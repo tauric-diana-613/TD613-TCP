@@ -1,0 +1,142 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22547282"
+source_title: "Essential-Goods Dependency & Survival Systems: A field theory of coupled access to food, water, energy, housing and healthcare under dependency and disruption"
+metadata_blob_sha256: 438fd709878c313ec6ab7ac9cc46455873e4a5ac47a7f9aab44bf01edecfc251
+metadata_blob_path: 02-ORIGINALS/live/blobs/43/438fd709878c313ec6ab7ac9cc46455873e4a5ac47a7f9aab44bf01edecfc251.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22547281",
+  "conceptrecid": "22547281",
+  "created": "2026-09-06T17:37:43.208514+00:00",
+  "doi": "10.5281/zenodo.22547282",
+  "doi_url": "https://doi.org/10.5281/zenodo.22547282",
+  "files": [
+    {
+      "checksum": "md5:5b072c9871a8ee6db8ecb18b97a3d7f2",
+      "id": "44417650-411a-49cb-a478-6d0ae29cdd66",
+      "key": "Essential-Goods Dependency & Survival Systems.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22547282/files/Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/content"
+      },
+      "size": 138072
+    }
+  ],
+  "id": 22547282,
+  "links": {
+    "access": "https://zenodo.org/api/records/22547282/access",
+    "access_grants": "https://zenodo.org/api/records/22547282/access/grants",
+    "access_links": "https://zenodo.org/api/records/22547282/access/links",
+    "access_request": "https://zenodo.org/api/records/22547282/access/request",
+    "access_users": "https://zenodo.org/api/records/22547282/access/users",
+    "archive": "https://zenodo.org/api/records/22547282/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22547282/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22547282/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22547282/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22547282",
+    "draft": "https://zenodo.org/api/records/22547282/draft",
+    "file_modification": "https://zenodo.org/api/records/22547282/file-modification",
+    "files": "https://zenodo.org/api/records/22547282/files",
+    "latest": "https://zenodo.org/api/records/22547282/versions/latest",
+    "latest_html": "https://zenodo.org/records/22547282/latest",
+    "media_files": "https://zenodo.org/api/records/22547282/media-files",
+    "parent": "https://zenodo.org/api/records/22547281",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22547281",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22547281",
+    "parent_html": "https://zenodo.org/records/22547281",
+    "preview_html": "https://zenodo.org/records/22547282?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22547282/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22547282/request-deletion",
+    "requests": "https://zenodo.org/api/records/22547282/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22547282/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22547282",
+    "self_doi": "https://doi.org/10.5281/zenodo.22547282",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22547282",
+    "self_html": "https://zenodo.org/records/22547282",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22547282/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22547282/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22547282:Essential-Goods%20Dependency%20&%20Survival%20Systems.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22547282/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>EGDSS &mdash; Essential‑Goods Dependency &amp; Survival Systems</strong></h1>\n<p><strong>A Field Theory of Coupled Access to Food, Water, Energy, Housing, and Healthcare Under Dependency and Disruption</strong></p>\n<h2><strong>Description</strong></h2>\n<p><strong>Essential‑Goods Dependency &amp; Survival Systems (EGDSS)</strong> evaluates a bounded and falsifiable proposition: survival access is not determined by any single essential good but by the coupled continuity of <strong>food</strong>, <strong>water and sanitation</strong>, <strong>energy</strong>, <strong>housing</strong>, and <strong>healthcare</strong>. The manuscript does not treat scarcity, poverty, or infrastructure failure as isolated phenomena. Instead, it specifies the causal, temporal, and distributional conditions under which disruption, unaffordability, or administrative exclusion in one essential good reduces realized access to others and forces household rationing.</p>\n<p>EGDSS formalizes realized access as a vector system combining physical continuity, affordability, quality, administrative inclusion, reserve duration, dependency concentration, and substitution limits. It defines survival‑system failure as one or more essential goods falling below a defensible, non‑substitutable minimum threshold for a given population and time. The field rejects universal survival scores until construct equivalence, ethical weighting, and domain‑expert thresholds are established.</p>\n<p>EGDSS distinguishes itself from adjacent frameworks&mdash;<strong>WEF nexus</strong>, <strong>critical‑infrastructure interdependency</strong>, <strong>human security</strong>, and <strong>essential‑services models</strong>&mdash;by defining a narrower dependent variable: multi‑good threshold breach and cross‑good survival cascades. It evaluates whether multiplex dependency structures improve prediction of rationing, threshold breaches, and recovery beyond sector‑only, poverty‑only, or state‑capacity baselines.</p>\n<p>The formal model represents cross‑good dependency through a matrix capturing how loss of one good reduces realized access to others. Cascades occur when direct loss plus dependency‑mediated losses drive one or more essential goods below minimum thresholds. Restoration is evaluated by centrality: recovery of the most enabling dependency should accelerate multi‑good restoration more than equal spending on peripheral endpoints.</p>\n<p>EGDSS is a full SR field, empirically active but not yet fully validated. Its boundaries are explicit: it studies essential‑goods access and coupled survival requirements, while logistics, governance, household absorption, and planetary pressure transfer remain adjacent mechanisms supplied by their respective SR fields.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<p><strong>1. A distinct survival‑system object</strong><br>EGDSS establishes <strong>survival access</strong> as a coupled systems problem rather than a sectoral or poverty‑only outcome. It identifies the essential‑goods system&mdash;food, water/sanitation, energy, housing, healthcare&mdash;as a single interdependent survival architecture. This reframes measurement, causation, and intervention around multi‑good continuity rather than isolated service indicators.</p>\n<p><strong>2. A formal cross‑good dependency mechanism</strong><br>The field supplies a multiplex dependency model linking continuity, affordability, reserves, administrative inclusion, and substitution limits across essential goods. It specifies when disruption in a high‑centrality good (e.g., water, energy) produces larger multi‑good losses than equal disruption in a peripheral good. This mechanism is absent from sector‑only and nexus models.</p>\n<p><strong>3. A threshold‑based survival test</strong><br>EGDSS defines survival‑system failure as breach of defensible, non‑substitutable minimum thresholds. This shifts analysis from aggregate availability to <strong>realized access</strong>, capturing affordability, administrative exclusion, reserve depletion, and substitution feasibility. It prevents misclassification of national supply adequacy as household survival continuity.</p>\n<p><strong>4. Incremental prediction over rival frameworks</strong><br>The field&rsquo;s distinct claim is empirical: multiplex dependency must outperform <strong>sector‑only</strong>, <strong>poverty‑only</strong>, <strong>WEF nexus</strong>, and <strong>state‑capacity</strong> models in predicting threshold breaches, rationing, and recovery. This establishes a falsifiable, incremental‑value test rather than conceptual novelty alone.</p>\n<p><strong>5. Restoration architecture and centrality‑based intervention</strong><br>EGDSS defines restoration as recovery of enabling dependencies that unlock multiple goods. It predicts that restoring the most central failed dependency yields faster multi‑good recovery than equal spending on peripheral endpoints. This provides a scientifically grounded restoration logic for crisis response, humanitarian planning, and essential‑services policy.</p>\n<p><strong>6. Ethical and empirical discipline</strong><br>The field establishes strict boundaries: no household‑level vulnerability maps that enable targeting; thresholds set with domain experts and affected communities; preregistered positive, negative, and reversal cases; transparent measurement; rival‑model comparison; and independent replication before validation. This ensures scientific integrity and prevents misuse.</p>",
+    "doi": "10.5281/zenodo.22547282",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Governance",
+      "Government",
+      "Economics"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22547281"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Essential-Goods Dependency & Survival Systems: A field theory of coupled access to food, water, energy, housing and healthcare under dependency and disruption",
+    "version": "1.0"
+  },
+  "modified": "2026-09-06T17:37:43.558237+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22547282",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Essential-Goods Dependency & Survival Systems: A field theory of coupled access to food, water, energy, housing and healthcare under dependency and disruption",
+  "updated": "2026-09-06T17:37:43.558237+00:00"
+}
+```

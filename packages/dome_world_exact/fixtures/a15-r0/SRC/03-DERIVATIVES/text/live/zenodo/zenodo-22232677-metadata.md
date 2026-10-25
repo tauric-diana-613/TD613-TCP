@@ -1,0 +1,138 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22232677"
+source_title: "PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST: Infrastructure Burden, Resolution Capacity, and the Locked 2031 National Trajectories"
+metadata_blob_sha256: 7eddcae1e17a96456bb41d1e8b280496e63d3c64e5dd5bd556889c9c20a7f7c6
+metadata_blob_path: 02-ORIGINALS/live/blobs/7e/7eddcae1e17a96456bb41d1e8b280496e63d3c64e5dd5bd556889c9c20a7f7c6.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22232676",
+  "conceptrecid": "22232676",
+  "created": "2026-09-01T14:11:02.833616+00:00",
+  "doi": "10.5281/zenodo.22232677",
+  "doi_url": "https://doi.org/10.5281/zenodo.22232677",
+  "files": [
+    {
+      "checksum": "md5:c01aa5aff902c8eb20a7e98e283d4f9e",
+      "id": "387bf05b-75c6-4571-a81d-d0d2279c19ff",
+      "key": "PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22232677/files/PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/content"
+      },
+      "size": 217920
+    }
+  ],
+  "id": 22232677,
+  "links": {
+    "access": "https://zenodo.org/api/records/22232677/access",
+    "access_grants": "https://zenodo.org/api/records/22232677/access/grants",
+    "access_links": "https://zenodo.org/api/records/22232677/access/links",
+    "access_request": "https://zenodo.org/api/records/22232677/access/request",
+    "access_users": "https://zenodo.org/api/records/22232677/access/users",
+    "archive": "https://zenodo.org/api/records/22232677/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22232677/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22232677/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22232677/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22232677",
+    "draft": "https://zenodo.org/api/records/22232677/draft",
+    "file_modification": "https://zenodo.org/api/records/22232677/file-modification",
+    "files": "https://zenodo.org/api/records/22232677/files",
+    "latest": "https://zenodo.org/api/records/22232677/versions/latest",
+    "latest_html": "https://zenodo.org/records/22232677/latest",
+    "media_files": "https://zenodo.org/api/records/22232677/media-files",
+    "parent": "https://zenodo.org/api/records/22232676",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22232676",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22232676",
+    "parent_html": "https://zenodo.org/records/22232676",
+    "preview_html": "https://zenodo.org/records/22232677?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22232677/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22232677/request-deletion",
+    "requests": "https://zenodo.org/api/records/22232677/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22232677/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22232677",
+    "self_doi": "https://doi.org/10.5281/zenodo.22232677",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22232677",
+    "self_html": "https://zenodo.org/records/22232677",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22232677/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22232677/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22232677:PLANETARY%20SR%20XXXI%20%E2%80%94%20THE%20INFRASTRUCTURE%20DEBT%20TEST.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22232677/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXXI &mdash; THE INFRASTRUCTURE DEBT TEST</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XXXI &mdash; The Infrastructure Debt Test</em> introduces a cross‑country diagnostic layer that evaluates <strong>infrastructure burden, resolution capacity, and substitution topology</strong> across the thirty locked national pathways. The study defines a multidimensional <strong>Infrastructure Debt Profile</strong> separating <em>renewal debt, capacity debt, conversion debt, resilience debt,</em> and <em>transition debt</em>, and uses the World Bank&rsquo;s 2026 Infrastructure Foundations dataset to compute a comparative <strong>Infrastructure Pressure Signal (IPS)</strong> for twenty‑nine countries. The paper emphasizes that a high Infrastructure Efficiency Ratio is not &ldquo;bad infrastructure,&rdquo; but a <strong>high modeled social return to additional investment</strong>, which can occur in both infrastructure‑poor systems and highly capable systems facing rapid transition requirements. Nigeria and Egypt show <em>&ldquo;IPS values far above the rest of the set,&rdquo;</em> aligning with locked SR pathways centered on access, conversion, municipal burden, and household pressure. Germany, Norway, Australia, New Zealand, Saudi Arabia, the UAE, and Singapore appear as <strong>boundary cases</strong>, where substantial infrastructure requirements coexist with strong institutional, fiscal, sovereign, or external substitution capacity. The study does not rewrite any national forecast; it tests whether infrastructure evidence is <strong>consistent, inconsistent, or neutral</strong> relative to the locked 2031 mechanisms.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>structural adjudication layer</strong> to the Planetary SR series by demonstrating how infrastructure burden interacts with <strong>Systems Propagation Science</strong>, <strong>Infrastructural Political Economy</strong>, <strong>Household Absorption Science</strong>, and <strong>Substitution Topology</strong>. It shows that infrastructure pressure is not a deterministic collapse variable but a <strong>carrier</strong> whose effects depend on resolution capacity and substitution options. The paper strengthens SR&rsquo;s comparative architecture by revealing three distinct global conditions: (1) <strong>pressure‑amplification systems</strong> (Nigeria, Egypt, Colombia, Mexico, India, Indonesia) where infrastructure burden aligns with household, municipal, and territorial receivers; (2) <strong>restoration and managed‑adaptation systems</strong> (South Africa, Germany, Norway, Australia, New Zealand, Saudi Arabia, UAE, Singapore) where high pressure tests institutional or sovereign conversion capacity; and (3) <strong>renewal/transition systems</strong> where infrastructure burden interacts with demographic, fiscal, housing, or administrative mechanisms rather than driving outcomes alone. The study expands the 2031 adjudication framework by establishing that <strong>infrastructure must match the locked mechanism</strong> to count as support: physical expansion without reduced household, municipal, or service compensation does not constitute restoration. By freezing the infrastructure layer alongside the original forecasts, the paper ensures that SR&rsquo;s mechanism‑first grammar remains auditable, falsifiable, and structurally comparable across all thirty national trajectories.</p>",
+    "doi": "10.5281/zenodo.22232677",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22232676"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST: Infrastructure Burden, Resolution Capacity, and the Locked 2031 National Trajectories",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T14:11:03.374805+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22232677",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST: Infrastructure Burden, Resolution Capacity, and the Locked 2031 National Trajectories",
+  "updated": "2026-09-01T14:11:03.374805+00:00"
+}
+```

@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22217212"
+source_title: "PLANETARY SR XXIV — SOUTH AFRICA: Infrastructure-Restoration Transition, High Unemployment, Social-Grant Buffering, and Institutional Resilience"
+metadata_blob_sha256: bdeca50bb166d035ce7f0306501837550eee2ec409531fb426c84bf996df7221
+metadata_blob_path: 02-ORIGINALS/live/blobs/bd/bdeca50bb166d035ce7f0306501837550eee2ec409531fb426c84bf996df7221.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22217211",
+  "conceptrecid": "22217211",
+  "created": "2026-09-01T00:23:16.696625+00:00",
+  "doi": "10.5281/zenodo.22217212",
+  "doi_url": "https://doi.org/10.5281/zenodo.22217212",
+  "files": [
+    {
+      "checksum": "md5:31865d36adbafb369dc26e92af389ad8",
+      "id": "943c4e79-5506-4a5c-8c7c-6dafdcef0dfa",
+      "key": "PLANETARY SR XXIV — SOUTH AFRICA.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22217212/files/PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/content"
+      },
+      "size": 403550
+    }
+  ],
+  "id": 22217212,
+  "links": {
+    "access": "https://zenodo.org/api/records/22217212/access",
+    "access_grants": "https://zenodo.org/api/records/22217212/access/grants",
+    "access_links": "https://zenodo.org/api/records/22217212/access/links",
+    "access_request": "https://zenodo.org/api/records/22217212/access/request",
+    "access_users": "https://zenodo.org/api/records/22217212/access/users",
+    "archive": "https://zenodo.org/api/records/22217212/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22217212/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22217212/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22217212/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22217212",
+    "draft": "https://zenodo.org/api/records/22217212/draft",
+    "file_modification": "https://zenodo.org/api/records/22217212/file-modification",
+    "files": "https://zenodo.org/api/records/22217212/files",
+    "latest": "https://zenodo.org/api/records/22217212/versions/latest",
+    "latest_html": "https://zenodo.org/records/22217212/latest",
+    "media_files": "https://zenodo.org/api/records/22217212/media-files",
+    "parent": "https://zenodo.org/api/records/22217211",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22217211",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217211",
+    "parent_html": "https://zenodo.org/records/22217211",
+    "preview_html": "https://zenodo.org/records/22217212?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22217212/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22217212/request-deletion",
+    "requests": "https://zenodo.org/api/records/22217212/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22217212/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22217212",
+    "self_doi": "https://doi.org/10.5281/zenodo.22217212",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217212",
+    "self_html": "https://zenodo.org/records/22217212",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22217212/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22217212/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22217212:PLANETARY%20SR%20XXIV%20%E2%80%94%20SOUTH%20AFRICA.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22217212/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XXIV &mdash; SOUTH AFRICA</strong></h1>\n<h2>Description</h2>\n<p>Planetary SR XXIV &mdash; South Africa analyzes South Africa as a coupled institutional&ndash;population system defined by infrastructure-restoration transition, high unemployment, social-grant buffering, and institutional resilience. The study documents a continuity architecture combining strong constitutional and monetary institutions, an advanced financial and industrial base, extensive social transfers, and substantial resource capacity with deep inequality, persistent unemployment, municipal-performance gaps, and uneven infrastructure access. IMF estimates place 2025 growth at 1.3%, average inflation at 3.2%, and public debt near 77% of GDP, while Statistics South Africa reported unemployment of 31.9% in 2025Q3 and 32.7% in 2026Q1. Effective access diverges from formal provision across nine provinces, metropolitan and local municipalities, and formal and informal settlement geographies, where transport, housing, public-service reliability, employment access, and administrative capacity shape conversion. Improving electricity reliability following severe load-shedding periods makes South Africa a particularly important restoration case: the central question is whether electricity, logistics, rail, port, and municipal-system recovery can restore productive capacity faster than unemployment and fiscal pressure consume institutional and household buffers. The paper does not diagnose generalized national collapse. It distinguishes social and institutional compensation from durable restoration and asks whether current buffers can be renewed without transferring unsustainable burdens to households, communities, workers, or future public capacity.</p>\n<h2>How It Contributes</h2>\n<p>This study contributes a distinct continuity topology to the Planetary SR comparative series by demonstrating how strong institutions and social-transfer systems can preserve essential continuity under extreme unemployment, inequality, infrastructure strain, and constrained fiscal space. South Africa strengthens Systems Propagation Science, Infrastructural Political Economy, Institutional Cognition, Collapse Governance, and the Drift Collapse Field by identifying measurable bridges from electricity and logistics reliability to production, investment, and employment; from unemployment to poverty and social-grant demand; from municipal capacity to water, sanitation, housing, and business continuity; and from debt-service pressure to infrastructure and social-investment capacity. The paper expands the ATLAS architecture by establishing restoration as an evidentiary object rather than treating deterioration as the only meaningful result. Reduced load-shedding and improving electricity performance must therefore receive the same analytical weight as continued labour, fiscal, municipal, and household pressure. South Africa&rsquo;s mechanism is empirically distinguishable through its combination of strong constitutional and financial institutions, resource and industrial capacity, social-grant buffering, extreme unemployment, territorial inequality, and infrastructure-restoration requirements. The five-year test is conditional: selective restoration becomes more likely if electricity, logistics, and municipal capacity continue improving, while unemployment and fiscal pressure remain the principal constraints on broad social and economic conversion.</p>",
+    "doi": "10.5281/zenodo.22217212",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "South Africa",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22217211"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XXIV — SOUTH AFRICA: Infrastructure-Restoration Transition, High Unemployment, Social-Grant Buffering, and Institutional Resilience",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T13:57:16.288275+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22217212",
+  "revision": 4,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 3,
+    "views": 3
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XXIV — SOUTH AFRICA: Infrastructure-Restoration Transition, High Unemployment, Social-Grant Buffering, and Institutional Resilience",
+  "updated": "2026-09-01T13:57:16.288275+00:00"
+}
+```

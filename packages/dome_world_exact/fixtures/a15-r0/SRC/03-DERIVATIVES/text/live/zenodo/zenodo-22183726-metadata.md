@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22183726"
+source_title: "PLANETARY SR XIII — JAPAN: Ageing High-Capacity Continuity, Infrastructure Discipline, Fiscal Persistence, and Demographic Contraction"
+metadata_blob_sha256: 1c9812e466732483ef76c16ce8e2b15072566cd3592b6e6a98f9704c2cc769f1
+metadata_blob_path: 02-ORIGINALS/live/blobs/1c/1c9812e466732483ef76c16ce8e2b15072566cd3592b6e6a98f9704c2cc769f1.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22183725",
+  "conceptrecid": "22183725",
+  "created": "2026-08-31T02:27:16.529096+00:00",
+  "doi": "10.5281/zenodo.22183726",
+  "doi_url": "https://doi.org/10.5281/zenodo.22183726",
+  "files": [
+    {
+      "checksum": "md5:7cdce2c8507b7ee1115422ff9495b279",
+      "id": "2c5440e6-451d-4896-8378-1ed3c5f0e4f6",
+      "key": "PLANETARY SR XIII — JAPAN.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22183726/files/PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/content"
+      },
+      "size": 408299
+    }
+  ],
+  "id": 22183726,
+  "links": {
+    "access": "https://zenodo.org/api/records/22183726/access",
+    "access_grants": "https://zenodo.org/api/records/22183726/access/grants",
+    "access_links": "https://zenodo.org/api/records/22183726/access/links",
+    "access_request": "https://zenodo.org/api/records/22183726/access/request",
+    "access_users": "https://zenodo.org/api/records/22183726/access/users",
+    "archive": "https://zenodo.org/api/records/22183726/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22183726/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22183726/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22183726/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22183726",
+    "draft": "https://zenodo.org/api/records/22183726/draft",
+    "file_modification": "https://zenodo.org/api/records/22183726/file-modification",
+    "files": "https://zenodo.org/api/records/22183726/files",
+    "latest": "https://zenodo.org/api/records/22183726/versions/latest",
+    "latest_html": "https://zenodo.org/records/22183726/latest",
+    "media_files": "https://zenodo.org/api/records/22183726/media-files",
+    "parent": "https://zenodo.org/api/records/22183725",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22183725",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22183725",
+    "parent_html": "https://zenodo.org/records/22183725",
+    "preview_html": "https://zenodo.org/records/22183726?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22183726/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22183726/request-deletion",
+    "requests": "https://zenodo.org/api/records/22183726/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22183726/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22183726",
+    "self_doi": "https://doi.org/10.5281/zenodo.22183726",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22183726",
+    "self_html": "https://zenodo.org/records/22183726",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22183726/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22183726/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22183726:PLANETARY%20SR%20XIII%20%E2%80%94%20JAPAN.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22183726/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XIII &mdash; JAPAN</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XIII &mdash; Japan</em> provides a structural diagnostic of Japan as a coupled institutional&ndash;population system, using evidence from 2000&ndash;2025 with 2026 verification. The paper identifies Japan&rsquo;s continuity architecture as <strong>ageing high‑capacity continuity, infrastructure discipline, fiscal persistence, and demographic contraction</strong>. Japan&rsquo;s demographic pressure is already realized rather than projected&mdash;<em>&ldquo;population declined in 90.6% of municipalities between 2020 and 2025&rdquo;</em>&mdash;and coexists with very high public fiscal commitments and a durable administrative‑infrastructural base. The energy system remains import‑dependent, with <em>&ldquo;67.5% of electricity generation from thermal sources, 23.0% from renewables, and 9.4% from nuclear&rdquo;</em> (METI, 2026). The study distinguishes universal statutory coverage from effective access, showing how ageing, rural service withdrawal, labour shortages, and municipal shrinkage shape continuity beneath strong institutional insulation. Japan&rsquo;s long‑standing infrastructure discipline and administrative capacity sustain high function even as demographic contraction accelerates.</p>\n<h2><strong>Contribution</strong></h2>\n<p>This paper expands the Planetary SR comparative series by introducing a <strong>new continuity topology</strong> distinct from Canada, the United States, Mexico, Germany, France, the United Kingdom, Italy, Spain, Sweden, Norway, and Poland. Japan&rsquo;s configuration strengthens SR fields such as <strong>Planetary Pressure Ecology</strong>, <strong>Institutional Reflex Science</strong>, <strong>Planetary Drift Mechanics</strong>, and <strong>Systems Propagation Science</strong> by demonstrating how demographic contraction, ageing, fiscal persistence, and energy‑import dependence interact across 47 prefectures and diverse municipal service systems. The document provides high‑resolution evidence for SR&rsquo;s frozen hypotheses, including compensated continuity, unequal insulation, surface&ndash;substrate divergence, and reorganization. It also contributes to the ATLAS architecture by showing how high‑capacity institutional continuity can coexist with shrinking cohorts, rising care requirements, and long‑run fiscal pressure. As the paper states, Japan&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;high‑capacity institutional and infrastructural continuity under persistent population decline, rapid ageing, high public debt and energy‑import dependence,&rdquo;</em> thereby adding a new structural configuration to the planetary series.</p>",
+    "doi": "10.5281/zenodo.22183726",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Japan",
+      "Society"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22183725"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XIII — JAPAN: Ageing High-Capacity Continuity, Infrastructure Discipline, Fiscal Persistence, and Demographic Contraction",
+    "version": "1.0"
+  },
+  "modified": "2026-08-31T02:27:16.946436+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22183726",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XIII — JAPAN: Ageing High-Capacity Continuity, Infrastructure Discipline, Fiscal Persistence, and Demographic Contraction",
+  "updated": "2026-08-31T02:27:16.946436+00:00"
+}
+```

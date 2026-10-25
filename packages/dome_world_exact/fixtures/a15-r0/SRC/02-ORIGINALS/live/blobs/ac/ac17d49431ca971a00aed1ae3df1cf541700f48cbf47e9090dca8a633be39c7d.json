@@ -1,0 +1,131 @@
+{
+  "conceptdoi": "10.5281/zenodo.22288778",
+  "conceptrecid": "22288778",
+  "created": "2026-09-03T23:45:23.883160+00:00",
+  "doi": "10.5281/zenodo.22288779",
+  "doi_url": "https://doi.org/10.5281/zenodo.22288779",
+  "files": [
+    {
+      "checksum": "md5:69276df1116313b58f341f12af257ed4",
+      "id": "69f00558-eb29-476f-9fb8-9bef082e73f9",
+      "key": "ATLAS VI — STATE AGENCY UNDER EXTERNAL DEPENDENCY.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22288779/files/ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/content"
+      },
+      "size": 162032
+    }
+  ],
+  "id": 22288779,
+  "links": {
+    "access": "https://zenodo.org/api/records/22288779/access",
+    "access_grants": "https://zenodo.org/api/records/22288779/access/grants",
+    "access_links": "https://zenodo.org/api/records/22288779/access/links",
+    "access_request": "https://zenodo.org/api/records/22288779/access/request",
+    "access_users": "https://zenodo.org/api/records/22288779/access/users",
+    "archive": "https://zenodo.org/api/records/22288779/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22288779/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22288779/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22288779/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22288779",
+    "draft": "https://zenodo.org/api/records/22288779/draft",
+    "file_modification": "https://zenodo.org/api/records/22288779/file-modification",
+    "files": "https://zenodo.org/api/records/22288779/files",
+    "latest": "https://zenodo.org/api/records/22288779/versions/latest",
+    "latest_html": "https://zenodo.org/records/22288779/latest",
+    "media_files": "https://zenodo.org/api/records/22288779/media-files",
+    "parent": "https://zenodo.org/api/records/22288778",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22288778",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22288778",
+    "parent_html": "https://zenodo.org/records/22288778",
+    "preview_html": "https://zenodo.org/records/22288779?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22288779/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22288779/request-deletion",
+    "requests": "https://zenodo.org/api/records/22288779/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22288779/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22288779",
+    "self_doi": "https://doi.org/10.5281/zenodo.22288779",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22288779",
+    "self_html": "https://zenodo.org/records/22288779",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22288779/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22288779/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22288779:ATLAS%20VI%20%E2%80%94%20STATE%20AGENCY%20UNDER%20EXTERNAL%20DEPENDENCY.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22288779/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>ATLAS VI &mdash; State Agency Under External Dependency</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>ATLAS VI</em> formalizes the <strong>agency layer</strong> of the ATLAS universe: the diagnostic architecture that distinguishes <strong>formal authority</strong> from <strong>executable agency</strong>. As the manuscript states, <em>&ldquo;Formal authority does not guarantee executable agency. Dependence constrains agency when substitution is low, private or foreign structural power is high, and regulatory leverage cannot be implemented.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions state agency as a <strong>conditional capability</strong>, shaped by infrastructure dependency, external financing, technology control, supplier concentration, switching costs, and regulatory enforceability.</p>\n<p>ATLAS VI extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how low substitution capacity (S) and high external dependence (D) reduce executable bargaining and policy agency (A). It introduces a measurement architecture focused on infrastructure dependency, substitution capacity, regulatory leverage, supplier concentration, external financing, currency exposure, and implementation gaps.</p>\n<p>The manuscript establishes that agency loss is not a moral failure or institutional flaw; it is a <strong>structural consequence</strong> of dependency architectures that limit a government&rsquo;s ability to execute policy, regulate essential systems, negotiate terms, or protect people who move across borders.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS VI provides the <strong>state‑agency foundation</strong> of the ATLAS universe. It operationalizes <strong>Executable Agency</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how external dependency constrains state action.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how low retention and high burdens weaken substitution capacity, raise external dependence, and reduce the state&rsquo;s ability to execute policy. It strengthens <strong>Infrastructural Political Economy</strong>by demonstrating how infrastructure ownership, technology control, logistics dependency, and external finance shape the limits of regulatory leverage.</p>\n<p>The migration‑agency audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing how employer dependence, recruiter power, remittance reliance, credential recognition, and diaspora policy shape executable migration agency.</p>\n<p>ATLAS VI also provides the empirical substrate for evaluating <strong>restoration</strong> through redundant public capacity, interoperability, open standards, procurement‑based capability formation, and regional substitution arrangements.</p>\n<p>Ultimately, ATLAS VI contributes the <strong>agency grammar</strong> required to evaluate whether states can retain gains, govern essential systems, absorb shocks fairly, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22288779",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Economics",
+      "World",
+      "Governance"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-04",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22288778"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS VI STATE AGENCY UNDER EXTERNAL DEPENDENCY: Infrastructure, Finance, Technology, and Executable Sovereignty",
+    "version": "1.0"
+  },
+  "modified": "2026-09-03T23:45:24.186552+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22288779",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS VI STATE AGENCY UNDER EXTERNAL DEPENDENCY: Infrastructure, Finance, Technology, and Executable Sovereignty",
+  "updated": "2026-09-03T23:45:24.186552+00:00"
+}
