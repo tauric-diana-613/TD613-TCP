@@ -26,5 +26,9 @@ jobs:
         run: node tests/atelier-method-v02-universal-seed.test.mjs
       - name: Execute source-bound Em 44-interface overlay controls
         run: node tests/emstd613-universal-v02-overlay.test.mjs
+      - name: Execute common parity resolver and topology controls
+        run: node tests/atelier-method-v02-parity-operators.test.mjs
+      - name: Exercise real Em Work and hash-verified literal source sieve
+        run: node tests/emstd613-native-parity-v02.test.mjs
       - name: Execute read-only Em corpus capability inspector
         run: node packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs --status
