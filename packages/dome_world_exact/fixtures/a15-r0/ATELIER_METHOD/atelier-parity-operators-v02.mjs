@@ -444,3 +444,41 @@ export function extractVerbatimClaimCandidates({snapshot_id,source_id,source_loc
   status:'EXTRACTED_CANDIDATES_NOT_ADJUDICATED',
   claim_ceiling:'NO_SCIENTIFIC_TRUTH_AUTHORSHIP_OR_GENEALOGY_ESTABLISHED'};
 }
+
+
+/** Blind, pre-registered foreign-donor 2×2 descriptor-level contrasts.
+ * Caller supplies observed scores and original witnesses; this does not
+ * acquire donors, judge authorship, infer intent, or establish causal transfer.
+ */
+export function scoreForeignDonorFourCell({plan,observations}){
+ guard(plan?.schema==='td613.atelier-foreign-donor-factorial/v0.2-candidate'&&
+  plan.state==='PREREGISTERED_NOT_EXECUTED','DONOR_PLAN_NOT_FROZEN');
+ guard(Array.isArray(observations)&&observations.length===4,'FOUR_CELLS_REQUIRED');
+ const allowed=new Set(['C00','C01','C10','C11']);
+ const by=new Map();
+ for(const row of observations){
+  guard(allowed.has(row.cell)&&!by.has(row.cell),'DONOR_CELL_DUPLICATE_OR_INVALID');
+  guard(typeof row.score==='number'&&Number.isFinite(row.score),'DONOR_SCORE_INVALID');
+  guard(str(row.witness_id)&&str(row.matched_frame)&&row.matched_frame===plan.matched_frame,
+   'DONOR_WITNESS_OR_FRAME_MISMATCH');
+  guard(row.blinded===true,'DONOR_EVALUATION_NOT_BLINDED');
+  by.set(row.cell,row);
+ }
+ guard(by.size===4,'DONOR_CELL_MISSING');
+ const q=c=>by.get(c).score;
+ const architecture_main_effect=((q('C10')+q('C11'))-(q('C00')+q('C01')))/2;
+ const style_main_effect=((q('C01')+q('C11'))-(q('C00')+q('C10')))/2;
+ const interaction=q('C11')-q('C10')-q('C01')+q('C00');
+ return {
+  schema:'td613.atelier-foreign-donor-contrasts/v0.2',
+  plan_id:plan.id,matched_frame:plan.matched_frame,
+  witnesses:observations.map(x=>({cell:x.cell,witness_id:x.witness_id})),
+  contrasts:{architecture_main_effect,style_main_effect,interaction},
+  observation_state:'FOUR_CELL_SCORES_RECORDED',
+  causal_identifiability:'UNESTABLISHED_BY_DESCRIPTIVE_CONTRASTS',
+  source_transfer_authority:false,
+  source_authorship_attribution:false,
+  full_prior_art_novelty_adjudication:false,
+  claim_ceiling:'BLINDED_MATCHED_FRAME_DESCRIPTIVE_2X2_ONLY_NO_UNIQUE_CAUSATION_OR_DONOR_INTENT'
+ };
+}
