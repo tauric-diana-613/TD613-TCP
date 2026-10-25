@@ -45,5 +45,7 @@ jobs:
           node tests/emstd613-four-atelier-parity-audition.test.mjs
           node tests/emstd613-universal-v02-overlay.test.mjs
           node tests/emstd613-native-parity-v02.test.mjs
+      - name: Instantiate and exercise a disposable empty Atelier on synthetic research specimens
+        run: node tests/atelier-method-v02-blank-integration.test.mjs
       - name: Dry-run empty Atilla-Ozy example (no files created)
         run: node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-scaffold-v02.mjs --id ATILLA_OZY --label "Atilla & Ozy"
