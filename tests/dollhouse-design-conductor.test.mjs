@@ -515,3 +515,41 @@ test('TD613 Dollhouse Design Conductor v0.2 - Qualification Commission Full Inge
   assert.equal(refLaw.content_excerpt.includes(deepInstruction), false);
   assert.equal(refLaw.full_content.includes(deepInstruction), true);
 });
+
+
+test('DD-02: operator-defined deliverable cardinality is independent of internal alternatives', async () => {
+  const seed = 'A room in which contrasting witnesses must preserve distinct histories';
+  const single = normalizeCommission({ seed, medium: 'VISUAL' });
+  assert.equal(single.deliverable_count, 1, 'Implicit commission must authorize exactly one finished artifact');
+
+  const receipt = await runDollhouseDesignCycle({ seed, medium: 'VISUAL' });
+  assert.equal(receipt.output_contract.requested_deliverables, 1);
+  assert.equal(receipt.output_contract.cardinality_authority, 'OPERATOR_COMMISSION_ONLY');
+  assert.equal(receipt.output_contract.candidates_are_internal_scaffolding, true);
+  assert.equal(receipt.output_contract.refraction_is_internal_scaffolding, true);
+  assert.equal(receipt.refractive_variant.status, 'INTERNAL_COMPARATIVE_DESIGN_STUDY_NOT_A_DELIVERABLE');
+  assert.equal(receipt.candidates.length, 2, 'Two internal concepts are permissible without authorizing two outputs');
+
+  const explicit = await runDollhouseDesignCycle({ seed, medium: 'VISUAL', deliverable_count: 3 });
+  assert.equal(explicit.output_contract.requested_deliverables, 3, 'Only explicit commission cardinality permits more artifacts');
+  assert.equal(explicit.candidates.length, 2, 'Candidate count must remain independent of requested deliverable count');
+
+  for (const bad of [0, -1, 1.5, '2', null, Number.MAX_SAFE_INTEGER + 1]) {
+    assert.throws(() => normalizeCommission({ seed, deliverable_count: bad }), /deliverable_count/,
+      'Invalid deliverable counts must not silently change output contract');
+  }
+});
+
+test('DD-02: skill and authoring cycle must not impose experimental paired outputs on ordinary commissions', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const skill = await readFile(new URL('../.agents/skills/dollhouse-design/SKILL.md', import.meta.url), 'utf8');
+  const cycle = await readFile(new URL('../.agents/skills/dollhouse-design/references/authoring-cycle.md', import.meta.url), 'utf8');
+  const provenance = await readFile(new URL('../.agents/skills/dollhouse-design/references/firebreak-and-provenance.md', import.meta.url), 'utf8');
+  assert.match(skill, /Operator-Defined Deliverable Cardinality/);
+  assert.match(skill, /one finished deliverable per commission/);
+  assert.match(cycle, /exactly the artifacts explicitly commissioned/);
+  assert.match(provenance, /internal Refractive Comparison/);
+  assert.doesNotMatch(skill, /materializes both Candidate A/);
+  assert.doesNotMatch(skill, /Deliver the inspectable artifact, its refractive counterpart/);
+  assert.doesNotMatch(cycle, /presents the materialized work, its refractive counterpart/);
+});
