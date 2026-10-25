@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { emRegistry,queryNativeEmWork,queryNativeEmMotifs }
+import { emRegistry,queryNativeEmWork,queryNativeEmMotifs,emSourceBoundCandidateDossier }
  from '../packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-native-parity-v02.mjs';
 
 const native=emRegistry();
@@ -42,4 +42,26 @@ assert.throws(()=>queryNativeEmMotifs({
 assert.throws(()=>queryNativeEmMotifs({
  source_ids:['emsrc_ae5d4155056773c8a50db1b9','emsrc_ae5d4155056773c8a50db1b9'],terms:['x']
 }),/DUPLICATE_SOURCE_IDS/);
+
+const dossier=emSourceBoundCandidateDossier({
+ source_ids:['emsrc_ae5d4155056773c8a50db1b9','emsrc_b7e4e42924d33bdaf666a4f8'],
+ terms:['system','control'],max_claims_per_source:8
+});
+assert.equal(dossier.schema,'td613.em-native-provisional-ledgers/v0.2');
+assert.equal(dossier.source_count,2);
+assert.equal(dossier.source_integrity,'ALL_EXCERPTS_SHA256_MATCH_REGISTERED_NATIVE_DERIVATIVES');
+assert.ok(dossier.claim_candidate_ledger.length>0);
+assert.ok(dossier.motif_candidate_ledger.length>0);
+assert.ok(dossier.claim_candidate_ledger.every(c=>c.evidence_class==='ARCHIVE_OBSERVATION'));
+assert.ok(dossier.claim_candidate_ledger.every(c=>/^[a-f0-9]{64}$/.test(c.verbatim_utf8_sha256)));
+assert.ok(dossier.claim_candidate_ledger.every(c=>c.end_char>c.start_char));
+assert.ok(dossier.claim_candidate_ledger.every(c=>c.source_text_copied_into_packet===false));
+assert.ok(dossier.claim_candidate_ledger.every(c=>c.candidate_state==='TEXTUAL_CLAIM_CANDIDATE_NOT_TRUTH_ADJUDICATION'));
+assert.equal(dossier.mechanism_ledger.entries.length,0);
+assert.equal(dossier.genealogy_ledger.entries.length,0);
+assert.match(dossier.mechanism_ledger.status,/HELD/);
+assert.match(dossier.genealogy_ledger.status,/HELD/);
+assert.equal(dossier.saved_to_canonical_Em_registry,false);
+assert.equal(dossier.source_text_copied_into_packet,false);
+
 console.log('EM real-corpus SOURCE-BOUND parity pass: 87 source registry, 32 Work index, supported 1–2 Work identity interval, 2 rehashed extracted texts and literal motifs; no relation/motif ledger or theory promoted.');
