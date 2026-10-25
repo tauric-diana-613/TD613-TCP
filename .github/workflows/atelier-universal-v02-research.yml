@@ -36,7 +36,7 @@ jobs:
       - name: Fetch exact Em PR #1604 for native-corpus comparator
         run: |
           git fetch --no-tags --depth=1 origin refs/pull/1604/head
-          test "$(git rev-parse FETCH_HEAD)" = "be060f9718861bfe29d4439ce46d58c41f607da5"
+          test "$(git rev-parse FETCH_HEAD)" = "1243023d56c1939d25c9525706b91be416320381"
           git worktree add --detach "$RUNNER_TEMP/atelier-em-pr1604" FETCH_HEAD
       - name: Execute native Em source and shared-operator tests (isolated worktree)
         run: |
