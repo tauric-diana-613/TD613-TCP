@@ -26,7 +26,7 @@ The integrity of TD613 depends on maintaining an impenetrable firebreak between 
 
 ## 2. Instrument Provenance Tracking
 
-Every artifact returned by `/dollhouse-design` must carry an explicit **Instrument Provenance Ledger**:
+Every commissioned artifact can carry or expose an **Instrument Provenance Ledger** within that artifact or its internal receipt; the ledger never authorizes an additional externally delivered file:
 - Which specific instrument was selected?
 - Which mathematical formula or theoretical concept was adapted?
 - What was genuinely computed by code versus what was authored as a creative prompt?
@@ -38,5 +38,5 @@ Every artifact returned by `/dollhouse-design` must carry an explicit **Instrume
 
 The proposed sixth specialist, `Palate` (Aesthetic Judgment), remains constitutionally **unborn**. 
 - Aesthetic merit cannot be reduced to a scalar score, a pass/fail classifier, or an algorithmic threshold.
-- Instead of an automated aesthetic judge, `/dollhouse-design` enforces **Refractive Comparison**: generating a counterfactual variant so the human operator can witness what happens when a formal decision changes.
+- Instead of an automated aesthetic judge, `/dollhouse-design` supports **internal Refractive Comparison**: examining a counterfactual design choice without obligating the author to create or deliver a second work. A paired visual comparison is produced only if the operator requests it.
 - Final aesthetic judgment, selection, and closure belong exclusively to the human operator.
