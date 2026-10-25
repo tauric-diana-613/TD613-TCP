@@ -25,6 +25,10 @@ assert.equal(blank.current_findings.length,0);
 assert.equal(blank.claim_ceiling,'NO_SOURCES_NO_RESEARCH_RESULT');
 assert.equal(blank.consent_and_contact.outbound_contact_authorized,false);
 assert.equal(blank.modules.PUBLIC_RECOGNITION_BREADCRUMB_ROUTE.corpus_execution,'NOT_TESTED');
+assert.equal(Object.values(blank.modules).filter(m=>m.callable_available).length,1);
+assert.equal(blank.modules.STAGE_ORDER_PERMUTATION_IDENTIFIABILITY.callable_available,true);
+assert.equal(blank.modules.NOMENCLATURE_DECONTAMINATION.callable_available,false);
+
 assert.deepEqual(blank.routes,['EXPERIENTIAL','CUSTODIAL','AUDIT','IMPLEMENTATION']);
 const illegal=structuredClone(blank);
 illegal.modules.POLYCOMPILATION_CONSERVATION.implementation_state='IMPLEMENTED_AND_TRUST_ME';
