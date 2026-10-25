@@ -28,7 +28,7 @@ Instruments may be paired, with one acting as scaffold and the second as counter
 ---
 
 ## 3. Generate Alternatives (Propagation)
-Before drafting or coding, the seed must branch into at least two structurally non-equivalent formal propositions. 
+Before drafting or coding, the seed may be studied through structurally non-equivalent internal formal propositions. These are design studies, not file deliverables. 
 - *Candidate A* might prioritize temporal suspense and retrospective revelation.
 - *Candidate B* might prioritize immediate consequence and procedural friction.
 
@@ -44,7 +44,7 @@ The Conductor applies the remaining generative verbs:
 ---
 
 ## 5. Materialize
-The engine produces the actual working artifact: complete standalone HTML5 code, a fully articulated scholarly essay movement, or a rigorous theoretical proof. Outlines and promissory descriptions are rejected.
+The engine produces the operator-requested number of finished working artifacts (default: exactly one): complete standalone HTML5 code, a fully articulated scholarly essay, a rigorous theoretical proof, or another commissioned medium. Outlines and promissory descriptions are rejected. A receipt is not itself a finished artifact.
 
 ---
 
@@ -55,12 +55,12 @@ The engine mutates exactly one governing formal parameter:
 - Removing an interactive affordance to test if the meaning survives.
 - Exaggerating an interference peak.
 
-This produces a concrete, competing counterfactual realization.
+This produces an **internal counterfactual design study**, not an additional deliverable. It may strengthen the one finished artifact; external materialization requires an explicit operator request.
 
 ---
 
 ## 7. Compare
-The engine analyzes the pair:
+The engine analyzes the primary approach and internal counterfactual:
 - What survived the refraction?
 - What was destroyed by the change?
 - Which formal choice was truly consequential versus merely decorative?
@@ -68,7 +68,7 @@ The engine analyzes the pair:
 ---
 
 ## 8. Return (Human Rest)
-The engine presents the materialized work, its refractive counterpart, and the comparative analysis to the human operator. The system rests; human selection and closure remain required.
+The engine returns **exactly the artifacts explicitly commissioned**, one by default. Neither the counterfactual study nor the comparison requires a second file, variant, or visual mode. Experimental A/B paired-output requirements apply only inside an explicitly commissioned controlled comparison; they never override ordinary commissions. The system rests; human selection and closure remain required.
 
 ---
 
