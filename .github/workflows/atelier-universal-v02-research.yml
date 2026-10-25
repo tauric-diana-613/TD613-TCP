@@ -19,11 +19,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Candidate full-inventory and hostile synthetic controls
         run: node tests/atelier-method-v02-universal-seed.test.mjs
+      - name: Execute shared SRC + Wendbine derived parity operations
+        run: node tests/atelier-method-v02-parity-operators.test.mjs
+      - name: Fetch unmodified Wendbine PR #1116 witness (research only)
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/1116/head
+          test "$(git rev-parse FETCH_HEAD)" = "ce1e4ea4ccffe8409f9ea9873628e0f717706385"
+      - name: Execute source-native SRC and Wendbine comparison oracles
+        run: node tests/atelier-method-v02-native-oracles.test.mjs
       - name: Dry-run empty Atilla-Ozy example (no files created)
         run: node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-scaffold-v02.mjs --id ATILLA_OZY --label "Atilla & Ozy"
