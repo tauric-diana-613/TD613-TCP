@@ -167,7 +167,7 @@ assert.throws(()=>nomenclatureOperatorCrosswalk({source_snapshot:'S',receiver_sn
   alternative_explanation:'existing',claim_ceiling:'low'}]}),/ORDINARY_TERM_UNGROUNDED/);
 
 
-const text='The state requires a distinct witness. Inference cannot prove the source. Mechanism remains unresolved.';
+const text='The state requires a distinct witness. The source defines an explicit comparison. The mechanism depends on testable predictions.';
 const snippets=extractVerbatimClaimCandidates({snapshot_id:'SYNTHETIC',source_id:'case-A',
  source_locator:'synthetic:document',text,max_candidates:8});
 assert.ok(snippets.candidate_count>=2);
