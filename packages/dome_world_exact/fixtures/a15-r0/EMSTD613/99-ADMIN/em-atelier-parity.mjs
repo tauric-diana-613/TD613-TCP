@@ -4,6 +4,7 @@
  * The shared method is pinned byte-for-byte from PR #1118, commit 3021cfbf...
  */
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -190,6 +191,27 @@ export function makeBlurbHypothesis({finding_id,source_file_id,span_or_locator,p
     next_highest_information_test:'Acquire exact full source and identify a specific operator, boundary condition, and falsifier.',
     human_closure_state:'PENDING_HUMAN_REVIEW'
   };
+}
+
+
+/**
+ * Stage an operator-reviewed, local source intake proposal without accessing or
+ * writing the corpus. Matches the SRC pattern of separate acquisition and
+ * admission while preserving Em's rights and independent source provenance.
+ */
+export function stageSourceIntake({bytes,original_filename,media_type,provenance_basis,rights_state,parent_epoch}) {
+  assert(bytes instanceof Uint8Array,'INTAKE_BYTES_REQUIRED');
+  assert(nonempty(original_filename)&&nonempty(media_type),'INTAKE_IDENTITY_REQUIRED');
+  assert(nonempty(provenance_basis)&&nonempty(parent_epoch),'INTAKE_PROVENANCE_OR_EPOCH_MISSING');
+  assert(['PUBLIC','PRIVATE_RETAIN_ONLY','RESTRICTED_NO_EXPORT'].includes(rights_state),'INTAKE_RIGHTS_UNRESOLVED');
+  const digest=createHash('sha256').update(bytes).digest('hex');
+  return Object.freeze({
+    schema:'td613.em-source-stage/v0.1',state:'STAGED_UNADMITTED',source_file_id_candidate:'emstaged_'+digest.slice(0,24),
+    sha256:digest,byte_length:bytes.length,original_filename,media_type,provenance_basis,
+    rights_state,parent_epoch,public_export_permitted:false,
+    accession_authorized:false,scientific_support_created:false,
+    required_next_step:'HUMAN_REVIEW_AND_SEPARATELY_AUTHORIZED_APPEND_ONLY_INTAKE'
+  });
 }
 
 const direct=process.argv[1] && path.resolve(process.argv[1])===fileURLToPath(import.meta.url);
