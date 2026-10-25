@@ -99,8 +99,9 @@ export function traceTypedCompilations(model,{from,to,max_hops=3,allowed_roles=n
  const walk=(node,path,visited)=>{
   if(path.length>=max_hops)return;
   for(const edge of edges.filter(x=>x.subject_id===node)){
-   if(visited.has(edge.architecture_id))continue;
    const chain=[...path,edge];
+   // An explicit direct self-role is a legitimate source assertion. Only
+   // forbid cyclic *extensions* beyond the query target.
    if(edge.architecture_id===to){
     result.push({from,to,hop_count:chain.length,
       assertion_ids:chain.map(x=>x.role_assertion_id),
@@ -112,7 +113,7 @@ export function traceTypedCompilations(model,{from,to,max_hops=3,allowed_roles=n
        chain[0].ceiling==="EXPLICIT_SOURCE_WITNESSED_CONTEXTUAL_ROLE",
       scientific_causality_admitted:false,
       independent_source_families_established:false});
-   }else walk(edge.architecture_id,chain,new Set([...visited,edge.architecture_id]));
+   }else if(!visited.has(edge.architecture_id)) walk(edge.architecture_id,chain,new Set([...visited,edge.architecture_id]));
   }
  };
  walk(from,[],new Set([from]));
