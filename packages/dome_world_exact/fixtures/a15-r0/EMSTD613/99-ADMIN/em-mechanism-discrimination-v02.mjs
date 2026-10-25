@@ -11,7 +11,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {emRegistry} from './em-native-parity-v02.mjs';
-import {bindExactSourceSpan,discriminateMechanisms}
+import {bindExactSourceSpan,discriminateMechanisms,stageFragmentaryTheory}
  from '../../ATELIER_METHOD/atelier-mechanism-discrimination-v02.mjs';
 const ROOT=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const guard=(x,why)=>{if(!x)throw Error(why)};
@@ -106,4 +106,45 @@ export function runNativeAlgedonicMechanismSpecimen(){
   mechanism_theory_ceiling:'SOURCE_FORMULA_FINITE_ALGEBRA_ONLY',
   native_canonical_mechanism_ledger_modified:false
  };
+}
+
+
+/**
+ * Source-located, intentionally non-executed research candidate from the
+ * 1+1=3/oscillator manuscript. Only this short admitted excerpt is inspected.
+ * No claim about the entire document's mathematical sophistication is made.
+ */
+export function runNativeOscillatorFragmentSpecimen(){
+ const reg=emRegistry();
+ const sourceId='emsrc_c01c49eb755108563b9e58c6';
+ const native=reg.source_rows.find(x=>x.source_file_id===sourceId);
+ const derived=reg.derivatives.find(x=>x.source_file_id===sourceId);
+ guard(native&&derived&&derived.parent_sha256===native.sha256,'OSCILLATOR_NATIVE_SOURCE_UNBOUND');
+ const full=path.resolve(ROOT,derived.derivative_relative_path);
+ guard(full.startsWith(ROOT+path.sep),'OSCILLATOR_PATH_ESCAPE');
+ const bytes=fs.readFileSync(full);
+ guard(digest(bytes)===derived.derivative_sha256,'OSCILLATOR_SOURCE_HASH_MISMATCH');
+ const text=bytes.toString('utf8');
+ const phrase='The task at hand is to construct a deep, rigorous mathematical and cybernetic proof';
+ const endPhrase='as the primary engine of self-referential systems.';
+ const start=text.indexOf(phrase);const stop=text.indexOf(endPhrase,start);
+ guard(start>=0&&stop>=start&&stop-start<400,'OSCILLATOR_EXCERPT_NOT_LOCATED');
+ const anchor=bindExactSourceSpan({
+  snapshot_id:SNAPSHOT,source_file_id:sourceId,source_locator:derived.derivative_relative_path,
+  full_text:text,start_char:start,end_char:stop+endPhrase.length,
+  derivative_sha256:derived.derivative_sha256,source_parent_sha256:native.sha256
+ });
+ const candidate=stageFragmentaryTheory({
+  snapshot_id:SNAPSHOT,anchor,
+  proposed_question:'Can the described oscillator be expressed as a falsifiable transformation rather than only an ontological analogy?',
+  objects:['oscillator','self-referential system'],
+  variables:[],operator_specification:null,
+  prediction_specification:null,falsifier_specification:null,
+  known_reference_terms:[]
+ });
+ return {schema:'td613.em-oscillator-excerpt-assay/v0.2',
+  candidate,verified_source_span:anchor,
+  full_work_analyzed:false,
+  manuscript_is_mathematically_empty:'NOT_CLAIMED',
+  archive_writes:0};
 }
