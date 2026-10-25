@@ -72,8 +72,8 @@ export function inspectEmCorpus(root=EM_ROOT) {
     {name:COMMON_CAPABILITIES[5],state:states.relations?.present?'REGISTERED_NOT_VALIDATED':'NOT_GENERATED',explanation:'Typed graph semantics are documented; a populated relation ledger is missing or unverified.'},
     {name:COMMON_CAPABILITIES[6],state:'PROTOCOL_ONLY',explanation:'A held-out reconstruction benchmark on live EM source claims has not been demonstrated.'},
     {name:COMMON_CAPABILITIES[7],state:'SELECTED_RECEIPTS',explanation:'Existing red-team studies provide bounded examples; common adversarial battery unverified.'},
-    {name:COMMON_CAPABILITIES[8],state:'BOUNDING_ADAPTER_AVAILABLE',explanation:'Four distinct projections can be generated for validated finding packets; no UI/browser claim.'},
-    {name:COMMON_CAPABILITIES[9],state:'BOUNDING_VALIDATOR_AVAILABLE',explanation:'Strict typed finding validation; no automatic evidence-class or graph-edge promotion.'}
+    {name:COMMON_CAPABILITIES[8],state:'FOUR_AIA_PACKET_PROJECTIONS_ONLY',explanation:'Packet-specific projections are available. This does NOT implement SRC four-route research query, traversal, rights, or authority behavior.'},
+    {name:COMMON_CAPABILITIES[9],state:'PACKET_SHAPE_VALIDATOR_ONLY',explanation:'Strict finding shape/locator/authority constraints, not an operational or SRC-equivalent graph evidence verifier.'}
   ];
   return {
     schema:'td613.em-parity-inspection/v0.1',
@@ -87,6 +87,8 @@ export function inspectEmCorpus(root=EM_ROOT) {
     custody_scope:'MANIFEST_AND_REGISTERED_HASHES_ONLY_NO_BLOB_REHASH',
     registry_states:states,
     capabilities,
+    src_compositional_fidelity:'NOT_TESTED',
+    full_functional_parity:'NOT_EARNED',
     authority:{human_closure_required:true,scientific_promotion:false,merge:false,publication:false,release:false},
     source_ids:new Set(sourceRows.map(x=>x.source_file_id))
   };
