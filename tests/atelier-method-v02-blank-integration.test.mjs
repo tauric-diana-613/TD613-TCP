@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { DEFAULT_PARENT,createEmptyAtelier,preview }
  from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-scaffold-v02.mjs';
+import { assemblePolycompiler,traceTypedCompilations } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-semantic-polycompiler-v02.mjs';
 import { METHOD,validateProfile,stageOrderAssay }
  from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-core-v02.mjs';
 import { compileSourceBoundTopology,makeHeldoutView,reconstructionControlBattery,
@@ -80,6 +81,34 @@ try{
    operator_delta_refs:[],alternative_explanation:'Same token, no operator established',
    claim_ceiling:'NO_DONOR_ORIGIN'}]});
  assert.equal(prior.counts.NEITHER,1);
+
+ const contextual=assemblePolycompiler({
+  snapshot_id:snapshot,seal_id:'SYNTHETIC_EPISODE',
+  role_assertions:[
+   {contextual_role_assertion_id:'a-context',subject_id:'trial:A',architecture_id:'trial:B',
+    role_normalized:'DEFINES',source_status:'EXPLICIT_SOURCE',adjudication_status:'WITNESSED',
+    evidence_ids:['trial:A'],interpretive_limit:'Source test only',
+    atelier_snapshot_id:snapshot,seal_epoch_binding:'RESOLVE_MATCHED_CURRENT_SEAL'},
+   {contextual_role_assertion_id:'b-context',subject_id:'trial:B',architecture_id:'trial:C',
+    role_normalized:'EXTENDS',source_status:'ARCHIVE_INFERRED',adjudication_status:'CANDIDATE',
+    evidence_ids:['trial:B'],interpretive_limit:'Candidate only',
+    atelier_snapshot_id:snapshot,seal_epoch_binding:'RESOLVE_MATCHED_CURRENT_SEAL'}
+  ],
+  compilation_passes:[
+   {compilation_pass_id:'Apass',build_target_id:'trial:B',atelier_snapshot_id:snapshot,
+    seal_epoch_binding:'RESOLVE_MATCHED_CURRENT_SEAL',input_ids:['trial:A'],
+    input_role_assertion_ids:['a-context'],contextual_role_count:1},
+   {compilation_pass_id:'Bpass',build_target_id:'trial:C',atelier_snapshot_id:snapshot,
+    seal_epoch_binding:'RESOLVE_MATCHED_CURRENT_SEAL',input_ids:['trial:B'],
+    input_role_assertion_ids:['b-context'],contextual_role_count:1}
+  ]
+ });
+ assert.equal(contextual.role_count,2);
+ const route=traceTypedCompilations(contextual,{from:'trial:A',to:'trial:C'});
+ assert.equal(route.routes.length,1);
+ assert.equal(route.routes[0].direct_relation_admitted,false);
+ assert.match(route.routes[0].path_ceiling,/CANDIDATE/);
+
 
  const plan={schema:'td613.atelier-foreign-donor-factorial/v0.2-candidate',
   id:'EMPTY_TRIAL_BLINDED',state:'PREREGISTERED_NOT_EXECUTED',matched_frame:'FIXED_SYNTHETIC_FRAME'};
