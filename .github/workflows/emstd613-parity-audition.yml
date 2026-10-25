@@ -1,0 +1,26 @@
+name: EMSTD613 Four-Atelier Experimental Parity (Research Only)
+
+on:
+  push:
+    branches:
+      - research/emstd613-four-atelier-parity-audition-20261025
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute exact-head Em parity negative controls
+        run: node tests/emstd613-four-atelier-parity-audition.test.mjs
+      - name: Execute read-only Em corpus capability inspector
+        run: node packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs --status
