@@ -10,7 +10,7 @@ import path from 'node:path';
 import { spawnSync,execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { resolveSourceEntity,compileSourceBoundTopology,readRegisteredRows,
-  makeHeldoutView,reconstructionControlBattery } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
+  makeHeldoutView,reconstructionControlBattery,nomenclatureOperatorCrosswalk } from '../packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-parity-operators-v02.mjs';
 const repo=process.cwd(),root='packages/dome_world_exact/fixtures/a15-r0';
 const src=path.join(repo,root,'SRC');
 const current=JSON.parse(fs.readFileSync(path.join(src,'04-RECEIPTS/phase2/current-seal.json'),'utf8'));
@@ -102,6 +102,41 @@ assert.equal(controls.C2.compiled.concept_count,controls.C0.compiled.concept_cou
 assert.equal(controls.C3.compiled.typed_relation_count,0);
 assert.equal(controls.C4.state,'HELD_DECOY_NOT_PREREGISTERED');
 assert.equal(controls.source_target_leakage,false);
+// Ingest the ORIGINAL already-adjudicated 14-row nomenclature/operator
+// decisions as source-bound packets. This reproduces classifications; it does
+// not independently re-adjudicate disciplinary priority or authorship.
+const historical=JSON.parse(show('04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json'));
+assert.equal(historical.crosswalk.length,14);
+const normalizedRows=historical.crosswalk.map(r=>({
+ id:r.id,subject:r.wendbine_feature,proposed_term:r.ordinary_terms[0],
+ source_locator:r.wendbine_source_refs[0],
+ receiver_baseline_locator:historical.source_freeze.independent_nomenclature_control_head,
+ proposes_better_name:['BETTER_NAME','BOTH'].includes(r.outcome),
+ proposes_better_operator:['BETTER_OPERATOR','BOTH'].includes(r.outcome),
+ conventional_prior_refs:['BETTER_NAME','BOTH'].includes(r.outcome)?
+  [historical.source_freeze.independent_nomenclature_fixture_git_blob]:[],
+ operator_delta_refs:['BETTER_OPERATOR','BOTH'].includes(r.outcome)?
+  [...r.wendbine_source_refs,historical.source_freeze.independent_nomenclature_control_head]:[],
+ operator_before:r.td613_receiver.join(', '),
+ operator_after:r.wendbine_feature,
+ alternative_explanation:r.mismatch_or_residual,
+ claim_ceiling:'HISTORICAL_WENDBINE_BOUND_CROSSWALK_NO_NEW_SCIENTIFIC_PROMOTION',
+ ...(r.outcome==='REJECTED'?{rejection_reason:r.mismatch_or_residual}:{})
+}));
+const bridge=nomenclatureOperatorCrosswalk({
+ source_snapshot:historical.source_freeze.snapshot_id,
+ receiver_snapshot:historical.source_freeze.independent_nomenclature_control_head,
+ rows:normalizedRows
+});
+assert.deepEqual(bridge.counts,historical.crosswalk_summary && {
+ BETTER_NAME:historical.crosswalk_summary.BETTER_NAME,
+ BETTER_OPERATOR:historical.crosswalk_summary.BETTER_OPERATOR,
+ BOTH:historical.crosswalk_summary.BOTH,
+ NEITHER:historical.crosswalk_summary.NEITHER,
+ REJECTED:historical.crosswalk_summary.REJECTED
+});
+assert.equal(bridge.external_prior_art_verified_by_runner,false);
+assert.equal(bridge.scientific_promotion,false);
 assert.equal(meta.scope.private_google_group_admitted,false);
 assert.equal(meta.rights.full_post_bodies_copied,false);
 console.log('NATIVE ORACLES PASS: SRC exact-seal source resolver agrees with source-native Python; Wendbine 33/191/146/143/43 topology matches original compiler; EchoCore held-out view excludes target without invented reconstruction.');
