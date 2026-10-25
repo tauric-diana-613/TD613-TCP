@@ -1,0 +1,61 @@
+name: Universal Atelier v0.2 Research Seed
+
+on:
+  push:
+    branches:
+      - research/atelier-universal-v02-seed-20261025
+  pull_request:
+    branches:
+      - research/atelier-method-v01-20260911
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Candidate full-inventory and hostile synthetic controls
+        run: node tests/atelier-method-v02-universal-seed.test.mjs
+      - name: Execute shared SRC + Wendbine derived parity operations
+        run: node tests/atelier-method-v02-parity-operators.test.mjs
+      - name: Prospective Wendbine-style commitment and chronology non-bootstrap hostile tests
+        run: node tests/atelier-method-v02-prospective-controls.test.mjs
+      - name: Universal bounded mechanism discrimination / prior-art abstention
+        run: node tests/atelier-method-v02-mechanism-discrimination.test.mjs
+      - name: SRC native 27-pass semantic polycompiler and hostile non-lifting controls
+        run: node tests/atelier-method-v02-semantic-polycompiler.test.mjs
+      - name: Fetch unmodified Wendbine PR #1116 witness (research only)
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/1116/head
+          test "$(git rev-parse FETCH_HEAD)" = "ce1e4ea4ccffe8409f9ea9873628e0f717706385"
+      - name: Execute source-native SRC and Wendbine comparison oracles
+        run: node tests/atelier-method-v02-native-oracles.test.mjs
+      - name: Fetch exact Em PR #1604 for native-corpus comparator
+        run: |
+          git fetch --no-tags --depth=1 origin refs/pull/1604/head
+          test "$(git rev-parse FETCH_HEAD)" = "50c35cceb50f483c7c36a1497fed9de9377b89d9"
+          git worktree add --detach "$RUNNER_TEMP/atelier-em-pr1604" FETCH_HEAD
+      - name: Execute native Em source and shared-operator tests (isolated worktree)
+        run: |
+          cd "$RUNNER_TEMP/atelier-em-pr1604"
+          node tests/atelier-method-v02-parity-operators.test.mjs
+          node tests/emstd613-four-atelier-parity-audition.test.mjs
+          node tests/emstd613-universal-v02-overlay.test.mjs
+          node tests/emstd613-native-parity-v02.test.mjs
+          node tests/emstd613-semantic-polycompiler-v02.test.mjs
+          node tests/atelier-method-v02-prospective-controls.test.mjs
+          node tests/atelier-method-v02-mechanism-discrimination.test.mjs
+          node tests/emstd613-mechanism-discrimination-v02.test.mjs
+      - name: Instantiate and exercise a disposable empty Atelier on synthetic research specimens
+        run: node tests/atelier-method-v02-blank-integration.test.mjs
+      - name: Dry-run empty Atilla-Ozy example (no files created)
+        run: node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/atelier-scaffold-v02.mjs --id ATILLA_OZY --label "Atilla & Ozy"
