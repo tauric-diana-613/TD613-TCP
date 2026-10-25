@@ -32,5 +32,7 @@ jobs:
         run: node tests/emstd613-native-parity-v02.test.mjs
       - name: Exercise Em-native 53-contextual-role semantic polycompilation
         run: node tests/emstd613-semantic-polycompiler-v02.test.mjs
+      - name: Exercise common prospective commitment chronology safeguards
+        run: node tests/atelier-method-v02-prospective-controls.test.mjs
       - name: Execute read-only Em corpus capability inspector
         run: node packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-atelier-parity.mjs --status
