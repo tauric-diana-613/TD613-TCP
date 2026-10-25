@@ -29,7 +29,8 @@ const shell=(id,display)=>({
 export function preview(id,display=id){
  const p=blankProfile(id,{display_name:display});validateProfile(p);
  return {atelier_id:id,display_name:display,method:p.method_version,
-    module_count:Object.keys(p.modules).length,source_count:0,
+    registered_module_count:Object.keys(p.modules).length,
+    callable_module_count:Object.values(p.modules).filter(m=>m.callable_available).length,source_count:0,
     files:Object.keys(shell(id,display)).sort(),authority:'NONE',write_performed:false};
 }
 export function createEmptyAtelier(id,{display_name=id,destination,create=false}={}){
