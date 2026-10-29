@@ -1,0 +1,80 @@
+{
+  "schema": "td613.experiment-a.postflight-closure-r1-receipt/v1.0",
+  "issued_at": "2026-10-29T13:46:51.873Z",
+  "commission": "TD613_Experiment_A_Postflight_Independent_Scientific_Redpen_2026-10-29.md",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "disposition": "A_BASELINE_READY_WITH_NAMED_LIMITATIONS",
+  "physical_evidence_transferred": {
+    "filename": "TD613_Experiment_A_Postflight_Scientific_Evidence_2026-10-29.zip",
+    "destination": "<appDataDir>/brain/<conversation-id>\\TD613_Experiment_A_Postflight_Scientific_Evidence_2026-10-29.zip",
+    "bytes": 43100,
+    "sha256": "a8568aef7c6dbf6bdefe39a10a88f164684a8c81e5d9ba029828cd7356216afe",
+    "status": "TRANSFERRED_AND_VERIFIED"
+  },
+  "predecessor_archives_verified": [
+    {
+      "name": "Preflight Lever Archive",
+      "filename": "TD613_Experiment_A_Latifa_Preflight_Lever_2026-10-29.zip",
+      "exists": true,
+      "bytes": 274617,
+      "sha256": "86dd720e628f1f79e451162f50da9b31f332d20f825c76cbc5d6162d6cfac30f",
+      "matches_expected": true
+    },
+    {
+      "name": "Flight-V0 Partial Archive",
+      "filename": "TD613_Experiment_A_Flight_Evidence_2026-10-29.zip",
+      "exists": true,
+      "bytes": 77400,
+      "sha256": "897cf83fabe9df66e70ddcc7136b10fc32871d99eaf6871d0734fcf1dcb262d9",
+      "matches_expected": true
+    },
+    {
+      "name": "Flight-R1 Review Archive",
+      "filename": "TD613_Experiment_A_Flight_R1_and_Postflight_Qualification_Evidence_2026-10-29.zip",
+      "exists": true,
+      "bytes": 127502,
+      "sha256": "21df8b139d13a24c6e395ee032f48b7f2675971abede09ec13eca51f3cc49da6",
+      "matches_expected": true
+    },
+    {
+      "name": "Em Manifest Rendered Review Archive",
+      "filename": "TD613_Em_Manifest_Rendered_Review_Evidence_Closure_2026-10-29.zip",
+      "exists": true,
+      "bytes": 23635724,
+      "sha256": "2b92e074c05677f1f0e464ecf1d24396bd31d1bd2676f2f9f1b605a810789f36",
+      "matches_expected": true
+    },
+    {
+      "name": "Stage W0 Forensic Remediation Archive",
+      "filename": "TD613_Experiment_A_Postflight_W0_Evidence_2026-10-29.zip",
+      "exists": true,
+      "bytes": 54510,
+      "sha256": "47b282e47a5f279a1d06a504ed7a2987996cc3a425e3259027b46965663a2dc4",
+      "matches_expected": true
+    },
+    {
+      "name": "Scientific Postflight Evidence Archive",
+      "filename": "TD613_Experiment_A_Postflight_Scientific_Evidence_2026-10-29.zip",
+      "exists": true,
+      "bytes": 43100,
+      "sha256": "a8568aef7c6dbf6bdefe39a10a88f164684a8c81e5d9ba029828cd7356216afe",
+      "matches_expected": true
+    }
+  ],
+  "redpen_actions_completed": {
+    "action_1_physical_evidence_transfer": "COMPLETED (ZIP transferred to brain root, 43,100 bytes, SHA verified)",
+    "action_2_claim_ledger_repair": "COMPLETED (16 claims categorized under 6 epistemic tiers, overclaims downgraded)",
+    "action_3_controls_and_chronology_audit": "COMPLETED (A1 leakage risk recognized, 6 scientific + 6 hostile controls segregated)",
+    "action_4_comparator_redpen": "COMPLETED (Non-monotonicity corrected to non-superadditivity; weak flat pool qualified)",
+    "action_5_dollhouse_role_separation": "COMPLETED (Internal specialist consensus distinguished from external blinded review)",
+    "action_6_experiment_a_baseline_charter": "COMPLETED (Comprehensive charter authored for Experiment B Preflight)",
+    "action_7_closure_recommendation": "A_BASELINE_READY_WITH_NAMED_LIMITATIONS"
+  },
+  "standing_holds": {
+    "gate_e": "HELD",
+    "empirical_credit": 0,
+    "human_closure": "RESERVED",
+    "release_deploy_authority": 0,
+    "experiment_b_corpus": "STRICTLY_SEALED_UNINSPECTED"
+  }
+}

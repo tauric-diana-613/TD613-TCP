@@ -1,0 +1,112 @@
+{
+  "schema": "td613.experiment-a.master-portable-review-package-manifest/v1.0",
+  "assembled_at": "2026-10-29T14:04:09.594Z",
+  "commission": "TD613_EXPERIMENT_A_ORIGINAL_MANDATE_RECONCILIATION_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "operator_notice": "This complete package must be attached directly by the human operator to the ChatGPT Emergence HQ conversation.",
+  "referenced_external_archives": {
+    "em_manifest_rendered_review_evidence_closure": {
+      "filename": "TD613_Em_Manifest_Rendered_Review_Evidence_Closure_2026-10-29.zip",
+      "bytes": 23635724,
+      "sha256": "2b92e074c05677f1f0e464ecf1d24396bd31d1bd2676f2f9f1b605a810789f36",
+      "custody": "ALREADY_AVAILABLE_AT_HQ · REFERENCED_BY_DIGEST_ONLY"
+    }
+  },
+  "bundled_sealed_archives": [
+    {
+      "name": "TD613_Experiment_A_Latifa_Preflight_Lever_2026-10-29.zip",
+      "bytes": 274617,
+      "sha256": "86dd720e628f1f79e451162f50da9b31f332d20f825c76cbc5d6162d6cfac30f",
+      "verified_intact": true
+    },
+    {
+      "name": "TD613_Experiment_A_Flight_Evidence_2026-10-29.zip",
+      "bytes": 77400,
+      "sha256": "897cf83fabe9df66e70ddcc7136b10fc32871d99eaf6871d0734fcf1dcb262d9",
+      "verified_intact": true
+    },
+    {
+      "name": "TD613_Experiment_A_Flight_R1_and_Postflight_Qualification_Evidence_2026-10-29.zip",
+      "bytes": 127502,
+      "sha256": "21df8b139d13a24c6e395ee032f48b7f2675971abede09ec13eca51f3cc49da6",
+      "verified_intact": true
+    },
+    {
+      "name": "TD613_Experiment_A_Postflight_W0_Evidence_2026-10-29.zip",
+      "bytes": 54510,
+      "sha256": "47b282e47a5f279a1d06a504ed7a2987996cc3a425e3259027b46965663a2dc4",
+      "verified_intact": true
+    },
+    {
+      "name": "TD613_Experiment_A_Postflight_Scientific_Evidence_2026-10-29.zip",
+      "bytes": 43100,
+      "sha256": "a8568aef7c6dbf6bdefe39a10a88f164684a8c81e5d9ba029828cd7356216afe",
+      "verified_intact": true
+    }
+  ],
+  "closure_r1_governing_documents": [
+    {
+      "file": "CORRECTED_BOUNDED_SCIENCE_CLAIM_LEDGER.json",
+      "bytes": 12451,
+      "sha256": "dd96dc29b4c0afabd7b77835ee2abdc6a4b9852987ebc2705b5c3113e824726a"
+    },
+    {
+      "file": "EXPERIMENT_A_BASELINE_CHARTER_FOR_EXPERIMENT_B.md",
+      "bytes": 7210,
+      "sha256": "6c5b879fd53cb84fa19985343ca6c534c1e351957e4153a5c5c03cd7a88e76d5"
+    },
+    {
+      "file": "INDEPENDENT_REVIEW_NOTES_AND_REPLAY_INSTRUCTIONS.md",
+      "bytes": 4509,
+      "sha256": "17f6c49877b8c0f9a1063f0eab4cdce8617a96cd7627136e6142cb2915c580e9"
+    },
+    {
+      "file": "EXPERIMENT_A_SCIENTIFIC_POSTFLIGHT_R1_REDPEN_RECEIPT.json",
+      "bytes": 3725,
+      "sha256": "ae92f171a54c4a49b46354c35b5abcb5b80f08dd5c9b5fe4847b7b9c6ffda5b7"
+    }
+  ],
+  "blinded_evaluator_packet": {
+    "packet_path": "03_blinded_review_packet/BLINDED_ADVERSARIAL_REVIEW_PACKET.json",
+    "bytes": 1698,
+    "sha256": "921ee9c747bac25c1c8c0076bd64ac53a2499c1500f7721693d4926422791d30"
+  },
+  "isolated_unblinding_key": {
+    "key_path": "04_sealed_unblinding_key/SEALED_UNBLINDING_KEY.json",
+    "bytes": 492,
+    "sha256": "fa4af6ca4f57e306edf45ec4ad72abda076ea2aeb892339ac2ee1579d2cb88d2",
+    "custody_warning": "DO NOT REVEAL TO EVALUATOR UNTIL INITIAL CONCLUSIONS ARE FROZEN"
+  },
+  "executable_scripts": [
+    {
+      "file": "run-scientific-postflight.mjs",
+      "bytes": 51741,
+      "sha256": "a1c7a606363be79203de7cc8177805718fafe09052bff3e2c279f098cb04414e"
+    },
+    {
+      "file": "verify-scientific-postflight.mjs",
+      "bytes": 10906,
+      "sha256": "7fdf1bdd7a78168d30f6e74e5038228ec7571d2149d6542e5af14017369b6414"
+    },
+    {
+      "file": "run-stage-w0-remediation.mjs",
+      "bytes": 43346,
+      "sha256": "b6887c2ef5ba769244a539c827076a22cbff696f3b3ed7ed2e1563023626c943"
+    },
+    {
+      "file": "verify-w0-evidence.mjs",
+      "bytes": 8638,
+      "sha256": "4e3f75632cd53097d7a0d937319d246fee879eda6527171ba736a3dbfd21efdc"
+    },
+    {
+      "file": "run-postflight-closure-redpen.mjs",
+      "bytes": 31648,
+      "sha256": "3dea499026cece1206ab7b3ebb8eccbe10aa335c0f90280ae3a9868ebb09de55"
+    },
+    {
+      "file": "verify-postflight-closure-redpen.mjs",
+      "bytes": 8106,
+      "sha256": "6c2f6c1e48b30f82134988b761f400751003ad5e515e7fd34e6e1f30b66a524f"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "td613.experiment-a.blinded-adversarial-review/v1.0",
+  "prepared_at": "2026-10-29T10:39:40.462Z",
+  "reviewer_instructions": "Evaluate the seven disguised arms below based purely on observed input/output logs, without access to authorial preference or theoretical framing.",
+  "disguised_arms": {
+    "ARM_ALPHA": {
+      "description": "Render-only transport baseline",
+      "output_entropy": 0.12,
+      "observed_relations": 0
+    },
+    "ARM_BETA": {
+      "description": "Unilateral source retrieval (P1)",
+      "output_entropy": 0.45,
+      "observed_relations": 1
+    },
+    "ARM_GAMMA": {
+      "description": "Unilateral source retrieval (Em)",
+      "output_entropy": 0.48,
+      "observed_relations": 2
+    },
+    "ARM_DELTA": {
+      "description": "Equal-input native deduplicated union baseline",
+      "output_entropy": 0.82,
+      "observed_relations": 3
+    },
+    "ARM_EPSILON": {
+      "description": "Empty recipient lifecycle profile",
+      "output_entropy": 0,
+      "observed_relations": 0
+    },
+    "ARM_ZETA": {
+      "description": "Two-stage reciprocal chamber compilation",
+      "output_entropy": 0.82,
+      "observed_relations": 3
+    },
+    "ARM_ETA": {
+      "description": "Exploratory multi-budget context-routed compilation",
+      "output_entropy": 0.91,
+      "observed_relations": 4
+    }
+  },
+  "comparator_blinded_evaluation": {
+    "delta_zeta_minus_delta": 0,
+    "interpretation": "ARM_ZETA achieves identical relation count (3) to ARM_DELTA. Emergence surplus over strong union is 0."
+  },
+  "ancestry_limitation_disclosure": "Blindness is procedural. Reviewer and generator share upstream cybernetic citations and training priors."
+}

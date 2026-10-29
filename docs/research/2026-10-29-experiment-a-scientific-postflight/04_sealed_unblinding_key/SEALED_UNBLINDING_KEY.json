@@ -1,0 +1,14 @@
+{
+  "schema": "td613.experiment-a.unblinding-key/v1.0",
+  "sealed_at": "2026-10-29T10:39:40.463Z",
+  "key_custody": "SEPARATED_FROM_ADJUDICATING_REVIEWER",
+  "mapping": {
+    "ARM_ALPHA": "ARM_0_EMPTY_EMPTY",
+    "ARM_BETA": "ARM_1_TD613_NATIVE",
+    "ARM_GAMMA": "ARM_2_EM_NATIVE",
+    "ARM_DELTA": "ARM_3_EQUAL_INPUT_NATIVE_UNION",
+    "ARM_EPSILON": "ARM_4_TD613_RECIPIENT_ATELIER",
+    "ARM_ZETA": "ARM_5_EM_RECIPIENT_ENCYCLOPEDIA",
+    "ARM_ETA": "ARM_6_EXPLORATORY_EXTENDED_UNION"
+  }
+}
