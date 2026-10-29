@@ -96,7 +96,7 @@ A single geometric framework must never be imposed across all inquiries. The aut
 | Instrument ID | Lineage / Foundation | Primary Generative Capability | Recommended Media |
 |---|---|---|---|
 | **`PHASONIC_COUNTERPOINT`** | Aperture v3.2-alpha Triple Overlay | Periodic scaffold ($T_\Delta$) + quasiperiodic counterlayer ($Q_\varphi$) + interference field ($H$); transmedia invariance | Visual, Motion, Hybrid, Theoretical |
-| **`CARO_INSTITUTIONAL_RECONSTRUCTION`** | Robert Caro (Thinkers Bin 2) | Procedural clearance latency ($T_{\text{clearance}} = \mu \times 400\text{ms}$), discrete petition redaction ($4 \times \text{chamber}$), and archival resistance | Scholarly, Visual, Product, Hybrid |
+| **`CARO_INSTITUTIONAL_RECONSTRUCTION`** | Robert Caro (Thinkers Bin 2) | Procedural clearance latency ($\text{step\_latency} = \mu \times \text{base\_latency}$), progressive archival redaction/omission, and institutional friction (historical fixture: $T_{\text{clearance}} = \mu \times 400\text{ms}$, $4 \times \text{chamber}$ redactions) | Scholarly, Visual, Product, Hybrid |
 | **`BUTLER_PERFORMATIVE_ITERATION`** | Judith Butler (Thinkers Bin 2) | Citational reiteration, ritualized normative convention, and subversive slippage across repetitions | Scholarly, Theoretical, Visual |
 | **`SEDGWICK_REPARATIVE_TEXTURE`** | Eve Kosofsky Sedgwick (Thinkers Bin 2) | Textural parataxis (beside-ness), affective survival, and resisting paranoid hermeneutic closure | Scholarly, Visual, Product |
 | **`DIALECTICAL_TENSION`** | Polyphonic Contrapuntalism | Irreducible antithesis, competing perspectives, and non-synthesized juxtaposition | Scholarly, Theoretical, Motion |

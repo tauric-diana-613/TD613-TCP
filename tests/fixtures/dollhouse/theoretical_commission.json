@@ -1,0 +1,29 @@
+{
+  "commission_id": "COMM-THEORETICAL-COUNTERPOINT-01",
+  "seed": "Polyphonic contrapuntal discourse on irreducible institutional friction and non-reductive epistemic repair",
+  "medium": "THEORETICAL",
+  "deliverable_count": 1,
+  "human_coordinates": {
+    "what": "Contrapuntal scholarly treatise preserving irreconcilable voices in productive tension",
+    "who": "Theoretical investigator examining institutional limits and reparative possibilities",
+    "where": "Dual-strata typography legible across desktop (1440px) and mobile (390px)",
+    "how": "Interleaved polyphonic statements with explicit dissonance bounds omega",
+    "when": "Structured essay reading with section markers and exit affordances",
+    "why": "To articulate why friction cannot be synthesized away without epistemic violence"
+  },
+  "instruments": [
+    "DIALECTICAL_TENSION",
+    "CARO_INSTITUTIONAL_RECONSTRUCTION"
+  ],
+  "historical_references": [
+    {
+      "reference_id": "REF-LAW-AGENTS-01",
+      "source_path": "AGENTS.md",
+      "source_revision": "HEAD",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "TD613 Agent Entry Contract: Cistern law, consequence before ontology, child-legible NOW / WHY / EXACT, and human closure."
+    }
+  ],
+  "scientific_audit_requested": true
+}

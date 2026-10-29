@@ -111,6 +111,20 @@ export function verifySourceRevision(sourceRev, options = {}) {
 
   // Allow working tree fallback when explicitly running in uncommitted local state
   if (trimmed === 'WORKING_TREE_UNCOMMITTED') {
+    if (options.strict_provenance === true) {
+      return {
+        verified: false,
+        git_commit_verified: false,
+        in_local_git_history: false,
+        is_working_tree: true,
+        declared_revision: trimmed,
+        executing_checkout_revision: checkoutRev,
+        reason: 'STRICT_PROVENANCE_REFUSES_UNCOMMITTED',
+        infraction: 'HOLD_STRICT_PROVENANCE_FAILED',
+        status: 'UNCOMMITTED_REFUSED_UNDER_STRICT_PROVENANCE',
+        source_revision: trimmed
+      };
+    }
     return {
       verified: true,
       git_commit_verified: false,
@@ -129,7 +143,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
       verified: false,
       git_commit_verified: false,
       reason: 'INVALID_SOURCE_REVISION_FORMAT',
-      infraction: 'HOLD_UNVERIFIABLE_SOURCE_REVISION',
+      infraction: options.strict_provenance === true ? 'HOLD_STRICT_PROVENANCE_FAILED' : 'HOLD_UNVERIFIABLE_SOURCE_REVISION',
       declared_revision: trimmed,
       executing_checkout_revision: checkoutRev,
       is_working_tree: false,
@@ -736,9 +750,10 @@ function classifySpecialistDefect(roleInput, evalResult, evidence_class, options
  * Main programmatic dispatcher for the TD613 Dollhouse Native Antigravity Skill.
  *
  * @param {Object} input - Invocation contract payload
- * @returns {Promise<{ machine_receipt: Object, human_receipt: string, exit_code: number, write_error?: Error }>}
+ * @param {Object} [callerOptions] - Optional execution options
+ * @returns {Promise<{ machine_receipt: Object, human_receipt: string, orchestrator_decision?: string, exit_code: number, write_error?: Error }>}
  */
-export async function runDollhouseSkillAudit(input = {}) {
+export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
   const startTime = Date.now();
   const detected_infractions_set = new Set();
   const unresolved_questions = [];
@@ -747,9 +762,10 @@ export async function runDollhouseSkillAudit(input = {}) {
     ? input.source_revision.trim()
     : resolveCurrentSourceRevision();
 
-  const options = (input.options && typeof input.options === 'object')
-    ? { ...input.options }
-    : {};
+  const options = {
+    ...callerOptions,
+    ...(input.options && typeof input.options === 'object' ? input.options : {})
+  };
 
   if (input.allow_synthetic_fault_injection !== undefined) {
     options.allow_synthetic_fault_injection = Boolean(input.allow_synthetic_fault_injection);
@@ -757,12 +773,21 @@ export async function runDollhouseSkillAudit(input = {}) {
   if (input.allow_overwrite !== undefined) {
     options.allow_overwrite = Boolean(input.allow_overwrite);
   }
+  if (input.strict_provenance !== undefined) {
+    options.strict_provenance = Boolean(input.strict_provenance);
+  }
+  if (callerOptions.strict_provenance !== undefined) {
+    options.strict_provenance = Boolean(callerOptions.strict_provenance);
+  }
 
   // 1. Provenance Verification: Bind source revision
   const sourceValidation = verifySourceRevision(rawSourceRevision, options);
   const source_revision = sourceValidation.source_revision || rawSourceRevision;
   if (!sourceValidation.verified) {
     detected_infractions_set.add(sourceValidation.infraction || 'HOLD_UNVERIFIABLE_SOURCE_REVISION');
+    if (options.strict_provenance === true) {
+      detected_infractions_set.add('HOLD_STRICT_PROVENANCE_FAILED');
+    }
     unresolved_questions.push(`Source revision provenance error: ${sourceValidation.reason || 'unverifiable'}.`);
   }
   options.expected_source_revision = source_revision;
@@ -797,7 +822,7 @@ export async function runDollhouseSkillAudit(input = {}) {
 
   const rawRoles = input.roles !== undefined
     ? input.roles
-    : [...CANONICAL_SPECIALIST_ROLES, ORCHESTRATOR_ROLE];
+    : [...CANONICAL_SPECIALIST_ROLES];
 
   const {
     specialist_roles,
@@ -807,7 +832,7 @@ export async function runDollhouseSkillAudit(input = {}) {
 
   const shouldOrchestrate = input.include_orchestrator !== undefined
     ? Boolean(input.include_orchestrator)
-    : include_orchestrator;
+    : (input.roles !== undefined ? include_orchestrator : true);
 
   const domain_inputs = (input.domain_inputs && typeof input.domain_inputs === 'object')
     ? input.domain_inputs
@@ -828,6 +853,7 @@ export async function runDollhouseSkillAudit(input = {}) {
       evidence_references,
       evidence_manifest: evidenceValidation.manifest,
       roles_requested: rawRoles,
+      roles_attempted: [],
       roles_executed: [],
       missing_inputs: [],
       specialist_findings: unknown_roles.map(r => ({
@@ -896,10 +922,11 @@ export async function runDollhouseSkillAudit(input = {}) {
   const specialist_findings = [];
   const missing_inputs = [];
   const roles_executed = [];
+  const roles_attempted = [...specialist_roles];
 
   if (normalization_conflict) {
     for (const role of specialist_roles) {
-      roles_executed.push(role);
+      // Do NOT push to roles_executed; domain conflict prevented execution
       const isConflictingRole = normalization_conflict.role === role || normalization_conflict.message?.includes(role);
       specialist_findings.push({
         role,
@@ -917,7 +944,6 @@ export async function runDollhouseSkillAudit(input = {}) {
     }
   } else {
     for (const role of specialist_roles) {
-      roles_executed.push(role);
       const roleInput = normalized_domain_inputs[role] ?? null;
 
       if (roleInput === null || roleInput === undefined) {
@@ -935,6 +961,8 @@ export async function runDollhouseSkillAudit(input = {}) {
         });
         continue;
       }
+
+      roles_executed.push(role);
 
       // Call canonical harness specialist executor
       const evalResult = executeSpecialistRole(role, roleInput, options);
@@ -1274,6 +1302,7 @@ export async function runDollhouseSkillAudit(input = {}) {
     evidence_references,
     evidence_manifest: evidenceValidation.manifest,
     roles_requested: rawRoles,
+    roles_attempted,
     roles_executed,
     missing_inputs,
     specialist_findings,
@@ -1305,6 +1334,7 @@ export async function runDollhouseSkillAudit(input = {}) {
       return {
         machine_receipt,
         human_receipt: compileHumanReceipt(machine_receipt),
+        orchestrator_decision: 'HELD',
         exit_code: 1,
         write_error: err
       };
@@ -1312,7 +1342,12 @@ export async function runDollhouseSkillAudit(input = {}) {
   }
 
   const exit_code = overallDecision === 'SUPPORTED' ? 0 : 1;
-  return { machine_receipt, human_receipt, exit_code };
+  return {
+    machine_receipt,
+    human_receipt,
+    orchestrator_decision: machine_receipt.orchestrator?.decision || overallDecision,
+    exit_code
+  };
 }
 
 /**

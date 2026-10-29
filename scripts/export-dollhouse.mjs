@@ -30,6 +30,37 @@ export const DOLLHOUSE_KIT_ENTRYPOINTS = Object.freeze([
   'app/engine/dollhouse-case-dossier.js'
 ]);
 
+export const DOLLHOUSE_NATIVE_SKILL_ENTRYPOINTS = Object.freeze([
+  '.agents/skills/dollhouse-design/SKILL.md',
+  '.agents/skills/dollhouse-design/references/authoring-cycle.md',
+  '.agents/skills/dollhouse-design/references/selectable-instruments.md',
+  '.agents/skills/dollhouse-design/references/firebreak-and-provenance.md',
+  '.agents/skills/dollhouse-audit/SKILL.md',
+  '.agents/skills/dollhouse-audit/references/cli.md',
+  '.agents/skills/dollhouse-audit/references/examples.md',
+  '.agents/skills/dollhouse-audit/references/specialists.md',
+  'scripts/run-dollhouse-design.mjs',
+  'scripts/run-dollhouse-skill-audit.mjs',
+  'app/engine/dollhouse-design-conductor.js',
+  'app/engine/dollhouse-skill-dispatcher.js',
+  'app/engine/dollhouse-ablation-harness.js',
+  'app/engine/dollhouse-temporal-custodian.js',
+  'app/engine/dollhouse-pedagogue-dromological.js',
+  'app/engine/dollhouse-atlas-relational-custody.js',
+  'app/engine/dollhouse-fadt-reparative-assistance.js'
+]);
+
+export const DOLLHOUSE_ALL_ENTRYPOINTS = Object.freeze([
+  ...DOLLHOUSE_KIT_ENTRYPOINTS,
+  ...DOLLHOUSE_NATIVE_SKILL_ENTRYPOINTS
+]);
+
+export function getProfileEntrypoints(profile = 'legacy') {
+  if (profile === 'native-skills') return DOLLHOUSE_NATIVE_SKILL_ENTRYPOINTS;
+  if (profile === 'all') return DOLLHOUSE_ALL_ENTRYPOINTS;
+  return DOLLHOUSE_KIT_ENTRYPOINTS;
+}
+
 const manifestName = 'dollhouse-kit.manifest.json';
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const gitBlobSha = bytes => createHash('sha1').update(Buffer.from(`blob ${bytes.length}\0`)).update(bytes).digest('hex');
@@ -39,8 +70,9 @@ const canonical = value => Array.isArray(value) ? `[${value.map(canonical).join(
 const hold = message => { throw new Error(`Dollhouse export HOLD: ${message}`); };
 const runtimeAllowed = relative => /^app\/engine\/[a-z0-9-]+\.js$/.test(relative)
   || /^app\/dome-world\/(?:holonomy-loom|data)\/[a-z0-9-]+\.js$/.test(relative)
-  || relative === 'app/dome-world/ash/canonical-json.js';
-const entrypointSet = new Set(DOLLHOUSE_KIT_ENTRYPOINTS);
+  || relative === 'app/dome-world/ash/canonical-json.js'
+  || /^scripts\/run-dollhouse-[a-z0-9-]+\.mjs$/.test(relative);
+const entrypointSet = new Set(DOLLHOUSE_ALL_ENTRYPOINTS);
 const cataloguePath = 'dollhouse/lineage/source-records.json';
 const originalAllowed = relative => /^dollhouse\/lineage\/originals\/[a-z0-9][a-z0-9._-]*\.source\.md$/.test(relative);
 
@@ -179,7 +211,9 @@ function resolveDependency(importer, specifier) {
   return { relative };
 }
 
-export async function collectDollhouseSources(sourceRoot) {
+export async function collectDollhouseSources(sourceRoot, options = {}) {
+  const profile = options.profile || 'legacy';
+  const profileEntrypoints = getProfileEntrypoints(profile);
   const root = await noSymlinkPath(path.resolve(sourceRoot));
   if (await realpath(root) !== root) hold('source root realpath mismatch');
   const collected = new Map();
@@ -188,7 +222,7 @@ export async function collectDollhouseSources(sourceRoot) {
   // The isolated parser uses only these fixed Node builtins; repository source
   // text is its data input and is never evaluated as child-process code.
   const builtins = new Set(['node:fs', 'node:vm']);
-  const pending = [...DOLLHOUSE_KIT_ENTRYPOINTS, ...archivedPaths];
+  const pending = [...profileEntrypoints, ...(profile !== 'native-skills' ? archivedPaths : [])];
   let totalBytes = 0;
   while (pending.length) {
     const relative = pending.shift();
@@ -235,9 +269,9 @@ function sourceIdentity(root, collected, allowWorkingTree) {
   };
 }
 
-export async function exportDollhouseKit({ sourceRoot, outputDirectory, allowWorkingTree = false }) {
+export async function exportDollhouseKit({ sourceRoot, outputDirectory, allowWorkingTree = false, profile = 'legacy' }) {
   if (!outputDirectory || typeof outputDirectory !== 'string') hold('operator-chosen new output directory is required');
-  const { root, collected, builtins, lineage, archivedPaths } = await collectDollhouseSources(sourceRoot);
+  const { root, collected, builtins, lineage, archivedPaths } = await collectDollhouseSources(sourceRoot, { profile });
   const source = sourceIdentity(root, collected, allowWorkingTree);
   const output = path.resolve(outputDirectory);
   if (output === root || output.startsWith(`${root}${path.sep}`) || root.startsWith(`${output}${path.sep}`) || output === path.parse(output).root) hold('choose a new output directory outside the repository and its ancestor roots');
@@ -252,8 +286,12 @@ export async function exportDollhouseKit({ sourceRoot, outputDirectory, allowWor
     source: record.generated ? 'GENERATED_NO_INSTALL_SCRIPTS_OR_DEPENDENCIES' : record.lineage ? 'DECLARED_PINNED_ORIGINAL_DOCUMENT_BYTES' : 'CANONICAL_REPOSITORY_BYTES',
     ...(record.lineage ? { lineage: record.lineage } : {})
   }));
+  const profileEntrypoints = getProfileEntrypoints(profile);
   const payload = {
-    schema: DOLLHOUSE_KIT_SCHEMA, source, entrypoints: [...DOLLHOUSE_KIT_ENTRYPOINTS],
+    schema: DOLLHOUSE_KIT_SCHEMA,
+    ...(profile !== 'legacy' ? { profile } : {}),
+    source,
+    entrypoints: [...profileEntrypoints],
     packaging_bounds: DOLLHOUSE_KIT_BOUNDS,
     research_lineage: lineage,
     dependency_closure: { method: 'V8_STATIC_ESM_NO_EXECUTION', complete_for_declared_entrypoints: true, dynamic_imports: 'HOLD', external_packages: 'HOLD', node_builtins: builtins },
@@ -289,7 +327,8 @@ export async function verifyDollhouseKit(directory) {
   const manifest = JSON.parse(await readFile(path.join(root, manifestName), 'utf8'));
   const { manifest_sha256: digest, ...payload } = manifest;
   if (manifest.schema !== DOLLHOUSE_KIT_SCHEMA || sha256(canonical(payload)) !== digest) hold('manifest integrity mismatch');
-  if (canonical(manifest.entrypoints) !== canonical(DOLLHOUSE_KIT_ENTRYPOINTS)) hold('entrypoint allowlist mismatch');
+  const expectedEntrypoints = getProfileEntrypoints(manifest.profile || 'legacy');
+  if (canonical(manifest.entrypoints) !== canonical(expectedEntrypoints)) hold('entrypoint allowlist mismatch');
   if (canonical(manifest.packaging_bounds) !== canonical(DOLLHOUSE_KIT_BOUNDS)) hold('packaging bound mismatch');
   if (!Array.isArray(manifest.files) || !manifest.files.length || manifest.files.length + 1 > DOLLHOUSE_KIT_BOUNDS.max_files) hold('manifest file count is empty or exceeds bounds');
   await noSymlinkPath(path.join(root, cataloguePath));
@@ -323,7 +362,7 @@ export async function verifyDollhouseKit(directory) {
     }
   };
   await walk(root);
-  for (const entrypoint of DOLLHOUSE_KIT_ENTRYPOINTS) {
+  for (const entrypoint of expectedEntrypoints) {
     if (!records.has(entrypoint)) hold(`missing entrypoint: ${entrypoint}`);
   }
   for (const original of lineage.archives.keys()) {
@@ -347,10 +386,24 @@ if (invoked === import.meta.url) {
   try {
     const args = process.argv.slice(2);
     let result;
-    if (args.length === 2 && args[0] === '--verify') result = await verifyDollhouseKit(args[1]);
-    else if (args.length === 1 || (args.length === 2 && args[1] === '--allow-working-tree')) {
-      result = await exportDollhouseKit({ sourceRoot: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), outputDirectory: args[0], allowWorkingTree: args.includes('--allow-working-tree') });
-    } else hold('Usage: node scripts/export-dollhouse.mjs <new-output-directory> [--allow-working-tree] | --verify <kit-directory>');
+    if (args.length >= 2 && args[0] === '--verify') {
+      result = await verifyDollhouseKit(args[1]);
+    } else {
+      const allowWorkingTree = args.includes('--allow-working-tree');
+      let profile = 'legacy';
+      const profIdx = args.indexOf('--profile');
+      if (profIdx !== -1 && args[profIdx + 1]) {
+        profile = args[profIdx + 1];
+      }
+      const dirArg = args.find(a => !a.startsWith('--') && (profIdx === -1 || a !== args[profIdx + 1]));
+      if (!dirArg) hold('Usage: node scripts/export-dollhouse.mjs <new-output-directory> [--allow-working-tree] [--profile <legacy|native-skills|all>] | --verify <kit-directory>');
+      result = await exportDollhouseKit({
+        sourceRoot: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'),
+        outputDirectory: dirArg,
+        allowWorkingTree,
+        profile
+      });
+    }
     process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   } catch (error) { process.stderr.write(`${error.message}\n`); process.exitCode = 1; }
 }

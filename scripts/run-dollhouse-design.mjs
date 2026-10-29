@@ -114,6 +114,23 @@ async function main() {
     };
   }
 
+  // CLI flag precedence over file/stdin input (R01.2)
+  if (audit) {
+    commissionInput.scientific_audit_requested = true;
+  }
+  if (args.includes('--deliverable-count')) {
+    commissionInput.deliverable_count = deliverableCount;
+  }
+  if (seed) {
+    commissionInput.seed = seed;
+  }
+  if (args.includes('--medium') || args.includes('-m')) {
+    commissionInput.medium = medium;
+  }
+  if (instruments.length > 0) {
+    commissionInput.instruments = instruments;
+  }
+
   try {
     const receipt = await runDollhouseDesignCycle(commissionInput);
 
@@ -143,6 +160,18 @@ async function main() {
       console.log('\n--- INTERNAL REFRACTION (NOT A DELIVERABLE) ---');
       console.log(`Mutated Parameter:    ${receipt.refractive_variant.mutated_parameter}`);
       console.log(`Formal Consequence:   ${receipt.refractive_variant.formal_consequence}`);
+      if (receipt.scientific_companion_audit) {
+        console.log('\n--- SCIENTIFIC COMPANION AUDIT (ADVISORY) ---');
+        console.log(`Disposition:          ${receipt.scientific_companion_audit.disposition}`);
+        console.log(`Exit Code:            ${receipt.scientific_companion_audit.exit_code}`);
+        console.log(`Consensus:            ${receipt.scientific_companion_audit.consensus || 'NONE'}`);
+        if (receipt.scientific_companion_audit.missing_inputs?.length > 0) {
+          console.log(`Missing Inputs:       ${receipt.scientific_companion_audit.missing_inputs.join(', ')}`);
+        }
+        if (receipt.scientific_companion_audit.detected_infractions?.length > 0) {
+          console.log(`Infractions:          ${receipt.scientific_companion_audit.detected_infractions.join(', ')}`);
+        }
+      }
       console.log('\n--- GOVERNANCE & AUTHORITY ---');
       console.log(`Discourse Mode:       ${receipt.governance.discourse_mode}`);
       console.log(`Scientific Proof:     ${receipt.governance.scientific_proof}`);

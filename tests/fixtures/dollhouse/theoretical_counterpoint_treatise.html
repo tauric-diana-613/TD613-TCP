@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𝌋 TD613 · Theoretical Counterpoint Treatise · Polyphonic Contrapuntalism</title>
+  <style>
+    :root {
+      --bg-canvas: #f7f8f9;
+      --bg-card: #ffffff;
+      --text-primary: #1a1e24;
+      --text-muted: #5a6472;
+      --border-subtle: #dbe0e6;
+      --voice-a-color: #1a365d;
+      --voice-b-color: #742a2a;
+      --focus-color: #2b6cb0;
+      --transition-duration: 200ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    body.reduced-motion * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Georgia", Cambria, serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.65;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .title-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sigil {
+      font-size: 22px;
+      color: var(--voice-a-color);
+    }
+
+    h1 {
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 8px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .action-btn:hover {
+      background: #edf2f7;
+    }
+
+    .action-btn:focus-visible,
+    .strata-card:focus-visible {
+      outline: 3px solid var(--focus-color);
+      outline-offset: 2px;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .prologue-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .polyphonic-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .polyphonic-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+    }
+
+    .strata-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .strata-card.voice-a {
+      border-top: 4px solid var(--voice-a-color);
+    }
+
+    .strata-card.voice-b {
+      border-top: 4px solid var(--voice-b-color);
+    }
+
+    .voice-badge {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .voice-a .voice-badge { color: var(--voice-a-color); }
+    .voice-b .voice-badge { color: var(--voice-b-color); }
+
+    .treatise-text {
+      font-size: 0.98rem;
+      margin-bottom: 16px;
+    }
+
+    .status-alert {
+      display: none;
+      padding: 14px 18px;
+      background: #e2e8f0;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 16px 20px;
+      background: var(--bg-card);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="title-area">
+        <span class="sigil" aria-hidden="true">&#x10D613;</span>
+        <h1>Theoretical Counterpoint · Non-Reductive Epistemic Repair</h1>
+      </div>
+      <div class="nav-actions">
+        <button id="motion-toggle" class="action-btn" type="button" aria-pressed="false">
+          <span id="motion-label">Reduced Motion: OFF</span>
+        </button>
+        <button id="rest-toggle" class="action-btn" type="button">
+          Rest Sequence
+        </button>
+        <button id="exit-toggle" class="action-btn" type="button">
+          Exit Reading
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="notice-box" class="status-alert" role="status" aria-live="polite"></div>
+
+    <section class="prologue-card" aria-label="Treatise Invariant Framing">
+      <h2 style="font-size: 1.15rem; margin-bottom: 10px; font-weight: 600;">Governing Proposition: Dialectical Tension Without Synthesis</h2>
+      <p class="treatise-text">
+        In orthodox Hegelian dialectics, opposing forces are forcibly sublated into a teleological resolution. In polyphonic contrapuntal theory, opposing voices maintain their autonomous trajectories. Neither voice is subordinated into a harmonic compromise.
+      </p>
+      <div style="font-size: 0.88rem; color: var(--text-muted); font-family: monospace;">
+        Khona‌lit-po Heritage Covenant · U+200C non-joiner boundary preserved.
+      </div>
+    </section>
+
+    <section class="polyphonic-grid" aria-label="Parallel Strata">
+      <article class="strata-card voice-a" tabindex="0" aria-label="Strata Voice A: Institutional Friction">
+        <div>
+          <div class="voice-badge">Voice A · Institutional Friction & Archival Gravity</div>
+          <p class="treatise-text">
+            Bureaucratic resistance cannot be treated as an accidental defect of human weakness. It is structural architecture. Every review step, every clearance latency $\mu \times 400\text{ms}$, and every withheld record establishes the gravity of the sovereign institution.
+          </p>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); font-family: -apple-system, sans-serif;">
+          Parameter: <code>procedural_friction_coefficient_mu = 0.72</code>
+        </div>
+      </article>
+
+      <article class="strata-card voice-b" tabindex="0" aria-label="Strata Voice B: Reparative Beside-ness">
+        <div>
+          <div class="voice-badge">Voice B · Affective Beside-ness & Shelter</div>
+          <p class="treatise-text">
+            Against the sovereign imperative to dominate, beside-ness builds an alternative fabric. We do not wait for the institution to confer legitimacy; we assemble restorative pockets of communal care that thrive in the shadows of the apparatus.
+          </p>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); font-family: -apple-system, sans-serif;">
+          Parameter: <code>dissonance_interval_omega = 0.58</code>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    𝌋 TD613 · Consequential Form-Making · Khona‌lit-po Covenant · Polyphonic Contrapuntalism
+  </footer>
+
+  <script>
+    const motionBtn = document.getElementById('motion-toggle');
+    const motionLabel = document.getElementById('motion-label');
+    const restBtn = document.getElementById('rest-toggle');
+    const exitBtn = document.getElementById('exit-toggle');
+    const noticeBox = document.getElementById('notice-box');
+
+    let motionReduced = false;
+    let resting = false;
+
+    motionBtn.addEventListener('click', () => {
+      motionReduced = !motionReduced;
+      motionBtn.setAttribute('aria-pressed', motionReduced ? 'true' : 'false');
+      if (motionReduced) {
+        document.body.classList.add('reduced-motion');
+        motionLabel.textContent = 'Reduced Motion: ON';
+      } else {
+        document.body.classList.remove('reduced-motion');
+        motionLabel.textContent = 'Reduced Motion: OFF';
+      }
+    });
+
+    restBtn.addEventListener('click', () => {
+      resting = !resting;
+      if (resting) {
+        noticeBox.style.display = 'block';
+        noticeBox.textContent = '⏸️ Reading paused safely. Inhabitants may rest without penalty.';
+        restBtn.textContent = 'Resume Discourse';
+      } else {
+        noticeBox.style.display = 'none';
+        restBtn.textContent = 'Rest Sequence';
+      }
+    });
+
+    exitBtn.addEventListener('click', () => {
+      noticeBox.style.display = 'block';
+      noticeBox.textContent = '🚪 Exited discourse safely. Human closure preserved.';
+      exitBtn.disabled = true;
+      exitBtn.textContent = 'Exited';
+    });
+  </script>
+</body>
+</html>

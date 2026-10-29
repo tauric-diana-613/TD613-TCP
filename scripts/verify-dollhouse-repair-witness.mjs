@@ -1,0 +1,443 @@
+#!/usr/bin/env node
+
+/**
+ * @fileoverview Real Chromium Headless Verification for TD613 Dollhouse Repair Activation (Component 5).
+ * Connects directly via Chrome DevTools Protocol (CDP) to exercise desktop (1440x900)
+ * and mobile (390x844) viewports, verifying zero horizontal overflow (overflowPx === 0),
+ * touch target accessibility (>= 44px), reduced-motion controls, and unpenalized rest/exit semantics.
+ */
+
+import { spawn, execFileSync } from 'node:child_process';
+import { resolve } from 'node:path';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+
+function findChromePath() {
+  if (process.env.CHROME_BIN && existsSync(process.env.CHROME_BIN)) {
+    return process.env.CHROME_BIN;
+  }
+  if (process.env.PUPPETEER_EXECUTABLE_PATH && existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
+    return process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
+  const candidates = [
+    'C:/Program Files/Google/Chrome/Application/chrome.exe',
+    'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
+    process.env.LOCALAPPDATA ? `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe` : null,
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+  ].filter(Boolean);
+
+  for (const c of candidates) {
+    if (existsSync(c)) return c;
+  }
+  throw new Error('Chrome executable not found. Please set CHROME_BIN environment variable.');
+}
+
+function getGitRevision() {
+  try {
+    return execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  } catch {
+    return 'WORKING_TREE_LOCAL';
+  }
+}
+
+function sha256(data) {
+  return createHash('sha256').update(data).digest('hex');
+}
+
+const PORT = 9226;
+
+class CdpClient {
+  constructor(wsUrl) {
+    this.wsUrl = wsUrl;
+    this.id = 0;
+    this.callbacks = new Map();
+    this.events = new Map();
+    this.ws = null;
+  }
+
+  async connect() {
+    return new Promise((res, rej) => {
+      this.ws = new WebSocket(this.wsUrl);
+      this.ws.onopen = () => res();
+      this.ws.onerror = (err) => rej(err);
+      this.ws.onmessage = (msg) => {
+        const data = JSON.parse(msg.data);
+        if (data.id && this.callbacks.has(data.id)) {
+          const { resolve, reject } = this.callbacks.get(data.id);
+          this.callbacks.delete(data.id);
+          if (data.error) reject(new Error(data.error.message));
+          else resolve(data.result);
+        } else if (data.method && this.events.has(data.method)) {
+          this.events.get(data.method)(data.params);
+        }
+      };
+    });
+  }
+
+  send(method, params = {}) {
+    return new Promise((resolve, reject) => {
+      const id = ++this.id;
+      this.callbacks.set(id, { resolve, reject });
+      this.ws.send(JSON.stringify({ id, method, params }));
+    });
+  }
+
+  on(method, handler) {
+    this.events.set(method, handler);
+  }
+
+  close() {
+    if (this.ws) this.ws.close();
+  }
+}
+
+async function runWitnessSuite() {
+  const chromePath = findChromePath();
+  const gitRevision = getGitRevision();
+
+  console.log('======================================================================');
+  console.log('  𝌋 TD613 REAL CHROMIUM BROWSER WITNESS (COMPONENT 5)');
+  console.log('======================================================================');
+  console.log(`Chrome Executable: ${chromePath}`);
+  console.log(`Git Revision:      ${gitRevision}`);
+  console.log(`CDP Port:          ${PORT}\n`);
+
+  const chromeProc = spawn(chromePath, [
+    '--headless=new',
+    `--remote-debugging-port=${PORT}`,
+    '--disable-gpu',
+    '--no-sandbox',
+    '--hide-scrollbars'
+  ]);
+
+  let versionData = null;
+  for (let i = 0; i < 30; i++) {
+    try {
+      const res = await fetch(`http://127.0.0.1:${PORT}/json/version`);
+      versionData = await res.json();
+      break;
+    } catch {
+      await new Promise(r => setTimeout(r, 200));
+    }
+  }
+
+  if (!versionData) {
+    chromeProc.kill();
+    throw new Error('Failed to connect to headless Chrome via CDP');
+  }
+
+  console.log(`Browser Engine:    ${versionData.Browser}`);
+  console.log(`User Agent:        ${versionData['User-Agent']}`);
+  console.log(`CDP Protocol:      ${versionData['Protocol-Version']}\n`);
+
+  let totalAssertions = 0;
+  function verifiedAssert(cond, msg) {
+    assert.ok(cond, msg);
+    totalAssertions++;
+  }
+
+  const receipt = {
+    schema: 'td613.dollhouse-design.browser-witness-receipt/v0.2',
+    timestamp: new Date().toISOString(),
+    browser_engine: versionData.Browser,
+    user_agent: versionData['User-Agent'],
+    cdp_protocol: versionData['Protocol-Version'],
+    source_revision: gitRevision,
+    total_assertions_checked: 0,
+    disposition: 'PENDING',
+    artifacts: []
+  };
+
+  try {
+    // =============================================================
+    // WITNESS 1: Sedgwick Paratactic Surface
+    // =============================================================
+    console.log('--- WITNESS 1: Sedgwick Paratactic Surface (Visual Reading Beside-ness) ---');
+    const sedgwickRelPath = 'tests/fixtures/dollhouse/sedgwick_paratactic_surface.html';
+    const sedgwickPath = resolve(process.cwd(), sedgwickRelPath);
+    const sedgwickBytes = readFileSync(sedgwickPath);
+    const sedgwickDigest = sha256(sedgwickBytes);
+    const sedgwickUrl = pathToFileURL(sedgwickPath).href;
+
+    console.log(`  • Path:    ${sedgwickRelPath}`);
+    console.log(`  • Bytes:   ${sedgwickBytes.length}`);
+    console.log(`  • SHA-256: ${sedgwickDigest}`);
+
+    const pageRes1 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const target1 = await pageRes1.json();
+    const client1 = new CdpClient(target1.webSocketDebuggerUrl);
+    await client1.connect();
+
+    await client1.send('Page.enable');
+    await client1.send('DOM.enable');
+    await client1.send('Runtime.enable');
+
+    const sedgwickWitness = {
+      path: sedgwickRelPath,
+      byte_count: sedgwickBytes.length,
+      sha256: sedgwickDigest,
+      viewports: {}
+    };
+
+    // Desktop: 1440x900
+    console.log('  [Desktop 1440x900 Evaluation]');
+    await client1.send('Emulation.setDeviceMetricsOverride', {
+      width: 1440,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false
+    });
+    await client1.send('Page.navigate', { url: sedgwickUrl });
+    await new Promise(r => setTimeout(r, 600));
+
+    const desktopMetrics1 = await client1.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        bodyWidth: document.body.getBoundingClientRect().width,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const dm1 = desktopMetrics1.result.value;
+    verifiedAssert(dm1.overflowPx === 0, `Desktop horizontal overflow must be 0px, got ${dm1.overflowPx}px`);
+    console.log(`    ✓ Desktop overflowPx === 0 (scrollWidth: ${dm1.scrollWidth}px, clientWidth: ${dm1.clientWidth}px)`);
+
+    // Verify touch targets >= 44px
+    const touchTargets1 = await client1.send('Runtime.evaluate', {
+      expression: `Array.from(document.querySelectorAll('button.interactive-btn, .fragment-card')).map(el => {
+        const r = el.getBoundingClientRect();
+        return { tag: el.tagName, id: el.id, w: r.width, h: r.height, pass: r.width >= 44 && r.height >= 44 };
+      })`,
+      returnByValue: true
+    });
+    const tt1 = touchTargets1.result.value;
+    verifiedAssert(tt1.every(t => t.pass), 'All interactive buttons and cards must meet minimum 44px touch target');
+    console.log(`    ✓ Verified ${tt1.length} interactive targets meet >= 44px touch target`);
+
+    // Exercise Reduced Motion toggle
+    await client1.send('Runtime.evaluate', {
+      expression: `document.getElementById('toggle-motion').click()`
+    });
+    const motionActive1 = await client1.send('Runtime.evaluate', {
+      expression: `document.body.classList.contains('reduced-motion')`,
+      returnByValue: true
+    });
+    verifiedAssert(motionActive1.result.value === true, 'Reduced motion class must be active after click');
+    console.log('    ✓ Reduced motion control activates zero-duration transition state');
+
+    // Exercise Rest / Pause Sequence
+    await client1.send('Runtime.evaluate', {
+      expression: `document.getElementById('pause-btn').click()`
+    });
+    const pauseStatus1 = await client1.send('Runtime.evaluate', {
+      expression: `document.getElementById('rest-banner').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(pauseStatus1.result.value.includes('Reading paused safely'), 'Rest sequence must display unpenalized pause');
+    console.log('    ✓ Child-legible rest/pause sequence activates without state loss or penalty');
+
+    // Exercise Exit Sequence
+    await client1.send('Runtime.evaluate', {
+      expression: `document.getElementById('exit-btn').click()`
+    });
+    const exitStatus1 = await client1.send('Runtime.evaluate', {
+      expression: `document.getElementById('rest-banner').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(exitStatus1.result.value.includes('Exited reading surface cleanly'), 'Exit sequence must acknowledge clean human closure');
+    console.log('    ✓ Safe exit sequence functions without trapping or penalizing the operator');
+
+    sedgwickWitness.viewports.desktop = {
+      width: 1440,
+      height: 900,
+      overflowPx: dm1.overflowPx,
+      touch_targets_verified: tt1.length,
+      reduced_motion_verified: true,
+      rest_sequence_verified: true,
+      exit_sequence_verified: true
+    };
+
+    // Mobile: 390x844
+    console.log('  [Mobile 390x844 Evaluation]');
+    await client1.send('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 3,
+      mobile: true
+    });
+    await new Promise(r => setTimeout(r, 400));
+
+    const mobileMetrics1 = await client1.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        bodyWidth: document.body.getBoundingClientRect().width,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const mm1 = mobileMetrics1.result.value;
+    verifiedAssert(mm1.overflowPx === 0, `Mobile horizontal overflow must be 0px, got ${mm1.overflowPx}px`);
+    console.log(`    ✓ Mobile overflowPx === 0 (scrollWidth: ${mm1.scrollWidth}px, clientWidth: ${mm1.clientWidth}px)`);
+
+    sedgwickWitness.viewports.mobile = {
+      width: 390,
+      height: 844,
+      overflowPx: mm1.overflowPx
+    };
+
+    client1.close();
+    receipt.artifacts.push(sedgwickWitness);
+
+    // =============================================================
+    // WITNESS 2: Theoretical Counterpoint Treatise
+    // =============================================================
+    console.log('\n--- WITNESS 2: Theoretical Counterpoint Treatise (Polyphonic Contrapuntalism) ---');
+    const theoRelPath = 'tests/fixtures/dollhouse/theoretical_counterpoint_treatise.html';
+    const theoPath = resolve(process.cwd(), theoRelPath);
+    const theoBytes = readFileSync(theoPath);
+    const theoDigest = sha256(theoBytes);
+    const theoUrl = pathToFileURL(theoPath).href;
+
+    console.log(`  • Path:    ${theoRelPath}`);
+    console.log(`  • Bytes:   ${theoBytes.length}`);
+    console.log(`  • SHA-256: ${theoDigest}`);
+
+    const pageRes2 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const target2 = await pageRes2.json();
+    const client2 = new CdpClient(target2.webSocketDebuggerUrl);
+    await client2.connect();
+
+    await client2.send('Page.enable');
+    await client2.send('DOM.enable');
+    await client2.send('Runtime.enable');
+
+    const theoWitness = {
+      path: theoRelPath,
+      byte_count: theoBytes.length,
+      sha256: theoDigest,
+      viewports: {}
+    };
+
+    // Desktop: 1440x900
+    console.log('  [Desktop 1440x900 Evaluation]');
+    await client2.send('Emulation.setDeviceMetricsOverride', {
+      width: 1440,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false
+    });
+    await client2.send('Page.navigate', { url: theoUrl });
+    await new Promise(r => setTimeout(r, 600));
+
+    const desktopMetrics2 = await client2.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const dm2 = desktopMetrics2.result.value;
+    verifiedAssert(dm2.overflowPx === 0, `Desktop horizontal overflow must be 0px, got ${dm2.overflowPx}px`);
+    console.log(`    ✓ Desktop overflowPx === 0 (scrollWidth: ${dm2.scrollWidth}px, clientWidth: ${dm2.clientWidth}px)`);
+
+    // Verify touch targets >= 44px
+    const touchTargets2 = await client2.send('Runtime.evaluate', {
+      expression: `Array.from(document.querySelectorAll('.action-btn, .strata-card')).map(el => {
+        const r = el.getBoundingClientRect();
+        return { tag: el.tagName, id: el.id, w: r.width, h: r.height, pass: r.width >= 44 && r.height >= 44 };
+      })`,
+      returnByValue: true
+    });
+    const tt2 = touchTargets2.result.value;
+    verifiedAssert(tt2.every(t => t.pass), 'All action buttons and strata cards must meet minimum 44px touch target');
+    console.log(`    ✓ Verified ${tt2.length} interactive targets meet >= 44px touch target`);
+
+    // Exercise Rest / Resume sequence
+    await client2.send('Runtime.evaluate', {
+      expression: `document.getElementById('rest-toggle').click()`
+    });
+    const restText2 = await client2.send('Runtime.evaluate', {
+      expression: `document.getElementById('notice-box').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(restText2.result.value.includes('Reading paused safely'), 'Rest sequence must display unpenalized pause');
+    console.log('    ✓ Theoretical rest sequence verified');
+
+    // Exercise Exit sequence
+    await client2.send('Runtime.evaluate', {
+      expression: `document.getElementById('exit-toggle').click()`
+    });
+    const exitText2 = await client2.send('Runtime.evaluate', {
+      expression: `document.getElementById('notice-box').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(exitText2.result.value.includes('Exited discourse safely'), 'Exit sequence must confirm safe closure');
+    console.log('    ✓ Theoretical exit sequence verified');
+
+    theoWitness.viewports.desktop = {
+      width: 1440,
+      height: 900,
+      overflowPx: dm2.overflowPx,
+      touch_targets_verified: tt2.length,
+      rest_sequence_verified: true,
+      exit_sequence_verified: true
+    };
+
+    // Mobile: 390x844
+    console.log('  [Mobile 390x844 Evaluation]');
+    await client2.send('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 3,
+      mobile: true
+    });
+    await new Promise(r => setTimeout(r, 400));
+
+    const mobileMetrics2 = await client2.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const mm2 = mobileMetrics2.result.value;
+    verifiedAssert(mm2.overflowPx === 0, `Mobile horizontal overflow must be 0px, got ${mm2.overflowPx}px`);
+    console.log(`    ✓ Mobile overflowPx === 0 (scrollWidth: ${mm2.scrollWidth}px, clientWidth: ${mm2.clientWidth}px)`);
+
+    theoWitness.viewports.mobile = {
+      width: 390,
+      height: 844,
+      overflowPx: mm2.overflowPx
+    };
+
+    client2.close();
+    receipt.artifacts.push(theoWitness);
+
+    receipt.total_assertions_checked = totalAssertions;
+    receipt.disposition = 'WITNESS_VERIFIED_PASS';
+
+    const outPath = resolve(process.cwd(), 'tests/fixtures/dollhouse/witness_receipt_20261029.json');
+    writeFileSync(outPath, JSON.stringify(receipt, null, 2), 'utf8');
+
+    console.log('\n======================================================================');
+    console.log(`  ✓ REAL CHROMIUM BROWSER WITNESS COMPLETE: ${totalAssertions}/${totalAssertions} ASSERTIONS PASSED`);
+    console.log(`  Receipt: ${outPath}`);
+    console.log('======================================================================\n');
+  } finally {
+    chromeProc.kill();
+  }
+}
+
+runWitnessSuite().catch(err => {
+  console.error('\n❌ Browser witness failed:', err);
+  process.exit(1);
+});
