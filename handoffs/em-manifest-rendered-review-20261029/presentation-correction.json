@@ -1,0 +1,20 @@
+{
+  "author": "𝌋",
+  "scope": "EM_PRESENTATION_RENDERED_REVIEW",
+  "basis": [
+    "Actual Edge cover screenshot",
+    "Actual Edge Corpus screenshot"
+  ],
+  "demonstrated_defect": "Graphite dominated both header and Corpus reading architecture despite dominant Baker–Miller commission.",
+  "change": "Pink reading surfaces/header/mobile menu, graphite text and borders, legible hover; preserve monochrome artwork and pink title; Arc Flash reserved for title math and rare tagged accents.",
+  "before_sha256": "e5f643dc527dc3673cc9d719517f5b32bbda56aa25a80b5257ab5d38d78689eb",
+  "after_sha256": "10b48fa947158b8f16aedc8391a2fa56f101f008a275da2999ef507788a7ad03",
+  "only_theme_layer_changed": true,
+  "corpus_changes": 0,
+  "original_fonts_changed": false,
+  "original_artwork_changed": false,
+  "native_code_changed": false,
+  "rendered_after_status": "NOT_YET_OBSERVED",
+  "scientific_authority": false,
+  "operator_closure": "RESERVED"
+}
