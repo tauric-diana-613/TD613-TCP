@@ -1,0 +1,23 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C1-MECHANICAL-OSCILLATOR",
+  "system_class": "SECOND_ORDER_LINEAR_DISSIPATIVE_DYNAMICAL_SYSTEM",
+  "domain": "CLASSICAL_MECHANICS",
+  "governing_equation": "m * d^2x/dt^2 + b * dx/dt + k * x = F(t)",
+  "state_variables": {
+    "generalized_coordinate": { "symbol": "x", "dimension": "LENGTH", "unit": "meter" },
+    "generalized_velocity": { "symbol": "v", "definition": "dx/dt", "dimension": "VELOCITY", "unit": "meter/second" }
+  },
+  "physical_parameters": {
+    "inertial_mass": { "symbol": "m", "dimension": "MASS", "unit": "kilogram", "value": 2.5 },
+    "viscous_damping": { "symbol": "b", "dimension": "DAMPING", "unit": "newton*second/meter", "value": 0.4 },
+    "restoring_stiffness": { "symbol": "k", "dimension": "STIFFNESS", "unit": "newton/meter", "value": 10.0 }
+  },
+  "hamiltonian_energy": "E_mech = 0.5 * m * v^2 + 0.5 * k * x^2",
+  "dissipation_rate": "dE_mech/dt = - b * v^2",
+  "phase_space_dimension": 2,
+  "boundary_conditions": { "x(0)": 0.15, "v(0)": 0.0, "t_span": [0.0, 30.0] },
+  "regime": "UNDERDAMPED",
+  "damping_ratio": "zeta = b / (2 * sqrt(m * k)) = 0.04",
+  "natural_frequency": "omega_0 = sqrt(k / m) = 2.0 rad/s"
+}

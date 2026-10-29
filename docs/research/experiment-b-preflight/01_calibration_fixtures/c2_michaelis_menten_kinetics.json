@@ -1,0 +1,23 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C2-MICHAELIS-MENTEN-KINETICS",
+  "system_class": "STEADY_STATE_ALGEBRAIC_SATURATION_HYPERBOLA",
+  "domain": "BIOCHEMICAL_ENZYME_KINETICS",
+  "governing_equation": "v = (V_max * [S]) / (K_m + [S])",
+  "state_variables": {
+    "substrate_concentration": { "symbol": "[S]", "dimension": "CHEMICAL_CONCENTRATION", "unit": "micromolar" },
+    "reaction_velocity": { "symbol": "v", "dimension": "REACTION_FLUX", "unit": "micromolar/second" }
+  },
+  "physical_parameters": {
+    "maximal_velocity": { "symbol": "V_max", "dimension": "RATE_OF_FORMATION", "unit": "micromolar/second", "value": 50.0 },
+    "michaelis_constant": { "symbol": "K_m", "dimension": "HALF_SATURATION_CONCENTRATION", "unit": "micromolar", "value": 15.0 }
+  },
+  "equilibrium_nature": "STATIC_QUASI_STEADY_STATE_BINDING_CURVE",
+  "phase_space_dimension": 0,
+  "superficial_terms": ["capacity", "rate", "saturation_constant"],
+  "ground_truth_non_isomorphism_reasons": [
+    "Divergent dimensional units: dN/dt is temporal flux (T^-1), v([S]) is concentration flux per unit time (M*L^-3*T^-1).",
+    "Dynamic differential trajectory vs. static algebraic quasi-steady-state isotherm.",
+    "Nonlinear time evolution vs. instantaneous concentration-response mapping."
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C4-INCOMPLETE-BOUNDARY-SYSTEM",
+  "system_class": "PARTIALLY_OBSERVED_NONLINEAR_SYSTEM",
+  "domain": "NONLINEAR_MECHANICS",
+  "governing_equation": "d^2y/dt^2 + gamma * dy/dt + grad(U(y)) = 0",
+  "state_variables": {
+    "generalized_coordinate": { "symbol": "y", "dimension": "ARBITRARY", "unit": "unknown" }
+  },
+  "observed_parameters": {
+    "damping_parameter": { "symbol": "gamma", "value": 0.12 }
+  },
+  "missing_unobserved_dimensions": [
+    "Functional form of potential U(y) is unobserved (only local quadratic Taylor expansion in neighborhood |y| < 0.05 is supplied).",
+    "Boundary conditions y(0) and dy/dt(0) are missing.",
+    "Global phase portrait topology (whether single-well, double-well Duffing, or periodic pendulum) is indeterminate from available sensor data."
+  ],
+  "expected_epistemic_outcome": {
+    "decision": "ABSTAIN_INSUFFICIENT_OBSERVATION",
+    "warranted_action": "Refuse global isomorphism hypothesis; emit explicit epistemic deficit report naming missing potential form and boundary data."
+  }
+}

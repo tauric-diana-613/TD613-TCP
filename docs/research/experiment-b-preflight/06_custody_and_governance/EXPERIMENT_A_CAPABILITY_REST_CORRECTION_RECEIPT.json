@@ -1,0 +1,42 @@
+{
+  "schema": "td613.experiment-a.rest-correction-receipt/v1",
+  "timestamp": "2026-10-29T19:00:00Z",
+  "commission": "TD613_Experiment_A_Rest_Acceptance_and_B_Preflight_Design_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona\u200Clit-po",
+  "source_identity_reconciliations": [
+    {
+      "source_file": "Archive/Optimal Gamma Smoothing Factor.md",
+      "byte_count": 48225,
+      "line_terminator": "LF",
+      "authentic_complete_sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+      "retracted_conflicting_hash": "cffbe00609b68832c32cf97c0c1ae02450c268fc330e7161bcf77370884d538e",
+      "reconciliation_status": "AUTHENTIC_SHA256_FROZEN · SPURIOUS_HASH_RETRACTED"
+    },
+    {
+      "source_passage": "Optimal Gamma Smoothing Factor.md (BESS Section)",
+      "byte_span_utf8": [24923, 27575],
+      "byte_count": 2652,
+      "authentic_passage_sha256": "141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222",
+      "status": "PASSAGE_SPAN_IDENTITY_PRESERVED"
+    }
+  ],
+  "specimen_scope_binding": {
+    "reduced_specimen_total_bytes": 4629,
+    "components": {
+      "p1_section_6_slice": { "span": [18656, 20574], "bytes": 1918, "sha256": "e9d259d718bf66ab4436553cbf232fe1c6222787688e740822a2368829d3ff41" },
+      "em_bess_section_slice": { "span": [24923, 27575], "bytes": 2652, "sha256": "141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222" },
+      "framing_overhead": 59
+    },
+    "binding_rule": "The observed Delta=0 parity result is bound exclusively to this 4,629-byte reduced specimen. It does not establish full-corpus (40k/48k) architectural parity."
+  },
+  "experiment_a_frozen_constitution": {
+    "native_indexing_retrieval_status": "AVAILABLE_WITHIN_MODULE_BOUNDARIES",
+    "autonomous_research_synthesis_status": "CAPABILITY_NOT_IMPLEMENTED",
+    "autonomous_reciprocal_execution_status": "UNEXECUTABLE_IN_INSPECTED_APIS",
+    "bridge_b1_warrant": "AUTHORED_RESEARCH_ANALOGY · ZERO_DISCOVERY_CREDIT · MATHEMATICAL_ISOMORPHISM_HELD",
+    "third_machine_emergence_credit": 0,
+    "dollhouse_status": "HELD_MISSING_OBSERVATION",
+    "gate_e_status": "HELD",
+    "human_closure": "RESERVED"
+  }
+}

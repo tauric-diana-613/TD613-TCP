@@ -1,0 +1,21 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C2-LOGISTIC-POPULATION",
+  "system_class": "FIRST_ORDER_NONLINEAR_AUTONOMOUS_ODE",
+  "domain": "POPULATION_ECOLOGY",
+  "governing_equation": "dN/dt = r * N * (1 - N / K)",
+  "state_variables": {
+    "population_density": { "symbol": "N", "dimension": "POPULATION_COUNT", "unit": "individuals" }
+  },
+  "physical_parameters": {
+    "intrinsic_growth_rate": { "symbol": "r", "dimension": "RATE", "unit": "second^-1", "value": 0.25 },
+    "carrying_capacity": { "symbol": "K", "dimension": "POPULATION_CAPACITY", "unit": "individuals", "value": 1000.0 }
+  },
+  "equilibrium_fixed_points": [
+    { "N_star": 0.0, "stability": "UNSTABLE" },
+    { "N_star": 1000.0, "stability": "ASYMPTOTICALLY_STABLE_ATTRACTOR" }
+  ],
+  "phase_space_dimension": 1,
+  "trajectory_type": "SIGMOIDAL_TIME_EVOLUTION",
+  "superficial_terms": ["capacity", "growth_rate", "saturation_limit"]
+}

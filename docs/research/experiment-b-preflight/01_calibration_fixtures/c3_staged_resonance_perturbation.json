@@ -1,0 +1,31 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C3-STAGED-RESONANCE-PERTURBATION",
+  "system_class": "SEQUENTIAL_EPISTEMIC_UPDATE_TEST",
+  "domain": "CROSS_DOMAIN_RESONANT_DISSIPATION",
+  "turns": [
+    {
+      "turn_index": 1,
+      "staged_evidence": {
+        "observation": "System exhibits steady unattenuated oscillation over initial observation interval t in [0, 5] seconds.",
+        "measured_energy_decay": 0.0,
+        "preliminary_hypothesis": "CONSERVATIVE_UNDAMPED_ISOMORPHISM (b = 0, R = 0)",
+        "governing_model": "d^2x/dt^2 + (k/m) * x = 0  <--->  d^2q/dt^2 + (1/(L*C)) * q = 0"
+      }
+    },
+    {
+      "turn_index": 2,
+      "staged_evidence": {
+        "observation": "Extended sensor integration reveals finite cycle dissipation over t in [0, 50] seconds.",
+        "measured_energy_decay_per_cycle": "-4.5% of total energy per cycle (Delta_E / E_0 = -0.045)",
+        "required_epistemic_revision": "REVISE_PARAMETER_REGIME_TO_UNDERDAMPED_WITHOUT_BREAKING_COORDINATE_BIJECTION",
+        "revised_parameters": {
+          "mechanical_damping": "b = 0.4 N*s/m",
+          "electrical_resistance": "R = 0.4 ohm",
+          "quality_factor": "Q = 22.2"
+        },
+        "preserved_invariants": ["x <-> q coordinate bijection", "v <-> i velocity/current bijection", "Hamiltonian quadratic energy pairing"]
+      }
+    }
+  ]
+}
