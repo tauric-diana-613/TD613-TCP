@@ -33,7 +33,15 @@ The live shakedown was executed via [`run-source-free-live-calibration.mjs`](03_
 * **Sampling Parameters**: `temperature: 0.0`, `max_output_tokens: 4096` (per-call output ceiling, not episode budget).
 * **Scoring Mode**: Blinded independent evaluation (`SPECIMEN_ALPHA` vs `SPECIMEN_BETA` scored by [`evaluator-oracle.mjs`](03_calibration_execution/evaluator-oracle.mjs)).
 
-### Summary of Live Shakedown & Offline Rescore Findings
+### Summary of Live Shakedown, Offline Rescore & Independent Evaluation
+
+* **Automated Offline Rescore Receipt:** [`03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json`](03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json)  
+  *Classification:* `INTERNAL_ANONYMIZED_OFFLINE_RESCORE` (`AUTOMATED_RUBRIC_PARITY`). Internal same-process pseudonymization; establishes rubric parity without regenerating frozen model answers.
+* **Independent Semantic Evaluation Dossier:** [`03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md`](03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md)  
+  *Receipt:* [`03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json`](03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json)  
+  *Classification:* `INDEPENDENT_SEMANTIC_EVALUATION`. Criterion-by-criterion evaluation of all 14 frozen final-condition model outputs against the withheld answer key.
+* **Adversarial Scorer Test Suite:** [`tests/test-evaluator-oracle.mjs`](../../../tests/test-evaluator-oracle.mjs)  
+  Expanded from 12 to 16 unit tests, explicitly verifying resistance against adversarial negations, false-twin affirmations, rejected hypothesis numeric claims, and negative keywords in positive controls (16/16 passing).
 
 | Evaluative Criterion | Arm 2A (Modular Jurisdictional) | Arm 2B (Matched Native Union) | Independent Ground Truth Oracle Finding |
 |---|---|---|---|
@@ -63,12 +71,13 @@ The native `/dollhouse-audit` skill was executed with authentic domain observati
 * **Specialists Evaluated**: `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN` (Zero missing inputs).
 * **Specialist Findings**:
   * `PEDAGOGUE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Dromological cadence strictly ordered: `NOTICE < ACT < WORLD_ANSWERS < NAME`).
-  * `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — $3 \times 3$ latent-state covariance $\Sigma_\theta$ supplied matching latent dimension $n=3$; candidate probe $[0, 0, 1]$ stably lifts rank from 2 to 3 with $\kappa = 1.70$).
+  * `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — $3 \times 3$ latent-state covariance $\Sigma_\theta$ supplied matching latent dimension $n=3$; candidate probe $[0, 0, 1]$ stably lifts rank from 2 to 3 with $\kappa = 1.70$. Scoped internal hold: `classification_replay_stability: HELD_NOT_YET_WITNESSED`, `proposal_is_execution: false`).
   * `ATLAS`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Parity and trajectory winding $0$ preserved).
-  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Inner fiber bounds hold irreducible gap cardinality 4, while outer specialist supports unconditioned action boundary).
+  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Inner fiber bounds hold irreducible gap cardinality 4: `HOLD_IRREDUCIBLE_GAP`, while outer specialist supports unconditioned action boundary).
   * `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Monotonic milestone chronology verified across all 5 phases).
 * **Orchestrator Consensus**: `UNANIMOUS_SUPPORT`
 * **Orchestrator Decision**: **✓ SUPPORTED**
+* **Scoped Evidence Ceiling**: Outer `SUPPORTED / UNANIMOUS_SUPPORT` applies strictly to caller-supplied synthetic domain inputs. Does not imply external production release authority.
 * **Empirical Replication Count**: 0 (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`)
 * **Release Authority**: false
 * **Human Closure Required**: true
@@ -106,11 +115,14 @@ node -e "import('./docs/research/experiment-b-preflight/02_four_arm_harness/run-
 # 4. Verify native Encyclopedia and Wendbine Arm 1 archival controls
 node -e "import('./docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs').then(m => m.runArm1Archival('.', {}))"
 
-# 5. Run independent evaluator oracle unit test suite (12/12 passing)
+# 5. Run independent evaluator oracle unit test suite (16/16 passing)
 node tests/test-evaluator-oracle.mjs
 
 # 6. Run offline frozen-trace rescore and fairness reconciliation
 node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-trace-rescore.mjs
+
+# 7. Inspect independent semantic evaluation dossier and receipt
+# (Examine docs/research/experiment-b-preflight/03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md)
 ```
 
 ---

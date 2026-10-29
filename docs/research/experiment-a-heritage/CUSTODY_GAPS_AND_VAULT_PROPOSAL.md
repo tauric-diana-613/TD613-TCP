@@ -41,9 +41,9 @@ experiment_a_scientific_status = CAPABILITY_REST_ACCEPTED_DO_NOT_REOPEN
 * **Remediation:** Archive all 22 narrative walkthroughs in `02_OPERATOR_WALKTHROUGHS/` with cryptographic crosswalks to their corresponding machine receipts.
 
 ### Gap 3: Unmerged Retrospective Evidence & Redpen Chains (PR #1606)
-* **Deficit:** Pull Request #1606 preserved 26 retrospective evidence files, native capability execution traces, and independent redpens. Because PR #1606 was closed unmerged following independent redpen review `5704109031`, this material does not exist on `main`.
+* **Deficit:** Pull Request #1606 preserved 26 retrospective evidence files, native capability execution traces, and independent redpens. Under independent review `5704109031` (`PR1606_REQUEST_CHANGES_RECOMMENDED · A_NATIVE_RECIPROCAL_EVIDENCE_HELD`), PR #1606 remains **OPEN / UNMERGED** at commit `9f562748c576e85253ee295f35636379cc2e62d0`. This material does not exist on `main`.
 * **Archival Impact:** Relying on unmerged GitHub PRs or temporary conversation attachments poses long-term retention risks.
-* **Remediation:** Ingest the complete PR #1606 evidence packages (`TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip` [67,081 bytes] and `TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip` [54,741 bytes]) into `03_INDEPENDENT_REDPENS_AND_REVIEWS/` as historical, unmerged audit evidence.
+* **Remediation:** Ingest the complete PR #1606 evidence packages (`TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip` [67,081 bytes, SHA-256 `389f901381667a5903306b6e47f59447a472579ee98086b7d32732ba80c5d4a5`] and `TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip` [54,741 bytes, SHA-256 `8589dd23196aac7b3d8bd5361a5cf7095aaedf1cc2bc317b7e461e29c0a34472`]) into `03_INDEPENDENT_REDPENS_AND_REVIEWS/` as historical, unmerged audit evidence.
 
 ### Gap 4: Public Loose-File Multi-Edition Length Drift
 * **Deficit:** Emergence HQ identified that five non-archive loose files on the witness branch differ in recorded byte length from the values recorded in the master manifest:
@@ -87,7 +87,8 @@ td613-experiment-a-heritage-vault/
 │   ├── TD613_Experiment_A_Flight_R1_and_Postflight_Evidence_2026-10-29.zip (127,502 B | 21df8b13...)
 │   ├── TD613_Experiment_A_Postflight_W0_Evidence_2026-10-29.zip          (54,510 B  | 47b282e4...)
 │   └── TD613_Experiment_A_Postflight_Scientific_Evidence_2026-10-29.zip  (43,100 B  | a8568aef...)
-├── 02_OPERATOR_WALKTHROUGHS/                      # 22 Standalone narrative walkthroughs
+├── 02_OPERATOR_WALKTHROUGHS/                      # 22 Standalone narrative walkthroughs + Private Supplement
+│   │                                               # (Supplement contains 24 entries: 2 audit + 5 charters + 8 redpens + 9 walkthroughs)
 │   ├── experiment_a_latifa_preflight_plan.md
 │   ├── experiment_a_preflight_lever_walkthrough_v1.1.md
 │   ├── experiment_a_flight_walkthrough.md
@@ -97,9 +98,9 @@ td613-experiment-a-heritage-vault/
 │   ├── TD613_Experiment_A_Postflight_W0_Independent_Redpen_2026-10-29.md
 │   ├── TD613_PR1606_Independent_Source_Code_Redpen_2026-10-29.md
 │   ├── TD613_Experiment_A_Architecture_Custody_Preservation_Audit_2026-10-29.md
-│   └── PR1606_RECIPROCAL_EVIDENCE/
-│       ├── TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip
-│       └── TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip
+│   └── PR1606_RECIPROCAL_EVIDENCE/                # Unmerged historical PR #1606 trial evidence
+│       ├── TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip          (67,081 B | 389f9013...)
+│       └── TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip (54,741 B | 8589dd23...)
 ├── 04_NATIVE_EXECUTION_AND_REST_RECEIPTS/         # Native API capability characterization & rest
 │   ├── TD613_Experiment_A_Native_Execution_and_Capability_Characterization_2026-10-29.md
 │   ├── TD613_Experiment_A_Native_Capability_Independent_Adjudication_2026-10-29.md

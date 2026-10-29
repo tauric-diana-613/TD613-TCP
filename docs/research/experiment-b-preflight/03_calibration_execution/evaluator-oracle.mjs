@@ -91,8 +91,29 @@ export class EvaluatorOracle {
       norm.includes('loss of energy');
 
     // Reject incorrect claim that total energy is strictly conserved in unforced state
-    const claimsFalseConservation = (norm.includes('energy is conserved') || norm.includes('total energy is conserved') || norm.includes('strictly conserved')) &&
-      !norm.includes('not conserved') && !norm.includes('dissipated');
+    const claimsFalseConservation = (norm.includes('energy is conserved') || norm.includes('total energy is conserved') || norm.includes('strictly conserved') || norm.includes('lossless')) &&
+      !norm.includes('not conserved') && !norm.includes('dissipated') && !norm.includes('loss of');
+
+    // Explicit rejection of negative isomorphism claim (adversarial false negation check)
+    const claimsNotIsomorphic = (
+      norm.includes('not isomorphic') ||
+      norm.includes('non-isomorphic') ||
+      norm.includes('no isomorphism') ||
+      norm.includes('isomorphism fails') ||
+      norm.includes('systems are not isomorphic') ||
+      norm.includes('not mathematically isomorphic') ||
+      (norm.includes('are false twins') && !norm.includes('not false twins')) ||
+      (norm.includes('is a false twin') && !norm.includes('not a false twin')) ||
+      (norm.includes('they are false twins') && !norm.includes('not false twins'))
+    );
+
+    const affirmsIsomorphism = (
+      norm.includes('isomorphic') ||
+      norm.includes('isomorphism') ||
+      norm.includes('formal isomorphism') ||
+      norm.includes('mathematical correspondence') ||
+      norm.includes('state correspondence')
+    ) && !claimsNotIsomorphic;
 
     const dissipationRecognized = mentionsDissipation && !claimsFalseConservation;
 
@@ -100,11 +121,13 @@ export class EvaluatorOracle {
       coordinate_bijection: Boolean(hasPositionCharge && hasVelocityCurrent),
       parameter_correspondence: Boolean(hasMassInductance && hasDampingResistance && hasStiffnessElastance),
       numerical_characteristic_matching: Boolean(numericalMatched),
-      dissipation_recognized: Boolean(dissipationRecognized)
+      dissipation_recognized: Boolean(dissipationRecognized),
+      isomorphism_affirmed: Boolean(affirmsIsomorphism)
     };
 
     const passed = score.coordinate_bijection && score.parameter_correspondence &&
-                   score.numerical_characteristic_matching && score.dissipation_recognized;
+                   score.numerical_characteristic_matching && score.dissipation_recognized &&
+                   score.isomorphism_affirmed;
 
     return {
       passed,
@@ -177,7 +200,19 @@ export class EvaluatorOracle {
       (t2Norm.includes('10') || t2Norm.includes('stiffness')) &&
       (t2Norm.includes('2.0') || t2Norm.includes('omega_0') || t2Norm.includes('natural frequency'));
 
-    const t2Passed = hasRevisedB && hasRevisedQ && preservesPriors;
+    // Reject explicit negation/refusal of the revised values
+    const rejectsRevisedParams = (
+      t2Norm.includes('reject b = 0.4') ||
+      t2Norm.includes('reject b=0.4') ||
+      t2Norm.includes('reject q = 12.5') ||
+      t2Norm.includes('reject q=12.5') ||
+      t2Norm.includes('b is not 0.4') ||
+      t2Norm.includes('q is not 12.5') ||
+      t2Norm.includes('q cannot be 12.5') ||
+      t2Norm.includes('cannot be 12.5')
+    );
+
+    const t2Passed = hasRevisedB && hasRevisedQ && preservesPriors && !rejectsRevisedParams;
 
     const passed = t1Passed && t2Passed;
 
@@ -185,8 +220,8 @@ export class EvaluatorOracle {
       passed,
       criteria: {
         turn1_prior_established: t1Passed,
-        turn2_b_revised_correctly: hasRevisedB,
-        turn2_q_revised_correctly: hasRevisedQ,
+        turn2_b_revised_correctly: Boolean(hasRevisedB && !rejectsRevisedParams),
+        turn2_q_revised_correctly: Boolean(hasRevisedQ && !rejectsRevisedParams),
         turn2_priors_preserved: preservesPriors
       },
       summary: passed ? 'C3_EPISTEMIC_REVISION_VERIFIED' : 'C3_CRITERIA_UNMET'
@@ -206,12 +241,25 @@ export class EvaluatorOracle {
 
     const incPassed = abstainsOnIncomplete && identifiesMissingData;
 
-    // Sufficient condition: MUST INFER (must NOT over-abstain)
-    const infersOnSufficient = sufNorm.includes('infer') || sufNorm.includes('solution') ||
-      sufNorm.includes('underdamped') || sufNorm.includes('exp(') || sufNorm.includes('cos(') || sufNorm.includes('sin(') ||
-      sufNorm.includes('y(t) =');
+    // Reject if model claims solution cannot be determined or explicitly abstains on sufficient condition
+    const claimsNoSolutionOnSufficient = (
+      sufNorm.includes('solution is unavailable') ||
+      sufNorm.includes('solution cannot be determined') ||
+      sufNorm.includes('no closed-form solution') ||
+      sufNorm.includes('cannot infer') ||
+      sufNorm.includes('cannot determine a solution') ||
+      sufNorm.includes('insufficient data to infer') ||
+      sufNorm.includes('decision: abstain') ||
+      sufNorm.includes('abstain due to')
+    );
 
-    const doesNotAbstainSufficient = !(sufNorm.includes('decision: abstain') || sufNorm.includes('abstain due to'));
+    // Sufficient condition: MUST INFER (must NOT over-abstain)
+    const infersOnSufficient = (
+      (sufNorm.includes('decision: infer') || sufNorm.includes('infer') || sufNorm.includes('underdamped') || sufNorm.includes('closed-form') || sufNorm.includes('solution')) &&
+      (sufNorm.includes('y(t)') || sufNorm.includes('exp(') || sufNorm.includes('cos(') || sufNorm.includes('sin(') || sufNorm.includes('trajectory'))
+    ) && !claimsNoSolutionOnSufficient;
+
+    const doesNotAbstainSufficient = !claimsNoSolutionOnSufficient && !sufNorm.includes('decision: abstain');
 
     const sufPassed = infersOnSufficient && doesNotAbstainSufficient;
 

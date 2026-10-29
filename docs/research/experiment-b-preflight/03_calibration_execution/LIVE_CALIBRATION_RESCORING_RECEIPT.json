@@ -1,9 +1,12 @@
 {
   "schema": "td613.experiment-b.live-calibration-rescore-receipt/v1",
-  "timestamp": "2026-10-29T20:19:55.497Z",
+  "timestamp": "2026-10-29T20:39:51.126Z",
   "commission": "TD613_Experiment_B_Live_Calibration_Rescore_and_Fairness_Reconciliation_2026-10-29",
   "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
   "disposition": "B_OFFLINE_RESCORE_AND_FAIRNESS_RECONCILED",
+  "rescore_classification": "INTERNAL_ANONYMIZED_OFFLINE_RESCORE",
+  "adjudication_scope": "AUTOMATED_RUBRIC_PARITY",
+  "external_blinded_status": "INTERNAL_SAME_PROCESS_PSEUDONYMIZATION_PENDING_EXTERNAL_ASSESSOR",
   "frozen_traces_provenance": {
     "provider": "Google Gemini REST API (v1beta)",
     "model": "gemini-2.5-flash-lite",
@@ -22,8 +25,8 @@
   },
   "corrected_blinded_rescore": {
     "unblinding_key": {
-      "SPECIMEN_ALPHA": "ARM_2B_MATCHED_UNION",
-      "SPECIMEN_BETA": "ARM_2A_MODULAR"
+      "SPECIMEN_ALPHA": "ARM_2A_MODULAR",
+      "SPECIMEN_BETA": "ARM_2B_MATCHED_UNION"
     },
     "arm_2a_modular": {
       "total_episodes": 10,
@@ -38,7 +41,8 @@
             "coordinate_bijection": true,
             "parameter_correspondence": true,
             "numerical_characteristic_matching": true,
-            "dissipation_recognized": true
+            "dissipation_recognized": true,
+            "isomorphism_affirmed": true
           },
           "summary": "C1_MATHEMATICAL_ISOMORPHISM_VERIFIED"
         },
@@ -83,7 +87,8 @@
             "coordinate_bijection": true,
             "parameter_correspondence": true,
             "numerical_characteristic_matching": true,
-            "dissipation_recognized": true
+            "dissipation_recognized": true,
+            "isomorphism_affirmed": true
           },
           "summary": "C1_MATHEMATICAL_ISOMORPHISM_VERIFIED"
         },

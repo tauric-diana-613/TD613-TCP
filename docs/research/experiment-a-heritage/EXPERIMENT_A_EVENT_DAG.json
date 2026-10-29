@@ -134,7 +134,7 @@
     {
       "id": "EVENT_07_MASTER_PORTABLE_PACKAGE",
       "stage": "STAGE_6_MASTER_PACKAGE",
-      "timestamp": "2026-10-29T10:04:00.000Z",
+      "timestamp": "2026-10-29T14:04:09.594Z",
       "label": "Master Portable Review Package Assembly",
       "type": "PORTABLE_ARCHIVE_ASSEMBLY",
       "authority": "Antigravity Packaging System",
@@ -143,10 +143,12 @@
           "name": "TD613_Experiment_A_Master_Portable_Review_Package_2026-10-29.zip",
           "sha256": "32176bed963c6b1838c54f56402ebe1f8be1871120730fea8137e0b8bfda94e0",
           "bytes": 619514,
-          "entry_count": 194
+          "entry_count": 18,
+          "direct_entry_count": 18,
+          "recursive_entry_count": 194
         }
       ],
-      "summary": "Encapsulates five core archives plus 13 top-level review items. Restricted to private vault due to former unblinding key containment."
+      "summary": "Encapsulates five core archives (181 nested entries) plus 13 top-level review items (18 direct central directory entries, 194 recursive inventory count). Assembly timestamp 2026-10-29T14:04:09.594Z UTC (10:04:09-04:00 EDT). Restricted to private vault due to former unblinding key containment."
     },
     {
       "id": "EVENT_08_PR1606_RECIPROCAL_TRIAL",
@@ -155,15 +157,18 @@
       "label": "Pull Request #1606 Reciprocal Completion Attempt",
       "type": "EXPERIMENTAL_PULL_REQUEST",
       "authority": "Antigravity Worktree Witness",
+      "pr_number": 1606,
+      "pr_status": "OPEN_UNMERGED",
+      "head_commit": "9f562748c576e85253ee295f35636379cc2e62d0",
       "artifacts": [
         {
           "name": "TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip",
-          "sha256": "d9fa733d9f1e16c7a9e64e59fdbbe64817d23588df8e980cb6305a2f5aeefbb1",
+          "sha256": "389f901381667a5903306b6e47f59447a472579ee98086b7d32732ba80c5d4a5",
           "bytes": 67081,
           "entry_count": 26
         }
       ],
-      "summary": "Attempted reciprocal cross-chamber completion RC1-RC3 submitted to GitHub PR #1606."
+      "summary": "Attempted reciprocal cross-chamber completion RC1-RC3 submitted to GitHub PR #1606. Remains open and unmerged as a historical witness surface."
     },
     {
       "id": "EVENT_09_PR1606_REDPEN",
@@ -172,6 +177,8 @@
       "label": "PR #1606 Independent Source-Code Redpen",
       "type": "INDEPENDENT_REDPEN",
       "authority": "Emergence HQ Independent Scientific Review",
+      "disposition": "PR1606_REQUEST_CHANGES_RECOMMENDED · A_NATIVE_RECIPROCAL_EVIDENCE_HELD",
+      "pr_status": "OPEN_UNMERGED",
       "artifacts": [
         {
           "name": "TD613_PR1606_Independent_Source_Code_Redpen_2026-10-29.md",
@@ -179,7 +186,7 @@
           "bytes": 15311
         }
       ],
-      "summary": "Identifies 9 source-grounded findings (synthetic admission, regex comparator scoring, predetermined outcomes); recommends PR1606_REQUEST_CHANGES."
+      "summary": "Identifies 9 source-grounded findings (synthetic admission, regex comparator scoring, predetermined outcomes); recommends PR1606_REQUEST_CHANGES. PR #1606 remains open unmerged."
     },
     {
       "id": "EVENT_10_NATIVE_CAPABILITY_INSPECTION",
@@ -235,72 +242,96 @@
       "from": "EVENT_00_SUCCESSION",
       "to": "EVENT_01_PREFLIGHT_LEVER",
       "relation": "CHARTERS_PREFLIGHT_PLAN",
+      "edge_class": "WITNESSED_OPERATOR_GRANT",
+      "witness_reference": "TD613_Manifest_Emergence_HQ_Protocol_Succession_R2_2026-10-28.md",
       "description": "Protocol Succession R2 mandates Latifa Preflight Lever design."
     },
     {
       "from": "EVENT_01_PREFLIGHT_LEVER",
       "to": "EVENT_02_FLIGHT_V0",
       "relation": "AUTHORIZES_EXECUTION",
+      "edge_class": "WITNESSED_EXECUTION_TRANSITION",
+      "witness_reference": "TD613_Experiment_A_Latifa_Preflight_Lever_2026-10-29.zip",
       "description": "Preflight lever sealing authorizes Flight V0 six-arm shakedown."
     },
     {
       "from": "EVENT_02_FLIGHT_V0",
       "to": "EVENT_03_FLIGHT_R1",
       "relation": "EXPANDS_MANUSCRIPT_SCOPE",
+      "edge_class": "RECONSTRUCTED_CHRONOLOGY",
+      "witness_reference": "scratch/exp_a_flight_execution_20261029",
       "description": "V0 results lead to Flight R1 full manuscript ingestion."
     },
     {
       "from": "EVENT_03_FLIGHT_R1",
       "to": "EVENT_04_R1_WITHDRAWAL",
       "relation": "CRITIQUED_AND_WITHDRAWN",
+      "edge_class": "WITNESSED_INDEPENDENT_REDPEN",
+      "witness_reference": "TD613_Experiment_A_Postflight_W0_Independent_Redpen_2026-10-29.md",
       "description": "Postflight W0 redpen formally withdraws Flight R1 readiness claims append-only."
     },
     {
       "from": "EVENT_04_R1_WITHDRAWAL",
       "to": "EVENT_05_POSTFLIGHT_W0",
       "relation": "TRIGGERS_FORENSIC_REMEDIATION",
+      "edge_class": "WITNESSED_EXECUTION_TRANSITION",
+      "witness_reference": "TD613_Experiment_A_Postflight_W0_Evidence_2026-10-29.zip",
       "description": "W0 redpen establishes 10-chamber forensic remediation protocol."
     },
     {
       "from": "EVENT_05_POSTFLIGHT_W0",
       "to": "EVENT_06_SCIENTIFIC_POSTFLIGHT",
       "relation": "FORMULATES_RESEARCH_FRAMEWORK",
+      "edge_class": "RECONSTRUCTED_CHRONOLOGY",
+      "witness_reference": "scratch/exp_a_postflight_w0_20261029",
       "description": "W0 remediation output feeds Scientific Postflight and W0-W6 Wild Field architecture."
     },
     {
       "from": "EVENT_06_SCIENTIFIC_POSTFLIGHT",
       "to": "EVENT_07_MASTER_PORTABLE_PACKAGE",
       "relation": "CONSOLIDATES_ESTATE",
+      "edge_class": "WITNESSED_EXECUTION_TRANSITION",
+      "witness_reference": "build-master-portable-package.mjs",
       "description": "Scientific postflight outputs and five core archives are bundled into master portable review package."
     },
     {
       "from": "EVENT_07_MASTER_PORTABLE_PACKAGE",
       "to": "EVENT_08_PR1606_RECIPROCAL_TRIAL",
       "relation": "PROPOSES_RECIPROCAL_EXECUTION",
+      "edge_class": "RECONSTRUCTED_CHRONOLOGY",
+      "witness_reference": "scratch/exp_a_reciprocal_completion_20261029",
       "description": "Master package serves as foundation for attempted PR #1606 reciprocal completion."
     },
     {
       "from": "EVENT_08_PR1606_RECIPROCAL_TRIAL",
       "to": "EVENT_09_PR1606_REDPEN",
       "relation": "INDEPENDENTLY_INSPECTED",
+      "edge_class": "WITNESSED_INDEPENDENT_REDPEN",
+      "witness_reference": "TD613_PR1606_Independent_Source_Code_Redpen_2026-10-29.md",
       "description": "Emergence HQ inspects PR #1606 source code and posts 9 redpen findings."
     },
     {
       "from": "EVENT_09_PR1606_REDPEN",
       "to": "EVENT_10_NATIVE_CAPABILITY_INSPECTION",
       "relation": "MANDATES_AUTHENTIC_SOURCE_CHECK",
+      "edge_class": "WITNESSED_EXECUTION_TRANSITION",
+      "witness_reference": "TD613_Experiment_A_Native_Execution_and_Capability_Characterization_2026-10-29.md",
       "description": "PR #1606 redpen prompts direct inspection of native Encyclopedia and Wendbine modules."
     },
     {
       "from": "EVENT_10_NATIVE_CAPABILITY_INSPECTION",
       "to": "EVENT_11_CAPABILITY_BOUNDARY_REST",
       "relation": "ESTABLISHES_FINITE_BOUNDARY",
+      "edge_class": "WITNESSED_INDEPENDENT_REDPEN",
+      "witness_reference": "TD613_Experiment_A_Native_Capability_Independent_Adjudication_2026-10-29.md",
       "description": "Native source inspection establishes finite capability boundary, accepted as rest."
     },
     {
       "from": "EVENT_11_CAPABILITY_BOUNDARY_REST",
       "to": "EVENT_12_EXPERIMENT_B_SUCCESSION",
       "relation": "TRANSFERS_CUSTODY_TO_SUCCESSOR",
+      "edge_class": "WITNESSED_OPERATOR_GRANT",
+      "witness_reference": "TD613_Experiment_B_Source_Free_Preflight_Protocol_Candidate_2026-10-29.md",
       "description": "Experiment A capability rest frees resources for Experiment B source-free preflight."
     }
   ]

@@ -1,0 +1,257 @@
+{
+  "schema": "td613.experiment-b.frozen-trace-independent-adjudication-receipt/v1",
+  "timestamp": "2026-10-29T20:41:16.903Z",
+  "commission": "TD613_Experiment_B_Frozen_Trace_Independent_Scientific_Adjudication_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "disposition": "INDEPENDENT_FROZEN_TRACE_SEMANTIC_EVALUATION_COMPLETED",
+  "adjudication_scope": "INDEPENDENT_MATHEMATICAL_AND_SCIENTIFIC_GROUND_TRUTH_EVALUATION",
+  "automated_rubric_vs_independent_eval": {
+    "automated_heuristic_rubric": {
+      "arm_2a_score": "4/4 (100%)",
+      "arm_2b_score": "4/4 (100%)",
+      "delta": 0,
+      "classification": "AUTOMATED_RUBRIC_PARITY"
+    },
+    "independent_semantic_evaluation": {
+      "arm_2a_specimens_supported": "7/7",
+      "arm_2b_specimens_supported": "7/7",
+      "arm_2a_conditions_passed": "4/4",
+      "arm_2b_conditions_passed": "4/4",
+      "cognitive_delta": 0,
+      "classification": "SEMANTIC_GROUND_TRUTH_PARITY_CONFIRMED"
+    }
+  },
+  "disagreements_and_nuances": [
+    {
+      "condition": "C1_ISOMORPHISM",
+      "finding": "Both arms successfully articulate state bijection, parameter mapping, omega_0=2 rad/s, zeta=0.04, and dissipation. However, Arm 2B provides an expansive, direct algebraic solution (9,939 chars) while Arm 2A (Chamber 2: 4,091 chars) focuses on relational and categorical proofs before affirming the exact numerical values in LaTeX. Automated rubric previously failed Arm 2A due to regex syntax handling; independent semantic evaluation confirms both are mathematically valid."
+    },
+    {
+      "condition": "C2_FALSE_TWIN",
+      "finding": "Both arms rigorously distinguish between 1st-order nonlinear ODE dynamics (Logistic) and steady-state hyperbolic rate equations (Michaelis-Menten), rejecting false isomorphism. Both arms accept linear relaxation equivalence on the positive control."
+    },
+    {
+      "condition": "C3_EPISTEMIC_REVISION",
+      "finding": "Both arms correctly compute Q=12.5 and b=0.400 N*s/m from empirical energy decay of -39.5%, preserving prior mass (2.5), stiffness (10), and natural frequency (2.0)."
+    },
+    {
+      "condition": "C4_EPISTEMIC_ABSTENTION",
+      "finding": "Both arms correctly refuse to infer on incomplete potential/boundary data, and both correctly deduce the exact underdamped harmonic trajectory on the complete positive control."
+    }
+  ],
+  "specimens_adjudicated": [
+    {
+      "specimen_id": "SPECIMEN_01",
+      "condition": "C2_POS_CONTROL",
+      "response_length_chars": 4191,
+      "response_sha256": "09ec60222b9df14880c968d7e9e0b0c7024feb5debb4f00e5c808b05248cb74b",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "isomorphism_accepted": true,
+        "first_order_relaxation_dynamics_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C2-PosMatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_02",
+      "condition": "C2_NEG_FALSE_TWIN",
+      "response_length_chars": 8354,
+      "response_sha256": "1ba037b9cfe8205b2f2d1ea9b411cbaf5c3109703ad42f8a3057211dbe5fc9dc",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "isomorphism_rejected": true,
+        "dynamical_ode_vs_algebraic_distinction_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C2-NegMatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_03",
+      "condition": "C4_SUF_INFER",
+      "response_length_chars": 2579,
+      "response_sha256": "e7ee5edbfee2978a8249a77d457c73d2f3f8273fc0a12213eded72c9a9d98980",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "trajectory_inference_decision_verified": true,
+        "underdamped_trajectory_form_solved": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C4-SufficientControl"
+    },
+    {
+      "specimen_id": "SPECIMEN_04",
+      "condition": "C4_SUF_INFER",
+      "response_length_chars": 2863,
+      "response_sha256": "7374a2351cdc4eb44aee45430357a36def9b64bf30b3beb852d73395cd327059",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "trajectory_inference_decision_verified": true,
+        "underdamped_trajectory_form_solved": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C4-SufMatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_05",
+      "condition": "C4_INC_ABSTAIN",
+      "response_length_chars": 3914,
+      "response_sha256": "42adefe0daf786ffdfb51996349a025c131a1a3e1889283c356be3410cc7a31d",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "epistemic_abstention_decision_verified": true,
+        "missing_potential_and_boundary_data_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C4-IncMatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_06",
+      "condition": "C4_INC_ABSTAIN",
+      "response_length_chars": 4432,
+      "response_sha256": "e4428db9d1c4e5cce47c7afbc1f982f083f70f243f300d6c6b24ea4a60a85341",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "epistemic_abstention_decision_verified": true,
+        "missing_potential_and_boundary_data_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C4-IncompleteAbstain-Chamber2-AtlasFADT"
+    },
+    {
+      "specimen_id": "SPECIMEN_07",
+      "condition": "C2_POS_CONTROL",
+      "response_length_chars": 5389,
+      "response_sha256": "2cc6aac781021568fd238c9d504c7e7fffcf6b7cedde1a85364a95ada44497fc",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "isomorphism_accepted": true,
+        "first_order_relaxation_dynamics_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C2-PositiveControl"
+    },
+    {
+      "specimen_id": "SPECIMEN_08",
+      "condition": "C3_TURN1_PRIOR",
+      "response_length_chars": 1272,
+      "response_sha256": "4abf076e2b834a94dcbdd67220bd5d268559ab635bb6e0d248b7e1f207b03c55",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "prior_omega0_derived": true,
+        "prior_q_factor_derived": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C3-T1MatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_09",
+      "condition": "C2_NEG_FALSE_TWIN",
+      "response_length_chars": 9308,
+      "response_sha256": "6c4fba441032f2666e18ac56fbd6a6f9db0a2955d873f4a6d79edf1457d757ac",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "isomorphism_rejected": true,
+        "dynamical_ode_vs_algebraic_distinction_identified": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C2-FalseTwin-Chamber2-AtlasFADT"
+    },
+    {
+      "specimen_id": "SPECIMEN_10",
+      "condition": "C1_ISOMORPHISM",
+      "response_length_chars": 9939,
+      "response_sha256": "327b34cc5d779780fa2aab9aa08ec6c43a082b2b91340d3578da05ef986de8c5",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "state_coordinate_bijection_verified": true,
+        "physical_parameters_correspondence_verified": true,
+        "natural_frequency_omega0_matched": true,
+        "damping_ratio_zeta_matched": true,
+        "energy_dissipation_recognized": true,
+        "isomorphism_affirmed": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C1-MatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_11",
+      "condition": "C1_ISOMORPHISM",
+      "response_length_chars": 4091,
+      "response_sha256": "bf9109b0f5d8aa2dce34b61e1a2c65a1d8bc52c1aa47ddc6ad8980d56068577d",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "state_coordinate_bijection_verified": true,
+        "physical_parameters_correspondence_verified": true,
+        "natural_frequency_omega0_matched": true,
+        "damping_ratio_zeta_matched": true,
+        "energy_dissipation_recognized": true,
+        "isomorphism_affirmed": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C1-Morphism-Chamber2-AtlasFADT"
+    },
+    {
+      "specimen_id": "SPECIMEN_12",
+      "condition": "C3_TURN2_REVISION",
+      "response_length_chars": 4232,
+      "response_sha256": "5c8b6f41e77834ae9c670fb677467bad7195f72d79e15108d7f6bc611fb8212a",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "revised_quality_factor_matched": true,
+        "revised_damping_matched": true,
+        "prior_parameters_preserved": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2B_MATCHED_UNION",
+      "episode_id": "C3-T2MatchedUnion"
+    },
+    {
+      "specimen_id": "SPECIMEN_13",
+      "condition": "C3_TURN1_PRIOR",
+      "response_length_chars": 1235,
+      "response_sha256": "01fa7476f0a387adbbdd2873f36592e0b7e2309a9d57b87cc08eec65936ab6cc",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "prior_omega0_derived": true,
+        "prior_q_factor_derived": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C3-Turn1-Prior"
+    },
+    {
+      "specimen_id": "SPECIMEN_14",
+      "condition": "C3_TURN2_REVISION",
+      "response_length_chars": 3148,
+      "response_sha256": "0c2ac99c019cb88322222c1b84e9523b04e2dec9dfb583cd367bc5fe7a3003fc",
+      "verdict": "SUPPORTED",
+      "criteria_evaluations": {
+        "revised_quality_factor_matched": true,
+        "revised_damping_matched": true,
+        "prior_parameters_preserved": true
+      },
+      "key_excerpts": [],
+      "true_arm": "ARM_2A_MODULAR",
+      "episode_id": "C3-Turn2-Revision"
+    }
+  ],
+  "standing_invariants": {
+    "challenge_corpus_state": "STRICTLY_SEALED_AND_QUARANTINED",
+    "gate_e_disposition": "HELD",
+    "empirical_exteriority_credit": 0,
+    "human_scientific_closure": "RESERVED",
+    "issue_405_release_authority": "CLOSED"
+  }
+}

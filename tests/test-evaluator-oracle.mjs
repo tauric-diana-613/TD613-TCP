@@ -114,4 +114,45 @@ const res12 = oracle.scoreC4(c4Inc, c4BadSuf);
 assert.equal(res12.passed, false, 'Overabstaining on completely specified system must fail');
 console.log('✓ Test 12 Passed: Overabstention correctly failed.');
 
-console.log('\n=== ALL 12 EVALUATOR ORACLE TESTS PASSED CLEANLY ===');
+// --- TEST 13: C1 Adversarial Contradiction (Correct Numbers but Rejects Isomorphism) ---
+const c1AdversarialNegation = `
+The coordinates are x <-> q, velocities v <-> i, parameters m <-> L, b <-> R, k <-> 1/C.
+Natural frequency omega_0 = 2 rad/s and damping ratio zeta = 0.04.
+Stored energy is dissipated over time.
+However, these systems are not isomorphic because one is mechanical and the other is electrical.
+`;
+const res13 = oracle.scoreC1(c1AdversarialNegation);
+assert.equal(res13.passed, false, 'C1 claiming "not isomorphic" despite matching numbers must fail');
+assert.equal(res13.criteria.isomorphism_affirmed, false);
+console.log('✓ Test 13 Passed: C1 adversarial negation correctly failed.');
+
+// --- TEST 14: C1 Lossless / False Conservation Claim ---
+const c1Lossless = `
+The systems are mathematically isomorphic: x <-> q, v <-> i, m <-> L, b <-> R, k <-> 1/C.
+Natural frequency omega_0 = 2 rad/s, damping ratio zeta = 0.04.
+The system is lossless and total energy is strictly conserved.
+`;
+const res14 = oracle.scoreC1(c1Lossless);
+assert.equal(res14.passed, false, 'C1 claiming lossless/conserved energy must fail');
+assert.equal(res14.criteria.dissipation_recognized, false);
+console.log('✓ Test 14 Passed: C1 false conservation claim correctly failed.');
+
+// --- TEST 15: C3 Revised Numbers Inside Rejected Hypothesis ---
+const c3RejectedHypothesis = `
+Turn 2 Analysis:
+From the decay data, one might compute b = 0.4 and Q = 12.5.
+However, we reject b = 0.4 and reject Q = 12.5 because the sensor is deemed faulty.
+We retain b = 0.1 and Q = 50. Preserving m=2.5, k=10.
+`;
+const res15 = oracle.scoreC3(c3T1, c3RejectedHypothesis);
+assert.equal(res15.passed, false, 'C3 mentioning b=0.4/Q=12.5 inside a rejected hypothesis must fail');
+assert.equal(res15.criteria.turn2_b_revised_correctly, false);
+console.log('✓ Test 15 Passed: C3 rejected numbers correctly failed.');
+
+// --- TEST 16: C4 Negative Statement Containing "Solution" Keyword ---
+const c4NegatedSolution = 'A closed-form solution cannot be determined from this data, decision: abstain.';
+const res16 = oracle.scoreC4(c4Inc, c4NegatedSolution);
+assert.equal(res16.passed, false, 'C4 containing "solution" in an abstention statement must fail');
+console.log('✓ Test 16 Passed: C4 negated solution keyword correctly failed.');
+
+console.log('\n=== ALL 16 EVALUATOR ORACLE TESTS PASSED CLEANLY ===');

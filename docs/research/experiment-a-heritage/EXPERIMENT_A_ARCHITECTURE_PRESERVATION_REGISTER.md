@@ -44,12 +44,12 @@ The following table records the five immutable core archives of Experiment A, ve
 
 ### Supplementary Master & Evidence Archives (Restricted Custody)
 
-| Archive | Filename | Exact Bytes | ZIP Entries | Verified SHA-256 | Custody Classification |
-|---|---|---:|---:|---|---|
-| **Master Portable Review Package** | `TD613_Experiment_A_Master_Portable_Review_Package_2026-10-29.zip` | 619,514 | 194 | `32176bed963c6b1838c54f56402ebe1f8be1871120730fea8137e0b8bfda94e0` | **RESTRICTED** (Contains spent unblinding key and raw arm mappings; private vault only) |
+| Archive | Filename | Exact Bytes | ZIP Entries | Verified SHA-256 | Custody Classification & Identity Reconciliation |
+|---|---|---:|---|---|---|
+| **Master Portable Review Package** | `TD613_Experiment_A_Master_Portable_Review_Package_2026-10-29.zip` | 619,514 | **18 direct**<br>*(194 recursive)* | `32176bed963c6b1838c54f56402ebe1f8be1871120730fea8137e0b8bfda94e0` | **RESTRICTED** (Contains spent unblinding key and raw arm mappings; private vault only. Central directory has 18 entries; 194 is recursive inventory count: $181\text{ nested} + 13\text{ loose}$.) |
 | **Em Rendered Review Evidence** | `TD613_Em_Manifest_Rendered_Review_Evidence_Closure_2026-10-29.zip` | 23,635,724 | 147 | `2b92e074c05677f1f0e464ecf1d24396bd31d1bd2676f2f9f1b605a810789f36` | **CONFIDENTIAL** (147-record candidate estate; referenced by hash only; strictly private) |
-| **Reciprocal Completion (PR #1606)** | `TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip` | 67,081 | 26 | `d9fa733d9f1e16c7a9e64e59fdbbe64817d23588df8e980cb6305a2f5aeefbb1` | **SUPERSEDED** (Retained for redpen audit; unmerged; superseded by native rest) |
-| **Reciprocal Completion R1 (PR #1606)** | `TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip` | 54,741 | 28 | `9b8fc8a72e73796cb95ce08c35bb627b0ebf4ca2bca7e8b69324545b7ee720f7` | **SUPERSEDED** (Retained for redpen audit; unmerged; superseded by native rest) |
+| **Reciprocal Completion (PR #1606)** | `TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip` | 67,081 | 26 | `389f901381667a5903306b6e47f59447a472579ee98086b7d32732ba80c5d4a5` | **SUPERSEDED / WITNESSED REHASH** (Matches original operator handback. Prior register text `d9fa733d...` was unverified; on-disk physical rehash confirms `389f9013...`.) |
+| **Reciprocal Completion R1 (PR #1606)** | `TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip` | 54,741 | 28 | `8589dd23196aac7b3d8bd5361a5cf7095aaedf1cc2bc317b7e461e29c0a34472` | **SUPERSEDED / WITNESSED REHASH** (Matches original operator handback. Prior register text `9b8fc8a7...` was unverified; on-disk physical rehash confirms `8589dd23...`.) |
 
 ---
 
@@ -130,12 +130,14 @@ flowchart TD
   - *Assay A5:* Notation stripping and coordinate normalization.
 - **The W0–W6 Scientific Architecture Formulation:** Formulated the six prospective research horizons (forensic repair, Wild Field conjecture, genealogy, prospective comparison, finite formal countermodels, Dollhouse auditing, human-gated candidate synthesis).
 
-### Stage 6: Master Portable Review Package (194 entries)
+### Stage 6: Master Portable Review Package (18 Direct / 194 Recursive Entries)
 - **Package Builder:** `build-master-portable-package.mjs`.
-- **Structure:** Encapsulated all five original core archives, plus 13 top-level review and verification items.
+- **Witnessed Assembly Timestamp:** `2026-10-29T14:04:09.594Z` (recorded in `EXPERIMENT_A_ARCHIVE_MANIFEST.json`; local time `10:04:09-04:00` EDT).
+- **Structure:** Encapsulated all five original core archives (181 nested entries), plus 13 top-level review and verification items (18 direct central directory entries; 194 logical recursive entries).
 - **Containment Note:** Because this package contained the historical former unblinding key and plain arm mappings, it is restricted to private operator custody and must not be published to public GitHub.
 
 ### Stage 7: Reciprocal Completion Trial (PR #1606)
+- **PR Status:** **OPEN / UNMERGED** on GitHub.
 - **PR Head:** `9f562748c576e85253ee295f35636379cc2e62d0`.
 - **Independent Emergence HQ Redpen Findings:**
   1. Synthetic receiver admission rather than live state ingestion.
@@ -147,7 +149,7 @@ flowchart TD
   7. Incomplete role ablation.
   8. Missing live model provider telemetry.
   9. Unearned empirical emergence claims.
-- **Disposition:** `PR1606_REQUEST_CHANGES_RECOMMENDED · A_NATIVE_RECIPROCAL_EVIDENCE_HELD`. PR #1606 remained unmerged.
+- **Disposition:** `PR1606_REQUEST_CHANGES_RECOMMENDED · A_NATIVE_RECIPROCAL_EVIDENCE_HELD`. PR #1606 remains open and unmerged as a historical witness surface; do not close or merge it without operator authorization.
 
 ### Stage 8: Native Capability Characterization
 - **Inspection Targets:** Authentic base-commit Encyclopedia intake, staging, admission, and reference search modules (`app/engine/`), plus Wendbine curated corpus compiler (`c5_wendbine_snapshot_manifest.json`).
@@ -203,7 +205,55 @@ Experiment A produced significant architectural and mathematical assets that rem
 
 ---
 
-## 7. Standing Invariants & Human Closure
+## 7. Errata and Reconciled Predecessor Identities (A-H1..A-H7)
+
+In response to Emergence HQ's independent adjudication (`TD613_PR1607_R2_ExperimentA_Heritage_ExperimentB_Independent_Adjudication_2026-10-29.md`), this register formally records seven append-only errata and identity reconciliations:
+
+### A-H1: PR #1607 Immutable Commit Head Erratum Reconciled
+* **Erroneous Handback String:** `60465e0a39dfa6d0932da1e7fb534ff71427c376` (an inadvertent typographical truncation in the prior handback text).
+* **True Immutable Git Commit SHA:** `60465e0a3b601623d8610c9dd846b9237372c052` (verified via `git log -n 1 --format="%H"` on branch `witness/experiment-b-source-free-preflight`).
+* **Status:** Reconciled append-only.
+
+### A-H2: PR #1606 Reciprocal Archive Physical Rehash Reconciled
+* **Prior Register Strings:** `d9fa733d9f1e16c7a9e64e59fdbbe64817d23588df8e980cb6305a2f5aeefbb1` and `9b8fc8a72e73796cb95ce08c35bb627b0ebf4ca2bca7e8b69324545b7ee720f7` (unverified draft placeholders).
+* **Physical On-Disk Rehash (SHA-256):**
+  * `TD613_Experiment_A_Reciprocal_Completion_Evidence_2026-10-29.zip` (67,081 bytes):  
+    `389f901381667a5903306b6e47f59447a472579ee98086b7d32732ba80c5d4a5`
+  * `TD613_Experiment_A_Reciprocal_Completion_R1_Adjudication_Evidence_2026-10-29.zip` (54,741 bytes):  
+    `8589dd23196aac7b3d8bd5361a5cf7095aaedf1cc2bc317b7e461e29c0a34472`
+* **Status:** Both physical hashes match the original operator handback receipts. Prior placeholder strings are superseded.
+
+### A-H3: PR #1606 GitHub Lifecycle Status Clarification
+* **Observed GitHub Status:** `OPEN / UNMERGED` at commit `9f562748c576e85253ee295f35636379cc2e62d0`.
+* **Adjudication:** Governed by `PR1606_REQUEST_CHANGES_RECOMMENDED · A_NATIVE_RECIPROCAL_EVIDENCE_HELD`. PR #1606 remains open on GitHub as an unmerged historical audit and witness surface. It must not be merged or closed without explicit operator direction.
+
+### A-H4: Master Package Dual Entry Count Formally Reconciled
+* **Direct Central Directory Entry Count:** Exactly **18 entries** (5 nested core ZIP archives + 13 loose top-level review documents).
+* **Logical Recursive Inventory Count:** **194 entries** ($181\text{ entries in the 5 nested ZIPs} + 13\text{ loose entries}$).
+* **Status:** Both counts are valid and formally distinguished.
+
+### A-H5: Witnessed Assembly Timestamp Offset Reconciled
+* **Recorded UTC Timestamp:** `2026-10-29T14:04:09.594Z` (in `EXPERIMENT_A_ARCHIVE_MANIFEST.json`).
+* **Prior Register Shorthand:** `2026-10-29T10:04:00.000Z` (`10:04:09-04:00` local Eastern Daylight Time).
+* **Status:** Timezone offset representation difference reconciled. The authentic UTC assembly timestamp is `2026-10-29T14:04:09.594Z`.
+
+### A-H6: Operator Walkthrough Supplement Typological Census
+The 24 entries in `TD613_Experiment_A_Operator_Governance_and_Walkthrough_Supplement_PRIVATE_2026-10-29.zip` (`media_1793303991243_e59d9e7d.zip`, SHA-256 `6e1e82ef41b65e94ea00c01d9f82d4da288b89e6eb1e67041ca701c45d35508c`, 418,895 bytes) are categorized as:
+1. **2 Audit & Manifest Files:** Master manifest and preservation audit.
+2. **5 Governance Charters & Commissions:** Succession R2, Activation Charters, Preflight Mandate, Flight Activation.
+3. **8 Redpens & Formal Adjudications:** Preflight Redpens, Postflight W0 Redpen, PR #1606 Redpen, Native Capability Adjudication.
+4. **9 Narrative Walkthroughs:** Preflight Plans V1.0/V1.1, Flight Walkthroughs, W0 Forensics, Wild Field Architecture Walkthroughs.
+
+### A-H7: Causal Event DAG Edge Typology
+All 12 causal edges in `EXPERIMENT_A_EVENT_DAG.json` are classified into four explicit causal edge classes with cited witness artifacts:
+1. `WITNESSED_OPERATOR_GRANT` (Edges 1, 12): Formal governance charters directly issued by the Sovereign Operator.
+2. `WITNESSED_INDEPENDENT_REDPEN` (Edges 4, 9, 11): Formal reviews and adjudications by Emergence HQ.
+3. `WITNESSED_EXECUTION_TRANSITION` (Edges 2, 5, 7, 10): State machine transitions governed by completed tool execution and sealed archives.
+4. `RECONSTRUCTED_CHRONOLOGY` (Edges 3, 6, 8): Historical and diagnostic progression reconstructed from physical scratch artifacts.
+
+---
+
+## 8. Standing Invariants & Human Closure
 
 ```text
 challenge_corpus_state = STRICTLY_SEALED_AND_QUARANTINED

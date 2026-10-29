@@ -73,6 +73,9 @@ export function runOfflineTraceRescore() {
     commission: 'TD613_Experiment_B_Live_Calibration_Rescore_and_Fairness_Reconciliation_2026-10-29',
     covenant: 'Tauric Diana — Crimean heritage custodianship · Khona‌lit-po',
     disposition: 'B_OFFLINE_RESCORE_AND_FAIRNESS_RECONCILED',
+    rescore_classification: 'INTERNAL_ANONYMIZED_OFFLINE_RESCORE',
+    adjudication_scope: 'AUTOMATED_RUBRIC_PARITY',
+    external_blinded_status: 'INTERNAL_SAME_PROCESS_PSEUDONYMIZATION_PENDING_EXTERNAL_ASSESSOR',
     frozen_traces_provenance: {
       provider: 'Google Gemini REST API (v1beta)',
       model: 'gemini-2.5-flash-lite',
