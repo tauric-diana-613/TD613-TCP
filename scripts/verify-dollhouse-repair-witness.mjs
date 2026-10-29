@@ -422,6 +422,186 @@ async function runWitnessSuite() {
     client2.close();
     receipt.artifacts.push(theoWitness);
 
+    // =============================================================
+    // WITNESS 3: Butlerian Performative Iteration Surface (Scope D)
+    // =============================================================
+    console.log('\n--- WITNESS 3: Butlerian Performative Iteration Surface (Fresh Commission Scope D) ---');
+    const butlerRelPath = 'tests/fixtures/dollhouse/butler_performative_surface.html';
+    const butlerPath = resolve(process.cwd(), butlerRelPath);
+    const butlerBytes = readFileSync(butlerPath);
+    const butlerDigest = sha256(butlerBytes);
+    const butlerUrl = pathToFileURL(butlerPath).href;
+
+    console.log(`  • Path:    ${butlerRelPath}`);
+    console.log(`  • Bytes:   ${butlerBytes.length}`);
+    console.log(`  • SHA-256: ${butlerDigest}`);
+
+    const pageRes3 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const target3 = await pageRes3.json();
+    const client3 = new CdpClient(target3.webSocketDebuggerUrl);
+    await client3.connect();
+
+    await client3.send('Page.enable');
+    await client3.send('DOM.enable');
+    await client3.send('Runtime.enable');
+
+    const butlerWitness = {
+      path: butlerRelPath,
+      byte_count: butlerBytes.length,
+      sha256: butlerDigest,
+      viewports: {}
+    };
+
+    // Desktop: 1440x900
+    console.log('  [Desktop 1440x900 Evaluation]');
+    await client3.send('Emulation.setDeviceMetricsOverride', {
+      width: 1440,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false
+    });
+    await client3.send('Page.navigate', { url: butlerUrl });
+    await new Promise(r => setTimeout(r, 600));
+
+    const desktopMetrics3 = await client3.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const dm3 = desktopMetrics3.result.value;
+    verifiedAssert(dm3.overflowPx === 0, `Desktop horizontal overflow must be 0px, got ${dm3.overflowPx}px`);
+    console.log(`    ✓ Desktop overflowPx === 0 (scrollWidth: ${dm3.scrollWidth}px, clientWidth: ${dm3.clientWidth}px)`);
+
+    // Verify touch targets >= 44px
+    const touchTargets3 = await client3.send('Runtime.evaluate', {
+      expression: `Array.from(document.querySelectorAll('button.interactive-btn, .iteration-card')).map(el => {
+        const r = el.getBoundingClientRect();
+        return { tag: el.tagName, id: el.id, w: r.width, h: r.height, pass: r.width >= 44 && r.height >= 44 };
+      })`,
+      returnByValue: true
+    });
+    const tt3 = touchTargets3.result.value;
+    verifiedAssert(tt3.every(t => t.pass), 'All interactive buttons and iteration cards must meet minimum 44px touch target');
+    console.log(`    ✓ Verified ${tt3.length} interactive targets meet >= 44px touch target`);
+
+    // Exercise Falsification Probe (epsilon = 0.0)
+    await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('reset-falsify').click()`
+    });
+    const probeStatusText = await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('probe-status').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(probeStatusText.result.value.includes('FALSIFICATION PROBE ACTIVE'), 'Falsification probe must activate when epsilon = 0.0');
+    console.log('    ✓ Butlerian falsification probe triggers mechanical conformity on epsilon = 0.0');
+
+    // Exercise Dynamic Slippage (epsilon = 1.5)
+    await client3.send('Runtime.evaluate', {
+      expression: `(function() {
+        const slider = document.getElementById('epsilon-slider');
+        slider.value = 1.5;
+        slider.dispatchEvent(new Event('input'));
+      })()`
+    });
+    const kern4Val = await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('kern-4').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(parseFloat(kern4Val.result.value) > 5.0, 'Iteration 4 kerning must drift significantly under epsilon = 1.5');
+    console.log(`    ✓ Dynamic citational slippage transfer law verified (kern-4: ${kern4Val.result.value})`);
+
+    // Exercise Reduced Motion
+    await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('toggle-motion').click()`
+    });
+    const motionActive3 = await client3.send('Runtime.evaluate', {
+      expression: `document.body.classList.contains('reduced-motion')`,
+      returnByValue: true
+    });
+    verifiedAssert(motionActive3.result.value === true, 'Reduced motion class must be active after click');
+    console.log('    ✓ Reduced motion control verified');
+
+    // Exercise Rest / Pause Sequence
+    await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('pause-btn').click()`
+    });
+    const restText3 = await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('rest-banner').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(restText3.result.value.includes('paused safely'), 'Rest sequence must display unpenalized pause');
+    console.log('    ✓ Citational rest sequence verified');
+
+    // Exercise Exit Sequence
+    await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('exit-btn').click()`
+    });
+    const exitText3 = await client3.send('Runtime.evaluate', {
+      expression: `document.getElementById('rest-banner').textContent`,
+      returnByValue: true
+    });
+    verifiedAssert(exitText3.result.value.includes('Exited citational altar cleanly'), 'Exit sequence must confirm safe closure');
+    console.log('    ✓ Citational exit sequence verified');
+
+    // Verify Covenant preservation (Khonalit-po U+200C and U+10D613)
+    const covenantCheck = await client3.send('Runtime.evaluate', {
+      expression: `({
+        hasKhonalitPo: document.body.textContent.includes('Khona\u200Clit-po'),
+        hasGlyph: document.body.textContent.includes('\uDBF5\uDE13') || document.body.textContent.includes('𝌋')
+      })`,
+      returnByValue: true
+    });
+    verifiedAssert(covenantCheck.result.value.hasKhonalitPo, 'Covenant string Khona‌lit-po with U+200C must be preserved in DOM');
+    verifiedAssert(covenantCheck.result.value.hasGlyph, 'Glyph U+10D613 must be preserved in DOM');
+    console.log('    ✓ Khona‌lit-po covenant (U+200C) and glyph (U+10D613) verified in DOM');
+
+    butlerWitness.viewports.desktop = {
+      width: 1440,
+      height: 900,
+      overflowPx: dm3.overflowPx,
+      touch_targets_verified: tt3.length,
+      falsification_probe_verified: true,
+      dynamic_slippage_verified: true,
+      reduced_motion_verified: true,
+      rest_sequence_verified: true,
+      exit_sequence_verified: true,
+      covenant_verified: true
+    };
+
+    // Mobile: 390x844
+    console.log('  [Mobile 390x844 Evaluation]');
+    await client3.send('Emulation.setDeviceMetricsOverride', {
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 3,
+      mobile: true
+    });
+    await new Promise(r => setTimeout(r, 400));
+
+    const mobileMetrics3 = await client3.send('Runtime.evaluate', {
+      expression: `({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+        overflowPx: Math.max(0, document.documentElement.scrollWidth - window.innerWidth)
+      })`,
+      returnByValue: true
+    });
+    const mm3 = mobileMetrics3.result.value;
+    verifiedAssert(mm3.overflowPx === 0, `Mobile horizontal overflow must be 0px, got ${mm3.overflowPx}px`);
+    console.log(`    ✓ Mobile overflowPx === 0 (scrollWidth: ${mm3.scrollWidth}px, clientWidth: ${mm3.clientWidth}px)`);
+
+    butlerWitness.viewports.mobile = {
+      width: 390,
+      height: 844,
+      overflowPx: mm3.overflowPx
+    };
+
+    client3.close();
+    receipt.artifacts.push(butlerWitness);
+
     receipt.total_assertions_checked = totalAssertions;
     receipt.disposition = 'WITNESS_VERIFIED_PASS';
 

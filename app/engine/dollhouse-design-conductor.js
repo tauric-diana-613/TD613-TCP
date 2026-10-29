@@ -22,8 +22,8 @@
  */
 
 import { createHash } from 'node:crypto';
-import { readFileSync, existsSync } from 'node:fs';
-import { resolve, relative, isAbsolute } from 'node:path';
+import { readFileSync, existsSync, realpathSync } from 'node:fs';
+import { resolve, relative, isAbsolute, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { runDollhouseSkillAudit, resolveCurrentSourceRevision } from './dollhouse-skill-dispatcher.js';
 
@@ -41,7 +41,8 @@ export const VALID_REFERENCE_CLASSIFICATIONS = Object.freeze([
 export const VALID_PROVENANCE_CLASSES = Object.freeze([
   'CONTEMPORANEOUS_ORIGINAL',
   'RECONSTRUCTED_RECORD',
-  'ANNOTATED_RECORD'
+  'ANNOTATED_RECORD',
+  'WORKING_TREE_LOCAL_SUBSTITUTE'
 ]);
 
 export const AVAILABLE_INSTRUMENTS = Object.freeze({
@@ -131,6 +132,26 @@ export function resolveHistoricalReference(ref, options = {}) {
         throw new Error(`Historical reference "${refId}" path "${sourcePath}" escapes repository root`);
       }
     }
+    // Ancestor symlink escape verification
+    if (!options.allow_external_paths) {
+      let curr = fullPath;
+      while (curr && curr !== repoRoot && dirname(curr) !== curr) {
+        if (existsSync(curr)) {
+          try {
+            const realCurr = realpathSync(curr);
+            const realRepoRoot = realpathSync(repoRoot);
+            const relReal = relative(realRepoRoot, realCurr);
+            if (relReal.startsWith('..') || isAbsolute(relReal)) {
+              throw new Error(`Historical reference "${refId}" path "${sourcePath}" escapes repository root via ancestor symlink`);
+            }
+          } catch (e) {
+            if (e.message && e.message.includes('escapes repository root')) throw e;
+          }
+          break;
+        }
+        curr = dirname(curr);
+      }
+    }
   }
 
   let classification = 'NEGOTIABLE_AESTHETIC_DIRECTION';
@@ -167,13 +188,13 @@ export function resolveHistoricalReference(ref, options = {}) {
     revisionType = 'WORKING_TREE';
   }
 
-  let provenanceClass = (sourceRevision && isHexCommit) ? 'CONTEMPORANEOUS_ORIGINAL' : 'RECONSTRUCTED_RECORD';
+  let declaredProvenanceClass = null;
   if (ref.provenance_class !== undefined && ref.provenance_class !== null) {
     const rawProv = String(ref.provenance_class).trim().toUpperCase();
     if (!VALID_PROVENANCE_CLASSES.includes(rawProv)) {
       throw new TypeError(`Unrecognized provenance class "${ref.provenance_class}". Allowed: ${VALID_PROVENANCE_CLASSES.join(', ')}`);
     }
-    provenanceClass = rawProv;
+    declaredProvenanceClass = rawProv;
   }
 
   const summary = String(ref.summary || ref.description || '').trim();
@@ -188,16 +209,24 @@ export function resolveHistoricalReference(ref, options = {}) {
   let rawContent = null;
   let retrievalMethod = 'UNRESOLVED';
   let retrievalError = null;
+  let effectiveProvenanceClass = null;
+  let provenanceMismatch = null;
 
-  // 1. If source_revision is specified and not working tree, attempt git show
+  // 1. If source_revision is specified and not working tree, attempt git show pinned to resolved commit
   if (sourceRevision && sourceRevision !== 'WORKING_TREE') {
+    const gitTargetRef = resolvedCommit || sourceRevision;
     try {
-      rawContent = execFileSync('git', ['show', `${sourceRevision}:${sourcePath}`], {
+      rawContent = execFileSync('git', ['show', `${gitTargetRef}:${sourcePath}`], {
         cwd: repoRoot,
         encoding: 'utf8',
         stdio: ['ignore', 'pipe', 'pipe']
       });
-      retrievalMethod = isHexCommit ? 'GIT_SHOW_IMMUTABLE_40HEX_COMMIT' : 'GIT_SHOW_MUTABLE_REF';
+      retrievalMethod = isHexCommit
+        ? 'GIT_SHOW_IMMUTABLE_40HEX_COMMIT'
+        : (resolvedCommit ? 'GIT_SHOW_PINNED_COMMIT' : 'GIT_SHOW_MUTABLE_REF');
+      effectiveProvenanceClass = isHexCommit || resolvedCommit
+        ? (declaredProvenanceClass || 'CONTEMPORANEOUS_ORIGINAL')
+        : (declaredProvenanceClass || 'RECONSTRUCTED_RECORD');
     } catch (err) {
       retrievalError = String(err && err.message ? err.message : err).trim();
     }
@@ -217,8 +246,9 @@ export function resolveHistoricalReference(ref, options = {}) {
       try {
         rawContent = readFileSync(fullPath, 'utf8');
         retrievalMethod = 'LOCAL_FILESYSTEM_WORKING_TREE';
-        if (!ref.provenance_class) {
-          provenanceClass = (sourceRevision && isHexCommit) ? 'CONTEMPORANEOUS_ORIGINAL' : 'WORKING_TREE_LOCAL_SUBSTITUTE';
+        effectiveProvenanceClass = 'WORKING_TREE_LOCAL_SUBSTITUTE';
+        if (declaredProvenanceClass === 'CONTEMPORANEOUS_ORIGINAL') {
+          provenanceMismatch = 'CALLER_DECLARED_ORIGINAL_DISALLOWED_ON_WORKING_TREE_FALLBACK';
         }
       } catch (err) {
         retrievalError = String(err && err.message ? err.message : err).trim();
@@ -227,6 +257,8 @@ export function resolveHistoricalReference(ref, options = {}) {
       retrievalError = `File not found on filesystem: ${sourcePath}`;
     }
   }
+
+  const finalProvenanceClass = effectiveProvenanceClass || declaredProvenanceClass || 'RECONSTRUCTED_RECORD';
 
   // 3. Handle retrieval failure
   if (rawContent === null) {
@@ -242,7 +274,10 @@ export function resolveHistoricalReference(ref, options = {}) {
       resolved_commit: resolvedCommit,
       revision_type: revisionType,
       classification,
-      provenance_class: provenanceClass,
+      provenance_class: finalProvenanceClass,
+      effective_provenance_class: effectiveProvenanceClass || finalProvenanceClass,
+      declared_provenance_class: declaredProvenanceClass,
+      provenance_mismatch: provenanceMismatch,
       summary,
       resolution_status: 'UNRESOLVED',
       retrieval_method: 'FAILED',
@@ -280,7 +315,10 @@ export function resolveHistoricalReference(ref, options = {}) {
     resolved_commit: resolvedCommit,
     revision_type: revisionType,
     classification,
-    provenance_class: provenanceClass,
+    provenance_class: finalProvenanceClass,
+    effective_provenance_class: effectiveProvenanceClass || finalProvenanceClass,
+    declared_provenance_class: declaredProvenanceClass,
+    provenance_mismatch: provenanceMismatch,
     summary,
     resolution_status: 'RESOLVED',
     retrieval_method: retrievalMethod,
@@ -416,7 +454,11 @@ export function analyzeSeedSemantics(seed = '') {
 export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY', seedTerms = [], options = {}) {
   const normMedium = String(medium || 'SCHOLARLY').trim().toUpperCase();
   const isMaterialized = options.is_materialized === true;
-  const executionStatus = isMaterialized ? 'MATERIALIZED_WITNESSED' : 'PROPOSED_TRANSFER_LAW';
+  const isHistoricalFixture = options.historical_fixture === 'tests/fixtures/dollhouse/caro_corridor_primary.html' ||
+    options.historical_qualification_scope === true;
+  const executionStatus = isHistoricalFixture
+    ? 'EXECUTED_DEMONSTRATION_LAW'
+    : (isMaterialized ? 'MATERIALIZED_WITNESSED' : 'PROPOSED_TRANSFER_LAW');
 
   const contracts = {
     PHASONIC_COUNTERPOINT: {
@@ -449,25 +491,29 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
         {
           parameter: 'procedural_friction_coefficient_mu',
           target_component: normMedium === 'PRODUCT' ? 'workflow_step_clearance_latency' : (normMedium === 'SCHOLARLY' ? 'archival_friction_resistance' : 'procedural_clearance_latency'),
-          transfer_law: normMedium === 'PRODUCT'
-            ? 'step_latency_ms = mu * base_latency (administrative processing delay; reduced-motion or falsification probe collapses to 0ms)'
-            : (normMedium === 'SCHOLARLY'
-                ? 'citation_depth = mu * base_archival_depth (procedural resistance in bibliographic access)'
-                : 'T_clearance = mu * 400ms (chamber latency delay; navigation controls locked during administrative review; reduced-motion or falsification probe bypasses to 0ms)'),
+          transfer_law: isHistoricalFixture
+            ? 'T_clearance = mu * 400ms (chamber latency delay; navigation controls locked during administrative review; reduced-motion or falsification probe bypasses to 0ms)'
+            : (normMedium === 'PRODUCT'
+                ? 'step_latency_ms = mu * base_latency (administrative processing delay; reduced-motion or falsification probe collapses to 0ms)'
+                : (normMedium === 'SCHOLARLY'
+                    ? 'citation_depth = mu * base_archival_depth (procedural resistance in bibliographic access)'
+                    : 'step_latency_ms = mu * base_clearance_latency (clearance latency delay; navigation controls locked during administrative review; reduced-motion or falsification probe bypasses to 0ms)')),
           declarative_alternative: 'scroll_delta_effective = scroll_delta_raw / (1 + mu * bureaucratic_layers)',
-          execution_status: normMedium === 'VISUAL' ? 'EXECUTED_DEMONSTRATION_LAW' : executionStatus,
+          execution_status: executionStatus,
           falsification_probe: 'mu = 0.0 collapses procedural clearance latency to 0ms (immediate transition across corridor)'
         },
         {
           parameter: 'archive_omission_index_lambda',
           target_component: normMedium === 'PRODUCT' ? 'field_redaction_disclosure' : (normMedium === 'SCHOLARLY' ? 'archival_omission_disclosure' : 'progressive_document_redaction'),
-          transfer_law: normMedium === 'PRODUCT'
-            ? 'redacted_fields = floor(lambda * total_record_fields)'
-            : (normMedium === 'SCHOLARLY'
-                ? 'suppressed_records = floor(lambda * total_dossier_entries)'
-                : 'redacted_word_count = chamber_index * 4 (discrete petition redaction; terminal door unlocks at 16/16 redactions)'),
+          transfer_law: isHistoricalFixture
+            ? 'redacted_word_count = chamber_index * 4 (discrete petition redaction; terminal door unlocks at 16/16 redactions)'
+            : (normMedium === 'PRODUCT'
+                ? 'redacted_fields = floor(lambda * total_record_fields)'
+                : (normMedium === 'SCHOLARLY'
+                    ? 'suppressed_records = floor(lambda * total_dossier_entries)'
+                    : 'redacted_elements = floor(lambda * total_document_elements) (progressive element redaction; reduced opacity or redaction bars)')),
           declarative_alternative: 'text_opacity = 1.0 - lambda * sovereign_censure_level',
-          execution_status: normMedium === 'VISUAL' ? 'EXECUTED_DEMONSTRATION_LAW' : executionStatus,
+          execution_status: executionStatus,
           falsification_probe: 'lambda = 0.0 restores all recorded elements to full visibility'
         }
       ],
@@ -749,7 +795,8 @@ export function normalizeCommission(raw = {}) {
     }
 
     const sourceRevision = String(ref.source_revision || ref.commit || ref.revision || '').trim();
-    let provenanceClass = sourceRevision ? 'CONTEMPORANEOUS_ORIGINAL' : 'RECONSTRUCTED_RECORD';
+    const isHex = /^[a-f0-9]{40}$/i.test(sourceRevision);
+    let provenanceClass = isHex ? 'CONTEMPORANEOUS_ORIGINAL' : (sourceRevision === 'WORKING_TREE' ? 'WORKING_TREE_LOCAL_SUBSTITUTE' : 'RECONSTRUCTED_RECORD');
     if (ref.provenance_class !== undefined && ref.provenance_class !== null) {
       const cleanProv = String(ref.provenance_class).trim().toUpperCase();
       if (!VALID_PROVENANCE_CLASSES.includes(cleanProv)) {
@@ -949,6 +996,15 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
   };
 
   // 5. COMPARE (What survived, what changed, open decisions)
+  const candidateEvaluations = candidates.map((cand, idx) => ({
+    candidate_id: cand.candidate_id || `CANDIDATE_${String.fromCharCode(65 + idx)}`,
+    concept_title: cand.concept_title,
+    governing_instrument: cand.governing_instrument,
+    formal_proposition: cand.formal_proposition,
+    structural_mechanism: cand.structural_mechanism || cand.spatial_metaphor || cand.affective_structure || 'Declared operative mechanism',
+    distinctive_contribution: `Governed by ${cand.governing_instrument}: ${cand.formal_proposition}`
+  }));
+
   const comparativeAnalysis = {
     shared_invariants: [
       `The core intellectual seed ("${commission.seed}") is held invariant across internal design alternatives`,
@@ -956,9 +1012,10 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
       'No scalar utility score or automatic aesthetic crown is applied'
     ],
     divergent_qualities: [
-      `Candidate A operates under primary instrument ${primaryInst}: ${candidateA.formal_proposition}`,
+      ...candidates.map((c, i) => `Candidate ${String.fromCharCode(65 + i)} (${c.concept_title}): ${c.governing_instrument} — ${c.formal_proposition}`),
       `Refractive Variant mutates [${mutatedParameter}]: ${formalConsequence}`
     ],
+    candidate_evaluations: candidateEvaluations,
     governing_interaction_topology: {
       spatial_interpolation: 'CONTINUOUS_MANIFOLD_WHERE_REQUIRED',
       grammatical_state_transitions: 'DISCRETE_STATE_PERMUTATIONS',

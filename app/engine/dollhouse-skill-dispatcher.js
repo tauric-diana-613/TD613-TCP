@@ -71,13 +71,73 @@ export const ORCHESTRATOR_ROLE = 'ORCHESTRATOR';
 export const ALL_CANONICAL_ROLES = Object.freeze([...FIVE_ROLES, ORCHESTRATOR_ROLE]);
 
 /**
- * Resolves current git head SHA if available, otherwise returns fallback.
+ * Inspects working tree cleanliness for modified, staged, or untracked source files.
+ * @param {string} [repoRoot]
+ * @param {object} [options]
+ * @returns {{ is_clean: boolean, modified_files: string[], staged_files: string[], untracked_source_files: string[] }}
  */
-export function resolveCurrentSourceRevision() {
+export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
+  const child_process = globalThis.process?.getBuiltinModule?.('node:child_process');
+  if (!child_process?.execFileSync) {
+    return { is_clean: true, modified_files: [], staged_files: [], untracked_source_files: [] };
+  }
+  try {
+    const cwd = repoRoot || process.cwd();
+    const output = child_process.execFileSync('git', ['status', '--porcelain'], {
+      cwd,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    });
+    const lines = output.split(/\r?\n/).map(l => l.trimEnd()).filter(Boolean);
+    const modified = [];
+    const staged = [];
+    const untracked = [];
+
+    for (const line of lines) {
+      const code = line.slice(0, 2);
+      const filePath = line.slice(3).trim();
+      // Skip ignorable scratch, tmp, .gemini
+      if (filePath.startsWith('scratch/') || filePath.startsWith('tmp/') || filePath.startsWith('.gemini/')) {
+        continue;
+      }
+      const isStaged = code[0] !== ' ' && code[0] !== '?' && code[0] !== '!';
+      const isWorkTree = code[1] !== ' ' && code[1] !== '?' && code[1] !== '!';
+      const isUntracked = code === '??';
+
+      if (isStaged) staged.push(filePath);
+      if (isWorkTree) modified.push(filePath);
+      if (isUntracked && (filePath.endsWith('.js') || filePath.endsWith('.mjs') || filePath.startsWith('app/') || filePath.startsWith('scripts/'))) {
+        untracked.push(filePath);
+      }
+    }
+
+    const isClean = staged.length === 0 && modified.length === 0 && untracked.length === 0;
+    return {
+      is_clean: isClean,
+      modified_files: modified,
+      staged_files: staged,
+      untracked_source_files: untracked
+    };
+  } catch {
+    return { is_clean: false, modified_files: ['GIT_INSPECTION_FAILED'], staged_files: [], untracked_source_files: [] };
+  }
+}
+
+/**
+ * Resolves current git head SHA if available, otherwise returns fallback.
+ * @param {object} [options]
+ * @returns {string}
+ */
+export function resolveCurrentSourceRevision(options = {}) {
   const child_process = globalThis.process?.getBuiltinModule?.('node:child_process');
   if (child_process?.execFileSync) {
     try {
-      const sha = child_process.execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+      const cwd = options.repo_root || options.repoRoot || process.cwd();
+      const sha = child_process.execFileSync('git', ['rev-parse', 'HEAD'], {
+        cwd,
+        encoding: 'utf8',
+        stdio: ['ignore', 'pipe', 'ignore']
+      }).trim();
       if (/^[a-f0-9]{40}$/.test(sha)) {
         return sha;
       }
@@ -89,10 +149,15 @@ export function resolveCurrentSourceRevision() {
 }
 
 /**
- * Binds and validates source revision against verifiable git provenance.
+ * Binds and validates source revision against verifiable git provenance and working tree cleanliness.
+ * @param {string} sourceRev
+ * @param {object} [options]
+ * @returns {object}
  */
 export function verifySourceRevision(sourceRev, options = {}) {
-  const checkoutRev = resolveCurrentSourceRevision();
+  const repoRoot = options.repo_root || options.repoRoot || process.cwd();
+  const checkoutRev = resolveCurrentSourceRevision({ repo_root: repoRoot });
+  const cleanliness = inspectExecutingSourceCleanliness(repoRoot, options);
 
   if (typeof sourceRev !== 'string' || !sourceRev.trim()) {
     return {
@@ -103,6 +168,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
       declared_revision: null,
       executing_checkout_revision: checkoutRev,
       is_working_tree: false,
+      cleanliness,
       source_revision: null
     };
   }
@@ -122,6 +188,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
         reason: 'STRICT_PROVENANCE_REFUSES_UNCOMMITTED',
         infraction: 'HOLD_STRICT_PROVENANCE_FAILED',
         status: 'UNCOMMITTED_REFUSED_UNDER_STRICT_PROVENANCE',
+        cleanliness,
         source_revision: trimmed
       };
     }
@@ -133,6 +200,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
       declared_revision: trimmed,
       executing_checkout_revision: checkoutRev,
       status: 'WORKING_TREE_RESEARCH_MODE',
+      cleanliness,
       source_revision: trimmed
     };
   }
@@ -147,6 +215,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
       declared_revision: trimmed,
       executing_checkout_revision: checkoutRev,
       is_working_tree: false,
+      cleanliness,
       source_revision: trimmed
     };
   }
@@ -155,39 +224,61 @@ export function verifySourceRevision(sourceRev, options = {}) {
   const child_process = globalThis.process?.getBuiltinModule?.('node:child_process');
   if (child_process?.execFileSync) {
     try {
-      child_process.execFileSync('git', ['cat-file', '-e', `${trimmed}^{commit}`], { stdio: ['ignore', 'ignore', 'ignore'] });
-      const isExactCheckout = (trimmed.toLowerCase() === checkoutRev.toLowerCase());
-      const exactMatch = isExactCheckout && (checkoutRev !== 'WORKING_TREE_UNCOMMITTED');
+      child_process.execFileSync('git', ['cat-file', '-e', `${trimmed}^{commit}`], {
+        cwd: repoRoot,
+        stdio: ['ignore', 'ignore', 'ignore']
+      });
+      const isExactCheckoutSha = (trimmed.toLowerCase() === checkoutRev.toLowerCase());
+      const exactMatch = isExactCheckoutSha && (checkoutRev !== 'WORKING_TREE_UNCOMMITTED');
 
-      if (options.require_exact_checkout === true && !exactMatch) {
-        return {
-          verified: false,
-          git_commit_verified: true,
-          in_local_git_history: true,
-          is_exact_checkout_match: false,
-          exact_checkout_verified: false,
-          is_historical_commit_only: true,
-          is_working_tree: false,
-          declared_revision: trimmed,
-          executing_checkout_revision: checkoutRev,
-          reason: 'HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
-          infraction: 'HOLD_HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
-          status: 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
-          source_revision: trimmed
-        };
+      if (options.require_clean_source === true || options.require_exact_checkout === true) {
+        if (!cleanliness.is_clean) {
+          return {
+            verified: false,
+            git_commit_verified: true,
+            in_local_git_history: true,
+            is_exact_checkout_match: isExactCheckoutSha,
+            exact_checkout_verified: false,
+            cleanliness,
+            reason: 'WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT',
+            infraction: 'HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT',
+            status: 'WORKING_TREE_DIRTY_REFUSED',
+            declared_revision: trimmed,
+            executing_checkout_revision: checkoutRev,
+            source_revision: trimmed
+          };
+        }
+        if (options.require_exact_checkout === true && !exactMatch) {
+          return {
+            verified: false,
+            git_commit_verified: true,
+            in_local_git_history: true,
+            is_exact_checkout_match: false,
+            exact_checkout_verified: false,
+            is_historical_commit_only: true,
+            cleanliness,
+            reason: 'HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
+            infraction: 'HOLD_HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
+            status: 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
+            declared_revision: trimmed,
+            executing_checkout_revision: checkoutRev,
+            source_revision: trimmed
+          };
+        }
       }
 
       return {
         verified: true,
         git_commit_verified: true,
         in_local_git_history: true,
-        is_exact_checkout_match: isExactCheckout,
-        exact_checkout_verified: exactMatch,
-        is_historical_commit_only: !isExactCheckout,
-        is_working_tree: isExactCheckout,
+        is_exact_checkout_match: isExactCheckoutSha,
+        exact_checkout_verified: exactMatch && cleanliness.is_clean,
+        is_historical_commit_only: !isExactCheckoutSha,
+        is_working_tree: isExactCheckoutSha,
+        cleanliness,
         declared_revision: trimmed,
         executing_checkout_revision: checkoutRev,
-        status: isExactCheckout ? 'EXACT_CHECKOUT_VERIFIED' : 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
+        status: isExactCheckoutSha ? 'EXACT_CHECKOUT_VERIFIED' : 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
         source_revision: trimmed
       };
     } catch {
@@ -199,6 +290,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
         exact_checkout_verified: false,
         is_historical_commit_only: false,
         is_working_tree: false,
+        cleanliness,
         declared_revision: trimmed,
         executing_checkout_revision: checkoutRev,
         reason: 'COMMIT_NOT_IN_LOCAL_HISTORY',

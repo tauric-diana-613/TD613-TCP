@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TD613 · Butlerian Performative Iteration Surface · U+10D613</title>
+  <style>
+    :root {
+      --bg: #090a0d;
+      --card-bg: #12141a;
+      --card-border: #232733;
+      --text: #e6e4df;
+      --text-muted: #8e94a5;
+      --accent: #c89b53;
+      --accent-subversive: #d15656;
+      --highlight: #2a3346;
+      --btn-bg: #181c24;
+      --btn-border: #323846;
+      --btn-hover: #222734;
+      --font-mono: "SF Mono", Consolas, Menlo, Monaco, monospace;
+      --font-serif: "Charter", "Georgia", "Palatino", serif;
+      --transition-speed: 240ms;
+    }
+
+    body.reduced-motion {
+      --transition-speed: 0ms !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-serif);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* HEADER & TELEMETRY BAR */
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .badge-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #1c212d;
+      border: 1px solid #2d3546;
+      color: var(--text-muted);
+    }
+
+    .badge.covenant {
+      border-color: #554425;
+      color: var(--accent);
+      background: #1f1910;
+    }
+
+    .badge.instrument {
+      border-color: #4a2828;
+      color: var(--accent-subversive);
+      background: #201313;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .seed-quote {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 15px;
+      border-left: 2px solid var(--accent);
+      padding-left: 12px;
+    }
+
+    /* CONTROLS PANEL */
+    .controls-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .slider-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .slider-label span.value {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #272d3b;
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: 2px solid #fff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button.interactive-btn {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 16px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background var(--transition-speed), border-color var(--transition-speed);
+      touch-action: manipulation;
+    }
+
+    button.interactive-btn:hover {
+      background: var(--btn-hover);
+      border-color: #4a5468;
+    }
+
+    button.interactive-btn.danger:hover {
+      border-color: var(--accent-subversive);
+      color: #ff9494;
+    }
+
+    /* REST & EXIT BANNER */
+    #rest-banner {
+      display: none;
+      background: #18201a;
+      border: 1px solid #2f5235;
+      color: #8edba0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    /* PROBE STATUS BADGE */
+    #probe-status {
+      display: none;
+      background: #241616;
+      border: 1px solid #632d2d;
+      color: #f79999;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    /* ITERATIONS ALTAR */
+    .iterations-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .iteration-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--transition-speed), transform var(--transition-speed);
+    }
+
+    .iteration-card.active {
+      border-color: var(--accent);
+    }
+
+    .iteration-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      border-bottom: 1px solid #1c202a;
+      padding-bottom: 8px;
+    }
+
+    .iteration-number {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .decree-text {
+      font-size: 20px;
+      line-height: 1.5;
+      letter-spacing: 0.01em;
+      transition: letter-spacing var(--transition-speed), transform var(--transition-speed), font-weight var(--transition-speed);
+      word-break: break-word;
+    }
+
+    .slippage-telemetry {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .telemetry-item span.val {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 16px;
+    }
+
+    /* MOBILE 390px ADAPTATIONS */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px 32px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .decree-text {
+        font-size: 17px;
+      }
+      .action-buttons {
+        width: 100%;
+      }
+      button.interactive-btn {
+        flex: 1;
+        min-width: calc(50% - 6px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="badge-bar">
+          <span class="badge covenant">Khona‌lit-po · U+10D613</span>
+          <span class="badge instrument">BUTLER_PERFORMATIVE_ITERATION</span>
+          <span class="badge">VISUAL MEDIUM</span>
+        </div>
+        <div class="badge">COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01</div>
+      </div>
+      <h1>Judith Butler Citational Reiteration Altar</h1>
+      <p class="seed-quote">
+        &ldquo;Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration.&rdquo;
+      </p>
+    </header>
+
+    <div class="controls-panel">
+      <div class="control-row">
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Citational Slippage Parameter (&epsilon;)</span>
+            <span class="value" id="epsilon-value">&epsilon; = 0.85</span>
+          </div>
+          <input type="range" id="epsilon-slider" min="0.0" max="2.0" step="0.05" value="0.85" aria-label="Citational Slippage Parameter Epsilon">
+        </div>
+
+        <div class="action-buttons">
+          <button id="toggle-motion" class="interactive-btn" type="button">Reduced Motion</button>
+          <button id="pause-btn" class="interactive-btn" type="button">Rest / Pause</button>
+          <button id="exit-btn" class="interactive-btn danger" type="button">Safe Exit</button>
+          <button id="reset-falsify" class="interactive-btn" type="button">Falsify (&epsilon; = 0)</button>
+        </div>
+      </div>
+
+      <div id="probe-status"></div>
+      <div id="rest-banner"></div>
+    </div>
+
+    <main class="iterations-stack" id="iterations-stack">
+      <!-- 5 Progressive Iterations generated dynamically and pre-rendered for instant indexing -->
+      <article class="iteration-card" id="iter-0" data-index="0">
+        <div class="iteration-meta">
+          <span class="iteration-number">ITERATION I &middot; Sovereign Inscription (n = 0)</span>
+          <span class="iteration-status">ORIGINAL CANON</span>
+        </div>
+        <div class="decree-text" id="text-0">
+          By sovereign decree, the form shall endure unchanged through every citation.
+        </div>
+        <div class="slippage-telemetry">
+          <div class="telemetry-item">Kerning: <span class="val" id="kern-0">0.00px</span></div>
+          <div class="telemetry-item">Angular Drift: <span class="val" id="rot-0">0.00&deg;</span></div>
+          <div class="telemetry-item">Covenant Check: <span class="val">Khona‌lit-po U+200C OK</span></div>
+        </div>
+      </article>
+
+      <article class="iteration-card" id="iter-1" data-index="1">
+        <div class="iteration-meta">
+          <span class="iteration-number">ITERATION II &middot; First Reiteration (n = 1)</span>
+          <span class="iteration-status">INITIAL MIMICRY</span>
+        </div>
+        <div class="decree-text" id="text-1">
+          By sovereign decree, the form shall endure unchanged through every citation.
+        </div>
+        <div class="slippage-telemetry">
+          <div class="telemetry-item">Kerning: <span class="val" id="kern-1">+1.77px</span></div>
+          <div class="telemetry-item">Angular Drift: <span class="val" id="rot-1">+0.59&deg;</span></div>
+          <div class="telemetry-item">Covenant Check: <span class="val">Khona‌lit-po U+200C OK</span></div>
+        </div>
+      </article>
+
+      <article class="iteration-card" id="iter-2" data-index="2">
+        <div class="iteration-meta">
+          <span class="iteration-number">ITERATION III &middot; Second Reiteration (n = 2)</span>
+          <span class="iteration-status">PERFORMATIVE TREMOR</span>
+        </div>
+        <div class="decree-text" id="text-2">
+          By sovereign decree, the form shall endure unchanged through every citation.
+        </div>
+        <div class="slippage-telemetry">
+          <div class="telemetry-item">Kerning: <span class="val" id="kern-2">+2.80px</span></div>
+          <div class="telemetry-item">Angular Drift: <span class="val" id="rot-2">+0.93&deg;</span></div>
+          <div class="telemetry-item">Covenant Check: <span class="val">Khona‌lit-po U+200C OK</span></div>
+        </div>
+      </article>
+
+      <article class="iteration-card" id="iter-3" data-index="3">
+        <div class="iteration-meta">
+          <span class="iteration-number">ITERATION IV &middot; Third Reiteration (n = 3)</span>
+          <span class="iteration-status">SUBVERSIVE ASYMMETRY</span>
+        </div>
+        <div class="decree-text" id="text-3">
+          By sovereign decree, the form shall endure unchanged through every citation.
+        </div>
+        <div class="slippage-telemetry">
+          <div class="telemetry-item">Kerning: <span class="val" id="kern-3">+3.54px</span></div>
+          <div class="telemetry-item">Angular Drift: <span class="val" id="rot-3">+1.18&deg;</span></div>
+          <div class="telemetry-item">Covenant Check: <span class="val">Khona‌lit-po U+200C OK</span></div>
+        </div>
+      </article>
+
+      <article class="iteration-card" id="iter-4" data-index="4">
+        <div class="iteration-meta">
+          <span class="iteration-number">ITERATION V &middot; Fourth Reiteration (n = 4)</span>
+          <span class="iteration-status">AUTHORITY DISPLACED</span>
+        </div>
+        <div class="decree-text" id="text-4">
+          By sovereign decree, the form shall endure unchanged through every citation.
+        </div>
+        <div class="slippage-telemetry">
+          <div class="telemetry-item">Kerning: <span class="val" id="kern-4">+4.11px</span></div>
+          <div class="telemetry-item">Angular Drift: <span class="val" id="rot-4">+1.37&deg;</span></div>
+          <div class="telemetry-item">Covenant Check: <span class="val">Khona‌lit-po U+200C OK</span></div>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      𝌋 Tauric Diana TD613 &middot; Heritage Custodianship &middot; Judith Butler Performative Iteration &middot; Human Closure Required
+    </footer>
+  </div>
+
+  <script>
+    // Governing transfer law: kerning(n) = kerning_0 + epsilon * log(1 + n) * 3.0px
+    // Falsification probe: epsilon = 0.0 collapses all variance to mechanical baseline (0.00px, 0.00deg)
+    const slider = document.getElementById('epsilon-slider');
+    const epsilonValueDisplay = document.getElementById('epsilon-value');
+    const probeStatus = document.getElementById('probe-status');
+    const restBanner = document.getElementById('rest-banner');
+    const toggleMotionBtn = document.getElementById('toggle-motion');
+    const pauseBtn = document.getElementById('pause-btn');
+    const exitBtn = document.getElementById('exit-btn');
+    const resetFalsifyBtn = document.getElementById('reset-falsify');
+
+    function updateAltar(epsilon) {
+      epsilonValueDisplay.textContent = `ε = ${epsilon.toFixed(2)}`;
+
+      if (epsilon === 0.0) {
+        probeStatus.style.display = 'block';
+        probeStatus.textContent = 'FALSIFICATION PROBE ACTIVE (ε = 0.00): Mechanical conformity enforced across all repetitions.';
+      } else {
+        probeStatus.style.display = 'none';
+      }
+
+      for (let n = 0; n < 5; n++) {
+        const textEl = document.getElementById(`text-${n}`);
+        const kernEl = document.getElementById(`kern-${n}`);
+        const rotEl = document.getElementById(`rot-${n}`);
+
+        const deltaKern = (epsilon * Math.log(1 + n) * 3.0);
+        const deltaRot = (epsilon * Math.log(1 + n) * 1.0);
+        const weight = Math.round(400 - (epsilon * Math.log(1 + n) * 35));
+
+        textEl.style.letterSpacing = `${deltaKern.toFixed(2)}px`;
+        textEl.style.transform = `rotate(${deltaRot.toFixed(2)}deg)`;
+        textEl.style.fontWeight = `${weight}`;
+
+        if (n > 0 && epsilon > 0.4) {
+          textEl.style.color = `hsl(${40 - n * 8}, ${30 + n * 10}%, ${90 - n * 5}%)`;
+        } else {
+          textEl.style.color = 'var(--text)';
+        }
+
+        kernEl.textContent = (deltaKern >= 0 ? '+' : '') + deltaKern.toFixed(2) + 'px';
+        rotEl.textContent = (deltaRot >= 0 ? '+' : '') + deltaRot.toFixed(2) + '°';
+      }
+    }
+
+    slider.addEventListener('input', (e) => {
+      updateAltar(parseFloat(e.target.value));
+    });
+
+    toggleMotionBtn.addEventListener('click', () => {
+      document.body.classList.toggle('reduced-motion');
+      toggleMotionBtn.textContent = document.body.classList.contains('reduced-motion')
+        ? 'Full Motion'
+        : 'Reduced Motion';
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      restBanner.style.display = 'block';
+      restBanner.style.borderColor = '#2f5235';
+      restBanner.style.background = '#18201a';
+      restBanner.style.color = '#8edba0';
+      restBanner.textContent = 'Citational practice paused safely without loss of state. Rest is unpenalized.';
+    });
+
+    exitBtn.addEventListener('click', () => {
+      restBanner.style.display = 'block';
+      restBanner.style.borderColor = '#632d2d';
+      restBanner.style.background = '#241616';
+      restBanner.style.color = '#f79999';
+      restBanner.textContent = 'Exited citational altar cleanly. Human closure acknowledged.';
+    });
+
+    resetFalsifyBtn.addEventListener('click', () => {
+      slider.value = 0.0;
+      updateAltar(0.0);
+    });
+
+    // Initial update
+    updateAltar(parseFloat(slider.value));
+  </script>
+</body>
+</html>

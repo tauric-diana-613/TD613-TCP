@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, unlinkSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, unlinkSync, mkdirSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 
 import {
   runDollhouseDesignCycle,
@@ -26,7 +27,6 @@ test('R01 - Companion audit disposition and CLI flag precedence', async (t) => {
   });
 
   assert.ok(designResult.scientific_companion_audit, 'Companion audit must be present when requested');
-  // Currently, conductor reads auditResult.orchestrator_disposition which is undefined!
   assert.notEqual(designResult.scientific_companion_audit.disposition, undefined, 'Disposition must not be undefined');
   assert.equal(designResult.scientific_companion_audit.disposition, 'HELD_MISSING_OBSERVATION');
 
@@ -58,19 +58,34 @@ test('R01 - Companion audit disposition and CLI flag precedence', async (t) => {
 });
 
 test('R02 - Proposed mechanisms presented truthfully without false executed laws', () => {
-  // buildInstrumentCausalContract should adapt to medium and seed terms
-  const contract = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'PRODUCT', ['procurement', 'delay']);
+  // 1. Generic VISUAL commission without materialized artifact or historical qualification fixture
+  const visualContract = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', ['corridor', 'delay']);
+  for (const binding of visualContract.causal_bindings) {
+    assert.equal(binding.execution_status, 'PROPOSED_TRANSFER_LAW',
+      'Generic VISUAL planning contract must not claim EXECUTED_DEMONSTRATION_LAW without historical fixture');
+  }
+  const visualLawsString = JSON.stringify(visualContract.causal_bindings);
+  assert.equal(visualLawsString.includes('T_clearance = mu * 400ms'), false,
+    'Generic VISUAL contract must not hardcode 400ms historical chamber delay');
+  assert.equal(visualLawsString.includes('chamber_index * 4'), false,
+    'Generic VISUAL contract must not hardcode chamber_index * 4');
+  assert.equal(visualLawsString.includes('16/16 redactions'), false,
+    'Generic VISUAL contract must not hardcode 16/16 petition redactions');
 
-  // In planning without a materialized artifact/witness, status must not claim EXECUTED_DEMONSTRATION_LAW
-  for (const binding of contract.causal_bindings) {
-    assert.notEqual(binding.execution_status, 'EXECUTED_DEMONSTRATION_LAW',
-      'Planning contract must not claim EXECUTED_DEMONSTRATION_LAW without a materialized artifact');
+  // 2. PRODUCT commission
+  const productContract = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'PRODUCT', ['procurement', 'delay']);
+  for (const binding of productContract.causal_bindings) {
+    assert.equal(binding.execution_status, 'PROPOSED_TRANSFER_LAW');
   }
 
-  // The universal contract must not hardcode chamber/door numbers for unrelated product commissions
-  const lawsString = JSON.stringify(contract.causal_bindings);
-  assert.equal(lawsString.includes('chamber_index * 4'), false, 'Universal contract must not hardcode 4 words per chamber');
-  assert.equal(lawsString.includes('16/16 redactions'), false, 'Universal contract must not hardcode 16-word petition');
+  // 3. Historical qualification fixture ONLY
+  const historicalContract = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    historical_fixture: 'tests/fixtures/dollhouse/caro_corridor_primary.html'
+  });
+  assert.equal(historicalContract.causal_bindings[0].execution_status, 'EXECUTED_DEMONSTRATION_LAW',
+    'Explicit historical qualification fixture scope must verify EXECUTED_DEMONSTRATION_LAW');
+  assert.ok(historicalContract.causal_bindings[0].transfer_law.includes('400ms'),
+    'Historical demonstration binding must reference 400ms chamber latency');
 });
 
 test('R03 - Explicit instrument choice governs candidate construction', () => {
@@ -108,30 +123,44 @@ test('R04 - Reference scope and provenance security', () => {
     });
   }, /escapes|traversal|outside/i);
 
-  // R04.2 Mutable symbolic ref resolution
+  // R04.2 Mutable symbolic ref resolution pins to immutable 40-hex SHA
   const resolved = resolveHistoricalReference({
     reference_id: 'REF-HEAD',
     source_path: 'AGENTS.md',
     source_revision: 'HEAD',
     classification: 'BINDING_CUSTODY_LAW'
   });
-  // Must resolve to immutable 40-hex commit SHA when available
   if (resolved.resolved && resolved.retrieval_method.includes('GIT')) {
-    assert.match(resolved.resolved_commit || resolved.source_revision, /^[a-f0-9]{40}$/);
+    assert.match(resolved.resolved_commit, /^[a-f0-9]{40}$/);
+    assert.equal(resolved.retrieval_method, 'GIT_SHOW_PINNED_COMMIT');
   }
 
-  // R04.3 Working tree fallback provenance class
-  const resolvedWorkingTree = resolveHistoricalReference({
-    reference_id: 'REF-LOCAL',
+  // R04.3 Working tree fallback: caller claiming CONTEMPORANEOUS_ORIGINAL is refused
+  const resolvedWorkingTreeSpoofed = resolveHistoricalReference({
+    reference_id: 'REF-LOCAL-SPOOFED',
     source_path: 'AGENTS.md',
     source_revision: 'WORKING_TREE',
+    provenance_class: 'CONTEMPORANEOUS_ORIGINAL',
     classification: 'NEGOTIABLE_AESTHETIC_DIRECTION'
   });
-  assert.notEqual(resolvedWorkingTree.provenance_class, 'CONTEMPORANEOUS_ORIGINAL',
-    'Working tree fallback must not claim CONTEMPORANEOUS_ORIGINAL');
+  assert.equal(resolvedWorkingTreeSpoofed.provenance_class, 'WORKING_TREE_LOCAL_SUBSTITUTE',
+    'Caller-spoofed original must be downgraded to WORKING_TREE_LOCAL_SUBSTITUTE on working tree fallback');
+  assert.equal(resolvedWorkingTreeSpoofed.effective_provenance_class, 'WORKING_TREE_LOCAL_SUBSTITUTE');
+  assert.equal(resolvedWorkingTreeSpoofed.declared_provenance_class, 'CONTEMPORANEOUS_ORIGINAL');
+  assert.ok(resolvedWorkingTreeSpoofed.provenance_mismatch);
+
+  // R04.4 normalizeCommission defaults: non-hex ref cannot default to CONTEMPORANEOUS_ORIGINAL
+  const normalized = normalizeCommission({
+    seed: 'Testing provenance default',
+    historical_references: [
+      { reference_id: 'REF-MUTABLE', source_path: 'AGENTS.md', source_revision: 'HEAD' }
+    ]
+  });
+  assert.notEqual(normalized.historical_references[0].provenance_class, 'CONTEMPORANEOUS_ORIGINAL',
+    'normalizeCommission must not default non-hex revision to CONTEMPORANEOUS_ORIGINAL');
 });
 
-test('R05 - Candidate override validation and preservation', () => {
+test('R05 - Candidate override validation, preservation, and substantive evaluation', async () => {
   // R05.1 Reject undeclared instrument
   assert.throws(() => {
     normalizeCommission({
@@ -154,17 +183,20 @@ test('R05 - Candidate override validation and preservation', () => {
     });
   }, /duplicate/i);
 
-  // R05.3 Preserve 3+ candidates in receipt
-  const comm3 = normalizeCommission({
+  // R05.3 Preserve 3+ candidates in receipt and substantively evaluate all 3 in comparative analysis
+  const comm3 = {
     seed: 'Test three candidates',
     candidate_overrides: [
       { concept_title: 'Cand 1', governing_instrument: 'PHASONIC_COUNTERPOINT', formal_proposition: 'Prop 1' },
       { concept_title: 'Cand 2', governing_instrument: 'CARO_INSTITUTIONAL_RECONSTRUCTION', formal_proposition: 'Prop 2' },
       { concept_title: 'Cand 3', governing_instrument: 'SEDGWICK_REPARATIVE_TEXTURE', formal_proposition: 'Prop 3' }
     ]
-  });
-  const candidates = deriveCommissionCandidates(comm3);
-  assert.equal(candidates.length, 3, 'Must preserve all 3 candidate overrides');
+  };
+  const receipt3 = await runDollhouseDesignCycle(comm3);
+  assert.equal(receipt3.candidates.length, 3, 'Must preserve all 3 candidate overrides');
+  assert.equal(receipt3.output_contract.requested_deliverables, 1, 'Universal default deliverables must remain 1');
+  assert.ok(receipt3.comparative_analysis.candidate_evaluations, 'Comparative analysis must evaluate candidate overrides');
+  assert.equal(receipt3.comparative_analysis.candidate_evaluations.length, 3, 'Comparative analysis must evaluate all 3 candidates');
 });
 
 test('R06 - Role execution accounting: requested vs attempted vs executed', async () => {
@@ -187,15 +219,66 @@ test('R06 - Role execution accounting: requested vs attempted vs executed', asyn
 });
 
 test('R07 - Executing source byte integrity and clean working tree verification', () => {
-  // If an exact commit is required and source files in app/engine are modified, exact_checkout_verified must be false
-  const headCommit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-  const validation = verifySourceRevision(headCommit, {
-    require_exact_checkout: true,
-    require_clean_source: true
-  });
+  const tempRepo = mkdtempSync(resolve(tmpdir(), 'td613-r07-cleanliness-'));
+  try {
+    execFileSync('git', ['init'], { cwd: tempRepo });
+    execFileSync('git', ['config', 'user.email', 'test@td613.local'], { cwd: tempRepo });
+    execFileSync('git', ['config', 'user.name', 'TD613 Test'], { cwd: tempRepo });
+    mkdirSync(resolve(tempRepo, 'app/engine'), { recursive: true });
+    writeFileSync(resolve(tempRepo, 'app/engine/core.js'), '// original source\n');
+    execFileSync('git', ['add', '.'], { cwd: tempRepo });
+    execFileSync('git', ['commit', '-m', 'Initial commit'], { cwd: tempRepo });
+    const commitA = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: tempRepo, encoding: 'utf8' }).trim();
 
-  // When clean, exact_checkout_verified is true. If dirty, must be false.
-  assert.equal(typeof validation.exact_checkout_verified, 'boolean');
+    // 1. Clean checkout of exact commit
+    const cleanCheck = verifySourceRevision(commitA, {
+      repo_root: tempRepo,
+      require_exact_checkout: true
+    });
+    assert.equal(cleanCheck.verified, true);
+    assert.equal(cleanCheck.exact_checkout_verified, true);
+
+    // 2. Unstaged modification in source tree
+    writeFileSync(resolve(tempRepo, 'app/engine/core.js'), '// modified dirty source\n');
+    const dirtyCheckUnstaged = verifySourceRevision(commitA, {
+      repo_root: tempRepo,
+      require_exact_checkout: true
+    });
+    assert.equal(dirtyCheckUnstaged.verified, false, 'Unstaged source modifications must fail verification');
+    assert.equal(dirtyCheckUnstaged.exact_checkout_verified, false);
+    assert.equal(dirtyCheckUnstaged.infraction, 'HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT');
+
+    // 3. Staged modification in source tree
+    execFileSync('git', ['add', 'app/engine/core.js'], { cwd: tempRepo });
+    const dirtyCheckStaged = verifySourceRevision(commitA, {
+      repo_root: tempRepo,
+      require_exact_checkout: true
+    });
+    assert.equal(dirtyCheckStaged.verified, false, 'Staged source modifications must fail verification');
+    assert.equal(dirtyCheckStaged.exact_checkout_verified, false);
+    assert.equal(dirtyCheckStaged.infraction, 'HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT');
+
+    // 4. Commit modification -> commit B
+    execFileSync('git', ['commit', '-m', 'Second commit'], { cwd: tempRepo });
+    // Now verify commit A (historical commit, not HEAD) with require_exact_checkout
+    const histCheckExact = verifySourceRevision(commitA, {
+      repo_root: tempRepo,
+      require_exact_checkout: true
+    });
+    assert.equal(histCheckExact.verified, false, 'Historical commit must fail when require_exact_checkout is true');
+    assert.equal(histCheckExact.infraction, 'HOLD_HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT');
+
+    // 5. Verify commit A without require_exact_checkout
+    const histCheckPermissive = verifySourceRevision(commitA, {
+      repo_root: tempRepo,
+      require_exact_checkout: false
+    });
+    assert.equal(histCheckPermissive.verified, true);
+    assert.equal(histCheckPermissive.is_historical_commit_only, true);
+    assert.equal(histCheckPermissive.exact_checkout_verified, false);
+  } finally {
+    rmSync(tempRepo, { recursive: true, force: true });
+  }
 });
 
 test('R08 - Strict provenance flag enforcement and refusal', async () => {
