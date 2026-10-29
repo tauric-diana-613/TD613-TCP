@@ -1,0 +1,15 @@
+{
+  "author": "𝌋",
+  "bundle": "TD613_Em_Manifest_Review_Candidate_2026-10-29.zip",
+  "bytes": 40146731,
+  "sha256": "d1407aef8949e2024319a3039caf9c379760206fdb0783eac1779cb561e8f1bd",
+  "verified_zip_members": 344,
+  "candidate_html_sha256": "10b48fa947158b8f16aedc8391a2fa56f101f008a275da2999ef507788a7ad03",
+  "rendered_after_status": "NOT_YET_OBSERVED",
+  "fresh_dollhouse_design": "NOT_EXECUTED",
+  "fresh_dollhouse_audit": "NOT_EXECUTED",
+  "public_research_upload": false,
+  "reverse_source_grant": "PROPOSED_UNEXECUTED",
+  "gate_e": "HELD",
+  "operator_closure": "RESERVED"
+}
