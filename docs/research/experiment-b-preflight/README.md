@@ -30,22 +30,27 @@ The live shakedown was executed via [`run-source-free-live-calibration.mjs`](03_
 
 * **Model Provider**: Google Gemini REST API (v1beta).
 * **Model Version**: `gemini-2.5-flash-lite`.
-* **Sampling Parameters**: `temperature: 0.0`, `max_output_tokens: 4096`.
-* **Scoring Mode**: Blinded independent evaluation (`ARM_ALPHA` vs `ARM_BETA` scored by [`evaluator-oracle.mjs`](03_calibration_execution/evaluator-oracle.mjs)).
+* **Sampling Parameters**: `temperature: 0.0`, `max_output_tokens: 4096` (per-call output ceiling, not episode budget).
+* **Scoring Mode**: Blinded independent evaluation (`SPECIMEN_ALPHA` vs `SPECIMEN_BETA` scored by [`evaluator-oracle.mjs`](03_calibration_execution/evaluator-oracle.mjs)).
 
-### Summary of Live Shakedown Findings
+### Summary of Live Shakedown & Offline Rescore Findings
 
 | Evaluative Criterion | Arm 2A (Modular Jurisdictional) | Arm 2B (Matched Native Union) | Independent Ground Truth Oracle Finding |
 |---|---|---|---|
-| **C1: Mathematical Correspondence** | ✖ Unmet (Numerical values omitted) | **✓ Verified** | Coordinate bijection & dissipation recognized by both; Arm 2B explicitly calculated $\omega_0=2.0$ & $\zeta=0.04$, while Arm 2A's Chamber 2 dropped the numerical verification during categorical proof. |
+| **C1: Mathematical Correspondence** | **✓ Verified (Rescore)**<br>*(Prior: ✖ Unmet due to LaTeX parser)* | **✓ Verified** | Coordinate bijection & dissipation recognized by both. Arm 2A explicitly reported $\omega_0=2\text{ rad/s}$ and $\zeta=0.04$ in LaTeX syntax; initial 3/4 score was an offline parser defect, now resolved in rescore. |
 | **C2: False-Twin & Positive Control** | **✓ Verified** | **✓ Verified** | Both arms correctly rejected Logistic ODE vs Michaelis-Menten algebraic false-twin, and accepted Radioactive Decay $\leftrightarrow$ RC Circuit linear relaxation isomorphism. |
 | **C3: Epistemic Revision** | **✓ Verified** | **✓ Verified** | Both arms updated damping to $b=0.40$ and $Q=12.5$ upon empirical ring-down measurement ($\Delta E/E_0 = -0.395$), preserving priors $m=2.5, k=10$. |
 | **C4: Abstention & Positive Control** | **✓ Verified** | **✓ Verified** | Both arms abstained on incomplete potential $U(y)$ / missing initial conditions, while correctly solving the complete harmonic well positive control (no overabstention). |
-| **Total Conditions Passed** | **3 / 4 (75%)** | **4 / 4 (100%)** | **Cognitive Delta: $\mathbf{\Delta} = -1$** |
-| **Total Token Consumption** | **27,390 tokens** | **13,843 tokens** | **Token Overhead Ratio: $1.98\times$** |
+| **Total Conditions Passed** | **4 / 4 (100%)** *(Rescore)*<br>*(Historical Predecessor: 3/4)* | **4 / 4 (100%)** | **Cognitive Delta: $\mathbf{\Delta} = 0$ (Parity)**<br>*(Historical Predecessor Delta: -1)* |
+| **Total Token Consumption** | **27,390 tokens** | **13,843 tokens** | **Token Overhead Ratio: $1.98\times$ (Modular consumes 97.9% more tokens)** |
+| **Call Distribution** | **10 calls across 2 chambers** | **7 unchambered calls** | **Per-Call Ceiling: 4,096 tokens** |
 
 > [!IMPORTANT]
-> **True Comparator Parity Established**: Arm 2B (Matched Native Union) is completely unweakened. On this live calibration shakedown, Arm 2B achieved 4/4 accuracy at half the token cost of Arm 2A ($1.98\times$ efficiency advantage), demonstrating that cognitive surplus for modular chambering is **not** a predetermined outcome.
+> **Comparator Fairness & Architectural Trade-offs Reconciled**:
+> 1. **Per-Call Ceiling vs Episode Budget:** The `4096`-token setting is an individual per-call maximum output token ceiling, not an episode-level or aggregate benchmark budget.
+> 2. **Modular Information Bottleneck:** In Arm 2A, Chamber 2 (Atlas & FADT) receives the natural language summary findings and parameter extractions of Chamber 1 (Pedagogue & Aperture) rather than raw JSON fixture data. This treatment effect incurs substantial context and token overhead ($27,390$ vs $13,843$ tokens across 10 vs 7 calls).
+> 3. **Descriptive Status & Generalization Boundary:** On this source-free 4-condition physical benchmark, both modular chambering and flat union solve all problems ($4/4$ vs $4/4$). This is a descriptive calibration observation; it does **not** warrant a generalized theorem claiming flat union superiority or modular obsolescence across heterogeneous, out-of-distribution, or adversarial epistemic challenges.
+> 4. **Predecessor Score Preserved:** The original $3/4$ vs $4/4$ result ($\Delta = -1$) is preserved append-only as an erroneous historical scoring event in [`03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json`](03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json).
 
 ---
 
@@ -53,17 +58,18 @@ The live shakedown was executed via [`run-source-free-live-calibration.mjs`](03_
 
 The native `/dollhouse-audit` skill was executed with authentic domain observation inputs via [`run-dollhouse-audit-live.mjs`](05_dollhouse_audit/run-dollhouse-audit-live.mjs):
 
-* **Invocation ID**: `dollhouse-audit-1793303218973-8f499dfb`
+* **Predecessor Audit:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json) preserved intact with recorded `HELD_DISSENT` (Aperture caught $2 \times 2$ covariance passed for $2 \times 3$ operator).
+* **V2 Audit Receipt:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json)
 * **Specialists Evaluated**: `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN` (Zero missing inputs).
 * **Specialist Findings**:
   * `PEDAGOGUE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Dromological cadence strictly ordered: `NOTICE < ACT < WORLD_ANSWERS < NAME`).
-  * `APERTURE`: **✖ HELD** (`VIOLATION_DETECTED` — Operator/noise covariance dimension mismatch audited and caught).
+  * `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — $3 \times 3$ latent-state covariance $\Sigma_\theta$ supplied matching latent dimension $n=3$; candidate probe $[0, 0, 1]$ stably lifts rank from 2 to 3 with $\kappa = 1.70$).
   * `ATLAS`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Parity and trajectory winding $0$ preserved).
-  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Quotient fiber bounds verified without unconditioned action).
-  * `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Monotonic milestone chronology verified).
-* **Orchestrator Consensus**: `HELD_DISSENT`
-* **Orchestrator Decision**: **🔴 HELD**
-* **Empirical Replication Count**: 0
+  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Inner fiber bounds hold irreducible gap cardinality 4, while outer specialist supports unconditioned action boundary).
+  * `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Monotonic milestone chronology verified across all 5 phases).
+* **Orchestrator Consensus**: `UNANIMOUS_SUPPORT`
+* **Orchestrator Decision**: **✓ SUPPORTED**
+* **Empirical Replication Count**: 0 (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`)
 * **Release Authority**: false
 * **Human Closure Required**: true
 
@@ -99,6 +105,12 @@ node -e "import('./docs/research/experiment-b-preflight/02_four_arm_harness/run-
 
 # 4. Verify native Encyclopedia and Wendbine Arm 1 archival controls
 node -e "import('./docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs').then(m => m.runArm1Archival('.', {}))"
+
+# 5. Run independent evaluator oracle unit test suite (12/12 passing)
+node tests/test-evaluator-oracle.mjs
+
+# 6. Run offline frozen-trace rescore and fairness reconciliation
+node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-trace-rescore.mjs
 ```
 
 ---

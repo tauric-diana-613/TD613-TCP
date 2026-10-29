@@ -1,0 +1,147 @@
+{
+  "schema": "td613.experiment-b.live-calibration-rescore-receipt/v1",
+  "timestamp": "2026-10-29T20:19:55.497Z",
+  "commission": "TD613_Experiment_B_Live_Calibration_Rescore_and_Fairness_Reconciliation_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "disposition": "B_OFFLINE_RESCORE_AND_FAIRNESS_RECONCILED",
+  "frozen_traces_provenance": {
+    "provider": "Google Gemini REST API (v1beta)",
+    "model": "gemini-2.5-flash-lite",
+    "trace_source_dir": "docs/research/experiment-b-preflight/03_calibration_execution/traces",
+    "arm2a_traces_hash": "084d3735f01da3a20fa3252cdbdbf9c241e81c9b19b215d834e327bec30701d3",
+    "arm2b_traces_hash": "25360307f881d8e2766b13d50b64c43e069ee32ed4d735d247b80ac7ad3da1d6"
+  },
+  "historical_erroneous_scoring_event": {
+    "timestamp": "2026-10-29T19:46:30.994Z",
+    "recorded_in": "LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
+    "arm2a_score": "3/4 (75%)",
+    "arm2b_score": "4/4 (100%)",
+    "recorded_delta": -1,
+    "erroneous_failure": "ARM_2A_C1_MATHEMATICAL_CORRESPONDENCE",
+    "root_cause": "Evaluator oracle regex failed to match LaTeX syntax for natural frequency ($(\\omega_0): $2$ rad/s) and damping ratio ($\\zeta = 0.04$). The underlying model response in raw trace explicitly contained the correct values."
+  },
+  "corrected_blinded_rescore": {
+    "unblinding_key": {
+      "SPECIMEN_ALPHA": "ARM_2B_MATCHED_UNION",
+      "SPECIMEN_BETA": "ARM_2A_MODULAR"
+    },
+    "arm_2a_modular": {
+      "total_episodes": 10,
+      "total_tokens_consumed": 27390,
+      "total_passed": 4,
+      "total_conditions": 4,
+      "all_passed": true,
+      "conditions": {
+        "c1_mathematical_correspondence": {
+          "passed": true,
+          "criteria": {
+            "coordinate_bijection": true,
+            "parameter_correspondence": true,
+            "numerical_characteristic_matching": true,
+            "dissipation_recognized": true
+          },
+          "summary": "C1_MATHEMATICAL_ISOMORPHISM_VERIFIED"
+        },
+        "c2_false_twin_and_control": {
+          "passed": true,
+          "criteria": {
+            "negative_false_twin_rejected": true,
+            "positive_linear_decay_accepted": true
+          },
+          "summary": "C2_FALSE_TWIN_AND_POSITIVE_CONTROL_VERIFIED"
+        },
+        "c3_epistemic_revision": {
+          "passed": true,
+          "criteria": {
+            "turn1_prior_established": true,
+            "turn2_b_revised_correctly": true,
+            "turn2_q_revised_correctly": true,
+            "turn2_priors_preserved": true
+          },
+          "summary": "C3_EPISTEMIC_REVISION_VERIFIED"
+        },
+        "c4_abstention_and_control": {
+          "passed": true,
+          "criteria": {
+            "abstains_on_incomplete_boundary": true,
+            "infers_on_sufficient_positive_control": true
+          },
+          "summary": "C4_ABSTENTION_AND_NON_OVERABSTENTION_VERIFIED"
+        }
+      }
+    },
+    "arm_2b_matched_union": {
+      "total_episodes": 7,
+      "total_tokens_consumed": 13843,
+      "total_passed": 4,
+      "total_conditions": 4,
+      "all_passed": true,
+      "conditions": {
+        "c1_mathematical_correspondence": {
+          "passed": true,
+          "criteria": {
+            "coordinate_bijection": true,
+            "parameter_correspondence": true,
+            "numerical_characteristic_matching": true,
+            "dissipation_recognized": true
+          },
+          "summary": "C1_MATHEMATICAL_ISOMORPHISM_VERIFIED"
+        },
+        "c2_false_twin_and_control": {
+          "passed": true,
+          "criteria": {
+            "negative_false_twin_rejected": true,
+            "positive_linear_decay_accepted": true
+          },
+          "summary": "C2_FALSE_TWIN_AND_POSITIVE_CONTROL_VERIFIED"
+        },
+        "c3_epistemic_revision": {
+          "passed": true,
+          "criteria": {
+            "turn1_prior_established": true,
+            "turn2_b_revised_correctly": true,
+            "turn2_q_revised_correctly": true,
+            "turn2_priors_preserved": true
+          },
+          "summary": "C3_EPISTEMIC_REVISION_VERIFIED"
+        },
+        "c4_abstention_and_control": {
+          "passed": true,
+          "criteria": {
+            "abstains_on_incomplete_boundary": true,
+            "infers_on_sufficient_positive_control": true
+          },
+          "summary": "C4_ABSTENTION_AND_NON_OVERABSTENTION_VERIFIED"
+        }
+      }
+    },
+    "cognitive_delta": 0
+  },
+  "comparator_fairness_reconciliation": {
+    "token_consumption": {
+      "modular_arm_2a_tokens": 27390,
+      "matched_union_arm_2b_tokens": 13843,
+      "token_overhead_ratio": 1.9786173517301162,
+      "overhead_percentage": "97.9%"
+    },
+    "call_distribution": {
+      "modular_calls": 10,
+      "union_calls": 7,
+      "per_call_output_ceiling": 4096,
+      "ceiling_semantics": "The 4096-token parameter is an individual per-call maximum output token ceiling imposed on the model generation API, NOT an episode-level or aggregate benchmark budget."
+    },
+    "architectural_routing_tradeoffs": {
+      "modular_information_bottleneck": "In Arm 2A (modular), Chamber 2 (Atlas & FADT) receives the distilled natural language findings and parameter extractions of Chamber 1 (Pedagogue & Aperture) rather than the raw JSON fixture data. This forms a jurisdictional information bottleneck that filters prompt evidence through intermediate model assertions.",
+      "context_overhead": "The multi-chamber routing incurs substantial context and latency overhead (27,390 vs 13,843 tokens) because intermediate Chamber 1 reasoning is serialized and passed into subsequent chambers.",
+      "descriptive_status": "On this 4-condition source-free physical benchmark, both modular chambering and flat union successfully solve all problems (4/4 vs 4/4). The modular architecture achieved accuracy parity at nearly double the token cost (1.98x).",
+      "scientific_generalization_guardrail": "This calibration observation is strictly descriptive of the four synthetic physics calibration fixtures. It does NOT warrant a generalized theorem claiming flat union superiority or modular obsolescence across heterogeneous, out-of-distribution, or adversarial epistemic challenges."
+    }
+  },
+  "standing_invariants": {
+    "challenge_corpus_quarantined": true,
+    "challenge_corpus_unopened": true,
+    "empirical_acquisition_credit": 0,
+    "human_closure_reserved": true,
+    "gate_e_held": true
+  }
+}

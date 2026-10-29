@@ -1,10 +1,7 @@
 {
-  "schema": "td613.experiment-b.preflight-manifest/v1.1",
-  "timestamp": "2026-10-29T19:48:33.660Z",
-  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
-  "governing_status": "SOURCE_FREE_LIVE_CALIBRATION_REPAIRED · B_CORPUS_QUARANTINED",
-  "total_files": 38,
-  "total_bytes": 325155,
+  "schema": "td613.experiment-b.preflight-manifest/v1",
+  "timestamp": "2026-10-29T20:20:42.928Z",
+  "entry_count": 42,
   "entries": [
     {
       "path": "01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
@@ -53,8 +50,8 @@
     },
     {
       "path": "02_four_arm_harness/gemini-live-client.mjs",
-      "bytes": 5132,
-      "sha256": "6ff7091bb87d8538beb84e17aaf11bc69a14c17527bdc0f13ef336cb3d065a8b"
+      "bytes": 5171,
+      "sha256": "3689a0ec5879d4946f622796ec8c64aa735761369315d66e5a8bf86448fe8f42"
     },
     {
       "path": "02_four_arm_harness/reasoning-kernel.mjs",
@@ -68,8 +65,8 @@
     },
     {
       "path": "02_four_arm_harness/run-arm1-archival.mjs",
-      "bytes": 6319,
-      "sha256": "ef114cad4e122897ae148624beddd022d8a07d48d559e53da4e13fcb238b1661"
+      "bytes": 6325,
+      "sha256": "a78f3995b0ed58fe3e8001b83969f85fbfca69ebbeb1a056c2a6c279ded2d17d"
     },
     {
       "path": "02_four_arm_harness/run-arm2a-modular.mjs",
@@ -87,19 +84,29 @@
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
     },
     {
-      "path": "03_calibration_execution/evaluator-oracle.mjs",
-      "bytes": 8010,
-      "sha256": "d5af98e131b04264c15c1be47e76d91a6bf28365bbdfc86a5ec38d665b8f2a3c"
-    },
-    {
       "path": "03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 4089,
       "sha256": "9bb5615923ac4aa658e4c2be269a535eba2ab1b5bb47478fe5ea6860e5df0a37"
     },
     {
+      "path": "03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json",
+      "bytes": 6485,
+      "sha256": "7f4cf3a1596cd53f78830ca66e46bd103e63937fc83a5e0ce3e0c26e2a1441f3"
+    },
+    {
       "path": "03_calibration_execution/PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
       "bytes": 1811,
       "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
+    },
+    {
+      "path": "03_calibration_execution/evaluator-oracle.mjs",
+      "bytes": 11215,
+      "sha256": "6fd751807bc56c2cf95e23ba743e8c14fc8802eee76a4e17224ddc20fe88daf2"
+    },
+    {
+      "path": "03_calibration_execution/run-offline-trace-rescore.mjs",
+      "bytes": 9059,
+      "sha256": "baa93b476033f89c24c156718e1957a8345dd9c99fa6b73dd9cf4d1580fde55a"
     },
     {
       "path": "03_calibration_execution/run-source-free-calibration.mjs",
@@ -157,9 +164,19 @@
       "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
     },
     {
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
+      "bytes": 18739,
+      "sha256": "db862b045be1fe2ce0fdbadb0357a8074fe87cbd9fdfa62dbf63d4c3da6b4dd9"
+    },
+    {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
       "bytes": 3375,
       "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
+    },
+    {
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
+      "bytes": 3112,
+      "sha256": "aff1542abb596b57ebcee060d7ffbb1cbbe776e9edd412e36696f49d456bf473"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
@@ -178,8 +195,8 @@
     },
     {
       "path": "05_dollhouse_audit/run-dollhouse-audit-live.mjs",
-      "bytes": 5701,
-      "sha256": "bea7a0ed5d8b5b538193aa167ec31099e01382ed445cd0121abfbb52a8d6a127"
+      "bytes": 6578,
+      "sha256": "79afdb3b54ef65dc50560ee774ffa8f8d322be158bcdeae89b996b1e1b4e6a80"
     },
     {
       "path": "06_custody_and_governance/EXPERIMENT_A_CAPABILITY_REST_CORRECTION_RECEIPT.json",
@@ -193,8 +210,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 7732,
-      "sha256": "577e095d1e277b8307b3831929821b9f61da9750e8249007f2c89aeecfa196aa"
+      "bytes": 9981,
+      "sha256": "ff9da21e79c08e1fd072e676ee6fb9eba7c25f66e383db3ec41264256fd8e0b5"
     }
   ]
 }

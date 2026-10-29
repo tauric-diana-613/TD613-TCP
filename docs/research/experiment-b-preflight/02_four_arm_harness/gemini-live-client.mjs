@@ -4,6 +4,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { geminiGenerateContentUrl, geminiRequestHeaders, observeGeminiQuota } from '../../../../server/gemini-provider-transport.js';
 
 function loadApiKey() {
@@ -121,7 +122,7 @@ export class GeminiLiveClient {
         latency_ms: latencyMs
       },
       http_status: response.status,
-      system_instruction_hash: systemInstruction ? Buffer.from(systemInstruction).toString('base64').slice(0, 16) : null,
+      system_instruction_hash: systemInstruction ? crypto.createHash('sha256').update(systemInstruction).digest('hex') : null,
       request_token_budget: this.maxOutputTokens,
       provider_usage: {
         prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,

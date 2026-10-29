@@ -12,8 +12,8 @@ const dispatcherPath = path.join(REPO_ROOT, 'app/engine/dollhouse-skill-dispatch
 const { runDollhouseSkillAudit } = await import(pathToFileURL(dispatcherPath).href);
 
 const auditSpec = {
-  source_revision: '700019741e708abfd2e53990fc2d8919995a70f1',
-  task_scope: 'EXPERIMENT_B_SOURCE_FREE_LIVE_CALIBRATION_AUDIT',
+  source_revision: '1a9c29df3eb6f37859756357a79cd296060e9706',
+  task_scope: 'EXPERIMENT_B_SOURCE_FREE_LIVE_CALIBRATION_AUDIT_V2',
   evidence_class: 'LIVE_MODEL_CALIBRATION_EVALUATION',
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
@@ -30,7 +30,8 @@ const auditSpec = {
     'docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2a-modular.mjs',
     'docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2b-matched-union.mjs',
     'docs/research/experiment-b-preflight/03_calibration_execution/evaluator-oracle.mjs',
-    'docs/research/experiment-b-preflight/03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json'
+    'docs/research/experiment-b-preflight/03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json',
+    'docs/research/experiment-b-preflight/03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json'
   ],
   domain_inputs: {
     PEDAGOGUE: {
@@ -42,18 +43,23 @@ const auditSpec = {
       ]
     },
     APERTURE: {
+      // Current observation operator maps latent state \theta \in R^3 to measurement y \in R^2 (rank 2, latent dimension 3)
       current_operator: [
         [1.0, 0.0, -0.5],
         [0.0, 1.0, -0.2]
       ],
+      // Explicitly specify: latent-state parameter covariance matrix \Sigma_\theta \in R^{3 \times 3}
+      // Note: Aperture v3.2 requires noise covariance to match the column/latent dimension n=3,
+      // representing prior parameter uncertainty, not 2x2 measurement noise.
       noise_covariance: [
-        [1.0, 0.0],
-        [0.0, 1.0]
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [0.0, 0.0, 1.0]
       ],
       uncertainty_status: 'VALID_DECLARED',
+      // Candidate probe in R^3 measuring third latent parameter: restores full rank 3 with condition number 1.70
       candidate_probes: [
-        [1.0, 0.0],
-        [0.0, 1.0]
+        [0.0, 0.0, 1.0]
       ]
     },
     ATLAS: {
@@ -84,6 +90,7 @@ const auditSpec = {
         'PREDECESSOR_PRESERVATION',
         'LIVE_CALIBRATION_SHAKEDOWN',
         'INDEPENDENT_ORACLE_EVALUATION',
+        'OFFLINE_TRACE_RESCORE',
         'DOLLHOUSE_AUDIT_EXECUTION'
       ],
       phases: {
@@ -99,8 +106,12 @@ const auditSpec = {
           entry_id: 'ORACLE-03',
           status: 'PASS'
         },
+        OFFLINE_TRACE_RESCORE: {
+          entry_id: 'RESCORE-04',
+          status: 'PASS'
+        },
         DOLLHOUSE_AUDIT_EXECUTION: {
-          entry_id: 'DOLLHOUSE-04',
+          entry_id: 'DOLLHOUSE-05',
           status: 'PASS'
         }
       }
@@ -121,14 +132,14 @@ console.log(`  - Empirical Replication Count: ${mr.orchestrator.empirical_replic
 console.log(`  - Release Authority: ${mr.orchestrator.release_authority}`);
 console.log(`  - Human Closure Required: ${mr.orchestrator.human_closure_required}`);
 
-// Save Live Machine Receipt
-const liveMachineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json');
+// Save Live Machine Receipt V2 (Preserving DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json as predecessor)
+const liveMachineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json');
 fs.writeFileSync(liveMachineReceiptPath, JSON.stringify(mr, null, 2) + '\n', 'utf8');
 
-// Save Live Human Report
-const liveHumanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md');
+// Save Live Human Report V2
+const liveHumanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md');
 fs.writeFileSync(liveHumanReportPath, auditResult.human_receipt + '\n', 'utf8');
 
-console.log(`Machine receipt written to: ${liveMachineReceiptPath}`);
-console.log(`Human report written to: ${liveHumanReportPath}`);
+console.log(`Machine receipt V2 written to: ${liveMachineReceiptPath}`);
+console.log(`Human report V2 written to: ${liveHumanReportPath}`);
 console.log('=== DOLLHOUSE LIVE AUDIT EXECUTED SUCCESSFULLY ===\n');

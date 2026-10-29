@@ -20,8 +20,8 @@ export async function runArm1Archival(repoRoot, fixtures) {
   record('Testing schema-gated intake, deterministic retrieval, and capability boundaries.');
 
   // 1. Native Encyclopedia Intake
-  const intakeSchema = JSON.parse(fs.readFileSync(path.join(repoRoot, 'scripts/encyclopedia-intake-schema.json'), 'utf8'));
-  const intake = require(path.join(repoRoot, 'scripts/encyclopedia-intake.cjs'));
+  const intakeSchema = JSON.parse(fs.readFileSync(path.resolve(repoRoot, 'scripts/encyclopedia-intake-schema.json'), 'utf8'));
+  const intake = require(path.resolve(repoRoot, 'scripts/encyclopedia-intake.cjs'));
 
   const validRecord = {
     schema: 'td613.research-intake/v1',
