@@ -1,8 +1,13 @@
+// TD613 Experiment B · Arm 0 Transport Baseline
+// Tests raw byte preservation across an actual I/O roundtrip transport boundary.
+// Verifies exact byte counts and SHA-256 identity, including Unicode/non-ASCII edge cases (U+200C).
+// Confirms zero cognitive, relational, or semantic operations.
+
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
-export function runArm0Transport(fixtures) {
+export function runArm0Transport(fixturesDir) {
   const log = [];
   function record(msg) {
     const l = `[${new Date().toISOString()}] [ARM-0-TRANSPORT] ${msg}`;
@@ -10,31 +15,57 @@ export function runArm0Transport(fixtures) {
     return l;
   }
 
-  record('=== EXECUTING ARM 0: TRANSPORT-ONLY BASELINE ===');
-  record('Testing raw I/O fidelity and byte preservation with zero cognitive processing or routing.');
+  record('=== EXECUTING ARM 0: ENHANCED TRANSPORT-ONLY BASELINE ===');
+  record('Testing physical raw-byte persistence across filesystem I/O boundary.');
 
-  const ingestedBlobs = [];
-  for (const [key, fixture] of Object.entries(fixtures)) {
-    const rawBuffer = Buffer.from(JSON.stringify(fixture), 'utf8');
-    const sha = crypto.createHash('sha256').update(rawBuffer).digest('hex');
-    ingestedBlobs.push({
-      fixture_id: key,
-      bytes: rawBuffer.length,
-      sha256: sha,
-      transport_status: 'PRESERVED_EXACT_BYTES'
+  const fixtureFiles = fs.readdirSync(fixturesDir).filter(f => f.endsWith('.json'));
+  const ledger = [];
+
+  // Temporary transport boundary directory
+  const tempDir = path.resolve('.tmp_arm0_transport');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+  for (const file of fixtureFiles) {
+    const srcPath = path.join(fixturesDir, file);
+    const rawSrcBytes = fs.readFileSync(srcPath);
+    const srcSha = crypto.createHash('sha256').update(rawSrcBytes).digest('hex');
+
+    // Transport operation: write across I/O boundary
+    const destPath = path.join(tempDir, file);
+    fs.writeFileSync(destPath, rawSrcBytes);
+
+    // Read back across boundary
+    const rawDestBytes = fs.readFileSync(destPath);
+    const destSha = crypto.createHash('sha256').update(rawDestBytes).digest('hex');
+
+    const bytePreserved = rawSrcBytes.length === rawDestBytes.length && srcSha === destSha;
+
+    ledger.push({
+      fixture_file: file,
+      source_bytes: rawSrcBytes.length,
+      destination_bytes: rawDestBytes.length,
+      source_sha256: srcSha,
+      destination_sha256: destSha,
+      byte_identical: bytePreserved
     });
-    record(`Ingested ${key}: bytes=${rawBuffer.length}, sha256=${sha.substring(0, 16)}...`);
+
+    record(`Transported ${file}: bytes=${rawSrcBytes.length}, sha=${srcSha.slice(0, 16)}... -> match=${bytePreserved}`);
   }
 
-  // Concatenate without cross-referencing or semantic processing
-  const totalBytes = ingestedBlobs.reduce((sum, b) => sum + b.bytes, 0);
-  record(`Total transport payload: ${totalBytes} bytes across ${ingestedBlobs.length} fixtures.`);
-  record('Zero autonomous hypotheses generated. Zero crosswalks synthesized. Zero semantic operations.');
+  // Clean up transport directory
+  fs.rmSync(tempDir, { recursive: true, force: true });
+
+  const totalBytes = ledger.reduce((sum, b) => sum + b.source_bytes, 0);
+  const allIdentical = ledger.every(b => b.byte_identical);
+
+  record(`Transport complete: ${totalBytes} bytes across ${ledger.length} files. All byte identical: ${allIdentical}`);
+  record('Zero autonomous hypotheses. Zero crosswalks. Zero semantic operations.');
 
   return {
     arm: 'ARM_0_TRANSPORT_ONLY',
-    ingested_blobs: ingestedBlobs,
+    transport_ledger: ledger,
     total_bytes: totalBytes,
+    all_byte_identical: allIdentical,
     autonomous_hypotheses: 0,
     warranted_citations: 0,
     epistemic_revisions: 0,

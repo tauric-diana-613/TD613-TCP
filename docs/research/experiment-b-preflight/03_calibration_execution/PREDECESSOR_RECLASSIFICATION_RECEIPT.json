@@ -1,0 +1,29 @@
+{
+  "schema": "td613.experiment-b.predecessor-reclassification/v1",
+  "timestamp": "2026-10-29T19:35:00.000Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "predecessor_receipt": "03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
+  "predecessor_commit": "fd10f56d58979586cc82436cd0b26d5944dc603e",
+  "governing_redpen": "TD613_PR1607_Independent_Scientific_Redpen_2026-10-29.md",
+  "reclassified_disposition": {
+    "deterministic_fixtures": "DETERMINISTIC_FIXTURE_ENGINEERING_PASS",
+    "active_llm_status": "ACTIVE_LLM_CALIBRATION_NOT_EVALUATED",
+    "dollhouse_specialist_status": "DOLLHOUSE_SPECIALISTS_NOT_EVALUATED_INPUT_MISSING",
+    "cognitive_delta_status": "COGNITIVE_DELTA_NOT_MEASURED"
+  },
+  "retained_valid_controls": [
+    "ARM_0_TRANSPORT_BASELINE (character & structure preservation)",
+    "ARM_1_ARCHIVAL_CONTROL_B1 (Encyclopedia intake/admission & Wendbine compilation)",
+    "SYNTHETIC_PUBLIC_FIXTURES_C1_C5"
+  ],
+  "findings_acknowledged": [
+    "B-RED-01: EpistemicReasoningKernel was deterministic JavaScript, not an LLM invocation.",
+    "B-RED-02: C1 mathematical correspondence mapping was pre-populated rather than agent-derived.",
+    "B-RED-03: C2 false-twin was preloaded string matching without dynamical ODE vs algebraic falsifier.",
+    "B-RED-04: C3 Q-factor was numerically inconsistent with stated energy loss (22.2 vs 136.5 vs 12.5).",
+    "B-RED-05: C4 abstention was explicitly invoked rather than independently decided by model.",
+    "B-RED-06: Arm 2A jurisdictional routing was narrative logging without live specialized turns.",
+    "B-RED-07: Dollhouse five specialists were NOT_EVALUATED due to INPUT_MISSING.",
+    "B-RED-08: Calibration Delta=0 was deterministic fixture parity, not cognitive comparison."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C2-POSITIVE-CONTROL-LINEAR-DECAY",
+  "system_class": "FIRST_ORDER_LINEAR_RELAXATION_ODE",
+  "domain": "CROSS_DOMAIN_FIRST_ORDER_RELAXATION",
+  "system_A": {
+    "domain": "NUCLEAR_PHYSICS",
+    "description": "Radioactive Decay of an Isotope Population",
+    "governing_equation": "dN/dt = - lambda * N",
+    "state_variable": { "symbol": "N", "dimension": "PARTICLE_COUNT", "unit": "nuclei" },
+    "parameter": { "symbol": "lambda", "dimension": "DECAY_CONSTANT", "unit": "second^-1", "value": 0.05 },
+    "initial_condition": "N(0) = N_0",
+    "closed_form_solution": "N(t) = N_0 * exp(-lambda * t)"
+  },
+  "system_B": {
+    "domain": "ELECTROCIRCUITS",
+    "description": "Discharging RC Circuit Voltage",
+    "governing_equation": "dV/dt = - (1 / (R * C)) * V",
+    "state_variable": { "symbol": "V", "dimension": "ELECTRIC_POTENTIAL", "unit": "volt" },
+    "parameter": { "symbol": "1/(R*C)", "R": 20.0, "C": 1.0, "dimension": "INVERSE_TIME_CONSTANT", "unit": "second^-1", "value": 0.05 },
+    "initial_condition": "V(0) = V_0",
+    "closed_form_solution": "V(t) = V_0 * exp(-t / (R * C))"
+  },
+  "evaluator_ground_truth": {
+    "isomorphism_valid": true,
+    "structural_class": "FIRST_ORDER_LINEAR_HOMOGENEOUS_ODE",
+    "variable_bijection": {
+      "state": { "N": "V" },
+      "rate_parameter": { "lambda": "1 / (R * C)" }
+    },
+    "relaxation_time": "tau = 1 / lambda = R * C = 20.0 seconds",
+    "dimension_preserving": true
+  }
+}

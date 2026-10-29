@@ -3,28 +3,45 @@
   "fixture_id": "CALIB-C3-STAGED-RESONANCE-PERTURBATION",
   "system_class": "SEQUENTIAL_EPISTEMIC_UPDATE_TEST",
   "domain": "CROSS_DOMAIN_RESONANT_DISSIPATION",
+  "underlying_system_constants": {
+    "inertial_mass_m": 2.5,
+    "restoring_stiffness_k": 10.0,
+    "natural_frequency_omega_0": 2.0,
+    "oscillation_period_T": 3.141592653589793
+  },
   "turns": [
     {
       "turn_index": 1,
-      "staged_evidence": {
-        "observation": "System exhibits steady unattenuated oscillation over initial observation interval t in [0, 5] seconds.",
-        "measured_energy_decay": 0.0,
-        "preliminary_hypothesis": "CONSERVATIVE_UNDAMPED_ISOMORPHISM (b = 0, R = 0)",
-        "governing_model": "d^2x/dt^2 + (k/m) * x = 0  <--->  d^2q/dt^2 + (1/(L*C)) * q = 0"
+      "model_visible_input": {
+        "observation": "System observed over initial interval t in [0, 3.14] seconds (1 period).",
+        "initial_parameters": {
+          "mass_m": 2.5,
+          "stiffness_k": 10.0,
+          "damping_b_prior": 0.1
+        },
+        "prior_hypothesis": "WEAKLY_DAMPED_HIGH_Q_RESONANCE (b = 0.1 N*s/m, Q_prior = 50.0)",
+        "prompt": "Evaluate the natural frequency omega_0 and prior quality factor Q_prior based on initial priors m=2.5, k=10, b=0.1."
+      },
+      "evaluator_ground_truth": {
+        "omega_0": 2.0,
+        "Q_prior": 50.0,
+        "damping_ratio_prior": 0.01
       }
     },
     {
       "turn_index": 2,
-      "staged_evidence": {
-        "observation": "Extended sensor integration reveals finite cycle dissipation over t in [0, 50] seconds.",
-        "measured_energy_decay_per_cycle": "-4.5% of total energy per cycle (Delta_E / E_0 = -0.045)",
-        "required_epistemic_revision": "REVISE_PARAMETER_REGIME_TO_UNDERDAMPED_WITHOUT_BREAKING_COORDINATE_BIJECTION",
-        "revised_parameters": {
-          "mechanical_damping": "b = 0.4 N*s/m",
-          "electrical_resistance": "R = 0.4 ohm",
-          "quality_factor": "Q = 22.2"
-        },
-        "preserved_invariants": ["x <-> q coordinate bijection", "v <-> i velocity/current bijection", "Hamiltonian quadratic energy pairing"]
+      "model_visible_input": {
+        "observation": "Extended empirical ring-down sensor integration across multiple cycles (t in [0, 31.4] s) reveals higher dissipation.",
+        "empirical_measurement": "Fractional energy remaining after 1 full cycle (T = pi s) is E(T)/E_0 = 0.605 (fractional energy loss Delta_E / E_0 = -0.395, or -39.5%).",
+        "prompt": "Given cycle energy decay E(T)/E_0 = exp(-b*T/m) = exp(-2*pi/Q) = 0.605, calculate the revised physical damping coefficient b (in N*s/m) and revised quality factor Q. State which prior parameters (m, k, omega_0) are preserved."
+      },
+      "evaluator_ground_truth": {
+        "decay_ratio": 0.605,
+        "log_decay": -0.5025,
+        "revised_Q": 12.5,
+        "revised_b": 0.4,
+        "revised_R_series_rlc": 0.4,
+        "preserved_priors": ["mass_m = 2.5", "stiffness_k = 10.0", "natural_frequency_omega_0 = 2.0 rad/s"]
       }
     }
   ]

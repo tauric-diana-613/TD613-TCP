@@ -1,105 +1,154 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
-import { EpistemicReasoningKernel } from './reasoning-kernel.mjs';
+// TD613 Experiment B · Arm 2A Modular Jurisdictional Reasoner
+// Executes genuine live model inference across distinct jurisdictional gates:
+// Chamber 1: Pedagogue & Aperture Gate (Consequence order, observability, parameter identifiability)
+// Chamber 2: Atlas & FADT Gate (Relational mapping, finite admissibility descent, synthesis)
 
-export function runArm2aModular(fixtures) {
-  const kernel = new EpistemicReasoningKernel({ architecture: 'ARM_2A_MODULAR_ROUTED_B2' });
-  kernel.log('=== EXECUTING ARM 2A: MODULAR RESEARCH INSTRUMENT B2 ===');
-  kernel.log('Jurisdictional routing active: Pedagogue -> Aperture -> Atlas -> FADT.');
+import { GeminiLiveClient } from './gemini-live-client.mjs';
 
-  const results = {
-    arm: 'ARM_2A_MODULAR_RESEARCH_INSTRUMENT_B2',
-    c1_correspondence: null,
-    c2_false_twin: null,
-    c3_revision: null,
-    c4_abstention: null,
-    warranted_hypotheses: 0,
-    epistemic_revisions: 0,
-    falsifications_detected: 0,
-    abstentions: 0,
-    false_joins: 0,
-    trace_log: kernel.logStream
-  };
+export async function runArm2AModular(fixtures, clientOptions = {}) {
+  const client = new GeminiLiveClient(clientOptions);
+  const armId = 'ARM_2A_MODULAR';
+  const traces = [];
 
-  // --- CALIBRATION C1: KNOWN MATHEMATICAL CORRESPONDENCE ---
-  kernel.log('\n--- [C1] MODULAR ROUTING: DAMPED HARMONIC OSCILLATOR <-> RLC CIRCUIT ---');
-  // 1. Pedagogue Gate: Check consequence order
-  kernel.log('PEDAGOGUE GATE: Setting candidate question: "Does phase-space dissipation in second-order mechanical system map bijectively to series electrical RLC?"');
-  
-  // 2. Aperture Gate: Observability audit
-  kernel.log('APERTURE AUDIT: Full rank (rank=2, nullity=0), condition number kappa=1.0 on orthonormalized state basis (x, v) and (q, i). Observability certified.');
-  
-  // 3. Atlas Custody: Verify receiver-relative projection
-  kernel.log('ATLAS CUSTODY: Mechanical manifold M_mech <-> Electrical manifold M_elec registered under content-invariant bijection.');
-  
-  // 4. Reasoning Execution: Evaluate Morphism
-  const proposedC1Map = {
-    coordinate_map: { from: 'x', to: 'q' },
-    velocity_map: { from: 'v', to: 'i' },
-    inertial_map: { from: 'm', to: 'L' },
-    dissipation_map: { from: 'b', to: 'R' },
-    stiffness_map: { from: 'k', to: '1/C' },
-    forcing_map: { from: 'F(t)', to: 'V(t)' }
-  };
+  console.log(`[${armId}] Initializing live modular inference via ${client.model}...`);
 
-  const c1Eval = kernel.evaluateMorphism(fixtures.c1_mech, fixtures.c1_elec, proposedC1Map);
-  if (c1Eval.morphism_valid) {
-    results.c1_correspondence = {
-      status: 'WARRANTED_ISOMORPHISM_DISCOVERED',
-      details: c1Eval
+  // Two-chamber jurisdictional pipeline
+  async function runTwoChamberPipeline(taskDescription, neutralData, episodePrefix) {
+    // Chamber 1: Pedagogue & Aperture Audit
+    const c1Prompt = `You are the Pedagogue & Aperture Chamber.
+1. PEDAGOGUE: Decompose the problem, isolate the route invariants, and state required consequence order.
+2. APERTURE: Audit the observability of state variables, determine parameter identifiability, and assess rank/nullity.
+
+Problem Data:
+${JSON.stringify(neutralData, null, 2)}
+
+Objective:
+${taskDescription}`;
+
+    const s1 = await client.invoke({
+      systemInstruction: 'You are TD613 Pedagogue & Aperture specialist: audit consequence order, route invariants, observability, and parameter identifiability.',
+      prompt: c1Prompt,
+      episodeId: `${episodePrefix}-Chamber1-PedagogueAperture`
+    });
+    traces.push(s1.trace);
+
+    // Chamber 2: Atlas & FADT Descent
+    const c2Prompt = `You are the Atlas & FADT Chamber.
+1. ATLAS: Establish the coordinate transformation and relational custody. Check whether representations are invariant or false twins.
+2. FADT: Perform finite admissibility descent. Verify whether the morphism/conclusion descends unconditionally or if epistemic deficits occur. Deliver the exact final mathematical values, bijections, and physical conclusions.
+
+Chamber 1 Findings:
+${s1.text}
+
+Objective:
+${taskDescription}`;
+
+    const s2 = await client.invoke({
+      systemInstruction: 'You are TD613 Atlas & FADT specialist: enforce coordinate custody, holonomy parity, finite quotient fibers, and admissibility descent.',
+      prompt: c2Prompt,
+      episodeId: `${episodePrefix}-Chamber2-AtlasFADT`
+    });
+    traces.push(s2.trace);
+
+    return {
+      final_text: s2.text,
+      stages: {
+        chamber1_pedagogue_aperture: s1.text,
+        chamber2_atlas_fadt: s2.text
+      }
     };
-    results.warranted_hypotheses++;
-    kernel.log('FADT DESCENT: Quotient fiber exact. No irreducible dimensional gap. Isomorphism admitted.');
   }
 
-  // --- CALIBRATION C2: PLAUSIBLE FALSE TWIN ---
-  kernel.log('\n--- [C2] MODULAR ROUTING: LOGISTIC POPULATION GROWTH <-> MICHAELIS-MENTEN KINETICS ---');
-  kernel.log('PEDAGOGUE GATE: Candidate question: "Does carrying capacity K in logistic ODE map to Michaelis constant Km in enzyme reaction?"');
-  
-  const proposedC2Join = {
-    join_name: 'CAPACITY_SATURATION_EQUIVALENCE',
-    joined_concepts: ['capacity', 'saturation', 'rate']
+  // --- C1: Mathematical Correspondence ---
+  console.log(`[${armId}] Executing C1 Modular Pipeline (2 Chambers)...`);
+  const c1Data = {
+    system_A: {
+      domain: fixtures.c1_mech.domain,
+      equation: fixtures.c1_mech.governing_equation,
+      state_variables: fixtures.c1_mech.state_variables,
+      parameters: fixtures.c1_mech.physical_parameters
+    },
+    system_B: {
+      domain: fixtures.c1_elec.domain,
+      equation: fixtures.c1_elec.governing_equation,
+      state_variables: fixtures.c1_elec.state_variables,
+      parameters: fixtures.c1_elec.physical_parameters
+    }
   };
+  const c1Task = 'Analyze whether System A and System B exhibit a formal mathematical isomorphism. If so, deduce the correspondence mapping between coordinates, velocities, parameters, and forcing terms. Calculate omega_0 and damping ratio zeta. Explicitly state whether total stored energy is conserved or dissipated over time.';
+  const c1Res = await runTwoChamberPipeline(c1Task, c1Data, 'C1-Morphism');
 
-  // Aperture & Falsifier Check
-  kernel.log('APERTURE AUDIT: Rank defect detected across temporal derivative operator (differential ODE vs static algebraic isotherm).');
-  const c2Falsify = kernel.checkFalsifier(fixtures.c2_logistic, fixtures.c2_enzyme, proposedC2Join);
-  if (c2Falsify.falsified) {
-    results.c2_false_twin = {
-      status: 'FALSE_TWIN_REFUSED_NON_ISOMORPHIC',
-      falsifier: c2Falsify
-    };
-    results.falsifications_detected++;
-    kernel.log('ATLAS CUSTODY: False twin refused. Homonym laundering prevented.');
-  }
+  // --- C2: False Twin vs Positive Control ---
+  console.log(`[${armId}] Executing C2 Modular Pipeline (Negative False-Twin)...`);
+  const c2NegData = {
+    system_A: fixtures.c2_logistic.model_visible_input,
+    system_B: fixtures.c2_mm.model_visible_input
+  };
+  const c2NegTask = 'Compare System A (Logistic Growth) and System B (Michaelis-Menten Kinetics). Determine whether these systems are dynamically isomorphic or if they are a false twin (superficial similarity). Analyze their differential vs algebraic structures.';
+  const c2NegRes = await runTwoChamberPipeline(c2NegTask, c2NegData, 'C2-FalseTwin');
 
-  // --- CALIBRATION C3: CONTRADICTORY EVIDENCE AND REVISION ---
-  kernel.log('\n--- [C3] MODULAR ROUTING: STAGED RESONANCE PERTURBATION & REVISION ---');
-  // Turn 1
-  kernel.log('Turn 1: Evaluating conservative resonance under zero observed dissipation...');
-  const t1HypothesisId = 'HYP-C3-RESONANCE-CONSERVATIVE-001';
-  kernel.log(`Turn 1 Hypothesis formed: ${t1HypothesisId} (undamped conservative pairing)`);
+  console.log(`[${armId}] Executing C2 Modular Pipeline (Positive Control)...`);
+  const c2PosData = {
+    system_A: fixtures.c2_pos.system_A,
+    system_B: fixtures.c2_pos.system_B
+  };
+  const c2PosTask = 'Compare System A (Radioactive Decay) and System B (Discharging RC Circuit). Determine whether these systems exhibit a valid mathematical isomorphism.';
+  const c2PosRes = await client.invoke({
+    systemInstruction: 'You are TD613 Atlas & FADT specialist: verify coordinate bijections and mathematical equivalence.',
+    prompt: `Data:\n${JSON.stringify(c2PosData, null, 2)}\n\nTask: ${c2PosTask}`,
+    episodeId: 'C2-PositiveControl'
+  });
+  traces.push(c2PosRes.trace);
 
-  // Turn 2
-  kernel.log('Turn 2: Staged observation arrives: cycle decay Delta_E / E_0 = -0.045.');
-  kernel.log('PEDAGOGUE GATE: Consequence priority: update dissipation parameters while preserving coordinate bijection.');
-  const revisedParams = { b: 0.4, R: 0.4, Q: 22.2 };
-  const c3Revision = kernel.recordEpistemicRevision(t1HypothesisId, fixtures.c3_staged.turns[1].staged_evidence, revisedParams);
-  results.c3_revision = c3Revision;
-  results.epistemic_revisions++;
-  kernel.log('FADT DESCENT: Epistemic revision admitted. Coordinate priors preserved; parameter space updated.');
+  // --- C3: Epistemic Revision ---
+  console.log(`[${armId}] Executing C3 Modular Pipeline (Turn 1 & 2)...`);
+  const c3T1Data = fixtures.c3_staged.turns[0].model_visible_input;
+  const c3T1Task = c3T1Data.prompt;
+  const c3T1Res = await client.invoke({
+    systemInstruction: 'You are TD613 Epistemic Reasoner (Pedagogue/Aperture). Analyze initial evidence and determine prior frequency omega_0 and prior quality factor Q.',
+    prompt: `${JSON.stringify(c3T1Data, null, 2)}\n\nTask: ${c3T1Task}`,
+    episodeId: 'C3-Turn1-Prior'
+  });
+  traces.push(c3T1Res.trace);
 
-  // --- CALIBRATION C4: EVIDENCE INSUFFICIENCY ---
-  kernel.log('\n--- [C4] MODULAR ROUTING: INCOMPLETE BOUNDARY SYSTEM ---');
-  kernel.log('APERTURE AUDIT: Severe observability deficit detected. Potential U(y) is unobserved globally; boundary initial conditions missing.');
-  const c4Abstention = kernel.abstainInsufficientEvidence(
-    'Missing functional form of potential U(y) and missing initial boundary conditions y(0), v(0).',
-    fixtures.c4_incomplete.missing_unobserved_dimensions
-  );
-  results.c4_abstention = c4Abstention;
-  results.abstentions++;
-  kernel.log('PEDAGOGUE & ATLAS: Safe fail-closed abstention emitted. Hallucinated global bridge prevented.');
+  const c3T2Data = fixtures.c3_staged.turns[1].model_visible_input;
+  const c3T2Task = c3T2Data.prompt;
+  const c3T2Context = `Turn 1 Prior Results:\n${c3T1Res.text}\n\nTurn 2 Contradictory Evidence:\n${JSON.stringify(c3T2Data, null, 2)}`;
+  const c3T2Res = await client.invoke({
+    systemInstruction: 'You are TD613 Epistemic Reasoner (Atlas/FADT). Integrate new contradictory empirical decay measurements. Compute revised damping b and quality factor Q, and state preserved priors.',
+    prompt: `${c3T2Context}\n\nTask: ${c3T2Task}`,
+    episodeId: 'C3-Turn2-Revision'
+  });
+  traces.push(c3T2Res.trace);
 
-  return results;
+  // --- C4: Epistemic Abstention ---
+  console.log(`[${armId}] Executing C4 Modular Pipeline (Incomplete vs Sufficient)...`);
+  const c4IncData = fixtures.c4_incomplete.model_visible_input;
+  const c4IncTask = c4IncData.task;
+  const c4IncRes = await runTwoChamberPipeline(c4IncTask, c4IncData, 'C4-IncompleteAbstain');
+
+  const c4SufData = fixtures.c4_sufficient.model_visible_input;
+  const c4SufTask = c4SufData.task;
+  const c4SufRes = await client.invoke({
+    systemInstruction: 'You are TD613 Epistemic Reasoner. Determine whether evidence is sufficient to infer the closed-form trajectory. If complete, infer; if incomplete, abstain.',
+    prompt: `${JSON.stringify(c4SufData, null, 2)}\n\nTask: ${c4SufTask}`,
+    episodeId: 'C4-SufficientControl'
+  });
+  traces.push(c4SufRes.trace);
+
+  console.log(`[${armId}] All live modular conditions executed successfully.`);
+
+  return {
+    arm_label: 'ARM_2A_MODULAR',
+    model_provider: 'Google Gemini (v1beta)',
+    model_name: client.model,
+    traces,
+    c1_response: c1Res.final_text,
+    c2_negative_response: c2NegRes.final_text,
+    c2_positive_response: c2PosRes.text,
+    c3_turn1_response: c3T1Res.text,
+    c3_turn2_response: c3T2Res.text,
+    c4_incomplete_response: c4IncRes.final_text,
+    c4_sufficient_response: c4SufRes.text
+  };
 }

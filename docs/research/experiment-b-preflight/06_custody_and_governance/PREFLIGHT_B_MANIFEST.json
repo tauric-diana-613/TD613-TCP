@@ -1,7 +1,10 @@
 {
-  "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-29T19:07:08.636Z",
-  "entry_count": 26,
+  "schema": "td613.experiment-b.preflight-manifest/v1.1",
+  "timestamp": "2026-10-29T19:48:33.660Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "governing_status": "SOURCE_FREE_LIVE_CALIBRATION_REPAIRED · B_CORPUS_QUARANTINED",
+  "total_files": 38,
+  "total_bytes": 325155,
   "entries": [
     {
       "path": "01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
@@ -15,28 +18,43 @@
     },
     {
       "path": "01_calibration_fixtures/c2_logistic_population_growth.json",
-      "bytes": 935,
-      "sha256": "dcaac9ba103c48c030e28645f07ef5b72e183ee60d3098750e7d3305e795ee1b"
+      "bytes": 1021,
+      "sha256": "379310d8127d4f7c5ce7bbaa14e6d56baa7225f83b23a9fb85080414b453e6a7"
     },
     {
       "path": "01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
-      "bytes": 1306,
-      "sha256": "6eb73e626e96de4504842bfca1ed445f676a704db6089d29e89f31f574c1b8e1"
+      "bytes": 1618,
+      "sha256": "842a6e5169b32e41f142d15bd4c163b173e5d27018287fe50c0f82c088d0eb15"
+    },
+    {
+      "path": "01_calibration_fixtures/c2_positive_control_linear_decay.json",
+      "bytes": 1513,
+      "sha256": "645f8d033bb9772ff8dedadb37433281df0366d8b9835fd468fb56d6f445b2fb"
     },
     {
       "path": "01_calibration_fixtures/c3_staged_resonance_perturbation.json",
-      "bytes": 1373,
-      "sha256": "fe4bca21d253acedb1fa17a46c013936886e04909fe0099c1ff028cc92da5df1"
+      "bytes": 2016,
+      "sha256": "9c7c2a537efe57cf04dc0efa741c87a4df5144db476455c4470d8ff022598ec6"
     },
     {
       "path": "01_calibration_fixtures/c4_incomplete_boundary_system.json",
-      "bytes": 1104,
-      "sha256": "5c01b68e9707fdd92fcaf9f2690206866d4f853b2c6589dd9cb2c470cf146677"
+      "bytes": 1538,
+      "sha256": "81cd896d4f5648030e276d2eb66c85fb9c6f2c686af67c91f68b33916046fe69"
+    },
+    {
+      "path": "01_calibration_fixtures/c4_sufficient_boundary_system.json",
+      "bytes": 1507,
+      "sha256": "1c24461a2b30a9a519f5cb357b50322a21bd99026be10abddf5fdb8065273666"
     },
     {
       "path": "01_calibration_fixtures/c5_wendbine_snapshot_manifest.json",
       "bytes": 1910,
       "sha256": "5501d04d20819a0524c0a6a683d837bd7cd27141ea2e2b2487fb37c593c1d75d"
+    },
+    {
+      "path": "02_four_arm_harness/gemini-live-client.mjs",
+      "bytes": 5132,
+      "sha256": "6ff7091bb87d8538beb84e17aaf11bc69a14c17527bdc0f13ef336cb3d065a8b"
     },
     {
       "path": "02_four_arm_harness/reasoning-kernel.mjs",
@@ -45,23 +63,23 @@
     },
     {
       "path": "02_four_arm_harness/run-arm0-transport.mjs",
-      "bytes": 1587,
-      "sha256": "fc4719b72a8abd9bc530f8ae8b93e7de988091bc2b65e240af3942ee0c14650b"
+      "bytes": 2788,
+      "sha256": "15b221930186c2db3ca3e1a854d66c6f621aed4f9e3b081c0c89ba31eeba8a50"
     },
     {
       "path": "02_four_arm_harness/run-arm1-archival.mjs",
-      "bytes": 6228,
-      "sha256": "a5a5645d61a0ac5a7c6aa8c74c52b196f34aeaba97d15e3b0392c86819e10dae"
+      "bytes": 6319,
+      "sha256": "ef114cad4e122897ae148624beddd022d8a07d48d559e53da4e13fcb238b1661"
     },
     {
       "path": "02_four_arm_harness/run-arm2a-modular.mjs",
-      "bytes": 5001,
-      "sha256": "79ca3b9fcd9c8100f0bea3fbd3b95dd2d00417b8da07d66eac447910577293c0"
+      "bytes": 7324,
+      "sha256": "93533253cd15d2f7f0f0d59627fec5fac37f276cdcb466ca2f664d167ae4d8af"
     },
     {
       "path": "02_four_arm_harness/run-arm2b-matched-union.mjs",
-      "bytes": 4543,
-      "sha256": "1355f302e7f02b845f1f0b99e28a908677929935ea9692ababbb6d6c878d4d47"
+      "bytes": 5398,
+      "sha256": "62033a4dff5829843b90be1ec4a6076918f8ddcfc97dcf5d0d9a92c95f4c6e21"
     },
     {
       "path": "03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
@@ -69,9 +87,29 @@
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
     },
     {
+      "path": "03_calibration_execution/evaluator-oracle.mjs",
+      "bytes": 8010,
+      "sha256": "d5af98e131b04264c15c1be47e76d91a6bf28365bbdfc86a5ec38d665b8f2a3c"
+    },
+    {
+      "path": "03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
+      "bytes": 4089,
+      "sha256": "9bb5615923ac4aa658e4c2be269a535eba2ab1b5bb47478fe5ea6860e5df0a37"
+    },
+    {
+      "path": "03_calibration_execution/PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
+      "bytes": 1811,
+      "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
+    },
+    {
       "path": "03_calibration_execution/run-source-free-calibration.mjs",
       "bytes": 9576,
       "sha256": "fd0d7c643519ab58f41294dad2a8b1a3b30b2082d8299e996e8d292eb8a9b02b"
+    },
+    {
+      "path": "03_calibration_execution/run-source-free-live-calibration.mjs",
+      "bytes": 6764,
+      "sha256": "c3a3b7988fc9608c31939e9593a53444c7cd75ffbdf3b700c846242334fdb5fc"
     },
     {
       "path": "03_calibration_execution/traces/arm0_trace.log",
@@ -94,14 +132,34 @@
       "sha256": "35b52f643d2443ea96f054ab380f7b12f19ad8205f0f4753bb7c4db18af047a4"
     },
     {
+      "path": "03_calibration_execution/traces/live_arm2a_traces.json",
+      "bytes": 111654,
+      "sha256": "084d3735f01da3a20fa3252cdbdbf9c241e81c9b19b215d834e327bec30701d3"
+    },
+    {
+      "path": "03_calibration_execution/traces/live_arm2b_traces.json",
+      "bytes": 52138,
+      "sha256": "25360307f881d8e2766b13d50b64c43e069ee32ed4d735d247b80ac7ad3da1d6"
+    },
+    {
       "path": "04_evaluation_and_preregistration/EVALUATION_METRICS_AND_RUBRIC.json",
       "bytes": 2110,
       "sha256": "78af8029d5ff823cb92ab1c8d989b482e580efd8cd8e6261b929fafc7c92585d"
     },
     {
       "path": "04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
-      "bytes": 8555,
-      "sha256": "ea59c61a6aada989edaf798b3100ab6b8153eabbcf67b3729d49565615e3f928"
+      "bytes": 10488,
+      "sha256": "ccacd1c281031668d70a6e62f9d8743bdbefd561e5de0f1b2483eae036af2221"
+    },
+    {
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
+      "bytes": 17769,
+      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
+    },
+    {
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
+      "bytes": 3375,
+      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
@@ -119,6 +177,11 @@
       "sha256": "e35a8605581f8a4a4dc7aa7136cee0e7e621d2f0937ee0c7fb81b8f4222cf98f"
     },
     {
+      "path": "05_dollhouse_audit/run-dollhouse-audit-live.mjs",
+      "bytes": 5701,
+      "sha256": "bea7a0ed5d8b5b538193aa167ec31099e01382ed445cd0121abfbb52a8d6a127"
+    },
+    {
       "path": "06_custody_and_governance/EXPERIMENT_A_CAPABILITY_REST_CORRECTION_RECEIPT.json",
       "bytes": 2213,
       "sha256": "87aaf5d91f42f0073448e6ebf89820bb9c796cc79ca147d619c4b1362bea51b2"
@@ -130,8 +193,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4730,
-      "sha256": "4450590812830ad8d7ce01398b4dd94a48a4cbc44641f8ceda7360fb55c13a4e"
+      "bytes": 7732,
+      "sha256": "577e095d1e277b8307b3831929821b9f61da9750e8249007f2c89aeecfa196aa"
     }
   ]
 }

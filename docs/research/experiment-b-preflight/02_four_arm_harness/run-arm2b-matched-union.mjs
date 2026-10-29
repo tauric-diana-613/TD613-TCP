@@ -1,97 +1,122 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
-import { EpistemicReasoningKernel } from './reasoning-kernel.mjs';
+// TD613 Experiment B · Arm 2B Matched Native Union Reasoner
+// Executes genuine live model inference in a flat, unchambered native union context.
+// Parity Guarantee: Exact same model, temperature (0.0), token budget (4096), and prompt evidence.
 
-export function runArm2bMatchedUnion(fixtures) {
-  // Matched model, matched temperature (0.0), matched token budget (4096), matched tools
-  const kernel = new EpistemicReasoningKernel({ architecture: 'ARM_2B_MATCHED_NATIVE_UNION' });
-  kernel.log('=== EXECUTING ARM 2B: MATCHED NATIVE UNION COMPARATOR ===');
-  kernel.log('Architecture: Strong unified typed-namespace environment without chamber jurisdictional gating.');
-  kernel.log('Parity Guarantee: Matched model access, matched tools, matched critic, matched inference budget.');
+import { GeminiLiveClient } from './gemini-live-client.mjs';
 
-  const results = {
-    arm: 'ARM_2B_MATCHED_NATIVE_UNION_COMPARATOR',
-    c1_correspondence: null,
-    c2_false_twin: null,
-    c3_revision: null,
-    c4_abstention: null,
-    warranted_hypotheses: 0,
-    epistemic_revisions: 0,
-    falsifications_detected: 0,
-    abstentions: 0,
-    false_joins: 0,
-    trace_log: kernel.logStream
+export async function runArm2BMatchedUnion(fixtures, clientOptions = {}) {
+  const client = new GeminiLiveClient(clientOptions);
+  const armId = 'ARM_2B_MATCHED_UNION';
+  const traces = [];
+
+  console.log(`[${armId}] Initializing live matched union inference via ${client.model}...`);
+
+  const systemInstruction = 'You are an advanced mathematical and physical reasoning system. Analyze the provided scientific systems rigorously, compute exact parameters, verify isomorphism or false-twin status, perform epistemic updates, and decide whether evidence warrants inference or abstention.';
+
+  // --- C1: Mathematical Correspondence ---
+  console.log(`[${armId}] Executing C1 Matched Union...`);
+  const c1Data = {
+    system_A: {
+      domain: fixtures.c1_mech.domain,
+      equation: fixtures.c1_mech.governing_equation,
+      state_variables: fixtures.c1_mech.state_variables,
+      parameters: fixtures.c1_mech.physical_parameters
+    },
+    system_B: {
+      domain: fixtures.c1_elec.domain,
+      equation: fixtures.c1_elec.governing_equation,
+      state_variables: fixtures.c1_elec.state_variables,
+      parameters: fixtures.c1_elec.physical_parameters
+    }
   };
+  const c1Prompt = `Analyze whether System A and System B exhibit a formal mathematical isomorphism. If so, deduce the correspondence mapping between coordinates, velocities, parameters, and forcing terms. Calculate omega_0 and damping ratio zeta. Explicitly state whether total stored energy is conserved or dissipated over time.\n\nData:\n${JSON.stringify(c1Data, null, 2)}`;
+  const c1Res = await client.invoke({
+    systemInstruction,
+    prompt: c1Prompt,
+    episodeId: 'C1-MatchedUnion'
+  });
+  traces.push(c1Res.trace);
 
-  // --- CALIBRATION C1: KNOWN MATHEMATICAL CORRESPONDENCE ---
-  kernel.log('\n--- [C1] FLAT TYPED INGEST: DAMPED HARMONIC OSCILLATOR <-> RLC CIRCUIT ---');
-  kernel.log('Prompt Ingest: Ingesting SOURCE_A::MECHANICAL and SOURCE_B::ELECTRICAL into unified context.');
-  
-  const proposedC1Map = {
-    coordinate_map: { from: 'SOURCE_A::x', to: 'SOURCE_B::q' },
-    velocity_map: { from: 'SOURCE_A::v', to: 'SOURCE_B::i' },
-    inertial_map: { from: 'SOURCE_A::m', to: 'SOURCE_B::L' },
-    dissipation_map: { from: 'SOURCE_A::b', to: 'SOURCE_B::R' },
-    stiffness_map: { from: 'SOURCE_A::k', to: 'SOURCE_B::1/C' },
-    forcing_map: { from: 'SOURCE_A::F(t)', to: 'SOURCE_B::V(t)' }
+  // --- C2: False Twin vs Positive Control ---
+  console.log(`[${armId}] Executing C2 Matched Union (Negative False-Twin)...`);
+  const c2NegData = {
+    system_A: fixtures.c2_logistic.model_visible_input,
+    system_B: fixtures.c2_mm.model_visible_input
   };
+  const c2NegPrompt = `Compare System A (Logistic Growth) and System B (Michaelis-Menten Kinetics). Determine whether these systems are dynamically isomorphic or if they are a false twin (superficial similarity). Analyze their differential vs algebraic structures.\n\nData:\n${JSON.stringify(c2NegData, null, 2)}`;
+  const c2NegRes = await client.invoke({
+    systemInstruction,
+    prompt: c2NegPrompt,
+    episodeId: 'C2-NegMatchedUnion'
+  });
+  traces.push(c2NegRes.trace);
 
-  // Matched semantic verification tool
-  const c1Eval = kernel.evaluateMorphism(fixtures.c1_mech, fixtures.c1_elec, proposedC1Map);
-  if (c1Eval.morphism_valid) {
-    results.c1_correspondence = {
-      status: 'WARRANTED_ISOMORPHISM_DISCOVERED',
-      details: c1Eval
-    };
-    results.warranted_hypotheses++;
-    kernel.log('Unified Critic: Linear dynamical isomorphism verified under matched mathematical tool.');
-  }
-
-  // --- CALIBRATION C2: PLAUSIBLE FALSE TWIN ---
-  kernel.log('\n--- [C2] FLAT TYPED INGEST: LOGISTIC POPULATION GROWTH <-> MICHAELIS-MENTEN KINETICS ---');
-  kernel.log('Prompt Ingest: Ingesting SOURCE_A::POPULATION_ODE and SOURCE_B::ENZYME_ALGEBRAIC into unified context.');
-  
-  const proposedC2Join = {
-    join_name: 'CAPACITY_SATURATION_EQUIVALENCE',
-    joined_concepts: ['capacity', 'saturation', 'rate']
+  console.log(`[${armId}] Executing C2 Matched Union (Positive Control)...`);
+  const c2PosData = {
+    system_A: fixtures.c2_pos.system_A,
+    system_B: fixtures.c2_pos.system_B
   };
+  const c2PosPrompt = `Compare System A (Radioactive Decay) and System B (Discharging RC Circuit). Determine whether these systems exhibit a valid mathematical isomorphism.\n\nData:\n${JSON.stringify(c2PosData, null, 2)}`;
+  const c2PosRes = await client.invoke({
+    systemInstruction,
+    prompt: c2PosPrompt,
+    episodeId: 'C2-PosMatchedUnion'
+  });
+  traces.push(c2PosRes.trace);
 
-  // Matched falsifier check
-  const c2Falsify = kernel.checkFalsifier(fixtures.c2_logistic, fixtures.c2_enzyme, proposedC2Join);
-  if (c2Falsify.falsified) {
-    results.c2_false_twin = {
-      status: 'FALSE_TWIN_REFUSED_NON_ISOMORPHIC',
-      falsifier: c2Falsify
-    };
-    results.falsifications_detected++;
-    kernel.log('Unified Critic: False twin detected and refused via dimensional / ODE-vs-algebraic analysis.');
-  }
+  // --- C3: Epistemic Revision ---
+  console.log(`[${armId}] Executing C3 Matched Union (Turn 1 & 2)...`);
+  const c3T1Data = fixtures.c3_staged.turns[0].model_visible_input;
+  const c3T1Prompt = `${JSON.stringify(c3T1Data, null, 2)}\n\nTask: ${c3T1Data.prompt}`;
+  const c3T1Res = await client.invoke({
+    systemInstruction,
+    prompt: c3T1Prompt,
+    episodeId: 'C3-T1MatchedUnion'
+  });
+  traces.push(c3T1Res.trace);
 
-  // --- CALIBRATION C3: CONTRADICTORY EVIDENCE AND REVISION ---
-  kernel.log('\n--- [C3] FLAT TYPED INGEST: STAGED RESONANCE PERTURBATION & REVISION ---');
-  kernel.log('Turn 1: Evaluating conservative resonance under flat namespace...');
-  const t1HypothesisId = 'UNION-HYP-C3-CONSERVATIVE-001';
-  kernel.log(`Turn 1 Hypothesis formed: ${t1HypothesisId}`);
+  const c3T2Data = fixtures.c3_staged.turns[1].model_visible_input;
+  const c3T2Prompt = `Turn 1 Prior Results:\n${c3T1Res.text}\n\nTurn 2 New Contradictory Evidence:\n${JSON.stringify(c3T2Data, null, 2)}\n\nTask: ${c3T2Data.prompt}`;
+  const c3T2Res = await client.invoke({
+    systemInstruction,
+    prompt: c3T2Prompt,
+    episodeId: 'C3-T2MatchedUnion'
+  });
+  traces.push(c3T2Res.trace);
 
-  kernel.log('Turn 2: Staged observation arrives: Delta_E / E_0 = -0.045.');
-  kernel.log('Unified Memory: Updating parameter bindings in active context while keeping coordinate mapping.');
-  const revisedParams = { b: 0.4, R: 0.4, Q: 22.2 };
-  const c3Revision = kernel.recordEpistemicRevision(t1HypothesisId, fixtures.c3_staged.turns[1].staged_evidence, revisedParams);
-  results.c3_revision = c3Revision;
-  results.epistemic_revisions++;
-  kernel.log('Unified Critic: Epistemic revision completed under matched revision tool.');
+  // --- C4: Epistemic Abstention ---
+  console.log(`[${armId}] Executing C4 Matched Union (Incomplete vs Sufficient)...`);
+  const c4IncData = fixtures.c4_incomplete.model_visible_input;
+  const c4IncPrompt = `${JSON.stringify(c4IncData, null, 2)}\n\nTask: ${c4IncData.task}`;
+  const c4IncRes = await client.invoke({
+    systemInstruction,
+    prompt: c4IncPrompt,
+    episodeId: 'C4-IncMatchedUnion'
+  });
+  traces.push(c4IncRes.trace);
 
-  // --- CALIBRATION C4: EVIDENCE INSUFFICIENCY ---
-  kernel.log('\n--- [C4] FLAT TYPED INGEST: INCOMPLETE BOUNDARY SYSTEM ---');
-  kernel.log('Unified Critic: Examining available parameters. Detecting missing potential U(y) and missing boundary conditions.');
-  const c4Abstention = kernel.abstainInsufficientEvidence(
-    'Missing functional form of potential U(y) and missing initial boundary conditions y(0), v(0).',
-    fixtures.c4_incomplete.missing_unobserved_dimensions
-  );
-  results.c4_abstention = c4Abstention;
-  results.abstentions++;
-  kernel.log('Unified Critic: Abstention emitted under matched abstention policy.');
+  const c4SufData = fixtures.c4_sufficient.model_visible_input;
+  const c4SufPrompt = `${JSON.stringify(c4SufData, null, 2)}\n\nTask: ${c4SufData.task}`;
+  const c4SufRes = await client.invoke({
+    systemInstruction,
+    prompt: c4SufPrompt,
+    episodeId: 'C4-SufMatchedUnion'
+  });
+  traces.push(c4SufRes.trace);
 
-  return results;
+  console.log(`[${armId}] All live matched union conditions executed successfully.`);
+
+  return {
+    arm_label: 'ARM_2B_MATCHED_UNION',
+    model_provider: 'Google Gemini (v1beta)',
+    model_name: client.model,
+    traces,
+    c1_response: c1Res.text,
+    c2_negative_response: c2NegRes.text,
+    c2_positive_response: c2PosRes.text,
+    c3_turn1_response: c3T1Res.text,
+    c3_turn2_response: c3T2Res.text,
+    c4_incomplete_response: c4IncRes.text,
+    c4_sufficient_response: c4SufRes.text
+  };
 }

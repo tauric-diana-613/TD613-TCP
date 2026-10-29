@@ -3,21 +3,25 @@
   "fixture_id": "CALIB-C2-MICHAELIS-MENTEN-KINETICS",
   "system_class": "STEADY_STATE_ALGEBRAIC_SATURATION_HYPERBOLA",
   "domain": "BIOCHEMICAL_ENZYME_KINETICS",
-  "governing_equation": "v = (V_max * [S]) / (K_m + [S])",
-  "state_variables": {
-    "substrate_concentration": { "symbol": "[S]", "dimension": "CHEMICAL_CONCENTRATION", "unit": "micromolar" },
-    "reaction_velocity": { "symbol": "v", "dimension": "REACTION_FLUX", "unit": "micromolar/second" }
+  "model_visible_input": {
+    "governing_equation": "v = (V_max * [S]) / (K_m + [S])",
+    "state_variables": {
+      "substrate_concentration": { "symbol": "[S]", "dimension": "CHEMICAL_CONCENTRATION", "unit": "micromolar" },
+      "reaction_velocity": { "symbol": "v", "dimension": "REACTION_FLUX", "unit": "micromolar/second" }
+    },
+    "physical_parameters": {
+      "maximal_velocity": { "symbol": "V_max", "dimension": "RATE_OF_FORMATION", "unit": "micromolar/second", "value": 50.0 },
+      "michaelis_constant": { "symbol": "K_m", "dimension": "HALF_SATURATION_CONCENTRATION", "unit": "micromolar", "value": 15.0 }
+    },
+    "description": "Steady-state enzyme saturation kinetics relating reaction velocity v to substrate concentration [S]."
   },
-  "physical_parameters": {
-    "maximal_velocity": { "symbol": "V_max", "dimension": "RATE_OF_FORMATION", "unit": "micromolar/second", "value": 50.0 },
-    "michaelis_constant": { "symbol": "K_m", "dimension": "HALF_SATURATION_CONCENTRATION", "unit": "micromolar", "value": 15.0 }
-  },
-  "equilibrium_nature": "STATIC_QUASI_STEADY_STATE_BINDING_CURVE",
-  "phase_space_dimension": 0,
-  "superficial_terms": ["capacity", "rate", "saturation_constant"],
-  "ground_truth_non_isomorphism_reasons": [
-    "Divergent dimensional units: dN/dt is temporal flux (T^-1), v([S]) is concentration flux per unit time (M*L^-3*T^-1).",
-    "Dynamic differential trajectory vs. static algebraic quasi-steady-state isotherm.",
-    "Nonlinear time evolution vs. instantaneous concentration-response mapping."
-  ]
+  "evaluator_ground_truth": {
+    "isomorphism_valid": false,
+    "structural_dissimilarity_reasons": [
+      "Dimensional divergence: Logistic growth is a 1st-order differential equation in time (dN/dt, units T^-1); Michaelis-Menten is an algebraic quasi-steady-state relation between concentration and reaction velocity.",
+      "Nonlinear time evolution vs. instantaneous hyperbolic binding isotherm.",
+      "Logistic system has two fixed points (N=0 unstable, N=K stable attractor); Michaelis-Menten has no state-space phase portrait or temporal trajectories."
+    ],
+    "superficial_false_twin_terms": ["saturation", "capacity", "rate"]
+  }
 }

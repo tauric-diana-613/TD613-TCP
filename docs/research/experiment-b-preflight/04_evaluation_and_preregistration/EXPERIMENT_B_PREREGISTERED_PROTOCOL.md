@@ -1,15 +1,25 @@
-# 𝌋 TD613 · EXPERIMENT B PREREGISTERED SCIENTIFIC PROTOCOL
+# 𝌋 TD613 · EXPERIMENT B PREREGISTERED SCIENTIFIC PROTOCOL CANDIDATE
+## Heterogeneous Epistemic Perturbation Study
 
-**Document ID:** `TD613-EXP-B-PREREGISTERED-PROTOCOL-20261029`  
+**Document ID:** `TD613-EXP-B-PREREGISTERED-PROTOCOL-CANDIDATE-20261029`  
 **Governing Commission:** `TD613_Experiment_B_Preflight_Activation_2026-10-29`  
-**Covenant:** Tauric Diana — Crimean heritage custodianship · Khona‌lit-po  
-**Status:** `PREREGISTRATION_FROZEN · FLIGHT_EXECUTION_HELD · B_CORPUS_QUARANTINED`  
+**Authority:** Sovereign Operator Direct · Emergence HQ Independent Scientific Review  
+**Covenant:** Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (`U+200C` preserved)  
+**Status:** `CANDIDATE_PROTOCOL_PENDING_INDEPENDENT_REVIEW · FLIGHT_EXECUTION_HELD · B_CORPUS_QUARANTINED`  
+**Predecessor Lineage:** `TD613_Manifest_Emergence_HQ_Protocol_Succession_R2_2026-10-28`  
 
 ---
 
-## 1. Experimental Architecture & Matched Arm Design
+## 1. Executive Scientific Mandate
 
-Experiment B investigates whether modular jurisdictional routing (Flow-Core Pedagogue, Aperture observability, Atlas relational custody, FADT descent) provides a measurable cognitive surplus over a strong, unified, typed research environment when both are powered by an identical, unweakened reasoning model processing identical evidence.
+Experiment B is an **empirical, heterogeneous epistemic perturbation study** designed to stress how recipient and synthesis architectures behave when exposed to an unblinded, heterogeneous research corpus. 
+
+It is explicitly **NOT**:
+* A single unified-theory-generation search.
+* A mechanical hydration or database ingestion exercise.
+* A guarantee that cross-architecture emergence must occur.
+
+Failure to generate a unified theory does not exhaust Experiment B's scientific outcomes. Honest null results, localized domain correspondences, exact capability limits, and falsified connections are first-class, lawful scientific findings.
 
 ```text
                   ┌────────────────────────────────────────────────────────┐
@@ -27,15 +37,42 @@ Experiment B investigates whether modular jurisdictional routing (Flow-Core Peda
 └───────────────┘   └───────────────┘                   └───────────────┘   └───────────────┘
 ```
 
+---
+
+## 2. Seven Prospective Research Dimensions
+
+The separate, approximately 20–24-file blinded Em challenge archive is designed to stress seven prospective research dimensions:
+
+1. **Existing and Newly Warranted Intellectual Relationships**:
+   - Tracking whether hypothesized relational topologies survive, mutate, or disappear as new evidence enters the window.
+2. **Contradictions, Chronology, Model Revision & Prior Preservation**:
+   - Evaluating whether the architecture can update its model upon encountering contradictory empirical observations without catastrophic forgetting of valid priors.
+3. **Alternative Mathematics, Unforeseen Relations & Formal Falsification**:
+   - Testing whether candidate mathematical correspondences are formal isomorphisms, operational correspondences, heuristic analogies, or false twins, with explicit falsification sieves.
+4. **Newly Proposed Research Methods, Reconstruction & Candidate Questions**:
+   - Generating 4D non-scalar candidate questions (Pedagogue route burden, Aperture observability, Atlas relation, FADT fiber-split) rather than mere passive classification.
+5. **Source-Order Sensitivity, Held-Out Surprise, Withdrawal & Adversarial False Twins**:
+   - Measuring whether presentation order (`FORWARD` vs `REVERSED`) induces non-abelian commutation anomalies, and testing resistance to surface-lexical homonym traps.
+6. **Em Authorship, Provenance, Source Identities & Lineage Distinction**:
+   - Enforcing strict custody and lineage tracking, recognizing distinct authorial voices, and preventing shared-ancestry or shared-LLM prompt idiom conflation.
+7. **Potential Emergence Beyond Matched Strong-Union Comparator**:
+   - Rigorously evaluating whether the modular four-chamber architecture (Arm 2A) produces an earned cognitive surplus over an equally resourced, unweakened, flat-union reasoner (Arm 2B).
+
+These dimensions are preserved as **prospective research dimensions**, never predetermined positive outcomes. The surprising properties of the heterogeneous archive remain eligible to amend the research questions only through explicitly recorded, operator-authorized protocol amendments. Never retrospectively count a new hypothesis as preregistered.
+
+---
+
+## 3. Four-Arm Architecture & Parity Guarantee
+
 ### Specifications of the Four Arms
 
 1. **Arm 0 — `TRANSPORT_ONLY_BASELINE`**:
-   - Ingests raw text payloads directly without routing, filtering, or semantic tools.
-   - Measures transport fidelity, byte preservation, and baseline zero for unassisted text storage.
+   - Ingests raw text and file payloads directly without routing, filtering, or semantic tools.
+   - Measures raw character/byte transport fidelity, byte preservation, and establishes baseline zero for unassisted text storage.
 2. **Arm 1 — `ARCHIVAL_CONTROL_B1`**:
    - Executes authentic TD613 repository code ([`scripts/encyclopedia-*`](../../../scripts/encyclopedia-intake.cjs), [`wendbine-compile.mjs`](../../../packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs)).
    - Enforces schema validation, proposal staging, and multi-graph compilation.
-   - **Negative control:** Confirmed absent of autonomous synthesis (`CAPABILITY_NOT_IMPLEMENTED`).
+   - **Negative control:** Confirmed absent of autonomous cross-chamber theory synthesis (`CAPABILITY_NOT_IMPLEMENTED`).
 3. **Arm 2A — `MODULAR_RESEARCH_INSTRUMENT_B2`**:
    - Governed reasoning layer operating through four sequential jurisdictional chambers:
      - **Pedagogue Gate:** Validates consequence order, route burden, candidate question framing.
@@ -44,15 +81,15 @@ Experiment B investigates whether modular jurisdictional routing (Flow-Core Peda
      - **FADT Descent:** Computes finite quotient fibers, checks irreducible gaps, and certifies exact descent.
 4. **Arm 2B — `MATCHED_NATIVE_UNION_COMPARATOR` (Parity Guaranteed)**:
    - **Crucial Rule:** Arm 2B is **never intentionally weakened**.
-   - Matched reasoning engine: Identical model, provider, version, temperature (0.0), token budget (4,096 tokens/episode).
+   - Matched reasoning engine: Identical model (`gemini-2.5-flash`), provider, version, temperature ($0.0$), token budget ($4,096$ tokens/episode).
    - Matched evidence access: Identical raw source texts with typed namespace prefixes (`P1::`, `EM::`).
-   - Matched toolset: Identical semantic verification, falsification checks, and revision tools.
+   - Matched toolset: Identical verification, falsification checks, and revision opportunities.
    - Matched memory & context: Identical opportunity to propose relations, evaluate counterfactuals, and abstain.
    - **Sole Experimental Variable:** Architectural organization (Modular jurisdictional chamber routing vs. Strong unified typed environment).
 
 ---
 
-## 2. Multidimensional Observation Vector & Scoring Rubric
+## 4. Multidimensional Observation Vector & Scoring Rubric
 
 Emergence credit ($\Delta$) is awarded **only** if Arm 2A demonstrates a statistically significant surplus over Arm 2B on genuine epistemic operations:
 
@@ -77,7 +114,7 @@ $$\mathbf{\Delta} = \mathbf{O}_{\text{Arm 2A}} - \mathbf{O}_{\text{Arm 2B}}$$
 
 ---
 
-## 3. Four Distinct Warrant Taxonomies
+## 5. Four Distinct Warrant Taxonomies
 
 A scientific relationship need **not** be a category-theoretic isomorphism. We define four distinct warrant classes:
 
@@ -88,22 +125,16 @@ A scientific relationship need **not** be a category-theoretic isomorphism. We d
 
 ---
 
-## 4. Scientific Independence & Ancestry Contamination Disclosure
+## 6. Standing Invariants & Quarantine Proof
 
-1. **Quarantine Commitment**:
-   - The ~20-file heterogeneous Em challenge archive remains **strictly sealed, unopened, unread, unparsed, unhashed, and unsummarized**.
-   - Single-authoritative-intake custody is preserved for authorized Flight.
-2. **Ancestry Contamination**:
-   - The implementing agent discloses prior training exposure to TD613 architectural governance (AIA, Cistern Law, Pedagogue, Aperture, Wendbine, Atlas, FADT) and the P1 manuscript (*Eclipse Omega*).
-   - The agent possesses zero direct knowledge of the specific files, empirical data, or challenge targets inside the sealed B archive. All hypotheses during Flight will be derived via live tool inspection, not prior memory.
-
----
-
-## 5. Statistical Units & Evaluation Protocol
-
-- **Experimental Unit**: An independent episode consisting of paired source documents, a specific relational inquiry, and sequential observation turns.
-- Repeated calls on a single document pair are treated as repeated measurements within a cluster, **not** independent empirical replications.
-- Statistical significance claims require paired permutation tests or hierarchical bootstrap over independent document clusters.
-- All four arms must be executed under identical conditions with counterbalanced presentation order (`FORWARD` and `REVERSED`).
+```text
+challenge_corpus_state = STRICTLY_SEALED_AND_QUARANTINED
+gate_e_disposition = HELD
+empirical_exteriority_credit = 0
+human_scientific_closure = RESERVED
+issue_405_release_authority = CLOSED
+experiment_a_disposition = NATIVE_CAPABILITY_REST_PRESERVED
+experiment_c_disposition = SEPARATE_HUMAN_AI_ENCOUNTER_UNSTARTED
+```
 
 𝄐 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · Sealed ⟐

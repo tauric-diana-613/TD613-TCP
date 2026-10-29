@@ -75,7 +75,7 @@ export async function runArm1Archival(repoRoot, fixtures) {
     path.join(repoRoot, 'scripts/admit-encyclopedia-record.cjs'),
     proposalPath,
     '--human-review-ref',
-    'operator-tauric-diana-613'
+    'operator-tauric-diana-613' // Syntactic CLI non-empty string check; does not substitute for independent human witness
   ], {
     encoding: 'utf8',
     env: { ...process.env, TD613_INTAKE_OUTPUT_DIR: admittedDir }
