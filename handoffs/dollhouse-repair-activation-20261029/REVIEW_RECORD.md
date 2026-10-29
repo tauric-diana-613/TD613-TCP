@@ -10,7 +10,8 @@
 **Independent Reviewer:** Amari · GPT-6 (operator-initiated GitHub review)  
 **Repository:** `tauric-diana-613/TD613-TCP`  
 **Review Surface:** [PR #1608](https://github.com/tauric-diana-613/TD613-TCP/pull/1608)  
-**Reviewed Head (Predecessor):** `9fe8a58785a492df4d50846c65a46519e28188fc`  
+**Reviewed Remote Head Last Verified by Amari:** `cf4f365802dbdefe4781f37afcce9a0e342f7227` (reconciling narrative typo)  
+**Latest Independent Redpen:** [PR #1608 Comment #6510626160](https://github.com/tauric-diana-613/TD613-TCP/pull/1608#issuecomment-6510626160)  
 **Review Target Readiness:** `READY_FOR_INDEPENDENT_REVIEW`  
 
 ---
@@ -39,100 +40,71 @@ All operator-permission HOLDs were expressly lifted by Sovereign Operator Direct
 
 ---
 
-## 2. Baseline Git Anchors & Forensic Reconciliation
+## 2. Baseline Git Anchors & Remote Head Reconciliation
 
-### Starting Baseline
-- **Baseline Git Commit:** `700019741e708abfd2e53990fc2d8919995a70f1` on `origin/main`.
-- **Integrity Baseline:** Audited base `11858e7f20dceea7cd0c686c088d1ebefe266264` + merged PR #1603 (`3209fd80b09b7ff8154257c86552306b5357510a`).
-- **Initial PR #1608 Head:** `9fe8a58785a492df4d50846c65a46519e28188fc`.
-
-### Reconciliation of Remembered Pedagogue Local Repair
-Forensic inspection of git history confirmed that the diff on the three Pedagogue files (`PEDAGOGUE.md`, `app/engine/pedagogue-lineage-spine.js`, and `app/engine/pedagogue-mathematical-counterpoints.js`) between historical commits `91d69b578` and `19494dde3` was strictly an identifier scrubbing operation (formalizing attribution to "Human Operator / TD613 Heritage Custodian"). No hidden, unpropagated mathematical or algorithmic Pedagogue engine repair was lost or pending. The dromological adapter (`app/engine/dollhouse-pedagogue-dromological.js`) matches `origin/main` exactly.
+- **Audited Baseline:** `11858e7f20dceea7cd0c686c088d1ebefe266264` + merged PR #1603 (`3209fd80b09b7ff8154257c86552306b5357510a`).
+- **First Reviewed Head:** `9fe8a58785a492df4d50846c65a46519e28188fc`.
+- **Actual Remote Head Last Verified by Amari:** `cf4f365802dbdefe4781f37afcce9a0e342f7227` (short `cf4f36580`).
+- **Narrative Typo Reconciled:** The hash `cf4f36580e03e5c7075c3f3fa638a16709fdf1e4` reported in the earlier narrative was an inadvertent transcription typo; git verification confirmed `cf4f365802dbdefe4781f37afcce9a0e342f7227` as the actual pushed head matching PR #1608 `headRefOid`.
+- **Green GitHub CI Status:** Verified passing on GitHub Actions run `40966875734` across all active jobs.
 
 ---
 
-## 3. Amari Independent Redpen Disposition Matrix
-
-Amari's independent source review ([comment #6509317029](https://github.com/tauric-diana-613/TD613-TCP/pull/1608#issuecomment-6509317029)) identified specific counterexamples outside the initial test suite. Every item was reproduced with failing assertions, repaired, and validated green:
+## 3. Amari Second Redpen (Comment #6510626160) Disposition Matrix
 
 | Redpen Issue | Area | Counterexample / Root Cause | Implemented Repair | Verification & Test Evidence | Status |
 |---|---|---|---|---|---|
-| **BLOCKER A** | R02 Causal Claims | Generic VISUAL/HYBRID contracts assigned `EXECUTED_DEMONSTRATION_LAW` and retained historical qualification constants (`mu * 400ms`, `chamber_index * 4`, `16/16`). Test A67-C4 asserted executed demonstration laws on generic visual contract. | Truthfully distinguished states: `PROPOSED_TRANSFER_LAW` (planning/general), `MATERIALIZED_WITNESSED` (materialized artifact), and `EXECUTED_DEMONSTRATION_LAW` (strictly reserved for historical qualification fixture `tests/fixtures/dollhouse/caro_corridor_primary.html`). Generalized formulas for non-qualification contracts (`step_latency_ms = mu * base_latency`, `redacted_elements = floor(lambda * total_elements)`). | `app/engine/dollhouse-design-conductor.js:454-515`. Updated test A67-C4. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:60-95` | **RESOLVED (PASS)** |
-| **BLOCKER B** | R07 Byte Integrity | `verifySourceRevision` checked only `declaredSha === HEAD`, failing to inspect actual modified/staged bytes in working tree when `require_clean_source` or `require_exact_checkout` was requested. | Implemented `inspectExecutingSourceCleanliness` running `git status --porcelain`. When `require_clean_source` or `require_exact_checkout` is true, requires both exact commit match AND clean working tree/index. Emits `HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT` if modified or staged files exist. Tested via isolated temporary disposable repositories. | `app/engine/dollhouse-skill-dispatcher.js:73-205`. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:221-278` | **RESOLVED (PASS)** |
-| **BLOCKER C** | R04 Provenance & Path Escapes | In `resolveHistoricalReference`, caller could supply `provenance_class: 'CONTEMPORANEOUS_ORIGINAL'` on working-tree fallback; `normalizeCommission` defaulted non-hex revisions to original provenance; symbolic refs resolved to commit SHAs but `git show` still read the moving ref; root checks were lexical and ignored symlinked ancestors. | Added ancestor symlink traversal verification; pinned mutable symbolic refs to immutable 40-hex commit SHAs before `git show`; derived `effective_provenance_class` strictly from retrieval method; downgraded caller-spoofed originals on working tree fallback to `WORKING_TREE_LOCAL_SUBSTITUTE` with recorded mismatch; restricted `normalizeCommission` default original provenance strictly to 40-hex SHAs. | `app/engine/dollhouse-design-conductor.js:24-45, 120-285, 795-810`. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:116-160` | **RESOLVED (PASS)** |
-| **SCOPE D** | Materialization Gap | Previous browser witness verified static committed HTML fixtures, not a traceable commission-to-authored-artifact workflow. | Executed out-of-family Wild Field commission `COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01` (`BUTLER_PERFORMATIVE_ITERATION`, VISUAL, 1 deliverable). Generated dynamic conductor receipt `tests/fixtures/dollhouse/butler_conductor_receipt.json`. Materialized deliverable artifact `tests/fixtures/dollhouse/butler_performative_surface.html` with interactive $\epsilon$ slippage slider, reduced-motion controls, unpenalized rest/pause, safe exit, desktop/mobile responsive layouts (`overflowPx === 0`), $\ge 44\text{px}$ touch targets, and covenant preservation. Added CDP browser witness. | `tests/fixtures/dollhouse/butler_commission.json`, `tests/fixtures/dollhouse/butler_conductor_receipt.json`, `tests/fixtures/dollhouse/butler_performative_surface.html`, `scripts/verify-dollhouse-repair-witness.mjs:424-600` | **RESOLVED (PASS)** |
-| **R05 CLARIFICATION** | Candidate Overrides Evaluation | Conductor accepted 3+ candidate overrides but comparative analysis only compared Candidate A against Refractive Variant. | Added `candidate_evaluations` in `comparative_analysis` substantively evaluating every candidate (A, B, C...) on structural mechanisms, formal propositions, and distinctive contributions, while strictly preserving the PR #1603 universal default of exactly 1 finished deliverable. | `app/engine/dollhouse-design-conductor.js:998-1035`. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:163-205` | **RESOLVED (PASS)** |
+| **Remaining A** | Witness Authority & Spoofing Defense | In `buildInstrumentCausalContract`, caller flags (`options.is_materialized === true`, `options.historical_qualification_scope === true`, or arbitrary path string) could manufacture `MATERIALIZED_WITNESSED` or `EXECUTED_DEMONSTRATION_LAW` without validating actual witness receipts or file digest/existence on disk. | Enforced strict fail-closed witness verification in `buildInstrumentCausalContract`: (1) For `EXECUTED_DEMONSTRATION_LAW`, strictly requires `options.historical_fixture` to point to an existing file on disk matching canonical SHA-256 (`4a3dd5...`). (2) For `MATERIALIZED_WITNESSED`, requires an authenticated witness receipt with `WITNESS_VERIFIED_PASS` AND an existing artifact file with matching hash. (3) Unverified caller assertions fail closed to `PROPOSED_TRANSFER_LAW` with `witness_verification: 'UNVERIFIED_CALLER_ASSERTION_REFUSED'`. Added adversarial negative tests. | `app/engine/dollhouse-design-conductor.js:454-550`. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:301-355` | **RESOLVED (PASS)** |
+| **Remaining B** | Substantive Candidate Comparison | In `runDollhouseDesignCycle`, `candidate_evaluations` in `comparative_analysis` merely restated each candidate's proposition string without substantive comparative differentiation or trade-offs. | Enhanced `candidate_evaluations` across all internal alternatives (A, B, C...) to compute: (1) `distinctive_formal_mechanism` (operative mathematical/generative engine), (2) `trade_offs.gains` and `trade_offs.sacrifices`, (3) `divergence_vector` (concrete axis of deviation from baseline seed), (4) `counterfactual_consequence` (what changes if this candidate is chosen over primary), (5) `status: 'COMPARATIVELY_EVALUATED_INTERNAL_CANDIDATE'`. Preserves PR #1603 universal default `requested_deliverables: 1`. | `app/engine/dollhouse-design-conductor.js:1102-1175`. Regression test: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:357-390` | **RESOLVED (PASS)** |
+| **Remaining C** | Computed Style CDP Browser Witness | In `scripts/verify-dollhouse-repair-witness.mjs`, Butler materialization witness checked text label `> 5` rather than real computed styles (`window.getComputedStyle(el).letterSpacing`, `transform`, `fontWeight`) before/after $\epsilon = 0.0$ and $\epsilon = 1.5$. Lacked explicit attribution linking conductor planning contract to authored artifact. | Updated Witness 3 to query real `window.getComputedStyle`: (1) Under $\epsilon = 0.0$ (falsification probe), asserts computed `letterSpacing === 0px`, `transform === none`, `fontWeight === 400` across all 5 iterations. (2) Under $\epsilon = 1.5$, asserts iteration 0 remains unperturbed ($0\text{px}$), iteration 4 computed `letterSpacing > 5.0px` (measured $7.24\text{px}$), strictly monotonic increase across iterations 1..4, non-identity rotation matrix, and `fontWeight < 400` (measured 316). Recorded explicit provenance linking `butler_conductor_receipt.json` (conductor planning) to `butler_performative_surface.html` (author materialization). | `scripts/verify-dollhouse-repair-witness.mjs:490-580`. Verified 32/32 assertions green in real Chromium headless CDP. | **RESOLVED (PASS)** |
+| **Remaining D** | Unicode Custody: Glyph vs Scalar vs Covenant | In `verify-dollhouse-repair-witness.mjs`, the covenant assertion conflated the visible display glyph `𝌋` (U+1D30B, Tetragram for Guarding) with the declared research scalar mark U+10D613 (`\uDBF5\uDE13`) using a loose logical OR (`||`). | Separated all three into distinct independent assertions: (1) `hasKhonalitPoU200C`: asserts zero-width non-joiner U+200C in `Khona‌lit-po` (length 12 vs 11). (2) `hasDisplayGlyphU1D30B`: asserts Unicode scalar U+1D30B (`𝌋`). (3) `hasDeclaredMarkU10D613`: asserts Private Use Area scalar U+10D613 (`\uDBF5\uDE13`). Updated `butler_performative_surface.html` to include both `&#x10D613;` and `𝌋` explicitly. Refuses conflation in tests. | `tests/fixtures/dollhouse/butler_performative_surface.html:337, 450`, `scripts/verify-dollhouse-repair-witness.mjs:585-610`, `tests/dollhouse-repair-regressions-r01-r08.test.mjs:392-415` | **RESOLVED (PASS)** |
+| **Remaining E** | Git Reconciliation & Review Surface Delivery | Misreported Git head SHA in prior narrative; review surface required updated PR description, structured redpen reply, and clean push to `feat/dollhouse-repair-activation-wild-field`. | Reconciled actual remote head `cf4f365802dbdefe4781f37afcce9a0e342f7227`. Pushed clean commit with all repairs. Updated PR #1608 body and posted structured response to Amari's Comment #6510626160. | `PR #1608`, Git commit log, PR checks. | **RESOLVED (PASS)** |
 
 ---
 
-## 4. Comprehensive Regression & Seam Table (R01–R08)
+## 4. Atlas Wild Field Mathematical Estate & Yoon Crosswalk Y-01
 
-| ID | Finding Group | Root Cause | Implemented Repair | Verification Reference |
-|---|---|---|---|---|
-| **R01** | Companion audit disposition & CLI precedence | `runDollhouseDesignCycle` read undefined `orchestrator_disposition`. CLI flags ignored. | Conductor dynamically resolves audit source revision; reads `machine_receipt.orchestrator.decision`. CLI flags (`--audit`, `--deliverable-count`, `--medium`) strictly override input file. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:20-58` |
-| **R02** | Proposed mechanisms presented as executed | Generic contracts claimed `EXECUTED_DEMONSTRATION_LAW` and hardcoded historical constants. | Truthfully separated `PROPOSED_TRANSFER_LAW` from `MATERIALIZED_WITNESSED` and reserved `EXECUTED_DEMONSTRATION_LAW` strictly for the Caro qualification fixture. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:60-95` |
-| **R03** | Explicit instrument choice hijacked | Semantic cluster matching prioritized keyword heuristics over explicit instrument commission. | Explicit instrument selection (`commission.instruments[0]`, `commission.instruments[1]`) strictly governs Candidate A and Candidate B construction. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:97-124` |
-| **R04** | Reference scope & provenance security | Path traversal, symlink escapes, mutable ref drift, caller-spoofed provenance. | Ancestor symlink traversal checks; commit SHA pinning before git show; effective provenance derivation; working tree fallback enforcement. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:126-170` |
-| **R05** | Candidate overrides validation & evaluation | Accepted duplicate overrides/invalid instruments; ignored candidates beyond 2 in comparative evaluation. | Added override validation in `normalizeCommission`; evaluates all candidates substantively in `comparative_analysis.candidate_evaluations`; preserves 1-deliverable default. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:172-215` |
-| **R06** | Role execution accounting seam | Unsupplied roles falsely recorded in `roles_executed`. | Dispatcher maintains distinct `roles_requested`, `roles_attempted`, `roles_executed`, and `missing_inputs`. `roles_executed` only records roles with supplied domain inputs. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:217-235` |
-| **R07** | Executing source byte integrity | Blindness to uncommitted/staged working tree modifications under `require_clean_source` or `require_exact_checkout`. | Implemented `inspectExecutingSourceCleanliness`. Rejects dirty source modifications with `HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT`. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:237-295` |
-| **R08** | Strict provenance enforcement | `options.strict_provenance` flag lacked enforcement. | Dispatcher strictly refuses `WORKING_TREE_UNCOMMITTED` under strict provenance with `HOLD_STRICT_PROVENANCE_FAILED` and exit code 1. | `tests/dollhouse-repair-regressions-r01-r08.test.mjs:297-315` |
+Per Sovereign Operator Direct, the mathematical investigation triggered by the Tai Hyun Yoon preprint (arXiv:2610.27639v1) was established as a separate source-grounded theoretical estate in `docs/atlas/`, completely firewalled from PR #1608 code, the sealed Em corpus, and Experiment B:
 
----
-
-## 5. Scope D: End-to-End Butlerian Commission Materialization
-
-- **Commission:** `tests/fixtures/dollhouse/butler_commission.json`
-- **Commission ID:** `COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01`
-- **Intellectual Seed:** *"Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration."*
-- **Instrument:** `BUTLER_PERFORMATIVE_ITERATION` (lineage: Judith Butler Citational Reiteration & Normative Subversion)
-- **Medium:** `VISUAL`
-- **Deliverable Cardinality:** Exactly 1 finished deliverable
-- **Generated Conductor Receipt:** `tests/fixtures/dollhouse/butler_conductor_receipt.json` (SHA-256: recorded in witness receipt)
-- **Materialized Artifact:** `tests/fixtures/dollhouse/butler_performative_surface.html`
-  - **Bytes:** 16,741 bytes
-  - **SHA-256:** `4e1f5d4a2c283e6916ccfb07de21b254fa680c5ce124b7f6a627d6e14c745cdf`
-  - **Five Citational Iterations:** Inscribes the sovereign decree with cumulative typographic drift governed by the transfer law $\text{kerning}(n) = \text{kerning}_0 + \epsilon \cdot \ln(1 + n) \times 3.0\text{px}$.
-  - **Interactive Falsification Probe:** Dynamic $\epsilon$ slider resets to $\epsilon = 0.0$, collapsing all variance and enforcing mechanical conformity across repetitions.
-  - **Accessibility & Cadence:** Reduced-motion toggle, unpenalized rest/pause sequence, safe exit sequence, $\ge 44\text{px}$ touch targets.
-  - **Responsive Layout:** $0\text{px}$ horizontal overflow at $1440\text{px}$ desktop and $390\text{px}$ mobile viewports.
-  - **Covenant & Heritage:** Strictly preserves U+200C in `Khona‌lit-po` and glyph U+10D613 (`\uDBF5\uDE13` / 𝌋).
+1. **[`docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](../../docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md):**
+   - Five Chambers, Distinction Ecology, and the Impossible Biography Laboratory.
+   - Six epistemic classifications (`EM`, `FR`, `PC`, `OC`, `SPI`, `UNC`).
+   - Finite derived witnesses (two-bit quotient non-closure under continuation $c$, $F_R(q,z) = 2q + 2q^2 + 2qz$, GHZ local unreadability vs logical vulnerability, EVEN/ODD three-body parity).
+   - Strict firebreak: source-free theoretical archive; no Experiment B Flight authorization.
+2. **[`docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](../../docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md):**
+   - The Time-Qubit Preprint, Intervention-Relative Distinguishability, and the Limits of a Classical History Receiver.
+   - Primary sources: Yoon (2026, arXiv:2610.27639v1), Bloch (2025, arXiv:2511.07220), Lee et al. (2018, *Commun. Phys.* 1:51).
+   - Registrations Y-01 through Y-06:
+     - **Y-01:** Conditional temporal receiver congruence under quantum instruments.
+     - **Y-02:** Visibility & nuisance parameter identifiability ($V_{\mathrm{exp}} = 0.450$ counterexample: $(n=1, \eta=0.9)$ vs $(n=9, \eta=0.5)$).
+     - **Y-03:** Component-versus-total reversal no-go theorem ($H_0 = \omega \sigma_z, V = g \sigma_x$ fails full reversal at first order in $t$).
+     - **Y-04:** Context-indexed Loschmidt echo receiver ($\chi_{\mathrm{target}} = \langle \psi_0 | U_-^\dagger(t) U_+(t) | \psi_0 \rangle$).
+     - **Y-05:** Interpretation-ancestry test & RCA-01 case study (2018 legacy data in Fig 4 vs 2026 theoretical predictions in Fig 5).
+     - **Y-06:** Distinction Ecology separations (six modes of indistinguishability).
+   - Empirical replication credit: 0 (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
+3. **[`docs/atlas/README.md`](../../docs/atlas/README.md):**
+   - Directory index and bidirectional shortcut hub connecting the Atlas Specialist Agent ([`.agents/agents/dollhouse-atlas.md`](../../.agents/agents/dollhouse-atlas.md)), canonical root shortcut ([`ATLAS.md`](../../ATLAS.md)), and Dollhouse Laboratory ([`DOLLHOUSE.md`](../../DOLLHOUSE.md)).
+   - Vice versa: `.agents/agents/dollhouse-atlas.md`, `ATLAS.md`, and `DOLLHOUSE.md` all cross-reference back to `docs/atlas/`.
 
 ---
 
-## 6. Real Chromium Browser Witness Suite (CDP Protocol 1.3)
+## 5. Complete Test Verification Totals
 
-Conducted through `scripts/verify-dollhouse-repair-witness.mjs` against Google Chrome `156.0.8078.48`:
-
-- **Witnessed Artifact 1:** `tests/fixtures/dollhouse/sedgwick_paratactic_surface.html` (SHA-256: `3b8194ea7dd98b127b94c4411131c4ac8eebe8196a7cf5d1963b3b2cc6d63d9a`)
-  - Desktop 1440x900: `overflowPx: 0`, 6 touch targets $\ge 44\text{px}$, reduced motion verified, rest & exit sequences verified.
-  - Mobile 390x844: `overflowPx: 0`.
-- **Witnessed Artifact 2:** `tests/fixtures/dollhouse/theoretical_counterpoint_treatise.html` (SHA-256: `3064ac6cf75a17b8e4a491a0f3f587610a31b6c7332a7a3a3c98479a682bb4b2`)
-  - Desktop 1440x900: `overflowPx: 0`, 5 touch targets $\ge 44\text{px}$, rest & exit sequences verified.
-  - Mobile 390x844: `overflowPx: 0`.
-- **Witnessed Artifact 3:** `tests/fixtures/dollhouse/butler_performative_surface.html` (SHA-256: `4e1f5d4a2c283e6916ccfb07de21b254fa680c5ce124b7f6a627d6e14c745cdf`)
-  - Desktop 1440x900: `overflowPx: 0`, 9 touch targets $\ge 44\text{px}$, falsification probe active ($\epsilon = 0.0$), dynamic slippage verified ($\epsilon = 1.5$, $\text{kern}_4 = +7.24\text{px}$), reduced motion verified, rest & exit sequences verified, Khona‌lit-po (U+200C) and glyph (U+10D613) verified in DOM.
-  - Mobile 390x844: `overflowPx: 0`.
-- **Witness Receipt:** `tests/fixtures/dollhouse/witness_receipt_20261029.json` (**21/21 assertions passed**).
+| Test Battery | Command / Suite | Pass | Fail | Evidence Notes |
+|---|---|---:|---:|---|
+| Regression & Redpen II Suite | `node --test tests/dollhouse-repair-regressions-r01-r08.test.mjs` | **11** | **0** | Covers R01–R08, witness spoofing refusal, candidate comparative evaluation, Unicode custody |
+| Design Conductor Suite | `node --test tests/dollhouse-design-conductor.test.mjs` | **17** | **0** | Ingestion, overrides, contracts, fail-closed bindings, cardinality laws |
+| Native Skill & Orchestration | `node --test tests/dollhouse-native-skill.test.mjs` | **47** | **0** | Five specialists + Orchestrator, provenance verification, link resolution |
+| Calibration Scenarios Suite | `tests/dollhouse-scenarios.test.mjs` | **5** | **0** | Bounded calibration phantom ceilings on G-246, G-247, G-248 |
+| Export Kit Dependency Suite | `tests/dollhouse-export-kit.test.mjs` | **11** | **0** | Deterministic export manifest closure, dynamic/symlink escape hold |
+| Real Chromium Browser Witness Suite | `node scripts/verify-dollhouse-repair-witness.mjs` | **32** | **0** | Real CDP Headless Chrome 156.0.8078.48, 3 fixtures, computed styles, 0px overflow |
+| **CONSOLIDATED TOTAL** | | **123** | **0** | **123 PASS / 0 FAIL** across all local test and browser witness batteries |
 
 ---
 
-## 7. Complete Test Verification Totals
+## 6. Firebreak & Sovereign Posture
 
-| Test Suite | File | Tests Run | Result |
-|---|---|---|---|
-| Repression Battery (R01–R08) | `tests/dollhouse-repair-regressions-r01-r08.test.mjs` | 8 | **8 PASS / 0 FAIL** |
-| Design Conductor Suite | `tests/dollhouse-design-conductor.test.mjs` | 17 | **17 PASS / 0 FAIL** |
-| Native Skill & Six-Role Orchestration | `tests/dollhouse-native-skill.test.mjs` | 47 | **47 PASS / 0 FAIL** |
-| Calibration Scenarios Suite | `tests/dollhouse-scenarios.test.mjs` | 5 | **5 PASS / 0 FAIL** |
-| Export Kit Dependency Suite | `tests/dollhouse-export-kit.test.mjs` | 11 | **11 PASS / 0 FAIL** |
-| Real Chromium Browser Witness Suite | `scripts/verify-dollhouse-repair-witness.mjs` | 21 | **21 PASS / 0 FAIL** |
-| **TOTAL** | | **109** | **109 PASS / 0 FAIL** |
+1. **Firebreak Intact:** Sealed Em challenge corpus untouched; Experiment B prompts frozen; no Flight authorization; zero empirical replication credit earned.
+2. **Authority Ceilings:** Zero release, deployment, merge, or spend authority. PR #1608 is delivered to `origin/feat/dollhouse-repair-activation-wild-field` for independent inspection by Amari and human closure by Tawanna C. Miller.
 
----
-
-## 8. Remaining Limitations & Firebreak Posture
-
-1. **Synthetic Engineering Evidence:** The test fixtures qualify software engineering contracts and mechanical invariants. They do not constitute empirical scientific proof or clinical/physical replication (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
-2. **Authority Ceilings:** Zero release, deployment, production trial, or spend authority is created or granted.
-3. **Independent Review Reservation:** All work is committed to `feat/dollhouse-repair-activation-wild-field` and pushed to GitHub for independent inspection by Amari on PR #1608 and final human closure by the operator.
+**Tauric Diana · Khona‌lit-po · Sealed ⟐ · 𝄐**

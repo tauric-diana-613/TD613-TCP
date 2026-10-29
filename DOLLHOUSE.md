@@ -39,7 +39,9 @@ Canonical shortcut: [`APERTURE.md`](APERTURE.md)
 
 Receiver-relation audit. It checks whether intentionally different receiver presentations preserve the same governed control plane and Flow-Core relation trace.
 
-Canonical shortcut: [`ATLAS.md`](ATLAS.md)
+Canonical shortcut: [`ATLAS.md`](ATLAS.md)  
+Specialist Agent: [`.agents/agents/dollhouse-atlas.md`](.agents/agents/dollhouse-atlas.md)  
+Research Estate: [`docs/atlas/README.md`](docs/atlas/README.md) · [`ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md) · [`ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md)
 
 ### FADT
 

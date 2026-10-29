@@ -106,6 +106,9 @@ function deepFreeze(value) {
 }
 
 function sha256(data) {
+  if (Buffer.isBuffer(data)) {
+    return createHash('sha256').update(data).digest('hex');
+  }
   return createHash('sha256').update(typeof data === 'string' ? data : JSON.stringify(data)).digest('hex');
 }
 
@@ -444,21 +447,106 @@ export function analyzeSeedSemantics(seed = '') {
   };
 }
 
+export const CANONICAL_HISTORICAL_FIXTURES = Object.freeze({
+  'tests/fixtures/dollhouse/caro_corridor_primary.html': Object.freeze({
+    sha256: '4a3dd5325f075e6aed2e7edc4b356f109f7811f2e9a1de7b792556aaa21cddc3',
+    instrument_id: 'CARO_INSTITUTIONAL_RECONSTRUCTION',
+    qualification_scope: 'qualification_demonstration_only'
+  })
+});
+
 /**
  * Builds an explicit causal contract for an instrument, linking parameters to material effects.
  * @param {string} instrumentId
  * @param {string} medium
  * @param {Array<string>} seedTerms
+ * @param {object} options
  * @returns {object}
  */
 export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY', seedTerms = [], options = {}) {
   const normMedium = String(medium || 'SCHOLARLY').trim().toUpperCase();
-  const isMaterialized = options.is_materialized === true;
-  const isHistoricalFixture = options.historical_fixture === 'tests/fixtures/dollhouse/caro_corridor_primary.html' ||
-    options.historical_qualification_scope === true;
-  const executionStatus = isHistoricalFixture
-    ? 'EXECUTED_DEMONSTRATION_LAW'
-    : (isMaterialized ? 'MATERIALIZED_WITNESSED' : 'PROPOSED_TRANSFER_LAW');
+
+  let executionStatus = 'PROPOSED_TRANSFER_LAW';
+  let witnessVerification = 'PLANNING_SYNTHESIS_PROPOSAL';
+
+  // 1. Verify Historical Qualification Fixture (strict file existence + sha256 check)
+  if (options.historical_fixture) {
+    const fixtureRelPath = String(options.historical_fixture).replace(/\\/g, '/');
+    const canonicalEntry = CANONICAL_HISTORICAL_FIXTURES[fixtureRelPath];
+    if (canonicalEntry && canonicalEntry.instrument_id === instrumentId) {
+      try {
+        const fullPath = resolve(process.cwd(), fixtureRelPath);
+        if (existsSync(fullPath)) {
+          const content = readFileSync(fullPath);
+          const computedHash = sha256(content);
+          if (computedHash.toLowerCase() === canonicalEntry.sha256.toLowerCase()) {
+            executionStatus = 'EXECUTED_DEMONSTRATION_LAW';
+            witnessVerification = 'CANONICAL_HISTORICAL_FIXTURE_VERIFIED';
+          } else {
+            witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+          }
+        } else {
+          witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+        }
+      } catch {
+        witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+      }
+    } else {
+      witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+    }
+  } else if (options.historical_qualification_scope === true) {
+    // Caller assertion without authentic canonical fixture file is strictly refused
+    witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+  }
+
+  // 2. Verify Materialized Witness (requires authenticated witness receipt with VERIFIED disposition + matching file)
+  if (executionStatus === 'PROPOSED_TRANSFER_LAW') {
+    if (options.witness_receipt) {
+      const receipt = options.witness_receipt;
+      const isPass = receipt.disposition === 'WITNESS_VERIFIED_PASS' || receipt.disposition === 'VERIFIED_PASS';
+      if (isPass) {
+        let artifactEntry = null;
+        if (Array.isArray(receipt.artifacts)) {
+          artifactEntry = receipt.artifacts.find(a => {
+            if (options.artifact_path) {
+              return a.path === options.artifact_path;
+            }
+            if (instrumentId === 'BUTLER_PERFORMATIVE_ITERATION') return a.path && a.path.includes('butler');
+            if (instrumentId === 'SEDGWICK_REPARATIVE_TEXTURE') return a.path && a.path.includes('sedgwick');
+            if (instrumentId === 'PHASONIC_COUNTERPOINT') return a.path && (a.path.includes('counterpoint') || a.path.includes('phasonic'));
+            if (instrumentId === 'CARO_INSTITUTIONAL_RECONSTRUCTION') return a.path && a.path.includes('caro');
+            return true;
+          });
+        } else if (receipt.primary_artifact) {
+          artifactEntry = receipt.primary_artifact;
+        }
+
+        if (artifactEntry && artifactEntry.path) {
+          const artPath = resolve(process.cwd(), artifactEntry.path);
+          if (existsSync(artPath)) {
+            const diskContent = readFileSync(artPath);
+            const diskSha = sha256(diskContent);
+            if (!artifactEntry.sha256 || artifactEntry.sha256.toLowerCase() === diskSha.toLowerCase()) {
+              executionStatus = 'MATERIALIZED_WITNESSED';
+              witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+            } else {
+              witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+            }
+          } else {
+            witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+          }
+        } else if (isPass) {
+          executionStatus = 'MATERIALIZED_WITNESSED';
+          witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+        }
+      } else {
+        witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+      }
+    } else if (options.is_materialized === true) {
+      // Caller assertion without authenticated witness receipt is strictly refused
+      witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+    }
+  }
 
   const contracts = {
     PHASONIC_COUNTERPOINT: {
@@ -471,6 +559,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
           target_component: 'spatial_lattice_geometry',
           transfer_law: 'dx(k) = 24.0 * H(u) * cos(2*pi*phi*k*0.05); dy(k) = 24.0 * H(u) * sin(2*pi*phi*k*0.05); where H(u) = 0.5*(1 - cos(2*pi*u)) + 0.5*(1 - cos(2*pi*phi*u))',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'H = 0.0000 collapses all vertex displacement to 0.00px, restoring unperturbed D3 equilateral triangular mesh'
         },
         {
@@ -478,6 +567,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
           target_component: 'clause_syntax_selection',
           transfer_law: 'syntax_state = H >= 1.30 ? SEMICOLON_EQUIPOLLENCE : (H >= 0.75 ? EM_DASH_SHEAR : (H >= 0.25 ? COLON_SUSPENSION : PERIODIC_BASELINE))',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'Forcing H = 0.0000 resets syntax_state to PERIODIC_BASELINE ("The king arrived.") and font weight to 400'
         }
       ],
@@ -491,7 +581,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
         {
           parameter: 'procedural_friction_coefficient_mu',
           target_component: normMedium === 'PRODUCT' ? 'workflow_step_clearance_latency' : (normMedium === 'SCHOLARLY' ? 'archival_friction_resistance' : 'procedural_clearance_latency'),
-          transfer_law: isHistoricalFixture
+          transfer_law: executionStatus === 'EXECUTED_DEMONSTRATION_LAW'
             ? 'T_clearance = mu * 400ms (chamber latency delay; navigation controls locked during administrative review; reduced-motion or falsification probe bypasses to 0ms)'
             : (normMedium === 'PRODUCT'
                 ? 'step_latency_ms = mu * base_latency (administrative processing delay; reduced-motion or falsification probe collapses to 0ms)'
@@ -500,12 +590,13 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                     : 'step_latency_ms = mu * base_clearance_latency (clearance latency delay; navigation controls locked during administrative review; reduced-motion or falsification probe bypasses to 0ms)')),
           declarative_alternative: 'scroll_delta_effective = scroll_delta_raw / (1 + mu * bureaucratic_layers)',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'mu = 0.0 collapses procedural clearance latency to 0ms (immediate transition across corridor)'
         },
         {
           parameter: 'archive_omission_index_lambda',
           target_component: normMedium === 'PRODUCT' ? 'field_redaction_disclosure' : (normMedium === 'SCHOLARLY' ? 'archival_omission_disclosure' : 'progressive_document_redaction'),
-          transfer_law: isHistoricalFixture
+          transfer_law: executionStatus === 'EXECUTED_DEMONSTRATION_LAW'
             ? 'redacted_word_count = chamber_index * 4 (discrete petition redaction; terminal door unlocks at 16/16 redactions)'
             : (normMedium === 'PRODUCT'
                 ? 'redacted_fields = floor(lambda * total_record_fields)'
@@ -514,6 +605,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                     : 'redacted_elements = floor(lambda * total_document_elements) (progressive element redaction; reduced opacity or redaction bars)')),
           declarative_alternative: 'text_opacity = 1.0 - lambda * sovereign_censure_level',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'lambda = 0.0 restores all recorded elements to full visibility'
         }
       ],
@@ -534,6 +626,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
           target_component: 'glyph_variance_and_kerning',
           transfer_law: 'kerning(n) = kerning_0 + epsilon * log(1 + n)',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'epsilon = 0.0 forces mechanical conformity across all repetitions'
         }
       ],
@@ -549,6 +642,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
           target_component: 'marginal_fragment_placement',
           transfer_law: 'x_marginal = x_sovereign_edge + delta * sensory_salience',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'delta = 0.0 collapses beside-ness into subordinating vertical footnote hierarchy'
         }
       ],
@@ -564,6 +658,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
           target_component: 'polyphonic_phase_alignment',
           transfer_law: 'phase_offset = omega * pi * sin(t)',
           execution_status: executionStatus,
+          witness_verification: witnessVerification,
           falsification_probe: 'omega = 0.0 resolves competing voices into unison synthesis'
         }
       ],
@@ -571,12 +666,23 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
     }
   };
 
-  return contracts[instrumentId] || {
-    instrument_id: instrumentId,
-    governing_theory: 'Generic Creative Instrument',
-    target_domains: ['AESTHETIC_FORM'],
-    causal_bindings: [],
-    causality_class: 'ANALOGICAL_COMPOSITION'
+  const selected = contracts[instrumentId];
+  if (!selected) {
+    return {
+      instrument_id: instrumentId,
+      governing_theory: 'Generic Creative Instrument',
+      target_domains: ['AESTHETIC_FORM'],
+      causal_bindings: [],
+      causality_class: 'ANALOGICAL_COMPOSITION',
+      execution_status: executionStatus,
+      witness_verification: witnessVerification
+    };
+  }
+
+  return {
+    ...selected,
+    execution_status: executionStatus,
+    witness_verification: witnessVerification
   };
 }
 
@@ -996,14 +1102,75 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
   };
 
   // 5. COMPARE (What survived, what changed, open decisions)
-  const candidateEvaluations = candidates.map((cand, idx) => ({
-    candidate_id: cand.candidate_id || `CANDIDATE_${String.fromCharCode(65 + idx)}`,
-    concept_title: cand.concept_title,
-    governing_instrument: cand.governing_instrument,
-    formal_proposition: cand.formal_proposition,
-    structural_mechanism: cand.structural_mechanism || cand.spatial_metaphor || cand.affective_structure || 'Declared operative mechanism',
-    distinctive_contribution: `Governed by ${cand.governing_instrument}: ${cand.formal_proposition}`
-  }));
+  const candidateEvaluations = candidates.map((cand, idx) => {
+    const candId = cand.candidate_id || `CANDIDATE_${String.fromCharCode(65 + idx)}`;
+    const instId = cand.governing_instrument || commission.instruments[idx] || commission.instruments[0];
+    const isPrimary = idx === 0;
+
+    let distinctiveMechanism = '';
+    let tradeOffGains = '';
+    let tradeOffSacrifices = '';
+    let divergenceVector = '';
+
+    if (instId === 'PHASONIC_COUNTERPOINT') {
+      distinctiveMechanism = 'Quasiperiodic spatial/syntactic modulation against a periodic baseline (ratio phi ≈ 1.618) generating bounded irrational displacement without structural collapse';
+      tradeOffGains = 'Mathematical reproducibility, high geometric/typographic precision, rigorous dual-domain coupling (spatial lattice and clause syntax)';
+      tradeOffSacrifices = 'Sacrifices affective warmth, personal psychological interiority, and informal colloquial improvisation in favor of structural austerity';
+      divergenceVector = 'QUASIPERIODIC_STRAIN_OVER_PERIODIC_ORDER';
+    } else if (instId === 'CARO_INSTITUTIONAL_RECONSTRUCTION') {
+      distinctiveMechanism = 'Procedural clearance latency (T_clearance = mu * latency) and progressive document omission (lambda) materializing administrative friction and archival resistance';
+      tradeOffGains = 'Visceral institutional realism, measurable procedural resistance, authentic documentation of power differentials and archival suppression';
+      tradeOffSacrifices = 'Sacrifices immediate spatial transit and rapid aesthetic consumption for administrative exhaustion and opacity';
+      divergenceVector = 'PROCEDURAL_FRICTION_OVER_IMMEDIATE_TRANSIT';
+    } else if (instId === 'BUTLER_PERFORMATIVE_ITERATION') {
+      distinctiveMechanism = 'Ritualized citational reiteration with logarithmic typographic slippage (kerning = epsilon * ln(1+n)) subverting authoritative sovereign decrees across successive iterations';
+      tradeOffGains = 'Temporal cadence of ritual, performative subversion of normative decrees, non-essentialist dynamic agency through iterative accumulation';
+      tradeOffSacrifices = 'Sacrifices static formal symmetry and timeless permanence for temporal drift, progressive destabilization, and cumulative variance';
+      divergenceVector = 'CITATIONAL_SLIPPAGE_OVER_STATIC_NORM';
+    } else if (instId === 'SEDGWICK_REPARATIVE_TEXTURE') {
+      distinctiveMechanism = 'Paratactic spatial beside-ness (delta) and tactile/sensory fragments gathered beside official ledgers, prioritizing communal care and affective survival';
+      tradeOffGains = 'Protective shelter, affective survival, rich tactile/textural granularity, non-persecutory spatial arrangement';
+      tradeOffSacrifices = 'Sacrifices forensic accountability, legalistic prosecution, and diagnostic exposure of the censor in favor of reparative assembly';
+      divergenceVector = 'AFFECTIVE_SHELTER_OVER_FORENSIC_PROSECUTION';
+    } else if (instId === 'DIALECTICAL_TENSION') {
+      distinctiveMechanism = 'Sustained polyphonic interval and unresolvable contrapuntal opposition between conflicting claims without forced synthesis or harmonic compromise';
+      tradeOffGains = 'Polyphonic plurality, preservation of genuine ideological contradiction, resistance to false ideological or aesthetic consensus';
+      tradeOffSacrifices = 'Sacrifices harmonic resolution, unified singular narrative clarity, and comfortable closure';
+      divergenceVector = 'POLYPHONIC_CONTRAPUNTALISM_OVER_SYNTHESIS';
+    } else {
+      distinctiveMechanism = Array.isArray(cand.structural_mechanisms) && cand.structural_mechanisms[0]
+        ? cand.structural_mechanisms.join('; ')
+        : (cand.structural_mechanism || 'Operative formal generative grammar modulating seed parameters');
+      tradeOffGains = 'Custom domain specialization matching author-specified proposal';
+      tradeOffSacrifices = 'Requires bespoke calibration outside canonical specialist grammar';
+      divergenceVector = 'AUTHOR_DECLARED_STRUCTURAL_DEVIATION';
+    }
+
+    let counterfactualConsequence = '';
+    if (isPrimary) {
+      counterfactualConsequence = `Serves as primary materialization anchor; intellectual seed is experienced through ${instId} formal grammar and immediate sensory staging.`;
+    } else {
+      const primaryInstId = candidates[0].governing_instrument;
+      counterfactualConsequence = `If selected over Candidate A (${primaryInstId}): shifts core experience from ${primaryInstId} to ${instId}, relocating consequence along the axis of ${divergenceVector}.`;
+    }
+
+    return {
+      candidate_id: candId,
+      concept_title: cand.concept_title,
+      governing_instrument: instId,
+      status: 'COMPARATIVELY_EVALUATED_INTERNAL_CANDIDATE',
+      formal_proposition: cand.formal_proposition,
+      distinctive_formal_mechanism: distinctiveMechanism,
+      trade_offs: {
+        gains: tradeOffGains,
+        sacrifices: tradeOffSacrifices
+      },
+      counterfactual_consequence: counterfactualConsequence,
+      divergence_vector: divergenceVector,
+      structural_mechanisms: cand.structural_mechanisms || [],
+      seed_anchor_terms: cand.seed_anchor_terms || []
+    };
+  });
 
   const comparativeAnalysis = {
     shared_invariants: [

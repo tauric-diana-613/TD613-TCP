@@ -297,3 +297,118 @@ test('R08 - Strict provenance flag enforcement and refusal', async () => {
   );
   assert.equal(result.exit_code, 1, 'Must exit with non-zero failure code');
 });
+
+test('Redpen II - Adversarial execution witness spoofing refused', () => {
+  // 1. Caller passing is_materialized: true without authenticated witness receipt
+  const spoofMaterialized = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    is_materialized: true
+  });
+  assert.equal(spoofMaterialized.execution_status, 'PROPOSED_TRANSFER_LAW',
+    'Passing is_materialized: true without witness must not manufacture MATERIALIZED_WITNESSED');
+  assert.equal(spoofMaterialized.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED',
+    'Must record UNVERIFIED_CALLER_ASSERTION_REFUSED');
+
+  // 2. Caller passing historical_qualification_scope: true without authentic fixture
+  const spoofHistoricalScope = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    historical_qualification_scope: true
+  });
+  assert.equal(spoofHistoricalScope.execution_status, 'PROPOSED_TRANSFER_LAW',
+    'Passing historical_qualification_scope: true without fixture must not manufacture EXECUTED_DEMONSTRATION_LAW');
+  assert.equal(spoofHistoricalScope.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
+
+  // 3. Caller passing fake/nonexistent historical fixture
+  const spoofFakeFixture = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    historical_fixture: 'tests/fixtures/dollhouse/nonexistent_corridor.html'
+  });
+  assert.equal(spoofFakeFixture.execution_status, 'PROPOSED_TRANSFER_LAW',
+    'Nonexistent fixture path must fail closed to PROPOSED_TRANSFER_LAW');
+  assert.equal(spoofFakeFixture.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
+
+  // 4. Caller passing failed witness receipt
+  const failedWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    witness_receipt: { disposition: 'WITNESS_FAILED' }
+  });
+  assert.equal(failedWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
+  assert.equal(failedWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
+
+  // 5. Authentic canonical historical fixture (disk existence + sha256 match)
+  const authenticHistorical = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    historical_fixture: 'tests/fixtures/dollhouse/caro_corridor_primary.html'
+  });
+  assert.equal(authenticHistorical.execution_status, 'EXECUTED_DEMONSTRATION_LAW');
+  assert.equal(authenticHistorical.witness_verification, 'CANONICAL_HISTORICAL_FIXTURE_VERIFIED');
+  assert.ok(authenticHistorical.causal_bindings[0].transfer_law.includes('400ms'));
+
+  // 6. Authentic materialized witness receipt with matching verified artifact
+  const authenticWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      artifacts: [{ path: 'tests/fixtures/dollhouse/butler_performative_surface.html' }]
+    }
+  });
+  assert.equal(authenticWitness.execution_status, 'MATERIALIZED_WITNESSED');
+  assert.equal(authenticWitness.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+});
+
+test('Redpen II - Substantive candidate comparative evaluation', async () => {
+  const result = await runDollhouseDesignCycle({
+    seed: 'A laboratory of non-synthesizing tension and paratactic shelter',
+    medium: 'SCHOLARLY',
+    instruments: ['DIALECTICAL_TENSION', 'SEDGWICK_REPARATIVE_TEXTURE']
+  });
+
+  const evals = result.comparative_analysis.candidate_evaluations;
+  assert.ok(Array.isArray(evals) && evals.length >= 2, 'Must evaluate at least 2 candidates');
+
+  for (const candEval of evals) {
+    assert.equal(candEval.status, 'COMPARATIVELY_EVALUATED_INTERNAL_CANDIDATE',
+      'Candidate must be classified as COMPARATIVELY_EVALUATED_INTERNAL_CANDIDATE');
+    assert.ok(candEval.distinctive_formal_mechanism.length > 20,
+      'Must provide substantive distinctive formal mechanism');
+    assert.ok(candEval.trade_offs && candEval.trade_offs.gains.length > 10,
+      'Must specify substantive trade-off gains');
+    assert.ok(candEval.trade_offs && candEval.trade_offs.sacrifices.length > 10,
+      'Must specify substantive trade-off sacrifices');
+    assert.ok(candEval.divergence_vector.length > 5,
+      'Must specify concrete divergence vector');
+    assert.ok(candEval.counterfactual_consequence.length > 20,
+      'Must specify counterfactual consequence');
+  }
+
+  // Ensure candidate 0 and candidate 1 have distinct divergence vectors and mechanisms
+  assert.notEqual(evals[0].divergence_vector, evals[1].divergence_vector,
+    'Candidates must possess distinct divergence vectors');
+  assert.notEqual(evals[0].distinctive_formal_mechanism, evals[1].distinctive_formal_mechanism,
+    'Candidates must possess distinct formal mechanisms');
+
+  // Universal binding default requested_deliverables: 1
+  assert.equal(result.output_contract.requested_deliverables, 1,
+    'Universal default deliverable count must be 1');
+  assert.equal(result.output_contract.default_deliverables, 1);
+});
+
+test('Redpen II - Unicode custody: display glyph U+1D30B vs research mark U+10D613 vs covenant U+200C', () => {
+  const displayGlyph = '𝌋';
+  const researchMark = '\uDBF5\uDE13';
+  const covenantKhonalitPo = 'Khona\u200Clit-po';
+
+  // Display glyph is U+1D30B (Tetragram for Guarding)
+  assert.equal(displayGlyph.codePointAt(0), 0x1D30B,
+    'Display glyph must resolve to Unicode scalar U+1D30B');
+
+  // Declared research mark is U+10D613 (Private Use Area plane 16)
+  assert.equal(researchMark.codePointAt(0), 0x10D613,
+    'Research mark must resolve to Unicode scalar U+10D613');
+
+  // Zero-width non-joiner U+200C in Khona‌lit-po
+  assert.ok(covenantKhonalitPo.includes('\u200C'),
+    'Covenant string must contain zero-width non-joiner U+200C');
+  assert.equal(covenantKhonalitPo.length, 12,
+    'Khona‌lit-po with U+200C has length 12');
+  assert.equal('Khonalit-po'.length, 11,
+    'Unjoined Khonalit-po has length 11');
+
+  // Refuse conflation
+  assert.notEqual(displayGlyph, researchMark,
+    'Display glyph 𝌋 (U+1D30B) must never be conflated with research mark U+10D613');
+});

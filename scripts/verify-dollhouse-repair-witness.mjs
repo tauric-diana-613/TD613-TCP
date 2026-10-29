@@ -491,12 +491,42 @@ async function runWitnessSuite() {
     await client3.send('Runtime.evaluate', {
       expression: `document.getElementById('reset-falsify').click()`
     });
+    await new Promise(r => setTimeout(r, 400));
     const probeStatusText = await client3.send('Runtime.evaluate', {
       expression: `document.getElementById('probe-status').textContent`,
       returnByValue: true
     });
     verifiedAssert(probeStatusText.result.value.includes('FALSIFICATION PROBE ACTIVE'), 'Falsification probe must activate when epsilon = 0.0');
-    console.log('    ✓ Butlerian falsification probe triggers mechanical conformity on epsilon = 0.0');
+
+    // Remaining C: Verify COMPUTED styles under epsilon = 0.0 (mechanical baseline)
+    const computedBaseline = await client3.send('Runtime.evaluate', {
+      expression: `[0, 1, 2, 3, 4].map(n => {
+        const el = document.getElementById('text-' + n);
+        const cs = window.getComputedStyle(el);
+        return {
+          n,
+          letterSpacing: cs.letterSpacing,
+          letterSpacingPx: parseFloat(cs.letterSpacing) || 0,
+          transform: cs.transform,
+          fontWeight: cs.fontWeight
+        };
+      })`,
+      returnByValue: true
+    });
+    const baselineItems = computedBaseline.result.value;
+    verifiedAssert(
+      baselineItems.every(item => Math.abs(item.letterSpacingPx) < 0.01),
+      `Computed letterSpacing must collapse to 0px across all iterations when epsilon = 0.0, got: ${JSON.stringify(baselineItems)}`
+    );
+    verifiedAssert(
+      baselineItems.every(item => item.transform === 'none' || item.transform.includes('matrix(1, 0, 0, 1, 0, 0)')),
+      'Computed transform must collapse to identity/none across all iterations when epsilon = 0.0'
+    );
+    verifiedAssert(
+      baselineItems.every(item => item.fontWeight === '400'),
+      'Computed fontWeight must be 400 across all iterations when epsilon = 0.0'
+    );
+    console.log('    ✓ Butlerian falsification probe verified via real computed styles (letterSpacing === 0px, transform === none, fontWeight === 400)');
 
     // Exercise Dynamic Slippage (epsilon = 1.5)
     await client3.send('Runtime.evaluate', {
@@ -506,12 +536,39 @@ async function runWitnessSuite() {
         slider.dispatchEvent(new Event('input'));
       })()`
     });
-    const kern4Val = await client3.send('Runtime.evaluate', {
-      expression: `document.getElementById('kern-4').textContent`,
+    await new Promise(r => setTimeout(r, 400));
+
+    // Remaining C: Verify COMPUTED styles under epsilon = 1.5
+    const computedDrift = await client3.send('Runtime.evaluate', {
+      expression: `[0, 1, 2, 3, 4].map(n => {
+        const el = document.getElementById('text-' + n);
+        const cs = window.getComputedStyle(el);
+        return {
+          n,
+          letterSpacingPx: parseFloat(cs.letterSpacing) || 0,
+          transform: cs.transform,
+          fontWeight: parseInt(cs.fontWeight, 10) || 400
+        };
+      })`,
       returnByValue: true
     });
-    verifiedAssert(parseFloat(kern4Val.result.value) > 5.0, 'Iteration 4 kerning must drift significantly under epsilon = 1.5');
-    console.log(`    ✓ Dynamic citational slippage transfer law verified (kern-4: ${kern4Val.result.value})`);
+    const driftItems = computedDrift.result.value;
+    // Iteration 0 (n=0): ln(1) = 0, remains baseline
+    verifiedAssert(Math.abs(driftItems[0].letterSpacingPx) < 0.01, 'Iteration 0 must remain unperturbed baseline (0px)');
+    // Iteration 4 (n=4): ln(5)*3.0*1.5 ~= 7.24px
+    verifiedAssert(driftItems[4].letterSpacingPx > 5.0, `Iteration 4 computed letterSpacing must be > 5.0px under epsilon = 1.5, got ${driftItems[4].letterSpacingPx}px`);
+    // Iterations 1..4 must exhibit strictly monotonic increase in computed letterSpacing
+    for (let i = 1; i < driftItems.length; i++) {
+      verifiedAssert(
+        driftItems[i].letterSpacingPx > driftItems[i - 1].letterSpacingPx,
+        `Computed letterSpacing must increase monotonically across iterations (item ${i}: ${driftItems[i].letterSpacingPx}px > item ${i-1}: ${driftItems[i-1].letterSpacingPx}px)`
+      );
+    }
+    // Transform must exhibit non-identity matrix for n=4
+    verifiedAssert(driftItems[4].transform !== 'none', 'Iteration 4 computed transform must not be none under epsilon = 1.5');
+    // FontWeight must decrease due to slippage
+    verifiedAssert(driftItems[4].fontWeight < 400, `Iteration 4 computed fontWeight must be < 400, got ${driftItems[4].fontWeight}`);
+    console.log(`    ✓ Dynamic citational slippage verified via real computed styles (iter 4 letterSpacing: ${driftItems[4].letterSpacingPx.toFixed(2)}px, transform: ${driftItems[4].transform}, fontWeight: ${driftItems[4].fontWeight})`);
 
     // Exercise Reduced Motion
     await client3.send('Runtime.evaluate', {
@@ -546,17 +603,23 @@ async function runWitnessSuite() {
     verifiedAssert(exitText3.result.value.includes('Exited citational altar cleanly'), 'Exit sequence must confirm safe closure');
     console.log('    ✓ Citational exit sequence verified');
 
-    // Verify Covenant preservation (Khonalit-po U+200C and U+10D613)
+    // Remaining D: Distinct assertions for Khonalit-po U+200C, display glyph U+1D30B, and declared mark U+10D613
     const covenantCheck = await client3.send('Runtime.evaluate', {
       expression: `({
-        hasKhonalitPo: document.body.textContent.includes('Khona\u200Clit-po'),
-        hasGlyph: document.body.textContent.includes('\uDBF5\uDE13') || document.body.textContent.includes('𝌋')
+        hasKhonalitPoU200C: document.body.textContent.includes('Khona\u200Clit-po'),
+        hasDisplayGlyphU1D30B: document.body.textContent.includes('𝌋'),
+        hasDeclaredMarkU10D613: document.body.textContent.includes('\uDBF5\uDE13')
       })`,
       returnByValue: true
     });
-    verifiedAssert(covenantCheck.result.value.hasKhonalitPo, 'Covenant string Khona‌lit-po with U+200C must be preserved in DOM');
-    verifiedAssert(covenantCheck.result.value.hasGlyph, 'Glyph U+10D613 must be preserved in DOM');
-    console.log('    ✓ Khona‌lit-po covenant (U+200C) and glyph (U+10D613) verified in DOM');
+    verifiedAssert(covenantCheck.result.value.hasKhonalitPoU200C, 'Covenant string Khona‌lit-po with zero-width non-joiner U+200C must be preserved in DOM');
+    verifiedAssert(covenantCheck.result.value.hasDisplayGlyphU1D30B, 'Display glyph 𝌋 (Unicode U+1D30B) must be preserved in DOM');
+    verifiedAssert(covenantCheck.result.value.hasDeclaredMarkU10D613, 'Declared research scalar mark U+10D613 (surrogate pair \\uDBF5\\uDE13) must be preserved in DOM');
+    console.log('    ✓ Khona‌lit-po covenant (U+200C), display glyph (U+1D30B), and research mark (U+10D613) independently verified in DOM');
+
+    butlerWitness.planning_receipt_origin = 'tests/fixtures/dollhouse/butler_conductor_receipt.json (generated by runDollhouseDesignCycle)';
+    butlerWitness.materialization_author = 'Human/agent author materialized tests/fixtures/dollhouse/butler_performative_surface.html to execute conductor contract';
+    butlerWitness.witness_authority = 'PHYSICAL_CDP_BROWSER_WITNESS';
 
     butlerWitness.viewports.desktop = {
       width: 1440,
