@@ -1,0 +1,566 @@
+{
+  "schema": "td613.experiment-a.assay-rc3-matched-strong-union/v2-r1",
+  "assay_id": "A-RC3-R1-MATCHED-STRONG-UNION-TYPED-PARITY",
+  "timestamp": "2026-10-29T18:08:23.891Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "epistemic_disposition": "MATCHED_STRONG_UNION_EXECUTED · TYPED_PARITY_ESTABLISHED · EMERGENCE_CREDIT_ZERO",
+  "scientific_clarification": {
+    "engineering_improvement": "Modular chamber routing and typed namespace tagging both eliminate cross-boundary false-aliasing errors.",
+    "emergence_verdict": "When strong union is equipped with typed namespace protection comparable to the modular system (Arm 3B), Delta = 0 across ALL budget levels (1024..65536 B). Proves that the prior Delta = 3 was an artifact of unsegregated lexical aliasing in an untyped pool, not third-machine emergence.",
+    "emergence_credit": 0
+  },
+  "sweep_results": [
+    {
+      "kappa_bytes": 1024,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 1024,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 2,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 1024,
+        "p1_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 512,
+        "em_bytes": 512,
+        "score_v": 4,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 512,
+        "em_bytes": 512,
+        "score_v": 4,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 512,
+        "em_bytes": 512,
+        "score_v": 4,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 2048,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 2048,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 2048,
+        "p1_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 1024,
+        "em_bytes": 1024,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 1024,
+        "em_bytes": 1024,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 1024,
+        "em_bytes": 1024,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 4096,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 4096,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 0,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 4096,
+        "p1_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 2048,
+        "em_bytes": 2048,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 2048,
+        "em_bytes": 2048,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 2048,
+        "em_bytes": 2048,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 8192,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 8192,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 8192,
+        "p1_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 4096,
+        "em_bytes": 4096,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 4096,
+        "em_bytes": 4096,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 4096,
+        "em_bytes": 4096,
+        "score_v": 8,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 16384,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 16384,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 16384,
+        "p1_excluded_structurally": true,
+        "score_v": 4,
+        "vector": {
+          "operations": 1,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 8192,
+        "em_bytes": 8192,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 8192,
+        "em_bytes": 8192,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 8192,
+        "em_bytes": 8192,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 32768,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 32768,
+        "em_bytes": 0,
+        "em_excluded_structurally": true,
+        "score_v": 6,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 0,
+          "parameters": 1,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 0,
+        "em_bytes": 32768,
+        "p1_excluded_structurally": true,
+        "score_v": 17,
+        "vector": {
+          "operations": 2,
+          "warranted_citations": 1,
+          "parameters": 5,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 16384,
+        "em_bytes": 16384,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 16384,
+        "em_bytes": 16384,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 16384,
+        "em_bytes": 16384,
+        "score_v": 10,
+        "vector": {
+          "operations": 3,
+          "warranted_citations": 0,
+          "parameters": 2,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 0,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    },
+    {
+      "kappa_bytes": 65536,
+      "arm_1_flat_p1_first": {
+        "p1_bytes": 40418,
+        "em_bytes": 25118,
+        "em_excluded_structurally": false,
+        "score_v": 18,
+        "vector": {
+          "operations": 4,
+          "warranted_citations": 1,
+          "parameters": 5,
+          "aliasing_errors": 1,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_2_flat_em_first": {
+        "p1_bytes": 17311,
+        "em_bytes": 48225,
+        "p1_excluded_structurally": false,
+        "score_v": 23,
+        "vector": {
+          "operations": 4,
+          "warranted_citations": 1,
+          "parameters": 6,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3a_untyped_strong_union_balanced": {
+        "p1_bytes": 32768,
+        "em_bytes": 32768,
+        "score_v": 20,
+        "vector": {
+          "operations": 4,
+          "warranted_citations": 1,
+          "parameters": 6,
+          "aliasing_errors": 1,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_3b_typed_strong_union_balanced": {
+        "p1_bytes": 32768,
+        "em_bytes": 32768,
+        "score_v": 23,
+        "vector": {
+          "operations": 4,
+          "warranted_citations": 1,
+          "parameters": 6,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 0,
+          "novel_grounded_relations": 0
+        }
+      },
+      "arm_4_modular_chamber_routing": {
+        "p1_bytes": 32768,
+        "em_bytes": 32768,
+        "score_v": 23,
+        "vector": {
+          "operations": 4,
+          "warranted_citations": 1,
+          "parameters": 6,
+          "aliasing_errors": 0,
+          "false_joins": 0,
+          "abstentions": 1,
+          "novel_grounded_relations": 0
+        }
+      },
+      "delta_vs_untyped_strong_union": 3,
+      "delta_vs_typed_strong_union": 0,
+      "honest_null_vs_typed_comparator": true
+    }
+  ],
+  "scientific_findings": [
+    "1. RC-04 Resolved: Raw component counts and non-scalar vector outcomes (ops, citations, params, aliasing, false_joins, abstentions, novel_relations) are exposed for all arms across all 7 budget sweeps.",
+    "2. RC-05 Resolved: When compared against TYPED_STRONG_UNION_BALANCED with equal namespace protections, Delta = 0 across all budgets (1024..65536 B).",
+    "3. Demonstrates that modular routing provides robust engineering boundary enforcement and reduced false-aliasing, but generates zero novel unconditioned grounded relations (novel_relations = 0).",
+    "4. Honest empirical nulls are fully preserved."
+  ]
+}

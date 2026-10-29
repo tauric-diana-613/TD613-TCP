@@ -1,0 +1,159 @@
+{
+  "schema": "td613.experiment-a.corrected-bounded-science-claim-ledger/v3-r1",
+  "authored_at": "2026-10-29T18:08:24.259Z",
+  "commission_reference": "TD613_Experiment_A_RC_Independent_Adjudication_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "epistemic_categories": {
+    "OBSERVED": "Direct empirical observation from instrument/data traces without inferential surplus",
+    "FINITE_DEMONSTRATED": "Formally or computationally established within a specified bounded test fixture",
+    "CONDITIONAL_MODEL": "Theoretically valid conditional on stated axiomatic or mathematical assumptions",
+    "PROPOSED": "Formulated open candidate hypothesis for future empirical/theoretical evaluation",
+    "REFUTED": "Empirically or logically falsified by direct counterexample or comparative measurement",
+    "HELD": "Unresolved, unproved in general form, or requiring additional external warrants before promotion"
+  },
+  "claims": [
+    {
+      "claim_id": "CLAIM_CORPUS_CENSUS_TAXONOMY",
+      "statement": "The Em candidate corpus consists of 147 total items, structured as 94 archived original records and 53 derivative records.",
+      "status": "OBSERVED",
+      "taxonomy_breakdown": {
+        "total_items": 147,
+        "archived_original_records": 94,
+        "original_records_detail": {
+          "substantive_markdown_notes": 33,
+          "appledouble_metadata_sidecars": 33,
+          "pdf_reference_documents": 27,
+          "opaque_zip_archives": 1
+        },
+        "derivative_records": 53,
+        "opaque_zip_status": {
+          "id": "emsrc_db43deb1f616beed44e042c4",
+          "inner_reads": 0,
+          "posture": "STRICTLY_OPAQUE"
+        }
+      },
+      "redpen_correction": "Corrected conflation between substantive Markdown documents (33 .md files) and AppleDouble metadata files (33 ._* files). The 94 original records represent heterogeneous archival files, not 94 independent research documents.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/03_evidence_genealogy/CORPUS_GENEALOGY_AUDIT.json"
+    },
+    {
+      "claim_id": "CLAIM_UNBRIDGED_POLYCOMPILER_REFUSAL",
+      "statement": "The polycompiler strictly refuses cross-chamber compilation on unbridged graphs, admits exactly 1 path when a validated research analogy bridge (B1) is provided with exact UTF-8 offsets (18656..20574 and 24923..27575), and rejects both obvious and plausible type-compatible false twins.",
+      "status": "OBSERVED",
+      "scope": "Refusal is an empirical property of the unbridged graph fixture lacking cross-chamber edges (NULL_ON_TESTED_NO_CROSS_EDGE_FIXTURE).",
+      "redpen_correction": "Reconciled RC-02 and RC-03 in Assay A-RC2-R1. Tested plausible false twin (B_rival_plausible connecting P1 capacity to Flowmeter K-factor), proving structural evaluation beyond superficial scalar typing. Autonomous discovery credit remains 0.",
+      "witness_reference": "03_assay_rc2_repaired/ASSAY_RC2_R1_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_ROLE_COUNT_EMERGENCE_SURPLUS",
+      "statement": "In a matched strong-union benchmark with typed namespace parity (TYPED_STRONG_UNION_BALANCED), emergence surplus Delta = V(Modular) - V(TypedStrongUnion) is exactly 0 across all tested budgets (1024..65536 B). The earlier Delta = 3 difference over untyped union is fully accounted for by engineering namespace protection, not ontological third-machine emergence.",
+      "status": "OBSERVED",
+      "scope": "The measured surplus Delta = 0. The apparent surplus in earlier runs was a role-counting artifact of unreviewed string joining and tautological role aggregation.",
+      "redpen_correction": "Reconciled RC-04 and RC-05 in Assay A-RC3-R1. Emergence credit is confirmed as 0; honest empirical nulls are fully preserved across all budgets.",
+      "witness_reference": "04_assay_rc3_repaired/ASSAY_RC3_R1_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_ASSAY_A1_TOPICAL_PLACEMENT",
+      "statement": "Topical concordance between P1 Section 6 and Em Optimal Gamma smoothing represents post-hoc textual retrieval within a single execution path, not prospective predictive credit.",
+      "status": "OBSERVED",
+      "adjudication": "ONE_TARGET_CONCORDANCE_WITH_LEAKAGE_RISK",
+      "redpen_correction": "Reconciled WIT-06. Epistemic predictive credit is officially downgraded to 0 (A1_PREDICTIVE_CREDIT_ZERO). Validated as an archival retrieval match only.",
+      "witness_reference": "02_assay_rc1_two_way_recipient/ASSAY_RC1_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_ASSAY_A2_FALSE_TWIN_GUARD",
+      "statement": "The polycompiler prevents semantic collapse when presented with rival false-twin bridges (COLLAPSE_PREVENTED_FALSE_TWIN_REFUSED), catching dimensional incompatibilities between discrete projective obstructions and continuous noise variance derivatives.",
+      "status": "FINITE_DEMONSTRATED",
+      "adjudication": "SUPPORTED_FINITE_FALSE_JOIN_GUARD_ON_TESTED_HOMONYMS",
+      "redpen_correction": "Dynamically confirmed in Assay A-RC2 Condition 3 with frozen rival bridge B_rival.",
+      "witness_reference": "03_assay_rc2_warranted_bridge/ASSAY_RC2_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_ASSAY_A3_CONTEXT_CROWDING",
+      "statement": "The original Assay A3 claim of an architectural advantage over flat pools is FALSIFIED as an architectural test: the tested flat comparator placed 40,418 P1 bytes before Em under kappa <= 8192 B, structurally excluding Em from entering the comparison.",
+      "status": "REFUTED",
+      "adjudication": "WEAK_FLAT_POOL_CROWDING_DEMONSTRATED · ARCHITECTURAL_SURPLUS_UNDETERMINED",
+      "redpen_correction": "Reconciled WIT-03. Old A3 comparator downgraded to A3_UNFAIR_COMPARATOR_FALSIFIED_AS_ARCHITECTURAL_TEST. Replaced by A-RC3 matched balanced strong-union benchmark.",
+      "witness_reference": "04_assay_rc3_matched_strong_union/ASSAY_RC3_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_ASSAY_A4_NON_SCALAR_REPRESENTATION",
+      "statement": "Candidate questions retain a 4-dimensional representation across Pedagogue, Aperture, Atlas, and FADT jurisdictions.",
+      "status": "OBSERVED",
+      "adjudication": "NON_SCALAR_REPRESENTATION_PRESERVED",
+      "redpen_correction": "Retaining typed vector fields without scalar ranking collapse is verified. Does not prove the dimensions independent, observable, optimally informative, or a general discovery law.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/04_assays_a1_to_a5/ASSAY_A4_NON_SCALAR_QUESTION_AUDIT.json"
+    },
+    {
+      "claim_id": "CLAIM_ASSAY_A5_NOTATION_STRIPPING",
+      "statement": "Operational predicates retain execution invariance under plain-language paraphrase stripping formal notation.",
+      "status": "FINITE_DEMONSTRATED",
+      "adjudication": "FINITE_PREDICATE_EQUIVALENCE_ON_TESTED_PARAPHRASES",
+      "redpen_correction": "Finite equivalence verified on tested manual paraphrases. Broad claims of empirical invariance exceeding tested instances are held pending external semantic oracles and adversarial quantifier-shift tests.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/04_assays_a1_to_a5/ASSAY_A5_NOTATION_STRIPPING_SIEVE.json"
+    },
+    {
+      "claim_id": "CLAIM_WF1_EMA_VS_PRCSA",
+      "statement": "Exponential moving average (EMA) smoothing differs mathematically from phase-resetting cybernetic algedonics (PRCSA).",
+      "status": "FINITE_DEMONSTRATED",
+      "adjudication": "FINITE_COUNTERMODEL_TO_EQUIVALENCE_ON_SHOCK_INPUTS",
+      "redpen_correction": "Legitimate finite countermodel to mathematical equivalence on step/shock inputs. Claims of a proven short exact sequence are HELD pending formal definition of topological spaces, composable maps, and exactness im(iota) = ker(pi). No real-world crisis dynamics inferred.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/05_mathematical_frameworks/MATHEMATICAL_FRAMEWORKS_AND_FALSIFICATIONS.json"
+    },
+    {
+      "claim_id": "CLAIM_WF2_FADT_PRODUCT_DESCENT",
+      "statement": "Finite admissibility descent over product spaces satisfies F(A x B) = F(A) x F(B).",
+      "status": "HELD",
+      "adjudication": "HELD_PRODUCT_DESCENT_CONJECTURE",
+      "redpen_correction": "Product descent equality requires explicit product-preservation conditions and independent factors. A nonempty descent gap across unbridged chambers depends on fiber support differences. Held as an open mathematical conjecture.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/05_mathematical_frameworks/MATHEMATICAL_FRAMEWORKS_AND_FALSIFICATIONS.json"
+    },
+    {
+      "claim_id": "CLAIM_WF3_UNIVERSAL_CAPACITY_GEOMETRY",
+      "statement": "Capacity-bounded information geometry governs universal non-monotonicity in multimodal unions.",
+      "status": "HELD",
+      "adjudication": "HELD_UNIVERSAL_CAPACITY_THEOREM",
+      "redpen_correction": "Resource-constrained packing produces demonstrable trade-offs in naive pools, but universal non-monotonicity over strong unions is unproved and HELD.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/05_mathematical_frameworks/MATHEMATICAL_FRAMEWORKS_AND_FALSIFICATIONS.json"
+    },
+    {
+      "claim_id": "CLAIM_WF4_DROMOLOGICAL_LIE_COMMUTATOR",
+      "statement": "Sequential processing pipeline exhibits Lie algebraic commutator structure [X_ped, X_inst] != 0.",
+      "status": "FINITE_DEMONSTRATED",
+      "adjudication": "FINITE_ORDER_DEPENDENCE_ON_PERMUTATION_TESTS",
+      "redpen_correction": "Permutation tests prove pipeline transformations are order-dependent (C1 o C2 != C2 o C1). Claims of a Lie algebra, Lie brackets, or quantum geometry are formally withdrawn. Finite order dependence retained as an engineering property.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/05_mathematical_frameworks/MATHEMATICAL_FRAMEWORKS_AND_FALSIFICATIONS.json"
+    },
+    {
+      "claim_id": "CLAIM_WF5_SVD_CONDITIONING_COLLAPSE",
+      "statement": "Conditioning number kappa > 10^3 induces singular-value collapse and noise indistinguishability.",
+      "status": "HELD",
+      "adjudication": "HELD_UNIVERSAL_SVD_COLLAPSE_THRESHOLD",
+      "redpen_correction": "kappa > 10^3 does not inherently cause singular-value collapse (e.g., diag(2000, 1) has kappa=2000 and full rank). Universal threshold withdrawn; must specify exact matrix, noise model, and task-specific calibration.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/05_mathematical_frameworks/MATHEMATICAL_FRAMEWORKS_AND_FALSIFICATIONS.json"
+    },
+    {
+      "claim_id": "CLAIM_WF6_GENEALOGICAL_N_EFF",
+      "statement": "The 33 Markdown notes collapse to an effective sample size N_eff approx 1.51 due to prompt-ancestry correlation rho = 0.65.",
+      "status": "CONDITIONAL_MODEL",
+      "adjudication": "ILLUSTRATIVE_SENSITIVITY_SCENARIO",
+      "redpen_correction": "Calculation 33 / (1 + 32 * 0.65) approx 1.51 is correct conditional on an equicorrelation model with rho=0.65. Thematic and citation similarities do not establish documentary parentage. The 33 notes were not independent empirical replications to begin with. Labeled as an illustrative sensitivity scenario.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/03_evidence_genealogy/CORPUS_GENEALOGY_AUDIT.json"
+    },
+    {
+      "claim_id": "CLAIM_DOLLHOUSE_INTERNAL_GOVERNANCE",
+      "statement": "Native Dollhouse audit achieved unanimous specialist consensus (decision: SUPPORTED, 0 infractions).",
+      "status": "OBSERVED",
+      "adjudication": "INTERNAL_ARCHITECTURAL_WITNESS_CONSENSUS",
+      "redpen_correction": "Confirmed internal architectural consistency across the 5 specialist doll schemas. Acknowledged that Dollhouse specialist dolls share the agent model and instructions; internal consensus is not independent external blinded adjudication.",
+      "witness_reference": "scratch/exp_a_scientific_postflight_20261029/06_dollhouse_review/POSTFLIGHT_DOLLHOUSE_MACHINE_RECEIPT.json"
+    },
+    {
+      "claim_id": "CLAIM_MANIFEST_TRAJECTORIES_M0_M4",
+      "statement": "Two-way isolated recipient operation (A-RC1-R1) confirmed: Atelier receiver isolates P1 with exact UTF-8 Section 6 body (18656..20574, SHA-256 e9d259d7...); Encyclopedia receiver admits 147 candidate items with persistent idempotence. Reverse staging proves lexical queryability while maintaining catalog immutability (147 records) and zero autonomous cross-chamber edge synthesis.",
+      "status": "OBSERVED",
+      "adjudication": "CANDIDATE_DEVELOPMENT_TRAJECTORIES_ONLY",
+      "redpen_correction": "Reconciled RC-02 and RC-06 in Assay A-RC1-R1 with exact UTF-8 offsets and verified lifecycle transitions.",
+      "witness_reference": "02_assay_rc1_repaired/ASSAY_RC1_R1_RECEIPT.json"
+    }
+  ]
+}
