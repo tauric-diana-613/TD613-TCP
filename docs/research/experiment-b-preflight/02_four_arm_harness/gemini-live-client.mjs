@@ -7,6 +7,17 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { geminiGenerateContentUrl, geminiRequestHeaders, observeGeminiQuota } from '../../../../server/gemini-provider-transport.js';
 
+export const MODEL_PRICING = Object.freeze({
+  'gemini-2.5-flash-lite': {
+    inputPerMillion: 0.075,
+    outputPerMillion: 0.30
+  },
+  'gemini-2.5-flash': {
+    inputPerMillion: 0.15,
+    outputPerMillion: 0.60
+  }
+});
+
 function loadApiKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
   const envPath = path.resolve('.env');
@@ -29,6 +40,8 @@ export class GeminiLiveClient {
     this.temperature = options.temperature ?? 0.0;
     this.maxOutputTokens = options.maxOutputTokens ?? 4096;
     this.recordedTraces = [];
+    this.totalProviderAttempts = 0;
+    this.totalInternalRetries = 0;
   }
 
   isAvailable() {
@@ -67,9 +80,12 @@ export class GeminiLiveClient {
     let resData;
     let attempts = 0;
     const maxAttempts = 3;
+    const attemptLog = [];
 
     while (attempts < maxAttempts) {
       attempts++;
+      this.totalProviderAttempts++;
+      const attemptStart = Date.now();
       try {
         response = await fetch(url, {
           method: 'POST',
@@ -78,10 +94,18 @@ export class GeminiLiveClient {
         });
 
         resData = await response.json();
+        const attemptLatency = Date.now() - attemptStart;
+        attemptLog.push({
+          attempt_index: attempts,
+          http_status: response.status,
+          latency_ms: attemptLatency,
+          timestamp: new Date().toISOString()
+        });
 
         if (response.status === 200) {
           break;
         } else if (response.status === 429 || response.status >= 500) {
+          this.totalInternalRetries++;
           const quota = observeGeminiQuota(resData, { model: this.model, response });
           const delay = Math.max(2000 * attempts, 2000);
           console.warn(`[GeminiLiveClient] HTTP ${response.status} on attempt ${attempts}. Retrying in ${delay}ms...`);
@@ -91,6 +115,7 @@ export class GeminiLiveClient {
         }
       } catch (err) {
         if (attempts >= maxAttempts) throw err;
+        this.totalInternalRetries++;
         await new Promise(r => setTimeout(r, 2000 * attempts));
       }
     }
@@ -108,6 +133,14 @@ export class GeminiLiveClient {
     const textParts = candidateParts.filter(p => p.text && !p.thought).map(p => p.text);
     const responseText = textParts.join('\n').trim() || candidateParts.map(p => p.text).join('\n').trim();
 
+    // Granular usage extraction from provider metadata
+    const usage = resData.usageMetadata || {};
+    const promptTokens = usage.promptTokenCount ?? null;
+    const candidatesTokens = usage.candidatesTokenCount ?? null;
+    const thoughtsTokens = usage.thoughtsTokenCount ?? 0;
+    const cachedTokens = usage.cachedContentTokenCount ?? 0;
+    const totalTokens = usage.totalTokenCount ?? (promptTokens + candidatesTokens);
+
     const trace = {
       episode_id: episodeId,
       model_provider: 'Google Gemini REST API (v1beta)',
@@ -122,17 +155,18 @@ export class GeminiLiveClient {
         latency_ms: latencyMs
       },
       http_status: response.status,
+      attempt_count: attempts,
+      internal_retries: attempts - 1,
+      attempt_log: attemptLog,
       system_instruction_hash: systemInstruction ? crypto.createHash('sha256').update(systemInstruction).digest('hex') : null,
       request_token_budget: this.maxOutputTokens,
-      total_tokens: resData.usageMetadata?.totalTokenCount ?? null,
-      prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
-      candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,
       provider_usage: {
-        prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
-        candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,
-        thoughts_tokens: resData.usageMetadata?.thoughtsTokenCount ?? null,
-        total_tokens: resData.usageMetadata?.totalTokenCount ?? null,
-        service_tier: resData.usageMetadata?.serviceTier ?? 'standard'
+        prompt_tokens: promptTokens,
+        candidates_tokens: candidatesTokens,
+        thoughts_tokens: thoughtsTokens,
+        cached_tokens: cachedTokens,
+        total_tokens: totalTokens,
+        service_tier: usage.serviceTier ?? 'standard'
       },
       finish_reason: candidate?.finishReason || 'STOP',
       raw_prompt: fullPrompt,

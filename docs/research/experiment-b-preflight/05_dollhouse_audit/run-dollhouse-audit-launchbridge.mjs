@@ -37,8 +37,8 @@ console.log('=== EXECUTING TD613 DOLLHOUSE SCIENTIFIC AUDIT ON FLIGHT LAUNCHBRID
 const dispatcherPath = path.join(REPO_ROOT, 'app/engine/dollhouse-skill-dispatcher.js');
 const { runDollhouseSkillAudit } = await import(pathToFileURL(dispatcherPath).href);
 
-// Bound to accepted main predecessor commit
-const PREDECESSOR_HEAD = 'c4bd0401b432f5adda55c62ddca2bd99d4f3cc92';
+// Bound to accepted main predecessor commit (PR #1609)
+const PREDECESSOR_HEAD = 'f78f75024e9625ddb7ac7b201560d77e6b70e335';
 
 const auditSpec = {
   source_revision: PREDECESSOR_HEAD,
@@ -116,7 +116,7 @@ const auditSpec = {
       ],
       phases: {
         PREFLIGHT_MERGED_PREDECESSOR: {
-          entry_id: 'PRED-MAIN-C4BD04',
+          entry_id: 'PRED-MAIN-F78F75',
           status: 'PASS'
         },
         CONTROLLED_INTAKE_STAGED: {

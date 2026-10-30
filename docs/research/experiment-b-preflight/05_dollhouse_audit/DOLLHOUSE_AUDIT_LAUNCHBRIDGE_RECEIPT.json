@@ -1,14 +1,14 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793364860041-1a55e0a2",
-  "timestamp": "2026-10-30T12:54:20.041Z",
-  "source_revision": "c4bd0401b432f5adda55c62ddca2bd99d4f3cc92",
+  "invocation_id": "dollhouse-audit-1793368198815-32c5153d",
+  "timestamp": "2026-10-30T13:49:58.815Z",
+  "source_revision": "f78f75024e9625ddb7ac7b201560d77e6b70e335",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "4651d94d479f2c51461ffd1359aa45fe58ba4aec",
-  "is_exact_checkout_match": false,
+  "executing_checkout_revision": "f78f75024e9625ddb7ac7b201560d77e6b70e335",
+  "is_exact_checkout_match": true,
   "exact_checkout_verified": false,
-  "is_historical_commit_only": true,
+  "is_historical_commit_only": false,
   "task_scope": "EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT",
   "evidence_class": "SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION",
   "evidence_references": [
@@ -29,33 +29,33 @@
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "b7c659570c3580671e75b4071b58b5e00c60236d0a88ed1517b00a6652109ce9",
+      "byte_digest": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae",
       "byte_digest_verified": true,
-      "sha256": "b7c659570c3580671e75b4071b58b5e00c60236d0a88ed1517b00a6652109ce9"
+      "sha256": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "848a32308bc57daa99e98e2ef6a2e9d908b0ae098fe367d05987e3083fde9879",
+      "byte_digest": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc",
       "byte_digest_verified": true,
-      "sha256": "848a32308bc57daa99e98e2ef6a2e9d908b0ae098fe367d05987e3083fde9879"
+      "sha256": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "428c6f5e5fad7032cde75339d3e2be36a9e29cfd131a353b524c10a096c8f12e",
+      "byte_digest": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a",
       "byte_digest_verified": true,
-      "sha256": "428c6f5e5fad7032cde75339d3e2be36a9e29cfd131a353b524c10a096c8f12e"
+      "sha256": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3",
+      "byte_digest": "8adbe0329c0ccd83704524fe2e062983f8fd385ccf1fbd3fd4854f6973282697",
       "byte_digest_verified": true,
-      "sha256": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3"
+      "sha256": "8adbe0329c0ccd83704524fe2e062983f8fd385ccf1fbd3fd4854f6973282697"
     },
     {
       "reference": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
@@ -109,9 +109,9 @@
       "reference": "scripts/run-experiment-b-flight.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "9f481eb4b97a6f15e423c27fc318f48775c89c5e378fd15977b616252332704c",
+      "byte_digest": "58d527adce6e5d4965ad7b7e0c298e7273373960fdaf7d97c6fd8a5d842bf317",
       "byte_digest_verified": true,
-      "sha256": "9f481eb4b97a6f15e423c27fc318f48775c89c5e378fd15977b616252332704c"
+      "sha256": "58d527adce6e5d4965ad7b7e0c298e7273373960fdaf7d97c6fd8a5d842bf317"
     }
   ],
   "roles_requested": [
@@ -436,6 +436,6 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 494,
+  "execution_duration_ms": 612,
   "scope_qualification": "Offline evaluation of declared in-memory synthetic specialist fixtures. Consensus (5/5 SUPPORT) applies strictly to declared domain inputs; it does not constitute an automated code-security verification or exact-commit audit of subsequent PR revisions."
 }

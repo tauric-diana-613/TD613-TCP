@@ -1,6 +1,6 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T12:54:27.101Z",
+  "timestamp": "2026-10-30T13:51:36.293Z",
   "entry_count": 64,
   "entries": [
     {
@@ -65,18 +65,18 @@
     },
     {
       "path": "02_four_arm_harness/controlled-archive-intake.mjs",
-      "bytes": 5441,
-      "sha256": "b7c659570c3580671e75b4071b58b5e00c60236d0a88ed1517b00a6652109ce9"
+      "bytes": 26324,
+      "sha256": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae"
     },
     {
       "path": "02_four_arm_harness/dry_run_checkpoint.json",
-      "bytes": 12128,
-      "sha256": "7392f1d89e9c0dd3a9d597cc203c6ee9e2bb0f8e6545f81fa69baea34249c50e"
+      "bytes": 52303,
+      "sha256": "93b442c03ea9260449b92390a972d4722b6fe3eb22a6c4fe424271863ae571f9"
     },
     {
       "path": "02_four_arm_harness/gemini-live-client.mjs",
-      "bytes": 5387,
-      "sha256": "848a32308bc57daa99e98e2ef6a2e9d908b0ae098fe367d05987e3083fde9879"
+      "bytes": 6305,
+      "sha256": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc"
     },
     {
       "path": "02_four_arm_harness/reasoning-kernel.mjs",
@@ -105,18 +105,23 @@
     },
     {
       "path": "02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
-      "bytes": 21880,
-      "sha256": "428c6f5e5fad7032cde75339d3e2be36a9e29cfd131a353b524c10a096c8f12e"
+      "bytes": 26316,
+      "sha256": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a"
     },
     {
       "path": "02_four_arm_harness/stage2-independent-evaluator.mjs",
-      "bytes": 16558,
-      "sha256": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3"
+      "bytes": 24991,
+      "sha256": "8adbe0329c0ccd83704524fe2e062983f8fd385ccf1fbd3fd4854f6973282697"
     },
     {
       "path": "03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 3202,
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
+    },
+    {
+      "path": "03_calibration_execution/evaluator-oracle.mjs",
+      "bytes": 13563,
+      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
@@ -142,11 +147,6 @@
       "path": "03_calibration_execution/PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
       "bytes": 1811,
       "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
-    },
-    {
-      "path": "03_calibration_execution/evaluator-oracle.mjs",
-      "bytes": 13563,
-      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution/run-offline-trace-rescore.mjs",
@@ -221,17 +221,12 @@
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json",
       "bytes": 17885,
-      "sha256": "c536fe703db61d94c83fd288e327a310d1c35d2292f3861a3bf245a594f82366"
+      "sha256": "a76aa843fad18e58a496817a43ec5472a0a1105b6d1d5d458bdb79b1ba9fad19"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md",
       "bytes": 3116,
-      "sha256": "72fc012b42887165fbfc44c8e9678a0d18f47c400fd8bdec5261380833486d9b"
-    },
-    {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
-      "bytes": 17769,
-      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
+      "sha256": "a7949f2213ae8085d4b08234460c10fad1b37d15786dec5a465f8b880501d51f"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
@@ -239,14 +234,19 @@
       "sha256": "db862b045be1fe2ce0fdbadb0357a8074fe87cbd9fdfa62dbf63d4c3da6b4dd9"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
-      "bytes": 3375,
-      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
+      "bytes": 17769,
+      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
       "bytes": 3112,
       "sha256": "aff1542abb596b57ebcee060d7ffbb1cbbe776e9edd412e36696f49d456bf473"
+    },
+    {
+      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
+      "bytes": 3375,
+      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
@@ -265,8 +265,8 @@
     },
     {
       "path": "05_dollhouse_audit/run-dollhouse-audit-launchbridge.mjs",
-      "bytes": 7955,
-      "sha256": "bfb82c3c22465ff04d792abed55df1eb751930d2b449860e8704db0d7954d8e3"
+      "bytes": 7966,
+      "sha256": "78a5ed3c0e7b641fa936178e94952e0ee5d1487fe227810a6b9006aba4c4ce02"
     },
     {
       "path": "05_dollhouse_audit/run-dollhouse-audit-live.mjs",
@@ -276,7 +276,7 @@
     {
       "path": "06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
       "bytes": 1913,
-      "sha256": "6b98bd99a55566d71c60d403cb2337064d6fc0be30b2272dab9b75acb8698308"
+      "sha256": "54fad4afed2f4f6de85e024e3498299e7aa3be18b8a9ace4b10912dcfb16370f"
     },
     {
       "path": "06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",

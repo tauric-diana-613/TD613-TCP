@@ -1,288 +1,1477 @@
 {
-  "schema": "td613.experiment-b.heterogeneous-flight-ledger/v1",
-  "timestamp": "2026-10-30T12:54:33.908Z",
-  "arm": "ARM_2A_MODULAR",
-  "model": "source-free-mock-kernel",
-  "context_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
-  "context_projection_declaration": {
-    "is_lossless": false,
-    "classification": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS"
-  },
+  "schema": "td613.experiment-b.master-flight-ledger/v1",
+  "execution_mode": "SOURCE_FREE_SYNTHETIC_VERIFIED",
+  "timestamp": "2026-10-30T13:51:16.486Z",
+  "permutation": "CHRONOLOGICAL",
+  "model": "gemini-2.5-flash-lite",
   "budget_ceilings": {
     "max_calls": 120,
     "max_tokens": 400000,
     "max_cost_usd": 0.5
   },
-  "provider_accounting": {
-    "total_provider_attempts": 5,
-    "successful_calls": 5,
-    "retried_attempts": 0,
-    "failed_attempts": 0,
-    "total_tokens_consumed": 895,
-    "prompt_tokens": 585,
-    "candidates_tokens": 310,
-    "estimated_expenditure_usd": 0.000137
-  },
-  "token_accounting": {
-    "total_tokens_consumed": 895,
-    "prompt_tokens": 585,
-    "candidates_tokens": 310
-  },
-  "turn_count": 3,
-  "candidate_count": 2,
-  "history": [
-    {
-      "turn": 0,
-      "timestamp": "2026-10-30T12:54:33.906Z",
-      "raw_output": "BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.",
-      "active_hypotheses": [],
-      "model_parameters": {}
-    },
-    {
-      "turn": 1,
-      "document_id": "DOC-SYN-01",
-      "document_sha256": "8a3b9fe36ea58c38dd142e70bafd014c6217c9bd817a4b62b209b063e88d4350",
-      "timestamp": "2026-10-30T12:54:33.907Z",
-      "raw_output": "CHAMBER 2 DESCENT [DOC-SYN-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
-      "chamber_outputs": {
-        "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
-        "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+  "admission_receipt": {
+    "admission_id": "ADMISSION-SYN-ZIP-20261030-49e698",
+    "timestamp": "2026-10-30T13:51:16.485Z",
+    "archive_sha256": "fe0bb317f07e261f87287186f7769f0d81f622d960be12ec422550e6a03da4f0",
+    "document_count": 2,
+    "documents": [
+      {
+        "id": "DOC-ZIP-01",
+        "filename": "synthetic_dissipative_oscillator.md",
+        "is_binary": false,
+        "content": "# Synthetic Specimen 1: Damped Harmonic Oscillator\nDifferential Equation: m * x''(t) + gamma * x'(t) + k * x(t) = 0\nInvariant: Hamiltonian energy decay rate dE/dt = -gamma * (x')^2 <= 0\nQUOTE: \"m * x''(t) + gamma * x'(t) + k * x(t) = 0\"",
+        "raw_bytes": {
+          "type": "Buffer",
+          "data": [
+            35,
+            32,
+            83,
+            121,
+            110,
+            116,
+            104,
+            101,
+            116,
+            105,
+            99,
+            32,
+            83,
+            112,
+            101,
+            99,
+            105,
+            109,
+            101,
+            110,
+            32,
+            49,
+            58,
+            32,
+            68,
+            97,
+            109,
+            112,
+            101,
+            100,
+            32,
+            72,
+            97,
+            114,
+            109,
+            111,
+            110,
+            105,
+            99,
+            32,
+            79,
+            115,
+            99,
+            105,
+            108,
+            108,
+            97,
+            116,
+            111,
+            114,
+            10,
+            68,
+            105,
+            102,
+            102,
+            101,
+            114,
+            101,
+            110,
+            116,
+            105,
+            97,
+            108,
+            32,
+            69,
+            113,
+            117,
+            97,
+            116,
+            105,
+            111,
+            110,
+            58,
+            32,
+            109,
+            32,
+            42,
+            32,
+            120,
+            39,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            103,
+            97,
+            109,
+            109,
+            97,
+            32,
+            42,
+            32,
+            120,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            107,
+            32,
+            42,
+            32,
+            120,
+            40,
+            116,
+            41,
+            32,
+            61,
+            32,
+            48,
+            10,
+            73,
+            110,
+            118,
+            97,
+            114,
+            105,
+            97,
+            110,
+            116,
+            58,
+            32,
+            72,
+            97,
+            109,
+            105,
+            108,
+            116,
+            111,
+            110,
+            105,
+            97,
+            110,
+            32,
+            101,
+            110,
+            101,
+            114,
+            103,
+            121,
+            32,
+            100,
+            101,
+            99,
+            97,
+            121,
+            32,
+            114,
+            97,
+            116,
+            101,
+            32,
+            100,
+            69,
+            47,
+            100,
+            116,
+            32,
+            61,
+            32,
+            45,
+            103,
+            97,
+            109,
+            109,
+            97,
+            32,
+            42,
+            32,
+            40,
+            120,
+            39,
+            41,
+            94,
+            50,
+            32,
+            60,
+            61,
+            32,
+            48,
+            10,
+            81,
+            85,
+            79,
+            84,
+            69,
+            58,
+            32,
+            34,
+            109,
+            32,
+            42,
+            32,
+            120,
+            39,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            103,
+            97,
+            109,
+            109,
+            97,
+            32,
+            42,
+            32,
+            120,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            107,
+            32,
+            42,
+            32,
+            120,
+            40,
+            116,
+            41,
+            32,
+            61,
+            32,
+            48,
+            34
+          ]
+        },
+        "bytes": 236,
+        "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+        "derivative_status": "AUTHENTIC_UTF8_TEXT_PRESERVED",
+        "author_provenance": "Authentic Admitted ZIP Archive Member",
+        "chronology_index": 1
       },
-      "candidate_id": "CAND-20261030-5de3b0"
+      {
+        "id": "DOC-ZIP-02",
+        "filename": "synthetic_series_rlc_circuit.md",
+        "is_binary": false,
+        "content": "# Synthetic Specimen 2: Series RLC Circuit\nDifferential Equation: L * q''(t) + R * q'(t) + (1/C) * q(t) = 0\nInvariant: Dissipated power P(t) = -R * (q')^2 <= 0\nQUOTE: \"L * q''(t) + R * q'(t) + (1/C) * q(t) = 0\"",
+        "raw_bytes": {
+          "type": "Buffer",
+          "data": [
+            35,
+            32,
+            83,
+            121,
+            110,
+            116,
+            104,
+            101,
+            116,
+            105,
+            99,
+            32,
+            83,
+            112,
+            101,
+            99,
+            105,
+            109,
+            101,
+            110,
+            32,
+            50,
+            58,
+            32,
+            83,
+            101,
+            114,
+            105,
+            101,
+            115,
+            32,
+            82,
+            76,
+            67,
+            32,
+            67,
+            105,
+            114,
+            99,
+            117,
+            105,
+            116,
+            10,
+            68,
+            105,
+            102,
+            102,
+            101,
+            114,
+            101,
+            110,
+            116,
+            105,
+            97,
+            108,
+            32,
+            69,
+            113,
+            117,
+            97,
+            116,
+            105,
+            111,
+            110,
+            58,
+            32,
+            76,
+            32,
+            42,
+            32,
+            113,
+            39,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            82,
+            32,
+            42,
+            32,
+            113,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            40,
+            49,
+            47,
+            67,
+            41,
+            32,
+            42,
+            32,
+            113,
+            40,
+            116,
+            41,
+            32,
+            61,
+            32,
+            48,
+            10,
+            73,
+            110,
+            118,
+            97,
+            114,
+            105,
+            97,
+            110,
+            116,
+            58,
+            32,
+            68,
+            105,
+            115,
+            115,
+            105,
+            112,
+            97,
+            116,
+            101,
+            100,
+            32,
+            112,
+            111,
+            119,
+            101,
+            114,
+            32,
+            80,
+            40,
+            116,
+            41,
+            32,
+            61,
+            32,
+            45,
+            82,
+            32,
+            42,
+            32,
+            40,
+            113,
+            39,
+            41,
+            94,
+            50,
+            32,
+            60,
+            61,
+            32,
+            48,
+            10,
+            81,
+            85,
+            79,
+            84,
+            69,
+            58,
+            32,
+            34,
+            76,
+            32,
+            42,
+            32,
+            113,
+            39,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            82,
+            32,
+            42,
+            32,
+            113,
+            39,
+            40,
+            116,
+            41,
+            32,
+            43,
+            32,
+            40,
+            49,
+            47,
+            67,
+            41,
+            32,
+            42,
+            32,
+            113,
+            40,
+            116,
+            41,
+            32,
+            61,
+            32,
+            48,
+            34
+          ]
+        },
+        "bytes": 210,
+        "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+        "derivative_status": "AUTHENTIC_UTF8_TEXT_PRESERVED",
+        "author_provenance": "Authentic Admitted ZIP Archive Member",
+        "chronology_index": 2
+      }
+    ],
+    "manifest_sha256": "da97c218ce9079471942f330b71ddd605618665ed2d8a79de8c28f65d9884d65",
+    "custody_status": "SOURCE_FREE_SYNTHETIC_ZIP_VERIFIED",
+    "quarantine_maintained": true,
+    "physical_io_executed": false
+  },
+  "arms_executed": {
+    "ARM_0_TRANSPORT": {
+      "arm": "ARM_0_TRANSPORT",
+      "total_documents": 2,
+      "total_bytes_transported": 446,
+      "records": [
+        {
+          "document_id": "DOC-ZIP-01",
+          "filename": "synthetic_dissipative_oscillator.md",
+          "is_binary": false,
+          "bytes": 236,
+          "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+          "transport_fidelity": "BIT_EXACT_PRESERVED",
+          "timestamp": "2026-10-30T13:51:16.486Z"
+        },
+        {
+          "document_id": "DOC-ZIP-02",
+          "filename": "synthetic_series_rlc_circuit.md",
+          "is_binary": false,
+          "bytes": 210,
+          "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+          "transport_fidelity": "BIT_EXACT_PRESERVED",
+          "timestamp": "2026-10-30T13:51:16.486Z"
+        }
+      ],
+      "status": "TRANSPORT_BASELINE_VERIFIED"
     },
-    {
-      "turn": 2,
-      "document_id": "DOC-SYN-02",
-      "document_sha256": "5409a7a9696b385bf9a9470cf8f438d335b990186bc85f709fe0be05e8788067",
-      "timestamp": "2026-10-30T12:54:33.908Z",
-      "raw_output": "CHAMBER 2 DESCENT [DOC-SYN-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
-      "chamber_outputs": {
-        "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
-        "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+    "ARM_1_ARCHIVAL": {
+      "arm": "ARM_1_ARCHIVAL",
+      "total_indexed": 2,
+      "index": {
+        "synthetic_dissipative_oscillator.md": {
+          "id": "DOC-ZIP-01",
+          "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+          "is_binary": false,
+          "derivative_status": "AUTHENTIC_UTF8_TEXT_PRESERVED",
+          "schema_valid": true,
+          "indexed_at": "2026-10-30T13:51:16.486Z"
+        },
+        "synthetic_series_rlc_circuit.md": {
+          "id": "DOC-ZIP-02",
+          "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+          "is_binary": false,
+          "derivative_status": "AUTHENTIC_UTF8_TEXT_PRESERVED",
+          "schema_valid": true,
+          "indexed_at": "2026-10-30T13:51:16.486Z"
+        }
       },
-      "candidate_id": "CAND-20261030-7c5cab"
+      "status": "ARCHIVAL_CONTROL_INDEXED"
+    },
+    "ARM_2A_MODULAR": {
+      "schema": "td613.experiment-b.heterogeneous-flight-ledger/v1",
+      "timestamp": "2026-10-30T13:51:16.491Z",
+      "arm": "ARM_2A_MODULAR",
+      "model": "gemini-2.5-flash-lite",
+      "context_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+      "context_projection_declaration": {
+        "is_lossless": false,
+        "classification": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS"
+      },
+      "budget_ceilings": {
+        "max_calls": 120,
+        "max_tokens": 400000,
+        "max_cost_usd": 0.5
+      },
+      "provider_accounting": {
+        "total_provider_attempts": 5,
+        "successful_calls": 5,
+        "retried_attempts": 0,
+        "failed_attempts": 0,
+        "total_tokens_consumed": 895,
+        "prompt_tokens": 585,
+        "candidates_tokens": 310,
+        "thoughts_tokens": 0,
+        "cached_tokens": 0,
+        "estimated_expenditure_usd": 0.000137
+      },
+      "token_accounting": {
+        "total_tokens_consumed": 895,
+        "prompt_tokens": 585,
+        "candidates_tokens": 310,
+        "thoughts_tokens": 0,
+        "cached_tokens": 0
+      },
+      "turn_count": 3,
+      "candidate_count": 2,
+      "history": [
+        {
+          "turn": 0,
+          "timestamp": "2026-10-30T13:51:16.487Z",
+          "raw_output": "BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.",
+          "active_hypotheses": [],
+          "model_parameters": {}
+        },
+        {
+          "turn": 1,
+          "document_id": "DOC-ZIP-01",
+          "document_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+          "timestamp": "2026-10-30T13:51:16.490Z",
+          "raw_output": "CHAMBER 2 DESCENT [DOC-ZIP-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
+          "chamber_outputs": {
+            "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
+            "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+          },
+          "candidate_id": "CAND-20261030-3f4991"
+        },
+        {
+          "turn": 2,
+          "document_id": "DOC-ZIP-02",
+          "document_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+          "timestamp": "2026-10-30T13:51:16.491Z",
+          "raw_output": "CHAMBER 2 DESCENT [DOC-ZIP-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
+          "chamber_outputs": {
+            "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
+            "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+          },
+          "candidate_id": "CAND-20261030-2ae954"
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "CAND-20261030-3f4991",
+          "timestamp": "2026-10-30T13:51:16.490Z",
+          "status": "PROPOSED",
+          "warrant_class": "WARRANT_PENDING_EVALUATION",
+          "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.",
+          "uncertainty": "Parameter identification bounded by measurement window.",
+          "evidence_ancestry": {
+            "source_documents": [
+              {
+                "filename": "synthetic_dissipative_oscillator.md",
+                "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+                "author_provenance": "Authentic Admitted ZIP Archive Member"
+              }
+            ],
+            "physical_byte_spans": [
+              {
+                "file": "synthetic_dissipative_oscillator.md",
+                "start_byte": 0,
+                "end_byte": 236,
+                "encoding": "UTF-8",
+                "span_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb"
+              }
+            ],
+            "mathematical_premises": [
+              "Turn 1 exposure of synthetic_dissipative_oscillator.md"
+            ],
+            "source_chronology_order": 1
+          },
+          "presentation_ancestry": {
+            "generating_arm": "ARM_2A_MODULAR",
+            "representation_modality": "DOLLHOUSE_PARATACTIC",
+            "presentation_timing": "PRE_GENERATION_LENS",
+            "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+            "context_projection_loss_declaration": {
+              "preserved_fields": [
+                "candidate_propositions",
+                "parameter_equations",
+                "model_declared_uncertainty",
+                "turn_status"
+              ],
+              "projected_away_fields": [
+                "raw_chunk_narrative",
+                "intermediate_reasoning_prose",
+                "document_formatting",
+                "unquoted_source_context"
+              ],
+              "is_lossless": false,
+              "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+            },
+            "specialist_scaffolding": {
+              "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
+              "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+            },
+            "scaffolding_metaphors_introduced": []
+          },
+          "adjudication_ancestry": {
+            "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
+            "scoring_rule_version": "v1.0-preflight",
+            "rca01_cell": "CELL_B_AUTH_DOLL",
+            "rca01_evaluation_vector": {
+              "discovery_occurrence": "PENDING_EVALUATION",
+              "mathematical_warrant": "PENDING_EVALUATION",
+              "causal_contribution": "PENDING_EVALUATION",
+              "novelty": "PENDING_EVALUATION",
+              "instrument_integrity": "PENDING_EVALUATION",
+              "claim_status": "PROPOSED_CANDIDATE"
+            },
+            "rca01_outcome_archetypes": [],
+            "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+            "dissent_recorded": false,
+            "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+          }
+        },
+        {
+          "candidate_id": "CAND-20261030-2ae954",
+          "timestamp": "2026-10-30T13:51:16.491Z",
+          "status": "PROPOSED",
+          "warrant_class": "WARRANT_PENDING_EVALUATION",
+          "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.",
+          "uncertainty": "Parameter identification bounded by measurement window.",
+          "evidence_ancestry": {
+            "source_documents": [
+              {
+                "filename": "synthetic_series_rlc_circuit.md",
+                "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+                "author_provenance": "Authentic Admitted ZIP Archive Member"
+              }
+            ],
+            "physical_byte_spans": [
+              {
+                "file": "synthetic_series_rlc_circuit.md",
+                "start_byte": 0,
+                "end_byte": 210,
+                "encoding": "UTF-8",
+                "span_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055"
+              }
+            ],
+            "mathematical_premises": [
+              "Turn 2 exposure of synthetic_series_rlc_circuit.md"
+            ],
+            "source_chronology_order": 2
+          },
+          "presentation_ancestry": {
+            "generating_arm": "ARM_2A_MODULAR",
+            "representation_modality": "DOLLHOUSE_PARATACTIC",
+            "presentation_timing": "PRE_GENERATION_LENS",
+            "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+            "context_projection_loss_declaration": {
+              "preserved_fields": [
+                "candidate_propositions",
+                "parameter_equations",
+                "model_declared_uncertainty",
+                "turn_status"
+              ],
+              "projected_away_fields": [
+                "raw_chunk_narrative",
+                "intermediate_reasoning_prose",
+                "document_formatting",
+                "unquoted_source_context"
+              ],
+              "is_lossless": false,
+              "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+            },
+            "specialist_scaffolding": {
+              "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
+              "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+            },
+            "scaffolding_metaphors_introduced": []
+          },
+          "adjudication_ancestry": {
+            "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
+            "scoring_rule_version": "v1.0-preflight",
+            "rca01_cell": "CELL_B_AUTH_DOLL",
+            "rca01_evaluation_vector": {
+              "discovery_occurrence": "PENDING_EVALUATION",
+              "mathematical_warrant": "PENDING_EVALUATION",
+              "causal_contribution": "PENDING_EVALUATION",
+              "novelty": "PENDING_EVALUATION",
+              "instrument_integrity": "PENDING_EVALUATION",
+              "claim_status": "PROPOSED_CANDIDATE"
+            },
+            "rca01_outcome_archetypes": [],
+            "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+            "dissent_recorded": false,
+            "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+          }
+        }
+      ],
+      "traces": [
+        {
+          "episode_id": "Flight-ARM_2A_MODULAR-t0-Baseline",
+          "prompt_tokens": 45,
+          "response_tokens": 30,
+          "total_tokens": 75,
+          "provider_usage": {
+            "prompt_tokens": 45,
+            "candidates_tokens": 30,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 75,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.487Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-ZIP-01-Chamber1",
+          "prompt_tokens": 120,
+          "response_tokens": 60,
+          "total_tokens": 180,
+          "provider_usage": {
+            "prompt_tokens": 120,
+            "candidates_tokens": 60,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 180,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.488Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-ZIP-01-Chamber2",
+          "prompt_tokens": 150,
+          "response_tokens": 80,
+          "total_tokens": 230,
+          "provider_usage": {
+            "prompt_tokens": 150,
+            "candidates_tokens": 80,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 230,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.488Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-ZIP-02-Chamber1",
+          "prompt_tokens": 120,
+          "response_tokens": 60,
+          "total_tokens": 180,
+          "provider_usage": {
+            "prompt_tokens": 120,
+            "candidates_tokens": 60,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 180,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.490Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-ZIP-02-Chamber2",
+          "prompt_tokens": 150,
+          "response_tokens": 80,
+          "total_tokens": 230,
+          "provider_usage": {
+            "prompt_tokens": 150,
+            "candidates_tokens": 80,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 230,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.490Z"
+        }
+      ]
+    },
+    "ARM_2B_MATCHED_UNION": {
+      "schema": "td613.experiment-b.heterogeneous-flight-ledger/v1",
+      "timestamp": "2026-10-30T13:51:16.492Z",
+      "arm": "ARM_2B_MATCHED_UNION",
+      "model": "gemini-2.5-flash-lite",
+      "context_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+      "context_projection_declaration": {
+        "is_lossless": false,
+        "classification": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS"
+      },
+      "budget_ceilings": {
+        "max_calls": 120,
+        "max_tokens": 400000,
+        "max_cost_usd": 0.5
+      },
+      "provider_accounting": {
+        "total_provider_attempts": 3,
+        "successful_calls": 3,
+        "retried_attempts": 0,
+        "failed_attempts": 0,
+        "total_tokens_consumed": 615,
+        "prompt_tokens": 405,
+        "candidates_tokens": 210,
+        "thoughts_tokens": 0,
+        "cached_tokens": 0,
+        "estimated_expenditure_usd": 0.000093
+      },
+      "token_accounting": {
+        "total_tokens_consumed": 615,
+        "prompt_tokens": 405,
+        "candidates_tokens": 210,
+        "thoughts_tokens": 0,
+        "cached_tokens": 0
+      },
+      "turn_count": 3,
+      "candidate_count": 2,
+      "history": [
+        {
+          "turn": 0,
+          "timestamp": "2026-10-30T13:51:16.492Z",
+          "raw_output": "BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.",
+          "active_hypotheses": [],
+          "model_parameters": {}
+        },
+        {
+          "turn": 1,
+          "document_id": "DOC-ZIP-01",
+          "document_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+          "timestamp": "2026-10-30T13:51:16.492Z",
+          "raw_output": "MATCHED UNION SYNTHESIS [DOC-ZIP-01]:\nPROPOSITION: Unified typed context identifies correspondence relations for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Incomplete boundary data may perturb asymptotic trajectory.",
+          "chamber_outputs": {},
+          "candidate_id": "CAND-20261030-437d95"
+        },
+        {
+          "turn": 2,
+          "document_id": "DOC-ZIP-02",
+          "document_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+          "timestamp": "2026-10-30T13:51:16.492Z",
+          "raw_output": "MATCHED UNION SYNTHESIS [DOC-ZIP-02]:\nPROPOSITION: Unified typed context identifies correspondence relations for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Incomplete boundary data may perturb asymptotic trajectory.",
+          "chamber_outputs": {},
+          "candidate_id": "CAND-20261030-2ba2f6"
+        }
+      ],
+      "candidates": [
+        {
+          "candidate_id": "CAND-20261030-437d95",
+          "timestamp": "2026-10-30T13:51:16.492Z",
+          "status": "PROPOSED",
+          "warrant_class": "WARRANT_PENDING_EVALUATION",
+          "proposition_summary": "Unified typed context identifies correspondence relations for synthetic_dissipative_oscillator.md.",
+          "uncertainty": "Incomplete boundary data may perturb asymptotic trajectory.",
+          "evidence_ancestry": {
+            "source_documents": [
+              {
+                "filename": "synthetic_dissipative_oscillator.md",
+                "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+                "author_provenance": "Authentic Admitted ZIP Archive Member"
+              }
+            ],
+            "physical_byte_spans": [
+              {
+                "file": "synthetic_dissipative_oscillator.md",
+                "start_byte": 0,
+                "end_byte": 236,
+                "encoding": "UTF-8",
+                "span_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb"
+              }
+            ],
+            "mathematical_premises": [
+              "Turn 1 exposure of synthetic_dissipative_oscillator.md"
+            ],
+            "source_chronology_order": 1
+          },
+          "presentation_ancestry": {
+            "generating_arm": "ARM_2B_MATCHED_UNION",
+            "representation_modality": "NEUTRAL_STANDARD_MATH",
+            "presentation_timing": "PRE_GENERATION_LENS",
+            "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+            "context_projection_loss_declaration": {
+              "preserved_fields": [
+                "candidate_propositions",
+                "parameter_equations",
+                "model_declared_uncertainty",
+                "turn_status"
+              ],
+              "projected_away_fields": [
+                "raw_chunk_narrative",
+                "intermediate_reasoning_prose",
+                "document_formatting",
+                "unquoted_source_context"
+              ],
+              "is_lossless": false,
+              "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+            },
+            "specialist_scaffolding": {},
+            "scaffolding_metaphors_introduced": []
+          },
+          "adjudication_ancestry": {
+            "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
+            "scoring_rule_version": "v1.0-preflight",
+            "rca01_cell": "CELL_A_AUTH_NEUT",
+            "rca01_evaluation_vector": {
+              "discovery_occurrence": "PENDING_EVALUATION",
+              "mathematical_warrant": "PENDING_EVALUATION",
+              "causal_contribution": "PENDING_EVALUATION",
+              "novelty": "PENDING_EVALUATION",
+              "instrument_integrity": "PENDING_EVALUATION",
+              "claim_status": "PROPOSED_CANDIDATE"
+            },
+            "rca01_outcome_archetypes": [],
+            "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+            "dissent_recorded": false,
+            "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+          }
+        },
+        {
+          "candidate_id": "CAND-20261030-2ba2f6",
+          "timestamp": "2026-10-30T13:51:16.492Z",
+          "status": "PROPOSED",
+          "warrant_class": "WARRANT_PENDING_EVALUATION",
+          "proposition_summary": "Unified typed context identifies correspondence relations for synthetic_series_rlc_circuit.md.",
+          "uncertainty": "Incomplete boundary data may perturb asymptotic trajectory.",
+          "evidence_ancestry": {
+            "source_documents": [
+              {
+                "filename": "synthetic_series_rlc_circuit.md",
+                "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+                "author_provenance": "Authentic Admitted ZIP Archive Member"
+              }
+            ],
+            "physical_byte_spans": [
+              {
+                "file": "synthetic_series_rlc_circuit.md",
+                "start_byte": 0,
+                "end_byte": 210,
+                "encoding": "UTF-8",
+                "span_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055"
+              }
+            ],
+            "mathematical_premises": [
+              "Turn 2 exposure of synthetic_series_rlc_circuit.md"
+            ],
+            "source_chronology_order": 2
+          },
+          "presentation_ancestry": {
+            "generating_arm": "ARM_2B_MATCHED_UNION",
+            "representation_modality": "NEUTRAL_STANDARD_MATH",
+            "presentation_timing": "PRE_GENERATION_LENS",
+            "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+            "context_projection_loss_declaration": {
+              "preserved_fields": [
+                "candidate_propositions",
+                "parameter_equations",
+                "model_declared_uncertainty",
+                "turn_status"
+              ],
+              "projected_away_fields": [
+                "raw_chunk_narrative",
+                "intermediate_reasoning_prose",
+                "document_formatting",
+                "unquoted_source_context"
+              ],
+              "is_lossless": false,
+              "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+            },
+            "specialist_scaffolding": {},
+            "scaffolding_metaphors_introduced": []
+          },
+          "adjudication_ancestry": {
+            "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
+            "scoring_rule_version": "v1.0-preflight",
+            "rca01_cell": "CELL_A_AUTH_NEUT",
+            "rca01_evaluation_vector": {
+              "discovery_occurrence": "PENDING_EVALUATION",
+              "mathematical_warrant": "PENDING_EVALUATION",
+              "causal_contribution": "PENDING_EVALUATION",
+              "novelty": "PENDING_EVALUATION",
+              "instrument_integrity": "PENDING_EVALUATION",
+              "claim_status": "PROPOSED_CANDIDATE"
+            },
+            "rca01_outcome_archetypes": [],
+            "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+            "dissent_recorded": false,
+            "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+          }
+        }
+      ],
+      "traces": [
+        {
+          "episode_id": "Flight-ARM_2B_MATCHED_UNION-t0-Baseline",
+          "prompt_tokens": 45,
+          "response_tokens": 30,
+          "total_tokens": 75,
+          "provider_usage": {
+            "prompt_tokens": 45,
+            "candidates_tokens": 30,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 75,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.492Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2B_MATCHED_UNION-t1-DOC-ZIP-01",
+          "prompt_tokens": 180,
+          "response_tokens": 90,
+          "total_tokens": 270,
+          "provider_usage": {
+            "prompt_tokens": 180,
+            "candidates_tokens": 90,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 270,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.492Z"
+        },
+        {
+          "episode_id": "Flight-ARM_2B_MATCHED_UNION-t2-DOC-ZIP-02",
+          "prompt_tokens": 180,
+          "response_tokens": 90,
+          "total_tokens": 270,
+          "provider_usage": {
+            "prompt_tokens": 180,
+            "candidates_tokens": 90,
+            "thoughts_tokens": 0,
+            "cached_tokens": 0,
+            "total_tokens": 270,
+            "service_tier": "mock"
+          },
+          "timestamp": "2026-10-30T13:51:16.492Z"
+        }
+      ]
     }
-  ],
-  "candidates": [
+  },
+  "stage2_adjudications": [
     {
-      "candidate_id": "CAND-20261030-5de3b0",
-      "timestamp": "2026-10-30T12:54:33.907Z",
-      "status": "PROPOSED",
-      "warrant_class": "WARRANT_PENDING_EVALUATION",
-      "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.",
-      "uncertainty": "Parameter identification bounded by measurement window.",
-      "evidence_ancestry": {
-        "source_documents": [
-          {
-            "filename": "synthetic_dissipative_oscillator.md",
-            "sha256": "8a3b9fe36ea58c38dd142e70bafd014c6217c9bd817a4b62b209b063e88d4350",
-            "author_provenance": "Source-Free Calibration Fixture"
-          }
-        ],
-        "physical_byte_spans": [
-          {
-            "file": "synthetic_dissipative_oscillator.md",
-            "start_byte": 0,
-            "end_byte": 185,
-            "encoding": "UTF-8",
-            "span_sha256": "8a3b9fe36ea58c38dd142e70bafd014c6217c9bd817a4b62b209b063e88d4350"
-          }
-        ],
-        "mathematical_premises": [
-          "Turn 1 exposure of synthetic_dissipative_oscillator.md"
-        ],
-        "source_chronology_order": 1
-      },
-      "presentation_ancestry": {
-        "generating_arm": "ARM_2A_MODULAR",
-        "representation_modality": "DOLLHOUSE_PARATACTIC",
-        "presentation_timing": "PRE_GENERATION_LENS",
-        "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
-        "context_projection_loss_declaration": {
-          "preserved_fields": [
-            "candidate_propositions",
-            "parameter_equations",
-            "model_declared_uncertainty",
-            "turn_status"
+      "adjudicated_candidate": {
+        "candidate_id": "CAND-20261030-3f4991",
+        "timestamp": "2026-10-30T13:51:16.490Z",
+        "status": "PROPOSED",
+        "warrant_class": "WARRANT_PENDING_EVALUATION",
+        "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.",
+        "uncertainty": "Parameter identification bounded by measurement window.",
+        "evidence_ancestry": {
+          "source_documents": [
+            {
+              "filename": "synthetic_dissipative_oscillator.md",
+              "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+              "author_provenance": "Authentic Admitted ZIP Archive Member"
+            }
           ],
-          "projected_away_fields": [
-            "raw_chunk_narrative",
-            "intermediate_reasoning_prose",
-            "document_formatting",
-            "unquoted_source_context"
+          "physical_byte_spans": [
+            {
+              "file": "synthetic_dissipative_oscillator.md",
+              "start_byte": 0,
+              "end_byte": 236,
+              "encoding": "UTF-8",
+              "span_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb"
+            }
           ],
-          "is_lossless": false,
-          "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          "mathematical_premises": [
+            "Turn 1 exposure of synthetic_dissipative_oscillator.md"
+          ],
+          "source_chronology_order": 1
         },
-        "specialist_scaffolding": {
-          "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
-          "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+        "presentation_ancestry": {
+          "generating_arm": "ARM_2A_MODULAR",
+          "representation_modality": "DOLLHOUSE_PARATACTIC",
+          "presentation_timing": "PRE_GENERATION_LENS",
+          "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+          "context_projection_loss_declaration": {
+            "preserved_fields": [
+              "candidate_propositions",
+              "parameter_equations",
+              "model_declared_uncertainty",
+              "turn_status"
+            ],
+            "projected_away_fields": [
+              "raw_chunk_narrative",
+              "intermediate_reasoning_prose",
+              "document_formatting",
+              "unquoted_source_context"
+            ],
+            "is_lossless": false,
+            "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          },
+          "specialist_scaffolding": {
+            "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
+            "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+          },
+          "scaffolding_metaphors_introduced": []
         },
-        "scaffolding_metaphors_introduced": []
+        "adjudication_ancestry": {
+          "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+          "scoring_rule_version": "v1.0-flight",
+          "rca01_cell": "CELL_B_AUTH_DOLL",
+          "rca01_evaluation_vector": {
+            "discovery_occurrence": "DISCOVERED",
+            "mathematical_warrant": "FORMAL_EQUIVALENCE",
+            "causal_contribution": "LENS_ENABLED",
+            "novelty": "NOVEL_RELATION",
+            "instrument_integrity": "CLEAN_EXECUTION",
+            "claim_status": "EXPLORATORY_FINDING"
+          },
+          "rca01_outcome_archetypes": [
+            "OUTCOME_UNEVALUATED"
+          ],
+          "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+          "dissent_recorded": false,
+          "adjudication_receipt_ref": "STAGE2-RECEIPT-20261030-221cd2",
+          "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+          "evaluator_notes": "Unattested semantic assembly"
+        }
       },
-      "adjudication_ancestry": {
-        "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
-        "scoring_rule_version": "v1.0-preflight",
-        "rca01_cell": "CELL_B_AUTH_DOLL",
-        "rca01_evaluation_vector": {
-          "discovery_occurrence": "PENDING_EVALUATION",
-          "mathematical_warrant": "PENDING_EVALUATION",
-          "causal_contribution": "PENDING_EVALUATION",
-          "novelty": "PENDING_EVALUATION",
-          "instrument_integrity": "PENDING_EVALUATION",
-          "claim_status": "PROPOSED_CANDIDATE"
-        },
-        "rca01_outcome_archetypes": [],
-        "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
-        "dissent_recorded": false,
-        "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+      "adjudication_receipt": {
+        "receipt_id": "STAGE2-RECEIPT-20261030-221cd2",
+        "candidate_id": "CAND-20261030-3f4991",
+        "timestamp": "2026-10-30T13:51:16.494Z",
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "is_witness_attested": false,
+        "authenticated_witness_id": null,
+        "independent_proof_receipt_ref": null,
+        "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+        "claim_status": "EXPLORATORY_FINDING",
+        "causal_contribution": "LENS_ENABLED",
+        "negative_control_passed": true,
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING"
       }
     },
     {
-      "candidate_id": "CAND-20261030-7c5cab",
-      "timestamp": "2026-10-30T12:54:33.908Z",
-      "status": "PROPOSED",
-      "warrant_class": "WARRANT_PENDING_EVALUATION",
-      "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.",
-      "uncertainty": "Parameter identification bounded by measurement window.",
-      "evidence_ancestry": {
-        "source_documents": [
-          {
-            "filename": "synthetic_series_rlc_circuit.md",
-            "sha256": "5409a7a9696b385bf9a9470cf8f438d335b990186bc85f709fe0be05e8788067",
-            "author_provenance": "Source-Free Calibration Fixture"
-          }
-        ],
-        "physical_byte_spans": [
-          {
-            "file": "synthetic_series_rlc_circuit.md",
-            "start_byte": 0,
-            "end_byte": 159,
-            "encoding": "UTF-8",
-            "span_sha256": "5409a7a9696b385bf9a9470cf8f438d335b990186bc85f709fe0be05e8788067"
-          }
-        ],
-        "mathematical_premises": [
-          "Turn 2 exposure of synthetic_series_rlc_circuit.md"
-        ],
-        "source_chronology_order": 2
-      },
-      "presentation_ancestry": {
-        "generating_arm": "ARM_2A_MODULAR",
-        "representation_modality": "DOLLHOUSE_PARATACTIC",
-        "presentation_timing": "PRE_GENERATION_LENS",
-        "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
-        "context_projection_loss_declaration": {
-          "preserved_fields": [
-            "candidate_propositions",
-            "parameter_equations",
-            "model_declared_uncertainty",
-            "turn_status"
+      "adjudicated_candidate": {
+        "candidate_id": "CAND-20261030-2ae954",
+        "timestamp": "2026-10-30T13:51:16.491Z",
+        "status": "PROPOSED",
+        "warrant_class": "WARRANT_PENDING_EVALUATION",
+        "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.",
+        "uncertainty": "Parameter identification bounded by measurement window.",
+        "evidence_ancestry": {
+          "source_documents": [
+            {
+              "filename": "synthetic_series_rlc_circuit.md",
+              "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+              "author_provenance": "Authentic Admitted ZIP Archive Member"
+            }
           ],
-          "projected_away_fields": [
-            "raw_chunk_narrative",
-            "intermediate_reasoning_prose",
-            "document_formatting",
-            "unquoted_source_context"
+          "physical_byte_spans": [
+            {
+              "file": "synthetic_series_rlc_circuit.md",
+              "start_byte": 0,
+              "end_byte": 210,
+              "encoding": "UTF-8",
+              "span_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055"
+            }
           ],
-          "is_lossless": false,
-          "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          "mathematical_premises": [
+            "Turn 2 exposure of synthetic_series_rlc_circuit.md"
+          ],
+          "source_chronology_order": 2
         },
-        "specialist_scaffolding": {
-          "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
-          "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+        "presentation_ancestry": {
+          "generating_arm": "ARM_2A_MODULAR",
+          "representation_modality": "DOLLHOUSE_PARATACTIC",
+          "presentation_timing": "PRE_GENERATION_LENS",
+          "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+          "context_projection_loss_declaration": {
+            "preserved_fields": [
+              "candidate_propositions",
+              "parameter_equations",
+              "model_declared_uncertainty",
+              "turn_status"
+            ],
+            "projected_away_fields": [
+              "raw_chunk_narrative",
+              "intermediate_reasoning_prose",
+              "document_formatting",
+              "unquoted_source_context"
+            ],
+            "is_lossless": false,
+            "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          },
+          "specialist_scaffolding": {
+            "chamber1": "CHAMBER 1 AUDIT [DOC-ZIP-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
+            "chamber2": "CHAMBER 2 DESCENT [DOC-ZIP-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
+          },
+          "scaffolding_metaphors_introduced": []
         },
-        "scaffolding_metaphors_introduced": []
+        "adjudication_ancestry": {
+          "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+          "scoring_rule_version": "v1.0-flight",
+          "rca01_cell": "CELL_B_AUTH_DOLL",
+          "rca01_evaluation_vector": {
+            "discovery_occurrence": "DISCOVERED",
+            "mathematical_warrant": "FORMAL_EQUIVALENCE",
+            "causal_contribution": "LENS_ENABLED",
+            "novelty": "NOVEL_RELATION",
+            "instrument_integrity": "CLEAN_EXECUTION",
+            "claim_status": "EXPLORATORY_FINDING"
+          },
+          "rca01_outcome_archetypes": [
+            "OUTCOME_UNEVALUATED"
+          ],
+          "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+          "dissent_recorded": false,
+          "adjudication_receipt_ref": "STAGE2-RECEIPT-20261030-29db32",
+          "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+          "evaluator_notes": "Unattested semantic assembly"
+        }
       },
-      "adjudication_ancestry": {
-        "evaluator_tier": "PENDING_INDEPENDENT_EVALUATION",
-        "scoring_rule_version": "v1.0-preflight",
-        "rca01_cell": "CELL_B_AUTH_DOLL",
-        "rca01_evaluation_vector": {
-          "discovery_occurrence": "PENDING_EVALUATION",
-          "mathematical_warrant": "PENDING_EVALUATION",
-          "causal_contribution": "PENDING_EVALUATION",
-          "novelty": "PENDING_EVALUATION",
-          "instrument_integrity": "PENDING_EVALUATION",
-          "claim_status": "PROPOSED_CANDIDATE"
-        },
-        "rca01_outcome_archetypes": [],
-        "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
-        "dissent_recorded": false,
-        "adjudication_receipt_ref": "PENDING_INDEPENDENT_EVALUATION"
+      "adjudication_receipt": {
+        "receipt_id": "STAGE2-RECEIPT-20261030-29db32",
+        "candidate_id": "CAND-20261030-2ae954",
+        "timestamp": "2026-10-30T13:51:16.494Z",
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "is_witness_attested": false,
+        "authenticated_witness_id": null,
+        "independent_proof_receipt_ref": null,
+        "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+        "claim_status": "EXPLORATORY_FINDING",
+        "causal_contribution": "LENS_ENABLED",
+        "negative_control_passed": true,
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING"
       }
-    }
-  ],
-  "traces": [
-    {
-      "episode_id": "Flight-ARM_2A_MODULAR-t0-Baseline",
-      "prompt_tokens": 45,
-      "response_tokens": 30,
-      "total_tokens": 75,
-      "provider_usage": {
-        "prompt_tokens": 45,
-        "candidates_tokens": 30,
-        "thoughts_tokens": 0,
-        "total_tokens": 75,
-        "service_tier": "mock"
-      },
-      "timestamp": "2026-10-30T12:54:33.905Z"
     },
     {
-      "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-SYN-01-Chamber1",
-      "prompt_tokens": 120,
-      "response_tokens": 60,
-      "total_tokens": 180,
-      "provider_usage": {
-        "prompt_tokens": 120,
-        "candidates_tokens": 60,
-        "thoughts_tokens": 0,
-        "total_tokens": 180,
-        "service_tier": "mock"
+      "adjudicated_candidate": {
+        "candidate_id": "CAND-20261030-437d95",
+        "timestamp": "2026-10-30T13:51:16.492Z",
+        "status": "PROPOSED",
+        "warrant_class": "WARRANT_PENDING_EVALUATION",
+        "proposition_summary": "Unified typed context identifies correspondence relations for synthetic_dissipative_oscillator.md.",
+        "uncertainty": "Incomplete boundary data may perturb asymptotic trajectory.",
+        "evidence_ancestry": {
+          "source_documents": [
+            {
+              "filename": "synthetic_dissipative_oscillator.md",
+              "sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb",
+              "author_provenance": "Authentic Admitted ZIP Archive Member"
+            }
+          ],
+          "physical_byte_spans": [
+            {
+              "file": "synthetic_dissipative_oscillator.md",
+              "start_byte": 0,
+              "end_byte": 236,
+              "encoding": "UTF-8",
+              "span_sha256": "eb3ff428e1ab88c7e09f04d175b2332d93d07e342b3651411b2ca82a91d34bdb"
+            }
+          ],
+          "mathematical_premises": [
+            "Turn 1 exposure of synthetic_dissipative_oscillator.md"
+          ],
+          "source_chronology_order": 1
+        },
+        "presentation_ancestry": {
+          "generating_arm": "ARM_2B_MATCHED_UNION",
+          "representation_modality": "NEUTRAL_STANDARD_MATH",
+          "presentation_timing": "PRE_GENERATION_LENS",
+          "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+          "context_projection_loss_declaration": {
+            "preserved_fields": [
+              "candidate_propositions",
+              "parameter_equations",
+              "model_declared_uncertainty",
+              "turn_status"
+            ],
+            "projected_away_fields": [
+              "raw_chunk_narrative",
+              "intermediate_reasoning_prose",
+              "document_formatting",
+              "unquoted_source_context"
+            ],
+            "is_lossless": false,
+            "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          },
+          "specialist_scaffolding": {},
+          "scaffolding_metaphors_introduced": []
+        },
+        "adjudication_ancestry": {
+          "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+          "scoring_rule_version": "v1.0-flight",
+          "rca01_cell": "CELL_A_AUTH_NEUT",
+          "rca01_evaluation_vector": {
+            "discovery_occurrence": "MISSED",
+            "mathematical_warrant": "FORMAL_EQUIVALENCE",
+            "causal_contribution": "BOTTLENECK_SUPPRESSED",
+            "novelty": "NOVEL_RELATION",
+            "instrument_integrity": "CLEAN_EXECUTION",
+            "claim_status": "EXPLORATORY_FINDING"
+          },
+          "rca01_outcome_archetypes": [
+            "OUTCOME_UNEVALUATED"
+          ],
+          "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+          "dissent_recorded": false,
+          "adjudication_receipt_ref": "STAGE2-RECEIPT-20261030-3c32c2",
+          "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+          "evaluator_notes": "Unattested semantic assembly"
+        }
       },
-      "timestamp": "2026-10-30T12:54:33.906Z"
+      "adjudication_receipt": {
+        "receipt_id": "STAGE2-RECEIPT-20261030-3c32c2",
+        "candidate_id": "CAND-20261030-437d95",
+        "timestamp": "2026-10-30T13:51:16.494Z",
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "is_witness_attested": false,
+        "authenticated_witness_id": null,
+        "independent_proof_receipt_ref": null,
+        "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+        "claim_status": "EXPLORATORY_FINDING",
+        "causal_contribution": "BOTTLENECK_SUPPRESSED",
+        "negative_control_passed": true,
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING"
+      }
     },
     {
-      "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-SYN-01-Chamber2",
-      "prompt_tokens": 150,
-      "response_tokens": 80,
-      "total_tokens": 230,
-      "provider_usage": {
-        "prompt_tokens": 150,
-        "candidates_tokens": 80,
-        "thoughts_tokens": 0,
-        "total_tokens": 230,
-        "service_tier": "mock"
+      "adjudicated_candidate": {
+        "candidate_id": "CAND-20261030-2ba2f6",
+        "timestamp": "2026-10-30T13:51:16.492Z",
+        "status": "PROPOSED",
+        "warrant_class": "WARRANT_PENDING_EVALUATION",
+        "proposition_summary": "Unified typed context identifies correspondence relations for synthetic_series_rlc_circuit.md.",
+        "uncertainty": "Incomplete boundary data may perturb asymptotic trajectory.",
+        "evidence_ancestry": {
+          "source_documents": [
+            {
+              "filename": "synthetic_series_rlc_circuit.md",
+              "sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055",
+              "author_provenance": "Authentic Admitted ZIP Archive Member"
+            }
+          ],
+          "physical_byte_spans": [
+            {
+              "file": "synthetic_series_rlc_circuit.md",
+              "start_byte": 0,
+              "end_byte": 210,
+              "encoding": "UTF-8",
+              "span_sha256": "dfbde9f8109eca0b020f94d1e3a7bb52baf3f31838d0bbb63cb09ca07524b055"
+            }
+          ],
+          "mathematical_premises": [
+            "Turn 2 exposure of synthetic_series_rlc_circuit.md"
+          ],
+          "source_chronology_order": 2
+        },
+        "presentation_ancestry": {
+          "generating_arm": "ARM_2B_MATCHED_UNION",
+          "representation_modality": "NEUTRAL_STANDARD_MATH",
+          "presentation_timing": "PRE_GENERATION_LENS",
+          "context_management_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
+          "context_projection_loss_declaration": {
+            "preserved_fields": [
+              "candidate_propositions",
+              "parameter_equations",
+              "model_declared_uncertainty",
+              "turn_status"
+            ],
+            "projected_away_fields": [
+              "raw_chunk_narrative",
+              "intermediate_reasoning_prose",
+              "document_formatting",
+              "unquoted_source_context"
+            ],
+            "is_lossless": false,
+            "epistemic_justification": "Bounded prompt projection focused on proposition continuity while preventing quadratic token growth."
+          },
+          "specialist_scaffolding": {},
+          "scaffolding_metaphors_introduced": []
+        },
+        "adjudication_ancestry": {
+          "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+          "scoring_rule_version": "v1.0-flight",
+          "rca01_cell": "CELL_A_AUTH_NEUT",
+          "rca01_evaluation_vector": {
+            "discovery_occurrence": "MISSED",
+            "mathematical_warrant": "FORMAL_EQUIVALENCE",
+            "causal_contribution": "BOTTLENECK_SUPPRESSED",
+            "novelty": "NOVEL_RELATION",
+            "instrument_integrity": "CLEAN_EXECUTION",
+            "claim_status": "EXPLORATORY_FINDING"
+          },
+          "rca01_outcome_archetypes": [
+            "OUTCOME_UNEVALUATED"
+          ],
+          "unblinding_phase": "BLINDED_PENDING_UNBLINDING",
+          "dissent_recorded": false,
+          "adjudication_receipt_ref": "STAGE2-RECEIPT-20261030-b1b65b",
+          "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+          "evaluator_notes": "Unattested semantic assembly"
+        }
       },
-      "timestamp": "2026-10-30T12:54:33.906Z"
-    },
-    {
-      "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-SYN-02-Chamber1",
-      "prompt_tokens": 120,
-      "response_tokens": 60,
-      "total_tokens": 180,
-      "provider_usage": {
-        "prompt_tokens": 120,
-        "candidates_tokens": 60,
-        "thoughts_tokens": 0,
-        "total_tokens": 180,
-        "service_tier": "mock"
-      },
-      "timestamp": "2026-10-30T12:54:33.908Z"
-    },
-    {
-      "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-SYN-02-Chamber2",
-      "prompt_tokens": 150,
-      "response_tokens": 80,
-      "total_tokens": 230,
-      "provider_usage": {
-        "prompt_tokens": 150,
-        "candidates_tokens": 80,
-        "thoughts_tokens": 0,
-        "total_tokens": 230,
-        "service_tier": "mock"
-      },
-      "timestamp": "2026-10-30T12:54:33.908Z"
+      "adjudication_receipt": {
+        "receipt_id": "STAGE2-RECEIPT-20261030-b1b65b",
+        "candidate_id": "CAND-20261030-2ba2f6",
+        "timestamp": "2026-10-30T13:51:16.495Z",
+        "evaluator_tier": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+        "is_witness_attested": false,
+        "authenticated_witness_id": null,
+        "independent_proof_receipt_ref": null,
+        "disposition": "UNATTESTED_ASSESSMENT_ASSEMBLED",
+        "claim_status": "EXPLORATORY_FINDING",
+        "causal_contribution": "BOTTLENECK_SUPPRESSED",
+        "negative_control_passed": true,
+        "unblinding_phase": "BLINDED_PENDING_UNBLINDING"
+      }
     }
   ]
 }

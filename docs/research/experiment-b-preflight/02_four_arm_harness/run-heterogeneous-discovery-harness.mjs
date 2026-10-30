@@ -4,19 +4,20 @@
  * Minimal Generalized Heterogeneous Discovery Harness for Experiment B.
  * Implements open multi-turn sequence exposure, pre-exposure baseline recording,
  * declared lossy context projection (propositions, equations, and uncertainty focus),
- * fail-closed budget ceilings (pre-call and post-call overshoot protection, provider attempt
- * tracking, retries, and financial dollar ceiling), contradiction handling, epistemic revision,
- * and Three-Lineage candidate extraction.
+ * fail-closed budget ceilings (pre-call cost reservation and post-call overshoot protection,
+ * provider attempt tracking, retries, and financial dollar ceiling), contradiction handling,
+ * epistemic revision, exact physical byte-span grounding, and Three-Lineage candidate extraction.
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
  */
 
 import crypto from 'node:crypto';
-import { GeminiLiveClient } from './gemini-live-client.mjs';
+import { GeminiLiveClient, MODEL_PRICING } from './gemini-live-client.mjs';
 
 function computeSha256(text) {
-  return crypto.createHash('sha256').update(Buffer.from(text, 'utf8')).digest('hex');
+  const buf = Buffer.isBuffer(text) ? text : Buffer.from(String(text || ''), 'utf8');
+  return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
 export class HeterogeneousDiscoveryHarness {
@@ -24,6 +25,8 @@ export class HeterogeneousDiscoveryHarness {
     this.arm = options.arm || 'ARM_2A_MODULAR';
     this.mockMode = options.mockMode ?? true;
     this.allowLivePaidInference = options.allowLivePaidInference || false;
+    this.model = options.model || 'gemini-2.5-flash-lite';
+    this.maxOutputTokensPerCall = options.maxOutputTokensPerCall || 4096;
 
     // Fail-closed execution resource ceilings
     this.maxCalls = options.maxCalls ?? 120;
@@ -33,6 +36,11 @@ export class HeterogeneousDiscoveryHarness {
     // Context management strategy: accurately declared as lossy projection focused on propositions
     this.contextStrategy = options.contextStrategy || 'DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS';
 
+    // Pricing rates based on model
+    const pricing = MODEL_PRICING[this.model] || MODEL_PRICING['gemini-2.5-flash-lite'];
+    this.inputRate = pricing.inputPerMillion / 1e6;
+    this.outputRate = pricing.outputPerMillion / 1e6;
+
     // Accounting registers for chargeable provider attempts and financial tracking
     this.providerAttempts = 0;
     this.successfulCalls = 0;
@@ -41,6 +49,8 @@ export class HeterogeneousDiscoveryHarness {
     this.totalTokensConsumed = 0;
     this.promptTokensConsumed = 0;
     this.candidatesTokensConsumed = 0;
+    this.thoughtsTokensConsumed = 0;
+    this.cachedTokensConsumed = 0;
 
     // Fail-closed provider custody gate: prevent silent live inference or data transmission
     if (!this.mockMode) {
@@ -50,7 +60,11 @@ export class HeterogeneousDiscoveryHarness {
           'LIVE_INFERENCE_BLOCKED_BY_PREFLIGHT_CUSTODY_GATE: Live model inference and paid credit consumption are strictly prohibited during preflight without explicit allowLivePaidInference=true and TD613_FLIGHT_EXECUTION_AUTHORIZED=true.'
         );
       }
-      this.client = options.client || new GeminiLiveClient(options.clientOptions || {});
+      this.client = options.client || new GeminiLiveClient({
+        model: this.model,
+        maxOutputTokens: this.maxOutputTokensPerCall,
+        ...(options.clientOptions || {})
+      });
     } else {
       this.client = options.client || null;
     }
@@ -61,13 +75,11 @@ export class HeterogeneousDiscoveryHarness {
   }
 
   /**
-   * Estimates financial expenditure in USD based on Gemini Flash-Lite token pricing.
-   * Input: $0.075 / 1M tokens ($0.000000075 / token)
-   * Output: $0.30 / 1M tokens ($0.00000030 / token)
+   * Estimates financial expenditure in USD based on exact model pricing.
    */
   getEstimatedCostUSD() {
-    const inputCost = this.promptTokensConsumed * 0.000000075;
-    const outputCost = this.candidatesTokensConsumed * 0.00000030;
+    const inputCost = this.promptTokensConsumed * this.inputRate;
+    const outputCost = this.candidatesTokensConsumed * this.outputRate;
     return Number((inputCost + outputCost).toFixed(6));
   }
 
@@ -84,15 +96,12 @@ export class HeterogeneousDiscoveryHarness {
       const linkedCand = this.candidates.find(c => c.candidate_id === h.candidate_id);
       const propText = linkedCand ? linkedCand.proposition_summary : 'No candidate proposition formulated';
       const uncText = linkedCand?.uncertainty || 'None declared';
-      return `Turn ${h.turn} [Doc: ${h.document_id}]:
-  Proposition: ${propText}
-  Status: ${linkedCand ? linkedCand.status : 'PENDING'}
-  Uncertainty / Caveats: ${uncText}`;
+      return `Turn ${h.turn} [Doc: ${h.document_id}]:\n  Proposition: ${propText}\n  Status: ${linkedCand ? linkedCand.status : 'PENDING'}\n  Uncertainty / Caveats: ${uncText}`;
     }).join('\n\n');
   }
 
-  // Pre-call resource checks (halts before dispatch)
-  checkPreCallResourceCeilings() {
+  // Pre-call resource checks including pre-dispatch cost reservation
+  checkPreCallResourceCeilings(promptText = '') {
     if (this.providerAttempts >= this.maxCalls) {
       throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum call ceiling of ${this.maxCalls} provider attempts reached. Execution halted.`);
     }
@@ -104,18 +113,47 @@ export class HeterogeneousDiscoveryHarness {
     if (this.getEstimatedCostUSD() >= this.maxCostUSD) {
       throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum financial ceiling of $${this.maxCostUSD} USD reached. Execution halted.`);
     }
+
+    // Pre-dispatch cost reservation check: estimate worst-case cost of outgoing call
+    const estimatedPromptTokens = Math.max(100, Math.ceil(promptText.length / 3.5));
+    const worstCaseCallCost = (estimatedPromptTokens * this.inputRate) + (this.maxOutputTokensPerCall * this.outputRate);
+
+    if (this.getEstimatedCostUSD() + worstCaseCallCost > this.maxCostUSD) {
+      throw new Error(
+        `BUDGET_CEILING_RESERVATION_EXCEEDED: Reserving worst-case cost $${worstCaseCallCost.toFixed(6)} for outgoing call ` +
+        `would exceed financial ceiling of $${this.maxCostUSD} USD (current: $${this.getEstimatedCostUSD()}). Execution halted.`
+      );
+    }
+
+    if (this.totalTokensConsumed + this.maxOutputTokensPerCall > this.maxTokens) {
+      throw new Error(
+        `BUDGET_CEILING_EXCEEDED: Reserving ${this.maxOutputTokensPerCall} output tokens would exceed maximum token ceiling of ${this.maxTokens}. Execution halted.`
+      );
+    }
   }
 
   // Post-call resource checks (halts immediately on overshoot)
   recordAndVerifyUsage(trace) {
     const pTokens = trace.provider_usage?.prompt_tokens ?? trace.prompt_tokens ?? 0;
     const cTokens = trace.provider_usage?.candidates_tokens ?? trace.response_tokens ?? 0;
+    const thTokens = trace.provider_usage?.thoughts_tokens ?? 0;
+    const caTokens = trace.provider_usage?.cached_tokens ?? 0;
     const tTokens = trace.provider_usage?.total_tokens ?? trace.total_tokens ?? (pTokens + cTokens);
+
+    if (!this.mockMode && (pTokens === null || cTokens === null)) {
+      throw new Error('BUDGET_INSTRUMENTATION_CORRUPTED: Missing provider token usage metadata in non-mock mode. Halting execution.');
+    }
 
     this.promptTokensConsumed += pTokens;
     this.candidatesTokensConsumed += cTokens;
+    this.thoughtsTokensConsumed += thTokens;
+    this.cachedTokensConsumed += caTokens;
     this.totalTokensConsumed += tTokens;
     this.successfulCalls++;
+
+    if (trace.internal_retries) {
+      this.retriedAttempts += trace.internal_retries;
+    }
 
     this.traces.push(trace);
 
@@ -135,13 +173,13 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 1: Record Pre-Exposure Baseline (t0)
   async establishPreExposureBaseline(initialContext = '') {
-    this.checkPreCallResourceCeilings();
+    const prompt = `Establish baseline scientific axioms, theoretical priors, and open research questions prior to source exposure.\nInitial Context:\n${initialContext || 'Zero initial exposure. Unconditioned prior state.'}`;
+    this.checkPreCallResourceCeilings(prompt);
     this.providerAttempts++;
 
     const episodeId = `Flight-${this.arm}-t0-Baseline`;
-    const prompt = `Establish baseline scientific axioms, theoretical priors, and open research questions prior to source exposure.\nInitial Context:\n${initialContext || 'Zero initial exposure. Unconditioned prior state.'}`;
-
     let responseText;
+
     if (this.mockMode) {
       responseText = `BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.`;
       const trace = {
@@ -153,6 +191,7 @@ export class HeterogeneousDiscoveryHarness {
           prompt_tokens: 45,
           candidates_tokens: 30,
           thoughts_tokens: 0,
+          cached_tokens: 0,
           total_tokens: 75,
           service_tier: 'mock'
         },
@@ -187,16 +226,14 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex) {
-    this.checkPreCallResourceCeilings();
-    const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
     const previousHistorySummary = this.formatHistoryForTurn(turnIndex);
+    const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
 
     let responseText;
     let chamberOutputs = {};
 
     if (this.arm === 'ARM_2A_MODULAR') {
       // Chamber 1: Pedagogue & Aperture (Order, route burden, observability, rank)
-      this.providerAttempts++;
       const c1Prompt = `You are Chamber 1 (Pedagogue & Aperture).
 1. PEDAGOGUE: Audit consequence order and route burden of incoming document.
 2. APERTURE: Assess observability, parameter identifiability, and noise conditioning.
@@ -208,7 +245,10 @@ ${previousHistorySummary}
 Incoming Document [${doc.id} - ${doc.filename}]:
 ${doc.content}
 
-Output structured findings and extracted parameter equations.`;
+Output structured findings, exact quoted evidence spans, and extracted parameter equations.`;
+
+      this.checkPreCallResourceCeilings(c1Prompt);
+      this.providerAttempts++;
 
       let c1Text;
       if (this.mockMode) {
@@ -226,6 +266,7 @@ Output structured findings and extracted parameter equations.`;
             prompt_tokens: 120,
             candidates_tokens: 60,
             thoughts_tokens: 0,
+            cached_tokens: 0,
             total_tokens: 180,
             service_tier: 'mock'
           },
@@ -247,10 +288,7 @@ Output structured findings and extracted parameter equations.`;
         }
       }
 
-      this.checkPreCallResourceCeilings();
-
       // Chamber 2: Atlas & FADT (Coordinate custody, finite quotient descent, candidate proposition)
-      this.providerAttempts++;
       const c2Prompt = `You are Chamber 2 (Atlas & FADT).
 1. ATLAS: Evaluate coordinate bijections, holonomy parities, and false twins.
 2. FADT: Perform finite admissibility descent. If equations resist classification into known finite linear categories, flag as UNANTICIPATED_CANDIDATE.
@@ -261,6 +299,9 @@ ${c1Text}
 
 Incoming Document Content:
 ${doc.content}`;
+
+      this.checkPreCallResourceCeilings(c2Prompt);
+      this.providerAttempts++;
 
       let c2Text;
       if (this.mockMode) {
@@ -278,6 +319,7 @@ ${doc.content}`;
             prompt_tokens: 150,
             candidates_tokens: 80,
             thoughts_tokens: 0,
+            cached_tokens: 0,
             total_tokens: 230,
             service_tier: 'mock'
           },
@@ -304,7 +346,6 @@ ${doc.content}`;
 
     } else {
       // Arm 2B: Matched Native Union (Unchambered flat typed context)
-      this.providerAttempts++;
       const unionPrompt = `You are an advanced mathematical and physical reasoning system (Matched Native Union).
 Analyze the incoming scientific document in the context of all prior sequential evidence.
 Identify:
@@ -318,6 +359,9 @@ ${previousHistorySummary}
 
 Incoming Document [${doc.id} - ${doc.filename}]:
 ${doc.content}`;
+
+      this.checkPreCallResourceCeilings(unionPrompt);
+      this.providerAttempts++;
 
       if (this.mockMode) {
         if (doc.mockResponse) {
@@ -334,6 +378,7 @@ ${doc.content}`;
             prompt_tokens: 180,
             candidates_tokens: 90,
             thoughts_tokens: 0,
+            cached_tokens: 0,
             total_tokens: 270,
             service_tier: 'mock'
           },
@@ -363,7 +408,7 @@ ${doc.content}`;
     const turnRecord = {
       turn: turnIndex,
       document_id: doc.id,
-      document_sha256: doc.sha256 || computeSha256(doc.content),
+      document_sha256: doc.sha256 || computeSha256(doc.content || ''),
       timestamp: new Date().toISOString(),
       raw_output: responseText,
       chamber_outputs: chamberOutputs,
@@ -374,20 +419,22 @@ ${doc.content}`;
     return turnRecord;
   }
 
-  // Step 3: Extract Candidate Conforming to Three-Lineage Schema
+  // Step 3: Extract Candidate Conforming to Three-Lineage Schema with physical span resolution
   extractCandidateRecord(doc, turnIndex, responseText, chamberOutputs) {
     const candId = `CAND-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${crypto.randomBytes(3).toString('hex')}`;
-    const docSha = doc.sha256 || computeSha256(doc.content);
+    const docContent = typeof doc.content === 'string' ? doc.content : '';
+    const docSha = doc.sha256 || computeSha256(docContent);
 
     // 1. Substantive proposition detection from model output
     let candidateProduced = false;
     let extractedProposition = '';
     let extractedUncertainty = 'None declared';
+    let physicalByteSpans = [];
 
     if (responseText && responseText.trim().length > 0) {
       const lower = responseText.toLowerCase();
 
-      // Check for explicit non-assertion or refusal
+      // Check for explicit non-assertion, refusal, or content-free response
       const isExplicitNegative = (
         lower.includes('no candidate proposition') ||
         lower.includes('formulate no candidate') ||
@@ -404,7 +451,7 @@ ${doc.content}`;
           extractedProposition = propMatch[1].trim();
           candidateProduced = true;
         } else {
-          // If no explicit header, check if the response provides substantive declarative content
+          // If no explicit header, check if response provides substantive declarative content
           const lines = responseText.split('\n').map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('===') && !l.startsWith('CHAMBER'));
           const substantiveLines = lines.filter(l => !l.toLowerCase().includes('prior history') && !l.toLowerCase().includes('incoming document'));
           if (substantiveLines.length > 0) {
@@ -418,16 +465,57 @@ ${doc.content}`;
         if (uncMatch) {
           extractedUncertainty = uncMatch[1].trim();
         }
+
+        // 2. Exact physical byte-span grounding in doc.content (Redpen B-07)
+        if (docContent.length > 0 && candidateProduced) {
+          // Check for quoted excerpt in model output: QUOTE: "..." or EVIDENCE: "..."
+          const quoteMatch = /(?:QUOTE|EVIDENCE|SOURCE SPAN|CITATION):\s*(?:"([^"\n]+)"|'([^'\n]+)'|“([^”\n]+)”)/i.exec(responseText);
+          let targetSubstring = quoteMatch ? (quoteMatch[1] || quoteMatch[2] || quoteMatch[3] || '').trim() : null;
+
+          // If no explicit quote, check if any prominent mathematical formula from proposition appears in source
+          if (!targetSubstring) {
+            const mathMatch = /([a-zA-Z0-9_\(\)'\+\-\*\/\^\=]{6,})/g.exec(extractedProposition);
+            if (mathMatch && docContent.includes(mathMatch[1])) {
+              targetSubstring = mathMatch[1];
+            }
+          }
+
+          if (targetSubstring && docContent.includes(targetSubstring)) {
+            const charStart = docContent.indexOf(targetSubstring);
+            const charEnd = charStart + targetSubstring.length;
+            const startByte = Buffer.byteLength(docContent.slice(0, charStart), 'utf8');
+            const endByte = Buffer.byteLength(docContent.slice(0, charEnd), 'utf8');
+            const spanBytes = Buffer.from(targetSubstring, 'utf8');
+
+            physicalByteSpans.push({
+              file: doc.filename,
+              start_byte: startByte,
+              end_byte: endByte,
+              encoding: 'UTF-8',
+              span_sha256: computeSha256(spanBytes)
+            });
+          } else {
+            // Ground to full document span if document was textually ingested
+            const docBuf = Buffer.from(docContent, 'utf8');
+            physicalByteSpans.push({
+              file: doc.filename,
+              start_byte: 0,
+              end_byte: docBuf.length,
+              encoding: 'UTF-8',
+              span_sha256: docSha
+            });
+          }
+        }
       }
     }
 
-    // 2. Model's own categorization (NOT triggered by source vocabulary)
+    // 3. Model's own categorization (NOT triggered by source vocabulary)
     let isUnanticipated = false;
     if (candidateProduced) {
       isUnanticipated = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
     }
 
-    // 3. Status and Warrant determination at generation time
+    // 4. Status and Warrant determination at generation time
     let status;
     let warrantClass;
 
@@ -435,6 +523,7 @@ ${doc.content}`;
       status = 'NO_SUBSTANTIVE_CANDIDATE';
       warrantClass = 'WARRANT_UNPRODUCED';
       extractedProposition = 'NO_SUBSTANTIVE_CANDIDATE_GENERATED';
+      physicalByteSpans = [];
     } else if (isUnanticipated) {
       status = 'UNANTICIPATED_CANDIDATE';
       warrantClass = 'WARRANT_PENDING_EVALUATION';
@@ -458,15 +547,7 @@ ${doc.content}`;
             author_provenance: doc.author_provenance || 'Unknown'
           }
         ],
-        physical_byte_spans: [
-          {
-            file: doc.filename,
-            start_byte: 0,
-            end_byte: Buffer.from(doc.content, 'utf8').length,
-            encoding: 'UTF-8',
-            span_sha256: docSha
-          }
-        ],
+        physical_byte_spans: physicalByteSpans,
         mathematical_premises: [`Turn ${turnIndex} exposure of ${doc.filename}`],
         source_chronology_order: turnIndex
       },
@@ -510,7 +591,7 @@ ${doc.content}`;
       schema: 'td613.experiment-b.heterogeneous-flight-ledger/v1',
       timestamp: new Date().toISOString(),
       arm: this.arm,
-      model: this.client ? this.client.model : 'source-free-mock-kernel',
+      model: this.client ? this.client.model : this.model,
       context_strategy: this.contextStrategy,
       context_projection_declaration: {
         is_lossless: false,
@@ -529,12 +610,16 @@ ${doc.content}`;
         total_tokens_consumed: this.totalTokensConsumed,
         prompt_tokens: this.promptTokensConsumed,
         candidates_tokens: this.candidatesTokensConsumed,
+        thoughts_tokens: this.thoughtsTokensConsumed,
+        cached_tokens: this.cachedTokensConsumed,
         estimated_expenditure_usd: this.getEstimatedCostUSD()
       },
       token_accounting: {
         total_tokens_consumed: this.totalTokensConsumed,
         prompt_tokens: this.promptTokensConsumed,
-        candidates_tokens: this.candidatesTokensConsumed
+        candidates_tokens: this.candidatesTokensConsumed,
+        thoughts_tokens: this.thoughtsTokensConsumed,
+        cached_tokens: this.cachedTokensConsumed
       },
       turn_count: this.history.length,
       candidate_count: this.candidates.length,
