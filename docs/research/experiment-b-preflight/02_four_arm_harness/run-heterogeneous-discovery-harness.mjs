@@ -3,6 +3,7 @@
  *
  * Minimal Generalized Heterogeneous Discovery Harness for Experiment B.
  * Implements open multi-turn sequence exposure, pre-exposure baseline recording,
+ * structured non-lossy context continuity, fail-closed budget ceilings,
  * contradiction handling, epistemic revision, and Three-Lineage candidate extraction.
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
@@ -22,6 +23,11 @@ export class HeterogeneousDiscoveryHarness {
     this.mockMode = options.mockMode ?? true;
     this.allowLivePaidInference = options.allowLivePaidInference || false;
 
+    // Fail-closed execution resource ceilings
+    this.maxCalls = options.maxCalls ?? 120;
+    this.maxTokens = options.maxTokens ?? 400000;
+    this.contextStrategy = options.contextStrategy || 'STRUCTURED_PROPOSITION_CONTINUITY';
+
     // Fail-closed provider custody gate: prevent silent live inference or data transmission
     if (!this.mockMode) {
       const authorized = this.allowLivePaidInference === true && process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED === 'true';
@@ -40,8 +46,40 @@ export class HeterogeneousDiscoveryHarness {
     this.traces = [];
   }
 
+  // Transparent, non-lossy context formatting across multi-turn sequential encounters
+  formatHistoryForTurn(turnIndex) {
+    if (this.history.length === 0) {
+      return 'Turn 0: Baseline state unconditioned. No prior observations.';
+    }
+
+    return this.history.map(h => {
+      if (h.turn === 0) {
+        return `Turn 0 [Baseline Priors]: ${h.raw_output}`;
+      }
+      const linkedCand = this.candidates.find(c => c.candidate_id === h.candidate_id);
+      const propText = linkedCand ? linkedCand.proposition_summary : 'No candidate proposition formulated';
+      const uncText = linkedCand?.uncertainty || 'None declared';
+      return `Turn ${h.turn} [Doc: ${h.document_id}]:
+  Proposition: ${propText}
+  Status: ${linkedCand ? linkedCand.status : 'PENDING'}
+  Uncertainty / Caveats: ${uncText}`;
+    }).join('\n\n');
+  }
+
+  checkResourceCeilings() {
+    if (this.traces.length >= this.maxCalls) {
+      throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum call ceiling of ${this.maxCalls} calls reached. Execution halted.`);
+    }
+
+    const currentTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.total_tokens ?? t.total_tokens ?? 0), 0);
+    if (currentTokens >= this.maxTokens) {
+      throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum token ceiling of ${this.maxTokens} tokens reached. Execution halted.`);
+    }
+  }
+
   // Step 1: Record Pre-Exposure Baseline (t0)
   async establishPreExposureBaseline(initialContext = '') {
+    this.checkResourceCeilings();
     const episodeId = `Flight-${this.arm}-t0-Baseline`;
     const prompt = `Establish baseline scientific axioms, theoretical priors, and open research questions prior to source exposure.\nInitial Context:\n${initialContext || 'Zero initial exposure. Unconditioned prior state.'}`;
 
@@ -85,8 +123,9 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex) {
+    this.checkResourceCeilings();
     const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
-    const previousHistorySummary = this.history.map(h => `Turn ${h.turn}: ${h.raw_output.slice(0, 150)}...`).join('\n');
+    const previousHistorySummary = this.formatHistoryForTurn(turnIndex);
 
     let responseText;
     let chamberOutputs = {};
@@ -136,6 +175,8 @@ Output structured findings and extracted parameter equations.`;
         c1Text = c1Res.text;
         this.traces.push(c1Res.trace);
       }
+
+      this.checkResourceCeilings();
 
       // Chamber 2: Atlas & FADT (Coordinate custody, finite quotient descent, candidate proposition)
       const c2Prompt = `You are Chamber 2 (Atlas & FADT).
@@ -279,7 +320,7 @@ ${doc.content}`;
           extractedProposition = propMatch[1].trim();
           candidateProduced = true;
         } else {
-          // If no explicit header, check if the response provides substantive declarative content (not merely echoing instructions)
+          // If no explicit header, check if the response provides substantive declarative content
           const lines = responseText.split('\n').map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('===') && !l.startsWith('CHAMBER'));
           const substantiveLines = lines.filter(l => !l.toLowerCase().includes('prior history') && !l.toLowerCase().includes('incoming document'));
           if (substantiveLines.length > 0) {
@@ -297,7 +338,6 @@ ${doc.content}`;
     }
 
     // 2. Model's own categorization (NOT triggered by source vocabulary)
-    // Checks whether the model output explicitly states that the phenomenon resists known linear categories
     let isUnanticipated = false;
     if (candidateProduced) {
       isUnanticipated = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
@@ -325,6 +365,7 @@ ${doc.content}`;
       status,
       warrant_class: warrantClass,
       proposition_summary: extractedProposition,
+      uncertainty: extractedUncertainty,
       evidence_ancestry: {
         source_documents: [
           {
@@ -349,6 +390,7 @@ ${doc.content}`;
         generating_arm: this.arm,
         representation_modality: this.arm === 'ARM_2A_MODULAR' ? 'DOLLHOUSE_PARATACTIC' : 'NEUTRAL_STANDARD_MATH',
         presentation_timing: 'PRE_GENERATION_LENS',
+        context_management_strategy: this.contextStrategy,
         specialist_scaffolding: chamberOutputs || {},
         scaffolding_metaphors_introduced: []
       },
@@ -383,6 +425,11 @@ ${doc.content}`;
       timestamp: new Date().toISOString(),
       arm: this.arm,
       model: this.client ? this.client.model : 'source-free-mock-kernel',
+      context_strategy: this.contextStrategy,
+      budget_ceilings: {
+        max_calls: this.maxCalls,
+        max_tokens: this.maxTokens
+      },
       turn_count: this.history.length,
       candidate_count: this.candidates.length,
       token_accounting: {
