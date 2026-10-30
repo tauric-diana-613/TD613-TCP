@@ -848,15 +848,17 @@ test('R4-01: Antigravity-Native Execution Contract, Telemetry & Fail-Closed Inva
     document: { id: 'DOC-1', filename: 'oscillator.md' }
   });
 
-  assert.equal(turnResult.backend, 'ANTIGRAVITY_NATIVE_AGENT');
+  assert.equal(turnResult.backend, 'SYNTHETIC_NATIVE_PREFLIGHT_SIMULATOR');
   assert.equal(turnResult.orchestration_schema, ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA);
-  assert.equal(turnResult.telemetry.native_turn_executed, true);
-  assert.equal(turnResult.telemetry.prompt_parity_verified, true);
+  assert.equal(turnResult.telemetry.native_turn_executed, false);
+  assert.equal(turnResult.telemetry.synthetic_turn_executed, true);
+  assert.equal(turnResult.telemetry.prompt_parity_verified, false);
   assert.ok(turnResult.parsed_candidate);
 
   // 3. Receipt verification
   const audit = AntigravityNativeOrchestrator.verifyNativeSessionExecution(turnResult);
-  assert.equal(audit.valid, true);
+  assert.equal(audit.valid, false);
+  assert.equal(audit.reason, 'BACKEND_NOT_NATIVE');
 
   const fakeReceipt = { backend: 'MOCK_OR_REST', telemetry: {} };
   const fakeAudit = AntigravityNativeOrchestrator.verifyNativeSessionExecution(fakeReceipt);
@@ -879,6 +881,36 @@ test('R4-01: Antigravity-Native Execution Contract, Telemetry & Fail-Closed Inva
     },
     /NATIVE_UNIMPLEMENTED_HELD/
   );
+
+  // The original flaw: a forged session environment changed a synthetic dry-run
+  // into a receipt declaring an actual native model turn. Environment flags cannot
+  // provide a callable runner or prove that any cognitive encounter occurred.
+  const originalActive = process.env.ANTIGRAVITY_AGENT_ACTIVE;
+  const originalSession = process.env.TD613_ANTIGRAVITY_NATIVE_SESSION_ID;
+  try {
+    process.env.ANTIGRAVITY_AGENT_ACTIVE = 'true';
+    process.env.TD613_ANTIGRAVITY_NATIVE_SESSION_ID = 'FORGED-NATIVE-SESSION';
+    await assert.rejects(
+      () => liveOrchestrator.executeTurn({
+        arm: 'ARM_2B_MATCHED_UNION',
+        turnIndex: 1,
+        document: { id: 'DOC-1', filename: 'oscillator.md' }
+      }),
+      /NATIVE_UNIMPLEMENTED_HELD/
+    );
+    // Even a fabricated success-shaped 'native' receipt cannot self-authenticate.
+    const forgedReceipt = {
+      backend: 'ANTIGRAVITY_NATIVE_AGENT',
+      orchestration_schema: ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA,
+      telemetry: { native_turn_executed: true }
+    };
+    assert.equal(AntigravityNativeOrchestrator.verifyNativeSessionExecution(forgedReceipt).valid, false);
+  } finally {
+    if (originalActive === undefined) delete process.env.ANTIGRAVITY_AGENT_ACTIVE;
+    else process.env.ANTIGRAVITY_AGENT_ACTIVE = originalActive;
+    if (originalSession === undefined) delete process.env.TD613_ANTIGRAVITY_NATIVE_SESSION_ID;
+    else process.env.TD613_ANTIGRAVITY_NATIVE_SESSION_ID = originalSession;
+  }
 });
 
 test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validation', () => {
