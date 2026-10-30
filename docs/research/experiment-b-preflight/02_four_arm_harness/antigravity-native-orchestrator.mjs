@@ -107,14 +107,14 @@ export class AntigravityNativeOrchestrator {
    * Orchestrates a single turn under the native agent contract.
    */
   async executeTurn({ arm, turnIndex, document, priorHistory = [] }) {
+    // A session environment variable is an assertion, not a callable/native reasoning adapter.
+    // Until an authenticated in-app execution adapter exists, never synthesize a live turn.
     if (!this.syntheticMode) {
-      if (!this.allowLiveNativeFlight || !this.isLiveNativeEnvironmentActive()) {
-        throw new Error(
-          'NATIVE_UNIMPLEMENTED_HELD: Genuine Antigravity in-app native agent flight requires an active, ' +
-          'connected in-app agent runner environment (TD613_ANTIGRAVITY_NATIVE_SESSION_ID). ' +
-          'Fallback to Gemini REST client is strictly prohibited by Sovereign Steer 2026-10-30.'
-        );
-      }
+      throw new Error(
+        'NATIVE_UNIMPLEMENTED_HELD: No authenticated Antigravity in-app native execution adapter is installed. ' +
+        'Environment variables cannot authenticate an agent execution; synthetic output must never represent live research. ' +
+        'Fallback to Gemini REST remains prohibited.'
+      );
     }
 
     // Synthetic verification execution adheres strictly to native orchestration plan
@@ -130,16 +130,17 @@ export class AntigravityNativeOrchestrator {
       document_id: document?.id || `DOC-${turnIndex}`,
       filename: document?.filename || `specimen_${turnIndex}.md`,
       timestamp: turnTimestamp,
-      backend: 'ANTIGRAVITY_NATIVE_AGENT',
+      backend: 'SYNTHETIC_NATIVE_PREFLIGHT_SIMULATOR',
       orchestration_schema: ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA,
       model_identity: this.modelIdentity,
       raw_output: syntheticOutput.text,
       parsed_candidate: syntheticOutput.candidate,
       telemetry: {
-        native_turn_executed: true,
+        native_turn_executed: false,
+        synthetic_turn_executed: true,
         session_id: this.sessionId,
-        prompt_parity_verified: true,
-        tool_opportunity_parity: true,
+        prompt_parity_verified: false,
+        tool_opportunity_parity: false,
         subagents_spawned: 0
       }
     };
@@ -187,9 +188,10 @@ export class AntigravityNativeOrchestrator {
     if (receipt.orchestration_schema !== ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA) {
       return { valid: false, reason: 'SCHEMA_MISMATCH' };
     }
-    if (!receipt.telemetry?.native_turn_executed) {
-      return { valid: false, reason: 'NATIVE_TELEMETRY_MISSING' };
+    if (!receipt.telemetry?.native_turn_executed || receipt.telemetry?.synthetic_turn_executed) {
+      return { valid: false, reason: 'NATIVE_TELEMETRY_MISSING_OR_SYNTHETIC' };
     }
-    return { valid: true };
+    // A caller-provided telemetry Boolean is insufficient to authenticate a native model run.
+    return { valid: false, reason: 'NATIVE_INDEPENDENT_ATTESTATION_UNAVAILABLE' };
   }
 }
