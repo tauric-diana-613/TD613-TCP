@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𝌋 TD613 · Sedgwick Paratactic Surface · Community Care Archive</title>
+  <style>
+    :root {
+      --bg-primary: #faf6f0;
+      --bg-surface: #ffffff;
+      --bg-aside: #f0eae1;
+      --text-main: #2b2622;
+      --text-muted: #6b635b;
+      --border-color: #d8cec2;
+      --accent-warm: #8a4a36;
+      --accent-soft: #5b7065;
+      --focus-ring: #8a4a36;
+      --transition-speed: 250ms;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root {
+        --transition-speed: 0ms !important;
+      }
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    body.reduced-motion * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .glyph {
+      font-size: 24px;
+      color: var(--accent-warm);
+      line-height: 1;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button.interactive-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 10px 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    button.interactive-btn:hover {
+      background: var(--bg-aside);
+      border-color: var(--accent-warm);
+    }
+
+    button.interactive-btn:focus-visible,
+    .fragment-card:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      main {
+        grid-template-columns: 2fr 1.2fr;
+        gap: 32px;
+      }
+    }
+
+    .sovereign-column {
+      background: var(--bg-surface);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .paratactic-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-warm);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .sovereign-text {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
+
+    .covenant-note {
+      padding: 12px 16px;
+      background: var(--bg-aside);
+      border-left: 4px solid var(--accent-soft);
+      font-size: 0.9rem;
+      border-radius: 4px;
+      margin-top: 16px;
+    }
+
+    .fragment-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      cursor: pointer;
+      min-height: 44px;
+      transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    }
+
+    .fragment-card:hover {
+      border-color: var(--accent-warm);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .fragment-card.active {
+      border-color: var(--accent-warm);
+      border-left: 4px solid var(--accent-warm);
+      background: #fffdfa;
+    }
+
+    .fragment-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-warm);
+      margin-bottom: 6px;
+    }
+
+    .fragment-body {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .parameter-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 36px;
+      cursor: pointer;
+    }
+
+    .rest-message-banner {
+      display: none;
+      padding: 16px;
+      background: #e8ede9;
+      border: 1px solid var(--accent-soft);
+      border-radius: 8px;
+      color: #1e3328;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 16px 20px;
+      background: var(--bg-surface);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="title-group">
+        <span class="glyph" aria-hidden="true">&#x10D613;</span>
+        <h1>Community Care Archive · Paratactic Beside-ness</h1>
+      </div>
+      <div class="controls-group">
+        <button id="toggle-motion" class="interactive-btn" type="button" aria-pressed="false">
+          <span id="motion-status">Reduced Motion: OFF</span>
+        </button>
+        <button id="pause-btn" class="interactive-btn" type="button">
+          Pause Reading
+        </button>
+        <button id="exit-btn" class="interactive-btn" type="button">
+          Exit Surface
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="sovereign-column" aria-label="Sovereign Text Spine">
+      <div id="rest-banner" class="rest-message-banner" role="status" aria-live="polite"></div>
+      <div class="section-tag">Sovereign Reading Stream</div>
+      <p class="sovereign-text">
+        In her foundational essay on reparative reading, Eve Kosofsky Sedgwick proposes that to read reparatively is to surrender the paranoid imperative of exposure. It asks what beside-ness might accomplish when hierarchy, suspicion, and procedural retribution are set aside in favor of care.
+      </p>
+      <p class="sovereign-text">
+        Beside-ness refuses vertical subordination. The marginal note is neither a humble subservient footnote nor a sovereign decree; it sits alongside the text, sharing proximity without absorbing or crushing what came before.
+      </p>
+      <div class="covenant-note">
+        <strong>Heritage Covenant:</strong> Khona‌lit-po — Preserving U+200C non-joiner boundary and non-retroactivity in communal custody.
+      </div>
+
+      <div class="parameter-box">
+        <div class="section-tag">Paratactic Proximity Parameter (&delta;)</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          Governs lateral displacement between marginal notes and sovereign reading spine: <code>x_marginal = x_sovereign_edge + &delta; * sensory_salience</code>.
+        </p>
+        <div class="slider-row">
+          <label for="proximity-slider" style="font-size: 0.9rem; font-weight: 500;">Proximity &delta;:</label>
+          <input type="range" id="proximity-slider" min="0" max="100" value="48" step="1" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48">
+          <span id="proximity-val" style="font-family: monospace; font-weight: 600;">0.48</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="paratactic-column" aria-label="Beside Fragments">
+      <div class="section-tag">Beside Fragments (Tactile Shelter)</div>
+
+      <div class="fragment-card active" tabindex="0" role="article" aria-label="Fragment 1: Parataxis">
+        <div class="fragment-title">Fragment 1 · Parataxis Beside Logic</div>
+        <div class="fragment-body">
+          Placing ideas beside each other rather than ordering them into causal submission allows affective survival across hostile environments.
+        </div>
+      </div>
+
+      <div class="fragment-card" tabindex="0" role="article" aria-label="Fragment 2: Restorative Shelter">
+        <div class="fragment-title">Fragment 2 · Restorative Shelter</div>
+        <div class="fragment-body">
+          A community archive that does not interrogate its visitors, but instead provides shelter, warm tea, and unexamined reading.
+        </div>
+      </div>
+
+      <div class="fragment-card" tabindex="0" role="article" aria-label="Fragment 3: Quiet Continuity">
+        <div class="fragment-title">Fragment 3 · Quiet Continuity</div>
+        <div class="fragment-body">
+          Care does not require an administrative witness or a timestamped validation ledger to be valid in the hearts of its custodians.
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    𝌋 TD613 · Dollhouse Design Operative Artifact · Consequence Before Ontology · Khona‌lit-po
+  </footer>
+
+  <script>
+    // Paratactic Interactive Behavior
+    const motionBtn = document.getElementById('toggle-motion');
+    const motionStatus = document.getElementById('motion-status');
+    const pauseBtn = document.getElementById('pause-btn');
+    const exitBtn = document.getElementById('exit-btn');
+    const banner = document.getElementById('rest-banner');
+    const proximitySlider = document.getElementById('proximity-slider');
+    const proximityVal = document.getElementById('proximity-val');
+    const fragmentCards = document.querySelectorAll('.fragment-card');
+
+    let isReducedMotion = false;
+    let isPaused = false;
+
+    // Toggle reduced motion
+    motionBtn.addEventListener('click', () => {
+      isReducedMotion = !isReducedMotion;
+      motionBtn.setAttribute('aria-pressed', isReducedMotion ? 'true' : 'false');
+      if (isReducedMotion) {
+        document.body.classList.add('reduced-motion');
+        motionStatus.textContent = 'Reduced Motion: ON';
+      } else {
+        document.body.classList.remove('reduced-motion');
+        motionStatus.textContent = 'Reduced Motion: OFF';
+      }
+    });
+
+    // Pause reading without penalty
+    pauseBtn.addEventListener('click', () => {
+      isPaused = !isPaused;
+      if (isPaused) {
+        banner.style.display = 'block';
+        banner.textContent = '⏸️ Reading paused safely. Rest without penalty or lost state.';
+        pauseBtn.textContent = 'Resume Reading';
+      } else {
+        banner.style.display = 'none';
+        pauseBtn.textContent = 'Pause Reading';
+      }
+    });
+
+    // Exit without penalty
+    exitBtn.addEventListener('click', () => {
+      banner.style.display = 'block';
+      banner.textContent = '🚪 Exited reading surface cleanly. Human closure acknowledged.';
+      exitBtn.disabled = true;
+      exitBtn.textContent = 'Exited';
+    });
+
+    // Proximity slider
+    proximitySlider.addEventListener('input', (e) => {
+      const val = (e.target.value / 100).toFixed(2);
+      proximityVal.textContent = val;
+      e.target.setAttribute('aria-valuenow', e.target.value);
+    });
+
+    // Interactive card selection with keyboard support
+    fragmentCards.forEach(card => {
+      const activate = () => {
+        fragmentCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      };
+
+      card.addEventListener('click', activate);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

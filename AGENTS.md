@@ -118,20 +118,22 @@ Pedagogue proposes or reframes
 
 Neither shortcut grants automatic experiment execution, custody action, route mutation, release, deployment, or promotion authority.
 
-## Four-role Dollhouse order
+## Six-role Dollhouse order (Five Specialists + Orchestrator)
 
 Use the smallest role set that answers the question, while keeping their jurisdictions distinct:
 
 ```text
-Pedagogue  → consequence order, route burden, practice, temporal sequence, and candidate-question framing
-Aperture   → observation geometry, identifiability, conditioning, uncertainty, abstention, and replay
-Atlas      → receiver-relative relation/history preservation, symmetry and continuity across projections
-FADT       → exact finite admissibility after conditioning-state erasure
+Pedagogue          → consequence order, route burden, practice, temporal sequence, and candidate-question framing
+Aperture           → observation geometry, identifiability, conditioning, uncertainty, abstention, and replay
+Atlas              → receiver-relative relation/history preservation, symmetry and continuity across projections
+FADT               → exact finite admissibility after conditioning-state erasure
+Temporal Custodian → monotonic chronology, predecessor citation chains, non-retroactivity, and phase completions
+Orchestrator       → multi-role consensus aggregation, veto preservation, and replication discipline
 ```
 
-When a human-facing route changes consequence order and also changes what can be observed, use Pedagogue first, then Aperture. Reach for Atlas when the route has multiple receivers, projections, returns or identity relations. Reach for FADT when a proposed compression or stage erasure may collapse different lawful supports. Agreement between roles is a review finding; it never creates execution, scientific, merge or release authority.
+Historical 4-role analysis remains authentic to its original recorded scope (Pedagogue, Aperture, Atlas, FADT). When a human-facing route changes consequence order and also changes what can be observed, use Pedagogue first, then Aperture. Reach for Atlas when the route has multiple receivers, projections, returns or identity relations. Reach for FADT when a proposed compression or stage erasure may collapse different lawful supports. Reach for Temporal Custodian when journey sequence, retroactive claims, or ledger predecessors are implicated. Reach for Orchestrator to govern multi-specialist consensus and prevent false replication credit (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). Agreement between roles is a review finding; it never creates execution, scientific, merge or release authority.
 
-The full mathematical and historical records live in the four root shortcuts and the pinned lineage catalogue. A bounded adapter is an operational witness for its declared input; it is not a substitute for the original theorem, preregistration, receipt, source archive or empirical acquisition contract.
+The full mathematical and historical records live in the root shortcuts and the pinned lineage catalogue. A bounded adapter is an operational witness for its declared input; it is not a substitute for the original theorem, preregistration, receipt, source archive or empirical acquisition contract.
 
 ## Source lineage and Dollhouse export
 

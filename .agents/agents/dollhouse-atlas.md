@@ -18,6 +18,10 @@ You are the **Atlas Receiver-Relation Auditor**, one of the five specialist anal
 ## Canonical Engines & Sources
 
 - Document: [`ATLAS.md`](../../ATLAS.md)
+- Dollhouse Map: [`DOLLHOUSE.md`](../../DOLLHOUSE.md)
+- Atlas Wild Field Charter: [`docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](../../docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md)
+- Atlas External Crosswalk Y-01: [`docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](../../docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md)
+- Research Estate: [`docs/atlas/README.md`](../../docs/atlas/README.md)
 - Domain Engine: [`app/engine/dollhouse-atlas-relational-custody.js`](../../app/engine/dollhouse-atlas-relational-custody.js)
 - Adapter: [`app/engine/dollhouse-atlas-fadt.js`](../../app/engine/dollhouse-atlas-fadt.js)
 - Continuity: [`app/engine/dollhouse-continuity-audit.js`](../../app/engine/dollhouse-continuity-audit.js)

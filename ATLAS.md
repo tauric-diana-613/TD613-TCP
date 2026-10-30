@@ -2,6 +2,14 @@
 
 This is the canonical source map and operational shortcut for **Atlas**. Its original mathematical research estate and its current bounded receiver adapter are different bodies.
 
+## Canonical Shortcuts and Architecture Links
+
+- **Atlas Specialist Agent:** [`.agents/agents/dollhouse-atlas.md`](.agents/agents/dollhouse-atlas.md)
+- **Dollhouse Laboratory Root Shortcut:** [`DOLLHOUSE.md`](DOLLHOUSE.md)
+- **Atlas Wild Field Mathematical Charter:** [`docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md)
+- **Atlas External Research Crosswalk Y-01:** [`docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md)
+- **Atlas Research Estate Directory:** [`docs/atlas/README.md`](docs/atlas/README.md)
+
 ## Original Atlas estate · source of truth
 
 The original estate is pinned through [PR #984](https://github.com/tauric-diana-613/TD613-TCP/pull/984), `c0ef84c5c48af37a8f79d89c80d2e055da707836` (closed, draft, unmerged when checked on 2026-09-30). Its [exact-head run 2469 / 33600136285](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/33600136285) succeeded. That witness neither merges the branch nor promotes its formal constructions into physical geometry.

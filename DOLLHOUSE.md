@@ -5,21 +5,23 @@ The Dollhouse is the controlled multi-agent laboratory for stressing Portable AI
 Current bounded role map:
 
 ```text
-Pedagogue     Aperture     Atlas     FADT
-    \            |          |         /
-     \           |          |        /
-             LOOM / FLOW-CORE
-                    |
-             Portable AIA
-                    |
-       Marrowline reference host
-                    |
-          remote companion hosts
+Pedagogue   Aperture   Atlas   FADT   Temporal Custodian
+    \           \        |      /           /
+     \           \       |     /           /
+                 ORCHESTRATOR
+                      |
+               LOOM / FLOW-CORE
+                      |
+                 Portable AIA
+                      |
+           Marrowline reference host
+                      |
+              remote companion hosts
 ```
 
 This diagram is an operational map, not a sovereign ontology or canonical UI topology.
 
-## Four distinct jobs
+## Six distinct roles (Five Specialists + Orchestrator)
 
 ### Pedagogue
 
@@ -37,7 +39,9 @@ Canonical shortcut: [`APERTURE.md`](APERTURE.md)
 
 Receiver-relation audit. It checks whether intentionally different receiver presentations preserve the same governed control plane and Flow-Core relation trace.
 
-Canonical shortcut: [`ATLAS.md`](ATLAS.md)
+Canonical shortcut: [`ATLAS.md`](ATLAS.md)  
+Specialist Agent: [`.agents/agents/dollhouse-atlas.md`](.agents/agents/dollhouse-atlas.md)  
+Research Estate: [`docs/atlas/README.md`](docs/atlas/README.md) · [`ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md) · [`ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md)
 
 ### FADT
 
@@ -45,12 +49,24 @@ Finite erasure/quotient audit. It checks whether lawful support remains constant
 
 Canonical shortcut: [`FADT.md`](FADT.md)
 
+### Temporal Custodian
+
+Monotonic chronology, non-retroactivity, phase progression, and predecessor citation chains.
+
+Implementation: [`app/engine/dollhouse-temporal-custodian.js`](app/engine/dollhouse-temporal-custodian.js)
+
+### Orchestrator
+
+Multi-role scientific governance, evidence adjudication, consensus aggregation, and replication discipline (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). Produces recommendation and verification records only; strictly closed to release or deployment authority.
+
+Implementation: [`app/engine/dollhouse-ablation-harness.js`](app/engine/dollhouse-ablation-harness.js)
+
 ## Shared operational rule
 
 The agents may inspect different coordinates without becoming interchangeable:
 
 ```text
-PEDAGOGUE != APERTURE != ATLAS != FADT
+PEDAGOGUE != APERTURE != ATLAS != FADT != TEMPORAL_CUSTODIAN != ORCHESTRATOR
 ```
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.

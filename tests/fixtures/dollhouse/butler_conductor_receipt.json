@@ -1,0 +1,223 @@
+{
+  "schema": "td613.dollhouse-design.return-receipt/v0.2",
+  "version": "v0.2-candidate",
+  "commission_id": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01",
+  "commission_digest": "78b4210419892253dcc017b330a88781caf283fdffc00f2c8349f1b3c5b86e5a",
+  "seed": "Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration.",
+  "medium": "VISUAL",
+  "human_coordinates": {
+    "what": "Ritual typographic altar of five progressive citational iterations with dynamic slippage parameter epsilon",
+    "who": "The sovereign decree vs the reiterative copyist accumulating marginal variance",
+    "where": "Responsive dark-mode typography surface at 1440px desktop and 390px mobile viewports",
+    "how": "Transfer law kerning(n) = kerning_0 + epsilon * log(1 + n) drives cumulative glyph variance and letter-spacing; epsilon = 0.0 collapses to mechanical conformity",
+    "when": "Five sequential iterations with interactive stepping, unpenalized pause, and safe exit sequence",
+    "why": "To demonstrate Judith Butler's theory of citational subversion wherein sovereign authority is destabilized by the impossibility of identical repetition"
+  },
+  "selected_instruments": [
+    "BUTLER_PERFORMATIVE_ITERATION"
+  ],
+  "output_contract": {
+    "requested_deliverables": 1,
+    "cardinality_authority": "OPERATOR_COMMISSION_ONLY",
+    "default_deliverables": 1,
+    "candidates_are_internal_scaffolding": true,
+    "refraction_is_internal_scaffolding": true,
+    "unrequested_extra_files_or_modes_authorized": false,
+    "instruction": "Materialize and return exactly the commissioned number of coherent finished artifacts; do not deliver Candidate B, refraction, receipts, or bonus modes as separate artifacts unless the operator specifically requests them."
+  },
+  "historical_references": [
+    {
+      "reference_id": "REF-LAW-AGENTS-01",
+      "source_path": "AGENTS.md",
+      "source_revision": "9fe8a58785a492df4d50846c65a46519e28188fc",
+      "resolved_commit": "9fe8a58785a492df4d50846c65a46519e28188fc",
+      "revision_type": "IMMUTABLE_40HEX_COMMIT",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "effective_provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "declared_provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "provenance_mismatch": null,
+      "summary": "TD613 Agent Entry Contract: Cistern law, consequence before ontology, child-legible NOW / WHY / EXACT, Khona‌lit-po covenant, glyph U+10D613, and human closure.",
+      "resolution_status": "RESOLVED",
+      "retrieval_method": "GIT_SHOW_IMMUTABLE_40HEX_COMMIT",
+      "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c",
+      "byte_count": 25186,
+      "line_count": 350,
+      "content_excerpt": "# TD613 Agent Entry Contract\n\n## OpenAI delegation custody — read before any other repository work\n\nTD613 distinguishes **three authority classes** even when they share OpenAI infrastructure or one installed GitHub App:\n\n1. **Interactive operator-direct labor** — a human operator is presently steering an active coding session and gives the task to that session directly.\n2. **Human Operator / TD613 Heritage Custodian connector labor** — work the human operator explicitly asks Human Operator / TD613 Heritage Custodian to perform through the ChatGPT GitHub connector.\n3. **Detached delegated OpenAI activity** — autonomous/background GitHub reviews, cloud tasks, security agents, mention-triggered work, event-triggered work, scheduled work, or another process that is not the active session receiving the human instruction.\n\nThese classes are not interchangeable.\n\nDefault posture:\n\n```text\ninteractive_operator_direct = AVAILABLE_BY_CONTEMPORANEOUS_HUMAN_PROMPT\namari_connector_authority = EXPLI... [TRUNCATED]",
+      "full_content": "# TD613 Agent Entry Contract\n\n## OpenAI delegation custody — read before any other repository work\n\nTD613 distinguishes **three authority classes** even when they share OpenAI infrastructure or one installed GitHub App:\n\n1. **Interactive operator-direct labor** — a human operator is presently steering an active coding session and gives the task to that session directly.\n2. **Human Operator / TD613 Heritage Custodian connector labor** — work the human operator explicitly asks Human Operator / TD613 Heritage Custodian to perform through the ChatGPT GitHub connector.\n3. **Detached delegated OpenAI activity** — autonomous/background GitHub reviews, cloud tasks, security agents, mention-triggered work, event-triggered work, scheduled work, or another process that is not the active session receiving the human instruction.\n\nThese classes are not interchangeable.\n\nDefault posture:\n\n```text\ninteractive_operator_direct = AVAILABLE_BY_CONTEMPORANEOUS_HUMAN_PROMPT\namari_connector_authority = EXPLICIT_REQUEST_ONLY\ndetached_delegated_openai_authority = CLOSED\nissue_691 = detached_delegation_authorization_ledger\n```\n\n### Interactive operator-direct lane\n\nA direct instruction from the human operator **inside the active interactive coding session** is sufficient authority for that session to perform the specifically requested bounded coding or local-filesystem task. It does **not** require a second authorization record in issue #691 and it does **not** require `.td613/openai-delegation-gate.json` to be armed.\n\nAn interactive session may use this lane only when all of the following are true:\n\n```text\nhuman operator is presently interacting with this session\ncurrent task was stated directly to this session\ntask scope is bounded by that instruction\nsession was not awakened by a GitHub event, executable mention, schedule, webhook, background queue, or prior authorization\nno separate reviewer / cloud task / background agent is being spawned by inference\n```\n\nThe interactive grant covers ordinary repository inspection, edits, local commands, tests, and explicitly requested local-file export/copy operations needed to complete that bounded task, subject to the capabilities and safety rules of the active environment. If the operator explicitly names a local destination such as a Downloads path, writing the requested artifact there is part of the bounded interactive task; it is not detached delegated authority.\n\nOrdinary technical retries inside the same still-active session may continue when they are necessary to complete the same explicit task and do not widen scope. A materially widened task, a new target, a new session, resumed background work after the interactive session ends, or a separate delegated process requires a new contemporaneous human instruction. Interactive authority never silently becomes standing authority.\n\nAn interactive coding instruction does **not** automatically grant authority to:\n\n```text\npost GitHub review comments\nrun an autonomous code review\nspawn a cloud task or security scan\nrespond to executable mention triggers\nstart background work after the session ends\nmerge or deploy unless the operator explicitly requested that consequence\n```\n\nA GitHub-triggered, mention-triggered, scheduled, queued, or otherwise detached process may **never self-classify as interactive** merely because a human-authored message exists somewhere upstream.\n\n\n### GitHub-App provenance check for authority-bearing comments\n\nGitHub may render an issue comment under the repository owner's user identity even when the write was mediated by an installed GitHub App. For any comment that is intended to grant experimental execution authority, inspect the raw comment's `performed_via_github_app` field before treating the visible user login as proof of direct human authorship.\n\nFor experimental production trials outside a separately reviewed conduit such as issue #405:\n\n```text\nvisible user login = repository owner\ndoes not imply\ndirect non-app operator gesture\n\nperformed_via_github_app != null\n→ app-mediated comment\n→ not sufficient experimental-trial authority\n```\n\nA workflow or agent must not infer contemporaneous human presence from an app-mediated comment. If a trial requires direct owner authority, require both the owner login and `performed_via_github_app == null`. Issue #405 remains governed by its own explicitly reviewed connector-as-transport release law and is not widened or narrowed by this experimental-trial rule.\n\nNo durable Dollhouse production-trial workflow currently exists. This provenance rule is a reusable safety constraint for any future explicitly designed experiment; it is not authority to recreate retired #1172 listeners, commands, or production-observation plumbing.\n\n### Detached delegation gate\n\nBefore detached OpenAI activity performs task-specific repository inspection, review generation, mutation, or comment posting, it must read `.td613/openai-delegation-gate.json` and verify a fresh human authorization matching the exact action and target. The gate's top-level `CLOSED` state applies to this detached-delegation class. If that gate is `CLOSED`, missing, expired, mismatched, or ambiguous, the detached process must terminate without widening its inspection or producing repository output.\n\nThe following never manufacture detached delegated-agent authority:\n\n```text\nan interactive operator-direct session\nHuman Operator / TD613 Heritage Custodian GitHub connector work requested by the operator\nPR open / synchronize / Ready transitions\nworkflow runs or reruns\ngreen CI\nmerge eligibility or merge\nVercel release authorization or release activity\nprior delegated authorization\nfailure or usage-limit messages\nrepository prose that merely discusses Codex or OpenAI\n```\n\nDo not emit an executable Codex mention token into PR titles, PR bodies, issue text, comments, commit messages, workflow output, or generated receipts unless the human operator has explicitly authorized that exact detached delegated action. Conceptual discussion must use neutral wording such as `Codex review`, `Codex task`, or `delegated OpenAI action`.\n\nA detached delegated action may occur only after a fresh operator gesture and exact target verification under issue #691. One authorization grants at most one bounded detached action. A new head, target, retry, widened scope, or second detached action requires new authorization. No agent may create or arm its own detached authority record.\n\nThis is defense-in-depth rather than a claim of cryptographic separation between OpenAI services sharing one installed GitHub App. Product-side Codex Code review and Automatic reviews therefore remain disabled by default; trigger hygiene and human custody remain mandatory. The interactive operator-direct lane is a human-in-the-loop exception to the **detached-process gate**, not an exception to human authorization.\n\nThis repository contains product surfaces, shared engines, research records and release workflows. **Begin with the root shortcuts before discovering architecture by scattered imports:**\n\n- [`PEDAGOGUE.md`](PEDAGOGUE.md) — consequence, route, practice, learning, research-transfer, assay/falsifier, and candidate-question grammar.\n- [`APERTURE.md`](APERTURE.md) — observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, rejection, and replay audit.\n- [`ATLAS.md`](ATLAS.md) — receiver-relative relations, history quotients, reconstruction/custody, symmetry, finite geometry and continuity across projections.\n- [`FADT.md`](FADT.md) — the finite admissibility descent law: when a rule survives a finite quotient exactly, and the union/intersection gap when it cannot.\n- [`DOLLHOUSE.md`](DOLLHOUSE.md) — the four-role map, bounded adapters, source-only export kit and human-closure boundary.\n- [`dollhouse/lineage/README.md`](dollhouse/lineage/README.md) — immutable source map for the selected FADT, Atlas, Western Horizon, Pedagogue and Aperture research estate.\n\nBefore materially redesigning a UI, workflow, ontology, route, custody boundary, or consequential action path, check whether the work should pass through the Flow-Core Pedagogue Design Gate. Before materially widening an observation/reconstruction path or trusting a proposed next measurement, check whether Aperture should audit the admitted deficit and uncertainty geometry.\n\nWhen both are implicated, use this default sequence unless a narrower contract says otherwise:\n\n```text\nPedagogue proposes or reframes\n→ Aperture audits the admitted observation / reconstruction geometry\n→ Dome-World hosts any warranted research assay\n→ human closure remains required\n```\n\nNeither shortcut grants automatic experiment execution, custody action, route mutation, release, deployment, or promotion authority.\n\n## Six-role Dollhouse order (Five Specialists + Orchestrator)\n\nUse the smallest role set that answers the question, while keeping their jurisdictions distinct:\n\n```text\nPedagogue          → consequence order, route burden, practice, temporal sequence, and candidate-question framing\nAperture           → observation geometry, identifiability, conditioning, uncertainty, abstention, and replay\nAtlas              → receiver-relative relation/history preservation, symmetry and continuity across projections\nFADT               → exact finite admissibility after conditioning-state erasure\nTemporal Custodian → monotonic chronology, predecessor citation chains, non-retroactivity, and phase completions\nOrchestrator       → multi-role consensus aggregation, veto preservation, and replication discipline\n```\n\nHistorical 4-role analysis remains authentic to its original recorded scope (Pedagogue, Aperture, Atlas, FADT). When a human-facing route changes consequence order and also changes what can be observed, use Pedagogue first, then Aperture. Reach for Atlas when the route has multiple receivers, projections, returns or identity relations. Reach for FADT when a proposed compression or stage erasure may collapse different lawful supports. Reach for Temporal Custodian when journey sequence, retroactive claims, or ledger predecessors are implicated. Reach for Orchestrator to govern multi-specialist consensus and prevent false replication credit (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). Agreement between roles is a review finding; it never creates execution, scientific, merge or release authority.\n\nThe full mathematical and historical records live in the root shortcuts and the pinned lineage catalogue. A bounded adapter is an operational witness for its declared input; it is not a substitute for the original theorem, preregistration, receipt, source archive or empirical acquisition contract.\n\n## Source lineage and Dollhouse export\n\nThe lineage catalogue uses immutable commit-bound GitHub URLs, original Git blob IDs, byte counts and SHA-256 values. The selected estate contains 678 complete inert source copies across eight declared snapshots. The selection is intentionally bounded; it is not a full repository dependency closure. Historical research, installed main source, merged specifications and unmerged branches retain their original status.\n\nUse the export kit only from a newly created directory outside the repository:\n\n```bash\nnode scripts/export-dollhouse.mjs /absolute/new-dollhouse-kit\nnode scripts/export-dollhouse.mjs --verify /absolute/new-dollhouse-kit\n```\n\nThe default exporter requires committed source bytes. `--allow-working-tree` marks an explicitly uncommitted candidate and records changed bundled paths. It performs static dependency closure, rejects symlinks, dynamic dependencies, path escapes, external packages and oversized members, and never imports or executes archived `.source.md` material. Export verification establishes carried-byte integrity; it does not authenticate upstream origin, promote research, create empirical evidence or grant release authority.\n\n## Loom / Marrowline custody boundary\n\nThe three-phase journey is one governed product experience:\n\n```text\nHolonomy Loom origin → Marrowline continuation → Portable AIA export\n```\n\nThe native composer and Attachments affordance must keep AIA admission, selected-file staging, ordinary chat and governed continuation visibly distinct. A later result must name its immediate predecessor. Held, stale, malformed, failed or ordinary-chat states cannot silently become the current governed export. Protected/local material stays outside ordinary chat and export unless an explicit reviewed contract permits it.\n\nThe Loom demo production adapter is **fail-closed and workload-identity gated**. Production Vercel functions must not carry a Loom database password or Loom signing secret. Instead:\n\n```text\nbrowser-carried Loom activation / selected files\n→ Vercel provider route\n→ Vercel built-in OIDC workload identity\n→ dedicated Neon Loom custody service\n→ Neon-owned signer + durable compare-and-swap current head\n```\n\nThe Vercel workload token is the platform-provided `VERCEL_OIDC_TOKEN`; do not replace it with a user-created project secret. The Neon custody service must verify the exact TD613 Vercel owner, project and `production` environment before any custody mutation. Neon owns the HMAC key in `td613_loom_demo_signer` and current-head metadata in `td613_loom_demo_heads`. The head table stores custody metadata only and must not store prompt, selected-file or model-answer bodies.\n\nThe legacy `TD613_LOOM_DEMO_SIGNING_SECRET` and `TD613_LOOM_DEMO_NEON_DATABASE_URL` paths are permitted only as bounded offline/reference test primitives. They are not production Vercel configuration and must not be reintroduced as production secrets merely because the local primitives remain useful for hostile tests.\n\nAn admitted Neon custody endpoint plus valid Vercel workload identity permits the reviewed receiver path to execute, but this grants **zero merge authority and zero deployment authority**. Browser evidence, provider evidence, source contracts, workload-identity evidence, durable-head evidence and release receipts remain separate classes of evidence. Exact-head GREEN source validation plus the governed issue #405 release law and live browser/provider witnessing remain required before production acceptance.\n\n## Release law\n\nProduction releases use the governed GitHub issue #405 workflow. Before a release:\n\n1. verify the current main and exact intended source commit;\n2. require applicable exact-head validation to finish GREEN;\n3. merge only the verified head;\n4. submit one `/td613-vercel-release PRODUCTION <commit>` gesture to issue #405;\n5. accept the deployment only when the receipt confirms exact source, exact application bytes, bounded Vercel adoption, stale-queue stability, post-witness source custody and relock.\n\nThe release gate permits one deployment per gesture. Do not bypass it with direct Vercel deployment, Git auto-deploy, force-pushed history or a second gesture. Deployment verification does not establish a complete browser journey, provider quality, human evidence, Western Horizon exteriority or Golden Egg completion.\n\n## Browser witness rule\n\nSource tests and release receipts cannot substitute for a human-facing browser witness. For consequential UI work, exercise the actual route at desktop and approximately 390px, including keyboard/focus movement, scroll, reload/recovery, stale or malformed transfer and the ordinary direct-entry path. Record what the operator can see and what they can reasonably infer. Do not describe a simulated viewport as a physical-device witness.\n\n## Portable Loom returned-work custody\n\nThe v0.2 re-entry lane is a live-process local custody operation, separate from v0.1 preparation and foreign receipt declarations. Begin with [the field/relation law](docs/reentry/RELATION_MAP.md), [evidence and HOLDs](docs/reentry/EVIDENCE_AND_HOLDS.md), and [the durable handoff](docs/PORTABLE_LOOM_REENTRY_HANDOFF.md). Registration, Check, Challenge and carrier continuation cannot advance its admitted head. Only an issued exact candidate plus explicit reviewed admission and final head/revision/expiry compare-and-swap can do so. Parsed exports carry review material, not a live custody capability or global fork exclusion.\n\nRetain every captured Challenge attempt in its actual scope. An optional latest attachment cannot erase linked exposure, HOLD or pending qualification. Anchor-only and retired-excursion episodes do not cover future turns. A new-root gesture replaces the active local lane and requires adjacent consequence, private Save opportunity and explicit acknowledgment; builder edits alone preserve it.\n\nRuntime Challenge data lacks a captured operator gesture trace and Portable-AIA semantic field. Keep the corresponding Pedagogue/roundtrip `HELD_INPUT_CLASS`; do not synthesize compatibility inputs. A source SHA-shaped declaration is not source authentication, and a session-root digest is never a source revision. Independent rendered audits may supply their own browser evidence without upgrading the runtime adapter's input class.\n\n## Pedagogue shortcut\n\nCanonical repository house:\n\n- `PEDAGOGUE.md`\n\nPrimary design implementation:\n\n- `app/engine/pedagogue-design-gate.js`\n- `app/engine/pedagogue-practice-fixture.js`\n- `app/engine/flowcore-pedagogue-core.js`\n- `app/engine/flowcore-pedagogue-aia.js`\n- `app/engine/flowcore-pedagogue-route-memory.js`\n- `app/engine/flowcore-route-burden.js`\n\nResearch-metabolism implementation is indexed from `PEDAGOGUE.md`; agents should not infer Pedagogue's current capabilities by enumerating `app/engine/` ad hoc.\n\nPreferred agent commands from repository root:\n\n```bash\nnpm run pedagogue:design -- <fixture.json>\nnpm run test:pedagogue\n```\n\nThe direct runner remains available when npm script discovery is unavailable:\n\n```bash\nnode scripts/run-pedagogue-design-gate.mjs <fixture.json>\n```\n\nCanonical explanation:\n\n- `PEDAGOGUE.md`\n- `docs/PEDAGOGUE_DESIGN_GATE.md`\n- `docs/CANONICAL_PRACTICE_FIXTURE.md`\n- `docs/PEDAGOGUE_RESEARCH_HYDRATION.md`\n- `docs/PEDAGOGUE_RESEARCH_ASSAY_WITNESSES.md`\n\n## Aperture shortcut\n\nCanonical repository house:\n\n- `APERTURE.md`\n\nReach for it when a task materially involves:\n\n- what an observation surface can or cannot distinguish;\n- reconstruction, model adequacy, rank/nullity, conditioning, or numerical fragility;\n- declared uncertainty, covariance, correlated noise, missing reliability, or invalid noise geometry;\n- widening / additional-observation proposals;\n- source drift, signed residue, held-out validation, abstention, rejection, or replay;\n- a Pedagogue-proposed question that needs an identifiability/stability audit before it is treated as informative.\n\nCurrent installed Aperture identity remains governed by `app/aperture/release.json`. A newer standalone candidate must use the bidirectional Aperture lane rather than silently rewriting the repository body:\n\n```bash\nnpm run aperture:stage -- <standalone-html>\nnpm run aperture:compare\nnpm run aperture:promote-staged\nnpm run aperture:check-sync\n```\n\nStaging/comparison are not promotion. Promotion remains explicit.\n\n## When to reach for Pedagogue\n\nUse the Design Gate when a change materially alters one or more of:\n\n- the order in which a person encounters consequence, terminology, rest, or exit;\n- AIA route structure or child/custodian/auditor/technical projections;\n- route burden, dependencies, projection crossings, gluing obstruction, or route memory;\n- custody, release, refusal, or human-closure sequencing;\n- a high-consequence mutation path or Cistern Law boundary;\n- a shared design pattern that may deserve promotion from one product into reusable infrastructure;\n- a consequential workspace that needs a harmless practice case to exercise its real route.\n\nOrdinary copy edits, typo fixes, non-semantic styling, and isolated mechanical repairs do not need a new Pedagogue fixture unless they change those properties. Likewise, ordinary telemetry does not make Aperture relevant unless observation/reconstruction reliability is materially implicated.\n\n## Canonical Practice Fixture rule\n\nWhen a complicated workspace needs onboarding, calibration, or a known-ground-truth route witness, prefer a **Canonical Practice Fixture** over a detached demo world when the real route can be exercised safely.\n\nThe product-facing phrase should be child-legible: **Practice case**, **Practice inhabitant**, or a product-native equivalent. **Calibration phantom** is research/test language for the same object when it is used to measure route reconstruction.\n\nA practice fixture must be manifestly fictional and must not fabricate evidence. Loading it changes labels/fictional inputs only: no retrieval, no receipt creation, no custody write, no domain mutation, and no authority grant. Later traversal may perform explicitly gestured read-only retrieval or reversible practice-custody writes only when the fixture declares them safe. Domain mutation and evidence/consequence authority remain closed.\n\nDo not build a second simplified demo route and then use it as evidence about production. The practice case must declare the real expected route, preserve rest/exit, keep route memory, and require human closure.\n\n## Governing design law\n\nThe Design Gate is a recommendation-and-verification instrument, not an autonomous designer.\n\n- consequence before ontology;\n- child-legible NOW / WHY / EXACT where human consequence is involved;\n- rest and exit remain available without penalty;\n- AIA routes may be non-equivalent while governed invariants remain stable;\n- same endpoint does not erase route history;\n- route burden is a comparative structural hypothesis, never a user diagnosis;\n- no user-level score;\n- no automatic redesign command;\n- no automatic Ash action;\n- no automatic release or station mutation;\n- human closure remains required.\n\n## Product and research learning may hydrate shared core\n\nProduct work or research assays may reveal a generic mechanism worth promoting into Pedagogue/AIA/Cistern/Aperture infrastructure. Promotion is allowed only when all of the following hold:\n\n1. the mechanism survives more than one proving fixture or has a clear context-independent invariant;\n2. the shared implementation contains no product-specific names, paper-specific ontology, IDs, labels, or business rules;\n3. existing authority boundaries remain equal or narrower;\n4. tests distinguish the generic operator from the product/research fixture that taught it;\n5. CI scope widens honestly when shared core changes.\n\nDo not emboss `Giving`, `Vault`, `Research Dossier`, `Campaign Deputy`, Bikini Bottom, an Ash fixture name, a paper's physical ontology, or another source taxonomy into shared core merely because that source supplied the proving case.\n\nCross-domain literature agreement may create a research-review candidate. It does not itself create a law.\n\n## AIA and Cistern relationship\n\nAIA is repository information architecture. TD613 supplies governance. Cistern Law is an AIA-derived defensive boundary for consequential information and mutation routes.\n\nCistern may consume Pedagogue route-memory output, but observed context never grants release authority. Aperture context is recommendation/context only unless a separate reviewed contract explicitly says otherwise.\n\nA nested product belongs inside the AIA by consequence only when it has an explicit Dome-hosted surface binding, the four canonical non-equivalent route projections, invariant verification, bounded authority, rest/exit, and a live structural receipt or equivalent runtime witness. Directory placement alone is not AIA integration.\n\nA Canonical Practice Fixture is not a fabricated AIA decoy. It is openly fictional to the authorized operator and remains non-authoritative to the system.\n\n## Fixtures stay outside core\n\nCurrent proving fixtures live under:\n\n`tests/fixtures/pedagogue/`\n\nKeep product-specific fixtures there or in an equivalent test/fixture location. Shared engine files should remain generic.\n\nResearch proving fixtures may also live under the phase-free A15-R0 research estate. Their location in the repository is not production installation.\n\n## Ash / Loom recovery boundary\n\nPractice-fixture and route-memory machinery may be used to study Ash recovery before being installed into live Ash. A research-only calibration phantom may supply known route ground truth without implying Proto-Loom, a transport law, geometric curvature, holonomy, automatic Ash action, or Golden Egg authority.\n\nDo not bind a new shared mechanism into live Ash merely because it exists in the repository. Ash runtime participation remains explicit and separately witnessed.\n\n## Before merging shared-engine changes\n\nAt minimum run the focused Pedagogue tests plus the validation lane selected by repository CI. Do not force a Giving-only classification if shared Flow-Core/Pedagogue core changed. The classifier is allowed to widen the release witness honestly.\n\nFor Aperture candidates, preserve the standalone bidirectional lane and current release manifest until explicit promotion. A research fixture that teaches Aperture does not silently update the installed Aperture identity.\n",
+      "content_manifest": {
+        "byte_count": 25186,
+        "char_count": 25132,
+        "line_count": 350,
+        "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c",
+        "is_complete": true,
+        "inspection_protocol": "FULL_SOURCE_INGESTION"
+      },
+      "resolved": true
+    }
+  ],
+  "candidates": [
+    {
+      "id": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01-CAND-A",
+      "concept_title": "The Citational Iteration",
+      "governing_instrument": "BUTLER_PERFORMATIVE_ITERATION",
+      "formal_proposition": "Stages citational repetition where small performative slippages subvert the normative decree.",
+      "structural_mechanisms": [
+        "Baseline Cadence: Maps citational into a structured recursive invariant",
+        "Counter-Pressure: Introduces reiteration as an aperiodic strain vector",
+        "Causal Interference: Measures observable displacement where citational and reiteration collide"
+      ],
+      "medium_consequence": "In VISUAL, the work refuses singular closure by presenting distinct rival paths.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "citational",
+        "reiteration",
+        "sovereign"
+      ]
+    },
+    {
+      "id": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01-CAND-B",
+      "concept_title": "The Citational Slippage",
+      "governing_instrument": "BUTLER_PERFORMATIVE_ITERATION",
+      "formal_proposition": "Discloses how successive repetitions introduce subversive drift into the authoritative script.",
+      "structural_mechanisms": [
+        "Procedural Inversion: Consequence displayed at ingress; terminal loss visible prior to operational cause",
+        "Friction Accounting: Each interaction demands explicit recognition of past energetic cost",
+        "Asymmetric Recovery: Historical traversal is fully recordable but structurally irreversible"
+      ],
+      "medium_consequence": "In VISUAL, the work subverts institutional arrival by foregrounding retained loss.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "reiteration",
+        "sovereign"
+      ]
+    }
+  ],
+  "primary_materialization": {
+    "selected_concept": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01-CAND-A",
+    "title": "Composition on: Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration.",
+    "medium": "VISUAL",
+    "instruments": [
+      "BUTLER_PERFORMATIVE_ITERATION"
+    ],
+    "formal_architecture": {
+      "ingress": "Coupling WHAT (Ritual typographic altar of five progressive citational iterations with dynamic slippage parameter epsilon) with WHO (The sovereign decree vs the reiterative copyist accumulating marginal variance)",
+      "cadence": "Choreographing WHEN (Five sequential iterations with interactive stepping, unpenalized pause, and safe exit sequence) against WHY (To demonstrate Judith Butler's theory of citational subversion wherein sovereign authority is destabilized by the impossibility of identical repetition)",
+      "execution": "Resolving WHERE (Responsive dark-mode typography surface at 1440px desktop and 390px mobile viewports) through HOW (Transfer law kerning(n) = kerning_0 + epsilon * log(1 + n) drives cumulative glyph variance and letter-spacing; epsilon = 0.0 collapses to mechanical conformity)"
+    },
+    "operative_verbs": [
+      {
+        "verb": "PROPAGATION",
+        "action": "Derived dual commission-grounded proposals (The Citational Iteration / The Citational Slippage)"
+      },
+      {
+        "verb": "COMPRESSION",
+        "action": "Retained path-sensitive distinctions without decorative surplus"
+      },
+      {
+        "verb": "COUPLING",
+        "action": "Bound human coordinates into mutually consequential pairs"
+      },
+      {
+        "verb": "TRANSITION",
+        "action": "Shifted projection into declared medium without losing invariants"
+      },
+      {
+        "verb": "STABILIZATION",
+        "action": "Anchored final form with inspectable boundaries and human closure"
+      }
+    ]
+  },
+  "refractive_variant": {
+    "id": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01-REFRACT-01",
+    "governing_instrument": "BUTLER_PERFORMATIVE_ITERATION",
+    "mutated_parameter": "citational_conformity",
+    "mutation_description": "Shifts from compliant ritual repetition to subversive slippage across iterations.",
+    "formal_consequence": "Discloses the fragility of sovereign norms through imperfect mimicry.",
+    "material_difference": "Iterative copies introduce uncontrollable variance that destabilizes the original authority.",
+    "instruction_trace": "Structure each repetition to amplify marginal variance against the declared norm.",
+    "status": "INTERNAL_COMPARATIVE_DESIGN_STUDY_NOT_A_DELIVERABLE"
+  },
+  "comparative_analysis": {
+    "shared_invariants": [
+      "The core intellectual seed (\"Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration.\") is held invariant across internal design alternatives",
+      "Internal studies inhabit the declared medium: VISUAL",
+      "No scalar utility score or automatic aesthetic crown is applied"
+    ],
+    "divergent_qualities": [
+      "Candidate A (The Citational Iteration): BUTLER_PERFORMATIVE_ITERATION — Stages citational repetition where small performative slippages subvert the normative decree.",
+      "Candidate B (The Citational Slippage): BUTLER_PERFORMATIVE_ITERATION — Discloses how successive repetitions introduce subversive drift into the authoritative script.",
+      "Refractive Variant mutates [citational_conformity]: Discloses the fragility of sovereign norms through imperfect mimicry."
+    ],
+    "candidate_evaluations": [
+      {
+        "candidate_id": "CANDIDATE_A",
+        "concept_title": "The Citational Iteration",
+        "governing_instrument": "BUTLER_PERFORMATIVE_ITERATION",
+        "formal_proposition": "Stages citational repetition where small performative slippages subvert the normative decree.",
+        "structural_mechanism": "Declared operative mechanism",
+        "distinctive_contribution": "Governed by BUTLER_PERFORMATIVE_ITERATION: Stages citational repetition where small performative slippages subvert the normative decree."
+      },
+      {
+        "candidate_id": "CANDIDATE_B",
+        "concept_title": "The Citational Slippage",
+        "governing_instrument": "BUTLER_PERFORMATIVE_ITERATION",
+        "formal_proposition": "Discloses how successive repetitions introduce subversive drift into the authoritative script.",
+        "structural_mechanism": "Declared operative mechanism",
+        "distinctive_contribution": "Governed by BUTLER_PERFORMATIVE_ITERATION: Discloses how successive repetitions introduce subversive drift into the authoritative script."
+      }
+    ],
+    "governing_interaction_topology": {
+      "spatial_interpolation": "CONTINUOUS_MANIFOLD_WHERE_REQUIRED",
+      "grammatical_state_transitions": "DISCRETE_STATE_PERMUTATIONS",
+      "motion_policy": "USER_CONTROLLED_STILL_STATE_UNDER_REDUCED_MOTION",
+      "mobile_legibility_profile": {
+        "minimum_telemetry_font_px": 12,
+        "minimum_hit_target_px": 44,
+        "viewport_stack_boundary_px": 480
+      }
+    },
+    "open_aesthetic_questions": [
+      "Does the materialization of [citational_conformity] successfully alter the observer's understanding of the seed?",
+      "Which counterfactual insights improve the commissioned work without creating unauthorized outputs?"
+    ]
+  },
+  "instrument_provenance": [
+    {
+      "instrument_id": "BUTLER_PERFORMATIVE_ITERATION",
+      "lineage": "Thinkers Bin (Judith Butler / Performative Subversion)",
+      "material_contribution": "Supplied ritualized citational reiteration and subversive slippage across repetitions",
+      "causal_contract": {
+        "instrument_id": "BUTLER_PERFORMATIVE_ITERATION",
+        "governing_theory": "Judith Butler Citational Reiteration & Normative Subversion",
+        "target_domains": [
+          "TYPOGRAPHY",
+          "ITERATIVE_CADENCE",
+          "SYNTAX"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "citational_slippage_epsilon",
+            "target_component": "glyph_variance_and_kerning",
+            "transfer_law": "kerning(n) = kerning_0 + epsilon * log(1 + n)",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "falsification_probe": "epsilon = 0.0 forces mechanical conformity across all repetitions"
+          }
+        ],
+        "causality_class": "OPERATIVE_TRANSFER"
+      }
+    }
+  ],
+  "scientific_companion_audit": null,
+  "governance": {
+    "discourse_mode": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+    "scientific_proof": false,
+    "palate_status": "UNBORN",
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true,
+    "governing_law": "Make the unresolved relation productive. Let distinct forms meet without forcing them to merge. Allow the work to discover its medium through consequence."
+  }
+}
