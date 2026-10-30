@@ -46,7 +46,9 @@ import {
   Stage2IndependentEvaluator,
   computeProofBindingDigest,
   createIndependentProofReceipt,
-  verifyWitnessAttestation
+  verifyWitnessAttestation,
+  verifyWitnessAttestationDetailed,
+  createWitnessAttestation
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 import {
   SharedBudgetGovernor,
@@ -414,7 +416,7 @@ async function main() {
     }
   }
 
-  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, and trust root before archive admission)
+  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission)
   if (options.requireWitnessTier) {
     const witnessKeys = resolveWitnessKeys(options);
     const attestedWitness = resolveAttestedWitness(options);
@@ -426,16 +428,23 @@ async function main() {
       process.exit(1);
     }
     const witnessKey = witnessKeys[attestedWitness.witnessId];
-    const isValid = verifyWitnessAttestation(attestedWitness, witnessKey);
-    if (!isValid) {
+
+    // Scope check is strictly non-optional
+    if (!attestedWitness.scope || attestedWitness.scope !== 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION') {
       console.error(
-        `PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID: Cryptographic witness signature verification failed for witnessId '${attestedWitness.witnessId}'. Zero protected exposure or provider calls permitted.`
+        `PREFLIGHT_STAGE2_WITNESS_SCOPE_MISMATCH: Witness scope '${attestedWitness.scope || 'OMITTED'}' does not match required 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'. Halted before archive admission or model dispatch.`
       );
       process.exit(1);
     }
-    if (attestedWitness.scope && attestedWitness.scope !== 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION') {
+
+    const activeEpisodeId = options.episodeId || null;
+    const audit = verifyWitnessAttestationDetailed(attestedWitness, witnessKey, {
+      expectedScope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+      expectedEpisodeId: activeEpisodeId
+    });
+    if (!audit.valid) {
       console.error(
-        `PREFLIGHT_STAGE2_WITNESS_SCOPE_MISMATCH: Witness scope '${attestedWitness.scope}' does not match required 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'. Halted before archive admission or model dispatch.`
+        `PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID: Cryptographic witness signature verification failed for witnessId '${attestedWitness.witnessId}' (reason: ${audit.reason}). Zero protected exposure or provider calls permitted.`
       );
       process.exit(1);
     }

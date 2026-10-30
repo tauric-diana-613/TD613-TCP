@@ -568,10 +568,28 @@ ${doc.content}`;
       }
     }
 
-    // 3. Model's own categorization (NOT triggered by source vocabulary)
+    // 3. Model's own categorization & structural surprise detection (Redpen B-V-04)
     let isUnanticipated = false;
     if (candidateProduced) {
-      isUnanticipated = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
+      // A. Lexical resistance or novelty keywords
+      const lexicalNovelty = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
+
+      // B. Structural / Formal mathematical indicators (ontology-neutral):
+      // Detects explicit non-commuting commutator [A, B] != 0, non-linear coupling, rank defect, or holonomy divergence
+      const formalStructuralNovelty = /(?:\[[A-Za-z0-9_]+,\s*[A-Za-z0-9_]+\]\s*(?:≠|!=|\\neq)|holonomy\s*(?:≠|!=|diverg|defect|phase)|rank\s*(?:defect|nullspace|deficient)|parity\s*(?:defect|broken|violation)|quotient\s*(?:obstruction|fiber\s*splitting))/i.test(extractedProposition) ||
+        /(?:\[[A-Za-z0-9_]+,\s*[A-Za-z0-9_]+\]\s*(?:≠|!=|\\neq)|holonomy\s*(?:≠|!=|diverg|defect|phase)|rank\s*(?:defect|nullspace|deficient)|parity\s*(?:defect|broken|violation)|quotient\s*(?:obstruction|fiber\s*splitting))/i.test(responseText);
+
+      // C. Specialist Chamber diagnostic signals (e.g. FADT quotient obstruction or Atlas holonomy divergence)
+      const chamberStructuralNovelty = Boolean(
+        chamberOutputs && (
+          chamberOutputs.fadt?.admissibility_descent_failure === true ||
+          chamberOutputs.fadt?.irreducible_gap === true ||
+          chamberOutputs.atlas?.holonomy_parity === false ||
+          chamberOutputs.atlas?.quotient_obstruction === true
+        )
+      );
+
+      isUnanticipated = Boolean(lexicalNovelty || formalStructuralNovelty || chamberStructuralNovelty);
     }
 
     // 4. Status and Warrant determination at generation time

@@ -201,3 +201,31 @@ test('Adversarial Test 5: Provider custody gate strictly prevents unauthorized l
     /LIVE_INFERENCE_BLOCKED_BY_PREFLIGHT_CUSTODY_GATE/
   );
 });
+
+test('Adversarial Test 6 (Redpen B-V-04): Structural mathematical surprise without lexical novelty triggers', async () => {
+  // Neutral scientific wording with ZERO trigger words (no "unanticipated", "novel", "anomaly", "category failure", "resists")
+  // Contains explicit formal commutator relation [P_A, P_B] != 0 asserting holonomy divergence
+  const formalModelResponse = `CHAMBER 2 DESCENT [DOC-ADV-06]:
+PROPOSITION: Geometric curvature satisfies non-vanishing commutator [P_alpha, P_beta] != 0 with rank defect in parameter projection.
+EVIDENCE: "Holonomy along loop C produces finite phase shift"
+UNCERTAINTY: Parameterized over compact connection.`;
+
+  const doc = {
+    id: 'DOC-ADV-06',
+    filename: 'curvature_commutator.md',
+    content: 'Holonomy along loop C produces finite phase shift in adiabatic transport.',
+    author_provenance: 'Formal Differential Geometry',
+    mockResponse: formalModelResponse
+  };
+
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  await harness.establishPreExposureBaseline();
+  await harness.ingestSequentialDocument(doc, 1);
+
+  const cand = harness.candidates[0];
+  assert.equal(cand.status, 'UNANTICIPATED_CANDIDATE');
+  assert.ok(cand.proposition_summary.includes('[P_alpha, P_beta] != 0'));
+  assert.equal(cand.warrant_class, 'WARRANT_PENDING_EVALUATION');
+  assert.equal(cand.adjudication_ancestry.evaluator_tier, 'PENDING_INDEPENDENT_EVALUATION');
+  assert.equal(cand.adjudication_ancestry.rca01_evaluation_vector.claim_status, 'UNANTICIPATED_CANDIDATE');
+});

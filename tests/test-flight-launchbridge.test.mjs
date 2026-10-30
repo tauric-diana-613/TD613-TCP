@@ -16,7 +16,10 @@ import {
   Stage2IndependentEvaluator,
   computeProofBindingDigest,
   createIndependentProofReceipt,
-  verifyWitnessAttestation
+  verifyWitnessAttestation,
+  verifyWitnessAttestationDetailed,
+  createWitnessAttestation,
+  computeCanonicalWitnessPayload
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 import {
   SharedBudgetGovernor,
@@ -240,19 +243,18 @@ test('B-01: Cryptographic Operator Flight Grant Verification for Physical Archiv
 
 test('B-03 / B-04: Deterministic Proof-Binding Digest Verification & Adversarial Tampering Sieve', () => {
   const witnessKey = 'EMERGENCE_HQ_WITNESS_ROOT_KEY_2026';
-  const sessionPayload = 'WITNESS_SESSION:AMARI_WITNESS_01';
-  const witnessSig = crypto.createHmac('sha256', witnessKey).update(sessionPayload).digest('hex');
+  const attestedWitness = createWitnessAttestation({
+    witnessId: 'AMARI_WITNESS_01',
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    episodeId: 'Episode-Proof-Test'
+  }, witnessKey);
 
   const evaluator = new Stage2IndependentEvaluator({
     evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
     trustedWitnessKeys: {
       AMARI_WITNESS_01: witnessKey
     },
-    attestedWitness: {
-      witnessId: 'AMARI_WITNESS_01',
-      signature: witnessSig,
-      payload: sessionPayload
-    }
+    attestedWitness
   });
 
   const candidate = {
@@ -399,13 +401,16 @@ test('B-03 / B-04: Deterministic Proof-Binding Digest Verification & Adversarial
 
 test('B-05: RCA-01 Scaffolding Investigation vs Authentic Mathematical Warrant Preservation', () => {
   const witnessKey = 'EMERGENCE_HQ_WITNESS_ROOT_KEY_2026';
-  const sessionPayload = 'WITNESS_SESSION:AMARI_WITNESS_01';
-  const witnessSig = crypto.createHmac('sha256', witnessKey).update(sessionPayload).digest('hex');
+  const attestedWitness = createWitnessAttestation({
+    witnessId: 'AMARI_WITNESS_01',
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    episodeId: 'Episode-Scaffolding-Test'
+  }, witnessKey);
 
   const evaluator = new Stage2IndependentEvaluator({
     evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
     trustedWitnessKeys: { AMARI_WITNESS_01: witnessKey },
-    attestedWitness: { witnessId: 'AMARI_WITNESS_01', signature: witnessSig, payload: sessionPayload }
+    attestedWitness
   });
 
   const candidate = {
@@ -942,35 +947,83 @@ test('R4-01B: Live native flight refuses before reading protected archive even w
   }
 });
 
-test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validation', () => {
+test('R4-02: Preflight Independent Witness Signature, Scope, Episode Binding & Trust-Root Validation', () => {
   const witnessSecretKey = crypto.randomBytes(32).toString('hex');
   const trustedWitnessKeys = {
     EMERGENCE_HQ_WITNESS_01: witnessSecretKey
   };
+  const testEpisodeId = 'EPISODE-B-20261030-PREFLIGHT-01';
 
-  // 1. Valid cryptographic witness attestation
-  const payload = 'WITNESS_SESSION:EMERGENCE_HQ_WITNESS_01';
-  const validSignature = crypto.createHmac('sha256', witnessSecretKey).update(payload).digest('hex');
-  const validAttestation = {
+  // 1. Valid cryptographic witness attestation using createWitnessAttestation
+  const validAttestation = createWitnessAttestation({
     witnessId: 'EMERGENCE_HQ_WITNESS_01',
-    payload,
-    signature: validSignature,
-    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'
-  };
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    episodeId: testEpisodeId,
+    reviewerAuthorityClass: 'INDEPENDENT_EXTERNAL_REVIEWER'
+  }, witnessSecretKey);
 
   assert.equal(verifyWitnessAttestation(validAttestation, witnessSecretKey), true);
+  const auditValid = verifyWitnessAttestationDetailed(validAttestation, witnessSecretKey, {
+    expectedScope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    expectedEpisodeId: testEpisodeId
+  });
+  assert.equal(auditValid.valid, true);
 
   // 2. Syntactically present but invalid signature must fail verification
   const invalidAttestation = {
-    witnessId: 'EMERGENCE_HQ_WITNESS_01',
-    payload,
-    signature: 'badc0ffee0000000000000000000000000000000000000000000000000000000',
-    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'
+    ...validAttestation,
+    signature: 'badc0ffee0000000000000000000000000000000000000000000000000000000'
   };
-
   assert.equal(verifyWitnessAttestation(invalidAttestation, witnessSecretKey), false);
 
-  // 3. Stage 2 Evaluator rejects invalid witness attestation fail-closed
+  // 3. Omitted scope must fail verification fail-closed (Redpen B-V-03)
+  const omittedScopeAttestation = {
+    ...validAttestation,
+    scope: undefined
+  };
+  const omittedScopeAudit = verifyWitnessAttestationDetailed(omittedScopeAttestation, witnessSecretKey);
+  assert.equal(omittedScopeAudit.valid, false);
+  assert.equal(omittedScopeAudit.reason, 'WITNESS_SCOPE_MISMATCH_OR_OMITTED');
+
+  // 4. Mutated scope must fail verification
+  const mutatedScopeAttestation = {
+    ...validAttestation,
+    scope: 'EXPERIMENT_A_STAGE1'
+  };
+  const mutatedScopeAudit = verifyWitnessAttestationDetailed(mutatedScopeAttestation, witnessSecretKey);
+  assert.equal(mutatedScopeAudit.valid, false);
+  assert.equal(mutatedScopeAudit.reason, 'WITNESS_SCOPE_MISMATCH_OR_OMITTED');
+
+  // 5. Mutated episodeId must fail verification when expected episode is enforced
+  const mutatedEpisodeAttestation = {
+    ...validAttestation,
+    episodeId: 'FORGED-EPISODE-999'
+  };
+  const mutatedEpisodeAudit = verifyWitnessAttestationDetailed(mutatedEpisodeAttestation, witnessSecretKey, {
+    expectedScope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    expectedEpisodeId: testEpisodeId
+  });
+  assert.equal(mutatedEpisodeAudit.valid, false);
+  assert.equal(mutatedEpisodeAudit.reason, 'WITNESS_EPISODE_MISMATCH_OR_OMITTED');
+
+  // 6. Free-form payload that does not bind scope/episode must fail verification
+  const unboundPayload = 'FREE_FORM_STRING_WITHOUT_BOUND_FIELDS';
+  const unboundSig = crypto.createHmac('sha256', witnessSecretKey).update(unboundPayload).digest('hex');
+  const unboundAttestation = {
+    witnessId: 'EMERGENCE_HQ_WITNESS_01',
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    episodeId: testEpisodeId,
+    payload: unboundPayload,
+    signature: unboundSig
+  };
+  const unboundAudit = verifyWitnessAttestationDetailed(unboundAttestation, witnessSecretKey, {
+    expectedScope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    expectedEpisodeId: testEpisodeId
+  });
+  assert.equal(unboundAudit.valid, false);
+  assert.equal(unboundAudit.reason, 'PAYLOAD_SCOPE_OR_WITNESS_NOT_BOUND');
+
+  // 7. Stage 2 Evaluator rejects invalid witness attestation fail-closed
   assert.throws(
     () => new Stage2IndependentEvaluator({
       evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
@@ -980,7 +1033,28 @@ test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validat
     /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
   );
 
-  // 4. Missing trust-root key fails closed
+  // 8. Stage 2 Evaluator rejects attestation with missing scope fail-closed
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+      trustedWitnessKeys,
+      attestedWitness: omittedScopeAttestation
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+
+  // 9. Stage 2 Evaluator rejects attestation when episodeId mismatches run episode
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+      trustedWitnessKeys,
+      attestedWitness: validAttestation,
+      expectedEpisodeId: 'DIFFERENT-ACTIVE-EPISODE'
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+
+  // 10. Missing trust-root key fails closed
   assert.throws(
     () => new Stage2IndependentEvaluator({
       evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
@@ -989,6 +1063,16 @@ test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validat
     }),
     /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
   );
+
+  // 11. Valid attestation creates authentic attested Stage2 evaluator
+  const validEvaluator = new Stage2IndependentEvaluator({
+    evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+    trustedWitnessKeys,
+    attestedWitness: validAttestation,
+    expectedEpisodeId: testEpisodeId
+  });
+  assert.equal(validEvaluator.isWitnessAttested, true);
+  assert.equal(validEvaluator.authenticatedWitnessId, 'EMERGENCE_HQ_WITNESS_01');
 });
 
 test('R4-03: Chronology and Topic Treatments Fail Closed on Absent Metadata', () => {

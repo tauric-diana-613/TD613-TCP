@@ -156,32 +156,196 @@ export function createIndependentProofReceipt(params, secretKey) {
   };
 }
 
-/**
- * Verifies a cryptographic HMAC-SHA256 witness attestation against a trusted root key.
- *
- * @param {object} attestation - { witnessId, signature, payload }
- * @param {string|Buffer} trustedKey - HMAC secret key for the designated witness
- * @returns {boolean} Whether signature is cryptographically valid
- */
-export function verifyWitnessAttestation(attestation, trustedKey) {
-  if (!attestation || !attestation.witnessId || !attestation.signature || !trustedKey) {
-    return false;
-  }
-  try {
-    const rawPayload = attestation.payload || `WITNESS_SESSION:${attestation.witnessId}`;
-    const canonicalPayload = typeof rawPayload === 'string' ? rawPayload : JSON.stringify(rawPayload);
-    const expectedHmac = crypto.createHmac('sha256', trustedKey).update(canonicalPayload).digest('hex');
+export const CANONICAL_WITNESS_ATTESTATION_DOMAIN = 'TD613_WITNESS_ATTESTATION_v1';
 
+/**
+ * Computes canonical witness attestation payload structure and deterministic string.
+ * Strictly binds domain separator, witnessId, scope, and episodeId.
+ *
+ * @param {object} params
+ * @param {string} params.witnessId
+ * @param {string} params.scope - Mandatory scope, e.g. 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'
+ * @param {string} [params.episodeId] - Mandatory flight episode ID
+ * @param {string} [params.reviewerAuthorityClass]
+ * @param {string} [params.timestamp]
+ * @param {string} [params.nonce]
+ * @returns {object} { canonicalPayloadObject, canonicalPayloadString }
+ */
+export function computeCanonicalWitnessPayload(params = {}) {
+  const witnessId = String(params.witnessId || '').trim();
+  const scope = String(params.scope || '').trim();
+  const episodeId = String(params.episodeId || '').trim();
+  const reviewerAuthorityClass = String(params.reviewerAuthorityClass || 'INDEPENDENT_EXTERNAL_REVIEWER').trim();
+  const timestamp = String(params.timestamp || '').trim();
+  const nonce = String(params.nonce || '').trim();
+
+  const canonicalPayloadObject = {
+    domain_separator: CANONICAL_WITNESS_ATTESTATION_DOMAIN,
+    witness_id: witnessId,
+    scope,
+    episode_id: episodeId,
+    reviewer_authority_class: reviewerAuthorityClass,
+    timestamp: timestamp || undefined,
+    nonce: nonce || undefined
+  };
+
+  const cleaned = {};
+  for (const [k, v] of Object.entries(canonicalPayloadObject)) {
+    if (v !== undefined) cleaned[k] = v;
+  }
+
+  const canonicalPayloadString = canonicalJsonStringify(cleaned);
+  return {
+    canonicalPayloadObject: cleaned,
+    canonicalPayloadString
+  };
+}
+
+/**
+ * Creates an authenticated independent witness attestation binding scope and episode.
+ *
+ * @param {object} params
+ * @param {string|Buffer} trustedKey
+ * @returns {object} Authenticated witness attestation object
+ */
+export function createWitnessAttestation(params, trustedKey) {
+  const { witnessId, scope, episodeId, reviewerAuthorityClass, timestamp, nonce } = params;
+  const { canonicalPayloadObject, canonicalPayloadString } = computeCanonicalWitnessPayload({
+    witnessId,
+    scope,
+    episodeId,
+    reviewerAuthorityClass,
+    timestamp: timestamp || new Date().toISOString(),
+    nonce: nonce || crypto.randomBytes(8).toString('hex')
+  });
+
+  const signature = crypto.createHmac('sha256', trustedKey).update(canonicalPayloadString).digest('hex');
+
+  return {
+    witnessId,
+    scope,
+    episodeId,
+    reviewerAuthorityClass: canonicalPayloadObject.reviewer_authority_class,
+    timestamp: canonicalPayloadObject.timestamp,
+    nonce: canonicalPayloadObject.nonce,
+    canonical_payload: canonicalPayloadString,
+    payload: canonicalPayloadString,
+    signature
+  };
+}
+
+/**
+ * Performs detailed cryptographic verification of a witness attestation against trusted root key,
+ * enforcing mandatory scope and episodeId binding (Redpen B-V-03).
+ *
+ * @param {object} attestation - { witnessId, signature, payload, scope, episodeId }
+ * @param {string|Buffer} trustedKey - HMAC secret key
+ * @param {object} [options] - Verification options { expectedScope, expectedEpisodeId }
+ * @returns {object} { valid: boolean, reason?: string }
+ */
+export function verifyWitnessAttestationDetailed(attestation, trustedKey, options = {}) {
+  if (!attestation || !attestation.witnessId || !attestation.signature || !trustedKey) {
+    return { valid: false, reason: 'MISSING_REQUIRED_FIELDS' };
+  }
+
+  // 1. Scope is strictly mandatory - never permitted to be omitted or empty
+  const expectedScope = options.expectedScope || 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION';
+  const attestationScope = attestation.scope;
+  if (!attestationScope || attestationScope !== expectedScope) {
+    return {
+      valid: false,
+      reason: 'WITNESS_SCOPE_MISMATCH_OR_OMITTED',
+      declaredScope: attestationScope,
+      expectedScope
+    };
+  }
+
+  // 2. Episode ID binding check (if expectedEpisodeId is specified)
+  const expectedEpisodeId = options.expectedEpisodeId;
+  const attestationEpisodeId = attestation.episodeId;
+  if (expectedEpisodeId && (!attestationEpisodeId || attestationEpisodeId !== expectedEpisodeId)) {
+    return {
+      valid: false,
+      reason: 'WITNESS_EPISODE_MISMATCH_OR_OMITTED',
+      declaredEpisodeId: attestationEpisodeId,
+      expectedEpisodeId
+    };
+  }
+
+  try {
+    // 3. Inspect signed payload to ensure it cryptographically binds scope and episode
+    const rawPayload = attestation.payload || attestation.canonical_payload;
+    if (!rawPayload) {
+      return { valid: false, reason: 'WITNESS_PAYLOAD_MISSING' };
+    }
+
+    let parsedPayload = null;
+    let payloadString = '';
+
+    if (typeof rawPayload === 'object') {
+      parsedPayload = rawPayload;
+      payloadString = canonicalJsonStringify(rawPayload);
+    } else if (typeof rawPayload === 'string') {
+      payloadString = rawPayload;
+      try {
+        parsedPayload = JSON.parse(rawPayload);
+      } catch {
+        // Not a JSON string
+      }
+    }
+
+    // Verify whether the payload actually binds scope and episode
+    if (parsedPayload && typeof parsedPayload === 'object') {
+      const pScope = parsedPayload.scope;
+      const pWitness = parsedPayload.witness_id || parsedPayload.witnessId;
+      const pEpisode = parsedPayload.episode_id || parsedPayload.episodeId;
+
+      if (!pScope || pScope !== expectedScope) {
+        return { valid: false, reason: 'PAYLOAD_SCOPE_UNBOUND_OR_MISMATCH' };
+      }
+      if (pWitness !== attestation.witnessId) {
+        return { valid: false, reason: 'PAYLOAD_WITNESS_MISMATCH' };
+      }
+      if (expectedEpisodeId && pEpisode !== expectedEpisodeId) {
+        return { valid: false, reason: 'PAYLOAD_EPISODE_UNBOUND_OR_MISMATCH' };
+      }
+    } else {
+      // Legacy or raw string payload: must contain the bound witness and scope substrings
+      if (!payloadString.includes(expectedScope) || !payloadString.includes(attestation.witnessId)) {
+        return { valid: false, reason: 'PAYLOAD_SCOPE_OR_WITNESS_NOT_BOUND' };
+      }
+      if (expectedEpisodeId && !payloadString.includes(expectedEpisodeId)) {
+        return { valid: false, reason: 'PAYLOAD_EPISODE_NOT_BOUND' };
+      }
+    }
+
+    // 4. Verify HMAC-SHA256 signature
+    const expectedHmac = crypto.createHmac('sha256', trustedKey).update(payloadString).digest('hex');
     const sigBuf = Buffer.from(attestation.signature, 'hex');
     const expectedBuf = Buffer.from(expectedHmac, 'hex');
 
     if (sigBuf.length !== expectedBuf.length || sigBuf.length === 0) {
-      return false;
+      return { valid: false, reason: 'SIGNATURE_MISMATCH' };
     }
-    return crypto.timingSafeEqual(sigBuf, expectedBuf);
-  } catch {
-    return false;
+
+    const matches = crypto.timingSafeEqual(sigBuf, expectedBuf);
+    return matches ? { valid: true } : { valid: false, reason: 'SIGNATURE_MISMATCH' };
+  } catch (err) {
+    return { valid: false, reason: 'VERIFICATION_ERROR', error: err.message };
   }
+}
+
+/**
+ * Verifies a cryptographic HMAC-SHA256 witness attestation against a trusted root key.
+ *
+ * @param {object} attestation - { witnessId, signature, payload, scope, episodeId }
+ * @param {string|Buffer} trustedKey - HMAC secret key for the designated witness
+ * @param {object} [options] - Verification constraints { expectedScope, expectedEpisodeId }
+ * @returns {boolean} Whether signature and bound scope/episode are valid
+ */
+export function verifyWitnessAttestation(attestation, trustedKey, options = {}) {
+  const result = verifyWitnessAttestationDetailed(attestation, trustedKey, options);
+  return result.valid;
 }
 
 export class Stage2IndependentEvaluator {
@@ -190,7 +354,9 @@ export class Stage2IndependentEvaluator {
    * @param {string} options.evaluatorTier - Requested tier. Defaults to IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW.
    * @param {string} options.scoringRuleVersion - Version string of scoring rubric.
    * @param {object} options.trustedWitnessKeys - Map of { [witnessId]: string|Buffer } trusted root HMAC keys.
-   * @param {object} options.attestedWitness - Cryptographic witness attestation { witnessId, signature, payload }.
+   * @param {object} options.attestedWitness - Cryptographic witness attestation { witnessId, signature, payload, scope, episodeId }.
+   * @param {string} [options.expectedScope] - Expected scope. Defaults to EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION.
+   * @param {string} [options.expectedEpisodeId] - Expected flight episode ID.
    */
   constructor(options = {}) {
     this.scoringRuleVersion = options.scoringRuleVersion || 'v1.0-flight';
@@ -214,11 +380,13 @@ export class Stage2IndependentEvaluator {
         );
       }
 
-      const isValid = verifyWitnessAttestation(witness, witnessKey);
-      if (!isValid) {
+      const expectedScope = options.expectedScope || 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION';
+      const expectedEpisodeId = options.expectedEpisodeId || options.episodeId || null;
+      const audit = verifyWitnessAttestationDetailed(witness, witnessKey, { expectedScope, expectedEpisodeId });
+      if (!audit.valid) {
         throw new Error(
-          `STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED: Cryptographic HMAC signature verification failed ` +
-          `for witnessId '${witness.witnessId}'. Fake or unverified signatures are strictly rejected.`
+          `STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED: Cryptographic witness verification failed ` +
+          `for witnessId '${witness.witnessId}' (reason: ${audit.reason}). Unverified or unbound signatures are strictly rejected.`
         );
       }
 

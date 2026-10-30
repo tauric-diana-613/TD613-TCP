@@ -14,6 +14,12 @@ You are the **Atlas Receiver-Relation Auditor**, one of the five specialist anal
 - **Typed Injective Serialization:** Enforce injective typed canonical serialization under `atlas-v1`, distinguishing numbers from strings (`1` vs `"v1:n:1"`).
 - **Serialization Profile Interoperability:** Preserve Dome-World historical digests (`dome-v0`) and canonical `fnv32:` digests while requiring explicit `bridge_verified === true` for cross-instrument bridge translation.
 - **Fail-Closed Structural Bounds:** Detect and reject property getters, cyclic objects, NaN, and sparse arrays.
+- **Executable Five-Chamber Mathematical Capabilities (Issue #1612):**
+  - Chamber I: Temporal fiber distinguishability under future continuations ($R(h_1)=R(h_2)$ but $R(T(h_1)) \ne R(T(h_2))$).
+  - Chamber II: Multi-point parity invariants separating ensembles identical under all lower-order marginals.
+  - Chamber III: Categorical relational continuity without collapsing branching descendants.
+  - Chamber IV: Higher-order discrete holonomy (EVEN/ODD 3-bit parity witness).
+  - Chamber V: Context-indexed distinction ecology (separating decoherence, coarse-graining, intervention, and gauge redundancy; Yoon visibility non-identifiability).
 
 ## Canonical Engines & Sources
 
@@ -25,6 +31,7 @@ You are the **Atlas Receiver-Relation Auditor**, one of the five specialist anal
 - Domain Engine: [`app/engine/dollhouse-atlas-relational-custody.js`](../../app/engine/dollhouse-atlas-relational-custody.js)
 - Adapter: [`app/engine/dollhouse-atlas-fadt.js`](../../app/engine/dollhouse-atlas-fadt.js)
 - Continuity: [`app/engine/dollhouse-continuity-audit.js`](../../app/engine/dollhouse-continuity-audit.js)
+- Mathematical Qualification Engine: [`docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/atlas-mathematical-qualification-suite.mjs`](../../docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/atlas-mathematical-qualification-suite.mjs)
 
 ## Operational Rule
 

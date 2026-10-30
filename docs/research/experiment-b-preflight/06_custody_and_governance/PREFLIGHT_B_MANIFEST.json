@@ -1,7 +1,7 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T18:49:48.184Z",
-  "entry_count": 77,
+  "timestamp": "2026-10-30T19:31:54.001Z",
+  "entry_count": 82,
   "entries": [
     {
       "path": "01_calibration_fixtures\\c1_damped_harmonic_oscillator.json",
@@ -65,8 +65,8 @@
     },
     {
       "path": "02_four_arm_harness\\antigravity-native-orchestrator.mjs",
-      "bytes": 7483,
-      "sha256": "6d1e35b0ba424c4a8ec9e6f35045bd7cf63633f1e2cd70b97c4910d74b91f3fb"
+      "bytes": 7836,
+      "sha256": "12d9c183d3cb49a3b6d3582876c7c8902098f60c1850a70e04ef8869c7865914"
     },
     {
       "path": "02_four_arm_harness\\atomic-custody-ledger.mjs",
@@ -110,18 +110,23 @@
     },
     {
       "path": "02_four_arm_harness\\run-heterogeneous-discovery-harness.mjs",
-      "bytes": 28858,
-      "sha256": "666ab742e62aa5a26bcb62e2d9ffc5866e038b143ac133f83fab0cea8f14303d"
+      "bytes": 30233,
+      "sha256": "312a5c7fa0ba205ca72859e08219442ba5d4ce2d4c255affab0b5355dbc9f2f0"
     },
     {
       "path": "02_four_arm_harness\\stage2-independent-evaluator.mjs",
-      "bytes": 26573,
-      "sha256": "45260e8274e6c73b537a7047a9e7d44c444e349366854e12bb3ad550fac22901"
+      "bytes": 33467,
+      "sha256": "95fdcb447e28cae13bf4cdeea3b2527b6531e120db1a2f3b3b68f1d668051922"
     },
     {
       "path": "03_calibration_execution\\CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 3202,
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
+    },
+    {
+      "path": "03_calibration_execution\\evaluator-oracle.mjs",
+      "bytes": 13563,
+      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
@@ -147,11 +152,6 @@
       "path": "03_calibration_execution\\PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
       "bytes": 1811,
       "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
-    },
-    {
-      "path": "03_calibration_execution\\evaluator-oracle.mjs",
-      "bytes": 13563,
-      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution\\run-offline-trace-rescore.mjs",
@@ -234,24 +234,24 @@
       "sha256": "211e7f6440e644876ac4d52e43216136b4fd2e9a38c3f7a4d2fe06a8ac4ee7a6"
     },
     {
-      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
-      "bytes": 17769,
-      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
-    },
-    {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
       "bytes": 18739,
       "sha256": "db862b045be1fe2ce0fdbadb0357a8074fe87cbd9fdfa62dbf63d4c3da6b4dd9"
     },
     {
-      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
-      "bytes": 3375,
-      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
+      "bytes": 17769,
+      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
       "bytes": 3112,
       "sha256": "aff1542abb596b57ebcee060d7ffbb1cbbe776e9edd412e36696f49d456bf473"
+    },
+    {
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
+      "bytes": 3375,
+      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
@@ -354,6 +354,11 @@
       "sha256": "2a4f69649c178c0ad2bd379990eff6ef476b3016e4109e0973c0dbe73d9945ce"
     },
     {
+      "path": "08_computed_aperture_bridge\\aperture-v32-computed-bridge.mjs",
+      "bytes": 14802,
+      "sha256": "dd0c3e2d4cb32b3ec2c9ae116678a0db8e9b976cbd23be164f5156f9595b610f"
+    },
+    {
       "path": "08_computed_aperture_bridge\\HISTORICAL_TOMOGRAPHY_REPLAY_RECEIPT.json",
       "bytes": 4448,
       "sha256": "358d2110a528694ad9c34573faee92a8304aabd0000a25135806b4ee590fa784"
@@ -364,16 +369,6 @@
       "sha256": "6a0f36279924a53ae3b008855383669a2437a984e1f7d7b287d047d6a40a5ebd"
     },
     {
-      "path": "08_computed_aperture_bridge\\SCIENTIFIC_PROVENANCE_CROSSWALK.md",
-      "bytes": 10482,
-      "sha256": "4efe50cdf64ec1ecd3b01bb8f36aeb91db29926f46de8d20b008274a88264156"
-    },
-    {
-      "path": "08_computed_aperture_bridge\\aperture-v32-computed-bridge.mjs",
-      "bytes": 14802,
-      "sha256": "dd0c3e2d4cb32b3ec2c9ae116678a0db8e9b976cbd23be164f5156f9595b610f"
-    },
-    {
       "path": "08_computed_aperture_bridge\\run-computed-aperture-bridge.mjs",
       "bytes": 14784,
       "sha256": "d12851d070333262663301368f937eb54241360daae764963d51c11a4628a033"
@@ -382,6 +377,36 @@
       "path": "08_computed_aperture_bridge\\run-historical-tomography-replay.mjs",
       "bytes": 12780,
       "sha256": "42fd04e195957c9b605d7596d40155ca1d051da443d1926d2993ad72ddbfc4d0"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\SCIENTIFIC_PROVENANCE_CROSSWALK.md",
+      "bytes": 10482,
+      "sha256": "4efe50cdf64ec1ecd3b01bb8f36aeb91db29926f46de8d20b008274a88264156"
+    },
+    {
+      "path": "09_atlas_mathematical_qualification\\ATLAS_MATHEMATICAL_QUALIFICATION_RECEIPT.json",
+      "bytes": 7477,
+      "sha256": "4bc052b34e2af340d02fbecfdfca46aed0adf06235ea2667098bc39384fc6347"
+    },
+    {
+      "path": "09_atlas_mathematical_qualification\\ATLAS_MATHEMATICAL_QUALIFICATION_REPORT.md",
+      "bytes": 10700,
+      "sha256": "ffd5f9791d7c4d4ac910122fb6b6f94782b8cd68ce783e61c0289ffa720ae446"
+    },
+    {
+      "path": "09_atlas_mathematical_qualification\\atlas-mathematical-qualification-suite.mjs",
+      "bytes": 28571,
+      "sha256": "11752e6f0441404df20a20fa700a6d4ec43d86f9d0c1d51dd2dd363d8e3f3f1c"
+    },
+    {
+      "path": "09_atlas_mathematical_qualification\\run-atlas-mathematical-qualification.mjs",
+      "bytes": 6761,
+      "sha256": "991e347bfaad1a359ebe34e4abef08eeabab9743ae73f5dc2ce1a3d1f4a0d729"
+    },
+    {
+      "path": "ATLAS_CAPABILITY_AND_FLIGHT_READINESS_RECONCILIATION_20261030.md",
+      "bytes": 10328,
+      "sha256": "7a6776f3f22391e55682259cc30045961aefea0d1f50c9b6da497abe1e1ed482"
     },
     {
       "path": "README.md",

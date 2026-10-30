@@ -1289,4 +1289,39 @@ test('TD613 Dollhouse Native Skill & Six-Role Orchestration Test Battery', async
     assert.ok(!existsSync(missingTarget));
   });
 
+  // 47. Atlas executes Five-Chamber mathematical capabilities via skill dispatcher
+  await t.test('47. Atlas executes Five-Chamber mathematical capabilities via skill dispatcher when domain input is supplied', async () => {
+    const res = await runDollhouseSkillAudit({
+      roles: ['ATLAS'],
+      include_orchestrator: false,
+      domain_inputs: {
+        ATLAS: {
+          ...BENIGN_ATLAS_INPUT,
+          temporal_fiber: {},
+          higher_order_parity: {},
+          ghz_stabilizer: {},
+          visibility_inverse: {},
+          measurement_context: {},
+          notation_normalization: {}
+        }
+      }
+    });
+
+    assert.equal(res.exit_code, 0);
+    const atlasFinding = res.machine_receipt.specialist_findings[0];
+    assert.equal(atlasFinding.verdict, 'SUPPORTED');
+    assert.ok(atlasFinding.extensions?.temporal_fiber);
+    assert.equal(atlasFinding.extensions.temporal_fiber.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.higher_order_parity);
+    assert.equal(atlasFinding.extensions.higher_order_parity.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.ghz_stabilizer);
+    assert.equal(atlasFinding.extensions.ghz_stabilizer.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.visibility_inverse);
+    assert.equal(atlasFinding.extensions.visibility_inverse.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.measurement_context);
+    assert.equal(atlasFinding.extensions.measurement_context.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.notation_normalization);
+    assert.equal(atlasFinding.extensions.notation_normalization.positive_control.passed, true);
+  });
+
 });

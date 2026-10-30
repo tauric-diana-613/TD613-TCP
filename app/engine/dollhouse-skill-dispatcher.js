@@ -48,6 +48,14 @@ import {
   auditPhasonCustodyDiff
 } from './dollhouse-atlas-relational-custody.js';
 import {
+  probeA01_FutureResponseSeparation,
+  probeA02_HigherOrderParity,
+  probeA03_GHZPhaseAndLocality,
+  probeA07_QuantumVisibilityAmbiguity,
+  probeA08_MeasurementContextIntervention,
+  probeA09_MathematicalNotationEquivalence
+} from '../../docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/atlas-mathematical-qualification-suite.mjs';
+import {
   computeFadtFiberBounds,
   evaluateFadtCoordinateRecovery,
   evaluateFadtDiscrepancyIdentity,
@@ -618,6 +626,25 @@ function executeSpecialistExtensions(role, domainInput, options) {
         const phasonOpts = domainInput.options || domainInput.phason_diff?.options || {};
         if (prev && curr) {
           ext.phason_custody_diff = auditPhasonCustodyDiff(prev, curr, phasonOpts);
+        }
+        // Atlas Wild Field Mathematical Capabilities (Issue #1612 / Chambers I-V)
+        if (domainInput.temporal_fiber) {
+          ext.temporal_fiber = probeA01_FutureResponseSeparation(domainInput.temporal_fiber);
+        }
+        if (domainInput.higher_order_parity) {
+          ext.higher_order_parity = probeA02_HigherOrderParity(domainInput.higher_order_parity);
+        }
+        if (domainInput.ghz_stabilizer) {
+          ext.ghz_stabilizer = probeA03_GHZPhaseAndLocality(domainInput.ghz_stabilizer);
+        }
+        if (domainInput.visibility_inverse) {
+          ext.visibility_inverse = probeA07_QuantumVisibilityAmbiguity(domainInput.visibility_inverse);
+        }
+        if (domainInput.measurement_context) {
+          ext.measurement_context = probeA08_MeasurementContextIntervention(domainInput.measurement_context);
+        }
+        if (domainInput.notation_normalization) {
+          ext.notation_normalization = probeA09_MathematicalNotationEquivalence(domainInput.notation_normalization);
         }
         return Object.keys(ext).length > 0 ? ext : null;
       }

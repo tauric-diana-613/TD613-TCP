@@ -1,0 +1,186 @@
+{
+  "domain_separator": "TD613_ATLAS_QUALIFICATION_v1",
+  "timestamp": "2026-10-30T19:31:28.743Z",
+  "total_probes": 9,
+  "positive_controls_passed": 9,
+  "negative_controls_passed": 9,
+  "fully_qualified_specimens": 9,
+  "all_probes_passed": true,
+  "probes": [
+    {
+      "probe_id": "A-01",
+      "title": "Future-Response Separation",
+      "mathematical_domain": "Dynamical Systems & Temporal Continuation",
+      "positive_control": {
+        "passed": true,
+        "t0_observation_A": 25,
+        "t0_observation_B": 25,
+        "t0_equivalent": true,
+        "t1_observation_A": 32,
+        "t1_observation_B": 36,
+        "t1_distinguishable": true
+      },
+      "negative_control": {
+        "passed": true,
+        "true_congruence_maintained": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Demonstrates observational equivalence at t=0 while correctly proving continuation distinguishability under non-symmetric flow."
+    },
+    {
+      "probe_id": "A-02",
+      "title": "Higher-Order Parity Discrimination",
+      "mathematical_domain": "Discrete Holonomy & Multi-Point Invariants",
+      "positive_control": {
+        "passed": true,
+        "univariate_identical": true,
+        "pairwise_identical": true,
+        "even_parity_invariant": 1,
+        "odd_parity_invariant": -1,
+        "parity_separated": true
+      },
+      "negative_control": {
+        "passed": true,
+        "unentangled_bernoulli_parity": 0
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Proves zero pairwise covariance in both ensembles while isolating the 3-point parity holonomy invariant."
+    },
+    {
+      "probe_id": "A-03",
+      "title": "GHZ± Local Unreadability vs Global Stabilizer",
+      "mathematical_domain": "Quantum Information & Context-Indexed State Representation",
+      "positive_control": {
+        "passed": true,
+        "reduced_2qubit_identical": true,
+        "reduced_1qubit_identical": true,
+        "global_eigenvalue_plus": 1,
+        "global_eigenvalue_minus": -1,
+        "global_distinguishable": true,
+        "qec_distance": 1,
+        "qec_unjustified_claim_rejected": true
+      },
+      "negative_control": {
+        "passed": true,
+        "separable_state_distinct": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Demonstrates identical local density matrices while isolating global parity stabilizer and refusing unearned quantum error correction claims."
+    },
+    {
+      "probe_id": "A-04",
+      "title": "F31 Modular Rank vs Real Jacobi SVD Conditioning",
+      "mathematical_domain": "Finite Field Linear Algebra & Numerical Conditioning",
+      "positive_control": {
+        "passed": true,
+        "f31_rank": 2,
+        "f31_nullity": 2,
+        "f31_rank_accurate": true,
+        "svd_refusal_caught": true,
+        "real_svd_condition_number": 2,
+        "real_svd_accurate": true
+      },
+      "negative_control": {
+        "passed": true,
+        "refusal_reason": "FINITE_FIELD_SVD_REFUSED"
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Strictly distinguishes modular kernel computation in F31 from continuous SVD conditioning, refusing invalid cross-domain operations."
+    },
+    {
+      "probe_id": "A-05",
+      "title": "Representation Causal Control & Label Sieve",
+      "mathematical_domain": "Categorical Invariants & Morphism Verification",
+      "positive_control": {
+        "passed": true,
+        "legitimate_morphism_detected": true,
+        "spurious_nominal_coupling_rejected": true
+      },
+      "negative_control": {
+        "passed": true,
+        "nominal_label_authority_denied": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Validates structural mathematical isomorphisms while rejecting nominal buzzword-driven false unification."
+    },
+    {
+      "probe_id": "A-06",
+      "title": "Ontology-Free Structural Surprise Detection",
+      "mathematical_domain": "Formal Invariant Classification & Epistemic Abstention",
+      "positive_control": {
+        "passed": true,
+        "lexical_trigger_words_present": false,
+        "structural_surprise_detected": true
+      },
+      "negative_control": {
+        "passed": true,
+        "standard_linear_equation_falsely_flagged": false
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Detects structural invariant divergence in neutral notation without requiring metalinguistic trigger vocabulary."
+    },
+    {
+      "probe_id": "A-07",
+      "title": "Quantum Visibility Nuisance-Parameter Ambiguity",
+      "mathematical_domain": "Inverse Problem Identifiability & Aperture Conditioning",
+      "positive_control": {
+        "passed": true,
+        "visibility_case_1": 0.45,
+        "visibility_case_2": 0.45,
+        "degenerate_observation": true,
+        "inverse_unidentifiable_flagged": true,
+        "physical_time_machine_claim_refused": true
+      },
+      "negative_control": {
+        "passed": true,
+        "single_parameter_monotonic_identifiable": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Isolates exact parameter non-identifiability on 1D observation fibers, refusing uncalibrated physical inference."
+    },
+    {
+      "probe_id": "A-08",
+      "title": "Measurement Context & Transformation Separation",
+      "mathematical_domain": "Foundations of Quantum Measurement & Contextuality",
+      "positive_control": {
+        "passed": true,
+        "decoherence_classified": "ENVIRONMENTAL_DECOHERENCE",
+        "coarse_graining_classified": "COARSE_GRAINING",
+        "quantum_intervention_classified": "QUANTUM_INTERVENTION",
+        "gauge_redundancy_classified": "GAUGE_REDUNDANCY"
+      },
+      "negative_control": {
+        "passed": true,
+        "gauge_not_conflated_with_decoherence": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Strictly distinguishes physical decoherence, classical coarse-graining, projective measurement back-action, and gauge symmetry."
+    },
+    {
+      "probe_id": "A-09",
+      "title": "Mathematical Notation Normalization & Sieve",
+      "mathematical_domain": "Symbolic Equivalence & Syntactic Invariance",
+      "positive_control": {
+        "passed": true,
+        "latex_standard_accepted": true,
+        "unicode_accepted": true,
+        "plain_text_accepted": true,
+        "algebraic_parameterization_accepted": true
+      },
+      "negative_control": {
+        "passed": true,
+        "inverted_ratio_rejected": true,
+        "missing_square_root_rejected": true
+      },
+      "epistemic_status": "QUALIFIED_SOURCE_FREE_SPECIMEN",
+      "atlas_operational_capability": "Normalizes equivalent mathematical notation formats without creating false-negative rejections or admitting inverted false twins."
+    }
+  ],
+  "access_parity_contract": {
+    "arm_2a_prior_access": "ISOLATED_SYMMETRIC_MANIFEST",
+    "arm_2b_prior_access": "ISOLATED_SYMMETRIC_MANIFEST",
+    "unearned_literature_priors_injected": false,
+    "blindness_boundary_preserved": true
+  },
+  "disposition": "ATLAS_MATHEMATICAL_SPECIMENS_QUALIFIED_SOURCE_FREE · PROTECTED_B_FLIGHT_REMAINS_HELD"
+}

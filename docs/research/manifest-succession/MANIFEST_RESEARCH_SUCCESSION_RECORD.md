@@ -265,7 +265,40 @@ The audit method, rather than merely the resulting image, is preserved across fo
 
 ---
 
-## XI. Governing Invariants
+## XII. Atlas Mathematical Maturation & Issue #1612 Operational Succession
+
+```text
+ATLAS_WILD_FIELD_RESEARCH_INDEXED            = VERIFIED
+FIVE_CHAMBERS_MATHEMATICAL_ANCESTRY_RECOVERED = VERIFIED
+OPERATIONAL_CAPABILITY_PROBES_EXECUTED        = 9_OF_9_QUALIFIED
+SYMMETRIC_ARM_ACCESS_MANIFESTS_ENFORCED       = VERIFIED
+UNEARNED_LITERATURE_PRIORS_EXCLUDED          = VERIFIED
+YOON_CROSSWALK_EXTERNAL_CALIBRATION_HELD      = VERIFIED
+PROTECTED_B_FLIGHT_HELD                      = VERIFIED
+```
+
+### 1. Operational Witness Battery (Issue #1612)
+
+Responding to Sovereign Operator Direct and Amari's Redpen V, the nine source-free capability probes were implemented and qualified in `docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/`:
+- **A-01 (Future-Response Separation):** Isolates dynamical separation where $R(h_1) = R(h_2)$ at $t=0$ while $R(T(h_1)) \ne R(T(h_2))$.
+- **A-02 (Higher-Order Parity):** Proves discrimination of 3-bit EVEN/ODD distributions having identical pairwise marginals ($P=0.25$), with 3-point parity $\pm 1$.
+- **A-03 (GHZ± Local Unreadability vs Global Stabilizer):** Proves identical local density matrices while global stabilizer $X_1 X_2 X_3$ reads relative phase; enforces $d=1$ code distance and rejects unearned QEC claims.
+- **A-04 (F31 Modular Rank vs Real Jacobi SVD):** Distinguishes exact modular kernel computation in $\mathbb{F}_{31}$ from continuous SVD conditioning, refusing invalid cross-domain operations.
+- **A-05 (Representation Causal Control):** Validates structural mathematical morphisms while rejecting nominal buzzword-driven false unification.
+- **A-06 (Ontology-Free Surprise):** Detects structural invariant divergence in neutral notation without requiring metalinguistic trigger vocabulary.
+- **A-07 (Quantum Visibility Ambiguity):** Isolates exact parameter non-identifiability on 1D observation fibers ($V=0.45$ for $(\eta,n)=(0.9,1)$ vs $(0.5,9)$), refusing uncalibrated physical inference.
+- **A-08 (Measurement Context Separation):** Strictly distinguishes physical decoherence, classical coarse-graining, projective measurement back-action, and gauge symmetry.
+- **A-09 (Mathematical Notation Normalization):** Normalizes equivalent mathematical notation formats (LaTeX, Unicode, plain text, algebraic equivalent) without creating false-negative rejections or admitting inverted false twins.
+
+### 2. Access Parity and Pre-Registration Contract
+
+- **Arm 2A Access Manifest:** Bounded to turn specimen documents; paratactic specialist framing. Source files in `docs/atlas/` and `ATLAS.md` are excluded from candidate-generation prompts.
+- **Arm 2B Access Manifest:** Bounded to identical specimen documents with standard mathematical union framing.
+- **Symmetric Treatment:** Neither arm receives privileged theoretical texts or pre-loaded answers during blinded flight.
+
+---
+
+## XIII. Governing Invariants
 
 ```text
 MANIFEST_RESEARCH_AMBITION_PRESERVED          = VERIFIED
@@ -285,6 +318,9 @@ THREE_CLOCK_MANIFEST_SEPARATION_ENFORCED      = VERIFIED
 FRONTISPIECE_AUDIT_METHOD_PRESERVED           = VERIFIED
 MATHEMATICAL_CRADLE_ARTISTIC_LINEAGE_PRESERVED= VERIFIED
 HISTORICAL_ANIMATIONS_INVENTORY_SCHEDULED     = VERIFIED
+ATLAS_WILD_FIELD_RESEARCH_INDEXED            = VERIFIED
+ATLAS_CAPABILITY_PROBES_QUALIFIED             = VERIFIED
+SYMMETRIC_ARM_ACCESS_PARITY_VERIFIED          = VERIFIED
 ```
 
 𝄐 · Tauric Diana · Khona‌lit-po · Sealed ⟐
