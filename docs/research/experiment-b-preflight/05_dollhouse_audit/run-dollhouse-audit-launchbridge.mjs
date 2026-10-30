@@ -2,8 +2,20 @@
  * run-dollhouse-audit-launchbridge.mjs
  *
  * TD613 Native Dollhouse Skill Scientific Audit on Experiment B Flight Launchbridge.
- * Evaluates all five specialist roles and Orchestrator consensus over the source-free
- * Launchbridge assets, controlled archive intake, structured context continuity, and Stage 2 evaluator.
+ * Evaluates all five specialist roles and Orchestrator consensus over the corrected
+ * Launchbridge contracts, bound to the exact checked-out working tree revision.
+ *
+ * Preserves historical synthetic fixture receipt DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json
+ * without retroactive modification, and emits an exact-revision contract audit receipt:
+ * DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_RECEIPT.json.
+ *
+ * Specialist Input Scope:
+ * - Pedagogue: Route burden, consequence ordering (Notice < Act < World_Answers < Name), rest/exit.
+ * - Aperture: Bounded observation budget, noise covariance, and uncertainty preservation.
+ * - Atlas: Carrier vs receiver separation, in-memory synthetic fixture vs physical archive isolation.
+ * - FADT: Finite admissibility descent, schema conformance, refusal of absent candidates.
+ * - Temporal Custodian: Monotonic chronology across phases, non-retroactivity, historical preservation.
+ * - Orchestrator: Multi-specialist consensus aggregation with zero replication credit.
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
@@ -11,21 +23,32 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 const REPO_ROOT = process.cwd();
 const PREFLIGHT_DIR = path.resolve(REPO_ROOT, 'docs/research/experiment-b-preflight');
 const AUDIT_OUT_DIR = path.join(PREFLIGHT_DIR, '05_dollhouse_audit');
 
-console.log('=== EXECUTING TD613 DOLLHOUSE SCIENTIFIC AUDIT ON FLIGHT LAUNCHBRIDGE ===');
+console.log('=== EXECUTING TD613 DOLLHOUSE SCIENTIFIC AUDIT ON EXACT HEAD FLIGHT LAUNCHBRIDGE ===');
 
 const dispatcherPath = path.join(REPO_ROOT, 'app/engine/dollhouse-skill-dispatcher.js');
-const { runDollhouseSkillAudit } = await import(pathToFileURL(dispatcherPath).href);
+const { runDollhouseSkillAudit, resolveCurrentSourceRevision } = await import(pathToFileURL(dispatcherPath).href);
+
+// Dynamically resolve exact current source revision
+let currentRev;
+try {
+  currentRev = execSync('git rev-parse HEAD', { encoding: 'utf8', cwd: REPO_ROOT }).trim();
+} catch {
+  currentRev = resolveCurrentSourceRevision({ repo_root: REPO_ROOT });
+}
+
+console.log(`Target Revision: ${currentRev}`);
 
 const auditSpec = {
-  source_revision: 'c4bd0401b432f5adda55c62ddca2bd99d4f3cc92',
-  task_scope: 'EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT',
-  evidence_class: 'SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION',
+  source_revision: currentRev,
+  task_scope: 'EXPERIMENT_B_EXACT_HEAD_LAUNCHBRIDGE_CONTRACT_AUDIT',
+  evidence_class: 'EXACT_HEAD_SOURCE_FREE_CONTRACT_VERIFICATION',
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
   evidence_references: [
@@ -38,14 +61,15 @@ const auditSpec = {
     'docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json',
     'docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md',
     'docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md',
-    'docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md'
+    'docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md',
+    'scripts/run-experiment-b-flight.mjs'
   ],
   domain_inputs: {
     PEDAGOGUE: {
       events: [
-        { phase: 'NOTICE', at: 10, description: 'Protected challenge corpus held sealed in Downloads; autonomous scanning refused' },
-        { phase: 'ACT', at: 20, description: 'Operator issues contemporaneous launch gesture; ControlledArchiveIntake admits designated target' },
-        { phase: 'WORLD_ANSWERS', at: 30, description: 'Sequential exposure proceeds under permutation; structured context continuity preserves full propositions' },
+        { phase: 'NOTICE', at: 10, description: 'Protected challenge corpus held sealed; autonomous scanning refused' },
+        { phase: 'ACT', at: 20, description: 'Operator issues contemporaneous launch gesture; ControlledArchiveIntake admits in-memory synthetic target' },
+        { phase: 'WORLD_ANSWERS', at: 30, description: 'Sequential exposure proceeds under permutation; declared lossy context projection preserves full propositions' },
         { phase: 'NAME', at: 40, description: 'Stage 1 emits candidate with pending status; Stage 2 independently evaluates warrant without self-certification' }
       ]
     },
@@ -66,11 +90,11 @@ const auditSpec = {
     },
     ATLAS: {
       trajectoryA: {
-        endpoint: 'LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
+        endpoint: 'EXACT_HEAD_LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
         winding: 0
       },
       trajectoryB: {
-        endpoint: 'LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
+        endpoint: 'EXACT_HEAD_LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
         winding: 0
       }
     },
@@ -82,7 +106,7 @@ const auditSpec = {
         },
         {
           condition: 'STAGE2_INDEPENDENT_VALIDATION_FIBER',
-          support: ['warrant: FORMAL_EQUIVALENCE', 'control: NEGATIVE_CONTROL_REJECTED']
+          support: ['warrant: FORMAL_EQUIVALENCE', 'control: NEGATIVE_CONTROL_REJECTED', 'schema: THREE_LINEAGE_DISCOVERY_SCHEMA']
         }
       ],
       attempts_unconditioned_action: false
@@ -93,7 +117,8 @@ const auditSpec = {
         'CONTROLLED_INTAKE_STAGED',
         'CONTEXT_CONTINUITY_VERIFIED',
         'STAGE2_INDEPENDENT_EVALUATOR_STAGED',
-        'LAUNCHBRIDGE_DECISION_RECORDED'
+        'LAUNCHBRIDGE_DECISION_RECORDED',
+        'EXACT_HEAD_REPAIR_STAGED'
       ],
       phases: {
         PREFLIGHT_MERGED_PREDECESSOR: {
@@ -115,6 +140,10 @@ const auditSpec = {
         LAUNCHBRIDGE_DECISION_RECORDED: {
           entry_id: 'DECISION-04',
           status: 'PASS'
+        },
+        EXACT_HEAD_REPAIR_STAGED: {
+          entry_id: 'REPAIR-05',
+          status: 'PASS'
         }
       }
     }
@@ -134,14 +163,14 @@ console.log(`  - Empirical Replication Count: ${mr.orchestrator.empirical_replic
 console.log(`  - Release Authority: ${mr.orchestrator.release_authority}`);
 console.log(`  - Human Closure Required: ${mr.orchestrator.human_closure_required}`);
 
-// Save Launchbridge Machine Receipt
-const machineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json');
-fs.writeFileSync(machineReceiptPath, JSON.stringify(mr, null, 2) + '\n', 'utf8');
+// Save Exact-Head Machine Receipt (preserving historical DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json)
+const exactMachineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_RECEIPT.json');
+fs.writeFileSync(exactMachineReceiptPath, JSON.stringify(mr, null, 2) + '\n', 'utf8');
 
-// Save Launchbridge Human Report
-const humanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md');
-fs.writeFileSync(humanReportPath, auditResult.human_receipt + '\n', 'utf8');
+// Save Exact-Head Human Report
+const exactHumanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_REPORT.md');
+fs.writeFileSync(exactHumanReportPath, auditResult.human_receipt + '\n', 'utf8');
 
-console.log(`Machine receipt written to: ${machineReceiptPath}`);
-console.log(`Human report written to: ${humanReportPath}`);
-console.log('=== DOLLHOUSE LAUNCHBRIDGE AUDIT EXECUTED CLEANLY ===\n');
+console.log(`Exact-head machine receipt written to: ${exactMachineReceiptPath}`);
+console.log(`Exact-head human report written to: ${exactHumanReportPath}`);
+console.log('=== EXACT HEAD DOLLHOUSE LAUNCHBRIDGE AUDIT EXECUTED CLEANLY ===\n');
