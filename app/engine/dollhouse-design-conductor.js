@@ -501,13 +501,20 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
 
   // 2. Verify Materialized Witness (requires authenticated witness receipt with VERIFIED disposition + matching file)
   if (executionStatus === 'PROPOSED_TRANSFER_LAW') {
-    if (options.witness_receipt) {
+    if (options.witness_receipt && typeof options.witness_receipt === 'object') {
       const receipt = options.witness_receipt;
       const isPass = receipt.disposition === 'WITNESS_VERIFIED_PASS' || receipt.disposition === 'VERIFIED_PASS';
-      if (isPass) {
+      
+      // Provenance check: receipt must tie the observed run to an immutable source or timestamp/run identifier
+      const hasProvenance = (typeof receipt.source_revision === 'string' && receipt.source_revision.trim().length > 0) ||
+                            (typeof receipt.timestamp === 'string' && receipt.timestamp.trim().length > 0) ||
+                            (typeof receipt.witness_run_id === 'string' && receipt.witness_run_id.trim().length > 0);
+
+      if (isPass && hasProvenance) {
         let artifactEntry = null;
-        if (Array.isArray(receipt.artifacts)) {
+        if (Array.isArray(receipt.artifacts) && receipt.artifacts.length > 0) {
           artifactEntry = receipt.artifacts.find(a => {
+            if (!a || typeof a !== 'object') return false;
             if (options.artifact_path) {
               return a.path === options.artifact_path;
             }
@@ -517,29 +524,47 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
             if (instrumentId === 'CARO_INSTITUTIONAL_RECONSTRUCTION') return a.path && a.path.includes('caro');
             return true;
           });
-        } else if (receipt.primary_artifact) {
+        } else if (receipt.primary_artifact && typeof receipt.primary_artifact === 'object') {
           artifactEntry = receipt.primary_artifact;
         }
 
-        if (artifactEntry && artifactEntry.path) {
-          const artPath = resolve(process.cwd(), artifactEntry.path);
-          if (existsSync(artPath)) {
-            const diskContent = readFileSync(artPath);
-            const diskSha = sha256(diskContent);
-            if (!artifactEntry.sha256 || artifactEntry.sha256.toLowerCase() === diskSha.toLowerCase()) {
-              executionStatus = 'MATERIALIZED_WITNESSED';
-              witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+        // Strict witness requirement: artifact must exist, have valid non-empty path, and exact 64-hex SHA-256
+        if (artifactEntry && typeof artifactEntry.path === 'string' && artifactEntry.path.trim().length > 0) {
+          const declaredSha = typeof artifactEntry.sha256 === 'string' ? artifactEntry.sha256.trim() : '';
+          const isHex64 = /^[a-f0-9]{64}$/i.test(declaredSha);
+
+          if (isHex64) {
+            const rootDir = process.cwd();
+            const artPath = resolve(rootDir, artifactEntry.path);
+            const relFromRoot = relative(rootDir, artPath);
+            const escapesRoot = relFromRoot.startsWith('..') || isAbsolute(relFromRoot);
+
+            if (!escapesRoot && existsSync(artPath)) {
+              try {
+                const diskContent = readFileSync(artPath);
+                const diskSha = sha256(diskContent);
+                if (declaredSha.toLowerCase() === diskSha.toLowerCase()) {
+                  executionStatus = 'MATERIALIZED_WITNESSED';
+                  witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+                } else {
+                  witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+                }
+              } catch {
+                witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+              }
             } else {
               witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
             }
           } else {
+            // Missing, malformed, or empty sha256 is strictly refused
             witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
           }
-        } else if (isPass) {
-          executionStatus = 'MATERIALIZED_WITNESSED';
-          witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+        } else {
+          // Missing artifact in receipt is strictly refused
+          witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
         }
       } else {
+        // Missing provenance or non-PASS disposition is strictly refused
         witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
       }
     } else if (options.is_materialized === true) {
@@ -1158,7 +1183,8 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
       candidate_id: candId,
       concept_title: cand.concept_title,
       governing_instrument: instId,
-      status: 'COMPARATIVELY_EVALUATED_INTERNAL_CANDIDATE',
+      status: 'COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE',
+      evaluation_nature: 'HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION',
       formal_proposition: cand.formal_proposition,
       distinctive_formal_mechanism: distinctiveMechanism,
       trade_offs: {
@@ -1183,6 +1209,7 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
       `Refractive Variant mutates [${mutatedParameter}]: ${formalConsequence}`
     ],
     candidate_evaluations: candidateEvaluations,
+    evaluation_type: 'COMPARATIVE_DESIGN_HEURISTIC_INVENTORY',
     governing_interaction_topology: {
       spatial_interpolation: 'CONTINUOUS_MANIFOLD_WHERE_REQUIRED',
       grammatical_state_transitions: 'DISCRETE_STATE_PERMUTATIONS',

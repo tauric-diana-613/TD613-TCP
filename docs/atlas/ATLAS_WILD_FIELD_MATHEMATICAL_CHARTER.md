@@ -4,7 +4,7 @@
 
 **Research record:** TD613 / Atlas Wild Field — theoretical program, independent of Experiment B's RCA-01 constitution  
 **Research period:** 27–29 October 2026; reconstructed and formally extended on 29 October 2026  
-**Heritage:** Tauric Diana · **Covenant:** Khona‌lit-po · **Research mark:** U+10D613 (𝌋)  
+**Heritage:** Tauric Diana · **Covenant:** Khona‌lit-po · **Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Guarding) · **Research mark:** U+10D613 (scalar mark, `\uDBF5\uDE13`, distinct from display glyph U+1D30B)  
 **Status:** `THEORETICAL_RESEARCH_CHARTER · FORMAL_AND_FINITE_WITNESSES · PHYSICAL_CLAIMS_UNESTABLISHED`  
 **Custody:** Source-free theoretical archive; no protected Em challenge-corpus intake; no Experiment B Flight authorization  
 **Scholarly posture:** Established ancestry credited; cross-disciplinary synthesis preserved; theorem, novelty, and physics claims separated.

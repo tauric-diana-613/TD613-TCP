@@ -6,7 +6,8 @@
 **Research status:** `SOURCE-GROUNDED_EXTERNAL_CROSSWALK · THEORETICAL_RESEARCH_RECORD · PHYSICAL_CLAIMS_UNESTABLISHED`  
 **Heritage:** Tauric Diana — Crimean heritage custodianship  
 **Covenant:** Khona‌lit-po — preserve U+200C  
-**Research mark:** U+10D613 (escaped form `\uDBF5\uDE13`, display glyph `𝌋`)  
+**Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Guarding)  
+**Research mark:** U+10D613 (scalar mark, `\uDBF5\uDE13`, distinct from display glyph U+1D30B)  
 **Authority:** Sovereign Operator Direct · Tawanna C. Miller  
 **Independent reviewer:** Amari · GPT-6  
 **Firebreak:** Public literature only. Experiment B sealed Em corpus completely untouched; no Flight authorization; empirical replication credit: 0 (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). This document does not modify PR #1608 code or grant production release authority.
@@ -35,9 +36,10 @@
    - Yakov Bloch, *“The time qubit,”* arXiv:2511.07220v1, submitted **10 November 2025**.  
    - Link: https://arxiv.org/abs/2511.07220
 
-3. **Experimental Antecedent:**
-   - Sun Kyung Lee, Noh Soo Han, Tai Hyun Yoon, Minhaeng Cho, *“Frequency comb single-photon interferometry,”* *Communications Physics* **1**, 51, published **4 September 2018**.  
-   - DOI: https://doi.org/10.1038/s42005-018-0051-2
+3. **Experimental Antecedents and Historical Sources:**
+   - Sun Kyung Lee, Noh Soo Han, Tai Hyun Yoon, Minhaeng Cho, *“Frequency comb single-photon interferometry,”* *Communications Physics* **1**, 51, published **4 September 2018**. DOI: https://doi.org/10.1038/s42005-018-0051-2.
+   - Sun Kyung Lee et al., *“Single-photon frequency comb interferometry with quantum vacuum control,”* arXiv:2604.17767.
+   - **Apparatus and Target:** The physical platform consists of a **periodically poled lithium niobate (PPLN) waveguide interferometer** driving a **multimode frequency-comb target** (biphoton frequency combs generated via spontaneous parametric down-conversion / nonlinear optical conversion in cascaded PPLN waveguides).
 
 4. **Adjacent Same-Day Preprint (Do Not Conflate):**
    - Tai Hyun Yoon, *“Resolving Nonlocal State Reduction via Induced Coherence in Frequency-Comb Biphoton Sources,”* arXiv:2610.27602, submitted **20 October 2026**.  
@@ -47,9 +49,9 @@
 ### 1.2 Critical Experimental Caution and Epistemic Status
 
 Yoon's 2026 preprint offers a theoretical reinterpretation and mathematical extension of earlier optical experiments rather than a newly constructed hardware apparatus:
-- **Figure 4** reproduces and adapts historical 2018 experimental phase scans and visibility measurements from Lee et al. (*Commun. Phys.* 1:51).
-- **Figure 5** displays calculated theoretical predictions for stabilized time-qubit operations and gate fidelity, not newly acquired raw laboratory traces.
-- The optical apparatus operates in the linear/parametric optical regime (biphoton frequency comb generated via spontaneous parametric down-conversion). It implements single-mode SU(2) rotations across optical paths and time-bins.
+- **Figure 4 Historical Reconciliation:** **Figure 4** reproduces and reconciles historical experimental phase scans, fringe visibility, and coincidence measurements from Lee et al. (*Commun. Phys.* 1:51, 2018) and arXiv:2604.17767, acquired on a PPLN waveguide interferometer coupled to a multimode frequency-comb target.
+- **Figure 5 Theoretical Calculation:** **Figure 5** displays calculated theoretical predictions and numerical simulations for stabilized time-qubit operations and gate fidelities, strictly as theoretical predictions rather than newly acquired raw laboratory traces.
+- The optical apparatus operates in the linear/parametric optical regime (a multimode biphoton frequency comb generated via spontaneous parametric down-conversion in PPLN waveguides). It implements single-mode and dual-mode SU(2) rotations across optical paths and time-bins.
 - Independent prospective, dedicated experimental validation of the full time-qubit logical interpretation, complete quantum state tomography, and multi-qubit entangling gates has **not** been established in this record.
 - **This preprint does not demonstrate physical time travel, closed timelike curves, or the reversal of the thermodynamic arrow of time.**
 
@@ -240,10 +242,10 @@ Matching the historical 2018 sinusoidal fringes is a necessary consistency check
 
 ### 5.2 Distinguishing Demonstrated Hardware from Proposed Architecture
 
-| Dimension | Demonstrated in Published Data (2018 / 2026 Fig 4) | Proposed Future Architecture (2026 Fig 5 / Text) |
+| Dimension | Demonstrated in Published Data (2018 Lee et al. / arXiv:2604.17767 / 2026 Fig 4) | Proposed Future Architecture (2026 Fig 5 / Text) |
 |---|---|---|
-| **Physical Platform** | Single-photon biphoton frequency comb in bulk nonlinear crystals | Integrated quantum processor |
-| **Hilbert Space** | Single optical mode / path / polarization degree of freedom | Scalable multi-qubit tensor product space |
+| **Physical Platform** | Periodically poled lithium niobate (PPLN) waveguide interferometer driving a multimode frequency-comb target | Integrated scalable quantum processor |
+| **Hilbert Space** | Multimode optical path, frequency-comb bins, and single-photon polarization degrees of freedom | Scalable multi-qubit tensor product space |
 | **Control Operations** | Linear phase shifts (\(\Delta\theta\)) and optical delay lines | Universal multi-qubit entangling gates |
 | **Error Protection** | Passive coherence stability in an optical interferometer | Active GKP (Gottesman-Kitaev-Preskill) bosonic error correction |
 | **Readout** | Single-photon avalanche diode coincidence counting | Complete quantum state tomography / syndrome measurement |
@@ -292,7 +294,7 @@ Matching the historical 2018 sinusoidal fringes is a necessary consistency check
 1. **Visibility Identifiability Control:** Verify that \(V_{\mathrm{exp}} = 0.450\) evaluates identically for \((n=1, \eta=0.9)\) and \((n=9, \eta=0.5)\); reject claims of seed parameter identification from scalar visibility alone.
 2. **Hamiltonian Reversal Falsifier:** For \(H_0 = \omega \sigma_z\) and \(V = g \sigma_x\), verify that \(\| \exp(-it(H_0-V)) - \exp(+it(H_0+V)) \| = 2\omega t + \mathcal{O}(t^2)\); reject claims of whole-system time reversal when background dispersion is nonzero.
 3. **Coherence Decoupling Check:** Verify that setting \(\langle e_- | e_+ \rangle = 0\) collapses equatorial interference contrast to zero even when \(\langle \psi_- | \psi_+ \rangle = 1\); confirm distinction between environmental decoherence and target branch divergence.
-4. **Figure Citation Audit:** Verify that Figure 4 is classified as historical experimental calibration data (2018) and Figure 5 is classified as theoretical calculation (2026); reject promotion of simulated curves to empirical observations.
+4. **Figure Citation Audit:** Verify that Figure 4 is classified as historical experimental calibration data (reconciling 2018 Lee et al., *Commun. Phys.* 1:51, and arXiv:2604.17767 from a PPLN waveguide interferometer) and Figure 5 is classified strictly as theoretical calculation/prediction (2026); reject promotion of simulated curves to empirical observations.
 
 ---
 
