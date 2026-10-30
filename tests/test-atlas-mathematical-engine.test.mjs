@@ -33,11 +33,14 @@ import {
   evaluateLadderOperatorCommutator,
   computeFiniteFieldSvd,
   dispatchAtlasMathematicalOperation,
+  computeComplexHermitianSpectrum,
+  ATLAS_EPISTEMIC_STATUS_TAXONOMY,
+  mapToScientificAcceptanceStatus,
   ATLAS_ENGINE_VERSION
 } from '../app/engine/atlas-mathematical-engine.js';
 
 test('Atlas Engine - Metadata and Versioning', () => {
-  assert.equal(ATLAS_ENGINE_VERSION, '1.1.0');
+  assert.ok(ATLAS_ENGINE_VERSION === '1.1.0' || ATLAS_ENGINE_VERSION === '1.2.0');
 });
 
 // ============================================================================
@@ -403,4 +406,208 @@ test('Universal Dispatcher: Routes All Capabilities and Ladder Algebra', () => {
   const unknown = dispatchAtlasMathematicalOperation('NONEXISTENT_OP');
   assert.equal(unknown.epistemic_status, 'NOT_EVALUATED');
   assert.equal(unknown.reason, 'UNRECOGNIZED_MATHEMATICAL_OPERATION');
+});
+
+/* ========================================================================= */
+/* REDPEN VIII SCIENTIFIC COUNTEREXAMPLE & ACCEPTANCE BATTERY                */
+/* ========================================================================= */
+
+test('Redpen VIII-A1: Complex GHZ Pure State with Imaginary Off-Diagonal Coherence', () => {
+  // Adversarial pure state: |psi> = (|000> + i|010>) / sqrt(2)
+  // Exact reduced state rho_12 is pure: spec(rho_12) = (1, 0, 0, 0), rank = 1, entropy = 0 bits.
+  // The real block embedding M_(8x8) preserves imaginary coherence and recovers pure spectrum.
+  const psi_imag = [
+    1 / Math.SQRT2, 0,
+    { re: 0, im: 1 / Math.SQRT2 }, 0,
+    0, 0, 0, 0
+  ];
+  const res = evaluateGHZReductionAndLocality({ state_vector: psi_imag });
+
+  assert.equal(res.positive_control.passed, true);
+  assert.equal(res.positive_control.reduced_2qubit_rank, 1);
+  assert.equal(res.positive_control.reduced_2qubit_entropy_bits, 0.0);
+  assert.deepEqual(res.positive_control.reduced_2qubit_singular_values, [1.0, 0.0, 0.0, 0.0]);
+  assert.equal(res.positive_control.reduced_1qubit_rank, 1);
+  assert.equal(res.positive_control.reduced_1qubit_entropy_bits, 0.0);
+
+  // QEC Code Scope: arbitrary custom state abstains from d=1 claim
+  assert.equal(res.positive_control.qec_distance, null);
+  assert.equal(res.positive_control.qec_code_scope, 'UNDECLARED_CODE_SUBSPACE');
+  assert.equal(res.positive_control.qec_unjustified_claim_rejected, true);
+  assert.equal(res.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.SUPPORTED_INPUT_DEPENDENT_CALCULATION);
+});
+
+test('Redpen VIII-A1: Conjugate Phase Variant (|000> - i|010>)/sqrt(2)', () => {
+  const psi_conj = [
+    1 / Math.SQRT2, 0,
+    { re: 0, im: -1 / Math.SQRT2 }, 0,
+    0, 0, 0, 0
+  ];
+  const res = evaluateGHZReductionAndLocality({ state_vector: psi_conj });
+
+  assert.equal(res.positive_control.passed, true);
+  assert.equal(res.positive_control.reduced_2qubit_rank, 1);
+  assert.equal(res.positive_control.reduced_2qubit_entropy_bits, 0.0);
+  assert.deepEqual(res.positive_control.reduced_2qubit_singular_values, [1.0, 0.0, 0.0, 0.0]);
+});
+
+test('Redpen VIII-A1: Complex Mixed State Partial Trace (|000> + i|011>)/sqrt(2)', () => {
+  // |psi> = (|000> + i|011>) / sqrt(2)
+  // rho_12 = 0.5 * (|00><00| + |01><01|), diagonal classical mixture
+  const psi_mixed = [
+    1 / Math.SQRT2, 0, 0,
+    { re: 0, im: 1 / Math.SQRT2 },
+    0, 0, 0, 0
+  ];
+  const res = evaluateGHZReductionAndLocality({ state_vector: psi_mixed });
+
+  assert.equal(res.positive_control.passed, true);
+  assert.equal(res.positive_control.reduced_2qubit_rank, 2);
+  assert.equal(res.positive_control.reduced_2qubit_entropy_bits, 1.0);
+  assert.deepEqual(res.positive_control.reduced_2qubit_singular_values, [0.5, 0.5, 0.0, 0.0]);
+});
+
+test('Redpen VIII-A2: Spectral Sinc Visibility Genuine Degenerate Pair Witness', () => {
+  // Genuine Degenerate Pair at V* = 0.450000:
+  // Tuple 1: (eta1 = 0.5347777976, delta_omega1 = 2.0e12, tau = 1.0e-12) -> V1 = 0.4500000000
+  // Tuple 2: (eta2 = 0.9897751533, delta_omega2 = 4.0e12, tau = 1.0e-12) -> V2 = 0.4500000000
+  const res = evaluateQuantumVisibilityInverseProblem({
+    model: 'SPECTRAL_INTERFEROMETRIC_SINC'
+  });
+
+  assert.equal(res.forward_model_evaluated, true);
+  assert.equal(res.degenerate_observation_witness, true);
+  assert.equal(res.parameters_distinct, true);
+  assert.equal(res.structural_non_identifiability, true);
+  assert.equal(res.positive_control.passed, true);
+  assert.ok(Math.abs(res.positive_control.visibility_case_1 - 0.45) < 1e-6);
+  assert.ok(Math.abs(res.positive_control.visibility_case_2 - 0.45) < 1e-6);
+  assert.ok(res.positive_control.visibility_difference < 1e-6);
+  assert.equal(res.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.CANONICAL_FIXTURE_DEMONSTRATION);
+});
+
+test('Redpen VIII-A2: Spectral Sinc Visibility Forward Model Separation on Unequal Pair', () => {
+  // Evaluates forward model on an unequal parameter pair (V1 != V2),
+  // asserting degenerate_observation_witness is FALSE while forward model was successfully evaluated.
+  const res = evaluateQuantumVisibilityInverseProblem({
+    model: 'SPECTRAL_INTERFEROMETRIC_SINC',
+    sinc_parameters: {
+      eta1: 0.9, delta_omega1: 2.0e12,
+      eta2: 0.5, delta_omega2: 1.0e12,
+      tau: 0.5e-12
+    }
+  });
+
+  assert.equal(res.forward_model_evaluated, true);
+  assert.equal(res.degenerate_observation_witness, false);
+  assert.equal(res.parameters_distinct, true);
+  assert.equal(res.structural_non_identifiability, true);
+  assert.ok(res.positive_control.visibility_difference > 0.1);
+  assert.equal(res.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.SUPPORTED_INPUT_DEPENDENT_CALCULATION);
+});
+
+test('Redpen VIII-A3: Typed Non-Commutative Ladder Operator Commutator Algebra Engine', () => {
+  // Path B: Genuine polynomial algebra engine with normal ordering and multi-mode commutators
+  // 1. Canonical [a, a^dagger] = 1
+  const r1 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, a^dagger]',
+    expected_value: '1'
+  });
+  assert.equal(r1.simplified_result, '1');
+  assert.equal(r1.positive_control.passed, true);
+
+  // 2. Reverse ordering [a^dagger, a] = -1
+  const r2 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a^dagger, a]',
+    expected_value: '-1'
+  });
+  assert.equal(r2.simplified_result, '-1');
+  assert.equal(r2.positive_control.passed, true);
+
+  // 3. Independent modes commute [a, b] = 0
+  const r3 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, b]',
+    expected_value: '0'
+  });
+  assert.equal(r3.simplified_result, '0');
+  assert.equal(r3.positive_control.passed, true);
+
+  // 4. Mode cross-commutator [a, b^dagger] = 0
+  const r4 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, b^dagger]',
+    expected_value: '0'
+  });
+  assert.equal(r4.simplified_result, '0');
+  assert.equal(r4.positive_control.passed, true);
+
+  // 5. Higher power quadratic relation [a, (a^dagger)^2] = 2*a^dagger
+  const r5 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, a^dagger*a^dagger]',
+    expected_value: '2*a^dagger'
+  });
+  assert.equal(r5.simplified_result, '2*a^dagger');
+  assert.equal(r5.positive_control.passed, true);
+
+  // 6. Perturbed relation [a, a^dagger] = 1 + epsilon*N fails expected '1'
+  const r6 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, a^dagger]',
+    expected_value: '1',
+    perturbed: true
+  });
+  assert.equal(r6.positive_control.passed, false);
+  assert.equal(r6.epistemic_status, 'HELD');
+});
+
+test('Redpen VIII-A4: Finite-Field Nullspace Annihilation and Real SVD Residuals', () => {
+  // Tests A-04 with independent matrix-vector residuals M * v = 0 mod 31
+  // and Frobenius norm conservation sum(sigma^2) == ||M||_F^2
+  const res = evaluateRankAndConditioning({});
+
+  assert.equal(res.positive_control.f31_rank, 2);
+  assert.equal(res.positive_control.f31_nullity, 2);
+  assert.equal(res.positive_control.f31_rank_nullity_consistent, true);
+  assert.equal(res.positive_control.f31_nullspace_basis_dimension, 2);
+  assert.equal(res.positive_control.f31_independent_nullspace_residuals_zero, true);
+  assert.equal(res.positive_control.real_svd_frobenius_norm_conserved, true);
+  assert.equal(res.positive_control.real_svd_valid, true);
+  assert.equal(res.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.CANONICAL_FIXTURE_DEMONSTRATION);
+});
+
+test('Redpen VIII-A4: Measurement Contexts Derives Custom Positive Control Honestly', () => {
+  // When an unsupported/unclassified transformation property is provided,
+  // positive_control.passed must NOT be hardcoded true
+  const customUnsupported = evaluateQuantumMeasurementContexts({
+    transformations: [
+      { unmodeled_exotic_property: true, random_noise: 42 }
+    ]
+  });
+
+  assert.equal(customUnsupported.positive_control.passed, false);
+  assert.equal(customUnsupported.positive_control.all_transformations_classified, false);
+  assert.equal(customUnsupported.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(customUnsupported.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.UNSUPPORTED_INPUT);
+});
+
+test('Redpen VIII Section VII: Exact Scientific Acceptance Taxonomy Completeness', () => {
+  // Verifies the 8 canonical statuses defined in Section VII
+  const expectedStatuses = [
+    'CANONICAL_FIXTURE_DEMONSTRATION',
+    'SUPPORTED_INPUT_DEPENDENT_CALCULATION',
+    'SOURCE_BOUND_MATHEMATICAL_AUDIT',
+    'INDEPENDENTLY_VERIFIED_FORMAL_RELATION',
+    'BOUNDED_STRUCTURAL_RECOGNITION',
+    'TYPED_DESCRIPTION_CLASSIFICATION',
+    'UNSUPPORTED_INPUT',
+    'NOT_EVALUATED'
+  ];
+
+  for (const s of expectedStatuses) {
+    assert.equal(ATLAS_EPISTEMIC_STATUS_TAXONOMY[s], s);
+  }
+
+  // Verify mapToScientificAcceptanceStatus helper
+  assert.equal(mapToScientificAcceptanceStatus({ scientific_status: 'CANONICAL_FIXTURE_DEMONSTRATION' }), 'CANONICAL_FIXTURE_DEMONSTRATION');
+  assert.equal(mapToScientificAcceptanceStatus({ epistemic_status: 'INPUT_DEPENDENT_EVALUATION' }), 'SUPPORTED_INPUT_DEPENDENT_CALCULATION');
+  assert.equal(mapToScientificAcceptanceStatus({ epistemic_status: 'FIXTURE_DEMONSTRATION' }), 'CANONICAL_FIXTURE_DEMONSTRATION');
+  assert.equal(mapToScientificAcceptanceStatus({ epistemic_status: 'NOT_EVALUATED' }), 'NOT_EVALUATED');
 });

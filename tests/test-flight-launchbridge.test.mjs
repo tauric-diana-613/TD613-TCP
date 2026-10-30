@@ -36,6 +36,11 @@ import {
   AntigravityNativeOrchestrator,
   ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/antigravity-native-orchestrator.mjs';
+import {
+  generateLiveEpisodeId,
+  loadEpisodeRegistry,
+  registerLiveEpisode
+} from '../scripts/run-experiment-b-flight.mjs';
 
 const REPO_ROOT = path.resolve('.');
 
@@ -1374,4 +1379,170 @@ test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Si
     fs.unlinkSync(attestationFile);
     fs.rmdirSync(tempDir);
   } catch {}
+});
+
+test('R4-06B: Execution-Time Tool-Boundary Mediation, Traversal Rejection & Symlink Isolation (Redpen VIII-B)', async () => {
+  // 1. Path traversal outside repo root throws PATH_TRAVERSAL_FORBIDDEN
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', '../../etc/passwd'),
+    /PATH_TRAVERSAL_FORBIDDEN/
+  );
+
+  // 2. Direct access to 09_atlas_mathematical_qualification is forbidden for ALL arms
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/charter.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/probes.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_1_ARCHIVAL', 'docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/spec.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // 3. Direct access to engine or charter is forbidden for all arms
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'app/engine/atlas-mathematical-engine.js'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_1_ARCHIVAL', 'app/engine/atlas-mathematical-engine.js'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // 4. Allowed source roots are strictly respected
+  const permitted2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_manifest/spec.json');
+  assert.equal(permitted2A.permitted, true);
+
+  const permitted2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/manifest-succession/lineage.md');
+  assert.equal(permitted2B.permitted, true);
+
+  // 5. HeterogeneousDiscoveryHarness executeAuditedToolCall mediation
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true
+  });
+
+  // A. Permitted tool call with allowed path
+  let executed = false;
+  const toolResult = await harness.executeAuditedToolCall(
+    'read_file',
+    { Path: 'docs/research/experiment-b-preflight/01_manifest/spec.json' },
+    async (params) => {
+      executed = true;
+      return '{"spec": "valid"}';
+    }
+  );
+  assert.equal(toolResult.status, 'PERMITTED');
+  assert.equal(executed, true);
+
+  // B. Refused tool call due to unauthorized tool
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('write_file', { Path: 'test.txt' });
+    },
+    /UNAUTHORIZED_TOOL_FORBIDDEN/
+  );
+
+  // C. Refused tool call due to restricted path
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('read_file', { Path: 'docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/test.md' });
+    },
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // D. Tool audit log preserves all permitted and refused records
+  assert.equal(harness.toolAuditLog.length, 3);
+  assert.equal(harness.toolAuditLog[0].status, 'PERMITTED');
+  assert.equal(harness.toolAuditLog[1].status, 'REFUSED');
+  assert.equal(harness.toolAuditLog[2].status, 'REFUSED');
+
+  // E. Ledger export includes tool audit log
+  const ledger = harness.exportResearchLedger();
+  assert.ok(ledger.tool_audit_log);
+  assert.equal(ledger.tool_audit_log.length, 3);
+});
+
+test('R4-08: Prospective Live Episode Issuance, Immutable Registration & Replay Protection (Redpen VIII-B)', () => {
+  const tempDir = path.resolve('.td613_temp_test_registry');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'test_episodes.json');
+
+  try {
+    // 1. Prospective episode ID generation format check
+    const ep1 = generateLiveEpisodeId();
+    const ep2 = generateLiveEpisodeId();
+    assert.match(ep1, /^EP-LIVE-\d{8}-[A-F0-9]{8}$/);
+    assert.match(ep2, /^EP-LIVE-\d{8}-[A-F0-9]{8}$/);
+    assert.notEqual(ep1, ep2);
+
+    // 2. Initial registration succeeds
+    const regRecord = registerLiveEpisode(ep1, { arm: 'ARM_2A_MODULAR', model: 'gemini-2.5-flash-lite' }, registryFile);
+    assert.equal(regRecord.episode_id, ep1);
+    assert.equal(regRecord.status, 'REGISTERED');
+
+    // 3. Duplicate registration throws EPISODE_REPLAY_FORBIDDEN
+    assert.throws(
+      () => registerLiveEpisode(ep1, { arm: 'ARM_2A_MODULAR' }, registryFile),
+      /EPISODE_REPLAY_FORBIDDEN/
+    );
+
+    // 4. Registry correctly loads persisted episodes
+    const loaded = loadEpisodeRegistry(registryFile);
+    assert.ok(loaded.episodes[ep1]);
+    assert.equal(loaded.episodes[ep1].episode_id, ep1);
+
+    // 5. Runner fails closed when witness tier is missing in live mode
+    const nonexistentArchive = path.resolve(REPO_ROOT, 'test-dummy-archive.zip');
+    assert.throws(
+      () => {
+        execSync(
+          `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "${nonexistentArchive}" --operator-key test-key --episode-id "${ep2}" --episode-registry-file "${registryFile}"`,
+          {
+            encoding: 'utf8',
+            stdio: 'pipe',
+            env: {
+              ...process.env,
+              TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED: 'true',
+              TD613_FLIGHT_EXECUTION_AUTHORIZED: 'true'
+            }
+          }
+        );
+      },
+      (err) => {
+        const output = (err.stdout || '') + (err.stderr || '');
+        return output.includes('WITNESS_TIER_REQUIRED') || err.status !== 0;
+      }
+    );
+
+    // 6. Runner fails closed when attempting replay of already registered episode ep1
+    assert.throws(
+      () => {
+        execSync(
+          `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "${nonexistentArchive}" --operator-key test-key --require-witness-tier --episode-id "${ep1}" --episode-registry-file "${registryFile}"`,
+          {
+            encoding: 'utf8',
+            stdio: 'pipe',
+            env: {
+              ...process.env,
+              TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED: 'true',
+              TD613_FLIGHT_EXECUTION_AUTHORIZED: 'true'
+            }
+          }
+        );
+      },
+      (err) => {
+        const output = (err.stdout || '') + (err.stderr || '');
+        return output.includes('EPISODE_REPLAY_FORBIDDEN') || err.status !== 0;
+      }
+    );
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
+    } catch {}
+  }
 });

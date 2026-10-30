@@ -65,6 +65,58 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const REPO_ROOT = path.resolve(__dirname, '..');
 
+export const DEFAULT_EPISODE_REGISTRY_FILE = path.resolve(REPO_ROOT, '.td613/experiment-b-episodes.json');
+
+/**
+ * Generates an immutable, cryptographically unique prospective episode identifier for live flight (Redpen VIII-B).
+ */
+export function generateLiveEpisodeId() {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const entropy = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `EP-LIVE-${today}-${entropy}`;
+}
+
+/**
+ * Loads the flight episode registry table.
+ */
+export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+  if (fs.existsSync(registryPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    } catch {
+      return { schema: 'td613.experiment-b.episode-registry/v1', episodes: {} };
+    }
+  }
+  return { schema: 'td613.experiment-b.episode-registry/v1', episodes: {} };
+}
+
+/**
+ * Prospective live episode registration and replay sieve (Redpen VIII-B).
+ * Fails closed if the episode identifier has already been recorded.
+ */
+export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+  const registry = loadEpisodeRegistry(registryPath);
+  if (registry.episodes && registry.episodes[episodeId]) {
+    throw new Error(
+      `EPISODE_REPLAY_FORBIDDEN: Episode ID "${episodeId}" has already been executed or registered in episode registry (${registry.episodes[episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
+    );
+  }
+  if (!registry.episodes) registry.episodes = {};
+  registry.episodes[episodeId] = {
+    episode_id: episodeId,
+    registered_at: new Date().toISOString(),
+    status: 'REGISTERED',
+    ...metadata
+  };
+
+  const regDir = path.dirname(registryPath);
+  if (!fs.existsSync(regDir)) {
+    fs.mkdirSync(regDir, { recursive: true });
+  }
+  fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf8');
+  return registry.episodes[episodeId];
+}
+
 function parseArgs(args) {
   const options = {
     dryRun: false,
@@ -86,6 +138,7 @@ function parseArgs(args) {
     witnessKeysFile: null,
     attestedWitnessFile: null,
     episodeId: 'EPISODE-B-SOURCE-FREE-PREFLIGHT-01',
+    episodeRegistryFile: null,
     ledgerPath: null,
     derivativesManifest: null,
     strictTreatment: false,
@@ -139,6 +192,8 @@ function parseArgs(args) {
       options.attestedWitnessFile = args[++i];
     } else if (arg === '--episode-id' && args[i + 1]) {
       options.episodeId = args[++i];
+    } else if (arg === '--episode-registry-file' && args[i + 1]) {
+      options.episodeRegistryFile = args[++i];
     } else if (arg === '--ledger-path' && args[i + 1]) {
       options.ledgerPath = args[++i];
     } else if (arg === '--derivatives-manifest' && args[i + 1]) {
@@ -440,6 +495,33 @@ async function main() {
       );
       process.exit(1);
     }
+
+    // Live Flight requires in-line witnessed evaluation (Redpen VIII-B)
+    if (!options.requireWitnessTier) {
+      console.error(
+        'WITNESS_TIER_REQUIRED: Live Flight execution requires explicit witnessed evaluation (--require-witness-tier) with valid cryptographic attestation. Zero unobserved live runs permitted.'
+      );
+      process.exit(1);
+    }
+
+    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B)
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
+    const currentRegistry = loadEpisodeRegistry(registryFile);
+    if (currentRegistry.episodes && currentRegistry.episodes[options.episodeId]) {
+      console.error(
+        `EPISODE_REPLAY_FORBIDDEN: Episode ID "${options.episodeId}" has already been executed or registered in episode registry (${currentRegistry.episodes[options.episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
+      );
+      process.exit(1);
+    }
+
+    // Register prospective episode in immutable table
+    registerLiveEpisode(options.episodeId, {
+      backend: options.backend,
+      arm: options.arm,
+      permutation: options.permutation,
+      model: options.model,
+      archive_path: options.archivePath
+    }, registryFile);
   }
 
   // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission)
@@ -871,7 +953,14 @@ async function main() {
   console.log(`======================================================================`);
 }
 
-main().catch(err => {
-  console.error(`\n❌ FLIGHT EXECUTION FAILED: ${err.message}`);
-  process.exit(1);
-});
+const isDirectExecution = process.argv[1] && (
+  fileURLToPath(import.meta.url) === path.resolve(process.argv[1]) ||
+  process.argv[1].endsWith('run-experiment-b-flight.mjs')
+);
+
+if (isDirectExecution) {
+  main().catch(err => {
+    console.error(`\n❌ FLIGHT EXECUTION FAILED: ${err.message}`);
+    process.exit(1);
+  });
+}

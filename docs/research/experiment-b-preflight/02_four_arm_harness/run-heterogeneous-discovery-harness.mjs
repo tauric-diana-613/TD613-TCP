@@ -12,8 +12,12 @@
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
  */
 
+import fs from 'node:fs';
+import path from 'node:path';
 import crypto from 'node:crypto';
 import { GeminiLiveClient, MODEL_PRICING } from './gemini-live-client.mjs';
+
+const DEFAULT_REPO_ROOT = path.resolve('.');
 
 export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
   /docs\/atlas\//i,
@@ -21,12 +25,17 @@ export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
   /ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER/i,
   /ATLAS_YOON_TIME_QUBIT_CROSSWALK/i,
   /Yoon\s+time-qubit/i,
-  /Yoon\s+crosswalk/i
+  /Yoon\s+crosswalk/i,
+  /09_atlas_mathematical_qualification/i,
+  /atlas-mathematical-engine/i,
+  /app[\\/]engine[\\/]atlas-/i,
+  /app[\\/]engine[\\/]dollhouse-atlas-/i
 ];
 
 /**
- * Audited execution-time allowlists and forbidden patterns for each experimental arm (Redpen VII-B B7-02).
+ * Audited execution-time allowlists and forbidden patterns for each experimental arm (Redpen VII-B B7-02 & Redpen VIII-B).
  * Enforces actual filesystem and tool-access boundaries beyond textual prompt linting.
+ * Narrowed specifically to prevent unearned access to mathematical qualification suites or atlas engines.
  */
 export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
   ARM_0_TRANSPORT: {
@@ -39,11 +48,13 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
     allowedSourceRoots: [
       'app/wendbine/',
       'app/encyclopedia/',
-      'docs/research/experiment-b-preflight/'
+      'docs/research/manifest-succession/'
     ],
     allowedTools: ['read_file'],
     allowedSkills: [],
     forbiddenPatterns: [
+      /09_atlas_mathematical_qualification/i,
+      /atlas-mathematical-engine/i,
       /docs[\\/]atlas/i,
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
@@ -53,12 +64,16 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
   },
   ARM_2A_MODULAR: {
     allowedSourceRoots: [
-      'docs/research/experiment-b-preflight/',
-      'docs/research/manifest-succession/'
+      'docs/research/experiment-b-preflight/01_manifest/',
+      'docs/research/experiment-b-preflight/02_four_arm_harness/',
+      'docs/research/manifest-succession/',
+      'tests/fixtures/'
     ],
     allowedTools: ['read_file'],
     allowedSkills: [],
     forbiddenPatterns: [
+      /09_atlas_mathematical_qualification/i,
+      /atlas-mathematical-engine/i,
       /docs[\\/]atlas/i,
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
@@ -68,12 +83,16 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
   },
   ARM_2B_MATCHED_UNION: {
     allowedSourceRoots: [
-      'docs/research/experiment-b-preflight/',
-      'docs/research/manifest-succession/'
+      'docs/research/experiment-b-preflight/01_manifest/',
+      'docs/research/experiment-b-preflight/02_four_arm_harness/',
+      'docs/research/manifest-succession/',
+      'tests/fixtures/'
     ],
     allowedTools: ['read_file'],
     allowedSkills: [],
     forbiddenPatterns: [
+      /09_atlas_mathematical_qualification/i,
+      /atlas-mathematical-engine/i,
       /docs[\\/]atlas/i,
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
@@ -84,21 +103,61 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
 };
 
 /**
- * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02).
+ * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02 & Redpen VIII-B).
+ * Enforces canonical repository path resolution, path traversal denial, and symlink escape checks.
  *
  * @param {string} arm
  * @param {string} targetPath
+ * @param {object} [options]
  * @returns {object} { permitted: boolean, arm: string, targetPath: string }
  */
-export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath = '') {
-  const normPath = String(targetPath || '').replace(/\\/g, '/').replace(/^\.\//, '');
+export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath = '', options = {}) {
+  const repoRoot = path.resolve(options.repoRoot || DEFAULT_REPO_ROOT);
+  const rawTarget = String(targetPath || '').trim();
+  const normPath = rawTarget.replace(/\\/g, '/').replace(/^\.\//, '');
+
   const config = ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {
     allowedSourceRoots: [],
-    forbiddenPatterns: [/docs[\\/]atlas/i, /ATLAS\.md/i, /Yoon/i]
+    forbiddenPatterns: [
+      /09_atlas_mathematical_qualification/i,
+      /atlas-mathematical-engine/i,
+      /docs[\\/]atlas/i,
+      /ATLAS\.md/i,
+      /Yoon/i
+    ]
   };
 
+  // Traversal and resolution checks
+  const resolvedTarget = path.isAbsolute(rawTarget)
+    ? path.resolve(rawTarget)
+    : path.resolve(repoRoot, rawTarget);
+
+  // Check if target escapes repo root via .. traversal
+  if (!resolvedTarget.startsWith(repoRoot)) {
+    throw new Error(
+      `PATH_TRAVERSAL_FORBIDDEN: Attempted directory traversal outside repository root "${targetPath}". Execution-time access denied.`
+    );
+  }
+
+  // Symlink resolution check
+  if (fs.existsSync(resolvedTarget)) {
+    try {
+      const realTarget = fs.realpathSync(resolvedTarget);
+      if (!realTarget.startsWith(repoRoot)) {
+        throw new Error(
+          `SYMLINK_ESCAPE_FORBIDDEN: Target path "${targetPath}" resolves via symlink to "${realTarget}" outside repository root. Execution-time access denied.`
+        );
+      }
+    } catch (err) {
+      if (err.message.includes('SYMLINK_ESCAPE_FORBIDDEN')) throw err;
+    }
+  }
+
+  const relativeNorm = path.relative(repoRoot, resolvedTarget).replace(/\\/g, '/');
+
+  // Check forbidden patterns against both raw input path and normalized relative path
   for (const pattern of config.forbiddenPatterns) {
-    if (pattern.test(normPath)) {
+    if (pattern.test(normPath) || pattern.test(relativeNorm)) {
       throw new Error(
         `FORBIDDEN_SOURCE_ACCESS_REFUSED: Attempted direct access to restricted source path "${normPath}" by ${arm}. ` +
         `Execution-time access control parity violation fail-closed.`
@@ -106,10 +165,11 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     }
   }
 
+  // Check allowed source roots
   if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
     const isAllowed = config.allowedSourceRoots.some(root => {
       const normRoot = root.replace(/\\/g, '/');
-      return normPath.startsWith(normRoot);
+      return relativeNorm.startsWith(normRoot) || normPath.startsWith(normRoot);
     });
     if (!isAllowed) {
       throw new Error(
@@ -117,12 +177,16 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
         `[${config.allowedSourceRoots.join(', ')}] for ${arm}. Execution-time access denied.`
       );
     }
+  } else if (arm === 'ARM_0_TRANSPORT' || (config.allowedSourceRoots && config.allowedSourceRoots.length === 0)) {
+    throw new Error(
+      `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Arm ${arm} has empty allowedSourceRoots. Direct source access forbidden.`
+    );
   }
 
   return {
     permitted: true,
     arm,
-    targetPath: normPath
+    targetPath: relativeNorm
   };
 }
 
@@ -219,6 +283,7 @@ export class HeterogeneousDiscoveryHarness {
     this.history = [];
     this.candidates = [];
     this.traces = [];
+    this.toolAuditLog = [];
   }
 
   /**
@@ -255,12 +320,8 @@ export class HeterogeneousDiscoveryHarness {
     return verifyAccessParityContract(promptText, this.arm);
   }
 
-  // Audits runtime tool access to enforce real source-path allowlists (Redpen VII-B B7-02)
+  // Audits runtime tool access to enforce real source-path allowlists (Redpen VII-B B7-02 & Redpen VIII-B)
   auditToolExecution(toolName, params = {}) {
-    if (toolName === 'read_file') {
-      const filePath = params.Path || params.path || '';
-      return assertArmSourceAccessPermitted(this.arm, filePath);
-    }
     if (toolName === 'run_command') {
       const cmd = params.CommandLine || params.command || '';
       for (const pattern of FORBIDDEN_ACCESS_PARITY_PATTERNS) {
@@ -271,7 +332,52 @@ export class HeterogeneousDiscoveryHarness {
         }
       }
     }
+
+    const config = ARM_EXECUTION_ACCESS_ALLOWLISTS[this.arm];
+    if (config && config.allowedTools && !config.allowedTools.includes(toolName)) {
+      throw new Error(
+        `UNAUTHORIZED_TOOL_FORBIDDEN: Tool "${toolName}" is not permitted for ${this.arm}. Permitted tools: [${config.allowedTools.join(', ')}].`
+      );
+    }
+
+    if (toolName === 'read_file') {
+      const filePath = params.Path || params.path || '';
+      return assertArmSourceAccessPermitted(this.arm, filePath);
+    }
     return { permitted: true, arm: this.arm, toolName };
+  }
+
+  /**
+   * Mediates and audits tool execution for discovery agents (Redpen VIII-B).
+   * Validates tool identity and source path against audited allowlists before invocation.
+   */
+  async executeAuditedToolCall(toolName, params = {}, executorFn = null) {
+    const callRecord = {
+      timestamp: new Date().toISOString(),
+      arm: this.arm,
+      tool: toolName,
+      params,
+      status: 'PENDING'
+    };
+
+    try {
+      this.auditToolExecution(toolName, params);
+      callRecord.status = 'PERMITTED';
+
+      let result = null;
+      if (typeof executorFn === 'function') {
+        result = await executorFn(params);
+        callRecord.output_preview = typeof result === 'string' ? result.slice(0, 200) : 'OBJECT_OUTPUT';
+      }
+
+      this.toolAuditLog.push(callRecord);
+      return { status: 'PERMITTED', tool: toolName, result };
+    } catch (err) {
+      callRecord.status = 'REFUSED';
+      callRecord.error = err.message;
+      this.toolAuditLog.push(callRecord);
+      throw err;
+    }
   }
 
   // Pre-call resource checks including pre-dispatch cost reservation and access parity
@@ -875,7 +981,8 @@ ${doc.content}`;
       candidate_count: this.candidates.length,
       history: this.history,
       candidates: this.candidates,
-      traces: this.traces
+      traces: this.traces,
+      tool_audit_log: this.toolAuditLog
     };
   }
 }
