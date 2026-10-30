@@ -1,17 +1,18 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793368198815-32c5153d",
-  "timestamp": "2026-10-30T13:49:58.815Z",
+  "invocation_id": "dollhouse-audit-1793370045088-32c5153d",
+  "timestamp": "2026-10-30T14:20:45.088Z",
   "source_revision": "f78f75024e9625ddb7ac7b201560d77e6b70e335",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "f78f75024e9625ddb7ac7b201560d77e6b70e335",
-  "is_exact_checkout_match": true,
+  "executing_checkout_revision": "8bd96e534a674c3e46b652a8857b7fe5596b3d95",
+  "is_exact_checkout_match": false,
   "exact_checkout_verified": false,
-  "is_historical_commit_only": false,
+  "is_historical_commit_only": true,
   "task_scope": "EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT",
   "evidence_class": "SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION",
   "evidence_references": [
+    "docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs",
     "docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
     "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
     "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
@@ -26,28 +27,36 @@
   ],
   "evidence_manifest": [
     {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "097f5747b520e9ddaa95c0642c3d39581c6b2e4431cdaab9c753588bf8424c1b",
+      "byte_digest_verified": true,
+      "sha256": "097f5747b520e9ddaa95c0642c3d39581c6b2e4431cdaab9c753588bf8424c1b"
+    },
+    {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae",
+      "byte_digest": "6cdbb31a70d07698754925a8fd385ff34f3819dbfd2283ce2ea491d8970ad2af",
       "byte_digest_verified": true,
-      "sha256": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae"
+      "sha256": "6cdbb31a70d07698754925a8fd385ff34f3819dbfd2283ce2ea491d8970ad2af"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc",
+      "byte_digest": "28f5123c3c204cfb3778f909bb3b0bbf69b87cc60403413f0b0da72468a9b160",
       "byte_digest_verified": true,
-      "sha256": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc"
+      "sha256": "28f5123c3c204cfb3778f909bb3b0bbf69b87cc60403413f0b0da72468a9b160"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a",
+      "byte_digest": "666ab742e62aa5a26bcb62e2d9ffc5866e038b143ac133f83fab0cea8f14303d",
       "byte_digest_verified": true,
-      "sha256": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a"
+      "sha256": "666ab742e62aa5a26bcb62e2d9ffc5866e038b143ac133f83fab0cea8f14303d"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
@@ -109,9 +118,9 @@
       "reference": "scripts/run-experiment-b-flight.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "58d527adce6e5d4965ad7b7e0c298e7273373960fdaf7d97c6fd8a5d842bf317",
+      "byte_digest": "4a4ee2ca91feea0591e5eaf802d14b029da8040ffe4b110a9f96b438f0934ef4",
       "byte_digest_verified": true,
-      "sha256": "58d527adce6e5d4965ad7b7e0c298e7273373960fdaf7d97c6fd8a5d842bf317"
+      "sha256": "4a4ee2ca91feea0591e5eaf802d14b029da8040ffe4b110a9f96b438f0934ef4"
     }
   ],
   "roles_requested": [
@@ -436,6 +445,6 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 612,
+  "execution_duration_ms": 501,
   "scope_qualification": "Offline evaluation of declared in-memory synthetic specialist fixtures. Consensus (5/5 SUPPORT) applies strictly to declared domain inputs; it does not constitute an automated code-security verification or exact-commit audit of subsequent PR revisions."
 }

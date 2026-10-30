@@ -18,6 +18,10 @@ import {
   createIndependentProofReceipt,
   verifyWitnessAttestation
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
+import {
+  SharedBudgetGovernor,
+  AtomicCustodyLedger
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
 
 // Load Three-Lineage Schema to validate all test candidate outputs
 const schemaPath = path.resolve('docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json');
@@ -527,4 +531,125 @@ test('Complete Four-Arm Dry Run with Chronological and Topical Permutations', ()
   // Test topical permutation
   const topOut = execSync('node scripts/run-experiment-b-flight.mjs --dry-run --arm ALL --permutation TOPICAL', { encoding: 'utf8' });
   assert.ok(topOut.includes('Permutation:      TOPICAL'));
+});
+
+test('B-08: Shared Aggregate Budget Governor Across Cognitive Arms', async () => {
+  const governor = new SharedBudgetGovernor({
+    maxCalls: 3, // Very tight ceiling: 3 calls aggregate across both arms
+    maxTokens: 50000,
+    maxCostUSD: 0.50,
+    model: 'gemini-2.5-flash-lite'
+  });
+
+  const harnessA = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true,
+    sharedBudgetGovernor: governor
+  });
+
+  const harnessB = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2B_MATCHED_UNION',
+    mockMode: true,
+    sharedBudgetGovernor: governor
+  });
+
+  // Arm 2A baseline (call 1)
+  await harnessA.establishPreExposureBaseline();
+  assert.equal(governor.providerAttempts, 1);
+
+  // Arm 2A turn 1 (call 2: chamber 1, call 3: chamber 2)
+  await harnessA.ingestSequentialDocument({ id: 'D1', filename: 'd1.md', content: 'formula: x=1' }, 1);
+  assert.equal(governor.providerAttempts, 3);
+
+  // Now aggregate call ceiling (3 calls) is reached!
+  // Arm 2B baseline must immediately halt with SHARED_BUDGET_CEILING_EXCEEDED!
+  await assert.rejects(
+    async () => {
+      await harnessB.establishPreExposureBaseline();
+    },
+    /SHARED_BUDGET_CEILING_EXCEEDED/
+  );
+});
+
+test('B-09: Atomic Custody Ledger, Private Evidence Containment, and Interruption Recovery', () => {
+  // 1. Refuses writing in git-tracked docs/ directory (Private evidence spill defense)
+  assert.throws(
+    () => new AtomicCustodyLedger('docs/research/experiment-b-preflight/02_four_arm_harness/spill.json'),
+    /PRIVATE_CUSTODY_BREACH_PREVENTED/
+  );
+
+  // 2. Writes atomically to private path
+  const privateDir = path.resolve('artifacts/private');
+  const ledgerPath = path.join(privateDir, 'test_flight_ledger.json');
+  if (fs.existsSync(ledgerPath)) fs.unlinkSync(ledgerPath);
+
+  const ledger = new AtomicCustodyLedger(ledgerPath);
+  ledger.initializeFlight({
+    executionMode: 'SOURCE_FREE_TEST',
+    permutation: 'CHRONOLOGICAL',
+    model: 'gemini-2.5-flash-lite',
+    budgetCeilings: { max_calls: 10, max_tokens: 1000, max_cost_usd: 0.1 }
+  });
+
+  assert.ok(fs.existsSync(ledgerPath));
+  const data1 = ledger.load();
+  assert.equal(data1.execution_mode, 'SOURCE_FREE_TEST');
+  assert.equal(data1.turns.length, 0);
+
+  // Incremental turn write
+  ledger.recordTurn({
+    arm: 'ARM_2A_MODULAR',
+    turnIndex: 1,
+    documentId: 'DOC-1',
+    turnRecord: { turn: 1, status: 'PROPOSED' }
+  });
+
+  const data2 = ledger.load();
+  assert.equal(data2.turns.length, 1);
+  assert.equal(data2.turns[0].document_id, 'DOC-1');
+
+  // Clean up test file
+  fs.unlinkSync(ledgerPath);
+});
+
+test('B-10: Binary Document Handling and Authenticated Derivative Pathway', async () => {
+  const intake = new ControlledArchiveIntake({
+    syntheticMode: true,
+    authorizedDerivativesMap: {
+      'has_derivative.pdf': {
+        text: '# Extracted Title\nODE: m * x\'\' + k * x = 0\nQUOTE: "m * x\'\' + k * x = 0"',
+        sourceSha256: null // wildcard
+      }
+    }
+  });
+
+  // Archive with two binary files: one with authorized derivative, one without
+  const binaryZip = createSyntheticZipArchive([
+    { name: 'unprocessed_binary.pdf', data: Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xff]) },
+    { name: 'has_derivative.pdf', data: Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xee]) }
+  ]);
+
+  const receipt = intake.admitArchive({ zipBuffer: binaryZip }, { trustedSyntheticFixture: true });
+  assert.equal(receipt.documents.length, 2);
+
+  const unprocDoc = receipt.documents.find(d => d.filename === 'unprocessed_binary.pdf');
+  assert.equal(unprocDoc.is_binary, true);
+  assert.equal(unprocDoc.content, null);
+  assert.equal(unprocDoc.derivative_status, 'RAW_BINARY_PRESERVED_NO_TEXT_SYNTHESIS');
+
+  const derivDoc = receipt.documents.find(d => d.filename === 'has_derivative.pdf');
+  assert.equal(derivDoc.is_binary, true);
+  assert.ok(derivDoc.content.includes('ODE: m * x'));
+  assert.equal(derivDoc.derivative_status, 'AUTHENTICATED_TEXT_DERIVATIVE_ATTACHED');
+
+  // Ingest unprocessed binary through harness: MUST produce explicit abstention candidate without model call
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true
+  });
+
+  const res = await harness.ingestSequentialDocument(unprocDoc, 1);
+  assert.equal(res.candidate.status, 'ABSTAIN_BINARY_WITHOUT_AUTHENTICATED_DERIVATIVE');
+  assert.equal(res.candidate.warrant_class, 'WARRANT_UNPRODUCED');
+  assert.ok(res.candidate.proposition_summary.includes('ABSTAIN'));
 });

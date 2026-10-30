@@ -190,6 +190,7 @@ export class ControlledArchiveIntake {
     this.syntheticMode = options.syntheticMode ?? true;
     this.allowProtectedAdmission = options.allowProtectedAdmission ?? false;
     this.trustedOperatorKeys = options.trustedOperatorKeys || {};
+    this.authorizedDerivativesMap = options.authorizedDerivativesMap || {};
 
     // Security & Custody Ceilings
     this.maxMembers = options.maxMembers ?? 50;
@@ -389,6 +390,22 @@ export class ControlledArchiveIntake {
           textContent = null;
           derivativeStatus = 'MALFORMED_UTF8_PRESERVED_AS_BINARY';
         }
+      } else {
+        // Authenticated derivative attachment pathway
+        const normalizedMemberKey = rawFilename.replace(/\\/g, '/');
+        const authDerivative = this.authorizedDerivativesMap?.[normalizedMemberKey] || this.authorizedDerivativesMap?.[rawFilename];
+        if (authDerivative && authDerivative.text) {
+          const memberSha = computeSha256(decompressedBuf);
+          if (!authDerivative.sourceSha256 || authDerivative.sourceSha256.toLowerCase() === memberSha.toLowerCase()) {
+            textContent = authDerivative.text;
+            isBinary = true; // Still marked as binary asset, but carries authenticated text derivative
+            derivativeStatus = 'AUTHENTICATED_TEXT_DERIVATIVE_ATTACHED';
+          } else {
+            derivativeStatus = 'DERIVATIVE_SHA256_MISMATCH_REJECTED';
+          }
+        } else {
+          derivativeStatus = 'RAW_BINARY_PRESERVED_NO_TEXT_SYNTHESIS';
+        }
       }
 
       admittedDocuments.push({
@@ -441,7 +458,19 @@ export class ControlledArchiveIntake {
         );
       }
 
-      const trustedKey = this.trustedOperatorKeys[grant.issuerId];
+      let trustedKey = null;
+      if (typeof this.trustedOperatorKeys === 'string') {
+        trustedKey = this.trustedOperatorKeys;
+      } else if (this.trustedOperatorKeys && typeof this.trustedOperatorKeys === 'object') {
+        trustedKey = this.trustedOperatorKeys[grant.issuerId] || this.trustedOperatorKeys['default'] || this.trustedOperatorKeys['OPERATOR_PRIMARY'];
+      }
+      if (!trustedKey && authContext.trustedOperatorKeys) {
+        if (typeof authContext.trustedOperatorKeys === 'string') {
+          trustedKey = authContext.trustedOperatorKeys;
+        } else {
+          trustedKey = authContext.trustedOperatorKeys[grant.issuerId] || authContext.trustedOperatorKeys['default'];
+        }
+      }
       if (!trustedKey) {
         throw new Error(
           `ARCHIVE_ADMISSION_UNAUTHORIZED: Unrecognized or untrusted grant issuerId '${grant.issuerId}'. Trusted root key is missing.`

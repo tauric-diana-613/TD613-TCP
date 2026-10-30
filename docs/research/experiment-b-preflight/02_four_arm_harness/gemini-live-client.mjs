@@ -9,14 +9,27 @@ import { geminiGenerateContentUrl, geminiRequestHeaders, observeGeminiQuota } fr
 
 export const MODEL_PRICING = Object.freeze({
   'gemini-2.5-flash-lite': {
-    inputPerMillion: 0.075,
-    outputPerMillion: 0.30
+    inputPerMillion: 0.10,
+    outputPerMillion: 0.40,
+    thoughtsPerMillion: 0.40
   },
   'gemini-2.5-flash': {
-    inputPerMillion: 0.15,
-    outputPerMillion: 0.60
+    inputPerMillion: 0.30,
+    outputPerMillion: 2.50,
+    thoughtsPerMillion: 2.50
   }
 });
+
+/**
+ * Calculates financial cost in USD using current Google standard paid API rates.
+ * Output pricing includes thinking / reasoning tokens.
+ */
+export function calculateModelCost(model, inputTokens = 0, outputTokens = 0, thoughtsTokens = 0) {
+  const pricing = MODEL_PRICING[model] || MODEL_PRICING['gemini-2.5-flash-lite'];
+  const inputCost = (inputTokens / 1_000_000) * pricing.inputPerMillion;
+  const outputCost = ((outputTokens + thoughtsTokens) / 1_000_000) * pricing.outputPerMillion;
+  return Number((inputCost + outputCost).toFixed(8));
+}
 
 function loadApiKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;

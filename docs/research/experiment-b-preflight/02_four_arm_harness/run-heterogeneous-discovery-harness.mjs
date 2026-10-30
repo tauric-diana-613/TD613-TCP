@@ -36,10 +36,11 @@ export class HeterogeneousDiscoveryHarness {
     // Context management strategy: accurately declared as lossy projection focused on propositions
     this.contextStrategy = options.contextStrategy || 'DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS';
 
-    // Pricing rates based on model
+    // Pricing rates based on model (standard Google paid API rates)
     const pricing = MODEL_PRICING[this.model] || MODEL_PRICING['gemini-2.5-flash-lite'];
     this.inputRate = pricing.inputPerMillion / 1e6;
     this.outputRate = pricing.outputPerMillion / 1e6;
+    this.sharedBudgetGovernor = options.sharedBudgetGovernor || null;
 
     // Accounting registers for chargeable provider attempts and financial tracking
     this.providerAttempts = 0;
@@ -78,8 +79,11 @@ export class HeterogeneousDiscoveryHarness {
    * Estimates financial expenditure in USD based on exact model pricing.
    */
   getEstimatedCostUSD() {
+    if (this.sharedBudgetGovernor) {
+      return this.sharedBudgetGovernor.getEstimatedCostUSD();
+    }
     const inputCost = this.promptTokensConsumed * this.inputRate;
-    const outputCost = this.candidatesTokensConsumed * this.outputRate;
+    const outputCost = (this.candidatesTokensConsumed + this.thoughtsTokensConsumed) * this.outputRate;
     return Number((inputCost + outputCost).toFixed(6));
   }
 
@@ -102,6 +106,11 @@ export class HeterogeneousDiscoveryHarness {
 
   // Pre-call resource checks including pre-dispatch cost reservation
   checkPreCallResourceCeilings(promptText = '') {
+    if (this.sharedBudgetGovernor) {
+      this.sharedBudgetGovernor.checkPreCallResourceCeilings(promptText, this.maxOutputTokensPerCall);
+      return;
+    }
+
     if (this.providerAttempts >= this.maxCalls) {
       throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum call ceiling of ${this.maxCalls} provider attempts reached. Execution halted.`);
     }
@@ -138,7 +147,7 @@ export class HeterogeneousDiscoveryHarness {
     const cTokens = trace.provider_usage?.candidates_tokens ?? trace.response_tokens ?? 0;
     const thTokens = trace.provider_usage?.thoughts_tokens ?? 0;
     const caTokens = trace.provider_usage?.cached_tokens ?? 0;
-    const tTokens = trace.provider_usage?.total_tokens ?? trace.total_tokens ?? (pTokens + cTokens);
+    const tTokens = trace.provider_usage?.total_tokens ?? trace.total_tokens ?? (pTokens + cTokens + thTokens);
 
     if (!this.mockMode && (pTokens === null || cTokens === null)) {
       throw new Error('BUDGET_INSTRUMENTATION_CORRUPTED: Missing provider token usage metadata in non-mock mode. Halting execution.');
@@ -157,6 +166,11 @@ export class HeterogeneousDiscoveryHarness {
 
     this.traces.push(trace);
 
+    if (this.sharedBudgetGovernor) {
+      this.sharedBudgetGovernor.recordAndVerifyUsage(trace, this.arm);
+      return;
+    }
+
     // Fail-closed post-call overshoot detection
     if (this.totalTokensConsumed > this.maxTokens) {
       throw new Error(
@@ -171,11 +185,18 @@ export class HeterogeneousDiscoveryHarness {
     }
   }
 
+  registerProviderAttempt() {
+    this.providerAttempts++;
+    if (this.sharedBudgetGovernor) {
+      this.sharedBudgetGovernor.providerAttempts++;
+    }
+  }
+
   // Step 1: Record Pre-Exposure Baseline (t0)
   async establishPreExposureBaseline(initialContext = '') {
     const prompt = `Establish baseline scientific axioms, theoretical priors, and open research questions prior to source exposure.\nInitial Context:\n${initialContext || 'Zero initial exposure. Unconditioned prior state.'}`;
     this.checkPreCallResourceCeilings(prompt);
-    this.providerAttempts++;
+    this.registerProviderAttempt();
 
     const episodeId = `Flight-${this.arm}-t0-Baseline`;
     let responseText;
@@ -229,6 +250,44 @@ export class HeterogeneousDiscoveryHarness {
     const previousHistorySummary = this.formatHistoryForTurn(turnIndex);
     const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
 
+    // Binary Document Guard: If document is raw binary without authenticated text derivative,
+    // abstain explicitly. Do NOT hallucinate, call model, or synthesize false propositions.
+    if (doc.is_binary && !doc.content) {
+      const abstentionCandidate = {
+        candidate_id: `CAND-${doc.id}-BINARY-ABSTAIN`,
+        turn: turnIndex,
+        document_id: doc.id,
+        filename: doc.filename,
+        status: 'ABSTAIN_BINARY_WITHOUT_AUTHENTICATED_DERIVATIVE',
+        proposition_summary: `ABSTAIN: Document '${doc.filename}' is a raw binary asset (${doc.bytes || (doc.raw_bytes ? doc.raw_bytes.length : 0)} bytes) without an authenticated text derivative. Model ingestion refused.`,
+        uncertainty: 'Complete epistemic abstention due to lack of verified text transcription.',
+        warrant_class: 'WARRANT_UNPRODUCED',
+        evidence_ancestry: {
+          physical_byte_spans: [],
+          is_binary: true,
+          derivative_status: doc.derivative_status || 'RAW_BINARY_PRESERVED_NO_TEXT_DERIVATIVE',
+          raw_sha256: doc.sha256
+        },
+        adjudication_ancestry: {
+          evaluator_tier: 'PENDING_INDEPENDENT_EVALUATION',
+          rca01_cell: this.arm === 'ARM_2A_MODULAR' ? 'CELL_B_AUTH_DOLL' : 'CELL_A_MATCHED_UNION',
+          disposition: 'EPISTEMIC_ABSTENTION_BINARY_PAYLOAD'
+        }
+      };
+
+      this.candidates.push(abstentionCandidate);
+      const turnRecord = {
+        turn: turnIndex,
+        document_id: doc.id,
+        timestamp: new Date().toISOString(),
+        raw_output: 'ABSTAIN_BINARY_WITHOUT_AUTHENTICATED_DERIVATIVE',
+        candidate_id: abstentionCandidate.candidate_id,
+        candidate_status: abstentionCandidate.status
+      };
+      this.history.push(turnRecord);
+      return { turnRecord, candidate: abstentionCandidate };
+    }
+
     let responseText;
     let chamberOutputs = {};
 
@@ -248,7 +307,7 @@ ${doc.content}
 Output structured findings, exact quoted evidence spans, and extracted parameter equations.`;
 
       this.checkPreCallResourceCeilings(c1Prompt);
-      this.providerAttempts++;
+      this.registerProviderAttempt();
 
       let c1Text;
       if (this.mockMode) {
@@ -301,7 +360,7 @@ Incoming Document Content:
 ${doc.content}`;
 
       this.checkPreCallResourceCeilings(c2Prompt);
-      this.providerAttempts++;
+      this.registerProviderAttempt();
 
       let c2Text;
       if (this.mockMode) {
@@ -361,7 +420,7 @@ Incoming Document [${doc.id} - ${doc.filename}]:
 ${doc.content}`;
 
       this.checkPreCallResourceCeilings(unionPrompt);
-      this.providerAttempts++;
+      this.registerProviderAttempt();
 
       if (this.mockMode) {
         if (doc.mockResponse) {

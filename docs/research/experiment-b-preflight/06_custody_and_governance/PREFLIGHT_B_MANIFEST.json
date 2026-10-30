@@ -1,320 +1,320 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T13:51:36.293Z",
+  "timestamp": "2026-10-30T14:21:13.527Z",
   "entry_count": 64,
   "entries": [
     {
-      "path": "01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
+      "path": "01_calibration_fixtures\\c1_damped_harmonic_oscillator.json",
       "bytes": 1221,
       "sha256": "c4253c7c6bbfdd8360e04e225633db752cfeb41a27cb37cbe03268db64c87b4c"
     },
     {
-      "path": "01_calibration_fixtures/c1_series_rlc_circuit.json",
+      "path": "01_calibration_fixtures\\c1_series_rlc_circuit.json",
       "bytes": 1233,
       "sha256": "3c453106946c3392addce8b4face31d556ebf55fb2bc849ece3f8d6cdb1f2d67"
     },
     {
-      "path": "01_calibration_fixtures/c2_logistic_population_growth.json",
+      "path": "01_calibration_fixtures\\c2_logistic_population_growth.json",
       "bytes": 1021,
       "sha256": "379310d8127d4f7c5ce7bbaa14e6d56baa7225f83b23a9fb85080414b453e6a7"
     },
     {
-      "path": "01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
+      "path": "01_calibration_fixtures\\c2_michaelis_menten_kinetics.json",
       "bytes": 1618,
       "sha256": "842a6e5169b32e41f142d15bd4c163b173e5d27018287fe50c0f82c088d0eb15"
     },
     {
-      "path": "01_calibration_fixtures/c2_positive_control_linear_decay.json",
+      "path": "01_calibration_fixtures\\c2_positive_control_linear_decay.json",
       "bytes": 1513,
       "sha256": "645f8d033bb9772ff8dedadb37433281df0366d8b9835fd468fb56d6f445b2fb"
     },
     {
-      "path": "01_calibration_fixtures/c3_staged_resonance_perturbation.json",
+      "path": "01_calibration_fixtures\\c3_staged_resonance_perturbation.json",
       "bytes": 2016,
       "sha256": "9c7c2a537efe57cf04dc0efa741c87a4df5144db476455c4470d8ff022598ec6"
     },
     {
-      "path": "01_calibration_fixtures/c4_incomplete_boundary_system.json",
+      "path": "01_calibration_fixtures\\c4_incomplete_boundary_system.json",
       "bytes": 1538,
       "sha256": "81cd896d4f5648030e276d2eb66c85fb9c6f2c686af67c91f68b33916046fe69"
     },
     {
-      "path": "01_calibration_fixtures/c4_sufficient_boundary_system.json",
+      "path": "01_calibration_fixtures\\c4_sufficient_boundary_system.json",
       "bytes": 1507,
       "sha256": "1c24461a2b30a9a519f5cb357b50322a21bd99026be10abddf5fdb8065273666"
     },
     {
-      "path": "01_calibration_fixtures/c5_wendbine_snapshot_manifest.json",
+      "path": "01_calibration_fixtures\\c5_wendbine_snapshot_manifest.json",
       "bytes": 1910,
       "sha256": "5501d04d20819a0524c0a6a683d837bd7cd27141ea2e2b2487fb37c593c1d75d"
     },
     {
-      "path": "01_calibration_fixtures/heterogeneous_specimens/specimen_01_conservative_hamiltonian.md",
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_01_conservative_hamiltonian.md",
       "bytes": 906,
       "sha256": "869660a4e78677f8852fcd4ac8ff8b60b2108ca2dea962b2c6ae64df8daa9dac"
     },
     {
-      "path": "01_calibration_fixtures/heterogeneous_specimens/specimen_02_empirical_damping_decay.md",
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_02_empirical_damping_decay.md",
       "bytes": 1168,
       "sha256": "3f091f8c8392744db21b6507452bdc39092a37ecd245b401043a369f2e5a4429"
     },
     {
-      "path": "01_calibration_fixtures/heterogeneous_specimens/specimen_03_topological_soliton_crosswalk.md",
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_03_topological_soliton_crosswalk.md",
       "bytes": 1183,
       "sha256": "4f6697ff05085f494cacf3369e90e5852bc0377c860aa0d84170e11d91aba7d1"
     },
     {
-      "path": "02_four_arm_harness/controlled-archive-intake.mjs",
-      "bytes": 26324,
-      "sha256": "1a67d00d7b8a88070b1c0b81b94fd26a9ce6fe0647651e3e5324e9c4bcea90ae"
+      "path": "02_four_arm_harness\\atomic-custody-ledger.mjs",
+      "bytes": 10760,
+      "sha256": "097f5747b520e9ddaa95c0642c3d39581c6b2e4431cdaab9c753588bf8424c1b"
     },
     {
-      "path": "02_four_arm_harness/dry_run_checkpoint.json",
-      "bytes": 52303,
-      "sha256": "93b442c03ea9260449b92390a972d4722b6fe3eb22a6c4fe424271863ae571f9"
+      "path": "02_four_arm_harness\\controlled-archive-intake.mjs",
+      "bytes": 27981,
+      "sha256": "6cdbb31a70d07698754925a8fd385ff34f3819dbfd2283ce2ea491d8970ad2af"
     },
     {
-      "path": "02_four_arm_harness/gemini-live-client.mjs",
-      "bytes": 6305,
-      "sha256": "e0ff50940d197c0e3bacea14737be3c50de89eba90b2385ac06a523d6bbecadc"
+      "path": "02_four_arm_harness\\gemini-live-client.mjs",
+      "bytes": 6916,
+      "sha256": "28f5123c3c204cfb3778f909bb3b0bbf69b87cc60403413f0b0da72468a9b160"
     },
     {
-      "path": "02_four_arm_harness/reasoning-kernel.mjs",
+      "path": "02_four_arm_harness\\reasoning-kernel.mjs",
       "bytes": 5677,
       "sha256": "fa380890df4239e03598182330fa494069a2154d2d229d08460b5979381cb133"
     },
     {
-      "path": "02_four_arm_harness/run-arm0-transport.mjs",
+      "path": "02_four_arm_harness\\run-arm0-transport.mjs",
       "bytes": 2788,
       "sha256": "15b221930186c2db3ca3e1a854d66c6f621aed4f9e3b081c0c89ba31eeba8a50"
     },
     {
-      "path": "02_four_arm_harness/run-arm1-archival.mjs",
+      "path": "02_four_arm_harness\\run-arm1-archival.mjs",
       "bytes": 6325,
       "sha256": "a78f3995b0ed58fe3e8001b83969f85fbfca69ebbeb1a056c2a6c279ded2d17d"
     },
     {
-      "path": "02_four_arm_harness/run-arm2a-modular.mjs",
+      "path": "02_four_arm_harness\\run-arm2a-modular.mjs",
       "bytes": 7324,
       "sha256": "93533253cd15d2f7f0f0d59627fec5fac37f276cdcb466ca2f664d167ae4d8af"
     },
     {
-      "path": "02_four_arm_harness/run-arm2b-matched-union.mjs",
+      "path": "02_four_arm_harness\\run-arm2b-matched-union.mjs",
       "bytes": 5398,
       "sha256": "62033a4dff5829843b90be1ec4a6076918f8ddcfc97dcf5d0d9a92c95f4c6e21"
     },
     {
-      "path": "02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
-      "bytes": 26316,
-      "sha256": "8e08314a237a556922bb5c810c0ac9fe06cbbab167f14032fddbe16ae9c7151a"
+      "path": "02_four_arm_harness\\run-heterogeneous-discovery-harness.mjs",
+      "bytes": 28858,
+      "sha256": "666ab742e62aa5a26bcb62e2d9ffc5866e038b143ac133f83fab0cea8f14303d"
     },
     {
-      "path": "02_four_arm_harness/stage2-independent-evaluator.mjs",
+      "path": "02_four_arm_harness\\stage2-independent-evaluator.mjs",
       "bytes": 24991,
       "sha256": "8adbe0329c0ccd83704524fe2e062983f8fd385ccf1fbd3fd4854f6973282697"
     },
     {
-      "path": "03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
+      "path": "03_calibration_execution\\CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 3202,
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
     },
     {
-      "path": "03_calibration_execution/evaluator-oracle.mjs",
+      "path": "03_calibration_execution\\evaluator-oracle.mjs",
       "bytes": 13563,
       "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
-      "path": "03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
+      "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
       "bytes": 10660,
       "sha256": "d1665630aff89c7396768647d69420fc5c86c8fd7c84d03a3c8f53d4a5cf9900"
     },
     {
-      "path": "03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md",
+      "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_EVALUATION.md",
       "bytes": 14513,
       "sha256": "ebe01eddc8f80c1b3b665cf436976c6984fb831b9a2d99a2cc84816cd8951018"
     },
     {
-      "path": "03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
+      "path": "03_calibration_execution\\LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 4089,
       "sha256": "9bb5615923ac4aa658e4c2be269a535eba2ab1b5bb47478fe5ea6860e5df0a37"
     },
     {
-      "path": "03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json",
+      "path": "03_calibration_execution\\LIVE_CALIBRATION_RESCORING_RECEIPT.json",
       "bytes": 6784,
       "sha256": "8229d8f9e24678d0a39f342161d234248035155af64f6f0221ad63504bb94767"
     },
     {
-      "path": "03_calibration_execution/PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
+      "path": "03_calibration_execution\\PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
       "bytes": 1811,
       "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
     },
     {
-      "path": "03_calibration_execution/run-offline-trace-rescore.mjs",
+      "path": "03_calibration_execution\\run-offline-trace-rescore.mjs",
       "bytes": 9274,
       "sha256": "a55835cad97ac49ed18b34faca55a0a1ca1c30054d3c9cc9f630a2a0cf1cdd2f"
     },
     {
-      "path": "03_calibration_execution/run-source-free-calibration.mjs",
+      "path": "03_calibration_execution\\run-source-free-calibration.mjs",
       "bytes": 9576,
       "sha256": "fd0d7c643519ab58f41294dad2a8b1a3b30b2082d8299e996e8d292eb8a9b02b"
     },
     {
-      "path": "03_calibration_execution/run-source-free-live-calibration.mjs",
+      "path": "03_calibration_execution\\run-source-free-live-calibration.mjs",
       "bytes": 6764,
       "sha256": "c3a3b7988fc9608c31939e9593a53444c7cd75ffbdf3b700c846242334fdb5fc"
     },
     {
-      "path": "03_calibration_execution/traces/arm0_trace.log",
+      "path": "03_calibration_execution\\traces\\arm0_trace.log",
       "bytes": 1198,
       "sha256": "278dd2cf5e33637cbf5e2e7855cd5dfeffa8723992746460aefa39d6007d6ba1"
     },
     {
-      "path": "03_calibration_execution/traces/arm1_trace.log",
+      "path": "03_calibration_execution\\traces\\arm1_trace.log",
       "bytes": 1472,
       "sha256": "6ea0c93ab4f84a1105735c603691c4a064fe06e1b4697126167a1027fa38b2b5"
     },
     {
-      "path": "03_calibration_execution/traces/arm2a_trace.log",
+      "path": "03_calibration_execution\\traces\\arm2a_trace.log",
       "bytes": 4065,
       "sha256": "c4e644011455cda4039588788136ced9eb52ed69781791893dace6cea963036d"
     },
     {
-      "path": "03_calibration_execution/traces/arm2b_trace.log",
+      "path": "03_calibration_execution\\traces\\arm2b_trace.log",
       "bytes": 3692,
       "sha256": "35b52f643d2443ea96f054ab380f7b12f19ad8205f0f4753bb7c4db18af047a4"
     },
     {
-      "path": "03_calibration_execution/traces/live_arm2a_traces.json",
+      "path": "03_calibration_execution\\traces\\live_arm2a_traces.json",
       "bytes": 111654,
       "sha256": "084d3735f01da3a20fa3252cdbdbf9c241e81c9b19b215d834e327bec30701d3"
     },
     {
-      "path": "03_calibration_execution/traces/live_arm2b_traces.json",
+      "path": "03_calibration_execution\\traces\\live_arm2b_traces.json",
       "bytes": 52138,
       "sha256": "25360307f881d8e2766b13d50b64c43e069ee32ed4d735d247b80ac7ad3da1d6"
     },
     {
-      "path": "04_evaluation_and_preregistration/EVALUATION_METRICS_AND_RUBRIC.json",
+      "path": "04_evaluation_and_preregistration\\EVALUATION_METRICS_AND_RUBRIC.json",
       "bytes": 2110,
       "sha256": "78af8029d5ff823cb92ab1c8d989b482e580efd8cd8e6261b929fafc7c92585d"
     },
     {
-      "path": "04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
+      "path": "04_evaluation_and_preregistration\\EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
       "bytes": 13116,
       "sha256": "eaba08cdd1bcdf8c1d64dec90903b157b16847b356b7526191aba7326bd4a9d7"
     },
     {
-      "path": "04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
+      "path": "04_evaluation_and_preregistration\\RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
       "bytes": 13111,
       "sha256": "894429592ffa434d2ec900c8a0ed8c239a36d7b3313edf2a560dce72e4edad41"
     },
     {
-      "path": "04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md",
+      "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_CUSTODY_PROTOCOL.md",
       "bytes": 8437,
       "sha256": "619104877aeb090c2e76000cf44f8a41573f5ea86e2fdbb1abed07e70f408ad5"
     },
     {
-      "path": "04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json",
+      "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_DISCOVERY_SCHEMA.json",
       "bytes": 7489,
       "sha256": "492fb5ec451d4bb8fc9a05b8109af6e97beaf6818dbae9cd1191397b50f87ae3"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json",
-      "bytes": 17885,
-      "sha256": "a76aa843fad18e58a496817a43ec5472a0a1105b6d1d5d458bdb79b1ba9fad19"
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json",
+      "bytes": 18357,
+      "sha256": "a4024068cf3f24a87be019d480b1387215636db9dddee06302bbf54c666e5d54"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md",
       "bytes": 3116,
-      "sha256": "a7949f2213ae8085d4b08234460c10fad1b37d15786dec5a465f8b880501d51f"
+      "sha256": "0c8e29bc6a6fa04d653af84a275692fba156ad3b1fb7bc2fd7305a7d8213a1fb"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
       "bytes": 18739,
       "sha256": "db862b045be1fe2ce0fdbadb0357a8074fe87cbd9fdfa62dbf63d4c3da6b4dd9"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
       "bytes": 17769,
       "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
       "bytes": 3112,
       "sha256": "aff1542abb596b57ebcee060d7ffbb1cbbe776e9edd412e36696f49d456bf473"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
       "bytes": 3375,
       "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
       "bytes": 8883,
       "sha256": "3d95fa33f91a59022a34618254a25c0ab4625e5ae7cf34fd2fbb0ee90568e40b"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_PREFLIGHT_B_REPORT.md",
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_PREFLIGHT_B_REPORT.md",
       "bytes": 3683,
       "sha256": "78e6651293e3c1875674de74fda717273fc7d5a8a0c1bca09605eea3380f33ab"
     },
     {
-      "path": "05_dollhouse_audit/run-dollhouse-audit-b.mjs",
+      "path": "05_dollhouse_audit\\run-dollhouse-audit-b.mjs",
       "bytes": 3121,
       "sha256": "e35a8605581f8a4a4dc7aa7136cee0e7e621d2f0937ee0c7fb81b8f4222cf98f"
     },
     {
-      "path": "05_dollhouse_audit/run-dollhouse-audit-launchbridge.mjs",
-      "bytes": 7966,
-      "sha256": "78a5ed3c0e7b641fa936178e94952e0ee5d1487fe227810a6b9006aba4c4ce02"
+      "path": "05_dollhouse_audit\\run-dollhouse-audit-launchbridge.mjs",
+      "bytes": 8056,
+      "sha256": "c3f85c840695bf08067326d9725e46b6aed00dfbeb8cb8615175fd07eb173ef6"
     },
     {
-      "path": "05_dollhouse_audit/run-dollhouse-audit-live.mjs",
+      "path": "05_dollhouse_audit\\run-dollhouse-audit-live.mjs",
       "bytes": 6578,
       "sha256": "79afdb3b54ef65dc50560ee774ffa8f8d322be158bcdeae89b996b1e1b4e6a80"
     },
     {
-      "path": "06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
+      "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
       "bytes": 1913,
       "sha256": "54fad4afed2f4f6de85e024e3498299e7aa3be18b8a9ace4b10912dcfb16370f"
     },
     {
-      "path": "06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",
+      "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",
       "bytes": 4087,
       "sha256": "cf7f38dc6ea6de974e6e0e8675c041f01597cd336a371c4b6489335a3b4cd050"
     },
     {
-      "path": "06_custody_and_governance/EXPERIMENT_A_CAPABILITY_REST_CORRECTION_RECEIPT.json",
+      "path": "06_custody_and_governance\\EXPERIMENT_A_CAPABILITY_REST_CORRECTION_RECEIPT.json",
       "bytes": 2213,
       "sha256": "87aaf5d91f42f0073448e6ebf89820bb9c796cc79ca147d619c4b1362bea51b2"
     },
     {
-      "path": "06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md",
+      "path": "06_custody_and_governance\\FLIGHT_AUTHORIZATION_DECISION_SHEET.md",
       "bytes": 6400,
       "sha256": "d3c4a7e0b9b173cba42d96e56d234d41a3df877636e8e4b0094c70a27319ea26"
     },
     {
-      "path": "06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md",
+      "path": "06_custody_and_governance\\FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md",
       "bytes": 14708,
       "sha256": "d89272c648494133f3622667cb0fb09d0642dbbcbaaa0282d8eaafd1c514e33f"
     },
     {
-      "path": "06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md",
+      "path": "06_custody_and_governance\\FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md",
       "bytes": 9262,
       "sha256": "8b6edddc3b10c9d3082d83a2a781621d5332bd570313b8866ac12a2cb531b4e9"
     },
     {
-      "path": "06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md",
+      "path": "06_custody_and_governance\\INSTRUMENT_FREEZE_AND_CROSSWALK.md",
       "bytes": 5445,
       "sha256": "2cf48f6e76802d4d24c9334ec5526a289fec9eacd1cffa6345effa7df78b7992"
     },
     {
-      "path": "06_custody_and_governance/MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md",
+      "path": "06_custody_and_governance\\MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md",
       "bytes": 6560,
       "sha256": "f129003e094b9586a462e3d90f5e4288ee7f19c12b71b973ac42d1fe847a6e0f"
     },
     {
-      "path": "06_custody_and_governance/PUBLIC_CUSTODY_DECISION_RECORD.md",
+      "path": "06_custody_and_governance\\PUBLIC_CUSTODY_DECISION_RECORD.md",
       "bytes": 6194,
       "sha256": "6bbc30c8ccd456ad5e29d92a15e3d85698f1e68995505c1240f2b98650c6bca7"
     },

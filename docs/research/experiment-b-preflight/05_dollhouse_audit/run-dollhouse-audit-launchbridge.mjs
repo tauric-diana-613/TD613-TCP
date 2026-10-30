@@ -47,6 +47,7 @@ const auditSpec = {
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
   evidence_references: [
+    'docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs',
     'docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs',
     'docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs',
     'docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs',
