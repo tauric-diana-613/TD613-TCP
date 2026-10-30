@@ -15,6 +15,47 @@
 import crypto from 'node:crypto';
 import { GeminiLiveClient, MODEL_PRICING } from './gemini-live-client.mjs';
 
+export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
+  /docs\/atlas\//i,
+  /ATLAS\.md/i,
+  /ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER/i,
+  /ATLAS_YOON_TIME_QUBIT_CROSSWALK/i,
+  /Yoon\s+time-qubit/i,
+  /Yoon\s+crosswalk/i
+];
+
+/**
+ * Enforces experimental access parity: ensures no arm receives unearned literature priors
+ * or atlas internal documentation during candidate generation (Redpen VI).
+ *
+ * @param {string} promptOrContext
+ * @param {string} [arm]
+ * @returns {object} { compliant: boolean, violations: string[] }
+ */
+export function verifyAccessParityContract(promptOrContext = '', arm = 'ARM_UNKNOWN') {
+  const text = String(promptOrContext || '');
+  const violations = [];
+
+  for (const pattern of FORBIDDEN_ACCESS_PARITY_PATTERNS) {
+    if (pattern.test(text)) {
+      violations.push(pattern.toString());
+    }
+  }
+
+  if (violations.length > 0) {
+    throw new Error(
+      `ACCESS_PARITY_VIOLATION: Unearned literature priors or internal atlas documentation injected into ${arm} prompt: ` +
+      violations.join(', ') + '. Symmetrical manifest policy violated fail-closed.'
+    );
+  }
+
+  return {
+    compliant: true,
+    arm,
+    violations: []
+  };
+}
+
 function computeSha256(text) {
   const buf = Buffer.isBuffer(text) ? text : Buffer.from(String(text || ''), 'utf8');
   return crypto.createHash('sha256').update(buf).digest('hex');
@@ -104,8 +145,16 @@ export class HeterogeneousDiscoveryHarness {
     }).join('\n\n');
   }
 
-  // Pre-call resource checks including pre-dispatch cost reservation
+  // Access parity verification against unearned literature priors
+  verifyAccessParity(promptText = '') {
+    return verifyAccessParityContract(promptText, this.arm);
+  }
+
+  // Pre-call resource checks including pre-dispatch cost reservation and access parity
   checkPreCallResourceCeilings(promptText = '') {
+    // 1. Mandatory Access Parity Check (Redpen VI)
+    this.verifyAccessParity(promptText);
+
     if (this.sharedBudgetGovernor) {
       this.sharedBudgetGovernor.checkPreCallResourceCeilings(promptText, this.maxOutputTokensPerCall);
       return;

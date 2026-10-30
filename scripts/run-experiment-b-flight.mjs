@@ -85,6 +85,7 @@ function parseArgs(args) {
     witnessKeyId: null,
     witnessKeysFile: null,
     attestedWitnessFile: null,
+    episodeId: 'EPISODE-B-SOURCE-FREE-PREFLIGHT-01',
     ledgerPath: null,
     derivativesManifest: null,
     strictTreatment: false,
@@ -136,6 +137,8 @@ function parseArgs(args) {
       options.witnessKeysFile = args[++i];
     } else if (arg === '--attested-witness-file' && args[i + 1]) {
       options.attestedWitnessFile = args[++i];
+    } else if (arg === '--episode-id' && args[i + 1]) {
+      options.episodeId = args[++i];
     } else if (arg === '--ledger-path' && args[i + 1]) {
       options.ledgerPath = args[++i];
     } else if (arg === '--derivatives-manifest' && args[i + 1]) {
@@ -169,6 +172,7 @@ Options:
   --require-witness-tier    Require in-line independent witnessed evaluation (fails closed if witness keys unsupplied)
   --witness-keys-file <p>   Path to JSON file mapping witnessId -> secretKey
   --attested-witness-file<p>Path to JSON file containing attested witness payload and signature
+  --episode-id <id>         Flight episode identifier (default: EPISODE-B-SOURCE-FREE-PREFLIGHT-01)
   --ledger-path <path>      Private custody path for research ledger (defaults to artifacts/private/)
   --derivatives-manifest <p> Optional path to JSON map of authenticated text derivatives for binary files
   --help, -h                Show this help message
@@ -761,7 +765,8 @@ async function main() {
   const evaluator = new Stage2IndependentEvaluator({
     evaluatorTier,
     trustedWitnessKeys: witnessKeys,
-    attestedWitness: attestedWitness
+    attestedWitness: attestedWitness,
+    expectedEpisodeId: options.episodeId
   });
 
   console.log(`\n--- Executing Stage 2 Independent Evaluation (Tier: ${evaluatorTier}) ---`);

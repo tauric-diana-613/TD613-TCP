@@ -11,7 +11,10 @@ import {
   createOperatorFlightGrant,
   verifyOperatorFlightGrant
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
-import { HeterogeneousDiscoveryHarness } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
+import {
+  HeterogeneousDiscoveryHarness,
+  verifyAccessParityContract
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
 import {
   Stage2IndependentEvaluator,
   computeProofBindingDigest,
@@ -1199,4 +1202,113 @@ test('R4-04: Interrupted Execution Recovery Across Turn Lifecycle & Idempotent R
 
   // Clean up test file
   try { fs.unlinkSync(safeLedgerPath); } catch {}
+});
+
+test('R4-06: Symmetrical Experimental Access Parity Contract Enforcement (Redpen VI)', () => {
+  // 1. Clean, unconditioned prompts in both Arm 2A and Arm 2B pass verification
+  const cleanPromptArm2A = 'Analyze incoming document [DOC-01]: Harmonic motion m*x\'\' + gamma*x\' + k*x = 0.';
+  const res2A = verifyAccessParityContract(cleanPromptArm2A, 'ARM_2A_MODULAR');
+  assert.equal(res2A.compliant, true);
+
+  const cleanPromptArm2B = 'Analyze incoming document [DOC-01] under unchambered matched union.';
+  const res2B = verifyAccessParityContract(cleanPromptArm2B, 'ARM_2B_MATCHED_UNION');
+  assert.equal(res2B.compliant, true);
+
+  // 2. Prohibited internal atlas documentation leaks fail closed
+  assert.throws(
+    () => verifyAccessParityContract('Injecting docs/atlas/charter.md into context', 'ARM_2A_MODULAR'),
+    /ACCESS_PARITY_VIOLATION/
+  );
+
+  assert.throws(
+    () => verifyAccessParityContract('Referencing ATLAS.md invariants', 'ARM_2B_MATCHED_UNION'),
+    /ACCESS_PARITY_VIOLATION/
+  );
+
+  assert.throws(
+    () => verifyAccessParityContract('Applying ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER guidance', 'ARM_2A_MODULAR'),
+    /ACCESS_PARITY_VIOLATION/
+  );
+
+  assert.throws(
+    () => verifyAccessParityContract('Using Yoon time-qubit crosswalk Y-01 mapping', 'ARM_2B_MATCHED_UNION'),
+    /ACCESS_PARITY_VIOLATION/
+  );
+
+  // 3. Harness pre-call check automatically enforces access parity fail-closed
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true
+  });
+
+  assert.throws(
+    () => harness.checkPreCallResourceCeilings('Pre-call prompt with unearned docs/atlas/ reference'),
+    /ACCESS_PARITY_VIOLATION/
+  );
+});
+
+test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Sieve (Redpen VI)', () => {
+  // 1. Verify --help documents --episode-id
+  const helpOutput = execSync('node scripts/run-experiment-b-flight.mjs --help', { encoding: 'utf8' });
+  assert.ok(helpOutput.includes('--episode-id'));
+
+  // 2. Create an attested witness file signed specifically for EPISODE-ALPHA
+  const tempDir = path.resolve('.td613_temp_test_reentry');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+  const witnessSecretKey = crypto.randomBytes(32).toString('hex');
+  const witnessKeysFile = path.join(tempDir, 'test_witness_keys.json');
+  fs.writeFileSync(witnessKeysFile, JSON.stringify({ EMERGENCE_HQ_WITNESS_01: witnessSecretKey }), 'utf8');
+
+  const episodeAlpha = 'EPISODE-ALPHA-20261030';
+  const episodeBeta = 'EPISODE-BETA-REPLAY-ATTEMPT';
+
+  const attestationAlpha = createWitnessAttestation({
+    witnessId: 'EMERGENCE_HQ_WITNESS_01',
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+    episodeId: episodeAlpha,
+    reviewerAuthorityClass: 'INDEPENDENT_EXTERNAL_REVIEWER'
+  }, witnessSecretKey);
+
+  const attestationFile = path.join(tempDir, 'test_attestation_alpha.json');
+  fs.writeFileSync(attestationFile, JSON.stringify(attestationAlpha, null, 2), 'utf8');
+
+  // 3. Attempting to run runner with --episode-id EPISODE-BETA using attestation for EPISODE-ALPHA
+  // MUST FAIL with PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID or non-zero exit
+  assert.throws(
+    () => {
+      execSync(
+        `node scripts/run-experiment-b-flight.mjs --require-witness-tier ` +
+        `--witness-keys-file "${witnessKeysFile}" ` +
+        `--attested-witness-file "${attestationFile}" ` +
+        `--episode-id "${episodeBeta}" ` +
+        `--dry-run`,
+        { encoding: 'utf8', stdio: 'pipe' }
+      );
+    },
+    (err) => {
+      const output = (err.stdout || '') + (err.stderr || '');
+      return output.includes('PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID') ||
+             output.includes('WITNESS_EPISODE_MISMATCH_OR_OMITTED') ||
+             err.status !== 0;
+    }
+  );
+
+  // 4. Running runner with matching --episode-id EPISODE-ALPHA succeeds through preflight check
+  const matchingOutput = execSync(
+    `node scripts/run-experiment-b-flight.mjs --require-witness-tier ` +
+    `--witness-keys-file "${witnessKeysFile}" ` +
+    `--attested-witness-file "${attestationFile}" ` +
+    `--episode-id "${episodeAlpha}" ` +
+    `--dry-run`,
+    { encoding: 'utf8' }
+  );
+  assert.ok(matchingOutput.includes('Executing Stage 2 Independent Evaluation'));
+
+  // Clean up temp files
+  try {
+    fs.unlinkSync(witnessKeysFile);
+    fs.unlinkSync(attestationFile);
+    fs.rmdirSync(tempDir);
+  } catch {}
 });

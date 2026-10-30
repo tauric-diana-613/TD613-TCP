@@ -5,7 +5,7 @@
 **Covenant:** Khona‌lit-po — preserve U+200C exactly  
 **Display glyph:** 𝌋 · U+1D30B  
 **Research scalar:** U+10D613 · `\uDBF5\uDE13`  
-**Timestamp:** `2026-10-30T19:31:28.743Z`  
+**Timestamp:** `2026-10-30T19:58:28.139Z`  
 **Parent PR:** #1610 · Corrective branch: #1611 · Issue: #1612  
 **Authority:** Sovereign Operator Direct · Emergence HQ Independent Scientific Review  
 **Operational Disposition:** `ATLAS_MATHEMATICAL_SPECIMENS_QUALIFIED_SOURCE_FREE · PROTECTED_B_FLIGHT_REMAINS_HELD`
@@ -34,7 +34,7 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 | **A-02** | Higher-Order Parity Discrimination | Discrete Holonomy & Multi-Point Invariants | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
 | **A-03** | GHZ± Local Unreadability vs Global Stabilizer | Quantum Information & Context-Indexed State Representation | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
 | **A-04** | F31 Modular Rank vs Real Jacobi SVD Conditioning | Finite Field Linear Algebra & Numerical Conditioning | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
-| **A-05** | Representation Causal Control & Label Sieve | Categorical Invariants & Morphism Verification | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
+| **A-05** | Representation Causal Control & Dissipative Dynamical Morphisms | Dynamical Systems, Liouville Contraction & Categorical Morphisms | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
 | **A-06** | Ontology-Free Structural Surprise Detection | Formal Invariant Classification & Epistemic Abstention | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
 | **A-07** | Quantum Visibility Nuisance-Parameter Ambiguity | Inverse Problem Identifiability & Aperture Conditioning | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
 | **A-08** | Measurement Context & Transformation Separation | Foundations of Quantum Measurement & Contextuality | 🟢 PASS | 🟢 PASS | `QUALIFIED_SOURCE_FREE_SPECIMEN` |
@@ -94,13 +94,27 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 ### Probe A-03: GHZ± Local Unreadability vs Global Stabilizer
 - **Domain:** `Quantum Information & Context-Indexed State Representation`
 - **Epistemic Status:** `QUALIFIED_SOURCE_FREE_SPECIMEN`
-- **Demonstrated Operational Capability:** Demonstrates identical local density matrices while isolating global parity stabilizer and refusing unearned quantum error correction claims.
+- **Demonstrated Operational Capability:** Demonstrates identical local density matrices (rho_12 rank 2 classical mixture, rho_1 maximally mixed on 1 qubit) while isolating global parity stabilizer and refusing unearned quantum error correction claims.
 - **Positive Control Evidence:**
 ```json
 {
   "passed": true,
   "reduced_2qubit_identical": true,
+  "reduced_2qubit_diagonal": [
+    0.5,
+    0,
+    0,
+    0.5
+  ],
+  "reduced_2qubit_rank": 2,
+  "reduced_2qubit_entropy_bits": 1,
+  "reduced_2qubit_maximally_mixed_i4_div_4": false,
   "reduced_1qubit_identical": true,
+  "reduced_1qubit_diagonal": [
+    0.5,
+    0.5
+  ],
+  "reduced_1qubit_maximally_mixed_on_1qubit": true,
   "global_eigenvalue_plus": 1,
   "global_eigenvalue_minus": -1,
   "global_distinguishable": true,
@@ -119,7 +133,7 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 ### Probe A-04: F31 Modular Rank vs Real Jacobi SVD Conditioning
 - **Domain:** `Finite Field Linear Algebra & Numerical Conditioning`
 - **Epistemic Status:** `QUALIFIED_SOURCE_FREE_SPECIMEN`
-- **Demonstrated Operational Capability:** Strictly distinguishes modular kernel computation in F31 from continuous SVD conditioning, refusing invalid cross-domain operations.
+- **Demonstrated Operational Capability:** Strictly distinguishes modular kernel computation in F31 from continuous iterative Jacobi SVD conditioning, refusing invalid cross-domain operations.
 - **Positive Control Evidence:**
 ```json
 {
@@ -128,6 +142,12 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
   "f31_nullity": 2,
   "f31_rank_accurate": true,
   "svd_refusal_caught": true,
+  "real_svd_singular_values": [
+    3.9999999999999996,
+    1.9999999999999998
+  ],
+  "real_svd_sigma_max": 3.9999999999999996,
+  "real_svd_sigma_min": 1.9999999999999998,
   "real_svd_condition_number": 2,
   "real_svd_accurate": true
 }
@@ -140,15 +160,23 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 }
 ```
 
-### Probe A-05: Representation Causal Control & Label Sieve
-- **Domain:** `Categorical Invariants & Morphism Verification`
+### Probe A-05: Representation Causal Control & Dissipative Dynamical Morphisms
+- **Domain:** `Dynamical Systems, Liouville Contraction & Categorical Morphisms`
 - **Epistemic Status:** `QUALIFIED_SOURCE_FREE_SPECIMEN`
-- **Demonstrated Operational Capability:** Validates structural mathematical isomorphisms while rejecting nominal buzzword-driven false unification.
+- **Demonstrated Operational Capability:** Validates structural dissipative dynamical morphisms (div(F) = -gamma/m < 0) while refusing to classify dissipative flows as symplectic and rejecting nominal buzzword-driven false unification.
 - **Positive Control Evidence:**
 ```json
 {
   "passed": true,
-  "legitimate_morphism_detected": true,
+  "mechanical_omega0_squared": 4,
+  "electrical_omega0_squared": 4,
+  "frequencies_matched": true,
+  "mechanical_phase_contraction_divF": -0.2,
+  "electrical_phase_contraction_divF": -0.2,
+  "contraction_rates_matched": true,
+  "dissipative_morphism_valid": true,
+  "is_strictly_symplectic": false,
+  "unqualified_symplectic_label_refused": true,
   "spurious_nominal_coupling_rejected": true
 }
 ```
@@ -156,7 +184,8 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 ```json
 {
   "passed": true,
-  "nominal_label_authority_denied": true
+  "nominal_label_authority_denied": true,
+  "symplectic_confusion_prevented": true
 }
 ```
 
@@ -228,7 +257,7 @@ Prior to this assay, the repository documented the Five-Chamber Atlas Wild Field
 ### Probe A-09: Mathematical Notation Normalization & Sieve
 - **Domain:** `Symbolic Equivalence & Syntactic Invariance`
 - **Epistemic Status:** `QUALIFIED_SOURCE_FREE_SPECIMEN`
-- **Demonstrated Operational Capability:** Normalizes equivalent mathematical notation formats without creating false-negative rejections or admitting inverted false twins.
+- **Demonstrated Operational Capability:** Normalizes equivalent mathematical notation formats for harmonic oscillator dynamics without creating false-negative rejections or admitting inverted false twins.
 - **Positive Control Evidence:**
 ```json
 {

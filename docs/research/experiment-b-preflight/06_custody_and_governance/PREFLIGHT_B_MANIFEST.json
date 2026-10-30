@@ -1,6 +1,6 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T19:31:54.001Z",
+  "timestamp": "2026-10-30T20:00:35.988Z",
   "entry_count": 82,
   "entries": [
     {
@@ -110,8 +110,8 @@
     },
     {
       "path": "02_four_arm_harness\\run-heterogeneous-discovery-harness.mjs",
-      "bytes": 30233,
-      "sha256": "312a5c7fa0ba205ca72859e08219442ba5d4ce2d4c255affab0b5355dbc9f2f0"
+      "bytes": 31684,
+      "sha256": "467d2e8809850e1f4854ac76e3207c2759a726bafa0a986e0d3405303ccdff8b"
     },
     {
       "path": "02_four_arm_harness\\stage2-independent-evaluator.mjs",
@@ -385,18 +385,18 @@
     },
     {
       "path": "09_atlas_mathematical_qualification\\ATLAS_MATHEMATICAL_QUALIFICATION_RECEIPT.json",
-      "bytes": 7477,
-      "sha256": "4bc052b34e2af340d02fbecfdfca46aed0adf06235ea2667098bc39384fc6347"
+      "bytes": 8786,
+      "sha256": "316c850872eaffa3ffad9b3f1cf4f8e946c8f32f8e16e2bf6640a96fae44f11c"
     },
     {
       "path": "09_atlas_mathematical_qualification\\ATLAS_MATHEMATICAL_QUALIFICATION_REPORT.md",
-      "bytes": 10700,
-      "sha256": "ffd5f9791d7c4d4ac910122fb6b6f94782b8cd68ce783e61c0289ffa720ae446"
+      "bytes": 11790,
+      "sha256": "2ab9b81891e2b836c6697c3cd9a0acb497d78ba5d918b5e5c6653177a37e1fd8"
     },
     {
       "path": "09_atlas_mathematical_qualification\\atlas-mathematical-qualification-suite.mjs",
-      "bytes": 28571,
-      "sha256": "11752e6f0441404df20a20fa700a6d4ec43d86f9d0c1d51dd2dd363d8e3f3f1c"
+      "bytes": 36782,
+      "sha256": "3fcea863028299bf932fa9627dea37dbf096ffb39bb5512aa46319b3d8f635a1"
     },
     {
       "path": "09_atlas_mathematical_qualification\\run-atlas-mathematical-qualification.mjs",

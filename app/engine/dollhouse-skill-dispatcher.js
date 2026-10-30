@@ -51,6 +51,9 @@ import {
   probeA01_FutureResponseSeparation,
   probeA02_HigherOrderParity,
   probeA03_GHZPhaseAndLocality,
+  probeA04_F31RankVsRealSVD,
+  probeA05_RepresentationCausalControl,
+  probeA06_OntologyFreeSurprise,
   probeA07_QuantumVisibilityAmbiguity,
   probeA08_MeasurementContextIntervention,
   probeA09_MathematicalNotationEquivalence
@@ -636,6 +639,15 @@ function executeSpecialistExtensions(role, domainInput, options) {
         }
         if (domainInput.ghz_stabilizer) {
           ext.ghz_stabilizer = probeA03_GHZPhaseAndLocality(domainInput.ghz_stabilizer);
+        }
+        if (domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning) {
+          ext.modular_vs_real_svd = probeA04_F31RankVsRealSVD(domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning);
+        }
+        if (domainInput.causal_morphism_control || domainInput.representation_morphism) {
+          ext.causal_morphism_control = probeA05_RepresentationCausalControl(domainInput.causal_morphism_control || domainInput.representation_morphism);
+        }
+        if (domainInput.ontology_free_surprise) {
+          ext.ontology_free_surprise = probeA06_OntologyFreeSurprise(domainInput.ontology_free_surprise);
         }
         if (domainInput.visibility_inverse) {
           ext.visibility_inverse = probeA07_QuantumVisibilityAmbiguity(domainInput.visibility_inverse);

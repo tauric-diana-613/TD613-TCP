@@ -1300,6 +1300,9 @@ test('TD613 Dollhouse Native Skill & Six-Role Orchestration Test Battery', async
           temporal_fiber: {},
           higher_order_parity: {},
           ghz_stabilizer: {},
+          modular_vs_real_svd: {},
+          causal_morphism_control: {},
+          ontology_free_surprise: {},
           visibility_inverse: {},
           measurement_context: {},
           notation_normalization: {}
@@ -1316,6 +1319,12 @@ test('TD613 Dollhouse Native Skill & Six-Role Orchestration Test Battery', async
     assert.equal(atlasFinding.extensions.higher_order_parity.positive_control.passed, true);
     assert.ok(atlasFinding.extensions?.ghz_stabilizer);
     assert.equal(atlasFinding.extensions.ghz_stabilizer.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.modular_vs_real_svd);
+    assert.equal(atlasFinding.extensions.modular_vs_real_svd.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.causal_morphism_control);
+    assert.equal(atlasFinding.extensions.causal_morphism_control.positive_control.passed, true);
+    assert.ok(atlasFinding.extensions?.ontology_free_surprise);
+    assert.equal(atlasFinding.extensions.ontology_free_surprise.positive_control.passed, true);
     assert.ok(atlasFinding.extensions?.visibility_inverse);
     assert.equal(atlasFinding.extensions.visibility_inverse.positive_control.passed, true);
     assert.ok(atlasFinding.extensions?.measurement_context);
