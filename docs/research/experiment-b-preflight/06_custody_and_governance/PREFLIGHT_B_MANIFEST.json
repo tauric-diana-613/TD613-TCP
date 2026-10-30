@@ -1,7 +1,7 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T17:07:16.015Z",
-  "entry_count": 68,
+  "timestamp": "2026-10-30T18:49:48.184Z",
+  "entry_count": 77,
   "entries": [
     {
       "path": "01_calibration_fixtures\\c1_damped_harmonic_oscillator.json",
@@ -64,9 +64,14 @@
       "sha256": "4f6697ff05085f494cacf3369e90e5852bc0377c860aa0d84170e11d91aba7d1"
     },
     {
+      "path": "02_four_arm_harness\\antigravity-native-orchestrator.mjs",
+      "bytes": 7483,
+      "sha256": "6d1e35b0ba424c4a8ec9e6f35045bd7cf63633f1e2cd70b97c4910d74b91f3fb"
+    },
+    {
       "path": "02_four_arm_harness\\atomic-custody-ledger.mjs",
-      "bytes": 16514,
-      "sha256": "c022c03bf2f5554b274ac273e5c71768e152fd8c019d85069689ad3a8afbe388"
+      "bytes": 17177,
+      "sha256": "e2f473cb805b7a2e81dccbb227daa53e0c31c7d1355ea15459b802acb6cd6bfa"
     },
     {
       "path": "02_four_arm_harness\\controlled-archive-intake.mjs",
@@ -337,6 +342,46 @@
       "path": "07_aperture_first_use\\run-aperture-first-use-assay.mjs",
       "bytes": 12473,
       "sha256": "881c8225072bcd6a0c5743c59729c9eba873dad7c50d4a7223ef694f83ed9e91"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\APERTURE_V32_COMPUTED_BRIDGE_RECEIPT.json",
+      "bytes": 7610,
+      "sha256": "37123e4ec5333dcfbdb6d63df3905f17dc5247abdfb6ebc0babc9402915c3a48"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\APERTURE_V32_COMPUTED_BRIDGE_RECEIPT.md",
+      "bytes": 6159,
+      "sha256": "2a4f69649c178c0ad2bd379990eff6ef476b3016e4109e0973c0dbe73d9945ce"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\HISTORICAL_TOMOGRAPHY_REPLAY_RECEIPT.json",
+      "bytes": 4448,
+      "sha256": "358d2110a528694ad9c34573faee92a8304aabd0000a25135806b4ee590fa784"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\HISTORICAL_TOMOGRAPHY_REPLAY_REPORT.md",
+      "bytes": 3066,
+      "sha256": "6a0f36279924a53ae3b008855383669a2437a984e1f7d7b287d047d6a40a5ebd"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\SCIENTIFIC_PROVENANCE_CROSSWALK.md",
+      "bytes": 10482,
+      "sha256": "4efe50cdf64ec1ecd3b01bb8f36aeb91db29926f46de8d20b008274a88264156"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\aperture-v32-computed-bridge.mjs",
+      "bytes": 14802,
+      "sha256": "dd0c3e2d4cb32b3ec2c9ae116678a0db8e9b976cbd23be164f5156f9595b610f"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\run-computed-aperture-bridge.mjs",
+      "bytes": 14784,
+      "sha256": "d12851d070333262663301368f937eb54241360daae764963d51c11a4628a033"
+    },
+    {
+      "path": "08_computed_aperture_bridge\\run-historical-tomography-replay.mjs",
+      "bytes": 12780,
+      "sha256": "42fd04e195957c9b605d7596d40155ca1d051da443d1926d2993ad72ddbfc4d0"
     },
     {
       "path": "README.md",

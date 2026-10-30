@@ -299,9 +299,25 @@ export class AtomicCustodyLedger {
       stage2_adjudications: [],
       shared_budget_summary: null
     };
+
+    if (options.resume && fs.existsSync(resolvedPath)) {
+      try {
+        const raw = fs.readFileSync(resolvedPath, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.schema) {
+          this.ledgerData = parsed;
+        }
+      } catch (e) {
+        console.warn(`Warning: Could not resume from existing ledger: ${e.message}`);
+      }
+    }
   }
 
   initializeFlight({ executionMode, permutation, model, budgetCeilings, admissionReceipt }) {
+    if (this.ledgerData.journal.some(e => e.type === 'FLIGHT_INITIALIZED')) {
+      this.recordEvent({ type: 'FLIGHT_RESUMED', execution_mode: executionMode });
+      return;
+    }
     this.ledgerData.execution_mode = executionMode;
     this.ledgerData.last_updated_at = new Date().toISOString();
     this.ledgerData.metadata = {
@@ -357,6 +373,10 @@ export class AtomicCustodyLedger {
     return this.ledgerData.journal.some(
       e => e.episode_id === episodeId && (e.type?.endsWith('_COMPLETED') || e.type?.endsWith('_SUCCEEDED'))
     );
+  }
+
+  isArmCompleted(armName) {
+    return Boolean(this.ledgerData.arms && this.ledgerData.arms[armName]);
   }
 
   getCompletedTurn(arm, turnIndex) {

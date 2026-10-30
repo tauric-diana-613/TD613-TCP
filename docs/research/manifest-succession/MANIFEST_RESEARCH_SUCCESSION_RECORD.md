@@ -166,7 +166,106 @@ Candidate requirements for an Em-controlled, independently operable Manifest:
 
 ---
 
-## VIII. Governing Invariants
+## IX. Prospective Design Addendum: Portable Manifest Action Folio & Research Dispatch (Light Steer A)
+
+**Status:** PROSPECTIVE DESIGN SUCCESSION NOTE · NO FLIGHT MUTATION COMMISSIONED  
+**Heritage & Context:** Tauric Diana · Khona‌lit-po · Postflight Architectural Inheritance
+
+### 1. Architectural Origin & Working Terminology
+
+A significant postflight product capability arises from recovering the Encyclopedia's existing saved-selection feature. Rather than treating this as a greenfield feature, Manifest recovers the original save/select implementation and its known limitations to enable an owner to assemble research operations for delegated execution by local AI systems.
+
+- **Action Folio:** The saved collection of research entries and proposed operations assembled by the owner across their research estate.
+- **Dispatch:** The portable, machine-readable work commission exportable as a single file. References sources through stable, content-addressed identities (SHA-256) without embedding confidential source payloads in the instruction package.
+- **Return Receipt:** The local agent's machine-readable ledger detailing proposed changes, executed operations, explicit refusals, and cryptographic evidence.
+
+### 2. Candidate Entry-Level Operations
+
+The Action Folio supports structured operations spanning research, archival discipline, and publication governance:
+
+- **Research and Synthesis:** Investigate, crosswalk, compare, reconcile, explore, mark for synthesis, propose relationships, verify mathematical claims, and preserve unresolved hypotheses.
+- **Archive Housekeeping:** Rename, reformat, reindex, summarize, annotate, edit, reorganize, save, demote, escalate, quarantine, redact, withdraw, or propose removal.
+- **Publication Governance:** Separately control the public visibility of mathematical results, theoretical interpretation, source lineage, metadata, and original content.
+  - *Enforced Granular Permissions:* A publicly interpretable mathematical result may remain associated with an inaccessible private original. A different entry may be authorized for public access to both its mathematical presentation and source material. These are distinct, enforced permission states, requiring real cryptographic and authorization guards rather than presentation-only hiding.
+
+### 3. Delegation Authority & Execution Boundaries
+
+- **Single-File Export:** The Dispatch commission exports as a single portable file referencing verified source identities. A local agent executes the commission against the owner's separately mounted estate.
+- **No Automatic Execution Authority:** Exported instruction files carry zero automatic authority to execute arbitrary system commands or overwrite sources. User intent, delegated execution permission, and final admission authority remain strictly separated.
+- **Infrastructure Neutrality:** Designed for local/offline models and user-authorized hosted services without permanent TD613 or cloud dependency.
+
+### 4. The Three-Clock Manifest Dynamic
+
+Manifest architectural state evolves across three non-interchangeable operational clocks:
+
+1. **Initial Advanced Synthesis (Mandatory First-Use Activation):**
+   - Mandatory activation process for a functioning Manifest.
+   - Lawful results include bounded synthesis, competing theories, unresolved contradictions, or documented inability to unify.
+   - *Anti-Fabrication Invariant:* A fictional unified theory cannot be manufactured simply to satisfy activation.
+2. **Ambiance Refresh (Automatic Operational State):**
+   - Automatically recomputed from eligible admitted changes through valid, situated observation procedures.
+   - Runs continuously without requiring optional advanced resynthesis.
+3. **Subsequent Advanced Resynthesis (Owner-Initiated Theory Editions):**
+   - Separately initiated by the owner on demand.
+   - Produces a formal new **Theory Edition** comprising: proposed theory name, Manifest homepage subtitle, manifesto, dissertation, mathematical representations, and visual identity.
+   - Preserves all predecessor editions, supporting direct comparison, rollback of presentation choices, and uninterrupted access to earlier theoretical work.
+
+---
+
+## X. Historical Frontispiece Design/Audit Machinery & Visual Asset Succession (Light Steer B)
+
+**Status:** HISTORICAL AUDIT RECONSTRUCTION & VISUAL SUCCESSION NOTE  
+**Heritage & Context:** Tauric Diana · Khona‌lit-po · Postflight Architectural Inheritance
+
+### 1. Historical Reconstruction Anchors
+
+The TD613 Encyclopedia's sculptural chrome frontispiece represents an agonizing, high-yield design audit that must not be reduced to generic "Mugler-inspired image generation."
+
+- **Accepted Predecessor PRs:**
+  - **PR #1584:** Encyclopedia interface and frontispiece integration.
+  - **PR #1596:** Desktop and mobile chrome artwork refinements.
+- **Retained Origin Asset:**
+  - Asset: `luxury_architectural_centerpiece_hero_1792633300380.jpg`
+  - Dimensions: 1376 × 768 JPEG.
+  - SHA-256 Digest: beginning `e41e77eb...`
+  - Provenance: C2PA-bearing provenance metadata (distinguishing embedded manifest presence from independently verified full trust-chain authenticity).
+  - Generation Event: One documented Antigravity image-subagent generation event on October 22, 2026.
+  - Creative Brief: Sculptural chrome, Mugler-informed architectural corsetry, futurecore aesthetics, 6D icosahedral/star-polytope references, equilateral geometry, and cobalt/violet lighting.
+- **Documented Iterative Lineage:**
+  - V1 rejected as underdeveloped.
+  - V2, V3, V3.5, and V4 refined through repeated operator criticism and actual interface inspection.
+  - Rejection of dashboard chrome, Google-Forms-like layouts, split-column compositions, literal "Mugler" or "couture" labels, and generic neon aesthetics.
+  - Progression into Interface 2.0 and Interface 3.0.
+  - CSS and compositional transformation: monochrome chrome treatment, high contrast, screen blending, and warm/vermilion interface accents.
+  - PR #1596 separate desktop (1678 × 937) and mobile (941 × 1672) WebP production assets.
+
+### 2. Preservation of Method & Evidence Classes
+
+The audit method, rather than merely the resulting image, is preserved across four formal evidence classes:
+
+| Evidence Class | Recorded Domain Artifact |
+|---|---|
+| `SOURCE_ATTESTED` | PR #1584 and #1596 commits, WebP assets, CSS blending rules, and origin JPEG byte hashes |
+| `OPERATOR_TESTIMONY` | Operator aesthetic critiques, negative constraints, rejection of dashboard chrome, and interface milestones |
+| `RECONSTRUCTABLE_INFERENCE` | 6D star-polytope visual motifs, equilateral framing, and chromatic palette correspondence |
+| `UNAVAILABLE_EVIDENCE` | Transient subagent seed numbers, intermediate generation scratch tokens, and unrecorded sub-prompts |
+
+### 3. Future Manifest Visual Ambition: Computed Theory as Artistic Cradle
+
+- **Scientific Reality:** The original chrome centerpiece was mathematically inspired; the surviving record does not make every visible feature the exact computational output of its cited equations.
+- **Future Manifest Standard:** For future Manifest artwork, the owner's own computed and independently reviewable theoretical foundation provides the mathematical crib from which the artistic system constructs its interpretation.
+- **Aesthetic Breadth:** Supports adventurous, speculative, high-fashion, futurecore chromepunk aesthetics through `/dollhouse-design` rather than reducing art to a literal chart.
+
+### 4. Separate Inventory of Historical Mathematical Animations
+
+- **Distinction from Frontispiece:** The approximately six or seven exceptional animated and interactive mathematical data representations created by Antigravity during TD613 theory-convergence work are distinct works and must not be conflated with the frontispiece JPEG.
+- **Future Inventory Requirement:** A dedicated source-based inventory must record their original code, mathematical inputs, browser behavior, runtime dependencies, render assets, version lineages, and recoverable provenance.
+- **Ambiance Presentation:** The existing Dome-World weather interface will be evaluated as a future Manifest ambiance presentation under genuine measurement and projection contracts.
+- **Active Flight Firebreak:** No image generation jobs or Manifest redesigns are permitted while the Flight commission remains active.
+
+---
+
+## XI. Governing Invariants
 
 ```text
 MANIFEST_RESEARCH_AMBITION_PRESERVED          = VERIFIED
@@ -181,6 +280,11 @@ MANIFEST_MATHEMATICAL_INHERITANCE_PRESERVED   = VERIFIED
 EXPERIMENT_B_ORIGINAL_PROTOCOL_UNCHANGED      = VERIFIED
 FLIGHT_FIREBREAK_MAINTAINED                   = VERIFIED
 PROTECTED_EM_CORPUS_SEALED                    = VERIFIED
+ACTION_FOLIO_PROSPECTIVE_DESIGN_RECORDED      = VERIFIED
+THREE_CLOCK_MANIFEST_SEPARATION_ENFORCED      = VERIFIED
+FRONTISPIECE_AUDIT_METHOD_PRESERVED           = VERIFIED
+MATHEMATICAL_CRADLE_ARTISTIC_LINEAGE_PRESERVED= VERIFIED
+HISTORICAL_ANIMATIONS_INVENTORY_SCHEDULED     = VERIFIED
 ```
 
 𝄐 · Tauric Diana · Khona‌lit-po · Sealed ⟐

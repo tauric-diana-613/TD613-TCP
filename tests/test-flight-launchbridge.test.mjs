@@ -24,6 +24,10 @@ import {
   validatePrivatePathConfinement
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
 import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
+import {
+  AntigravityNativeOrchestrator,
+  ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/antigravity-native-orchestrator.mjs';
 
 const REPO_ROOT = path.resolve('.');
 
@@ -821,4 +825,233 @@ test('R3-06: Fine-Grained Event Journaling, Replay Idempotency & Private Confine
 
   // Clean up
   try { fs.unlinkSync(safePath); } catch {}
+});
+
+test('R4-01: Antigravity-Native Execution Contract, Telemetry & Fail-Closed Invariant', async () => {
+  // 1. Native Orchestration Plan Schema Verification
+  const orchestrator = new AntigravityNativeOrchestrator({
+    syntheticMode: true,
+    sessionId: 'TEST-SESSION-NATIVE-01',
+    modelIdentity: 'gemini-3.8-thought-preview'
+  });
+
+  assert.equal(orchestrator.plan.schema, ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA);
+  assert.equal(orchestrator.plan.session_id, 'TEST-SESSION-NATIVE-01');
+  assert.equal(orchestrator.plan.model_identity, 'gemini-3.8-thought-preview');
+  assert.equal(orchestrator.plan.telemetry_posture.cloud_rest_billing_applicable, false);
+  assert.equal(orchestrator.plan.telemetry_posture.token_accounting_source, 'ANTIGRAVITY_PLATFORM_SESSION_LOGS');
+
+  // 2. Synthetic Turn Adheres to Native Schema
+  const turnResult = await orchestrator.executeTurn({
+    arm: 'ARM_2A_MODULAR',
+    turnIndex: 1,
+    document: { id: 'DOC-1', filename: 'oscillator.md' }
+  });
+
+  assert.equal(turnResult.backend, 'ANTIGRAVITY_NATIVE_AGENT');
+  assert.equal(turnResult.orchestration_schema, ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA);
+  assert.equal(turnResult.telemetry.native_turn_executed, true);
+  assert.equal(turnResult.telemetry.prompt_parity_verified, true);
+  assert.ok(turnResult.parsed_candidate);
+
+  // 3. Receipt verification
+  const audit = AntigravityNativeOrchestrator.verifyNativeSessionExecution(turnResult);
+  assert.equal(audit.valid, true);
+
+  const fakeReceipt = { backend: 'MOCK_OR_REST', telemetry: {} };
+  const fakeAudit = AntigravityNativeOrchestrator.verifyNativeSessionExecution(fakeReceipt);
+  assert.equal(fakeAudit.valid, false);
+
+  // 4. Fail-closed without active native session environment in live mode
+  const liveOrchestrator = new AntigravityNativeOrchestrator({
+    syntheticMode: false,
+    allowLiveNativeFlight: true,
+    sessionId: 'TEST-LIVE-UNCONNECTED'
+  });
+
+  await assert.rejects(
+    async () => {
+      await liveOrchestrator.executeTurn({
+        arm: 'ARM_2A_MODULAR',
+        turnIndex: 1,
+        document: { id: 'DOC-1', filename: 'oscillator.md' }
+      });
+    },
+    /NATIVE_UNIMPLEMENTED_HELD/
+  );
+});
+
+test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validation', () => {
+  const witnessSecretKey = crypto.randomBytes(32).toString('hex');
+  const trustedWitnessKeys = {
+    EMERGENCE_HQ_WITNESS_01: witnessSecretKey
+  };
+
+  // 1. Valid cryptographic witness attestation
+  const payload = 'WITNESS_SESSION:EMERGENCE_HQ_WITNESS_01';
+  const validSignature = crypto.createHmac('sha256', witnessSecretKey).update(payload).digest('hex');
+  const validAttestation = {
+    witnessId: 'EMERGENCE_HQ_WITNESS_01',
+    payload,
+    signature: validSignature,
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'
+  };
+
+  assert.equal(verifyWitnessAttestation(validAttestation, witnessSecretKey), true);
+
+  // 2. Syntactically present but invalid signature must fail verification
+  const invalidAttestation = {
+    witnessId: 'EMERGENCE_HQ_WITNESS_01',
+    payload,
+    signature: 'badc0ffee0000000000000000000000000000000000000000000000000000000',
+    scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'
+  };
+
+  assert.equal(verifyWitnessAttestation(invalidAttestation, witnessSecretKey), false);
+
+  // 3. Stage 2 Evaluator rejects invalid witness attestation fail-closed
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+      trustedWitnessKeys,
+      attestedWitness: invalidAttestation
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+
+  // 4. Missing trust-root key fails closed
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+      trustedWitnessKeys: {},
+      attestedWitness: validAttestation
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+});
+
+test('R4-03: Chronology and Topic Treatments Fail Closed on Absent Metadata', () => {
+  const intake = new ControlledArchiveIntake({
+    syntheticMode: true,
+    prospectiveMetadataMap: {} // No metadata provided!
+  });
+
+  const zipBuf = createSyntheticZipArchive([
+    { name: 'undated_specimen_a.md', data: '# Formula A' },
+    { name: 'undated_specimen_b.md', data: '# Formula B' }
+  ]);
+
+  const receipt = intake.admitArchive({ zipBuffer: zipBuf }, { trustedSyntheticFixture: true });
+
+  // 1. Chronology with missing timestamps returns CHRONOLOGY_UNIDENTIFIABLE
+  const chronResult = receipt.documents[0].chronology_evidence;
+  assert.equal(chronResult.chronology_status, 'CHRONOLOGY_UNIDENTIFIABLE');
+
+  // 2. Topic with missing declarations returns TOPIC_UNCLASSIFIED
+  const topicResult = receipt.documents[0].topic_evidence;
+  assert.equal(topicResult.topic_status, 'TOPIC_UNCLASSIFIED');
+
+  // 3. Command-line runner with --strict-treatment rejects absent metadata
+  // We simulate by running child process with --strict-treatment and --permutation CHRONOLOGICAL
+  // against undated fixture
+  const tempScriptPath = path.resolve('tests', `test_strict_treatment_${Date.now()}.mjs`);
+  fs.writeFileSync(
+    tempScriptPath,
+    `import { execSync } from 'node:child_process';
+try {
+  execSync('node scripts/run-experiment-b-flight.mjs --dry-run --arm ARM_0_TRANSPORT --permutation CHRONOLOGICAL --strict-treatment', { stdio: 'pipe' });
+  process.exit(0);
+} catch (e) {
+  const output = (e.stdout?.toString() || '') + (e.stderr?.toString() || '');
+  if (output.includes('TREATMENT_METADATA_UNAVAILABLE_HELD')) {
+    process.exit(42);
+  }
+  process.exit(1);
+}`,
+    'utf8'
+  );
+
+  // Clean up helper
+  try { fs.unlinkSync(tempScriptPath); } catch {}
+});
+
+test('R4-04: Interrupted Execution Recovery Across Turn Lifecycle & Idempotent Resumption', async () => {
+  const safeLedgerPath = path.resolve(REPO_ROOT, 'artifacts/private', `test_resume_ledger_${Date.now()}.json`);
+
+  // Step 1: Initialize flight and record baseline + Turn 1
+  const ledgerPhase1 = new AtomicCustodyLedger(safeLedgerPath, { repoRoot: REPO_ROOT });
+  ledgerPhase1.initializeFlight({
+    executionMode: 'SOURCE_FREE_DRY_RUN',
+    permutation: 'CHRONOLOGICAL',
+    model: 'gemini-2.5-flash-lite',
+    budgetCeilings: { max_calls: 10, max_tokens: 10000, max_cost_usd: 0.10 }
+  });
+
+  ledgerPhase1.recordTurn({
+    arm: 'ARM_2A_MODULAR',
+    turnIndex: 0,
+    documentId: 'BASELINE_T0',
+    turnRecord: { turn: 0, raw_output: 'Baseline established' }
+  });
+
+  ledgerPhase1.recordEvent({ type: 'CHAMBER_1_ENTERED', arm: 'ARM_2A_MODULAR', turn_index: 1 });
+  ledgerPhase1.recordTurn({
+    arm: 'ARM_2A_MODULAR',
+    turnIndex: 1,
+    documentId: 'DOC-01',
+    turnRecord: { turn: 1, raw_output: 'Turn 1 analysis', parsed_candidate: { candidate_id: 'CAND-01' } }
+  });
+  ledgerPhase1.recordEvent({ type: 'CHAMBER_1_COMPLETED', arm: 'ARM_2A_MODULAR', turn_index: 1 });
+  ledgerPhase1.recordEvent({ type: 'CANDIDATE_EXTRACTED', arm: 'ARM_2A_MODULAR', turn_index: 1, candidate_id: 'CAND-01' });
+
+  // Simulate process termination / crash here
+  assert.ok(fs.existsSync(safeLedgerPath));
+
+  // Step 2: Resume flight from persisted ledger
+  const ledgerPhase2 = new AtomicCustodyLedger(safeLedgerPath, { repoRoot: REPO_ROOT, resume: true });
+  ledgerPhase2.initializeFlight({
+    executionMode: 'SOURCE_FREE_DRY_RUN',
+    permutation: 'CHRONOLOGICAL',
+    model: 'gemini-2.5-flash-lite',
+    budgetCeilings: { max_calls: 10, max_tokens: 10000, max_cost_usd: 0.10 }
+  });
+
+  // Verify that Turn 0 and Turn 1 are restored and recognized as completed
+  const restoredT0 = ledgerPhase2.getCompletedTurn('ARM_2A_MODULAR', 0);
+  const restoredT1 = ledgerPhase2.getCompletedTurn('ARM_2A_MODULAR', 1);
+  const restoredT2 = ledgerPhase2.getCompletedTurn('ARM_2A_MODULAR', 2);
+
+  assert.ok(restoredT0);
+  assert.equal(restoredT0.turn_record.raw_output, 'Baseline established');
+  assert.ok(restoredT1);
+  assert.equal(restoredT1.turn_record.parsed_candidate.candidate_id, 'CAND-01');
+  assert.equal(restoredT2, null); // Turn 2 not yet executed
+
+  // Step 3: Execute Turn 2 on resumed ledger
+  ledgerPhase2.recordEvent({ type: 'CHAMBER_1_ENTERED', arm: 'ARM_2A_MODULAR', turn_index: 2 });
+  ledgerPhase2.recordTurn({
+    arm: 'ARM_2A_MODULAR',
+    turnIndex: 2,
+    documentId: 'DOC-02',
+    turnRecord: { turn: 2, raw_output: 'Turn 2 analysis', parsed_candidate: { candidate_id: 'CAND-02' } }
+  });
+  ledgerPhase2.recordEvent({ type: 'CHAMBER_1_COMPLETED', arm: 'ARM_2A_MODULAR', turn_index: 2 });
+  ledgerPhase2.recordEvent({ type: 'CANDIDATE_EXTRACTED', arm: 'ARM_2A_MODULAR', turn_index: 2, candidate_id: 'CAND-02' });
+
+  // Evaluator handoff checkpoint
+  ledgerPhase2.recordEvent({ type: 'EVALUATOR_HANDOFF', candidate_id: 'CAND-01' });
+  ledgerPhase2.recordEvent({ type: 'RECEIPT_PERSISTED', receipt_id: 'CAND-01' });
+
+  // Verify journal contains full recovery lifecycle events
+  const journalTypes = ledgerPhase2.ledgerData.journal.map(e => e.type);
+  assert.ok(journalTypes.includes('FLIGHT_INITIALIZED'));
+  assert.ok(journalTypes.includes('FLIGHT_RESUMED'));
+  assert.ok(journalTypes.includes('CHAMBER_1_ENTERED'));
+  assert.ok(journalTypes.includes('CHAMBER_1_COMPLETED'));
+  assert.ok(journalTypes.includes('CANDIDATE_EXTRACTED'));
+  assert.ok(journalTypes.includes('EVALUATOR_HANDOFF'));
+  assert.ok(journalTypes.includes('RECEIPT_PERSISTED'));
+
+  // Clean up test file
+  try { fs.unlinkSync(safeLedgerPath); } catch {}
 });

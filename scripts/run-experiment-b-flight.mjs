@@ -45,7 +45,8 @@ import { HeterogeneousDiscoveryHarness } from '../docs/research/experiment-b-pre
 import {
   Stage2IndependentEvaluator,
   computeProofBindingDigest,
-  createIndependentProofReceipt
+  createIndependentProofReceipt,
+  verifyWitnessAttestation
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 import {
   SharedBudgetGovernor,
@@ -53,6 +54,10 @@ import {
   validatePrivatePathConfinement
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
 import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
+import {
+  AntigravityNativeOrchestrator,
+  ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/antigravity-native-orchestrator.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,6 +85,8 @@ function parseArgs(args) {
     attestedWitnessFile: null,
     ledgerPath: null,
     derivativesManifest: null,
+    strictTreatment: false,
+    resume: false,
     help: false
   };
 
@@ -89,6 +96,10 @@ function parseArgs(args) {
       options.help = true;
     } else if (arg === '--dry-run') {
       options.dryRun = true;
+    } else if (arg === '--strict-treatment') {
+      options.strictTreatment = true;
+    } else if (arg === '--resume') {
+      options.resume = true;
     } else if (arg === '--backend' && args[i + 1]) {
       options.backend = args[++i].toLowerCase();
     } else if (arg === '--archive-path' && args[i + 1]) {
@@ -401,18 +412,32 @@ async function main() {
       );
       process.exit(1);
     }
+  }
 
-    // R3-01: Preflight Stage 2 Witness Contract Check
-    if (options.requireWitnessTier) {
-      const witnessKeys = resolveWitnessKeys(options);
-      const attestedWitness = resolveAttestedWitness(options);
-      if (!attestedWitness || !witnessKeys[attestedWitness.witnessId]) {
-        console.error(
-          'PREFLIGHT_STAGE2_WITNESS_CONTRACT_MISSING: In-line witnessed evaluation requested (--require-witness-tier), ' +
-          'but missing authentic cryptographic witness attestation or trusted key. Halted before archive admission or provider dispatch.'
-        );
-        process.exit(1);
-      }
+  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, and trust root before archive admission)
+  if (options.requireWitnessTier) {
+    const witnessKeys = resolveWitnessKeys(options);
+    const attestedWitness = resolveAttestedWitness(options);
+    if (!attestedWitness || !witnessKeys[attestedWitness.witnessId]) {
+      console.error(
+        'PREFLIGHT_STAGE2_WITNESS_CONTRACT_MISSING: In-line witnessed evaluation requested (--require-witness-tier), ' +
+        'but missing authentic cryptographic witness attestation or trusted key. Halted before archive admission or provider dispatch.'
+      );
+      process.exit(1);
+    }
+    const witnessKey = witnessKeys[attestedWitness.witnessId];
+    const isValid = verifyWitnessAttestation(attestedWitness, witnessKey);
+    if (!isValid) {
+      console.error(
+        `PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID: Cryptographic witness signature verification failed for witnessId '${attestedWitness.witnessId}'. Zero protected exposure or provider calls permitted.`
+      );
+      process.exit(1);
+    }
+    if (attestedWitness.scope && attestedWitness.scope !== 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION') {
+      console.error(
+        `PREFLIGHT_STAGE2_WITNESS_SCOPE_MISMATCH: Witness scope '${attestedWitness.scope}' does not match required 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'. Halted before archive admission or model dispatch.`
+      );
+      process.exit(1);
     }
   }
 
@@ -427,11 +452,23 @@ async function main() {
 
   // 2. Admission of Specimens
   let admissionReceipt;
+  const syntheticMetadata = {
+    'synthetic_dissipative_oscillator.md': {
+      operator_declared_date: '2026-01-15T00:00:00Z',
+      declared_topic: 'TOPIC_DISSIPATION'
+    },
+    'synthetic_series_rlc_circuit.md': {
+      operator_declared_date: '2026-02-01T00:00:00Z',
+      declared_topic: 'TOPIC_CIRCUITS'
+    }
+  };
+
   const intake = new ControlledArchiveIntake({
     syntheticMode: options.dryRun,
     allowProtectedAdmission: !options.dryRun,
     trustedOperatorKeys: operatorKeys,
     authorizedDerivativesMap: derivativesMap,
+    prospectiveMetadataMap: options.dryRun ? syntheticMetadata : {},
     maxMembers: 50,
     maxTotalExpandedBytes: 10 * 1024 * 1024,
     maxPerMemberBytes: 2 * 1024 * 1024,
@@ -464,15 +501,25 @@ async function main() {
     console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive: ${options.archivePath}`);
   }
 
-  // 3. Sequence Permutation Treatment (R3-05)
+  // 3. Sequence Permutation Treatment (R3-05 & R4-03)
   const permResult = applySequencePermutation(admissionReceipt.documents, options.permutation);
+  if (options.strictTreatment || !options.dryRun) {
+    if (permResult.status === 'CHRONOLOGY_UNIDENTIFIABLE' || permResult.status === 'TOPIC_UNCLASSIFIED_ORDER_HELD') {
+      console.error(
+        `TREATMENT_METADATA_UNAVAILABLE_HELD: Permutation '${options.permutation}' halted fail-closed (${permResult.status}). ` +
+        `Required verified historical metadata is unavailable. Silent fallback to archive-order or guessing is strictly prohibited.`
+      );
+      process.exit(1);
+    }
+  }
+
   const admittedDocs = permResult.documents;
   console.log(`  ✓ Sequence treatment applied: ${options.permutation} (${admittedDocs.map(d => d.filename).join(' -> ')}) [status: ${permResult.status}]`);
   if (permResult.notice) {
     console.log(`    Note: ${permResult.notice}`);
   }
 
-  // 4. Private Custody Ledger & Shared Budget Governor Initialization (R3-04 & R3-06)
+  // 4. Private Custody Ledger & Shared Budget Governor Initialization (R3-04, R3-06 & R4-04)
   const defaultLedger = path.resolve(REPO_ROOT, 'artifacts/private', options.dryRun ? 'flight_research_ledger_dry_run_test.json' : 'flight_research_ledger_live.json');
   const targetLedgerPath = options.ledgerPath ? path.resolve(options.ledgerPath) : defaultLedger;
 
@@ -486,7 +533,11 @@ async function main() {
     model: options.model
   });
 
-  const custodyLedger = new AtomicCustodyLedger(targetLedgerPath, { repoRoot: REPO_ROOT });
+  const custodyLedger = new AtomicCustodyLedger(targetLedgerPath, {
+    repoRoot: REPO_ROOT,
+    resume: options.resume
+  });
+
   custodyLedger.initializeFlight({
     executionMode: options.dryRun ? 'SOURCE_FREE_DRY_RUN' : 'LIVE_PHYSICAL_FLIGHT',
     permutation: options.permutation,
@@ -500,7 +551,7 @@ async function main() {
     admissionReceipt
   });
 
-  // 5. Execution of Designated Arms
+  // 5. Execution of Designated Arms (R4-01 & R4-04)
   const allHarnesses = {};
   const armsToRun = options.arm === 'ALL'
     ? ['ARM_0_TRANSPORT', 'ARM_1_ARCHIVAL', 'ARM_2A_MODULAR', 'ARM_2B_MATCHED_UNION']
@@ -508,62 +559,163 @@ async function main() {
 
   for (const arm of armsToRun) {
     if (arm === 'ARM_0_TRANSPORT') {
+      if (options.resume && custodyLedger.isArmCompleted('ARM_0_TRANSPORT')) {
+        console.log(`\n--- Arm 0 Already Completed (Restoring from persisted ledger) ---`);
+        continue;
+      }
       console.log(`\n--- Executing ARM_0_TRANSPORT ---`);
       const arm0Result = executeArm0Transport(admittedDocs);
       custodyLedger.recordArmCompletion('ARM_0_TRANSPORT', arm0Result);
       console.log(`  ✓ Arm 0 Complete: ${arm0Result.total_documents} docs transported (${arm0Result.total_bytes_transported} bytes)`);
     } else if (arm === 'ARM_1_ARCHIVAL') {
+      if (options.resume && custodyLedger.isArmCompleted('ARM_1_ARCHIVAL')) {
+        console.log(`\n--- Arm 1 Already Completed (Restoring from persisted ledger) ---`);
+        continue;
+      }
       console.log(`\n--- Executing ARM_1_ARCHIVAL ---`);
       const arm1Result = await executeArm1Archival(REPO_ROOT, admittedDocs);
       custodyLedger.recordArmCompletion('ARM_1_ARCHIVAL', arm1Result);
       console.log(`  ✓ Arm 1 Complete: ${arm1Result.total_documents} docs processed (raw_preserved: ${arm1Result.raw_bytes_preserved}, indexed: ${arm1Result.total_indexed}, schema_admitted: ${arm1Result.schema_admitted}, schema_rejected: ${arm1Result.schema_rejected})`);
     } else if (arm === 'ARM_2A_MODULAR' || arm === 'ARM_2B_MATCHED_UNION') {
-      console.log(`\n--- Executing ${arm} ---`);
-      const harness = new HeterogeneousDiscoveryHarness({
-        arm,
-        mockMode: options.dryRun,
-        allowLivePaidInference: !options.dryRun,
-        model: options.model,
-        maxCalls: options.maxCalls,
-        maxTokens: options.maxTokens,
-        maxCostUSD: options.maxCostUSD,
-        sharedBudgetGovernor
-      });
+      console.log(`\n--- Executing ${arm} (${options.backend === 'native' ? 'Antigravity Native Agent' : 'Gemini REST Client'}) ---`);
 
-      console.log(`  ✓ Establishing Pre-Exposure Baseline (t0)...`);
-      await harness.establishPreExposureBaseline();
-      custodyLedger.recordTurn({
-        arm,
-        turnIndex: 0,
-        documentId: 'BASELINE_T0',
-        turnRecord: harness.history[0],
-        sharedBudgetGovernor
-      });
+      let nativeOrchestrator = null;
+      let harness = null;
 
-      let turnIdx = 0;
-      for (const doc of admittedDocs) {
-        turnIdx++;
-        console.log(`  ✓ Ingesting turn ${turnIdx}: ${doc.filename}...`);
-        await harness.ingestSequentialDocument(doc, turnIdx);
-        custodyLedger.recordTurn({
+      if (options.backend === 'native') {
+        nativeOrchestrator = new AntigravityNativeOrchestrator({
+          syntheticMode: options.dryRun,
+          allowLiveNativeFlight: !options.dryRun && isFlightAuthorized,
+          sessionId: `AGY-${arm}-${Date.now()}`,
+          modelIdentity: options.model
+        });
+
+        if (!options.dryRun && !nativeOrchestrator.isLiveNativeEnvironmentActive()) {
+          console.error(
+            'NATIVE_UNIMPLEMENTED_HELD: Genuine Antigravity in-app native agent flight requires an active, ' +
+            'connected in-app agent runner environment (TD613_ANTIGRAVITY_NATIVE_SESSION_ID). ' +
+            'Fallback to Gemini REST client is strictly prohibited by Sovereign Steer 2026-10-30.'
+          );
+          process.exit(1);
+        }
+      } else {
+        harness = new HeterogeneousDiscoveryHarness({
           arm,
-          turnIndex: turnIdx,
-          documentId: doc.id,
-          turnRecord: harness.history[harness.history.length - 1],
+          mockMode: options.dryRun,
+          allowLivePaidInference: !options.dryRun,
+          model: options.model,
+          maxCalls: options.maxCalls,
+          maxTokens: options.maxTokens,
+          maxCostUSD: options.maxCostUSD,
           sharedBudgetGovernor
         });
       }
 
-      allHarnesses[arm] = harness;
+      // Pre-Exposure Baseline (t0) with Granular Recovery Check
+      const completedBaseline = custodyLedger.getCompletedTurn(arm, 0);
+      let baselineTurnRecord;
+      if (completedBaseline) {
+        console.log(`  ✓ Restoring Pre-Exposure Baseline (t0) from persisted ledger...`);
+        baselineTurnRecord = completedBaseline.turn_record;
+      } else {
+        console.log(`  ✓ Establishing Pre-Exposure Baseline (t0)...`);
+        custodyLedger.recordEvent({ type: 'BASELINE_ENTERED', arm });
+        if (options.backend === 'native') {
+          baselineTurnRecord = await nativeOrchestrator.executeTurn({
+            arm,
+            turnIndex: 0,
+            document: null
+          });
+        } else {
+          await harness.establishPreExposureBaseline();
+          baselineTurnRecord = harness.history[0];
+        }
+        custodyLedger.recordTurn({
+          arm,
+          turnIndex: 0,
+          documentId: 'BASELINE_T0',
+          turnRecord: baselineTurnRecord,
+          sharedBudgetGovernor: options.backend === 'rest' ? sharedBudgetGovernor : null
+        });
+        custodyLedger.recordEvent({ type: 'BASELINE_COMPLETED', arm });
+      }
+
+      let turnIdx = 0;
+      const candidates = [];
+      const history = [baselineTurnRecord];
+
+      for (const doc of admittedDocs) {
+        turnIdx++;
+        const completedTurn = custodyLedger.getCompletedTurn(arm, turnIdx);
+        let turnRecord;
+        if (completedTurn) {
+          console.log(`  ✓ Restoring turn ${turnIdx} (${doc.filename}) from persisted ledger...`);
+          turnRecord = completedTurn.turn_record;
+          history.push(turnRecord);
+          if (turnRecord.parsed_candidate) {
+            candidates.push(turnRecord.parsed_candidate);
+          }
+          continue;
+        }
+
+        console.log(`  ✓ Ingesting turn ${turnIdx}: ${doc.filename}...`);
+        custodyLedger.recordEvent({ type: 'CHAMBER_1_ENTERED', arm, turn_index: turnIdx, document_id: doc.id });
+        if (options.backend === 'native') {
+          turnRecord = await nativeOrchestrator.executeTurn({
+            arm,
+            turnIndex: turnIdx,
+            document: doc,
+            priorHistory: history
+          });
+          if (turnRecord.parsed_candidate) {
+            candidates.push(turnRecord.parsed_candidate);
+            custodyLedger.recordEvent({
+              type: 'CANDIDATE_EXTRACTED',
+              arm,
+              turn_index: turnIdx,
+              candidate_id: turnRecord.parsed_candidate.candidate_id
+            });
+          }
+        } else {
+          await harness.ingestSequentialDocument(doc, turnIdx);
+          turnRecord = harness.history[harness.history.length - 1];
+          if (harness.candidates.length > 0) {
+            const latestCand = harness.candidates[harness.candidates.length - 1];
+            if (!candidates.some(c => c.candidate_id === latestCand.candidate_id)) {
+              candidates.push(latestCand);
+              custodyLedger.recordEvent({
+                type: 'CANDIDATE_EXTRACTED',
+                arm,
+                turn_index: turnIdx,
+                candidate_id: latestCand.candidate_id
+              });
+            }
+          }
+        }
+        history.push(turnRecord);
+        custodyLedger.recordEvent({ type: 'CHAMBER_1_COMPLETED', arm, turn_index: turnIdx, document_id: doc.id });
+        custodyLedger.recordTurn({
+          arm,
+          turnIndex: turnIdx,
+          documentId: doc.id,
+          turnRecord,
+          sharedBudgetGovernor: options.backend === 'rest' ? sharedBudgetGovernor : null
+        });
+      }
+
+      allHarnesses[arm] = { candidates, history };
       custodyLedger.recordArmCompletion(arm, {
         arm,
-        turns_executed: harness.history.length,
-        candidates_formulated: harness.candidates.length,
-        summary: sharedBudgetGovernor.getSummary()
+        backend: options.backend,
+        turns_executed: history.length,
+        candidates_formulated: candidates.length,
+        summary: options.backend === 'rest' ? sharedBudgetGovernor.getSummary() : { backend: 'ANTIGRAVITY_NATIVE_AGENT', turns: history.length }
       });
 
-      console.log(`  ✓ ${arm} Complete: ${harness.history.length} turns, ${harness.candidates.length} candidates formulated.`);
-      console.log(`    Aggregate Calls: ${sharedBudgetGovernor.providerAttempts} | Tokens: ${sharedBudgetGovernor.totalTokensConsumed} | Cost: $${sharedBudgetGovernor.getEstimatedCostUSD()}`);
+      console.log(`  ✓ ${arm} Complete: ${history.length} turns, ${candidates.length} candidates formulated.`);
+      if (options.backend === 'rest') {
+        console.log(`    Aggregate Calls: ${sharedBudgetGovernor.providerAttempts} | Tokens: ${sharedBudgetGovernor.totalTokensConsumed} | Cost: $${sharedBudgetGovernor.getEstimatedCostUSD()}`);
+      }
     }
   }
 

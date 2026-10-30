@@ -1,0 +1,131 @@
+{
+  "schema": "td613.aperture.historical-tomography-replay-receipt/v0.1",
+  "timestamp": "2026-10-30T18:05:57.069Z",
+  "spec_heads": {
+    "discrete_transport_tomography": "d9cff3a1c6969be28af28c90f7aef85e4200fc70",
+    "hardened_transport_tomography": "b301ac9147b68a9ba8883bfec40391a0f5ac086b",
+    "noncommuting_two_face": "5a0abd4275f46b6265b0213a4ae3912e2af680e5",
+    "path_groupoid_holonomy": "559383ec511df1759f3257de2e2a0ddea8d8c86c"
+  },
+  "four_essential_scientific_outcomes": {
+    "successful_operator_reconstruction": {
+      "status": "VERIFIED",
+      "edge": "AB",
+      "probe_schedule": "P_FULL",
+      "rank": 4,
+      "nullity": 0,
+      "unique_solution_found": true,
+      "in_sample_residual": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "held_out_residual": 0,
+      "oracle_match": true
+    },
+    "persistent_nullspace": {
+      "status": "VERIFIED",
+      "schedule": "P_BLIND_HARD",
+      "rank": 3,
+      "nullity": 1,
+      "frozen_null_vector": [
+        15,
+        0,
+        1,
+        0
+      ],
+      "distinct_candidates_count": 2,
+      "identical_primary_observations": true,
+      "identical_heldout_observations": true,
+      "distinct_loop_holonomies": true,
+      "loop_identifiability": "UNIDENTIFIED"
+    },
+    "numerical_instability": {
+      "status": "VERIFIED",
+      "matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0.0005
+        ]
+      ],
+      "algebraic_rank": 2,
+      "condition_number": 2000,
+      "sigma_min": 0.0005,
+      "deficit_class": "NUMERICAL_STABILITY_DEFICIT",
+      "disposition": "PROPOSE"
+    },
+    "hostile_model_rejection": {
+      "status": "VERIFIED",
+      "test_type": "HOSTILE_REVERSE_EDGE_CONNECTION_FAILURE",
+      "hostile_oracle_invertible": true,
+      "connection_consistency_pass": false,
+      "rejection_enforced": true
+    }
+  },
+  "replayed_programs": {
+    "discrete_transport_tomography_closed_loop": {
+      "schema": "td613.ash.discrete-transport-tomography.closed-loop-falsification/v0.1",
+      "full_rank": 4,
+      "loop_operator": [
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "bounded_answer": "DISCRETE_HOLONOMY_TOMOGRAPHY_IS_IMPLEMENTABLE_AND_FALSIFIABLE_IN_AUTHORED_FINITE_RESEARCH_FIXTURE"
+    },
+    "discrete_transport_tomography_hardened": {
+      "schema": "td613.ash.discrete-transport-tomography.closed-loop-falsification.hardened/v0.1",
+      "hard_blind_nullspace_control_pass": true,
+      "loop_identifiability": "UNIDENTIFIED",
+      "classification": "CLOSED_LOOP_TRANSPORT_UNIDENTIFIED_AFTER_HELDOUT_BLIND_NULLSPACE_CONTROL"
+    },
+    "noncommuting_two_face_holonomy": {
+      "schema": "td613.ash.noncommuting-two-face-holonomy-tomography/v0.1",
+      "directed_edge_count": 14,
+      "face_loops_commute": false,
+      "bounded_answer": "NONCOMMUTING_TWO_FACE_HOLONOMY_COMPOSITION_SURVIVES_TOMOGRAPHIC_RECONSTRUCTION_IN_AUTHORED_GL2_F31_CELL_COMPLEX"
+    },
+    "path_groupoid_discrete_holonomy": {
+      "schema": "td613.ash.path-groupoid-discrete-holonomy-representation/v0.1",
+      "gamma1_inverse_law": true,
+      "commutator_nonidentity": true,
+      "bounded_answer": "DISCRETE_PATH_GROUPOID_HOLONOMY_REPRESENTATION_CANDIDATE_SURVIVES_IN_AUTHORED_F31_GRAPH_FIXTURE"
+    },
+    "real_valued_aperture_svd": {
+      "robust": {
+        "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "disposition": "ASK_NOTHING",
+        "criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+        "reason": "declared local rank and stability posture is presently satisfied"
+      },
+      "ill_conditioned": {
+        "deficit_class": "NUMERICAL_STABILITY_DEFICIT",
+        "disposition": "PROPOSE",
+        "criterion": "SEEK_PREDECLARED_STABILIZING_OBSERVATION_WITHOUT_REQUIRING_RANK_LIFT",
+        "reason": "operator is full rank but fails the declared local stability posture"
+      },
+      "deficient": {
+        "deficit_class": "STRUCTURAL_RANK_DEFICIT",
+        "disposition": "PROPOSE",
+        "criterion": "SEEK_PREDECLARED_NULLSPACE_CONTRACTING_OBSERVATION_THEN_AUDIT_STABILITY",
+        "reason": "current operator rank is below the declared latent dimension"
+      }
+    }
+  },
+  "scientific_governance": {
+    "real_svd_applied_to_finite_fields": false,
+    "finite_field_algebra_preserved": true,
+    "negative_controls_preserved": true,
+    "human_closure_required": true
+  }
+}
