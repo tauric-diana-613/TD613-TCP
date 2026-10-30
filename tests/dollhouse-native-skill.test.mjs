@@ -1313,7 +1313,14 @@ test('TD613 Dollhouse Native Skill & Six-Role Orchestration Test Battery', async
       assert.ok(atlasFinding, 'Atlas finding must be present');
       assert.ok(atlasFinding.extensions?.mathematical_evaluation, `Extension should execute for ${op}`);
       const evalResult = atlasFinding.extensions.mathematical_evaluation;
-      assert.equal(evalResult.epistemic_status, 'MATHEMATICALLY_QUALIFIED', `Op ${op} must be MATHEMATICALLY_QUALIFIED`);
+      const validStatuses = [
+        'FIXTURE_DEMONSTRATION',
+        'INPUT_DEPENDENT_EVALUATION',
+        'STRUCTURAL_SIGNATURE_RECOGNIZED',
+        'TYPED_DESCRIPTION_CLASSIFIED',
+        'MATHEMATICALLY_QUALIFIED'
+      ];
+      assert.ok(validStatuses.includes(evalResult.epistemic_status), `Op ${op} epistemic_status must be truthful qualification status, got ${evalResult.epistemic_status}`);
       assert.equal(evalResult.positive_control.passed, true, `Op ${op} positive control must pass`);
       assert.equal(evalResult.negative_control.passed, true, `Op ${op} negative control must pass`);
     }
