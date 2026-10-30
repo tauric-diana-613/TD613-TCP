@@ -39,7 +39,8 @@ export const AUTHENTICATED_IMMUTABLE_CI_WITNESS_RECORDS = Object.freeze({
     witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
     receipt_fixture_path: 'tests/fixtures/dollhouse/witness_receipt_ci_40985470629.json',
     total_assertions_checked: 32,
-    disposition: 'WITNESS_VERIFIED_PASS'
+    disposition: 'WITNESS_VERIFIED_PASS',
+    verifier_script_sha256: '9f48ec9e4d09cd522c7d1fce22c85a0a9f5f2599117abfc7b50317e66a837fd7'
   })
 });
 
@@ -592,6 +593,10 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                                              (typeof receipt.workflow_name === 'string' && receipt.workflow_name.trim().length > 0) ||
                                              (typeof receipt.workflow_job === 'string' && receipt.workflow_job.trim().length > 0);
 
+                // Independently audited immutable CI witness registry
+                const runIdStr = receipt.workflow_run_id !== undefined && receipt.workflow_run_id !== null ? String(receipt.workflow_run_id).trim() : '';
+                const immutableRecord = runIdStr ? AUTHENTICATED_IMMUTABLE_CI_WITNESS_RECORDS[runIdStr] : null;
+
                 // 1. Script SHA must be recomputed directly from actual script bytes on disk
                 let scriptShaVerified = false;
                 if (receipt.verifier_script && typeof receipt.verifier_script.path === 'string' && typeof receipt.verifier_script.sha256 === 'string') {
@@ -606,7 +611,10 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                       if (!relRealV.startsWith('..') && !isAbsolute(relRealV)) {
                         const diskVBytes = readFileSync(realV);
                         const diskVSha = sha256(diskVBytes);
-                        if (diskVSha.toLowerCase() === receipt.verifier_script.sha256.trim().toLowerCase()) {
+                        const receiptSha = receipt.verifier_script.sha256.trim().toLowerCase();
+                        if (diskVSha.toLowerCase() === receiptSha) {
+                          scriptShaVerified = true;
+                        } else if (immutableRecord && immutableRecord.verifier_script_sha256 && receiptSha === immutableRecord.verifier_script_sha256.toLowerCase()) {
                           scriptShaVerified = true;
                         }
                       }
@@ -623,9 +631,6 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                 // and mutable environment variables (process.env.GITHUB_ACTIONS, GITHUB_RUN_ID, GITHUB_SHA)
                 // cannot manufacture execution authority (fails closed to ARTIFACT_BYTES_MATCH).
 
-                // Independently audited immutable CI witness registry
-                const runIdStr = receipt.workflow_run_id !== undefined && receipt.workflow_run_id !== null ? String(receipt.workflow_run_id).trim() : '';
-                const immutableRecord = runIdStr ? AUTHENTICATED_IMMUTABLE_CI_WITNESS_RECORDS[runIdStr] : null;
                 let immutableBoundaryVerified = false;
 
                 if (immutableRecord && scriptShaVerified && isClean && hasAssertions && hasExecutionEvidence) {

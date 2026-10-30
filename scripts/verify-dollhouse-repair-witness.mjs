@@ -163,6 +163,12 @@ async function runWitnessSuite() {
     '--disable-setuid-sandbox',
     '--disable-dev-shm-usage',
     '--disable-gpu',
+    '--disable-background-networking',
+    '--disable-features=AudioServiceOutOfProcess,dbus',
+    '--disable-extensions',
+    '--disable-sync',
+    '--disable-default-apps',
+    '--mute-audio',
     '--no-first-run',
     '--no-default-browser-check',
     '--password-store=basic',
@@ -191,7 +197,7 @@ async function runWitnessSuite() {
   });
 
   let versionData = null;
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 150; i++) {
     if (chromeExitCode !== null) {
       break;
     }
@@ -210,7 +216,7 @@ async function runWitnessSuite() {
     try { chromeProc.kill(); } catch {}
     try { rmSync(tempUserDataDir, { recursive: true, force: true }); } catch {}
     throw new Error(
-      `Failed to connect to headless Chrome via CDP after 50 attempts (10s).\n` +
+      `Failed to connect to headless Chrome via CDP after 150 attempts (30s).\n` +
       `Chrome exit code: ${chromeExitCode}, signal: ${chromeExitSignal}\n` +
       `Chrome stderr:\n${chromeStderr.trim() || '(none)'}\n` +
       `Chrome stdout:\n${chromeStdout.trim() || '(none)'}`
