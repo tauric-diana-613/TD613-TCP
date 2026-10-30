@@ -45,8 +45,9 @@ All operator-permission HOLDs were expressly lifted by Sovereign Operator Direct
 
 - **Audited Baseline:** `11858e7f20dceea7cd0c686c088d1ebefe266264` + merged PR #1603 (`3209fd80b09b7ff8154257c86552306b5357510a`).
 - **First Reviewed Head:** `9fe8a58785a492df4d50846c65a46519e28188fc`.
-- **Predecessor Remote Head Verified by Emergence HQ / Amari:** `919d31e0850a27df017b0dee4c618ded51a924db` (following initial reconciliation from `cf4f365802dbdefe4781f37afcce9a0e342f7227`).
-- **Green GitHub CI Status:** Verified passing on GitHub Actions run `40966875734` and subsequent exact-head validations.
+- **Second Reviewed Head:** `919d31e0850a27df017b0dee4c618ded51a924db` (following initial reconciliation from `cf4f365802dbdefe4781f37afcce9a0e342f7227`).
+- **Third Reviewed Head:** `731e5ce52bd54ac6247d0e35159c7609c98a7dfc` (Comment #6511670811: `ENGINEERING SUBSTANTIALLY ACCEPTED · TWO CUSTODY HOLDS`).
+- **Green GitHub CI Status:** Verified passing on GitHub Actions run `40978057545` (Consolidated Validation SUCCESS).
 
 ---
 
@@ -61,6 +62,29 @@ Following review `5706457484` (`ENGINEERING_SUBSTANTIALLY_ACCEPTED · TWO_EXACT_
 | **Scope Correction 1** | Candidate Comparison Typing | Fixed mechanism and trade-off vectors were classified as evaluated internal candidates rather than comparative design heuristics. | Explicitly typed candidate evaluations as `COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE` with `evaluation_nature: 'HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION'` and `evaluation_type: 'COMPARATIVE_DESIGN_HEURISTIC_INVENTORY'`. Preserved all candidates and PR #1603 universal 1-deliverable default. | `app/engine/dollhouse-design-conductor.js:1182-1215`. Suite: `tests/dollhouse-repair-regressions-r01-r08.test.mjs:388-420`. | **RESOLVED (PASS)** |
 | **Scope Correction 2** | Unicode Custody in Atlas Docs | Documentation headers conflated display glyph `𝌋` (U+1D30B) with declared research scalar U+10D613 (`\uDBF5\uDE13`). | Strictly separated visible display glyph `𝌋` (Unicode U+1D30B, Tetragram for Guarding) from declared research scalar mark U+10D613 (`\uDBF5\uDE13`, PUA plane 16). Preserved covenant `Khona‌lit-po` with zero-width non-joiner U+200C (12 characters). | `docs/atlas/README.md:1-6`, `docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md:7`, `docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md:7-11`. | **RESOLVED (PASS)** |
 | **Scope Correction 3** | Atlas Yoon Crosswalk Source Details | Need accurate description of PPLN waveguide interferometer and reconciliation of Fig 4/5 historical sources. | Updated `ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`: (1) Accurately describes PPLN waveguide interferometer and multimode frequency-comb target. (2) Reconciles Fig 4 historical empirical sources: Lee et al. (2018, *Commun. Phys.* 1:51) and arXiv:2604.17767. (3) Formally marks Fig 5 strictly as theoretical calculations/predictions. (4) Retained investigations Y-01 through Y-06, finite reversal countermodel, and visibility identifiability failure. | `docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md:30-56, 240-252, 290-300`. | **RESOLVED (PASS)** |
+
+### 3.1. Final Custody Resolution (Review #6511670811 Holds A & B)
+
+Following Amari's third independent review (Comment #6511670811), the two remaining custody holds were decisively resolved:
+
+1. **Hold A — Self-Asserted Execution Witness Refusal (`ARTIFACT_BYTE_INTEGRITY != AUTHENTICATED_EXECUTION`):**
+   - In `app/engine/dollhouse-design-conductor.js::buildInstrumentCausalContract`, enforced absolute separation between disk byte verification and execution event authentication.
+   - Formalized 4 mutually distinct evidentiary states:
+     - `PROPOSED_TRANSFER_LAW` (default generative synthesis planning state; also fail-closed result when file missing, hash mismatch, or path escape).
+     - `ARTIFACT_BYTES_MATCH` (artifact exists within real repository root and matches 64-hex SHA-256, but execution is unauthenticated, unverified in trusted ledger, or bound to wrong source revision).
+     - `MATERIALIZED_WITNESSED` (byte match AND independently authenticated execution event bound to exact source revision and trusted authority: `PHYSICAL_CDP_BROWSER_WITNESS` with clean tree and >= 32 assertions, or `GITHUB_ACTIONS_BROWSER_WITNESS` with verified attestation).
+     - `EXECUTED_DEMONSTRATION_LAW` (canonical historical qualification fixture `caro_corridor_primary.html`).
+   - Blocked all symlink and relative directory escapes using `realpathSync(artPath)` checked against `realpathSync(rootDir)`.
+   - Added 7 exact adversarial regression controls in `tests/dollhouse-repair-regressions-r01-r08.test.mjs` verifying each condition and the invariant `assert.notEqual('ARTIFACT_BYTES_MATCH', 'MATERIALIZED_WITNESSED')`.
+
+2. **Hold B — Self-Referential Git Witness Loop Elimination:**
+   - Decoupled receipt generation from the git working tree. `scripts/verify-dollhouse-repair-witness.mjs` now accepts `--out <path>` and writes out-of-tree by default to `artifacts/dollhouse-browser-witness/witness_receipt.json`.
+   - Ignored `artifacts/dollhouse-browser-witness/` in `.gitignore`, keeping working copy 100% clean across local and CI runs.
+   - Updated `.github/workflows/td613-ci.yml` `contracts:` job to:
+     - Check out exact PR head via `actions/checkout@v4` with `ref: ${{ github.event.pull_request.head.sha || github.sha }}`.
+     - Execute clean exact-head browser witness writing to out-of-tree path.
+     - Upload receipt as CI build artifact `dollhouse-witness-${{ github.event.pull_request.head.sha || github.sha }}` via `actions/upload-artifact@v4`.
+   - Preserved 4/4 durable workflow estate without regression (`workflow-estate.test.mjs` PASS).
 
 ---
 

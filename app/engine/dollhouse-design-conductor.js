@@ -499,76 +499,127 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
     witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
   }
 
-  // 2. Verify Materialized Witness (requires authenticated witness receipt with VERIFIED disposition + matching file)
+  // 2. Verify Materialized Witness (enforcing ARTIFACT_BYTE_INTEGRITY != AUTHENTICATED_EXECUTION)
   if (executionStatus === 'PROPOSED_TRANSFER_LAW') {
     if (options.witness_receipt && typeof options.witness_receipt === 'object') {
       const receipt = options.witness_receipt;
       const isPass = receipt.disposition === 'WITNESS_VERIFIED_PASS' || receipt.disposition === 'VERIFIED_PASS';
-      
-      // Provenance check: receipt must tie the observed run to an immutable source or timestamp/run identifier
-      const hasProvenance = (typeof receipt.source_revision === 'string' && receipt.source_revision.trim().length > 0) ||
-                            (typeof receipt.timestamp === 'string' && receipt.timestamp.trim().length > 0) ||
-                            (typeof receipt.witness_run_id === 'string' && receipt.witness_run_id.trim().length > 0);
 
-      if (isPass && hasProvenance) {
-        let artifactEntry = null;
-        if (Array.isArray(receipt.artifacts) && receipt.artifacts.length > 0) {
-          artifactEntry = receipt.artifacts.find(a => {
-            if (!a || typeof a !== 'object') return false;
-            if (options.artifact_path) {
-              return a.path === options.artifact_path;
-            }
-            if (instrumentId === 'BUTLER_PERFORMATIVE_ITERATION') return a.path && a.path.includes('butler');
-            if (instrumentId === 'SEDGWICK_REPARATIVE_TEXTURE') return a.path && a.path.includes('sedgwick');
-            if (instrumentId === 'PHASONIC_COUNTERPOINT') return a.path && (a.path.includes('counterpoint') || a.path.includes('phasonic'));
-            if (instrumentId === 'CARO_INSTITUTIONAL_RECONSTRUCTION') return a.path && a.path.includes('caro');
-            return true;
-          });
-        } else if (receipt.primary_artifact && typeof receipt.primary_artifact === 'object') {
-          artifactEntry = receipt.primary_artifact;
-        }
+      let artifactEntry = null;
+      if (Array.isArray(receipt.artifacts) && receipt.artifacts.length > 0) {
+        artifactEntry = receipt.artifacts.find(a => {
+          if (!a || typeof a !== 'object') return false;
+          if (options.artifact_path) {
+            return a.path === options.artifact_path;
+          }
+          if (instrumentId === 'BUTLER_PERFORMATIVE_ITERATION') return a.path && a.path.includes('butler');
+          if (instrumentId === 'SEDGWICK_REPARATIVE_TEXTURE') return a.path && a.path.includes('sedgwick');
+          if (instrumentId === 'PHASONIC_COUNTERPOINT') return a.path && (a.path.includes('counterpoint') || a.path.includes('phasonic'));
+          if (instrumentId === 'CARO_INSTITUTIONAL_RECONSTRUCTION') return a.path && a.path.includes('caro');
+          return true;
+        });
+      } else if (receipt.primary_artifact && typeof receipt.primary_artifact === 'object') {
+        artifactEntry = receipt.primary_artifact;
+      }
 
-        // Strict witness requirement: artifact must exist, have valid non-empty path, and exact 64-hex SHA-256
-        if (artifactEntry && typeof artifactEntry.path === 'string' && artifactEntry.path.trim().length > 0) {
-          const declaredSha = typeof artifactEntry.sha256 === 'string' ? artifactEntry.sha256.trim() : '';
-          const isHex64 = /^[a-f0-9]{64}$/i.test(declaredSha);
+      if (artifactEntry && typeof artifactEntry.path === 'string' && artifactEntry.path.trim().length > 0) {
+        const declaredSha = typeof artifactEntry.sha256 === 'string' ? artifactEntry.sha256.trim() : '';
+        const isHex64 = /^[a-f0-9]{64}$/i.test(declaredSha);
 
-          if (isHex64) {
-            const rootDir = process.cwd();
-            const artPath = resolve(rootDir, artifactEntry.path);
-            const relFromRoot = relative(rootDir, artPath);
-            const escapesRoot = relFromRoot.startsWith('..') || isAbsolute(relFromRoot);
+        if (isHex64) {
+          const rootDir = process.cwd();
+          const artPath = resolve(rootDir, artifactEntry.path);
+          const relFromRoot = relative(rootDir, artPath);
+          const escapesRoot = relFromRoot.startsWith('..') || isAbsolute(relFromRoot);
 
-            if (!escapesRoot && existsSync(artPath)) {
-              try {
-                const diskContent = readFileSync(artPath);
+          let bytesVerified = false;
+
+          if (!escapesRoot && existsSync(artPath)) {
+            try {
+              const realArt = realpathSync(artPath);
+              const realRoot = realpathSync(rootDir);
+              const relReal = relative(realRoot, realArt);
+              const realEscapes = relReal.startsWith('..') || isAbsolute(relReal);
+
+              if (!realEscapes) {
+                const diskContent = readFileSync(realArt);
                 const diskSha = sha256(diskContent);
                 if (declaredSha.toLowerCase() === diskSha.toLowerCase()) {
-                  executionStatus = 'MATERIALIZED_WITNESSED';
-                  witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
-                } else {
-                  witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+                  bytesVerified = true;
                 }
-              } catch {
-                witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
               }
+            } catch {
+              bytesVerified = false;
+            }
+          }
+
+          if (bytesVerified) {
+            // Artifact bytes on disk match declared 64-hex SHA-256 within repository bounds.
+            // Invariant: ARTIFACT_BYTE_INTEGRITY != AUTHENTICATED_EXECUTION.
+            const declaredRev = typeof receipt.source_revision === 'string' ? receipt.source_revision.trim() : '';
+            if (options.expected_source_revision && declaredRev.toLowerCase() !== options.expected_source_revision.toLowerCase()) {
+              executionStatus = 'ARTIFACT_BYTES_MATCH';
+              witnessVerification = 'WRONG_SOURCE_REVISION_REFUSED';
             } else {
-              witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
+              const authority = receipt.witness_authority || artifactEntry.witness_authority;
+              let executionAuthenticated = false;
+
+              if (isPass) {
+                if (authority === 'PHYSICAL_CDP_BROWSER_WITNESS') {
+                  const hasEngine = typeof receipt.browser_engine === 'string' && receipt.browser_engine.trim().length > 0;
+                  const hasCdp = typeof receipt.cdp_protocol === 'string' && receipt.cdp_protocol.trim().length > 0;
+                  const hasAssertions = typeof receipt.total_assertions_checked === 'number' && receipt.total_assertions_checked >= 32;
+                  const hasScriptSha = receipt.verifier_script && typeof receipt.verifier_script.sha256 === 'string' && /^[a-f0-9]{64}$/i.test(receipt.verifier_script.sha256);
+                  const isClean = (receipt.clean_working_tree_precheck && receipt.clean_working_tree_precheck.verified_clean_before_run === true) || options.allow_uncommitted_local_witness === true;
+
+                  if (hasEngine && hasCdp && hasAssertions && hasScriptSha && isClean) {
+                    executionAuthenticated = true;
+                  }
+                } else if (authority === 'GITHUB_ACTIONS_BROWSER_WITNESS') {
+                  const hasRunId = receipt.workflow_run_id !== undefined && receipt.workflow_run_id !== null && String(receipt.workflow_run_id).trim().length > 0;
+                  const hasWorkflow = typeof receipt.workflow_name === 'string' && receipt.workflow_name.trim().length > 0;
+                  const hasArtifact = (typeof receipt.published_artifact_path === 'string' && receipt.published_artifact_path.trim().length > 0) ||
+                                      (typeof receipt.published_artifact_name === 'string' && receipt.published_artifact_name.trim().length > 0);
+
+                  let inTrustedLedger = true;
+                  if (options.trusted_run_ledger) {
+                    const ledger = Array.isArray(options.trusted_run_ledger) ? options.trusted_run_ledger : (options.trusted_run_ledger instanceof Set ? Array.from(options.trusted_run_ledger) : []);
+                    inTrustedLedger = ledger.includes(receipt.workflow_run_id) || ledger.includes(String(receipt.workflow_run_id));
+                  }
+                  const attestationOk = receipt.attestation_verified === true || (options.trusted_run_ledger && inTrustedLedger);
+
+                  if (hasRunId && hasWorkflow && hasArtifact && inTrustedLedger && attestationOk) {
+                    executionAuthenticated = true;
+                  }
+                }
+              }
+
+              if (executionAuthenticated) {
+                executionStatus = 'MATERIALIZED_WITNESSED';
+                witnessVerification = 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED';
+              } else {
+                executionStatus = 'ARTIFACT_BYTES_MATCH';
+                witnessVerification = 'UNAUTHENTICATED_EXECUTION_REFUSED';
+              }
             }
           } else {
-            // Missing, malformed, or empty sha256 is strictly refused
+            // Artifact missing, sha mismatch, or path escapes repository root
+            executionStatus = 'PROPOSED_TRANSFER_LAW';
             witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
           }
         } else {
-          // Missing artifact in receipt is strictly refused
+          // Missing, malformed, or empty sha256 is strictly refused
+          executionStatus = 'PROPOSED_TRANSFER_LAW';
           witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
         }
       } else {
-        // Missing provenance or non-PASS disposition is strictly refused
+        // Missing artifact in receipt is strictly refused
+        executionStatus = 'PROPOSED_TRANSFER_LAW';
         witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
       }
     } else if (options.is_materialized === true) {
       // Caller assertion without authenticated witness receipt is strictly refused
+      executionStatus = 'PROPOSED_TRANSFER_LAW';
       witnessVerification = 'UNVERIFIED_CALLER_ASSERTION_REFUSED';
     }
   }
@@ -1230,7 +1281,7 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
   const analysis = analyzeSeedSemantics(commission.seed);
   const instrumentProvenance = commission.instruments.map(instId => {
     const inst = AVAILABLE_INSTRUMENTS[instId];
-    const causalContract = buildInstrumentCausalContract(inst.id, commission.medium, analysis.salient_keywords);
+    const causalContract = buildInstrumentCausalContract(inst.id, commission.medium, analysis.salient_keywords, options);
     let contrib = 'Supplied formal generative grammar';
     if (inst.id === 'PHASONIC_COUNTERPOINT') {
       contrib = 'Supplied D₃ periodic scaffold, φ quasiperiodic detour equations, and interference field';

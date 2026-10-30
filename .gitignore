@@ -18,3 +18,4 @@ Crashpad/
 .env*
 .superdesign/tmp/
 .neon
+artifacts/dollhouse-browser-witness/

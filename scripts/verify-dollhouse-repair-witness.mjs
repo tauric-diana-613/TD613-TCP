@@ -8,11 +8,30 @@
  */
 
 import { spawn, execFileSync } from 'node:child_process';
-import { resolve } from 'node:path';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+  let outPath = process.env.TD613_WITNESS_OUTPUT_PATH || 'artifacts/dollhouse-browser-witness/witness_receipt.json';
+  let expectedRevision = process.env.EXPECTED_HEAD_SHA || null;
+  let requireClean = process.env.REQUIRE_CLEAN_CHECKOUT === 'true';
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--out' || args[i] === '--output') {
+      outPath = args[++i];
+    } else if (args[i] === '--expected-revision' || args[i] === '--expected-sha') {
+      expectedRevision = args[++i];
+    } else if (args[i] === '--require-clean') {
+      requireClean = true;
+    }
+  }
+
+  return { outPath, expectedRevision, requireClean };
+}
 
 function findChromePath() {
   if (process.env.CHROME_BIN && existsSync(process.env.CHROME_BIN)) {
@@ -34,6 +53,14 @@ function findChromePath() {
   for (const c of candidates) {
     if (existsSync(c)) return c;
   }
+
+  for (const bin of ['google-chrome', 'chromium', 'chromium-browser']) {
+    try {
+      const resolved = execFileSync('which', [bin], { encoding: 'utf8' }).trim();
+      if (resolved && existsSync(resolved)) return resolved;
+    } catch {}
+  }
+
   throw new Error('Chrome executable not found. Please set CHROME_BIN environment variable.');
 }
 
@@ -97,14 +124,20 @@ class CdpClient {
 }
 
 async function runWitnessSuite() {
+  const { outPath: targetOutRel, expectedRevision, requireClean } = parseArgs();
   const chromePath = findChromePath();
   const gitRevision = getGitRevision();
+
+  if (expectedRevision && gitRevision.toLowerCase() !== expectedRevision.trim().toLowerCase()) {
+    throw new Error(`Git revision mismatch: expected ${expectedRevision}, got ${gitRevision}`);
+  }
 
   console.log('======================================================================');
   console.log('  𝌋 TD613 REAL CHROMIUM BROWSER WITNESS (COMPONENT 5)');
   console.log('======================================================================');
   console.log(`Chrome Executable: ${chromePath}`);
   console.log(`Git Revision:      ${gitRevision}`);
+  console.log(`Target Receipt:    ${targetOutRel}`);
   console.log(`CDP Port:          ${PORT}\n`);
 
   const chromeProc = spawn(chromePath, [
@@ -112,6 +145,7 @@ async function runWitnessSuite() {
     `--remote-debugging-port=${PORT}`,
     '--disable-gpu',
     '--no-sandbox',
+    '--disable-dev-shm-usage',
     '--hide-scrollbars'
   ]);
 
@@ -154,7 +188,7 @@ async function runWitnessSuite() {
     try {
       const statusOut = execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim();
       const relevantLines = statusOut
-        ? statusOut.split('\n').filter(l => !l.includes('scratch/') && !l.includes('witness_receipt'))
+        ? statusOut.split('\n').filter(l => !l.includes('scratch/') && !l.includes('witness_receipt') && !l.includes('artifacts/'))
         : [];
       return {
         verified_clean_before_run: relevantLines.length === 0,
@@ -168,12 +202,21 @@ async function runWitnessSuite() {
     }
   })();
 
+  if (requireClean && !cleanWorkingTreeStatus.verified_clean_before_run) {
+    chromeProc.kill();
+    throw new Error(`Working tree is not clean before witness run: ${JSON.stringify(cleanWorkingTreeStatus.uncommitted_entries)}`);
+  }
+
   const receipt = {
     schema: 'td613.dollhouse-design.browser-witness-receipt/v0.2',
     timestamp: new Date().toISOString(),
+    repository: process.env.GITHUB_REPOSITORY || 'tauric-diana-613/TD613-TCP',
+    workflow_run_id: process.env.GITHUB_RUN_ID || null,
+    workflow_job: process.env.GITHUB_JOB || null,
     browser_engine: versionData.Browser,
     user_agent: versionData['User-Agent'],
     cdp_protocol: versionData['Protocol-Version'],
+    witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
     source_revision: gitRevision,
     clean_working_tree_precheck: cleanWorkingTreeStatus,
     verifier_script: {
@@ -710,7 +753,8 @@ async function runWitnessSuite() {
     receipt.total_assertions_checked = totalAssertions;
     receipt.disposition = 'WITNESS_VERIFIED_PASS';
 
-    const outPath = resolve(process.cwd(), 'tests/fixtures/dollhouse/witness_receipt_20261029.json');
+    const outPath = resolve(process.cwd(), targetOutRel);
+    mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, JSON.stringify(receipt, null, 2), 'utf8');
 
     console.log('\n======================================================================');

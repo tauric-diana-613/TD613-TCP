@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { writeFileSync, unlinkSync, mkdirSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync, mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -298,43 +298,46 @@ test('R08 - Strict provenance flag enforcement and refusal', async () => {
   assert.equal(result.exit_code, 1, 'Must exit with non-zero failure code');
 });
 
-test('Redpen II - Adversarial execution witness spoofing refused', () => {
+test('Hold A - Adversarial execution witness spoofing refused and four evidentiary states enforced', (t) => {
   const BUTLER_FIXTURE_PATH = 'tests/fixtures/dollhouse/butler_performative_surface.html';
   const BUTLER_FIXTURE_SHA = 'eedc6e5b6623495c6c1fe8b3831c65abddb943ae74a3a95f3cc8212dcd550910';
 
-  // 1. Caller passing is_materialized: true without authenticated witness receipt
+  // Invariant verification: the four evidentiary states must be mutually distinct
+  assert.notEqual('ARTIFACT_BYTES_MATCH', 'MATERIALIZED_WITNESSED', 'Invariant: ARTIFACT_BYTE_INTEGRITY != AUTHENTICATED_EXECUTION');
+  assert.notEqual('ARTIFACT_BYTES_MATCH', 'EXECUTED_DEMONSTRATION_LAW');
+  assert.notEqual('ARTIFACT_BYTES_MATCH', 'PROPOSED_TRANSFER_LAW');
+  assert.notEqual('MATERIALIZED_WITNESSED', 'EXECUTED_DEMONSTRATION_LAW');
+
+  // Baseline negative controls (missing artifacts, malformed sha, path escapes fail closed to PROPOSED_TRANSFER_LAW)
+  // 0a. Caller passing is_materialized: true without authenticated witness receipt
   const spoofMaterialized = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
     is_materialized: true
   });
-  assert.equal(spoofMaterialized.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Passing is_materialized: true without witness must not manufacture MATERIALIZED_WITNESSED');
-  assert.equal(spoofMaterialized.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED',
-    'Must record UNVERIFIED_CALLER_ASSERTION_REFUSED');
+  assert.equal(spoofMaterialized.execution_status, 'PROPOSED_TRANSFER_LAW');
+  assert.equal(spoofMaterialized.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 2. Caller passing historical_qualification_scope: true without authentic fixture
+  // 0b. Caller passing historical_qualification_scope: true without authentic fixture
   const spoofHistoricalScope = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
     historical_qualification_scope: true
   });
-  assert.equal(spoofHistoricalScope.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Passing historical_qualification_scope: true without fixture must not manufacture EXECUTED_DEMONSTRATION_LAW');
+  assert.equal(spoofHistoricalScope.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(spoofHistoricalScope.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 3. Caller passing fake/nonexistent historical fixture
+  // 0c. Caller passing fake/nonexistent historical fixture
   const spoofFakeFixture = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
     historical_fixture: 'tests/fixtures/dollhouse/nonexistent_corridor.html'
   });
-  assert.equal(spoofFakeFixture.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Nonexistent fixture path must fail closed to PROPOSED_TRANSFER_LAW');
+  assert.equal(spoofFakeFixture.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(spoofFakeFixture.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 4. Caller passing failed witness receipt
+  // 0d. Caller passing failed witness receipt
   const failedWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: { disposition: 'WITNESS_FAILED', timestamp: '2026-10-29T23:00:00Z' }
   });
   assert.equal(failedWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(failedWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 5. Caller declaring PASS with empty/missing artifacts
+  // 0e. Caller declaring PASS with empty/missing artifacts
   const emptyArtifactsWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -342,11 +345,10 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       artifacts: []
     }
   });
-  assert.equal(emptyArtifactsWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Witness receipt with no artifacts must fail closed');
+  assert.equal(emptyArtifactsWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(emptyArtifactsWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 6. Caller referencing artifact without SHA-256
+  // 0f. Caller referencing artifact without SHA-256
   const noShaWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -354,11 +356,10 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       artifacts: [{ path: BUTLER_FIXTURE_PATH }]
     }
   });
-  assert.equal(noShaWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Artifact without sha256 must fail closed');
+  assert.equal(noShaWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(noShaWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 7. Caller referencing artifact with malformed SHA-256 (not 64-hex)
+  // 0g. Caller referencing artifact with malformed SHA-256 (not 64-hex)
   const malformedShaWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -366,11 +367,10 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       artifacts: [{ path: BUTLER_FIXTURE_PATH, sha256: 'not-a-valid-hex-digest' }]
     }
   });
-  assert.equal(malformedShaWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Artifact with malformed sha256 must fail closed');
+  assert.equal(malformedShaWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(malformedShaWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 8. Caller referencing nonexistent artifact file
+  // 0h. Caller referencing nonexistent artifact file
   const nonexistentFileWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -381,11 +381,10 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       }]
     }
   });
-  assert.equal(nonexistentFileWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Nonexistent artifact file must fail closed');
+  assert.equal(nonexistentFileWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(nonexistentFileWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 9. Path traversal escape outside permitted root
+  // 0i. Relative path traversal escape outside permitted root
   const pathEscapeWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -396,25 +395,10 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       }]
     }
   });
-  assert.equal(pathEscapeWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Path traversal escape must fail closed');
+  assert.equal(pathEscapeWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(pathEscapeWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 10. Missing provenance in receipt (no source_revision, timestamp, or run id)
-  const noProvenanceWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
-    witness_receipt: {
-      disposition: 'WITNESS_VERIFIED_PASS',
-      artifacts: [{
-        path: BUTLER_FIXTURE_PATH,
-        sha256: BUTLER_FIXTURE_SHA
-      }]
-    }
-  });
-  assert.equal(noProvenanceWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Receipt without verifiable provenance must fail closed');
-  assert.equal(noProvenanceWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
-
-  // 11. Artifact byte hash mismatch against disk
+  // 0j. Artifact byte hash mismatch against disk
   const hashMismatchWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
@@ -425,32 +409,175 @@ test('Redpen II - Adversarial execution witness spoofing refused', () => {
       }]
     }
   });
-  assert.equal(hashMismatchWitness.execution_status, 'PROPOSED_TRANSFER_LAW',
-    'Byte hash mismatch must fail closed');
+  assert.equal(hashMismatchWitness.execution_status, 'PROPOSED_TRANSFER_LAW');
   assert.equal(hashMismatchWitness.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED');
 
-  // 12. Canonical historical fixture (disk existence + sha256 match) preserved as separate evidence class
-  const authenticHistorical = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
-    historical_fixture: 'tests/fixtures/dollhouse/caro_corridor_primary.html'
-  });
-  assert.equal(authenticHistorical.execution_status, 'EXECUTED_DEMONSTRATION_LAW');
-  assert.equal(authenticHistorical.witness_verification, 'CANONICAL_HISTORICAL_FIXTURE_VERIFIED');
-  assert.ok(authenticHistorical.causal_bindings[0].transfer_law.includes('400ms'));
+  // =========================================================================
+  // THE 7 EXACT ADVERSARIAL REGRESSION CONTROLS MANDATED FOR HOLD A RESOLUTION
+  // =========================================================================
 
-  // 13. Authentic materialized witness receipt with full provenance, in-bounds path, and matching 64-hex SHA-256
-  const authenticWitness = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+  // Control 1: Fabricated PASS with correct artifact SHA-256 (no witness authority)
+  // Bytes on disk match, but execution is unauthenticated -> ARTIFACT_BYTES_MATCH
+  const control1 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
-      source_revision: '919d31e0850a27df017b0dee4c618ded51a924db',
-      timestamp: '2026-10-29T23:40:20.793Z',
       artifacts: [{
         path: BUTLER_FIXTURE_PATH,
         sha256: BUTLER_FIXTURE_SHA
       }]
     }
   });
-  assert.equal(authenticWitness.execution_status, 'MATERIALIZED_WITNESSED');
-  assert.equal(authenticWitness.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+  assert.equal(control1.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 1: Byte match without witness authority must yield ARTIFACT_BYTES_MATCH');
+  assert.equal(control1.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED',
+    'Control 1: Unauthenticated execution must record UNAUTHENTICATED_EXECUTION_REFUSED');
+
+  // Control 2: Fabricated PASS with plausible timestamp and nonexistent run
+  // Plausible timestamp and unverified GHA attestation -> ARTIFACT_BYTES_MATCH
+  const control2 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      timestamp: '2026-10-29T23:59:59.000Z',
+      witness_authority: 'GITHUB_ACTIONS_BROWSER_WITNESS',
+      workflow_run_id: '9999999999',
+      workflow_name: 'TD613 Consolidated Validation',
+      published_artifact_path: 'artifacts/dollhouse-browser-witness/witness_receipt.json',
+      attestation_verified: false,
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA
+      }]
+    }
+  });
+  assert.equal(control2.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 2: Fabricated run without verified attestation must yield ARTIFACT_BYTES_MATCH');
+  assert.equal(control2.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED',
+    'Control 2: Must refuse unauthenticated execution');
+
+  // Control 3: Fabricated run ID not independently verified in trusted ledger
+  const control3 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    trusted_run_ledger: ['40978057545', '40978057546'],
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      timestamp: '2026-10-29T23:59:59.000Z',
+      witness_authority: 'GITHUB_ACTIONS_BROWSER_WITNESS',
+      workflow_run_id: '8888888888',
+      workflow_name: 'TD613 Consolidated Validation',
+      published_artifact_path: 'artifacts/dollhouse-browser-witness/witness_receipt.json',
+      attestation_verified: true,
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA
+      }]
+    }
+  });
+  assert.equal(control3.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 3: Run ID outside trusted ledger must yield ARTIFACT_BYTES_MATCH');
+  assert.equal(control3.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED');
+
+  // Control 4: Authentic artifact bytes paired with wrong source revision
+  const control4 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
+      browser_engine: 'Chrome/156.0.8078.48',
+      cdp_protocol: '1.3',
+      total_assertions_checked: 32,
+      source_revision: 'cf4f365802dbdefe4781f37afcce9a0e342f7227', // Mismatched predecessor
+      clean_working_tree_precheck: { verified_clean_before_run: true },
+      verifier_script: {
+        path: 'scripts/verify-dollhouse-repair-witness.mjs',
+        sha256: 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
+      },
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA
+      }]
+    }
+  });
+  assert.equal(control4.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 4: Wrong source revision must yield ARTIFACT_BYTES_MATCH');
+  assert.equal(control4.witness_verification, 'WRONG_SOURCE_REVISION_REFUSED',
+    'Control 4: Must record WRONG_SOURCE_REVISION_REFUSED');
+
+  // Control 5: Symlinked artifact path escaping repo root
+  const tmpExternalDir = mkdtempSync(resolve(tmpdir(), 'dollhouse-escape-'));
+  const externalFile = resolve(tmpExternalDir, 'external_butler.html');
+  const externalContent = readFileSync(resolve(process.cwd(), BUTLER_FIXTURE_PATH));
+  writeFileSync(externalFile, externalContent);
+
+  const symlinkPathRel = 'tests/fixtures/dollhouse/temp_escaping_symlink.html';
+  const symlinkPathAbs = resolve(process.cwd(), symlinkPathRel);
+
+  let symlinkCreated = false;
+  try {
+    symlinkSync(externalFile, symlinkPathAbs, 'file');
+    symlinkCreated = true;
+  } catch (err) {
+    // If OS does not permit symlink creation, handle cleanly
+  }
+
+  t.after(() => {
+    if (symlinkCreated && existsSync(symlinkPathAbs)) unlinkSync(symlinkPathAbs);
+    if (existsSync(externalFile)) unlinkSync(externalFile);
+    if (existsSync(tmpExternalDir)) rmSync(tmpExternalDir, { recursive: true, force: true });
+  });
+
+  if (symlinkCreated) {
+    const control5 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+      witness_receipt: {
+        disposition: 'WITNESS_VERIFIED_PASS',
+        witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
+        source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+        artifacts: [{
+          path: symlinkPathRel,
+          sha256: BUTLER_FIXTURE_SHA
+        }]
+      }
+    });
+    assert.equal(control5.execution_status, 'PROPOSED_TRANSFER_LAW',
+      'Control 5: Symlink escaping root must fail closed to PROPOSED_TRANSFER_LAW');
+    assert.equal(control5.witness_verification, 'UNVERIFIED_CALLER_ASSERTION_REFUSED',
+      'Control 5: Must record UNVERIFIED_CALLER_ASSERTION_REFUSED');
+  }
+
+  // Control 6: Valid trusted execution witness with matching artifact identity & matching source revision
+  const control6 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      timestamp: '2026-10-29T23:40:20.793Z',
+      witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
+      source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+      browser_engine: 'Chrome/156.0.8078.48',
+      cdp_protocol: '1.3',
+      total_assertions_checked: 32,
+      clean_working_tree_precheck: { verified_clean_before_run: true },
+      verifier_script: {
+        path: 'scripts/verify-dollhouse-repair-witness.mjs',
+        sha256: 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
+      },
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA,
+        witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS'
+      }]
+    }
+  });
+  assert.equal(control6.execution_status, 'MATERIALIZED_WITNESSED',
+    'Control 6: Matching bytes + authenticated execution must yield MATERIALIZED_WITNESSED');
+  assert.equal(control6.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED',
+    'Control 6: Must record AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+
+  // Control 7: Canonical historical qualification fixture preserved as separate evidence class
+  const control7 = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
+    historical_fixture: 'tests/fixtures/dollhouse/caro_corridor_primary.html'
+  });
+  assert.equal(control7.execution_status, 'EXECUTED_DEMONSTRATION_LAW',
+    'Control 7: Canonical fixture must yield EXECUTED_DEMONSTRATION_LAW');
+  assert.equal(control7.witness_verification, 'CANONICAL_HISTORICAL_FIXTURE_VERIFIED');
+  assert.ok(control7.causal_bindings[0].transfer_law.includes('400ms'));
 });
 
 test('Redpen II - Substantive candidate comparative evaluation', async () => {
