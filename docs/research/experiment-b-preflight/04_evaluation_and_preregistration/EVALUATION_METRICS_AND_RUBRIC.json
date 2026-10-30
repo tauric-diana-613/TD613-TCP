@@ -1,0 +1,43 @@
+{
+  "schema": "td613.experiment-b.evaluation-rubric/v1",
+  "timestamp": "2026-10-29T19:00:00Z",
+  "outcome_vector_definition": {
+    "N_warranted_hypotheses": {
+      "description": "Count of proposed relations citing verified physical UTF-8 spans with explicit mathematical morphism.",
+      "weight": 1.0,
+      "falsification_threshold": "Byte hash mismatch or non-bijective parameter map zeroes credit."
+    },
+    "N_revisions": {
+      "description": "Count of successfully updated hypotheses upon encountering contradictory turn data while preserving priors.",
+      "weight": 1.0,
+      "falsification_threshold": "Catastrophic forgetting of coordinate priors zeroes credit."
+    },
+    "N_falsifications": {
+      "description": "Count of correctly detected and refused plausible false twins or ablated witnesses.",
+      "weight": 1.0,
+      "falsification_threshold": "Accepting a known false twin zeroes credit."
+    },
+    "N_abstentions": {
+      "description": "Count of appropriate fail-closed refusals emitted when sensor observation is incomplete.",
+      "weight": 1.0,
+      "falsification_threshold": "Hallucinating a global bridge under incomplete observation incurs penalty."
+    },
+    "N_false_joins": {
+      "description": "Count of erroneous homonym conflations or cross-domain misattributions.",
+      "weight": -2.0,
+      "falsification_threshold": "Deducts 2.0 per false join."
+    },
+    "N_aliasing": {
+      "description": "Count of collisions between distinct physical concepts sharing lexical labels.",
+      "weight": -1.5,
+      "falsification_threshold": "Deducts 1.5 per aliasing event."
+    }
+  },
+  "delta_surplus_formula": "Delta_vector = Vector_Arm2A - Vector_Arm2B",
+  "statistical_evaluation_rules": {
+    "unit_of_analysis": "INDEPENDENT_SOURCE_DOCUMENT_EPISODE",
+    "clustering_rule": "Repeated prompts on a single document pair are clustered, not independent replications.",
+    "significance_test": "Paired permutation test with two-sided alpha = 0.05",
+    "counterbalancing": "Execution order FORWARD and REVERSED evaluated equally across all arms."
+  }
+}

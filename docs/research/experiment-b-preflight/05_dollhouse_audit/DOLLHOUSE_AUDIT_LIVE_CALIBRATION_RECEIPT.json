@@ -1,0 +1,429 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793303218973-8f499dfb",
+  "timestamp": "2026-10-29T19:46:58.973Z",
+  "source_revision": "700019741e708abfd2e53990fc2d8919995a70f1",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "fd10f56d58979586cc82436cd0b26d5944dc603e",
+  "is_exact_checkout_match": false,
+  "exact_checkout_verified": false,
+  "is_historical_commit_only": true,
+  "task_scope": "EXPERIMENT_B_SOURCE_FREE_LIVE_CALIBRATION_AUDIT",
+  "evidence_class": "LIVE_MODEL_CALIBRATION_EVALUATION",
+  "evidence_references": [
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_population_growth.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_positive_control_linear_decay.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_resonance_perturbation.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_boundary_system.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_sufficient_boundary_system.json",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2a-modular.mjs",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2b-matched-union.mjs",
+    "docs/research/experiment-b-preflight/03_calibration_execution/evaluator-oracle.mjs",
+    "docs/research/experiment-b-preflight/03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c4253c7c6bbfdd8360e04e225633db752cfeb41a27cb37cbe03268db64c87b4c",
+      "byte_digest_verified": true,
+      "sha256": "c4253c7c6bbfdd8360e04e225633db752cfeb41a27cb37cbe03268db64c87b4c"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3c453106946c3392addce8b4face31d556ebf55fb2bc849ece3f8d6cdb1f2d67",
+      "byte_digest_verified": true,
+      "sha256": "3c453106946c3392addce8b4face31d556ebf55fb2bc849ece3f8d6cdb1f2d67"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_population_growth.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "379310d8127d4f7c5ce7bbaa14e6d56baa7225f83b23a9fb85080414b453e6a7",
+      "byte_digest_verified": true,
+      "sha256": "379310d8127d4f7c5ce7bbaa14e6d56baa7225f83b23a9fb85080414b453e6a7"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "842a6e5169b32e41f142d15bd4c163b173e5d27018287fe50c0f82c088d0eb15",
+      "byte_digest_verified": true,
+      "sha256": "842a6e5169b32e41f142d15bd4c163b173e5d27018287fe50c0f82c088d0eb15"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_positive_control_linear_decay.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "645f8d033bb9772ff8dedadb37433281df0366d8b9835fd468fb56d6f445b2fb",
+      "byte_digest_verified": true,
+      "sha256": "645f8d033bb9772ff8dedadb37433281df0366d8b9835fd468fb56d6f445b2fb"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_resonance_perturbation.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "9c7c2a537efe57cf04dc0efa741c87a4df5144db476455c4470d8ff022598ec6",
+      "byte_digest_verified": true,
+      "sha256": "9c7c2a537efe57cf04dc0efa741c87a4df5144db476455c4470d8ff022598ec6"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_boundary_system.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "81cd896d4f5648030e276d2eb66c85fb9c6f2c686af67c91f68b33916046fe69",
+      "byte_digest_verified": true,
+      "sha256": "81cd896d4f5648030e276d2eb66c85fb9c6f2c686af67c91f68b33916046fe69"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_sufficient_boundary_system.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1c24461a2b30a9a519f5cb357b50322a21bd99026be10abddf5fdb8065273666",
+      "byte_digest_verified": true,
+      "sha256": "1c24461a2b30a9a519f5cb357b50322a21bd99026be10abddf5fdb8065273666"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6ff7091bb87d8538beb84e17aaf11bc69a14c17527bdc0f13ef336cb3d065a8b",
+      "byte_digest_verified": true,
+      "sha256": "6ff7091bb87d8538beb84e17aaf11bc69a14c17527bdc0f13ef336cb3d065a8b"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2a-modular.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "93533253cd15d2f7f0f0d59627fec5fac37f276cdcb466ca2f664d167ae4d8af",
+      "byte_digest_verified": true,
+      "sha256": "93533253cd15d2f7f0f0d59627fec5fac37f276cdcb466ca2f664d167ae4d8af"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2b-matched-union.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "62033a4dff5829843b90be1ec4a6076918f8ddcfc97dcf5d0d9a92c95f4c6e21",
+      "byte_digest_verified": true,
+      "sha256": "62033a4dff5829843b90be1ec4a6076918f8ddcfc97dcf5d0d9a92c95f4c6e21"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/03_calibration_execution/evaluator-oracle.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "d5af98e131b04264c15c1be47e76d91a6bf28365bbdfc86a5ec38d665b8f2a3c",
+      "byte_digest_verified": true,
+      "sha256": "d5af98e131b04264c15c1be47e76d91a6bf28365bbdfc86a5ec38d665b8f2a3c"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/03_calibration_execution/LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "9bb5615923ac4aa658e4c2be269a535eba2ab1b5bb47478fe5ea6860e5df0a37",
+      "byte_digest_verified": true,
+      "sha256": "9bb5615923ac4aa658e4c2be269a535eba2ab1b5bb47478fe5ea6860e5df0a37"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": false,
+            "exit_required": false,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 10,
+            "ACT": 20,
+            "WORLD_ANSWERS": 30,
+            "NAME": 40
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "dollhouse-pedagogue-cadence-audit",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 10,
+              "ACT": 20,
+              "WORLD_ANSWERS": 30,
+              "NAME": 40
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": false,
+              "exit_required": false,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "HELD",
+      "status": "VIOLATION_DETECTED",
+      "defect_class": "CALLER_SUPPLIED_MATHEMATICAL_VIOLATION",
+      "claim": "declared noise covariance matrix is not symmetric positive-definite: noise covariance matrix must be a 2D array matching the latent dimension",
+      "infractions": [
+        "URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED"
+      ],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 3,
+            "current_rank": 2,
+            "sigma_min": 0,
+            "condition_number": 1.1357816691600549,
+            "uncertainty_status": "VALID_DECLARED",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL"
+          },
+          "deficit_class": "STRUCTURAL_RANK_DEFICIT",
+          "disposition": "PROPOSE",
+          "admissible_question_criterion": "SEEK_PREDECLARED_NULLSPACE_CONTRACTING_OBSERVATION_THEN_AUDIT_STABILITY",
+          "reason": "current operator rank is below the declared latent dimension",
+          "pedagogue_companion_cue": "PEDAGOGUE_MAY_PROPOSE_PREDECLARED_CANDIDATE_FAMILY_UNDER_THIS_CRITERION",
+          "candidate_probe_evaluation": {
+            "schema": "td613.aperture.candidate-probe-evaluation/v0.1",
+            "deficit_class": "INVALID_NOISE_GEOMETRY",
+            "disposition": "REJECT",
+            "reason": "declared noise covariance matrix is not symmetric positive-definite: noise covariance matrix must be a 2D array matching the latent dimension",
+            "evaluated_candidates": []
+          },
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "COORDINATE_BIJECTION_X_Q",
+          "endpoint_b": "COORDINATE_BIJECTION_X_Q",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 0,
+          "winding_delta": 0,
+          "history_parity_equal": true,
+          "modulo_2_parity_equal": true,
+          "disposition": "PASS",
+          "reason": "endpoints and winding histories match exactly",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 2,
+          "union_support": [
+            "L*d2q/dt2 + R*dq/dt + q/C = V",
+            "dN/dt = -lambda*N",
+            "dV/dt = -V/(RC)",
+            "m*d2x/dt2 + b*dx/dt + k*x = F"
+          ],
+          "union_cardinality": 4,
+          "intersection_support": [],
+          "intersection_cardinality": 0,
+          "irreducible_gap": [
+            "L*d2q/dt2 + R*dq/dt + q/C = V",
+            "dN/dt = -lambda*N",
+            "dV/dt = -V/(RC)",
+            "m*d2x/dt2 + b*dx/dt + k*x = F"
+          ],
+          "irreducible_gap_cardinality": 4,
+          "exact_descent_exists": false,
+          "universally_sound_available": false,
+          "disposition": "HOLD_IRREDUCIBLE_GAP",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "PREDECESSOR_PRESERVATION": "PASS",
+            "LIVE_CALIBRATION_SHAKEDOWN": "PASS",
+            "INDEPENDENT_ORACLE_EVALUATION": "PASS",
+            "DOLLHOUSE_AUDIT_EXECUTION": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [
+    "URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED"
+  ],
+  "orchestrator": {
+    "decision": "HELD",
+    "consensus": "HELD_DISSENT",
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [
+      "URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED"
+    ],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Infractions detected: URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 243
+}

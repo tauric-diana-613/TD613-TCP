@@ -1,0 +1,214 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793300752916-ab8a9c66",
+  "timestamp": "2026-10-29T19:05:52.916Z",
+  "source_revision": "700019741e708abfd2e53990fc2d8919995a70f1",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "700019741e708abfd2e53990fc2d8919995a70f1",
+  "is_exact_checkout_match": true,
+  "exact_checkout_verified": true,
+  "is_historical_commit_only": false,
+  "task_scope": "EXPERIMENT_B_SOURCE_FREE_PREFLIGHT_CALIBRATION_AUDIT",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_population_growth.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_resonance_perturbation.json",
+    "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_boundary_system.json",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/reasoning-kernel.mjs",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2a-modular.mjs",
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2b-matched-union.mjs",
+    "docs/research/experiment-b-preflight/03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c4253c7c6bbfdd8360e04e225633db752cfeb41a27cb37cbe03268db64c87b4c",
+      "byte_digest_verified": true,
+      "sha256": "c4253c7c6bbfdd8360e04e225633db752cfeb41a27cb37cbe03268db64c87b4c"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3c453106946c3392addce8b4face31d556ebf55fb2bc849ece3f8d6cdb1f2d67",
+      "byte_digest_verified": true,
+      "sha256": "3c453106946c3392addce8b4face31d556ebf55fb2bc849ece3f8d6cdb1f2d67"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_population_growth.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "dcaac9ba103c48c030e28645f07ef5b72e183ee60d3098750e7d3305e795ee1b",
+      "byte_digest_verified": true,
+      "sha256": "dcaac9ba103c48c030e28645f07ef5b72e183ee60d3098750e7d3305e795ee1b"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6eb73e626e96de4504842bfca1ed445f676a704db6089d29e89f31f574c1b8e1",
+      "byte_digest_verified": true,
+      "sha256": "6eb73e626e96de4504842bfca1ed445f676a704db6089d29e89f31f574c1b8e1"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_resonance_perturbation.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "fe4bca21d253acedb1fa17a46c013936886e04909fe0099c1ff028cc92da5df1",
+      "byte_digest_verified": true,
+      "sha256": "fe4bca21d253acedb1fa17a46c013936886e04909fe0099c1ff028cc92da5df1"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_boundary_system.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "5c01b68e9707fdd92fcaf9f2690206866d4f853b2c6589dd9cb2c470cf146677",
+      "byte_digest_verified": true,
+      "sha256": "5c01b68e9707fdd92fcaf9f2690206866d4f853b2c6589dd9cb2c470cf146677"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/reasoning-kernel.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "fa380890df4239e03598182330fa494069a2154d2d229d08460b5979381cb133",
+      "byte_digest_verified": true,
+      "sha256": "fa380890df4239e03598182330fa494069a2154d2d229d08460b5979381cb133"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2a-modular.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "79ca3b9fcd9c8100f0bea3fbd3b95dd2d00417b8da07d66eac447910577293c0",
+      "byte_digest_verified": true,
+      "sha256": "79ca3b9fcd9c8100f0bea3fbd3b95dd2d00417b8da07d66eac447910577293c0"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-arm2b-matched-union.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1355f302e7f02b845f1f0b99e28a908677929935ea9692ababbb6d6c878d4d47",
+      "byte_digest_verified": true,
+      "sha256": "1355f302e7f02b845f1f0b99e28a908677929935ea9692ababbb6d6c878d4d47"
+    },
+    {
+      "reference": "docs/research/experiment-b-preflight/03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1",
+      "byte_digest_verified": true,
+      "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "consequence-order-route-burden-practice-and-research-transfer",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability-identifiability-reconstruction-conditioning-and-replay-audit",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "compare-non-equivalent-receiver-projections-against-one-admitted-relation-and-governance-control-plane",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "audit-finite-quotient-fibres-for-exact-admissibility-descent-and-preserve-union-intersection-gap",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "independent-temporal-audit-monotonic-chronology-and-attempt-lineage-preservation",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "HELD_MISSING_OBSERVATION",
+    "consensus": "INCOMPLETE_OBSERVATION",
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Missing domain observation inputs for: PEDAGOGUE, APERTURE, ATLAS, FADT, TEMPORAL_CUSTODIAN."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 293
+}

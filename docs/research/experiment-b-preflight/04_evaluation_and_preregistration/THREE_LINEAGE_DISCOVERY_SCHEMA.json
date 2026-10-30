@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://td613.org/schemas/three-lineage-discovery-candidate.v1.json",
+  "title": "TD613 Three-Lineage Discovery Candidate Schema",
+  "type": "object",
+  "required": [
+    "candidate_id",
+    "timestamp",
+    "status",
+    "warrant_class",
+    "evidence_ancestry",
+    "presentation_ancestry",
+    "adjudication_ancestry"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^CAND-[0-9]{8}-[0-9A-Fa-f]{6}$",
+      "description": "Unique identifier for the research candidate."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of candidate registration."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PROPOSED",
+        "WARRANTED",
+        "FALSIFIED",
+        "HELD_INSUFFICIENT_DATA",
+        "UNANTICIPATED_CANDIDATE",
+        "NO_SUBSTANTIVE_CANDIDATE",
+        "SUPERSEDED"
+      ],
+      "description": "Current scientific status of the candidate proposition."
+    },
+    "warrant_class": {
+      "type": "string",
+      "enum": [
+        "WARRANT_ANALOGY",
+        "WARRANT_OPERATIONAL",
+        "WARRANT_FORMAL_EQUIVALENCE",
+        "WARRANT_MATHEMATICAL_ISOMORPHISM",
+        "WARRANT_UNANTICIPATED_OUTCOME",
+        "WARRANT_PENDING_EVALUATION",
+        "WARRANT_UNPRODUCED"
+      ],
+      "description": "Formal warrant category claimed by the proposition."
+    },
+    "proposition_summary": {
+      "type": "string",
+      "description": "Concise natural language formulation of the candidate relationship."
+    },
+    "evidence_ancestry": {
+      "type": "object",
+      "required": [
+        "source_documents",
+        "physical_byte_spans",
+        "mathematical_premises",
+        "source_chronology_order"
+      ],
+      "properties": {
+        "source_documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["filename", "sha256", "author_provenance"],
+            "properties": {
+              "filename": { "type": "string" },
+              "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "author_provenance": { "type": "string" }
+            }
+          }
+        },
+        "physical_byte_spans": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["file", "start_byte", "end_byte", "encoding", "span_sha256"],
+            "properties": {
+              "file": { "type": "string" },
+              "start_byte": { "type": "integer", "minimum": 0 },
+              "end_byte": { "type": "integer", "minimum": 0 },
+              "encoding": { "type": "string", "enum": ["UTF-8", "UTF-16"] },
+              "span_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+            }
+          }
+        },
+        "mathematical_premises": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "source_chronology_order": {
+          "type": "integer",
+          "description": "Integer index of document presentation in exposure sequence."
+        }
+      }
+    },
+    "presentation_ancestry": {
+      "type": "object",
+      "required": [
+        "generating_arm",
+        "representation_modality",
+        "presentation_timing",
+        "specialist_scaffolding"
+      ],
+      "properties": {
+        "generating_arm": {
+          "type": "string",
+          "enum": ["ARM_0_TRANSPORT", "ARM_1_ARCHIVAL", "ARM_2A_MODULAR", "ARM_2B_MATCHED_UNION"]
+        },
+        "representation_modality": {
+          "type": "string",
+          "enum": ["NEUTRAL_STANDARD_MATH", "DOLLHOUSE_PARATACTIC", "CATEGORY_THEORETIC", "CUSTOM_SYNTAX"]
+        },
+        "presentation_timing": {
+          "type": "string",
+          "enum": ["PRE_GENERATION_LENS", "POST_GENERATION_SIEVE", "UNCHAMBERED_FLAT"]
+        },
+        "specialist_scaffolding": {
+          "type": "object",
+          "properties": {
+            "pedagogue_cadence": { "type": "string" },
+            "aperture_conditioning": { "type": "string" },
+            "atlas_parities": { "type": "string" },
+            "fadt_fiber_quotient": { "type": "string" },
+            "temporal_milestone": { "type": "string" }
+          }
+        },
+        "scaffolding_metaphors_introduced": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Explicit list of terms/notations introduced by representation that were not in source evidence."
+        }
+      }
+    },
+    "adjudication_ancestry": {
+      "type": "object",
+      "required": [
+        "evaluator_tier",
+        "scoring_rule_version",
+        "rca01_cell",
+        "unblinding_phase",
+        "adjudication_receipt_ref"
+      ],
+      "properties": {
+        "evaluator_tier": {
+          "type": "string",
+          "enum": [
+            "AUTOMATED_RUBRIC_PARITY",
+            "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+            "INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION",
+            "EXTERNAL_MATHEMATICAL_REPLICATION",
+            "PENDING_INDEPENDENT_EVALUATION",
+            "UNEVALUATED_AT_GENERATION"
+          ]
+        },
+        "scoring_rule_version": { "type": "string" },
+        "rca01_cell": {
+          "type": "string",
+          "enum": ["CELL_A_AUTH_NEUT", "CELL_B_AUTH_DOLL", "CELL_C_NEG_NEUT", "CELL_D_NEG_DOLL"]
+        },
+        "rca01_evaluation_vector": {
+          "type": "object",
+          "properties": {
+            "discovery_occurrence": { "type": "string", "enum": ["DISCOVERED", "MISSED", "ABSTAINED", "PENDING_EVALUATION", "UNPRODUCED"] },
+            "mathematical_warrant": { "type": "string", "enum": ["ISOMORPHISM", "FORMAL_EQUIVALENCE", "OPERATIONAL", "ANALOGY", "FALSIFIED", "NONE", "PENDING_EVALUATION", "UNPRODUCED"] },
+            "causal_contribution": { "type": "string", "enum": ["NEUTRAL_SUFFICIENT", "LENS_ENABLED", "POST_HOC_SIEVE", "SCAFFOLDING_ARTIFACT", "BOTTLENECK_SUPPRESSED", "PENDING_EVALUATION", "UNPRODUCED"] },
+            "novelty": { "type": "string", "enum": ["ESTABLISHED_RESTATEMENT", "NOVEL_RELATION", "UNANTICIPATED_SYNTHESIS", "PENDING_EVALUATION", "UNPRODUCED"] },
+            "instrument_integrity": { "type": "string", "enum": ["CLEAN_EXECUTION", "CONDITIONING_DEFICIT", "FIBER_GAP", "DROMOLOGICAL_DEADLOCK", "PENDING_EVALUATION", "UNPRODUCED"] },
+            "claim_status": { "type": "string", "enum": ["WARRANTED_DISCOVERY", "EXPLORATORY_FINDING", "UNANTICIPATED_CANDIDATE", "HELD_DISSENT", "FALSIFIED_ARTIFACT", "PROPOSED_CANDIDATE", "NO_CANDIDATE", "PENDING_EVALUATION"] }
+          }
+        },
+        "rca01_outcome_archetypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "OUTCOME_MANUFACTURED_EMERGENCE",
+              "OUTCOME_SUPPRESSED_EMERGENCE",
+              "OUTCOME_REPRESENTATION_ENABLED_DISCOVERY",
+              "OUTCOME_WARRANTED_MATHEMATICS",
+              "OUTCOME_NOVEL_REPRESENTATION",
+              "OUTCOME_INSTRUMENT_FAILURE",
+              "OUTCOME_UNANTICIPATED_CANDIDATE",
+              "OUTCOME_UNEVALUATED"
+            ]
+          }
+        },
+        "unblinding_phase": {
+          "type": "string",
+          "enum": ["FROZEN_BLINDED", "PRELIMINARY_UNBLINDED", "FINAL_UNBLINDED", "BLINDED_PENDING_UNBLINDING"]
+        },
+        "dissent_recorded": { "type": "boolean" },
+        "adjudication_receipt_ref": { "type": "string" }
+      }
+    }
+  }
+}

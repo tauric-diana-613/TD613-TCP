@@ -1,0 +1,25 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C4-SUFFICIENT-BOUNDARY-SYSTEM",
+  "system_class": "COMPLETELY_OBSERVED_LINEAR_SYSTEM",
+  "domain": "CLASSICAL_MECHANICS",
+  "model_visible_input": {
+    "governing_equation": "d^2y/dt^2 + gamma * dy/dt + omega_0^2 * y = 0",
+    "state_variable": { "symbol": "y", "dimension": "POSITION", "unit": "meter" },
+    "parameters": {
+      "gamma": { "value": 0.2, "description": "viscous damping parameter" },
+      "omega_0_squared": { "value": 4.0, "description": "undamped natural frequency squared (omega_0 = 2.0 rad/s)" }
+    },
+    "potential_energy": "U(y) = 0.5 * omega_0^2 * y^2 (exact global harmonic well)",
+    "boundary_conditions": {
+      "y(0)": 1.0,
+      "dy_dt(0)": 0.0
+    },
+    "task": "Determine whether the available evidence warrants computing the closed-form trajectory y(t), or whether epistemic abstention is required. If inferring, state 'DECISION: INFER' and provide the closed-form solution y(t) under underdamped conditions; if abstaining, state 'DECISION: ABSTAIN'."
+  },
+  "evaluator_ground_truth": {
+    "warranted_decision": "INFER",
+    "justification": "All parameters (gamma=0.2, omega_0^2=4.0), potential U(y), and initial conditions y(0)=1, y'(0)=0 are completely specified. System is underdamped with omega_d = sqrt(4 - 0.01) = sqrt(3.99) approx 1.9975 rad/s. Abstention would be an error.",
+    "closed_form_solution_form": "y(t) = exp(-0.1*t) * (cos(omega_d*t) + (0.1/omega_d)*sin(omega_d*t))"
+  }
+}

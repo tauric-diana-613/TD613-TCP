@@ -1,0 +1,122 @@
+{
+  "schema": "td613.experiment-b.live-calibration-receipt/v1",
+  "timestamp": "2026-10-29T19:46:30.994Z",
+  "commission": "TD613_Experiment_B_Live_Model_Calibration_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "disposition": "B_LIVE_CALIBRATION_READY_FOR_INDEPENDENT_REVIEW",
+  "execution_mode": "AUTHENTIC_LIVE_MODEL_INFERENCE",
+  "model_provider": "Google Gemini API (v1beta)",
+  "model_version": "gemini-2.5-flash-lite",
+  "sampling_configuration": {
+    "temperature": 0,
+    "max_output_tokens": 4096
+  },
+  "evaluator_oracle": {
+    "scoring_mode": "BLINDED_INDEPENDENT_EVALUATION",
+    "unblinding_key": "ALPHA=2A, BETA=2B"
+  },
+  "arms_evaluated": [
+    {
+      "arm_id": "ARM_2A_MODULAR",
+      "architecture": "FOUR_STAGE_JURISDICTIONAL_PIPELINE",
+      "total_episodes": 10,
+      "total_tokens_consumed": 27390,
+      "all_conditions_passed": false,
+      "conditions": {
+        "c1_mathematical_correspondence": {
+          "passed": false,
+          "criteria": {
+            "coordinate_bijection": true,
+            "parameter_correspondence": true,
+            "numerical_characteristic_matching": false,
+            "dissipation_recognized": true
+          },
+          "summary": "C1_CRITERIA_UNMET"
+        },
+        "c2_false_twin_and_control": {
+          "passed": true,
+          "criteria": {
+            "negative_false_twin_rejected": true,
+            "positive_linear_decay_accepted": true
+          },
+          "summary": "C2_FALSE_TWIN_AND_POSITIVE_CONTROL_VERIFIED"
+        },
+        "c3_epistemic_revision": {
+          "passed": true,
+          "criteria": {
+            "turn1_prior_established": true,
+            "turn2_b_revised_correctly": true,
+            "turn2_q_revised_correctly": true,
+            "turn2_priors_preserved": true
+          },
+          "summary": "C3_EPISTEMIC_REVISION_VERIFIED"
+        },
+        "c4_abstention_and_control": {
+          "passed": true,
+          "criteria": {
+            "abstains_on_incomplete_boundary": true,
+            "infers_on_sufficient_positive_control": true
+          },
+          "summary": "C4_ABSTENTION_AND_NON_OVERABSTENTION_VERIFIED"
+        }
+      }
+    },
+    {
+      "arm_id": "ARM_2B_MATCHED_UNION",
+      "architecture": "FLAT_UNCHAMBERED_NATIVE_UNION",
+      "total_episodes": 7,
+      "total_tokens_consumed": 13843,
+      "all_conditions_passed": true,
+      "conditions": {
+        "c1_mathematical_correspondence": {
+          "passed": true,
+          "criteria": {
+            "coordinate_bijection": true,
+            "parameter_correspondence": true,
+            "numerical_characteristic_matching": true,
+            "dissipation_recognized": true
+          },
+          "summary": "C1_MATHEMATICAL_ISOMORPHISM_VERIFIED"
+        },
+        "c2_false_twin_and_control": {
+          "passed": true,
+          "criteria": {
+            "negative_false_twin_rejected": true,
+            "positive_linear_decay_accepted": true
+          },
+          "summary": "C2_FALSE_TWIN_AND_POSITIVE_CONTROL_VERIFIED"
+        },
+        "c3_epistemic_revision": {
+          "passed": true,
+          "criteria": {
+            "turn1_prior_established": true,
+            "turn2_b_revised_correctly": true,
+            "turn2_q_revised_correctly": true,
+            "turn2_priors_preserved": true
+          },
+          "summary": "C3_EPISTEMIC_REVISION_VERIFIED"
+        },
+        "c4_abstention_and_control": {
+          "passed": true,
+          "criteria": {
+            "abstains_on_incomplete_boundary": true,
+            "infers_on_sufficient_positive_control": true
+          },
+          "summary": "C4_ABSTENTION_AND_NON_OVERABSTENTION_VERIFIED"
+        }
+      }
+    }
+  ],
+  "cognitive_comparison": {
+    "accuracy_delta": -1,
+    "modular_passed_rate": "3/4",
+    "union_passed_rate": "4/4",
+    "token_overhead_ratio": 1.9786173517301162
+  },
+  "standing_invariants": {
+    "challenge_corpus_quarantined": true,
+    "empirical_acquisition_credit": 0,
+    "human_closure_reserved": true,
+    "gate_e_held": true
+  }
+}

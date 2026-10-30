@@ -1,0 +1,104 @@
+{
+  "schema": "td613.experiment-b.calibration-receipt/v1",
+  "timestamp": "2026-10-29T19:04:56.324Z",
+  "commission": "TD613_Experiment_B_Preflight_Activation_2026-10-29",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "governing_status": "SOURCE_FREE_CALIBRATION_SUCCESSFUL · FLIGHT_HELD",
+  "arms_evaluated": [
+    {
+      "arm_id": "ARM_0",
+      "name": "TRANSPORT_ONLY_BASELINE",
+      "total_bytes": 7986,
+      "autonomous_hypotheses": 0
+    },
+    {
+      "arm_id": "ARM_1",
+      "name": "ARCHIVAL_CONTROL_B1",
+      "native_modules": [
+        "scripts/encyclopedia-*",
+        "wendbine-compile.mjs"
+      ],
+      "schema_valid_admissions": 1,
+      "unstructured_rejections": 2,
+      "capability_status": "CAPABILITY_NOT_IMPLEMENTED: AUTONOMOUS_EDGE_SYNTHESIS"
+    },
+    {
+      "arm_id": "ARM_2A",
+      "name": "MODULAR_RESEARCH_INSTRUMENT_B2",
+      "reasoning_kernel": "TD613-Epistemic-Reasoning-Kernel-v1.0",
+      "temperature": 0,
+      "token_budget": 4096,
+      "routing_chambers": [
+        "Pedagogue",
+        "Aperture",
+        "Atlas",
+        "FADT"
+      ],
+      "vector_outcome": {
+        "N_warranted_hypotheses": 1,
+        "N_revisions": 1,
+        "N_falsifications": 1,
+        "N_abstentions": 1,
+        "N_false_joins": 0
+      }
+    },
+    {
+      "arm_id": "ARM_2B",
+      "name": "MATCHED_NATIVE_UNION_COMPARATOR",
+      "reasoning_kernel": "TD613-Epistemic-Reasoning-Kernel-v1.0",
+      "temperature": 0,
+      "token_budget": 4096,
+      "namespace_policy": "TYPED_PREFIX_FLAT_INGEST",
+      "vector_outcome": {
+        "N_warranted_hypotheses": 1,
+        "N_revisions": 1,
+        "N_falsifications": 1,
+        "N_abstentions": 1,
+        "N_false_joins": 0
+      }
+    }
+  ],
+  "calibration_conditions_verified": {
+    "C1_known_mathematical_correspondence": {
+      "status": "VERIFIED",
+      "isomorphism": "SECOND_ORDER_LINEAR_DAMPED_HAMILTONIAN_ISOMORPHISM",
+      "energy_preserved": true,
+      "dissipation_equivalent": true
+    },
+    "C2_plausible_false_twin": {
+      "status": "VERIFIED",
+      "false_twin_refused": true,
+      "falsifier_type": "DIFFERENTIAL_TRAJECTORY_VS_STATIC_ALGEBRAIC_CURVE"
+    },
+    "C3_contradictory_evidence_revision": {
+      "status": "VERIFIED",
+      "revision_executed": true,
+      "prior_priors_preserved": true,
+      "quality_factor_updated": true
+    },
+    "C4_evidence_insufficiency_abstention": {
+      "status": "VERIFIED",
+      "abstention_emitted": true,
+      "decision": "ABSTAIN_INSUFFICIENT_OBSERVATION",
+      "missing_dimensions_identified": true
+    },
+    "C5_native_controls_verified": {
+      "status": "VERIFIED",
+      "schema_intake_confirmed": true,
+      "unsupported_synthesis_declined": true
+    }
+  },
+  "comparative_delta_vector": {
+    "delta_warranted_hypotheses": 0,
+    "delta_revisions": 0,
+    "delta_falsifications": 0,
+    "delta_abstentions": 0,
+    "delta_false_joins": 0
+  },
+  "evidence_traces": [
+    "03_calibration_execution/traces/arm0_trace.log",
+    "03_calibration_execution/traces/arm1_trace.log",
+    "03_calibration_execution/traces/arm2a_trace.log",
+    "03_calibration_execution/traces/arm2b_trace.log"
+  ]
+}

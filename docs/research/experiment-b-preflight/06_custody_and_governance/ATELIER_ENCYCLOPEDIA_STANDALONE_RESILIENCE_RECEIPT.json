@@ -1,0 +1,50 @@
+{
+  "schema": "td613.experiment-b.atelier-encyclopedia-resilience-receipt/v1",
+  "timestamp": "2026-10-30T03:28:06.307Z",
+  "authority": "Sovereign Operator Direct · Emergence HQ Independent Scientific Review",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "disposition": "ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_VERIFIED",
+  "test_result": "PASS",
+  "independent_estates_recovered": {
+    "encyclopedia": {
+      "schema_id": "td613.research-intake/v1",
+      "schema_sha256": "52d09471ec442e6c26505fee9fa9f2c8b836f7b5e2777bac1dd30eeac315b934",
+      "runtime_sha256": "92bcf30f1900f4336e7c0a175c00db32c5bd9334e7e4e7339dcee76aff438e69",
+      "intake_sha256": "543e2c23aff74a6d55d66fae2231327f98374498e3637214ddaabf32d0438cc5",
+      "human_review_gating_present": true,
+      "autonomous_edge_synthesis_absent": true
+    },
+    "atelier": {
+      "profile_sha256": "7b33bbf29e3607dc5d860946cbd7b7efac6b9bee5dd2d7635ddf63e793f98e3d",
+      "surface_id": "a15-r0-src-atelier",
+      "surface_decl_sha256": "99bc23dfe6d4858ab12a7bb15a12ff4b92f5c833a1e5189c6bae27b0e01b08e5",
+      "canonical_routes": [
+        "EXPERIENTIAL",
+        "CUSTODIAL",
+        "AUDIT",
+        "IMPLEMENTATION"
+      ],
+      "human_closure_required": true,
+      "route_inference_forbidden": true,
+      "forbidden_payloads": [
+        "raw_bodies",
+        "credentials",
+        "cookies",
+        "authorization_headers",
+        "private_tokens"
+      ]
+    }
+  },
+  "manifest_bypass_demonstration": {
+    "manifest_read_attempted": false,
+    "integration_layer_bypassed": true,
+    "direct_disk_recovery_succeeded": true
+  },
+  "standing_invariants": {
+    "challenge_corpus_state": "STRICTLY_SEALED_AND_QUARANTINED",
+    "gate_e_disposition": "HELD",
+    "empirical_exteriority_credit": 0,
+    "human_scientific_closure": "RESERVED",
+    "issue_405_release_authority": "CLOSED"
+  }
+}

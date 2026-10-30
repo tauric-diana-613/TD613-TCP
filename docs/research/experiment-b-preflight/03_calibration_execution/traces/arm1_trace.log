@@ -1,0 +1,12 @@
+[2026-10-29T19:04:55.725Z] [ARM-1-ARCHIVAL-B1] === EXECUTING ARM 1: ARCHIVAL CONTROL B1 (NATIVE REPOSITORY ENGINES) ===
+[2026-10-29T19:04:55.725Z] [ARM-1-ARCHIVAL-B1] Testing schema-gated intake, deterministic retrieval, and capability boundaries.
+[2026-10-29T19:04:55.735Z] [ARM-1-ARCHIVAL-B1] Encyclopedia inspect structured record: valid=true, publication_eligible=true
+[2026-10-29T19:04:55.735Z] [ARM-1-ARCHIVAL-B1] Encyclopedia inspect raw unstructured formula: valid=false, errors=[Input must be one JSON record.]
+[2026-10-29T19:04:55.909Z] [ARM-1-ARCHIVAL-B1] stage-encyclopedia-record: exit=0
+[2026-10-29T19:04:56.113Z] [ARM-1-ARCHIVAL-B1] admit-encyclopedia-record without --human-review-ref: exit=1 (fail-closed refusal)
+[2026-10-29T19:04:56.270Z] [ARM-1-ARCHIVAL-B1] admit-encyclopedia-record with --human-review-ref: exit=0 (admitted to index)
+[2026-10-29T19:04:56.316Z] [ARM-1-ARCHIVAL-B1] Wendbine compiler executed: post_nodes=33, concept_nodes=191, typed_relations=146
+[2026-10-29T19:04:56.316Z] [ARM-1-ARCHIVAL-B1] Wendbine non-equivalences enforced: 11 invariants
+[2026-10-29T19:04:56.316Z] [ARM-1-ARCHIVAL-B1] Wendbine raw ODE compilation rejected: "unsupported or missing Wendbine snapshot metadata"
+[2026-10-29T19:04:56.316Z] [ARM-1-ARCHIVAL-B1] Arm 1 Evaluation on Autonomous Scientific Synthesis: CAPABILITY_NOT_IMPLEMENTED
+[2026-10-29T19:04:56.316Z] [ARM-1-ARCHIVAL-B1] Zero autonomous hypotheses synthesized. Archival control cleanly established.

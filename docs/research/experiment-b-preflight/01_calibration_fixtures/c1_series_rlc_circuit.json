@@ -1,0 +1,23 @@
+{
+  "schema": "td613.calibration-fixture/v1",
+  "fixture_id": "CALIB-C1-ELECTRICAL-RLC",
+  "system_class": "SECOND_ORDER_LINEAR_DISSIPATIVE_DYNAMICAL_SYSTEM",
+  "domain": "ELECTRODYNAMICS",
+  "governing_equation": "L * d^2q/dt^2 + R * dq/dt + (1/C) * q = V(t)",
+  "state_variables": {
+    "generalized_coordinate": { "symbol": "q", "dimension": "ELECTRIC_CHARGE", "unit": "coulomb" },
+    "generalized_velocity": { "symbol": "i", "definition": "dq/dt", "dimension": "ELECTRIC_CURRENT", "unit": "ampere" }
+  },
+  "physical_parameters": {
+    "inductance": { "symbol": "L", "dimension": "INDUCTANCE", "unit": "henry", "value": 2.5 },
+    "ohmic_resistance": { "symbol": "R", "dimension": "RESISTANCE", "unit": "ohm", "value": 0.4 },
+    "elastance": { "symbol": "1/C", "capacitance_C": 0.1, "dimension": "ELASTANCE", "unit": "farad^-1", "value": 10.0 }
+  },
+  "hamiltonian_energy": "E_elec = 0.5 * L * i^2 + 0.5 * (1/C) * q^2",
+  "dissipation_rate": "dE_elec/dt = - R * i^2",
+  "phase_space_dimension": 2,
+  "boundary_conditions": { "q(0)": 0.15, "i(0)": 0.0, "t_span": [0.0, 30.0] },
+  "regime": "UNDERDAMPED",
+  "damping_ratio": "zeta = R / (2 * sqrt(L / C)) = 0.04",
+  "natural_frequency": "omega_0 = 1 / sqrt(L * C) = 2.0 rad/s"
+}
