@@ -32,7 +32,10 @@ When an autonomous or agent-assisted system generates candidate hypotheses acros
 
 1. **Anti-Conflation Rule:** A relationship or terminology introduced by the presentation layer (e.g., Pedagogue dromology, Atlas holonomy parity, FADT fibers) **cannot silently become an empirical proposition attributed to the original Em source evidence**.
 2. **Anti-Notation Discrimination Rule:** A mathematically valid derivation or empirical correspondence **cannot be discarded merely because it appears in unfamiliar, paratactic, or non-traditional notation**.
-3. **Temporal Invariance:** The evidence must predate presentation; presentation must predate hypothesis generation; and hypothesis generation must predate independent adjudication.
+3. **Flexible Temporal Ordering Law:**
+   * In *Pre-Generation Lens Mode* ($\mathcal{R}_{\text{pre}}$): Evidence predates Presentation Framing, which predates Hypothesis Generation.
+   * In *Post-Generation Sieve Mode* ($\mathcal{R}_{\text{post}}$): Evidence predates Hypothesis Generation, which is *subsequently* audited by Presentation Scaffolding (Aperture SVD, Atlas parities, FADT quotient fibers).
+   * In both modes: Hypothesis Generation must be frozen prior to unblinded independent adjudication. Temporal ordering must not artificially prohibit post-generation specialist examination.
 
 ---
 
@@ -47,13 +50,19 @@ When an autonomous or agent-assisted system generates candidate hypotheses acros
 ### II. Presentation Ancestry
 * **Generating Arm:** Identifies whether the candidate emerged from Arm 0 (Transport), Arm 1 (Archival Control), Arm 2A (Modular Instrument), or Arm 2B (Matched Union).
 * **Representation Modality:** Declares whether standard mathematical syntax, Dollhouse paratactic counterpoint, or category-theoretic functors were employed.
-* **Presentation Timing:** Specifies whether representation was applied *before* hypothesis generation ($\mathcal{R}_{\text{pre}}$) or *after* generation ($\mathcal{R}_{\text{post}}$).
+* **Presentation Timing:** Specifies whether representation was applied *before* hypothesis generation ($\mathcal{R}_{\text{pre}}$) or *after* generation ($\mathcal{R}_{\text{post}}$). Both modes are fully supported.
 * **Introduced Vocabulary:** An explicit ledger of any terminology, metaphors, or structural categories supplied by the instrument that are absent from the underlying source text.
 
 ### III. Adjudication Ancestry
 * **Evaluator Tier:** Exact epistemic classification (Level 1: Automated Rubric, Level 2: Implementer Semantic Review, Level 3: Independently Witnessed Blinded Evaluation, Level 4: External Mathematical Replication).
 * **Scoring Rules:** Versioned hash of the answer key, evaluation script, and math normalization engine.
-* **RCA-01 Outcome:** Formal assignment to one of the seven RCA-01 outcomes (e.g. `OUTCOME_WARRANTED_MATHEMATICS`, `OUTCOME_REPRESENTATION_ENABLED_DISCOVERY`, `OUTCOME_MANUFACTURED_EMERGENCE`).
+* **RCA-01 Multi-Dimensional Evaluation Vector:** Captures the six decoupled evaluative dimensions:
+  1. Discovery Occurrence ($D \in \{\text{Discovered, Missed, Abstained}\}$)
+  2. Mathematical Warrant ($W \in \{\text{Isomorphism, Formal Equivalence, Operational, Analogy, Falsified, None}\}$)
+  3. Causal Role ($C_{\mathcal{R}} \in \{\text{Neutral-Sufficient, Lens-Enabled, Post-Hoc Sieve, Scaffolding-Artifact, Bottleneck-Suppressed}\}$)
+  4. Independent Novelty ($N \in \{\text{Established-Restatement, Novel-Relation, Unanticipated-Synthesis}\}$)
+  5. Instrument Integrity ($F \in \{\text{Clean-Execution, Conditioning-Deficit, Fiber-Gap, Dromological-Deadlock}\}$)
+  6. Scientific Claim Status ($\mathcal{S} \in \{\text{Warranted-Discovery, Exploratory-Finding, Unanticipated-Candidate, Held-Dissent, Falsified-Artifact}\}$)
 * **Unblinding Sequence:** Verification that scoring occurred while model arm identity was pseudonymized (`FROZEN_BLINDED`), prior to final unblinding.
 
 ---

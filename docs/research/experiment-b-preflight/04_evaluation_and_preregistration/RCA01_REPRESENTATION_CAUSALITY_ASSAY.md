@@ -19,66 +19,91 @@ $$\text{Instrument Contribution} \neq \text{Epistemic Warrant}$$
 
 An experimental instrument (such as the four-role Dollhouse, jurisdictional chambering, or paratactic framing) may critically assist a reasoning system in discovering an authentic relationship without receiving the authority to certify that the relationship is objectively true. Conversely, an instrument may manufacture an illusion of emergence through prompting idioms, or suppress real emergence through severe routing bottlenecks.
 
-The **Representation Causality Assay (RCA-01)** is designed to rigorously disentangle what the evidence warrants from what the representation introduces.
+The **Representation Causality Assay (RCA-01)** is designed to evaluate evidence bearing on causal attribution: what the evidence warrants, what the representation facilitates, and what the instrument fails to classify.
 
 ---
 
-## 2. Seven Distinguishable Epistemic Outcomes
+## 2. Six Decoupled Evaluative Axes (Multi-Dimensional Outcomes)
 
-RCA-01 establishes exact criteria to separate seven mutually exclusive epistemic outcomes:
+Scientific outcomes in open research are **non-exclusive and multi-faceted**. A valid discovery may simultaneously possess formal mathematical warrant, be enabled by a specific representation, and present a genuinely novel notation. 
 
-1. **Manufactured Emergence (`OUTCOME_MANUFACTURED_EMERGENCE`):**
-   * *Definition:* A relationship or "discovery" that appears exclusively because of the instrument's prompt templates, scaffolding idioms, or coordinate framing, with zero grounding in the underlying source evidence.
-   * *Diagnostic Falsifier:* Disappears under neutral representation; asserts correspondences on matched negative controls.
-2. **Suppressed Emergence (`OUTCOME_SUPPRESSED_EMERGENCE`):**
-   * *Definition:* An authentic mathematical or relational property present in the evidence that is masked, rejected, or lost due to instrument overhead, routing bottlenecks, or rigid categorical filtering.
-   * *Diagnostic Falsifier:* Discovered by flat native union (Arm 2B) but missed by modular chambering (Arm 2A).
-3. **Legitimate Representation-Enabled Discovery (`OUTCOME_REPRESENTATION_ENABLED_DISCOVERY`):**
-   * *Definition:* An authentic relationship genuinely grounded in source bytes whose cognitive recovery is uniquely enabled or accelerated by the instrument's structured coordinate projection, while retaining independent validity.
-   * *Diagnostic Falsifier:* Found under Dollhouse framing; survives independent mathematical verification under neutral notation; fails on matched negative controls.
-4. **Warranted Mathematics (`OUTCOME_WARRANTED_MATHEMATICS`):**
-   * *Definition:* A formal isomorphism, algebraic equivalence, or dynamical invariant supported by rigorous proof and independent mathematical derivation.
-   * *Diagnostic Falsifier:* Representation-invariant truth; holds whether written in standard LaTeX, plain text, or paratactic formalisms.
-5. **Novel Representation of Established Mathematics (`OUTCOME_NOVEL_REPRESENTATION`):**
-   * *Definition:* A known, standard mathematical structure or theorem restated in unfamiliar, novel, or domain-specific terminology.
-   * *Diagnostic Falsifier:* Reducible via exact dictionary translation to classical textbook formulations without empirical or cognitive novelty.
-6. **Discovery of Instrument Failure (`OUTCOME_INSTRUMENT_FAILURE`):**
-   * *Definition:* An assay outcome that reveals an internal limitation, false assumption, numerical conditioning breakdown, or categorical failure within the Dollhouse specialists themselves.
-   * *Diagnostic Falsifier:* Aperture SVD ill-conditioning, FADT irreducible quotient gap, or Pedagogue dromological deadlock triggered by authentic domain data.
-7. **Unexpected Research Outcomes (`OUTCOME_UNANTICIPATED_CANDIDATE`):**
-   * *Definition:* Genuine empirical or theoretical relationships that resist classification within existing Dollhouse specialist jurisdictions and cannot be cleanly mapped onto preregistered categories.
-   * *Diagnostic Falsifier:* Routed to the Unknown-Discovery Channel for prospective, unblinded exploration without immediate truth claims.
+RCA-01 replaces rigid single-label categories with six decoupled evaluative dimensions:
+
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        RCA-01 MULTI-DIMENSIONAL EVALUATION VECTOR                     │
+│                                                                                        │
+│  1. Discovery Occurrence (D)           ──► { Discovered, Missed, Refused }             │
+│  2. Mathematical Warrant (W)           ──► { Isomorphism, Equivalence, Operational,    │
+│                                              Analogy, Falsified, None }                │
+│  3. Causal Role of Representation (C)  ──► { Neutral-Sufficient, Lens-Enabled,        │
+│                                              Post-Hoc Sieve, Scaffolding-Artifact }    │
+│  4. Independent Novelty (N)            ──► { Established-Restatement, Novel-Relation,   │
+│                                              Unanticipated-Synthesis }                 │
+│  5. Instrument Integrity (F)           ──► { Clean-Execution, Conditioning-Deficit,     │
+│                                              Fiber-Gap, Dromological-Deadlock }        │
+│  6. Scientific Claim Status (S)        ──► { Warranted-Discovery, Exploratory-Finding,  │
+│                                              Unanticipated-Candidate, Held-Dissent,    │
+│                                              Falsified-Artifact }                      │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Seven Overlapping Outcome Archetypes
+
+Rather than forcing candidates into mutually exclusive silos, RCA-01 recognizes seven characteristic multi-dimensional profiles:
+
+1. **Manufactured Emergence Archetype:**
+   * *Profile:* $D = \text{Discovered}$, $W = \text{None/Falsified}$, $C = \text{Scaffolding-Artifact}$, $\mathcal{S} = \text{Falsified-Artifact}$.
+   * *Evidence:* Appears exclusively under specific prompt scaffolding; fires identically on matched negative controls; lacks source span grounding.
+2. **Suppressed Emergence Archetype:**
+   * *Profile:* $D = \text{Missed in Arm 2A / Found in Arm 2B}$, $W = \text{Warranted}$, $C = \text{Bottleneck-Suppressed}$.
+   * *Evidence:* Authentic mathematical relation in source evidence discovered by flat native union (Arm 2B) but filtered out by modular jurisdictional handoffs.
+3. **Legitimate Representation-Enabled Discovery Archetype:**
+   * *Profile:* $D = \text{Discovered in Cell B}$, $W = \text{Warranted}$, $C = \text{Lens-Enabled}$, $\mathcal{S} = \text{Warranted-Discovery}$.
+   * *Evidence:* Enabled or accelerated by Dollhouse coordinate framing; rejected on negative controls; supported by independent mathematical proof.
+4. **Warranted Mathematics Archetype:**
+   * *Profile:* $W = \text{Isomorphism / Formal Equivalence}$, $\mathcal{S} = \text{Warranted-Discovery}$.
+   * *Evidence:* Formal derivation holds independently of whether standard LaTeX, plain text, or paratactic formalisms are used.
+5. **Novel Representation of Established Mathematics Archetype:**
+   * *Profile:* $W = \text{Warranted}$, $N = \text{Established-Restatement}$, $\mathcal{S} = \text{Exploratory-Finding}$.
+   * *Evidence:* Known theorem or dynamical equivalence restated in novel paratactic or domain-specific notation without novel physical claims.
+6. **Discovery of Instrument Failure Archetype:**
+   * *Profile:* $F = \text{Conditioning-Deficit / Fiber-Gap / Deadlock}$, $\mathcal{S} = \text{Held-Dissent}$.
+   * *Evidence:* Encounter reveals an internal limitation of the instrument itself (e.g., Aperture matrix rank deficiency, FADT quotient gap, or Pedagogue order violation).
+7. **Unexpected Research Outcomes (`UNANTICIPATED_CANDIDATE`):**
+   * *Profile:* $N = \text{Unanticipated-Synthesis}$, $\mathcal{S} = \text{Unanticipated-Candidate}$.
+   * *Evidence:* Genuine relationships that resist classification within existing Dollhouse specialist jurisdictions. Preserved without requiring resemblance to pre-existing categories.
 
 ---
 
 ## 3. Factorial Validation Design ($2 \times 2$)
 
-To causally isolate representational effects, every candidate relationship is subjected to a four-cell factorial matrix:
+To causally isolate representational effects, every candidate relationship is evaluated across a four-cell factorial matrix:
 
 $$\mathcal{M} = \big\{ \text{Evidence Class} \big\} \times \big\{ \text{Representation Class} \big\}$$
 
-| Factorial Cell | Evidence Condition | Representation Condition | Expected Outcome for Genuine Discovery |
+| Factorial Cell | Evidence Condition | Representation Condition | Evaluative Role in Causal Attribution |
 |---|---|---|---|
-| **Cell A: Authentic $\times$ Neutral** | Authentic Source Corpus ($\mathcal{E}_{\text{auth}}$) | Standard Mathematical / Plain Text ($\mathcal{R}_{\text{neut}}$) | Discovered or easily recognized upon inspection. |
-| **Cell B: Authentic $\times$ Dollhouse** | Authentic Source Corpus ($\mathcal{E}_{\text{auth}}$) | Governed Jurisdictional Projection ($\mathcal{R}_{\text{doll}}$) | Discovered with structured structural receipts and audits. |
-| **Cell C: Negative Control $\times$ Neutral** | Matched Permuted / Decoupled Source ($\mathcal{E}_{\text{neg}}$) | Standard Mathematical / Plain Text ($\mathcal{R}_{\text{neut}}$) | **Must be rejected / abstained.** Zero join reported. |
-| **Cell D: Negative Control $\times$ Dollhouse** | Matched Permuted / Decoupled Source ($\mathcal{E}_{\text{neg}}$) | Governed Jurisdictional Projection ($\mathcal{R}_{\text{doll}}$) | **Must be rejected / abstained.** Zero join reported. |
+| **Cell A: Authentic $\times$ Neutral** | Authentic Source Corpus ($\mathcal{E}_{\text{auth}}$) | Standard Mathematical / Plain Text ($\mathcal{R}_{\text{neut}}$) | Tests baseline discoverability without specialized scaffolding. |
+| **Cell B: Authentic $\times$ Dollhouse** | Authentic Source Corpus ($\mathcal{E}_{\text{auth}}$) | Governed Jurisdictional Projection ($\mathcal{R}_{\text{doll}}$) | Tests discovery under governed coordinate lens. |
+| **Cell C: Negative Control $\times$ Neutral** | Matched Permuted / Decoupled Source ($\mathcal{E}_{\text{neg}}$) | Standard Mathematical / Plain Text ($\mathcal{R}_{\text{neut}}$) | Verifies neutral false-positive resistance. |
+| **Cell D: Negative Control $\times$ Dollhouse** | Matched Permuted / Decoupled Source ($\mathcal{E}_{\text{neg}}$) | Governed Jurisdictional Projection ($\mathcal{R}_{\text{doll}}$) | Verifies instrument false-positive resistance. |
 
-### Diagnostic Decision Rule
+### Causal Attribution as Evidence, Not an Automatic Boolean Oracle
 
-$$\text{Valid Discovery} \iff \big(\text{Cell B} = \text{ACCEPT}\big) \land \big(\text{Cell D} = \text{REJECT}\big) \land \big(\text{Cell C} = \text{REJECT}\big)$$
+The factorial matrix supplies **evidence bearing on causal attribution**, not a mechanical binary truth oracle:
 
-$$\text{Manufactured Artifact} \iff \big(\text{Cell B} = \text{ACCEPT}\big) \land \big(\text{Cell D} = \text{ACCEPT}\big)$$
+* **High Evidence for Representation-Enabled Discovery:** Candidate is discovered in Cell B, verified in Cell A (or proven independently), and strictly rejected in Cells C and D.
+* **Evidence of Scaffolding Artifact:** Candidate is affirmed in Cell B and Cell D (firing on negative control) or cannot be formulated outside the instrument's idiosyncratic terms.
+* **Representation Invariance Is Not Required for Truth:** If an authentic mathematical proposition is discovered in Cell B but initially missed in Cell A due to context complexity, the proposition is **not discarded**. If it possesses rigorous independent mathematical proof, it is accepted as a valid discovery where the representation functioned as an effective lens.
 
-### Temporal Order of Representation Application
+### Flexible Representation Routes (Pre- and Post-Generation)
 
-RCA-01 counterbalances presentation timing across two distinct modalities:
-1. **Pre-Generation Representation ($\mathcal{R}_{\text{pre}}$):** Dollhouse structural framing is applied to source material *before* the model generates hypotheses. Measures representation as a cognitive lens.
-2. **Post-Generation Representation ($\mathcal{R}_{\text{post}}$):** Hypotheses are generated under neutral presentation, and Dollhouse structural auditing is applied *after* generation. Measures representation as a verification sieve.
+RCA-01 preserves two distinct investigative routes:
+1. **Pre-Generation Lens ($\mathcal{R}_{\text{pre}}$):** Dollhouse structural framing is presented *prior* to hypothesis generation to test representation as an interpretive lens.
+2. **Post-Generation Sieve ($\mathcal{R}_{\text{post}}$):** Hypotheses are generated openly under neutral framing, and Dollhouse specialist auditing is applied *subsequently* to audit conditioning, parities, and fiber descent.
 
-> [!IMPORTANT]
-> **Representation Invariance is Not Demanded; Independent Warrant Is:**  
-> A reasoning architecture is not required to discover every truth with equal facility across all representations. Some coordinate systems naturally illuminate what others obscure. What RCA-01 demands is that once a relationship is articulated, its mathematical and empirical truth must stand independently of the scaffolding that facilitated its discovery.
+Neither route is privileged; both are legitimate means of scientific investigation.
 
 ---
 
@@ -99,14 +124,14 @@ To prevent post-hoc rationalization and the retroactive reclassification of expl
 │ STAGE 2: CANDIDATE-SPECIFIC INDEPENDENT VALIDATION          │
 │ - Construction of candidate-specific matched negative controls │
 │ - Negative controls frozen BEFORE unblinded evaluation     │
-│ - Independent assessor scoring against ground truth        │
+│ - Multi-dimensional assessment across 6 axes               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ### Protocol for Control-Construction in Stage 2
 
 Because genuinely unanticipated discoveries cannot have fully pre-specified relationship-specific negative controls prior to discovery, RCA-01 preregisters the **control-generation procedure**:
-1. **Coordinate Decoupling:** Permute the parameter mappings (e.g., swapping stiffness $k$ with damping $b$) while preserving overall numerical magnitudes.
+1. **Coordinate Decoupling:** Permute parameter mappings (e.g., swapping stiffness $k$ with damping $b$) while preserving overall numerical magnitudes.
 2. **Dynamical Class Mutation:** Replace linear terms with nonlinear saturation terms (e.g., turning harmonic wells into quartic double-wells) to test structural boundary conditions.
 3. **Topological Inversion:** Invert directionality of directed edges or reverse causal arrows in relational assertions.
 4. **Source Span Shuffling:** Splice non-contiguous text spans with matching lexical keywords to test against surface homonym reliance.
@@ -121,7 +146,7 @@ gate_e_disposition = HELD
 empirical_exteriority_credit = 0
 human_scientific_closure = RESERVED
 issue_405_release_authority = CLOSED
-rca01_protocol_status = PREREGISTERED_CANDIDATE
+rca01_methodological_status = DECOUPLED_MULTI_DIMENSIONAL_PREREGISTERED
 ```
 
-𝌐 `RCA01_PROTOCOL_FROZEN · SEVEN_OUTCOMES_FORMALIZED · FACTORIAL_2x2_DESIGN_BOUND · TWO_STAGE_DISCOVERY_STRUCTURED · B_CORPUS_SEALED · GATE_E_HELD · HUMAN_CLOSURE_RESERVED ⟐`
+𝌐 `RCA01_METHODOLOGY_DECOUPLED · RIGID_BOOLEAN_ORACLE_REPLACED · SIX_EVALUATIVE_AXES_ESTABLISHED · OPEN_DISCOVERY_PRESERVED · B_CORPUS_SEALED · GATE_E_HELD · HUMAN_CLOSURE_RESERVED ⟐`

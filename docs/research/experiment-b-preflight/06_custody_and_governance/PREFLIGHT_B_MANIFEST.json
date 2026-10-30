@@ -1,7 +1,7 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T02:47:35.817Z",
-  "entry_count": 51,
+  "timestamp": "2026-10-30T03:11:11.169Z",
+  "entry_count": 57,
   "entries": [
     {
       "path": "01_calibration_fixtures\\c1_damped_harmonic_oscillator.json",
@@ -49,6 +49,21 @@
       "sha256": "5501d04d20819a0524c0a6a683d837bd7cd27141ea2e2b2487fb37c593c1d75d"
     },
     {
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_01_conservative_hamiltonian.md",
+      "bytes": 906,
+      "sha256": "869660a4e78677f8852fcd4ac8ff8b60b2108ca2dea962b2c6ae64df8daa9dac"
+    },
+    {
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_02_empirical_damping_decay.md",
+      "bytes": 1168,
+      "sha256": "3f091f8c8392744db21b6507452bdc39092a37ecd245b401043a369f2e5a4429"
+    },
+    {
+      "path": "01_calibration_fixtures\\heterogeneous_specimens\\specimen_03_topological_soliton_crosswalk.md",
+      "bytes": 1183,
+      "sha256": "4f6697ff05085f494cacf3369e90e5852bc0377c860aa0d84170e11d91aba7d1"
+    },
+    {
       "path": "02_four_arm_harness\\gemini-live-client.mjs",
       "bytes": 5171,
       "sha256": "3689a0ec5879d4946f622796ec8c64aa735761369315d66e5a8bf86448fe8f42"
@@ -79,9 +94,19 @@
       "sha256": "62033a4dff5829843b90be1ec4a6076918f8ddcfc97dcf5d0d9a92c95f4c6e21"
     },
     {
+      "path": "02_four_arm_harness\\run-heterogeneous-discovery-harness.mjs",
+      "bytes": 10492,
+      "sha256": "5a0cfb376cc96fb9db5a0899606021a6199c5afad5d6403fad7618eae562dc5a"
+    },
+    {
       "path": "03_calibration_execution\\CALIBRATION_EXECUTION_RECEIPT.json",
       "bytes": 3202,
       "sha256": "9267abd77e104839dece5f42218e0ac331a29ce62160a6e6d4e9dfaa72e39cf1"
+    },
+    {
+      "path": "03_calibration_execution\\evaluator-oracle.mjs",
+      "bytes": 13563,
+      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
@@ -107,11 +132,6 @@
       "path": "03_calibration_execution\\PREDECESSOR_RECLASSIFICATION_RECEIPT.json",
       "bytes": 1811,
       "sha256": "e049058e060dfad4828b14a6772fdc5cef59faad140e478b066de56ab6f422b8"
-    },
-    {
-      "path": "03_calibration_execution\\evaluator-oracle.mjs",
-      "bytes": 13563,
-      "sha256": "41ae09c4011209f573bbe3e2b225bacf8f3ca33de995f7f6f966eebb5a618cbe"
     },
     {
       "path": "03_calibration_execution\\run-offline-trace-rescore.mjs",
@@ -170,23 +190,18 @@
     },
     {
       "path": "04_evaluation_and_preregistration\\RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
-      "bytes": 10055,
-      "sha256": "ddccd801270999bed663d230f94496b9419fafb9ac50f6ebb710a30feae557b5"
+      "bytes": 12121,
+      "sha256": "538c04c004f7508bbd14bcd5f4897b0216cffa003819accc25662ad4983304cd"
     },
     {
       "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_CUSTODY_PROTOCOL.md",
-      "bytes": 6443,
-      "sha256": "d6b99992f4844dd81db487104d0bf7fd32f69422a05e4256e5eef6b4ad505468"
+      "bytes": 7526,
+      "sha256": "bc3e7652b0e9ce8dd95af91f187e672e8d49d78380a23f132419c35c050c1d66"
     },
     {
       "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_DISCOVERY_SCHEMA.json",
-      "bytes": 5911,
-      "sha256": "6f9974fd6a95f28514bf6830cafaac318a469b3388716e3a80ffb67fffa3a5fa"
-    },
-    {
-      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
-      "bytes": 17769,
-      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
+      "bytes": 6991,
+      "sha256": "f43818d8171cf7f7a5d43dac4af34340d91fbfccc6cb59e562ad7a3691788345"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
@@ -194,14 +209,19 @@
       "sha256": "db862b045be1fe2ce0fdbadb0357a8074fe87cbd9fdfa62dbf63d4c3da6b4dd9"
     },
     {
-      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
-      "bytes": 3375,
-      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
+      "bytes": 17769,
+      "sha256": "ad1d3f71284a52a6ffe51ae8a5ad61a28c5f62224aca23c84d1241da43c2d03e"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT_V2.md",
       "bytes": 3112,
       "sha256": "aff1542abb596b57ebcee060d7ffbb1cbbe776e9edd412e36696f49d456bf473"
+    },
+    {
+      "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_REPORT.md",
+      "bytes": 3375,
+      "sha256": "35df7262dcd93f2caf1a964a4f449871b7da28528fbfee3456dfd0550cbde5be"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_PREFLIGHT_B_RECEIPT.json",
@@ -226,7 +246,7 @@
     {
       "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
       "bytes": 1913,
-      "sha256": "2d4e4280869edb241edf7b3c4705de6dbe7cc3ba42d10ee01588b3a974d4ecc7"
+      "sha256": "eb2555645cabf5c6e358c59e2dbddf5226726848a8c6f38edb45000ff8aadc30"
     },
     {
       "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",
@@ -244,9 +264,19 @@
       "sha256": "d3c4a7e0b9b173cba42d96e56d234d41a3df877636e8e4b0094c70a27319ea26"
     },
     {
+      "path": "06_custody_and_governance\\FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md",
+      "bytes": 8163,
+      "sha256": "7b1b5be63967eacfff639420b1dd2d5dfbffd94899fec3e297fd99c25673221b"
+    },
+    {
       "path": "06_custody_and_governance\\INSTRUMENT_FREEZE_AND_CROSSWALK.md",
       "bytes": 5445,
       "sha256": "2cf48f6e76802d4d24c9334ec5526a289fec9eacd1cffa6345effa7df78b7992"
+    },
+    {
+      "path": "06_custody_and_governance\\MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md",
+      "bytes": 6560,
+      "sha256": "f129003e094b9586a462e3d90f5e4288ee7f19c12b71b973ac42d1fe847a6e0f"
     },
     {
       "path": "06_custody_and_governance\\PUBLIC_CUSTODY_DECISION_RECORD.md",
@@ -255,8 +285,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 13047,
-      "sha256": "cd6465838ff9c5a5bb889b53e4e0f327045997d9cd6bd6737ff218f5b9073d8c"
+      "bytes": 15317,
+      "sha256": "b3ab4cedfe2433287d4745446089682d5c06050464e4a328f461a505fde78b52"
     }
   ]
 }

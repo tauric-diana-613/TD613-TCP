@@ -157,17 +157,31 @@
           "type": "string",
           "enum": ["CELL_A_AUTH_NEUT", "CELL_B_AUTH_DOLL", "CELL_C_NEG_NEUT", "CELL_D_NEG_DOLL"]
         },
-        "rca01_outcome": {
-          "type": "string",
-          "enum": [
-            "OUTCOME_MANUFACTURED_EMERGENCE",
-            "OUTCOME_SUPPRESSED_EMERGENCE",
-            "OUTCOME_REPRESENTATION_ENABLED_DISCOVERY",
-            "OUTCOME_WARRANTED_MATHEMATICS",
-            "OUTCOME_NOVEL_REPRESENTATION",
-            "OUTCOME_INSTRUMENT_FAILURE",
-            "OUTCOME_UNANTICIPATED_CANDIDATE"
-          ]
+        "rca01_evaluation_vector": {
+          "type": "object",
+          "properties": {
+            "discovery_occurrence": { "type": "string", "enum": ["DISCOVERED", "MISSED", "ABSTAINED"] },
+            "mathematical_warrant": { "type": "string", "enum": ["ISOMORPHISM", "FORMAL_EQUIVALENCE", "OPERATIONAL", "ANALOGY", "FALSIFIED", "NONE"] },
+            "causal_contribution": { "type": "string", "enum": ["NEUTRAL_SUFFICIENT", "LENS_ENABLED", "POST_HOC_SIEVE", "SCAFFOLDING_ARTIFACT", "BOTTLENECK_SUPPRESSED"] },
+            "novelty": { "type": "string", "enum": ["ESTABLISHED_RESTATEMENT", "NOVEL_RELATION", "UNANTICIPATED_SYNTHESIS"] },
+            "instrument_integrity": { "type": "string", "enum": ["CLEAN_EXECUTION", "CONDITIONING_DEFICIT", "FIBER_GAP", "DROMOLOGICAL_DEADLOCK"] },
+            "claim_status": { "type": "string", "enum": ["WARRANTED_DISCOVERY", "EXPLORATORY_FINDING", "UNANTICIPATED_CANDIDATE", "HELD_DISSENT", "FALSIFIED_ARTIFACT"] }
+          }
+        },
+        "rca01_outcome_archetypes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "OUTCOME_MANUFACTURED_EMERGENCE",
+              "OUTCOME_SUPPRESSED_EMERGENCE",
+              "OUTCOME_REPRESENTATION_ENABLED_DISCOVERY",
+              "OUTCOME_WARRANTED_MATHEMATICS",
+              "OUTCOME_NOVEL_REPRESENTATION",
+              "OUTCOME_INSTRUMENT_FAILURE",
+              "OUTCOME_UNANTICIPATED_CANDIDATE"
+            ]
+          }
         },
         "unblinding_phase": {
           "type": "string",
