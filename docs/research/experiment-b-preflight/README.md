@@ -1,15 +1,22 @@
-# 𝌋 TD613 · Experiment B Source-Free Preflight Dossier (Amended per PR #1607 Redpen)
+# 𝌋 TD613 · Experiment B Source-Free Preflight Dossier (Final Constitution)
 
 **Commission:** `TD613_Experiment_B_Preflight_Activation_2026-10-29`  
 **Governing Covenant:** Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (`U+200C` preserved)  
 **Adjudicated Disposition:**  
-$$\mathbf{B\_LIVE\_CALIBRATION\_READY\_FOR\_INDEPENDENT\_REVIEW \cdot B\_CORPUS\_QUARANTINED}$$  
+$$\mathbf{B\_PREFLIGHT\_READY\_FOR\_INDEPENDENT\_ACCEPTANCE\_AND\_OPERATOR\_FLIGHT\_DECISION \cdot B\_CORPUS\_SEALED}$$
 
 ---
 
 ## Overview
 
-This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package** under `docs/research/experiment-b-preflight/`. In response to the Emergence HQ Independent Scientific Redpen on PR #1607, it replaces deterministic simulation stubs with **authentic live model inference via Google Gemini REST API (`gemini-2.5-flash-lite`)**, provides an **independent evaluator oracle with withheld ground truths**, corrects fixture physics (Q-factor and dissipation consistency), incorporates positive controls, and executes the **native `/dollhouse-audit` with authentic specialist domain observations**.
+This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package** under `docs/research/experiment-b-preflight/`. In response to Emergence HQ reviews `5704533595` and `5707431596` on PR #1607, it establishes:
+1. Authentic live model calibration shakedown via Google Gemini REST API (`gemini-2.5-flash-lite`, 4/4 vs 4/4 parity under corrected automated rubric).
+2. Four-tier epistemic evaluation hierarchy strictly separating automated rubric parity, implementer semantic review, independent blinded evaluation, and external replication.
+3. Merged PR #1608 Dollhouse repair integration and strict quarantine of the separate Atlas Wild Field mathematical estate.
+4. Preregistered **RCA-01 Representation Causality Assay** ($2 \times 2$ factorial validation design).
+5. **Three-Lineage Discovery Custody Protocol** and Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`).
+6. Empirical demonstration of standalone Atelier and Encyclopedia resilience without Manifest dependency.
+7. Clear Preflight / Flight / Postflight separation and Sovereign Operator Decision Sheet.
 
 ---
 
@@ -33,13 +40,13 @@ The live shakedown was executed via [`run-source-free-live-calibration.mjs`](03_
 * **Sampling Parameters**: `temperature: 0.0`, `max_output_tokens: 4096` (per-call output ceiling, not episode budget).
 * **Scoring Mode**: Blinded independent evaluation (`SPECIMEN_ALPHA` vs `SPECIMEN_BETA` scored by [`evaluator-oracle.mjs`](03_calibration_execution/evaluator-oracle.mjs)).
 
-### Summary of Live Shakedown, Offline Rescore & Independent Evaluation
+### Summary of Live Shakedown, Offline Rescore & Semantic Review
 
 * **Automated Offline Rescore Receipt:** [`03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json`](03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json)  
   *Classification:* `INTERNAL_ANONYMIZED_OFFLINE_RESCORE` (`AUTOMATED_RUBRIC_PARITY`). Internal same-process pseudonymization; establishes rubric parity without regenerating frozen model answers.
-* **Independent Semantic Evaluation Dossier:** [`03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md`](03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md)  
+* **Implementer Semantic Review Dossier:** [`03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md`](03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md)  
   *Receipt:* [`03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json`](03_calibration_execution/FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json)  
-  *Classification:* `INDEPENDENT_SEMANTIC_EVALUATION`. Criterion-by-criterion evaluation of all 14 frozen final-condition model outputs against the withheld answer key.
+  *Classification:* `IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW`. Criterion-by-criterion evaluation of all 14 frozen final-condition model outputs against the withheld answer key.
 * **Adversarial Scorer Test Suite:** [`tests/test-evaluator-oracle.mjs`](../../../tests/test-evaluator-oracle.mjs)  
   Expanded from 12 to 16 unit tests, explicitly verifying resistance against adversarial negations, false-twin affirmations, rejected hypothesis numeric claims, and negative keywords in positive controls (16/16 passing).
 
@@ -84,17 +91,20 @@ The native `/dollhouse-audit` skill was executed with authentic domain observati
 
 ---
 
-## 4. Seven-Dimension Perturbation Mandate (Section IV & Addendum)
+## 4. Governance & Methodological Assets
 
-In accordance with Amari's governing mandate addendum, [`EXPERIMENT_B_PREREGISTERED_PROTOCOL.md`](04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md) is updated to **Candidate Status** (`CANDIDATE_PROTOCOL_PENDING_INDEPENDENT_REVIEW`) and incorporates the seven prospective research dimensions of the heterogeneous epistemic perturbation study:
-
-1. Existing and newly warranted intellectual relationships (topology mutation/disappearance).
-2. Contradictions, chronology, model revision, and prior preservation.
-3. Alternative mathematics, unforeseen theoretical relations, and formal falsification.
-4. Newly proposed research methods, reconstruction operations, and 4D candidate questions.
-5. Source-order sensitivity, held-out surprise, evidence withdrawal, and adversarial false twins.
-6. Em authorship, provenance, source identities, lineage distinction, and lawful custody.
-7. Potential emergence beyond an equally resourced and equally capable strong-union research comparator.
+1. **RCA-01 Representation Causality Assay:** [`04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md`](04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md)  
+   Disentangles scaffolding from discovery via $2 \times 2$ factorial validation design across 7 distinguishable outcomes.
+2. **Three-Lineage Discovery Custody Protocol:** [`04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md`](04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md)  
+   Enforces separation of Evidence, Presentation, and Adjudication ancestries under [`THREE_LINEAGE_DISCOVERY_SCHEMA.json`](04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json).
+3. **Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`):**  
+   Non-promotional intake status for findings outside existing Dollhouse categories, preserving full parity with Arm 2B.
+4. **Instrument Freeze & Separate Atlas Wild Field Program:** [`06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md`](06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md)  
+   Freezes all code/model identities and strictly quarantines the Atlas theoretical program from challenge data.
+5. **Standalone Atelier & Encyclopedia Resilience:** [`06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md`](06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md)  
+   Empirical proof that originating heritage estates remain directly recoverable without Manifest dependency.
+6. **Flight Authorization Decision Sheet:** [`06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md`](06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md)  
+   Defines the operator flight decision checklist with zero remaining blockers.
 
 ---
 
@@ -118,11 +128,14 @@ node -e "import('./docs/research/experiment-b-preflight/02_four_arm_harness/run-
 # 5. Run independent evaluator oracle unit test suite (16/16 passing)
 node tests/test-evaluator-oracle.mjs
 
-# 6. Run offline frozen-trace rescore and fairness reconciliation
-node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-trace-rescore.mjs
+# 6. Run merged Dollhouse R01-R08 regression test suite (11/11 passing)
+node tests/dollhouse-repair-regressions-r01-r08.test.mjs
 
-# 7. Inspect independent semantic evaluation dossier and receipt
-# (Examine docs/research/experiment-b-preflight/03_calibration_execution/FROZEN_TRACE_INDEPENDENT_EVALUATION.md)
+# 7. Run standalone Atelier & Encyclopedia resilience demonstration
+node scripts/verify-atelier-encyclopedia-resilience.mjs
+
+# 8. Run offline frozen-trace rescore and fairness reconciliation
+node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-trace-rescore.mjs
 ```
 
 ---
@@ -135,7 +148,7 @@ gate_e_disposition = HELD
 empirical_exteriority_credit = 0
 human_scientific_closure = RESERVED
 issue_405_release_authority = CLOSED
-pr_1607_review_state = AMENDED_FOR_CONCURRENT_ADJUDICATION
+pr_1607_status = FINAL_PREFLIGHT_CONSTITUTION_COMPLETE
 ```
 
-𝄐 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · Sealed ⟐
+𝌐 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · Sealed ⟐

@@ -1,24 +1,36 @@
 {
-  "schema": "td613.experiment-b.frozen-trace-independent-adjudication-receipt/v1",
+  "schema": "td613.experiment-b.frozen-trace-implementer-review-receipt/v1",
   "timestamp": "2026-10-29T20:41:16.903Z",
-  "commission": "TD613_Experiment_B_Frozen_Trace_Independent_Scientific_Adjudication_2026-10-29",
+  "commission": "TD613_Experiment_B_Frozen_Trace_Implementer_Semantic_Review_2026-10-29",
   "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
-  "disposition": "INDEPENDENT_FROZEN_TRACE_SEMANTIC_EVALUATION_COMPLETED",
-  "adjudication_scope": "INDEPENDENT_MATHEMATICAL_AND_SCIENTIFIC_GROUND_TRUTH_EVALUATION",
-  "automated_rubric_vs_independent_eval": {
-    "automated_heuristic_rubric": {
+  "disposition": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW_COMPLETED",
+  "adjudication_scope": "IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW",
+  "epistemic_evaluation_hierarchy": {
+    "level_1_automated_rubric_parity": {
+      "status": "CONFIRMED",
+      "tool": "evaluator-oracle.mjs",
       "arm_2a_score": "4/4 (100%)",
       "arm_2b_score": "4/4 (100%)",
       "delta": 0,
       "classification": "AUTOMATED_RUBRIC_PARITY"
     },
-    "independent_semantic_evaluation": {
+    "level_2_implementer_semantic_review": {
+      "status": "CONFIRMED",
+      "assessor": "Implementer / Internal Research Session",
       "arm_2a_specimens_supported": "7/7",
       "arm_2b_specimens_supported": "7/7",
       "arm_2a_conditions_passed": "4/4",
       "arm_2b_conditions_passed": "4/4",
       "cognitive_delta": 0,
-      "classification": "SEMANTIC_GROUND_TRUTH_PARITY_CONFIRMED"
+      "classification": "IMPLEMENTER_SEMANTIC_PARITY_CONFIRMED"
+    },
+    "level_3_independent_blinded_evaluation": {
+      "status": "PENDING_EXTERNAL_BLINDED_ASSESSOR",
+      "description": "Requires third-party external assessor with evaluations frozen prior to unblinding."
+    },
+    "level_4_external_mathematical_replication": {
+      "status": "REPLICATION_COUNT_ZERO",
+      "description": "Requires independent execution on separate infrastructure (SHARED_ACQUISITION != INDEPENDENT_REPLICATION)."
     }
   },
   "disagreements_and_nuances": [

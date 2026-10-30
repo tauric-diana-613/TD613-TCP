@@ -1,27 +1,40 @@
-# 𝌋 TD613 · Experiment B Frozen-Trace Independent Scientific Adjudication Dossier
+# 𝌋 TD613 · Experiment B Frozen-Trace Implementer Semantic Adjudication Dossier
 
 **Heritage:** Tauric Diana — Crimean heritage custodianship  
 **Covenant:** Khona‌lit-po (`U+200C` preserved)  
 **Authority:** Sovereign Operator Direct · Emergence HQ Independent Scientific Review  
 **Operating Posture:** Princess Latifa · Wild Field Mode Active · `/plan OFF`  
 **Classification:** Review-Safe Public Evaluation Dossier  
-**Disposition:** `INDEPENDENT_FROZEN_TRACE_SEMANTIC_EVALUATION_COMPLETED · PARITY_CONFIRMED_ON_FROZEN_SPECIMENS`
+**Disposition:** `IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW_COMPLETED · PARITY_CONFIRMED_ON_FROZEN_SPECIMENS`
 
 ---
 
-## 1. Executive Summary & Evaluation Protocol
+## 1. Executive Summary & Epistemic Hierarchy
 
-In accordance with Emergence HQ review `5704533595` and Section III of the governing mandate, this dossier reports on the **independent semantic and mathematical adjudication** of the 14 frozen model responses generated during the live Gemini calibration shakedown.
+In accordance with Emergence HQ review `5707431596` and Section II.A of the governing preflight constitution, this dossier establishes the exact epistemic status of the mathematical evaluations performed across the 14 frozen model responses generated during the live Gemini calibration shakedown.
 
-### Core Distinctions Established
+### Four-Level Epistemic Classification
 
-1. **Separation of Automated Rubric vs Semantic Evaluation:**
-   * **Automated Rubric:** Scored via [`evaluator-oracle.mjs`](evaluator-oracle.mjs). Verified that both Arm 2A and Arm 2B achieve **4/4 conditions passed** under the repaired math-normalization parser. Labeled formally as `AUTOMATED_RUBRIC_PARITY`.
-   * **Independent Semantic Adjudication:** Performed directly against the frozen mathematical, physical, and epistemic ground-truth answer key, with criterion-by-criterion verification and verbatim excerpting. Confirms **4/4 conditions passed** for both architectures (`SEMANTIC_GROUND_TRUTH_PARITY_CONFIRMED`).
-2. **Offline Frozen Traces Exclusively:** Zero additional paid model tokens were consumed. The evaluation operates strictly on the immutable raw responses saved in `traces/live_arm2a_traces.json` (`084d3735...`) and `traces/live_arm2b_traces.json` (`25360307...`).
-3. **Anonymized Blinded Review:** All 14 responses were pseudonymized as `SPECIMEN_01` through `SPECIMEN_14` using an offline cryptographic shuffle before evaluating against the answer key.
+To maintain scientific integrity and prevent epistemic inflation, TD613 strictly distinguishes four levels of evaluation:
 
----
+1. **Level 1 — Automated Rubric Parity (`AUTOMATED_RUBRIC_PARITY`):**
+   * Heuristic pattern-matching and mathematical AST extraction executed by [`evaluator-oracle.mjs`](evaluator-oracle.mjs).
+   * Verified that both Arm 2A and Arm 2B achieve **4/4 conditions passed** under the repaired math-normalization parser (which corrected an offline regex defect on LaTeX roots).
+2. **Level 2 — Implementer-Authored Semantic Review (`IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW`):**
+   * Substantive mathematical review conducted by the implementer against the withheld physical, mathematical, and epistemic ground-truth answer key.
+   * Evaluates coordinate bijections, parameter mappings, Q-factor derivations, energy dissipation laws, differential vs algebraic false-twin distinctions, and boundary-condition abstentions with verbatim excerpting.
+   * Confirms **4/4 conditions passed** for both architectures on the frozen responses (`IMPLEMENTER_SEMANTIC_PARITY_CONFIRMED`).
+3. **Level 3 — Independently Witnessed Blinded Evaluation (`INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION`):**
+   * Requires a separately identified, external scientific assessor whose evaluations and judgments are recorded and frozen *prior* to unblinding or exposure to arm identities.
+   * **Status:** `NOT_YET_ESTABLISHED · PENDING_EXTERNAL_BLINDED_ASSESSOR`. Implementer review cannot be retroactively rebranded as independent third-party blinded evaluation.
+4. **Level 4 — External Mathematical Replication (`EXTERNAL_MATHEMATICAL_REPLICATION`):**
+   * Requires independent re-execution across disparate physical compute infrastructure, separate provider accounts, and independent witness observers.
+   * **Status:** `NOT_YET_OCCURRED · REPLICATION_COUNT_ZERO` (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
+
+### Operating Boundaries
+
+* **Offline Frozen Traces Exclusively:** Zero additional paid model tokens were consumed. The evaluation operates strictly on the immutable raw responses saved in `traces/live_arm2a_traces.json` (`084d3735...`) and `traces/live_arm2b_traces.json` (`25360307...`).
+* **Specimen Preservation:** All 14 responses were pseudonymized as `SPECIMEN_01` through `SPECIMEN_14`. Their exact character lengths, SHA-256 digests, timestamps, verdicts, and excerpts are preserved append-only below.
 
 ## 2. Frozen Mathematical Ground-Truth Answer Key
 
@@ -113,19 +126,20 @@ In accordance with Emergence HQ review `5704533595` and Section III of the gover
 
 ---
 
-## 4. Synthesis of Independent Findings & Comparison Limits
+## 4. Synthesis of Evaluative Findings & Comparison Limits
 
-| Architectural Arm | Total Responses Adjudicated | Conditions Evaluated | Conditions Supported | Automated Rubric Score | Semantic Evaluation Score | Total Tokens Consumed | Request Count |
+| Architectural Arm | Total Responses Adjudicated | Conditions Evaluated | Conditions Supported | Automated Rubric Score | Implementer Semantic Review Score | Total Tokens Consumed | Request Count |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | **Arm 2A (Modular Jurisdictional)** | 7 | 4 | 4 | 4 / 4 (100%) | **4 / 4 (100%)** | 27,390 | 10 |
 | **Arm 2B (Matched Native Union)** | 7 | 4 | 4 | 4 / 4 (100%) | **4 / 4 (100%)** | 13,843 | 7 |
 
 ### Scientific Conclusions on the Frozen Traces
 
-1. **Parity Confirmed Under Both Modes:** Both the repaired automated heuristic rubric and the independent semantic adjudication confirm that on this 4-condition source-free benchmark, both modular chambering and flat native union correctly solve all physical and epistemic challenges ($4/4$ vs $4/4$, $\Delta = 0$).
+1. **Parity Confirmed Under Both Modes:** Both the repaired automated heuristic rubric (`AUTOMATED_RUBRIC_PARITY`) and the implementer semantic review (`IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW`) confirm that on this 4-condition source-free benchmark, both modular chambering and flat native union correctly solve all physical and epistemic challenges ($4/4$ vs $4/4$, $\Delta = 0$).
 2. **Cost & Expressive Differences:** Arm 2B solves the problems directly in single turns with extensive algebraic derivation, consuming $13,843$ tokens across $7$ calls. Arm 2A incurs a $1.98\times$ token overhead ($27,390$ tokens across $10$ calls) due to two-chamber jurisdictional handoffs (Chamber 1 natural language summary $\to$ Chamber 2 categorical descent).
 3. **Generalization Scope:** Parity on these four synthetic physics problems represents a successful baseline shakedown. It demonstrates that the harness, model client, and evaluators are operational; it does **not** prove an architectural superiority theorem across heterogeneous, out-of-distribution, or adversarial research challenges.
+4. **Third-Party Independence Reserved:** This assessment represents implementer-conducted semantic verification against ground truth. Independent third-party blinded evaluation remains a separate prospective milestone for Flight.
 
 ---
 
-𝌐 `FROZEN_TRACES_INDEPENDENTLY_ADJUDICATED · AUTOMATED_RUBRIC_PARITY_CONFIRMED · SEMANTIC_GROUND_TRUTH_PARITY_CONFIRMED · GATE_E_HELD · HUMAN_CLOSURE_RESERVED`
+𝌐 `FROZEN_TRACES_IMPLEMENTER_REVIEWED · AUTOMATED_RUBRIC_PARITY_CONFIRMED · IMPLEMENTER_SEMANTIC_PARITY_CONFIRMED · INDEPENDENT_BLINDED_EVALUATION_PENDING · REPLICATION_COUNT_ZERO · GATE_E_HELD · HUMAN_CLOSURE_RESERVED`

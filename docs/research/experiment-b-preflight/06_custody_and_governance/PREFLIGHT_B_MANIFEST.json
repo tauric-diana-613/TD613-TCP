@@ -1,7 +1,7 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-29T20:47:40.248Z",
-  "entry_count": 44,
+  "timestamp": "2026-10-30T02:47:35.817Z",
+  "entry_count": 51,
   "entries": [
     {
       "path": "01_calibration_fixtures\\c1_damped_harmonic_oscillator.json",
@@ -85,13 +85,13 @@
     },
     {
       "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_ADJUDICATION_RECEIPT.json",
-      "bytes": 10105,
-      "sha256": "09fffdae92bf4dd86fdcced012d9fb82877c39e5ea1d2558ef603dc77bd77277"
+      "bytes": 10660,
+      "sha256": "d1665630aff89c7396768647d69420fc5c86c8fd7c84d03a3c8f53d4a5cf9900"
     },
     {
       "path": "03_calibration_execution\\FROZEN_TRACE_INDEPENDENT_EVALUATION.md",
-      "bytes": 12782,
-      "sha256": "3ce4d7ce7006b9193a90eee436cdc05829dec37794f75d6bd6e597b1e0eabdb4"
+      "bytes": 14513,
+      "sha256": "ebe01eddc8f80c1b3b665cf436976c6984fb831b9a2d99a2cc84816cd8951018"
     },
     {
       "path": "03_calibration_execution\\LIVE_CALIBRATION_EXECUTION_RECEIPT.json",
@@ -165,8 +165,23 @@
     },
     {
       "path": "04_evaluation_and_preregistration\\EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
-      "bytes": 10488,
-      "sha256": "ccacd1c281031668d70a6e62f9d8743bdbefd561e5de0f1b2483eae036af2221"
+      "bytes": 13116,
+      "sha256": "eaba08cdd1bcdf8c1d64dec90903b157b16847b356b7526191aba7326bd4a9d7"
+    },
+    {
+      "path": "04_evaluation_and_preregistration\\RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
+      "bytes": 10055,
+      "sha256": "ddccd801270999bed663d230f94496b9419fafb9ac50f6ebb710a30feae557b5"
+    },
+    {
+      "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_CUSTODY_PROTOCOL.md",
+      "bytes": 6443,
+      "sha256": "d6b99992f4844dd81db487104d0bf7fd32f69422a05e4256e5eef6b4ad505468"
+    },
+    {
+      "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_DISCOVERY_SCHEMA.json",
+      "bytes": 5911,
+      "sha256": "6f9974fd6a95f28514bf6830cafaac318a469b3388716e3a80ffb67fffa3a5fa"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
@@ -209,9 +224,29 @@
       "sha256": "79afdb3b54ef65dc50560ee774ffa8f8d322be158bcdeae89b996b1e1b4e6a80"
     },
     {
+      "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
+      "bytes": 1913,
+      "sha256": "2d4e4280869edb241edf7b3c4705de6dbe7cc3ba42d10ee01588b3a974d4ecc7"
+    },
+    {
+      "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",
+      "bytes": 4087,
+      "sha256": "cf7f38dc6ea6de974e6e0e8675c041f01597cd336a371c4b6489335a3b4cd050"
+    },
+    {
       "path": "06_custody_and_governance\\EXPERIMENT_A_CAPABILITY_REST_CORRECTION_RECEIPT.json",
       "bytes": 2213,
       "sha256": "87aaf5d91f42f0073448e6ebf89820bb9c796cc79ca147d619c4b1362bea51b2"
+    },
+    {
+      "path": "06_custody_and_governance\\FLIGHT_AUTHORIZATION_DECISION_SHEET.md",
+      "bytes": 6400,
+      "sha256": "d3c4a7e0b9b173cba42d96e56d234d41a3df877636e8e4b0094c70a27319ea26"
+    },
+    {
+      "path": "06_custody_and_governance\\INSTRUMENT_FREEZE_AND_CROSSWALK.md",
+      "bytes": 5445,
+      "sha256": "2cf48f6e76802d4d24c9334ec5526a289fec9eacd1cffa6345effa7df78b7992"
     },
     {
       "path": "06_custody_and_governance\\PUBLIC_CUSTODY_DECISION_RECORD.md",
@@ -220,8 +255,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 11732,
-      "sha256": "413ea36c1f5f879bd0c448e23d0eba59a1bef378473daa671c0ea8d35739f6ef"
+      "bytes": 13047,
+      "sha256": "cd6465838ff9c5a5bb889b53e4e0f327045997d9cd6bd6737ff218f5b9073d8c"
     }
   ]
 }

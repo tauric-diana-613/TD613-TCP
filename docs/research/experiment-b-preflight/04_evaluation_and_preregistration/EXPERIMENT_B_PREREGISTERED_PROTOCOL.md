@@ -12,7 +12,7 @@
 
 ## 1. Executive Scientific Mandate
 
-Experiment B is an **empirical, heterogeneous epistemic perturbation study** designed to stress how recipient and synthesis architectures behave when exposed to an unblinded, heterogeneous research corpus. 
+Experiment B is an **empirical, heterogeneous epistemic perturbation study** designed to stress how recipient and synthesis architectures behave when exposed to a **protected, blinded heterogeneous research corpus (`BLINDED_CHALLENGE_ARCHIVE`)**.
 
 It is explicitly **NOT**:
 * A single unified-theory-generation search.
@@ -39,7 +39,7 @@ Failure to generate a unified theory does not exhaust Experiment B's scientific 
 
 ---
 
-## 2. Seven Prospective Research Dimensions
+## 2. Seven Prospective Research Dimensions & Methodological Extensions
 
 The separate, approximately 20–24-file blinded Em challenge archive is designed to stress seven prospective research dimensions:
 
@@ -58,11 +58,17 @@ The separate, approximately 20–24-file blinded Em challenge archive is designe
 7. **Potential Emergence Beyond Matched Strong-Union Comparator**:
    - Rigorously evaluating whether the modular four-chamber architecture (Arm 2A) produces an earned cognitive surplus over an equally resourced, unweakened, flat-union reasoner (Arm 2B).
 
+### 2.1 Methodological Extensions
+
+* **RCA-01 Representation Causality Assay ([`RCA01_REPRESENTATION_CAUSALITY_ASSAY.md`](RCA01_REPRESENTATION_CAUSALITY_ASSAY.md)):** Factorial ($2 \times 2$) validation design to distinguish manufactured emergence from legitimate representation-enabled discovery across authentic vs negative controls and neutral vs Dollhouse framing.
+* **Three-Lineage Discovery Custody ([`THREE_LINEAGE_CUSTODY_PROTOCOL.md`](THREE_LINEAGE_CUSTODY_PROTOCOL.md) & [`THREE_LINEAGE_DISCOVERY_SCHEMA.json`](THREE_LINEAGE_DISCOVERY_SCHEMA.json)):** Enforces strict temporal and provenance separation across Evidence Ancestry, Presentation Ancestry, and Adjudication Ancestry.
+* **Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`):** Formal non-promotional intake status for findings that resist existing Dollhouse classifications, available equally to Arm 2A and Arm 2B.
+
 These dimensions are preserved as **prospective research dimensions**, never predetermined positive outcomes. The surprising properties of the heterogeneous archive remain eligible to amend the research questions only through explicitly recorded, operator-authorized protocol amendments. Never retrospectively count a new hypothesis as preregistered.
 
 ---
 
-## 3. Four-Arm Architecture & Parity Guarantee
+## 3. Four-Arm Architecture, Parity Guarantee & Execution Limits
 
 ### Specifications of the Four Arms
 
@@ -74,18 +80,31 @@ These dimensions are preserved as **prospective research dimensions**, never pre
    - Enforces schema validation, proposal staging, and multi-graph compilation.
    - **Negative control:** Confirmed absent of autonomous cross-chamber theory synthesis (`CAPABILITY_NOT_IMPLEMENTED`).
 3. **Arm 2A — `MODULAR_RESEARCH_INSTRUMENT_B2`**:
-   - Governed reasoning layer operating through four sequential jurisdictional chambers:
-     - **Pedagogue Gate:** Validates consequence order, route burden, candidate question framing.
-     - **Aperture Auditor:** Computes matrix rank, nullity, SVD condition number $\kappa$, noise covariance.
-     - **Atlas Custodian:** Preserves receiver-relative identity, holonomy history, and prevents false-twin joins.
-     - **FADT Descent:** Computes finite quotient fibers, checks irreducible gaps, and certifies exact descent.
+   - Governed reasoning layer operating through sequential jurisdictional chambers:
+     - **Chamber 1 (Pedagogue & Aperture):** Evaluates consequence order, route burden, matrix rank/nullity, SVD condition number $\kappa$, and noise covariance. Outputs structured natural-language findings and extracted parameter bounds.
+     - **Chamber 2 (Atlas & FADT):** Receives Chamber 1 findings (intentional jurisdictional information bottleneck); checks receiver-relative identity, holonomy parities, computes finite quotient fibers, checks irreducible gaps, and certifies exact descent.
+   - **Architectural Characteristics:** Higher call count ($10$ calls vs $7$ in calibration) and token overhead ($1.98\times$) measured as authentic trade-offs of jurisdictional modularity.
 4. **Arm 2B — `MATCHED_NATIVE_UNION_COMPARATOR` (Parity Guaranteed)**:
    - **Crucial Rule:** Arm 2B is **never intentionally weakened**.
-   - Matched reasoning engine: Identical model (`gemini-2.5-flash`), provider, version, temperature ($0.0$), token budget ($4,096$ tokens/episode).
+   - Matched reasoning engine: Identical model, provider, temperature ($0.0$), and per-call maximum output token ceiling ($4,096$ tokens).
    - Matched evidence access: Identical raw source texts with typed namespace prefixes (`P1::`, `EM::`).
    - Matched toolset: Identical verification, falsification checks, and revision opportunities.
    - Matched memory & context: Identical opportunity to propose relations, evaluate counterfactuals, and abstain.
-   - **Sole Experimental Variable:** Architectural organization (Modular jurisdictional chamber routing vs. Strong unified typed environment).
+   - **Sole Experimental Variable:** Architectural organization (Modular jurisdictional chamber routing vs Strong unified typed environment).
+
+### Reconciled Calibration vs Prospective Flight Configurations
+
+| Parameter | Executed Live Calibration Shakedown | Prospective Flight Execution Specification |
+|---|---|---|
+| **Model Version** | `gemini-2.5-flash-lite` | `gemini-2.5-flash` *(or `gemini-2.5-flash-lite` subject to explicit operator grant)* |
+| **Provider Route** | Google Gemini REST API (v1beta) | Google Gemini REST API (v1beta) |
+| **Sampling Temperature** | `0.0` (deterministic greedy decoding) | `0.0` (deterministic greedy decoding) |
+| **Per-Call Ceiling** | `max_output_tokens: 4096` *(per-call ceiling)* | `max_output_tokens: 4096` *(per-call ceiling, not episode budget)* |
+| **Aggregate Call Ceiling** | Arm 2A: 10 calls; Arm 2B: 7 calls | Maximum 15 calls per arm |
+| **Aggregate Token Ceiling** | Arm 2A: 27,390 tokens; Arm 2B: 13,843 tokens | Maximum 60,000 tokens per arm |
+| **Retry Conditions** | Zero retries needed during shakedown | Strictly bounded to HTTP 5xx / transport transient failures (exponential backoff, max 3 retries). **Zero retries** for substantive model answers, invalid logic, or formatting defects. |
+| **Information Topology** | Modular chamber handoff bottleneck vs unified text | Measured architectural variable; not concealed as identical access. |
+| **Paid Provider Boundary** | Authorized for source-free calibration | **STRICTLY CLOSED** for Flight until explicit operator flight decision grant. |
 
 ---
 
