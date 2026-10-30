@@ -1289,4 +1289,61 @@ test('TD613 Dollhouse Native Skill & Six-Role Orchestration Test Battery', async
     assert.ok(!existsSync(missingTarget));
   });
 
+  // 47. Atlas standalone executes all 9 typed mathematical discovery capabilities via skill dispatcher
+  await t.test('47. Atlas standalone executes all 9 typed mathematical discovery capabilities', async () => {
+    const atlasOps = [
+      'A-01', 'A-02', 'A-03', 'A-04', 'A-05', 'A-06', 'A-07', 'A-08', 'A-09'
+    ];
+
+    for (const op of atlasOps) {
+      const res = await runDollhouseSkillAudit({
+        roles: ['ATLAS'],
+        include_orchestrator: false,
+        evidence_class: 'CALIBRATION_FIXTURE',
+        domain_inputs: {
+          ATLAS: {
+            ...BENIGN_ATLAS_INPUT,
+            mathematical_operation: op
+          }
+        }
+      });
+
+      assert.equal(res.exit_code, 0, `Op ${op} should succeed`);
+      const atlasFinding = res.machine_receipt.specialist_findings.find(f => f.role === 'ATLAS');
+      assert.ok(atlasFinding, 'Atlas finding must be present');
+      assert.ok(atlasFinding.extensions?.mathematical_evaluation, `Extension should execute for ${op}`);
+      const evalResult = atlasFinding.extensions.mathematical_evaluation;
+      assert.equal(evalResult.epistemic_status, 'MATHEMATICALLY_QUALIFIED', `Op ${op} must be MATHEMATICALLY_QUALIFIED`);
+      assert.equal(evalResult.positive_control.passed, true, `Op ${op} positive control must pass`);
+      assert.equal(evalResult.negative_control.passed, true, `Op ${op} negative control must pass`);
+    }
+  });
+
+  // 48. Atlas rejects unsupported or malformed mathematical inputs with NOT_EVALUATED
+  await t.test('48. Atlas rejects unsupported or malformed mathematical inputs with NOT_EVALUATED', async () => {
+    const res = await runDollhouseSkillAudit({
+      roles: ['ATLAS'],
+      include_orchestrator: false,
+      evidence_class: 'CALIBRATION_FIXTURE',
+      domain_inputs: {
+        ATLAS: {
+          ...BENIGN_ATLAS_INPUT,
+          mathematical_operation: 'A-01',
+          input: {
+            stateA: ['not', 'numbers'],
+            stateB: [1, 2]
+          }
+        }
+      }
+    });
+
+    assert.equal(res.exit_code, 0);
+    const atlasFinding = res.machine_receipt.specialist_findings.find(f => f.role === 'ATLAS');
+    assert.ok(atlasFinding);
+    const evalResult = atlasFinding.extensions?.mathematical_evaluation;
+    assert.ok(evalResult);
+    assert.equal(evalResult.epistemic_status, 'NOT_EVALUATED');
+    assert.equal(evalResult.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+  });
+
 });

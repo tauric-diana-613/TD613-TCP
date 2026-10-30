@@ -48,6 +48,18 @@ import {
   auditPhasonCustodyDiff
 } from './dollhouse-atlas-relational-custody.js';
 import {
+  evaluateTemporalFiberEquivalence,
+  evaluateParityInvariant,
+  evaluateGHZReductionAndLocality,
+  evaluateRankAndConditioning,
+  evaluateDynamicalMorphism,
+  evaluateStructuralSignature,
+  evaluateQuantumVisibilityInverseProblem,
+  evaluateQuantumMeasurementContexts,
+  evaluateHarmonicOscillatorSymbolicEquivalence,
+  dispatchAtlasMathematicalOperation
+} from './atlas-mathematical-engine.js';
+import {
   computeFadtFiberBounds,
   evaluateFadtCoordinateRecovery,
   evaluateFadtDiscrepancyIdentity,
@@ -619,6 +631,41 @@ function executeSpecialistExtensions(role, domainInput, options) {
         if (prev && curr) {
           ext.phason_custody_diff = auditPhasonCustodyDiff(prev, curr, phasonOpts);
         }
+
+        // Bounded Atlas Mathematical Discovery Operations
+        if (domainInput.mathematical_operation || domainInput.operation) {
+          const opName = domainInput.mathematical_operation || domainInput.operation;
+          const prob = domainInput.problem || domainInput.input || domainInput;
+          ext.mathematical_evaluation = dispatchAtlasMathematicalOperation(opName, prob, domainInput.options || {});
+        }
+        if (domainInput.future_response || domainInput.temporal_fiber) {
+          ext.future_response = evaluateTemporalFiberEquivalence(domainInput.future_response || domainInput.temporal_fiber);
+        }
+        if (domainInput.higher_order_parity || domainInput.parity_ensemble) {
+          ext.higher_order_parity = evaluateParityInvariant(domainInput.higher_order_parity || domainInput.parity_ensemble);
+        }
+        if (domainInput.ghz_state || domainInput.ghz_locality) {
+          ext.ghz_locality = evaluateGHZReductionAndLocality(domainInput.ghz_state || domainInput.ghz_locality);
+        }
+        if (domainInput.rank_conditioning || domainInput.f31_matrix || domainInput.svd_matrix) {
+          ext.rank_conditioning = evaluateRankAndConditioning(domainInput.rank_conditioning || domainInput);
+        }
+        if (domainInput.dynamical_morphism || domainInput.liouville_flow) {
+          ext.dynamical_morphism = evaluateDynamicalMorphism(domainInput.dynamical_morphism || domainInput.liouville_flow);
+        }
+        if (domainInput.structural_signature || domainInput.novel_proposition) {
+          ext.structural_signature = evaluateStructuralSignature(domainInput.structural_signature || domainInput.novel_proposition);
+        }
+        if (domainInput.quantum_visibility || domainInput.visibility_problem) {
+          ext.quantum_visibility = evaluateQuantumVisibilityInverseProblem(domainInput.quantum_visibility || domainInput.visibility_problem);
+        }
+        if (domainInput.measurement_contexts || domainInput.transformation_cases) {
+          ext.measurement_contexts = evaluateQuantumMeasurementContexts(domainInput.measurement_contexts || domainInput.transformation_cases);
+        }
+        if (domainInput.notation_normalization || domainInput.symbolic_variants) {
+          ext.notation_normalization = evaluateHarmonicOscillatorSymbolicEquivalence(domainInput.notation_normalization || domainInput.symbolic_variants);
+        }
+
         return Object.keys(ext).length > 0 ? ext : null;
       }
       case 'FADT': {
