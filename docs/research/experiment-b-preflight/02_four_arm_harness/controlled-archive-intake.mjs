@@ -191,6 +191,7 @@ export class ControlledArchiveIntake {
     this.allowProtectedAdmission = options.allowProtectedAdmission ?? false;
     this.trustedOperatorKeys = options.trustedOperatorKeys || {};
     this.authorizedDerivativesMap = options.authorizedDerivativesMap || {};
+    this.prospectiveMetadataMap = options.prospectiveMetadataMap || {};
 
     // Security & Custody Ceilings
     this.maxMembers = options.maxMembers ?? 50;
@@ -391,22 +392,73 @@ export class ControlledArchiveIntake {
           derivativeStatus = 'MALFORMED_UTF8_PRESERVED_AS_BINARY';
         }
       } else {
-        // Authenticated derivative attachment pathway
+        // Authenticated derivative attachment pathway (R3-03)
         const normalizedMemberKey = rawFilename.replace(/\\/g, '/');
         const authDerivative = this.authorizedDerivativesMap?.[normalizedMemberKey] || this.authorizedDerivativesMap?.[rawFilename];
-        if (authDerivative && authDerivative.text) {
+        let derivativeMetadata = null;
+
+        if (authDerivative) {
           const memberSha = computeSha256(decompressedBuf);
-          if (!authDerivative.sourceSha256 || authDerivative.sourceSha256.toLowerCase() === memberSha.toLowerCase()) {
+
+          // R3-03: Remove fallback (!authDerivative.sourceSha256). Require exact 64-char hex match,
+          // verified derivative identity, explicit conversion method, and provenance.
+          if (!authDerivative.sourceSha256 || typeof authDerivative.sourceSha256 !== 'string' || authDerivative.sourceSha256.length !== 64) {
+            derivativeStatus = 'DERIVATIVE_SOURCE_SHA256_MISSING_REJECTED';
+          } else if (authDerivative.sourceSha256.toLowerCase() !== memberSha.toLowerCase()) {
+            derivativeStatus = 'DERIVATIVE_SHA256_MISMATCH_REJECTED';
+          } else if (!authDerivative.derivativeId || !authDerivative.conversionMethod) {
+            derivativeStatus = 'DERIVATIVE_PROVENANCE_MISSING_REJECTED';
+          } else if (!authDerivative.text || typeof authDerivative.text !== 'string') {
+            derivativeStatus = 'DERIVATIVE_TEXT_EMPTY_OR_INVALID';
+          } else {
             textContent = authDerivative.text;
             isBinary = true; // Still marked as binary asset, but carries authenticated text derivative
             derivativeStatus = 'AUTHENTICATED_TEXT_DERIVATIVE_ATTACHED';
-          } else {
-            derivativeStatus = 'DERIVATIVE_SHA256_MISMATCH_REJECTED';
+            derivativeMetadata = {
+              derivative_id: authDerivative.derivativeId,
+              conversion_method: authDerivative.conversionMethod,
+              source_sha256: authDerivative.sourceSha256.toLowerCase(),
+              provenance: authDerivative.provenance || 'Declared Authenticated Derivative',
+              semantic_completeness: authDerivative.semanticCompleteness || 'UNVERIFIED_EXTRACTION',
+              omissions: Array.isArray(authDerivative.omissions) ? authDerivative.omissions : [],
+              uncertainty_receipt: authDerivative.uncertaintyReceipt || null,
+              unsupported_content: Array.isArray(authDerivative.unsupportedContent) ? authDerivative.unsupportedContent : []
+            };
           }
         } else {
           derivativeStatus = 'RAW_BINARY_PRESERVED_NO_TEXT_SYNTHESIS';
         }
+
+        if (derivativeMetadata) {
+          this._lastDerivativeMetadata = derivativeMetadata;
+        }
       }
+
+      // R3-05: Prospective metadata contract binding source identity to declared chronology and topic evidence
+      const normalizedKey = rawFilename.replace(/\\/g, '/');
+      const memberMetadata = this.prospectiveMetadataMap?.[normalizedKey] || this.prospectiveMetadataMap?.[rawFilename] || {};
+
+      const operatorDeclaredDate = memberMetadata.operator_declared_date || null;
+      const authorDocumentedDate = memberMetadata.author_documented_date || null;
+      const filesystemDate = null; // Do not use filesystem mtime as historical truth
+      const verifiedChronologyDate = operatorDeclaredDate || authorDocumentedDate || null;
+
+      const declaredTopic = memberMetadata.declared_topic || null;
+
+      const chronologyEvidence = {
+        operator_declared_date: operatorDeclaredDate,
+        author_documented_date: authorDocumentedDate,
+        filesystem_date: filesystemDate,
+        archive_member_order: idx + 1,
+        verified_chronology_date: verifiedChronologyDate,
+        chronology_status: verifiedChronologyDate ? 'VERIFIED_CHRONOLOGY' : 'CHRONOLOGY_UNIDENTIFIABLE'
+      };
+
+      const topicEvidence = {
+        declared_topic: declaredTopic,
+        inferred_topic: memberMetadata.inferred_topic || null,
+        topic_status: declaredTopic ? 'DECLARED_TOPIC' : 'TOPIC_UNCLASSIFIED'
+      };
 
       admittedDocuments.push({
         id: `DOC-ZIP-${String(idx + 1).padStart(2, '0')}`,
@@ -417,9 +469,14 @@ export class ControlledArchiveIntake {
         bytes: decompressedBuf.length,
         sha256: computeSha256(decompressedBuf),
         derivative_status: derivativeStatus,
-        author_provenance: 'Authentic Admitted ZIP Archive Member',
-        chronology_index: idx + 1
+        derivative_metadata: this._lastDerivativeMetadata || null,
+        author_provenance: memberMetadata.author_provenance || 'Authentic Admitted ZIP Archive Member',
+        chronology_index: idx + 1,
+        chronology_evidence: chronologyEvidence,
+        topic_evidence: topicEvidence,
+        metadata: memberMetadata
       });
+      this._lastDerivativeMetadata = null;
 
       runningOffset += 46 + nameLen + extraLen + commentLen;
     }
@@ -549,6 +606,8 @@ export class ControlledArchiveIntake {
         documents: admittedDocuments,
         manifest_sha256: computeSha256(manifestBuf),
         custody_status: 'PHYSICAL_ZIP_AUTHENTICATED_AND_ADMITTED',
+        signature_verification: 'VALID_HMAC_LOCAL_INTEGRITY',
+        human_authority_class: 'CALLER_CONSISTENT_ONLY_WITHOUT_EXTERNAL_HUMAN_ATTESTATION',
         quarantine_maintained: true,
         physical_io_executed: true
       };

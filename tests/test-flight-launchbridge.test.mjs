@@ -20,8 +20,12 @@ import {
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 import {
   SharedBudgetGovernor,
-  AtomicCustodyLedger
+  AtomicCustodyLedger,
+  validatePrivatePathConfinement
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
+import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
+
+const REPO_ROOT = path.resolve('.');
 
 // Load Three-Lineage Schema to validate all test candidate outputs
 const schemaPath = path.resolve('docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json');
@@ -517,7 +521,8 @@ test('Complete Four-Arm Dry Run with Chronological and Topical Permutations', ()
   assert.ok(chronOut.includes('Arm Selection:    ALL'));
   assert.ok(chronOut.includes('Permutation:      CHRONOLOGICAL'));
   assert.ok(chronOut.includes('Arm 0 Complete: 2 docs transported'));
-  assert.ok(chronOut.includes('Arm 1 Complete: 2 docs indexed'));
+  assert.ok(chronOut.includes('Arm 1 Complete: 2 docs processed'));
+  assert.ok(chronOut.includes('indexed: 0, schema_admitted: 0, schema_rejected: 2'));
   assert.ok(chronOut.includes('ARM_2A_MODULAR Complete'));
   assert.ok(chronOut.includes('ARM_2B_MATCHED_UNION Complete'));
   assert.ok(chronOut.includes('Evaluated 4 candidates through Stage 2 Evaluator'));
@@ -613,34 +618,54 @@ test('B-09: Atomic Custody Ledger, Private Evidence Containment, and Interruptio
 });
 
 test('B-10: Binary Document Handling and Authenticated Derivative Pathway', async () => {
+  const binaryDataWithDeriv = Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xee]);
+  const expectedSha = crypto.createHash('sha256').update(binaryDataWithDeriv).digest('hex');
+
   const intake = new ControlledArchiveIntake({
     syntheticMode: true,
     authorizedDerivativesMap: {
       'has_derivative.pdf': {
+        derivativeId: 'DERIV-01',
+        conversionMethod: 'PDF_TEXT_EXTRACTOR_v2',
+        provenance: 'Authorized Lab OCR v2',
         text: '# Extracted Title\nODE: m * x\'\' + k * x = 0\nQUOTE: "m * x\'\' + k * x = 0"',
-        sourceSha256: null // wildcard
+        sourceSha256: expectedSha,
+        semanticCompleteness: 'VERIFIED_COMPLETE'
+      },
+      'wildcard_rejected.pdf': {
+        derivativeId: 'DERIV-02',
+        conversionMethod: 'PDF_TEXT_EXTRACTOR_v2',
+        text: 'Should be rejected because sourceSha256 is null',
+        sourceSha256: null // R3-03: must be rejected!
       }
     }
   });
 
-  // Archive with two binary files: one with authorized derivative, one without
+  // Archive with three binary files: one with valid derivative, one wildcard rejected, one unprocessed
   const binaryZip = createSyntheticZipArchive([
     { name: 'unprocessed_binary.pdf', data: Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xff]) },
-    { name: 'has_derivative.pdf', data: Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xee]) }
+    { name: 'has_derivative.pdf', data: binaryDataWithDeriv },
+    { name: 'wildcard_rejected.pdf', data: Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00, 0xdd]) }
   ]);
 
   const receipt = intake.admitArchive({ zipBuffer: binaryZip }, { trustedSyntheticFixture: true });
-  assert.equal(receipt.documents.length, 2);
+  assert.equal(receipt.documents.length, 3);
 
   const unprocDoc = receipt.documents.find(d => d.filename === 'unprocessed_binary.pdf');
   assert.equal(unprocDoc.is_binary, true);
   assert.equal(unprocDoc.content, null);
   assert.equal(unprocDoc.derivative_status, 'RAW_BINARY_PRESERVED_NO_TEXT_SYNTHESIS');
 
+  const wildcardDoc = receipt.documents.find(d => d.filename === 'wildcard_rejected.pdf');
+  assert.equal(wildcardDoc.is_binary, true);
+  assert.equal(wildcardDoc.content, null);
+  assert.equal(wildcardDoc.derivative_status, 'DERIVATIVE_SOURCE_SHA256_MISSING_REJECTED');
+
   const derivDoc = receipt.documents.find(d => d.filename === 'has_derivative.pdf');
   assert.equal(derivDoc.is_binary, true);
   assert.ok(derivDoc.content.includes('ODE: m * x'));
   assert.equal(derivDoc.derivative_status, 'AUTHENTICATED_TEXT_DERIVATIVE_ATTACHED');
+  assert.equal(derivDoc.derivative_metadata.semantic_completeness, 'VERIFIED_COMPLETE');
 
   // Ingest unprocessed binary through harness: MUST produce explicit abstention candidate without model call
   const harness = new HeterogeneousDiscoveryHarness({
@@ -652,4 +677,148 @@ test('B-10: Binary Document Handling and Authenticated Derivative Pathway', asyn
   assert.equal(res.candidate.status, 'ABSTAIN_BINARY_WITHOUT_AUTHENTICATED_DERIVATIVE');
   assert.equal(res.candidate.warrant_class, 'WARRANT_UNPRODUCED');
   assert.ok(res.candidate.proposition_summary.includes('ABSTAIN'));
+});
+
+test('R3-01: Live Stage 2 Authority Boundary & Preflight Witness Contract Verification', () => {
+  // 1. Uncredentialed request for independent tier strictly rejected
+  assert.throws(
+    () => new Stage2IndependentEvaluator({ evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION' }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+
+  // 2. Provisional live recording tier initializes cleanly without witness credentials
+  const provisionalEvaluator = new Stage2IndependentEvaluator({
+    evaluatorTier: 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS'
+  });
+  assert.equal(provisionalEvaluator.evaluatorTier, 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS');
+  assert.equal(provisionalEvaluator.isWitnessAttested, false);
+
+  // 3. Candidate evaluation under provisional tier confers ZERO independent authority
+  const mockCandidate = {
+    candidate_id: 'CAND-PROVISIONAL-001',
+    proposition_summary: "Harmonic oscillator energy decay rate dE/dt = -gamma * (x')^2",
+    status: 'PROPOSED',
+    evidence_ancestry: { physical_byte_spans: [{ start_byte: 0, end_byte: 10, span_sha256: 'abc' }] }
+  };
+
+  const adj = provisionalEvaluator.evaluateCandidate(mockCandidate);
+  assert.equal(adj.status, 'HELD_PENDING_INDEPENDENT_EVALUATOR_WITNESS');
+  assert.equal(adj.independent_warrant_conferred, false);
+  assert.equal(adj.adjudicated_candidate.status, 'HELD_PENDING_INDEPENDENT_EVALUATOR_WITNESS');
+  assert.equal(adj.adjudicated_candidate.warrant_class, 'WARRANT_PENDING_INDEPENDENT_WITNESS');
+});
+
+test('R3-02: Arm 1 Document-Specific Native Outcomes & Capability Bounds', async () => {
+  const documents = [
+    {
+      id: 'DOC-01',
+      filename: 'hamiltonian.md',
+      content: '# Hamiltonian Mechanics\nH = p^2/(2m) + V(q)',
+      is_binary: false,
+      sha256: crypto.createHash('sha256').update('# Hamiltonian Mechanics\nH = p^2/(2m) + V(q)').digest('hex')
+    },
+    {
+      id: 'DOC-02',
+      filename: 'raw_waveform.dat',
+      content: null,
+      raw_bytes: Buffer.from([0x00, 0x01, 0x02, 0x03]),
+      is_binary: true,
+      sha256: crypto.createHash('sha256').update(Buffer.from([0x00, 0x01, 0x02, 0x03])).digest('hex')
+    }
+  ];
+
+  const arm1Res = await runArm1Archival(REPO_ROOT, documents);
+
+  assert.equal(arm1Res.total_incoming, 2);
+  assert.equal(arm1Res.raw_bytes_preserved, 2);
+  assert.equal(arm1Res.schema_admitted, 0);
+  assert.equal(arm1Res.schema_rejected, 2);
+  assert.equal(arm1Res.total_indexed, 0); // Unstructured documents admitted to structured index: 0
+  assert.equal(arm1Res.relations_compiled, 0);
+  assert.equal(arm1Res.autonomous_relation_synthesis_present, false);
+
+  const doc1Result = arm1Res.per_document_operations.find(d => d.filename === 'hamiltonian.md');
+  assert.equal(doc1Result.operation, 'RAW_PRESERVED_UNSTRUCTURED_SOURCE');
+  assert.equal(doc1Result.schema_valid, false);
+
+  const doc2Result = arm1Res.per_document_operations.find(d => d.filename === 'raw_waveform.dat');
+  assert.equal(doc2Result.operation, 'RAW_PRESERVED_BINARY_PAYLOAD');
+  assert.equal(doc2Result.schema_valid, false);
+});
+
+test('R3-04: Provider Attempts Accounting Under Shared Ceiling & Capacity Reservation', () => {
+  const governor = new SharedBudgetGovernor({
+    maxCalls: 5,
+    maxTokens: 10000,
+    maxCostUSD: 0.50
+  });
+
+  // Verify attempt registration increments under shared ceiling
+  governor.registerProviderAttempt('ARM_2A_MODULAR', { attempt: 1 });
+  governor.registerProviderAttempt('ARM_2A_MODULAR', { attempt: 2, retry: true });
+  assert.equal(governor.providerAttempts, 2);
+
+  // Pre-dispatch reservation test
+  const reservation = governor.calculateTokenCapacityReservation('Small prompt', 4096);
+  assert.ok(reservation.callReservedTokens >= 4096);
+  assert.ok(reservation.worstCaseCost > 0);
+
+  // Attempt ceiling enforcement
+  governor.registerProviderAttempt('ARM_2B', { attempt: 3 });
+  governor.registerProviderAttempt('ARM_2B', { attempt: 4 });
+  governor.registerProviderAttempt('ARM_2B', { attempt: 5 });
+
+  // 6th attempt must throw
+  assert.throws(
+    () => governor.registerProviderAttempt('ARM_2B', { attempt: 6 }),
+    /SHARED_BUDGET_CEILING_EXCEEDED/
+  );
+});
+
+test('R3-05: Prospective Chronology Contract & CHRONOLOGY_UNIDENTIFIABLE Hold', () => {
+  const intake = new ControlledArchiveIntake({
+    syntheticMode: true,
+    prospectiveMetadataMap: {
+      'dated_doc.md': {
+        author_documented_date: '2026-04-10T12:00:00Z',
+        declared_topic: 'TOPIC_DISSIPATION'
+      }
+    }
+  });
+
+  const zipBuf = createSyntheticZipArchive([
+    { name: 'undated_doc.md', data: '# Undated Note' },
+    { name: 'dated_doc.md', data: '# Dated Note' }
+  ]);
+
+  const receipt = intake.admitArchive({ zipBuffer: zipBuf }, { trustedSyntheticFixture: true });
+  const undated = receipt.documents.find(d => d.filename === 'undated_doc.md');
+  const dated = receipt.documents.find(d => d.filename === 'dated_doc.md');
+
+  assert.equal(undated.chronology_evidence.chronology_status, 'CHRONOLOGY_UNIDENTIFIABLE');
+  assert.equal(dated.chronology_evidence.chronology_status, 'VERIFIED_CHRONOLOGY');
+  assert.equal(dated.topic_evidence.topic_status, 'DECLARED_TOPIC');
+});
+
+test('R3-06: Fine-Grained Event Journaling, Replay Idempotency & Private Confinement', () => {
+  // 1. Strict private path confinement test
+  assert.throws(
+    () => validatePrivatePathConfinement('docs/research/experiment-b-preflight/02_four_arm_harness/spill.json', REPO_ROOT),
+    /PRIVATE_CUSTODY_BREACH_PREVENTED/
+  );
+
+  const safePath = path.resolve(REPO_ROOT, 'artifacts/private', `test_journal_${Date.now()}.json`);
+  const ledger = new AtomicCustodyLedger(safePath, { repoRoot: REPO_ROOT });
+
+  // 2. Journaling
+  ledger.recordEvent({ type: 'BASELINE_COMPLETED', episode_id: 'ep-test-01', status: 'SUCCESS' });
+  ledger.recordEvent({ type: 'CHAMBER_1_COMPLETED', episode_id: 'ep-test-02', status: 'SUCCESS' });
+
+  // 3. Replay Idempotency check
+  assert.equal(ledger.isEpisodeCompleted('ep-test-01'), true);
+  assert.equal(ledger.isEpisodeCompleted('ep-test-02'), true);
+  assert.equal(ledger.isEpisodeCompleted('ep-unseen-99'), false);
+
+  // Clean up
+  try { fs.unlinkSync(safePath); } catch {}
 });

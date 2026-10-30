@@ -1,13 +1,13 @@
 # 𝌋 TD613 Dollhouse Scientific Audit Receipt
 
-**Invocation ID:** `dollhouse-audit-1793370045088-32c5153d`  
+**Invocation ID:** `dollhouse-audit-1793379893745-32c5153d`  
 **Schema:** `td613.dollhouse.skill-audit-receipt/v1.0`  
-**Timestamp:** 2026-10-30T14:20:45.088Z  
+**Timestamp:** 2026-10-30T17:04:53.745Z  
 **Target Revision:** `f78f75024e9625ddb7ac7b201560d77e6b70e335`  
 **Task Scope:** `EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT`  
 **Evidence Class:** `SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION`  
 **Replication Status:** `SYNTHETIC_OFFLINE_FIXTURE` (Empirical Credit: 0)  
-**Execution Duration:** 501ms  
+**Execution Duration:** 570ms  
 
 ---
 

@@ -1,0 +1,299 @@
+{
+  "schema": "td613.aperture.v32-observation-assay-receipt/v0.1",
+  "timestamp": "2026-10-30T17:00:06.228Z",
+  "aperture_version": "v3.2-alpha",
+  "instrument_schema": "td613-aperture/v3.2-alpha",
+  "self_test": {
+    "schema": "td613.aperture.v32-typed-epistemic-deficit-self-test/v0.1",
+    "status": "pass",
+    "results": [
+      {
+        "expected": [
+          "UNDECLARED_OPERATOR_GEOMETRY",
+          "ABSTAIN"
+        ],
+        "actual": [
+          "UNDECLARED_OPERATOR_GEOMETRY",
+          "ABSTAIN"
+        ],
+        "pass": true
+      },
+      {
+        "expected": [
+          "STRUCTURAL_RANK_DEFICIT",
+          "PROPOSE"
+        ],
+        "actual": [
+          "STRUCTURAL_RANK_DEFICIT",
+          "PROPOSE"
+        ],
+        "pass": true
+      },
+      {
+        "expected": [
+          "NUMERICAL_STABILITY_DEFICIT",
+          "PROPOSE"
+        ],
+        "actual": [
+          "NUMERICAL_STABILITY_DEFICIT",
+          "PROPOSE"
+        ],
+        "pass": true
+      },
+      {
+        "expected": [
+          "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "ASK_NOTHING"
+        ],
+        "actual": [
+          "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "ASK_NOTHING"
+        ],
+        "pass": true
+      },
+      {
+        "expected": [
+          "NOISE_GEOMETRY_INCOMPLETE",
+          "ABSTAIN"
+        ],
+        "actual": [
+          "NOISE_GEOMETRY_INCOMPLETE",
+          "ABSTAIN"
+        ],
+        "pass": true
+      },
+      {
+        "expected": [
+          "INVALID_NOISE_GEOMETRY",
+          "REJECT"
+        ],
+        "actual": [
+          "INVALID_NOISE_GEOMETRY",
+          "REJECT"
+        ],
+        "pass": true
+      }
+    ],
+    "classification_replay_stability": "WITNESSED_PASS_6_OF_6"
+  },
+  "conditions": [
+    {
+      "condition_id": "COND_1_PROJECTION_INVARIANT",
+      "title": "Unchanged content under changed projection",
+      "observation_operator": "A_proj: (SourceContent) -> ProjectionSpace",
+      "uncertainty_geometry": {
+        "posture": "VALID_DECLARED",
+        "sigma_min": 1,
+        "condition_number": 1,
+        "latent_dimension": 3,
+        "current_rank": 3,
+        "sigma_min_floor": 0.1,
+        "condition_number_ceiling": 20
+      },
+      "declared_invariant": "Content byte digest is invariant across projection transformations; rank is preserved.",
+      "falsifier": "Any observed variance in underlying physical byte hash or rank reduction across projections.",
+      "specimen": {
+        "content": "m * x''(t) + gamma * x'(t) + k * x(t) = 0",
+        "content_sha256": "ceec9b33a54c8c1696ddaed71d28f2f3176c7d0a4d9e568ecd320bfd99f638d6",
+        "projection_a": "DOLLHOUSE_PARATACTIC_LENS",
+        "projection_b": "NEUTRAL_STANDARD_MATH"
+      },
+      "audit_receipt": {
+        "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+        "version": "v3.2-alpha",
+        "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+        "authority_class": "A2_DERIVATIONAL",
+        "input": {
+          "latent_dimension": 3,
+          "current_rank": 3,
+          "sigma_min": 1,
+          "condition_number": 1,
+          "uncertainty_status": "VALID_DECLARED",
+          "sigma_min_floor": 0.1,
+          "condition_number_ceiling": 20
+        },
+        "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "disposition": "ASK_NOTHING",
+        "admissible_question_criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+        "reason": "declared local rank and stability posture is presently satisfied",
+        "pedagogue_companion_cue": "PEDAGOGUE_SHOULD_NOT_MANUFACTURE_A_QUESTION",
+        "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+        "no_scalar_crown": true,
+        "proposal_is_execution": false,
+        "widening_is_validation": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "promotion_authority": false,
+        "production_mutation": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "condition_id": "COND_2_PRESENTATION_INVARIANT_CONTENT_DEFICIT",
+      "title": "Changed content under unchanged presentation",
+      "observation_operator": "A_pres: (EquationContent) -> FixedTemplateView",
+      "uncertainty_geometry": {
+        "posture": "VALID_DECLARED",
+        "sigma_min": 0,
+        "condition_number": 10000,
+        "latent_dimension": 3,
+        "current_rank": 2,
+        "sigma_min_floor": 0.1,
+        "condition_number_ceiling": 20
+      },
+      "declared_invariant": "Presentation appearance is identical; underlying state rank drops below latent dimension.",
+      "falsifier": "Claiming identifiability of distinct physical dynamical regimes from presentation features alone.",
+      "specimen": {
+        "content_a": "m * x''(t) + gamma * x'(t) + k * x(t) = 0",
+        "content_b": "x''(t) - mu * (1 - x^2) * x'(t) + x(t) = 0",
+        "presentation_template": "STANDARD_SECOND_ORDER_ODE_TEMPLATE"
+      },
+      "audit_receipt": {
+        "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+        "version": "v3.2-alpha",
+        "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+        "authority_class": "A2_DERIVATIONAL",
+        "input": {
+          "latent_dimension": 3,
+          "current_rank": 2,
+          "sigma_min": 0,
+          "condition_number": 10000,
+          "uncertainty_status": "VALID_DECLARED",
+          "sigma_min_floor": 0.1,
+          "condition_number_ceiling": 20
+        },
+        "deficit_class": "STRUCTURAL_RANK_DEFICIT",
+        "disposition": "PROPOSE",
+        "admissible_question_criterion": "SEEK_PREDECLARED_NULLSPACE_CONTRACTING_OBSERVATION_THEN_AUDIT_STABILITY",
+        "reason": "current operator rank is below the declared latent dimension",
+        "pedagogue_companion_cue": "PEDAGOGUE_MAY_PROPOSE_PREDECLARED_CANDIDATE_FAMILY_UNDER_THIS_CRITERION",
+        "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+        "no_scalar_crown": true,
+        "proposal_is_execution": false,
+        "widening_is_validation": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "promotion_authority": false,
+        "production_mutation": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "condition_id": "COND_3_CUSTODY_PERMISSION_TRANSITION",
+      "title": "Changed stewardship or custody permissions",
+      "observation_operator": "A_cust: (ArtifactReceipt) -> CustodyDomain",
+      "uncertainty_geometry": {
+        "posture": "VALID_DECLARED",
+        "sigma_min": 0.005,
+        "condition_number": 250,
+        "latent_dimension": 2,
+        "current_rank": 2,
+        "sigma_min_floor": 0.1,
+        "condition_number_ceiling": 20
+      },
+      "declared_invariant": "Source artifact content is identical; permission transition triggers stability audit.",
+      "falsifier": "Treating a custody boundary change as a silent or unobserved operation.",
+      "specimen": {
+        "artifact_id": "ART-CUSTODY-001",
+        "prior_stewardship": "OPEN_FIELD_READ_ONLY",
+        "new_stewardship": "RESTRICTED_PRIVATE_QUARANTINE"
+      },
+      "audit_receipt": {
+        "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+        "version": "v3.2-alpha",
+        "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+        "authority_class": "A2_DERIVATIONAL",
+        "input": {
+          "latent_dimension": 2,
+          "current_rank": 2,
+          "sigma_min": 0.005,
+          "condition_number": 250,
+          "uncertainty_status": "VALID_DECLARED",
+          "sigma_min_floor": 0.1,
+          "condition_number_ceiling": 20
+        },
+        "deficit_class": "NUMERICAL_STABILITY_DEFICIT",
+        "disposition": "PROPOSE",
+        "admissible_question_criterion": "SEEK_PREDECLARED_STABILITY_IMPROVING_OBSERVATION_RANK_LIFT_NOT_REQUIRED",
+        "reason": "singular value floor breached or condition ceiling exceeded",
+        "pedagogue_companion_cue": "PEDAGOGUE_MAY_PROPOSE_CONDITIONING_IMPROVEMENT_WITHOUT_RANK_LIFT",
+        "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+        "no_scalar_crown": true,
+        "proposal_is_execution": false,
+        "widening_is_validation": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "promotion_authority": false,
+        "production_mutation": false,
+        "human_closure_required": true
+      }
+    },
+    {
+      "condition_id": "COND_4_ROUTE_HISTORY_NON_EQUIVALENCE",
+      "title": "Changed route history under equivalent visible endpoint conditions",
+      "observation_operator": "A_route: (SequenceTrajectory) -> FinalEndpointState",
+      "uncertainty_geometry": {
+        "posture": "UNDECLARED",
+        "sigma_min": null,
+        "condition_number": null,
+        "latent_dimension": null,
+        "current_rank": null,
+        "sigma_min_floor": null,
+        "condition_number_ceiling": null
+      },
+      "declared_invariant": "Endpoint state equivalence does NOT erase path-dependent route history (holonomy parity).",
+      "falsifier": "Treating identical final endpoint outputs as evidence of equivalent trajectory or learning.",
+      "specimen": {
+        "path_a": [
+          "BASELINE_t0",
+          "TURNS_DOC1",
+          "TURNS_DOC2"
+        ],
+        "path_b": [
+          "BASELINE_t0",
+          "TURNS_DOC2",
+          "TURNS_DOC1"
+        ],
+        "visible_endpoint": "UNIFIED_CONSERVATIVE_DISSIPATIVE_PROPOSITION"
+      },
+      "audit_receipt": {
+        "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+        "version": "v3.2-alpha",
+        "source_status": "HELD_UNDECLARED_OPERATOR_GEOMETRY",
+        "authority_class": "A2_DERIVATIONAL",
+        "input": {
+          "uncertainty_status": "UNDECLARED"
+        },
+        "deficit_class": "UNDECLARED_OPERATOR_GEOMETRY",
+        "disposition": "ABSTAIN",
+        "admissible_question_criterion": null,
+        "reason": "operator geometry and uncertainty posture have not yet been explicitly declared",
+        "pedagogue_companion_cue": "DECLARE_OPERATOR_GEOMETRY_BEFORE_QUESTION_DESIGN",
+        "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+        "no_scalar_crown": true,
+        "proposal_is_execution": false,
+        "widening_is_validation": false,
+        "automatic_observation": false,
+        "automatic_experiment_execution": false,
+        "promotion_authority": false,
+        "production_mutation": false,
+        "human_closure_required": true
+      }
+    }
+  ],
+  "governing_invariants": {
+    "visibility_is_not_identifiability": true,
+    "rank_deficit_is_not_stability_deficit": true,
+    "endpoint_equivalence_does_not_erase_route_history": true,
+    "missing_noise_is_not_neutral_noise": true,
+    "proposal_is_not_execution": true,
+    "widening_is_not_validation": true,
+    "human_closure_required": true
+  },
+  "quarantine_boundary": {
+    "em_archive_accessed": false,
+    "flight_prompts_modified": false,
+    "rubric_altered": false,
+    "status": "SOURCE_FREE_FIRST_DOME_PILOT_VERIFIED"
+  }
+}

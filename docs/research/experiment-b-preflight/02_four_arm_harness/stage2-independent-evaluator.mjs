@@ -226,6 +226,12 @@ export class Stage2IndependentEvaluator {
       this.isWitnessAttested = true;
       this.authenticatedWitnessId = witness.witnessId;
       this.attestationNotice = `ATTESTED_INDEPENDENT_WITNESS_VERIFIED:${witness.witnessId}`;
+    } else if (requestedTier === 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS') {
+      // R3-01: Provisional live candidate generation phase prior to independent witness adjudication
+      this.evaluatorTier = requestedTier;
+      this.isWitnessAttested = false;
+      this.authenticatedWitnessId = null;
+      this.attestationNotice = 'PROVISIONAL_UNWITNESSED_GENERATION: Independent scientific warrant strictly withheld until authentic witness attestation.';
     } else {
       // Explicitly unverified assessment assembler
       this.evaluatorTier = requestedTier;
@@ -266,6 +272,28 @@ export class Stage2IndependentEvaluator {
 
     const receiptId = `STAGE2-RECEIPT-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${crypto.randomBytes(3).toString('hex')}`;
     const adjudicatedCandidate = JSON.parse(JSON.stringify(candidate));
+
+    // R3-01: Provisional live candidate generation phase prior to independent witness adjudication
+    if (this.evaluatorTier === 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS') {
+      adjudicatedCandidate.status = 'HELD_PENDING_INDEPENDENT_EVALUATOR_WITNESS';
+      adjudicatedCandidate.warrant_class = 'WARRANT_PENDING_INDEPENDENT_WITNESS';
+      adjudicatedCandidate.adjudication_ancestry = {
+        evaluator_tier: this.evaluatorTier,
+        scoring_rule_version: this.scoringRuleVersion,
+        receipt_id: receiptId,
+        timestamp: new Date().toISOString(),
+        independent_warrant_conferred: false,
+        attestation_notice: this.attestationNotice,
+        human_closure_status: 'HELD_PENDING_OPERATOR_AND_EXTERNAL_REVIEW'
+      };
+      return {
+        receipt_id: receiptId,
+        adjudicated_candidate: adjudicatedCandidate,
+        independent_warrant_conferred: false,
+        status: 'HELD_PENDING_INDEPENDENT_EVALUATOR_WITNESS',
+        reason: 'Candidate recorded under live blinded flight; independent scientific warrant strictly withheld until external witness review.'
+      };
+    }
 
     // If evidence is incomplete, fail closed to PENDING / HELD
     if (!isEvidenceComplete) {

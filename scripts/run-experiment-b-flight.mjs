@@ -1,28 +1,32 @@
 #!/usr/bin/env node
+
 /**
  * run-experiment-b-flight.mjs
  *
- * TD613 Experiment B Flight Execution Entry Point.
- * Implements the prospective protected four-arm execution pathway across three
- * sequence treatments, three-lineage candidate records, and Stage 2 independent evaluation.
+ * TD613 Experiment B · Sovereign Flight Runner & Preflight Verification
  *
- * Architectural Invariants:
- * - Executes all four arms (Arm 0 Transport Baseline, Arm 1 Archival Control,
- *   Arm 2A Modular Instrument, Arm 2B Matched Strong-Union Comparator).
- * - Arm 2B parity guarantee: identical evidence, tools, model, temperature 0.0,
- *   4096-token output ceiling, context opportunity; sole variable is modular vs flat architecture.
- * - Supports three sequence permutations: CHRONOLOGICAL, REVERSE_CHRONOLOGICAL, TOPICAL.
- * - Enforces aggregate ceilings across all cognitive arms: $0.50 USD, 120 attempts, 400,000 total tokens
- *   with pre-call cost reservation and thinking token accounting.
- * - Protected physical Flight execution remains gated fail-closed unless explicit
- *   operator cryptographic grant and contemporaneous environment authorizations are provided.
- * - Private custody ledger enforces atomic per-turn interruption recovery and refuses
- *   storing confidential source evidence in git-trackable docs/ directories.
+ * Coordinates the full four-arm heterogeneous discovery flight:
+ *   - Arm 0: Transport-Only Baseline
+ *   - Arm 1: Authentic Native Archival Control (Encyclopedia & Wendbine)
+ *   - Arm 2A: Modular Paratactic Research Instrument
+ *   - Arm 2B: Matched Strong-Union Comparator
+ *
+ * Dual-Backend Architecture (Sovereign Steer 2026-10-30):
+ *   - Track Alpha (--backend native): Antigravity in-app agent reasoning route (Operator-Designated Primary).
+ *   - Track Beta (--backend rest): Optional Gemini REST client route (Preserved Secondary Comparator).
+ *
+ * Redpen R3 Reconciliation:
+ *   - R3-01: Explicit phase boundary between candidate generation and independent witness adjudication.
+ *   - R3-02: Authentic document-specific native Arm 1 archival outcomes (no fixture substitution).
+ *   - R3-03: Zero unauthenticated binary derivative attachment (exact SHA-256 + provenance).
+ *   - R3-04: Aggregate attempt tracking, conservative token reservation, shared ceilings.
+ *   - R3-05: Prospective chronology and topic metadata contract (explicit CHRONOLOGY_UNIDENTIFIABLE hold).
+ *   - R3-06: Fine-grained journal recovery and strict private-path confinement.
+ *   - R3-07: Key masking, caller-consistency vs independent human authority separation.
  *
  * Usage:
- *   node scripts/run-experiment-b-flight.mjs --dry-run
- *   node scripts/run-experiment-b-flight.mjs --dry-run --arm ALL --permutation CHRONOLOGICAL
- *   node scripts/run-experiment-b-flight.mjs --archive-path <path> --grant-path <grant.json> --operator-key <key>
+ *   node scripts/run-experiment-b-flight.mjs --dry-run --arm ALL --permutation CHRONOLOGICAL --backend native
+ *   node scripts/run-experiment-b-flight.mjs --archive-path <path> --grant-path <grant.json> --backend native
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
@@ -45,7 +49,8 @@ import {
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 import {
   SharedBudgetGovernor,
-  AtomicCustodyLedger
+  AtomicCustodyLedger,
+  validatePrivatePathConfinement
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
 import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
 
@@ -56,6 +61,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 function parseArgs(args) {
   const options = {
     dryRun: false,
+    backend: 'native', // 'native' (Antigravity in-app agent) | 'rest' (Gemini HTTP API)
     archivePath: null,
     arm: 'ALL', // 'ALL' | 'ARM_0_TRANSPORT' | 'ARM_1_ARCHIVAL' | 'ARM_2A_MODULAR' | 'ARM_2B_MATCHED_UNION'
     permutation: 'CHRONOLOGICAL', // 'CHRONOLOGICAL' | 'REVERSE_CHRONOLOGICAL' | 'TOPICAL'
@@ -67,6 +73,11 @@ function parseArgs(args) {
     operatorKey: null,
     operatorKeyId: null,
     operatorKeysFile: null,
+    requireWitnessTier: false,
+    witnessKey: null,
+    witnessKeyId: null,
+    witnessKeysFile: null,
+    attestedWitnessFile: null,
     ledgerPath: null,
     derivativesManifest: null,
     help: false
@@ -78,6 +89,8 @@ function parseArgs(args) {
       options.help = true;
     } else if (arg === '--dry-run') {
       options.dryRun = true;
+    } else if (arg === '--backend' && args[i + 1]) {
+      options.backend = args[++i].toLowerCase();
     } else if (arg === '--archive-path' && args[i + 1]) {
       options.archivePath = args[++i];
     } else if (arg === '--arm' && args[i + 1]) {
@@ -100,6 +113,16 @@ function parseArgs(args) {
       options.operatorKeyId = args[++i];
     } else if (arg === '--operator-keys-file' && args[i + 1]) {
       options.operatorKeysFile = args[++i];
+    } else if (arg === '--require-witness-tier') {
+      options.requireWitnessTier = true;
+    } else if (arg === '--witness-key' && args[i + 1]) {
+      options.witnessKey = args[++i];
+    } else if (arg === '--witness-key-id' && args[i + 1]) {
+      options.witnessKeyId = args[++i];
+    } else if (arg === '--witness-keys-file' && args[i + 1]) {
+      options.witnessKeysFile = args[++i];
+    } else if (arg === '--attested-witness-file' && args[i + 1]) {
+      options.attestedWitnessFile = args[++i];
     } else if (arg === '--ledger-path' && args[i + 1]) {
       options.ledgerPath = args[++i];
     } else if (arg === '--derivatives-manifest' && args[i + 1]) {
@@ -119,17 +142,20 @@ Usage:
 
 Options:
   --dry-run                 Run source-free verification with synthetic fixtures (default in preflight)
+  --backend <name>          Execution backend: native (Antigravity In-App Agent, Primary) | rest (Gemini API, Optional) (default: native)
   --archive-path <path>     Designated absolute path to physical ZIP archive (requires operator grant)
   --arm <name>              Arm to execute: ALL | ARM_0_TRANSPORT | ARM_1_ARCHIVAL | ARM_2A_MODULAR | ARM_2B_MATCHED_UNION (default: ALL)
   --permutation <name>      Exposure sequence: CHRONOLOGICAL | REVERSE_CHRONOLOGICAL | TOPICAL (default: CHRONOLOGICAL)
   --model <name>            Model version: gemini-2.5-flash-lite | gemini-2.5-flash (default: gemini-2.5-flash-lite)
   --max-calls <n>           Maximum provider attempts ceiling (default: 120)
   --max-tokens <n>          Maximum aggregate token ceiling (default: 400000)
-  --max-cost <n>            Maximum financial ceiling in USD (default: 0.50)
+  --max-cost <n>            Maximum financial ceiling in USD for REST backend (default: 0.50)
   --grant-path <path>       Path to operator cryptographic flight grant JSON
   --operator-key <key>      Operator root secret key for grant cryptographic verification
-  --operator-key-id <id>    Operator key ID (default: OPERATOR_PRIMARY)
   --operator-keys-file <p>  Path to JSON file mapping issuerId -> secretKey
+  --require-witness-tier    Require in-line independent witnessed evaluation (fails closed if witness keys unsupplied)
+  --witness-keys-file <p>   Path to JSON file mapping witnessId -> secretKey
+  --attested-witness-file<p>Path to JSON file containing attested witness payload and signature
   --ledger-path <path>      Private custody path for research ledger (defaults to artifacts/private/)
   --derivatives-manifest <p> Optional path to JSON map of authenticated text derivatives for binary files
   --help, -h                Show this help message
@@ -164,6 +190,45 @@ function resolveOperatorKeys(options) {
   return keys;
 }
 
+function resolveWitnessKeys(options) {
+  const keys = {};
+
+  if (options.witnessKeysFile && fs.existsSync(options.witnessKeysFile)) {
+    try {
+      const fileData = JSON.parse(fs.readFileSync(options.witnessKeysFile, 'utf8'));
+      Object.assign(keys, fileData);
+    } catch (e) {
+      console.warn(`Warning: Could not parse witness keys file: ${e.message}`);
+    }
+  }
+
+  if (options.witnessKey) {
+    const keyId = options.witnessKeyId || 'WITNESS_PRIMARY';
+    keys[keyId] = options.witnessKey;
+    keys['default'] = options.witnessKey;
+  }
+
+  const envKey = process.env.TD613_WITNESS_SIGNING_KEY || process.env.TD613_WITNESS_KEY;
+  if (envKey) {
+    const envKeyId = process.env.TD613_WITNESS_KEY_ID || 'WITNESS_PRIMARY';
+    keys[envKeyId] = envKey;
+    keys['default'] = envKey;
+  }
+
+  return keys;
+}
+
+function resolveAttestedWitness(options) {
+  if (options.attestedWitnessFile && fs.existsSync(options.attestedWitnessFile)) {
+    try {
+      return JSON.parse(fs.readFileSync(options.attestedWitnessFile, 'utf8'));
+    } catch (e) {
+      console.warn(`Warning: Could not parse attested witness file: ${e.message}`);
+    }
+  }
+  return null;
+}
+
 function resolveDerivativesMap(options) {
   if (options.derivativesManifest && fs.existsSync(options.derivativesManifest)) {
     try {
@@ -176,51 +241,78 @@ function resolveDerivativesMap(options) {
 }
 
 /**
- * Orders admitted documents according to the designated sequence treatment.
- * Uses prospective source metadata when present, falling back cleanly to archive order.
+ * R3-05: Orders admitted documents according to designated sequence treatment.
+ * Distinguishes operator/author verified dates from archive order.
+ * If true chronological order cannot be established, records CHRONOLOGY_UNIDENTIFIABLE
+ * rather than relabeling archive order as historical chronology.
  */
 function applySequencePermutation(documents, permutation) {
   const docs = [...documents];
 
   if (permutation === 'REVERSE_CHRONOLOGICAL') {
-    const chronDocs = applySequencePermutation(docs, 'CHRONOLOGICAL');
-    return chronDocs.reverse();
+    const chronRes = applySequencePermutation(docs, 'CHRONOLOGICAL');
+    return {
+      documents: chronRes.documents.reverse(),
+      permutation: 'REVERSE_CHRONOLOGICAL',
+      status: chronRes.status,
+      notice: chronRes.notice
+    };
   }
 
   if (permutation === 'TOPICAL') {
-    return docs.sort((a, b) => {
-      const topicA = a.metadata?.topic || a.topic || getFilenameTopicCategory(a.filename);
-      const topicB = b.metadata?.topic || b.topic || getFilenameTopicCategory(b.filename);
-      if (topicA !== topicB) return topicA.localeCompare(topicB);
-      return (a.chronology_index || 0) - (b.chronology_index || 0);
+    const hasUndeclaredTopic = docs.some(d => !d.topic_evidence?.declared_topic && !d.metadata?.declared_topic);
+    if (hasUndeclaredTopic) {
+      return {
+        documents: docs,
+        permutation: 'TOPICAL',
+        status: 'TOPIC_UNCLASSIFIED_ORDER_HELD',
+        notice: 'One or more documents lack declared research topics. Grouping by keyword guessing is refused; admission order preserved under hold.'
+      };
+    }
+    const sorted = docs.sort((a, b) => {
+      const topA = a.topic_evidence?.declared_topic || a.metadata?.declared_topic || '';
+      const topB = b.topic_evidence?.declared_topic || b.metadata?.declared_topic || '';
+      return topA.localeCompare(topB);
     });
+    return {
+      documents: sorted,
+      permutation: 'TOPICAL',
+      status: 'DECLARED_TOPIC_ORDER_APPLIED',
+      notice: 'Documents grouped by explicit declared research topics.'
+    };
   }
 
   // Default: CHRONOLOGICAL
-  return docs.sort((a, b) => {
-    const dateA = a.metadata?.timestamp || a.metadata?.date ? new Date(a.metadata.timestamp || a.metadata.date).getTime() : null;
-    const dateB = b.metadata?.timestamp || b.metadata?.date ? new Date(b.metadata.timestamp || b.metadata.date).getTime() : null;
-    if (dateA !== null && dateB !== null && !isNaN(dateA) && !isNaN(dateB)) {
-      return dateA - dateB;
-    }
-    return (a.chronology_index || 0) - (b.chronology_index || 0);
+  const hasUnidentifiableDate = docs.some(d => {
+    const ev = d.chronology_evidence;
+    return !ev?.verified_chronology_date && !d.metadata?.timestamp && !d.metadata?.date;
   });
-}
 
-function getFilenameTopicCategory(filename = '') {
-  const lower = filename.toLowerCase();
-  if (lower.includes('oscillator') || lower.includes('hamiltonian') || lower.includes('theory') || lower.includes('conservative')) {
-    return '1_THEORETICAL_MECHANICS';
+  if (hasUnidentifiableDate) {
+    return {
+      documents: docs,
+      permutation: 'CHRONOLOGICAL',
+      status: 'CHRONOLOGY_UNIDENTIFIABLE',
+      notice: 'One or more documents lack verified historical timestamps. Relabeling archive order as chronology is strictly refused; admission order preserved under explicit hold.'
+    };
   }
-  if (lower.includes('circuit') || lower.includes('rlc') || lower.includes('empirical') || lower.includes('damping')) {
-    return '2_EMPIRICAL_CIRCUITS';
-  }
-  return '3_GENERAL_SYSTEMS';
+
+  const sorted = docs.sort((a, b) => {
+    const dateA = new Date(a.chronology_evidence?.verified_chronology_date || a.metadata?.timestamp || a.metadata?.date).getTime();
+    const dateB = new Date(b.chronology_evidence?.verified_chronology_date || b.metadata?.timestamp || b.metadata?.date).getTime();
+    return dateA - dateB;
+  });
+
+  return {
+    documents: sorted,
+    permutation: 'CHRONOLOGICAL',
+    status: 'VERIFIED_CHRONOLOGY_APPLIED',
+    notice: 'Documents ordered strictly by verified historical timestamps.'
+  };
 }
 
 /**
  * Executes Arm 0: Transport-Only Baseline.
- * Measures raw byte preservation without model inference.
  */
 function executeArm0Transport(documents) {
   const records = [];
@@ -251,20 +343,23 @@ function executeArm0Transport(documents) {
 }
 
 /**
- * Executes Arm 1: Native Archival Control (Authentic Encyclopedia & Wendbine Compiler).
- * Enforces native schema inspection, staging, admission, and typed relational indexing.
+ * Executes Arm 1: Native Archival Control (R3-02 Repair).
  */
 async function executeArm1Archival(repoRoot, documents) {
-  const arm1Log = await runArm1Archival(repoRoot, documents);
+  const arm1Res = await runArm1Archival(repoRoot, documents);
 
   return {
     arm: 'ARM_1_ARCHIVAL',
     runtime: 'NATIVE_ENCYCLOPEDIA_AND_WENDBINE_COMPILER',
     total_documents: documents.length,
-    total_indexed: documents.length,
-    encyclopedia_schema_validated: true,
-    wendbine_compilation_verified: true,
-    execution_log: arm1Log,
+    raw_bytes_preserved: arm1Res.raw_bytes_preserved,
+    total_indexed: arm1Res.total_indexed, // authentic count, e.g. 0
+    schema_admitted: arm1Res.schema_admitted,
+    schema_rejected: arm1Res.schema_rejected,
+    relations_compiled: arm1Res.relations_compiled,
+    autonomous_relation_synthesis_present: arm1Res.autonomous_relation_synthesis_present,
+    per_document_operations: arm1Res.per_document_operations,
+    execution_log: arm1Res.log,
     status: 'NATIVE_ARCHIVAL_CONTROL_VERIFIED'
   };
 }
@@ -300,24 +395,31 @@ async function main() {
       process.exit(1);
     }
 
-    if (!options.grantPath || !fs.existsSync(options.grantPath)) {
-      console.error(
-        'FLIGHT_EXECUTION_BLOCKED_UNAUTHORIZED: Cryptographic operator flight grant (--grant-path) is required for physical archive admission.'
-      );
-      process.exit(1);
-    }
-
     if (Object.keys(operatorKeys).length === 0) {
       console.error(
         'FLIGHT_EXECUTION_BLOCKED_UNAUTHORIZED: Physical archive admission requires trusted operator keys via --operator-key, --operator-keys-file, or TD613_OPERATOR_KEY.'
       );
       process.exit(1);
     }
+
+    // R3-01: Preflight Stage 2 Witness Contract Check
+    if (options.requireWitnessTier) {
+      const witnessKeys = resolveWitnessKeys(options);
+      const attestedWitness = resolveAttestedWitness(options);
+      if (!attestedWitness || !witnessKeys[attestedWitness.witnessId]) {
+        console.error(
+          'PREFLIGHT_STAGE2_WITNESS_CONTRACT_MISSING: In-line witnessed evaluation requested (--require-witness-tier), ' +
+          'but missing authentic cryptographic witness attestation or trusted key. Halted before archive admission or provider dispatch.'
+        );
+        process.exit(1);
+      }
+    }
   }
 
   console.log(`======================================================================`);
   console.log(`  𝌋 TD613 EXPERIMENT B FLIGHT RUNNER · ${options.dryRun ? 'SOURCE-FREE DRY RUN' : 'LIVE FLIGHT'}`);
   console.log(`======================================================================`);
+  console.log(`Backend Route:    ${options.backend === 'native' ? 'Track Alpha · Antigravity Native Agent' : 'Track Beta · Gemini REST API'}`);
   console.log(`Arm Selection:    ${options.arm}`);
   console.log(`Permutation:      ${options.permutation}`);
   console.log(`Model Engine:     ${options.model}`);
@@ -337,7 +439,6 @@ async function main() {
   });
 
   if (options.dryRun) {
-    // Generate synthetic in-memory ZIP archive to verify full ZIP decompression pipeline
     const syntheticZipBuffer = createSyntheticZipArchive([
       {
         name: 'synthetic_dissipative_oscillator.md',
@@ -355,21 +456,29 @@ async function main() {
     );
     console.log(`  ✓ Admitted ${admissionReceipt.document_count} synthetic specimens from in-memory ZIP (manifest: ${admissionReceipt.manifest_sha256.slice(0, 16)}...)`);
   } else {
-    // Live physical admission with operator grant
     const grantRaw = fs.readFileSync(path.resolve(options.grantPath), 'utf8');
     const grant = JSON.parse(grantRaw);
-
     admissionReceipt = intake.admitArchive(options.archivePath, {
       operatorFlightGrant: grant
     });
-    console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive '${options.archivePath}'`);
+    console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive: ${options.archivePath}`);
   }
 
-  // 3. Apply Designated Sequence Permutation
-  const orderedDocuments = applySequencePermutation(admissionReceipt.documents, options.permutation);
-  console.log(`  ✓ Sequence treatment applied: ${options.permutation} (${orderedDocuments.map(d => d.filename).join(' -> ')})`);
+  // 3. Sequence Permutation Treatment (R3-05)
+  const permResult = applySequencePermutation(admissionReceipt.documents, options.permutation);
+  const admittedDocs = permResult.documents;
+  console.log(`  ✓ Sequence treatment applied: ${options.permutation} (${admittedDocs.map(d => d.filename).join(' -> ')}) [status: ${permResult.status}]`);
+  if (permResult.notice) {
+    console.log(`    Note: ${permResult.notice}`);
+  }
 
-  // 4. Initialize Shared Budget Governor and Atomic Custody Ledger
+  // 4. Private Custody Ledger & Shared Budget Governor Initialization (R3-04 & R3-06)
+  const defaultLedger = path.resolve(REPO_ROOT, 'artifacts/private', options.dryRun ? 'flight_research_ledger_dry_run_test.json' : 'flight_research_ledger_live.json');
+  const targetLedgerPath = options.ledgerPath ? path.resolve(options.ledgerPath) : defaultLedger;
+
+  // Enforce private confinement
+  validatePrivatePathConfinement(targetLedgerPath, REPO_ROOT);
+
   const sharedBudgetGovernor = new SharedBudgetGovernor({
     maxCalls: options.maxCalls,
     maxTokens: options.maxTokens,
@@ -377,15 +486,11 @@ async function main() {
     model: options.model
   });
 
-  const defaultLedgerPath = options.dryRun
-    ? path.resolve(REPO_ROOT, 'artifacts/private/dry_run_checkpoint.json')
-    : path.resolve(REPO_ROOT, 'artifacts/private/flight_research_ledger.json');
-  const targetLedgerPath = options.ledgerPath ? path.resolve(options.ledgerPath) : defaultLedgerPath;
-
-  const custodyLedger = new AtomicCustodyLedger(targetLedgerPath);
+  const custodyLedger = new AtomicCustodyLedger(targetLedgerPath, { repoRoot: REPO_ROOT });
   custodyLedger.initializeFlight({
-    executionMode: options.dryRun ? 'SOURCE_FREE_SYNTHETIC_VERIFIED' : 'LIVE_PROTECTED_FLIGHT',
+    executionMode: options.dryRun ? 'SOURCE_FREE_DRY_RUN' : 'LIVE_PHYSICAL_FLIGHT',
     permutation: options.permutation,
+    backend: options.backend,
     model: options.model,
     budgetCeilings: {
       max_calls: options.maxCalls,
@@ -394,49 +499,57 @@ async function main() {
     },
     admissionReceipt
   });
-  console.log(`  ✓ Atomic Custody Ledger initialized at private path: ${targetLedgerPath}`);
 
+  // 5. Execution of Designated Arms
+  const allHarnesses = {};
   const armsToRun = options.arm === 'ALL'
     ? ['ARM_0_TRANSPORT', 'ARM_1_ARCHIVAL', 'ARM_2A_MODULAR', 'ARM_2B_MATCHED_UNION']
     : [options.arm];
 
-  const allHarnesses = {};
-
-  // 5. Execute Selected Arms with Atomic Per-Turn Checkpointing
   for (const arm of armsToRun) {
-    console.log(`\n--- Executing ${arm} ---`);
-
     if (arm === 'ARM_0_TRANSPORT') {
-      const arm0Result = executeArm0Transport(orderedDocuments);
+      console.log(`\n--- Executing ARM_0_TRANSPORT ---`);
+      const arm0Result = executeArm0Transport(admittedDocs);
       custodyLedger.recordArmCompletion('ARM_0_TRANSPORT', arm0Result);
       console.log(`  ✓ Arm 0 Complete: ${arm0Result.total_documents} docs transported (${arm0Result.total_bytes_transported} bytes)`);
     } else if (arm === 'ARM_1_ARCHIVAL') {
-      const arm1Result = await executeArm1Archival(REPO_ROOT, orderedDocuments);
+      console.log(`\n--- Executing ARM_1_ARCHIVAL ---`);
+      const arm1Result = await executeArm1Archival(REPO_ROOT, admittedDocs);
       custodyLedger.recordArmCompletion('ARM_1_ARCHIVAL', arm1Result);
-      console.log(`  ✓ Arm 1 Complete: ${arm1Result.total_indexed} docs indexed via native Encyclopedia and Wendbine compiler`);
+      console.log(`  ✓ Arm 1 Complete: ${arm1Result.total_documents} docs processed (raw_preserved: ${arm1Result.raw_bytes_preserved}, indexed: ${arm1Result.total_indexed}, schema_admitted: ${arm1Result.schema_admitted}, schema_rejected: ${arm1Result.schema_rejected})`);
     } else if (arm === 'ARM_2A_MODULAR' || arm === 'ARM_2B_MATCHED_UNION') {
+      console.log(`\n--- Executing ${arm} ---`);
       const harness = new HeterogeneousDiscoveryHarness({
         arm,
         mockMode: options.dryRun,
         allowLivePaidInference: !options.dryRun,
         model: options.model,
-        sharedBudgetGovernor // Shared aggregate budget across both cognitive arms!
+        maxCalls: options.maxCalls,
+        maxTokens: options.maxTokens,
+        maxCostUSD: options.maxCostUSD,
+        sharedBudgetGovernor
       });
 
       console.log(`  ✓ Establishing Pre-Exposure Baseline (t0)...`);
-      await harness.establishPreExposureBaseline(`Priors unconditioned for ${arm}`);
+      await harness.establishPreExposureBaseline();
+      custodyLedger.recordTurn({
+        arm,
+        turnIndex: 0,
+        documentId: 'BASELINE_T0',
+        turnRecord: harness.history[0],
+        sharedBudgetGovernor
+      });
 
-      for (let i = 0; i < orderedDocuments.length; i++) {
-        const doc = orderedDocuments[i];
-        console.log(`  ✓ Ingesting turn ${i + 1}: ${doc.filename}...`);
-        const turnResult = await harness.ingestSequentialDocument(doc, i + 1);
-
-        // Atomic per-turn persistence for interruption recovery!
+      let turnIdx = 0;
+      for (const doc of admittedDocs) {
+        turnIdx++;
+        console.log(`  ✓ Ingesting turn ${turnIdx}: ${doc.filename}...`);
+        await harness.ingestSequentialDocument(doc, turnIdx);
         custodyLedger.recordTurn({
           arm,
-          turnIndex: i + 1,
+          turnIndex: turnIdx,
           documentId: doc.id,
-          turnRecord: turnResult.turnRecord,
+          turnRecord: harness.history[harness.history.length - 1],
           sharedBudgetGovernor
         });
       }
@@ -454,13 +567,30 @@ async function main() {
     }
   }
 
-  // 6. Stage 2 Independent Adjudication
+  // 6. Stage 2 Independent Adjudication / Phase Boundary (R3-01)
+  let evaluatorTier;
+  let witnessKeys = {};
+  let attestedWitness = null;
+
+  if (options.dryRun) {
+    evaluatorTier = 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW';
+  } else if (options.requireWitnessTier) {
+    evaluatorTier = 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION';
+    witnessKeys = resolveWitnessKeys(options);
+    attestedWitness = resolveAttestedWitness(options);
+  } else {
+    // Blinded live candidate generation: provisional held tier
+    evaluatorTier = 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS';
+  }
+
   const allAdjudications = [];
   const evaluator = new Stage2IndependentEvaluator({
-    evaluatorTier: options.dryRun ? 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW' : 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION'
+    evaluatorTier,
+    trustedWitnessKeys: witnessKeys,
+    attestedWitness: attestedWitness
   });
 
-  console.log(`\n--- Executing Stage 2 Independent Evaluation ---`);
+  console.log(`\n--- Executing Stage 2 Independent Evaluation (Tier: ${evaluatorTier}) ---`);
 
   if (options.dryRun) {
     console.log(`  (Running source-free pipeline verification; results marked as DRY_RUN_PLUMBING_VERIFICATION)`);
@@ -477,7 +607,7 @@ async function main() {
               status: 'HELD_INSUFFICIENT_DATA',
               warrant_class: 'WARRANT_UNPRODUCED',
               adjudication_ancestry: {
-                evaluator_tier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+                evaluator_tier: 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW',
                 disposition: 'EPISTEMIC_ABSTENTION_BINARY_PAYLOAD_UNANALYZED',
                 verification_notice: 'DRY_RUN_PLUMBING_VERIFICATION'
               }
@@ -525,10 +655,9 @@ async function main() {
       }
     }
   } else {
-    // Live flight adjudication: requires attested external proof receipt
+    // Live flight adjudication: evaluates candidates under assigned tier (provisional or witnessed)
     for (const [armKey, harness] of Object.entries(allHarnesses)) {
       for (const cand of harness.candidates) {
-        // Fails closed to HELD unless external receipt is supplied
         const adj = evaluator.evaluateCandidate(cand, {
           groundTruthWarrant: null,
           negativeControlRejected: null,
@@ -537,7 +666,7 @@ async function main() {
           isNovel: null,
           instrumentAnomalies: null,
           episodeId: `Episode-${armKey}`,
-          evaluatorNotes: 'Live flight adjudication pending independent external witness receipt.'
+          evaluatorNotes: 'Live flight adjudication recorded.'
         });
         allAdjudications.push(adj);
       }
@@ -547,7 +676,8 @@ async function main() {
   custodyLedger.recordAdjudications(allAdjudications);
   console.log(`  ✓ Evaluated ${allAdjudications.length} candidates through Stage 2 Evaluator (spectrum of RCA-01 outcomes demonstrated)`);
 
-  console.log(`\n  ✓ Research Ledger Persisted to Private Local Custody: ${targetLedgerPath}`);
+  const displayLedgerPath = path.relative(REPO_ROOT, targetLedgerPath) || targetLedgerPath;
+  console.log(`\n  ✓ Research Ledger Persisted to Private Local Custody: ${displayLedgerPath}`);
   console.log(`\n======================================================================`);
   console.log(`  𝌋 FLIGHT EXECUTION FINISHED: B_FLIGHT_ENGINEERING_READY ⟐`);
   console.log(`======================================================================`);

@@ -3,19 +3,20 @@
  *
  * TD613 Experiment B · Atomic Custody Ledger & Shared Budget Governor
  *
- * 1. SharedBudgetGovernor:
+ * 1. SharedBudgetGovernor (Redpen R3-04):
  *    Maintains a single, shared aggregate resource ledger across all cognitive arms
- *    (Arm 0, Arm 1, Arm 2A Modular, Arm 2B Matched Union) and retries.
+ *    (Arm 0, Arm 1, Arm 2A Modular, Arm 2B Matched Union) and HTTP retries/failures.
  *    Enforces the cumulative 120-call, 400,000-token, and $0.50 USD financial ceilings
- *    with pre-dispatch reservation and thinking token accounting.
+ *    with conservative pre-dispatch reservation (prompt + output + thinking tokens).
  *
- * 2. AtomicCustodyLedger:
- *    Maintains incremental per-turn persistence using atomic filesystem operations
- *    (write to temporary file, then rename). Guarantees interruption recovery without data loss.
- *    Strictly prevents confidential source spills:
- *    - Defaults to private, git-ignored local custody (e.g. artifacts/private/).
- *    - Explicitly refuses persistence inside git-trackable docs/ trees.
- *    - Sanitizes binary payloads, recording SHA-256 and byte counts without dumping raw bytes.
+ * 2. AtomicCustodyLedger (Redpens R3-06 & R3-07):
+ *    Maintains granular event journaling and incremental per-turn persistence using atomic
+ *    filesystem operations (write to temporary file, then rename).
+ *    Guarantees full interruption recovery across baseline, chambers, and adjudication.
+ *    Strictly enforces private-path confinement across all output destinations:
+ *    - Rejects path traversal, symlinks into git-tracked spaces, and any non-ignored repo directory.
+ *    - Records explicit provider retention disclaimers (requested vs confirmed).
+ *    - Sanitizes binary admissions to metadata only.
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
@@ -25,6 +26,52 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { calculateModelCost } from './gemini-live-client.mjs';
+
+/**
+ * Validates that an output path strictly conforms to private, non-git-tracked custody.
+ */
+export function validatePrivatePathConfinement(targetPath, repoRoot = null) {
+  const resolved = path.resolve(targetPath);
+  const normalized = resolved.replace(/\\/g, '/');
+
+  // Check 1: Deny any explicit docs/research or git-tracked directories
+  if (normalized.includes('/docs/') || normalized.includes('/scripts/') || normalized.includes('/tests/') || normalized.includes('/packages/')) {
+    throw new Error(
+      `PRIVATE_CUSTODY_BREACH_PREVENTED: Output path '${resolved}' is located inside git-trackable repository structure (PRIVATE_CUSTODY_CONFINEMENT_VIOLATION). ` +
+      `Private evidence must remain confined to git-ignored private directories (e.g. artifacts/private/ or external paths).`
+    );
+  }
+
+  // Check 2: If repoRoot is provided, ensure path is either outside repo or strictly inside git-ignored private dirs
+  if (repoRoot) {
+    const resolvedRoot = path.resolve(repoRoot).replace(/\\/g, '/');
+    if (normalized.startsWith(resolvedRoot)) {
+      const relPath = normalized.slice(resolvedRoot.length).replace(/^\/+/, '');
+      const isAllowedPrivateDir = relPath.startsWith('artifacts/private/') ||
+                                  relPath.startsWith('.td613_custody/') ||
+                                  relPath.startsWith('.tmp_');
+      if (!isAllowedPrivateDir) {
+        throw new Error(
+          `PRIVATE_CUSTODY_BREACH_PREVENTED: Output path '${resolved}' is inside repository at '${relPath}', ` +
+          `which is not an authorized git-ignored private directory (authorized: artifacts/private/, .td613_custody/) (PRIVATE_CUSTODY_CONFINEMENT_VIOLATION).`
+        );
+      }
+    }
+  }
+
+  // Check 3: Check symlink target if path or parent exists
+  if (fs.existsSync(resolved)) {
+    const stat = fs.lstatSync(resolved);
+    if (stat.isSymbolicLink()) {
+      const realTarget = fs.realpathSync(resolved).replace(/\\/g, '/');
+      if (realTarget.includes('/docs/') || realTarget.includes('/packages/')) {
+        throw new Error(`PRIVATE_CUSTODY_CONFINEMENT_VIOLATION: Symlink '${resolved}' targets git-tracked space '${realTarget}'.`);
+      }
+    }
+  }
+
+  return resolved;
+}
 
 export class SharedBudgetGovernor {
   constructor(options = {}) {
@@ -47,6 +94,7 @@ export class SharedBudgetGovernor {
 
     this.estimatedCostUSD = 0;
     this.callLog = [];
+    this.attemptHistory = [];
   }
 
   getEstimatedCostUSD() {
@@ -54,45 +102,93 @@ export class SharedBudgetGovernor {
   }
 
   /**
-   * Pre-dispatch resource check: verifies that making this call cannot exceed aggregate ceilings.
+   * Registers an individual HTTP attempt (attempt 1, retries, failures) under the shared ceiling.
    */
-  checkPreCallResourceCeilings(promptText = '', maxOutputTokens = null) {
-    const maxOut = maxOutputTokens || this.maxOutputTokensPerCall;
+  registerProviderAttempt(arm = 'UNKNOWN_ARM', metadata = {}) {
+    this.providerAttempts++;
 
-    if (this.providerAttempts >= this.maxCalls) {
+    const attemptRecord = {
+      attempt_index: this.providerAttempts,
+      arm,
+      timestamp: new Date().toISOString(),
+      ...metadata
+    };
+    this.attemptHistory.push(attemptRecord);
+
+    if (this.providerAttempts > this.maxCalls) {
       throw new Error(
-        `SHARED_BUDGET_CEILING_EXCEEDED: Maximum aggregate call ceiling of ${this.maxCalls} attempts reached across all arms. Halting flight.`
+        `SHARED_BUDGET_CEILING_EXCEEDED: Maximum aggregate provider attempts (${this.maxCalls}) reached across all arms. Halting flight.`
       );
     }
 
+    return this.providerAttempts;
+  }
+
+  /**
+   * Conservative pre-dispatch capacity calculation.
+   * Calculates worst-case tokens: prompt estimation + full output reservation + thinking ceiling.
+   */
+  calculateTokenCapacityReservation(promptText = '', maxOutputTokens = null) {
+    const promptBytes = Buffer.byteLength(promptText || '', 'utf8');
+    // Conservative estimation: 1 token per 2.8 bytes (English/math), minimum 150 tokens
+    const estimatedPromptTokens = Math.max(150, Math.ceil(promptBytes / 2.8));
+    const maxOut = maxOutputTokens || this.maxOutputTokensPerCall;
+    const reservedThoughts = (this.model.includes('flash') || this.model.includes('pro')) ? 1024 : 0;
+    const callReservedTokens = estimatedPromptTokens + maxOut + reservedThoughts;
+
+    const worstCaseCost = calculateModelCost(this.model, estimatedPromptTokens, maxOut, reservedThoughts);
+
+    return {
+      estimatedPromptTokens,
+      maxOut,
+      reservedThoughts,
+      callReservedTokens,
+      worstCaseCost
+    };
+  }
+
+  /**
+   * Pre-dispatch resource check: verifies that making this call cannot exceed aggregate ceilings.
+   */
+  checkPreCallResourceCeilings(promptText = '', maxOutputTokens = null) {
+    // 1. Attempt ceiling check
+    if (this.providerAttempts + 1 > this.maxCalls) {
+      throw new Error(
+        `SHARED_BUDGET_CEILING_EXCEEDED: Dispatching call would exceed maximum aggregate attempt ceiling of ${this.maxCalls} (current: ${this.providerAttempts}). Halting flight.`
+      );
+    }
+
+    // 2. Token ceiling check
     if (this.totalTokensConsumed >= this.maxTokens) {
       throw new Error(
         `SHARED_BUDGET_CEILING_EXCEEDED: Maximum aggregate token ceiling of ${this.maxTokens} tokens reached (${this.totalTokensConsumed} consumed). Halting flight.`
       );
     }
 
+    // 3. Financial ceiling check
     if (this.getEstimatedCostUSD() >= this.maxCostUSD) {
       throw new Error(
         `SHARED_BUDGET_CEILING_EXCEEDED: Maximum aggregate financial ceiling of $${this.maxCostUSD.toFixed(2)} USD reached. Halting flight.`
       );
     }
 
-    // Pre-dispatch cost reservation: estimate worst-case cost of outgoing call
-    const estimatedPromptTokens = Math.max(100, Math.ceil((promptText || '').length / 3.5));
-    const worstCaseCost = calculateModelCost(this.model, estimatedPromptTokens, maxOut, 0);
+    // 4. Pre-dispatch capacity & cost reservation
+    const reservation = this.calculateTokenCapacityReservation(promptText, maxOutputTokens);
 
-    if (this.getEstimatedCostUSD() + worstCaseCost > this.maxCostUSD) {
+    if (this.totalTokensConsumed + reservation.callReservedTokens > this.maxTokens) {
       throw new Error(
-        `SHARED_BUDGET_RESERVATION_EXCEEDED: Reserving worst-case cost $${worstCaseCost.toFixed(5)} for outgoing call ` +
+        `SHARED_BUDGET_RESERVATION_EXCEEDED: Reserving ${reservation.callReservedTokens} tokens for outgoing call would breach aggregate token ceiling of ${this.maxTokens} (current: ${this.totalTokensConsumed}). Halting flight.`
+      );
+    }
+
+    if (this.getEstimatedCostUSD() + reservation.worstCaseCost > this.maxCostUSD) {
+      throw new Error(
+        `SHARED_BUDGET_RESERVATION_EXCEEDED: Reserving worst-case cost $${reservation.worstCaseCost.toFixed(5)} for outgoing call ` +
         `would exceed aggregate financial ceiling of $${this.maxCostUSD.toFixed(2)} USD across arms (current: $${this.getEstimatedCostUSD().toFixed(5)}). Halting flight.`
       );
     }
 
-    if (this.totalTokensConsumed + maxOut > this.maxTokens) {
-      throw new Error(
-        `SHARED_BUDGET_RESERVATION_EXCEEDED: Reserving ${maxOut} output tokens would exceed aggregate token ceiling of ${this.maxTokens} (current: ${this.totalTokensConsumed}). Halting flight.`
-      );
-    }
+    return reservation;
   }
 
   /**
@@ -172,19 +268,12 @@ export class AtomicCustodyLedger {
   /**
    * @param {string} ledgerPath - Absolute or relative path to target ledger JSON
    * @param {object} options
-   * @param {boolean} options.allowTrackedDocsPath - Whether to permit writing in git-tracked docs/ (strictly false by default)
+   * @param {string} options.repoRoot - Path to repository root for confinement check
+   * @param {boolean} options.allowTrackedDocsPath - Strictly false by default
    */
   constructor(ledgerPath, options = {}) {
-    const resolvedPath = path.resolve(ledgerPath);
-
-    // Private evidence spill defense: disallow writing research ledgers inside docs/
-    const normalized = resolvedPath.replace(/\\/g, '/');
-    if (!options.allowTrackedDocsPath && normalized.includes('/docs/research/')) {
-      throw new Error(
-        `PRIVATE_CUSTODY_BREACH_PREVENTED: Ledger path '${resolvedPath}' is located inside git-trackable 'docs/research/'. ` +
-        `Confidential research ledgers and model traces must be stored in private, uncommitted custody (e.g. artifacts/private/ or an external path).`
-      );
-    }
+    // R3-06: Strict private path confinement
+    const resolvedPath = validatePrivatePathConfinement(ledgerPath, options.repoRoot);
 
     this.ledgerPath = resolvedPath;
     const parentDir = path.dirname(resolvedPath);
@@ -197,8 +286,14 @@ export class AtomicCustodyLedger {
       created_at: new Date().toISOString(),
       last_updated_at: new Date().toISOString(),
       execution_mode: 'PENDING_INITIALIZATION',
+      provider_retention_posture: {
+        requested_posture: 'ZERO_DATA_RETENTION_REQUESTED',
+        confirmed_status: 'SUBJECT_TO_GOOGLE_API_TERMS_AND_ORGANIZATION_AGREEMENTS',
+        note: 'Requested privacy posture is distinct from a provider-confirmed contractual guarantee.'
+      },
       metadata: {},
       admission_summary: null,
+      journal: [], // R3-06: Fine-grained event journal
       arms: {},
       turns: [],
       stage2_adjudications: [],
@@ -225,18 +320,47 @@ export class AtomicCustodyLedger {
         sha256: d.sha256,
         derivative_status: d.derivative_status,
         author_provenance: d.author_provenance,
-        chronology_index: d.chronology_index
+        chronology_index: d.chronology_index,
+        chronology_evidence: d.chronology_evidence || null,
+        topic_evidence: d.topic_evidence || null
       }));
 
       this.ledgerData.admission_summary = {
+        admission_id: admissionReceipt.admission_id,
         archive_sha256: admissionReceipt.archive_sha256,
-        total_documents: admissionReceipt.total_documents,
+        total_documents: admissionReceipt.total_documents || admissionReceipt.document_count,
         total_bytes: admissionReceipt.total_bytes,
         documents: sanitizedDocs
       };
     }
 
+    this.recordEvent({ type: 'FLIGHT_INITIALIZED', execution_mode: executionMode });
+  }
+
+  /**
+   * R3-06: Records a granular journal event and flushes atomically to disk immediately.
+   */
+  recordEvent(event) {
+    this.ledgerData.last_updated_at = new Date().toISOString();
+    this.ledgerData.journal.push({
+      timestamp: new Date().toISOString(),
+      ...event
+    });
     this.flush();
+  }
+
+  /**
+   * Idempotent replay check: determines if an episode was already successfully recorded.
+   */
+  isEpisodeCompleted(episodeId) {
+    if (!episodeId) return false;
+    return this.ledgerData.journal.some(
+      e => e.episode_id === episodeId && (e.type?.endsWith('_COMPLETED') || e.type?.endsWith('_SUCCEEDED'))
+    );
+  }
+
+  getCompletedTurn(arm, turnIndex) {
+    return this.ledgerData.turns.find(t => t.arm === arm && t.turn_index === turnIndex) || null;
   }
 
   recordTurn({ arm, turnIndex, documentId, turnRecord, sharedBudgetGovernor }) {
@@ -253,19 +377,24 @@ export class AtomicCustodyLedger {
       this.ledgerData.shared_budget_summary = sharedBudgetGovernor.getSummary();
     }
 
-    this.flush();
+    this.recordEvent({
+      type: 'TURN_RECORDED',
+      arm,
+      turn_index: turnIndex,
+      document_id: documentId
+    });
   }
 
   recordArmCompletion(armName, armResult) {
     this.ledgerData.last_updated_at = new Date().toISOString();
     this.ledgerData.arms[armName] = armResult;
-    this.flush();
+    this.recordEvent({ type: 'ARM_COMPLETED', arm: armName });
   }
 
   recordAdjudications(adjudications) {
     this.ledgerData.last_updated_at = new Date().toISOString();
     this.ledgerData.stage2_adjudications = adjudications;
-    this.flush();
+    this.recordEvent({ type: 'ADJUDICATIONS_RECORDED', count: adjudications.length });
   }
 
   /**
@@ -278,7 +407,22 @@ export class AtomicCustodyLedger {
 
     const payload = JSON.stringify(this.ledgerData, null, 2) + '\n';
     fs.writeFileSync(tmpPath, payload, 'utf8');
-    fs.renameSync(tmpPath, this.ledgerPath);
+    try {
+      fs.renameSync(tmpPath, this.ledgerPath);
+    } catch (err) {
+      if (err.code === 'EPERM' || err.code === 'EBUSY') {
+        // Windows filesystem file-lock resilience: copy + unlink fallback
+        try {
+          fs.copyFileSync(tmpPath, this.ledgerPath);
+          fs.unlinkSync(tmpPath);
+        } catch {
+          fs.writeFileSync(this.ledgerPath, payload, 'utf8');
+          try { fs.unlinkSync(tmpPath); } catch {}
+        }
+      } else {
+        throw err;
+      }
+    }
   }
 
   load() {
