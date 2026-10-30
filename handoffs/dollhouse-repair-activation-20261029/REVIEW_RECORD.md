@@ -107,6 +107,18 @@ Following independent review `5707151488` (`CI_EXACT_HEAD_BROWSER_WITNESS_ACCEPT
 
 ---
 
+## 3.3. Independent Review 5707293906 Live-CI Environment Authority Closure
+
+Following independent review `5707293906` (`KNOWN_CI_WITNESS_ACCEPTED · SYNTHETIC_CI_ENV_REFUSED · PR1608_FINAL_MERGE_DECISION_PENDING · B_CORPUS_SEALED`), the final execution-elevation counterexample was surgically resolved:
+
+1. **Generic Live-CI Promotion Branch Removed:** Completely disabled/removed the branch that accepted mutable `process.env.GITHUB_ACTIONS`, `GITHUB_RUN_ID`, and `GITHUB_SHA` as execution authority in `app/engine/dollhouse-design-conductor.js`.
+2. **Control 6F Converted to Adversarial Negative Control:** Fabricated GitHub Actions environment variables paired with matching synthetic receipts fail closed to `ARTIFACT_BYTES_MATCH` with `witness_verification: 'UNAUTHENTICATED_EXECUTION_REFUSED'`.
+3. **Audited Immutable CI Witness Registry Preserved:** Execution authority (`MATERIALIZED_WITNESSED`) remains strictly gated on audited repository records in `AUTHENTICATED_IMMUTABLE_CI_WITNESS_RECORDS` backed by authentic repository fixtures (`tests/fixtures/dollhouse/witness_receipt_ci_40985470629.json`) and positive Control 6E.
+4. **Historical Qualification Fixtures Preserved:** Canonical historical fixture verification (`tests/fixtures/dollhouse/caro_corridor_primary.html`) remains preserved as a distinct evidence class (`EXECUTED_DEMONSTRATION_LAW`, Control 7).
+5. **Full Test Battery Passing:** 11/11 tests pass in `tests/dollhouse-repair-regressions-r01-r08.test.mjs` (including negative controls 6A, 6B, 6C, 6D, 6F and positive controls 6E, 7).
+
+---
+
 ## 4. Atlas Wild Field Mathematical Estate & Yoon Crosswalk Y-01
 
 Per Sovereign Operator Direct, the mathematical investigation triggered by the Tai Hyun Yoon preprint (arXiv:2610.27639v1) was established as a separate source-grounded theoretical estate in `docs/atlas/`, completely firewalled from PR #1608 code, the sealed Em corpus, and Experiment B:

@@ -618,7 +618,12 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
 
                 const isClean = (receipt.clean_working_tree_precheck && receipt.clean_working_tree_precheck.verified_clean_before_run === true) || options.allow_uncommitted_local_witness === true;
 
-                // Boundary 1: Audited immutable CI witness registry
+                // Execution authentication requires an independently trusted boundary.
+                // Invariant: Ordinary caller options, synthetic on-disk receipts, caller-supplied run ledgers,
+                // and mutable environment variables (process.env.GITHUB_ACTIONS, GITHUB_RUN_ID, GITHUB_SHA)
+                // cannot manufacture execution authority (fails closed to ARTIFACT_BYTES_MATCH).
+
+                // Independently audited immutable CI witness registry
                 const runIdStr = receipt.workflow_run_id !== undefined && receipt.workflow_run_id !== null ? String(receipt.workflow_run_id).trim() : '';
                 const immutableRecord = runIdStr ? AUTHENTICATED_IMMUTABLE_CI_WITNESS_RECORDS[runIdStr] : null;
                 let immutableBoundaryVerified = false;
@@ -655,23 +660,7 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                   }
                 }
 
-                // Boundary 2: Live GitHub Actions CI runner environment
-                let liveCiBoundaryVerified = false;
-                const isLiveCi = process.env.GITHUB_ACTIONS === 'true' &&
-                                 typeof process.env.GITHUB_RUN_ID === 'string' &&
-                                 process.env.GITHUB_RUN_ID.trim().length > 0;
-
-                if (isLiveCi && scriptShaVerified && isClean && hasAssertions && hasExecutionEvidence) {
-                  const liveRunId = process.env.GITHUB_RUN_ID.trim();
-                  if (runIdStr === liveRunId) {
-                    const liveExpectedSha = (process.env.EXPECTED_HEAD_SHA || process.env.GITHUB_SHA || options.expected_source_revision || '').trim().toLowerCase();
-                    if (!liveExpectedSha || declaredRev.toLowerCase() === liveExpectedSha) {
-                      liveCiBoundaryVerified = true;
-                    }
-                  }
-                }
-
-                if (immutableBoundaryVerified || liveCiBoundaryVerified) {
+                if (immutableBoundaryVerified) {
                   executionAuthenticated = true;
                 }
               }

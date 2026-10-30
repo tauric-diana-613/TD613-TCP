@@ -671,7 +671,8 @@ test('Hold A - Adversarial execution witness spoofing refused and four evidentia
   assert.equal(control6E.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED',
     'Control 6E: Must record AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
 
-  // Control 6F (Positive Control): Authentic executing GitHub Actions CI runner boundary earns MATERIALIZED_WITNESSED
+  // Control 6F (Adversarial Negative Control): Fabricated GitHub Actions environment variables
+  // (process.env.GITHUB_ACTIONS, GITHUB_RUN_ID, GITHUB_SHA) cannot manufacture execution authority
   const origGha = process.env.GITHUB_ACTIONS;
   const origRunId = process.env.GITHUB_RUN_ID;
   const origSha = process.env.GITHUB_SHA;
@@ -707,16 +708,15 @@ test('Hold A - Adversarial execution witness spoofing refused and four evidentia
       expected_source_revision: '12352af2b0fc0dec4554abb7aa35599ad7f897f1',
       witness_receipt: liveCiReceipt
     });
-    assert.equal(control6F.execution_status, 'MATERIALIZED_WITNESSED',
-      'Control 6F: Authentic executing GitHub Actions CI runner must earn MATERIALIZED_WITNESSED');
-    assert.equal(control6F.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED',
-      'Control 6F: Must record AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+    assert.equal(control6F.execution_status, 'ARTIFACT_BYTES_MATCH',
+      'Control 6F: Fabricated GitHub Actions environment variables must fail closed to ARTIFACT_BYTES_MATCH');
+    assert.equal(control6F.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED',
+      'Control 6F: Must record UNAUTHENTICATED_EXECUTION_REFUSED');
   } finally {
     if (origGha !== undefined) process.env.GITHUB_ACTIONS = origGha; else delete process.env.GITHUB_ACTIONS;
     if (origRunId !== undefined) process.env.GITHUB_RUN_ID = origRunId; else delete process.env.GITHUB_RUN_ID;
     if (origSha !== undefined) process.env.GITHUB_SHA = origSha; else delete process.env.GITHUB_SHA;
   }
-  assert.equal(control6D.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED');
 
   // Control 7: Canonical historical qualification fixture preserved as separate evidence class
   const control7 = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {
