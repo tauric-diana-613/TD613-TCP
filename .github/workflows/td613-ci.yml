@@ -219,7 +219,6 @@ jobs:
           node scripts/verify-dollhouse-repair-witness.mjs --out artifacts/dollhouse-browser-witness/witness_receipt.json --expected-revision "${{ github.event.pull_request.head.sha || github.sha }}"
       - name: Upload clean Dollhouse browser witness receipt
         uses: actions/upload-artifact@v4
-        if: always()
         with:
           name: dollhouse-witness-${{ github.event.pull_request.head.sha || github.sha }}
           path: artifacts/dollhouse-browser-witness/witness_receipt.json

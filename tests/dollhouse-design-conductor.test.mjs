@@ -430,7 +430,7 @@ test('TD613 Dollhouse Design Conductor v0.2 - Strict Historical Reference Input 
   const mutableRef = resolveHistoricalReference({
     reference_id: 'REF-MUTABLE-SYM',
     source_path: 'AGENTS.md',
-    source_revision: 'feat/dollhouse-design-candidate',
+    source_revision: 'HEAD',
     classification: 'NEGOTIABLE_AESTHETIC_DIRECTION'
   });
   assert.equal(mutableRef.revision_type, 'MUTABLE_SYMBOLIC_REF');
