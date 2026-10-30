@@ -1,0 +1,28 @@
+{
+  "commission_id": "COMM-SEDGWICK-PARATACTIC-SURFACE-01",
+  "seed": "A community care archive for gentle reading, paratactic beside-ness, and affective survival",
+  "medium": "VISUAL",
+  "deliverable_count": 1,
+  "human_coordinates": {
+    "what": "Paratactic beside-ness reading surface prioritizing affective care and tactile survival",
+    "who": "Reader seeking restorative shelter from sovereign administrative hierarchy",
+    "where": "Responsive canvas supporting 1440px desktop and 390px mobile viewports",
+    "how": "Lateral margin fragments placed alongside sovereign text without subordinating hierarchy",
+    "when": "Contemporaneous reading session with unpenalized pause and exit affordances",
+    "why": "To materialize Eve Kosofsky Sedgwick's reparative reading and beside-ness as interactive form"
+  },
+  "instruments": [
+    "SEDGWICK_REPARATIVE_TEXTURE"
+  ],
+  "historical_references": [
+    {
+      "reference_id": "REF-LAW-AGENTS-01",
+      "source_path": "AGENTS.md",
+      "source_revision": "HEAD",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "TD613 Agent Entry Contract: Cistern law, consequence before ontology, child-legible NOW / WHY / EXACT, and human closure."
+    }
+  ],
+  "scientific_audit_requested": true
+}

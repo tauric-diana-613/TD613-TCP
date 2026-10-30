@@ -215,7 +215,13 @@ async function runOperationalReplay() {
   console.log(`  • Full Source Delivered: REF-LAW-AGENTS-01 (${agentsLawRef.byte_count} bytes)`);
 
   // 6. Stage 6: Verify Primary & Refractive Executable Artifacts
-  console.log(`\n[STAGE 6] Verifying Primary and Refractive HTML Artifacts...`);
+  // NOTE on Merged PR #1603 & Operator Deliverable Cardinality:
+  // Ordinary Dollhouse commissions produce exactly ONE finished deliverable by default.
+  // Candidate B, refractive counterfactuals, and comparison notes are internal design scaffolding.
+  // Paired primary and refractive file materialization in this replay script was an explicit requirement
+  // of the historical blind A/B qualification commission only (tests/fixtures/dollhouse/qualification_commission.json
+  // and caro_commission.json experimental harness), and must NOT be inferred as an obligation for general creative commissions.
+  console.log(`\n[STAGE 6] Verifying Primary and Refractive HTML Artifacts (Historical Qualification Handoff)...`);
   const primaryRelPath = isQualification
     ? 'tests/fixtures/dollhouse/qualification_ledger_primary.html'
     : 'tests/fixtures/dollhouse/caro_corridor_primary.html';

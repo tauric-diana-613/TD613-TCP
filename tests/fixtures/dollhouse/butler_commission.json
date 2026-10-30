@@ -1,0 +1,28 @@
+{
+  "commission_id": "COMM-BUTLER-PERFORMATIVE-SLIPPAGE-01",
+  "seed": "Citational reiteration of sovereign decrees where ritual repetition accumulates subversive typographic slippage across each subsequent iteration.",
+  "medium": "VISUAL",
+  "deliverable_count": 1,
+  "human_coordinates": {
+    "what": "Ritual typographic altar of five progressive citational iterations with dynamic slippage parameter epsilon",
+    "who": "The sovereign decree vs the reiterative copyist accumulating marginal variance",
+    "where": "Responsive dark-mode typography surface at 1440px desktop and 390px mobile viewports",
+    "how": "Transfer law kerning(n) = kerning_0 + epsilon * log(1 + n) drives cumulative glyph variance and letter-spacing; epsilon = 0.0 collapses to mechanical conformity",
+    "when": "Five sequential iterations with interactive stepping, unpenalized pause, and safe exit sequence",
+    "why": "To demonstrate Judith Butler's theory of citational subversion wherein sovereign authority is destabilized by the impossibility of identical repetition"
+  },
+  "instruments": [
+    "BUTLER_PERFORMATIVE_ITERATION"
+  ],
+  "historical_references": [
+    {
+      "reference_id": "REF-LAW-AGENTS-01",
+      "source_path": "AGENTS.md",
+      "source_revision": "9fe8a58785a492df4d50846c65a46519e28188fc",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "TD613 Agent Entry Contract: Cistern law, consequence before ontology, child-legible NOW / WHY / EXACT, Khona‌lit-po covenant, glyph U+10D613, and human closure."
+    }
+  ],
+  "scientific_audit_requested": false
+}
