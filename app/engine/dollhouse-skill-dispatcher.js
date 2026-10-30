@@ -48,16 +48,17 @@ import {
   auditPhasonCustodyDiff
 } from './dollhouse-atlas-relational-custody.js';
 import {
-  probeA01_FutureResponseSeparation,
-  probeA02_HigherOrderParity,
-  probeA03_GHZPhaseAndLocality,
-  probeA04_F31RankVsRealSVD,
-  probeA05_RepresentationCausalControl,
-  probeA06_OntologyFreeSurprise,
-  probeA07_QuantumVisibilityAmbiguity,
-  probeA08_MeasurementContextIntervention,
-  probeA09_MathematicalNotationEquivalence
-} from '../../docs/research/experiment-b-preflight/09_atlas_mathematical_qualification/atlas-mathematical-qualification-suite.mjs';
+  evaluateTemporalFiberEquivalence,
+  evaluateParityInvariant,
+  evaluateGHZReductionAndLocality,
+  evaluateRankAndConditioning,
+  evaluateDynamicalMorphism,
+  evaluateStructuralSignature,
+  evaluateQuantumVisibilityInverseProblem,
+  evaluateQuantumMeasurementContexts,
+  evaluateHarmonicOscillatorSymbolicEquivalence,
+  dispatchAtlasMathematicalOperation
+} from './atlas-mathematical-engine.js';
 import {
   computeFadtFiberBounds,
   evaluateFadtCoordinateRecovery,
@@ -630,33 +631,38 @@ function executeSpecialistExtensions(role, domainInput, options) {
         if (prev && curr) {
           ext.phason_custody_diff = auditPhasonCustodyDiff(prev, curr, phasonOpts);
         }
-        // Atlas Wild Field Mathematical Capabilities (Issue #1612 / Chambers I-V)
-        if (domainInput.temporal_fiber) {
-          ext.temporal_fiber = probeA01_FutureResponseSeparation(domainInput.temporal_fiber);
+        // Bounded Atlas Mathematical Discovery Operations
+        if (domainInput.mathematical_operation || domainInput.operation) {
+          const opName = domainInput.mathematical_operation || domainInput.operation;
+          const prob = domainInput.problem || domainInput.input || domainInput;
+          ext.mathematical_evaluation = dispatchAtlasMathematicalOperation(opName, prob, domainInput.options || {});
         }
-        if (domainInput.higher_order_parity) {
-          ext.higher_order_parity = probeA02_HigherOrderParity(domainInput.higher_order_parity);
+        if (domainInput.future_response || domainInput.temporal_fiber) {
+          ext.future_response = evaluateTemporalFiberEquivalence(domainInput.future_response || domainInput.temporal_fiber);
         }
-        if (domainInput.ghz_stabilizer) {
-          ext.ghz_stabilizer = probeA03_GHZPhaseAndLocality(domainInput.ghz_stabilizer);
+        if (domainInput.higher_order_parity || domainInput.parity_ensemble) {
+          ext.higher_order_parity = evaluateParityInvariant(domainInput.higher_order_parity || domainInput.parity_ensemble);
         }
-        if (domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning) {
-          ext.modular_vs_real_svd = probeA04_F31RankVsRealSVD(domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning);
+        if (domainInput.ghz_state || domainInput.ghz_locality || domainInput.ghz_stabilizer) {
+          ext.ghz_locality = evaluateGHZReductionAndLocality(domainInput.ghz_state || domainInput.ghz_locality || domainInput.ghz_stabilizer);
         }
-        if (domainInput.causal_morphism_control || domainInput.representation_morphism) {
-          ext.causal_morphism_control = probeA05_RepresentationCausalControl(domainInput.causal_morphism_control || domainInput.representation_morphism);
+        if (domainInput.rank_conditioning || domainInput.f31_matrix || domainInput.svd_matrix || domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning) {
+          ext.rank_conditioning = evaluateRankAndConditioning(domainInput.rank_conditioning || domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning || domainInput);
         }
-        if (domainInput.ontology_free_surprise) {
-          ext.ontology_free_surprise = probeA06_OntologyFreeSurprise(domainInput.ontology_free_surprise);
+        if (domainInput.dynamical_morphism || domainInput.liouville_flow || domainInput.causal_morphism_control || domainInput.representation_morphism) {
+          ext.dynamical_morphism = evaluateDynamicalMorphism(domainInput.dynamical_morphism || domainInput.liouville_flow || domainInput.causal_morphism_control || domainInput.representation_morphism);
         }
-        if (domainInput.visibility_inverse) {
-          ext.visibility_inverse = probeA07_QuantumVisibilityAmbiguity(domainInput.visibility_inverse);
+        if (domainInput.structural_signature || domainInput.novel_proposition || domainInput.ontology_free_surprise) {
+          ext.structural_signature = evaluateStructuralSignature(domainInput.structural_signature || domainInput.novel_proposition || domainInput.ontology_free_surprise);
         }
-        if (domainInput.measurement_context) {
-          ext.measurement_context = probeA08_MeasurementContextIntervention(domainInput.measurement_context);
+        if (domainInput.quantum_visibility || domainInput.visibility_problem || domainInput.visibility_inverse) {
+          ext.quantum_visibility = evaluateQuantumVisibilityInverseProblem(domainInput.quantum_visibility || domainInput.visibility_problem || domainInput.visibility_inverse);
         }
-        if (domainInput.notation_normalization) {
-          ext.notation_normalization = probeA09_MathematicalNotationEquivalence(domainInput.notation_normalization);
+        if (domainInput.measurement_contexts || domainInput.transformation_cases || domainInput.measurement_context) {
+          ext.measurement_contexts = evaluateQuantumMeasurementContexts(domainInput.measurement_contexts || domainInput.transformation_cases || domainInput.measurement_context);
+        }
+        if (domainInput.notation_normalization || domainInput.symbolic_variants) {
+          ext.notation_normalization = evaluateHarmonicOscillatorSymbolicEquivalence(domainInput.notation_normalization || domainInput.symbolic_variants);
         }
         return Object.keys(ext).length > 0 ? ext : null;
       }

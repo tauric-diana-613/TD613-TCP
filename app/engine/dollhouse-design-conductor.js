@@ -1383,14 +1383,28 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
   if (commission.scientific_audit_requested) {
     try {
       const auditRev = options.source_revision || resolveCurrentSourceRevision();
+      const auditRoles = Array.isArray(commission.audit_roles) && commission.audit_roles.length > 0
+        ? commission.audit_roles
+        : (commission.mathematical_premise ? ['PEDAGOGUE', 'APERTURE', 'ATLAS'] : ['PEDAGOGUE', 'APERTURE']);
+
+      const auditDomainInputs = { ...(commission.audit_domain_inputs || commission.domain_inputs || {}) };
+      if (commission.mathematical_premise && !auditDomainInputs.ATLAS) {
+        auditDomainInputs.ATLAS = {
+          trajectoryA: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 0 },
+          trajectoryB: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 0 },
+          mathematical_operation: commission.mathematical_premise.operation || commission.mathematical_premise.capability_id || 'A-01',
+          input: commission.mathematical_premise.problem || commission.mathematical_premise.input
+        };
+      }
+
       const auditResult = await runDollhouseSkillAudit({
         source_revision: auditRev,
         task_scope: `DOLLHOUSE_DESIGN_ADVISORY_${commission.commission_id}`,
-        roles: ['PEDAGOGUE', 'APERTURE'],
+        roles: auditRoles,
         include_orchestrator: true,
         evidence_class: options.evidence_class || 'SYNTHETIC_TEST_FIXTURE',
         evidence_references: ['app/engine/dollhouse-design-conductor.js'],
-        domain_inputs: commission.audit_domain_inputs || commission.domain_inputs || {}
+        domain_inputs: auditDomainInputs
       });
       const orchestratorDecision = auditResult.machine_receipt?.orchestrator?.decision || auditResult.orchestrator_decision || 'HELD_MISSING_OBSERVATION';
       scientificAuditReceipt = {
