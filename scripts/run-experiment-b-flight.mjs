@@ -418,6 +418,28 @@ async function main() {
       );
       process.exit(1);
     }
+
+    // Critical pre-admission fail-closed gate. Protected material must not be opened
+    // before the requested native cognitive backend can perform an authentic turn.
+    // The current 'native' module is a source-free simulator with no in-app model adapter.
+    if (options.backend === 'native' &&
+        (options.arm === 'ALL' || options.arm === 'ARM_2A_MODULAR' || options.arm === 'ARM_2B_MATCHED_UNION')) {
+      console.error(
+        'NATIVE_UNIMPLEMENTED_HELD: Native Antigravity model execution adapter is unavailable. ' +
+        'Rejecting before protected archive admission; session environment flags are insufficient. ' +
+        'No synthetic research, archive access, or implicit REST fallback permitted.'
+      );
+      process.exit(1);
+    }
+
+    // B7-03: Live flight requires an explicit, unique, immutable episode identity
+    if (!options.episodeId || options.episodeId === 'EPISODE-B-SOURCE-FREE-PREFLIGHT-01') {
+      console.error(
+        'LIVE_FLIGHT_EPISODE_IDENTITY_REQUIRED: Live Flight requires an explicit, unique, immutable episode identifier (--episode-id <id>).\n' +
+        'Reusing the synthetic preflight default "EPISODE-B-SOURCE-FREE-PREFLIGHT-01" is strictly prohibited for live execution.'
+      );
+      process.exit(1);
+    }
   }
 
   // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission)
@@ -452,19 +474,6 @@ async function main() {
       );
       process.exit(1);
     }
-  }
-
-  // Critical pre-admission fail-closed gate. Protected material must not be opened
-  // before the requested native cognitive backend can perform an authentic turn.
-  // The current 'native' module is a source-free simulator with no in-app model adapter.
-  if (!options.dryRun && options.backend === 'native' &&
-      (options.arm === 'ALL' || options.arm === 'ARM_2A_MODULAR' || options.arm === 'ARM_2B_MATCHED_UNION')) {
-    console.error(
-      'NATIVE_UNIMPLEMENTED_HELD: Native Antigravity model execution adapter is unavailable. ' +
-      'Rejecting before protected archive admission; session environment flags are insufficient. ' +
-      'No synthetic research, archive access, or implicit REST fallback permitted.'
-    );
-    process.exit(1);
   }
 
   console.log(`======================================================================`);

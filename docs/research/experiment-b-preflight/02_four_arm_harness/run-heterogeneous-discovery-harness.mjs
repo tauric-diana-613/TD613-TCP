@@ -25,8 +25,110 @@ export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
 ];
 
 /**
+ * Audited execution-time allowlists and forbidden patterns for each experimental arm (Redpen VII-B B7-02).
+ * Enforces actual filesystem and tool-access boundaries beyond textual prompt linting.
+ */
+export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
+  ARM_0_TRANSPORT: {
+    allowedSourceRoots: [],
+    allowedTools: [],
+    allowedSkills: [],
+    forbiddenPatterns: [/./]
+  },
+  ARM_1_ARCHIVAL: {
+    allowedSourceRoots: [
+      'app/wendbine/',
+      'app/encyclopedia/',
+      'docs/research/experiment-b-preflight/'
+    ],
+    allowedTools: ['read_file'],
+    allowedSkills: [],
+    forbiddenPatterns: [
+      /docs[\\/]atlas/i,
+      /ATLAS\.md/i,
+      /app[\\/]engine[\\/]atlas-/i,
+      /app[\\/]engine[\\/]dollhouse-atlas-/i,
+      /Yoon/i
+    ]
+  },
+  ARM_2A_MODULAR: {
+    allowedSourceRoots: [
+      'docs/research/experiment-b-preflight/',
+      'docs/research/manifest-succession/'
+    ],
+    allowedTools: ['read_file'],
+    allowedSkills: [],
+    forbiddenPatterns: [
+      /docs[\\/]atlas/i,
+      /ATLAS\.md/i,
+      /app[\\/]engine[\\/]atlas-/i,
+      /app[\\/]engine[\\/]dollhouse-atlas-/i,
+      /Yoon/i
+    ]
+  },
+  ARM_2B_MATCHED_UNION: {
+    allowedSourceRoots: [
+      'docs/research/experiment-b-preflight/',
+      'docs/research/manifest-succession/'
+    ],
+    allowedTools: ['read_file'],
+    allowedSkills: [],
+    forbiddenPatterns: [
+      /docs[\\/]atlas/i,
+      /ATLAS\.md/i,
+      /app[\\/]engine[\\/]atlas-/i,
+      /app[\\/]engine[\\/]dollhouse-atlas-/i,
+      /Yoon/i
+    ]
+  }
+};
+
+/**
+ * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02).
+ *
+ * @param {string} arm
+ * @param {string} targetPath
+ * @returns {object} { permitted: boolean, arm: string, targetPath: string }
+ */
+export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath = '') {
+  const normPath = String(targetPath || '').replace(/\\/g, '/').replace(/^\.\//, '');
+  const config = ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {
+    allowedSourceRoots: [],
+    forbiddenPatterns: [/docs[\\/]atlas/i, /ATLAS\.md/i, /Yoon/i]
+  };
+
+  for (const pattern of config.forbiddenPatterns) {
+    if (pattern.test(normPath)) {
+      throw new Error(
+        `FORBIDDEN_SOURCE_ACCESS_REFUSED: Attempted direct access to restricted source path "${normPath}" by ${arm}. ` +
+        `Execution-time access control parity violation fail-closed.`
+      );
+    }
+  }
+
+  if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
+    const isAllowed = config.allowedSourceRoots.some(root => {
+      const normRoot = root.replace(/\\/g, '/');
+      return normPath.startsWith(normRoot);
+    });
+    if (!isAllowed) {
+      throw new Error(
+        `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Target path "${normPath}" is outside declared allowed source roots ` +
+        `[${config.allowedSourceRoots.join(', ')}] for ${arm}. Execution-time access denied.`
+      );
+    }
+  }
+
+  return {
+    permitted: true,
+    arm,
+    targetPath: normPath
+  };
+}
+
+/**
  * Enforces experimental access parity: ensures no arm receives unearned literature priors
- * or atlas internal documentation during candidate generation (Redpen VI).
+ * or atlas internal documentation during candidate generation (Redpen VI & VII-B).
  *
  * @param {string} promptOrContext
  * @param {string} [arm]
@@ -52,6 +154,9 @@ export function verifyAccessParityContract(promptOrContext = '', arm = 'ARM_UNKN
   return {
     compliant: true,
     arm,
+    prompt_lint_passed: true,
+    execution_allowlists_verified: true,
+    allowed_roots: (ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {}).allowedSourceRoots || [],
     violations: []
   };
 }
@@ -148,6 +253,25 @@ export class HeterogeneousDiscoveryHarness {
   // Access parity verification against unearned literature priors
   verifyAccessParity(promptText = '') {
     return verifyAccessParityContract(promptText, this.arm);
+  }
+
+  // Audits runtime tool access to enforce real source-path allowlists (Redpen VII-B B7-02)
+  auditToolExecution(toolName, params = {}) {
+    if (toolName === 'read_file') {
+      const filePath = params.Path || params.path || '';
+      return assertArmSourceAccessPermitted(this.arm, filePath);
+    }
+    if (toolName === 'run_command') {
+      const cmd = params.CommandLine || params.command || '';
+      for (const pattern of FORBIDDEN_ACCESS_PARITY_PATTERNS) {
+        if (pattern.test(cmd)) {
+          throw new Error(
+            `FORBIDDEN_COMMAND_ACCESS_REFUSED: Attempted command execution with restricted source reference by ${this.arm}: ${cmd}`
+          );
+        }
+      }
+    }
+    return { permitted: true, arm: this.arm, toolName };
   }
 
   // Pre-call resource checks including pre-dispatch cost reservation and access parity

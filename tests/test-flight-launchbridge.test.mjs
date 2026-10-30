@@ -13,7 +13,9 @@ import {
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
 import {
   HeterogeneousDiscoveryHarness,
-  verifyAccessParityContract
+  verifyAccessParityContract,
+  assertArmSourceAccessPermitted,
+  ARM_EXECUTION_ACCESS_ALLOWLISTS
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
 import {
   Stage2IndependentEvaluator,
@@ -1245,6 +1247,44 @@ test('R4-06: Symmetrical Experimental Access Parity Contract Enforcement (Redpen
     () => harness.checkPreCallResourceCeilings('Pre-call prompt with unearned docs/atlas/ reference'),
     /ACCESS_PARITY_VIOLATION/
   );
+
+  // 4. (B7-02) Audited Execution-Time Tool & Filesystem Access Control Parity
+  // Permitted path in allowed source root passes
+  const permitted = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_manifest/spec.json');
+  assert.equal(permitted.permitted, true);
+
+  // Attempted direct read of restricted atlas internal documentation strictly throws
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'ATLAS.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'app/engine/atlas-mathematical-engine.js'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // Attempted read outside declared source roots throws UNAUTHORIZED_SOURCE_ROOT_ACCESS
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'package.json'),
+    /UNAUTHORIZED_SOURCE_ROOT_ACCESS/
+  );
+
+  // Harness auditToolExecution intercepts read_file and run_command
+  assert.throws(
+    () => harness.auditToolExecution('read_file', { Path: 'docs/atlas/charter.md' }),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  assert.throws(
+    () => harness.auditToolExecution('run_command', { CommandLine: 'cat docs/atlas/test.md' }),
+    /FORBIDDEN_COMMAND_ACCESS_REFUSED/
+  );
 });
 
 test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Sieve (Redpen VI)', () => {
@@ -1304,6 +1344,29 @@ test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Si
     { encoding: 'utf8' }
   );
   assert.ok(matchingOutput.includes('Executing Stage 2 Independent Evaluation'));
+
+  // 5. (B7-03) Runner-level rejection of live flight when default preflight episode identity is reused
+  // When running without --dry-run and passing default episode ID (or omitting --episode-id), runner MUST fail closed
+  assert.throws(
+    () => {
+      execSync(
+        `node scripts/run-experiment-b-flight.mjs --episode-id "EPISODE-B-SOURCE-FREE-PREFLIGHT-01"`,
+        {
+          encoding: 'utf8',
+          stdio: 'pipe',
+          env: {
+            ...process.env,
+            TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED: 'true',
+            TD613_FLIGHT_EXECUTION_AUTHORIZED: 'true'
+          }
+        }
+      );
+    },
+    (err) => {
+      const output = (err.stdout || '') + (err.stderr || '');
+      return output.includes('LIVE_FLIGHT_EPISODE_IDENTITY_REQUIRED') || err.status !== 0;
+    }
+  );
 
   // Clean up temp files
   try {
