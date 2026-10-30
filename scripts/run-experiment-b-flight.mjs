@@ -441,6 +441,19 @@ async function main() {
     }
   }
 
+  // Critical pre-admission fail-closed gate. Protected material must not be opened
+  // before the requested native cognitive backend can perform an authentic turn.
+  // The current 'native' module is a source-free simulator with no in-app model adapter.
+  if (!options.dryRun && options.backend === 'native' &&
+      (options.arm === 'ALL' || options.arm === 'ARM_2A_MODULAR' || options.arm === 'ARM_2B_MATCHED_UNION')) {
+    console.error(
+      'NATIVE_UNIMPLEMENTED_HELD: Native Antigravity model execution adapter is unavailable. ' +
+      'Rejecting before protected archive admission; session environment flags are insufficient. ' +
+      'No synthetic research, archive access, or implicit REST fallback permitted.'
+    );
+    process.exit(1);
+  }
+
   console.log(`======================================================================`);
   console.log(`  𝌋 TD613 EXPERIMENT B FLIGHT RUNNER · ${options.dryRun ? 'SOURCE-FREE DRY RUN' : 'LIVE FLIGHT'}`);
   console.log(`======================================================================`);
