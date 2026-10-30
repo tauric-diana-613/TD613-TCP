@@ -216,7 +216,7 @@ jobs:
       - name: Execute clean exact-head Dollhouse browser witness
         run: |
           mkdir -p artifacts/dollhouse-browser-witness
-          node scripts/verify-dollhouse-repair-witness.mjs --out artifacts/dollhouse-browser-witness/witness_receipt.json --expected-revision "${{ github.event.pull_request.head.sha || github.sha }}"
+          node scripts/verify-dollhouse-repair-witness.mjs --out artifacts/dollhouse-browser-witness/witness_receipt.json --expected-revision "${{ github.event.pull_request.head.sha || github.sha }}" --require-clean
       - name: Upload clean Dollhouse browser witness receipt
         uses: actions/upload-artifact@v4
         with:

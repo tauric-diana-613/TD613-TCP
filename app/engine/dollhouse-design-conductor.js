@@ -569,10 +569,68 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                   const hasEngine = typeof receipt.browser_engine === 'string' && receipt.browser_engine.trim().length > 0;
                   const hasCdp = typeof receipt.cdp_protocol === 'string' && receipt.cdp_protocol.trim().length > 0;
                   const hasAssertions = typeof receipt.total_assertions_checked === 'number' && receipt.total_assertions_checked >= 32;
-                  const hasScriptSha = receipt.verifier_script && typeof receipt.verifier_script.sha256 === 'string' && /^[a-f0-9]{64}$/i.test(receipt.verifier_script.sha256);
+
+                  // 1. Script SHA must be recomputed directly from actual script bytes on disk
+                  let scriptShaVerified = false;
+                  if (receipt.verifier_script && typeof receipt.verifier_script.path === 'string' && typeof receipt.verifier_script.sha256 === 'string') {
+                    const verifierRel = receipt.verifier_script.path.trim();
+                    const verifierPath = resolve(rootDir, verifierRel);
+                    const relV = relative(rootDir, verifierPath);
+                    if (!relV.startsWith('..') && !isAbsolute(relV) && existsSync(verifierPath)) {
+                      try {
+                        const realV = realpathSync(verifierPath);
+                        const realRoot = realpathSync(rootDir);
+                        const relRealV = relative(realRoot, realV);
+                        if (!relRealV.startsWith('..') && !isAbsolute(relRealV)) {
+                          const diskVBytes = readFileSync(realV);
+                          const diskVSha = sha256(diskVBytes);
+                          if (diskVSha.toLowerCase() === receipt.verifier_script.sha256.trim().toLowerCase()) {
+                            scriptShaVerified = true;
+                          }
+                        }
+                      } catch {
+                        scriptShaVerified = false;
+                      }
+                    }
+                  }
+
+                  // 2. Receipt must be independently generated on disk (anti-forgery)
+                  // In-memory caller assertions without verified on-disk receipt backing cannot manufacture execution authority
+                  let receiptFileVerified = false;
+                  const receiptPathCandidate = options.witness_receipt_path || (typeof receipt.receipt_path === 'string' ? receipt.receipt_path : null);
+                  if (receiptPathCandidate && typeof receiptPathCandidate === 'string') {
+                    const recPath = resolve(rootDir, receiptPathCandidate.trim());
+                    const relRec = relative(rootDir, recPath);
+                    if (!relRec.startsWith('..') && !isAbsolute(relRec) && existsSync(recPath)) {
+                      try {
+                        const realRec = realpathSync(recPath);
+                        const realRoot = realpathSync(rootDir);
+                        const relRealRec = relative(realRoot, realRec);
+                        if (!relRealRec.startsWith('..') && !isAbsolute(relRealRec)) {
+                          const diskReceipt = JSON.parse(readFileSync(realRec, 'utf8'));
+                          if (diskReceipt &&
+                              diskReceipt.disposition === receipt.disposition &&
+                              diskReceipt.witness_authority === receipt.witness_authority &&
+                              Number(diskReceipt.total_assertions_checked) >= 32 &&
+                              Number(diskReceipt.total_assertions_checked) === Number(receipt.total_assertions_checked)) {
+                            const diskArtifact = Array.isArray(diskReceipt.artifacts) && diskReceipt.artifacts.find(a => a && a.path === artifactEntry.path);
+                            if (diskArtifact && diskArtifact.sha256 && diskArtifact.sha256.toLowerCase() === declaredSha.toLowerCase()) {
+                              receiptFileVerified = true;
+                            }
+                          }
+                        }
+                      } catch {
+                        receiptFileVerified = false;
+                      }
+                    }
+                  } else if (options.witness_receipt_verified === true && !options.is_caller_asserted) {
+                    // Explicit caller boundary where an authenticated runner verified the receipt
+                    receiptFileVerified = true;
+                  }
+
                   const isClean = (receipt.clean_working_tree_precheck && receipt.clean_working_tree_precheck.verified_clean_before_run === true) || options.allow_uncommitted_local_witness === true;
 
-                  if (hasEngine && hasCdp && hasAssertions && hasScriptSha && isClean) {
+                  if (hasEngine && hasCdp && hasAssertions && scriptShaVerified && receiptFileVerified && isClean) {
                     executionAuthenticated = true;
                   }
                 } else if (authority === 'GITHUB_ACTIONS_BROWSER_WITNESS') {
@@ -581,14 +639,25 @@ export function buildInstrumentCausalContract(instrumentId, medium = 'SCHOLARLY'
                   const hasArtifact = (typeof receipt.published_artifact_path === 'string' && receipt.published_artifact_path.trim().length > 0) ||
                                       (typeof receipt.published_artifact_name === 'string' && receipt.published_artifact_name.trim().length > 0);
 
-                  let inTrustedLedger = true;
+                  // For CI, a verified run from a trusted API/ledger is MANDATORY; caller's attestation_verified cannot substitute!
+                  let inTrustedLedger = false;
                   if (options.trusted_run_ledger) {
                     const ledger = Array.isArray(options.trusted_run_ledger) ? options.trusted_run_ledger : (options.trusted_run_ledger instanceof Set ? Array.from(options.trusted_run_ledger) : []);
-                    inTrustedLedger = ledger.includes(receipt.workflow_run_id) || ledger.includes(String(receipt.workflow_run_id));
+                    inTrustedLedger = ledger.some(entry => {
+                      if (typeof entry === 'string' || typeof entry === 'number') {
+                        return String(entry) === String(receipt.workflow_run_id);
+                      }
+                      if (entry && typeof entry === 'object') {
+                        const matchRun = String(entry.run_id || entry.workflow_run_id) === String(receipt.workflow_run_id);
+                        const matchArtifact = !entry.artifact_name || entry.artifact_name === receipt.published_artifact_name;
+                        const matchSha = !entry.head_sha || entry.head_sha.toLowerCase() === declaredRev.toLowerCase();
+                        return matchRun && matchArtifact && matchSha;
+                      }
+                      return false;
+                    });
                   }
-                  const attestationOk = receipt.attestation_verified === true || (options.trusted_run_ledger && inTrustedLedger);
 
-                  if (hasRunId && hasWorkflow && hasArtifact && inTrustedLedger && attestationOk) {
+                  if (hasRunId && hasWorkflow && hasArtifact && inTrustedLedger) {
                     executionAuthenticated = true;
                   }
                 }

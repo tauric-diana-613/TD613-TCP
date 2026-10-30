@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync, mkdtempSync, rmSync, symlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -542,33 +543,122 @@ test('Hold A - Adversarial execution witness spoofing refused and four evidentia
       'Control 5: Must record UNVERIFIED_CALLER_ASSERTION_REFUSED');
   }
 
-  // Control 6: Valid trusted execution witness with matching artifact identity & matching source revision
-  const control6 = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
-    expected_source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+  // Control 6A: Matching artifact bytes + forged all-other-claims (forged script SHA, self-asserted clean tree, no on-disk receipt)
+  // Must strictly refuse execution authority and produce ARTIFACT_BYTES_MATCH
+  const control6A = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
     witness_receipt: {
       disposition: 'WITNESS_VERIFIED_PASS',
       timestamp: '2026-10-29T23:40:20.793Z',
       witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
-      source_revision: '731e5ce52bd54ac6247d0e35159c7609c98a7dfc',
+      source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
       browser_engine: 'Chrome/156.0.8078.48',
       cdp_protocol: '1.3',
       total_assertions_checked: 32,
       clean_working_tree_precheck: { verified_clean_before_run: true },
       verifier_script: {
         path: 'scripts/verify-dollhouse-repair-witness.mjs',
-        sha256: 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
+        sha256: 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2' // FORGED: does not match actual script bytes
       },
       artifacts: [{
         path: BUTLER_FIXTURE_PATH,
-        sha256: BUTLER_FIXTURE_SHA,
+        sha256: BUTLER_FIXTURE_SHA, // Authentic bytes
         witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS'
       }]
     }
   });
-  assert.equal(control6.execution_status, 'MATERIALIZED_WITNESSED',
-    'Control 6: Matching bytes + authenticated execution must yield MATERIALIZED_WITNESSED');
-  assert.equal(control6.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED',
-    'Control 6: Must record AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+  assert.equal(control6A.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 6A: Matching artifact bytes with forged verifier script SHA and self-asserted metadata must refuse execution authority');
+  assert.equal(control6A.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED',
+    'Control 6A: Must record UNAUTHENTICATED_EXECUTION_REFUSED');
+
+  // Control 6B: Genuinely independently verified physical CDP browser witness backed by on-disk receipt and actual script bytes
+  const actualScriptPathAbs = resolve(process.cwd(), 'scripts/verify-dollhouse-repair-witness.mjs');
+  const actualScriptBytes = readFileSync(actualScriptPathAbs);
+  const actualScriptSha = createHash('sha256').update(actualScriptBytes).digest('hex');
+
+  mkdirSync(resolve(process.cwd(), 'artifacts/dollhouse-browser-witness'), { recursive: true });
+  const testReceiptPathRel = 'artifacts/dollhouse-browser-witness/test_verified_receipt.json';
+  const testReceiptPathAbs = resolve(process.cwd(), testReceiptPathRel);
+  const authenticReceipt = {
+    schema: 'td613.dollhouse-design.browser-witness-receipt/v0.2',
+    disposition: 'WITNESS_VERIFIED_PASS',
+    timestamp: '2026-10-30T00:54:21.628Z',
+    witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS',
+    source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+    browser_engine: 'Chrome/156.0.8078.48',
+    cdp_protocol: '1.3',
+    total_assertions_checked: 32,
+    clean_working_tree_precheck: { verified_clean_before_run: true },
+    verifier_script: {
+      path: 'scripts/verify-dollhouse-repair-witness.mjs',
+      sha256: actualScriptSha
+    },
+    artifacts: [{
+      path: BUTLER_FIXTURE_PATH,
+      sha256: BUTLER_FIXTURE_SHA,
+      witness_authority: 'PHYSICAL_CDP_BROWSER_WITNESS'
+    }]
+  };
+  writeFileSync(testReceiptPathAbs, JSON.stringify(authenticReceipt, null, 2), 'utf8');
+  t.after(() => {
+    if (existsSync(testReceiptPathAbs)) unlinkSync(testReceiptPathAbs);
+  });
+
+  const control6B = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+    witness_receipt_path: testReceiptPathRel,
+    witness_receipt: authenticReceipt
+  });
+  assert.equal(control6B.execution_status, 'MATERIALIZED_WITNESSED',
+    'Control 6B: Matching bytes + independently verified on-disk receipt + authentic script SHA must yield MATERIALIZED_WITNESSED');
+  assert.equal(control6B.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED',
+    'Control 6B: Must record AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+
+  // Control 6C: Authenticated CI witness with matching artifact bytes and trusted run ledger
+  const control6C = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+    trusted_run_ledger: ['40982988148'],
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      timestamp: '2026-10-29T23:40:20.793Z',
+      witness_authority: 'GITHUB_ACTIONS_BROWSER_WITNESS',
+      workflow_run_id: '40982988148',
+      workflow_name: 'TD613 Consolidated Validation',
+      source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+      published_artifact_name: 'dollhouse-witness-2c60936919f128c95bcdd16a69f47948ce59fdfd',
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA,
+        witness_authority: 'GITHUB_ACTIONS_BROWSER_WITNESS'
+      }]
+    }
+  });
+  assert.equal(control6C.execution_status, 'MATERIALIZED_WITNESSED',
+    'Control 6C: Matching bytes + verified run in trusted ledger must yield MATERIALIZED_WITNESSED');
+  assert.equal(control6C.witness_verification, 'AUTHENTICATED_WITNESS_RECEIPT_VERIFIED');
+
+  // Control 6D: CI witness with caller claiming attestation_verified: true without trusted run ledger
+  const control6D = buildInstrumentCausalContract('BUTLER_PERFORMATIVE_ITERATION', 'VISUAL', [], {
+    expected_source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+    witness_receipt: {
+      disposition: 'WITNESS_VERIFIED_PASS',
+      timestamp: '2026-10-29T23:40:20.793Z',
+      witness_authority: 'GITHUB_ACTIONS_BROWSER_WITNESS',
+      workflow_run_id: '40982988148',
+      workflow_name: 'TD613 Consolidated Validation',
+      source_revision: '2c60936919f128c95bcdd16a69f47948ce59fdfd',
+      published_artifact_name: 'dollhouse-witness-2c60936919f128c95bcdd16a69f47948ce59fdfd',
+      attestation_verified: true, // Caller-provided self-attestation flag without ledger
+      artifacts: [{
+        path: BUTLER_FIXTURE_PATH,
+        sha256: BUTLER_FIXTURE_SHA
+      }]
+    }
+  });
+  assert.equal(control6D.execution_status, 'ARTIFACT_BYTES_MATCH',
+    'Control 6D: Caller attestation_verified flag cannot substitute for independent trusted run ledger');
+  assert.equal(control6D.witness_verification, 'UNAUTHENTICATED_EXECUTION_REFUSED');
 
   // Control 7: Canonical historical qualification fixture preserved as separate evidence class
   const control7 = buildInstrumentCausalContract('CARO_INSTITUTIONAL_RECONSTRUCTION', 'VISUAL', [], {

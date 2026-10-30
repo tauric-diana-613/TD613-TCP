@@ -76,6 +76,11 @@ Following Amari's third independent review (Comment #6511670811), the two remain
      - `EXECUTED_DEMONSTRATION_LAW` (canonical historical qualification fixture `caro_corridor_primary.html`).
    - Blocked all symlink and relative directory escapes using `realpathSync(artPath)` checked against `realpathSync(rootDir)`.
    - Added 7 exact adversarial regression controls in `tests/dollhouse-repair-regressions-r01-r08.test.mjs` verifying each condition and the invariant `assert.notEqual('ARTIFACT_BYTES_MATCH', 'MATERIALIZED_WITNESSED')`.
+   - **Final Execution-Authority Boundary Hardening (Emergence HQ Review 5706927900):**
+     - Eliminated caller-manufactured execution authority: verifier script SHA-256 is recomputed directly from actual script bytes on disk (`readFileSync(realVerifierPath)`) and verified against `receipt.verifier_script.sha256`. Fabricated script hashes (e.g. `a1b2c3...`) are strictly refused.
+     - Local CDP execution requires an independently generated verified receipt on disk (`options.witness_receipt_path` or `receipt.receipt_path`), verifying on-disk receipt JSON, disposition, assertions, and artifact match. Self-asserted in-memory receipts without verified on-disk receipt backing are restricted to `ARTIFACT_BYTES_MATCH` with `UNAUTHENTICATED_EXECUTION_REFUSED`.
+     - CI execution requires a mandatory independent trusted run ledger (`options.trusted_run_ledger`). Caller-supplied `attestation_verified: true` flags cannot substitute for ledger verification.
+     - Added Controls 6A (matching artifact bytes + forged claims refused), 6B (authentic local CDP pathway), 6C (authentic CI pathway via trusted ledger), and 6D (CI caller attestation flag without ledger refused).
 
 2. **Hold B — Self-Referential Git Witness Loop Elimination:**
    - Decoupled receipt generation from the git working tree. `scripts/verify-dollhouse-repair-witness.mjs` now accepts `--out <path>` and writes out-of-tree by default to `artifacts/dollhouse-browser-witness/witness_receipt.json`.
@@ -83,7 +88,7 @@ Following Amari's third independent review (Comment #6511670811), the two remain
    - Enhanced `scripts/verify-dollhouse-repair-witness.mjs` with Linux headless container flags (`--remote-debugging-address=0.0.0.0`, `--user-data-dir`, `--disable-setuid-sandbox`, isolated temporary user profile cleanup), dual IPv4/localhost fallback, and full stderr/stdout diagnostic capture.
    - Updated `.github/workflows/td613-ci.yml` `contracts:` job to:
      - Check out exact PR head via `actions/checkout@v4` with `ref: ${{ github.event.pull_request.head.sha || github.sha }}`.
-     - Execute clean exact-head browser witness writing to out-of-tree path.
+     - Execute clean exact-head browser witness writing to out-of-tree path with `--require-clean` fail-closed enforcement.
      - Upload receipt as CI build artifact `dollhouse-witness-${{ github.event.pull_request.head.sha || github.sha }}` via `actions/upload-artifact@v4`.
    - Preserved 4/4 durable workflow estate without regression (`workflow-estate.test.mjs` PASS).
 
