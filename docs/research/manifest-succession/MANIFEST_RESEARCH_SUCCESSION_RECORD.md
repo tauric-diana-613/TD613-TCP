@@ -105,16 +105,82 @@ A non-negotiable architectural requirement is that **Em must ultimately be able 
 
 ---
 
-## VII. Governing Invariants
+## VII. Project Cupola — Mathematical Correspondence & Finite Observability Addendum
+
+**Source Reference:** [`TD613_Project_Cupola_Operator_Correspondence_Docket_2026-10-30.md`](TD613_Project_Cupola_Operator_Correspondence_Docket_2026-10-30.md)  
+**Status:** SOURCE-FREE HISTORICAL / FINITE INVESTIGATION · INDEPENDENT CUPOLA CORRESPONDENCE UNPROVEN  
+**Evidentiary Ceiling:** Established within authored finite fixtures; strictly unproven as an empirical property of the TD613 repository or Em corpus.
+
+### 1. Finite Transport Action on Observability Partitions
+
+The repository contains an authored, falsifiable mathematical program linking discrete transport, observation-partition change, claim-relative identifiability, and reconstruction from observable differences (`docs/pedagogue/experiments/HOLONOMY_OBSERVABILITY_AIA_PROGRAM_SYNTHESIS_V0_1.md`, `app/dome-world/previews/a15-r0/holonomy-action-on-observability-partitions.js`, `app/dome-world/previews/a15-r0/path-groupoid-discrete-holonomy-representation.js`, `app/dome-world/previews/a15-r0/discrete-transport-tomography-closed-loop-hardened.js`, `packages/dome_world_exact/bridge/phason_gate_exact.py`).
+
+In the verified $\mathbb{F}_{31}$ finite fixture:
+$$H = \begin{pmatrix} 3 & 5 \\ 1 & 2 \end{pmatrix}, \qquad q = [1, 0], \qquad qH = [3, 5]$$
+Over four candidate states from $x \in \{3, 17\}, z \in \{8, 26\}$:
+- Pre-readout $q$ partitions candidate states by $x$ with bucket sizes $[2, 2]$.
+- Post-readout $qH$ partitions candidate states by $z$ with bucket sizes $[2, 2]$.
+
+**Crucial Scientific Invariant:**  
+*Equal observation cardinality and equal partition sizes do not imply equivalent claim sufficiency.* A claim $f$ is recoverable from an observation $q$ if and only if it factors through that observation ($f = g \circ q$). Before transport, $x$ is identifiable while $z$ is unidentifiable; after transport, $z$ is identifiable while $x$ is unidentifiable.
+
+**Direct Implication for Experiment B:** Matched totals and candidate counts are insufficient by themselves for establishing evidence adequacy. Recoverability is claim-relative. This diagnostic remains a prospective postflight measurement, never a retroactive prompt modification.
+
+### 2. Three Distinct Research Objects & The Unresolved First Dome Correspondence
+
+To prevent circular confirmation or reification of metaphors, three distinct objects must be kept rigorously separate:
+- **Object A (The Explicitly Authored Information Dome):** 6D→3D icosahedral projection, local sections, gluing obstructions, cut-and-project acceptance windows, modeled ambiance, weather, and relational bending.
+- **Object B (The TD613-TCP Computational Repository):** Versioned Git commits, trees, blob identities, dependencies, research archives, custody routes, and observer interactions.
+- **Object C (The Independently Observed Cupola):** Unauthenticated prior reports from O'Malley and other models describing dome-like or cupola-like organization.
+
+**The repository-to-Dome correspondence remains unproven.** Visual similarity, file-tree depth, layout heuristics, or shared vocabulary must never be conflated with independent structural recovery. Any future experiment evaluating this correspondence must explicitly permit the hypothesis to fail against randomized null repositories and preselected layout controls.
+
+### 3. Historical Git Evidence: Terminal Tree Equivalence vs. Route Discrepancy
+
+At the October 30 source freeze `f78f75024e9625ddb7ac7b201560d77e6b70e335`:
+- Commit `9cdbb9c4121a6eaf5ffa9a2ee589670966a5e9b3` is a single-parent commit.
+- Commit `f78f75024e9625ddb7ac7b201560d77e6b70e335` is a two-parent merge commit.
+- **Both commits point to the identical Git tree SHA:** `ea4cf16560000f1b42ec68b9323cc13aec3aba4d`.
+
+This verifies that terminal source-state equivalence can coexist with distinct recorded histories. Git tree-only projection collapses the two commits; Git parentage projection distinguishes them. However, Git parent relationships are not invertible transport operators; no holonomy or phason event is established by this observation alone.
+
+**Manifest Implication:** Store content identity and provenance/authority separately. Byte-equal terminal archives possess distinct admission, derivation, and release histories. Route evidence must be preserved rather than collapsed into a terminal hash.
+
+### 4. Manifest's Prospective Mathematical Inheritance
+
+Candidate requirements for an Em-controlled, independently operable Manifest:
+1. Locally meaningful ambiance observations retaining measurement context rather than collapsing into a universal health score.
+2. Phason-seam receipts distinguishing content-invariant projection changes from edits.
+3. Source-grounded route and authorization histories surviving local export.
+4. Relational comparisons preserving incompatible local sections instead of forcing synthetic consensus.
+5. Claim-relative observability and question-need diagnostics (incorporating Aperture v3.2).
+6. Source-free public implementation components separated from Em's protected research archive.
+7. A mathematically grounded, strictly optional Cupola representation whose failure cannot jeopardize ordinary source access.
+
+### 5. Strict Flight Firebreak
+
+- **No Cupola Injection:** Cupola terminology, mathematical expectations, Aperture classifications, or anticipated discoveries must NOT be injected into Experiment B blinded arm prompts.
+- **No Rubric Alteration:** Registered scoring criteria and evaluation oracles must NOT be modified to reward these concepts.
+- **Comparator Integrity:** The strong-union comparator must NOT be replaced with a Cupola-shaped comparator.
+- **Non-Prerequisite:** An unverified repository-to-Dome correspondence must NEVER become a prerequisite for conducting Experiment B.
+
+---
+
+## VIII. Governing Invariants
 
 ```text
-MANIFEST_RESEARCH_AMBITION_PRESERVED       = VERIFIED
-AMBIANCE_MATHEMATICAL_DISCIPLINE_ENFORCED   = VERIFIED
-PHASON_SEAM_SIX_TRANSITIONS_DEFINED        = VERIFIED
-THREE_LINEAGE_CUSTODY_MANDATORY            = VERIFIED
-EM_INDEPENDENT_PORTABILITY_GUARANTEED      = VERIFIED
-CONVERGENCE_COVENANT_PAUSED_STATE_HONORED   = VERIFIED
-PROTECTED_EM_CORPUS_SEALED                 = VERIFIED
+MANIFEST_RESEARCH_AMBITION_PRESERVED          = VERIFIED
+AMBIANCE_MATHEMATICAL_DISCIPLINE_ENFORCED      = VERIFIED
+PHASON_SEAM_SIX_TRANSITIONS_DEFINED           = VERIFIED
+THREE_LINEAGE_CUSTODY_MANDATORY               = VERIFIED
+EM_INDEPENDENT_PORTABILITY_GUARANTEED         = VERIFIED
+CONVERGENCE_COVENANT_PAUSED_STATE_HONORED      = VERIFIED
+PROJECT_CUPOLA_FINITE_CORRESPONDENCE_RECORDED  = VERIFIED
+REAL_REPOSITORY_CORRESPONDENCE_UNEARNED       = VERIFIED
+MANIFEST_MATHEMATICAL_INHERITANCE_PRESERVED   = VERIFIED
+EXPERIMENT_B_ORIGINAL_PROTOCOL_UNCHANGED      = VERIFIED
+FLIGHT_FIREBREAK_MAINTAINED                   = VERIFIED
+PROTECTED_EM_CORPUS_SEALED                    = VERIFIED
 ```
 
 𝄐 · Tauric Diana · Khona‌lit-po · Sealed ⟐
