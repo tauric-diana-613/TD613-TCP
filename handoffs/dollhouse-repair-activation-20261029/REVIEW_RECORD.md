@@ -80,6 +80,7 @@ Following Amari's third independent review (Comment #6511670811), the two remain
 2. **Hold B — Self-Referential Git Witness Loop Elimination:**
    - Decoupled receipt generation from the git working tree. `scripts/verify-dollhouse-repair-witness.mjs` now accepts `--out <path>` and writes out-of-tree by default to `artifacts/dollhouse-browser-witness/witness_receipt.json`.
    - Ignored `artifacts/dollhouse-browser-witness/` in `.gitignore`, keeping working copy 100% clean across local and CI runs.
+   - Enhanced `scripts/verify-dollhouse-repair-witness.mjs` with Linux headless container flags (`--remote-debugging-address=0.0.0.0`, `--user-data-dir`, `--disable-setuid-sandbox`, isolated temporary user profile cleanup), dual IPv4/localhost fallback, and full stderr/stdout diagnostic capture.
    - Updated `.github/workflows/td613-ci.yml` `contracts:` job to:
      - Check out exact PR head via `actions/checkout@v4` with `ref: ${{ github.event.pull_request.head.sha || github.sha }}`.
      - Execute clean exact-head browser witness writing to out-of-tree path.

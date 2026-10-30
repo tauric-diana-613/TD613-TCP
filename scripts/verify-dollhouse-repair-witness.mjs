@@ -8,8 +8,9 @@
  */
 
 import { spawn, execFileSync } from 'node:child_process';
-import { resolve, dirname } from 'node:path';
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { resolve, dirname, join } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
@@ -76,7 +77,19 @@ function sha256(data) {
   return createHash('sha256').update(data).digest('hex');
 }
 
-const PORT = 9226;
+const PORT = parseInt(process.env.CDP_PORT || '9226', 10);
+let cdpHost = '127.0.0.1';
+
+async function cdpFetch(endpoint, options = {}) {
+  try {
+    return await fetch(`http://${cdpHost}:${PORT}${endpoint}`, options);
+  } catch {
+    const fallback = cdpHost === '127.0.0.1' ? 'localhost' : '127.0.0.1';
+    const res = await fetch(`http://${fallback}:${PORT}${endpoint}`, options);
+    cdpHost = fallback;
+    return res;
+  }
+}
 
 class CdpClient {
   constructor(wsUrl) {
@@ -140,29 +153,68 @@ async function runWitnessSuite() {
   console.log(`Target Receipt:    ${targetOutRel}`);
   console.log(`CDP Port:          ${PORT}\n`);
 
-  const chromeProc = spawn(chromePath, [
+  const tempUserDataDir = mkdtempSync(join(tmpdir(), 'td613-chrome-cdp-'));
+  const chromeArgs = [
     '--headless=new',
     `--remote-debugging-port=${PORT}`,
-    '--disable-gpu',
+    '--remote-debugging-address=0.0.0.0',
+    `--user-data-dir=${tempUserDataDir}`,
     '--no-sandbox',
+    '--disable-setuid-sandbox',
     '--disable-dev-shm-usage',
+    '--disable-gpu',
+    '--no-first-run',
+    '--no-default-browser-check',
+    '--password-store=basic',
+    '--use-mock-keychain',
     '--hide-scrollbars'
-  ]);
+  ];
+
+  let chromeStdout = '';
+  let chromeStderr = '';
+  let chromeExitCode = null;
+  let chromeExitSignal = null;
+
+  const chromeProc = spawn(chromePath, chromeArgs, {
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+
+  chromeProc.stdout.on('data', chunk => {
+    chromeStdout += chunk.toString();
+  });
+  chromeProc.stderr.on('data', chunk => {
+    chromeStderr += chunk.toString();
+  });
+  chromeProc.on('exit', (code, sig) => {
+    chromeExitCode = code;
+    chromeExitSignal = sig;
+  });
 
   let versionData = null;
-  for (let i = 0; i < 30; i++) {
-    try {
-      const res = await fetch(`http://127.0.0.1:${PORT}/json/version`);
-      versionData = await res.json();
+  for (let i = 0; i < 50; i++) {
+    if (chromeExitCode !== null) {
       break;
+    }
+    try {
+      const res = await cdpFetch('/json/version');
+      if (res.ok) {
+        versionData = await res.json();
+        break;
+      }
     } catch {
       await new Promise(r => setTimeout(r, 200));
     }
   }
 
   if (!versionData) {
-    chromeProc.kill();
-    throw new Error('Failed to connect to headless Chrome via CDP');
+    try { chromeProc.kill(); } catch {}
+    try { rmSync(tempUserDataDir, { recursive: true, force: true }); } catch {}
+    throw new Error(
+      `Failed to connect to headless Chrome via CDP after 50 attempts (10s).\n` +
+      `Chrome exit code: ${chromeExitCode}, signal: ${chromeExitSignal}\n` +
+      `Chrome stderr:\n${chromeStderr.trim() || '(none)'}\n` +
+      `Chrome stdout:\n${chromeStdout.trim() || '(none)'}`
+    );
   }
 
   console.log(`Browser Engine:    ${versionData.Browser}`);
@@ -249,7 +301,7 @@ async function runWitnessSuite() {
     console.log(`  • Bytes:   ${sedgwickBytes.length}`);
     console.log(`  • SHA-256: ${sedgwickDigest}`);
 
-    const pageRes1 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const pageRes1 = await cdpFetch('/json/new', { method: 'PUT' });
     const target1 = await pageRes1.json();
     const client1 = new CdpClient(target1.webSocketDebuggerUrl);
     await client1.connect();
@@ -390,7 +442,7 @@ async function runWitnessSuite() {
     console.log(`  • Bytes:   ${theoBytes.length}`);
     console.log(`  • SHA-256: ${theoDigest}`);
 
-    const pageRes2 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const pageRes2 = await cdpFetch('/json/new', { method: 'PUT' });
     const target2 = await pageRes2.json();
     const client2 = new CdpClient(target2.webSocketDebuggerUrl);
     await client2.connect();
@@ -517,7 +569,7 @@ async function runWitnessSuite() {
     console.log(`  • Bytes:   ${butlerBytes.length}`);
     console.log(`  • SHA-256: ${butlerDigest}`);
 
-    const pageRes3 = await fetch(`http://127.0.0.1:${PORT}/json/new`, { method: 'PUT' });
+    const pageRes3 = await cdpFetch('/json/new', { method: 'PUT' });
     const target3 = await pageRes3.json();
     const client3 = new CdpClient(target3.webSocketDebuggerUrl);
     await client3.connect();
@@ -762,7 +814,12 @@ async function runWitnessSuite() {
     console.log(`  Receipt: ${outPath}`);
     console.log('======================================================================\n');
   } finally {
-    chromeProc.kill();
+    try {
+      chromeProc.kill('SIGKILL');
+    } catch {}
+    try {
+      rmSync(tempUserDataDir, { recursive: true, force: true });
+    } catch {}
   }
 }
 
