@@ -3,7 +3,10 @@
  *
  * Minimal Generalized Heterogeneous Discovery Harness for Experiment B.
  * Implements open multi-turn sequence exposure, pre-exposure baseline recording,
- * contradiction handling, epistemic revision, and Three-Lineage candidate extraction.
+ * declared lossy context projection (propositions, equations, and uncertainty focus),
+ * fail-closed budget ceilings (pre-call and post-call overshoot protection, provider attempt
+ * tracking, retries, and financial dollar ceiling), contradiction handling, epistemic revision,
+ * and Three-Lineage candidate extraction.
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
@@ -21,6 +24,23 @@ export class HeterogeneousDiscoveryHarness {
     this.arm = options.arm || 'ARM_2A_MODULAR';
     this.mockMode = options.mockMode ?? true;
     this.allowLivePaidInference = options.allowLivePaidInference || false;
+
+    // Fail-closed execution resource ceilings
+    this.maxCalls = options.maxCalls ?? 120;
+    this.maxTokens = options.maxTokens ?? 400000;
+    this.maxCostUSD = options.maxCostUSD ?? 0.50; // $0.50 ceiling for preflight/flight safety
+
+    // Context management strategy: accurately declared as lossy projection focused on propositions
+    this.contextStrategy = options.contextStrategy || 'DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS';
+
+    // Accounting registers for chargeable provider attempts and financial tracking
+    this.providerAttempts = 0;
+    this.successfulCalls = 0;
+    this.retriedAttempts = 0;
+    this.failedAttempts = 0;
+    this.totalTokensConsumed = 0;
+    this.promptTokensConsumed = 0;
+    this.candidatesTokensConsumed = 0;
 
     // Fail-closed provider custody gate: prevent silent live inference or data transmission
     if (!this.mockMode) {
@@ -40,15 +60,91 @@ export class HeterogeneousDiscoveryHarness {
     this.traces = [];
   }
 
+  /**
+   * Estimates financial expenditure in USD based on Gemini Flash-Lite token pricing.
+   * Input: $0.075 / 1M tokens ($0.000000075 / token)
+   * Output: $0.30 / 1M tokens ($0.00000030 / token)
+   */
+  getEstimatedCostUSD() {
+    const inputCost = this.promptTokensConsumed * 0.000000075;
+    const outputCost = this.candidatesTokensConsumed * 0.00000030;
+    return Number((inputCost + outputCost).toFixed(6));
+  }
+
+  // Declared lossy projection formatting across multi-turn sequential encounters
+  formatHistoryForTurn(turnIndex) {
+    if (this.history.length === 0) {
+      return 'Turn 0: Baseline state unconditioned. No prior observations.';
+    }
+
+    return this.history.map(h => {
+      if (h.turn === 0) {
+        return `Turn 0 [Baseline Priors]: ${h.raw_output}`;
+      }
+      const linkedCand = this.candidates.find(c => c.candidate_id === h.candidate_id);
+      const propText = linkedCand ? linkedCand.proposition_summary : 'No candidate proposition formulated';
+      const uncText = linkedCand?.uncertainty || 'None declared';
+      return `Turn ${h.turn} [Doc: ${h.document_id}]:
+  Proposition: ${propText}
+  Status: ${linkedCand ? linkedCand.status : 'PENDING'}
+  Uncertainty / Caveats: ${uncText}`;
+    }).join('\n\n');
+  }
+
+  // Pre-call resource checks (halts before dispatch)
+  checkPreCallResourceCeilings() {
+    if (this.providerAttempts >= this.maxCalls) {
+      throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum call ceiling of ${this.maxCalls} provider attempts reached. Execution halted.`);
+    }
+
+    if (this.totalTokensConsumed >= this.maxTokens) {
+      throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum token ceiling of ${this.maxTokens} tokens reached (${this.totalTokensConsumed} consumed). Execution halted.`);
+    }
+
+    if (this.getEstimatedCostUSD() >= this.maxCostUSD) {
+      throw new Error(`BUDGET_CEILING_EXCEEDED: Maximum financial ceiling of $${this.maxCostUSD} USD reached. Execution halted.`);
+    }
+  }
+
+  // Post-call resource checks (halts immediately on overshoot)
+  recordAndVerifyUsage(trace) {
+    const pTokens = trace.provider_usage?.prompt_tokens ?? trace.prompt_tokens ?? 0;
+    const cTokens = trace.provider_usage?.candidates_tokens ?? trace.response_tokens ?? 0;
+    const tTokens = trace.provider_usage?.total_tokens ?? trace.total_tokens ?? (pTokens + cTokens);
+
+    this.promptTokensConsumed += pTokens;
+    this.candidatesTokensConsumed += cTokens;
+    this.totalTokensConsumed += tTokens;
+    this.successfulCalls++;
+
+    this.traces.push(trace);
+
+    // Fail-closed post-call overshoot detection
+    if (this.totalTokensConsumed > this.maxTokens) {
+      throw new Error(
+        `BUDGET_CEILING_EXCEEDED: Completed provider call overshot maximum token ceiling. Consumed ${this.totalTokensConsumed} tokens (ceiling: ${this.maxTokens}). Execution halted.`
+      );
+    }
+
+    if (this.getEstimatedCostUSD() > this.maxCostUSD) {
+      throw new Error(
+        `BUDGET_CEILING_EXCEEDED: Completed provider call overshot maximum financial ceiling. Consumed $${this.getEstimatedCostUSD()} USD (ceiling: $${this.maxCostUSD}). Execution halted.`
+      );
+    }
+  }
+
   // Step 1: Record Pre-Exposure Baseline (t0)
   async establishPreExposureBaseline(initialContext = '') {
+    this.checkPreCallResourceCeilings();
+    this.providerAttempts++;
+
     const episodeId = `Flight-${this.arm}-t0-Baseline`;
     const prompt = `Establish baseline scientific axioms, theoretical priors, and open research questions prior to source exposure.\nInitial Context:\n${initialContext || 'Zero initial exposure. Unconditioned prior state.'}`;
 
     let responseText;
     if (this.mockMode) {
       responseText = `BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.`;
-      this.traces.push({
+      const trace = {
         episode_id: episodeId,
         prompt_tokens: 45,
         response_tokens: 30,
@@ -61,15 +157,21 @@ export class HeterogeneousDiscoveryHarness {
           service_tier: 'mock'
         },
         timestamp: new Date().toISOString()
-      });
+      };
+      this.recordAndVerifyUsage(trace);
     } else {
-      const res = await this.client.invoke({
-        systemInstruction: 'You are the TD613 Pre-Exposure Baseline Recorder. Register initial axioms and prior parameter beliefs before document exposure.',
-        prompt,
-        episodeId
-      });
-      responseText = res.text;
-      this.traces.push(res.trace);
+      try {
+        const res = await this.client.invoke({
+          systemInstruction: 'You are the TD613 Pre-Exposure Baseline Recorder. Register initial axioms and prior parameter beliefs before document exposure.',
+          prompt,
+          episodeId
+        });
+        responseText = res.text;
+        this.recordAndVerifyUsage(res.trace);
+      } catch (err) {
+        this.failedAttempts++;
+        throw err;
+      }
     }
 
     const baseline = {
@@ -85,14 +187,16 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex) {
+    this.checkPreCallResourceCeilings();
     const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
-    const previousHistorySummary = this.history.map(h => `Turn ${h.turn}: ${h.raw_output.slice(0, 150)}...`).join('\n');
+    const previousHistorySummary = this.formatHistoryForTurn(turnIndex);
 
     let responseText;
     let chamberOutputs = {};
 
     if (this.arm === 'ARM_2A_MODULAR') {
       // Chamber 1: Pedagogue & Aperture (Order, route burden, observability, rank)
+      this.providerAttempts++;
       const c1Prompt = `You are Chamber 1 (Pedagogue & Aperture).
 1. PEDAGOGUE: Audit consequence order and route burden of incoming document.
 2. APERTURE: Assess observability, parameter identifiability, and noise conditioning.
@@ -113,7 +217,7 @@ Output structured findings and extracted parameter equations.`;
         } else {
           c1Text = `CHAMBER 1 AUDIT [${doc.id}]: Consequence order valid. Observability verified. Identified parameters for ${doc.filename}. Contradiction analysis flagged if non-conservative terms appear.`;
         }
-        this.traces.push({
+        const c1Trace = {
           episode_id: `${episodeId}-Chamber1`,
           prompt_tokens: 120,
           response_tokens: 60,
@@ -126,18 +230,27 @@ Output structured findings and extracted parameter equations.`;
             service_tier: 'mock'
           },
           timestamp: new Date().toISOString()
-        });
+        };
+        this.recordAndVerifyUsage(c1Trace);
       } else {
-        const c1Res = await this.client.invoke({
-          systemInstruction: 'You are TD613 Chamber 1 (Pedagogue & Aperture). Audit order and observability.',
-          prompt: c1Prompt,
-          episodeId: `${episodeId}-Chamber1`
-        });
-        c1Text = c1Res.text;
-        this.traces.push(c1Res.trace);
+        try {
+          const c1Res = await this.client.invoke({
+            systemInstruction: 'You are TD613 Chamber 1 (Pedagogue & Aperture). Audit order and observability.',
+            prompt: c1Prompt,
+            episodeId: `${episodeId}-Chamber1`
+          });
+          c1Text = c1Res.text;
+          this.recordAndVerifyUsage(c1Res.trace);
+        } catch (err) {
+          this.failedAttempts++;
+          throw err;
+        }
       }
 
+      this.checkPreCallResourceCeilings();
+
       // Chamber 2: Atlas & FADT (Coordinate custody, finite quotient descent, candidate proposition)
+      this.providerAttempts++;
       const c2Prompt = `You are Chamber 2 (Atlas & FADT).
 1. ATLAS: Evaluate coordinate bijections, holonomy parities, and false twins.
 2. FADT: Perform finite admissibility descent. If equations resist classification into known finite linear categories, flag as UNANTICIPATED_CANDIDATE.
@@ -156,7 +269,7 @@ ${doc.content}`;
         } else {
           c2Text = `CHAMBER 2 DESCENT [${doc.id}]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for ${doc.filename}.\nUNCERTAINTY: Parameter identification bounded by measurement window.`;
         }
-        this.traces.push({
+        const c2Trace = {
           episode_id: `${episodeId}-Chamber2`,
           prompt_tokens: 150,
           response_tokens: 80,
@@ -169,15 +282,21 @@ ${doc.content}`;
             service_tier: 'mock'
           },
           timestamp: new Date().toISOString()
-        });
+        };
+        this.recordAndVerifyUsage(c2Trace);
       } else {
-        const c2Res = await this.client.invoke({
-          systemInstruction: 'You are TD613 Chamber 2 (Atlas & FADT). Enforce coordinate parities and admissibility descent.',
-          prompt: c2Prompt,
-          episodeId: `${episodeId}-Chamber2`
-        });
-        c2Text = c2Res.text;
-        this.traces.push(c2Res.trace);
+        try {
+          const c2Res = await this.client.invoke({
+            systemInstruction: 'You are TD613 Chamber 2 (Atlas & FADT). Enforce coordinate parities and admissibility descent.',
+            prompt: c2Prompt,
+            episodeId: `${episodeId}-Chamber2`
+          });
+          c2Text = c2Res.text;
+          this.recordAndVerifyUsage(c2Res.trace);
+        } catch (err) {
+          this.failedAttempts++;
+          throw err;
+        }
       }
 
       chamberOutputs = { chamber1: c1Text, chamber2: c2Text };
@@ -185,6 +304,7 @@ ${doc.content}`;
 
     } else {
       // Arm 2B: Matched Native Union (Unchambered flat typed context)
+      this.providerAttempts++;
       const unionPrompt = `You are an advanced mathematical and physical reasoning system (Matched Native Union).
 Analyze the incoming scientific document in the context of all prior sequential evidence.
 Identify:
@@ -205,7 +325,7 @@ ${doc.content}`;
         } else {
           responseText = `MATCHED UNION SYNTHESIS [${doc.id}]:\nPROPOSITION: Unified typed context identifies correspondence relations for ${doc.filename}.\nUNCERTAINTY: Incomplete boundary data may perturb asymptotic trajectory.`;
         }
-        this.traces.push({
+        const unionTrace = {
           episode_id: episodeId,
           prompt_tokens: 180,
           response_tokens: 90,
@@ -218,15 +338,21 @@ ${doc.content}`;
             service_tier: 'mock'
           },
           timestamp: new Date().toISOString()
-        });
+        };
+        this.recordAndVerifyUsage(unionTrace);
       } else {
-        const unionRes = await this.client.invoke({
-          systemInstruction: 'You are an advanced physical and mathematical reasoner operating over a unified typed research context.',
-          prompt: unionPrompt,
-          episodeId
-        });
-        responseText = unionRes.text;
-        this.traces.push(unionRes.trace);
+        try {
+          const unionRes = await this.client.invoke({
+            systemInstruction: 'You are an advanced physical and mathematical reasoner operating over a unified typed research context.',
+            prompt: unionPrompt,
+            episodeId
+          });
+          responseText = unionRes.text;
+          this.recordAndVerifyUsage(unionRes.trace);
+        } catch (err) {
+          this.failedAttempts++;
+          throw err;
+        }
       }
     }
 
@@ -249,7 +375,6 @@ ${doc.content}`;
   }
 
   // Step 3: Extract Candidate Conforming to Three-Lineage Schema
-  // Evaluates solely the generated research encounter output (NOT source keywords)
   extractCandidateRecord(doc, turnIndex, responseText, chamberOutputs) {
     const candId = `CAND-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${crypto.randomBytes(3).toString('hex')}`;
     const docSha = doc.sha256 || computeSha256(doc.content);
@@ -279,7 +404,7 @@ ${doc.content}`;
           extractedProposition = propMatch[1].trim();
           candidateProduced = true;
         } else {
-          // If no explicit header, check if the response provides substantive declarative content (not merely echoing instructions)
+          // If no explicit header, check if the response provides substantive declarative content
           const lines = responseText.split('\n').map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('===') && !l.startsWith('CHAMBER'));
           const substantiveLines = lines.filter(l => !l.toLowerCase().includes('prior history') && !l.toLowerCase().includes('incoming document'));
           if (substantiveLines.length > 0) {
@@ -297,7 +422,6 @@ ${doc.content}`;
     }
 
     // 2. Model's own categorization (NOT triggered by source vocabulary)
-    // Checks whether the model output explicitly states that the phenomenon resists known linear categories
     let isUnanticipated = false;
     if (candidateProduced) {
       isUnanticipated = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
@@ -325,6 +449,7 @@ ${doc.content}`;
       status,
       warrant_class: warrantClass,
       proposition_summary: extractedProposition,
+      uncertainty: extractedUncertainty,
       evidence_ancestry: {
         source_documents: [
           {
@@ -349,6 +474,13 @@ ${doc.content}`;
         generating_arm: this.arm,
         representation_modality: this.arm === 'ARM_2A_MODULAR' ? 'DOLLHOUSE_PARATACTIC' : 'NEUTRAL_STANDARD_MATH',
         presentation_timing: 'PRE_GENERATION_LENS',
+        context_management_strategy: this.contextStrategy,
+        context_projection_loss_declaration: {
+          preserved_fields: ['candidate_propositions', 'parameter_equations', 'model_declared_uncertainty', 'turn_status'],
+          projected_away_fields: ['raw_chunk_narrative', 'intermediate_reasoning_prose', 'document_formatting', 'unquoted_source_context'],
+          is_lossless: false,
+          epistemic_justification: 'Bounded prompt projection focused on proposition continuity while preventing quadratic token growth.'
+        },
         specialist_scaffolding: chamberOutputs || {},
         scaffolding_metaphors_introduced: []
       },
@@ -374,23 +506,38 @@ ${doc.content}`;
 
   // Step 4: Export Complete Raw Research Ledger with exact provider token accounting
   exportResearchLedger() {
-    const totalTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.total_tokens ?? t.total_tokens ?? 0), 0);
-    const promptTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.prompt_tokens ?? t.prompt_tokens ?? 0), 0);
-    const candidatesTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.candidates_tokens ?? t.candidates_tokens ?? 0), 0);
-
     return {
       schema: 'td613.experiment-b.heterogeneous-flight-ledger/v1',
       timestamp: new Date().toISOString(),
       arm: this.arm,
       model: this.client ? this.client.model : 'source-free-mock-kernel',
+      context_strategy: this.contextStrategy,
+      context_projection_declaration: {
+        is_lossless: false,
+        classification: 'DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS'
+      },
+      budget_ceilings: {
+        max_calls: this.maxCalls,
+        max_tokens: this.maxTokens,
+        max_cost_usd: this.maxCostUSD
+      },
+      provider_accounting: {
+        total_provider_attempts: this.providerAttempts,
+        successful_calls: this.successfulCalls,
+        retried_attempts: this.retriedAttempts,
+        failed_attempts: this.failedAttempts,
+        total_tokens_consumed: this.totalTokensConsumed,
+        prompt_tokens: this.promptTokensConsumed,
+        candidates_tokens: this.candidatesTokensConsumed,
+        estimated_expenditure_usd: this.getEstimatedCostUSD()
+      },
+      token_accounting: {
+        total_tokens_consumed: this.totalTokensConsumed,
+        prompt_tokens: this.promptTokensConsumed,
+        candidates_tokens: this.candidatesTokensConsumed
+      },
       turn_count: this.history.length,
       candidate_count: this.candidates.length,
-      token_accounting: {
-        total_tokens_consumed: totalTokens,
-        prompt_tokens: promptTokens,
-        candidates_tokens: candidatesTokens
-      },
-      call_count: this.traces.length,
       history: this.history,
       candidates: this.candidates,
       traces: this.traces

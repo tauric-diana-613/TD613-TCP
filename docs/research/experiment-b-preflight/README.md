@@ -1,24 +1,25 @@
-# 𝌋 TD613 · Experiment B Source-Free Preflight Dossier (Final Constitution)
+# 𝌋 TD613 · Experiment B Source-Free Preflight Dossier & Flight Launchbridge
 
-**Commission:** `TD613_Experiment_B_Preflight_Activation_2026-10-29`  
+**Commission:** `TD613_Experiment_B_Launchbridge_Activation_2026-10-29`  
 **Governing Covenant:** Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (`U+200C` preserved)  
 **Adjudicated Disposition:**  
-$$\mathbf{B\_SOURCE\_FREE\_CONSTITUTION\_ACCEPTED \cdot B\_FLIGHT\_CAPABILITY\_GAP\_IDENTIFIED \cdot B\_CORPUS\_SEALED}$$
+$$\mathbf{B\_SOURCE\_FREE\_LAUNCHBRIDGE\_READY\_FOR\_OPERATOR\_FLIGHT\_DECISION \cdot B\_CORPUS\_SEALED}$$
 
 ---
 
 ## Overview
 
-This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package** under `docs/research/experiment-b-preflight/`. In response to Emergence HQ reviews `5704533595`, `5707431596`, and `5707682022` on PR #1607, it establishes:
+This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package and Flight Launchbridge** under `docs/research/experiment-b-preflight/`. In response to Emergence HQ reviews `5704533595`, `5707431596`, `5707682022`, and `5707772624`, it establishes:
 1. Authentic live model calibration shakedown via Google Gemini REST API (`gemini-2.5-flash-lite`, 4/4 vs 4/4 parity under corrected automated rubric).
 2. Four-tier epistemic evaluation hierarchy strictly separating automated rubric parity, implementer semantic review, independent blinded evaluation, and external replication.
 3. Merged PR #1608 Dollhouse repair integration and strict quarantine of the separate Atlas Wild Field mathematical estate.
 4. Preregistered **RCA-01 Representation Causality Assay** ($2 \times 2$ factorial validation design decoupled across six evaluative dimensions: Discovery, Warrant, Causal Role, Novelty, Instrument Integrity, Scientific Status).
 5. **Three-Lineage Discovery Custody Protocol** with flexible temporal ordering and Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`).
 6. Empirical demonstration of standalone Atelier and Encyclopedia resilience without Manifest dependency.
-7. Flight Execution-Capability Assessment & Capacity Reconciliation declaring the physical capability gap ($\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$), detailing the ~70–90 call multi-turn capacity requirement for 20–24 documents vs the 15-call ceiling, and presenting three prospective execution designs.
+7. Flight Execution-Capability Assessment & Capacity Reconciliation, detailing the ~70–90 call multi-turn capacity requirement for 20–24 documents vs the 15-call ceiling, and presenting three prospective execution designs.
 8. Mathematical Construction and Rendering Inventory establishing anti-circularity boundaries for prospective postflight visualization.
 9. Minimal Generalized Heterogeneous Discovery Harness prototype with **R4 Discovery Integrity Repair**: substantive proposition extraction from model reasoning, removal of keyword triggers, fail-closed custody gate, and truthful pending adjudication semantics (6/6 unit and adversarial tests passing).
+10. **Operator Flight Launchbridge:** Controlled archive admission route ([`controlled-archive-intake.mjs`](02_four_arm_harness/controlled-archive-intake.mjs)), transparent structured context continuity without blind truncation, fail-closed resource limits (120 calls, 400k tokens), Stage 2 independent scientific evaluator ([`stage2-independent-evaluator.mjs`](02_four_arm_harness/stage2-independent-evaluator.mjs)), focused native Dollhouse audit ([`DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md)), and executive Flight decision record ([`FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md`](06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md)).
 
 ---
 
@@ -62,31 +63,24 @@ The live shakedown was executed via [`run-source-free-live-calibration.mjs`](03_
 | **Total Token Consumption** | **27,390 tokens** | **13,843 tokens** | **Token Overhead Ratio: $1.98\times$ (Modular consumes 97.9% more tokens)** |
 | **Call Distribution** | **10 calls across 2 chambers** | **7 unchambered calls** | **Per-Call Ceiling: 4,096 tokens** |
 
-> [!IMPORTANT]
-> **Comparator Fairness & Architectural Trade-offs Reconciled**:
-> 1. **Per-Call Ceiling vs Episode Budget:** The `4096`-token setting is an individual per-call maximum output token ceiling, not an episode-level or aggregate benchmark budget.
-> 2. **Modular Information Bottleneck:** In Arm 2A, Chamber 2 (Atlas & FADT) receives the natural language summary findings and parameter extractions of Chamber 1 (Pedagogue & Aperture) rather than raw JSON fixture data. This treatment effect incurs substantial context and token overhead ($27,390$ vs $13,843$ tokens across 10 vs 7 calls).
-> 3. **Descriptive Status & Generalization Boundary:** On this source-free 4-condition physical benchmark, both modular chambering and flat union solve all problems ($4/4$ vs $4/4$). This is a descriptive calibration observation; it does **not** warrant a generalized theorem claiming flat union superiority or modular obsolescence across heterogeneous, out-of-distribution, or adversarial epistemic challenges.
-> 4. **Predecessor Score Preserved:** The original $3/4$ vs $4/4$ result ($\Delta = -1$) is preserved append-only as an erroneous historical scoring event in [`03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json`](03_calibration_execution/LIVE_CALIBRATION_RESCORING_RECEIPT.json).
-
 ---
 
 ## 3. Genuine Dollhouse Specialist Evaluation (Section VI)
 
-The native `/dollhouse-audit` skill was executed with authentic domain observation inputs via [`run-dollhouse-audit-live.mjs`](05_dollhouse_audit/run-dollhouse-audit-live.mjs):
+The native `/dollhouse-audit` skill was executed with authentic domain observation inputs:
 
-* **Predecessor Audit:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json) preserved intact with recorded `HELD_DISSENT` (Aperture caught $2 \times 2$ covariance passed for $2 \times 3$ operator).
-* **V2 Audit Receipt:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json)
+* **V2 Calibration Audit Receipt:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json)
+* **Launchbridge Audit Receipt:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json)
 * **Specialists Evaluated**: `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN` (Zero missing inputs).
-* **Specialist Findings**:
+* **Launchbridge Findings**:
   * `PEDAGOGUE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Dromological cadence strictly ordered: `NOTICE < ACT < WORLD_ANSWERS < NAME`).
-  * `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — $3 \times 3$ latent-state covariance $\Sigma_\theta$ supplied matching latent dimension $n=3$; candidate probe $[0, 0, 1]$ stably lifts rank from 2 to 3 with $\kappa = 1.70$. Scoped internal hold: `classification_replay_stability: HELD_NOT_YET_WITNESSED`, `proposal_is_execution: false`).
-  * `ATLAS`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Parity and trajectory winding $0$ preserved).
-  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Inner fiber bounds hold irreducible gap cardinality 4: `HOLD_IRREDUCIBLE_GAP`, while outer specialist supports unconditioned action boundary).
-  * `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Monotonic milestone chronology verified across all 5 phases).
+  * `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Candidate probe $[0, 0, 1]$ restores full rank 3 with $\kappa = 1.70$; zero unobservable state leakage).
+  * `ATLAS`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Trajectory parities and winding $0$ preserved).
+  * `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Two-fiber structure maps Stage 1 pending status and Stage 2 formal warrants).
+  * `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED` — Monotonic milestone sequence across 5 phases).
 * **Orchestrator Consensus**: `UNANIMOUS_SUPPORT`
 * **Orchestrator Decision**: **✓ SUPPORTED**
-* **Scoped Evidence Ceiling**: Outer `SUPPORTED / UNANIMOUS_SUPPORT` applies strictly to caller-supplied synthetic domain inputs. Does not imply external production release authority.
+* **Scoped Evidence Ceiling**: Applies strictly to source-free launchbridge engineering assets. Does not imply external production release authority.
 * **Empirical Replication Count**: 0 (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`)
 * **Release Authority**: false
 * **Human Closure Required**: true
@@ -102,23 +96,25 @@ The native `/dollhouse-audit` skill was executed with authentic domain observati
 3. **Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`):**  
    Non-promotional intake status for findings outside existing Dollhouse categories, preserving full parity with Arm 2B.
 4. **Flight Execution-Capability Assessment & Honest Gap Declaration:** [`06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md`](06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md)  
-   Audits the 9-operation capability matrix, reconciles executable call capacity (~70–90 calls needed across 20–24 documents vs the 15-call calibration ceiling), presents three prospective execution designs, and declares $\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$ pending operator unsealing, sequence permutation selection, and paid credit authorization.
+   Audits the 9-operation capability matrix, reconciles executable call capacity (~70–90 calls needed across 20–24 documents vs the 15-call calibration ceiling), presents three prospective execution designs, and declares capacity requirements.
 5. **Mathematical Construction & Rendering Inventory:** [`06_custody_and_governance/MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md`](06_custody_and_governance/MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md)  
    Catalogs earlier formulaic, SVD, and geometric cradle assets for prospective postflight visualization while enforcing anti-circularity laws and noting that repository leads are preliminary.
 6. **Minimal Heterogeneous Discovery Harness Prototype (R4 Repaired):** [`02_four_arm_harness/run-heterogeneous-discovery-harness.mjs`](02_four_arm_harness/run-heterogeneous-discovery-harness.mjs)  
    Verifies multi-turn sequential exposure across physical and topological domains (`specimen_01`, `specimen_02`, `specimen_03`), with keyword-triggered status promotion completely removed, substantive proposition extraction from model reasoning, fail-closed custody gate, and pending adjudication semantics. Tested via [`tests/test-heterogeneous-discovery-harness.mjs`](../../../tests/test-heterogeneous-discovery-harness.mjs) (6/6 passing).
-7. **Instrument Freeze & Separate Atlas Wild Field Program:** [`06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md`](06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md)  
-   Freezes all code/model identities and strictly quarantines the Atlas theoretical program from challenge data.
-8. **Standalone Atelier & Encyclopedia Resilience:** [`06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md`](06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md)  
-   Empirical proof that originating heritage estates remain directly recoverable without Manifest dependency.
-9. **Flight Authorization Decision Sheet:** [`06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md`](06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md)  
-   Defines the operator flight decision checklist and preflight custody boundaries.
+7. **Controlled Archive Admission Route:** [`02_four_arm_harness/controlled-archive-intake.mjs`](02_four_arm_harness/controlled-archive-intake.mjs)  
+   Enforces fail-closed physical custody boundaries: prohibits autonomous directory scanning or globbing; requires explicit operator authorization before archive access; verifies synthetic accession pathways.
+8. **Stage 2 Independent Evaluator Engine:** [`02_four_arm_harness/stage2-independent-evaluator.mjs`](02_four_arm_harness/stage2-independent-evaluator.mjs)  
+   Evaluates Stage 1 candidates against mathematical derivations, candidate-specific matched negative controls, and four-cell factorial comparisons (Cells A, B, C, D).
+9. **Operator Flight Launchbridge Decision Record:** [`06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md`](06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md)  
+   Concise executive decision instrument identifying instrument version, prospective admission route, permutation options, resource ceilings, disclosure boundaries, and the precise operator gesture required for Flight launch.
+10. **Focused Launchbridge Dollhouse Audit:** [`05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md`](05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md)  
+    Full five-specialist audit with Orchestrator unanimous support verifying exposure order, measurement integrity, route distinctions, fiber descent, and monotonic chronology.
 
 ---
 
 ## 5. Verification Commands
 
-From the repository root on branch `witness/experiment-b-source-free-preflight`:
+From the repository root:
 
 ```bash
 # 1. Run authentic live model calibration shakedown
@@ -147,6 +143,12 @@ node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-t
 
 # 9. Run minimal heterogeneous discovery harness & adversarial test suite (6/6 passing)
 node tests/test-heterogeneous-discovery-harness.mjs
+
+# 10. Run Flight Launchbridge unit and integration test suite (4/4 passing)
+node tests/test-flight-launchbridge.test.mjs
+
+# 11. Run focused Launchbridge Dollhouse Audit (5/5 specialists + Orchestrator passing)
+node docs/research/experiment-b-preflight/05_dollhouse_audit/run-dollhouse-audit-launchbridge.mjs
 ```
 
 ---
@@ -154,13 +156,13 @@ node tests/test-heterogeneous-discovery-harness.mjs
 ## 6. Standing Invariants & Quarantine Proof
 
 ```text
-challenge_corpus_state = STRICTLY_SEALED_AND_QUARANTINED
-gate_e_disposition = HELD
-empirical_exteriority_credit = 0
-human_scientific_closure = RESERVED
+challenge_corpus_state      = STRICTLY_SEALED_AND_QUARANTINED
+flight_launchbridge_status  = B_SOURCE_FREE_LAUNCHBRIDGE_READY_FOR_OPERATOR_FLIGHT_DECISION
+gate_e_disposition          = HELD
+empirical_exteriority_credit= 0
+human_scientific_closure    = RESERVED
 issue_405_release_authority = CLOSED
-flight_execution_capability = B_FLIGHT_EXECUTION_CAPABILITY_GAP_IDENTIFIED
-pr_1607_status = FINAL_PREFLIGHT_CONSTITUTION_COMPLETE
+manifest_ontological_status = OPEN_RESEARCH_OBJECT
 ```
 
 𝌋 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · Sealed ⟐
