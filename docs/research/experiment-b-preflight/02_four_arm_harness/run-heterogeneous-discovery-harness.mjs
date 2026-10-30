@@ -29,13 +29,35 @@ export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
   /09_atlas_mathematical_qualification/i,
   /atlas-mathematical-engine/i,
   /app[\\/]engine[\\/]atlas-/i,
-  /app[\\/]engine[\\/]dollhouse-atlas-/i
+  /app[\\/]engine[\\/]dollhouse-atlas-/i,
+  /manifest-succession/i,
+  /MANIFEST_RESEARCH_SUCCESSION/i
 ];
 
 /**
- * Audited execution-time allowlists and forbidden patterns for each experimental arm (Redpen VII-B B7-02 & Redpen VIII-B).
+ * Exact Positive Specimen Allowlist for Experiment B Preflight Discovery (Redpen IX-B1).
+ * Strictly positive catalog of calibration specimens containing zero Yoon crosswalks,
+ * zero Atlas internal mathematical charters, and zero manifest succession records.
+ */
+export const EXACT_POSITIVE_SPECIMEN_ALLOWLIST = [
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_differential_growth.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_positive_control_two_tier_coupling.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_qubit_decoherence.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_aperture_transversal.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_sufficient_aperture_transversal.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c5_wendbine_unclassified_divergence.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens_v2.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens_v3.json'
+];
+
+/**
+ * Audited execution-time allowlists and forbidden patterns for each experimental arm (Redpen VII-B B7-02, Redpen VIII-B, Redpen IX-B1).
  * Enforces actual filesystem and tool-access boundaries beyond textual prompt linting.
- * Narrowed specifically to prevent unearned access to mathematical qualification suites or atlas engines.
+ * Narrowed specifically to prevent unearned access to mathematical qualification suites, atlas engines, or manifest succession archives.
  */
 export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
   ARM_0_TRANSPORT: {
@@ -47,8 +69,7 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
   ARM_1_ARCHIVAL: {
     allowedSourceRoots: [
       'app/wendbine/',
-      'app/encyclopedia/',
-      'docs/research/manifest-succession/'
+      'app/encyclopedia/'
     ],
     allowedTools: ['read_file'],
     allowedSkills: [],
@@ -59,14 +80,16 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
       /app[\\/]engine[\\/]dollhouse-atlas-/i,
-      /Yoon/i
+      /Yoon/i,
+      /manifest-succession/i,
+      /MANIFEST_RESEARCH_SUCCESSION/i
     ]
   },
   ARM_2A_MODULAR: {
     allowedSourceRoots: [
+      'docs/research/experiment-b-preflight/01_calibration_fixtures/',
       'docs/research/experiment-b-preflight/01_manifest/',
       'docs/research/experiment-b-preflight/02_four_arm_harness/',
-      'docs/research/manifest-succession/',
       'tests/fixtures/'
     ],
     allowedTools: ['read_file'],
@@ -78,15 +101,19 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
       /app[\\/]engine[\\/]dollhouse-atlas-/i,
-      /Yoon/i
+      /Yoon/i,
+      /manifest-succession/i,
+      /MANIFEST_RESEARCH_SUCCESSION/i
     ]
   },
   ARM_2B_MATCHED_UNION: {
     allowedSourceRoots: [
+      'docs/research/experiment-b-preflight/01_calibration_fixtures/',
       'docs/research/experiment-b-preflight/01_manifest/',
       'docs/research/experiment-b-preflight/02_four_arm_harness/',
-      'docs/research/manifest-succession/',
-      'tests/fixtures/'
+      'tests/fixtures/',
+      'app/wendbine/',
+      'app/encyclopedia/'
     ],
     allowedTools: ['read_file'],
     allowedSkills: [],
@@ -97,13 +124,15 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
       /ATLAS\.md/i,
       /app[\\/]engine[\\/]atlas-/i,
       /app[\\/]engine[\\/]dollhouse-atlas-/i,
-      /Yoon/i
+      /Yoon/i,
+      /manifest-succession/i,
+      /MANIFEST_RESEARCH_SUCCESSION/i
     ]
   }
 };
 
 /**
- * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02 & Redpen VIII-B).
+ * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02, Redpen VIII-B, Redpen IX-B1, Redpen IX-B3).
  * Enforces canonical repository path resolution, path traversal denial, and symlink escape checks.
  *
  * @param {string} arm
@@ -123,7 +152,9 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
       /atlas-mathematical-engine/i,
       /docs[\\/]atlas/i,
       /ATLAS\.md/i,
-      /Yoon/i
+      /Yoon/i,
+      /manifest-succession/i,
+      /MANIFEST_RESEARCH_SUCCESSION/i
     ]
   };
 
@@ -139,10 +170,11 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     );
   }
 
-  // Symlink resolution check
+  // Canonical realpath resolution and symlink alias defense (Redpen IX-B3)
+  let realTarget = resolvedTarget;
   if (fs.existsSync(resolvedTarget)) {
     try {
-      const realTarget = fs.realpathSync(resolvedTarget);
+      realTarget = fs.realpathSync(resolvedTarget);
       if (!realTarget.startsWith(repoRoot)) {
         throw new Error(
           `SYMLINK_ESCAPE_FORBIDDEN: Target path "${targetPath}" resolves via symlink to "${realTarget}" outside repository root. Execution-time access denied.`
@@ -154,26 +186,29 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
   }
 
   const relativeNorm = path.relative(repoRoot, resolvedTarget).replace(/\\/g, '/');
+  const realRelativeNorm = path.relative(repoRoot, realTarget).replace(/\\/g, '/');
 
-  // Check forbidden patterns against both raw input path and normalized relative path
+  // Check forbidden patterns against raw input path, normalized relative path, AND canonical realpath (Redpen IX-B3)
   for (const pattern of config.forbiddenPatterns) {
-    if (pattern.test(normPath) || pattern.test(relativeNorm)) {
+    if (pattern.test(normPath) || pattern.test(relativeNorm) || pattern.test(realRelativeNorm)) {
       throw new Error(
-        `FORBIDDEN_SOURCE_ACCESS_REFUSED: Attempted direct access to restricted source path "${normPath}" by ${arm}. ` +
+        `FORBIDDEN_SOURCE_ACCESS_REFUSED: Attempted direct access to restricted source path "${normPath}" (resolving to "${realRelativeNorm}") by ${arm}. ` +
         `Execution-time access control parity violation fail-closed.`
       );
     }
   }
 
-  // Check allowed source roots
+  // Check allowed source roots: BOTH declared relativeNorm AND canonical realRelativeNorm must be permitted
   if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
     const isAllowed = config.allowedSourceRoots.some(root => {
       const normRoot = root.replace(/\\/g, '/');
-      return relativeNorm.startsWith(normRoot) || normPath.startsWith(normRoot);
+      const declaredPermitted = relativeNorm.startsWith(normRoot) || normPath.startsWith(normRoot);
+      const realPermitted = realRelativeNorm.startsWith(normRoot);
+      return declaredPermitted && realPermitted;
     });
     if (!isAllowed) {
       throw new Error(
-        `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Target path "${normPath}" is outside declared allowed source roots ` +
+        `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Target path "${normPath}" (resolving to "${realRelativeNorm}") is outside declared allowed source roots ` +
         `[${config.allowedSourceRoots.join(', ')}] for ${arm}. Execution-time access denied.`
       );
     }
@@ -186,7 +221,7 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
   return {
     permitted: true,
     arm,
-    targetPath: relativeNorm
+    targetPath: realRelativeNorm
   };
 }
 

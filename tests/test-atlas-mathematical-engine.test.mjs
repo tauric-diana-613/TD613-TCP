@@ -611,3 +611,141 @@ test('Redpen VIII Section VII: Exact Scientific Acceptance Taxonomy Completeness
   assert.equal(mapToScientificAcceptanceStatus({ epistemic_status: 'FIXTURE_DEMONSTRATION' }), 'CANONICAL_FIXTURE_DEMONSTRATION');
   assert.equal(mapToScientificAcceptanceStatus({ epistemic_status: 'NOT_EVALUATED' }), 'NOT_EVALUATED');
 });
+
+// ============================================================================
+// SECTION 3: REDPEN IX EXACT-HEAD ACCEPTANCE TEST BATTERY
+// ============================================================================
+
+test('Redpen IX-A1: Signed Complex Hermitian Spectrum via Cyclic Jacobi Diagonalization', () => {
+  // Test negative eigenvalue signed spectrum preservation on indefinite matrix [[1, 0], [0, -1]]
+  const indefiniteMatrix = [
+    [1.0, 0.0],
+    [0.0, -1.0]
+  ];
+  const spec = computeComplexHermitianSpectrum(indefiniteMatrix);
+
+  assert.equal(spec.valid, true);
+  assert.deepEqual(spec.eigenvalues, [1.0, -1.0]);
+  assert.equal(spec.trace, 0.0);
+  assert.equal(spec.min_eigenvalue, -1.0);
+  assert.equal(spec.max_eigenvalue, 1.0);
+  assert.equal(spec.rank, 2);
+  assert.equal(spec.is_positive_semidefinite, false);
+  assert.equal(spec.density_matrix_valid, false);
+  assert.equal(spec.entropy_bits, null);
+
+  // Test standard positive-semidefinite density matrix diag(0.5, 0.5)
+  const psdMatrix = [
+    [0.5, 0.0],
+    [0.0, 0.5]
+  ];
+  const specPsd = computeComplexHermitianSpectrum(psdMatrix);
+  assert.equal(specPsd.valid, true);
+  assert.deepEqual(specPsd.eigenvalues, [0.5, 0.5]);
+  assert.equal(specPsd.trace, 1.0);
+  assert.equal(specPsd.min_eigenvalue, 0.5);
+  assert.equal(specPsd.is_positive_semidefinite, true);
+  assert.equal(specPsd.density_matrix_valid, true);
+  assert.equal(specPsd.entropy_bits, 1.0);
+});
+
+test('Redpen IX-A2: Quantum Coherence Localization in (|000> + i|010>)/sqrt(2)', () => {
+  // (|000> + i|010>)/sqrt(2):
+  // Qubit 1 is pure state |0>, density matrix rho_1 = diag(1, 0)
+  // Qubit 2 carries the superposition (|0> + i|1>)/sqrt(2), density matrix rho_2 has coherence -0.5i, 0.5i
+  // Subsystem 12 carries coherence at (0, 1) and (1, 0)
+  const psi = [
+    { re: 1 / Math.SQRT2, im: 0 },
+    { re: 0, im: 0 },
+    { re: 0, im: 1 / Math.SQRT2 },
+    { re: 0, im: 0 },
+    { re: 0, im: 0 },
+    { re: 0, im: 0 },
+    { re: 0, im: 0 },
+    { re: 0, im: 0 }
+  ];
+
+  const res = evaluateGHZReductionAndLocality({ state_vector: psi });
+  assert.equal(res.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(res.positive_control.passed, true);
+
+  // 1. Inspect rho_1 (tracing out qubits 2 and 3): pure real diag(1, 0)
+  const rho1 = res.positive_control.reduced_1qubit_matrix;
+  assert.ok(Math.abs(rho1[0][0].re - 1.0) < 1e-10 && Math.abs(rho1[0][0].im) < 1e-10);
+  assert.ok(Math.abs(rho1[0][1].re) < 1e-10 && Math.abs(rho1[0][1].im) < 1e-10);
+  assert.ok(Math.abs(rho1[1][0].re) < 1e-10 && Math.abs(rho1[1][0].im) < 1e-10);
+  assert.ok(Math.abs(rho1[1][1].re) < 1e-10 && Math.abs(rho1[1][1].im) < 1e-10);
+  assert.equal(res.positive_control.reduced_1qubit_rank, 1);
+  assert.equal(res.positive_control.reduced_1qubit_entropy_bits, 0.0);
+
+  // 2. Inspect rho_2 (tracing out qubits 1 and 3): carries imaginary coherence -0.5i and 0.5i
+  const rho2 = res.positive_control.reduced_qubit2_matrix;
+  assert.ok(Math.abs(rho2[0][0].re - 0.5) < 1e-10 && Math.abs(rho2[0][0].im) < 1e-10);
+  assert.ok(Math.abs(rho2[0][1].re) < 1e-10 && Math.abs(rho2[0][1].im - (-0.5)) < 1e-10);
+  assert.ok(Math.abs(rho2[1][0].re) < 1e-10 && Math.abs(rho2[1][0].im - 0.5) < 1e-10);
+  assert.ok(Math.abs(rho2[1][1].re - 0.5) < 1e-10 && Math.abs(rho2[1][1].im) < 1e-10);
+  assert.equal(res.positive_control.reduced_qubit2_rank, 1);
+  assert.equal(res.positive_control.reduced_qubit2_entropy_bits, 0.0);
+
+  // 3. Inspect rho_12 (tracing out qubit 3): rank 1 pure state, preserving off-diagonal coherence
+  const rho12 = res.positive_control.reduced_2qubit_matrix;
+  assert.ok(Math.abs(rho12[0][0].re - 0.5) < 1e-10);
+  assert.ok(Math.abs(rho12[0][1].im - (-0.5)) < 1e-10);
+  assert.ok(Math.abs(rho12[1][0].im - 0.5) < 1e-10);
+  assert.ok(Math.abs(rho12[1][1].re - 0.5) < 1e-10);
+  assert.equal(res.positive_control.reduced_2qubit_rank, 1);
+  assert.equal(res.positive_control.reduced_2qubit_entropy_bits, 0.0);
+});
+
+test('Redpen IX-A3: Noncommutative Ladder Operator Grammar Parser & Linear Combinations', () => {
+  // 1. Linear combination: [a + a^dagger, a] = -1
+  const r1 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a + a^dagger, a]',
+    expected_value: '-1'
+  });
+  assert.equal(r1.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(r1.simplified_result, '-1');
+  assert.equal(r1.positive_control.passed, true);
+  assert.equal(r1.positive_control.normal_ordering_exact, true);
+
+  // 2. Linear combination: [a + a^dagger, a^dagger] = 1
+  const r2 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a + a^dagger, a^dagger]',
+    expected_value: '1'
+  });
+  assert.equal(r2.simplified_result, '1');
+  assert.equal(r2.positive_control.passed, true);
+
+  // 3. Independent modes with linear combination: [2*a - b, a^dagger] = 2
+  const r3 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[2*a - b, a^dagger]',
+    expected_value: '2'
+  });
+  assert.equal(r3.simplified_result, '2');
+  assert.equal(r3.positive_control.passed, true);
+
+  // 4. Powers: [a, (a^dagger)^2] = 2*a^dagger
+  const r4 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, (a^dagger)^2]',
+    expected_value: '2*a^dagger'
+  });
+  assert.equal(r4.simplified_result, '2*a^dagger');
+  assert.equal(r4.positive_control.passed, true);
+
+  // 5. Adversarial input: Unrecognized operator [a, xyz] fails closed
+  const r5 = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, xyz]'
+  });
+  assert.equal(r5.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(r5.scientific_status, ATLAS_EPISTEMIC_STATUS_TAXONOMY.NOT_EVALUATED);
+  assert.equal(r5.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+  assert.equal(r5.positive_control, undefined);
+
+  // 6. Adversarial structured array input with invalid token
+  const r6 = evaluateLadderOperatorCommutator({
+    A: [{ coeff: 1, factors: ['invalid_op'] }],
+    B: 'a'
+  });
+  assert.equal(r6.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(r6.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+});

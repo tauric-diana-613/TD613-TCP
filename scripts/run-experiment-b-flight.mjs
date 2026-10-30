@@ -78,32 +78,53 @@ export function generateLiveEpisodeId() {
 
 /**
  * Loads the flight episode registry table.
+ * Fails closed if the episode registry file exists but is corrupted or contains invalid JSON (Redpen IX-B4).
  */
 export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
   if (fs.existsSync(registryPath)) {
     try {
-      return JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-    } catch {
-      return { schema: 'td613.experiment-b.episode-registry/v1', episodes: {} };
+      const content = fs.readFileSync(registryPath, 'utf8');
+      const parsed = JSON.parse(content);
+      if (!parsed || typeof parsed !== 'object' || !parsed.episodes || typeof parsed.episodes !== 'object') {
+        throw new Error('Malformed registry schema structure');
+      }
+      return parsed;
+    } catch (err) {
+      throw new Error(
+        `EPISODE_REGISTRY_CORRUPTED: Episode registry file at "${registryPath}" is corrupted or contains invalid JSON (${err.message}). Flight execution fail-closed.`
+      );
     }
   }
   return { schema: 'td613.experiment-b.episode-registry/v1', episodes: {} };
 }
 
 /**
- * Prospective live episode registration and replay sieve (Redpen VIII-B).
- * Fails closed if the episode identifier has already been recorded.
+ * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4).
+ * Fails closed if the episode identifier has already been recorded, if synthetic IDs are submitted,
+ * or if write concurrency fails. Employs atomic write semantics to guarantee registry consistency.
  */
 export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
-  const registry = loadEpisodeRegistry(registryPath);
-  if (registry.episodes && registry.episodes[episodeId]) {
+  const idStr = String(episodeId || '').trim();
+  if (!idStr) {
+    throw new Error('INVALID_EPISODE_ID: Episode ID must be a non-empty string.');
+  }
+
+  // Reject synthetic or preflight episodes from live registration (Redpen IX-B4)
+  if (idStr.startsWith('EPISODE-B-SOURCE-FREE') || idStr.includes('SYNTHETIC') || idStr.includes('DRY_RUN')) {
     throw new Error(
-      `EPISODE_REPLAY_FORBIDDEN: Episode ID "${episodeId}" has already been executed or registered in episode registry (${registry.episodes[episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
+      `SYNTHETIC_EPISODE_LIVE_REGISTRATION_REFUSED: Episode ID "${idStr}" is synthetic/preflight and cannot be registered in live flight episode registry.`
+    );
+  }
+
+  const registry = loadEpisodeRegistry(registryPath);
+  if (registry.episodes && registry.episodes[idStr]) {
+    throw new Error(
+      `EPISODE_REPLAY_FORBIDDEN: Episode ID "${idStr}" has already been executed or registered in episode registry (${registry.episodes[idStr].registered_at}). Prospective replay strictly prohibited fail-closed.`
     );
   }
   if (!registry.episodes) registry.episodes = {};
-  registry.episodes[episodeId] = {
-    episode_id: episodeId,
+  registry.episodes[idStr] = {
+    episode_id: idStr,
     registered_at: new Date().toISOString(),
     status: 'REGISTERED',
     ...metadata
@@ -113,8 +134,13 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
   if (!fs.existsSync(regDir)) {
     fs.mkdirSync(regDir, { recursive: true });
   }
-  fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2), 'utf8');
-  return registry.episodes[episodeId];
+
+  // Atomic transactional write via temporary file (Redpen IX-B4)
+  const tmpPath = `${registryPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
+  fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
+  fs.renameSync(tmpPath, registryPath);
+
+  return registry.episodes[idStr];
 }
 
 function parseArgs(args) {

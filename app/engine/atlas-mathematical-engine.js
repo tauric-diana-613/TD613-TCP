@@ -82,13 +82,68 @@ export function computeFiniteFieldSvd(matrix, fieldOrder = 31) {
 }
 
 /**
+ * Real symmetric cyclic Jacobi eigensolver for exact signed eigenvalues.
+ * Diagonally zeroes off-diagonal elements by orthogonal similarity rotations,
+ * preserving exact signed spectrum, trace, and metric topology without absolute-value loss.
+ *
+ * @param {Array<Array<number>>} A Real symmetric matrix
+ * @param {number} [maxIter=100] Maximum sweeps
+ * @param {number} [tol=1e-15] Convergence threshold
+ * @returns {Array<number>} Signed eigenvalues sorted in descending order
+ */
+function jacobiSymmetricEigenvalues(A, maxIter = 100, tol = 1e-15) {
+  const n = A.length;
+  const D = A.map(row => [...row]);
+  for (let iter = 0; iter < maxIter; iter++) {
+    let changed = false;
+    for (let p = 0; p < n - 1; p++) {
+      for (let q = p + 1; q < n; q++) {
+        if (Math.abs(D[p][q]) < tol) continue;
+        changed = true;
+        const diff = D[q][q] - D[p][p];
+        let t;
+        if (Math.abs(diff) < 1e-15) {
+          t = D[p][q] > 0 ? 1 : -1;
+        } else {
+          const theta = diff / (2 * D[p][q]);
+          t = 1 / (Math.abs(theta) + Math.sqrt(1 + theta * theta));
+          if (theta < 0) t = -t;
+        }
+        const c = 1 / Math.sqrt(1 + t * t);
+        const s = t * c;
+        const tau = s / (1 + c);
+        const Dpq = D[p][q];
+        D[p][q] = 0;
+        D[q][p] = 0;
+        D[p][p] -= t * Dpq;
+        D[q][q] += t * Dpq;
+        for (let r = 0; r < n; r++) {
+          if (r !== p && r !== q) {
+            const D_rp = D[r][p];
+            const D_rq = D[r][q];
+            D[r][p] = D_rp - s * (D_rq + tau * D_rp);
+            D[p][r] = D[r][p];
+            D[r][q] = D_rq + s * (D_rp - tau * D_rq);
+            D[q][r] = D[r][q];
+          }
+        }
+      }
+    }
+    if (!changed) break;
+  }
+  const evals = [];
+  for (let i = 0; i < n; i++) evals.push(D[i][i]);
+  return evals.sort((a, b) => b - a);
+}
+
+/**
  * Computes exact spectrum of a complex Hermitian matrix via real block embedding.
  * Embeds H = A + iB into real symmetric M = [ [A, -B], [B, A] ].
- * Singular values of M yield eigenvalues of H duplicated with multiplicity 2,
- * fully preserving off-diagonal imaginary coherence without loss.
+ * Uses real symmetric Jacobi diagonalization to extract exact signed eigenvalues,
+ * strictly validating positive-semidefiniteness and preserving negative eigenvalue signs (Redpen IX-A1).
  *
  * @param {Array<Array<{re: number, im: number}|number>>} complexMatrix
- * @returns {object} { valid: boolean, eigenvalues: Array<number>, trace: number, rank: number, entropy_bits: number }
+ * @returns {object} { valid: boolean, eigenvalues: Array<number>, trace: number, rank: number, is_positive_semidefinite: boolean, entropy_bits: number|null }
  */
 export function computeComplexHermitianSpectrum(complexMatrix) {
   if (!Array.isArray(complexMatrix) || complexMatrix.length === 0 || !Array.isArray(complexMatrix[0])) {
@@ -132,7 +187,7 @@ export function computeComplexHermitianSpectrum(complexMatrix) {
     }
   }
 
-  // Real block embedding: M = [ [A, -B], [B, A] ] (size 2n x 2n)
+  // Real block embedding: M = [ [A, -B], [B, A] ] (size 2n x 2n, real symmetric)
   const M = Array.from({ length: 2 * n }, () => Array(2 * n).fill(0));
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
@@ -143,12 +198,12 @@ export function computeComplexHermitianSpectrum(complexMatrix) {
     }
   }
 
-  const svd = computeMatrixSvd(M);
-  const s = svd.singular_values || [];
+  // Symmetric Jacobi eigensolver extracts exact signed eigenvalues with multiplicity 2
+  const signedEvals = jacobiSymmetricEigenvalues(M);
   const eigenvalues = [];
   for (let k = 0; k < n; k++) {
-    const val1 = s[2 * k] !== undefined ? s[2 * k] : 0;
-    const val2 = s[2 * k + 1] !== undefined ? s[2 * k + 1] : 0;
+    const val1 = signedEvals[2 * k] !== undefined ? signedEvals[2 * k] : 0;
+    const val2 = signedEvals[2 * k + 1] !== undefined ? signedEvals[2 * k + 1] : 0;
     const avg = (val1 + val2) / 2;
     eigenvalues.push(Math.abs(avg) < 1e-12 ? 0.0 : avg);
   }
@@ -157,19 +212,37 @@ export function computeComplexHermitianSpectrum(complexMatrix) {
   const cleanNum = v => Math.abs(v) < 1e-12 ? 0.0 : Math.round(v * 1e10) / 1e10;
   const cleanedEvals = eigenvalues.map(cleanNum);
   const trace = cleanNum(cleanedEvals.reduce((sum, v) => sum + v, 0));
-  const nonZeroEvals = cleanedEvals.filter(v => v > 1e-6);
+  const min_eigenvalue = Math.min(...cleanedEvals);
+  const max_eigenvalue = Math.max(...cleanedEvals);
+
+  // Strictly validate positive-semidefiniteness (Redpen IX-A1)
+  const is_positive_semidefinite = min_eigenvalue >= -1e-6;
+  const nonZeroEvals = cleanedEvals.filter(v => Math.abs(v) > 1e-6);
   const rank = nonZeroEvals.length;
-  const entropy = nonZeroEvals.reduce((acc, p) => {
-    if (p <= 0) return acc;
-    return acc - p * Math.log2(p);
-  }, 0);
+
+  let entropy_bits = null;
+  let density_matrix_valid = false;
+
+  if (is_positive_semidefinite) {
+    const positiveEvals = cleanedEvals.filter(v => v > 1e-6);
+    const entropy = positiveEvals.reduce((acc, p) => {
+      if (p <= 0) return acc;
+      return acc - p * Math.log2(p);
+    }, 0);
+    entropy_bits = Math.abs(entropy) < 1e-12 ? 0.0 : cleanNum(entropy);
+    density_matrix_valid = Math.abs(trace - 1.0) < 1e-4;
+  }
 
   return {
     valid: true,
     eigenvalues: cleanedEvals,
     trace,
     rank,
-    entropy_bits: Math.abs(entropy) < 1e-12 ? 0.0 : cleanNum(entropy)
+    min_eigenvalue,
+    max_eigenvalue,
+    is_positive_semidefinite,
+    density_matrix_valid,
+    entropy_bits
   };
 }
 
@@ -520,8 +593,18 @@ export function evaluateGHZReductionAndLocality(problem = {}, options = {}) {
   );
   const rho1_diag = [cleanNum(rho1[0][0].re), cleanNum(rho1[1][1].re)];
 
+  // 3b. Partial trace over qubits 1 & 3: rho_2(x, y) = rho12(x, y) + rho12(2+x, 2+y) for x, y in {0..1}
+  // Qubit 2 carries the superposition (|0> + i|1>)/sqrt(2) with imaginary coherence -0.5i, +0.5i (Redpen IX-A2)
+  const rho2 = Array.from({ length: 2 }, (_, x) =>
+    Array.from({ length: 2 }, (_, y) => ({
+      re: rho12[x][y].re + rho12[2 + x][2 + y].re,
+      im: rho12[x][y].im + rho12[2 + x][2 + y].im
+    }))
+  );
+  const rho2_diag = [cleanNum(rho2[0][0].re), cleanNum(rho2[1][1].re)];
+
   // 4. Compute exact spectra of complex Hermitian density matrices via real block embedding
-  // Strictly preserves off-diagonal imaginary coherence (Redpen VIII-A1)
+  // Strictly preserves off-diagonal imaginary coherence (Redpen VIII-A1, IX-A1, IX-A2)
   const spec12 = computeComplexHermitianSpectrum(rho12);
   const rho12_singular_values = spec12.eigenvalues || [];
   const rho12_rank = spec12.rank;
@@ -535,6 +618,13 @@ export function evaluateGHZReductionAndLocality(problem = {}, options = {}) {
   const rho1_entropy_bits = spec1.entropy_bits;
   const rho1_is_maximally_mixed_on_1qubit = (rho1_rank === 2) &&
     rho1_singular_values.every(v => Math.abs(v - 0.5) < 1e-4);
+
+  const spec2 = computeComplexHermitianSpectrum(rho2);
+  const rho2_singular_values = spec2.eigenvalues || [];
+  const rho2_rank = spec2.rank;
+  const rho2_entropy_bits = spec2.entropy_bits;
+  const rho2_is_maximally_mixed_on_1qubit = (rho2_rank === 2) &&
+    rho2_singular_values.every(v => Math.abs(v - 0.5) < 1e-4);
 
   // 5. Global Stabilizer expectation <X1 X2 X3>
   // X1 X2 X3 maps bit triple (x1, x2, x3) to (1-x1, 1-x2, 1-x3)
@@ -582,7 +672,7 @@ export function evaluateGHZReductionAndLocality(problem = {}, options = {}) {
     negativePassed = prodRes.positive_control.reduced_2qubit_rank === 1 &&
                      prodRes.positive_control.reduced_2qubit_entropy_bits === 0.0;
   } else {
-    positivePassed = Number.isFinite(rho12_entropy_bits) && (rho12_rank >= 1) && spec12.valid && spec1.valid;
+    positivePassed = Number.isFinite(rho12_entropy_bits) && (rho12_rank >= 1) && spec12.valid && spec1.valid && spec2.valid;
   }
 
   const epistemic_status = isCustom
@@ -601,16 +691,24 @@ export function evaluateGHZReductionAndLocality(problem = {}, options = {}) {
     imaginary_coherence_preserved: true,
     positive_control: {
       passed: positivePassed,
+      reduced_2qubit_matrix: rho12,
       reduced_2qubit_diagonal: rho12_diag,
       reduced_2qubit_singular_values: rho12_singular_values,
       reduced_2qubit_rank: rho12_rank,
       reduced_2qubit_entropy_bits: rho12_entropy_bits,
       reduced_2qubit_maximally_mixed_i4_div_4: rho12_is_maximally_mixed_on_2qubits,
+      reduced_1qubit_matrix: rho1,
       reduced_1qubit_diagonal: rho1_diag,
       reduced_1qubit_singular_values: rho1_singular_values,
       reduced_1qubit_rank: rho1_rank,
       reduced_1qubit_entropy_bits: rho1_entropy_bits,
       reduced_1qubit_maximally_mixed_on_1qubit: rho1_is_maximally_mixed_on_1qubit,
+      reduced_qubit2_matrix: rho2,
+      reduced_qubit2_diagonal: rho2_diag,
+      reduced_qubit2_singular_values: rho2_singular_values,
+      reduced_qubit2_rank: rho2_rank,
+      reduced_qubit2_entropy_bits: rho2_entropy_bits,
+      reduced_qubit2_maximally_mixed_on_1qubit: rho2_is_maximally_mixed_on_1qubit,
       global_stabilizer_x1x2x3_expectation: x1x2x3_expectation,
       single_qubit_z1_expectation: z1_expectation,
       is_canonical_ghz_plus,
@@ -1546,25 +1644,84 @@ export function evaluateLadderOperatorCommutator(problem = {}, options = {}) {
     return res;
   }
 
-  function parseExpressionToPoly(exprStr) {
-    const s = String(exprStr || '').replace(/\s+/g, '')
-      .replace(/a\^\\dagger|a\^\*/g, 'a^dagger')
-      .replace(/b\^\\dagger|b\^\*/g, 'b^dagger');
-
-    if (s === '1') return [{ coeff: 1, factors: [] }];
-    if (s === '0') return [];
-    if (s === 'a') return [{ coeff: 1, factors: ['a'] }];
-    if (s === 'a^dagger') return [{ coeff: 1, factors: ['a^dagger'] }];
-    if (s === 'b') return [{ coeff: 1, factors: ['b'] }];
-    if (s === 'b^dagger') return [{ coeff: 1, factors: ['b^dagger'] }];
-    if (s === 'a*a^dagger') return [{ coeff: 1, factors: ['a', 'a^dagger'] }];
-    if (s === 'a^dagger*a') return [{ coeff: 1, factors: ['a^dagger', 'a'] }];
-    if (s === 'a^dagger^2' || s === '(a^dagger)^2' || s === 'a^dagger*a^dagger') {
-      return [{ coeff: 1, factors: ['a^dagger', 'a^dagger'] }];
+  function validateLadderPoly(poly) {
+    if (!Array.isArray(poly)) return false;
+    const validBases = new Set(['a', 'a^dagger', 'b', 'b^dagger', 'epsilon*N']);
+    for (const t of poly) {
+      if (!t || typeof t !== 'object') return false;
+      if (typeof t.coeff !== 'number' || !Number.isFinite(t.coeff)) return false;
+      if (!Array.isArray(t.factors)) return false;
+      for (const f of t.factors) {
+        if (!validBases.has(f)) return false;
+      }
     }
-    if (s === 'a^2' || s === 'a*a') return [{ coeff: 1, factors: ['a', 'a'] }];
-    const factors = s.split('*').filter(Boolean);
-    return [{ coeff: 1, factors }];
+    return true;
+  }
+
+  function parseLadderExpression(exprStr) {
+    if (typeof exprStr !== 'string') return null;
+    let s = exprStr.trim();
+    if (!s) return null;
+    s = s.replace(/\\dagger|\^\*/g, '^dagger')
+         .replace(/a\^\{dagger\}/g, 'a^dagger')
+         .replace(/b\^\{dagger\}/g, 'b^dagger')
+         .replace(/a\^†/g, 'a^dagger')
+         .replace(/b\^†/g, 'b^dagger');
+    s = s.replace(/\s+/g, '');
+    if (s === '0') return [];
+    const termRegex = /([+-]?[^+-]+)/g;
+    const rawTerms = s.match(termRegex);
+    if (!rawTerms || rawTerms.join('') !== s) return null;
+    const poly = [];
+    for (let rawTerm of rawTerms) {
+      let termStr = rawTerm;
+      let sign = 1;
+      if (termStr.startsWith('+')) termStr = termStr.slice(1);
+      else if (termStr.startsWith('-')) { sign = -1; termStr = termStr.slice(1); }
+      if (!termStr) return null;
+      if (/^\d+(?:\.\d+)?$/.test(termStr)) {
+        const val = parseFloat(termStr) * sign;
+        if (Math.abs(val) > 1e-12) poly.push({ coeff: val, factors: [] });
+        continue;
+      }
+      if (termStr === 'epsilon*N' || termStr === 'epsilon' || termStr === 'N') {
+        poly.push({ coeff: sign, factors: ['epsilon*N'] });
+        continue;
+      }
+      const factorParts = termStr.split('*');
+      let coeff = sign;
+      const factors = [];
+      for (const part of factorParts) {
+        if (!part) return null;
+        if (/^\d+(?:\.\d+)?$/.test(part)) {
+          coeff *= parseFloat(part);
+          continue;
+        }
+        let p = part;
+        if (p.startsWith('(') && p.includes(')^')) {
+          const m = p.match(/^\(([^)]+)\)\^(\d+)$/);
+          if (m) p = m[1] + '^' + m[2];
+        }
+        let base = null;
+        let power = 1;
+        if (p === 'a' || p === 'b' || p === 'a^dagger' || p === 'b^dagger' || p === 'epsilon*N') {
+          base = p;
+          power = 1;
+        } else {
+          const powerMatch = p.match(/^(a\^dagger|b\^dagger|a|b)\^(\d+)$/);
+          if (powerMatch) {
+            base = powerMatch[1];
+            power = parseInt(powerMatch[2], 10);
+            if (power < 1 || power > 10) return null;
+          } else {
+            return null; // Reject unrecognized symbols (e.g. xyz) (Redpen IX-A3)
+          }
+        }
+        for (let k = 0; k < power; k++) factors.push(base);
+      }
+      poly.push({ coeff, factors });
+    }
+    return poly;
   }
 
   let A_poly = [{ coeff: 1, factors: ['a'] }];
@@ -1580,10 +1737,20 @@ export function evaluateLadderOperatorCommutator(problem = {}, options = {}) {
       exprLabel = rel;
       const match = rel.match(/^\[([^\]]+),\s*([^\]]+)\](?:\s*\+\s*(.*))?$/);
       if (match) {
-        A_poly = parseExpressionToPoly(match[1]);
-        B_poly = parseExpressionToPoly(match[2]);
+        A_poly = parseLadderExpression(match[1]);
+        B_poly = parseLadderExpression(match[2]);
         if (match[3]) {
-          trailingPoly = parseExpressionToPoly(match[3]);
+          trailingPoly = parseLadderExpression(match[3]);
+        }
+        if (!A_poly || !B_poly || (match[3] && !trailingPoly)) {
+          return {
+            capability_id: 'A-09-LADDER',
+            name: 'Ladder Operator Commutator Algebra',
+            epistemic_status: 'NOT_EVALUATED',
+            scientific_status: ATLAS_EPISTEMIC_STATUS_TAXONOMY.NOT_EVALUATED,
+            reason: 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN',
+            details: `Unrecognized operator or invalid syntax in commutator relation: "${rel}"`
+          };
         }
       } else {
         return {
@@ -1596,8 +1763,18 @@ export function evaluateLadderOperatorCommutator(problem = {}, options = {}) {
         };
       }
     } else if (input.A && input.B) {
-      A_poly = Array.isArray(input.A) ? input.A : parseExpressionToPoly(input.A);
-      B_poly = Array.isArray(input.B) ? input.B : parseExpressionToPoly(input.B);
+      A_poly = Array.isArray(input.A) ? (validateLadderPoly(input.A) ? input.A : null) : parseLadderExpression(input.A);
+      B_poly = Array.isArray(input.B) ? (validateLadderPoly(input.B) ? input.B : null) : parseLadderExpression(input.B);
+      if (!A_poly || !B_poly) {
+        return {
+          capability_id: 'A-09-LADDER',
+          name: 'Ladder Operator Commutator Algebra',
+          epistemic_status: 'NOT_EVALUATED',
+          scientific_status: ATLAS_EPISTEMIC_STATUS_TAXONOMY.NOT_EVALUATED,
+          reason: 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN',
+          details: 'Unrecognized operator or invalid syntax in input operators A or B.'
+        };
+      }
       exprLabel = `[${JSON.stringify(input.A)}, ${JSON.stringify(input.B)}]`;
     }
     if (input.expected_value !== undefined) expectedValue = String(input.expected_value).trim();

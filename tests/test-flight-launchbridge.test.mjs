@@ -1416,8 +1416,14 @@ test('R4-06B: Execution-Time Tool-Boundary Mediation, Traversal Rejection & Syml
   const permitted2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_manifest/spec.json');
   assert.equal(permitted2A.permitted, true);
 
-  const permitted2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/manifest-succession/lineage.md');
+  const permitted2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'app/wendbine/spec.md');
   assert.equal(permitted2B.permitted, true);
+
+  // docs/research/manifest-succession is strictly excluded for all arms (Redpen IX-B1)
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/manifest-succession/lineage.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
 
   // 5. HeterogeneousDiscoveryHarness executeAuditedToolCall mediation
   const harness = new HeterogeneousDiscoveryHarness({
@@ -1544,5 +1550,67 @@ test('R4-08: Prospective Live Episode Issuance, Immutable Registration & Replay 
       if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
       if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
     } catch {}
+  }
+});
+
+test('Redpen IX-B: Strict Positive Manifest, Symlink Alias Defense & Fail-Closed Registry', async () => {
+  // IX-B1: Manifest succession files are strictly forbidden for Arm 1, 2A, and 2B
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_1_ARCHIVAL', 'docs/research/manifest-succession/lineage.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/manifest-succession/lineage.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/manifest-succession/lineage.md'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // IX-B2: Execution-time tool mediation and unmediated tool rejection
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR' });
+  await assert.rejects(
+    async () => harness.executeAuditedToolCall('unauthorized_tool', {}),
+    /UNAUTHORIZED_TOOL_FORBIDDEN/
+  );
+
+  // IX-B3: Symlink Alias Loophole Defense
+  // Place a symlink inside an allowed folder (tests/fixtures/symlink_alias_defense_test.md)
+  // pointing to a forbidden file in the repository (ATLAS.md)
+  const symlinkPath = path.resolve('tests/fixtures/symlink_alias_defense_test.md');
+  const targetForbiddenPath = path.resolve('ATLAS.md');
+  try {
+    if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+    fs.symlinkSync(targetForbiddenPath, symlinkPath, 'file');
+
+    // assertArmSourceAccessPermitted must follow canonical realpath and fail-closed!
+    assert.throws(
+      () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'tests/fixtures/symlink_alias_defense_test.md'),
+      /FORBIDDEN_SOURCE_ACCESS_REFUSED|UNAUTHORIZED_SOURCE_ROOT_ACCESS/
+    );
+  } finally {
+    if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+  }
+
+  // IX-B4: Episode registry corruption fail-closed
+  const tempDir = path.resolve('.td613_temp_test_registry_corrupt');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const corruptFile = path.join(tempDir, 'corrupted_episodes.json');
+  try {
+    fs.writeFileSync(corruptFile, '{ invalid json structure !!!', 'utf8');
+    assert.throws(
+      () => loadEpisodeRegistry(corruptFile),
+      /EPISODE_REGISTRY_CORRUPTED/
+    );
+
+    // Synthetic ID rejection
+    assert.throws(
+      () => registerLiveEpisode('EPISODE-B-SOURCE-FREE-01', {}, corruptFile),
+      /SYNTHETIC_EPISODE_LIVE_REGISTRATION_REFUSED/
+    );
+  } finally {
+    if (fs.existsSync(corruptFile)) fs.unlinkSync(corruptFile);
+    if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
   }
 });

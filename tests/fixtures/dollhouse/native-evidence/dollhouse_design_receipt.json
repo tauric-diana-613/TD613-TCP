@@ -1,0 +1,238 @@
+{
+  "schema": "td613.dollhouse-design.return-receipt/v0.2",
+  "version": "v0.2-candidate",
+  "commission_id": "COMM-d6f005af",
+  "commission_digest": "d6f005afd2f361fffab72816392a36025a00f9405d837b5226f2f8cbe2a793bb",
+  "seed": "Holonomy Invariants across Non-Commutative Ladder Operator Phase Spaces: A Study in Spectral Preservation and Dissipative Contraction",
+  "medium": "SCHOLARLY",
+  "human_coordinates": {
+    "what": "Declared artifact form",
+    "who": "Intended human encounter & authority",
+    "where": "Material site & viewport",
+    "how": "Operational & rhetorical mechanism",
+    "when": "Temporal cadence & transform sequence",
+    "why": "Teleological & consequential purpose"
+  },
+  "selected_instruments": [
+    "PHASONIC_COUNTERPOINT"
+  ],
+  "output_contract": {
+    "requested_deliverables": 1,
+    "cardinality_authority": "OPERATOR_COMMISSION_ONLY",
+    "default_deliverables": 1,
+    "candidates_are_internal_scaffolding": true,
+    "refraction_is_internal_scaffolding": true,
+    "unrequested_extra_files_or_modes_authorized": false,
+    "instruction": "Materialize and return exactly the commissioned number of coherent finished artifacts; do not deliver Candidate B, refraction, receipts, or bonus modes as separate artifacts unless the operator specifically requests them."
+  },
+  "historical_references": [],
+  "candidates": [
+    {
+      "id": "COMM-d6f005af-CAND-A",
+      "concept_title": "The Holonomy Escapement",
+      "governing_instrument": "PHASONIC_COUNTERPOINT",
+      "formal_proposition": "Couples quasiperiodic wave modulation with physical lattice strain, transforming recurrence into material displacement.",
+      "structural_mechanisms": [
+        "Baseline Cadence: Maps holonomy into a structured recursive invariant",
+        "Counter-Pressure: Introduces invariants as an aperiodic strain vector",
+        "Causal Interference: Measures observable displacement where holonomy and invariants collide"
+      ],
+      "medium_consequence": "In SCHOLARLY, the work refuses singular closure by presenting distinct rival paths.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "holonomy",
+        "invariants",
+        "across"
+      ]
+    },
+    {
+      "id": "COMM-d6f005af-CAND-B",
+      "concept_title": "The Aperiodic Reflection",
+      "governing_instrument": "PHASONIC_COUNTERPOINT",
+      "formal_proposition": "Reflects the trajectory across the irrational phasonic angle, revealing unseen structural symmetry.",
+      "structural_mechanisms": [
+        "Procedural Inversion: Consequence displayed at ingress; terminal loss visible prior to operational cause",
+        "Friction Accounting: Each interaction demands explicit recognition of past energetic cost",
+        "Asymmetric Recovery: Historical traversal is fully recordable but structurally irreversible"
+      ],
+      "medium_consequence": "In SCHOLARLY, the work subverts institutional arrival by foregrounding retained loss.",
+      "scaffolding_class": "DETERMINISTIC_FRAMEWORK",
+      "proposal_origin": "COMMISSION_DERIVED",
+      "seed_anchor_terms": [
+        "invariants",
+        "across"
+      ]
+    }
+  ],
+  "primary_materialization": {
+    "selected_concept": "COMM-d6f005af-CAND-A",
+    "title": "Composition on: Holonomy Invariants across Non-Commutative Ladder Operator Phase Spaces: A Study in Spectral Preservation and Dissipative Contraction",
+    "medium": "SCHOLARLY",
+    "instruments": [
+      "PHASONIC_COUNTERPOINT"
+    ],
+    "formal_architecture": {
+      "ingress": "Coupling WHAT (Declared artifact form) with WHO (Intended human encounter & authority)",
+      "cadence": "Choreographing WHEN (Temporal cadence & transform sequence) against WHY (Teleological & consequential purpose)",
+      "execution": "Resolving WHERE (Material site & viewport) through HOW (Operational & rhetorical mechanism)"
+    },
+    "operative_verbs": [
+      {
+        "verb": "PROPAGATION",
+        "action": "Derived dual commission-grounded proposals (The Holonomy Escapement / The Aperiodic Reflection)"
+      },
+      {
+        "verb": "COMPRESSION",
+        "action": "Retained path-sensitive distinctions without decorative surplus"
+      },
+      {
+        "verb": "COUPLING",
+        "action": "Bound human coordinates into mutually consequential pairs"
+      },
+      {
+        "verb": "TRANSITION",
+        "action": "Shifted projection into declared medium without losing invariants"
+      },
+      {
+        "verb": "STABILIZATION",
+        "action": "Anchored final form with inspectable boundaries and human closure"
+      }
+    ]
+  },
+  "refractive_variant": {
+    "id": "COMM-d6f005af-REFRACT-01",
+    "governing_instrument": "PHASONIC_COUNTERPOINT",
+    "mutated_parameter": "temporal_revelation_order",
+    "mutation_description": "Reverses the sequence: reveals path divergence first, and shared endpoint alibi second.",
+    "formal_consequence": "Changes the work from an exposure of institutional erasure into a study of inevitable convergence.",
+    "material_difference": "The viewer witnesses the divergence before discovering they were destined for the same door.",
+    "instruction_trace": "Choreograph the trajectory so the observer witnesses divergence before discovering the shared endpoint.",
+    "status": "INTERNAL_COMPARATIVE_DESIGN_STUDY_NOT_A_DELIVERABLE"
+  },
+  "comparative_analysis": {
+    "shared_invariants": [
+      "The core intellectual seed (\"Holonomy Invariants across Non-Commutative Ladder Operator Phase Spaces: A Study in Spectral Preservation and Dissipative Contraction\") is held invariant across internal design alternatives",
+      "Internal studies inhabit the declared medium: SCHOLARLY",
+      "No scalar utility score or automatic aesthetic crown is applied"
+    ],
+    "divergent_qualities": [
+      "Candidate A (The Holonomy Escapement): PHASONIC_COUNTERPOINT — Couples quasiperiodic wave modulation with physical lattice strain, transforming recurrence into material displacement.",
+      "Candidate B (The Aperiodic Reflection): PHASONIC_COUNTERPOINT — Reflects the trajectory across the irrational phasonic angle, revealing unseen structural symmetry.",
+      "Refractive Variant mutates [temporal_revelation_order]: Changes the work from an exposure of institutional erasure into a study of inevitable convergence."
+    ],
+    "candidate_evaluations": [
+      {
+        "candidate_id": "CANDIDATE_A",
+        "concept_title": "The Holonomy Escapement",
+        "governing_instrument": "PHASONIC_COUNTERPOINT",
+        "status": "COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE",
+        "evaluation_nature": "HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION",
+        "formal_proposition": "Couples quasiperiodic wave modulation with physical lattice strain, transforming recurrence into material displacement.",
+        "distinctive_formal_mechanism": "Quasiperiodic spatial/syntactic modulation against a periodic baseline (ratio phi ≈ 1.618) generating bounded irrational displacement without structural collapse",
+        "trade_offs": {
+          "gains": "Mathematical reproducibility, high geometric/typographic precision, rigorous dual-domain coupling (spatial lattice and clause syntax)",
+          "sacrifices": "Sacrifices affective warmth, personal psychological interiority, and informal colloquial improvisation in favor of structural austerity"
+        },
+        "counterfactual_consequence": "Serves as primary materialization anchor; intellectual seed is experienced through PHASONIC_COUNTERPOINT formal grammar and immediate sensory staging.",
+        "divergence_vector": "QUASIPERIODIC_STRAIN_OVER_PERIODIC_ORDER",
+        "structural_mechanisms": [
+          "Baseline Cadence: Maps holonomy into a structured recursive invariant",
+          "Counter-Pressure: Introduces invariants as an aperiodic strain vector",
+          "Causal Interference: Measures observable displacement where holonomy and invariants collide"
+        ],
+        "seed_anchor_terms": [
+          "holonomy",
+          "invariants",
+          "across"
+        ]
+      },
+      {
+        "candidate_id": "CANDIDATE_B",
+        "concept_title": "The Aperiodic Reflection",
+        "governing_instrument": "PHASONIC_COUNTERPOINT",
+        "status": "COMPARATIVE_DESIGN_HEURISTIC_CANDIDATE",
+        "evaluation_nature": "HEURISTIC_COMPARATIVE_ANALYSIS_NOT_INDEPENDENT_EXECUTION",
+        "formal_proposition": "Reflects the trajectory across the irrational phasonic angle, revealing unseen structural symmetry.",
+        "distinctive_formal_mechanism": "Quasiperiodic spatial/syntactic modulation against a periodic baseline (ratio phi ≈ 1.618) generating bounded irrational displacement without structural collapse",
+        "trade_offs": {
+          "gains": "Mathematical reproducibility, high geometric/typographic precision, rigorous dual-domain coupling (spatial lattice and clause syntax)",
+          "sacrifices": "Sacrifices affective warmth, personal psychological interiority, and informal colloquial improvisation in favor of structural austerity"
+        },
+        "counterfactual_consequence": "If selected over Candidate A (PHASONIC_COUNTERPOINT): shifts core experience from PHASONIC_COUNTERPOINT to PHASONIC_COUNTERPOINT, relocating consequence along the axis of QUASIPERIODIC_STRAIN_OVER_PERIODIC_ORDER.",
+        "divergence_vector": "QUASIPERIODIC_STRAIN_OVER_PERIODIC_ORDER",
+        "structural_mechanisms": [
+          "Procedural Inversion: Consequence displayed at ingress; terminal loss visible prior to operational cause",
+          "Friction Accounting: Each interaction demands explicit recognition of past energetic cost",
+          "Asymmetric Recovery: Historical traversal is fully recordable but structurally irreversible"
+        ],
+        "seed_anchor_terms": [
+          "invariants",
+          "across"
+        ]
+      }
+    ],
+    "evaluation_type": "COMPARATIVE_DESIGN_HEURISTIC_INVENTORY",
+    "governing_interaction_topology": {
+      "spatial_interpolation": "CONTINUOUS_MANIFOLD_WHERE_REQUIRED",
+      "grammatical_state_transitions": "DISCRETE_STATE_PERMUTATIONS",
+      "motion_policy": "USER_CONTROLLED_STILL_STATE_UNDER_REDUCED_MOTION",
+      "mobile_legibility_profile": {
+        "minimum_telemetry_font_px": 12,
+        "minimum_hit_target_px": 44,
+        "viewport_stack_boundary_px": 480
+      }
+    },
+    "open_aesthetic_questions": [
+      "Does the materialization of [temporal_revelation_order] successfully alter the observer's understanding of the seed?",
+      "Which counterfactual insights improve the commissioned work without creating unauthorized outputs?"
+    ]
+  },
+  "instrument_provenance": [
+    {
+      "instrument_id": "PHASONIC_COUNTERPOINT",
+      "lineage": "Aperture v3.2-alpha Triple Overlay",
+      "material_contribution": "Supplied D₃ periodic scaffold, φ quasiperiodic detour equations, and interference field",
+      "causal_contract": {
+        "instrument_id": "PHASONIC_COUNTERPOINT",
+        "governing_theory": "Triple Overlay (D₃ Periodic Lattice × φ Quasiperiodic Modulation × Heterostratigraphic Interference)",
+        "target_domains": [
+          "GEOMETRY",
+          "MOTION",
+          "GRAMMAR"
+        ],
+        "causal_bindings": [
+          {
+            "parameter": "scalar_interference_H",
+            "target_component": "spatial_lattice_geometry",
+            "transfer_law": "dx(k) = 24.0 * H(u) * cos(2*pi*phi*k*0.05); dy(k) = 24.0 * H(u) * sin(2*pi*phi*k*0.05); where H(u) = 0.5*(1 - cos(2*pi*u)) + 0.5*(1 - cos(2*pi*phi*u))",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "H = 0.0000 collapses all vertex displacement to 0.00px, restoring unperturbed D3 equilateral triangular mesh"
+          },
+          {
+            "parameter": "scalar_interference_H",
+            "target_component": "clause_syntax_selection",
+            "transfer_law": "syntax_state = H >= 1.30 ? SEMICOLON_EQUIPOLLENCE : (H >= 0.75 ? EM_DASH_SHEAR : (H >= 0.25 ? COLON_SUSPENSION : PERIODIC_BASELINE))",
+            "execution_status": "PROPOSED_TRANSFER_LAW",
+            "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL",
+            "falsification_probe": "Forcing H = 0.0000 resets syntax_state to PERIODIC_BASELINE (\"The king arrived.\") and font weight to 400"
+          }
+        ],
+        "causality_class": "OPERATIVE_TRANSFER",
+        "execution_status": "PROPOSED_TRANSFER_LAW",
+        "witness_verification": "PLANNING_SYNTHESIS_PROPOSAL"
+      }
+    }
+  ],
+  "scientific_companion_audit": null,
+  "governance": {
+    "discourse_mode": "OPEN_FIELD_CREATIVE_SYNTHESIS",
+    "scientific_proof": false,
+    "palate_status": "UNBORN",
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true,
+    "governing_law": "Make the unresolved relation productive. Let distinct forms meet without forcing them to merge. Allow the work to discover its medium through consequence."
+  }
+}
