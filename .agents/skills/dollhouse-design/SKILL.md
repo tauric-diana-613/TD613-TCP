@@ -201,12 +201,18 @@ When invoking `/dollhouse-design` natively in Antigravity or via CLI runner, the
       "summary": "<concise-summary-of-reference>"
     }
   ],
+  "mathematical_premise": {
+    "operation": "A-01 | A-02 | A-03 | A-04 | A-05 | A-06 | A-07 | A-08 | A-09 | LADDER_COMMUTATOR",
+    "problem": { "/* typed mathematical input structure */": true },
+    "required": true
+  },
   "deliverable_count": 1,
   "scientific_audit_requested": false
 }
 ```
 
 - If `instruments` is omitted, the conductor infers instruments contextually from seed semantics.
+- If `mathematical_premise` is declared, the Conductor enlists `ATLAS` alongside `PEDAGOGUE` and `APERTURE` in the pre-synthesis advisory audit, validating the formal premise against the Atlas Mathematical Engine (`app/engine/atlas-mathematical-engine.js`).
 - If `historical_references` are supplied, all binding references are retrieved and fully ingested. If any binding reference cannot be resolved at the declared revision, the cycle fails closed (`ReferenceError`).
 - Downstream creative materialization consumes the receipt and produces **exactly `output_contract.requested_deliverables` finished artifacts** (one by default) under `OPEN_FIELD_CREATIVE_SYNTHESIS`. Candidate A/B and the refractive study are design reasoning, never mandatory additional files.
 

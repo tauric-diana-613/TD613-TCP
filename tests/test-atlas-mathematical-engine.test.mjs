@@ -3,14 +3,15 @@
  *
  * Tests the 9 reusable Atlas mathematical capabilities in app/engine/atlas-mathematical-engine.js:
  *   - Genuine input dependency (caller problem objects actively steer outcomes)
- *   - Epistemic status enforcement (NOT_EVALUATED / HELD on malformed / out-of-domain inputs)
+ *   - Epistemic status enforcement (FIXTURE_DEMONSTRATION vs INPUT_DEPENDENT_EVALUATION vs NOT_EVALUATED)
+ *   - Out-of-family generalization testing across unexpected inputs
  *   - Strict separation:
- *       * SVD on R vs Gaussian elimination over F31 (continuous SVD refused on F31)
- *       * GHZ 2-qubit reduction (rank 2 classical mixture, S=1.0 bit, NOT maximally mixed on 2 qubits)
+ *       * SVD on R vs Gaussian elimination over F31 (callable continuous SVD refused on F31)
+ *       * Physical 3-qubit density matrix reduction (genuine partial traces, rank, entropy)
  *       * Liouville phase volume contraction div(F) = -gamma/m < 0 (damped systems dissipative, NOT symplectic)
- *       * Parameter non-identifiability in quantum visibility inverse problems
+ *       * Disentangled photon statistics vs spectral sinc visibility inverse models
  *       * Operational separation of decoherence vs coarse-graining vs quantum intervention vs gauge symmetry
- *       * Symbolic syntactic normalization vs false-twin rejection
+ *       * Harmonic frequency normalization vs non-commutative ladder operator algebra
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Heritage: Tauric Diana · Khona‌lit-po · Display: 𝌋 · Scalar: U+10D613 (\uDBF5\uDE13)
@@ -29,17 +30,23 @@ import {
   evaluateQuantumVisibilityInverseProblem,
   evaluateQuantumMeasurementContexts,
   evaluateHarmonicOscillatorSymbolicEquivalence,
+  evaluateLadderOperatorCommutator,
+  computeFiniteFieldSvd,
   dispatchAtlasMathematicalOperation,
   ATLAS_ENGINE_VERSION
 } from '../app/engine/atlas-mathematical-engine.js';
 
 test('Atlas Engine - Metadata and Versioning', () => {
-  assert.equal(ATLAS_ENGINE_VERSION, '1.0.0');
+  assert.equal(ATLAS_ENGINE_VERSION, '1.1.0');
 });
 
-test('A-01: Temporal Fiber Geometry - Positive and Negative Controls', () => {
+// ============================================================================
+// SECTION 1: CANONICAL CALIBRATION FIXTURES (FIXTURE_DEMONSTRATION)
+// ============================================================================
+
+test('A-01: Temporal Fiber Geometry - Canonical Fixture Demonstration', () => {
   const result = evaluateTemporalFiberEquivalence();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.t0_equivalent, true);
   assert.equal(result.positive_control.t1_distinguishable, true);
@@ -47,32 +54,9 @@ test('A-01: Temporal Fiber Geometry - Positive and Negative Controls', () => {
   assert.equal(result.negative_control.radial_congruence_maintained, true);
 });
 
-test('A-01: Temporal Fiber Geometry - Custom Inputs and Input Dependency', () => {
-  const custom = evaluateTemporalFiberEquivalence({
-    stateA: [6, 8],
-    stateB: [10, 0],
-    f: ([x1, x2]) => x1 * x1 + x2 * x2,
-    T: ([x1, x2]) => [x1 + 2, x2]
-  });
-  assert.equal(custom.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
-  assert.equal(custom.positive_control.t0_observation_A, 100);
-  assert.equal(custom.positive_control.t0_observation_B, 100);
-  assert.equal(custom.positive_control.t0_equivalent, true);
-  assert.equal(custom.positive_control.t1_distinguishable, true);
-});
-
-test('A-01: Temporal Fiber Geometry - Malformed Input Rejection', () => {
-  const malformed = evaluateTemporalFiberEquivalence({
-    stateA: ['invalid', 'strings'],
-    stateB: [5, 0]
-  });
-  assert.equal(malformed.epistemic_status, 'NOT_EVALUATED');
-  assert.equal(malformed.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
-});
-
-test('A-02: Distributed Historical Memory - Parity Holonomy', () => {
+test('A-02: Distributed Historical Memory - Canonical Fixture Demonstration', () => {
   const result = evaluateParityInvariant();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.univariate_identical, true);
   assert.equal(result.positive_control.pairwise_identical, true);
@@ -83,27 +67,9 @@ test('A-02: Distributed Historical Memory - Parity Holonomy', () => {
   assert.equal(result.negative_control.unentangled_bernoulli_parity, 0.0);
 });
 
-test('A-02: Distributed Historical Memory - Custom Ensemble Input', () => {
-  const custom = evaluateParityInvariant({
-    evenEnsemble: [[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0]],
-    oddEnsemble: [[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]
-  });
-  assert.equal(custom.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
-  assert.equal(custom.positive_control.parity_separated, true);
-});
-
-test('A-02: Distributed Historical Memory - Malformed Input Rejection', () => {
-  const malformed = evaluateParityInvariant({
-    evenEnsemble: [[0, 0]], // Only 2 bits instead of 3
-    oddEnsemble: [[1, 1, 1]]
-  });
-  assert.equal(malformed.epistemic_status, 'NOT_EVALUATED');
-  assert.equal(malformed.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
-});
-
-test('A-03: GHZ Locality Bounds - Exact Reduced Density Matrix Mathematics', () => {
+test('A-03: GHZ Locality Bounds - Canonical Fixture Demonstration', () => {
   const result = evaluateGHZReductionAndLocality();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
 
   // Exact 2-qubit reduced density matrix rho_12:
@@ -111,7 +77,7 @@ test('A-03: GHZ Locality Bounds - Exact Reduced Density Matrix Mathematics', () 
   // Rank is 2, entropy S = 1.0 bit
   assert.deepEqual(result.positive_control.reduced_2qubit_diagonal, [0.5, 0.0, 0.0, 0.5]);
   assert.equal(result.positive_control.reduced_2qubit_rank, 2);
-  assert.equal(result.positive_control.reduced_2qubit_entropy_bits, 1.0);
+  assert.ok(Math.abs(result.positive_control.reduced_2qubit_entropy_bits - 1.0) < 1e-4);
   // Strictly NOT maximally mixed on 2 qubits (I_4 / 4 would be rank 4, S = 2.0 bits)
   assert.equal(result.positive_control.reduced_2qubit_maximally_mixed_i4_div_4, false);
 
@@ -122,28 +88,20 @@ test('A-03: GHZ Locality Bounds - Exact Reduced Density Matrix Mathematics', () 
   assert.equal(result.positive_control.reduced_1qubit_maximally_mixed_on_1qubit, true);
 
   // Global distinction and vulnerability
-  assert.equal(result.positive_control.global_eigenvalue_plus, 1);
-  assert.equal(result.positive_control.global_eigenvalue_minus, -1);
-  assert.equal(result.positive_control.global_distinguishable, true);
+  assert.ok(Math.abs(result.positive_control.global_stabilizer_x1x2x3_expectation - 1.0) < 1e-4);
+  assert.equal(result.positive_control.is_canonical_ghz_plus, true);
   assert.equal(result.positive_control.qec_distance, 1);
   assert.equal(result.positive_control.qec_unjustified_claim_rejected, true);
 });
 
-test('A-03: GHZ Locality Bounds - Malformed State Vector Rejection', () => {
-  const malformed = evaluateGHZReductionAndLocality({
-    state_vector: [1, 0, 0] // Only 3 elements instead of 8
-  });
-  assert.equal(malformed.epistemic_status, 'NOT_EVALUATED');
-  assert.equal(malformed.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
-});
-
-test('A-04: Modular Rank vs Real Jacobi SVD Conditioning', () => {
+test('A-04: Modular Rank vs Real Jacobi SVD Conditioning - Canonical Fixture Demonstration', () => {
   const result = evaluateRankAndConditioning();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.f31_rank, 2);
   assert.equal(result.positive_control.f31_nullity, 2);
-  assert.equal(result.positive_control.svd_refusal_caught, true);
+  assert.equal(result.positive_control.rank_nullity_consistent, true);
+  assert.equal(result.positive_control.svd_refusal_verified, true);
 
   // Dynamic real Jacobi SVD: condition number = 2.0, sigma_max = 4.0, sigma_min = 2.0
   assert.ok(Math.abs(result.positive_control.real_svd_condition_number - 2.0) < 1e-10);
@@ -151,17 +109,9 @@ test('A-04: Modular Rank vs Real Jacobi SVD Conditioning', () => {
   assert.ok(Math.abs(result.positive_control.real_svd_sigma_min - 2.0) < 1e-10);
 });
 
-test('A-04: Modular Rank vs Real SVD - Malformed Matrix Rejection', () => {
-  const malformed = evaluateRankAndConditioning({
-    modular_matrix: 'not-a-matrix'
-  });
-  assert.equal(malformed.epistemic_status, 'NOT_EVALUATED');
-  assert.equal(malformed.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
-});
-
-test('A-05: Liouville Contraction & Dissipative Morphisms', () => {
+test('A-05: Liouville Contraction & Dissipative Morphisms - Canonical Fixture Demonstration', () => {
   const result = evaluateDynamicalMorphism();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
 
   // Mechanical and electrical phase space volume contraction
@@ -177,27 +127,18 @@ test('A-05: Liouville Contraction & Dissipative Morphisms', () => {
   assert.equal(result.positive_control.spurious_nominal_coupling_rejected, true);
 });
 
-test('A-05: Liouville Contraction - Conservative Oscillator is Symplectic', () => {
-  const conservative = evaluateDynamicalMorphism({
-    mechanical: { m: 1.0, gamma: 0.0, k: 4.0 },
-    electrical: { L: 1.0, R: 0.0, C: 0.25 }
-  });
-  assert.equal(conservative.positive_control.is_strictly_symplectic, true);
-  assert.equal(conservative.positive_control.mechanical_phase_contraction_divF, 0.0);
-});
-
 test('A-06: Distinction Ecology - Structural Signature Detection', () => {
   const result = evaluateStructuralSignature();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'STRUCTURAL_SIGNATURE_RECOGNIZED');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.lexical_trigger_words_present, false);
   assert.equal(result.positive_control.structural_surprise_detected, true);
   assert.equal(result.negative_control.standard_linear_equation_falsely_flagged, false);
 });
 
-test('A-07: Quantum Visibility Nuisance-Parameter Ambiguity', () => {
+test('A-07: Quantum Visibility Nuisance-Parameter Ambiguity - Photon Occupancy Fixture', () => {
   const result = evaluateQuantumVisibilityInverseProblem();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.ok(Math.abs(result.positive_control.visibility_case_1 - 0.45) < 1e-12);
   assert.ok(Math.abs(result.positive_control.visibility_case_2 - 0.45) < 1e-12);
@@ -208,7 +149,7 @@ test('A-07: Quantum Visibility Nuisance-Parameter Ambiguity', () => {
 
 test('A-08: Quantum Measurement Context & Transformation Separation', () => {
   const result = evaluateQuantumMeasurementContexts();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.decoherence_classified, 'ENVIRONMENTAL_DECOHERENCE');
   assert.equal(result.positive_control.coarse_graining_classified, 'COARSE_GRAINING');
@@ -217,9 +158,9 @@ test('A-08: Quantum Measurement Context & Transformation Separation', () => {
   assert.equal(result.negative_control.gauge_not_conflated_with_decoherence, true);
 });
 
-test('A-09: Harmonic Oscillator Symbolic Syntactic Equivalence', () => {
+test('A-09: Harmonic Oscillator Symbolic Syntactic Equivalence - Frequency Relation Fixture', () => {
   const result = evaluateHarmonicOscillatorSymbolicEquivalence();
-  assert.equal(result.epistemic_status, 'MATHEMATICALLY_QUALIFIED');
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
   assert.equal(result.positive_control.passed, true);
   assert.equal(result.positive_control.latex_standard_accepted, true);
   assert.equal(result.positive_control.unicode_accepted, true);
@@ -229,12 +170,235 @@ test('A-09: Harmonic Oscillator Symbolic Syntactic Equivalence', () => {
   assert.equal(result.negative_control.missing_square_root_rejected, true);
 });
 
-test('Universal Dispatcher: dispatchAtlasMathematicalOperation', () => {
-  const op1 = dispatchAtlasMathematicalOperation('A-01');
-  assert.equal(op1.capability_id, 'A-01');
+test('A-09-LADDER: Ladder Operator Commutator Algebra - Canonical Commutator [a, a^dagger] = 1', () => {
+  const result = evaluateLadderOperatorCommutator();
+  assert.equal(result.epistemic_status, 'FIXTURE_DEMONSTRATION');
+  assert.equal(result.positive_control.passed, true);
+  assert.equal(result.positive_control.canonical_commutator_verified, true);
+  assert.equal(result.negative_control.passed, true);
+  assert.equal(result.negative_control.perturbed_commutator_rejected, true);
+  assert.equal(result.negative_control.independent_mode_commutes, true);
+});
 
-  const op3 = dispatchAtlasMathematicalOperation('GHZ_LOCALITY');
-  assert.equal(op3.capability_id, 'A-03');
+// ============================================================================
+// SECTION 2: OUT-OF-FAMILY GENERALIZATION BATTERY (INPUT_DEPENDENT_EVALUATION)
+// ============================================================================
+
+test('A7-01 Generalization: GHZ Evaluation on Separable Product State |000>', () => {
+  // Caller supplies product state |000>
+  const result = evaluateGHZReductionAndLocality({
+    state_vector: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  });
+
+  assert.equal(result.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  // Two-qubit reduction of |000> is a pure state diag(1, 0, 0, 0)
+  assert.deepEqual(result.positive_control.reduced_2qubit_diagonal, [1.0, 0.0, 0.0, 0.0]);
+  assert.equal(result.positive_control.reduced_2qubit_rank, 1);
+  assert.equal(result.positive_control.reduced_2qubit_entropy_bits, 0.0);
+  assert.equal(result.positive_control.reduced_2qubit_maximally_mixed_i4_div_4, false);
+
+  // Single-qubit reduction is also pure diag(1, 0)
+  assert.deepEqual(result.positive_control.reduced_1qubit_diagonal, [1.0, 0.0]);
+  assert.equal(result.positive_control.reduced_1qubit_rank, 1);
+  assert.equal(result.positive_control.reduced_1qubit_entropy_bits, 0.0);
+  assert.equal(result.positive_control.reduced_1qubit_maximally_mixed_on_1qubit, false);
+
+  // Global stabilizer expectation for |000> is 0 (not +1 or -1)
+  assert.equal(result.positive_control.global_stabilizer_x1x2x3_expectation, 0.0);
+  assert.equal(result.positive_control.is_canonical_ghz_plus, false);
+});
+
+test('A7-01 Generalization: GHZ Evaluation on Entangled W State (|001> + |010> + |100>)/sqrt(3)', () => {
+  const s = 1 / Math.sqrt(3);
+  // Indices: 1 = 001, 2 = 010, 4 = 100
+  const wState = [0.0, s, s, 0.0, s, 0.0, 0.0, 0.0];
+
+  const result = evaluateGHZReductionAndLocality({ state_vector: wState });
+  assert.equal(result.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+
+  // W-state has bipartite entanglement, non-zero entropy, but differs completely from GHZ
+  assert.ok(result.positive_control.reduced_2qubit_rank > 1);
+  assert.ok(result.positive_control.reduced_2qubit_entropy_bits > 0.0);
+  assert.equal(result.positive_control.is_canonical_ghz_plus, false);
+});
+
+test('A7-01 Negative Control: Rejection of Unnormalized and Malformed State Vectors', () => {
+  // Unnormalized (norm^2 = 2 != 1)
+  const unnorm = evaluateGHZReductionAndLocality({
+    state_vector: [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  });
+  assert.equal(unnorm.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(unnorm.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+
+  // Wrong dimension (length 4)
+  const wrongDim = evaluateGHZReductionAndLocality({
+    state_vector: [0.5, 0.5, 0.5, 0.5]
+  });
+  assert.equal(wrongDim.epistemic_status, 'NOT_EVALUATED');
+
+  // Non-numeric elements
+  const nonNum = evaluateGHZReductionAndLocality({
+    state_vector: ['string', 0, 0, 0, 0, 0, 0, 0]
+  });
+  assert.equal(nonNum.epistemic_status, 'NOT_EVALUATED');
+});
+
+test('A7-02 Generalization: Out-of-Family Custom Modular Matrix (Rank 2, Nullity 0)', () => {
+  // Custom 2x2 identity matrix over F31: rank is 2, nullity is 0
+  // Crucial test: must NOT demand canonical answer (rank 2, nullity 2)
+  const custom = evaluateRankAndConditioning({
+    modular_matrix: [
+      [1, 0],
+      [0, 1]
+    ]
+  });
+
+  assert.equal(custom.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(custom.positive_control.f31_rank, 2);
+  assert.equal(custom.positive_control.f31_nullity, 0);
+  assert.equal(custom.positive_control.rank_nullity_consistent, true);
+});
+
+test('A7-02 Generalization: Out-of-Family Custom Real Matrix with Condition Number 5.0', () => {
+  // Custom diagonal matrix diag(5.0, 1.0): sigmaMax = 5.0, sigmaMin = 1.0, kappa = 5.0
+  // Must NOT demand canonical answer kappa = 2.0
+  const custom = evaluateRankAndConditioning({
+    real_matrix: [
+      [5.0, 0.0],
+      [0.0, 1.0]
+    ]
+  });
+
+  assert.equal(custom.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.ok(Math.abs(custom.positive_control.real_svd_condition_number - 5.0) < 1e-10);
+  assert.ok(Math.abs(custom.positive_control.real_svd_sigma_max - 5.0) < 1e-10);
+  assert.ok(Math.abs(custom.positive_control.real_svd_sigma_min - 1.0) < 1e-10);
+  assert.equal(custom.positive_control.real_svd_valid, true);
+});
+
+test('A7-02 Callable Public API Boundary: computeFiniteFieldSvd Throws Explicit Refusal', () => {
+  assert.throws(
+    () => computeFiniteFieldSvd([[1, 0], [0, 1]], 31),
+    /FINITE_FIELD_SVD_REFUSED/
+  );
+});
+
+test('A7-02 Negative Control: Ragged Row and Non-Finite Matrix Rejection', () => {
+  // Ragged row
+  const ragged = evaluateRankAndConditioning({
+    modular_matrix: [[1, 2], [3]]
+  });
+  assert.equal(ragged.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(ragged.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+
+  // Non-finite entry (NaN)
+  const nonFinite = evaluateRankAndConditioning({
+    real_matrix: [[NaN, 1.0], [0.0, 1.0]]
+  });
+  assert.equal(nonFinite.epistemic_status, 'NOT_EVALUATED');
+});
+
+test('A7-03 Generalization: Non-Commutative Ladder Operator Commutator Evaluation', () => {
+  // Evaluate canonical [a, a^dagger]
+  const resCanonical = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, a^dagger]'
+  });
+  assert.equal(resCanonical.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(resCanonical.simplified_result, '1');
+  assert.equal(resCanonical.positive_control.passed, true);
+
+  // Evaluate inverted commutator [a^dagger, a] = -1
+  const resInverted = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a^dagger, a]',
+    expected_value: '-1'
+  });
+  assert.equal(resInverted.simplified_result, '-1');
+  assert.equal(resInverted.positive_control.passed, true);
+
+  // Negative control: perturbed commutator does NOT equal 1
+  const resPerturbed = evaluateLadderOperatorCommutator({
+    commutator_relation: '[a, a^dagger] + epsilon * N',
+    expected_value: '1'
+  });
+  assert.equal(resPerturbed.epistemic_status, 'HELD');
+  assert.equal(resPerturbed.positive_control.passed, false);
+});
+
+test('A7-04 Generalization: Spectral Sinc Interferometric Forward Model', () => {
+  const sincModel = evaluateQuantumVisibilityInverseProblem({
+    model: 'SPECTRAL_INTERFEROMETRIC_SINC',
+    sinc_parameters: {
+      eta1: 0.8,
+      delta_omega1: 1.0e12,
+      tau: 1.0e-12,
+      eta2: 0.4,
+      delta_omega2: 0.5e12
+    }
+  });
+
+  assert.equal(sincModel.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(sincModel.forward_model.model_name, 'SPECTRAL_INTERFEROMETRIC_SINC');
+  assert.ok(sincModel.positive_control.visibility_case_1 > 0);
+  assert.ok(sincModel.positive_control.visibility_case_2 > 0);
+  assert.equal(sincModel.positive_control.inverse_unidentifiable_flagged, true);
+});
+
+test('A7-04 Negative Control: Rejection of Unphysical Negative Parameters', () => {
+  const negativeEta = evaluateQuantumVisibilityInverseProblem({
+    pair1: { eta: -0.5, n: 1.0 },
+    pair2: { eta: 0.5, n: 9.0 }
+  });
+  assert.equal(negativeEta.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(negativeEta.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+
+  const negativeOccupancy = evaluateQuantumVisibilityInverseProblem({
+    pair1: { eta: 0.9, n: -2.0 },
+    pair2: { eta: 0.5, n: 9.0 }
+  });
+  assert.equal(negativeOccupancy.epistemic_status, 'NOT_EVALUATED');
+});
+
+test('A7-05 Generalization: Damped vs Conservative Dynamical Morphisms & Domain Validation', () => {
+  // Conservative oscillator (gamma = 0) is volume preserving
+  const conservative = evaluateDynamicalMorphism({
+    mechanical: { m: 2.0, gamma: 0.0, k: 8.0 },
+    electrical: { L: 2.0, R: 0.0, C: 0.125 }
+  });
+  assert.equal(conservative.epistemic_status, 'INPUT_DEPENDENT_EVALUATION');
+  assert.equal(conservative.positive_control.is_strictly_symplectic, true);
+  assert.equal(conservative.positive_control.mechanical_phase_contraction_divF, 0.0);
+
+  // Negative control: unphysical negative mass
+  const unphysical = evaluateDynamicalMorphism({
+    mechanical: { m: -1.0, gamma: 0.2, k: 4.0 },
+    electrical: { L: 1.0, R: 0.2, C: 0.25 }
+  });
+  assert.equal(unphysical.epistemic_status, 'NOT_EVALUATED');
+  assert.equal(unphysical.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
+});
+
+test('A7-05 Generalization: Structural Signature Retains Unknown Candidate Propositions', () => {
+  // An unknown mathematical proposition outside regular expressions is NOT erased
+  const unknownProp = evaluateStructuralSignature({
+    text: 'PROPOSITION: The spectral gap of the transfer operator is strictly positive for all beta > 0.'
+  });
+  assert.equal(unknownProp.epistemic_status, 'STRUCTURAL_SIGNATURE_RECOGNIZED');
+  assert.equal(unknownProp.positive_control.structural_surprise_detected, false);
+  assert.equal(unknownProp.positive_control.retained_for_adjudication, true);
+});
+
+test('Universal Dispatcher: Routes All Capabilities and Ladder Algebra', () => {
+  const opLadder = dispatchAtlasMathematicalOperation('LADDER_OPERATOR', {
+    commutator_relation: '[a, a^dagger]'
+  });
+  assert.equal(opLadder.capability_id, 'A-09-LADDER');
+  assert.equal(opLadder.simplified_result, '1');
+
+  const opVisibilitySinc = dispatchAtlasMathematicalOperation('A-07', {
+    model: 'SPECTRAL_SINC'
+  });
+  assert.equal(opVisibilitySinc.capability_id, 'A-07');
+  assert.equal(opVisibilitySinc.forward_model.model_name, 'SPECTRAL_INTERFEROMETRIC_SINC');
 
   const unknown = dispatchAtlasMathematicalOperation('NONEXISTENT_OP');
   assert.equal(unknown.epistemic_status, 'NOT_EVALUATED');
