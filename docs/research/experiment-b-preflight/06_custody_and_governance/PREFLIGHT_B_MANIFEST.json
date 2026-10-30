@@ -1,6 +1,6 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T03:11:11.169Z",
+  "timestamp": "2026-10-30T03:28:18.303Z",
   "entry_count": 57,
   "entries": [
     {
@@ -65,8 +65,8 @@
     },
     {
       "path": "02_four_arm_harness\\gemini-live-client.mjs",
-      "bytes": 5171,
-      "sha256": "3689a0ec5879d4946f622796ec8c64aa735761369315d66e5a8bf86448fe8f42"
+      "bytes": 5387,
+      "sha256": "848a32308bc57daa99e98e2ef6a2e9d908b0ae098fe367d05987e3083fde9879"
     },
     {
       "path": "02_four_arm_harness\\reasoning-kernel.mjs",
@@ -95,8 +95,8 @@
     },
     {
       "path": "02_four_arm_harness\\run-heterogeneous-discovery-harness.mjs",
-      "bytes": 10492,
-      "sha256": "5a0cfb376cc96fb9db5a0899606021a6199c5afad5d6403fad7618eae562dc5a"
+      "bytes": 16121,
+      "sha256": "99c7a77c1054cbf54f3e1553c2dcd4f2d469151994ef6b2aa8d367596d29c6a9"
     },
     {
       "path": "03_calibration_execution\\CALIBRATION_EXECUTION_RECEIPT.json",
@@ -190,18 +190,18 @@
     },
     {
       "path": "04_evaluation_and_preregistration\\RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
-      "bytes": 12121,
-      "sha256": "538c04c004f7508bbd14bcd5f4897b0216cffa003819accc25662ad4983304cd"
+      "bytes": 13111,
+      "sha256": "894429592ffa434d2ec900c8a0ed8c239a36d7b3313edf2a560dce72e4edad41"
     },
     {
       "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_CUSTODY_PROTOCOL.md",
-      "bytes": 7526,
-      "sha256": "bc3e7652b0e9ce8dd95af91f187e672e8d49d78380a23f132419c35c050c1d66"
+      "bytes": 8437,
+      "sha256": "619104877aeb090c2e76000cf44f8a41573f5ea86e2fdbb1abed07e70f408ad5"
     },
     {
       "path": "04_evaluation_and_preregistration\\THREE_LINEAGE_DISCOVERY_SCHEMA.json",
-      "bytes": 6991,
-      "sha256": "f43818d8171cf7f7a5d43dac4af34340d91fbfccc6cb59e562ad7a3691788345"
+      "bytes": 7489,
+      "sha256": "492fb5ec451d4bb8fc9a05b8109af6e97beaf6818dbae9cd1191397b50f87ae3"
     },
     {
       "path": "05_dollhouse_audit\\DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT_V2.json",
@@ -246,7 +246,7 @@
     {
       "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_RECEIPT.json",
       "bytes": 1913,
-      "sha256": "eb2555645cabf5c6e358c59e2dbddf5226726848a8c6f38edb45000ff8aadc30"
+      "sha256": "d2dbe9c550b05a96a89ea1b843db6db6cfbba38b46b9a8aede94d2eb9a440f64"
     },
     {
       "path": "06_custody_and_governance\\ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md",
@@ -265,8 +265,8 @@
     },
     {
       "path": "06_custody_and_governance\\FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md",
-      "bytes": 8163,
-      "sha256": "7b1b5be63967eacfff639420b1dd2d5dfbffd94899fec3e297fd99c25673221b"
+      "bytes": 14708,
+      "sha256": "d89272c648494133f3622667cb0fb09d0642dbbcbaaa0282d8eaafd1c514e33f"
     },
     {
       "path": "06_custody_and_governance\\INSTRUMENT_FREEZE_AND_CROSSWALK.md",
@@ -285,8 +285,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 15317,
-      "sha256": "b3ab4cedfe2433287d4745446089682d5c06050464e4a328f461a505fde78b52"
+      "bytes": 16103,
+      "sha256": "a2e03e25b90a21bbbe38399b66d25c8758a008f387b28e870e4097ba60d93555"
     }
   ]
 }

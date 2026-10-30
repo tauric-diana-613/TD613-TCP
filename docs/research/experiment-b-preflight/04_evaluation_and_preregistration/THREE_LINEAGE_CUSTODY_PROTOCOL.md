@@ -86,7 +86,18 @@ The matched strong-union comparator (Arm 2B) has **identical access** to the `UN
 
 ---
 
-## 4. Standing Invariants & Human Closure
+## 4. Non-Self-Certifying Generation & Truthful Pending States
+
+Candidate generation registers an intellectual proposition formulated during the research encounter. It **never self-certifies scientific adjudication**.
+
+* **Evaluator Tier:** Initialized to `PENDING_INDEPENDENT_EVALUATION` at candidate generation time.
+* **Evaluation Vector:** All six RCA-01 evaluative dimensions ($D, W, C_{\mathcal{R}}, N, F_{\text{inst}}, \mathcal{S}$) are set to `PENDING_EVALUATION` (or `UNPRODUCED` if no substantive proposition was generated).
+* **Archetypes:** `rca01_outcome_archetypes` is initialized to `[]` (empty array).
+* **Quarantine of Authority:** A candidate cannot be awarded `DISCOVERED`, `WARRANTED_DISCOVERY`, `LENS_ENABLED`, or `CLEAN_EXECUTION` merely because it was generated. Substantive adjudication requires subsequent independent evaluation against ground truth or formal mathematical proof.
+
+---
+
+## 5. Standing Invariants & Human Closure
 
 ```text
 challenge_corpus_state = STRICTLY_SEALED_AND_QUARANTINED

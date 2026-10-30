@@ -124,6 +124,9 @@ export class GeminiLiveClient {
       http_status: response.status,
       system_instruction_hash: systemInstruction ? crypto.createHash('sha256').update(systemInstruction).digest('hex') : null,
       request_token_budget: this.maxOutputTokens,
+      total_tokens: resData.usageMetadata?.totalTokenCount ?? null,
+      prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
+      candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,
       provider_usage: {
         prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
         candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,

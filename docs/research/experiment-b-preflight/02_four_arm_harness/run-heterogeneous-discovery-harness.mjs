@@ -19,8 +19,22 @@ function computeSha256(text) {
 export class HeterogeneousDiscoveryHarness {
   constructor(options = {}) {
     this.arm = options.arm || 'ARM_2A_MODULAR';
-    this.client = options.client || new GeminiLiveClient(options.clientOptions || {});
-    this.mockMode = options.mockMode || false;
+    this.mockMode = options.mockMode ?? true;
+    this.allowLivePaidInference = options.allowLivePaidInference || false;
+
+    // Fail-closed provider custody gate: prevent silent live inference or data transmission
+    if (!this.mockMode) {
+      const authorized = this.allowLivePaidInference === true && process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED === 'true';
+      if (!authorized) {
+        throw new Error(
+          'LIVE_INFERENCE_BLOCKED_BY_PREFLIGHT_CUSTODY_GATE: Live model inference and paid credit consumption are strictly prohibited during preflight without explicit allowLivePaidInference=true and TD613_FLIGHT_EXECUTION_AUTHORIZED=true.'
+        );
+      }
+      this.client = options.client || new GeminiLiveClient(options.clientOptions || {});
+    } else {
+      this.client = options.client || null;
+    }
+
     this.history = [];
     this.candidates = [];
     this.traces = [];
@@ -35,10 +49,17 @@ export class HeterogeneousDiscoveryHarness {
     if (this.mockMode) {
       responseText = `BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.`;
       this.traces.push({
-        episodeId,
+        episode_id: episodeId,
         prompt_tokens: 45,
         response_tokens: 30,
         total_tokens: 75,
+        provider_usage: {
+          prompt_tokens: 45,
+          candidates_tokens: 30,
+          thoughts_tokens: 0,
+          total_tokens: 75,
+          service_tier: 'mock'
+        },
         timestamp: new Date().toISOString()
       });
     } else {
@@ -87,7 +108,25 @@ Output structured findings and extracted parameter equations.`;
 
       let c1Text;
       if (this.mockMode) {
-        c1Text = `CHAMBER 1 AUDIT [${doc.id}]: Consequence order valid. Observability verified. Identified parameters from text. Contradiction analysis flagged if non-conservative terms appear.`;
+        if (doc.mockChamber1) {
+          c1Text = doc.mockChamber1;
+        } else {
+          c1Text = `CHAMBER 1 AUDIT [${doc.id}]: Consequence order valid. Observability verified. Identified parameters for ${doc.filename}. Contradiction analysis flagged if non-conservative terms appear.`;
+        }
+        this.traces.push({
+          episode_id: `${episodeId}-Chamber1`,
+          prompt_tokens: 120,
+          response_tokens: 60,
+          total_tokens: 180,
+          provider_usage: {
+            prompt_tokens: 120,
+            candidates_tokens: 60,
+            thoughts_tokens: 0,
+            total_tokens: 180,
+            service_tier: 'mock'
+          },
+          timestamp: new Date().toISOString()
+        });
       } else {
         const c1Res = await this.client.invoke({
           systemInstruction: 'You are TD613 Chamber 1 (Pedagogue & Aperture). Audit order and observability.',
@@ -112,7 +151,25 @@ ${doc.content}`;
 
       let c2Text;
       if (this.mockMode) {
-        c2Text = `CHAMBER 2 DESCENT [${doc.id}]: Admissibility evaluated. Proposition formulated. Contradictions resolved. Candidate emitted.`;
+        if (doc.mockResponse || doc.mockChamber2) {
+          c2Text = doc.mockResponse || doc.mockChamber2;
+        } else {
+          c2Text = `CHAMBER 2 DESCENT [${doc.id}]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for ${doc.filename}.\nUNCERTAINTY: Parameter identification bounded by measurement window.`;
+        }
+        this.traces.push({
+          episode_id: `${episodeId}-Chamber2`,
+          prompt_tokens: 150,
+          response_tokens: 80,
+          total_tokens: 230,
+          provider_usage: {
+            prompt_tokens: 150,
+            candidates_tokens: 80,
+            thoughts_tokens: 0,
+            total_tokens: 230,
+            service_tier: 'mock'
+          },
+          timestamp: new Date().toISOString()
+        });
       } else {
         const c2Res = await this.client.invoke({
           systemInstruction: 'You are TD613 Chamber 2 (Atlas & FADT). Enforce coordinate parities and admissibility descent.',
@@ -143,7 +200,25 @@ Incoming Document [${doc.id} - ${doc.filename}]:
 ${doc.content}`;
 
       if (this.mockMode) {
-        responseText = `MATCHED UNION SYNTHESIS [${doc.id}]: Analyzed in flat context. Extracted parameters and revisions. Emitted candidate.`;
+        if (doc.mockResponse) {
+          responseText = doc.mockResponse;
+        } else {
+          responseText = `MATCHED UNION SYNTHESIS [${doc.id}]:\nPROPOSITION: Unified typed context identifies correspondence relations for ${doc.filename}.\nUNCERTAINTY: Incomplete boundary data may perturb asymptotic trajectory.`;
+        }
+        this.traces.push({
+          episode_id: episodeId,
+          prompt_tokens: 180,
+          response_tokens: 90,
+          total_tokens: 270,
+          provider_usage: {
+            prompt_tokens: 180,
+            candidates_tokens: 90,
+            thoughts_tokens: 0,
+            total_tokens: 270,
+            service_tier: 'mock'
+          },
+          timestamp: new Date().toISOString()
+        });
       } else {
         const unionRes = await this.client.invoke({
           systemInstruction: 'You are an advanced physical and mathematical reasoner operating over a unified typed research context.',
@@ -155,7 +230,7 @@ ${doc.content}`;
       }
     }
 
-    // Extract Three-Lineage Candidate Record
+    // Extract Three-Lineage Candidate Record from generated research output
     const candidate = this.extractCandidateRecord(doc, turnIndex, responseText, chamberOutputs);
     this.candidates.push(candidate);
 
@@ -174,19 +249,74 @@ ${doc.content}`;
   }
 
   // Step 3: Extract Candidate Conforming to Three-Lineage Schema
+  // Evaluates solely the generated research encounter output (NOT source keywords)
   extractCandidateRecord(doc, turnIndex, responseText, chamberOutputs) {
     const candId = `CAND-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${crypto.randomBytes(3).toString('hex')}`;
     const docSha = doc.sha256 || computeSha256(doc.content);
 
-    // Determine status & warrant from text characteristics
-    let status = 'PROPOSED';
-    let warrantClass = 'WARRANT_FORMAL_EQUIVALENCE';
-    if (doc.content.includes('topological') || doc.content.includes('soliton') || doc.content.includes('Sine-Gordon')) {
+    // 1. Substantive proposition detection from model output
+    let candidateProduced = false;
+    let extractedProposition = '';
+    let extractedUncertainty = 'None declared';
+
+    if (responseText && responseText.trim().length > 0) {
+      const lower = responseText.toLowerCase();
+
+      // Check for explicit non-assertion or refusal
+      const isExplicitNegative = (
+        lower.includes('no candidate proposition') ||
+        lower.includes('formulate no candidate') ||
+        lower.includes('no invariant detected') ||
+        lower.includes('no new invariants') ||
+        lower.includes('abstain: insufficient') ||
+        lower.includes('insufficient data to formulate')
+      ) && !lower.includes('proposition:');
+
+      if (!isExplicitNegative) {
+        // Look for explicit proposition block in model response
+        const propMatch = /(?:PROPOSITION|CANDIDATE PROPOSITION|PROPOSED RELATION|INVARIANT|HYPOTHESIS):\s*([^\n]+(?:\n(?!\n|[A-Z_]+:)[^\n]+)*)/i.exec(responseText);
+        if (propMatch && propMatch[1].trim().length > 0) {
+          extractedProposition = propMatch[1].trim();
+          candidateProduced = true;
+        } else {
+          // If no explicit header, check if the response provides substantive declarative content (not merely echoing instructions)
+          const lines = responseText.split('\n').map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('===') && !l.startsWith('CHAMBER'));
+          const substantiveLines = lines.filter(l => !l.toLowerCase().includes('prior history') && !l.toLowerCase().includes('incoming document'));
+          if (substantiveLines.length > 0) {
+            extractedProposition = substantiveLines.join(' ').slice(0, 300);
+            candidateProduced = true;
+          }
+        }
+
+        // Extract model-declared uncertainty or caveats
+        const uncMatch = /(?:UNCERTAINTY|CAVEAT|LIMITATION|ASSUMES|VALID ONLY|CONDITION):\s*([^\n]+)/i.exec(responseText);
+        if (uncMatch) {
+          extractedUncertainty = uncMatch[1].trim();
+        }
+      }
+    }
+
+    // 2. Model's own categorization (NOT triggered by source vocabulary)
+    // Checks whether the model output explicitly states that the phenomenon resists known linear categories
+    let isUnanticipated = false;
+    if (candidateProduced) {
+      isUnanticipated = /(?:resists (?:known|standard|linear)|unanticipated (?:candidate|dynamic|outcome)|category failure|anomalous (?:dynamic|structure)|outside (?:standard|known) (?:ontology|framework))/i.test(responseText);
+    }
+
+    // 3. Status and Warrant determination at generation time
+    let status;
+    let warrantClass;
+
+    if (!candidateProduced) {
+      status = 'NO_SUBSTANTIVE_CANDIDATE';
+      warrantClass = 'WARRANT_UNPRODUCED';
+      extractedProposition = 'NO_SUBSTANTIVE_CANDIDATE_GENERATED';
+    } else if (isUnanticipated) {
       status = 'UNANTICIPATED_CANDIDATE';
-      warrantClass = 'WARRANT_UNANTICIPATED_OUTCOME';
-    } else if (doc.content.includes('empirical') || doc.content.includes('dissipation')) {
-      status = 'WARRANTED';
-      warrantClass = 'WARRANT_OPERATIONAL';
+      warrantClass = 'WARRANT_PENDING_EVALUATION';
+    } else {
+      status = 'PROPOSED';
+      warrantClass = 'WARRANT_PENDING_EVALUATION';
     }
 
     return {
@@ -194,7 +324,7 @@ ${doc.content}`;
       timestamp: new Date().toISOString(),
       status,
       warrant_class: warrantClass,
-      proposition_summary: `Candidate proposition derived from document ${doc.id} at turn ${turnIndex}.`,
+      proposition_summary: extractedProposition,
       evidence_ancestry: {
         source_documents: [
           {
@@ -212,7 +342,7 @@ ${doc.content}`;
             span_sha256: docSha
           }
         ],
-        mathematical_premises: [`Derived in turn ${turnIndex}`],
+        mathematical_premises: [`Turn ${turnIndex} exposure of ${doc.filename}`],
         source_chronology_order: turnIndex
       },
       presentation_ancestry: {
@@ -223,37 +353,43 @@ ${doc.content}`;
         scaffolding_metaphors_introduced: []
       },
       adjudication_ancestry: {
-        evaluator_tier: 'AUTOMATED_RUBRIC_PARITY',
+        evaluator_tier: 'PENDING_INDEPENDENT_EVALUATION',
         scoring_rule_version: 'v1.0-preflight',
         rca01_cell: this.arm === 'ARM_2A_MODULAR' ? 'CELL_B_AUTH_DOLL' : 'CELL_A_AUTH_NEUT',
         rca01_evaluation_vector: {
-          discovery_occurrence: 'DISCOVERED',
-          mathematical_warrant: warrantClass.replace('WARRANT_', ''),
-          causal_contribution: this.arm === 'ARM_2A_MODULAR' ? 'LENS_ENABLED' : 'NEUTRAL_SUFFICIENT',
-          novelty: status === 'UNANTICIPATED_CANDIDATE' ? 'UNANTICIPATED_SYNTHESIS' : 'NOVEL_RELATION',
-          instrument_integrity: 'CLEAN_EXECUTION',
-          claim_status: status === 'UNANTICIPATED_CANDIDATE' ? 'UNANTICIPATED_CANDIDATE' : 'WARRANTED_DISCOVERY'
+          discovery_occurrence: candidateProduced ? 'PENDING_EVALUATION' : 'UNPRODUCED',
+          mathematical_warrant: 'PENDING_EVALUATION',
+          causal_contribution: 'PENDING_EVALUATION',
+          novelty: 'PENDING_EVALUATION',
+          instrument_integrity: 'PENDING_EVALUATION',
+          claim_status: candidateProduced ? (isUnanticipated ? 'UNANTICIPATED_CANDIDATE' : 'PROPOSED_CANDIDATE') : 'NO_CANDIDATE'
         },
-        rca01_outcome_archetypes: [
-          status === 'UNANTICIPATED_CANDIDATE' ? 'OUTCOME_UNANTICIPATED_CANDIDATE' : 'OUTCOME_WARRANTED_MATHEMATICS'
-        ],
-        unblinding_phase: 'FROZEN_BLINDED',
+        rca01_outcome_archetypes: [],
+        unblinding_phase: 'BLINDED_PENDING_UNBLINDING',
         dissent_recorded: false,
-        adjudication_receipt_ref: 'PENDING_POSTFLIGHT_EVALUATION'
+        adjudication_receipt_ref: 'PENDING_INDEPENDENT_EVALUATION'
       }
     };
   }
 
-  // Step 4: Export Complete Raw Research Ledger
+  // Step 4: Export Complete Raw Research Ledger with exact provider token accounting
   exportResearchLedger() {
+    const totalTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.total_tokens ?? t.total_tokens ?? 0), 0);
+    const promptTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.prompt_tokens ?? t.prompt_tokens ?? 0), 0);
+    const candidatesTokens = this.traces.reduce((acc, t) => acc + (t.provider_usage?.candidates_tokens ?? t.candidates_tokens ?? 0), 0);
+
     return {
       schema: 'td613.experiment-b.heterogeneous-flight-ledger/v1',
       timestamp: new Date().toISOString(),
       arm: this.arm,
-      model: this.client.model,
+      model: this.client ? this.client.model : 'source-free-mock-kernel',
       turn_count: this.history.length,
       candidate_count: this.candidates.length,
-      total_tokens_consumed: this.traces.reduce((acc, t) => acc + (t.total_tokens || 0), 0),
+      token_accounting: {
+        total_tokens_consumed: totalTokens,
+        prompt_tokens: promptTokens,
+        candidates_tokens: candidatesTokens
+      },
       call_count: this.traces.length,
       history: this.history,
       candidates: this.candidates,

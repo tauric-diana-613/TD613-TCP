@@ -9,16 +9,16 @@ $$\mathbf{B\_SOURCE\_FREE\_CONSTITUTION\_ACCEPTED \cdot B\_FLIGHT\_CAPABILITY\_G
 
 ## Overview
 
-This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package** under `docs/research/experiment-b-preflight/`. In response to Emergence HQ reviews `5704533595` and `5707431596` on PR #1607, it establishes:
+This dossier establishes the complete, self-contained, reviewable **Experiment B Source-Free Preflight Package** under `docs/research/experiment-b-preflight/`. In response to Emergence HQ reviews `5704533595`, `5707431596`, and `5707682022` on PR #1607, it establishes:
 1. Authentic live model calibration shakedown via Google Gemini REST API (`gemini-2.5-flash-lite`, 4/4 vs 4/4 parity under corrected automated rubric).
 2. Four-tier epistemic evaluation hierarchy strictly separating automated rubric parity, implementer semantic review, independent blinded evaluation, and external replication.
 3. Merged PR #1608 Dollhouse repair integration and strict quarantine of the separate Atlas Wild Field mathematical estate.
 4. Preregistered **RCA-01 Representation Causality Assay** ($2 \times 2$ factorial validation design decoupled across six evaluative dimensions: Discovery, Warrant, Causal Role, Novelty, Instrument Integrity, Scientific Status).
 5. **Three-Lineage Discovery Custody Protocol** with flexible temporal ordering and Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`).
 6. Empirical demonstration of standalone Atelier and Encyclopedia resilience without Manifest dependency.
-7. Flight Execution-Capability Assessment declaring the physical capability gap ($\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$) pending operator archive unsealing, sequence permutation selection, and paid credit authorization.
+7. Flight Execution-Capability Assessment & Capacity Reconciliation declaring the physical capability gap ($\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$), detailing the ~70–90 call multi-turn capacity requirement for 20–24 documents vs the 15-call ceiling, and presenting three prospective execution designs.
 8. Mathematical Construction and Rendering Inventory establishing anti-circularity boundaries for prospective postflight visualization.
-9. Minimal Generalized Heterogeneous Discovery Harness prototype verified across physical, dissipative, and non-linear topological soliton regimes.
+9. Minimal Generalized Heterogeneous Discovery Harness prototype with **R4 Discovery Integrity Repair**: substantive proposition extraction from model reasoning, removal of keyword triggers, fail-closed custody gate, and truthful pending adjudication semantics (6/6 unit and adversarial tests passing).
 
 ---
 
@@ -96,17 +96,17 @@ The native `/dollhouse-audit` skill was executed with authentic domain observati
 ## 4. Governance & Methodological Assets
 
 1. **RCA-01 Representation Causality Assay:** [`04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md`](04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md)  
-   Disentangles scaffolding from discovery via $2 \times 2$ factorial validation design across 7 distinguishable outcomes. Decoupled into six evaluative dimensions ($D, W, C_{\mathcal{R}}, N, F_{\text{inst}}, \mathcal{S}$) rejecting rigid Boolean decision rules.
+   Disentangles scaffolding from discovery via $2 \times 2$ factorial validation design across 7 distinguishable outcomes. Decoupled into six evaluative dimensions ($D, W, C_{\mathcal{R}}, N, F_{\text{inst}}, \mathcal{S}$) rejecting rigid Boolean decision rules and enforcing strict separation between candidate generation and independent adjudication.
 2. **Three-Lineage Discovery Custody Protocol:** [`04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md`](04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md)  
-   Enforces separation of Evidence, Presentation, and Adjudication ancestries under [`THREE_LINEAGE_DISCOVERY_SCHEMA.json`](04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json), supporting flexible temporal ordering for post-generation audits.
+   Enforces separation of Evidence, Presentation, and Adjudication ancestries under [`THREE_LINEAGE_DISCOVERY_SCHEMA.json`](04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json), supporting flexible temporal ordering for post-generation audits and truthful pending-adjudication states.
 3. **Unknown-Discovery Channel (`UNANTICIPATED_CANDIDATE`):**  
    Non-promotional intake status for findings outside existing Dollhouse categories, preserving full parity with Arm 2B.
 4. **Flight Execution-Capability Assessment & Honest Gap Declaration:** [`06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md`](06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md)  
-   Evaluates the 9-operation capability matrix contrasting implemented code vs specifications, declaring $\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$ pending operator unsealing, sequence permutation selection, and paid credit authorization.
+   Audits the 9-operation capability matrix, reconciles executable call capacity (~70–90 calls needed across 20–24 documents vs the 15-call calibration ceiling), presents three prospective execution designs, and declares $\mathbf{B\_FLIGHT\_EXECUTION\_CAPABILITY\_GAP\_IDENTIFIED}$ pending operator unsealing, sequence permutation selection, and paid credit authorization.
 5. **Mathematical Construction & Rendering Inventory:** [`06_custody_and_governance/MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md`](06_custody_and_governance/MATHEMATICAL_CONSTRUCTION_AND_RENDERING_INVENTORY.md)  
-   Catalogs earlier formulaic, SVD, and geometric cradle assets for prospective postflight visualization while enforcing anti-circularity laws.
-6. **Minimal Heterogeneous Discovery Harness Prototype:** [`02_four_arm_harness/run-heterogeneous-discovery-harness.mjs`](02_four_arm_harness/run-heterogeneous-discovery-harness.mjs)  
-   Verifies multi-turn sequential exposure across physical and topological domains (`specimen_01`, `specimen_02`, `specimen_03`), tested via [`tests/test-heterogeneous-discovery-harness.mjs`](../../../tests/test-heterogeneous-discovery-harness.mjs).
+   Catalogs earlier formulaic, SVD, and geometric cradle assets for prospective postflight visualization while enforcing anti-circularity laws and noting that repository leads are preliminary.
+6. **Minimal Heterogeneous Discovery Harness Prototype (R4 Repaired):** [`02_four_arm_harness/run-heterogeneous-discovery-harness.mjs`](02_four_arm_harness/run-heterogeneous-discovery-harness.mjs)  
+   Verifies multi-turn sequential exposure across physical and topological domains (`specimen_01`, `specimen_02`, `specimen_03`), with keyword-triggered status promotion completely removed, substantive proposition extraction from model reasoning, fail-closed custody gate, and pending adjudication semantics. Tested via [`tests/test-heterogeneous-discovery-harness.mjs`](../../../tests/test-heterogeneous-discovery-harness.mjs) (6/6 passing).
 7. **Instrument Freeze & Separate Atlas Wild Field Program:** [`06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md`](06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md)  
    Freezes all code/model identities and strictly quarantines the Atlas theoretical program from challenge data.
 8. **Standalone Atelier & Encyclopedia Resilience:** [`06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md`](06_custody_and_governance/ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_REPORT.md)  
@@ -145,7 +145,7 @@ node scripts/verify-atelier-encyclopedia-resilience.mjs
 # 8. Run offline frozen-trace rescore and fairness reconciliation
 node docs/research/experiment-b-preflight/03_calibration_execution/run-offline-trace-rescore.mjs
 
-# 9. Run minimal heterogeneous discovery harness unit test suite
+# 9. Run minimal heterogeneous discovery harness & adversarial test suite (6/6 passing)
 node tests/test-heterogeneous-discovery-harness.mjs
 ```
 

@@ -115,18 +115,29 @@ To prevent post-hoc rationalization and the retroactive reclassification of expl
 ┌─────────────────────────────────────────────────────────────┐
 │ STAGE 1: OPEN CANDIDATE GENERATION                          │
 │ - Execution under prospectively frozen conditions           │
-│ - Extraction of candidate hypotheses, morphisms, morphisms   │
+│ - Extraction of candidate hypotheses and propositions       │
 │ - Unfiltered recording into candidate ledger                │
+│ - Status: PROPOSED or UNANTICIPATED_CANDIDATE               │
+│ - RCA-01 Vector: PENDING_EVALUATION across all 6 axes       │
 └──────────────────────────────┬──────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ STAGE 2: CANDIDATE-SPECIFIC INDEPENDENT VALIDATION          │
 │ - Construction of candidate-specific matched negative controls │
-│ - Negative controls frozen BEFORE unblinded evaluation     │
+│ - Negative controls frozen BEFORE unblinded evaluation      │
 │ - Multi-dimensional assessment across 6 axes               │
+│ - Adjudication Tier: Independent / blinded evaluation       │
 └─────────────────────────────────────────────────────────────┘
 ```
+
+### Evidentiary Separation Between Generation and Adjudication
+
+Stage 1 (Generation) produces candidate propositions from the research encounter. It **cannot certify** its own mathematical warrant, causal contribution, novelty, or execution integrity. 
+
+* At candidate generation time, all evaluative axes in the RCA-01 vector must remain `PENDING_EVALUATION` (or `UNPRODUCED` if no substantive proposition was generated).
+* An instrument cannot award itself `WARRANTED_DISCOVERY`, `LENS_ENABLED`, or `CLEAN_EXECUTION` at generation time without the corresponding independent observations, factorial comparisons, and formal proofs.
+* Only Stage 2 (Independent Validation & Adjudication) possesses the evidentiary authority to update the evaluation vector based on verifiable receipts.
 
 ### Protocol for Control-Construction in Stage 2
 
