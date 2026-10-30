@@ -1,14 +1,14 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793332487113-1a55e0a2",
-  "timestamp": "2026-10-30T03:54:47.113Z",
+  "invocation_id": "dollhouse-audit-1793364860041-1a55e0a2",
+  "timestamp": "2026-10-30T12:54:20.041Z",
   "source_revision": "c4bd0401b432f5adda55c62ddca2bd99d4f3cc92",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "c4bd0401b432f5adda55c62ddca2bd99d4f3cc92",
-  "is_exact_checkout_match": true,
+  "executing_checkout_revision": "4651d94d479f2c51461ffd1359aa45fe58ba4aec",
+  "is_exact_checkout_match": false,
   "exact_checkout_verified": false,
-  "is_historical_commit_only": false,
+  "is_historical_commit_only": true,
   "task_scope": "EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT",
   "evidence_class": "SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION",
   "evidence_references": [
@@ -21,16 +21,17 @@
     "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json",
     "docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_AUTHORIZATION_DECISION_SHEET.md",
     "docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_EXECUTION_CAPABILITY_ASSESSMENT.md",
-    "docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md"
+    "docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md",
+    "scripts/run-experiment-b-flight.mjs"
   ],
   "evidence_manifest": [
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "1ddb08546cd310db1b236cf6b64d20449ab4e565917e14d9d74200474c8a8bdf",
+      "byte_digest": "b7c659570c3580671e75b4071b58b5e00c60236d0a88ed1517b00a6652109ce9",
       "byte_digest_verified": true,
-      "sha256": "1ddb08546cd310db1b236cf6b64d20449ab4e565917e14d9d74200474c8a8bdf"
+      "sha256": "b7c659570c3580671e75b4071b58b5e00c60236d0a88ed1517b00a6652109ce9"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/gemini-live-client.mjs",
@@ -44,17 +45,17 @@
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "2128d389a913652c29a38e6fba0e9fc4e918eda0c7f74514ba9456ee41fece32",
+      "byte_digest": "428c6f5e5fad7032cde75339d3e2be36a9e29cfd131a353b524c10a096c8f12e",
       "byte_digest_verified": true,
-      "sha256": "2128d389a913652c29a38e6fba0e9fc4e918eda0c7f74514ba9456ee41fece32"
+      "sha256": "428c6f5e5fad7032cde75339d3e2be36a9e29cfd131a353b524c10a096c8f12e"
     },
     {
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "48805119571554ae7ffca9b6b528f98f60bba894f8657a455e00062aca1af74c",
+      "byte_digest": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3",
       "byte_digest_verified": true,
-      "sha256": "48805119571554ae7ffca9b6b528f98f60bba894f8657a455e00062aca1af74c"
+      "sha256": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3"
     },
     {
       "reference": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
@@ -100,9 +101,17 @@
       "reference": "docs/research/experiment-b-preflight/06_custody_and_governance/FLIGHT_LAUNCHBRIDGE_DECISION_RECORD.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "5482b81c0bdb5d9cab1871af67d706b841e6867077e9ca7643abf8507bf04880",
+      "byte_digest": "8b6edddc3b10c9d3082d83a2a781621d5332bd570313b8866ac12a2cb531b4e9",
       "byte_digest_verified": true,
-      "sha256": "5482b81c0bdb5d9cab1871af67d706b841e6867077e9ca7643abf8507bf04880"
+      "sha256": "8b6edddc3b10c9d3082d83a2a781621d5332bd570313b8866ac12a2cb531b4e9"
+    },
+    {
+      "reference": "scripts/run-experiment-b-flight.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "9f481eb4b97a6f15e423c27fc318f48775c89c5e378fd15977b616252332704c",
+      "byte_digest_verified": true,
+      "sha256": "9f481eb4b97a6f15e423c27fc318f48775c89c5e378fd15977b616252332704c"
     }
   ],
   "roles_requested": [
@@ -346,19 +355,21 @@
           "union_support": [
             "control: NEGATIVE_CONTROL_REJECTED",
             "evaluator_tier: PENDING_INDEPENDENT_EVALUATION",
+            "schema: THREE_LINEAGE_DISCOVERY_SCHEMA",
             "status: PROPOSED",
             "warrant: FORMAL_EQUIVALENCE"
           ],
-          "union_cardinality": 4,
+          "union_cardinality": 5,
           "intersection_support": [],
           "intersection_cardinality": 0,
           "irreducible_gap": [
             "control: NEGATIVE_CONTROL_REJECTED",
             "evaluator_tier: PENDING_INDEPENDENT_EVALUATION",
+            "schema: THREE_LINEAGE_DISCOVERY_SCHEMA",
             "status: PROPOSED",
             "warrant: FORMAL_EQUIVALENCE"
           ],
-          "irreducible_gap_cardinality": 4,
+          "irreducible_gap_cardinality": 5,
           "exact_descent_exists": false,
           "universally_sound_available": false,
           "disposition": "HOLD_IRREDUCIBLE_GAP",
@@ -425,5 +436,6 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 672
+  "execution_duration_ms": 494,
+  "scope_qualification": "Offline evaluation of declared in-memory synthetic specialist fixtures. Consensus (5/5 SUPPORT) applies strictly to declared domain inputs; it does not constitute an automated code-security verification or exact-commit audit of subsequent PR revisions."
 }

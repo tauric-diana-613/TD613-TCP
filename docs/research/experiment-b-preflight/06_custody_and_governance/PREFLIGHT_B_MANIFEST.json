@@ -1,7 +1,7 @@
 {
   "schema": "td613.experiment-b.preflight-manifest/v1",
-  "timestamp": "2026-10-30T04:27:22.217Z",
-  "entry_count": 66,
+  "timestamp": "2026-10-30T12:54:27.101Z",
+  "entry_count": 64,
   "entries": [
     {
       "path": "01_calibration_fixtures/c1_damped_harmonic_oscillator.json",
@@ -71,7 +71,7 @@
     {
       "path": "02_four_arm_harness/dry_run_checkpoint.json",
       "bytes": 12128,
-      "sha256": "d5375c99336b91e3c3e33698c57443001ab3fd70efba9e3425058bb551fda235"
+      "sha256": "7392f1d89e9c0dd3a9d597cc203c6ee9e2bb0f8e6545f81fa69baea34249c50e"
     },
     {
       "path": "02_four_arm_harness/gemini-live-client.mjs",
@@ -110,8 +110,8 @@
     },
     {
       "path": "02_four_arm_harness/stage2-independent-evaluator.mjs",
-      "bytes": 11429,
-      "sha256": "159ab5f4d41eec245f44191f5f15f5af8b17f23a2770b8ed81a564dede78c00e"
+      "bytes": 16558,
+      "sha256": "74ce40e771e6b72ecfcf8e5fb6e7518b7d3a33948e975e7666ae07dee6fa6ec3"
     },
     {
       "path": "03_calibration_execution/CALIBRATION_EXECUTION_RECEIPT.json",
@@ -219,24 +219,14 @@
       "sha256": "492fb5ec451d4bb8fc9a05b8109af6e97beaf6818dbae9cd1191397b50f87ae3"
     },
     {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_RECEIPT.json",
-      "bytes": 17682,
-      "sha256": "07e32acbb13091ba0ec84fc59181420dfe481a927d0acc975d0551188f6547b3"
-    },
-    {
-      "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_REPORT.md",
-      "bytes": 3125,
-      "sha256": "8e655bf6b0c3da630ba077c274f2d94f9533dcb9a6dab440f4d9f818fa4fd93b"
-    },
-    {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json",
-      "bytes": 17118,
-      "sha256": "3eb858305947e699a45004e8c1d3bc1971c075825a433c49e1813282624bacd0"
+      "bytes": 17885,
+      "sha256": "c536fe703db61d94c83fd288e327a310d1c35d2292f3861a3bf245a594f82366"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md",
       "bytes": 3116,
-      "sha256": "7a9cacba880ae99e0ac5872ab076cdad633efea67e0016be9c34fd223aacf58b"
+      "sha256": "72fc012b42887165fbfc44c8e9678a0d18f47c400fd8bdec5261380833486d9b"
     },
     {
       "path": "05_dollhouse_audit/DOLLHOUSE_AUDIT_LIVE_CALIBRATION_RECEIPT.json",
@@ -275,8 +265,8 @@
     },
     {
       "path": "05_dollhouse_audit/run-dollhouse-audit-launchbridge.mjs",
-      "bytes": 7985,
-      "sha256": "284577cd61524dd40ef36f91982dbaf6b84224cb64885b3a427211da1b2ae71f"
+      "bytes": 7955,
+      "sha256": "bfb82c3c22465ff04d792abed55df1eb751930d2b449860e8704db0d7954d8e3"
     },
     {
       "path": "05_dollhouse_audit/run-dollhouse-audit-live.mjs",

@@ -2,11 +2,12 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { execSync } from 'node:child_process';
 
 import { ControlledArchiveIntake } from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
 import { HeterogeneousDiscoveryHarness } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
-import { Stage2IndependentEvaluator } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
+import { Stage2IndependentEvaluator, verifyWitnessAttestation } from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 
 // Load Three-Lineage Schema to validate all test candidate outputs
 const schemaPath = path.resolve('docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_DISCOVERY_SCHEMA.json');
@@ -25,43 +26,68 @@ function validateCandidateAgainstSchemaEnums(cand) {
   );
 }
 
-test('L1 Repair Test 1: Stage 2 Evaluator rejects empty candidates and ungrounded self-certification', () => {
-  const evaluator = new Stage2IndependentEvaluator();
-
+test('L1 Repair Test 1: Stage 2 Evaluator rejects empty candidates and ungrounded witness tier requests', () => {
   // 1. Refuses null or missing candidate
+  const defaultEvaluator = new Stage2IndependentEvaluator();
   assert.throws(
-    () => evaluator.evaluateCandidate(null),
+    () => defaultEvaluator.evaluateCandidate(null),
     /STAGE2_EVALUATOR_NO_CANDIDATE/
   );
 
   // 2. Refuses candidate without ID or with NO_SUBSTANTIVE_CANDIDATE status
   assert.throws(
-    () => evaluator.evaluateCandidate({ status: 'NO_SUBSTANTIVE_CANDIDATE', proposition_summary: 'NO_SUBSTANTIVE_CANDIDATE_GENERATED' }),
+    () => defaultEvaluator.evaluateCandidate({ status: 'NO_SUBSTANTIVE_CANDIDATE', proposition_summary: 'NO_SUBSTANTIVE_CANDIDATE_GENERATED' }),
     /STAGE2_EVALUATOR_NO_CANDIDATE/
   );
 
-  // 3. Forged evaluator tier request without authentic attestation is downgraded
-  const selfCertEvaluator = new Stage2IndependentEvaluator({
-    evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION'
-  });
-  assert.equal(selfCertEvaluator.evaluatorTier, 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW');
-  assert.equal(selfCertEvaluator.isWitnessAttested, false);
-  assert.ok(selfCertEvaluator.attestationNotice.includes('UNATTESTED_INDEPENDENT_TIER_DOWNGRADED'));
+  // 3. Forged evaluator tier request without authentic attestation is strictly rejected fail-closed
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION'
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
 
-  // 4. Properly attested witness request is honored
-  const attestedEvaluator = new Stage2IndependentEvaluator({
+  // 4. Forged/fake signature string (e.g. 'VALID_ATTESTED_HMAC_SIG_01') is strictly rejected
+  const mockKey = 'EMERGENCE_HQ_ROOT_SECRET_KEY_2026';
+  assert.throws(
+    () => new Stage2IndependentEvaluator({
+      evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+      trustedWitnessKeys: {
+        EMERGENCE_HQ_WITNESS_01: mockKey
+      },
+      attestedWitness: {
+        witnessId: 'EMERGENCE_HQ_WITNESS_01',
+        signature: 'VALID_ATTESTED_HMAC_SIG_01', // Fake uncomputed signature!
+        payload: 'WITNESS_SESSION:EMERGENCE_HQ_WITNESS_01'
+      }
+    }),
+    /STAGE2_EVALUATOR_FORGED_WITNESS_REJECTED/
+  );
+
+  // 5. Genuine cryptographic HMAC signature verification succeeds
+  const sessionPayload = 'WITNESS_SESSION:EMERGENCE_HQ_WITNESS_01';
+  const validHmacSig = crypto.createHmac('sha256', mockKey).update(sessionPayload).digest('hex');
+
+  const authenticatedEvaluator = new Stage2IndependentEvaluator({
     evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+    trustedWitnessKeys: {
+      EMERGENCE_HQ_WITNESS_01: mockKey
+    },
     attestedWitness: {
       witnessId: 'EMERGENCE_HQ_WITNESS_01',
-      signature: 'VALID_ATTESTED_HMAC_SIG_01'
+      signature: validHmacSig,
+      payload: sessionPayload
     }
   });
-  assert.equal(attestedEvaluator.evaluatorTier, 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION');
-  assert.equal(attestedEvaluator.isWitnessAttested, true);
+
+  assert.equal(authenticatedEvaluator.evaluatorTier, 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION');
+  assert.equal(authenticatedEvaluator.isWitnessAttested, true);
+  assert.equal(authenticatedEvaluator.authenticatedWitnessId, 'EMERGENCE_HQ_WITNESS_01');
 });
 
-test('L1 Repair Test 2: Incomplete evidence fails closed to PENDING/HELD; schema-compliant warrant output', () => {
-  const evaluator = new Stage2IndependentEvaluator();
+test('L1 Repair Test 2: Incomplete evidence fails closed to PENDING/HELD; scientific promotion requires proof receipt', () => {
+  const defaultEvaluator = new Stage2IndependentEvaluator();
 
   const validStage1 = {
     candidate_id: 'CAND-20261030-def456',
@@ -74,21 +100,23 @@ test('L1 Repair Test 2: Incomplete evidence fails closed to PENDING/HELD; schema
     }
   };
 
-  // 1. Incomplete evidence criteria (no defaults!) fails closed to HELD
-  const heldResult = evaluator.evaluateCandidate(validStage1, {
-    groundTruthWarrant: 'ISOMORPHISM'
-    // negativeControlRejected, discoveredInCellA, discoveredInCellB omitted!
+  // 1. Incomplete evidence criteria (no defaults allowed) fails closed to HELD
+  const heldResult = defaultEvaluator.evaluateCandidate(validStage1, {
+    groundTruthWarrant: 'ISOMORPHISM',
+    negativeControlRejected: true
+    // missing discoveredInCellA, discoveredInCellB, isNovel, instrumentAnomalies
   });
 
   const heldCand = heldResult.adjudicated_candidate;
   assert.equal(heldCand.status, 'HELD_INSUFFICIENT_DATA');
   assert.equal(heldCand.warrant_class, 'WARRANT_PENDING_EVALUATION');
   assert.equal(heldCand.adjudication_ancestry.disposition, 'EVALUATION_HELD_INSUFFICIENT_EVIDENCE');
-  assert.ok(heldCand.adjudication_ancestry.missing_evidence_fields.includes('negativeControlRejected'));
+  assert.ok(heldCand.adjudication_ancestry.missing_evidence_fields.includes('discoveredInCellA'));
+  assert.ok(heldCand.adjudication_ancestry.missing_evidence_fields.includes('isNovel'));
   validateCandidateAgainstSchemaEnums(heldCand);
 
-  // 2. Complete evidence with verified Isomorphism -> WARRANT_MATHEMATICAL_ISOMORPHISM
-  const warrantedResult = evaluator.evaluateCandidate(validStage1, {
+  // 2. Unattested Result Assembler: Complete criteria WITHOUT authenticated proof cannot self-certify warrant
+  const unverifiedResult = defaultEvaluator.evaluateCandidate(validStage1, {
     groundTruthWarrant: 'ISOMORPHISM',
     negativeControlRejected: true,
     discoveredInCellA: true,
@@ -97,23 +125,66 @@ test('L1 Repair Test 2: Incomplete evidence fails closed to PENDING/HELD; schema
     instrumentAnomalies: 'CLEAN_EXECUTION'
   });
 
-  const warCand = warrantedResult.adjudicated_candidate;
+  const unverifiedCand = unverifiedResult.adjudicated_candidate;
+  // Must NOT promote to WARRANTED or WARRANTED_DISCOVERY without authenticated witness & proof receipt!
+  assert.equal(unverifiedCand.status, 'PROPOSED');
+  assert.equal(unverifiedCand.warrant_class, 'WARRANT_PENDING_EVALUATION');
+  assert.equal(unverifiedCand.adjudication_ancestry.rca01_evaluation_vector.claim_status, 'EXPLORATORY_FINDING');
+  assert.equal(unverifiedResult.adjudication_receipt.disposition, 'UNATTESTED_ASSESSMENT_ASSEMBLED');
+  validateCandidateAgainstSchemaEnums(unverifiedCand);
+
+  // 3. Authenticated Witness + Verified Proof Receipt enables legitimate warrant promotion
+  const mockKey = 'EMERGENCE_HQ_PROOF_KEY_2026';
+  const sessionPayload = 'WITNESS_SESSION:PROOF_WITNESS_01';
+  const validSig = crypto.createHmac('sha256', mockKey).update(sessionPayload).digest('hex');
+
+  const authenticatedEvaluator = new Stage2IndependentEvaluator({
+    evaluatorTier: 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION',
+    trustedWitnessKeys: {
+      PROOF_WITNESS_01: mockKey
+    },
+    attestedWitness: {
+      witnessId: 'PROOF_WITNESS_01',
+      signature: validSig,
+      payload: sessionPayload
+    }
+  });
+
+  const dummyProofSha = crypto.createHash('sha256').update('MATHEMATICAL_DERIVATION_PROOF_BYTES').digest('hex');
+  const promotedResult = authenticatedEvaluator.evaluateCandidate(validStage1, {
+    groundTruthWarrant: 'ISOMORPHISM',
+    negativeControlRejected: true,
+    discoveredInCellA: false,
+    discoveredInCellB: true,
+    isNovel: true,
+    instrumentAnomalies: 'CLEAN_EXECUTION',
+    independentProofReceipt: {
+      receipt_id: 'INDEPENDENT-PROOF-RECEIPT-20261030-01',
+      proof_sha256: dummyProofSha
+    }
+  });
+
+  const warCand = promotedResult.adjudicated_candidate;
   assert.equal(warCand.status, 'WARRANTED');
-  assert.equal(warCand.warrant_class, 'WARRANT_MATHEMATICAL_ISOMORPHISM'); // NOT WARRANT_ISOMORPHISM!
-  assert.equal(warCand.adjudication_ancestry.unblinding_phase, 'BLINDED_PENDING_UNBLINDING'); // No ungrounded unblinding!
+  assert.equal(warCand.warrant_class, 'WARRANT_MATHEMATICAL_ISOMORPHISM');
+  assert.equal(warCand.adjudication_ancestry.rca01_evaluation_vector.claim_status, 'WARRANTED_DISCOVERY');
+  assert.equal(warCand.adjudication_ancestry.rca01_evaluation_vector.causal_contribution, 'LENS_ENABLED');
+  assert.equal(warCand.adjudication_ancestry.unblinding_phase, 'BLINDED_PENDING_UNBLINDING'); // Default remains blinded
   validateCandidateAgainstSchemaEnums(warCand);
 
-  // 3. Negative control failure -> status FALSIFIED with warrant_class WARRANT_UNPRODUCED
-  const falsifiedResult = evaluator.evaluateCandidate(validStage1, {
+  // 4. Negative control failure -> status FALSIFIED with warrant_class WARRANT_UNPRODUCED
+  const falsifiedResult = defaultEvaluator.evaluateCandidate(validStage1, {
     groundTruthWarrant: 'ISOMORPHISM',
     negativeControlRejected: false, // Falsified by negative control
     discoveredInCellA: false,
-    discoveredInCellB: true
+    discoveredInCellB: true,
+    isNovel: true,
+    instrumentAnomalies: 'CLEAN_EXECUTION'
   });
 
   const falCand = falsifiedResult.adjudicated_candidate;
   assert.equal(falCand.status, 'FALSIFIED');
-  assert.equal(falCand.warrant_class, 'WARRANT_UNPRODUCED'); // NOT WARRANT_FALSIFIED!
+  assert.equal(falCand.warrant_class, 'WARRANT_UNPRODUCED');
   assert.equal(falCand.adjudication_ancestry.rca01_evaluation_vector.causal_contribution, 'SCAFFOLDING_ARTIFACT');
   assert.ok(falCand.adjudication_ancestry.rca01_outcome_archetypes.includes('OUTCOME_MANUFACTURED_EMERGENCE'));
   validateCandidateAgainstSchemaEnums(falCand);

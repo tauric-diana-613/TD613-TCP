@@ -1,6 +1,6 @@
 {
   "schema": "td613.experiment-b.heterogeneous-flight-ledger/v1",
-  "timestamp": "2026-10-30T04:25:48.955Z",
+  "timestamp": "2026-10-30T12:54:33.908Z",
   "arm": "ARM_2A_MODULAR",
   "model": "source-free-mock-kernel",
   "context_strategy": "DECLARED_LOSSY_PROJECTION_PROPOSITION_FOCUS",
@@ -33,7 +33,7 @@
   "history": [
     {
       "turn": 0,
-      "timestamp": "2026-10-30T04:25:48.950Z",
+      "timestamp": "2026-10-30T12:54:33.906Z",
       "raw_output": "BASELINE t0 ESTABLISHED: Prior state unconditioned. No relational hypotheses asserted. Ready for sequential source exposure.",
       "active_hypotheses": [],
       "model_parameters": {}
@@ -42,31 +42,31 @@
       "turn": 1,
       "document_id": "DOC-SYN-01",
       "document_sha256": "8a3b9fe36ea58c38dd142e70bafd014c6217c9bd817a4b62b209b063e88d4350",
-      "timestamp": "2026-10-30T04:25:48.953Z",
+      "timestamp": "2026-10-30T12:54:33.907Z",
       "raw_output": "CHAMBER 2 DESCENT [DOC-SYN-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
       "chamber_outputs": {
         "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-01]: Consequence order valid. Observability verified. Identified parameters for synthetic_dissipative_oscillator.md. Contradiction analysis flagged if non-conservative terms appear.",
         "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-01]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
       },
-      "candidate_id": "CAND-20261030-3a35f0"
+      "candidate_id": "CAND-20261030-5de3b0"
     },
     {
       "turn": 2,
       "document_id": "DOC-SYN-02",
       "document_sha256": "5409a7a9696b385bf9a9470cf8f438d335b990186bc85f709fe0be05e8788067",
-      "timestamp": "2026-10-30T04:25:48.954Z",
+      "timestamp": "2026-10-30T12:54:33.908Z",
       "raw_output": "CHAMBER 2 DESCENT [DOC-SYN-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window.",
       "chamber_outputs": {
         "chamber1": "CHAMBER 1 AUDIT [DOC-SYN-02]: Consequence order valid. Observability verified. Identified parameters for synthetic_series_rlc_circuit.md. Contradiction analysis flagged if non-conservative terms appear.",
         "chamber2": "CHAMBER 2 DESCENT [DOC-SYN-02]:\nPROPOSITION: The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.\nUNCERTAINTY: Parameter identification bounded by measurement window."
       },
-      "candidate_id": "CAND-20261030-ed096f"
+      "candidate_id": "CAND-20261030-7c5cab"
     }
   ],
   "candidates": [
     {
-      "candidate_id": "CAND-20261030-3a35f0",
-      "timestamp": "2026-10-30T04:25:48.953Z",
+      "candidate_id": "CAND-20261030-5de3b0",
+      "timestamp": "2026-10-30T12:54:33.907Z",
       "status": "PROPOSED",
       "warrant_class": "WARRANT_PENDING_EVALUATION",
       "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_dissipative_oscillator.md.",
@@ -139,8 +139,8 @@
       }
     },
     {
-      "candidate_id": "CAND-20261030-ed096f",
-      "timestamp": "2026-10-30T04:25:48.954Z",
+      "candidate_id": "CAND-20261030-7c5cab",
+      "timestamp": "2026-10-30T12:54:33.908Z",
       "status": "PROPOSED",
       "warrant_class": "WARRANT_PENDING_EVALUATION",
       "proposition_summary": "The system exhibits coordinate correspondence with observable invariants for synthetic_series_rlc_circuit.md.",
@@ -226,7 +226,7 @@
         "total_tokens": 75,
         "service_tier": "mock"
       },
-      "timestamp": "2026-10-30T04:25:48.950Z"
+      "timestamp": "2026-10-30T12:54:33.905Z"
     },
     {
       "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-SYN-01-Chamber1",
@@ -240,7 +240,7 @@
         "total_tokens": 180,
         "service_tier": "mock"
       },
-      "timestamp": "2026-10-30T04:25:48.951Z"
+      "timestamp": "2026-10-30T12:54:33.906Z"
     },
     {
       "episode_id": "Flight-ARM_2A_MODULAR-t1-DOC-SYN-01-Chamber2",
@@ -254,7 +254,7 @@
         "total_tokens": 230,
         "service_tier": "mock"
       },
-      "timestamp": "2026-10-30T04:25:48.951Z"
+      "timestamp": "2026-10-30T12:54:33.906Z"
     },
     {
       "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-SYN-02-Chamber1",
@@ -268,7 +268,7 @@
         "total_tokens": 180,
         "service_tier": "mock"
       },
-      "timestamp": "2026-10-30T04:25:48.954Z"
+      "timestamp": "2026-10-30T12:54:33.908Z"
     },
     {
       "episode_id": "Flight-ARM_2A_MODULAR-t2-DOC-SYN-02-Chamber2",
@@ -282,7 +282,7 @@
         "total_tokens": 230,
         "service_tier": "mock"
       },
-      "timestamp": "2026-10-30T04:25:48.954Z"
+      "timestamp": "2026-10-30T12:54:33.908Z"
     }
   ]
 }

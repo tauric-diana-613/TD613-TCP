@@ -2,12 +2,15 @@
  * run-dollhouse-audit-launchbridge.mjs
  *
  * TD613 Native Dollhouse Skill Scientific Audit on Experiment B Flight Launchbridge.
- * Evaluates all five specialist roles and Orchestrator consensus over the corrected
- * Launchbridge contracts, bound to the exact checked-out working tree revision.
+ * Evaluates all five specialist roles and Orchestrator consensus over the source-free
+ * Launchbridge assets, controlled archive intake, declared lossy context projection,
+ * and Stage 2 independent evaluator.
  *
- * Preserves historical synthetic fixture receipt DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json
- * without retroactive modification, and emits an exact-revision contract audit receipt:
- * DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_RECEIPT.json.
+ * Truthful Audit Scope:
+ * This receipt is an offline evaluation of declared in-memory synthetic specialist fixtures.
+ * It establishes valid consensus (5/5 SUPPORT) for those declared domain inputs only;
+ * it does not claim to be an automated code-security verification or exact-commit audit
+ * of subsequently shifting PR git commit heads.
  *
  * Specialist Input Scope:
  * - Pedagogue: Route burden, consequence ordering (Notice < Act < World_Answers < Name), rest/exit.
@@ -23,32 +26,24 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
 const REPO_ROOT = process.cwd();
 const PREFLIGHT_DIR = path.resolve(REPO_ROOT, 'docs/research/experiment-b-preflight');
 const AUDIT_OUT_DIR = path.join(PREFLIGHT_DIR, '05_dollhouse_audit');
 
-console.log('=== EXECUTING TD613 DOLLHOUSE SCIENTIFIC AUDIT ON EXACT HEAD FLIGHT LAUNCHBRIDGE ===');
+console.log('=== EXECUTING TD613 DOLLHOUSE SCIENTIFIC AUDIT ON FLIGHT LAUNCHBRIDGE ===');
 
 const dispatcherPath = path.join(REPO_ROOT, 'app/engine/dollhouse-skill-dispatcher.js');
-const { runDollhouseSkillAudit, resolveCurrentSourceRevision } = await import(pathToFileURL(dispatcherPath).href);
+const { runDollhouseSkillAudit } = await import(pathToFileURL(dispatcherPath).href);
 
-// Dynamically resolve exact current source revision
-let currentRev;
-try {
-  currentRev = execSync('git rev-parse HEAD', { encoding: 'utf8', cwd: REPO_ROOT }).trim();
-} catch {
-  currentRev = resolveCurrentSourceRevision({ repo_root: REPO_ROOT });
-}
-
-console.log(`Target Revision: ${currentRev}`);
+// Bound to accepted main predecessor commit
+const PREDECESSOR_HEAD = 'c4bd0401b432f5adda55c62ddca2bd99d4f3cc92';
 
 const auditSpec = {
-  source_revision: currentRev,
-  task_scope: 'EXPERIMENT_B_EXACT_HEAD_LAUNCHBRIDGE_CONTRACT_AUDIT',
-  evidence_class: 'EXACT_HEAD_SOURCE_FREE_CONTRACT_VERIFICATION',
+  source_revision: PREDECESSOR_HEAD,
+  task_scope: 'EXPERIMENT_B_SOURCE_FREE_FLIGHT_LAUNCHBRIDGE_AUDIT',
+  evidence_class: 'SOURCE_FREE_LAUNCHBRIDGE_VERIFICATION',
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
   evidence_references: [
@@ -67,7 +62,7 @@ const auditSpec = {
   domain_inputs: {
     PEDAGOGUE: {
       events: [
-        { phase: 'NOTICE', at: 10, description: 'Protected challenge corpus held sealed; autonomous scanning refused' },
+        { phase: 'NOTICE', at: 10, description: 'Protected challenge corpus held sealed in Downloads; autonomous scanning refused' },
         { phase: 'ACT', at: 20, description: 'Operator issues contemporaneous launch gesture; ControlledArchiveIntake admits in-memory synthetic target' },
         { phase: 'WORLD_ANSWERS', at: 30, description: 'Sequential exposure proceeds under permutation; declared lossy context projection preserves full propositions' },
         { phase: 'NAME', at: 40, description: 'Stage 1 emits candidate with pending status; Stage 2 independently evaluates warrant without self-certification' }
@@ -90,11 +85,11 @@ const auditSpec = {
     },
     ATLAS: {
       trajectoryA: {
-        endpoint: 'EXACT_HEAD_LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
+        endpoint: 'LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
         winding: 0
       },
       trajectoryB: {
-        endpoint: 'EXACT_HEAD_LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
+        endpoint: 'LAUNCHBRIDGE_ROUTE_CONTINUITY_ARM2A',
         winding: 0
       }
     },
@@ -117,8 +112,7 @@ const auditSpec = {
         'CONTROLLED_INTAKE_STAGED',
         'CONTEXT_CONTINUITY_VERIFIED',
         'STAGE2_INDEPENDENT_EVALUATOR_STAGED',
-        'LAUNCHBRIDGE_DECISION_RECORDED',
-        'EXACT_HEAD_REPAIR_STAGED'
+        'LAUNCHBRIDGE_DECISION_RECORDED'
       ],
       phases: {
         PREFLIGHT_MERGED_PREDECESSOR: {
@@ -140,10 +134,6 @@ const auditSpec = {
         LAUNCHBRIDGE_DECISION_RECORDED: {
           entry_id: 'DECISION-04',
           status: 'PASS'
-        },
-        EXACT_HEAD_REPAIR_STAGED: {
-          entry_id: 'REPAIR-05',
-          status: 'PASS'
         }
       }
     }
@@ -152,6 +142,9 @@ const auditSpec = {
 
 const auditResult = await runDollhouseSkillAudit(auditSpec);
 const mr = auditResult.machine_receipt;
+
+// Explicit qualification note to prevent misrepresenting offline fixture as code audit
+mr.scope_qualification = 'Offline evaluation of declared in-memory synthetic specialist fixtures. Consensus (5/5 SUPPORT) applies strictly to declared domain inputs; it does not constitute an automated code-security verification or exact-commit audit of subsequent PR revisions.';
 
 console.log(`Dollhouse Execution Complete:`);
 console.log(`  - Invocation ID: ${mr.invocation_id}`);
@@ -163,14 +156,14 @@ console.log(`  - Empirical Replication Count: ${mr.orchestrator.empirical_replic
 console.log(`  - Release Authority: ${mr.orchestrator.release_authority}`);
 console.log(`  - Human Closure Required: ${mr.orchestrator.human_closure_required}`);
 
-// Save Exact-Head Machine Receipt (preserving historical DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json)
-const exactMachineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_RECEIPT.json');
-fs.writeFileSync(exactMachineReceiptPath, JSON.stringify(mr, null, 2) + '\n', 'utf8');
+// Save Canonical Launchbridge Machine Receipt
+const machineReceiptPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_RECEIPT.json');
+fs.writeFileSync(machineReceiptPath, JSON.stringify(mr, null, 2) + '\n', 'utf8');
 
-// Save Exact-Head Human Report
-const exactHumanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_EXACT_HEAD_REPORT.md');
-fs.writeFileSync(exactHumanReportPath, auditResult.human_receipt + '\n', 'utf8');
+// Save Canonical Launchbridge Human Report
+const humanReportPath = path.join(AUDIT_OUT_DIR, 'DOLLHOUSE_AUDIT_LAUNCHBRIDGE_REPORT.md');
+fs.writeFileSync(humanReportPath, auditResult.human_receipt + '\n', 'utf8');
 
-console.log(`Exact-head machine receipt written to: ${exactMachineReceiptPath}`);
-console.log(`Exact-head human report written to: ${exactHumanReportPath}`);
-console.log('=== EXACT HEAD DOLLHOUSE LAUNCHBRIDGE AUDIT EXECUTED CLEANLY ===\n');
+console.log(`Machine receipt written to: ${machineReceiptPath}`);
+console.log(`Human report written to: ${humanReportPath}`);
+console.log('=== DOLLHOUSE LAUNCHBRIDGE AUDIT EXECUTED CLEANLY ===\n');
