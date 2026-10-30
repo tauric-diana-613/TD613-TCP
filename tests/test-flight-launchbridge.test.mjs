@@ -913,6 +913,35 @@ test('R4-01: Antigravity-Native Execution Contract, Telemetry & Fail-Closed Inva
   }
 });
 
+test('R4-01B: Live native flight refuses before reading protected archive even with forged session flags', () => {
+  const forgedEnv = {
+    ...process.env,
+    TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED: 'true',
+    TD613_FLIGHT_EXECUTION_AUTHORIZED: 'true',
+    ANTIGRAVITY_AGENT_ACTIVE: 'true',
+    TD613_ANTIGRAVITY_NATIVE_SESSION_ID: 'FORGED-SESSION'
+  };
+  const nonexistentArchive = path.resolve(REPO_ROOT, 'nonexistent-protected-archive-do-not-create.zip');
+  const nonexistentGrant = path.resolve(REPO_ROOT, 'nonexistent-protected-grant-do-not-create.json');
+  assert.equal(fs.existsSync(nonexistentArchive), false);
+  assert.equal(fs.existsSync(nonexistentGrant), false);
+  let output = '';
+  try {
+    execSync(
+      `node scripts/run-experiment-b-flight.mjs --backend native --arm ARM_2A_MODULAR --archive-path "${nonexistentArchive}" --grant-path "${nonexistentGrant}" --operator-key source-free-test-key`,
+      { cwd: REPO_ROOT, env: forgedEnv, encoding: 'utf8', stdio: 'pipe' }
+    );
+    assert.fail('Live native route must halt before physical archive/grant read');
+  } catch (err) {
+    if (err.code === 'ERR_ASSERTION') throw err;
+    output = String(err.stdout || '') + String(err.stderr || '');
+    assert.match(output, /NATIVE_UNIMPLEMENTED_HELD/,
+      'Native backend must fail closed before archive or grant admission');
+    assert.doesNotMatch(output, /ENOENT|no such file|Admitted .*physical specimens/i,
+      'Native refusal must precede protected physical I/O');
+  }
+});
+
 test('R4-02: Preflight Independent Witness Signature, Scope & Trust-Root Validation', () => {
   const witnessSecretKey = crypto.randomBytes(32).toString('hex');
   const trustedWitnessKeys = {
