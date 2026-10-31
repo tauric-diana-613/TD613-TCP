@@ -702,7 +702,9 @@ test('B-10: Binary Document Handling and Authenticated Derivative Pathway', asyn
   // Ingest unprocessed binary through harness: MUST produce explicit abstention candidate without model call
   const harness = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2A_MODULAR',
-    mockMode: true
+    mockMode: true,
+    // B-10 uses a trusted synthetic fixture, not the protected physical ZIP route.
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC
   });
 
   const res = await harness.ingestSequentialDocument(unprocDoc, 1);
