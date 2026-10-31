@@ -82,19 +82,21 @@ export function computeFiniteFieldSvd(matrix, fieldOrder = 31) {
 }
 
 /**
- * Real symmetric cyclic Jacobi eigensolver for exact signed eigenvalues.
+ * Real symmetric cyclic Jacobi eigensolver for numerical signed eigenvalues.
  * Diagonally zeroes off-diagonal elements by orthogonal similarity rotations,
- * preserving exact signed spectrum, trace, and metric topology without absolute-value loss.
+ * iteratively converging to diagonal form with numerical residual diagnostics (Redpen X-A1).
  *
  * @param {Array<Array<number>>} A Real symmetric matrix
  * @param {number} [maxIter=100] Maximum sweeps
  * @param {number} [tol=1e-15] Convergence threshold
- * @returns {Array<number>} Signed eigenvalues sorted in descending order
+ * @returns {{ eigenvalues: Array<number>, off_diagonal_residual: number, sweeps: number }} Numerical signed eigenvalues and convergence diagnostics
  */
 function jacobiSymmetricEigenvalues(A, maxIter = 100, tol = 1e-15) {
   const n = A.length;
   const D = A.map(row => [...row]);
+  let sweeps = 0;
   for (let iter = 0; iter < maxIter; iter++) {
+    sweeps++;
     let changed = false;
     for (let p = 0; p < n - 1; p++) {
       for (let q = p + 1; q < n; q++) {
@@ -131,19 +133,29 @@ function jacobiSymmetricEigenvalues(A, maxIter = 100, tol = 1e-15) {
     }
     if (!changed) break;
   }
+  let offDiagSumSq = 0;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i !== j) offDiagSumSq += D[i][j] * D[i][j];
+    }
+  }
+  const off_diagonal_residual = Math.sqrt(offDiagSumSq);
   const evals = [];
   for (let i = 0; i < n; i++) evals.push(D[i][i]);
-  return evals.sort((a, b) => b - a);
+  evals.sort((a, b) => b - a);
+  return { eigenvalues: evals, off_diagonal_residual, sweeps };
 }
 
 /**
- * Computes exact spectrum of a complex Hermitian matrix via real block embedding.
+ * Computes numerical spectrum of a complex Hermitian matrix via real block embedding.
  * Embeds H = A + iB into real symmetric M = [ [A, -B], [B, A] ].
- * Uses real symmetric Jacobi diagonalization to extract exact signed eigenvalues,
+ * Uses real symmetric cyclic Jacobi similarity rotations to extract signed eigenvalues,
  * strictly validating positive-semidefiniteness and preserving negative eigenvalue signs (Redpen IX-A1).
+ * Von Neumann entropy S = -Tr(rho log2 rho) is calculated strictly for valid normalized density
+ * states (PSD with unit trace |Tr - 1| < 1e-4); unnormalized or non-PSD operators yield entropy_bits = null (Redpen X-A1).
  *
  * @param {Array<Array<{re: number, im: number}|number>>} complexMatrix
- * @returns {object} { valid: boolean, eigenvalues: Array<number>, trace: number, rank: number, is_positive_semidefinite: boolean, entropy_bits: number|null }
+ * @returns {object} { valid: boolean, numerical_algorithm: string, eigenvalue_type: string, eigenvalues: Array<number>, off_diagonal_residual: number, sweeps_converged: number, trace: number, rank: number, is_positive_semidefinite: boolean, density_matrix_valid: boolean, entropy_bits: number|null }
  */
 export function computeComplexHermitianSpectrum(complexMatrix) {
   if (!Array.isArray(complexMatrix) || complexMatrix.length === 0 || !Array.isArray(complexMatrix[0])) {
@@ -198,8 +210,12 @@ export function computeComplexHermitianSpectrum(complexMatrix) {
     }
   }
 
-  // Symmetric Jacobi eigensolver extracts exact signed eigenvalues with multiplicity 2
-  const signedEvals = jacobiSymmetricEigenvalues(M);
+  // Symmetric Jacobi eigensolver extracts numerical signed eigenvalues with multiplicity 2
+  const jacobiResult = jacobiSymmetricEigenvalues(M);
+  const signedEvals = jacobiResult.eigenvalues;
+  const off_diagonal_residual = jacobiResult.off_diagonal_residual;
+  const sweeps_converged = jacobiResult.sweeps;
+
   const eigenvalues = [];
   for (let k = 0; k < n; k++) {
     const val1 = signedEvals[2 * k] !== undefined ? signedEvals[2 * k] : 0;
@@ -220,22 +236,28 @@ export function computeComplexHermitianSpectrum(complexMatrix) {
   const nonZeroEvals = cleanedEvals.filter(v => Math.abs(v) > 1e-6);
   const rank = nonZeroEvals.length;
 
+  // Density matrix validity requires PSD AND unit trace (Redpen X-A1)
+  const density_matrix_valid = is_positive_semidefinite && Math.abs(trace - 1.0) < 1e-4;
   let entropy_bits = null;
-  let density_matrix_valid = false;
 
-  if (is_positive_semidefinite) {
+  // Von Neumann entropy is only defined for valid physical density states (Redpen X-A1)
+  if (density_matrix_valid) {
     const positiveEvals = cleanedEvals.filter(v => v > 1e-6);
     const entropy = positiveEvals.reduce((acc, p) => {
       if (p <= 0) return acc;
-      return acc - p * Math.log2(p);
+      const clampedP = Math.min(1.0, Math.max(0.0, p));
+      return acc - clampedP * Math.log2(clampedP);
     }, 0);
     entropy_bits = Math.abs(entropy) < 1e-12 ? 0.0 : cleanNum(entropy);
-    density_matrix_valid = Math.abs(trace - 1.0) < 1e-4;
   }
 
   return {
     valid: true,
+    numerical_algorithm: 'CYCLIC_JACOBI_SIMILARITY',
+    eigenvalue_type: 'NUMERICAL_SIGNED_EIGENVALUES',
     eigenvalues: cleanedEvals,
+    off_diagonal_residual,
+    sweeps_converged,
     trace,
     rank,
     min_eigenvalue,
