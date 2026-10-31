@@ -1,22 +1,22 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793423187776-92e6b895",
-  "timestamp": "2026-10-31T05:06:27.777Z",
-  "source_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
+  "invocation_id": "dollhouse-audit-1793423315900-920aa12c",
+  "timestamp": "2026-10-31T05:08:35.900Z",
+  "source_revision": "7d630b21377c004b6b35c5fa9a0e9b32bc26de20",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
+  "executing_checkout_revision": "7d630b21377c004b6b35c5fa9a0e9b32bc26de20",
   "is_exact_checkout_match": true,
-  "worktree_cleanliness_verified": false,
-  "exact_checkout_verified": false,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
-    "audit_execution_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
+    "executable_source_revision": "7d630b21377c004b6b35c5fa9a0e9b32bc26de20",
+    "audit_execution_revision": "7d630b21377c004b6b35c5fa9a0e9b32bc26de20",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
-    "worktree_cleanliness_verified": false,
+    "worktree_cleanliness_verified": true,
     "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
     "current_head_source_equivalence_verified": true,
     "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
@@ -419,5 +419,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 487
+  "execution_duration_ms": 526
 }
