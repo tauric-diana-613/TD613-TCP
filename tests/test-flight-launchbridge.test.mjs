@@ -1,3 +1,4 @@
+import './test-experiment-b-codex-integration.test.mjs';
 import './test-experiment-b-gate-f-feasibility.test.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
