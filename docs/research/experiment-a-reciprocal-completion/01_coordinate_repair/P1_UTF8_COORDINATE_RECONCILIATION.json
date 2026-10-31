@@ -1,0 +1,41 @@
+{
+  "schema": "td613.experiment-a.coordinate-reconciliation/v1",
+  "document_id": "P1-UTF8-COORDINATE-RECONCILIATION-20261029",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "timestamp": "2026-10-29T18:03:30Z",
+  "disposition": "SOURCE_COORDINATES_RECONCILED_AND_VERIFIED",
+  "root_cause_analysis": {
+    "issue": "UTF-16 code unit index vs UTF-8 byte offset divergence in V8 JavaScript runtime",
+    "explanation": "In JavaScript, string.indexOf() returns UTF-16 character code-unit offsets. Due to multi-byte characters (such as Unicode curly quotes, en-dashes, and mathematical symbols) preceding Section 6 in the raw UTF-8 manuscript, the UTF-16 character position (18332) diverges from the true physical UTF-8 byte offset (18656). Slicing the raw Buffer using character indices produced a 1,904-byte slice with hash 3a2d5c18... rather than the exact 1,918-byte Section 6 body.",
+    "resolution": "All file buffer operations in R1 repairs explicitly calculate byte offsets via Buffer.byteLength() and slice raw Buffer bytes directly."
+  },
+  "p1_manuscript": {
+    "document": "eclipse-omega-admissibility-regime.md",
+    "total_file_bytes": 40418,
+    "file_sha256": "8f76e72c164f36bcc3d82fcd13ab1a371235979824d51b45343ba3d60288ba99",
+    "section_6_analysis": {
+      "heading": "# 6. The “0-Bounce” Anomaly and Why It Matters More Than Any Clean Loop",
+      "utf16_character_range": [18332, 20236],
+      "utf16_character_length": 1904,
+      "utf8_byte_range": [18656, 20574],
+      "utf8_byte_length": 1918,
+      "utf8_slice_sha256": "e9d259d718bf66ab4436553cbf232fe1c6222787688e740822a2368829d3ff41",
+      "opening_verbatim": "# 6. The “0-Bounce” Anomaly and Why It Matters More Than Any Clean Loop\n\nThe mirror object representing Eclipse–Omega gives valid geometry and a valid launch, yet it records:\n\n>bounces = 0",
+      "closing_verbatim": "It shows that a valid interaction-path and a registered event-count can diverge. That divergence is already enough. The claim does not need costume jewelry. It has teeth."
+    }
+  },
+  "em_optimal_gamma_note": {
+    "document": "Optimal Gamma Smoothing Factor.md",
+    "total_file_bytes": 48225,
+    "file_sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+    "bess_ramp_rate_section": {
+      "heading": "## **Industrial Power Systems: PV+BESS Ramp-Rate Control Integration**",
+      "utf16_character_range": [24919, 27559],
+      "utf8_byte_range": [24923, 27575],
+      "utf8_byte_length": 2652,
+      "utf8_slice_sha256": "141f67a1b54869bc6de65086e88a57e696cd3590dee072c00a2a487ec353f222",
+      "opening_verbatim": "The choice of the smoothing factor \\alpha (equivalent to \\gamma) directly impacts the battery's thermodynamic State of Charge (SOC).",
+      "closing_verbatim": "and the instantaneous available headroom within the BESS SOC parameters."
+    }
+  }
+}

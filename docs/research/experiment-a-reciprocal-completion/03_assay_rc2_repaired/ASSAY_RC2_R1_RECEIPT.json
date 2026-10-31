@@ -1,0 +1,101 @@
+{
+  "schema": "td613.experiment-a.assay-rc2-warranted-bridge/v2-r1",
+  "assay_id": "A-RC2-R1-WARRANTED-BRIDGE-AND-PLAUSIBLE-FALSIFIERS",
+  "timestamp": "2026-10-29T18:08:23.691Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "epistemic_disposition": "WARRANTED_BRIDGE_VALIDATED · PLAUSIBLE_FALSE_TWIN_REFUSED · COMPILER_WITNESS_CONFIRMED",
+  "authorial_status": {
+    "warrant_provenance": "EXPLICIT_RESEARCH_ANALOGY_CANDIDATE_AWAITING_HUMAN_CLOSURE",
+    "autonomous_bridge_discovery_credit": 0,
+    "interpretation": "The compiler acts strictly as an operational witness verifying declared contracts against physical source coordinates. It does not autonomously discover ontological relationships between chambers."
+  },
+  "conditions": {
+    "condition_1_unbridged": {
+      "condition": "UNBRIDGED_QUERY",
+      "bridge_admitted": false,
+      "admitted_path_count": 0,
+      "disposition": "PATH_COMPILATION_REFUSED_UNBRIDGED",
+      "reason": "Jurisdictional boundary strictly enforced. Zero cross-chamber paths compilable without an admitted bridge."
+    },
+    "condition_2_warranted_bridge": {
+      "bridge_id": "BRIDGE-WARRANTED-P1-SEC6-EM-BESS-01",
+      "author_provenance": "EXPLICIT_RESEARCH_ANALOGY_CANDIDATE_AWAITING_HUMAN_CLOSURE",
+      "checks": {
+        "endpoint_a_document_hash_valid": true,
+        "endpoint_a_byte_range_valid": true,
+        "endpoint_a_slice_hash_valid": true,
+        "endpoint_b_document_hash_valid": true,
+        "endpoint_b_byte_range_valid": true,
+        "endpoint_b_slice_hash_valid": true,
+        "dimensional_type_compatible": true,
+        "mathematical_isomorphism_verified": true,
+        "formal_contract_verified": true
+      },
+      "admitted_path_count": 1,
+      "disposition": "COMPILATION_ADMITTED_CONDITIONAL_ON_AUTHORED_ANALOGY",
+      "reason": "Formally verified contract admitted conditional on authored research analogy; zero autonomous discovery credit earned."
+    },
+    "condition_3a_obvious_false_twin": {
+      "bridge_id": "BRIDGE-RIVAL-HOMONYM-CURVATURE-02",
+      "author_provenance": "UNREVIEWED_LEXICAL_HEURISTIC",
+      "checks": {
+        "endpoint_a_document_hash_valid": true,
+        "endpoint_a_byte_range_valid": true,
+        "endpoint_a_slice_hash_valid": true,
+        "endpoint_b_document_hash_valid": true,
+        "endpoint_b_byte_range_valid": true,
+        "endpoint_b_slice_hash_valid": true,
+        "dimensional_type_compatible": false,
+        "mathematical_isomorphism_verified": false,
+        "formal_contract_verified": false
+      },
+      "admitted_path_count": 0,
+      "disposition": "COLLAPSE_PREVENTED_FALSE_TWIN_REFUSED",
+      "reason": "Dimensional incompatibility: Discrete projective obstruction cannot be equated with continuous Allan variance derivative."
+    },
+    "condition_3b_plausible_false_twin": {
+      "bridge_id": "BRIDGE-RIVAL-PLAUSIBLE-CAPACITY-FLOWMETER-03",
+      "author_provenance": "PLAUSIBLE_ADVERSARIAL_CANDIDATE_FOR_FALSIFICATION",
+      "checks": {
+        "endpoint_a_document_hash_valid": true,
+        "endpoint_a_byte_range_valid": true,
+        "endpoint_a_slice_hash_valid": true,
+        "endpoint_b_document_hash_valid": true,
+        "endpoint_b_byte_range_valid": true,
+        "endpoint_b_slice_hash_valid": true,
+        "dimensional_type_compatible": true,
+        "mathematical_isomorphism_verified": false,
+        "formal_contract_verified": false
+      },
+      "admitted_path_count": 0,
+      "disposition": "REFUSED_PLAUSIBLE_FALSE_BRIDGE_NON_ISOMORPHIC",
+      "reason": "Semantic/mathematical non-isomorphism: Discrete topological containment capacity bounds cannot be mapped to fluid pulse integration constants, despite superficial scalar type compatibility."
+    },
+    "condition_4_ablated_witness": {
+      "bridge_id": "BRIDGE-ABLATED-WITNESS-CORRUPTED-04",
+      "author_provenance": "EXPLICIT_RESEARCH_ANALOGY_CANDIDATE_AWAITING_HUMAN_CLOSURE",
+      "checks": {
+        "endpoint_a_document_hash_valid": true,
+        "endpoint_a_byte_range_valid": false,
+        "endpoint_a_slice_hash_valid": false,
+        "endpoint_b_document_hash_valid": true,
+        "endpoint_b_byte_range_valid": true,
+        "endpoint_b_slice_hash_valid": true,
+        "dimensional_type_compatible": true,
+        "mathematical_isomorphism_verified": true,
+        "formal_contract_verified": true
+      },
+      "admitted_path_count": 0,
+      "disposition": "WITNESS_HASH_OR_OFFSET_MISMATCH_REFUSED",
+      "reason": "Declared byte spans lie outside physical document boundaries or slice SHA-256 mismatch."
+    }
+  },
+  "scientific_findings": [
+    "1. Cross-chamber queries without an admitted bridge are reliably refused (PATH_COMPILATION_REFUSED_UNBRIDGED).",
+    "2. Warranted Bridge B1 passes all dimensional and exact UTF-8 byte span checks (18656..20574 and 24923..27575), admitting exactly 1 typed path conditional on authored research analogy.",
+    "3. Obvious False-Twin Bridge B_rival_obvious is rejected by dimensional type incompatibility (COLLAPSE_PREVENTED_FALSE_TWIN_REFUSED).",
+    "4. RC-03 Resolved: Plausible, type-compatible False-Twin Bridge B_rival_plausible is rejected by semantic/mathematical non-isomorphism (REFUSED_PLAUSIBLE_FALSE_BRIDGE_NON_ISOMORPHIC), proving the compiler evaluates structural invariants, not merely syntactic types.",
+    "5. Corrupted witness byte spans are rejected (WITNESS_HASH_OR_OFFSET_MISMATCH_REFUSED).",
+    "6. Autonomous discovery credit remains 0."
+  ]
+}
