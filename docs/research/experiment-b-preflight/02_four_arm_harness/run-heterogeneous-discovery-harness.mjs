@@ -498,10 +498,26 @@ export class HeterogeneousDiscoveryHarness {
       }
 
       const isDirectRead = typeof executorFn !== 'function';
+      const isProtected = effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED;
+      const requireExistingForTool = isDirectRead || (isProtected && toolName === 'read_file' && params.requireExisting !== false) || params.requireExisting === true;
+      const requireByteBindingForTool = isDirectRead || (isProtected && toolName === 'read_file' && params.requireByteBinding !== false) || params.requireByteBinding === true;
+
       const auth = this.auditToolExecution(toolName, params, {
-        requireByteBinding: isDirectRead || params.requireByteBinding === true,
-        requireExisting: isDirectRead || params.requireExisting === true
+        requireByteBinding: requireByteBindingForTool,
+        requireExisting: requireExistingForTool
       });
+
+      // Fail-closed enforcement for PROTECTED read_file (Redpen XIII-R2 R2-A):
+      // A PROTECTED read_file operation must fail closed when auth.byteBindingDigest is absent,
+      // including when a caller supplies a custom executorFn.
+      if (toolName === 'read_file' && isProtected) {
+        if (!auth || !auth.byteBindingDigest) {
+          throw new Error(
+            `PROTECTED_UNAUTHENTICATED_BYTES_REFUSED: PROTECTED read_file operation for "${params.Path || params.path || ''}" failed to establish an authorized byte-binding digest. Custom executor cannot consume unauthenticated bytes fail-closed.`
+          );
+        }
+      }
+
       callRecord.status = 'PERMITTED';
 
       let result = null;
@@ -755,6 +771,28 @@ export class HeterogeneousDiscoveryHarness {
         if (!doc.derivative_sha256 || doc.derivative_sha256.toLowerCase() !== (calculatedSha || '').toLowerCase()) {
           throw new Error(
             `DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH: Authenticated text derivative '${doc.filename}' content digest (${calculatedSha}) does not match derivative_sha256 (${doc.derivative_sha256}). Lineage binding rejected fail-closed.`
+          );
+        }
+      }
+
+      // Ingress Ancestry & Provenance Authentication (Redpen XIII-R2 R2-B):
+      // In PROTECTED mode, caller cannot submit unauthenticated text or buffers with caller-computed SHA-256
+      // without an authorized physical source file, an authenticated admission receipt ancestor, or an authenticated derivative lineage.
+      if (isProtected) {
+        const hasPhysicalSource = Boolean(doc.filePath && typeof doc.filePath === 'string');
+        const hasAdmittedReceiptAncestor = Boolean(
+          (doc.admission_receipt_sha256 && typeof doc.admission_receipt_sha256 === 'string') ||
+          (doc.source_admission_contract && typeof doc.source_admission_contract === 'string') ||
+          (doc.archive_intake_verified === true) ||
+          (doc.author_provenance === 'Authentic Admitted ZIP Archive Member')
+        );
+        const hasAuthenticatedDerivativeAncestry = Boolean(
+          isDerivative && doc.parent_raw_sha256
+        );
+
+        if (!hasPhysicalSource && !hasAdmittedReceiptAncestor && !hasAuthenticatedDerivativeAncestry) {
+          throw new Error(
+            `PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED: Document '${doc.filename}' submitted as PROTECTED without verified physical source (filePath), authenticated admission receipt ancestor, or verified derivative parent lineage. Caller-computed digest alone cannot establish trusted provenance.`
           );
         }
       }

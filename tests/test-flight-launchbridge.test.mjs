@@ -1443,7 +1443,8 @@ test('R4-06B: Execution-Time Tool-Boundary Mediation, Traversal Rejection & Syml
   // 5. HeterogeneousDiscoveryHarness executeAuditedToolCall mediation
   const harness = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2A_MODULAR',
-    mockMode: true
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC
   });
 
   // A. Permitted tool call with allowed path in exact positive specimen allowlist
@@ -2795,8 +2796,8 @@ test('Redpen XIII-R1: FSM Reserved Field Protection & Registry Hash Integrity (R
 
     // Refusal Test 5: Modification of an earlier stored transition followed by registry reload throws EPISODE_REGISTRY_CORRUPTED
     const rawRegistry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
-    // Tamper with the from state of entry 1 in status_history
-    rawRegistry.episodes[epId].status_history[0].from = 'TAMPERED_PREV_STATE';
+    // Tamper with details payload of entry 1 in status_history (without tampering lawful state adjacency)
+    rawRegistry.episodes[epId].status_history[0].details = { tampered: true };
     fs.writeFileSync(registryFile, JSON.stringify(rawRegistry, null, 2), 'utf8');
 
     assert.throws(
@@ -2837,6 +2838,48 @@ test('Redpen XIII-R1: FSM Reserved Field Protection & Registry Hash Integrity (R
       expectedWitnessGenesisHash,
       'External witness anchor divergence detected: local hash recomputation cannot fabricate external witness attestation!'
     );
+
+    // Negative Control R2-C1: Top-level status tampering without altering hash chain throws EPISODE_HISTORY_CORRUPTED
+    const statusTamperedRegistry = JSON.parse(JSON.stringify(rawRegistry));
+    statusTamperedRegistry.episodes[epId].status = 'ADJUDICATED'; // Tamper top-level status
+    fs.writeFileSync(registryFile, JSON.stringify(statusTamperedRegistry, null, 2), 'utf8');
+    assert.throws(
+      () => loadEpisodeRegistry(registryFile),
+      /EPISODE_HISTORY_CORRUPTED.*top-level status/
+    );
+
+    // Negative Control R2-C2: Top-level attempt_count tampering without altering hash chain throws EPISODE_HISTORY_CORRUPTED
+    const countTamperedRegistry = JSON.parse(JSON.stringify(rawRegistry));
+    countTamperedRegistry.episodes[epId].attempt_count = 999; // Tamper top-level attempt_count
+    fs.writeFileSync(registryFile, JSON.stringify(countTamperedRegistry, null, 2), 'utf8');
+    assert.throws(
+      () => loadEpisodeRegistry(registryFile),
+      /EPISODE_HISTORY_CORRUPTED.*attempt_count/
+    );
+
+    // Negative Control R2-C3: Episode with empty history but invalid initial status throws EPISODE_HISTORY_CORRUPTED
+    const emptyTamperedRegistry = JSON.parse(JSON.stringify(rawRegistry));
+    const emptyEpId = `${epId}-EMPTY-TAMPERED`;
+    emptyTamperedRegistry.episodes[emptyEpId] = {
+      episode_id: emptyEpId,
+      status: 'ADJUDICATED',
+      attempt_count: 0,
+      status_history: []
+    };
+    fs.writeFileSync(registryFile, JSON.stringify(emptyTamperedRegistry, null, 2), 'utf8');
+    assert.throws(
+      () => loadEpisodeRegistry(registryFile),
+      /EPISODE_HISTORY_CORRUPTED.*empty history but invalid initial status/
+    );
+
+    // Negative Control R2-C4: Episode with empty history but non-zero attempt_count throws EPISODE_HISTORY_CORRUPTED
+    emptyTamperedRegistry.episodes[emptyEpId].status = 'REGISTERED';
+    emptyTamperedRegistry.episodes[emptyEpId].attempt_count = 5;
+    fs.writeFileSync(registryFile, JSON.stringify(emptyTamperedRegistry, null, 2), 'utf8');
+    assert.throws(
+      () => loadEpisodeRegistry(registryFile),
+      /EPISODE_HISTORY_CORRUPTED.*empty history but non-zero attempt_count/
+    );
   } finally {
     try {
       if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
@@ -2844,4 +2887,130 @@ test('Redpen XIII-R1: FSM Reserved Field Protection & Registry Hash Integrity (R
       if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
     } catch (_) {}
   }
+});
+
+test('Redpen XIII-R2: Protected Tool Executor and Document Ancestry Invariants (R2-A, R2-B)', async () => {
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    trustClass: INGRESS_TRUST_CLASSES.PROTECTED,
+    mockMode: true
+  });
+
+  // Negative Control R2-A: Prospective allowlisted fixture does not exist on disk + custom executor -> REFUSED fail-closed
+  const nonExistentAllowlistedPath = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md';
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall(
+        'read_file',
+        { Path: nonExistentAllowlistedPath },
+        async () => 'arbitrary model text without on-disk byte binding'
+      );
+    },
+    /SOURCE_FILE_NOT_FOUND_REFUSED|PROTECTED_UNAUTHENTICATED_BYTES_REFUSED/
+  );
+
+  // Negative Control R2-B1: PROTECTED text plus matching caller-computed SHA-256 without admitted source identity -> REFUSED
+  const callerText = '# Arbitrary text without admission identity';
+  const callerSha = crypto.createHash('sha256').update(callerText).digest('hex');
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument(
+        {
+          id: 'DOC-CALLER-ONLY-01',
+          filename: 'caller_doc.md',
+          content: callerText,
+          sha256: callerSha
+          // No filePath, no admission receipt ancestor, no derivative parent
+        },
+        1
+      );
+    },
+    /PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED/
+  );
+
+  // Negative Control R2-B2: PROTECTED text naming an unavailable physical source -> REFUSED
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument(
+        {
+          id: 'DOC-UNAVAIL-SOURCE-01',
+          filename: 'unavailable_doc.md',
+          filePath: 'path/to/nonexistent/file.md',
+          content: callerText,
+          sha256: callerSha
+        },
+        1
+      );
+    },
+    /SOURCE_FILE_VANISHED_REFUSED/
+  );
+
+  // Negative Control R2-B3: Valid physical source that changes before staging -> REFUSED
+  const tempDir = path.resolve('.td613_temp_r2_b_toctou');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const toctouFile = path.join(tempDir, 'toctou_doc.md');
+  try {
+    const initialBytes = Buffer.from('# Initial Content\n', 'utf8');
+    const initialSha = crypto.createHash('sha256').update(initialBytes).digest('hex');
+    fs.writeFileSync(toctouFile, initialBytes);
+
+    // Mutate file before ingestion
+    fs.writeFileSync(toctouFile, Buffer.from('# Mutated Content\n', 'utf8'));
+
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument(
+          {
+            id: 'DOC-TOCTOU-R2-01',
+            filename: 'toctou_doc.md',
+            filePath: toctouFile,
+            content: initialBytes.toString('utf8'),
+            sha256: initialSha
+          },
+          1
+        );
+      },
+      /SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE/
+    );
+  } finally {
+    try {
+      if (fs.existsSync(toctouFile)) fs.unlinkSync(toctouFile);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+
+  // Negative Control R2-B4: Authenticated derivative missing its parent source identity -> REFUSED
+  const derivText = '# Derivative Text Content';
+  const derivSha = crypto.createHash('sha256').update(derivText).digest('hex');
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument(
+        {
+          id: 'DOC-DERIV-NO-PARENT-01',
+          filename: 'deriv.txt',
+          content: derivText,
+          sha256: derivSha,
+          is_derivative: true,
+          derivative_sha256: derivSha
+          // parent_raw_sha256 missing
+        },
+        1
+      );
+    },
+    /PROTECTED_DERIVATIVE_LINEAGE_MANDATORY/
+  );
+
+  // Positive Control R2-B5: Fully authenticated in-memory path with admission receipt ancestor -> PERMITTED
+  const admittedDoc = {
+    id: 'DOC-ADMITTED-01',
+    filename: 'admitted_specimen.md',
+    content: callerText,
+    sha256: callerSha,
+    admission_receipt_sha256: 'a'.repeat(64),
+    archive_intake_verified: true,
+    mockResponse: 'CHAMBER 2 DESCENT [DOC-ADMITTED-01]:\nPROPOSITION: Authenticated in-memory buffer accepted.'
+  };
+  const turn = await harness.ingestSequentialDocument(admittedDoc, 1);
+  assert.equal(turn.consumed_bytes_sha256, callerSha);
+  assert.equal(turn.model_exposed_bytes_length, Buffer.from(callerText, 'utf8').length);
 });

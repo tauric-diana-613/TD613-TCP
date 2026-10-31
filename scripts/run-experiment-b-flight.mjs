@@ -91,7 +91,7 @@ export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE
       }
       if (options.validateHistoryIntegrity !== false) {
         for (const ep of Object.values(parsed.episodes)) {
-          if (ep && ep.status_history && ep.status_history.length > 0) {
+          if (ep && typeof ep === 'object') {
             try {
               validateEpisodeHistoryIntegrity(ep);
             } catch (err) {
@@ -283,35 +283,108 @@ export const RESERVED_EPISODE_INTERNAL_FIELDS = Object.freeze([
 ]);
 
 /**
- * Validates the cryptographic hash-chain integrity of an episode's status history (Redpen XIII-R1).
+ * Validates the cryptographic hash-chain integrity of an episode's status history (Redpen XIII-R1, XIII-R2 R2-C).
  * Recomputes each transition hash sequentially from genesis '0000...0000'.
- * Detects any intermediate mutation, tampering, or broken chain link fail-closed.
+ * Verifies initial registration state, legal adjacency, consecutive attempt numbering,
+ * continuity between prior 'to' and next 'from', agreement between top-level status and
+ * final transition status, and agreement between top-level attempt_count and history length.
  */
 export function validateEpisodeHistoryIntegrity(episodeRecord) {
   if (!episodeRecord || typeof episodeRecord !== 'object') {
     return { valid: true, verified_entries: 0 };
   }
+  const epId = episodeRecord.episode_id || episodeRecord.id || 'UNKNOWN_EPISODE';
   const history = episodeRecord.status_history;
+  const LAWFUL_REGISTRATION_STATES = ['REGISTERED', 'PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED'];
+
   if (!Array.isArray(history) || history.length === 0) {
+    // Valid handling of episodes with no transition history
+    const topStatus = episodeRecord.status;
+    if (topStatus && !LAWFUL_REGISTRATION_STATES.includes(topStatus)) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' has empty history but invalid initial status '${topStatus}'.`
+      );
+    }
+    const topAttempts = episodeRecord.attempt_count || 0;
+    if (topAttempts !== 0) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' has empty history but non-zero attempt_count (${topAttempts}).`
+      );
+    }
     return { valid: true, verified_entries: 0 };
   }
+
+  // 1. Initial registration state and claimed identity verification
+  const firstTransition = history[0];
+  if (!LAWFUL_REGISTRATION_STATES.includes(firstTransition.from)) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' genesis transition originates from unlawful registration state '${firstTransition.from}'.`
+    );
+  }
+
   let prevHash = '0000000000000000000000000000000000000000000000000000000000000000';
+  let expectedAttempt = 1;
+  let lastState = firstTransition.from;
+
   for (let i = 0; i < history.length; i++) {
     const entry = history[i];
+
+    // 2. Consecutive attempt numbering
+    if (entry.attempt !== expectedAttempt) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' non-consecutive attempt numbering at index ${i}. Expected ${expectedAttempt}, got ${entry.attempt}.`
+      );
+    }
+    expectedAttempt++;
+
+    // 3. Continuity between each prior 'to' and next 'from'
+    if (i > 0 && entry.from !== lastState) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' state discontinuity at index ${i}. Prior 'to' state was '${lastState}', but next 'from' state is '${entry.from}'.`
+      );
+    }
+
+    // 4. Legal adjacency for every stored transition
+    const allowedTransitions = LEGAL_EPISODE_STATE_TRANSITIONS[entry.from] || [];
+    if (!allowedTransitions.includes(entry.to)) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' illegal transition adjacency at index ${i} from '${entry.from}' to '${entry.to}'. Permitted transitions: [${allowedTransitions.join(', ')}].`
+      );
+    }
+
+    // 5. Hash chain continuity and payload integrity
     if (entry.prev_transition_hash !== prevHash) {
       throw new Error(
-        `TRANSITION_HASH_CHAIN_BROKEN: Episode '${episodeRecord.episode_id || episodeRecord.id}' entry ${i} prev_transition_hash mismatch. Expected ${prevHash}, got ${entry.prev_transition_hash}.`
+        `TRANSITION_HASH_CHAIN_BROKEN: Episode '${epId}' entry ${i} prev_transition_hash mismatch. Expected ${prevHash}, got ${entry.prev_transition_hash}.`
       );
     }
     const { transition_hash, ...payload } = entry;
     const expectedHash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
     if (transition_hash !== expectedHash) {
       throw new Error(
-        `TRANSITION_HASH_TAMPERED: Episode '${episodeRecord.episode_id || episodeRecord.id}' entry ${i} transition_hash tampered. Expected ${expectedHash}, got ${transition_hash}.`
+        `TRANSITION_HASH_TAMPERED: Episode '${epId}' entry ${i} transition_hash tampered. Expected ${expectedHash}, got ${transition_hash}.`
       );
     }
+
     prevHash = transition_hash;
+    lastState = entry.to;
   }
+
+  // 6. Agreement between top-level status and final transition status
+  const finalTransition = history[history.length - 1];
+  if (episodeRecord.status && episodeRecord.status !== finalTransition.to) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' top-level status '${episodeRecord.status}' does not agree with final transition status '${finalTransition.to}'.`
+    );
+  }
+
+  // 7. Agreement between top-level attempt_count and verified history
+  if (episodeRecord.attempt_count !== undefined && episodeRecord.attempt_count !== history.length) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' top-level attempt_count (${episodeRecord.attempt_count}) does not match history entry count (${history.length}).`
+    );
+  }
+
   return { valid: true, verified_entries: history.length };
 }
 
@@ -482,10 +555,18 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
       );
     }
     for (const key of Object.keys(metadata)) {
-      if (['status_history', 'attempt_count', 'updated_at'].includes(key)) {
+      if (['status_history', 'attempt_count', 'updated_at', 'episode_id', 'id', 'registered_at', 'transition_hash', 'custody_digest', 'prev_transition_hash'].includes(key)) {
         throw new Error(
           `RESERVED_FIELD_MUTATION_REFUSED: Caller cannot overwrite reserved internal field '${key}' in episode registration metadata.`
         );
+      }
+    }
+
+    // Explicitly permitted metadata fields only (Redpen XIII-R2 R2-C)
+    const permittedMetadata = {};
+    for (const [k, v] of Object.entries(metadata)) {
+      if (!RESERVED_EPISODE_INTERNAL_FIELDS.includes(k) && k !== 'status') {
+        permittedMetadata[k] = v;
       }
     }
 
@@ -493,7 +574,9 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
       episode_id: idStr,
       registered_at: new Date().toISOString(),
       status: initialStatus,
-      ...metadata
+      attempt_count: 0,
+      status_history: [],
+      ...permittedMetadata
     };
 
     // Atomic transactional write via temporary file with Windows EPERM retry and copy fallback (Redpen IX-B4, Redpen X-B3)
