@@ -51,13 +51,28 @@ The TD613 Dollhouse architecture enforces jurisdictional independence between fi
 
 ## 3. Atlas Receiver-Relation Auditor (ATLAS)
 
-- **Jurisdiction:** Receiver-relative control identity, concrete trajectories, holonomy history parity, content-versus-projection distinctions, bounded digest verification, and serialization bridges.
+- **Jurisdiction:** Receiver-relative control identity, concrete trajectories, holonomy history parity, content-versus-projection distinctions, bounded digest verification, serialization bridges, and 9-domain mathematical discovery engine.
 - **Canonical House:** [`ATLAS.md`](../../../../ATLAS.md)
+- **Mathematical Lineage:**
+  - Atlas Wild Field Charter: [`docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md`](../../../../docs/atlas/ATLAS_WILD_FIELD_MATHEMATICAL_CHARTER.md)
+  - Atlas External Crosswalk Y-01: [`docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md`](../../../../docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md)
 - **Primary Engines:**
+  - [`atlas-mathematical-engine.js`](../../../../app/engine/atlas-mathematical-engine.js) (Modular Reusable Mathematical Discovery Engine)
   - [`dollhouse-atlas-relational-custody.js`](../../../../app/engine/dollhouse-atlas-relational-custody.js)
   - [`dollhouse-atlas-fadt.js`](../../../../app/engine/dollhouse-atlas-fadt.js)
   - [`dollhouse-continuity-audit.js`](../../../../app/engine/dollhouse-continuity-audit.js)
+- **Executable Mathematical Capabilities:**
+  1. `A-01` (`TEMPORAL_FIBER`): Future-Response Separation. Demonstrates observational equivalence at $t=0$ while proving continuation distinguishability under non-symmetric flow.
+  2. `A-02` (`HIGHER_ORDER_PARITY`): Distributed Historical Memory. Proves identical univariate ($p=0.5$) and pairwise marginals ($p=0.25$) while isolating 3-point parity holonomy invariant ($\pm 1$).
+  3. `A-03` (`GHZ_LOCALITY`): Relational Continuity & Locality Bounds. Evaluates 2-qubit partial trace $\rho_{12} = \text{diag}(0.5, 0, 0, 0.5)$ (rank 2, $S=1.0$ bit, classical mixture, NOT maximally mixed on 2 qubits) vs 1-qubit reduction $\rho_1 = 0.5 I_2$ (maximally mixed on 1 qubit, $S=1.0$ bit). Global parity stabilizer $M = X_1 X_2 X_3$ distinguishes states. Single-qubit phase flip vulnerability $Z_1 |GHZ_+\rangle = |GHZ_-\rangle$, distance $d=1$; unearned QEC claims refused.
+  4. `A-04` (`RANK_CONDITIONING`): Modular Field Rank vs Real Jacobi SVD Conditioning. Computes exact Gaussian elimination over $\mathbb{F}_{31}$ while strictly refusing real continuous SVD on finite fields (`FINITE_FIELD_SVD_REFUSED`). Computes dynamic iterative Jacobi SVD over $\mathbb{R}$.
+  5. `A-05` (`LIOUVILLE_DAMPED`): Representation Causal Control & Dissipative Morphisms. Liouville divergence $\text{div}(F) = -\gamma/m < 0$ and $dE/dt \le 0$ contracts phase volume. Damped systems are dissipative and NOT symplectic. Refuses unqualified symplectic labels and rejects nominal buzzwords lacking dynamical morphisms.
+  6. `A-06` (`STRUCTURAL_SIGNATURE`): Distinction Ecology & Structural Invariant Divergence. Identifies novel formal mathematical relations (commutators, rank defects, holonomy shifts) in neutral syntax without lexical trigger words.
+  7. `A-07` (`QUANTUM_VISIBILITY`): Nuisance-Parameter Inverse Problems. Identifies parameter non-identifiability on the 1D visibility manifold $V(\eta, n) = \frac{\eta n}{1 + n}$ (degenerate $V=0.45$ for distinct $(\eta, n)$ pairs), refusing uncalibrated physical inference.
+  8. `A-08` (`MEASUREMENT_CONTEXTS`): Transformation Separation. Strictly discriminates between environmental decoherence, classical coarse-graining, projective quantum intervention, and gauge redundancy.
+  9. `A-09` (`NOTATION_NORMALIZATION`): Harmonic Oscillator Symbolic Equivalence. Normalizes genuine syntactic representations (LaTeX, Unicode, plain text, algebraic parameterization) while rejecting inverted-ratio and missing-radical false twins.
 - **Key Invariants:**
+  - Caller problems drive execution; unsupported domains return typed `NOT_EVALUATED` or `HELD` rather than silently running built-in fixtures.
   - Preserves 5 concrete relation classes without member custody collapse.
   - Holonomy history parity: identical endpoints with different winding routes are non-equivalent (`same endpoint does not erase route history`).
   - Strict injective serialization under `atlas-v1`: distinct preimages for numbers vs strings (`1` vs `"v1:n:1"`).

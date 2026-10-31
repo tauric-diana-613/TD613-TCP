@@ -16,7 +16,7 @@ The **TD613 Dollhouse** is a repository-native six-role scientific orchestration
 |---|---|---|---|
 | **PEDAGOGUE** | Consequence order, dromology, route burden, rest/exit | [`dollhouse-pedagogue-dromological.js`](../../../app/engine/dollhouse-pedagogue-dromological.js) | [`PEDAGOGUE.md`](../../../PEDAGOGUE.md) |
 | **APERTURE** | Observability, identifiability, SVD conditioning, noise geometry | [`aperture-v32-typed-epistemic-deficit.js`](../../../app/engine/aperture-v32-typed-epistemic-deficit.js) | [`APERTURE.md`](../../../APERTURE.md) |
-| **ATLAS** | Receiver-relative identity, holonomy history, profile bridges | [`dollhouse-atlas-relational-custody.js`](../../../app/engine/dollhouse-atlas-relational-custody.js) | [`ATLAS.md`](../../../ATLAS.md) |
+| **ATLAS** | Receiver-relative identity, holonomy history, profile bridges, and 9-domain mathematical discovery | [`dollhouse-atlas-relational-custody.js`](../../../app/engine/dollhouse-atlas-relational-custody.js), [`atlas-mathematical-engine.js`](../../../app/engine/atlas-mathematical-engine.js) | [`ATLAS.md`](../../../ATLAS.md) |
 | **FADT** | Finite quotient fibers, irreducible gaps, bounded search | [`dollhouse-fadt-reparative-assistance.js`](../../../app/engine/dollhouse-fadt-reparative-assistance.js) | [`FADT.md`](../../../FADT.md) |
 | **TEMPORAL CUSTODIAN** | Monotonic chronology, predecessor chains, attempt lineage | [`dollhouse-temporal-custodian.js`](../../../app/engine/dollhouse-temporal-custodian.js) | [`DOLLHOUSE.md`](../../../DOLLHOUSE.md) |
 | **ORCHESTRATOR** | Multi-role evidence adjudication, consensus, replication | [`dollhouse-ablation-harness.js`](../../../app/engine/dollhouse-ablation-harness.js) | [`DOLLHOUSE.md`](../../../DOLLHOUSE.md) |
@@ -35,6 +35,7 @@ Activate `/dollhouse-audit` or invoke it programmatically when:
 3. **Reparative Verification:** Validating that an operator recovered from an invalid state into a valid, supported state using reparative assistance.
 4. **Custody & Continuity Verification:** Auditing holonomy parity, predecessor digests, or cross-instrument serialization (`dome-v0` vs `atlas-v1`).
 5. **Epistemic Deficit Audit:** Checking whether an added probe improves algebraic rank at the expense of exploding numerical conditioning.
+6. **Atlas Mathematical Qualification & Discovery:** Auditing source-free mathematical operations across all 9 formal domains (temporal fiber geometry, discrete parity holonomy, complex Hermitian GHZ locality, finite-field nullspaces, dissipative dynamical morphisms, structural signature detection, quantum visibility nuisance-parameter ambiguities, measurement context separations, and non-commutative ladder operator algebra).
 
 ---
 
