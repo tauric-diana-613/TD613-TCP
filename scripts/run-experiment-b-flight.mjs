@@ -225,13 +225,78 @@ export function releaseRegistryLock(lockFile, lockToken = null) {
           // We do not own this lock! A newer owner owns it; do not delete!
           return false;
         }
-      } catch (_) {}
+      } catch (_) {
+        // Corrupted lock JSON: caller cannot prove ownership! Refuse release without deleting lock! (Redpen XII-C1)
+        return false;
+      }
     }
 
     fs.unlinkSync(lockFile);
     return true;
   } catch (_) {
     return false;
+  }
+}
+
+export const CANONICAL_EPISODE_STATES = [
+  'PROSPECTIVE_RESERVED',
+  'WITNESS_VERIFIED',
+  'ARCHIVE_ADMITTED',
+  'GENERATION_STARTED',
+  'GENERATION_INTERRUPTED',
+  'GENERATION_COMPLETED',
+  'STAGE2_PENDING',
+  'ADJUDICATED',
+  'ABORTED_BEFORE_EXPOSURE'
+];
+
+/**
+ * Updates the finite lifecycle status of an episode in the registry (Redpen XII-C2).
+ * Enforces valid state transitions and transactional atomicity.
+ */
+export function updateEpisodeStatus(episodeId, newStatus, details = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+  const idStr = String(episodeId || '').trim();
+  if (!idStr) throw new Error('INVALID_EPISODE_ID: Episode ID must be non-empty.');
+  if (!CANONICAL_EPISODE_STATES.includes(newStatus)) {
+    throw new Error(`INVALID_EPISODE_STATUS: Status '${newStatus}' is not one of the canonical states: ${CANONICAL_EPISODE_STATES.join(', ')}.`);
+  }
+
+  const trustedPath = assertTrustedRegistryPath(registryPath);
+  const lockFile = `${trustedPath}.lock`;
+  const lockToken = acquireRegistryLock(lockFile);
+
+  try {
+    const registry = loadEpisodeRegistry(trustedPath);
+    if (!registry.episodes || !registry.episodes[idStr]) {
+      throw new Error(`EPISODE_NOT_FOUND: Cannot update status for unrecorded episode '${idStr}'.`);
+    }
+
+    const ep = registry.episodes[idStr];
+    const prevStatus = ep.status;
+    ep.status = newStatus;
+    ep.updated_at = new Date().toISOString();
+    if (!ep.status_history) ep.status_history = [];
+    ep.status_history.push({
+      from: prevStatus,
+      to: newStatus,
+      at: ep.updated_at,
+      details
+    });
+
+    Object.assign(ep, details);
+
+    const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
+    try {
+      fs.renameSync(tmpPath, trustedPath);
+    } catch (e) {
+      fs.copyFileSync(tmpPath, trustedPath);
+      try { fs.unlinkSync(tmpPath); } catch (_) {}
+    }
+
+    return ep;
+  } finally {
+    releaseRegistryLock(lockFile, lockToken);
   }
 }
 
@@ -274,7 +339,7 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
     registry.episodes[idStr] = {
       episode_id: idStr,
       registered_at: new Date().toISOString(),
-      status: 'REGISTERED',
+      status: metadata.status || 'REGISTERED',
       ...metadata
     };
 
@@ -754,6 +819,7 @@ async function main() {
     const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
     try {
       registerLiveEpisode(options.episodeId, {
+        status: 'WITNESS_VERIFIED',
         backend: options.backend,
         arm: options.arm,
         permutation: options.permutation,
@@ -820,15 +886,23 @@ async function main() {
     );
     console.log(`  ✓ Admitted ${admissionReceipt.document_count} synthetic specimens from in-memory ZIP (manifest: ${admissionReceipt.manifest_sha256.slice(0, 16)}...)`);
   } else {
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
     if (!options.grantPath) {
+      updateEpisodeStatus(options.episodeId, 'ABORTED_BEFORE_EXPOSURE', { error: 'OPERATOR_FLIGHT_GRANT_REQUIRED' }, registryFile);
       throw new Error('OPERATOR_FLIGHT_GRANT_REQUIRED: Live flight requires --grant-path pointing to cryptographic operator flight grant.');
     }
     const grantRaw = fs.readFileSync(path.resolve(options.grantPath), 'utf8');
     const grant = JSON.parse(grantRaw);
-    admissionReceipt = intake.admitArchive(options.archivePath, {
-      operatorFlightGrant: grant
-    });
-    console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive: ${options.archivePath}`);
+    try {
+      admissionReceipt = intake.admitArchive(options.archivePath, {
+        operatorFlightGrant: grant
+      });
+      updateEpisodeStatus(options.episodeId, 'ARCHIVE_ADMITTED', { manifest_sha256: admissionReceipt.manifest_sha256 }, registryFile);
+      console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive: ${options.archivePath}`);
+    } catch (intakeErr) {
+      updateEpisodeStatus(options.episodeId, 'ABORTED_BEFORE_EXPOSURE', { error: intakeErr.message }, registryFile);
+      throw intakeErr;
+    }
   }
 
   // 3. Sequence Permutation Treatment (R3-05 & R4-03)

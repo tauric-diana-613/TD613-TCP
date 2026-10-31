@@ -42,6 +42,8 @@ import {
   generateLiveEpisodeId,
   loadEpisodeRegistry,
   registerLiveEpisode,
+  updateEpisodeStatus,
+  CANONICAL_EPISODE_STATES,
   assertTrustedRegistryPath,
   acquireRegistryLock,
   releaseRegistryLock
@@ -2057,6 +2059,229 @@ test('Dollhouse N1-F05: Witness Verification Precedes Live Episode Reservation',
         return out.includes('EPISODE_REPLAY_FORBIDDEN');
       }
     );
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XII-B3: Fail-Closed Downstream Ingestion, TOCTOU Defense & Derivative Lineage Sieve', async () => {
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', dryRun: true });
+  const validSpecimen = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json';
+
+  // 1A. Existing unlisted source fails closed
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'package.json'),
+    /UNLISTED_SOURCE_FILE_REFUSED/
+  );
+
+  // 1B. Restricted internal source fails closed with forbidden pattern refusal
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'app/engine/atlas-mathematical-engine.js'),
+    /FORBIDDEN_SOURCE_ACCESS_REFUSED/
+  );
+
+  // 2. Missing allowlisted source fails closed when byte-binding is required
+  assert.throws(
+    () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md', { requireExisting: true }),
+    /SOURCE_FILE_NOT_FOUND_REFUSED/
+  );
+
+  // 3. Caller-supplied executor returning different bytes without explicit verify flag fails closed by default
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('read_file', { Path: validSpecimen }, async () => 'TAMPERED_OUTPUT_WITHOUT_OPT_IN_FLAG');
+    },
+    /BYTE_BINDING_INTEGRITY_MISMATCH/
+  );
+
+  // 4. Document with absent digest under strict mode fails closed
+  const strictHarness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', dryRun: true, strictIngestionDigest: true });
+  await assert.rejects(
+    async () => {
+      await strictHarness.ingestSequentialDocument({
+        id: 'DOC-NO-DIGEST',
+        filename: 'specimen.json',
+        content: '{"k": 1}'
+      }, 1);
+    },
+    /DOCUMENT_INGESTION_DIGEST_REQUIRED/
+  );
+
+  // 5. Document with malformed digest (not 64-char hex) fails closed
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument({
+        id: 'DOC-SHORT-SHA',
+        filename: 'specimen.json',
+        content: '{"k": 1}',
+        sha256: 'deadbeef' // Too short!
+      }, 1);
+    },
+    /DOCUMENT_INGESTION_INTEGRITY_MISMATCH/
+  );
+
+  // 6. Text derivative with mismatched derivative_sha256 fails closed
+  await assert.rejects(
+    async () => {
+      const realContent = 'Decoded authentic text';
+      const actualDigest = crypto.createHash('sha256').update(realContent, 'utf8').digest('hex');
+      await harness.ingestSequentialDocument({
+        id: 'DOC-TAMPERED-DERIVATIVE',
+        filename: 'derivative.md',
+        content: realContent,
+        sha256: actualDigest,
+        is_derivative: true,
+        parent_raw_sha256: '0000000000000000000000000000000000000000000000000000000000000001',
+        derivative_sha256: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' // Mismatched!
+      }, 1);
+    },
+    /DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH/
+  );
+
+  // 7. Valid authorized content passes under both ARM_2A_MODULAR and ARM_2B_MATCHED_UNION
+  const access2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', validSpecimen, { requireByteBinding: true });
+  assert.equal(access2A.permitted, true);
+  assert.equal(access2A.disposition, 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED');
+
+  const access2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', validSpecimen, { requireByteBinding: true });
+  assert.equal(access2B.permitted, true);
+  assert.equal(access2B.disposition, 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED');
+});
+
+test('Redpen XII-C1: Lock Release Rejection on Corrupted Lock Payload', () => {
+  const tempDir = path.resolve('.td613_temp_xii_c1_corrupted_lock');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const lockFile = path.join(tempDir, 'corrupted_test.lock');
+
+  try {
+    // Write corrupted non-JSON content to lock file
+    fs.writeFileSync(lockFile, 'CORRUPTED_NON_JSON_DATA_{{{{', 'utf8');
+
+    // Attempting release with a token cannot prove ownership; must return false and NOT unlink
+    const released = releaseRegistryLock(lockFile, 'some-caller-token');
+    assert.equal(released, false, 'Release must be rejected on corrupted lock JSON');
+    assert.ok(fs.existsSync(lockFile), 'Lock file must NOT be deleted when ownership cannot be proven');
+  } finally {
+    try {
+      if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XII-C2: Finite Episode State Machine Lifecycle Transitions', () => {
+  const tempDir = path.resolve('.td613_temp_xii_c2_state_machine');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'episodes_state_test.json');
+  const epId = `LIVE-EP-FSM-${Date.now()}`;
+
+  try {
+    // 1. Initial registration sets WITNESS_VERIFIED
+    const ep = registerLiveEpisode(epId, {
+      backend: 'rest',
+      arm: 'ARM_2A_MODULAR',
+      status: 'WITNESS_VERIFIED'
+    }, registryFile);
+    assert.equal(ep.status, 'WITNESS_VERIFIED');
+
+    // 2. Transition to ARCHIVE_ADMITTED
+    const ep2 = updateEpisodeStatus(epId, 'ARCHIVE_ADMITTED', { manifest_sha256: 'abc123' }, registryFile);
+    assert.equal(ep2.status, 'ARCHIVE_ADMITTED');
+    assert.equal(ep2.manifest_sha256, 'abc123');
+
+    // 3. Transition to GENERATION_STARTED
+    const ep3 = updateEpisodeStatus(epId, 'GENERATION_STARTED', {}, registryFile);
+    assert.equal(ep3.status, 'GENERATION_STARTED');
+
+    // 4. Interruption transition
+    const ep4 = updateEpisodeStatus(epId, 'GENERATION_INTERRUPTED', { reason: 'BUDGET_RESERVATION_HALT' }, registryFile);
+    assert.equal(ep4.status, 'GENERATION_INTERRUPTED');
+
+    // 5. Completion transition
+    const ep5 = updateEpisodeStatus(epId, 'GENERATION_COMPLETED', { candidates_count: 5 }, registryFile);
+    assert.equal(ep5.status, 'GENERATION_COMPLETED');
+
+    // 6. Stage 2 Handoff & Adjudication
+    const ep6 = updateEpisodeStatus(epId, 'STAGE2_PENDING', {}, registryFile);
+    assert.equal(ep6.status, 'STAGE2_PENDING');
+
+    const ep7 = updateEpisodeStatus(epId, 'ADJUDICATED', { adjudication_result: 'BOUNDED_ACCEPT' }, registryFile);
+    assert.equal(ep7.status, 'ADJUDICATED');
+
+    // 7. Verify status history preserves full non-retroactive sequence
+    assert.equal(ep7.status_history.length, 6);
+    assert.equal(ep7.status_history[0].from, 'WITNESS_VERIFIED');
+    assert.equal(ep7.status_history[0].to, 'ARCHIVE_ADMITTED');
+
+    // 8. Invalid status throws fail-closed
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'INVALID_UNKNOWN_STATUS', {}, registryFile),
+      /INVALID_EPISODE_STATUS/
+    );
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XII-C4: Source-Free End-to-End Interruption and Recovery Rehearsal', async () => {
+  const tempDir = path.resolve('.td613_temp_xii_c4_rehearsal');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'rehearsal_episodes.json');
+  const rehearsalEpisodeId = `REHEARSAL-EP-${Date.now()}`;
+
+  try {
+    // Phase 1: Episode Registered after Witness Verification
+    registerLiveEpisode(rehearsalEpisodeId, {
+      backend: 'native',
+      arm: 'ARM_2A_MODULAR',
+      status: 'WITNESS_VERIFIED',
+      is_rehearsal: true
+    }, registryFile);
+
+    // Phase 2: Synthetic Archive Admitted
+    updateEpisodeStatus(rehearsalEpisodeId, 'ARCHIVE_ADMITTED', {
+      manifest_sha256: 'synthetic_rehearsal_manifest_hash_001'
+    }, registryFile);
+
+    // Phase 3: Generation Started
+    updateEpisodeStatus(rehearsalEpisodeId, 'GENERATION_STARTED', {}, registryFile);
+
+    // Phase 4: Simulated Interruption (e.g. process signal or network halt)
+    updateEpisodeStatus(rehearsalEpisodeId, 'GENERATION_INTERRUPTED', {
+      interrupted_at_turn: 2,
+      interruption_reason: 'SIMULATED_REHEARSAL_INTERRUPTION'
+    }, registryFile);
+
+    const midRegistry = loadEpisodeRegistry(registryFile);
+    assert.equal(midRegistry.episodes[rehearsalEpisodeId].status, 'GENERATION_INTERRUPTED');
+
+    // Phase 5: Idempotent Recovery and Resumption
+    updateEpisodeStatus(rehearsalEpisodeId, 'GENERATION_STARTED', {
+      resumed_at_turn: 2,
+      resumed_at: new Date().toISOString()
+    }, registryFile);
+
+    // Phase 6: Completed Generation & Stage 2 Adjudication
+    updateEpisodeStatus(rehearsalEpisodeId, 'GENERATION_COMPLETED', {
+      total_turns_completed: 4
+    }, registryFile);
+
+    updateEpisodeStatus(rehearsalEpisodeId, 'ADJUDICATED', {
+      adjudication_receipt: 'REHEARSAL_RECEIPT_VERIFIED'
+    }, registryFile);
+
+    const finalRegistry = loadEpisodeRegistry(registryFile);
+    const finalEp = finalRegistry.episodes[rehearsalEpisodeId];
+    assert.equal(finalEp.status, 'ADJUDICATED');
+    assert.ok(finalEp.status_history.length >= 5);
   } finally {
     try {
       if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);

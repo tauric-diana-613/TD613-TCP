@@ -319,6 +319,7 @@ export class HeterogeneousDiscoveryHarness {
     this.allowLivePaidInference = options.allowLivePaidInference || false;
     this.model = options.model || 'gemini-2.5-flash-lite';
     this.maxOutputTokensPerCall = options.maxOutputTokensPerCall || 4096;
+    this.strictIngestionDigest = options.strictIngestionDigest ?? false;
 
     // Fail-closed execution resource ceilings
     this.maxCalls = options.maxCalls ?? 120;
@@ -462,7 +463,8 @@ export class HeterogeneousDiscoveryHarness {
       if (typeof executorFn === 'function') {
         result = await executorFn(params);
         callRecord.output_preview = typeof result === 'string' ? result.slice(0, 200) : 'OBJECT_OUTPUT';
-        if (toolName === 'read_file' && auth && auth.byteBindingDigest && params.verifyExecutorDigest === true) {
+        const shouldVerifyDigest = params.verifyExecutorDigest !== false && params.isSynthetic !== true && params.untrustedSynthetic !== true;
+        if (toolName === 'read_file' && auth && auth.byteBindingDigest && shouldVerifyDigest) {
           const resultBytes = Buffer.isBuffer(result) ? result : Buffer.from(typeof result === 'string' ? result : JSON.stringify(result), 'utf8');
           const actualDigest = crypto.createHash('sha256').update(resultBytes).digest('hex');
           if (actualDigest !== auth.byteBindingDigest) {
@@ -640,15 +642,31 @@ export class HeterogeneousDiscoveryHarness {
   }
 
   // Step 2: Ingest Single Sequential Document (tk)
-  async ingestSequentialDocument(doc, turnIndex) {
-    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI)
+  async ingestSequentialDocument(doc, turnIndex, options = {}) {
+    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI & Redpen XII-B2)
     if (doc && (doc.raw_bytes || doc.content)) {
       const docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
       const calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
-      if (doc.sha256 && calculatedSha.toLowerCase() !== doc.sha256.toLowerCase()) {
+      const isStrict = this.strictIngestionDigest || options.strict || doc.requireDigest;
+      if (doc.sha256) {
+        if (typeof doc.sha256 !== 'string' || doc.sha256.length !== 64 || calculatedSha.toLowerCase() !== doc.sha256.toLowerCase()) {
+          throw new Error(
+            `DOCUMENT_INGESTION_INTEGRITY_MISMATCH: Admitted document '${doc.filename}' payload digest (${calculatedSha}) does not match admission digest (${doc.sha256}). Ingestion rejected fail-closed.`
+          );
+        }
+      } else if (isStrict) {
         throw new Error(
-          `DOCUMENT_INGESTION_INTEGRITY_MISMATCH: Admitted document '${doc.filename}' payload digest (${calculatedSha}) does not match admission digest (${doc.sha256}). Ingestion rejected fail-closed.`
+          `DOCUMENT_INGESTION_DIGEST_REQUIRED: Admitted document '${doc.filename}' lacks mandatory sha256 digest in strict ingestion mode. Ingestion rejected fail-closed.`
         );
+      }
+
+      // Authenticated text derivative lineage binding (Redpen XII-B2)
+      if (doc.is_derivative && doc.parent_raw_sha256) {
+        if (!doc.derivative_sha256 || doc.derivative_sha256.toLowerCase() !== calculatedSha.toLowerCase()) {
+          throw new Error(
+            `DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH: Authenticated text derivative '${doc.filename}' content digest (${calculatedSha}) does not match derivative_sha256 (${doc.derivative_sha256}). Lineage binding rejected fail-closed.`
+          );
+        }
       }
     }
 

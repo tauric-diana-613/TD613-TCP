@@ -108,8 +108,8 @@ export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
     for (const line of lines) {
       const code = line.slice(0, 2);
       const filePath = line.slice(3).trim();
-      // Skip ignorable scratch, tmp, .gemini
-      if (filePath.startsWith('scratch/') || filePath.startsWith('tmp/') || filePath.startsWith('.gemini/')) {
+      // Skip ignorable scratch, tmp, .gemini, artifacts (generated audit receipts)
+      if (filePath.startsWith('scratch/') || filePath.startsWith('tmp/') || filePath.startsWith('.gemini/') || filePath.startsWith('artifacts/')) {
         continue;
       }
       const isStaged = code[0] !== ' ' && code[0] !== '?' && code[0] !== '!';
@@ -284,6 +284,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
         git_commit_verified: true,
         in_local_git_history: true,
         is_exact_checkout_match: isExactCheckoutSha,
+        worktree_cleanliness_verified: Boolean(cleanliness.is_clean),
         exact_checkout_verified: exactMatch && cleanliness.is_clean,
         is_historical_commit_only: !isExactCheckoutSha,
         is_working_tree: isExactCheckoutSha,
@@ -772,7 +773,8 @@ function compileHumanReceipt(machineReceipt) {
 | Instrument Property | Status / Value |
 |---|---|
 | **Orchestrator Decision** | **${decisionBadge}** (\`${orchestrator?.decision || 'NOT_RUN'}\`) |
-| **Consensus** | \`${consensusText}\` |
+| **Consensus (Primary Verdicts)** | \`${consensusText}\` |
+| **Nested Extension Holds** | ${machineReceipt.nested_extension_holds?.length || 0} |
 | **Detected Infractions** | ${detected_infractions.length} |
 | **Release Authority** | **STRICTLY CLOSED (false)** |
 | **Deployment Authority** | **STRICTLY CLOSED (false)** |
@@ -801,6 +803,11 @@ ${rows}
 
 ### Detected Infractions:
 ${infractionsList}
+
+### Nested Specialist-Extension Holds:
+${(machineReceipt.nested_extension_holds || []).length > 0
+  ? machineReceipt.nested_extension_holds.map(h => `- \`${h.role}\`: \`${h.property}\` = \`${h.status}\` (${h.description})`).join('\n')
+  : '_None._'}
 
 ### Governance Invariants:
 1. **Replication Discipline:** Shared acquisition on a single receipt adds **zero** independent empirical replication (\`SHARED_ACQUISITION != INDEPENDENT_REPLICATION\`).
@@ -1341,9 +1348,35 @@ export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
           : 'PARTIAL_ROLE_SUPPORT';
       }
 
+      const nested_extension_holds = [];
+      for (const finding of specialist_findings) {
+        if (finding.extensions) {
+          // Check Aperture classification_replay_stability
+          if (finding.extensions.epistemic_deficit?.classification_replay_stability === 'HELD_NOT_YET_WITNESSED') {
+            nested_extension_holds.push({
+              role: finding.role,
+              property: 'classification_replay_stability',
+              status: 'HELD_NOT_YET_WITNESSED',
+              description: 'Multi-epoch empirical classification replay stability not yet witnessed in single-run execution'
+            });
+          }
+          // Check Atlas relation identity
+          if (finding.extensions.relation_identity?.held === true) {
+            nested_extension_holds.push({
+              role: finding.role,
+              property: 'relation_identity',
+              status: finding.extensions.relation_identity.relation,
+              description: finding.extensions.relation_identity.reason
+            });
+          }
+        }
+      }
+
       orchestrator = {
         decision: adjudicatedDecision,
         consensus: adjudicatedConsensus,
+        primary_verdicts_consensus: adjudicatedConsensus,
+        nested_extension_holds,
         replication_status: orchResult.replication_status,
         empirical_replication_count: orchResult.empirical_replication_count,
         active_roles: specialist_roles,
@@ -1435,7 +1468,9 @@ export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
     git_commit_verified: Boolean(sourceValidation.git_commit_verified),
     executing_checkout_revision: sourceValidation.executing_checkout_revision,
     is_exact_checkout_match: Boolean(sourceValidation.is_exact_checkout_match),
+    worktree_cleanliness_verified: Boolean(sourceValidation.worktree_cleanliness_verified),
     exact_checkout_verified: Boolean(sourceValidation.exact_checkout_verified),
+    nested_extension_holds: orchestrator?.nested_extension_holds || [],
     is_historical_commit_only: Boolean(sourceValidation.is_historical_commit_only),
     task_scope,
     evidence_class,
