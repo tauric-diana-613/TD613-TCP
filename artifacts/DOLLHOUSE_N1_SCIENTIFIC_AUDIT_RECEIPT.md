@@ -1,13 +1,13 @@
 # 𝌋 TD613 Dollhouse Scientific Audit Receipt
 
-**Invocation ID:** `dollhouse-audit-1793418371091-af910922`  
+**Invocation ID:** `dollhouse-audit-1793420849556-f693811e`  
 **Schema:** `td613.dollhouse.skill-audit-receipt/v1.0`  
-**Timestamp:** 2026-10-31T03:46:11.091Z  
-**Target Revision:** `fbe6df265a131216eae648af7ef47ab36fc14d54`  
+**Timestamp:** 2026-10-31T04:27:29.556Z  
+**Target Revision:** `e8d0f692d6e273c0ec3dbc41ad9d5c2a4070e812`  
 **Task Scope:** `DOLLHOUSE_N1_SCIENTIFIC_AUDIT`  
 **Evidence Class:** `SOURCE_CODE_AUDIT`  
 **Replication Status:** `SYNTHETIC_OFFLINE_FIXTURE` (Empirical Credit: 0)  
-**Execution Duration:** 484ms  
+**Execution Duration:** 533ms  
 
 ---
 
@@ -16,7 +16,8 @@
 | Instrument Property | Status / Value |
 |---|---|
 | **Orchestrator Decision** | **🟢 SUPPORTED** (`SUPPORTED`) |
-| **Consensus** | `UNANIMOUS_SUPPORT` |
+| **Consensus (Primary Verdicts)** | `UNANIMOUS_SUPPORT` |
+| **Nested Extension Holds** | 1 |
 | **Detected Infractions** | 0 |
 | **Release Authority** | **STRICTLY CLOSED (false)** |
 | **Deployment Authority** | **STRICTLY CLOSED (false)** |
@@ -49,6 +50,9 @@ _All requested specialist inputs were supplied._
 
 ### Detected Infractions:
 _None detected._
+
+### Nested Specialist-Extension Holds:
+- `APERTURE`: `classification_replay_stability` = `HELD_NOT_YET_WITNESSED` (Multi-epoch empirical classification replay stability not yet witnessed in single-run execution)
 
 ### Governance Invariants:
 1. **Replication Discipline:** Shared acquisition on a single receipt adds **zero** independent empirical replication (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).

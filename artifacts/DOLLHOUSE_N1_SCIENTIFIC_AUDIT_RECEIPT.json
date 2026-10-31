@@ -1,13 +1,22 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793418361899-af910922",
-  "timestamp": "2026-10-31T03:46:01.900Z",
-  "source_revision": "fbe6df265a131216eae648af7ef47ab36fc14d54",
+  "invocation_id": "dollhouse-audit-1793420840767-f693811e",
+  "timestamp": "2026-10-31T04:27:20.767Z",
+  "source_revision": "e8d0f692d6e273c0ec3dbc41ad9d5c2a4070e812",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "fbe6df265a131216eae648af7ef47ab36fc14d54",
+  "executing_checkout_revision": "e8d0f692d6e273c0ec3dbc41ad9d5c2a4070e812",
   "is_exact_checkout_match": true,
-  "exact_checkout_verified": false,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
   "is_historical_commit_only": false,
   "task_scope": "DOLLHOUSE_N1_SCIENTIFIC_AUDIT",
   "evidence_class": "SOURCE_CODE_AUDIT",
@@ -23,25 +32,25 @@
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "df2569a58dc1899b63219c2ddf9b57b4ce51b379ab0c2acdec12bfae1957d266",
+      "byte_digest": "8e8c0bb39622a09a744b48ae181d7d866cb209699812ef58961da78f9db2110f",
       "byte_digest_verified": true,
-      "sha256": "df2569a58dc1899b63219c2ddf9b57b4ce51b379ab0c2acdec12bfae1957d266"
+      "sha256": "8e8c0bb39622a09a744b48ae181d7d866cb209699812ef58961da78f9db2110f"
     },
     {
       "reference": "scripts/run-experiment-b-flight.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ab72c4d7b588b4103c65e6e42edf58f44e20ba0769fdaefbc05fd3680aeef35c",
+      "byte_digest": "90629b9bb72c6bfa3d114eb16840a10d2e90d2b8aa635c162edaa2ee60fb6e12",
       "byte_digest_verified": true,
-      "sha256": "ab72c4d7b588b4103c65e6e42edf58f44e20ba0769fdaefbc05fd3680aeef35c"
+      "sha256": "90629b9bb72c6bfa3d114eb16840a10d2e90d2b8aa635c162edaa2ee60fb6e12"
     },
     {
       "reference": "tests/test-flight-launchbridge.test.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "7fbaf278f50bd6bf3316e636cba20dbfe175a0e4d2ea3943377f39742fc7d832",
+      "byte_digest": "1cc56f06fc4315ea4476e559d6479e731ddc7f1afe08cec8cf31e2e6cb1bab52",
       "byte_digest_verified": true,
-      "sha256": "7fbaf278f50bd6bf3316e636cba20dbfe175a0e4d2ea3943377f39742fc7d832"
+      "sha256": "1cc56f06fc4315ea4476e559d6479e731ddc7f1afe08cec8cf31e2e6cb1bab52"
     },
     {
       "reference": "app/engine/atlas-mathematical-engine.js",
@@ -362,6 +371,15 @@
   "orchestrator": {
     "decision": "SUPPORTED",
     "consensus": "UNANIMOUS_SUPPORT",
+    "primary_verdicts_consensus": "UNANIMOUS_SUPPORT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
     "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
     "empirical_replication_count": 0,
     "active_roles": [
@@ -383,5 +401,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 500
+  "execution_duration_ms": 569
 }
