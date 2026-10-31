@@ -1,13 +1,32 @@
 #!/usr/bin/env node
+
 /**
  * run-experiment-b-flight.mjs
  *
- * TD613 Experiment B Flight Execution Entry Point.
- * Provides a source-free dry-run harness and enforces fail-closed gates for live Flight.
+ * TD613 Experiment B · Sovereign Flight Runner & Preflight Verification
+ *
+ * Coordinates the full four-arm heterogeneous discovery flight:
+ *   - Arm 0: Transport-Only Baseline
+ *   - Arm 1: Authentic Native Archival Control (Encyclopedia & Wendbine)
+ *   - Arm 2A: Modular Paratactic Research Instrument
+ *   - Arm 2B: Matched Strong-Union Comparator
+ *
+ * Dual-Backend Architecture (Sovereign Steer 2026-10-30):
+ *   - Track Alpha (--backend native): Antigravity in-app agent reasoning route (Operator-Designated Primary).
+ *   - Track Beta (--backend rest): Optional Gemini REST client route (Preserved Secondary Comparator).
+ *
+ * Redpen R3 Reconciliation:
+ *   - R3-01: Explicit phase boundary between candidate generation and independent witness adjudication.
+ *   - R3-02: Authentic document-specific native Arm 1 archival outcomes (no fixture substitution).
+ *   - R3-03: Zero unauthenticated binary derivative attachment (exact SHA-256 + provenance).
+ *   - R3-04: Aggregate attempt tracking, conservative token reservation, shared ceilings.
+ *   - R3-05: Prospective chronology and topic metadata contract (explicit CHRONOLOGY_UNIDENTIFIABLE hold).
+ *   - R3-06: Fine-grained journal recovery and strict private-path confinement.
+ *   - R3-07: Key masking, caller-consistency vs independent human authority separation.
  *
  * Usage:
- *   node scripts/run-experiment-b-flight.mjs --dry-run
- *   node scripts/run-experiment-b-flight.mjs --archive-path <path> --permutation CHRONOLOGICAL
+ *   node scripts/run-experiment-b-flight.mjs --dry-run --arm ALL --permutation CHRONOLOGICAL --backend native
+ *   node scripts/run-experiment-b-flight.mjs --archive-path <path> --grant-path <grant.json> --backend native
  *
  * Authority: Sovereign Operator Direct · Emergence HQ Independent Scientific Review
  * Covenant: Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)
@@ -16,20 +35,607 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ControlledArchiveIntake } from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
+import crypto from 'node:crypto';
+import {
+  ControlledArchiveIntake,
+  createSyntheticZipArchive,
+  verifyOperatorFlightGrant
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
 import { HeterogeneousDiscoveryHarness } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
+import {
+  Stage2IndependentEvaluator,
+  computeProofBindingDigest,
+  createIndependentProofReceipt,
+  verifyWitnessAttestation,
+  verifyWitnessAttestationDetailed,
+  createWitnessAttestation
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
+import {
+  SharedBudgetGovernor,
+  AtomicCustodyLedger,
+  validatePrivatePathConfinement
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
+import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
+import {
+  AntigravityNativeOrchestrator,
+  ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA
+} from '../docs/research/experiment-b-preflight/02_four_arm_harness/antigravity-native-orchestrator.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const REPO_ROOT = path.resolve(__dirname, '..');
+
+export const DEFAULT_EPISODE_REGISTRY_FILE = path.resolve(REPO_ROOT, '.td613/experiment-b-episodes.json');
+
+/**
+ * Generates an immutable, cryptographically unique prospective episode identifier for live flight (Redpen VIII-B).
+ */
+export function generateLiveEpisodeId() {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const entropy = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `EP-LIVE-${today}-${entropy}`;
+}
+
+/**
+ * Loads the flight episode registry table.
+ * Fails closed if the episode registry file exists but is corrupted or contains invalid JSON (Redpen IX-B4, XIII-R1).
+ * Verifies local cryptographic hash-chain integrity of status history across recorded episodes.
+ */
+export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE, options = {}) {
+  if (fs.existsSync(registryPath)) {
+    try {
+      const content = fs.readFileSync(registryPath, 'utf8');
+      const parsed = JSON.parse(content);
+      if (!parsed || typeof parsed !== 'object' || !parsed.episodes || typeof parsed.episodes !== 'object') {
+        throw new Error('Malformed registry schema structure');
+      }
+      if (options.validateHistoryIntegrity !== false) {
+        for (const ep of Object.values(parsed.episodes)) {
+          if (ep && typeof ep === 'object') {
+            try {
+              validateEpisodeHistoryIntegrity(ep);
+            } catch (err) {
+              throw new Error(
+                `EPISODE_REGISTRY_CORRUPTED: Hash-chain validation failed for episode '${ep.episode_id || ep.id}': ${err.message}`
+              );
+            }
+          }
+        }
+      }
+      return parsed;
+    } catch (err) {
+      throw new Error(
+        `EPISODE_REGISTRY_CORRUPTED: Episode registry file at "${registryPath}" is corrupted or contains invalid JSON (${err.message}). Flight execution fail-closed.`
+      );
+    }
+  }
+  return { schema: 'td613.experiment-b.episode-registry/v1', episodes: {} };
+}
+
+/**
+ * Asserts that the registry path is strictly confined to trusted repository workspace paths (Redpen X-B3, N1-F04).
+ * Uses path-component-aware canonical containment and rejects untrusted locations before writing.
+ */
+export function assertTrustedRegistryPath(registryPath, repoRoot = process.cwd()) {
+  const resolvedRoot = path.resolve(repoRoot);
+  const resolved = path.resolve(registryPath);
+
+  // 1. Relative path containment check
+  const rel = path.relative(resolvedRoot, resolved);
+  if (rel.startsWith('..') || path.isAbsolute(rel) || rel === '') {
+    throw new Error(
+      `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves outside trusted repository root "${resolvedRoot}". Traversal rejected fail-closed.`
+    );
+  }
+
+  // 2. Component-aware prefix check (prevents sibling prefix attacks like repo-sibling)
+  const rootPrefix = resolvedRoot.endsWith(path.sep) ? resolvedRoot : resolvedRoot + path.sep;
+  if (!resolved.startsWith(rootPrefix)) {
+    throw new Error(
+      `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves outside trusted repository root "${resolvedRoot}". Traversal rejected fail-closed.`
+    );
+  }
+
+  // 3. Symlink / reparse / junction canonical path containment check for existing paths/parents
+  let checkTarget = resolved;
+  while (!fs.existsSync(checkTarget) && path.dirname(checkTarget) !== checkTarget) {
+    checkTarget = path.dirname(checkTarget);
+  }
+  if (fs.existsSync(checkTarget)) {
+    let realTarget = checkTarget;
+    try { realTarget = fs.realpathSync(checkTarget); } catch (_) {}
+    let realRoot = resolvedRoot;
+    try { realRoot = fs.realpathSync(resolvedRoot); } catch (_) {}
+    const realRootPrefix = realRoot.endsWith(path.sep) ? realRoot : realRoot + path.sep;
+    if (!realTarget.startsWith(realRootPrefix) && realTarget !== realRoot) {
+      throw new Error(
+        `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves via symlink to "${realTarget}" outside trusted repository root "${realRoot}". Traversal rejected fail-closed.`
+      );
+    }
+  }
+
+  return resolved;
+}
+
+/**
+ * Acquires an exclusive cross-process lock on the registry lockfile using atomic wx open (Redpen X-B3, N1-F03).
+ * Generates an immutable lockToken and writes { token, pid, acquiredAt }.
+ * Stale lock recovery verifies whether the recorded PID is dead (ESRCH); live owners are never evicted even after stale timeout.
+ * Returns the lockToken string.
+ */
+export function acquireRegistryLock(lockFile, maxRetries = 60, initialDelayMs = 50, staleTimeoutMs = 10000) {
+  const lockToken = crypto.randomUUID();
+  let delay = initialDelayMs;
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const fd = fs.openSync(lockFile, 'wx');
+      const payload = JSON.stringify({ token: lockToken, pid: process.pid, acquiredAt: Date.now() });
+      fs.writeSync(fd, payload);
+      fs.closeSync(fd);
+      return lockToken;
+    } catch (err) {
+      if (err.code === 'EEXIST') {
+        // Inspect lock ownership and liveness
+        try {
+          if (fs.existsSync(lockFile)) {
+            const rawContent = fs.readFileSync(lockFile, 'utf8');
+            let lockData = null;
+            try { lockData = JSON.parse(rawContent); } catch (_) {}
+
+            if (lockData && lockData.pid) {
+              let isLiveOwner = true;
+              try {
+                // process.kill(pid, 0) tests process existence without delivering a signal
+                process.kill(lockData.pid, 0);
+              } catch (killErr) {
+                if (killErr.code === 'ESRCH') {
+                  isLiveOwner = false;
+                }
+              }
+
+              // Live owner survives beyond stale threshold; competing processes cannot evict a live owner!
+              if (!isLiveOwner && (Date.now() - lockData.acquiredAt > staleTimeoutMs)) {
+                try { fs.unlinkSync(lockFile); } catch (_) {}
+                continue;
+              }
+            } else {
+              // Corrupted or unparseable lock file past stale threshold can be reclaimed
+              const stats = fs.statSync(lockFile);
+              if (Date.now() - stats.mtimeMs > staleTimeoutMs) {
+                try { fs.unlinkSync(lockFile); } catch (_) {}
+                continue;
+              }
+            }
+          }
+        } catch (_) {}
+
+        // Exponential backoff with small random jitter
+        const waitMs = delay + Math.floor(Math.random() * 20);
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, waitMs);
+        delay = Math.min(delay * 1.3, 300);
+      } else {
+        throw err;
+      }
+    }
+  }
+  throw new Error(`REGISTRY_LOCK_TIMEOUT: Failed to acquire cross-process lock on "${lockFile}" after ${maxRetries} attempts.`);
+}
+
+/**
+ * Releases the exclusive cross-process lock on the registry lockfile (Redpen X-B3, N1-F03).
+ * Verifies that the lock still belongs to the calling lockToken and PID before unlinking.
+ * Prevents an old owner whose lock timed out from deleting a newer owner's lock.
+ */
+export function releaseRegistryLock(lockFile, lockToken = null) {
+  try {
+    if (!fs.existsSync(lockFile)) return false;
+
+    if (lockToken) {
+      const raw = fs.readFileSync(lockFile, 'utf8');
+      try {
+        const lockData = JSON.parse(raw);
+        if (lockData.token !== lockToken) {
+          // We do not own this lock! A newer owner owns it; do not delete!
+          return false;
+        }
+      } catch (_) {
+        // Corrupted lock JSON: caller cannot prove ownership! Refuse release without deleting lock! (Redpen XII-C1)
+        return false;
+      }
+    }
+
+    fs.unlinkSync(lockFile);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+export const CANONICAL_EPISODE_STATES = Object.freeze([
+  'PROSPECTIVE_RESERVED',
+  'WITNESS_VERIFIED',
+  'ARCHIVE_ADMITTED',
+  'GENERATION_STARTED',
+  'GENERATION_INTERRUPTED',
+  'GENERATION_COMPLETED',
+  'STAGE2_PENDING',
+  'ADJUDICATED',
+  'ABORTED_BEFORE_EXPOSURE'
+]);
+
+export const TERMINAL_EPISODE_STATES = Object.freeze([
+  'ADJUDICATED',
+  'ABORTED_BEFORE_EXPOSURE'
+]);
+
+export const RESERVED_EPISODE_INTERNAL_FIELDS = Object.freeze([
+  'status',
+  'status_history',
+  'attempt_count',
+  'episode_id',
+  'id',
+  'registered_at',
+  'updated_at',
+  'transition_hash',
+  'custody_digest',
+  'prev_transition_hash'
+]);
+
+/**
+ * Validates the cryptographic hash-chain integrity of an episode's status history (Redpen XIII-R1, XIII-R2 R2-C).
+ * Recomputes each transition hash sequentially from genesis '0000...0000'.
+ * Verifies initial registration state, legal adjacency, consecutive attempt numbering,
+ * continuity between prior 'to' and next 'from', agreement between top-level status and
+ * final transition status, and agreement between top-level attempt_count and history length.
+ */
+export function validateEpisodeHistoryIntegrity(episodeRecord) {
+  if (!episodeRecord || typeof episodeRecord !== 'object') {
+    return { valid: true, verified_entries: 0 };
+  }
+  const epId = episodeRecord.episode_id || episodeRecord.id || 'UNKNOWN_EPISODE';
+  const history = episodeRecord.status_history;
+  const LAWFUL_REGISTRATION_STATES = ['REGISTERED', 'PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED'];
+
+  if (!Array.isArray(history) || history.length === 0) {
+    // Valid handling of episodes with no transition history
+    const topStatus = episodeRecord.status;
+    if (topStatus && !LAWFUL_REGISTRATION_STATES.includes(topStatus)) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' has empty history but invalid initial status '${topStatus}'.`
+      );
+    }
+    const topAttempts = episodeRecord.attempt_count || 0;
+    if (topAttempts !== 0) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' has empty history but non-zero attempt_count (${topAttempts}).`
+      );
+    }
+    return { valid: true, verified_entries: 0 };
+  }
+
+  // 1. Initial registration state and claimed identity verification
+  const firstTransition = history[0];
+  if (!LAWFUL_REGISTRATION_STATES.includes(firstTransition.from)) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' genesis transition originates from unlawful registration state '${firstTransition.from}'.`
+    );
+  }
+
+  let prevHash = '0000000000000000000000000000000000000000000000000000000000000000';
+  let expectedAttempt = 1;
+  let lastState = firstTransition.from;
+
+  for (let i = 0; i < history.length; i++) {
+    const entry = history[i];
+
+    // 2. Consecutive attempt numbering
+    if (entry.attempt !== expectedAttempt) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' non-consecutive attempt numbering at index ${i}. Expected ${expectedAttempt}, got ${entry.attempt}.`
+      );
+    }
+    expectedAttempt++;
+
+    // 3. Continuity between each prior 'to' and next 'from'
+    if (i > 0 && entry.from !== lastState) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' state discontinuity at index ${i}. Prior 'to' state was '${lastState}', but next 'from' state is '${entry.from}'.`
+      );
+    }
+
+    // 4. Legal adjacency for every stored transition
+    const allowedTransitions = LEGAL_EPISODE_STATE_TRANSITIONS[entry.from] || [];
+    if (!allowedTransitions.includes(entry.to)) {
+      throw new Error(
+        `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' illegal transition adjacency at index ${i} from '${entry.from}' to '${entry.to}'. Permitted transitions: [${allowedTransitions.join(', ')}].`
+      );
+    }
+
+    // 5. Hash chain continuity and payload integrity
+    if (entry.prev_transition_hash !== prevHash) {
+      throw new Error(
+        `TRANSITION_HASH_CHAIN_BROKEN: Episode '${epId}' entry ${i} prev_transition_hash mismatch. Expected ${prevHash}, got ${entry.prev_transition_hash}.`
+      );
+    }
+    const { transition_hash, ...payload } = entry;
+    const expectedHash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+    if (transition_hash !== expectedHash) {
+      throw new Error(
+        `TRANSITION_HASH_TAMPERED: Episode '${epId}' entry ${i} transition_hash tampered. Expected ${expectedHash}, got ${transition_hash}.`
+      );
+    }
+
+    prevHash = transition_hash;
+    lastState = entry.to;
+  }
+
+  // 6. Agreement between top-level status and final transition status
+  const finalTransition = history[history.length - 1];
+  if (episodeRecord.status && episodeRecord.status !== finalTransition.to) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' top-level status '${episodeRecord.status}' does not agree with final transition status '${finalTransition.to}'.`
+    );
+  }
+
+  // 7. Agreement between top-level attempt_count and verified history
+  if (episodeRecord.attempt_count !== undefined && episodeRecord.attempt_count !== history.length) {
+    throw new Error(
+      `EPISODE_HISTORY_CORRUPTED: Episode '${epId}' top-level attempt_count (${episodeRecord.attempt_count}) does not match history entry count (${history.length}).`
+    );
+  }
+
+  return { valid: true, verified_entries: history.length };
+}
+
+export const LEGAL_EPISODE_STATE_TRANSITIONS = Object.freeze({
+  REGISTERED: Object.freeze(['PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
+  PROSPECTIVE_RESERVED: Object.freeze(['WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
+  WITNESS_VERIFIED: Object.freeze(['ARCHIVE_ADMITTED', 'ABORTED_BEFORE_EXPOSURE']),
+  ARCHIVE_ADMITTED: Object.freeze(['GENERATION_STARTED', 'ABORTED_BEFORE_EXPOSURE']),
+  GENERATION_STARTED: Object.freeze(['GENERATION_INTERRUPTED', 'GENERATION_COMPLETED']),
+  GENERATION_INTERRUPTED: Object.freeze(['GENERATION_STARTED']), // Idempotent resume
+  GENERATION_COMPLETED: Object.freeze(['STAGE2_PENDING']),
+  STAGE2_PENDING: Object.freeze(['ADJUDICATED']),
+  ADJUDICATED: Object.freeze([]), // Terminal
+  ABORTED_BEFORE_EXPOSURE: Object.freeze([]) // Terminal
+});
+
+/**
+ * Updates the finite lifecycle status of an episode in the registry (Redpen XII-C2, XIII-P3).
+ * Enforces legal state transition adjacency, terminal state non-reversibility, and transactional integrity.
+ */
+export function updateEpisodeStatus(episodeId, newStatus, details = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+  const idStr = String(episodeId || '').trim();
+  if (!idStr) throw new Error('INVALID_EPISODE_ID: Episode ID must be non-empty.');
+  if (!CANONICAL_EPISODE_STATES.includes(newStatus)) {
+    throw new Error(`INVALID_EPISODE_STATUS: Status '${newStatus}' is not one of the canonical states: ${CANONICAL_EPISODE_STATES.join(', ')}.`);
+  }
+
+  const trustedPath = assertTrustedRegistryPath(registryPath);
+  const lockFile = `${trustedPath}.lock`;
+  const lockToken = acquireRegistryLock(lockFile);
+
+  try {
+    const registry = loadEpisodeRegistry(trustedPath);
+    if (!registry.episodes || !registry.episodes[idStr]) {
+      throw new Error(`EPISODE_NOT_FOUND: Cannot update status for unrecorded episode '${idStr}'.`);
+    }
+
+    const ep = registry.episodes[idStr];
+    const prevStatus = ep.status || 'REGISTERED';
+
+    // 1. Terminal state protection: cannot transition out of terminal state
+    if (TERMINAL_EPISODE_STATES.includes(prevStatus)) {
+      throw new Error(
+        `TERMINAL_STATE_PROTECTED: Cannot transition episode '${idStr}' out of terminal state '${prevStatus}' to '${newStatus}'. Terminal states are non-reversible.`
+      );
+    }
+
+    // 2. Reserved internal fields protection (Redpen XIII-R1)
+    for (const key of Object.keys(details)) {
+      if (RESERVED_EPISODE_INTERNAL_FIELDS.includes(key)) {
+        throw new Error(
+          `RESERVED_FIELD_MUTATION_REFUSED: Caller cannot overwrite reserved internal field '${key}' in episode transition details.`
+        );
+      }
+    }
+
+    // 2. Duplicate transition / completion prevention
+    if (prevStatus === newStatus) {
+      throw new Error(
+        `DUPLICATE_STATE_TRANSITION_REFUSED: Episode '${idStr}' is already in state '${prevStatus}'. Duplicate transition refused.`
+      );
+    }
+
+    // 3. Finite state adjacency enforcement
+    const allowedNext = LEGAL_EPISODE_STATE_TRANSITIONS[prevStatus] || [];
+    if (!allowedNext.includes(newStatus)) {
+      throw new Error(
+        `ILLEGAL_STATE_TRANSITION: Episode '${idStr}' cannot transition from '${prevStatus}' to '${newStatus}'. Permitted transitions: [${allowedNext.join(', ')}].`
+      );
+    }
+
+    // 4. Monotonic attempt counting
+    ep.attempt_count = (ep.attempt_count || 0) + 1;
+    ep.status = newStatus;
+    ep.updated_at = new Date().toISOString();
+    if (!ep.status_history) ep.status_history = [];
+
+    // 5. Tamper-evident cryptographic hash chaining for transition history
+    const prevTransitionHash = ep.status_history.length > 0
+      ? ep.status_history[ep.status_history.length - 1].transition_hash
+      : '0000000000000000000000000000000000000000000000000000000000000000';
+
+    const transitionPayload = {
+      attempt: ep.attempt_count,
+      from: prevStatus,
+      to: newStatus,
+      at: ep.updated_at,
+      prev_transition_hash: prevTransitionHash,
+      details
+    };
+    const transitionHash = crypto.createHash('sha256').update(JSON.stringify(transitionPayload)).digest('hex');
+    transitionPayload.transition_hash = transitionHash;
+
+    ep.status_history.push(transitionPayload);
+    for (const [k, v] of Object.entries(details)) {
+      if (!RESERVED_EPISODE_INTERNAL_FIELDS.includes(k)) {
+        ep[k] = v;
+      }
+    }
+
+    const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
+    try {
+      fs.renameSync(tmpPath, trustedPath);
+    } catch (e) {
+      fs.copyFileSync(tmpPath, trustedPath);
+      try { fs.unlinkSync(tmpPath); } catch (_) {}
+    }
+
+    return ep;
+  } finally {
+    releaseRegistryLock(lockFile, lockToken);
+  }
+}
+
+/**
+ * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4, X-B3, N1-F03).
+ * Fails closed if the episode identifier has already been recorded, if synthetic IDs are submitted,
+ * or if write concurrency fails. Employs cross-process file locking with ownership fencing and atomic write semantics.
+ */
+export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+  const idStr = String(episodeId || '').trim();
+  if (!idStr) {
+    throw new Error('INVALID_EPISODE_ID: Episode ID must be a non-empty string.');
+  }
+
+  // Reject synthetic or preflight episodes from live registration (Redpen IX-B4)
+  if (idStr.startsWith('EPISODE-B-SOURCE-FREE') || idStr.includes('SYNTHETIC') || idStr.includes('DRY_RUN')) {
+    throw new Error(
+      `SYNTHETIC_EPISODE_LIVE_REGISTRATION_REFUSED: Episode ID "${idStr}" is synthetic/preflight and cannot be registered in live flight episode registry.`
+    );
+  }
+
+  // Enforce trusted repository workspace confinement (Redpen X-B3, N1-F04)
+  const trustedPath = assertTrustedRegistryPath(registryPath);
+  const regDir = path.dirname(trustedPath);
+  if (!fs.existsSync(regDir)) {
+    fs.mkdirSync(regDir, { recursive: true });
+  }
+
+  const lockFile = `${trustedPath}.lock`;
+  const lockToken = acquireRegistryLock(lockFile);
+
+  try {
+    const registry = loadEpisodeRegistry(trustedPath);
+    if (registry.episodes && registry.episodes[idStr]) {
+      throw new Error(
+        `EPISODE_REPLAY_FORBIDDEN: Episode ID "${idStr}" has already been executed or registered in episode registry (${registry.episodes[idStr].registered_at}). Prospective replay strictly prohibited fail-closed.`
+      );
+    }
+    if (!registry.episodes) registry.episodes = {};
+
+    const initialStatus = metadata.status || 'REGISTERED';
+    const LAWFUL_REGISTRATION_STATES = ['REGISTERED', 'PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED'];
+    if (!LAWFUL_REGISTRATION_STATES.includes(initialStatus)) {
+      throw new Error(
+        `INVALID_REGISTRATION_STATUS_REFUSED: Initial episode registration cannot directly set unauthorized status '${initialStatus}'. Permitted registration states: [${LAWFUL_REGISTRATION_STATES.join(', ')}].`
+      );
+    }
+    if (metadata.status_history && Array.isArray(metadata.status_history) && metadata.status_history.length > 0) {
+      throw new Error(
+        'RESERVED_FIELD_MUTATION_REFUSED: Cannot inject pre-populated status_history at initial episode registration.'
+      );
+    }
+    if (metadata.attempt_count && metadata.attempt_count !== 0) {
+      throw new Error(
+        'RESERVED_FIELD_MUTATION_REFUSED: Cannot inject non-zero attempt_count at initial episode registration.'
+      );
+    }
+    for (const key of Object.keys(metadata)) {
+      if (['status_history', 'attempt_count', 'updated_at', 'episode_id', 'id', 'registered_at', 'transition_hash', 'custody_digest', 'prev_transition_hash'].includes(key)) {
+        throw new Error(
+          `RESERVED_FIELD_MUTATION_REFUSED: Caller cannot overwrite reserved internal field '${key}' in episode registration metadata.`
+        );
+      }
+    }
+
+    // Explicitly permitted metadata fields only (Redpen XIII-R2 R2-C)
+    const permittedMetadata = {};
+    for (const [k, v] of Object.entries(metadata)) {
+      if (!RESERVED_EPISODE_INTERNAL_FIELDS.includes(k) && k !== 'status') {
+        permittedMetadata[k] = v;
+      }
+    }
+
+    registry.episodes[idStr] = {
+      episode_id: idStr,
+      registered_at: new Date().toISOString(),
+      status: initialStatus,
+      attempt_count: 0,
+      status_history: [],
+      ...permittedMetadata
+    };
+
+    // Atomic transactional write via temporary file with Windows EPERM retry and copy fallback (Redpen IX-B4, Redpen X-B3)
+    const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
+
+    let retries = 5;
+    while (retries > 0) {
+      try {
+        fs.renameSync(tmpPath, trustedPath);
+        break;
+      } catch (renameErr) {
+        if ((renameErr.code === 'EPERM' || renameErr.code === 'EACCES') && retries > 1) {
+          retries--;
+          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 25);
+          continue;
+        }
+        try {
+          fs.copyFileSync(tmpPath, trustedPath);
+          fs.unlinkSync(tmpPath);
+          break;
+        } catch (_) {
+          throw renameErr;
+        }
+      }
+    }
+
+    return registry.episodes[idStr];
+  } finally {
+    releaseRegistryLock(lockFile, lockToken);
+  }
+}
 
 function parseArgs(args) {
   const options = {
     dryRun: false,
+    backend: 'native', // 'native' (Antigravity in-app agent) | 'rest' (Gemini HTTP API)
     archivePath: null,
-    permutation: 'CHRONOLOGICAL',
+    arm: 'ALL', // 'ALL' | 'ARM_0_TRANSPORT' | 'ARM_1_ARCHIVAL' | 'ARM_2A_MODULAR' | 'ARM_2B_MATCHED_UNION'
+    permutation: 'CHRONOLOGICAL', // 'CHRONOLOGICAL' | 'REVERSE_CHRONOLOGICAL' | 'TOPICAL'
     model: 'gemini-2.5-flash-lite',
     maxCalls: 120,
     maxTokens: 400000,
+    maxCostUSD: 0.50,
+    grantPath: null,
+    operatorKey: null,
+    operatorKeyId: null,
+    operatorKeysFile: null,
+    requireWitnessTier: false,
+    witnessKey: null,
+    witnessKeyId: null,
+    witnessKeysFile: null,
+    attestedWitnessFile: null,
+    episodeId: 'EPISODE-B-SOURCE-FREE-PREFLIGHT-01',
+    episodeRegistryFile: null,
+    ledgerPath: null,
+    derivativesManifest: null,
+    strictTreatment: false,
+    resume: false,
     help: false
   };
 
@@ -39,16 +645,52 @@ function parseArgs(args) {
       options.help = true;
     } else if (arg === '--dry-run') {
       options.dryRun = true;
+    } else if (arg === '--strict-treatment') {
+      options.strictTreatment = true;
+    } else if (arg === '--resume') {
+      options.resume = true;
+    } else if (arg === '--backend' && args[i + 1]) {
+      options.backend = args[++i].toLowerCase();
     } else if (arg === '--archive-path' && args[i + 1]) {
       options.archivePath = args[++i];
+    } else if (arg === '--arm' && args[i + 1]) {
+      options.arm = args[++i].toUpperCase();
     } else if (arg === '--permutation' && args[i + 1]) {
-      options.permutation = args[++i];
+      options.permutation = args[++i].toUpperCase();
     } else if (arg === '--model' && args[i + 1]) {
       options.model = args[++i];
     } else if (arg === '--max-calls' && args[i + 1]) {
       options.maxCalls = parseInt(args[++i], 10);
     } else if (arg === '--max-tokens' && args[i + 1]) {
       options.maxTokens = parseInt(args[++i], 10);
+    } else if (arg === '--max-cost' && args[i + 1]) {
+      options.maxCostUSD = parseFloat(args[++i]);
+    } else if (arg === '--grant-path' && args[i + 1]) {
+      options.grantPath = args[++i];
+    } else if (arg === '--operator-key' && args[i + 1]) {
+      options.operatorKey = args[++i];
+    } else if (arg === '--operator-key-id' && args[i + 1]) {
+      options.operatorKeyId = args[++i];
+    } else if (arg === '--operator-keys-file' && args[i + 1]) {
+      options.operatorKeysFile = args[++i];
+    } else if (arg === '--require-witness-tier') {
+      options.requireWitnessTier = true;
+    } else if (arg === '--witness-key' && args[i + 1]) {
+      options.witnessKey = args[++i];
+    } else if (arg === '--witness-key-id' && args[i + 1]) {
+      options.witnessKeyId = args[++i];
+    } else if (arg === '--witness-keys-file' && args[i + 1]) {
+      options.witnessKeysFile = args[++i];
+    } else if (arg === '--attested-witness-file' && args[i + 1]) {
+      options.attestedWitnessFile = args[++i];
+    } else if (arg === '--episode-id' && args[i + 1]) {
+      options.episodeId = args[++i];
+    } else if (arg === '--episode-registry-file' && args[i + 1]) {
+      options.episodeRegistryFile = args[++i];
+    } else if (arg === '--ledger-path' && args[i + 1]) {
+      options.ledgerPath = args[++i];
+    } else if (arg === '--derivatives-manifest' && args[i + 1]) {
+      options.derivativesManifest = args[++i];
     }
   }
 
@@ -59,15 +701,232 @@ function printHelp() {
   console.log(`
 𝌋 TD613 · Experiment B Flight Runner
 
+Usage:
+  node scripts/run-experiment-b-flight.mjs [options]
+
 Options:
-  --dry-run             Run source-free verification with synthetic in-memory fixtures (default in preflight)
-  --archive-path <path> Designated path to archive (gated by operator authorization)
-  --permutation <name>  Exposure sequence: CHRONOLOGICAL | REVERSE_CHRONOLOGICAL | TOPICAL
-  --model <name>        Model version (default: gemini-2.5-flash-lite)
-  --max-calls <n>       Maximum provider attempts ceiling (default: 120)
-  --max-tokens <n>      Maximum token ceiling (default: 400000)
-  --help, -h            Show this help message
+  --dry-run                 Run source-free verification with synthetic fixtures (default in preflight)
+  --backend <name>          Execution backend: native (Antigravity In-App Agent, Primary) | rest (Gemini API, Optional) (default: native)
+  --archive-path <path>     Designated absolute path to physical ZIP archive (requires operator grant)
+  --arm <name>              Arm to execute: ALL | ARM_0_TRANSPORT | ARM_1_ARCHIVAL | ARM_2A_MODULAR | ARM_2B_MATCHED_UNION (default: ALL)
+  --permutation <name>      Exposure sequence: CHRONOLOGICAL | REVERSE_CHRONOLOGICAL | TOPICAL (default: CHRONOLOGICAL)
+  --model <name>            Model version: gemini-2.5-flash-lite | gemini-2.5-flash (default: gemini-2.5-flash-lite)
+  --max-calls <n>           Maximum provider attempts ceiling (default: 120)
+  --max-tokens <n>          Maximum aggregate token ceiling (default: 400000)
+  --max-cost <n>            Maximum financial ceiling in USD for REST backend (default: 0.50)
+  --grant-path <path>       Path to operator cryptographic flight grant JSON
+  --operator-key <key>      Operator root secret key for grant cryptographic verification
+  --operator-keys-file <p>  Path to JSON file mapping issuerId -> secretKey
+  --require-witness-tier    Require in-line independent witnessed evaluation (fails closed if witness keys unsupplied)
+  --witness-keys-file <p>   Path to JSON file mapping witnessId -> secretKey
+  --attested-witness-file<p>Path to JSON file containing attested witness payload and signature
+  --episode-id <id>         Flight episode identifier (default: EPISODE-B-SOURCE-FREE-PREFLIGHT-01)
+  --ledger-path <path>      Private custody path for research ledger (defaults to artifacts/private/)
+  --derivatives-manifest <p> Optional path to JSON map of authenticated text derivatives for binary files
+  --help, -h                Show this help message
 `);
+}
+
+function resolveOperatorKeys(options) {
+  const keys = {};
+
+  if (options.operatorKeysFile && fs.existsSync(options.operatorKeysFile)) {
+    try {
+      const fileData = JSON.parse(fs.readFileSync(options.operatorKeysFile, 'utf8'));
+      Object.assign(keys, fileData);
+    } catch (e) {
+      console.warn(`Warning: Could not parse operator keys file: ${e.message}`);
+    }
+  }
+
+  if (options.operatorKey) {
+    const keyId = options.operatorKeyId || 'OPERATOR_PRIMARY';
+    keys[keyId] = options.operatorKey;
+    keys['default'] = options.operatorKey;
+  }
+
+  const envKey = process.env.TD613_OPERATOR_SIGNING_KEY || process.env.TD613_OPERATOR_KEY || process.env.TD613_OPERATOR_VERIFYING_KEY;
+  if (envKey) {
+    const envKeyId = process.env.TD613_OPERATOR_KEY_ID || 'OPERATOR_PRIMARY';
+    keys[envKeyId] = envKey;
+    keys['default'] = envKey;
+  }
+
+  return keys;
+}
+
+function resolveWitnessKeys(options) {
+  const keys = {};
+
+  if (options.witnessKeysFile && fs.existsSync(options.witnessKeysFile)) {
+    try {
+      const fileData = JSON.parse(fs.readFileSync(options.witnessKeysFile, 'utf8'));
+      Object.assign(keys, fileData);
+    } catch (e) {
+      console.warn(`Warning: Could not parse witness keys file: ${e.message}`);
+    }
+  }
+
+  if (options.witnessKey) {
+    const keyId = options.witnessKeyId || 'WITNESS_PRIMARY';
+    keys[keyId] = options.witnessKey;
+    keys['default'] = options.witnessKey;
+  }
+
+  const envKey = process.env.TD613_WITNESS_SIGNING_KEY || process.env.TD613_WITNESS_KEY;
+  if (envKey) {
+    const envKeyId = process.env.TD613_WITNESS_KEY_ID || 'WITNESS_PRIMARY';
+    keys[envKeyId] = envKey;
+    keys['default'] = envKey;
+  }
+
+  return keys;
+}
+
+function resolveAttestedWitness(options) {
+  if (options.attestedWitnessFile && fs.existsSync(options.attestedWitnessFile)) {
+    try {
+      return JSON.parse(fs.readFileSync(options.attestedWitnessFile, 'utf8'));
+    } catch (e) {
+      console.warn(`Warning: Could not parse attested witness file: ${e.message}`);
+    }
+  }
+  return null;
+}
+
+function resolveDerivativesMap(options) {
+  if (options.derivativesManifest && fs.existsSync(options.derivativesManifest)) {
+    try {
+      return JSON.parse(fs.readFileSync(options.derivativesManifest, 'utf8'));
+    } catch (e) {
+      console.warn(`Warning: Could not parse derivatives manifest: ${e.message}`);
+    }
+  }
+  return {};
+}
+
+/**
+ * R3-05: Orders admitted documents according to designated sequence treatment.
+ * Distinguishes operator/author verified dates from archive order.
+ * If true chronological order cannot be established, records CHRONOLOGY_UNIDENTIFIABLE
+ * rather than relabeling archive order as historical chronology.
+ */
+function applySequencePermutation(documents, permutation) {
+  const docs = [...documents];
+
+  if (permutation === 'REVERSE_CHRONOLOGICAL') {
+    const chronRes = applySequencePermutation(docs, 'CHRONOLOGICAL');
+    return {
+      documents: chronRes.documents.reverse(),
+      permutation: 'REVERSE_CHRONOLOGICAL',
+      status: chronRes.status,
+      notice: chronRes.notice
+    };
+  }
+
+  if (permutation === 'TOPICAL') {
+    const hasUndeclaredTopic = docs.some(d => !d.topic_evidence?.declared_topic && !d.metadata?.declared_topic);
+    if (hasUndeclaredTopic) {
+      return {
+        documents: docs,
+        permutation: 'TOPICAL',
+        status: 'TOPIC_UNCLASSIFIED_ORDER_HELD',
+        notice: 'One or more documents lack declared research topics. Grouping by keyword guessing is refused; admission order preserved under hold.'
+      };
+    }
+    const sorted = docs.sort((a, b) => {
+      const topA = a.topic_evidence?.declared_topic || a.metadata?.declared_topic || '';
+      const topB = b.topic_evidence?.declared_topic || b.metadata?.declared_topic || '';
+      return topA.localeCompare(topB);
+    });
+    return {
+      documents: sorted,
+      permutation: 'TOPICAL',
+      status: 'DECLARED_TOPIC_ORDER_APPLIED',
+      notice: 'Documents grouped by explicit declared research topics.'
+    };
+  }
+
+  // Default: CHRONOLOGICAL
+  const hasUnidentifiableDate = docs.some(d => {
+    const ev = d.chronology_evidence;
+    return !ev?.verified_chronology_date && !d.metadata?.timestamp && !d.metadata?.date;
+  });
+
+  if (hasUnidentifiableDate) {
+    return {
+      documents: docs,
+      permutation: 'CHRONOLOGICAL',
+      status: 'CHRONOLOGY_UNIDENTIFIABLE',
+      notice: 'One or more documents lack verified historical timestamps. Relabeling archive order as chronology is strictly refused; admission order preserved under explicit hold.'
+    };
+  }
+
+  const sorted = docs.sort((a, b) => {
+    const dateA = new Date(a.chronology_evidence?.verified_chronology_date || a.metadata?.timestamp || a.metadata?.date).getTime();
+    const dateB = new Date(b.chronology_evidence?.verified_chronology_date || b.metadata?.timestamp || b.metadata?.date).getTime();
+    return dateA - dateB;
+  });
+
+  return {
+    documents: sorted,
+    permutation: 'CHRONOLOGICAL',
+    status: 'VERIFIED_CHRONOLOGY_APPLIED',
+    notice: 'Documents ordered strictly by verified historical timestamps.'
+  };
+}
+
+/**
+ * Executes Arm 0: Transport-Only Baseline.
+ */
+function executeArm0Transport(documents) {
+  const records = [];
+  let totalBytes = 0;
+
+  for (const doc of documents) {
+    const rawLen = doc.raw_bytes ? doc.raw_bytes.length : Buffer.from(doc.content || '', 'utf8').length;
+    totalBytes += rawLen;
+    records.push({
+      document_id: doc.id,
+      filename: doc.filename,
+      is_binary: doc.is_binary,
+      bytes: rawLen,
+      sha256: doc.sha256,
+      derivative_status: doc.derivative_status,
+      transport_fidelity: 'BIT_EXACT_PRESERVED',
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  return {
+    arm: 'ARM_0_TRANSPORT',
+    total_documents: documents.length,
+    total_bytes_transported: totalBytes,
+    records,
+    status: 'TRANSPORT_BASELINE_VERIFIED'
+  };
+}
+
+/**
+ * Executes Arm 1: Native Archival Control (R3-02 Repair).
+ */
+async function executeArm1Archival(repoRoot, documents) {
+  const arm1Res = await runArm1Archival(repoRoot, documents);
+
+  return {
+    arm: 'ARM_1_ARCHIVAL',
+    runtime: 'NATIVE_ENCYCLOPEDIA_AND_WENDBINE_COMPILER',
+    total_documents: documents.length,
+    raw_bytes_preserved: arm1Res.raw_bytes_preserved,
+    total_indexed: arm1Res.total_indexed, // authentic count, e.g. 0
+    schema_admitted: arm1Res.schema_admitted,
+    schema_rejected: arm1Res.schema_rejected,
+    relations_compiled: arm1Res.relations_compiled,
+    autonomous_relation_synthesis_present: arm1Res.autonomous_relation_synthesis_present,
+    per_document_operations: arm1Res.per_document_operations,
+    execution_log: arm1Res.log,
+    status: 'NATIVE_ARCHIVAL_CONTROL_VERIFIED'
+  };
 }
 
 async function main() {
@@ -78,87 +937,553 @@ async function main() {
     process.exit(0);
   }
 
-  // Live Flight Custody Verification
+  // 1. Live Flight Custody Verification
   const isEnvAdmitted = process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED === 'true';
   const isFlightAuthorized = process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED === 'true';
+  const operatorKeys = resolveOperatorKeys(options);
+  const derivativesMap = resolveDerivativesMap(options);
 
   if (!options.dryRun) {
     if (!isEnvAdmitted || !isFlightAuthorized) {
       console.error(
-        'FLIGHT_EXECUTION_BLOCKED_IN_PREFLIGHT: Protected Flight over physical archives remains gated until live Sovereign Operator activation.\n' +
+        'FLIGHT_EXECUTION_BLOCKED_UNAUTHORIZED: Protected Flight over physical archives remains gated until live Sovereign Operator activation.\n' +
         'Missing required environment grants: TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED=true and TD613_FLIGHT_EXECUTION_AUTHORIZED=true.\n' +
         'Use --dry-run for source-free verification.'
       );
       process.exit(1);
     }
 
-    if (options.archivePath) {
+    if (!options.archivePath) {
       console.error(
-        'ARCHIVE_ADMISSION_PHYSICAL_ZIP_HELD: Physical archive intake is held. In preflight, physical file reading is disabled fail-closed.'
+        'FLIGHT_EXECUTION_BLOCKED_UNAUTHORIZED: Physical archive path (--archive-path) must be explicitly designated for live flight.'
+      );
+      process.exit(1);
+    }
+
+    if (Object.keys(operatorKeys).length === 0) {
+      console.error(
+        'FLIGHT_EXECUTION_BLOCKED_UNAUTHORIZED: Physical archive admission requires trusted operator keys via --operator-key, --operator-keys-file, or TD613_OPERATOR_KEY.'
+      );
+      process.exit(1);
+    }
+
+    // Critical pre-admission fail-closed gate. Protected material must not be opened
+    // before the requested native cognitive backend can perform an authentic turn.
+    // The current 'native' module is a source-free simulator with no in-app model adapter.
+    if (options.backend === 'native' &&
+        (options.arm === 'ALL' || options.arm === 'ARM_2A_MODULAR' || options.arm === 'ARM_2B_MATCHED_UNION')) {
+      console.error(
+        'NATIVE_UNIMPLEMENTED_HELD: Native Antigravity model execution adapter is unavailable. ' +
+        'Rejecting before protected archive admission; session environment flags are insufficient. ' +
+        'No synthetic research, archive access, or implicit REST fallback permitted.'
+      );
+      process.exit(1);
+    }
+
+    // B7-03: Live flight requires an explicit, unique, immutable episode identity
+    if (!options.episodeId || options.episodeId === 'EPISODE-B-SOURCE-FREE-PREFLIGHT-01') {
+      console.error(
+        'LIVE_FLIGHT_EPISODE_IDENTITY_REQUIRED: Live Flight requires an explicit, unique, immutable episode identifier (--episode-id <id>).\n' +
+        'Reusing the synthetic preflight default "EPISODE-B-SOURCE-FREE-PREFLIGHT-01" is strictly prohibited for live execution.'
+      );
+      process.exit(1);
+    }
+
+    // Live Flight requires in-line witnessed evaluation (Redpen VIII-B)
+    if (!options.requireWitnessTier) {
+      console.error(
+        'WITNESS_TIER_REQUIRED: Live Flight execution requires explicit witnessed evaluation (--require-witness-tier) with valid cryptographic attestation. Zero unobserved live runs permitted.'
+      );
+      process.exit(1);
+    }
+
+    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B, Redpen X-B3, N1-F05)
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
+    try {
+      assertTrustedRegistryPath(registryFile);
+      const currentRegistry = loadEpisodeRegistry(registryFile);
+      if (currentRegistry.episodes && currentRegistry.episodes[options.episodeId]) {
+        console.error(
+          `EPISODE_REPLAY_FORBIDDEN: Episode ID "${options.episodeId}" has already been executed or registered in episode registry (${currentRegistry.episodes[options.episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
+        );
+        process.exit(1);
+      }
+    } catch (err) {
+      console.error(err.message);
+      process.exit(1);
+    }
+  }
+
+  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission or registration) (N1-F05)
+  let attestedWitnessRecord = null;
+  if (options.requireWitnessTier) {
+    const witnessKeys = resolveWitnessKeys(options);
+    const attestedWitness = resolveAttestedWitness(options);
+    if (!attestedWitness || !witnessKeys[attestedWitness.witnessId]) {
+      console.error(
+        'PREFLIGHT_STAGE2_WITNESS_CONTRACT_MISSING: In-line witnessed evaluation requested (--require-witness-tier), ' +
+        'but missing authentic cryptographic witness attestation or trusted key. Halted before archive admission or provider dispatch.'
+      );
+      process.exit(1);
+    }
+    const witnessKey = witnessKeys[attestedWitness.witnessId];
+
+    // Scope check is strictly non-optional
+    if (!attestedWitness.scope || attestedWitness.scope !== 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION') {
+      console.error(
+        `PREFLIGHT_STAGE2_WITNESS_SCOPE_MISMATCH: Witness scope '${attestedWitness.scope || 'OMITTED'}' does not match required 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION'. Halted before archive admission or model dispatch.`
+      );
+      process.exit(1);
+    }
+
+    const activeEpisodeId = options.episodeId || null;
+    const audit = verifyWitnessAttestationDetailed(attestedWitness, witnessKey, {
+      expectedScope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+      expectedEpisodeId: activeEpisodeId
+    });
+    if (!audit.valid) {
+      console.error(
+        `PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID: Cryptographic witness signature verification failed for witnessId '${attestedWitness.witnessId}' (reason: ${audit.reason}). Zero protected exposure or provider calls permitted.`
+      );
+      process.exit(1);
+    }
+    attestedWitnessRecord = attestedWitness;
+  }
+
+  // Post-Witness Registration (N1-F05): Only register prospective live episode after witness validation succeeds
+  if (!options.dryRun) {
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
+    try {
+      registerLiveEpisode(options.episodeId, {
+        status: 'WITNESS_VERIFIED',
+        backend: options.backend,
+        arm: options.arm,
+        permutation: options.permutation,
+        model: options.model,
+        archive_path: options.archivePath,
+        witness_id: attestedWitnessRecord?.witnessId || null,
+        witness_verified_at: attestedWitnessRecord ? new Date().toISOString() : null
+      }, registryFile);
+    } catch (err) {
+      console.error(err.message);
+      process.exit(1);
+    }
+  }
+
+  console.log(`======================================================================`);
+  console.log(`  𝌋 TD613 EXPERIMENT B FLIGHT RUNNER · ${options.dryRun ? 'SOURCE-FREE DRY RUN' : 'LIVE FLIGHT'}`);
+  console.log(`======================================================================`);
+  console.log(`Backend Route:    ${options.backend === 'native' ? 'Track Alpha · Antigravity Native Agent' : 'Track Beta · Gemini REST API'}`);
+  console.log(`Arm Selection:    ${options.arm}`);
+  console.log(`Permutation:      ${options.permutation}`);
+  console.log(`Model Engine:     ${options.model}`);
+  console.log(`Budget Ceilings:  ${options.maxCalls} calls · ${options.maxTokens} tokens · $${options.maxCostUSD} USD`);
+
+  // 2. Admission of Specimens
+  let admissionReceipt;
+  const syntheticMetadata = {
+    'synthetic_dissipative_oscillator.md': {
+      operator_declared_date: '2026-01-15T00:00:00Z',
+      declared_topic: 'TOPIC_DISSIPATION'
+    },
+    'synthetic_series_rlc_circuit.md': {
+      operator_declared_date: '2026-02-01T00:00:00Z',
+      declared_topic: 'TOPIC_CIRCUITS'
+    }
+  };
+
+  const intake = new ControlledArchiveIntake({
+    syntheticMode: options.dryRun,
+    allowProtectedAdmission: !options.dryRun,
+    trustedOperatorKeys: operatorKeys,
+    authorizedDerivativesMap: derivativesMap,
+    prospectiveMetadataMap: options.dryRun ? syntheticMetadata : {},
+    maxMembers: 50,
+    maxTotalExpandedBytes: 10 * 1024 * 1024,
+    maxPerMemberBytes: 2 * 1024 * 1024,
+    maxDecompressionRatio: 100
+  });
+
+  if (options.dryRun) {
+    const syntheticZipBuffer = createSyntheticZipArchive([
+      {
+        name: 'synthetic_dissipative_oscillator.md',
+        data: '# Synthetic Specimen 1: Damped Harmonic Oscillator\nDifferential Equation: m * x\'\'(t) + gamma * x\'(t) + k * x(t) = 0\nInvariant: Hamiltonian energy decay rate dE/dt = -gamma * (x\')^2 <= 0\nQUOTE: "m * x\'\'(t) + gamma * x\'(t) + k * x(t) = 0"'
+      },
+      {
+        name: 'synthetic_series_rlc_circuit.md',
+        data: '# Synthetic Specimen 2: Series RLC Circuit\nDifferential Equation: L * q\'\'(t) + R * q\'(t) + (1/C) * q(t) = 0\nInvariant: Dissipated power P(t) = -R * (q\')^2 <= 0\nQUOTE: "L * q\'\'(t) + R * q\'(t) + (1/C) * q(t) = 0"'
+      }
+    ]);
+
+    admissionReceipt = intake.admitArchive(
+      { zipBuffer: syntheticZipBuffer },
+      { trustedSyntheticFixture: true }
+    );
+    console.log(`  ✓ Admitted ${admissionReceipt.document_count} synthetic specimens from in-memory ZIP (manifest: ${admissionReceipt.manifest_sha256.slice(0, 16)}...)`);
+  } else {
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
+    if (!options.grantPath) {
+      updateEpisodeStatus(options.episodeId, 'ABORTED_BEFORE_EXPOSURE', { error: 'OPERATOR_FLIGHT_GRANT_REQUIRED' }, registryFile);
+      throw new Error('OPERATOR_FLIGHT_GRANT_REQUIRED: Live flight requires --grant-path pointing to cryptographic operator flight grant.');
+    }
+    const grantRaw = fs.readFileSync(path.resolve(options.grantPath), 'utf8');
+    const grant = JSON.parse(grantRaw);
+    try {
+      admissionReceipt = intake.admitArchive(options.archivePath, {
+        operatorFlightGrant: grant
+      });
+      updateEpisodeStatus(options.episodeId, 'ARCHIVE_ADMITTED', { manifest_sha256: admissionReceipt.manifest_sha256 }, registryFile);
+      console.log(`  ✓ Admitted ${admissionReceipt.document_count} physical specimens from archive: ${options.archivePath}`);
+    } catch (intakeErr) {
+      updateEpisodeStatus(options.episodeId, 'ABORTED_BEFORE_EXPOSURE', { error: intakeErr.message }, registryFile);
+      throw intakeErr;
+    }
+  }
+
+  // 3. Sequence Permutation Treatment (R3-05 & R4-03)
+  const permResult = applySequencePermutation(admissionReceipt.documents, options.permutation);
+  if (options.strictTreatment || !options.dryRun) {
+    if (permResult.status === 'CHRONOLOGY_UNIDENTIFIABLE' || permResult.status === 'TOPIC_UNCLASSIFIED_ORDER_HELD') {
+      console.error(
+        `TREATMENT_METADATA_UNAVAILABLE_HELD: Permutation '${options.permutation}' halted fail-closed (${permResult.status}). ` +
+        `Required verified historical metadata is unavailable. Silent fallback to archive-order or guessing is strictly prohibited.`
       );
       process.exit(1);
     }
   }
 
-  // Source-Free Dry Run Execution with Trusted In-Memory Synthetic Fixtures
-  console.log('𝌋 TD613 Experiment B Flight Runner: Commencing source-free synthetic verification...');
-
-  const intake = new ControlledArchiveIntake({ syntheticMode: true, allowProtectedAdmission: false });
-  const syntheticSpecimens = {
-    syntheticDocuments: [
-      {
-        id: 'DOC-SYN-01',
-        filename: 'synthetic_dissipative_oscillator.md',
-        content: '# Synthetic Specimen 1: Damped Harmonic Oscillator\nDifferential Equation: m * x\'\'(t) + gamma * x\'(t) + k * x(t) = 0\nInvariant: Hamiltonian energy decay rate dE/dt = -gamma * (x\')^2 <= 0',
-        author_provenance: 'Source-Free Calibration Fixture'
-      },
-      {
-        id: 'DOC-SYN-02',
-        filename: 'synthetic_series_rlc_circuit.md',
-        content: '# Synthetic Specimen 2: Series RLC Circuit\nDifferential Equation: L * q\'\'(t) + R * q\'(t) + (1/C) * q(t) = 0\nInvariant: Dissipated power P(t) = -R * (q\')^2 <= 0',
-        author_provenance: 'Source-Free Calibration Fixture'
-      }
-    ]
-  };
-
-  const admissionReceipt = intake.admitArchive(syntheticSpecimens, { trustedSyntheticFixture: true });
-  console.log(`  ✓ Admitted ${admissionReceipt.document_count} synthetic specimens (manifest: ${admissionReceipt.manifest_sha256.slice(0, 16)}...)`);
-
-  const harness = new HeterogeneousDiscoveryHarness({
-    arm: 'ARM_2A_MODULAR',
-    mockMode: true,
-    maxCalls: options.maxCalls,
-    maxTokens: options.maxTokens
-  });
-
-  console.log('  ✓ Establishing Pre-Exposure Baseline (t0)...');
-  await harness.establishPreExposureBaseline('Baseline priors unconditioned.');
-
-  for (let i = 0; i < admissionReceipt.documents.length; i++) {
-    const doc = admissionReceipt.documents[i];
-    console.log(`  ✓ Ingesting turn ${i + 1}: ${doc.filename}...`);
-    await harness.ingestSequentialDocument(doc, i + 1);
+  const admittedDocs = permResult.documents;
+  console.log(`  ✓ Sequence treatment applied: ${options.permutation} (${admittedDocs.map(d => d.filename).join(' -> ')}) [status: ${permResult.status}]`);
+  if (permResult.notice) {
+    console.log(`    Note: ${permResult.notice}`);
   }
 
-  const ledger = harness.exportResearchLedger();
-  console.log(`\n𝌋 Execution Summary:`);
-  console.log(`  Turns Executed: ${ledger.turn_count}`);
-  console.log(`  Candidates Formulated: ${ledger.candidate_count}`);
-  console.log(`  Provider Calls: ${ledger.provider_accounting.successful_calls}`);
-  console.log(`  Tokens Consumed: ${ledger.provider_accounting.total_tokens_consumed}`);
-  console.log(`  Context Strategy: ${ledger.context_strategy}`);
-  console.log(`  Custody Status: ${admissionReceipt.custody_status}`);
+  // 4. Private Custody Ledger & Shared Budget Governor Initialization (R3-04, R3-06 & R4-04)
+  const defaultLedger = path.resolve(REPO_ROOT, 'artifacts/private', options.dryRun ? 'flight_research_ledger_dry_run_test.json' : 'flight_research_ledger_live.json');
+  const targetLedgerPath = options.ledgerPath ? path.resolve(options.ledgerPath) : defaultLedger;
 
-  // Flush checkpoint
-  const checkpointDir = path.resolve(__dirname, '../docs/research/experiment-b-preflight/02_four_arm_harness');
-  const checkpointPath = path.join(checkpointDir, 'dry_run_checkpoint.json');
-  fs.writeFileSync(checkpointPath, JSON.stringify(ledger, null, 2), 'utf8');
-  console.log(`  ✓ Checkpoint persisted: ${checkpointPath}`);
+  // Enforce private confinement
+  validatePrivatePathConfinement(targetLedgerPath, REPO_ROOT);
 
-  console.log('\n𝌋 Source-Free Dry Run Complete: B_SOURCE_FREE_LAUNCHBRIDGE_VERIFIED ⟐');
+  const sharedBudgetGovernor = new SharedBudgetGovernor({
+    maxCalls: options.maxCalls,
+    maxTokens: options.maxTokens,
+    maxCostUSD: options.maxCostUSD,
+    model: options.model
+  });
+
+  const custodyLedger = new AtomicCustodyLedger(targetLedgerPath, {
+    repoRoot: REPO_ROOT,
+    resume: options.resume
+  });
+
+  custodyLedger.initializeFlight({
+    executionMode: options.dryRun ? 'SOURCE_FREE_DRY_RUN' : 'LIVE_PHYSICAL_FLIGHT',
+    permutation: options.permutation,
+    backend: options.backend,
+    model: options.model,
+    budgetCeilings: {
+      max_calls: options.maxCalls,
+      max_tokens: options.maxTokens,
+      max_cost_usd: options.maxCostUSD
+    },
+    admissionReceipt
+  });
+
+  // 5. Execution of Designated Arms (R4-01 & R4-04)
+  const allHarnesses = {};
+  const armsToRun = options.arm === 'ALL'
+    ? ['ARM_0_TRANSPORT', 'ARM_1_ARCHIVAL', 'ARM_2A_MODULAR', 'ARM_2B_MATCHED_UNION']
+    : [options.arm];
+
+  for (const arm of armsToRun) {
+    if (arm === 'ARM_0_TRANSPORT') {
+      if (options.resume && custodyLedger.isArmCompleted('ARM_0_TRANSPORT')) {
+        console.log(`\n--- Arm 0 Already Completed (Restoring from persisted ledger) ---`);
+        continue;
+      }
+      console.log(`\n--- Executing ARM_0_TRANSPORT ---`);
+      const arm0Result = executeArm0Transport(admittedDocs);
+      custodyLedger.recordArmCompletion('ARM_0_TRANSPORT', arm0Result);
+      console.log(`  ✓ Arm 0 Complete: ${arm0Result.total_documents} docs transported (${arm0Result.total_bytes_transported} bytes)`);
+    } else if (arm === 'ARM_1_ARCHIVAL') {
+      if (options.resume && custodyLedger.isArmCompleted('ARM_1_ARCHIVAL')) {
+        console.log(`\n--- Arm 1 Already Completed (Restoring from persisted ledger) ---`);
+        continue;
+      }
+      console.log(`\n--- Executing ARM_1_ARCHIVAL ---`);
+      const arm1Result = await executeArm1Archival(REPO_ROOT, admittedDocs);
+      custodyLedger.recordArmCompletion('ARM_1_ARCHIVAL', arm1Result);
+      console.log(`  ✓ Arm 1 Complete: ${arm1Result.total_documents} docs processed (raw_preserved: ${arm1Result.raw_bytes_preserved}, indexed: ${arm1Result.total_indexed}, schema_admitted: ${arm1Result.schema_admitted}, schema_rejected: ${arm1Result.schema_rejected})`);
+    } else if (arm === 'ARM_2A_MODULAR' || arm === 'ARM_2B_MATCHED_UNION') {
+      console.log(`\n--- Executing ${arm} (${options.backend === 'native' ? 'Antigravity Native Agent' : 'Gemini REST Client'}) ---`);
+
+      let nativeOrchestrator = null;
+      let harness = null;
+
+      if (options.backend === 'native') {
+        nativeOrchestrator = new AntigravityNativeOrchestrator({
+          syntheticMode: options.dryRun,
+          allowLiveNativeFlight: !options.dryRun && isFlightAuthorized,
+          sessionId: `AGY-${arm}-${Date.now()}`,
+          modelIdentity: options.model
+        });
+
+        if (!options.dryRun && !nativeOrchestrator.isLiveNativeEnvironmentActive()) {
+          console.error(
+            'NATIVE_UNIMPLEMENTED_HELD: Genuine Antigravity in-app native agent flight requires an active, ' +
+            'connected in-app agent runner environment (TD613_ANTIGRAVITY_NATIVE_SESSION_ID). ' +
+            'Fallback to Gemini REST client is strictly prohibited by Sovereign Steer 2026-10-30.'
+          );
+          process.exit(1);
+        }
+      } else {
+        harness = new HeterogeneousDiscoveryHarness({
+          arm,
+          mockMode: options.dryRun,
+          allowLivePaidInference: !options.dryRun,
+          model: options.model,
+          maxCalls: options.maxCalls,
+          maxTokens: options.maxTokens,
+          maxCostUSD: options.maxCostUSD,
+          sharedBudgetGovernor
+        });
+      }
+
+      // Pre-Exposure Baseline (t0) with Granular Recovery Check
+      const completedBaseline = custodyLedger.getCompletedTurn(arm, 0);
+      let baselineTurnRecord;
+      if (completedBaseline) {
+        console.log(`  ✓ Restoring Pre-Exposure Baseline (t0) from persisted ledger...`);
+        baselineTurnRecord = completedBaseline.turn_record;
+      } else {
+        console.log(`  ✓ Establishing Pre-Exposure Baseline (t0)...`);
+        custodyLedger.recordEvent({ type: 'BASELINE_ENTERED', arm });
+        if (options.backend === 'native') {
+          baselineTurnRecord = await nativeOrchestrator.executeTurn({
+            arm,
+            turnIndex: 0,
+            document: null
+          });
+        } else {
+          await harness.establishPreExposureBaseline();
+          baselineTurnRecord = harness.history[0];
+        }
+        custodyLedger.recordTurn({
+          arm,
+          turnIndex: 0,
+          documentId: 'BASELINE_T0',
+          turnRecord: baselineTurnRecord,
+          sharedBudgetGovernor: options.backend === 'rest' ? sharedBudgetGovernor : null
+        });
+        custodyLedger.recordEvent({ type: 'BASELINE_COMPLETED', arm });
+      }
+
+      let turnIdx = 0;
+      const candidates = [];
+      const history = [baselineTurnRecord];
+
+      for (const doc of admittedDocs) {
+        turnIdx++;
+        const completedTurn = custodyLedger.getCompletedTurn(arm, turnIdx);
+        let turnRecord;
+        if (completedTurn) {
+          console.log(`  ✓ Restoring turn ${turnIdx} (${doc.filename}) from persisted ledger...`);
+          turnRecord = completedTurn.turn_record;
+          history.push(turnRecord);
+          if (turnRecord.parsed_candidate) {
+            candidates.push(turnRecord.parsed_candidate);
+          }
+          continue;
+        }
+
+        console.log(`  ✓ Ingesting turn ${turnIdx}: ${doc.filename}...`);
+        custodyLedger.recordEvent({ type: 'CHAMBER_1_ENTERED', arm, turn_index: turnIdx, document_id: doc.id });
+        if (options.backend === 'native') {
+          turnRecord = await nativeOrchestrator.executeTurn({
+            arm,
+            turnIndex: turnIdx,
+            document: doc,
+            priorHistory: history
+          });
+          if (turnRecord.parsed_candidate) {
+            candidates.push(turnRecord.parsed_candidate);
+            custodyLedger.recordEvent({
+              type: 'CANDIDATE_EXTRACTED',
+              arm,
+              turn_index: turnIdx,
+              candidate_id: turnRecord.parsed_candidate.candidate_id
+            });
+          }
+        } else {
+          await harness.ingestSequentialDocument(doc, turnIdx);
+          turnRecord = harness.history[harness.history.length - 1];
+          if (harness.candidates.length > 0) {
+            const latestCand = harness.candidates[harness.candidates.length - 1];
+            if (!candidates.some(c => c.candidate_id === latestCand.candidate_id)) {
+              candidates.push(latestCand);
+              custodyLedger.recordEvent({
+                type: 'CANDIDATE_EXTRACTED',
+                arm,
+                turn_index: turnIdx,
+                candidate_id: latestCand.candidate_id
+              });
+            }
+          }
+        }
+        history.push(turnRecord);
+        custodyLedger.recordEvent({ type: 'CHAMBER_1_COMPLETED', arm, turn_index: turnIdx, document_id: doc.id });
+        custodyLedger.recordTurn({
+          arm,
+          turnIndex: turnIdx,
+          documentId: doc.id,
+          turnRecord,
+          sharedBudgetGovernor: options.backend === 'rest' ? sharedBudgetGovernor : null
+        });
+      }
+
+      allHarnesses[arm] = { candidates, history };
+      custodyLedger.recordArmCompletion(arm, {
+        arm,
+        backend: options.backend,
+        turns_executed: history.length,
+        candidates_formulated: candidates.length,
+        summary: options.backend === 'rest' ? sharedBudgetGovernor.getSummary() : { backend: 'ANTIGRAVITY_NATIVE_AGENT', turns: history.length }
+      });
+
+      console.log(`  ✓ ${arm} Complete: ${history.length} turns, ${candidates.length} candidates formulated.`);
+      if (options.backend === 'rest') {
+        console.log(`    Aggregate Calls: ${sharedBudgetGovernor.providerAttempts} | Tokens: ${sharedBudgetGovernor.totalTokensConsumed} | Cost: $${sharedBudgetGovernor.getEstimatedCostUSD()}`);
+      }
+    }
+  }
+
+  // 6. Stage 2 Independent Adjudication / Phase Boundary (R3-01)
+  let evaluatorTier;
+  let witnessKeys = {};
+  let attestedWitness = null;
+
+  if (options.dryRun) {
+    evaluatorTier = 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW';
+  } else if (options.requireWitnessTier) {
+    evaluatorTier = 'INDEPENDENTLY_WITNESSED_BLINDED_EVALUATION';
+    witnessKeys = resolveWitnessKeys(options);
+    attestedWitness = resolveAttestedWitness(options);
+  } else {
+    // Blinded live candidate generation: provisional held tier
+    evaluatorTier = 'PROVISIONAL_LIVE_RECORDING_HELD_FOR_WITNESS';
+  }
+
+  const allAdjudications = [];
+  const evaluator = new Stage2IndependentEvaluator({
+    evaluatorTier,
+    trustedWitnessKeys: witnessKeys,
+    attestedWitness: attestedWitness,
+    expectedEpisodeId: options.episodeId
+  });
+
+  console.log(`\n--- Executing Stage 2 Independent Evaluation (Tier: ${evaluatorTier}) ---`);
+
+  if (options.dryRun) {
+    console.log(`  (Running source-free pipeline verification; results marked as DRY_RUN_PLUMBING_VERIFICATION)`);
+    let candIdx = 0;
+    for (const [armKey, harness] of Object.entries(allHarnesses)) {
+      for (const cand of harness.candidates) {
+        candIdx++;
+        let adj;
+
+        if (cand.status === 'ABSTAIN_BINARY_WITHOUT_AUTHENTICATED_DERIVATIVE') {
+          adj = {
+            adjudicated_candidate: {
+              ...cand,
+              status: 'HELD_INSUFFICIENT_DATA',
+              warrant_class: 'WARRANT_UNPRODUCED',
+              adjudication_ancestry: {
+                evaluator_tier: 'IMPLEMENTER_AUTHORED_SEMANTIC_REVIEW',
+                disposition: 'EPISTEMIC_ABSTENTION_BINARY_PAYLOAD_UNANALYZED',
+                verification_notice: 'DRY_RUN_PLUMBING_VERIFICATION'
+              }
+            }
+          };
+        } else if (candIdx === 1) {
+          // Candidate 1: Genuine matching criteria -> WARRANTED
+          adj = evaluator.evaluateCandidate(cand, {
+            groundTruthWarrant: 'FORMAL_EQUIVALENCE',
+            negativeControlRejected: true,
+            discoveredInCellA: armKey === 'ARM_2B_MATCHED_UNION',
+            discoveredInCellB: armKey === 'ARM_2A_MODULAR',
+            isNovel: true,
+            instrumentAnomalies: 'CLEAN_EXECUTION',
+            episodeId: `Episode-${armKey}`,
+            evaluatorNotes: 'DRY_RUN_PLUMBING_VERIFICATION: Specimen 1 formula equivalence verified against synthetic oscillator.'
+          });
+        } else if (candIdx === 2) {
+          // Candidate 2: Fired on negative control noise -> SCAFFOLDING_ARTIFACT with math warrant surviving
+          adj = evaluator.evaluateCandidate(cand, {
+            groundTruthWarrant: 'ISOMORPHISM',
+            negativeControlRejected: false, // Fired on noise!
+            discoveredInCellA: false,
+            discoveredInCellB: true,
+            isNovel: true,
+            instrumentAnomalies: 'CLEAN_EXECUTION',
+            episodeId: `Episode-${armKey}`,
+            evaluatorNotes: 'DRY_RUN_PLUMBING_VERIFICATION: Candidate fired on negative control noise; representation claim held as scaffolding artifact.'
+          });
+        } else {
+          // Candidate 3+: Incomplete evidence criteria -> HELD_INSUFFICIENT_DATA
+          adj = evaluator.evaluateCandidate(cand, {
+            groundTruthWarrant: null, // Incomplete criteria!
+            negativeControlRejected: null,
+            discoveredInCellA: false,
+            discoveredInCellB: false,
+            isNovel: false,
+            instrumentAnomalies: 'CLEAN_EXECUTION',
+            episodeId: `Episode-${armKey}`,
+            evaluatorNotes: 'DRY_RUN_PLUMBING_VERIFICATION: Incomplete criteria supplied; evaluation correctly held.'
+          });
+        }
+
+        allAdjudications.push(adj);
+      }
+    }
+  } else {
+    // Live flight adjudication: evaluates candidates under assigned tier (provisional or witnessed)
+    for (const [armKey, harness] of Object.entries(allHarnesses)) {
+      for (const cand of harness.candidates) {
+        const adj = evaluator.evaluateCandidate(cand, {
+          groundTruthWarrant: null,
+          negativeControlRejected: null,
+          discoveredInCellA: null,
+          discoveredInCellB: null,
+          isNovel: null,
+          instrumentAnomalies: null,
+          episodeId: `Episode-${armKey}`,
+          evaluatorNotes: 'Live flight adjudication recorded.'
+        });
+        allAdjudications.push(adj);
+      }
+    }
+  }
+
+  custodyLedger.recordAdjudications(allAdjudications);
+  console.log(`  ✓ Evaluated ${allAdjudications.length} candidates through Stage 2 Evaluator (spectrum of RCA-01 outcomes demonstrated)`);
+
+  const displayLedgerPath = path.relative(REPO_ROOT, targetLedgerPath) || targetLedgerPath;
+  console.log(`\n  ✓ Research Ledger Persisted to Private Local Custody: ${displayLedgerPath}`);
+  console.log(`\n======================================================================`);
+  console.log(`  𝌋 FLIGHT EXECUTION FINISHED: B_FLIGHT_ENGINEERING_READY ⟐`);
+  console.log(`======================================================================`);
 }
 
-main().catch(err => {
-  console.error(`ERROR: ${err.message}`);
-  process.exit(1);
-});
+const isDirectExecution = process.argv[1] && (
+  fileURLToPath(import.meta.url) === path.resolve(process.argv[1]) ||
+  process.argv[1].endsWith('run-experiment-b-flight.mjs')
+);
+
+if (isDirectExecution) {
+  main().catch(err => {
+    console.error(`\n❌ FLIGHT EXECUTION FAILED: ${err.message}`);
+    process.exit(1);
+  });
+}

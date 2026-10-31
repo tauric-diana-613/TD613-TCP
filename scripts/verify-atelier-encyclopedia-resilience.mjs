@@ -111,7 +111,7 @@ const receipt = {
     gate_e_disposition: 'HELD',
     empirical_exteriority_credit: 0,
     human_scientific_closure: 'RESERVED',
-    issue_405_release_authority: 'CLOSED'
+    issue_405_release_authority: 'RELEASE_NOT_AUTHORIZED'
   }
 };
 

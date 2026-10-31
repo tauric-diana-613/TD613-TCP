@@ -1,0 +1,183 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793468430336-c3c80504",
+  "timestamp": "2026-10-31T17:40:30.336Z",
+  "source_revision": "6159385c58ea9c2e1ac99e8b73d14d722dd09911",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "6159385c58ea9c2e1ac99e8b73d14d722dd09911",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "6159385c58ea9c2e1ac99e8b73d14d722dd09911",
+    "audit_execution_revision": "6159385c58ea9c2e1ac99e8b73d14d722dd09911",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [],
+  "is_historical_commit_only": false,
+  "task_scope": "TD613 Experiment B Flight Engineering & Protected Custody Gate P Reconciliation (Redpen XIII-R2)",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
+    "scripts/run-experiment-b-flight.mjs",
+    "tests/test-flight-launchbridge.test.mjs",
+    "tests/test-heterogeneous-discovery-harness.mjs"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c595eabf04988cf257b9bf4aec8f343553b724af4c280e7371c9c7a78bff0468",
+      "byte_digest_verified": true,
+      "sha256": "c595eabf04988cf257b9bf4aec8f343553b724af4c280e7371c9c7a78bff0468"
+    },
+    {
+      "reference": "scripts/run-experiment-b-flight.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "456f9f107a8ddb0e6df7c7c3f963bc2bcb0eef177915a55594c2b7f9164e4458",
+      "byte_digest_verified": true,
+      "sha256": "456f9f107a8ddb0e6df7c7c3f963bc2bcb0eef177915a55594c2b7f9164e4458"
+    },
+    {
+      "reference": "tests/test-flight-launchbridge.test.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "4eee78ae2cd2622cc4c7ec9af7c76becd2f60b274649acc35527639edb9c32a2",
+      "byte_digest_verified": true,
+      "sha256": "4eee78ae2cd2622cc4c7ec9af7c76becd2f60b274649acc35527639edb9c32a2"
+    },
+    {
+      "reference": "tests/test-heterogeneous-discovery-harness.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "962f66355583b71c69512e28fe78e364a94c5a4b4eedb8315d0efddcdb1fd327",
+      "byte_digest_verified": true,
+      "sha256": "962f66355583b71c69512e28fe78e364a94c5a4b4eedb8315d0efddcdb1fd327"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [],
+  "missing_inputs": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "consequence-order-route-burden-practice-and-research-transfer",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability-identifiability-reconstruction-conditioning-and-replay-audit",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "compare-non-equivalent-receiver-projections-against-one-admitted-relation-and-governance-control-plane",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "audit-finite-quotient-fibres-for-exact-admissibility-descent-and-preserve-union-intersection-gap",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "independent-temporal-audit-monotonic-chronology-and-attempt-lineage-preservation",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "HELD_MISSING_OBSERVATION",
+    "consensus": "INCOMPLETE_OBSERVATION",
+    "primary_verdicts_consensus": "INCOMPLETE_OBSERVATION",
+    "nested_extension_holds": [],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Missing domain observation inputs for: PEDAGOGUE, APERTURE, ATLAS, FADT, TEMPORAL_CUSTODIAN."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 444
+}
