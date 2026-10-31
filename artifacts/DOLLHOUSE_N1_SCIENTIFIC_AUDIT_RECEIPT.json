@@ -1,11 +1,11 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793414038520-5927928c",
-  "timestamp": "2026-10-31T02:33:58.520Z",
-  "source_revision": "ad403235e65786e486e775ef717b4a1a0b657adb",
+  "invocation_id": "dollhouse-audit-1793418361899-af910922",
+  "timestamp": "2026-10-31T03:46:01.900Z",
+  "source_revision": "fbe6df265a131216eae648af7ef47ab36fc14d54",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "ad403235e65786e486e775ef717b4a1a0b657adb",
+  "executing_checkout_revision": "fbe6df265a131216eae648af7ef47ab36fc14d54",
   "is_exact_checkout_match": true,
   "exact_checkout_verified": false,
   "is_historical_commit_only": false,
@@ -23,9 +23,9 @@
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "5ffadcac74b381192c203dd2866efb768eaa269f5b36363fef153a7dc7834dd1",
+      "byte_digest": "df2569a58dc1899b63219c2ddf9b57b4ce51b379ab0c2acdec12bfae1957d266",
       "byte_digest_verified": true,
-      "sha256": "5ffadcac74b381192c203dd2866efb768eaa269f5b36363fef153a7dc7834dd1"
+      "sha256": "df2569a58dc1899b63219c2ddf9b57b4ce51b379ab0c2acdec12bfae1957d266"
     },
     {
       "reference": "scripts/run-experiment-b-flight.mjs",
@@ -39,9 +39,9 @@
       "reference": "tests/test-flight-launchbridge.test.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "d9cd4be811b55041c85cd43a322f42d39e3657b86b4d85190baea2937fd1e719",
+      "byte_digest": "7fbaf278f50bd6bf3316e636cba20dbfe175a0e4d2ea3943377f39742fc7d832",
       "byte_digest_verified": true,
-      "sha256": "d9cd4be811b55041c85cd43a322f42d39e3657b86b4d85190baea2937fd1e719"
+      "sha256": "7fbaf278f50bd6bf3316e636cba20dbfe175a0e4d2ea3943377f39742fc7d832"
     },
     {
       "reference": "app/engine/atlas-mathematical-engine.js",
@@ -254,11 +254,32 @@
         },
         "relation_identity": {
           "schema": "td613.dollhouse.atlas-relation-identity/v0.1",
-          "relation": "HELD_INVALID_DECLARATION",
-          "held": true,
-          "left_custody": {},
-          "shared_orbit": false,
-          "reason": "one or both members violate valid Atlas member constraints",
+          "relation": "EXACT_IDENTITY",
+          "held": false,
+          "left_custody": {
+            "a": 2,
+            "b": 2,
+            "s": 1,
+            "path": [
+              "D",
+              "E",
+              "N"
+            ]
+          },
+          "right_custody": {
+            "a": 2,
+            "b": 2,
+            "s": 1,
+            "path": [
+              "D",
+              "E",
+              "N"
+            ]
+          },
+          "shared_orbit": true,
+          "left_is_palindrome": false,
+          "right_is_palindrome": false,
+          "concrete_paths_preserved": true,
           "laws": {
             "relation_recognition_not_identity_substitution": true,
             "shared_orbit_not_same_member": true,
@@ -362,5 +383,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 807
+  "execution_duration_ms": 500
 }
