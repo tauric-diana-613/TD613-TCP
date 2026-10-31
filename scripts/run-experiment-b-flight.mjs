@@ -99,42 +99,103 @@ export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE
 }
 
 /**
- * Asserts that the registry path is strictly confined to trusted repository workspace paths (Redpen X-B3).
+ * Asserts that the registry path is strictly confined to trusted repository workspace paths (Redpen X-B3, N1-F04).
+ * Uses path-component-aware canonical containment and rejects untrusted locations before writing.
  */
 export function assertTrustedRegistryPath(registryPath, repoRoot = process.cwd()) {
-  const resolved = path.resolve(registryPath);
   const resolvedRoot = path.resolve(repoRoot);
-  if (!resolved.startsWith(resolvedRoot)) {
+  const resolved = path.resolve(registryPath);
+
+  // 1. Relative path containment check
+  const rel = path.relative(resolvedRoot, resolved);
+  if (rel.startsWith('..') || path.isAbsolute(rel) || rel === '') {
     throw new Error(
       `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves outside trusted repository root "${resolvedRoot}". Traversal rejected fail-closed.`
     );
   }
+
+  // 2. Component-aware prefix check (prevents sibling prefix attacks like repo-sibling)
+  const rootPrefix = resolvedRoot.endsWith(path.sep) ? resolvedRoot : resolvedRoot + path.sep;
+  if (!resolved.startsWith(rootPrefix)) {
+    throw new Error(
+      `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves outside trusted repository root "${resolvedRoot}". Traversal rejected fail-closed.`
+    );
+  }
+
+  // 3. Symlink / reparse / junction canonical path containment check for existing paths/parents
+  let checkTarget = resolved;
+  while (!fs.existsSync(checkTarget) && path.dirname(checkTarget) !== checkTarget) {
+    checkTarget = path.dirname(checkTarget);
+  }
+  if (fs.existsSync(checkTarget)) {
+    let realTarget = checkTarget;
+    try { realTarget = fs.realpathSync(checkTarget); } catch (_) {}
+    let realRoot = resolvedRoot;
+    try { realRoot = fs.realpathSync(resolvedRoot); } catch (_) {}
+    const realRootPrefix = realRoot.endsWith(path.sep) ? realRoot : realRoot + path.sep;
+    if (!realTarget.startsWith(realRootPrefix) && realTarget !== realRoot) {
+      throw new Error(
+        `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves via symlink to "${realTarget}" outside trusted repository root "${realRoot}". Traversal rejected fail-closed.`
+      );
+    }
+  }
+
   return resolved;
 }
 
 /**
- * Acquires an exclusive cross-process lock on the registry lockfile using atomic wx open (Redpen X-B3).
- * Supports bounded exponential backoff, retry, and stale-lock recovery (10s threshold).
+ * Acquires an exclusive cross-process lock on the registry lockfile using atomic wx open (Redpen X-B3, N1-F03).
+ * Generates an immutable lockToken and writes { token, pid, acquiredAt }.
+ * Stale lock recovery verifies whether the recorded PID is dead (ESRCH); live owners are never evicted even after stale timeout.
+ * Returns the lockToken string.
  */
 export function acquireRegistryLock(lockFile, maxRetries = 60, initialDelayMs = 50, staleTimeoutMs = 10000) {
+  const lockToken = crypto.randomUUID();
   let delay = initialDelayMs;
+
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       const fd = fs.openSync(lockFile, 'wx');
-      const payload = JSON.stringify({ pid: process.pid, acquiredAt: Date.now() });
+      const payload = JSON.stringify({ token: lockToken, pid: process.pid, acquiredAt: Date.now() });
       fs.writeSync(fd, payload);
       fs.closeSync(fd);
-      return true;
+      return lockToken;
     } catch (err) {
       if (err.code === 'EEXIST') {
-        // Check for stale lock
+        // Inspect lock ownership and liveness
         try {
-          const stats = fs.statSync(lockFile);
-          if (Date.now() - stats.mtimeMs > staleTimeoutMs) {
-            try { fs.unlinkSync(lockFile); } catch (_) {}
-            continue;
+          if (fs.existsSync(lockFile)) {
+            const rawContent = fs.readFileSync(lockFile, 'utf8');
+            let lockData = null;
+            try { lockData = JSON.parse(rawContent); } catch (_) {}
+
+            if (lockData && lockData.pid) {
+              let isLiveOwner = true;
+              try {
+                // process.kill(pid, 0) tests process existence without delivering a signal
+                process.kill(lockData.pid, 0);
+              } catch (killErr) {
+                if (killErr.code === 'ESRCH') {
+                  isLiveOwner = false;
+                }
+              }
+
+              // Live owner survives beyond stale threshold; competing processes cannot evict a live owner!
+              if (!isLiveOwner && (Date.now() - lockData.acquiredAt > staleTimeoutMs)) {
+                try { fs.unlinkSync(lockFile); } catch (_) {}
+                continue;
+              }
+            } else {
+              // Corrupted or unparseable lock file past stale threshold can be reclaimed
+              const stats = fs.statSync(lockFile);
+              if (Date.now() - stats.mtimeMs > staleTimeoutMs) {
+                try { fs.unlinkSync(lockFile); } catch (_) {}
+                continue;
+              }
+            }
           }
         } catch (_) {}
+
         // Exponential backoff with small random jitter
         const waitMs = delay + Math.floor(Math.random() * 20);
         Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, waitMs);
@@ -148,20 +209,36 @@ export function acquireRegistryLock(lockFile, maxRetries = 60, initialDelayMs = 
 }
 
 /**
- * Releases the exclusive cross-process lock on the registry lockfile (Redpen X-B3).
+ * Releases the exclusive cross-process lock on the registry lockfile (Redpen X-B3, N1-F03).
+ * Verifies that the lock still belongs to the calling lockToken and PID before unlinking.
+ * Prevents an old owner whose lock timed out from deleting a newer owner's lock.
  */
-export function releaseRegistryLock(lockFile) {
+export function releaseRegistryLock(lockFile, lockToken = null) {
   try {
-    if (fs.existsSync(lockFile)) {
-      fs.unlinkSync(lockFile);
+    if (!fs.existsSync(lockFile)) return false;
+
+    if (lockToken) {
+      const raw = fs.readFileSync(lockFile, 'utf8');
+      try {
+        const lockData = JSON.parse(raw);
+        if (lockData.token !== lockToken) {
+          // We do not own this lock! A newer owner owns it; do not delete!
+          return false;
+        }
+      } catch (_) {}
     }
-  } catch (_) {}
+
+    fs.unlinkSync(lockFile);
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 /**
- * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4, X-B3).
+ * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4, X-B3, N1-F03).
  * Fails closed if the episode identifier has already been recorded, if synthetic IDs are submitted,
- * or if write concurrency fails. Employs cross-process file locking and atomic write semantics.
+ * or if write concurrency fails. Employs cross-process file locking with ownership fencing and atomic write semantics.
  */
 export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
   const idStr = String(episodeId || '').trim();
@@ -176,7 +253,7 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
     );
   }
 
-  // Enforce trusted repository workspace confinement (Redpen X-B3)
+  // Enforce trusted repository workspace confinement (Redpen X-B3, N1-F04)
   const trustedPath = assertTrustedRegistryPath(registryPath);
   const regDir = path.dirname(trustedPath);
   if (!fs.existsSync(regDir)) {
@@ -184,7 +261,7 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
   }
 
   const lockFile = `${trustedPath}.lock`;
-  acquireRegistryLock(lockFile);
+  const lockToken = acquireRegistryLock(lockFile);
 
   try {
     const registry = loadEpisodeRegistry(trustedPath);
@@ -228,7 +305,7 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
 
     return registry.episodes[idStr];
   } finally {
-    releaseRegistryLock(lockFile);
+    releaseRegistryLock(lockFile, lockToken);
   }
 }
 
@@ -619,7 +696,7 @@ async function main() {
       process.exit(1);
     }
 
-    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B, Redpen X-B3)
+    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B, Redpen X-B3, N1-F05)
     const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
     try {
       assertTrustedRegistryPath(registryFile);
@@ -630,22 +707,14 @@ async function main() {
         );
         process.exit(1);
       }
-
-      // Register prospective episode in immutable table under atomic cross-process lock (Redpen X-B3)
-      registerLiveEpisode(options.episodeId, {
-        backend: options.backend,
-        arm: options.arm,
-        permutation: options.permutation,
-        model: options.model,
-        archive_path: options.archivePath
-      }, registryFile);
     } catch (err) {
       console.error(err.message);
       process.exit(1);
     }
   }
 
-  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission)
+  // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission or registration) (N1-F05)
+  let attestedWitnessRecord = null;
   if (options.requireWitnessTier) {
     const witnessKeys = resolveWitnessKeys(options);
     const attestedWitness = resolveAttestedWitness(options);
@@ -675,6 +744,26 @@ async function main() {
       console.error(
         `PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID: Cryptographic witness signature verification failed for witnessId '${attestedWitness.witnessId}' (reason: ${audit.reason}). Zero protected exposure or provider calls permitted.`
       );
+      process.exit(1);
+    }
+    attestedWitnessRecord = attestedWitness;
+  }
+
+  // Post-Witness Registration (N1-F05): Only register prospective live episode after witness validation succeeds
+  if (!options.dryRun) {
+    const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
+    try {
+      registerLiveEpisode(options.episodeId, {
+        backend: options.backend,
+        arm: options.arm,
+        permutation: options.permutation,
+        model: options.model,
+        archive_path: options.archivePath,
+        witness_id: attestedWitnessRecord?.witnessId || null,
+        witness_verified_at: attestedWitnessRecord ? new Date().toISOString() : null
+      }, registryFile);
+    } catch (err) {
+      console.error(err.message);
       process.exit(1);
     }
   }
@@ -731,6 +820,9 @@ async function main() {
     );
     console.log(`  ✓ Admitted ${admissionReceipt.document_count} synthetic specimens from in-memory ZIP (manifest: ${admissionReceipt.manifest_sha256.slice(0, 16)}...)`);
   } else {
+    if (!options.grantPath) {
+      throw new Error('OPERATOR_FLIGHT_GRANT_REQUIRED: Live flight requires --grant-path pointing to cryptographic operator flight grant.');
+    }
     const grantRaw = fs.readFileSync(path.resolve(options.grantPath), 'utf8');
     const grant = JSON.parse(grantRaw);
     admissionReceipt = intake.admitArchive(options.archivePath, {

@@ -49,6 +49,15 @@ export const EXACT_POSITIVE_SPECIMEN_ALLOWLIST = [
   'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_aperture_transversal.md',
   'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_sufficient_aperture_transversal.md',
   'docs/research/experiment-b-preflight/01_calibration_fixtures/c5_wendbine_unclassified_divergence.md',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_population_growth.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_michaelis_menten_kinetics.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_positive_control_linear_decay.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c3_staged_resonance_perturbation.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_incomplete_boundary_system.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c4_sufficient_boundary_system.json',
+  'docs/research/experiment-b-preflight/01_calibration_fixtures/c5_wendbine_snapshot_manifest.json',
   'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens.json',
   'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens_v2.json',
   'docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_calibration_specimens_v3.json'
@@ -155,19 +164,21 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     ? path.resolve(rawTarget)
     : path.resolve(repoRoot, rawTarget);
 
-  // Check if target escapes repo root via .. traversal
-  if (!resolvedTarget.startsWith(repoRoot)) {
+  const repoRootPrefix = repoRoot.endsWith(path.sep) ? repoRoot : repoRoot + path.sep;
+
+  // Check if target escapes repo root via .. traversal or sibling prefix attack
+  if (!resolvedTarget.startsWith(repoRootPrefix) && resolvedTarget !== repoRoot) {
     throw new Error(
       `PATH_TRAVERSAL_FORBIDDEN: Attempted directory traversal outside repository root "${targetPath}". Execution-time access denied.`
     );
   }
 
-  // Canonical realpath resolution and symlink alias defense (Redpen IX-B3)
+  // Canonical realpath resolution and symlink alias defense (Redpen IX-B3, N1-F01)
   let realTarget = resolvedTarget;
   if (fs.existsSync(resolvedTarget)) {
     try {
       realTarget = fs.realpathSync(resolvedTarget);
-      if (!realTarget.startsWith(repoRoot)) {
+      if (!realTarget.startsWith(repoRootPrefix) && realTarget !== repoRoot) {
         throw new Error(
           `SYMLINK_ESCAPE_FORBIDDEN: Target path "${targetPath}" resolves via symlink to "${realTarget}" outside repository root. Execution-time access denied.`
         );
@@ -190,23 +201,25 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     }
   }
 
-  // Check exact positive specimen allowlist for candidate generation arms (Redpen X-B1)
+  // Check exact positive specimen allowlist for candidate generation arms (Redpen X-B1, N1-F01)
   if (config.allowedFiles && config.allowedFiles.length > 0) {
-    const isExactFileAllowed = config.allowedFiles.some(allowedFile => {
-      const normAllowed = allowedFile.replace(/\\/g, '/');
-      return realRelativeNorm === normAllowed || relativeNorm === normAllowed || normPath === normAllowed;
-    });
-    if (!isExactFileAllowed) {
+    const normalizedAllowed = config.allowedFiles.map(f => f.replace(/\\/g, '/'));
+    const declaredPermitted = normalizedAllowed.some(f => f === relativeNorm || f === normPath);
+    const canonicalPermitted = normalizedAllowed.some(f => f === realRelativeNorm);
+
+    // BOTH declared path AND canonical target must be independently authorized in allowlist
+    if (!declaredPermitted || !canonicalPermitted) {
       throw new Error(
-        `UNLISTED_SOURCE_FILE_REFUSED: Target path "${normPath}" (resolving to "${realRelativeNorm}") is not in the exact positive specimen allowlist for ${arm}. Execution-time access denied.`
+        `UNLISTED_SOURCE_FILE_REFUSED: Target path "${normPath}" (resolving to canonical "${realRelativeNorm}") ` +
+        `failed independent declared/canonical authorization for ${arm}. Both declared path and canonical target must be in the exact positive specimen allowlist. Execution-time access denied.`
       );
     }
   } else if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
     // Check allowed source roots: BOTH declared relativeNorm AND canonical realRelativeNorm must be permitted
     const isAllowed = config.allowedSourceRoots.some(root => {
-      const normRoot = root.replace(/\\/g, '/');
-      const declaredPermitted = relativeNorm.startsWith(normRoot) || normPath.startsWith(normRoot);
-      const realPermitted = realRelativeNorm.startsWith(normRoot);
+      const cleanRoot = root.replace(/\\/g, '/').replace(/\/+$/, '');
+      const declaredPermitted = relativeNorm === cleanRoot || relativeNorm.startsWith(cleanRoot + '/') || normPath === cleanRoot || normPath.startsWith(cleanRoot + '/');
+      const realPermitted = realRelativeNorm === cleanRoot || realRelativeNorm.startsWith(cleanRoot + '/');
       return declaredPermitted && realPermitted;
     });
     if (!isAllowed) {
@@ -221,10 +234,26 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     );
   }
 
+  // Bind authorized source identity to the bytes actually opened (N1-F01)
+  let byteSize = null;
+  let byteBindingDigest = null;
+  if (fs.existsSync(realTarget)) {
+    try {
+      const stats = fs.statSync(realTarget);
+      byteSize = stats.size;
+      const fileBytes = fs.readFileSync(realTarget);
+      byteBindingDigest = crypto.createHash('sha256').update(fileBytes).digest('hex');
+    } catch (_) {}
+  }
+
   return {
     permitted: true,
     arm,
-    targetPath: realRelativeNorm
+    targetPath: realRelativeNorm,
+    canonicalPath: realTarget,
+    byteSize,
+    byteBindingDigest,
+    disposition: 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED'
   };
 }
 

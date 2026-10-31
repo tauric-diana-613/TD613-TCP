@@ -3,7 +3,8 @@ import test from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { execSync } from 'node:child_process';
+import { execSync, spawn } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 
 import {
   ControlledArchiveIntake,
@@ -1116,7 +1117,7 @@ test('R4-03: Chronology and Topic Treatments Fail Closed on Absent Metadata', ()
   const tempScriptPath = path.resolve('tests', `test_strict_treatment_${Date.now()}.mjs`);
   fs.writeFileSync(
     tempScriptPath,
-    `import { execSync } from 'node:child_process';
+    `import { execSync, spawn } from 'node:child_process';
 try {
   execSync('node scripts/run-experiment-b-flight.mjs --dry-run --arm ARM_0_TRANSPORT --permutation CHRONOLOGICAL --strict-treatment', { stdio: 'pipe' });
   process.exit(0);
@@ -1707,5 +1708,325 @@ test('Redpen X-B: Exact Specimen Manifest, Arm Parity & Concurrent Registry Lock
       if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
       if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
     } catch {}
+  }
+});
+
+test('Dollhouse N1-F01: Canonical Target Authorization & Byte-Binding Sieve', () => {
+  const tempFixtureDir = path.resolve('.td613_temp_n1_f01_fixture');
+  if (!fs.existsSync(tempFixtureDir)) fs.mkdirSync(tempFixtureDir, { recursive: true });
+
+  const unlistedTargetFile = path.join(tempFixtureDir, 'unlisted_real_source.md');
+  fs.writeFileSync(unlistedTargetFile, '# Unlisted Source Content\nSecret data.', 'utf8');
+
+  // Create a symlink named like an allowed file or inside allowed tree pointing to unlisted target
+  const symlinkPath = path.join(tempFixtureDir, 'symlink_pointing_to_unlisted.md');
+  try { if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath); } catch (_) {}
+
+  let symlinkCreated = false;
+  try {
+    fs.symlinkSync(unlistedTargetFile, symlinkPath, 'file');
+    symlinkCreated = true;
+  } catch (_) {
+    // Windows non-admin symlink fallback if unprivileged
+  }
+
+  try {
+    // 1. Direct unlisted source file is rejected fail-closed for candidate arms
+    assert.throws(
+      () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', unlistedTargetFile),
+      /UNLISTED_SOURCE_FILE_REFUSED/
+    );
+
+    // 2. If symlink exists: accessing symlink whose canonical target is unlisted MUST fail closed
+    if (symlinkCreated) {
+      assert.throws(
+        () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', symlinkPath),
+        /UNLISTED_SOURCE_FILE_REFUSED/
+      );
+    }
+
+    // 3. Authorized file passes and returns canonical path, byteSize, byteBindingDigest, and CANONICAL_TARGET_AUTHORIZATION_VERIFIED
+    const validSpecimen = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json';
+    const access = assertArmSourceAccessPermitted('ARM_2A_MODULAR', validSpecimen);
+    assert.equal(access.permitted, true);
+    assert.equal(access.disposition, 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED');
+    assert.ok(access.byteSize > 0);
+    assert.ok(typeof access.byteBindingDigest === 'string' && access.byteBindingDigest.length === 64);
+  } finally {
+    try {
+      if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+      if (fs.existsSync(unlistedTargetFile)) fs.unlinkSync(unlistedTargetFile);
+      if (fs.existsSync(tempFixtureDir)) fs.rmSync(tempFixtureDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Dollhouse N1-F02: Independent Multi-Process Registry Contention & Replay Refusal', async () => {
+  const tempDir = path.resolve('.td613_temp_n1_f02_contention');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'mp_episodes.json');
+
+  try {
+    // Part A: 4 independent OS processes concurrently registering DISTINCT episode IDs
+    const scriptPath = path.resolve('scripts/run-experiment-b-flight.mjs');
+    const scriptUrl = pathToFileURL(scriptPath).href;
+    const childWorkerCode = (epId, regPath) => `
+      import { registerLiveEpisode } from '${scriptUrl}';
+      try {
+        const reg = registerLiveEpisode('${epId}', { pid: process.pid, time: Date.now() }, '${regPath.replace(/\\/g, '/')}');
+        process.stdout.write(JSON.stringify({ success: true, pid: process.pid, epId: '${epId}' }));
+        process.exit(0);
+      } catch (err) {
+        process.stderr.write(err.message);
+        process.exit(1);
+      }
+    `;
+
+    const distinctIds = Array.from({ length: 4 }, (_, i) => `LIVE-EP-MP-DISTINCT-${i}-${Date.now()}`);
+    const results = await Promise.all(
+      distinctIds.map(epId => {
+        return new Promise((resolve) => {
+          const child = spawn(process.execPath, ['--input-type=module', '-e', childWorkerCode(epId, registryFile)], {
+            stdio: ['pipe', 'pipe', 'pipe']
+          });
+          let stdout = '';
+          let stderr = '';
+          child.stdout.on('data', d => { stdout += d; });
+          child.stderr.on('data', d => { stderr += d; });
+          child.on('close', code => {
+            resolve({ code, stdout, stderr, epId });
+          });
+        });
+      })
+    );
+
+    // All distinct child processes must succeed
+    for (const res of results) {
+      assert.equal(res.code, 0, `Expected worker for ${res.epId} to succeed, stderr: ${res.stderr}`);
+    }
+
+    // Verify registry file has all 4 episodes with zero lost updates
+    const saved = loadEpisodeRegistry(registryFile);
+    assert.equal(Object.keys(saved.episodes).length, 4);
+    for (const epId of distinctIds) {
+      assert.ok(saved.episodes[epId], `Missing episode ${epId} in registry`);
+    }
+
+    // Part B: 4 independent OS processes concurrently competing to register the EXACT SAME ID
+    const duplicateId = `LIVE-EP-MP-DUP-${Date.now()}`;
+    const dupResults = await Promise.all(
+      Array.from({ length: 4 }).map(() => {
+        return new Promise((resolve) => {
+          const child = spawn(process.execPath, ['--input-type=module', '-e', childWorkerCode(duplicateId, registryFile)], {
+            stdio: ['pipe', 'pipe', 'pipe']
+          });
+          let stdout = '';
+          let stderr = '';
+          child.stdout.on('data', d => { stdout += d; });
+          child.stderr.on('data', d => { stderr += d; });
+          child.on('close', code => {
+            resolve({ code, stdout, stderr });
+          });
+        });
+      })
+    );
+
+    // Exactly one process succeeds, others fail with EPISODE_REPLAY_FORBIDDEN
+    const successes = dupResults.filter(r => r.code === 0);
+    const failures = dupResults.filter(r => r.code !== 0);
+    assert.equal(successes.length, 1, 'Expected exactly 1 process to register duplicate episode');
+    assert.equal(failures.length, 3, 'Expected 3 processes to be rejected');
+    for (const f of failures) {
+      assert.ok(f.stderr.includes('EPISODE_REPLAY_FORBIDDEN'), `Expected EPISODE_REPLAY_FORBIDDEN in: ${f.stderr}`);
+    }
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Dollhouse N1-F03: Lock Ownership, Live Protection & Stale Dead-Owner Recovery', () => {
+  const tempDir = path.resolve('.td613_temp_n1_f03_lock');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const lockFile = path.join(tempDir, 'test.lock');
+
+  try {
+    // 1. Acquire lock returns unique string lockToken
+    const token1 = acquireRegistryLock(lockFile, 5, 20, 200);
+    assert.ok(typeof token1 === 'string' && token1.length > 0);
+
+    // 2. Competing acquisition fails while live owner holds it (even if staleTimeoutMs is exceeded)
+    assert.throws(
+      () => acquireRegistryLock(lockFile, 4, 15, 50), // 50ms stale threshold
+      /REGISTRY_LOCK_TIMEOUT/
+    );
+
+    // 3. Old owner cannot delete lock if token doesn't match
+    const wrongToken = 'wrong-token-1234';
+    const deletedWithWrongToken = releaseRegistryLock(lockFile, wrongToken);
+    assert.equal(deletedWithWrongToken, false);
+    assert.ok(fs.existsSync(lockFile), 'Lock file must still exist after wrong-token release attempt');
+
+    // 4. Release with correct token succeeds
+    const deletedWithCorrectToken = releaseRegistryLock(lockFile, token1);
+    assert.equal(deletedWithCorrectToken, true);
+    assert.ok(!fs.existsSync(lockFile), 'Lock file must be unlinked after valid release');
+
+    // 5. Crashed owner recovery: mock a dead PID past stale threshold
+    const deadPid = 99999999;
+    const stalePayload = JSON.stringify({ token: 'dead-token', pid: deadPid, acquiredAt: Date.now() - 5000 });
+    fs.writeFileSync(lockFile, stalePayload, 'utf8');
+
+    // Competing process with staleTimeoutMs=100 can safely reclaim dead owner's lock
+    const token2 = acquireRegistryLock(lockFile, 5, 20, 100);
+    assert.ok(typeof token2 === 'string');
+    releaseRegistryLock(lockFile, token2);
+  } finally {
+    try {
+      if (fs.existsSync(lockFile)) fs.unlinkSync(lockFile);
+      if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
+    } catch (_) {}
+  }
+});
+
+test('Dollhouse N1-F04: Component-Aware Workspace Confinement & Sibling Defense', () => {
+  const repoRoot = process.cwd();
+
+  // 1. Authorized path inside workspace succeeds
+  const validPath = path.join(repoRoot, '.td613/test_reg.json');
+  assert.equal(assertTrustedRegistryPath(validPath, repoRoot), validPath);
+
+  // 2. Directory traversal outside workspace rejected
+  assert.throws(
+    () => assertTrustedRegistryPath('../outside_repo.json', repoRoot),
+    /UNTRUSTED_REGISTRY_PATH_FORBIDDEN/
+  );
+
+  // 3. Sibling directory with common textual prefix rejected (e.g. repo-sibling)
+  const siblingPath = path.resolve(repoRoot + '-sibling', 'episodes.json');
+  assert.throws(
+    () => assertTrustedRegistryPath(siblingPath, repoRoot),
+    /UNTRUSTED_REGISTRY_PATH_FORBIDDEN/
+  );
+
+  // 4. Subdirectory with prefix that doesn't match path component boundary
+  const fakeSiblingPath = path.resolve(repoRoot + '_other', 'episodes.json');
+  assert.throws(
+    () => assertTrustedRegistryPath(fakeSiblingPath, repoRoot),
+    /UNTRUSTED_REGISTRY_PATH_FORBIDDEN/
+  );
+});
+
+test('Dollhouse N1-F05: Witness Verification Precedes Live Episode Reservation', () => {
+  const tempDir = path.resolve('.td613_temp_n1_f05_witness_order');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'ordered_episodes.json');
+  const witnessKeysFile = path.join(tempDir, 'witness_keys.json');
+
+  const witnessId = 'WITNESS-TEST-001';
+  const witnessKey = 'test-secret-key-at-least-32-chars-long!';
+  fs.writeFileSync(witnessKeysFile, JSON.stringify({ [witnessId]: witnessKey }, null, 2), 'utf8');
+
+  const testEpisodeId = `LIVE-EP-WITNESS-ORDER-${Date.now()}`;
+
+  try {
+    // 1. Calling live flight with invalid witness signature MUST FAIL
+    // AND must NOT record the episode in registryFile!
+    const badAttestationFile = path.join(tempDir, 'bad_attestation.json');
+    fs.writeFileSync(badAttestationFile, JSON.stringify({
+      witnessId,
+      scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+      episodeId: testEpisodeId,
+      signature: 'bad-signature-hex'
+    }), 'utf8');
+
+    const flightEnv = {
+      ...process.env,
+      TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED: 'true',
+      TD613_FLIGHT_EXECUTION_AUTHORIZED: 'true'
+    };
+
+    assert.throws(
+      () => {
+        execSync(
+          `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "fake/archive.zip" --operator-key "test-key" ` +
+          `--require-witness-tier --witness-keys-file "${witnessKeysFile}" --attested-witness-file "${badAttestationFile}" ` +
+          `--episode-id "${testEpisodeId}" --episode-registry-file "${registryFile}"`,
+          { encoding: 'utf8', stdio: 'pipe', env: flightEnv }
+        );
+      },
+      (err) => {
+        const out = (err.stdout || '') + (err.stderr || '');
+        return out.includes('PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID');
+      }
+    );
+
+    // Verify episode was NOT registered in registryFile
+    const registryAfterFailure = loadEpisodeRegistry(registryFile);
+    assert.equal(registryAfterFailure.episodes[testEpisodeId], undefined, 'Episode must NOT be registered after witness validation failure');
+
+    // 2. Retry with valid witness attestation: succeeds through witness verification!
+    // Create valid attestation for testEpisodeId
+    const validAttestation = createWitnessAttestation({
+      witnessId,
+      scope: 'EXPERIMENT_B_STAGE2_INDEPENDENT_EVALUATION',
+      targetArtifact: 'stage2_eval.json',
+      targetDigest: crypto.randomBytes(32).toString('hex'),
+      sourceRevision: 'HEAD',
+      timestamp: new Date().toISOString(),
+      evaluatorMetrics: { arm_parity: true },
+      claimsAssessed: ['CLAIMS_STAGE2_VERIFIED'],
+      verdict: 'PREFLIGHT_STAGE2_WITNESSED_PASS',
+      episodeId: testEpisodeId
+    }, witnessKey);
+
+    const validAttestationFile = path.join(tempDir, 'valid_attestation.json');
+    fs.writeFileSync(validAttestationFile, JSON.stringify(validAttestation, null, 2), 'utf8');
+
+    // Run with valid attestation and fake archive (it will proceed past witness verification to archive validation)
+    assert.throws(
+      () => {
+        execSync(
+          `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "fake/archive.zip" --operator-key "test-key" ` +
+          `--require-witness-tier --witness-keys-file "${witnessKeysFile}" --attested-witness-file "${validAttestationFile}" ` +
+          `--episode-id "${testEpisodeId}" --episode-registry-file "${registryFile}"`,
+          { encoding: 'utf8', stdio: 'pipe', env: flightEnv }
+        );
+      },
+      (err) => {
+        const out = (err.stdout || '') + (err.stderr || '');
+        // It failed because fake/archive.zip or grant doesn't exist, which is AFTER witness verification & episode registration!
+        return out.includes('ControlledArchiveIntake') || out.includes('ENOENT') || out.includes('ARCHIVE_NOT_FOUND') || out.includes('OPERATOR_FLIGHT_GRANT_REQUIRED');
+      }
+    );
+
+    // Now verify the episode WAS registered!
+    const registryAfterSuccess = loadEpisodeRegistry(registryFile);
+    assert.ok(registryAfterSuccess.episodes[testEpisodeId], 'Episode must be registered once witness verification passes');
+
+    // 3. Replay with the same episode ID now triggers EPISODE_REPLAY_FORBIDDEN
+    assert.throws(
+      () => {
+        execSync(
+          `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "fake/archive.zip" --operator-key "test-key" ` +
+          `--require-witness-tier --witness-keys-file "${witnessKeysFile}" --attested-witness-file "${validAttestationFile}" ` +
+          `--episode-id "${testEpisodeId}" --episode-registry-file "${registryFile}"`,
+          { encoding: 'utf8', stdio: 'pipe', env: flightEnv }
+        );
+      },
+      (err) => {
+        const out = (err.stdout || '') + (err.stderr || '');
+        return out.includes('EPISODE_REPLAY_FORBIDDEN');
+      }
+    );
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
   }
 });

@@ -100,8 +100,11 @@ A non-negotiable architectural requirement is that **Em must ultimately be able 
 
 1. **Paused Covenant Status:**
    - Convergence Covenant Revision 2 remains safely paused. Neither this record nor PR #1610 modifies the paused state.
-2. **Prospective Reconciliation:**
-   - Provisions COV-M5 (Unified Relational Ontology) and COV-M7 (Cross-Station Custody Handshake) will be re-evaluated post-Experiment B, informed by the empirical observations of the four-arm discovery flight.
+2. **Authoritative Milestone 7 Definition:**
+   - Authoritative Convergence Covenant Revision 2 explicitly defines Milestone 7 (COV-M7) as the **Dome-World independent playable ecology** (incorporating DomeBlox runtime, local persistent browser save, and non-punitive rest and exit semantics).
+   - This authoritative definition must not be conflated with earlier informal shorthand or conversational phrases such as "Cross-Station Custody Handshake" (which describes a transport relation rather than the playable ecological station itself).
+3. **Prospective Reconciliation:**
+   - Provisions COV-M5 (Unified Relational Ontology) and COV-M7 (Dome-World Independent Playable Ecology) will be re-evaluated post-Experiment B, informed by the empirical observations of the four-arm discovery flight and sovereign human closure.
 
 ---
 
