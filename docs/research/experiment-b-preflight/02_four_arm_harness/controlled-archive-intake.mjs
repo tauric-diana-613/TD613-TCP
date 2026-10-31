@@ -34,6 +34,29 @@ export function computeSha256(buf) {
   return crypto.createHash('sha256').update(b).digest('hex');
 }
 
+/* Only physically authorized ZIP intake can mint these private document identities.
+ * Synthetic fixtures and caller-provided receipt fields cannot enter this WeakMap. */
+const AUTHENTICATED_PHYSICAL_ARCHIVE_MEMBERS = new WeakMap();
+export function verifyAuthenticatedPhysicalArchiveMember(doc) {
+  if (!doc || typeof doc !== 'object') return false;
+  const bound = AUTHENTICATED_PHYSICAL_ARCHIVE_MEMBERS.get(doc);
+  if (!bound || !Buffer.isBuffer(doc.raw_bytes)) return false;
+  const contentSha = typeof doc.content === 'string' ? computeSha256(doc.content) : null;
+  return doc.id === bound.id && doc.filename === bound.filename &&
+    doc.sha256 === bound.sha256 && doc.bytes === bound.bytes &&
+    doc.is_binary === bound.is_binary && doc.derivative_status === bound.derivative_status &&
+    computeSha256(doc.raw_bytes) === bound.sha256 && contentSha === bound.content_sha256;
+}
+function bindAuthenticatedPhysicalArchiveMembers(documents) {
+  for (const doc of documents) {
+    AUTHENTICATED_PHYSICAL_ARCHIVE_MEMBERS.set(doc, Object.freeze({
+      id: doc.id, filename: doc.filename, sha256: doc.sha256, bytes: doc.bytes,
+      is_binary: doc.is_binary, derivative_status: doc.derivative_status,
+      content_sha256: typeof doc.content === 'string' ? computeSha256(doc.content) : null
+    }));
+  }
+}
+
 /**
  * Computes the canonical payload string for an operator flight grant.
  */
@@ -596,6 +619,9 @@ export class ControlledArchiveIntake {
       const manifestBuf = Buffer.from(
         JSON.stringify(admittedDocuments.map(d => ({ filename: d.filename, sha256: d.sha256, bytes: d.bytes })))
       );
+
+      // Mint only after verification of the operator grant and physical ZIP.
+      bindAuthenticatedPhysicalArchiveMembers(admittedDocuments);
 
       return {
         admission_id: admissionId,

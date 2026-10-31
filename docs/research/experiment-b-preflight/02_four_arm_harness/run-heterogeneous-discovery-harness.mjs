@@ -16,6 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { GeminiLiveClient, MODEL_PRICING } from './gemini-live-client.mjs';
+import { verifyAuthenticatedPhysicalArchiveMember } from './controlled-archive-intake.mjs';
 
 const DEFAULT_REPO_ROOT = path.resolve('.');
 
@@ -775,29 +776,18 @@ export class HeterogeneousDiscoveryHarness {
         }
       }
 
-      // Ingress Ancestry & Provenance Authentication (Redpen XIII-R2 R2-B):
-      // In PROTECTED mode, caller cannot submit unauthenticated text or buffers with caller-computed SHA-256
-      // without an authorized physical source file, an authenticated admission receipt ancestor, or an authenticated derivative lineage.
+      // Protected ingress requires a private intake capability or an authorized physical path.
+      // Caller-supplied flags, receipt hashes, and derivative labels carry zero authority.
       if (isProtected) {
         const hasPhysicalSource = Boolean(doc.filePath && typeof doc.filePath === 'string');
-        const hasAdmittedReceiptAncestor = Boolean(
-          (doc.admission_receipt_sha256 && typeof doc.admission_receipt_sha256 === 'string') ||
-          (doc.source_admission_contract && typeof doc.source_admission_contract === 'string') ||
-          (doc.archive_intake_verified === true) ||
-          (doc.author_provenance === 'Authentic Admitted ZIP Archive Member')
-        );
-        const hasAuthenticatedDerivativeAncestry = Boolean(
-          isDerivative && doc.parent_raw_sha256
-        );
-
-        if (!hasPhysicalSource && !hasAdmittedReceiptAncestor && !hasAuthenticatedDerivativeAncestry) {
+        if (!hasPhysicalSource && !verifyAuthenticatedPhysicalArchiveMember(doc)) {
           throw new Error(
-            `PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED: Document '${doc.filename}' submitted as PROTECTED without verified physical source (filePath), authenticated admission receipt ancestor, or verified derivative parent lineage. Caller-computed digest alone cannot establish trusted provenance.`
+            `PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED: Document '${doc.filename}' lacks verified physical intake identity or a source path requiring arm authorization.`
           );
         }
       }
 
-      // TOCTOU check & Physical Source Custody Enforcement (Redpen XIII-R1)
+            // TOCTOU check & Physical Source Custody Enforcement (Redpen XIII-R1)
       const claimsPhysicalSource = Boolean(doc.filePath || doc.claimsPhysicalFile || doc.physical_source || (isProtected && doc.claimsPhysicalSource));
       if (claimsPhysicalSource || doc.filePath) {
         if (!doc.filePath || typeof doc.filePath !== 'string') {
@@ -831,6 +821,16 @@ export class HeterogeneousDiscoveryHarness {
           throw new Error(
             `SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE: Document '${doc.filename}' changed on disk (current ${diskSha}) compared to authorized admission digest (${calculatedSha}) before prompt construction. Ingestion rejected fail-closed.`
           );
+        }
+
+        // PROTECTED direct-file ingestion requires the arm's positive source allowlist.
+        if (isProtected) {
+          const sourceAuth = assertArmSourceAccessPermitted(this.arm, canonicalPath, {
+            requireExisting: true, requireByteBinding: true
+          });
+          if (!sourceAuth.byteBindingDigest || sourceAuth.byteBindingDigest !== diskSha) {
+            throw new Error('PROTECTED_SOURCE_AUTHORIZATION_DIGEST_MISMATCH: Authorized physical bytes changed before exposure.');
+          }
         }
 
         // Revalidate and stage the exact bytes from disk for model exposure

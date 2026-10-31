@@ -2705,22 +2705,17 @@ test('Redpen XIII-R1: Physical Byte & TOCTOU Enforcement (R1-C)', async () => {
       /SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE/
     );
 
-    // Positive Control: Valid disk file with matching SHA stages exact disk bytes and records lengths
-    fs.writeFileSync(tempFile, initialBytes); // Restore valid bytes
-    const turn = await harness.ingestSequentialDocument(
-      {
-        id: 'DOC-VALID-01',
-        filename: 'physical_specimen.md',
-        filePath: tempFile,
-        content: initialBytes.toString('utf8'),
-        sha256: initialSha,
-        mockResponse: 'CHAMBER 2 DESCENT [DOC-VALID-01]:\nPROPOSITION: Verified invariant matches physical byte span.'
-      },
-      1
-    );
-
-    assert.equal(turn.consumed_bytes_sha256, initialSha);
-    assert.equal(turn.model_exposed_bytes_length, initialBytes.length);
+    // Positive protected direct-file control: both source allowlist and digest bind.
+    const allowlisted = path.resolve('docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json');
+    const allowedBytes = fs.readFileSync(allowlisted);
+    const allowedSha = crypto.createHash('sha256').update(allowedBytes).digest('hex');
+    const turn = await harness.ingestSequentialDocument({
+      id: 'DOC-VALID-01', filename: 'c1_damped_harmonic_oscillator.json',
+      filePath: allowlisted, content: allowedBytes.toString('utf8'), sha256: allowedSha,
+      mockResponse: 'CHAMBER 2 DESCENT [DOC-VALID-01]:\nPROPOSITION: Verified byte span.'
+    }, 1);
+    assert.equal(turn.consumed_bytes_sha256, allowedSha);
+    assert.equal(turn.model_exposed_bytes_length, allowedBytes.length);
   } finally {
     try {
       if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
@@ -3000,17 +2995,77 @@ test('Redpen XIII-R2: Protected Tool Executor and Document Ancestry Invariants (
     /PROTECTED_DERIVATIVE_LINEAGE_MANDATORY/
   );
 
-  // Positive Control R2-B5: Fully authenticated in-memory path with admission receipt ancestor -> PERMITTED
-  const admittedDoc = {
-    id: 'DOC-ADMITTED-01',
-    filename: 'admitted_specimen.md',
-    content: callerText,
-    sha256: callerSha,
-    admission_receipt_sha256: 'a'.repeat(64),
-    archive_intake_verified: true,
-    mockResponse: 'CHAMBER 2 DESCENT [DOC-ADMITTED-01]:\nPROPOSITION: Authenticated in-memory buffer accepted.'
-  };
-  const turn = await harness.ingestSequentialDocument(admittedDoc, 1);
-  assert.equal(turn.consumed_bytes_sha256, callerSha);
-  assert.equal(turn.model_exposed_bytes_length, Buffer.from(callerText, 'utf8').length);
+  // Negative R2-B5: self-asserted admission flag, provenance and receipt digest.
+  await assert.rejects(
+    () => harness.ingestSequentialDocument({
+      id: 'DOC-FORGED', filename: 'forged.md', content: callerText,
+      sha256: callerSha, archive_intake_verified: true,
+      admission_receipt_sha256: 'a'.repeat(64),
+      author_provenance: 'Authentic Admitted ZIP Archive Member'
+    }, 1),
+    /PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED/
+  );
+
+  // Negative R2-B6: an arbitrary on-disk document outside this arm's allowlist.
+  const unlistedPath = path.resolve('.td613_temp_r2_unlisted.md');
+  fs.writeFileSync(unlistedPath, callerText);
+  try {
+    await assert.rejects(
+      () => harness.ingestSequentialDocument({
+        id: 'DOC-UNLISTED', filename: 'unlisted.md', filePath: unlistedPath,
+        content: callerText, sha256: callerSha
+      }, 1),
+      /UNLISTED_SOURCE_FILE_REFUSED/
+    );
+  } finally { fs.rmSync(unlistedPath, { force: true }); }
+
+  // Positive R2-B7: source-free test with a local signed physical ZIP fixture.
+  // No protected external archive or paid inference is accessed.
+  const zipPath = path.resolve('.td613_temp_r2_signed_fixture.zip');
+  const zipBytes = createSyntheticZipArchive([{ name: 'admitted_specimen.md', data: callerText }]);
+  const issuerId = 'R2_LOCAL_TEST_ISSUER', key = 'R2_LOCAL_TEST_SECRET_ONLY';
+  const previousArchiveGrant = process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED;
+  const previousFlightGrant = process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED;
+  fs.writeFileSync(zipPath, zipBytes);
+  try {
+    const grant = createOperatorFlightGrant({
+      archivePath: zipPath,
+      archiveSha256: crypto.createHash('sha256').update(zipBytes).digest('hex'),
+      permittedOperation: 'EXPERIMENT_B_FLIGHT_ARCHIVE_ADMISSION',
+      episodeId: 'R2_SOURCE_FREE_LOCAL_TEST',
+      issuerId
+    }, key);
+    process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED = 'true';
+    process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED = 'true';
+    const intake = new ControlledArchiveIntake({
+      syntheticMode: false, allowProtectedAdmission: true,
+      trustedOperatorKeys: { [issuerId]: key }
+    });
+    const receipt = intake.admitArchive(zipPath, { operatorFlightGrant: grant });
+    const doc = receipt.documents[0];
+    doc.mockResponse = 'CHAMBER 2 DESCENT [DOC-ZIP-01]:\nPROPOSITION: Verified admission.';
+    const turn = await harness.ingestSequentialDocument(doc, 1);
+    assert.equal(turn.consumed_bytes_sha256, callerSha);
+    assert.equal(turn.model_exposed_bytes_length, Buffer.from(callerText).length);
+
+    // A cloned descriptor with identical digests cannot borrow admission ancestry.
+    const clone = { ...doc, raw_bytes: Buffer.from(doc.raw_bytes) };
+    await assert.rejects(
+      () => harness.ingestSequentialDocument(clone, 2),
+      /PROTECTED_UNAUTHENTICATED_INGESTION_REFUSED/
+    );
+    // In-place mutation after admission must also be rejected.
+    doc.content = 'mutated after admission';
+    doc.raw_bytes = Buffer.from(doc.content);
+    await assert.rejects(
+      () => harness.ingestSequentialDocument(doc, 2),
+      /DOCUMENT_INGESTION_INTEGRITY_MISMATCH/
+    );
+  } finally {
+    if (previousArchiveGrant === undefined) delete process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED;
+    else process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED = previousArchiveGrant;
+    if (previousFlightGrant === undefined) delete process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED;
+    else process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED = previousFlightGrant;
+    fs.rmSync(zipPath, { force: true });
+  }
 });
