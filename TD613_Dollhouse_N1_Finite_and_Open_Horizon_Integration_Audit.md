@@ -94,6 +94,14 @@ The actual repository Dollhouse engine was executed using `scripts/run-dollhouse
 - **Replication Discipline:** Shared acquisition on a single receipt adds **zero** independent empirical replication (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
 - **Attribution Distinction:** Amari's prior ChatGPT analytical review is formally cataloged as `EXTERNAL_SOURCE_BASED_DOLLHOUSE_METHOD_REVIEW`. The receipt generated herein represents the **actual executed native repository Dollhouse audit**.
 
+#### Consensus vs Specialist Inner Hold Phenomenon (Redpen XI / N1 Qualification)
+In the predecessor execution (`ad403235...`), the Orchestrator reported `UNANIMOUS_SUPPORT` at the top level while its Atlas extension held internally on `relation_identity: 'HELD_INVALID_DECLARATION'`. That occurred because strings (`["ARM_2A_MODULAR", "ARM_2B_MATCHED_UNION"]`) were passed instead of Delannoy path member objects `{ a, b, s, path }`. 
+
+This empirical finding validates an essential architectural principle of the Dollhouse:
+1. **Uncollapsed Specialist Senses:** The Orchestrator's top-level verdict summarizes high-level specialist agreement, but inner domain holds remain uncollapsed and independently inspectable. Agreement at the top level never erases or overrules an internal specialist hold.
+2. **Valid Member Qualification:** When valid Delannoy path members (`{ a: 2, b: 2, s: 1, path: ["D", "E", "N"] }`) are supplied to the relation specification, the Atlas relation identity resolves directly to `EXACT_IDENTITY` (`held: false`, `concrete_paths_preserved: true`).
+3. **Evidence Class Segregation:** Synthetic test fixture audits, historical commit reviews, and live exact-head certifications remain strictly distinct evidence classes.
+
 ---
 
 ## 3. F01–F07 Finite Negative-Test Matrix
@@ -112,7 +120,7 @@ All 31 automated tests in `tests/test-flight-launchbridge.test.mjs` pass cleanly
 
 | Test Case | Adversarial Attack / Vulnerability Tested | Defensive Repair Implemented | Verified Execution Outcome |
 |---|---|---|---|
-| **N1-F01: Canonical Source Membership & Byte-Binding** | Allowlisted symlink pathname resolving to an unlisted target file (`symlink_pointing_to_unlisted.md` $\to$ `unlisted_real_source.md`). | `assertArmSourceAccessPermitted` updated to require **BOTH** declared pathname **AND** canonical `realpathSync()` target to be independently authorized in allowlist. Authorized files return `byteSize` and SHA-256 `byteBindingDigest`. | `CANONICAL_TARGET_AUTHORIZATION_VERIFIED`<br>Symlink target attack threw `UNLISTED_SOURCE_FILE_REFUSED`. Byte-binding confirmed. |
+| **N1-F01: Canonical Source Membership & Byte-Binding** | 1. **Allowlisted Symlink to Unlisted Target:** Allowlisted declared path (`c1_damped_mechanical_oscillator.md`) symlinked to unlisted file (`unlisted_real_source.md`).<br>2. **Missing File Gap:** Path allowed on allowlist but missing on disk.<br>3. **Downstream Ingestion Tampering:** Consuming tool or document stream returning bytes that diverge from authorized hash. | 1. `assertArmSourceAccessPermitted` verifies **BOTH** declared path **AND** canonical `realpathSync()` target against allowlist. Declared allowlist match alone is insufficient; canonical target check fails closed (`UNLISTED_SOURCE_FILE_REFUSED`).<br>2. If file is missing or unreadable when byte-binding is required (`requireExisting: true`), fails closed (`SOURCE_FILE_NOT_FOUND_REFUSED`) rather than returning a null digest.<br>3. `executeAuditedToolCall` verifies ingested bytes match `byteBindingDigest` (`BYTE_BINDING_INTEGRITY_MISMATCH`). `ingestSequentialDocument` verifies doc bytes match `sha256` (`DOCUMENT_INGESTION_INTEGRITY_MISMATCH`). | `CANONICAL_TARGET_AUTHORIZATION_VERIFIED`<br>Symlink target attack threw `UNLISTED_SOURCE_FILE_REFUSED`.<br>Missing file threw `SOURCE_FILE_NOT_FOUND_REFUSED`.<br>Byte-tampering threw `BYTE_BINDING_INTEGRITY_MISMATCH` & `DOCUMENT_INGESTION_INTEGRITY_MISMATCH`. |
 | **N1-F02: Cross-Process Episode Contention** | 4 independent operating system processes (`child_process.spawn`) concurrently registering distinct vs identical episode IDs. | Atomic atomic lockfile protocol with cross-process serialization. Distinct registrations succeed losslessly (all 4 recorded). Identical ID race permits exactly 1 registration and rejects 3. | `INDEPENDENT_PROCESS_CONTENTION_VERIFIED`<br>4 distinct PIDs registered losslessly. Duplicate attempt threw `EPISODE_REPLAY_FORBIDDEN`. |
 | **N1-F03: Lock Ownership & Liveness Protection** | Stale eviction stealing lock from active long-running process; older process deleting newer lock upon late release. | Lockfile writes `{ token, pid, acquiredAt }`. Stale eviction tests `process.kill(pid, 0)`: live owners are **NEVER** evicted. Release requires matching `lockToken`, preventing stale owners from unlinking newer locks. | `LOCK_OWNERSHIP_AND_STALE_RECOVERY_VERIFIED`<br>Live process retained lock past 10s. Dead PID evicted safely. Mismatched token release refused. |
 | **N1-F04: Workspace Confinement** | Traversal escapes (`..`), symlinked parent directory escapes, and sibling directory prefix attacks (e.g. `tcp-repository-sibling`). | `assertTrustedRegistryPath` rewritten with path-component-aware prefix verification (`resolvedRoot + path.sep`), relative traversal checks, and canonical realpath confinement. | `TRUSTED_WORKSPACE_CONFINEMENT_VERIFIED`<br>Sibling directory rejected fail-closed with `REGISTRY_PATH_OUTSIDE_WORKSPACE_REFUSED`. |
@@ -233,7 +241,7 @@ In accordance with Section VI, an open-horizon exploration was conducted across 
 ### W1 — Portable Warrant
 *What can survive the transfer of a research estate when source bytes remain identical but computational tools, models, or assumptions change?*
 - **Supported Source-Based Finding:** Bit-exact byte preservation (SHA-256) survives transport; execution behavior does not unless runtime dependencies (Node, Python, libraries) and floating-point rounding semantics are pinned.
-- **Formal Counterexample:** In `app/engine/atlas-mathematical-engine.js`, continuous SVD uses iterative Jacobi rotations. Under different architectures (e.g. ARM vs x86-64), minor floating-point divergence ($10^{-16}$) alters the least-significant eigenvectors of near-degenerate subspaces, changing nominal basis vectors while preserving the subspace projector.
+- **Proposed Future Hypothesis & Experiment:** CPU architecture divergence (e.g. ARM vs x86-64 floating-point Jacobi rotation rounding altering nominal basis vectors of near-degenerate subspaces, while preserving the projector) is a plausible proposed hypothesis to be tested under multi-platform CI, rather than an empirically measured cross-platform divergence in this local Windows test run.
 - **Remaining Independent Witness Requirement:** A portable execution receipt requires bit-identical input digests AND verifiable containerized environment manifests.
 
 ### W2 — Delegated Authorization
@@ -246,7 +254,7 @@ In accordance with Section VI, an open-horizon exploration was conducted across 
 *Could source-invariant projection changes generate legitimate new relations without silently modifying archival evidence or theory editions?*
 - **Supported Source-Based Finding:** In the finite Cupola model, rotating the observation projection ($q \to qH$) partitions states differently without altering underlying states ($x, z$).
 - **Reconstructable Inference:** Situated ambiance (lighting, layout, emphasis) highlights different relations in an archival corpus without modifying text bytes.
-- **Unidentifiable Outcome:** Disentangling whether a user perceived an isomorphism because of structural evidence versus suggestive ambient styling is unidentifiable without a blinded ablation control (RCA-01).
+- **Unidentifiable Outcome:** Disentangling whether a user perceived an isomorphism because of structural evidence versus suggestive ambient styling is unidentifiable without a blinded ablation control (RCA-01). The Cupola–ambiance–Flow-Core question merits its own separate prospective experiment, strictly independent of Experiment B's frozen generation and scoring protocol.
 
 ### W4 — Computational Art
 *Which aspects of a theory-derived image are reproducible mathematical structures and which remain creative interpretation?*
@@ -257,25 +265,27 @@ In accordance with Section VI, an open-horizon exploration was conducted across 
 *Can the research estate reject TD613's proposed synthesis, preserve dissent, and continue under independently chosen tools?*
 - **Supported Source-Based Finding:** `MANIFEST_RESEARCH_SUCCESSION_RECORD.md` § V explicitly guarantees Em's local autonomous operation. Admittance into TD613 requires no surrender of sovereign private files.
 - **Formal Counterexample:** If the data model requires a proprietary server (e.g. Neon PostgreSQL with Vercel OIDC) to read historical state, owner independence is compromised.
-- **Proposed Future Experiment:** Export an entire research estate to an inert offline folder and execute full local retrieval and verification using standard open-source tools with zero network access.
+- **Proposed Future Experiment:** A network-disconnected offline export and local reconstruction test remains required to prove operational realization of owner independence: export an entire research estate to an inert offline folder and execute full local retrieval and verification using standard open-source tools with zero network access.
 
 ### W6 — Exteriority Boundary
 *Which claims remain observationally indistinguishable between a genuine external acquisition and a byte-identical internally generated record?*
 - **Supported Source-Based Finding:** An offline receipt with cryptographic signatures matching known keys can be created entirely in synthetic tests. Internal consistency cannot prove external origin.
-- **Unidentifiable Outcome:** A byte-identical file presented without verifiable outside network or physical hardware attestations cannot be mathematically distinguished from an internally fabricated fixture.
-- **Remaining Independent Witness Requirement:** Gate E exteriority requires independent cryptographic timestamps (e.g. RFC 3161 TSA or public ledger attestation) signed by an uncoordinated third party.
+- **Formal Epistemic Boundary (Amari Redpen XI Correction):** Trusted timestamps (e.g. RFC 3161 TSA, public blockchain ledgers) establish temporal non-retroactivity—proving that a data record existed no later than time $T$. However, timestamps alone do NOT prove physical external or exogenous origin; even perfectly timestamped fabricated evidence remains fabricated. Western Horizon's exogenous-witness condition survives intact as an irreducible condition for Gate E exteriority.
+- **Remaining Independent Witness Requirement:** Gate E exteriority requires independent cryptographic timestamps AND an uncoordinated external physical observer/witness attestation that cannot be simulated from inside the repository boundary.
 
 ### W7 — Test-Oracle Blindness
 *Which classes of unauthorized source access, tool execution, or partial episode reuse could survive the existing finite test suite?*
 - **Supported Source-Based Finding:** N1-F01 caught symlink target aliasing; N1-F04 caught sibling path prefix collision; N1-F05 caught premature episode reservation.
-- **Formal Counterexample:** Time-of-check to time-of-use (TOCTOU) file replacement. An allowed file is authorized; an adversary immediately replaces it with an unlisted file before `fs.readFileSync` opens it.
-- **Defensive Repair:** `assertArmSourceAccessPermitted` binds authorized source identity to the bytes actually opened, calculating `byteBindingDigest` from the read stream.
+- **Identified Oracle Blindness Classes:**
+  1. *Allowlisted Declared Path to Unlisted Target:* Merely checking whether a declared pathname is on an allowlist allows symlink evasion to unauthorized targets. Repaired in N1-F01 by checking both declared and canonical target paths.
+  2. *Helper Digest vs Downstream Consumed Bytes:* A permission helper returning `permitted: true` with a null digest allows unverified reads. Repaired in N1-F01 by failing closed on missing/unreadable files and verifying byte digests upon downstream tool return and document ingestion.
+- **Defensive Repair:** `assertArmSourceAccessPermitted` binds authorized source identity to the bytes actually opened, calculating `byteBindingDigest` from the read stream and rejecting mismatched downstream bytes fail-closed.
 
 ### W8 — Institutional Time
 *Could an interface, archival transformation, or automated synthesis make later reconstructed knowledge appear to have been available to an earlier observer?*
 - **Supported Source-Based Finding:** Appending later repair results to the end of a dossier while keeping older headings active created temporal ambiguity.
 - **Formal Counterexample:** A report dated October 28 containing commit SHAs generated on October 30 falsely implies retroactive foreknowledge.
-- **Defensive Repair:** Strict supersession headers and monotonic timestamping enforced by Temporal Custodian invariants.
+- **Defensive Repair & Prospective Limitation:** Strict supersession headers and monotonic timestamping enforced by Temporal Custodian invariants protect non-retroactivity, but universal automated institutional time enforcement across all repository artifacts remains prospective.
 
 ---
 

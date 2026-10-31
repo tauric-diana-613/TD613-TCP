@@ -1711,24 +1711,22 @@ test('Redpen X-B: Exact Specimen Manifest, Arm Parity & Concurrent Registry Lock
   }
 });
 
-test('Dollhouse N1-F01: Canonical Target Authorization & Byte-Binding Sieve', () => {
+test('Dollhouse N1-F01: Canonical Target Authorization & Byte-Binding Sieve', async () => {
   const tempFixtureDir = path.resolve('.td613_temp_n1_f01_fixture');
   if (!fs.existsSync(tempFixtureDir)) fs.mkdirSync(tempFixtureDir, { recursive: true });
 
   const unlistedTargetFile = path.join(tempFixtureDir, 'unlisted_real_source.md');
   fs.writeFileSync(unlistedTargetFile, '# Unlisted Source Content\nSecret data.', 'utf8');
 
-  // Create a symlink named like an allowed file or inside allowed tree pointing to unlisted target
-  const symlinkPath = path.join(tempFixtureDir, 'symlink_pointing_to_unlisted.md');
-  try { if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath); } catch (_) {}
-
-  let symlinkCreated = false;
+  // Case B: Create symlink using an EXACT ALLOWLISTED PATHNAME pointing to unlisted target!
+  // 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md' is in EXACT_POSITIVE_SPECIMEN_ALLOWLIST.
+  const allowlistedSymlinkPath = path.resolve('docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md');
+  let allowlistedSymlinkCreated = false;
   try {
-    fs.symlinkSync(unlistedTargetFile, symlinkPath, 'file');
-    symlinkCreated = true;
-  } catch (_) {
-    // Windows non-admin symlink fallback if unprivileged
-  }
+    if (fs.existsSync(allowlistedSymlinkPath)) fs.unlinkSync(allowlistedSymlinkPath);
+    fs.symlinkSync(unlistedTargetFile, allowlistedSymlinkPath, 'file');
+    allowlistedSymlinkCreated = true;
+  } catch (_) {}
 
   try {
     // 1. Direct unlisted source file is rejected fail-closed for candidate arms
@@ -1737,24 +1735,61 @@ test('Dollhouse N1-F01: Canonical Target Authorization & Byte-Binding Sieve', ()
       /UNLISTED_SOURCE_FILE_REFUSED/
     );
 
-    // 2. If symlink exists: accessing symlink whose canonical target is unlisted MUST fail closed
-    if (symlinkCreated) {
+    // 2. Allowlisted declared pathname resolving to an unlisted target via symlink MUST FAIL CLOSED!
+    // This directly proves that allowlist membership of the declared path alone is insufficient:
+    // canonical target check catches and rejects the unlisted target (Amari Redpen XI).
+    if (allowlistedSymlinkCreated) {
       assert.throws(
-        () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', symlinkPath),
+        () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md'),
         /UNLISTED_SOURCE_FILE_REFUSED/
       );
     }
 
-    // 3. Authorized file passes and returns canonical path, byteSize, byteBindingDigest, and CANONICAL_TARGET_AUTHORIZATION_VERIFIED
+    // 3. Missing/unavailable file with requireExisting: true fails closed (no null digest permitted)
+    assert.throws(
+      () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c2_logistic_differential_growth.md', { requireExisting: true }),
+      /SOURCE_FILE_NOT_FOUND_REFUSED/
+    );
+
+    // 4. Authorized existing file passes and returns canonical path, byteSize, byteBindingDigest, and CANONICAL_TARGET_AUTHORIZATION_VERIFIED
     const validSpecimen = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json';
-    const access = assertArmSourceAccessPermitted('ARM_2A_MODULAR', validSpecimen);
+    const access = assertArmSourceAccessPermitted('ARM_2A_MODULAR', validSpecimen, { requireByteBinding: true });
     assert.equal(access.permitted, true);
     assert.equal(access.disposition, 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED');
     assert.ok(access.byteSize > 0);
     assert.ok(typeof access.byteBindingDigest === 'string' && access.byteBindingDigest.length === 64);
+
+    // 5. Downstream Ingestion & Tool Byte-Binding Verification (Redpen XI)
+    const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', dryRun: true });
+
+    // 5A: Audited tool execution reads authentic bytes and verifies matching SHA-256 digest
+    const toolCall = await harness.executeAuditedToolCall('read_file', { Path: validSpecimen });
+    assert.equal(toolCall.status, 'PERMITTED');
+    assert.equal(toolCall.byteBindingDigest, access.byteBindingDigest);
+
+    // 5B: Downstream tool execution fails closed if returned bytes do not match verified digest (tampering sieve)
+    await assert.rejects(
+      async () => {
+        await harness.executeAuditedToolCall('read_file', { Path: validSpecimen, verifyExecutorDigest: true }, async () => 'MODIFIED_BYTES_THAT_DO_NOT_MATCH_DIGEST');
+      },
+      /BYTE_BINDING_INTEGRITY_MISMATCH/
+    );
+
+    // 5C: Sequential document ingestion strictly validates admitted document digest
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument({
+          id: 'TAMPERED-DOC-01',
+          filename: 'tampered.json',
+          content: 'Real content',
+          sha256: '0000000000000000000000000000000000000000000000000000000000000000' // Wrong SHA!
+        }, 1);
+      },
+      /DOCUMENT_INGESTION_INTEGRITY_MISMATCH/
+    );
   } finally {
     try {
-      if (fs.existsSync(symlinkPath)) fs.unlinkSync(symlinkPath);
+      if (allowlistedSymlinkCreated && fs.existsSync(allowlistedSymlinkPath)) fs.unlinkSync(allowlistedSymlinkPath);
       if (fs.existsSync(unlistedTargetFile)) fs.unlinkSync(unlistedTargetFile);
       if (fs.existsSync(tempFixtureDir)) fs.rmSync(tempFixtureDir, { recursive: true, force: true });
     } catch (_) {}

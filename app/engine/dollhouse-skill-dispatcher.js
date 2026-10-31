@@ -623,7 +623,10 @@ function executeSpecialistExtensions(role, domainInput, options) {
           ext.holonomy_parity = auditAtlasHolonomyHistoryParity(domainInput.trajectoryA, domainInput.trajectoryB);
         }
         if (domainInput.relation_entry) {
-          ext.relation_identity = classifyAtlasRelationIdentity(domainInput.relation_entry);
+          const entry = domainInput.relation_entry;
+          const left = entry.left || (Array.isArray(entry.members) ? entry.members[0] : entry);
+          const right = entry.right || (Array.isArray(entry.members) ? entry.members[1] : undefined);
+          ext.relation_identity = classifyAtlasRelationIdentity(left, right);
         }
         const prev = domainInput.previous || domainInput.phason_diff?.previous;
         const curr = domainInput.current || domainInput.phason_diff?.current;

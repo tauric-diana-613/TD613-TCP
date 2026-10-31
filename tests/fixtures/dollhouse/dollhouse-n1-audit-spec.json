@@ -47,7 +47,22 @@
       },
       "relation_entry": {
         "relation_class": "RECEIVER_INVARIANT",
-        "members": ["ARM_2A_MODULAR", "ARM_2B_MATCHED_UNION"],
+        "left": {
+          "a": 2,
+          "b": 2,
+          "s": 1,
+          "path": ["D", "E", "N"]
+        },
+        "right": {
+          "a": 2,
+          "b": 2,
+          "s": 1,
+          "path": ["D", "E", "N"]
+        },
+        "members": [
+          { "a": 2, "b": 2, "s": 1, "path": ["D", "E", "N"] },
+          { "a": 2, "b": 2, "s": 1, "path": ["D", "E", "N"] }
+        ],
         "source_receiver": "EXPERIMENT_B_FOUR_ARM_HARNESS"
       }
     },

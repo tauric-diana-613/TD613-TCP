@@ -234,16 +234,29 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     );
   }
 
-  // Bind authorized source identity to the bytes actually opened (N1-F01)
+  // Bind authorized source identity to the bytes actually opened (N1-F01, Redpen XI)
   let byteSize = null;
   let byteBindingDigest = null;
+  let disposition = 'CANONICAL_TARGET_PATH_ONLY_UNBOUND';
+
   if (fs.existsSync(realTarget)) {
     try {
       const stats = fs.statSync(realTarget);
       byteSize = stats.size;
       const fileBytes = fs.readFileSync(realTarget);
       byteBindingDigest = crypto.createHash('sha256').update(fileBytes).digest('hex');
-    } catch (_) {}
+      disposition = 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED';
+    } catch (err) {
+      if (options.requireExisting || options.requireByteBinding) {
+        throw new Error(
+          `SOURCE_FILE_UNREADABLE_REFUSED: Failed to read authorized target path "${normPath}" (canonical "${realRelativeNorm}"): ${err.message}. Byte binding failed fail-closed.`
+        );
+      }
+    }
+  } else if (options.requireExisting || options.requireByteBinding) {
+    throw new Error(
+      `SOURCE_FILE_NOT_FOUND_REFUSED: Target path "${normPath}" (canonical "${realRelativeNorm}") does not exist on disk. Byte binding cannot be verified fail-closed.`
+    );
   }
 
   return {
@@ -253,7 +266,7 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     canonicalPath: realTarget,
     byteSize,
     byteBindingDigest,
-    disposition: 'CANONICAL_TARGET_AUTHORIZATION_VERIFIED'
+    disposition
   };
 }
 
@@ -397,7 +410,7 @@ export class HeterogeneousDiscoveryHarness {
   }
 
   // Audits runtime tool access to enforce real source-path allowlists (Redpen VII-B B7-02 & Redpen VIII-B)
-  auditToolExecution(toolName, params = {}) {
+  auditToolExecution(toolName, params = {}, options = {}) {
     if (toolName === 'run_command') {
       const cmd = params.CommandLine || params.command || '';
       for (const pattern of FORBIDDEN_ACCESS_PARITY_PATTERNS) {
@@ -418,7 +431,7 @@ export class HeterogeneousDiscoveryHarness {
 
     if (toolName === 'read_file') {
       const filePath = params.Path || params.path || '';
-      return assertArmSourceAccessPermitted(this.arm, filePath);
+      return assertArmSourceAccessPermitted(this.arm, filePath, options);
     }
     return { permitted: true, arm: this.arm, toolName };
   }
@@ -426,6 +439,7 @@ export class HeterogeneousDiscoveryHarness {
   /**
    * Mediates and audits tool execution for discovery agents (Redpen VIII-B).
    * Validates tool identity and source path against audited allowlists before invocation.
+   * Strictly binds downstream ingested bytes to the authorized byte-binding digest (Redpen XI).
    */
   async executeAuditedToolCall(toolName, params = {}, executorFn = null) {
     const callRecord = {
@@ -437,17 +451,42 @@ export class HeterogeneousDiscoveryHarness {
     };
 
     try {
-      this.auditToolExecution(toolName, params);
+      const isDirectRead = typeof executorFn !== 'function';
+      const auth = this.auditToolExecution(toolName, params, {
+        requireByteBinding: isDirectRead || params.requireByteBinding === true,
+        requireExisting: isDirectRead || params.requireExisting === true
+      });
       callRecord.status = 'PERMITTED';
 
       let result = null;
       if (typeof executorFn === 'function') {
         result = await executorFn(params);
         callRecord.output_preview = typeof result === 'string' ? result.slice(0, 200) : 'OBJECT_OUTPUT';
+        if (toolName === 'read_file' && auth && auth.byteBindingDigest && params.verifyExecutorDigest === true) {
+          const resultBytes = Buffer.isBuffer(result) ? result : Buffer.from(typeof result === 'string' ? result : JSON.stringify(result), 'utf8');
+          const actualDigest = crypto.createHash('sha256').update(resultBytes).digest('hex');
+          if (actualDigest !== auth.byteBindingDigest) {
+            throw new Error(
+              `BYTE_BINDING_INTEGRITY_MISMATCH: Ingested bytes for "${auth.targetPath}" (digest ${actualDigest}) do not match authorized digest (${auth.byteBindingDigest}). File replacement detected fail-closed.`
+            );
+          }
+          callRecord.byteBindingDigest = actualDigest;
+        }
+      } else if (toolName === 'read_file') {
+        const rawBytes = fs.readFileSync(auth.canonicalPath);
+        const actualDigest = crypto.createHash('sha256').update(rawBytes).digest('hex');
+        if (actualDigest !== auth.byteBindingDigest) {
+          throw new Error(
+            `BYTE_BINDING_INTEGRITY_MISMATCH: Ingested bytes for "${auth.targetPath}" (digest ${actualDigest}) do not match authorized digest (${auth.byteBindingDigest}). File replacement detected fail-closed.`
+          );
+        }
+        result = rawBytes.toString('utf8');
+        callRecord.output_preview = result.slice(0, 200);
+        callRecord.byteBindingDigest = actualDigest;
       }
 
       this.toolAuditLog.push(callRecord);
-      return { status: 'PERMITTED', tool: toolName, result };
+      return { status: 'PERMITTED', tool: toolName, result, byteBindingDigest: auth?.byteBindingDigest };
     } catch (err) {
       callRecord.status = 'REFUSED';
       callRecord.error = err.message;
@@ -602,6 +641,17 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex) {
+    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI)
+    if (doc && (doc.raw_bytes || doc.content)) {
+      const docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
+      const calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
+      if (doc.sha256 && calculatedSha.toLowerCase() !== doc.sha256.toLowerCase()) {
+        throw new Error(
+          `DOCUMENT_INGESTION_INTEGRITY_MISMATCH: Admitted document '${doc.filename}' payload digest (${calculatedSha}) does not match admission digest (${doc.sha256}). Ingestion rejected fail-closed.`
+        );
+      }
+    }
+
     const previousHistorySummary = this.formatHistoryForTurn(turnIndex);
     const episodeId = `Flight-${this.arm}-t${turnIndex}-${doc.id}`;
 
