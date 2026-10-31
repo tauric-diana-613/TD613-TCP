@@ -1,13 +1,13 @@
 # 𝌋 TD613 Dollhouse Scientific Audit Receipt
 
-**Invocation ID:** `dollhouse-audit-1793424859586-b337e9ec`  
+**Invocation ID:** `dollhouse-audit-1793468430336-c3c80504`  
 **Schema:** `td613.dollhouse.skill-audit-receipt/v1.0`  
-**Timestamp:** 2026-10-31T05:35:38.000Z  
-**Target Revision:** `f8114a4f8ca138a4bdb861c4e849594213ff5030`  
-**Task Scope:** `DOLLHOUSE_N1_SCIENTIFIC_AUDIT`  
+**Timestamp:** 2026-10-31T17:40:30.336Z  
+**Target Revision:** `6159385c58ea9c2e1ac99e8b73d14d722dd09911`  
+**Task Scope:** `TD613 Experiment B Flight Engineering & Protected Custody Gate P Reconciliation (Redpen XIII-R2)`  
 **Evidence Class:** `SOURCE_CODE_AUDIT`  
 **Replication Status:** `SYNTHETIC_OFFLINE_FIXTURE` (Empirical Credit: 0)  
-**Execution Duration:** 526ms  
+**Execution Duration:** 444ms  
 
 ---
 
@@ -15,9 +15,9 @@
 
 | Instrument Property | Status / Value |
 |---|---|
-| **Orchestrator Decision** | **🟢 SUPPORTED** (`SUPPORTED`) |
-| **Consensus (Primary Verdicts)** | `UNANIMOUS_SUPPORT` |
-| **Nested Extension Holds** | 1 |
+| **Orchestrator Decision** | **🔴 HELD** (`HELD_MISSING_OBSERVATION`) |
+| **Consensus (Primary Verdicts)** | `INCOMPLETE_OBSERVATION` |
+| **Nested Extension Holds** | 0 |
 | **Detected Infractions** | 0 |
 | **Release Authority** | **STRICTLY CLOSED (false)** |
 | **Deployment Authority** | **STRICTLY CLOSED (false)** |
@@ -27,10 +27,14 @@
 
 ## 2. Examination Scope & Inputs
 
-- **Roles Requested:** `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, `ORCHESTRATOR`
-- **Roles Executed:** `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`
+- **Roles Requested:** `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`
+- **Roles Executed:** 
 - **Missing / Withheld Inputs:**
-_All requested specialist inputs were supplied._
+- `PEDAGOGUE`: input unsupplied or null
+- `APERTURE`: input unsupplied or null
+- `ATLAS`: input unsupplied or null
+- `FADT`: input unsupplied or null
+- `TEMPORAL_CUSTODIAN`: input unsupplied or null
 
 ---
 
@@ -38,11 +42,11 @@ _All requested specialist inputs were supplied._
 
 | Specialist Role | Jurisdiction | Verdict | Status | Defect Class | Finding / Claim |
 |---|---|---|---|---|---|
-| `PEDAGOGUE` | human_consequence_and_burden | **✓ SUPPORTED** | `NO_VIOLATION_DETECTED` | `NONE` | Invariants verified by PEDAGOGUE |
-| `APERTURE` | observability_and_identifiability | **✓ SUPPORTED** | `NO_VIOLATION_DETECTED` | `NONE` | Invariants verified by APERTURE |
-| `ATLAS` | receiver_relative_custody | **✓ SUPPORTED** | `NO_VIOLATION_DETECTED` | `NONE` | Invariants verified by ATLAS |
-| `FADT` | finite_support_boundary | **✓ SUPPORTED** | `NO_VIOLATION_DETECTED` | `NONE` | Invariants verified by FADT |
-| `TEMPORAL_CUSTODIAN` | chronological_sequence | **✓ SUPPORTED** | `NO_VIOLATION_DETECTED` | `NONE` | Invariants verified by TEMPORAL_CUSTODIAN |
+| `PEDAGOGUE` | consequence-order-route-burden-practice-and-research-transfer | **○ NOT_EVALUATED** | `INPUT_MISSING` | `NONE` | No observation input supplied for PEDAGOGUE |
+| `APERTURE` | observability-identifiability-reconstruction-conditioning-and-replay-audit | **○ NOT_EVALUATED** | `INPUT_MISSING` | `NONE` | No observation input supplied for APERTURE |
+| `ATLAS` | compare-non-equivalent-receiver-projections-against-one-admitted-relation-and-governance-control-plane | **○ NOT_EVALUATED** | `INPUT_MISSING` | `NONE` | No observation input supplied for ATLAS |
+| `FADT` | audit-finite-quotient-fibres-for-exact-admissibility-descent-and-preserve-union-intersection-gap | **○ NOT_EVALUATED** | `INPUT_MISSING` | `NONE` | No observation input supplied for FADT |
+| `TEMPORAL_CUSTODIAN` | independent-temporal-audit-monotonic-chronology-and-attempt-lineage-preservation | **○ NOT_EVALUATED** | `INPUT_MISSING` | `NONE` | No observation input supplied for TEMPORAL_CUSTODIAN |
 
 ---
 
@@ -52,7 +56,7 @@ _All requested specialist inputs were supplied._
 _None detected._
 
 ### Nested Specialist-Extension Holds:
-- `APERTURE`: `classification_replay_stability` = `HELD_NOT_YET_WITNESSED` (Multi-epoch empirical classification replay stability not yet witnessed in single-run execution)
+_None._
 
 ### Governance Invariants:
 1. **Replication Discipline:** Shared acquisition on a single receipt adds **zero** independent empirical replication (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
@@ -64,18 +68,18 @@ _None detected._
 
 ## 5. Unresolved Questions & Holds
 
-_None._
+- Missing domain observation inputs for: PEDAGOGUE, APERTURE, ATLAS, FADT, TEMPORAL_CUSTODIAN.
 
 ---
 
 ## 6. What Would Resolve the Hold
 
-_All active specialist invariants verified. No open holds._
+- Address missing observations or specialist infractions before re-running audit.
 
 ---
 
 ## 7. Permitted Next Operator Action
 
-Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.
+Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.
 
 Sealed ⟐
