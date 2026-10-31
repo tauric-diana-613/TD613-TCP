@@ -45,6 +45,8 @@ import {
   registerLiveEpisode,
   updateEpisodeStatus,
   CANONICAL_EPISODE_STATES,
+  RESERVED_EPISODE_INTERNAL_FIELDS,
+  validateEpisodeHistoryIntegrity,
   assertTrustedRegistryPath,
   acquireRegistryLock,
   releaseRegistryLock
@@ -2531,6 +2533,310 @@ test('Redpen XIII-P3: Enforced Finite State Adjacency Matrix & Forbidden Transit
       );
       assert.ok(/^[a-f0-9]{64}$/.test(epRecord.status_history[i].transition_hash));
     }
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XIII-R1: Trust-Class Downgrade & Promotion Prevention (R1-B)', async () => {
+  const protectedHarness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.PROTECTED
+  });
+  await protectedHarness.establishPreExposureBaseline();
+
+  // Test 1: params.trustClass = SYNTHETIC against protected harness throws PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED
+  await assert.rejects(
+    async () => {
+      await protectedHarness.executeAuditedToolCall(
+        'read_file',
+        { path: 'c1_damped_mechanical_oscillator.md', trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC },
+        async () => 'fake content'
+      );
+    },
+    /PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED/
+  );
+
+  // Test 2: doc.trustClass = SYNTHETIC against protected harness throws PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED
+  const content = 'Test protected content';
+  const sha = crypto.createHash('sha256').update(content).digest('hex');
+  await assert.rejects(
+    async () => {
+      await protectedHarness.ingestSequentialDocument(
+        {
+          id: 'DOC-DOWNGRADE-01',
+          filename: 'downgrade_attempt.md',
+          content,
+          sha256: sha,
+          trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC
+        },
+        1
+      );
+    },
+    /PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED/
+  );
+
+  // Test 3: Synthetic harness cannot promote unauthenticated fixture to PROTECTED
+  const syntheticHarness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC
+  });
+  await syntheticHarness.establishPreExposureBaseline();
+
+  await assert.rejects(
+    async () => {
+      await syntheticHarness.ingestSequentialDocument(
+        {
+          id: 'DOC-PROMOTION-01',
+          filename: 'promotion_attempt.md',
+          content: 'Synthetic content claiming protection',
+          trustClass: INGRESS_TRUST_CLASSES.PROTECTED
+        },
+        1
+      );
+    },
+    /SYNTHETIC_PROMOTION_TO_PROTECTED_REFUSED/
+  );
+
+  await assert.rejects(
+    async () => {
+      await syntheticHarness.executeAuditedToolCall(
+        'read_file',
+        { path: 'specimen_01.md', trustClass: INGRESS_TRUST_CLASSES.PROTECTED },
+        async () => 'synthetic output'
+      );
+    },
+    /SYNTHETIC_PROMOTION_TO_PROTECTED_REFUSED/
+  );
+
+  // Test 4: Protected admission cannot disable digest verification via options
+  await assert.rejects(
+    async () => {
+      await protectedHarness.ingestSequentialDocument(
+        {
+          id: 'DOC-BYPASS-01',
+          filename: 'bypass_attempt.md',
+          content,
+          sha256: sha,
+          verifyExecutorDigest: false
+        },
+        1
+      );
+    },
+    /PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED/
+  );
+});
+
+test('Redpen XIII-R1: Physical Byte & TOCTOU Enforcement (R1-C)', async () => {
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.PROTECTED
+  });
+  await harness.establishPreExposureBaseline();
+
+  const tempDir = path.resolve('.td613_temp_r1_c_toctou');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+
+  const tempFile = path.join(tempDir, 'physical_specimen.md');
+  const initialBytes = Buffer.from('# Physical Specimen Content\nLine 1\nLine 2\n', 'utf8');
+  fs.writeFileSync(tempFile, initialBytes);
+  const initialSha = crypto.createHash('sha256').update(initialBytes).digest('hex');
+
+  try {
+    // Negative Control 1: Absent / vanished previously admitted physical file throws SOURCE_FILE_VANISHED_REFUSED
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument(
+          {
+            id: 'DOC-VANISHED-01',
+            filename: 'vanished.md',
+            filePath: path.join(tempDir, 'non_existent_file.md'),
+            content: 'some text',
+            sha256: crypto.createHash('sha256').update('some text').digest('hex')
+          },
+          1
+        );
+      },
+      /SOURCE_FILE_VANISHED_REFUSED/
+    );
+
+    // Negative Control 2: Unreadable physical source (e.g., directory specified as file) throws SOURCE_FILE_UNREADABLE_REFUSED
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument(
+          {
+            id: 'DOC-DIR-01',
+            filename: 'dir_as_file.md',
+            filePath: tempDir, // directory cannot be read as file
+            content: 'dir content',
+            sha256: crypto.createHash('sha256').update('dir content').digest('hex')
+          },
+          1
+        );
+      },
+      /SOURCE_FILE_UNREADABLE_REFUSED/
+    );
+
+    // Negative Control 3: Content replacement / TOCTOU mutation on disk throws SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE
+    const mutatedBytes = Buffer.from('# Tampered Specimen Content\nLine 1\nMutated Line 2\n', 'utf8');
+    fs.writeFileSync(tempFile, mutatedBytes); // Mutate disk before exposure
+
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument(
+          {
+            id: 'DOC-MUTATED-01',
+            filename: 'physical_specimen.md',
+            filePath: tempFile,
+            content: initialBytes.toString('utf8'),
+            sha256: initialSha // Authorized with original SHA
+          },
+          1
+        );
+      },
+      /SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE/
+    );
+
+    // Positive Control: Valid disk file with matching SHA stages exact disk bytes and records lengths
+    fs.writeFileSync(tempFile, initialBytes); // Restore valid bytes
+    const turn = await harness.ingestSequentialDocument(
+      {
+        id: 'DOC-VALID-01',
+        filename: 'physical_specimen.md',
+        filePath: tempFile,
+        content: initialBytes.toString('utf8'),
+        sha256: initialSha,
+        mockResponse: 'CHAMBER 2 DESCENT [DOC-VALID-01]:\nPROPOSITION: Verified invariant matches physical byte span.'
+      },
+      1
+    );
+
+    assert.equal(turn.consumed_bytes_sha256, initialSha);
+    assert.equal(turn.model_exposed_bytes_length, initialBytes.length);
+  } finally {
+    try {
+      if (fs.existsSync(tempFile)) fs.unlinkSync(tempFile);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XIII-R1: FSM Reserved Field Protection & Registry Hash Integrity (R1-D)', () => {
+  const tempDir = path.resolve('.td613_temp_r1_d_fsm');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'r1_d_registry.json');
+
+  try {
+    const epId = `EP-R1-D-${Date.now()}`;
+
+    // Refusal Test 1: Registration directly into unauthorized terminal state throws INVALID_REGISTRATION_STATUS_REFUSED
+    assert.throws(
+      () => {
+        registerLiveEpisode(
+          `${epId}-TERMINAL`,
+          { status: 'ADJUDICATED', backend: 'native', arm: 'ARM_2A_MODULAR' },
+          registryFile
+        );
+      },
+      /INVALID_REGISTRATION_STATUS_REFUSED/
+    );
+
+    assert.throws(
+      () => {
+        registerLiveEpisode(
+          `${epId}-TERMINAL-ABORT`,
+          { status: 'ABORTED_BEFORE_EXPOSURE', backend: 'native', arm: 'ARM_2A_MODULAR' },
+          registryFile
+        );
+      },
+      /INVALID_REGISTRATION_STATUS_REFUSED/
+    );
+
+    // Register legitimate prospective episode
+    registerLiveEpisode(epId, { backend: 'native', arm: 'ARM_2A_MODULAR', status: 'REGISTERED' }, registryFile);
+
+    // Advance to PROSPECTIVE_RESERVED
+    updateEpisodeStatus(epId, 'PROSPECTIVE_RESERVED', {}, registryFile);
+
+    // Refusal Test 2: Valid transition carrying details.status = ADJUDICATED throws RESERVED_FIELD_MUTATION_REFUSED
+    assert.throws(
+      () => {
+        updateEpisodeStatus(epId, 'WITNESS_VERIFIED', { status: 'ADJUDICATED' }, registryFile);
+      },
+      /RESERVED_FIELD_MUTATION_REFUSED/
+    );
+
+    // Refusal Test 3: Valid transition attempting to replace status_history throws RESERVED_FIELD_MUTATION_REFUSED
+    assert.throws(
+      () => {
+        updateEpisodeStatus(epId, 'WITNESS_VERIFIED', { status_history: [] }, registryFile);
+      },
+      /RESERVED_FIELD_MUTATION_REFUSED/
+    );
+
+    // Refusal Test 4: Valid transition attempting to reset attempt_count throws RESERVED_FIELD_MUTATION_REFUSED
+    assert.throws(
+      () => {
+        updateEpisodeStatus(epId, 'WITNESS_VERIFIED', { attempt_count: 0 }, registryFile);
+      },
+      /RESERVED_FIELD_MUTATION_REFUSED/
+    );
+
+    // Legitimate transitions through to ARCHIVE_ADMITTED
+    updateEpisodeStatus(epId, 'WITNESS_VERIFIED', { witness_id: 'W-01' }, registryFile);
+    updateEpisodeStatus(epId, 'ARCHIVE_ADMITTED', { archive_admitted: true }, registryFile);
+
+    // Refusal Test 5: Modification of an earlier stored transition followed by registry reload throws EPISODE_REGISTRY_CORRUPTED
+    const rawRegistry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+    // Tamper with the from state of entry 1 in status_history
+    rawRegistry.episodes[epId].status_history[0].from = 'TAMPERED_PREV_STATE';
+    fs.writeFileSync(registryFile, JSON.stringify(rawRegistry, null, 2), 'utf8');
+
+    assert.throws(
+      () => {
+        loadEpisodeRegistry(registryFile);
+      },
+      /EPISODE_REGISTRY_CORRUPTED|TRANSITION_HASH_TAMPERED/
+    );
+
+    // Demonstration of Limitation: Recalculating all local hashes satisfies local chain validator
+    // but demonstrates why local hash chaining alone lacks external immutability without an independent witness anchor!
+    let prevHash = '0000000000000000000000000000000000000000000000000000000000000000';
+    for (const entry of rawRegistry.episodes[epId].status_history) {
+      entry.prev_transition_hash = prevHash;
+      const { transition_hash, ...payload } = entry;
+      entry.transition_hash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+      prevHash = entry.transition_hash;
+    }
+    fs.writeFileSync(registryFile, JSON.stringify(rawRegistry, null, 2), 'utf8');
+
+    // Local validator passes because internal math is consistent
+    const reloaded = loadEpisodeRegistry(registryFile);
+    assert.ok(reloaded.episodes[epId]);
+
+    // But an external witness anchor verifying against original genesis root detects the tampering!
+    const originalGenesisHash = rawRegistry.episodes[epId].status_history[0].transition_hash;
+    const knownWitnessedGenesisPayload = {
+      attempt: 1,
+      from: 'REGISTERED',
+      to: 'PROSPECTIVE_RESERVED',
+      at: rawRegistry.episodes[epId].status_history[0].at,
+      prev_transition_hash: '0000000000000000000000000000000000000000000000000000000000000000',
+      details: {}
+    };
+    const expectedWitnessGenesisHash = crypto.createHash('sha256').update(JSON.stringify(knownWitnessedGenesisPayload)).digest('hex');
+    assert.notEqual(
+      originalGenesisHash,
+      expectedWitnessGenesisHash,
+      'External witness anchor divergence detected: local hash recomputation cannot fabricate external witness attestation!'
+    );
   } finally {
     try {
       if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);

@@ -467,6 +467,36 @@ export class HeterogeneousDiscoveryHarness {
     };
 
     try {
+      // 1. Ingress Trust-Class Invariant & Downgrade Defense (Redpen XIII-P2, XIII-R1)
+      let effectiveTrustClass;
+      if (this.trustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
+        if (params.trustClass && params.trustClass !== INGRESS_TRUST_CLASSES.PROTECTED) {
+          throw new Error(
+            `PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED: Caller cannot downgrade harness trustClass 'PROTECTED' to '${params.trustClass}'.`
+          );
+        }
+        if (params.verifyExecutorDigest === false) {
+          throw new Error(
+            'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot disable digest verification (verifyExecutorDigest=false) on a PROTECTED trust class.'
+          );
+        }
+        if (params.isSynthetic === true || params.untrustedSynthetic === true) {
+          throw new Error(
+            'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot declare synthetic mode (isSynthetic/untrustedSynthetic) on a PROTECTED trust class.'
+          );
+        }
+        effectiveTrustClass = INGRESS_TRUST_CLASSES.PROTECTED;
+      } else if (this.trustClass === INGRESS_TRUST_CLASSES.SYNTHETIC) {
+        if (params.trustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
+          throw new Error(
+            'SYNTHETIC_PROMOTION_TO_PROTECTED_REFUSED: Synthetic harness cannot promote unauthenticated call to PROTECTED trust class.'
+          );
+        }
+        effectiveTrustClass = INGRESS_TRUST_CLASSES.SYNTHETIC;
+      } else {
+        effectiveTrustClass = params.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
+      }
+
       const isDirectRead = typeof executorFn !== 'function';
       const auth = this.auditToolExecution(toolName, params, {
         requireByteBinding: isDirectRead || params.requireByteBinding === true,
@@ -478,20 +508,6 @@ export class HeterogeneousDiscoveryHarness {
       if (typeof executorFn === 'function') {
         result = await executorFn(params);
         callRecord.output_preview = typeof result === 'string' ? result.slice(0, 200) : 'OBJECT_OUTPUT';
-
-        const effectiveTrustClass = params.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
-        if (effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
-          if (params.verifyExecutorDigest === false) {
-            throw new Error(
-              'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot disable digest verification (verifyExecutorDigest=false) on a PROTECTED trust class.'
-            );
-          }
-          if (params.isSynthetic === true || params.untrustedSynthetic === true) {
-            throw new Error(
-              'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot declare synthetic mode (isSynthetic/untrustedSynthetic) on a PROTECTED trust class.'
-            );
-          }
-        }
 
         const shouldVerifyDigest = effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED
           ? true
@@ -676,22 +692,41 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex, options = {}) {
-    const effectiveTrustClass = doc.trustClass || options.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
-
-    // Caller cannot downgrade protected admission into synthetic mode (Redpen XIII-P2)
-    if (effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
-      if (options.isSynthetic === true || options.untrustedSynthetic === true || doc.isSynthetic === true) {
+    let effectiveTrustClass;
+    if (this.trustClass === INGRESS_TRUST_CLASSES.PROTECTED || (doc && doc._admittedTrustClass === INGRESS_TRUST_CLASSES.PROTECTED)) {
+      if ((doc && doc.trustClass && doc.trustClass !== INGRESS_TRUST_CLASSES.PROTECTED) ||
+          (options.trustClass && options.trustClass !== INGRESS_TRUST_CLASSES.PROTECTED)) {
+        throw new Error(
+          `PROTECTED_TRUST_CLASS_DOWNGRADE_REFUSED: Caller cannot downgrade an admitted PROTECTED trust class to '${(doc && doc.trustClass) || options.trustClass}'.`
+        );
+      }
+      if (options.isSynthetic === true || options.untrustedSynthetic === true || (doc && (doc.isSynthetic === true || doc.untrustedSynthetic === true))) {
         throw new Error('PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot declare synthetic mode on a PROTECTED trust class.');
       }
+      if (options.verifyExecutorDigest === false || (doc && doc.verifyExecutorDigest === false)) {
+        throw new Error('PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot disable digest verification on a PROTECTED trust class.');
+      }
+      effectiveTrustClass = INGRESS_TRUST_CLASSES.PROTECTED;
+    } else if (this.trustClass === INGRESS_TRUST_CLASSES.SYNTHETIC) {
+      if ((doc && doc.trustClass === INGRESS_TRUST_CLASSES.PROTECTED) || options.trustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
+        throw new Error(
+          `SYNTHETIC_PROMOTION_TO_PROTECTED_REFUSED: Synthetic harness cannot promote unauthenticated fixture '${doc?.filename}' to PROTECTED trust class.`
+        );
+      }
+      effectiveTrustClass = INGRESS_TRUST_CLASSES.SYNTHETIC;
+    } else {
+      effectiveTrustClass = (doc && doc.trustClass) || options.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
     }
 
     let calculatedSha = null;
     let docBytes = null;
 
-    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI, XII-B2, XIII-P2)
-    if (doc && (doc.raw_bytes || doc.content)) {
-      docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
-      calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
+    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI, XII-B2, XIII-P2, XIII-R1)
+    if (doc && (doc.raw_bytes || doc.content || doc.filePath)) {
+      if (doc.raw_bytes || doc.content) {
+        docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
+        calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
+      }
       const isProtected = effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED;
       const isStrict = isProtected || this.strictIngestionDigest || options.strict || doc.requireDigest;
 
@@ -702,7 +737,7 @@ export class HeterogeneousDiscoveryHarness {
           );
         }
       } else {
-        if (typeof doc.sha256 !== 'string' || doc.sha256.length !== 64 || calculatedSha.toLowerCase() !== doc.sha256.toLowerCase()) {
+        if (typeof doc.sha256 !== 'string' || doc.sha256.length !== 64 || (calculatedSha && calculatedSha.toLowerCase() !== doc.sha256.toLowerCase())) {
           throw new Error(
             `DOCUMENT_INGESTION_INTEGRITY_MISMATCH: Admitted document '${doc.filename}' payload digest (${calculatedSha}) does not match admission digest (${doc.sha256}). Ingestion rejected fail-closed.`
           );
@@ -717,25 +752,54 @@ export class HeterogeneousDiscoveryHarness {
             `PROTECTED_DERIVATIVE_LINEAGE_MANDATORY: Authenticated derivative document '${doc.filename}' omits mandatory parent_raw_sha256. Lineage binding rejected fail-closed.`
           );
         }
-        if (!doc.derivative_sha256 || doc.derivative_sha256.toLowerCase() !== calculatedSha.toLowerCase()) {
+        if (!doc.derivative_sha256 || doc.derivative_sha256.toLowerCase() !== (calculatedSha || '').toLowerCase()) {
           throw new Error(
             `DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH: Authenticated text derivative '${doc.filename}' content digest (${calculatedSha}) does not match derivative_sha256 (${doc.derivative_sha256}). Lineage binding rejected fail-closed.`
           );
         }
       }
 
-      // TOCTOU check: verify file on disk has not mutated between authorization and prompt construction
-      if (doc.filePath && fs.existsSync(doc.filePath)) {
+      // TOCTOU check & Physical Source Custody Enforcement (Redpen XIII-R1)
+      const claimsPhysicalSource = Boolean(doc.filePath || doc.claimsPhysicalFile || doc.physical_source || (isProtected && doc.claimsPhysicalSource));
+      if (claimsPhysicalSource || doc.filePath) {
+        if (!doc.filePath || typeof doc.filePath !== 'string') {
+          throw new Error(`PHYSICAL_SOURCE_PATH_REQUIRED: Document '${doc.filename}' claims physical source custody but specifies no valid filePath.`);
+        }
+        const resolvedPath = path.resolve(doc.filePath);
+        if (!fs.existsSync(resolvedPath)) {
+          throw new Error(
+            `SOURCE_FILE_VANISHED_REFUSED: Authorized physical source '${doc.filePath}' does not exist on disk before prompt exposure. File vanished or missing.`
+          );
+        }
+        let canonicalPath;
         try {
-          const diskBytes = fs.readFileSync(doc.filePath);
-          const diskSha = crypto.createHash('sha256').update(diskBytes).digest('hex');
-          if (diskSha.toLowerCase() !== calculatedSha.toLowerCase()) {
-            throw new Error(
-              `SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE: Document '${doc.filename}' changed on disk (current ${diskSha}) compared to authorized admission digest (${calculatedSha}) before prompt construction. Ingestion rejected fail-closed.`
-            );
-          }
+          canonicalPath = fs.realpathSync(resolvedPath);
         } catch (err) {
-          if (err.message.includes('SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE')) throw err;
+          throw new Error(`SOURCE_CANONICAL_PATH_FAILED: Failed to resolve canonical path for '${doc.filePath}': ${err.message}`);
+        }
+        let diskBytes;
+        try {
+          diskBytes = fs.readFileSync(canonicalPath);
+        } catch (err) {
+          throw new Error(`SOURCE_FILE_UNREADABLE_REFUSED: Authorized physical source '${doc.filePath}' could not be read: ${err.message}`);
+        }
+        const diskSha = crypto.createHash('sha256').update(diskBytes).digest('hex');
+        if (doc.sha256 && diskSha.toLowerCase() !== doc.sha256.toLowerCase()) {
+          throw new Error(
+            `SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE: Document '${doc.filename}' changed on disk (current ${diskSha}) compared to authorized admission digest (${doc.sha256}) before prompt construction. Ingestion rejected fail-closed.`
+          );
+        }
+        if (calculatedSha && diskSha.toLowerCase() !== calculatedSha.toLowerCase()) {
+          throw new Error(
+            `SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE: Document '${doc.filename}' changed on disk (current ${diskSha}) compared to authorized admission digest (${calculatedSha}) before prompt construction. Ingestion rejected fail-closed.`
+          );
+        }
+
+        // Revalidate and stage the exact bytes from disk for model exposure
+        docBytes = diskBytes;
+        calculatedSha = diskSha;
+        if (!doc.is_binary) {
+          doc.content = diskBytes.toString('utf8');
         }
       }
     }

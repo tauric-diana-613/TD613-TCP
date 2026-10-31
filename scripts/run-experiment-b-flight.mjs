@@ -78,15 +78,29 @@ export function generateLiveEpisodeId() {
 
 /**
  * Loads the flight episode registry table.
- * Fails closed if the episode registry file exists but is corrupted or contains invalid JSON (Redpen IX-B4).
+ * Fails closed if the episode registry file exists but is corrupted or contains invalid JSON (Redpen IX-B4, XIII-R1).
+ * Verifies local cryptographic hash-chain integrity of status history across recorded episodes.
  */
-export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
+export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE, options = {}) {
   if (fs.existsSync(registryPath)) {
     try {
       const content = fs.readFileSync(registryPath, 'utf8');
       const parsed = JSON.parse(content);
       if (!parsed || typeof parsed !== 'object' || !parsed.episodes || typeof parsed.episodes !== 'object') {
         throw new Error('Malformed registry schema structure');
+      }
+      if (options.validateHistoryIntegrity !== false) {
+        for (const ep of Object.values(parsed.episodes)) {
+          if (ep && ep.status_history && ep.status_history.length > 0) {
+            try {
+              validateEpisodeHistoryIntegrity(ep);
+            } catch (err) {
+              throw new Error(
+                `EPISODE_REGISTRY_CORRUPTED: Hash-chain validation failed for episode '${ep.episode_id || ep.id}': ${err.message}`
+              );
+            }
+          }
+        }
       }
       return parsed;
     } catch (err) {
@@ -255,6 +269,52 @@ export const TERMINAL_EPISODE_STATES = Object.freeze([
   'ABORTED_BEFORE_EXPOSURE'
 ]);
 
+export const RESERVED_EPISODE_INTERNAL_FIELDS = Object.freeze([
+  'status',
+  'status_history',
+  'attempt_count',
+  'episode_id',
+  'id',
+  'registered_at',
+  'updated_at',
+  'transition_hash',
+  'custody_digest',
+  'prev_transition_hash'
+]);
+
+/**
+ * Validates the cryptographic hash-chain integrity of an episode's status history (Redpen XIII-R1).
+ * Recomputes each transition hash sequentially from genesis '0000...0000'.
+ * Detects any intermediate mutation, tampering, or broken chain link fail-closed.
+ */
+export function validateEpisodeHistoryIntegrity(episodeRecord) {
+  if (!episodeRecord || typeof episodeRecord !== 'object') {
+    return { valid: true, verified_entries: 0 };
+  }
+  const history = episodeRecord.status_history;
+  if (!Array.isArray(history) || history.length === 0) {
+    return { valid: true, verified_entries: 0 };
+  }
+  let prevHash = '0000000000000000000000000000000000000000000000000000000000000000';
+  for (let i = 0; i < history.length; i++) {
+    const entry = history[i];
+    if (entry.prev_transition_hash !== prevHash) {
+      throw new Error(
+        `TRANSITION_HASH_CHAIN_BROKEN: Episode '${episodeRecord.episode_id || episodeRecord.id}' entry ${i} prev_transition_hash mismatch. Expected ${prevHash}, got ${entry.prev_transition_hash}.`
+      );
+    }
+    const { transition_hash, ...payload } = entry;
+    const expectedHash = crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+    if (transition_hash !== expectedHash) {
+      throw new Error(
+        `TRANSITION_HASH_TAMPERED: Episode '${episodeRecord.episode_id || episodeRecord.id}' entry ${i} transition_hash tampered. Expected ${expectedHash}, got ${transition_hash}.`
+      );
+    }
+    prevHash = transition_hash;
+  }
+  return { valid: true, verified_entries: history.length };
+}
+
 export const LEGAL_EPISODE_STATE_TRANSITIONS = Object.freeze({
   REGISTERED: Object.freeze(['PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
   PROSPECTIVE_RESERVED: Object.freeze(['WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
@@ -299,6 +359,15 @@ export function updateEpisodeStatus(episodeId, newStatus, details = {}, registry
       );
     }
 
+    // 2. Reserved internal fields protection (Redpen XIII-R1)
+    for (const key of Object.keys(details)) {
+      if (RESERVED_EPISODE_INTERNAL_FIELDS.includes(key)) {
+        throw new Error(
+          `RESERVED_FIELD_MUTATION_REFUSED: Caller cannot overwrite reserved internal field '${key}' in episode transition details.`
+        );
+      }
+    }
+
     // 2. Duplicate transition / completion prevention
     if (prevStatus === newStatus) {
       throw new Error(
@@ -337,7 +406,11 @@ export function updateEpisodeStatus(episodeId, newStatus, details = {}, registry
     transitionPayload.transition_hash = transitionHash;
 
     ep.status_history.push(transitionPayload);
-    Object.assign(ep, details);
+    for (const [k, v] of Object.entries(details)) {
+      if (!RESERVED_EPISODE_INTERNAL_FIELDS.includes(k)) {
+        ep[k] = v;
+      }
+    }
 
     const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
     fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
@@ -390,10 +463,36 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
       );
     }
     if (!registry.episodes) registry.episodes = {};
+
+    const initialStatus = metadata.status || 'REGISTERED';
+    const LAWFUL_REGISTRATION_STATES = ['REGISTERED', 'PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED'];
+    if (!LAWFUL_REGISTRATION_STATES.includes(initialStatus)) {
+      throw new Error(
+        `INVALID_REGISTRATION_STATUS_REFUSED: Initial episode registration cannot directly set unauthorized status '${initialStatus}'. Permitted registration states: [${LAWFUL_REGISTRATION_STATES.join(', ')}].`
+      );
+    }
+    if (metadata.status_history && Array.isArray(metadata.status_history) && metadata.status_history.length > 0) {
+      throw new Error(
+        'RESERVED_FIELD_MUTATION_REFUSED: Cannot inject pre-populated status_history at initial episode registration.'
+      );
+    }
+    if (metadata.attempt_count && metadata.attempt_count !== 0) {
+      throw new Error(
+        'RESERVED_FIELD_MUTATION_REFUSED: Cannot inject non-zero attempt_count at initial episode registration.'
+      );
+    }
+    for (const key of Object.keys(metadata)) {
+      if (['status_history', 'attempt_count', 'updated_at'].includes(key)) {
+        throw new Error(
+          `RESERVED_FIELD_MUTATION_REFUSED: Caller cannot overwrite reserved internal field '${key}' in episode registration metadata.`
+        );
+      }
+    }
+
     registry.episodes[idStr] = {
       episode_id: idStr,
       registered_at: new Date().toISOString(),
-      status: metadata.status || 'REGISTERED',
+      status: initialStatus,
       ...metadata
     };
 

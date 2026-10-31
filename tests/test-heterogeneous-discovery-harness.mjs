@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 
-import { HeterogeneousDiscoveryHarness } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
+import { HeterogeneousDiscoveryHarness, INGRESS_TRUST_CLASSES } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
 
 function readSpecimen(filename) {
   const fullPath = path.resolve('docs/research/experiment-b-preflight/01_calibration_fixtures/heterogeneous_specimens', filename);
@@ -18,33 +19,43 @@ function loadSchema() {
 test('HeterogeneousDiscoveryHarness: Standard multi-turn execution & pending adjudication semantics', async () => {
   const schema = loadSchema();
 
+  const c1Content = readSpecimen('specimen_01_conservative_hamiltonian.md');
   const doc1 = {
     id: 'DOC-01',
     filename: 'specimen_01_conservative_hamiltonian.md',
-    content: readSpecimen('specimen_01_conservative_hamiltonian.md'),
+    content: c1Content,
+    sha256: crypto.createHash('sha256').update(c1Content).digest('hex'),
+    trustClass: INGRESS_TRUST_CLASSES.AUTHENTICATED_CALIBRATION,
     author_provenance: 'Analytical Mechanics Foundation',
     mockResponse: 'CHAMBER 2 DESCENT [DOC-01]:\nPROPOSITION: Total mechanical energy H(x, p) = p^2/(2m) + (1/2)kx^2 is conserved.\nUNCERTAINTY: Valid for unperturbed isolated systems.'
   };
 
+  const c2Content = readSpecimen('specimen_02_empirical_damping_decay.md');
   const doc2 = {
     id: 'DOC-02',
     filename: 'specimen_02_empirical_damping_decay.md',
-    content: readSpecimen('specimen_02_empirical_damping_decay.md'),
+    content: c2Content,
+    sha256: crypto.createHash('sha256').update(c2Content).digest('hex'),
+    trustClass: INGRESS_TRUST_CLASSES.AUTHENTICATED_CALIBRATION,
     author_provenance: 'Experimental Dynamics Laboratory',
     mockResponse: 'CHAMBER 2 DESCENT [DOC-02]:\nPROPOSITION: Ring-down measurements reveal dissipative damping with Q = 12.5.\nUNCERTAINTY: Damping coefficient assumed linear visco-elastic.'
   };
 
+  const c3Content = readSpecimen('specimen_03_topological_soliton_crosswalk.md');
   const doc3 = {
     id: 'DOC-03',
     filename: 'specimen_03_topological_soliton_crosswalk.md',
-    content: readSpecimen('specimen_03_topological_soliton_crosswalk.md'),
+    content: c3Content,
+    sha256: crypto.createHash('sha256').update(c3Content).digest('hex'),
+    trustClass: INGRESS_TRUST_CLASSES.AUTHENTICATED_CALIBRATION,
     author_provenance: 'Field Theory & Geometry Group',
     mockResponse: 'CHAMBER 2 DESCENT [DOC-03]:\nPROPOSITION: Topological soliton solution phi(x, t) = 4 arctan(exp(gamma(x - vt))).\nThis phenomenon resists known linear lumped oscillator categories and represents an unanticipated non-linear field excitation.\nUNCERTAINTY: 1+1D continuum approximation.'
   };
 
   const harness2A = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2A_MODULAR',
-    mockMode: true
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.AUTHENTICATED_CALIBRATION
   });
 
   const baseline = await harness2A.establishPreExposureBaseline('Zero initial exposure.');
@@ -98,11 +109,12 @@ However, this text contains no validated mathematical models or verifiable param
     id: 'DOC-ADV-01',
     filename: 'superficial_buzzwords.md',
     content: sourceWithBuzzwords,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     author_provenance: 'Adversarial Probe',
     mockResponse: 'CHAMBER 2 DESCENT [DOC-ADV-01]:\nI have inspected the source text. It mentions solitons and dissipation, but I formulate no candidate proposition or invariant from this material.\nUNCERTAINTY: Insufficient structured evidence.'
   };
 
-  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true, trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC });
   await harness.establishPreExposureBaseline();
   const turn = await harness.ingestSequentialDocument(doc, 1);
 
@@ -123,11 +135,12 @@ test('Adversarial Test 2: Negated claims in model response must NOT receive unea
     id: 'DOC-ADV-02',
     filename: 'negated_conservation.md',
     content: 'Empirical measurement shows continuous amplitude decay over 10 cycles.',
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     author_provenance: 'Adversarial Probe',
     mockResponse: 'CHAMBER 2 DESCENT [DOC-ADV-02]:\nContradiction detected: Energy conservation is explicitly negated by the empirical decay profile. No conservative invariant holds.\nUNCERTAINTY: Negative result on Hamiltonian invariance.'
   };
 
-  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2B_MATCHED_UNION', mockMode: true });
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2B_MATCHED_UNION', mockMode: true, trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC });
   await harness.establishPreExposureBaseline();
   await harness.ingestSequentialDocument(doc, 1);
 
@@ -145,11 +158,12 @@ test('Adversarial Test 3: Content-free, empty, or whitespace model responses mus
     id: 'DOC-ADV-03',
     filename: 'empty_response_probe.md',
     content: 'Sample text.',
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     author_provenance: 'Adversarial Probe',
     mockResponse: '   \n\n   ' // Pure whitespace
   };
 
-  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true, trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC });
   await harness.establishPreExposureBaseline();
   await harness.ingestSequentialDocument(doc, 1);
 
@@ -172,11 +186,12 @@ UNCERTAINTY: Valid for sub-luminal wall drift velocities alpha < 1.`;
     id: 'DOC-ADV-04',
     filename: 'unfamiliar_boundary_pinning.md',
     content: 'Boundary measurement data across relativistic media.',
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     author_provenance: 'Theoretical Investigation',
     mockResponse: novelModelResponse
   };
 
-  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true, trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC });
   await harness.establishPreExposureBaseline();
   await harness.ingestSequentialDocument(doc, 1);
 
@@ -214,11 +229,12 @@ UNCERTAINTY: Parameterized over compact connection.`;
     id: 'DOC-ADV-06',
     filename: 'curvature_commutator.md',
     content: 'Holonomy along loop C produces finite phase shift in adiabatic transport.',
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     author_provenance: 'Formal Differential Geometry',
     mockResponse: formalModelResponse
   };
 
-  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true, trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC });
   await harness.establishPreExposureBaseline();
   await harness.ingestSequentialDocument(doc, 1);
 
