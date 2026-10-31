@@ -99,9 +99,69 @@ export function loadEpisodeRegistry(registryPath = DEFAULT_EPISODE_REGISTRY_FILE
 }
 
 /**
- * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4).
+ * Asserts that the registry path is strictly confined to trusted repository workspace paths (Redpen X-B3).
+ */
+export function assertTrustedRegistryPath(registryPath, repoRoot = process.cwd()) {
+  const resolved = path.resolve(registryPath);
+  const resolvedRoot = path.resolve(repoRoot);
+  if (!resolved.startsWith(resolvedRoot)) {
+    throw new Error(
+      `UNTRUSTED_REGISTRY_PATH_FORBIDDEN: Registry path "${registryPath}" resolves outside trusted repository root "${resolvedRoot}". Traversal rejected fail-closed.`
+    );
+  }
+  return resolved;
+}
+
+/**
+ * Acquires an exclusive cross-process lock on the registry lockfile using atomic wx open (Redpen X-B3).
+ * Supports bounded exponential backoff, retry, and stale-lock recovery (10s threshold).
+ */
+export function acquireRegistryLock(lockFile, maxRetries = 60, initialDelayMs = 50, staleTimeoutMs = 10000) {
+  let delay = initialDelayMs;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const fd = fs.openSync(lockFile, 'wx');
+      const payload = JSON.stringify({ pid: process.pid, acquiredAt: Date.now() });
+      fs.writeSync(fd, payload);
+      fs.closeSync(fd);
+      return true;
+    } catch (err) {
+      if (err.code === 'EEXIST') {
+        // Check for stale lock
+        try {
+          const stats = fs.statSync(lockFile);
+          if (Date.now() - stats.mtimeMs > staleTimeoutMs) {
+            try { fs.unlinkSync(lockFile); } catch (_) {}
+            continue;
+          }
+        } catch (_) {}
+        // Exponential backoff with small random jitter
+        const waitMs = delay + Math.floor(Math.random() * 20);
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, waitMs);
+        delay = Math.min(delay * 1.3, 300);
+      } else {
+        throw err;
+      }
+    }
+  }
+  throw new Error(`REGISTRY_LOCK_TIMEOUT: Failed to acquire cross-process lock on "${lockFile}" after ${maxRetries} attempts.`);
+}
+
+/**
+ * Releases the exclusive cross-process lock on the registry lockfile (Redpen X-B3).
+ */
+export function releaseRegistryLock(lockFile) {
+  try {
+    if (fs.existsSync(lockFile)) {
+      fs.unlinkSync(lockFile);
+    }
+  } catch (_) {}
+}
+
+/**
+ * Prospective live episode registration and replay sieve (Redpen VIII-B, IX-B4, X-B3).
  * Fails closed if the episode identifier has already been recorded, if synthetic IDs are submitted,
- * or if write concurrency fails. Employs atomic write semantics to guarantee registry consistency.
+ * or if write concurrency fails. Employs cross-process file locking and atomic write semantics.
  */
 export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
   const idStr = String(episodeId || '').trim();
@@ -116,31 +176,60 @@ export function registerLiveEpisode(episodeId, metadata = {}, registryPath = DEF
     );
   }
 
-  const registry = loadEpisodeRegistry(registryPath);
-  if (registry.episodes && registry.episodes[idStr]) {
-    throw new Error(
-      `EPISODE_REPLAY_FORBIDDEN: Episode ID "${idStr}" has already been executed or registered in episode registry (${registry.episodes[idStr].registered_at}). Prospective replay strictly prohibited fail-closed.`
-    );
-  }
-  if (!registry.episodes) registry.episodes = {};
-  registry.episodes[idStr] = {
-    episode_id: idStr,
-    registered_at: new Date().toISOString(),
-    status: 'REGISTERED',
-    ...metadata
-  };
-
-  const regDir = path.dirname(registryPath);
+  // Enforce trusted repository workspace confinement (Redpen X-B3)
+  const trustedPath = assertTrustedRegistryPath(registryPath);
+  const regDir = path.dirname(trustedPath);
   if (!fs.existsSync(regDir)) {
     fs.mkdirSync(regDir, { recursive: true });
   }
 
-  // Atomic transactional write via temporary file (Redpen IX-B4)
-  const tmpPath = `${registryPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
-  fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
-  fs.renameSync(tmpPath, registryPath);
+  const lockFile = `${trustedPath}.lock`;
+  acquireRegistryLock(lockFile);
 
-  return registry.episodes[idStr];
+  try {
+    const registry = loadEpisodeRegistry(trustedPath);
+    if (registry.episodes && registry.episodes[idStr]) {
+      throw new Error(
+        `EPISODE_REPLAY_FORBIDDEN: Episode ID "${idStr}" has already been executed or registered in episode registry (${registry.episodes[idStr].registered_at}). Prospective replay strictly prohibited fail-closed.`
+      );
+    }
+    if (!registry.episodes) registry.episodes = {};
+    registry.episodes[idStr] = {
+      episode_id: idStr,
+      registered_at: new Date().toISOString(),
+      status: 'REGISTERED',
+      ...metadata
+    };
+
+    // Atomic transactional write via temporary file with Windows EPERM retry and copy fallback (Redpen IX-B4, Redpen X-B3)
+    const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(registry, null, 2), 'utf8');
+
+    let retries = 5;
+    while (retries > 0) {
+      try {
+        fs.renameSync(tmpPath, trustedPath);
+        break;
+      } catch (renameErr) {
+        if ((renameErr.code === 'EPERM' || renameErr.code === 'EACCES') && retries > 1) {
+          retries--;
+          Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 25);
+          continue;
+        }
+        try {
+          fs.copyFileSync(tmpPath, trustedPath);
+          fs.unlinkSync(tmpPath);
+          break;
+        } catch (_) {
+          throw renameErr;
+        }
+      }
+    }
+
+    return registry.episodes[idStr];
+  } finally {
+    releaseRegistryLock(lockFile);
+  }
 }
 
 function parseArgs(args) {
@@ -530,24 +619,30 @@ async function main() {
       process.exit(1);
     }
 
-    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B)
+    // Prospective Replay Sieve: verify episode has not already been executed (Redpen VIII-B, Redpen X-B3)
     const registryFile = options.episodeRegistryFile || DEFAULT_EPISODE_REGISTRY_FILE;
-    const currentRegistry = loadEpisodeRegistry(registryFile);
-    if (currentRegistry.episodes && currentRegistry.episodes[options.episodeId]) {
-      console.error(
-        `EPISODE_REPLAY_FORBIDDEN: Episode ID "${options.episodeId}" has already been executed or registered in episode registry (${currentRegistry.episodes[options.episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
-      );
+    try {
+      assertTrustedRegistryPath(registryFile);
+      const currentRegistry = loadEpisodeRegistry(registryFile);
+      if (currentRegistry.episodes && currentRegistry.episodes[options.episodeId]) {
+        console.error(
+          `EPISODE_REPLAY_FORBIDDEN: Episode ID "${options.episodeId}" has already been executed or registered in episode registry (${currentRegistry.episodes[options.episodeId].registered_at}). Prospective replay strictly prohibited fail-closed.`
+        );
+        process.exit(1);
+      }
+
+      // Register prospective episode in immutable table under atomic cross-process lock (Redpen X-B3)
+      registerLiveEpisode(options.episodeId, {
+        backend: options.backend,
+        arm: options.arm,
+        permutation: options.permutation,
+        model: options.model,
+        archive_path: options.archivePath
+      }, registryFile);
+    } catch (err) {
+      console.error(err.message);
       process.exit(1);
     }
-
-    // Register prospective episode in immutable table
-    registerLiveEpisode(options.episodeId, {
-      backend: options.backend,
-      arm: options.arm,
-      permutation: options.permutation,
-      model: options.model,
-      archive_path: options.archivePath
-    }, registryFile);
   }
 
   // R4-02: Preflight Stage 2 Witness Contract Check (Verifies signature, scope, episode, and trust root before archive admission)

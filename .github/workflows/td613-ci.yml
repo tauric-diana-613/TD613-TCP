@@ -212,7 +212,8 @@ jobs:
             tests/dollhouse-synthetic-operator-workflow.test.mjs \
             tests/dollhouse-native-skill.test.mjs \
             tests/dollhouse-repair-regressions-r01-r08.test.mjs \
-            tests/dollhouse-design-conductor.test.mjs
+            tests/dollhouse-design-conductor.test.mjs \
+            tests/test-atlas-mathematical-engine.test.mjs
       - name: Validate Experiment B Flight Launchbridge, Security Battery, and Discovery Controls
         run: |
           node --test tests/test-flight-launchbridge.test.mjs

@@ -86,12 +86,8 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
     ]
   },
   ARM_2A_MODULAR: {
-    allowedSourceRoots: [
-      'docs/research/experiment-b-preflight/01_calibration_fixtures/',
-      'docs/research/experiment-b-preflight/01_manifest/',
-      'docs/research/experiment-b-preflight/02_four_arm_harness/',
-      'tests/fixtures/'
-    ],
+    allowedSourceRoots: [],
+    allowedFiles: [...EXACT_POSITIVE_SPECIMEN_ALLOWLIST],
     allowedTools: ['read_file'],
     allowedSkills: [],
     forbiddenPatterns: [
@@ -107,14 +103,8 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
     ]
   },
   ARM_2B_MATCHED_UNION: {
-    allowedSourceRoots: [
-      'docs/research/experiment-b-preflight/01_calibration_fixtures/',
-      'docs/research/experiment-b-preflight/01_manifest/',
-      'docs/research/experiment-b-preflight/02_four_arm_harness/',
-      'tests/fixtures/',
-      'app/wendbine/',
-      'app/encyclopedia/'
-    ],
+    allowedSourceRoots: [],
+    allowedFiles: [...EXACT_POSITIVE_SPECIMEN_ALLOWLIST],
     allowedTools: ['read_file'],
     allowedSkills: [],
     forbiddenPatterns: [
@@ -132,8 +122,9 @@ export const ARM_EXECUTION_ACCESS_ALLOWLISTS = {
 };
 
 /**
- * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02, Redpen VIII-B, Redpen IX-B1, Redpen IX-B3).
- * Enforces canonical repository path resolution, path traversal denial, and symlink escape checks.
+ * Validates direct execution-time source file/path access against the arm's audited allowlist and forbidden patterns (Redpen VII-B B7-02, Redpen VIII-B, Redpen IX-B1, Redpen IX-B3, Redpen X-B1).
+ * Enforces canonical repository path resolution, path traversal denial, symlink escape checks,
+ * and exact positive specimen allowlist membership for candidate generation arms.
  *
  * @param {string} arm
  * @param {string} targetPath
@@ -147,6 +138,7 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
 
   const config = ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {
     allowedSourceRoots: [],
+    allowedFiles: [],
     forbiddenPatterns: [
       /09_atlas_mathematical_qualification/i,
       /atlas-mathematical-engine/i,
@@ -198,8 +190,19 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
     }
   }
 
-  // Check allowed source roots: BOTH declared relativeNorm AND canonical realRelativeNorm must be permitted
-  if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
+  // Check exact positive specimen allowlist for candidate generation arms (Redpen X-B1)
+  if (config.allowedFiles && config.allowedFiles.length > 0) {
+    const isExactFileAllowed = config.allowedFiles.some(allowedFile => {
+      const normAllowed = allowedFile.replace(/\\/g, '/');
+      return realRelativeNorm === normAllowed || relativeNorm === normAllowed || normPath === normAllowed;
+    });
+    if (!isExactFileAllowed) {
+      throw new Error(
+        `UNLISTED_SOURCE_FILE_REFUSED: Target path "${normPath}" (resolving to "${realRelativeNorm}") is not in the exact positive specimen allowlist for ${arm}. Execution-time access denied.`
+      );
+    }
+  } else if (config.allowedSourceRoots && config.allowedSourceRoots.length > 0) {
+    // Check allowed source roots: BOTH declared relativeNorm AND canonical realRelativeNorm must be permitted
     const isAllowed = config.allowedSourceRoots.some(root => {
       const normRoot = root.replace(/\\/g, '/');
       const declaredPermitted = relativeNorm.startsWith(normRoot) || normPath.startsWith(normRoot);
@@ -212,9 +215,9 @@ export function assertArmSourceAccessPermitted(arm = 'ARM_UNKNOWN', targetPath =
         `[${config.allowedSourceRoots.join(', ')}] for ${arm}. Execution-time access denied.`
       );
     }
-  } else if (arm === 'ARM_0_TRANSPORT' || (config.allowedSourceRoots && config.allowedSourceRoots.length === 0)) {
+  } else {
     throw new Error(
-      `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Arm ${arm} has empty allowedSourceRoots. Direct source access forbidden.`
+      `UNAUTHORIZED_SOURCE_ROOT_ACCESS: Arm ${arm} has empty allowedSourceRoots and empty allowedFiles. Direct source access forbidden.`
     );
   }
 
@@ -253,9 +256,11 @@ export function verifyAccessParityContract(promptOrContext = '', arm = 'ARM_UNKN
   return {
     compliant: true,
     arm,
+    prompt_syntax_parity_verified: true,
     prompt_lint_passed: true,
-    execution_allowlists_verified: true,
+    runtime_tool_execution_mediated: false,
     allowed_roots: (ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {}).allowedSourceRoots || [],
+    allowed_files: (ARM_EXECUTION_ACCESS_ALLOWLISTS[arm] || {}).allowedFiles || [],
     violations: []
   };
 }
@@ -313,6 +318,13 @@ export class HeterogeneousDiscoveryHarness {
       });
     } else {
       this.client = options.client || null;
+    }
+
+    // Model Tool Isolation Guarantee (Redpen X-B2):
+    // The underlying GeminiLiveClient operates strictly as a text-in/text-out model transport with zero tools enabled.
+    // Candidate generation models have NO filesystem access, NO CLI execution access, and NO dynamic tool execution capabilities.
+    if (this.client) {
+      this.client.tools = [];
     }
 
     this.history = [];

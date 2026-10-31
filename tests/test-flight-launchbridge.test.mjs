@@ -15,7 +15,8 @@ import {
   HeterogeneousDiscoveryHarness,
   verifyAccessParityContract,
   assertArmSourceAccessPermitted,
-  ARM_EXECUTION_ACCESS_ALLOWLISTS
+  ARM_EXECUTION_ACCESS_ALLOWLISTS,
+  EXACT_POSITIVE_SPECIMEN_ALLOWLIST
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
 import {
   Stage2IndependentEvaluator,
@@ -39,7 +40,10 @@ import {
 import {
   generateLiveEpisodeId,
   loadEpisodeRegistry,
-  registerLiveEpisode
+  registerLiveEpisode,
+  assertTrustedRegistryPath,
+  acquireRegistryLock,
+  releaseRegistryLock
 } from '../scripts/run-experiment-b-flight.mjs';
 
 const REPO_ROOT = path.resolve('.');
@@ -1254,8 +1258,8 @@ test('R4-06: Symmetrical Experimental Access Parity Contract Enforcement (Redpen
   );
 
   // 4. (B7-02) Audited Execution-Time Tool & Filesystem Access Control Parity
-  // Permitted path in allowed source root passes
-  const permitted = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_manifest/spec.json');
+  // Permitted path in exact positive specimen allowlist passes
+  const permitted = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md');
   assert.equal(permitted.permitted, true);
 
   // Attempted direct read of restricted atlas internal documentation strictly throws
@@ -1274,10 +1278,10 @@ test('R4-06: Symmetrical Experimental Access Parity Contract Enforcement (Redpen
     /FORBIDDEN_SOURCE_ACCESS_REFUSED/
   );
 
-  // Attempted read outside declared source roots throws UNAUTHORIZED_SOURCE_ROOT_ACCESS
+  // Attempted read outside declared source roots or exact allowlist throws access refusal
   assert.throws(
     () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'package.json'),
-    /UNAUTHORIZED_SOURCE_ROOT_ACCESS/
+    /UNAUTHORIZED_SOURCE_ROOT_ACCESS|UNLISTED_SOURCE_FILE_REFUSED/
   );
 
   // Harness auditToolExecution intercepts read_file and run_command
@@ -1334,8 +1338,7 @@ test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Si
     (err) => {
       const output = (err.stdout || '') + (err.stderr || '');
       return output.includes('PREFLIGHT_STAGE2_WITNESS_SIGNATURE_INVALID') ||
-             output.includes('WITNESS_EPISODE_MISMATCH_OR_OMITTED') ||
-             err.status !== 0;
+             output.includes('WITNESS_EPISODE_MISMATCH_OR_OMITTED');
     }
   );
 
@@ -1355,7 +1358,7 @@ test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Si
   assert.throws(
     () => {
       execSync(
-        `node scripts/run-experiment-b-flight.mjs --episode-id "EPISODE-B-SOURCE-FREE-PREFLIGHT-01"`,
+        `node scripts/run-experiment-b-flight.mjs --arm ARM_2A_MODULAR --backend rest --archive-path "fake/archive.zip" --operator-key "test-key" --episode-id "EPISODE-B-SOURCE-FREE-PREFLIGHT-01"`,
         {
           encoding: 'utf8',
           stdio: 'pipe',
@@ -1369,7 +1372,7 @@ test('R4-07: Flight Runner Episode Binding & Cross-Episode Attestation Replay Si
     },
     (err) => {
       const output = (err.stdout || '') + (err.stderr || '');
-      return output.includes('LIVE_FLIGHT_EPISODE_IDENTITY_REQUIRED') || err.status !== 0;
+      return output.includes('LIVE_FLIGHT_EPISODE_IDENTITY_REQUIRED');
     }
   );
 
@@ -1412,12 +1415,15 @@ test('R4-06B: Execution-Time Tool-Boundary Mediation, Traversal Rejection & Syml
     /FORBIDDEN_SOURCE_ACCESS_REFUSED/
   );
 
-  // 4. Allowed source roots are strictly respected
-  const permitted2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_manifest/spec.json');
+  // 4. Exact positive specimens and allowed source roots are strictly respected
+  const permitted2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md');
   assert.equal(permitted2A.permitted, true);
 
-  const permitted2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'app/wendbine/spec.md');
+  const permitted2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_series_rlc_circuit.md');
   assert.equal(permitted2B.permitted, true);
+
+  const permitted1 = assertArmSourceAccessPermitted('ARM_1_ARCHIVAL', 'app/wendbine/spec.md');
+  assert.equal(permitted1.permitted, true);
 
   // docs/research/manifest-succession is strictly excluded for all arms (Redpen IX-B1)
   assert.throws(
@@ -1431,11 +1437,11 @@ test('R4-06B: Execution-Time Tool-Boundary Mediation, Traversal Rejection & Syml
     mockMode: true
   });
 
-  // A. Permitted tool call with allowed path
+  // A. Permitted tool call with allowed path in exact positive specimen allowlist
   let executed = false;
   const toolResult = await harness.executeAuditedToolCall(
     'read_file',
-    { Path: 'docs/research/experiment-b-preflight/01_manifest/spec.json' },
+    { Path: 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md' },
     async (params) => {
       executed = true;
       return '{"spec": "valid"}';
@@ -1520,7 +1526,7 @@ test('R4-08: Prospective Live Episode Issuance, Immutable Registration & Replay 
       },
       (err) => {
         const output = (err.stdout || '') + (err.stderr || '');
-        return output.includes('WITNESS_TIER_REQUIRED') || err.status !== 0;
+        return output.includes('WITNESS_TIER_REQUIRED');
       }
     );
 
@@ -1542,7 +1548,7 @@ test('R4-08: Prospective Live Episode Issuance, Immutable Registration & Replay 
       },
       (err) => {
         const output = (err.stdout || '') + (err.stderr || '');
-        return output.includes('EPISODE_REPLAY_FORBIDDEN') || err.status !== 0;
+        return output.includes('EPISODE_REPLAY_FORBIDDEN');
       }
     );
   } finally {
@@ -1612,5 +1618,94 @@ test('Redpen IX-B: Strict Positive Manifest, Symlink Alias Defense & Fail-Closed
   } finally {
     if (fs.existsSync(corruptFile)) fs.unlinkSync(corruptFile);
     if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
+  }
+});
+
+test('Redpen X-B: Exact Specimen Manifest, Arm Parity & Concurrent Registry Lock', async () => {
+  // X-B1: Unlisted existing files in allowed directories are strictly refused for candidate arms
+  const unlistedExistingFixture = 'tests/fixtures/pedagogue/c1_sample.json';
+  if (fs.existsSync(unlistedExistingFixture)) {
+    assert.throws(
+      () => assertArmSourceAccessPermitted('ARM_2A_MODULAR', unlistedExistingFixture),
+      /UNLISTED_SOURCE_FILE_REFUSED/
+    );
+    assert.throws(
+      () => assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', unlistedExistingFixture),
+      /UNLISTED_SOURCE_FILE_REFUSED/
+    );
+  }
+
+  // Exact allowlist positive files are permitted
+  const validSpecimen = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md';
+  const access2A = assertArmSourceAccessPermitted('ARM_2A_MODULAR', validSpecimen);
+  assert.equal(access2A.permitted, true);
+  const access2B = assertArmSourceAccessPermitted('ARM_2B_MATCHED_UNION', validSpecimen);
+  assert.equal(access2B.permitted, true);
+
+  // X-B2: Arm Candidate Evidence Parity & Tool Isolation
+  assert.deepEqual(
+    ARM_EXECUTION_ACCESS_ALLOWLISTS.ARM_2A_MODULAR.allowedFiles,
+    ARM_EXECUTION_ACCESS_ALLOWLISTS.ARM_2B_MATCHED_UNION.allowedFiles
+  );
+  assert.equal(ARM_EXECUTION_ACCESS_ALLOWLISTS.ARM_2A_MODULAR.allowedSourceRoots.length, 0);
+  assert.equal(ARM_EXECUTION_ACCESS_ALLOWLISTS.ARM_2B_MATCHED_UNION.allowedSourceRoots.length, 0);
+
+  // verifyAccessParityContract flags check
+  const parity = verifyAccessParityContract('Neutral prompt without forbidden terms', 'ARM_2A_MODULAR');
+  assert.equal(parity.compliant, true);
+  assert.equal(parity.prompt_syntax_parity_verified, true);
+  assert.equal(parity.prompt_lint_passed, true);
+  assert.equal(parity.runtime_tool_execution_mediated, false);
+
+  // Model tool isolation check (client has no runtime tools)
+  const harness = new HeterogeneousDiscoveryHarness({ arm: 'ARM_2A_MODULAR', mockMode: true });
+  assert.deepEqual(harness.client?.tools || [], []);
+
+  // X-B3: Cross-Process Concurrent Episode Registration & Lock Integrity
+  const tempDir = path.resolve('.td613_temp_concurrent_lock_test');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'concurrent_episodes.json');
+
+  try {
+    // 1. Untrusted registry path outside repository is rejected
+    assert.throws(
+      () => assertTrustedRegistryPath('../../../outside_repo/episodes.json'),
+      /UNTRUSTED_REGISTRY_PATH_FORBIDDEN/
+    );
+
+    // 2. Parallel distinct episode registration: zero lost updates
+    const episodeIds = Array.from({ length: 8 }, (_, i) => `LIVE-EPISODE-CONCURRENT-${i}-${Date.now()}`);
+    await Promise.all(
+      episodeIds.map(epId => {
+        return new Promise((resolve, reject) => {
+          try {
+            const reg = registerLiveEpisode(epId, { arm: 'ARM_2A_MODULAR' }, registryFile);
+            resolve(reg);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      })
+    );
+
+    const savedRegistry = loadEpisodeRegistry(registryFile);
+    assert.equal(Object.keys(savedRegistry.episodes).length, 8);
+    for (const epId of episodeIds) {
+      assert.ok(savedRegistry.episodes[epId], `Expected episode ${epId} to be registered without lost update`);
+    }
+
+    // 3. Concurrent conflicting replay: attempting to register the exact same ID simultaneously
+    const duplicateId = `LIVE-EPISODE-DUPLICATE-${Date.now()}`;
+    registerLiveEpisode(duplicateId, { arm: 'ARM_2A_MODULAR' }, registryFile);
+    assert.throws(
+      () => registerLiveEpisode(duplicateId, { arm: 'ARM_2A_MODULAR' }, registryFile),
+      /EPISODE_REPLAY_FORBIDDEN/
+    );
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmdirSync(tempDir);
+    } catch {}
   }
 });

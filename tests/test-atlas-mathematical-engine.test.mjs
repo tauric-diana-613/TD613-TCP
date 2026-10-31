@@ -749,3 +749,73 @@ test('Redpen IX-A3: Noncommutative Ladder Operator Grammar Parser & Linear Combi
   assert.equal(r6.epistemic_status, 'NOT_EVALUATED');
   assert.equal(r6.reason, 'INPUT_UNSUPPORTED_OR_EXCEEDS_DOMAIN');
 });
+
+// ============================================================================
+// SECTION 4: REDPEN X FINITE ATLAS ACCEPTANCE BATTERY
+// ============================================================================
+
+test('Redpen X-A1: Normalized Density State Von Neumann Entropy & Cyclic Jacobi Residual Diagnostics', () => {
+  // 1. Unnormalized PSD matrix [[2, 0], [0, 0]]: trace 2, PSD true, density_matrix_valid false, entropy_bits null
+  const unnormalizedPsd = [
+    [2.0, 0.0],
+    [0.0, 0.0]
+  ];
+  const specUnnorm = computeComplexHermitianSpectrum(unnormalizedPsd);
+  assert.equal(specUnnorm.valid, true);
+  assert.equal(specUnnorm.is_positive_semidefinite, true);
+  assert.equal(specUnnorm.trace, 2.0);
+  assert.equal(specUnnorm.density_matrix_valid, false);
+  assert.equal(specUnnorm.entropy_bits, null);
+  assert.equal(specUnnorm.numerical_algorithm, 'CYCLIC_JACOBI_SIMILARITY');
+  assert.equal(specUnnorm.eigenvalue_type, 'NUMERICAL_SIGNED_EIGENVALUES');
+  assert.ok(specUnnorm.off_diagonal_residual <= 1e-12);
+  assert.equal(typeof specUnnorm.sweeps_converged, 'number');
+
+  // 2. Trace-zero PSD zero matrix [[0, 0], [0, 0]]: trace 0, PSD true, density_matrix_valid false, entropy_bits null
+  const zeroMatrix = [
+    [0.0, 0.0],
+    [0.0, 0.0]
+  ];
+  const specZero = computeComplexHermitianSpectrum(zeroMatrix);
+  assert.equal(specZero.valid, true);
+  assert.equal(specZero.is_positive_semidefinite, true);
+  assert.equal(specZero.trace, 0.0);
+  assert.equal(specZero.density_matrix_valid, false);
+  assert.equal(specZero.entropy_bits, null);
+
+  // 3. Indefinite matrix [[1, 0], [0, -1]]: trace 0, PSD false, density_matrix_valid false, entropy_bits null
+  const indefiniteMatrix = [
+    [1.0, 0.0],
+    [0.0, -1.0]
+  ];
+  const specIndef = computeComplexHermitianSpectrum(indefiniteMatrix);
+  assert.equal(specIndef.valid, true);
+  assert.equal(specIndef.is_positive_semidefinite, false);
+  assert.equal(specIndef.density_matrix_valid, false);
+  assert.equal(specIndef.entropy_bits, null);
+
+  // 4. Normalized mixed density state [[0.5, 0], [0, 0.5]]: trace 1, PSD true, density_matrix_valid true, entropy_bits 1.0
+  const validPsd = [
+    [0.5, 0.0],
+    [0.0, 0.5]
+  ];
+  const specValid = computeComplexHermitianSpectrum(validPsd);
+  assert.equal(specValid.valid, true);
+  assert.equal(specValid.is_positive_semidefinite, true);
+  assert.equal(specValid.trace, 1.0);
+  assert.equal(specValid.density_matrix_valid, true);
+  assert.equal(specValid.entropy_bits, 1.0);
+  assert.ok(specValid.off_diagonal_residual <= 1e-12);
+
+  // 5. Normalized pure state [[1, 0], [0, 0]]: trace 1, PSD true, density_matrix_valid true, entropy_bits 0.0
+  const pureState = [
+    [1.0, 0.0],
+    [0.0, 0.0]
+  ];
+  const specPure = computeComplexHermitianSpectrum(pureState);
+  assert.equal(specPure.valid, true);
+  assert.equal(specPure.is_positive_semidefinite, true);
+  assert.equal(specPure.trace, 1.0);
+  assert.equal(specPure.density_matrix_valid, true);
+  assert.equal(specPure.entropy_bits, 0.0);
+});
