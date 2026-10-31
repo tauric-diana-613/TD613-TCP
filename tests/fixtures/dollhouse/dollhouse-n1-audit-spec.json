@@ -1,0 +1,95 @@
+{
+  "task_scope": "DOLLHOUSE_N1_SCIENTIFIC_AUDIT",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
+    "scripts/run-experiment-b-flight.mjs",
+    "tests/test-flight-launchbridge.test.mjs",
+    "app/engine/atlas-mathematical-engine.js",
+    "tests/test-atlas-mathematical-engine.test.mjs"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        { "phase": "NOTICE", "at": 10 },
+        { "phase": "ACT", "at": 20 },
+        { "phase": "WORLD_ANSWERS", "at": 30 },
+        { "phase": "NAME", "at": 40 }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.0, 0.0],
+        [0.0, 1.0]
+      ],
+      "noise_covariance": [
+        [1.0, 0.0],
+        [0.0, 1.0]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "EXPERIMENT_B_PREFLIGHT_STAGE2_ENDPOINT",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "EXPERIMENT_B_PREFLIGHT_STAGE2_ENDPOINT",
+        "winding": 0
+      },
+      "relation_entry": {
+        "relation_class": "RECEIVER_INVARIANT",
+        "left": {
+          "a": 2,
+          "b": 2,
+          "s": 1,
+          "path": ["D", "E", "N"]
+        },
+        "right": {
+          "a": 2,
+          "b": 2,
+          "s": 1,
+          "path": ["D", "E", "N"]
+        },
+        "members": [
+          { "a": 2, "b": 2, "s": 1, "path": ["D", "E", "N"] },
+          { "a": 2, "b": 2, "s": 1, "path": ["D", "E", "N"] }
+        ],
+        "source_receiver": "EXPERIMENT_B_FOUR_ARM_HARNESS"
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": ["READ_ALLOWED_SPECIMEN", "VERIFY_CANONICAL_TARGET", "BYTE_BINDING"],
+          "condition": "EXACT_POSITIVE_SPECIMEN_ALLOWLIST"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "PREFLIGHT_STAGE2_WITNESS_VERIFICATION": { "status": "PASS", "entry_id": "STAGE2-WITNESS-01" },
+        "LIVE_EPISODE_REGISTRATION": { "status": "PASS", "entry_id": "EPISODE-REG-01" },
+        "ARCHIVE_INTAKE_ADMISSION": { "status": "PASS", "entry_id": "INTAKE-01" },
+        "ARM_EXECUTION": { "status": "PASS", "entry_id": "EXEC-01" },
+        "STAGE2_ADJUDICATION_RELOCK": { "status": "PASS", "entry_id": "RELOCK-01" }
+      },
+      "required_phases": [
+        "PREFLIGHT_STAGE2_WITNESS_VERIFICATION",
+        "LIVE_EPISODE_REGISTRATION",
+        "ARCHIVE_INTAKE_ADMISSION",
+        "ARM_EXECUTION",
+        "STAGE2_ADJUDICATION_RELOCK"
+      ]
+    }
+  }
+}

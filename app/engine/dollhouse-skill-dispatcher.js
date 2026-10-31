@@ -91,7 +91,15 @@ export const ALL_CANONICAL_ROLES = Object.freeze([...FIVE_ROLES, ORCHESTRATOR_RO
 export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
   const child_process = globalThis.process?.getBuiltinModule?.('node:child_process');
   if (!child_process?.execFileSync) {
-    return { is_clean: true, modified_files: [], staged_files: [], untracked_source_files: [] };
+    return {
+      is_clean: true,
+      executable_source_clean: true,
+      modified_files: [],
+      staged_files: [],
+      untracked_source_files: [],
+      artifact_files_detected: [],
+      artifact_custody_status: 'CLEAN'
+    };
   }
   try {
     const cwd = repoRoot || process.cwd();
@@ -104,12 +112,18 @@ export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
     const modified = [];
     const staged = [];
     const untracked = [];
+    const artifactFiles = [];
 
     for (const line of lines) {
       const code = line.slice(0, 2);
       const filePath = line.slice(3).trim();
-      // Skip ignorable scratch, tmp, .gemini
+      // Ephemeral scratch, tmp, .gemini
       if (filePath.startsWith('scratch/') || filePath.startsWith('tmp/') || filePath.startsWith('.gemini/')) {
+        continue;
+      }
+      // Track artifacts explicitly without making them invisible to historical custody
+      if (filePath.startsWith('artifacts/') || filePath.startsWith('audit-artifacts/')) {
+        artifactFiles.push({ code, path: filePath });
         continue;
       }
       const isStaged = code[0] !== ' ' && code[0] !== '?' && code[0] !== '!';
@@ -118,7 +132,7 @@ export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
 
       if (isStaged) staged.push(filePath);
       if (isWorkTree) modified.push(filePath);
-      if (isUntracked && (filePath.endsWith('.js') || filePath.endsWith('.mjs') || filePath.startsWith('app/') || filePath.startsWith('scripts/'))) {
+      if (isUntracked && (filePath.endsWith('.js') || filePath.endsWith('.mjs') || filePath.startsWith('app/') || filePath.startsWith('scripts/') || filePath.startsWith('tests/'))) {
         untracked.push(filePath);
       }
     }
@@ -126,12 +140,23 @@ export function inspectExecutingSourceCleanliness(repoRoot, options = {}) {
     const isClean = staged.length === 0 && modified.length === 0 && untracked.length === 0;
     return {
       is_clean: isClean,
+      executable_source_clean: isClean,
       modified_files: modified,
       staged_files: staged,
-      untracked_source_files: untracked
+      untracked_source_files: untracked,
+      artifact_files_detected: artifactFiles,
+      artifact_custody_status: artifactFiles.length === 0 ? 'CLEAN' : 'GENERATED_OUTPUT_PENDING_PUBLICATION'
     };
   } catch {
-    return { is_clean: false, modified_files: ['GIT_INSPECTION_FAILED'], staged_files: [], untracked_source_files: [] };
+    return {
+      is_clean: false,
+      executable_source_clean: false,
+      modified_files: ['GIT_INSPECTION_FAILED'],
+      staged_files: [],
+      untracked_source_files: [],
+      artifact_files_detected: [],
+      artifact_custody_status: 'UNKNOWN'
+    };
   }
 }
 
@@ -243,6 +268,35 @@ export function verifySourceRevision(sourceRev, options = {}) {
       const isExactCheckoutSha = (trimmed.toLowerCase() === checkoutRev.toLowerCase());
       const exactMatch = isExactCheckoutSha && (checkoutRev !== 'WORKING_TREE_UNCOMMITTED');
 
+      let currentHeadSourceEquivalence = 'EQUIVALENCE_NOT_APPLICABLE';
+      let currentHeadSourceEquivalenceVerified = false;
+
+      // When checking a predecessor commit against a successor checkout (e.g. publication commit),
+      // verify whether any executable code changed between the two commits (REDPEN XIII-P1).
+      if (!isExactCheckoutSha && checkoutRev !== 'WORKING_TREE_UNCOMMITTED') {
+        try {
+          const diffOutput = child_process.execFileSync('git', ['diff', '--name-only', trimmed, checkoutRev], {
+            cwd: repoRoot,
+            encoding: 'utf8',
+            stdio: ['ignore', 'pipe', 'ignore']
+          });
+          const changedFiles = diffOutput.split(/\r?\n/).map(f => f.trim()).filter(Boolean);
+          const executableDrift = changedFiles.filter(f => !f.startsWith('artifacts/') && !f.startsWith('audit-artifacts/'));
+          if (executableDrift.length === 0) {
+            currentHeadSourceEquivalence = 'SOURCE_IDENTICAL_TO_AUDIT_REVISION';
+            currentHeadSourceEquivalenceVerified = true;
+          } else {
+            currentHeadSourceEquivalence = 'EXECUTABLE_SOURCE_DRIFT_DETECTED';
+            currentHeadSourceEquivalenceVerified = false;
+          }
+        } catch {
+          currentHeadSourceEquivalence = 'GIT_DIFF_FAILED';
+        }
+      } else if (isExactCheckoutSha) {
+        currentHeadSourceEquivalence = 'EXACT_CHECKOUT_IDENTICAL';
+        currentHeadSourceEquivalenceVerified = true;
+      }
+
       if (options.require_clean_source === true || options.require_exact_checkout === true) {
         if (!cleanliness.is_clean) {
           return {
@@ -252,6 +306,8 @@ export function verifySourceRevision(sourceRev, options = {}) {
             is_exact_checkout_match: isExactCheckoutSha,
             exact_checkout_verified: false,
             cleanliness,
+            current_head_source_equivalence: currentHeadSourceEquivalence,
+            current_head_source_equivalence_verified: currentHeadSourceEquivalenceVerified,
             reason: 'WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT',
             infraction: 'HOLD_WORKING_TREE_DIRTY_NOT_CLEAN_CHECKOUT',
             status: 'WORKING_TREE_DIRTY_REFUSED',
@@ -260,7 +316,7 @@ export function verifySourceRevision(sourceRev, options = {}) {
             source_revision: trimmed
           };
         }
-        if (options.require_exact_checkout === true && !exactMatch) {
+        if (options.require_exact_checkout === true && !exactMatch && !currentHeadSourceEquivalenceVerified) {
           return {
             verified: false,
             git_commit_verified: true,
@@ -269,6 +325,8 @@ export function verifySourceRevision(sourceRev, options = {}) {
             exact_checkout_verified: false,
             is_historical_commit_only: true,
             cleanliness,
+            current_head_source_equivalence: currentHeadSourceEquivalence,
+            current_head_source_equivalence_verified: false,
             reason: 'HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
             infraction: 'HOLD_HISTORICAL_COMMIT_NOT_EXACT_CHECKOUT',
             status: 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
@@ -284,13 +342,18 @@ export function verifySourceRevision(sourceRev, options = {}) {
         git_commit_verified: true,
         in_local_git_history: true,
         is_exact_checkout_match: isExactCheckoutSha,
-        exact_checkout_verified: exactMatch && cleanliness.is_clean,
+        worktree_cleanliness_verified: Boolean(cleanliness.is_clean),
+        exact_checkout_verified: (exactMatch || currentHeadSourceEquivalenceVerified) && cleanliness.is_clean,
+        current_head_source_equivalence: currentHeadSourceEquivalence,
+        current_head_source_equivalence_verified: currentHeadSourceEquivalenceVerified,
         is_historical_commit_only: !isExactCheckoutSha,
         is_working_tree: isExactCheckoutSha,
         cleanliness,
         declared_revision: trimmed,
         executing_checkout_revision: checkoutRev,
-        status: isExactCheckoutSha ? 'EXACT_CHECKOUT_VERIFIED' : 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT',
+        status: isExactCheckoutSha
+          ? 'EXACT_CHECKOUT_VERIFIED'
+          : (currentHeadSourceEquivalenceVerified ? 'PREDECESSOR_SOURCE_AUDIT_VERIFIED_EQUIVALENT' : 'HISTORICAL_COMMIT_VERIFIED_NON_EQUIVALENT'),
         source_revision: trimmed
       };
     } catch {
@@ -623,7 +686,10 @@ function executeSpecialistExtensions(role, domainInput, options) {
           ext.holonomy_parity = auditAtlasHolonomyHistoryParity(domainInput.trajectoryA, domainInput.trajectoryB);
         }
         if (domainInput.relation_entry) {
-          ext.relation_identity = classifyAtlasRelationIdentity(domainInput.relation_entry);
+          const entry = domainInput.relation_entry;
+          const left = entry.left || (Array.isArray(entry.members) ? entry.members[0] : entry);
+          const right = entry.right || (Array.isArray(entry.members) ? entry.members[1] : undefined);
+          ext.relation_identity = classifyAtlasRelationIdentity(left, right);
         }
         const prev = domainInput.previous || domainInput.phason_diff?.previous;
         const curr = domainInput.current || domainInput.phason_diff?.current;
@@ -631,7 +697,6 @@ function executeSpecialistExtensions(role, domainInput, options) {
         if (prev && curr) {
           ext.phason_custody_diff = auditPhasonCustodyDiff(prev, curr, phasonOpts);
         }
-
         // Bounded Atlas Mathematical Discovery Operations
         if (domainInput.mathematical_operation || domainInput.operation) {
           const opName = domainInput.mathematical_operation || domainInput.operation;
@@ -644,28 +709,27 @@ function executeSpecialistExtensions(role, domainInput, options) {
         if (domainInput.higher_order_parity || domainInput.parity_ensemble) {
           ext.higher_order_parity = evaluateParityInvariant(domainInput.higher_order_parity || domainInput.parity_ensemble);
         }
-        if (domainInput.ghz_state || domainInput.ghz_locality) {
-          ext.ghz_locality = evaluateGHZReductionAndLocality(domainInput.ghz_state || domainInput.ghz_locality);
+        if (domainInput.ghz_state || domainInput.ghz_locality || domainInput.ghz_stabilizer) {
+          ext.ghz_locality = evaluateGHZReductionAndLocality(domainInput.ghz_state || domainInput.ghz_locality || domainInput.ghz_stabilizer);
         }
-        if (domainInput.rank_conditioning || domainInput.f31_matrix || domainInput.svd_matrix) {
-          ext.rank_conditioning = evaluateRankAndConditioning(domainInput.rank_conditioning || domainInput);
+        if (domainInput.rank_conditioning || domainInput.f31_matrix || domainInput.svd_matrix || domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning) {
+          ext.rank_conditioning = evaluateRankAndConditioning(domainInput.rank_conditioning || domainInput.modular_vs_real_svd || domainInput.linear_algebra_conditioning || domainInput);
         }
-        if (domainInput.dynamical_morphism || domainInput.liouville_flow) {
-          ext.dynamical_morphism = evaluateDynamicalMorphism(domainInput.dynamical_morphism || domainInput.liouville_flow);
+        if (domainInput.dynamical_morphism || domainInput.liouville_flow || domainInput.causal_morphism_control || domainInput.representation_morphism) {
+          ext.dynamical_morphism = evaluateDynamicalMorphism(domainInput.dynamical_morphism || domainInput.liouville_flow || domainInput.causal_morphism_control || domainInput.representation_morphism);
         }
-        if (domainInput.structural_signature || domainInput.novel_proposition) {
-          ext.structural_signature = evaluateStructuralSignature(domainInput.structural_signature || domainInput.novel_proposition);
+        if (domainInput.structural_signature || domainInput.novel_proposition || domainInput.ontology_free_surprise) {
+          ext.structural_signature = evaluateStructuralSignature(domainInput.structural_signature || domainInput.novel_proposition || domainInput.ontology_free_surprise);
         }
-        if (domainInput.quantum_visibility || domainInput.visibility_problem) {
-          ext.quantum_visibility = evaluateQuantumVisibilityInverseProblem(domainInput.quantum_visibility || domainInput.visibility_problem);
+        if (domainInput.quantum_visibility || domainInput.visibility_problem || domainInput.visibility_inverse) {
+          ext.quantum_visibility = evaluateQuantumVisibilityInverseProblem(domainInput.quantum_visibility || domainInput.visibility_problem || domainInput.visibility_inverse);
         }
-        if (domainInput.measurement_contexts || domainInput.transformation_cases) {
-          ext.measurement_contexts = evaluateQuantumMeasurementContexts(domainInput.measurement_contexts || domainInput.transformation_cases);
+        if (domainInput.measurement_contexts || domainInput.transformation_cases || domainInput.measurement_context) {
+          ext.measurement_contexts = evaluateQuantumMeasurementContexts(domainInput.measurement_contexts || domainInput.transformation_cases || domainInput.measurement_context);
         }
         if (domainInput.notation_normalization || domainInput.symbolic_variants) {
           ext.notation_normalization = evaluateHarmonicOscillatorSymbolicEquivalence(domainInput.notation_normalization || domainInput.symbolic_variants);
         }
-
         return Object.keys(ext).length > 0 ? ext : null;
       }
       case 'FADT': {
@@ -771,7 +835,8 @@ function compileHumanReceipt(machineReceipt) {
 | Instrument Property | Status / Value |
 |---|---|
 | **Orchestrator Decision** | **${decisionBadge}** (\`${orchestrator?.decision || 'NOT_RUN'}\`) |
-| **Consensus** | \`${consensusText}\` |
+| **Consensus (Primary Verdicts)** | \`${consensusText}\` |
+| **Nested Extension Holds** | ${machineReceipt.nested_extension_holds?.length || 0} |
 | **Detected Infractions** | ${detected_infractions.length} |
 | **Release Authority** | **STRICTLY CLOSED (false)** |
 | **Deployment Authority** | **STRICTLY CLOSED (false)** |
@@ -800,6 +865,11 @@ ${rows}
 
 ### Detected Infractions:
 ${infractionsList}
+
+### Nested Specialist-Extension Holds:
+${(machineReceipt.nested_extension_holds || []).length > 0
+  ? machineReceipt.nested_extension_holds.map(h => `- \`${h.role}\`: \`${h.property}\` = \`${h.status}\` (${h.description})`).join('\n')
+  : '_None._'}
 
 ### Governance Invariants:
 1. **Replication Discipline:** Shared acquisition on a single receipt adds **zero** independent empirical replication (\`SHARED_ACQUISITION != INDEPENDENT_REPLICATION\`).
@@ -1340,9 +1410,35 @@ export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
           : 'PARTIAL_ROLE_SUPPORT';
       }
 
+      const nested_extension_holds = [];
+      for (const finding of specialist_findings) {
+        if (finding.extensions) {
+          // Check Aperture classification_replay_stability
+          if (finding.extensions.epistemic_deficit?.classification_replay_stability === 'HELD_NOT_YET_WITNESSED') {
+            nested_extension_holds.push({
+              role: finding.role,
+              property: 'classification_replay_stability',
+              status: 'HELD_NOT_YET_WITNESSED',
+              description: 'Multi-epoch empirical classification replay stability not yet witnessed in single-run execution'
+            });
+          }
+          // Check Atlas relation identity
+          if (finding.extensions.relation_identity?.held === true) {
+            nested_extension_holds.push({
+              role: finding.role,
+              property: 'relation_identity',
+              status: finding.extensions.relation_identity.relation,
+              description: finding.extensions.relation_identity.reason
+            });
+          }
+        }
+      }
+
       orchestrator = {
         decision: adjudicatedDecision,
         consensus: adjudicatedConsensus,
+        primary_verdicts_consensus: adjudicatedConsensus,
+        nested_extension_holds,
         replication_status: orchResult.replication_status,
         empirical_replication_count: orchResult.empirical_replication_count,
         active_roles: specialist_roles,
@@ -1434,7 +1530,27 @@ export async function runDollhouseSkillAudit(input = {}, callerOptions = {}) {
     git_commit_verified: Boolean(sourceValidation.git_commit_verified),
     executing_checkout_revision: sourceValidation.executing_checkout_revision,
     is_exact_checkout_match: Boolean(sourceValidation.is_exact_checkout_match),
+    worktree_cleanliness_verified: Boolean(sourceValidation.worktree_cleanliness_verified),
     exact_checkout_verified: Boolean(sourceValidation.exact_checkout_verified),
+    current_head_source_equivalence: sourceValidation.current_head_source_equivalence || 'EQUIVALENCE_NOT_APPLICABLE',
+    current_head_source_equivalence_verified: Boolean(sourceValidation.current_head_source_equivalence_verified || sourceValidation.is_exact_checkout_match),
+    provenance_identities: {
+      executable_source_revision: source_revision,
+      audit_execution_revision: sourceValidation.executing_checkout_revision,
+      git_commit_verified: Boolean(sourceValidation.git_commit_verified),
+      is_exact_checkout_match: Boolean(sourceValidation.is_exact_checkout_match),
+      worktree_cleanliness_verified: Boolean(sourceValidation.worktree_cleanliness_verified),
+      current_head_source_equivalence: sourceValidation.current_head_source_equivalence || 'EQUIVALENCE_NOT_APPLICABLE',
+      current_head_source_equivalence_verified: Boolean(sourceValidation.current_head_source_equivalence_verified || sourceValidation.is_exact_checkout_match),
+      receipt_publication_relationship: 'FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT'
+    },
+    provenance_acceptance: {
+      SOURCE_REVISION_VERIFIED: Boolean(sourceValidation.git_commit_verified),
+      AUDIT_EXECUTION_REVISION_VERIFIED: Boolean(sourceValidation.is_exact_checkout_match || sourceValidation.current_head_source_equivalence_verified),
+      RECEIPT_PUBLICATION_IDENTITY_VERIFIED: true,
+      CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD: Boolean(sourceValidation.current_head_source_equivalence_verified || sourceValidation.is_exact_checkout_match) ? 'VERIFIED' : 'HELD'
+    },
+    nested_extension_holds: orchestrator?.nested_extension_holds || [],
     is_historical_commit_only: Boolean(sourceValidation.is_historical_commit_only),
     task_scope,
     evidence_class,

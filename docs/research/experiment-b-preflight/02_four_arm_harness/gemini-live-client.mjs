@@ -7,6 +7,30 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { geminiGenerateContentUrl, geminiRequestHeaders, observeGeminiQuota } from '../../../../server/gemini-provider-transport.js';
 
+export const MODEL_PRICING = Object.freeze({
+  'gemini-2.5-flash-lite': {
+    inputPerMillion: 0.10,
+    outputPerMillion: 0.40,
+    thoughtsPerMillion: 0.40
+  },
+  'gemini-2.5-flash': {
+    inputPerMillion: 0.30,
+    outputPerMillion: 2.50,
+    thoughtsPerMillion: 2.50
+  }
+});
+
+/**
+ * Calculates financial cost in USD using current Google standard paid API rates.
+ * Output pricing includes thinking / reasoning tokens.
+ */
+export function calculateModelCost(model, inputTokens = 0, outputTokens = 0, thoughtsTokens = 0) {
+  const pricing = MODEL_PRICING[model] || MODEL_PRICING['gemini-2.5-flash-lite'];
+  const inputCost = (inputTokens / 1_000_000) * pricing.inputPerMillion;
+  const outputCost = ((outputTokens + thoughtsTokens) / 1_000_000) * pricing.outputPerMillion;
+  return Number((inputCost + outputCost).toFixed(8));
+}
+
 function loadApiKey() {
   if (process.env.GEMINI_API_KEY) return process.env.GEMINI_API_KEY;
   const envPath = path.resolve('.env');
@@ -28,14 +52,18 @@ export class GeminiLiveClient {
     this.model = options.model || 'gemini-2.5-flash-lite';
     this.temperature = options.temperature ?? 0.0;
     this.maxOutputTokens = options.maxOutputTokens ?? 4096;
+    this.sharedBudgetGovernor = options.sharedBudgetGovernor || null;
+    this.fetchStub = options.fetchStub || null;
     this.recordedTraces = [];
+    this.totalProviderAttempts = 0;
+    this.totalInternalRetries = 0;
   }
 
   isAvailable() {
-    return Boolean(this.apiKey && this.apiKey.length > 10);
+    return Boolean(this.fetchStub || (this.apiKey && this.apiKey.length > 10));
   }
 
-  async invoke({ systemInstruction = '', prompt = '', context = '', episodeId = 'ep-0' }) {
+  async invoke({ systemInstruction = '', prompt = '', context = '', episodeId = 'ep-0', arm = 'UNKNOWN_ARM' }) {
     if (!this.isAvailable()) {
       throw new Error('MODEL_EXECUTION_UNAVAILABLE: GEMINI_API_KEY not found in environment or .env');
     }
@@ -67,23 +95,49 @@ export class GeminiLiveClient {
     let resData;
     let attempts = 0;
     const maxAttempts = 3;
+    const attemptLog = [];
 
     while (attempts < maxAttempts) {
       attempts++;
-      try {
-        response = await fetch(url, {
-          method: 'POST',
-          headers: geminiRequestHeaders(this.apiKey),
-          body: JSON.stringify(requestBody)
-        });
+      this.totalProviderAttempts++;
 
-        resData = await response.json();
+      // R3-04: Account every individual attempt (including retries) under the shared governor
+      if (this.sharedBudgetGovernor) {
+        this.sharedBudgetGovernor.registerProviderAttempt(arm, { episode_id: episodeId, attempt: attempts });
+      }
+
+      const attemptStart = Date.now();
+      try {
+        if (typeof this.fetchStub === 'function') {
+          response = await this.fetchStub(url, {
+            method: 'POST',
+            headers: geminiRequestHeaders(this.apiKey || 'STUB_API_KEY'),
+            body: JSON.stringify(requestBody)
+          }, attempts);
+          resData = await response.json();
+        } else {
+          response = await fetch(url, {
+            method: 'POST',
+            headers: geminiRequestHeaders(this.apiKey),
+            body: JSON.stringify(requestBody)
+          });
+          resData = await response.json();
+        }
+
+        const attemptLatency = Date.now() - attemptStart;
+        attemptLog.push({
+          attempt_index: attempts,
+          http_status: response.status,
+          latency_ms: attemptLatency,
+          timestamp: new Date().toISOString()
+        });
 
         if (response.status === 200) {
           break;
         } else if (response.status === 429 || response.status >= 500) {
+          this.totalInternalRetries++;
           const quota = observeGeminiQuota(resData, { model: this.model, response });
-          const delay = Math.max(2000 * attempts, 2000);
+          const delay = this.fetchStub ? 10 : Math.max(2000 * attempts, 2000);
           console.warn(`[GeminiLiveClient] HTTP ${response.status} on attempt ${attempts}. Retrying in ${delay}ms...`);
           await new Promise(r => setTimeout(r, delay));
         } else {
@@ -91,7 +145,9 @@ export class GeminiLiveClient {
         }
       } catch (err) {
         if (attempts >= maxAttempts) throw err;
-        await new Promise(r => setTimeout(r, 2000 * attempts));
+        this.totalInternalRetries++;
+        const delay = this.fetchStub ? 10 : 2000 * attempts;
+        await new Promise(r => setTimeout(r, delay));
       }
     }
 
@@ -108,6 +164,24 @@ export class GeminiLiveClient {
     const textParts = candidateParts.filter(p => p.text && !p.thought).map(p => p.text);
     const responseText = textParts.join('\n').trim() || candidateParts.map(p => p.text).join('\n').trim();
 
+    // Granular usage extraction from provider metadata (R3-04)
+    const usage = resData.usageMetadata || {};
+    let promptTokens = usage.promptTokenCount ?? null;
+    let candidatesTokens = usage.candidatesTokenCount ?? null;
+    let thoughtsTokens = usage.thoughtsTokenCount ?? 0;
+    let cachedTokens = usage.cachedContentTokenCount ?? 0;
+    let usageEstimationStatus = 'VERIFIED_PROVIDER_METADATA';
+
+    if (promptTokens === null || candidatesTokens === null) {
+      // R3-04: If provider metadata is absent, measure conservatively and record explicit status
+      usageEstimationStatus = 'CONSERVATIVE_HEURISTIC_PROVIDER_METADATA_ABSENT';
+      promptTokens = promptTokens ?? Math.max(150, Math.ceil(Buffer.byteLength(fullPrompt, 'utf8') / 2.8));
+      candidatesTokens = candidatesTokens ?? Math.max(50, Math.ceil(Buffer.byteLength(responseText, 'utf8') / 2.8));
+      thoughtsTokens = 0;
+    }
+
+    const totalTokens = usage.totalTokenCount ?? (promptTokens + candidatesTokens + thoughtsTokens);
+
     const trace = {
       episode_id: episodeId,
       model_provider: 'Google Gemini REST API (v1beta)',
@@ -122,17 +196,19 @@ export class GeminiLiveClient {
         latency_ms: latencyMs
       },
       http_status: response.status,
+      attempt_count: attempts,
+      internal_retries: attempts - 1,
+      attempt_log: attemptLog,
       system_instruction_hash: systemInstruction ? crypto.createHash('sha256').update(systemInstruction).digest('hex') : null,
       request_token_budget: this.maxOutputTokens,
-      total_tokens: resData.usageMetadata?.totalTokenCount ?? null,
-      prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
-      candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,
       provider_usage: {
-        prompt_tokens: resData.usageMetadata?.promptTokenCount ?? null,
-        candidates_tokens: resData.usageMetadata?.candidatesTokenCount ?? null,
-        thoughts_tokens: resData.usageMetadata?.thoughtsTokenCount ?? null,
-        total_tokens: resData.usageMetadata?.totalTokenCount ?? null,
-        service_tier: resData.usageMetadata?.serviceTier ?? 'standard'
+        prompt_tokens: promptTokens,
+        candidates_tokens: candidatesTokens,
+        thoughts_tokens: thoughtsTokens,
+        cached_tokens: cachedTokens,
+        total_tokens: totalTokens,
+        usage_estimation_status: usageEstimationStatus,
+        service_tier: usage.serviceTier ?? 'standard'
       },
       finish_reason: candidate?.finishReason || 'STOP',
       raw_prompt: fullPrompt,

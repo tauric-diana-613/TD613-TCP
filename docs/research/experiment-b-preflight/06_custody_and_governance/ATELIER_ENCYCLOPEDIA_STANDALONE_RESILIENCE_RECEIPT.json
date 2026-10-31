@@ -1,6 +1,6 @@
 {
   "schema": "td613.experiment-b.atelier-encyclopedia-resilience-receipt/v1",
-  "timestamp": "2026-10-30T12:54:49.137Z",
+  "timestamp": "2026-10-31T02:39:28.205Z",
   "authority": "Sovereign Operator Direct · Emergence HQ Independent Scientific Review",
   "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
   "disposition": "ATELIER_ENCYCLOPEDIA_STANDALONE_RESILIENCE_VERIFIED",
@@ -45,6 +45,6 @@
     "gate_e_disposition": "HELD",
     "empirical_exteriority_credit": 0,
     "human_scientific_closure": "RESERVED",
-    "issue_405_release_authority": "CLOSED"
+    "issue_405_release_authority": "RELEASE_NOT_AUTHORIZED"
   }
 }

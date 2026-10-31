@@ -372,6 +372,11 @@ export function validAtlasMember(m) {
  * recognition NEVER replaces or erases individual member paths.
  */
 export function classifyAtlasRelationIdentity(left, right) {
+  if (left && typeof left === 'object' && right === undefined && (left.left || left.members)) {
+    const entry = left;
+    left = entry.left || (Array.isArray(entry.members) ? entry.members[0] : undefined);
+    right = entry.right || (Array.isArray(entry.members) ? entry.members[1] : undefined);
+  }
   const lc = cloneAtlasMember(left);
   const rc = cloneAtlasMember(right);
 

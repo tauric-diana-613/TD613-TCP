@@ -1,0 +1,233 @@
+{
+  "schema": "td613.aperture.v32-computed-operator-bridge/v0.1",
+  "timestamp": "2026-10-30T18:06:02.625Z",
+  "authority": "Sovereign Operator Direct · Emergence HQ Independent Scientific Review",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po (U+200C preserved)",
+  "research_scalar": "U+10D613 (\\uDBF5\\uDE13)",
+  "display_glyph": "𝌋 (U+1D30B)",
+  "provenance_summary": {
+    "finite_field_modulus": 31,
+    "algebraic_method": "Gaussian rankMod over F_31 (Real SVD strictly prohibited)",
+    "real_method": "One-sided Jacobi SVD with singular value condition number",
+    "route_memory_holonomy": "Path groupoid composition over 2-face noncommuting boundary"
+  },
+  "executions": {
+    "finite_field": {
+      "positive_full_schedule": {
+        "rank": 4,
+        "nullity": 0,
+        "unique_reconstruction": true,
+        "reconstructed_operator": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "heldout_residual": 0,
+        "aperture_deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "aperture_disposition": "ASK_NOTHING"
+      },
+      "blind_schedule": {
+        "rank": 3,
+        "nullity": 1,
+        "unique_reconstruction": false,
+        "heldout_residual": null,
+        "aperture_deficit_class": "STRUCTURAL_RANK_DEFICIT",
+        "aperture_disposition": "PROPOSE"
+      }
+    },
+    "real_valued": {
+      "well_conditioned": {
+        "singular_values": [
+          2,
+          1.5
+        ],
+        "condition_number": 1.3333333333333333,
+        "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+        "disposition": "ASK_NOTHING"
+      },
+      "ill_conditioned": {
+        "singular_values": [
+          2.00005000125,
+          0.0000499987499999711
+        ],
+        "condition_number": 40002.000075025,
+        "deficit_class": "NUMERICAL_STABILITY_DEFICIT",
+        "disposition": "PROPOSE",
+        "probe_evaluation_disposition": "PROPOSE"
+      },
+      "structural_deficit": {
+        "singular_values": [
+          2.23606797749979,
+          0
+        ],
+        "condition_number": null,
+        "deficit_class": "STRUCTURAL_RANK_DEFICIT",
+        "disposition": "PROPOSE"
+      },
+      "invalid_noise_geometry": {
+        "deficit_class": "NOISE_GEOMETRY_INCOMPLETE",
+        "disposition": "ABSTAIN"
+      }
+    },
+    "route_reconstruction": {
+      "gamma1_loop": [
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "gamma2_loop": [
+        [
+          3,
+          26
+        ],
+        [
+          2,
+          28
+        ]
+      ],
+      "commutator": [
+        [
+          11,
+          2
+        ],
+        [
+          30,
+          14
+        ]
+      ],
+      "commutator_is_identity": false,
+      "order_distinct": true,
+      "route_memory_preserved": true
+    }
+  },
+  "four_first_dome_conditions": [
+    {
+      "condition_id": "CONDITION_1_IDENTICAL_CONTENT_CHANGED_PROJECTION",
+      "description": "Identical source content observed under different full-rank projection bases",
+      "evidence_status": "NEWLY_EXECUTED_USING_AUTHENTICATED_OPERATOR",
+      "finding": "Reconstructed operators under basis P_FULL and alternative full-rank frame yield identical underlying matrix and zero held-out residual.",
+      "rank": 4,
+      "nullity": 0,
+      "classification": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+      "disposition": "ASK_NOTHING"
+    },
+    {
+      "condition_id": "CONDITION_2_CHANGED_CONTENT_EQUIVALENT_PRESENTATION",
+      "description": "Changed content observed under identical projection presentation",
+      "evidence_status": "NEWLY_EXECUTED_USING_AUTHENTICATED_OPERATOR",
+      "finding": "Perturbed operator under identical probe schedule produces distinct observable residuals, enabling discrimination.",
+      "rank": 4,
+      "nullity": 0,
+      "classification": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+      "disposition": "ASK_NOTHING"
+    },
+    {
+      "condition_id": "CONDITION_3_CHANGED_STEWARDSHIP_OR_CUSTODY_PERMISSIONS",
+      "description": "Changed custody permissions or unauthenticated access assertion",
+      "evidence_status": "ALREADY_EXECUTED_IN_EXISTING_RESEARCH",
+      "finding": "Unauthenticated custody claims fail closed; private custody boundary prevents git tracking or uncredentialed publication.",
+      "rank": null,
+      "nullity": null,
+      "classification": "INVALID_NOISE_GEOMETRY",
+      "disposition": "REJECT"
+    },
+    {
+      "condition_id": "CONDITION_4_DIFFERENT_ROUTES_EQUIVALENT_ENDPOINTS",
+      "description": "Distinct chronological exposure routes arriving at identical terminal state",
+      "evidence_status": "NEWLY_EXECUTED_USING_AUTHENTICATED_OPERATOR",
+      "finding": "Git commit tree-equality (ea4cf165...) coexists with distinct parentage; noncommuting holonomy path products order12 != order21 demonstrate route burden.",
+      "rank": 4,
+      "nullity": 0,
+      "classification": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+      "disposition": "ASK_NOTHING"
+    }
+  ],
+  "adversarial_controls": {
+    "all_passed": true,
+    "controls": {
+      "ctrl_01_positive_reconstruction": {
+        "pass": true,
+        "metric": "Unique solution with zero held-out residual",
+        "result": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "ctrl_02_persistent_underdetermination": {
+        "pass": true,
+        "metric": "Refuses unique solution under rank 3 probe set",
+        "nullity": 1
+      },
+      "ctrl_03_heldout_residual": {
+        "pass": true,
+        "metric": "P_HOLD prediction matches observed probe scalar exactly",
+        "residual": 0
+      },
+      "ctrl_04_gauge_equivalent": {
+        "pass": true,
+        "metric": "Gauge-transformed edge reconstructs faithfully with zero holdout residual",
+        "transformed_operator": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ]
+      },
+      "ctrl_05_hostile_contradictory_observation": {
+        "pass": true,
+        "metric": "Identical probes yielding conflicting observations detected and rejected",
+        "contradiction_detected": true
+      },
+      "ctrl_06_wrong_operator_binding": {
+        "pass": true,
+        "metric": "BC operator assigned to AB edge is recognized as mismatch against AB oracle",
+        "mismatch_detected": true
+      },
+      "ctrl_07_unauthenticated_custody": {
+        "pass": true,
+        "metric": "Unsigned or uncredentialed archive grant rejected at intake gate without exposure",
+        "fail_closed_verified": true
+      },
+      "ctrl_08_reordered_route_consequence": {
+        "pass": true,
+        "metric": "Gamma1 * Gamma2 != Gamma2 * Gamma1 in noncommuting loop surface",
+        "order_distinct": true
+      },
+      "ctrl_09_content_invariant_projection": {
+        "pass": true,
+        "metric": "Same underlying matrix represented in different coordinates preserves determinant and invariants",
+        "determinant": 1
+      },
+      "ctrl_10_ask_nothing": {
+        "pass": true,
+        "metric": "Full-rank, well-conditioned matrix receives ASK_NOTHING disposition",
+        "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT"
+      },
+      "ctrl_11_abstain": {
+        "pass": true,
+        "metric": "Incomplete noise geometry status triggers ABSTAIN disposition",
+        "deficit_class": "NOISE_GEOMETRY_INCOMPLETE"
+      }
+    }
+  }
+}

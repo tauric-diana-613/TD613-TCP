@@ -19,4 +19,8 @@ Crashpad/
 .superdesign/tmp/
 .neon
 artifacts/dollhouse-browser-witness/
+artifacts/private/
+.td613_custody/
+docs/research/experiment-b-preflight/02_four_arm_harness/dry_run_checkpoint.json
+docs/research/experiment-b-preflight/02_four_arm_harness/flight_research_ledger.json
 scratch/

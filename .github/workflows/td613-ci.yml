@@ -214,6 +214,11 @@ jobs:
             tests/dollhouse-repair-regressions-r01-r08.test.mjs \
             tests/dollhouse-design-conductor.test.mjs \
             tests/test-atlas-mathematical-engine.test.mjs
+      - name: Validate Experiment B Flight Launchbridge, Security Battery, and Discovery Controls
+        run: |
+          node --test tests/test-flight-launchbridge.test.mjs
+          node tests/test-heterogeneous-discovery-harness.mjs
+          node tests/test-evaluator-oracle.mjs
       - name: Execute clean exact-head Dollhouse browser witness
         run: |
           mkdir -p artifacts/dollhouse-browser-witness
