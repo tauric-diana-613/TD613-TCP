@@ -19,6 +19,12 @@ import { GeminiLiveClient, MODEL_PRICING } from './gemini-live-client.mjs';
 
 const DEFAULT_REPO_ROOT = path.resolve('.');
 
+export const INGRESS_TRUST_CLASSES = Object.freeze({
+  PROTECTED: 'PROTECTED',
+  AUTHENTICATED_CALIBRATION: 'AUTHENTICATED_CALIBRATION',
+  SYNTHETIC: 'SYNTHETIC'
+});
+
 export const FORBIDDEN_ACCESS_PARITY_PATTERNS = [
   /docs\/atlas\//i,
   /ATLAS\.md/i,
@@ -319,7 +325,10 @@ export class HeterogeneousDiscoveryHarness {
     this.allowLivePaidInference = options.allowLivePaidInference || false;
     this.model = options.model || 'gemini-2.5-flash-lite';
     this.maxOutputTokensPerCall = options.maxOutputTokensPerCall || 4096;
-    this.strictIngestionDigest = options.strictIngestionDigest ?? false;
+    this.trustClass = options.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
+    this.strictIngestionDigest = options.strictIngestionDigest !== undefined
+      ? Boolean(options.strictIngestionDigest)
+      : (this.trustClass === INGRESS_TRUST_CLASSES.PROTECTED || this.trustClass === INGRESS_TRUST_CLASSES.AUTHENTICATED_CALIBRATION);
 
     // Fail-closed execution resource ceilings
     this.maxCalls = options.maxCalls ?? 120;
@@ -432,7 +441,13 @@ export class HeterogeneousDiscoveryHarness {
 
     if (toolName === 'read_file') {
       const filePath = params.Path || params.path || '';
-      return assertArmSourceAccessPermitted(this.arm, filePath, options);
+      const effectiveTrust = params.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
+      const opts = {
+        ...options,
+        requireExisting: options.requireExisting || params.requireExisting || Boolean(options.requireExisting || params.requireExisting),
+        requireByteBinding: options.requireByteBinding || params.requireByteBinding
+      };
+      return assertArmSourceAccessPermitted(this.arm, filePath, opts);
     }
     return { permitted: true, arm: this.arm, toolName };
   }
@@ -463,7 +478,25 @@ export class HeterogeneousDiscoveryHarness {
       if (typeof executorFn === 'function') {
         result = await executorFn(params);
         callRecord.output_preview = typeof result === 'string' ? result.slice(0, 200) : 'OBJECT_OUTPUT';
-        const shouldVerifyDigest = params.verifyExecutorDigest !== false && params.isSynthetic !== true && params.untrustedSynthetic !== true;
+
+        const effectiveTrustClass = params.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
+        if (effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
+          if (params.verifyExecutorDigest === false) {
+            throw new Error(
+              'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot disable digest verification (verifyExecutorDigest=false) on a PROTECTED trust class.'
+            );
+          }
+          if (params.isSynthetic === true || params.untrustedSynthetic === true) {
+            throw new Error(
+              'PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot declare synthetic mode (isSynthetic/untrustedSynthetic) on a PROTECTED trust class.'
+            );
+          }
+        }
+
+        const shouldVerifyDigest = effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED
+          ? true
+          : (params.verifyExecutorDigest !== false && params.isSynthetic !== true && params.untrustedSynthetic !== true);
+
         if (toolName === 'read_file' && auth && auth.byteBindingDigest && shouldVerifyDigest) {
           const resultBytes = Buffer.isBuffer(result) ? result : Buffer.from(typeof result === 'string' ? result : JSON.stringify(result), 'utf8');
           const actualDigest = crypto.createHash('sha256').update(resultBytes).digest('hex');
@@ -643,29 +676,66 @@ export class HeterogeneousDiscoveryHarness {
 
   // Step 2: Ingest Single Sequential Document (tk)
   async ingestSequentialDocument(doc, turnIndex, options = {}) {
-    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI & Redpen XII-B2)
+    const effectiveTrustClass = doc.trustClass || options.trustClass || this.trustClass || INGRESS_TRUST_CLASSES.PROTECTED;
+
+    // Caller cannot downgrade protected admission into synthetic mode (Redpen XIII-P2)
+    if (effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED) {
+      if (options.isSynthetic === true || options.untrustedSynthetic === true || doc.isSynthetic === true) {
+        throw new Error('PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED: Caller cannot declare synthetic mode on a PROTECTED trust class.');
+      }
+    }
+
+    let calculatedSha = null;
+    let docBytes = null;
+
+    // Verify document byte-binding integrity upon downstream ingestion (Redpen XI, XII-B2, XIII-P2)
     if (doc && (doc.raw_bytes || doc.content)) {
-      const docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
-      const calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
-      const isStrict = this.strictIngestionDigest || options.strict || doc.requireDigest;
-      if (doc.sha256) {
+      docBytes = doc.raw_bytes || Buffer.from(doc.content, 'utf8');
+      calculatedSha = crypto.createHash('sha256').update(docBytes).digest('hex');
+      const isProtected = effectiveTrustClass === INGRESS_TRUST_CLASSES.PROTECTED;
+      const isStrict = isProtected || this.strictIngestionDigest || options.strict || doc.requireDigest;
+
+      if (!doc.sha256) {
+        if (isProtected || isStrict) {
+          throw new Error(
+            `DOCUMENT_INGESTION_DIGEST_REQUIRED: Admitted document '${doc.filename}' lacks mandatory sha256 digest in ${effectiveTrustClass} mode. Ingestion rejected fail-closed.`
+          );
+        }
+      } else {
         if (typeof doc.sha256 !== 'string' || doc.sha256.length !== 64 || calculatedSha.toLowerCase() !== doc.sha256.toLowerCase()) {
           throw new Error(
             `DOCUMENT_INGESTION_INTEGRITY_MISMATCH: Admitted document '${doc.filename}' payload digest (${calculatedSha}) does not match admission digest (${doc.sha256}). Ingestion rejected fail-closed.`
           );
         }
-      } else if (isStrict) {
-        throw new Error(
-          `DOCUMENT_INGESTION_DIGEST_REQUIRED: Admitted document '${doc.filename}' lacks mandatory sha256 digest in strict ingestion mode. Ingestion rejected fail-closed.`
-        );
       }
 
-      // Authenticated text derivative lineage binding (Redpen XII-B2)
-      if (doc.is_derivative && doc.parent_raw_sha256) {
+      // Authenticated text derivative lineage binding (Redpen XII-B2, XIII-P2)
+      const isDerivative = doc.is_derivative || doc.derivative_status === 'AUTHENTICATED_DERIVATIVE' || doc.parent_raw_sha256;
+      if (isDerivative) {
+        if (!doc.parent_raw_sha256) {
+          throw new Error(
+            `PROTECTED_DERIVATIVE_LINEAGE_MANDATORY: Authenticated derivative document '${doc.filename}' omits mandatory parent_raw_sha256. Lineage binding rejected fail-closed.`
+          );
+        }
         if (!doc.derivative_sha256 || doc.derivative_sha256.toLowerCase() !== calculatedSha.toLowerCase()) {
           throw new Error(
             `DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH: Authenticated text derivative '${doc.filename}' content digest (${calculatedSha}) does not match derivative_sha256 (${doc.derivative_sha256}). Lineage binding rejected fail-closed.`
           );
+        }
+      }
+
+      // TOCTOU check: verify file on disk has not mutated between authorization and prompt construction
+      if (doc.filePath && fs.existsSync(doc.filePath)) {
+        try {
+          const diskBytes = fs.readFileSync(doc.filePath);
+          const diskSha = crypto.createHash('sha256').update(diskBytes).digest('hex');
+          if (diskSha.toLowerCase() !== calculatedSha.toLowerCase()) {
+            throw new Error(
+              `SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE: Document '${doc.filename}' changed on disk (current ${diskSha}) compared to authorized admission digest (${calculatedSha}) before prompt construction. Ingestion rejected fail-closed.`
+            );
+          }
+        } catch (err) {
+          if (err.message.includes('SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE')) throw err;
         }
       }
     }
@@ -891,6 +961,8 @@ ${doc.content}`;
       turn: turnIndex,
       document_id: doc.id,
       document_sha256: doc.sha256 || computeSha256(doc.content || ''),
+      consumed_bytes_sha256: calculatedSha || (doc.sha256 || computeSha256(doc.content || '')),
+      model_exposed_bytes_length: docBytes ? docBytes.length : (doc.content ? Buffer.byteLength(doc.content, 'utf8') : 0),
       timestamp: new Date().toISOString(),
       raw_output: responseText,
       chamber_outputs: chamberOutputs,

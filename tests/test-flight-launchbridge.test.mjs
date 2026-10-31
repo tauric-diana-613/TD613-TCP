@@ -17,7 +17,8 @@ import {
   verifyAccessParityContract,
   assertArmSourceAccessPermitted,
   ARM_EXECUTION_ACCESS_ALLOWLISTS,
-  EXACT_POSITIVE_SPECIMEN_ALLOWLIST
+  EXACT_POSITIVE_SPECIMEN_ALLOWLIST,
+  INGRESS_TRUST_CLASSES
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs';
 import {
   Stage2IndependentEvaluator,
@@ -513,7 +514,8 @@ test('B-06: Pre-Dispatch Budget Reservation and Model Pricing Ceilings', async (
 test('B-07: Exact Physical Byte-Span Grounding vs Ungrounded Proposition', async () => {
   const harness = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2A_MODULAR',
-    mockMode: true
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC
   });
 
   await harness.establishPreExposureBaseline();
@@ -575,12 +577,14 @@ test('B-08: Shared Aggregate Budget Governor Across Cognitive Arms', async () =>
   const harnessA = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2A_MODULAR',
     mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     sharedBudgetGovernor: governor
   });
 
   const harnessB = new HeterogeneousDiscoveryHarness({
     arm: 'ARM_2B_MATCHED_UNION',
     mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.SYNTHETIC,
     sharedBudgetGovernor: governor
   });
 
@@ -2201,7 +2205,8 @@ test('Redpen XII-C2: Finite Episode State Machine Lifecycle Transitions', () => 
     const ep4 = updateEpisodeStatus(epId, 'GENERATION_INTERRUPTED', { reason: 'BUDGET_RESERVATION_HALT' }, registryFile);
     assert.equal(ep4.status, 'GENERATION_INTERRUPTED');
 
-    // 5. Completion transition
+    // 5. Resume and Completion transition
+    updateEpisodeStatus(epId, 'GENERATION_STARTED', { resumed: true }, registryFile);
     const ep5 = updateEpisodeStatus(epId, 'GENERATION_COMPLETED', { candidates_count: 5 }, registryFile);
     assert.equal(ep5.status, 'GENERATION_COMPLETED');
 
@@ -2213,7 +2218,7 @@ test('Redpen XII-C2: Finite Episode State Machine Lifecycle Transitions', () => 
     assert.equal(ep7.status, 'ADJUDICATED');
 
     // 7. Verify status history preserves full non-retroactive sequence
-    assert.equal(ep7.status_history.length, 6);
+    assert.equal(ep7.status_history.length, 7);
     assert.equal(ep7.status_history[0].from, 'WITNESS_VERIFIED');
     assert.equal(ep7.status_history[0].to, 'ARCHIVE_ADMITTED');
 
@@ -2269,9 +2274,13 @@ test('Redpen XII-C4: Source-Free End-to-End Interruption and Recovery Rehearsal'
       resumed_at: new Date().toISOString()
     }, registryFile);
 
-    // Phase 6: Completed Generation & Stage 2 Adjudication
+    // Phase 6: Completed Generation, Stage 2 Handoff & Adjudication
     updateEpisodeStatus(rehearsalEpisodeId, 'GENERATION_COMPLETED', {
       total_turns_completed: 4
+    }, registryFile);
+
+    updateEpisodeStatus(rehearsalEpisodeId, 'STAGE2_PENDING', {
+      stage2_evaluator: 'EMERGENCE_HQ_BLINDED'
     }, registryFile);
 
     updateEpisodeStatus(rehearsalEpisodeId, 'ADJUDICATED', {
@@ -2281,7 +2290,247 @@ test('Redpen XII-C4: Source-Free End-to-End Interruption and Recovery Rehearsal'
     const finalRegistry = loadEpisodeRegistry(registryFile);
     const finalEp = finalRegistry.episodes[rehearsalEpisodeId];
     assert.equal(finalEp.status, 'ADJUDICATED');
-    assert.ok(finalEp.status_history.length >= 5);
+    assert.ok(finalEp.status_history.length >= 6);
+  } finally {
+    try {
+      if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);
+      if (fs.existsSync(`${registryFile}.lock`)) fs.unlinkSync(`${registryFile}.lock`);
+      if (fs.existsSync(tempDir)) fs.rmSync(tempDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+});
+
+test('Redpen XIII-P2: Universal Protected-Path Byte Binding & 8 Negative Control Vectors', async () => {
+  const harness = new HeterogeneousDiscoveryHarness({
+    arm: 'ARM_2A_MODULAR',
+    mockMode: true,
+    trustClass: INGRESS_TRUST_CLASSES.PROTECTED
+  });
+
+  const testFile = 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_harmonic_oscillator.json';
+  const realBytes = fs.readFileSync(testFile);
+  const realSha = crypto.createHash('sha256').update(realBytes).digest('hex');
+
+  // Negative Control 1: Protected executor requests verifyExecutorDigest=false -> Refused
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('read_file', {
+        Path: testFile,
+        verifyExecutorDigest: false
+      }, async () => 'some dummy content');
+    },
+    /PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED/
+  );
+
+  // Negative Control 2: Protected executor declares isSynthetic=true or untrustedSynthetic=true -> Refused
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('read_file', {
+        Path: testFile,
+        isSynthetic: true
+      }, async () => 'some dummy content');
+    },
+    /PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED/
+  );
+
+  await assert.rejects(
+    async () => {
+      await harness.executeAuditedToolCall('read_file', {
+        Path: testFile,
+        untrustedSynthetic: true
+      }, async () => 'some dummy content');
+    },
+    /PROTECTED_SOURCE_DIGEST_BYPASS_REFUSED/
+  );
+
+  // Negative Control 3: Protected document omits sha256 -> Refused
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument({
+        id: 'DOC-OMIT-SHA',
+        filename: 'protected_specimen.json',
+        content: JSON.stringify({ parameter: 'k' })
+        // sha256 missing
+      }, 1);
+    },
+    /DOCUMENT_INGESTION_DIGEST_REQUIRED/
+  );
+
+  // Negative Control 4: A derivative omits parent_raw_sha256 -> Refused
+  const validDerivativeContent = '# Derivative text';
+  const validDerivativeSha = crypto.createHash('sha256').update(Buffer.from(validDerivativeContent, 'utf8')).digest('hex');
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument({
+        id: 'DOC-DERIVATIVE-NO-PARENT',
+        filename: 'derivative_doc.txt',
+        content: validDerivativeContent,
+        sha256: validDerivativeSha,
+        is_derivative: true,
+        derivative_sha256: validDerivativeSha
+        // parent_raw_sha256 missing
+      }, 1);
+    },
+    /PROTECTED_DERIVATIVE_LINEAGE_MANDATORY/
+  );
+
+  // Negative Control 5: A derivative's contents differ from its signed or admitted digest -> Refused
+  await assert.rejects(
+    async () => {
+      await harness.ingestSequentialDocument({
+        id: 'DOC-DERIVATIVE-CORRUPT',
+        filename: 'derivative_doc.txt',
+        content: validDerivativeContent + ' TAMPERED',
+        sha256: validDerivativeSha,
+        is_derivative: true,
+        parent_raw_sha256: 'a'.repeat(64),
+        derivative_sha256: validDerivativeSha
+      }, 1);
+    },
+    /DOCUMENT_INGESTION_INTEGRITY_MISMATCH|DERIVATIVE_LINEAGE_INTEGRITY_MISMATCH/
+  );
+
+  // Negative Control 6: Source changes between authorization and prompt construction (TOCTOU) -> Refused
+  const tempToctouDir = path.resolve('.td613_temp_toctou_test');
+  if (!fs.existsSync(tempToctouDir)) fs.mkdirSync(tempToctouDir, { recursive: true });
+  const toctouFile = path.join(tempToctouDir, 'toctou_doc.json');
+  try {
+    fs.writeFileSync(toctouFile, JSON.stringify({ version: 1 }), 'utf8');
+    const admittedSha = crypto.createHash('sha256').update(fs.readFileSync(toctouFile)).digest('hex');
+
+    // Mutate file on disk before ingestion
+    fs.writeFileSync(toctouFile, JSON.stringify({ version: 2, mutated: true }), 'utf8');
+
+    await assert.rejects(
+      async () => {
+        await harness.ingestSequentialDocument({
+          id: 'DOC-TOCTOU',
+          filename: 'toctou_doc.json',
+          filePath: toctouFile,
+          content: JSON.stringify({ version: 1 }),
+          sha256: admittedSha
+        }, 1);
+      },
+      /SOURCE_MUTATED_BETWEEN_AUTHORIZATION_AND_EXPOSURE/
+    );
+  } finally {
+    try {
+      if (fs.existsSync(toctouFile)) fs.unlinkSync(toctouFile);
+      if (fs.existsSync(tempToctouDir)) fs.rmSync(tempToctouDir, { recursive: true, force: true });
+    } catch (_) {}
+  }
+
+  // Negative Control 7: A source path is allowlisted but its canonical target is unauthorized -> Refused
+  const symlinkSource = path.resolve(REPO_ROOT, 'docs/research/experiment-b-preflight/01_calibration_fixtures/symlink_escape.json');
+  try {
+    if (!fs.existsSync(symlinkSource)) {
+      try { fs.symlinkSync(path.resolve(REPO_ROOT, 'package.json'), symlinkSource); } catch (_) {}
+    }
+    if (fs.existsSync(symlinkSource)) {
+      assert.throws(
+        () => harness.auditToolExecution('read_file', { Path: 'docs/research/experiment-b-preflight/01_calibration_fixtures/symlink_escape.json' }),
+        /UNLISTED_SOURCE_FILE_REFUSED/
+      );
+    }
+  } finally {
+    try { if (fs.existsSync(symlinkSource)) fs.unlinkSync(symlinkSource); } catch (_) {}
+  }
+
+  // Negative Control 8: A calibration source is absent or unreadable -> Refused
+  assert.throws(
+    () => harness.auditToolExecution('read_file', {
+      Path: 'docs/research/experiment-b-preflight/01_calibration_fixtures/c1_damped_mechanical_oscillator.md',
+      requireExisting: true
+    }),
+    /SOURCE_FILE_NOT_FOUND_REFUSED/
+  );
+});
+
+test('Redpen XIII-P3: Enforced Finite State Adjacency Matrix & Forbidden Transition Sieve', () => {
+  const tempDir = path.resolve('.td613_temp_xiii_p3_fsm');
+  if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+  const registryFile = path.join(tempDir, 'fsm_rejection_episodes.json');
+  const epId = `FSM-REJECT-EP-${Date.now()}`;
+
+  try {
+    // Initial registration in PROSPECTIVE_RESERVED
+    registerLiveEpisode(epId, {
+      backend: 'native',
+      arm: 'ARM_2A_MODULAR',
+      status: 'PROSPECTIVE_RESERVED'
+    }, registryFile);
+
+    // 1. Forbidden transition: WITNESS_VERIFIED -> ADJUDICATED
+    updateEpisodeStatus(epId, 'WITNESS_VERIFIED', {}, registryFile);
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'ADJUDICATED', {}, registryFile),
+      /ILLEGAL_STATE_TRANSITION/
+    );
+
+    // 2. Forbidden transition: ARCHIVE_ADMITTED -> STAGE2_PENDING
+    updateEpisodeStatus(epId, 'ARCHIVE_ADMITTED', {}, registryFile);
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'STAGE2_PENDING', {}, registryFile),
+      /ILLEGAL_STATE_TRANSITION/
+    );
+
+    // 3. Forbidden transition: GENERATION_STARTED -> ADJUDICATED
+    updateEpisodeStatus(epId, 'GENERATION_STARTED', {}, registryFile);
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'ADJUDICATED', {}, registryFile),
+      /ILLEGAL_STATE_TRANSITION/
+    );
+
+    // 4. Forbidden transition: GENERATION_COMPLETED -> ADJUDICATED (without STAGE2_PENDING)
+    updateEpisodeStatus(epId, 'GENERATION_COMPLETED', {}, registryFile);
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'ADJUDICATED', {}, registryFile),
+      /ILLEGAL_STATE_TRANSITION/
+    );
+
+    // 5. Lawful path: GENERATION_COMPLETED -> STAGE2_PENDING -> ADJUDICATED
+    updateEpisodeStatus(epId, 'STAGE2_PENDING', {}, registryFile);
+    updateEpisodeStatus(epId, 'ADJUDICATED', {}, registryFile);
+
+    // 6. Terminal state protection: Cannot transition out of ADJUDICATED
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'GENERATION_STARTED', {}, registryFile),
+      /TERMINAL_STATE_PROTECTED/
+    );
+
+    // 7. Duplicate transition refused
+    const regAfterAdj = loadEpisodeRegistry(registryFile);
+    assert.equal(regAfterAdj.episodes[epId].status, 'ADJUDICATED');
+    assert.throws(
+      () => updateEpisodeStatus(epId, 'ADJUDICATED', {}, registryFile),
+      /TERMINAL_STATE_PROTECTED|DUPLICATE_STATE_TRANSITION_REFUSED/
+    );
+
+    // 8. Aborted pre-exposure episode terminal state protection
+    const abortEpId = `ABORT-EP-${Date.now()}`;
+    registerLiveEpisode(abortEpId, {
+      backend: 'native',
+      arm: 'ARM_2A_MODULAR',
+      status: 'WITNESS_VERIFIED'
+    }, registryFile);
+
+    updateEpisodeStatus(abortEpId, 'ABORTED_BEFORE_EXPOSURE', { reason: 'INTAKE_VERIFICATION_FAILED' }, registryFile);
+    assert.throws(
+      () => updateEpisodeStatus(abortEpId, 'GENERATION_STARTED', {}, registryFile),
+      /TERMINAL_STATE_PROTECTED/
+    );
+
+    // 9. Tamper-evident cryptographic transition hash chain verified
+    const finalReg = loadEpisodeRegistry(registryFile);
+    const epRecord = finalReg.episodes[epId];
+    assert.ok(epRecord.status_history.length >= 6);
+    for (let i = 1; i < epRecord.status_history.length; i++) {
+      assert.equal(
+        epRecord.status_history[i].prev_transition_hash,
+        epRecord.status_history[i - 1].transition_hash
+      );
+      assert.ok(/^[a-f0-9]{64}$/.test(epRecord.status_history[i].transition_hash));
+    }
   } finally {
     try {
       if (fs.existsSync(registryFile)) fs.unlinkSync(registryFile);

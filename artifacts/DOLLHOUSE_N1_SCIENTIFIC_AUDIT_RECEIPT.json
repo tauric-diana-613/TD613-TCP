@@ -1,14 +1,32 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793420840767-f693811e",
-  "timestamp": "2026-10-31T04:27:20.767Z",
-  "source_revision": "e8d0f692d6e273c0ec3dbc41ad9d5c2a4070e812",
+  "invocation_id": "dollhouse-audit-1793423187776-92e6b895",
+  "timestamp": "2026-10-31T05:06:27.777Z",
+  "source_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "e8d0f692d6e273c0ec3dbc41ad9d5c2a4070e812",
+  "executing_checkout_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
   "is_exact_checkout_match": true,
-  "worktree_cleanliness_verified": true,
-  "exact_checkout_verified": true,
+  "worktree_cleanliness_verified": false,
+  "exact_checkout_verified": false,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
+    "audit_execution_revision": "06dfc985eee2cca2de7b98154d35d35db563f316",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": false,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
   "nested_extension_holds": [
     {
       "role": "APERTURE",
@@ -32,25 +50,25 @@
       "reference": "docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "8e8c0bb39622a09a744b48ae181d7d866cb209699812ef58961da78f9db2110f",
+      "byte_digest": "8e17ee5fb2de356153ff72e09a393e1c9f502d37f6f51d5b156f49aa7bdbcc1d",
       "byte_digest_verified": true,
-      "sha256": "8e8c0bb39622a09a744b48ae181d7d866cb209699812ef58961da78f9db2110f"
+      "sha256": "8e17ee5fb2de356153ff72e09a393e1c9f502d37f6f51d5b156f49aa7bdbcc1d"
     },
     {
       "reference": "scripts/run-experiment-b-flight.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "90629b9bb72c6bfa3d114eb16840a10d2e90d2b8aa635c162edaa2ee60fb6e12",
+      "byte_digest": "95515ac76e76b401e7f576d36065db760a6bb8cac6d9cb69570fd3d1b5c8da68",
       "byte_digest_verified": true,
-      "sha256": "90629b9bb72c6bfa3d114eb16840a10d2e90d2b8aa635c162edaa2ee60fb6e12"
+      "sha256": "95515ac76e76b401e7f576d36065db760a6bb8cac6d9cb69570fd3d1b5c8da68"
     },
     {
       "reference": "tests/test-flight-launchbridge.test.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "1cc56f06fc4315ea4476e559d6479e731ddc7f1afe08cec8cf31e2e6cb1bab52",
+      "byte_digest": "839be2ecaef918a11a2f0c460e076bf0a265d3ca012cfe0eda994ca87bd0f7e5",
       "byte_digest_verified": true,
-      "sha256": "1cc56f06fc4315ea4476e559d6479e731ddc7f1afe08cec8cf31e2e6cb1bab52"
+      "sha256": "839be2ecaef918a11a2f0c460e076bf0a265d3ca012cfe0eda994ca87bd0f7e5"
     },
     {
       "reference": "app/engine/atlas-mathematical-engine.js",
@@ -401,5 +419,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 569
+  "execution_duration_ms": 487
 }

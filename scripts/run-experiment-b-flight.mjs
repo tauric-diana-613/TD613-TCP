@@ -238,7 +238,7 @@ export function releaseRegistryLock(lockFile, lockToken = null) {
   }
 }
 
-export const CANONICAL_EPISODE_STATES = [
+export const CANONICAL_EPISODE_STATES = Object.freeze([
   'PROSPECTIVE_RESERVED',
   'WITNESS_VERIFIED',
   'ARCHIVE_ADMITTED',
@@ -248,11 +248,29 @@ export const CANONICAL_EPISODE_STATES = [
   'STAGE2_PENDING',
   'ADJUDICATED',
   'ABORTED_BEFORE_EXPOSURE'
-];
+]);
+
+export const TERMINAL_EPISODE_STATES = Object.freeze([
+  'ADJUDICATED',
+  'ABORTED_BEFORE_EXPOSURE'
+]);
+
+export const LEGAL_EPISODE_STATE_TRANSITIONS = Object.freeze({
+  REGISTERED: Object.freeze(['PROSPECTIVE_RESERVED', 'WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
+  PROSPECTIVE_RESERVED: Object.freeze(['WITNESS_VERIFIED', 'ABORTED_BEFORE_EXPOSURE']),
+  WITNESS_VERIFIED: Object.freeze(['ARCHIVE_ADMITTED', 'ABORTED_BEFORE_EXPOSURE']),
+  ARCHIVE_ADMITTED: Object.freeze(['GENERATION_STARTED', 'ABORTED_BEFORE_EXPOSURE']),
+  GENERATION_STARTED: Object.freeze(['GENERATION_INTERRUPTED', 'GENERATION_COMPLETED']),
+  GENERATION_INTERRUPTED: Object.freeze(['GENERATION_STARTED']), // Idempotent resume
+  GENERATION_COMPLETED: Object.freeze(['STAGE2_PENDING']),
+  STAGE2_PENDING: Object.freeze(['ADJUDICATED']),
+  ADJUDICATED: Object.freeze([]), // Terminal
+  ABORTED_BEFORE_EXPOSURE: Object.freeze([]) // Terminal
+});
 
 /**
- * Updates the finite lifecycle status of an episode in the registry (Redpen XII-C2).
- * Enforces valid state transitions and transactional atomicity.
+ * Updates the finite lifecycle status of an episode in the registry (Redpen XII-C2, XIII-P3).
+ * Enforces legal state transition adjacency, terminal state non-reversibility, and transactional integrity.
  */
 export function updateEpisodeStatus(episodeId, newStatus, details = {}, registryPath = DEFAULT_EPISODE_REGISTRY_FILE) {
   const idStr = String(episodeId || '').trim();
@@ -272,17 +290,53 @@ export function updateEpisodeStatus(episodeId, newStatus, details = {}, registry
     }
 
     const ep = registry.episodes[idStr];
-    const prevStatus = ep.status;
+    const prevStatus = ep.status || 'REGISTERED';
+
+    // 1. Terminal state protection: cannot transition out of terminal state
+    if (TERMINAL_EPISODE_STATES.includes(prevStatus)) {
+      throw new Error(
+        `TERMINAL_STATE_PROTECTED: Cannot transition episode '${idStr}' out of terminal state '${prevStatus}' to '${newStatus}'. Terminal states are non-reversible.`
+      );
+    }
+
+    // 2. Duplicate transition / completion prevention
+    if (prevStatus === newStatus) {
+      throw new Error(
+        `DUPLICATE_STATE_TRANSITION_REFUSED: Episode '${idStr}' is already in state '${prevStatus}'. Duplicate transition refused.`
+      );
+    }
+
+    // 3. Finite state adjacency enforcement
+    const allowedNext = LEGAL_EPISODE_STATE_TRANSITIONS[prevStatus] || [];
+    if (!allowedNext.includes(newStatus)) {
+      throw new Error(
+        `ILLEGAL_STATE_TRANSITION: Episode '${idStr}' cannot transition from '${prevStatus}' to '${newStatus}'. Permitted transitions: [${allowedNext.join(', ')}].`
+      );
+    }
+
+    // 4. Monotonic attempt counting
+    ep.attempt_count = (ep.attempt_count || 0) + 1;
     ep.status = newStatus;
     ep.updated_at = new Date().toISOString();
     if (!ep.status_history) ep.status_history = [];
-    ep.status_history.push({
+
+    // 5. Tamper-evident cryptographic hash chaining for transition history
+    const prevTransitionHash = ep.status_history.length > 0
+      ? ep.status_history[ep.status_history.length - 1].transition_hash
+      : '0000000000000000000000000000000000000000000000000000000000000000';
+
+    const transitionPayload = {
+      attempt: ep.attempt_count,
       from: prevStatus,
       to: newStatus,
       at: ep.updated_at,
+      prev_transition_hash: prevTransitionHash,
       details
-    });
+    };
+    const transitionHash = crypto.createHash('sha256').update(JSON.stringify(transitionPayload)).digest('hex');
+    transitionPayload.transition_hash = transitionHash;
 
+    ep.status_history.push(transitionPayload);
     Object.assign(ep, details);
 
     const tmpPath = `${trustedPath}.tmp.${Date.now()}.${crypto.randomBytes(4).toString('hex')}`;
