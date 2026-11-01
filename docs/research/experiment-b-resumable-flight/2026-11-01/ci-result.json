@@ -1,0 +1,25 @@
+{
+  "evidence_class": "ACTUAL_GITHUB_ACTIONS_OBSERVATION",
+  "tested_code_head": "13fd7bcfb2cfb78bc8672f77763f415700434d06",
+  "targeted": {
+    "run_id": 41338586219,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41338586219",
+    "conclusion": "success"
+  },
+  "consolidated": {
+    "run_id": 41338586221,
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41338586221",
+    "job_id": 124943622076,
+    "conclusion": "failure",
+    "failed_step": "Enforce the four-workflow estate and release membrane",
+    "command": "node tests/workflow-estate.test.mjs",
+    "exit_code": 1,
+    "assertion": "AssertionError [ERR_ASSERTION]: Workflow estate must remain exactly four durable authority surfaces. Found: experiment-b-resumable.yml, pages.yml, td613-ci.yml, vercel-operator-release.yml, vercel-relock-safety.yml"
+  },
+  "cause": "New experiment-b-resumable.yml creates a fifth workflow authority surface.",
+  "correction_performed": false,
+  "smallest_corrective_action": "Remove the added workflow and place the same targeted job in an existing approved workflow using a Node version with node:sqlite.",
+  "repair_boundary": "The one permitted correction pass was already used. Preserve evidence and stop; no second implementation correction or rerun.",
+  "code_changed_after_tested_head": false,
+  "disposition": "RESUMABLE_FLIGHT_IMPLEMENTATION_HELD_WITH_IRREDUCIBLE_BLOCKER"
+}

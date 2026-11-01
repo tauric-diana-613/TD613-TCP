@@ -12,6 +12,7 @@
     "docs/research/experiment-b-resumable-flight/2026-11-01/RESOURCE_AMENDMENT_CANDIDATE.md",
     "docs/research/experiment-b-resumable-flight/2026-11-01/RUNTIME_AND_CUSTODY.md",
     "docs/research/experiment-b-resumable-flight/2026-11-01/changed-file-inventory.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/ci-result.json",
     "docs/research/experiment-b-resumable-flight/2026-11-01/gate-f-matrix.json",
     "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation-result.json",
     "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation.tap",
@@ -27,5 +28,5 @@
     "scripts/experiment-b-resumable/runner.mjs",
     "tests/experiment-b-resumable.test.mjs"
   ],
-  "total": 23
+  "total": 24
 }

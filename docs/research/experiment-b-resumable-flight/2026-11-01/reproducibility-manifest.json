@@ -24,15 +24,15 @@
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/PROVENANCE_AND_REPRODUCTION.md",
-      "bytes": 7257,
-      "sha256": "8827c5f352e7ff2e669ec79c372c16cbf0c59c3f1732dc97c49bd2ff25c98541",
-      "git_blob_sha1": "93264f21a28ad8c50e024e585963a186a34acd3f"
+      "bytes": 7922,
+      "sha256": "03b41acbeaa45168e71b620aa3bc3ce174b85d64c1965e83ef69a03895b6d4ee",
+      "git_blob_sha1": "54a37736d64c00de08b60fae3fa039d93d36a152"
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/README.md",
-      "bytes": 3734,
-      "sha256": "ec77b447aa842f7e4e1a92c6822efb01405466974278560a2b847eb93b638321",
-      "git_blob_sha1": "e0de1391bf41287fd66ae9d4471caf09159bafca"
+      "bytes": 4749,
+      "sha256": "5a133735d023228b8ff2883b68677fdda108cc463c730a007c56559821812c0f",
+      "git_blob_sha1": "95b1caaac33e8f75e6382f7a7046e2a33d6c9196"
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/RESOURCE_AMENDMENT_CANDIDATE.md",
@@ -48,15 +48,21 @@
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/changed-file-inventory.json",
-      "bytes": 1815,
-      "sha256": "c22e86c9173b9819151a12e2b3010b39cc575c44e23e1f3642e33c57668daa09",
-      "git_blob_sha1": "326fee2408e311c8c16452ebdf9193b29c395722"
+      "bytes": 1892,
+      "sha256": "306efe51a4b48b5aa0a1a23614cb834e553d1809daffce71ae09f573fc0fdd62",
+      "git_blob_sha1": "a83e1ea33e93a4391f3b355ac9cbe9035da415e8"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/ci-result.json",
+      "bytes": 1427,
+      "sha256": "ad57610b0cdeaaf6c65afbe80acedc0a86d2296156857c1e405cc033e4656c2b",
+      "git_blob_sha1": "8fef49e1f8bcebbbbee7f9e9ec8fcdefd4f13bb6"
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/gate-f-matrix.json",
-      "bytes": 3906,
-      "sha256": "2908befd6205aea7e8ee6af769bb356d8a1ad74c4f44f7b0704f89d8fc5ddf7a",
-      "git_blob_sha1": "9acc9d26ecfe73fa901d72c3dccc42d7205a7cbc"
+      "bytes": 4361,
+      "sha256": "682c16d27972c3ee33c1b5165dd18f8678a1c6659dbf23397dd83c0c69e0dcb0",
+      "git_blob_sha1": "aff1fced0f7be0c0b538b336015fdb1804717f73"
     },
     {
       "path": "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation-result.json",

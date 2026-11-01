@@ -1,6 +1,8 @@
 # Experiment B · recoverable Flight implementation
 
-**RESUMABLE_FLIGHT_IMPLEMENTATION_READY_FOR_INDEPENDENT_REVIEW** within the source-free tested scope. This is an executable mechanism and a proposed resource amendment, not protected-execution authority. Gate P CLOSED; Gate F HELD; Gate E HELD; human closure RESERVED.
+**RESUMABLE_FLIGHT_IMPLEMENTATION_HELD_WITH_IRREDUCIBLE_BLOCKER.** The new source-free mechanism passes its targeted tests, but the added CI workflow violates the repository's exact four-workflow estate. The one permitted correction pass has been used; no second implementation repair is made. This is an executable recoverable-work handoff and proposed resource amendment, not protected-execution authority. Gate P CLOSED; Gate F HELD; Gate E HELD; human closure RESERVED.
+
+Exact blocker: consolidated run 41338586221, job 124943622076, `node tests/workflow-estate.test.mjs` exits 1: “Workflow estate must remain exactly four durable authority surfaces.” The added `experiment-b-resumable.yml` creates a fifth. The smallest corrective action is to move the same targeted Node >=24.4 job into an existing approved workflow and remove the new workflow. This is a bounded repository compatibility correction, not a reason to restart Experiment B or commission another budget study. `ci-result.json` preserves the failing assertion, successful targeted run and exact tested code HEAD. The final evidence-only commit changes no implementation or test code.
 
 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · 𝌋 U+1D30B · U+10D613.
 
@@ -21,6 +23,7 @@ The three invented documents in the test are a bookkeeping fixture. They do not 
 - `source-bindings.json`, `changed-file-inventory.json`, `reproducibility-manifest.json`: source revisions and artifact hashes.
 - `synthetic-recovery-receipts.json`, `targeted-tests.tap`, `validation-result.json`: actual new synthetic observations.
 - `initial-validation.tap`, `initial-validation-result.json`: preserved failed validation attempt.
+- `ci-result.json`: successful targeted GitHub workflow and failing repository-estate compatibility check; no rerun requested.
 
 The new backend dispatch is `--backend codex-resumable`. Its signed configuration and actual isolated runtime must be provisioned and accepted before use. The existing Antigravity `native`, REST, source-free adapter guard, archive WeakMap, archival engine and evaluator remain unchanged. No automatic fallback is added.
 

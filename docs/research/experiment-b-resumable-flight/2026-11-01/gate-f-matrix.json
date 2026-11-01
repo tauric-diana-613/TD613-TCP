@@ -1,5 +1,5 @@
 {
-  "disposition": "RESUMABLE_FLIGHT_IMPLEMENTATION_READY_FOR_INDEPENDENT_REVIEW",
+  "disposition": "RESUMABLE_FLIGHT_IMPLEMENTATION_HELD_WITH_IRREDUCIBLE_BLOCKER",
   "scope": "Source-free local implementation properties only",
   "gate_p": "CLOSED",
   "gate_f": "HELD",
@@ -11,6 +11,7 @@
   "empirical_replication_credit": 0,
   "amendment_adopted": false,
   "requirements": [
+    {"id":"I01","condition":"Repository workflow-estate compatibility","status":"HELD_AFTER_PERMITTED_CORRECTION_PASS","evidence":"ci-result.json; consolidated run 41338586221 job 124943622076","blocker":"Added experiment-b-resumable.yml creates a fifth workflow, violating tests/workflow-estate.test.mjs. Smallest correction: place targeted job in an existing approved workflow and remove new workflow. No second implementation correction performed."},
     {"id":"F01","condition":"Durable per-turn journal and exact final-output recovery","status":"IMPLEMENTED_SYNTHETICALLY_TESTED","evidence":"targeted-tests.tap; synthetic-recovery-receipts.json","limits":"No live CLI crash/recovery or protected source operation tested"},
     {"id":"F02","condition":"No accepted-turn rerun; incomplete paired lanes retained","status":"IMPLEMENTED_SYNTHETICALLY_TESTED","evidence":"paired quota/reopen, captured-answer recovery, idempotent completion tests","limits":"No claim of restored hidden reasoning or provider session state"},
     {"id":"F03","condition":"Scientific opportunity separated from spending/quota and physical limits","status":"IMPLEMENTED_CANDIDATE_REQUIRES_ADOPTION","evidence":"resources.mjs; RESOURCE_AMENDMENT_CANDIDATE.md","blocker":"External finite policy, account class, accepted reservations and adoption are absent"},
