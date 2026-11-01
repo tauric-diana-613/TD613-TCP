@@ -1,0 +1,367 @@
+{
+  "status": "PROSPECTIVE_ARITHMETIC_NOT_EXECUTION",
+  "current_prospective_ceiling_per_arm": 720000,
+  "earlier_prospective_ceiling_per_arm": 180000,
+  "observed_mean_tokens_per_turn": {
+    "a": 12034.333333333334,
+    "b": 12357.333333333334
+  },
+  "observed_qualification_totals": {
+    "a": 72206,
+    "b": 74144,
+    "review": 13163
+  },
+  "rows": [
+    {
+      "id": "HISTORICAL_PLANNER_24x3",
+      "documents": 24,
+      "orders": 3,
+      "factorial_cells": 1,
+      "replications": 1,
+      "schedule": "legacy_no_baseline_no_synthesis",
+      "scope": "Source planner arithmetic only; unequal opportunities; not full RCA-01",
+      "conditions_per_architecture": 3,
+      "base_generation_calls": {
+        "a": 144,
+        "b": 72
+      },
+      "reserved_max_generation_attempts": {
+        "a": 173,
+        "b": 87
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 1732944,
+        "b": 889728
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 2081940,
+        "b": 1075088
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": null,
+        "b": null
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": null,
+        "b": null
+      },
+      "hypothetical_replay_fits_input_cap": null,
+      "hypothetical_hard_generation_envelope": {
+        "a": 11780608,
+        "b": 5924352
+      },
+      "stage2_base_forecast": {
+        "calls": 93,
+        "tokens_per_arm": 372000,
+        "total_tokens": 744000,
+        "maximum_candidates": 30
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 112,
+        "tokens_per_arm": 448000,
+        "total_tokens": 896000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 2529940,
+        "b": 1523088
+      },
+      "fits_180k_generation_at_observed_mean": false,
+      "fits_current_ceiling_generation_at_observed_mean": false,
+      "fits_current_ceiling_mean_plus_stage2": false,
+      "authorized": false
+    },
+    {
+      "id": "FULL_20",
+      "documents": 20,
+      "orders": 3,
+      "factorial_cells": 4,
+      "replications": 3,
+      "schedule": "matched",
+      "scope": "20 documents, both architectures in all four RCA-01 cells; three orders; three run replications, not a power guarantee",
+      "conditions_per_architecture": 36,
+      "base_generation_calls": {
+        "a": 1512,
+        "b": 1512
+      },
+      "reserved_max_generation_attempts": {
+        "a": 1815,
+        "b": 1815
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 18195912,
+        "b": 18684288
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 21842315,
+        "b": 22428560
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": 53561434,
+        "b": 68465434
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": 60968,
+        "b": 61992
+      },
+      "hypothetical_replay_fits_input_cap": true,
+      "hypothetical_hard_generation_envelope": {
+        "a": 123594240,
+        "b": 123594240
+      },
+      "stage2_base_forecast": {
+        "calls": 1116,
+        "tokens_per_arm": 4464000,
+        "total_tokens": 8928000,
+        "maximum_candidates": 360
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 1340,
+        "tokens_per_arm": 5360000,
+        "total_tokens": 10720000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 27202315,
+        "b": 27788560
+      },
+      "fits_180k_generation_at_observed_mean": false,
+      "fits_current_ceiling_generation_at_observed_mean": false,
+      "fits_current_ceiling_mean_plus_stage2": false,
+      "authorized": false
+    },
+    {
+      "id": "FULL_24",
+      "documents": 24,
+      "orders": 3,
+      "factorial_cells": 4,
+      "replications": 3,
+      "schedule": "matched",
+      "scope": "24 documents, both architectures in all four RCA-01 cells; three orders; three run replications, not a power guarantee",
+      "conditions_per_architecture": 36,
+      "base_generation_calls": {
+        "a": 1800,
+        "b": 1800
+      },
+      "reserved_max_generation_attempts": {
+        "a": 2160,
+        "b": 2160
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 21661800,
+        "b": 22243200
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 25994160,
+        "b": 26691840
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": 71423079,
+        "b": 92418279
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": 71064,
+        "b": 72088
+      },
+      "hypothetical_replay_fits_input_cap": false,
+      "hypothetical_hard_generation_envelope": {
+        "a": 147087360,
+        "b": 147087360
+      },
+      "stage2_base_forecast": {
+        "calls": 1116,
+        "tokens_per_arm": 4464000,
+        "total_tokens": 8928000,
+        "maximum_candidates": 360
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 1340,
+        "tokens_per_arm": 5360000,
+        "total_tokens": 10720000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 31354160,
+        "b": 32051840
+      },
+      "fits_180k_generation_at_observed_mean": false,
+      "fits_current_ceiling_generation_at_observed_mean": false,
+      "fits_current_ceiling_mean_plus_stage2": false,
+      "authorized": false
+    },
+    {
+      "id": "FACTORIAL_ONE_ORDER",
+      "documents": 24,
+      "orders": 1,
+      "factorial_cells": 4,
+      "replications": 1,
+      "schedule": "matched",
+      "scope": "Factorial coverage but no order contrast or replication inference",
+      "conditions_per_architecture": 4,
+      "base_generation_calls": {
+        "a": 200,
+        "b": 200
+      },
+      "reserved_max_generation_attempts": {
+        "a": 240,
+        "b": 240
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 2406867,
+        "b": 2471467
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 2888240,
+        "b": 2965760
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": 7935898,
+        "b": 10268698
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": 71064,
+        "b": 72088
+      },
+      "hypothetical_replay_fits_input_cap": false,
+      "hypothetical_hard_generation_envelope": {
+        "a": 16343040,
+        "b": 16343040
+      },
+      "stage2_base_forecast": {
+        "calls": 124,
+        "tokens_per_arm": 496000,
+        "total_tokens": 992000,
+        "maximum_candidates": 40
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 149,
+        "tokens_per_arm": 596000,
+        "total_tokens": 1192000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 3484240,
+        "b": 3561760
+      },
+      "fits_180k_generation_at_observed_mean": false,
+      "fits_current_ceiling_generation_at_observed_mean": false,
+      "fits_current_ceiling_mean_plus_stage2": false,
+      "authorized": false
+    },
+    {
+      "id": "SINGLE_PASS_24",
+      "documents": 24,
+      "orders": 1,
+      "factorial_cells": 1,
+      "replications": 1,
+      "schedule": "matched",
+      "scope": "Longitudinal case study only; omits factorial/order/replication claims",
+      "conditions_per_architecture": 1,
+      "base_generation_calls": {
+        "a": 50,
+        "b": 50
+      },
+      "reserved_max_generation_attempts": {
+        "a": 60,
+        "b": 60
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 601717,
+        "b": 617867
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 722060,
+        "b": 741440
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": 1983975,
+        "b": 2567175
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": 71064,
+        "b": 72088
+      },
+      "hypothetical_replay_fits_input_cap": false,
+      "hypothetical_hard_generation_envelope": {
+        "a": 4085760,
+        "b": 4085760
+      },
+      "stage2_base_forecast": {
+        "calls": 31,
+        "tokens_per_arm": 124000,
+        "total_tokens": 248000,
+        "maximum_candidates": 10
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 38,
+        "tokens_per_arm": 152000,
+        "total_tokens": 304000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 874060,
+        "b": 893440
+      },
+      "fits_180k_generation_at_observed_mean": false,
+      "fits_current_ceiling_generation_at_observed_mean": false,
+      "fits_current_ceiling_mean_plus_stage2": false,
+      "authorized": false
+    },
+    {
+      "id": "MINIMAL_LONGITUDINAL_3",
+      "documents": 3,
+      "orders": 1,
+      "factorial_cells": 1,
+      "replications": 1,
+      "schedule": "matched",
+      "scope": "Smallest proposition-contradiction-revision follow-up; different bounded research scope, NOT original full Flight",
+      "conditions_per_architecture": 1,
+      "base_generation_calls": {
+        "a": 8,
+        "b": 8
+      },
+      "reserved_max_generation_attempts": {
+        "a": 10,
+        "b": 10
+      },
+      "observed_mean_projection_no_retry": {
+        "a": 96275,
+        "b": 98859
+      },
+      "observed_mean_with_retry_reserve": {
+        "a": 120344,
+        "b": 123574
+      },
+      "hypothetical_growing_replay_with_retry_fraction": {
+        "a": 139133,
+        "b": 155333
+      },
+      "hypothetical_peak_input_per_call": {
+        "a": 18060,
+        "b": 19084
+      },
+      "hypothetical_replay_fits_input_cap": true,
+      "hypothetical_hard_generation_envelope": {
+        "a": 680960,
+        "b": 680960
+      },
+      "stage2_base_forecast": {
+        "calls": 31,
+        "tokens_per_arm": 124000,
+        "total_tokens": 248000,
+        "maximum_candidates": 10
+      },
+      "stage2_with_retry_reserve": {
+        "maximum_attempts": 38,
+        "tokens_per_arm": 152000,
+        "total_tokens": 304000
+      },
+      "mean_plus_stage2_projection_per_arm": {
+        "a": 272344,
+        "b": 275574
+      },
+      "fits_180k_generation_at_observed_mean": true,
+      "fits_current_ceiling_generation_at_observed_mean": true,
+      "fits_current_ceiling_mean_plus_stage2": true,
+      "authorized": false
+    }
+  ],
+  "overall_full_flight_feasible_under_current_ceiling": false,
+  "power_established": false,
+  "high_effort_token_multiplier_known": false
+}

@@ -1,0 +1,189 @@
+{
+  "schema": "td613.blind-capacity.artifact-manifest/v1",
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "predecessor_heads": [
+    "2d98d519535870bdf01b8cc9bd6b0328ad3ae70c",
+    "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46"
+  ],
+  "self_excluded": true,
+  "self_binding": "Git commit tree",
+  "new_model_calls": 0,
+  "protected_archive_operations": 0,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 38,
+      "sha256": "1f97855d2633aece8b13c74641d3b0dbcde9b3ecc7c55f6f455393be24bd2d3f"
+    },
+    {
+      "path": ".node-version",
+      "bytes": 7,
+      "sha256": "068a0a6e1f02416d0c46e50a46a679eff53f1b748c8c3e559a2c64ef950cc781"
+    },
+    {
+      "path": "bin/size-synthetic.mjs",
+      "bytes": 767,
+      "sha256": "eef946fe453694911a22705ad578fa5d4e238f6f0746d232d6c5a137d635f7e8"
+    },
+    {
+      "path": "bin/synthetic-matrix.mjs",
+      "bytes": 1717,
+      "sha256": "b5def295bed6b50f9cf555554940af2813903e21d0293ac5801bf769b40ccfe8"
+    },
+    {
+      "path": "bin/verify-package.mjs",
+      "bytes": 2238,
+      "sha256": "92858b8dd674c146989b21e0f1ab165d0432ac0ba55b858d2a9882b66bd4df64"
+    },
+    {
+      "path": "changed-file-inventory.json",
+      "bytes": 1328,
+      "sha256": "2c2dcb0c6125e28a3091f07fda1e84e17c1065e9f5175049c15f7b62a5816918"
+    },
+    {
+      "path": "lib/capacity.mjs",
+      "bytes": 18070,
+      "sha256": "7bd3626ecb6b6105fc768affba82acf24806b08d24768049acbcaa6f74359c1f"
+    },
+    {
+      "path": "lib/errors.mjs",
+      "bytes": 1962,
+      "sha256": "56c262964a1bc4e7bfbe11e27aaade51a92a03dca92807579323ad61a94816d3"
+    },
+    {
+      "path": "lib/private-custody.mjs",
+      "bytes": 6210,
+      "sha256": "8f05c88f937e8528192463901845434a61d32c1f448c2aba24fcf6a71b809d97"
+    },
+    {
+      "path": "lib/templates.mjs",
+      "bytes": 2542,
+      "sha256": "c7fc0759af5264b81e586b041f23b03c26a87c0f7757c4a85b618565d485c129"
+    },
+    {
+      "path": "lib/tokenizer.mjs",
+      "bytes": 3892,
+      "sha256": "5fdd64f1ce8c78bbfcff7b4c8d45670fc083ac656d989e7e3197d82002a7ab67"
+    },
+    {
+      "path": "lib/zip.mjs",
+      "bytes": 5024,
+      "sha256": "d3d95aec18f72d9d14853ddde25febefa5dbf4677ce15e19960d62695469c53b"
+    },
+    {
+      "path": "LIMITATIONS.md",
+      "bytes": 3595,
+      "sha256": "f531df60d1280c676be9f87b9f9a4422857093be019bf0a0a30f9e86441cd106"
+    },
+    {
+      "path": "MATHEMATICS.md",
+      "bytes": 7039,
+      "sha256": "04c5fd3b28386030985c2b22524053aa831575a00c01cd9c8a97478df1aa7991"
+    },
+    {
+      "path": "OFFLINE_CUSTODY.md",
+      "bytes": 7144,
+      "sha256": "3bb74bc8d7f06875b0e6ef944925f99ae218beef04004db133f57bb0cae50579"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 1325,
+      "sha256": "fbda302ae39bf4e9345fc8682d8d3a1cd1015033e9892cdc023cab017d105898"
+    },
+    {
+      "path": "package.json",
+      "bytes": 274,
+      "sha256": "3ef6925a161a54019f810c6756c1612f097a216bf8a71910938e7c514d746d1f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5478,
+      "sha256": "dd51ecf982c64602d7d34a00032671962ea57044aa70d4a072ffb5427b15f32e"
+    },
+    {
+      "path": "receipts/syntax-checks.json",
+      "bytes": 962,
+      "sha256": "1989b32411a2219a526dc7b05dd4d0dc5e7fb6d1e7e4dfd956abbcb4b7f9059d"
+    },
+    {
+      "path": "receipts/synthetic-aggregate.json",
+      "bytes": 1901,
+      "sha256": "2c7bc94798c26c18c3bc8933ba763c1e47e7618abbfa391b5826df8418064638"
+    },
+    {
+      "path": "receipts/synthetic-alternatives.json",
+      "bytes": 11486,
+      "sha256": "a06490bff4ab532b3dedf4c4583549303490dabf1d45858af78cb32db6e3f38a"
+    },
+    {
+      "path": "receipts/synthetic-tests.json",
+      "bytes": 4123,
+      "sha256": "488317d1a51e9cb87538e08e0c818c7c219b960abf5d21f3e0b8403ec5f3045a"
+    },
+    {
+      "path": "repository-guidance.json",
+      "bytes": 1002,
+      "sha256": "2101e27e59ae949db80686dd471bc751857437b126e79043d7d0b3645c949eb4"
+    },
+    {
+      "path": "runtime-profile.json",
+      "bytes": 232,
+      "sha256": "86fd4bce46a4b5a5497cc144f66339e8f9b3a6238ed7a799876a4539260e2c4f"
+    },
+    {
+      "path": "source-bindings.json",
+      "bytes": 5024,
+      "sha256": "b1b907aba998f1912e7382dd79c0069d7af1684e73550b479dd492bc77a16ae2"
+    },
+    {
+      "path": "sources/pr1616-reasoning-summary.json",
+      "bytes": 849,
+      "sha256": "b2d00f342d65d838853df1774ef039dbeccb3ae5aa0582c66ee126d4de194280"
+    },
+    {
+      "path": "sources/pr1617-capacity-assumptions.json",
+      "bytes": 5574,
+      "sha256": "c6f9007589664154518d8bfc25e783f75390d65e8f394817c70671d5e6024ebd"
+    },
+    {
+      "path": "sources/pr1617-capacity-model.mjs",
+      "bytes": 4990,
+      "sha256": "f9f601645f80e13f06930c5ea7e1691d9ebc86c8782b84c313ec8d8dfc0abb24"
+    },
+    {
+      "path": "sources/pr1617-capacity-results.json",
+      "bytes": 10350,
+      "sha256": "4410f833ba9aa731243910856c14011d4f2ca35f6f34c95cd050c7ec4c986277"
+    },
+    {
+      "path": "sources/pr1617-ISOLATION_CONTRACT.md",
+      "bytes": 9581,
+      "sha256": "24ee89587240166cac76fe97ad97f14c8ce348462575b4b68f45f3daddae8a87"
+    },
+    {
+      "path": "sources/pr1617-PROPOSED_AMENDMENT.md",
+      "bytes": 6824,
+      "sha256": "f439d89f549df42f0be13ea8c965d98a4337567ef00e699d6720e8c9fbe33ab9"
+    },
+    {
+      "path": "sources/pr1617-SOURCE_TRANSFER_SPEC.md",
+      "bytes": 9386,
+      "sha256": "75ae57d03ca1a93c6931d24f06fbc1edf3b745a39b692794bec7df674979d0bd"
+    },
+    {
+      "path": "test/fixtures.mjs",
+      "bytes": 2883,
+      "sha256": "8392c95a5d7f37537cfa1f405f58f723c71a7e0750a6b6922b32786da87e72f1"
+    },
+    {
+      "path": "test/run.mjs",
+      "bytes": 18202,
+      "sha256": "c2fd3e11fd1096d7aa5c953aa23570efef234d5b50791f0e8aac97f506e7b919"
+    },
+    {
+      "path": "TOKENIZER_AND_MODELS.md",
+      "bytes": 3222,
+      "sha256": "00139d6a61266c1d5c61e07e447549baa35cf8fb9ba6aa4d25412cc068e18167"
+    }
+  ]
+}

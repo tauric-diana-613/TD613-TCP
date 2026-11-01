@@ -1,0 +1,87 @@
+{
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "predecessor_snapshots": [
+    {
+      "snapshot": "sources/pr1616-reasoning-summary.json",
+      "pr": 1616,
+      "revision": "2d98d519535870bdf01b8cc9bd6b0328ad3ae70c",
+      "original_path": "docs/research/experiment-b-codex-qualification/2026-11-01/receipts/reasoning-summary.json",
+      "git_blob_sha1": "58def53d2aacf1d06d97623c5fa8da4ac14ec2b9",
+      "sha256": "b2d00f342d65d838853df1774ef039dbeccb3ae5aa0582c66ee126d4de194280",
+      "bytes": 849,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/2d98d519535870bdf01b8cc9bd6b0328ad3ae70c/docs/research/experiment-b-codex-qualification/2026-11-01/receipts/reasoning-summary.json"
+    },
+    {
+      "snapshot": "sources/pr1617-capacity-assumptions.json",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-assumptions.json",
+      "git_blob_sha1": "e3c9cf7e1b5390342ab9ea91482a831e0ecf31d4",
+      "sha256": "c6f9007589664154518d8bfc25e783f75390d65e8f394817c70671d5e6024ebd",
+      "bytes": 5574,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-assumptions.json"
+    },
+    {
+      "snapshot": "sources/pr1617-capacity-results.json",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-results.json",
+      "git_blob_sha1": "bb1c8f7813055aab4555fa9285f53af7f9ba4432",
+      "sha256": "4410f833ba9aa731243910856c14011d4f2ca35f6f34c95cd050c7ec4c986277",
+      "bytes": 10350,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-results.json"
+    },
+    {
+      "snapshot": "sources/pr1617-ISOLATION_CONTRACT.md",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/ISOLATION_CONTRACT.md",
+      "git_blob_sha1": "50017d2436b6601531c3b4b668e5194a3a7a558e",
+      "sha256": "24ee89587240166cac76fe97ad97f14c8ce348462575b4b68f45f3daddae8a87",
+      "bytes": 9581,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/ISOLATION_CONTRACT.md"
+    },
+    {
+      "snapshot": "sources/pr1617-SOURCE_TRANSFER_SPEC.md",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/SOURCE_TRANSFER_SPEC.md",
+      "git_blob_sha1": "5ba9384a96fd03b07090035c71069477e3d52ca8",
+      "sha256": "75ae57d03ca1a93c6931d24f06fbc1edf3b745a39b692794bec7df674979d0bd",
+      "bytes": 9386,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/SOURCE_TRANSFER_SPEC.md"
+    },
+    {
+      "snapshot": "sources/pr1617-PROPOSED_AMENDMENT.md",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/PROPOSED_AMENDMENT.md",
+      "git_blob_sha1": "105d141b4827e47e040367c988cee0d04e5ad933",
+      "sha256": "f439d89f549df42f0be13ea8c965d98a4337567ef00e699d6720e8c9fbe33ab9",
+      "bytes": 6824,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/PROPOSED_AMENDMENT.md"
+    },
+    {
+      "snapshot": "sources/pr1617-capacity-model.mjs",
+      "pr": 1617,
+      "revision": "929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46",
+      "original_path": "docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-model.mjs",
+      "git_blob_sha1": "41e13632e98cfbdb31bab735e2473a04c7a1f29a",
+      "sha256": "f9f601645f80e13f06930c5ea7e1691d9ebc86c8782b84c313ec8d8dfc0abb24",
+      "bytes": 4990,
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/929ef1b0297c0e5c1f7c473e1f493b4ebaa8da46/docs/research/experiment-b-prospective-flight-contract/2026-11-01/capacity-model.mjs"
+    }
+  ],
+  "official_registry": {
+    "repository": "openai/tiktoken",
+    "revision": "4e71bbe0c078468e00fefbf94b39849389f346e5",
+    "path": "tiktoken/model.py",
+    "git_blob_sha1": "166db0692bfd5a374aa718f3a20c92d008a9918d",
+    "sha256": "600f26902d1cf6a1a5f54e37be988b3e0d911f1ff17ba7060bb361f9b5295521",
+    "gpt_6_1_sol_mapping_found": false,
+    "snapshot_copied": false
+  },
+  "public_tokenizer_dependency": "js-tiktoken@1.0.21",
+  "new_model_calls": 0,
+  "protected_archive_operations": 0
+}
