@@ -1,0 +1,167 @@
+{
+  "schema": "td613.capacity.synthetic-test-receipt/v1",
+  "status": "PASS",
+  "tests": 38,
+  "passed": 38,
+  "failed": 0,
+  "reference_tokenizer": "js-tiktoken@1.0.21",
+  "real_bpe_used": true,
+  "new_model_calls": 0,
+  "protected_archive_operations": 0,
+  "independent_witness_claim": false,
+  "gate_f": "HELD",
+  "results": [
+    {
+      "test": "real-reference-ranks-match-official-digests",
+      "status": "PASS"
+    },
+    {
+      "test": "independent-known-token-vectors",
+      "status": "PASS"
+    },
+    {
+      "test": "unicode-joiner-line-endings-and-special-literals",
+      "status": "PASS"
+    },
+    {
+      "test": "byte-fallback-upper-bound-on-varied-text",
+      "status": "PASS"
+    },
+    {
+      "test": "stored-zip-order-and-bytes-preserved",
+      "status": "PASS"
+    },
+    {
+      "test": "deflate-and-data-descriptors",
+      "status": "PASS"
+    },
+    {
+      "test": "crc-and-data-corruption-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "zip-traversal-and-aliases-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "unsupported-binary-and-invalid-utf8-refuse-whole-corpus",
+      "status": "PASS"
+    },
+    {
+      "test": "zip-expansion-and-document-limits-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "symlink-encrypted-and-multidisk-zip-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "all-members-required-no-selective-omission",
+      "status": "PASS"
+    },
+    {
+      "test": "rendered-matched-call-schedule-includes-t0-and-synthesis",
+      "status": "PASS"
+    },
+    {
+      "test": "unknown-history-never-labeled-exact-provider-input",
+      "status": "PASS"
+    },
+    {
+      "test": "known-output-replay-measured-as-whole-rendered-text",
+      "status": "PASS"
+    },
+    {
+      "test": "unproduced-evaluator-packets-are-not-exact-inputs",
+      "status": "PASS"
+    },
+    {
+      "test": "known-evaluator-packets-and-alternate-reference-encoding",
+      "status": "PASS"
+    },
+    {
+      "test": "replay-above-declared-output-cap-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "no-future-source-or-inter-arm-history-reference",
+      "status": "PASS"
+    },
+    {
+      "test": "wrong-lane-and-unused-replay-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "explicit-order-must-be-full-permutation",
+      "status": "PASS"
+    },
+    {
+      "test": "negative-variants-required-not-substituted",
+      "status": "PASS"
+    },
+    {
+      "test": "full-crossed-factorial-counts-20-and-24",
+      "status": "PASS"
+    },
+    {
+      "test": "microstudy-capacity-matches-pr1617-conditional-envelope",
+      "status": "PASS"
+    },
+    {
+      "test": "retry-reserve-distinct-from-three-per-call-maximum",
+      "status": "PASS"
+    },
+    {
+      "test": "input-breach-recorded-without-truncation",
+      "status": "PASS"
+    },
+    {
+      "test": "budget-escalation-truncation-and-scope-flags-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "forged-runtime-control-claim-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "high-and-other-model-reference-forecasts-not-measurements",
+      "status": "PASS"
+    },
+    {
+      "test": "unapproved-tokenizer-and-model-identity-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "aggregate-release-has-no-text-names-source-digests-or-order",
+      "status": "PASS"
+    },
+    {
+      "test": "non-authorized-release-and-forged-measurement-refused",
+      "status": "PASS"
+    },
+    {
+      "test": "error-projection-never-forwards-runtime-message",
+      "status": "PASS"
+    },
+    {
+      "test": "authorization-absent-refuses-before-any-archive-inspection",
+      "status": "PASS"
+    },
+    {
+      "test": "tokenizer-model-mapping-refuses-unapproved-profile",
+      "status": "PASS"
+    },
+    {
+      "test": "other-model-tokenizer-profiles-and-effort-bounds",
+      "status": "PASS"
+    },
+    {
+      "test": "source-identity-stays-stable-under-reversal",
+      "status": "PASS"
+    },
+    {
+      "test": "future-private-api-tested-only-with-synthetic-files-and-test-keys",
+      "status": "PASS"
+    }
+  ]
+}
