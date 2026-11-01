@@ -1,0 +1,106 @@
+{
+  "sourceBase": "46f40e5768afeceb3304c12170f334ec590dfecf",
+  "providerSource": "f79b26ccbb3116b052544666a181012fb45dc49b",
+  "files": [
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/egress-gateway.mjs",
+      "sha256": "159917d0a94b17ef9f2234ba7ce5be4eeda3f0e10a253a8a58f17f07693c5a3c"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/loopback-bridge.mjs",
+      "sha256": "f558f8c2122a136244edb0913f43a62d301c3558cb201871843f3b5ad54ed155"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/egress-probe.mjs",
+      "sha256": "31ae8c84fc5033818c6dddc306b2b3a37c7907e379bf1a39e94338961b88b9e0"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/tls-client-hello.mjs",
+      "sha256": "006ad9fac46e29380f00011e7055850edbf96cf24a2fdf0fc51e7aa9b001a4f8"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/tls-client-hello.test.mjs",
+      "sha256": "e082d94a374201caf8ce2c5e0caaa7a16fa26f23ac22b7c0d9517149ea7fc74c"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/session-control.mjs",
+      "sha256": "fe297b863fbe5a970661bb54904d9acf8dceccfc7fe4fb4b56ee671db673403a"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/start-auth.mjs",
+      "sha256": "00d90e48a8e58f52cd593603fe26650954809d19483b55ec2ff80e217c8c6b50"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/adopt-auth-profile.mjs",
+      "sha256": "07c761aa9850199fe467ebc5e67ffcc2339deff7e386218df6cd5d8964391e45"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/read-isolated-metadata.mjs",
+      "sha256": "1b682facf78fce72da512c3a7d07c4826ea4174ea4e63e84df722312350d4802"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/configure-metadata-profile.mjs",
+      "sha256": "c75a1fec5cac183d011ef78f10a6ac0e795b784d9dc0d7ab686018e7b030291b"
+    },
+    {
+      "file": "scripts/experiment-b-operational/provider-egress/check-credential-metadata.mjs",
+      "sha256": "65ecffb3f7309348ec93ae066cb643d1cea60f0cc59d1c64a703320d0e82d07f"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/prepare-build.mjs",
+      "sha256": "96dac32aaef13f0f3f9176c28db423c2ebebb93a63b95551a8c4481b7950980b"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/build-and-test.mjs",
+      "sha256": "a9d5013bc4d836e9ad6172c79b546b30d3f470934fe2027f2b925a20afc38bb1"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/build/Dockerfile",
+      "sha256": "1f6c35127aa97feda0621e48a03c06e0d1fb4a93d08eb4262a5fb77dfa26dc55"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/build/.dockerignore",
+      "sha256": "8ea3ea66012a43cc67cf0280c64f8e11070ccf4ce427d41553d3d9191a9cc527"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/egress-initial-observation.json",
+      "sha256": "a30eec66d45f134fe2550ff9826bc96ba510cff65dc8269d08fdc19292452d78"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/egress-observation.json",
+      "sha256": "e400372c0acd49edcf6655be8baff63ef2f3627d2b16d00b90aac17f2a1c708c"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/auth-public-receipt.json",
+      "sha256": "5bf3f49bb632dfef3c2ea74baae2c2b4d770bafcad6f152da68470147fb43317"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/credential-confinement-receipt.json",
+      "sha256": "07cc0cbfa074049a62afd42da02a838e2c44d65b639f1fb3baada7ddb2bf6188"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/isolated-metadata-public-receipt.json",
+      "sha256": "272f6da0b4759dd8fe3c378015a9a1866d7dcff1e5521030bd42d2499f7a4a9c"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/pr1623-linux-tests.tap",
+      "sha256": "efbfea7bd1d41f1b04925707505e35865885972b6d1667d3826f1e3b0a98e85e"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/tls-parser-tests.tap",
+      "sha256": "e9405b338e8dd33a6086d175ec148dd48c70133b0411d2c89fbe1336411a659c"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/pr1623-windows-tests.tap",
+      "sha256": "640e6a14669ef2a71c9db9b3bffe9db09e5bd09f280fe60fe2ffb9425cdc8b00"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/validation.json",
+      "sha256": "f7d54ebcd8918fc1bd04e031e68764ff592afc9b1fea848271e0b0a9aebd4b82"
+    },
+    {
+      "file": "docs/research/experiment-b-provider-egress/2026-11-01/PROVISIONING_RESULT.md",
+      "sha256": "1da14510a7c951aa6279ae534dc4e4437c77891ce068e0c545cf3bf7a00bf572"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "sourceRevision": "46f40e5768afeceb3304c12170f334ec590dfecf",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "originVerified": true,
+  "reviewBranch": "td613-pr1623-exact",
+  "reviewWorktree": "clean sparse worktree",
+  "ahead": 0,
+  "behind": 0,
+  "originalBranch": "main",
+  "originalHead": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "originalChangedEntriesPreserved": 4,
+  "windows": {
+    "node": "v26.7.0",
+    "command": "node --test --test-reporter=tap tests/experiment-b-private-account-receipt.test.mjs tests/experiment-b-resumable.test.mjs tests/experiment-b-final-integration.test.mjs",
+    "tests": 31,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 1,
+    "skip": "Symlink creation unavailable"
+  },
+  "linux": {
+    "node": "v24.4.0",
+    "command": "node --test --test-reporter=tap /tcp-repository/tests/experiment-b-private-account-receipt.test.mjs",
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "network": "none",
+    "hostBindMounts": 0
+  },
+  "hostPrivateDirectory": {
+    "accessRulesProtected": true,
+    "unexpectedAllowRules": 0,
+    "outsideReviewCheckout": true
+  },
+  "actualPrivateReader": {
+    "revision": "46f40e5768afeceb3304c12170f334ec590dfecf",
+    "status": "METADATA_READ_COMPLETED",
+    "modelRequests": 0,
+    "privateReceiptWritten": true
+  },
+  "conditionalWitnessAuthority": {
+    "arm2AMaximumRequests": 1,
+    "arm2BMaximumRequests": 1,
+    "retries": 0,
+    "paidAPIAuthorityUSD": 0,
+    "executedRequests": 0,
+    "condition": "Independent pre-dispatch acceptance of actual runtime, authentication, egress, account/privacy posture and capture service"
+  },
+  "operationHistory": [
+    {
+      "event": "Initial full worktree checkout failed; separate no-checkout sparse route and exact-HEAD index population succeeded; original changes preserved"
+    },
+    {
+      "event": "Read-only container source injection was refused; built a network-disabled image from public fixtures instead; all three Linux tests passed"
+    },
+    {
+      "event": "Initial supported sign-in attempts failed because the new native home directory was absent; created the empty private directory with restrictive umask; subsequent official challenge completed by account holder"
+    },
+    {
+      "event": "Hardened CONNECT policy with bounded TLS ClientHello SNI matching; both allowed TLS origins passed, six denied authorities and direct network bypass were blocked"
+    },
+    {
+      "event": "Initial restricted metadata app-server exited; a fresh private metadata-only profile disabling unnecessary tool/plugin/agent services was installed; the exact PR reader then completed"
+    },
+    {
+      "event": "Post-upgrade audit initially rejected a socket-lineage lookup; corrected it to independently bind the original login scope and current gateway scope; strict audit passed"
+    }
+  ],
+  "protectedArchiveOperations": 0,
+  "experimentalModelRequests": 0,
+  "paidAPIModelRequests": 0,
+  "stage2Executions": 0
+}

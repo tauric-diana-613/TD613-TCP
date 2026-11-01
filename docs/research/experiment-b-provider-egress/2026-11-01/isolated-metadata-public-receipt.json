@@ -1,0 +1,12 @@
+{
+  "evidenceClass": "ACTUAL_RESTRICTED_NATIVE_METADATA_READ",
+  "sourceRevision": "46f40e5768afeceb3304c12170f334ec590dfecf",
+  "image": "sha256:0f5db0645aa3187055a001ca12e123ae4cd5c15e50561f04973dd58f3bbb537a",
+  "exitCode": 0,
+  "status": "METADATA_READ_COMPLETED",
+  "modelRequests": 0,
+  "privateReceiptWritten": true,
+  "identityAndQuotaPublished": false,
+  "workerNetwork": "none",
+  "providerEgress": "EXACT_CONNECT_AND_TLS_SNI_ALLOWLIST"
+}
