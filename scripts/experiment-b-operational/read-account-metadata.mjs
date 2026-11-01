@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
-import fs from 'node:fs';
+import { validatePrivateAccountReceiptPath, writePrivateAccountReceipt } from './private-account-receipt.mjs';
+const receiptPath = validatePrivateAccountReceiptPath(process.env.TD613_ACCOUNT_METADATA_PRIVATE_PATH);
 const permitted=['PATH','HOME','USERPROFILE','CODEX_HOME','LOCALAPPDATA','APPDATA','ProgramFiles','SystemRoot','SYSTEMROOT','windir','TEMP','TMP','LANG','LC_ALL','HTTPS_PROXY','HTTP_PROXY','NO_PROXY','SSL_CERT_FILE'];
 const env=Object.fromEntries(permitted.filter(key=>typeof process.env[key]==='string').map(key=>[key,process.env[key]]));
 const methods=['initialize','account/read','account/rateLimits/read'];
@@ -8,7 +9,7 @@ const result={evidenceClass:'NATIVE_NON_INFERENTIAL_ACCOUNT_METADATA',observedAt
 let buffer='',finished=false;
 const finish=()=>{
  if(finished)return;finished=true;clearTimeout(timer);child.stdin.end();child.kill();
- fs.writeFileSync('work/operational/account-metadata-receipt.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
+ writePrivateAccountReceipt(receiptPath,result);console.log(JSON.stringify({evidenceClass:result.evidenceClass,status:result.status??'UNAVAILABLE',modelRequests:0,accountIdentityRetained:false,credentialsRetained:false,privateReceiptWritten:true}));
 };
 const send=(id,method,params)=>{if(!methods.includes(method))throw Error('RPC_METHOD_REFUSED');child.stdin.write(JSON.stringify({id,method,params})+'\n');};
 const timer=setTimeout(()=>{result.status='METADATA_READ_TIMEOUT';finish();},45000);
