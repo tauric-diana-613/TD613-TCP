@@ -1,0 +1,12 @@
+{
+  "evidenceClass": "ACTUAL_OFFLINE_NATIVE_VERSION_ONLY",
+  "image": "sha256:ea839611d049c0dc768c90e7055d370473e247010d98cf4988d5acefc8bb20c0",
+  "version": "codex-cli 0.166.0-alpha.5.1",
+  "executableSHA256": "6253fb59fc4c21a9134b2f73237650eaec4a3d9380e5af12f3f1e9040dc24c14",
+  "network": "none",
+  "hostMounts": 0,
+  "credentialsInjected": 0,
+  "modelRequests": 0,
+  "exitCode": 0,
+  "protectedArchiveOperations": 0
+}
