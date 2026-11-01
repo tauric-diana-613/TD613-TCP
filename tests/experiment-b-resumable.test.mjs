@@ -12,6 +12,7 @@ import { resourceState, usageRecord, validatePolicy } from '../scripts/experimen
 import { protectedBroker, ledgerMirror, nativeTransport, verifyExecutionAuthorization } from '../scripts/experiment-b-resumable/boundaries.mjs';
 import { runProtectedConfiguration } from '../scripts/experiment-b-resumable/runner.mjs';
 import { parseCodexEvents } from '../scripts/experiment-b-codex-exec-adapter.mjs';
+import { syntheticCapture } from './experiment-b-capture-fixture.mjs';
 
 const KEY = 'SYNTHETIC-TEST-ONLY-NOT-AN-OPERATOR-KEY-000';
 const EVIDENCE = [];
@@ -163,11 +164,13 @@ test('protected WeakMap capability cannot be minted by copied fixture or grant l
   await assert.rejects(runProtectedConfiguration(), /EXPLICIT_PRIVATE/);
 });
 
-test('native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools', async () => {
+test('native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools', async t => {
   let seen;
   const stdout = [ {type:'thread.started', thread_id:'SYNTHETIC_THREAD'}, {type:'item.completed',item:{type:'agent_message',text:'SYNTHETIC_FINAL'}}, {type:'turn.completed',usage:{input_tokens:3,output_tokens:1}} ].map(JSON.stringify).join('\n');
-  const transport = nativeTransport({ workspace: os.tmpdir(), model: 'SYNTHETIC_MODEL', effort: 'high', observeRuntime: async () => IDENTITY, spawnNative: async args => { seen = args; return { exitCode: 0, stdout, stderr: '' }; } });
-  const r = await transport({ rendered: { prompt: 'SYNTHETIC_PROMPT' }, runtime: IDENTITY, capture() {} });
+  const fake=syntheticCapture(t);
+  const identity={...IDENTITY,cliExecutableSHA256:'0'.repeat(64)};
+  const transport = nativeTransport({ workspace: os.tmpdir(), model: 'SYNTHETIC_MODEL', effort: 'high', observeRuntime: async () => identity, captureService:fake.service, spawnNative: async args => { seen=args;return fake.spawnNative(args); } });
+  const r = await transport({ attempt:'SYNTHETIC', rendered: { prompt: 'SYNTHETIC_PROMPT' }, runtime: identity, capture() {} });
   assert(seen.args.includes('--ephemeral')); assert(seen.args.includes('model_reasoning_effort="high"'));
   assert.equal(r.completeEvidence.stdout, stdout); assert.equal(r.completeEvidence.model_served_independently_attested, false);
   assert.equal(r.response, 'SYNTHETIC_FINAL');

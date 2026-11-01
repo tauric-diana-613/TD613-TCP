@@ -4,7 +4,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { digest, canonical, mac, equalHex } from './journal.mjs';
 import { ControlledArchiveIntake, verifyAuthenticatedPhysicalArchiveMember } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
 import { AtomicCustodyLedger } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
-import { codexArgs, parseCodexEvents } from '../experiment-b-codex-exec-adapter.mjs';
+import { codexArgs } from '../experiment-b-codex-exec-adapter.mjs';
+import { capturedNativeCall, requireCaptureService } from './terminal-capture.mjs';
+import { admissionPolicyDigest } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/admission-policy.mjs';
 
 export const OPERATION = 'EXPERIMENT_B_RESUMABLE_FLIGHT';
 export function verifyExecutionAuthorization(grant, roots, expected, now = Date.now()) {
@@ -49,22 +51,21 @@ export function ledgerMirror(ledger) {
 }
 
 /** Reuses the accepted adapter's CLI argument builder and JSONL parser; never calls its synthetic-only API. */
-export function nativeTransport({ workspace, model, effort, observeRuntime, spawnNative }) {
+export function nativeTransport({ workspace, model, effort, observeRuntime, spawnNative, captureService }) {
   if (!path.isAbsolute(workspace) || typeof spawnNative !== 'function') throw Error('PROVISIONED_ISOLATED_NATIVE_SPAWN_REQUIRED');
   return async request => {
+    requireCaptureService(captureService);
     const args = codexArgs({ model, workspace });
     // Exact flags are retained; successful application/effective effort require runtime acceptance.
     args.splice(args.length - 1, 0, '-c', `model_reasoning_effort=${JSON.stringify(effort)}`);
     const observedIdentity = await observeRuntime();
     if (digest(observedIdentity) !== digest(request.runtime)) throw Error('PRE_DISPATCH_RUNTIME_DRIFT');
     // spawnNative is operator-reviewed runtime provisioning, not a boolean isolation assertion.
-    const run = await spawnNative({ executable: 'codex', args, input: request.rendered.prompt, capture: request.capture });
-    if (run.exitCode !== 0 || typeof run.stdout !== 'string') throw Error('NATIVE_TERMINAL_RESULT_UNVERIFIED');
-    const parsed = parseCodexEvents(run.stdout);
+    const { run, parsed, args: capturedArgs, finalEvidence } = await capturedNativeCall({ service: captureService, spawnNative, args, request, executableSHA256: observedIdentity.cliExecutableSHA256 });
     const events = run.stdout.trim().split(/\r?\n/).map(JSON.parse);
     const activities = events.filter(e => e.type === 'item.completed' && !['agent_message', 'reasoning'].includes(e.item?.type));
     return { status: 'COMPLETED', response: parsed.output, usage: parsed.usage_reported, observedIdentity,
-      completeEvidence: { evidence_class: 'NATIVE_WRAPPER_RETURNED_JSONL_NOT_PROVIDER_ATTESTATION', stdout: run.stdout, stderr: run.stderr ?? '', args, thread_id: parsed.thread_id,
+      completeEvidence: { evidence_class: 'EXTERNAL_TERMINAL_FILE_AND_JSONL_CAPTURE', stdout: run.stdout, stderr: run.stderr, args: capturedArgs, terminalFinal: finalEvidence, thread_id: parsed.thread_id,
         model_served_independently_attested: false, provider_persisted_history_restored: false },
       tools: activities, kernelActivity: run.kernelActivity ?? [], isolationViolation: activities.length > 0,
       billableUSD: run.billableUSD ?? null, subscriptionQuotaUnits: run.subscriptionQuotaUnits ?? null,
@@ -83,13 +84,25 @@ export async function loadAuthorizedRuntime(config, roots) {
   // Provisioning dependency/config inventory is also frozen in plan.runtimeBinding and checked pre-dispatch.
   const runtime = await import(pathToFileURL(file).href);
   for (const name of ['observeRuntime', 'confirmQuotaWindow', 'measureInput', 'spawnNative', 'freezeStage2Packets', 'collectIndependentStage2']) if (typeof runtime[name] !== 'function') throw Error('RUNTIME_PROVISIONING_INCOMPLETE');
+  requireCaptureService(runtime.captureService);
   return { authority, runtime };
 }
 
 export function admitAuthorizedSources(config, roots) {
   // Never called by synthetic tests. Existing ZIP guards verify the original independently supplied admission grant.
   const intake = new ControlledArchiveIntake({ syntheticMode: false, allowProtectedAdmission: true, trustedOperatorKeys: roots, authorizedDerivativesMap: config.authorizedDerivativesMap ?? {}, prospectiveMetadataMap: config.prospectiveMetadataMap ?? {} });
+  if (config.admissionEscrow && config.admissionEscrow.metadataPolicyDigest !== admissionPolicyDigest({
+    authorizedDerivativesMap: intake.authorizedDerivativesMap, prospectiveMetadataMap: intake.prospectiveMetadataMap,
+    maxMembers: intake.maxMembers, maxPerMemberBytes: intake.maxPerMemberBytes,
+    maxTotalExpandedBytes: intake.maxTotalExpandedBytes, maxDecompressionRatio: intake.maxDecompressionRatio
+  })) throw Error('ADMISSION_POLICY_DRIFT_HOLD');
   const admission = intake.admitArchive(config.archivePath, { operatorFlightGrant: config.archiveGrant });
+  if (config.admissionEscrow) {
+    const escrow = config.admissionEscrow;
+    if (escrow.operation !== 'EXPERIMENT_B_ADMISSION_ONLY' || escrow.inferenceAuthorized !== false ||
+        escrow.archiveSHA256 !== admission.archive_sha256 || escrow.sourceManifestDigest !== config.sourceManifestDigest ||
+        escrow.intakeManifestDigest !== admission.manifest_sha256) throw Error('ADMISSION_ESCROW_DRIFT_HOLD');
+  }
   const broker = protectedBroker(admission.documents);
   if (digest(broker.manifest()) !== config.sourceManifestDigest) throw Error('AUTHORIZED_SOURCE_MANIFEST_MISMATCH');
   return { admission, broker };

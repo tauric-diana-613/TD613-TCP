@@ -28,6 +28,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
+import { admissionPolicyDigest } from './admission-policy.mjs';
 
 export function computeSha256(buf) {
   const b = Buffer.isBuffer(buf) ? buf : Buffer.from(String(buf || ''), 'utf8');
@@ -212,6 +213,7 @@ export class ControlledArchiveIntake {
   constructor(options = {}) {
     this.syntheticMode = options.syntheticMode ?? true;
     this.allowProtectedAdmission = options.allowProtectedAdmission ?? false;
+    this.bootstrapAuthority = options.bootstrapAuthority ?? null;
     this.trustedOperatorKeys = options.trustedOperatorKeys || {};
     this.authorizedDerivativesMap = options.authorizedDerivativesMap || {};
     this.prospectiveMetadataMap = options.prospectiveMetadataMap || {};
@@ -530,8 +532,35 @@ export class ControlledArchiveIntake {
         );
       }
 
+      let grant;
+      if (authContext.admissionOnlyGrant) {
+        const admission = authContext.admissionOnlyGrant;
+        if (!path.isAbsolute(target) || admission.operation !== 'EXPERIMENT_B_ADMISSION_ONLY' ||
+            admission.archivePath !== target || !/^[a-f0-9]{64}$/.test(admission.archiveSha256 ?? '') ||
+            !admission.authorizationId || !admission.issuer || !admission.episode ||
+            !Number.isFinite(admission.expires) || admission.expires <= Date.now() ||
+            !/^[a-f0-9]{64}$/.test(admission.metadataPolicyDigest ?? '') ||
+            process.env.TD613_ADMISSION_ONLY_AUTHORIZED !== 'true') {
+          throw new Error('ADMISSION_ONLY_SCOPE_REJECTED');
+        }
+        const effectivePolicy = { authorizedDerivativesMap: this.authorizedDerivativesMap, prospectiveMetadataMap: this.prospectiveMetadataMap,
+          maxMembers: this.maxMembers, maxPerMemberBytes: this.maxPerMemberBytes, maxTotalExpandedBytes: this.maxTotalExpandedBytes, maxDecompressionRatio: this.maxDecompressionRatio };
+        if (admission.metadataPolicyDigest !== admissionPolicyDigest(effectivePolicy)) throw new Error('ADMISSION_ONLY_POLICY_REJECTED');
+        if (['OPENAI_API_KEY', 'GEMINI_API_KEY', 'ANTHROPIC_API_KEY'].some(name => Boolean(process.env[name]))) throw new Error('ADMISSION_PROVIDER_CREDENTIALS_REFUSED');
+        if (this.bootstrapAuthority?.assertOfflineBoundary?.() !== true) throw new Error('ADMISSION_OFFLINE_BOUNDARY_REQUIRED');
+        // External custodian service must authenticate human authority, policy/limits,
+        // expiry and atomically consume the single-use authorization before file I/O.
+        const request = Object.freeze({ ...admission, operation: 'EXPERIMENT_B_ADMISSION_ONLY',
+          maxMembers: this.maxMembers, maxPerMemberBytes: this.maxPerMemberBytes,
+          maxTotalExpandedBytes: this.maxTotalExpandedBytes, maxDecompressionRatio: this.maxDecompressionRatio,
+          authorizedDerivativesMap: this.authorizedDerivativesMap, prospectiveMetadataMap: this.prospectiveMetadataMap });
+        if (this.bootstrapAuthority?.authorizeAndConsume?.(request) !== true) {
+          throw new Error('EXTERNAL_ADMISSION_AUTHORITY_REQUIRED');
+        }
+        grant = admission;
+      } else {
       // Validate cryptographic operator grant and issuer binding
-      const grant = authContext.operatorFlightGrant;
+      grant = authContext.operatorFlightGrant;
       if (!grant || !grant.issuerId || !grant.signature) {
         throw new Error(
           'ARCHIVE_ADMISSION_UNAUTHORIZED: Live physical archive admission refused. Valid cryptographic operatorFlightGrant is required.'
@@ -577,6 +606,9 @@ export class ControlledArchiveIntake {
         throw new Error(
           'ARCHIVE_ADMISSION_UNAUTHORIZED: Missing required environment grants: TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED=true and TD613_FLIGHT_EXECUTION_AUTHORIZED=true.'
         );
+      }
+
+
       }
 
       // Enforce absolute path and exact match with grant
@@ -632,7 +664,8 @@ export class ControlledArchiveIntake {
         documents: admittedDocuments,
         manifest_sha256: computeSha256(manifestBuf),
         custody_status: 'PHYSICAL_ZIP_AUTHENTICATED_AND_ADMITTED',
-        signature_verification: 'VALID_HMAC_LOCAL_INTEGRITY',
+        signature_verification: authContext.admissionOnlyGrant ? 'EXTERNAL_ADMISSION_AUTHORITY_VERIFIED' : 'VALID_HMAC_LOCAL_INTEGRITY',
+        authorization_operation: authContext.admissionOnlyGrant ? 'EXPERIMENT_B_ADMISSION_ONLY' : 'EXPERIMENT_B_FLIGHT_ARCHIVE_ADMISSION',
         human_authority_class: 'CALLER_CONSISTENT_ONLY_WITHOUT_EXTERNAL_HUMAN_ATTESTATION',
         quarantine_maintained: true,
         physical_io_executed: true

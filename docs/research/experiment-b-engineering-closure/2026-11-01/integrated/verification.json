@@ -1,0 +1,70 @@
+{
+  "parent": "a6460efdc65491e8e7e2645bf2c126b18eafc4e2",
+  "node": "v26.7.0",
+  "command": "node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs tests/experiment-b-final-integration.test.mjs",
+  "exitCode": 0,
+  "tests": 28,
+  "passed": 28,
+  "failed": 0,
+  "scope": "Dependency-closed focused source snapshot, not full repository checkout. Synthetic ZIP fixtures only. No provider transport or experimental model invocation.",
+  "initialAttempts": [
+    {
+      "result": "test loading blocked",
+      "dependency": "server/gemini-provider-transport.js",
+      "resolution": "Fetched unchanged public dependency and package metadata at parent revision"
+    },
+    {
+      "tests": 28,
+      "passed": 27,
+      "failed": 1,
+      "cause": "New synthetic journal test integrity string shorter than existing minimum",
+      "resolution": "Extended synthetic-only test string; original journal check unchanged"
+    }
+  ],
+  "implementation": [
+    {
+      "file": ".github/workflows/td613-ci.yml",
+      "sha256": "d1089159afcf5fe529ca8bc93e36b90b69aad0986b06528a62c3e90df6305f79"
+    },
+    {
+      "file": "scripts/experiment-b-codex-exec-adapter.mjs",
+      "sha256": "af8b11ed8048338520f70b65ed159ecfc02e0a3bdb1827aa3bc7050d597753f1"
+    },
+    {
+      "file": "scripts/experiment-b-resumable/boundaries.mjs",
+      "sha256": "2670269b808fc179140d3c8f011f8a4531f95e31786b9e9616769419d791ac69"
+    },
+    {
+      "file": "scripts/experiment-b-resumable/runner.mjs",
+      "sha256": "861b6defb595439b6c35c6566bb75167cdfc1e931d35dd807f4217bb45ebd905"
+    },
+    {
+      "file": "scripts/experiment-b-resumable/terminal-capture.mjs",
+      "sha256": "1629cac27c99fb6adc29be8e720b320354b1422a5de2d3ec997d6e894ac1fbc9"
+    },
+    {
+      "file": "scripts/experiment-b-resumable/admission-only.mjs",
+      "sha256": "43c1b6d393cfb289c837337c3f68af0947bfe2f58d3575936326134ee2d86d7a"
+    },
+    {
+      "file": "docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
+      "sha256": "67b463389e9a70b301f5f21e3df22e1827f00d0b8ac0fb557b23b80d2da4bf91"
+    },
+    {
+      "file": "docs/research/experiment-b-preflight/02_four_arm_harness/admission-policy.mjs",
+      "sha256": "4e13aacba9a0f6972f1d48660fe72fca8b4884ed6b920f40d88af21b4ff730f6"
+    },
+    {
+      "file": "tests/experiment-b-resumable.test.mjs",
+      "sha256": "e84c35dcc9af2b998082c52f044606deccd0c2dd132c417650fc64d93b308335"
+    },
+    {
+      "file": "tests/experiment-b-final-integration.test.mjs",
+      "sha256": "137c4d7d39df3a8fad18f986a34e6e566f68ed3cc192dc79978e839d3210ebef"
+    },
+    {
+      "file": "tests/experiment-b-capture-fixture.mjs",
+      "sha256": "9b97b57fc96b58d2d80a8e6975ef83943e9222ac0b2fb41efa977dbb47b730fa"
+    }
+  ]
+}

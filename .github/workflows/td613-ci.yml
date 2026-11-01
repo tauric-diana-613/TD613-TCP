@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: '24.4.0'
       - name: Verify synthetic checkpoint, replay and resume
-        run: node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs
+        run: node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs tests/experiment-b-final-integration.test.mjs
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
