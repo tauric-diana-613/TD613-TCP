@@ -1,0 +1,19 @@
+name: Experiment B resumable source-free checks
+on:
+  pull_request:
+    paths:
+      - 'scripts/experiment-b-resumable/**'
+      - 'tests/experiment-b-resumable.test.mjs'
+      - '.github/workflows/experiment-b-resumable.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.4.0'
+      - run: node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs

@@ -1,0 +1,31 @@
+{
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "modified_existing": [
+    "scripts/run-experiment-b-flight.mjs"
+  ],
+  "added": [
+    ".github/workflows/experiment-b-resumable.yml",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/IMPLEMENTATION.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/OPERATOR_EXECUTION_DOCKET.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/PROVENANCE_AND_REPRODUCTION.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/README.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/RESOURCE_AMENDMENT_CANDIDATE.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/RUNTIME_AND_CUSTODY.md",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/changed-file-inventory.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/gate-f-matrix.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation-result.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation.tap",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/reproducibility-manifest.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/source-bindings.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/synthetic-recovery-receipts.json",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/targeted-tests.tap",
+    "docs/research/experiment-b-resumable-flight/2026-11-01/validation-result.json",
+    "scripts/experiment-b-resumable/boundaries.mjs",
+    "scripts/experiment-b-resumable/engine.mjs",
+    "scripts/experiment-b-resumable/journal.mjs",
+    "scripts/experiment-b-resumable/resources.mjs",
+    "scripts/experiment-b-resumable/runner.mjs",
+    "tests/experiment-b-resumable.test.mjs"
+  ],
+  "total": 23
+}

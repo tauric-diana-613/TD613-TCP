@@ -1,0 +1,140 @@
+{
+  "schema": "td613.experiment-b.resumable-review/v1",
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "head_binding": "Draft PR head and terminal handoff; self-referential HEAD excluded from commit contents",
+  "manifest_self_hash": "Excluded; manifest is bound by Git tree and final commit",
+  "artifacts": [
+    {
+      "path": ".github/workflows/experiment-b-resumable.yml",
+      "bytes": 619,
+      "sha256": "e4cf455293a0d36b80a11961e48d1ec3fd7475cbde7bb288442c80b575f10306",
+      "git_blob_sha1": "01ae06dc16ebc0ee966bf50f627aca07a3e463aa"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/IMPLEMENTATION.md",
+      "bytes": 6624,
+      "sha256": "1bc3d380fcfa548323da48b9120d0d1c9e01db0491e4f2a937b1fe59228c49a4",
+      "git_blob_sha1": "289bbeed45e3cee030fa4bc2ead6ff490e2d8e40"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/OPERATOR_EXECUTION_DOCKET.md",
+      "bytes": 8266,
+      "sha256": "3f0a8ba219c453b329cdca5546c4448634e0ec30310ac51d536578ef03279afa",
+      "git_blob_sha1": "4bc62503aa3f5db7887d8de810bd399f3f6b1540"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/PROVENANCE_AND_REPRODUCTION.md",
+      "bytes": 7257,
+      "sha256": "8827c5f352e7ff2e669ec79c372c16cbf0c59c3f1732dc97c49bd2ff25c98541",
+      "git_blob_sha1": "93264f21a28ad8c50e024e585963a186a34acd3f"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/README.md",
+      "bytes": 3734,
+      "sha256": "ec77b447aa842f7e4e1a92c6822efb01405466974278560a2b847eb93b638321",
+      "git_blob_sha1": "e0de1391bf41287fd66ae9d4471caf09159bafca"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/RESOURCE_AMENDMENT_CANDIDATE.md",
+      "bytes": 5681,
+      "sha256": "81d5d34d5e4d96c91b5a36d1308b6552b807c756686112e8c39292c688cab256",
+      "git_blob_sha1": "6a0b061cfa7e1de5f2ab40947c9060bc3f487d4d"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/RUNTIME_AND_CUSTODY.md",
+      "bytes": 11021,
+      "sha256": "b5c07e22597becb9ab0df8d5bca554f2d8031222fcc95dee3105e13b79281436",
+      "git_blob_sha1": "540f85cb4ba0030f7bcaef8c2dfc1ea56aea54a1"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/changed-file-inventory.json",
+      "bytes": 1815,
+      "sha256": "c22e86c9173b9819151a12e2b3010b39cc575c44e23e1f3642e33c57668daa09",
+      "git_blob_sha1": "326fee2408e311c8c16452ebdf9193b29c395722"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/gate-f-matrix.json",
+      "bytes": 3906,
+      "sha256": "2908befd6205aea7e8ee6af769bb356d8a1ad74c4f44f7b0704f89d8fc5ddf7a",
+      "git_blob_sha1": "9acc9d26ecfe73fa901d72c3dccc42d7205a7cbc"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation-result.json",
+      "bytes": 298,
+      "sha256": "f207cd00dc7e277239bd44fcaecb32165f790bf724b242912a69d4a06efbac90",
+      "git_blob_sha1": "ab35654bc83c6b25b147b8719ce44ea75e5cc812"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/initial-validation.tap",
+      "bytes": 1438,
+      "sha256": "3c8a97a0f75de79634fb02b2842943d57f9d7b96ba99f4f251932849c50bf187",
+      "git_blob_sha1": "068e351aef4454bc2b48645317d03444bfd1ece5"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/source-bindings.json",
+      "bytes": 17033,
+      "sha256": "94633666ffabd28245a29873c5cc6bec3ec9ca4fc1ebd8c2232246b9c720b5c2",
+      "git_blob_sha1": "43cb541f0906f4e922d066dd60c91dd00bb9e3d3"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/synthetic-recovery-receipts.json",
+      "bytes": 226061,
+      "sha256": "7478438510395c88763d4659c617a285f9e89e564d0776b99dca25d218193ed2",
+      "git_blob_sha1": "94382fbe4e4fe2b3e33e503b17262087c7cfdad2"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/targeted-tests.tap",
+      "bytes": 2952,
+      "sha256": "6e9dc1163fa03d4f49ccfb8dec6c6d7b8853514dd51b9f72964ea587f9ad2c92",
+      "git_blob_sha1": "f7763fa244944eda96ccb0ba42a86e6332536add"
+    },
+    {
+      "path": "docs/research/experiment-b-resumable-flight/2026-11-01/validation-result.json",
+      "bytes": 299,
+      "sha256": "c58f15637bda1cdc9f3ed953922969a4d33d5bc4b5b1742d9d7544bf949ccbd2",
+      "git_blob_sha1": "4a681b0f257ea9debf8d6a54fd34f006a193460e"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/boundaries.mjs",
+      "bytes": 7655,
+      "sha256": "8333fa18c2a25e27fb83c191b2bfc9e73611ba7b24659d1d97e176686d9c9374",
+      "git_blob_sha1": "63d8735331827842c78fa5497550ccf6ce6d7edc"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/engine.mjs",
+      "bytes": 11242,
+      "sha256": "892de5c413a5918a02e66e4f0985e7d43838d21f2e4540580581598362353d6b",
+      "git_blob_sha1": "0744b27e3fa94d347ce5e7863ca0320c97637861"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/journal.mjs",
+      "bytes": 4354,
+      "sha256": "4c0d593e8a5e5ae2500ed15169919f1f0c7de0a86390638d1811a607417f0136",
+      "git_blob_sha1": "09e79bb67f5fadfaa84274d589b4fc67710ceaa1"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/resources.mjs",
+      "bytes": 3767,
+      "sha256": "271b0bcc538bd9e0217f1225f8b31a89ad1dbb9184d7e45605fceeb07779032b",
+      "git_blob_sha1": "f6566326b4fea9c4780ea579cdee63f0e3395284"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/runner.mjs",
+      "bytes": 7632,
+      "sha256": "93e38260ae79472a2a8879f3cd609182401086529b21a4ecaaaa2bd0415767af",
+      "git_blob_sha1": "5095854a8ec6bcb30304cd642b7a10df2c7f3a39"
+    },
+    {
+      "path": "scripts/run-experiment-b-flight.mjs",
+      "bytes": 64011,
+      "sha256": "7b1767af30c727ab49c79ef8a1a4c8d7fc0d6bcba629163d22906d5255b03700",
+      "git_blob_sha1": "4598c3d41cad3aa4eb51d5cb4f0eb945fcde981b"
+    },
+    {
+      "path": "tests/experiment-b-resumable.test.mjs",
+      "bytes": 15454,
+      "sha256": "74234beecb6cbad47c590b1fd2cb91f42a130939ac9d6e0a408cec5848a2568f",
+      "git_blob_sha1": "00be43a3120af231cc08cd253b312d189709b1b5"
+    }
+  ]
+}
