@@ -24,3 +24,6 @@ artifacts/private/
 docs/research/experiment-b-preflight/02_four_arm_harness/dry_run_checkpoint.json
 docs/research/experiment-b-preflight/02_four_arm_harness/flight_research_ledger.json
 scratch/
+
+# Prevent accidental staging of local Experiment B account and runtime receipts
+work/operational/
