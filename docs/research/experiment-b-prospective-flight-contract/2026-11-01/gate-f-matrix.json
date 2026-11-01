@@ -1,0 +1,241 @@
+{
+  "schema": "td613.prospective-flight-contract/gate-f-v1",
+  "status": "CODEX_PROSPECTIVE_FLIGHT_CONTRACT_HELD_WITH_EXACT_BLOCKERS",
+  "authority": "PROPOSED_NOT_ADOPTED_NO_EXECUTION_AUTHORITY",
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "qualification_head": "2d98d519535870bdf01b8cc9bd6b0328ad3ae70c",
+  "review_id": 5728990012,
+  "gate_p": "CLOSED_ACCEPTED_WITH_SCOPE_NOT_REOPENED",
+  "gate_f": "HELD",
+  "gate_e": "HELD",
+  "human_closure": "RESERVED",
+  "new_inference_calls": 0,
+  "protected_archive_operations": 0,
+  "empirical_replication_credit": 0,
+  "current_token_ceiling_per_arm": 720000,
+  "earlier_token_ceiling_per_arm": 180000,
+  "adopted_amendment": false,
+  "execution_authorized": false,
+  "accepted_scope": [
+    {
+      "id": "AC01",
+      "category": "OBSERVED_1616",
+      "finding": "Genuine local CLI receipts accepted with scope",
+      "source_ids": [
+        "Q01",
+        "Q03",
+        "REVIEW_5728990012"
+      ],
+      "provider_attestation": false
+    },
+    {
+      "id": "AC02",
+      "category": "OBSERVED_1616",
+      "finding": "Exact user-managed arm-local final-output replay observed",
+      "source_ids": [
+        "Q01",
+        "Q02"
+      ],
+      "provider_persistence": false
+    },
+    {
+      "id": "AC03",
+      "category": "IMPLEMENTED_SOURCE_FREE",
+      "finding": "Synthetic-only adapter and syntactic blinding guard implemented",
+      "source_ids": [
+        "B08",
+        "B09"
+      ],
+      "protected_ingress_implemented": false
+    }
+  ],
+  "requirements": [
+    {
+      "id": "GF01",
+      "exact_blocker": "MODEL_EFFECTIVE_CONFIGURATION",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D02",
+        "D03"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF01"
+    },
+    {
+      "id": "GF02",
+      "exact_blocker": "DECODING_ENFORCEMENT",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D03",
+        "D04"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF02"
+    },
+    {
+      "id": "GF03",
+      "exact_blocker": "CONTEXT_AND_SOURCE_ISOLATION",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D09",
+        "D11"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF03"
+    },
+    {
+      "id": "GF04",
+      "exact_blocker": "AUTHENTICATED_PROCESS_TRANSFER",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D12",
+        "D20"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF04"
+    },
+    {
+      "id": "GF05",
+      "exact_blocker": "ENGINE_PARITY",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D13"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF05"
+    },
+    {
+      "id": "GF06",
+      "exact_blocker": "BUDGET_SCOPE_AND_CAPACITY",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D04",
+        "D05",
+        "D06",
+        "D16",
+        "D17"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF06"
+    },
+    {
+      "id": "GF07",
+      "exact_blocker": "STAGE2_INDEPENDENCE_AND_BLINDING",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D14",
+        "D15",
+        "D19"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF07"
+    },
+    {
+      "id": "GF08",
+      "exact_blocker": "DESIGN_AND_POWER",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D07",
+        "D08",
+        "D09",
+        "D10"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF08"
+    },
+    {
+      "id": "GF09",
+      "exact_blocker": "OPERATOR_RELEASE_DECISIONS",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D01",
+        "D18",
+        "D20"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF09"
+    },
+    {
+      "id": "GF10",
+      "exact_blocker": "PROVIDER_CONFIDENTIALITY",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D01",
+        "D18"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF10"
+    },
+    {
+      "id": "GF11",
+      "exact_blocker": "PROOF_ORIGIN_BOUNDARY",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D14",
+        "D15"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF11"
+    },
+    {
+      "id": "GF12",
+      "exact_blocker": "CANDIDATE_AND_RUNTIME_OVERFLOW",
+      "status": "HELD",
+      "evidence_category": "UNVERIFIED",
+      "design_category": "PROPOSED_NOT_ADOPTED",
+      "independently_verified": false,
+      "operator_decision_ids": [
+        "D04",
+        "D16",
+        "D17"
+      ],
+      "closure_specification": "RISKS_AND_BLOCKERS.md",
+      "no_automatic_promotion": true,
+      "register_row_id": "GF12"
+    }
+  ]
+}
