@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: synthetic capture correlation requires external witness
+ok 1 - synthetic capture correlation requires external witness
+  ---
+  duration_ms: 5.7205
+  type: 'test'
+  ...
+# Subtest: synthetic exact bytes accepted only by explicit fake authority
+ok 2 - synthetic exact bytes accepted only by explicit fake authority
+  ---
+  duration_ms: 0.5895
+  type: 'test'
+  ...
+# Subtest: synthetic file mismatch and failed exit hold
+ok 3 - synthetic file mismatch and failed exit hold
+  ---
+  duration_ms: 0.5855
+  type: 'test'
+  ...
+# Subtest: synthetic late events and incomplete tools hold
+ok 4 - synthetic late events and incomplete tools hold
+  ---
+  duration_ms: 0.6051
+  type: 'test'
+  ...
+# Subtest: admission-only denies absent authority, Flight-purpose grant and expiry before I/O
+ok 5 - admission-only denies absent authority, Flight-purpose grant and expiry before I/O
+  ---
+  duration_ms: 1.9032
+  type: 'test'
+  ...
+# Subtest: legacy physical guard and synthetic WeakMap nonauthority preserved
+ok 6 - legacy physical guard and synthetic WeakMap nonauthority preserved
+  ---
+  duration_ms: 8.5654
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 277.3391

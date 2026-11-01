@@ -1,0 +1,39 @@
+{
+  "referenceIntake": "c7ee69abc9800d0abdf21bbb957c5534f86b01ad",
+  "referenceParser": "d3da8d4e7431c7208dc1d1216cd741bc5aa0ca58",
+  "node": "v26.7.0",
+  "tests": 6,
+  "pass": 6,
+  "modelCalls": 0,
+  "archiveReads": 0,
+  "files": [
+    {
+      "file": "admission-only-intake.candidate.mjs",
+      "sha256": "25b7f05b8a7d306246924ca321ae2b8ff7552350c7157f3d889d078c931721a4"
+    },
+    {
+      "file": "admission-only.patch",
+      "sha256": "12e996cd56d5834e1a947c75929fd5f827467823cd80dc722be8d1a94466ce47"
+    },
+    {
+      "file": "closure.test.mjs",
+      "sha256": "3a884dbf2ae099cbf3e0c20ce21e964cce251a44b6ee8df825da5a9baddb4d09"
+    },
+    {
+      "file": "pr1620-adapter.mjs",
+      "sha256": "7a3c42d1e12a8ead834818e1cdea1be2ef92f6ad6a251beccd5591ecd110b2ef"
+    },
+    {
+      "file": "STATUS.md",
+      "sha256": "585af1d622185b959ea9360f8905090687e14250a2c7ad13faa7b2cfb3b12b14"
+    },
+    {
+      "file": "terminal-capture.candidate.mjs",
+      "sha256": "81440011654f82de944991707b3749e2269e0d7d8b008b296c100b59ce510c8f"
+    },
+    {
+      "file": "tests.tap",
+      "sha256": "41d9f6381b0d5a108fbde330cb3c3bdd450a79286635dca1e4145cb4a953d062"
+    }
+  ]
+}
