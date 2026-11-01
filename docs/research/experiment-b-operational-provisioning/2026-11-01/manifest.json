@@ -1,0 +1,79 @@
+{
+  "implementationBase": "fcdafe418b7a1686f4f9da3d018345d1a595e69d",
+  "hostNode": "v26.7.0",
+  "containerNode": "v24.4.0",
+  "containerEngine": "29.7.2",
+  "nativeVersion": "codex-cli 0.166.0-alpha.5.1",
+  "executableSHA256": "6253fb59fc4c21a9134b2f73237650eaec4a3d9380e5af12f3f1e9040dc24c14",
+  "nativeImage": "sha256:ea839611d049c0dc768c90e7055d370473e247010d98cf4988d5acefc8bb20c0",
+  "finalBoundaryTests": {
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --test --test-reporter=tap scripts/experiment-b-operational/boundary.test.mjs",
+    "environment": {
+      "TD613_RUN_BOUNDARY_TESTS": "true",
+      "TD613_BOUNDARY_IMAGE": "sha256:ea839611d049c0dc768c90e7055d370473e247010d98cf4988d5acefc8bb20c0"
+    },
+    "scope": "Actual credential-free offline container enforcement and integer workers; no model requests"
+  },
+  "initialProbe": "boundary-result.tap records the earlier base-image run before image allowlist tightening; boundary-native-result.tap records the final locked-image implementation run.",
+  "failedOperations": [
+    {
+      "operation": "Restricted command security/virtualization check",
+      "outcome": "Non-administrator token; virtualization interfaces unavailable within that command sandbox"
+    },
+    {
+      "operation": "Outside-sandbox Docker endpoint check before startup",
+      "outcome": "Endpoint unavailable"
+    },
+    {
+      "operation": "First native package extraction",
+      "outcome": "NATIVE_ARTIFACT_REJECTED at 256 MiB in-memory extraction ceiling; public tar entry declares 318015496 bytes",
+      "resolution": "Verified cached package rechecked against registry SHA-512, then extracted to a fresh file using bounded streaming, declared-size validation and ELF/digest checks"
+    }
+  ],
+  "files": [
+    {
+      "file": "scripts/experiment-b-operational/isolated-math-supervisor.mjs",
+      "sha256": "287008ddf144b1d06e25e006c1a137ec70ff2811bf5667af5dfcf7ce7517768d"
+    },
+    {
+      "file": "scripts/experiment-b-operational/boundary.test.mjs",
+      "sha256": "f1f9d8bf92ae3b30e78fcf3dfdaa08611e89a336a5fea3db492bd8b17c56da2b"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/provision-native.mjs",
+      "sha256": "eafda06703c78e2934b10917fa90b72fe9217b8caaf29261dd662c68276b6640"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/witness-native.mjs",
+      "sha256": "70ed0bd0c9bbddc2baecccee720f6ed58280260d6f6191aea060d0f58b18240a"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/build/Dockerfile",
+      "sha256": "67df0c7e5a9eb5442d7eb77ce14b80ee7ec4d124ae22e96d9404d3a4178c3c04"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/build/.dockerignore",
+      "sha256": "b2eb527739615598f1b2b1ee6db2aa3159747970badc1c6905959bbdfec7956b"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/native-package-receipt.json",
+      "sha256": "cd67f953a95ea92b1e3ba7c338b507169727e4a0bb14a41b632d584717cda79f"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/native-version-receipt.json",
+      "sha256": "8d117eb8a0a988eea0f3950b839df5052b4d932c9d314035dcaf8ff8b4b40b80"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/boundary-result.tap",
+      "sha256": "b076b3738eae3983615db0b6375fb12cfae66c33e6cb4c1646f036cd26c9e439"
+    },
+    {
+      "file": "docs/research/experiment-b-operational-provisioning/2026-11-01/boundary-native-result.tap",
+      "sha256": "44d1c7f9ca43fd599323659fda1fc7cb4fad08d2b17260597aa03001844b1e12"
+    }
+  ]
+}
