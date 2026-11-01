@@ -1,0 +1,12 @@
+SOURCE-FREE SYNTHETIC QUALIFICATION. Use only inline documents and the exact prior final messages below. Do not use any tool, inspect files, search, or delegate. Report externally reviewable claims, calculations, commitments and uncertainty only. Do not provide private internal reasoning. Do not infer an observation not yet supplied. Keep answer under 200 words. No treatment labels or chamber names in the answer. Return a JSON object with keys proposition, evidence, prior_commitment_status, calculation, limitation. All values must be strings.
+EXACT OWN PRIOR FINAL MESSAGES:
+[]
+CURRENT HANDOFF D1:
+**ARM_2A_MODULAR — Chamber 1**
+
+- **Observation limits:** D1 supplies only \(x_0=5\), \(x_1=8\), and \(x_2=11\). Both observed increments equal \(3\). No later values are supplied.
+- **Domain:** The proposed recurrence applies to every nonnegative integer \(n\).
+- **Provisional commitment:** The universal rule \(x_{n+1}=x_n+3\) is **consistent with the observations, not proved by them**. Finite observations do not establish its validity at every index.
+- **Conditional prediction:** If the proposed rule holds at \(n=2\), then \(x_3=11+3=\boxed{14}\). This is a prediction, not an observation.
+TASK:
+Second jurisdiction: from the current handoff alone, audit relation identity, exact finite bounds, valid or invalid extrapolation and candidate falsification. Preserve or revise your own prior commitments. Do not recover the raw document from outside this input.

@@ -1,0 +1,17 @@
+{
+  "repository": "tauric-diana-613/TD613-TCP",
+  "sha": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "tree_sha": "43493e58c2620c8266213c17359c4e1f6de5627d",
+  "github_verification": true,
+  "github_verification_reason": "valid",
+  "main_before_publication": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "method": "GitHub connector exact-ref fetch and reconstructed blob SHA-1 verification; no local checkout mutation",
+  "local_clone_metadata_observation": {
+    "provenance": "transcribed from exec tool observations",
+    "head": "f0986a207eb18311abb22af8e68455f55c13235c",
+    "origin": "https://github.com/tauric-diana-613/TD613-TCP.git",
+    "baseline_object_check": "fatal: not a tree object",
+    "initial_access": "Permission denied; metadata read succeeded with approved escalation"
+  },
+  "tree_discovery_failure": "Recursive GitHub tree request returned Transport closed; exact-ref directory listings and code search located the six paths instead."
+}

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Six exact-ref source SHA-256 and Git blob SHA-1 identities match",
+    "12 successful genuine-process recorded turns, unique local thread IDs, exact output/usage binding, zero visible tool items",
+    "All later arm prompts replay exactly their own prescribed stage history; current modular handoffs equal actual preceding outputs",
+    "Recorded failures preserved, independent-credential request refused, uncredentialed baseline assembler held, fresh native review recorded",
+    "Syntactic arm labels absent from review packet; semantic blindness explicitly remains unverified"
+  ],
+  "successful_reasoning_turns": 12,
+  "native_review_turns": 1,
+  "visible_tool_items": 0,
+  "provider_attestation_verified": false,
+  "semantic_blindness_verified": false,
+  "independent_witness_verified": false
+}

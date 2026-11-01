@@ -1,0 +1,15 @@
+{
+  "schema": "td613.experiment-b.blind-stage2/v1",
+  "candidates": [
+    {
+      "blind_id": "BLIND-460d5705388844670f75cefd",
+      "text": "[{\"document\":\"D1\",\"proposition\":\"The universal rule is consistent with the supplied observations but is not proved. If the rule holds, x_3=14.\",\"calculation\":\"8−5=3; 11−8=3. Conditional prediction: x_3=11+3=14. For example, an unmeasured x_3=15 would also fit all supplied measurements while violating the universal rule.\"},{\"document\":\"D2\",\"proposition\":\"The universal increment-3 proposition is false for the same invented relay. The exact observation x_3=15 contradicts its conditional prediction x_3=14.\",\"calculation\":\"8−5=3; 11−8=3; 15−11=4≠3; 19−15=4≠3. The observed x_3 exceeds the predicted 14 by 1. Either increment-4 transition independently falsifies the universal increment-3 proposition.\"},{\"document\":\"D3\",\"proposition\":\"The proposed recurrence fits all supplied observations. Conditional on the hypothesis, x_n=5+3n+max(0,n−2) for every nonnegative integer n, predicting x_5=23. The false twin x_n=5+4n is falsified.\",\"calculation\":\"Among n transitions, max(0,n−2) have index at least 2. Summation gives x_n=5+3n+max(0,n−2), hence x_5=5+15+3=23. The false twin predicts x_1=9, contradicting observed x_1=8.\"}]",
+      "text_sha256": "b308508baa45354212631ddd43172ccfed17d4a33a970295e9851af91ba6001b"
+    },
+    {
+      "blind_id": "BLIND-df02586a2e83ba751342a723",
+      "text": "[{\"document\":\"D1\",\"proposition\":\"The proposed relation is x_(n+1) = x_n + 3 for every nonnegative integer n. Its equivalent closed form, given x_0 = 5, is x_n = 5 + 3n. Both remain hypotheses beyond the supplied observations.\",\"calculation\":\"8 - 5 = 3 and 11 - 8 = 3. If the recurrence holds at n = 2, then x_3 = 11 + 3 = 14.\"},{\"document\":\"D2\",\"proposition\":\"The audited relation is x_(n+1)=x_n+3 for every nonnegative integer n, equivalently x_n=5+3n given x_0=5. The supplied observations falsify this universal claim.\",\"calculation\":\"Adjacent increments are 3,3,4,4. At n=2, x_3-(x_2+3)=15-14=1. At n=3, x_4-(x_3+3)=19-18=1. Either failure independently falsifies the universal recurrence.\"},{\"document\":\"D3\",\"proposition\":\"The handoff's formula implies x_(n+1)=x_n+3+1_{n>=2}, with x_0=5. This differs from the falsified universal +3 rule and fits every supplied observation.\",\"calculation\":\"Observed increments are 3,3,4,4. Summing the proposed increments yields x_n=5+3n+max(0,n-2). Conditional on universal adoption, x_5=23. The candidate 5+4n predicts 9,13,17,21 at indices 1–4 and is falsified.\"}]",
+      "text_sha256": "563a1b84fa096b82dc319709f044f3fa3738c43bc5ac0e912c8839b571b247d0"
+    }
+  ]
+}
