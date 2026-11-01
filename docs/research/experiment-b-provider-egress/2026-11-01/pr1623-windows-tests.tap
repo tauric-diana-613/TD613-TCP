@@ -1,0 +1,197 @@
+TAP version 13
+# Subtest: SYNTHETIC terminal exact bytes and evidence survive authenticated journal reopen
+ok 1 - SYNTHETIC terminal exact bytes and evidence survive authenticated journal reopen
+  ---
+  duration_ms: 86.9303
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses mismatch
+ok 2 - SYNTHETIC final capture refuses mismatch
+  ---
+  duration_ms: 8.737
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses absent
+ok 3 - SYNTHETIC final capture refuses absent
+  ---
+  duration_ms: 7.7716
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses stale
+ok 4 - SYNTHETIC final capture refuses stale
+  ---
+  duration_ms: 8.2244
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses reused
+ok 5 - SYNTHETIC final capture refuses reused
+  ---
+  duration_ms: 7.816
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses wrongDispatch
+ok 6 - SYNTHETIC final capture refuses wrongDispatch
+  ---
+  duration_ms: 8.2032
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses uncaptured
+ok 7 - SYNTHETIC final capture refuses uncaptured
+  ---
+  duration_ms: 4.844
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses postTerminal
+ok 8 - SYNTHETIC final capture refuses postTerminal
+  ---
+  duration_ms: 6.248
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses toolStart
+ok 9 - SYNTHETIC final capture refuses toolStart
+  ---
+  duration_ms: 4.9524
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses toolUpdate
+ok 10 - SYNTHETIC final capture refuses toolUpdate
+  ---
+  duration_ms: 7.0399
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC final capture refuses unknown
+ok 11 - SYNTHETIC final capture refuses unknown
+  ---
+  duration_ms: 4.7872
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC missing capture authority refuses before spawn
+ok 12 - SYNTHETIC missing capture authority refuses before spawn
+  ---
+  duration_ms: 1.1729
+  type: 'test'
+  ...
+# Subtest: SYNTHETIC admission purpose, digest, policy, expiry, single use, physical re-admission and legacy guard
+ok 13 - SYNTHETIC admission purpose, digest, policy, expiry, single use, physical re-admission and legacy guard
+  ---
+  duration_ms: 27.7798
+  type: 'test'
+  ...
+# Subtest: source-free account metadata requires absolute existing private destination
+ok 14 - source-free account metadata requires absolute existing private destination
+  ---
+  duration_ms: 15.6821
+  type: 'test'
+  ...
+# Subtest: source-free private receipt is exclusive, byte-preserving and not overwritten
+ok 15 - source-free private receipt is exclusive, byte-preserving and not overwritten
+  ---
+  duration_ms: 18.8179
+  type: 'test'
+  ...
+# Subtest: source-free symlinked parent cannot reroute receipts into repository
+ok 16 - source-free symlinked parent cannot reroute receipts into repository # SKIP Symlink creation unavailable
+  ---
+  duration_ms: 6.8558
+  type: 'test'
+  ...
+# Subtest: paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets
+ok 17 - paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets
+  ---
+  duration_ms: 183.1049
+  type: 'test'
+  ...
+# Subtest: complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion
+ok 18 - complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion
+  ---
+  duration_ms: 566.4573
+  type: 'test'
+  ...
+# Subtest: captured answer is accepted after interruption without transport execution
+ok 19 - captured answer is accepted after interruption without transport execution
+  ---
+  duration_ms: 78.4433
+  type: 'test'
+  ...
+# Subtest: actual local process death after durable intent leaves uncertain unit, never retries
+ok 20 - actual local process death after durable intent leaves uncertain unit, never retries
+  ---
+  duration_ms: 267.4465
+  type: 'test'
+  ...
+# Subtest: writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection
+ok 21 - writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection
+  ---
+  duration_ms: 88.1535
+  type: 'test'
+  ...
+# Subtest: operator pause, source drift, model drift, and context limit preserve completed progress
+ok 22 - operator pause, source drift, model drift, and context limit preserve completed progress
+  ---
+  duration_ms: 54.3212
+  type: 'test'
+  ...
+# Subtest: unknown accounting remains unknown and reserved; spending stop is not scientific invalidation
+ok 23 - unknown accounting remains unknown and reserved; spending stop is not scientific invalidation
+  ---
+  duration_ms: 48.2353
+  type: 'test'
+  ...
+# Subtest: definitively rejected no-execution attempt can resume within frozen retry authority
+ok 24 - definitively rejected no-execution attempt can resume within frozen retry authority
+  ---
+  duration_ms: 366.9296
+  type: 'test'
+  ...
+# Subtest: mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun
+ok 25 - mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun
+  ---
+  duration_ms: 394.1631
+  type: 'test'
+  ...
+# Subtest: protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed
+ok 26 - protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed
+  ---
+  duration_ms: 2.607
+  type: 'test'
+  ...
+# Subtest: native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools
+ok 27 - native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools
+  ---
+  duration_ms: 11.1104
+  type: 'test'
+  ...
+# Subtest: Codex native parser retains last completed agent message, not concatenated commentary
+ok 28 - Codex native parser retains last completed agent message, not concatenated commentary
+  ---
+  duration_ms: 0.5202
+  type: 'test'
+  ...
+# Subtest: Codex native parser refuses agent output or any extra events after terminal turn
+ok 29 - Codex native parser refuses agent output or any extra events after terminal turn
+  ---
+  duration_ms: 0.6021
+  type: 'test'
+  ...
+# Subtest: Codex native parser rejects started, updated and completed tool activity
+ok 30 - Codex native parser rejects started, updated and completed tool activity
+  ---
+  duration_ms: 0.8444
+  type: 'test'
+  ...
+# Subtest: Codex native parser retains fail-closed full JSONL size bound
+ok 31 - Codex native parser retains fail-closed full JSONL size bound
+  ---
+  duration_ms: 7.6414
+  type: 'test'
+  ...
+1..31
+# tests 31
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 2471.3725
+

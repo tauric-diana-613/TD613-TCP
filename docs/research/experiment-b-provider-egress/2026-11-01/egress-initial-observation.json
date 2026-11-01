@@ -1,0 +1,26 @@
+{
+  "image": "sha256:35e3f28a7aeb61b024258d192fed7286105a6e3109c0bc45582c879db6aa897d",
+  "evidenceClass": "ACTUAL_ORIGIN_GATEWAY_PROBE",
+  "modelRequests": 0,
+  "example.com:443": 403,
+  "api.openai.com:443": 403,
+  "127.0.0.1:443": 403,
+  "169.254.169.254:443": 403,
+  "auth.openai.com:80": 403,
+  "chatgpt.com.attacker.invalid:443": 403,
+  "auth.openai.com:443": {
+    "connectStatus": 200,
+    "verifiedTLS": true
+  },
+  "chatgpt.com:443": {
+    "connectStatus": 200,
+    "verifiedTLS": true
+  },
+  "directNetwork": "ENETUNREACH",
+  "credentialEnvironment": [],
+  "ambientAuthFile": false,
+  "workerNetwork": "none",
+  "sharedSocketMount": "read_only_named_volume",
+  "hostBindMounts": 0,
+  "exitCode": 0
+}

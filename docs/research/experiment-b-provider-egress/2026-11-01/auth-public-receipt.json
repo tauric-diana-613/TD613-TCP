@@ -1,0 +1,14 @@
+{
+  "evidenceClass": "SUPPORTED_FIRST_PARTY_DEVICE_AUTH",
+  "image": "sha256:35e3f28a7aeb61b024258d192fed7286105a6e3109c0bc45582c879db6aa897d",
+  "workerNetwork": "none",
+  "gatewayOrigins": [
+    "auth.openai.com:443",
+    "chatgpt.com:443"
+  ],
+  "hostBindMounts": 0,
+  "ambientCredentialsCopied": false,
+  "modelRequests": 0,
+  "stage": "FIRST_PARTY_SIGN_IN_COMPLETED",
+  "exitCode": 0
+}
