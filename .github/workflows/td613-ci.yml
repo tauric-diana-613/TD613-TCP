@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, experiment-b-parser-redpen-2026-11-01]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: '24.4.0'
       - name: Verify synthetic checkpoint, replay and resume
-        run: node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs
+        run: node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs tests/experiment-b-final-integration.test.mjs
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'

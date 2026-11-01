@@ -52,7 +52,7 @@ export async function runProtectedConfiguration(configFile, rootsFile, checkpoin
     }
     const flight = new ResumableFlight({ journal, plan: config.plan, policy: config.policy, broker,
       observeRuntime: runtime.observeRuntime, measureInput: runtime.measureInput,
-      transport: nativeTransport({ workspace: config.isolatedWorkspace, model: config.plan.model.requested, effort: config.plan.model.effort, observeRuntime: runtime.observeRuntime, spawnNative: runtime.spawnNative }),
+      transport: nativeTransport({ workspace: config.isolatedWorkspace, model: config.plan.model.requested, effort: config.plan.model.effort, observeRuntime: runtime.observeRuntime, spawnNative: runtime.spawnNative, captureService: runtime.captureService }),
       mirror: ledgerMirror(ledger), pauseRequested: () => stop });
     const result = await flight.run({ windowId: config.quotaWindowId, policyAuthorization: authority.authorizationId, runtimeAuthorization: authority.authorizationId });
     if (result.status !== 'REASONING_COMPLETE_STAGE2_REQUIRED') return result;

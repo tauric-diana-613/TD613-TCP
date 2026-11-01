@@ -19,6 +19,8 @@ export function parseCodexEvents(stdout){
     try{const v=JSON.parse(line);if(typeof v.type!=='string')throw Error();return v;}
     catch{fail('CODEX_JSONL_INVALID_EVENT_'+i);}
   });
+  const allowed=['thread.started','turn.started','item.started','item.updated','item.completed','turn.completed','error','turn.failed'];
+  if(events.some(e=>!allowed.includes(e.type)))fail('NATIVE_UNKNOWN_EVENT_REFUSED');
   const starts=events.filter(e=>e.type==='thread.started'&&typeof e.thread_id==='string'&&e.thread_id);
   const finishes=events.filter(e=>e.type==='turn.completed');
   if(starts.length!==1 || events[0]!==starts[0])fail('NATIVE_THREAD_ID_MISSING_OR_DUPLICATED');

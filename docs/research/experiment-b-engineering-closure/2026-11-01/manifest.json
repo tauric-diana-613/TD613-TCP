@@ -1,0 +1,87 @@
+{
+  "referenceIntake": "c7ee69abc9800d0abdf21bbb957c5534f86b01ad",
+  "referenceParser": "d3da8d4e7431c7208dc1d1216cd741bc5aa0ca58",
+  "evidence": "Existing recorded synthetic tests only; publication performs zero inference and zero archive operations",
+  "files": [
+    {
+      "file": "candidate/admission-only-intake.candidate.mjs",
+      "sha256": "25b7f05b8a7d306246924ca321ae2b8ff7552350c7157f3d889d078c931721a4"
+    },
+    {
+      "file": "candidate/admission-only.patch",
+      "sha256": "12e996cd56d5834e1a947c75929fd5f827467823cd80dc722be8d1a94466ce47"
+    },
+    {
+      "file": "candidate/closure.test.mjs",
+      "sha256": "3a884dbf2ae099cbf3e0c20ce21e964cce251a44b6ee8df825da5a9baddb4d09"
+    },
+    {
+      "file": "candidate/pr1620-adapter.mjs",
+      "sha256": "7a3c42d1e12a8ead834818e1cdea1be2ef92f6ad6a251beccd5591ecd110b2ef"
+    },
+    {
+      "file": "candidate/STATUS.md",
+      "sha256": "585af1d622185b959ea9360f8905090687e14250a2c7ad13faa7b2cfb3b12b14"
+    },
+    {
+      "file": "candidate/terminal-capture.candidate.mjs",
+      "sha256": "81440011654f82de944991707b3749e2269e0d7d8b008b296c100b59ce510c8f"
+    },
+    {
+      "file": "candidate/tests.tap",
+      "sha256": "41d9f6381b0d5a108fbde330cb3c3bdd450a79286635dca1e4145cb4a953d062"
+    },
+    {
+      "file": "prior-review/adapter-redpen.test.mjs",
+      "sha256": "b5f6887b1a65f548093ff39549b9b0ca0414a1aebe245ff9ffab54eb7c032983"
+    },
+    {
+      "file": "prior-review/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
+      "sha256": "a85d00780f9b1bc68dd199551625f6064a001df1221faab15a57afd574e93788"
+    },
+    {
+      "file": "prior-review/baseline/docs/research/experiment-b-resumable-flight/2026-11-01/RUNTIME_AND_CUSTODY.md",
+      "sha256": "b5c07e22597becb9ab0df8d5bca554f2d8031222fcc95dee3105e13b79281436"
+    },
+    {
+      "file": "prior-review/baseline/scripts/experiment-b-codex-exec-adapter.mjs",
+      "sha256": "439edabf1e55e17b98d63ab465e1610324fc78cab9bf91508a1f2688ffc02986"
+    },
+    {
+      "file": "prior-review/baseline/scripts/experiment-b-resumable/boundaries.mjs",
+      "sha256": "8333fa18c2a25e27fb83c191b2bfc9e73611ba7b24659d1d97e176686d9c9374"
+    },
+    {
+      "file": "prior-review/baseline/scripts/experiment-b-resumable/runner.mjs",
+      "sha256": "93e38260ae79472a2a8879f3cd609182401086529b21a4ecaaaa2bd0415767af"
+    },
+    {
+      "file": "prior-review/baseline/tests/experiment-b-resumable.test.mjs",
+      "sha256": "74234beecb6cbad47c590b1fd2cb91f42a130939ac9d6e0a408cec5848a2568f"
+    },
+    {
+      "file": "prior-review/candidate.patch",
+      "sha256": "3bd65a01d9b0e829a4291fe5593067b45e30740bbddb014a455278e76933b707"
+    },
+    {
+      "file": "prior-review/REVIEW.md",
+      "sha256": "5b8fb1a030948bb6c0771be6ed743f6c507ba121c368de3f10e7dfd8e5023f99"
+    },
+    {
+      "file": "prior-review/test-receipt.json",
+      "sha256": "a989db65a37037c7dee58b17f37210b48a4dbd00763918606b713eb94235e414"
+    },
+    {
+      "file": "candidate/manifest.json",
+      "sha256": "a6d535cd1b1600f5dd7d98c6bd38f43a464145408eef9f477b795a5c8e90a58c"
+    },
+    {
+      "file": "prior-review/manifest.json",
+      "sha256": "8caa882e4aa677f22ce88359c7fca728c49eb35d192fee89f55126f8e3c031a3"
+    },
+    {
+      "file": "README.md",
+      "sha256": "da0db929fa9c16253137d561918fab3e35a3753fe71098a8e9b782e3bde4f3c5"
+    }
+  ]
+}

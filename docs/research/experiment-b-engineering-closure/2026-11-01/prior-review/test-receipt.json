@@ -1,0 +1,12 @@
+{
+  "evidenceClass": "SOURCE_FREE_SYNTHETIC_REPRODUCTION",
+  "command": "node --test outputs/runtime-review/adapter-redpen.test.mjs",
+  "exitCode": 0,
+  "tests": 6,
+  "passed": 6,
+  "failed": 0,
+  "modelCalls": 0,
+  "protectedArchiveReads": 0,
+  "signaturesGenerated": 0,
+  "scope": "Existing parser behavior and ZIP nonauthority guards only. No admission-only implementation or isolated runtime certified."
+}
