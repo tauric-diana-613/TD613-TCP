@@ -2,7 +2,7 @@ name: TD613 Consolidated Validation
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, experiment-b-parser-redpen-2026-11-01]
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
