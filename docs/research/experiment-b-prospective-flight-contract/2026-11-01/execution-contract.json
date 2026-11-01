@@ -1,0 +1,42 @@
+{
+  "status": "PROPOSED_NOT_IMPLEMENTED",
+  "arm_ids": [
+    "ARM_0_TRANSPORT",
+    "ARM_1_ARCHIVAL",
+    "ARM_2A_MODULAR",
+    "ARM_2B_MATCHED_UNION"
+  ],
+  "reasoning_model": "gpt-6.1-sol",
+  "effort_options": [
+    "medium",
+    "high"
+  ],
+  "selected_effort": null,
+  "outer_chat_high_is_not_child_receipt": true,
+  "source_transfer": "trusted-parent WeakMap validation then new authenticated broker capability; no serialization promotion",
+  "history_method_proposed": "exact explicit arm-local replay",
+  "provider_persistence_verified": false,
+  "calls_per_document_per_reasoning_arm": 2,
+  "baseline_calls_per_arm_per_condition": 1,
+  "final_calls_per_arm_per_condition": 1,
+  "factorial_cells": [
+    "AUTHENTIC_NEUTRAL",
+    "AUTHENTIC_DOLLHOUSE",
+    "NEGATIVE_NEUTRAL",
+    "NEGATIVE_DOLLHOUSE"
+  ],
+  "architecture_crossed_with_cells": true,
+  "orders_proposed": [
+    "AUTHENTICATED_CHRONOLOGICAL",
+    "REVERSE_CHRONOLOGICAL",
+    "AUTHENTICATED_TOPICAL"
+  ],
+  "replications_example_only": 3,
+  "statistical_power_approved": false,
+  "operator_approvals": [],
+  "transfer_envelope_bound": false,
+  "stage2_credentials_configured": false,
+  "unblinding_authorized": false,
+  "postflight_programs_may_influence_flight": false,
+  "execution_authorized": false
+}
