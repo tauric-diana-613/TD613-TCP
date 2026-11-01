@@ -1,0 +1,12 @@
+{
+  "command": "node --test --test-reporter=tap tests/experiment-b-resumable.test.mjs",
+  "node": "v26.7.0",
+  "platform": "win32",
+  "architecture": "x64",
+  "exit_code": 1,
+  "model_calls": 0,
+  "protected_archive_operations": 0,
+  "test_passes": 0,
+  "test_failures": 1,
+  "source_free": true
+}
