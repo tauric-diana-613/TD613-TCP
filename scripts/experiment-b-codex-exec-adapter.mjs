@@ -21,16 +21,28 @@ export function parseCodexEvents(stdout){
   });
   const starts=events.filter(e=>e.type==='thread.started'&&typeof e.thread_id==='string'&&e.thread_id);
   const finishes=events.filter(e=>e.type==='turn.completed');
-  if(starts.length!==1)fail('NATIVE_THREAD_ID_MISSING_OR_DUPLICATED');
+  if(starts.length!==1 || events[0]!==starts[0])fail('NATIVE_THREAD_ID_MISSING_OR_DUPLICATED');
   if(events.some(e=>['error','turn.failed'].includes(e.type)))fail('NATIVE_TURN_FAILED');
   if(finishes.length!==1)fail('NATIVE_TURN_COMPLETION_UNVERIFIED');
-  const messages=events.filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message'&&typeof e.item.text==='string'&&e.item.text.trim());
+  // The verified terminal event must close the returned JSONL. Later agent
+  // messages must never be silently accepted as a completed answer.
+  const terminalIndex=events.indexOf(finishes[0]);
+  if(terminalIndex!==events.length-1)fail('NATIVE_POST_TERMINAL_EVENT_REFUSED');
+  // All item lifecycle events are evidence of activity. The prior completed-only
+  // filter missed started/updated tool calls, including tools that never completed.
+  const itemEvents=events.filter(e=>['item.started','item.updated','item.completed'].includes(e.type));
+  const prohibited=itemEvents.filter(e=>!['agent_message','reasoning'].includes(e.item?.type));
+  if(prohibited.length)fail('NATIVE_TOOL_ACTIVITY_REFUSED');
+  const messages=events.slice(1,terminalIndex).filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message'&&typeof e.item.text==='string'&&e.item.text.trim());
   if(!messages.length)fail('NATIVE_AGENT_MESSAGE_UNOBSERVED');
-  const output=messages.map(e=>e.item.text).join('\n');
+  // Multiple completed agent messages may include intermediate commentary.
+  // Preserve the last completed message verbatim as the terminal answer; retain
+  // the entire original JSONL separately in the durable transport evidence.
+  const output=messages[messages.length-1].item.text;
   return {thread_id:starts[0].thread_id,output,output_sha256:hash(output),
     usage_reported:finishes[0].usage||null,
     model_served_independently_attested:false,
-    command_event_count:events.filter(e=>e.type==='item.completed'&&e.item?.type==='command_execution').length};
+    command_event_count:0};
 }
 function safeEnv(){
   const keys=['PATH','HOME','USERPROFILE','CODEX_HOME','TMPDIR','TMP','TEMP','LANG','LC_ALL','SystemRoot','SYSTEMROOT','HTTPS_PROXY','HTTP_PROXY','NO_PROXY','SSL_CERT_FILE'];

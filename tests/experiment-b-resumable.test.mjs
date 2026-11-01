@@ -11,6 +11,7 @@ import { ResumableFlight, ARMS, rounds } from '../scripts/experiment-b-resumable
 import { resourceState, usageRecord, validatePolicy } from '../scripts/experiment-b-resumable/resources.mjs';
 import { protectedBroker, ledgerMirror, nativeTransport, verifyExecutionAuthorization } from '../scripts/experiment-b-resumable/boundaries.mjs';
 import { runProtectedConfiguration } from '../scripts/experiment-b-resumable/runner.mjs';
+import { parseCodexEvents } from '../scripts/experiment-b-codex-exec-adapter.mjs';
 
 const KEY = 'SYNTHETIC-TEST-ONLY-NOT-AN-OPERATOR-KEY-000';
 const EVIDENCE = [];
@@ -172,3 +173,42 @@ test('native utility wiring uses deterministic injected spawn, retains full JSON
   assert.equal(r.response, 'SYNTHETIC_FINAL');
 });
 
+
+test('Codex native parser retains last completed agent message, not concatenated commentary', () => {
+  const stdout = [
+    { type: 'thread.started', thread_id: 'SYNTHETIC_THREAD' },
+    { type: 'item.completed', item: { type: 'agent_message', text: 'SYNTHETIC_INTERMEDIATE' } },
+    { type: 'item.completed', item: { type: 'agent_message', text: 'SYNTHETIC_FINAL_ONLY' } },
+    { type: 'turn.completed', usage: { input_tokens: 5, output_tokens: 2 } }
+  ].map(JSON.stringify).join('\n');
+  const observed = parseCodexEvents(stdout);
+  assert.equal(observed.output, 'SYNTHETIC_FINAL_ONLY');
+  assert.equal(observed.usage_reported.input_tokens, 5);
+});
+
+test('Codex native parser refuses agent output or any extra events after terminal turn', () => {
+  const base = [
+    { type: 'thread.started', thread_id: 'SYNTHETIC_THREAD' },
+    { type: 'item.completed', item: { type: 'agent_message', text: 'SYNTHETIC_FINAL' } },
+    { type: 'turn.completed' }
+  ];
+  assert.throws(() => parseCodexEvents([...base, { type: 'item.completed', item: { type: 'agent_message', text: 'SYNTHETIC_POST_TERMINAL' } }].map(JSON.stringify).join('\n')), /NATIVE_POST_TERMINAL_EVENT_REFUSED/);
+});
+
+test('Codex native parser rejects started, updated and completed tool activity', () => {
+  const baseStart = { type: 'thread.started', thread_id: 'SYNTHETIC_THREAD' };
+  const final = { type: 'item.completed', item: { type: 'agent_message', text: 'SYNTHETIC_FINAL' } };
+  const terminal = { type: 'turn.completed' };
+  for (const type of ['item.started', 'item.updated', 'item.completed']) {
+    const toolEvent = { type, item: { type: 'command_execution', id: 'SYNTHETIC_TOOL' } };
+    const stdout = [baseStart, toolEvent, final, terminal].map(JSON.stringify).join('\n');
+    assert.throws(() => parseCodexEvents(stdout), /NATIVE_TOOL_ACTIVITY_REFUSED/, type);
+  }
+  const incompleteMcp = [baseStart, { type: 'item.started', item: { type: 'mcp_tool_call', id: 'SYNTHETIC_MCP' } }, final, terminal].map(JSON.stringify).join('\n');
+  assert.throws(() => parseCodexEvents(incompleteMcp), /NATIVE_TOOL_ACTIVITY_REFUSED/);
+});
+
+test('Codex native parser retains fail-closed full JSONL size bound', () => {
+  const big = 'X'.repeat(16 * 1024 * 1024 + 1);
+  assert.throws(() => parseCodexEvents(big), /CODEX_JSONL_MISSING_OR_OVERSIZED/);
+});
