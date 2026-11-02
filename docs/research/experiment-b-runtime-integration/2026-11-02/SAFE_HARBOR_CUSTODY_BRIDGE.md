@@ -57,7 +57,7 @@ Only encoded-payload detached HS256 JWS is supported. `none`, unexpected algorit
 
 ## Context research → actual adaptations
 
-The [concrete Portable Loom / pre-emergence Manifest / Dome-World crosswalk](SAFE_HARBOR_APPLICATION_CONTEXTS.md) records exact functions, objects, transition scopes, interposition points and failure consequences. Its future integrations are explicitly distinguished from the gate changes actually implemented here.
+The [concrete Portable Loom / nascent and speculative post-emergence Manifest / Dome-World crosswalk](SAFE_HARBOR_APPLICATION_CONTEXTS.md) records exact functions, objects, transition scopes, interposition points and failure consequences. It includes adaptive Theory Edition succession and unforeseen instruments without claiming emergence or installing those future executors. Its future integrations are explicitly distinguished from the gate changes actually implemented here.
 
 ### Safe Harbor
 

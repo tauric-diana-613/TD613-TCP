@@ -1,4 +1,4 @@
-# Safe Harbor JWS: concrete application contracts after source tracing
+# Safe Harbor JWS: Portable Loom, nascent/post-emergence Manifest and Dome-World
 
 **PROSPECTIVE APPLICATIONS — NOT INSTALLED OR AUTHORIZED.** These are source-derived candidate adaptations, not claims of live integration. They follow the context investigation and explain the resulting reusable-gate hardening. Experiment B retains its frozen program and separate grants.
 
@@ -71,6 +71,38 @@ Every proposed scope needs separate **evidence ancestry**, **presentation ancest
 An independently owned Manifest must be able to use its own namespace, roots, local models and tools. The generic verifier therefore supports an explicitly different namespace under its own accepted roots; the Experiment B wrapper still requires the TD613 namespace. No TD613 private governance is imposed on an independent owner by this candidate.
 
 The practical pre-emergence benefit is already precise: preserve portable intent, per-entry permission differences and complete returned proposals **before any result is crowned as the Manifest**. This does not inject Manifest/Cupola vocabulary into blinded Flight prompts, alter the seven dimensions, or weaken the strong union.
+
+### Speculative post-emergence TD613 Manifest: govern adaptive succession
+
+This is explicitly conditional design, not a finding that emergence has occurred. It extends the succession record's Theory Edition, three-ancestry and owner-controlled transformation requirements. It does not limit the future Manifest to today's source taxonomy, mathematics, kernels, ontology or representation.
+
+The important future object is a **proposed consequential transition**, which may be entirely new. The gate should authenticate its exact scope without deciding that its theory is true, forcing it into today's ontology, or authorizing itself to execute it. Known transition profiles provide reviewed starting points; unknown proposals remain preservable as `UNANTICIPATED_CANDIDATE` until their particular consequences can be reviewed.
+
+| Concrete future encounter | Specific Safe Harbor adaptation | Permission/evidence that must stay separate |
+| --- | --- | --- |
+| A candidate contradicts the current TD613 Manifest or proposes a new foundation | Retain the complete attributed candidate, exact evidence/presentation/adjudication ancestry and negative results; sign a scoped provenance receipt if a real custodian is appointed | Recording an objection does not require approval of its truth. Provenance, independent judgment, human adoption and executable authority are different records |
+| A new Theory Edition is proposed after independently judged work | Bind proposed edition content, predecessor edition(s), source estate commitments, permission snapshot, formal warrants and unresolved objections; separately authorize admission of that exact edition | A Stage 2 verdict is not the operator's edition-adoption signature. Preserve earlier editions, comparison and ordinary source access |
+| Two incompatible editions are both defensible under different local sections | Preserve branch-specific parents, competing claim scopes and explicit compatibility/obstruction findings; sign which edition/branch a particular operation addresses | The latest visible homepage is not a universal best theory. No automatic forced merge, majority vote or erasure of a minority branch |
+| Discovery requires an unanticipated operation or verifier | Record the new typed operation, input/output grammar, engine/algorithm version, mathematical warrant, finite resources and proposed numerical tolerances as a prospective instrument amendment | A mathematically interesting proposal cannot install arbitrary shell/network/tools or rewrite frozen primary Flight conditions. Adoption and a newly bounded execution permit come later |
+| A future edition changes its conceptual architecture | Bind the exact old/new architecture and migration map, retained originals, declared lossy projections and rollback/read-access behavior | Architecture change is not source-byte change; neither a familiar name nor a signed source hash establishes semantic equivalence or renewed source consent |
+| A source permission is withdrawn or a new publication boundary is selected | Recheck the current authorized permission state at the consequential action, with independent axes for results, interpretations, lineage, metadata and originals | Old signatures do not create perpetual permission. Handle retained evidence and any redaction under the actually accepted custody/privacy policy; do not silently rewrite the historical scientific observation |
+| Manifest's mathematically derived representations feed a Dome-World/Cupola view | Bind edition, computed inputs, transformation/renderer identity, projection assumptions and output artifact separately; retain numerical results and interpretive art as different evidence classes | A signed rendering is not proof that repository structure equals a physical dome, that Cupola correspondence is established, or that an illustration is the exact computational result of its equations |
+
+One concrete future sequence is:
+
+```text
+unexpected attributed candidate (including contradiction or failed claim)
+→ preserved exact candidate/evidence records
+→ separately controlled substantive judgment and frozen objections
+→ human choice of proposed Theory Edition / instrument amendment
+→ exact versioned application scope and purpose-limited issuer policy
+→ separately authorized bounded operation against its intended parent state
+→ complete performed/refused/uncertain return and successor receipt
+```
+
+The gate does not need to predict the mathematics in order to preserve and scope the proposed operation. It does need to know the particular authorized crossing before allowing execution. The reusable verifier can support a newly reviewed purpose under an explicit root policy; it cannot learn new permissions from successful research output. `proposeSafeHarborUse()` is the implemented non-authoritative record path for uses beyond this table.
+
+This provides an adaptation mechanism rather than a promise of autonomous self-redesign: unfamiliar proposals survive; accepted new application schemas are versioned; existing signatures retain their original meanings; the owner can refuse, compare or adopt a successor. Experimental results never automatically expand the operator's spending, source disclosure, tool access or deployment authority. No post-emergence executor, Theory Edition, new mathematical kernel or production Manifest is installed by this commission.
 
 ## 3. Dome-World: two concrete seams, with different data/authority laws
 

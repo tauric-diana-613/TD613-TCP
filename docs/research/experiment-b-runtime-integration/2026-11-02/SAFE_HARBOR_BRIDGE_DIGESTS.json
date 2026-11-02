@@ -39,8 +39,8 @@
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_CUSTODY_BRIDGE.md",
-      "bytes": 22367,
-      "sha256": "b33f25a51159028a476ca26931650ba6bdcecf920f9180f80676b8f396ea309b"
+      "bytes": 22531,
+      "sha256": "f2152ecc9413f054093dac80f777a1533f04396d408be4efbe3881bcb79c19d6"
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_BRIDGE_TESTS.tap",
@@ -59,8 +59,8 @@
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_APPLICATION_CONTEXTS.md",
-      "bytes": 15024,
-      "sha256": "5574cd49c0df327484facbabf6c358052b39aa7fd3c66e8165fce898a7ffd65f"
+      "bytes": 20432,
+      "sha256": "7e0b04ca5c3196a4dd6be2a9c49d3b50bcf9a974eb8ed3ad6c5d4d4e57c61cdc"
     }
   ],
   "auditedPublicSources": [
