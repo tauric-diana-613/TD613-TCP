@@ -67,3 +67,26 @@ test('recipient requires an external admission receipt and refuses a coherent lo
  assert.throws(()=>r.retrieve(a.source_id,receipt.record_sha256),/RECEIVER_RECORD_RECEIPT_MISMATCH/);
  await assert.rejects(r.execute(a.source_id,receipt.record_sha256),/RECEIVER_RECORD_RECEIPT_MISMATCH/);
 });
+
+test('source-matched native / recipient / transport-only lanes distinguish executable research from copied bytes',async t=>{
+ const store=fixture(t);
+ for(const [route,object] of [[T,td()],[W,w()]]){
+  const source=make(route,'FIXTURE:COMPARE:'+route,object);
+  const transport={raw_byte_sha256:sha(source.bytes),returned_bytes:Buffer.from(source.bytes),native_operations_executed:0};
+  assert.equal(transport.raw_byte_sha256,source.sha256);
+  const native=await nativeProbe(root,route,source.original);
+  const receiver=openSyntheticReceiver({repoRoot:root,store,route});
+  const admitted=await receiver.admit(source);
+  const after=await receiver.execute(source.source_id,admitted.record_sha256);
+  assert.deepEqual(after.result,native.result,'source-matched executed operation output');
+  assert.notEqual(after.operation,undefined);
+  assert.equal(transport.native_operations_executed,0,'transport is explicitly operation-free');
+ }
+});
+test('source withdrawal changes the native bounded result without inventing interpretations',async()=>{
+ const source=td(),two={...source,sources:[...source.sources,{source_id:'FIXTURE:ADDITIONAL',kind:'artifact',locator:'fixture:second',capture_status:'OPERATOR_SUPPLIED'}]};
+ const tdBefore=await nativeProbe(root,T,JSON.stringify(two)),tdAfter=await nativeProbe(root,T,JSON.stringify(source));
+ assert.equal(tdBefore.result.source_refs.length,2);assert.equal(tdAfter.result.source_refs.length,1);
+ const wBefore=await nativeProbe(root,W,JSON.stringify(w(true))),wAfter=await nativeProbe(root,W,JSON.stringify(w(false)));
+ assert.equal(wBefore.result.typed_edges.length,1);assert.equal(wAfter.result.typed_edges.length,0);
+});
