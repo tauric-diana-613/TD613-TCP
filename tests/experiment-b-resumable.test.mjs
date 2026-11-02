@@ -14,6 +14,9 @@ import { runProtectedConfiguration } from '../scripts/experiment-b-resumable/run
 import { parseCodexEvents } from '../scripts/experiment-b-codex-exec-adapter.mjs';
 import { syntheticCapture } from './experiment-b-capture-fixture.mjs';
 import {conservativeInputMeasurement} from '../scripts/experiment-b-operational/input-accounting.mjs';
+import {normalizeInputMeasurement} from '../scripts/experiment-b-operational/input-accounting.mjs';
+import {OBSERVATIONAL,STRICT,CLAIM_RESTRICTIONS,observationalMeasurement,plannedAuthority,finiteProduct} from '../scripts/experiment-b-operational/d04-evidence-policy.mjs';
+import {runtimeMeasurement} from '../scripts/experiment-b-operational/docker-capture-runtime.mjs';
 
 const KEY = 'SYNTHETIC-TEST-ONLY-NOT-AN-OPERATOR-KEY-000';
 const EVIDENCE = [];
@@ -39,6 +42,55 @@ function engine(journal, options = {}) {
 }
 const resume = (f, windowId = 'SYNTHETIC-WINDOW-1') => f.run({ windowId, policyAuthorization: 'SYNTHETIC_POLICY_TEST_ONLY', runtimeAuthorization: 'SYNTHETIC_RUNTIME_TEST_ONLY' });
 const successes = j => j.events().filter(e => e.type === 'TURN_ACCEPTED');
+const observationalPolicy=()=>({mode:OBSERVATIONAL,version:1,model:'gpt-6.1-sol',effort:'xhigh',planningContext:500000,planningGuard:450000,outputReservation:25000,claimRestrictions:[...CLAIM_RESTRICTIONS]});
+function observationalEngine(j,overrides={}){
+  const plan=makePlan(),ep=observationalPolicy();plan.model={requested:'gpt-6.1-sol',effort:'xhigh'};
+  plan.context={inputLimit:500000,outputLimit:25000,tokenizerBinding:digest(ep),evidencePolicy:ep};
+  const a=plannedAuthority(plan.lanes),policy={...POLICY,maxEpisodeAttempts:a.attempts,maxWindowAttempts:a.attempts,
+    reservationTokens:450000,maxAccountedTokens:a.administrativeUnits,maxRejectedRetries:0,accountingBasis:'administrative-context-reservation'};
+  return engine(j,{plan,policy,measureInput:text=>observationalMeasurement(text,ep),...overrides});
+}
+test('observational bytes remain unknown token evidence and cannot satisfy strict mode',()=>{
+  const ep=observationalPolicy(),m=runtimeMeasurement({evidencePolicy:ep},'𝌋 invented');
+  assert.equal(m.unknownOverhead,true);assert.equal(m.upperBound,null);assert.equal(m.measuredTokens,null);
+  assert.equal(normalizeInputMeasurement(m,'𝌋 invented',ep).guardTokens,null);
+  assert.throws(()=>normalizeInputMeasurement(m,'𝌋 invented',{mode:STRICT,version:1}));
+  assert.throws(()=>normalizeInputMeasurement({...m,unknownOverhead:false},'𝌋 invented',ep));
+  assert.throws(()=>runtimeMeasurement({evidencePolicy:ep,effectiveLimits:{contextTokens:500000}},'invented'));
+  assert.throws(()=>runtimeMeasurement({},'invented'));assert.throws(()=>finiteProduct(Number.MAX_SAFE_INTEGER,2));
+  assert.throws(()=>runtimeMeasurement({evidencePolicy:ep},'x'.repeat(425000)),/PLANNING_MARGIN_HOLD/);
+  assert.throws(()=>plannedAuthority([]));
+});
+test('observational complete study retains equal unrestricted candidates, replay identity and prospective scope binding',async t=>{
+  const {filename}=fixture(t);const j=new Journal(filename,KEY);let calls=0;
+  const candidate='UNANTICIPATED_CANDIDATE: reject Manifest premises; invent an unsupported formalism. Negative result retained.';
+  const f=observationalEngine(j,{transport:async r=>{calls++;return result(r,{response:candidate});}});
+  assert.equal((await resume(f)).status,'REASONING_COMPLETE_STAGE2_REQUIRED');
+  const n=calls;assert.equal(n,16);assert.equal((await resume(f)).status,'REASONING_COMPLETE_STAGE2_REQUIRED');assert.equal(calls,n);
+  for(const e of successes(j)){assert.equal(e.payload.response,candidate);assert.equal(e.payload.input_measurement.unknownOverhead,true);assert.equal(e.payload.input_tokens_upper_bound,null);assert.equal(e.payload.evidence_standard,OBSERVATIONAL);}
+  const other=makePlan();assert.throws(()=>engine(j,{plan:other}),/FROZEN_CONDITION_DRIFT/);j.close();
+});
+test('observed adverse evidence holds with captured result retained',async t=>{
+  for(const key of ['compaction','truncation','contextError','incompleteTurn','sourceOmission','unequalOpportunity']){
+    const {filename}=fixture(t),j=new Journal(filename,KEY);
+    const r=await resume(observationalEngine(j,{transport:async req=>result(req,{observations:{[key]:true}})}));
+    assert.equal(r.reason,'OBSERVED_EXECUTION_COMPARABILITY_HOLD');assert(j.events().some(e=>e.type==='RESULT_CAPTURED'));assert.equal(successes(j).length,0);j.close();
+  }
+});
+test('source omission, incomplete result and treatment drift hold without favorable reruns',async t=>{
+  for(const options of [{broker:{...broker(),prefix:()=>({sources:[],commitment:'SYNTHETIC'})}},
+    {transport:async req=>result(req,{status:'INCOMPLETE'})},
+    {observeRuntime:async()=>({drift:true})}]){
+    const {filename}=fixture(t),j=new Journal(filename,KEY);const r=await resume(observationalEngine(j,options));
+    assert.equal(r.status,'PAUSED');j.close();
+  }
+});
+test('observed output overrun retains accepted answer but permanently stops subsequent dispatch and window reset',async t=>{
+  const {filename}=fixture(t),j=new Journal(filename,KEY);let calls=0;
+  const f=observationalEngine(j,{transport:async r=>{calls++;return result(r,{usage:{input_tokens:9,output_tokens:25001}});}});
+  assert.equal((await resume(f)).reason,'ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION');assert.equal(successes(j).length,1);
+  assert.equal((await resume(f,'NEW_WINDOW')).reason,'ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION');assert.equal(calls,1);j.close();
+});
 
 test('D04 production measurement policy retains bound and reported usage as different coordinates',async t=>{
   const {filename}=fixture(t);const j=new Journal(filename,KEY);

@@ -1,0 +1,67 @@
+✔ invented ClientHello binds the visible exact server name (4.854616ms)
+✔ incomplete record waits instead of accepting a prefix (0.795068ms)
+✔ duplicate server-name extensions and non-TLS traffic are refused (1.436423ms)
+✔ oversized ClientHello is refused (0.70456ms)
+(node:19) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ SYNTHETIC terminal exact bytes and evidence survive authenticated journal reopen (23.146081ms)
+✔ SYNTHETIC final capture refuses mismatch (2.916549ms)
+✔ SYNTHETIC final capture refuses absent (8.908363ms)
+✔ SYNTHETIC final capture refuses stale (1.593536ms)
+✔ SYNTHETIC final capture refuses reused (2.562919ms)
+✔ SYNTHETIC final capture refuses wrongDispatch (1.977669ms)
+✔ SYNTHETIC final capture refuses uncaptured (2.323799ms)
+✔ SYNTHETIC final capture refuses postTerminal (2.952453ms)
+✔ SYNTHETIC final capture refuses toolStart (2.645026ms)
+✔ SYNTHETIC final capture refuses toolUpdate (1.729048ms)
+✔ SYNTHETIC final capture refuses unknown (1.385419ms)
+✔ SYNTHETIC missing capture authority refuses before spawn (0.984384ms)
+✔ SYNTHETIC admission purpose, digest, policy, expiry, single use, physical re-admission and legacy guard (60.873008ms)
+✔ source-free account metadata requires absolute existing private destination (10.390889ms)
+✔ source-free private receipt is exclusive, byte-preserving and not overwritten (3.709818ms)
+✔ source-free symlinked parent cannot reroute receipts into repository (1.746149ms)
+(node:33) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ observational bytes remain unknown token evidence and cannot satisfy strict mode (15.1953ms)
+✔ observational complete study retains equal unrestricted candidates, replay identity and prospective scope binding (732.014927ms)
+✔ observed adverse evidence holds with captured result retained (68.215036ms)
+✔ source omission, incomplete result and treatment drift hold without favorable reruns (52.192165ms)
+✔ observed output overrun retains accepted answer but permanently stops subsequent dispatch and window reset (11.714903ms)
+✔ D04 production measurement policy retains bound and reported usage as different coordinates (12.404461ms)
+✔ D04 unknown overhead or policy drift stops before durable dispatch intent (18.640495ms)
+✔ paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets (52.500692ms)
+✔ complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion (467.138665ms)
+✔ captured answer is accepted after interruption without transport execution (18.253062ms)
+✔ actual local process death after durable intent leaves uncertain unit, never retries (116.65408ms)
+✔ writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection (9.730732ms)
+✔ operator pause, source drift, model drift, and context limit preserve completed progress (13.751176ms)
+✔ unknown accounting remains unknown and reserved; spending stop is not scientific invalidation (22.261305ms)
+✔ definitively rejected no-execution attempt can resume within frozen retry authority (254.733794ms)
+✔ mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun (470.848072ms)
+✔ protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed (1.844863ms)
+✔ native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools (3.708728ms)
+✔ Codex native parser retains last completed agent message, not concatenated commentary (0.23182ms)
+✔ Codex native parser refuses agent output or any extra events after terminal turn (0.287326ms)
+✔ Codex native parser rejects started, updated and completed tool activity (0.602353ms)
+✔ Codex native parser retains fail-closed full JSONL size bound (26.91788ms)
+(node:47) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D04 bound preserves full UTF8 text identity and never claims exact tokens (12.820033ms)
+✔ D04 context prediction is not silently compared with aggregate provider accounting (0.531147ms)
+✔ D04 unknown tokenizer/envelope and unsupported text refuse before dispatch (0.592152ms)
+✔ D04 reference ceiling and planning headroom do not satisfy native acceptance (0.530947ms)
+✔ quota-window identifiers bind actual reset metadata and never a caller label or quota percentage (1.092797ms)
+✔ D13 finite exact arithmetic supports signed boundary and rejects expression execution (1.969374ms)
+✔ D13 fixed stdio program is valid source and carries no arbitrary execution interface (53.676044ms)
+✔ native capability restriction preserves all instructions, efforts and numeric limits (1.322417ms)
+✔ D13 native lifecycle needs matching complete physical kernel receipt (1.287414ms)
+✔ runtime ABI import has no provider side effects and Stage2 retrieves without adjudicating (10.728848ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 52
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3656.037413
+{"evidenceClass":"ACTUAL_OFFLINE_LINUX_SYNTHETIC_SUITES","image":"sha256:3ab1d8a775153425c45ac8c6434c8717fae5866d9dc3e494dc7eb8550d71c75f","node":"v24.4.0","sourceClosureFiles":30,"sourceClosureSHA256":"b7f039fa3f3ce40e94c2be3ce81d282a624ebda744be60edee9a57735e187cf0","exitCode":0,"modelRequests":0,"protectedArchiveOperations":0,"credentialMounts":0,"network":"none"}
