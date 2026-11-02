@@ -20,10 +20,10 @@ const alive = pid => { try { process.kill(pid, 0); return true; } catch (e) { re
 
 /** Single-host private journal. FULL SQLite commits authenticate retained bytes, not provider identity. */
 export class Journal {
-  constructor(filename, key, { anchor = null } = {}) {
+  constructor(filename, key, { anchor = null, anchorAuthority = null } = {}) {
     if (!key || Buffer.byteLength(key) < 32) throw Error('EXTERNAL_CHECKPOINT_KEY_REQUIRED');
     fs.mkdirSync(path.dirname(filename), { recursive: true, mode: 0o700 });
-    this.key = key; this.owner = randomUUID();
+    this.key = key; this.owner = randomUUID();this.anchorAuthority=anchorAuthority;
     this.db = new DatabaseSync(filename);
     this.db.exec('PRAGMA busy_timeout=1000; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;');
     this.db.exec('CREATE TABLE IF NOT EXISTS events (seq INTEGER PRIMARY KEY, body TEXT NOT NULL, hash TEXT NOT NULL, signature TEXT NOT NULL); CREATE TABLE IF NOT EXISTS control (id INTEGER PRIMARY KEY CHECK(id=1), head TEXT NOT NULL, owner TEXT, pid INTEGER); INSERT OR IGNORE INTO control VALUES (1, \'\', NULL, NULL);');
@@ -31,7 +31,20 @@ export class Journal {
       this.transaction(() => {
         const row = this.db.prepare('SELECT * FROM control WHERE id=1').get();
         if (row.owner && alive(row.pid)) throw Error('CHECKPOINT_WRITER_ACTIVE_OR_PID_REUSED');
-        this.verify(anchor);
+        const events=this.verify(anchor);
+        if(anchorAuthority){
+          if(typeof anchorAuthority.minimumAnchor!=='function'||typeof anchorAuthority.publish!=='function')throw Error('EXTERNAL_CHECKPOINT_AUTHORITY_REQUIRED');
+          const minimum=anchorAuthority.minimumAnchor();
+          if(minimum?.then)throw Error('SYNCHRONOUS_CHECKPOINT_AUTHORITY_REQUIRED');
+          if(minimum!==null&&(!Number.isSafeInteger(minimum?.seq)||minimum.seq<1||!/^[a-f0-9]{64}$/.test(minimum?.hash??'')))throw Error('EXTERNAL_CHECKPOINT_ANCHOR_INVALID');
+          this.verify(minimum);
+          const head=events.at(-1);
+          if(head&&(minimum?.seq!==head.seq||minimum?.hash!==head.hash)||!head&&minimum)throw Error('EXTERNAL_ANCHOR_LAG_RECONCILIATION_REQUIRED');
+          if(head?.type==='TURN_ACCEPTED'&&typeof anchorAuthority.reconcile==='function'){
+            const reconciled=anchorAuthority.reconcile(head);
+            if(reconciled?.then||reconciled?.seq!==head.seq||reconciled?.hash!==head.hash)throw Error('TERMINAL_CUSTODY_RECONCILIATION_HOLD');
+          }
+        }
         this.db.prepare('UPDATE control SET owner=?, pid=? WHERE id=1').run(this.owner, process.pid);
       });
     } catch (e) { this.db.close(); throw e; }
@@ -55,7 +68,8 @@ export class Journal {
   }
   events() { return this.verify(); }
   append(type, payload) {
-    return this.transaction(() => {
+    if(this.anchorFault)throw Error('CHECKPOINT_ANCHOR_PUBLICATION_UNCERTAIN');
+    const event=this.transaction(() => {
       const row = this.db.prepare('SELECT * FROM control WHERE id=1').get();
       if (row.owner !== this.owner) throw Error('CHECKPOINT_LEASE_LOST');
       const seq = this.db.prepare('SELECT count(*) AS n FROM events').get().n + 1;
@@ -65,6 +79,11 @@ export class Journal {
       this.db.prepare('UPDATE control SET head=? WHERE id=1').run(hash);
       return { ...body, hash, signature };
     });
+    if(this.anchorAuthority)try{
+      const published=this.anchorAuthority.publish(event);
+      if(published?.then||published?.seq!==event.seq||published?.hash!==event.hash)throw Error();
+    }catch{this.anchorFault=true;throw Error('CHECKPOINT_ANCHOR_PUBLICATION_UNCERTAIN');}
+    return event;
   }
   close() {
     this.transaction(() => this.db.prepare('UPDATE control SET owner=NULL, pid=NULL WHERE id=1 AND owner=?').run(this.owner));

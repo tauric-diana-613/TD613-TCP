@@ -1,0 +1,10 @@
+{
+  "custodianAccount": null,
+  "controllerAccount": null,
+  "engineeringAccount": null,
+  "destination": null,
+  "reviewedCommit": null,
+  "pwshExecutable": null,
+  "nodeExecutable": null,
+  "auditLogMaximumKB": 65536
+}
