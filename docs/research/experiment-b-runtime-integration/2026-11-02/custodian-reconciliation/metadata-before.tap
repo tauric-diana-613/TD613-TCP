@@ -1,0 +1,46 @@
+✖ SYNTHETIC terminal IPC refuses undeclared payload data without retaining its body (125.2465ms)
+✖ SYNTHETIC terminal IPC refuses undeclared evidence data without retaining its body (100.9128ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 611.3423
+
+✖ failing tests:
+
+test at tests\experiment-b-custodian.test.mjs:192:43
+✖ SYNTHETIC terminal IPC refuses undeclared payload data without retaining its body (125.2465ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'OK' !== 'HOLD'
+  
+      at TestContext.<anonymous> (<review-worktree>/tests/experiment-b-custodian.test.mjs:200:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'OK',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\experiment-b-custodian.test.mjs:192:43
+✖ SYNTHETIC terminal IPC refuses undeclared evidence data without retaining its body (100.9128ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'OK' !== 'HOLD'
+  
+      at TestContext.<anonymous> (<review-worktree>/tests/experiment-b-custodian.test.mjs:200:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'OK',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

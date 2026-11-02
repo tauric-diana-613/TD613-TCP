@@ -14,15 +14,20 @@ export async function handleCustodyRequest(store,request){
       Object.keys(request).some(k=>!['requestId','operation','mandateId','episode','payload'].includes(k)))throw Error('DECLARED_CUSTODY_OPERATION_REQUIRED');
     const m=store.mandate(request.mandateId);
     if(request.episode!==m.context.episode)throw Error('CUSTODIAN_EPISODE_SCOPE_HOLD');
+    const exact=(v,keys)=>v!==null&&typeof v==='object'&&!Array.isArray(v)&&
+      Object.keys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
+    if(request.operation==='dispatch.lookup'&&!exact(request.payload,['attempt']))throw Error('PERMIT_METADATA_ONLY_REQUEST_REQUIRED');
+    if(request.operation==='terminal.record'&&(!exact(request.payload,['attempt','evidence'])||
+      !exact(request.payload.evidence,['journalHash','finalSHA256','jsonlSHA256'])))throw Error('TERMINAL_METADATA_ONLY_REQUEST_REQUIRED');
     let result;
     switch(request.operation){
       case 'dispatch.authorize':result=await store.authorizeAndConsume(request.mandateId,request.payload);break;
-      case 'dispatch.lookup':result=store.lookup(request.payload.attempt);break;
+      case 'dispatch.lookup':result=store.lookup(request.payload.attempt,request.mandateId);break;
       case 'anchor.read':result=store.anchor(request.episode);break;
       case 'anchor.publish':result=store.publishAnchor(request.episode,request.payload);break;
       case 'terminal.record':{
         if(store.anchor(request.episode)?.hash!==request.payload.evidence?.journalHash)throw Error('ANCHORED_TERMINAL_COMMITMENT_REQUIRED');
-        result=store.recordTerminal(request.payload.attempt,request.payload.evidence);break;
+        result=store.recordTerminal(request.payload.attempt,request.payload.evidence,request.mandateId);break;
       }
       default:throw Error('UNDECLARED_CUSTODY_OPERATION_REFUSED');
     }

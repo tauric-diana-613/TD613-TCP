@@ -1,0 +1,64 @@
+✖ SYNTHETIC terminal IPC cannot clear another mandate permit across episodes (163.4042ms)
+✖ SYNTHETIC terminal IPC cannot clear another mandate permit within one episode (116.4117ms)
+✖ SYNTHETIC lookup refuses another mandate and terminal ownership rechecks revocation inside transaction (111.3605ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 800.4722
+
+✖ failing tests:
+
+test at tests\experiment-b-custodian.test.mjs:162:39
+✖ SYNTHETIC terminal IPC cannot clear another mandate permit across episodes (163.4042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'OK' !== 'HOLD'
+  
+      at TestContext.<anonymous> (<review-worktree>/tests/experiment-b-custodian.test.mjs:172:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'OK',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\experiment-b-custodian.test.mjs:162:39
+✖ SYNTHETIC terminal IPC cannot clear another mandate permit within one episode (116.4117ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'OK' !== 'HOLD'
+  
+      at TestContext.<anonymous> (<review-worktree>/tests/experiment-b-custodian.test.mjs:172:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'OK',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\experiment-b-custodian.test.mjs:180:1
+✖ SYNTHETIC lookup refuses another mandate and terminal ownership rechecks revocation inside transaction (111.3605ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'OK' !== 'HOLD'
+  
+      at TestContext.<anonymous> (<review-worktree>/tests/experiment-b-custodian.test.mjs:185:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'OK',
+    expected: 'HOLD',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

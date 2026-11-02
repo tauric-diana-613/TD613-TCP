@@ -1,0 +1,13 @@
+✔ SYNTHETIC terminal IPC cannot clear another mandate permit across episodes (175.8376ms)
+✔ SYNTHETIC terminal IPC cannot clear another mandate permit within one episode (105.1966ms)
+✔ SYNTHETIC lookup refuses another mandate and terminal ownership rechecks revocation inside transaction (101.3309ms)
+✔ SYNTHETIC terminal IPC refuses undeclared payload data without retaining its body (90.9832ms)
+✔ SYNTHETIC terminal IPC refuses undeclared evidence data without retaining its body (165.1774ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1091.3796
