@@ -1,0 +1,40 @@
+{
+  "parent": "43f769a4b1d554c10da31467273a1ce528305aa2",
+  "files": [
+    {
+      "path": ".github/workflows/experiment-b-runtime-source-free.yml",
+      "sha256": "661dceffa0ab45d6c452cdd2c86a2981e58e306ed62cd96e69a320231dfe1624"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/NATIVE_OBSERVABILITY_REDPEN.md",
+      "sha256": "20111edf8b76af948b9fb161686c4f824f743ab5b9f068efdb13ac003d05ec98"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/native-redpen-evidence/linux-tests.tap",
+      "sha256": "9bbd9ad6935fc8e9494cd8af06d8daa087f7f35f8df7766e4924d4e911a72f84"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/boundaries.mjs",
+      "sha256": "d423d50b9c40f5f0d69fb6a00005d385ccf0ba5dba258940be2ccd47cd66fe18"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/engine.mjs",
+      "sha256": "582dc6db703e3f9ee82353e96f9066e9b374524c90fcf944131ebdd217f7df93"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/runner.mjs",
+      "sha256": "cb0abeea21aa8a09ce03dc2ba375cfd9d8ac8ec1a1d29746d78832090882e9fe"
+    },
+    {
+      "path": "tests/experiment-b-final-integration.test.mjs",
+      "sha256": "431ab9c1d600d945bc4849703736df3a310a4f8161e0dbd4e46c281970643cb2"
+    },
+    {
+      "path": "tests/experiment-b-resumable.test.mjs",
+      "sha256": "3a921b4dcc3a9da8457b8b480fef5b3fb3723d367be609d1facace39b6fc64d5"
+    }
+  ],
+  "modelRequests": 0,
+  "protectedArchiveOperations": 0,
+  "seal": "⟐"
+}
