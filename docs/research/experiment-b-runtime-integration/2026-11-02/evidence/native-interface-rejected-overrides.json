@@ -1,0 +1,54 @@
+{
+  "evidenceClass": "ACTUAL_OFFLINE_NATIVE_NON_INFERENTIAL_INTERFACE",
+  "image": "sha256:0f5db0645aa3187055a001ca12e123ae4cd5c15e50561f04973dd58f3bbb537a",
+  "observations": {
+    "execHelp": {
+      "exitCode": 0,
+      "errorCode": null,
+      "stdoutSHA256": "df0d864ca2076f7654288c6a1e3394e3eaa2ea8f15021df2524efdd90c70986c",
+      "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "documentedFlags": [
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--output-last-message",
+        "--json",
+        "--ephemeral",
+        "--strict-config"
+      ]
+    },
+    "features": {
+      "exitCode": 1,
+      "errorCode": null,
+      "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSHA256": "ccf6027cce50f98c043621563e0f95fc50509018ef7eef9c3f29d7ee9f0c8429",
+      "disabledFeatures": []
+    },
+    "startupConfig": {
+      "exitCode": 1,
+      "errorCode": null,
+      "stdoutSHA256": "a01831232654c9c58fd9a0e081ccf9b1e80d2e9257025c2b095336a67e4efd32",
+      "stderrSHA256": "7410e9fbaf523f453bf174d1971430a6671abd1ed7a5196f6a066c9a607b7e26"
+    }
+  },
+  "requestedSettings": {
+    "features.apps": false,
+    "features.plugins": false,
+    "features.multi_agent": false,
+    "features.memories": false,
+    "features.code_mode_host": false,
+    "features.shell_tool": false,
+    "features.browser_use": false,
+    "web_search": "disabled",
+    "analytics.enabled": false,
+    "check_for_update_on_startup": false,
+    "forced_login_method": "chatgpt",
+    "cli_auth_credentials_store": "file",
+    "model_provider": "openai",
+    "model_providers.openai.request_max_retries": 0,
+    "model_providers.openai.stream_max_retries": 0
+  },
+  "nativeModelTokensPrecount": "NOT_ESTABLISHED",
+  "effectiveSubscriptionContextAndOutputCeilings": "NOT_ATTESTED",
+  "servedModel": "NOT_OBSERVED",
+  "modelRequests": 0
+}

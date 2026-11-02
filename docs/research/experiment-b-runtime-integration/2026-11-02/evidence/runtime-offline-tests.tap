@@ -1,0 +1,21 @@
+✔ ACTUAL OFFLINE Docker capture retains exact bytes, immutable final evidence and one-time proof (4379.6619ms)
+✔ ACTUAL OFFLINE capture refuses mismatch and retains evidence (3859.5868ms)
+✔ ACTUAL OFFLINE capture refuses absent and retains evidence (3927.6538ms)
+✔ ACTUAL OFFLINE capture refuses stale and retains evidence (3779.5866ms)
+✔ ACTUAL OFFLINE capture refuses replaced and retains evidence (3425.1234ms)
+✔ ACTUAL OFFLINE capture refuses post-terminal and retains evidence (3459.495ms)
+✔ ACTUAL OFFLINE capture refuses unexpected-tool and retains evidence (3791.4958ms)
+✔ ACTUAL OFFLINE capture refuses incomplete-tool and retains evidence (4954.3038ms)
+✔ ACTUAL OFFLINE capture refuses oversized and retains evidence (4297.8397ms)
+✔ ACTUAL OFFLINE ARM_2A typed MCP correlates all four operations to physical receipts (4779.2497ms)
+✔ ACTUAL OFFLINE ARM_2B typed MCP correlates all four operations to physical receipts (5175.2197ms)
+✔ ACTUAL OFFLINE capture refuses wrong dispatch, reused attempt and invented proof (2248.7711ms)
+✔ ACTUAL OFFLINE missing external dispatch authority refuses native launch (1663.3663ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49932.6827

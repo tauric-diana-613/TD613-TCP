@@ -1,0 +1,35 @@
+✔ ACTUAL OFFLINE Docker capture retains exact bytes, immutable final evidence and one-time proof (3426.7871ms)
+✔ ACTUAL OFFLINE capture refuses mismatch and retains evidence (3583.1245ms)
+✔ ACTUAL OFFLINE capture refuses absent and retains evidence (3845.1216ms)
+✔ ACTUAL OFFLINE capture refuses stale and retains evidence (4500.1767ms)
+✔ ACTUAL OFFLINE capture refuses replaced and retains evidence (3662.3405ms)
+✔ ACTUAL OFFLINE capture refuses post-terminal and retains evidence (3420.269ms)
+✔ ACTUAL OFFLINE capture refuses unexpected-tool and retains evidence (3894.524ms)
+✔ ACTUAL OFFLINE capture refuses incomplete-tool and retains evidence (4525.6366ms)
+✔ ACTUAL OFFLINE capture refuses oversized and retains evidence (3989.1292ms)
+✖ ACTUAL OFFLINE typed MCP worker and native-shaped events correlate to physical arithmetic receipts (3000.7301ms)
+✔ ACTUAL OFFLINE missing external dispatch authority refuses native launch (1488.7766ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39476.4014
+
+✖ failing tests:
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:40:1
+✖ ACTUAL OFFLINE typed MCP worker and native-shaped events correlate to physical arithmetic receipts (3000.7301ms)
+  Error: NATIVE_TERMINAL_UNVERIFIED
+      at fail (/tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:14:39)
+      at spawnNative (/tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:181:91)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async capturedNativeCall (/tcp-repository/scripts/experiment-b-resumable/terminal-capture.mjs:31:15)
+      at async call (/tcp-repository/tests/experiment-b-runtime-offline.test.mjs:21:32)
+      at async TestContext.<anonymous> (/tcp-repository/tests/experiment-b-runtime-offline.test.mjs:41:43)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NATIVE_TERMINAL_UNVERIFIED'
+  }

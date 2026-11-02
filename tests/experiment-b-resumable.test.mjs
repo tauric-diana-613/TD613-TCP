@@ -13,6 +13,7 @@ import { protectedBroker, ledgerMirror, nativeTransport, verifyExecutionAuthoriz
 import { runProtectedConfiguration } from '../scripts/experiment-b-resumable/runner.mjs';
 import { parseCodexEvents } from '../scripts/experiment-b-codex-exec-adapter.mjs';
 import { syntheticCapture } from './experiment-b-capture-fixture.mjs';
+import {conservativeInputMeasurement} from '../scripts/experiment-b-operational/input-accounting.mjs';
 
 const KEY = 'SYNTHETIC-TEST-ONLY-NOT-AN-OPERATOR-KEY-000';
 const EVIDENCE = [];
@@ -38,6 +39,30 @@ function engine(journal, options = {}) {
 }
 const resume = (f, windowId = 'SYNTHETIC-WINDOW-1') => f.run({ windowId, policyAuthorization: 'SYNTHETIC_POLICY_TEST_ONLY', runtimeAuthorization: 'SYNTHETIC_RUNTIME_TEST_ONLY' });
 const successes = j => j.events().filter(e => e.type === 'TURN_ACCEPTED');
+
+test('D04 production measurement policy retains bound and reported usage as different coordinates',async t=>{
+  const {filename}=fixture(t);const j=new Journal(filename,KEY);
+  const p={model:'gpt-6.1-sol',algorithm:'UTF8_BYTES_PLUS_ENVELOPE_BOUND_V1',
+    tokenizer:{property:'NONEMPTY_BYTE_TOKENS_WITH_NO_TEXT_EXPANSION',implementation:'SYNTHETIC_BYTE_ASSUMPTION',version:'TEST_ONLY',modelMapping:'SYNTHETIC_NOT_LIVE',mappingEvidenceDigest:'a'.repeat(64)},
+    envelopeUpperBoundTokens:0,envelopeEvidenceDigest:'a'.repeat(64),acceptanceDigest:'a'.repeat(64),
+    overheadAssumptions:['SYNTHETIC_NO_PROVIDER_ATTESTATION'],
+    envelopeScopes:['native_instructions','tool_definitions','bounded_tool_exchanges','structural_tokens','provider_transforms']};
+  const plan=makePlan();plan.context.tokenizerBinding=digest(p);plan.context.requireCompleteMeasurement=true;
+  const f=engine(j,{plan,measureInput:text=>conservativeInputMeasurement(text,p),policy:{...POLICY,maxWindowAttempts:1}});
+  assert.equal((await resume(f)).reason,'RESOURCE_AUTHORITY_PAUSE');
+  const turn=successes(j)[0].payload;
+  assert.equal(turn.input_tokens_measured,null);assert.equal(turn.input_tokens_upper_bound,Buffer.byteLength(turn.rendered.prompt));
+  assert.equal(turn.input_count_comparison.providerReportedTokens,23);
+  assert.equal(turn.input_count_comparison.comparison,'UNAVAILABLE_OR_NONCOMPARABLE');
+  j.close();
+});
+test('D04 unknown overhead or policy drift stops before durable dispatch intent',async t=>{
+  for(const measureInput of [()=>{throw Object.assign(Error('UNKNOWN'),{code:'D04_UNKNOWN_OVERHEAD'});},()=>12]){
+    const {filename}=fixture(t);const j=new Journal(filename,KEY);const plan=makePlan();plan.context.requireCompleteMeasurement=true;
+    const r=await resume(engine(j,{plan,measureInput}));assert.equal(r.reason,'INPUT_MEASUREMENT_HOLD');
+    assert.equal(j.events().filter(e=>e.type==='DISPATCH_INTENT').length,0);j.close();
+  }
+});
 
 test('paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets', async t => {
   const { filename } = fixture(t); let calls = [];

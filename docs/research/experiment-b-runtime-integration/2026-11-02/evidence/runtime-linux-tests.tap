@@ -1,0 +1,62 @@
+✔ invented ClientHello binds the visible exact server name (7.808481ms)
+✔ incomplete record waits instead of accepting a prefix (0.779668ms)
+✔ duplicate server-name extensions and non-TLS traffic are refused (1.416524ms)
+✔ oversized ClientHello is refused (0.502544ms)
+(node:19) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ SYNTHETIC terminal exact bytes and evidence survive authenticated journal reopen (29.725293ms)
+✔ SYNTHETIC final capture refuses mismatch (5.735401ms)
+✔ SYNTHETIC final capture refuses absent (2.257397ms)
+✔ SYNTHETIC final capture refuses stale (2.339804ms)
+✔ SYNTHETIC final capture refuses reused (4.145962ms)
+✔ SYNTHETIC final capture refuses wrongDispatch (1.738252ms)
+✔ SYNTHETIC final capture refuses uncaptured (1.84106ms)
+✔ SYNTHETIC final capture refuses postTerminal (2.587726ms)
+✔ SYNTHETIC final capture refuses toolStart (3.577112ms)
+✔ SYNTHETIC final capture refuses toolUpdate (2.318002ms)
+✔ SYNTHETIC final capture refuses unknown (1.298713ms)
+✔ SYNTHETIC missing capture authority refuses before spawn (0.882877ms)
+✔ SYNTHETIC admission purpose, digest, policy, expiry, single use, physical re-admission and legacy guard (16.319723ms)
+✔ source-free account metadata requires absolute existing private destination (9.794254ms)
+✔ source-free private receipt is exclusive, byte-preserving and not overwritten (4.450188ms)
+✔ source-free symlinked parent cannot reroute receipts into repository (2.027877ms)
+(node:33) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D04 production measurement policy retains bound and reported usage as different coordinates (35.134565ms)
+✔ D04 unknown overhead or policy drift stops before durable dispatch intent (30.517762ms)
+✔ paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets (61.241642ms)
+✔ complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion (645.342352ms)
+✔ captured answer is accepted after interruption without transport execution (18.213053ms)
+✔ actual local process death after durable intent leaves uncertain unit, never retries (116.001694ms)
+✔ writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection (6.045216ms)
+✔ operator pause, source drift, model drift, and context limit preserve completed progress (11.383271ms)
+✔ unknown accounting remains unknown and reserved; spending stop is not scientific invalidation (9.630521ms)
+✔ definitively rejected no-execution attempt can resume within frozen retry authority (252.420029ms)
+✔ mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun (399.46067ms)
+✔ protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed (1.662242ms)
+✔ native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools (3.952537ms)
+✔ Codex native parser retains last completed agent message, not concatenated commentary (0.23342ms)
+✔ Codex native parser refuses agent output or any extra events after terminal turn (0.34773ms)
+✔ Codex native parser rejects started, updated and completed tool activity (0.797668ms)
+✔ Codex native parser retains fail-closed full JSONL size bound (22.053181ms)
+(node:47) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ D04 bound preserves full UTF8 text identity and never claims exact tokens (5.840599ms)
+✔ D04 context prediction is not silently compared with aggregate provider accounting (0.613252ms)
+✔ D04 unknown tokenizer/envelope and unsupported text refuse before dispatch (0.725462ms)
+✔ D04 reference ceiling and planning headroom do not satisfy native acceptance (0.553647ms)
+✔ quota-window identifiers bind actual reset metadata and never a caller label or quota percentage (0.885275ms)
+✔ D13 finite exact arithmetic supports signed boundary and rejects expression execution (2.424307ms)
+✔ D13 fixed stdio program is valid source and carries no arbitrary execution interface (63.085081ms)
+✔ native capability restriction preserves all instructions, efforts and numeric limits (1.587335ms)
+✔ D13 native lifecycle needs matching complete physical kernel receipt (1.650341ms)
+✔ runtime ABI import has no provider side effects and Stage2 retrieves without adjudicating (12.397457ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2865.748611
+{"evidenceClass":"ACTUAL_OFFLINE_LINUX_SYNTHETIC_SUITES","image":"sha256:3ab1d8a775153425c45ac8c6434c8717fae5866d9dc3e494dc7eb8550d71c75f","node":"v24.4.0","sourceClosureFiles":29,"sourceClosureSHA256":"00db8cf0de503eb8de842fc6a1dddc4514b6903227087335eff43e61c3949a49","exitCode":0,"modelRequests":0,"protectedArchiveOperations":0,"credentialMounts":0,"network":"none"}

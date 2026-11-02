@@ -1,0 +1,22 @@
+{
+  "evidenceClass": "ACTUAL_NATIVE_NON_INFERENTIAL_MODEL_CATALOG",
+  "image": "sha256:0f5db0645aa3187055a001ca12e123ae4cd5c15e50561f04973dd58f3bbb537a",
+  "exitCode": 0,
+  "status": "NATIVE_MODEL_LIST_COMPLETED",
+  "requestedModelPresent": true,
+  "supportedReasoningEfforts": [
+    "low",
+    "medium",
+    "high",
+    "xhigh",
+    "max",
+    "ultra"
+  ],
+  "defaultReasoningEffort": "low",
+  "contextAndOutputCeilingFieldsPresent": false,
+  "catalogProvenance": "REMOTE_OR_BUNDLED_NOT_ATTESTED",
+  "privateCatalogReceiptWritten": true,
+  "modelRequests": 0,
+  "accountValuesPublished": false,
+  "servedModelAttested": false
+}
