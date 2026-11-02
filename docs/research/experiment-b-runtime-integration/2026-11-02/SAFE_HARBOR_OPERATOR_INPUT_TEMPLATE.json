@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "namespace": {
+    "principal": "tauric.diana.613",
+    "heritageKey": "Tauric Diana",
+    "covenantKey": "Khona‌lit-po",
+    "canonicalCovenant": "Tauric Diana — Crimean heritage custodianship",
+    "displayCovenant": "Blood Rite 613",
+    "claimedPUA": "U+10D613",
+    "utf16": "\\uDBF5\\uDE13",
+    "bindingFragment": "#9B07D8B",
+    "sac": "SAC[X6ZNK5NO51]"
+  },
+  "custodian": {
+    "serviceModule": null,
+    "moduleSHA256": null,
+    "independentAcceptanceDigest": null
+  },
+  "context": {
+    "experiment": "EXPERIMENT_B",
+    "episode": null,
+    "shi": null,
+    "safeHarborPacketReplayDigest": null,
+    "safeHarborPacketRecordDigest": null,
+    "planDigest": null,
+    "policyDigest": null,
+    "sourceManifestDigest": null,
+    "decisionsDigest": null,
+    "executionAuthorizationDigest": null
+  }
+}

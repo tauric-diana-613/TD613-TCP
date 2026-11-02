@@ -5,7 +5,7 @@ import { Journal, digest, mac, equalHex } from './journal.mjs';
 import { ResumableFlight, validatePlan } from './engine.mjs';
 import { validatePolicy } from './resources.mjs';
 import {evidenceMode,OBSERVATIONAL,validateObservationalResources} from '../experiment-b-operational/d04-evidence-policy.mjs';
-import { loadAuthorizedRuntime, admitAuthorizedSources, nativeTransport, openCompatibilityLedger, ledgerMirror, repositoryRoot } from './boundaries.mjs';
+import { loadAuthorizedRuntime, admitAuthorizedSources, requireAdmissionEscrow, nativeTransport, openCompatibilityLedger, ledgerMirror, repositoryRoot } from './boundaries.mjs';
 import { validatePrivatePathConfinement } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
 import { verifyWitnessAttestationDetailed } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs';
 
@@ -27,6 +27,7 @@ export async function runProtectedConfiguration(configFile, rootsFile, checkpoin
   const roots = JSON.parse(fs.readFileSync(rootsFile, 'utf8'));
   validatePlan(config.plan); validatePolicy(config.policy);
   if(evidenceMode(config.plan.context.evidencePolicy)===OBSERVATIONAL)validateObservationalResources(config.plan,config.policy);
+  requireAdmissionEscrow(config,roots);
   if (process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED !== 'true' || process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED !== 'true') throw Error('PROTECTED_EXECUTION_NOT_AUTHORIZED');
   const store = privateFile(config.checkpointFile), mirrorFile = privateFile(config.ledgerFile);
   const { authority, runtime } = await loadAuthorizedRuntime(config, roots);

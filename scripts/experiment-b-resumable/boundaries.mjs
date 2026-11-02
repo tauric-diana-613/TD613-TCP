@@ -7,6 +7,7 @@ import { AtomicCustodyLedger } from '../../docs/research/experiment-b-preflight/
 import { codexArgs } from '../experiment-b-codex-exec-adapter.mjs';
 import { capturedNativeCall, requireCaptureService } from './terminal-capture.mjs';
 import { admissionPolicyDigest } from '../../docs/research/experiment-b-preflight/02_four_arm_harness/admission-policy.mjs';
+import {evidenceMode,OBSERVATIONAL} from '../experiment-b-operational/d04-evidence-policy.mjs';
 
 export const OPERATION = 'EXPERIMENT_B_RESUMABLE_FLIGHT';
 export function verifyExecutionAuthorization(grant, roots, expected, now = Date.now()) {
@@ -106,7 +107,26 @@ export async function loadAuthorizedRuntime(config, roots) {
   return { authority, runtime };
 }
 
+export function requireAdmissionEscrow(config,roots,now=Date.now()){
+  if(evidenceMode(config.plan?.context?.evidencePolicy)!==OBSERVATIONAL)return;
+  const e=config.admissionEscrow,sha=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+  if(!e||e.operation!=='EXPERIMENT_B_ADMISSION_ONLY'||e.inferenceAuthorized!==false||
+    !['archiveSHA256','metadataPolicyDigest','intakeManifestDigest','sourceManifestDigest'].every(k=>sha(e[k]))||
+    !Array.isArray(e.brokerManifest)||digest(e.brokerManifest)!==e.sourceManifestDigest||
+    e.sourceManifestDigest!==config.sourceManifestDigest)throw Error('OBSERVATIONAL_ADMISSION_ESCROW_REQUIRED');
+  const {signature,...receipt}=config.admissionEscrowReceipt??{};
+  const key=roots?.[receipt.issuer];
+  if(!key||!equalHex(signature,mac(key,receipt))||receipt.operation!=='EXPERIMENT_B_ADMISSION_ESCROW'||
+    !receipt.authorizationId||!Number.isFinite(receipt.expires)||receipt.expires<=now||
+    receipt.experiment!==config.plan.experiment||receipt.episode!==config.plan.episode||
+    receipt.escrowDigest!==digest(e))throw Error('EXTERNAL_ADMISSION_ESCROW_RECEIPT_REQUIRED');
+  // The separately trusted custodian attests that admitOnly produced this escrow.
+  // This checks its receipt and signed-configuration commitment, not physical-member authority.
+  // Protected admission below still needs its original independent grant and must
+  // physically reproduce archive, policy, intake and source commitments.
+}
 export function admitAuthorizedSources(config, roots) {
+  requireAdmissionEscrow(config,roots);
   // Never called by synthetic tests. Existing ZIP guards verify the original independently supplied admission grant.
   const intake = new ControlledArchiveIntake({ syntheticMode: false, allowProtectedAdmission: true, trustedOperatorKeys: roots, authorizedDerivativesMap: config.authorizedDerivativesMap ?? {}, prospectiveMetadataMap: config.prospectiveMetadataMap ?? {} });
   if (config.admissionEscrow && config.admissionEscrow.metadataPolicyDigest !== admissionPolicyDigest({
