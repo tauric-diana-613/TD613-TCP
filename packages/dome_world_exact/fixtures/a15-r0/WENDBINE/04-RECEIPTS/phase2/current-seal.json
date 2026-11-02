@@ -1,55 +1,55 @@
 {
   "schema": "wendbine-src-seal/v1",
-  "atelier_snapshot_id": "wendbine-20261002220512-58f084b90335",
-  "seal_id": "wendbine-seal:58f084b90335f55ab8ba4d8e580a021570845cfade39e6ad1c9b2d5d96b80292",
-  "path": "07-ARCHIVE-LEDGER/syncs/wendbine-20261002220512-58f084b90335.json",
-  "created_at": "2026-10-02T22:05:12.637Z",
+  "atelier_snapshot_id": "wendbine-20261102175835-2861f2e0326f",
+  "seal_id": "wendbine-seal:2861f2e0326fef26db241bf888c194ceb40a16131ad48e98149d7511b443a5dd",
+  "path": "07-ARCHIVE-LEDGER/syncs/wendbine-20261102175835-2861f2e0326f.json",
+  "created_at": "2026-11-02T17:58:35.406Z",
   "projection": "PUBLIC_METADATA_ONLY",
   "file_hashes": [
     {
       "path": "01-MANIFESTS/phase2/manifestations.jsonl",
-      "sha256": "81c3d0d0a30e177afb971564ef7c81bcb08b6efdadb34b2dc2780afdfe65acf2",
-      "count": 1310
+      "sha256": "bd855907a1663ae1fd014a38371b216667174ab6d358f86336d18d9e5e15a0a7",
+      "count": 2021
     },
     {
       "path": "01-MANIFESTS/phase2/capture-v2.jsonl",
-      "sha256": "1a795d5f37a9d388ca5ccad13f6bbed5bfb3d5e7c81d8142ae049b9207272dd5",
-      "count": 2680
+      "sha256": "734f07ce8a33c2dcb11d2578b4aee564375f0dee4c9e5d2fcc0efab32456bece",
+      "count": 4701
     },
     {
       "path": "01-MANIFESTS/phase2/blob-v1.jsonl",
-      "sha256": "bdad2447d86b674be60ac818cc66a23cdf238bc711d897b0af5b99d770e72747",
-      "count": 842
+      "sha256": "a56fa9be8f1edbae93e162f5d13e20dea9ed104ec2aebf9be8e28138deb9058d",
+      "count": 1273
     },
     {
       "path": "01-MANIFESTS/phase2/derivative-v1.jsonl",
-      "sha256": "fb12c3097fcf1d541ab9141b54541e348fc128179b415e5ca55b52f5901dcab4",
-      "count": 2680
+      "sha256": "3a7d83826617981ae282b32dc647c0e13e28455775354d10cb4438e8d351ae29",
+      "count": 4701
     },
     {
       "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
-      "sha256": "f34b1b65d105e878c89f5e22d057d2307b9a49eb47bc33d5aea0e773250e27e0",
-      "count": 1310
+      "sha256": "077a512c298d23a17642b72946a906a15c38fccfe476ccd021a25b837039a30d",
+      "count": 2021
     },
     {
       "path": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
-      "sha256": "aac8cb84d2770ab3d033f797a1b368648f85bef9d206c40b680581a3973b6c63",
-      "count": 2680
+      "sha256": "513af61bd693ad4ae8289f6b7f1eac74dab59bba6f66c3a9e1a7ccb213c865fd",
+      "count": 4701
     },
     {
       "path": "05-OPERATIONS/phase2/version-observations.jsonl",
-      "sha256": "d30d6abd4d9fbaa61f0288942a7e4884ccab52a251ce6c7850507f073b2f59d3",
-      "count": 2680
+      "sha256": "a9df20403066f31ee47e612d90b2b147f062ca16b0f467b1e6e524bafe302722",
+      "count": 4701
     },
     {
       "path": "05-OPERATIONS/relations/typed-edges.jsonl",
-      "sha256": "f6a027c8ee835ce8b3da5cde03617d08dac48fce00376a7d8bfdf91239d30e9d",
-      "count": 2620
+      "sha256": "5c1cae7bb161b5c12aaaa2073695d994caab254be7d9d57999a1e43b638fd6d1",
+      "count": 4641
     }
   ],
-  "interface_registry_sha256": "e7530a7fb6e1d23d4b85f5a816ca51764f7326f6448c0a4b02b63b9c6efddffd",
-  "registry_index_sha256": "4732eb170adaebc39b78012ba74c381846eb8fd366726a1a782ce3f669c6c5a7",
+  "interface_registry_sha256": "72d129a45f9cd1b836c93ddf5f7c5fcad81c9f7ec41a0b57faa826fc21198667",
+  "registry_index_sha256": "700450b6608a47c918f9160189c37053fb887aa04f1ba674ea9bdc0fc2afdbe1",
   "private_source_fields_available_to_public_connector": false,
-  "source_count": 1310,
-  "capture_count": 2680
+  "source_count": 2021,
+  "capture_count": 4701
 }
