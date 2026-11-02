@@ -57,6 +57,8 @@ Only encoded-payload detached HS256 JWS is supported. `none`, unexpected algorit
 
 ## Context research → actual adaptations
 
+The [concrete Portable Loom / pre-emergence Manifest / Dome-World crosswalk](SAFE_HARBOR_APPLICATION_CONTEXTS.md) records exact functions, objects, transition scopes, interposition points and failure consequences. Its future integrations are explicitly distinguished from the gate changes actually implemented here.
+
 ### Safe Harbor
 
 Read `README.md`, `docs/ARCHITECTURE.md`, `docs/HOOKS.md`, the registry/probe history, `app/main.js`, `app/safe-harbor-authority-verifier.js`, `app/safe-harbor-step1-countersignature.js`, the entrant-authorship schema and the blind-custody challenge specification. The latter remains authored/pre-implementation/human-gated, not an installed signer.
@@ -67,7 +69,9 @@ Digest fields use bare lowercase SHA-256 hex. A custodian may extract the 64-hex
 
 Countersignature code assesses packet authority-reading/replay posture. The entrant-authorship schema separately binds a custody assertion and review digests. Neither supplies a human execution signature, replay ledger, legal identity proof or automatic public promotion. The new verifier never consumes the browser's `verified:true` as authority.
 
-### Loom
+### Portable Loom and the separate hosted Loom custodian
+
+The primary portable context is `app/engine/portable-loom-reentry.js`, not just the hosted demo below. Its `stage → recordChallenge → check → admit → continuation` sequence separates local registration, captured declarations, recomputed commitments and actual process-local admission. `admit()` requires its exact locally issued candidate object, unchanged revision/head/expiry and explicit human review; exported records cannot restore that capability. The new gate adopts its plain-data-before-digest discipline. The linked application crosswalk specifies separately scoped egress, receiver attestation and exact-candidate admission permits without claiming foreign execution or global latest-state proof.
 
 Read `app/dome-world/holonomy-loom/demo-contract.js`, `server/loom-demo-custody-client.js`, `server/loom-demo-signing.js`, `neon/functions/loom-custody/index.mjs`, `neon/migrations/20261001_loom_custody.sql` and root custody law. The production custodian verifies RS256 Vercel OIDC against owner/project/environment, signs a domain-separated stage receipt, and reserves/commits via conditional SQL on current head and pending request. Stages distinguish `ACTIVATE`/`AIA_ONLY` from `CONTINUE`/`SELECTED_FILES_BOUND`; receipts explicitly retain `authority_transferred:false`. A legacy local HMAC helper is not the production deployment route.
 
@@ -122,7 +126,7 @@ Existing Node suffices; no new program download is necessary. Preparation does n
 
 Local affected Linux suite: **55/55 PASS**, Node **24.4.0**, pinned image `sha256:3ab1d8a775153425c45ac8c6434c8717fae5866d9dc3e494dc7eb8550d71c75f`, `node scripts/experiment-b-operational/run-source-free-linux-tests.mjs`. Complete source closure: 30 files, SHA-256 `b45f75a554293e1bd8f83e0047b71ca1a66191dfd9be00720e2f6ecaa0672159`.
 
-New compatibility/gate/setup suite: **12/12 PASS**, local Node **26.7.0**, `node --test --test-concurrency=1 tests/experiment-b-safe-harbor-bridge.test.mjs`. Public Git-blob fallback was used for sparse Safe Harbor files. Final receipts are retained alongside this document. These are deterministic observations, not live-provider, independent signer or live database witnesses. CI runs both suites and the four existing focused parser regressions at the PR's exact head; CI outcome is recorded in the PR handoff after completion.
+New compatibility/gate/setup suite: **13/13 PASS**, local Node **26.7.0**, `node --test --test-concurrency=1 tests/experiment-b-safe-harbor-bridge.test.mjs`. Public Git-blob fallback was used for sparse Safe Harbor files. Final receipts are retained alongside this document. These are deterministic observations, not live-provider, independent signer or live database witnesses. CI runs both suites and the four existing focused parser regressions at the PR's exact head; CI outcome is recorded in the PR handoff after completion.
 
 Operations in this commission comprised source inspection, synthetic/local arithmetic/signature fixtures, invented ZIP fixtures in inherited tests and offline tests. **Zero protected Em archive reads/hashes, zero model requests, zero genuine grant/key issuance, zero paid API requests, zero service endpoint calls, zero deployment or merge.** Synthetic signatures authenticate only invented test fixtures and confer no operator authority.
 

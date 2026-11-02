@@ -20,11 +20,29 @@ export function proposeSafeHarborUse({proposedPurpose,rationale,declaredAttribut
     namespace:SAFE_HARBOR_NAMESPACE,proposedPurpose,rationale,declaredAttribution,
     attributionVerified:false,provenance,executionAuthorized:false,
     adoption:'SEPARATE_PROSPECTIVE_HUMAN_AND_INDEPENDENT_REVIEW_REQUIRED'};
-  const text=canonical(record);if(Buffer.byteLength(text)>65536)throw Error('PROPOSAL_RECORD_BOUND_HOLD');
+  plainData(record);const text=canonical(record);if(Buffer.byteLength(text)>65536)throw Error('PROPOSAL_RECORD_BOUND_HOLD');
   return JSON.parse(text);
 }
 const hold=()=>{throw Error('SAFE_HARBOR_EXTERNAL_DISPATCH_AUTHORITY_REQUIRED');};
 const sha=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
+// Portable Loom's data-before-digest discipline, scoped to this adapter: reject
+// accessors/exotic objects rather than executing getters during canonicalization.
+function plainData(v,budget={nodes:0},depth=0){
+  if(++budget.nodes>10000||depth>24)hold();
+  if(v===null||typeof v==='boolean')return;
+  if(typeof v==='string'){if(v.length>65536)hold();return;}
+  if(typeof v==='number'&&Number.isFinite(v))return;
+  if(typeof v!=='object')hold();
+  const array=Array.isArray(v),proto=Object.getPrototypeOf(v);
+  if(!array&&proto!==Object.prototype&&proto!==null)hold();
+  if(array&&Reflect.ownKeys(v).length!==v.length+1)hold();
+  for(const key of Reflect.ownKeys(v)){
+    if(array&&key==='length')continue;
+    if(typeof key!=='string'||['__proto__','constructor','prototype'].includes(key))hold();
+    const d=Object.getOwnPropertyDescriptor(v,key);if(!d||!('value' in d))hold();
+    plainData(d.value,budget,depth+1);
+  }
+}
 function decode(value){
   if(typeof value!=='string'||!value||!/^[A-Za-z0-9_-]+$/.test(value))hold();
   const bytes=Buffer.from(value,'base64url');if(bytes.toString('base64url')!==value)hold();return bytes;
@@ -42,10 +60,12 @@ function copyRoots(trustedIssuers){
   }));
 }
 function verify(envelope,roots,scope,clock){
+  plainData(envelope);
   if(!envelope||envelope.lane!==scope.lane||typeof envelope.payload!=='string'||Buffer.byteLength(envelope.payload)>65536||
     typeof envelope.detachedJws!=='string'||envelope.detachedJws.length>8192)hold();
   const parts=envelope.detachedJws.split('.');if(parts.length!==3||parts[1]!=='')hold();
   let header,payload;try{header=JSON.parse(decode(parts[0]).toString('utf8'));payload=JSON.parse(envelope.payload);}catch{hold();}
+  plainData(header);plainData(payload);
   if(!header||typeof header!=='object'||!payload||typeof payload!=='object'||header.alg!=='HS256'||
     typeof header.kid!=='string'||Object.keys(header).some(k=>!['alg','kid','typ'].includes(k))||
     header.typ!=='TD613-SCOPED-AUTHORIZATION+JWS')hold();
@@ -67,12 +87,14 @@ function verify(envelope,roots,scope,clock){
  * This result is NOT consumption, source consent, a grant or execution authority.
  */
 export function verifySafeHarborScopedJws({envelope,trustedIssuers,scope,now=Date.now()}={}){
+  plainData(scope);
   if(!scope||typeof scope.lane!=='string'||!scope.lane||!scope.operation||scope.operation==='*'||
     typeof scope.application!=='string'||!scope.application||scope.application==='*'||
     typeof scope.namespace?.principal!=='string'||!scope.namespace.principal)hold();
   return verify(envelope,copyRoots(trustedIssuers),JSON.parse(canonical(scope)),now);
 }
 function contextRequired(c){
+  plainData(c);
   if(!c||!c.experiment||!c.episode||!/^TD613-SH-9B07D8B-[A-F0-9]{8}$/.test(c.shi??'')||
     !['safeHarborPacketReplayDigest','safeHarborPacketRecordDigest','planDigest','policyDigest','sourceManifestDigest','decisionsDigest','executionAuthorizationDigest'].every(k=>sha(c[k])))hold();
 }
@@ -94,6 +116,7 @@ export function createSafeHarborDispatchBridge({context,trustedIssuers,loadEnvel
   if(![...roots.values()].some(r=>r.lane===EXPERIMENT_B_CUSTODY_LANE&&r.application==='EXPERIMENT_B'&&
     r.namespacePrincipal===SAFE_HARBOR_NAMESPACE.principal&&r.operations.includes(OPERATION)))hold();
   return Object.freeze({async authorizeAndConsume(binding){
+    plainData(binding);
     if(!binding?.dispatchId||!binding.attempt||!binding.captureId||
       !['executableSHA256','promptSHA256','argumentsDigest','runtimePolicyDigest','inputMeasurementDigest'].every(k=>sha(binding[k]))||!binding.image)hold();
     // Snapshot before asynchronous resolution. Sign and compare the whole runtime

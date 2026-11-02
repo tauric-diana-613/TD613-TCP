@@ -133,6 +133,13 @@ test('SYNTHETIC a valid signature cannot carry authority between applications or
   const ownRoots={[issuer]:{...trustedIssuers[issuer],application:'MANIFEST',namespacePrincipal:p.namespace.principal}};
   assert.equal(verifySafeHarborScopedJws({envelope:signed(p),trustedIssuers:ownRoots,scope,now:1000}).application,'MANIFEST');
 });
+test('SYNTHETIC Portable Loom data discipline rejects accessors and exotic input before digest or consumption',async()=>{
+  let read=0;const bad={...binding};Object.defineProperty(bad,'captureId',{enumerable:true,get(){read++;return 'SIDE_EFFECT';}});
+  const f=fixture();await assert.rejects(f.service.authorizeAndConsume(bad));assert.equal(read,0);assert.equal(f.calls(),0);
+  for(const value of [new Date(),[,'SPARSE'],{value:undefined},{value:Infinity}]){
+    await assert.rejects(f.service.authorizeAndConsume({...binding,extra:value}));
+  }
+});
 test('SYNTHETIC external consume refusal or absence cannot become dispatch permission',async()=>{
   for(const result of [false,undefined,{verified:true}])await assert.rejects(fixture(signed(),()=>result).service.authorizeAndConsume(binding),/EXTERNAL_DISPATCH/);
   assert.throws(()=>createSafeHarborDispatchBridge({context}),/EXTERNAL_DISPATCH/);

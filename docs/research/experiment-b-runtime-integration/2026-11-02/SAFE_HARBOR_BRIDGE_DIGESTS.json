@@ -19,8 +19,8 @@
     },
     {
       "path": "scripts/experiment-b-operational/safe-harbor-dispatch-bridge.mjs",
-      "bytes": 8241,
-      "sha256": "3c3de958533f9385c083f447b5cdc1763c82bcec0a168fc43325a34fb51336b4"
+      "bytes": 9308,
+      "sha256": "96ed4596d05bbc36200a9b1302a4e94ea2a3f7d6f5e3fd427e5b34c7130961a5"
     },
     {
       "path": "scripts/experiment-b-operational/prepare-safe-harbor-custody.mjs",
@@ -34,18 +34,18 @@
     },
     {
       "path": "tests/experiment-b-safe-harbor-bridge.test.mjs",
-      "bytes": 15400,
-      "sha256": "601be0e3e91b2c3ef4436e7012ce54b1d7904c63650dd8632efd237bf15d124e"
+      "bytes": 15951,
+      "sha256": "bbb9ba7b3e24ad73a1cf224d6f344814449474af4286ec0a9ac494a99a5aea41"
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_CUSTODY_BRIDGE.md",
-      "bytes": 21285,
-      "sha256": "ef820caa228defcb452145e6943395265f2927cbdd3e0290d0874b3145c0fcd3"
+      "bytes": 22367,
+      "sha256": "b33f25a51159028a476ca26931650ba6bdcecf920f9180f80676b8f396ea309b"
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_BRIDGE_TESTS.tap",
-      "bytes": 1471,
-      "sha256": "fb644b0074d15ae150feb27527ee61e59d52dbf1a5054aba3739079364da8caa"
+      "bytes": 1592,
+      "sha256": "12572cfdd0314c16f4a9cb5144cafffcdcda2173c84389e99356f79fb15e5441"
     },
     {
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_ESCROW_TESTS.tap",
@@ -56,6 +56,11 @@
       "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_OPERATOR_INPUT_TEMPLATE.json",
       "bytes": 837,
       "sha256": "699f53c0ed6821ff372c525d9ae40632cd69e8e7f9375b2511b5c2d5012c2321"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_APPLICATION_CONTEXTS.md",
+      "bytes": 15024,
+      "sha256": "5574cd49c0df327484facbabf6c358052b39aa7fd3c66e8165fce898a7ffd65f"
     }
   ],
   "auditedPublicSources": [
@@ -178,6 +183,72 @@
       "bytes": 19886,
       "sha256": "fb69905b846d5e751fe9c652a12a8c5b7aac515c73530d20d1f1deb54329d229",
       "gitBlob": "c697bfe293900c1ab652b250c9fb0bf325c1682e"
+    },
+    {
+      "path": "app/engine/portable-loom-reentry.js",
+      "bytes": 32091,
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+      "gitBlob": "996bd38b9b9844020d155894260dec7335ae62ad"
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "bytes": 30382,
+      "sha256": "3ba2d2479a3a33e9b5ff4cbea941d489f17258c307b3df8314c5462e4d257872",
+      "gitBlob": "803757b282b438db3d20056fc3ca67daa71ef972"
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "bytes": 40457,
+      "sha256": "a4b35df99f2a5578aad4c9c5d4240edf26a9d38b0e511b16ad451f7d15d2145e",
+      "gitBlob": "dbf19ab9390705b33cfccd961b5ffcefb391f1ea"
+    },
+    {
+      "path": "docs/reentry/RELATION_MAP.md",
+      "bytes": 22847,
+      "sha256": "c08880a105efffbc42b01312ad5f2ae3038dcd717354e43354911f86594bec32",
+      "gitBlob": "3a9c2d4bc6b2f4f90ae5533bdedb5a72cfbdb1ed"
+    },
+    {
+      "path": "docs/reentry/EVIDENCE_AND_HOLDS.md",
+      "bytes": 32011,
+      "sha256": "d30b24e37d2641fcedadd290676ad8ab36eea0f0710b18138362533354eb5f13",
+      "gitBlob": "8a542dd7df9a3e4fedb4465cd634123cedcb9804"
+    },
+    {
+      "path": "docs/PORTABLE_LOOM_REENTRY_HANDOFF.md",
+      "bytes": 22535,
+      "sha256": "c2bfe8fa319b7783dcaf0c330d5c7faa63ec9c7d096b631cb480c226b4d56c94",
+      "gitBlob": "ff899d1adaff1626e0313d8b578c7a40956958cf"
+    },
+    {
+      "path": "packages/dome_world_exact/runtime.py",
+      "bytes": 15566,
+      "sha256": "0eb434006bb93dc18ebf334093abd35f922fec7caf7ef472eb3c8916d32aa6fc",
+      "gitBlob": "3ae708e656a4d071cf408733f846a78e6b3511bb"
+    },
+    {
+      "path": "packages/dome_world_exact/trainer/trainer.py",
+      "bytes": 11095,
+      "sha256": "870c8c5c232ce92add6aa07e0d573c091a784dbea8136f1fc11c0f077b10ee66",
+      "gitBlob": "ca5043aaba22b95398a530f17398f93685bf01e1"
+    },
+    {
+      "path": "packages/dome_world_exact/TRAINER_SPEC.md",
+      "bytes": 21615,
+      "sha256": "2312ef79a0c9cd8e36477379d5b3f5985490345b921288bc6d5c84d76694ca62",
+      "gitBlob": "a94faf5f689d2420fb7d387d1e1eb007862dac0c"
+    },
+    {
+      "path": "api/dome-world-engine.py",
+      "bytes": 18279,
+      "sha256": "dbbd60ccb22c4ff248a57200f11923156033efe0be9221bc69ef0041593b2391",
+      "gitBlob": "8d428764d3b1ee8e53300c5edfc4189ecada545a"
+    },
+    {
+      "path": "app/encyclopedia/index.html",
+      "bytes": 7214198,
+      "sha256": "118214bfe7fd69afb42fa5f3206fc365e1905210254f852b9d0e1d1f4088d62d",
+      "gitBlob": "6a43ad4ae1ae6a7f3642ce8668ed6b0425dce0fb"
     }
   ],
   "authority": "INTEGRITY_ONLY_NOT_AUTHORIZATION"
