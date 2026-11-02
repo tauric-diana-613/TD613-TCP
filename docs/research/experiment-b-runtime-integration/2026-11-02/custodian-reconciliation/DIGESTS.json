@@ -1,0 +1,192 @@
+{
+  "schema": "TD613_POST_REVIEW_CUSTODIAN_CORRECTION_V1",
+  "baseCommit": "7a24e55818e7ae8938d3d1f5fee80f22fa6466c1",
+  "independentReview": "5741604976",
+  "originMainObserved": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "changes": [
+    {
+      "path": ".github/workflows/experiment-b-runtime-source-free.yml",
+      "bytes": 2814,
+      "sha256": "ae4e2978449ad7496f3a43c985134690865e12eed2bb8186505ff577438352f6"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/POST_REVIEW_PREKEY_HANDOFF.md",
+      "bytes": 18047,
+      "sha256": "be85be3b001427b7551a496423e7accb2f4c97a4f1f429f4119cfbd70b2dac4b"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/combined-after.tap",
+      "bytes": 9813,
+      "sha256": "acede40e13369865dccac72876b4c0a40243ec02482498e62c59cf5e9d92a75a"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/focused-after.tap",
+      "bytes": 632,
+      "sha256": "73ced30cb25afd4073e9b8860ab1b27f17972cffea53900b159a29d3600de6ce"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/metadata-before.tap",
+      "bytes": 1665,
+      "sha256": "d8ce8991c4692ebca68696bfdae20b9279079529c5eb8320ff2f1740ed818592"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/parser-after.tap",
+      "bytes": 424,
+      "sha256": "583b352262d67d1fe1008e98804c707e4580a820d6905d010c850f7672d336b7"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/scope-before.tap",
+      "bytes": 2441,
+      "sha256": "ebcf6cc548297b037b8d1be930308ef7fc44fd27d7d15f6779f75e85e557a100"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/custodian-reconciliation/scope-only-intermediate.tap",
+      "bytes": 9616,
+      "sha256": "ca2d879972f14f4f21c9fd1f898e1d9f20b6b69a98ef1f4822c75bc4f868fcb1"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/store.mjs",
+      "bytes": 14490,
+      "sha256": "a6a156ef2cbfe97dd59ad8cc0502839861fb5390e10888cc5f286236963d5d74"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/worker.mjs",
+      "bytes": 4284,
+      "sha256": "9b03a51acd0b1f9ce9b0dfb1b4cc2053f0bda83ee52dac6b17d4bea6844b5471"
+    },
+    {
+      "path": "tests/experiment-b-custodian.test.mjs",
+      "bytes": 19473,
+      "sha256": "02fbc5f69bc630ee40ea0e6534555ab718c8e98a23c40c0f8b1ae18a3bf9aca5"
+    }
+  ],
+  "serviceSourceClosure": [
+    {
+      "path": "scripts/experiment-b-operational/custodian/Accept-Installation.ps1",
+      "bytes": 2696,
+      "sha256": "aca7ca155dd814a567350b89785d35fd69ded0923fe49c87828d71b98b0c3730"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Activate-Custodian.ps1",
+      "bytes": 3448,
+      "sha256": "4571e525142e92dbd1941ad7a35a6c338ee3d9e29df48afe10ceda2b58e94166"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Install-CustodianLayout.ps1",
+      "bytes": 8602,
+      "sha256": "af2129f78567db9e165db578c99e77a178b6df46c825fae0d669e5ae6ac69ba6"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Setup-Custodian.ps1",
+      "bytes": 1715,
+      "sha256": "57afe27b07d5fe5ef2584bb629732761c8652c02e8fe408605a31b34585e71a2"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Start-Custodian.ps1",
+      "bytes": 3699,
+      "sha256": "02d09624f76def978b8535cb3fa13a7b411b7148db77b61b0d72e79da39fc4d6"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Test-DistinctPeer.ps1",
+      "bytes": 2753,
+      "sha256": "3a83a80e1be88688d11ae06860a157fae385cd98758a1e2a4ebf443576044660"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Test-InstalledIsolation.ps1",
+      "bytes": 2790,
+      "sha256": "83dab595e6cead8b3faf93c8303b21a1a0ac908a7d4c81a0b7ac263385784098"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/Test-WindowsPipe.ps1",
+      "bytes": 4105,
+      "sha256": "4c9cff02f4dfefd1adfae1a1baa3944f04835adfe5991a5f8904baa437c56dab"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/WindowsPipe.cs",
+      "bytes": 8834,
+      "sha256": "f91dbe4ba5b888356884866091cb862bbe04c78dc9524bff212001e8f5161bbb"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/bundle-source.mjs",
+      "bytes": 1795,
+      "sha256": "898ed6a4734048b491032318fcd7b90c04d7f1d5b6c660db909ea11e53053834"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/client.mjs",
+      "bytes": 2658,
+      "sha256": "93c9684d9bd01f7764caba257e072c1ae1640bfa8157f190997ab2eec138c21c"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/configuration-digest.mjs",
+      "bytes": 287,
+      "sha256": "5a06b05927138033b6cc894d775f7cc869fdb164c1c464b01e4e03358f51f254"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/human-actions.mjs",
+      "bytes": 4951,
+      "sha256": "48a31d8fa7faaf569b81eb679548e6a6fa25bf4494a415276ae7504ef9ade39a"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/prepare-mandate.mjs",
+      "bytes": 1055,
+      "sha256": "54f8132d9590ca577e769f8181da19156907ca418ef9ecb309d45278f3361b85"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/store.mjs",
+      "bytes": 14490,
+      "sha256": "a6a156ef2cbfe97dd59ad8cc0502839861fb5390e10888cc5f286236963d5d74"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/windows-audit.mjs",
+      "bytes": 736,
+      "sha256": "56e5b906db274dca4b59fba46c86b52624d3782ff3654e3e3d63b9522f40fb7e"
+    },
+    {
+      "path": "scripts/experiment-b-operational/custodian/worker.mjs",
+      "bytes": 4284,
+      "sha256": "9b03a51acd0b1f9ce9b0dfb1b4cc2053f0bda83ee52dac6b17d4bea6844b5471"
+    },
+    {
+      "path": "scripts/experiment-b-operational/d04-evidence-policy.mjs",
+      "bytes": 3921,
+      "sha256": "b58d7c4cd46fb42a2807b5ad1936618e8730ca8d04678d5fb26ef2d06f664db5"
+    },
+    {
+      "path": "scripts/experiment-b-operational/input-accounting.mjs",
+      "bytes": 5486,
+      "sha256": "53e3e23a15a541c8232b9ebc8977c03ae6cd9f3a50a5d11eb8b3257fd6523c07"
+    },
+    {
+      "path": "scripts/experiment-b-operational/safe-harbor-dispatch-bridge.mjs",
+      "bytes": 9308,
+      "sha256": "96ed4596d05bbc36200a9b1302a4e94ea2a3f7d6f5e3fd427e5b34c7130961a5"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/engine.mjs",
+      "bytes": 14710,
+      "sha256": "582dc6db703e3f9ee82353e96f9066e9b374524c90fcf944131ebdd217f7df93"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/journal.mjs",
+      "bytes": 5855,
+      "sha256": "8dbc2bae17eaff158efda10b3506a718fc448555eaa676b359d9f31e9d6ecb0e"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/resources.mjs",
+      "bytes": 4313,
+      "sha256": "60799d491fba4e29cfc02e00fd0a24b4a2b1fcf5357b2dee1b87780a34d6edd7"
+    }
+  ],
+  "runtime": {
+    "node": "v26.7.0",
+    "powerShell": "7.6.5",
+    "ciNode": "24.4.0"
+  },
+  "installation": "PENDING_REAL_INSTALLATION",
+  "productionKeysCreated": 0,
+  "modelMediatedDelegatedOperations": 0,
+  "modelRequests": 0,
+  "protectedArchiveOperations": 0,
+  "redaction": "Retained failure stacks replace only the review-worktree prefix; original logs remain private.",
+  "originalArtifacts": "PR #1629 digest manifest and original receipts unchanged; this version binds the corrected source."
+}

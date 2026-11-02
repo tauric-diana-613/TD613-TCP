@@ -158,6 +158,50 @@ test('SYNTHETIC client requires exact request correlation; source-bearing extra 
     assert.throws(()=>f.store.issue(mandate().id,{...binding(),sourceText:'SYNTHETIC_NOT_A_REAL_SOURCE'}),/METADATA_ONLY/);
   }finally{f.store.close();}
 });
+
+for(const sameEpisode of [false,true])test('SYNTHETIC terminal IPC cannot clear another mandate permit '+(sameEpisode?'within one episode':'across episodes'),async t=>{
+  const f=fixture(t);try{
+    const second={...mandate(),id:'SYNTHETIC_OTHER_MANDATE',context:{...context,episode:sameEpisode?context.episode:'SYNTHETIC_OTHER_EPISODE'}};
+    f.store.approveMandate(second);
+    await f.store.authorizeAndConsume(mandate().id,binding());
+    const hash=digest('SYNTHETIC_ANCHORED_METADATA'),event={seq:1,previous:'',hash,signature:createHmac('sha256',checkpointKey).update(canonical({seq:1,hash})).digest('hex')};
+    f.store.publishAnchor(second.context.episode,event);
+    const payload={attempt:binding().attempt,evidence:{journalHash:hash,finalSHA256:digest('SYNTHETIC_FINAL'),jsonlSHA256:digest('SYNTHETIC_JSONL')}};
+    const request={requestId:'SYNTHETIC_CROSS_MANDATE',operation:'terminal.record',mandateId:second.id,episode:second.context.episode,payload};
+    const denied=await handleCustodyRequest(f.store,request);
+    assert.equal(denied.status,'HOLD');assert.equal(denied.code,'PERMIT_MANDATE_SCOPE_HOLD');assert(denied.receipt);
+    assert.equal(f.store.lookup(binding().attempt).state,'CONSUMED_UNCERTAIN');
+    if(!sameEpisode)f.store.publishAnchor(context.episode,event);
+    const own=await handleCustodyRequest(f.store,{...request,requestId:'SYNTHETIC_OWN_MANDATE',mandateId:mandate().id,episode:context.episode});
+    assert.equal(own.status,'OK');assert.equal(f.store.lookup(binding().attempt).state,'TERMINAL_RECORDED');
+  }finally{f.store.close();}
+});
+
+test('SYNTHETIC lookup refuses another mandate and terminal ownership rechecks revocation inside transaction',async t=>{
+  const f=fixture(t);try{
+    const second={...mandate(),id:'SYNTHETIC_OTHER_MANDATE'};f.store.approveMandate(second);
+    await f.store.authorizeAndConsume(mandate().id,binding());
+    const response=await handleCustodyRequest(f.store,{requestId:'SYNTHETIC_LOOKUP',operation:'dispatch.lookup',mandateId:second.id,episode:context.episode,payload:{attempt:binding().attempt}});
+    assert.equal(response.status,'HOLD');assert.equal(response.code,'PERMIT_MANDATE_SCOPE_HOLD');
+    f.store.revoke(mandate().id);
+    assert.throws(()=>f.store.recordTerminal(binding().attempt,{journalHash:digest('SYNTHETIC_JOURNAL'),finalSHA256:digest('SYNTHETIC_FINAL'),jsonlSHA256:digest('SYNTHETIC_JSONL')},mandate().id),/REVOKED/);
+    assert.equal(f.store.lookup(binding().attempt).state,'CONSUMED_UNCERTAIN');
+  }finally{f.store.close();}
+});
+
+for(const field of ['payload','evidence'])test('SYNTHETIC terminal IPC refuses undeclared '+field+' data without retaining its body',async t=>{
+  const f=fixture(t);try{
+    await f.store.authorizeAndConsume(mandate().id,binding());
+    const hash=digest('SYNTHETIC_METADATA_ANCHOR'),signature=createHmac('sha256',checkpointKey).update(canonical({seq:1,hash})).digest('hex');
+    f.store.publishAnchor(context.episode,{seq:1,previous:'',hash,signature});
+    const payload={attempt:binding().attempt,evidence:{journalHash:hash,finalSHA256:digest('SYNTHETIC_FINAL'),jsonlSHA256:digest('SYNTHETIC_JSONL')}};
+    (field==='payload'?payload:payload.evidence).sourceText='SYNTHETIC_UNDECLARED_BODY_NEVER_REAL_SOURCE';
+    const result=await handleCustodyRequest(f.store,{requestId:'SYNTHETIC_EXTRA_METADATA',operation:'terminal.record',mandateId:mandate().id,episode:context.episode,payload});
+    assert.equal(result.status,'HOLD');
+    assert.equal(f.store.lookup(binding().attempt).state,'CONSUMED_UNCERTAIN');
+    assert(!f.store.db.prepare('SELECT body FROM audit').all().some(r=>r.body.includes('SYNTHETIC_UNDECLARED_BODY_NEVER_REAL_SOURCE')));
+  }finally{f.store.close();}
+});
 test('installed source inventory closes every static JS dependency including the private-plan helper',()=>{
   const root=fileURLToPath(new URL('../',import.meta.url)),files=custodySourceClosure(root);
   assert(files.includes('scripts/experiment-b-resumable/engine.mjs'));

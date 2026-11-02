@@ -140,11 +140,20 @@ export class CustodyStore{
     this.db.prepare('UPDATE mandates SET revoked=1 WHERE id=?').run(id);
     this.db.prepare("UPDATE permits SET state='REVOKED' WHERE mandate=? AND state='ISSUED'").run(id);
   }).receipt;}
-  lookup(attempt){const r=this.db.prepare('SELECT state,dispatch,scope_digest FROM permits WHERE attempt=?').get(attempt);return r?{state:r.state,dispatchId:r.dispatch,scopeDigest:r.scope_digest}:null;}
-  recordTerminal(attempt,evidence){
-    if(!sha(evidence?.journalHash)||!sha(evidence?.finalSHA256)||!sha(evidence?.jsonlSHA256))held('TERMINAL_EVIDENCE_COMMITMENTS_REQUIRED');
+  // Trusted in-process diagnostics may omit mandateId. Every IPC call supplies
+  // its authenticated mandate; an attempt name alone is not that authority.
+  lookup(attempt,mandateId=null){
+    if(mandateId!==null)this.mandate(mandateId);
+    const r=this.db.prepare('SELECT mandate,state,dispatch,scope_digest FROM permits WHERE attempt=?').get(attempt);
+    if(r&&mandateId!==null&&r.mandate!==mandateId)held('PERMIT_MANDATE_SCOPE_HOLD');
+    return r?{state:r.state,dispatchId:r.dispatch,scopeDigest:r.scope_digest}:null;
+  }
+  recordTerminal(attempt,evidence,mandateId=null){
+    if(!sha(evidence?.journalHash)||!sha(evidence?.finalSHA256)||!sha(evidence?.jsonlSHA256)||Object.keys(evidence).length!==3)held('TERMINAL_EVIDENCE_COMMITMENTS_REQUIRED');
     return this.transaction('TERMINAL_COMMITMENTS_RECORDED',{attempt,evidence},()=>{
-      const r=this.db.prepare('SELECT state,terminal_evidence FROM permits WHERE attempt=?').get(attempt);
+      if(mandateId!==null)this.mandate(mandateId);
+      const r=this.db.prepare('SELECT mandate,state,terminal_evidence FROM permits WHERE attempt=?').get(attempt);
+      if(mandateId!==null&&r?.mandate!==mandateId)held('PERMIT_MANDATE_SCOPE_HOLD');
       if(r?.state==='TERMINAL_RECORDED'&&r.terminal_evidence===canonical(evidence))return;
       if(r?.state!=='CONSUMED_UNCERTAIN')held('TERMINAL_SCOPE_HOLD');
       this.db.prepare("UPDATE permits SET state='TERMINAL_RECORDED',terminal_evidence=? WHERE attempt=?").run(canonical(evidence),attempt);
