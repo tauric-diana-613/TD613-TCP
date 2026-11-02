@@ -55,7 +55,7 @@ import {
   AtomicCustodyLedger,
   validatePrivatePathConfinement
 } from '../docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs';
-import { runArm1Archival } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
+import { runArm1Archival, assertArchivalReceipt } from '../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs';
 import {
   AntigravityNativeOrchestrator,
   ANTIGRAVITY_NATIVE_ORCHESTRATION_SCHEMA
@@ -922,23 +922,8 @@ function executeArm0Transport(documents) {
 /**
  * Executes Arm 1: Native Archival Control (R3-02 Repair).
  */
-async function executeArm1Archival(repoRoot, documents) {
-  const arm1Res = await runArm1Archival(repoRoot, documents);
-
-  return {
-    arm: 'ARM_1_ARCHIVAL',
-    runtime: 'NATIVE_ENCYCLOPEDIA_AND_WENDBINE_COMPILER',
-    total_documents: documents.length,
-    raw_bytes_preserved: arm1Res.raw_bytes_preserved,
-    total_indexed: arm1Res.total_indexed, // authentic count, e.g. 0
-    schema_admitted: arm1Res.schema_admitted,
-    schema_rejected: arm1Res.schema_rejected,
-    relations_compiled: arm1Res.relations_compiled,
-    autonomous_relation_synthesis_present: arm1Res.autonomous_relation_synthesis_present,
-    per_document_operations: arm1Res.per_document_operations,
-    execution_log: arm1Res.log,
-    status: 'NATIVE_ARCHIVAL_CONTROL_VERIFIED'
-  };
+export async function executeArm1Archival(repoRoot, documents, options = {}) {
+  return assertArchivalReceipt(await runArm1Archival(repoRoot, documents, options), documents, options);
 }
 
 async function main() {
@@ -1233,14 +1218,12 @@ async function main() {
       custodyLedger.recordArmCompletion('ARM_0_TRANSPORT', arm0Result);
       console.log(`  ✓ Arm 0 Complete: ${arm0Result.total_documents} docs transported (${arm0Result.total_bytes_transported} bytes)`);
     } else if (arm === 'ARM_1_ARCHIVAL') {
-      if (options.resume && custodyLedger.isArmCompleted('ARM_1_ARCHIVAL')) {
-        console.log(`\n--- Arm 1 Already Completed (Restoring from persisted ledger) ---`);
-        continue;
-      }
-      console.log(`\n--- Executing ARM_1_ARCHIVAL ---`);
-      const arm1Result = await executeArm1Archival(REPO_ROOT, admittedDocs);
-      custodyLedger.recordArmCompletion('ARM_1_ARCHIVAL', arm1Result);
-      console.log(`  ✓ Arm 1 Complete: ${arm1Result.total_documents} docs processed (raw_preserved: ${arm1Result.raw_bytes_preserved}, indexed: ${arm1Result.total_indexed}, schema_admitted: ${arm1Result.schema_admitted}, schema_rejected: ${arm1Result.schema_rejected})`);
+      const previous = custodyLedger.ledgerData.arms?.ARM_1_ARCHIVAL;
+      if (previous && previous.schema !== 'td613.arm1-control/v2') throw Error('LEGACY_BASELINE_REQUIRES_HUMAN_REVIEW');
+      const arm1Result = await executeArm1Archival(REPO_ROOT, admittedDocs, { proposalDirectory: targetLedgerPath + '.arm1-proposals' });
+      if (previous && previous.receipt_sha256 !== arm1Result.receipt_sha256) throw Error('BASELINE_CHECKPOINT_INCOMPATIBLE');
+      if (!previous) custodyLedger.recordArmCompletion('ARM_1_ARCHIVAL', arm1Result);
+      console.log(`Arm 1 typed outcomes recorded: ${arm1Result.total_incoming} members; indexed ${arm1Result.total_indexed}.`);
     } else if (arm === 'ARM_2A_MODULAR' || arm === 'ARM_2B_MATCHED_UNION') {
       console.log(`\n--- Executing ${arm} (${options.backend === 'native' ? 'Antigravity Native Agent' : 'Gemini REST Client'}) ---`);
 
