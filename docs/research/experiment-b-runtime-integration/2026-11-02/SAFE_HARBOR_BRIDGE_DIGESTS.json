@@ -1,0 +1,255 @@
+{
+  "schema": "TD613_SAFE_HARBOR_BRIDGE_REVIEW_DIGESTS_V1",
+  "base": "29cdad5d1b83311799902c0ce3d79be8103d8760",
+  "artifacts": [
+    {
+      "path": ".github/workflows/experiment-b-runtime-source-free.yml",
+      "bytes": 1631,
+      "sha256": "8425b4ee903536c30f838e5b5ffa7c41eb0c83fb5e178752acff5c41994027f3"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/boundaries.mjs",
+      "bytes": 11718,
+      "sha256": "99812742eda3cc054b39a68ec4696db9c87927c03d89e057a401beb0951d77cf"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/runner.mjs",
+      "bytes": 7992,
+      "sha256": "aefbd2d03a5bc8c69147c946a5f1d24f332dc1534b3304eb32f098fa01c2b486"
+    },
+    {
+      "path": "scripts/experiment-b-operational/safe-harbor-dispatch-bridge.mjs",
+      "bytes": 9308,
+      "sha256": "96ed4596d05bbc36200a9b1302a4e94ea2a3f7d6f5e3fd427e5b34c7130961a5"
+    },
+    {
+      "path": "scripts/experiment-b-operational/prepare-safe-harbor-custody.mjs",
+      "bytes": 3650,
+      "sha256": "9cf08c89d68b98d06146cb2ad36709e35cdb0c68506c412c01d2f49f6f8135c0"
+    },
+    {
+      "path": "tests/experiment-b-final-integration.test.mjs",
+      "bytes": 9302,
+      "sha256": "5b524e81b6bc88531c5b4dae9d317c0b33ad5a4c2b5d99841cb847be41581b42"
+    },
+    {
+      "path": "tests/experiment-b-safe-harbor-bridge.test.mjs",
+      "bytes": 15951,
+      "sha256": "bbb9ba7b3e24ad73a1cf224d6f344814449474af4286ec0a9ac494a99a5aea41"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_CUSTODY_BRIDGE.md",
+      "bytes": 22531,
+      "sha256": "f2152ecc9413f054093dac80f777a1533f04396d408be4efbe3881bcb79c19d6"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_BRIDGE_TESTS.tap",
+      "bytes": 1592,
+      "sha256": "12572cfdd0314c16f4a9cb5144cafffcdcda2173c84389e99356f79fb15e5441"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_ESCROW_TESTS.tap",
+      "bytes": 6200,
+      "sha256": "4a5598c74857dea6d0a00e8fc848d2baa46829784300c331eb48f122f62905c4"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_OPERATOR_INPUT_TEMPLATE.json",
+      "bytes": 837,
+      "sha256": "699f53c0ed6821ff372c525d9ae40632cd69e8e7f9375b2511b5c2d5012c2321"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/SAFE_HARBOR_APPLICATION_CONTEXTS.md",
+      "bytes": 20432,
+      "sha256": "7e0b04ca5c3196a4dd6be2a9c49d3b50bcf9a974eb8ed3ad6c5d4d4e57c61cdc"
+    }
+  ],
+  "auditedPublicSources": [
+    {
+      "path": "app/safe-harbor/README.md",
+      "bytes": 9701,
+      "sha256": "e4eb01fa97f66ed4cd92506582b151131adc2ca2fb3045ee535b2afd600898c1",
+      "gitBlob": "f276848b1f23edf4bc3ecf3a0f7139043267e7bc"
+    },
+    {
+      "path": "app/safe-harbor/app/binding-provenance.js",
+      "bytes": 2692,
+      "sha256": "694cb84b65503b45e5a30305f25bd78871fb635bb2e332f0ac1b8b765a251140",
+      "gitBlob": "37477d08e490f2e9f7201c653e11dbe735936cc0"
+    },
+    {
+      "path": "app/safe-harbor/app/main.js",
+      "bytes": 210047,
+      "sha256": "ac4dcb0635283c92c53cd9ee13ee46a539eaeda44222961a9fd47f9d77cecd30",
+      "gitBlob": "7a20c543ad1e612e2ec321e6054a1a366e9563aa"
+    },
+    {
+      "path": "app/safe-harbor/app/safe-harbor-authority-verifier.js",
+      "bytes": 23369,
+      "sha256": "8764205ed6de64e8cf74fff965322a1e56a10385db4a49b5c7005ffdb3426e5d",
+      "gitBlob": "9ed42eec6ae265dc6422a6544a0d004ca4b3bb2e"
+    },
+    {
+      "path": "app/safe-harbor/app/safe-harbor-step1-countersignature.js",
+      "bytes": 12739,
+      "sha256": "b45b05e6195597856f9b9654fdabfafb4824cd116b01722d4c20e79b043ff6dc",
+      "gitBlob": "6439c66576468e45b30eb33c594fff3e9db5db27"
+    },
+    {
+      "path": "app/safe-harbor/docs/HOOKS.md",
+      "bytes": 3792,
+      "sha256": "7297f6c768ea325cdc8820e827ad2468b1145636e4039d34c8e78ab504143140",
+      "gitBlob": "09307479766a6ac344bd080679867f0cefbde57d"
+    },
+    {
+      "path": "app/safe-harbor/reference/12_TD613_PUA_Badge_Provenance_Attestation_Registry.json",
+      "bytes": 3224,
+      "sha256": "9eb9997ca843498c9f8159d46e8c2d2ca0e1e56f71def0913f582881041d14c4",
+      "gitBlob": "f8b9f612bbc0ea52a9e014075e370c217d46cd33"
+    },
+    {
+      "path": "app/safe-harbor/corpus/binding_provenance_manifest.json",
+      "bytes": 4659,
+      "sha256": "724125eb0bbd19e11daadc54810cfaf0e31f4575d9996bf7a257cfd7e5536650",
+      "gitBlob": "4ea3ae5de5bcec2d78c20c1f20ff592f9d3507f3"
+    },
+    {
+      "path": "app/safe-harbor/reference/td613_trust_profile.json",
+      "bytes": 3319,
+      "sha256": "7195238d6d6d478e0c06d2ef111fde69398f5c442f4d4bfebc8bdc7db4f675ab",
+      "gitBlob": "d68445454af94c0581b603bd0b919a7f4cfc60d4"
+    },
+    {
+      "path": "app/dome-world/holonomy-loom/demo-contract.js",
+      "bytes": 32423,
+      "sha256": "a6c968aa98b06a8cbeab0de8424ec46c3638ec59c60761fe1d7f23d55603a217",
+      "gitBlob": "a46c53d53065d0ea1c77ceaec4313fff4ab48e0e"
+    },
+    {
+      "path": "server/loom-demo-custody-client.js",
+      "bytes": 3886,
+      "sha256": "b091cdd5009f44d5bdb1af95997c170ab5d2709b9acd4e7f2ac36faa81d13b44",
+      "gitBlob": "bbfae8d30dc373af0357689ab57362e651e9b751"
+    },
+    {
+      "path": "server/loom-demo-signing.js",
+      "bytes": 4437,
+      "sha256": "e4a76d511bff70588cf2401a547c92e56709d78f31874e776716e5537463a655",
+      "gitBlob": "ddda263ddd7352db128dc092b6dece9dd8d7b6a7"
+    },
+    {
+      "path": "neon/functions/loom-custody/index.mjs",
+      "bytes": 13732,
+      "sha256": "b37149f2b073333c919a572e4ffb482e0c557eeb86c89f34ffddc4884803428f",
+      "gitBlob": "4b99e0a4a1c3bf42ce44c0092160b237b8d54750"
+    },
+    {
+      "path": "neon/migrations/20261001_loom_custody.sql",
+      "bytes": 1018,
+      "sha256": "243101c33232e19e08b34572abdefab596c06ce2fbfe833e81e7e703fc7cceb4",
+      "gitBlob": "7d0164743234c087bc7dc3b9341a4f13cae1f7ee"
+    },
+    {
+      "path": "docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md",
+      "bytes": 26687,
+      "sha256": "ff861f1de157bcbb181b2b94a42ed90f602c9e139d239aabef55a417783feceb",
+      "gitBlob": "f209e4075a03b09760f92b972b596220fc2aecb1"
+    },
+    {
+      "path": "docs/DOME_WORLD_FLOW_CORE.md",
+      "bytes": 4781,
+      "sha256": "e22a8615319155730bd59d4ae638cf781ac23565f08d58d2cdc503068431abae",
+      "gitBlob": "6d82ebb008d43a027b256c9b0a16f32588736292"
+    },
+    {
+      "path": "api/dome-world-engine-guard.py",
+      "bytes": 9339,
+      "sha256": "d87953f922ee4e28e8771f9ff34f7952d8cca1c28903e9c9e9887abe88738367",
+      "gitBlob": "2ce49058ed24854aa128d61fe111d49a538c153d"
+    },
+    {
+      "path": "packages/dome_world_exact/flowcore_context.py",
+      "bytes": 15405,
+      "sha256": "49dc0efdd58487d476b6757b53bc5df9089731a9c9d6176107cb52696e615b71",
+      "gitBlob": "5078ad1d092579b67cca9372a9df338b312e954d"
+    },
+    {
+      "path": "packages/dome_world_exact/reciprocal_bridge.py",
+      "bytes": 10586,
+      "sha256": "10a1a256ff95384d1e9b979ef43bb4bfbdcc28d4a58cf325b7e1977d17ededf3",
+      "gitBlob": "250df8b9b3d6b71e1a1e95607724c334569f1a77"
+    },
+    {
+      "path": "app/engine/aperture-v3-reciprocal-bridge.js",
+      "bytes": 19886,
+      "sha256": "fb69905b846d5e751fe9c652a12a8c5b7aac515c73530d20d1f1deb54329d229",
+      "gitBlob": "c697bfe293900c1ab652b250c9fb0bf325c1682e"
+    },
+    {
+      "path": "app/engine/portable-loom-reentry.js",
+      "bytes": 32091,
+      "sha256": "45502649973471d6e35dac09162650adec8a74d43e1308cde788b7f41c3a3aec",
+      "gitBlob": "996bd38b9b9844020d155894260dec7335ae62ad"
+    },
+    {
+      "path": "app/engine/portable-loom-session.js",
+      "bytes": 30382,
+      "sha256": "3ba2d2479a3a33e9b5ff4cbea941d489f17258c307b3df8314c5462e4d257872",
+      "gitBlob": "803757b282b438db3d20056fc3ca67daa71ef972"
+    },
+    {
+      "path": "app/engine/portable-loom-challenge.js",
+      "bytes": 40457,
+      "sha256": "a4b35df99f2a5578aad4c9c5d4240edf26a9d38b0e511b16ad451f7d15d2145e",
+      "gitBlob": "dbf19ab9390705b33cfccd961b5ffcefb391f1ea"
+    },
+    {
+      "path": "docs/reentry/RELATION_MAP.md",
+      "bytes": 22847,
+      "sha256": "c08880a105efffbc42b01312ad5f2ae3038dcd717354e43354911f86594bec32",
+      "gitBlob": "3a9c2d4bc6b2f4f90ae5533bdedb5a72cfbdb1ed"
+    },
+    {
+      "path": "docs/reentry/EVIDENCE_AND_HOLDS.md",
+      "bytes": 32011,
+      "sha256": "d30b24e37d2641fcedadd290676ad8ab36eea0f0710b18138362533354eb5f13",
+      "gitBlob": "8a542dd7df9a3e4fedb4465cd634123cedcb9804"
+    },
+    {
+      "path": "docs/PORTABLE_LOOM_REENTRY_HANDOFF.md",
+      "bytes": 22535,
+      "sha256": "c2bfe8fa319b7783dcaf0c330d5c7faa63ec9c7d096b631cb480c226b4d56c94",
+      "gitBlob": "ff899d1adaff1626e0313d8b578c7a40956958cf"
+    },
+    {
+      "path": "packages/dome_world_exact/runtime.py",
+      "bytes": 15566,
+      "sha256": "0eb434006bb93dc18ebf334093abd35f922fec7caf7ef472eb3c8916d32aa6fc",
+      "gitBlob": "3ae708e656a4d071cf408733f846a78e6b3511bb"
+    },
+    {
+      "path": "packages/dome_world_exact/trainer/trainer.py",
+      "bytes": 11095,
+      "sha256": "870c8c5c232ce92add6aa07e0d573c091a784dbea8136f1fc11c0f077b10ee66",
+      "gitBlob": "ca5043aaba22b95398a530f17398f93685bf01e1"
+    },
+    {
+      "path": "packages/dome_world_exact/TRAINER_SPEC.md",
+      "bytes": 21615,
+      "sha256": "2312ef79a0c9cd8e36477379d5b3f5985490345b921288bc6d5c84d76694ca62",
+      "gitBlob": "a94faf5f689d2420fb7d387d1e1eb007862dac0c"
+    },
+    {
+      "path": "api/dome-world-engine.py",
+      "bytes": 18279,
+      "sha256": "dbbd60ccb22c4ff248a57200f11923156033efe0be9221bc69ef0041593b2391",
+      "gitBlob": "8d428764d3b1ee8e53300c5edfc4189ecada545a"
+    },
+    {
+      "path": "app/encyclopedia/index.html",
+      "bytes": 7214198,
+      "sha256": "118214bfe7fd69afb42fa5f3206fc365e1905210254f852b9d0e1d1f4088d62d",
+      "gitBlob": "6a43ad4ae1ae6a7f3642ce8668ed6b0425dce0fb"
+    }
+  ],
+  "authority": "INTEGRITY_ONLY_NOT_AUTHORIZATION"
+}

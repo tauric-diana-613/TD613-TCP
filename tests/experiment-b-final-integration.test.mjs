@@ -3,12 +3,36 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { nativeTransport, protectedBroker, verifyExecutionAuthorization } from '../scripts/experiment-b-resumable/boundaries.mjs';
+import { nativeTransport, protectedBroker, verifyExecutionAuthorization,requireAdmissionEscrow,admitAuthorizedSources } from '../scripts/experiment-b-resumable/boundaries.mjs';
 import { syntheticCapture } from './experiment-b-capture-fixture.mjs';
-import { Journal, digest } from '../scripts/experiment-b-resumable/journal.mjs';
+import { Journal, digest, mac } from '../scripts/experiment-b-resumable/journal.mjs';
 import { admitOnly } from '../scripts/experiment-b-resumable/admission-only.mjs';
 import { admissionPolicyDigest } from '../docs/research/experiment-b-preflight/02_four_arm_harness/admission-policy.mjs';
 import { ControlledArchiveIntake, createSyntheticZipArchive, verifyAuthenticatedPhysicalArchiveMember } from '../docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs';
+import {OBSERVATIONAL,CLAIM_RESTRICTIONS} from '../scripts/experiment-b-operational/d04-evidence-policy.mjs';
+test('observational episode requires admission-only escrow before any archive access; legacy remains separate',()=>{
+  const p={mode:OBSERVATIONAL,version:1,model:'gpt-6.1-sol',effort:'xhigh',planningContext:500000,planningGuard:450000,outputReservation:25000,claimRestrictions:[...CLAIM_RESTRICTIONS]};
+  const brokerManifest=[{id:'SYNTHETIC',sha256:'a'.repeat(64),content_sha256:'b'.repeat(64)}];
+  const config={plan:{experiment:'SYNTHETIC',episode:'SYNTHETIC',context:{evidencePolicy:p}},sourceManifestDigest:digest(brokerManifest)};
+  assert.throws(()=>admitAuthorizedSources(config,{}),/OBSERVATIONAL_ADMISSION_ESCROW_REQUIRED/);
+  const e={operation:'EXPERIMENT_B_ADMISSION_ONLY',inferenceAuthorized:false,archiveSHA256:'b'.repeat(64),metadataPolicyDigest:'c'.repeat(64),intakeManifestDigest:'d'.repeat(64),brokerManifest,sourceManifestDigest:config.sourceManifestDigest};
+  const roots={SYNTHETIC:'SYNTHETIC_TEST_ONLY_NOT_A_REAL_CUSTODIAN_KEY'};
+  const sign=(payload)=>({...payload,signature:mac(roots.SYNTHETIC,payload)});
+  const payload={operation:'EXPERIMENT_B_ADMISSION_ESCROW',issuer:'SYNTHETIC',authorizationId:'SYNTHETIC-ESCROW',expires:2000,experiment:'SYNTHETIC',episode:'SYNTHETIC',escrowDigest:digest(e)};
+  const frozen={...config,admissionEscrow:e,admissionEscrowReceipt:sign(payload)};
+  requireAdmissionEscrow(frozen,roots,1000);
+  assert.throws(()=>requireAdmissionEscrow({...config,admissionEscrow:e},roots,1000),/EXTERNAL_ADMISSION_ESCROW/);
+  assert.throws(()=>requireAdmissionEscrow(frozen,{},1000),/EXTERNAL_ADMISSION_ESCROW/);
+  for(const patch of [{operation:'EXPERIMENT_B_RESUMABLE_FLIGHT'},{issuer:'UNTRUSTED'},{expires:1000},{episode:'OTHER'},{experiment:'OTHER'},{escrowDigest:'0'.repeat(64)},{authorizationId:null}])
+    assert.throws(()=>requireAdmissionEscrow({...frozen,admissionEscrowReceipt:sign({...payload,...patch})},roots,1000),/EXTERNAL_ADMISSION_ESCROW/);
+  assert.throws(()=>requireAdmissionEscrow({...frozen,admissionEscrowReceipt:{...frozen.admissionEscrowReceipt,signature:'0'.repeat(64)}},roots,1000),/EXTERNAL_ADMISSION_ESCROW/);
+  for(const patch of [{inferenceAuthorized:true},{operation:'EXPERIMENT_B_RESUMABLE_FLIGHT'},{sourceManifestDigest:'e'.repeat(64)},{archiveSHA256:null},{brokerManifest:[]}])
+    assert.throws(()=>requireAdmissionEscrow({...config,admissionEscrow:{...e,...patch}}),/ESCROW_REQUIRED/);
+  requireAdmissionEscrow({plan:{context:{}}});
+  // Passing the commitment check does not authorize a ZIP read or mint a member.
+  assert.throws(()=>protectedBroker([e]),/AUTHENTICATED/);
+  assert.throws(()=>verifyExecutionAuthorization(e,{},{}),/AUTHORIZATION_REQUIRED/);
+});
 const identity={evidence:'SYNTHETIC_ONLY',cliExecutableSHA256:'0'.repeat(64)};
 const request=()=>({attempt:'SYNTHETIC',rendered:{prompt:'SYNTHETIC'},runtime:identity,capture(){}});
 function transport(t,options={}) {

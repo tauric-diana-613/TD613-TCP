@@ -1,0 +1,21 @@
+✔ public namespace preserves scalar, covenant, fragment, SAC and unsigned claim ceiling (205.4321ms)
+✔ ordered public leaf metadata replays the declared provenance root without reading corpus members (62.2035ms)
+✔ actual v2 SHI replay is reproducible without a signing key; altered fingerprint fails (74.4284ms)
+✔ actual Safe Harbor replay excludes signature overlays; a full packet record commitment detects their change (64.483ms)
+✔ SYNTHETIC dedicated Experiment B receipt reaches authorizeAndConsume ABI and rejects replay (3.4175ms)
+✔ SYNTHETIC bridge requires signature, exact purpose/namespace/context/binding and never trusts overlay verified Boolean (7.4214ms)
+✔ SYNTHETIC verifier can be reused only with an explicit accepted new purpose; it cannot widen Flight (1.8545ms)
+✔ SYNTHETIC a valid signature cannot carry authority between applications or namespace principals (1.1362ms)
+✔ SYNTHETIC Portable Loom data discipline rejects accessors and exotic input before digest or consumption (2.2399ms)
+✔ SYNTHETIC external consume refusal or absence cannot become dispatch permission (2.0611ms)
+✔ SYNTHETIC Wild Field proposal retains novel scope and provenance without becoming authorization (0.6245ms)
+✔ operator setup prefills public bindings, lists missing inputs and never treats preparation as authority (1.1873ms)
+✔ SYNTHETIC setup pins external module bytes without importing it; CLI refuses overwrite (183.6796ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 752.9229
