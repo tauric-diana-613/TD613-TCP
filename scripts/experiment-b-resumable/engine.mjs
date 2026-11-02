@@ -1,6 +1,7 @@
 import { canonical, digest } from './journal.mjs';
 import { validatePolicy, usageRecord, canReserve } from './resources.mjs';
 import { normalizeInputMeasurement, compareInputUsage } from '../experiment-b-operational/input-accounting.mjs';
+import {evidenceMode,OBSERVATIONAL,planningMonitor,validateObservationalResources,observedFailure} from '../experiment-b-operational/d04-evidence-policy.mjs';
 
 export const ARMS = ['ARM_2A_MODULAR', 'ARM_2B_MATCHED_UNION'];
 const accepted = events => events.filter(e => e.type === 'TURN_ACCEPTED');
@@ -22,6 +23,7 @@ export function renderTurn(plan, lane, roundIndex, arm, events, broker) {
   // Chamber 1 final outputs are the sole handoffs to chamber 2. Chamber 2 retains its own finals too.
   const retained = arm === ARMS[0] && round.phase === 'SYNTHESIS' ? prior.filter(e => e.payload.phase === 'STAGE2' || e.payload.phase === 'BASELINE') : prior;
   const prefix = broker.prefix(lane.sourceOrder.slice(0, round.prefix));
+  if(canonical(prefix.sources.map(s=>s.id))!==canonical(lane.sourceOrder.slice(0,round.prefix))||prefix.sources.some(s=>typeof s.content!=='string'))throw Error('COMPLETE_SOURCE_SUBMISSION_REQUIRED');
   const rawVisible = !(arm === ARMS[0] && ['STAGE2', 'SYNTHESIS'].includes(round.phase));
   const templateKey = round.phase === 'BASELINE' ? 'baseline' : round.phase === 'SYNTHESIS' ? 'synthesis' : arm === ARMS[0] ? round.phase === 'STAGE1' ? 'modular1' : 'modular2' : round.phase === 'STAGE1' ? 'union1' : 'union2';
   const history = retained.map(e => ({ turn: e.payload.turn, response: e.payload.response, response_digest: digest(e.payload.response), receipt_hash: e.hash }));
@@ -36,6 +38,7 @@ export function renderTurn(plan, lane, roundIndex, arm, events, broker) {
 export class ResumableFlight {
   constructor({ journal, plan, policy, broker, transport, measureInput, observeRuntime, mirror = () => {}, pauseRequested = () => false, afterCapture = () => {} }) {
     validatePlan(plan); validatePolicy(policy);
+    if(evidenceMode(plan.context.evidencePolicy)===OBSERVATIONAL)validateObservationalResources(plan,policy);
     this.journal = journal; this.plan = plan; this.policy = policy; this.broker = broker;
     this.transport = transport; this.measureInput = measureInput; this.observeRuntime = observeRuntime;
     this.mirror = mirror; this.pauseRequested = pauseRequested; this.afterCapture = afterCapture;
@@ -49,6 +52,7 @@ export class ResumableFlight {
   async run({ windowId, policyAuthorization, runtimeAuthorization }) {
     if (!windowId || !policyAuthorization || !runtimeAuthorization) throw Error('EXTERNAL_POLICY_AND_RUNTIME_AUTHORIZATION_REQUIRED');
     const events = this.journal.events();
+    if(events.some(e=>e.type==='RESOURCE_MONITOR_HOLD'))return this.pause('ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION');
     const oldWindow = events.find(e => e.type === 'QUOTA_WINDOW' && e.payload.window === windowId);
     if (oldWindow && oldWindow.payload.policy_digest !== digest(this.policy)) throw Error('WINDOW_POLICY_REUSE_MISMATCH');
     if (!oldWindow) this.journal.append('QUOTA_WINDOW', { window: windowId, policy: this.policy, policy_digest: digest(this.policy), authorization: policyAuthorization });
@@ -77,9 +81,10 @@ export class ResumableFlight {
             const permission = canReserve(historyEvents, this.policy, windowId);
             if (!permission.permitted) return this.pause(permission.reason, { pair, accounting: permission, pair_complete: false });
             if (digest(await this.observeRuntime()) !== this.plan.runtimeBinding) return this.pause('MODEL_OR_RUNTIME_DRIFT_HOLD', { turn });
-            const rendered = renderTurn(this.plan, lane, r, arm, historyEvents, this.broker);
+            let rendered;
+            try{rendered=renderTurn(this.plan,lane,r,arm,historyEvents,this.broker);}catch{return this.pause('SOURCE_SUBMISSION_HOLD',{turn});}
             let measurement;
-            try { measurement = normalizeInputMeasurement(await this.measureInput(rendered.prompt), rendered.prompt); }
+            try { measurement = normalizeInputMeasurement(await this.measureInput(rendered.prompt), rendered.prompt,this.plan.context.evidencePolicy); }
             catch (error) { return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:error.code ?? 'D04_MEASUREMENT_FAILED'}); }
             const count = measurement.guardTokens;
             // Historical synthetic callers can keep their counter. A production
@@ -88,14 +93,17 @@ export class ResumableFlight {
               return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:'D04_COMPLETE_MEASUREMENT_REQUIRED'});
             if (measurement.kind !== 'LEGACY_CALLER_COUNTER' && measurement.evidenceDigest !== this.plan.context.tokenizerBinding)
               return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:'D04_TOKENIZER_POLICY_DRIFT'});
-            if (count + this.plan.context.outputLimit > this.plan.context.inputLimit || count + this.plan.context.outputLimit > this.policy.reservationTokens) return this.pause('PHYSICAL_CONTEXT_OR_RESERVATION_HOLD', { turn, input_tokens: count, input_measurement:measurement });
+            let planning=null;
+            if(evidenceMode(this.plan.context.evidencePolicy)===OBSERVATIONAL){
+              try{planning=planningMonitor(measurement,this.plan.context.evidencePolicy);}catch(error){return this.pause(error.code,{turn,input_measurement:measurement});}
+            }else if (count + this.plan.context.outputLimit > this.plan.context.inputLimit || count + this.plan.context.outputLimit > this.policy.reservationTokens) return this.pause('PHYSICAL_CONTEXT_OR_RESERVATION_HOLD', { turn, input_tokens: count, input_measurement:measurement });
             const rejectedCount = historyEvents.filter(e => e.type === 'REJECTED_NO_EXECUTION' && e.payload.turn === turn).length;
             if (rejectedCount > this.policy.maxRejectedRetries) return this.pause('REJECTED_RETRY_AUTHORITY_EXHAUSTED', { turn });
             const attempt = `${turn}/attempt-${rejectedCount + 1}`;
             intent = this.journal.append('DISPATCH_INTENT', { experiment: this.plan.experiment, episode: this.plan.episode,
               turn, pair, lane: lane.id, arm, round: r, phase: rendered.phase, attempt, window: windowId,
               configuration: this.plan.model, context: this.plan.context, runtime: observed,
-              rendered, input_tokens_measured: measurement.measuredTokens,
+              rendered, evidence_standard:evidenceMode(this.plan.context.evidencePolicy),planning_monitor:planning,input_tokens_measured: measurement.measuredTokens,
               input_tokens_upper_bound: measurement.upperBound, input_measurement:measurement,
               reservation: permission.reservation,
               custody_lineage: lane.custodyLineage, kernel_binding: this.plan.kernelBinding, tool_policy_binding: this.plan.toolPolicyBinding });
@@ -109,6 +117,8 @@ export class ResumableFlight {
             }
           }
           const result = captured.payload.result;
+          const adverse=observedFailure(result);
+          if(adverse)return this.pause('OBSERVED_EXECUTION_COMPARABILITY_HOLD',{turn,attempt:intent.payload.attempt,observation:adverse});
           if (result.status === 'REJECTED_NO_EXECUTION' && result.definitiveRejectionEvidence && this.plan.definitiveRejectionBinding === digest(result.definitiveRejectionEvidence.standard)) {
             this.journal.append('REJECTED_NO_EXECUTION', { turn, attempt: intent.payload.attempt, evidence: result.definitiveRejectionEvidence });
             return this.pause('PROVIDER_REJECTION_PAUSE', { turn, pair_complete: false });
@@ -122,6 +132,11 @@ export class ResumableFlight {
             usage: usageRecord(result), result_capture_hash: captured.hash, observed_identity: result.observedIdentity,
             execution_status: 'ACCEPTED', recovery_eligibility: 'EXACT_FINAL_OUTPUT_REPLAY_ONLY' });
           this.mirror(receipt);
+          if(evidenceMode(this.plan.context.evidencePolicy)===OBSERVATIONAL&&receipt.payload.usage.output_tokens>25000){
+            this.journal.append('RESOURCE_MONITOR_HOLD',{attempt:intent.payload.attempt,acceptedReceipt:receipt.hash,
+              reason:'OBSERVED_OUTPUT_RESERVATION_OVERRUN',effectiveProviderCeiling:'UNKNOWN'});
+            return this.pause('ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION',{turn});
+          }
         }
         const pairTurns = accepted(this.journal.events()).filter(e => e.payload.lane === lane.id && e.payload.round === r);
         if (pairTurns.length !== 2 || new Set(pairTurns.map(e => e.payload.arm)).size !== 2) throw Error('INCOMPLETE_PAIR_HOLD');

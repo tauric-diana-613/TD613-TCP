@@ -1,7 +1,7 @@
 name: Experiment B runtime source-free integration
 on:
   pull_request:
-    branches: ['experiment-b/provider-egress-private-custody-2026-11-01']
+    branches: ['experiment-b/provider-egress-private-custody-2026-11-01', 'experiment-b/runtime-d04-d13-integration-2026-11-02']
     paths:
       - 'scripts/experiment-b-operational/**'
       - 'scripts/experiment-b-resumable/**'

@@ -1,4 +1,5 @@
 import { digest } from '../experiment-b-resumable/journal.mjs';
+import {evidenceMode,OBSERVATIONAL,validateObservationalRecord} from './d04-evidence-policy.mjs';
 
 const hold = code => { throw Object.assign(Error(code), {code}); };
 const natural = value => Number.isSafeInteger(value) && value >= 0;
@@ -48,7 +49,8 @@ export function compareInputUsage(measurement,reported,semantics='UNAVAILABLE'){
 /** Normalize without relabeling a bound as an exact measurement. The legacy
  * scalar path remains explicitly a caller counter, not native token evidence.
  */
-export function normalizeInputMeasurement(value, prompt) {
+export function normalizeInputMeasurement(value, prompt, policy) {
+  if(evidenceMode(policy)===OBSERVATIONAL)return validateObservationalRecord(value,prompt,policy);
   if (natural(value)) return {kind:'LEGACY_CALLER_COUNTER', guardTokens:value,
     measuredTokens:null, upperBound:null, callerCounter:value, providerReportedTokens:null,
     unknownOverhead:true, promptSHA256:digest(Buffer.from(prompt))};

@@ -8,10 +8,19 @@ import {codexArgs} from '../experiment-b-codex-exec-adapter.mjs';
 import {conservativeInputMeasurement,validateEffectiveLimits,quotaWindowCommitment} from './input-accounting.mjs';
 import {mathServerSource,correlateKernelEvents,MATH_POLICY,MAX_TYPED_RESULT_BYTES,MAX_MATH_RECEIPT_BYTES} from './typed-math.mjs';
 import {NATIVE_SETTINGS} from './native-settings.mjs';
+import {evidenceMode,OBSERVATIONAL,observationalMeasurement,planningMonitor} from './d04-evidence-policy.mjs';
 import {verifyRestrictedCatalog,enforceNoCompactionGuard} from './restricted-model-catalog.mjs';
 
 export const PINNED_IMAGE='sha256:0f5db0645aa3187055a001ca12e123ae4cd5c15e50561f04973dd58f3bbb537a';
 export const CLI_SHA256='6253fb59fc4c21a9134b2f73237650eaec4a3d9380e5af12f3f1e9040dc24c14';
+export function runtimeMeasurement(config,text){
+  if(evidenceMode(config.evidencePolicy)===OBSERVATIONAL){
+    if(config.effectiveLimits!=null||config.inputPolicy!=null)throw Error('OBSERVATIONAL_EFFECTIVE_ATTESTATION_CONFLICT');
+    const m=observationalMeasurement(text,config.evidencePolicy);planningMonitor(m,config.evidencePolicy);return m;
+  }
+  const limits=validateEffectiveLimits(config.effectiveLimits),m=conservativeInputMeasurement(text,config.inputPolicy);
+  if(m.upperBound+limits.outputAndReasoningTokens>limits.contextTokens)throw Error('D04_CONTEXT_RESERVATION_HOLD');return m;
+}
 const sha=x=>typeof x==='string'&&/^[a-f0-9]{64}$/.test(x);
 const fail=code=>{throw Object.assign(Error(code),{code});};
 const docker=(args,input,timeout=30000)=>{
@@ -108,9 +117,7 @@ function createBoundary(config, fixture) {
     if(canonical(request.args)!==canonical(expected))fail('UNFROZEN_NATIVE_ARGUMENTS');
     let state,authority,measurement,restrictedCatalog;
     if(!fixture){
-      const limits=validateEffectiveLimits(config.effectiveLimits);
-      measurement=conservativeInputMeasurement(request.input,config.inputPolicy);
-      if(measurement.upperBound+limits.outputAndReasoningTokens>limits.contextTokens)fail('D04_CONTEXT_RESERVATION_HOLD');
+      measurement=runtimeMeasurement(config,request.input);
       // This is a real external service, not a caller Boolean. The authority
       // module and acceptance record are frozen in observeRuntime. No service
       // is supplied by this package and missing provision fails before launch.
@@ -120,7 +127,7 @@ function createBoundary(config, fixture) {
       const catalogEvidence=verifyRestrictedCatalog(sourceModel,restrictedCatalog);
       if(catalogEvidence.restrictedCatalogDigest!==config.restrictedCatalogDigest||catalogEvidence.sourceModelDigest!==config.sourceModelDigest)
         fail('FROZEN_NATIVE_CATALOG_REQUIRED');
-      enforceNoCompactionGuard(sourceModel,measurement,config.effectiveLimits);
+      if(evidenceMode(config.evidencePolicy)!==OBSERVATIONAL)enforceNoCompactionGuard(sourceModel,measurement,config.effectiveLimits);
       if(!Number.isSafeInteger(config.nativeToolOutputEnvelopeUpperBoundBytes)||config.nativeToolOutputEnvelopeUpperBoundBytes<0||
         !Number.isSafeInteger(config.toolOutputTokenLimit)||config.toolOutputTokenLimit<MAX_TYPED_RESULT_BYTES+config.nativeToolOutputEnvelopeUpperBoundBytes||
         !sha(config.toolOutputRetentionEvidenceDigest))fail('AUDITED_COMPLETE_TYPED_TOOL_OUTPUT_RETENTION_REQUIRED');
@@ -273,14 +280,15 @@ async function loadAuthority(spec){
   if(typeof service.authorizeAndConsume!=='function')fail('EXTERNAL_ATOMIC_DISPATCH_AUTHORITY_REQUIRED');return service;
 }
 function dependencyInventory(){
-  const names=['docker-capture-runtime.mjs','native-runtime.mjs','native-settings.mjs','restricted-model-catalog.mjs','input-accounting.mjs','typed-math.mjs','read-account-metadata.mjs','private-account-receipt.mjs',
+  const names=['docker-capture-runtime.mjs','native-runtime.mjs','native-settings.mjs','restricted-model-catalog.mjs','input-accounting.mjs','d04-evidence-policy.mjs','typed-math.mjs','read-account-metadata.mjs','private-account-receipt.mjs',
     '../experiment-b-codex-exec-adapter.mjs','../experiment-b-resumable/terminal-capture.mjs',
     'provider-egress/loopback-bridge.mjs','provider-egress/egress-gateway.mjs','provider-egress/tls-client-hello.mjs'];
   return Object.fromEntries(names.map(name=>[name,digest(fs.readFileSync(new URL(name,import.meta.url)))]));
 }
 function publicPolicy(c){return {schema:'TD613_NATIVE_RUNTIME_V1',image:PINNED_IMAGE,cliExecutableSHA256:CLI_SHA256,
   modelRequested:'gpt-6.1-sol',effortRequested:'xhigh',contextPolicy:c.inputPolicy??null,
-  effectiveLimits:c.effectiveLimits??null,captureStorageBytes:c.captureStorageBytes,timeoutMs:c.timeoutMs,
+  effectiveLimits:evidenceMode(c.evidencePolicy)===OBSERVATIONAL?null:c.effectiveLimits??null,
+  evidencePolicy:c.evidencePolicy??{mode:'STRICT_EFFECTIVE_CONTEXT_WARRANT',version:1},captureStorageBytes:c.captureStorageBytes,timeoutMs:c.timeoutMs,
   sourceModelDigest:c.sourceModelDigest??null,restrictedCatalogDigest:c.restrictedCatalogDigest??null,
   toolOutputRetention:{tokenLimit:c.toolOutputTokenLimit??null,typedResultUpperBoundBytes:MAX_TYPED_RESULT_BYTES,
     nativeEnvelopeUpperBoundBytes:c.nativeToolOutputEnvelopeUpperBoundBytes??null,evidenceDigest:c.toolOutputRetentionEvidenceDigest??null},
@@ -297,14 +305,13 @@ export function createOperationalRuntime(config){
   const boundary=createBoundary(config,null);
   const assertProvisioned=async()=>{
     assertPrivateDirectory(config.privateCaptureDirectory);
-    const limits=validateEffectiveLimits(config.effectiveLimits);
-    const measurement=conservativeInputMeasurement('',config.inputPolicy);
+    const measurement=runtimeMeasurement(config,'');
     await loadAuthority(config.dispatchAuthority);
     const original=readPrivateJSON(config.sourceModelFile),restricted=readPrivateJSON(config.restrictedCatalogFile);
     const e=verifyRestrictedCatalog(original,restricted);
     if(e.sourceModelDigest!==config.sourceModelDigest||e.restrictedCatalogDigest!==config.restrictedCatalogDigest)
       fail('FROZEN_NATIVE_CATALOG_REQUIRED');
-    enforceNoCompactionGuard(original,measurement,limits);
+    if(evidenceMode(config.evidencePolicy)!==OBSERVATIONAL)enforceNoCompactionGuard(original,measurement,config.effectiveLimits);
     if(!Number.isSafeInteger(config.mathMaxCallsPerTurn)||config.mathMaxCallsPerTurn<1||config.mathMaxCallsPerTurn>4096||
       !Number.isSafeInteger(config.kernelStorageBytes)||config.kernelStorageBytes<1||config.kernelStorageBytes>16*1024*1024||
       config.mathMaxCallsPerTurn*MAX_MATH_RECEIPT_BYTES>config.kernelStorageBytes||
@@ -366,7 +373,7 @@ export function createOperationalRuntime(config){
       !Number.isFinite(age)||age<0||age>config.quotaMaxAgeMs)return false;
     try{return windowId===quotaWindowCommitment(q);}catch{return false;}
   };
-  const measureInput=text=>{validateEffectiveLimits(config.effectiveLimits);return conservativeInputMeasurement(text,config.inputPolicy);};
+  const measureInput=text=>runtimeMeasurement(config,text);
   const freezeStage2Packets=async ({events,binding})=>{
     const s=config.stage2;if(!s?.packetFile||!sha(s.packetDigest)||s.contract?.binding!==binding||
       !s.contract.model||!s.contract.effort||!s.contract.independentPrincipalBinding||

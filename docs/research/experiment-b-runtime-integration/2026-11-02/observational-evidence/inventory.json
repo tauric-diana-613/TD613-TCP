@@ -1,0 +1,52 @@
+{
+  "parent": "ebb4f59972b23f598dfd4f17b847c40eea443178",
+  "files": [
+    {
+      "path": ".github/workflows/experiment-b-runtime-source-free.yml",
+      "sha256": "c7ae23b07552447a5aa764fbc2c1450c7f2fa66da9e09a1082b799185e8c286e"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/OBSERVATIONAL_ADOPTION_V1.md",
+      "sha256": "bbf791d1917ca8e589fef6ea787c0ef1a803b2f68f679d0ed1f336af7e042ad6"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/observational-evidence/d04-observational-linux-final.tap",
+      "sha256": "76bad9e554ef7eb3fd5caae53e691bdad2b3bedef47b6ba82465a3673475cb86"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/observational-evidence/d04-observational-linux.tap",
+      "sha256": "6cdc5288ffb1d22c99c9be8a92f57bc33011d547a9ce55123f5fdf2d092935e9"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/observational-evidence/d04-observational-tests-attempt1.tap",
+      "sha256": "4dd3c741ea9594560a2d01457a1445a044af4b7491e83671d0ede26db643db96"
+    },
+    {
+      "path": "scripts/experiment-b-operational/d04-evidence-policy.mjs",
+      "sha256": "b58d7c4cd46fb42a2807b5ad1936618e8730ca8d04678d5fb26ef2d06f664db5"
+    },
+    {
+      "path": "scripts/experiment-b-operational/docker-capture-runtime.mjs",
+      "sha256": "ba5e2693dee94a8b317c57adf3ca57c25cb03debae7b893070a1cf47d6770a1d"
+    },
+    {
+      "path": "scripts/experiment-b-operational/input-accounting.mjs",
+      "sha256": "53e3e23a15a541c8232b9ebc8977c03ae6cd9f3a50a5d11eb8b3257fd6523c07"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/engine.mjs",
+      "sha256": "b323eba81e6fe9bd47e17da95d8151e073de74d703aa1a29dbe5ac5c04635745"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/resources.mjs",
+      "sha256": "60799d491fba4e29cfc02e00fd0a24b4a2b1fcf5357b2dee1b87780a34d6edd7"
+    },
+    {
+      "path": "tests/experiment-b-resumable.test.mjs",
+      "sha256": "2b5f7f9a851e38b12c369c952b6bfd60b710436b99896f3852ae0defd30f0d54"
+    }
+  ],
+  "modelRequests": 0,
+  "protectedArchiveOperations": 0,
+  "seal": "⟐"
+}
