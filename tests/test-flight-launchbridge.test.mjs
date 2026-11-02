@@ -766,20 +766,13 @@ test('R3-02: Arm 1 Document-Specific Native Outcomes & Capability Bounds', async
   const arm1Res = await runArm1Archival(REPO_ROOT, documents);
 
   assert.equal(arm1Res.total_incoming, 2);
-  assert.equal(arm1Res.raw_bytes_preserved, 2);
-  assert.equal(arm1Res.schema_admitted, 0);
-  assert.equal(arm1Res.schema_rejected, 2);
-  assert.equal(arm1Res.total_indexed, 0); // Unstructured documents admitted to structured index: 0
+  assert.equal(arm1Res.raw_bytes_preserved, 0);
+  assert.equal(arm1Res.total_indexed, 0);
   assert.equal(arm1Res.relations_compiled, 0);
-  assert.equal(arm1Res.autonomous_relation_synthesis_present, false);
+  assert.equal(arm1Res.status, 'INCOMPLETE');
+  assert.equal(arm1Res.per_document_operations[0].error, 'ORIGINAL_BYTES_REQUIRED');
+  assert.equal(arm1Res.per_document_operations[1].error, 'UPSTREAM_MEMBER_AUTHENTICATION_REQUIRED');
 
-  const doc1Result = arm1Res.per_document_operations.find(d => d.filename === 'hamiltonian.md');
-  assert.equal(doc1Result.operation, 'RAW_PRESERVED_UNSTRUCTURED_SOURCE');
-  assert.equal(doc1Result.schema_valid, false);
-
-  const doc2Result = arm1Res.per_document_operations.find(d => d.filename === 'raw_waveform.dat');
-  assert.equal(doc2Result.operation, 'RAW_PRESERVED_BINARY_PAYLOAD');
-  assert.equal(doc2Result.schema_valid, false);
 });
 
 test('R3-04: Provider Attempts Accounting Under Shared Ceiling & Capacity Reservation', () => {

@@ -27,6 +27,8 @@ export async function runProtectedConfiguration(configFile, rootsFile, checkpoin
   const roots = JSON.parse(fs.readFileSync(rootsFile, 'utf8'));
   validatePlan(config.plan); validatePolicy(config.policy);
   if(evidenceMode(config.plan.context.evidencePolicy)===OBSERVATIONAL)validateObservationalResources(config.plan,config.policy);
+  const { archivalBinding } = await import('./archival-control-v2.mjs');
+  if (config.plan.baselineBinding !== archivalBinding(repositoryRoot)) throw Error('NEW_BASELINE_BINDING_REQUIRES_HUMAN_REVIEW');
   requireAdmissionEscrow(config,roots);
   if(config.custodianProfile!==undefined&&config.custodianProfile!=='TD613_LOCAL_CUSTODIAN_V1')throw Error('UNSUPPORTED_CUSTODIAN_PROFILE');
   if(config.custodianProfile==='TD613_LOCAL_CUSTODIAN_V1'){
@@ -58,14 +60,12 @@ export async function runProtectedConfiguration(configFile, rootsFile, checkpoin
     const ledger = openCompatibilityLedger(mirrorFile, repositoryRoot);
     ledger.initializeFlight({ executionMode: 'CODEX_RESUMABLE', permutation: 'FROZEN_PRIVATE_PLAN', model: config.plan.model.requested, budgetCeilings: { policy_digest: digest(config.policy) }, admissionReceipt: admission });
     // Deterministic transport and AUTHENTIC archival compiler remain mandatory; provenance checked against frozen plan.
-    if (!journal.events().some(e => e.type === 'BASELINES_ACCEPTED')) {
-      const { runArm1Archival } = await import('../../docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs');
-      const results = { binding: config.plan.baselineBinding,
-        arm0: { role: 'DETERMINISTIC_TRANSPORT', documents: admission.documents.map(d => ({ id: d.id, sha256: d.sha256, raw_byte_sha256: digest(d.raw_bytes) })) },
-        arm1: await runArm1Archival(repositoryRoot, admission.documents) };
-      journal.append('BASELINES_ACCEPTED', { results });
-      ledger.recordArmCompletion('ARM_0_TRANSPORT', results.arm0); ledger.recordArmCompletion('ARM_1_ARCHIVAL', results.arm1);
-    }
+    const { recordArchivalBaselines } = await import('./archival-control-v2.mjs');
+    const results = await recordArchivalBaselines({ journal, repoRoot: repositoryRoot,
+      documents: admission.documents, binding: config.plan.baselineBinding,
+      proposalDirectory: config.checkpointFile + '.arm1-proposals' });
+    ledger.recordArmCompletion('ARM_0_TRANSPORT', results.arm0);
+    ledger.recordArmCompletion('ARM_1_ARCHIVAL', results.arm1);
     const flight = new ResumableFlight({ journal, plan: config.plan, policy: config.policy, broker,
       observeRuntime: runtime.observeRuntime, measureInput: runtime.measureInput,
       transport: nativeTransport({ workspace: config.isolatedWorkspace, model: config.plan.model.requested, effort: config.plan.model.effort, observeRuntime: runtime.observeRuntime, spawnNative: runtime.spawnNative, captureService: runtime.captureService }),
