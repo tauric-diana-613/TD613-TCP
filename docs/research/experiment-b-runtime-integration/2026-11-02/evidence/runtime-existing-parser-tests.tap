@@ -1,0 +1,12 @@
+✔ B-CODEX-01 command flags and mandatory model pin (2.2443ms)
+✔ B-CODEX-02 JSONL cannot omit authentic-shaped thread and completion (2.0455ms)
+✔ B-CODEX-03 source-free only; stub credit must remain zero (3.1046ms)
+✔ B-CODEX-07 CLI availability probe never claims real model access (0.4872ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 186.6423

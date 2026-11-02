@@ -1,0 +1,34 @@
+name: Experiment B runtime source-free integration
+on:
+  pull_request:
+    branches: ['experiment-b/provider-egress-private-custody-2026-11-01']
+    paths:
+      - 'scripts/experiment-b-operational/**'
+      - 'scripts/experiment-b-resumable/**'
+      - 'scripts/experiment-b-codex-exec-adapter.mjs'
+      - 'tests/experiment-b-*.mjs'
+      - '.github/workflows/experiment-b-runtime-source-free.yml'
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.4.0'
+      - name: Exact source-free integration regressions
+        run: >-
+          node --test --test-concurrency=1
+          tests/experiment-b-resumable.test.mjs
+          tests/experiment-b-final-integration.test.mjs
+          tests/experiment-b-private-account-receipt.test.mjs
+          tests/experiment-b-runtime-integration.test.mjs
+          scripts/experiment-b-operational/provider-egress/tls-client-hello.test.mjs
+      - name: Directly affected existing parser regressions
+        run: node --test --test-name-pattern='B-CODEX-0[1237]' tests/test-experiment-b-codex-integration.test.mjs

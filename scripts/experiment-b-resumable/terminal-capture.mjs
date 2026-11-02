@@ -31,13 +31,19 @@ export async function capturedNativeCall({ service, spawnNative, args, request, 
   const run = await spawnNative({ executable: 'codex', args: nativeArgs, input: request.rendered.prompt, capture, dispatchId });
   if (run.exitCode !== 0 || typeof run.stdout !== 'string' || typeof run.stderr !== 'string') throw Error('NATIVE_TERMINAL_RESULT_UNVERIFIED');
   if (!Buffer.concat(stdout).equals(Buffer.from(run.stdout)) || !Buffer.concat(stderr).equals(Buffer.from(run.stderr))) throw Error('DURABLE_CAPTURE_MISMATCH');
-  const parsed = parseCodexEvents(run.stdout);
+  // Refuse oversized/incomplete records before any JSONL projection. The full
+  // stream has already been durably captured; this never truncates to fit.
+  if (Buffer.byteLength(run.stdout) > 16 * 1024 * 1024) throw Error('CODEX_JSONL_MISSING_OR_OVERSIZED');
   const final = await service.collect({ ...binding, ticket });
+  const kernel = typeof service.kernelEvidence === 'function' ? await service.kernelEvidence(dispatchId) : {items:[],receipts:[]};
+  const allowed = new Set(kernel.items.map(item=>digest(item)));
+  const parsed = parseCodexEvents(run.stdout, {allowKernelEvent:item=>allowed.has(digest(item))});
   if (!Buffer.isBuffer(final?.bytes) || final.bytes.length > 16 * 1024 * 1024 || !Buffer.from(parsed.output).equals(final.bytes)) throw Error('TERMINAL_FINAL_BYTES_CONFLICT');
   const evidence = { ...binding, captureId: ticket.captureId, outputFile: ticket.outputFile,
     threadId: parsed.thread_id, exitCode: run.exitCode, jsonlSHA256: digest(Buffer.from(run.stdout)),
     stderrSHA256: digest(Buffer.from(run.stderr)), finalSHA256: digest(final.bytes) };
   if (await service.verify(evidence, final.proof) !== true) throw Error('TERMINAL_CAPTURE_AUTHORITY_REJECTED');
   request.capture('final', final.bytes);
-  return { run, parsed, args: nativeArgs, finalEvidence: { ...evidence, finalBase64: final.bytes.toString('base64'), proof: final.proof } };
+  return { run:{...run,kernelActivity:kernel.receipts}, parsed, args: nativeArgs,
+    finalEvidence: { ...evidence, finalBase64: final.bytes.toString('base64'), proof: final.proof } };
 }

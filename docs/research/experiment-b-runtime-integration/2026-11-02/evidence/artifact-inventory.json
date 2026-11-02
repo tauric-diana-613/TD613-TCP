@@ -1,0 +1,194 @@
+{
+  "baseRevision": "8e5dd9ef26dfb343e7c205392f3fb3b48d4556b6",
+  "finalCommitReference": "CHILD_DRAFT_PR_HEAD",
+  "files": [
+    {
+      "path": ".github/workflows/experiment-b-runtime-source-free.yml",
+      "bytes": 1409,
+      "sha256": "50254e75032e451ac77a9a3a0c38a8866651ffaa43e342e6a01b8d20c250ff57"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/README.md",
+      "bytes": 14474,
+      "sha256": "c226c17de49778f995d070493c23a73b2a5517fd6da786ab1a7f5615bc4dacfd"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/native-interface-observation.json",
+      "bytes": 4794,
+      "sha256": "21528a350c748c32e06a3d2e919cb033a2519922e972f872439c2ee353767240"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/native-interface-rejected-overrides.json",
+      "bytes": 1971,
+      "sha256": "2ab5e044168b1c16e7d8f6954eba1f4890684d3de8bb3c7dc8577e2bf03dd006"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/native-model-catalog-observation.json",
+      "bytes": 651,
+      "sha256": "27edbc7947c784c786fa0571485d6d485d879b8e65c18e1522f50bf803592605"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/native-restricted-catalog-observation.json",
+      "bytes": 2092,
+      "sha256": "6d4899f3b5144010cc980e618e97055079c20cdb7c8d12834394b4984f5d54fa"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/native-static-catalog-observation.json",
+      "bytes": 1783,
+      "sha256": "b3b87e9528d6e1b7b8fe9a7acbbfa11dbb0941aa2d82e1a6a8925245e4a99ccc"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-actual-observation-attempt1.json",
+      "bytes": 140,
+      "sha256": "5b081758411cea8bafd4ed3d10bb0cdf826d1a7ba8888209fcb0190db5d45220"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-actual-observation.json",
+      "bytes": 4679,
+      "sha256": "fb15499a68f05e0e805c38107a34ffbeebeae198ca2ea804c0c79fcf839b48d6"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-existing-parser-tests.tap",
+      "bytes": 425,
+      "sha256": "47bb8f3001835414519c321eb8e4f019106f86e5449a8aabb0c9522196add82a"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-integration-host-tests.tap",
+      "bytes": 4354,
+      "sha256": "ab37035582e7d41d852a32186e58fef6b1ae75f70a89bcd133cdf220732dca4e"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-linux-tests.tap",
+      "bytes": 5279,
+      "sha256": "57fe57304257d277908209e4f9e147dd8eba43aefe96bfd1f9b4898f1c4da454"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-math-repair-test.tap",
+      "bytes": 240,
+      "sha256": "45cfefdbeacb8dcf38db61bf0d19b409badda1a2f293821db153a54aef6551c5"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-offline-tests-attempt1.tap",
+      "bytes": 13020,
+      "sha256": "a6c4d8d501a87d6b61efbb6afc62c05ecb253c927b00b7427695ba7c7547b7a3"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-offline-tests-attempt2.tap",
+      "bytes": 10498,
+      "sha256": "05a25f49c78c9eeb37bdcaba3a2c372552778ec6e0a6f6c8770d62dee17dad3d"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-offline-tests-attempt3.tap",
+      "bytes": 2150,
+      "sha256": "05a438dfa41976d26c0fd6ce5dca665f5575e1a25032ff24d8d3f3612b622373"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/runtime-offline-tests.tap",
+      "bytes": 1291,
+      "sha256": "627ed1e9e1a52e115ec005cb89c1486f96777b1988413c29ca19320b9a0fde26"
+    },
+    {
+      "path": "docs/research/experiment-b-runtime-integration/2026-11-02/evidence/synchronization.json",
+      "bytes": 657,
+      "sha256": "9bce19366f0fe44bf7f18e22cce24b49456b6e506a9d00d65b869761b9e52860"
+    },
+    {
+      "path": "scripts/experiment-b-codex-exec-adapter.mjs",
+      "bytes": 6758,
+      "sha256": "6f76676c35c5cff7d8959f3bcfb2cd705bcd05c1d17341f186d0a20c5f2a63cd"
+    },
+    {
+      "path": "scripts/experiment-b-operational/docker-capture-runtime.mjs",
+      "bytes": 35859,
+      "sha256": "15471dc42dbb9d0c334a79721a87f16ae56aa118a9d35f1feae815b8a89a1bb0"
+    },
+    {
+      "path": "scripts/experiment-b-operational/input-accounting.mjs",
+      "bytes": 5281,
+      "sha256": "ba3f908a2d20facab7b61a66f55fd75dc5928dc9bc4de19f6c8276228e334f6b"
+    },
+    {
+      "path": "scripts/experiment-b-operational/inspect-model-catalog.mjs",
+      "bytes": 4812,
+      "sha256": "28a7413f3517a1b74491033dd54caf4af187f5f348c0bca3e8d351fe15a43116"
+    },
+    {
+      "path": "scripts/experiment-b-operational/inspect-native-interface.mjs",
+      "bytes": 2615,
+      "sha256": "c6dda7da3ed9154c9f8827e81719bf99bbec3464bb75ea4757a32f46e6944ef0"
+    },
+    {
+      "path": "scripts/experiment-b-operational/inspect-restricted-catalog.mjs",
+      "bytes": 4399,
+      "sha256": "9e314bcf9a3d6dc5512f6a1d38bb085ea51d05082de7957b865ab272ce0395ad"
+    },
+    {
+      "path": "scripts/experiment-b-operational/native-runtime.mjs",
+      "bytes": 1579,
+      "sha256": "72f863ad4e7a8c2ce696e976795953e5ba52814045f07574b15e69aefe832399"
+    },
+    {
+      "path": "scripts/experiment-b-operational/native-settings.mjs",
+      "bytes": 2408,
+      "sha256": "265ad67e1cedac1bc2efc05415e494f46eaa5330b13994933eb030d621e31f0f"
+    },
+    {
+      "path": "scripts/experiment-b-operational/observe-provisioned-runtime.mjs",
+      "bytes": 2349,
+      "sha256": "17fda614daf6e667679051e76512c0adc4f0f14b59ad56f365f8ab0180c27db1"
+    },
+    {
+      "path": "scripts/experiment-b-operational/prepare-restricted-catalog.mjs",
+      "bytes": 2783,
+      "sha256": "878425063047fdc85e1badf66c2778bd91d38e76739876ede13825791c53b222"
+    },
+    {
+      "path": "scripts/experiment-b-operational/restricted-model-catalog.mjs",
+      "bytes": 1932,
+      "sha256": "ea1ef80f731e27e0d610638e013439975c9e06d33a79c4b4c5397cd1dbbda2fc"
+    },
+    {
+      "path": "scripts/experiment-b-operational/run-source-free-linux-tests.mjs",
+      "bytes": 3506,
+      "sha256": "845e4c6ecc93a0f6427fb7add7852a5971a7fca13a084d9e7b4b8d5d26b30d2b"
+    },
+    {
+      "path": "scripts/experiment-b-operational/typed-math.mjs",
+      "bytes": 6172,
+      "sha256": "3bb02dc832931dd841587e21ec196d72feb132b13869c7f54149b0136ffe439e"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/boundaries.mjs",
+      "bytes": 8891,
+      "sha256": "8935c79430edfa550138b30412925a01bd7138648881cca6e2254d15d468bbd4"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/engine.mjs",
+      "bytes": 12748,
+      "sha256": "0d7f49327bacfe2686ebeea89a69873cd21c9db093b6aab9a85ff230362193f9"
+    },
+    {
+      "path": "scripts/experiment-b-resumable/terminal-capture.mjs",
+      "bytes": 3557,
+      "sha256": "e31e254b77bbd415f78cca84b7fb6dcba2bdab84eb44f810464fec46e6d06afa"
+    },
+    {
+      "path": "tests/experiment-b-resumable.test.mjs",
+      "bytes": 20103,
+      "sha256": "3eaed9a8fa97dd52eebd3ddb6d2516e8bbe9bfaf55699e77da22390636aa9f67"
+    },
+    {
+      "path": "tests/experiment-b-runtime-integration.test.mjs",
+      "bytes": 9448,
+      "sha256": "ae77e874d66ec67524cbcc6961cb495246f868a9300c2e6fb0c9ea061733dd92"
+    },
+    {
+      "path": "tests/experiment-b-runtime-offline.test.mjs",
+      "bytes": 6361,
+      "sha256": "1de5e5e9dae90da14bea1a19b0bb211c1d247ed3a59175abc13c0823615cfb4a"
+    }
+  ],
+  "modelRequests": 0,
+  "protectedArchiveOperations": 0,
+  "seal": "⟐"
+}

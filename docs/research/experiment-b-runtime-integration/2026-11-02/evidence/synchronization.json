@@ -1,0 +1,18 @@
+{
+  "baseRevision": "8e5dd9ef26dfb343e7c205392f3fb3b48d4556b6",
+  "predecessors": [
+    "c7ee69abc9800d0abdf21bbb957c5534f86b01ad",
+    "d3da8d4e7431c7208dc1d1216cd741bc5aa0ca58",
+    "fcdafe418b7a1686f4f9da3d018345d1a595e69d",
+    "4273e9502b01059a1ffee1cc6e9242b64655bbf4",
+    "46f40e5768afeceb3304c12170f334ec590dfecf"
+  ],
+  "allPredecessorsVerifiedAncestors": true,
+  "originalBranchPreserved": "main",
+  "originalChangedEntriesPreserved": 4,
+  "originRepositoryVerified": "tauric-diana-613/TD613-TCP",
+  "reviewWorktreeInitiallyClean": true,
+  "reviewWorktreeBranch": "td613-pr1624-runtime",
+  "protectedArchiveOperations": 0,
+  "modelRequests": 0
+}

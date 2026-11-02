@@ -1,0 +1,216 @@
+✖ ACTUAL OFFLINE Docker capture retains exact bytes, immutable final evidence and one-time proof (1717.1442ms)
+✖ ACTUAL OFFLINE capture refuses mismatch and retains evidence (1253.7377ms)
+✖ ACTUAL OFFLINE capture refuses absent and retains evidence (1387.7229ms)
+✖ ACTUAL OFFLINE capture refuses stale and retains evidence (1901.2855ms)
+✖ ACTUAL OFFLINE capture refuses replaced and retains evidence (2664.8127ms)
+✖ ACTUAL OFFLINE capture refuses post-terminal and retains evidence (2080.3112ms)
+✖ ACTUAL OFFLINE capture refuses unexpected-tool and retains evidence (2000.6449ms)
+✖ ACTUAL OFFLINE capture refuses incomplete-tool and retains evidence (1924.8299ms)
+✖ ACTUAL OFFLINE capture refuses oversized and retains evidence (2493.799ms)
+✖ ACTUAL OFFLINE typed MCP worker and native-shaped events correlate to physical arithmetic receipts (1909.4975ms)
+✖ ACTUAL OFFLINE missing external dispatch authority refuses native launch (1712.5615ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 0
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21182.4917
+
+✖ failing tests:
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:25:1
+✖ ACTUAL OFFLINE Docker capture retains exact bytes, immutable final evidence and one-time proof (1717.1442ms)
+  Error: DOCKER_CONTROL_OPERATION_HOLD
+      at fail (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:14:39)
+      at docker (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:17:28)
+      at helper (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:54:21)
+      at Object.prepare (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:89:19)
+      at capturedNativeCall (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-resumable/terminal-capture.mjs:19:32)
+      at call (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:21:38)
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:26:50)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17) {
+    code: 'DOCKER_CONTROL_OPERATION_HOLD'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses mismatch and retains evidence (1253.7377ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses absent and retains evidence (1387.7229ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses stale and retains evidence (1901.2855ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses replaced and retains evidence (2664.8127ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses post-terminal and retains evidence (2080.3112ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses unexpected-tool and retains evidence (2000.6449ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses incomplete-tool and retains evidence (1924.8299ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:34:3
+✖ ACTUAL OFFLINE capture refuses oversized and retains evidence (2493.799ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert(file)
+  
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:36:67)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:40:1
+✖ ACTUAL OFFLINE typed MCP worker and native-shaped events correlate to physical arithmetic receipts (1909.4975ms)
+  Error: DOCKER_CONTROL_OPERATION_HOLD
+      at fail (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:14:39)
+      at docker (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:17:28)
+      at helper (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:54:21)
+      at Object.prepare (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:89:19)
+      at capturedNativeCall (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-resumable/terminal-capture.mjs:19:32)
+      at call (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:21:38)
+      at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:41:49)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'DOCKER_CONTROL_OPERATION_HOLD'
+  }
+
+test at /tcp-repository\tests\experiment-b-runtime-offline.test.mjs:44:1
+✖ ACTUAL OFFLINE missing external dispatch authority refuses native launch (1712.5615ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /EXTERNAL_DISPATCH_AUTHORITY_UNPROVISIONED/. Input:
+  
+  'Error: DOCKER_CONTROL_OPERATION_HOLD'
+  
+      at async TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:59:3)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: DOCKER_CONTROL_OPERATION_HOLD
+        at fail (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:14:39)
+        at docker (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:17:28)
+        at helper (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:54:21)
+        at Object.prepare (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-operational/docker-capture-runtime.mjs:89:19)
+        at capturedNativeCall (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/scripts/experiment-b-resumable/terminal-capture.mjs:19:32)
+        at call (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:21:38)
+        at TestContext.<anonymous> (file:///<PRIVATE>/Documents/Codex/2026-11-01/td613-experiment-b-fresh-flight-thread//tcp-repository/tests/experiment-b-runtime-offline.test.mjs:59:24)
+        at Test.runInAsyncScope (node:async_hooks:226:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18),
+    expected: /EXTERNAL_DISPATCH_AUTHORITY_UNPROVISIONED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

@@ -13,7 +13,7 @@ export function codexArgs({model,workspace}={}){
   if(typeof workspace!=='string'||!path.isAbsolute(workspace))fail('ABSOLUTE_WORKSPACE_REQUIRED');
   return ['exec','--json','--ephemeral','--ignore-user-config','--sandbox','read-only','--skip-git-repo-check','--cd',workspace,'--model',model,'-'];
 }
-export function parseCodexEvents(stdout){
+export function parseCodexEvents(stdout,{allowKernelEvent=()=>false}={}){
   if(typeof stdout!=='string'||!stdout.trim()||Buffer.byteLength(stdout)>16*1024*1024)fail('CODEX_JSONL_MISSING_OR_OVERSIZED');
   const events=stdout.trim().split(/\r?\n/).map((line,i)=>{
     try{const v=JSON.parse(line);if(typeof v.type!=='string')throw Error();return v;}
@@ -33,7 +33,11 @@ export function parseCodexEvents(stdout){
   // All item lifecycle events are evidence of activity. The prior completed-only
   // filter missed started/updated tool calls, including tools that never completed.
   const itemEvents=events.filter(e=>['item.started','item.updated','item.completed'].includes(e.type));
-  const prohibited=itemEvents.filter(e=>!['agent_message','reasoning'].includes(e.item?.type));
+  // An explicitly provisioned capture service can authorize the exact physical
+  // arithmetic receipts. This hook never widens the default no-tool parser.
+  const kernelIds=new Set(itemEvents.filter(e=>e.type==='item.completed'&&e.item?.type==='mcp_tool_call'&&allowKernelEvent(e.item)===true).map(e=>e.item.id));
+  const prohibited=itemEvents.filter(e=>!['agent_message','reasoning'].includes(e.item?.type)&&
+    !(e.item?.type==='mcp_tool_call'&&kernelIds.has(e.item.id)&&e.item.server==='td613_math'&&e.item.tool==='exact_integer'));
   if(prohibited.length)fail('NATIVE_TOOL_ACTIVITY_REFUSED');
   const messages=events.slice(1,terminalIndex).filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message'&&typeof e.item.text==='string'&&e.item.text.trim());
   if(!messages.length)fail('NATIVE_AGENT_MESSAGE_UNOBSERVED');
@@ -44,7 +48,7 @@ export function parseCodexEvents(stdout){
   return {thread_id:starts[0].thread_id,output,output_sha256:hash(output),
     usage_reported:finishes[0].usage||null,
     model_served_independently_attested:false,
-    command_event_count:0};
+    command_event_count:0,approved_kernel_item_ids:[...kernelIds]};
 }
 function safeEnv(){
   const keys=['PATH','HOME','USERPROFILE','CODEX_HOME','TMPDIR','TMP','TEMP','LANG','LC_ALL','SystemRoot','SYSTEMROOT','HTTPS_PROXY','HTTP_PROXY','NO_PROXY','SSL_CERT_FILE'];

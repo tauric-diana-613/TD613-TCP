@@ -63,9 +63,11 @@ export function nativeTransport({ workspace, model, effort, observeRuntime, spaw
     // spawnNative is operator-reviewed runtime provisioning, not a boolean isolation assertion.
     const { run, parsed, args: capturedArgs, finalEvidence } = await capturedNativeCall({ service: captureService, spawnNative, args, request, executableSHA256: observedIdentity.cliExecutableSHA256 });
     const events = run.stdout.trim().split(/\r?\n/).map(JSON.parse);
-    const activities = events.filter(e => e.type === 'item.completed' && !['agent_message', 'reasoning'].includes(e.item?.type));
+    const activities = events.filter(e => e.type === 'item.completed' && !['agent_message', 'reasoning'].includes(e.item?.type)&&
+      !parsed.approved_kernel_item_ids.includes(e.item?.id));
     return { status: 'COMPLETED', response: parsed.output, usage: parsed.usage_reported, observedIdentity,
       completeEvidence: { evidence_class: 'EXTERNAL_TERMINAL_FILE_AND_JSONL_CAPTURE', stdout: run.stdout, stderr: run.stderr, args: capturedArgs, terminalFinal: finalEvidence, thread_id: parsed.thread_id,
+        native_runtime:run.effectiveConfiguration??null,
         model_served_independently_attested: false, provider_persisted_history_restored: false },
       tools: activities, kernelActivity: run.kernelActivity ?? [], isolationViolation: activities.length > 0,
       billableUSD: run.billableUSD ?? null, subscriptionQuotaUnits: run.subscriptionQuotaUnits ?? null,

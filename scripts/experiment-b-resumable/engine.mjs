@@ -1,5 +1,6 @@
 import { canonical, digest } from './journal.mjs';
 import { validatePolicy, usageRecord, canReserve } from './resources.mjs';
+import { normalizeInputMeasurement, compareInputUsage } from '../experiment-b-operational/input-accounting.mjs';
 
 export const ARMS = ['ARM_2A_MODULAR', 'ARM_2B_MATCHED_UNION'];
 const accepted = events => events.filter(e => e.type === 'TURN_ACCEPTED');
@@ -77,15 +78,26 @@ export class ResumableFlight {
             if (!permission.permitted) return this.pause(permission.reason, { pair, accounting: permission, pair_complete: false });
             if (digest(await this.observeRuntime()) !== this.plan.runtimeBinding) return this.pause('MODEL_OR_RUNTIME_DRIFT_HOLD', { turn });
             const rendered = renderTurn(this.plan, lane, r, arm, historyEvents, this.broker);
-            const count = this.measureInput(rendered.prompt);
-            if (!Number.isSafeInteger(count) || count < 0 || count + this.plan.context.outputLimit > this.plan.context.inputLimit || count + this.plan.context.outputLimit > this.policy.reservationTokens) return this.pause('PHYSICAL_CONTEXT_OR_RESERVATION_HOLD', { turn, input_tokens: Number.isFinite(count) ? count : null });
+            let measurement;
+            try { measurement = normalizeInputMeasurement(await this.measureInput(rendered.prompt), rendered.prompt); }
+            catch (error) { return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:error.code ?? 'D04_MEASUREMENT_FAILED'}); }
+            const count = measurement.guardTokens;
+            // Historical synthetic callers can keep their counter. A production
+            // policy may never present this scalar path as a native measurement.
+            if (measurement.kind === 'LEGACY_CALLER_COUNTER' && this.plan.context.requireCompleteMeasurement === true)
+              return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:'D04_COMPLETE_MEASUREMENT_REQUIRED'});
+            if (measurement.kind !== 'LEGACY_CALLER_COUNTER' && measurement.evidenceDigest !== this.plan.context.tokenizerBinding)
+              return this.pause('INPUT_MEASUREMENT_HOLD', {turn, error_code:'D04_TOKENIZER_POLICY_DRIFT'});
+            if (count + this.plan.context.outputLimit > this.plan.context.inputLimit || count + this.plan.context.outputLimit > this.policy.reservationTokens) return this.pause('PHYSICAL_CONTEXT_OR_RESERVATION_HOLD', { turn, input_tokens: count, input_measurement:measurement });
             const rejectedCount = historyEvents.filter(e => e.type === 'REJECTED_NO_EXECUTION' && e.payload.turn === turn).length;
             if (rejectedCount > this.policy.maxRejectedRetries) return this.pause('REJECTED_RETRY_AUTHORITY_EXHAUSTED', { turn });
             const attempt = `${turn}/attempt-${rejectedCount + 1}`;
             intent = this.journal.append('DISPATCH_INTENT', { experiment: this.plan.experiment, episode: this.plan.episode,
               turn, pair, lane: lane.id, arm, round: r, phase: rendered.phase, attempt, window: windowId,
               configuration: this.plan.model, context: this.plan.context, runtime: observed,
-              rendered, input_tokens_measured: count, reservation: permission.reservation,
+              rendered, input_tokens_measured: measurement.measuredTokens,
+              input_tokens_upper_bound: measurement.upperBound, input_measurement:measurement,
+              reservation: permission.reservation,
               custody_lineage: lane.custodyLineage, kernel_binding: this.plan.kernelBinding, tool_policy_binding: this.plan.toolPolicyBinding });
             // The complete intent is committed with FULL synchronous durability BEFORE dispatch.
             try {
@@ -102,7 +114,10 @@ export class ResumableFlight {
             return this.pause('PROVIDER_REJECTION_PAUSE', { turn, pair_complete: false });
           }
           if (result.status !== 'COMPLETED' || typeof result.response !== 'string' || !result.response.length || !result.completeEvidence || !result.observedIdentity || digest(result.observedIdentity) !== this.plan.runtimeBinding || !Array.isArray(result.tools) || !Array.isArray(result.kernelActivity) || result.isolationViolation === true) return this.pause('UNVERIFIED_RESULT_HOLD', { turn, pair_complete: false });
+          const inputComparison=compareInputUsage(intent.payload.input_measurement,result.usage?.input_tokens,result.inputTokenCountingSemantics);
+          if(inputComparison.comparison==='PREDICTION_EXCEEDED')return this.pause('INPUT_ACCOUNTING_PREDICTION_EXCEEDED_HOLD',{turn,attempt:intent.payload.attempt,inputComparison,pair_complete:false});
           const receipt = this.journal.append('TURN_ACCEPTED', { ...intent.payload, response: result.response,
+            input_count_comparison:inputComparison,
             complete_evidence: result.completeEvidence, tools: result.tools, deterministic_kernel_activity: result.kernelActivity,
             usage: usageRecord(result), result_capture_hash: captured.hash, observed_identity: result.observedIdentity,
             execution_status: 'ACCEPTED', recovery_eligibility: 'EXACT_FINAL_OUTPUT_REPLAY_ONLY' });
