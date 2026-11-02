@@ -91,6 +91,30 @@ test('observed output overrun retains accepted answer but permanently stops subs
   assert.equal((await resume(f)).reason,'ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION');assert.equal(successes(j).length,1);
   assert.equal((await resume(f,'NEW_WINDOW')).reason,'ADMINISTRATIVE_OVERRUN_REQUIRES_ADJUDICATION');assert.equal(calls,1);j.close();
 });
+test('real nativeTransport parser refusal reaches Flight, retains raw chunks and survives authenticated reopen without retry',async t=>{
+  const {filename}=fixture(t);let j=new Journal(filename,KEY),calls=0;
+  const identity={...IDENTITY,cliExecutableSHA256:'0'.repeat(64)};
+  const fake=syntheticCapture(t,{late:[{type:'turn.started'}]});
+  const transport=nativeTransport({workspace:os.tmpdir(),model:'gpt-6.1-sol',effort:'xhigh',observeRuntime:async()=>identity,
+    spawnNative:async r=>{calls++;return fake.spawnNative(r);},captureService:fake.service});
+  const plan=makePlan();plan.runtimeBinding=digest(identity);
+  const f=engine(j,{plan,observeRuntime:async()=>identity,transport});
+  const r=await resume(f);assert.equal(r.reason,'UNCERTAIN_CALL_HOLD');assert.equal(r.error_code,'NATIVE_POST_TERMINAL_EVENT_REFUSED');
+  const refusal=j.events().find(e=>e.type==='NATIVE_PATH_REFUSED');assert.equal(refusal.payload.observation.refusalCode,r.error_code);
+  assert.equal(refusal.payload.observation.hiddenCompaction,'UNKNOWN');
+  const raw=j.events().filter(e=>e.type==='TRANSPORT_CHUNK'&&e.payload.channel==='stdout').map(e=>Buffer.from(e.payload.base64,'base64').toString()).join('');
+  assert(raw.endsWith('{"type":"turn.started"}'));assert.equal(successes(j).length,0);j.close();
+  j=new Journal(filename,KEY);assert(j.events().some(e=>e.hash===refusal.hash));
+  assert.equal((await resume(engine(j,{plan,observeRuntime:async()=>identity,transport}))).reason,'UNCERTAIN_CALL_HOLD');
+  assert.equal(calls,1);j.close();
+});
+test('observational schedule/resource mismatch refuses protected runner before archive or runtime admission',async t=>{
+  const {dir}=fixture(t);const plan=makePlan(),ep=observationalPolicy();plan.model={requested:'gpt-6.1-sol',effort:'xhigh'};
+  plan.context={inputLimit:500000,outputLimit:25000,tokenizerBinding:digest(ep),evidencePolicy:ep};
+  const config=path.join(dir,'invented-config.json'),roots=path.join(dir,'invented-roots.json');
+  fs.writeFileSync(config,JSON.stringify({plan,policy:POLICY}));fs.writeFileSync(roots,'{}');
+  await assert.rejects(runProtectedConfiguration(config,roots,'SYNTHETIC_UNUSED_KEY'),/OBSERVATIONAL_FINITE_MATCHED_AUTHORITY_REQUIRED/);
+});
 
 test('D04 production measurement policy retains bound and reported usage as different coordinates',async t=>{
   const {filename}=fixture(t);const j=new Journal(filename,KEY);

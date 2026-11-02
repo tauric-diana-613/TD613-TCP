@@ -54,6 +54,7 @@ export function ledgerMirror(ledger) {
 export function nativeTransport({ workspace, model, effort, observeRuntime, spawnNative, captureService }) {
   if (!path.isAbsolute(workspace) || typeof spawnNative !== 'function') throw Error('PROVISIONED_ISOLATED_NATIVE_SPAWN_REQUIRED');
   return async request => {
+    try {
     requireCaptureService(captureService);
     const args = codexArgs({ model, workspace });
     // Exact flags are retained; successful application/effective effort require runtime acceptance.
@@ -65,13 +66,28 @@ export function nativeTransport({ workspace, model, effort, observeRuntime, spaw
     const events = run.stdout.trim().split(/\r?\n/).map(JSON.parse);
     const activities = events.filter(e => e.type === 'item.completed' && !['agent_message', 'reasoning'].includes(e.item?.type)&&
       !parsed.approved_kernel_item_ids.includes(e.item?.id));
-    return { status: 'COMPLETED', response: parsed.output, usage: parsed.usage_reported, observedIdentity,
+    const observations={schema:'TD613_NATIVE_OBSERVABILITY_V1',
+      compaction:'UNKNOWN',truncation:'UNKNOWN',contextError:'UNKNOWN',incompleteTurn:'UNKNOWN',
+      sourceOmission:'UNKNOWN',unequalOpportunity:'UNKNOWN',
+      nativeTerminal:'OBSERVED_COMPLETED_TURN_AND_VERIFIED_FINAL_BYTES',
+      requestedRuntimeComparison:'OBSERVED_MATCH',
+      submittedPrompt:{bytes:Buffer.byteLength(request.rendered.prompt),sha256:digest(Buffer.from(request.rendered.prompt)),scope:'PARENT_SUBMITTED_TEXT_NOT_PROVIDER_RETAINED_CONTEXT'}};
+    return { status: 'COMPLETED', response: parsed.output, usage: parsed.usage_reported, observedIdentity,observations,
       completeEvidence: { evidence_class: 'EXTERNAL_TERMINAL_FILE_AND_JSONL_CAPTURE', stdout: run.stdout, stderr: run.stderr, args: capturedArgs, terminalFinal: finalEvidence, thread_id: parsed.thread_id,
-        native_runtime:run.effectiveConfiguration??null,
+        native_runtime:run.effectiveConfiguration??null,nativeObservability:observations,
         model_served_independently_attested: false, provider_persisted_history_restored: false },
       tools: activities, kernelActivity: run.kernelActivity ?? [], isolationViolation: activities.length > 0,
       billableUSD: run.billableUSD ?? null, subscriptionQuotaUnits: run.subscriptionQuotaUnits ?? null,
       reasoningInclusionSemantics: run.reasoningInclusionSemantics ?? 'UNAVAILABLE' };
+    } catch(error) {
+      // Existing parser/capture refusals remain refusals. Never reinterpret a
+      // provider error string or unsupported event as a fabricated detector.
+      const candidate=String(error.code??error.message??'');
+      const reason=/^[A-Z][A-Z0-9_]{1,120}$/.test(candidate)?candidate:'NATIVE_CAPTURE_OR_RUNTIME_REFUSED';
+      throw Object.assign(Error(reason),{code:reason,nativeObservation:{schema:'TD613_NATIVE_OBSERVABILITY_V1',
+        evidenceClass:'OBSERVED_NATIVE_PATH_REFUSAL',refusalCode:reason,
+        hiddenCompaction:'UNKNOWN',providerRetainedContext:'UNKNOWN',effectiveOutputCeiling:'UNKNOWN'}});
+    }
   };
 }
 

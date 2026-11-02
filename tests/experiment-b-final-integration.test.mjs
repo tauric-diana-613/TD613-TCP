@@ -18,6 +18,10 @@ function transport(t,options={}) {
 test('SYNTHETIC terminal exact bytes and evidence survive authenticated journal reopen',async t=>{
   const chunks=[];const r=await transport(t)({...request(),capture:(channel,bytes)=>chunks.push({channel,base64:Buffer.from(bytes).toString('base64')})});
   assert.equal(r.response,'SYNTHETIC_FINAL');assert(chunks.some(c=>c.channel==='final'));
+  assert.equal(r.observations.compaction,'UNKNOWN');assert.equal(r.observations.sourceOmission,'UNKNOWN');
+  assert.equal(r.observations.nativeTerminal,'OBSERVED_COMPLETED_TURN_AND_VERIFIED_FINAL_BYTES');
+  assert.equal(r.observations.submittedPrompt.sha256,digest(Buffer.from('SYNTHETIC')));
+  assert(!Object.values(r.observations).includes(false));
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'td613-final-journal-'));
   t.after(()=>{assert.equal(path.dirname(dir),os.tmpdir());assert(path.basename(dir).startsWith('td613-final-journal-'));fs.rmSync(dir,{recursive:true,force:true});});
   const file=path.join(dir,'test.sqlite');const key='SYNTHETIC_INTEGRITY_ONLY_NOT_AN_OPERATOR_KEY';

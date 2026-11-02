@@ -113,6 +113,8 @@ export class ResumableFlight {
               captured = this.journal.append('RESULT_CAPTURED', { attempt, result });
               this.afterCapture(captured);
             } catch (error) {
+              if(error.nativeObservation?.schema==='TD613_NATIVE_OBSERVABILITY_V1')this.journal.append('NATIVE_PATH_REFUSED',
+                {attempt,observation:error.nativeObservation,rawEvidence:'RETAINED_TRANSPORT_CHUNKS_AND_PRIVATE_CAPTURE_SERVICE'});
               return this.pause('UNCERTAIN_CALL_HOLD', { turn, attempt, error_code: String(error.code ?? 'TRANSPORT_OR_CAPTURE_INTERRUPTED'), pair_complete: false });
             }
           }
