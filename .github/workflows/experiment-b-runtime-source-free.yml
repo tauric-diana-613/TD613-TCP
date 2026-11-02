@@ -1,7 +1,7 @@
 name: Experiment B runtime source-free integration
 on:
   pull_request:
-    branches: ['experiment-b/native-observability-redpen-2026-11-02', 'experiment-b/observational-d04-amendment-2026-11-02', 'experiment-b/provider-egress-private-custody-2026-11-01', 'experiment-b/runtime-d04-d13-integration-2026-11-02']
+    branches: ['experiment-b/safe-harbor-custody-bridge-2026-11-02', 'experiment-b/native-observability-redpen-2026-11-02', 'experiment-b/observational-d04-amendment-2026-11-02', 'experiment-b/provider-egress-private-custody-2026-11-01', 'experiment-b/runtime-d04-d13-integration-2026-11-02']
     paths:
       - 'scripts/experiment-b-operational/**'
       - 'scripts/experiment-b-resumable/**'
@@ -30,6 +30,30 @@ jobs:
           tests/experiment-b-private-account-receipt.test.mjs
           tests/experiment-b-runtime-integration.test.mjs
           tests/experiment-b-safe-harbor-bridge.test.mjs
+          tests/experiment-b-custodian.test.mjs
           scripts/experiment-b-operational/provider-egress/tls-client-hello.test.mjs
       - name: Directly affected existing parser regressions
         run: node --test --test-name-pattern='B-CODEX-0[1237]' tests/test-experiment-b-codex-integration.test.mjs
+  windows-custodian:
+    runs-on: windows-2025
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.4.0'
+      - name: Source-free custody regressions; installed authority remains pending
+        run: node --test --test-concurrency=1 tests/experiment-b-custodian.test.mjs
+      - name: Parse human-only setup without executing it
+        shell: pwsh
+        run: |
+          $failed=$false
+          Get-ChildItem scripts/experiment-b-operational/custodian/*.ps1 | ForEach-Object {
+            $tokens=$null; $errors=$null
+            [void][Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$tokens,[ref]$errors)
+            if($errors.Count){$failed=$true}
+          }
+          if($failed){throw 'CUSTODIAN_SCRIPT_SYNTAX_FAILURE'}

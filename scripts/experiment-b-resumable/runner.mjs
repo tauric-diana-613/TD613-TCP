@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath,pathToFileURL } from 'node:url';
 import { Journal, digest, mac, equalHex } from './journal.mjs';
 import { ResumableFlight, validatePlan } from './engine.mjs';
 import { validatePolicy } from './resources.mjs';
@@ -28,13 +28,26 @@ export async function runProtectedConfiguration(configFile, rootsFile, checkpoin
   validatePlan(config.plan); validatePolicy(config.policy);
   if(evidenceMode(config.plan.context.evidencePolicy)===OBSERVATIONAL)validateObservationalResources(config.plan,config.policy);
   requireAdmissionEscrow(config,roots);
+  if(config.custodianProfile!==undefined&&config.custodianProfile!=='TD613_LOCAL_CUSTODIAN_V1')throw Error('UNSUPPORTED_CUSTODIAN_PROFILE');
+  if(config.custodianProfile==='TD613_LOCAL_CUSTODIAN_V1'){
+    if(config.custodianCheckpointRequired!==true)throw Error('LOCAL_CUSTODIAN_CHECKPOINTS_REQUIRED');
+    for(const file of [configFile,rootsFile,checkpointKeyFile])privateFile(file);
+  }
   if (process.env.TD613_FLIGHT_EXECUTION_AUTHORIZED !== 'true' || process.env.TD613_OPERATOR_ARCHIVE_ADMISSION_GRANTED !== 'true') throw Error('PROTECTED_EXECUTION_NOT_AUTHORIZED');
   const store = privateFile(config.checkpointFile), mirrorFile = privateFile(config.ledgerFile);
   const { authority, runtime } = await loadAuthorizedRuntime(config, roots);
   if (!authority.resumeAcrossQuotaWindows || !await runtime.confirmQuotaWindow(config.quotaWindowId)) throw Error('APPROVED_CONFIRMED_QUOTA_WINDOW_REQUIRED');
   // Model/tool/credential provisioning must pass BEFORE archive admission.
   if (digest(await runtime.observeRuntime()) !== config.plan.runtimeBinding) throw Error('RUNTIME_ACCEPTANCE_REQUIRED_BEFORE_SOURCE_EXPOSURE');
-  const journal = new Journal(store, fs.readFileSync(checkpointKeyFile), { anchor: config.minimumAnchor ?? null });
+  let anchorAuthority=null;
+  if(config.custodianCheckpointRequired===true){
+    const spec=config.checkpointAuthority;
+    if(!spec?.module||!/^[a-f0-9]{64}$/.test(spec.sha256??'')||!/^[a-f0-9]{64}$/.test(spec.independentAcceptanceDigest??''))throw Error('ACCEPTED_CHECKPOINT_CUSTODY_REQUIRED');
+    if(digest(fs.readFileSync(spec.module))!==spec.sha256)throw Error('CHECKPOINT_AUTHORITY_CODE_DRIFT');
+    anchorAuthority=(await import(pathToFileURL(path.resolve(spec.module)).href)).checkpointCustody;
+    if(!anchorAuthority)throw Error('EXTERNAL_CHECKPOINT_AUTHORITY_REQUIRED');
+  }
+  const journal = new Journal(store, fs.readFileSync(checkpointKeyFile), { anchor: config.minimumAnchor ?? null,anchorAuthority });
   let stop = false;
   const onStop = () => { stop = true; };
   process.on('SIGINT', onStop); process.on('SIGTERM', onStop);
