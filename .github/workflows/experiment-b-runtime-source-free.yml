@@ -21,13 +21,14 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 3
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.4.0'
       - name: Exact source-free integration regressions
         run: >-
           node --test --test-concurrency=1
+          tests/experiment-b-two-seam-integrity.test.mjs
           tests/experiment-b-archival-control.test.mjs
           tests/experiment-b-resumable.test.mjs
           tests/experiment-b-final-integration.test.mjs

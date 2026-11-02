@@ -9,10 +9,19 @@ import { verifyAuthenticatedPhysicalArchiveMember } from '../../docs/research/ex
 export const ARCHIVAL_SCHEMA = 'td613.arm1-control/v2';
 export function archivalBinding(repoRoot) {
   const files = ['scripts/experiment-b-resumable/archival-control-v2.mjs',
+    'scripts/experiment-b-resumable/journal.mjs',
+    'docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs',
+    'docs/research/experiment-b-preflight/02_four_arm_harness/admission-policy.mjs',
     'scripts/stage-encyclopedia-record.cjs','scripts/encyclopedia-intake.cjs',
     'scripts/encyclopedia-intake-schema.json',
     'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs'];
-  return digest({ schema: ARCHIVAL_SCHEMA, sources: files.map(file => [file, digest(fs.readFileSync(path.join(repoRoot, file)))]) });
+  const root = fs.realpathSync(repoRoot);
+  const sources = files.map(file => {
+    const target = path.join(root, file);
+    if (!fs.lstatSync(target).isFile() || fs.realpathSync(target) !== target) throw Error('BOUND_SOURCE_SUBSTITUTION');
+    return [file, digest(fs.readFileSync(target))];
+  });
+  return digest({ schema: 'td613.arm1-implementation/v3', receipt_schema: ARCHIVAL_SCHEMA, sources });
 }
 const require = createRequire(import.meta.url);
 const compilerPath = 'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-compile.mjs';
@@ -20,7 +29,12 @@ const evidenceClasses = new Set(['SOURCE_EXPLICIT_SEQUENCE','SOURCE_EXPLICIT_PRO
 
 // Native CLI prepares the proposal. Linking a complete temporary result publishes
 // without overwrite; a failed attempt can be retried against the same exact bytes.
-function stageProposal(repoRoot, text, proposalDirectory, inputHash, recordId) {
+function stageProposal(repoRoot, text, proposalDirectory, inputHash, inspection) {
+  const recordId = inspection.record.record_id;
+  // Match the native CLI's deterministic representation from authoritative input.
+  const expected = { schema: 'td613.research-proposal/v1', disposition: 'PROPOSED',
+    input_sha256: inputHash, original_json: text, record: inspection.record, authority: inspection.authority };
+  const expectedBytes = Buffer.from(JSON.stringify(expected, null, 2) + '\n');
   if (!proposalDirectory) throw Error('PROPOSAL_STORE_REQUIRED');
   fs.mkdirSync(proposalDirectory, { recursive: true, mode: 0o700 });
   if (fs.lstatSync(proposalDirectory).isSymbolicLink()) throw Error('PROPOSAL_STORE_SYMLINK');
@@ -29,11 +43,10 @@ function stageProposal(repoRoot, text, proposalDirectory, inputHash, recordId) {
   const destination = path.join(store, digest(recordId) + '.json');
   const verify = () => {
     if (fs.lstatSync(destination).isSymbolicLink()) throw Error('PROPOSAL_SYMLINK');
-    const proposal = JSON.parse(fs.readFileSync(destination, 'utf8'));
-    if (proposal.schema !== 'td613.research-proposal/v1' || proposal.disposition !== 'PROPOSED' ||
-        proposal.input_sha256 !== inputHash || proposal.original_json !== text || proposal.record?.record_id !== recordId) throw Error('PROPOSAL_CONFLICT');
-    return { schema: proposal.schema, disposition: proposal.disposition, record_id: recordId,
-      input_sha256: inputHash, staged_sha256: digest(fs.readFileSync(destination)), readback_verified: true };
+    const bytes = fs.readFileSync(destination);
+    if (!bytes.equals(expectedBytes)) throw Error('PROPOSAL_CONFLICT');
+    return { schema: expected.schema, disposition: expected.disposition, record_id: recordId,
+      input_sha256: inputHash, staged_sha256: digest(bytes), readback_verified: true };
   };
   if (fs.existsSync(destination)) return verify();
   const temporary = fs.mkdtempSync(path.join(store, '.proposal-'));
@@ -80,7 +93,7 @@ export async function runArchivalControlV2(repoRoot, documents = [], { sourceFre
       if (records.has(id)) { row.error = 'DUPLICATE_RECORD_ID'; continue; }
       records.add(id);
       try {
-        row.proposal = stageProposal(repoRoot, doc.content, proposalDirectory, row.content_sha256, id);
+        row.proposal = stageProposal(repoRoot, doc.content, proposalDirectory, row.content_sha256, inspected);
         row.proposal_status = 'STAGED_PROPOSED';
       } catch (e) { row.error = e.message; row.proposal_status = 'INCOMPLETE'; }
     }
