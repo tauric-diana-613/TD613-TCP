@@ -111,6 +111,7 @@ test('formal nine-layer cartography is separate from eight reader routes and typ
  assert.equal(x.traversal.direct_identity_admitted,false);assert.equal(x.traversal.geometry_measured,false);
  const no=runSRC(c,S,{family:'MULTI_COORDINATE_NAVIGATION',from:'A',to:'UNSEEN'}).result.traversal;
  assert.equal(no.status,'EXECUTED_ZERO_NO_PATH');
+ assert.equal(mapTraversal(readSynthetic(c,'FIXTURE-SRC-SOURCES').fixture,{from:'A',to:'C',graph:'G_GHOST'}).status,'HELD_UNCLASSIFIED_GRAPH_FAMILY');
  assert.equal(runSRC(c,S,{family:'TYPED_NON_LIFT_RELATION_COMPOSITION'}).result.non_lift.direct_relation_admitted,false);
 });
 
@@ -165,7 +166,7 @@ test('independent synthetic receipt, wrong epoch/rights, source tamper, replay a
  const wrong={...fixture,epoch:'BAD'};const wrongbytes=Buffer.from(JSON.stringify(wrong));
  const other='FIXTURE-SRC-OTHER';
  assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture:wrong,receipt:makeTestWitness({sourceId:other,bytes:wrongbytes})}),/WRONG_EPOCH_RIGHTS_OR_SOURCE_CLASS/);
- assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
+ assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_CORRUPT/);
  const restart=reopenEmptyChamber(c.root);assert.equal(restart.profile.source_count,0);assert.equal(runSRC(restart,S,{family:'AUTHORITATIVE_CURRENT_VS_HISTORY'}).result.current.chosen,'CANON_MAP');
  const stem=hash(Buffer.from(S)).slice(0,20),file=path.join(c.root,'E3B4_SYNTHETIC_CUSTODY',stem+'.json');
  fs.appendFileSync(file,' ');assert.throws(()=>readSynthetic(c,S),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
