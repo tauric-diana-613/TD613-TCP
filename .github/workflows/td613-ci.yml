@@ -136,6 +136,19 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: B6 source-free Em method inheritance and three-origin anti-contamination
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs') != ''
+        run: |
+          git rev-parse HEAD
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs
+      - name: B5 source-free assembled recipient and separate predecessor regressions
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs') != ''
+        run: |
+          git rev-parse HEAD
+          git fetch --no-tags origin d7319f9d1c600a47cb1467ccb071971ca33a3444
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
