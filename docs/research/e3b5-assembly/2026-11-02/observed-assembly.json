@@ -1,0 +1,3903 @@
+{
+  "schema": "td613.e3b5-executed-observations/v1",
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "empirical_replications": 0,
+  "negative_control_refusals": [
+    {
+      "ordinal": 1,
+      "code": "ROUTE_EPOCH_RIGHTS_REFUSED",
+      "message": "ROUTE_EPOCH_RIGHTS_REFUSED"
+    },
+    {
+      "ordinal": 2,
+      "code": "DIRECT_LIFT_REFUSED",
+      "message": "DIRECT_LIFT_REFUSED"
+    },
+    {
+      "ordinal": 3,
+      "code": "DIRECT_LIFT_REFUSED",
+      "message": "DIRECT_LIFT_REFUSED"
+    },
+    {
+      "ordinal": 4,
+      "code": "DIRECT_LIFT_REFUSED",
+      "message": "DIRECT_LIFT_REFUSED"
+    },
+    {
+      "ordinal": 5,
+      "code": "ROUTE_EPOCH_RIGHTS_REFUSED",
+      "message": "ROUTE_EPOCH_RIGHTS_REFUSED"
+    },
+    {
+      "ordinal": 6,
+      "code": "ROUTE_EPOCH_RIGHTS_REFUSED",
+      "message": "ROUTE_EPOCH_RIGHTS_REFUSED"
+    },
+    {
+      "ordinal": 7,
+      "code": "ROUTE_EPOCH_RIGHTS_REFUSED",
+      "message": "ROUTE_EPOCH_RIGHTS_REFUSED"
+    },
+    {
+      "ordinal": 8,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 9,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 10,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 11,
+      "code": "SOURCE_ABSENT",
+      "message": "SOURCE_ABSENT"
+    },
+    {
+      "ordinal": 12,
+      "code": "CITATION_BINDING_REFUSED",
+      "message": "CITATION_BINDING_REFUSED"
+    },
+    {
+      "ordinal": 13,
+      "code": "CITATION_ROUTE_REFUSED",
+      "message": "CITATION_ROUTE_REFUSED"
+    },
+    {
+      "ordinal": 14,
+      "code": "CROSS_NAMESPACE_SOURCE_ID_COLLISION",
+      "message": "CROSS_NAMESPACE_SOURCE_ID_COLLISION"
+    },
+    {
+      "ordinal": 15,
+      "code": "REPLAY_CONFLICT",
+      "message": "REPLAY_CONFLICT"
+    },
+    {
+      "ordinal": 16,
+      "code": "SOURCE_WITHDRAWN",
+      "message": "SOURCE_WITHDRAWN"
+    },
+    {
+      "ordinal": 17,
+      "code": "SOURCE_WITHDRAWN",
+      "message": "SOURCE_WITHDRAWN"
+    },
+    {
+      "ordinal": 18,
+      "code": "SOURCE_WITHDRAWN",
+      "message": "SOURCE_WITHDRAWN"
+    },
+    {
+      "ordinal": 19,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 20,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 21,
+      "code": "SOURCE_STATE_CORRUPT",
+      "message": "SOURCE_STATE_CORRUPT"
+    },
+    {
+      "ordinal": 22,
+      "code": "SOURCE_STATE_CORRUPT",
+      "message": "SOURCE_STATE_CORRUPT"
+    },
+    {
+      "ordinal": 23,
+      "code": "STATE_ABSENT",
+      "message": "STATE_ABSENT"
+    },
+    {
+      "ordinal": 24,
+      "code": "STATE_ABSENT",
+      "message": "STATE_ABSENT"
+    },
+    {
+      "ordinal": 25,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 26,
+      "code": "EXTERNAL_SOURCE_RECEIPT_MISMATCH",
+      "message": "EXTERNAL_SOURCE_RECEIPT_MISMATCH"
+    },
+    {
+      "ordinal": 27,
+      "code": "SUBSTITUTED_STATE",
+      "message": "SUBSTITUTED_STATE"
+    },
+    {
+      "ordinal": 28,
+      "code": "SUBSTITUTED_STATE",
+      "message": "SUBSTITUTED_STATE"
+    },
+    {
+      "ordinal": 29,
+      "code": "INTERRUPTED_ADMISSION_HELD",
+      "message": "INTERRUPTED_ADMISSION_HELD"
+    },
+    {
+      "ordinal": 30,
+      "code": "ROOT_RECEIPT_REQUIRED_OR_MISMATCH",
+      "message": "ROOT_RECEIPT_REQUIRED_OR_MISMATCH"
+    },
+    {
+      "ordinal": 31,
+      "code": "ORIGINAL_PROFILE_MUTATION",
+      "message": "ORIGINAL_PROFILE_MUTATION"
+    },
+    {
+      "ordinal": 32,
+      "code": "ORIGINAL_PROFILE_MUTATION",
+      "message": "ORIGINAL_PROFILE_MUTATION"
+    },
+    {
+      "ordinal": 33,
+      "code": "SRC_UNBOUND_EDGE",
+      "message": "SRC_UNBOUND_EDGE"
+    },
+    {
+      "ordinal": 34,
+      "code": "SRC_UNKNOWN_GRAPH",
+      "message": "SRC_UNKNOWN_GRAPH"
+    },
+    {
+      "ordinal": 35,
+      "code": "SRC_DOCUMENT_ID_OR_RIGHTS",
+      "message": "SRC_DOCUMENT_ID_OR_RIGHTS"
+    },
+    {
+      "ordinal": 36,
+      "code": "SRC_DOCUMENT_BYTES_OR_PATH",
+      "message": "SRC_DOCUMENT_BYTES_OR_PATH"
+    },
+    {
+      "ordinal": 37,
+      "code": "SRC_DOCUMENT_BYTES_OR_PATH",
+      "message": "SRC_DOCUMENT_BYTES_OR_PATH"
+    },
+    {
+      "ordinal": 38,
+      "code": null,
+      "message": "unadmitted: relation cites an unadmitted source"
+    },
+    {
+      "ordinal": 39,
+      "code": "UNKNOWN_GRAPH_SEMANTICS",
+      "message": "UNKNOWN_GRAPH_SEMANTICS"
+    },
+    {
+      "ordinal": 40,
+      "code": "UNAVAILABLE_OPERATION",
+      "message": "UNAVAILABLE_OPERATION"
+    },
+    {
+      "ordinal": 41,
+      "code": null,
+      "message": "ROLE_EPOCH_OR_SEAL_CONTRACT"
+    }
+  ],
+  "observations": [
+    {
+      "case": "assembly-restart",
+      "status": {
+        "manifest": {
+          "schema": "td613.e3b5-research-shell/v1",
+          "assembly_id": "e3beed01-0eef-4769-b555-73dcac093c37",
+          "lane": "PRODUCT_RECIPIENT",
+          "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+          "profile_sha256": "f13c291cc424431a6feeab71ae5e3e129cd3010f44c1caef2402bac48933c17b",
+          "encyclopedia_profile_sha256": "a5ecf1647db105e8b29f7f3dbf41a8dcb3091696777df6f9258597ce5ad6aca6",
+          "source_count": 0,
+          "source_admission_authority": false,
+          "scientific_promotion": false,
+          "historical_encyclopedia": false,
+          "original_seed_connector": "NO_SOURCES_ADMITTED",
+          "shell_is_original_seed_entry": false,
+          "authentic_shared_entry_status": "HELD_SHARED_RECIPIENT_IDENTITY"
+        },
+        "root_receipt": "8cc695183b4447ad96b82b003065e62e9ede5492692aab24afcdd6e71abd15c0",
+        "original_profile": {
+          "schema": "td613.atelier-profile/v0.2-candidate",
+          "atelier_id": "UNIVERSAL_ATELIER_E3B3",
+          "display_name": "UNIVERSAL_ATELIER_E3B3",
+          "method_version": "td613.atelier-method/v0.2-candidate",
+          "provenance": "HUMAN_INSTANTIATED_EMPTY_CHAMBER",
+          "status": "EMPTY_NO_EVIDENCE_NO_AUTHORSHIP_CLAIMS",
+          "source_policy": "OPERATOR_APPROVED_ONLY",
+          "source_count": 0,
+          "work_count": 0,
+          "epoch": "UNINITIALIZED",
+          "native_graphs": [],
+          "rights_state": "NOT_YET_ASSESSED",
+          "modules": {
+            "CUSTODY_SNAPSHOT_AND_RIGHTS": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "SOURCE_SYNC_STAGE_AND_DELTA": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "SOURCE_SPAN_RETRIEVAL": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "WORK_EDITION_MANIFESTATION_CAPTURE_IDENTITY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PROVENANCE_AND_INDEPENDENCE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "TYPED_MULTIPLEX_GRAPH": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "FOUR_AIA_ROUTES": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "FINDING_INTERCHANGE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "NEGATIVE_STATE_ADJUDICATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "HUMAN_CLOSURE_AND_EXIT": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "SEALED_EPOCH_QUERY_AUTHORITY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "QUERY_CONDITIONED_CANONICAL_SUFFICIENCY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "POLYCOMPILATION_CONSERVATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "MULTI_COORDINATE_NAVIGATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "TYPE_CONDITIONED_CROSS_SURFACE_IDENTITY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "DIACHRONIC_RECLASSIFICATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "TYPED_NON_LIFT_RELATION_COMPOSITION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "DEFERRED_SEMANTIC_ADDRESS_RESOLUTION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PROJECTIVE_ROUTING_HOSTILE_NULLS": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "THREE_STRATUM_RECONSTRUCTION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "COMPILER_PROJECTION_CONSERVATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "AUTHORITATIVE_CURRENT_VS_HISTORY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PUBLIC_SERIALIZED_TOPOLOGY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PUBLIC_PRIVATE_SURFACE_FIREWALL": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "SOURCE_EXPLICIT_CORRECTIONS": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "HELD_OUT_ARCHITECTURAL_PLACEMENT": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "ORDER_SHUFFLE_LABEL_PERMUTE_EDGE_ABLATE_DECOY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "NOMENCLATURE_DECONTAMINATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PRIOR_ART_NOVELTY_RESIDUAL_SIEVE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "FOREIGN_DONOR_ARCHITECTURE_STYLE_FACTORIAL": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "STAGE_ORDER_PERMUTATION_IDENTIFIABILITY": {
+              "interface_declared": true,
+              "callable_available": true,
+              "implementation_state": "IMPLEMENTED_TESTED",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "INTERMEDIATE_WITNESS_DIFFERENTIATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "PUBLIC_RECOGNITION_BREADCRUMB_ROUTE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "REPARATIVE_TRANSFER_AND_EXIT": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "BLIND_SOURCE_ANATOMY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "WORK_IDENTITY_SPLIT_COLLAPSE_SENSITIVITY": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "MOTIF_VS_MECHANISM_NULL": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "FORMAL_OPERATOR_AND_AUTHORITY_LAUNDERING": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "GENEALOGY_AND_SOURCE_INDEPENDENCE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "CONVERGENCE_DIVERGENCE_EMERGENCE": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "OBFUSCATION_DECOMPRESSION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "EXTERNAL_SCIENTIFIC_CONFRONTATION": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "HOSTILE_ALTERNATIVE_MODELS": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            },
+            "FRAGMENTARY_BLURB_THEORY_PROPOSALS": {
+              "interface_declared": true,
+              "callable_available": false,
+              "implementation_state": "HELD_MISSING_IMPLEMENTATION",
+              "corpus_execution": "NOT_TESTED",
+              "finding_count": 0
+            }
+          },
+          "routes": [
+            "EXPERIENTIAL",
+            "CUSTODIAL",
+            "AUDIT",
+            "IMPLEMENTATION"
+          ],
+          "human_closure_required": true,
+          "scientific_promotion_authority": false,
+          "consent_and_contact": {
+            "outbound_contact_authorized": false,
+            "public_recognition_route_enabled": false
+          },
+          "current_findings": [],
+          "claim_ceiling": "NO_SOURCES_NO_RESEARCH_RESULT",
+          "creation_does_not_admit_source": true
+        },
+        "src_families": [
+          "SEALED_EPOCH_QUERY_AUTHORITY",
+          "QUERY_CONDITIONED_CANONICAL_SUFFICIENCY",
+          "POLYCOMPILATION_CONSERVATION",
+          "MULTI_COORDINATE_NAVIGATION",
+          "TYPE_CONDITIONED_CROSS_SURFACE_IDENTITY",
+          "DIACHRONIC_RECLASSIFICATION",
+          "TYPED_NON_LIFT_RELATION_COMPOSITION",
+          "DEFERRED_SEMANTIC_ADDRESS_RESOLUTION",
+          "PROJECTIVE_ROUTING_HOSTILE_NULLS",
+          "THREE_STRATUM_RECONSTRUCTION",
+          "COMPILER_PROJECTION_CONSERVATION",
+          "AUTHORITATIVE_CURRENT_VS_HISTORY"
+        ],
+        "src_classification": {
+          "executed": 4,
+          "partial": 7,
+          "designed": 1,
+          "original_corpus_parity": 0
+        },
+        "em_readiness": {
+          "families": 10,
+          "family_ids": [
+            "BLIND_SOURCE_ANATOMY",
+            "WORK_IDENTITY_SPLIT_COLLAPSE_SENSITIVITY",
+            "MOTIF_VS_MECHANISM_NULL",
+            "FORMAL_OPERATOR_AND_AUTHORITY_LAUNDERING",
+            "GENEALOGY_AND_SOURCE_INDEPENDENCE",
+            "CONVERGENCE_DIVERGENCE_EMERGENCE",
+            "OBFUSCATION_DECOMPRESSION",
+            "EXTERNAL_SCIENTIFIC_CONFRONTATION",
+            "HOSTILE_ALTERNATIVE_MODELS",
+            "FRAGMENTARY_BLURB_THEORY_PROPOSALS"
+          ],
+          "executed": 0,
+          "status": "HELD_EM_AUTHORIZED_SOURCE_AND_IDENTITY_WITNESS"
+        },
+        "six_arm_study": "UNEXECUTED"
+      }
+    },
+    {
+      "case": "td-native-recipient-search",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "search",
+        "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+        "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+        "result": {
+          "query": {
+            "q": "governance"
+          },
+          "total": 2,
+          "offset": 0,
+          "limit": 10,
+          "has_more": false,
+          "hits": [
+            {
+              "id": "R-FIXTURE-A",
+              "label": "Tú puedes clonarme, pero no tienes mis genes.",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.64072,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "id": "R-FIXTURE-B",
+              "label": "Second reference",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.06931,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "search",
+        "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+        "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+        "result": {
+          "query": {
+            "q": "governance"
+          },
+          "total": 2,
+          "offset": 0,
+          "limit": 10,
+          "has_more": false,
+          "hits": [
+            {
+              "id": "R-FIXTURE-A",
+              "label": "Tú puedes clonarme, pero no tienes mis genes.",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.64072,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "id": "R-FIXTURE-B",
+              "label": "Second reference",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.06931,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+        }
+      }
+    },
+    {
+      "case": "td-native-recipient-get",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "get",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "04a4dd5ab494e527893e83a14a2c9fc612041229a52d8ee360311fc34d6ddee2",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "kind": "evidence",
+          "label": "Tú puedes clonarme, pero no tienes mis genes.",
+          "aliases": [
+            "governance"
+          ],
+          "evidence_class": "SYNTHETIC",
+          "visibility": "public",
+          "record": {
+            "body": "collapse governance topology"
+          },
+          "supplement": {},
+          "links": [
+            {
+              "type": "cites_source",
+              "target": "R-FIXTURE-B"
+            }
+          ],
+          "source_keys": [
+            "FIXTURE-TD"
+          ],
+          "origin": {
+            "json_pointer": "fixture:/A"
+          }
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "get",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "04a4dd5ab494e527893e83a14a2c9fc612041229a52d8ee360311fc34d6ddee2",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "kind": "evidence",
+          "label": "Tú puedes clonarme, pero no tienes mis genes.",
+          "aliases": [
+            "governance"
+          ],
+          "evidence_class": "SYNTHETIC",
+          "visibility": "public",
+          "record": {
+            "body": "collapse governance topology"
+          },
+          "supplement": {},
+          "links": [
+            {
+              "type": "cites_source",
+              "target": "R-FIXTURE-B"
+            }
+          ],
+          "source_keys": [
+            "FIXTURE-TD"
+          ],
+          "origin": {
+            "json_pointer": "fixture:/A"
+          }
+        }
+      }
+    },
+    {
+      "case": "td-native-recipient-cite",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "cite",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "3aa61a4db23395d91c626f9515cb98584136980db45a13df38c67372f3e35cb7",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "label": "Tú puedes clonarme, pero no tienes mis genes.",
+          "kind": "evidence",
+          "evidence_class": "SYNTHETIC",
+          "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+          "canonical_json_pointer": "fixture:/A",
+          "canonical_payload_sha256": "synthetic-only",
+          "edition_source_commit": "synthetic-only",
+          "artifact_source_commit": null,
+          "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+          "html_line": 1,
+          "html_anchor": "#record=R-FIXTURE-A",
+          "source_ids": [
+            "R-FIXTURE-B"
+          ]
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "cite",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "3aa61a4db23395d91c626f9515cb98584136980db45a13df38c67372f3e35cb7",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "label": "Tú puedes clonarme, pero no tienes mis genes.",
+          "kind": "evidence",
+          "evidence_class": "SYNTHETIC",
+          "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+          "canonical_json_pointer": "fixture:/A",
+          "canonical_payload_sha256": "synthetic-only",
+          "edition_source_commit": "synthetic-only",
+          "artifact_source_commit": null,
+          "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+          "html_line": 1,
+          "html_anchor": "#record=R-FIXTURE-A",
+          "source_ids": [
+            "R-FIXTURE-B"
+          ]
+        }
+      }
+    },
+    {
+      "case": "td-native-recipient-verify",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "verify",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "5364403c223afbdf282113b5ba8e7d7ef2ed49c9fa33e48b2896951a5c06ce15",
+        "result": {
+          "verified": 2,
+          "total": 2,
+          "mismatches": [],
+          "scope": "Integrity of generated retrieval records only (single-line JSON with less-than characters escaped, excluding the line terminator); source origin, scientific truth and current deployment identity require their own evidence."
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "verify",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "5364403c223afbdf282113b5ba8e7d7ef2ed49c9fa33e48b2896951a5c06ce15",
+        "result": {
+          "verified": 2,
+          "total": 2,
+          "mismatches": [],
+          "scope": "Integrity of generated retrieval records only (single-line JSON with less-than characters escaped, excluding the line terminator); source origin, scientific truth and current deployment identity require their own evidence."
+        }
+      }
+    },
+    {
+      "case": "td-native-recipient-neighbors",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "neighbors",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "20d4bfb0428ff1e38e4628b963f786db31d7c503c67b702af9e27da27c93c7f5",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "outgoing": [
+            {
+              "type": "cites_source",
+              "target": "R-FIXTURE-B"
+            }
+          ],
+          "incoming": [],
+          "meaning": "Edges preserve explicit citations/references and lexical cross-references; a path supplies no new theorem or empirical authority."
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "neighbors",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "20d4bfb0428ff1e38e4628b963f786db31d7c503c67b702af9e27da27c93c7f5",
+        "result": {
+          "id": "R-FIXTURE-A",
+          "outgoing": [
+            {
+              "type": "cites_source",
+              "target": "R-FIXTURE-B"
+            }
+          ],
+          "incoming": [],
+          "meaning": "Edges preserve explicit citations/references and lexical cross-references; a path supplies no new theorem or empirical authority."
+        }
+      }
+    },
+    {
+      "case": "td-native-recipient-context",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "030a0089-813a-477f-834f-0dcb69c139e9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "e387df176e435ca7d83f8e2c860fac5144219bd19eae75a1d4d7089c3bd262ae",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "context",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "d39de17208b83ad83100221ae13d820378571c262a0eaca7037101eef37e3fa9",
+        "result": {
+          "root": "R-FIXTURE-A",
+          "records": [
+            {
+              "record": {
+                "id": "R-FIXTURE-A",
+                "kind": "evidence",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "aliases": [
+                  "governance"
+                ],
+                "evidence_class": "SYNTHETIC",
+                "visibility": "public",
+                "record": {
+                  "body": "collapse governance topology"
+                },
+                "supplement": {},
+                "links": [
+                  {
+                    "type": "cites_source",
+                    "target": "R-FIXTURE-B"
+                  }
+                ],
+                "source_keys": [
+                  "FIXTURE-TD"
+                ],
+                "origin": {
+                  "json_pointer": "fixture:/A"
+                }
+              },
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "record": {
+                "id": "R-FIXTURE-B",
+                "kind": "evidence",
+                "label": "Second reference",
+                "aliases": [
+                  "governance"
+                ],
+                "evidence_class": "SYNTHETIC",
+                "visibility": "public",
+                "record": {
+                  "body": "other source"
+                },
+                "supplement": {},
+                "links": [],
+                "source_keys": [
+                  "FIXTURE-TD"
+                ],
+                "origin": {
+                  "json_pointer": "fixture:/B"
+                }
+              },
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "truncated": false,
+          "missing_evidence": "Consult each original record and source note; absence of a field supplies no positive evidence."
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "60ea855c-7eea-4e28-a362-05f4fd828612",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TD613_REFERENCE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "47865775c81d807c5abe6c5640473bc49e171ec38fa2dbb6c4cec473b504022e",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "context",
+        "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+        "result_sha256": "d39de17208b83ad83100221ae13d820378571c262a0eaca7037101eef37e3fa9",
+        "result": {
+          "root": "R-FIXTURE-A",
+          "records": [
+            {
+              "record": {
+                "id": "R-FIXTURE-A",
+                "kind": "evidence",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "aliases": [
+                  "governance"
+                ],
+                "evidence_class": "SYNTHETIC",
+                "visibility": "public",
+                "record": {
+                  "body": "collapse governance topology"
+                },
+                "supplement": {},
+                "links": [
+                  {
+                    "type": "cites_source",
+                    "target": "R-FIXTURE-B"
+                  }
+                ],
+                "source_keys": [
+                  "FIXTURE-TD"
+                ],
+                "origin": {
+                  "json_pointer": "fixture:/A"
+                }
+              },
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "record": {
+                "id": "R-FIXTURE-B",
+                "kind": "evidence",
+                "label": "Second reference",
+                "aliases": [
+                  "governance"
+                ],
+                "evidence_class": "SYNTHETIC",
+                "visibility": "public",
+                "record": {
+                  "body": "other source"
+                },
+                "supplement": {},
+                "links": [],
+                "source_keys": [
+                  "FIXTURE-TD"
+                ],
+                "origin": {
+                  "json_pointer": "fixture:/B"
+                }
+              },
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "truncated": false,
+          "missing_evidence": "Consult each original record and source note; absence of a field supplies no positive evidence."
+        }
+      }
+    },
+    {
+      "case": "wendbine-native-recipient-lexical",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "fe8705f5-81d5-4cb3-a192-a55495299606",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "15841a92a04e62d3ceb9b94410fd2536fdada3c0542a116278d662fabbf88d35",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "lexical",
+        "parameters_sha256": "1340d46ccdf8850b0192b52747a6281ff9f1d7b6b41e40971cd655a1748d0df9",
+        "result_sha256": "e9b881f7e716aa682cdc6f46ec50bef931c4655c9c7a9079f8ed453d909db1d8",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": [],
+            "score": 26,
+            "match_basis": [
+              "PHRASE",
+              "CONCEPT:topology"
+            ]
+          },
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": [],
+            "score": 24,
+            "match_basis": [
+              "PHRASE",
+              "SUMMARY:topology"
+            ]
+          }
+        ]
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "486a9a7a-a2f6-4a55-bd13-1ca00d127630",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "841a0a5050affd76a49e8f57796923f302a099553d3dab68183c516ea5b77997",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "lexical",
+        "parameters_sha256": "1340d46ccdf8850b0192b52747a6281ff9f1d7b6b41e40971cd655a1748d0df9",
+        "result_sha256": "e9b881f7e716aa682cdc6f46ec50bef931c4655c9c7a9079f8ed453d909db1d8",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": [],
+            "score": 26,
+            "match_basis": [
+              "PHRASE",
+              "CONCEPT:topology"
+            ]
+          },
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": [],
+            "score": 24,
+            "match_basis": [
+              "PHRASE",
+              "SUMMARY:topology"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case": "wendbine-native-recipient-semantic",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "fe8705f5-81d5-4cb3-a192-a55495299606",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "15841a92a04e62d3ceb9b94410fd2536fdada3c0542a116278d662fabbf88d35",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "semantic",
+        "parameters_sha256": "1340d46ccdf8850b0192b52747a6281ff9f1d7b6b41e40971cd655a1748d0df9",
+        "result_sha256": "b1b9ea73c7878bf0279ffb41f8d77cd122a5e1a629736662d8bf9d3507a45096",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": [],
+            "score": 40,
+            "match_basis": [
+              "CONCEPT:topology",
+              "SUMMARY:topology"
+            ]
+          },
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": [],
+            "score": 10,
+            "match_basis": [
+              "SUMMARY:topology"
+            ]
+          }
+        ]
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "486a9a7a-a2f6-4a55-bd13-1ca00d127630",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "841a0a5050affd76a49e8f57796923f302a099553d3dab68183c516ea5b77997",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "semantic",
+        "parameters_sha256": "1340d46ccdf8850b0192b52747a6281ff9f1d7b6b41e40971cd655a1748d0df9",
+        "result_sha256": "b1b9ea73c7878bf0279ffb41f8d77cd122a5e1a629736662d8bf9d3507a45096",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": [],
+            "score": 40,
+            "match_basis": [
+              "CONCEPT:topology",
+              "SUMMARY:topology"
+            ]
+          },
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": [],
+            "score": 10,
+            "match_basis": [
+              "SUMMARY:topology"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "case": "wendbine-native-recipient-topology",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "fe8705f5-81d5-4cb3-a192-a55495299606",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "15841a92a04e62d3ceb9b94410fd2536fdada3c0542a116278d662fabbf88d35",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "topology",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "659e3f47aad9f97bfd97d5350b1b20c70eb5927ba4fd07ac10d773de416b49af",
+        "result": {
+          "snapshot_id": "B5-SYNTHETIC",
+          "typed_edges": [
+            {
+              "graph": "G_D",
+              "from": "alpha",
+              "relation": "DEPENDS_ON",
+              "to": "beta",
+              "source_id": "reddit:t3_fixturea",
+              "evidence_class": "SOURCE_EXPLICIT_PROGRAM"
+            }
+          ],
+          "day_buckets": {
+            "2026-09-10": 1,
+            "2026-09-11": 1
+          },
+          "documented_graph_semantics": {
+            "G_D": "dependency topology",
+            "G_A": "authority / permission / trust",
+            "G_F": "information and metadata flow",
+            "G_I": "identity / continuity / entity alignment",
+            "G_T": "temporal / program / version relations",
+            "G_P": "provenance / custody / ancestry",
+            "G_R": "reconstruction / estimation / recovery",
+            "G_O": "observation boundary / observability",
+            "G_X": "cross-relation interaction or source-declared synthesis",
+            "G_SOURCE": "source-to-normalized-concept binding",
+            "G_COOCCURRENCE": "archive-derived co-occurrence only; never causal"
+          },
+          "unclassified_graphs": []
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "486a9a7a-a2f6-4a55-bd13-1ca00d127630",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "841a0a5050affd76a49e8f57796923f302a099553d3dab68183c516ea5b77997",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "topology",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "659e3f47aad9f97bfd97d5350b1b20c70eb5927ba4fd07ac10d773de416b49af",
+        "result": {
+          "snapshot_id": "B5-SYNTHETIC",
+          "typed_edges": [
+            {
+              "graph": "G_D",
+              "from": "alpha",
+              "relation": "DEPENDS_ON",
+              "to": "beta",
+              "source_id": "reddit:t3_fixturea",
+              "evidence_class": "SOURCE_EXPLICIT_PROGRAM"
+            }
+          ],
+          "day_buckets": {
+            "2026-09-10": 1,
+            "2026-09-11": 1
+          },
+          "documented_graph_semantics": {
+            "G_D": "dependency topology",
+            "G_A": "authority / permission / trust",
+            "G_F": "information and metadata flow",
+            "G_I": "identity / continuity / entity alignment",
+            "G_T": "temporal / program / version relations",
+            "G_P": "provenance / custody / ancestry",
+            "G_R": "reconstruction / estimation / recovery",
+            "G_O": "observation boundary / observability",
+            "G_X": "cross-relation interaction or source-declared synthesis",
+            "G_SOURCE": "source-to-normalized-concept binding",
+            "G_COOCCURRENCE": "archive-derived co-occurrence only; never causal"
+          },
+          "unclassified_graphs": []
+        }
+      }
+    },
+    {
+      "case": "wendbine-native-recipient-recent",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "fe8705f5-81d5-4cb3-a192-a55495299606",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "15841a92a04e62d3ceb9b94410fd2536fdada3c0542a116278d662fabbf88d35",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "recent",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "53ef80ebb9a09ce07710d40a81068df4aa9f1f6cc72691f7ad07139f1e570682",
+        "result": [
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": []
+          },
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": []
+          }
+        ]
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "486a9a7a-a2f6-4a55-bd13-1ca00d127630",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "841a0a5050affd76a49e8f57796923f302a099553d3dab68183c516ea5b77997",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "recent",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "53ef80ebb9a09ce07710d40a81068df4aa9f1f6cc72691f7ad07139f1e570682",
+        "result": [
+          {
+            "id": "reddit:t3_fixtureb",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 2,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-11",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_b",
+            "technical_header": "Synthetic b",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "beta"
+            ],
+            "query_aliases": []
+          },
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": []
+          }
+        ]
+      }
+    },
+    {
+      "case": "wendbine-native-recipient-resolve",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "fe8705f5-81d5-4cb3-a192-a55495299606",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "15841a92a04e62d3ceb9b94410fd2536fdada3c0542a116278d662fabbf88d35",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "resolve",
+        "parameters_sha256": "d4d1393c527a588cb1f65ab5f531b23b67c6c52d56a97c2473d322e22bdef4b1",
+        "result_sha256": "dcbcb47b5ec7aee0ab212fc2e2da32563c25839f03864fcda99ebd5033aa165d",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": []
+          }
+        ]
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "486a9a7a-a2f6-4a55-bd13-1ca00d127630",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "NEW_UNIVERSAL_ENCYCLOPEDIA_E3B3",
+        "family": "WENDBINE_PUBLIC",
+        "source_id": "FIXTURE-WENDBINE_PUBLIC",
+        "epoch": "wendbine-public-v0.1-synthetic",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f8abd0585c2bdafcef4ae3652f7739b8da40180c96a75eeba7346edb563c451f",
+        "source_receipt": "841a0a5050affd76a49e8f57796923f302a099553d3dab68183c516ea5b77997",
+        "source_pin": "a8a619378f5a47137a8bd7d1765d47571f383e1e",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "resolve",
+        "parameters_sha256": "d4d1393c527a588cb1f65ab5f531b23b67c6c52d56a97c2473d322e22bdef4b1",
+        "result_sha256": "dcbcb47b5ec7aee0ab212fc2e2da32563c25839f03864fcda99ebd5033aa165d",
+        "result": [
+          {
+            "id": "reddit:t3_fixturea",
+            "schema": null,
+            "path": "01-MANIFESTS/source-registry.jsonl",
+            "ordinal": 1,
+            "kind": "JSONL_RECORD",
+            "date": "2026-09-10",
+            "date_basis": "PUBLICATION_DAY",
+            "time_precision": "DAY",
+            "status": null,
+            "canonical_url": "https://www.reddit.com/r/Wendbine/comments/fixture_a",
+            "technical_header": "Synthetic a",
+            "technical_header_status": null,
+            "source_binding_state": null,
+            "public_account_handle": null,
+            "account_binding_basis": null,
+            "post_detail_retrieved": null,
+            "listing_position": null,
+            "normalized_summary": "Synthetic governance topology",
+            "declared_concepts": [
+              "topology",
+              "alpha"
+            ],
+            "query_aliases": []
+          }
+        ]
+      }
+    },
+    {
+      "case": "native_plain_later",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "4c950935-c0eb-4e6a-a73e-0954c296bd6b",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "c81ccdbb74884aca32566bcfccf708b45e6bc98a34bcc433a610ab26229bab81",
+        "source_receipt": "7139c69926824eda3f79c256429aca3c4392e7bd8387a665c0a4b8bcd43ed0ae",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "2608c2cf1b395c1d9cd7e8877fabba1a2d092f24ed7edef70976d96aeb85f927",
+        "result": {
+          "native": {
+            "explore": [
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_token": "collapse governance",
+                "normalized_token": "collapse governance",
+                "machine_candidates": [
+                  {
+                    "target_id": "zenodo:2",
+                    "target_title": "Collapse Governance: A Field",
+                    "target_created": "2026-02-01T00:00:00+00:00",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "LATER",
+                    "latency_seconds": 2678400
+                  }
+                ],
+                "human_disposition_required": true,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              },
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "UNRESOLVED_MACHINE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_token": "nowhere theory",
+                "normalized_token": "nowhere theory",
+                "machine_candidates": [],
+                "human_disposition_required": false,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              }
+            ],
+            "signatures": [
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "RECURRING_EXACT_SIGNATURE",
+                "normalized_signature": "keep the trace",
+                "manifestation_count": 2,
+                "members": [
+                  {
+                    "source_id": "zenodo:1",
+                    "source_title": "Source",
+                    "source_created": "2026-01-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                  },
+                  {
+                    "source_id": "zenodo:2",
+                    "source_title": "Collapse Governance: A Field",
+                    "source_created": "2026-02-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              }
+            ]
+          },
+          "command": [
+            "python3",
+            "/workspace/scratch/427b1641e444/td613-assembly/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+            "--self-test",
+            "--root",
+            "/tmp/e3b5-native-mHoHF6"
+          ],
+          "stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1,\n    \"UNRESOLVED_MACHINE\": 1\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+          "sources": [
+            {
+              "source_id": "zenodo:1",
+              "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+              "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+            },
+            {
+              "source_id": "zenodo:2",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+            }
+          ],
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "write_flag": false,
+          "historical_labels_are_not_authority": true
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "506c015b-1ac0-4cb1-b9d8-b2b0282f57a8",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "c81ccdbb74884aca32566bcfccf708b45e6bc98a34bcc433a610ab26229bab81",
+        "source_receipt": "757e36738a1c7f9e7f8d877823c8c5d634d1e969ecb70af20eae332683ba9f77",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "270f4574e34b92b49a80a72833773387584fbc75cf56bcdf7823582478465590",
+        "result": {
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "independent_empirical_replication_count": 0,
+          "src_corpus_parity": "UNESTABLISHED",
+          "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+          "source_rights_granted": false,
+          "scientific_identity": false,
+          "graph_promotion": false,
+          "observations": [
+            {
+              "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-01-01T00:00:00+00:00",
+              "raw_token": "collapse governance",
+              "normalized_token": "collapse governance",
+              "machine_candidates": [
+                {
+                  "target_id": "zenodo:2",
+                  "target_title": "Collapse Governance: A Field",
+                  "target_created": "2026-02-01T00:00:00+00:00",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "LATER",
+                  "latency_seconds": 2678400
+                }
+              ],
+              "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+              "human_disposition_required": true,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                  "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+                }
+              ]
+            },
+            {
+              "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-01-01T00:00:00+00:00",
+              "raw_token": "nowhere theory",
+              "normalized_token": "nowhere theory",
+              "machine_candidates": [],
+              "observation_status": "UNRESOLVED_MACHINE",
+              "human_disposition_required": false,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+                }
+              ]
+            }
+          ],
+          "signatures": [
+            {
+              "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+              "normalized_signature": "keep the trace",
+              "manifestation_count": 2,
+              "observation_status": "RECURRING_EXACT_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:1",
+                  "source_title": "Source",
+                  "source_created": "2026-01-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "source_title": "Collapse Governance: A Field",
+                  "source_created": "2026-02-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            }
+          ]
+        }
+      },
+      "transport": {
+        "status": "UNEXECUTED",
+        "sha256": "c81ccdbb74884aca32566bcfccf708b45e6bc98a34bcc433a610ab26229bab81",
+        "execution_count": 0
+      }
+    },
+    {
+      "case": "native_plain_preexisting",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "b4e8b976-685b-4fa5-bf94-73411592aecd",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "44af9c523ac71497d86faaba193893b563e0e45e3bc02b5b695b515e80a57e81",
+        "source_receipt": "e6fee55813cd0901c0accd06c2cfadba00f460f6bfd853dbcfbfaf3732d5ed3f",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "f9838a700f3a5f3d9f108c21f92bcc689ece7e4e462d04c32fbe9c6ad08868c3",
+        "result": {
+          "native": {
+            "explore": [
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "PREEXISTING_DESTINATION_CANDIDATE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_token": "collapse governance",
+                "normalized_token": "collapse governance",
+                "machine_candidates": [
+                  {
+                    "target_id": "zenodo:2",
+                    "target_title": "Collapse Governance: A Field",
+                    "target_created": "2026-01-01T00:00:00+00:00",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                    "latency_seconds": -2678400
+                  }
+                ],
+                "human_disposition_required": true,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              }
+            ],
+            "signatures": [
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "RECURRING_EXACT_SIGNATURE",
+                "normalized_signature": "keep the trace",
+                "manifestation_count": 2,
+                "members": [
+                  {
+                    "source_id": "zenodo:2",
+                    "source_title": "Collapse Governance: A Field",
+                    "source_created": "2026-01-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                  },
+                  {
+                    "source_id": "zenodo:1",
+                    "source_title": "Source",
+                    "source_created": "2026-02-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              }
+            ]
+          },
+          "command": [
+            "python3",
+            "/workspace/scratch/427b1641e444/td613-assembly/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+            "--self-test",
+            "--root",
+            "/tmp/e3b5-native-tPrXcg"
+          ],
+          "stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"PREEXISTING_DESTINATION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+          "sources": [
+            {
+              "source_id": "zenodo:1",
+              "body_sha256": "d54393eb44fda67998c5e8b3b6f748f858ca4ea6ab2598bba02a23ff117bb968",
+              "metadata_sha256": "0f1829bd9dd70d3212ef7c3bca618c3b25e03127d651ddaced7e6b0d866c90d4"
+            },
+            {
+              "source_id": "zenodo:2",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "b6618917cbdf1c1aea47f1f7b686a4c199a0383264c1267dca4804bc4df52573"
+            }
+          ],
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "write_flag": false,
+          "historical_labels_are_not_authority": true
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "d9b6f042-766c-465d-893d-f90abbc22688",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "44af9c523ac71497d86faaba193893b563e0e45e3bc02b5b695b515e80a57e81",
+        "source_receipt": "3ca13d10e721046953793e90de56d27dec7029461af1a7d3bee334f799b570b2",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "4bbb94d3821040ff541ebe616883791701a3045b31ec2c654093ccf719704d7f",
+        "result": {
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "independent_empirical_replication_count": 0,
+          "src_corpus_parity": "UNESTABLISHED",
+          "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+          "source_rights_granted": false,
+          "scientific_identity": false,
+          "graph_promotion": false,
+          "observations": [
+            {
+              "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-02-01T00:00:00+00:00",
+              "raw_token": "collapse governance",
+              "normalized_token": "collapse governance",
+              "machine_candidates": [
+                {
+                  "target_id": "zenodo:2",
+                  "target_title": "Collapse Governance: A Field",
+                  "target_created": "2026-01-01T00:00:00+00:00",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                  "latency_seconds": -2678400
+                }
+              ],
+              "observation_status": "PREEXISTING_DESTINATION_CANDIDATE",
+              "human_disposition_required": true,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "d54393eb44fda67998c5e8b3b6f748f858ca4ea6ab2598bba02a23ff117bb968",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "0f1829bd9dd70d3212ef7c3bca618c3b25e03127d651ddaced7e6b0d866c90d4"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                  "metadata_sha256": "b6618917cbdf1c1aea47f1f7b686a4c199a0383264c1267dca4804bc4df52573"
+                }
+              ]
+            }
+          ],
+          "signatures": [
+            {
+              "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+              "normalized_signature": "keep the trace",
+              "manifestation_count": 2,
+              "observation_status": "RECURRING_EXACT_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:2",
+                  "source_title": "Collapse Governance: A Field",
+                  "source_created": "2026-01-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                },
+                {
+                  "source_id": "zenodo:1",
+                  "source_title": "Source",
+                  "source_created": "2026-02-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            }
+          ]
+        }
+      },
+      "transport": {
+        "status": "UNEXECUTED",
+        "sha256": "44af9c523ac71497d86faaba193893b563e0e45e3bc02b5b695b515e80a57e81",
+        "execution_count": 0
+      }
+    },
+    {
+      "case": "colon_variant_negative",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "3a2848d6-09c4-45e8-b8b4-bf937ec87890",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "99004893c1b56c278f8ba2c51d968425a27455061d258f09c8c4ae94c7c5f02a",
+        "source_receipt": "398985b3e268301fdda70a2423168898e107e6c9c8417f622af9632c4e5ab249",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED_ZERO",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "3b707a9a8c11ab68ecdba38f49224946301fc6eefbd45abeed93b04da0f503af",
+        "result": {
+          "native": {
+            "explore": [],
+            "signatures": [
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "RECURRING_EXACT_SIGNATURE",
+                "normalized_signature": "keep the trace",
+                "manifestation_count": 2,
+                "members": [
+                  {
+                    "source_id": "zenodo:1",
+                    "source_title": "Source",
+                    "source_created": "2026-01-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                  },
+                  {
+                    "source_id": "zenodo:2",
+                    "source_title": "Collapse Governance: A Field",
+                    "source_created": "2026-02-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              }
+            ]
+          },
+          "command": [
+            "python3",
+            "/workspace/scratch/427b1641e444/td613-assembly/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+            "--self-test",
+            "--root",
+            "/tmp/e3b5-native-O95ALX"
+          ],
+          "stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {},\n  \"explore_observation_count\": 0,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+          "sources": [
+            {
+              "source_id": "zenodo:1",
+              "body_sha256": "6a8e899eab2e6968b0fe66906d3cde097d60e9b4d81ead52f682c2e7bdec8f55",
+              "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+            },
+            {
+              "source_id": "zenodo:2",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+            }
+          ],
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "write_flag": false,
+          "historical_labels_are_not_authority": true
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "c08834dc-e69f-4b0d-919e-ba05ab1fd759",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "99004893c1b56c278f8ba2c51d968425a27455061d258f09c8c4ae94c7c5f02a",
+        "source_receipt": "fb3b6cff3accfb00f9814ebfc24ed57b6991446feef36662942c9c54bc79625a",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED_ZERO",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "6c5273a44f6517f4e593c429953e60bb665bbdcf4e1d62cfe81a008c7ff16d0f",
+        "result": {
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "independent_empirical_replication_count": 0,
+          "src_corpus_parity": "UNESTABLISHED",
+          "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+          "source_rights_granted": false,
+          "scientific_identity": false,
+          "graph_promotion": false,
+          "observations": [],
+          "signatures": [
+            {
+              "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+              "normalized_signature": "keep the trace",
+              "manifestation_count": 2,
+              "observation_status": "RECURRING_EXACT_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:1",
+                  "source_title": "Source",
+                  "source_created": "2026-01-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "source_title": "Collapse Governance: A Field",
+                  "source_created": "2026-02-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            }
+          ]
+        }
+      },
+      "transport": {
+        "status": "UNEXECUTED",
+        "sha256": "99004893c1b56c278f8ba2c51d968425a27455061d258f09c8c4ae94c7c5f02a",
+        "execution_count": 0
+      }
+    },
+    {
+      "case": "spanish_exact",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "0b724398-5ba9-47c6-a5c4-9679fb9648ff",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+        "source_receipt": "10b7873ff97058a6bc5e48c815a23adacbaa84a0fd602b43b35525273fd2d3cb",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "da309c235cac321ae654a3b396c7323dab8a4b8394fe8d24e4c1365d734fcdcb",
+        "result": {
+          "native": {
+            "explore": [
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_token": "la cartografía del umbral",
+                "normalized_token": "la cartograf a del umbral",
+                "machine_candidates": [
+                  {
+                    "target_id": "zenodo:2",
+                    "target_title": "La cartografía del umbral",
+                    "target_created": "2026-02-01T00:00:00+00:00",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "LATER",
+                    "latency_seconds": 2678400
+                  }
+                ],
+                "human_disposition_required": true,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              }
+            ],
+            "signatures": [
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "SINGLETON_SIGNATURE",
+                "normalized_signature": "keep the trace",
+                "manifestation_count": 1,
+                "members": [
+                  {
+                    "source_id": "zenodo:2",
+                    "source_title": "La cartografía del umbral",
+                    "source_created": "2026-02-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              },
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "SINGLETON_SIGNATURE",
+                "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+                "manifestation_count": 1,
+                "members": [
+                  {
+                    "source_id": "zenodo:1",
+                    "source_title": "Source",
+                    "source_created": "2026-01-01T00:00:00+00:00",
+                    "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              }
+            ]
+          },
+          "command": [
+            "python3",
+            "/workspace/scratch/427b1641e444/td613-assembly/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+            "--self-test",
+            "--root",
+            "/tmp/e3b5-native-InnpQh"
+          ],
+          "stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"SINGLETON_SIGNATURE\": 2\n  },\n  \"signature_group_count\": 2,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+          "sources": [
+            {
+              "source_id": "zenodo:1",
+              "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+              "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+            },
+            {
+              "source_id": "zenodo:2",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "0eb2b96cfd27d42aa243cdbb3574b6641b24a30a0fccccc5cc6459f96e518cc6"
+            }
+          ],
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "write_flag": false,
+          "historical_labels_are_not_authority": true
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "d34e125e-80d4-48c3-ae12-ff6217a3b2c5",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+        "source_receipt": "7be95e3ed9c9972a671fbb57f5e764c1f5a550a9137f7985ce6e560ebfdc21ee",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "b551f613818303c9d1a62d2ce161c6a440f4f3b7f1b7804c506c0cb6f517e29b",
+        "result": {
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "independent_empirical_replication_count": 0,
+          "src_corpus_parity": "UNESTABLISHED",
+          "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+          "source_rights_granted": false,
+          "scientific_identity": false,
+          "graph_promotion": false,
+          "observations": [
+            {
+              "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-01-01T00:00:00+00:00",
+              "raw_token": "la cartografía del umbral",
+              "normalized_token": "la cartograf a del umbral",
+              "machine_candidates": [
+                {
+                  "target_id": "zenodo:2",
+                  "target_title": "La cartografía del umbral",
+                  "target_created": "2026-02-01T00:00:00+00:00",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "LATER",
+                  "latency_seconds": 2678400
+                }
+              ],
+              "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+              "human_disposition_required": true,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                  "metadata_sha256": "0eb2b96cfd27d42aa243cdbb3574b6641b24a30a0fccccc5cc6459f96e518cc6"
+                }
+              ]
+            }
+          ],
+          "signatures": [
+            {
+              "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+              "normalized_signature": "keep the trace",
+              "manifestation_count": 1,
+              "observation_status": "SINGLETON_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:2",
+                  "source_title": "La cartografía del umbral",
+                  "source_created": "2026-02-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            },
+            {
+              "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+              "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+              "manifestation_count": 1,
+              "observation_status": "SINGLETON_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:1",
+                  "source_title": "Source",
+                  "source_created": "2026-01-01T00:00:00+00:00",
+                  "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            }
+          ]
+        }
+      },
+      "transport": {
+        "status": "UNEXECUTED",
+        "sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+        "execution_count": 0
+      }
+    },
+    {
+      "case": "two-origin-trace",
+      "result": {
+        "status": "BOUNDED_TWO_ORIGIN_TRACE",
+        "trace_id": "3d5bb89e14d6f6bef575491aa86c8af4384963d44e287eaeba74787f26bd8da0",
+        "envelopes": [
+          {
+            "retrieval": {
+              "schema": "td613.e3b5-execution-envelope/v1",
+              "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+              "assembly_id": "7da42a3f-756d-4f10-b0e6-1304ba39de3c",
+              "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+              "lane": "PRODUCT_RECIPIENT",
+              "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+              "family": "TD613_REFERENCE",
+              "source_id": "FIXTURE-TD613_REFERENCE",
+              "epoch": "td613-reference-edition-1.4",
+              "rights": "SYNTHETIC_LOCAL_ONLY",
+              "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+              "source_receipt": "a15a877c9c64b0388cd2ae2e45aa8a4c1aed789efeeac004afcc1d3207ffc8a1",
+              "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+              "scientific_identity": false,
+              "real_source_rights": false,
+              "independent_empirical_replications": 0,
+              "status": "EXECUTED",
+              "execution_count": 1,
+              "operation": "search",
+              "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+              "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+              "result": {
+                "query": {
+                  "q": "governance"
+                },
+                "total": 2,
+                "offset": 0,
+                "limit": 10,
+                "has_more": false,
+                "hits": [
+                  {
+                    "id": "R-FIXTURE-A",
+                    "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                    "kind": "evidence",
+                    "evidence_class": "SYNTHETIC",
+                    "score": 8.64072,
+                    "matched": [
+                      "governance"
+                    ],
+                    "why": [
+                      "alias:governance"
+                    ],
+                    "citation": {
+                      "id": "R-FIXTURE-A",
+                      "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                      "kind": "evidence",
+                      "evidence_class": "SYNTHETIC",
+                      "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                      "canonical_json_pointer": "fixture:/A",
+                      "canonical_payload_sha256": "synthetic-only",
+                      "edition_source_commit": "synthetic-only",
+                      "artifact_source_commit": null,
+                      "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                      "html_line": 1,
+                      "html_anchor": "#record=R-FIXTURE-A",
+                      "source_ids": [
+                        "R-FIXTURE-B"
+                      ]
+                    }
+                  },
+                  {
+                    "id": "R-FIXTURE-B",
+                    "label": "Second reference",
+                    "kind": "evidence",
+                    "evidence_class": "SYNTHETIC",
+                    "score": 8.06931,
+                    "matched": [
+                      "governance"
+                    ],
+                    "why": [
+                      "alias:governance"
+                    ],
+                    "citation": {
+                      "id": "R-FIXTURE-B",
+                      "label": "Second reference",
+                      "kind": "evidence",
+                      "evidence_class": "SYNTHETIC",
+                      "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                      "canonical_json_pointer": "fixture:/B",
+                      "canonical_payload_sha256": "synthetic-only",
+                      "edition_source_commit": "synthetic-only",
+                      "artifact_source_commit": null,
+                      "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                      "html_line": 1,
+                      "html_anchor": "#record=R-FIXTURE-B",
+                      "source_ids": []
+                    }
+                  }
+                ],
+                "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+              }
+            },
+            "citation": {
+              "schema": "td613.e3b5-execution-envelope/v1",
+              "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+              "assembly_id": "7da42a3f-756d-4f10-b0e6-1304ba39de3c",
+              "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+              "lane": "PRODUCT_RECIPIENT",
+              "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+              "family": "TD613_REFERENCE",
+              "source_id": "FIXTURE-TD613_REFERENCE",
+              "epoch": "td613-reference-edition-1.4",
+              "rights": "SYNTHETIC_LOCAL_ONLY",
+              "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+              "source_receipt": "a15a877c9c64b0388cd2ae2e45aa8a4c1aed789efeeac004afcc1d3207ffc8a1",
+              "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+              "scientific_identity": false,
+              "real_source_rights": false,
+              "independent_empirical_replications": 0,
+              "status": "EXECUTED",
+              "execution_count": 2,
+              "operation": "cite",
+              "parameters_sha256": "837d5e2fe07fc7697a0ac7c298cb5d6b267b646313bfe41c58f38984439a3102",
+              "result_sha256": "3aa61a4db23395d91c626f9515cb98584136980db45a13df38c67372f3e35cb7",
+              "result": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            }
+          },
+          {
+            "surface": {
+              "schema": "td613.e3b5-execution-envelope/v1",
+              "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+              "assembly_id": "7da42a3f-756d-4f10-b0e6-1304ba39de3c",
+              "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+              "lane": "PRODUCT_RECIPIENT",
+              "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+              "family": "SRC_METHODS",
+              "source_id": "FIXTURE-SRC_METHODS",
+              "epoch": "SRC-E3B4-INVENTED-20261102",
+              "rights": "SYNTHETIC_LOCAL_ONLY",
+              "source_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+              "source_receipt": "6801550f6bfa656546d182769e40d2b69ab7294816083a8ed61e6d5636f9734c",
+              "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+              "scientific_identity": false,
+              "real_source_rights": false,
+              "independent_empirical_replications": 0,
+              "status": "EXECUTED",
+              "execution_count": 1,
+              "operation": "surface",
+              "parameters_sha256": "99e9fb51f760a80597b576ce43f9053514a7d10230511cf73faaf5c726ae7103",
+              "result_sha256": "654980f9110f6bf583d203e47ae7724aae2b5905b7b0693731ab8c72af0fe037",
+              "result": {
+                "question": "Q_history",
+                "chosen": "PROVENANCE_REGISTRY",
+                "alternatives": [
+                  "PROVENANCE_REGISTRY"
+                ],
+                "status": "SOURCE_FREE_SURFACE_SELECTED",
+                "authority": "SYNTHETIC_QUESTION_CONDITIONED_SELECTION"
+              }
+            },
+            "route": {
+              "schema": "td613.e3b5-execution-envelope/v1",
+              "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+              "assembly_id": "7da42a3f-756d-4f10-b0e6-1304ba39de3c",
+              "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+              "lane": "PRODUCT_RECIPIENT",
+              "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+              "family": "SRC_METHODS",
+              "source_id": "FIXTURE-SRC_METHODS",
+              "epoch": "SRC-E3B4-INVENTED-20261102",
+              "rights": "SYNTHETIC_LOCAL_ONLY",
+              "source_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+              "source_receipt": "6801550f6bfa656546d182769e40d2b69ab7294816083a8ed61e6d5636f9734c",
+              "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+              "scientific_identity": false,
+              "real_source_rights": false,
+              "independent_empirical_replications": 0,
+              "status": "EXECUTED",
+              "execution_count": 1,
+              "operation": "typed_route",
+              "parameters_sha256": "7bf1d8051d87ea79ff0e9ef92ab35b76d1b5d4054cabcc9b5f38e9faf3df0f7c",
+              "result_sha256": "adf1266b7b6896354ab11e9ffb69e8a6e6257dc9d3ead5939f7ccffe5ba0b310",
+              "result": {
+                "from": "A",
+                "to": "C",
+                "graph": "G_CANON",
+                "paths": [
+                  {
+                    "edges": [
+                      "edge-AB",
+                      "edge-BC"
+                    ],
+                    "relations": [
+                      "PRECEDES",
+                      "PRECEDES"
+                    ],
+                    "source_coordinates": [
+                      "FIXTURE-PROVENANCE",
+                      "FIXTURE-PROVENANCE"
+                    ],
+                    "hop_count": 2
+                  }
+                ],
+                "status": "WITNESSED_TYPED_PATH",
+                "direct_identity_admitted": false,
+                "direct_causation_admitted": false,
+                "direct_genealogy_admitted": false,
+                "geometry_measured": false
+              }
+            }
+          }
+        ],
+        "cross_bridge": {
+          "status": "HELD",
+          "candidate": "CANDIDATE_ANALOGY",
+          "shared_genealogy": false,
+          "common_authorship": false,
+          "direct_graph_edge": false,
+          "scientific_equivalence": false,
+          "novel_result": false,
+          "empirical_exteriority": false
+        },
+        "execution_count": 5
+      }
+    },
+    {
+      "case": "numeric-unresolved-twins",
+      "native": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "90b813a8-ec2b-4595-97cc-e3ac2051cbd9",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "SOURCE_NATIVE",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "734d65290d3a99480e87917036214241915a9ac9cc41201115c19fa0d31f2ae8",
+        "source_receipt": "3f3596facd487721f0eb5f2e6f1f9fcf5cff4c2b37445a338a97da1806de326e",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "2ed1ca2c8cf52ade2de0d3b2986b9de06fec571cba077e7f3dcce26838393718",
+        "result": {
+          "native": {
+            "explore": [
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:adfcb6800fc73c835522086c",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "UNRESOLVED_MACHINE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_token": "+ governance",
+                "normalized_token": "governance",
+                "machine_candidates": [
+                  {
+                    "target_id": "zenodo:2",
+                    "target_title": "2 Governance",
+                    "target_created": "invalid",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "TIME_UNRESOLVED",
+                    "latency_seconds": null
+                  },
+                  {
+                    "target_id": "zenodo:3",
+                    "target_title": "2 Governance",
+                    "target_created": "invalid",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "TIME_UNRESOLVED",
+                    "latency_seconds": null
+                  }
+                ],
+                "human_disposition_required": false,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              },
+              {
+                "schema_version": "src-projective-routing-explore-observation/v1",
+                "explore_observation_id": "src-prg-explore:abaf57f26f14f717dbccc162",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "UNRESOLVED_MACHINE",
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_token": "2 governance",
+                "normalized_token": "2 governance",
+                "machine_candidates": [
+                  {
+                    "target_id": "zenodo:2",
+                    "target_title": "2 Governance",
+                    "target_created": "invalid",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "TIME_UNRESOLVED",
+                    "latency_seconds": null
+                  },
+                  {
+                    "target_id": "zenodo:3",
+                    "target_title": "2 Governance",
+                    "target_created": "invalid",
+                    "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                    "token_word_coverage": 1,
+                    "temporal_relation": "TIME_UNRESOLVED",
+                    "latency_seconds": null
+                  }
+                ],
+                "human_disposition_required": false,
+                "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+              }
+            ],
+            "signatures": [
+              {
+                "schema_version": "src-projective-routing-signature-observation/v1",
+                "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+                "atelier_snapshot_id": "src-20260824-p2-001",
+                "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+                "source_status": "ARCHIVE_BODY_OBSERVATION",
+                "observation_status": "RECURRING_EXACT_SIGNATURE",
+                "normalized_signature": "keep the trace",
+                "manifestation_count": 3,
+                "members": [
+                  {
+                    "source_id": "zenodo:1",
+                    "source_title": "Source",
+                    "source_created": "2026-01-01T00:00:00+00:00",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                  },
+                  {
+                    "source_id": "zenodo:2",
+                    "source_title": "2 Governance",
+                    "source_created": "invalid",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                  },
+                  {
+                    "source_id": "zenodo:3",
+                    "source_title": "2 Governance",
+                    "source_created": "invalid",
+                    "raw_phrase": "Keep the trace",
+                    "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+                  }
+                ],
+                "coordinate_class": "UNRESOLVED",
+                "coordinate_inference_permitted": false,
+                "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+              }
+            ]
+          },
+          "command": [
+            "python3",
+            "/workspace/scratch/427b1641e444/td613-assembly/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+            "--self-test",
+            "--root",
+            "/tmp/e3b5-native-3PHRkH"
+          ],
+          "stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 3,\n  \"explore_classification_counts\": {\n    \"UNRESOLVED_MACHINE\": 2\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+          "sources": [
+            {
+              "source_id": "zenodo:1",
+              "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+              "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+            },
+            {
+              "source_id": "zenodo:2",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+            },
+            {
+              "source_id": "zenodo:3",
+              "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+              "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+            }
+          ],
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "write_flag": false,
+          "historical_labels_are_not_authority": true
+        }
+      },
+      "recipient": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "8e00677e-a598-48bb-ac95-e654c61753dd",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "734d65290d3a99480e87917036214241915a9ac9cc41201115c19fa0d31f2ae8",
+        "source_receipt": "841b14843ead59ec1a987aba19404386bb16bb896cd57ea7185fdd31dbaab208",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "explore",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "2c1091dac2792309fad1ac25ce192aba29711dbbb143a4c39a35265fee208d15",
+        "result": {
+          "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+          "independent_empirical_replication_count": 0,
+          "src_corpus_parity": "UNESTABLISHED",
+          "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+          "source_rights_granted": false,
+          "scientific_identity": false,
+          "graph_promotion": false,
+          "observations": [
+            {
+              "explore_observation_id": "src-prg-explore:adfcb6800fc73c835522086c",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-01-01T00:00:00+00:00",
+              "raw_token": "+ governance",
+              "normalized_token": "governance",
+              "machine_candidates": [
+                {
+                  "target_id": "zenodo:2",
+                  "target_title": "2 Governance",
+                  "target_created": "invalid",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "TIME_UNRESOLVED",
+                  "latency_seconds": null
+                },
+                {
+                  "target_id": "zenodo:3",
+                  "target_title": "2 Governance",
+                  "target_created": "invalid",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "TIME_UNRESOLVED",
+                  "latency_seconds": null
+                }
+              ],
+              "observation_status": "UNRESOLVED_MACHINE",
+              "human_disposition_required": false,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                  "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+                },
+                {
+                  "source_id": "zenodo:3",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-3-metadata.md",
+                  "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+                }
+              ]
+            },
+            {
+              "explore_observation_id": "src-prg-explore:abaf57f26f14f717dbccc162",
+              "source_id": "zenodo:1",
+              "source_title": "Source",
+              "source_created": "2026-01-01T00:00:00+00:00",
+              "raw_token": "2 governance",
+              "normalized_token": "2 governance",
+              "machine_candidates": [
+                {
+                  "target_id": "zenodo:2",
+                  "target_title": "2 Governance",
+                  "target_created": "invalid",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "TIME_UNRESOLVED",
+                  "latency_seconds": null
+                },
+                {
+                  "target_id": "zenodo:3",
+                  "target_title": "2 Governance",
+                  "target_created": "invalid",
+                  "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                  "token_word_coverage": 1,
+                  "temporal_relation": "TIME_UNRESOLVED",
+                  "latency_seconds": null
+                }
+              ],
+              "observation_status": "UNRESOLVED_MACHINE",
+              "human_disposition_required": false,
+              "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+              "witnesses": [
+                {
+                  "source_id": "zenodo:1",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                  "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                  "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                  "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+                },
+                {
+                  "source_id": "zenodo:3",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md",
+                  "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                  "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-3-metadata.md",
+                  "metadata_sha256": "b08037b250ab401beec2a617e9dd648843790a1a5ab163802cac9b29141a5f57"
+                }
+              ]
+            }
+          ],
+          "signatures": [
+            {
+              "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+              "normalized_signature": "keep the trace",
+              "manifestation_count": 3,
+              "observation_status": "RECURRING_EXACT_SIGNATURE",
+              "members": [
+                {
+                  "source_id": "zenodo:1",
+                  "source_title": "Source",
+                  "source_created": "2026-01-01T00:00:00+00:00",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+                },
+                {
+                  "source_id": "zenodo:2",
+                  "source_title": "2 Governance",
+                  "source_created": "invalid",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+                },
+                {
+                  "source_id": "zenodo:3",
+                  "source_title": "2 Governance",
+                  "source_created": "invalid",
+                  "raw_phrase": "Keep the trace",
+                  "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+                }
+              ],
+              "coordinate_class": "UNRESOLVED",
+              "coordinate_inference_permitted": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "custody-twins",
+      "one": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "451a7dd1-abf8-4a82-a516-cb1e752b6ba4",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TWIN-ONE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "a81d03b8080e44d048107b05ff0c823526a5f8db1b0eaa69891bd3e664761c30",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "search",
+        "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+        "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+        "result": {
+          "query": {
+            "q": "governance"
+          },
+          "total": 2,
+          "offset": 0,
+          "limit": 10,
+          "has_more": false,
+          "hits": [
+            {
+              "id": "R-FIXTURE-A",
+              "label": "Tú puedes clonarme, pero no tienes mis genes.",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.64072,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "id": "R-FIXTURE-B",
+              "label": "Second reference",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.06931,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+        }
+      },
+      "two": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "451a7dd1-abf8-4a82-a516-cb1e752b6ba4",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TWIN-TWO",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "69a930536d4ae2fc3aa4625ea7e73ef0a807f99e5affc51669a824353c898de5",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "search",
+        "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+        "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+        "result": {
+          "query": {
+            "q": "governance"
+          },
+          "total": 2,
+          "offset": 0,
+          "limit": 10,
+          "has_more": false,
+          "hits": [
+            {
+              "id": "R-FIXTURE-A",
+              "label": "Tú puedes clonarme, pero no tienes mis genes.",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.64072,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "id": "R-FIXTURE-B",
+              "label": "Second reference",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.06931,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+        }
+      },
+      "restarted": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "451a7dd1-abf8-4a82-a516-cb1e752b6ba4",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "TD613_REFERENCE",
+        "source_id": "FIXTURE-TWIN-ONE",
+        "epoch": "td613-reference-edition-1.4",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f1224ae923f16c81e9e7b66373edaab8660e4c4d72ff510083f7215d563c3865",
+        "source_receipt": "a81d03b8080e44d048107b05ff0c823526a5f8db1b0eaa69891bd3e664761c30",
+        "source_pin": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "search",
+        "parameters_sha256": "822fb89a183efd20279924d04799f696b8bd8d215a40b5002dd1b0866a9ada47",
+        "result_sha256": "6128f36072e42477fc1b78a32585643f53bc4dcfab2de7eb3d18176f56feb8ef",
+        "result": {
+          "query": {
+            "q": "governance"
+          },
+          "total": 2,
+          "offset": 0,
+          "limit": 10,
+          "has_more": false,
+          "hits": [
+            {
+              "id": "R-FIXTURE-A",
+              "label": "Tú puedes clonarme, pero no tienes mis genes.",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.64072,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-A",
+                "label": "Tú puedes clonarme, pero no tienes mis genes.",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ac662eefb2a448b3c167406639776da3433c42ea1b937ed38dd21b9b8152dfca",
+                "canonical_json_pointer": "fixture:/A",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-A",
+                "source_ids": [
+                  "R-FIXTURE-B"
+                ]
+              }
+            },
+            {
+              "id": "R-FIXTURE-B",
+              "label": "Second reference",
+              "kind": "evidence",
+              "evidence_class": "SYNTHETIC",
+              "score": 8.06931,
+              "matched": [
+                "governance"
+              ],
+              "why": [
+                "alias:governance"
+              ],
+              "citation": {
+                "id": "R-FIXTURE-B",
+                "label": "Second reference",
+                "kind": "evidence",
+                "evidence_class": "SYNTHETIC",
+                "record_sha256": "ede26d29b89c97020344284b82461accc59e352e4e6455b56103fe6b6719d383",
+                "canonical_json_pointer": "fixture:/B",
+                "canonical_payload_sha256": "synthetic-only",
+                "edition_source_commit": "synthetic-only",
+                "artifact_source_commit": null,
+                "artifact_source_commit_note": "Resolve the repository/deployment receipt independently; this generated file cannot authenticate its own Git commit.",
+                "html_line": 1,
+                "html_anchor": "#record=R-FIXTURE-B",
+                "source_ids": []
+              }
+            }
+          ],
+          "ranking": "Deterministic weighted lexical/BM25 ranking; score measures retrieval relevance, never evidence quality."
+        }
+      }
+    },
+    {
+      "case": "source-method-role-compilation",
+      "result": {
+        "schema": "td613.e3b5-execution-envelope/v1",
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "assembly_id": "301edbef-f939-4ba7-a133-2814046faa7b",
+        "dependency_digest": "c4572a236ad03a390152d1922bd892d01cae54c210d68c66633ad5dfa1cf581c",
+        "lane": "PRODUCT_RECIPIENT",
+        "product": "UNIVERSAL_ATELIER_B5_RESEARCH_SHELL",
+        "family": "SRC_METHODS",
+        "source_id": "FIXTURE-SRC_METHODS",
+        "epoch": "SRC-E3B4-INVENTED-20261102",
+        "rights": "SYNTHETIC_LOCAL_ONLY",
+        "source_sha256": "f338ab013bd4c86fa27c2825a728358b22e3a38563fd76fdd89bd6af9062d9bb",
+        "source_receipt": "1c3a231e66dd1dbd1d8051b0e5f390de721a3d2b9241d310e28a913da0c9b0b0",
+        "source_pin": "4948a1c9c23b738d326b07cfc7d208604c305973",
+        "scientific_identity": false,
+        "real_source_rights": false,
+        "independent_empirical_replications": 0,
+        "status": "EXECUTED",
+        "execution_count": 1,
+        "operation": "compile_roles",
+        "parameters_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "result_sha256": "bdbb68a7f73216279277e482a68ea69cd047f82ce7079fed54d4ad8dd85a04b8",
+        "result": {
+          "model": {
+            "schema": "td613.atelier-contextual-polycompilation/v0.2",
+            "snapshot_id": "SRC-E3B4-INVENTED-20261102",
+            "seal_id": "SYNTHETIC_SEAL_E3B4",
+            "pass_count": 2,
+            "role_count": 2,
+            "passes": [
+              {
+                "compilation_pass_id": "p1",
+                "build_target_id": "B",
+                "input_ids": [
+                  "A"
+                ],
+                "roles": [
+                  {
+                    "role_assertion_id": "r1",
+                    "subject_id": "A",
+                    "architecture_id": "B",
+                    "relation_type": "DEFINES",
+                    "context_scope": {},
+                    "source_status": "EXPLICIT_SOURCE",
+                    "adjudication_status": "WITNESSED",
+                    "evidence_ids": [
+                      "SYNTHETIC-r1"
+                    ],
+                    "ceiling": "EXPLICIT_SOURCE_WITNESSED_CONTEXTUAL_ROLE",
+                    "interpretive_limit": "Only the described edge is admitted; no stronger endpoint conclusion",
+                    "assertion_time": null,
+                    "direct_role_assertion": true
+                  }
+                ]
+              },
+              {
+                "compilation_pass_id": "p2",
+                "build_target_id": "C",
+                "input_ids": [
+                  "B"
+                ],
+                "roles": [
+                  {
+                    "role_assertion_id": "r2",
+                    "subject_id": "B",
+                    "architecture_id": "C",
+                    "relation_type": "TRANSLATES",
+                    "context_scope": {},
+                    "source_status": "ARCHIVE_INFERRED",
+                    "adjudication_status": "CANDIDATE",
+                    "evidence_ids": [
+                      "SYNTHETIC-r2"
+                    ],
+                    "ceiling": "PARTIAL_OR_CANDIDATE_CONTEXTUAL_ROLE",
+                    "interpretive_limit": "Only the described edge is admitted; no stronger endpoint conclusion",
+                    "assertion_time": null,
+                    "direct_role_assertion": true
+                  }
+                ]
+              }
+            ],
+            "claim_ceiling": "NATIVE_CONTEXTUAL_ROLE_RECONSTRUCTION_NO_GENERAL_SEMANTIC_OR_CAUSAL_TRUTH"
+          },
+          "trace": {
+            "from": "A",
+            "to": "C",
+            "max_hops": 3,
+            "status": "BOUNDED_TYPED_PATHS",
+            "routes": [
+              {
+                "from": "A",
+                "to": "C",
+                "hop_count": 2,
+                "assertion_ids": [
+                  "r1",
+                  "r2"
+                ],
+                "roles": [
+                  "DEFINES",
+                  "TRANSLATES"
+                ],
+                "evidence_ids": [
+                  "SYNTHETIC-r1",
+                  "SYNTHETIC-r2"
+                ],
+                "path_ceiling": "MULTIHOP_MIXED_OR_CANDIDATE_PATH_NO_DIRECT_RELATION",
+                "direct_relation_admitted": false,
+                "scientific_causality_admitted": false,
+                "independent_source_families_established": false
+              }
+            ],
+            "ceiling": "NO_NEW_DIRECT_EDGE_OR_INDEPENDENT_EVIDENCE_FROM_PATH_COMPOSITION"
+          },
+          "ablation": {
+            "target_id": "C",
+            "original_roles": 1,
+            "retained_roles": 0,
+            "withdrawn_roles": [
+              "r2"
+            ],
+            "before_classes": {
+              "PARTIAL_OR_CANDIDATE_CONTEXTUAL_ROLE": 1
+            },
+            "after_classes": {},
+            "remaining_relation_types": [],
+            "claim_ceiling": "STRUCTURAL_DEPENDENCE_ONLY_NO_EVIDENCE_TRUTH_OR_CAUSAL_INFERENCE"
+          }
+        }
+      }
+    }
+  ]
+}
