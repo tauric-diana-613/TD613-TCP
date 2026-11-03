@@ -106,6 +106,91 @@ export function validateSourceFree({payload,manifests,captures,rights,versions=[
     pair.uses++;
     check(String(raw.author).toLowerCase()==='upset-ratio502' && String(raw.subreddit).toLowerCase()==='wendbine' &&
       raw.title===p.title && raw.selftext===p.selftext,'RAW_SOURCE_IDENTITY_OR_FIELDS_MISMATCH');
+    const id=p.source_id.slice('reddit:t3_'.length);
+    const validPermalink=typeof raw.permalink==='string' && new RegExp('^/r/Wendbine/comments/'+id+'(?:/[^?#]*)? && derived.state!=='HELD_REMOVED_OR_DELETED' &&
+      derived.state===p.body_state && derived.media===p.media_or_link_post && c.body_state===derived.state,'BODY_OR_MEDIA_STATE_CONFLICT');
+    check(c.source_created_utc===Number(raw.created_utc) && p.source_created_utc===c.source_created_utc &&
+      eq(c.source_edited??null,raw.edited??null) && eq(p.source_edited??null,c.source_edited??null) &&
+      eq(c.archive_retrieved_on??null,raw.retrieved_on??null) && eq(p.archive_retrieved_on??null,c.archive_retrieved_on??null) &&
+      c.provider==='ARCTIC_SHIFT','CAPTURE_CLOCK_OR_EDIT_STATE_MISMATCH');
+    check(c.title_sha256_utf8===sha(utf8(p.title)) && c.body_sha256_utf8===sha(utf8(p.selftext)) &&
+      c.body_utf8_bytes===utf8(p.selftext).length &&
+      (m.platform_title_status==='TITLE_HASH_ONLY_PUBLIC_RESEARCH_PROJECTION' || m.platform_title===p.title) &&
+      m.canonical_url===p.canonical_url && m.published_at===new Date(p.source_created_utc*1000).toISOString(),
+      'SOURCE_HASH_OR_PUBLIC_FIELDS_MISMATCH');
+    records.push({source_id:p.source_id,canonical_url:p.canonical_url,published_at:m.published_at,
+      title:p.title,selftext:p.selftext,body_state:derived.state,media_or_link_post:derived.media,
+      body_sha256_utf8:c.body_sha256_utf8,title_sha256_utf8:c.title_sha256_utf8,
+      capture_id:c.capture_id,observed_at:c.observed_at,source_edited:c.source_edited,
+      rights:'PRIVATE_ONLY',snapshotId,sealId});
+  }
+  check(seen.size===byId.size && [...batches.values()].every(x=>x.uses>0),'INCOMPLETE_POSTS_OR_ORPHAN_RAW_BATCH');
+  records.sort((a,b)=>a.published_at.localeCompare(b.published_at)||a.source_id.localeCompare(b.source_id));
+  return records;
+}
+
+const digestRecords = rows => sha(utf8(JSON.stringify(rows.map(x=>[x.source_id,x.capture_id,x.body_sha256_utf8,x.title_sha256_utf8,x.snapshotId,x.sealId]))));
+const encCursor = (data,key) => {
+  const body=Buffer.from(JSON.stringify(data)).toString('base64url');
+  const signature=crypto.createHmac('sha256',key).update(body).digest('base64url');
+  return body+'.'+signature;
+};
+const decCursor = (cursor,key) => {
+  const [body,signature,...extra]=String(cursor).split('.');
+  check(!extra.length && body && signature && encCursor(JSON.parse(Buffer.from(body,'base64url').toString('utf8')),key)===cursor,'STALE_OR_TAMPERED_CURSOR');
+  return JSON.parse(Buffer.from(body,'base64url').toString('utf8'));
+};
+/** Exact-byte search deliberately case-sensitive; no case-folding without an offset map. */
+export function queryLocalPage({records,kind='search',term,limit=50,cursor=null,cursorKey,allowSource}) {
+  check(Array.isArray(records) && (kind==='search'||kind==='date') && typeof term==='string' &&
+    Number.isInteger(limit)&&limit>=1&&limit<=100 && Buffer.isBuffer(cursorKey)&&cursorKey.length>=16 &&
+    typeof allowSource==='function','INVALID_QUERY_OR_LOCAL_AUTHORITY');
+  if(kind==='date')check(/^\d{4}-\d{2}-\d{2}$/.test(term)&&!Number.isNaN(Date.parse(term+'T00:00:00Z'))&&new Date(term+'T00:00:00Z').toISOString().startsWith(term),'INVALID_UTC_DATE');
+  else check(utf8(term).length>=2&&utf8(term).length<=500,'INVALID_EXACT_PHRASE');
+  check(records.every(r=>r.rights==='PRIVATE_ONLY' && r.snapshotId===records[0]?.snapshotId && r.sealId===records[0]?.sealId &&
+    sha(utf8(r.selftext))===r.body_sha256_utf8 && sha(utf8(r.title))===r.title_sha256_utf8),'RESTORED_RECORD_TAMPER_OR_EPOCH_MIX');
+  const dataset=digestRecords(records);
+  // Bind cursors to a single evaluated authorization snapshot, not only the index.
+  const eligibility=records.map(r=>Boolean(allowSource(r)));
+  const eligibilityDigest=sha(utf8(JSON.stringify(records.filter((_,i)=>eligibility[i]).map(r=>r.source_id))));
+  const qid=sha(utf8(JSON.stringify([epoch(records[0]?.snapshotId,records[0]?.sealId),dataset,eligibilityDigest,kind,term])));
+  const state=cursor?decCursor(cursor,cursorKey):{qid,dataset,offset:0};
+  check(state.qid===qid && state.dataset===dataset && safeInt(state.offset),'STALE_OR_CROSS_QUERY_CURSOR');
+  const list=[];let excluded=0;
+  for(const [i,r] of records.entries()){
+    if(!eligibility[i]){excluded++;continue;}
+    if(kind==='date'){
+      if(r.published_at.slice(0,10)===term)list.push({source_id:r.source_id,published_at:r.published_at,body_state:r.body_state,capture_id:r.capture_id});
+    } else {
+      const body=utf8(r.selftext),needle=utf8(term);let from=0;
+      while(from<=body.length-needle.length){
+        const idx=body.indexOf(needle,from);if(idx<0)break;
+        list.push({source_id:r.source_id,capture_id:r.capture_id,field:'selftext',start_utf8:idx,end_utf8:idx+needle.length,
+          exact_slice:new TextDecoder('utf-8',{fatal:true}).decode(body.subarray(idx,idx+needle.length)),body_sha256_utf8:r.body_sha256_utf8});
+        from=idx+1;
+      }
+    }
+  }
+  const returned=list.slice(state.offset,state.offset+limit),end=state.offset+returned.length;
+  const next=end<list.length?encCursor({qid,dataset,offset:end},cursorKey):null;
+  return {status:excluded?'EXECUTED_WITH_RIGHTS_GAPS':list.length?'EXECUTED_MATCHES':'EXECUTED_ZERO',
+    query_id:qid,snapshotId:records[0]?.snapshotId,sealId:records[0]?.sealId,eligible:records.length-excluded,
+    rights_excluded:excluded,total_matches:list.length,returned_count:returned.length,results:returned,next_cursor:next,
+    exhausted:!next,offset_convention:'EXACT_ORIGINAL_UTF8_BYTE_HALF_OPEN'};
+}
+
+export function verifyReopenedJsonl({bytes,expectedSha256,expectedLength,expectedCount,snapshotId,sealId}) {
+  check(Buffer.isBuffer(bytes) && bytes.length===expectedLength && sha(bytes)===expectedSha256,'INDEPENDENT_LOCAL_INDEX_ANCHOR_MISMATCH');
+  let rows;
+  try {const str=new TextDecoder('utf-8',{fatal:true}).decode(bytes);check(str.endsWith('\n'),'UNCOMMITTED_OR_TRUNCATED_INDEX');
+    rows=str.trimEnd().split('\n').map(JSON.parse);} catch {err('MALFORMED_REOPENED_INDEX');}
+  check(rows.length===expectedCount && rows.every(r=>r.snapshotId===snapshotId && r.sealId===sealId &&
+    sha(utf8(r.selftext))===r.body_sha256_utf8 && sha(utf8(r.title))===r.title_sha256_utf8),'REOPENED_INDEX_CONTENT_MISMATCH');
+  return rows;
+}
+,'i').test(raw.permalink);
+    const canonicalFromRaw='https://www.reddit.com'+(validPermalink?raw.permalink:'/r/Wendbine/comments/'+id+'/');
+    check(canonicalFromRaw===m.canonical_url,'RAW_PERMALINK_PUBLIC_URL_MISMATCH');
     const derived=rawStatus(raw);
     check(derived.state!=='HELD_EMPTY_TEXT_BODY' && derived.state!=='HELD_REMOVED_OR_DELETED' &&
       derived.state===p.body_state && derived.media===p.media_or_link_post && c.body_state===derived.state,'BODY_OR_MEDIA_STATE_CONFLICT');
@@ -167,7 +252,7 @@ export function queryLocalPage({records,kind='search',term,limit=50,cursor=null,
         const idx=body.indexOf(needle,from);if(idx<0)break;
         list.push({source_id:r.source_id,capture_id:r.capture_id,field:'selftext',start_utf8:idx,end_utf8:idx+needle.length,
           exact_slice:new TextDecoder('utf-8',{fatal:true}).decode(body.subarray(idx,idx+needle.length)),body_sha256_utf8:r.body_sha256_utf8});
-        from=idx+Math.max(1,needle.length);
+        from=idx+1;
       }
     }
   }
