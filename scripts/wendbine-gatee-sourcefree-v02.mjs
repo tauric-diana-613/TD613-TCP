@@ -46,7 +46,7 @@ export function validateSourceFree({payload,manifests,captures,rights,versions=[
   check(payload?.schema==='wendbine-src-autosync/v0.1' && payload?.provider==='ARCTIC_SHIFT' &&
     Array.isArray(payload.posts) && Array.isArray(payload.raw_batches) &&
     Array.isArray(manifests) && Array.isArray(captures) && Array.isArray(rights) && Array.isArray(versions), 'INVALID_EPOCH_INPUT');
-  check(manifests.length>0 && manifests.length<=100000 && payload.posts.length===manifests.length && rights.length===manifests.length,'INCOMPLETE_EPOCH_CARDINALITY');
+  check(manifests.length>0 && manifests.length<=100000 && payload.posts.length===manifests.length && rights.length===manifests.length && versions.length===captures.length,'INCOMPLETE_EPOCH_CARDINALITY');
   const byId=new Map(),byManifestId=new Map(),rightsByManifest=new Map(),capturesById=new Map(),versionByCapture=new Map();
   for(const m of manifests){
     check(sid(m.source_id) && !byId.has(m.source_id) && m.platform_account==='Upset-Ratio502' && m.subreddit==='Wendbine' &&
@@ -149,12 +149,16 @@ export function queryLocalPage({records,kind='search',term,limit=50,cursor=null,
   else check(utf8(term).length>=2&&utf8(term).length<=500,'INVALID_EXACT_PHRASE');
   check(records.every(r=>r.rights==='PRIVATE_ONLY' && r.snapshotId===records[0]?.snapshotId && r.sealId===records[0]?.sealId &&
     sha(utf8(r.selftext))===r.body_sha256_utf8 && sha(utf8(r.title))===r.title_sha256_utf8),'RESTORED_RECORD_TAMPER_OR_EPOCH_MIX');
-  const dataset=digestRecords(records),qid=sha(utf8(JSON.stringify([epoch(records[0]?.snapshotId,records[0]?.sealId),dataset,kind,term])));
+  const dataset=digestRecords(records);
+  // Bind cursors to a single evaluated authorization snapshot, not only the index.
+  const eligibility=records.map(r=>Boolean(allowSource(r)));
+  const eligibilityDigest=sha(utf8(JSON.stringify(records.filter((_,i)=>eligibility[i]).map(r=>r.source_id))));
+  const qid=sha(utf8(JSON.stringify([epoch(records[0]?.snapshotId,records[0]?.sealId),dataset,eligibilityDigest,kind,term])));
   const state=cursor?decCursor(cursor,cursorKey):{qid,dataset,offset:0};
   check(state.qid===qid && state.dataset===dataset && safeInt(state.offset),'STALE_OR_CROSS_QUERY_CURSOR');
   const list=[];let excluded=0;
-  for(const r of records){
-    if(!allowSource(r)){excluded++;continue;}
+  for(const [i,r] of records.entries()){
+    if(!eligibility[i]){excluded++;continue;}
     if(kind==='date'){
       if(r.published_at.slice(0,10)===term)list.push({source_id:r.source_id,published_at:r.published_at,body_state:r.body_state,capture_id:r.capture_id});
     } else {
