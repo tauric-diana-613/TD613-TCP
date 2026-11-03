@@ -165,7 +165,7 @@ test('independent synthetic receipt, wrong epoch/rights, source tamper, replay a
  const wrong={...fixture,epoch:'BAD'};const wrongbytes=Buffer.from(JSON.stringify(wrong));
  const other='FIXTURE-SRC-OTHER';
  assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture:wrong,receipt:makeTestWitness({sourceId:other,bytes:wrongbytes})}),/WRONG_EPOCH_RIGHTS_OR_SOURCE_CLASS/);
- assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
+ assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_CORRUPT/);
  const restart=reopenEmptyChamber(c.root);assert.equal(restart.profile.source_count,0);assert.equal(runSRC(restart,S,{family:'AUTHORITATIVE_CURRENT_VS_HISTORY'}).result.current.chosen,'CANON_MAP');
  const stem=hash(Buffer.from(S)).slice(0,20),file=path.join(c.root,'E3B4_SYNTHETIC_CUSTODY',stem+'.json');
  fs.appendFileSync(file,' ');assert.throws(()=>readSynthetic(c,S),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
