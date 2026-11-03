@@ -112,3 +112,16 @@ test('complete capture/version relation must match clock and hash',()=>{
  const f=fixture();f.versions[0].observed_at='2026-11-02T19:00:00Z';
  assert.throws(()=>validate(f),/CAPTURE_VERSION_CLOCK_OR_HASH_CONFLICT/);
 });
+
+test('GE-R02: raw permalink cannot silently rewrite canonical source binding',()=>{
+ const f=fixture();const raw=JSON.parse(Buffer.from(f.payload.raw_batches[0].raw_b64,'base64').toString('utf8'));
+ raw[0].permalink='/r/Wendbine/comments/a0000/altered-slug/';
+ const bytes=b(JSON.stringify(raw)),hash=sha(bytes);
+ f.payload.raw_batches[0]={raw_b64:bytes.toString('base64'),raw_byte_length:bytes.length,raw_sha256:hash};
+ for(const x of f.payload.posts){x.archive_response_sha256=hash;x.archive_response_bytes=bytes.length;}
+ for(const x of f.captures){x.archive_response_sha256=hash;x.archive_response_bytes=bytes.length;}
+ assert.throws(()=>validate(f),/RAW_PERMALINK_PUBLIC_URL_MISMATCH/);
+});
+test('GE-R04: empty version registry never earns verified capture status',()=>{
+ const f=fixture();f.versions=[];assert.throws(()=>validate(f),/INCOMPLETE_EPOCH_CARDINALITY/);
+});
