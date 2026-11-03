@@ -31,7 +31,7 @@ export function extractExploreTokens(document) {
   const found=[];
   const pattern=/(?<![\p{L}\p{N}_])Explore +([^.!?]{2,96})\./giu;
   for(const match of document.normalized_body.matchAll(pattern)) {
-    const token=normalizeSpace(match[1]).replace(/^[ -:\t]+|[ -:\t]+$/g,'').replace(/\s+(?:[IVXLCDMİı]+|\d+)(?:\.\d+)*$/iu,'');
+    const token=normalizeSpace(match[1]).replace(/^[- :\t]+|[- :\t]+$/g,'').replace(/\s+(?:[IVXLCDMİı]+|\d+)(?:\.\d+)*$/iu,'');
     if(cpLength(token)>=2&&cpLength(token)<=80)found.push(token);
   }
   return found;

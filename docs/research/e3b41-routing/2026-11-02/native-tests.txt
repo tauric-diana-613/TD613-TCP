@@ -1,21 +1,22 @@
-✔ native Python differential native_plain_later (109.473484ms)
-✔ native Python differential native_plain_preexisting (100.934437ms)
-✔ native Python differential colon_variant_negative (107.489485ms)
-✔ native Python differential spanish_exact (97.11463ms)
-✔ native rankings retain exact twins, near-title lexical candidates and chronological ambiguity (211.398508ms)
-✔ lexical near-title and earlier lexical candidate remain human-review states (196.208136ms)
-✔ Spanish accentless false twin remains lexical, never exact or host identity (106.048858ms)
-✔ source withdrawal produces an executed unresolved result and host scope is preserved (179.30274ms)
-✔ normalization, title tie order, truncation and source self-exclusion match native (101.216937ms)
-✔ integrity, rights, coordinate and G_GHOST negatives refuse before routing (2.627854ms)
-✔ Python casefold and submillisecond chronology survive the recipient (89.421689ms)
-✔ archived B4 recipient reproduces the original source-body compatibility failure (11.920146ms)
-✔ colon route table remains explicitly an extension (0.1727ms)
-ℹ tests 13
+✔ native Python differential native_plain_later (114.551137ms)
+✔ native Python differential native_plain_preexisting (139.324972ms)
+✔ native Python differential colon_variant_negative (108.391827ms)
+✔ native Python differential spanish_exact (98.612587ms)
+✔ native rankings retain exact twins, near-title lexical candidates and chronological ambiguity (203.013766ms)
+✔ lexical near-title and earlier lexical candidate remain human-review states (198.327504ms)
+✔ Spanish accentless false twin remains lexical, never exact or host identity (98.680585ms)
+✔ source withdrawal produces an executed unresolved result and host scope is preserved (187.667692ms)
+✔ normalization, title tie order, truncation and source self-exclusion match native (96.456595ms)
+✔ integrity, rights, coordinate and G_GHOST negatives refuse before routing (2.094013ms)
+✔ Python casefold and submillisecond chronology survive the recipient (93.984624ms)
+✔ native token trimming preserves leading numeric and plus characters (94.700881ms)
+✔ archived B4 recipient reproduces the original source-body compatibility failure (9.612205ms)
+✔ colon route table remains explicitly an extension (0.223937ms)
+ℹ tests 14
 ℹ suites 0
-ℹ pass 13
+ℹ pass 14
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1406.619175
+ℹ duration_ms 1550.591184

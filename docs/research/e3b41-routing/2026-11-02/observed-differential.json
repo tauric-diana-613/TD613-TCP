@@ -10,7 +10,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-z9MxMf"
+        "/tmp/e3b41-case-W6DIWG"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -214,7 +214,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-dWbyJo"
+        "/tmp/e3b41-case-kwRqgb"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -381,7 +381,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-AJqjSR"
+        "/tmp/e3b41-case-bKkjax"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -482,7 +482,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-0i6ERi"
+        "/tmp/e3b41-case-yWPsD9"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -674,7 +674,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-9zvfOT"
+        "/tmp/e3b41-case-SV6d7w"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -945,7 +945,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-9zvfOT"
+        "/tmp/e3b41-case-SV6d7w"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -1216,7 +1216,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-ijFK8y"
+        "/tmp/e3b41-case-fSLolN"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -1383,7 +1383,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-ijFK8y"
+        "/tmp/e3b41-case-fSLolN"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -1550,7 +1550,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-Lf7KEl"
+        "/tmp/e3b41-case-9srakY"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -1742,7 +1742,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-OesaYJ"
+        "/tmp/e3b41-case-oxWO4V"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -1946,7 +1946,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-OesaYJ"
+        "/tmp/e3b41-case-oxWO4V"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -2102,7 +2102,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-FAZhGU"
+        "/tmp/e3b41-case-lnoe8D"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -2679,7 +2679,7 @@
         "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
         "--self-test",
         "--root",
-        "/tmp/e3b41-case-8ObP7O"
+        "/tmp/e3b41-case-usSYG1"
       ],
       "write_flag": false,
       "real_src_admission": false,
@@ -2855,6 +2855,237 @@
                 "source_created": "2026-02-01T00:00:00.000400+00:00",
                 "raw_phrase": "Signature",
                 "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-lFk465"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore 2 governance. Explore + governance.",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "abaab29d7a531d83474edda52402f69b8d46230bae0bdbc2ec61ee2b45b55f7f",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"2 Governance\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 2\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:adfcb6800fc73c835522086c",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "+ governance",
+            "normalized_token": "governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "2 Governance",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:abaf57f26f14f717dbccc162",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "2 governance",
+            "normalized_token": "2 governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "2 Governance",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "2 Governance",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:adfcb6800fc73c835522086c",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "+ governance",
+            "normalized_token": "governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "2 Governance",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "abaab29d7a531d83474edda52402f69b8d46230bae0bdbc2ec61ee2b45b55f7f"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:abaf57f26f14f717dbccc162",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "2 governance",
+            "normalized_token": "2 governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "2 Governance",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "ae560350e7bb49ecdfbac1402ee7ebb6e1ab56e23ac8aeda0fc475bd1d06ffb8",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "abaab29d7a531d83474edda52402f69b8d46230bae0bdbc2ec61ee2b45b55f7f"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "2 Governance",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
               }
             ],
             "coordinate_class": "UNRESOLVED",

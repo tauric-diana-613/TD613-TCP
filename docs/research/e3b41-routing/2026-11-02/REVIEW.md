@@ -18,9 +18,11 @@ Fixtures are the four supplied case directories. The original ZIP SHA-256 is `15
 | colon_variant_negative | Explore: collapse governance. | No token extracted by either native grammar path |
 | spanish_exact | Explore la cartografía del umbral. | Later exact/title-substring candidate; computed key `la cartograf a del umbral`; raw title/token retains accents |
 
-`observed-differential.json` carries actual native CLI stdout, detailed native and recipient results, raw invented source/metadata, byte hashes and executed commands for 13 differential scenarios. Outer evidence class is `SYNTHETIC_REPLAY_ONLY`. Native hardcoded seal/snapshot/source-status labels are retained as program output only. They confer zero sealed-source or original SRC admission credit. The recipient never issues a real seal or source grant.
+`observed-differential.json` carries actual native CLI stdout, detailed native and recipient results, raw invented source/metadata, byte hashes and executed commands for 14 differential scenarios. Outer evidence class is `SYNTHETIC_REPLAY_ONLY`. Native hardcoded seal/snapshot/source-status labels are retained as program output only. They confer zero sealed-source or original SRC admission credit. The recipient never issues a real seal or source grant.
 
 Candidate ranking retains all native candidates up to eight, including ambiguous title twins, and orders exact before lexical, coverage descending, then timestamp string and source ID. Earlier/later/missing temporal evidence, lexical-only classes, exact unresolved candidates and withdrawal are compared separately. Signatures are compared by raw phrase, normalized key and host-specific members. No host identity, hidden author, graph edge or causal claim is promoted. Raw body/metadata buffers and their distinct source/path/hash witnesses remain separate from normalization artifacts. Witness strings create zero independent acquisition credit.
+
+A final differential caught overly broad trimming in the JavaScript translation. The corrected character class preserves leading digits and plus signs exactly as Python; a dedicated negative-before/positive-after test covers both.
 
 ## Reproduction
 
@@ -31,7 +33,7 @@ node tests/workflow-estate.test.mjs
 git diff --check
 ```
 
-Observed: new routing suite 13/13 PASS; B.4 regression 16/16 PASS; combined 29/29 PASS, no failures or skips. B.3 regression 11/11 PASS in a separate untouched checkout at `fff4f7426e21a42b272351f32c65baa1be11c749`; this is a frozen baseline control, not integration of B.3 into the recipient. Four workflows remain four. A bounded replay step is added inside existing `td613-ci.yml`. Archived B.4 reproduction requires its original Git object; CI uses full-history checkout.
+Observed: new routing suite 14/14 PASS; B.4 regression 16/16 PASS; combined 30/30 PASS, no failures or skips. B.3 regression 11/11 PASS in a separate untouched checkout at `fff4f7426e21a42b272351f32c65baa1be11c749`; this is a frozen baseline control, not integration of B.3 into the recipient. Four workflows remain four. A bounded replay step is added inside existing `td613-ci.yml`. Archived B.4 reproduction requires its original Git object; CI uses full-history checkout.
 
 ## Limits and independent review
 

@@ -63,6 +63,11 @@ test('Python casefold and submillisecond chronology survive the recipient',t=>{
  target(dir,2,'J Method','2026-02-01T00:00:00.000500+00:00');const r=check(dir);
  assert.equal(r.recipient.observations[0].normalized_token,'j method');assert.equal(r.recipient.observations[0].observation_status,'LATER_EXACT_RESOLUTION_CANDIDATE');
 });
+test('native token trimming preserves leading numeric and plus characters',t=>{
+ const dir=fixture(t);fs.writeFileSync(path.join(dir,'03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md'),'SR - Keep the trace. Preface. Explore 2 governance. Explore + governance.');
+ target(dir,2,'2 Governance');const r=check(dir);
+ assert.deepEqual(r.recipient.observations.map(r=>r.raw_token),['+ governance','2 governance']);
+});
 test('archived B4 recipient reproduces the original source-body compatibility failure',async t=>{
  const dir=fixture(t),input=loadInput(dir),base=fs.mkdtempSync(path.join(os.tmpdir(),'e3b41-before-'));t.after(()=>fs.rmSync(base,{recursive:true,force:true}));
  fs.mkdirSync(path.join(base,'src'));const prefix='packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/';
