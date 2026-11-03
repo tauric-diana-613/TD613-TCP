@@ -1,0 +1,38 @@
+✔ real source-free #1605 initializer creates empty 44-declaration chamber, not a product admission (13.052058ms)
+✔ all 12 SRC-contributed family names match the exact #1605 method registry, and distinct paths execute (27.401789ms)
+✔ five question families select source-appropriate authority; false-twin vocabulary does not promote wrong surface (10.507376ms)
+✔ formal nine-layer cartography is separate from eight reader routes and typed graph traversal never lifts (8.30397ms)
+✔ two predecessors to one destination block unique ancestry; field-to-embedded-program stays typed (9.392017ms)
+✔ original #1605 semantic compiler runs source-declared roles; two-hop path does not become direct evidence (7.069722ms)
+✔ role-based conservation reports source-bound claim preservation and role-specific omissions without scientific promotion (7.209723ms)
+✔ exact Explore: routing and Spanish recurrence remain reader navigation, hostile ambiguous and near matches are refused (7.490229ms)
+✔ seven F/N/G subsets exist as a declared prospective plan; no triple-only SRC emergence earned (9.178323ms)
+✔ independent synthetic receipt, wrong epoch/rights, source tamper, replay and restart fail closed (11.027082ms)
+✔ interrupted synthetic admission does not regenerate evidence or silently promote real sources (8.372093ms)
+✔ Em-adjacent source-bound span and prospective controls execute without Em parity or material admission (7.293961ms)
+✔ six source-matched #1605 portable-native oracle/recipient pairs execute through distinct imports; transport executes zero (11.046491ms)
+✔ missing admitted historical authority changes answer; invented question must abstain without provenance surface (7.785846ms)
+✔ all seven pinned native modules are verified before synthetic chamber initialization; tamper fails (3.035385ms)
+✔ missing rights and matching type-local fingerprints do not confer source or scientific identity (7.188031ms)
+✔ native Python differential native_plain_later (157.093919ms)
+✔ native Python differential native_plain_preexisting (147.142687ms)
+✔ native Python differential colon_variant_negative (120.050277ms)
+✔ native Python differential spanish_exact (124.367539ms)
+✔ native rankings retain exact twins, near-title lexical candidates and chronological ambiguity (243.934904ms)
+✔ lexical near-title and earlier lexical candidate remain human-review states (258.206598ms)
+✔ Spanish accentless false twin remains lexical, never exact or host identity (138.641927ms)
+✔ source withdrawal produces an executed unresolved result and host scope is preserved (257.148958ms)
+✔ normalization, title tie order, truncation and source self-exclusion match native (157.340268ms)
+✔ integrity, rights, coordinate and G_GHOST negatives refuse before routing (3.212103ms)
+✔ Python casefold and submillisecond chronology survive the recipient (113.105104ms)
+✔ native token trimming preserves leading numeric and plus characters (140.744163ms)
+✔ archived B4 recipient reproduces the original source-body compatibility failure (3425.017011ms)
+✔ colon route table remains explicitly an extension (0.189658ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5467.127994
