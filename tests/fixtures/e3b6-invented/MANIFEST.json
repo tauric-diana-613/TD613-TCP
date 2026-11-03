@@ -1,0 +1,15 @@
+{
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "files": [
+    {
+      "path": "EXPECTATIONS.json",
+      "sha256": "51d52e0a1851e7884173a80a139db3d7bb62d2648d21534fa6291f8b9a8fb920",
+      "bytes": 672
+    },
+    {
+      "path": "em-fixture.json",
+      "sha256": "76b6a0346ba2609a475edbf87e0a044ba32117d91145f3e6b0ad0506b7555ef5",
+      "bytes": 12475
+    }
+  ]
+}
