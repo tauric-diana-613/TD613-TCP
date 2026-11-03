@@ -227,3 +227,31 @@ test('missing admitted historical authority changes answer; invented question mu
  assert.equal(wrong.result.status,'ABSTAIN_SURFACE_NOT_ADMITTED');
  assert.equal(wrong.result.chosen,null);
 });
+
+test('all seven pinned native modules are verified before synthetic chamber initialization; tamper fails',async t=>{
+ const {checkPinnedSeedFiles,PINNED_SEED_BLOBS}=await import('../src/src-compositional-v01.mjs');
+ const {fileURLToPath}=await import('node:url');
+ const seed=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../seed');
+ assert.equal(Object.keys(PINNED_SEED_BLOBS).length,7);
+ assert.equal(checkPinnedSeedFiles(seed).verified_files,7);
+ const temp=fs.mkdtempSync(path.join(os.tmpdir(),'e3b4-seed-corrupt-'));
+ t.after(()=>fs.rmSync(temp,{recursive:true,force:true}));
+ const altered=path.join(temp,'seed');fs.cpSync(seed,altered,{recursive:true});
+ fs.appendFileSync(path.join(altered,'atelier-parity-operators-v02.mjs'),'\n// invented tamper');
+ assert.throws(()=>checkPinnedSeedFiles(altered),/SOURCE_PINNED_BLOB_MISMATCH/);
+ await assert.rejects(()=>initializeEmptyChamber(path.join(temp,'not-created'),{seedDir:altered}),/SOURCE_PINNED_BLOB_MISMATCH/);
+ assert.equal(fs.existsSync(path.join(temp,'not-created')),false);
+});
+
+test('missing rights and matching type-local fingerprints do not confer source or scientific identity',async t=>{
+ const {c,fixture}=await chamber(t);
+ const bad=structuredClone(fixture);delete bad.rights;
+ const id='FIXTURE-SRC-NO-RIGHTS',bytes=Buffer.from(JSON.stringify(bad));
+ assert.throws(()=>stageSynthetic(c,{sourceId:id,fixture:bad,receipt:makeTestWitness({sourceId:id,bytes})}),/WRONG_EPOCH_RIGHTS_OR_SOURCE_CLASS/);
+ const a=fixture.identity[0], b={...a};
+ const r=compareTypeIdentity(a,b);
+ assert.equal(r.status,'TYPE_LOCAL_SIGNATURE_MATCH');
+ assert.equal(r.type_local_match,true);
+ assert.equal(r.same_object_admitted,false);
+ assert.equal(r.scientific_identity_established,false);
+});
