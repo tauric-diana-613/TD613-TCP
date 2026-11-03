@@ -38,7 +38,7 @@ export const PINNED_SEED_BLOBS=Object.freeze({
 export function checkPinnedSeedFiles(seedDir=SEED){
  for(const [filename,expected] of Object.entries(PINNED_SEED_BLOBS)){
   const pathname=path.join(seedDir,filename);ok(fs.existsSync(pathname)&&fs.statSync(pathname).isFile()&&!fs.lstatSync(pathname).isSymbolicLink(),'PINNED_SOURCE_FILE_MISSING');
-  const raw=fs.readFileSync(pathname);const actual=createHash('sha1').update(Buffer.from('blob '+raw.length+'\\0')).update(raw).digest('hex');
+  const raw=fs.readFileSync(pathname);const actual=createHash('sha1').update(Buffer.from('blob '+raw.length+'\0')).update(raw).digest('hex');
   ok(actual===expected,'SOURCE_PINNED_BLOB_MISMATCH:'+filename);
  }
  return {verified_files:7,source_identity:'EXACT_1605_GIT_BLOBS',preimport_authority_verified:false};
