@@ -24,6 +24,25 @@ const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const utf=x=>Buffer.from(JSON.stringify(x),'utf8');
 const root=path.dirname(fileURLToPath(import.meta.url));
 const SEED=path.resolve(root,'../seed');
+// Git blobs are checked against the exact #1605 source identities. This is a
+// local source-custody check, NOT a pre-import or external trust-root signature.
+export const PINNED_SEED_BLOBS=Object.freeze({
+ 'atelier-core-v02.mjs':'48a8f0eaa224e9850897a91028dbb63ab25c70ad',
+ 'atelier-scaffold-v02.mjs':'c1e541cb84c37d105642535c52c12a45c674f1ff',
+ 'atelier-method-v0.2-candidate.json':'471048d73dac00f7b419b28d168f75567e89f150',
+ 'atelier-parity-operators-v02.mjs':'39ff91ae97a1064be33dbff210d1fb2a72116d81',
+ 'atelier-mechanism-discrimination-v02.mjs':'ed7866467ab030a56373fc92d4b87bbf9bab3c00',
+ 'atelier-prospective-controls-v02.mjs':'5e1a439e9c9abb94c1dac4d9320f9a3eb41d84ed',
+ 'atelier-semantic-polycompiler-v02.mjs':'b0b607dd19a5c655b42139ee53be3ae9c040a748'
+});
+export function checkPinnedSeedFiles(seedDir=SEED){
+ for(const [filename,expected] of Object.entries(PINNED_SEED_BLOBS)){
+  const pathname=path.join(seedDir,filename);ok(fs.existsSync(pathname)&&fs.statSync(pathname).isFile()&&!fs.lstatSync(pathname).isSymbolicLink(),'PINNED_SOURCE_FILE_MISSING');
+  const raw=fs.readFileSync(pathname);const actual=createHash('sha1').update(Buffer.from('blob '+raw.length+'\\0')).update(raw).digest('hex');
+  ok(actual===expected,'SOURCE_PINNED_BLOB_MISMATCH:'+filename);
+ }
+ return {verified_files:7,source_identity:'EXACT_1605_GIT_BLOBS',preimport_authority_verified:false};
+}
 export const EPOCH='SRC-E3B4-INVENTED-20261102';
 export const RIGHTS='INVENTED_SOURCE_FREE_PUBLIC_METADATA';
 export const FIVE=['Q_place','Q_history','Q_bridge','Q_type','Q_reader'];
@@ -72,6 +91,7 @@ function validFixture(s){
 }
 export async function initializeEmptyChamber(dir,{id='SRC_E3B4',seedDir=SEED}={}){
  ok(/^[A-Z][A-Z0-9_]{2,63}$/.test(id),'ATELIER_ID_INVALID');
+ checkPinnedSeedFiles(seedDir);
  const target=safeDir(dir);fs.mkdirSync(target,{recursive:true});
  // Initialize the authentic #1605 scaffold in a detached copied seed directory.
  const isolatedSeed=path.join(target,'SEED');fs.cpSync(seedDir,isolatedSeed,{recursive:true,errorOnExist:true});
@@ -158,7 +178,7 @@ export function compareTypeIdentity(a,b){
  if(!DISCRIMINANTS[t]||b?.entity_type!==t)return {status:'HELD_AMBIGUOUS_OR_DIFFERENT_TYPE',same_object_admitted:false};
  const keys=DISCRIMINANTS[t];const complete=keys.every(k=>is(a[k])&&is(b[k]));
  if(!complete)return {status:'HELD_MISSING_TYPE_DISCRIMINANT',required:keys,same_object_admitted:false};
- const same=keys.every(k=>a[k]===b[k]);return {status:same?'TYPE_LOCAL_SIGNATURE_MATCH':'TYPE_LOCAL_FALSE_TWIN',same_object_admitted:same&&t!=='SIGNATURE',
+ const same=keys.every(k=>a[k]===b[k]);return {status:same?'TYPE_LOCAL_SIGNATURE_MATCH':'TYPE_LOCAL_FALSE_TWIN',type_local_match:same,same_object_admitted:false,
   // matched signatures are shared occurrences, not cross-host scientific identity
   required:keys,scientific_identity_established:false};
 }
