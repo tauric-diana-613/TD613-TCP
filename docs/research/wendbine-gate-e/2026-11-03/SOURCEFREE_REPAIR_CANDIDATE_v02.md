@@ -24,14 +24,14 @@ Frozen baseline to preserve:
 4. **GE-R04:** bind source creation, edit/retrieval coordinates, provider, body/media flags and capture/version clocks; reject incompatible same-observation-time current versions.
 5. **GE-R05 (partial):** require manifest-linked PRIVATE_ONLY rights, a caller-supplied independent public epoch trust assertion and an explicit local query authorization predicate. Full host security, real rights grants and durable withdrawal remain **HELD**.
 6. **GE-Q01:** case-sensitive exact byte matching with original UTF-8 offsets and half-open byte spans. Case-folded search remains unsupported until independently verified original-offset maps exist.
-7. **GE-Q02:** enumerate all matching occurrences and date records with bounded presentation pages, full cardinalities and HMAC-authenticated query/epoch/dataset-bound cursors. Source-specific denied reads report rights gaps rather than complete zero.
+7. **GE-Q02:** enumerate all matching occurrences (including overlapping UTF-8 matches) and date records with bounded presentation pages, full cardinalities and HMAC-authenticated query/epoch/dataset-bound cursors. Source-specific denied reads report rights gaps rather than complete zero.
 8. **GE-Q03 (partial):** verify a reopened JSONL byte buffer against an **independently supplied** SHA-256, length, count, and exact epoch; detect tampering/truncation. This is a primitive, not a transactional host writer or independent trust-root implementation.
 
 ## How to exercise
 
 `node --test tests/wendbine-gatee-sourcefree-v02.test.mjs`
 
-Ten source-free challenge groups passed locally under **Node 22.16.0** before publication. The Git object identities must be compared to the tested local bytes, and **independent exact-head CI/review is required** before acceptance. A passing test means only that the named synthetic assertions exercised the candidate.
+Fourteen source-free challenge groups passed locally under **Node 22.16.0** before publication. The Git object identities must be compared to the tested local bytes, and **independent exact-head CI/review is required** before acceptance. A passing test means only that the named synthetic assertions exercised the candidate.
 
 ## Required negative acceptance before any real restoration
 
@@ -39,13 +39,13 @@ Ten source-free challenge groups passed locally under **Node 22.16.0** before pu
 
 **Q03 durable query:** close/reopen using a separately anchored receipt and recheck the index before every session; test rights withdrawal and stale cursors after changing the eligible source set. The current query cursor binds **data and query**, but per-session authorization changes are an external-host responsibility. Do not infer end-to-end rights security from these pure functions.
 
-**Producer/validator schema parity:** run independent, source-free fixtures with exact public capture/v2 and version-observation shapes, hash-only title projections, same-time archive conflicts and backfill/edited-state cases. The current ten tests are not a complete correctness proof.
+**Producer/validator schema parity:** run independent, source-free fixtures with exact public capture/v2 and version-observation shapes, hash-only title projections, same-time archive conflicts and backfill/edited-state cases. The current fourteen tests are not a complete correctness proof.
 
 **Historical coverage:** source acquisition begins September 9, 2026. Prior history, comments and offsite media require separately scoped lawful acquisition. The November 2 cumulative sealed epoch should be retained. Incremental chronological sync with bounded overlap and backfill is a separate engineering track, not part of this PR.
 
 ## Governing dispositions
 
-`SOURCE_FREE_KERNEL_TESTS_10_OF_10_PASS` (locally executed; exact-head CI unobserved at creation)
+`SOURCE_FREE_KERNEL_TESTS_14_OF_14_PASS` (locally executed; exact-head CI unobserved at creation)
 
 `FULL_RESTORER_NOT_COMMISSIONED_HERE`
 
