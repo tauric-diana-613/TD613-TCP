@@ -1,0 +1,18 @@
+{
+  "finding": "B9-F01",
+  "expected_product": "TD613_UNIVERSAL_ATELIER_B8_CANDIDATE",
+  "actual_product": "TD613_UNIVERSAL_ENCYCLOPEDIA_B8_CANDIDATE",
+  "expected_receipt": "39d30186b8de4e5e7637e2c0ea6bd723f430c0c0a99d1451bb0c666b439e01e0",
+  "actual_receipt": "UNVALIDATED_RECEIPT",
+  "family": "TD613_REFERENCE",
+  "status": "EXECUTED",
+  "real_source_authority": false,
+  "scientific_authority": false
+}
+{
+  "finding": "B9-F02",
+  "expected": "Accessor refused without invoking getter",
+  "getter_calls": 3,
+  "status": "EXECUTED",
+  "source_authorized": false
+}

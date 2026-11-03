@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "reproducer_sha256": "16282510387a92fdc0b24030a311321537233431a65b9136970222ea2cfa4a66",
+  "source_head": "b9bf0df0b06edf82b0d4c3d910fec8fd9405209a",
+  "source_tree": "f3e644d4fb5db58df9126e92a73c3d730663dc2c",
+  "stdout_sha256": "002b5b93ebdc21d0ddbc8d8453aad21723cb013885715d2fcde119dee5522116",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
