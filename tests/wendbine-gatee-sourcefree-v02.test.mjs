@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
-import {validateSourceFree,queryLocalPage,verifyReopenedJsonl} from './wendbine-gatee-sourcefree-v02.mjs';
+import {validateSourceFree,queryLocalPage,verifyReopenedJsonl} from '../scripts/wendbine-gatee-sourcefree-v02.mjs';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const b=s=>Buffer.from(s,'utf8');
 const capid=c=>'wendbine:capture:'+sha([c.source_id,c.title_sha256_utf8,c.body_sha256_utf8,c.observed_at].join('\x1f')).slice(0,24);
