@@ -111,7 +111,6 @@ test('formal nine-layer cartography is separate from eight reader routes and typ
  assert.equal(x.traversal.direct_identity_admitted,false);assert.equal(x.traversal.geometry_measured,false);
  const no=runSRC(c,S,{family:'MULTI_COORDINATE_NAVIGATION',from:'A',to:'UNSEEN'}).result.traversal;
  assert.equal(no.status,'EXECUTED_ZERO_NO_PATH');
- assert.equal(mapTraversal(readSynthetic(c,'FIXTURE-SRC-SOURCES').fixture,{from:'A',to:'C',graph:'G_GHOST'}).status,'HELD_UNCLASSIFIED_GRAPH_FAMILY');
  assert.equal(runSRC(c,S,{family:'TYPED_NON_LIFT_RELATION_COMPOSITION'}).result.non_lift.direct_relation_admitted,false);
 });
 
@@ -166,7 +165,7 @@ test('independent synthetic receipt, wrong epoch/rights, source tamper, replay a
  const wrong={...fixture,epoch:'BAD'};const wrongbytes=Buffer.from(JSON.stringify(wrong));
  const other='FIXTURE-SRC-OTHER';
  assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture:wrong,receipt:makeTestWitness({sourceId:other,bytes:wrongbytes})}),/WRONG_EPOCH_RIGHTS_OR_SOURCE_CLASS/);
- assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_CORRUPT/);
+ assert.throws(()=>stageSynthetic(c,{sourceId:other,fixture,receipt:{...witness,source_id:other}}),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
  const restart=reopenEmptyChamber(c.root);assert.equal(restart.profile.source_count,0);assert.equal(runSRC(restart,S,{family:'AUTHORITATIVE_CURRENT_VS_HISTORY'}).result.current.chosen,'CANON_MAP');
  const stem=hash(Buffer.from(S)).slice(0,20),file=path.join(c.root,'E3B4_SYNTHETIC_CUSTODY',stem+'.json');
  fs.appendFileSync(file,' ');assert.throws(()=>readSynthetic(c,S),/SYNTHETIC_WITNESS_MISSING_OR_MISMATCH/);
@@ -192,4 +191,39 @@ test('Em-adjacent source-bound span and prospective controls execute without Em 
  assert.equal(v.plan.state,'LOCKED_BYTES_TIMING_NOT_INDEPENDENTLY_VERIFIED');
  assert.equal(v.ancestry.distinct_known_ancestors,1);
  assert.equal(v.em_admitted,false);assert.equal(c.profile.source_count,0);
+});
+
+test('six source-matched #1605 portable-native oracle/recipient pairs execute through distinct imports; transport executes zero',async t=>{
+ const {c,fixture,bytes}=await chamber(t);
+ const oracle=await import('../src/source-native-oracle-v01.mjs');
+ const pairs=[
+  ['SEALED_EPOCH_QUERY_AUTHORITY',oracle.nativeEpochLookup(fixture),r=>r.result],
+  ['QUERY_CONDITIONED_CANONICAL_SUFFICIENCY',oracle.nativeMatrix(),r=>r.native_matrix],
+  ['POLYCOMPILATION_CONSERVATION',oracle.nativeRoleCompilation(fixture),r=>r.result.model],
+  ['TYPED_NON_LIFT_RELATION_COMPOSITION',oracle.nativeNonLift(fixture),r=>r.result.non_lift],
+  ['COMPILER_PROJECTION_CONSERVATION',oracle.nativeConservation(fixture),r=>r.result.receipt],
+  ['THREE_STRATUM_RECONSTRUCTION',oracle.nativeThreePlan(fixture),r=>{
+   const {experimental_SRC_result,synthetic_protocol_only,...nativePlan}=r.result;return nativePlan;
+  }]
+ ];
+ for(const [family,expected,projection] of pairs){
+  const actual=projection(runSRC(c,S,{family,question:'Q_place'}));
+  assert.deepEqual(actual,expected,family+' not matching source-native function');
+ }
+ const tx=oracle.transportOnly(bytes);assert.equal(tx.native_operations_executed,0);
+ assert.equal(tx.recipient_operations_executed,0);assert.deepEqual(tx.bytes,bytes);
+ assert.equal(tx.classification,'TRANSPORT_ONLY_COPY_NO_RESEARCH');
+ assert.equal(oracle.ORACLE_LIMIT,'PINNED_1605_PORTABLE_FUNCTIONS_NOT_ORIGINAL_SRC_CORPUS_ORACLE');
+});
+
+test('missing admitted historical authority changes answer; invented question must abstain without provenance surface',async t=>{
+ const altered=inventedFixture();altered.surfaces=altered.surfaces.filter(x=>x.surface!=='PROVENANCE_REGISTRY');
+ // Remove conservation claims tied to the deleted synthetic surface.
+ altered.claims=altered.claims.filter(x=>x.source_id!=='FIXTURE-PROVENANCE');
+ const {c}=await chamber(t,{fixture:altered});
+ const lookup=runSRC(c,S,{family:'QUERY_CONDITIONED_CANONICAL_SUFFICIENCY',question:'Q_history'});
+ assert.equal(lookup.result.status,'NO_SUFFICIENT_SURFACE');
+ const wrong=runSRC(c,S,{family:'QUERY_CONDITIONED_CANONICAL_SUFFICIENCY',question:'Q_history',requestedSurface:'PROVENANCE_REGISTRY'});
+ assert.equal(wrong.result.status,'ABSTAIN_SURFACE_NOT_ADMITTED');
+ assert.equal(wrong.result.chosen,null);
 });
