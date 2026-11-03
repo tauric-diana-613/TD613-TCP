@@ -132,6 +132,7 @@ export function selectedSurface(q,{requested=null,available=SURFACES}={}){
  ok(FIVE.includes(q),'UNKNOWN_RESEARCH_QUESTION');
  const m=SURFACE_MATRIX[q];const usable=available.filter(s=>m[s]==='SUFFICIENT');
  if(requested!==null){ok(SURFACES.includes(requested),'UNREGISTERED_SURFACE');
+  if(!available.includes(requested))return {question:q,requested,chosen:null,status:'ABSTAIN_SURFACE_NOT_ADMITTED',sufficiency:'UNOBSERVED',authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};
   return {question:q,requested,chosen:m[requested]==='SUFFICIENT'?requested:null,
    status:m[requested]==='SUFFICIENT'?'SOURCE_FREE_SURFACE_SELECTED':'ABSTAIN_WRONG_AUTHORITY_SURFACE',
    sufficiency:m[requested],authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};}
@@ -144,6 +145,7 @@ export function nativeSufficiencyMatrix(){
 }
 export function mapTraversal(f,{from,to,graph='G_CANON',maxHops=4}){
  ok(is(from)&&is(to)&&Number.isInteger(maxHops)&&maxHops>=1&&maxHops<=5,'PATH_QUERY_INVALID');
+ if(!['G_CANON','G_PROVENANCE','G_READER','G_CFIF'].includes(graph))return {from,to,graph,paths:[],status:'HELD_UNCLASSIFIED_GRAPH_FAMILY',direct_identity_admitted:false,direct_causation_admitted:false,direct_genealogy_admitted:false,geometry_measured:false};
  const admissible=f.edges.filter(e=>e.graph===graph&&e.witness_id&&e.evidence_class==='INVENTED_SOURCE_FREE');
  const paths=[],walk=(at,used,nodes)=>{if(used.length>=maxHops)return;for(const e of admissible.filter(e=>e.from===at)){if(nodes.has(e.to))continue;const steps=[...used,e];if(e.to===to){paths.push({edges:steps.map(x=>x.edge_id),relations:steps.map(x=>x.relation),source_coordinates:steps.map(x=>x.source_id),hop_count:steps.length});}else walk(e.to,steps,new Set([...nodes,e.to]));}};
  walk(from,[],new Set([from]));return {from,to,graph,paths,status:paths.length?'WITNESSED_TYPED_PATH':'EXECUTED_ZERO_NO_PATH',
