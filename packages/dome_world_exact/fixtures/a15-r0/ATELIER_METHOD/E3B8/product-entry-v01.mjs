@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash,randomUUID} from 'node:crypto';
+import {requestAction,snapshotRequest} from './request-data-v01.mjs';
 
 export const SCHEMA='td613.universal-atelier-prospective/v0.1';
 export const ATELIER='TD613_UNIVERSAL_ATELIER_B8_CANDIDATE';
@@ -56,6 +57,7 @@ function parameters(p){need(plain(p),'B8_PARAMETERS_OBJECT');const visit=x=>{if(
 
 /** The only candidate public entry. Reopen requires caller-retained root identity. */
 export async function openCandidateProduct(options={}){
+ options=snapshotRequest(options,['workspace','mode','create','root_receipt']);
  keys(options,['workspace','mode','create','root_receipt']);
  const {workspace,mode='PRODUCT_RECIPIENT',create=false}=options;
  need(modes.includes(mode),'B8_MODE_UNAVAILABLE');need(typeof create==='boolean','B8_CREATE_FLAG_TYPE');directory(workspace);
@@ -101,14 +103,20 @@ export async function openCandidateProduct(options={}){
   if(q.citation)need(q.citation.product_id===q.product_id&&q.citation.source_id===q.source_id&&q.citation.source_receipt===q.receipt,'B8_CITATION_PRODUCT_OR_SOURCE');
   const api=await implementation(),result=await api.request({...delegate(r),action:'execute',operation:q.operation,params:q.params??{},...(q.citation?{citation:q.citation.native_citation}:{})});
   const out={schema:'td613.b8-candidate-execution/v1',product_id:q.product_id,historical_product:false,instance_id:m.instance_id,mode,family:r.family,source_id:r.source_id,source_receipt:q.receipt,source_sha256:r.sha256,epoch:r.epoch,rights,evidence_class:evidence,declared:true,implemented:!['three_stratum','NATIVE_EM_CORPUS'].includes(q.operation),executed_with_synthetic:result.execution_count>0,source_authorized:false,native_corpus_verified:false,scientifically_validated:false,independent_durable_custody_credit:false,independent_empirical_replications:0,delegate:result,status:result.status,execution_count:result.execution_count};
-  if(q.operation==='cite'&&result.result)out.citation={product_id:q.product_id,source_id:q.source_id,source_receipt:q.receipt,native_citation:result.result};
+  // Pinned native libraries can return VM-realm objects. Emit their trusted JSON
+  // citation value as host plain data so it can reenter the strict request domain.
+  if(q.operation==='cite'&&result.result)out.citation={product_id:q.product_id,source_id:q.source_id,source_receipt:q.receipt,native_citation:JSON.parse(JSON.stringify(result.result))};
   return out;
  }
  async function request(q={}){
   // Read only the action descriptor first: forbidden operations never inspect a supplied path/profile/bytes.
-  need(plain(q),'B8_PLAIN_REQUEST_REQUIRED');const action=Object.getOwnPropertyDescriptor(q,'action');need(action&&'value'in action&&typeof action.value==='string','B8_ACTION_REQUIRED');
-  if(denied.has(action.value))fail('B8_REAL_SOURCE_OPERATION_DISABLED');
-  need(fields[action.value],'B8_ACTION_UNAVAILABLE');keys(q,fields[action.value]);safe();
+  const action=requestAction(q);
+  if(denied.has(action))fail('B8_REAL_SOURCE_OPERATION_DISABLED');
+  need(fields[action],'B8_ACTION_UNAVAILABLE');
+  // All subsequent branches, delegates and output attribution use this owned
+  // snapshot, completed before the first asynchronous suspension.
+  q=snapshotRequest(q,fields[action],{stagingBytes:action==='stageSyntheticFixture'});
+  keys(q,fields[action]);safe();
   if(q.action==='inspectAdmissionReadiness')return {...clone(policy),runtime_enforcement_implemented:true,scope:'TEST_ONLY_PUBLIC_ENTRY',real_source_operations:'HARD_DISABLED_NO_PERMIT_PATH',external_custody:'HELD',production_privacy_security:'HELD'};
   if(q.action==='describeFixtures')return catalog.fixtures.map(({bytes_base64,...f})=>({...clone(f),product_id:specs[f.family].product,epoch:specs[f.family].epoch,rights}));
   if(q.action==='status'){

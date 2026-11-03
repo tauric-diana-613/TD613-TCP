@@ -147,6 +147,25 @@ jobs:
           mkdir -p artifacts/e3b8
           sha256sum packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/implementation-manifest.json
           TD613_E3B8_EVIDENCE_OUTPUT=artifacts/e3b8/observed-product-entry.json node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.test.mjs | tee artifacts/e3b8/b8-tests.txt
+      - name: B91 request binding and descriptor-safe hostile conformance
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD 'HEAD^{tree}'
+          node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs
+          mkdir -p artifacts/e3b91
+          sha256sum packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/implementation-manifest.json
+          node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/verify-original-reproducer.mjs > artifacts/e3b91/unchanged-reproducer.json
+          TD613_E3B91_EVIDENCE_OUTPUT=artifacts/e3b91/hostile-observations.json node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs | tee artifacts/e3b91/b91-tests.txt
+      - name: Preserve B91 raw source-free request conformance
+        if: always() && hashFiles('artifacts/e3b91/hostile-observations.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: b91-request-conformance-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/e3b91
+          retention-days: 7
+          if-no-files-found: error
       - name: Preserve B8 source-free public-entry observations
         if: always() && hashFiles('artifacts/e3b8/observed-product-entry.json') != ''
         uses: actions/upload-artifact@v4

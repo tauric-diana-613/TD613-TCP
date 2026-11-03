@@ -197,9 +197,15 @@
     },
     {
       "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
-      "sha256": "0ca9d747df5f738d1d694a4389590c75a0b04dcb1d36921d75f3ae03bc528bf6",
-      "git_blob": "d71be90f92b4a9c760645984f67b8ada92f463dd",
-      "bytes": 18392
+      "sha256": "9353aec148adad3aee24bba78c9e2cadc223d3c858a6c3ac24ff5a6943c7f64e",
+      "git_blob": "9c531f64e21f2a89d6ad98162cc43b71f7fd42ec",
+      "bytes": 18799
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs",
+      "sha256": "c798cbae6b2d1782ec31dc4882194779c34828d261251a54f35bc7d503462e26",
+      "git_blob": "9021b9aeda7be726146de9169da4a1c2972c5b1c",
+      "bytes": 5416
     }
   ],
   "source_pins": {
@@ -212,5 +218,6 @@
     "original_src": "638bb78523fa7f156c7c5e5243d71e5df26cb0e0",
     "em_software": "50c35cceb50f483c7c36a1497fed9de9377b89d9",
     "em_original_software_coordinate": "70b5a0f9e94626cba6068f41c6117e7978800bbd"
-  }
+  },
+  "request_boundary_revision": "B91_OWNED_PLAIN_DATA_SNAPSHOT_V1"
 }
