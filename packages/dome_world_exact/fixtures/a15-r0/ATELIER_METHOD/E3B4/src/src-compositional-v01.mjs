@@ -132,7 +132,6 @@ export function selectedSurface(q,{requested=null,available=SURFACES}={}){
  ok(FIVE.includes(q),'UNKNOWN_RESEARCH_QUESTION');
  const m=SURFACE_MATRIX[q];const usable=available.filter(s=>m[s]==='SUFFICIENT');
  if(requested!==null){ok(SURFACES.includes(requested),'UNREGISTERED_SURFACE');
-  if(!available.includes(requested))return {question:q,requested,chosen:null,status:'ABSTAIN_SURFACE_NOT_ADMITTED',sufficiency:'UNOBSERVED',authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};
   return {question:q,requested,chosen:m[requested]==='SUFFICIENT'?requested:null,
    status:m[requested]==='SUFFICIENT'?'SOURCE_FREE_SURFACE_SELECTED':'ABSTAIN_WRONG_AUTHORITY_SURFACE',
    sufficiency:m[requested],authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};}
@@ -145,8 +144,8 @@ export function nativeSufficiencyMatrix(){
 }
 export function mapTraversal(f,{from,to,graph='G_CANON',maxHops=4}){
  ok(is(from)&&is(to)&&Number.isInteger(maxHops)&&maxHops>=1&&maxHops<=5,'PATH_QUERY_INVALID');
- if(!['G_CANON','G_PROVENANCE','G_READER','G_CFIF'].includes(graph))return {from,to,graph,paths:[],status:'HELD_UNCLASSIFIED_GRAPH_FAMILY',direct_identity_admitted:false,direct_causation_admitted:false,direct_genealogy_admitted:false,geometry_measured:false};
- const admissible=f.edges.filter(e=>e.graph===graph&&e.witness_id&&e.evidence_class==='INVENTED_SOURCE_FREE');
+ const sourceIds=new Set(f.surfaces.map(s=>s.source_id));
+ const admissible=f.edges.filter(e=>e.graph===graph&&e.witness_id&&sourceIds.has(e.source_id)&&e.evidence_class==='INVENTED_SOURCE_FREE');
  const paths=[],walk=(at,used,nodes)=>{if(used.length>=maxHops)return;for(const e of admissible.filter(e=>e.from===at)){if(nodes.has(e.to))continue;const steps=[...used,e];if(e.to===to){paths.push({edges:steps.map(x=>x.edge_id),relations:steps.map(x=>x.relation),source_coordinates:steps.map(x=>x.source_id),hop_count:steps.length});}else walk(e.to,steps,new Set([...nodes,e.to]));}};
  walk(from,[],new Set([from]));return {from,to,graph,paths,status:paths.length?'WITNESSED_TYPED_PATH':'EXECUTED_ZERO_NO_PATH',
   direct_identity_admitted:false,direct_causation_admitted:false,direct_genealogy_admitted:false,
@@ -221,7 +220,9 @@ export function runSRC(chamber,sourceId,{family,question,requestedSurface,curren
  case 'TYPE_CONDITIONED_CROSS_SURFACE_IDENTITY':return {family,result:compareTypeIdentity(compareA??f.identity[0],compareB??f.identity[1]),scope:STATUS_LIMIT};
  case 'DIACHRONIC_RECLASSIFICATION':return {family,result:diachronic(f,currentId??'CURRENT-HUB'),scope:STATUS_LIMIT};
  case 'TYPED_NON_LIFT_RELATION_COMPOSITION':{
-  const [a,b]=f.typed_edges;return {family,result:{non_lift:nonLiftSafe(a,b),path:mapTraversal(f,{from:'A',to:'C',graph:'G_CANON'})},scope:STATUS_LIMIT};}
+  const [a,b]=f.typed_edges;const admitted=new Set(f.surfaces.map(x=>x.source_id));
+  if(!a||!b||![a,b].every(x=>admitted.has(x.source_id)))return {family,result:{status:'HELD_UNBOUND_TYPED_EDGE',direct_relation_admitted:false},scope:STATUS_LIMIT};
+  return {family,result:{non_lift:nonLiftSafe(a,b),path:mapTraversal(f,{from:'A',to:'C',graph:'G_CANON'})},scope:STATUS_LIMIT};}
  case 'DEFERRED_SEMANTIC_ADDRESS_RESOLUTION':return {family,result:explore(f,{destination:destination??'LA CARTOGRAFÍA DEL UMBRAL',signature:signature??'Tú puedes clonarme, pero no tienes mis genes.'}),scope:STATUS_LIMIT};
  case 'PROJECTIVE_ROUTING_HOSTILE_NULLS':return {family,result:hostileProjectiveNulls(f),scope:STATUS_LIMIT};
  case 'THREE_STRATUM_RECONSTRUCTION':return {family,result:threeStratumPlan(f),scope:STATUS_LIMIT};
