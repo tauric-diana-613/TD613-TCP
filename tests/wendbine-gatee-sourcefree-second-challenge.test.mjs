@@ -10,3 +10,8 @@ test('independent GE-Q02: withdrawal invalidates issued cursor',()=>{
  assert.ok(p.next_cursor);
  assert.throws(()=>queryLocalPage({...base,cursor:p.next_cursor,allowSource:r=>r.source_id!==rows[0].source_id}),/STALE_OR_TAMPERED_CURSOR|STALE_OR_CROSS_QUERY_CURSOR/);
 });
+test('independent GE-Q02: all overlapping exact byte occurrences are enumerated',()=>{
+ const one={...rows[0],selftext:'aaaa',body_sha256_utf8:h('aaaa')};
+ const p=queryLocalPage({...base,records:[one],term:'aa',limit:10,allowSource:()=>true});
+ assert.deepEqual(p.results.map(x=>x.start_utf8),[0,1,2]);
+});
