@@ -136,6 +136,10 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: E3-B.4.1 native Python and recipient differential replay
+        run: |
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
