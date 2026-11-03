@@ -110,3 +110,14 @@ test('public Wendbine route rejects declared private bodies and injected copied 
  const receipt=await r.admit(permitted);assert.equal(receipt.status,'RECEIVER_SOURCE_ADMITTED_SYNTHETIC');
  assert.equal((await r.execute(permitted.source_id,receipt.record_sha256)).result.typed_edges.length,1);
 });
+
+test('v0.2 private source surface refuses even when other declared public flags are false',async t=>{
+ const store=fixture(t),r=openSyntheticReceiver({repoRoot:root,store,route:W});
+ const forbidden=w();forbidden.meta.scope.surface='private Google group';
+ const envelope=make(W,'FIXTURE:PRIVATE-SURFACE',forbidden);
+ await assert.rejects(nativeProbe(root,W,envelope.original),/WENDBINE_PUBLIC_RIGHTS_REFUSED/);
+ await assert.rejects(r.admit(envelope),/WENDBINE_PUBLIC_RIGHTS_REFUSED/);
+ assert.throws(()=>r.retrieve(envelope.source_id,'0'.repeat(64)),/RECEIVER_SOURCE_ABSENT/);
+ const historicalPublic=w();historicalPublic.meta.scope.surface='public Reddit only';
+ assert.equal((await nativeProbe(root,W,JSON.stringify(historicalPublic))).result.typed_edges.length,1);
+});
