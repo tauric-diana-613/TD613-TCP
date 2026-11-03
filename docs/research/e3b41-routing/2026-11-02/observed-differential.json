@@ -1,0 +1,2867 @@
+{
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "fixtures_manifest_sha256": "0489e8fef7dd5af8e287af2337db6acb4ec456a24e5435616f396f4f02d56fea",
+  "runs": [
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-z9MxMf"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1,\n    \"UNRESOLVED_MACHINE\": 1\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-dWbyJo"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d54393eb44fda67998c5e8b3b6f748f858ca4ea6ab2598bba02a23ff117bb968",
+          "metadata_sha256": "0f1829bd9dd70d3212ef7c3bca618c3b25e03127d651ddaced7e6b0d866c90d4",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "b6618917cbdf1c1aea47f1f7b686a4c199a0383264c1267dca4804bc4df52573",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"PREEXISTING_DESTINATION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "PREEXISTING_DESTINATION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-02-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-01-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                "latency_seconds": -2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-02-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-01-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                "latency_seconds": -2678400
+              }
+            ],
+            "observation_status": "PREEXISTING_DESTINATION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d54393eb44fda67998c5e8b3b6f748f858ca4ea6ab2598bba02a23ff117bb968",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "0f1829bd9dd70d3212ef7c3bca618c3b25e03127d651ddaced7e6b0d866c90d4"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "b6618917cbdf1c1aea47f1f7b686a4c199a0383264c1267dca4804bc4df52573"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-AJqjSR"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "6a8e899eab2e6968b0fe66906d3cde097d60e9b4d81ead52f682c2e7bdec8f55",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore: collapse governance.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {},\n  \"explore_observation_count\": 0,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-0i6ERi"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Tú puedes clonarme, pero no tienes mis genes. Preface. Explore la cartografía del umbral.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "0eb2b96cfd27d42aa243cdbb3574b6641b24a30a0fccccc5cc6459f96e518cc6",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"La cartografía del umbral\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"SINGLETON_SIGNATURE\": 2\n  },\n  \"signature_group_count\": 2,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "la cartografía del umbral",
+            "normalized_token": "la cartograf a del umbral",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "La cartografía del umbral",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "La cartografía del umbral",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          },
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "la cartografía del umbral",
+            "normalized_token": "la cartograf a del umbral",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "La cartografía del umbral",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "0eb2b96cfd27d42aa243cdbb3574b6641b24a30a0fccccc5cc6459f96e518cc6"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "La cartografía del umbral",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          },
+          {
+            "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+            "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-9zvfOT"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:3",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "0b6cb720b897298efa9257e2732942f84c804aad08574c027d3f415e01b165ad",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-03-01T00:00:00Z\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:4",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "6953c44bc95faa9ea5cc5be2eea6e5133ee09ae1f1fe181717d1a9a7f4e8f83a",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"A Governance Intervention\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 4,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1,\n    \"UNRESOLVED_MACHINE\": 1\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-03-01T00:00:00Z",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 5097600
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 4,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "A Governance Intervention",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-03-01T00:00:00Z",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-03-01T00:00:00Z",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 5097600
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+              },
+              {
+                "source_id": "zenodo:3",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-3-metadata.md",
+                "metadata_sha256": "0b6cb720b897298efa9257e2732942f84c804aad08574c027d3f415e01b165ad"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 4,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "A Governance Intervention",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-03-01T00:00:00Z",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-9zvfOT"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "229e8f0498a4b3e39f9a2983a1c12d159dece6ecd9ae0eaf9820fcbd4db1e4a9",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"invalid\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:3",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "229e8f0498a4b3e39f9a2983a1c12d159dece6ecd9ae0eaf9820fcbd4db1e4a9",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"invalid\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:4",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "6953c44bc95faa9ea5cc5be2eea6e5133ee09ae1f1fe181717d1a9a7f4e8f83a",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"A Governance Intervention\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 4,\n  \"explore_classification_counts\": {\n    \"UNRESOLVED_MACHINE\": 2\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "invalid",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "TIME_UNRESOLVED",
+                "latency_seconds": null
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "invalid",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "TIME_UNRESOLVED",
+                "latency_seconds": null
+              }
+            ],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 4,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "A Governance Intervention",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "invalid",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "invalid",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "invalid",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "TIME_UNRESOLVED",
+                "latency_seconds": null
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "invalid",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "TIME_UNRESOLVED",
+                "latency_seconds": null
+              }
+            ],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "229e8f0498a4b3e39f9a2983a1c12d159dece6ecd9ae0eaf9820fcbd4db1e4a9"
+              },
+              {
+                "source_id": "zenodo:3",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-3-metadata.md",
+                "metadata_sha256": "229e8f0498a4b3e39f9a2983a1c12d159dece6ecd9ae0eaf9820fcbd4db1e4a9"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 4,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "A Governance Intervention",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "invalid",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "invalid",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-ijFK8y"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "8059e62778c4f909fa221e70bfb7712fae0c88cd9d70963ec572adbaf11ec16e",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance method.",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:e706d5de0fbe590a4b0da09b",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance method",
+            "normalized_token": "collapse governance method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.6667,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:e706d5de0fbe590a4b0da09b",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance method",
+            "normalized_token": "collapse governance method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.6667,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "8059e62778c4f909fa221e70bfb7712fae0c88cd9d70963ec572adbaf11ec16e",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-ijFK8y"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "8059e62778c4f909fa221e70bfb7712fae0c88cd9d70963ec572adbaf11ec16e",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance method.",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "1b946346596b0ac5c140dc5fca3352aeb69a097ae396466a876bcc8463a54845",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2025-01-01\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:e706d5de0fbe590a4b0da09b",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance method",
+            "normalized_token": "collapse governance method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2025-01-01",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.6667,
+                "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                "latency_seconds": -31536000
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2025-01-01",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:e706d5de0fbe590a4b0da09b",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance method",
+            "normalized_token": "collapse governance method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2025-01-01",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.6667,
+                "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+                "latency_seconds": -31536000
+              }
+            ],
+            "observation_status": "PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "8059e62778c4f909fa221e70bfb7712fae0c88cd9d70963ec572adbaf11ec16e",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "1b946346596b0ac5c140dc5fca3352aeb69a097ae396466a876bcc8463a54845"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2025-01-01",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-Lf7KEl"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Tú puedes clonarme, pero no tienes mis genes. Preface. Explore la cartografía del umbral.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "26f5c5b712135f40f0b13d91eb09b5dba73a72f0985dbd5af618a42f5727ae46",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"La cartografia del umbral\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"SINGLETON_SIGNATURE\": 2\n  },\n  \"signature_group_count\": 2,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "la cartografía del umbral",
+            "normalized_token": "la cartograf a del umbral",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "La cartografia del umbral",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.75,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "La cartografia del umbral",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          },
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:74fbb19d5cfef619c279b63a",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "la cartografía del umbral",
+            "normalized_token": "la cartograf a del umbral",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "La cartografia del umbral",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "LEXICAL_OVERLAP_ONLY",
+                "token_word_coverage": 0.75,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "26f5c5b712135f40f0b13d91eb09b5dba73a72f0985dbd5af618a42f5727ae46"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "La cartografia del umbral",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          },
+          {
+            "signature_observation_id": "src-prg-signature:1a2e65b0a552d2085e2574e2",
+            "normalized_signature": "t puedes clonarme pero no tienes mis genes",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Tú puedes clonarme, pero no tienes mis genes",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-OesaYJ"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1,\n    \"UNRESOLVED_MACHINE\": 1\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 2,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-OesaYJ"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 1,\n  \"explore_classification_counts\": {\n    \"UNRESOLVED_MACHINE\": 2\n  },\n  \"explore_observation_count\": 2,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"SINGLETON_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 1,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          },
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "UNRESOLVED_MACHINE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          },
+          {
+            "explore_observation_id": "src-prg-explore:4ab1ac338f3a2f7d8b014e81",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "nowhere theory",
+            "normalized_token": "nowhere theory",
+            "machine_candidates": [],
+            "observation_status": "UNRESOLVED_MACHINE",
+            "human_disposition_required": false,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-FAZhGU"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "6936bc20307a43b2bf290d3adbf86676bcdd686917ad49f04d2ed2ed04407d26",
+          "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+          "raw_body": "Author: SR — Straße Ω. Preface. Explore\n collapse   governance IV.",
+          "raw_metadata": "{\n  \"created\": \"2026-01-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Source\",\n    \"publication_date\": \"2026-01-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:10",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:11",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:12",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+          "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+          "raw_body": "SR - Keep the trace. Abstract.\n",
+          "raw_metadata": "{\n  \"created\": \"2026-02-01T00:00:00+00:00\",\n  \"metadata\": {\n    \"title\": \"Collapse Governance: A Field\",\n    \"publication_date\": \"2026-02-01\"\n  }\n}\n"
+        },
+        {
+          "source_id": "zenodo:3",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:4",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:5",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:6",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:7",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:8",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        },
+        {
+          "source_id": "zenodo:9",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00+00:00\",\"metadata\":{\"title\":\"Collapse Governance: A Field\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 12,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"RECURRING_EXACT_SIGNATURE\": 1,\n    \"SINGLETON_SIGNATURE\": 1\n  },\n  \"signature_group_count\": 2,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:10",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:11",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:12",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:4",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:5",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:6",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 11,
+            "members": [
+              {
+                "source_id": "zenodo:10",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-10-file-0.md"
+              },
+              {
+                "source_id": "zenodo:11",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-11-file-0.md"
+              },
+              {
+                "source_id": "zenodo:12",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-12-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:5",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-5-file-0.md"
+              },
+              {
+                "source_id": "zenodo:6",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-6-file-0.md"
+              },
+              {
+                "source_id": "zenodo:7",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-7-file-0.md"
+              },
+              {
+                "source_id": "zenodo:8",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-8-file-0.md"
+              },
+              {
+                "source_id": "zenodo:9",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-9-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          },
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:16d96952087774fee069b758",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "strasse",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Straße Ω",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:2bf487a674d7f5a5f9c8e6d8",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-01-01T00:00:00+00:00",
+            "raw_token": "collapse governance",
+            "normalized_token": "collapse governance",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:10",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:11",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:12",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:2",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:3",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:4",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:5",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              },
+              {
+                "target_id": "zenodo:6",
+                "target_title": "Collapse Governance: A Field",
+                "target_created": "2026-02-01T00:00:00+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 2678400
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "6936bc20307a43b2bf290d3adbf86676bcdd686917ad49f04d2ed2ed04407d26",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810"
+              },
+              {
+                "source_id": "zenodo:10",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-10-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-10-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:11",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-11-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-11-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:12",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-12-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-12-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa"
+              },
+              {
+                "source_id": "zenodo:3",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-3-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:4",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-4-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:5",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-5-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-5-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              },
+              {
+                "source_id": "zenodo:6",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-6-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-6-metadata.md",
+                "metadata_sha256": "2f42db07c216d1c76c5c017cd59cf36417e1ce55e95bb04f7b217a5ef54bdbc2"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 11,
+            "observation_status": "RECURRING_EXACT_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:10",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-10-file-0.md"
+              },
+              {
+                "source_id": "zenodo:11",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-11-file-0.md"
+              },
+              {
+                "source_id": "zenodo:12",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-12-file-0.md"
+              },
+              {
+                "source_id": "zenodo:2",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              },
+              {
+                "source_id": "zenodo:3",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-3-file-0.md"
+              },
+              {
+                "source_id": "zenodo:4",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-4-file-0.md"
+              },
+              {
+                "source_id": "zenodo:5",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-5-file-0.md"
+              },
+              {
+                "source_id": "zenodo:6",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-6-file-0.md"
+              },
+              {
+                "source_id": "zenodo:7",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-7-file-0.md"
+              },
+              {
+                "source_id": "zenodo:8",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-8-file-0.md"
+              },
+              {
+                "source_id": "zenodo:9",
+                "source_title": "Collapse Governance: A Field",
+                "source_created": "2026-02-01T00:00:00+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-9-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          },
+          {
+            "signature_observation_id": "src-prg-signature:16d96952087774fee069b758",
+            "normalized_signature": "strasse",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-01-01T00:00:00+00:00",
+                "raw_phrase": "Straße Ω",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    },
+    {
+      "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+      "native_runner_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+      "command": [
+        "python3",
+        "/workspace/scratch/427b1641e444/td613-routing-repair/packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/native/run-projective-routing-grammar-assay.py",
+        "--self-test",
+        "--root",
+        "/tmp/e3b41-case-8ObP7O"
+      ],
+      "write_flag": false,
+      "real_src_admission": false,
+      "historical_native_labels_are_not_source_authority": true,
+      "fixture_sources": [
+        {
+          "source_id": "zenodo:1",
+          "body_sha256": "d3e4a7c00269f0baab104a07176dfeed34309b541a911cffa120b3be3fc384a3",
+          "metadata_sha256": "e4f1f609059e963881853ad0d0c652db474469614e0a849dd6c307965148d4a0",
+          "raw_body": "SR - Signature. Preface. Explore ǰ method.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00.000400+00:00\",\"metadata\":{\"title\":\"Source\",\"publication_date\":\"2026-01-01\"}}"
+        },
+        {
+          "source_id": "zenodo:2",
+          "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+          "metadata_sha256": "bd297f0f34971d7783c580264b0e53f060597bcf0bb77ed47e1a9daef1cad464",
+          "raw_body": "SR - Keep the trace. Abstract.",
+          "raw_metadata": "{\"created\":\"2026-02-01T00:00:00.000500+00:00\",\"metadata\":{\"title\":\"J Method\"}}"
+        }
+      ],
+      "native_cli_stdout": "{\n  \"atelier_snapshot_id\": \"src-20260824-p2-001\",\n  \"automatic_promotions_forbidden\": [\n    \"LATER_SEMANTIC_RESOLUTION\",\n    \"PROMISSORY_OBJECT_CONFIRMED\",\n    \"SIGNATURE_COORDINATE_AXIS_CONFIRMED\",\n    \"MACHINE_ROUTING_EFFECT_CONFIRMED\",\n    \"TOMOGRAPHY\",\n    \"HOLONOMY\",\n    \"HIDDEN_MESSAGE\",\n    \"SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS\"\n  ],\n  \"claim_ceiling\": \"This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.\",\n  \"document_count\": 2,\n  \"explore_classification_counts\": {\n    \"LATER_EXACT_RESOLUTION_CANDIDATE\": 1\n  },\n  \"explore_observation_count\": 1,\n  \"field_marker_counts\": {},\n  \"field_marker_observation_count\": 0,\n  \"next_human_steps\": [\n    \"adjudicate later exact/title-substring Explore candidates against source wording and chronology\",\n    \"blind-code structural roles before examining signature identity\",\n    \"separate pre-existing Explore destinations from future-resolving nodes\",\n    \"inspect unresolved high-frequency Explore nodes without inventing missing works\",\n    \"build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay\"\n  ],\n  \"schema_version\": \"src-projective-routing-summary/v1\",\n  \"seal_id\": \"src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a\",\n  \"signature_classification_counts\": {\n    \"SINGLETON_SIGNATURE\": 2\n  },\n  \"signature_group_count\": 2,\n  \"status\": \"BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED\"\n}\n",
+      "native": {
+        "explore": [
+          {
+            "schema_version": "src-projective-routing-explore-observation/v1",
+            "explore_observation_id": "src-prg-explore:8e3163abf4dba28c2f8aa238",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-02-01T00:00:00.000400+00:00",
+            "raw_token": "ǰ method",
+            "normalized_token": "j method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "J Method",
+                "target_created": "2026-02-01T00:00:00.000500+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 0
+              }
+            ],
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object."
+          }
+        ],
+        "signatures": [
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "J Method",
+                "source_created": "2026-02-01T00:00:00.000500+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          },
+          {
+            "schema_version": "src-projective-routing-signature-observation/v1",
+            "signature_observation_id": "src-prg-signature:1a2fc26dc7ea5a2a4748b7cb",
+            "atelier_snapshot_id": "src-20260824-p2-001",
+            "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+            "source_status": "ARCHIVE_BODY_OBSERVATION",
+            "observation_status": "SINGLETON_SIGNATURE",
+            "normalized_signature": "signature",
+            "manifestation_count": 1,
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-02-01T00:00:00.000400+00:00",
+                "raw_phrase": "Signature",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false,
+            "interpretive_limit": "Exact recurrence is counted before structural-role coding. Recurrence does not establish authorship, a fixed codebook, machine routing function, or a stable coordinate axis."
+          }
+        ]
+      },
+      "recipient": {
+        "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+        "independent_empirical_replication_count": 0,
+        "src_corpus_parity": "UNESTABLISHED",
+        "grammar_class": "ORIGINAL_SRC_EXPLORE_SENTENCE",
+        "source_rights_granted": false,
+        "scientific_identity": false,
+        "graph_promotion": false,
+        "observations": [
+          {
+            "explore_observation_id": "src-prg-explore:8e3163abf4dba28c2f8aa238",
+            "source_id": "zenodo:1",
+            "source_title": "Source",
+            "source_created": "2026-02-01T00:00:00.000400+00:00",
+            "raw_token": "ǰ method",
+            "normalized_token": "j method",
+            "machine_candidates": [
+              {
+                "target_id": "zenodo:2",
+                "target_title": "J Method",
+                "target_created": "2026-02-01T00:00:00.000500+00:00",
+                "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+                "token_word_coverage": 1,
+                "temporal_relation": "LATER",
+                "latency_seconds": 0
+              }
+            ],
+            "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+            "human_disposition_required": true,
+            "interpretive_limit": "Lexical/title candidates only; no semantic identity, causation, intentional puzzle or source promise.",
+            "witnesses": [
+              {
+                "source_id": "zenodo:1",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+                "body_sha256": "d3e4a7c00269f0baab104a07176dfeed34309b541a911cffa120b3be3fc384a3",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+                "metadata_sha256": "e4f1f609059e963881853ad0d0c652db474469614e0a849dd6c307965148d4a0"
+              },
+              {
+                "source_id": "zenodo:2",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+                "body_sha256": "aec20b557621e2b3dae4f16dd1d39c912f91064e0ce87e289ef52ceac1ae1ccb",
+                "metadata_path": "03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+                "metadata_sha256": "bd297f0f34971d7783c580264b0e53f060597bcf0bb77ed47e1a9daef1cad464"
+              }
+            ]
+          }
+        ],
+        "signatures": [
+          {
+            "signature_observation_id": "src-prg-signature:dfa25a57f127ae2bcd0ff055",
+            "normalized_signature": "keep the trace",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:2",
+                "source_title": "J Method",
+                "source_created": "2026-02-01T00:00:00.000500+00:00",
+                "raw_phrase": "Keep the trace",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          },
+          {
+            "signature_observation_id": "src-prg-signature:1a2fc26dc7ea5a2a4748b7cb",
+            "normalized_signature": "signature",
+            "manifestation_count": 1,
+            "observation_status": "SINGLETON_SIGNATURE",
+            "members": [
+              {
+                "source_id": "zenodo:1",
+                "source_title": "Source",
+                "source_created": "2026-02-01T00:00:00.000400+00:00",
+                "raw_phrase": "Signature",
+                "body_path": "03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md"
+              }
+            ],
+            "coordinate_class": "UNRESOLVED",
+            "coordinate_inference_permitted": false
+          }
+        ]
+      }
+    }
+  ]
+}
