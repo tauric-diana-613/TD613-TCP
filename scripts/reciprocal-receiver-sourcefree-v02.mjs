@@ -62,7 +62,8 @@ export async function nativeProbe(repoRoot, route, original) {
   // This guard is intentionally narrower than a general private-data detector.
   if (value.meta?.rights?.full_post_bodies_copied !== false ||
       value.meta?.scope?.private_google_group_admitted !== false ||
-      value.meta?.scope?.community !== 'r/Wendbine') fail('WENDBINE_PUBLIC_RIGHTS_REFUSED');
+      value.meta?.scope?.community !== 'r/Wendbine' ||
+      !['synthetic','public Reddit only'].includes(value.meta?.scope?.surface)) fail('WENDBINE_PUBLIC_RIGHTS_REFUSED');
   const copiedBodyKeys=['body','body_text','content','full_text','post_body','private_text','raw_body','source_body','source_text','text'];
   if (value.posts.some(post=>!post || typeof post!=='object' ||
       copiedBodyKeys.some(key=>Object.hasOwn(post,key)))) fail('WENDBINE_SOURCE_BODY_FIELD_REFUSED');
