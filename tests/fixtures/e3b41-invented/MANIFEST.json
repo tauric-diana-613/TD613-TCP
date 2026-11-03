@@ -1,0 +1,97 @@
+{
+  "schema": "td613.e3b41-fixture-manifest/v1",
+  "synthetic_only": true,
+  "source_release_authority": false,
+  "files": [
+    {
+      "path": "EXPECTATIONS.json",
+      "sha256": "0e555ac9e279ca4f3ef91a81bb48dcf9d8db0ea3fd78dcab036ba3cd4677ddb1",
+      "bytes": 1952
+    },
+    {
+      "path": "README.md",
+      "sha256": "1c0e7fb2d71a775fca65b5edd7a4ceb969c289057e22c1c8212f4bac0c660b48",
+      "bytes": 1194
+    },
+    {
+      "path": "colon_variant_negative/03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+      "sha256": "6a8e899eab2e6968b0fe66906d3cde097d60e9b4d81ead52f682c2e7bdec8f55",
+      "bytes": 60
+    },
+    {
+      "path": "colon_variant_negative/03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+      "sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+      "bytes": 126
+    },
+    {
+      "path": "colon_variant_negative/03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+      "sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+      "bytes": 31
+    },
+    {
+      "path": "colon_variant_negative/03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+      "sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+      "bytes": 148
+    },
+    {
+      "path": "native_plain_later/03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+      "sha256": "d92498e078a3d31ffb5c688ad6c6b1c00190057c2e385aa89aa39ff1c563e6d3",
+      "bytes": 83
+    },
+    {
+      "path": "native_plain_later/03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+      "sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+      "bytes": 126
+    },
+    {
+      "path": "native_plain_later/03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+      "sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+      "bytes": 31
+    },
+    {
+      "path": "native_plain_later/03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+      "sha256": "730cbf2329dcead7367de6dc38fc2bdde5bcec4f7c5bee935798329cc30640fa",
+      "bytes": 148
+    },
+    {
+      "path": "native_plain_preexisting/03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+      "sha256": "d54393eb44fda67998c5e8b3b6f748f858ca4ea6ab2598bba02a23ff117bb968",
+      "bytes": 59
+    },
+    {
+      "path": "native_plain_preexisting/03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+      "sha256": "0f1829bd9dd70d3212ef7c3bca618c3b25e03127d651ddaced7e6b0d866c90d4",
+      "bytes": 126
+    },
+    {
+      "path": "native_plain_preexisting/03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+      "sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+      "bytes": 31
+    },
+    {
+      "path": "native_plain_preexisting/03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+      "sha256": "b6618917cbdf1c1aea47f1f7b686a4c199a0383264c1267dca4804bc4df52573",
+      "bytes": 148
+    },
+    {
+      "path": "spanish_exact/03-DERIVATIVES/text/zenodo/zenodo-1-file-0.md",
+      "sha256": "f44ada2fa7febae70191eb594a139e97e8f4b3733eb6b5479294d9463af02a8a",
+      "bytes": 97
+    },
+    {
+      "path": "spanish_exact/03-DERIVATIVES/text/zenodo/zenodo-1-metadata.md",
+      "sha256": "90850525a6a5dfec0bead04c7d566dd5c22e13b7240f4c5ae77e002149726810",
+      "bytes": 126
+    },
+    {
+      "path": "spanish_exact/03-DERIVATIVES/text/zenodo/zenodo-2-file-0.md",
+      "sha256": "270c4d6ef1918e0cef640d054ad4b23d04353a85ceb54c14eb5d18a81f88e4cf",
+      "bytes": 31
+    },
+    {
+      "path": "spanish_exact/03-DERIVATIVES/text/zenodo/zenodo-2-metadata.md",
+      "sha256": "0eb2b96cfd27d42aa243cdbb3574b6641b24a30a0fccccc5cc6459f96e518cc6",
+      "bytes": 146
+    }
+  ]
+}

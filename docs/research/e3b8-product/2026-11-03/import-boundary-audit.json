@@ -1,0 +1,218 @@
+{
+  "schema": "td613.b8-source-free-import-review/v1",
+  "scope": "FINITE_PINNED_CODE_IMPORTS_AND_SELECTED_CALLS_NOT_OS_SANDBOX",
+  "bound_paths": 33,
+  "literal_relative_imports": [
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/seed/atelier-scaffold-v02.mjs",
+      "literal_relative_import": "./atelier-core-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/seed/atelier-core-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs",
+      "literal_relative_import": "../scripts/e3b3-source-native-oracle-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-source-native-oracle-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs",
+      "literal_relative_import": "../scripts/e3b3-authentic-chamber-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-authentic-chamber-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-scaffold-v02.mjs",
+      "literal_relative_import": "./atelier-core-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-core-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/source-native-oracle-v01.mjs",
+      "literal_relative_import": "../seed/atelier-core-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-core-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/source-native-oracle-v01.mjs",
+      "literal_relative_import": "../seed/atelier-parity-operators-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-parity-operators-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/source-native-oracle-v01.mjs",
+      "literal_relative_import": "../seed/atelier-semantic-polycompiler-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-semantic-polycompiler-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "./src-native-routing-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-native-routing-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "../seed/atelier-core-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-core-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "../seed/atelier-parity-operators-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-parity-operators-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "../seed/atelier-semantic-polycompiler-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-semantic-polycompiler-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "../seed/atelier-mechanism-discrimination-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-mechanism-discrimination-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs",
+      "literal_relative_import": "../seed/atelier-prospective-controls-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-prospective-controls-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/native-routing-differential.mjs",
+      "literal_relative_import": "../src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "literal_relative_import": "../src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "literal_relative_import": "../src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "literal_relative_import": "../src/source-native-oracle-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/source-native-oracle-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs",
+      "literal_relative_import": "../src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs",
+      "literal_relative_import": "./native-routing-differential.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/native-routing-differential.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs",
+      "literal_relative_import": "../src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.mjs",
+      "literal_relative_import": "../E3B3/scripts/e3b3-authentic-chamber-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-authentic-chamber-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.mjs",
+      "literal_relative_import": "../E3B3/scripts/e3b3-source-native-oracle-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/scripts/e3b3-source-native-oracle-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.mjs",
+      "literal_relative_import": "../E3B4/src/src-compositional-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/src/src-compositional-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs",
+      "literal_relative_import": "../E3B4/seed/atelier-parity-operators-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-parity-operators-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs",
+      "literal_relative_import": "../E3B4/seed/atelier-mechanism-discrimination-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-mechanism-discrimination-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs",
+      "literal_relative_import": "./native/em-atelier-parity.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/native/em-atelier-parity.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-portable-oracle-v01.mjs",
+      "literal_relative_import": "../E3B4/seed/atelier-parity-operators-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-parity-operators-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-portable-oracle-v01.mjs",
+      "literal_relative_import": "../E3B4/seed/atelier-mechanism-discrimination-v02.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/seed/atelier-mechanism-discrimination-v02.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-portable-oracle-v01.mjs",
+      "literal_relative_import": "./em-methods-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs",
+      "literal_relative_import": "../E3B5/recipient-assembly-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs",
+      "literal_relative_import": "./native/em-atelier-parity.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/native/em-atelier-parity.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs",
+      "literal_relative_import": "./em-methods-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-methods-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs",
+      "literal_relative_import": "./em-portable-oracle-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-portable-oracle-v01.mjs"
+    },
+    {
+      "caller": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
+      "literal_relative_import": "../E3B6/recipient-em-assembly-v01.mjs",
+      "bound_target": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/recipient-em-assembly-v01.mjs"
+    }
+  ],
+  "nonliteral_boundaries": [
+    {
+      "component": "B3 initializeRecipient/reopenRecipient",
+      "targets": "three pinned E3B3 seed files copied into owned workspace/METHOD only",
+      "read_boundary": "no caller-selected originalRoot exposed by B8"
+    },
+    {
+      "component": "B3 TD VM",
+      "targets": "pinned encyclopedia-reference-runtime.js prefix",
+      "read_boundary": "only finite catalog records injected; no browser/network globals"
+    },
+    {
+      "component": "B3 Wendbine",
+      "targets": "pinned compiler/query",
+      "read_boundary": "compilePublicCorpus uses supplied catalog metadata; buildIndex reads generated synthetic-only register"
+    },
+    {
+      "component": "B5 nativePython",
+      "targets": "exact pinned SRC Python runner",
+      "read_boundary": "explicit --root disposable synthetic directory, --self-test, no --write; full original default root unused"
+    },
+    {
+      "component": "B6 Em pure original",
+      "targets": "E3B6/native/em-atelier-parity.mjs",
+      "read_boundary": "original reader helpers exist, but selected stage/graph/proposal functions and portable kernels use supplied invented data; original corpus modules absent"
+    },
+    {
+      "component": "B8 entry",
+      "targets": "B6 coordinator lazy import after fixture/route gate",
+      "read_boundary": "real operations refuse before any caller path/body inspection; no public arbitrary reader or code-root parameter"
+    }
+  ],
+  "test_witnesses": [
+    "denied-read-spy",
+    "import-time-boundary-spy",
+    "positive-four-family-read-allowlist",
+    "finite-source-binding-attacks"
+  ],
+  "production_privacy_security": "HELD",
+  "preimport_signed_root": "HELD",
+  "empirical_replications": 0
+}
