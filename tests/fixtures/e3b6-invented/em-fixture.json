@@ -1,0 +1,350 @@
+{
+  "schema": "td613.e3b6-invented-em/v1",
+  "epoch": "EM-B6-INVENTED-20261102",
+  "rights": "SYNTHETIC_LOCAL_ONLY",
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "originals": [
+    {
+      "original_id": "FIXTURE-O1",
+      "bytes_base64": "IyBBbiBpbnZlbnRlZCBzdXJmYWNlClRpdGxlOiBhIGRlbGliZXJhdGVseSBtaXNsZWFkaW5nIGxhYmVsClTDuiBwdWVkZXMgY2xvbmFybWUsIHBlcm8gbm8gdGllbmVzIG1pcyBnZW5lcy4KCiMjIE5vdGVzCktlZXAgdGhlIHRyYWNlLiBBIG1vdGlmIHN1cHBsaWVzIGEgc2VhcmNoIGN1ZSBvbmx5Lg==",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "ancestor_id": "FIXTURE-ORIGIN-1",
+      "synthetic_origin": true,
+      "published_at": "2026-01-01T00:00:00Z",
+      "observed_at": "2026-01-02T00:00:00Z"
+    },
+    {
+      "original_id": "FIXTURE-O2",
+      "bytes_base64": "IyBBbiBpbnZlbnRlZCBzdXJmYWNlClRpdGxlOiBhIGRlbGliZXJhdGVseSBtaXNsZWFkaW5nIGxhYmVsClTDuiBwdWVkZXMgY2xvbmFybWUsIHBlcm8gbm8gdGllbmVzIG1pcyBnZW5lcy4KCiMjIE5vdGVzCktlZXAgdGhlIHRyYWNlLiBBIG1vdGlmIHN1cHBsaWVzIGEgc2VhcmNoIGN1ZSBvbmx5Lg==",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "ancestor_id": "FIXTURE-ORIGIN-2",
+      "synthetic_origin": true,
+      "published_at": "2026-01-01T00:00:00Z",
+      "observed_at": "2026-01-02T00:00:00Z"
+    },
+    {
+      "original_id": "FIXTURE-O3",
+      "bytes_base64": "IyBJbnZlbnRlZCBmaW5pdGUgZXhhbXBsZQojIyBEZWZpbml0aW9uClRoZSBib3VuZGVkIHNjb3JlID0gdGFyZ2V0IC0gc2Vlbi4gQXQgdGFyZ2V0PTEgYW5kIHNlZW49NCwgdGhlIHNjb3JlIGlzIC0zLiBBIGRpZmZlcmVudCBzY29yZSBmYWxzaWZpZXMgdGhpcyBzdXBwbGllZCBmaW5pdGUgcHJlZGljdGlvbi4gS2VlcCB0aGUgdHJhY2Uu",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "ancestor_id": "FIXTURE-ORIGIN-3",
+      "synthetic_origin": true,
+      "published_at": "2026-01-01T00:00:00Z",
+      "observed_at": "2026-01-02T00:00:00Z"
+    },
+    {
+      "original_id": "FIXTURE-O4",
+      "bytes_base64": "QW4gaW52ZW50ZWQgZnJhZ21lbnQgc3VnZ2VzdHMgdGhhdCBhIHdvdmVuIGJvdW5kYXJ5IG1pZ2h0IG9yZ2FuaXplIHJlbGF0aW9ucy4gS2VlcCB0aGUgdHJhY2UuIEl0IHNwZWNpZmllcyBuZWl0aGVyIGEgbnVtZXJpYyBvcGVyYXRvciBub3IgYSBmYWxzaWZ5aW5nIG9ic2VydmF0aW9uLg==",
+      "sha256": "e0c1f3d6d24652e844adac26c6686d7cde4d138f812906ed78a8a1f964f1e9a6",
+      "ancestor_id": "FIXTURE-ORIGIN-4",
+      "synthetic_origin": true,
+      "published_at": "2026-01-01T00:00:00Z",
+      "observed_at": "2026-01-02T00:00:00Z"
+    }
+  ],
+  "source_files": [
+    {
+      "source_file_id": "FIXTURE-S1",
+      "original_id": "FIXTURE-O1",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "media_type": "text/plain",
+      "original_filename": "invented-1.txt"
+    },
+    {
+      "source_file_id": "FIXTURE-S2",
+      "original_id": "FIXTURE-O2",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "media_type": "text/plain",
+      "original_filename": "invented-2.txt"
+    },
+    {
+      "source_file_id": "FIXTURE-S3",
+      "original_id": "FIXTURE-O3",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "media_type": "text/plain",
+      "original_filename": "invented-3.txt"
+    },
+    {
+      "source_file_id": "FIXTURE-S4",
+      "original_id": "FIXTURE-O3",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "media_type": "text/plain",
+      "original_filename": "invented-4.txt"
+    },
+    {
+      "source_file_id": "FIXTURE-S5",
+      "original_id": "FIXTURE-O4",
+      "sha256": "e0c1f3d6d24652e844adac26c6686d7cde4d138f812906ed78a8a1f964f1e9a6",
+      "media_type": "text/plain",
+      "original_filename": "invented-5.txt"
+    },
+    {
+      "source_file_id": "FIXTURE-S6",
+      "original_id": "FIXTURE-O3",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "media_type": "text/plain",
+      "original_filename": "invented-6.txt"
+    }
+  ],
+  "derivatives": [
+    {
+      "derivative_id": "FIXTURE-D1",
+      "source_file_id": "FIXTURE-S1",
+      "original_id": "FIXTURE-O1",
+      "parent_sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "text_base64": "IyBBbiBpbnZlbnRlZCBzdXJmYWNlClRpdGxlOiBhIGRlbGliZXJhdGVseSBtaXNsZWFkaW5nIGxhYmVsClTDuiBwdWVkZXMgY2xvbmFybWUsIHBlcm8gbm8gdGllbmVzIG1pcyBnZW5lcy4KCiMjIE5vdGVzCktlZXAgdGhlIHRyYWNlLiBBIG1vdGlmIHN1cHBsaWVzIGEgc2VhcmNoIGN1ZSBvbmx5Lg==",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "observed_at": "2026-01-03T00:00:00Z"
+    },
+    {
+      "derivative_id": "FIXTURE-D2",
+      "source_file_id": "FIXTURE-S2",
+      "original_id": "FIXTURE-O2",
+      "parent_sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "text_base64": "IyBBbiBpbnZlbnRlZCBzdXJmYWNlClRpdGxlOiBhIGRlbGliZXJhdGVseSBtaXNsZWFkaW5nIGxhYmVsClTDuiBwdWVkZXMgY2xvbmFybWUsIHBlcm8gbm8gdGllbmVzIG1pcyBnZW5lcy4KCiMjIE5vdGVzCktlZXAgdGhlIHRyYWNlLiBBIG1vdGlmIHN1cHBsaWVzIGEgc2VhcmNoIGN1ZSBvbmx5Lg==",
+      "sha256": "f6b452874b87509a8a17cbf6778662a33a035ceda605c4786ac09c21154077ae",
+      "observed_at": "2026-01-03T00:00:00Z"
+    },
+    {
+      "derivative_id": "FIXTURE-D3",
+      "source_file_id": "FIXTURE-S3",
+      "original_id": "FIXTURE-O3",
+      "parent_sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "text_base64": "IyBJbnZlbnRlZCBmaW5pdGUgZXhhbXBsZQojIyBEZWZpbml0aW9uClRoZSBib3VuZGVkIHNjb3JlID0gdGFyZ2V0IC0gc2Vlbi4gQXQgdGFyZ2V0PTEgYW5kIHNlZW49NCwgdGhlIHNjb3JlIGlzIC0zLiBBIGRpZmZlcmVudCBzY29yZSBmYWxzaWZpZXMgdGhpcyBzdXBwbGllZCBmaW5pdGUgcHJlZGljdGlvbi4gS2VlcCB0aGUgdHJhY2Uu",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "observed_at": "2026-01-03T00:00:00Z"
+    },
+    {
+      "derivative_id": "FIXTURE-D4",
+      "source_file_id": "FIXTURE-S4",
+      "original_id": "FIXTURE-O3",
+      "parent_sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "text_base64": "IyBJbnZlbnRlZCBmaW5pdGUgZXhhbXBsZQojIyBEZWZpbml0aW9uClRoZSBib3VuZGVkIHNjb3JlID0gdGFyZ2V0IC0gc2Vlbi4gQXQgdGFyZ2V0PTEgYW5kIHNlZW49NCwgdGhlIHNjb3JlIGlzIC0zLiBBIGRpZmZlcmVudCBzY29yZSBmYWxzaWZpZXMgdGhpcyBzdXBwbGllZCBmaW5pdGUgcHJlZGljdGlvbi4gS2VlcCB0aGUgdHJhY2Uu",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "observed_at": "2026-01-03T00:00:00Z"
+    },
+    {
+      "derivative_id": "FIXTURE-D5",
+      "source_file_id": "FIXTURE-S5",
+      "original_id": "FIXTURE-O4",
+      "parent_sha256": "e0c1f3d6d24652e844adac26c6686d7cde4d138f812906ed78a8a1f964f1e9a6",
+      "text_base64": "QW4gaW52ZW50ZWQgZnJhZ21lbnQgc3VnZ2VzdHMgdGhhdCBhIHdvdmVuIGJvdW5kYXJ5IG1pZ2h0IG9yZ2FuaXplIHJlbGF0aW9ucy4gS2VlcCB0aGUgdHJhY2UuIEl0IHNwZWNpZmllcyBuZWl0aGVyIGEgbnVtZXJpYyBvcGVyYXRvciBub3IgYSBmYWxzaWZ5aW5nIG9ic2VydmF0aW9uLg==",
+      "sha256": "e0c1f3d6d24652e844adac26c6686d7cde4d138f812906ed78a8a1f964f1e9a6",
+      "observed_at": "2026-01-03T00:00:00Z"
+    },
+    {
+      "derivative_id": "FIXTURE-D6",
+      "source_file_id": "FIXTURE-S6",
+      "original_id": "FIXTURE-O3",
+      "parent_sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "text_base64": "IyBJbnZlbnRlZCBmaW5pdGUgZXhhbXBsZQojIyBEZWZpbml0aW9uClRoZSBib3VuZGVkIHNjb3JlID0gdGFyZ2V0IC0gc2Vlbi4gQXQgdGFyZ2V0PTEgYW5kIHNlZW49NCwgdGhlIHNjb3JlIGlzIC0zLiBBIGRpZmZlcmVudCBzY29yZSBmYWxzaWZpZXMgdGhpcyBzdXBwbGllZCBmaW5pdGUgcHJlZGljdGlvbi4gS2VlcCB0aGUgdHJhY2Uu",
+      "sha256": "03c76c4f81bf515423c07b1cd54add76f6a6c35a0db037c678f8007fd9a67aed",
+      "observed_at": "2026-01-03T00:00:00Z"
+    }
+  ],
+  "works": [
+    {
+      "work_id": "FIXTURE-WA",
+      "manifestation_source_file_ids": [
+        "FIXTURE-S1",
+        "FIXTURE-S2"
+      ],
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 2,
+      "authorship": "UNRESOLVED"
+    },
+    {
+      "work_id": "FIXTURE-WB",
+      "manifestation_source_file_ids": [
+        "FIXTURE-S3",
+        "FIXTURE-S4"
+      ],
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 1,
+      "authorship": "UNRESOLVED"
+    },
+    {
+      "work_id": "FIXTURE-WC",
+      "manifestation_source_file_ids": [
+        "FIXTURE-S5"
+      ],
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "minimum_independent_work_contribution": 1,
+      "maximum_independent_work_contribution": 1,
+      "authorship": "UNRESOLVED"
+    }
+  ],
+  "manifestations": [
+    {
+      "manifestation_id": "FIXTURE-M1",
+      "source_file_id": "FIXTURE-S1",
+      "work_id": "FIXTURE-WA",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true
+    },
+    {
+      "manifestation_id": "FIXTURE-M2",
+      "source_file_id": "FIXTURE-S2",
+      "work_id": "FIXTURE-WA",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true
+    },
+    {
+      "manifestation_id": "FIXTURE-M3",
+      "source_file_id": "FIXTURE-S3",
+      "work_id": "FIXTURE-WB",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false
+    },
+    {
+      "manifestation_id": "FIXTURE-M4",
+      "source_file_id": "FIXTURE-S4",
+      "work_id": "FIXTURE-WB",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false
+    },
+    {
+      "manifestation_id": "FIXTURE-M5",
+      "source_file_id": "FIXTURE-S5",
+      "work_id": "FIXTURE-WC",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false
+    },
+    {
+      "manifestation_id": "FIXTURE-M6",
+      "source_file_id": "FIXTURE-S6",
+      "work_id": null,
+      "identity_status": "UNRESOLVED",
+      "human_gate_required": true
+    }
+  ],
+  "optional_identity_links": [
+    {
+      "from": "FIXTURE-M1",
+      "to": "FIXTURE-M2",
+      "status": "SUPPORTED"
+    },
+    {
+      "from": "FIXTURE-M1",
+      "to": "FIXTURE-M6",
+      "status": "UNRESOLVED"
+    }
+  ],
+  "specimens": [
+    {
+      "specimen_id": "SIGNED",
+      "derivative_id": "FIXTURE-D3",
+      "start_char": 0,
+      "end_char": 192,
+      "cases": [
+        {
+          "case_id": "POSITIVE",
+          "inputs": {
+            "target": 8,
+            "seen": 3
+          },
+          "observed": 5,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        },
+        {
+          "case_id": "NEGATIVE",
+          "inputs": {
+            "target": 1,
+            "seen": 4
+          },
+          "observed": -3,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        },
+        {
+          "case_id": "ZERO",
+          "inputs": {
+            "target": 3,
+            "seen": 3
+          },
+          "observed": 0,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        },
+        {
+          "case_id": "NEGATIVE_INPUT",
+          "inputs": {
+            "target": -4,
+            "seen": -1
+          },
+          "observed": -3,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        }
+      ]
+    },
+    {
+      "specimen_id": "NONUNIQUE",
+      "derivative_id": "FIXTURE-D3",
+      "start_char": 0,
+      "end_char": 192,
+      "cases": [
+        {
+          "case_id": "NONUNIQUE_ZERO",
+          "inputs": {
+            "target": 0,
+            "seen": 0
+          },
+          "observed": 0,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        },
+        {
+          "case_id": "NONUNIQUE_POSITIVE",
+          "inputs": {
+            "target": 2,
+            "seen": 0
+          },
+          "observed": 2,
+          "observation_basis": "INVENTED_FROZEN_EXPECTATION"
+        }
+      ]
+    }
+  ],
+  "fragment": {
+    "derivative_id": "FIXTURE-D5"
+  },
+  "comparison": {
+    "question": "FINITE_SIGNED_PREDICTION",
+    "target_withheld": true,
+    "controls": [
+      "REFERENCE",
+      "SHUFFLED",
+      "TEMPLATE"
+    ],
+    "inputs": [
+      {
+        "target": 8,
+        "seen": 3
+      },
+      {
+        "target": 1,
+        "seen": 4
+      },
+      {
+        "target": 3,
+        "seen": 3
+      },
+      {
+        "target": -4,
+        "seen": -1
+      }
+    ],
+    "input_sha256": "33ab7027619658a2e03e0a0162aff2ea2e86972975d224b56ed3c6d375600b90",
+    "observed": [
+      5,
+      -3,
+      0,
+      -3
+    ]
+  },
+  "decompression": [
+    "amber route",
+    "azure route"
+  ]
+}
