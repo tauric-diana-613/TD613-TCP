@@ -132,6 +132,7 @@ export function selectedSurface(q,{requested=null,available=SURFACES}={}){
  ok(FIVE.includes(q),'UNKNOWN_RESEARCH_QUESTION');
  const m=SURFACE_MATRIX[q];const usable=available.filter(s=>m[s]==='SUFFICIENT');
  if(requested!==null){ok(SURFACES.includes(requested),'UNREGISTERED_SURFACE');
+  if(!available.includes(requested))return {question:q,requested,chosen:null,status:'ABSTAIN_SURFACE_NOT_ADMITTED',sufficiency:'UNOBSERVED',authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};
   return {question:q,requested,chosen:m[requested]==='SUFFICIENT'?requested:null,
    status:m[requested]==='SUFFICIENT'?'SOURCE_FREE_SURFACE_SELECTED':'ABSTAIN_WRONG_AUTHORITY_SURFACE',
    sufficiency:m[requested],authority:'SYNTHETIC_QUESTION_CONDITIONED_SELECTION'};}
