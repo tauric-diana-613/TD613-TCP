@@ -1,0 +1,233 @@
+{
+  "schema": "td613.pe08.preflight-operator-decision-packet/v1",
+  "docket": "PEFB-20261103-v1",
+  "authorization_scope": "ENGINEERING_ONLY_SOURCE_FREE",
+  "decision_state": "PREVIEW_UNRESOLVED",
+  "immutable_predecessors": {
+    "original_d01_d20_blob": "97c0ae2b066a250608b655215295ea36d4579a8a",
+    "consolidated_docket_blob": "4bc62503aa3f5db7887d8de810bd399f3f6b1540"
+  },
+  "historical_token_budgets": [
+    60000,
+    180000
+  ],
+  "proposed_unadopted_budget_options": [
+    720000,
+    "FINITE_SIGNED_QUOTA_WINDOWS"
+  ],
+  "protected_archive_admitted": false,
+  "provider_inference_commissioned": false,
+  "flight_activated": false,
+  "final_grant_issued": false,
+  "decisions": [
+    {
+      "id": "D01",
+      "subject": "provider_account_confidentiality",
+      "needed_witness": "operator-approved terms, retention, access, source dataflow",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D02",
+      "subject": "model_effort_revision",
+      "needed_witness": "selected child model/effort with served-identity drift-stop",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D03",
+      "subject": "unavailable_attestations",
+      "needed_witness": "explicit limitations and independent scientific review",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D04",
+      "subject": "effective_token_caps",
+      "needed_witness": "hard input/output/reasoning accounting semantics",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D05",
+      "subject": "finite_resource_policy",
+      "needed_witness": "explicit window/token/USD caps; 720000 is NOT adopted",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D06",
+      "subject": "full_study_scope",
+      "needed_witness": "full four-arm study or separately justified alternative",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D07",
+      "subject": "matched_call_opportunity",
+      "needed_witness": "equal meaningful calls/coverage per document",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D08",
+      "subject": "RCA01_crossing",
+      "needed_witness": "architecture × control × representation frozen cells",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D09",
+      "subject": "order_holdout_withdrawal",
+      "needed_witness": "private randomized order seeds and metadata boundaries",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D10",
+      "subject": "estimand_power_analysis",
+      "needed_witness": "replications, precision, multiple tests, stopping",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D11",
+      "subject": "history_context_replay",
+      "needed_witness": "visibility and lossless replay versus compaction",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D12",
+      "subject": "broker_and_source_confinement",
+      "needed_witness": "physical admission rights, runtime isolation",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D13",
+      "subject": "authentic_kernel_equivalence",
+      "needed_witness": "actual math/operator tolerances and tool parity",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D14",
+      "subject": "independent_evaluator",
+      "needed_witness": "separate principal/credentials/conflict review and trust root",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D15",
+      "subject": "masking_and_falsification",
+      "needed_witness": "lossless masking, negative controls, grading rubric",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D16",
+      "subject": "candidate_overflow",
+      "needed_witness": "full candidate preservation and stop policy",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D17",
+      "subject": "retry_checkpoint_policy",
+      "needed_witness": "no uncertain replay, bounded paid attempts, rollback",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D18",
+      "subject": "private_custody_reporting",
+      "needed_witness": "keys/retention/deletion, no protected public bytes",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D19",
+      "subject": "unblinding_and_program_boundaries",
+      "needed_witness": "independent unblinding custodian after frozen score",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    },
+    {
+      "id": "D20",
+      "subject": "final_external_execution_grant",
+      "needed_witness": "future signed human decision only after D01-D19 accepted",
+      "status": "UNRESOLVED",
+      "operator_choice": null,
+      "source_receipt": null,
+      "independent_witness": null,
+      "waiver": null
+    }
+  ],
+  "separate_authority": [
+    "source_admission",
+    "provider_account_terms",
+    "independent_evaluator_credentials",
+    "independent_trust_anchor",
+    "D20_human_final_grant"
+  ],
+  "human_scientific_release_closure_reserved": true,
+  "note": "Operator source-free engineering approval does not adopt D01-D20. Never synthesize signer/independent reviewer or silently activate Flight."
+}
