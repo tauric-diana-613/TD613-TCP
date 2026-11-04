@@ -12,6 +12,7 @@ import base64
 from contextlib import closing
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import sqlite3
@@ -142,12 +143,19 @@ def _reject_nonfinite(token):
     raise ReceiverError("Non-finite JSON token is forbidden: "+token)
 
 
+def _finite_float(token):
+    value = float(token)
+    if not math.isfinite(value):
+        raise ReceiverError("Non-finite JSON number is forbidden: "+token)
+    return value
+
+
 def validate(raw: bytes):
     if not isinstance(raw, bytes):
         raise ReceiverError("Packet input must be exact bytes")
     try:
         item = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs,
-                          parse_constant=_reject_nonfinite)
+                          parse_constant=_reject_nonfinite, parse_float=_finite_float)
     except ReceiverError:
         raise
     except (UnicodeDecodeError, ValueError, TypeError) as exc:
@@ -330,8 +338,9 @@ def main(argv=None):
         raw=return_packet(args.database,args.packet_id)
         obj={"packet_sha256":digest(raw),"packet_bytes_b64":base64.b64encode(raw).decode("ascii")}
     else:
-        obj=method_query(args.database,args.field,json.loads(args.expected_json))
-    print(json.dumps(obj,ensure_ascii=False,sort_keys=True))
+        obj=method_query(args.database,args.field,json.loads(args.expected_json, parse_constant=_reject_nonfinite,
+                                      parse_float=_finite_float))
+    print(json.dumps(obj,ensure_ascii=False,sort_keys=True,allow_nan=False))
 
 
 if __name__ == "__main__":
