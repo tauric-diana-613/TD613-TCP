@@ -45,6 +45,41 @@ class UniversalSourceBoundTests(unittest.TestCase):
         self.assertEqual(audit["estates"]["EMSTD613"]["native_derivatives"],1)
         self.assertEqual(audit["Wendbine_semantic_embedding_parity"],"UNVERIFIED")
 
+    def test_original_wendbine_title_search_preserves_field_and_digest(self):
+        import hashlib
+        rows=u.exact_query(u.load_sources(self.dbpath,self.repo),"original link",limit=20)
+        self.assertEqual(len(rows),1)
+        hit=rows[0]
+        self.assertEqual(hit["estate"],"WENDBINE")
+        self.assertEqual(hit["source_id"],"reddit:t3_abcde1")
+        self.assertEqual(hit["source_field"],"title")
+        self.assertEqual(hit["byte_offset"],0)
+        self.assertEqual(hit["source_sha256"],hashlib.sha256(b"original link").hexdigest())
+        self.assertTrue(hit["original_source_bytes_verified"])
+        body=u.exact_query(u.load_sources(self.dbpath,self.repo),"Paul's observed",limit=20)
+        self.assertEqual(len(body),1)
+        self.assertEqual(body[0]["source_field"],"selftext")
+        self.assertEqual(body[0]["source_sha256"],
+            hashlib.sha256(b"\xf0\x9d\x8c\x8b Paul's observed text with original UTF-8.").hexdigest())
+
+    def test_balanced_all_estates_and_explicit_estate_scoping(self):
+        # A common token must not allow source enumeration order to starve
+        # Wendbine before its source-backed bytes are ever read.
+        hits=u.exact_query(u.load_sources(self.dbpath,self.repo),"𝌋",limit=3)
+        self.assertEqual([h["estate"] for h in hits],
+                         ["WENDBINE","SRC","EMSTD613"])
+        partial=u.exact_query(u.load_sources(self.dbpath,self.repo),"𝌋",limit=2)
+        self.assertEqual([h["estate"] for h in partial],["WENDBINE","SRC"])
+        em=u.exact_query(u.load_sources(self.dbpath,self.repo),"𝌋",
+                         limit=1,estate="EMSTD613")
+        self.assertEqual(len(em),1)
+        self.assertEqual(em[0]["estate"],"EMSTD613")
+        original=u.exact_query(u.load_sources(self.dbpath,self.repo),
+                               "Paul's observed",limit=1,estate="WENDBINE")
+        self.assertEqual(original[0]["source_field"],"selftext")
+        self.assertRaisesRegex(ValueError,"UNREGISTERED_QUERY_ESTATE",
+                               u.exact_query,[],"𝌋",1,"BAD")
+
     def test_wrong_source_local_file_or_path_refused(self):
         self.assertRaisesRegex(ValueError,"OPERATOR_LOCAL_WENDBINE_DB_REQUIRED",
           lambda:list(u.load_sources(Path("/nothing/to/read/wendbine.sqlite"),self.repo)))
