@@ -75,8 +75,8 @@ def prepare_db(dest: Path) -> sqlite3.Connection:
       observed_utc TEXT NOT NULL, title BLOB NOT NULL, selftext BLOB NOT NULL,
       title_sha256 TEXT NOT NULL, body_sha256 TEXT NOT NULL,
       title_bytes INTEGER NOT NULL, body_bytes INTEGER NOT NULL,
-      body_state TEXT NOT NULL, archive_copy_version TEXT NOT NULL,
-      provider TEXT NOT NULL);
+      body_state TEXT NOT NULL, outbound_url TEXT, media_kind TEXT NOT NULL,
+      archive_copy_version TEXT NOT NULL, provider TEXT NOT NULL);
     CREATE VIRTUAL TABLE text_fts USING fts5(title,selftext,
       tokenize='unicode61 remove_diacritics 0');
     CREATE TABLE versions (
@@ -118,8 +118,12 @@ def validate_post(x: Any) -> dict:
         raise ValueError("REMOVED_OR_DELETED_SOURCE_REFUSED")
     is_media=(x.get("is_self") is False or x.get("is_video") is True)
     state=("EMPTY_MEDIA_LINK_POST" if is_media else "EMPTY_TEXT_POST") if body=="" else "OBSERVED_ARCHIVE_TEXT"
+    outgoing=x.get("url")
+    if outgoing is not None and (not isinstance(outgoing,str) or len(outgoing)>4096):
+        raise ValueError("INVALID_EXTERNAL_URL")
+    kind="VIDEO" if x.get("is_video") is True else ("LINK_OR_MEDIA" if is_media else "SELF")
     source_id="reddit:t3_"+pid
-    return {"source_id":source_id,"canonical_url":f"https://www.reddit.com/r/Wendbine/comments/{pid}/",
+    return {"source_id":source_id,"outbound_url":outgoing,"media_kind":kind,"canonical_url":f"https://www.reddit.com/r/Wendbine/comments/{pid}/",
             "published_unix":int(created),"title":title_bytes,"selftext":body_bytes,
             "title_sha256":sha(title_bytes),"body_sha256":sha(body_bytes),
             "title_bytes":len(title_bytes),"body_bytes":len(body_bytes),
@@ -156,11 +160,11 @@ def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
             continue
         conn.execute("""insert into sources(source_id,author,subreddit,canonical_url,published_unix,
           observed_utc,title,selftext,title_sha256,body_sha256,title_bytes,body_bytes,
-          body_state,archive_copy_version,provider)
-          values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+          body_state,outbound_url,media_kind,archive_copy_version,provider)
+          values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
           (p["source_id"],AUTHOR,COMMUNITY,p["canonical_url"],p["published_unix"],
            observed,p["title"],p["selftext"],p["title_sha256"],p["body_sha256"],
-           p["title_bytes"],p["body_bytes"],p["body_state"],p["archive_copy_version"],"ARCTIC_SHIFT"))
+           p["title_bytes"],p["body_bytes"],p["body_state"],p["outbound_url"],p["media_kind"],p["archive_copy_version"],"ARCTIC_SHIFT"))
         rid=conn.execute("select last_insert_rowid()").fetchone()[0]
         conn.execute("insert into text_fts(rowid,title,selftext) values(?,?,?)",
                      (rid,p["title"].decode("utf8"),p["selftext"].decode("utf8")))
@@ -272,6 +276,68 @@ def fts_search(conn:sqlite3.Connection,query:str,limit:int=20)->list[dict]:
              "title_sha256":r[3],"body_sha256":r[4],
              "retrieval_kind":"LEXICAL_FTS_NOT_VECTOR_SEMANTIC"} for r in rows]
 
+def enumerate_day(conn: sqlite3.Connection, day: str, limit: int=100, offset: int=0, include_text:bool=True) -> dict:
+    """Exact observed-date enumeration, explicitly separated from completeness of the provider."""
+    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}",day):
+        raise ValueError("STRICT_UTC_DAY_REQUIRED")
+    try:
+        date=dt.date.fromisoformat(day)
+        start=dt.datetime.combine(date,dt.time.min,tzinfo=dt.timezone.utc)
+        stop=start+dt.timedelta(days=1)
+    except (ValueError, OverflowError) as e:
+        raise ValueError("INVALID_UTC_DATE") from e
+    if not isinstance(limit,int) or limit<1 or limit>1000 or not isinstance(offset,int) or offset<0:
+        raise ValueError("BOUNDED_DATE_PAGINATION_REQUIRED")
+    lo,hi=int(start.timestamp()),int(stop.timestamp())
+    total=conn.execute("select count(*) from sources where published_unix>=? and published_unix<?",(lo,hi)).fetchone()[0]
+    rows=conn.execute("""select source_id,canonical_url,published_unix,title,selftext,title_sha256,body_sha256,
+       body_state,outbound_url,media_kind from sources where published_unix>=? and published_unix<?
+       order by published_unix,source_id limit ? offset ?""",(lo,hi,limit,offset)).fetchall()
+    out=[]
+    for sid,url,created,title,body,th,bh,state,external,kind in rows:
+        if sha(title)!=th or sha(body)!=bh:
+            raise ValueError("INDEXED_DAY_SOURCE_HASH_MISMATCH")
+        row={"source_id":sid,"canonical_url":url,"published_utc":dt.datetime.fromtimestamp(created,dt.timezone.utc).isoformat(),
+             "title":title.decode("utf8"),"title_sha256":th,"body_sha256":bh,
+             "body_state":state,"media_kind":kind,"external_media_url":external,
+             "media_transcript_observed":False,"source_body_observed":bool(body)}
+        if include_text:row["selftext"]=body.decode("utf8")
+        out.append(row)
+    return {"schema":"td613.wendbine.utc-day-source-enumeration/v1",
+      "utc_day":day,"observed_total":total,"returned":len(out),"offset":offset,
+      "next_offset":offset+len(out) if offset+len(out)<total else None,
+      "entries":out,"observed_source_db_only":True,
+      "provider_and_inception_completeness":"UNVERIFIED",
+      "media_transcripts_or_link_contents_inferred":0}
+
+def explicit_graph(conn: sqlite3.Connection, source_id:str, max_depth:int=3) -> dict:
+    """Only actual source-cited explicit hyperlink edges; no inferred conceptual equivalence."""
+    if not source_id.startswith("reddit:t3_") or not POST_ID.fullmatch(source_id[10:]):
+        raise ValueError("EXACT_WENDBINE_SOURCE_ID_REQUIRED")
+    if max_depth<0 or max_depth>8:raise ValueError("BOUNDED_GRAPH_DEPTH_REQUIRED")
+    if conn.execute("select 1 from sources where source_id=?",(source_id,)).fetchone() is None:
+        raise ValueError("SOURCE_NOT_INDEXED")
+    seen={source_id};frontier=[source_id];edges=[]
+    for depth in range(max_depth):
+        if not frontier:break
+        q="select src,dst,relation,source_field,offset_utf8,evidence_span from links where src in ("+",".join("?" for _ in frontier)+") order by src,offset_utf8"
+        next_frontier=[]
+        for src,dst,relation,field,offset,span in conn.execute(q,frontier):
+            stored=conn.execute("select "+("title" if field=="title" else "selftext")+" from sources where source_id=?",(src,)).fetchone()
+            if not stored or stored[0][offset:offset+len(span.encode("utf8"))]!=span.encode("utf8"):
+                raise ValueError("GRAPH_EDGE_SOURCE_SPAN_INVALID")
+            dst_present=conn.execute("select 1 from sources where source_id=?",(dst,)).fetchone() is not None
+            edges.append({"from":src,"to":dst,"relation":relation,"source_field":field,
+              "evidence_utf8_byte_offset":offset,"evidence_span":span,"target_indexed":dst_present,
+              "status":"OBSERVED_TEXT_LINK_NOT_TOPOLOGICAL_INFERENCE"})
+            if dst_present and dst not in seen:
+                seen.add(dst);next_frontier.append(dst)
+        frontier=next_frontier
+    return {"schema":"td613.wendbine.explicit-link-graph/v1","start_source":source_id,
+      "max_depth":max_depth,"indexed_nodes_reached":len(seen),"edges":edges,
+      "mathematical_relational_geometry":"NOT_ESTABLISHED",
+      "unindexed_target_nodes_not_silently_created":True}
+
 def status(conn:sqlite3.Connection)->dict:
     return {"schema":"td613.wendbine.local-research-index/v1",
       "integrity_check":conn.execute("pragma integrity_check").fetchone()[0],
@@ -303,6 +369,14 @@ def main():
     for mode in ("exact","lexical"):
         q=sub.add_parser(mode);q.add_argument("query");q.add_argument("--limit",type=int,default=20)
     sub.add_parser("status")
+    q=sub.add_parser("day")
+    q.add_argument("date_utc")
+    q.add_argument("--offset",type=int,default=0)
+    q.add_argument("--limit",type=int,default=100)
+    q.add_argument("--metadata-only",action="store_true")
+    q=sub.add_parser("graph")
+    q.add_argument("source_id")
+    q.add_argument("--depth",type=int,default=3)
     q=sub.add_parser("source");q.add_argument("source_id")
     q=sub.add_parser("links");q.add_argument("--source-id",default=None)
     args=p.parse_args()
@@ -324,6 +398,8 @@ def main():
         ensure_local(location)
         db=sqlite3.connect(location.as_uri()+"?mode=ro",uri=True)
         if args.command=="status":report=status(db)
+        elif args.command=="day":report=enumerate_day(db,args.date_utc,args.limit,args.offset,not args.metadata_only)
+        elif args.command=="graph":report=explicit_graph(db,args.source_id,args.depth)
         elif args.command=="exact":report=exact_search(db,args.query,args.limit)
         elif args.command=="lexical":report=fts_search(db,args.query,args.limit)
         elif args.command=="source":
