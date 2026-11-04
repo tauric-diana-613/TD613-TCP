@@ -1,3 +1,4 @@
+from contextlib import closing
 import hashlib, importlib.util, pathlib, sqlite3, tempfile, unittest
 p=pathlib.Path(__file__).resolve().parents[1]/"scripts"/"wendbine-evidence-routes-v1.py"
 s=importlib.util.spec_from_file_location("wendroutes",p)
@@ -7,7 +8,7 @@ class Routes(unittest.TestCase):
  def setUp(self):
   t=tempfile.TemporaryDirectory();self.addCleanup(t.cleanup)
   self.db=pathlib.Path(t.name)/"example.sqlite"
-  with sqlite3.connect(self.db) as con:
+  with closing(sqlite3.connect(self.db)) as con, con:
    con.execute("CREATE TABLE sources(source_id TEXT)")
    con.execute("INSERT INTO sources VALUES('reddit:t3_abcde1')")
    con.execute("INSERT INTO sources VALUES('reddit:t3_abcde2')")
@@ -29,7 +30,7 @@ class Routes(unittest.TestCase):
   self.assertFalse(link["direct_relation_promotion"])
   self.assertFalse(out["scientific_promotion"])
  def test_tampering_blocks_results(self):
-  with sqlite3.connect(self.db) as con:
+  with closing(sqlite3.connect(self.db)) as con, con:
    con.execute("UPDATE capture_versions SET selftext=? WHERE capture_id='capture0'",(b"changed",))
   with self.assertRaisesRegex(ValueError,"SOURCE_CAPTURE_HASH_CHANGED"):
    m.observation_routes(self.db,"reddit:t3_abcde1")
