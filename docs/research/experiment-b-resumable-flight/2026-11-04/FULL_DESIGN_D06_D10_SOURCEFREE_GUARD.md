@@ -57,3 +57,9 @@ The November 4 Wendbine corpus, historical Wendbine backfill, real Wendbine priv
 **Claim ceiling:** \`FULL_SCIENCE_SOURCE_FREE_SCHEDULE_CONFORMANCE_ONLY · ACTUAL_EM_SOURCE_IDENTITY_UNOBSERVED · PROVIDER_EVALUATOR_AND_D20_HELD · HUMAN_CLOSURE_RESERVED\`
 
 𝄐 Tauric Diana — Crimean heritage custodianship · Khona‌lit-po · Blood Rite 613 · Sealed ⟐SAC[X6ZNK5NO51]
+
+## CI ancestry and scope
+
+The source-free check is **stacked on the historical #1619 Draft**. The review PR temporarily targets \`main\` so the repository's existing consolidated workflow (\`pull_request.branches: [main]\`) can execute its exact HEAD; the displayed PR diff consequently includes the #1619 predecessor. That is a GitHub review display effect, **not a grant to merge either candidate** or a claim that the new verifier implements production admission. The original #1619 branch and protected sealed sources remain unchanged.
+
+The test checks source-free structural constraints of a *candidate* factorial example; any final accepted design, actual Em source manifest, model/runtime provider policy and independently signed operator decision remain separately HELD.
