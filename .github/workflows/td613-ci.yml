@@ -105,6 +105,8 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Test latest real sealed Wendbine public source lookup and typed topology
+        run: node --test packages/dome_world_exact/fixtures/a15-r0/WENDBINE/tests/wendbine-sealed-public-research-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
