@@ -55,6 +55,18 @@ test('Universal Atelier public companion operates native November 4 SEALED searc
  assert.equal(q.result.hits.length,1);
  assert.equal(q.result.hits[0].source.platform_account,'Upset-Ratio502');
  assert.equal(q.provider_or_model_calls,0);
+ const concepts=await port.request({action:'conceptSummary'});
+ assert.equal(concepts.result.source_id_join_count,33);
+ assert.equal(concepts.result.inherited_concept_edges,146);
+ assert.equal(concepts.result.typed_graph_layers.G_X,46);
+ assert.equal(concepts.result.source_ids_without_bounded_concept_annotation,2029);
+ const publicLeads=await port.request({action:'conceptSearch',query:'provenance',limit:8});
+ assert.ok(publicLeads.result.total_matching_historical_sources>0);
+ assert.ok(publicLeads.result.hits.every(x=>x.match_basis==='HISTORICAL_BOUND_PUBLIC_PARAPHRASE'&&x.original_bot_text_quoted===false));
+ const boundedMap=await port.request({action:'conceptMap',concept:'dependency_graph',limit:20});
+ assert.ok(boundedMap.result.total_edges>0);
+ assert.equal(boundedMap.result.proof_ceiling,'RELATIONSHIP_DECLARATION_NOT_EMPIRICAL_CAUSALITY');
+
  const read=await port.request({action:'source',sourceId:'reddit:t3_1wb61ip'});
  assert.equal(read.result.found,true);
  assert.equal(read.result.source.original_full_text_available,false);
