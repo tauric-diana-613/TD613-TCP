@@ -131,7 +131,10 @@ def validate_post(x: Any) -> dict:
             "body_state":state,"archive_copy_version":"OBSERVED_NOT_EARLIEST_OR_LIVE_AUTHOR_SIGNED"}
 
 def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
-                observed:str, *, allow_existing:bool=False, commit:bool=True) -> dict:
+                observed:str, *, allow_existing:bool=False, commit:bool=True,
+                provider:str="ARCTIC_SHIFT") -> dict:
+    if provider not in {"ARCTIC_SHIFT","INVENTED_SYNTHETIC_FIXTURE","OPERATOR_LOCAL_CAPTURE"}:
+        raise ValueError("UNREGISTERED_LOCAL_CAPTURE_SOURCE_PROVIDER")
     floor,ceil=utc(start),utc(end)
     if not floor<ceil: raise ValueError("INVALID_INTERVAL")
     good=[]
@@ -165,7 +168,7 @@ def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
           values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
           (p["source_id"],AUTHOR,COMMUNITY,p["canonical_url"],p["published_unix"],
            observed,p["title"],p["selftext"],p["title_sha256"],p["body_sha256"],
-           p["title_bytes"],p["body_bytes"],p["body_state"],p["outbound_url"],p["media_kind"],p["archive_copy_version"],"ARCTIC_SHIFT"))
+           p["title_bytes"],p["body_bytes"],p["body_state"],p["outbound_url"],p["media_kind"],p["archive_copy_version"],provider))
         rid=conn.execute("select last_insert_rowid()").fetchone()[0]
         conn.execute("insert into text_fts(rowid,title,selftext) values(?,?,?)",
                      (rid,p["title"].decode("utf8"),p["selftext"].decode("utf8")))
@@ -421,7 +424,8 @@ def main():
             if db is None:db=stack.enter_context(closing(prepare_db(location)))
             with db:
                 report=import_rows(db,posts,actual_since,args.until,
-                    dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume),commit=False)
+                    dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume),
+                    commit=False,provider=source_class)
                 db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
                 db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
                 db.execute("insert or replace into audit(key,value) values(?,?)",("recomparison_start_utc",actual_since))
