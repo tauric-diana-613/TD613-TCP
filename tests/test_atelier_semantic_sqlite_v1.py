@@ -5,7 +5,8 @@ m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
 def source(estate,sid,text):
  b=text.encode("utf8")
  return {"estate":estate,"source_id":sid,"source_kind":"TEST_ONLY",
-  "bytes":b,"sha256":hashlib.sha256(b).hexdigest(),"relative_path":"none"}
+  "bytes":b,"sha256":hashlib.sha256(b).hexdigest(),"relative_path":"none",
+  "title":b"title","title_sha256":hashlib.sha256(b"title").hexdigest()}
 class SemanticDB(unittest.TestCase):
  def test_full_three_estate_source_bound_snapshot(self):
   with tempfile.TemporaryDirectory() as folder:
