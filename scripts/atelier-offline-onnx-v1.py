@@ -7,6 +7,7 @@ Mean pooling and normalization follow the checkpoint author's model card.
 from pathlib import Path
 import hashlib
 import json
+import os
 
 class LocalSentenceEncoder:
     def __init__(self,folder):
@@ -54,7 +55,11 @@ class LocalSentenceEncoder:
 
 def fingerprint(folder):
     root=Path(folder);rows=[]
-    for p in sorted(root.rglob('*')):
-        if p.is_symlink():raise ValueError("LOCAL_MODEL_LINK_REFUSED")
-        if p.is_file():rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
+    for parent,dirs,files in os.walk(root,followlinks=False):
+        dirs.sort();files.sort()
+        if any((Path(parent)/d).is_symlink() for d in dirs):raise ValueError("LOCAL_MODEL_LINK_REFUSED")
+        for name in files:
+            p=Path(parent)/name
+            if p.is_symlink():raise ValueError("LOCAL_MODEL_LINK_REFUSED")
+            if p.is_file():rows.append([p.relative_to(root).as_posix(),hashlib.sha256(p.read_bytes()).hexdigest()])
     return hashlib.sha256(json.dumps(rows,ensure_ascii=False,separators=(',',':')).encode('utf8')).hexdigest()
