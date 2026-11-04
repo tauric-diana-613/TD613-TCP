@@ -43,11 +43,12 @@ def unpack(raw,n):
     values=struct.unpack("<"+str(n)+"f",raw)
     return q.verified_vector(list(values))
 
-def build(destination,rows,embed,model_hash):
+def build(destination,rows,embed,model_hash,*,embed_batch=None,batch_size=24):
     dest=q.check_absolute(destination)
     if dest.exists():raise FileExistsError("EXCLUSIVE_NEW_SEMANTIC_INDEX_REQUIRED")
     if not dest.parent.is_dir():raise ValueError("PRIVATE_INDEX_PARENT_MISSING")
     if not isinstance(model_hash,str) or len(model_hash)!=64:raise ValueError("MODEL_SHA_REQUIRED")
+    if type(batch_size) is not int or not 1<=batch_size<=128:raise ValueError("SEMANTIC_BATCH_SIZE_INVALID")
     con=sqlite3.connect(dest)
     count=0;states={};finger=hashlib.sha256();dimension=None
     try:
@@ -59,9 +60,9 @@ def build(destination,rows,embed,model_hash):
               chunk_sha256 TEXT NOT NULL,byte_offset INTEGER NOT NULL,
               dims INTEGER NOT NULL,vector BLOB NOT NULL);""")
         con.execute("BEGIN IMMEDIATE")
-        for item in rows:
-            raw=pack(embed(item["chunk"]))
-            dim=len(raw)//4
+        def add(item,vector):
+            nonlocal count,dimension
+            raw=pack(vector);dim=len(raw)//4
             if dimension is None:dimension=dim
             if dim!=dimension:raise ValueError("INCONSISTENT_MODEL_EMBEDDING_DIMENSIONS")
             con.execute("INSERT INTO vectors VALUES(?,?,?,?,?,?,?,?,?,?,?)",
@@ -71,6 +72,21 @@ def build(destination,rows,embed,model_hash):
             snapshot_step(finger,item)
             states[item["estate"]]=states.get(item["estate"],0)+1
             count+=1
+        if embed_batch is None:
+            for item in rows:add(item,embed(item["chunk"]))
+        else:
+            pending=[]
+            def flush():
+                if not pending:return
+                vectors=embed_batch([item["chunk"] for item in pending])
+                if len(vectors)!=len(pending):
+                    raise ValueError("SEMANTIC_BATCH_VECTOR_COUNT_CONFLICT")
+                for item,vector in zip(pending,vectors):add(item,vector)
+                pending.clear()
+            for item in rows:
+                pending.append(item)
+                if len(pending)>=batch_size:flush()
+            flush()
         if count==0 or any(states.get(estate,0)==0 for estate in q.u.ESTATES):
             raise ValueError("THREE_NONEMPTY_SOURCE_ESTATES_REQUIRED")
         meta={"schema":VERSION,"model_sha256":model_hash,
@@ -82,8 +98,6 @@ def build(destination,rows,embed,model_hash):
         con.commit()
     except BaseException:
         con.rollback();con.close()
-        # A failed index is never eligible for search. Preserve for inspection,
-        # then operator can explicitly discard and rebuild at a new path.
         raise
     finally:
         try:con.close()
@@ -157,7 +171,10 @@ def main():
     model=e.open_model(a.model_dir)
     if a.cmd=="build":
         result=build(a.index,corpus_rows(a.wendbine_db,a.repo_root,a.src_checkout,a.em_checkout),
-                     lambda t:e.encode(model,t),model_hash)
+                     lambda t:e.encode(model,t),model_hash,
+                     embed_batch=lambda texts:model.encode(texts,batch_size=24,
+                       normalize_embeddings=True,show_progress_bar=False),
+                     batch_size=24)
     else:
         result={"model_sha256":model_hash,
           "results":search(a.index,e.encode(model,a.text),
