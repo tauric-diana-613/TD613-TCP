@@ -68,4 +68,16 @@ class NativeSRCExploration(unittest.TestCase):
                 "adjudication_status":"UNRESOLVED","evidence_ids":[]})+"\n")
         after=m.explore(self.root,"A")["registry_sha256"]["typed_edges"]
         self.assertNotEqual(before,after)
+    def test_disagreement_shuffle_and_role_withdrawal_do_not_resolve_science(self):
+        file=self.root/m.EDGE_PATH
+        rows=[json.loads(x) for x in file.read_text('utf8').splitlines()]
+        rows.append({'edge_id':'opposed','from_id':'A','to_id':'B','relation':'DISAGREES_WITH_FORMALIZATION','graph_kind':'CONCEPTUAL','evidence_ids':['synthetic-opposing-span'],'adjudication_status':'WITNESSED'})
+        file.write_text(''.join(json.dumps(x)+'\n' for x in reversed(rows)),'utf8')
+        (self.root/m.ROLE_PATH).write_text('','utf8')
+        out=m.explore(self.root,'A',depth=2)
+        relations={e['relation'] for e in out['witnessed_typed_routes']}
+        self.assertIn('FORMALIZES',relations);self.assertIn('DISAGREES_WITH_FORMALIZATION',relations)
+        self.assertEqual(out['contextual_roles'],[])
+        self.assertFalse(out['heterostratigraphic_synthesis_proven'])
+        self.assertTrue(all(not e['candidate_direct_relation_admitted'] for e in out['witnessed_typed_routes']))
 if __name__=="__main__":unittest.main()
