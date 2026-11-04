@@ -61,4 +61,24 @@ class UniversalSourceBoundTests(unittest.TestCase):
         self.assertEqual(hit[0]["source_id"],"reddit:t3_abcde1")
         self.assertRaises(ValueError,u.exact_query,[], "", 10)
 
+
+    def test_both_native_checkouts_are_required_and_pinned(self):
+        import types
+        from unittest.mock import patch
+        srcroot=self.base/"src-worktree"
+        emroot=self.base/"em-worktree"
+        for base,estate in ((srcroot,"SRC"),(emroot,"EMSTD613")):
+            (base/u.BASE/estate).mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError,"BOTH_NATIVE_CHECKOUTS_REQUIRED"):
+            list(u.load_sources(self.dbpath,self.repo,native_checkouts={"SRC":srcroot}))
+        with patch.object(u.subprocess,"run",return_value=types.SimpleNamespace(stdout="0"*40)) as proc:
+            with self.assertRaisesRegex(ValueError,"NATIVE_CHECKOUT_HEAD_DRIFT"):
+                u.verify_native_checkout(srcroot,"SRC")
+            self.assertTrue(proc.called)
+        with patch.object(u.subprocess,"run",side_effect=[
+                types.SimpleNamespace(stdout=u.NATIVE_PINNED_HEADS["SRC"]),
+                types.SimpleNamespace(stdout=u.NATIVE_PINNED_HEADS["EMSTD613"])]):
+            self.assertEqual(u.verify_native_checkout(srcroot,"SRC"),srcroot/u.BASE/"SRC")
+            self.assertEqual(u.verify_native_checkout(emroot,"EMSTD613"),emroot/u.BASE/"EMSTD613")
+
 if __name__=="__main__":unittest.main()
