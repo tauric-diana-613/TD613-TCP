@@ -82,7 +82,7 @@ test('RCA01 four cells and paired source orders must be exact with distinct nega
  const p=plan();p.lanes.find(x=>x.id==='B_REVERSED').sourceOrder.reverse();
  assert.throws(()=>inspectSourceFreeScientificFreeze(p,scientific()),/PROSPECTIVE_REVERSE_ORDER_MISMATCH/);
  const q=plan();q.lanes.find(x=>x.id==='C_FORWARD').sourceOrder=sourceIds('AUTH');
- assert.throws(()=>inspectSourceFreeScientificFreeze(q,scientific()),/NEGATIVE_NEUTRAL_DOLLHOUSE_SOURCE_MISMATCH|AUTHENTIC_NEGATIVE_CONTROL_SOURCE_ALIAS_COLLISION/);
+ assert.throws(()=>inspectSourceFreeScientificFreeze(q,scientific()),/PROSPECTIVE_REVERSE_ORDER_MISMATCH|NEGATIVE_NEUTRAL_DOLLHOUSE_SOURCE_MISMATCH|AUTHENTIC_NEGATIVE_CONTROL_SOURCE_ALIAS_COLLISION/);
  const r=plan();r.lanes.find(x=>x.id==='B_FORWARD').sourceOrder=[...sourceIds('AUTH')].reverse();
  assert.throws(()=>inspectSourceFreeScientificFreeze(r,scientific()),/PROSPECTIVE_REVERSE_ORDER_MISMATCH|AUTHENTIC_NEUTRAL_DOLLHOUSE_SOURCE_MISMATCH/);
 });
