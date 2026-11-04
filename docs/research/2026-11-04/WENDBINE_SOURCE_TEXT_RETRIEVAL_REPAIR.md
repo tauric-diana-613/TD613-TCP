@@ -60,6 +60,17 @@ Native SRC has a content-addressed original tree and derivative/mapping instrume
 Required evidence: authentic post-ID/date exact retrieval (including same-day exhaustive sets); source SHA/bytes; exact byte offsets; attributed explicit relations; independent native SRC/Em comparisons; failure on wrong/withheld source; nontrivial cross-origin geometry equality where justified; distinct scientific nulls where it is not. No synthetic pass can substitute for a genuine accessible corpus run.
 
 
+
+### Mandatory completeness check before claiming a successful original-text corpus
+
+A provider returning some posts does **not** prove every publicly catalogued source was collected. The new coverage adjudicator compares the populated local DB against the verified November 4 public source-ID registry and lists **every missing ID**, rather than inventing text.
+
+\`\`\`powershell
+python scripts/wendbine-source-coverage-adjudicator-v1.py --db "C:\OperatorOnly\Wendbine\wendbine-live-v1.sqlite" --public-manifest "C:\OperatorOnly\TD613-TCP\packages\dome_world_exact\fixtures\a15-r0\WENDBINE\01-MANIFESTS\phase2\manifestations.jsonl" --since "2026-01-01T00:00:00Z" --until "2026-11-05T00:00:00Z" --require-complete
+\`\`\`
+
+A nonzero result means the returned body set is incomplete **relative to that public manifest**. A passed result still cannot establish that the public manifest reaches the true first publication, that every removed post remains legally retrievable, or that a model has proved native semantic and research-topology parity. The separately held 60-source historical corpus is not retroactively converted into live author evidence.
+
 ## Universal Atelier read-only bridge (new)
 
 A separate executable \`scripts/universal-atelier-sourcebound-readonly-v1.py\` federates the **actual operator-local Wendbine observed text database** with the checked-in SRC and Em derivative files. It computes exact local byte offsets and hashes for the existing text while labeling the two latter estates as **DERIVATIVES, NOT VERIFIED ORIGINALS**. The bridge cannot manufacture a missing original source blob or a native semantic/topological claim.
