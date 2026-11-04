@@ -33,23 +33,12 @@ Use an isolated verified review checkout on the authorized Windows workstation. 
 
 ```powershell
 python -B -m unittest discover -s tests -p 'test_wendbine_local_capture_intake_v1.py' -v
-
-python -B scripts/wendbine-local-capture-intake-v1.py import \
-  --manifest "<absolute-operator-local-path>\wendbine-captures.jsonl" \
-  --db "<absolute-private-path>\wendbine-custody-v1.sqlite" \
-  --since "2026-01-01T00:00:00Z" \
-  --until "<actual-UTC-exclusive-cutoff>" \
-  --custody-basis "operator-local independently captured historical source observations"
-
-python -B scripts/wendbine-local-capture-intake-v1.py history-exact \
-  --db "<absolute-private-path>\wendbine-custody-v1.sqlite" "𝌋"
-python -B scripts/wendbine-local-capture-intake-v1.py history-lexical \
-  --db "<absolute-private-path>\wendbine-custody-v1.sqlite" "topology"
-python -B scripts/wendbine-live-research-index-v1.py \
-  --db "<absolute-private-path>\wendbine-custody-v1.sqlite" status
+python -B scripts/wendbine-local-capture-intake-v1.py import --manifest '<absolute-operator-local-path>\wendbine-captures.jsonl' --db '<absolute-private-path>\wendbine-custody-v1.sqlite' --since '2026-01-01T00:00:00Z' --until '<actual-UTC-exclusive-cutoff>' --custody-basis 'operator-held independent historical source observations'
+python -B scripts/wendbine-local-capture-intake-v1.py history-exact --db '<absolute-private-path>\wendbine-custody-v1.sqlite' '𝌋'
+python -B scripts/wendbine-local-capture-intake-v1.py history-lexical --db '<absolute-private-path>\wendbine-custody-v1.sqlite' 'topology'
+python -B scripts/wendbine-live-research-index-v1.py --db '<absolute-private-path>\wendbine-custody-v1.sqlite' status
 ```
 
-**Caution:** PowerShell uses the backtick for line continuation, not backslash. The shown backslash-wrapped examples are illustrative multiline commands; for direct PowerShell execution, run each command on one line or replace every line-ending `\` with PowerShell backtick.
 
 The core index stores a deterministic earliest-observed capture per source for compatibility with existing Wendbine/Universal read-only retrieval; `capture_versions` and the dedicated `capture_fts` store and search **every** admitted historical capture of that source, even if edited or later reported filtered. Each historical version has its own title and body BLOBs, SHA-256, capture time, source label and declared custody basis. A conflicting publication time, mutated byte hash, duplicate capture ID or unsupported status blocks admission.
 
