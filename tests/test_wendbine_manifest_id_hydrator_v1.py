@@ -160,7 +160,10 @@ class KnownIdArchiveSourceFree(unittest.TestCase):
           "saturated_one_second_intervals":[],
         }),encoding="utf8")
         def with_early(url):
-            if "ids=pre2026" in url:return h.encoded({"data":[p("pre2026","Early 𝌋 source")]})
+            if "ids=pre2026" in url:
+                item=p("pre2026","Early 𝌋 source")
+                item["created_utc"]=int(dt.datetime(2025,12,20,tzinfo=dt.timezone.utc).timestamp())
+                return h.encoded({"data":[item]})
             return self.fake(url)
         receipt=h.hydrate(self.manifest,self.private,batch_size=2,
            extra_files=[additional],fetch=with_early,clock=self.clock)
@@ -171,6 +174,13 @@ class KnownIdArchiveSourceFree(unittest.TestCase):
         rows=[json.loads(x) for x in (self.private/"wendbine-captures.jsonl").read_text("utf8").splitlines()]
         self.assertIn("reddit:t3_pre2026",{x["source_id"] for x in rows})
         self.assertEqual(receipt["held_or_unreturned_sources"],1)
+        imported=c.import_local(self.private/"wendbine-captures.jsonl",
+            self.private/"mixed-2025-2026.sqlite","2025-01-01T00:00:00Z",
+            "2026-11-05T00:00:00Z","INVENTED_MIXED_YEAR_TEST")
+        self.assertEqual(imported["unique_sources"],4)
+        with closing(sqlite3.connect(self.private/"mixed-2025-2026.sqlite")) as con:
+            observed=con.execute("SELECT selftext FROM sources WHERE source_id='reddit:t3_pre2026'").fetchone()[0]
+            self.assertIn("Early 𝌋".encode("utf8"),observed)
 
     def test_resumed_batch_rejects_changed_discovered_id_universe(self):
         extra=self.root/"extra-set.json"
