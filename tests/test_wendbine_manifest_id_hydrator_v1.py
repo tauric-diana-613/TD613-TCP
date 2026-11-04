@@ -150,6 +150,51 @@ class KnownIdArchiveSourceFree(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"UNRECOGNIZED_ARCHIVE_ID_RESPONSE"):
             h.parse_batch(b'{"unexpected":"shape"}',IDS[:2])
 
+    def test_extra_source_ids_are_separate_from_immutable_pinned_manifest(self):
+        additional=self.root/"extra-discovery.json"
+        additional.write_text(json.dumps({
+          "schema":"td613.wendbine.archive-discovered-id-set/v1",
+          "pinned_manifest_sha256":h.MANIFEST_SHA,
+          "source_ids":["reddit:t3_pre2026"],
+          "source_class":"ARCHIVE_SEARCH_DISCOVERED_IDS_UNVERIFIED_ORIGINAL",
+          "saturated_one_second_intervals":[],
+        }),encoding="utf8")
+        def with_early(url):
+            if "ids=pre2026" in url:return h.encoded({"data":[p("pre2026","Early 𝌋 source")]})
+            return self.fake(url)
+        receipt=h.hydrate(self.manifest,self.private,batch_size=2,
+           extra_files=[additional],fetch=with_early,clock=self.clock)
+        self.assertEqual(receipt["manifest_ids"],4)
+        self.assertEqual(receipt["supplementary_archive_search_ids"],1)
+        self.assertEqual(receipt["total_ids_looked_up"],5)
+        self.assertEqual(receipt["observed_archive_text_sources"],4)
+        rows=[json.loads(x) for x in (self.private/"wendbine-captures.jsonl").read_text("utf8").splitlines()]
+        self.assertIn("reddit:t3_pre2026",{x["source_id"] for x in rows})
+        self.assertEqual(receipt["held_or_unreturned_sources"],1)
+
+    def test_resumed_batch_rejects_changed_discovered_id_universe(self):
+        extra=self.root/"extra-set.json"
+        def write_ids(ids):
+            extra.write_text(json.dumps({
+                "schema":"td613.wendbine.archive-discovered-id-set/v1",
+                "pinned_manifest_sha256":h.MANIFEST_SHA,
+                "source_class":"ARCHIVE_SEARCH_DISCOVERED_IDS_UNVERIFIED_ORIGINAL",
+                "source_ids":ids,"saturated_one_second_intervals":[]
+            }),encoding="utf8")
+        write_ids(["reddit:t3_pre2026"])
+        requests=[]
+        def broken(url):
+            requests.append(url)
+            if len(requests)==2:raise ConnectionError("BREAK")
+            return self.fake(url)
+        with self.assertRaises(ConnectionError):
+            h.hydrate(self.manifest,self.private,batch_size=2,extra_files=[extra],
+               fetch=broken,clock=self.clock)
+        write_ids(["reddit:t3_pre2026","reddit:t3_pre2027"])
+        with self.assertRaisesRegex(ValueError,"RESUMED_PROVIDER_BATCH_IDENTITY_DRIFT"):
+            h.hydrate(self.manifest,self.private,batch_size=2,extra_files=[extra],
+                      resume=True,fetch=self.fake,clock=self.clock)
+
     def test_wrong_author_and_malformed_text_are_not_promoted(self):
         wrong=p("abcde1","Reported post",author="OtherWriter")
         result,state=h.post_to_capture("reddit:t3_abcde1",wrong,
