@@ -362,6 +362,7 @@ def main():
     s.add_argument("--max-pages",type=int,default=50)
     s.add_argument("--page-size",type=int,default=100)
     s.add_argument("--resume",action="store_true",help="Continue from immutable successful UTC cutoff in an existing genuine-source index")
+    s.add_argument("--overlap-days",type=int,default=2,help="Recompare 0–7 days of earlier observed records by hash when resuming")
     s.add_argument("--operator-confirmed-rights",action="store_true",
         help="Operator has separately reviewed lawful local post retrieval/use and deletion handling")
     t=sub.add_parser("import-fixture")
@@ -387,6 +388,8 @@ def main():
         if args.command=="sync" and not args.operator_confirmed_rights:
             raise ValueError("HUMAN_RIGHTS_CONFIRMATION_REQUIRED_BEFORE_LIVE_SOURCE_ACQUISITION")
         source_class="ARCTIC_SHIFT" if args.command=="sync" else "INVENTED_SYNTHETIC_FIXTURE"
+        if args.command=="sync" and args.overlap_days not in range(0,8):
+            raise ValueError("FINITE_OVERLAP_DAYS_REQUIRED")
         if args.command=="sync" and args.resume:
             ensure_local(location)
             if not location.is_file() or location.is_symlink():
@@ -397,9 +400,11 @@ def main():
             prior=dict(db.execute("select key,value from audit").fetchall())
             if prior.get("source_class")!="ARCTIC_SHIFT":
                 raise ValueError("RESUME_SYNTHETIC_OR_UNATTESTED_DB_REFUSED")
-            actual_since=prior.get("last_successful_until_utc")
-            if not actual_since or utc(args.until)<=utc(actual_since):
+            prior_end=prior.get("last_successful_until_utc")
+            if not prior_end or utc(args.until)<=utc(prior_end):
                 raise ValueError("RESUME_REQUIRES_NEW_LATER_EXCLUSIVE_CUTOFF")
+            actual_since=dt.datetime.fromtimestamp(utc(prior_end)-86400*args.overlap_days,
+               tz=dt.timezone.utc).isoformat().replace("+00:00","Z")
         else:
             if args.command=="import-fixture" and getattr(args,"resume",False):
                 raise ValueError("SYNTHETIC_TO_REAL_RESUME_REFUSED")
@@ -416,6 +421,7 @@ def main():
                 dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume))
             db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
             db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
+            db.execute("insert or replace into audit(key,value) values(?,?)",("recomparison_start_utc",actual_since))
             db.execute("insert or replace into audit(key,value) values(?,?)",("last_import_summary_sha256",
               sha(json.dumps(report,sort_keys=True).encode("utf8"))))
             report["provider_receipt"]=receipt
