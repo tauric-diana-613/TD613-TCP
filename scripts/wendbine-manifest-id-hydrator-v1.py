@@ -114,9 +114,17 @@ def remote_bytes(url:str):
         except urllib.error.HTTPError as e:
             if e.code not in (429,500,502,503,504) or attempt==2:
                 raise
-            retry=e.headers.get("Retry-After","2")
-            try:pause=min(30,max(1,int(retry)))
-            except (ValueError,TypeError):pause=2
+            retry=e.headers.get("Retry-After")
+            if retry is None:
+                if e.code == 429:
+                    raise
+                pause=2
+            else:
+                try:pause=int(retry)
+                except (ValueError,TypeError):raise e
+                if pause < 0 or pause > 30:
+                    raise
+                pause=max(1,pause)
             time.sleep(pause)
     raise ValueError("PROVIDER_RETRIES_EXHAUSTED")
 

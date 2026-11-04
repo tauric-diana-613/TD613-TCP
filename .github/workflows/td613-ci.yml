@@ -144,6 +144,10 @@ jobs:
         run: python -B -m unittest discover -s tests -p 'test_wendbine_manifest_id_hydrator_v1.py' -v
       - name: Bounded independent archive search discovery beyond the Wendbine pinned source IDs
         run: python -B -m unittest discover -s tests -p 'test_wendbine_archive_discover_source_ids_v1.py' -v
+      - name: Verify partial archive search response recovery
+        run: python -B -m unittest discover -s tests -p 'test_wendbine_search_batch_recovery_v1.py' -v
+      - name: Verify source-grounded captured URL spans
+        run: python -B -m unittest discover -s tests -p 'test_wendbine_observed_url_index_v1.py' -v
       - name: Universal Atelier source-labeled Wendbine SRC and Em read-only bridge
         run: python -B -m unittest discover -s tests -p 'test_universal_atelier_sourcebound_readonly_v1.py' -v
       - name: Wendbine historical source-ID coverage refusal test
