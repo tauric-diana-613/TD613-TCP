@@ -7,3 +7,6 @@ app/safe-harbor/corpus/binding_event_receipt.json text eol=lf
 app/safe-harbor/corpus/binding_provenance_manifest.json text eol=lf
 app/safe-harbor/corpus/ns_request_signed_example.json text eol=lf
 app/safe-harbor/corpus/td_signed_payloads_bundle.json text eol=lf
+
+# Research indexes bind exact committed bytes; preserve checkout hashes.
+packages/dome_world_exact/fixtures/a15-r0/EMSTD613/** -text

@@ -13,7 +13,7 @@ def load(root,rel):
         if path.is_symlink():raise ValueError("EM_SYMLINK_REFUSED")
     if not path.is_file() or path.stat().st_size>4_000_000:raise ValueError("EM_REGISTRY_REQUIRED")
     raw=path.read_bytes()
-    return [json.loads(line) for line in raw.decode("utf8-sig").splitlines() if line.strip()],hashlib.sha256(raw).hexdigest()
+    return [json.loads(line) for line in raw.decode("utf-8-sig").splitlines() if line.strip()],hashlib.sha256(raw).hexdigest()
 def route(root,work_id):
     if not isinstance(work_id,str) or not work_id.startswith("emwork_"):raise ValueError("EM_WORK_ID_REQUIRED")
     source={};digest={}
