@@ -1,0 +1,95 @@
+{
+  "schema": "td613.source-free-execution-contract/v1",
+  "private_gold_or_rankings_loaded": false,
+  "execution_drivers": [
+    {
+      "driver": "execute_semantics.py",
+      "sha256": "f1013df21fcd43b89829f945e93b5d70e45eee83a95b3382aee214539abf05db",
+      "calls": [
+        {
+          "line": 65,
+          "function": "bench.benchmark",
+          "arguments": {}
+        },
+        {
+          "line": 66,
+          "function": "bench.benchmark",
+          "arguments": {}
+        },
+        {
+          "line": 23,
+          "function": "q.source_chunks",
+          "arguments": {}
+        },
+        {
+          "line": 47,
+          "function": "sem.search",
+          "arguments": {
+            "estate": "EXPLICIT_ESTATE_ARGUMENT",
+            "limit": 20,
+            "unique_sources": true
+          }
+        },
+        {
+          "line": 56,
+          "function": "ref.search",
+          "arguments": {
+            "estate": "EXPLICIT_ESTATE_ARGUMENT",
+            "limit": 100,
+            "offset": "EXPRESSION"
+          }
+        }
+      ]
+    },
+    {
+      "driver": "final_research_verification.py",
+      "sha256": "a3778ca2651931ba7953e9fe9934a3227b753d087aad448eb25b71a918f66611",
+      "calls": [
+        {
+          "line": 29,
+          "function": "native.search",
+          "arguments": {
+            "limit": 5
+          }
+        },
+        {
+          "line": 16,
+          "function": "sem.search",
+          "arguments": {
+            "estate": "EXPLICIT_ESTATE_ARGUMENT",
+            "limit": 5,
+            "unique_sources": true
+          }
+        },
+        {
+          "line": 44,
+          "function": "ref.search",
+          "arguments": {
+            "estate": "EXPLICIT_ESTATE_ARGUMENT",
+            "limit": 100,
+            "offset": "EXPRESSION"
+          }
+        },
+        {
+          "line": 20,
+          "function": "ref.search",
+          "arguments": {
+            "estate": "EXPLICIT_ESTATE_ARGUMENT",
+            "limit": 20
+          }
+        }
+      ]
+    },
+    {
+      "driver": "final_native_assay.py",
+      "sha256": "ad8e726cfccd42bbeb17c8b9434fdbf10194ff59ad2561178662b03614bd6e25",
+      "calls": []
+    }
+  ],
+  "synthetic_tokenization": {
+    "synthetic_characters": 1180,
+    "token_pieces_before": 852,
+    "token_pieces_after": 256,
+    "tail_marker_seen": false
+  }
+}
