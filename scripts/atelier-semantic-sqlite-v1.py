@@ -36,6 +36,7 @@ def snapshot_step(hasher,item):
     hasher.update(json_line([item["chunk_id"],item["estate"],item["source_id"],
         item["capture_id"],item["source_sha256"],item["chunk_sha256"]]))
 def pack(v):
+    if hasattr(v,"tolist"):v=v.tolist()
     values=q.verified_vector(v)
     return struct.pack("<"+str(len(values))+"f",*values)
 def unpack(raw,n):
