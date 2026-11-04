@@ -180,7 +180,6 @@ def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
                   values(?,?,?,?,?,?,?)""",
                   (p["source_id"],dst,"EXPLICIT_WENDBINE_POST_LINK",field,offset,
                    m.group(0),"OBSERVED_TEXTUAL_LINK_NOT_DEPENDENCY_PROOF"))
-    conn.commit()
     summary={"unique_sources":len(unique),
              "nonempty_bodies":sum(bool(p["body_bytes"]) for p in unique.values()),
              "empty_bodies":sum(not p["body_bytes"] for p in unique.values()),
@@ -339,7 +338,9 @@ def explicit_graph(conn: sqlite3.Connection, source_id:str, max_depth:int=3) -> 
       "unindexed_target_nodes_not_silently_created":True}
 
 def status(conn:sqlite3.Connection)->dict:
-    return {"schema":"td613.wendbine.local-research-index/v1",
+    audit=dict(conn.execute("select key,value from audit order by key").fetchall())
+    return {"last_successful_until_utc":audit.get("last_successful_until_utc"),
+      "index_source_class":audit.get("source_class","UNATTESTED"),"schema":"td613.wendbine.local-research-index/v1",
       "integrity_check":conn.execute("pragma integrity_check").fetchone()[0],
       "sources":conn.execute("select count(*) from sources").fetchone()[0],
       "nonempty_bodies":conn.execute("select count(*) from sources where body_bytes>0").fetchone()[0],
@@ -360,6 +361,7 @@ def main():
     s.add_argument("--until",required=True,help="UTC exclusive cutoff")
     s.add_argument("--max-pages",type=int,default=50)
     s.add_argument("--page-size",type=int,default=100)
+    s.add_argument("--resume",action="store_true",help="Continue from immutable successful UTC cutoff in an existing genuine-source index")
     s.add_argument("--operator-confirmed-rights",action="store_true",
         help="Operator has separately reviewed lawful local post retrieval/use and deletion handling")
     t=sub.add_parser("import-fixture")
@@ -384,14 +386,38 @@ def main():
     if args.command in ("sync","import-fixture"):
         if args.command=="sync" and not args.operator_confirmed_rights:
             raise ValueError("HUMAN_RIGHTS_CONFIRMATION_REQUIRED_BEFORE_LIVE_SOURCE_ACQUISITION")
-        if args.command=="sync":
-            posts,receipt=fetch_history(args.since,args.until,args.max_pages,args.page_size)
+        source_class="ARCTIC_SHIFT" if args.command=="sync" else "INVENTED_SYNTHETIC_FIXTURE"
+        if args.command=="sync" and args.resume:
+            ensure_local(location)
+            if not location.is_file() or location.is_symlink():
+                raise ValueError("EXISTING_GENUINE_SOURCE_DB_REQUIRED")
+            db=sqlite3.connect(location)
+            if db.execute("pragma integrity_check").fetchone()[0]!="ok":
+                raise ValueError("RESUME_DB_INTEGRITY_FAILURE")
+            prior=dict(db.execute("select key,value from audit").fetchall())
+            if prior.get("source_class")!="ARCTIC_SHIFT":
+                raise ValueError("RESUME_SYNTHETIC_OR_UNATTESTED_DB_REFUSED")
+            actual_since=prior.get("last_successful_until_utc")
+            if not actual_since or utc(args.until)<=utc(actual_since):
+                raise ValueError("RESUME_REQUIRES_NEW_LATER_EXCLUSIVE_CUTOFF")
         else:
-            posts=json.loads(Path(args.fixture).read_text("utf8"));receipt={"provider":"INVENTED_SYNTHETIC_FIXTURE"}
-        db=prepare_db(location)
+            if args.command=="import-fixture" and getattr(args,"resume",False):
+                raise ValueError("SYNTHETIC_TO_REAL_RESUME_REFUSED")
+            actual_since=args.since
+            db=None
+        if args.command=="sync":
+            posts,receipt=fetch_history(actual_since,args.until,args.max_pages,args.page_size)
+        else:
+            posts=json.loads(Path(args.fixture).read_text("utf8"))
+            receipt={"provider":"INVENTED_SYNTHETIC_FIXTURE"}
+        if db is None:db=prepare_db(location)
         with db:
-            report=import_rows(db,posts,args.since,args.until,
-                dt.datetime.now(dt.timezone.utc).isoformat())
+            report=import_rows(db,posts,actual_since,args.until,
+                dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume))
+            db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
+            db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
+            db.execute("insert or replace into audit(key,value) values(?,?)",("last_import_summary_sha256",
+              sha(json.dumps(report,sort_keys=True).encode("utf8"))))
             report["provider_receipt"]=receipt
         print(json.dumps({"report":report,"status":status(db)},ensure_ascii=False,indent=2))
     else:
