@@ -75,6 +75,32 @@ def manifest_ids(path:Path):
     if len(entries)!=SOURCE_COUNT:raise ValueError("EXPECTED_PINNED_MANIFEST_COUNT_DRIFT")
     return entries
 
+def extra_discovered_ids(files:list[Path]|None, pinned:list[str]):
+    """Read independent search-discovered ID sets without altering native manifest."""
+    if not files:return [],0
+    seen=set(pinned);out=[];held_segments=0
+    for path in files:
+        local(path)
+        if not path.is_file() or path.stat().st_size>MAX_MANIFEST:
+            raise ValueError("EXTRA_ID_DISCOVERY_FILE_INVALID")
+        obj=json_from(path.read_bytes())
+        if not isinstance(obj,dict) or obj.get("schema")!="td613.wendbine.archive-discovered-id-set/v1" or \
+           obj.get("pinned_manifest_sha256")!=MANIFEST_SHA or \
+           obj.get("source_class")!="ARCHIVE_SEARCH_DISCOVERED_IDS_UNVERIFIED_ORIGINAL":
+            raise ValueError("EXTRA_DISCOVERY_PROVENANCE_MISMATCH")
+        ids=obj.get("source_ids")
+        if not isinstance(ids,list):raise ValueError("EXTRA_DISCOVERY_SOURCE_ID_ARRAY_REQUIRED")
+        saturated=obj.get("saturated_one_second_intervals")
+        if not isinstance(saturated,list):raise ValueError("EXTRA_DISCOVERY_SATURATION_EVIDENCE_REQUIRED")
+        held_segments+=len(saturated)
+        for sid in ids:
+            if not isinstance(sid,str) or not SOURCE_ID.fullmatch(sid):
+                raise ValueError("EXTRA_SOURCE_ID_INVALID")
+            if sid not in seen:
+                seen.add(sid);out.append(sid)
+    if len(out)>100000:raise ValueError("EXTRA_DISCOVERY_ID_CEILING")
+    return sorted(out),held_segments
+
 def remote_bytes(url:str):
     req=urllib.request.Request(url,headers={
        "User-Agent":"TD613-Wendbine-ManifestArchiveHydration/1.0",
@@ -178,8 +204,12 @@ def atomic_bytes(path:Path,raw:bytes):
     os.replace(tmp,path)
 
 def hydrate(manifest:Path,workspace:Path,*,batch_size=25,resume=False,
-            fetch=remote_bytes,clock=lambda:dt.datetime.now(dt.timezone.utc)):
-    ids=manifest_ids(manifest)
+            extra_files=None,fetch=remote_bytes,
+            clock=lambda:dt.datetime.now(dt.timezone.utc)):
+    pinned=manifest_ids(manifest)
+    extra_ids,saturated_search_intervals=extra_discovered_ids(extra_files,pinned)
+    ids=pinned+extra_ids
+    full_id_set_sha=sha(encoded(ids))
     if type(batch_size) is not int or not 1<=batch_size<=100:
         raise ValueError("BOUNDED_MANIFEST_ID_BATCH_SIZE_REQUIRED")
     local(workspace)
@@ -209,7 +239,7 @@ def hydrate(manifest:Path,workspace:Path,*,batch_size=25,resume=False,
             if receipt.get("manifest_sha256")!=MANIFEST_SHA or \
                receipt.get("requested_ids")!=requested or \
                receipt.get("response_sha256")!=sha(raw) or \
-               receipt.get("batch_size")!=batch_size:
+               receipt.get("batch_size")!=batch_size or                receipt.get("full_id_set_sha256")!=full_id_set_sha:
                 raise ValueError("RESUMED_PROVIDER_BATCH_IDENTITY_DRIFT")
             observed=receipt["observed_utc"]
         else:
@@ -219,7 +249,8 @@ def hydrate(manifest:Path,workspace:Path,*,batch_size=25,resume=False,
             parse_batch(raw,requested)
             observed=observed_timestamp(clock)
             receipt={"batch_index":index,"batch_size":batch_size,
-                "manifest_sha256":MANIFEST_SHA,"requested_ids":requested,
+                "manifest_sha256":MANIFEST_SHA,"full_id_set_sha256":full_id_set_sha,
+                "requested_ids":requested,
                 "response_sha256":sha(raw),"response_bytes":len(raw),
                 "observed_utc":observed,"provider":API}
             atomic_bytes(raw_path,raw)
@@ -249,7 +280,11 @@ def hydrate(manifest:Path,workspace:Path,*,batch_size=25,resume=False,
     for x in held:counts[x["reason"]]=counts.get(x["reason"],0)+1
     report={"schema":"td613.wendbine.manifest-id-hydration-receipt/v1",
        "state":"PUBLIC_ARCHIVE_ID_BYTES_CAPTURED_LOCALLY_WITH_GAPS",
-       "pinned_manifest_sha256":MANIFEST_SHA,"manifest_ids":len(ids),
+       "pinned_manifest_sha256":MANIFEST_SHA,"manifest_ids":len(pinned),
+       "supplementary_archive_search_ids":len(extra_ids),
+       "source_id_universe_sha256":full_id_set_sha,
+       "supplementary_search_saturated_one_second_intervals":saturated_search_intervals,
+       "total_ids_looked_up":len(ids),
        "observed_archive_text_sources":len(all_captures),
        "held_or_unreturned_sources":len(held),
        "held_by_reason":dict(sorted(counts.items())),
@@ -272,9 +307,12 @@ def main():
     p.add_argument("--public-manifest",type=Path,required=True)
     p.add_argument("--private-workspace",type=Path,required=True)
     p.add_argument("--batch-size",type=int,default=25)
+    p.add_argument("--extra-ids",type=Path,action="append",
+       help="Optional distinct independently archive-discovered source ID JSON files")
     p.add_argument("--resume",action="store_true")
     args=p.parse_args()
     print(json.dumps(hydrate(args.public_manifest,args.private_workspace,
-      batch_size=args.batch_size,resume=args.resume),ensure_ascii=False,indent=2))
+      batch_size=args.batch_size,resume=args.resume,extra_files=args.extra_ids),
+      ensure_ascii=False,indent=2))
 
 if __name__=="__main__":main()
