@@ -92,27 +92,34 @@ def load_sources(dbpath,repository,*,native_checkouts=None):
             yield {"estate":"WENDBINE","source_id":sid,
                 "source_kind":"OBSERVED_PUBLIC_PROVIDER_TEXT_NOT_AUTHOR_SIGNED",
                 "canonical_url":url,"relative_path":None,
-                "sha256":bhash,"bytes":body,"title":title,
+                "sha256":bhash,"bytes":body,"title":title,"title_sha256":thash,
                 "text":body.decode("utf8",errors="strict"),
                 "original_source_bytes_verified":True}
     finally:con.close()
 
 def exact_query(source_iter,phrase,limit=30):
+    """Field-bound exact UTF-8 readback; title and body remain distinct sources of evidence."""
     if not isinstance(phrase,str) or not phrase or len(phrase)>1024 or limit<1 or limit>100:
         raise ValueError("BOUNDED_EXACT_QUERY_REQUIRED")
     needle=phrase.encode("utf8")
     hits=[]
     for row in source_iter:
-        b=row["bytes"];start=0
-        while len(hits)<limit:
-            idx=b.find(needle,start)
-            if idx<0:break
-            hits.append({"estate":row["estate"],"source_id":row["source_id"],
-              "source_kind":row["source_kind"],"source_sha256":row["sha256"],
-              "byte_offset":idx,"length_utf8":len(needle),"exact_match":phrase,
-              "path":row["relative_path"],"original_source_bytes_verified":row["original_source_bytes_verified"],
-              "canonical_url":row.get("canonical_url")})
-            start=idx+max(1,len(needle))
+        fields=[("selftext" if row["estate"]=="WENDBINE" else "derivative_text",
+                 row["bytes"],row["sha256"])]
+        if row["estate"]=="WENDBINE":
+            fields.append(("title",row["title"],row["title_sha256"]))
+        for field,body,digest in fields:
+            start=0
+            while len(hits)<limit:
+                idx=body.find(needle,start)
+                if idx<0:break
+                hits.append({"estate":row["estate"],"source_id":row["source_id"],
+                  "source_kind":row["source_kind"],"source_sha256":digest,
+                  "source_field":field,"byte_offset":idx,"length_utf8":len(needle),
+                  "exact_match":phrase,"path":row["relative_path"],
+                  "original_source_bytes_verified":row["original_source_bytes_verified"],
+                  "canonical_url":row.get("canonical_url")})
+                start=idx+max(1,len(needle))
         if len(hits)>=limit:break
     return hits
 
