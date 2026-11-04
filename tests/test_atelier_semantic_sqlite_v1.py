@@ -34,9 +34,11 @@ class SemanticDB(unittest.TestCase):
       source("WENDBINE","reddit:t3_abcde1","c captured observation")]
    chunks=list(m.q.source_chunks(iter(rows)))
    calls=[]
+   class ArrayLike:
+    def tolist(self):return [1.0,0.0]
    def embed_batch(texts):
     calls.append(len(texts))
-    return [[1,0] for text in texts]
+    return [ArrayLike() for text in texts]
    report=m.build(target,iter(chunks),lambda _:(_ for _ in ()).throw(AssertionError("UNBATCHED")),
            "a"*64,embed_batch=embed_batch,batch_size=2)
    self.assertEqual(report["source_chunk_count"],4)
