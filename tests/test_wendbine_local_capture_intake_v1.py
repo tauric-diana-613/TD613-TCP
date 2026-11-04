@@ -137,6 +137,8 @@ class HistoricalCustody(unittest.TestCase):
             con.commit()
         with self.assertRaisesRegex(ValueError,"CAPTURE_VERSION_DIGEST_CONFLICT"):
             m.history_exact(self.db,"TAMPERED")
+        with self.assertRaisesRegex(ValueError,"CAPTURE_VERSION_DIGEST_CONFLICT"):
+            m.history_lexical(self.db,"Unmodified")
 
 if __name__=="__main__":
     unittest.main()
