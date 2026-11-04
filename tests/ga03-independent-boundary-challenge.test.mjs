@@ -6,7 +6,7 @@ import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 
-const checkout=process.argv[2];
+const checkout=process.env.GA03_EXACT_CHECKOUT;
 assert.ok(typeof checkout==='string'&&path.isAbsolute(checkout),'PINNED_SOURCE_CHECKOUT_REQUIRED');
 const get=path=>import(pathToFileURL(path.join(checkout,path)).href);
 const sha=b=>createHash('sha256').update(b).digest('hex');
