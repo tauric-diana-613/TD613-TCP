@@ -27,6 +27,21 @@ class SemanticDB(unittest.TestCase):
     m.audit(dest,iter(chunks[:-1]))
    with self.assertRaisesRegex(ValueError,"SEMANTIC_MODEL_OR_INDEX_STATE_DRIFT"):
     m.search(dest,[1,0],model_hash="b"*64)
+ def test_batched_embeddings_retain_three_estates_and_all_chunks(self):
+  with tempfile.TemporaryDirectory() as folder:
+   target=pathlib.Path(folder)/"batched.sqlite"
+   rows=[source("SRC","s1","a research thread"),source("EMSTD613","e1","b research argument"),
+      source("WENDBINE","reddit:t3_abcde1","c captured observation")]
+   chunks=list(m.q.source_chunks(iter(rows)))
+   calls=[]
+   def embed_batch(texts):
+    calls.append(len(texts))
+    return [[1,0] for text in texts]
+   report=m.build(target,iter(chunks),lambda _:(_ for _ in ()).throw(AssertionError("UNBATCHED")),
+           "a"*64,embed_batch=embed_batch,batch_size=2)
+   self.assertEqual(report["source_chunk_count"],4)
+   self.assertEqual(calls,[2,2])
+   self.assertEqual(int(m.audit(target,iter(chunks))["corpus_chunk_count"]),4)
  def test_incomplete_source_coverage_is_explicit(self):
   with tempfile.TemporaryDirectory() as folder:
    one=list(m.q.source_chunks(iter([source("SRC","s1","single")])))[0]
