@@ -7,3 +7,6 @@ app/safe-harbor/corpus/binding_event_receipt.json text eol=lf
 app/safe-harbor/corpus/binding_provenance_manifest.json text eol=lf
 app/safe-harbor/corpus/ns_request_signed_example.json text eol=lf
 app/safe-harbor/corpus/td_signed_payloads_bundle.json text eol=lf
+
+# Keep exact workflow contracts portable across Windows and Linux.
+.github/workflows/*.yml text eol=lf
