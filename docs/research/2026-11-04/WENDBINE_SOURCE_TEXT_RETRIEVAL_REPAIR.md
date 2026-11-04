@@ -62,7 +62,7 @@ Required evidence: authentic post-ID/date exact retrieval (including same-day ex
 ## Test contract
 
 \`\`\`bash
-python -m unittest discover -s tests -p 'wendbine-live-research-index-v1.test.py' -v
+python -m unittest discover -s tests -p 'test_wendbine_live_research_index_v1.py' -v
 \`\`\`
 
 **Release posture:** Draft only · no merge · no paid provider calls · no private-source restoration · no Experiment B D20 · no automatic scientific promotion.
