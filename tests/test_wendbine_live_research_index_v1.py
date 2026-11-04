@@ -125,5 +125,53 @@ class AtelierOriginalRetrieval(unittest.TestCase):
         self.assertEqual(g["mathematical_relational_geometry"],"NOT_ESTABLISHED")
         self.assertRaises(ValueError,m.explicit_graph,self.db,"reddit:t3_missing")
 
+
+    def test_chronological_resume_reuses_real_database_and_never_overwrites_previous_bytes(self):
+        import contextlib
+        import io
+        import sys
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as td:
+            path=Path(td)/"real_history.sqlite"
+            first=post("abcde1",created=1790000000,text="First persistent original")
+            second=post("abcde2",created=1790086400,text="Later captured original")
+            def execute(argv,rows):
+                with patch.object(sys,"argv",["index","--db",str(path),*argv]):
+                    with patch.object(m,"fetch_history",return_value=(rows,{"provider":"TEST_STUB"})) as fetch:
+                        with contextlib.redirect_stdout(io.StringIO()):
+                            m.main()
+                        return fetch.call_args.args[0]
+            old_end="2026-09-22T00:00:00Z"
+            new_end="2026-11-05T00:00:00Z"
+            initial=execute(["sync","--since","2026-01-01T00:00:00Z",
+                "--until",old_end,"--operator-confirmed-rights"],[first])
+            self.assertEqual(initial,"2026-01-01T00:00:00Z")
+            resumed=execute(["sync","--until",new_end,"--resume",
+                "--operator-confirmed-rights"],[second])
+            self.assertEqual(resumed,old_end)
+            with sqlite3.connect(path) as con:
+                self.assertEqual(m.status(con)["sources"],2)
+                self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
+                self.assertEqual(m.status(con)["index_source_class"],"ARCTIC_SHIFT")
+                prior=con.execute("select selftext from sources where source_id='reddit:t3_abcde1'").fetchone()[0]
+                self.assertEqual(prior,b"First persistent original")
+            with self.assertRaisesRegex(ValueError,"VERSION_DRIFT_REQUIRES_EXPLICIT_ADJUDICATION"):
+                execute(["sync","--until","2026-11-06T00:00:00Z","--resume",
+                         "--operator-confirmed-rights"],[post("abcde1",text="Silently changed!")])
+            with sqlite3.connect(path) as con:
+                self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
+                self.assertEqual(con.execute("select selftext from sources where source_id='reddit:t3_abcde1'").fetchone()[0],prior)
+
+    def test_synthetic_fixture_watermark_cannot_be_resumed_as_genuine_source(self):
+        self.db.execute("insert into audit(key,value) values('source_class','INVENTED_SYNTHETIC_FIXTURE')")
+        self.db.execute("insert into audit(key,value) values('last_successful_until_utc','2026-09-22T00:00:00Z')")
+        self.db.commit()
+        import sys, contextlib, io
+        from unittest.mock import patch
+        with patch.object(sys,"argv",["index","--db",str(self.dbpath),"sync",
+                    "--resume","--until","2026-11-05T00:00:00Z","--operator-confirmed-rights"]):
+            with self.assertRaisesRegex(ValueError,"RESUME_SYNTHETIC_OR_UNATTESTED_DB_REFUSED"):
+                with contextlib.redirect_stdout(io.StringIO()):m.main()
+
 if __name__=="__main__":
     unittest.main()
