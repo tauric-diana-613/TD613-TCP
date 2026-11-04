@@ -206,6 +206,24 @@ class KnownIdArchiveSourceFree(unittest.TestCase):
             h.hydrate(self.manifest,self.private,batch_size=2,extra_files=[extra],
                       resume=True,fetch=self.fake,clock=self.clock)
 
+    def test_rate_limit_never_retries_before_provider_wait(self):
+        from urllib.error import HTTPError
+        from io import BytesIO
+        url="https://archive.example/ids"
+        for headers in ({"Retry-After":"120"}, {"Retry-After":"invalid"}, {}):
+            error=HTTPError(url,429,"rate limited",headers,None)
+            with patch.object(h.urllib.request,"urlopen",side_effect=error) as request, \
+                 patch.object(h.time,"sleep") as sleep:
+                with self.assertRaises(HTTPError):h.remote_bytes(url)
+                self.assertEqual(request.call_count,1)
+                sleep.assert_not_called()
+        error=HTTPError(url,429,"rate limited",{"Retry-After":"3"},None)
+        with patch.object(h.urllib.request,"urlopen",side_effect=[error,BytesIO(b"ok")]) as request, \
+             patch.object(h.time,"sleep") as sleep:
+            self.assertEqual(h.remote_bytes(url),b"ok")
+            self.assertEqual(request.call_count,2)
+            sleep.assert_called_once_with(3)
+
     def test_wrong_author_and_malformed_text_are_not_promoted(self):
         wrong=p("abcde1","Reported post",author="OtherWriter")
         result,state=h.post_to_capture("reddit:t3_abcde1",wrong,
