@@ -70,10 +70,10 @@ The tool produces locally, only after the bounded ID batch process completes:
 - `hydrate-receipt.json` — IDs requested/returned, actual observed bodies, title-only material, held IDs, evidence ceilings
 - `unreturned-or-held-ids.json` — exact held IDs and reasons (private local forensic reconciliation)
 
-Follow by importing these *actual* archive observations into the existing operator-local custody reader. Use `--since` and `--until` as the genuine publication interval supported by the manifest and retrieval receipt. This example uses the historically observed span September 2026 through November 4, 2026, with an exclusive cutoff on November 5:
+Follow by importing these *actual* archive observations into the existing operator-local custody reader. Use `--since` and `--until` as the genuine publication interval supported by the manifest and retrieval receipt. This example accepts the separately searched period from January 2025 through November 4, 2026 (exclusive cutoff November 5); it does not claim that January 2025 was Wendbine’s inception:
 
 ```powershell
-python -B scripts/wendbine-local-capture-intake-v1.py import --manifest "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-captures.jsonl" --db "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-custody-v1.sqlite" --since "2026-01-01T00:00:00Z" --until "2026-11-05T00:00:00Z" --custody-basis "independently archived public post-ID observations, fetched through known-ID read-only archive endpoint"
+python -B scripts/wendbine-local-capture-intake-v1.py import --manifest "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-captures.jsonl" --db "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-custody-v1.sqlite" --since "2025-01-01T00:00:00Z" --until "2026-11-05T00:00:00Z" --custody-basis "independently archived public post-ID observations, fetched through known-ID read-only archive endpoint"
 python -B scripts/wendbine-local-capture-intake-v1.py history-exact --db "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-custody-v1.sqlite" "𝌋"
 python -B scripts/wendbine-local-capture-intake-v1.py history-lexical --db "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-custody-v1.sqlite" "topology"
 python -B scripts/wendbine-live-research-index-v1.py --db "<PRIVATE-RESEARCH-WORKSPACE>\wendbine-custody-v1.sqlite" status
