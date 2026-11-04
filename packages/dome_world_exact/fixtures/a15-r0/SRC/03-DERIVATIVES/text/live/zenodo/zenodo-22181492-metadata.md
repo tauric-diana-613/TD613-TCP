@@ -1,0 +1,140 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22181492"
+source_title: "PLANETARY SR VI — UNITED KINGDOM: Centralized Fiscal-Health Buffering, Liberalized Infrastructure, Regional Asymmetry, and Post-Industrial Reorganization"
+metadata_blob_sha256: eee602561ab0439192fad66534e8efaec8bda9895743c1fb65b3e2017e6d15c3
+metadata_blob_path: 02-ORIGINALS/live/blobs/ee/eee602561ab0439192fad66534e8efaec8bda9895743c1fb65b3e2017e6d15c3.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22181491",
+  "conceptrecid": "22181491",
+  "created": "2026-08-30T21:41:23.550700+00:00",
+  "doi": "10.5281/zenodo.22181492",
+  "doi_url": "https://doi.org/10.5281/zenodo.22181492",
+  "files": [
+    {
+      "checksum": "md5:2022af618acfa79c1afd381b7a593163",
+      "id": "9afdbc63-0148-4c49-9920-98ed096f2b24",
+      "key": "PLANETARY SR VI — UNITED KINGDOM.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22181492/files/PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/content"
+      },
+      "size": 443588
+    }
+  ],
+  "id": 22181492,
+  "links": {
+    "access": "https://zenodo.org/api/records/22181492/access",
+    "access_grants": "https://zenodo.org/api/records/22181492/access/grants",
+    "access_links": "https://zenodo.org/api/records/22181492/access/links",
+    "access_request": "https://zenodo.org/api/records/22181492/access/request",
+    "access_users": "https://zenodo.org/api/records/22181492/access/users",
+    "archive": "https://zenodo.org/api/records/22181492/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22181492/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22181492/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22181492/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22181492",
+    "draft": "https://zenodo.org/api/records/22181492/draft",
+    "file_modification": "https://zenodo.org/api/records/22181492/file-modification",
+    "files": "https://zenodo.org/api/records/22181492/files",
+    "latest": "https://zenodo.org/api/records/22181492/versions/latest",
+    "latest_html": "https://zenodo.org/records/22181492/latest",
+    "media_files": "https://zenodo.org/api/records/22181492/media-files",
+    "parent": "https://zenodo.org/api/records/22181491",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22181491",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22181491",
+    "parent_html": "https://zenodo.org/records/22181491",
+    "preview_html": "https://zenodo.org/records/22181492?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22181492/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22181492/request-deletion",
+    "requests": "https://zenodo.org/api/records/22181492/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22181492/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22181492",
+    "self_doi": "https://doi.org/10.5281/zenodo.22181492",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22181492",
+    "self_html": "https://zenodo.org/records/22181492",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22181492/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22181492/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22181492:PLANETARY%20SR%20VI%20%E2%80%94%20UNITED%20KINGDOM.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22181492/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR VI &mdash; UNITED KINGDOM</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR VI &mdash; United Kingdom</em> provides a structural diagnostic of the UK as a coupled institutional&ndash;population system, using evidence from 2000&ndash;2025 with 2026 verification. The paper identifies the UK&rsquo;s continuity architecture as <strong>centralized fiscal and health buffering combined with liberalized infrastructure and persistent regional productivity gaps</strong>, supported by strong financial capacity but uneven territorial conversion. It evaluates pressure, institutional reflex, drift, collapse thresholds, and reorganization across domains including labour, health, housing, energy, governance, care, and digital systems. The study distinguishes formal coverage from effective access, showing how universal systems&mdash;such as the NHS&mdash;can maintain continuity while still exhibiting conversion constraints, long queues, or unequal insulation. As the document states, <em>&ldquo;The strongest current diagnosis is not generalized collapse. It is centralized public buffering combined with liberalized and privately supplied infrastructure, strong financial capacity, and persistent territorial conversion gaps.&rdquo;</em></p>\n<h2><strong>Contribution</strong></h2>\n<p>This paper expands the Planetary SR comparative series by introducing a <strong>new continuity topology</strong> distinct from Canada, the United States, Mexico, Germany, and France. It strengthens SR&rsquo;s emerging fields&mdash;such as <strong>Planetary Pressure Ecology</strong>, <strong>Institutional Reflex Science</strong>, <strong>Planetary Drift Mechanics</strong>, and <strong>Cross‑Domain Propagation</strong>&mdash;by demonstrating how centralized fiscal buffering interacts with devolved delivery, private utilities, and regional inequality. The UK case provides high‑resolution evidence for SR&rsquo;s frozen hypotheses, including compensated continuity, surface&ndash;substrate divergence, unequal insulation, and reorganization. It also contributes to the ATLAS architecture by clarifying how a mature welfare state with strong financial markets can sustain continuity through buffering while still generating structural requirement&ndash;capacity gaps. As the paper notes, <em>&ldquo;A new country contributes only if its mechanism is empirically distinguishable from these existing configurations,&rdquo;</em> and the UK meets this criterion through its unique blend of centralized buffers and liberalized infrastructure.</p>",
+    "doi": "10.5281/zenodo.22181492",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "United Kingdom"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-30",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22181491"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR VI — UNITED KINGDOM: Centralized Fiscal-Health Buffering, Liberalized Infrastructure, Regional Asymmetry, and Post-Industrial Reorganization",
+    "version": "1.0"
+  },
+  "modified": "2026-08-30T21:41:24.259887+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22181492",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR VI — UNITED KINGDOM: Centralized Fiscal-Health Buffering, Liberalized Infrastructure, Regional Asymmetry, and Post-Industrial Reorganization",
+  "updated": "2026-08-30T21:41:24.259887+00:00"
+}
+```

@@ -1,0 +1,138 @@
+{
+  "conceptdoi": "10.5281/zenodo.23041433",
+  "conceptrecid": "23041433",
+  "created": "2026-09-29T14:47:29.885034+00:00",
+  "doi": "10.5281/zenodo.23041434",
+  "doi_url": "https://doi.org/10.5281/zenodo.23041434",
+  "files": [
+    {
+      "checksum": "md5:58ec11ae610632c48b99d9a146ee0c7e",
+      "id": "fdcfaaa9-5f7f-41f9-9c03-cab2964bbb97",
+      "key": "SR-RIF_Stratification_Randomization_SIL_2026-09-11.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23041434/files/SR-RIF_Stratification_Randomization_SIL_2026-09-11.docx/content"
+      },
+      "size": 779988
+    },
+    {
+      "checksum": "md5:bd78dd33ed4b4e0a9ff181f32bdc3484",
+      "id": "d4617973-9bb4-4996-beca-51a652918019",
+      "key": "SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23041434/files/SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/content"
+      },
+      "size": 228142
+    }
+  ],
+  "id": 23041434,
+  "links": {
+    "access": "https://zenodo.org/api/records/23041434/access",
+    "access_grants": "https://zenodo.org/api/records/23041434/access/grants",
+    "access_links": "https://zenodo.org/api/records/23041434/access/links",
+    "access_request": "https://zenodo.org/api/records/23041434/access/request",
+    "access_users": "https://zenodo.org/api/records/23041434/access/users",
+    "communities": "https://zenodo.org/api/records/23041434/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23041434/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23041434",
+    "draft": "https://zenodo.org/api/records/23041434/draft",
+    "file_modification": "https://zenodo.org/api/records/23041434/file-modification",
+    "files": "https://zenodo.org/api/records/23041434/files",
+    "latest": "https://zenodo.org/api/records/23041434/versions/latest",
+    "latest_html": "https://zenodo.org/records/23041434/latest",
+    "media_files": "https://zenodo.org/api/records/23041434/media-files",
+    "parent": "https://zenodo.org/api/records/23041433",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23041433",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23041433",
+    "parent_html": "https://zenodo.org/records/23041433",
+    "preview_html": "https://zenodo.org/records/23041434?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23041434/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23041434/request-deletion",
+    "requests": "https://zenodo.org/api/records/23041434/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23041434/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23041434",
+    "self_doi": "https://doi.org/10.5281/zenodo.23041434",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23041434",
+    "self_html": "https://zenodo.org/records/23041434",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23041434/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23041434/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23041434:SR-RIF_Stratification_Randomization_SIL_2026-09-11.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23041434/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Stratification, Randomization, and Structural Information Loss (SIL): An Empirical Evidence Synthesis of Population Compression in Human Research</strong></p>\n<div>\n</div>\n<h2><strong>Description</strong></h2>\n<p><strong>This paper evaluates how randomized evidence loses scientifically consequential population structure across selection, aggregation, subgroup recovery, and transport. Using five empirical evidence blocks&mdash;within‑trial risk heterogeneity, subgroup‑claim credibility, demographic representation across U.S. trials, real‑world eligibility gaps for biologics, and transportability analysis of the National Lung Screening Trial&mdash;the paper shows that valid randomized estimates can coexist with substantial Structural Information Loss (SIL). SIL is operationalized as a diagnostic vector rather than a single index, capturing distinct forms of population compression across the research pipeline. The central proposition is that methodological validity does not guarantee structural fidelity, and that causal identification, heterogeneity estimation, population representation, and transportability must be treated as separate empirical problems.</strong></p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p><strong>This paper provides the first unified SR‑RIF framework for diagnosing how human‑research pipelines lose population structure even when causal identification is valid. It demonstrates empirically that randomized trials often compress clinically relevant heterogeneity, that most subgroup claims lack credibility, that trial populations differ materially from real‑world users, and that transported treatment effects can change when population structure changes. By defining SIL as a falsifiable diagnostic vector, the paper establishes a structure‑preserving research architecture that separates causal identification from structural resolution and transportability. It links SR‑RIF to Disciplinary Validation Science by showing how research incentives create methodological compression while validation safeguards determine whether recovered structure is real. The contribution is a new methodological baseline: a valid average is not necessarily a faithful population model.</strong></p>",
+    "doi": "10.5281/zenodo.23041434",
+    "keywords": [
+      "Metatheory",
+      "Clinical trials",
+      "Measurements",
+      "Research",
+      "Institutions",
+      "Governance"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-29",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23041433"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Stratification, Randomization, and Structural Information Loss (SIL): An Empirical Evidence Synthesis of Population Compression in Human Research",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:15:44.333229+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23041434",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 8,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 8,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Stratification, Randomization, and Structural Information Loss (SIL): An Empirical Evidence Synthesis of Population Compression in Human Research",
+  "updated": "2026-10-06T01:15:44.333229+00:00"
+}

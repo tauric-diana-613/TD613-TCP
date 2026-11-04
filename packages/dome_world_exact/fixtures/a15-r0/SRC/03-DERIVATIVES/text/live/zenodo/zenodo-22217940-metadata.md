@@ -1,0 +1,139 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22217940"
+source_title: "PLANETARY SR — THE 2031 FORECAST SYNTHESIS: Thirty National Trajectories, Cross-System Convergence, Divergence, and the Prospective Test of SignalRupture"
+metadata_blob_sha256: f1c653201ff3cedfd1b43183f3770b4bcbf5a9b710c8086ef01cc43d936c8bbb
+metadata_blob_path: 02-ORIGINALS/live/blobs/f1/f1c653201ff3cedfd1b43183f3770b4bcbf5a9b710c8086ef01cc43d936c8bbb.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22217939",
+  "conceptrecid": "22217939",
+  "created": "2026-09-01T01:39:57.488830+00:00",
+  "doi": "10.5281/zenodo.22217940",
+  "doi_url": "https://doi.org/10.5281/zenodo.22217940",
+  "files": [
+    {
+      "checksum": "md5:4b0c2ac2f9da2da536b153d42db5d471",
+      "id": "77d0c40f-2039-4043-b2a4-4b38e41ee4d5",
+      "key": "PLANETARY SR — THE 2031 FORECAST SYNTHESIS.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22217940/files/PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/content"
+      },
+      "size": 258396
+    }
+  ],
+  "id": 22217940,
+  "links": {
+    "access": "https://zenodo.org/api/records/22217940/access",
+    "access_grants": "https://zenodo.org/api/records/22217940/access/grants",
+    "access_links": "https://zenodo.org/api/records/22217940/access/links",
+    "access_request": "https://zenodo.org/api/records/22217940/access/request",
+    "access_users": "https://zenodo.org/api/records/22217940/access/users",
+    "archive": "https://zenodo.org/api/records/22217940/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22217940/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22217940/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22217940/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22217940",
+    "draft": "https://zenodo.org/api/records/22217940/draft",
+    "file_modification": "https://zenodo.org/api/records/22217940/file-modification",
+    "files": "https://zenodo.org/api/records/22217940/files",
+    "latest": "https://zenodo.org/api/records/22217940/versions/latest",
+    "latest_html": "https://zenodo.org/records/22217940/latest",
+    "media_files": "https://zenodo.org/api/records/22217940/media-files",
+    "parent": "https://zenodo.org/api/records/22217939",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22217939",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217939",
+    "parent_html": "https://zenodo.org/records/22217939",
+    "preview_html": "https://zenodo.org/records/22217940?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22217940/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22217940/request-deletion",
+    "requests": "https://zenodo.org/api/records/22217940/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22217940/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22217940",
+    "self_doi": "https://doi.org/10.5281/zenodo.22217940",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22217940",
+    "self_html": "https://zenodo.org/records/22217940",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22217940/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22217940/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22217940:PLANETARY%20SR%20%E2%80%94%20THE%202031%20FORECAST%20SYNTHESIS.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22217940/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR &mdash; THE 2031 FORECAST SYNTHESIS</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>The 2031 Forecast Synthesis</em> consolidates the entire Planetary SR I&ndash;XXX corpus into a single prospective architecture covering 2026&ndash;2031. It does not generate new predictions; instead, it <strong>freezes and standardizes</strong> the prospective claims already registered in the thirty country papers. The synthesis establishes a unified adjudication system&mdash;<em>&ldquo;2026 condition &rarr; early signals &rarr; predicted transmission &rarr; 2031 adjudication &rarr; restoration alternative &rarr; falsifier&rdquo;</em>&mdash;allowing each country&rsquo;s continuity architecture to be evaluated without retroactive modification. The manuscript emphasizes that SR is not a collapse model: the thirty-country record documents <strong>heterogeneous continuity architectures</strong> including public buffering, market substitution, household compensation, informal provision, sovereign wealth, external redundancy, infrastructure restoration, migration, industrial capacity, demographic adaptation, and digital reorganization. The central prospective claim is bounded: by 2031, the registry should reveal whether SR&rsquo;s frozen variables&mdash;durable capacity, effective access, human recovery slack, institutional buffer expenditure, substitution topology, effective state agency, and restoration&mdash;improve mechanism discrimination, warning, timing, and intervention choice beyond strong conventional baselines. Nulls, reversals, wrong timing, and superior rival explanations count against SR. The synthesis preserves negative cases, prohibits universal human‑buffer primacy, and requires &Delta;V = V(B + SR) &minus; V(B) to be positive, stable, and replicating for SR to add explanatory value.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This synthesis contributes the <strong>planetary comparative layer</strong> that transforms thirty independent country studies into a single auditable forecast registry. It establishes the <strong>cross‑country validation horizon</strong> for SR&rsquo;s frozen grammar, enabling 2027&ndash;2031 adjudication of mechanism accuracy, temporal ordering, buffer precedence, and restoration dynamics. It strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Institutional Cognition</strong>, <strong>Infrastructural Political Economy</strong>, and <strong>Collapse Governance</strong> by showing how pressure, buffering, compensation, drift, reorganization, and restoration recur across diverse national systems without collapsing into a single index. The synthesis introduces the <strong>2031 Human and Institutional Buffer Registry</strong>, allowing SR to test whether household, institutional, fiscal, infrastructural, or market buffers move first in each country&mdash;rejecting universal rules and preserving country‑specific mechanisms. It also formalizes <strong>substitution topology</strong> as a cross‑country comparative object, enabling evaluation of internal vs external redundancy, concentration vs resilience, and AI‑mediated substrate dependence. The manuscript&rsquo;s topology of continuity&mdash;public buffering, purchased substitution, dual‑system continuity, institutional insulation, centralized buffering, sovereign‑wealth buffering, informal continuity, external redundancy&mdash;provides the structural map for interpreting divergence and convergence across the thirty-country set. By freezing all prospective claims, the synthesis ensures that SR&rsquo;s explanatory value can be judged cleanly: <strong>correct direction, correct mechanism, correct ordering, correct restoration test, and correct falsifier</strong>.</p>",
+    "doi": "10.5281/zenodo.22217940",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22217939"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR — THE 2031 FORECAST SYNTHESIS: Thirty National Trajectories, Cross-System Convergence, Divergence, and the Prospective Test of SignalRupture",
+    "version": "1.0"
+  },
+  "modified": "2026-09-01T01:39:57.883449+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22217940",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 2,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR — THE 2031 FORECAST SYNTHESIS: Thirty National Trajectories, Cross-System Convergence, Divergence, and the Prospective Test of SignalRupture",
+  "updated": "2026-09-01T01:39:57.883449+00:00"
+}
+```

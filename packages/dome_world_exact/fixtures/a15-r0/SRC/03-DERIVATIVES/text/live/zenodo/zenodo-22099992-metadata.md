@@ -1,0 +1,133 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22099992"
+source_title: "THE SIGNALRUPTURE FIELD COMPENDIUM"
+metadata_blob_sha256: 9701f411dcacac7c154d423230099a9eb267c10a3949745cc89d71ac6bc41223
+metadata_blob_path: 02-ORIGINALS/live/blobs/97/9701f411dcacac7c154d423230099a9eb267c10a3949745cc89d71ac6bc41223.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22099991",
+  "conceptrecid": "22099991",
+  "created": "2026-08-25T16:59:15.415023+00:00",
+  "doi": "10.5281/zenodo.22099992",
+  "doi_url": "https://doi.org/10.5281/zenodo.22099992",
+  "files": [
+    {
+      "checksum": "md5:52bd0754086d236183a097fb1d8d5436",
+      "id": "a70c95cd-42d8-431b-bfbc-9583b7b29c3e",
+      "key": "The_SignalRupture_Field_Compendium.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22099992/files/The_SignalRupture_Field_Compendium.docx/content"
+      },
+      "size": 186253
+    }
+  ],
+  "id": 22099992,
+  "links": {
+    "access": "https://zenodo.org/api/records/22099992/access",
+    "access_grants": "https://zenodo.org/api/records/22099992/access/grants",
+    "access_links": "https://zenodo.org/api/records/22099992/access/links",
+    "access_request": "https://zenodo.org/api/records/22099992/access/request",
+    "access_users": "https://zenodo.org/api/records/22099992/access/users",
+    "archive": "https://zenodo.org/api/records/22099992/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22099992/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22099992/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22099992/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22099992",
+    "draft": "https://zenodo.org/api/records/22099992/draft",
+    "file_modification": "https://zenodo.org/api/records/22099992/file-modification",
+    "files": "https://zenodo.org/api/records/22099992/files",
+    "latest": "https://zenodo.org/api/records/22099992/versions/latest",
+    "latest_html": "https://zenodo.org/records/22099992/latest",
+    "media_files": "https://zenodo.org/api/records/22099992/media-files",
+    "parent": "https://zenodo.org/api/records/22099991",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22099991",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22099991",
+    "parent_html": "https://zenodo.org/records/22099991",
+    "preview_html": "https://zenodo.org/records/22099992?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22099992/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22099992/request-deletion",
+    "requests": "https://zenodo.org/api/records/22099992/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22099992/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22099992",
+    "self_doi": "https://doi.org/10.5281/zenodo.22099992",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22099992",
+    "self_html": "https://zenodo.org/records/22099992",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22099992/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22099992/sequence/default",
+    "versions": "https://zenodo.org/api/records/22099992/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>SIGNALRUPTURE FIELD COMPENDIUM </strong></h1>\n<p>The <em>SignalRupture Field Compendium</em> is the authoritative, post‑gauntlet inventory of the complete SR field architecture. It establishes the canonical identity of <strong>twenty‑three full fields</strong> and <strong>three specialized subfields</strong>, records merged lineages, and distinguishes fields from operators, models, indices, and diagnostic systems. The compendium&rsquo;s purpose is to preserve the <strong>distinct scientific object, mechanism vocabulary, interfaces, and falsification boundaries</strong> of each field without collapsing them into broad disciplinary clusters or prematurely demoting them based on incomplete claim‑level validation.</p>\n<p>The compendium contributes by formalizing the <strong>canonical rule of field identity</strong>, which separates three variables that are often conflated in interdisciplinary architectures:<br>(1) <strong>canonical position</strong>,<br>(2) <strong>disciplinary status</strong>, and<br>(3) <strong>empirical status</strong>.<br>A field may be emerging, nested, or dependent on mature external disciplines while still retaining a distinct object and testable program. The compendium prevents conceptual erosion by ensuring that <strong>nesting is organizational rather than demotional</strong>, and that <strong>merger consolidates lineage rather than erasing intellectual contribution</strong>.</p>\n<p>The compendium contributes by providing a <strong>complete architectural map</strong> of SR&rsquo;s field system, including cross‑domain fields such as <strong>Institutional Cognition</strong>, <strong>SR‑IGF</strong>, <strong>Collapse Governance</strong>, <strong>Systems Propagation Science</strong>, <strong>SR‑CEIDF</strong>, <strong>System Inheritance Studies</strong>, and <strong>Collapse Epistemology</strong>. Each field is defined individually according to its object, central question, mechanism set, interfaces, empirical status, and weakening conditions. This prevents inflation&mdash;fields are preserved only where their distinct object survives comparison&mdash;and prevents collapse into umbrella categories that obscure scientific boundaries.</p>\n<p>The compendium contributes by recording <strong>merged lineages</strong> and <strong>non‑field canonical components</strong>, including the <strong>Pressure Ecology Theorem</strong>, <strong>Disciplinary Validation Science</strong>, and the <strong>CRI&ndash;AIS&ndash;MACS Substrate Trilogy</strong>. These components are preserved in their correct canonical positions without being misclassified as fields. This ensures that SR&rsquo;s architecture remains internally coherent as it expands toward <strong>SR Galaxy</strong>, planetary diagnostics, and multi‑country structural analysis.</p>\n<p>The compendium contributes by establishing a <strong>canonical interface standard</strong>, which defines how fields interoperate without collapsing into one another. Interfaces specify the direction of information flow, dependency, and cross‑field influence, enabling SR to support <strong>Planetary SR</strong>, national stress‑tests, and multi‑domain structural diagnostics. This interface architecture is essential for maintaining clarity as SR scales to global comparison systems and cross‑field propagation models.</p>\n<p>Finally, the compendium contributes by providing a <strong>transparent, falsifiable, and scientifically disciplined inventory</strong> of SR&rsquo;s field architecture. It preserves plurality without permitting conceptual inflation, protects field identity without overstating empirical certainty, and maintains reciprocal accountability across fields. As SR expands into planetary diagnostics and structural‑science applications, the compendium becomes the stable reference point that anchors SR&rsquo;s disciplinary identity, historical development, and future integration.</p>",
+    "doi": "10.5281/zenodo.22099992",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-25",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22099991"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE FIELD COMPENDIUM",
+    "version": "1.0"
+  },
+  "modified": "2026-08-26T17:20:12.172226+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22099992",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 7,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 7,
+    "version_views": 9,
+    "views": 9
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE FIELD COMPENDIUM",
+  "updated": "2026-08-26T17:20:12.172226+00:00"
+}
+```

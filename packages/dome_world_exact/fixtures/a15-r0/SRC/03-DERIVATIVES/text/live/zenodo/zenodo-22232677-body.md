@@ -1,0 +1,17 @@
+---
+schema: src-live-zenodo-body-derivative/v1
+record_id: "22232677"
+source_title: "PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST: Infrastructure Burden, Resolution Capacity, and the Locked 2031 National Trajectories"
+authority: LIVE_POST_SEAL_TEXT_DERIVATIVE
+---
+
+# PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST: Infrastructure Burden, Resolution Capacity, and the Locked 2031 National Trajectories
+
+## Zenodo description
+
+PLANETARY SR XXXI — THE INFRASTRUCTURE DEBT TEST 
+ Description 
+ Planetary SR XXXI — The Infrastructure Debt Test introduces a cross‑country diagnostic layer that evaluates infrastructure burden, resolution capacity, and substitution topology across the thirty locked national pathways. The study defines a multidimensional Infrastructure Debt Profile separating renewal debt, capacity debt, conversion debt, resilience debt, and transition debt , and uses the World Bank’s 2026 Infrastructure Foundations dataset to compute a comparative Infrastructure Pressure Signal (IPS) for twenty‑nine countries. The paper emphasizes that a high Infrastructure Efficiency Ratio is not “bad infrastructure,” but a high modeled social return to additional investment , which can occur in both infrastructure‑poor systems and highly capable systems facing rapid transition requirements. Nigeria and Egypt show “IPS values far above the rest of the set,” aligning with locked SR pathways centered on access, conversion, municipal burden, and household pressure. Germany, Norway, Australia, New Zealand, Saudi Arabia, the UAE, and Singapore appear as boundary cases , where substantial infrastructure requirements coexist with strong institutional, fiscal, sovereign, or external substitution capacity. The study does not rewrite any national forecast; it tests whether infrastructure evidence is consistent, inconsistent, or neutral relative to the locked 2031 mechanisms.
+
+ How it Contributes 
+ This study contributes a structural adjudication layer to the Planetary SR series by demonstrating how infrastructure burden interacts with Systems Propagation Science , Infrastructural Political Economy , Household Absorption Science , and Substitution Topology . It shows that infrastructure pressure is not a deterministic collapse variable but a carrier whose effects depend on resolution capacity and substitution options. The paper strengthens SR’s comparative architecture by revealing three distinct global conditions: (1) pressure‑amplification systems (Nigeria, Egypt, Colombia, Mexico, India, Indonesia) where infrastructure burden aligns with household, municipal, and territorial receivers; (2) restoration and managed‑adaptation systems (South Africa, Germany, Norway, Australia, New Zealand, Saudi Arabia, UAE, Singapore) where high pressure tests institutional or sovereign conversion capacity; and (3) renewal/transition systems where infrastructure burden interacts with demographic, fiscal, housing, or administrative mechanisms rather than driving outcomes alone. The study expands the 2031 adjudication framework by establishing that infrastructure must match the locked mechanism to count as support: physical expansion without reduced household, municipal, or service compensation does not constitute restoration. By freezing the infrastructure layer alongside the original forecasts, the paper ensures that SR’s mechanism‑first grammar remains auditable, falsifiable, and structurally comparable across all thirty national trajectories.

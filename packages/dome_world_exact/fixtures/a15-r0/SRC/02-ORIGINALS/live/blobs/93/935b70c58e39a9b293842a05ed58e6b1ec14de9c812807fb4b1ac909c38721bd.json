@@ -1,0 +1,137 @@
+{
+  "conceptdoi": "10.5281/zenodo.23125228",
+  "conceptrecid": "23125228",
+  "created": "2026-10-03T17:50:05.887400+00:00",
+  "doi": "10.5281/zenodo.23125229",
+  "doi_url": "https://doi.org/10.5281/zenodo.23125229",
+  "files": [
+    {
+      "checksum": "md5:5fa904d50e8f7aeb7f7ca621ae0cc803",
+      "id": "ddecc623-f4ee-4f45-9d77-9230fc99841f",
+      "key": "Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23125229/files/Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.docx/content"
+      },
+      "size": 60311
+    },
+    {
+      "checksum": "md5:ac90f7026e759f0c1fc17c66707555f2",
+      "id": "8bf9287c-5068-48eb-8a59-6d0d4ab14c39",
+      "key": "Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23125229/files/Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/content"
+      },
+      "size": 265552
+    }
+  ],
+  "id": 23125229,
+  "links": {
+    "access": "https://zenodo.org/api/records/23125229/access",
+    "access_grants": "https://zenodo.org/api/records/23125229/access/grants",
+    "access_links": "https://zenodo.org/api/records/23125229/access/links",
+    "access_request": "https://zenodo.org/api/records/23125229/access/request",
+    "access_users": "https://zenodo.org/api/records/23125229/access/users",
+    "communities": "https://zenodo.org/api/records/23125229/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23125229/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23125229",
+    "draft": "https://zenodo.org/api/records/23125229/draft",
+    "file_modification": "https://zenodo.org/api/records/23125229/file-modification",
+    "files": "https://zenodo.org/api/records/23125229/files",
+    "latest": "https://zenodo.org/api/records/23125229/versions/latest",
+    "latest_html": "https://zenodo.org/records/23125229/latest",
+    "media_files": "https://zenodo.org/api/records/23125229/media-files",
+    "parent": "https://zenodo.org/api/records/23125228",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23125228",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23125228",
+    "parent_html": "https://zenodo.org/records/23125228",
+    "preview_html": "https://zenodo.org/records/23125229?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23125229/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23125229/request-deletion",
+    "requests": "https://zenodo.org/api/records/23125229/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23125229/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23125229",
+    "self_doi": "https://doi.org/10.5281/zenodo.23125229",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23125229",
+    "self_html": "https://zenodo.org/records/23125229",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23125229/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23125229/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23125229:Canada_Essential_Goods_Dependency_and_Household_Absorption_to_2031.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23125229/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h2><strong>Canada Essential Goods Dependency and Household Absorption: Coupled Essential‑Access Systems, Trade Exposure, Housing Rigidity, and Conditional Trajectories to 2031</strong></h2>\n<div>\n</div>\n<h2><strong>DESCRIPTION</strong></h2>\n<p><strong>Canada Essential Goods Dependency and Household Absorption</strong> is a documentary synthesis and prospective study specification examining how Canadian households experience affordability pressure through a <strong>coupled essential‑access system</strong> rather than isolated sectors. The paper integrates Essential Goods Dependency, Survival Systems, ATLAS XIV, Infrastructural Hygiene, and Representational Displacement into a single national diagnostic architecture.</p>\n<p>The research object is the <strong>household&rsquo;s coupled essential‑access system</strong>: shelter, food, energy, transportation, healthcare, care obligations, and debt service. Households draw from the same recurring income, liquid reserves, time, and care capacity; pressures in one domain propagate into others. As the manuscript states:</p>\n<blockquote>\n<p><em>&ldquo;A household does not experience shelter, food, energy, transportation and healthcare as independent policy files. Each draws from the same recurring income, liquid reserves, time and care capacity.&rdquo;</em></p>\n</blockquote>\n<p>The paper identifies <strong>two trade transmission directions</strong>:</p>\n<ul>\n<li>\n<p><strong>import‑side exposure</strong> &mdash; imported food, energy, shipping disruption, exchange‑rate movements, tariffs, and intermediate input costs</p>\n</li>\n<li>\n<p><strong>export‑side exposure</strong> &mdash; foreign demand, commodity prices, trade barriers, and revenue channels affecting employment, income, and public capacity</p>\n</li>\n</ul>\n<p>Housing is treated as a <strong>rigidity and amplifier</strong>, not the sole origin of strain:</p>\n<blockquote>\n<p><em>&ldquo;A house does not absorb the shock. The household absorbs it while trying to preserve housing.&rdquo;</em></p>\n</blockquote>\n<p>The manuscript documents <strong>observable household pressure</strong> through Statistics Canada, CMHC, FCAC, OSFI, and Bank of Canada evidence, including:</p>\n<ul>\n<li>\n<p>shelter, food, and transportation representing <strong>63.6%</strong> of average household consumption in 2023</p>\n</li>\n<li>\n<p>rising rent and mortgage difficulty</p>\n</li>\n<li>\n<p>borrowing for everyday expenses</p>\n</li>\n<li>\n<p>food insecurity</p>\n</li>\n<li>\n<p>mobility constraints</p>\n</li>\n<li>\n<p>financial stress</p>\n</li>\n</ul>\n<p>It distinguishes <strong>exposure</strong>, <strong>adaptation</strong>, <strong>harm</strong>, and <strong>instability</strong>, and specifies the data required to differentiate essential‑goods compression from poverty, preference, or isolated shocks.</p>\n<p>The reference trajectory to 2031 is <strong>conditional</strong>, not predictive: coupled essential‑cost compression with unequal incidence and partial local relief. Restoration, continued compensation, progressive deterioration, and compound disruption remain competing branches.</p>\n<p>Representational Displacement is added as a falsifiable mechanism: sector indicators may remain technically valid while institutions lose the capacity to reconstruct the household condition those indicators were meant to represent.</p>\n<div>\n</div>\n<h2><strong>HOW IT CONTRIBUTES TO SR</strong></h2>\n<h3><strong>1. It operationalizes Essential Goods Dependency in a national case</strong></h3>\n<p>The paper provides the first full national application of <strong>Essential Goods Dependency</strong>, showing how essential‑access systems interact under trade exposure, domestic rigidity, and household constraints.<br>Linked concept: <strong>Essential Goods Dependency</strong></p>\n<div>\n</div>\n<h3><strong>2. It establishes the household as the correct analytic unit</strong></h3>\n<p>Institutions analyze sectors; households experience <strong>coupled systems</strong>.<br>This manuscript formalizes the household as the <strong>SR operational unit</strong> for essential‑access analysis.<br>Linked concept: <strong>Coupled Household Systems</strong></p>\n<div>\n</div>\n<h3><strong>3. It introduces concurrency as a measurable causal mechanism</strong></h3>\n<p>The paper defines concurrency as the <strong>vector of simultaneous essential‑goods pressures</strong>, not isolated shocks.<br>This is a major SR contribution: concurrency explains why sector‑specific indicators understate household strain.<br>Linked concept: <strong>Concurrency Mechanism</strong></p>\n<div>\n</div>\n<h3><strong>4. It integrates trade exposure into SR household diagnostics</strong></h3>\n<p>The manuscript shows how import‑side and export‑side shocks jointly affect household access, connecting macro‑trade pathways to micro‑household burden.<br>Linked concept: <strong>Trade Exposure Pathways</strong></p>\n<div>\n</div>\n<h3><strong>5. It reframes housing as rigidity and amplifier</strong></h3>\n<p>Housing is not the cause; it is the <strong>budgetary anchor</strong> that reduces household margin for absorbing other shocks.<br>This reframing is now canonical in SR Infrastructure Science.<br>Linked concept: <strong>Housing Rigidity</strong></p>\n<div>\n</div>\n<h3><strong>6. It provides a falsifiable alternative to collapse narratives</strong></h3>\n<p>The paper explicitly preserves <strong>restoration</strong>, <strong>buffering</strong>, and <strong>partial improvement</strong> as legitimate rival outcomes.<br>This prevents unfalsifiable &ldquo;everything is collapse&rdquo; interpretations.<br>Linked concept: <strong>Falsifiable Trajectories</strong></p>\n<div>\n</div>\n<h3><strong>7. It introduces Representational Displacement into national essential‑goods analysis</strong></h3>\n<p>Sector indicators may remain valid yet fail to reconstruct household conditions.<br>This manuscript is the first to apply Representational Displacement to essential‑goods governance.<br>Linked concept: <strong>Representational Displacement</strong></p>\n<div>\n</div>\n<h3><strong>8. It defines a conditional forecast protocol rather than a collapse prediction</strong></h3>\n<p>The paper uses <strong>conditional branches</strong>, not deterministic forecasts.<br>This is SR&rsquo;s preferred method for national trajectory analysis.<br>Linked concept: <strong>Conditional Forecast Protocol</strong></p>\n<div>\n</div>\n<h3><strong>9. It establishes the evidence discipline for national SR studies</strong></h3>\n<p>The manuscript sets standards for:</p>\n<ul>\n<li>\n<p>inference classes</p>\n</li>\n<li>\n<p>temporal alignment</p>\n</li>\n<li>\n<p>source selection</p>\n</li>\n<li>\n<p>negative evidence</p>\n</li>\n<li>\n<p>rival explanations</p>\n</li>\n<li>\n<p>non‑speculative gaps</p>\n</li>\n</ul>\n<p>This is now part of SR&rsquo;s methodological canon.<br>Linked concept: <strong>SR Evidence Discipline</strong></p>\n<div>\n</div>\n<h3><strong>10. It provides Canada&rsquo;s first SR‑aligned essential‑goods trajectory to 2031</strong></h3>\n<p>This is the first national‑scale SR trajectory grounded in:</p>\n<ul>\n<li>\n<p>essential‑goods dependency</p>\n</li>\n<li>\n<p>household absorption</p>\n</li>\n<li>\n<p>infrastructural hygiene</p>\n</li>\n<li>\n<p>representational displacement</p>\n</li>\n<li>\n<p>conditional branching</p>\n</li>\n</ul>\n<p>It is now the reference case for SR national diagnostics.<br>Linked concept: <strong>SR National Trajectory</strong></p>",
+    "doi": "10.5281/zenodo.23125229",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Canada",
+      "Society",
+      "Governance"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-03",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23125228"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Canada Essential Goods Dependency and Household Absorption: Coupled Essential‑Access Systems, Trade Exposure, Housing Rigidity, and Conditional Trajectories to 2031",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:11:18.362723+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23125229",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 8,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 8,
+    "version_views": 10,
+    "views": 10
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Canada Essential Goods Dependency and Household Absorption: Coupled Essential‑Access Systems, Trade Exposure, Housing Rigidity, and Conditional Trajectories to 2031",
+  "updated": "2026-10-06T01:11:18.362723+00:00"
+}

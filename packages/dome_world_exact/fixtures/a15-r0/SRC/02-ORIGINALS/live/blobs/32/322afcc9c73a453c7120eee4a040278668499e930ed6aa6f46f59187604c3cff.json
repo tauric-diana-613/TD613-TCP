@@ -1,0 +1,115 @@
+{
+  "conceptdoi": "10.5281/zenodo.23174470",
+  "conceptrecid": "23174470",
+  "created": "2026-10-05T23:53:31.682633+00:00",
+  "doi": "10.5281/zenodo.23174471",
+  "doi_url": "https://doi.org/10.5281/zenodo.23174471",
+  "files": [
+    {
+      "checksum": "md5:e96f1530a4a425aec39861c3a3952d78",
+      "id": "b616c8a0-23cd-4004-9515-75e4494413cb",
+      "key": "IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23174471/files/IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/content"
+      },
+      "size": 477250
+    }
+  ],
+  "id": 23174471,
+  "links": {
+    "access": "https://zenodo.org/api/records/23174471/access",
+    "access_grants": "https://zenodo.org/api/records/23174471/access/grants",
+    "access_links": "https://zenodo.org/api/records/23174471/access/links",
+    "access_request": "https://zenodo.org/api/records/23174471/access/request",
+    "access_users": "https://zenodo.org/api/records/23174471/access/users",
+    "communities": "https://zenodo.org/api/records/23174471/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23174471/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23174471",
+    "draft": "https://zenodo.org/api/records/23174471/draft",
+    "file_modification": "https://zenodo.org/api/records/23174471/file-modification",
+    "files": "https://zenodo.org/api/records/23174471/files",
+    "latest": "https://zenodo.org/api/records/23174471/versions/latest",
+    "latest_html": "https://zenodo.org/records/23174471/latest",
+    "media_files": "https://zenodo.org/api/records/23174471/media-files",
+    "parent": "https://zenodo.org/api/records/23174470",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23174470",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23174470",
+    "parent_html": "https://zenodo.org/records/23174470",
+    "preview_html": "https://zenodo.org/records/23174471?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23174471/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23174471/request-deletion",
+    "requests": "https://zenodo.org/api/records/23174471/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23174471/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23174471",
+    "self_doi": "https://doi.org/10.5281/zenodo.23174471",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23174471",
+    "self_html": "https://zenodo.org/records/23174471",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23174471/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23174471/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23174471:IDENTITY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23174471/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>Identity is often inferred from a label, a trait score, a group category, a public statement, or a single account. Those observations may matter, but none establishes how a person or collective relates to itself across roles, audiences, commitments, imagined futures, disruptions, and time. Identity SR defines identity as a bounded trajectory of self relation and collective continuity. It separates identity content from process, public presentation from commitment, recognition from self attribution, role occupancy from role integration, continuity from rigidity, threat from disagreement, conflict from plurality, and revision from loss.</p>\n<p>SR Identity Continuity and Revision Theory represents an identity system, a component-preserving state vector, a longitudinal transition, a recognition discrepancy, a conditional continuity measure, and revision gain. These objects are measured inside a declared actor or collective boundary, reference-audience structure, domain, context, and horizon. The theory treats identity change as an empirical outcome whose meaning depends on agency, feasibility, consequences, and the affected party rather than as decline by definition.</p>\n<p>The field permits longitudinal scales, within-person designs, interviews, behavioral tasks, role and recognition networks, administrative comparison, natural experiments, and collective-process evidence. Its strongest tests compare trajectory models with personality traits, role structures, social identities, narrative measures, contextual conditions, and established identity instruments. Bridges transfer measured identity objects to feasible agency, Phenomenological SR, Harm and Value Dynamics, or Ethical SR without transferring causal or normative validity.</p>",
+    "doi": "10.5281/zenodo.23174471",
+    "publication_date": "2026-10-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23174470"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Identity SR: SR Identity Continuity and Revision Theory",
+    "version": "1.0"
+  },
+  "modified": "2026-10-05T23:53:32.008150+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23174471",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 9,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 9,
+    "version_views": 9,
+    "views": 9
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Identity SR: SR Identity Continuity and Revision Theory",
+  "updated": "2026-10-05T23:53:32.008150+00:00"
+}

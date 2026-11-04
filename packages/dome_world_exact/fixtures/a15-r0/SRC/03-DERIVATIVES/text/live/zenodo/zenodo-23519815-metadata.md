@@ -1,0 +1,138 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23519815"
+source_title: "THE INFRASTRUCTURAL MATRIX: A SignalRupture Definition of the Relational Structure of Social Life"
+metadata_blob_sha256: 93d990b20fb900e60f5a3abb1ebd1733b8152a4fb6b8939bc5683a9744ecbbfa
+metadata_blob_path: 02-ORIGINALS/live/blobs/93/93d990b20fb900e60f5a3abb1ebd1733b8152a4fb6b8939bc5683a9744ecbbfa.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23519814",
+  "conceptrecid": "23519814",
+  "created": "2026-10-20T23:58:37.512674+00:00",
+  "doi": "10.5281/zenodo.23519815",
+  "doi_url": "https://doi.org/10.5281/zenodo.23519815",
+  "files": [
+    {
+      "checksum": "md5:bf2e2d161947766c479ad7ab667b780f",
+      "id": "3e7e2cf2-77d0-44cf-8c97-44eec45642cb",
+      "key": "The_Infrastructural_Matrix_SR_2026-10-17.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23519815/files/The_Infrastructural_Matrix_SR_2026-10-17.pdf/content"
+      },
+      "size": 213511
+    }
+  ],
+  "id": 23519815,
+  "links": {
+    "access": "https://zenodo.org/api/records/23519815/access",
+    "access_grants": "https://zenodo.org/api/records/23519815/access/grants",
+    "access_links": "https://zenodo.org/api/records/23519815/access/links",
+    "access_request": "https://zenodo.org/api/records/23519815/access/request",
+    "access_users": "https://zenodo.org/api/records/23519815/access/users",
+    "communities": "https://zenodo.org/api/records/23519815/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23519815/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23519815",
+    "draft": "https://zenodo.org/api/records/23519815/draft",
+    "file_modification": "https://zenodo.org/api/records/23519815/file-modification",
+    "files": "https://zenodo.org/api/records/23519815/files",
+    "latest": "https://zenodo.org/api/records/23519815/versions/latest",
+    "latest_html": "https://zenodo.org/records/23519815/latest",
+    "media_files": "https://zenodo.org/api/records/23519815/media-files",
+    "parent": "https://zenodo.org/api/records/23519814",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23519814",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23519814",
+    "parent_html": "https://zenodo.org/records/23519814",
+    "preview_html": "https://zenodo.org/records/23519815?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23519815/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23519815/request-deletion",
+    "requests": "https://zenodo.org/api/records/23519815/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23519815/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23519815",
+    "self_doi": "https://doi.org/10.5281/zenodo.23519815",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23519815",
+    "self_html": "https://zenodo.org/records/23519815",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23519815/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23519815/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23519815:The_Infrastructural_Matrix_SR_2026-10-17.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23519815/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>The Infrastructural Matrix: A SignalRupture Definition of the Relational Structure of Social Life introduces the Infrastructural Matrix (SR-IM) as a foundational research object within the SignalRupture architecture.</p>\n<p>The paper defines the Infrastructural Matrix as the historically evolving configuration of infrastructure, institutions, rules, representations, resources, and social relationships through which human participation, practical opportunities, dependencies, exposures, and consequences are organized.</p>\n<p>Its central contribution is to distinguish formal institutional access from executable agency: the actual capacity of individuals to participate when interconnected material, administrative, technological, economic, and social conditions are satisfied.</p>\n<p>The study establishes five relational categories&mdash;enabling, allocation, authorization, representation, and feedback&mdash;and connects them to the existing SR Matrix Field, SR Measurement Standard, Society Blueprint, Institutional Reality Enactment Metatheory, and Metaphysical SR.</p>\n<p>Through formal specifications, analytical cases, five falsifiable propositions, and explicit revision criteria, the paper provides a framework for investigating how interconnected arrangements enable participation, generate barriers, transfer burdens, sustain institutional continuity, and undergo correction.</p>\n<p>Rather than claiming a universal causal law, the work establishes a bounded conceptual foundation for empirical investigation and comparative testing against established research in infrastructure studies, administrative burden, institutional classification, and multilayer networks.</p>\n<p>Contribution: A unified research object for examining the relational conditions of social life and the distinction between institutional recognition and practically executable participation.</p>\n<p>Keywords: Infrastructural Matrix; SR Matrix; SignalRupture; infrastructure; executable agency; institutional classification; structural dependency; representation; social systems; institutional coordination.</p>",
+    "doi": "10.5281/zenodo.23519815",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Society",
+      "Matrix"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-21",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23519814"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE INFRASTRUCTURAL MATRIX: A SignalRupture Definition of the Relational Structure of Social Life",
+    "version": "1.0"
+  },
+  "modified": "2026-10-20T23:58:37.981546+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23519815",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 3,
+    "unique_downloads": 3,
+    "unique_views": 6,
+    "version_downloads": 3,
+    "version_unique_downloads": 3,
+    "version_unique_views": 6,
+    "version_views": 6,
+    "views": 6
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE INFRASTRUCTURAL MATRIX: A SignalRupture Definition of the Relational Structure of Social Life",
+  "updated": "2026-10-20T23:58:37.981546+00:00"
+}
+```

@@ -1,0 +1,128 @@
+{
+  "conceptdoi": "10.5281/zenodo.22399663",
+  "conceptrecid": "22399663",
+  "created": "2026-09-05T21:08:18.282100+00:00",
+  "doi": "10.5281/zenodo.22399664",
+  "doi_url": "https://doi.org/10.5281/zenodo.22399664",
+  "files": [
+    {
+      "checksum": "md5:1c4835c9542e703cda8693c95001b938",
+      "id": "58bab8da-221e-463b-9172-a4ecfa9649dc",
+      "key": "ATLAS XVII — ATLAS OF EUROPE.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22399664/files/ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/content"
+      },
+      "size": 162063
+    }
+  ],
+  "id": 22399664,
+  "links": {
+    "access": "https://zenodo.org/api/records/22399664/access",
+    "access_grants": "https://zenodo.org/api/records/22399664/access/grants",
+    "access_links": "https://zenodo.org/api/records/22399664/access/links",
+    "access_request": "https://zenodo.org/api/records/22399664/access/request",
+    "access_users": "https://zenodo.org/api/records/22399664/access/users",
+    "archive": "https://zenodo.org/api/records/22399664/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22399664/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22399664/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22399664/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22399664",
+    "draft": "https://zenodo.org/api/records/22399664/draft",
+    "file_modification": "https://zenodo.org/api/records/22399664/file-modification",
+    "files": "https://zenodo.org/api/records/22399664/files",
+    "latest": "https://zenodo.org/api/records/22399664/versions/latest",
+    "latest_html": "https://zenodo.org/records/22399664/latest",
+    "media_files": "https://zenodo.org/api/records/22399664/media-files",
+    "parent": "https://zenodo.org/api/records/22399663",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22399663",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22399663",
+    "parent_html": "https://zenodo.org/records/22399663",
+    "preview_html": "https://zenodo.org/records/22399664?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22399664/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22399664/request-deletion",
+    "requests": "https://zenodo.org/api/records/22399664/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22399664/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22399664",
+    "self_doi": "https://doi.org/10.5281/zenodo.22399664",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22399664",
+    "self_html": "https://zenodo.org/records/22399664",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22399664/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22399664/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22399664:ATLAS%20XVII%20%E2%80%94%20ATLAS%20OF%20EUROPE.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22399664/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>&nbsp;</p>\n<h1><strong>ATLAS XVII &mdash; Atlas of Europe</strong></h1>\n<h2><strong>Description</strong></h2>\n<p>ATLAS XVII formalizes the <strong>European‑integration layer</strong> of the ATLAS universe: a diagnostic of how Europe&rsquo;s integrated markets can simultaneously reduce some dependencies while <strong>reproducing centre&ndash;periphery differences</strong> in ownership, technology, fiscal space, energy, and labour mobility. As the manuscript states, <em>&ldquo;European integration can reduce some dependencies while reproducing centre&ndash;periphery differences in ownership, technology, fiscal space, energy, and labour mobility.&rdquo;</em></p>\n<p>The paper rejects three shortcuts: commodity dependence is exposure, not proof; domestic value‑added does not guarantee broad retention; and low income or weak institutions cannot be used as circular explanations. It positions Europe not as East vs. West but as a <strong>pathway system</strong>, where upgrading, dependency, and restoration differ by sector, institutional capacity, and historical trajectory.</p>\n<p>ATLAS XVII extends the formal pathway (R &rarr; B &rarr; S &rarr; D &rarr; A &rarr; X) by showing how uneven retention (R), uncompensated burdens (B), and limited substitution capacity (S) can raise external dependence (D) and narrow bargaining agency (A) even inside an advanced integrated market. It introduces a measurement architecture focused on intra‑European TiVA, firm ownership, headquarters and R&amp;D location, labour mobility, wage convergence, energy import dependence, fiscal capacity, and regional supplier upgrading.</p>\n<p>The manuscript establishes that European integration is not automatically convergence; convergence requires <strong>retention, capability formation, and burden alignment</strong> across member states.</p>\n<div>\n</div>\n<h2><strong>How it Contributes</strong></h2>\n<p>ATLAS XVII provides the <strong>continental‑political‑economy foundation</strong> of the ATLAS universe. It operationalizes <strong>European Dependency Pathways</strong> by turning SR&rsquo;s pressure‑ecology insights into a measurable, falsifiable account of how Europe&rsquo;s integrated markets distribute gains, burdens, and agency.</p>\n<p>It deepens <strong>Developmental Lock‑In</strong> by showing how ownership geography, R&amp;D concentration, energy dependence, and fiscal asymmetry reproduce dependency even within high‑income regions. It strengthens <strong>Society as a Pressure Ecology</strong>by demonstrating how labour, ecological, fiscal, and energy burdens travel across borders and institutional layers.</p>\n<p>The migration audit expands ATLAS&rsquo;s cross‑border incidence analysis by tracing Europe as origin, transit, destination, return, colonial, and refugee contexts simultaneously. As the manuscript states, <em>&ldquo;No continent-wide causal attribution is permitted.&rdquo;</em></p>\n<p>ATLAS XVII also provides the empirical substrate for evaluating <strong>restoration</strong> through cohesion tied to productive capability, energy and digital interoperability, regional innovation networks, supplier upgrading, labour standards, and tax‑base protection.</p>\n<p>Ultimately, ATLAS XVII contributes the <strong>European‑agency grammar</strong> required to evaluate whether European societies can retain gains, govern essential systems, and escape coercive or concentrated dependency.</p>",
+    "doi": "10.5281/zenodo.22399664",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Europe"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-05",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22399663"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "ATLAS XVII ATLAS OF EUROPE: Integrated Markets, Uneven Value Capture, and the Political Economy of Dependency",
+    "version": "1.0"
+  },
+  "modified": "2026-09-05T21:08:18.568644+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22399664",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 2,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 2,
+    "version_views": 2,
+    "views": 2
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "ATLAS XVII ATLAS OF EUROPE: Integrated Markets, Uneven Value Capture, and the Political Economy of Dependency",
+  "updated": "2026-09-05T21:08:18.568644+00:00"
+}

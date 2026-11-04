@@ -1,0 +1,50 @@
+{
+  "anti_equivalences": [
+    "rank_gain != claim gain",
+    "claim resolution != full-state identification",
+    "one-action resolver != optimal action without cost/noise geometry",
+    "candidate availability != need for another observation after claim resolution"
+  ],
+  "base": {
+    "claim_identifiable": false,
+    "nullity": 4,
+    "rank": 4
+  },
+  "claim_ceiling": [
+    "TD613-authored selector fixture",
+    "source-derived marginals/exposure semantics only",
+    "not SR doctrine",
+    "not proof candidate observations are feasible or equally noisy"
+  ],
+  "non_direct_aggregate_minimum": {
+    "action_count": 2,
+    "sets": [
+      ["TRIPLE_DBF", "EXACTLY_ONE"],
+      ["TRIPLE_DBF", "AT_LEAST_TWO"],
+      ["EXACTLY_ONE", "AT_LEAST_TWO"]
+    ]
+  },
+  "one_action_candidates": {
+    "AT_LEAST_TWO": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "DIRECT_NONE": {"claim_identifiable": true, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "DIRECT_UNION": {"claim_identifiable": true, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "EXACTLY_ONE": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "PAIR_BF": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "PAIR_DB": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "PAIR_DF": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1},
+    "TRIPLE_DBF": {"claim_identifiable": false, "full_state_nullity": 3, "post_rank": 5, "rank_gain": 1}
+  },
+  "one_action_claim_resolvers": ["DIRECT_UNION", "DIRECT_NONE"],
+  "primitive_overlap_minimum": {
+    "action_count": 4,
+    "sets": [["PAIR_DB", "PAIR_DF", "PAIR_BF", "TRIPLE_DBF"]]
+  },
+  "schema": "td613.claim-conditioned-next-observation-selector/v0.1",
+  "selector_disposition": {
+    "claim_resolution": "DIRECT_UNION_OR_DIRECT_NONE_RESOLVES_IN_ONE_ACTION",
+    "full_state": "REMAINS_UNDERIDENTIFIED_AFTER_ONE_ACTION_CLAIM_STOP",
+    "optimality": "ABSTAIN_UNTIL_COST_AND_UNCERTAINTY_GEOMETRY_DECLARED"
+  },
+  "source_fixture": "ESB-PISA source-derived eight-cell joint-exposure geometry",
+  "target_claim": "exact union prevalence P(D or B or F)"
+}
