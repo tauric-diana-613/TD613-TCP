@@ -4,6 +4,10 @@
 
 **This is a LOCAL file-drop folder.** Copy new permitted source documents here using Windows File Explorer. This folder's `.gitignore` prevents Git from staging the dropped data. The README and `.gitignore` are the only intended tracked files. Do **not** use GitHub's browser Upload files control here for private material: GitHub storage is not the operator-local vault.
 
+## Open the drop folder on Windows
+
+From the repository root run `powershell -File scripts/open-atelier-inbox-v2.ps1 -Estate EMSTD613` (or `pwsh` if using PowerShell 7), then drag permitted source files from File Explorer into the opened folder. This only opens a folder; it does not authorize or perform any sync.
+
 ## One authorized sync
 
 Ask your locally connected AI collaborator:
