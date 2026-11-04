@@ -97,31 +97,46 @@ def load_sources(dbpath,repository,*,native_checkouts=None):
                 "original_source_bytes_verified":True}
     finally:con.close()
 
-def exact_query(source_iter,phrase,limit=30):
-    """Field-bound exact UTF-8 readback; title and body remain distinct sources of evidence."""
+def exact_query(source_iter,phrase,limit=30,estate="ALL"):
+    """Field-bound UTF-8 retrieval with a bounded, equitable per-estate result round."""
     if not isinstance(phrase,str) or not phrase or len(phrase)>1024 or limit<1 or limit>100:
         raise ValueError("BOUNDED_EXACT_QUERY_REQUIRED")
+    if estate!="ALL" and estate not in ESTATES:
+        raise ValueError("UNREGISTERED_QUERY_ESTATE")
     needle=phrase.encode("utf8")
-    hits=[]
+    # Prevent a common phrase in one native estate from hiding all Wendbine
+    # or Em hits merely because the generator happened to enumerate it first.
+    buckets={name:[] for name in ESTATES}
     for row in source_iter:
-        fields=[("selftext" if row["estate"]=="WENDBINE" else "derivative_text",
+        origin=row["estate"]
+        if origin not in buckets:
+            raise ValueError("UNREGISTERED_SOURCE_ESTATE")
+        if estate!="ALL" and origin!=estate:continue
+        hits=buckets[origin]
+        fields=[("selftext" if origin=="WENDBINE" else "derivative_text",
                  row["bytes"],row["sha256"])]
-        if row["estate"]=="WENDBINE":
+        if origin=="WENDBINE":
             fields.append(("title",row["title"],row["title_sha256"]))
         for field,body,digest in fields:
             start=0
             while len(hits)<limit:
                 idx=body.find(needle,start)
                 if idx<0:break
-                hits.append({"estate":row["estate"],"source_id":row["source_id"],
+                hits.append({"estate":origin,"source_id":row["source_id"],
                   "source_kind":row["source_kind"],"source_sha256":digest,
                   "source_field":field,"byte_offset":idx,"length_utf8":len(needle),
                   "exact_match":phrase,"path":row["relative_path"],
                   "original_source_bytes_verified":row["original_source_bytes_verified"],
                   "canonical_url":row.get("canonical_url")})
                 start=idx+max(1,len(needle))
-        if len(hits)>=limit:break
-    return hits
+    order=ESTATES if estate=="ALL" else (estate,)
+    merged=[]
+    for index in range(limit):
+        for origin in order:
+            if index<len(buckets[origin]):
+                merged.append(buckets[origin][index])
+                if len(merged)>=limit:return merged
+    return merged
 
 def state(source_iter):
     stats={}
@@ -167,7 +182,7 @@ def main():
     a.add_argument("--em-checkout",required=True,help="Independent git worktree at pinned Em HEAD")
     sub=a.add_subparsers(dest="command",required=True)
     sub.add_parser("audit")
-    q=sub.add_parser("exact");q.add_argument("phrase");q.add_argument("--limit",type=int,default=30)
+    q=sub.add_parser("exact");q.add_argument("phrase");q.add_argument("--limit",type=int,default=30);q.add_argument("--estate",choices=["ALL",*ESTATES],default="ALL")
     sub.add_parser("native-census")
     q=sub.add_parser("src-projection");q.add_argument("projection");q.add_argument("--term");q.add_argument("--limit",type=int,default=100)
     q=sub.add_parser("src-native-query");q.add_argument("operation")
@@ -182,7 +197,7 @@ def main():
         if not args.wendbine_db or not args.repo_root:
             raise ValueError("SOURCEBOUND_QUERY_REQUIRES_WENDBINE_DB_AND_REPO_ROOT")
         it=load_sources(Path(args.wendbine_db),Path(args.repo_root),native_checkouts=roots)
-        result=state(it) if args.command=="audit" else exact_query(it,args.phrase,args.limit)
+        result=state(it) if args.command=="audit" else exact_query(it,args.phrase,args.limit,args.estate)
     else:
         result=native_dispatch(native_src,native_em,args.command,
            projection=getattr(args,"projection",None),term=getattr(args,"term",None),
