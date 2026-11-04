@@ -245,3 +245,30 @@ UNHYDRATED != UNOBSERVED
 Research-only. Human closure remains required. No merge, deployment, identity adjudication, private-corpus intake, or scientific-promotion authority follows from this entry.
 
 Marked ⟐
+
+
+## November 4 source-sealed research entry — public archive only
+
+The earlier 60-source *privately indexed* original-title/selftext archive is a
+distinct source class from the new 2,062-source November 4 PUBLIC METADATA epoch.
+Do not infer that "60/60 recovered" proves restoration of the newer private
+encrypted ZIP. The new epoch exposes 2,062 manifestations, 6,763 captures and
+6,703 typed relations; its full post titles/bodies remain in a separately
+encrypted handoff, locally preserved with operator custody but not restored to
+this repository or this ChatGPT conversation.
+
+The **source-native public** search and graph interface added in [research
+PR #1661](https://github.com/tauric-diana-613/TD613-TCP/pull/1661) is
+`99-ADMIN/wendbine-sealed-public-research-v01.mjs`. It is seal-bound,
+strictly read-only and supports public source-ID/date/title metadata lookup,
+record resolution, layer-specific typed neighborhoods, and graph counts.
+A "Paul" or "Upset-Ratio502" operator alias is a lookup filter, not proof
+of personal identity, hidden model state, or source-body contents.
+
+**A hit for a topic in metadata does not establish advice from the original
+bot outputs.** For real full-text interpretation, first authenticate the
+operator-local decryption, exact original receipts, privacy/rights and
+allowed local search. The existence of searchable public relations or
+source-free method fixtures never satisfies those prerequisites.
+
+PUBLIC_SOURCE_SEARCH != BOT_OUTPUT_TEXT_SEARCH != SCIENTIFIC_ADVICE.
