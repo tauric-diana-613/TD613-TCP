@@ -34,9 +34,6 @@ class ReferenceIndex(unittest.TestCase):
    self.assertEqual(m.route(con,"emsrc_1","zenodo:100")["status"],
       "NO_RECORDED_PATH_NOT_SOURCE_ABSENCE")
  def test_source_mutation_and_authority_promotion_fail_closed(self):
-  with sqlite3.connect(self.db) as con:
-   pass
-  m.build if False else None
   self.edges[0]["authority"]="SCIENTIFIC_PROMOTED"
   with tempfile.TemporaryDirectory() as folder:
    with self.assertRaisesRegex(ValueError,"UNBOUND_OR_PROMOTED_RELATION"):
