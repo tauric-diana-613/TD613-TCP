@@ -136,6 +136,8 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Three-Atelier operator inbox source-free sync and hostile-gate regressions
+        run: python -B -m unittest discover -s tests -p 'test_atelier_operator_inbox_sync_v2.py' -v
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
