@@ -136,6 +136,8 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Execute bounded GB–GC–GD source-free dependency and D20 refusal tests
+        run: node --test tests/gb-gc-gd-dependency-adjudicator-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
