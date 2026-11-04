@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 spec=importlib.util.spec_from_file_location("td613_cross_estate_base",ROOT/"universal-atelier-sourcebound-readonly-v1.py")
 u=importlib.util.module_from_spec(spec);spec.loader.exec_module(u)
-MAX_ITEMS=50000
+MAX_ITEMS=250000
 MAX_FILE=512*1024*1024
 MAX_VECTOR=4096
 
