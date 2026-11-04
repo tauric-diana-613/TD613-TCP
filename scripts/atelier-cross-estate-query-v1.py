@@ -120,6 +120,8 @@ def semantic(query_vector,chunks,vectors,*,model_sha256,limit=20):
             "embedding_model_sha256":model_sha256,
             "source_span_verified":True,
             "semantic_relation_proven":False})
+    if seen!=set(by_id):
+        raise ValueError("SEMANTIC_INDEX_COVERAGE_INCOMPLETE")
     out.sort(key=lambda x:(-x["score"],x["estate"],x["chunk_id"]))
     return out[:limit]
 
