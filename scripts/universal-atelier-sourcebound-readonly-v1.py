@@ -12,18 +12,40 @@ import json
 import os
 import sqlite3
 import sys
+import subprocess
 from pathlib import Path
 
 ESTATES=("WENDBINE","SRC","EMSTD613")
 BASE=Path("packages/dome_world_exact/fixtures/a15-r0")
+NATIVE_PINNED_HEADS={
+    "SRC":"b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "EMSTD613":"70b5a0f9e94626cba6068f41c6117e7978800bbd",
+}
+def verify_native_checkout(path, estate):
+    if estate not in NATIVE_PINNED_HEADS:
+        raise ValueError("UNSUPPORTED_NATIVE_ESTATE")
+    if not path.is_absolute() or not path.is_dir() or path.is_symlink():
+        raise ValueError("ABSOLUTE_NATIVE_CHECKOUT_REQUIRED")
+    try:
+        head=subprocess.run(["git","-C",str(path),"rev-parse","HEAD"],
+            check=True,capture_output=True,text=True,timeout=12).stdout.strip()
+    except (OSError,subprocess.CalledProcessError,subprocess.TimeoutExpired) as exc:
+        raise ValueError("NATIVE_CHECKOUT_GIT_IDENTITY_UNAVAILABLE") from exc
+    if head!=NATIVE_PINNED_HEADS[estate]:
+        raise ValueError("NATIVE_CHECKOUT_HEAD_DRIFT")
+    native=path/BASE/estate
+    if not native.is_dir() or native.is_symlink():
+        raise ValueError("NATIVE_ESTATE_MISSING_AT_PINNED_HEAD")
+    return native
+
 MAX_FILE_BYTES=8*1024*1024
 MAX_CUMULATIVE_BYTES=120*1024*1024
 
 def sha(b):return hashlib.sha256(b).hexdigest()
 
-def repo_files(repository,estate):
+def repo_files(repository,estate,*,native_checkout=None):
     if estate not in ("SRC","EMSTD613"): raise ValueError("UNSUPPORTED_SOURCE_ESTATE")
-    root=repository/BASE/estate
+    root=verify_native_checkout(native_checkout,estate) if native_checkout is not None else repository/BASE/estate
     if not root.is_dir() or root.is_symlink(): raise ValueError("NATIVE_ESTATE_ROOT_MISSING_OR_SYMLINK")
     top=root/"03-DERIVATIVES"/"text"
     if not top.is_dir() or top.is_symlink():raise ValueError("NATIVE_TEXT_DERIVATIVES_MISSING")
@@ -47,13 +69,17 @@ def repo_files(repository,estate):
                  "relative_path":relative,"sha256":sha(body),"bytes":body,
                  "text":text,"original_source_bytes_verified":False}
 
-def load_sources(dbpath,repository):
+def load_sources(dbpath,repository,*,native_checkouts=None):
     if not dbpath.is_absolute() or not dbpath.is_file() or dbpath.is_symlink():
         raise ValueError("OPERATOR_LOCAL_WENDBINE_DB_REQUIRED")
     if not repository.is_absolute() or not repository.is_dir():
         raise ValueError("EXISTING_REPOSITORY_REQUIRED")
+    if native_checkouts is not None:
+        if set(native_checkouts)!={"SRC","EMSTD613"}:
+            raise ValueError("BOTH_NATIVE_CHECKOUTS_REQUIRED")
     for estate in ESTATES[1:]:
-        for row in repo_files(repository,estate):yield row
+        native=native_checkouts[estate] if native_checkouts is not None else None
+        for row in repo_files(repository,estate,native_checkout=native):yield row
     con=sqlite3.connect(dbpath.as_uri()+"?mode=ro",uri=True)
     try:
         if con.execute("pragma integrity_check").fetchone()[0]!="ok":
@@ -110,12 +136,15 @@ def main():
     a=argparse.ArgumentParser()
     a.add_argument("--wendbine-db",required=True)
     a.add_argument("--repo-root",required=True)
+    a.add_argument("--src-checkout",required=True,help="Independent git worktree at pinned SRC HEAD")
+    a.add_argument("--em-checkout",required=True,help="Independent git worktree at pinned Em HEAD")
     sub=a.add_subparsers(dest="command",required=True)
     sub.add_parser("audit")
     q=sub.add_parser("exact")
     q.add_argument("phrase");q.add_argument("--limit",type=int,default=30)
     args=a.parse_args()
-    it=load_sources(Path(args.wendbine_db),Path(args.repo_root))
+    it=load_sources(Path(args.wendbine_db),Path(args.repo_root),
+      native_checkouts={"SRC":Path(args.src_checkout),"EMSTD613":Path(args.em_checkout)})
     result=state(it) if args.command=="audit" else exact_query(it,args.phrase,args.limit)
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
