@@ -1,0 +1,166 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 16,
+  "query_id": "WENDBINE-2-VAGUE",
+  "question": "How can a claim be traced back to its source?",
+  "target_estate": "WENDBINE",
+  "difficulty": "VAGUE",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "reddit:t3_1psryls",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The text directly explains that outputs do not reveal their origin by default. This is relevant negative/limit evidence about tracing provenance, not a successful reconstructed chain.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+        "source_field": "body",
+        "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wb61ip",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The text distinguishes public artifacts from relations, provenance, temporal history and runtime state; reconstruction needs those additional bindings.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+        "source_field": "body",
+        "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wb66ly",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The text treats provenance, access scope and relational-memory integrity as distinct security/evaluation requirements. Relevance does not authenticate any particular claimed origin.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+        "source_field": "body",
+        "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1obi3g7",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1obmeqd",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+      "reason": "No claim-to-source/provenance analysis was established in this captured text. A linked video is an unexamined source object and a possible source pointer, so its broad-query decoy status remains uncertain.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1oc0xg2",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "reddit:t3_1wc7p1y",
+      "source_field": "body",
+      "source_sha256": "1698486569b6842f90a1bd4ebff6efd529a8fcd6b46b5e33b2197ccfd1c681cf",
+      "capture_id": null,
+      "evidence_byte_offset": 7466,
+      "evidence_sha256": "20ffb7c60b489d75242b26f750a4a82c363bfe51f15b128a18eba27b1997af13",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wb73ds",
+      "source_field": "body",
+      "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+      "capture_id": null,
+      "evidence_byte_offset": 69,
+      "evidence_sha256": "02ae801d3815ca547590171f3c801708c996796eba68c31468a82d06c16f9873",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}

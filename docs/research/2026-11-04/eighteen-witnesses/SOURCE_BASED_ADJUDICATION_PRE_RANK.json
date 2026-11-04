@@ -1,0 +1,3215 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.eighteen-source-based-diagnostic-review/v1",
+  "original_gold_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "recorded_before_individual_rankings": true,
+  "frozen_at_utc": "2026-11-04T20:58:57.267625+00:00",
+  "cases": [
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 1,
+      "query_id": "SRC-1-VAGUE",
+      "question": "How can a reader follow an open research lead to a later source?",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21185370-file-0.md",
+          "source_field": "body",
+          "source_sha256": "cdf13044faab03530529ca09a9f7d64ad35bfc686baf0c7ed5148ee5fd0475d9",
+          "capture_id": null,
+          "evidence_byte_offset": 7187,
+          "evidence_sha256": "3a107961be37ad4493a1aad5ffb371ef81f99f52c2cbdc206b1aff6e81c92bfc",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21632526-file-0.md",
+          "source_field": "body",
+          "source_sha256": "62bdc97c4d34b450d9080a1e75a7d72dbf8a1a5a7bb605ace19892d1523043cc",
+          "capture_id": null,
+          "evidence_byte_offset": 34968,
+          "evidence_sha256": "59222481514b784aea718c8301d0137f1a520ced75c7b343ed402feff7143e30",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "REPLACE_FALSE_POSITIVES_AND_HOLD_ROUTE_CONDITION",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 2,
+      "query_id": "SRC-1-INTERMEDIATE",
+      "question": "Find source-declared Explore cues with unresolved or later title candidates.",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21185370-file-0.md",
+          "source_field": "body",
+          "source_sha256": "cdf13044faab03530529ca09a9f7d64ad35bfc686baf0c7ed5148ee5fd0475d9",
+          "capture_id": null,
+          "evidence_byte_offset": 7187,
+          "evidence_sha256": "3a107961be37ad4493a1aad5ffb371ef81f99f52c2cbdc206b1aff6e81c92bfc",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21632526-file-0.md",
+          "source_field": "body",
+          "source_sha256": "62bdc97c4d34b450d9080a1e75a7d72dbf8a1a5a7bb605ace19892d1523043cc",
+          "capture_id": null,
+          "evidence_byte_offset": 34968,
+          "evidence_sha256": "59222481514b784aea718c8301d0137f1a520ced75c7b343ed402feff7143e30",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "REPLACE_FALSE_POSITIVES_AND_HOLD_ROUTE_CONDITION",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 3,
+      "query_id": "SRC-1-SPECIFIC",
+      "question": "Find a native SRC passage containing an Explore research cue.",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21185370-file-0.md",
+          "source_field": "body",
+          "source_sha256": "cdf13044faab03530529ca09a9f7d64ad35bfc686baf0c7ed5148ee5fd0475d9",
+          "capture_id": null,
+          "evidence_byte_offset": 7187,
+          "evidence_sha256": "3a107961be37ad4493a1aad5ffb371ef81f99f52c2cbdc206b1aff6e81c92bfc",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21632526-file-0.md",
+          "source_field": "body",
+          "source_sha256": "62bdc97c4d34b450d9080a1e75a7d72dbf8a1a5a7bb605ace19892d1523043cc",
+          "capture_id": null,
+          "evidence_byte_offset": 34968,
+          "evidence_sha256": "59222481514b784aea718c8301d0137f1a520ced75c7b343ed402feff7143e30",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "REPLACE_FALSE_POSITIVES_AND_HOLD_ROUTE_CONDITION",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 4,
+      "query_id": "SRC-2-VAGUE",
+      "question": "How can a research claim be traced back to its recorded source?",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Metadata authenticity, provenance loss and untraceable AI documents are directly discussed.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The Documentation and Provenance section discusses dataset collection history, model cards, registries and lineage.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Timestamped lineage, canonical links and echo protocols are proposed as ways to preserve origins. These source assertions are relevant but their claimed causal efficacy is not independently validated.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18225782-file-0.md",
+          "source_field": "body",
+          "source_sha256": "ec4f4b3145c460f03d0735fad7a3990cbd756e460ceeccdeb26faef60dfa2f6d",
+          "capture_id": null,
+          "evidence_byte_offset": 666,
+          "evidence_sha256": "cfdeccbdfaea475d4b72d39e02ab062d75aad726c581c1390e973af4fb11c172",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18237936-file-0.md",
+          "source_field": "body",
+          "source_sha256": "0175fed53e1c38d95fe39a92fd54b387f246c04a9874a164a0ce64874db73f5f",
+          "capture_id": null,
+          "evidence_byte_offset": 1428,
+          "evidence_sha256": "175ea7ed7e20a9eab95d965149f7ad9186ce3991e84e95d8fa11e5ef7e18b1a1",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 5,
+      "query_id": "SRC-2-INTERMEDIATE",
+      "question": "Find native research passages discussing provenance and source tracing.",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Metadata authenticity, provenance loss and untraceable AI documents are directly discussed.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The Documentation and Provenance section discusses dataset collection history, model cards, registries and lineage.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Timestamped lineage, canonical links and echo protocols are proposed as ways to preserve origins. These source assertions are relevant but their claimed causal efficacy is not independently validated.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18225782-file-0.md",
+          "source_field": "body",
+          "source_sha256": "ec4f4b3145c460f03d0735fad7a3990cbd756e460ceeccdeb26faef60dfa2f6d",
+          "capture_id": null,
+          "evidence_byte_offset": 666,
+          "evidence_sha256": "cfdeccbdfaea475d4b72d39e02ab062d75aad726c581c1390e973af4fb11c172",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18237936-file-0.md",
+          "source_field": "body",
+          "source_sha256": "0175fed53e1c38d95fe39a92fd54b387f246c04a9874a164a0ce64874db73f5f",
+          "capture_id": null,
+          "evidence_byte_offset": 1428,
+          "evidence_sha256": "175ea7ed7e20a9eab95d965149f7ad9186ce3991e84e95d8fa11e5ef7e18b1a1",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 6,
+      "query_id": "SRC-2-SPECIFIC",
+      "question": "Find native SRC text explicitly discussing provenance.",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Metadata authenticity, provenance loss and untraceable AI documents are directly discussed.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The Documentation and Provenance section discusses dataset collection history, model cards, registries and lineage.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Timestamped lineage, canonical links and echo protocols are proposed as ways to preserve origins. These source assertions are relevant but their claimed causal efficacy is not independently validated.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18225782-file-0.md",
+          "source_field": "body",
+          "source_sha256": "ec4f4b3145c460f03d0735fad7a3990cbd756e460ceeccdeb26faef60dfa2f6d",
+          "capture_id": null,
+          "evidence_byte_offset": 666,
+          "evidence_sha256": "cfdeccbdfaea475d4b72d39e02ab062d75aad726c581c1390e973af4fb11c172",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18237936-file-0.md",
+          "source_field": "body",
+          "source_sha256": "0175fed53e1c38d95fe39a92fd54b387f246c04a9874a164a0ce64874db73f5f",
+          "capture_id": null,
+          "evidence_byte_offset": 1428,
+          "evidence_sha256": "175ea7ed7e20a9eab95d965149f7ad9186ce3991e84e95d8fa11e5ef7e18b1a1",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 7,
+      "query_id": "EMSTD613-1-VAGUE",
+      "question": "How might a feedback system signal strain or overload?",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The algedonic channel escalates catastrophic performance/capability failures and bypasses routine reporting; its JSON alert is routed to policy or human oversight.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 2 defines algedonic circuit breakers and an asymmetric urgency response to memory bloat versus starvation.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Memory pressure, latency anomalies and context-window overflow trigger asynchronous algedonic interrupts and corrective memory actions.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "Smoothing and battery saturation demonstrate capacity/response constraints; this may inform a broad strain question, although an algedonic alert is not described.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "The Envoy Overload Manager reacts to configured memory thresholds through reclamation and connection shedding. This is a concrete strain/overload response despite absence of the algedonic anchor.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "The virtualization guide discusses high memory pressure and paging to disk. It is potentially informative about strain, but is not a direct algedonic signalling treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_20228928591ae11052bf2622.txt",
+          "source_field": "body",
+          "source_sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+          "capture_id": null,
+          "evidence_byte_offset": 8465,
+          "evidence_sha256": "5b46057cd8153b25967be5c6bdd137f8949c02502f6d534dc6de6722de58ed2c",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_4753469dce968cf7c48bd1fe.txt",
+          "source_field": "body",
+          "source_sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+          "capture_id": null,
+          "evidence_byte_offset": 3815,
+          "evidence_sha256": "122c489b7068dce55bc011bec9b7dbef1a573a99d5340b9ba736a208a0105e2e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 8,
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "question": "Find native research discussing algedonic signals in system design.",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The algedonic channel escalates catastrophic performance/capability failures and bypasses routine reporting; its JSON alert is routed to policy or human oversight.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 2 defines algedonic circuit breakers and an asymmetric urgency response to memory bloat versus starvation.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Memory pressure, latency anomalies and context-window overflow trigger asynchronous algedonic interrupts and corrective memory actions.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_20228928591ae11052bf2622.txt",
+          "source_field": "body",
+          "source_sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+          "capture_id": null,
+          "evidence_byte_offset": 8465,
+          "evidence_sha256": "5b46057cd8153b25967be5c6bdd137f8949c02502f6d534dc6de6722de58ed2c",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_4753469dce968cf7c48bd1fe.txt",
+          "source_field": "body",
+          "source_sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+          "capture_id": null,
+          "evidence_byte_offset": 3815,
+          "evidence_sha256": "122c489b7068dce55bc011bec9b7dbef1a573a99d5340b9ba736a208a0105e2e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 9,
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "question": "Find Em source text explicitly discussing algedonic signals.",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The algedonic channel escalates catastrophic performance/capability failures and bypasses routine reporting; its JSON alert is routed to policy or human oversight.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 2 defines algedonic circuit breakers and an asymmetric urgency response to memory bloat versus starvation.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Memory pressure, latency anomalies and context-window overflow trigger asynchronous algedonic interrupts and corrective memory actions.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_20228928591ae11052bf2622.txt",
+          "source_field": "body",
+          "source_sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+          "capture_id": null,
+          "evidence_byte_offset": 8465,
+          "evidence_sha256": "5b46057cd8153b25967be5c6bdd137f8949c02502f6d534dc6de6722de58ed2c",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_4753469dce968cf7c48bd1fe.txt",
+          "source_field": "body",
+          "source_sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+          "capture_id": null,
+          "evidence_byte_offset": 3815,
+          "evidence_sha256": "122c489b7068dce55bc011bec9b7dbef1a573a99d5340b9ba736a208a0105e2e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 10,
+      "query_id": "EMSTD613-2-VAGUE",
+      "question": "How could writing patterns be compared without assuming an author identity?",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The document explicitly mentions stylometry and briefly recalls text-authorship verification, but its operational treatment is kinematic movement signatures and drone coordination. That supports the literal specific query while only weakly supporting textual/writing comparison.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1a5f7e8bd71f3b1914d9dfc0.txt",
+          "source_field": "body",
+          "source_sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "fea3e1e22b133bb64c77e94ef24b3552431275e71235d1f940e1f77b4eae6d8b",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_c2a22c120e32b746513447b5.txt",
+          "source_field": "body",
+          "source_sha256": "dd922066073164f79e4a119dc90a26cc915d21b5fbce725306a20bc0a975285e",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "822fbbdbc45c2d863ff7bf08be2acc222a38859ac6500364eca537c4b3dc2e7d",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 11,
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "question": "Find native discussion of stylometry and textual comparison.",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The document explicitly mentions stylometry and briefly recalls text-authorship verification, but its operational treatment is kinematic movement signatures and drone coordination. That supports the literal specific query while only weakly supporting textual/writing comparison.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1a5f7e8bd71f3b1914d9dfc0.txt",
+          "source_field": "body",
+          "source_sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "fea3e1e22b133bb64c77e94ef24b3552431275e71235d1f940e1f77b4eae6d8b",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_c2a22c120e32b746513447b5.txt",
+          "source_field": "body",
+          "source_sha256": "dd922066073164f79e4a119dc90a26cc915d21b5fbce725306a20bc0a975285e",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "822fbbdbc45c2d863ff7bf08be2acc222a38859ac6500364eca537c4b3dc2e7d",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 12,
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "question": "Find Em source text explicitly mentioning stylometry.",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The document explicitly mentions stylometry and briefly recalls text-authorship verification, but its operational treatment is kinematic movement signatures and drone coordination. That supports the literal specific query while only weakly supporting textual/writing comparison.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+            "checks": {
+              "file_exists": true,
+              "index_text_hash_matches": true,
+              "file_hash_matches_index": true,
+              "pinned_git_blob_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1a5f7e8bd71f3b1914d9dfc0.txt",
+          "source_field": "body",
+          "source_sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "fea3e1e22b133bb64c77e94ef24b3552431275e71235d1f940e1f77b4eae6d8b",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_c2a22c120e32b746513447b5.txt",
+          "source_field": "body",
+          "source_sha256": "dd922066073164f79e4a119dc90a26cc915d21b5fbce725306a20bc0a975285e",
+          "capture_id": null,
+          "evidence_byte_offset": 0,
+          "evidence_sha256": "822fbbdbc45c2d863ff7bf08be2acc222a38859ac6500364eca537c4b3dc2e7d",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 13,
+      "query_id": "WENDBINE-1-VAGUE",
+      "question": "What can be learned about a system from what it lets us observe?",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion asks what is stored, retrievable, isolated, auditable and preserved across updates, and distinguishes a correct relational graph from merely similar fragments. This supports operational observability and its limits.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6nt0",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6vb2",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "A cognitive-OS definition mentions memory and feedback but supplies no explicit observability/identifiability analysis; broad-question usefulness is uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "The captured body supplies a linked video and a short claim about dual-state systems. The video was not inspected. Negative control is defensible only for the captured body, not the unavailable audiovisual source.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "The text concerns philosophical awareness and an observer of roles. It can be thematically informative for a vague observation question but does not supply technical observability analysis.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 81,
+          "evidence_sha256": "a7e01c875d220b6f86b88cfe91ec653238b8fb4996976b5e52e162e5bd68b9f9",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wbabte",
+          "source_field": "body",
+          "source_sha256": "d6bef69067919bbc085a84bfe5e70f96102cbfef3a3a77e150e75a996228064e",
+          "capture_id": null,
+          "evidence_byte_offset": 1766,
+          "evidence_sha256": "de8e7b47afd38a50e0b9c631c3a9448c92e0462ec2e39d439608e6a0a5cae94e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 14,
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "question": "Find observed posts discussing observability and its limits.",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion asks what is stored, retrievable, isolated, auditable and preserved across updates, and distinguishes a correct relational graph from merely similar fragments. This supports operational observability and its limits.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6nt0",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6vb2",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "A cognitive-OS definition mentions memory and feedback but supplies no explicit observability/identifiability analysis; broad-question usefulness is uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured body supplies a linked video and a short claim about dual-state systems. The video was not inspected. Negative control is defensible only for the captured body, not the unavailable audiovisual source.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The text concerns philosophical awareness and an observer of roles. It can be thematically informative for a vague observation question but does not supply technical observability analysis.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 81,
+          "evidence_sha256": "a7e01c875d220b6f86b88cfe91ec653238b8fb4996976b5e52e162e5bd68b9f9",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wbabte",
+          "source_field": "body",
+          "source_sha256": "d6bef69067919bbc085a84bfe5e70f96102cbfef3a3a77e150e75a996228064e",
+          "capture_id": null,
+          "evidence_byte_offset": 1766,
+          "evidence_sha256": "de8e7b47afd38a50e0b9c631c3a9448c92e0462ec2e39d439608e6a0a5cae94e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 15,
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "question": "Find captured Wendbine text explicitly discussing observability.",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion asks what is stored, retrievable, isolated, auditable and preserved across updates, and distinguishes a correct relational graph from merely similar fragments. This supports operational observability and its limits.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6nt0",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb6vb2",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+            "source_field": "body",
+            "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "A cognitive-OS definition mentions memory and feedback but supplies no explicit observability/identifiability analysis; broad-question usefulness is uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured body supplies a linked video and a short claim about dual-state systems. The video was not inspected. Negative control is defensible only for the captured body, not the unavailable audiovisual source.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The text concerns philosophical awareness and an observer of roles. It can be thematically informative for a vague observation question but does not supply technical observability analysis.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 81,
+          "evidence_sha256": "a7e01c875d220b6f86b88cfe91ec653238b8fb4996976b5e52e162e5bd68b9f9",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wbabte",
+          "source_field": "body",
+          "source_sha256": "d6bef69067919bbc085a84bfe5e70f96102cbfef3a3a77e150e75a996228064e",
+          "capture_id": null,
+          "evidence_byte_offset": 1766,
+          "evidence_sha256": "de8e7b47afd38a50e0b9c631c3a9448c92e0462ec2e39d439608e6a0a5cae94e",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 16,
+      "query_id": "WENDBINE-2-VAGUE",
+      "question": "How can a claim be traced back to its source?",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1psryls",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text directly explains that outputs do not reveal their origin by default. This is relevant negative/limit evidence about tracing provenance, not a successful reconstructed chain.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+            "source_field": "body",
+            "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb61ip",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text distinguishes public artifacts from relations, provenance, temporal history and runtime state; reconstruction needs those additional bindings.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+            "source_field": "body",
+            "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text treats provenance, access scope and relational-memory integrity as distinct security/evaluation requirements. Relevance does not authenticate any particular claimed origin.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+          "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+          "reason": "No claim-to-source/provenance analysis was established in this captured text. A linked video is an unexamined source object and a possible source pointer, so its broad-query decoy status remains uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wc7p1y",
+          "source_field": "body",
+          "source_sha256": "1698486569b6842f90a1bd4ebff6efd529a8fcd6b46b5e33b2197ccfd1c681cf",
+          "capture_id": null,
+          "evidence_byte_offset": 7466,
+          "evidence_sha256": "20ffb7c60b489d75242b26f750a4a82c363bfe51f15b128a18eba27b1997af13",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 69,
+          "evidence_sha256": "02ae801d3815ca547590171f3c801708c996796eba68c31468a82d06c16f9873",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 17,
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "question": "Find observed posts discussing provenance rather than generic source similarity.",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1psryls",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text directly explains that outputs do not reveal their origin by default. This is relevant negative/limit evidence about tracing provenance, not a successful reconstructed chain.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+            "source_field": "body",
+            "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb61ip",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text distinguishes public artifacts from relations, provenance, temporal history and runtime state; reconstruction needs those additional bindings.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+            "source_field": "body",
+            "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text treats provenance, access scope and relational-memory integrity as distinct security/evaluation requirements. Relevance does not authenticate any particular claimed origin.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "No claim-to-source/provenance analysis was established in this captured text. A linked video is an unexamined source object and a possible source pointer, so its broad-query decoy status remains uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wc7p1y",
+          "source_field": "body",
+          "source_sha256": "1698486569b6842f90a1bd4ebff6efd529a8fcd6b46b5e33b2197ccfd1c681cf",
+          "capture_id": null,
+          "evidence_byte_offset": 7466,
+          "evidence_sha256": "20ffb7c60b489d75242b26f750a4a82c363bfe51f15b128a18eba27b1997af13",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 69,
+          "evidence_sha256": "02ae801d3815ca547590171f3c801708c996796eba68c31468a82d06c16f9873",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    },
+    {
+      "opening_mark": "𝌋",
+      "schema": "td613.source-based-diagnostic-adjudication/v1",
+      "case_ordinal": 18,
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "question": "Find captured Wendbine text explicitly discussing provenance.",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+      "assessor": "Current operator-authorized AI research session",
+      "independent_of_individual_rankings_at_recording": true,
+      "aggregate_results_previously_known": true,
+      "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+      "source_judgments": [
+        {
+          "source_id": "reddit:t3_1psryls",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text directly explains that outputs do not reveal their origin by default. This is relevant negative/limit evidence about tracing provenance, not a successful reconstructed chain.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+            "source_field": "body",
+            "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb61ip",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text distinguishes public artifacts from relations, provenance, temporal history and runtime state; reconstruction needs those additional bindings.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+            "source_field": "body",
+            "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb66ly",
+          "candidate_role": "CANDIDATE_POSITIVE",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "decoy_disposition": "NOT_APPLICABLE",
+          "reason": "The text treats provenance, access scope and relational-memory integrity as distinct security/evaluation requirements. Relevance does not authenticate any particular claimed origin.",
+          "evidence_variant": {
+            "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+            "source_field": "body",
+            "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obi3g7",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1obmeqd",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "No claim-to-source/provenance analysis was established in this captured text. A linked video is an unexamined source object and a possible source pointer, so its broad-query decoy status remains uncertain.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1oc0xg2",
+          "candidate_role": "CANDIDATE_DECOY",
+          "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+          "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+          "reason": "The captured cognitive-OS definition or philosophical-awareness text does not provide source-tracing/provenance evidence. This judgment is limited to the available body.",
+          "evidence_variant": {
+            "capture_id": null,
+            "source_field": "body",
+            "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+            "checks": {
+              "field_hash_matches": true
+            },
+            "empty": false
+          },
+          "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+          "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+          "human_approval": false
+        }
+      ],
+      "confirmed_or_held_omitted_sources": [
+        {
+          "source_id": "reddit:t3_1wc7p1y",
+          "source_field": "body",
+          "source_sha256": "1698486569b6842f90a1bd4ebff6efd529a8fcd6b46b5e33b2197ccfd1c681cf",
+          "capture_id": null,
+          "evidence_byte_offset": 7466,
+          "evidence_sha256": "20ffb7c60b489d75242b26f750a4a82c363bfe51f15b128a18eba27b1997af13",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        },
+        {
+          "source_id": "reddit:t3_1wb73ds",
+          "source_field": "body",
+          "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+          "capture_id": null,
+          "evidence_byte_offset": 69,
+          "evidence_sha256": "02ae801d3815ca547590171f3c801708c996796eba68c31468a82d06c16f9873",
+          "relevance": "VERIFIED_RELEVANT_SOURCE",
+          "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+          "human_approval": false
+        }
+      ],
+      "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+      "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+      "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+      "source_identity_or_version_mismatch_found": false,
+      "human_decisions": [
+        "Approve semantic inclusion standard for broad versus literal questions.",
+        "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+        "Approve Work/manifestation and duplicate-content scoring unit."
+      ],
+      "human_scientific_approval": false,
+      "ranked_outputs_opened": false,
+      "seal": "⟐"
+    }
+  ],
+  "human_scientific_approval": false,
+  "seal": "⟐"
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613:candidate-gold:v1",
+  "title": "Frozen candidate gold v1; candidate labels are not human approval",
+  "type": "object",
+  "required": [
+    "schema",
+    "preregistered_at_utc",
+    "source_pins",
+    "cases"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.atelier-gold-queries/v1"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 18,
+      "maxItems": 18,
+      "items": {
+        "type": "object",
+        "required": [
+          "query_id",
+          "target_estate",
+          "difficulty",
+          "query",
+          "relevant_source_ids",
+          "decoy_source_ids",
+          "witnesses"
+        ],
+        "properties": {
+          "query_id": {
+            "type": "string"
+          },
+          "target_estate": {
+            "enum": [
+              "SRC",
+              "EMSTD613",
+              "WENDBINE"
+            ]
+          },
+          "difficulty": {
+            "enum": [
+              "VAGUE",
+              "INTERMEDIATE",
+              "SPECIFIC"
+            ]
+          },
+          "query": {
+            "type": "string"
+          },
+          "relevant_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "decoy_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "witnesses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "estate",
+                "source_id",
+                "source_sha256",
+                "anchor_byte_offset",
+                "anchor",
+                "candidate_passage",
+                "passage_sha256"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

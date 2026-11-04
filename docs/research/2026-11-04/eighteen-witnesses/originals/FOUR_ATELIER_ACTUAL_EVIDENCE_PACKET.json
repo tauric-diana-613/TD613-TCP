@@ -1,0 +1,105 @@
+{
+  "schema": "td613.atelier-four-estate-evidence/v1",
+  "estates": {
+    "SRC": {
+      "git_head": "23226fd5acac22b21bbdd39a520c4f356c052cc6",
+      "observed_source_count": 1765,
+      "human_reviewed_evidence_ids": [],
+      "forensic_source_origin_proven": false,
+      "checks": {
+        "EXACT_SOURCE_RETRIEVAL": "VERIFIED_ON_REAL_CORPUS",
+        "LEXICAL_SEARCH": "VERIFIED_ON_REAL_CORPUS",
+        "VAGUE_TO_SPECIFIC_SEMANTIC": "HELD",
+        "INDEX_AND_MANIFESTATION": "VERIFIED_ON_REAL_CORPUS",
+        "SOURCE_GROUNDED_CROSSWALK": "VERIFIED_ON_REAL_CORPUS",
+        "MULTI_STEP_EVIDENCE_ROUTE": "VERIFIED_ON_REAL_CORPUS",
+        "IDENTITY_AND_NEGATIVE_FIXTURES": "SOURCE_FREE_ONLY",
+        "HETEROSTRATIGRAPHIC_RESEARCH": "HELD",
+        "PROVENANCE_AND_ORIGINAL_HASH": "HELD"
+      }
+    },
+    "EMSTD613": {
+      "git_head": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+      "observed_source_count": 53,
+      "human_reviewed_evidence_ids": [],
+      "forensic_source_origin_proven": false,
+      "checks": {
+        "EXACT_SOURCE_RETRIEVAL": "VERIFIED_ON_REAL_CORPUS",
+        "LEXICAL_SEARCH": "VERIFIED_ON_REAL_CORPUS",
+        "VAGUE_TO_SPECIFIC_SEMANTIC": "HELD",
+        "INDEX_AND_MANIFESTATION": "VERIFIED_ON_REAL_CORPUS",
+        "SOURCE_GROUNDED_CROSSWALK": "VERIFIED_ON_REAL_CORPUS",
+        "MULTI_STEP_EVIDENCE_ROUTE": "VERIFIED_ON_REAL_CORPUS",
+        "IDENTITY_AND_NEGATIVE_FIXTURES": "HELD",
+        "HETEROSTRATIGRAPHIC_RESEARCH": "HELD",
+        "PROVENANCE_AND_ORIGINAL_HASH": "HELD"
+      }
+    },
+    "WENDBINE": {
+      "git_head": "61c09e54c1acd2223685eb4638fddffdd28e9515",
+      "observed_source_count": 2767,
+      "human_reviewed_evidence_ids": [],
+      "forensic_source_origin_proven": false,
+      "checks": {
+        "EXACT_SOURCE_RETRIEVAL": "VERIFIED_ON_REAL_CORPUS",
+        "LEXICAL_SEARCH": "VERIFIED_ON_REAL_CORPUS",
+        "VAGUE_TO_SPECIFIC_SEMANTIC": "HELD",
+        "INDEX_AND_MANIFESTATION": "VERIFIED_ON_REAL_CORPUS",
+        "SOURCE_GROUNDED_CROSSWALK": "VERIFIED_ON_REAL_CORPUS",
+        "MULTI_STEP_EVIDENCE_ROUTE": "HELD",
+        "IDENTITY_AND_NEGATIVE_FIXTURES": "SOURCE_FREE_ONLY",
+        "HETEROSTRATIGRAPHIC_RESEARCH": "HELD",
+        "PROVENANCE_AND_ORIGINAL_HASH": "HELD"
+      }
+    },
+    "UNIVERSAL": {
+      "git_head": "ed407fc64c1a7bfd6a27cb2b87da4e217bcb29b7",
+      "observed_source_count": 4585,
+      "human_reviewed_evidence_ids": [],
+      "forensic_source_origin_proven": false,
+      "checks": {
+        "EXACT_SOURCE_RETRIEVAL": "VERIFIED_ON_REAL_CORPUS",
+        "LEXICAL_SEARCH": "VERIFIED_ON_REAL_CORPUS",
+        "VAGUE_TO_SPECIFIC_SEMANTIC": "HELD",
+        "INDEX_AND_MANIFESTATION": "VERIFIED_ON_REAL_CORPUS",
+        "SOURCE_GROUNDED_CROSSWALK": "VERIFIED_ON_REAL_CORPUS",
+        "MULTI_STEP_EVIDENCE_ROUTE": "HELD",
+        "IDENTITY_AND_NEGATIVE_FIXTURES": "SOURCE_FREE_ONLY",
+        "HETEROSTRATIGRAPHIC_RESEARCH": "HELD",
+        "PROVENANCE_AND_ORIGINAL_HASH": "HELD"
+      }
+    }
+  },
+  "receivers": {
+    "UNIVERSAL_ENCYCLOPEDIA": {
+      "empty_source_admission": null,
+      "replayable_zero_source_receipt": null,
+      "has_auto_promote": false,
+      "observation": "No separately reviewed actual zero-source receiver custody receipt was observed; no receiver was initialized."
+    },
+    "UNIVERSAL_ATELIER": {
+      "empty_source_admission": null,
+      "replayable_zero_source_receipt": null,
+      "has_auto_promote": false,
+      "observation": "No separately reviewed actual zero-source receiver custody receipt was observed; no receiver was initialized."
+    }
+  },
+  "td613_encyclopedia_source": {
+    "observed_source_count": 1141,
+    "source_index_readback_verified": true,
+    "source_provenance_checked": true,
+    "matched_recipient_contract": false
+  },
+  "reciprocal_probes": {
+    "WENDBINE_TO_UNIVERSAL_ENCYCLOPEDIA": {
+      "distinct_send_return_routes": false,
+      "preregistered_matched_control": false,
+      "source_admission_approval": false
+    },
+    "TD613_ENCYCLOPEDIA_TO_UNIVERSAL_ATELIER": {
+      "distinct_send_return_routes": false,
+      "preregistered_matched_control": false,
+      "source_admission_approval": false
+    }
+  }
+}

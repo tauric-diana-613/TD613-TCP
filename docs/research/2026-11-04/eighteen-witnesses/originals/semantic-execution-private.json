@@ -1,0 +1,456 @@
+{
+  "gold_freeze_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "human_gold_approved": false,
+  "ranking_evidence": "EXPLORATORY_CANDIDATE_LABELS_ONLY",
+  "source_counts": {
+    "EMSTD613": 53,
+    "SRC": 1765,
+    "WENDBINE": 3473
+  },
+  "reference_build": {
+    "record_count": 36816,
+    "source_instances": 5291,
+    "source_digest": "bd4bee237c3bd32762968cedbf0092a530f4df5131b2d8f296bd779f41ff3686",
+    "index_status": "CREATED_NOT_INDEPENDENTLY_SEMANTICALLY_VALIDATED"
+  },
+  "reference_verify": {
+    "state": "INDEX_BYTES_VERIFIED_NOT_EXTERNAL_ORIGIN",
+    "records": 36816,
+    "source_digest": "bd4bee237c3bd32762968cedbf0092a530f4df5131b2d8f296bd779f41ff3686"
+  },
+  "facets": {
+    "by_estate": [
+      {
+        "estate": "EMSTD613",
+        "indexed_chunks": 2235,
+        "unique_source_ids": 53
+      },
+      {
+        "estate": "SRC",
+        "indexed_chunks": 15711,
+        "unique_source_ids": 1765
+      },
+      {
+        "estate": "WENDBINE",
+        "indexed_chunks": 18870,
+        "unique_source_ids": 2767
+      }
+    ],
+    "provenance": [
+      [
+        "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+        17946
+      ],
+      [
+        "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+        18870
+      ]
+    ]
+  },
+  "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+  "vector_build": {
+    "state": "COMPLETE_SOFTWARE_INDEX_WITH_SOURCE_BINDING",
+    "source_chunk_count": 36816,
+    "chunks_by_estate": {
+      "SRC": 15711,
+      "EMSTD613": 2235,
+      "WENDBINE": 18870
+    },
+    "corpus_manifest_sha256": "332c5d9604a98a9cc6487f5aeb28cbc095a65dd731e2f0f54f60ae421681dfa2",
+    "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+    "scientific_semantic_parity": "NOT_EVALUATED"
+  },
+  "vector_audit": {
+    "schema": "td613.atelier.semantic-sqlite/v1",
+    "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+    "corpus_chunk_count": "36816",
+    "corpus_manifest_sha256": "332c5d9604a98a9cc6487f5aeb28cbc095a65dd731e2f0f54f60ae421681dfa2",
+    "vector_dimensions": "384",
+    "estate_chunk_counts_json": "{\"EMSTD613\": 2235, \"SRC\": 15711, \"WENDBINE\": 18870}",
+    "state": "COMPLETE_INDEX_REQUIRES_FRESH_SOURCE_REVALIDATION"
+  },
+  "semantic_candidate_metrics": {
+    "schema": "td613.atelier-semantic-parity-benchmark/v1",
+    "at_k": 20,
+    "by_estate": {
+      "SRC": {
+        "queries": 6,
+        "mean_recall_at_k": 0.0,
+        "mean_reciprocal_rank": 0.0,
+        "decoy_hit_count": 0
+      },
+      "EMSTD613": {
+        "queries": 6,
+        "mean_recall_at_k": 0.8333,
+        "mean_reciprocal_rank": 0.4643,
+        "decoy_hit_count": 2
+      },
+      "WENDBINE": {
+        "queries": 6,
+        "mean_recall_at_k": 0.0,
+        "mean_reciprocal_rank": 0.0,
+        "decoy_hit_count": 1
+      }
+    },
+    "individual_queries": [
+      {
+        "query_id": "SRC-1-VAGUE",
+        "target_estate": "SRC",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-1-INTERMEDIATE",
+        "target_estate": "SRC",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-1-SPECIFIC",
+        "target_estate": "SRC",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-VAGUE",
+        "target_estate": "SRC",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-INTERMEDIATE",
+        "target_estate": "SRC",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-SPECIFIC",
+        "target_estate": "SRC",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-VAGUE",
+        "target_estate": "EMSTD613",
+        "difficulty": "VAGUE",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.14285714285714285,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-INTERMEDIATE",
+        "target_estate": "EMSTD613",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.14285714285714285,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-SPECIFIC",
+        "target_estate": "EMSTD613",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.3333333333333333,
+        "reciprocal_rank": 0.16666666666666666,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-VAGUE",
+        "target_estate": "EMSTD613",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-INTERMEDIATE",
+        "target_estate": "EMSTD613",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.3333333333333333,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-SPECIFIC",
+        "target_estate": "EMSTD613",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-VAGUE",
+        "target_estate": "WENDBINE",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-INTERMEDIATE",
+        "target_estate": "WENDBINE",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-SPECIFIC",
+        "target_estate": "WENDBINE",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-VAGUE",
+        "target_estate": "WENDBINE",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-INTERMEDIATE",
+        "target_estate": "WENDBINE",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-SPECIFIC",
+        "target_estate": "WENDBINE",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      }
+    ],
+    "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+    "automatic_parity_certification": false,
+    "requires_gold_registration_before_model_output": true
+  },
+  "bm25_candidate_metrics": {
+    "schema": "td613.atelier-semantic-parity-benchmark/v1",
+    "at_k": 20,
+    "by_estate": {
+      "SRC": {
+        "queries": 6,
+        "mean_recall_at_k": 0.0556,
+        "mean_reciprocal_rank": 0.0111,
+        "decoy_hit_count": 0
+      },
+      "EMSTD613": {
+        "queries": 6,
+        "mean_recall_at_k": 0.8889,
+        "mean_reciprocal_rank": 0.6806,
+        "decoy_hit_count": 3
+      },
+      "WENDBINE": {
+        "queries": 6,
+        "mean_recall_at_k": 0.0,
+        "mean_reciprocal_rank": 0.0,
+        "decoy_hit_count": 0
+      }
+    },
+    "individual_queries": [
+      {
+        "query_id": "SRC-1-VAGUE",
+        "target_estate": "SRC",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-1-INTERMEDIATE",
+        "target_estate": "SRC",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-1-SPECIFIC",
+        "target_estate": "SRC",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.3333333333333333,
+        "reciprocal_rank": 0.06666666666666667,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-VAGUE",
+        "target_estate": "SRC",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-INTERMEDIATE",
+        "target_estate": "SRC",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "SRC-2-SPECIFIC",
+        "target_estate": "SRC",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-VAGUE",
+        "target_estate": "EMSTD613",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.6666666666666666,
+        "reciprocal_rank": 0.3333333333333333,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-INTERMEDIATE",
+        "target_estate": "EMSTD613",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-1-SPECIFIC",
+        "target_estate": "EMSTD613",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.25,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-VAGUE",
+        "target_estate": "EMSTD613",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.6666666666666666,
+        "reciprocal_rank": 1.0,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-INTERMEDIATE",
+        "target_estate": "EMSTD613",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "EMSTD613-2-SPECIFIC",
+        "target_estate": "EMSTD613",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 0.5,
+        "decoy_in_top_k": true,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-VAGUE",
+        "target_estate": "WENDBINE",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-INTERMEDIATE",
+        "target_estate": "WENDBINE",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-1-SPECIFIC",
+        "target_estate": "WENDBINE",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-VAGUE",
+        "target_estate": "WENDBINE",
+        "difficulty": "VAGUE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-INTERMEDIATE",
+        "target_estate": "WENDBINE",
+        "difficulty": "INTERMEDIATE",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      },
+      {
+        "query_id": "WENDBINE-2-SPECIFIC",
+        "target_estate": "WENDBINE",
+        "difficulty": "SPECIFIC",
+        "recall_at_k": 0.0,
+        "reciprocal_rank": 0.0,
+        "decoy_in_top_k": false,
+        "retrieved_unique_source_ids": 20
+      }
+    ],
+    "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+    "automatic_parity_certification": false,
+    "requires_gold_registration_before_model_output": true
+  },
+  "returned_semantic_source_spans_verified": 360,
+  "evaluation_seconds": 3662.44
+}

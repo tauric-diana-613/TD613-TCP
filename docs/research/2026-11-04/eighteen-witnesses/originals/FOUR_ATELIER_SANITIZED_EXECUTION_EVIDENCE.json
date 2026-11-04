@@ -1,0 +1,945 @@
+{
+  "schema": "td613.four-atelier-execution-receipt/v1",
+  "date_utc": "2026-11-04T19:44:21.790894+00:00",
+  "operator": "Tawanna C. Miller",
+  "human_scientific_closure_reserved": true,
+  "initial_candidate_heads": {
+    "SRC": "99ed7cba32272a5c7a5963a7782b53b775c89dd8",
+    "EMSTD613": "f0bb9d1d10c7b91d569c5476b46025b00a0cdf58",
+    "WENDBINE": "c31a6320c9a815ffc4269954b6d41fbc5eff7b69",
+    "UNIVERSAL": "f7ebc755b631b66292633e519e73a51131dc30e8"
+  },
+  "executed_code_heads": {
+    "SRC": "23226fd5acac22b21bbdd39a520c4f356c052cc6",
+    "EMSTD613": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+    "WENDBINE": "61c09e54c1acd2223685eb4638fddffdd28e9515",
+    "UNIVERSAL": "ed407fc64c1a7bfd6a27cb2b87da4e217bcb29b7"
+  },
+  "original_source_pins": {
+    "SRC": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "EMSTD613": "70b5a0f9e94626cba6068f41c6117e7978800bbd",
+    "WENDBINE": "74abfb857e37a3e6d9d711c17428c96c4b07ecfd"
+  },
+  "wendbine": {
+    "integrity": "ok",
+    "sources": 2767,
+    "captures": 3473,
+    "primary_bodies": 1967,
+    "capture_fts": 3473,
+    "capture_hash_pairs_verified": 3473,
+    "source_file_sha256": "4f2cf2dba7d35c6324b4ffa51dc9c60a2a6e6828b462d7a3f437d333488f489c"
+  },
+  "native": {
+    "src_exact_build": {
+      "state": "EXECUTED",
+      "result": {
+        "estate": "SRC",
+        "indexed_derivatives": 1765,
+        "source_manifest_sha256": "749181959b46d87156af5ba5160315336c67def11f9acd40ab9027d9f7d515fd",
+        "origin_authentication": "NOT_ESTABLISHED",
+        "semantic_parity": "NOT_TESTED"
+      }
+    },
+    "src_exact_verify": {
+      "state": "EXECUTED",
+      "result": {
+        "verified": true,
+        "indexed_sources": 1765,
+        "source_origin_inferred": false
+      }
+    },
+    "em_exact_build": {
+      "state": "EXECUTED",
+      "result": {
+        "estate": "EMSTD613",
+        "indexed_derivatives": 53,
+        "source_manifest_sha256": "85d96c9678d1bc90440d67406a9a276a625109ffd1fa517d6932e256c6167abc",
+        "origin_authentication": "NOT_ESTABLISHED",
+        "semantic_parity": "NOT_TESTED"
+      }
+    },
+    "em_exact_verify": {
+      "state": "EXECUTED",
+      "result": {
+        "verified": true,
+        "indexed_sources": 53,
+        "source_origin_inferred": false
+      }
+    },
+    "src_original_candidate_differential": {
+      "state": "EXECUTED",
+      "result": {
+        "documents": 442,
+        "projective_observations": 417,
+        "all_original_classifications_equal": true,
+        "original_classification_counts": {
+          "UNRESOLVED_MACHINE": 244,
+          "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED": 26,
+          "LATER_EXACT_RESOLUTION_CANDIDATE": 53,
+          "PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED": 46,
+          "PREEXISTING_DESTINATION_CANDIDATE": 48
+        },
+        "signature_outputs_equal": true,
+        "chronology_withdrawal_changed_classifications": 79,
+        "original_method_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+        "candidate_method_sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+        "scientific_independence": "SHARED_SOURCE_ACQUISITION; deterministic method preservation only"
+      }
+    },
+    "src_authentic_research_journeys": {
+      "state": "EXECUTED",
+      "result": {
+        "queries": 6,
+        "events_per_query": {
+          "SRC-1-VAGUE": 3,
+          "SRC-1-INTERMEDIATE": 12,
+          "SRC-1-SPECIFIC": 12,
+          "SRC-2-VAGUE": 3,
+          "SRC-2-INTERMEDIATE": 3,
+          "SRC-2-SPECIFIC": 3
+        },
+        "max_route_depth": 1,
+        "automatic_scientific_promotion": false
+      }
+    },
+    "em_authentic_research_journeys": {
+      "state": "EXECUTED",
+      "result": {
+        "queries": 6,
+        "events_per_query": {
+          "EMSTD613-1-VAGUE": 5,
+          "EMSTD613-1-INTERMEDIATE": 5,
+          "EMSTD613-1-SPECIFIC": 5,
+          "EMSTD613-2-VAGUE": 5,
+          "EMSTD613-2-INTERMEDIATE": 5,
+          "EMSTD613-2-SPECIFIC": 5
+        },
+        "max_route_depth": 0,
+        "automatic_scientific_promotion": false
+      }
+    },
+    "src_role_withdrawal_control": {
+      "state": "EXECUTED",
+      "result": {
+        "authentic_subject": "zenodo:21612493",
+        "roles_before": 1,
+        "roles_after": 0,
+        "typed_paths_unchanged": true,
+        "role_inference_from_path": false
+      }
+    }
+  },
+  "semantic": {
+    "gold_freeze_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+    "human_gold_approved": false,
+    "ranking_evidence": "EXPLORATORY_CANDIDATE_LABELS_ONLY",
+    "source_counts": {
+      "EMSTD613": 53,
+      "SRC": 1765,
+      "WENDBINE": 3473
+    },
+    "reference_build": {
+      "record_count": 36816,
+      "source_instances": 5291,
+      "source_digest": "bd4bee237c3bd32762968cedbf0092a530f4df5131b2d8f296bd779f41ff3686",
+      "index_status": "CREATED_NOT_INDEPENDENTLY_SEMANTICALLY_VALIDATED"
+    },
+    "reference_verify": {
+      "state": "INDEX_BYTES_VERIFIED_NOT_EXTERNAL_ORIGIN",
+      "records": 36816,
+      "source_digest": "bd4bee237c3bd32762968cedbf0092a530f4df5131b2d8f296bd779f41ff3686"
+    },
+    "facets": {
+      "by_estate": [
+        {
+          "estate": "EMSTD613",
+          "indexed_chunks": 2235,
+          "unique_source_ids": 53
+        },
+        {
+          "estate": "SRC",
+          "indexed_chunks": 15711,
+          "unique_source_ids": 1765
+        },
+        {
+          "estate": "WENDBINE",
+          "indexed_chunks": 18870,
+          "unique_source_ids": 2767
+        }
+      ],
+      "provenance": [
+        [
+          "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          17946
+        ],
+        [
+          "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          18870
+        ]
+      ]
+    },
+    "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+    "vector_build": {
+      "state": "COMPLETE_SOFTWARE_INDEX_WITH_SOURCE_BINDING",
+      "source_chunk_count": 36816,
+      "chunks_by_estate": {
+        "SRC": 15711,
+        "EMSTD613": 2235,
+        "WENDBINE": 18870
+      },
+      "corpus_manifest_sha256": "332c5d9604a98a9cc6487f5aeb28cbc095a65dd731e2f0f54f60ae421681dfa2",
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+      "scientific_semantic_parity": "NOT_EVALUATED"
+    },
+    "vector_audit": {
+      "schema": "td613.atelier.semantic-sqlite/v1",
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+      "corpus_chunk_count": "36816",
+      "corpus_manifest_sha256": "332c5d9604a98a9cc6487f5aeb28cbc095a65dd731e2f0f54f60ae421681dfa2",
+      "vector_dimensions": "384",
+      "estate_chunk_counts_json": "{\"EMSTD613\": 2235, \"SRC\": 15711, \"WENDBINE\": 18870}",
+      "state": "COMPLETE_INDEX_REQUIRES_FRESH_SOURCE_REVALIDATION"
+    },
+    "semantic_candidate_metrics": {
+      "schema": "td613.atelier-semantic-parity-benchmark/v1",
+      "at_k": 20,
+      "by_estate": {
+        "SRC": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 0
+        },
+        "EMSTD613": {
+          "queries": 6,
+          "mean_recall_at_k": 0.8333,
+          "mean_reciprocal_rank": 0.4643,
+          "decoy_hit_count": 2
+        },
+        "WENDBINE": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 1
+        }
+      },
+      "individual_queries": [
+        {
+          "query_id": "SRC-1-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.14285714285714285,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.14285714285714285,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.3333333333333333,
+          "reciprocal_rank": 0.16666666666666666,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.3333333333333333,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        }
+      ],
+      "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+      "automatic_parity_certification": false,
+      "requires_gold_registration_before_model_output": true
+    },
+    "bm25_candidate_metrics": {
+      "schema": "td613.atelier-semantic-parity-benchmark/v1",
+      "at_k": 20,
+      "by_estate": {
+        "SRC": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0556,
+          "mean_reciprocal_rank": 0.0111,
+          "decoy_hit_count": 0
+        },
+        "EMSTD613": {
+          "queries": 6,
+          "mean_recall_at_k": 0.8889,
+          "mean_reciprocal_rank": 0.6806,
+          "decoy_hit_count": 3
+        },
+        "WENDBINE": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 0
+        }
+      },
+      "individual_queries": [
+        {
+          "query_id": "SRC-1-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.3333333333333333,
+          "reciprocal_rank": 0.06666666666666667,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 0.3333333333333333,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.25,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.5,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        }
+      ],
+      "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+      "automatic_parity_certification": false,
+      "requires_gold_registration_before_model_output": true
+    },
+    "returned_semantic_source_spans_verified": 360,
+    "evaluation_seconds": 3662.44
+  },
+  "independent_native_semantic": {
+    "SRC": {
+      "build": {
+        "estate": "SRC",
+        "source_count": 1765,
+        "vectors": 15711,
+        "reused_source_bound_vectors": 15711,
+        "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+        "scientific_independent_replication": false
+      },
+      "independent_query_results": 5,
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+      "universal_software_imported": false,
+      "shared_vector_acquisition_not_independent_replication": true
+    },
+    "EMSTD613": {
+      "build": {
+        "estate": "EMSTD613",
+        "source_count": 53,
+        "vectors": 2235,
+        "reused_source_bound_vectors": 2235,
+        "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+        "scientific_independent_replication": false
+      },
+      "independent_query_results": 5,
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6",
+      "universal_software_imported": false,
+      "shared_vector_acquisition_not_independent_replication": true
+    }
+  },
+  "research_verification": {
+    "matched_panel": {
+      "queries": 3,
+      "estate_executions": 9,
+      "semantic_spans_verified": 45,
+      "positive_relevance_accuracy": "NOT_MEASURABLE_WITHOUT_HUMAN_JUDGMENTS",
+      "all_estates_same_queries": true
+    },
+    "SRC_independent_semantic_reader": {
+      "results": 5,
+      "runtime_independent": true,
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6"
+    },
+    "EMSTD613_independent_semantic_reader": {
+      "results": 5,
+      "runtime_independent": true,
+      "model_sha256": "d80e58dab1a518eb94007ac57bd5541623e1129c806bf60366a115ff475e54d6"
+    },
+    "reference": {
+      "state": "INDEX_BYTES_VERIFIED_NOT_EXTERNAL_ORIGIN",
+      "records": 36816,
+      "source_digest": "bd4bee237c3bd32762968cedbf0092a530f4df5131b2d8f296bd779f41ff3686"
+    },
+    "graph": {
+      "typed_relations": 632,
+      "projections": {
+        "EMSTD613::EXTRACTION": 53,
+        "EMSTD613::UNASSIGNED_NOT_A_WORK": 34,
+        "EMSTD613::WORK_IDENTITY": 53,
+        "SRC::AUTHORITY": 1,
+        "SRC::CONCEPTUAL": 23,
+        "SRC::HISTORICAL": 4,
+        "SRC::LOOKUP_NOT_IDENTITY_PROOF": 442,
+        "SRC::MANIFESTATION": 1,
+        "SRC::NAVIGATIONAL": 2,
+        "SRC::OPERATIONAL": 19
+      },
+      "relation_context_records": 632,
+      "real_edge_route_readbacks": [
+        {
+          "projection": "EMSTD613::EXTRACTION",
+          "path_length": 1,
+          "reverse_links": 1
+        },
+        {
+          "projection": "EMSTD613::EXTRACTION",
+          "path_length": 1,
+          "reverse_links": 1
+        },
+        {
+          "projection": "EMSTD613::EXTRACTION",
+          "path_length": 1,
+          "reverse_links": 1
+        },
+        {
+          "projection": "EMSTD613::EXTRACTION",
+          "path_length": 1,
+          "reverse_links": 1
+        }
+      ]
+    },
+    "wendbine_topology_pagination": {
+      "pages": 14,
+      "unique_chunks": 1313,
+      "total_index_matches": 1313,
+      "reached_configured_offset_cap": false,
+      "source_exhaustion_claim": false
+    },
+    "authentic_em_motif_control": {
+      "schema": "td613.em.motif-mechanism-control/v1",
+      "classification": "MOTIF_MATCH",
+      "missing_for_mechanism_review": [
+        "SOURCE_SENSITIVE_STRUCTURAL_MAPPING",
+        "FIELD_GENERIC_OR_HOSTILE_ALTERNATIVES",
+        "MECHANISM_WITHOUT_MOTIF_VOCABULARY",
+        "DISCRIMINATING_OBSERVATION",
+        "SUPPORTED_WORK_COLLAPSE_SPLIT_SENSITIVITY"
+      ],
+      "mechanism_supported": false,
+      "automatic_promotion": false,
+      "hostile_control_status": "MISSING",
+      "human_adjudication_required": true,
+      "native_protocol": "06-INSTRUMENTS/MOTIF_TO_MECHANISM_TRANSLATION.md"
+    }
+  },
+  "gold_manifest": {
+    "schema": "td613.candidate-gold-freeze/v1",
+    "sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+    "bytes": 75625,
+    "registered_at_utc": "2026-11-04T18:21:38.903508+00:00",
+    "queries": 18,
+    "queries_by_estate": {
+      "SRC": 6,
+      "EMSTD613": 6,
+      "WENDBINE": 6
+    },
+    "difficulties": {
+      "VAGUE": 6,
+      "INTERMEDIATE": 6,
+      "SPECIFIC": 6
+    },
+    "source_scope_counts": {
+      "SRC": 442,
+      "EMSTD613": 53,
+      "WENDBINE": 1967
+    },
+    "human_approved": false,
+    "model_ranking_observed_before_freeze": false,
+    "private_annotations_retained_locally": true
+  },
+  "original_bytes": {
+    "EMSTD613": {
+      "registry_sources": 87,
+      "verified_original_byte_hashes": 86,
+      "unavailable_or_mismatched": 1
+    },
+    "SRC_INITIAL_INTEGRITY_LEDGER": {
+      "registry_sources": 5,
+      "verified_original_byte_hashes": 0,
+      "scope_limit": "Initial five-row integrity ledger; not the full later Zenodo capture ledger"
+    }
+  },
+  "readiness_gate": {
+    "schema": "td613.atelier-parity-gate/v1",
+    "disposition": "HELD_PARITY_NOT_REALIZED",
+    "estate_checks": {
+      "SRC": {
+        "missing": [
+          "VAGUE_TO_SPECIFIC_SEMANTIC",
+          "IDENTITY_AND_NEGATIVE_FIXTURES",
+          "HETEROSTRATIGRAPHIC_RESEARCH",
+          "PROVENANCE_AND_ORIGINAL_HASH",
+          "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+        ],
+        "real_source_count": 1765
+      },
+      "EMSTD613": {
+        "missing": [
+          "VAGUE_TO_SPECIFIC_SEMANTIC",
+          "IDENTITY_AND_NEGATIVE_FIXTURES",
+          "HETEROSTRATIGRAPHIC_RESEARCH",
+          "PROVENANCE_AND_ORIGINAL_HASH",
+          "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+        ],
+        "real_source_count": 53
+      },
+      "WENDBINE": {
+        "missing": [
+          "VAGUE_TO_SPECIFIC_SEMANTIC",
+          "MULTI_STEP_EVIDENCE_ROUTE",
+          "IDENTITY_AND_NEGATIVE_FIXTURES",
+          "HETEROSTRATIGRAPHIC_RESEARCH",
+          "PROVENANCE_AND_ORIGINAL_HASH",
+          "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+        ],
+        "real_source_count": 2767
+      },
+      "UNIVERSAL": {
+        "missing": [
+          "VAGUE_TO_SPECIFIC_SEMANTIC",
+          "MULTI_STEP_EVIDENCE_ROUTE",
+          "IDENTITY_AND_NEGATIVE_FIXTURES",
+          "HETEROSTRATIGRAPHIC_RESEARCH",
+          "PROVENANCE_AND_ORIGINAL_HASH",
+          "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+        ],
+        "real_source_count": 4585
+      }
+    },
+    "blocks": {
+      "SRC": [
+        "VAGUE_TO_SPECIFIC_SEMANTIC",
+        "IDENTITY_AND_NEGATIVE_FIXTURES",
+        "HETEROSTRATIGRAPHIC_RESEARCH",
+        "PROVENANCE_AND_ORIGINAL_HASH",
+        "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+      ],
+      "EMSTD613": [
+        "VAGUE_TO_SPECIFIC_SEMANTIC",
+        "IDENTITY_AND_NEGATIVE_FIXTURES",
+        "HETEROSTRATIGRAPHIC_RESEARCH",
+        "PROVENANCE_AND_ORIGINAL_HASH",
+        "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+      ],
+      "WENDBINE": [
+        "VAGUE_TO_SPECIFIC_SEMANTIC",
+        "MULTI_STEP_EVIDENCE_ROUTE",
+        "IDENTITY_AND_NEGATIVE_FIXTURES",
+        "HETEROSTRATIGRAPHIC_RESEARCH",
+        "PROVENANCE_AND_ORIGINAL_HASH",
+        "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+      ],
+      "UNIVERSAL": [
+        "VAGUE_TO_SPECIFIC_SEMANTIC",
+        "MULTI_STEP_EVIDENCE_ROUTE",
+        "IDENTITY_AND_NEGATIVE_FIXTURES",
+        "HETEROSTRATIGRAPHIC_RESEARCH",
+        "PROVENANCE_AND_ORIGINAL_HASH",
+        "NO_INDEPENDENT_REVIEWED_EVIDENCE"
+      ],
+      "UNIVERSAL_ENCYCLOPEDIA": [
+        "EMPTY_RECEIVER_CUSTODY_OR_AUTHORITY_NOT_VERIFIED"
+      ],
+      "UNIVERSAL_ATELIER": [
+        "EMPTY_RECEIVER_CUSTODY_OR_AUTHORITY_NOT_VERIFIED"
+      ],
+      "TD613_ENCYCLOPEDIA_SOURCE": [
+        "SECOND_FLIGHT_SOURCE_INDEX_AND_READBACK_UNVERIFIED"
+      ],
+      "WENDBINE_TO_UNIVERSAL_ENCYCLOPEDIA": [
+        "PROSPECTIVE_RECIPROCAL_CONTRACT_HELD"
+      ],
+      "TD613_ENCYCLOPEDIA_TO_UNIVERSAL_ATELIER": [
+        "PROSPECTIVE_RECIPROCAL_CONTRACT_HELD"
+      ]
+    },
+    "operator_approval_required_for_actual_flight": true,
+    "human_scientific_closure_reserved": true,
+    "does_not_admit_sources_or_initialize_flight": true,
+    "green_ci_is_not_real_corpus_evidence": true
+  },
+  "ci": [
+    {
+      "run_id": 41897078850,
+      "head": "6ede2e69abe9affab32d2401935fb1b6804f46d2",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897078850"
+    },
+    {
+      "run_id": 41897084446,
+      "head": "6bc3c99e8282ac1f009809f80fb47dd146168a7d",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897084446"
+    },
+    {
+      "run_id": 41897090462,
+      "head": "bb4f529b0f1421d81ffb13a2f5ac834cc794e62c",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897090462"
+    },
+    {
+      "run_id": 41897097436,
+      "head": "cedaa076bb522f0779fab9f8eb433c34d1e877ac",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897097436"
+    },
+    {
+      "run_id": 41897657073,
+      "head": "5bd4027fb1a560ad01dc173ead1420a08c05b53d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897657073"
+    },
+    {
+      "run_id": 41897663389,
+      "head": "74a52f0fee06ebb8fa453c4d00189f3aeb2fa80f",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897663389"
+    },
+    {
+      "run_id": 41897671381,
+      "head": "61c09e54c1acd2223685eb4638fddffdd28e9515",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897671381"
+    },
+    {
+      "run_id": 41897677656,
+      "head": "ff571bb32c72d2c5cebb4def1e4218dcf6368ed1",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41897677656"
+    },
+    {
+      "run_id": 41898934957,
+      "head": "ecb13c09d69339360faa438e180eb31d3c538454",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41898934957"
+    },
+    {
+      "run_id": 41898939885,
+      "head": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41898939885"
+    },
+    {
+      "run_id": 41898945058,
+      "head": "ed407fc64c1a7bfd6a27cb2b87da4e217bcb29b7",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41898945058"
+    },
+    {
+      "run_id": 41899201857,
+      "head": "23226fd5acac22b21bbdd39a520c4f356c052cc6",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41899201857"
+    }
+  ],
+  "wendbine_native_readback": {
+    "provenance": {
+      "native_exact_hits": 20,
+      "native_lexical_hits": 20,
+      "historical_exact_hits": 20,
+      "historical_lexical_hits": 20
+    },
+    "observability": {
+      "native_exact_hits": 20,
+      "native_lexical_hits": 20,
+      "historical_exact_hits": 20,
+      "historical_lexical_hits": 20
+    },
+    "𝌋": {
+      "native_exact_hits": 0,
+      "native_lexical_hits": 0,
+      "historical_exact_hits": 0,
+      "historical_lexical_hits": 0
+    }
+  }
+}

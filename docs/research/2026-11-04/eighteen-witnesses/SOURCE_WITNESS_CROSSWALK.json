@@ -1,0 +1,3276 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.gold-source-witness-crosswalk/v1",
+  "source_pins": {
+    "SRC": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "EMSTD613": "70b5a0f9e94626cba6068f41c6117e7978800bbd",
+    "WENDBINE": "74abfb857e37a3e6d9d711c17428c96c4b07ecfd"
+  },
+  "rows": [
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "available_variants": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/b3e69acf587d534eeef2e01d0bb5bdbdecdbd320/packages/dome_world_exact/fixtures/a15-r0/SRC/03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "available_variants": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "source_kind": "NATIVE_DERIVATIVE_ORIGINAL_AUTHENTICATION_NOT_ESTABLISHED",
+          "pinned_public_source_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/70b5a0f9e94626cba6068f41c6117e7978800bbd/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6nt0",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6vb2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6nt0",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6vb2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6nt0",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6nt0/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb6vb2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "body",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb6vb2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1psryls",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb61ip",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1psryls",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb61ip",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1psryls",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "body",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T164515348170Z-1psryls",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1psryls/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb61ip",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "body",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb61ip/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "source_id": "reddit:t3_1wb66ly",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "body",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_field": "title",
+          "source_sha256": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1wb66ly/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obi3g7",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T162650926799Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "body",
+          "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obi3g7",
+          "capture_id": "archive-id-20261104T164330835121Z-1obi3g7",
+          "source_field": "title",
+          "source_sha256": "7eb4f431113ada7b508f2986fe5431558aab2a3cf5094649ab1bc2aa45172667",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obi3g7/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1obmeqd",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T162650926799Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "body",
+          "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1obmeqd",
+          "capture_id": "archive-id-20261104T164330835121Z-1obmeqd",
+          "source_field": "title",
+          "source_sha256": "d9148b16c1107bd3b371165e897a11620fc58e6c9d274550488b73200616bdeb",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1obmeqd/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "candidate_role": "CANDIDATE_DECOY",
+      "source_id": "reddit:t3_1oc0xg2",
+      "available_variants": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": null,
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T162650926799Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "body",
+          "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1oc0xg2",
+          "capture_id": "archive-id-20261104T164330835121Z-1oc0xg2",
+          "source_field": "title",
+          "source_sha256": "942009d6789b0fcf1276dd1a1d4a3dcf00350dfcd322d1f6fc1334e27f823a6e",
+          "source_kind": "OBSERVED_CAPTURE_NOT_PLATFORM_OR_AUTHOR_AUTHENTICATION",
+          "original_public_source_url": "https://www.reddit.com/r/Wendbine/comments/1oc0xg2/",
+          "current_provider_availability": "NOT_RECHECKED_NO_NEW_INGESTION"
+        }
+      ]
+    }
+  ],
+  "seal": "⟐"
+}
