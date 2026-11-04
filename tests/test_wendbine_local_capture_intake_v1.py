@@ -120,6 +120,41 @@ class HistoricalCustody(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"DUPLICATE_CAPTURE_JSON_KEY"):
             m.parse_capture(raw,1)
 
+    def test_universal_searches_filtered_historical_versions_without_promoting_origin(self):
+        a=row("c1","reddit:t3_abcde1","Original report text")
+        b=row("c2","reddit:t3_abcde1","Later captured filtered cybersecurity text",
+              "2026-09-14T12:00:00Z","PLATFORM_FILTERED_REPORTED")
+        self.write([a,b])
+        self.ingest()
+        spec=importlib.util.spec_from_file_location("local_universal",
+            ROOT/"scripts"/"universal-atelier-sourcebound-readonly-v1.py")
+        u=importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(u)
+        repo=Path(self.tmp.name)/"repo"
+        for estate in ("SRC","EMSTD613"):
+            p=repo/u.BASE/estate/"03-DERIVATIVES"/"text"
+            p.mkdir(parents=True)
+            (p/"invented.txt").write_text("Independent 𝌋 synthetic",encoding="utf8")
+        hits=u.exact_query(u.load_sources(self.db,repo),"cybersecurity",
+                           limit=10,estate="WENDBINE")
+        self.assertEqual(len(hits),1)
+        self.assertEqual(hits[0]["capture_id"],"c2")
+        self.assertEqual(hits[0]["later_visibility_state"],"PLATFORM_FILTERED_REPORTED")
+        self.assertTrue(hits[0]["capture_bytes_verified"])
+        self.assertFalse(hits[0]["original_source_bytes_verified"])
+        self.assertEqual(hits[0]["source_kind"],
+            "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED")
+        audit=u.state(u.load_sources(self.db,repo))
+        self.assertEqual(audit["estates"]["WENDBINE"]["historical_capture_versions"],2)
+        self.assertEqual(audit["estates"]["WENDBINE"]["native_derivatives"],0)
+        self.assertEqual(audit["estates"]["WENDBINE"]["original_observed"],0)
+        self.assertEqual(audit["estates"]["EMSTD613"]["native_derivatives"],1)
+        with closing(sqlite3.connect(self.db)) as con:
+            con.execute("UPDATE capture_versions SET selftext=? WHERE capture_id='c2'",(b"forged",))
+            con.commit()
+        with self.assertRaisesRegex(ValueError,"HISTORICAL_CAPTURE_BYTES_HASH_CONFLICT"):
+            list(u.load_sources(self.db,repo))
+
     def test_conflicting_publication_times_same_source_are_held_before_database_creation(self):
         first=row("c1","reddit:t3_abcde1","First observation")
         second=row("c2","reddit:t3_abcde1","Second observation","2026-09-14T12:00:00Z")
