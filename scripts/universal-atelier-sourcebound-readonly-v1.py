@@ -207,4 +207,7 @@ def main():
            source_sha256=getattr(args,"query_sha256",None),limit=getattr(args,"limit",100))
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
-if __name__=="__main__":main()
+if __name__=="__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    main()
