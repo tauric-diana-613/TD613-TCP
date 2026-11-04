@@ -136,6 +136,15 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Execute PEFB 01–08 pinned source-free draft tests
+        run: node scripts/pe09-run-pinned-draft-tests-v01.mjs
+      - name: Retain PEFB exact-head source-free review and adverse outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pefb-sourcefree-review-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/pefb-sourcefree-review/exact-head-review.json
+          if-no-files-found: warn
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
