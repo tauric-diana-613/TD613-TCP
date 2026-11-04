@@ -130,7 +130,7 @@ def validate_post(x: Any) -> dict:
             "body_state":state,"archive_copy_version":"OBSERVED_NOT_EARLIEST_OR_LIVE_AUTHOR_SIGNED"}
 
 def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
-                observed:str, *, allow_existing:bool=False) -> dict:
+                observed:str, *, allow_existing:bool=False, commit:bool=True) -> dict:
     floor,ceil=utc(start),utc(end)
     if not floor<ceil: raise ValueError("INVALID_INTERVAL")
     good=[]
@@ -180,6 +180,7 @@ def import_rows(conn:sqlite3.Connection, posts:list[dict], start:str, end:str,
                   values(?,?,?,?,?,?,?)""",
                   (p["source_id"],dst,"EXPLICIT_WENDBINE_POST_LINK",field,offset,
                    m.group(0),"OBSERVED_TEXTUAL_LINK_NOT_DEPENDENCY_PROOF"))
+    if commit:conn.commit()
     summary={"unique_sources":len(unique),
              "nonempty_bodies":sum(bool(p["body_bytes"]) for p in unique.values()),
              "empty_bodies":sum(not p["body_bytes"] for p in unique.values()),
@@ -418,7 +419,7 @@ def main():
         if db is None:db=prepare_db(location)
         with db:
             report=import_rows(db,posts,actual_since,args.until,
-                dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume))
+                dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume),commit=False)
             db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
             db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
             db.execute("insert or replace into audit(key,value) values(?,?)",("recomparison_start_utc",actual_since))
