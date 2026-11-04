@@ -137,7 +137,7 @@ jobs:
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
       - name: Wendbine original-text index source-free negative and exact-byte tests
-        run: python -m unittest discover -s tests -p 'wendbine-live-research-index-v1.test.py' -v
+        run: python -m unittest discover -s tests -p 'test_wendbine_live_research_index_v1.py' -v
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
