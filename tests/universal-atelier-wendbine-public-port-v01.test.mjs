@@ -60,6 +60,16 @@ test('Universal Atelier public companion operates native November 4 SEALED searc
  assert.equal(concepts.result.inherited_concept_edges,146);
  assert.equal(concepts.result.typed_graph_layers.G_X,46);
  assert.equal(concepts.result.source_ids_without_bounded_concept_annotation,2029);
+ graphReceipt.historical_concept_overlay={
+  source_bound_posts:concepts.result.source_id_join_count,
+  conceptual_edges:concepts.result.inherited_concept_edges,
+  conceptual_graph_layers:concepts.result.typed_graph_layers,
+  sources_without_historical_concept_annotation:concepts.result.source_ids_without_bounded_concept_annotation,
+  original_bot_output_text_indexed:0,
+  evidence_class:'PREEXISTING_BOUNDED_PUBLIC_PARAPHRASE'
+ };
+ fs.writeFileSync(path.join(artifactDir,'graph-layer-summary.json'),JSON.stringify(graphReceipt,null,2)+'\n');
+
  const publicLeads=await port.request({action:'conceptSearch',query:'provenance',limit:8});
  assert.ok(publicLeads.result.total_matching_historical_sources>0);
  assert.ok(publicLeads.result.hits.every(x=>x.match_basis==='HISTORICAL_BOUND_PUBLIC_PARAPHRASE'&&x.original_bot_text_quoted===false));
