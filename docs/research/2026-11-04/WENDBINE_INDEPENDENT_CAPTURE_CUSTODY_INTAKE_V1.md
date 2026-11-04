@@ -44,7 +44,7 @@ The core index stores a deterministic earliest-observed capture per source for c
 
 ## Acceptance and remaining limits
 
-Demand observed original title and body exact readback; word-for-word UTF-8 byte spans, title/body hashes, date enumeration; all-version lexical queries; synthetic adversarial failures; public-ID coverage with held missing IDs; and Universal source-label fidelity. Provide only **sanitized counts, hashes and bounded non-sensitive citations** to GitHub. Do not upload the raw private source body manifest or SQLite DB.
+Demand observed original title and body exact readback; word-for-word UTF-8 byte spans, title/body hashes, date enumeration; all-version lexical queries; synthetic adversarial failures; public-ID coverage with held missing IDs; and Universal source-label fidelity. Provide aggregate counts, hashes and bounded non-sensitive citations to GitHub. Do not upload the raw private source body manifest or SQLite DB.
 
 Neither this script nor a successful synthetic test proves that a local plaintext manifest exists. No source corpus is created until that manifest is actually supplied, verified and ingested. This script does not turn an encrypted ZIP into text, claim a current deleted-post authorization, execute SRC's complete native geometries, or establish full Universal scientific parity. Preserve all four states separately in the outcome report.
 
