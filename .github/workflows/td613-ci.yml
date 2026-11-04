@@ -136,6 +136,15 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Independently execute exact-head GA03 source-free challenge
+        run: node scripts/ga03-run-independent-exacthead-review.mjs
+      - name: Retain GA03 exact-head synthetic results and counterexamples
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga03-sourcefree-review-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/ga03-sourcefree-independent-review/exact-head-review.json
+          if-no-files-found: warn
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
