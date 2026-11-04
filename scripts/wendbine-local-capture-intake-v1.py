@@ -258,10 +258,14 @@ def history_lexical(db:Path,query:str,limit:int=30):
     INDEX.ensure_local(db)
     with closing(__import__("sqlite3").connect(db.as_uri()+"?mode=ro",uri=True)) as con:
         result=con.execute("""SELECT v.capture_id,v.source_id,v.captured_at_utc,
-             v.later_visibility_state,v.title_sha256,v.body_sha256,bm25(capture_fts)
+             v.later_visibility_state,v.title_sha256,v.body_sha256,bm25(capture_fts),
+             v.title,v.selftext
              FROM capture_fts JOIN capture_versions v ON v.capture_id=capture_fts.capture_id
              WHERE capture_fts MATCH ? ORDER BY bm25(capture_fts),v.capture_id LIMIT ?""",
              (term,limit)).fetchall()
+    for r in result:
+        if sha(r[7])!=r[4] or sha(r[8])!=r[5]:
+            raise ValueError("CAPTURE_VERSION_DIGEST_CONFLICT")
     return [{"capture_id":r[0],"source_id":r[1],"captured_at_utc":r[2],
              "later_visibility_state":r[3],"title_sha256":r[4],"body_sha256":r[5],
              "score":r[6],"retrieval_kind":"LEXICAL_FTS_ALL_CAPTURE_VERSIONS"}
