@@ -90,6 +90,22 @@ class NativeIndependentPreservation(unittest.TestCase):
         self.assertGreater(control["value"]["record_count"],0)
         self.assertFalse(control["original_method_executed"])
 
+    def test_universal_atelier_invokes_pinned_native_methods_without_corpus_conflation(self):
+        spec=importlib.util.spec_from_file_location("universal_native_dispatch",
+            ROOT/"scripts"/"universal-atelier-sourcebound-readonly-v1.py")
+        u=importlib.util.module_from_spec(spec);spec.loader.exec_module(u)
+        census=u.native_dispatch(self.src,self.em,"native-census")
+        self.assertEqual(census["estates"]["SRC"]["present"],len(m.SRC_METHODS))
+        self.assertEqual(census["estates"]["EMSTD613"]["present"],len(m.EM_FIXTURES))
+        g=u.native_dispatch(self.src,self.em,"src-projection",projection="CARTOGRAPHIC",limit=1)
+        self.assertEqual(g["returned"],1)
+        self.assertEqual(g["operator_class"],"NATIVE_TYPED_REGISTRY_READBACK")
+        em=u.native_dispatch(self.src,self.em,"em-fixture",fixture="em_identity")
+        self.assertFalse(em["value"]["work_identity_state"]["WORK_IDENTITY_FULLY_RESOLVED"])
+        self.assertFalse(em["original_method_executed"])
+        with self.assertRaisesRegex(ValueError,"UNSUPPORTED_NATIVE_OPERATION"):
+            u.native_dispatch(self.src,self.em,"fake-materialize-original")
+
     def test_originals_remain_unmodified_and_native_roots_not_interchangeable(self):
         for root,hashes in [(self.src,self.src_hashes),(self.em,self.em_hashes)]:
             for relative,h in hashes.items():
