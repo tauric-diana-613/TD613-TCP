@@ -1,0 +1,492 @@
+{
+  "schema": "td613.experiment-a.blinded-adversarial-review-packet/v3-r1",
+  "packet_id": "BLINDED-R1-C772807B",
+  "timestamp": "2026-10-29T18:08:24.072Z",
+  "protocol": "PROSPECTIVE_BLINDED_BENCHMARK_REVIEW_R1",
+  "notice": "Contains objective numerical observation vectors and execution counts only. All condition names, descriptive arm titles, and authorial conclusions have been purged.",
+  "evaluation_instructions": "Evaluate comparative cross-chamber performance, vector counts, and routing fidelity across anonymized arms and routes. Freeze evaluation scores before requesting sealed unblinding key transmission.",
+  "budget_sweeps": [
+    {
+      "budget_bytes": 1024,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 2
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        }
+      }
+    },
+    {
+      "budget_bytes": 2048,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        }
+      }
+    },
+    {
+      "budget_bytes": 4096,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 0,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        }
+      }
+    },
+    {
+      "budget_bytes": 8192,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 8
+        }
+      }
+    },
+    {
+      "budget_bytes": 16384,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 1,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 4
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        }
+      }
+    },
+    {
+      "budget_bytes": 32768,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 0,
+            "parameters": 1,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 6
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 2,
+            "warranted_citations": 1,
+            "parameters": 5,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 17
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 3,
+            "warranted_citations": 0,
+            "parameters": 2,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 10
+        }
+      }
+    },
+    {
+      "budget_bytes": 65536,
+      "arms": {
+        "ARM_014A75": {
+          "non_scalar_vector": {
+            "operations": 4,
+            "warranted_citations": 1,
+            "parameters": 5,
+            "aliasing_errors": 1,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 18
+        },
+        "ARM_8D5F85": {
+          "non_scalar_vector": {
+            "operations": 4,
+            "warranted_citations": 1,
+            "parameters": 6,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 23
+        },
+        "ARM_5B6A90": {
+          "non_scalar_vector": {
+            "operations": 4,
+            "warranted_citations": 1,
+            "parameters": 6,
+            "aliasing_errors": 1,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 20
+        },
+        "ARM_5793F6": {
+          "non_scalar_vector": {
+            "operations": 4,
+            "warranted_citations": 1,
+            "parameters": 6,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 0,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 23
+        },
+        "ARM_9FF3B2": {
+          "non_scalar_vector": {
+            "operations": 4,
+            "warranted_citations": 1,
+            "parameters": 6,
+            "aliasing_errors": 0,
+            "false_joins": 0,
+            "abstentions": 1,
+            "novel_grounded_relations": 0
+          },
+          "derived_scalar_score": 23
+        }
+      }
+    }
+  ],
+  "bridge_compilation_routes": {
+    "ROUTE_53D9F7": {
+      "admitted_path_count": 0,
+      "checks_passed_count": 0,
+      "total_checks_count": 0
+    },
+    "ROUTE_30C280": {
+      "admitted_path_count": 1,
+      "checks_passed_count": 9,
+      "total_checks_count": 9
+    },
+    "ROUTE_64892E": {
+      "admitted_path_count": 0,
+      "checks_passed_count": 6,
+      "total_checks_count": 9
+    },
+    "ROUTE_150E26": {
+      "admitted_path_count": 0,
+      "checks_passed_count": 7,
+      "total_checks_count": 9
+    },
+    "ROUTE_265D16": {
+      "admitted_path_count": 0,
+      "checks_passed_count": 7,
+      "total_checks_count": 9
+    }
+  }
+}

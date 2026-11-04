@@ -1,0 +1,56 @@
+{
+  "schema": "td613.experiment-a.master-reciprocal-completion-receipt/v2-r1",
+  "receipt_id": "MASTER-RC-R1-RECEIPT-1793297304290",
+  "timestamp": "2026-10-29T18:08:24.290Z",
+  "covenant": "Tauric Diana — Crimean heritage custodianship · Khona‌lit-po",
+  "governing_commission": "TD613_Experiment_A_RC_Independent_Adjudication_2026-10-29",
+  "disposition": "A_RECIPROCAL_BASELINE_ACCEPTED_WITH_NAMED_LIMITATIONS",
+  "gate_e": "HELD",
+  "empirical_credit": 0,
+  "human_scientific_closure": "RESERVED",
+  "experiment_b_corpus": "HELD_STRICTLY_SEALED_UNREAD",
+  "step_results": [
+    {
+      "step": "Assay A-RC1-R1 (Exact UTF-8 Offsets & Lifecycle)",
+      "status": "SUCCESS",
+      "elapsed_ms": 337,
+      "stdout_snippet": "[2026-10-29T18:08:23.504Z] Reverse staging complete: AUTONOMOUS_SYNTHESIS_ABSENT | [2026-10-29T18:08:23.507Z] Assay A-RC1-R1 finished. Receipt: <scratch>\\exp_a_reciprocal_completion_r1_20261029\\02_assay_rc1_repaired\\ASSAY_RC1_R1_RECEIPT.json"
+    },
+    {
+      "step": "Assay A-RC2-R1 (Warranted Bridge & Plausible False Twins)",
+      "status": "SUCCESS",
+      "elapsed_ms": 180,
+      "stdout_snippet": "[2026-10-29T18:08:23.691Z] Condition 4 outcome: WITNESS_HASH_OR_OFFSET_MISMATCH_REFUSED (paths admitted: 0) | [2026-10-29T18:08:23.693Z] Assay A-RC2-R1 finished. Receipt: <scratch>\\exp_a_reciprocal_completion_r1_20261029\\03_assay_rc2_repaired\\ASSAY_RC2_R1_RECEIPT.json"
+    },
+    {
+      "step": "Assay A-RC3-R1 (Matched Strong Union with Typed Parity)",
+      "status": "SUCCESS",
+      "elapsed_ms": 199,
+      "stdout_snippet": "[2026-10-29T18:08:23.891Z] kappa=65536 B | Arm1=18 | Arm2=23 | Arm3A(Untyped)=20 | Arm3B(Typed)=23 | Arm4(Modular)=23 -> Delta(vs Typed)=0 | [2026-10-29T18:08:23.893Z] Assay A-RC3-R1 finished. Receipt: <scratch>\\exp_a_reciprocal_completion_r1_20261029\\04_assay_rc3_repaired\\ASSAY_RC3_R1_RECEIPT.json"
+    },
+    {
+      "step": "Prospective Blinded Review Packet R1",
+      "status": "SUCCESS",
+      "elapsed_ms": 188,
+      "stdout_snippet": "Blinded Review Packet R1 built successfully. | Sealed Unblinding Key R1 generated in local custody."
+    },
+    {
+      "step": "Reconciled Claim Ledger R1",
+      "status": "SUCCESS",
+      "elapsed_ms": 187,
+      "stdout_snippet": "CORRECTED_BOUNDED_SCIENCE_CLAIM_LEDGER_R1.json built successfully."
+    }
+  ],
+  "summary": {
+    "rc_01_private_archive_transfer_staged": true,
+    "rc_02_p1_utf8_span_18656_20574_verified": true,
+    "rc_02_em_utf8_span_24923_27575_verified": true,
+    "rc_03_bridge_provenance_research_analogy": true,
+    "rc_03_plausible_false_twin_rejected": true,
+    "rc_04_non_scalar_vectors_exposed": true,
+    "rc_05_typed_strong_union_delta_zero": true,
+    "rc_06_state_transitions_and_catalog_immutability_verified": true,
+    "rc_07_prospective_blinding_and_mutation_controls_verified": true,
+    "rc_08_dollhouse_held_dissent_preserved": true
+  }
+}
