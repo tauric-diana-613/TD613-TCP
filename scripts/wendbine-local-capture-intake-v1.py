@@ -156,7 +156,11 @@ def import_local(manifest:Path,dest:Path,start:str,end:str,declared_basis:str):
     ordered=sorted(captures,key=lambda pair:(
         pair[1]["source_id"],pair[1]["captured_unix"],pair[1]["capture_id"]))
     initial={}
+    original_publication={}
     for post,r in ordered:
+        prior=original_publication.setdefault(r["source_id"],r["published_at_utc"])
+        if utc_seconds(prior)!=utc_seconds(r["published_at_utc"]):
+            raise ValueError("CONFLICTING_SOURCE_PUBLICATION_TIME")
         initial.setdefault(r["source_id"],post)
     with closing(INDEX.prepare_db(dest)) as db:
         with db:
@@ -175,7 +179,12 @@ def import_local(manifest:Path,dest:Path,start:str,end:str,declared_basis:str):
                title_sha256 TEXT NOT NULL,body_sha256 TEXT NOT NULL,
                jsonl_line INTEGER NOT NULL,capture_record_sha256 TEXT NOT NULL,
                manifest_sha256 TEXT NOT NULL,custody_basis TEXT NOT NULL)""")
+            db.execute("""CREATE VIRTUAL TABLE capture_fts USING fts5(
+                capture_id UNINDEXED,title,selftext,
+                tokenize='unicode61 remove_diacritics 0')""")
             for _post,r in ordered:
+                db.execute("INSERT INTO capture_fts(capture_id,title,selftext) VALUES(?,?,?)",
+                  (r["capture_id"],r["title"].decode("utf8"),r["selftext"].decode("utf8")))
                 db.execute("""INSERT INTO capture_versions VALUES
                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (r["capture_id"],r["source_id"],r["source_system"],
@@ -202,6 +211,7 @@ def import_local(manifest:Path,dest:Path,start:str,end:str,declared_basis:str):
       "status":"LOCAL_SOURCE_TEXT_IMPORTED_FROM_OPERATOR_CAPTURE",
       "unique_sources":len(initial),"capture_versions":len(captures),
       "primary_bodies":status["nonempty_bodies"],"fts_rows":status["fulltext_rows"],
+      "all_capture_fts_rows":len(captures),
       "explicit_links":status["explicit_textual_edges"],
       "manifest_sha256":manifest_hash,
       "reported_visibility_counts":{s:sum(r["later_visibility_state"]==s for _,r in ordered)
@@ -238,6 +248,25 @@ def history_exact(db:Path,phrase:str,limit:int=30):
             if len(hits)>=limit:break
     return hits
 
+def history_lexical(db:Path,query:str,limit:int=30):
+    """Search ALL captured versions, including those with reported later filtering."""
+    if not isinstance(query,str) or not query or not 1<=limit<=200:
+        raise ValueError("CAPTURE_LEXICAL_QUERY_LIMITS")
+    words=re.findall(r"(?u)\\w+",query)[:12]
+    if not words:raise ValueError("CAPTURE_NO_SEARCH_WORDS")
+    term=" OR ".join('"'+w.replace('"','""')+'"' for w in words)
+    INDEX.ensure_local(db)
+    with closing(__import__("sqlite3").connect(db.as_uri()+"?mode=ro",uri=True)) as con:
+        result=con.execute("""SELECT v.capture_id,v.source_id,v.captured_at_utc,
+             v.later_visibility_state,v.title_sha256,v.body_sha256,bm25(capture_fts)
+             FROM capture_fts JOIN capture_versions v ON v.capture_id=capture_fts.capture_id
+             WHERE capture_fts MATCH ? ORDER BY bm25(capture_fts),v.capture_id LIMIT ?""",
+             (term,limit)).fetchall()
+    return [{"capture_id":r[0],"source_id":r[1],"captured_at_utc":r[2],
+             "later_visibility_state":r[3],"title_sha256":r[4],"body_sha256":r[5],
+             "score":r[6],"retrieval_kind":"LEXICAL_FTS_ALL_CAPTURE_VERSIONS"}
+            for r in result]
+
 def main():
     parser=argparse.ArgumentParser(description="Offline historical source-text custody intake")
     sub=parser.add_subparsers(dest="command",required=True)
@@ -247,6 +276,10 @@ def main():
     imp.add_argument("--since",required=True)
     imp.add_argument("--until",required=True)
     imp.add_argument("--custody-basis",required=True)
+    lex=sub.add_parser("history-lexical")
+    lex.add_argument("--db",type=Path,required=True)
+    lex.add_argument("query")
+    lex.add_argument("--limit",type=int,default=30)
     q=sub.add_parser("history-exact")
     q.add_argument("--db",type=Path,required=True)
     q.add_argument("phrase")
@@ -254,8 +287,10 @@ def main():
     args=parser.parse_args()
     if args.command=="import":
         result=import_local(args.manifest,args.db,args.since,args.until,args.custody_basis)
-    else:
+    elif args.command=="history-exact":
         result=history_exact(args.db,args.phrase,args.limit)
+    else:
+        result=history_lexical(args.db,args.query,args.limit)
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
 if __name__=="__main__":
