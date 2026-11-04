@@ -142,13 +142,13 @@ class AtelierOriginalRetrieval(unittest.TestCase):
                             m.main()
                         return fetch.call_args.args[0]
             old_end="2026-09-22T00:00:00Z"
-            new_end="2026-11-05T00:00:00Z"
+            new_end="2026-09-24T00:00:00Z"
             initial=execute(["sync","--since","2026-01-01T00:00:00Z",
                 "--until",old_end,"--operator-confirmed-rights"],[first])
             self.assertEqual(initial,"2026-01-01T00:00:00Z")
             resumed=execute(["sync","--until",new_end,"--resume",
                 "--operator-confirmed-rights"],[second])
-            self.assertEqual(resumed,old_end)
+            self.assertEqual(resumed,"2026-09-20T00:00:00Z")
             with sqlite3.connect(path) as con:
                 self.assertEqual(m.status(con)["sources"],2)
                 self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
@@ -156,8 +156,8 @@ class AtelierOriginalRetrieval(unittest.TestCase):
                 prior=con.execute("select selftext from sources where source_id='reddit:t3_abcde1'").fetchone()[0]
                 self.assertEqual(prior,b"First persistent original")
             with self.assertRaisesRegex(ValueError,"VERSION_DRIFT_REQUIRES_EXPLICIT_ADJUDICATION"):
-                execute(["sync","--until","2026-11-06T00:00:00Z","--resume",
-                         "--operator-confirmed-rights"],[post("abcde1",text="Silently changed!")])
+                execute(["sync","--until","2026-09-25T00:00:00Z","--resume",
+                         "--operator-confirmed-rights"],[post("abcde2",created=1790086400,text="Silently changed!")])
             with sqlite3.connect(path) as con:
                 self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
                 self.assertEqual(con.execute("select selftext from sources where source_id='reddit:t3_abcde1'").fetchone()[0],prior)
