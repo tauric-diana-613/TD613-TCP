@@ -4,8 +4,10 @@ s=importlib.util.spec_from_file_location("gate",p);g=importlib.util.module_from_
 def sample():
  return {"schema":"td613.atelier-four-estate-evidence/v1",
     "estates":{k:{"git_head":"0"*40,"checks":{x:"VERIFIED_ON_REAL_CORPUS" for x in g.TESTS},
-       "original_source_count":12,"human_reviewed_evidence_ids":["independent:1"],
+       "observed_source_count":12,"human_reviewed_evidence_ids":["independent:1"],
        "forensic_source_origin_proven":False} for k in g.ESTATES},
+    "td613_encyclopedia_source":{"observed_source_count":1,"source_index_readback_verified":True,
+      "source_provenance_checked":True,"matched_recipient_contract":True},
     "receivers":{k:{"empty_source_admission":True,"replayable_zero_source_receipt":True,
       "has_auto_promote":False} for k in ("UNIVERSAL_ENCYCLOPEDIA","UNIVERSAL_ATELIER")},
     "reciprocal_probes":{k:{"distinct_send_return_routes":True,
