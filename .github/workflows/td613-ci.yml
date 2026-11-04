@@ -136,6 +136,66 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: B8 prospective product entry and deny-all-real-source hostile controls
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.test.mjs') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD 'HEAD^{tree}'
+          git diff --check
+          node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs
+          mkdir -p artifacts/e3b8
+          sha256sum packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/implementation-manifest.json
+          TD613_E3B8_EVIDENCE_OUTPUT=artifacts/e3b8/observed-product-entry.json node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.test.mjs | tee artifacts/e3b8/b8-tests.txt
+      - name: B91 request binding and descriptor-safe hostile conformance
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs') != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD 'HEAD^{tree}'
+          node --check packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/request-data-v01.mjs
+          mkdir -p artifacts/e3b91
+          sha256sum packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/implementation-manifest.json
+          node packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/verify-original-reproducer.mjs > artifacts/e3b91/unchanged-reproducer.json
+          TD613_E3B91_EVIDENCE_OUTPUT=artifacts/e3b91/hostile-observations.json node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B91/request-conformance.test.mjs | tee artifacts/e3b91/b91-tests.txt
+      - name: Preserve B91 raw source-free request conformance
+        if: always() && hashFiles('artifacts/e3b91/hostile-observations.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: b91-request-conformance-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/e3b91
+          retention-days: 7
+          if-no-files-found: error
+      - name: Preserve B8 source-free public-entry observations
+        if: always() && hashFiles('artifacts/e3b8/observed-product-entry.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: b8-source-free-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/e3b8
+          retention-days: 7
+          if-no-files-found: error
+      - name: B6 source-free Em method inheritance and three-origin anti-contamination
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs') != ''
+        run: |
+          git rev-parse HEAD
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B6/em-method-inheritance-v01.test.mjs
+      - name: B5 source-free assembled recipient and separate predecessor regressions
+        if: hashFiles('packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs') != ''
+        run: |
+          git rev-parse HEAD
+          git fetch --no-tags origin d7319f9d1c600a47cb1467ccb071971ca33a3444
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B5/recipient-assembly-v01.test.mjs
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B3/tests/e3b3-authentic-chamber-v01.test.mjs
+          node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs
+      - name: Test Universal Atelier native source-method bridge to real sealed Wendbine public epoch
+        run: node --test tests/universal-atelier-wendbine-public-port-v01.test.mjs
+      - name: Retain seal-pinned Wendbine public graph-layer aggregate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-nov04-public-graph-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/wendbine-public-query/graph-layer-summary.json
+          if-no-files-found: warn
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs

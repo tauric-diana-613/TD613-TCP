@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+import {projectExactTDReferenceToNativeIntake,executeSourceFreeTDProjection} from '../scripts/ga03-sourcefree-revocation-and-td-projection-v01.mjs';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'..');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const catalog=JSON.parse(fs.readFileSync(path.join(root,'packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/fixture-catalog.json'),'utf8'));
+const original=Buffer.from(catalog.fixtures.find(x=>x.fixture_id==='TD_REFERENCE').bytes_base64,'base64');
+test('GA03 typed projection preserves both distinct byte identities',async()=>{
+ const projected=projectExactTDReferenceToNativeIntake(original);
+ assert.equal(sha(original),projected.lineage.original_sha256);
+ assert.equal(sha(projected.derivedBytes),projected.lineage.derived_sha256);
+ assert.notEqual(projected.lineage.original_sha256,projected.lineage.derived_sha256);
+ assert.equal(projected.lineage.transformation_is_byte_preserving,false);
+ assert.equal(projected.lineage.other_original_records_not_transferred,1);
+ assert.equal(projected.projected.body,'collapse governance topology');
+ const witness=await executeSourceFreeTDProjection({repoRoot:root,originalBytes:original});
+ assert.equal(witness.native_operation,'TD613_NATIVE_SCHEMA_INSPECTION');
+ assert.equal(witness.native_result.source_id,'R-FIXTURE-A');
+ assert.match(witness.claim_ceiling,/SAME_ORIGINAL_BYTE_PARITY_NOT_EARNED/);
+});

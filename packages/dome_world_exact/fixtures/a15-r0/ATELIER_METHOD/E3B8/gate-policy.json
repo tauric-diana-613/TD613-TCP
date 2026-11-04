@@ -1,0 +1,327 @@
+{
+  "schema": "td613.b8-test-only-deny-real-source/v0.1",
+  "status": "CANDIDATE_TEST_ONLY_DENY_ALL_REAL_SOURCES",
+  "prepared_on": "2026-11-03",
+  "principal": "Tawanna C. Miller",
+  "principal_id": "tauric.diana.613",
+  "heritage": "Tauric Diana — Crimean heritage custodianship",
+  "covenant": "Khona‌lit-po",
+  "default_source_state": "HELD_NOT_ADMITTED",
+  "runtime_enforcement_implemented": true,
+  "execution_enabled": false,
+  "grant_issuance_authorized": false,
+  "real_sources_admitted": 0,
+  "named_sources_selected": [],
+  "execution_grants": [],
+  "code_or_archive_payloads": [],
+  "human_closure_required": true,
+  "source_classes": [
+    {
+      "class_id": "TD613_EDITION_1_4",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Edition / canonical payload / individual record; none imply the whole research estate",
+      "minimum_source_witnesses": [
+        "exact edition commit",
+        "manifest and canonical payload hashes",
+        "record ID, JSON pointer and record hash",
+        "original source references and their own rights"
+      ],
+      "prospective_operations_for_separate_review": [
+        "native search/get/cite/integrity on an authorized isolated record set"
+      ],
+      "adverse_controls": [
+        "wrong edition",
+        "record citation false twin",
+        "record hash mismatch"
+      ],
+      "independent_comparator_class": "B3 original reference-library comparison with the approved exact subset; browser/product parity separate"
+    },
+    {
+      "class_id": "SRC_ORIGINAL_PUBLICATION",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Zenodo Work / publication / original file / version are distinct",
+      "minimum_source_witnesses": [
+        "publication ID and exact version",
+        "original-byte hash and independently retained capture witness",
+        "publication and observation clocks",
+        "licence and exact native epoch/seal scope"
+      ],
+      "prospective_operations_for_separate_review": [
+        "specifically authorized source-local operation only"
+      ],
+      "adverse_controls": [
+        "wrong seal/epoch",
+        "historical-looking synthetic marker",
+        "lexical identity false twin"
+      ],
+      "independent_comparator_class": "Exact original runner only with its complete read set independently authorized; synthetic Python parity does not prove corpus parity"
+    },
+    {
+      "class_id": "SRC_DERIVATIVE_CAPTURE",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Capture / original blob / text derivative are distinct",
+      "minimum_source_witnesses": [
+        "original ID/hash",
+        "derivative ID/hash",
+        "capture and extraction method/version",
+        "exact parent linkage and derivative/observation clocks"
+      ],
+      "prospective_operations_for_separate_review": [
+        "read-only exact derivative operation explicitly permitted later"
+      ],
+      "adverse_controls": [
+        "bad parent hash",
+        "wrong path",
+        "future observation used retroactively"
+      ],
+      "independent_comparator_class": "Pinned original native function on the approved source-matched input contract; no gate #758 sync inferred"
+    },
+    {
+      "class_id": "WENDBINE_PUBLIC_METADATA",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Public metadata row / post identity / typed declared relation; bodies excluded",
+      "minimum_source_witnesses": [
+        "exact public snapshot and source ID",
+        "metadata bytes/hash and capture witness",
+        "day-level time precision",
+        "declared relation and source reference",
+        "rights and public/private field policy"
+      ],
+      "prospective_operations_for_separate_review": [
+        "metadata lexical query or declared typed topology only"
+      ],
+      "adverse_controls": [
+        "unadmitted relation source",
+        "body field injection",
+        "G_FAKE semantic promotion",
+        "day-order overclaim"
+      ],
+      "independent_comparator_class": "Original public compiler/query on the same approved metadata, never an unrelated substitute snapshot"
+    },
+    {
+      "class_id": "WENDBINE_PRIVATE_BODY",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Private post body / group membership / metadata are distinct",
+      "minimum_source_witnesses": [
+        "explicit content-owner and principal permissions",
+        "exact named body and hash",
+        "lawful access basis",
+        "retention/revocation and privacy approvals"
+      ],
+      "prospective_operations_for_separate_review": [],
+      "adverse_controls": [
+        "public metadata treated as private access",
+        "membership inferred from a URL"
+      ],
+      "independent_comparator_class": "HELD: private restoration has no current authorized comparator or access route"
+    },
+    {
+      "class_id": "EM_ORIGINAL_FILE",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Original file / capture / manifestation / Work are distinct",
+      "minimum_source_witnesses": [
+        "specifically named original source ID and file/member",
+        "original-byte hash",
+        "independent custody/readback witness",
+        "rights and permitted local processing",
+        "no archive-wide permission inferred"
+      ],
+      "prospective_operations_for_separate_review": [
+        "only a later individually authorized operation"
+      ],
+      "adverse_controls": [
+        "byte twin given independent-origin credit",
+        "single member permission expanded to archive"
+      ],
+      "independent_comparator_class": "HELD_EM_NATIVE_CORPUS_PARITY; original adapter full read closure must fit a separate grant before invocation"
+    },
+    {
+      "class_id": "EM_DERIVATIVE",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Derivative / parent original / manifestation are distinct",
+      "minimum_source_witnesses": [
+        "original and derivative IDs and both hashes",
+        "explicit parent link",
+        "extraction method/version",
+        "source/derivative/observation clocks",
+        "same content privacy boundary as parent unless separately reviewed"
+      ],
+      "prospective_operations_for_separate_review": [
+        "a bounded explicitly approved source-span operation later"
+      ],
+      "adverse_controls": [
+        "bad parent digest",
+        "unregistered derivative",
+        "chronological inversion",
+        "unpermitted linked-file read"
+      ],
+      "independent_comparator_class": "Original native comparison only if all required registers/derivatives are independently allowed; portable comparison remains separately labeled"
+    },
+    {
+      "class_id": "EM_WORK_MANIFESTATION_IDENTITY",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Operational Work grouping / manifestation / independent Work contribution are distinct",
+      "minimum_source_witnesses": [
+        "exact linked file/manifestation/Work IDs",
+        "status of each confirmed/supported/singleton/unresolved link",
+        "original group and counterfactual bounds",
+        "human identity decision if any",
+        "each linked file has separate rights/custody"
+      ],
+      "prospective_operations_for_separate_review": [
+        "retain ambiguity and run an approved bounded identity-sensitivity check later"
+      ],
+      "adverse_controls": [
+        "supported promoted to confirmed",
+        "manifestation counted as independent Work",
+        "counterfactual rewrites canonical index"
+      ],
+      "independent_comparator_class": "Human-gated original identity witness plus source-matched native/recipient operation; historical 32–40 interval stays held"
+    },
+    {
+      "class_id": "EXTERNAL_SCIENTIFIC_WITNESS",
+      "state": "HELD_NOT_ADMITTED",
+      "distinct_unit": "Exogenous observation / episode / source / claim / publication are distinct",
+      "minimum_source_witnesses": [
+        "independently acquired evidence not determined by admitted bytes alone",
+        "claim-specific falsifier and comparison frame",
+        "method, clocks and custody",
+        "source identity and observation rights",
+        "separate authority to acquire/use it"
+      ],
+      "prospective_operations_for_separate_review": [],
+      "adverse_controls": [
+        "self-attestation as exteriority",
+        "citation or deterministic transformation treated as independent measurement",
+        "different episodes fused"
+      ],
+      "independent_comparator_class": "Independent acquisition and claim-specific falsification; no such witness selected or produced here"
+    }
+  ],
+  "common_required_tuple": [
+    "fresh explicit Tawanna C. Miller approval for the exact future action",
+    "exact source ID, file/member, permitted byte range and original SHA-256",
+    "derivative identity and SHA-256 or explicit documented non-applicability",
+    "rights/licence/consent witness distinct from public accessibility",
+    "Work/capture/edition/epoch state and ambiguity preserved",
+    "all transitive file/import/read effects within an independently reviewed allowlist",
+    "destination product version/namespace and separate entry identity",
+    "permitted operations and prohibited cross-source joins",
+    "privacy/processing/export/retention/withdrawal boundaries",
+    "independent source-matched comparator and predeclared adverse controls",
+    "external caller-held custody and restart/readback witnesses",
+    "prospective success/hold conditions and human closure"
+  ],
+  "unfilled_per_source_review_form": {
+    "principal_approval_ref": null,
+    "source_class": null,
+    "exact_source_id": null,
+    "exact_file_or_member": null,
+    "original_sha256": null,
+    "derivative_id": null,
+    "derivative_sha256": null,
+    "pair_nonapplicability_reason": null,
+    "rights_witness": null,
+    "expected_work_capture_edition_epoch_state": null,
+    "custody_and_independent_readback": null,
+    "complete_file_read_allowlist": null,
+    "destination_product_version_namespace": null,
+    "permitted_operations": [],
+    "privacy_processing_export_policy": null,
+    "retention_withdrawal_restart_policy": null,
+    "comparator_class_and_pin": null,
+    "prospective_adverse_controls": [],
+    "success_and_hold_conditions": null,
+    "future_execution_authorization": null,
+    "state": "HELD_NOT_ADMITTED"
+  },
+  "decision_rules": [
+    {
+      "when": "Any required item missing, unverified, contradictory, stale, withdrawn or out of scope",
+      "result": "HELD_NOT_ADMITTED"
+    },
+    {
+      "when": "A future review form is complete",
+      "result": "READY_FOR_SEPARATE_HUMAN_REVIEW_ONLY_NOT_AUTHORIZED"
+    },
+    {
+      "when": "Any document flag, source count, hash, citation, seal-shaped string, prior CI or Library presence is offered as execution authority",
+      "result": "DENY_AUTHORITY_INFERENCE"
+    },
+    {
+      "when": "Proposed real source or protected operation is requested under this B7 document",
+      "result": "DENY_CURRENT_COMMISSION"
+    },
+    {
+      "when": "A native comparator requires any unauthorized linked register/source",
+      "result": "HELD_SOURCE_ACCESS_NO_SUBSTITUTE_NATIVE_PARITY"
+    }
+  ],
+  "separate_evaluation_axes": [
+    "METHOD_APPLICABILITY",
+    "PRODUCT_ENTRY_IDENTITY",
+    "PRODUCTION_PRIVACY_AND_SECURITY",
+    "EXTERNAL_SCIENTIFIC_FALSIFICATION"
+  ],
+  "retained_holds": [
+    "HELD_ORIGINAL_PRODUCT_ENTRY_ABSENT",
+    "HELD_SHARED_RECIPIENT_IDENTITY",
+    "HELD_AUTHORIZED_ADMISSION",
+    "HELD_EM_NATIVE_CORPUS_PARITY",
+    "HELD_ORIGINAL_EM_WORK_IDENTITY",
+    "HELD_EXTERNAL_SCIENTIFIC_VALIDATION",
+    "HELD_UNSIGNED_PREIMPORT_ROOT"
+  ],
+  "preserved_classifications": {
+    "SRC": {
+      "executed": 4,
+      "partial": 7,
+      "designed": 1,
+      "real_corpus_parity": "0/12"
+    },
+    "EM": {
+      "bounded_synthetic_executed": 3,
+      "partial": 6,
+      "designed": 1,
+      "native_corpus": "HELD"
+    },
+    "original_seed": {
+      "declared_modules": 44,
+      "initial_callable_modules": 1,
+      "source_count": 0
+    },
+    "historical_em_identity": {
+      "status": "DISCLOSED_PRIOR_OBSERVATIONS_NOT_REAUDITED",
+      "operational_works": 32,
+      "manifestations": 53,
+      "independent_work_interval": [
+        32,
+        40
+      ]
+    },
+    "WENDBINE_PRIVATE_RESTORATION": "HELD",
+    "six_arm_reciprocal_study": "UNEXECUTED",
+    "protected_experiment_b_flight": "HELD"
+  },
+  "negative_state_meanings": {
+    "HELD": "missing authority, evidence or lawful operation; not a negative scientific result",
+    "UNEXECUTED": "operation did not run",
+    "EXECUTED_ZERO": "a permitted operation ran and returned a scoped zero",
+    "ABSENT": "an available authorized lookup found no exact target within its stated scope",
+    "UNAVAILABLE": "required implementation/interface cannot be called; never relabel as executed zero"
+  },
+  "non_inference_rules": [
+    "source staging does not admit source",
+    "profile schema validity does not prove implementations or custody",
+    "equal epoch/seal strings do not verify a seal",
+    "original creation provenance text does not attest an external human action",
+    "no synthetic record can be retrospectively relabeled as original source evidence",
+    "a one-file approval never authorizes a whole archive or linked read closure",
+    "same bytes do not independently establish common origin",
+    "an exogenous witness cannot be created solely by deterministic transformation of admitted data",
+    "no automatic product identity, graph/Work merge, privacy guarantee or scientific promotion"
+  ],
+  "enforcement_scope": "TEST_ONLY_CANDIDATE_PUBLIC_ENTRY_NOT_PRODUCTION_CERTIFICATION",
+  "source_proposal": "B7_PROPOSAL_REMAINS_UNCHANGED",
+  "b7_source_proposal_sha256": "ff4daa86bb33b1a6b3295bfbd26466bbe4203c4c24a9fc867ea4d99777ac3875"
+}

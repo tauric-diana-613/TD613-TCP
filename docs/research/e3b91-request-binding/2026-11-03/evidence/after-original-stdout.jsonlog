@@ -1,0 +1,11 @@
+{
+  "finding": "B9-F01",
+  "expected_product": "TD613_UNIVERSAL_ATELIER_B8_CANDIDATE",
+  "actual_product": "TD613_UNIVERSAL_ATELIER_B8_CANDIDATE",
+  "expected_receipt": "02a28a906d14acb0c039731c840191013743563ee486bd6695aa609f161a4036",
+  "actual_receipt": "02a28a906d14acb0c039731c840191013743563ee486bd6695aa609f161a4036",
+  "family": "TD613_REFERENCE",
+  "status": "EXECUTED",
+  "real_source_authority": false,
+  "scientific_authority": false
+}

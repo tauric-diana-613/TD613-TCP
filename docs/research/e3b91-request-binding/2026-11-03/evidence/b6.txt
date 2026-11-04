@@ -1,0 +1,29 @@
+✔ B6 inspected original pure Em module imports and executes without register/derivative reads (96.686201ms)
+✔ B6 ten real family IDs have distinct tested contracts; original seed/SRC and native Em holds remain (120.9869ms)
+✔ B6 Work sensitivity enumerates finite supported/unresolved assignments without rewriting operational identity (38.306482ms)
+✔ B6 motif recurrence remains separate from mechanism; source-independent byte twins never supply automatic genealogy (26.730392ms)
+✔ B6 original portable finite mechanism falsification rejects sum/absolute alternatives and retains a genuinely nonunique control (36.515791ms)
+✔ B6 source-matched independently initialized portable/recipient/transport lanes compare actual algorithms without Em-corpus parity (77.141072ms)
+✔ B6 genealogy separates derivatives, source rows, original roots, hash groups and Work identities (26.119137ms)
+✔ B6 blind structural masks ignore misleading labels/template rather than guessing Work or author identity (24.563131ms)
+✔ B6 fixed reference/shuffled/template comparison has equal frozen inputs and remains held for independent outcomes (29.801262ms)
+✔ B6 reversible encoding roundtrips exact bytes while lossy aliases preserve two compatible preimages (18.610834ms)
+✔ B6 external witness gate emits requirements without fabricated external citations or validation (16.520908ms)
+✔ B6 hostile battery actually mutates text, parents and clocks; no conventional toy formula earns novelty (22.270792ms)
+✔ B6 fragmentary excerpt remains locally HELD; explicit bounded positive blurb supplies its operator/prediction/falsifier (18.639617ms)
+✔ B6 three-origin public trace actually executes TD/SRC/Em methods and holds repeated-phrase cross-origin authority (70.743172ms)
+✔ B6 source/receipt/product/epoch/rights/citation swaps, ID collisions and false original binding refuse (65.534235ms)
+✔ B6 original revocation removes only its descendants, preserves raw original and independent sources, survives fresh process restart (187.891066ms)
+✔ B6 whole Em withdrawal leaves TD/SRC/W operational and blocks dependent three-origin trace (53.489976ms)
+✔ B6 exact replay differs from changed bytes; missing/corrupt manifest, source and receipt fail closed without repair (81.97886ms)
+✔ B6 wrong hash, missing source, chronology inversion and suppressed evidence cannot become executed zero (36.24366ms)
+✔ B6 source binding rejects changed coordinator or native dependency bytes on independently copied code closure (34.250336ms)
+✔ B6 interrupted admission and changed revocation witness remain held without reconstructing source state (21.331179ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1215.584368
