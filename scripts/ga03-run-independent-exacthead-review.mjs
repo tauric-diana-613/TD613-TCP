@@ -31,10 +31,10 @@ try{
  const cases=[
    {name:'CANDIDATE_TYPED_PROJECTION',cmd:process.execPath,args:['--test','tests/ga03-typed-projection-sourcefree.test.mjs'],cwd:checkout},
    {name:'CANDIDATE_MEDIATED_REVOCATION',cmd:process.execPath,args:['--test','tests/ga03-mediated-revocation-sourcefree.test.mjs'],cwd:checkout},
-   {name:'INDEPENDENT_BOUNDARY_CHALLENGE',cmd:process.execPath,args:['--test',path.join(home,'tests/ga03-independent-boundary-challenge.test.mjs'),checkout],cwd:home}
+   {name:'INDEPENDENT_BOUNDARY_CHALLENGE',cmd:process.execPath,args:['--test',path.join(home,'tests/ga03-independent-boundary-challenge.test.mjs')],cwd:home,env:{...process.env,GA03_EXACT_CHECKOUT:checkout}}
  ];
  for(const t of cases){
-   const r=exec(t.cmd,t.args,{cwd:t.cwd});
+   const r=exec(t.cmd,t.args,{cwd:t.cwd,...(t.env?{env:t.env}:{})});
    const row={test:t.name,exit_code:r.status,status:r.status===0?'EXECUTED_PASS':'EXECUTED_FAIL',
       stdout:r.stdout.slice(-11000),stderr:r.stderr.slice(-7000)};
    result.source_free_results.push(row);
