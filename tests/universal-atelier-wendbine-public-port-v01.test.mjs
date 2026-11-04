@@ -34,6 +34,20 @@ test('Universal Atelier public companion operates native November 4 SEALED searc
  assert.equal(s.research_product,'TD613_UNIVERSAL_ATELIER_B8_CANDIDATE');
  assert.equal(s.result.sources,2062);assert.equal(s.result.captures,6763);
  assert.equal(s.result.typed_edges,6703);
+ const graphReceipt={schema:'td613.wendbine.nov04-public-graph-summary/v1',
+  source_head:PUBLIC_WEND_SOURCE.git_head,
+  snapshot_id:PUBLIC_WEND_SOURCE.snapshot,seal_id:PUBLIC_WEND_SOURCE.seal,
+  sources:s.result.sources,captures:s.result.captures,
+  typed_edges:s.result.typed_edges,
+  graph_layers:s.result.graph_layers,
+  incomplete_endpoints:s.result.incomplete_endpoints,
+  public_metadata_only:true,private_bot_output_text_read:false,
+  scientific_claim:'ARCHIVE_TYPED_RELATIONS_ONLY_NOT_SEMANTIC_CONTENT'};
+ const artifactDir=path.join(repo,'artifacts/wendbine-public-query');
+ fs.mkdirSync(artifactDir,{recursive:true});
+ fs.writeFileSync(path.join(artifactDir,'graph-layer-summary.json'),JSON.stringify(graphReceipt,null,2)+'\n');
+ console.log('WENDBINE_GRAPH_LAYER_COUNTS='+JSON.stringify(graphReceipt.graph_layers));
+
  assert.equal(s.source_head,PUBLIC_WEND_SOURCE.git_head);
  assert.equal(s.source_bytes_copied_to_universal_product,0);
  assert.equal(s.private_fulltext,'HELD_NOT_AUTHORIZED');
