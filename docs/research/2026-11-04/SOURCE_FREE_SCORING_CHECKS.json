@@ -1,0 +1,80 @@
+{
+  "schema": "td613.source-free-scoring-inspection/v1",
+  "pinned_head": "b3136226f2b3e4c3ebe176c56d2c19c83ca5b730",
+  "private_inputs_loaded": false,
+  "sourcefree_checks_passed": 8,
+  "results": {
+    "duplicate_chunks": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 0.5,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 2
+    },
+    "duplicate_positive_labels": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 0.5,
+      "reciprocal_rank": 1.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "wrong_estate": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "source_id_prefix_difference": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "version_and_hash_fields_not_scored": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "unlabelled_source_not_automatically_relevant": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "prelimited_chunk_rankings": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 1
+    },
+    "source_unique_rankings": {
+      "query_id": "SRC0",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 0.5,
+      "decoy_in_top_k": false,
+      "retrieved_unique_source_ids": 2
+    }
+  }
+}
