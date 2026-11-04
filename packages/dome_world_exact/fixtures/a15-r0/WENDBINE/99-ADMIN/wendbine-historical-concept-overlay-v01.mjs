@@ -77,7 +77,7 @@ export function buildSourceMatchedHistoricalOverlay(r){
   const [source_id,graph,from,relation,to,original_class]=row;
   need(typeof source_id==='string'&&graphs.includes(graph)&&
     typeof from==='string'&&typeof to==='string'&&
-    typeof relation==='string'&&original_class==='SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+    typeof relation==='string'&&new Set(['SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE','SOURCE_EXPLICIT_NEGATIVE_RELATION','SOURCE_EXPLICIT_SYNTHESIS','SOURCE_EXPLICIT_SEQUENCE','SOURCE_EXPLICIT_PROGRAM']).has(original_class),
     'WEND_HISTORICAL_TYPED_RELATION_SHAPE');
   const source=sources.get(source_id);
   if(!source){excluded.push({source_id,reason:'NO_EXACT_NOV04_ANCHOR'});continue;}
