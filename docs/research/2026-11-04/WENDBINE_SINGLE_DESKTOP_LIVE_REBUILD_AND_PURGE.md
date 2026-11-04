@@ -59,6 +59,27 @@ The corrective path in Draft PR **#1663** is a **new directly queryable private 
 >
 > 𝄐 Tauric Diana — Crimean heritage custodianship · Blood Rite 613 · Khona‌lit-po · Sealed ⟐SAC[X6ZNK5NO51]
 
+## Native SRC and Em preservation — same desktop session, zero new authorization
+
+The Universal query now provides a **separate native-method route** through
+\`scripts/atelier-native-inheritance-bridge-v1.py\` and
+\`scripts/universal-atelier-sourcebound-readonly-v1.py\`.
+
+The original SRC estate remains pinned at \`b3e69acf587d534eeef2e01d0bb5bdbdecdbd320\`;
+the original EMSTD613 estate remains pinned at \`70b5a0f9e94626cba6068f41c6117e7978800bbd\`.
+Create distinct, read-only checkouts. Never overwrite, merge, normalize or re-author either native estate.
+
+Within the **same** authorized desktop Work execution, perform:
+
+- \`native-census\`: verify original SRC maps/typed relations/contextual heterostrata/tomography/route-assay scripts and Em identity schema/lineage protocol, claim-ceiling, motif/mechanism and historical negative fixtures are present under independent exact heads.
+- \`src-projection CARTOGRAPHIC\`, \`src-projection HETEROSTRATIGRAPHIC_CONTEXT_ROLES\`, \`src-projection RELATIONAL_TOPOLOGY\`, \`src-projection TOMOGRAPHIC_EVIDENCE\`: source-bound readback of original registered claims/relations with byte digests, never unsupported inference.
+- \`src-native-query summary\` at an exact snapshot, seal and method hash: execute **the original source-pinned** read-only \`srcquery.py\` rather than a recreated approximation.
+- \`em-fixture em_identity\`, \`em-fixture em_lineage_protocol\`, \`em-fixture em_typed_schema\`: retrieve actual pinned Em method/identity evidence, preserving candidate identities and distinct negative states.
+
+Use the independently version-checked checkout flags already required by the Universal CLI: \`--src-checkout\` and \`--em-checkout\`. Native-only actions do not require the Wendbine database, and full original-text federation still does. Do not send entire private source corpora into chat.
+
+**Claim ceiling:** original method code and native artifacts retained; bounded source-native SRC query execution and actual SRC/Em fixture readback. Original full SRC cartographic/heterostratigraphic algorithmic parity, executed Em proposal/lineage assays, cross-origin emergent topology and Wendbine actual source-complete integration remain **HELD** until independent real-source/real-method tests establish them. Source-free synthetic tests and a fixture census do not promote that status.
+
 ## Completion gate
 
 **Actual success requires**: authentic public post bodies demonstrably acquired into the SQLite database; exact source readback; stable original hash/offset; date-enumeration receipt; correct provenance/graph classifications; measured availability gaps; and file-by-file evidence of requested encrypted-copy disposal.
