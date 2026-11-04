@@ -107,3 +107,9 @@ Write one sanitized \`WENDBINE_UNIVERSAL_LIVE_EXECUTION_RECEIPT.md\`: source cod
 **Closing principle:** A successful export, a passing CI job, a retrieved title, a useful map and a proven original-science-equivalent engine are five different claims. Preserve the distinction, then actually deliver the achievable operations.
 
 𝄐 Khona‌lit-po · Authorship and closure reserved · ⟐
+
+## 7. Pagination and independent reviewer safeguards
+
+Arctic Shift's documented ascending-time search uses a date cursor, **not an independently attested exhaustive snapshot cursor**. If a page ends on a UTC second occupied by more post IDs than one page can deliver, repeating the last second and deduplicating may stall; silently advancing beyond that second may lose posts. Record every last-page timestamp and its duplicate-ID count, and test a >100-same-second hostile synthetic page. For a real tie-induced failure, use bounded provider-compliant time slices and the official ID endpoint for independently known public-manifest IDs, with one-to-one ID/hash verification; do not suppress the exception or represent a partial source set as complete. Distinguish `ARCHIVE_OBSERVED`, `CURRENTLY_AVAILABLE`, `REMOVED`, `MISSING` and `UNDETERMINED` per source.
+
+For Amari's independent review, return **the pushed commit SHA and consolidated CI run ID**, never only the branch name or an assertion that tests passed. Include a source-labeled original-title-only Universal search result. The GitHub research receipt may contain exact source IDs, hashes, timestamps, bounded permitted quotations and negative statuses, but no wholesale original full-text corpus, protected ZIP, secrets, or operator-local database.
