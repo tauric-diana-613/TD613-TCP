@@ -56,3 +56,41 @@ test('GA02 independent adverse witness: product withdrawal cannot erase separate
  assert.equal(r.t_states.T5,'UNEXECUTED');
  assert.equal(r.protected_flight,'HELD');
 });
+
+test('GA02 independent process: fresh Node reopen proves synthetic persistence, withdrawn W still refused',async t=>{
+ const {spawnSync}=await import('node:child_process');
+ const root=create(t);
+ await runGA01IntegratedSyntheticEpisode({workspaceRoot:root});
+ const program=String.raw`
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+const candidate=process.argv[1],root=process.argv[2];
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const {openTwinProducts}=await import(pathToFileURL(path.join(candidate,'scripts/td613-preflight-twin-products-v01.mjs')).href);
+const {ATELIER,ENCYCLOPEDIA}=await import(pathToFileURL(path.join(candidate,'packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs')).href);
+const a=path.join(root,'ATELIER'),e=path.join(root,'ENCYCLOPEDIA');
+const receipts={atelier:sha(fs.readFileSync(path.join(a,'PRODUCT.json'))),
+ encyclopedia:sha(fs.readFileSync(path.join(e,'PRODUCT.json')))};
+const twin=await openTwinProducts({atelierWorkspace:a,encyclopediaWorkspace:e,rootReceipts:receipts});
+const read=async (product,base,id)=>twin[product].request({action:'readback',
+ product_id:product==='atelier'?ATELIER:ENCYCLOPEDIA,source_id:id,
+ receipt:sha(fs.readFileSync(path.join(base,'SYNTHETIC_FIXTURES',sha(Buffer.from(id)),'receipt.json')))});
+const td=await read('atelier',a,'FIXTURE-TD-GA01');
+let denied=false;
+try{await read('encyclopedia',e,'FIXTURE-W-GA01')}catch{denied=true}
+console.log(JSON.stringify({new_process_open:true,td_sha256:sha(td.bytes),
+ withdrawn_w_denied:denied,real_sources_admitted:0,external_origin_attested:false}));
+if(!denied)process.exitCode=1;
+`;
+ const child=spawnSync(process.execPath,['--input-type=module','-e',program,candidate,root],
+  {encoding:'utf8',timeout:30000,maxBuffer:1024*1024});
+ assert.equal(child.status,0,child.stderr+' '+child.stdout);
+ const out=JSON.parse(child.stdout.trim());
+ assert.equal(out.new_process_open,true);
+ assert.equal(out.td_sha256,sha(td));
+ assert.equal(out.withdrawn_w_denied,true);
+ assert.equal(out.real_sources_admitted,0);
+ assert.equal(out.external_origin_attested,false);
+});
