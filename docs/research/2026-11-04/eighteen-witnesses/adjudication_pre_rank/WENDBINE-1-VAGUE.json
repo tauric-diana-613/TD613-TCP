@@ -1,0 +1,166 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 13,
+  "query_id": "WENDBINE-1-VAGUE",
+  "question": "What can be learned about a system from what it lets us observe?",
+  "target_estate": "WENDBINE",
+  "difficulty": "VAGUE",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "reddit:t3_1wb66ly",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The captured discussion asks what is stored, retrievable, isolated, auditable and preserved across updates, and distinguishes a correct relational graph from merely similar fragments. This supports operational observability and its limits.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+        "source_field": "body",
+        "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wb6nt0",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+        "source_field": "body",
+        "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wb6vb2",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The captured discussion separates directly observed feed visibility from causal explanations and lists distinct distribution checkpoints. Two different post IDs carry identical body bytes; count them as source observations, not independent conceptual evidence.",
+      "evidence_variant": {
+        "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+        "source_field": "body",
+        "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1obi3g7",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+      "reason": "A cognitive-OS definition mentions memory and feedback but supplies no explicit observability/identifiability analysis; broad-question usefulness is uncertain.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "4774a70251b428a863624d39bf86e6321e3dc7891794694125ce86574949f018",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1obmeqd",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+      "reason": "The captured body supplies a linked video and a short claim about dual-state systems. The video was not inspected. Negative control is defensible only for the captured body, not the unavailable audiovisual source.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "2c03357c4358e37b461ec142cabf7cf0738901205147cb73007d80113a2f27c3",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1oc0xg2",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "decoy_disposition": "UNACCEPTABLE_OR_UNCERTAIN_DECOY",
+      "reason": "The text concerns philosophical awareness and an observer of roles. It can be thematically informative for a vague observation question but does not supply technical observability analysis.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "5fceda837be05ba30472f90cb2a929fe015bc3b5166c43ae5192b69197288ae7",
+        "checks": {
+          "field_hash_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "reddit:t3_1wb73ds",
+      "source_field": "body",
+      "source_sha256": "051e86dc0d02f44fe92fb4d34acac52c930209116f37b6cd47f52e62a78190a5",
+      "capture_id": null,
+      "evidence_byte_offset": 81,
+      "evidence_sha256": "a7e01c875d220b6f86b88cfe91ec653238b8fb4996976b5e52e162e5bd68b9f9",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    },
+    {
+      "source_id": "reddit:t3_1wbabte",
+      "source_field": "body",
+      "source_sha256": "d6bef69067919bbc085a84bfe5e70f96102cbfef3a3a77e150e75a996228064e",
+      "capture_id": null,
+      "evidence_byte_offset": 1766,
+      "evidence_sha256": "de8e7b47afd38a50e0b9c631c3a9448c92e0462ec2e39d439608e6a0a5cae94e",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}

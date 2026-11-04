@@ -1,0 +1,184 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 2,
+  "query_id": "SRC-1-INTERMEDIATE",
+  "question": "Find source-declared Explore cues with unresolved or later title candidates.",
+  "target_estate": "SRC",
+  "difficulty": "INTERMEDIATE",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The committed anchor occurs inside the ordinary verb explores. The examined source does not supply a standalone source-declared Explore cue or an unresolved/later-title route. General citations alone do not establish the requested projective journey.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "These papers concern infrastructural/social harm and have ordinary scholarly references. The Social Infrastructure paper also names future research pathways, so absence of the literal anchor is not a defensible broad-query irrelevance rule; no explicit Explore-cue route was established in the examined text.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21185370-file-0.md",
+      "source_field": "body",
+      "source_sha256": "cdf13044faab03530529ca09a9f7d64ad35bfc686baf0c7ed5148ee5fd0475d9",
+      "capture_id": null,
+      "evidence_byte_offset": 7187,
+      "evidence_sha256": "3a107961be37ad4493a1aad5ffb371ef81f99f52c2cbdc206b1aff6e81c92bfc",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-21632526-file-0.md",
+      "source_field": "body",
+      "source_sha256": "62bdc97c4d34b450d9080a1e75a7d72dbf8a1a5a7bb605ace19892d1523043cc",
+      "capture_id": null,
+      "evidence_byte_offset": 34968,
+      "evidence_sha256": "59222481514b784aea718c8301d0137f1a520ced75c7b343ed402feff7143e30",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "reason": "Explicit source-declared Explore cue; unresolved/later-title status still requires the route witness.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "REPLACE_FALSE_POSITIVES_AND_HOLD_ROUTE_CONDITION",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}

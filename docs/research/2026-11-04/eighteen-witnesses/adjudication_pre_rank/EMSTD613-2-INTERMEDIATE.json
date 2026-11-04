@@ -1,0 +1,184 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 11,
+  "query_id": "EMSTD613-2-INTERMEDIATE",
+  "question": "Find native discussion of stylometry and textual comparison.",
+  "target_estate": "EMSTD613",
+  "difficulty": "INTERMEDIATE",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "AMBIGUOUS_OR_INSUFFICIENT",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The document explicitly mentions stylometry and briefly recalls text-authorship verification, but its operational treatment is kinematic movement signatures and drone coordination. That supports the literal specific query while only weakly supporting textual/writing comparison.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Section 5.1 describes lexical, syntactic and structural features, character N-grams, vocabulary diversity and transition/style drift. These support textual comparison; proposed author identities and licensing conclusions are not scientifically approved. The two files are manifestations of the same titled research treatment.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined smoothing/control, Hermes orchestration and hypervisor sections do not provide a writing-pattern comparison method. Shared AI/system vocabulary does not make them positive stylometry witnesses.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_1a5f7e8bd71f3b1914d9dfc0.txt",
+      "source_field": "body",
+      "source_sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+      "capture_id": null,
+      "evidence_byte_offset": 0,
+      "evidence_sha256": "fea3e1e22b133bb64c77e94ef24b3552431275e71235d1f940e1f77b4eae6d8b",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_c2a22c120e32b746513447b5.txt",
+      "source_field": "body",
+      "source_sha256": "dd922066073164f79e4a119dc90a26cc915d21b5fbce725306a20bc0a975285e",
+      "capture_id": null,
+      "evidence_byte_offset": 0,
+      "evidence_sha256": "822fbbdbc45c2d863ff7bf08be2acc222a38859ac6500364eca537c4b3dc2e7d",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}

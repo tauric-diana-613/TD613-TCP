@@ -1,0 +1,657 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.research-artifact-manifest/v1",
+  "principal": "tauric.diana.613",
+  "covenant": "Khona‌lit-po",
+  "repository_visibility": "public",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "library_upload": "UNAVAILABLE_NO_LIBRARY_ENDPOINT_EXPOSED_AND_DESKTOP_BROWSER_ACCESS_NOT_APPROVED",
+  "authorized_fallback": "GITHUB_ISOLATED_DRAFT_RESEARCH_PR",
+  "originals_preserved": true,
+  "manifest_self_hash": "Recorded separately in the final publication receipt to avoid self-reference",
+  "files": [
+    {
+      "filename": ".gitattributes",
+      "bytes": 9,
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+      "scientific_classification": "EXACT_ORIGINAL_BYTE_PRESERVATION_RULE",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/.gitattributes"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-1-INTERMEDIATE.json",
+      "bytes": 8872,
+      "sha256": "d9abb8d5be8fcb7d646a6994ff29bdf0f1978f10bfa22bba592cb402316cf002",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-1-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-1-SPECIFIC.json",
+      "bytes": 8857,
+      "sha256": "146a2cee04d2477f8a515ab2a22209a8bf3118a68a1702f65ccdadaa6487f227",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-1-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-1-VAGUE.json",
+      "bytes": 8853,
+      "sha256": "decfd32b2e2d15ba6277da09d830ac70b83022cc73c693c41238bfdbad092947",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-1-VAGUE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-2-INTERMEDIATE.json",
+      "bytes": 9470,
+      "sha256": "37c373ba09c6046e9ec7a1071dfdec4bdd80ed839db9e2d023da1a7a20cc3d2a",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-2-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-2-SPECIFIC.json",
+      "bytes": 9454,
+      "sha256": "261ea10bb82bc228dcdcbd810ca6f315343ece3b4550bb1f30be8ae73c183252",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-2-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/EMSTD613-2-VAGUE.json",
+      "bytes": 9471,
+      "sha256": "7b99d1e22d64093c0ed6f4a39a54550cdb52a0d5fa1c215f908620eb4a8c499b",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/EMSTD613-2-VAGUE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-1-INTERMEDIATE.json",
+      "bytes": 9554,
+      "sha256": "e9816dcd4f5deaaa72c2c8e1bcf7e2ff8dee79d1fdb1045925265b865e348749",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-1-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-1-SPECIFIC.json",
+      "bytes": 9529,
+      "sha256": "fa0de5c1634008133ac94b696e278d0765cd7dd594875e7ec983382b987ac98d",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-1-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-1-VAGUE.json",
+      "bytes": 9529,
+      "sha256": "603bc61a9984a7a87e680eaa476db010ce4cd88d7782d41b24aec49a50f2114b",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-1-VAGUE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-2-INTERMEDIATE.json",
+      "bytes": 9053,
+      "sha256": "140db7f9bb5d1afceed6d3c9a974e2d5e052bda0d81a7348dc3907d27ed06b4d",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-2-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-2-SPECIFIC.json",
+      "bytes": 9028,
+      "sha256": "0f6dc8c419ce77ee6842ef65f58f1575a3c8077479333e04a7f83c594df840a1",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-2-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/SRC-2-VAGUE.json",
+      "bytes": 9037,
+      "sha256": "924e263fc027a8495f39a14e1a0faa43a3ebdbe12f86e64e1b1413f657db47bd",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/SRC-2-VAGUE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-1-INTERMEDIATE.json",
+      "bytes": 8248,
+      "sha256": "a1e8f5cb18f9404306ad00893ac2bcf3275947983ea3c08f91ae391a55eb6454",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-1-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-1-SPECIFIC.json",
+      "bytes": 8244,
+      "sha256": "6c79fbf6e635aa25f8410520d6138836bcf2fa7d7d50b055bb25041860186924",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-1-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-1-VAGUE.json",
+      "bytes": 8244,
+      "sha256": "d989909145d39cbb4e51f2366247b3ecf48387754ae65d8dc6ff32bfb6ca2121",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-1-VAGUE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-2-INTERMEDIATE.json",
+      "bytes": 8006,
+      "sha256": "f6a16f5289b78c4137fe399e7c392daecb348f44f54982c48cbaebc8e95824fd",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-2-INTERMEDIATE.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-2-SPECIFIC.json",
+      "bytes": 7979,
+      "sha256": "d9195800aba1ffd1306fa8d3a49901f45696118ab71fdb7d3d3d73bb96a9caa9",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-2-SPECIFIC.json"
+    },
+    {
+      "filename": "adjudication_pre_rank/WENDBINE-2-VAGUE.json",
+      "bytes": 7959,
+      "sha256": "5f124942ada267135f50b2074b22a61d0d89fed918de6894f822657b7d2ac456",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/adjudication_pre_rank/WENDBINE-2-VAGUE.json"
+    },
+    {
+      "filename": "CANDIDATE_GOLD_SCHEMA.json",
+      "bytes": 1973,
+      "sha256": "903e20e371fe994274f5c4656a8b2bd8142b5995d5e8dd7f763d24a1687a87e5",
+      "scientific_classification": "STRUCTURAL_SCHEMA_NOT_SCIENTIFIC_VALIDATION",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/CANDIDATE_GOLD_SCHEMA.json"
+    },
+    {
+      "filename": "EIGHTEEN_WITNESSES_MECHANICAL_SUMMARY.json",
+      "bytes": 16032,
+      "sha256": "35dca788589d846dd0c795abee9e4026e722b858c46462ba46fe2f30d96d2e4e",
+      "scientific_classification": "EARLIER_MECHANICAL_PREPARATION_STAGE_NO_SEMANTIC_APPROVAL",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/EIGHTEEN_WITNESSES_MECHANICAL_SUMMARY.json"
+    },
+    {
+      "filename": "EIGHTEEN_WITNESSES_METADATA_AMENDMENT_MANIFEST.json",
+      "bytes": 430,
+      "sha256": "ec20dd0483ec779a02fad75b098c516b4593b8d82c2526b9ac60504515f609b0",
+      "scientific_classification": "EARLIER_MECHANICAL_PREPARATION_STAGE_NO_SEMANTIC_APPROVAL",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/EIGHTEEN_WITNESSES_METADATA_AMENDMENT_MANIFEST.json"
+    },
+    {
+      "filename": "ORIGINAL_RANKING_DIAGNOSTIC.json",
+      "bytes": 33039,
+      "sha256": "f185ea6f1daa443706906f663d46bfcf8a4b1e16b97ee7addc8be750bf5dabce",
+      "scientific_classification": "POST_OBSERVATION_DIAGNOSTIC_FINDINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/ORIGINAL_RANKING_DIAGNOSTIC.json"
+    },
+    {
+      "filename": "originals/CANDIDATE_GOLD_REVIEW_MANIFEST.json",
+      "original_filename": "CANDIDATE_GOLD_REVIEW_MANIFEST.json",
+      "bytes": 624,
+      "sha256": "d234eec0c0c6cf2a0b6823c06df7d385c82a57595b1aa07bfd65365c445b4668",
+      "scientific_classification": "ORIGINAL_FREEZE_MANIFEST",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/CANDIDATE_GOLD_REVIEW_MANIFEST.json"
+    },
+    {
+      "filename": "originals/execute_semantics.py",
+      "original_filename": "execute_semantics.py",
+      "bytes": 4819,
+      "sha256": "f1013df21fcd43b89829f945e93b5d70e45eee83a95b3382aee214539abf05db",
+      "scientific_classification": "ORIGINAL_EVALUATION_DRIVER",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/execute_semantics.py"
+    },
+    {
+      "filename": "originals/FOUR_ATELIER_ACTUAL_EVIDENCE_PACKET.json",
+      "original_filename": "FOUR_ATELIER_ACTUAL_EVIDENCE_PACKET.json",
+      "bytes": 4288,
+      "sha256": "f506b84dac4b1970b7fbca9af2b76d15a37883e01aef17f1e0a587e9e80d5509",
+      "scientific_classification": "PREDECESSOR_EVIDENCE_PACKET",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/FOUR_ATELIER_ACTUAL_EVIDENCE_PACKET.json"
+    },
+    {
+      "filename": "originals/FOUR_ATELIER_NATIVE_PARITY_EXECUTION_RECEIPT.md",
+      "original_filename": "FOUR_ATELIER_NATIVE_PARITY_EXECUTION_RECEIPT.md",
+      "bytes": 24806,
+      "sha256": "985accd9bb77ab59d097bea7cebe08aee2590a4b7d219dee73cbb63376190ae3",
+      "scientific_classification": "PREDECESSOR_EXECUTION_RECEIPT",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/FOUR_ATELIER_NATIVE_PARITY_EXECUTION_RECEIPT.md"
+    },
+    {
+      "filename": "originals/FOUR_ATELIER_READINESS_GATE_RESULT.json",
+      "original_filename": "FOUR_ATELIER_READINESS_GATE_RESULT.json",
+      "bytes": 3081,
+      "sha256": "b9115b26438708ceb30725435ba806f27992211f3be151aeb55c75c768c444db",
+      "scientific_classification": "PREDECESSOR_HELD_GATE_RESULT",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/FOUR_ATELIER_READINESS_GATE_RESULT.json"
+    },
+    {
+      "filename": "originals/FOUR_ATELIER_SANITIZED_EXECUTION_EVIDENCE.json",
+      "original_filename": "FOUR_ATELIER_SANITIZED_EXECUTION_EVIDENCE.json",
+      "bytes": 31565,
+      "sha256": "04484f59bbea5448ab821a8f554951d525404520a133aa1b45b5c195ef17b28f",
+      "scientific_classification": "PREDECESSOR_SANITIZED_EVIDENCE",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/FOUR_ATELIER_SANITIZED_EXECUTION_EVIDENCE.json"
+    },
+    {
+      "filename": "originals/lexical-rankings-private.json",
+      "original_filename": "lexical-rankings-private.json",
+      "bytes": 344946,
+      "sha256": "9f459776ad2ff0bc8befa574062d0f0ff7964dc734f722e9f4a4ad7ea314f197",
+      "scientific_classification": "ORIGINAL_BM25_RANKINGS_EXPLORATORY",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/lexical-rankings-private.json"
+    },
+    {
+      "filename": "originals/prepare_candidate_gold.py",
+      "original_filename": "prepare_candidate_gold.py",
+      "bytes": 6145,
+      "sha256": "257fa7b8fafcc2379f65e31bd0e37b64713d2d41bad6cacedb9ee9f583926d5d",
+      "scientific_classification": "ORIGINAL_CANDIDATE_SELECTION_METHOD",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/prepare_candidate_gold.py"
+    },
+    {
+      "filename": "originals/PRIVATE_CANDIDATE_GOLD_v1.json",
+      "original_filename": "PRIVATE_CANDIDATE_GOLD_v1.json",
+      "bytes": 75625,
+      "sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+      "scientific_classification": "FROZEN_V1_CANDIDATE_NOT_HUMAN_APPROVED",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/PRIVATE_CANDIDATE_GOLD_v1.json"
+    },
+    {
+      "filename": "originals/semantic-execution-private.json",
+      "original_filename": "semantic-execution-private.json",
+      "bytes": 14119,
+      "sha256": "9918f199dcc7b18b5dd39f4398184e852c16de6264db874642952dd9c8f1365a",
+      "scientific_classification": "ORIGINAL_EVALUATION_METRICS_AND_MODEL_COMMITMENTS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/semantic-execution-private.json"
+    },
+    {
+      "filename": "originals/semantic-rankings-private.json",
+      "original_filename": "semantic-rankings-private.json",
+      "bytes": 273932,
+      "sha256": "559b5ef31f12860b30dc9062d549346ce98f37f256386496f99878d1492a4cb2",
+      "scientific_classification": "ORIGINAL_MINILM_RANKINGS_EXPLORATORY",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "APPROVED_FOR_BOUNDED_PUBLIC_RESEARCH_ARTIFACT",
+      "public_review_basis": "Operator expressly authorizes publication; reviewed candidate questions, bounded nonconfidential witness excerpts, identifiers or evaluation metadata; no credential or private-contact content identified.",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/originals/semantic-rankings-private.json"
+    },
+    {
+      "filename": "PROPOSED_CANDIDATE_GOLD_v1_1_METADATA_ONLY.json",
+      "bytes": 156700,
+      "sha256": "9ee8067b39b5323726bed05c234be5d16e8935896157c5fb53a5cf08af0231ff",
+      "scientific_classification": "SEPARATELY_FROZEN_AMENDMENT_PENDING_HUMAN",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/PROPOSED_CANDIDATE_GOLD_v1_1_METADATA_ONLY.json"
+    },
+    {
+      "filename": "PROPOSED_CANDIDATE_GOLD_v2_DIAGNOSTIC.json",
+      "bytes": 114227,
+      "sha256": "5637036d9de1d901a249dd940a63b1fbf640fd6a9419687f2e3b4cafb3fb5e14",
+      "scientific_classification": "SEPARATELY_FROZEN_AMENDMENT_PENDING_HUMAN",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/PROPOSED_CANDIDATE_GOLD_v2_DIAGNOSTIC.json"
+    },
+    {
+      "filename": "PROPOSED_CANDIDATE_GOLD_v2_MANIFEST.json",
+      "bytes": 578,
+      "sha256": "e542bdc9ac8a2e7fac3597d78c0b74ffbf24e6cfc7d247079bff5670c233840b",
+      "scientific_classification": "SEPARATELY_FROZEN_AMENDMENT_PENDING_HUMAN",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/PROPOSED_CANDIDATE_GOLD_v2_MANIFEST.json"
+    },
+    {
+      "filename": "README.md",
+      "bytes": 6075,
+      "sha256": "775ef667e29099faf74b903fa0b2e23d43270f60822b19d71b15d1f1d7333784",
+      "scientific_classification": "POST_OBSERVATION_DIAGNOSTIC_FINDINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/README.md"
+    },
+    {
+      "filename": "RESEARCH_QUERIES.json",
+      "bytes": 11955,
+      "sha256": "3961513628aa54e65c2d4b1c723d487a95d76555b5a3e0aa7a5a615d17612ca0",
+      "scientific_classification": "POST_OBSERVATION_DIAGNOSTIC_FINDINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/RESEARCH_QUERIES.json"
+    },
+    {
+      "filename": "SCIENTIFIC_DECISION_PACKET.md",
+      "bytes": 18754,
+      "sha256": "7790fabb93f892c86cd47ae9e9ad2ab4b31787b895e230bb3515094b441fc535",
+      "scientific_classification": "POST_OBSERVATION_DIAGNOSTIC_FINDINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/SCIENTIFIC_DECISION_PACKET.md"
+    },
+    {
+      "filename": "SOURCE_BASED_ADJUDICATION_PRE_RANK.json",
+      "bytes": 172582,
+      "sha256": "aeea1cbcc0b7ae16af0422874df3e9e83da70dedb065d9e21c2e54835cbc4db7",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/SOURCE_BASED_ADJUDICATION_PRE_RANK.json"
+    },
+    {
+      "filename": "SOURCE_BASED_ADJUDICATION_PRE_RANK_MANIFEST.json",
+      "bytes": 497,
+      "sha256": "d2976486ef2199a999a7d767d3ce716d636101963cb83cab20d66de0f559a465",
+      "scientific_classification": "SOURCE_BASED_DIAGNOSTIC_JUDGMENTS_RECORDED_BEFORE_INDIVIDUAL_RANKINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/SOURCE_BASED_ADJUDICATION_PRE_RANK_MANIFEST.json"
+    },
+    {
+      "filename": "SOURCE_WITNESS_CROSSWALK.json",
+      "bytes": 169895,
+      "sha256": "2236931daf6e364fa34e13274a3702f1b0a9fe8da0d2559480c65f44b0673f6c",
+      "scientific_classification": "SOURCE_ID_FIELD_CAPTURE_HASH_BINDINGS",
+      "destinations": [
+        "Local preserved collection",
+        "GitHub public isolated research PR"
+      ],
+      "disclosure_disposition": "PUBLIC_RESEARCH_METADATA_ANNOTATION_OR_METHOD",
+      "public_destination": "https://github.com/tauric-diana-613/TD613-TCP/blob/research/eighteen-witnesses-adjudication-20261104/docs/research/2026-11-04/eighteen-witnesses/SOURCE_WITNESS_CROSSWALK.json"
+    },
+    {
+      "filename": "src-exact-v2.sqlite",
+      "bytes": 42631168,
+      "sha256": "2f22db9aa4010c5f269f083773f197fbc44ab3e6a1b487d8ae1b95af75730cc7",
+      "scientific_classification": "PRIVATE_SOURCE_TEXT_INDEX",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Contains bulk native text; exact pinned source links and evaluation bindings are published instead.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "em-exact-v2.sqlite",
+      "bytes": 6279168,
+      "sha256": "b4364e718911901079efef4dfecc6d2961a9a1fb97ccf7f27c0b85fad1f75e82",
+      "scientific_classification": "PRIVATE_SOURCE_TEXT_INDEX",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Contains bulk source text and identity-sensitive research; bounded excerpts and source references are included in the gold.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "wendbine-combined-observed.sqlite",
+      "bytes": 88530944,
+      "sha256": "4f2cf2dba7d35c6324b4ffa51dc9c60a2a6e6828b462d7a3f437d333488f489c",
+      "scientific_classification": "PRIVATE_OBSERVED_CAPTURE_DATABASE",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Contains complete third-party captured bodies and acquisition records; blanket republication rights are not established by this review. Gold excerpts and captured IDs/hashes are published.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "reference-exact-v4.sqlite",
+      "bytes": 136101888,
+      "sha256": "db02e720b4b36bfd193452821009b4b4c570525c7d6e9b1749c7a934ed506992",
+      "scientific_classification": "PRIVATE_FULL_TEXT_REFERENCE_DATABASE",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Bulk corpus text and state are unnecessary for replaying stored ranking scores; bindings and published native source URLs provide bounded reproduction.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "semantic-exact-v2.sqlite",
+      "bytes": 78913536,
+      "sha256": "e3bb570dd42b3a26da5ec8c370b3a8c284e4b69a482ce6abd7d7ddfe62dde47e",
+      "scientific_classification": "PRIVATE_VECTOR_DATABASE",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Full vector store is not necessary to reproduce scoring from original rankings; snapshot/model digests and identifier/hash joins are published.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "model.onnx",
+      "bytes": 90405214,
+      "sha256": "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
+      "scientific_classification": "LOCAL_MODEL_CHECKPOINT",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "90 MB checkpoint is not required for score replay; the immutable upstream model revision and checkpoint digest remain in the execution receipt.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "OFFLINE_REVIEW_DOCKET.html",
+      "bytes": 72255008,
+      "sha256": "9820f934d131b3b221c86b69698950a43673f1fd90638154dee3f18eb543939c",
+      "scientific_classification": "PRIVATE_FULL_CORPUS_HUMAN_REVIEW_DOCKET",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Embeds bulk source/capture text beyond the bounded gold excerpts; retained as a local controlled alternative.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    },
+    {
+      "filename": "LOCAL_INPUT_COMMITMENTS.json",
+      "bytes": 2272,
+      "sha256": "588023f0a46ff9df332b9f7cc4db6c49b162bc9399ecb249e37495f8e36ce9f8",
+      "scientific_classification": "LOCAL_OPERATIONAL_ACQUISITION_LEDGER",
+      "destinations": [
+        "Preserved operator-local custody"
+      ],
+      "public_destination": null,
+      "disclosure_disposition": "WITHHELD_FROM_PUBLIC_GITHUB",
+      "reason": "Operational locator ledger retained locally; public counterparts contain source pins, content digests and source-witness references.",
+      "alternative_destination": "Existing preserved local artifact; Library upload unavailable; not transmitted to experimental receivers"
+    }
+  ],
+  "seal": "⟐"
+}

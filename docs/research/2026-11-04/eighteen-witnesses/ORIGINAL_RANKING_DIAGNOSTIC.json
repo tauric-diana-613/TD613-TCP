@@ -1,0 +1,1007 @@
+{
+  "opening_mark": "\ud834\udf0b",
+  "schema": "td613.original-ranking-diagnostic/v1",
+  "pre_rank_review_sha256": "aeea1cbcc0b7ae16af0422874df3e9e83da70dedb065d9e21c2e54835cbc4db7",
+  "analysis_after_source_judgments_frozen": true,
+  "original_rankings_and_scores_unchanged": true,
+  "aggregate_checks": {
+    "MiniLM_rows": 360,
+    "MiniLM_exact_reference_join_matches": 360,
+    "BM25_rows": 360,
+    "BM25_exact_reference_join_matches": 360
+  },
+  "cases": [
+    {
+      "query_id": "SRC-1-VAGUE",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 4,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 18
+      }
+    },
+    {
+      "query_id": "SRC-1-VAGUE",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 6,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 14,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 18
+      }
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 14,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 12,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 16
+      }
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 1,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 9,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 7,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 19
+      }
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 9,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 10,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 17
+      }
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 2,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 19,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "estate": "SRC",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 15,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 14
+      }
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "estate": "SRC",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 12,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 17,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 2,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 1,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 2,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 2,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "estate": "EMSTD613",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "estate": "EMSTD613",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 3,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 11,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "estate": "WENDBINE",
+      "method": "MiniLM",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20
+      }
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "estate": "WENDBINE",
+      "method": "BM25",
+      "checks": {
+        "rows": 20,
+        "exact_reference_join_matches": 20,
+        "original_positive_source_id_hits": 0,
+        "same_positive_body_hash_different_id_hits": 0,
+        "src_outside_file0_annotation_scope": 0,
+        "unique_source_ids": 20,
+        "distinct_source_field_hashes": 20,
+        "distinct_publication_or_post_ids": 20,
+        "paging_replay_pages": 1,
+        "paging_replay_last_offset": 100,
+        "paging_replay_matches_original": 1
+      }
+    }
+  ],
+  "reproduced_original_metrics": {
+    "MiniLM": {
+      "schema": "td613.atelier-semantic-parity-benchmark/v1",
+      "at_k": 20,
+      "by_estate": {
+        "SRC": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 0
+        },
+        "EMSTD613": {
+          "queries": 6,
+          "mean_recall_at_k": 0.8333,
+          "mean_reciprocal_rank": 0.4643,
+          "decoy_hit_count": 2
+        },
+        "WENDBINE": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 1
+        }
+      },
+      "individual_queries": [
+        {
+          "query_id": "SRC-1-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.14285714285714285,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.14285714285714285,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.3333333333333333,
+          "reciprocal_rank": 0.16666666666666666,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.3333333333333333,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        }
+      ],
+      "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+      "automatic_parity_certification": false,
+      "requires_gold_registration_before_model_output": true
+    },
+    "BM25": {
+      "schema": "td613.atelier-semantic-parity-benchmark/v1",
+      "at_k": 20,
+      "by_estate": {
+        "SRC": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0556,
+          "mean_reciprocal_rank": 0.0111,
+          "decoy_hit_count": 0
+        },
+        "EMSTD613": {
+          "queries": 6,
+          "mean_recall_at_k": 0.8889,
+          "mean_reciprocal_rank": 0.6806,
+          "decoy_hit_count": 3
+        },
+        "WENDBINE": {
+          "queries": 6,
+          "mean_recall_at_k": 0.0,
+          "mean_reciprocal_rank": 0.0,
+          "decoy_hit_count": 0
+        }
+      },
+      "individual_queries": [
+        {
+          "query_id": "SRC-1-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-1-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.3333333333333333,
+          "reciprocal_rank": 0.06666666666666667,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-VAGUE",
+          "target_estate": "SRC",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-INTERMEDIATE",
+          "target_estate": "SRC",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "SRC-2-SPECIFIC",
+          "target_estate": "SRC",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 0.3333333333333333,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-1-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.25,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-VAGUE",
+          "target_estate": "EMSTD613",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.6666666666666666,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-INTERMEDIATE",
+          "target_estate": "EMSTD613",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 1.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "EMSTD613-2-SPECIFIC",
+          "target_estate": "EMSTD613",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 1.0,
+          "reciprocal_rank": 0.5,
+          "decoy_in_top_k": true,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-1-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-VAGUE",
+          "target_estate": "WENDBINE",
+          "difficulty": "VAGUE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-INTERMEDIATE",
+          "target_estate": "WENDBINE",
+          "difficulty": "INTERMEDIATE",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        },
+        {
+          "query_id": "WENDBINE-2-SPECIFIC",
+          "target_estate": "WENDBINE",
+          "difficulty": "SPECIFIC",
+          "recall_at_k": 0.0,
+          "reciprocal_rank": 0.0,
+          "decoy_in_top_k": false,
+          "retrieved_unique_source_ids": 20
+        }
+      ],
+      "machine_result_status": "PERFORMANCE_MEASURED_RELEVANCE_HUMAN_GATED",
+      "automatic_parity_certification": false,
+      "requires_gold_registration_before_model_output": true
+    }
+  },
+  "new_confirmatory_performance_claimed": false,
+  "seal": "\u27d0",
+  "field_representation_diagnostics": {
+    "MiniLM": {
+      "wendbine_title_returns": 17,
+      "observability_specific_title_returns": 14,
+      "observability_specific_distinct_title_hashes": 5
+    },
+    "BM25": {
+      "wendbine_title_returns": 0,
+      "observability_specific_title_returns": 0,
+      "observability_specific_distinct_title_hashes": 0
+    }
+  }
+}

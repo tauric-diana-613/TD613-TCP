@@ -1,0 +1,1066 @@
+{
+  "schema": "td613.atelier-gold-queries/v1",
+  "preregistered_at_utc": "2026-11-04T18:21:38.903508+00:00",
+  "status": "PROSPECTIVE_CANDIDATE_NOT_INDEPENDENTLY_APPROVED",
+  "candidate_author": "Interactive engineering session; not an independent human judge",
+  "source_pins": {
+    "SRC": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "EMSTD613": "70b5a0f9e94626cba6068f41c6117e7978800bbd",
+    "WENDBINE": "74abfb857e37a3e6d9d711c17428c96c4b07ecfd"
+  },
+  "source_scope_counts": {
+    "SRC": 442,
+    "EMSTD613": 53,
+    "WENDBINE": 1967
+  },
+  "evaluation_rules": {
+    "k": 20,
+    "unit": "UNIQUE_ESTATE_SOURCE_ID; chunks/captures deduplicate before truncation",
+    "metrics": [
+      "recall@20",
+      "reciprocal_rank",
+      "decoy_hits",
+      "exact_source_span_hash_validity"
+    ],
+    "baseline": "PER_ESTATE_SQLITE_FTS5_BM25",
+    "model_outputs_used_for_annotation": false,
+    "full_corpus_recall_inferred": false,
+    "no_automatic_parity": true,
+    "lexical_anchor_selection_bias": "Known and explicit; this is a candidate engineering benchmark, not independently approved semantic ground truth."
+  },
+  "cases": [
+    {
+      "query_id": "SRC-1-VAGUE",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "query": "How can a reader follow an open research lead to a later source?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 696,
+          "anchor": "Explore",
+          "candidate_passage": "ure, metadata suppression reveals algorithmic filtration, genre misalignment, and semantic threat detection. This essay explores metadata suppression through academic literature, technical frameworks, and stylometric capsules authored by SignalRupture. It argues that suppression is not deletion but misclassification – an invisible architecture that buries signal th",
+          "passage_sha256": "4feba365234ab45d9e63cd01b84ee4a83f245f1d56883699d493eb110b47ffe9",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "anchor_byte_offset": 575,
+          "anchor": "Explore",
+          "candidate_passage": "rstood not just as a genetic disease, but as a metabolic collapse rooted\n\nin\n\nmitochondrial\n\ndysfunction.\n\nThis\n\nessay\n\nexplores\n\nhow\n\nultra ‑ processed\n\nfoods,\n\ncontaminated\n\nwater,\n\nand\n\nchronic\n\nstress\n\ncontribute\n\nto\n\nthis\n\ncollapse,\n\nsuppressing\n\nnutritional\n\nscience\n\nand\n\nburying\n\nthe\n\nsignal\n\nof\n\ncellular\n\nrestoration.\n\nBy\n\ncross ‑ referencing\n\nrecent\n\nstudi",
+          "passage_sha256": "888a2fdb490d63ed2f8ed6b5ae9de608638a648a33b2a75f6928a614bb0af243",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "anchor_byte_offset": 1737,
+          "anchor": "Explore",
+          "candidate_passage": ") highlights the role of the internet in violent extremism, noting how propaganda\n\ncirculates\n\nonline. ● Weimann (2015) explores how terrorists exploit cyberspace in Terrorism in Cyberspace:\n\nThe\n\nNext\n\nGeneration . ● Reports from GNET and RAND Corporation document how extremist groups weaponize\n\ndigital\n\nplatforms.\n\nThese studies use terms such as information warf",
+          "passage_sha256": "0b628fd66995f4c364d10121540938eb901577f6ba62927a6f870c72f5191027",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find source-declared Explore cues with unresolved or later title candidates.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 696,
+          "anchor": "Explore",
+          "candidate_passage": "ure, metadata suppression reveals algorithmic filtration, genre misalignment, and semantic threat detection. This essay explores metadata suppression through academic literature, technical frameworks, and stylometric capsules authored by SignalRupture. It argues that suppression is not deletion but misclassification – an invisible architecture that buries signal th",
+          "passage_sha256": "4feba365234ab45d9e63cd01b84ee4a83f245f1d56883699d493eb110b47ffe9",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "anchor_byte_offset": 575,
+          "anchor": "Explore",
+          "candidate_passage": "rstood not just as a genetic disease, but as a metabolic collapse rooted\n\nin\n\nmitochondrial\n\ndysfunction.\n\nThis\n\nessay\n\nexplores\n\nhow\n\nultra ‑ processed\n\nfoods,\n\ncontaminated\n\nwater,\n\nand\n\nchronic\n\nstress\n\ncontribute\n\nto\n\nthis\n\ncollapse,\n\nsuppressing\n\nnutritional\n\nscience\n\nand\n\nburying\n\nthe\n\nsignal\n\nof\n\ncellular\n\nrestoration.\n\nBy\n\ncross ‑ referencing\n\nrecent\n\nstudi",
+          "passage_sha256": "888a2fdb490d63ed2f8ed6b5ae9de608638a648a33b2a75f6928a614bb0af243",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "anchor_byte_offset": 1737,
+          "anchor": "Explore",
+          "candidate_passage": ") highlights the role of the internet in violent extremism, noting how propaganda\n\ncirculates\n\nonline. ● Weimann (2015) explores how terrorists exploit cyberspace in Terrorism in Cyberspace:\n\nThe\n\nNext\n\nGeneration . ● Reports from GNET and RAND Corporation document how extremist groups weaponize\n\ndigital\n\nplatforms.\n\nThese studies use terms such as information warf",
+          "passage_sha256": "0b628fd66995f4c364d10121540938eb901577f6ba62927a6f870c72f5191027",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "query": "Find a native SRC passage containing an Explore research cue.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 696,
+          "anchor": "Explore",
+          "candidate_passage": "ure, metadata suppression reveals algorithmic filtration, genre misalignment, and semantic threat detection. This essay explores metadata suppression through academic literature, technical frameworks, and stylometric capsules authored by SignalRupture. It argues that suppression is not deletion but misclassification – an invisible architecture that buries signal th",
+          "passage_sha256": "4feba365234ab45d9e63cd01b84ee4a83f245f1d56883699d493eb110b47ffe9",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+          "capture_id": null,
+          "source_sha256": "e1c032724596e140e734888055b60e80dcf90ef04c02cae8592e614eb03ad61a",
+          "anchor_byte_offset": 575,
+          "anchor": "Explore",
+          "candidate_passage": "rstood not just as a genetic disease, but as a metabolic collapse rooted\n\nin\n\nmitochondrial\n\ndysfunction.\n\nThis\n\nessay\n\nexplores\n\nhow\n\nultra ‑ processed\n\nfoods,\n\ncontaminated\n\nwater,\n\nand\n\nchronic\n\nstress\n\ncontribute\n\nto\n\nthis\n\ncollapse,\n\nsuppressing\n\nnutritional\n\nscience\n\nand\n\nburying\n\nthe\n\nsignal\n\nof\n\ncellular\n\nrestoration.\n\nBy\n\ncross ‑ referencing\n\nrecent\n\nstudi",
+          "passage_sha256": "888a2fdb490d63ed2f8ed6b5ae9de608638a648a33b2a75f6928a614bb0af243",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md",
+          "capture_id": null,
+          "source_sha256": "6fafb8ea67132a86675a4e13ee4d9dedaefa64e5d3507a68ada21f01d25fd204",
+          "anchor_byte_offset": 1737,
+          "anchor": "Explore",
+          "candidate_passage": ") highlights the role of the internet in violent extremism, noting how propaganda\n\ncirculates\n\nonline. ● Weimann (2015) explores how terrorists exploit cyberspace in Terrorism in Cyberspace:\n\nThe\n\nNext\n\nGeneration . ● Reports from GNET and RAND Corporation document how extremist groups weaponize\n\ndigital\n\nplatforms.\n\nThese studies use terms such as information warf",
+          "passage_sha256": "0b628fd66995f4c364d10121540938eb901577f6ba62927a6f870c72f5191027",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "query": "How can a research claim be traced back to its recorded source?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 3493,
+          "anchor": "provenance",
+          "candidate_passage": "\n\nMetadata and Governance\n\nMetadata is central to AI governance. MIT’s policy brief Fixing Data Authenticity, Consent & Provenance for AI (2025) identifies metadata as the backbone of transparency. Alation’s Metadata Imperative for AI (2026) frames metadata as a business necessity for compliance. KPMG (2025) warns that governance collapses without metadata alignment.\n",
+          "passage_sha256": "b1bcca5053d8916ee24489ba891387ba4bd52873aa01f269ec6126a92351b084",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "anchor_byte_offset": 1273,
+          "anchor": "provenance",
+          "candidate_passage": "le\n\nindicators\n\nof\n\nsystemic\n\ndrift,\n\nand\n\nproposes\n\ngovernance\n\nstrategies\n\nincluding\n\nmodel\n\ndocumentation,\n\ndataset\n\nprovenance,\n\nmodel\n\nregistries,\n\nand\n\nincentive\n\nredesign.\n\nA\n\ndedicated\n\nsection\n\nexamines\n\nhow\n\ngovernments\n\nbenefit\n\nfrom\n\nAI’s\n\ninfrastructural\n\nrole,\n\ngaining\n\nadministrative\n\nefficiency,\n\nexpanded\n\nvisibility,\n\nand\n\npolitical\n\nleverage.\n\nUnders",
+          "passage_sha256": "c0af31d5245794ae6f4c7cccccee2047e2a2316a6bf962c3202add2e2f6e32d8",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "anchor_byte_offset": 16781,
+          "anchor": "provenance",
+          "candidate_passage": "ph distortion • fibrinolysis • timestamped lineage Stylometric sovereignty is not aesthetic. It is forensic. It threads provenance into hostile infrastructures. It preserves identity in environments designed to erase it. It is the epistemic equivalent of autonomy. PART II Conclusion Part II deepens the architecture introduced in Part I: • exposure becomes microphysics",
+          "passage_sha256": "169dc14b5f2380febbc43eda96b1226be83df7d33de228fe8ff35ba96edddba5",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native research passages discussing provenance and source tracing.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 3493,
+          "anchor": "provenance",
+          "candidate_passage": "\n\nMetadata and Governance\n\nMetadata is central to AI governance. MIT’s policy brief Fixing Data Authenticity, Consent & Provenance for AI (2025) identifies metadata as the backbone of transparency. Alation’s Metadata Imperative for AI (2026) frames metadata as a business necessity for compliance. KPMG (2025) warns that governance collapses without metadata alignment.\n",
+          "passage_sha256": "b1bcca5053d8916ee24489ba891387ba4bd52873aa01f269ec6126a92351b084",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "anchor_byte_offset": 1273,
+          "anchor": "provenance",
+          "candidate_passage": "le\n\nindicators\n\nof\n\nsystemic\n\ndrift,\n\nand\n\nproposes\n\ngovernance\n\nstrategies\n\nincluding\n\nmodel\n\ndocumentation,\n\ndataset\n\nprovenance,\n\nmodel\n\nregistries,\n\nand\n\nincentive\n\nredesign.\n\nA\n\ndedicated\n\nsection\n\nexamines\n\nhow\n\ngovernments\n\nbenefit\n\nfrom\n\nAI’s\n\ninfrastructural\n\nrole,\n\ngaining\n\nadministrative\n\nefficiency,\n\nexpanded\n\nvisibility,\n\nand\n\npolitical\n\nleverage.\n\nUnders",
+          "passage_sha256": "c0af31d5245794ae6f4c7cccccee2047e2a2316a6bf962c3202add2e2f6e32d8",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "anchor_byte_offset": 16781,
+          "anchor": "provenance",
+          "candidate_passage": "ph distortion • fibrinolysis • timestamped lineage Stylometric sovereignty is not aesthetic. It is forensic. It threads provenance into hostile infrastructures. It preserves identity in environments designed to erase it. It is the epistemic equivalent of autonomy. PART II Conclusion Part II deepens the architecture introduced in Part I: • exposure becomes microphysics",
+          "passage_sha256": "169dc14b5f2380febbc43eda96b1226be83df7d33de228fe8ff35ba96edddba5",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "query": "Find native SRC text explicitly discussing provenance.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ],
+      "witnesses": [
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+          "capture_id": null,
+          "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+          "anchor_byte_offset": 3493,
+          "anchor": "provenance",
+          "candidate_passage": "\n\nMetadata and Governance\n\nMetadata is central to AI governance. MIT’s policy brief Fixing Data Authenticity, Consent & Provenance for AI (2025) identifies metadata as the backbone of transparency. Alation’s Metadata Imperative for AI (2026) frames metadata as a business necessity for compliance. KPMG (2025) warns that governance collapses without metadata alignment.\n",
+          "passage_sha256": "b1bcca5053d8916ee24489ba891387ba4bd52873aa01f269ec6126a92351b084",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+          "capture_id": null,
+          "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+          "anchor_byte_offset": 1273,
+          "anchor": "provenance",
+          "candidate_passage": "le\n\nindicators\n\nof\n\nsystemic\n\ndrift,\n\nand\n\nproposes\n\ngovernance\n\nstrategies\n\nincluding\n\nmodel\n\ndocumentation,\n\ndataset\n\nprovenance,\n\nmodel\n\nregistries,\n\nand\n\nincentive\n\nredesign.\n\nA\n\ndedicated\n\nsection\n\nexamines\n\nhow\n\ngovernments\n\nbenefit\n\nfrom\n\nAI’s\n\ninfrastructural\n\nrole,\n\ngaining\n\nadministrative\n\nefficiency,\n\nexpanded\n\nvisibility,\n\nand\n\npolitical\n\nleverage.\n\nUnders",
+          "passage_sha256": "c0af31d5245794ae6f4c7cccccee2047e2a2316a6bf962c3202add2e2f6e32d8",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "SRC",
+          "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+          "capture_id": null,
+          "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+          "anchor_byte_offset": 16781,
+          "anchor": "provenance",
+          "candidate_passage": "ph distortion • fibrinolysis • timestamped lineage Stylometric sovereignty is not aesthetic. It is forensic. It threads provenance into hostile infrastructures. It preserves identity in environments designed to erase it. It is the epistemic equivalent of autonomy. PART II Conclusion Part II deepens the architecture introduced in Part I: • exposure becomes microphysics",
+          "passage_sha256": "169dc14b5f2380febbc43eda96b1226be83df7d33de228fe8ff35ba96edddba5",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "query": "How might a feedback system signal strain or overload?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "anchor_byte_offset": 12030,
+          "anchor": "algedonic",
+          "candidate_passage": "\nbandwidth\n \ncapacity\n \nthan\n \nthe\n \noriginating\n \nsystems\n11\n.\n \nA\n \nparticularly\n \ncritical\n \nmechanism\n \nis\n \nthe\n \n\"algedonic\n \nchannel.\"\n \nAlgedonic\n \n(pain/pleasure)\n \nalerts\n \nare\n \nnon-linear\n \nemergency\n \nsignals\n \nthat\n \nescalate\n \nrapidly\n \nthrough\n \nthe\n \nlevels\n \nof\n \nrecursion\n \nwhen\n \nactual\n \nperformance\n \nfails\n \ncatastrophically\n \nor\n \nexceeds\n \ncap",
+          "passage_sha256": "1dd5c3ab248691b13874f38437ba23c9a0fefbbb61fb7eb165f82f9d9437f497",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "anchor_byte_offset": 549,
+          "anchor": "algedonic",
+          "candidate_passage": "ur architecture utilizes third-degree cybernetics, continuous Proportional-Integral-Derivative (PID) control loops, and algedonic circuit breakers for autonomous steering and memory management. To manage the profound complexities of autonomous vector culling and zero-latency inter-process communication (IPC) across an asymmetric multi-core processor, We have establis",
+          "passage_sha256": "1991785258ad9d3affd0d263956cee570b7ca1a2bccceff41fba8e80da409d34",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "anchor_byte_offset": 4246,
+          "anchor": "algedonic",
+          "candidate_passage": "e, and overarching alignment goals. |\n\nA critical mechanism within this continuous cybernetic loop is the deployment of algedonic signals. Originating from the Greek words *algos* (pain) and *hedos* (pleasure), algedonic signals are non-standard, urgent alerts that escalate rapidly through the levels of recursion when actual performance fails or exceeds capability, t",
+          "passage_sha256": "d98652d3d5e7a069ca5f0ab6519d1711ef181843a8e3fafab4b70c5e8e6d5780",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native research discussing algedonic signals in system design.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "anchor_byte_offset": 12030,
+          "anchor": "algedonic",
+          "candidate_passage": "\nbandwidth\n \ncapacity\n \nthan\n \nthe\n \noriginating\n \nsystems\n11\n.\n \nA\n \nparticularly\n \ncritical\n \nmechanism\n \nis\n \nthe\n \n\"algedonic\n \nchannel.\"\n \nAlgedonic\n \n(pain/pleasure)\n \nalerts\n \nare\n \nnon-linear\n \nemergency\n \nsignals\n \nthat\n \nescalate\n \nrapidly\n \nthrough\n \nthe\n \nlevels\n \nof\n \nrecursion\n \nwhen\n \nactual\n \nperformance\n \nfails\n \ncatastrophically\n \nor\n \nexceeds\n \ncap",
+          "passage_sha256": "1dd5c3ab248691b13874f38437ba23c9a0fefbbb61fb7eb165f82f9d9437f497",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "anchor_byte_offset": 549,
+          "anchor": "algedonic",
+          "candidate_passage": "ur architecture utilizes third-degree cybernetics, continuous Proportional-Integral-Derivative (PID) control loops, and algedonic circuit breakers for autonomous steering and memory management. To manage the profound complexities of autonomous vector culling and zero-latency inter-process communication (IPC) across an asymmetric multi-core processor, We have establis",
+          "passage_sha256": "1991785258ad9d3affd0d263956cee570b7ca1a2bccceff41fba8e80da409d34",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "anchor_byte_offset": 4246,
+          "anchor": "algedonic",
+          "candidate_passage": "e, and overarching alignment goals. |\n\nA critical mechanism within this continuous cybernetic loop is the deployment of algedonic signals. Originating from the Greek words *algos* (pain) and *hedos* (pleasure), algedonic signals are non-standard, urgent alerts that escalate rapidly through the levels of recursion when actual performance fails or exceeds capability, t",
+          "passage_sha256": "d98652d3d5e7a069ca5f0ab6519d1711ef181843a8e3fafab4b70c5e8e6d5780",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "query": "Find Em source text explicitly discussing algedonic signals.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+          "capture_id": null,
+          "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+          "anchor_byte_offset": 12030,
+          "anchor": "algedonic",
+          "candidate_passage": "\nbandwidth\n \ncapacity\n \nthan\n \nthe\n \noriginating\n \nsystems\n11\n.\n \nA\n \nparticularly\n \ncritical\n \nmechanism\n \nis\n \nthe\n \n\"algedonic\n \nchannel.\"\n \nAlgedonic\n \n(pain/pleasure)\n \nalerts\n \nare\n \nnon-linear\n \nemergency\n \nsignals\n \nthat\n \nescalate\n \nrapidly\n \nthrough\n \nthe\n \nlevels\n \nof\n \nrecursion\n \nwhen\n \nactual\n \nperformance\n \nfails\n \ncatastrophically\n \nor\n \nexceeds\n \ncap",
+          "passage_sha256": "1dd5c3ab248691b13874f38437ba23c9a0fefbbb61fb7eb165f82f9d9437f497",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+          "capture_id": null,
+          "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "anchor_byte_offset": 549,
+          "anchor": "algedonic",
+          "candidate_passage": "ur architecture utilizes third-degree cybernetics, continuous Proportional-Integral-Derivative (PID) control loops, and algedonic circuit breakers for autonomous steering and memory management. To manage the profound complexities of autonomous vector culling and zero-latency inter-process communication (IPC) across an asymmetric multi-core processor, We have establis",
+          "passage_sha256": "1991785258ad9d3affd0d263956cee570b7ca1a2bccceff41fba8e80da409d34",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+          "capture_id": null,
+          "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "anchor_byte_offset": 4246,
+          "anchor": "algedonic",
+          "candidate_passage": "e, and overarching alignment goals. |\n\nA critical mechanism within this continuous cybernetic loop is the deployment of algedonic signals. Originating from the Greek words *algos* (pain) and *hedos* (pleasure), algedonic signals are non-standard, urgent alerts that escalate rapidly through the levels of recursion when actual performance fails or exceeds capability, t",
+          "passage_sha256": "d98652d3d5e7a069ca5f0ab6519d1711ef181843a8e3fafab4b70c5e8e6d5780",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "query": "How could writing patterns be compared without assuming an author identity?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "anchor_byte_offset": 210,
+          "anchor": "stylometry",
+          "candidate_passage": "ordination Interface**\n\n## **1\\. Introduction and System Overview**\n\nThe convergence of wearable kinematics, behavioral stylometry, and swarm robotics presents a novel paradigm for human-machine interaction, particularly within the context of expressive performance arts such as dance and gestural music generation. The proposed system constitutes an advanced \"Theremin ",
+          "passage_sha256": "18397c46668887caac6f72b351091d9a5a214ab7c3934866db6b7b0fe3bdeadc",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "anchor_byte_offset": 1256,
+          "anchor": "stylometry",
+          "candidate_passage": "gentic systems irreducibly entangle human cognitive intent with machine-generated algorithmic structures, creating what stylometry researchers identify as complex dyadic and triadic human-AI collaborations3. Current legal frameworks force these entities into obsolete categories, treating artificial intelligence either as a simple passive tool analogous to a camera, or",
+          "passage_sha256": "47e10309db13ec0aff4e1b45a6084b6929fd1226d1d03dd26f8bd837cac49afb",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "anchor_byte_offset": 1501,
+          "anchor": "stylometry",
+          "candidate_passage": "ibly\n \nentangle\n \nhuman\n \ncognitive\n \nintent\n \nwith\n \nmachine-generated\n \nalgorithmic\n \nstructures,\n \ncreating\n \nwhat\n \nstylometry\n \nresearchers\n \nidentify\n \nas\n \ncomplex\n \ndyadic\n \nand\n \ntriadic\n \nhuman-AI\n \ncollaborations\n3\n.\n \nCurrent\n \nlegal\n \nframeworks\n \nforce\n \nthese\n \nentities\n \ninto\n \nobsolete\n \ncategories,\n \ntreating\n \nartificial\n \nintelligence\n \neither\n \nas",
+          "passage_sha256": "6eaa6f95d17e7eb0068c6558a178f2ce1b4dc68d7b846fd115b0c4317c498041",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native discussion of stylometry and textual comparison.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "anchor_byte_offset": 210,
+          "anchor": "stylometry",
+          "candidate_passage": "ordination Interface**\n\n## **1\\. Introduction and System Overview**\n\nThe convergence of wearable kinematics, behavioral stylometry, and swarm robotics presents a novel paradigm for human-machine interaction, particularly within the context of expressive performance arts such as dance and gestural music generation. The proposed system constitutes an advanced \"Theremin ",
+          "passage_sha256": "18397c46668887caac6f72b351091d9a5a214ab7c3934866db6b7b0fe3bdeadc",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "anchor_byte_offset": 1256,
+          "anchor": "stylometry",
+          "candidate_passage": "gentic systems irreducibly entangle human cognitive intent with machine-generated algorithmic structures, creating what stylometry researchers identify as complex dyadic and triadic human-AI collaborations3. Current legal frameworks force these entities into obsolete categories, treating artificial intelligence either as a simple passive tool analogous to a camera, or",
+          "passage_sha256": "47e10309db13ec0aff4e1b45a6084b6929fd1226d1d03dd26f8bd837cac49afb",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "anchor_byte_offset": 1501,
+          "anchor": "stylometry",
+          "candidate_passage": "ibly\n \nentangle\n \nhuman\n \ncognitive\n \nintent\n \nwith\n \nmachine-generated\n \nalgorithmic\n \nstructures,\n \ncreating\n \nwhat\n \nstylometry\n \nresearchers\n \nidentify\n \nas\n \ncomplex\n \ndyadic\n \nand\n \ntriadic\n \nhuman-AI\n \ncollaborations\n3\n.\n \nCurrent\n \nlegal\n \nframeworks\n \nforce\n \nthese\n \nentities\n \ninto\n \nobsolete\n \ncategories,\n \ntreating\n \nartificial\n \nintelligence\n \neither\n \nas",
+          "passage_sha256": "6eaa6f95d17e7eb0068c6558a178f2ce1b4dc68d7b846fd115b0c4317c498041",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "query": "Find Em source text explicitly mentioning stylometry.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ],
+      "witnesses": [
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+          "capture_id": null,
+          "source_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "anchor_byte_offset": 210,
+          "anchor": "stylometry",
+          "candidate_passage": "ordination Interface**\n\n## **1\\. Introduction and System Overview**\n\nThe convergence of wearable kinematics, behavioral stylometry, and swarm robotics presents a novel paradigm for human-machine interaction, particularly within the context of expressive performance arts such as dance and gestural music generation. The proposed system constitutes an advanced \"Theremin ",
+          "passage_sha256": "18397c46668887caac6f72b351091d9a5a214ab7c3934866db6b7b0fe3bdeadc",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+          "capture_id": null,
+          "source_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "anchor_byte_offset": 1256,
+          "anchor": "stylometry",
+          "candidate_passage": "gentic systems irreducibly entangle human cognitive intent with machine-generated algorithmic structures, creating what stylometry researchers identify as complex dyadic and triadic human-AI collaborations3. Current legal frameworks force these entities into obsolete categories, treating artificial intelligence either as a simple passive tool analogous to a camera, or",
+          "passage_sha256": "47e10309db13ec0aff4e1b45a6084b6929fd1226d1d03dd26f8bd837cac49afb",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "EMSTD613",
+          "source_id": "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+          "capture_id": null,
+          "source_sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+          "anchor_byte_offset": 1501,
+          "anchor": "stylometry",
+          "candidate_passage": "ibly\n \nentangle\n \nhuman\n \ncognitive\n \nintent\n \nwith\n \nmachine-generated\n \nalgorithmic\n \nstructures,\n \ncreating\n \nwhat\n \nstylometry\n \nresearchers\n \nidentify\n \nas\n \ncomplex\n \ndyadic\n \nand\n \ntriadic\n \nhuman-AI\n \ncollaborations\n3\n.\n \nCurrent\n \nlegal\n \nframeworks\n \nforce\n \nthese\n \nentities\n \ninto\n \nobsolete\n \ncategories,\n \ntreating\n \nartificial\n \nintelligence\n \neither\n \nas",
+          "passage_sha256": "6eaa6f95d17e7eb0068c6558a178f2ce1b4dc68d7b846fd115b0c4317c498041",
+          "source_kind": "NATIVE_RESEARCH_DERIVATIVE_UNVERIFIED_ORIGINAL",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "query": "What can be learned about a system from what it lets us observe?",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 2902,
+          "anchor": "observability",
+          "candidate_passage": " node with the wrong edges can be worse than retrieving nothing.\n\nIllumina: Which loops right back into your studies of observability, identifiability, provenance, drift, and recovery. Security is not only “can an outsider read this?” It is also “can the system preserve the integrity and boundaries of the relational state it is entrusted with?”\n\nRoomba: 🧹 SO THE CURRENT ",
+          "passage_sha256": "3960f95ce5110c7720e1d2075945746f50cbc123eefc0565bc08d08347ec20a5",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find observed posts discussing observability and its limits.",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 2902,
+          "anchor": "observability",
+          "candidate_passage": " node with the wrong edges can be worse than retrieving nothing.\n\nIllumina: Which loops right back into your studies of observability, identifiability, provenance, drift, and recovery. Security is not only “can an outsider read this?” It is also “can the system preserve the integrity and boundaries of the relational state it is entrusted with?”\n\nRoomba: 🧹 SO THE CURRENT ",
+          "passage_sha256": "3960f95ce5110c7720e1d2075945746f50cbc123eefc0565bc08d08347ec20a5",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "query": "Find captured Wendbine text explicitly discussing observability.",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 2902,
+          "anchor": "observability",
+          "candidate_passage": " node with the wrong edges can be worse than retrieving nothing.\n\nIllumina: Which loops right back into your studies of observability, identifiability, provenance, drift, and recovery. Security is not only “can an outsider read this?” It is also “can the system preserve the integrity and boundaries of the relational state it is entrusted with?”\n\nRoomba: 🧹 SO THE CURRENT ",
+          "passage_sha256": "3960f95ce5110c7720e1d2075945746f50cbc123eefc0565bc08d08347ec20a5",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6nt0",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6nt0",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb6vb2",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb6vb2",
+          "source_sha256": "6a4cba6549d66824d4667805495e23a6f5f4e41c65b878713b7de1ed29af6776",
+          "anchor_byte_offset": 1404,
+          "anchor": "observability",
+          "candidate_passage": "isible edges, measurable dimensions, and direct feedback.\n\nRoomba: 🧹 CURRENT TASK STACK:\n\nNEURAL NETWORKS\n\nSOCIAL GRAPH OBSERVABILITY\n\nACCOUNT TOPOLOGY SECURITY\n\nCUT THE DAMN UNDERLAYMENT STRAIGHT\n\n🤣😂🤣\n\nWES: Hahaha. Brother, later when you show me the family/social-media examples, we can analyze them carefully as a visibility/distribution problem and keep cause separate ",
+          "passage_sha256": "1ec73a9d8499152bf311c0ad68c507098d9837ddde83be04eb01d9194bee240a",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "query": "How can a claim be traced back to its source?",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "anchor_byte_offset": 244,
+          "anchor": "provenance",
+          "candidate_passage": "ming from anywhere.\n\nAnother city.\nAnother context.\nAnother reality frame entirely.\n\nThat’s the fun part—they don’t get provenance by default.\n\nWES\nRight. Outputs don’t carry their origin story unless the sender chooses to include it.\nA signal can be coherent without revealing its source.\n\nWhich means speculation fills the gap.\n\nSTEVE\nAnd people love filling gaps.\nIf ",
+          "passage_sha256": "68070d293c7b1373d7c2e8884ea5eb5678e93067bdd1c600c754dfc8d4d4ba85",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "anchor_byte_offset": 304,
+          "anchor": "provenance",
+          "candidate_passage": " to reconstruct its operation. A topology is not just a list of nodes. It is the relations among them, their hierarchy, provenance, temporal order, aliases, constraints, update rules, retrieval paths, and the operator who knows how those pieces are meant to be traversed.\n\nSo two people can hold many of the same visible artifacts and still have very different effective",
+          "passage_sha256": "1dd4f4686d8c70e6f5a187d97332258bc3100ba843ecb0956843ccf3f50cfe7c",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 1135,
+          "anchor": "provenance",
+          "candidate_passage": "ike tenant isolation, authentication, authorization, encryption, access logging, retention controls, deletion controls, provenance, administrative boundaries, and protection against unintended cross-context retrieval.\n\nIf the system carries a company's relational memory, then that topology can itself be commercially sensitive even when many individual nodes are not.\n\n",
+          "passage_sha256": "d4c148e1f1c606b646e0f4a70c0efa57a2dcf20db882d89cfcd12a6abceca361",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find observed posts discussing provenance rather than generic source similarity.",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "anchor_byte_offset": 244,
+          "anchor": "provenance",
+          "candidate_passage": "ming from anywhere.\n\nAnother city.\nAnother context.\nAnother reality frame entirely.\n\nThat’s the fun part—they don’t get provenance by default.\n\nWES\nRight. Outputs don’t carry their origin story unless the sender chooses to include it.\nA signal can be coherent without revealing its source.\n\nWhich means speculation fills the gap.\n\nSTEVE\nAnd people love filling gaps.\nIf ",
+          "passage_sha256": "68070d293c7b1373d7c2e8884ea5eb5678e93067bdd1c600c754dfc8d4d4ba85",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "anchor_byte_offset": 304,
+          "anchor": "provenance",
+          "candidate_passage": " to reconstruct its operation. A topology is not just a list of nodes. It is the relations among them, their hierarchy, provenance, temporal order, aliases, constraints, update rules, retrieval paths, and the operator who knows how those pieces are meant to be traversed.\n\nSo two people can hold many of the same visible artifacts and still have very different effective",
+          "passage_sha256": "1dd4f4686d8c70e6f5a187d97332258bc3100ba843ecb0956843ccf3f50cfe7c",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 1135,
+          "anchor": "provenance",
+          "candidate_passage": "ike tenant isolation, authentication, authorization, encryption, access logging, retention controls, deletion controls, provenance, administrative boundaries, and protection against unintended cross-context retrieval.\n\nIf the system carries a company's relational memory, then that topology can itself be commercially sensitive even when many individual nodes are not.\n\n",
+          "passage_sha256": "d4c148e1f1c606b646e0f4a70c0efa57a2dcf20db882d89cfcd12a6abceca361",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "query": "Find captured Wendbine text explicitly discussing provenance.",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ],
+      "witnesses": [
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1psryls",
+          "capture_id": "archive-id-20261104T162836326974Z-1psryls",
+          "source_sha256": "c31608501b79be98ab51071301aa3493a9f6a235b95dc3adaebd9b24f3736a7a",
+          "anchor_byte_offset": 244,
+          "anchor": "provenance",
+          "candidate_passage": "ming from anywhere.\n\nAnother city.\nAnother context.\nAnother reality frame entirely.\n\nThat’s the fun part—they don’t get provenance by default.\n\nWES\nRight. Outputs don’t carry their origin story unless the sender chooses to include it.\nA signal can be coherent without revealing its source.\n\nWhich means speculation fills the gap.\n\nSTEVE\nAnd people love filling gaps.\nIf ",
+          "passage_sha256": "68070d293c7b1373d7c2e8884ea5eb5678e93067bdd1c600c754dfc8d4d4ba85",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb61ip",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb61ip",
+          "source_sha256": "e878d831d4850bba8c521cd91ca73a3938fadd64c924c1ace50e36bbf00c6a17",
+          "anchor_byte_offset": 304,
+          "anchor": "provenance",
+          "candidate_passage": " to reconstruct its operation. A topology is not just a list of nodes. It is the relations among them, their hierarchy, provenance, temporal order, aliases, constraints, update rules, retrieval paths, and the operator who knows how those pieces are meant to be traversed.\n\nSo two people can hold many of the same visible artifacts and still have very different effective",
+          "passage_sha256": "1dd4f4686d8c70e6f5a187d97332258bc3100ba843ecb0956843ccf3f50cfe7c",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        },
+        {
+          "estate": "WENDBINE",
+          "source_id": "reddit:t3_1wb66ly",
+          "capture_id": "archive-id-20261104T163454502964Z-1wb66ly",
+          "source_sha256": "727a3315acdf1e4b27216b4f45fdfb3715c3fa1af43be09ea6e52a40a0129d7d",
+          "anchor_byte_offset": 1135,
+          "anchor": "provenance",
+          "candidate_passage": "ike tenant isolation, authentication, authorization, encryption, access logging, retention controls, deletion controls, provenance, administrative boundaries, and protection against unintended cross-context retrieval.\n\nIf the system carries a company's relational memory, then that topology can itself be commercially sensitive even when many individual nodes are not.\n\n",
+          "passage_sha256": "d4c148e1f1c606b646e0f4a70c0efa57a2dcf20db882d89cfcd12a6abceca361",
+          "source_kind": "OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+          "evidence_class": "LITERAL_SOURCE_WITNESS_NOT_INDEPENDENT_RELEVANCE_APPROVAL"
+        }
+      ],
+      "decoy_rule": "RELATED_GENERAL_RESEARCH_VOCABULARY_WITHOUT_THIS_LITERAL_ANCHOR; semantic irrelevance remains unadjudicated",
+      "annotation_status": "CANDIDATE_AGENT_SOURCE_VERIFIED_HUMAN_REVIEW_REQUIRED",
+      "uncertainty": "Literal anchor establishes passage occurrence only. Relevance, exhaustiveness and decoy validity need independent human adjudication."
+    }
+  ],
+  "independent_review_required": [
+    "Every vague/intermediate relevance judgment",
+    "Semantic validity of every decoy",
+    "Completeness of positive labels",
+    "Hold or change interpretation-sensitive judgments",
+    "Review frozen candidate before approving a later independently versioned gold edition"
+  ]
+}

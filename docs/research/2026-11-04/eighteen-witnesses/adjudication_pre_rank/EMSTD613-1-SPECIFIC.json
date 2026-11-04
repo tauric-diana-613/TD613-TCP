@@ -1,0 +1,184 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 9,
+  "query_id": "EMSTD613-1-SPECIFIC",
+  "question": "Find Em source text explicitly discussing algedonic signals.",
+  "target_estate": "EMSTD613",
+  "difficulty": "SPECIFIC",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The algedonic channel escalates catastrophic performance/capability failures and bypasses routine reporting; its JSON alert is routed to policy or human oversight.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Section 2 defines algedonic circuit breakers and an asymmetric urgency response to memory bloat versus starvation.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Memory pressure, latency anomalies and context-window overflow trigger asynchronous algedonic interrupts and corrective memory actions.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "The examined source does not discuss the named algedonic signal/channel concept. This is a bounded negative for the explicit concept, not proof of general systems irrelevance.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_20228928591ae11052bf2622.txt",
+      "source_field": "body",
+      "source_sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+      "capture_id": null,
+      "evidence_byte_offset": 8465,
+      "evidence_sha256": "5b46057cd8153b25967be5c6bdd137f8949c02502f6d534dc6de6722de58ed2c",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_4753469dce968cf7c48bd1fe.txt",
+      "source_field": "body",
+      "source_sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+      "capture_id": null,
+      "evidence_byte_offset": 3815,
+      "evidence_sha256": "122c489b7068dce55bc011bec9b7dbef1a573a99d5340b9ba736a208a0105e2e",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}

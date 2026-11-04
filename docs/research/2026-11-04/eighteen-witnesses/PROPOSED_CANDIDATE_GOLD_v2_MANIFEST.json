@@ -1,0 +1,14 @@
+{
+  "opening_mark": "\ud834\udf0b",
+  "schema": "td613.diagnostic-gold-amendment-freeze/v1",
+  "filename": "PROPOSED_CANDIDATE_GOLD_v2_DIAGNOSTIC.json",
+  "bytes": 114227,
+  "sha256": "5637036d9de1d901a249dd940a63b1fbf640fd6a9419687f2e3b4cafb3fb5e14",
+  "predecessor_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "pre_rank_judgments_sha256": "aeea1cbcc0b7ae16af0422874df3e9e83da70dedb065d9e21c2e54835cbc4db7",
+  "cases": 18,
+  "diagnostic_only": true,
+  "human_approved": false,
+  "scorer_input_ready": false,
+  "seal": "\u27d0"
+}

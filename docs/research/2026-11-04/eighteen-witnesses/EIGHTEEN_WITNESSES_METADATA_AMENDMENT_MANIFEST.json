@@ -1,0 +1,11 @@
+{
+  "schema": "td613.metadata-amendment-freeze/v1",
+  "sha256": "9ee8067b39b5323726bed05c234be5d16e8935896157c5fb53a5cf08af0231ff",
+  "bytes": 156700,
+  "frozen_at_utc": "2026-11-04T20:45:31.820341+00:00",
+  "predecessor_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "semantic_labels_changed": false,
+  "questions_changed": false,
+  "human_approved": false,
+  "diagnostic_only": true
+}

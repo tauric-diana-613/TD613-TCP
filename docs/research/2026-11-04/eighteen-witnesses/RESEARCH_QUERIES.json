@@ -1,0 +1,296 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.frozen-research-questions/v1",
+  "original_gold_sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "cases": [
+    {
+      "query_id": "SRC-1-VAGUE",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "query": "How can a reader follow an open research lead to a later source?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "SRC-1-INTERMEDIATE",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find source-declared Explore cues with unresolved or later title candidates.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "SRC-1-SPECIFIC",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "query": "Find a native SRC passage containing an Explore research cue.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102995-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18103456-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "SRC-2-VAGUE",
+      "target_estate": "SRC",
+      "difficulty": "VAGUE",
+      "query": "How can a research claim be traced back to its recorded source?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "SRC-2-INTERMEDIATE",
+      "target_estate": "SRC",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native research passages discussing provenance and source tracing.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "SRC-2-SPECIFIC",
+      "target_estate": "SRC",
+      "difficulty": "SPECIFIC",
+      "query": "Find native SRC text explicitly discussing provenance.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+        "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-VAGUE",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "query": "How might a feedback system signal strain or overload?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-INTERMEDIATE",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native research discussing algedonic signals in system design.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-1-SPECIFIC",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "query": "Find Em source text explicitly discussing algedonic signals.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-VAGUE",
+      "target_estate": "EMSTD613",
+      "difficulty": "VAGUE",
+      "query": "How could writing patterns be compared without assuming an author identity?",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-INTERMEDIATE",
+      "target_estate": "EMSTD613",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find native discussion of stylometry and textual comparison.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ]
+    },
+    {
+      "query_id": "EMSTD613-2-SPECIFIC",
+      "target_estate": "EMSTD613",
+      "difficulty": "SPECIFIC",
+      "query": "Find Em source text explicitly mentioning stylometry.",
+      "relevant_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt"
+      ],
+      "decoy_source_ids": [
+        "derivative:03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+        "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-VAGUE",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "query": "What can be learned about a system from what it lets us observe?",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-INTERMEDIATE",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find observed posts discussing observability and its limits.",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-1-SPECIFIC",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "query": "Find captured Wendbine text explicitly discussing observability.",
+      "relevant_source_ids": [
+        "reddit:t3_1wb66ly",
+        "reddit:t3_1wb6nt0",
+        "reddit:t3_1wb6vb2"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-VAGUE",
+      "target_estate": "WENDBINE",
+      "difficulty": "VAGUE",
+      "query": "How can a claim be traced back to its source?",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-INTERMEDIATE",
+      "target_estate": "WENDBINE",
+      "difficulty": "INTERMEDIATE",
+      "query": "Find observed posts discussing provenance rather than generic source similarity.",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    },
+    {
+      "query_id": "WENDBINE-2-SPECIFIC",
+      "target_estate": "WENDBINE",
+      "difficulty": "SPECIFIC",
+      "query": "Find captured Wendbine text explicitly discussing provenance.",
+      "relevant_source_ids": [
+        "reddit:t3_1psryls",
+        "reddit:t3_1wb61ip",
+        "reddit:t3_1wb66ly"
+      ],
+      "decoy_source_ids": [
+        "reddit:t3_1obi3g7",
+        "reddit:t3_1obmeqd",
+        "reddit:t3_1oc0xg2"
+      ]
+    }
+  ],
+  "seal": "⟐"
+}

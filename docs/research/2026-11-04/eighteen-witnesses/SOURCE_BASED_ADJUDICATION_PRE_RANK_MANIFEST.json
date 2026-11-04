@@ -1,0 +1,14 @@
+{
+  "opening_mark": "\ud834\udf0b",
+  "schema": "td613.diagnostic-review-freeze/v1",
+  "filename": "SOURCE_BASED_ADJUDICATION_PRE_RANK.json",
+  "sha256": "aeea1cbcc0b7ae16af0422874df3e9e83da70dedb065d9e21c2e54835cbc4db7",
+  "bytes": 172582,
+  "cases_examined": 18,
+  "source_judgments": 108,
+  "frozen_at_utc": "2026-11-04T20:58:57.267625+00:00",
+  "individual_rankings_not_opened": true,
+  "human_scientific_approval": false,
+  "original_gold_unchanged": true,
+  "seal": "\u27d0"
+}

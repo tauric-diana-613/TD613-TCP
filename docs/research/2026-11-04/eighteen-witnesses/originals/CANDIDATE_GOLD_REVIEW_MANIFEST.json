@@ -1,0 +1,25 @@
+{
+  "schema": "td613.candidate-gold-freeze/v1",
+  "sha256": "740d076ec68550490295a50ff64f812daf65d7a8571f1d2449e1eefa8bc7a571",
+  "bytes": 75625,
+  "registered_at_utc": "2026-11-04T18:21:38.903508+00:00",
+  "queries": 18,
+  "queries_by_estate": {
+    "SRC": 6,
+    "EMSTD613": 6,
+    "WENDBINE": 6
+  },
+  "difficulties": {
+    "VAGUE": 6,
+    "INTERMEDIATE": 6,
+    "SPECIFIC": 6
+  },
+  "source_scope_counts": {
+    "SRC": 442,
+    "EMSTD613": 53,
+    "WENDBINE": 1967
+  },
+  "human_approved": false,
+  "model_ranking_observed_before_freeze": false,
+  "private_annotations_retained_locally": true
+}

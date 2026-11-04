@@ -1,0 +1,184 @@
+{
+  "opening_mark": "𝌋",
+  "schema": "td613.source-based-diagnostic-adjudication/v1",
+  "case_ordinal": 5,
+  "query_id": "SRC-2-INTERMEDIATE",
+  "question": "Find native research passages discussing provenance and source tracing.",
+  "target_estate": "SRC",
+  "difficulty": "INTERMEDIATE",
+  "diagnostic_class": "POST_OBSERVATION_DIAGNOSTIC_ADJUDICATION",
+  "assessor": "Current operator-authorized AI research session",
+  "independent_of_individual_rankings_at_recording": true,
+  "aggregate_results_previously_known": true,
+  "source_review_scope": "Full captured bodies for the eight selected Wendbine IDs; committed passages, introductions, topic-bearing sections, and targeted whole-text term checks for long native derivatives; unranked corpus screening for omissions. Not exhaustive corpus-wide semantic annotation.",
+  "source_judgments": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18102693-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Metadata authenticity, provenance loss and untraceable AI documents are directly discussed.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "1fe7bcdd1be5f1940fe049a851408f671a73af73a375893a10de4655a2dc533e",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18119243-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "The Documentation and Provenance section discusses dataset collection history, model cards, registries and lineage.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "4a5b627fdcccd311539dea057ab9367c3e383fd8ae48659e6d3494206e45c3ba",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18218135-file-0.md",
+      "candidate_role": "CANDIDATE_POSITIVE",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "decoy_disposition": "NOT_APPLICABLE",
+      "reason": "Timestamped lineage, canonical links and echo protocols are proposed as ways to preserve origins. These source assertions are relevant but their claimed causal efficacy is not independently validated.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "ae652696306afda789a0f620ace08e75526e7285865466988847d076254461fd",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18096652-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "7fc23cfe1c3a6589c53439dab1addc3740f8f7e71fb0c980e3ff4e54b2150f76",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097205-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "f8070365ec8bcf02b146bf86439df998d881d68386b4c5642a4121e8300fbbc9",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18097491-file-0.md",
+      "candidate_role": "CANDIDATE_DECOY",
+      "relevance": "VERIFIED_IRRELEVANT_SOURCE",
+      "decoy_disposition": "VALID_NEGATIVE_CONTROL_DECOY",
+      "reason": "Ordinary bibliographic citations can help trace claims under the broad question, but the examined sections do not discuss provenance mechanisms explicitly. Retain the broad-query uncertainty rather than treating anchor absence as semantic proof.",
+      "evidence_variant": {
+        "capture_id": null,
+        "source_field": "body",
+        "source_sha256": "83f97932d3d7aa8a64a0b00551970b8ff76092172db9c8b25dab6cea6e18ec28",
+        "checks": {
+          "file_exists": true,
+          "index_text_hash_matches": true,
+          "file_hash_matches_index": true,
+          "pinned_git_blob_matches": true
+        },
+        "empty": false
+      },
+      "witness_binding": "MATCHED_PINNED_DERIVATIVE_OR_CAPTURE_HASH",
+      "original_authentication": "NATIVE_DERIVATIVE_OR_OBSERVED_CAPTURE_ONLY",
+      "human_approval": false
+    }
+  ],
+  "confirmed_or_held_omitted_sources": [
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18225782-file-0.md",
+      "source_field": "body",
+      "source_sha256": "ec4f4b3145c460f03d0735fad7a3990cbd756e460ceeccdeb26faef60dfa2f6d",
+      "capture_id": null,
+      "evidence_byte_offset": 666,
+      "evidence_sha256": "cfdeccbdfaea475d4b72d39e02ab062d75aad726c581c1390e973af4fb11c172",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    },
+    {
+      "source_id": "derivative:03-DERIVATIVES/text/zenodo/zenodo-18237936-file-0.md",
+      "source_field": "body",
+      "source_sha256": "0175fed53e1c38d95fe39a92fd54b387f246c04a9874a164a0ce64874db73f5f",
+      "capture_id": null,
+      "evidence_byte_offset": 1428,
+      "evidence_sha256": "175ea7ed7e20a9eab95d965149f7ad9186ce3991e84e95d8fa11e5ef7e18b1a1",
+      "relevance": "VERIFIED_RELEVANT_SOURCE",
+      "reason": "Examined source section directly addresses the question topic; omitted from the bounded original first-three anchor selection.",
+      "human_approval": false
+    }
+  ],
+  "completeness": "INCOMPLETE_POSITIVE_LABELING_DEMONSTRATED; EXHAUSTIVE_SEMANTIC_COVERAGE_NOT_CLAIMED",
+  "wording_bias": "Substring selection, source-ID ordering and first-three truncation; same topic labels reused for vague/intermediate/specific questions.",
+  "proposed_disposition": "AMEND_INCOMPLETE_POSITIVES_AND_QUALIFY_DECOYS",
+  "source_identity_or_version_mismatch_found": false,
+  "human_decisions": [
+    "Approve semantic inclusion standard for broad versus literal questions.",
+    "Adjudicate proposed positive/uncertain/negative changes and incomplete labels.",
+    "Approve Work/manifestation and duplicate-content scoring unit."
+  ],
+  "human_scientific_approval": false,
+  "ranked_outputs_opened": false,
+  "seal": "⟐"
+}
