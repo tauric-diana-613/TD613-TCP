@@ -27,7 +27,8 @@ function makeReference(){
  vm.runInNewContext(source,context);
  return context.window.TD613Reference;
 }
-const ids=result=>result.hits.map(x=>x.id);
+// VM arrays have a different realm/prototype; materialize host-realm ids before deep equality.
+const ids=result=>Array.from(result.hits,x=>x.id);
 
 test('default whole-token matching rejects explores, explorer, and exploration',()=>{
  const ref=makeReference();

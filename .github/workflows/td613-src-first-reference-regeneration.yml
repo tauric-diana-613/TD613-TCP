@@ -42,6 +42,8 @@ jobs:
           if(m.record_count!==1141||m.canonical_payload_sha256!=='ff0c98f564c9157f22b8603a20ddefa3ca13d843b17bdfb7e2a495408a49b4c9')throw Error('Canonical reference payload changed');
           console.log(JSON.stringify({record_count:m.record_count,canonical_payload_sha256:m.canonical_payload_sha256,artifact_html_sha256:m.artifact_html_sha256}));
           NODE
+      - name: Install declared test dependencies
+        run: npm ci --no-audit --no-fund
       - name: Run lexical and canonical reference regression
         run: |
           node --test tests/encyclopedia-lexical-boundaries.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-navigation.test.mjs tests/encyclopedia-intake.test.mjs
