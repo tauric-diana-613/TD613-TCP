@@ -10,3 +10,6 @@ app/safe-harbor/corpus/td_signed_payloads_bundle.json text eol=lf
 
 # Research indexes bind exact committed bytes; preserve checkout hashes.
 app/encyclopedia/** -text
+
+# Keep exact workflow contracts portable across Windows and Linux.
+.github/workflows/*.yml text eol=lf
