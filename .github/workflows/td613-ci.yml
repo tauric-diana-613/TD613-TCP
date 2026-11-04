@@ -152,6 +152,8 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Falsify abbreviated Experiment B plans against the full scientific design
+        run: node --test tests/experiment-b-full-scientific-freeze-sourcefree.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
