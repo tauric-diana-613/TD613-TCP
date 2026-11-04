@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 
 const checkout=process.env.GA03_EXACT_CHECKOUT;
 assert.ok(typeof checkout==='string'&&path.isAbsolute(checkout),'PINNED_SOURCE_CHECKOUT_REQUIRED');
-const get=path=>import(pathToFileURL(path.join(checkout,path)).href);
+const get=relativePath=>import(pathToFileURL(path.join(checkout,relativePath)).href);
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const {runGA01IntegratedSyntheticEpisode}=await get('scripts/ga01-integrated-sourcefree-products-v01.mjs');
 const {openSyntheticReceiver}=await get('scripts/reciprocal-receiver-sourcefree-v01.mjs');
