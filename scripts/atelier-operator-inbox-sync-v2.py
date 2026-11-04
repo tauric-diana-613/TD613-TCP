@@ -250,6 +250,11 @@ def sync(estate,issue,vault,gesture,*,operator_approved=False,dry_run=False):
             if not row or row[0]!=obj["source_sha256"] or \
                  row[1]!=digest(row[2].encode("utf8")):
                 raise ValueError("INDEX_SOURCE_READBACK_FAILURE")
+            fts=con.execute("SELECT full_text FROM fts WHERE record_id=?",
+                            (obj["record_id"],)).fetchone()
+            if (obj["full_text"] and (not fts or fts[0]!=obj["full_text"])) or \
+               (not obj["full_text"] and fts):
+                raise ValueError("SEARCHABLE_DERIVATIVE_READBACK_FAILURE")
         receipt={"schema":"td613.operator-local-sync/v2","estate":estate,
             "issue_number":issue,"gesture_id":gesture,
             "run_at":datetime.now(timezone.utc).isoformat(),
@@ -322,16 +327,21 @@ def verify(vault,estate):
         if con.execute("PRAGMA integrity_check").fetchone()[0]!="ok":
             raise ValueError("SQLITE_INTEGRITY_FAILED")
         rows=con.execute(
-            "SELECT source_sha256,source_bytes,derivative_sha256,full_text FROM entries WHERE estate=?",
+            "SELECT record_id,source_sha256,source_bytes,derivative_sha256,full_text FROM entries WHERE estate=?",
             (estate,)).fetchall()
-        for hashhex,size,text_hash,extracted in rows:
+        searchable=0
+        for record_id,hashhex,size,text_hash,extracted in rows:
             p=checked_local(vault/"blobs"/hashhex[:2]/hashhex)
             if not p.is_file() or p.stat().st_size!=size or digest(p.read_bytes())!=hashhex:
                 raise ValueError("PRIVATE_SOURCE_BLOB_MISSING_OR_CHANGED")
             if digest(extracted.encode("utf8"))!=text_hash:
                 raise ValueError("PRIVATE_SEARCH_TEXT_CHANGED")
-        return {"state":"LOCAL_SOURCE_AND_TEXT_INTEGRITY_VERIFIED",
-                "estate":estate,"entries":len(rows),
+            fts=con.execute("SELECT full_text FROM fts WHERE record_id=?",(record_id,)).fetchone()
+            if (extracted and (not fts or fts[0]!=extracted)) or (not extracted and fts):
+                raise ValueError("PRIVATE_FTS_READBACK_MISSING_OR_CHANGED")
+            if extracted:searchable+=1
+        return {"state":"LOCAL_SOURCE_AND_FTS_INDEX_INTEGRITY_VERIFIED",
+                "estate":estate,"entries":len(rows),"searchable_derivatives":searchable,
                 "provider_origin_authenticated":False,"research_synthesis_verified":False}
     finally:con.close()
 
