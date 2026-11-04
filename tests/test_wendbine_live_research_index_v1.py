@@ -95,5 +95,35 @@ class AtelierOriginalRetrieval(unittest.TestCase):
         self.assertEqual(r[1],"OBSERVED_TEXTUAL_LINK_NOT_DEPENDENCY_PROOF")
         self.assertEqual(m.status(self.db)["inference_graph_state"],"NOT_AVAILABLE")
 
+
+    def test_full_utc_day_enumeration_including_linked_video_and_pagination(self):
+        text="Refer to https://www.reddit.com/r/Wendbine/comments/abcde2/"
+        video=post("abcde2",created=1790000001,title="Mysterious video",text="")
+        video.update(is_self=False,is_video=True,url="https://www.youtube.com/watch?v=example")
+        self.ingest([post("abcde1",created=1790000000,text=text),video])
+        first=m.enumerate_day(self.db,"2026-09-21",limit=1)
+        self.assertEqual(first["observed_total"],2)
+        self.assertEqual(first["returned"],1)
+        self.assertEqual(first["next_offset"],1)
+        second=m.enumerate_day(self.db,"2026-09-21",limit=1,offset=1)
+        self.assertIsNone(second["next_offset"])
+        self.assertEqual(second["entries"][0]["media_kind"],"VIDEO")
+        self.assertEqual(second["entries"][0]["external_media_url"],"https://www.youtube.com/watch?v=example")
+        self.assertEqual(second["entries"][0]["body_state"],"EMPTY_MEDIA_LINK_POST")
+        self.assertFalse(second["entries"][0]["media_transcript_observed"])
+        self.assertEqual(m.enumerate_day(self.db,"2026-09-20")["observed_total"],0)
+        self.assertRaises(ValueError,m.enumerate_day,self.db,"2026-02-30")
+
+    def test_grounded_graph_traversal_preserves_exact_link_span_and_refuses_inference(self):
+        self.ingest([post("abcde1",text="Follow https://www.reddit.com/r/Wendbine/comments/abcde2/"),
+                     post("abcde2",text="Second actual text")])
+        g=m.explicit_graph(self.db,"reddit:t3_abcde1",max_depth=2)
+        self.assertEqual(g["indexed_nodes_reached"],2)
+        self.assertEqual(len(g["edges"]),1)
+        self.assertTrue(g["edges"][0]["target_indexed"])
+        self.assertEqual(g["edges"][0]["evidence_utf8_byte_offset"],len("Follow ".encode("utf8")))
+        self.assertEqual(g["mathematical_relational_geometry"],"NOT_ESTABLISHED")
+        self.assertRaises(ValueError,m.explicit_graph,self.db,"reddit:t3_missing")
+
 if __name__=="__main__":
     unittest.main()
