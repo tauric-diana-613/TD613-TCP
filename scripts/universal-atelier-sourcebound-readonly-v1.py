@@ -85,16 +85,40 @@ def load_sources(dbpath,repository,*,native_checkouts=None):
     try:
         if con.execute("pragma integrity_check").fetchone()[0]!="ok":
             raise ValueError("LOCAL_WENDBINE_SQLITE_CORRUPT")
-        for sid,url,body,title,bhash,thash in con.execute(
-          "select source_id,canonical_url,selftext,title,body_sha256,title_sha256 from sources order by published_unix,source_id"):
-            if sha(body)!=bhash or sha(title)!=thash:
-                raise ValueError("SOURCE_BODY_HASH_CONFLICT")
-            yield {"estate":"WENDBINE","source_id":sid,
-                "source_kind":"OBSERVED_PUBLIC_PROVIDER_TEXT_NOT_AUTHOR_SIGNED",
-                "canonical_url":url,"relative_path":None,
-                "sha256":bhash,"bytes":body,"title":title,"title_sha256":thash,
-                "text":body.decode("utf8",errors="strict"),
-                "original_source_bytes_verified":True}
+        historical=con.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='capture_versions'").fetchone()
+        if historical:
+            # The local capture estate may contain distinct valid historical text
+            # versions for the same post. Do not make later filtered text vanish
+            # by exposing only the primary/earliest source version.
+            for cid,sid,url,body,title,bhash,thash,captured,state,manifest_hash in con.execute("""
+              SELECT v.capture_id,v.source_id,s.canonical_url,v.selftext,v.title,
+                     v.body_sha256,v.title_sha256,v.captured_at_utc,
+                     v.later_visibility_state,v.manifest_sha256
+              FROM capture_versions v JOIN sources s ON s.source_id=v.source_id
+              ORDER BY v.captured_at_utc,v.capture_id"""):
+                if sha(body)!=bhash or sha(title)!=thash:
+                    raise ValueError("HISTORICAL_CAPTURE_BYTES_HASH_CONFLICT")
+                yield {"estate":"WENDBINE","source_id":sid,"capture_id":cid,
+                  "captured_at_utc":captured,"later_visibility_state":state,
+                  "capture_manifest_sha256":manifest_hash,
+                  "source_kind":"OPERATOR_LOCAL_CAPTURE_BYTES_NOT_PLATFORM_AUTHENTICATED",
+                  "canonical_url":url,"relative_path":None,
+                  "sha256":bhash,"bytes":body,"title":title,"title_sha256":thash,
+                  "text":body.decode("utf8",errors="strict"),
+                  "capture_bytes_verified":True,
+                  "original_source_bytes_verified":False}
+        else:
+            for sid,url,body,title,bhash,thash in con.execute(
+              "select source_id,canonical_url,selftext,title,body_sha256,title_sha256 from sources order by published_unix,source_id"):
+                if sha(body)!=bhash or sha(title)!=thash:
+                    raise ValueError("SOURCE_BODY_HASH_CONFLICT")
+                yield {"estate":"WENDBINE","source_id":sid,
+                    "source_kind":"OBSERVED_PUBLIC_PROVIDER_TEXT_NOT_AUTHOR_SIGNED",
+                    "canonical_url":url,"relative_path":None,
+                    "sha256":bhash,"bytes":body,"title":title,"title_sha256":thash,
+                    "text":body.decode("utf8",errors="strict"),
+                    "original_source_bytes_verified":True}
     finally:con.close()
 
 def exact_query(source_iter,phrase,limit=30,estate="ALL"):
@@ -127,7 +151,11 @@ def exact_query(source_iter,phrase,limit=30,estate="ALL"):
                   "source_field":field,"byte_offset":idx,"length_utf8":len(needle),
                   "exact_match":phrase,"path":row["relative_path"],
                   "original_source_bytes_verified":row["original_source_bytes_verified"],
-                  "canonical_url":row.get("canonical_url")})
+                  "canonical_url":row.get("canonical_url"),
+                  "capture_id":row.get("capture_id"),
+                  "captured_at_utc":row.get("captured_at_utc"),
+                  "later_visibility_state":row.get("later_visibility_state"),
+                  "capture_bytes_verified":row.get("capture_bytes_verified",False)})
                 start=idx+max(1,len(needle))
     order=ESTATES if estate=="ALL" else (estate,)
     merged=[]
@@ -142,10 +170,12 @@ def state(source_iter):
     stats={}
     for row in source_iter:
         st=stats.setdefault(row["estate"],{"count":0,"body_bytes":0,
-           "original_observed":0,"native_derivatives":0})
+           "original_observed":0,"native_derivatives":0,"historical_capture_versions":0})
         st["count"]+=1;st["body_bytes"]+=len(row["bytes"])
         st["original_observed"]+=int(row["original_source_bytes_verified"])
-        st["native_derivatives"]+=int(not row["original_source_bytes_verified"])
+        historical=bool(row.get("capture_bytes_verified",False))
+        st["historical_capture_versions"]+=int(historical)
+        st["native_derivatives"]+=int(not row["original_source_bytes_verified"] and not historical)
     return {"schema":"td613.universal-ateliers.source-labeled-readonly/v1",
       "estates":stats,"SRC_original_blob_parity":"UNVERIFIED",
       "Em_original_pdf_parity":"UNVERIFIED",
