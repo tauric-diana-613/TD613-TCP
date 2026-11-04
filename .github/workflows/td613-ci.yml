@@ -136,6 +136,16 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Wendbine original-text index source-free negative and exact-byte tests
+        run: python -B -m unittest discover -s tests -p 'test_wendbine_live_research_index_v1.py' -v
+      - name: Universal Atelier source-labeled Wendbine SRC and Em read-only bridge
+        run: python -B -m unittest discover -s tests -p 'test_universal_atelier_sourcebound_readonly_v1.py' -v
+      - name: Wendbine historical source-ID coverage refusal test
+        run: python -B -m unittest discover -s tests -p 'test_wendbine_source_coverage_adjudicator_v1.py' -v
+      - name: Actual original Git blob census of SRC geometry and Em research instruments
+        run: python -B -m unittest discover -s tests -p 'test_atelier_native_preservation_census_v1.py' -v
+      - name: Verify actual pinned SRC native query projections and independent Em method fixtures
+        run: python -B -m unittest discover -s tests -p 'test_atelier_native_inheritance_bridge_v1.py' -v
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
