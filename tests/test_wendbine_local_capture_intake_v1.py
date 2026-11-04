@@ -63,7 +63,7 @@ class HistoricalCustody(unittest.TestCase):
         with closing(sqlite3.connect(self.db)) as verify:
             original_hit=m.INDEX.exact_search(verify,"Original 𝌋")
         self.assertEqual(len(original_hit),1)
-        self.assertEqual(original_hit[0]["byte_offset"],len("Original ".encode("utf8")))
+        self.assertEqual(original_hit[0]["byte_offset"],0)
         lexical=m.history_lexical(self.db,"Edited",limit=10)
         self.assertEqual(len(lexical),1)
         self.assertEqual(lexical[0]["capture_id"],"c2")
@@ -134,6 +134,7 @@ class HistoricalCustody(unittest.TestCase):
         self.ingest()
         with closing(sqlite3.connect(self.db)) as con:
             con.execute("UPDATE capture_versions SET selftext=? WHERE capture_id='c1'",(b"TAMPERED",))
+            con.commit()
         with self.assertRaisesRegex(ValueError,"CAPTURE_VERSION_DIGEST_CONFLICT"):
             m.history_exact(self.db,"TAMPERED")
 
