@@ -74,6 +74,7 @@ class ReceiverTests(unittest.TestCase):
         self.assertEqual(MOD.method_query(self.db,"nested.count",1)["total"],1)
         self.assertEqual(MOD.method_query(self.db,"nested.count",1.0)["total"],1)
         self.assertEqual(MOD.method_query(self.db,"composite_score",None)["total"],1)
+        self.assertEqual(MOD.method_query(self.db,"absent_field",None)["total"],0)
         self.assertEqual(MOD.method_query(self.db,"delta_scope","UNKNOWN")["total"],1)
 
     def test_tamper_detection_and_schema_drift(self):

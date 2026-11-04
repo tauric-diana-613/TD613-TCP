@@ -68,6 +68,7 @@ class NativeMethodAdapterTests(unittest.TestCase):
     def test_typed_query_never_replaces_unknown_and_null(self):
         self.assertEqual(adapter.query(self.bundle,"delta_evidence","UNKNOWN")["total"],1)
         self.assertEqual(adapter.query(self.bundle,"composite_score",None)["total"],1)
+        self.assertEqual(adapter.query(self.bundle,"absent_field",None)["total"],0)
         self.assertEqual(adapter.query(self.bundle,"composite_score",False)["total"],0)
         self.assertEqual(adapter.query(self.bundle,"delta_scope","NARROWED")["total"],1)
         self.assertEqual(adapter.query(self.bundle,"other_observed_effects.falsifiers",

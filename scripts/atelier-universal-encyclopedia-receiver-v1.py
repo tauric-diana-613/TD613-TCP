@@ -264,6 +264,7 @@ def method_query(path, field: str, expected, *, offset=0, limit=50):
     if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 100:
         raise ReceiverError("Invalid limit")
     matches = []
+    missing = object()  # Absent evidence differs from an explicitly recorded null.
     with closing(_open(path)) as db:
         db.execute("BEGIN")
         try:
@@ -280,10 +281,10 @@ def method_query(path, field: str, expected, *, offset=0, limit=50):
                     value = row
                     for part in field.split("."):
                         if not isinstance(value, dict) or part not in value:
-                            value = None
+                            value = missing
                             break
                         value = value[part]
-                    if same_type(value, expected):
+                    if value is not missing and same_type(value, expected):
                         matches.append({"packet_id":pid,"source_id":packet["source_id"],
                                         "capture_id":packet["capture_id"],"row_index":i,
                                         "method_row":row,"packet_sha256":digest(checked[0])})

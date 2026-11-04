@@ -93,14 +93,15 @@ def query(bundle, field, expected, *, offset=0, limit=50):
     if type(offset) is not int or offset < 0 or type(limit) is not int or not 1 <= limit <= 100:
         raise AdapterError("Invalid pagination")
     hits = []
+    missing = object()  # Absent method fields must not match an explicit JSON null.
     for i, row in enumerate(bundle["rows"]):
         value = row
         for key in field.split("."):
             if not isinstance(value, dict) or key not in value:
-                value = None
+                value = missing
                 break
             value = value[key]
-        if same_type(value, expected):
+        if value is not missing and same_type(value, expected):
             hits.append({"ordinal":i,"row":row,
                          "record_sha256":sha(json.dumps(row, ensure_ascii=False, sort_keys=True,
                                                        separators=(",",":")).encode("utf-8"))})
