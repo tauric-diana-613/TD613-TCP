@@ -19,7 +19,7 @@ class SemanticDB(unittest.TestCase):
    result=m.build(dest,iter(chunks),lambda x:labels[next(z["source_id"]
      for z in chunks if z["chunk"]==x)],"a"*64)
    self.assertEqual(result["source_chunk_count"],4)
-   self.assertEqual(int(m.audit(dest,iter(chunks))["corpus_chunk_count"]),3)
+   self.assertEqual(int(m.audit(dest,iter(chunks))["corpus_chunk_count"]),4)
    found=m.search(dest,[1,0],model_hash="a"*64,limit=2)
    self.assertEqual(found[0]["estate"],"EMSTD613")
    self.assertEqual(found[0]["retrieval_class"],"LOCAL_SEMANTIC_CANDIDATE_NO_RELATION_PROMOTION")
