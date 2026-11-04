@@ -7,6 +7,7 @@ No 'semantic' mode until actual source-verified embeddings/relations are supplie
 """
 from __future__ import annotations
 import argparse
+import importlib.util
 import hashlib
 import json
 import os
@@ -132,20 +133,56 @@ def state(source_iter):
       "source_text_reconstruction_from_summaries":False,
       "paid_or_private_provider_access":0}
 
+def native_dispatch(src_root,em_root,command,*,projection=None,term=None,
+                    fixture=None,operation=None,snapshot=None,seal=None,
+                    identifier=None,scope=None,source_sha256=None,limit=100):
+    """Callable Universal native-method route; original SRC/Em checkouts unchanged."""
+    source=Path(__file__).resolve().parent/"atelier-native-inheritance-bridge-v1.py"
+    if not source.is_file() or source.is_symlink():
+        raise ValueError("UNIVERSAL_NATIVE_BRIDGE_NOT_INSTALLED")
+    spec=importlib.util.spec_from_file_location("td613_native_frozen_bridge",source)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    src=module.root_check(src_root,"SRC")
+    em=module.root_check(em_root,"EMSTD613")
+    if command=="native-census":return module.census(src,em)
+    if command=="src-projection":return module.native_projection(src,projection,term,limit)
+    if command=="src-native-query":
+        return module.native_src_query(src,snapshot,seal,operation,identifier,scope,source_sha256)
+    if command=="em-fixture":return module.em_fixture(em,fixture,limit)
+    raise ValueError("UNSUPPORTED_NATIVE_OPERATION")
+
 def main():
     a=argparse.ArgumentParser()
-    a.add_argument("--wendbine-db",required=True)
-    a.add_argument("--repo-root",required=True)
+    a.add_argument("--wendbine-db")
+    a.add_argument("--repo-root")
     a.add_argument("--src-checkout",required=True,help="Independent git worktree at pinned SRC HEAD")
     a.add_argument("--em-checkout",required=True,help="Independent git worktree at pinned Em HEAD")
     sub=a.add_subparsers(dest="command",required=True)
     sub.add_parser("audit")
-    q=sub.add_parser("exact")
-    q.add_argument("phrase");q.add_argument("--limit",type=int,default=30)
+    q=sub.add_parser("exact");q.add_argument("phrase");q.add_argument("--limit",type=int,default=30)
+    sub.add_parser("native-census")
+    q=sub.add_parser("src-projection");q.add_argument("projection");q.add_argument("--term");q.add_argument("--limit",type=int,default=100)
+    q=sub.add_parser("src-native-query");q.add_argument("operation")
+    q.add_argument("--snapshot",required=True);q.add_argument("--seal",required=True)
+    q.add_argument("--query-sha256",required=True);q.add_argument("--id");q.add_argument("--scope")
+    q=sub.add_parser("em-fixture");q.add_argument("fixture");q.add_argument("--limit",type=int,default=100)
     args=a.parse_args()
-    it=load_sources(Path(args.wendbine_db),Path(args.repo_root),
-      native_checkouts={"SRC":Path(args.src_checkout),"EMSTD613":Path(args.em_checkout)})
-    result=state(it) if args.command=="audit" else exact_query(it,args.phrase,args.limit)
+    roots={"SRC":Path(args.src_checkout),"EMSTD613":Path(args.em_checkout)}
+    native_src=verify_native_checkout(roots["SRC"],"SRC")
+    native_em=verify_native_checkout(roots["EMSTD613"],"EMSTD613")
+    if args.command in {"audit","exact"}:
+        if not args.wendbine_db or not args.repo_root:
+            raise ValueError("SOURCEBOUND_QUERY_REQUIRES_WENDBINE_DB_AND_REPO_ROOT")
+        it=load_sources(Path(args.wendbine_db),Path(args.repo_root),native_checkouts=roots)
+        result=state(it) if args.command=="audit" else exact_query(it,args.phrase,args.limit)
+    else:
+        result=native_dispatch(native_src,native_em,args.command,
+           projection=getattr(args,"projection",None),term=getattr(args,"term",None),
+           fixture=getattr(args,"fixture",None),operation=getattr(args,"operation",None),
+           snapshot=getattr(args,"snapshot",None),seal=getattr(args,"seal",None),
+           identifier=getattr(args,"id",None),scope=getattr(args,"scope",None),
+           source_sha256=getattr(args,"query_sha256",None),limit=getattr(args,"limit",100))
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
 if __name__=="__main__":main()
