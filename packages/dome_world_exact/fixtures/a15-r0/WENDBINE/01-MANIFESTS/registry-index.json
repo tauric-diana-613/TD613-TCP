@@ -1,50 +1,50 @@
 {
   "schema_version": "connector-registry-index/v1",
   "atelier": "WENDBINE",
-  "snapshot_id": "wendbine-20261102175835-2861f2e0326f",
+  "snapshot_id": "wendbine-20261104014208-6d200e3ff3a0",
   "current_seal": "04-RECEIPTS/phase2/current-seal.json",
   "entity_resolver": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
   "evidence_resolver": "01-MANIFESTS/phase2/capture-v2.jsonl",
   "registries": [
     {
       "path": "01-MANIFESTS/phase2/manifestations.jsonl",
-      "count": 2021,
-      "sha256": "bd855907a1663ae1fd014a38371b216667174ab6d358f86336d18d9e5e15a0a7"
+      "count": 2062,
+      "sha256": "708dd6f7a0d0daeaccd9dcd77fd00e0b7f6e9ed57fa42618e5c8813c58eb6d6a"
     },
     {
       "path": "01-MANIFESTS/phase2/capture-v2.jsonl",
-      "count": 4701,
-      "sha256": "734f07ce8a33c2dcb11d2578b4aee564375f0dee4c9e5d2fcc0efab32456bece"
+      "count": 6763,
+      "sha256": "89fd7ee5f06ec80aa8cf5f0cb41d195bfcfc936ea53409b96772d3a314b3ca7b"
     },
     {
       "path": "01-MANIFESTS/phase2/blob-v1.jsonl",
-      "count": 1273,
-      "sha256": "a56fa9be8f1edbae93e162f5d13e20dea9ed104ec2aebf9be8e28138deb9058d"
+      "count": 1312,
+      "sha256": "6113c23ae3cdcaa25a8ffcbe4994d74d8fa882752a952377db183df9eb9ae742"
     },
     {
       "path": "01-MANIFESTS/phase2/derivative-v1.jsonl",
-      "count": 4701,
-      "sha256": "3a7d83826617981ae282b32dc647c0e13e28455775354d10cb4438e8d351ae29"
+      "count": 6763,
+      "sha256": "f7e6e600be71b64ebc0b5a01ce6e009c5fe52afbc6fd095119fa5c0780b25c10"
     },
     {
       "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
-      "count": 2021,
-      "sha256": "077a512c298d23a17642b72946a906a15c38fccfe476ccd021a25b837039a30d"
+      "count": 2062,
+      "sha256": "670b371b2f5a8dff2552eed1e3c735d752b93cc3527799d05bb8a79e837551b3"
     },
     {
       "path": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
-      "count": 4701,
-      "sha256": "513af61bd693ad4ae8289f6b7f1eac74dab59bba6f66c3a9e1a7ccb213c865fd"
+      "count": 6763,
+      "sha256": "6f2c5121baac458275865225b450874b79a8798324fb049c03f7e0b0b4d51999"
     },
     {
       "path": "05-OPERATIONS/phase2/version-observations.jsonl",
-      "count": 4701,
-      "sha256": "a9df20403066f31ee47e612d90b2b147f062ca16b0f467b1e6e524bafe302722"
+      "count": 6763,
+      "sha256": "fad9f8a6c4e8d6c32fe8b62df89c9ad6d674c573d17f7f36cbef38f6a3e3f1b2"
     },
     {
       "path": "05-OPERATIONS/relations/typed-edges.jsonl",
-      "count": 4641,
-      "sha256": "5c1cae7bb161b5c12aaaa2073695d994caab254be7d9d57999a1e43b638fd6d1"
+      "count": 6703,
+      "sha256": "d0dc40bb42d2a501fdd560cf03607e428149be5554a65a8e90833a4c0e0d9f6a"
     }
   ]
 }
