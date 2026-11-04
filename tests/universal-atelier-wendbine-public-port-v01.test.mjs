@@ -23,13 +23,15 @@ const fixture=async t=>{
  assert.equal(r.status,0,r.stderr);
  const a=path.join(home,'ATELIER'),e=path.join(home,'ENCYCLOPEDIA');
  fs.mkdirSync(a);fs.mkdirSync(e);
- const twin=await openTwinProducts({atelierWorkspace:a,encyclopediaWorkspace:e,create:true});
  const wendbineRoot=path.join(original,'packages/dome_world_exact/fixtures/a15-r0/WENDBINE');
+ const twin=await openTwinProducts({atelierWorkspace:a,encyclopediaWorkspace:e,create:true,publicWendbineRoot:wendbineRoot});
+ assert.equal(twin.real_public_wendbine_query_enabled,true);
+ assert.equal(twin.private_original_source_admission,'HELD');
  return {home,twin,wendbineRoot,original};
 };
 test('Universal Atelier public companion operates native November 4 SEALED search, never synthetic W_PUBLIC catalog',async t=>{
  const {twin,wendbineRoot}=await fixture(t);
- const port=await openUniversalWendbinePort({universalAtelier:twin.atelier,wendbineRoot});
+ const port=twin.wendbinePublicResearch;
  const s=await port.request({action:'summary'});
  assert.equal(s.research_product,'TD613_UNIVERSAL_ATELIER_B8_CANDIDATE');
  assert.equal(s.result.sources,2062);assert.equal(s.result.captures,6763);
@@ -89,7 +91,7 @@ test('Universal Atelier maps actual recorded typed edges without making a causal
   snapshotId:PUBLIC_WEND_SOURCE.snapshot,sealId:PUBLIC_WEND_SOURCE.seal});
  const edge=r.edges.find(x=>x.from&&x.to);
  assert.ok(edge);
- const port=await openUniversalWendbinePort({universalAtelier:twin.atelier,wendbineRoot});
+ const port=twin.wendbinePublicResearch;
  const result=await port.request({action:'map',entityId:edge.from,graph:edge.graph,depth:1});
  assert.ok(result.result.matching_edges>=1);
  assert.ok(result.result.edges.some(x=>x.from===edge.from||x.to===edge.from));
@@ -100,7 +102,7 @@ test('Universal Atelier maps actual recorded typed edges without making a causal
 });
 test('Universal fails closed on unsupported original text requests, tampered mutable input, or wrong archive',async t=>{
  const {twin,wendbineRoot}=await fixture(t);
- const port=await openUniversalWendbinePort({universalAtelier:twin.atelier,wendbineRoot});
+ const port=twin.wendbinePublicResearch;
  await assert.rejects(port.request({action:'readOriginal',sourceId:'reddit:t3_1wb61ip'}),/UAT_ORIGINALS_AND_UNSUPPORTED_ACTION_HELD/);
  await assert.rejects(port.request({action:'search',query:'raw selftext'}),/WEND_PRIVATE_CONTENT_QUERY_NOT_ON_PUBLIC_SURFACE/);
  const fake={action:'summary'};
