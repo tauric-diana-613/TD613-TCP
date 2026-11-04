@@ -59,6 +59,22 @@ Native SRC has a content-addressed original tree and derivative/mapping instrume
 
 Required evidence: authentic post-ID/date exact retrieval (including same-day exhaustive sets); source SHA/bytes; exact byte offsets; attributed explicit relations; independent native SRC/Em comparisons; failure on wrong/withheld source; nontrivial cross-origin geometry equality where justified; distinct scientific nulls where it is not. No synthetic pass can substitute for a genuine accessible corpus run.
 
+
+## Universal Atelier read-only bridge (new)
+
+A separate executable \`scripts/universal-atelier-sourcebound-readonly-v1.py\` federates the **actual operator-local Wendbine observed text database** with the checked-in SRC and Em derivative files. It computes exact local byte offsets and hashes for the existing text while labeling the two latter estates as **DERIVATIVES, NOT VERIFIED ORIGINALS**. The bridge cannot manufacture a missing original source blob or a native semantic/topological claim.
+
+Example after a successful local Wendbine source import:
+
+\`\`\`powershell
+python scripts/universal-atelier-sourcebound-readonly-v1.py --wendbine-db "C:\OperatorOnly\Wendbine\wendbine-live-v1.sqlite" --repo-root "C:\OperatorOnly\TD613-TCP" audit
+python scripts/universal-atelier-sourcebound-readonly-v1.py --wendbine-db "C:\OperatorOnly\Wendbine\wendbine-live-v1.sqlite" --repo-root "C:\OperatorOnly\TD613-TCP" exact "𝌋"
+\`\`\`
+
+This is **a bounded execution-compatible source resolution layer**, not SRC native operational parity, Em original-byte completeness, local meaning-based embedding search or the final Manifest interoperability standard. The tests explicitly refuse to promote derivative text into original source status.
+
+\`python -m unittest discover -s tests -p 'test_universal_atelier_sourcebound_readonly_v1.py' -v\`
+
 ## Test contract
 
 \`\`\`bash
