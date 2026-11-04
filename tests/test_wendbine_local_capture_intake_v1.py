@@ -64,6 +64,11 @@ class HistoricalCustody(unittest.TestCase):
             original_hit=m.INDEX.exact_search(verify,"Original 𝌋")
         self.assertEqual(len(original_hit),1)
         self.assertEqual(original_hit[0]["byte_offset"],len("Original ".encode("utf8")))
+        lexical=m.history_lexical(self.db,"Edited",limit=10)
+        self.assertEqual(len(lexical),1)
+        self.assertEqual(lexical[0]["capture_id"],"c2")
+        self.assertEqual(lexical[0]["later_visibility_state"],"PLATFORM_FILTERED_REPORTED")
+        self.assertEqual(report["all_capture_fts_rows"],3)
         edited=m.history_exact(self.db,"Edited later capture")
         self.assertEqual(len(edited),1)
         self.assertEqual(edited[0]["capture_id"],"c2")
@@ -114,6 +119,15 @@ class HistoricalCustody(unittest.TestCase):
         raw=b'{"schema":"td613.wendbine.local-capture/v1","schema":"evil"}'
         with self.assertRaisesRegex(ValueError,"DUPLICATE_CAPTURE_JSON_KEY"):
             m.parse_capture(raw,1)
+
+    def test_conflicting_publication_times_same_source_are_held_before_database_creation(self):
+        first=row("c1","reddit:t3_abcde1","First observation")
+        second=row("c2","reddit:t3_abcde1","Second observation","2026-09-14T12:00:00Z")
+        second["published_at_utc"]="2026-09-12T11:00:00Z"
+        self.write([first,second])
+        with self.assertRaisesRegex(ValueError,"CONFLICTING_SOURCE_PUBLICATION_TIME"):
+            self.ingest()
+        self.assertFalse(self.db.exists())
 
     def test_history_search_detects_mutated_observed_version(self):
         self.write([row("c1","reddit:t3_abcde1","Unmodified observation")])
