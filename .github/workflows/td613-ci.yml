@@ -152,6 +152,10 @@ jobs:
         run: python -B -m unittest discover -s tests -p 'test_atelier_cross_estate_query_v1.py' -v
       - name: Four Atelier operator-local offline embedding contract
         run: python -B -m unittest discover -s tests -p 'test_atelier_local_embeddings_v1.py' -v
+      - name: Full three-estate offline semantic SQLite source snapshot
+        run: python -B -m unittest discover -s tests -p 'test_atelier_semantic_sqlite_v1.py' -v
+      - name: Vague-to-specific preregistered relevance and decoy benchmarks
+        run: python -B -m unittest discover -s tests -p 'test_atelier_semantic_parity_benchmark_v1.py' -v
       - name: Source-identity Em Work SRC Zenodo Wendbine capture crosswalk
         run: python -B -m unittest discover -s tests -p 'test_atelier_source_crosswalk_v1.py' -v
       - name: Reciprocal Encyclopedia-Atelier Flight requires actual four-estate parity
