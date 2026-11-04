@@ -115,6 +115,14 @@ jobs:
           node tests/release-plumbing.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Standalone EMSTD613 source-free parity regressions
+        run: |
+          python -B packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/test_em_native_text_search_v1.py
+          python -B packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/test_em_native_reference_v1.py
+          python -B packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/test_em_work_route_v1.py
+          python -B packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/test_em_motif_mechanism_control_v1.py
+      - name: Independent native semantic reader source-digest controls
+        run: python -B packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/test_native_semantic_search_v1.py
       - name: Validate Giving and Campaign Deputy import contracts
         run: |
           node tests/giving-history-package.test.mjs
