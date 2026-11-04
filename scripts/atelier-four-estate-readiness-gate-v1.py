@@ -38,12 +38,12 @@ def check_report(packet):
         if any(status not in ALLOWED for status in checks.values()):
             raise ValueError("UNKNOWN_CHECK_STATUS:"+estate)
         pending=[test for test in TESTS if checks[test]!="VERIFIED_ON_REAL_CORPUS"]
-        if row.get("original_source_count",0)<1:pending.append("ORIGINAL_CORPUS_NOT_PRESENT")
+        if row.get("observed_source_count",0)<1:pending.append("OBSERVED_SOURCE_CORPUS_NOT_PRESENT")
         if not row.get("human_reviewed_evidence_ids"):pending.append("NO_INDEPENDENT_REVIEWED_EVIDENCE")
         if row.get("forensic_source_origin_proven") is True and not row.get("external_origin_witness_id"):
             raise ValueError("UNSUPPORTED_SOURCE_ORIGIN_ASSERTION")
         missing[estate]=pending
-        summary[estate]={"missing":pending,"real_source_count":row.get("original_source_count",0)}
+        summary[estate]={"missing":pending,"real_source_count":row.get("observed_source_count",0)}
     receiver=packet.get("receivers")
     if not isinstance(receiver,dict) or set(receiver)!={"UNIVERSAL_ENCYCLOPEDIA","UNIVERSAL_ATELIER"}:
         raise ValueError("BOTH_DISTINCT_EMPTY_RECEIVERS_REQUIRED")
@@ -52,6 +52,9 @@ def check_report(packet):
            record.get("replayable_zero_source_receipt") is not True or \
            record.get("has_auto_promote") is not False:
             missing.setdefault(dest,[]).append("EMPTY_RECEIVER_CUSTODY_OR_AUTHORITY_NOT_VERIFIED")
+    encyclopedia=packet.get("td613_encyclopedia_source")
+    if not isinstance(encyclopedia,dict) or encyclopedia.get("observed_source_count",0)<1 or        encyclopedia.get("source_index_readback_verified") is not True or        encyclopedia.get("source_provenance_checked") is not True or        encyclopedia.get("matched_recipient_contract") is not True:
+        missing.setdefault("TD613_ENCYCLOPEDIA_SOURCE",[]).append("SECOND_FLIGHT_SOURCE_INDEX_AND_READBACK_UNVERIFIED")
     extra=packet.get("reciprocal_probes")
     if not isinstance(extra,dict) or set(extra)!={"WENDBINE_TO_UNIVERSAL_ENCYCLOPEDIA",
                                                   "TD613_ENCYCLOPEDIA_TO_UNIVERSAL_ATELIER"}:
