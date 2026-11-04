@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 SCHEMA = "claim-evidence-tomography/v1"
@@ -57,6 +58,13 @@ def _reject_nonfinite(token):
     raise AdapterError("Non-finite JSON token is forbidden: "+token)
 
 
+def _finite_float(token):
+    value = float(token)
+    if not math.isfinite(value):
+        raise AdapterError("Non-finite JSON number is forbidden: "+token)
+    return value
+
+
 def load(path, *, snapshot, seal_binding, expected_sha256):
     if not snapshot or not seal_binding or not expected_sha256:
         raise AdapterError("Explicit source digest, snapshot and seal binding required")
@@ -67,7 +75,8 @@ def load(path, *, snapshot, seal_binding, expected_sha256):
         text = raw.decode("utf-8-sig")
         lines = [line for line in text.splitlines() if line.strip()]
         rows = [json.loads(line, object_pairs_hook=_pairs,
-                           parse_constant=_reject_nonfinite) for line in lines]
+                           parse_constant=_reject_nonfinite,
+                            parse_float=_finite_float) for line in lines]
     except AdapterError:
         raise
     except (UnicodeError, ValueError, TypeError) as exc:
@@ -145,8 +154,9 @@ def main(argv=None):
     p.add_argument("--limit",type=int,default=50)
     a=p.parse_args(argv)
     bundle=load(a.jsonl,snapshot=a.snapshot,seal_binding=a.seal_binding,expected_sha256=a.source_sha256)
-    print(json.dumps(query(bundle,a.field,json.loads(a.value_json),offset=a.offset,limit=a.limit),
-                     ensure_ascii=False,sort_keys=True))
+    print(json.dumps(query(bundle,a.field,json.loads(a.value_json, parse_constant=_reject_nonfinite,
+                      parse_float=_finite_float),offset=a.offset,limit=a.limit),
+                     ensure_ascii=False,sort_keys=True,allow_nan=False))
 
 
 if __name__=="__main__":
