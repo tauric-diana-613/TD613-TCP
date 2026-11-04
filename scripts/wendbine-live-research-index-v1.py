@@ -62,8 +62,7 @@ def prepare_db(dest: Path) -> sqlite3.Connection:
         raise FileExistsError("EXCLUSIVE_NEW_DB_REQUIRED_NO_OVERWRITE")
     if not dest.parent.exists() or not dest.parent.is_dir():
         raise FileNotFoundError("EXISTING_LOCAL_PRIVATE_DIRECTORY_REQUIRED")
-    if os.name!="nt":
-        os.chmod(dest.parent,0o700)
+    # Never chmod a caller-owned existing directory as a side effect.
     conn=sqlite3.connect(str(dest))
     if os.name!="nt":os.chmod(dest,0o600)
     conn.executescript("""
