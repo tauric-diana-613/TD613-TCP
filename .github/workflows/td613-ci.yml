@@ -189,6 +189,13 @@ jobs:
           node --test packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-native-routing-v01.test.mjs packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B4/tests/src-compositional-v01.test.mjs
       - name: Test Universal Atelier native source-method bridge to real sealed Wendbine public epoch
         run: node --test tests/universal-atelier-wendbine-public-port-v01.test.mjs
+      - name: Retain seal-pinned Wendbine public graph-layer aggregate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-nov04-public-graph-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/wendbine-public-query/graph-layer-summary.json
+          if-no-files-found: warn
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
