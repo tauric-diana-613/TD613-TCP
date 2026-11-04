@@ -252,7 +252,7 @@ def history_lexical(db:Path,query:str,limit:int=30):
     """Search ALL captured versions, including those with reported later filtering."""
     if not isinstance(query,str) or not query or not 1<=limit<=200:
         raise ValueError("CAPTURE_LEXICAL_QUERY_LIMITS")
-    words=re.findall(r"(?u)\\w+",query)[:12]
+    words=re.findall(r"(?u)\w+",query)[:12]
     if not words:raise ValueError("CAPTURE_NO_SEARCH_WORDS")
     term=" OR ".join('"'+w.replace('"','""')+'"' for w in words)
     INDEX.ensure_local(db)
