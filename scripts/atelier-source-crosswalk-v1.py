@@ -27,7 +27,7 @@ def jsonl(root,relative):
         if path.is_symlink():raise ValueError("REGISTRY_SYMLINK_REFUSED")
     if not path.is_file() or path.stat().st_size>MAX_SIZE:raise ValueError("REGISTRY_MISSING_OR_OVERSIZE")
     raw=path.read_bytes()
-    return [json.loads(line) for line in raw.decode("utf8-sig").splitlines() if line.strip()],hashlib.sha256(raw).hexdigest()
+    return [json.loads(line) for line in raw.decode("utf-8-sig").splitlines() if line.strip()],hashlib.sha256(raw).hexdigest()
 
 def annotate(hits,em_root,*,limit=100):
     if not isinstance(hits,list) or not 1<=len(hits)<=limit<=100:

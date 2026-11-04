@@ -1,3 +1,4 @@
+from contextlib import closing
 import importlib.util, pathlib, tempfile, hashlib, sqlite3, unittest
 p=pathlib.Path(__file__).resolve().parents[1]/"scripts"/"atelier-reference-index-v1.py"
 s=importlib.util.spec_from_file_location("refindex",p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
@@ -22,7 +23,7 @@ class ReferenceIndex(unittest.TestCase):
  def test_reference_index_and_typed_graph(self):
   state=m.build(self.db,self.data,self.edges)
   self.assertEqual(state["record_count"],4)
-  with m.connect(self.db) as con:
+  with closing(m.connect(self.db)) as con:
    self.assertEqual(m.verify(con)["records"],4)
    hits=m.search(con,"Traceable post",estate="WENDBINE")
    self.assertEqual(len(hits["results"]),1)
@@ -40,9 +41,27 @@ class ReferenceIndex(unittest.TestCase):
     m.build(pathlib.Path(folder)/"reject.sqlite",self.data,self.edges)
  def test_mutated_source_refused(self):
   m.build(self.db,self.data)
-  with sqlite3.connect(self.db) as con:
+  with closing(sqlite3.connect(self.db)) as con, con:
    con.execute("UPDATE records SET text='tampered' WHERE estate='SRC'")
-  with m.connect(self.db) as con:
+  with closing(m.connect(self.db)) as con:
    with self.assertRaisesRegex(ValueError,"REFERENCE_TEXT_DIGEST_MISMATCH"):
     m.verify(con)
+ def test_unicode_phrase_pages_context_reverse_and_fts_corruption(self):
+  m.build(self.db,self.data,self.edges)
+  with closing(m.connect(self.db)) as con:
+   hits=m.search(con,"𝌋",mode="exact",estate="WENDBINE")
+   self.assertEqual(hits['total'],1)
+   self.assertEqual(m.search(con,"post Traceable",mode="phrase")['total'],0)
+   self.assertEqual(m.search(con,"Traceable",source_id="not-the-source")['total'],0)
+   packet=m.context(con,hits['results'][0]['doc_id'],max_records=1)
+   self.assertEqual(len(packet['records']),1)
+   self.assertEqual(len(m.cited_by(con,"emsrc_1")),1)
+  with closing(sqlite3.connect(self.db)) as con,con:con.execute("DELETE FROM fts")
+  with closing(m.connect(self.db)) as con:
+   with self.assertRaisesRegex(ValueError,"FTS_MIRROR_MISMATCH"):m.verify(con)
+ def test_typed_relation_tamper_is_not_laundered_by_valid_source_hashes(self):
+  m.build(self.db,self.data,self.edges)
+  with closing(sqlite3.connect(self.db)) as con,con:con.execute("UPDATE relations SET projection='CAUSAL_PROMOTED'")
+  with closing(m.connect(self.db)) as con:
+   with self.assertRaisesRegex(ValueError,'RELATION_DIGEST_MISMATCH'):m.verify(con)
 if __name__=="__main__":unittest.main()

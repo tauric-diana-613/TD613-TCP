@@ -6,6 +6,7 @@ facets, typed neighbors and bounded route traversal. It is NOT the published
 TD613 Encyclopedia, a source admission surface, or scientific equivalence.
 """
 from __future__ import annotations
+from contextlib import closing
 import argparse
 from collections import deque
 import hashlib
@@ -14,6 +15,7 @@ import json
 from pathlib import Path
 import re
 import sqlite3
+from itertools import zip_longest
 
 HERE=Path(__file__).resolve().parent
 s=importlib.util.spec_from_file_location("td613_reference_cross_query",
@@ -41,7 +43,8 @@ def build(dest,source_chunks,edges=()):
           CREATE TABLE relations(edge_id TEXT PRIMARY KEY,src TEXT NOT NULL,
             dst TEXT NOT NULL,relation_type TEXT NOT NULL,
             projection TEXT NOT NULL,evidence_id TEXT NOT NULL,
-            evidence_status TEXT NOT NULL,authority TEXT NOT NULL);""")
+            evidence_status TEXT NOT NULL,authority TEXT NOT NULL);
+          CREATE TABLE relation_context(edge_id TEXT PRIMARY KEY,record_json TEXT NOT NULL);""")
         con.execute("BEGIN IMMEDIATE")
         for obj in source_chunks:
             blob=obj["chunk"].encode("utf8")
@@ -65,9 +68,14 @@ def build(dest,source_chunks,edges=()):
                 (edge["edge_id"],edge["src"],edge["dst"],edge["relation_type"],
                  edge["projection"],edge["evidence_id"],edge["evidence_status"],
                  edge["authority"]))
+            con.execute("INSERT INTO relation_context VALUES(?,?)",(edge['edge_id'],json.dumps(edge.get('native_record'),ensure_ascii=False,sort_keys=True,separators=(',',':'))))
+        relation_digest=hashlib.sha256()
+        for row in con.execute("SELECT r.*,c.record_json FROM relations r JOIN relation_context c USING(edge_id) ORDER BY r.edge_id"):
+            relation_digest.update(json.dumps(list(row),ensure_ascii=False,separators=(',',':')).encode('utf8')+b'\n')
         metadata={"schema":VERSION,"record_count":str(count),
             "source_instance_count":str(len(refs)),
             "source_digest":manifest.hexdigest(),"status":"COMPLETE_OPERATOR_LOCAL_INDEX"}
+        metadata['relation_digest']=relation_digest.hexdigest()
         con.executemany("INSERT INTO meta VALUES(?,?)",list(metadata.items()))
         con.commit()
     except BaseException:
@@ -87,6 +95,7 @@ def cite(con,record):
       "capture_id":record[3],"source_kind":record[4],
       "source_field":record[5],"source_sha256":record[6],
       "chunk_sha256":record[7],"byte_offset":record[8],
+      "graph_node_id":record[1]+'::'+record[2],
       "evidence_class":"SOURCE_BOUND_RETRIEVAL_NOT_SCIENTIFIC_PROOF"}
 
 def get(con,doc_id,*,include_text=False):
@@ -98,21 +107,26 @@ def get(con,doc_id,*,include_text=False):
     if include_text:out["text"]=r[9]
     return out
 
-def search(con,text,*,estate="ALL",limit=25,offset=0):
+def search(con,text,*,estate="ALL",limit=25,offset=0,mode="lexical",source_id=None):
     if not isinstance(text,str) or not text or not 1<=limit<=100 or not 0<=offset<=5000:
         raise ValueError("REFERENCE_SEARCH_LIMIT_OR_TEXT")
     if estate!="ALL" and estate not in ("SRC","EMSTD613","WENDBINE"):
         raise ValueError("REFERENCE_SEARCH_ESTATE_UNKNOWN")
+    if mode not in ("lexical","phrase","exact"):raise ValueError("REFERENCE_QUERY_MODE")
     tokens=re.findall(r"(?u)\w+",text)
-    if not tokens:raise ValueError("SEARCH_TERMS_REQUIRED")
-    query=" OR ".join('"'+v.replace('"','""')+'"' for v in tokens[:16])
+    if not tokens and mode!="exact":raise ValueError("SEARCH_TERMS_REQUIRED")
+    query=('"'+text.replace('"','""')+'"') if mode=="phrase" else " OR ".join('"'+v.replace('"','""')+'"' for v in tokens[:16])
     sql="""SELECT r.*,bm25(fts) FROM fts JOIN records r ON r.doc_id=fts.doc_id
         WHERE fts MATCH ?"""
+    if mode=="exact":
+        sql="SELECT r.*,0 FROM records r WHERE instr(r.text,?)>0";query=text
     params=[query]
     if estate!="ALL":sql+=" AND r.estate=?";params.append(estate)
-    sql+=" ORDER BY bm25(fts),r.doc_id LIMIT ? OFFSET ?";params.extend([limit,offset])
+    if source_id is not None:sql+=" AND r.source_id=?";params.append(source_id)
+    total=con.execute("SELECT COUNT(*) FROM ("+sql+")",params).fetchone()[0]
+    sql+=(" ORDER BY r.doc_id" if mode=="exact" else " ORDER BY bm25(fts),r.doc_id")+" LIMIT ? OFFSET ?";params.extend([limit,offset])
     data=con.execute(sql,params).fetchall()
-    return {"query":text,"estate":estate,"limit":limit,"offset":offset,
+    return {"query":text,"estate":estate,"limit":limit,"offset":offset,"total":total,"mode":mode,
         "results":[cite(con,r)|{"bm25_score":r[10],
           "rank_evidence":"LEXICAL_RELEVANCE_NOT_SCIENTIFIC_VALIDITY"} for r in data]}
 
@@ -130,6 +144,16 @@ def neighbors(con,source_id,*,projection=None):
        "projection":e[4],"evidence_id":e[5],"evidence_status":e[6],
        "causal_relation_inferred":False}
        for e in rows if projection is None or e[4]==projection]
+
+def cited_by(con,source_id,*,projection=None):
+    return [e for e in neighbors(con,source_id,projection=projection) if e["to"]==source_id]
+
+def context(con,doc_id,*,max_records=5,include_text=False):
+    if type(max_records) is not int or not 1<=max_records<=25:raise ValueError("REFERENCE_CONTEXT_BOUNDED")
+    seed=get(con,doc_id)
+    if "source_id" not in seed:return seed
+    ids=[x[0] for x in con.execute("SELECT doc_id FROM records WHERE estate=? AND source_id=? AND capture_id IS ? ORDER BY byte_offset,doc_id LIMIT ?",(seed['estate'],seed['source_id'],seed['capture_id'],max_records+1))]
+    return {"seed":seed,"records":[get(con,x,include_text=include_text) for x in ids[:max_records]],"truncated":len(ids)>max_records,"typed_neighbors":neighbors(con,seed['graph_node_id']),"candidate_relations_only":True}
 
 def route(con,start,goal,*,projection=None,max_depth=4):
     if not 1<=max_depth<=6:raise ValueError("ROUTE_DEPTH_BOUNDED")
@@ -161,6 +185,12 @@ def verify(con):
              ensure_ascii=False,separators=(",",":")).encode("utf8")+b"\n");count+=1
     if manifest.hexdigest()!=meta["source_digest"] or count!=int(meta["record_count"]):
         raise ValueError("REFERENCE_MANIFEST_DIGEST_MISMATCH")
+    if any(a!=b for a,b in zip_longest(con.execute('SELECT doc_id,text FROM records ORDER BY doc_id'),con.execute('SELECT doc_id,text FROM fts ORDER BY doc_id'))):
+        raise ValueError("REFERENCE_FTS_MIRROR_MISMATCH")
+    relation_digest=hashlib.sha256()
+    for row in con.execute("SELECT r.*,c.record_json FROM relations r JOIN relation_context c USING(edge_id) ORDER BY r.edge_id"):
+        relation_digest.update(json.dumps(list(row),ensure_ascii=False,separators=(',',':')).encode('utf8')+b'\n')
+    if relation_digest.hexdigest()!=meta.get('relation_digest') or con.execute('SELECT COUNT(*) FROM relations').fetchone()[0]!=con.execute('SELECT COUNT(*) FROM relation_context').fetchone()[0]:raise ValueError('REFERENCE_RELATION_DIGEST_MISMATCH')
     return {"state":"INDEX_BYTES_VERIFIED_NOT_EXTERNAL_ORIGIN","records":count,
             "source_digest":manifest.hexdigest()}
 def main():
@@ -171,19 +201,27 @@ def main():
     b.add_argument("--src-checkout",type=Path,required=True)
     b.add_argument("--em-checkout",type=Path,required=True)
     s=sub.add_parser("search");s.add_argument("text");s.add_argument("--estate",default="ALL")
+    s.add_argument("--limit",type=int,default=25);s.add_argument("--offset",type=int,default=0);s.add_argument("--mode",choices=["lexical","phrase","exact"],default="lexical");s.add_argument("--source-id")
     g=sub.add_parser("get");g.add_argument("doc_id");g.add_argument("--include-text",action="store_true")
     n=sub.add_parser("neighbors");n.add_argument("source_id")
+    n=sub.add_parser("cited-by");n.add_argument("source_id")
+    c=sub.add_parser("context");c.add_argument("doc_id");c.add_argument("--include-text",action="store_true")
+    c=sub.add_parser("cite");c.add_argument("doc_id")
     v=sub.add_parser("route");v.add_argument("start");v.add_argument("goal")
     sub.add_parser("facets");sub.add_parser("verify")
     args=p.parse_args()
     if args.command=="build":
-        rows=q.source_chunks(q.u.load_sources(args.wendbine_db,args.repo_root,
-          native_checkouts={"SRC":args.src_checkout,"EMSTD613":args.em_checkout}))
-        out=build(args.index,rows)
+        rows=list(q.source_chunks(q.u.load_sources(args.wendbine_db,args.repo_root,
+          native_checkouts={"SRC":args.src_checkout,"EMSTD613":args.em_checkout})))
+        spec=importlib.util.spec_from_file_location('native_reference_relations',HERE/'atelier-native-reference-relations-v1.py');native=importlib.util.module_from_spec(spec);spec.loader.exec_module(native)
+        out=build(args.index,rows,native.relations(args.src_checkout/q.u.BASE/'SRC',args.em_checkout/q.u.BASE/'EMSTD613',rows))
     else:
-        with connect(args.index) as con:
-            if args.command=="search":out=search(con,args.text,estate=args.estate)
+        with closing(connect(args.index)) as con:
+            if args.command=="search":out=search(con,args.text,estate=args.estate,limit=args.limit,offset=args.offset,mode=args.mode,source_id=args.source_id)
             elif args.command=="get":out=get(con,args.doc_id,include_text=args.include_text)
+            elif args.command=="cite":out=get(con,args.doc_id)
+            elif args.command=="context":out=context(con,args.doc_id,include_text=args.include_text)
+            elif args.command=="cited-by":out=cited_by(con,args.source_id)
             elif args.command=="neighbors":out=neighbors(con,args.source_id)
             elif args.command=="route":out=route(con,args.start,args.goal)
             elif args.command=="facets":out=facets(con)

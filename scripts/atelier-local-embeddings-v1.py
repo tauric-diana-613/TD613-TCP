@@ -40,6 +40,10 @@ def local_model_fingerprint(folder:Path):
 def open_model(folder):
     folder=q.check_absolute(folder)
     if not folder.is_dir():raise ValueError("LOCAL_MODEL_DIRECTORY_REQUIRED")
+    if (folder/"model.onnx").is_file():
+        spec=importlib.util.spec_from_file_location("td613_offline_onnx",ROOT/"atelier-offline-onnx-v1.py")
+        backend=importlib.util.module_from_spec(spec);spec.loader.exec_module(backend)
+        return backend.LocalSentenceEncoder(folder)
     # Explicit offline mode: a missing model or library causes a held state.
     os.environ["HF_HUB_OFFLINE"]="1"
     os.environ["TRANSFORMERS_OFFLINE"]="1"

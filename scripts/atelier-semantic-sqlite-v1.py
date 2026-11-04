@@ -6,6 +6,7 @@ Builds a new immutable SQLite vector index with exact native source fingerprint.
 No network API, no source admission, no assumption that similarity proves lineage.
 """
 from __future__ import annotations
+from contextlib import closing
 import argparse
 import hashlib
 import heapq
@@ -126,11 +127,11 @@ def audit(db,source_rows):
         return meta
     finally:con.close()
 
-def search(db,query_vector,*,model_hash,limit=20,estate="ALL"):
+def search(db,query_vector,*,model_hash,limit=20,estate="ALL",unique_sources=False):
     if estate!="ALL" and estate not in q.u.ESTATES:raise ValueError("UNKNOWN_SEMANTIC_ESTATE")
     if not 1<=limit<=100:raise ValueError("SEMANTIC_QUERY_LIMIT")
     vector=q.verified_vector(query_vector)
-    with sqlite3.connect(q.check_absolute(db).as_uri()+"?mode=ro",uri=True) as con:
+    with closing(sqlite3.connect(q.check_absolute(db).as_uri()+"?mode=ro",uri=True)) as con:
         meta=dict(con.execute("SELECT key,value FROM metadata"))
         if meta.get("state")!="COMPLETE_INDEX_REQUIRES_FRESH_SOURCE_REVALIDATION" or \
            meta.get("schema")!=VERSION or meta.get("model_sha256")!=model_hash:
@@ -145,7 +146,14 @@ def search(db,query_vector,*,model_hash,limit=20,estate="ALL"):
         for cid,est,sid,cap,kind,field,s_hash,c_hash,offset,dims,blob in con.execute(sql,params):
             score=sum(a*b for a,b in zip(vector,unpack(blob,dims)))
             rows.append((score,cid,est,sid,cap,kind,field,s_hash,c_hash,offset))
-        top=heapq.nlargest(limit,rows,key=lambda x:(x[0],x[1]))
+        if unique_sources:
+            top=[];seen=set()
+            for row in sorted(rows,key=lambda x:(-x[0],x[1])):
+                key=(row[2],row[3])
+                if key in seen:continue
+                seen.add(key);top.append(row)
+                if len(top)>=limit:break
+        else:top=heapq.nlargest(limit,rows,key=lambda x:(x[0],x[1]))
     return [{"score":round(r[0],8),"chunk_id":r[1],"estate":r[2],
        "source_id":r[3],"capture_id":r[4],"source_kind":r[5],
        "source_field":r[6],"source_sha256":r[7],

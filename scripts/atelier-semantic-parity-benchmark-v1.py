@@ -21,7 +21,7 @@ def benchmark(cases,rankings,*,k=20):
         if not isinstance(cid,str) or not cid or cid in ids or target not in ESTATES:
             raise ValueError("BENCHMARK_QUERY_ID_OR_ESTATE_INVALID")
         ids.add(cid)
-        if case.get("difficulty") not in ("VAGUE","SPECIFIC") or not isinstance(case.get("query"),str):
+        if case.get("difficulty") not in ("VAGUE","INTERMEDIATE","SPECIFIC") or not isinstance(case.get("query"),str):
             raise ValueError("BENCHMARK_QUERY_CLASS_REQUIRED")
         gold=case.get("relevant_source_ids")
         decoys=case.get("decoy_source_ids")
@@ -31,12 +31,13 @@ def benchmark(cases,rankings,*,k=20):
         rows=rankings.get(cid)
         if not isinstance(rows,list):raise ValueError("MISSING_INDEPENDENT_MODEL_RANKING")
         ranked=[]
-        for row in rows[:k]:
+        for row in rows:
             if row.get("estate") not in ESTATES or not isinstance(row.get("source_id"),str) or \
                row.get("retrieval_class")!="LOCAL_SEMANTIC_CANDIDATE_NO_RELATION_PROMOTION":
                 raise ValueError("RANKING_EVIDENCE_CLASS_INVALID")
             ref=(row["estate"],row["source_id"])
             if ref not in ranked:ranked.append(ref)
+            if len(ranked)>=k:break
         wanted={(target,x) for x in gold}
         decoy={(target,x) for x in decoys}
         recall=len(wanted.intersection(ranked))/len(wanted)

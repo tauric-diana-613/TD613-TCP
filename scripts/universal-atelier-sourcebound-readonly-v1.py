@@ -50,6 +50,13 @@ def repo_files(repository,estate,*,native_checkout=None):
     if not root.is_dir() or root.is_symlink(): raise ValueError("NATIVE_ESTATE_ROOT_MISSING_OR_SYMLINK")
     top=root/"03-DERIVATIVES"/"text"
     if not top.is_dir() or top.is_symlink():raise ValueError("NATIVE_TEXT_DERIVATIVES_MISSING")
+    committed={}
+    if native_checkout is not None:
+        rows=subprocess.run(["git","-C",str(native_checkout),"ls-files","--stage","-z","--",str(top.relative_to(native_checkout)).replace("\\","/")],check=True,capture_output=True,timeout=30).stdout
+        for row in rows.split(b"\0"):
+            if not row:continue
+            metadata,name=row.split(b"\t",1)
+            committed[name.decode("utf8")]=metadata.split()[1].decode("ascii")
     total=0
     for parent,dirs,files in os.walk(top,followlinks=False):
         dirs.sort();files.sort()
@@ -61,6 +68,12 @@ def repo_files(repository,estate,*,native_checkout=None):
             if f.is_symlink() or not f.is_file() or f.stat().st_size>MAX_FILE_BYTES:
                 raise ValueError("NATIVE_DERIVATIVE_INVALID")
             body=f.read_bytes()
+            if body.startswith(b"version https://git-lfs.github.com/spec/v1"):
+                raise ValueError("NATIVE_DERIVATIVE_LFS_POINTER_NOT_RESEARCH_TEXT")
+            if native_checkout is not None:
+                key=f.relative_to(native_checkout).as_posix()
+                git_blob=hashlib.sha1(b"blob "+str(len(body)).encode("ascii")+b"\0"+body).hexdigest()
+                if committed.get(key)!=git_blob:raise ValueError("NATIVE_DERIVATIVE_BYTES_DIFFER_FROM_PINNED_GIT")
             total+=len(body)
             if total>MAX_CUMULATIVE_BYTES:raise ValueError("NATIVE_DERIVATIVES_OVERSIZE")
             text=body.decode("utf8",errors="strict")

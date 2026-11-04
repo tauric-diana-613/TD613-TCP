@@ -26,4 +26,9 @@ class Bench(unittest.TestCase):
   self.cases[0]["difficulty"]="SPECIFIC"
   with self.assertRaisesRegex(ValueError,"BENCHMARK_ESTATE_COVERAGE_INSUFFICIENT"):
    m.benchmark(self.cases,self.ranks)
+ def test_chunk_duplicates_do_not_consume_source_level_rank_budget(self):
+  self.cases[1]['difficulty']='INTERMEDIATE'
+  self.ranks['SRC0']=[{'estate':'SRC','source_id':'duplicate','retrieval_class':'LOCAL_SEMANTIC_CANDIDATE_NO_RELATION_PROMOTION'}]*20+self.ranks['SRC0']
+  out=m.benchmark(self.cases,self.ranks,k=2)
+  self.assertEqual(out['individual_queries'][0]['reciprocal_rank'],0.5)
 if __name__=="__main__":unittest.main()

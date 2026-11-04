@@ -158,6 +158,8 @@ jobs:
         run: python -B -m unittest discover -s tests -p 'test_atelier_semantic_parity_benchmark_v1.py' -v
       - name: Encyclopedia-style source-bound searchable three-Atelier index and typed graph
         run: python -B -m unittest discover -s tests -p 'test_atelier_reference_index_v1.py' -v
+      - name: Native typed reference graph preserves unassigned Em manifestations
+        run: python -B -m unittest discover -s tests -p 'test_atelier_native_reference_relations_v1.py' -v
       - name: Source-identity Em Work SRC Zenodo Wendbine capture crosswalk
         run: python -B -m unittest discover -s tests -p 'test_atelier_source_crosswalk_v1.py' -v
       - name: Reciprocal Encyclopedia-Atelier Flight requires actual four-estate parity
