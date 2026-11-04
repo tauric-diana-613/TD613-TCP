@@ -36,6 +36,7 @@ class KnownIdArchiveSourceFree(unittest.TestCase):
         tmp=tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
         root=Path(tmp.name)
+        self.root=root
         self.manifest=root/"manifest.jsonl"
         raw=b"".join(h.encoded({
            "schema":"wendbine-manifestation/v1",
