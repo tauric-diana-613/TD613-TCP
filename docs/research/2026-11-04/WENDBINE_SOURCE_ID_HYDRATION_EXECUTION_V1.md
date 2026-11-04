@@ -82,6 +82,19 @@ python -B scripts/wendbine-source-coverage-adjudicator-v1.py --db "<PRIVATE-RESE
 
 Then execute Universal exact and audit queries with `--src-checkout`, `--em-checkout` and `--wendbine-db` set to the pinned and operator-local paths, as specified in the existing #1664 mandate. Demonstrate early, middle and recent exact source readback, title-only preservation, archive body offset/hashes, source-ID coverage, and source-grounded hyperlink topology. Report SRC and Em native-method parities separately.
 
+## Separate operator-requested disposal of obsolete encrypted Wendbine ZIPs
+
+The live text recovery must **never rely on decrypting or reopening** the two obsolete encrypted ZIP handoffs. Following operator's explicit previous destruction directive, run the separately bounded cleanup in the same authorized Windows Work session **only after** exact-target verification:
+
+| Captured obsolete handoff | GitHub Actions artifact ID | Required ZIP bytes | Required ZIP SHA-256 |
+| --- | ---: | ---: | --- |
+| November 2, 2026 | `13166173531` | `11753731` | `f8e3a09e0344b40aa6b56fbd5ef24c793dc02b056e24506568ba63456f7b92c1` |
+| November 4, 2026 | `13288781055` | `12220904` | `4804fabd2a2deb29652d21debc96a2a4feb3e1847aa66346d99dab560de20aeb` |
+
+The prior Windows receipt identified two byte/hash-matched local copies of each handoff and verified GitHub artifact metadata. **Re-check paths, bytes, hashes and GitHub metadata immediately before any deletion.** Inspect available custody/preservation notices for an *affirmative* legal or institutional hold; a specific identified hold precludes that deletion. Do not impose an impossible metaphysical proof that no undiscovered hold exists as a substitute for the operator's already explicit disposition instruction. If there is no conflicting recorded preservation obligation in the available custody record, delete **only the exact matched four known local ciphertext files** and the two verified GitHub Actions artifact IDs, recording each API response and the known/excluded copy scope. Keep metadata manifests, non-secret receipts, original source methods, SRC and Em histories, database, and unconnected archives intact. If GitHub permissions forbid Actions deletion, preserve precise failure status instead of claiming success. Distinguish logical removal from physical SSD or remote backup erasure.
+
+This subsection authorizes no decryption, recovery of protected original ZIP bodies, indiscriminate filesystem search, archive restoration, or wholesale cleanup.
+
 ## Acceptance and final report
 
 **A successful CI run certifies software behavior against invented provider responses, not actual retrieval.** For a live outcome require actual body/title counts; hashes and a few bounded authorized quotations; manifest-ID reconciliation; distinct error/missing categories; provider batch provenance; real Universal readback; and a sanitized receipt of the exact original Git heads. Any provider refusal or incomplete coverage retains an explicit HELD/INCOMPLETE classification, while successfully imported evidence remains searchable.
