@@ -1,0 +1,27 @@
+{
+  "disposition": "RESUMABLE_FLIGHT_IMPLEMENTATION_HELD_WITH_IRREDUCIBLE_BLOCKER",
+  "scope": "Source-free local implementation properties only",
+  "gate_p": "CLOSED",
+  "gate_f": "HELD",
+  "gate_e": "HELD",
+  "human_closure": "RESERVED",
+  "protected_archive_operations": 0,
+  "new_model_inference_calls": 0,
+  "paid_api_calls": 0,
+  "empirical_replication_credit": 0,
+  "amendment_adopted": false,
+  "requirements": [
+    {"id":"I01","condition":"Repository workflow-estate compatibility","status":"HELD_AFTER_PERMITTED_CORRECTION_PASS","evidence":"ci-result.json; consolidated run 41338586221 job 124943622076","blocker":"Added experiment-b-resumable.yml creates a fifth workflow, violating tests/workflow-estate.test.mjs. Smallest correction: place targeted job in an existing approved workflow and remove new workflow. No second implementation correction performed."},
+    {"id":"F01","condition":"Durable per-turn journal and exact final-output recovery","status":"IMPLEMENTED_SYNTHETICALLY_TESTED","evidence":"targeted-tests.tap; synthetic-recovery-receipts.json","limits":"No live CLI crash/recovery or protected source operation tested"},
+    {"id":"F02","condition":"No accepted-turn rerun; incomplete paired lanes retained","status":"IMPLEMENTED_SYNTHETICALLY_TESTED","evidence":"paired quota/reopen, captured-answer recovery, idempotent completion tests","limits":"No claim of restored hidden reasoning or provider session state"},
+    {"id":"F03","condition":"Scientific opportunity separated from spending/quota and physical limits","status":"IMPLEMENTED_CANDIDATE_REQUIRES_ADOPTION","evidence":"resources.mjs; RESOURCE_AMENDMENT_CANDIDATE.md","blocker":"External finite policy, account class, accepted reservations and adoption are absent"},
+    {"id":"F04","condition":"Source-free native path integrated without WeakMap serialization promotion","status":"IMPLEMENTED_PROTECTED_PATH_UNEXECUTED","evidence":"boundaries.mjs; runner.mjs; controller dispatch","blocker":"External source-admission/transmission/re-admission grant, frozen manifest and independent custody acceptance absent"},
+    {"id":"F05","condition":"Matched effective model/effort, revision, decoding and physical controls","status":"HELD_RUNTIME_PROVISIONING_AND_ACCEPTANCE","blocker":"No accepted native runtime observation manifest, effective controls or independently accepted uncertainty standard supplied"},
+    {"id":"F06","condition":"Actual tool/memory/source isolation and deterministic-kernel parity","status":"HELD_RUNTIME_PROVISIONING_AND_ACCEPTANCE","blocker":"Reviewed isolated spawn wrapper, credential class, absence of hidden calls, approved typed math-kernel interface and effective inventories absent; tests used empty kernel activity"},
+    {"id":"F07","condition":"Complete original scientific schedule and analysis","status":"HELD_FINITE_OPERATOR_DECISION","blocker":"Full source/order/representation/RCA/control/withdrawal/replication templates and endpoints require frozen external acceptance; no scope reduction proposed"},
+    {"id":"F08","condition":"Independent blinded Stage 2 within Flight","status":"HELD_EXTERNAL_EVALUATOR_PROVISIONING","blocker":"Independent credentials, mathematical competence, frozen complete candidates, semantic leakage/equivalence audits, proof verification and recoverable evaluator execution/accounting absent"},
+    {"id":"F09","condition":"Local store integrity and source re-admission on resume","status":"PARTIALLY_TESTED_RUNTIME_CUSTODY_REQUIRED","evidence":"writer/key/tamper/anchor tests; protectedBroker rejects copied fixture","blocker":"Actual private storage/key/anchor custody and future authorized physical re-admission remain untested; whole-store rollback without external anchor is not detectable"},
+    {"id":"F10","condition":"Provider quota rejection and unknown completion","status":"CONSERVATIVE_HOLD_IMPLEMENTED","evidence":"real local process exit and synthetic definitive-rejection tests","blocker":"No provider-authenticated nonexecution rejection standard is provisioned. Generic native errors remain uncertain, not automatically retried"},
+    {"id":"F11","condition":"Independent acceptance and final execution grant","status":"HELD_EXTERNAL_HUMAN_AUTHORITY","blocker":"Amari's independent acceptance and Tawanna's consolidated D01-D20 decision/grants are reserved; none issued here"}
+  ]
+}
