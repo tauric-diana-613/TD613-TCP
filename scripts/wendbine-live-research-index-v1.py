@@ -278,7 +278,7 @@ def fts_search(conn:sqlite3.Connection,query:str,limit:int=20)->list[dict]:
 
 def enumerate_day(conn: sqlite3.Connection, day: str, limit: int=100, offset: int=0, include_text:bool=True) -> dict:
     """Exact observed-date enumeration, explicitly separated from completeness of the provider."""
-    if not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}",day):
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}",day):
         raise ValueError("STRICT_UTC_DAY_REQUIRED")
     try:
         date=dt.date.fromisoformat(day)
