@@ -4757,7 +4757,7 @@
     "browser_api": "window.TD613Reference"
   },
   "operations": {
-    "search": "search({q,filter:{kind,family,status,evidence_class,source},match:\"all\"|\"any\",exclude,limit,offset}); quoted phrases required; max 100 hits per request; score measures retrieval relevance only",
+    "search": "search({q,filter:{kind,family,status,evidence_class,source},match:\"all\"|\"any\",termMode:\"exact\"|\"prefix\"|\"substring\",exclude,limit,offset}); default exact Unicode tokens; Explore: requires literal cue; prefix/substring opt-in; quoted phrases required; max 100 hits per request; score measures retrieval relevance only",
     "get": "get(id) returns full original record, supplements, typed outgoing links and canonical JSON pointer",
     "cite": "cite(id) returns exact HTML line, record hash, original edition commit, source IDs and claim ceiling",
     "neighbors": "neighbors(id,{direction,type}); citedBy(sourceId) follows reverse citations",
@@ -4784,7 +4784,7 @@
     "admit": "node scripts/admit-encyclopedia-record.cjs proposal.json --human-review-ref exact-review-reference",
     "semantics": "Preparation is read-only and PROPOSED. Source-index accession requires separately declared human review. Public merge/deployment and scientific adjudication retain their own authority. Private input cannot enter public accession output."
   },
-  "artifact_html_sha256": "d0048bcf841918ba36fd4a08666506a2bddd2e386dd3a1be504c9d87a2c14fd4",
+  "artifact_html_sha256": "ad2a3a791513dd6bc4a3bc80dded4ac592077a2c238e1dcdd5622f432b1e3391",
   "paths": {
     "directory": "reference/directory.json",
     "graph": "reference/graph.json",
