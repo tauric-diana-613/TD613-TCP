@@ -1,5 +1,6 @@
 """Adversarial source-free tests. All post text is deliberately invented."""
 import hashlib
+from contextlib import closing
 import importlib.util
 import json
 import sqlite3
@@ -59,20 +60,21 @@ class HistoricalCustody(unittest.TestCase):
         self.assertEqual(report["reported_visibility_counts"]["PLATFORM_FILTERED_REPORTED"],1)
         self.assertFalse(report["current_platform_status_verified"])
         self.assertFalse(report["encrypted_archives_read"])
-        original_hit=m.INDEX.exact_search(sqlite3.connect(self.db),"Original 𝌋")
+        with closing(sqlite3.connect(self.db)) as verify:
+            original_hit=m.INDEX.exact_search(verify,"Original 𝌋")
         self.assertEqual(len(original_hit),1)
         self.assertEqual(original_hit[0]["byte_offset"],len("Original ".encode("utf8")))
         edited=m.history_exact(self.db,"Edited later capture")
         self.assertEqual(len(edited),1)
         self.assertEqual(edited[0]["capture_id"],"c2")
         self.assertEqual(edited[0]["later_visibility_state"],"PLATFORM_FILTERED_REPORTED")
-        with sqlite3.connect(self.db) as con:
+        with closing(sqlite3.connect(self.db)) as con:
             self.assertEqual(con.execute("SELECT count(*) FROM capture_versions").fetchone()[0],3)
             self.assertEqual(con.execute("SELECT count(*) FROM sources").fetchone()[0],2)
             provider=con.execute("SELECT distinct provider FROM sources").fetchone()[0]
             self.assertEqual(provider,"OPERATOR_LOCAL_CAPTURE")
             primary=con.execute("SELECT selftext FROM sources WHERE source_id='reddit:t3_abcde1'").fetchone()[0]
-            self.assertEqual(primary,b"Original \xf0\x9d\x8c\x8b from September")
+            self.assertEqual(primary,"Original 𝌋 from September".encode("utf8"))
 
     def test_refuses_wrong_source_hash_and_duplicate_capture_id(self):
         a=row("c1","reddit:t3_abcde1","Unchanged text")
@@ -116,7 +118,7 @@ class HistoricalCustody(unittest.TestCase):
     def test_history_search_detects_mutated_observed_version(self):
         self.write([row("c1","reddit:t3_abcde1","Unmodified observation")])
         self.ingest()
-        with sqlite3.connect(self.db) as con:
+        with closing(sqlite3.connect(self.db)) as con:
             con.execute("UPDATE capture_versions SET selftext=? WHERE capture_id='c1'",(b"TAMPERED",))
         with self.assertRaisesRegex(ValueError,"CAPTURE_VERSION_DIGEST_CONFLICT"):
             m.history_exact(self.db,"TAMPERED")
