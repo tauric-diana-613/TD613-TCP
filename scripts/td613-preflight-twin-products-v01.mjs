@@ -54,7 +54,7 @@ function wrapped(api,product) {
 /** Workspaces are supplied locally by the operator. Creation requires EMPTY dirs.
  * Reopen requires BOTH independently retained root receipts.
  */
-export async function openTwinProducts({atelierWorkspace,encyclopediaWorkspace,create=false,rootReceipts}={}) {
+export async function openTwinProducts({atelierWorkspace,encyclopediaWorkspace,create=false,rootReceipts,publicWendbineRoot}={}) {
   const a=safeDir(atelierWorkspace),e=safeDir(encyclopediaWorkspace);
   need(a!==e&&!a.startsWith(e+path.sep)&&!e.startsWith(a+path.sep),'PE05_INDEPENDENT_WORKSPACES_REQUIRED');
   if(create){
@@ -66,6 +66,14 @@ export async function openTwinProducts({atelierWorkspace,encyclopediaWorkspace,c
   const ta=wrapped(atelier,ATELIER),te=wrapped(encyclopedia,ENCYCLOPEDIA);
   const [as,es]=await Promise.all([ta.request({action:'status'}),te.request({action:'status'})]);
   need(as.instance_id!==es.instance_id&&as.real_sources_admitted===0&&es.real_sources_admitted===0,'PE05_PRODUCT_IDENTITY_COLLISION');
-  return Object.freeze({atelier:ta,encyclopedia:te,rootReceipts:Object.freeze({atelier:ta.root_receipt,encyclopedia:te.root_receipt}),
+  const base=Object.freeze({atelier:ta,encyclopedia:te,rootReceipts:Object.freeze({atelier:ta.root_receipt,encyclopedia:te.root_receipt}),
     claim_ceiling:'TWO_DISTINCT_SYNTHETIC_INSTANCES_NOT_HISTORICAL_CONNECTOR_NOT_REAL_SOURCE'});
+  if(publicWendbineRoot===undefined)return base;
+  // Explicit opt-in: real PUBLIC metadata only. No protected original ever
+  // enters either B91 product store; this is a source-native query companion.
+  const {openUniversalWendbinePort}=await import('./universal-atelier-wendbine-public-port-v01.mjs');
+  const port=await openUniversalWendbinePort({universalAtelier:ta,wendbineRoot:publicWendbineRoot});
+  return Object.freeze({...base,wendbinePublicResearch:port,
+    real_public_wendbine_query_enabled:true,
+    private_original_source_admission:'HELD'});
 }
