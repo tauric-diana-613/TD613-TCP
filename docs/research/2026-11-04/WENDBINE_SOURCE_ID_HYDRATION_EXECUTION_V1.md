@@ -26,6 +26,30 @@ The original Wendbine research branch #1134 contains a content-addressed 2,062-i
 
 No original branch history should be merged, rewritten, or relocated. Do not use the empty main branch as a substitute for the historical manifest.
 
+## Independent discovery outside the pinned registry
+
+The pinned registry begins **2026-09-09T00:22:19Z** and ends **2026-11-04T01:39:56Z**. Earlier public Wendbine material is independently indexed, including a June 6, 2026 thread absent from the pinned 2,062 IDs; publicly discoverable posts also appear in December 2025. Thus the pinned registry must never be presented as first-publication or full-historical coverage.
+
+The new `scripts/wendbine-archive-discover-source-ids-v1.py` makes bounded, author- and subreddit-scoped historical search requests, splits saturated 100-result time windows recursively, and records even a saturated one-second interval as **HELD** instead of claiming that all posts were found. It writes **only IDs and raw provider response bytes to the operator's private disk**; its `extra-ids.json` is labeled separate from and subordinate to the exact-pinned native ID registry.
+
+Use **two disjoint discovery workspaces** before the final ID hydration:
+
+```powershell
+python -B -m unittest discover -s tests -p 'test_wendbine_archive_discover_source_ids_v1.py' -v
+python -B scripts/wendbine-archive-discover-source-ids-v1.py --public-manifest "<PINNED-WENDBINE-WORKTREE>\packages\dome_world_exact\fixtures\a15-r0\WENDBINE\01-MANIFESTS\phase2\manifestations.jsonl" --private-workspace "<NEW-LOCAL-PRIVATE-RESEARCH-DIRECTORY>\discover-before-sept09" --since "2025-01-01T00:00:00Z" --until "2026-09-09T00:22:19Z"
+python -B scripts/wendbine-archive-discover-source-ids-v1.py --public-manifest "<PINNED-WENDBINE-WORKTREE>\packages\dome_world_exact\fixtures\a15-r0\WENDBINE\01-MANIFESTS\phase2\manifestations.jsonl" --private-workspace "<NEW-LOCAL-PRIVATE-RESEARCH-DIRECTORY>\discover-after-nov04" --since "2026-11-04T01:39:56Z" --until "<ACTUAL-UTC-NOW-AT-EXECUTION>"
+```
+
+When a discovery run is interrupted by an actual provider error, repeat that **same** command and workspace with `--resume`. Missing/empty archive search is not evidence of historical nonexistence. Intervals before January 2025 remain outside the commissioned discovery horizon and explicitly unverified.
+
+Then supply both source-labeled discovery files to the known-ID hydrator in its one private output workspace:
+
+```powershell
+python -B scripts/wendbine-manifest-id-hydrator-v1.py --public-manifest "<PINNED-WENDBINE-WORKTREE>\packages\dome_world_exact\fixtures\a15-r0\WENDBINE\01-MANIFESTS\phase2\manifestations.jsonl" --private-workspace "<NEW-LOCAL-PRIVATE-RESEARCH-DIRECTORY>\wendbine-hydration-20261104" --extra-ids "<PRIVATE-RESEARCH-DIRECTORY>\discover-before-sept09\extra-ids.json" --extra-ids "<PRIVATE-RESEARCH-DIRECTORY>\discover-after-nov04\extra-ids.json" --batch-size 25
+```
+
+Every batch receipt is now tied to the digest of the **full pinned-plus-discovered ID universe**. Changing the discovery set during an interrupted sync will cause resume to refuse rather than silently skip or reassign sources. The resulting SQLite corpus has explicit source archive provenance and remains **observed archive coverage**, never a demonstrated complete origin archive or author-signed original.
+
 ## One-pass Windows desktop Work execution
 
 Fetch and pin this PR's **actual reviewed exact HEAD**, create a detached worktree for it, and independently pin Wendbine #1134/SRC #731/Em #962. Re-run the new source-free tests and confirm exact-head consolidated CI.
@@ -34,7 +58,7 @@ Use **an existing private local directory OUTSIDE the repository**, with suffici
 
 ```powershell
 python -B -m unittest discover -s tests -p 'test_wendbine_manifest_id_hydrator_v1.py' -v
-python -B scripts/wendbine-manifest-id-hydrator-v1.py --public-manifest "<PINNED-WENDBINE-WORKTREE>\packages\dome_world_exact\fixtures\a15-r0\WENDBINE\01-MANIFESTS\phase2\manifestations.jsonl" --private-workspace "<NEW-LOCAL-PRIVATE-RESEARCH-DIRECTORY>\wendbine-hydration-20261104" --batch-size 25
+# Execute the preceding two-window discovered-ID hydration command here; do not rerun pinned-only hydration in the same output workspace.
 ```
 
 If an actual network failure interrupts a batch, preserve the completed batch files in the same private workspace and repeat the identical command with `--resume`. **Do not bypass rate limits, access controls or security barriers.** Do not treat timeout, 403, missing provider IDs or unexpected response shape as proof a source was never published. Stop only the unsupported operation and report the exact blocker.
