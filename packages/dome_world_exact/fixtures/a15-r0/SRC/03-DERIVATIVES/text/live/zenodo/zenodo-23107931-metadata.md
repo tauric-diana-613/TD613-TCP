@@ -1,0 +1,146 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23107931"
+source_title: "Infrastructure Debt (IS‑ID): A Structural SR Subfield for Measuring Deferred Substrate Obligations and Future Burden"
+metadata_blob_sha256: 6637d66fdde0d0ac79e41ce5a6e2322ce84a5534a2d5c61695c824ac87a0dba3
+metadata_blob_path: 02-ORIGINALS/live/blobs/66/6637d66fdde0d0ac79e41ce5a6e2322ce84a5534a2d5c61695c824ac87a0dba3.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23107930",
+  "conceptrecid": "23107930",
+  "created": "2026-10-02T18:07:35.240977+00:00",
+  "doi": "10.5281/zenodo.23107931",
+  "doi_url": "https://doi.org/10.5281/zenodo.23107931",
+  "files": [
+    {
+      "checksum": "md5:b569e35e40e8cb143daa38207810d196",
+      "id": "5b37877b-4451-4ff5-ab56-4f0539cbc422",
+      "key": "INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23107931/files/INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx/content"
+      },
+      "size": 287848
+    },
+    {
+      "checksum": "md5:f9729f06cc94f4ea9c4d9b8e419e2851",
+      "id": "88ab1630-9cf8-43f9-b3e5-52d1b0021fb4",
+      "key": "INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23107931/files/INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/content"
+      },
+      "size": 394778
+    }
+  ],
+  "id": 23107931,
+  "links": {
+    "access": "https://zenodo.org/api/records/23107931/access",
+    "access_grants": "https://zenodo.org/api/records/23107931/access/grants",
+    "access_links": "https://zenodo.org/api/records/23107931/access/links",
+    "access_request": "https://zenodo.org/api/records/23107931/access/request",
+    "access_users": "https://zenodo.org/api/records/23107931/access/users",
+    "communities": "https://zenodo.org/api/records/23107931/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23107931/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23107931",
+    "draft": "https://zenodo.org/api/records/23107931/draft",
+    "file_modification": "https://zenodo.org/api/records/23107931/file-modification",
+    "files": "https://zenodo.org/api/records/23107931/files",
+    "latest": "https://zenodo.org/api/records/23107931/versions/latest",
+    "latest_html": "https://zenodo.org/records/23107931/latest",
+    "media_files": "https://zenodo.org/api/records/23107931/media-files",
+    "parent": "https://zenodo.org/api/records/23107930",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23107930",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23107930",
+    "parent_html": "https://zenodo.org/records/23107930",
+    "preview_html": "https://zenodo.org/records/23107931?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23107931/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23107931/request-deletion",
+    "requests": "https://zenodo.org/api/records/23107931/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23107931/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23107931",
+    "self_doi": "https://doi.org/10.5281/zenodo.23107931",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23107931",
+    "self_html": "https://zenodo.org/records/23107931",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23107931/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23107931/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23107931:INFRASTRUCTURE_DEBT_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23107931/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h2><strong>Infrastructure Debt (IS‑ID): A Structural SR Subfield for Measuring Deferred Substrate Obligations and Future Burden</strong></h2>\n<div>\n</div>\n<h2><strong>DESCRIPTION</strong></h2>\n<p><strong>Infrastructure Debt (IS‑ID)</strong> is a canonical SR subfield within <strong>Infrastructure Science</strong> that defines and measures the <strong>future burden created by unresolved substrate obligations</strong>. Its scientific object is not deterioration, age, backlog, or underinvestment, but a <strong>traceable deferred obligation</strong> that imposes a <strong>future claim</strong> on resources, repairability, risk, capacity, or operating choice.</p>\n<p>Infrastructure Debt distinguishes:</p>\n<ul>\n<li>\n<p><strong>debt principal</strong> &mdash; the unresolved obligation itself</p>\n</li>\n<li>\n<p><strong>debt service burden</strong> &mdash; the recurring cost, work, delay, risk, or constrained capacity required to carry that obligation</p>\n</li>\n<li>\n<p><strong>debt growth</strong> &mdash; accumulation of new obligations minus verified retirement</p>\n</li>\n<li>\n<p><strong>debt allocation</strong> &mdash; who actually carries the burden (organization, workers, households, suppliers, future budgets)</p>\n</li>\n<li>\n<p><strong>verified retirement</strong> &mdash; closure of the obligation plus stable function without recurrence</p>\n</li>\n</ul>\n<p>The field provides a full SR measurement architecture for:</p>\n<ul>\n<li>\n<p>origination</p>\n</li>\n<li>\n<p>accumulation</p>\n</li>\n<li>\n<p>service burden</p>\n</li>\n<li>\n<p>dependency topology</p>\n</li>\n<li>\n<p>burden transfer</p>\n</li>\n<li>\n<p>retirement</p>\n</li>\n<li>\n<p>recurrence</p>\n</li>\n<li>\n<p>empirical comparison</p>\n</li>\n</ul>\n<p>Debt remains a <strong>vector</strong> unless units and substitution rules justify aggregation.<br>The subfield survives only if its measures improve prediction of:</p>\n<ul>\n<li>\n<p>future expenditure</p>\n</li>\n<li>\n<p>delay</p>\n</li>\n<li>\n<p>recurrence</p>\n</li>\n<li>\n<p>modernization constraint</p>\n</li>\n<li>\n<p>functional disruption</p>\n</li>\n</ul>\n<p>beyond age, condition, spending, and ordinary backlog measures.</p>\n<div>\n</div>\n<h2><strong>HOW IT CONTRIBUTES TO SR</strong></h2>\n<h3><strong>1. It formalizes deferred obligation as a measurable SR object</strong></h3>\n<p>Infrastructure Debt gives SR a precise way to identify <strong>what present continuity leaves unresolved</strong>.<br>It replaces vague &ldquo;underinvestment&rdquo; language with <strong>traceable obligations</strong>, <strong>bearers</strong>, and <strong>future burdens</strong>.<br>Linked concept: <strong>Deferred Obligation</strong></p>\n<div>\n</div>\n<h3><strong>2. It provides the substrate‑side mechanism behind Drift Dynamics</strong></h3>\n<p>Drift Dynamics explains <strong>trajectory</strong>.<br>Infrastructure Debt explains <strong>why drift becomes harder to repair</strong>:</p>\n<ul>\n<li>\n<p>unresolved obligations accumulate</p>\n</li>\n<li>\n<p>repair windows shrink</p>\n</li>\n<li>\n<p>compatibility deteriorates</p>\n</li>\n<li>\n<p>maintainability declines</p>\n</li>\n</ul>\n<p>Debt is the <strong>latent substrate burden</strong> that Drift Dynamics eventually reveals.<br>Linked concept: <strong>Drift&ndash;Debt Relation</strong></p>\n<div>\n</div>\n<h3><strong>3. It explains hidden burden and compensatory work</strong></h3>\n<p>Debt service burden often falls on:</p>\n<ul>\n<li>\n<p>frontline workers</p>\n</li>\n<li>\n<p>households</p>\n</li>\n<li>\n<p>suppliers</p>\n</li>\n<li>\n<p>future budgets</p>\n</li>\n</ul>\n<p>This is the substrate counterpart to <strong>Human Capacity Load</strong>.<br>Linked concept: <strong>Burden Transfer</strong></p>\n<div>\n</div>\n<h3><strong>4. It provides the future‑constraint engine for Collapse Geometry</strong></h3>\n<p>Collapse Geometry maps <strong>viability boundaries</strong>.<br>Infrastructure Debt explains <strong>why boundaries move</strong>:</p>\n<ul>\n<li>\n<p>deferred obligations reduce buffers</p>\n</li>\n<li>\n<p>reduce redundancy</p>\n</li>\n<li>\n<p>increase cut‑set exposure</p>\n</li>\n<li>\n<p>increase recovery distance</p>\n</li>\n</ul>\n<p>Debt is the <strong>slow pressure</strong> that shifts viability geometry.<br>Linked concept: <strong>Debt&ndash;Collapse Relation</strong></p>\n<div>\n</div>\n<h3><strong>5. It distinguishes service return from verified retirement</strong></h3>\n<p>SR requires strict retirement discipline:</p>\n<ul>\n<li>\n<p>obligation closed</p>\n</li>\n<li>\n<p>function stable</p>\n</li>\n<li>\n<p>recurrence absent</p>\n</li>\n</ul>\n<p>This prevents institutions from declaring &ldquo;success&rdquo; when only <strong>temporary masking</strong> occurred.<br>Linked concept: <strong>Verified Retirement</strong></p>\n<div>\n</div>\n<h3><strong>6. It provides the substrate‑side mechanism for Recovery Architecture</strong></h3>\n<p>Recovery Architecture explains <strong>how systems return</strong>.<br>Infrastructure Debt explains <strong>why recovery fails</strong>:</p>\n<ul>\n<li>\n<p>unresolved obligations block restoration</p>\n</li>\n<li>\n<p>debt consumes resources</p>\n</li>\n<li>\n<p>recurrence reopens the failure pathway</p>\n</li>\n</ul>\n<p>Debt is the <strong>recovery inhibitor</strong>.<br>Linked concept: <strong>Debt&ndash;Recovery Relation</strong></p>\n<div>\n</div>\n<h3><strong>7. It introduces a full falsification and demotion protocol</strong></h3>\n<p>Infrastructure Debt is not self‑validating.<br>It can be:</p>\n<ul>\n<li>\n<p>narrowed</p>\n</li>\n<li>\n<p>merged</p>\n</li>\n<li>\n<p>demoted</p>\n</li>\n<li>\n<p>retired</p>\n</li>\n</ul>\n<p>if it fails to outperform simpler comparators.<br>Linked concept: <strong>SR Falsification Protocol</strong></p>\n<div>\n</div>\n<h3><strong>8. It gives SR a disciplined alternative to &ldquo;infrastructure crisis&rdquo; rhetoric</strong></h3>\n<p>Infrastructure Debt replaces:</p>\n<ul>\n<li>\n<p>crisis language</p>\n</li>\n<li>\n<p>political framing</p>\n</li>\n<li>\n<p>spending narratives</p>\n</li>\n<li>\n<p>age‑based claims</p>\n</li>\n</ul>\n<p>with <strong>measurable obligations</strong>, <strong>future burdens</strong>, and <strong>retirement tests</strong>.<br>Linked concept: <strong>SR Infrastructure Science</strong></p>",
+    "doi": "10.5281/zenodo.23107931",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Infrastructure"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-02",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23107930"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Infrastructure Debt (IS‑ID): A Structural SR Subfield for Measuring Deferred Substrate Obligations and Future Burden",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:12:10.752157+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23107931",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 5,
+    "unique_views": 12,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 12,
+    "version_views": 14,
+    "views": 14
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Infrastructure Debt (IS‑ID): A Structural SR Subfield for Measuring Deferred Substrate Obligations and Future Burden",
+  "updated": "2026-10-06T01:12:10.752157+00:00"
+}
+```

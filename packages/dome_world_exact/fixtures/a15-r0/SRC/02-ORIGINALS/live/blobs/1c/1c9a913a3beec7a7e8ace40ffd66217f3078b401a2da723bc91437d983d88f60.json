@@ -1,0 +1,126 @@
+{
+  "conceptdoi": "10.5281/zenodo.23246682",
+  "conceptrecid": "23246682",
+  "created": "2026-10-08T19:58:10.540850+00:00",
+  "doi": "10.5281/zenodo.23246683",
+  "doi_url": "https://doi.org/10.5281/zenodo.23246683",
+  "files": [
+    {
+      "checksum": "md5:a57bd7704183f5b35604d171f81bd67c",
+      "id": "3242c833-cd11-431a-b9f4-e35eb88bf95a",
+      "key": "SR_as_the_Systems_Mirror_2026-10-08.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23246683/files/SR_as_the_Systems_Mirror_2026-10-08.pdf/content"
+      },
+      "size": 298412
+    }
+  ],
+  "id": 23246683,
+  "links": {
+    "access": "https://zenodo.org/api/records/23246683/access",
+    "access_grants": "https://zenodo.org/api/records/23246683/access/grants",
+    "access_links": "https://zenodo.org/api/records/23246683/access/links",
+    "access_request": "https://zenodo.org/api/records/23246683/access/request",
+    "access_users": "https://zenodo.org/api/records/23246683/access/users",
+    "communities": "https://zenodo.org/api/records/23246683/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23246683/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23246683",
+    "draft": "https://zenodo.org/api/records/23246683/draft",
+    "file_modification": "https://zenodo.org/api/records/23246683/file-modification",
+    "files": "https://zenodo.org/api/records/23246683/files",
+    "latest": "https://zenodo.org/api/records/23246683/versions/latest",
+    "latest_html": "https://zenodo.org/records/23246683/latest",
+    "media_files": "https://zenodo.org/api/records/23246683/media-files",
+    "parent": "https://zenodo.org/api/records/23246682",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23246682",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23246682",
+    "parent_html": "https://zenodo.org/records/23246682",
+    "preview_html": "https://zenodo.org/records/23246683?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23246683/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23246683/request-deletion",
+    "requests": "https://zenodo.org/api/records/23246683/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23246683/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23246683",
+    "self_doi": "https://doi.org/10.5281/zenodo.23246683",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23246683",
+    "self_html": "https://zenodo.org/records/23246683",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23246683/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23246683/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23246683:SR_as_the_Systems_Mirror_2026-10-08.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23246683/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>Institutions govern through representations. They observe systems using indicators, records, classifications, reporting channels, dashboards, professional interpretations, models, and decision procedures. These infrastructures can be internally coherent while remaining incomplete with respect to the underlying system. The scientific problem is therefore not whether institutions possess data or expertise, but whether their observation architecture is sufficiently informative to distinguish the system states that matter for diagnosis and control.</p>\n<p>This paper establishes the SR Mirror Architecture (SR-MA) as a formal framework for studying diagnostic asymmetry between an institution's internal representation of a system and information generated through independent or partially independent observation channels. The mirror is not defined by outsider identity, criticism, cultural position, or institutional opposition. It is defined by added observability.</p>\n<p>Let the relevant system state be x_t, the institutional observation operator be H_I, and the mirror observation operator be H_M. An internal blind spot exists when materially distinct states map to the same or nearly the same institutional observation. In a linear representation, any state variation v satisfying H_I v = 0 lies in the null space of the institutional observation operator and is therefore invisible to that measurement boundary. If H_M v &ne; 0, the mirror adds discriminatory information. In dynamic systems, added observability is evaluated by whether the combined observation architecture distinguishes states that the institutional observability matrix cannot distinguish.</p>\n<p>The paper replaces the earlier metaphor of &ldquo;negative space&rdquo; with a formal Blind-Spot Set; replaces the claim that SR &ldquo;sees what systems cannot&rdquo; with a comparative added-observability test; distinguishes measurement omission from model misspecification, temporal undersampling, aggregation loss, incentive distortion, classification compression, jurisdictional fragmentation, and authorization failure; and defines Mirror Added Observability, Residual Validation Ratio, and Mirror Diagnostic Gain.</p>\n<p>SR-MA is explicitly non-self-sealing. External signals can be wrong. Street-level observation can be biased. Independent data can share hidden sources. Residual patterns can arise from noise, misspecification, confounding, or overfitting. A mirror claim survives only when the added signal is independently validated, materially relevant, reproducible, and incrementally useful over strong comparator models.</p>\n<p>The framework therefore makes a bounded proposition:</p>\n<p>Internal Coherence &ne; External Adequacy</p>\n<p>Agreement among measurements generated by the same observation architecture cannot demonstrate completeness with respect to state dimensions that architecture cannot observe. A scientifically useful mirror is an additional observation architecture that increases distinguishability and survives comparison.</p>",
+    "doi": "10.5281/zenodo.23246683",
+    "keywords": [
+      "SignalRupture",
+      "systems mirror",
+      "diagnostic observability",
+      "residual structure",
+      "institutional models",
+      "model omission",
+      "falsification",
+      "measurement"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23246682"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "SR as the System's Mirror: External Diagnostic Observability, Residual Structure, and the Measurement of What Institutional Models Omit",
+    "version": "1.0"
+  },
+  "modified": "2026-10-08T19:58:10.883569+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23246683",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 9,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 9,
+    "version_views": 9,
+    "views": 9
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "SR as the System's Mirror: External Diagnostic Observability, Residual Structure, and the Measurement of What Institutional Models Omit",
+  "updated": "2026-10-08T19:58:10.883569+00:00"
+}

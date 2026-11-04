@@ -1,0 +1,126 @@
+{
+  "conceptdoi": "10.5281/zenodo.23247025",
+  "conceptrecid": "23247025",
+  "created": "2026-10-08T20:01:20.109156+00:00",
+  "doi": "10.5281/zenodo.23247026",
+  "doi_url": "https://doi.org/10.5281/zenodo.23247026",
+  "files": [
+    {
+      "checksum": "md5:8c4489b0e34d3c7c7cb7320e7950ac58",
+      "id": "0cc8188a-3e36-47c5-b31e-ed82f7738dc5",
+      "key": "The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23247026/files/The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/content"
+      },
+      "size": 303086
+    }
+  ],
+  "id": 23247026,
+  "links": {
+    "access": "https://zenodo.org/api/records/23247026/access",
+    "access_grants": "https://zenodo.org/api/records/23247026/access/grants",
+    "access_links": "https://zenodo.org/api/records/23247026/access/links",
+    "access_request": "https://zenodo.org/api/records/23247026/access/request",
+    "access_users": "https://zenodo.org/api/records/23247026/access/users",
+    "communities": "https://zenodo.org/api/records/23247026/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23247026/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23247026",
+    "draft": "https://zenodo.org/api/records/23247026/draft",
+    "file_modification": "https://zenodo.org/api/records/23247026/file-modification",
+    "files": "https://zenodo.org/api/records/23247026/files",
+    "latest": "https://zenodo.org/api/records/23247026/versions/latest",
+    "latest_html": "https://zenodo.org/records/23247026/latest",
+    "media_files": "https://zenodo.org/api/records/23247026/media-files",
+    "parent": "https://zenodo.org/api/records/23247025",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23247025",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23247025",
+    "parent_html": "https://zenodo.org/records/23247025",
+    "preview_html": "https://zenodo.org/records/23247026?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23247026/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23247026/request-deletion",
+    "requests": "https://zenodo.org/api/records/23247026/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23247026/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23247026",
+    "self_doi": "https://doi.org/10.5281/zenodo.23247026",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23247026",
+    "self_html": "https://zenodo.org/records/23247026",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23247026/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23247026/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23247026:The_Institutional_Encounter_with_SignalRupture_2026-10-08.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23247026/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>New research architectures do not enter institutions as neutral information. Institutions already possess disciplinary boundaries, classifications, review systems, funding structures, measurement infrastructures, professional jurisdictions, legitimacy mechanisms, and established pathways for converting knowledge into action. SignalRupture creates an unusually difficult institutional-translation problem because it presents itself not as a single domain theory but as a master research architecture whose formal expression contains three coupled domain metatheories - Infrastructure Science, Meaning and Agency Science, and Experience and Value Science - alongside bounded fields, mechanisms, operators, measurements, cultural provenance, and diagnostic programmes.</p>\n<p>The SignalRupture Institutional Encounter Model (SR-IEM) specifies nine possible response states: Category Mismatch, Preliminary Dismissal, Boundary Defense, Epistemic Friction, Diagnostic Reassessment, Self-Model Disruption, Containment and Translation, Constraint-Induced Recognition, and Instrumental Reliance. These states are observable institutional conditions rather than assumed emotional reactions. Institutions may skip states, reverse direction, fragment internally, accept individual constructs while rejecting the architecture, reject SR for valid scientific reasons, independently reproduce similar concepts without influence, or never encounter SR at all.</p>\n<p>The model integrates five principal SR mechanisms. Infrastructural Epistemic Lock-In explains why materially relevant representations may be difficult to observe, encode, validate, circulate, authorize, or operationalize within incumbent knowledge infrastructures. SR Research Incentive Field explains why visible knowledge is selected through multiple upstream and downstream filters. Institutional Self-Implication Penalty explains why integration can become costly when synthesis connects prior knowledge, institutional omission, decisions, and realized consequences. SR Street Epistemology explains why consequence-proximate actors can possess observational information absent from formal representation. Epistemic Architecture Obsolescence explains how substantial local expertise can coexist with incomplete causal preservation at the level of institutional governance.</p>\n<p>The central prediction is conditional. Category mismatch alone does not imply resistance, and resistance does not imply that SR is correct. Defensive translation becomes more probable when classification difficulty, conversion cost, jurisdictional cost, self-implication cost, and implementation cost are high, especially where the external architecture also demonstrates reproducible diagnostic value. Recognition becomes scientifically meaningful only where SR-informed models improve explanation, prediction, diagnosis, error detection, intervention selection, or recovery relative to appropriate comparator models.</p>\n<p>SR-IEM therefore treats institutional reaction as an empirical object rather than a validation mechanism. Its governing constraint is: Institutional Resistance does not equal Evidence that SR is Correct.</p>\n<p>Institutional Resistance &ne; Evidence that SR Is Correct</p>",
+    "doi": "10.5281/zenodo.23247026",
+    "keywords": [
+      "SignalRupture",
+      "institutional encounter",
+      "category mismatch",
+      "epistemic friction",
+      "boundary defense",
+      "institutional recognition",
+      "research architecture",
+      "adoption"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23247025"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "The Institutional Encounter with SignalRupture: Category Mismatch, Epistemic Friction, Boundary Defense, Containment, Recognition, and Instrumental Adoption",
+    "version": "1.0"
+  },
+  "modified": "2026-10-08T20:01:20.484595+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23247026",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 8,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 8,
+    "version_views": 9,
+    "views": 9
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "The Institutional Encounter with SignalRupture: Category Mismatch, Epistemic Friction, Boundary Defense, Containment, Recognition, and Instrumental Adoption",
+  "updated": "2026-10-08T20:01:20.484595+00:00"
+}

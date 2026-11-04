@@ -1,0 +1,150 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23041893"
+source_title: "Care Capacity Systems Science (CCSS): The Care Requirement–Capacity Architecture and the SR Field Gauntlet"
+metadata_blob_sha256: 276d469e6a5df547e5c49b0fa47d6f8128266f9cacf3f739ce492c27c2fda164
+metadata_blob_path: 02-ORIGINALS/live/blobs/27/276d469e6a5df547e5c49b0fa47d6f8128266f9cacf3f739ce492c27c2fda164.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23041892",
+  "conceptrecid": "23041892",
+  "created": "2026-09-29T15:16:14.714190+00:00",
+  "doi": "10.5281/zenodo.23041893",
+  "doi_url": "https://doi.org/10.5281/zenodo.23041893",
+  "files": [
+    {
+      "checksum": "md5:c307032cdf8a53ba53135f54bc67b64e",
+      "id": "1284b043-233d-4b34-b13d-979972c1c266",
+      "key": "CARE CAPACITY SYSTEMS SCIENCE — EMPIRICAL CONSTRUCTION AND GAUNTLET.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23041893/files/CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.docx/content"
+      },
+      "size": 1152922
+    },
+    {
+      "checksum": "md5:ac45dafd2e553ba4fc1082defd37b9a3",
+      "id": "c70f6bee-f853-4905-8e0f-f286053afc2e",
+      "key": "CARE CAPACITY SYSTEMS SCIENCE — EMPIRICAL CONSTRUCTION AND GAUNTLET.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23041893/files/CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/content"
+      },
+      "size": 298724
+    }
+  ],
+  "id": 23041893,
+  "links": {
+    "access": "https://zenodo.org/api/records/23041893/access",
+    "access_grants": "https://zenodo.org/api/records/23041893/access/grants",
+    "access_links": "https://zenodo.org/api/records/23041893/access/links",
+    "access_request": "https://zenodo.org/api/records/23041893/access/request",
+    "access_users": "https://zenodo.org/api/records/23041893/access/users",
+    "communities": "https://zenodo.org/api/records/23041893/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23041893/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23041893",
+    "draft": "https://zenodo.org/api/records/23041893/draft",
+    "file_modification": "https://zenodo.org/api/records/23041893/file-modification",
+    "files": "https://zenodo.org/api/records/23041893/files",
+    "latest": "https://zenodo.org/api/records/23041893/versions/latest",
+    "latest_html": "https://zenodo.org/records/23041893/latest",
+    "media_files": "https://zenodo.org/api/records/23041893/media-files",
+    "parent": "https://zenodo.org/api/records/23041892",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23041892",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23041892",
+    "parent_html": "https://zenodo.org/records/23041892",
+    "preview_html": "https://zenodo.org/records/23041893?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23041893/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23041893/request-deletion",
+    "requests": "https://zenodo.org/api/records/23041893/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23041893/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23041893",
+    "self_doi": "https://doi.org/10.5281/zenodo.23041893",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23041893",
+    "self_html": "https://zenodo.org/records/23041893",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23041893/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23041893/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23041893:CARE%20CAPACITY%20SYSTEMS%20SCIENCE%20%E2%80%94%20EMPIRICAL%20CONSTRUCTION%20AND%20GAUNTLET.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23041893/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Care Capacity Systems Science (CCSS): The Care Requirement&ndash;Capacity Architecture and the SR Field Gauntlet</strong></p>\n<div>\n</div>\n<h1><strong>Description</strong></h1>\n<p><strong>This manuscript reconstructs whether the recurrent care mechanisms visible across SignalRupture constitute an autonomous scientific field. Drawing on Household Absorption Science, ATLAS VIII, Collapse Demography, Planetary SR, Systems Propagation Science, and Structural Restoration Dynamics, the paper tests whether a distinct SR remainder exists after mature external care-economy, feminist economics, social-reproduction, long-term-care, migration, and welfare-regime research are given full explanatory priority. The candidate object is the care requirement&ndash;capacity configuration: a defined care need, the effective capacity available to meet it, the provider architecture through which care is supplied, the reallocation or unmet gap when capacity is insufficient, the downstream state changes in receiving systems, and the conditions under which ordinary capacity is restored. The manuscript concludes that CCSS does not yet survive as a full autonomous field but does survive as a specialized SR research programme with immediate diagnostic value.</strong></p>\n<div>\n</div>\n<h1><strong>How it Contributes</strong></h1>\n<p><strong>This paper provides the first SR‑specific architecture for tracing care requirements across public services, markets, households, communities, employers, and transnational labour systems. It formalizes care requirement (Q), effective capacity (K_eff), care gaps (G), provider reallocation (A_j), receiving‑provider burden vectors (B_j), and care‑capacity reproduction (R_j &minus; D_j) within a time‑indexed causal ledger. The proposed mechanism&mdash;Care Capacity Reallocation (CCR)&mdash;captures how unmet care requirements move across providers, alter receiving‑system states, and change future care capacity. The gauntlet shows that CCSS cannot replace mature care-economy or care-regime frameworks, but it supplies a reproducible SR remainder: a unified requirement&ndash;capacity ledger that prevents care from being treated as an unmeasured bridge across SR fields. CCSS therefore contributes a standardized diagnostic programme for Planetary SR, ATLAS, Household Absorption Science, Collapse Demography, labour/migration dynamics, health systems, and restoration research, and defines the empirical conditions required for future promotion to a full SR field.</strong></p>",
+    "doi": "10.5281/zenodo.23041893",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Care",
+      "Public health",
+      "Policymakers",
+      "Infrastructure",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-29",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23041892"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Care Capacity Systems Science (CCSS): The Care Requirement–Capacity Architecture and the SR Field Gauntlet",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:15:24.205688+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23041893",
+  "revision": 6,
+  "state": "done",
+  "stats": {
+    "downloads": 4,
+    "unique_downloads": 4,
+    "unique_views": 10,
+    "version_downloads": 4,
+    "version_unique_downloads": 4,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Care Capacity Systems Science (CCSS): The Care Requirement–Capacity Architecture and the SR Field Gauntlet",
+  "updated": "2026-10-06T01:15:24.205688+00:00"
+}
+```

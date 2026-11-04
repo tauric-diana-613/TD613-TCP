@@ -1,0 +1,149 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22849841"
+source_title: "Economic Slow Harm (SR-ESH): Cumulative Sub-Threshold Pressure, Buffer Depletion, and Latent Economic Deterioration"
+metadata_blob_sha256: d17182358e1b98937011d4627c31fad36c702eb952881fa34e66d82e30259f6d
+metadata_blob_path: 02-ORIGINALS/live/blobs/d1/d17182358e1b98937011d4627c31fad36c702eb952881fa34e66d82e30259f6d.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22849840",
+  "conceptrecid": "22849840",
+  "created": "2026-09-19T20:51:37.496300+00:00",
+  "doi": "10.5281/zenodo.22849841",
+  "doi_url": "https://doi.org/10.5281/zenodo.22849841",
+  "files": [
+    {
+      "checksum": "md5:991d40b4cf1f5325e4a82b9356f5d1ae",
+      "id": "3ff342e3-4259-4566-8933-0d9fa580855b",
+      "key": "SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22849841/files/SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.docx/content"
+      },
+      "size": 38485
+    },
+    {
+      "checksum": "md5:acdee53a86d1a4fca82d503ee92615a5",
+      "id": "b2bb48bb-840b-4ab8-89db-2dd63a63c252",
+      "key": "SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22849841/files/SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/content"
+      },
+      "size": 183963
+    }
+  ],
+  "id": 22849841,
+  "links": {
+    "access": "https://zenodo.org/api/records/22849841/access",
+    "access_grants": "https://zenodo.org/api/records/22849841/access/grants",
+    "access_links": "https://zenodo.org/api/records/22849841/access/links",
+    "access_request": "https://zenodo.org/api/records/22849841/access/request",
+    "access_users": "https://zenodo.org/api/records/22849841/access/users",
+    "communities": "https://zenodo.org/api/records/22849841/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22849841/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22849841",
+    "draft": "https://zenodo.org/api/records/22849841/draft",
+    "file_modification": "https://zenodo.org/api/records/22849841/file-modification",
+    "files": "https://zenodo.org/api/records/22849841/files",
+    "latest": "https://zenodo.org/api/records/22849841/versions/latest",
+    "latest_html": "https://zenodo.org/records/22849841/latest",
+    "media_files": "https://zenodo.org/api/records/22849841/media-files",
+    "parent": "https://zenodo.org/api/records/22849840",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22849840",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22849840",
+    "parent_html": "https://zenodo.org/records/22849840",
+    "preview_html": "https://zenodo.org/records/22849841?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22849841/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22849841/request-deletion",
+    "requests": "https://zenodo.org/api/records/22849841/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22849841/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22849841",
+    "self_doi": "https://doi.org/10.5281/zenodo.22849841",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22849841",
+    "self_html": "https://zenodo.org/records/22849841",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22849841/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22849841/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22849841:SR-ESH_Economic_Slow_Harm_Empirical_Validation_2026-09-16.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22849841/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Economic Slow Harm (SR‑ESH) </strong></h1>\n<h1><strong>Description</strong></h1>\n<p><strong>Economic Slow Harm (SR‑ESH)</strong> is a SignalRupture Systems Economics field that studies cumulative economic deterioration produced by <strong>recurrent, sub‑threshold pressures</strong> that remain individually survivable but require <strong>costly absorption</strong> through savings drawdown, increased borrowing, consumption compression, deferred maintenance, additional labour, or foregone investment. The field distinguishes <strong>visible stability</strong> from <strong>latent deterioration</strong>, arguing that continued functionality does not imply absence of harm when the cost of maintaining that functionality reduces future capacity.</p>\n<p>SR‑ESH formalizes economic deterioration as a <strong>path‑dependent state variable</strong> with memory. It introduces a dynamic architecture in which each absorption event modifies the next‑period buffer state, future absorption capacity, and vulnerability to later shocks. The field&rsquo;s central proposition is:</p>\n<blockquote>\n<p><strong>Successful short‑run absorption &ne; zero harm.<br>Stability achieved by consuming resilience is not genuine stabilization.</strong></p>\n</blockquote>\n<p>Initial empirical validation uses official evidence from the United States, Canada, and the OECD. U.S. SHED data show widespread use of costly‑absorption channels (41% reduced savings, 16% increased borrowing, 46% delayed major purchases). Time‑series indicators show incomplete restoration of emergency buffers after the 2021 peak. OECD evidence confirms that insecurity emerges from the interaction between shocks and liquid‑asset buffers. Canada provides a crucial negative case: asset resilience increased from 67.1% (2019) to 71.4% (2023), demonstrating that pressure does not mechanically produce slow harm when regeneration exceeds draw.</p>\n<p>SR‑ESH therefore identifies a measurable, conditional, and falsifiable economic object: <strong>the accumulated cost of maintaining functionality under persistent pressure</strong>.</p>\n<div>\n</div>\n<h1><strong>How This Paper Contributes to SR</strong></h1>\n<h3><strong>Scientific Contribution</strong></h3>\n<p>SR‑ESH introduces a <strong>temporal accumulation operator</strong> for SR Systems Economics. It shows how repeated sub‑threshold pressures generate cumulative deterioration even when no conventional crisis threshold is crossed. The field provides explicit equations for buffer dynamics, absorption cost, legacy burden, and slow‑harm accumulation, enabling empirical testing and model comparison.</p>\n<h3><strong>Methodological Contribution</strong></h3>\n<p>The paper establishes a <strong>five‑test empirical protocol</strong> (costly absorption, buffer‑conditioned coping, persistence, negative cases, cross‑national plausibility). It also defines a <strong>Crown Test</strong> comparing three predictive models (current state only, conventional fragility, SR‑ESH trajectory model) to determine whether slow‑harm history improves out‑of‑sample prediction.</p>\n<h3><strong>Multiverse Contribution</strong></h3>\n<p>SR‑ESH supplies the economic temporal‑accumulation mechanism used across the SR Multiverse. It links directly to <strong>SR Systems Economics</strong>, <strong>Household Absorption Science</strong>, <strong>Collapse Economics</strong>, <strong>National Statistical Representation Dynamics</strong>, and <strong>General Slow Harm</strong>, clarifying how economic pressure propagates, transforms, and accumulates across time.</p>\n<h3><strong>Institutional Contribution</strong></h3>\n<p>The field explains why conventional indicators (employment, income, inflation, poverty, delinquency) can remain stable while resilience declines. It provides a diagnostic architecture for identifying latent deterioration early enough to support restoration rather than collapse response.</p>",
+    "doi": "10.5281/zenodo.22849841",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Economics",
+      "World",
+      "Society",
+      "Psychology"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-19",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22849840"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Economic Slow Harm (SR-ESH): Cumulative Sub-Threshold Pressure, Buffer Depletion, and Latent Economic Deterioration",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:20:48.370982+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22849841",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 5,
+    "unique_views": 10,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Economic Slow Harm (SR-ESH): Cumulative Sub-Threshold Pressure, Buffer Depletion, and Latent Economic Deterioration",
+  "updated": "2026-10-06T01:20:48.370982+00:00"
+}
+```

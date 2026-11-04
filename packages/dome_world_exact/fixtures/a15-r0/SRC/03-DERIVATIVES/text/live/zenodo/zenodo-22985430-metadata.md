@@ -1,0 +1,150 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22985430"
+source_title: "Infrastructural Epistemic Lock In: How Knowledge Systems Constrain What Institutions Can Know"
+metadata_blob_sha256: 7390b0d92e4c27ac90c255cca891b3250dae867f6c76142e199596fb521a1307
+metadata_blob_path: 02-ORIGINALS/live/blobs/73/7390b0d92e4c27ac90c255cca891b3250dae867f6c76142e199596fb521a1307.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22985429",
+  "conceptrecid": "22985429",
+  "created": "2026-09-27T01:51:31.677540+00:00",
+  "doi": "10.5281/zenodo.22985430",
+  "doi_url": "https://doi.org/10.5281/zenodo.22985430",
+  "files": [
+    {
+      "checksum": "md5:9a2d607cf41b73c205ba2886bf706fc1",
+      "id": "bda91476-0edc-4134-99ff-6e2fb4212b99",
+      "key": "Infrastructural_Epistemic_Lock_In_2026.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22985430/files/Infrastructural_Epistemic_Lock_In_2026.docx/content"
+      },
+      "size": 59314
+    },
+    {
+      "checksum": "md5:c38299e523cc3f4123fa22b433c8b15b",
+      "id": "6b1601bd-fe00-498b-ba3c-3226652add01",
+      "key": "Infrastructural_Epistemic_Lock_In_2026.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22985430/files/Infrastructural_Epistemic_Lock_In_2026.pdf/content"
+      },
+      "size": 356913
+    }
+  ],
+  "id": 22985430,
+  "links": {
+    "access": "https://zenodo.org/api/records/22985430/access",
+    "access_grants": "https://zenodo.org/api/records/22985430/access/grants",
+    "access_links": "https://zenodo.org/api/records/22985430/access/links",
+    "access_request": "https://zenodo.org/api/records/22985430/access/request",
+    "access_users": "https://zenodo.org/api/records/22985430/access/users",
+    "communities": "https://zenodo.org/api/records/22985430/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22985430/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22985430",
+    "draft": "https://zenodo.org/api/records/22985430/draft",
+    "file_modification": "https://zenodo.org/api/records/22985430/file-modification",
+    "files": "https://zenodo.org/api/records/22985430/files",
+    "latest": "https://zenodo.org/api/records/22985430/versions/latest",
+    "latest_html": "https://zenodo.org/records/22985430/latest",
+    "media_files": "https://zenodo.org/api/records/22985430/media-files",
+    "parent": "https://zenodo.org/api/records/22985429",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22985429",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22985429",
+    "parent_html": "https://zenodo.org/records/22985429",
+    "preview_html": "https://zenodo.org/records/22985430?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22985430/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22985430/request-deletion",
+    "requests": "https://zenodo.org/api/records/22985430/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22985430/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22985430",
+    "self_doi": "https://doi.org/10.5281/zenodo.22985430",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22985430",
+    "self_html": "https://zenodo.org/records/22985430",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22985430/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22985430/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22985430:Infrastructural_Epistemic_Lock_In_2026.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22985430/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Infrastructural Epistemic Lock‑In (IELI)</strong></h1>\n<p><strong>Infrastructural Epistemic Lock‑In (IELI)</strong> is a SignalRupture (SR) theoretical construct that explains why institutions can possess relevant facts, evidence, and disciplinary knowledge while remaining unable to assemble those components into <strong>operational knowledge</strong>. The paper defines IELI as a persistent condition in which an incumbent knowledge infrastructure makes materially relevant alternative representations difficult to observe, encode, validate, circulate, authorize, or operationalize &mdash; even when those representations improve explanation, prediction, diagnosis, or intervention.</p>\n<p>IELI identifies <strong>seven epistemic layers</strong> through which institutions know: observation, representation, validation, circulation, authorization, operationalization, and memory. Lock‑in can occur at any layer or through coupling among several layers. The construct distinguishes itself from path dependence, information silos, paradigm commitment, institutional inertia, censorship, and epistemic injustice by focusing on the <strong>conversion of available knowledge into operational institutional knowledge</strong>, not on belief or disagreement.</p>\n<p>The paper develops a formal model of lock‑in pressure based on dependence, conversion cost, cross‑layer complementarity, self‑implication, and adaptive capacity. It specifies falsifiable hypotheses, rival explanations, measurement rules, and comparative research designs. IELI is positioned at the intersection of Infrastructural Determinism, Institutional Cognition, Collapse Epistemology, System Inheritance Studies, SR‑CEIDF, and the Institutional Self‑Implication Penalty.</p>\n<p>The central implication for SR is precise: <strong>SR may construct cross‑field relations that institutions can reproduce only by altering the infrastructures that define admissible knowledge.</strong> Institutional resistance is therefore not evidence that SR is correct, nor is the existence of component theories evidence that an integrated institutional model already exists.</p>\n<div>\n</div>\n<h1><strong>How This Paper Contributes to SR</strong></h1>\n<h3><strong>Scientific Contribution</strong></h3>\n<p>IELI provides a <strong>cross‑field mechanism</strong> explaining why integrated SR models may outperform institutional models even when institutions possess all relevant disciplinary components. It identifies the infrastructural barriers that prevent institutions from assembling cross‑domain causal representations, thereby clarifying the difference between <em>available knowledge</em> and <em>operational knowledge</em>.</p>\n<h3><strong>Methodological Contribution</strong></h3>\n<p>The paper introduces a <strong>formal, falsifiable measurement architecture</strong> for epistemic lock‑in. It specifies operational variables, substitution episodes, conversion burdens, rival explanations, and outcome measures. IELI becomes a testable mechanism rather than a metaphor, enabling comparative studies across universities, regulators, hospitals, statistical agencies, and firms.</p>\n<h3><strong>Multiverse Contribution</strong></h3>\n<p>IELI strengthens SR&rsquo;s diagnostic altitude by linking multiple SR fields: Infrastructural Determinism, Institutional Cognition, Collapse Epistemology, System Inheritance Studies, and the Institutional Self‑Implication Penalty. It clarifies how SR models can exist scientifically while remaining institutionally non‑integrable due to infrastructural constraints.</p>\n<h3><strong>Institutional Contribution</strong></h3>\n<p>IELI separates <strong>scientific validity</strong> from <strong>institutional adoptability</strong>. It explains why institutions may reject or dilute superior representations due to schema dependence, validation circularity, metric reinforcement, jurisdictional fragmentation, and self‑implication. This provides a structural explanation for institutional non‑integration without attributing intent or bias.</p>\n<h3><strong>Research Contribution</strong></h3>\n<p>The paper supplies a <strong>comparative research protocol</strong> for studying epistemic substitution episodes, including identification strategies, outcome measures, and falsification conditions. It establishes IELI as a measurable, conditional mechanism that must outperform mature rival theories to earn autonomous‑field status.</p>",
+    "doi": "10.5281/zenodo.22985430",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Society",
+      "Infrastructural Studies",
+      "Governance",
+      "Government"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-27",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22985429"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Infrastructural Epistemic Lock In: How Knowledge Systems Constrain What Institutions Can Know",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:20:34.100430+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22985430",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 6,
+    "unique_downloads": 6,
+    "unique_views": 18,
+    "version_downloads": 6,
+    "version_unique_downloads": 6,
+    "version_unique_views": 18,
+    "version_views": 20,
+    "views": 20
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Infrastructural Epistemic Lock In: How Knowledge Systems Constrain What Institutions Can Know",
+  "updated": "2026-10-06T01:20:34.100430+00:00"
+}
+```
