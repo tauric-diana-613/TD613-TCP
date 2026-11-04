@@ -87,6 +87,14 @@ class ReceiverTests(unittest.TestCase):
         with self.assertRaises(MOD.ReceiverError):
             MOD.method_query(self.db,"delta_scope","UNKNOWN")
 
+    def test_json_nonfinite_method_values_fail_closed(self):
+        raw=fixture()
+        self.assertIn(b'"delta_scope": "UNKNOWN"',raw)
+        altered=raw.replace(b'"delta_scope": "UNKNOWN"',b'"delta_scope": NaN')
+        with self.assertRaisesRegex(MOD.ReceiverError,"Non-finite"):
+            MOD.admit(self.db,altered)
+        self.assertEqual(MOD.state(self.db)["counts"]["packets"],0)
+
     def test_bad_hash_rejection_is_non_mutating(self):
         obj=json.loads(fixture())
         obj["source_sha256"]="0"*64

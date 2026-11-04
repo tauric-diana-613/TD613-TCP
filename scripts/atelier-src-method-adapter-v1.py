@@ -53,6 +53,10 @@ def _path(path):
     return p
 
 
+def _reject_nonfinite(token):
+    raise AdapterError("Non-finite JSON token is forbidden: "+token)
+
+
 def load(path, *, snapshot, seal_binding, expected_sha256):
     if not snapshot or not seal_binding or not expected_sha256:
         raise AdapterError("Explicit source digest, snapshot and seal binding required")
@@ -62,7 +66,10 @@ def load(path, *, snapshot, seal_binding, expected_sha256):
     try:
         text = raw.decode("utf-8-sig")
         lines = [line for line in text.splitlines() if line.strip()]
-        rows = [json.loads(line, object_pairs_hook=_pairs) for line in lines]
+        rows = [json.loads(line, object_pairs_hook=_pairs,
+                           parse_constant=_reject_nonfinite) for line in lines]
+    except AdapterError:
+        raise
     except (UnicodeError, ValueError, TypeError) as exc:
         raise AdapterError("Native method rows are not valid UTF-8 JSONL") from exc
     if not rows:

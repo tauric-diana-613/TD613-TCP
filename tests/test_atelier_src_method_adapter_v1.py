@@ -113,6 +113,16 @@ class NativeMethodAdapterTests(unittest.TestCase):
         self.assertTrue(res["has_more"])
         self.assertEqual([z["ordinal"] for z in res["rows"]],[2,3])
 
+    def test_nonfinite_json_method_values_fail_closed(self):
+        text=self.method_path.read_text(encoding="utf-8")
+        self.assertIn('"delta_scope": "NARROWED"',text)
+        self.method_path.write_text(text.replace('"delta_scope": "NARROWED"',
+                                                 '"delta_scope": NaN'),encoding="utf-8")
+        dig=hashlib.sha256(self.method_path.read_bytes()).hexdigest()
+        with self.assertRaisesRegex(adapter.AdapterError,"Non-finite"):
+            adapter.load(self.method_path,snapshot="SYN-SNAPSHOT",
+                         seal_binding="RESOLVE_MATCHED_CURRENT_SEAL",expected_sha256=dig)
+
     def test_source_byte_tamper_refused(self):
         self.method_path.write_bytes(self.method_path.read_bytes()+b"\n")
         with self.assertRaisesRegex(adapter.AdapterError,"digest"):

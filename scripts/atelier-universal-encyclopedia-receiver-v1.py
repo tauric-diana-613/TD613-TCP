@@ -138,11 +138,18 @@ def _pairs(pairs):
     return result
 
 
+def _reject_nonfinite(token):
+    raise ReceiverError("Non-finite JSON token is forbidden: "+token)
+
+
 def validate(raw: bytes):
     if not isinstance(raw, bytes):
         raise ReceiverError("Packet input must be exact bytes")
     try:
-        item = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs)
+        item = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs,
+                          parse_constant=_reject_nonfinite)
+    except ReceiverError:
+        raise
     except (UnicodeDecodeError, ValueError, TypeError) as exc:
         raise ReceiverError("Invalid UTF-8/JSON packet") from exc
     if not isinstance(item, dict) or set(item) != KEYS:
