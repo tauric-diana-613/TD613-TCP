@@ -85,7 +85,12 @@ class UniversalSourceBoundTests(unittest.TestCase):
           lambda:list(u.load_sources(Path("/nothing/to/read/wendbine.sqlite"),self.repo)))
         file=self.repo/u.BASE/"SRC"/"03-DERIVATIVES"/"text"/"one.txt"
         file.unlink()
-        file.symlink_to(self.dbpath)
+        try:
+            file.symlink_to(self.dbpath)
+        except OSError as exc:
+            if getattr(exc, "winerror", None) == 1314:
+                self.skipTest("Windows symbolic-link privilege unavailable")
+            raise
         self.assertRaisesRegex(ValueError,"NATIVE_DERIVATIVE_INVALID",
           lambda:list(u.load_sources(self.dbpath,self.repo)))
 

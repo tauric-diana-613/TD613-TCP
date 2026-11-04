@@ -149,7 +149,7 @@ class AtelierOriginalRetrieval(unittest.TestCase):
             resumed=execute(["sync","--until",new_end,"--resume",
                 "--operator-confirmed-rights"],[second])
             self.assertEqual(resumed,"2026-09-20T00:00:00Z")
-            with sqlite3.connect(path) as con:
+            with contextlib.closing(sqlite3.connect(path)) as con:
                 self.assertEqual(m.status(con)["sources"],2)
                 self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
                 self.assertEqual(m.status(con)["index_source_class"],"ARCTIC_SHIFT")
@@ -158,7 +158,7 @@ class AtelierOriginalRetrieval(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,"VERSION_DRIFT_REQUIRES_EXPLICIT_ADJUDICATION"):
                 execute(["sync","--until","2026-09-25T00:00:00Z","--resume",
                          "--operator-confirmed-rights"],[post("abcde2",created=1790086400,text="Silently changed!")])
-            with sqlite3.connect(path) as con:
+            with contextlib.closing(sqlite3.connect(path)) as con:
                 self.assertEqual(m.status(con)["last_successful_until_utc"],new_end)
                 self.assertEqual(con.execute("select selftext from sources where source_id='reddit:t3_abcde1'").fetchone()[0],prior)
 

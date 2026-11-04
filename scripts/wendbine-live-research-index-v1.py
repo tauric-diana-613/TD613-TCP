@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack, closing
 import datetime as dt
 import hashlib
 import json
@@ -384,72 +385,73 @@ def main():
     q=sub.add_parser("source");q.add_argument("source_id")
     q=sub.add_parser("links");q.add_argument("--source-id",default=None)
     args=p.parse_args()
-    location=Path(args.db)
-    if args.command in ("sync","import-fixture"):
-        if args.command=="sync" and not args.operator_confirmed_rights:
-            raise ValueError("HUMAN_RIGHTS_CONFIRMATION_REQUIRED_BEFORE_LIVE_SOURCE_ACQUISITION")
-        source_class="ARCTIC_SHIFT" if args.command=="sync" else "INVENTED_SYNTHETIC_FIXTURE"
-        if args.command=="sync" and args.overlap_days not in range(0,8):
-            raise ValueError("FINITE_OVERLAP_DAYS_REQUIRED")
-        if args.command=="sync" and args.resume:
+    with ExitStack() as stack:
+        location=Path(args.db)
+        if args.command in ("sync","import-fixture"):
+            if args.command=="sync" and not args.operator_confirmed_rights:
+                raise ValueError("HUMAN_RIGHTS_CONFIRMATION_REQUIRED_BEFORE_LIVE_SOURCE_ACQUISITION")
+            source_class="ARCTIC_SHIFT" if args.command=="sync" else "INVENTED_SYNTHETIC_FIXTURE"
+            if args.command=="sync" and args.overlap_days not in range(0,8):
+                raise ValueError("FINITE_OVERLAP_DAYS_REQUIRED")
+            if args.command=="sync" and args.resume:
+                ensure_local(location)
+                if not location.is_file() or location.is_symlink():
+                    raise ValueError("EXISTING_GENUINE_SOURCE_DB_REQUIRED")
+                db=stack.enter_context(closing(sqlite3.connect(location)))
+                if db.execute("pragma integrity_check").fetchone()[0]!="ok":
+                    raise ValueError("RESUME_DB_INTEGRITY_FAILURE")
+                prior=dict(db.execute("select key,value from audit").fetchall())
+                if prior.get("source_class")!="ARCTIC_SHIFT":
+                    raise ValueError("RESUME_SYNTHETIC_OR_UNATTESTED_DB_REFUSED")
+                prior_end=prior.get("last_successful_until_utc")
+                if not prior_end or utc(args.until)<=utc(prior_end):
+                    raise ValueError("RESUME_REQUIRES_NEW_LATER_EXCLUSIVE_CUTOFF")
+                actual_since=dt.datetime.fromtimestamp(utc(prior_end)-86400*args.overlap_days,
+                   tz=dt.timezone.utc).isoformat().replace("+00:00","Z")
+            else:
+                if args.command=="import-fixture" and getattr(args,"resume",False):
+                    raise ValueError("SYNTHETIC_TO_REAL_RESUME_REFUSED")
+                actual_since=args.since
+                db=None
+            if args.command=="sync":
+                posts,receipt=fetch_history(actual_since,args.until,args.max_pages,args.page_size)
+            else:
+                posts=json.loads(Path(args.fixture).read_text("utf8"))
+                receipt={"provider":"INVENTED_SYNTHETIC_FIXTURE"}
+            if db is None:db=stack.enter_context(closing(prepare_db(location)))
+            with db:
+                report=import_rows(db,posts,actual_since,args.until,
+                    dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume),commit=False)
+                db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
+                db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
+                db.execute("insert or replace into audit(key,value) values(?,?)",("recomparison_start_utc",actual_since))
+                db.execute("insert or replace into audit(key,value) values(?,?)",("last_import_summary_sha256",
+                  sha(json.dumps(report,sort_keys=True).encode("utf8"))))
+                report["provider_receipt"]=receipt
+            print(json.dumps({"report":report,"status":status(db)},ensure_ascii=False,indent=2))
+        else:
             ensure_local(location)
-            if not location.is_file() or location.is_symlink():
-                raise ValueError("EXISTING_GENUINE_SOURCE_DB_REQUIRED")
-            db=sqlite3.connect(location)
-            if db.execute("pragma integrity_check").fetchone()[0]!="ok":
-                raise ValueError("RESUME_DB_INTEGRITY_FAILURE")
-            prior=dict(db.execute("select key,value from audit").fetchall())
-            if prior.get("source_class")!="ARCTIC_SHIFT":
-                raise ValueError("RESUME_SYNTHETIC_OR_UNATTESTED_DB_REFUSED")
-            prior_end=prior.get("last_successful_until_utc")
-            if not prior_end or utc(args.until)<=utc(prior_end):
-                raise ValueError("RESUME_REQUIRES_NEW_LATER_EXCLUSIVE_CUTOFF")
-            actual_since=dt.datetime.fromtimestamp(utc(prior_end)-86400*args.overlap_days,
-               tz=dt.timezone.utc).isoformat().replace("+00:00","Z")
-        else:
-            if args.command=="import-fixture" and getattr(args,"resume",False):
-                raise ValueError("SYNTHETIC_TO_REAL_RESUME_REFUSED")
-            actual_since=args.since
-            db=None
-        if args.command=="sync":
-            posts,receipt=fetch_history(actual_since,args.until,args.max_pages,args.page_size)
-        else:
-            posts=json.loads(Path(args.fixture).read_text("utf8"))
-            receipt={"provider":"INVENTED_SYNTHETIC_FIXTURE"}
-        if db is None:db=prepare_db(location)
-        with db:
-            report=import_rows(db,posts,actual_since,args.until,
-                dt.datetime.now(dt.timezone.utc).isoformat(),allow_existing=(args.command=="sync" and args.resume),commit=False)
-            db.execute("insert or replace into audit(key,value) values(?,?)",("source_class",source_class))
-            db.execute("insert or replace into audit(key,value) values(?,?)",("last_successful_until_utc",args.until))
-            db.execute("insert or replace into audit(key,value) values(?,?)",("recomparison_start_utc",actual_since))
-            db.execute("insert or replace into audit(key,value) values(?,?)",("last_import_summary_sha256",
-              sha(json.dumps(report,sort_keys=True).encode("utf8"))))
-            report["provider_receipt"]=receipt
-        print(json.dumps({"report":report,"status":status(db)},ensure_ascii=False,indent=2))
-    else:
-        ensure_local(location)
-        db=sqlite3.connect(location.as_uri()+"?mode=ro",uri=True)
-        if args.command=="status":report=status(db)
-        elif args.command=="day":report=enumerate_day(db,args.date_utc,args.limit,args.offset,not args.metadata_only)
-        elif args.command=="graph":report=explicit_graph(db,args.source_id,args.depth)
-        elif args.command=="exact":report=exact_search(db,args.query,args.limit)
-        elif args.command=="lexical":report=fts_search(db,args.query,args.limit)
-        elif args.command=="source":
-            row=db.execute("""select source_id,canonical_url,published_unix,title,selftext,
-               title_sha256,body_sha256,body_state from sources where source_id=?""",
-               (args.source_id,)).fetchone()
-            if row is None:raise ValueError("SOURCE_NOT_INDEXED")
-            report={"source_id":row[0],"canonical_url":row[1],"published_unix":row[2],
-             "title":row[3].decode("utf8"),"selftext":row[4].decode("utf8"),
-             "title_sha256":row[5],"body_sha256":row[6],"body_state":row[7],
-             "authenticity":"EXACT_ARCHIVE_OBSERVED_UTF8_NOT_VERIFIED_AUTHOR_ORIGINAL"}
-        else:
-            where="where src=?" if args.source_id else ""
-            values=(args.source_id,) if args.source_id else ()
-            report=[dict(zip(("src","dst","relation","field","byte_offset","evidence_span","evidence_class"),row))
-               for row in db.execute(f"""select src,dst,relation,source_field,offset_utf8,
-               evidence_span,evidence_class from links {where} order by src,offset_utf8 limit 500""",values)]
-        print(json.dumps(report,ensure_ascii=False,indent=2))
+            db=stack.enter_context(closing(sqlite3.connect(location.as_uri()+"?mode=ro",uri=True)))
+            if args.command=="status":report=status(db)
+            elif args.command=="day":report=enumerate_day(db,args.date_utc,args.limit,args.offset,not args.metadata_only)
+            elif args.command=="graph":report=explicit_graph(db,args.source_id,args.depth)
+            elif args.command=="exact":report=exact_search(db,args.query,args.limit)
+            elif args.command=="lexical":report=fts_search(db,args.query,args.limit)
+            elif args.command=="source":
+                row=db.execute("""select source_id,canonical_url,published_unix,title,selftext,
+                   title_sha256,body_sha256,body_state from sources where source_id=?""",
+                   (args.source_id,)).fetchone()
+                if row is None:raise ValueError("SOURCE_NOT_INDEXED")
+                report={"source_id":row[0],"canonical_url":row[1],"published_unix":row[2],
+                 "title":row[3].decode("utf8"),"selftext":row[4].decode("utf8"),
+                 "title_sha256":row[5],"body_sha256":row[6],"body_state":row[7],
+                 "authenticity":"EXACT_ARCHIVE_OBSERVED_UTF8_NOT_VERIFIED_AUTHOR_ORIGINAL"}
+            else:
+                where="where src=?" if args.source_id else ""
+                values=(args.source_id,) if args.source_id else ()
+                report=[dict(zip(("src","dst","relation","field","byte_offset","evidence_span","evidence_class"),row))
+                   for row in db.execute(f"""select src,dst,relation,source_field,offset_utf8,
+                   evidence_span,evidence_class from links {where} order by src,offset_utf8 limit 500""",values)]
+            print(json.dumps(report,ensure_ascii=False,indent=2))
 if __name__=="__main__":
     main()
