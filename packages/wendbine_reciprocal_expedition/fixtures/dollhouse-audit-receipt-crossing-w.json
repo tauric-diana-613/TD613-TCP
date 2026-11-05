@@ -1,22 +1,22 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793896516678-b9f9ba16",
-  "timestamp": "2026-11-05T16:35:16.678Z",
-  "source_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
+  "invocation_id": "dollhouse-audit-1793899595381-71d4c78c",
+  "timestamp": "2026-11-05T17:26:35.381Z",
+  "source_revision": "e3e776ecc9ba47b838fbcd546218f3f183b4db8d",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
+  "executing_checkout_revision": "e3e776ecc9ba47b838fbcd546218f3f183b4db8d",
   "is_exact_checkout_match": true,
-  "worktree_cleanliness_verified": true,
-  "exact_checkout_verified": true,
+  "worktree_cleanliness_verified": false,
+  "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
-    "audit_execution_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
+    "executable_source_revision": "e3e776ecc9ba47b838fbcd546218f3f183b4db8d",
+    "audit_execution_revision": "e3e776ecc9ba47b838fbcd546218f3f183b4db8d",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
-    "worktree_cleanliness_verified": true,
+    "worktree_cleanliness_verified": false,
     "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
     "current_head_source_equivalence_verified": true,
     "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
@@ -42,8 +42,8 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "CROSSING_W_TWO_ESTATE_RECIPROCAL_EXPEDITION_AUDIT",
-  "evidence_class": "WENDBINE_RECIPROCAL_EXPEDITION_EVIDENCE",
+  "task_scope": "WENDBINE_NATIVE_DIFFERENTIAL_COMPANION_AUDIT",
+  "evidence_class": "WENDBINE_NATIVE_DIFFERENTIAL_EVIDENCE",
   "evidence_references": [
     "packages/wendbine_reciprocal_expedition/WENDBINE_ORIGINAL_EVOLVED_METHOD_ATLAS.md",
     "packages/wendbine_reciprocal_expedition/wendbine-capability-receipt.json",
@@ -74,33 +74,33 @@
       "reference": "packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "cc232e207c2d70630cbbe79436045621408dc3243b1059696f084d84eb32432b",
+      "byte_digest": "97f0cb808e5ddfc8410245095f6275b8558aad3e3f5674a9307b9f6cb77f2935",
       "byte_digest_verified": true,
-      "sha256": "cc232e207c2d70630cbbe79436045621408dc3243b1059696f084d84eb32432b"
+      "sha256": "97f0cb808e5ddfc8410245095f6275b8558aad3e3f5674a9307b9f6cb77f2935"
     },
     {
       "reference": "packages/wendbine_reciprocal_expedition/receiver/wendbine-receiver-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "fd3cb9223e5a6e9e88f440f92a67d8c48360d4bb8d84ef192de1ee4fc91fdafa",
+      "byte_digest": "56c5def55f3416d60f6bb7843545d68a910629ce80d659574690099107e21cb3",
       "byte_digest_verified": true,
-      "sha256": "fd3cb9223e5a6e9e88f440f92a67d8c48360d4bb8d84ef192de1ee4fc91fdafa"
+      "sha256": "56c5def55f3416d60f6bb7843545d68a910629ce80d659574690099107e21cb3"
     },
     {
       "reference": "packages/wendbine_reciprocal_expedition/assay/run-wendbine-reciprocal-assay.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "83b1f5ea9124a65910e5202c24fa54599748ea7eed538ede544e55c57360bcd8",
+      "byte_digest": "54ec918ae47e4b9af543bc8e9581a08d105a2f6edbf959c6f6193e35a8e86bcf",
       "byte_digest_verified": true,
-      "sha256": "83b1f5ea9124a65910e5202c24fa54599748ea7eed538ede544e55c57360bcd8"
+      "sha256": "54ec918ae47e4b9af543bc8e9581a08d105a2f6edbf959c6f6193e35a8e86bcf"
     },
     {
       "reference": "packages/wendbine_reciprocal_expedition/assay/wendbine-reciprocal-assay-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "bf35e1ccb18c2c1cfcef8a9ee8c88cdfdcea875787067ca7fa78c84d07bcf774",
+      "byte_digest": "69d38138e2f3c7e8256c58b5207c15f9d69440e9ff924744eb492c3a1c458bcc",
       "byte_digest_verified": true,
-      "sha256": "bf35e1ccb18c2c1cfcef8a9ee8c88cdfdcea875787067ca7fa78c84d07bcf774"
+      "sha256": "69d38138e2f3c7e8256c58b5207c15f9d69440e9ff924744eb492c3a1c458bcc"
     },
     {
       "reference": "packages/wendbine_reciprocal_expedition/fixtures/dollhouse-design-receipt-crossing-w.json",
@@ -456,5 +456,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 562
+  "execution_duration_ms": 387
 }

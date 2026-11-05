@@ -1,6 +1,6 @@
 {
   "schema": "td613.wendbine-reciprocal-assay-receipt/v1",
-  "evaluated_at": "2026-11-05T16:36:35.539Z",
+  "evaluated_at": "2026-11-05T17:24:06.944Z",
   "authority": "SAC[X6ZNK5NO51]",
   "covenant": "Khona‌lit-po",
   "estate": "WENDBINE",
@@ -9,15 +9,16 @@
     "schema": "td613.wendbine-empty-receiver/v1",
     "recipient_id": "wb_rcp_synth_assay_01",
     "episode_id": "wb_ep_assay_run",
-    "initialized_at": "2026-11-05T16:36:35.532Z",
-    "entropy": "8554d851-aff3-4ff0-82ff-45a89a9c2841",
+    "initialized_at": "2026-11-05T17:24:06.936Z",
+    "entropy": "ff369e97-5e43-4f03-aab2-49c1c98ff83a",
     "tables": [
       "wb_sources",
       "wb_concepts",
       "wb_concept_declarations",
       "wb_typed_relations",
       "wb_cooccurrences",
-      "wb_captures"
+      "wb_captures",
+      "wb_adjudication_events"
     ],
     "zero_row_counts": {
       "wb_sources": 0,
@@ -25,37 +26,50 @@
       "wb_concept_declarations": 0,
       "wb_typed_relations": 0,
       "wb_cooccurrences": 0,
-      "wb_captures": 0
+      "wb_captures": 0,
+      "wb_adjudication_events": 0
     },
-    "witness_hash": "ac7930e7a6198176815f493ed8dbbbd032882a12d7c313661569804c49c4be93"
+    "witness_hash": "6a86e475ee58d723dd98010f643bb1a43222d81cd447c35a06b32fa7c12a8363"
   },
   "path_w1_original_evolved_method_representation": {
-    "classification": "PATH_W1_ORIGINAL_EVOLVED_METHOD_REPRESENTATION",
-    "description": "Documentary representation of authentic Wendbine compiler rules and evolved estate metrics (PR #1685)",
+    "classification": "PATH_W1_AUTHENTIC_NATIVE_METHOD_EXECUTION",
+    "description": "Live execution of authentic Wendbine compiler contract and public corpus compiler from PR #1685",
+    "native_execution_verified": true,
+    "native_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+    "native_executable_sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+    "native_result_sha256": "831e783447a7671545557cec42f23ef42a8528460e92cab72b8f4e8fabaf3206",
     "original_compiler_quantities": {
       "sources_count": 33,
       "concepts_count": 191,
       "typed_relations_count": 146,
       "nine_graph_families_count": 9,
+      "distinct_family_relation_pairs_count": 76,
+      "distinct_relation_names_count": 59,
       "recurrent_public_concepts_count": 43,
       "cooccurrence_overlay_edges_count": 143,
       "evidence_classes_count": 5
     },
-    "evolved_estate_quantities": {
-      "manifestations_count": 2062,
-      "captures_count": 6763,
-      "recorded_edges_count": 6703
+    "typed_relation_counts": {
+      "G_A": 15,
+      "G_D": 14,
+      "G_F": 3,
+      "G_I": 6,
+      "G_O": 9,
+      "G_P": 10,
+      "G_R": 18,
+      "G_T": 25,
+      "G_X": 46
     },
     "negative_controls_blocked": [
       {
-        "control_id": "WB_NEG_01_FULL_BODY_INJECTION",
-        "status": "BLOCKED_BY_ORIGINAL_METHOD_RULE",
-        "reason": "Original validateNativeInputs strictly throws WENDBINE_FULL_BODY_FIELD_REFUSED."
+        "control_id": "WB_W1_NEG_01_FULL_BODY_INJECTION",
+        "status": "BLOCKED_BY_NATIVE_VALIDATOR",
+        "reason": "validateNativeInputs strictly refused full body field with WENDBINE_FULL_BODY_FIELD_REFUSED."
       },
       {
-        "control_id": "WB_NEG_02_FABRICATED_GRAPH_PREDICATE",
-        "status": "BLOCKED_BY_ORIGINAL_METHOD_RULE",
-        "reason": "Original contract strictly verifies predicate against graph_relation_vocabulary; throws WENDBINE_UNSUPPORTED_GRAPH_RELATION."
+        "control_id": "WB_W1_NEG_02_FABRICATED_GRAPH_PREDICATE",
+        "status": "BLOCKED_BY_NATIVE_VALIDATOR",
+        "reason": "validateNativeInputs strictly refused uncontracted predicate with WENDBINE_UNSUPPORTED_GRAPH_RELATION."
       }
     ]
   },
@@ -72,7 +86,7 @@
         "to_concept": "concept:network_governance",
         "evidence_class": "SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE",
         "adjudicator_receipt_id": "rec:adj_assay_wb_001",
-        "admitted_at": "2026-11-05T16:36:35.538Z"
+        "admitted_at": "2026-11-05T17:24:06.941Z"
       }
     ],
     "negative_controls": [
@@ -82,14 +96,34 @@
         "reason": "WENDBINE_FULL_BODY_FIELD_REFUSED enforced by receiver schema"
       },
       {
-        "control_id": "WB_NEG_02_FABRICATED_GRAPH_PREDICATE",
+        "control_id": "WB_NEG_02_NESTED_BODY_INJECTION",
+        "blocked": true,
+        "reason": "WENDBINE_FULL_BODY_FIELD_REFUSED enforced by recursive payload scan"
+      },
+      {
+        "control_id": "WB_NEG_03_FABRICATED_GRAPH_PREDICATE",
         "blocked": true,
         "reason": "WENDBINE_UNSUPPORTED_GRAPH_RELATION enforced by 9-graph registry"
       },
       {
-        "control_id": "WB_NEG_03_TAMPERED_SPAN_DIGEST",
+        "control_id": "WB_NEG_04_MISSING_SPAN_PROOF",
+        "blocked": true,
+        "reason": "MISSING_SPAN_PROOF enforced (default-allow fallback eliminated)"
+      },
+      {
+        "control_id": "WB_NEG_05_TAMPERED_SPAN_DIGEST",
         "blocked": true,
         "reason": "INVALID_SPAN_PROOF_DIGEST enforced by live raw byte SHA-256 recomputation"
+      },
+      {
+        "control_id": "WB_NEG_06_UNREGISTERED_ADJUDICATOR",
+        "blocked": true,
+        "reason": "UNREGISTERED_ADJUDICATION_EVENT enforced against version-bound adjudication events table"
+      },
+      {
+        "control_id": "WB_NEG_07_UNDECLARED_CONCEPT_ENDPOINT",
+        "blocked": true,
+        "reason": "CONCEPT_NOT_DECLARED_FOR_SOURCE enforced; concepts must be declared for source post"
       }
     ]
   },
@@ -102,9 +136,10 @@
         "dimension_name": "PUBLIC_BOUNDED_SCOPE",
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Full post body fields strictly refused (selftext, body, source_body, full_text).",
-        "path_w2_outcome": "Full body injection rejected: true (WENDBINE_FULL_BODY_FIELD_REFUSED)",
-        "verdict": "CONCORDANT_REFUSED",
-        "invariant_held": true
+        "path_w2_outcome": "Top-level body rejected: true; Nested payload body rejected: true",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 2,
@@ -112,17 +147,19 @@
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Concepts inverted to source sets; set-theoretic union invariant.",
         "path_w2_outcome": "Inverted concept declarations stored in wb_concept_declarations table.",
-        "verdict": "CONCORDANT_INDEXED",
-        "invariant_held": true
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 3,
         "dimension_name": "NINE_GRAPH_VOCABULARY_RESTRICTION",
         "evaluation_type": "LIVE_EXECUTION",
-        "path_w1_rule": "Relations strictly constrained to G_A through G_X vocabulary.",
-        "path_w2_outcome": "Fabricated predicate rejected: true (WENDBINE_UNSUPPORTED_GRAPH_RELATION)",
-        "verdict": "CONCORDANT_CONSTRAINED",
-        "invariant_held": true
+        "path_w1_rule": "Relations strictly constrained to G_A through G_X vocabulary (76 distinct typed pairs).",
+        "path_w2_outcome": "Fabricated predicate rejected: true; Native execution verified 76 typed pairs.",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 4,
@@ -130,26 +167,29 @@
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Co-occurrence requires threshold >= 2 independent sources (ARCHIVE_DERIVED_COOCCURRENCE_NOT_CAUSAL).",
         "path_w2_outcome": "Overlay computed: 1 edge with weight 2",
-        "verdict": "CONCORDANT_THRESHOLDED",
-        "invariant_held": true
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 5,
         "dimension_name": "MISSING_ENDPOINTS_DEFAULT_DENY",
         "evaluation_type": "LIVE_EXECUTION",
-        "path_w1_rule": "Relations cannot reference unadmitted post sources.",
-        "path_w2_outcome": "Unadmitted sources rejected with SOURCE_ENDPOINT_UNADMITTED.",
-        "verdict": "CONCORDANT_DEFAULT_DENY",
-        "invariant_held": true
+        "path_w1_rule": "Relations cannot reference unadmitted post sources or undeclared concepts.",
+        "path_w2_outcome": "Undeclared concept rejected: true",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 6,
         "dimension_name": "LIVE_SPAN_SHA256_VERIFICATION",
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Cryptographic proof must match raw bytes.",
-        "path_w2_outcome": "Tampered span rejected: true (INVALID_SPAN_PROOF_DIGEST)",
-        "verdict": "CONCORDANT_VERIFIED",
-        "invariant_held": true
+        "path_w2_outcome": "Tampered span rejected: true; Admitted relation matches recomputed SHA-256",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 7,
@@ -157,17 +197,19 @@
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Dates require DAY precision YYYY-MM-DD.",
         "path_w2_outcome": "Schema validates YYYY-MM-DD format on all admitted posts.",
-        "verdict": "CONCORDANT_PRECISION",
-        "invariant_held": true
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 8,
         "dimension_name": "PROOF_REFUSAL",
         "evaluation_type": "LIVE_EXECUTION",
-        "path_w1_rule": "Arbitrary predicates and forged proofs fail closed.",
-        "path_w2_outcome": "Receiver enforces fail-closed default-deny across all endpoints and warrants.",
-        "verdict": "CONCORDANT_REFUSED",
-        "invariant_held": true
+        "path_w1_rule": "Missing proofs and forged adjudication events fail closed.",
+        "path_w2_outcome": "Missing span proof rejected: true; Unregistered adjudicator rejected: true",
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 9,
@@ -175,8 +217,9 @@
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Zero genuine private bodies, no model flight, Experiment B held, human closure reserved.",
         "path_w2_outcome": "Synthetic research deck verified; zero model invocations; zero private data.",
-        "verdict": "CONCORDANT_BOUNDED",
-        "invariant_held": true
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       },
       {
         "dimension_index": 10,
@@ -184,23 +227,34 @@
         "evaluation_type": "LIVE_EXECUTION",
         "path_w1_rule": "Crossing W maintains authentic origin estate boundary while admitting verified relational topology.",
         "path_w2_outcome": "Relational discovery admitted into clean SQLite recipient without cross-estate leakage.",
-        "verdict": "CONCORDANT_EXPLORATION",
-        "invariant_held": true
+        "verdict": "CONCORDANT_INVARIANT_HELD",
+        "invariant_held": true,
+        "evaluation_error": null
       }
     ],
-    "method_fidelity_status": "REPRODUCED_WITH_LIMITATIONS",
+    "adversarial_discordance_detector_control": {
+      "dimension_index": 99,
+      "dimension_name": "ADVERSARIAL_DISCORDANCE_DETECTOR_CONTROL",
+      "evaluation_type": "LIVE_EXECUTION",
+      "path_w1_rule": "Intentional invalid hypothesis must evaluate to false.",
+      "path_w2_outcome": "Negative control check returning false.",
+      "verdict": "DISCORDANCE_DETECTED",
+      "invariant_held": false,
+      "evaluation_error": null
+    },
+    "method_fidelity_status": "REPRODUCED_AUTHENTIC_NATIVE_EXECUTION",
     "research_continuation_status": "DOWNSTREAM_TOPOLOGICAL_CONTINUATION_PERMITTED",
     "scientific_warrant_status": "BOUNDED_PUBLIC_TOPOLOGY_ONLY",
     "epistemic_reconciliation": [
       {
         "domain": "METHOD_FIDELITY_VS_CONTINUATION",
-        "finding": "Original compiler logic operates on bounded public corpus only. Prospective recipient provides clean operational admission without modifying historical source bytes.",
+        "finding": "Original compiler logic genuinely executed against authentic snapshot (33 posts, 191 concepts, 146 relations across 76 typed pairs). Prospective recipient provides clean operational admission without modifying historical source bytes.",
         "resolution": "Strict boundary between origin-side compiler and prospective recipient admission preserved."
       },
       {
         "domain": "HISTORICAL_DATABASE_RESTORATION",
         "finding": "Reported [2767, 3473] database records were historical receipt claims; genuine runtime was unexecuted in Main.",
-        "resolution": "Negative runtime finding acknowledged; no retroactive execution manufactured."
+        "resolution": "Negative runtime finding acknowledged; prospective clean execution verified."
       }
     ]
   },

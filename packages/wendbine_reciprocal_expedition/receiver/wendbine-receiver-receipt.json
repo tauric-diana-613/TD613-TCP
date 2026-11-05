@@ -1,9 +1,9 @@
 {
   "schema": "td613.wendbine-receiver-receipt/v1",
-  "evaluated_at": "2026-11-05T16:36:35.329Z",
+  "evaluated_at": "2026-11-05T17:24:06.775Z",
   "receiver_schema": "td613.wendbine-empty-receiver/v1",
-  "total_tests": 25,
-  "passed_tests": 25,
+  "total_tests": 33,
+  "passed_tests": 33,
   "failed_tests": 0,
   "all_passed": true,
   "initial_state_witness": {
@@ -11,15 +11,16 @@
     "schema": "td613.wendbine-empty-receiver/v1",
     "recipient_id": "wb_rcp_synth_expedition_01",
     "episode_id": "wb_ep_crossing_w",
-    "initialized_at": "2026-11-05T16:36:35.317Z",
-    "entropy": "eb318ffc-1513-4ef8-b291-a85f3269df5e",
+    "initialized_at": "2026-11-05T17:24:06.762Z",
+    "entropy": "740bad10-98c2-4d68-b6e7-ce2058f56bc4",
     "tables": [
       "wb_sources",
       "wb_concepts",
       "wb_concept_declarations",
       "wb_typed_relations",
       "wb_cooccurrences",
-      "wb_captures"
+      "wb_captures",
+      "wb_adjudication_events"
     ],
     "zero_row_counts": {
       "wb_sources": 0,
@@ -27,9 +28,10 @@
       "wb_concept_declarations": 0,
       "wb_typed_relations": 0,
       "wb_cooccurrences": 0,
-      "wb_captures": 0
+      "wb_captures": 0,
+      "wb_adjudication_events": 0
     },
-    "witness_hash": "e70773ce8fc63485401f5323cd065475c23af91604ead31c3394f0a4c67202cf"
+    "witness_hash": "57b07005c1ea521333edee067ddf01e682824119b1b969c2ec42ca5d2d5eb8a2"
   },
   "test_census": [
     {
@@ -43,7 +45,12 @@
       "details": {}
     },
     {
-      "name": "Measured initial zero-row counts across all 6 receiver tables",
+      "name": "Attested exactly 7 receiver tables in initial state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Measured initial zero-row counts across all 7 receiver tables",
       "passed": true,
       "details": {}
     },
@@ -54,6 +61,26 @@
     },
     {
       "name": "Rejected post with body field (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with nested selftext in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with escaped body string in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {
+        "error": {
+          "code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+          "msg": "[WENDBINE_FULL_BODY_FIELD_REFUSED] Forbidden full-body field 'body' detected in raw_payload."
+        }
+      }
+    },
+    {
+      "name": "Rejected unallowlisted field in payload (WENDBINE_UNALLOWLISTED_PAYLOAD_FIELD)",
       "passed": true,
       "details": {}
     },
@@ -83,7 +110,7 @@
       "details": {}
     },
     {
-      "name": "Admitted valid G_A relation BOUNDS with live span proof",
+      "name": "Admitted valid G_A relation BOUNDS with live span proof and registered adjudication receipt",
       "passed": true,
       "details": {}
     },
@@ -138,7 +165,27 @@
       "details": {}
     },
     {
-      "name": "Rejected relation missing adjudicator receipt with ADJUDICATOR_RECEIPT_REQUIRED",
+      "name": "Rejected relation missing span proof with MISSING_SPAN_PROOF",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with undeclared concept with CONCEPT_NOT_DECLARED_FOR_SOURCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unregistered adjudicator receipt with UNREGISTERED_ADJUDICATION_EVENT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with non-ADMIT adjudication with ADJUDICATION_DECISION_NOT_ADMIT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with mismatched adjudicator span hash with ADJUDICATOR_SPAN_HASH_MISMATCH",
       "passed": true,
       "details": {}
     },

@@ -1,7 +1,7 @@
 {
-  "source_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
-  "task_scope": "CROSSING_W_TWO_ESTATE_RECIPROCAL_EXPEDITION_AUDIT",
-  "evidence_class": "WENDBINE_RECIPROCAL_EXPEDITION_EVIDENCE",
+  "source_revision": "e3e776ecc9ba47b838fbcd546218f3f183b4db8d",
+  "task_scope": "WENDBINE_NATIVE_DIFFERENTIAL_COMPANION_AUDIT",
+  "evidence_class": "WENDBINE_NATIVE_DIFFERENTIAL_EVIDENCE",
   "roles": [
     "PEDAGOGUE",
     "APERTURE",

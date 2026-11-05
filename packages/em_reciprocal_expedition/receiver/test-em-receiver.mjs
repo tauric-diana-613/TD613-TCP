@@ -56,8 +56,9 @@ recordTest('Unique initial witness created', Boolean(witness.witness_hash && wit
 
 recordTest('Schema conforms to td613.em-empty-receiver/v1', witness.schema === EM_RECEIVER_SCHEMA_V1);
 recordTest('Attestation type is INITIAL_ZERO_ROW_STATE_WITNESS', witness.attestation_type === 'INITIAL_ZERO_ROW_STATE_WITNESS');
+recordTest('Attested exactly 7 receiver tables in initial state', witness.tables.length === 7);
 const zeroCountsVerified = witness.tables.every(t => witness.zero_row_counts[t] === 0);
-recordTest('Measured initial zero-row counts across all 6 receiver tables', zeroCountsVerified);
+recordTest('Measured initial zero-row counts across all 7 receiver tables', zeroCountsVerified);
 
 // -------------------------------------------------------------
 // 2. Fatal UTF-8 Decoding & Binary Partition
@@ -256,6 +257,15 @@ const spanProof = {
   adjudicator_receipt_id: 'rec:adj_em_test_001',
 };
 
+// Register version-bound adjudication event
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_em_test_001',
+  adjudicatorRole: 'ORCHESTRATOR',
+  decision: 'ADMIT',
+  relationId: 'rel:cov_to_bin',
+  spanSha256: textSpan.span_sha256,
+});
+
 const rel = receiver.admitRelation({
   relationId: 'rel:cov_to_bin',
   fromId: 'src:covenant_text',
@@ -364,7 +374,24 @@ try {
 }
 recordTest('Rejected arbitrary warrant with UNRECOGNIZED_WARRANT_DENIED', unrecognizedWarrantRejected);
 
-// 7.6 Missing adjudicator receipt rejected (E-02)
+// 7.6 Warrant relation type mismatch
+let warrantMismatchRejected = false;
+try {
+  receiver.admitRelation({
+    relationId: 'rel:warrant_mismatch',
+    fromId: 'src:covenant_text',
+    toId: 'src:raw_binary',
+    relationType: 'EXPLORE_PROJECTIVE', // Not permitted by WARRANT_HISTORICAL_CITATION
+    temporalClassification: 'STRICTLY_FORWARD',
+    warrantId: 'WARRANT_HISTORICAL_CITATION',
+    sourceCaptureSpanProof: spanProof,
+  });
+} catch (err) {
+  if (err.code === 'WARRANT_RELATION_MISMATCH') warrantMismatchRejected = true;
+}
+recordTest('Rejected relation type not allowed by warrant contract with WARRANT_RELATION_MISMATCH', warrantMismatchRejected);
+
+// 7.7 Missing adjudicator receipt rejected (E-02)
 let missingAdjRejected = false;
 try {
   receiver.admitRelation({
@@ -387,7 +414,90 @@ try {
 }
 recordTest('Rejected relation missing adjudicator receipt with ADJUDICATOR_RECEIPT_REQUIRED', missingAdjRejected);
 
-// 7.7 Tampered span range out of bounds rejected (E-02)
+// 7.8 Unregistered adjudicator receipt rejected (E-C02)
+let unregisteredAdjRejected = false;
+try {
+  receiver.admitRelation({
+    relationId: 'rel:unreg_adj',
+    fromId: 'src:covenant_text',
+    toId: 'src:raw_binary',
+    relationType: 'HISTORICAL_CITATION',
+    temporalClassification: 'PREEXISTING_OR_CONTEMPORANEOUS',
+    warrantId: 'WARRANT_GROUNDED_SPAN_EVIDENCE',
+    sourceCaptureSpanProof: {
+      source_id: 'src:covenant_text',
+      start: 0,
+      end: 8,
+      span_sha256: textSpan.span_sha256,
+      adjudicator_receipt_id: 'rec:adj_unregistered_forgery',
+    },
+  });
+} catch (err) {
+  if (err.code === 'UNREGISTERED_ADJUDICATION_EVENT') unregisteredAdjRejected = true;
+}
+recordTest('Rejected unregistered adjudicator receipt with UNREGISTERED_ADJUDICATION_EVENT', unregisteredAdjRejected);
+
+// 7.9 Adjudication decision != ADMIT rejected
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_rejected_em',
+  adjudicatorRole: 'TEMPORAL_CUSTODIAN',
+  decision: 'REJECT',
+  relationId: 'rel:rejected_relation',
+  spanSha256: textSpan.span_sha256,
+});
+let decisionNotAdmitRejected = false;
+try {
+  receiver.admitRelation({
+    relationId: 'rel:rejected_relation',
+    fromId: 'src:covenant_text',
+    toId: 'src:raw_binary',
+    relationType: 'HISTORICAL_CITATION',
+    temporalClassification: 'PREEXISTING_OR_CONTEMPORANEOUS',
+    warrantId: 'WARRANT_GROUNDED_SPAN_EVIDENCE',
+    sourceCaptureSpanProof: {
+      source_id: 'src:covenant_text',
+      start: 0,
+      end: 8,
+      span_sha256: textSpan.span_sha256,
+      adjudicator_receipt_id: 'rec:adj_rejected_em',
+    },
+  });
+} catch (err) {
+  if (err.code === 'ADJUDICATION_DECISION_NOT_ADMIT') decisionNotAdmitRejected = true;
+}
+recordTest('Rejected relation with non-ADMIT adjudication with ADJUDICATION_DECISION_NOT_ADMIT', decisionNotAdmitRejected);
+
+// 7.10 Adjudicator span hash mismatch rejected (irrelevant valid-hash span)
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_diff_span',
+  adjudicatorRole: 'APERTURE_AUDITOR',
+  decision: 'ADMIT',
+  relationId: 'rel:diff_span_rel',
+  spanSha256: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+});
+let spanHashMismatchRejected = false;
+try {
+  receiver.admitRelation({
+    relationId: 'rel:diff_span_rel',
+    fromId: 'src:covenant_text',
+    toId: 'src:raw_binary',
+    relationType: 'HISTORICAL_CITATION',
+    temporalClassification: 'PREEXISTING_OR_CONTEMPORANEOUS',
+    warrantId: 'WARRANT_GROUNDED_SPAN_EVIDENCE',
+    sourceCaptureSpanProof: {
+      source_id: 'src:covenant_text',
+      start: 0,
+      end: 8,
+      span_sha256: textSpan.span_sha256,
+      adjudicator_receipt_id: 'rec:adj_diff_span',
+    },
+  });
+} catch (err) {
+  if (err.code === 'ADJUDICATOR_SPAN_HASH_MISMATCH') spanHashMismatchRejected = true;
+}
+recordTest('Rejected relation with mismatched adjudicator span hash with ADJUDICATOR_SPAN_HASH_MISMATCH', spanHashMismatchRejected);
+
+// 7.11 Tampered span range out of bounds rejected (E-02)
 let oobSpanRejected = false;
 try {
   receiver.admitRelation({

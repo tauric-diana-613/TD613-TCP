@@ -2,12 +2,12 @@
  * 𝌋 TD613 · Wendbine Empty Encyclopedia Receiver Test Suite (Crossing W)
  * 
  * Verifies:
- * 1. Initial State Zero-Row Witness Attestation across all 6 tables
- * 2. Bounded Scope & Refusal of Full Post Bodies (selftext, body, source_body, full_text)
+ * 1. Initial State Zero-Row Witness Attestation across all 7 tables
+ * 2. Bounded Scope & Refusal of Full Post Bodies (selftext, body, source_body, full_text, nested JSON, unallowlisted fields)
  * 3. Fatal UTF-8 Decoding & Raw Binary Partition
  * 4. Concept Declaration & Co-occurrence Overlay Engine
- * 5. 9-Graph Relation Registry (G_A .. G_X) Default-Deny
- * 6. Live Raw Byte Cryptographic Span Verification & Adjudicator Receipts
+ * 5. 9-Graph Relation Registry (G_A .. G_X) Default-Deny & Declared Concept Verification
+ * 6. Live Raw Byte Cryptographic Span Verification & Version-Bound Adjudicator Receipts
  * 7. Multilingual Unicode & Covenant Khona‌lit-po Integrity
  * 
  * Emits packages/wendbine_reciprocal_expedition/receiver/wendbine-receiver-receipt.json
@@ -52,13 +52,14 @@ const witness = receiver.initialize({
 console.log('--- TEST 1: Initial Zero-Row State Witness ---');
 recordTest('Witness conforms to td613.wendbine-empty-receiver/v1', witness.schema === WB_RECEIVER_SCHEMA_V1);
 recordTest('Witness attestation type is INITIAL_ZERO_ROW_STATE_WITNESS', witness.attestation_type === 'INITIAL_ZERO_ROW_STATE_WITNESS');
+recordTest('Attested exactly 7 receiver tables in initial state', witness.tables.length === 7);
 const zeroCountsVerified = witness.tables.every(t => witness.zero_row_counts[t] === 0);
-recordTest('Measured initial zero-row counts across all 6 receiver tables', zeroCountsVerified);
+recordTest('Measured initial zero-row counts across all 7 receiver tables', zeroCountsVerified);
 
 // -------------------------------------------------------------
 // 2. Refusal of Full Post Bodies (Public Bounded Scope)
 // -------------------------------------------------------------
-console.log('\n--- TEST 2: Refusal of Full Post Bodies ---');
+console.log('\n--- TEST 2: Refusal of Full Post Bodies & Raw Payload Boundaries ---');
 let selftextRejected = false;
 try {
   receiver.admitPostSource({
@@ -83,6 +84,56 @@ try {
 }
 recordTest('Rejected post with body field (WENDBINE_FULL_BODY_FIELD_REFUSED)', bodyRejected);
 
+// Nested JSON payload containing forbidden body field
+let nestedBodyRejected = false;
+try {
+  receiver.admitPostSource({
+    source_id: 'reddit:t3_nested_body_post',
+    public_date: '2026-08-01',
+    raw_payload: JSON.stringify({
+      title: 'Valid metadata title',
+      nested_data: { selftext: 'Smuggled body copy in nested object' },
+    }),
+  });
+} catch (err) {
+  if (err.code === 'WENDBINE_FULL_BODY_FIELD_REFUSED') nestedBodyRejected = true;
+}
+recordTest('Rejected post with nested selftext in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)', nestedBodyRejected);
+
+// Serialized escaped JSON inside raw_payload
+let escapedBodyRejected = false;
+let escapedErr = null;
+try {
+  receiver.admitPostSource({
+    source_id: 'reddit:t3_escaped_body_post',
+    public_date: '2026-08-01',
+    raw_payload: JSON.stringify({
+      title: 'Valid metadata title',
+      evidence: '{"body": "Smuggled inside serialized JSON string"}',
+    }),
+  });
+} catch (err) {
+  escapedErr = err;
+  if (err.code === 'WENDBINE_FULL_BODY_FIELD_REFUSED') escapedBodyRejected = true;
+}
+recordTest('Rejected post with escaped body string in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)', escapedBodyRejected, { error: escapedErr ? { code: escapedErr.code, msg: escapedErr.message } : 'NO_ERROR_THROWN' });
+
+// Unallowlisted field in payload
+let unallowlistedRejected = false;
+try {
+  receiver.admitPostSource({
+    source_id: 'reddit:t3_unallowlisted_post',
+    public_date: '2026-08-01',
+    raw_payload: JSON.stringify({
+      title: 'Valid Title',
+      unauthorized_secret_field: 'arbitrary payload injection',
+    }),
+  });
+} catch (err) {
+  if (err.code === 'WENDBINE_UNALLOWLISTED_PAYLOAD_FIELD') unallowlistedRejected = true;
+}
+recordTest('Rejected unallowlisted field in payload (WENDBINE_UNALLOWLISTED_PAYLOAD_FIELD)', unallowlistedRejected);
+
 // -------------------------------------------------------------
 // 3. Fatal UTF-8 Decoding & Binary Evidence
 // -------------------------------------------------------------
@@ -104,7 +155,9 @@ recordTest('Rejected malformed UTF-8 lone continuation bytes with MALFORMED_UTF8
 // Admitting valid UTF-8 post source with Covenant Khona‌lit-po
 const covenantPayload = JSON.stringify({
   source_id: 'reddit:t3_covenant_post',
-  covenant: 'Covenant Khona\u200Clit-po (preserving interior U+200C)',
+  canonical_url: 'https://www.reddit.com/r/Wendbine/comments/covenant_post/',
+  public_date: '2026-08-01',
+  title: 'Covenant Khona\u200Clit-po (preserving interior U+200C)',
   declared_concepts: ['concept:covenant', 'concept:topological_closure'],
 });
 
@@ -120,6 +173,9 @@ recordTest('Admitted valid UTF-8 source with Covenant Khona‌lit-po', admittedP
 // Second post for co-occurrence testing
 const post2Payload = JSON.stringify({
   source_id: 'reddit:t3_second_post',
+  canonical_url: 'https://www.reddit.com/r/Wendbine/comments/second_post/',
+  public_date: '2026-08-02',
+  title: 'Homeostatic Setpoint Post',
   declared_concepts: ['concept:covenant', 'concept:homeostasis'],
 });
 receiver.admitPostSource({
@@ -156,12 +212,21 @@ recordTest('Computed concept co-occurrence overlay with minThreshold=2', overlay
 recordTest('Identified pair concept:covenant <-> concept:topological_closure with weight 2', overlay[0].weight === 2);
 
 // -------------------------------------------------------------
-// 5. 9-Graph Relation Registry (G_A .. G_X)
+// 5. 9-Graph Relation Registry (G_A .. G_X) with Mandatory Span Proof & Registered Receipts
 // -------------------------------------------------------------
 console.log('\n--- TEST 5: 9-Graph Relation Registry Verification ---');
 
 const spanSlice = Buffer.from(covenantPayload).subarray(10, 40);
 const spanHash = sha256(spanSlice);
+
+// Register adjudication event for valid relation
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_wendbine_001',
+  adjudicatorRole: 'ORCHESTRATOR',
+  decision: 'ADMIT',
+  relationId: 'rel:cov_bounds_closure',
+  spanSha256: spanHash,
+});
 
 const validRel = receiver.admitTypedRelation({
   relationId: 'rel:cov_bounds_closure',
@@ -178,9 +243,9 @@ const validRel = receiver.admitTypedRelation({
     span_sha256: spanHash,
   },
 });
-recordTest('Admitted valid G_A relation BOUNDS with live span proof', validRel.relation_predicate === 'BOUNDS');
+recordTest('Admitted valid G_A relation BOUNDS with live span proof and registered adjudication receipt', validRel.relation_predicate === 'BOUNDS');
 
-// Exercise all 9 graph families with valid predicates
+// Exercise all other 8 graph families with valid predicates and proofs
 const graphFamiliesToTest = [
   { family: 'G_D', predicate: 'CONNECTS_TO' },
   { family: 'G_F', predicate: 'PROPAGATES_ACROSS' },
@@ -193,15 +258,30 @@ const graphFamiliesToTest = [
 ];
 
 for (const { family, predicate } of graphFamiliesToTest) {
+  const relId = `rel:test_${family}`;
+  const receiptId = `rec:adj_${family}`;
+  receiver.registerAdjudicationEvent({
+    receiptId,
+    adjudicatorRole: 'APERTURE_AUDITOR',
+    decision: 'ADMIT',
+    relationId: relId,
+    spanSha256: spanHash,
+  });
+
   const r = receiver.admitTypedRelation({
-    relationId: `rel:test_${family}`,
+    relationId: relId,
     sourceId: 'reddit:t3_covenant_post',
     graphFamily: family,
     fromConcept: 'concept:covenant',
     relationPredicate: predicate,
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_SYNTHESIS',
-    adjudicatorReceiptId: 'rec:adj_family_test',
+    adjudicatorReceiptId: receiptId,
+    spanProof: {
+      start: 10,
+      end: 40,
+      span_sha256: spanHash,
+    },
   });
   recordTest(`Admitted valid relation for family ${family} (${predicate})`, r.relation_predicate === predicate);
 }
@@ -223,6 +303,7 @@ try {
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
     adjudicatorReceiptId: 'rec:adj_bad_001',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
   });
 } catch (err) {
   if (err.code === 'WENDBINE_UNSUPPORTED_GRAPH_RELATION') unsuppPred = true;
@@ -241,31 +322,123 @@ try {
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
     adjudicatorReceiptId: 'rec:adj_bad_002',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
   });
 } catch (err) {
   if (err.code === 'WENDBINE_UNSUPPORTED_GRAPH_FAMILY') unsuppFam = true;
 }
 recordTest('Rejected unsupported graph family with WENDBINE_UNSUPPORTED_GRAPH_FAMILY', unsuppFam);
 
-// 6.3 Missing adjudicator receipt
-let missingAdj = false;
+// 6.3 Missing span proof (eliminating default-allow fallback)
+let missingSpan = false;
 try {
   receiver.admitTypedRelation({
-    relationId: 'rel:missing_adj',
+    relationId: 'rel:no_span',
     sourceId: 'reddit:t3_covenant_post',
     graphFamily: 'G_A',
     fromConcept: 'concept:covenant',
     relationPredicate: 'BOUNDS',
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
-    adjudicatorReceiptId: null,
+    adjudicatorReceiptId: 'rec:adj_wendbine_001',
+    spanProof: null,
   });
 } catch (err) {
-  if (err.code === 'ADJUDICATOR_RECEIPT_REQUIRED') missingAdj = true;
+  if (err.code === 'MISSING_SPAN_PROOF') missingSpan = true;
 }
-recordTest('Rejected relation missing adjudicator receipt with ADJUDICATOR_RECEIPT_REQUIRED', missingAdj);
+recordTest('Rejected relation missing span proof with MISSING_SPAN_PROOF', missingSpan);
 
-// 6.4 Fabricated span SHA-256
+// 6.4 Undeclared concept endpoint
+let undeclaredConcept = false;
+try {
+  receiver.admitTypedRelation({
+    relationId: 'rel:undeclared_concept',
+    sourceId: 'reddit:t3_covenant_post',
+    graphFamily: 'G_A',
+    fromConcept: 'concept:covenant',
+    relationPredicate: 'BOUNDS',
+    toConcept: 'concept:invented_nonexistent',
+    evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+    adjudicatorReceiptId: 'rec:adj_wendbine_001',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
+  });
+} catch (err) {
+  if (err.code === 'CONCEPT_NOT_DECLARED_FOR_SOURCE') undeclaredConcept = true;
+}
+recordTest('Rejected relation with undeclared concept with CONCEPT_NOT_DECLARED_FOR_SOURCE', undeclaredConcept);
+
+// 6.5 Unregistered adjudicator receipt
+let unregisteredAdj = false;
+try {
+  receiver.admitTypedRelation({
+    relationId: 'rel:unregistered_adj',
+    sourceId: 'reddit:t3_covenant_post',
+    graphFamily: 'G_A',
+    fromConcept: 'concept:covenant',
+    relationPredicate: 'BOUNDS',
+    toConcept: 'concept:topological_closure',
+    evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+    adjudicatorReceiptId: 'rec:adj_unregistered_999',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
+  });
+} catch (err) {
+  if (err.code === 'UNREGISTERED_ADJUDICATION_EVENT') unregisteredAdj = true;
+}
+recordTest('Rejected unregistered adjudicator receipt with UNREGISTERED_ADJUDICATION_EVENT', unregisteredAdj);
+
+// 6.6 Adjudication decision not ADMIT
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_rejected_case',
+  adjudicatorRole: 'TEMPORAL_CUSTODIAN',
+  decision: 'REJECT',
+  relationId: 'rel:rejected_adj',
+  spanSha256: spanHash,
+});
+let rejectAdj = false;
+try {
+  receiver.admitTypedRelation({
+    relationId: 'rel:rejected_adj',
+    sourceId: 'reddit:t3_covenant_post',
+    graphFamily: 'G_A',
+    fromConcept: 'concept:covenant',
+    relationPredicate: 'BOUNDS',
+    toConcept: 'concept:topological_closure',
+    evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+    adjudicatorReceiptId: 'rec:adj_rejected_case',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
+  });
+} catch (err) {
+  if (err.code === 'ADJUDICATION_DECISION_NOT_ADMIT') rejectAdj = true;
+}
+recordTest('Rejected relation with non-ADMIT adjudication with ADJUDICATION_DECISION_NOT_ADMIT', rejectAdj);
+
+// 6.7 Adjudication span hash mismatch
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_mismatch_hash',
+  adjudicatorRole: 'PEDAGOGUE_AUDITOR',
+  decision: 'ADMIT',
+  relationId: 'rel:hash_mismatch_rel',
+  spanSha256: 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+});
+let mismatchSpanHash = false;
+try {
+  receiver.admitTypedRelation({
+    relationId: 'rel:hash_mismatch_rel',
+    sourceId: 'reddit:t3_covenant_post',
+    graphFamily: 'G_A',
+    fromConcept: 'concept:covenant',
+    relationPredicate: 'BOUNDS',
+    toConcept: 'concept:topological_closure',
+    evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+    adjudicatorReceiptId: 'rec:adj_mismatch_hash',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
+  });
+} catch (err) {
+  if (err.code === 'ADJUDICATOR_SPAN_HASH_MISMATCH') mismatchSpanHash = true;
+}
+recordTest('Rejected relation with mismatched adjudicator span hash with ADJUDICATOR_SPAN_HASH_MISMATCH', mismatchSpanHash);
+
+// 6.8 Fabricated span SHA-256
 let forgedSpan = false;
 try {
   receiver.admitTypedRelation({
@@ -276,7 +449,7 @@ try {
     relationPredicate: 'BOUNDS',
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
-    adjudicatorReceiptId: 'rec:adj_bad_003',
+    adjudicatorReceiptId: 'rec:adj_wendbine_001',
     spanProof: {
       start: 10,
       end: 40,
@@ -288,7 +461,7 @@ try {
 }
 recordTest('Rejected fabricated span SHA-256 with INVALID_SPAN_PROOF_DIGEST', forgedSpan);
 
-// 6.5 Unadmitted source endpoint
+// 6.9 Unadmitted source endpoint
 let unadmittedSrc = false;
 try {
   receiver.admitTypedRelation({
@@ -299,14 +472,15 @@ try {
     relationPredicate: 'BOUNDS',
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
-    adjudicatorReceiptId: 'rec:adj_bad_004',
+    adjudicatorReceiptId: 'rec:adj_wendbine_001',
+    spanProof: { start: 10, end: 40, span_sha256: spanHash },
   });
 } catch (err) {
   if (err.code === 'SOURCE_ENDPOINT_UNADMITTED') unadmittedSrc = true;
 }
 recordTest('Rejected unadmitted source with SOURCE_ENDPOINT_UNADMITTED', unadmittedSrc);
 
-// 6.6 Out-of-bounds span
+// 6.10 Out-of-bounds span
 let oobSpan = false;
 try {
   receiver.admitTypedRelation({
@@ -317,7 +491,7 @@ try {
     relationPredicate: 'BOUNDS',
     toConcept: 'concept:topological_closure',
     evidenceClass: 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
-    adjudicatorReceiptId: 'rec:adj_bad_005',
+    adjudicatorReceiptId: 'rec:adj_wendbine_001',
     spanProof: {
       start: 0,
       end: 999999,

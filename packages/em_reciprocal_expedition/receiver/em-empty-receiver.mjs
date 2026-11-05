@@ -181,8 +181,20 @@ export class EmEmptyEncyclopediaReceiver {
       );
     `);
 
+    // 8. Version-bound Adjudication Events
+    this.db.exec(`
+      CREATE TABLE em_adjudication_events (
+        receipt_id TEXT PRIMARY KEY,
+        adjudicator_role TEXT NOT NULL,
+        decision TEXT NOT NULL,
+        relation_id TEXT,
+        span_sha256 TEXT NOT NULL,
+        registered_at TEXT NOT NULL
+      );
+    `);
+
     // Initialize Initial-State Zero-Row Witness (Review Finding E-04)
-    const tables = ['em_sources', 'em_derivatives', 'em_work_routes', 'em_manifestations', 'em_contextual_roles', 'em_admitted_relations'];
+    const tables = ['em_sources', 'em_derivatives', 'em_work_routes', 'em_manifestations', 'em_contextual_roles', 'em_admitted_relations', 'em_adjudication_events'];
     const zeroRowCounts = {};
     for (const tbl of tables) {
       const row = this.db.prepare(`SELECT count(*) as count FROM ${tbl}`).get();
@@ -408,6 +420,31 @@ export class EmEmptyEncyclopediaReceiver {
   }
 
   /**
+   * Registers a version-bound positive or negative adjudication event.
+   */
+  registerAdjudicationEvent({ receiptId, adjudicatorRole, decision = 'ADMIT', relationId = null, spanSha256 }) {
+    if (!this.db) throw new EmReceiverError('NOT_INITIALIZED', 'Receiver database is not initialized.');
+    if (!receiptId) throw new EmReceiverError('MISSING_RECEIPT_ID', 'receiptId is required.');
+    const validRoles = ['ORCHESTRATOR', 'APERTURE_AUDITOR', 'PEDAGOGUE_AUDITOR', 'ATLAS_AUDITOR', 'FADT_AUDITOR', 'TEMPORAL_CUSTODIAN', 'INDEPENDENT_AUDITOR'];
+    if (!validRoles.includes(adjudicatorRole)) {
+      throw new EmReceiverError('INVALID_ADJUDICATOR_ROLE', `Role ${adjudicatorRole} is not an authorized auditor.`);
+    }
+    if (!['ADMIT', 'REJECT', 'HOLD'].includes(decision)) {
+      throw new EmReceiverError('INVALID_ADJUDICATION_DECISION', `Decision ${decision} is invalid.`);
+    }
+    if (!spanSha256 || !/^[0-9a-f]{64}$/i.test(spanSha256)) {
+      throw new EmReceiverError('INVALID_SPAN_HASH', 'Valid 64-char hex span_sha256 required.');
+    }
+    const now = new Date().toISOString();
+    const stmt = this.db.prepare(`
+      INSERT INTO em_adjudication_events (receipt_id, adjudicator_role, decision, relation_id, span_sha256, registered_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    stmt.run(receiptId, adjudicatorRole, decision, relationId, spanSha256, now);
+    return { receipt_id: receiptId, adjudicator_role: adjudicatorRole, decision, relation_id: relationId, span_sha256: spanSha256, registered_at: now };
+  }
+
+  /**
    * Retrieving a byte span with strict safe-integer coordinate checks and fatal UTF-8 or raw Buffer return.
    */
   retrieveByteSpan(sourceId, start, end) {
@@ -555,12 +592,37 @@ export class EmEmptyEncyclopediaReceiver {
       );
     }
 
-    // 5. Adjudicator Receipt Verification
+    // 5. Version-Bound Adjudicator Receipt Verification
     const adjId = adjudicatorReceiptId || sourceCaptureSpanProof.adjudicator_receipt_id;
     if (!adjId) {
       throw new EmReceiverError(
         'ADJUDICATOR_RECEIPT_REQUIRED',
         'Admitted relation requires positive adjudicator_receipt_id verification.'
+      );
+    }
+    const adjEvent = this.db.prepare('SELECT * FROM em_adjudication_events WHERE receipt_id = ?').get(adjId);
+    if (!adjEvent) {
+      throw new EmReceiverError(
+        'UNREGISTERED_ADJUDICATION_EVENT',
+        `Adjudicator receipt ${adjId} is not registered in version-bound adjudication events.`
+      );
+    }
+    if (adjEvent.decision !== 'ADMIT') {
+      throw new EmReceiverError(
+        'ADJUDICATION_DECISION_NOT_ADMIT',
+        `Adjudication receipt ${adjId} has decision '${adjEvent.decision}', expected 'ADMIT'.`
+      );
+    }
+    if (adjEvent.span_sha256 !== span_sha256) {
+      throw new EmReceiverError(
+        'ADJUDICATOR_SPAN_HASH_MISMATCH',
+        `Adjudication event span hash ${adjEvent.span_sha256} does not match provided span proof hash ${span_sha256}.`
+      );
+    }
+    if (adjEvent.relation_id && adjEvent.relation_id !== relationId) {
+      throw new EmReceiverError(
+        'ADJUDICATOR_RELATION_ID_MISMATCH',
+        `Adjudication event relation_id ${adjEvent.relation_id} does not match relationId ${relationId}.`
       );
     }
 

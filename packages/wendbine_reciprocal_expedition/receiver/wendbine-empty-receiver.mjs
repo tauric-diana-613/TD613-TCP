@@ -32,6 +32,34 @@ export function sha256(data) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
+export function scanForForbiddenFields(obj) {
+  if (!obj || typeof obj !== 'object') return;
+  for (const [k, v] of Object.entries(obj)) {
+    if (['selftext', 'body', 'source_body', 'full_text'].includes(k)) {
+      throw new WendbineReceiverError(
+        'WENDBINE_FULL_BODY_FIELD_REFUSED',
+        `Forbidden full-body field '${k}' detected in raw_payload.`
+      );
+    }
+    if (typeof v === 'string') {
+      const trimmed = v.trim();
+      if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+        let parsed = null;
+        try {
+          parsed = JSON.parse(trimmed);
+        } catch {
+          // not valid JSON, ignore
+        }
+        if (parsed && typeof parsed === 'object') {
+          scanForForbiddenFields(parsed);
+        }
+      }
+    } else if (typeof v === 'object') {
+      scanForForbiddenFields(v);
+    }
+  }
+}
+
 export const WENDBINE_NINE_GRAPH_VOCABULARY = Object.freeze({
   G_A: Object.freeze([
     'BOUNDS', 'CAN_BECOME', 'CAN_CAUSE', 'CAN_CHANGE', 'CAN_DELAY',
@@ -188,8 +216,20 @@ export class WendbineEmptyEncyclopediaReceiver {
       );
     `);
 
-    // Zero-Row Attestation across all 6 data tables
-    const tables = ['wb_sources', 'wb_concepts', 'wb_concept_declarations', 'wb_typed_relations', 'wb_cooccurrences', 'wb_captures'];
+    // 8. Version-bound Adjudication Events
+    this.db.exec(`
+      CREATE TABLE wb_adjudication_events (
+        receipt_id TEXT PRIMARY KEY,
+        adjudicator_role TEXT NOT NULL,
+        decision TEXT NOT NULL,
+        relation_id TEXT,
+        span_sha256 TEXT NOT NULL,
+        registered_at TEXT NOT NULL
+      );
+    `);
+
+    // Zero-Row Attestation across all 7 data tables
+    const tables = ['wb_sources', 'wb_concepts', 'wb_concept_declarations', 'wb_typed_relations', 'wb_cooccurrences', 'wb_captures', 'wb_adjudication_events'];
     const zeroRowCounts = {};
     for (const tbl of tables) {
       const row = this.db.prepare(`SELECT count(*) as count FROM ${tbl}`).get();
@@ -240,12 +280,12 @@ export class WendbineEmptyEncyclopediaReceiver {
 
   /**
    * Admitting a post source with public bounded scope enforcement.
-   * Strictly refuses forbidden full post body fields.
+   * Strictly refuses forbidden full post body fields, including nested JSON payloads.
    */
   admitPostSource(postRecord) {
     if (!this.db) throw new WendbineReceiverError('NOT_INITIALIZED', 'Receiver is not initialized.');
 
-    // 1. Forbidden Full-Body Field Refusal
+    // 1. Forbidden Full-Body Field Refusal at top-level
     for (const field of ['selftext', 'body', 'source_body', 'full_text']) {
       if (Object.hasOwn(postRecord, field)) {
         throw new WendbineReceiverError(
@@ -270,6 +310,36 @@ export class WendbineEmptyEncyclopediaReceiver {
 
     if (!public_date || !/^\d{4}-\d{2}-\d{2}$/.test(public_date)) {
       throw new WendbineReceiverError('INVALID_PUBLIC_DATE', `public_date must be YYYY-MM-DD. Received: ${public_date}`);
+    }
+
+    // 2. Strict Raw Payload Boundary Inspection & Schema Enforcement
+    if (raw_payload !== null && raw_payload !== undefined) {
+      let parsedPayload = null;
+      if (typeof raw_payload === 'string') {
+        try { parsedPayload = JSON.parse(raw_payload); } catch {}
+      } else if (Buffer.isBuffer(raw_payload)) {
+        try { parsedPayload = JSON.parse(raw_payload.toString('utf8')); } catch {}
+      } else if (typeof raw_payload === 'object') {
+        parsedPayload = raw_payload;
+      }
+      if (parsedPayload) {
+        scanForForbiddenFields(parsedPayload);
+        if (typeof parsedPayload === 'object' && !Array.isArray(parsedPayload)) {
+          const allowedKeys = new Set([
+            'source_id', 'canonical_url', 'public_date', 'time_precision',
+            'declared_concepts', 'source_flags', 'title', 'evidence', 'concepts',
+            'author', 'subreddit', 'technical_header', 'id', 'community'
+          ]);
+          for (const k of Object.keys(parsedPayload)) {
+            if (!allowedKeys.has(k)) {
+              throw new WendbineReceiverError(
+                'WENDBINE_UNALLOWLISTED_PAYLOAD_FIELD',
+                `Payload contains unallowlisted field '${k}'. Public bounded schema permits only declared metadata fields.`
+              );
+            }
+          }
+        }
+      }
     }
 
     const payloadBytes = Buffer.isBuffer(raw_payload)
@@ -348,8 +418,35 @@ export class WendbineEmptyEncyclopediaReceiver {
   }
 
   /**
+   * Registers a version-bound positive or negative adjudication event.
+   */
+  registerAdjudicationEvent({ receiptId, adjudicatorRole, decision = 'ADMIT', relationId = null, spanSha256 }) {
+    if (!this.db) throw new WendbineReceiverError('NOT_INITIALIZED', 'Receiver is not initialized.');
+    if (!receiptId) throw new WendbineReceiverError('MISSING_RECEIPT_ID', 'receiptId is required.');
+    const validRoles = ['ORCHESTRATOR', 'APERTURE_AUDITOR', 'PEDAGOGUE_AUDITOR', 'ATLAS_AUDITOR', 'FADT_AUDITOR', 'TEMPORAL_CUSTODIAN', 'INDEPENDENT_AUDITOR'];
+    if (!validRoles.includes(adjudicatorRole)) {
+      throw new WendbineReceiverError('INVALID_ADJUDICATOR_ROLE', `Role ${adjudicatorRole} is not an authorized auditor.`);
+    }
+    if (!['ADMIT', 'REJECT', 'HOLD'].includes(decision)) {
+      throw new WendbineReceiverError('INVALID_ADJUDICATION_DECISION', `Decision ${decision} is invalid.`);
+    }
+    if (!spanSha256 || !/^[0-9a-f]{64}$/i.test(spanSha256)) {
+      throw new WendbineReceiverError('INVALID_SPAN_HASH', 'Valid 64-char hex span_sha256 required.');
+    }
+    const now = new Date().toISOString();
+    const stmt = this.db.prepare(`
+      INSERT INTO wb_adjudication_events (receipt_id, adjudicator_role, decision, relation_id, span_sha256, registered_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    stmt.run(receiptId, adjudicatorRole, decision, relationId, spanSha256, now);
+    return { receipt_id: receiptId, adjudicator_role: adjudicatorRole, decision, relation_id: relationId, span_sha256: spanSha256, registered_at: now };
+  }
+
+  /**
    * Admitting a 9-Graph Typed Relation.
-   * Enforces Default-Deny against WENDBINE_NINE_GRAPH_VOCABULARY.
+   * Enforces Default-Deny against WENDBINE_NINE_GRAPH_VOCABULARY,
+   * mandatory cryptographic spanProof, declared concept endpoint verification,
+   * and version-bound registered adjudication receipts.
    */
   admitTypedRelation({
     relationId,
@@ -387,39 +484,92 @@ export class WendbineEmptyEncyclopediaReceiver {
       );
     }
 
-    // 2. Source Endpoint Existence
+    // 2. Mandatory Span Proof (eliminating default-allow fallback)
+    if (!spanProof) {
+      throw new WendbineReceiverError(
+        'MISSING_SPAN_PROOF',
+        'Typed relation admission strictly requires cryptographic spanProof; default-allow fallback is eliminated.'
+      );
+    }
+
+    // 3. Source Endpoint Existence
     const source = this.db.prepare('SELECT source_id, byte_length, raw_bytes, public_date FROM wb_sources WHERE source_id = ?').get(sourceId);
     if (!source) {
       throw new WendbineReceiverError('SOURCE_ENDPOINT_UNADMITTED', `Source endpoint ${sourceId} is not admitted.`);
     }
 
-    // 3. Mandatory Adjudicator Receipt
+    // 4. Verify Concept Endpoints Existence and Declaration for this Source
+    const fromDec = this.db.prepare('SELECT declaration_id FROM wb_concept_declarations WHERE source_id = ? AND concept_id = ?').get(sourceId, fromConcept);
+    if (!fromDec) {
+      throw new WendbineReceiverError(
+        'CONCEPT_NOT_DECLARED_FOR_SOURCE',
+        `fromConcept '${fromConcept}' is not declared for source '${sourceId}'.`
+      );
+    }
+    const toDec = this.db.prepare('SELECT declaration_id FROM wb_concept_declarations WHERE source_id = ? AND concept_id = ?').get(sourceId, toConcept);
+    if (!toDec) {
+      throw new WendbineReceiverError(
+        'CONCEPT_NOT_DECLARED_FOR_SOURCE',
+        `toConcept '${toConcept}' is not declared for source '${sourceId}'.`
+      );
+    }
+
+    // 5. Live Cryptographic Span Verification
+    const { start, end, span_sha256 } = spanProof;
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) {
+      throw new WendbineReceiverError('INVALID_SPAN_COORDINATES', 'Span coordinates must be safe integers.');
+    }
+    if (start < 0 || end < start || end > source.byte_length) {
+      throw new WendbineReceiverError('INVALID_SPAN_BOUNDS', `Span [${start}, ${end}] out of range for source.`);
+    }
+    const rawBuf = Buffer.from(source.raw_bytes);
+    const slice = rawBuf.subarray(start, end);
+    const recomputedSha = sha256(slice);
+    if (recomputedSha !== span_sha256) {
+      throw new WendbineReceiverError(
+        'INVALID_SPAN_PROOF_DIGEST',
+        `Cryptographic span proof mismatch. Recomputed: ${recomputedSha}, Provided: ${span_sha256}`
+      );
+    }
+
+    // 6. Mandatory Version-Bound Adjudicator Receipt Verification
     if (!adjudicatorReceiptId) {
       throw new WendbineReceiverError('ADJUDICATOR_RECEIPT_REQUIRED', 'Relation requires positive adjudicator_receipt_id verification.');
     }
-
-    // 4. Live Cryptographic Span Verification (if span proof attached)
-    if (spanProof) {
-      const { start, end, span_sha256 } = spanProof;
-      if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) {
-        throw new WendbineReceiverError('INVALID_SPAN_COORDINATES', 'Span coordinates must be safe integers.');
-      }
-      if (start < 0 || end < start || end > source.byte_length) {
-        throw new WendbineReceiverError('INVALID_SPAN_BOUNDS', `Span [${start}, ${end}] out of range for source.`);
-      }
-      const rawBuf = Buffer.from(source.raw_bytes);
-      const slice = rawBuf.subarray(start, end);
-      const recomputedSha = sha256(slice);
-      if (recomputedSha !== span_sha256) {
-        throw new WendbineReceiverError(
-          'INVALID_SPAN_PROOF_DIGEST',
-          `Cryptographic span proof mismatch. Recomputed: ${recomputedSha}, Provided: ${span_sha256}`
-        );
-      }
+    const adjEvent = this.db.prepare('SELECT * FROM wb_adjudication_events WHERE receipt_id = ?').get(adjudicatorReceiptId);
+    if (!adjEvent) {
+      throw new WendbineReceiverError(
+        'UNREGISTERED_ADJUDICATION_EVENT',
+        `Adjudicator receipt ${adjudicatorReceiptId} is not registered in version-bound adjudication events.`
+      );
+    }
+    if (adjEvent.decision !== 'ADMIT') {
+      throw new WendbineReceiverError(
+        'ADJUDICATION_DECISION_NOT_ADMIT',
+        `Adjudication receipt ${adjudicatorReceiptId} has decision '${adjEvent.decision}', expected 'ADMIT'.`
+      );
+    }
+    if (adjEvent.span_sha256 !== span_sha256) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_SPAN_HASH_MISMATCH',
+        `Adjudication event span hash ${adjEvent.span_sha256} does not match provided span proof hash ${span_sha256}.`
+      );
+    }
+    if (adjEvent.relation_id && adjEvent.relation_id !== relationId) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_RELATION_ID_MISMATCH',
+        `Adjudication event relation_id ${adjEvent.relation_id} does not match relationId ${relationId}.`
+      );
     }
 
     const admittedAt = new Date().toISOString();
-    const proofJson = JSON.stringify(spanProof || { verified_by_source_metadata: true, adjudicator_receipt_id: adjudicatorReceiptId });
+    const proofJson = JSON.stringify({
+      ...spanProof,
+      adjudicator_receipt_id: adjudicatorReceiptId,
+      adjudicator_role: adjEvent.adjudicator_role,
+      verified_at: admittedAt,
+      verified_by_receiver: true,
+    });
 
     const stmt = this.db.prepare(`
       INSERT INTO wb_typed_relations (relation_id, source_id, graph_family, from_concept, relation_predicate, to_concept, evidence_class, adjudicator_receipt_id, span_proof_json, admitted_at)
