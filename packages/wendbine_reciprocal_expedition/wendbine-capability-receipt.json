@@ -1,0 +1,44 @@
+{
+  "schema": "td613.wendbine-capability-receipt/v1",
+  "evaluated_at": "2026-11-05T16:30:00.000Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona\u200Clit-po",
+  "estate": "WENDBINE",
+  "original_compiler_census": {
+    "public_corpus_posts": 33,
+    "declared_concepts": 191,
+    "typed_relations": 146,
+    "nine_graph_families": {
+      "G_A": 15,
+      "G_D": 14,
+      "G_F": 3,
+      "G_I": 6,
+      "G_O": 7,
+      "G_P": 8,
+      "G_R": 11,
+      "G_T": 5,
+      "G_X": 7
+    },
+    "recurrent_public_concepts": 43,
+    "cooccurrence_overlay_edges": 143,
+    "evidence_classes_count": 5
+  },
+  "evolved_estate_census": {
+    "manifestations": 2062,
+    "captures": 6763,
+    "recorded_edges": 6703
+  },
+  "verified_executable_functions": [
+    "validateNativeInputs",
+    "compilePublicCorpus",
+    "compileQualified",
+    "evaluateOrderingSensitivity"
+  ],
+  "claim_ceilings": {
+    "genuine_source_admission": false,
+    "live_model_flight": false,
+    "protected_experiment_b": "HELD",
+    "human_scientific_closure": "RESERVED"
+  },
+  "disposition": "WENDBINE_CAPABILITY_ATLAS_QUALIFIED_CLEAN"
+}
