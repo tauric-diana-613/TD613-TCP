@@ -251,8 +251,10 @@ evaluateWBDimension(4, 'PREDICATE_LABELS_AND_DISTINCT_PAIRS', () => {
     w2_result: {
       vocabulary_reference: 'WENDBINE_NINE_GRAPH_VOCABULARY',
       families_represented: 9,
+      receiver_admitted_sample_relations: 9,
+      transfer_status_of_all_146: 'HELD_PENDING_PER_EDGE_SOURCE_WITNESS_VALIDATION',
     },
-    differential: 'Preserves the authentic distinction: 146 total relation rows span 76 distinct (family::predicate) pairs with 59 unique predicate strings due to shared predicates like DIFFERS_FROM.',
+    differential: 'Preserves the authentic distinction: 146 total relation rows span 76 distinct (family::predicate) pairs with 59 unique predicate strings. Receiver admits 9 sampled relations across the 9 families; full per-edge admission of all 146 rows remains held.',
   };
 });
 
@@ -275,7 +277,7 @@ evaluateWBDimension(6, 'COOCCURRENCE_THRESHOLDING', () => {
     concordant: w1Cooc > 0 && w2Edges > 0,
     w1_result: { recurrent_concepts: w1Cooc },
     w2_result: { overlay_edges: w2Edges },
-    differential: 'Threshold >= 2 independent sources verified; co-occurrence does not imply causal relationship.',
+    differential: 'Threshold >= 2 independent sources verified (143 co-occurrence edges computed). Co-occurrence does not imply causal relationship; per-edge source-support equality is not claimed until demonstrated.',
   };
 });
 
@@ -333,8 +335,12 @@ evaluateWBDimension(10, 'UNTRANSFERRED_METHODS_AND_RECONCILED_EVOLUTION', () => 
   return {
     concordant: true,
     w1_result: { original_scientific_relations: originalRelationsCount },
-    w2_result: { evolved_manifestation_edges_reconciled: evolvedManifestationEdges },
-    differential: 'Formally reconciles the 146 original scientific relations from PR #1685 against the 6,703 evolved manifestation edges from PR #1694: evolved edges capture downstream manifestation topologies, whereas original 146 relations represent the core contracted scientific graph.',
+    w2_result: {
+      evolved_manifestation_edges_reconciled: evolvedManifestationEdges,
+      sample_relations_admitted: 9,
+      blanket_semantic_losslessness_claimed: false,
+    },
+    differential: 'Formally distinguishes the 146 original scientific relations from PR #1685, the 9 sample relations admitted into the receiver, and the 6,703 downstream evolved manifestation edges from PR #1694. Universal semantic losslessness is not claimed.',
   };
 });
 
@@ -356,6 +362,7 @@ const receipt = {
     sources_count: 33,
     concepts_count: 191,
     original_typed_relations: 146,
+    receiver_admitted_sample_relations: 9,
     distinct_family_relation_pairs: distinctTypedPairs.size, // 76
     distinct_predicate_names: distinctRelationNames.size,     // 59
     evolved_manifestation_edges: 6703,
@@ -367,7 +374,7 @@ const receipt = {
   dimensions: wendbineDimensions,
   scientific_finding: {
     finding_code: 'WENDBINE_ORIGINAL_NATIVE_TO_RECIPIENT_COMMON_INPUT_QUALIFIED',
-    determination: 'Common-input execution of authentic Wendbine compiler against prospective receiver establishes exact parity across 33 public sources, 191 concepts, and 9 graph families. The distinction between 146 original scientific relations and 76 distinct graph-family/predicate combinations is preserved. Downstream evolved manifestation edges (6,703) are explicitly distinguished from core scientific relations.',
+    determination: 'Common-input execution of authentic Wendbine compiler against prospective receiver establishes concordant structure across 33 public sources, 191 concepts, and 9 graph families. Nine sample relations (one per family) are admitted into the receiver, while full per-edge admission and source-support parity for all 146 original relations remains held pending per-edge source witness validation. The 143 computed co-occurrence edges are verified at threshold >= 2 without claiming per-edge source-support equality. Downstream evolved manifestation edges (6,703) are explicitly distinguished from core scientific relations.',
   },
 };
 

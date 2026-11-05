@@ -1,19 +1,19 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793904281617-d7ddc8f7",
-  "timestamp": "2026-11-05T18:44:41.617Z",
-  "source_revision": "0d4d5eea082acd0227589d28d84460b99c31de7b",
+  "invocation_id": "dollhouse-audit-1793908257431-1fcc8a61",
+  "timestamp": "2026-11-05T19:50:57.432Z",
+  "source_revision": "20df004c4997689d33ed614b42ab8b683c1da22a",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "0d4d5eea082acd0227589d28d84460b99c31de7b",
+  "executing_checkout_revision": "20df004c4997689d33ed614b42ab8b683c1da22a",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "0d4d5eea082acd0227589d28d84460b99c31de7b",
-    "audit_execution_revision": "0d4d5eea082acd0227589d28d84460b99c31de7b",
+    "executable_source_revision": "20df004c4997689d33ed614b42ab8b683c1da22a",
+    "audit_execution_revision": "20df004c4997689d33ed614b42ab8b683c1da22a",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -60,73 +60,73 @@
       "reference": "packages/four_crossing_capstone/FOUR_ESTATE_PROVENANCE_MATRIX.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e65ffc155bd1a5fcae4bb0ea54911e1ef2b7775a3530d840686e9977a1b5b873",
+      "byte_digest": "7de57e0a504f0a28678dccf2f24075f7232d71cd4329ae813bc20bdd2b7fa356",
       "byte_digest_verified": true,
-      "sha256": "e65ffc155bd1a5fcae4bb0ea54911e1ef2b7775a3530d840686e9977a1b5b873"
+      "sha256": "7de57e0a504f0a28678dccf2f24075f7232d71cd4329ae813bc20bdd2b7fa356"
     },
     {
       "reference": "packages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ce2d3afdd6f5761d842b32f9c2bd991e410f992f00f996c4b23f29fd6ebe9440",
+      "byte_digest": "ba4412ab79af9da6e3aafa14bf8567cbcaccef307b362f3e93b798994ac5db4d",
       "byte_digest_verified": true,
-      "sha256": "ce2d3afdd6f5761d842b32f9c2bd991e410f992f00f996c4b23f29fd6ebe9440"
+      "sha256": "ba4412ab79af9da6e3aafa14bf8567cbcaccef307b362f3e93b798994ac5db4d"
     },
     {
       "reference": "packages/four_crossing_capstone/custodial-gate-and-time-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ceb7a9a5aa617f6158b52c8a1ec891bcd8aea60f34a8ce707a02a5c90f837c82",
+      "byte_digest": "dcc23516038c8087bd5bd65876dc3e50d22a7d6584f5c0beb61ec81679ed2881",
       "byte_digest_verified": true,
-      "sha256": "ceb7a9a5aa617f6158b52c8a1ec891bcd8aea60f34a8ce707a02a5c90f837c82"
+      "sha256": "dcc23516038c8087bd5bd65876dc3e50d22a7d6584f5c0beb61ec81679ed2881"
     },
     {
       "reference": "packages/four_crossing_capstone/run-encyclopedia-matched-assay.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "648b4661fbe7aeb5c68ba66b94cab633a08a8627046a34f6d4f917dc1cd33ecb",
+      "byte_digest": "622abe600842fa4b871f1edbfa77fb01694077be25ec7dbf9ef91636f52f5e41",
       "byte_digest_verified": true,
-      "sha256": "648b4661fbe7aeb5c68ba66b94cab633a08a8627046a34f6d4f917dc1cd33ecb"
+      "sha256": "622abe600842fa4b871f1edbfa77fb01694077be25ec7dbf9ef91636f52f5e41"
     },
     {
       "reference": "packages/four_crossing_capstone/encyclopedia-common-input-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "4c7a381f8b4f6846ee882c706f1168dae1fdd0615475039f162954a78140794b",
+      "byte_digest": "142f830881e664e18c51e12b498506776613f74b3b51014657a5d8d39a6da662",
       "byte_digest_verified": true,
-      "sha256": "4c7a381f8b4f6846ee882c706f1168dae1fdd0615475039f162954a78140794b"
+      "sha256": "142f830881e664e18c51e12b498506776613f74b3b51014657a5d8d39a6da662"
     },
     {
       "reference": "packages/four_crossing_capstone/run-wendbine-matched-assay.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "005d8b81aeba93469b415338e54072e0cbf412e6a054d6682533d0d6d44b320b",
+      "byte_digest": "2ad8c69a963c8491491a8761f4c1d83f678c48f351db4350ec1e73fbdd029277",
       "byte_digest_verified": true,
-      "sha256": "005d8b81aeba93469b415338e54072e0cbf412e6a054d6682533d0d6d44b320b"
+      "sha256": "2ad8c69a963c8491491a8761f4c1d83f678c48f351db4350ec1e73fbdd029277"
     },
     {
       "reference": "packages/four_crossing_capstone/wendbine-common-input-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ae437aa8e98e582f59c7238e1526a694af0db36b932512aae7f43e1584e2b14e",
+      "byte_digest": "a862e1d2eafbd1ef3bc42c296533c6e72b137cb792293a972ff7039bc1dd872b",
       "byte_digest_verified": true,
-      "sha256": "ae437aa8e98e582f59c7238e1526a694af0db36b932512aae7f43e1584e2b14e"
+      "sha256": "a862e1d2eafbd1ef3bc42c296533c6e72b137cb792293a972ff7039bc1dd872b"
     },
     {
       "reference": "packages/four_crossing_capstone/run-twin-world-assay.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "f2622d137f14c336a308fa522b2c99b82e67e3167f2c23eaea06a23d38d15e90",
+      "byte_digest": "5e042c7e05af133fe27f28f9b9b68e974ecb9845f3dcb7b859ad9fa63afc1c87",
       "byte_digest_verified": true,
-      "sha256": "f2622d137f14c336a308fa522b2c99b82e67e3167f2c23eaea06a23d38d15e90"
+      "sha256": "5e042c7e05af133fe27f28f9b9b68e974ecb9845f3dcb7b859ad9fa63afc1c87"
     },
     {
       "reference": "packages/four_crossing_capstone/twin-world-assay-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "57ee82861e0714e986ac8214d9743c547007f7437ea77b0b622ec163e4111286",
+      "byte_digest": "66412d3aebb1b95911161ecbf07040c82cf6a46bb39cf6c275a8d639f95024cc",
       "byte_digest_verified": true,
-      "sha256": "57ee82861e0714e986ac8214d9743c547007f7437ea77b0b622ec163e4111286"
+      "sha256": "66412d3aebb1b95911161ecbf07040c82cf6a46bb39cf6c275a8d639f95024cc"
     }
   ],
   "roles_requested": [
@@ -485,5 +485,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 1147
+  "execution_duration_ms": 718
 }

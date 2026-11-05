@@ -260,6 +260,21 @@ export class UniversalAtelierReceiver {
       throw new UniversalAtelierError('INVALID_JURISDICTION', `Jurisdiction '${jurisdiction}' is unrecognized.`);
     }
 
+    // Amendment A: Prohibit self-issued MACHINE_SYNTHETIC events from acting as external HUMAN approvals.
+    // Until an independently authenticated human trust root actually exists, fail closed.
+    if (jurisdiction === JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION) {
+      if (adjudicatorKind === 'MACHINE_SYNTHETIC') {
+        throw new UniversalAtelierError(
+          'MACHINE_CANNOT_ISSUE_HUMAN_ADMISSION',
+          'Self-issued MACHINE_SYNTHETIC events cannot act as external HUMAN approvals.'
+        );
+      }
+      throw new UniversalAtelierError(
+        'EXTERNAL_HUMAN_AUTH_ROOT_UNAVAILABLE',
+        'External human admission authority root is unavailable in source-free research environment. Self-issued human adjudications are prohibited.'
+      );
+    }
+
     if (!['HUMAN', 'MACHINE_SYNTHETIC'].includes(adjudicatorKind)) {
       throw new UniversalAtelierError('INVALID_ADJUDICATOR_KIND', `Adjudicator kind '${adjudicatorKind}' must be HUMAN or MACHINE_SYNTHETIC.`);
     }
@@ -372,7 +387,7 @@ export class UniversalAtelierReceiver {
   } = {}) {
     if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
 
-    if (!proposal || !proposal.proposal_id || !proposal.record) {
+    if (!proposal || !proposal.proposal_id) {
       throw new UniversalAtelierError('INVALID_PROPOSAL_OBJECT', 'Valid staged proposal required.');
     }
 
@@ -382,13 +397,44 @@ export class UniversalAtelierReceiver {
       throw new UniversalAtelierError('PROPOSAL_NOT_STAGED', `Proposal ${proposal.proposal_id} is not staged.`);
     }
 
-    // 2. Recompute raw payload digest independently
-    const recomputedDigest = sha256(proposal.raw_json);
-    if (recomputedDigest !== proposal.input_sha256 || recomputedDigest !== staged.input_sha256) {
-      throw new UniversalAtelierError('PROPOSAL_DIGEST_CORRUPTED', 'Proposal digest recomputation failed or corrupted.');
+    // 2. Exact immutable staged byte verification (Amendment B)
+    const immutableRawBytes = staged.record_json;
+    if (proposal.raw_json !== undefined && proposal.raw_json !== immutableRawBytes) {
+      throw new UniversalAtelierError('STAGED_PAYLOAD_MUTATED', 'Proposal raw_json does not match staged record_json bytes.');
     }
 
-    // 3. Jurisdiction & Human Review Reference Enforcement
+    // 3. Recompute raw payload digest independently from staged immutable bytes
+    const recomputedDigest = sha256(immutableRawBytes);
+    if (recomputedDigest !== staged.input_sha256) {
+      throw new UniversalAtelierError('PROPOSAL_DIGEST_CORRUPTED', 'Staged proposal digest recomputation failed or corrupted.');
+    }
+    if (proposal.input_sha256 && proposal.input_sha256 !== recomputedDigest) {
+      throw new UniversalAtelierError('PROPOSAL_DIGEST_CORRUPTED', 'Proposal input_sha256 does not match staged digest.');
+    }
+
+    // 4. Reparse the staged payload at admission time from immutable bytes (Amendment B)
+    let reparsedRecord;
+    try {
+      reparsedRecord = JSON.parse(immutableRawBytes);
+    } catch (err) {
+      throw new UniversalAtelierError('STAGED_PAYLOAD_CORRUPT_JSON', `Failed to parse staged JSON: ${err.message}`);
+    }
+
+    if (!reparsedRecord || typeof reparsedRecord !== 'object') {
+      throw new UniversalAtelierError('STAGED_RECORD_INVALID', 'Reparsed record must be a valid JSON object.');
+    }
+
+    // If caller provided proposal.record, verify ID and key fields match reparsedRecord
+    if (proposal.record) {
+      if (proposal.record.id !== reparsedRecord.id) {
+        throw new UniversalAtelierError('PROPOSAL_RECORD_ID_MISMATCH', `Proposal record ID '${proposal.record.id}' mismatches staged payload ID '${reparsedRecord.id}'.`);
+      }
+      if (proposal.record.label !== reparsedRecord.label || proposal.record.kind !== reparsedRecord.kind) {
+        throw new UniversalAtelierError('PROPOSAL_RECORD_MUTATED', 'Caller proposal.record fields do not match staged payload bytes.');
+      }
+    }
+
+    // 5. Jurisdiction & Human Review Reference Enforcement
     if (!humanReviewRef || typeof humanReviewRef !== 'string') {
       throw new UniversalAtelierError(
         'HUMAN_REVIEW_REF_REQUIRED',
@@ -396,18 +442,21 @@ export class UniversalAtelierReceiver {
       );
     }
 
-    const rec = proposal.record;
     if (jurisdiction === JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION) {
-      // Real-source external human admission requires verifiable external authorization root
-      if (!externalAuthToken) {
+      // Amendment A: Fail closed for every supplied token until an independently authenticated human trust root exists.
+      throw new UniversalAtelierError(
+        'REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH',
+        'Real-source admission under EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION is HELD. No independently authenticated external human trust root exists. All tokens fail closed. Protected Experiment B is HELD.'
+      );
+    } else if (jurisdiction === JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION) {
+      // Amendment B: Require explicit boolean synthetic: true on the reparsed staged record
+      if (typeof reparsedRecord.synthetic !== 'boolean' || reparsedRecord.synthetic !== true) {
         throw new UniversalAtelierError(
-          'REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH',
-          'Real-source admission requires independently verifiable external authorization root. Protected Experiment B is HELD.'
+          'SYNTHETIC_DECLARATION_INVALID',
+          'TEST_ONLY_SYNTHETIC_ADJUDICATION requires explicit boolean synthetic: true on the staged record. Absent, null, false, or ambiguously typed values are rejected.'
         );
       }
-    } else if (jurisdiction === JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION) {
-      // Permits internally generated approvals SOLELY for declared synthetic fixtures
-      if (rec.synthetic === false || rec.evidence_class === 'OPERATOR_ADMITTED_SOURCE_RECORD') {
+      if (reparsedRecord.evidence_class === 'OPERATOR_ADMITTED_SOURCE_RECORD') {
         throw new UniversalAtelierError(
           'TEST_JURISDICTION_REAL_SOURCE_REFUSED',
           'Real source records cannot be admitted under TEST_ONLY_SYNTHETIC_ADJUDICATION.'
@@ -417,7 +466,7 @@ export class UniversalAtelierReceiver {
       throw new UniversalAtelierError('INVALID_JURISDICTION', `Unknown jurisdiction '${jurisdiction}'.`);
     }
 
-    // 4. Retrieve & Bind Adjudication Event
+    // 6. Retrieve & Bind Adjudication Event
     if (!adjudicatorReceiptId) {
       throw new UniversalAtelierError('ADJUDICATOR_RECEIPT_REQUIRED', 'Admission requires positive adjudicator receipt.');
     }
@@ -437,9 +486,9 @@ export class UniversalAtelierReceiver {
       throw new UniversalAtelierError('ADJUDICATION_DECISION_NOT_ADMIT', `Adjudication decision is ${adjEvent.decision}, expected ADMIT.`);
     }
 
-    // Bind target record ID
-    if (adjEvent.target_id !== rec.id) {
-      throw new UniversalAtelierError('ADJUDICATION_TARGET_MISMATCH', `Adjudication target ${adjEvent.target_id} does not match record ${rec.id}.`);
+    // Bind target record ID to reparsed staged record ID
+    if (adjEvent.target_id !== reparsedRecord.id) {
+      throw new UniversalAtelierError('ADJUDICATION_TARGET_MISMATCH', `Adjudication target ${adjEvent.target_id} does not match record ${reparsedRecord.id}.`);
     }
 
     // Bind jurisdiction
@@ -456,38 +505,41 @@ export class UniversalAtelierReceiver {
     if (adjEvent.schema !== UNIVERSAL_ATELIER_SCHEMA_V1) {
       throw new UniversalAtelierError('ADJUDICATION_SCHEMA_MISMATCH', `Receipt schema ${adjEvent.schema} does not match receiver schema.`);
     }
-    if (adjEvent.evidence_sha256 !== proposal.input_sha256) {
-      throw new UniversalAtelierError('ADJUDICATOR_HASH_MISMATCH', `Adjudication hash ${adjEvent.evidence_sha256} does not match proposal input_sha256 ${proposal.input_sha256}.`);
+    if (adjEvent.evidence_sha256 !== recomputedDigest) {
+      throw new UniversalAtelierError('ADJUDICATOR_HASH_MISMATCH', `Adjudication hash ${adjEvent.evidence_sha256} does not match proposal input_sha256 ${recomputedDigest}.`);
     }
 
-    // 5. Historical Rejection & Withdrawal Invariant
+    // 7. Historical Rejection & Withdrawal Invariant
     const priorNegative = this.db.prepare(`
       SELECT * FROM ua_adjudication_events
       WHERE target_id = ? AND (decision = 'REJECT' OR action = 'WITHDRAWAL')
       ORDER BY registered_at DESC
-    `).all(rec.id);
+    `).all(reparsedRecord.id);
 
     if (priorNegative.length > 0) {
       const binding = adjEvent.binding_json ? JSON.parse(adjEvent.binding_json) : null;
       if (!binding || !binding.reparative_override) {
         throw new UniversalAtelierError(
           'RECORD_PREVIOUSLY_REJECTED_OR_WITHDRAWN',
-          `Record ${rec.id} has prior rejection/withdrawal history; explicit reparative override required.`
+          `Record ${reparsedRecord.id} has prior rejection/withdrawal history; explicit reparative override required.`
         );
       }
     }
 
-    // 6. Time-base separation
-    const creationTime = rec.creation_time || rec.created_at || null;
-    const publicationTime = rec.publication_time || rec.published_at || null;
-    const observationTime = rec.observation_time || rec.observed_at || null;
-    const recordingTime = proposal.created_at;
+    // 8. Time-base separation derived strictly from reparsed staged record
+    const creationTime = reparsedRecord.creation_time || reparsedRecord.created_at || null;
+    const publicationTime = reparsedRecord.publication_time || reparsedRecord.published_at || null;
+    const observationTime = reparsedRecord.observation_time || reparsedRecord.observed_at || null;
+    const recordingTime = staged.created_at;
     const admissionTime = new Date().toISOString();
 
     const assignedEvidenceClass = jurisdiction === JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION
       ? 'TEST_ONLY_SYNTHETIC_WITNESS'
-      : (rec.evidence_class || 'SYNTHETIC_RESEARCH_WITNESS');
+      : (reparsedRecord.evidence_class || 'SYNTHETIC_RESEARCH_WITNESS');
 
+    const assignedCeiling = reparsedRecord.claim_ceiling || (jurisdiction === JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION ? 'SYNTHETIC_EXPLORATION_ONLY' : null);
+
+    // 9. Insert into ua_records (all fields derived strictly from immutable reparsed staged bytes)
     const stmt = this.db.prepare(`
       INSERT INTO ua_records (
         record_id, kind, label, family, status, jurisdiction, evidence_class, claim_ceiling,
@@ -496,33 +548,34 @@ export class UniversalAtelierReceiver {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
     stmt.run(
-      rec.id,
-      rec.kind,
-      rec.label,
-      rec.family || null,
-      rec.status || 'ADMITTED',
+      reparsedRecord.id,
+      reparsedRecord.kind,
+      reparsedRecord.label,
+      reparsedRecord.family || null,
+      reparsedRecord.status || 'ADMITTED',
       jurisdiction,
       assignedEvidenceClass,
-      rec.claim_ceiling || 'Zero private data; research witness only.',
+      assignedCeiling,
       creationTime,
       publicationTime,
       observationTime,
       recordingTime,
       admissionTime,
-      proposal.raw_json,
-      proposal.input_sha256,
+      immutableRawBytes,
+      recomputedDigest,
       adjudicatorReceiptId,
       humanReviewRef
     );
 
     return {
-      record_id: rec.id,
-      kind: rec.kind,
-      label: rec.label,
+      record_id: reparsedRecord.id,
+      kind: reparsedRecord.kind,
+      label: reparsedRecord.label,
       jurisdiction,
       evidence_class: assignedEvidenceClass,
-      sha256: proposal.input_sha256,
+      sha256: recomputedDigest,
       admission_time: admissionTime,
+      claim_ceiling: assignedCeiling,
       adjudication_time: adjEvent.registered_at,
       human_review_ref: humanReviewRef,
     };
@@ -645,12 +698,14 @@ export class UniversalAtelierReceiver {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(linkId, fromId, toId, linkType, linkStatus, temporalClassification, proofJson, adjudicatorReceiptId, now);
 
-    // Insert reverse citation index (citedBy)
-    const citId = `cit:${sha256(`${fromId}->${toId}:${linkType}`).slice(0, 16)}`;
-    this.db.prepare(`
-      INSERT OR REPLACE INTO ua_reverse_citations (citation_id, target_id, citing_id, link_type, admitted_at)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(citId, toId, fromId, linkType, now);
+    // Amendment C: Only admitted links enter the admitted reverse citation index (citedBy)
+    if (linkStatus === 'ADMITTED') {
+      const citId = `cit:${sha256(`${fromId}->${toId}:${linkType}`).slice(0, 16)}`;
+      this.db.prepare(`
+        INSERT OR REPLACE INTO ua_reverse_citations (citation_id, target_id, citing_id, link_type, admitted_at)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(citId, toId, fromId, linkType, now);
+    }
 
     return {
       link_id: linkId,
@@ -659,6 +714,7 @@ export class UniversalAtelierReceiver {
       link_type: linkType,
       status: linkStatus,
       temporal_classification: temporalClassification,
+      admitted: linkStatus === 'ADMITTED',
       admitted_at: now,
     };
   }
@@ -720,13 +776,15 @@ export class UniversalAtelierReceiver {
     const row = this.db.prepare('SELECT * FROM ua_records WHERE record_id = ?').get(record_id);
     if (!row) throw new UniversalAtelierError('RECORD_NOT_FOUND', `Record ${record_id} is not admitted.`);
 
-    const outgoing = this.db.prepare('SELECT to_id, link_type, status, temporal_classification, span_proof_json FROM ua_links WHERE from_id = ?').all(record_id);
+    const outgoing = this.db.prepare("SELECT to_id, link_type, status, temporal_classification, span_proof_json FROM ua_links WHERE from_id = ? AND status = 'ADMITTED'").all(record_id);
+    const candidateOutgoing = this.db.prepare("SELECT to_id, link_type, status, temporal_classification, span_proof_json FROM ua_links WHERE from_id = ? AND status != 'ADMITTED'").all(record_id);
     const incoming = this.db.prepare('SELECT citing_id, link_type FROM ua_reverse_citations WHERE target_id = ?').all(record_id);
 
     return {
       ...row,
       parsed_payload: JSON.parse(row.raw_payload),
       outgoing_links: outgoing,
+      candidate_links: candidateOutgoing,
       cited_by: incoming,
     };
   }
@@ -757,13 +815,14 @@ export class UniversalAtelierReceiver {
   // -------------------------------------------------------------
   // Governed Operation 4: neighbors
   // -------------------------------------------------------------
-  neighbors(record_id, { direction = 'both', type = null } = {}) {
+  neighbors(record_id, { direction = 'both', type = null, status = 'ADMITTED' } = {}) {
     if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
     const res = { outgoing: [], incoming: [] };
 
     if (direction === 'both' || direction === 'outgoing') {
       let q = 'SELECT to_id, link_type, status, admitted_at FROM ua_links WHERE from_id = ?';
       const p = [record_id];
+      if (status) { q += ' AND status = ?'; p.push(status); }
       if (type) { q += ' AND link_type = ?'; p.push(type); }
       res.outgoing = this.db.prepare(q).all(...p);
     }
@@ -795,7 +854,7 @@ export class UniversalAtelierReceiver {
       if (currentPath.length > safeMax + 1) break;
 
       const current = currentPath[currentPath.length - 1];
-      let sql = 'SELECT to_id, link_type FROM ua_links WHERE from_id = ?';
+      let sql = "SELECT to_id, link_type FROM ua_links WHERE from_id = ? AND status = 'ADMITTED'";
       const params = [current];
       if (types && types.length) {
         sql += ` AND link_type IN (${types.map(() => '?').join(',')})`;
@@ -819,6 +878,30 @@ export class UniversalAtelierReceiver {
     }
 
     return { found: false, depth: null, path: null };
+  }
+
+  // -------------------------------------------------------------
+  // Canonical Projection Operator Pi:
+  // Normalizes admitted graph nodes and edges into deterministic JSON and digest
+  // -------------------------------------------------------------
+  canonicalProjectionPi() {
+    if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
+    const records = this.db.prepare(`
+      SELECT record_id, kind, label, family FROM ua_records WHERE status = 'ACTIVE' OR status = 'ADMITTED' ORDER BY record_id ASC
+    `).all();
+    const links = this.db.prepare(`
+      SELECT from_id, to_id, link_type FROM ua_links WHERE status = 'ADMITTED' ORDER BY from_id ASC, to_id ASC, link_type ASC
+    `).all();
+    const canonicalPayload = {
+      nodes: records.map(r => ({ id: r.record_id, kind: r.kind, label: r.label, family: r.family })),
+      edges: links.map(l => ({ from: l.from_id, to: l.to_id, type: l.link_type })),
+    };
+    const canonicalJson = JSON.stringify(canonicalPayload);
+    return {
+      canonical_payload: canonicalPayload,
+      canonical_json: canonicalJson,
+      projection_digest: sha256(canonicalJson),
+    };
   }
 
   // -------------------------------------------------------------

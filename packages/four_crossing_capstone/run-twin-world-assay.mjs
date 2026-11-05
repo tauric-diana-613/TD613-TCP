@@ -50,28 +50,11 @@ console.log('================================================================\n'
 
 /**
  * Preregistered Canonical Projection Operator Pi:
- * Normalizes graph nodes and edges into deterministic JSON string and computes digest.
+ * Normalizes admitted graph nodes and edges into deterministic JSON string and computes digest.
+ * Strictly excludes unadmitted, candidate-only, or withdrawn links.
  */
 function canonicalProjectionPi(receiver) {
-  const records = receiver.db.prepare(`
-    SELECT record_id, kind, label, family FROM ua_records ORDER BY record_id ASC
-  `).all();
-
-  const links = receiver.db.prepare(`
-    SELECT from_id, to_id, link_type FROM ua_links ORDER BY from_id ASC, to_id ASC, link_type ASC
-  `).all();
-
-  const canonicalPayload = {
-    nodes: records.map(r => ({ id: r.record_id, kind: r.kind, label: r.label, family: r.family })),
-    edges: links.map(l => ({ from: l.from_id, to: l.to_id, type: l.link_type })),
-  };
-
-  const canonicalJson = JSON.stringify(canonicalPayload);
-  return {
-    canonical_payload: canonicalPayload,
-    canonical_json: canonicalJson,
-    projection_digest: sha256(canonicalJson),
-  };
+  return receiver.canonicalProjectionPi();
 }
 
 /**
@@ -228,8 +211,11 @@ twinWorldEvaluations.push({
   pi_equality: srEqualTerminal,
   pi_digest: piSR_A.projection_digest,
   h_inequality: srDistinctHistory,
-  inquiry_1_terminal_discriminability: 0.0, // Indistinguishable under Pi
-  inquiry_2_history_identifiability: 1.0,   // 100% identifiable via retained rejection in H
+  inquiry_1_terminal_mutual_information: 0.0,
+  inquiry_1_theoretical_discriminability_under_balanced_prior: 0.50,
+  inquiry_2_construction_history_separability: 1.0,
+  separability_classification: 'THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY',
+  empirical_blinded_classifier_executed: false,
   rejection_event_preserved: srRejectionsObserved,
   verdict: srEqualTerminal && srDistinctHistory && srRejectionsObserved ? 'INVARIANT_CONFIRMED' : 'FAILED',
 });
@@ -311,8 +297,11 @@ twinWorldEvaluations.push({
   pi_equality: emEqualTerminal,
   pi_digest: piEM_A.projection_digest,
   h_inequality: emDistinctHistory,
-  inquiry_1_terminal_discriminability: 0.0,
-  inquiry_2_history_identifiability: 1.0,
+  inquiry_1_terminal_mutual_information: 0.0,
+  inquiry_1_theoretical_discriminability_under_balanced_prior: 0.50,
+  inquiry_2_construction_history_separability: 1.0,
+  separability_classification: 'THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY',
+  empirical_blinded_classifier_executed: false,
   rejection_event_preserved: emGateHistoryPreserved,
   verdict: emEqualTerminal && emDistinctHistory && emGateHistoryPreserved ? 'INVARIANT_CONFIRMED' : 'FAILED',
 });
@@ -427,8 +416,11 @@ twinWorldEvaluations.push({
   pi_equality: wbEqualTerminal,
   pi_digest: piWB_A.projection_digest,
   h_inequality: wbDistinctHistory,
-  inquiry_1_terminal_discriminability: 0.0,
-  inquiry_2_history_identifiability: 1.0,
+  inquiry_1_terminal_mutual_information: 0.0,
+  inquiry_1_theoretical_discriminability_under_balanced_prior: 0.50,
+  inquiry_2_construction_history_separability: 1.0,
+  separability_classification: 'THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY',
+  empirical_blinded_classifier_executed: false,
   rejection_event_preserved: hWB_B.history_payload.rejections_count === 1,
   verdict: wbEqualTerminal && wbDistinctHistory ? 'INVARIANT_CONFIRMED' : 'FAILED',
 });
@@ -543,8 +535,11 @@ twinWorldEvaluations.push({
   pi_equality: tdEqualTerminal,
   pi_digest: piTD_A.projection_digest,
   h_inequality: tdDistinctHistory,
-  inquiry_1_terminal_discriminability: 0.0,
-  inquiry_2_history_identifiability: 1.0,
+  inquiry_1_terminal_mutual_information: 0.0,
+  inquiry_1_theoretical_discriminability_under_balanced_prior: 0.50,
+  inquiry_2_construction_history_separability: 1.0,
+  separability_classification: 'THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY',
+  empirical_blinded_classifier_executed: false,
   rejection_event_preserved: hTD_B.history_payload.rejections_count === 1,
   verdict: tdEqualTerminal && tdDistinctHistory ? 'INVARIANT_CONFIRMED' : 'FAILED',
 });
@@ -567,10 +562,10 @@ const receipt = {
   authority: 'SAC[X6ZNK5NO51]',
   covenant: 'Khona\u200Clit-po',
   preregistered_theorems: {
-    terminal_projection_quotient: 'Pi(G_A) === Pi(G_B) holds across all 4 estates; canonical graph serialization yields identical SHA-256 digest.',
+    terminal_projection_quotient: 'Pi(G_A) === Pi(G_B) holds across all 4 estates; canonical graph serialization of admitted nodes/edges yields identical SHA-256 digest.',
     historical_trace_divergence: 'H_A !== H_B holds across all 4 estates; retained adjudication events, rejections, and intake lineage yield distinct digests.',
-    inquiry_1_terminal_information: 'Mutual information I(World; Pi(G)) = 0. Blinded discriminator accuracy = 50% (random guess).',
-    inquiry_2_witness_identifiability: 'When process trace H is provided, discriminator accuracy = 100%. Hidden historical divergence is fully observable.',
+    inquiry_1_theoretical_separability: 'Under Pi alone, terminal graphs are identical. Mutual information I(World; Pi(G)) = 0. Under a balanced symmetric prior, expected chance accuracy is 50%. This is a theoretical property of the lossy quotient, NOT an empirically scored blinded classifier result.',
+    inquiry_2_construction_separability: 'When process trace H is provided, the signed rejection/override events render World A and World B distinguishable in-sample (1.0 trace separability within this constructed synthetic assay). This demonstrates internal trace preservation, NOT an empirical blinded evaluation.',
     externality_boundary_preserved: 'Synthetic process trace restores internal discriminability within the constructed experiment without proving external empirical origin. Shared acquisition adds zero independent replication credit.',
   },
   estates_evaluated: twinWorldEvaluations,

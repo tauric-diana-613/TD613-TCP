@@ -26,8 +26,8 @@ Through the execution of the **Chamber 6 Equal-Graph Twin-World Assay**, this in
    \[
    I(\text{World}; \Pi(G)) = 0.
    \]
-   A blinded discriminator given only \(\Pi(G)\) achieves 50% accuracy (random guess). The terminal graph quotient fundamentally conceals whether an edge was discovered directly or arose after rejected hypotheses, contested human gates, dropped unallowlisted captures, or revised draft proposals.
-2. **Under the Retained Process Witness \(H\):** When the Universal Atelier's version-bound adjudication events (`ua_adjudication_events`), proposal staging records (`ua_proposals`), and human-gated classifications are preserved, discriminability is restored to **100% across all four estates**.
+   Under a balanced symmetric prior, theoretical classification accuracy is 50% (random guess). This is a mathematical consequence of quotient collapse, not an empirical blinded-classifier score.
+2. **Under the Retained Process Witness \(H\):** In this synthetic construction, when the Universal Atelier's version-bound adjudication events (`ua_adjudication_events`), proposal staging records (`ua_proposals`), and rejection/override traces are preserved, World A and World B are completely separable (1.0 trace separability in-sample). This demonstrates internal trace retention, not external empirical generalization.
 3. **The Empirical Externality Boundary:** The ability to distinguish rival histories in this trial demonstrates that **process-sensitive representations preserve distinctions that graph quotients collapse**. However, this internal discriminability relies on locally retained synthetic execution traces; it **does not manufacture external empirical origin**. Shared acquisition adds zero independent replication credit (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
 
 ---
@@ -74,8 +74,8 @@ All numerical findings in this adjudication are drawn directly from live machine
 1. **Original method recovered:** Authentic `wendbine-compile.mjs` compiler contract and public metadata schema (PR #1685).
 2. **Original method executed:** Genuine execution of authentic compiler against 48h Reddit public snapshot (`packages/dome_world_exact/fixtures/a15-r0/WENDBINE`).
 3. **Receiver capability implemented:** `wendbine-empty-receiver.mjs` with 7-table zero-row witness, 9-graph default-deny registry, and co-occurrence overlay engine.
-4. **Common-input fidelity demonstrated:** 10/10 concordant dimensions on common 33-post corpus; exactly 143 co-occurrences computed.
-5. **Information lost in transfer:** Downstream evolved manifestation edges (6,703) are pruned from the core scientific graph to prevent noise inflation.
+4. **Common-input fidelity demonstrated:** Concordance demonstrated across 33 public sources, 191 concepts, and 9 graph families. Nine sampled relations (one per family) admitted into receiver; full per-edge transfer of all 146 relations held pending per-edge source witness validation; 143 co-occurrences computed without claiming per-edge support equality.
+5. **Information lost in transfer:** Downstream evolved manifestation edges (6,703) are distinguished from the core contracted scientific graph (146 relations).
 6. **Information newly preserved:** Bounded scope strictly refusing `selftext`/`body` and nested payload escapes (`WENDBINE_FULL_BODY_FIELD_REFUSED`); live raw byte span SHA-256 proofs.
 7. **Scientific claim ceiling:** Public archival mining only. Co-occurrence >= 2 independent sources confirms archival co-presence, never causal or clinical mechanism.
 8. **Missing independent evidence:** Real-time external platform telemetry; private author correspondence.
@@ -84,30 +84,24 @@ All numerical findings in this adjudication are drawn directly from live machine
 ### Crossing T · Universal Atelier / TD613 Reference Encyclopedia
 1. **Original method recovered:** Authentic Reference Edition 1.4 runtime (`scripts/encyclopedia-reference-runtime.js`) operating over 1,141 records (843 canonical + 298 accession) and 2,131 edges.
 2. **Original method executed:** Direct Node VM execution of authentic `TD613Reference` runtime functions (`search`, `get`, `cite`, `neighbors`, `route`, `context`, `citedBy`, `verify`).
-3. **Receiver capability implemented:** `universal-atelier-receiver.mjs` with 5-table zero-row witness, dual jurisdictions (`TEST_ONLY_SYNTHETIC` vs `EXTERNALLY_AUTHENTICATED_HUMAN`), bound link adjudications, and 6-phase time-bases.
-4. **Common-input fidelity demonstrated:** 7 concordant core operations on identical 26-record reference fixture; 5 measured differentials honestly characterized.
+3. **Receiver capability implemented:** `universal-atelier-receiver.mjs` with 5-table zero-row witness, dual jurisdictions (`TEST_ONLY_SYNTHETIC` vs `EXTERNALLY_AUTHENTICATED_HUMAN`), bound link adjudications, candidate relation isolation, and 6-phase time-bases.
+4. **Common-input fidelity demonstrated:** 7 concordant core operations on identical 26-record reference fixture; 5 measured differentials honestly characterized (BM25 vs facet ranking, citation formatting, exception vs null, 6-phase time separation, schema provenance). Claims of universal semantic losslessness rejected.
 5. **Information lost in transfer:** BM25 document length normalization (T1) is simplified to facet/chronological retrieval (T2); Git commit/line pointers (T1) are replaced by self-contained cryptographic references (T2).
-6. **Information newly preserved:** Explicit 6-phase time separation (`creation_time`, `publication_time`, `observation_time`, `recording_time`, `admission_time`, `adjudication_time`), anti-replay parameter binding, and fail-closed `RECORD_NOT_FOUND` handling.
+6. **Information newly preserved:** Explicit 6-phase time separation (`creation_time`, `publication_time`, `observation_time`, `recording_time`, `admission_time`, `adjudication_time`), candidate relation isolation, anti-replay parameter binding, and fail-closed `RECORD_NOT_FOUND` handling.
 7. **Scientific claim ceiling:** Reference indexing and proposal staging only. Citation edges represent bibliographic cross-references, never mathematical or empirical proof.
 8. **Missing independent evidence:** Production live database state; external author identity verification.
 9. **Human-gated authority retained:** Real-source admission strictly held without external authorization root (`REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH`).
 
 ---
 
-## 4. Custodial Gate Repair & Link Binding (Chambers 2 & 3)
+## 4. Custodial Gate Repair, Immutable Staging & Link Binding (Chambers 2 & 3)
 
-The vulnerabilities identified in prior versions were decisively falsified and repaired:
-1. **The SAC Conflation Defect:** `SAC[X6ZNK5NO51]` authorized bounded experimentation; it was not proof of a human reviewing each record. The Universal Atelier now enforces two explicit jurisdictions:
-   - `TEST_ONLY_SYNTHETIC_ADJUDICATION`: Internally generated approvals are permitted **solely** for declared synthetic fixtures. Records receive evidence class `TEST_ONLY_SYNTHETIC_WITNESS` and cannot be promoted to production or real-source authority.
-   - `EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION`: Real-source admission strictly requires a separate verifiable external authorization root. Because no external root was supplied, real-source admission remained **100% fail-closed (HELD)**.
-2. **Link Parameter Binding:** `admitLink()` now cryptographically binds the adjudicator receipt to:
-   - Exact link identity (`link_id`)
-   - Exact source and target endpoints (`from_id`, `to_id`)
-   - Exact relation predicate (`link_type`)
-   - Exact UTF-8 byte coordinates (`start`, `end`) and span digest (`span_sha256`)
-   - Episode identity (`episode_id`)
-   Cross-link receipt reuse and unrelated hash evidence fail closed with explicit errors.
-3. **Historical Time Separation:** Chronology checks now inspect `publication_time` and `creation_time`, **never** `admission_time`. A 2024 document citing a 2020 document is recognized as valid historical citation regardless of when either was loaded into SQLite; anachronistic retrospective citations (1970 citing 1980) are strictly rejected.
+The vulnerabilities identified in prior versions and independent scientific review #5790386565 were decisively addressed:
+1. **External Human Authorization Fail-Closed (Amendment A):** `EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION` now fails closed for *all* supplied tokens (null, empty, arbitrary, or syntactically plausible) until an external human trust root actually exists. Self-issued `MACHINE_SYNTHETIC` events are strictly barred from issuing human approvals.
+2. **Synthetic Provenance & Immutable Staged Proposals (Amendment B):** `TEST_ONLY_SYNTHETIC_ADJUDICATION` requires explicit boolean `synthetic: true` on the reparsed staged payload; absent, null, string, or number values are rejected. The record admitted into `ua_records` is derived strictly from reparsing the immutable staged JSON bytes (`ua_proposals.record_json`), preventing caller mutation after preparation.
+3. **Candidate Relation Isolation (Amendment C):** Unvalidated predicates (`CANDIDATE_UNVALIDATED_PREDICATE`) and non-admitted links are stored for historical inspection but are strictly excluded from the admitted terminal graph, reverse-citation index (`ua_reverse_citations`), routing (`route()`), neighbors (`neighbors()`), and `canonicalProjectionPi()`.
+4. **Link Parameter Binding:** `admitLink()` cryptographically binds adjudications to exact link ID, endpoints, predicate, UTF-8 byte span coordinates, and digest. Cross-link receipt reuse and endpoint tampering fail closed.
+5. **Historical Time Separation:** Chronology checks inspect `publication_time`, **never** `admission_time`. Anachronistic citations fail closed.
 
 ---
 
@@ -115,15 +109,15 @@ The vulnerabilities identified in prior versions were decisively falsified and r
 
 The Equal-Graph Twin-World trial produced the following formal results across all four estates:
 
-| Estate | World A (Direct) | World B (Complex History) | \(\Pi(G_A) = \Pi(G_B)\) | \(H_A \ne H_B\) | Inquiry 1 Distinguishability | Inquiry 2 Identifiability |
+| Estate | World A (Direct) | World B (Complex History) | \(\Pi(G_A) = \Pi(G_B)\) | \(H_A \ne H_B\) | Inquiry 1 Mutual Information | Inquiry 2 In-Sample Separability |
 |---|---|---|---|---|---|---|
-| **SignalRupture** | Clean direct link admission | Prior Aperture-rejected candidate attempt | **Identical** (`83904876e455bc3d`) | **Distinct** | **0.0 (Unidentifiable)** | **1.0 (100% Identifiable)** |
-| **EMSTD613** | Direct human approval | Contested Gate #3 resolved via reparative override | **Identical** (`b43b34104cfec308`) | **Distinct** | **0.0 (Unidentifiable)** | **1.0 (100% Identifiable)** |
-| **Wendbine** | Admitted clean metadata | Prior unallowlisted body capture rejected | **Identical** (`82966929ff0b58f0`) | **Distinct** | **0.0 (Unidentifiable)** | **1.0 (100% Identifiable)** |
-| **TD613 Reference** | Canonical baseline stratum | Staged draft proposal withdrawn before final admission | **Identical** (`7682a155ba426fbb`) | **Distinct** | **0.0 (Unidentifiable)** | **1.0 (100% Identifiable)** |
+| **SignalRupture** | Clean direct link admission | Prior Aperture-rejected candidate attempt | **Identical** (`83904876e455bc3d`) | **Distinct** | **0.0 (50% Chance Prior)** | **1.0 (100% Separable)** |
+| **EMSTD613** | Direct human approval | Contested Gate #3 resolved via reparative override | **Identical** (`b43b34104cfec308`) | **Distinct** | **0.0 (50% Chance Prior)** | **1.0 (100% Separable)** |
+| **Wendbine** | Admitted clean metadata | Prior unallowlisted body capture rejected | **Identical** (`82966929ff0b58f0`) | **Distinct** | **0.0 (50% Chance Prior)** | **1.0 (100% Separable)** |
+| **TD613 Reference** | Canonical baseline stratum | Staged draft proposal withdrawn before final admission | **Identical** (`7682a155ba426fbb`) | **Distinct** | **0.0 (50% Chance Prior)** | **1.0 (100% Separable)** |
 
 **Fundamental Conclusion:**
-A terminal research graph is a lossy quotient of research history. Without retaining process-level adjudication and rejection events, the path taken to arrive at a scientific conclusion is completely erased. The Universal Atelier successfully proves that retaining version-bound adjudication events in `ua_adjudication_events` restores historical identifiability without inventing evidence.
+A terminal research graph is a lossy quotient of research history. Without retaining process-level adjudication and rejection events, the path taken to arrive at a scientific conclusion is completely erased. The Universal Atelier successfully proves that retaining version-bound adjudication events in `ua_adjudication_events` restores historical separability in-sample without inventing evidence. (These results represent construction-specific separability and mathematical quotient analysis, not an empirical blinded-classifier trial).
 
 ---
 
