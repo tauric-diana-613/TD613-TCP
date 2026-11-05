@@ -6,6 +6,7 @@ on:
     paths:
       - 'scripts/atelier-native-inheritance-bridge-v1.py'
       - 'scripts/qualify-src-native-sourcebound-v1.py'
+      - 'scripts/universal-atelier-sourcebound-readonly-v1.py'
       - 'tests/test_atelier_native_inheritance_bridge_v1.py'
       - 'tests/test_atelier_src_epoch_binding_v1.py'
       - '.github/workflows/td613-src-native-sourcebound-qualification.yml'
@@ -43,6 +44,8 @@ jobs:
         run: python -B -m unittest discover -s tests -p 'test_atelier_src_epoch_binding_v1.py' -v
       - name: Historical native bridge regressions
         run: python -B -m unittest discover -s tests -p 'test_atelier_native_inheritance_bridge_v1.py' -v
+      - name: Universal read-only dispatch regressions
+        run: python -B -m unittest discover -s tests -p 'test_universal_atelier_sourcebound_readonly_v1.py' -v
       - name: Retained original SRC tests
         run: python -B -m unittest discover -s native-src/packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN -p 'test_*.py' -v
       - name: Adapter and synthetic-only receiver regressions

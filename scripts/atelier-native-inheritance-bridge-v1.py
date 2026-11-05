@@ -11,6 +11,8 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
+import tempfile
 
 SRC_METHODS={
  "src_query":"99-ADMIN/srcquery.py",
@@ -70,8 +72,7 @@ QUERY_INPUTS={
       "authority-jurisdiction-assertions")]],
 }
 
-def verify_query_epoch(src,snapshot,seal,operation):
-    """Verify consumed bytes only; never reseal or imply whole-tree custody."""
+def _query_epoch_manifest(src,snapshot,seal):
     raw,_=verified_bytes(src,"04-RECEIPTS/phase2/current-seal.json")
     current=json.loads(raw)
     if current.get("atelier_snapshot_id")!=snapshot or current.get("seal_id")!=seal:
@@ -81,6 +82,8 @@ def verify_query_epoch(src,snapshot,seal,operation):
         raise ValueError("UNSUPPORTED_PROJECTION_SEAL_PATH")
     raw,digest=verified_bytes(src,relative)
     manifest=json.loads(raw)
+    if manifest.get("schema_version")!="src-projection-seal/v1":
+        raise ValueError("UNSUPPORTED_PROJECTION_SEAL_SCHEMA")
     for key in ("atelier_snapshot_id","seal_id","projection_seal_id","projection_profile"):
         if not current.get(key) or manifest.get(key)!=current[key]:
             raise ValueError("SEAL_POINTER_MANIFEST_MISMATCH")
@@ -96,6 +99,11 @@ def verify_query_epoch(src,snapshot,seal,operation):
         if not isinstance(path,str) or Path(path).is_absolute() or ".." in Path(path).parts or path in bypath:
             raise ValueError("SEAL_ENTRY_PATH_INVALID_OR_DUPLICATE")
         bypath[path]=entry
+    return current,manifest,digest,bypath
+
+def verify_query_epoch(src,snapshot,seal,operation):
+    """Verify consumed bytes only; never reseal or imply whole-tree custody."""
+    _,_,digest,bypath=_query_epoch_manifest(src,snapshot,seal)
     checked=[]
     for path in [SRC_METHODS["src_query"],*QUERY_INPUTS[operation]]:
         entry=bypath.get(path)
@@ -107,6 +115,57 @@ def verify_query_epoch(src,snapshot,seal,operation):
     return {"scope":"CONSUMED_NATIVE_QUERY_FILES_ONLY","projection_seal_sha256":digest,
             "verified_inputs":checked,"whole_projection_verified":False,
             "external_custody_authenticated":False}
+
+def replay_native_src_query(src,snapshot,seal,operation,identifier=None,scope=None,
+                            expected_source_sha=None,*,allow_line_ending_replay=False):
+    """Explicit read-only replay of exact seal bytes from newline variants.
+
+    Copies into a temporary directory; never rewrites the retained source or
+    weakens the ordinary strict query. Every replayed consumed file must match
+    the original seal's byte count and SHA-256. Content edits remain refused.
+    This is a public-projection method replay, never source admission or a new seal.
+    """
+    if allow_line_ending_replay is not True:
+        raise ValueError("EXPLICIT_SEALED_NEWLINE_REPLAY_REQUIRED")
+    if operation not in QUERY_INPUTS:
+        raise ValueError("SRC_NATIVE_READONLY_OPERATION_NOT_ALLOWED")
+    src=root_check(Path(src),"SRC")
+    current,_,_,bypath=_query_epoch_manifest(src,snapshot,seal)
+    if current["projection_profile"]!="public":
+        raise ValueError("PUBLIC_PROJECTION_REPLAY_ONLY")
+    script=SRC_METHODS["src_query"]
+    _,h=verified_bytes(src,script)
+    if not expected_source_sha or expected_source_sha!=h:
+        raise ValueError("EXACT_NATIVE_SRC_QUERY_SHA256_REQUIRED")
+    replacements={};transforms=[]
+    for path in [script,*QUERY_INPUTS[operation]]:
+        entry=bypath.get(path)
+        if entry is None:raise ValueError("QUERY_INPUT_NOT_SEALED:"+path)
+        raw,h=verified_bytes(src,path)
+        if h==entry.get("sha256") and len(raw)==entry.get("bytes"):continue
+        # Executable source is never transformed by this data replay lane.
+        if path==script:raise ValueError("QUERY_INPUT_SEAL_DRIFT:"+path)
+        variant=raw.replace(b"\r\n",b"\n").replace(b"\n",b"\r\n")
+        vh=hashlib.sha256(variant).hexdigest()
+        if vh!=entry.get("sha256") or len(variant)!=entry.get("bytes"):
+            raise ValueError("UNREPLAYABLE_QUERY_INPUT_DRIFT:"+path)
+        replacements[path]=variant
+        transforms.append({"path":path,"retained_sha256":h,"replayed_sha256":vh,
+                           "transform":"LF_TO_CRLF_EXACT_SEAL_MATCH"})
+    total=0;count=0
+    for path in src.rglob("*"):
+        if path.is_symlink():raise ValueError("SYMLINK_IN_NATIVE_SOURCE_REFUSED")
+        if path.is_file():total+=path.stat().st_size;count+=1
+        if total>500_000_000 or count>20_000:raise ValueError("BOUNDED_REPLAY_COPY_EXCEEDED")
+    with tempfile.TemporaryDirectory(prefix="td613-public-sealed-query-") as temp:
+        replay=Path(temp)/"SRC"
+        shutil.copytree(src,replay)
+        for path,raw in replacements.items():(replay/path).write_bytes(raw)
+        result=native_src_query(replay,snapshot,seal,operation,identifier,scope,expected_source_sha)
+    return {**result,"replay":{"class":"PUBLIC_SOURCE_BOUND_SEALED_BYTE_REPLAY",
+       "retained_sources_modified":False,"seal_rewritten":False,
+       "transforms":transforms,"temporary_copy_destroyed":True,
+       "receiver_admission":False,"external_origin_authenticated":False}}
 
 def root_check(path, estate):
     p=Path(path)
@@ -227,13 +286,16 @@ def main():
     sub=p.add_subparsers(dest="command",required=True)
     sub.add_parser("census")
     q=sub.add_parser("src-projection");q.add_argument("projection",choices=list(PROJECTIONS));q.add_argument("--term");q.add_argument("--limit",type=int,default=100)
-    q=sub.add_parser("src-native-query");q.add_argument("operation",choices=["summary","trace","resolve","authority"]);q.add_argument("--snapshot",required=True);q.add_argument("--seal",required=True);q.add_argument("--query-sha256",required=True);q.add_argument("--id");q.add_argument("--scope")
+    for command in ("src-native-query","src-sealed-byte-replay"):
+        q=sub.add_parser(command);q.add_argument("operation",choices=["summary","trace","resolve","authority"]);q.add_argument("--snapshot",required=True);q.add_argument("--seal",required=True);q.add_argument("--query-sha256",required=True);q.add_argument("--id");q.add_argument("--scope")
+        if command=="src-sealed-byte-replay":q.add_argument("--allow-line-ending-replay",action="store_true",required=True)
     q=sub.add_parser("em-fixture");q.add_argument("name",choices=list(EM_FIXTURES))
     args=p.parse_args()
     src=root_check(args.src_root,"SRC");em=root_check(args.em_root,"EMSTD613")
     if args.command=="census":out=census(src,em)
     elif args.command=="src-projection":out=native_projection(src,args.projection,args.term,args.limit)
     elif args.command=="src-native-query":out=native_src_query(src,args.snapshot,args.seal,args.operation,args.id,args.scope,args.query_sha256)
+    elif args.command=="src-sealed-byte-replay":out=replay_native_src_query(src,args.snapshot,args.seal,args.operation,args.id,args.scope,args.query_sha256,allow_line_ending_replay=args.allow_line_ending_replay)
     else:out=em_fixture(em,args.name)
     print(json.dumps(out,ensure_ascii=False,indent=2))
 if __name__=="__main__":main()

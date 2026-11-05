@@ -173,11 +173,15 @@ def qualify(checkout):
         return {'retained_formulations':len(result['applicable_witnessed_formulations']),'controlling_formulation':None,'scope':'ORIGINAL_READBACK_WITHOUT_SEALED_QUERY_ADMISSION'}
     check('authority-chronology-nonpromotion',authority_control)
     def seals():
-        manifest=json.loads((src/current['path']).read_bytes());status=collections.Counter();drift=[]
+        manifest=json.loads((src/current['path']).read_bytes());status=collections.Counter();drift=[];newline_matches=0
         for e in manifest['entries']:
             f=src/e['path'];ok=f.is_file() and len(f.read_bytes())==e['bytes'] and sha(f.read_bytes())==e['sha256']
             status['match' if ok else 'drift_or_missing']+=1
-            if not ok:drift.append(e['path'])
+            if not ok:
+                drift.append(e['path'])
+                if f.is_file():
+                    variant=f.read_bytes().replace(b'\r\n',b'\n').replace(b'\n',b'\r\n')
+                    newline_matches+=len(variant)==e['bytes'] and sha(variant)==e['sha256']
         failures={}
         qsha=sha((src/'99-ADMIN/srcquery.py').read_bytes())
         for operation in bridge.QUERY_INPUTS:
@@ -185,7 +189,7 @@ def qualify(checkout):
             except ValueError as e:failures[operation]=str(e)
             else:failures[operation]='CONSUMED_FILES_VERIFIED'
         require(any('QUERY_INPUT_SEAL_DRIFT' in x for x in failures.values()),'Stale seal was not detected')
-        report['seal_audit']={'entry_counts':dict(status),'drift_paths':drift,'query_admission':failures,
+        report['seal_audit']={'entry_counts':dict(status),'drift_paths':drift,'exact_crlf_replay_matches':newline_matches,'query_admission':failures,
           'original_seal_rewritten':False,'external_source_authentication':False}
         return report['seal_audit']
     check('seal-digest-membership-and-stale-query-refusal',seals)
@@ -203,6 +207,22 @@ def qualify(checkout):
         return {'predecessor_bridge_sha256':sha(original),'predecessor_accepted_stale_epoch':True,
           'repaired_bridge_refused_stale_epoch':True,'original_source_bytes_changed':False}
     check('reproduced-predecessor-seal-bypass-and-completed-repair',predecessor_differential)
+    def sealed_replay():
+        results={};qsha=sha((src/'99-ADMIN/srcquery.py').read_bytes())
+        target=rows('05-OPERATIONS/relations/typed-edges.jsonl')[0]['from_id']
+        subject=rows('05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl')[0]['subject']['id']
+        for operation in bridge.QUERY_INPUTS:
+            identifier=subject if operation=='authority' else target
+            expected=query.summarize(src) if operation=='summary' else getattr(query,operation)(src,identifier,None) if operation=='authority' else getattr(query,operation)(src,identifier)
+            actual=bridge.replay_native_src_query(src,snapshot,current['seal_id'],operation,identifier,
+                expected_source_sha=qsha,allow_line_ending_replay=True)
+            require(actual['result']==expected,'Sealed replay changed native query result')
+            require(actual['replay']['receiver_admission'] is False,'Replay crossed admission boundary')
+            results[operation]={'native_result_exact':True,'transforms':len(actual['replay']['transforms']),
+              'verified_consumed_files':len(actual['source_binding']['verified_inputs'])}
+        return {'operations':results,'scope':'EXACT_CONSUMED_SEAL_BYTES_IN_TEMPORARY_COPY',
+                'originals_changed':False,'seal_rewritten':False,'external_origin_authenticated':False}
+    check('explicit-sealed-byte-replay-four-native-query-operations',sealed_replay)
     def no_promotion():
         require(all(x.get('coordinate_inference_permitted') is False for x in signatures),'Signature promoted')
         require('HOLONOMY' in summary['automatic_promotions_forbidden'],'Holonomy protection absent')
@@ -215,7 +235,7 @@ def qualify(checkout):
         return {'all_original_git_objects_match_before_after':True,'files':len(after)}
     check('retained-original-source-immutability',immutability)
     report['passed']=sum(x['status']=='PASS' for x in report['checks']);report['failed']=len(report['checks'])-report['passed']
-    report['disposition']='BOUNDED_METHOD_EXECUTION_CONFIRMED_SEALED_QUERY_HELD' if not report['failed'] else 'QUALIFICATION_FAILURE'
+    report['disposition']='BOUNDED_NATIVE_METHODS_AND_EXPLICIT_SEALED_REPLAY_CONFIRMED_FLIGHTS_HELD' if not report['failed'] else 'QUALIFICATION_FAILURE'
     return report
 
 def main():

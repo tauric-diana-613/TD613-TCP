@@ -115,4 +115,21 @@ class NativeIndependentPreservation(unittest.TestCase):
         self.assertRaisesRegex(ValueError,"NATIVE_FIXTURE_MISSING",
             m.native_projection,Path(self.temp.name)/"SRC-missing","CARTOGRAPHIC")
 
+    def test_sourcebound_sealed_replay_is_reachable_through_universal(self):
+        current=json.loads((self.src/"04-RECEIPTS/phase2/current-seal.json").read_text("utf8"))
+        spec=importlib.util.spec_from_file_location("universal_sealed_replay",
+            ROOT/"scripts/universal-atelier-sourcebound-readonly-v1.py")
+        u=importlib.util.module_from_spec(spec);spec.loader.exec_module(u)
+        args=dict(operation="summary",snapshot=current["atelier_snapshot_id"],seal=current["seal_id"],
+                  source_sha256=self.src_hashes["99-ADMIN/srcquery.py"])
+        with self.assertRaisesRegex(ValueError,"EXPLICIT_SEALED_NEWLINE_REPLAY_REQUIRED"):
+            u.native_dispatch(self.src,self.em,"src-sealed-byte-replay",**args)
+        result=u.native_dispatch(self.src,self.em,"src-sealed-byte-replay",**args,
+                                 allow_line_ending_replay=True)
+        self.assertEqual(result["result"]["compiler_map"],
+                         {"compilation_passes":27,"contextual_role_assertions":107})
+        self.assertFalse(result["replay"]["retained_sources_modified"])
+        self.assertFalse(result["replay"]["receiver_admission"])
+        self.assertGreater(len(result["replay"]["transforms"]),0)
+
 if __name__=="__main__":unittest.main()

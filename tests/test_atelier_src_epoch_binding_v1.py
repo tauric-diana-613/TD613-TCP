@@ -17,7 +17,7 @@ class EpochBinding(unittest.TestCase):
         original=(ROOT/'packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py').read_bytes()
         self.put(self.inputs[0],original);self.put(self.inputs[1],b'[]\n'.replace(b'[]',b''))
         self.method_sha=hashlib.sha256(original).hexdigest()
-        self.manifest={'atelier_snapshot_id':'SYNTHETIC-EPOCH','seal_id':'SYNTHETIC-SEAL','projection_profile':'public','entries':[]}
+        self.manifest={'schema_version':'src-projection-seal/v1','atelier_snapshot_id':'SYNTHETIC-EPOCH','seal_id':'SYNTHETIC-SEAL','projection_profile':'public','entries':[]}
         for p in self.inputs:
             raw=(self.root/p).read_bytes();self.manifest['entries'].append({'path':p,'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()})
         self.seal()
@@ -73,5 +73,38 @@ class EpochBinding(unittest.TestCase):
         binding=self.query()['source_binding']
         self.assertFalse(binding['whole_projection_verified'])
         self.assertNotIn('unsealed.txt',[e['path'] for e in binding['verified_inputs']])
+
+    def replay(self,**kwargs):
+        return m.replay_native_src_query(self.root,'SYNTHETIC-EPOCH','SYNTHETIC-SEAL',
+          'authority','ABSENT',expected_source_sha=self.method_sha,**kwargs)
+    def newline_fixture(self):
+        raw=b'{"subject":{"id":"ABSENT"},"scope":{}}\r\n'
+        self.put(self.inputs[1],raw)
+        self.manifest['entries'][1].update(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest());self.seal()
+        self.put(self.inputs[1],raw.replace(b'\r\n',b'\n'))
+    def test_explicit_newline_replay_preserves_original_bytes(self):
+        self.newline_fixture();before=(self.root/self.inputs[1]).read_bytes()
+        with self.assertRaisesRegex(ValueError,'QUERY_INPUT_SEAL_DRIFT'):self.query()
+        result=self.replay(allow_line_ending_replay=True)
+        self.assertEqual(len(result['result']['applicable_witnessed_formulations']),1)
+        self.assertEqual((self.root/self.inputs[1]).read_bytes(),before)
+        self.assertEqual(len(result['replay']['transforms']),1)
+        self.assertFalse(result['replay']['receiver_admission'])
+        self.assertTrue(result['replay']['temporary_copy_destroyed'])
+    def test_replay_requires_explicit_selection(self):
+        with self.assertRaisesRegex(ValueError,'EXPLICIT_SEALED_NEWLINE_REPLAY_REQUIRED'):self.replay()
+    def test_replay_content_edit_refused(self):
+        self.newline_fixture();self.put(self.inputs[1],b'{"subject":{"id":"ALTERED"},"scope":{}}\n')
+        with self.assertRaisesRegex(ValueError,'UNREPLAYABLE_QUERY_INPUT_DRIFT'):self.replay(allow_line_ending_replay=True)
+    def test_replay_never_transforms_executable_source(self):
+        raw=(self.root/self.inputs[0]).read_bytes();sealed=raw.replace(b'\n',b'\r\n')
+        self.manifest['entries'][0].update(bytes=len(sealed),sha256=hashlib.sha256(sealed).hexdigest());self.seal()
+        with self.assertRaisesRegex(ValueError,'QUERY_INPUT_SEAL_DRIFT'):self.replay(allow_line_ending_replay=True)
+    def test_replay_refuses_symlinked_copy_members(self):
+        (self.root/'link').symlink_to(self.root/self.inputs[1])
+        with self.assertRaisesRegex(ValueError,'SYMLINK_IN_NATIVE_SOURCE_REFUSED'):self.replay(allow_line_ending_replay=True)
+    def test_replay_refuses_nonpublic_projection(self):
+        self.manifest['projection_profile']='private';self.seal()
+        with self.assertRaisesRegex(ValueError,'PUBLIC_PROJECTION_REPLAY_ONLY'):self.replay(allow_line_ending_replay=True)
 
 if __name__=='__main__':unittest.main()

@@ -200,7 +200,8 @@ def state(source_iter):
 
 def native_dispatch(src_root,em_root,command,*,projection=None,term=None,
                     fixture=None,operation=None,snapshot=None,seal=None,
-                    identifier=None,scope=None,source_sha256=None,limit=100):
+                    identifier=None,scope=None,source_sha256=None,limit=100,
+                    allow_line_ending_replay=False):
     """Callable Universal native-method route; original SRC/Em checkouts unchanged."""
     source=Path(__file__).resolve().parent/"atelier-native-inheritance-bridge-v1.py"
     if not source.is_file() or source.is_symlink():
@@ -214,6 +215,9 @@ def native_dispatch(src_root,em_root,command,*,projection=None,term=None,
     if command=="src-projection":return module.native_projection(src,projection,term,limit)
     if command=="src-native-query":
         return module.native_src_query(src,snapshot,seal,operation,identifier,scope,source_sha256)
+    if command=="src-sealed-byte-replay":
+        return module.replay_native_src_query(src,snapshot,seal,operation,identifier,scope,
+           source_sha256,allow_line_ending_replay=allow_line_ending_replay)
     if command=="em-fixture":return module.em_fixture(em,fixture,limit)
     raise ValueError("UNSUPPORTED_NATIVE_OPERATION")
 
@@ -228,9 +232,11 @@ def main():
     q=sub.add_parser("exact");q.add_argument("phrase");q.add_argument("--limit",type=int,default=30);q.add_argument("--estate",choices=["ALL",*ESTATES],default="ALL")
     sub.add_parser("native-census")
     q=sub.add_parser("src-projection");q.add_argument("projection");q.add_argument("--term");q.add_argument("--limit",type=int,default=100)
-    q=sub.add_parser("src-native-query");q.add_argument("operation")
-    q.add_argument("--snapshot",required=True);q.add_argument("--seal",required=True)
-    q.add_argument("--query-sha256",required=True);q.add_argument("--id");q.add_argument("--scope")
+    for command in ("src-native-query","src-sealed-byte-replay"):
+        q=sub.add_parser(command);q.add_argument("operation")
+        q.add_argument("--snapshot",required=True);q.add_argument("--seal",required=True)
+        q.add_argument("--query-sha256",required=True);q.add_argument("--id");q.add_argument("--scope")
+        if command=="src-sealed-byte-replay":q.add_argument("--allow-line-ending-replay",action="store_true",required=True)
     q=sub.add_parser("em-fixture");q.add_argument("fixture");q.add_argument("--limit",type=int,default=100)
     args=a.parse_args()
     roots={"SRC":Path(args.src_checkout),"EMSTD613":Path(args.em_checkout)}
@@ -247,7 +253,8 @@ def main():
            fixture=getattr(args,"fixture",None),operation=getattr(args,"operation",None),
            snapshot=getattr(args,"snapshot",None),seal=getattr(args,"seal",None),
            identifier=getattr(args,"id",None),scope=getattr(args,"scope",None),
-           source_sha256=getattr(args,"query_sha256",None),limit=getattr(args,"limit",100))
+           source_sha256=getattr(args,"query_sha256",None),limit=getattr(args,"limit",100),
+           allow_line_ending_replay=getattr(args,"allow_line_ending_replay",False))
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
 if __name__=="__main__":
