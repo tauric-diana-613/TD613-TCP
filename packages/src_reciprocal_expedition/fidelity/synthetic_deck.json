@@ -1,0 +1,110 @@
+{
+  "schema": "td613.synthetic-method-deck/v1",
+  "projective_docs": [
+    {
+      "record_id": "1001",
+      "entity_id": "zenodo:1001",
+      "title": "Alpha Research Protocol and Methods",
+      "created": "2026-08-01T12:00:00Z",
+      "body": "Introduction. In this paper we investigate machine-readable field and dual-gradient structures. Explore Beta Exploration Series IV.2. Furthermore Explore Gamma Coordinate Anchor. Signatures are not slogans. they are coordinates."
+    },
+    {
+      "record_id": "1002",
+      "entity_id": "zenodo:1002",
+      "title": "Beta Exploration Series",
+      "created": "2026-08-05T12:00:00Z",
+      "body": "Abstract. Continuing prior work. Field becomes a graph rather than a sequence. Explore Delta Epistemic Horizon. Anchors in semantic space."
+    },
+    {
+      "record_id": "1003",
+      "entity_id": "zenodo:1003",
+      "title": "Gamma Coordinate Anchor System",
+      "created": "2026-07-20T12:00:00Z",
+      "body": "Historical foundations. Structural simulation narrative and ontological instantiation. Explore Alpha Research Protocol."
+    },
+    {
+      "record_id": "1004",
+      "entity_id": "zenodo:1004",
+      "title": "Delta Epistemic Horizon",
+      "created": "2026-08-10T12:00:00Z",
+      "body": "Final findings. Parallel channel of structural transmission. Signatures are not decoration. they are instructions."
+    },
+    {
+      "record_id": "1005",
+      "entity_id": "zenodo:1005",
+      "title": "Unrelated Noise Document",
+      "created": "2026-08-15T12:00:00Z",
+      "body": "Malformed cue test: Explore . And Explore ButNoPeriod and Explore "
+    }
+  ],
+  "tomography_cases": [
+    {
+      "case_id": "tomo_01_narrowed",
+      "transformation_id": "tr:01",
+      "source_scope": "GENERAL_SYSTEM",
+      "target_scope": "BOUNDED_SUBSYSTEM",
+      "declared_falsifiers": ["falsifier_subsystem_divergence"],
+      "observed_delta": "NARROWED"
+    },
+    {
+      "case_id": "tomo_02_expanded",
+      "transformation_id": "tr:02",
+      "source_scope": "LOCAL_NODE",
+      "target_scope": "DISTRIBUTED_FIELD",
+      "declared_falsifiers": ["falsifier_field_incoherence"],
+      "observed_delta": "EXPANDED"
+    },
+    {
+      "case_id": "tomo_03_unknown_null_score",
+      "transformation_id": "tr:03",
+      "source_scope": "UNKNOWN",
+      "target_scope": "UNKNOWN",
+      "declared_falsifiers": [],
+      "observed_delta": "UNKNOWN"
+    }
+  ],
+  "contextual_role_cases": [
+    {
+      "entity_id": "ent:alpha",
+      "compiler_pass": "compiler_pass_1",
+      "role": "COMPILER_SOURCE",
+      "scope": "INITIAL_PASS"
+    },
+    {
+      "entity_id": "ent:alpha",
+      "compiler_pass": "compiler_pass_2",
+      "role": "TRANSFORMATION_TARGET",
+      "scope": "SECONDARY_OPTIMIZATION"
+    },
+    {
+      "entity_id": "ent:beta",
+      "compiler_pass": "compiler_pass_1",
+      "role": "INVARIANT_WITNESS",
+      "scope": "INITIAL_PASS"
+    }
+  ],
+  "query_cases": [
+    {
+      "case_id": "q_epoch_valid",
+      "requested_snapshot": "src-20260824-p2-001",
+      "requested_seal": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a"
+    },
+    {
+      "case_id": "q_epoch_mismatch",
+      "requested_snapshot": "src-20260824-p2-001",
+      "requested_seal": "src-seal:wrong_seal_hash_000000000000000000000000000000000000"
+    },
+    {
+      "case_id": "q_trace_connected",
+      "start_entity": "zenodo:1001",
+      "witnessed_hops": ["zenodo:1001", "zenodo:1002", "zenodo:1004"],
+      "missing_intermediate": null
+    },
+    {
+      "case_id": "q_trace_missing_hop",
+      "start_entity": "zenodo:1001",
+      "witnessed_hops": ["zenodo:1001"],
+      "missing_intermediate": "zenodo:unadmitted_intermediate_9999"
+    }
+  ]
+}

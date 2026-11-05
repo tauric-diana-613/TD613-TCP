@@ -1,0 +1,115 @@
+{
+  "schema": "td613.differential-coverage-matrix/v1",
+  "evaluated_at": "2026-11-05T14:24:04.504Z",
+  "python_runtime": "Python 3.12.16",
+  "js_runtime": "Node.js v26.7.0",
+  "evaluations": [
+    {
+      "domain": "DOMAIN_1_PROJECTIVE_ROUTING",
+      "test_name": "13_FIELD_MARKERS_CENSUS",
+      "status": "EXACT_MATCH",
+      "details": {
+        "python_count": 9,
+        "js_count": 9,
+        "markers_evaluated": 13,
+        "all_matched": true
+      }
+    },
+    {
+      "domain": "DOMAIN_1_PROJECTIVE_ROUTING",
+      "test_name": "EXPLORE_CUE_EXTRACTION_AND_NUMERAL_STRIPPING",
+      "status": "DOCUMENTED_BEHAVIORAL_DISCREPANCY",
+      "details": {
+        "total_cues": 4,
+        "discrepancy_count": 1,
+        "discrepancies": [
+          {
+            "index": 0,
+            "python_cue": "Beta Exploration Series",
+            "python_normalized": "beta exploration series",
+            "js_cue": "Beta Exploration Series IV",
+            "js_normalized": "beta exploration series iv",
+            "reason": "Python strips trailing roman numerals/ordinals; JS raw regex preserves trailing numerals"
+          }
+        ],
+        "qualification": "Original Python projective.py explicitly normalizes trailing chapter/series numerals (IV.2 -> Series). JS candidate preserved raw capture without numeral stripping."
+      }
+    },
+    {
+      "domain": "DOMAIN_1_PROJECTIVE_ROUTING",
+      "test_name": "CANDIDATE_LINK_RESOLUTION_AND_TEMPORAL_ORDER",
+      "status": "EQUIVALENT_WITH_SCHEMA_TRANSLATION",
+      "details": {
+        "python_observation_count": 4,
+        "js_candidate_links_count": 4,
+        "temporal_relations_verified": [
+          "LATER",
+          "PREEXISTING_OR_CONTEMPORANEOUS"
+        ],
+        "schema_translation": "Python emits rich explore_observations with composite statuses (LATER_EXACT_RESOLUTION_CANDIDATE); JS candidate emits flat candidate_links with matching target and temporal classification."
+      }
+    },
+    {
+      "domain": "DOMAIN_2_PHASE2_TOMOGRAPHY",
+      "test_name": "SCOPE_DELTAS_AND_SCALAR_SCORE_REFUSAL",
+      "status": "EXACT_MATCH",
+      "details": {
+        "cases_evaluated": 3,
+        "composite_score_null_enforced": true,
+        "delta_scope_matched": true,
+        "delta_evidence_unknown_enforced": true,
+        "discrepancies": []
+      }
+    },
+    {
+      "domain": "DOMAIN_3_CONTEXTUAL_ROLES",
+      "test_name": "COMPILER_RELATIVE_ROLES_AND_INTRINSIC_PROHIBITION",
+      "status": "EXACT_MATCH",
+      "details": {
+        "assertions_evaluated": 3,
+        "multi_role_entity_preserved": true,
+        "intrinsic_role_promotion_refused": true
+      }
+    },
+    {
+      "domain": "DOMAIN_4_NATIVE_QUERY",
+      "test_name": "EPOCH_SEAL_AND_TRACE_MISSING_HOPS",
+      "status": "EXACT_MATCH",
+      "details": {
+        "cases_evaluated": 4,
+        "cross_epoch_refusal_verified": true,
+        "explicit_missing_hops_verified": true,
+        "speculative_joins_prevented": true
+      }
+    }
+  ],
+  "summary": {
+    "total_evaluations": 6,
+    "exact_matches": 4,
+    "equivalent_with_translations": 1,
+    "documented_discrepancies": 1,
+    "unresolved_discrepancies": 0
+  },
+  "key_findings": [
+    {
+      "finding_id": "FINDING_01_NUMERAL_STRIPPING",
+      "description": "Original Python extract_explore_tokens removes trailing roman numerals (e.g., \"IV.2\"), producing \"Beta Exploration Series\". JS candidate raw regex captures the entire string up to the period.",
+      "action": "Documented as first-class historical evidence. Original Python behavior is authoritative for PR #1683 pin."
+    },
+    {
+      "finding_id": "FINDING_02_SCHEMA_COMPOSITION",
+      "description": "Python explore_observations wraps candidates into typed observation objects with observation_status (e.g. LATER_EXACT_RESOLUTION_CANDIDATE); JS emits candidate_links directly.",
+      "action": "Schema translation documented and reconciled."
+    },
+    {
+      "finding_id": "FINDING_03_TOMOGRAPHY_SCALAR_REFUSAL",
+      "description": "Both Python phase2.py and JS src-native-methods.mjs strictly refuse scalar composite scores (composite_score: null) and preserve UNKNOWN deltas.",
+      "action": "Verified exact behavioral parity."
+    },
+    {
+      "finding_id": "FINDING_04_EPOCH_SEAL_CROSS_REFUSAL",
+      "description": "Both runtimes reject mismatched epoch seals with explicit typed cross-epoch refusal.",
+      "action": "Verified exact behavioral parity."
+    }
+  ]
+}
