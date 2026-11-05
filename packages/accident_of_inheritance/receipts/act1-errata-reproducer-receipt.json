@@ -1,0 +1,286 @@
+{
+  "schema": "td613.palace-act2.inherited-act1-errata-receipt/v1",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "inherited_pr": 1699,
+  "inherited_head_sha": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+  "independent_review_id": 5792614762,
+  "original_palace_files_modified": 0,
+  "original_confirmatory_96_receipt_sha256": "69f90a6c859f7e688d6bf85c741403e57dfe22802f2f87f8c32cc9f0653c3073",
+  "exact_frozen_episode_reproduction_verified": true,
+  "reproduced_episode_table_sha256": {
+    "B_TIGHT_96B": "1a6c5eb8a6ffdc18b19abed4ba7f093bb9cd69482d1df4def6eda4c1bdf13402",
+    "B_STANDARD_256B": "9c2bf8552a69af9b0607a03de31cd72a7305c27c0c9fbacd7cb8054fbf9dcd67"
+  },
+  "findings_reproduction_and_errata": {
+    "finding_1_oracle_and_unclipped_regret": {
+      "arch_c1_worlds_where_exhaustive_probe_differs_from_original_benchmark": 6,
+      "explanation": "In Family C, ARCH_C1_TRUE_DELAYED_LAG assigned PROBE_PRECURSOR_SEQUENCE (0.25*amp, shared with ARCH_C2) rather than PROBE_DELAYED_T2 (1.35*amp, unique positive lag signature), while evaluator.mjs clipped negative differences via Math.max(0, ...). Original CTRL_ORACLE is reclassified as a non-exhaustive reference benchmark in this errata; unclipped signed differences and exhaustive 16-pair (probe x intervention) upper bounds are reported below.",
+      "by_budget": {
+        "B_STANDARD_256B": {
+          "original_ctrl_oracle_family_C_mean_utility": 0.935,
+          "exhaustive_oracle_family_C_mean_utility": 0.975,
+          "heirs_family_C_mean_utility": 0.9618,
+          "conditions": {
+            "I_AMNESIACS": {
+              "original_clipped_regret_mean": 0.3686,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.3549,
+              "proportion_outperforming_original_benchmark": 0.125,
+              "count_outperforming_original_benchmark": 12,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.3776,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "II_ARCHIVISTS": {
+              "original_clipped_regret_mean": 0.1593,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.1475,
+              "proportion_outperforming_original_benchmark": 0.125,
+              "count_outperforming_original_benchmark": 12,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.1702,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "III_HEIRS": {
+              "original_clipped_regret_mean": 0.0405,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.0257,
+              "proportion_outperforming_original_benchmark": 0.125,
+              "count_outperforming_original_benchmark": 12,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.0483,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "IV_FALSE_PROPHETS": {
+              "original_clipped_regret_mean": 0.5915,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.5823,
+              "proportion_outperforming_original_benchmark": 0.0833,
+              "count_outperforming_original_benchmark": 8,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.6049,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "V_EXILES": {
+              "original_clipped_regret_mean": 0.5096,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.4953,
+              "proportion_outperforming_original_benchmark": 0.1563,
+              "count_outperforming_original_benchmark": 15,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.518,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "VI_REVISIONISTS": {
+              "original_clipped_regret_mean": 0.0645,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.0511,
+              "proportion_outperforming_original_benchmark": 0.1146,
+              "count_outperforming_original_benchmark": 11,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.0738,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "CTRL_RANDOM": {
+              "original_clipped_regret_mean": 0.7185,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.7185,
+              "proportion_outperforming_original_benchmark": 0,
+              "count_outperforming_original_benchmark": 0,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.7411,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            }
+          }
+        },
+        "B_TIGHT_96B": {
+          "original_ctrl_oracle_family_C_mean_utility": 0.935,
+          "exhaustive_oracle_family_C_mean_utility": 0.975,
+          "heirs_family_C_mean_utility": 0.9577,
+          "conditions": {
+            "I_AMNESIACS": {
+              "original_clipped_regret_mean": 0.3686,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.3549,
+              "proportion_outperforming_original_benchmark": 0.125,
+              "count_outperforming_original_benchmark": 12,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.3776,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "II_ARCHIVISTS": {
+              "original_clipped_regret_mean": 0.1593,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.1475,
+              "proportion_outperforming_original_benchmark": 0.125,
+              "count_outperforming_original_benchmark": 12,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.1702,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "III_HEIRS": {
+              "original_clipped_regret_mean": 0.0685,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.0545,
+              "proportion_outperforming_original_benchmark": 0.1354,
+              "count_outperforming_original_benchmark": 13,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.0771,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "IV_FALSE_PROPHETS": {
+              "original_clipped_regret_mean": 0.5915,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.5823,
+              "proportion_outperforming_original_benchmark": 0.0833,
+              "count_outperforming_original_benchmark": 8,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.6049,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "V_EXILES": {
+              "original_clipped_regret_mean": 0.5096,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.4953,
+              "proportion_outperforming_original_benchmark": 0.1563,
+              "count_outperforming_original_benchmark": 15,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.518,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "VI_REVISIONISTS": {
+              "original_clipped_regret_mean": 0.1357,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.1245,
+              "proportion_outperforming_original_benchmark": 0.0833,
+              "count_outperforming_original_benchmark": 8,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.1471,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            },
+            "CTRL_RANDOM": {
+              "original_clipped_regret_mean": 0.7274,
+              "unclipped_signed_diff_vs_original_benchmark_mean": 0.7274,
+              "proportion_outperforming_original_benchmark": 0,
+              "count_outperforming_original_benchmark": 0,
+              "unclipped_signed_regret_vs_exhaustive_oracle_mean": 0.75,
+              "proportion_outperforming_exhaustive_oracle": 0,
+              "count_outperforming_exhaustive_oracle": 0
+            }
+          }
+        }
+      }
+    },
+    "finding_2_confirmatory_freeze_scope": {
+      "pre_holdout_lock_commit": "24b57b1b2d0b69ccaf94bdcea9c4a8e7ef73247c",
+      "final_act1_commit": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+      "locked_artifacts_count": 8,
+      "files_added_or_modified_after_lock": [
+        "A\tpackages/palace_of_unborn_futures/README.md",
+        "A\tpackages/palace_of_unborn_futures/docs/05B_CONFIRMATORY_RESULTS_REPORT.md",
+        "A\tpackages/palace_of_unborn_futures/docs/06_COMPRESSION_AND_DISCLOSURE_RISK_REPORT.md",
+        "A\tpackages/palace_of_unborn_futures/docs/07_ONTOLOGY_RUPTURE_FALSIFICATION_DOSSIER.md",
+        "A\tpackages/palace_of_unborn_futures/docs/08_NEGATIVE_RESULTS_AND_UNRESOLVED_REGISTER.md",
+        "A\tpackages/palace_of_unborn_futures/docs/09_THE_PALACE_OF_UNBORN_FUTURES_PAPER.md",
+        "A\tpackages/palace_of_unborn_futures/docs/10_OPERATOR_DECISION_PACKET.md",
+        "A\tpackages/palace_of_unborn_futures/receipts/adversarial-challenges-receipt.json",
+        "A\tpackages/palace_of_unborn_futures/receipts/confirmatory-96-receipt.json",
+        "A\tpackages/palace_of_unborn_futures/receipts/dollhouse-audit-receipt-palace.json",
+        "A\tpackages/palace_of_unborn_futures/receipts/dollhouse-audit-spec-palace.json",
+        "A\tpackages/palace_of_unborn_futures/receipts/forbidden-wing-receipt.json",
+        "A\tpackages/palace_of_unborn_futures/receipts/privacy-disclosure-receipt.json",
+        "A\tpackages/palace_of_unborn_futures/scripts/run-confirmatory-96.mjs",
+        "A\tpackages/palace_of_unborn_futures/scripts/run-dollhouse-audit-palace.mjs",
+        "A\tpackages/palace_of_unborn_futures/scripts/run-forbidden-wing-and-challenges.mjs",
+        "A\tpackages/palace_of_unborn_futures/tests/test-palace-of-unborn-futures.mjs"
+      ],
+      "act2_remediation": "In Act II, 100% of confirmatory orchestration, statistical inference, and reporting scripts (including run-confirmatory-192.mjs) are committed and SHA-256 locked BEFORE generating or scoring the confirmatory 192-world suite."
+    },
+    "finding_3_policy_generator_codesign": {
+      "pilot_48_strong_epoch0_drift_rate": 0.5833,
+      "confirmatory_96_strong_epoch0_drift_rate": 0.7083,
+      "act2_remediation": "Act II eliminates supervised hidden-label capsule training from primary policies, holds permissible historical bytes identical across all four primary authority policies, counterbalances founder validity across regimes, and evaluates an explicit empirical-calibration policy (EVIDENTIALISTS) on equalized budgets."
+    },
+    "finding_4_test_assertion_gap": {
+      "total_worlds_checked": 144,
+      "legacy_undefined_digest_property_count": 144,
+      "verified_64hex_projection_digest_equality_count": 144,
+      "explanation": "Act I test line 89 compared donor.terminal_graph_pi.digest === w.terminal_graph_pi.digest (both undefined), though world-generator.mjs line 1192 independently enforced projection_digest equality. All 144 Pilot+Confirmatory worlds are verified here to carry valid 64-hex matching projection_digest values."
+    },
+    "finding_5_immutability_and_vault_instrumentation": {
+      "recomputed_history_sha256_exact_matches": "144/144",
+      "act2_remediation": "Act II wraps every world secret in an InstrumentedSecretVault JavaScript Proxy that dynamically counts and Stack-authorizes every property access, and recomputes full SHA-256(JSON.stringify(...)) before and after every policy step."
+    },
+    "finding_6_temporal_non_retroactivity": {
+      "pilot_48_records_with_obs_after_adm": 6,
+      "confirmatory_96_records_with_obs_after_adm": 10,
+      "explanation": "Act I C4 clock-inverted records set timestamp_obs=2024-03-09 after timestamp_adm=2024-03-06 without separating physical event time from delayed observation vs retrospective amendment.",
+      "act2_remediation": "Act II enforces an explicit 8-coordinate temporal lattice (t_event <= t_observed <= t_admitted <= t_available, t_decision <= t_action, t_contradiction, t_correction) with fail-closed runtime assertions on every record and decision."
+    },
+    "finding_7_monte_carlo_inference_and_ontology_ceiling": {
+      "mc_signflip_draws": 4096,
+      "minimum_nonzero_phipson_smyth_bound": 0.0002,
+      "corrected_256B_contrasts": {
+        "delta_U_H_archivists_minus_amnesiacs": {
+          "original_reported_p": 0,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.000244,
+          "zero_p_value_prohibited_note": "Zero observed exceedances in 4096 Monte Carlo draws support p <= 1/4097 (0.000244), never p = 0."
+        },
+        "delta_U_Z_heirs_minus_amnesiacs": {
+          "original_reported_p": 0,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.000244,
+          "zero_p_value_prohibited_note": "Zero observed exceedances in 4096 Monte Carlo draws support p <= 1/4097 (0.000244), never p = 0."
+        },
+        "heirs_minus_archivists_noninferiority": {
+          "original_reported_p": 0,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.000244,
+          "zero_p_value_prohibited_note": "Zero observed exceedances in 4096 Monte Carlo draws support p <= 1/4097 (0.000244), never p = 0."
+        },
+        "false_prophets_minus_amnesiacs": {
+          "original_reported_p": 0,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.000244,
+          "zero_p_value_prohibited_note": "Zero observed exceedances in 4096 Monte Carlo draws support p <= 1/4097 (0.000244), never p = 0."
+        },
+        "exiles_minus_amnesiacs": {
+          "original_reported_p": 0.0046,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.004882,
+          "zero_p_value_prohibited_note": "Non-zero empirical exceedance count."
+        },
+        "exiles_minus_false_prophets_utility": {
+          "original_reported_p": 0.1328,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.133024,
+          "zero_p_value_prohibited_note": "Non-zero empirical exceedance count."
+        },
+        "exiles_minus_false_prophets_brier_error": {
+          "original_reported_p": 0.439,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.439102,
+          "zero_p_value_prohibited_note": "Non-zero empirical exceedance count."
+        },
+        "revisionists_minus_archivists": {
+          "original_reported_p": 0.0039,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.004149,
+          "zero_p_value_prohibited_note": "Non-zero empirical exceedance count."
+        },
+        "revisionists_minus_amnesiacs": {
+          "original_reported_p": 0,
+          "n_quartet_clusters": 24,
+          "mc_draws": 4096,
+          "phipson_smyth_upper_bound_p": 0.000244,
+          "zero_p_value_prohibited_note": "Zero observed exceedances in 4096 Monte Carlo draws support p <= 1/4097 (0.000244), never p = 0."
+        }
+      },
+      "ontology_claim_ceiling": "Act I Family D results remain strictly scoped to bounded predicate induction within the pre-specified COMPOSITE_MOD3 / PATH_HOLONOMY_LATCH grammar, never open-ended ontological invention."
+    },
+    "finding_8_dollhouse_audit_cleanliness_and_holds": {
+      "act1_worktree_cleanliness_verified": false,
+      "act1_nested_holds": [
+        "APERTURE::classification_replay_stability=HELD_NOT_YET_WITNESSED"
+      ],
+      "act2_remediation": "Act II executes /dollhouse-audit only after committing all executable scripts and manuscripts in a clean working tree, and explicitly carries forward nested specialist holds without conflating role unanimity with empirical replication."
+    }
+  }
+}

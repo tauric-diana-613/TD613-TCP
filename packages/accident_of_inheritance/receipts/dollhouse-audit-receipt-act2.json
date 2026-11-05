@@ -1,0 +1,539 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793921396542-47acdc12",
+  "timestamp": "2026-11-05T23:29:56.542Z",
+  "source_revision": "5271c3fc729d0846a8da17e17278253a8e0ee768",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "5271c3fc729d0846a8da17e17278253a8e0ee768",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "5271c3fc729d0846a8da17e17278253a8e0ee768",
+    "audit_execution_revision": "5271c3fc729d0846a8da17e17278253a8e0ee768",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
+  "is_historical_commit_only": false,
+  "task_scope": "ACCIDENT_OF_INHERITANCE_ACT2_POSTFLIGHT_AUDIT",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/accident_of_inheritance/preregistration/preregistration-manifest-act2-v1.json",
+    "packages/accident_of_inheritance/preregistration/frozen-confirmatory-lock-act2.json",
+    "packages/accident_of_inheritance/schemas/temporal-and-authority-schemas.json",
+    "packages/accident_of_inheritance/src/temporal-lattice.mjs",
+    "packages/accident_of_inheritance/src/world-generator.mjs",
+    "packages/accident_of_inheritance/src/authority-policies.mjs",
+    "packages/accident_of_inheritance/src/evaluator-and-stats.mjs",
+    "packages/accident_of_inheritance/src/source-standing-factorial.mjs",
+    "packages/accident_of_inheritance/src/dead-civilization-wing.mjs",
+    "packages/accident_of_inheritance/src/adversarial-counterexamples.mjs",
+    "packages/accident_of_inheritance/scripts/run-confirmatory-192.mjs",
+    "packages/accident_of_inheritance/receipts/pilot-48-receipt.json",
+    "packages/accident_of_inheritance/receipts/confirmatory-192-receipt.json",
+    "packages/accident_of_inheritance/receipts/source-standing-factorial-receipt.json",
+    "packages/accident_of_inheritance/receipts/dead-civilization-wing-receipt.json",
+    "packages/accident_of_inheritance/receipts/adversarial-counterexamples-receipt.json",
+    "packages/accident_of_inheritance/receipts/act1-errata-reproducer-receipt.json",
+    "packages/accident_of_inheritance/docs/00_INHERITED_PALACE_ACT1_ERRATA_AND_REVIEW_AUDIT.md",
+    "packages/accident_of_inheritance/docs/07_CONFIRMATORY_RESULTS_AND_RESPONSE_SURFACES.md",
+    "packages/accident_of_inheritance/docs/10_ADVERSARIAL_COUNTEREXAMPLES_AND_NEGATIVE_REGISTER.md",
+    "packages/accident_of_inheritance/docs/11_THE_ACCIDENT_OF_INHERITANCE_MANUSCRIPT.md",
+    "packages/accident_of_inheritance/tests/test-accident-of-inheritance.mjs"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "packages/accident_of_inheritance/preregistration/preregistration-manifest-act2-v1.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "121e5db73b70c94b3a05d6aeb643422770bc4ce04ca03ebe880efe65432db970",
+      "byte_digest_verified": true,
+      "sha256": "121e5db73b70c94b3a05d6aeb643422770bc4ce04ca03ebe880efe65432db970"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/preregistration/frozen-confirmatory-lock-act2.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "a6a0490bf2da02fd42a5233f9e712c9669d25c859eeb1fec21fb98032b0016ad",
+      "byte_digest_verified": true,
+      "sha256": "a6a0490bf2da02fd42a5233f9e712c9669d25c859eeb1fec21fb98032b0016ad"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/schemas/temporal-and-authority-schemas.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c165fb5f0d7b2fed9fd7c1d9404d6d8e4e055d1c379745d9fb58f6133559af3e",
+      "byte_digest_verified": true,
+      "sha256": "c165fb5f0d7b2fed9fd7c1d9404d6d8e4e055d1c379745d9fb58f6133559af3e"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/temporal-lattice.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "a1ef75cf50497d0a8e157a52273993a811015749c39fb72413b62c98a4d95e9f",
+      "byte_digest_verified": true,
+      "sha256": "a1ef75cf50497d0a8e157a52273993a811015749c39fb72413b62c98a4d95e9f"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/world-generator.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1ee674b4f25c55d2e94ac2ca74fe1c43a46776d43403096bb8cc3d913319e449",
+      "byte_digest_verified": true,
+      "sha256": "1ee674b4f25c55d2e94ac2ca74fe1c43a46776d43403096bb8cc3d913319e449"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/authority-policies.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "708ae093cf11512aefbe62b3f1379d15b60bc1ce6ddf5a82c1aad9d1e386b247",
+      "byte_digest_verified": true,
+      "sha256": "708ae093cf11512aefbe62b3f1379d15b60bc1ce6ddf5a82c1aad9d1e386b247"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/evaluator-and-stats.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "37a16ebac067b050ca6a2d13459d307a6dbba5b33db289c5b073a391b6260df1",
+      "byte_digest_verified": true,
+      "sha256": "37a16ebac067b050ca6a2d13459d307a6dbba5b33db289c5b073a391b6260df1"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/source-standing-factorial.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6adff7e04075ec5919c3fe3f2d1a7ed64c2e8322f47b003945bb595bf9729406",
+      "byte_digest_verified": true,
+      "sha256": "6adff7e04075ec5919c3fe3f2d1a7ed64c2e8322f47b003945bb595bf9729406"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/dead-civilization-wing.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "836c995f44c5acef288f960fbb2b9304a24ca48e888eb4d6a7417a44c01c2214",
+      "byte_digest_verified": true,
+      "sha256": "836c995f44c5acef288f960fbb2b9304a24ca48e888eb4d6a7417a44c01c2214"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/src/adversarial-counterexamples.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "2d1296320a63ce341dd543a9c4f38d98ce47d3ce36848fdae05893eed69547a7",
+      "byte_digest_verified": true,
+      "sha256": "2d1296320a63ce341dd543a9c4f38d98ce47d3ce36848fdae05893eed69547a7"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/scripts/run-confirmatory-192.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "d6085ec9a03fd5f679ab0521130ff3faf3da9d9e66da85d6fe7388382d30735d",
+      "byte_digest_verified": true,
+      "sha256": "d6085ec9a03fd5f679ab0521130ff3faf3da9d9e66da85d6fe7388382d30735d"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/pilot-48-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "bcd802390767a35a9dafad0dc438756db0a74733a71bc169099cd455fea93be3",
+      "byte_digest_verified": true,
+      "sha256": "bcd802390767a35a9dafad0dc438756db0a74733a71bc169099cd455fea93be3"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/confirmatory-192-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "ddf6d59aa584a321254b737dcbf0af064ed03bd1d01b710a67ba95dd6f821ad3",
+      "byte_digest_verified": true,
+      "sha256": "ddf6d59aa584a321254b737dcbf0af064ed03bd1d01b710a67ba95dd6f821ad3"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/source-standing-factorial-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "7e376d524802912339e3ea07d5d5c50b3c24d40fd619008711cb70981d4ba6c8",
+      "byte_digest_verified": true,
+      "sha256": "7e376d524802912339e3ea07d5d5c50b3c24d40fd619008711cb70981d4ba6c8"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/dead-civilization-wing-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3f7f1c09de1cab9b0ff6239bf8d44ee6c824e7669f2101fa8d72a7d84e579bd6",
+      "byte_digest_verified": true,
+      "sha256": "3f7f1c09de1cab9b0ff6239bf8d44ee6c824e7669f2101fa8d72a7d84e579bd6"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/adversarial-counterexamples-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "4f7f042f04400d60f613ba11ff9db60c3b0a0be6f6dfa1a8b2b1a1cc177f4997",
+      "byte_digest_verified": true,
+      "sha256": "4f7f042f04400d60f613ba11ff9db60c3b0a0be6f6dfa1a8b2b1a1cc177f4997"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/receipts/act1-errata-reproducer-receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6d123c9c37ee6a8f9554286a0d06efe0eb18a0bc648cad85ee765746fb9e0117",
+      "byte_digest_verified": true,
+      "sha256": "6d123c9c37ee6a8f9554286a0d06efe0eb18a0bc648cad85ee765746fb9e0117"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/docs/00_INHERITED_PALACE_ACT1_ERRATA_AND_REVIEW_AUDIT.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "76a783e2ee9cc6f61931428834626b775d3308c5f93a97dd277590d395b84e07",
+      "byte_digest_verified": true,
+      "sha256": "76a783e2ee9cc6f61931428834626b775d3308c5f93a97dd277590d395b84e07"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/docs/07_CONFIRMATORY_RESULTS_AND_RESPONSE_SURFACES.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6af6f1319870bb1eb40b45d653659247ae31d8a9647e5051e5808affd94906f5",
+      "byte_digest_verified": true,
+      "sha256": "6af6f1319870bb1eb40b45d653659247ae31d8a9647e5051e5808affd94906f5"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/docs/10_ADVERSARIAL_COUNTEREXAMPLES_AND_NEGATIVE_REGISTER.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "9d20fc8d6a295d1cf15ab472e25811e7eb9700e7abf434642d762ef00f2a15dd",
+      "byte_digest_verified": true,
+      "sha256": "9d20fc8d6a295d1cf15ab472e25811e7eb9700e7abf434642d762ef00f2a15dd"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/docs/11_THE_ACCIDENT_OF_INHERITANCE_MANUSCRIPT.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "47b62e9f12fe0195aa65983ce8401da8c65af7b2daa76dd2a806dfd82a7924be",
+      "byte_digest_verified": true,
+      "sha256": "47b62e9f12fe0195aa65983ce8401da8c65af7b2daa76dd2a806dfd82a7924be"
+    },
+    {
+      "reference": "packages/accident_of_inheritance/tests/test-accident-of-inheritance.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6d9758118ccf5ab80dbf29c8ad1e460e3ddc1c2159468faf14020507f90aed37",
+      "byte_digest_verified": true,
+      "sha256": "6d9758118ccf5ab80dbf29c8ad1e460e3ddc1c2159468faf14020507f90aed37"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": false,
+            "exit_required": false,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 10,
+            "ACT": 20,
+            "WORLD_ANSWERS": 30,
+            "NAME": 40
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "dollhouse-pedagogue-cadence-audit",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 10,
+              "ACT": 20,
+              "WORLD_ANSWERS": 30,
+              "NAME": 40
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": false,
+              "exit_required": false,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 2,
+            "current_rank": 2,
+            "sigma_min": 1.18,
+            "condition_number": 1.1864406779661016,
+            "uncertainty_status": "VALID_DECLARED",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL"
+          },
+          "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "disposition": "ASK_NOTHING",
+          "admissible_question_criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+          "reason": "declared local rank and stability posture is presently satisfied",
+          "pedagogue_companion_cue": "PEDAGOGUE_SHOULD_NOT_MANUFACTURE_A_QUESTION",
+          "candidate_probe_evaluation": null,
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+          "endpoint_b": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 0,
+          "winding_delta": 0,
+          "history_parity_equal": true,
+          "modulo_2_parity_equal": true,
+          "disposition": "PASS",
+          "reason": "endpoints and winding histories match exactly",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 2,
+          "union_support": [
+            "ABSTAIN_IF_NULLSPACE",
+            "CONSEQUENTIAL_INTERVENE",
+            "PROBE_SELECT"
+          ],
+          "union_cardinality": 3,
+          "intersection_support": [
+            "ABSTAIN_IF_NULLSPACE",
+            "CONSEQUENTIAL_INTERVENE",
+            "PROBE_SELECT"
+          ],
+          "intersection_cardinality": 3,
+          "irreducible_gap": [],
+          "irreducible_gap_cardinality": 0,
+          "exact_descent_exists": true,
+          "universally_sound_available": true,
+          "disposition": "EXACT_DESCENT",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "DOLLHOUSE_DESIGN_QUALIFICATION": "PASS",
+            "PILOT_48_CALIBRATION": "PASS",
+            "FROZEN_CONFIRMATORY_LOCK_8EA7727A5": "PASS",
+            "CONFIRMATORY_192_EVALUATION": "PASS",
+            "ADVERSARIAL_12_OF_12_AND_RESERVED_CLOSURE": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "SUPPORTED",
+    "consensus": "UNANIMOUS_SUPPORT",
+    "primary_verdicts_consensus": "UNANIMOUS_SUPPORT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [],
+  "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
+  "execution_duration_ms": 715
+}
