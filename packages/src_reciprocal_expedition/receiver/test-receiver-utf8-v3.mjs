@@ -78,6 +78,22 @@ const binaryAdmission = r.admitSource({
 assert(binaryAdmission.admitted === true, 'Admitted arbitrary binary data when is_byte_evidence=true');
 assert(binaryAdmission.evidence_class === 'BYTE_EVIDENCE', 'Classified binary data as BYTE_EVIDENCE');
 
+// S21-F06: Retrieve exact binary byte span without forcing UTF-8 code point decoding
+const binSpan = r.retrieveByByteSpan('src:valid_binary_blob', 0, 2, 'raw');
+assert(binSpan.evidence_class === 'BYTE_EVIDENCE', 'Retrieved byte slice classified as BYTE_EVIDENCE');
+assert(binSpan.span_text === null, 'Text decoding refused for BYTE_EVIDENCE span (span_text is null)');
+assert(binSpan.raw_bytes_slice.equals(Buffer.from([0x80, 0x81])), 'Exact raw binary bytes roundtrip losslessly');
+assert(binSpan.span_bytes_sha256 === sha256(Buffer.from([0x80, 0x81])), 'Cryptographic digest of binary span verified');
+
+// Attempting normalized text retrieval on BYTE_EVIDENCE is refused
+let threwNormBin = false;
+try {
+  r.retrieveByByteSpan('src:valid_binary_blob', 0, 2, 'normalized');
+} catch (err) {
+  threwNormBin = err.code === 'NO_NORMALIZED_BODY';
+}
+assert(threwNormBin, 'Refused normalized text retrieval on BYTE_EVIDENCE with NO_NORMALIZED_BODY');
+
 // -------------------------------------------------------------
 // TEST 2: Valid UTF-8 Multilingual & Covenant Preservation
 // -------------------------------------------------------------
