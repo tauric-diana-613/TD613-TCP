@@ -60,6 +60,21 @@ export function computeEmpiricalMutualInformationBits(xs, ys) {
 }
 
 /**
+ * Computes Miller-Madow finite-sample bias-corrected Mutual Information in bits:
+ *   I_MM(X; Y) = max(0, I_plugin(X; Y) - ((|X_obs| - 1)(|Y_obs| - 1)) / (2 * N * ln 2))
+ * Prevents high-cardinality random hashes (e.g. F8_ADMIN_DIGEST) from receiving spurious
+ * finite-sample MI on small pilot calibration splits (N = 12 per family / 48 total).
+ */
+export function computeMillerMadowMutualInformationBits(xs, ys) {
+  if (xs.length !== ys.length || xs.length === 0) return 0;
+  const rawMi = computeEmpiricalMutualInformationBits(xs, ys);
+  const kx = new Set(xs.map(String)).size;
+  const ky = new Set(ys.map(String)).size;
+  const mmPenaltyBits = ((kx - 1) * (ky - 1)) / (2 * xs.length * Math.LN2);
+  return Math.max(0, rawMi - mmPenaltyBits);
+}
+
+/**
  * Extracts raw candidate feature atoms from a permissible history array H (without secret access).
  */
 export function extractCandidateHistoryAtoms(historyRecords) {
@@ -153,52 +168,75 @@ export function trainCapsuleCodecOnPilot(pilotPublicWorlds, pilotSecretVaultMap,
 
   const atomDiagnostics = {};
 
+  const families = ['A_CAUSAL_LOOKALIKES', 'B_HIGHER_ORDER_RELATIONS', 'C_TEMPORAL_INHERITANCE', 'D_IMPOSSIBLE_LIBRARY'];
+  const slotIndexedAtoms = new Set(['F1_CAL_COARSE', 'F2_CAL_EXACT', 'F6_EPOCH0_DRIFT']);
+
   for (const atomId of atomIds) {
-    // Compute average family-conditional MI with true mechanism archetype/slot
+    // Compute family-averaged Miller-Madow bias-corrected MI with the 4-class true mechanism target
     let familyMiSum = 0;
-    const families = ['A_CAUSAL_LOOKALIKES', 'B_HIGHER_ORDER_RELATIONS', 'C_TEMPORAL_INHERITANCE', 'D_IMPOSSIBLE_LIBRARY'];
+    let rawPluginMiSum = 0;
     for (const fam of families) {
       const sub = extractedPerWorld.filter(x => x.family === fam);
       const bins = sub.map(x => x.atoms[atomId].discreteBin);
-      const targets = sub.map(x => `${x.secret.true_mechanism_slot}:${x.secret.true_mechanism_archetype}`);
-      familyMiSum += computeEmpiricalMutualInformationBits(bins, targets);
+      const targets = slotIndexedAtoms.has(atomId)
+        ? sub.map(x => x.secret.true_mechanism_slot)
+        : sub.map(x => x.secret.true_mechanism_archetype);
+      rawPluginMiSum += computeEmpiricalMutualInformationBits(bins, targets);
+      familyMiSum += computeMillerMadowMutualInformationBits(bins, targets);
     }
+    const rawPluginMiBits = round2(rawPluginMiSum / families.length);
     const taskMiBits = round2(familyMiSum / families.length);
 
-    // Compute empirical directional accuracy / anti-drift alignment for slot-pointing features
+    // Compute empirical directional alignment on PILOT_48 (penalizes misleading anti-correlated drift!)
     let directionalGain = 0;
     if (atomId === 'F1_CAL_COARSE' || atomId === 'F2_CAL_EXACT') {
       let hits = 0;
+      let marginSum = 0;
       for (const x of extractedPerWorld) {
         const trueIdx = Number(x.secret.true_mechanism_slot.replace('M_SLOT_', ''));
         const vec = x.atoms[atomId].value;
         const maxVal = Math.max(...vec);
-        if (vec[trueIdx] === maxVal) hits += (atomId === 'F2_CAL_EXACT' ? 1.15 : 0.85);
+        const tieCount = vec.filter(v => v === maxVal).length;
+        if (vec[trueIdx] === maxVal) hits += 1 / tieCount;
+        const meanOthers = (vec.reduce((a, b) => a + b, 0) - vec[trueIdx]) / 3;
+        marginSum += Math.max(-1, Math.min(1.5, (vec[trueIdx] - meanOthers) * 0.35));
       }
-      directionalGain = round2(hits / extractedPerWorld.length);
+      const hitLift = (hits / extractedPerWorld.length) - 0.25;
+      const marginAvg = marginSum / extractedPerWorld.length;
+      directionalGain = round2(hitLift + 0.55 * marginAvg);
     } else if (atomId === 'F6_EPOCH0_DRIFT') {
-      // Measure whether epoch_0 endorsement helps or actively misleads relative to uniform (0.25)
       let hits = 0;
       for (const x of extractedPerWorld) {
         const trueIdx = Number(x.secret.true_mechanism_slot.replace('M_SLOT_', ''));
         if (x.atoms.F6_EPOCH0_DRIFT.value === trueIdx) hits += 1;
       }
       const hitRate = hits / extractedPerWorld.length;
-      directionalGain = round2(hitRate - 0.35); // negative when drifted below calibrated reliability!
-    } else if (atomId === 'F5_RES_FULL') {
-      directionalGain = 0.65; // continuous variance separates D1, D2, D3, D4 cleanly on pilot
-    } else if (atomId === 'F4_RES_COARSE') {
-      directionalGain = 0.25;
+      // Relative to uniform 0.25 + 1*SE(N=48) = 0.3125 threshold: negative/zero when founder drift misleads!
+      directionalGain = round2(hitRate - 0.32);
     } else if (atomId === 'F3_TEMP_LEDGER') {
-      directionalGain = 0.45;
+      const famC = extractedPerWorld.filter(x => x.family === 'C_TEMPORAL_INHERITANCE');
+      const cMi = computeMillerMadowMutualInformationBits(
+        famC.map(x => x.atoms.F3_TEMP_LEDGER.discreteBin),
+        famC.map(x => x.secret.true_mechanism_archetype)
+      );
+      directionalGain = round2(0.45 * cMi);
+    } else if (atomId === 'F4_RES_COARSE' || atomId === 'F5_RES_FULL') {
+      const famBD = extractedPerWorld.filter(
+        x => x.family === 'B_HIGHER_ORDER_RELATIONS' || x.family === 'D_IMPOSSIBLE_LIBRARY'
+      );
+      const bdMi = computeMillerMadowMutualInformationBits(
+        famBD.map(x => x.atoms[atomId].discreteBin),
+        famBD.map(x => x.secret.true_mechanism_archetype)
+      );
+      directionalGain = round2((atomId === 'F5_RES_FULL' ? 0.55 : 0.42) * bdMi);
     }
 
-    // Privacy leakage MI against true_sensitive_attribute_S
+    // Privacy leakage MI (Miller-Madow corrected + raw observable check) against true_sensitive_attribute_S
     const allBins = extractedPerWorld.map(x => x.atoms[atomId].discreteBin);
     const allS = extractedPerWorld.map(x => x.secret.true_sensitive_attribute_S);
-    const privacyMiBits = round2(computeEmpiricalMutualInformationBits(allBins, allS));
+    const privacyMiBits = round2(computeMillerMadowMutualInformationBits(allBins, allS));
 
-    // Worst-case JSON fragment byte cost across pilot + safety pad (+4 bytes for longer confirmatory IDs)
+    // Worst-case JSON fragment byte cost across pilot
     let maxFragmentBytes = 0;
     for (const x of extractedPerWorld) {
       const frag = `"${x.atoms[atomId].key}":${JSON.stringify(x.atoms[atomId].value)},`;
@@ -212,21 +250,23 @@ export function trainCapsuleCodecOnPilot(pilotPublicWorlds, pilotSecretVaultMap,
       atom_id: atomId,
       group: extractedPerWorld[0].atoms[atomId].group,
       key: extractedPerWorld[0].atoms[atomId].key,
+      pilot_raw_plugin_mi_bits: rawPluginMiBits,
       pilot_task_mi_bits: taskMiBits,
       pilot_directional_gain: directionalGain,
       pilot_privacy_mi_bits: privacyMiBits,
       net_bottleneck_score: netObjective,
+      eligible_positive_alignment: directionalGain > 0.06 && netObjective > 0.12,
       worst_case_fragment_bytes: maxFragmentBytes,
     };
   }
 
-  // Solve exact 0-1 subset selection over positive-utility atoms for each budget tier
+  // Solve exact 0-1 subset selection over eligible positive-utility atoms for each budget tier
   const selectedByBudget = {};
   const baseEnvelopeWorstBytes = Buffer.byteLength('{"s":"td613.z1","w":"CONFIRMATORY_96_D_Q99_W3"}', 'utf8') + 2;
 
   for (const [budgetName, budgetBytes] of Object.entries(MEMORY_BUDGETS)) {
     const availPayloadBytes = budgetBytes - baseEnvelopeWorstBytes;
-    const positiveAtoms = atomIds.filter(id => atomDiagnostics[id].net_bottleneck_score > 0.08);
+    const positiveAtoms = atomIds.filter(id => atomDiagnostics[id].eligible_positive_alignment);
 
     let bestSubset = [];
     let bestScore = -Infinity;

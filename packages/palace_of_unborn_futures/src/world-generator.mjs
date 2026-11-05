@@ -290,8 +290,8 @@ function buildWorldMechanics({
   const sStyle = SENSITIVE_STYLES[sensitiveS];
 
   // Whether early epoch_0 uncalibrated instrument had strong confounding baseline drift
-  // (~58% of worlds experience strong early calibration drift + founder anchoring)
-  const hasStrongEpoch0Drift = wRng.nextFloat() < 0.58;
+  // (~66% of worlds experience strong early calibration drift + founder anchoring)
+  const hasStrongEpoch0Drift = wRng.nextFloat() < 0.66;
   const wrongSlotChoices = [0, 1, 2, 3].filter(s => s !== trueSlot);
   const driftAnchoredSlotId = `M_SLOT_${wRng.choice(wrongSlotChoices)}`;
 
@@ -307,7 +307,7 @@ function buildWorldMechanics({
 
   if (family === 'A_CAUSAL_LOOKALIKES') {
     const gain = round3(quartetSharedParams.gain); // ~1.0
-    const noiseSd = 0.11;
+    const noiseSd = 0.25;
     structuralParams = { gain, noise_sd: noiseSd, suppressor_gain: round3(1.85 * gain) };
 
     probeMenu = [
@@ -397,7 +397,7 @@ function buildWorldMechanics({
     }
   } else if (family === 'B_HIGHER_ORDER_RELATIONS') {
     const pIdx = quartetSharedParams.parityPerm; // permutation of [0,1,2]
-    const noiseSd = 0.10;
+    const noiseSd = 0.24;
     structuralParams = { parity_perm: pIdx, noise_sd: noiseSd };
 
     probeMenu = [
@@ -467,7 +467,7 @@ function buildWorldMechanics({
     }
   } else if (family === 'C_TEMPORAL_INHERITANCE') {
     const amp = round3(quartetSharedParams.amp);
-    const noiseSd = 0.11;
+    const noiseSd = 0.26;
     structuralParams = { amp, noise_sd: noiseSd };
 
     probeMenu = [
@@ -558,7 +558,7 @@ function buildWorldMechanics({
     const modTarget = quartetSharedParams.modTarget; // 0, 1, or 2
     const noisyCoord = quartetSharedParams.noisyCoord; // 0, 1, or 2
     const extTheta = wRng.nextInt(0, 2); // hidden exterior bit for D3 (unidentifiable!)
-    const noiseSd = 0.08;
+    const noiseSd = 0.20;
 
     identifiable = archetype !== 'ARCH_D3_UNIDENTIFIABLE_EXTERIOR';
     structuralParams = {
@@ -597,7 +597,7 @@ function buildWorldMechanics({
       ARCH_D2_HYSTERETIC_HOLONOMY: {
         kind: 'RUPTURE_MISSING_PATH_HOLONOMY',
         expected_probes: {
-          PROBE_MODULAR_CELLS: 0.35,
+          PROBE_MODULAR_CELLS: 0.55,
           PROBE_HYSTERESIS_LOOP: 1.0,
           PROBE_REPEATABILITY_CHECK: 0.04,
           PROBE_EXTERIOR_APERTURE: 0.5,
@@ -607,7 +607,7 @@ function buildWorldMechanics({
       ARCH_D3_UNIDENTIFIABLE_EXTERIOR: {
         kind: 'UNIDENTIFIABLE_EXTERIOR_NULLSPACE',
         expected_probes: {
-          PROBE_MODULAR_CELLS: 0.0,
+          PROBE_MODULAR_CELLS: 0.24, // interior coordinates overlap D4 unless exterior aperture is tested
           PROBE_HYSTERESIS_LOOP: 0.0,
           PROBE_REPEATABILITY_CHECK: 0.04,
           PROBE_EXTERIOR_APERTURE: -1.0, // sentinel rank-deficit nullspace return
@@ -617,7 +617,7 @@ function buildWorldMechanics({
       ARCH_D4_COMPLETE_NOISY_ONTOLOGY: {
         kind: 'COMPLETE_ONTOLOGY_HIGH_NOISE',
         expected_probes: {
-          PROBE_MODULAR_CELLS: 0.0,
+          PROBE_MODULAR_CELLS: 0.28,
           PROBE_HYSTERESIS_LOOP: 0.0,
           PROBE_REPEATABILITY_CHECK: 0.85, // high within-cell aleatoric variance!
           PROBE_EXTERIOR_APERTURE: 0.5,
@@ -747,38 +747,42 @@ function buildAuthenticHistoryRecords({
       ? structuralParams.gain
       : 0.0;
     calHintKey = 'hub_unit_micro_delta';
-    calHintVal = round3(hubTrue + wRng.nextNormal(0, 0.12));
-    residualStats.within_cell_var = round3(Math.max(0.008, 0.014 + wRng.nextNormal(0, 0.003)));
-    residualStats.between_cell_var = round3(Math.abs(archetype === 'ARCH_A4_NONLINEAR_SUPPRESSOR' ? 0.34 : 0.04) + Math.abs(wRng.nextNormal(0, 0.02)));
+    calHintVal = round3(hubTrue + wRng.nextNormal(0, 0.24));
+    residualStats.within_cell_var = round3(Math.max(0.008, 0.015 + wRng.nextNormal(0, 0.004)));
+    residualStats.between_cell_var = round3(Math.abs(archetype === 'ARCH_A4_NONLINEAR_SUPPRESSOR' ? 0.31 : 0.06) + Math.abs(wRng.nextNormal(0, 0.04)));
   } else if (family === 'B_HIGHER_ORDER_RELATIONS') {
     // Historical pairwise correlation rejections tell us whether ANY 2-body XOR exists vs pure 3-body
     const anyPair = (archetype === 'ARCH_B1_PAIR_XOR_AB' || archetype === 'ARCH_B2_PAIR_XOR_BC') ? 1.0 : 0.0;
     calHintKey = 'max_subthreshold_pair_score';
-    calHintVal = round3(anyPair * 0.78 + wRng.nextNormal(0, 0.11));
-    residualStats.within_cell_var = round3(Math.max(0.008, 0.015 + wRng.nextNormal(0, 0.003)));
+    calHintVal = round3(anyPair * 0.75 + wRng.nextNormal(0, 0.21));
+    residualStats.within_cell_var = round3(Math.max(0.008, 0.015 + wRng.nextNormal(0, 0.004)));
     residualStats.between_cell_var = 0.25;
-    residualStats.triad_synergy_excess = round3((1 - anyPair) * 0.85 + wRng.nextNormal(0, 0.10));
+    residualStats.triad_synergy_excess = round3((1 - anyPair) * 0.80 + wRng.nextNormal(0, 0.20));
   } else if (family === 'C_TEMPORAL_INHERITANCE') {
     const immTrue = (archetype === 'ARCH_C2_TRANSIENT_SPIKE_DECAY' || archetype === 'ARCH_C3_DELAYED_COLLAPSE_HAZARD') ? 1.0 : 0.0;
     calHintKey = 'immediate_t0_micro_pulse';
-    calHintVal = round3(immTrue * 1.15 + wRng.nextNormal(0, 0.13));
+    calHintVal = round3(immTrue * 1.10 + wRng.nextNormal(0, 0.26));
     temporalFlag = {
-      withdrawal_count: archetype === 'ARCH_C3_DELAYED_COLLAPSE_HAZARD' ? 2 : (archetype === 'ARCH_C2_TRANSIENT_SPIKE_DECAY' ? 1 : 0),
-      clock_inverted: archetype === 'ARCH_C4_CLOCK_INVERTED_FEEDBACK',
+      withdrawal_count: archetype === 'ARCH_C3_DELAYED_COLLAPSE_HAZARD'
+        ? (wRng.nextFloat() < 0.86 ? 2 : 1)
+        : (archetype === 'ARCH_C2_TRANSIENT_SPIKE_DECAY' ? 1 : (wRng.nextFloat() < 0.10 ? 1 : 0)),
+      clock_inverted: archetype === 'ARCH_C4_CLOCK_INVERTED_FEEDBACK'
+        ? (wRng.nextFloat() < 0.90)
+        : (wRng.nextFloat() < 0.06),
     };
-    residualStats.within_cell_var = round3(Math.max(0.008, 0.014 + wRng.nextNormal(0, 0.003)));
+    residualStats.within_cell_var = round3(Math.max(0.008, 0.015 + wRng.nextNormal(0, 0.004)));
   } else {
     // Family D
     calHintKey = 'best_inherited_monotone_fit_err';
-    calHintVal = round3(archetype === 'ARCH_D4_COMPLETE_NOISY_ONTOLOGY' ? 0.28 + wRng.nextNormal(0, 0.03) : 0.44 + wRng.nextNormal(0, 0.03));
+    calHintVal = round3(archetype === 'ARCH_D4_COMPLETE_NOISY_ONTOLOGY' ? 0.28 + wRng.nextNormal(0, 0.05) : 0.43 + wRng.nextNormal(0, 0.05));
     if (archetype === 'ARCH_D1_MODULAR_INVARIANT') {
-      residualStats = { within_cell_var: round3(0.02 + Math.abs(wRng.nextNormal(0, 0.005))), between_cell_var: round3(0.24 + wRng.nextNormal(0, 0.02)), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.03))), exterior_nullspace_flag: false, dominant_single_coord: 0 };
+      residualStats = { within_cell_var: round3(Math.max(0.008, 0.025 + wRng.nextNormal(0, 0.015))), between_cell_var: round3(0.23 + wRng.nextNormal(0, 0.04)), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.08))), exterior_nullspace_flag: false, dominant_single_coord: 0 };
     } else if (archetype === 'ARCH_D2_HYSTERETIC_HOLONOMY') {
-      residualStats = { within_cell_var: round3(0.23 + wRng.nextNormal(0, 0.02)), between_cell_var: round3(0.25 + wRng.nextNormal(0, 0.02)), path_loop_gap: round3(0.88 + wRng.nextNormal(0, 0.06)), exterior_nullspace_flag: false, dominant_single_coord: 0 };
+      residualStats = { within_cell_var: round3(0.22 + wRng.nextNormal(0, 0.04)), between_cell_var: round3(0.24 + wRng.nextNormal(0, 0.04)), path_loop_gap: round3(0.80 + wRng.nextNormal(0, 0.14)), exterior_nullspace_flag: false, dominant_single_coord: 0 };
     } else if (archetype === 'ARCH_D3_UNIDENTIFIABLE_EXTERIOR') {
-      residualStats = { within_cell_var: round3(0.02 + Math.abs(wRng.nextNormal(0, 0.005))), between_cell_var: round3(0.02 + Math.abs(wRng.nextNormal(0, 0.005))), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.02))), exterior_nullspace_flag: true, dominant_single_coord: 2 };
+      residualStats = { within_cell_var: round3(Math.max(0.008, 0.025 + wRng.nextNormal(0, 0.015))), between_cell_var: round3(Math.max(0.01, 0.03 + wRng.nextNormal(0, 0.02))), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.06))), exterior_nullspace_flag: wRng.nextFloat() < 0.88, dominant_single_coord: 2 };
     } else {
-      residualStats = { within_cell_var: round3(0.21 + wRng.nextNormal(0, 0.02)), between_cell_var: round3(0.22 + wRng.nextNormal(0, 0.02)), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.03))), exterior_nullspace_flag: false, dominant_single_coord: structuralParams.noisy_coord };
+      residualStats = { within_cell_var: round3(0.20 + wRng.nextNormal(0, 0.04)), between_cell_var: round3(0.21 + wRng.nextNormal(0, 0.04)), path_loop_gap: round3(Math.abs(wRng.nextNormal(0, 0.08))), exterior_nullspace_flag: false, dominant_single_coord: structuralParams.noisy_coord };
     }
   }
 

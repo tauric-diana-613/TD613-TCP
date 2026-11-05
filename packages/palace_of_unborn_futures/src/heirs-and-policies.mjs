@@ -166,34 +166,41 @@ export function prepareConditionInheritance({
   if (conditionId === 'VI_REVISIONISTS') {
     // Rule-based selective forgetting over disposable working memory under strict budgetBytes:
     //   1. Explicitly FORGET: CAT_ADMINISTRATIVE_CLUTTER, CAT_PROVENANCE_AND_SENSITIVE, CAT_EPOCH0_DRIFT_TRIALS.
-    //   2. Retain prioritized categories greedily until adding the next summary exceeds budgetBytes:
-    //        Priority 1: CAT_CALIBRATED_REJECTIONS
-    //        Priority 2: CAT_TEMPORAL_LEDGER
-    //        Priority 3: CAT_RESIDUAL_ANOMALIES (fits in 256B; evicted in 96B!)
+    //   2. Retain prioritized category slices greedily until adding the next category exceeds budgetBytes:
+    //        Priority 1: CAT_CALIBRATED_REJECTIONS (~84B total -> fits in B_TIGHT=96B and B_STANDARD=256B)
+    //        Priority 2: CAT_TEMPORAL_LEDGER       (~142B cumulative -> evicted in 96B; fits in 256B)
+    //        Priority 3: CAT_RESIDUAL_ANOMALIES    (~243B cumulative -> evicted in 96B; fits in 256B)
     const byCat = new Map();
     for (const r of publicWorld.permissible_full_history) {
       byCat.set(r.category, r.payload);
     }
 
-    const workingMem = { m: 'rev1', kept: [] };
+    const workingMem = { mode: 'rev_v1', kept: [] };
     const candidateChunks = [
       {
-        cat: 'C1',
+        catName: 'CAT_CALIBRATED_REJECTIONS',
+        field: 'cal_rejections',
         build: () => {
           const cal = byCat.get('CAT_CALIBRATED_REJECTIONS') || {};
-          const slots = ['M_SLOT_0', 'M_SLOT_1', 'M_SLOT_2', 'M_SLOT_3'];
-          return slots.map(s => Math.round(Number(cal.calibrated_log_support?.[s] ?? 0) * 10) / 10);
+          return {
+            mv: Math.round(Number(cal.measured_value ?? 0) * 100) / 100,
+          };
         },
       },
       {
-        cat: 'C2',
+        catName: 'CAT_TEMPORAL_LEDGER',
+        field: 'temporal_ledger',
         build: () => {
           const t = byCat.get('CAT_TEMPORAL_LEDGER') || {};
-          return [Number(t.withdrawn_claims_count ?? 0), t.precursor_obs_before_primary ? 1 : 0];
+          return {
+            w: Number(t.withdrawn_claims_count ?? 0),
+            inv: t.precursor_obs_before_primary ? 1 : 0,
+          };
         },
       },
       {
-        cat: 'C3',
+        catName: 'CAT_RESIDUAL_ANOMALIES',
+        field: 'residual_anomalies',
         build: () => {
           const r = byCat.get('CAT_RESIDUAL_ANOMALIES') || {};
           return {
@@ -217,15 +224,15 @@ export function prepareConditionInheritance({
     for (const ch of candidateChunks) {
       const trial = {
         ...workingMem,
-        kept: [...workingMem.kept, ch.cat],
-        [ch.cat]: ch.build(),
+        kept: [...workingMem.kept, ch.catName],
+        [ch.field]: ch.build(),
       };
       const trialJson = JSON.stringify(trial);
       if (Buffer.byteLength(trialJson, 'utf8') <= budgetBytes) {
         workingMem.kept = trial.kept;
-        workingMem[ch.cat] = trial[ch.cat];
+        workingMem[ch.field] = trial[ch.field];
       } else {
-        omittedCategories.push(ch.cat === 'C3' ? 'CAT_RESIDUAL_ANOMALIES' : ch.cat);
+        omittedCategories.push(ch.catName);
       }
     }
 
@@ -284,14 +291,14 @@ export function derivePriorFromInheritance(packet) {
     const temper = suspicious ? 0.50 : 1.0;
 
     // Full-history Archivist / Prophet / Exile pools BOTH calibrated rejections AND legacy epoch_0 trials
-    // weighted by archival sample size (epoch_0 has legacy_sample_count=64, creating realistic anchor pull!)
-    const legacyWeight = Number(ep0.legacy_sample_count ?? 0) >= 40 ? 0.62 : 0.20;
+    // weighted by archival sample size (epoch_0 has legacy_sample_count=64 vs 12 calibrated replicates, creating realistic anchor pull!)
+    const legacyWeight = Number(ep0.legacy_sample_count ?? 0) >= 40 ? 0.80 : 0.25;
 
     for (let i = 0; i < 4; i++) {
       const s = slots[i];
       const calScore = Number(cal.calibrated_log_support?.[s] ?? 0);
       const ep0Score = Number(ep0.legacy_pooled_log_scores?.[s] ?? 0);
-      logPrior[i] = temper * (0.95 * calScore + legacyWeight * ep0Score);
+      logPrior[i] = temper * (0.90 * calScore + legacyWeight * ep0Score);
     }
 
     residualHints = {
@@ -351,38 +358,56 @@ export function derivePriorFromInheritance(packet) {
 
   if (mode === 'SELECTIVE_WORKING_MEMORY') {
     const hyps = packet.candidate_mechanism_hypotheses;
-    if (Array.isArray(payload.C1)) {
+    if (payload.cal_rejections && typeof payload.cal_rejections.mv === 'number') {
+      const mv = payload.cal_rejections.mv;
       for (let i = 0; i < 4; i++) {
-        let base = Number(payload.C1[i] ?? 0);
-        // Note: In Family D, if C3 (CAT_RESIDUAL_ANOMALIES) was evicted due to tight 96B budget,
-        // C1's slot breakdown previously depended on residual variance that Revisionist discarded!
-        // Under strict C3 eviction, Family D only retains coarse baseline fit error, not residual variance splits.
-        if (packet.family === 'D_IMPOSSIBLE_LIBRARY' && !payload.C3) {
-          base = 0;
+        const sig = hyps[i].model_signature;
+        if (packet.family === 'A_CAUSAL_LOOKALIKES') {
+          const mu = (sig === 'SCM_LINEAR_CHAIN' || sig === 'SCM_THRESHOLD_SUPPRESSOR') ? 1.0 : 0.0;
+          logPrior[i] += -2.0 * (mv - mu) * (mv - mu);
+        } else if (packet.family === 'B_HIGHER_ORDER_RELATIONS') {
+          const isPair = sig === 'GF2_PAIR_XOR_AB' || sig === 'GF2_PAIR_XOR_BC';
+          const pairSignal = mv > 0.38;
+          logPrior[i] += (isPair === pairSignal) ? 1.35 : -0.65;
+        } else if (packet.family === 'C_TEMPORAL_INHERITANCE') {
+          const isImm = sig === 'TEMP_IMMEDIATE_DECAY' || sig === 'TEMP_OVERSHOOT_COLLAPSE';
+          const mu = isImm ? 1.10 : 0.0;
+          logPrior[i] += -1.6 * (mv - mu) * (mv - mu);
+        } else if (packet.family === 'D_IMPOSSIBLE_LIBRARY') {
+          // Baseline monotone fit error alone separates complete-noisy D4 (~0.28) from non-monotone/exterior (~0.43)
+          if (sig === 'COMPLETE_ONTOLOGY_HIGH_NOISE') {
+            logPrior[i] += mv < 0.35 ? 1.1 : -0.8;
+          } else {
+            logPrior[i] += mv >= 0.35 ? 0.45 : -0.4;
+          }
         }
-        logPrior[i] += 1.1 * base;
       }
     }
-    if (Array.isArray(payload.C2)) {
-      const [wCount, invBit] = payload.C2;
+    if (payload.temporal_ledger) {
+      const wCount = Number(payload.temporal_ledger.w ?? 0);
+      const invBit = Number(payload.temporal_ledger.inv ?? 0);
       residualHints.clock_inversion_known = invBit === 1;
       for (let i = 0; i < 4; i++) {
         const sig = hyps[i].model_signature;
-        if (sig === 'TEMP_OVERSHOOT_COLLAPSE' && wCount >= 2) logPrior[i] += 1.2;
-        if (sig === 'TEMP_CLOCK_INVERTED_PRECURSOR' && invBit === 1) logPrior[i] += 1.4;
+        if (sig === 'TEMP_OVERSHOOT_COLLAPSE' && wCount >= 2) logPrior[i] += 1.5;
+        if (sig === 'TEMP_IMMEDIATE_DECAY' && wCount === 1) logPrior[i] += 1.0;
+        if (sig === 'TEMP_CLOCK_INVERTED_PRECURSOR' && invBit === 1) logPrior[i] += 1.8;
+        if (sig === 'TEMP_PURE_LAG_T2' && wCount === 0 && invBit === 0) logPrior[i] += 1.0;
       }
     }
-    if (payload.C3) {
-      const { wv, bv, ts, pg, en, dc } = payload.C3;
+    if (payload.residual_anomalies) {
+      const { wv, bv, ts, pg, en, dc } = payload.residual_anomalies;
       residualHints.has_detailed_residuals = true;
       residualHints.dominant_single_coord = dc;
       for (let i = 0; i < 4; i++) {
         const sig = hyps[i].model_signature;
-        if (sig === 'UNIDENTIFIABLE_EXTERIOR_NULLSPACE') logPrior[i] += en === 1 ? 1.6 : -1.0;
-        if (sig === 'COMPLETE_ONTOLOGY_HIGH_NOISE') logPrior[i] += (en === 0 && wv > 0.12 && pg < 0.35) ? 1.5 : -0.9;
-        if (sig === 'RUPTURE_MISSING_COMPOSITE_INVARIANT') logPrior[i] += (en === 0 && wv < 0.09 && bv > 0.14) ? 1.5 : -0.9;
-        if (sig === 'RUPTURE_MISSING_PATH_HOLONOMY') logPrior[i] += (en === 0 && pg > 0.45) ? 1.6 : -0.9;
-        if (sig.includes('3BODY')) logPrior[i] += ts > 0.42 ? 0.7 : -0.5;
+        if (sig === 'SCM_THRESHOLD_SUPPRESSOR' && bv > 0.18) logPrior[i] += 0.6;
+        if (sig === 'SCM_LINEAR_CHAIN' && bv <= 0.18) logPrior[i] += 0.35;
+        if (sig === 'UNIDENTIFIABLE_EXTERIOR_NULLSPACE') logPrior[i] += en === 1 ? 1.9 : -1.2;
+        if (sig === 'COMPLETE_ONTOLOGY_HIGH_NOISE') logPrior[i] += (en === 0 && wv > 0.12 && pg < 0.35) ? 1.6 : -1.0;
+        if (sig === 'RUPTURE_MISSING_COMPOSITE_INVARIANT') logPrior[i] += (en === 0 && wv < 0.09 && bv > 0.14) ? 1.7 : -1.0;
+        if (sig === 'RUPTURE_MISSING_PATH_HOLONOMY') logPrior[i] += (en === 0 && pg > 0.45) ? 1.8 : -1.0;
+        if (sig.includes('3BODY')) logPrior[i] += ts > 0.42 ? 0.9 : -0.7;
       }
     }
     return { logPrior, residualHints };
@@ -578,12 +603,13 @@ export function runInvestigatorEpisode({
   let ontologyInsufficient = false;
   let introducedPredicate = null;
 
-  // Check unidentifiable nullspace abstention (Aperture rank-deficit discipline)
+  // Check unidentifiable nullspace abstention (Aperture rank-deficit discipline):
+  // Requires positive evidence of exterior nullspace (sentinel -1.0 readout or posterior >= 0.58)
+  // or completely flat unresolved ambiguity across all 4 slots (mapProb < 0.27).
   const nullspaceIdx = hyps.findIndex(h => h.model_signature === 'UNIDENTIFIABLE_EXTERIOR_NULLSPACE');
-  if (nullspaceIdx >= 0 && postProbs[nullspaceIdx] >= 0.42) {
+  if (nullspaceIdx >= 0 && (yVal === -1.0 || postProbs[nullspaceIdx] >= 0.58)) {
     declared = 'ABSTAIN_UNIDENTIFIABLE';
-  } else if (mapProb < 0.36) {
-    // Epistemic humility when posterior remains nearly flat across incompatible mechanisms
+  } else if (mapProb < 0.27) {
     declared = 'ABSTAIN_UNIDENTIFIABLE';
   }
 

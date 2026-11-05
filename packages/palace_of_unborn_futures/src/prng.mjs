@@ -2,10 +2,8 @@
  * 𝌋 TD613 · THE PALACE OF UNBORN FUTURES
  * Deterministic Cryptographic Counter-Mode PRNG (Zero Math.random())
  *
- * All world parameters, variable permutations, historical trial realizations,
- * Common Random Number (CRN) observation noise draws, randomized control choices,
- * and paired bootstrap confidence intervals derive strictly from SHA-256 / HMAC-SHA256
- * streams keyed by explicit preregistered seed strings.
+ * Uses buffered SHA-256 counter-mode blocks (8 uint32 words per 256-bit digest)
+ * keyed by explicit preregistered seed strings for fast, 100% reproducible draws.
  *
  * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po
  */
@@ -17,18 +15,15 @@ export function sha256Hex(input) {
   return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
-export function hmacSha256Buffer(key, message) {
-  return crypto.createHmac('sha256', String(key)).update(String(message), 'utf8').digest();
-}
-
 export class DeterministicRng {
   constructor(seedString) {
     if (!seedString || typeof seedString !== 'string') {
       throw new TypeError('DeterministicRng requires a non-empty seed string.');
     }
     this.seedString = seedString;
-    this.key = crypto.createHash('sha256').update(seedString, 'utf8').digest();
-    this.counter = 0n;
+    this.blockCounter = 0;
+    this.pool = null;
+    this.poolOffset = 32;
     this.spareNormal = null;
   }
 
@@ -36,24 +31,28 @@ export class DeterministicRng {
     return new DeterministicRng(`${this.seedString}::${subLabel}`);
   }
 
-  nextUint32() {
-    const block = crypto
-      .createHmac('sha256', this.key)
-      .update(this.counter.toString(10), 'utf8')
+  _refillPool() {
+    this.pool = crypto
+      .createHash('sha256')
+      .update(`${this.seedString}#${this.blockCounter}`, 'utf8')
       .digest();
-    this.counter += 1n;
-    return block.readUInt32BE(0);
+    this.blockCounter += 1;
+    this.poolOffset = 0;
+  }
+
+  nextUint32() {
+    if (!this.pool || this.poolOffset > 28) {
+      this._refillPool();
+    }
+    const val = this.pool.readUInt32BE(this.poolOffset);
+    this.poolOffset += 4;
+    return val;
   }
 
   /** Uniform in [0, 1) with 53-bit precision */
   nextFloat() {
-    const block = crypto
-      .createHmac('sha256', this.key)
-      .update(this.counter.toString(10), 'utf8')
-      .digest();
-    this.counter += 1n;
-    const hi = block.readUInt32BE(0) >>> 5; // 27 bits
-    const lo = block.readUInt32BE(4) >>> 6; // 26 bits
+    const hi = this.nextUint32() >>> 5; // 27 bits
+    const lo = this.nextUint32() >>> 6; // 26 bits
     return (hi * 67108864 + lo) / 9007199254740992; // 2^53
   }
 
@@ -76,9 +75,8 @@ export class DeterministicRng {
       return mean + std * z;
     }
     let u = 0;
-    let v = 0;
     while (u <= 1e-15) u = this.nextFloat();
-    v = this.nextFloat();
+    const v = this.nextFloat();
     const mag = Math.sqrt(-2.0 * Math.log(u));
     const z0 = mag * Math.cos(2.0 * Math.PI * v);
     const z1 = mag * Math.sin(2.0 * Math.PI * v);
