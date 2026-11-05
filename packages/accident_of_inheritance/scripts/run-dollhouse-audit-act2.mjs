@@ -45,11 +45,12 @@ if (result.exit_code !== 0) {
   process.exit(result.exit_code);
 }
 
-if (!result.machine_receipt?.provenance?.worktree_cleanliness_verified) {
+if (
+  !result.machine_receipt?.worktree_cleanliness_verified ||
+  !result.machine_receipt?.exact_checkout_verified
+) {
   console.error(
-    `[CLEAN_WORKTREE_REQUIRED] Dollhouse audit must run against a clean committed tree! Got: ${JSON.stringify(
-      result.machine_receipt?.provenance?.executing_source_cleanliness
-    )}`
+    `[CLEAN_WORKTREE_REQUIRED] Dollhouse audit must run against a clean committed tree! Got worktree_cleanliness_verified=${result.machine_receipt?.worktree_cleanliness_verified}, exact_checkout_verified=${result.machine_receipt?.exact_checkout_verified}`
   );
   process.exit(1);
 }
