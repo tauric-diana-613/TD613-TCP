@@ -49,6 +49,65 @@ PROJECTIONS={
 }
 MAX_BYTES=10_000_000
 
+# These are the files actually consumed by the unchanged native srcquery.
+# Matching epoch labels alone never establish byte membership in that epoch.
+QUERY_INPUTS={
+ "summary":["01-MANIFESTS/phase2/acquisition-outcomes.jsonl",
+   *["05-OPERATIONS/phase2/"+name+".jsonl" for name in
+     ("expected-object-observations","contextual-role-assertions","compilation-passes",
+      "authority-jurisdiction-assertions","evidence-lineage-assertions")],
+   "04-RECEIPTS/assays/2026-08-24-phase2-kiln/coverage-ledger.jsonl"],
+ "resolve":["01-MANIFESTS/phase2/entity-resolver-v2.jsonl"],
+ "authority":["05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"],
+ "trace":["01-MANIFESTS/entity-index.jsonl",
+   *["01-MANIFESTS/phase2/"+name+".jsonl" for name in
+     ("entity-resolver-v2","capture-v2","derivative-v1")],
+   "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl",
+   "05-OPERATIONS/relations/typed-edges.jsonl",
+   "05-OPERATIONS/relations/recompilation-edges.jsonl",
+   *["05-OPERATIONS/phase2/"+name+".jsonl" for name in
+     ("contextual-role-assertions","compilation-passes","reference-assertions",
+      "authority-jurisdiction-assertions")]],
+}
+
+def verify_query_epoch(src,snapshot,seal,operation):
+    """Verify consumed bytes only; never reseal or imply whole-tree custody."""
+    raw,_=verified_bytes(src,"04-RECEIPTS/phase2/current-seal.json")
+    current=json.loads(raw)
+    if current.get("atelier_snapshot_id")!=snapshot or current.get("seal_id")!=seal:
+        raise ValueError("SEAL_EPOCH_MISMATCH")
+    relative=current.get("path")
+    if relative!="04-RECEIPTS/phase2/projection-seal.json":
+        raise ValueError("UNSUPPORTED_PROJECTION_SEAL_PATH")
+    raw,digest=verified_bytes(src,relative)
+    manifest=json.loads(raw)
+    for key in ("atelier_snapshot_id","seal_id","projection_seal_id","projection_profile"):
+        if not current.get(key) or manifest.get(key)!=current[key]:
+            raise ValueError("SEAL_POINTER_MANIFEST_MISMATCH")
+    entries=manifest.get("entries")
+    if not isinstance(entries,list) or any(not isinstance(e,dict) for e in entries):
+        raise ValueError("SEAL_ENTRIES_INVALID")
+    basis="".join(json.dumps(e,ensure_ascii=False,sort_keys=True,separators=(",",":"))+"\n" for e in entries)
+    if "src-projection-seal:"+hashlib.sha256(basis.encode("utf8")).hexdigest()!=current["projection_seal_id"]:
+        raise ValueError("PROJECTION_SEAL_DIGEST_MISMATCH")
+    bypath={}
+    for entry in entries:
+        path=entry.get("path")
+        if not isinstance(path,str) or Path(path).is_absolute() or ".." in Path(path).parts or path in bypath:
+            raise ValueError("SEAL_ENTRY_PATH_INVALID_OR_DUPLICATE")
+        bypath[path]=entry
+    checked=[]
+    for path in [SRC_METHODS["src_query"],*QUERY_INPUTS[operation]]:
+        entry=bypath.get(path)
+        if entry is None:raise ValueError("QUERY_INPUT_NOT_SEALED:"+path)
+        raw,h=verified_bytes(src,path)
+        if len(raw)!=entry.get("bytes") or h!=entry.get("sha256"):
+            raise ValueError("QUERY_INPUT_SEAL_DRIFT:"+path)
+        checked.append({"path":path,"bytes":len(raw),"sha256":h})
+    return {"scope":"CONSUMED_NATIVE_QUERY_FILES_ONLY","projection_seal_sha256":digest,
+            "verified_inputs":checked,"whole_projection_verified":False,
+            "external_custody_authenticated":False}
+
 def root_check(path, estate):
     p=Path(path)
     if not p.is_absolute() or not p.is_dir() or p.name!=estate or p.is_symlink():
@@ -118,6 +177,7 @@ def native_src_query(src,snapshot,seal,operation,identifier=None,scope=None,expe
     raw,h=verified_bytes(src,path)
     if expected_source_sha is None or h!=expected_source_sha:
         raise ValueError("EXACT_NATIVE_SRC_QUERY_SHA256_REQUIRED")
+    binding=verify_query_epoch(src,snapshot,seal,operation)
     module_path=src/path
     spec=importlib.util.spec_from_file_location("td613_pinned_native_srcquery",module_path)
     module=importlib.util.module_from_spec(spec)
@@ -135,7 +195,7 @@ def native_src_query(src,snapshot,seal,operation,identifier=None,scope=None,expe
         data=module.authority(src,identifier,scope)
     return {"method":"ORIGINAL_NATIVE_SRCQUERY_EXECUTED","method_sha256":h,
         "epoch":ep,"operation":operation,"result":data,
-        "full_src_algorithmic_coverage":False}
+        "full_src_algorithmic_coverage":False,"source_binding":binding}
 
 def em_fixture(em,key,limit=200):
     if key not in EM_FIXTURES:raise ValueError("UNKNOWN_EM_FIXTURE_REFUSED")

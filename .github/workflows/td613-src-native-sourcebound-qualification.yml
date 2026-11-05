@@ -1,0 +1,59 @@
+name: TD613 SRC native source-bound qualification (read-only)
+on:
+  push:
+    branches: [research/src-native-sourcebound-qualification-20261104]
+  pull_request:
+    paths:
+      - 'scripts/atelier-native-inheritance-bridge-v1.py'
+      - 'scripts/qualify-src-native-sourcebound-v1.py'
+      - 'tests/test_atelier_native_inheritance_bridge_v1.py'
+      - 'tests/test_atelier_src_epoch_binding_v1.py'
+      - '.github/workflows/td613-src-native-sourcebound-qualification.yml'
+permissions:
+  contents: read
+jobs:
+  bounded-source-qualification:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout: |
+            scripts
+            tests
+            app/engine
+            packages/dome_world_exact/fixtures/a15-r0/SRC
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check out immutable public SRC originals separately
+        uses: actions/checkout@v4
+        with:
+          ref: b3e69acf587d534eeef2e01d0bb5bdbdecdbd320
+          path: native-src
+          persist-credentials: false
+          lfs: true
+          sparse-checkout: packages/dome_world_exact/fixtures/a15-r0/SRC
+      - name: Source-bound native method qualification; source admission remains closed
+        run: python -B scripts/qualify-src-native-sourcebound-v1.py --src-checkout native-src --output "$RUNNER_TEMP/src-sourcebound-receipt.json"
+      - name: Epoch integrity and independent negative controls
+        run: python -B -m unittest discover -s tests -p 'test_atelier_src_epoch_binding_v1.py' -v
+      - name: Historical native bridge regressions
+        run: python -B -m unittest discover -s tests -p 'test_atelier_native_inheritance_bridge_v1.py' -v
+      - name: Retained original SRC tests
+        run: python -B -m unittest discover -s native-src/packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN -p 'test_*.py' -v
+      - name: Adapter and synthetic-only receiver regressions
+        run: |
+          python -B -m unittest discover -s tests -p 'test_atelier_src_method_adapter_v1.py' -v
+          python -B -m unittest discover -s tests -p 'test_atelier_universal_encyclopedia_receiver_v1.py' -v
+      - name: Preserve original source and repository bytes
+        run: |
+          git diff --exit-code
+          git -C native-src diff --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: src-native-sourcebound-qualification-receipt
+          path: ${{ runner.temp }}/src-sourcebound-receipt.json

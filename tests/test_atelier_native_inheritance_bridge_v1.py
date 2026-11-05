@@ -46,13 +46,13 @@ class NativeIndependentPreservation(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):cls.temp.cleanup()
 
-    def test_real_pinned_src_native_query_epoch_compiler_summary(self):
+    def test_real_pinned_src_native_query_refuses_stale_seal_registry(self):
         current=json.loads((self.src/"04-RECEIPTS/phase2/current-seal.json").read_text("utf8"))
-        rec=m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
+        # Historical labels survive, but several registries already drifted from
+        # their projection-seal entries. Preserve this negative source evidence.
+        with self.assertRaisesRegex(ValueError,"QUERY_INPUT_SEAL_DRIFT"):
+            m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
                                "summary",expected_source_sha=self.src_hashes[m.SRC_METHODS["src_query"]])
-        self.assertEqual(rec["method"],"ORIGINAL_NATIVE_SRCQUERY_EXECUTED")
-        self.assertEqual(rec["method_sha256"],self.src_hashes["99-ADMIN/srcquery.py"])
-        self.assertGreater(rec["result"]["compiler_map"]["compilation_passes"],0)
         with self.assertRaisesRegex(ValueError,"EXACT_NATIVE_SRC_QUERY_SHA256_REQUIRED"):
             m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
                                "summary",expected_source_sha="0"*64)
