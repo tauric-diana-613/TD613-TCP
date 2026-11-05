@@ -1,0 +1,120 @@
+{
+  "schema": "td613.mechanism-assay-corpus/v2",
+  "seed": 61303,
+  "documents": [
+    {
+      "source_id": "doc:explicit_explore_1",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Primary Exploration Document",
+      "created": "2026-08-01T10:00:00Z",
+      "body": "Introductory statement. We examine the projective routing of targets. Explore Target Beta Document. This marks a forward research cue."
+    },
+    {
+      "source_id": "doc:target_beta",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Target Beta Document",
+      "created": "2026-08-05T12:00:00Z",
+      "body": "Target beta definition and architecture. Machine-readable field and dual-gradient structures are instantiated here."
+    },
+    {
+      "source_id": "doc:grounded_cooccurrence",
+      "platform": "synthetic_archive",
+      "declared_title": "Dual Gradient Co-occurrence Source",
+      "created": "2026-08-02T14:00:00Z",
+      "body": "Observation record without explicit explore cue. The Target Beta Document co-occurs directly with Alpha Resonance Anchor in this verified passage."
+    },
+    {
+      "source_id": "doc:misleading_cooccurrence",
+      "platform": "synthetic_archive",
+      "declared_title": "Misleading Co-occurrence Noise",
+      "created": "2026-08-03T09:00:00Z",
+      "body": "Discussion of unrelated weather events. Mentions Target Beta Document in passing as an arbitrary metaphor without substantive relation or warrant."
+    },
+    {
+      "source_id": "doc:unadmitted_target",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Dangling Exploration Source",
+      "created": "2026-08-04T11:00:00Z",
+      "body": "Attempting to route to a ghost node. Explore Ghost Target Gamma. This node does not exist in the catalog."
+    },
+    {
+      "source_id": "doc:missing_intermediate",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Broken Chain Source",
+      "created": "2026-08-04T15:00:00Z",
+      "body": "Multi-hop traversal test. Route from Source Alpha requires intermediate Hop Beta before reaching Final Omega."
+    },
+    {
+      "source_id": "doc:contradictory_witness_1",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Witness Alpha Scope Narrowed",
+      "created": "2026-08-06T10:00:00Z",
+      "body": "Transformation TR-01 results in NARROWED scope deltas for the formal representation."
+    },
+    {
+      "source_id": "doc:contradictory_witness_2",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Witness Beta Scope Expanded",
+      "created": "2026-08-06T11:00:00Z",
+      "body": "Transformation TR-01 results in EXPANDED scope deltas for the distributed field."
+    },
+    {
+      "source_id": "doc:duplicate_carrier_1",
+      "platform": "platform_zenodo",
+      "declared_title": "Duplicate Manifestation Alpha",
+      "created": "2026-08-07T08:00:00Z",
+      "body": "Exact identical documentary payload across heterogeneous platforms for carrier test."
+    },
+    {
+      "source_id": "doc:duplicate_carrier_2",
+      "platform": "platform_figshare",
+      "declared_title": "Duplicate Manifestation Beta",
+      "created": "2026-08-07T09:00:00Z",
+      "body": "Exact identical documentary payload across heterogeneous platforms for carrier test."
+    },
+    {
+      "source_id": "doc:chronological_inversion",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Retroactive Exploration Attempt",
+      "created": "2026-08-10T12:00:00Z",
+      "body": "Attempting to link backwards in time. Explore Ancient Preexisting Alpha. Historical origin cannot be caused by later work."
+    },
+    {
+      "source_id": "doc:ancient_alpha",
+      "platform": "synthetic_zenodo",
+      "declared_title": "Ancient Preexisting Alpha",
+      "created": "2026-07-01T12:00:00Z",
+      "body": "Foundational document created a month prior. Existed before subsequent exploration attempts."
+    },
+    {
+      "source_id": "doc:unicode_span_witness",
+      "platform": "synthetic_covenant",
+      "declared_title": "Unicode Span Witness Corpus",
+      "created": "2026-08-03T16:00:00Z",
+      "body": "Preserving exact bytes. Covenant Khona‌lit-po with interior ZWNJ and token AéB. Explore Target Beta Document."
+    },
+    {
+      "source_id": "doc:malformed_cues",
+      "platform": "synthetic_noise",
+      "declared_title": "Malformed Cues Stress Corpus",
+      "created": "2026-08-09T18:00:00Z",
+      "body": "Testing parser boundaries: Explore . Also Explore Why? NotNow. And Explore WithoutPeriod"
+    }
+  ],
+  "catalog": [
+    { "record_id": "doc:explicit_explore_1", "title": "Primary Exploration Document", "created": "2026-08-01T10:00:00Z" },
+    { "record_id": "doc:target_beta", "title": "Target Beta Document", "created": "2026-08-05T12:00:00Z" },
+    { "record_id": "doc:grounded_cooccurrence", "title": "Dual Gradient Co-occurrence Source", "created": "2026-08-02T14:00:00Z" },
+    { "record_id": "doc:misleading_cooccurrence", "title": "Misleading Co-occurrence Noise", "created": "2026-08-03T09:00:00Z" },
+    { "record_id": "doc:unadmitted_target", "title": "Dangling Exploration Source", "created": "2026-08-04T11:00:00Z" },
+    { "record_id": "doc:missing_intermediate", "title": "Broken Chain Source", "created": "2026-08-04T15:00:00Z" },
+    { "record_id": "doc:contradictory_witness_1", "title": "Witness Alpha Scope Narrowed", "created": "2026-08-06T10:00:00Z" },
+    { "record_id": "doc:contradictory_witness_2", "title": "Witness Beta Scope Expanded", "created": "2026-08-06T11:00:00Z" },
+    { "record_id": "doc:duplicate_carrier_1", "title": "Duplicate Manifestation Alpha", "created": "2026-08-07T08:00:00Z" },
+    { "record_id": "doc:duplicate_carrier_2", "title": "Duplicate Manifestation Beta", "created": "2026-08-07T09:00:00Z" },
+    { "record_id": "doc:chronological_inversion", "title": "Retroactive Exploration Attempt", "created": "2026-08-10T12:00:00Z" },
+    { "record_id": "doc:ancient_alpha", "title": "Ancient Preexisting Alpha", "created": "2026-07-01T12:00:00Z" },
+    { "record_id": "doc:unicode_span_witness", "title": "Unicode Span Witness Corpus", "created": "2026-08-03T16:00:00Z" },
+    { "record_id": "doc:malformed_cues", "title": "Malformed Cues Stress Corpus", "created": "2026-08-09T18:00:00Z" }
+  ]
+}
