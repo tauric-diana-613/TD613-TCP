@@ -70,6 +70,17 @@ class NativeIndependentPreservation(unittest.TestCase):
         self.assertEqual(empty["returned"],0)
         self.assertRaises(ValueError,m.native_projection,self.src,"FAKE_TOPOLOGY")
 
+    def test_native_projection_truncated_only_when_more_matches_exist(self):
+        # Original cartography registry contains exactly three documented snapshots.
+        full=m.native_projection(self.src,"CARTOGRAPHIC",limit=3)
+        self.assertEqual(full["returned"],3)
+        self.assertFalse(full["truncated"])
+        clipped=m.native_projection(self.src,"CARTOGRAPHIC",limit=2)
+        self.assertEqual(clipped["returned"],2)
+        self.assertTrue(clipped["truncated"])
+        with self.assertRaisesRegex(ValueError,"EXPLICIT_BOUNDED_SRC_PROJECTION_REQUIRED"):
+            m.native_projection(self.src,"CARTOGRAPHIC",limit=True)
+
     def test_em_actual_identity_lineage_and_null_controls_retained_without_false_equality(self):
         c=m.census(self.src,self.em)
         self.assertEqual(c["estates"]["SRC"]["present"],len(m.SRC_METHODS))
