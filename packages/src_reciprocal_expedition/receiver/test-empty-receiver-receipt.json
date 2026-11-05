@@ -1,0 +1,122 @@
+{
+  "schema": "td613.empty-encyclopedia-receiver-test-receipt/v1",
+  "timestamp": "2026-11-05T08:47:02.509Z",
+  "environment": "Node.js v26.7.0",
+  "total_tests": 11,
+  "passed_tests": 11,
+  "results": [
+    {
+      "test": 1,
+      "name": "DEMONSTRABLE_ZERO_STATE",
+      "status": "PASS",
+      "witness": {
+        "schema": "td613.empty-encyclopedia-receiver/v1",
+        "initialized_at": "2026-11-05T08:47:02.430Z",
+        "db_type": "FILE_BACKED",
+        "initial_counts": {
+          "sources": 0,
+          "captures": 0,
+          "chunks": 0,
+          "relations": 0,
+          "registered_methods": 0,
+          "method_invocations": 0,
+          "failed_operations": 0
+        },
+        "table_count": 8,
+        "witness_sha256": "82ef8abebfbebaf5e2a65c663393c33c294fa9150f0a2a8b1be1d27736a7b2c7"
+      }
+    },
+    {
+      "test": 2,
+      "name": "FIRST_ADMISSION_AND_SPAN_INDEXING",
+      "status": "PASS",
+      "adm1": {
+        "admitted": true,
+        "source_id": "rec:source:001",
+        "capture_id": "cap-91f11de81c6cc3c4",
+        "raw_bytes_sha256": "b5355c17b0f7420a99330ebca503e9ba7512526ecedc0e6f89bbf763969e738a",
+        "normalized_body_sha256": "b5355c17b0f7420a99330ebca503e9ba7512526ecedc0e6f89bbf763969e738a",
+        "chunk_count": 1,
+        "identical_body_detected": false,
+        "ancestral_lineage_refused": false,
+        "admitted_at": "2026-11-05T08:47:02.447Z"
+      }
+    },
+    {
+      "test": 3,
+      "name": "MULTIPLE_RELATED_ADMISSIONS",
+      "status": "PASS",
+      "rel1": {
+        "registered": true,
+        "relation_id": "rel-7244fb95b35a06f3",
+        "from_source_id": "rec:source:001",
+        "to_source_id": "rec:source:002",
+        "relation_type": "PROJECTIVE_EXPLORE_LINK",
+        "registered_at": "2026-11-05T08:47:02.459Z"
+      }
+    },
+    {
+      "test": 4,
+      "name": "DUPLICATE_SOURCE_REFUSAL",
+      "status": "PASS"
+    },
+    {
+      "test": 5,
+      "name": "DELIBERATE_DUPLICATE_BODY_DETECTION",
+      "status": "PASS",
+      "adm3DupBody": {
+        "admitted": true,
+        "source_id": "rec:source:003_mirror",
+        "capture_id": "cap-1fa67308df3a1b42",
+        "raw_bytes_sha256": "b5355c17b0f7420a99330ebca503e9ba7512526ecedc0e6f89bbf763969e738a",
+        "normalized_body_sha256": "b5355c17b0f7420a99330ebca503e9ba7512526ecedc0e6f89bbf763969e738a",
+        "chunk_count": 1,
+        "identical_body_detected": true,
+        "ancestral_lineage_refused": true,
+        "admitted_at": "2026-11-05T08:47:02.472Z"
+      }
+    },
+    {
+      "test": 6,
+      "name": "UNSUPPORTED_GRAPH_LINK_REFUSAL",
+      "status": "PASS"
+    },
+    {
+      "test": 7,
+      "name": "DUPLICATE_RELATION_REFUSAL",
+      "status": "PASS"
+    },
+    {
+      "test": 8,
+      "name": "SPAN_RETRIEVAL_AND_VERIFICATION",
+      "status": "PASS",
+      "spanRes": {
+        "source_id": "rec:source:001",
+        "capture_id": "cap-91f11de81c6cc3c4",
+        "byte_start": 0,
+        "byte_end": 36,
+        "span_text": "This is the first admitted body text",
+        "span_sha256": "eb43ce10d777968765dbab14de4eb36591421678448239d2e58c5db047a1033c",
+        "verified": true
+      }
+    },
+    {
+      "test": 9,
+      "name": "GROUNDED_ENTITY_SEARCH",
+      "status": "PASS",
+      "match_count": 4
+    },
+    {
+      "test": 10,
+      "name": "METHOD_INVOCATION_AND_READBACK",
+      "status": "PASS",
+      "returnPkgId": "ret-98e4178dafe77493"
+    },
+    {
+      "test": 11,
+      "name": "FAILED_OPERATIONS_PRESERVATION",
+      "status": "PASS",
+      "failures_logged": 4
+    }
+  ]
+}

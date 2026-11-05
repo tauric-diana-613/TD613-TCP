@@ -1,0 +1,161 @@
+{
+  "documents": [
+    {
+      "record_id": "src-doc-001",
+      "entity_id": "src:entity:001",
+      "title": "Dual Gradient Transmission and Field Coordinates",
+      "created": "2026-08-10T12:00:00Z",
+      "publication_date": "2026-08-10",
+      "body": "In this document we observe a dual-gradient and establish that fields become machine-legible before they become human-legible. Explore Projective Topological Traversal. Furthermore signatures are not decoration. they are instructions.",
+      "body_path": "03-DERIVATIVES/text/zenodo/zenodo-001-file-0.md"
+    },
+    {
+      "record_id": "src-doc-002",
+      "entity_id": "src:entity:002",
+      "title": "Projective Topological Traversal Across Kiln Projections",
+      "created": "2026-08-12T14:30:00Z",
+      "publication_date": "2026-08-12",
+      "body": "Detailed assay of topological spaces. A machine-readable field is confirmed. Explore Heterostratigraphic Incompatibility.",
+      "body_path": "03-DERIVATIVES/text/zenodo/zenodo-002-file-0.md"
+    },
+    {
+      "record_id": "src-doc-003",
+      "entity_id": "src:entity:003",
+      "title": "Heterostratigraphic Incompatibility in Historical Stratification",
+      "created": "2026-08-15T09:15:00Z",
+      "publication_date": "2026-08-15",
+      "body": "When strata collide, partial projections fail to commute. Explore Dual Gradient Transmission and Field Coordinates. Also anchors in semantic space.",
+      "body_path": "03-DERIVATIVES/text/zenodo/zenodo-003-file-0.md"
+    },
+    {
+      "record_id": "src-doc-004",
+      "entity_id": "src:entity:004",
+      "title": "Isolated Specimen Without Downstream Cues",
+      "created": "2026-08-18T11:00:00Z",
+      "publication_date": "2026-08-18",
+      "body": "An unlinked terminal observation. Contains structural simulation narrative.",
+      "body_path": "03-DERIVATIVES/text/zenodo/zenodo-004-file-0.md"
+    },
+    {
+      "record_id": "src-doc-005_malformed",
+      "entity_id": "src:entity:005",
+      "title": "Malformed Cue Negative Control",
+      "created": "2026-08-20T16:00:00Z",
+      "publication_date": "2026-08-20",
+      "body": "This text contains malformed cues: Explore WithoutPeriod; Explore ? Explore ! Explore A. And Explore TargetTooLongWhichExceedsNinetySixCharactersWithoutAnyIntermediatePunctuationSoItRefusesTheRegexMatchCompletelySoNoMatchOccurs.",
+      "body_path": "03-DERIVATIVES/text/zenodo/zenodo-005-file-0.md"
+    }
+  ],
+  "lift_candidates": [
+    {
+      "transformation_id": "lift-001",
+      "from_id": "src:entity:001",
+      "to_id": "src:entity:002",
+      "claim_effects": {
+        "scope": "NARROWED",
+        "semantic_core": "PRESERVED",
+        "falsifiers": "EXACT_NUMERICAL_BOUNDARY"
+      },
+      "adjudication_status": "OBSERVED",
+      "interpretive_limit": "Representation lift narrowed scope to verified domain."
+    },
+    {
+      "transformation_id": "lift-002",
+      "from_id": "src:entity:002",
+      "to_id": "src:entity:003",
+      "claim_effects": {
+        "scope": "BROADENED",
+        "semantic_core": "MUTATED",
+        "falsifiers": "COUNTERMODEL_EXISTS"
+      },
+      "adjudication_status": "CANDIDATE",
+      "interpretive_limit": "Expansion beyond witnessed evidence."
+    },
+    {
+      "transformation_id": "lift-003",
+      "from_id": "src:entity:003",
+      "to_id": "src:entity:004",
+      "claim_effects": {
+        "scope": "UNKNOWN",
+        "semantic_core": "UNKNOWN",
+        "falsifiers": "NONE"
+      },
+      "adjudication_status": "UNRESOLVED",
+      "interpretive_limit": "Evidence delta indeterminate."
+    }
+  ],
+  "compiler_inputs": [
+    {
+      "compiler_id": "compiler-p2-alpha",
+      "input_id": "src:entity:001",
+      "assigned_role": "PRIMARY_GROUND_WITNESS",
+      "provenance": "WITNESSED_PASS_A",
+      "status": "RECORDED"
+    },
+    {
+      "compiler_id": "compiler-p2-alpha",
+      "input_id": "src:entity:002",
+      "assigned_role": "DERIVED_TOPOLOGICAL_TARGET",
+      "provenance": "WITNESSED_PASS_A",
+      "status": "RECORDED"
+    },
+    {
+      "compiler_id": "compiler-p2-beta",
+      "input_id": "src:entity:001",
+      "assigned_role": "SECONDARY_CONSERVATIVE_CONTROL",
+      "provenance": "WITNESSED_PASS_B",
+      "status": "RECORDED"
+    }
+  ],
+  "recompilation_edges": [
+    {
+      "compiler_id": "compiler-p2-alpha",
+      "from_id": "src:entity:001",
+      "to_id": "src:entity:002",
+      "edge_type": "RECOMPILATION_FLOW"
+    }
+  ],
+  "root_query_data": {
+    "acquisition_outcomes": [
+      { "platform": "zenodo", "state": "ADMITTED" },
+      { "platform": "zenodo", "state": "ADMITTED" },
+      { "platform": "zenodo", "state": "REFUSED" },
+      { "platform": "github", "state": "ADMITTED" }
+    ],
+    "expected_objects": [
+      { "expected_object_id": "src-exp-01", "state": "OPEN_UNRESOLVED", "series_namespace_id": "p2-series" },
+      { "expected_object_id": "src-exp-02", "state": "RESOLVED", "series_namespace_id": "p2-series" }
+    ],
+    "contextual_roles": [
+      { "contextual_role_assertion_id": "cr-01" },
+      { "contextual_role_assertion_id": "cr-02" }
+    ],
+    "compilation_passes": [
+      { "compilation_pass_id": "cp-01" }
+    ],
+    "authority_assertions": [
+      { "authority_assertion_id": "auth-01", "declared_by": "tauric.diana.613", "subject": "SRC_PHASE2", "scope": "BOUNDED_RESEARCH" }
+    ],
+    "evidence_lineages": [
+      { "evidence_lineage_assertion_id": "lin-01", "relationship": "IDENTICAL" }
+    ],
+    "coverage_ledger": [
+      { "trail_id": "trail-01", "status": "VERIFIED" },
+      { "trail_id": "trail-02", "status": "REQUIRES_FURTHER_ASSAY" }
+    ],
+    "entity_resolver": [
+      { "entity_id": "src:entity:001", "record_id": "src-doc-001", "path": "03-DERIVATIVES/text/zenodo/zenodo-001-file-0.md" },
+      { "entity_id": "src:entity:002", "record_id": "src-doc-002", "path": "03-DERIVATIVES/text/zenodo/zenodo-002-file-0.md" }
+    ],
+    "entity_index": [
+      { "entity_id": "src:entity:001", "defined_by_record_id": "src-doc-001", "source_entity_ids": ["src:entity:001:raw"] }
+    ],
+    "typed_edges": [
+      { "from_id": "src:entity:001", "to_id": "src:entity:002", "edge_type": "PROJECTIVE_EXPLORE_LINK" }
+    ],
+    "available_paths": [
+      "03-DERIVATIVES/text/zenodo/zenodo-001-file-0.md",
+      "03-DERIVATIVES/text/zenodo/zenodo-002-file-0.md"
+    ]
+  }
+}
