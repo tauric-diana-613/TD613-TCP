@@ -1,0 +1,64 @@
+{
+  "schema": "td613.architecture-order-research-assay-receipt/v1",
+  "timestamp": "2026-11-05T08:47:02.722Z",
+  "environment": "Node.js v26.7.0",
+  "evidence_count": 5,
+  "external_catalog_count": 6,
+  "controls": {
+    "transport_only_verified": true,
+    "atelier_only_cues": 5,
+    "atelier_only_links": 4,
+    "encyclopedia_only_sources": 5
+  },
+  "sequences": {
+    "H_AoN": {
+      "order": "A o N (Encyclopedia first, then Atelier)",
+      "cues_detected": 5,
+      "candidate_links": 3,
+      "grounded_span_relations": 1,
+      "total_reachable_edges": [
+        "doc:alpha -> doc:beta [EXACT_OR_TITLE_SUBSTRING]",
+        "doc:beta -> doc:gamma [EXACT_OR_TITLE_SUBSTRING]",
+        "doc:beta_mirror_duplicate -> doc:gamma [EXACT_OR_TITLE_SUBSTRING]",
+        "doc:alpha -> doc:epsilon_span_witness [GROUNDED_SPAN_CO_OCCURRENCE]"
+      ]
+    },
+    "H_NoA": {
+      "order": "N o A (Atelier first, then Encyclopedia)",
+      "raw_cues_detected": 5,
+      "raw_candidate_links": 4,
+      "admitted_links": 3,
+      "rejected_links": 1,
+      "rejected_reasons": [
+        {
+          "to": "doc:delta_external",
+          "code": "UNSUPPORTED_GRAPH_LINK"
+        }
+      ],
+      "total_reachable_edges": [
+        "doc:alpha -> doc:beta [EXACT_OR_TITLE_SUBSTRING]",
+        "doc:beta -> doc:gamma [EXACT_OR_TITLE_SUBSTRING]",
+        "doc:beta_mirror_duplicate -> doc:gamma [EXACT_OR_TITLE_SUBSTRING]"
+      ]
+    }
+  },
+  "symmetric_difference": {
+    "in_AoN_not_NoA": [
+      "doc:alpha -> doc:epsilon_span_witness [GROUNDED_SPAN_CO_OCCURRENCE]"
+    ],
+    "in_NoA_not_AoN": [],
+    "cardinality": 1
+  },
+  "withdrawal_assay": {
+    "target_withdrawn": "doc:beta",
+    "AoN_dangling_links_prevented": true,
+    "NoA_admission_rejections_logged": 2
+  },
+  "scientific_conclusion": {
+    "order_sensitivity_observed": true,
+    "deterministic_software_difference": true,
+    "symmetric_difference_nonzero": true,
+    "discovery_mechanism": "In H_{A o N}, Encyclopedia span indexing allows discovering relationships between un-cued co-occurring documents (e.g. doc:epsilon_span_witness) which pure Atelier projective routing misses entirely. In H_{N o A}, Atelier proposes links to unadmitted external targets (e.g. doc:delta_external) which Encyclopedia subsequently rejects at the admission boundary with UNSUPPORTED_GRAPH_LINK.",
+    "claim_ceiling": "ORDER_SENSITIVITY_IN_REACHABLE_RELATIONS_OBSERVED; NO_UNAUTHENTICATED_EMERGENCE_CLAIMED"
+  }
+}
