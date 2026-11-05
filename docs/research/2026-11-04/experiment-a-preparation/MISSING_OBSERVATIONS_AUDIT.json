@@ -1,0 +1,156 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793858073305-23911bfa",
+  "timestamp": "2026-11-05T05:54:33.305Z",
+  "source_revision": "WORKING_TREE_UNCOMMITTED",
+  "source_revision_verified": true,
+  "git_commit_verified": false,
+  "executing_checkout_revision": "WORKING_TREE_UNCOMMITTED",
+  "is_exact_checkout_match": false,
+  "worktree_cleanliness_verified": false,
+  "exact_checkout_verified": false,
+  "current_head_source_equivalence": "EQUIVALENCE_NOT_APPLICABLE",
+  "current_head_source_equivalence_verified": false,
+  "provenance_identities": {
+    "executable_source_revision": "WORKING_TREE_UNCOMMITTED",
+    "audit_execution_revision": "WORKING_TREE_UNCOMMITTED",
+    "git_commit_verified": false,
+    "is_exact_checkout_match": false,
+    "worktree_cleanliness_verified": false,
+    "current_head_source_equivalence": "EQUIVALENCE_NOT_APPLICABLE",
+    "current_head_source_equivalence_verified": false,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": false,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": false,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "HELD"
+  },
+  "nested_extension_holds": [],
+  "is_historical_commit_only": false,
+  "task_scope": "EXPERIMENT_A_PREPARATION_MISSING_EMPIRICAL_RUNTIME_OBSERVATIONS",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "audit-spec.json"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "audit-spec.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "2ca0222c0e0a14a486da7f170a5e6d3cdbf685100413dcb052cecc9aae0ffd63",
+      "byte_digest_verified": true,
+      "sha256": "2ca0222c0e0a14a486da7f170a5e6d3cdbf685100413dcb052cecc9aae0ffd63"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [],
+  "missing_inputs": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "consequence-order-route-burden-practice-and-research-transfer",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability-identifiability-reconstruction-conditioning-and-replay-audit",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "compare-non-equivalent-receiver-projections-against-one-admitted-relation-and-governance-control-plane",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "audit-finite-quotient-fibres-for-exact-admissibility-descent-and-preserve-union-intersection-gap",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "independent-temporal-audit-monotonic-chronology-and-attempt-lineage-preservation",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "HELD_MISSING_OBSERVATION",
+    "consensus": "INCOMPLETE_OBSERVATION",
+    "primary_verdicts_consensus": "INCOMPLETE_OBSERVATION",
+    "nested_extension_holds": [],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Missing domain observation inputs for: PEDAGOGUE, APERTURE, ATLAS, FADT, TEMPORAL_CUSTODIAN."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 16
+}

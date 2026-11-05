@@ -1,0 +1,41 @@
+test_file_manifest_link_tamper (test_experiment_a_preparation_v1.CarrierTests.test_file_manifest_link_tamper) ... ok
+test_genuine_or_expected_field_rejected (test_experiment_a_preparation_v1.CarrierTests.test_genuine_or_expected_field_rejected) ... ok
+test_independent_comparator (test_experiment_a_preparation_v1.CarrierTests.test_independent_comparator) ... ok
+test_original_method_fictional_only (test_experiment_a_preparation_v1.CarrierTests.test_original_method_fictional_only) ... ok
+test_original_native_pins (test_experiment_a_preparation_v1.CarrierTests.test_original_native_pins) ... ok
+test_result_free_closure (test_experiment_a_preparation_v1.CarrierTests.test_result_free_closure) ... ok
+test_strict_json (test_experiment_a_preparation_v1.CarrierTests.test_strict_json) ... ok
+test_actual_availability_stays_held (test_experiment_a_preparation_v1.CustodyTests.test_actual_availability_stays_held) ... ok
+test_bytes_identity_and_duplicate (test_experiment_a_preparation_v1.CustodyTests.test_bytes_identity_and_duplicate) ... ok
+test_distinct_capture_same_bytes (test_experiment_a_preparation_v1.CustodyTests.test_distinct_capture_same_bytes) ... ok
+test_empty_null_absent_withheld (test_experiment_a_preparation_v1.CustodyTests.test_empty_null_absent_withheld) ... ok
+test_exact_capture_requires_time_binding (test_experiment_a_preparation_v1.CustodyTests.test_exact_capture_requires_time_binding) ... ok
+test_graph_and_correction_promotion (test_experiment_a_preparation_v1.CustodyTests.test_graph_and_correction_promotion) ... ok
+test_missing_and_chronology (test_experiment_a_preparation_v1.CustodyTests.test_missing_and_chronology) ... ok
+test_universal_span_hash_offset_duplicate (test_experiment_a_preparation_v1.CustodyTests.test_universal_span_hash_offset_duplicate) ... ok
+test_native_relation_vocabulary_and_manifestation_separation (test_experiment_a_preparation_v1.IdentityCrosswalkTests.test_native_relation_vocabulary_and_manifestation_separation) ... ok
+test_registry_membership_missing_and_later_discovery (test_experiment_a_preparation_v1.IdentityCrosswalkTests.test_registry_membership_missing_and_later_discovery) ... ok
+test_typed_receipt_and_return_ids (test_experiment_a_preparation_v1.IdentityCrosswalkTests.test_typed_receipt_and_return_ids) ... ok
+test_withheld_unknown_survive_and_cannot_supply_spans (test_experiment_a_preparation_v1.IdentityCrosswalkTests.test_withheld_unknown_survive_and_cannot_supply_spans) ... ok
+test_complete_chain (test_experiment_a_preparation_v1.LedgerTests.test_complete_chain) ... ok
+test_genuine_and_receipt_collapse (test_experiment_a_preparation_v1.LedgerTests.test_genuine_and_receipt_collapse) ... ok
+test_interrupt_and_retry (test_experiment_a_preparation_v1.LedgerTests.test_interrupt_and_retry) ... ok
+test_stale_cas_and_closed_fields (test_experiment_a_preparation_v1.LedgerTests.test_stale_cas_and_closed_fields) ... ok
+test_truncation_checkpoint (test_experiment_a_preparation_v1.LedgerTests.test_truncation_checkpoint) ... ok
+test_readonly_synthetic_db_never_claims_genuine_execution (test_experiment_a_preparation_v1.LocalDatabaseContractTests.test_readonly_synthetic_db_never_claims_genuine_execution) ... ok
+test_unapproved_origin_contract_refused (test_experiment_a_preparation_v1.LocalDatabaseContractTests.test_unapproved_origin_contract_refused) ... ok
+test_wrong_pin_and_orphan_capture_refused (test_experiment_a_preparation_v1.LocalDatabaseContractTests.test_wrong_pin_and_orphan_capture_refused) ... ok
+test_46_separate_fields_and_unadjudicated (test_experiment_a_preparation_v1.RegisterTests.test_46_separate_fields_and_unadjudicated) ... ok
+test_all_source_excerpts_against_git (test_experiment_a_preparation_v1.RegisterTests.test_all_source_excerpts_against_git) ... ok
+test_native_loss_remove_duplicate (test_experiment_a_preparation_v1.RegisterTests.test_native_loss_remove_duplicate) ... ok
+test_native_map_readback_cannot_be_promoted_to_execution (test_experiment_a_preparation_v1.RegisterTests.test_native_map_readback_cannot_be_promoted_to_execution) ... ok
+test_original_byte_identity (test_experiment_a_preparation_v1.RegisterTests.test_original_byte_identity) ... ok
+test_provenance_and_excerpt (test_experiment_a_preparation_v1.RegisterTests.test_provenance_and_excerpt) ... ok
+test_support_control_substitution (test_experiment_a_preparation_v1.RegisterTests.test_support_control_substitution) ... ok
+test_unexecuted_promotion (test_experiment_a_preparation_v1.RegisterTests.test_unexecuted_promotion) ... ok
+test_unknown_null_and_authority (test_experiment_a_preparation_v1.RegisterTests.test_unknown_null_and_authority) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 0.619s
+
+OK
