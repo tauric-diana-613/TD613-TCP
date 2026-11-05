@@ -1,0 +1,193 @@
+{
+  "source_revision": "0d4d5eea082acd0227589d28d84460b99c31de7b",
+  "task_scope": "EXPERIMENT_A_FOUR_CROSSING_CAPSTONE_AUDIT",
+  "evidence_class": "FOUR_CROSSING_CAPSTONE_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/four_crossing_capstone/FOUR_ESTATE_PROVENANCE_MATRIX.md",
+    "packages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs",
+    "packages/four_crossing_capstone/custodial-gate-and-time-receipt.json",
+    "packages/four_crossing_capstone/run-encyclopedia-matched-assay.mjs",
+    "packages/four_crossing_capstone/encyclopedia-common-input-receipt.json",
+    "packages/four_crossing_capstone/run-wendbine-matched-assay.mjs",
+    "packages/four_crossing_capstone/wendbine-common-input-receipt.json",
+    "packages/four_crossing_capstone/run-twin-world-assay.mjs",
+    "packages/four_crossing_capstone/twin-world-assay-receipt.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-four-crossing-capstone",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Observed methodological deficits: SAC experimentation reference conflated with human review, un-bound link approvals, lack of common-input baseline."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Repaired Universal Atelier with two explicit jurisdictions (TEST_ONLY_SYNTHETIC vs EXTERNALLY_AUTHENTICATED_HUMAN), repaired link-adjudication parameter binding, executed matched original Encyclopedia and Wendbine experiments, and ran Equal-Graph Twin-World assay."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Common-input differentials measured; Twin-World assay proved terminal graph quotient has 0 mutual information about process history, while retained process witness restores 100% identifiability."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Final four-crossing adjudication synthesized; internal process discriminability distinguished from external empirical origin; protected Experiment B strictly held."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          2.0,
+          0.1
+        ],
+        [
+          0.1,
+          1.8
+        ]
+      ],
+      "candidate_probe": [
+        1.0,
+        0.5
+      ],
+      "noise_covariance": [
+        [
+          0.04,
+          0.01
+        ],
+        [
+          0.01,
+          0.04
+        ]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [
+          2.0,
+          0.1
+        ],
+        [
+          0.1,
+          1.8
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:four_crossing_terminal_research_graph",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:four_crossing_terminal_research_graph",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": {
+          "estates": 4,
+          "common_input_dimensions": 22,
+          "twin_world_accuracy": 1.0,
+          "path": [
+            "S",
+            "E",
+            "W",
+            "T"
+          ]
+        },
+        "right": {
+          "estates": 4,
+          "common_input_dimensions": 22,
+          "twin_world_accuracy": 1.0,
+          "path": [
+            "S",
+            "E",
+            "W",
+            "T"
+          ]
+        }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "terminal_graph_quotient_projection_pi",
+          "support": [
+            "NORMALIZED_NODES",
+            "NORMALIZED_EDGES",
+            "PREDICATE_TYPOGRAPHY"
+          ]
+        },
+        {
+          "state_id": "retained_process_history_fiber_h",
+          "support": [
+            "REJECTED_ATTEMPTS",
+            "REPARATIVE_OVERRIDES",
+            "INTAKE_LINEAGE",
+            "TIME_BASES",
+            "ADJUDICATION_TRAIL"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "CHAMBER_1_PRESERVE_FOUR_FINDINGS",
+        "CHAMBER_2_CUSTODIAL_GATE_REPAIR",
+        "CHAMBER_3_LINK_AND_TIME_REPAIR",
+        "CHAMBER_4_MATCHED_ENCYCLOPEDIA_EXPERIMENT",
+        "CHAMBER_5_WENDBINE_MATCHED_NATIVE_CORRECTION",
+        "CHAMBER_6_EQUAL_GRAPH_TWIN_WORLD_ASSAY",
+        "CHAMBER_7_DOLLHOUSE_FALSIFICATION",
+        "CHAMBER_8_FINAL_SCIENTIFIC_ADJUDICATION"
+      ],
+      "phases": {
+        "CHAMBER_1_PRESERVE_FOUR_FINDINGS": {
+          "status": "PASS",
+          "entry_id": "chamber_1_preserve_four_findings"
+        },
+        "CHAMBER_2_CUSTODIAL_GATE_REPAIR": {
+          "status": "PASS",
+          "entry_id": "chamber_2_custodial_gate_repair"
+        },
+        "CHAMBER_3_LINK_AND_TIME_REPAIR": {
+          "status": "PASS",
+          "entry_id": "chamber_3_link_and_time_repair"
+        },
+        "CHAMBER_4_MATCHED_ENCYCLOPEDIA_EXPERIMENT": {
+          "status": "PASS",
+          "entry_id": "chamber_4_matched_encyclopedia_experiment"
+        },
+        "CHAMBER_5_WENDBINE_MATCHED_NATIVE_CORRECTION": {
+          "status": "PASS",
+          "entry_id": "chamber_5_wendbine_matched_native_correction"
+        },
+        "CHAMBER_6_EQUAL_GRAPH_TWIN_WORLD_ASSAY": {
+          "status": "PASS",
+          "entry_id": "chamber_6_equal_graph_twin_world_assay"
+        },
+        "CHAMBER_7_DOLLHOUSE_FALSIFICATION": {
+          "status": "PASS",
+          "entry_id": "chamber_7_dollhouse_falsification"
+        },
+        "CHAMBER_8_FINAL_SCIENTIFIC_ADJUDICATION": {
+          "status": "PASS",
+          "entry_id": "chamber_8_final_scientific_adjudication"
+        }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

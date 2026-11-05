@@ -1,0 +1,60 @@
+{
+  "schema": "td613.four-crossing-capstone.twin-world-assay-receipt/v1",
+  "evaluated_at": "2026-11-05T18:48:21.979Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "preregistered_theorems": {
+    "terminal_projection_quotient": "Pi(G_A) === Pi(G_B) holds across all 4 estates; canonical graph serialization yields identical SHA-256 digest.",
+    "historical_trace_divergence": "H_A !== H_B holds across all 4 estates; retained adjudication events, rejections, and intake lineage yield distinct digests.",
+    "inquiry_1_terminal_information": "Mutual information I(World; Pi(G)) = 0. Blinded discriminator accuracy = 50% (random guess).",
+    "inquiry_2_witness_identifiability": "When process trace H is provided, discriminator accuracy = 100%. Hidden historical divergence is fully observable.",
+    "externality_boundary_preserved": "Synthetic process trace restores internal discriminability within the constructed experiment without proving external empirical origin. Shared acquisition adds zero independent replication credit."
+  },
+  "estates_evaluated": [
+    {
+      "estate": "SIGNALRUPTURE",
+      "description": "Equal final relation graph; World B retains an Aperture-rejected candidate attempt",
+      "pi_equality": true,
+      "pi_digest": "83904876e455bc3ddad6330e09e0a78289c7d2815601554be97af60838ab47f5",
+      "h_inequality": true,
+      "inquiry_1_terminal_discriminability": 0,
+      "inquiry_2_history_identifiability": 1,
+      "rejection_event_preserved": true,
+      "verdict": "INVARIANT_CONFIRMED"
+    },
+    {
+      "estate": "EMSTD613",
+      "description": "Equal final Work Route node; World B preserves prior Gate #3 human rejection & reparative override",
+      "pi_equality": true,
+      "pi_digest": "b43b34104cfec308c2ec9305a9ac781a85c7d3b281536c5d4a178c5643115c63",
+      "h_inequality": true,
+      "inquiry_1_terminal_discriminability": 0,
+      "inquiry_2_history_identifiability": 1,
+      "rejection_event_preserved": true,
+      "verdict": "INVARIANT_CONFIRMED"
+    },
+    {
+      "estate": "WENDBINE",
+      "description": "Equal 9-graph BOUNDS relation; World B preserves unallowlisted capture rejection event",
+      "pi_equality": true,
+      "pi_digest": "82966929ff0b58f009234508db868e5130c5098e410f52d2ade0d27fc07bc48e",
+      "h_inequality": true,
+      "inquiry_1_terminal_discriminability": 0,
+      "inquiry_2_history_identifiability": 1,
+      "rejection_event_preserved": true,
+      "verdict": "INVARIANT_CONFIRMED"
+    },
+    {
+      "estate": "TD613_REFERENCE",
+      "description": "Equal canonical citation graph; World B retains withdrawn draft accession history",
+      "pi_equality": true,
+      "pi_digest": "7682a155ba426fbb459ae70732cfc7a1bc820347c5e02d326b516ac35d08a622",
+      "h_inequality": true,
+      "inquiry_1_terminal_discriminability": 0,
+      "inquiry_2_history_identifiability": 1,
+      "rejection_event_preserved": true,
+      "verdict": "INVARIANT_CONFIRMED"
+    }
+  ],
+  "all_passed": true
+}

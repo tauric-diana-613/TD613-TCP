@@ -242,10 +242,21 @@ const spanProofValid = {
 const receiptLink1 = 'adj:ua:link:001';
 receiver.registerAdjudicationEvent({
   receiptId: receiptLink1,
+  jurisdiction: 'TEST_ONLY_SYNTHETIC_ADJUDICATION',
+  adjudicatorKind: 'MACHINE_SYNTHETIC',
   adjudicatorRole: 'ATLAS_AUDITOR',
+  action: 'LINK_ADMISSION',
   decision: 'ADMIT',
   targetId: 'link:contract_to_evidence',
   evidenceSha256: spanProofValid.span_sha256,
+  binding: {
+    from_id: syntheticRecord1.id,
+    to_id: syntheticRecord2.id,
+    link_type: 'WARRANTED_BY',
+    span_sha256: spanProofValid.span_sha256,
+    start: spanProofValid.start,
+    end: spanProofValid.end,
+  },
 });
 
 // Adversarial: missing span proof
@@ -345,7 +356,7 @@ recordTest('get returns record with cited_by incoming references', fetched2.cite
 // cite
 const citation1 = receiver.cite(syntheticRecord1.id);
 recordTest('cite produces formatted reference string TD613·UA[...]::sha256(...)', citation1.citation_format.startsWith('TD613·UA[ua:concept:khonalit_po_custody]::sha256('));
-recordTest('cite reports correct claim ceiling and evidence class', citation1.evidence_class === 'SYNTHETIC_RESEARCH_WITNESS');
+recordTest('cite reports correct claim ceiling and evidence class', citation1.evidence_class === 'TEST_ONLY_SYNTHETIC_WITNESS');
 
 // neighbors
 const neighbors1 = receiver.neighbors(syntheticRecord1.id);
