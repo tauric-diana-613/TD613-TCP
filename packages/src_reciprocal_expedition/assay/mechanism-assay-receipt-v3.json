@@ -1,0 +1,679 @@
+{
+  "schema": "td613.mechanism-assay-receipt/v3",
+  "evaluated_at": "2026-11-05T15:22:54.502Z",
+  "evaluation_instrument": {
+    "instrument_name": "run-mechanism-assay-v3.mjs",
+    "receiver_engine": "EmptyEncyclopediaReceiverV3",
+    "corpus": "challenge_corpus_v2.json",
+    "expected_manifest": "expected_manifest_v2.json",
+    "rehabilitations": [
+      "Receiver v3 fatal UTF-8 decoding and safe-integer byte coordinate checks integration",
+      "Cryptographic source-capture-span proof attached to all admitted relations",
+      "Reconciled narrative: retrieval affordance delta is exactly 3 relations"
+    ]
+  },
+  "cells": {
+    "C1_enc_first_retrieval_enabled": {
+      "cell_id": "C1",
+      "execution_order": "ENCYCLOPEDIA_FIRST",
+      "retrieval_affordance": "ENABLED",
+      "receiver_engine": "EmptyEncyclopediaReceiverV3",
+      "admitted_relations": [
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-8420d08a9561aa2d",
+          "registered_at": "2026-11-05T15:22:54.467Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 78,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-d8f706e984366a18",
+          "registered_at": "2026-11-05T15:22:54.467Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 91,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-ed313dbd56f42220",
+          "byte_start": 0,
+          "byte_end": 134,
+          "relation_id": "rel-2b30ac10adc96919",
+          "registered_at": "2026-11-05T15:22:54.467Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-86f87d66f7af0029",
+            "byte_start": 0,
+            "byte_end": 134,
+            "byte_length": 134,
+            "span_bytes_sha256": "fa9955cbc23e4eb4cc38fd875be970b53cee0f3af1338577a3c05f67c7828c6a",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:grounded_cooccurrence",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-608c75dbc867b2c9",
+          "byte_start": 0,
+          "byte_end": 146,
+          "relation_id": "rel-d14b19121fa675ae",
+          "registered_at": "2026-11-05T15:22:54.468Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-e204b474017ab318",
+            "byte_start": 0,
+            "byte_end": 146,
+            "byte_length": 146,
+            "span_bytes_sha256": "ae915fa287e76d5e0f04f2f627ca37b957eac8d1477113d680d355ce5fd3d490",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-9964a0691da2247a",
+          "byte_start": 0,
+          "byte_end": 112,
+          "relation_id": "rel-a2acec38967ef4f6",
+          "registered_at": "2026-11-05T15:22:54.469Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-5c582355cae7f6db",
+            "byte_start": 0,
+            "byte_end": 112,
+            "byte_length": 112,
+            "span_bytes_sha256": "7e4db70b311601e307d84a30ff858d1d5f73efc5d5bdfe55c401e11e7ecdc9e6",
+            "verified": true
+          }
+        }
+      ],
+      "admitted_edge_keys": [
+        "doc:explicit_explore_1->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:explicit_explore_1->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:grounded_cooccurrence->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:unicode_span_witness->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:unicode_span_witness->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE"
+      ],
+      "attempt_log": [
+        {
+          "source_id": "doc:duplicate_carrier_2",
+          "target_id": "doc:duplicate_carrier_1",
+          "relation_type": "SOURCE_ADMISSION",
+          "reason": "DUPLICATE_BODY_ANCESTRAL_LINEAGE_REFUSED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.457Z"
+        },
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:cue",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.460Z"
+        },
+        {
+          "source_id": "doc:unadmitted_target",
+          "target_id": "doc:ghost target gamma",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.460Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.460Z"
+        },
+        {
+          "source_id": "doc:misleading_cooccurrence",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "UNWARRANTED_NOISE_REJECTED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.462Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.465Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.467Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.467Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.468Z"
+        },
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.469Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.469Z"
+        }
+      ],
+      "metrics": {
+        "admitted_edge_count": 5,
+        "expected_edge_count": 5,
+        "true_positives": 5,
+        "admitted_false_link_count": 0,
+        "unsupported_link_count": 0,
+        "grounded_recall": 1,
+        "candidate_precision": 1,
+        "retained_rejections_count": 6,
+        "withdrawal_dropped_edges": 5,
+        "exact_source_span_valid": true,
+        "chronological_correctness": 1,
+        "missing_hop_visibility": true,
+        "carrier_identity_preservation": true
+      }
+    },
+    "C2_atelier_first_retrieval_enabled": {
+      "cell_id": "C2",
+      "execution_order": "ATELIER_FIRST",
+      "retrieval_affordance": "ENABLED",
+      "receiver_engine": "EmptyEncyclopediaReceiverV3",
+      "admitted_relations": [
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-8420d08a9561aa2d",
+          "registered_at": "2026-11-05T15:22:54.481Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 78,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-d8f706e984366a18",
+          "registered_at": "2026-11-05T15:22:54.481Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 91,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-ed313dbd56f42220",
+          "byte_start": 0,
+          "byte_end": 134,
+          "relation_id": "rel-2b30ac10adc96919",
+          "registered_at": "2026-11-05T15:22:54.481Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-86f87d66f7af0029",
+            "byte_start": 0,
+            "byte_end": 134,
+            "byte_length": 134,
+            "span_bytes_sha256": "fa9955cbc23e4eb4cc38fd875be970b53cee0f3af1338577a3c05f67c7828c6a",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:grounded_cooccurrence",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-608c75dbc867b2c9",
+          "byte_start": 0,
+          "byte_end": 146,
+          "relation_id": "rel-d14b19121fa675ae",
+          "registered_at": "2026-11-05T15:22:54.481Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-e204b474017ab318",
+            "byte_start": 0,
+            "byte_end": 146,
+            "byte_length": 146,
+            "span_bytes_sha256": "ae915fa287e76d5e0f04f2f627ca37b957eac8d1477113d680d355ce5fd3d490",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "warrant": "GROUNDED_SPAN_SUBSTRING_MATCH_AFFORDANCE",
+          "chunk_id": "chk-9964a0691da2247a",
+          "byte_start": 0,
+          "byte_end": 112,
+          "relation_id": "rel-a2acec38967ef4f6",
+          "registered_at": "2026-11-05T15:22:54.482Z",
+          "source_capture_span_proof": {
+            "capture_id": "cap-5c582355cae7f6db",
+            "byte_start": 0,
+            "byte_end": 112,
+            "byte_length": 112,
+            "span_bytes_sha256": "7e4db70b311601e307d84a30ff858d1d5f73efc5d5bdfe55c401e11e7ecdc9e6",
+            "verified": true
+          }
+        }
+      ],
+      "admitted_edge_keys": [
+        "doc:explicit_explore_1->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:explicit_explore_1->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:grounded_cooccurrence->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:unicode_span_witness->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:unicode_span_witness->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE"
+      ],
+      "attempt_log": [
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:cue",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.472Z"
+        },
+        {
+          "source_id": "doc:unadmitted_target",
+          "target_id": "doc:ghost target gamma",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.472Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.472Z"
+        },
+        {
+          "source_id": "doc:duplicate_carrier_2",
+          "target_id": "doc:duplicate_carrier_1",
+          "relation_type": "SOURCE_ADMISSION",
+          "reason": "DUPLICATE_BODY_ANCESTRAL_LINEAGE_REFUSED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.476Z"
+        },
+        {
+          "source_id": "doc:misleading_cooccurrence",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "UNWARRANTED_NOISE_REJECTED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.478Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.480Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.481Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.481Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.481Z"
+        },
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.482Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "GROUNDED_SPAN_CO_OCCURRENCE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.482Z"
+        }
+      ],
+      "metrics": {
+        "admitted_edge_count": 5,
+        "expected_edge_count": 5,
+        "true_positives": 5,
+        "admitted_false_link_count": 0,
+        "unsupported_link_count": 0,
+        "grounded_recall": 1,
+        "candidate_precision": 1,
+        "retained_rejections_count": 6,
+        "withdrawal_dropped_edges": 5,
+        "exact_source_span_valid": true,
+        "chronological_correctness": 1,
+        "missing_hop_visibility": true,
+        "carrier_identity_preservation": true
+      }
+    },
+    "C3_enc_first_retrieval_disabled": {
+      "cell_id": "C3",
+      "execution_order": "ENCYCLOPEDIA_FIRST",
+      "retrieval_affordance": "DISABLED",
+      "receiver_engine": "EmptyEncyclopediaReceiverV3",
+      "admitted_relations": [
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-8420d08a9561aa2d",
+          "registered_at": "2026-11-05T15:22:54.491Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 78,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-d8f706e984366a18",
+          "registered_at": "2026-11-05T15:22:54.491Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 91,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        }
+      ],
+      "admitted_edge_keys": [
+        "doc:explicit_explore_1->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:unicode_span_witness->doc:target_beta:EXPLORE_PROJECTIVE"
+      ],
+      "attempt_log": [
+        {
+          "source_id": "doc:duplicate_carrier_2",
+          "target_id": "doc:duplicate_carrier_1",
+          "relation_type": "SOURCE_ADMISSION",
+          "reason": "DUPLICATE_BODY_ANCESTRAL_LINEAGE_REFUSED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.489Z"
+        },
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:cue",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.490Z"
+        },
+        {
+          "source_id": "doc:unadmitted_target",
+          "target_id": "doc:ghost target gamma",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.490Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.490Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.491Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.491Z"
+        }
+      ],
+      "metrics": {
+        "admitted_edge_count": 2,
+        "expected_edge_count": 2,
+        "true_positives": 2,
+        "admitted_false_link_count": 0,
+        "unsupported_link_count": 0,
+        "grounded_recall": 1,
+        "candidate_precision": 1,
+        "retained_rejections_count": 4,
+        "withdrawal_dropped_edges": 2,
+        "exact_source_span_valid": true,
+        "chronological_correctness": 1,
+        "missing_hop_visibility": true,
+        "carrier_identity_preservation": true
+      }
+    },
+    "C4_atelier_first_retrieval_disabled": {
+      "cell_id": "C4",
+      "execution_order": "ATELIER_FIRST",
+      "retrieval_affordance": "DISABLED",
+      "receiver_engine": "EmptyEncyclopediaReceiverV3",
+      "admitted_relations": [
+        {
+          "from": "doc:explicit_explore_1",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-8420d08a9561aa2d",
+          "registered_at": "2026-11-05T15:22:54.500Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 78,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        },
+        {
+          "from": "doc:unicode_span_witness",
+          "to": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "warrant": "EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY",
+          "cue_text": "Explore Target Beta Document.",
+          "relation_id": "rel-d8f706e984366a18",
+          "registered_at": "2026-11-05T15:22:54.501Z",
+          "source_capture_span_proof": {
+            "cue_text": "Explore Target Beta Document.",
+            "byte_offset": 91,
+            "cue_bytes_sha256": "875e390971b838ad646f076f49b21cfb5e9d16be04655d42a3553467e81eca94",
+            "verified": true
+          }
+        }
+      ],
+      "admitted_edge_keys": [
+        "doc:explicit_explore_1->doc:target_beta:EXPLORE_PROJECTIVE",
+        "doc:unicode_span_witness->doc:target_beta:EXPLORE_PROJECTIVE"
+      ],
+      "attempt_log": [
+        {
+          "source_id": "doc:grounded_cooccurrence",
+          "target_id": "doc:cue",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.494Z"
+        },
+        {
+          "source_id": "doc:unadmitted_target",
+          "target_id": "doc:ghost target gamma",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "UNSUPPORTED_GRAPH_LINK_UNADMITTED_ENDPOINT",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.494Z"
+        },
+        {
+          "source_id": "doc:chronological_inversion",
+          "target_id": "doc:ancient_alpha",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PREEXISTING_CHRONOLOGY_BLOCKED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.494Z"
+        },
+        {
+          "source_id": "doc:duplicate_carrier_2",
+          "target_id": "doc:duplicate_carrier_1",
+          "relation_type": "SOURCE_ADMISSION",
+          "reason": "DUPLICATE_BODY_ANCESTRAL_LINEAGE_REFUSED",
+          "status": "REJECTED",
+          "recorded_at": "2026-11-05T15:22:54.499Z"
+        },
+        {
+          "source_id": "doc:explicit_explore_1",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.501Z"
+        },
+        {
+          "source_id": "doc:unicode_span_witness",
+          "target_id": "doc:target_beta",
+          "relation_type": "EXPLORE_PROJECTIVE",
+          "reason": "PASSED_ADMISSION",
+          "status": "ADMITTED",
+          "recorded_at": "2026-11-05T15:22:54.501Z"
+        }
+      ],
+      "metrics": {
+        "admitted_edge_count": 2,
+        "expected_edge_count": 2,
+        "true_positives": 2,
+        "admitted_false_link_count": 0,
+        "unsupported_link_count": 0,
+        "grounded_recall": 1,
+        "candidate_precision": 1,
+        "retained_rejections_count": 4,
+        "withdrawal_dropped_edges": 2,
+        "exact_source_span_valid": true,
+        "chronological_correctness": 1,
+        "missing_hop_visibility": true,
+        "carrier_identity_preservation": true
+      }
+    }
+  },
+  "relation_set_differences": {
+    "order_effect_retrieval_enabled": {
+      "in_A_not_B": [],
+      "in_B_not_A": [],
+      "cardinality": 0
+    },
+    "order_effect_retrieval_disabled": {
+      "in_A_not_B": [],
+      "in_B_not_A": [],
+      "cardinality": 0
+    },
+    "retrieval_effect_enc_first": {
+      "in_A_not_B": [
+        "doc:explicit_explore_1->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:grounded_cooccurrence->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:unicode_span_witness->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE"
+      ],
+      "in_B_not_A": [],
+      "cardinality": 3
+    },
+    "retrieval_effect_atelier_first": {
+      "in_A_not_B": [
+        "doc:explicit_explore_1->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:grounded_cooccurrence->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE",
+        "doc:unicode_span_witness->doc:target_beta:GROUNDED_SPAN_CO_OCCURRENCE"
+      ],
+      "in_B_not_A": [],
+      "cardinality": 3
+    }
+  },
+  "scientific_conclusion": {
+    "falsification_verdict": "ORDER_COMMUTATIVITY_OBSERVED_IN_SYNTHETIC_CONFIGURATION",
+    "explanation": "Under Receiver v3 strict UTF-8 custody and matched affordances, execution orders yield identical admitted relation sets in this synthetic configuration (|Delta(C1, C2)| = 0, |Delta(C3, C4)| = 0). Enabling retrieval affordance adds exactly 3 grounded relation edges (|Delta(C1, C3)| = 3, |Delta(C2, C4)| = 3). Universal algebraic commutativity across dynamic domains remains strictly unproved and withheld."
+  }
+}

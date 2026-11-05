@@ -253,24 +253,28 @@
       {
         "case_id": "q_trace_connected",
         "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
         "witnessed_hops": [
-          "zenodo:1001",
-          "zenodo:1002",
-          "zenodo:1004"
+          "zenodo:1001"
         ],
         "missing_hop_declared": false,
-        "missing_intermediate": null,
-        "speculative_join_invented": false
+        "missing_hops": [],
+        "speculative_join_invented": false,
+        "semantic_ceiling": "Witnessed records only; no missing hops invented."
       },
       {
         "case_id": "q_trace_missing_hop",
         "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
         "witnessed_hops": [
           "zenodo:1001"
         ],
         "missing_hop_declared": true,
-        "missing_intermediate": "zenodo:unadmitted_intermediate_9999",
-        "speculative_join_invented": false
+        "missing_hops": [
+          "NO_DOWNSTREAM_WITNESSED_RELATION"
+        ],
+        "speculative_join_invented": false,
+        "semantic_ceiling": "Witnessed records only; no missing hops invented."
       }
     ]
   }

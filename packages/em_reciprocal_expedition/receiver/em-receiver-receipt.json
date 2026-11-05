@@ -1,0 +1,127 @@
+{
+  "schema": "td613.em-receiver-receipt/v1",
+  "evaluated_at": "2026-11-05T15:30:55.008Z",
+  "receiver_schema": "td613.em-empty-receiver/v1",
+  "total_tests": 21,
+  "passed_tests": 21,
+  "failed_tests": 0,
+  "all_passed": true,
+  "initial_state_witness": {
+    "schema": "td613.em-empty-receiver/v1",
+    "witness_hash": "1faf35f453da9d3776f5c2403d86b52aecf4d61e3b608e55b4cabc1f0267d80c",
+    "initialized_at": "2026-11-05T15:30:55.000Z",
+    "entropy": "dd500efa-90a1-49d5-9419-6be552fc1dd8"
+  },
+  "test_census": [
+    {
+      "name": "Unique initial witness created",
+      "passed": true,
+      "details": {
+        "schema": "td613.em-empty-receiver/v1",
+        "witness_hash": "1faf35f453da9d3776f5c2403d86b52aecf4d61e3b608e55b4cabc1f0267d80c"
+      }
+    },
+    {
+      "name": "Schema conforms to td613.em-empty-receiver/v1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected malformed UTF-8 lone continuation bytes with MALFORMED_UTF8_SEQUENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid UTF-8 text containing Covenant Khona‌lit-po",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Classified binary data as BYTE_EVIDENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected fractional coordinate with INVALID_COORDINATES",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected NaN coordinate with INVALID_COORDINATES",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected out-of-bounds span with INVALID_SPAN",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused text decoding on BYTE_EVIDENCE span (span_text is null)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Exact raw binary bytes roundtrip losslessly",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Text span correctly decoded",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Extracted derivative registered linking parent source",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected derivative for nonexistent source with PARENT_SOURCE_NOT_FOUND",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Singleton Work route admitted without human gate",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Paired Work route admitted with human gate required",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected invalid work identity status with INVALID_WORK_IDENTITY_STATUS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Linked manifestation with cryptographic evidence hash",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Contextual role asserted with compiler-pass scoping",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected intrinsic role promotion with INTRINSIC_ROLE_PROMOTION_FORBIDDEN",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted relation with cryptographic span proof",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation missing span proof with MISSING_SPAN_PROOF",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "governing_covenant": "Khona‌lit-po",
+  "disposition": "EM_EMPTY_RECEIVER_VERIFIED_CLEAN"
+}

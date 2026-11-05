@@ -1,0 +1,30 @@
+{
+  "schema": "td613.shadow-graph-receipt/v3",
+  "evaluated_at": "2026-11-05T15:22:54.186Z",
+  "engine_version": "BoundaryAttemptGraphV3",
+  "verified_rehabilitations": [
+    "Default-deny warrant validation: unrecognized/fabricated warrants strictly rejected",
+    "Relation-specific temporal rules: backward historical citations permitted; forward exploration strictly forward",
+    "Two-phase re-adjudication: PENDING_READJUDICATION precedes predicate validation",
+    "Retained event history preserves full trajectory without in-place mutation loss",
+    "Comparison universe accurately measures NEVER_GENERATED relations"
+  ],
+  "census": {
+    "total_nodes": 5,
+    "admitted_nodes": 5,
+    "withdrawn_nodes": 0,
+    "total_attempts_recorded": 7,
+    "distinct_edges_attempted": 6,
+    "comparison_universe_size": 3,
+    "counts_by_epistemic_state": {
+      "ADMITTED": 2,
+      "ATTEMPTED_REJECTED": 4,
+      "NEVER_GENERATED": 1,
+      "WITHHELD_LACK_OF_EVIDENCE": 0,
+      "WITHDRAWN_SCOPE_CHANGE": 0,
+      "AWAITING_UNRESOLVED_EXTERNAL": 0,
+      "PENDING_READJUDICATION": 0
+    }
+  },
+  "verdict": "ALL_SHADOW_GRAPH_V3_DEFAULT_DENY_INVARIANTS_HELD"
+}

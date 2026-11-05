@@ -210,11 +210,71 @@ def run_query(deck_data: dict, temp_root: Path) -> dict:
         {"capture_id": "cap:1004", "target_id": "zenodo:1004"},
     ])
 
+    # Seed complete archival stores for connected trace
+    derivative_file = temp_root / "01-MANIFESTS" / "phase2" / "derivative-v1.jsonl"
+    derivative_file.parent.mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(derivative_file, [
+        {"capture_id": "cap:1001", "derivative_id": "der:1001"},
+        {"capture_id": "cap:1002", "derivative_id": "der:1002"},
+        {"capture_id": "cap:1004", "derivative_id": "der:1004"},
+    ])
+
+    evidence_file = temp_root / "04-RECEIPTS" / "assays" / "2026-08-24-phase15-authority-recompilation" / "witnessed-evidence.jsonl"
+    evidence_file.parent.mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(evidence_file, [
+        {"manifestation_id": "zenodo:1001", "evidence_id": "ev:1001"},
+        {"manifestation_id": "zenodo:1002", "evidence_id": "ev:1002"},
+        {"manifestation_id": "zenodo:1004", "evidence_id": "ev:1004"},
+    ])
+
+    relations_file = temp_root / "05-OPERATIONS" / "relations" / "typed-edges.jsonl"
+    relations_file.parent.mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(relations_file, [
+        {"from_id": "zenodo:1001", "to_id": "zenodo:1002"},
+        {"from_id": "zenodo:1002", "to_id": "zenodo:1004"},
+    ])
+
+    auth_file = temp_root / "05-OPERATIONS" / "phase2" / "authority-jurisdiction-assertions.jsonl"
+    auth_file.parent.mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(auth_file, [
+        {"subject": {"id": "zenodo:1001"}, "declarer": {"id": "zenodo:1001"}},
+        {"subject": {"id": "zenodo:1002"}, "declarer": {"id": "zenodo:1002"}},
+        {"subject": {"id": "zenodo:1004"}, "declarer": {"id": "zenodo:1004"}},
+    ])
+
     # Touch mock doc files
     (temp_root / "doc").mkdir(parents=True, exist_ok=True)
     (temp_root / "doc" / "1001").write_text("doc1001", encoding="utf-8")
     (temp_root / "doc" / "1002").write_text("doc1002", encoding="utf-8")
     (temp_root / "doc" / "1004").write_text("doc1004", encoding="utf-8")
+
+    # Also prepare a parallel root with missing relation/intermediate for q_trace_missing_hop
+    missing_root = temp_root / "sub_missing_root"
+    missing_root.mkdir(parents=True, exist_ok=True)
+    for sub in ["01-MANIFESTS", "01-MANIFESTS/phase2", "04-RECEIPTS/phase2", "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation", "05-OPERATIONS/phase2", "doc"]:
+        (missing_root / sub).mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(missing_root / "01-MANIFESTS/entity-index.jsonl", [
+        {"entity_id": "zenodo:1001", "defined_by_record_id": "1001", "source_entity_ids": ["zenodo:1001"]}
+    ])
+    phase2.write_rows(missing_root / "01-MANIFESTS/phase2/entity-resolver-v2.jsonl", [
+        {"entity_id": "zenodo:1001", "path": "doc/1001", "capture_id": "cap:1001"}
+    ])
+    phase2.write_rows(missing_root / "01-MANIFESTS/phase2/capture-v2.jsonl", [
+        {"capture_id": "cap:1001", "target_id": "zenodo:1001"}
+    ])
+    phase2.write_rows(missing_root / "01-MANIFESTS/phase2/derivative-v1.jsonl", [
+        {"capture_id": "cap:1001", "derivative_id": "der:1001"}
+    ])
+    phase2.write_rows(missing_root / "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl", [
+        {"manifestation_id": "zenodo:1001", "evidence_id": "ev:1001"}
+    ])
+    # Note: 05-OPERATIONS/relations/typed-edges.jsonl is deliberately omitted in missing_root
+    (missing_root / "05-OPERATIONS/relations").mkdir(parents=True, exist_ok=True)
+    phase2.write_rows(missing_root / "05-OPERATIONS/relations/typed-edges.jsonl", [])
+    phase2.write_rows(missing_root / "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl", [
+        {"subject": {"id": "zenodo:1001"}, "declarer": {"id": "zenodo:1001"}}
+    ])
+    (missing_root / "doc/1001").write_text("doc1001", encoding="utf-8")
 
     query_results = []
     for case in deck_data["query_cases"]:
@@ -238,16 +298,23 @@ def run_query(deck_data: dict, temp_root: Path) -> dict:
                 })
         elif "trace" in case_id:
             start_entity = case["start_entity"]
-            tr = query.trace(temp_root, start_entity)
-            has_missing = bool(case.get("missing_intermediate")) or (len(tr.get("missing_hops", [])) > 0)
+            active_root = missing_root if case.get("missing_intermediate") else temp_root
+            tr = query.trace(active_root, start_entity)
+            # Bind directly to authentic trace output tr['missing_hops'] (S21-F05 fix)
+            oracle_missing_hops = tr.get("missing_hops", [])
+            has_missing = len(oracle_missing_hops) > 0
+            witnessed_entities = [h["entity_id"] for h in tr.get("resolver_records", []) if h.get("entity_id")]
+
             query_results.append({
                 "case_id": case_id,
                 "start_entity": start_entity,
-                "witnessed_hops": [h["entity_id"] for h in tr["resolver_records"] if h.get("entity_id")],
-                "missing_hop_declared": bool(case.get("missing_intermediate")),
-                "missing_intermediate": case.get("missing_intermediate"),
-                "missing_hops": tr.get("missing_hops", []),
-                "speculative_join_invented": False,
+                "status": tr.get("status", "UNKNOWN"),
+                "witnessed_hops": witnessed_entities,
+                "missing_hop_declared": has_missing,
+                "missing_hops": oracle_missing_hops,
+                "join_rule": tr.get("join_rule", "UNKNOWN"),
+                "speculative_joins_present": False,
+                "unsupported_components": "UNKNOWN",
             })
 
     return {"query_results": query_results}

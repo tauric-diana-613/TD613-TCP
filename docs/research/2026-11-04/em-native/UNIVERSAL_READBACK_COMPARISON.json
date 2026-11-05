@@ -1,0 +1,80 @@
+{
+  "revision": "583c2b24a0680fcc1c3fba15dbace26dfe6c636e",
+  "bridge_sha256": "7316ed7b1d257d13370738aade7780883e096d5264590ff632dab70e3a701209",
+  "fixture_readbacks": [
+    {
+      "fixture": "em_identity",
+      "native_relative_path": "01-MANIFESTS/registry-index.json",
+      "sha256": "ce43c6dd63f0e9d530e4c16819ee0ee69ea7e995a1b3c5df5ac1d21fb3d2dbd5",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_source_identity",
+      "native_relative_path": "01-MANIFESTS/source-files.jsonl",
+      "sha256": "8af1515beab4451976c403ffaba869b93a175efef2c6fb184567e29444eba659",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_work_index",
+      "native_relative_path": "01-MANIFESTS/work-index.jsonl",
+      "sha256": "e3448b04b0fbe00ac159f2f29e1bfc07f7ae6880bfe435990ed1599b1e0209ec",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_title_candidates",
+      "native_relative_path": "01-MANIFESTS/title-relation-candidates.json",
+      "sha256": "e6255f2f0c9ff2992d65bef167775b1dd900cdddc35ff21756b689e1a50a69e4",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_typed_schema",
+      "native_relative_path": "01-MANIFESTS/SCHEMA.md",
+      "sha256": "7076f03563b971d0f0665d87ffb38d5b7b2c94674fd7ff78d2c26955e71d4fa1",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_lineage_protocol",
+      "native_relative_path": "06-INSTRUMENTS/LINEAGE_ASSAY_PROTOCOL.md",
+      "sha256": "819e033fcf879b78b35a1eb45838bb3f11d311c1a1c04beff12724453ce7c235",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_motif_mechanism",
+      "native_relative_path": "06-INSTRUMENTS/MOTIF_TO_MECHANISM_TRANSLATION.md",
+      "sha256": "c41cbe0692790f4e7d6aefacf6f5068aa1f80be70b348f27ae86b5468da36617",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_authority_geometry",
+      "native_relative_path": "06-INSTRUMENTS/AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1.md",
+      "sha256": "4e5b1a98bef1382430f2f3b84115b6422b67e5fe9838bfcf62b7dab4e69c12f8",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_claim_ceiling",
+      "native_relative_path": "06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md",
+      "sha256": "f46082c0e9c861eab3da3f1d62a5ebb8b9dbd8581d7b3af3cb5d447fb1b2f399",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_convergence",
+      "native_relative_path": "06-INSTRUMENTS/CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX.md",
+      "sha256": "c998e58362af8c400f6800c867c1d6b248976ce4575129f30ba1ece4dfd695bb",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_giveback",
+      "native_relative_path": "05-OPERATIONS/EM_GIVEBACK_RESEARCH_PROGRAM_V0_1.md",
+      "sha256": "d51d4012a19e3c7820e9b9913233752f6d37fde0986a8d733c52afa200fcf1b8",
+      "original_method_executed": false
+    },
+    {
+      "fixture": "em_negative_control",
+      "native_relative_path": "01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "sha256": "5aa217b5dc2cc5aef7574f167c329325d3b95893dcbabe4267266778aad554da",
+      "original_method_executed": false
+    }
+  ],
+  "unsupported_fixture_refused": true,
+  "scientific_method_execution": false
+}
