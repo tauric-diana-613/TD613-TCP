@@ -2,7 +2,8 @@
 from collections import Counter
 from .common import commitment,digest
 FIELDS=('implemented_or_restored_capability','observed_native_execution','scientific_result','supported_claim_ceiling','evidence_required_for_promotion','falsifiers_and_negative_controls','remaining_human_authority_gate')
-STATES={'SUPPORTED_BOUNDED_EXECUTION','CONDITIONAL_PROTOCOL_ONLY','INTERPRETIVE_LIMIT_ONLY','HISTORICAL_RESULT_ONLY','UNADJUDICATED'}
+STATES={'SUPPORTED_BOUNDED_EXECUTION','SUPPORTED_BOUNDED_READBACK','SUPPORTED_BYTE_BINDING_LIMIT','CONDITIONAL_PROTOCOL_ONLY','INTERPRETIVE_LIMIT_ONLY','HISTORICAL_RESULT_ONLY','UNADJUDICATED'}
+READBACK={'Relational topology':('SUPPORTED_BOUNDED_READBACK','SOURCE_BOUND_READBACK_WITH_GENERIC_CONTROL'),'Cartography':('SUPPORTED_BOUNDED_READBACK','SOURCE_BOUND_READBACK_ONLY'),'UNKNOWN / null / missing evidence':('SUPPORTED_BOUNDED_READBACK','SOURCE_BOUND_READBACK_ONLY'),'Snapshot / seal / witnesses':('SUPPORTED_BYTE_BINDING_LIMIT','SOURCE_BOUND_BINDING_CHECKS')}
 def validate(v2,old,raw):
  if v2.get('schema')!='td613.scientific-qualification-register/v2' or v2.get('prior_register_sha256')!=digest(raw):raise ValueError('PRIOR_REGISTER_PIN_OR_SCHEMA')
  prior={(r['estate'],r['method_or_investigation_id']):r for r in old['records']};seen=set()
@@ -25,6 +26,7 @@ def validate(v2,old,raw):
   elif not isinstance(text,str) or not text.strip():raise ValueError('CEILING_TEXT_REQUIRED')
   if text and (any(text==row[f].get('text') for f in FIELDS if f!='supported_claim_ceiling') or text in [p.get('current_universal_atelier_support'),p.get('negative_controls_falsifiers_unresolved')]):raise ValueError('CROSS_FIELD_SUBSTITUTION')
   execution=row['observed_native_execution']
+  if row['estate']=='SRC' and row['method_or_investigation_id'] in READBACK and (state,execution['state'])!=READBACK[row['method_or_investigation_id']]:raise ValueError('READBACK_OR_BINDING_PROMOTED_TO_EXECUTION')
   if state=='SUPPORTED_BOUNDED_EXECUTION' and execution['state'] not in ('ORIGINAL_PUBLIC_EXECUTED','NEW_SYNTHETIC_TRANSCRIPTION','SYNTHETIC_ONLY'):raise ValueError('UNSUPPORTED_EXECUTION_PROMOTION')
   if row['estate']=='EMSTD613' and execution.get('original_standalone_executors_recovered')!=0:raise ValueError('INVENTED_EM_EXECUTOR')
   if row.get('source_entailment_adjudication')!='HUMAN_REVIEW_REQUIRED' or row['remaining_human_authority_gate'].get('automatic_authorization') is not False:raise ValueError('AUTHORITY_WIDENING')

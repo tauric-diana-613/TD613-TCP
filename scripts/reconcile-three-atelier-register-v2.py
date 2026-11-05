@@ -68,6 +68,8 @@ def build():
    if ceiling is None:ex='PROPOSAL_OR_GENUINE_RUNTIME_UNEXECUTED'
    elif estate=='WENDBINE' and n==7:ex='NEW_SYNTHETIC_TRANSCRIPTION'
    elif estate=='WENDBINE' and n==12:ex='SYNTHETIC_ONLY'
+   elif estate=='SRC' and n in (5,6,9):state='SUPPORTED_BOUNDED_READBACK';ex='SOURCE_BOUND_READBACK_WITH_GENERIC_CONTROL' if n==5 else 'SOURCE_BOUND_READBACK_ONLY'
+   elif estate=='SRC' and n==8:state='SUPPORTED_BYTE_BINDING_LIMIT';ex='SOURCE_BOUND_BINDING_CHECKS'
    execution={'state':ex,'text':native['reproduction_or_differential_result']}
    scientific={'state':'HISTORICAL_RECORDED' if historic else 'UNESTABLISHED' if ceiling is None else 'BOUNDED_COMPUTATIONAL_OBSERVATION','text':'The qualified observation for '+mid+' is confined to its recorded input, epoch and evidence class.'}
    if estate=='WENDBINE':refs['native']=citation(native['original_source_revision'],'packages/dome_world_exact/fixtures/a15-r0/WENDBINE/'+native['exact_witness'],native=True)
@@ -76,12 +78,13 @@ def build():
   c=f(ceiling,state=state)
   if state=='UNADJUDICATED':c['reason']='No determinate achieved scientific ceiling established for '+mid+'; human adjudication remains required.'
   if estate=='EMSTD613' and state!='UNADJUDICATED':c['source_declared_conditional_or_interpretive_limit']=refs['native']['excerpt']
+  scientific['recorded_native_observation']=native['reproduction_or_differential_result'];scientific['interpretation_status']='BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED'
   execution['evidence_refs']=list(refs);scientific['evidence_refs']=list(refs)
   rows.append({'estate':estate,'method_or_investigation_id':mid,'prior_record_sha256':commitment(p),'estate_native_record':native,'sources':refs,
    'implemented_or_restored_capability':f(p['current_universal_atelier_support']),'observed_native_execution':execution,'scientific_result':scientific,'supported_claim_ceiling':c,
-   'evidence_required_for_promotion':f('Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for '+mid+'. This requirement grants no authority.',classification='SOURCE_BOUND_REVIEW_REQUIREMENT'),
+   'evidence_required_for_promotion':f('A promotion requirement has not been scientifically adjudicated for '+mid+'. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.',classification='UNADJUDICATED_PROMOTION_REQUIREMENT',native_required_repair=native.get('required_repair'),native_continuity_requirement=native.get('v2_and_capsule_requirements')),
    'falsifiers_and_negative_controls':f(p['negative_controls_falsifiers_unresolved']),
-   'remaining_human_authority_gate':f('Human admission, activation, interpretation and scientific closure remain reserved.',automatic_authorization=False),'source_entailment_adjudication':'HUMAN_REVIEW_REQUIRED'})
+   'remaining_human_authority_gate':f('Human admission, activation, interpretation and scientific closure remain reserved.',native_held_or_human_gated_state=native.get('held_or_human_gated_state'),automatic_authorization=False),'source_entailment_adjudication':'HUMAN_REVIEW_REQUIRED'})
  v={'schema':'td613.scientific-qualification-register/v2','correction_kind':'ADDITIVE_FIELD_INTEGRITY_REPAIR','prior_revision':'6ec4d6ebac2025e47222166b8050c55a26c5268d','prior_register_path':str(OLD.relative_to(ROOT)),'prior_register_sha256':digest(oldraw),'independent_review_id':5778948250,'records':rows,'automatic_authorization':False}
  validate(v,old,oldraw);return v
 if __name__=='__main__':

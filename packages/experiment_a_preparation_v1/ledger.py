@@ -1,6 +1,6 @@
 """Synthetic attempt journal with independent checkpoints; no WORM claim."""
 from pathlib import Path
-import os
+import os,re
 from .common import canonical,read_json,commitment,digest
 KEYS={'schema','episode_id','attempt_id','event','origin_receipt_id','recipient_receipt_id','input_sha256','output_sha256','comparison_sha256','runtime_receipt_sha256','reason_code','source_class'}
 TERMINAL={'FAILED','INTERRUPTED','INCONCLUSIVE','CONTAMINATION','STOPPED','CLOSED'}
@@ -24,6 +24,8 @@ def append(path,event,expected):
  if set(event)-KEYS or event.get('schema')!='td613.experiment-attempt-event/v1':raise ValueError('CLOSED_EVENT_SCHEMA')
  if event.get('source_class')!='SYNTHETIC':raise ValueError('SYNTHETIC_ONLY')
  if any(not isinstance(event.get(k),str) or not event[k] for k in ('episode_id','attempt_id','origin_receipt_id','input_sha256')):raise ValueError('ATTEMPT_BINDING')
+ if any(k in event and (not isinstance(event[k],str) or not re.fullmatch('[0-9a-f]{64}',event[k])) for k in ('input_sha256','output_sha256','comparison_sha256','runtime_receipt_sha256')):raise ValueError('TYPED_RECEIPT_HASH')
+ if 'recipient_receipt_id' in event and (not isinstance(event['recipient_receipt_id'],str) or not event['recipient_receipt_id']):raise ValueError('TYPED_RECIPIENT_ID')
  if event.get('recipient_receipt_id')==event['origin_receipt_id']:raise ValueError('RECEIPT_IDENTITY_COLLAPSE')
  lock=p.with_name(p.name+'.lock');fd=os.open(lock,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
  try:

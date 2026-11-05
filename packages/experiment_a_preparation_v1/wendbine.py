@@ -1,7 +1,9 @@
 """Origin-only population/span crosswalk. Hash integrity is not external origin."""
 from collections import Counter,defaultdict
 import datetime as dt,re
-from .common import digest
+from pathlib import Path
+from .common import digest,read_json
+CONTRACT=read_json((Path(__file__).resolve().parent/'native/wendbine-native-compiler-contract-v1.json').read_bytes())
 SID=re.compile(r'^reddit:t3_[a-z0-9]{5,12}$');GRAPHS={'G_D','G_A','G_F','G_I','G_T','G_P','G_R','G_O','G_X'};LINKS={'MANIFESTATION','NAVIGATIONAL','EXPLICIT_WENDBINE_POST_LINK'}
 def instant(v):
  if not isinstance(v,str):raise ValueError('EXPLICIT_UTC_INSTANT')
@@ -28,9 +30,13 @@ def verify_capture(r):
   b.decode('utf8')
   if digest(b)!=r.get(h):raise ValueError('CAPTURE_DIGEST')
   states[field]='NONEMPTY_BYTES' if b else 'EXPLICIT_EMPTY_BYTES'
+ declared=r.get('declared_evidence_states',{})
+ if not isinstance(declared,dict) or set(declared)-{'title','selftext'} or any(v not in ('UNKNOWN','WITHHELD') for v in declared.values()):raise ValueError('DECLARED_EVIDENCE_TYPE')
+ states['declared_evidence']=declared.copy()
  states['disclosure']='WITHHELD' if r.get('withheld') is True else 'ORIGIN_LOCAL_ONLY';return states
 def verify_span(c,x):
  f={'body':'selftext','selftext':'selftext','title':'title'}.get(x.get('source_field'));b=c.get(f)
+ if c.get('withheld') is True or c.get('declared_evidence_states',{}).get(f) in ('UNKNOWN','WITHHELD'):raise ValueError('WITHHELD_OR_UNKNOWN_SPAN_NOT_AVAILABLE')
  if not isinstance(b,bytes):raise ValueError('SOURCE_SPAN_UNAVAILABLE')
  if x.get('source_sha256')!=digest(b):raise ValueError('UNIVERSAL_SOURCE_DIGEST')
  at=x.get('byte_offset');text=x.get('text')
@@ -39,7 +45,7 @@ def verify_span(c,x):
  if at+len(raw)>len(b) or b[at:at+len(raw)]!=raw or digest(raw)!=x.get('chunk_sha256'):raise ValueError('UNIVERSAL_SPAN_DRIFT')
  return f,at,at+len(raw)
 def qualify(a_posts,b_manifestations,b_captures,c_captures,*,universal_chunks=None,relations=(),correction_edges=()):
- aset={};bset={};cset=defaultdict(list);caps={};states=Counter()
+ aset={};bset={};cset=defaultdict(list);caps={};states=Counter();evidence={}
  for r in a_posts:
   s=sid(r['source_id'])
   if s in aset or r.get('time_precision')!='DAY' or r.get('source_text_stored') is not False:raise ValueError('A_IDENTITY_PRECISION_OR_METADATA')
@@ -51,7 +57,7 @@ def qualify(a_posts,b_manifestations,b_captures,c_captures,*,universal_chunks=No
  for r in c_captures:
   st=verify_capture(r)
   if r['capture_id'] in caps:raise ValueError('DUPLICATE_CAPTURE')
-  caps[r['capture_id']]=r;cset[r['source_id']].append(r);states.update([st['title']+' / '+st['selftext']])
+  caps[r['capture_id']]=r;evidence[r['capture_id']]=st;cset[r['source_id']].append(r);states.update([st['title']+' / '+st['selftext']])
  def bound(b,c):return isinstance(c.get('title'),bytes) and isinstance(c.get('selftext'),bytes) and all(isinstance(b.get(k),str) and re.fullmatch('[0-9a-f]{64}',b[k]) for k in ('body_sha256_utf8','title_sha256_utf8')) and c.get('body_sha256')==b['body_sha256_utf8'] and c.get('title_sha256')==b['title_sha256_utf8']
  seen=set();exact=compatible=unbound=0;conflicts=[]
  for r in b_captures:
@@ -71,6 +77,7 @@ def qualify(a_posts,b_manifestations,b_captures,c_captures,*,universal_chunks=No
  for e in relations:
   g=e.get('graph');graphs[g]+=1
   if g not in GRAPHS|LINKS or not e.get('source_witness') or (g in GRAPHS and e.get('kind')!='SCIENTIFIC_LEGACY') or (g in LINKS and e.get('kind')!='CAPTURE_OR_RETRIEVAL'):raise ValueError('GRAPH_TYPE_OR_WITNESS_PROMOTION')
+  if g in GRAPHS and (e.get('relation') not in CONTRACT['graph_relation_vocabulary'][g] or e.get('evidence_class') not in CONTRACT['evidence_classes'] or any(not isinstance(e.get(k),str) or not e[k] for k in ('from','to'))):raise ValueError('UNSUPPORTED_NATIVE_RELATION_OR_ENDPOINT')
  for e in correction_edges:
   if not e.get('source_witness') or e.get('status') not in ('HISTORICAL_RECORDED','UNADJUDICATED'):raise ValueError('UNWITNESSED_CORRECTION')
  spans=defaultdict(list);unique=set()
@@ -90,5 +97,8 @@ def qualify(a_posts,b_manifestations,b_captures,c_captures,*,universal_chunks=No
     if start>covered:break
     covered=max(covered,end)
    if covered!=len(b):missing+=1
- held=not caps or bool(set(aset)-set(cset) or set(aset)-set(bset) or unbound or conflicts or universal_chunks is None or missing)
- return {'schema':'td613.wendbine.origin-custody-crosswalk/v1','populations':{'A_public_references':len(aset),'B_manifestations':len(bset),'B_captures':len(seen),'C_sources':len(cset),'C_captures':len(caps)},'A_source_membership':{'in_B':len(set(aset)&set(bset)),'in_C':len(set(aset)&set(cset)),'missing_from_B':sorted(set(aset)-set(bset)),'missing_from_C':sorted(set(aset)-set(cset))},'capture_relationships':{'EXACT_IDENTITY':exact,'BYTE_COMPATIBLE_DISTINCT_CAPTURE':compatible,'UNBOUND_OLD_CAPTURE':unbound},'C_field_states':dict(states),'chronology_conflicts':conflicts,'graph_counts':dict(graphs),'universal_readback':'HELD_NOT_SUPPLIED' if universal_chunks is None else 'EXACT_SPANS_COMPLETE' if not missing else 'HELD_INCOMPLETE_SPAN_COVERAGE','universal_missing_nonempty_fields':missing,'origin_byte_readback':'VERIFIED' if caps else 'HELD_NO_LOCAL_CAPTURE_ROWS','crosswalk_disposition':'HELD' if held else 'BOUNDED_IDENTITIES_AND_READBACK_CHECKED','source_provenance':'INTERNAL_ORIGIN_BYTES_AND_DECLARED_METADATA_ONLY','external_origin_authentication':'UNESTABLISHED_BY_HASHES','path_provenance':'UNOBSERVED','scientific_state_migration':'UNESTABLISHED','receiver_admission':False,'automatic_authorization':False}
+ held=not caps or bool(set(aset)-set(cset) or set(aset)-set(bset) or unbound or conflicts or universal_chunks is None or missing or any(st['disclosure']=='WITHHELD' or st['declared_evidence'] for st in evidence.values()))
+ crosswalk=[]
+ for s in sorted(set(aset)|set(bset)|set(cset)):
+  crosswalk.append({'source_id':s,'A_registry_member':s in aset,'B_manifestation_id':bset.get(s,{}).get('manifestation_id'),'B_work_id':bset.get(s,{}).get('work_id'),'C_capture_ids':[c['capture_id'] for c in sorted(cset.get(s,[]),key=lambda c:(instant(c['captured_at_utc']),c['capture_id']))],'state':'UNBOUND_NO_C_CAPTURE' if s not in cset else 'LATER_DISCOVERY_OUTSIDE_A' if s not in aset else 'A_REFERENCE_WITH_C_CAPTURE'})
+ return {'schema':'td613.wendbine.origin-custody-crosswalk/v1','populations':{'A_public_references':len(aset),'B_manifestations':len(bset),'B_captures':len(seen),'C_sources':len(cset),'C_captures':len(caps)},'A_source_membership':{'in_B':len(set(aset)&set(bset)),'in_C':len(set(aset)&set(cset)),'missing_from_B':sorted(set(aset)-set(bset)),'missing_from_C':sorted(set(aset)-set(cset))},'source_identity_crosswalk':crosswalk,'capture_relationships':{'EXACT_IDENTITY':exact,'BYTE_COMPATIBLE_DISTINCT_CAPTURE':compatible,'UNBOUND_OLD_CAPTURE':unbound},'C_field_states':dict(states),'capture_evidence_states':evidence,'chronology_conflicts':conflicts,'graph_counts':dict(graphs),'universal_readback':'HELD_NOT_SUPPLIED' if universal_chunks is None else 'EXACT_SPANS_COMPLETE' if not missing else 'HELD_INCOMPLETE_SPAN_COVERAGE','universal_missing_nonempty_fields':missing,'origin_byte_readback':'VERIFIED' if caps else 'HELD_NO_LOCAL_CAPTURE_ROWS','crosswalk_disposition':'HELD' if held else 'BOUNDED_IDENTITIES_AND_READBACK_CHECKED','source_provenance':'INTERNAL_ORIGIN_BYTES_AND_DECLARED_METADATA_ONLY','external_origin_authentication':'UNESTABLISHED_BY_HASHES','path_provenance':'UNOBSERVED','scientific_state_migration':'UNESTABLISHED','receiver_admission':False,'automatic_authorization':False}

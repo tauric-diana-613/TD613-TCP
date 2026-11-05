@@ -75,6 +75,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Projective routing is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Original CLI and direct functions produce identical summaries: 442 documents; 417 Explore observations; 34 signature groups; 17 literal field markers",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -89,12 +91,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Projective routing. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Projective routing. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -109,6 +113,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -177,6 +182,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Contextual roles / compilation is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Exact regeneration of 107 role assertions and 27 compiler passes; 20 subjects retain multiple compiler/scope/time/role contexts",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -191,12 +198,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Contextual roles / compilation. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Contextual roles / compilation. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -211,6 +220,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -279,6 +289,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Typed role / provenance traversal is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Original witnessed target returns 3 relations; absent target retains all 6 missing-hop classes. Explicit replay returns identical native trace results with 12 consumed files verified",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -293,12 +305,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Typed role / provenance traversal. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Typed role / provenance traversal. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -313,6 +327,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -364,6 +379,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Chronology and classification changes is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "53 later-exact cases tested; logically withdrawing their later-exact destination candidates changes 52 classifications. As-of views never receive a later-exact class",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification"
         ]
@@ -376,11 +393,13 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Chronology and classification changes. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Chronology and classification changes. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -393,6 +412,7 @@
         "evidence_refs": [
           "qualification"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -466,6 +486,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Claim–evidence tomography is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "34/34 ordered rows reproduced; source bytes and returned typed rows preserved by the adapter",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -480,12 +502,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Claim–evidence tomography. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Claim–evidence tomography. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -500,6 +524,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -563,7 +588,7 @@
         ]
       },
       "observed_native_execution": {
-        "state": "ORIGINAL_PUBLIC_EXECUTED",
+        "state": "SOURCE_BOUND_READBACK_WITH_GENERIC_CONTROL",
         "text": "50 original typed-edge rows returned exactly; unsupported projection and absent-ID controls refuse fabricated relations; original Tarjan control passes",
         "evidence_refs": [
           "qualification",
@@ -573,6 +598,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Relational topology is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "50 original typed-edge rows returned exactly; unsupported projection and absent-ID controls refuse fabricated relations; original Tarjan control passes",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -584,15 +611,17 @@
           "qualification",
           "native"
         ],
-        "state": "SUPPORTED_BOUNDED_EXECUTION"
+        "state": "SUPPORTED_BOUNDED_READBACK"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Relational topology. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Relational topology. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -607,6 +636,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -665,7 +695,7 @@
         ]
       },
       "observed_native_execution": {
-        "state": "ORIGINAL_PUBLIC_EXECUTED",
+        "state": "SOURCE_BOUND_READBACK_ONLY",
         "text": "3 immutable map snapshots returned exactly with source status and incomplete-enumeration limits intact",
         "evidence_refs": [
           "qualification",
@@ -675,6 +705,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Cartography is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "3 immutable map snapshots returned exactly with source status and incomplete-enumeration limits intact",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -686,15 +718,17 @@
           "qualification",
           "native"
         ],
-        "state": "SUPPORTED_BOUNDED_EXECUTION"
+        "state": "SUPPORTED_BOUNDED_READBACK"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Cartography. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Cartography. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -709,6 +743,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -777,6 +812,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Heterostratigraphy is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "107 original context rows preserved; builder parity and multiple-context traversal verified",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -791,12 +828,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Heterostratigraphy. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Heterostratigraphy. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -811,6 +850,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -879,7 +919,7 @@
         ]
       },
       "observed_native_execution": {
-        "state": "ORIGINAL_PUBLIC_EXECUTED",
+        "state": "SOURCE_BOUND_BINDING_CHECKS",
         "text": "Projection digest recomputed; consumed bytes verified; 51 LF/CRLF variants diagnosed. All 56 distinct tomography evidence IDs resolve; 55 line locators are in bounds and the remaining archive row-count locator matches",
         "evidence_refs": [
           "qualification",
@@ -889,6 +929,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for Snapshot / seal / witnesses is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Projection digest recomputed; consumed bytes verified; 51 LF/CRLF variants diagnosed. All 56 distinct tomography evidence IDs resolve; 55 line locators are in bounds and the remaining archive row-count locator matches",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -900,15 +942,17 @@
           "qualification",
           "native"
         ],
-        "state": "SUPPORTED_BOUNDED_EXECUTION"
+        "state": "SUPPORTED_BYTE_BINDING_LIMIT"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Snapshot / seal / witnesses. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Snapshot / seal / witnesses. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -923,6 +967,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -965,7 +1010,7 @@
         ]
       },
       "observed_native_execution": {
-        "state": "ORIGINAL_PUBLIC_EXECUTED",
+        "state": "SOURCE_BOUND_READBACK_ONLY",
         "text": "UNKNOWN and explicit null each survive all 34 rows; absent fields fail null queries; false fails null comparison; exponent overflow, source hash, snapshot, schema and seal negatives remain covered",
         "evidence_refs": [
           "qualification"
@@ -974,6 +1019,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for UNKNOWN / null / missing evidence is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "UNKNOWN and explicit null each survive all 34 rows; absent fields fail null queries; false fails null comparison; exponent overflow, source hash, snapshot, schema and seal negatives remain covered",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification"
         ]
@@ -983,14 +1030,16 @@
         "evidence_refs": [
           "qualification"
         ],
-        "state": "SUPPORTED_BOUNDED_EXECUTION"
+        "state": "SUPPORTED_BOUNDED_READBACK"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for UNKNOWN / null / missing evidence. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for UNKNOWN / null / missing evidence. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -1003,6 +1052,7 @@
         "evidence_refs": [
           "qualification"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -1071,6 +1121,8 @@
       "scientific_result": {
         "state": "UNESTABLISHED",
         "text": "The qualified observation for Holonomy–tomography crossover is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "30 documentary proposals remain separately classified; original routing forbids automatic holonomy promotion; adapter refuses a crossover schema posing as native tomography",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1086,12 +1138,14 @@
         "reason": "No determinate achieved scientific ceiling established for Holonomy–tomography crossover; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for Holonomy–tomography crossover. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for Holonomy–tomography crossover. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Source-free carrier completed in #1683; runtime isolation and specific genuine admission remain held.",
+        "native_continuity_requirement": "Keep native projective/compiler/authority semantics, sealed replay ancestry, UNKNOWN/null distinctions and inert scientific holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained 16-group source-bound receipt and 55 carrier controls; no genuine receiver admission.",
@@ -1106,6 +1160,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Reciprocal qualification HELD; scientific closure reserved.",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -1173,6 +1228,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "ACADEMIA_SUI_GENERIS_SIEVE_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1188,12 +1245,14 @@
         "reason": "No determinate achieved scientific ceiling established for ACADEMIA_SUI_GENERIS_SIEVE_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for ACADEMIA_SUI_GENERIS_SIEVE_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for ACADEMIA_SUI_GENERIS_SIEVE_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1207,6 +1266,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: EMSTD613 ATELIER RESEARCH INSTRUMENT / NOT TD613 LAW"
         ],
         "automatic_authorization": false
       },
@@ -1276,6 +1338,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1291,12 +1355,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 13. Claim ceiling\n\nA passing assay may support only:\n\n```text\nG_O_G_S_G_A_LOCAL_SEPARATION_SUPPORTED_IN_AUTHORED_SYNTHETIC_FIXTURE\nDEFICIT_INDEXED_AUTHORITY_INVERSION_CANDIDATE_SUPPORTED_LOCALLY\nR_PLUS_PRESERVATION_DIFFERENCE_OBSERVED_IN_PAIRED_FIXTURE\n```\n\nIt may not support:\n\n```text\nuniversal intelligent-systems theorem\nuniversal safety theorem\nproof of TD613 lineage\nproof of Em derivation\nproduction AIA redesign\nautonomous authority reassignment\nhuman authority reduction\nlive governance deployment\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1310,6 +1376,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1379,6 +1449,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1394,12 +1466,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 12. Claim ceiling\n\nA passing synthetic assay may support only:\n\n```text\nMEMORYLESS_THRESHOLD_CHATTER_OBSERVED_IN_BOUNDED_FIXTURE\nSCHMITT_STYLE_PERSISTENCE_REDUCED_CHATTER_WITHOUT_INVALID_STATE_MASKING\nAPERTURE_TEMPORAL_STABILITY_REFINEMENT_CANDIDATE\n```\n\nIt may not support:\n\n```text\nproduction Aperture modification\nuniversal threshold values\nuniversal control-theoretic identity\nhuman behavioral inference\nexternal sensor design\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1413,6 +1487,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NO APERTURE RELEASE MUTATION",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1482,6 +1560,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1497,12 +1577,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 12. Claim ceiling\n\nA passing bounded assay may support only:\n\n```text\nAUTHORITY_COMPOSITION_REQUIRES_SCOPE_PRESERVATION_IN_FIXTURE\nLOCAL_EDGE_VALIDITY_NOT_SUFFICIENT_FOR_GLOBAL_AUTHORITY_PATH_IN_FIXTURE\nAUTHORITY_COMPOSITION_DEBT_CANDIDATE\n```\n\nIt may not support:\n\n```text\ncurrent TD613 exploit\nexternal compromise\nuniversal capability-security theorem\nproduction mutation\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1516,6 +1598,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1585,6 +1671,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1600,12 +1688,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 13. Claim ceiling\n\nA passing synthetic assay may support only:\n\n```text\nAUTHORITY_RESTORATION_HYSTERESIS_SUPPORTED_IN_BOUNDED_FIXTURE\nSAME_CURRENT_STATE_NOT_SUFFICIENT_FOR_SAME_AUTHORITY_IN_BOUNDED_FIXTURE\nROUTE_MEMORY_RELEVANT_TO_REAUTHORIZATION_CANDIDATE\n```\n\nIt may not support:\n\n```text\nuniversal governance theorem\nproduction Cistern mutation\nproduction AIA mutation\nautomatic human-lock requirements\nexternal security certification\nholonomy claim\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1619,6 +1709,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1688,6 +1782,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "AUTHORITY_PATH_CATEGORY_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1703,12 +1799,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 10. Claim ceiling\n\nA passing bounded assay may support only:\n\n```text\nTYPED_PARTIAL_COMPOSITION_USEFUL_FOR_AUTHORITY_PROVENANCE_FIXTURE\nAUTHORITY_GRAPH_NOT_SUFFICIENT_WITHOUT_EDGE_COMPOSITION_LAW_IN_FIXTURE\nAUTHORITY_PATH_CATEGORY_CANDIDATE\n```\n\nIt may not support:\n\n```text\ncategory-theoretic theorem about production TD613\nholonomy\ngroupoid identity\nsecurity certification\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for AUTHORITY_PATH_CATEGORY_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for AUTHORITY_PATH_CATEGORY_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1722,6 +1820,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1791,6 +1893,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1806,12 +1910,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 13. Claim ceiling\n\nA bounded passing assay may support only:\n\n```text\nAUTHORITY_PROVENANCE_DISTINGUISHABLE_FROM_CURRENT_AUTHORITY_IN_FIXTURE\nCURRENT_PERMISSION_NOT_SUFFICIENT_FOR_PERMISSION_ROUTE_IDENTITY_IN_FIXTURE\nAUTHORITY_DEBT_REPRESENTATION_CANDIDATE\nFOURTH_GEOMETRY_CANDIDATE_FOR_DOME_WORLD\n```\n\nIt may not support:\n\n```text\nproduction vulnerability\nsecurity compromise\nuniversal authorization theorem\nautomatic AIA/Cistern mutation\nidentity or motive inference\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1825,6 +1931,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -1893,6 +2003,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -1908,12 +2020,14 @@
         "reason": "No determinate achieved scientific ceiling established for BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -1927,6 +2041,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH-ONLY / EMSTD613 Atelier"
         ],
         "automatic_authorization": false
       },
@@ -1996,6 +2113,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2011,12 +2130,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 7. Claim ceiling\n\nA passing assay may support only:\n\n```text\nCURRENT_CISTERN_CONTRACT_DOES_NOT_FIRST_CLASS_AUTHORITY_ANCESTRY\nPAYLOAD_ROUTE_AND_PERMISSION_ROUTE_SEPARATION_CANDIDATE\nAUTHORITY_ROUTE_RECEIPT_CANDIDATE\n```\n\nIt may not support:\n\n```text\nproduction exploit\nunauthorized access occurred\nCistern insecurity certification\nmandatory architecture change\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2030,6 +2151,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -2098,6 +2223,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "CLAIM_CEILING_PROPAGATION_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2113,12 +2240,14 @@
         "reason": "No determinate achieved scientific ceiling established for CLAIM_CEILING_PROPAGATION_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for CLAIM_CEILING_PROPAGATION_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for CLAIM_CEILING_PROPAGATION_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2132,6 +2261,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH-ONLY / EMSTD613 Atelier"
         ],
         "automatic_authorization": false
       },
@@ -2198,6 +2330,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2213,12 +2347,14 @@
         "reason": "No determinate achieved scientific ceiling established for CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2233,6 +2369,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": [],
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -2301,6 +2438,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2316,12 +2455,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 13. Claim ceiling\n\nA passing bounded assay may support only:\n\n```text\nTOTAL_ORDER_INSUFFICIENT_FOR_DECLARED_AUTHORITY_ASSIGNMENTS_IN_FIXTURE\nDEFICIT_INDEXED_AUTHORITY_POSET_CANDIDATE_SUPPORTED_LOCALLY\nNON_COMPENSABLE_RIGHT_REPRESENTATION_REQUIRED_IN_FIXTURE\n```\n\nIt may not support:\n\n```text\nuniversal governance theorem\nproduction AIA authority redesign\nautomatic rights allocation\npolitical or legal authority claims\nhuman authority reduction\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2335,6 +2476,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -2403,6 +2548,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "DERIVATIVE_CLOCK_CUSTODY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2418,12 +2565,14 @@
         "source_declared_conditional_or_interpretive_limit": "## Interpretation ceilings\n\n```text\nDELTA_ACROSS_LAYERS -> change across representational depth\nDELTA_ACROSS_TOKENS -> change across generation order\nD/DT_CONTINUOUS_DEPTH -> derivative inside a continuous-depth model\nD/DT_PLANT -> physical rate only when tied to physical time and a measured plant\n```\n\nWords such as `predictive`, `anticipatory`, `momentum`, `velocity`, or `temporal` are explanatory language unless the appropriate clock and predictive evaluation are bound.\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for DERIVATIVE_CLOCK_CUSTODY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for DERIVATIVE_CLOCK_CUSTODY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2437,6 +2586,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH INSTRUMENT / EMSTD613 ONLY"
         ],
         "automatic_authorization": false
       },
@@ -2505,6 +2657,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2520,12 +2674,14 @@
         "reason": "No determinate achieved scientific ceiling established for EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2539,6 +2695,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: PREREGISTERED RESEARCH DESIGN / NOT EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -2607,6 +2766,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2622,12 +2783,14 @@
         "reason": "No determinate achieved scientific ceiling established for FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2641,6 +2804,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH-ONLY / EMSTD613 Atelier"
         ],
         "automatic_authorization": false
       },
@@ -2709,6 +2875,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "FORMAL_OPERATOR_CUSTODY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2724,12 +2892,14 @@
         "reason": "No determinate achieved scientific ceiling established for FORMAL_OPERATOR_CUSTODY_V0_1; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for FORMAL_OPERATOR_CUSTODY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for FORMAL_OPERATOR_CUSTODY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2743,6 +2913,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH-ONLY / EMSTD613 Atelier"
         ],
         "automatic_authorization": false
       },
@@ -2809,6 +2982,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "LINEAGE_ASSAY_PROTOCOL remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2824,12 +2999,14 @@
         "reason": "No determinate achieved scientific ceiling established for LINEAGE_ASSAY_PROTOCOL; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for LINEAGE_ASSAY_PROTOCOL. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for LINEAGE_ASSAY_PROTOCOL. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2844,6 +3021,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": [],
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -2909,6 +3087,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "MOTIF_TO_MECHANISM_TRANSLATION remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -2924,12 +3104,14 @@
         "reason": "No determinate achieved scientific ceiling established for MOTIF_TO_MECHANISM_TRANSLATION; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for MOTIF_TO_MECHANISM_TRANSLATION. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for MOTIF_TO_MECHANISM_TRANSLATION. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -2944,6 +3126,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": [],
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3012,6 +3195,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3027,12 +3212,14 @@
         "source_declared_conditional_or_interpretive_limit": "## 13. Claim ceiling\n\nA passing bounded assay may support:\n\n```text\nNORMALIZATION_INDUCED_CONVERGENCE_OBSERVED_IN_BOUNDED_FIXTURE\nCOMPARISON_OPERATOR_ERASED_MECHANISM_DISCRIMINATING_CONSTRAINT\nNORMALIZED_RECURRENCE_NOT_SUFFICIENT_FOR_MECHANISM_IDENTITY\n```\n\nIt may not support:\n\n```text\nall cross-domain abstraction is invalid\nPedagogue recurrence is generally unsound\nall EMSTD613 cross-domain similarities are artifacts\nexternal scientific equivalence or inequivalence\nproduction mutation\n```\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -3046,6 +3233,10 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: AUTHORED / RESEARCH-ONLY / PRE-EXECUTION / NON-PROMOTING",
+          "STATUS = CANDIDATE_ASSAY_AUTHORED_NOT_YET_EXECUTED"
         ],
         "automatic_authorization": false
       },
@@ -3112,6 +3303,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "OBFUSCATION_DECOMPRESSION_PROTOCOL remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3127,12 +3320,14 @@
         "reason": "No determinate achieved scientific ceiling established for OBFUSCATION_DECOMPRESSION_PROTOCOL; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for OBFUSCATION_DECOMPRESSION_PROTOCOL. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for OBFUSCATION_DECOMPRESSION_PROTOCOL. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -3147,6 +3342,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": [],
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3214,6 +3410,8 @@
       "scientific_result": {
         "state": "NO_NEW_SCIENTIFIC_RESULT",
         "text": "SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1 remains a documentary instrument; readback establishes no newly observed scientific outcome.",
+        "recorded_native_observation": "EXACT_BYTE_READBACK_ONLY; scientific assay not resumed",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3229,12 +3427,14 @@
         "source_declared_conditional_or_interpretive_limit": "## Promotion rule\n\nA semantic-control result may be promoted from `TRACKING_VALIDATED` toward `FACTUAL_CONTROL_CANDIDATE` only when the reference constructor and witness relation are separately measured.\n\n```text\nTRACKING_VALIDATED\n+\nREFERENCE_PROVENANCE_VALIDATED\n+\nMEASUREMENT_CALIBRATED\n+\nCLAIM_CEILING_PRESERVED\n->\nFACTUAL_CONTROL_CANDIDATE\n```\n\nEven then, `CANDIDATE` is not universal factual certification.\n\n"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Recover original executor if one exists, or separately register a new protocol implementation",
+        "native_continuity_requirement": "Retain exact protocol, sources, typed operator/claim jurisdiction, receipts and held states"
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserved in exact original protocol; execution requires its own governed assay",
@@ -3248,6 +3448,9 @@
         "evidence_refs": [
           "qualification",
           "native"
+        ],
+        "native_held_or_human_gated_state": [
+          "Status: RESEARCH INSTRUMENT / EMSTD613 ONLY"
         ],
         "automatic_authorization": false
       },
@@ -3313,6 +3516,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for PUBLIC_TYPED_TOPOLOGY_COMPILER is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "33 posts; 191 concepts; 146 typed relations; nine independent graph families. New strict successor matches exact native output; independent Python oracle agrees.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3327,12 +3532,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for PUBLIC_TYPED_TOPOLOGY_COMPILER. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for PUBLIC_TYPED_TOPOLOGY_COMPILER. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Original permissive inputs remain versioned; successor refuses unsupported graph/relation/evidence, identity substitution, duplicated witnesses and body-field masking.",
@@ -3347,6 +3554,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3411,6 +3619,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for SOURCE_DECLARATION_AND_COOCCURRENCE is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "43 recurrent concepts and 143 co-occurrences reproduced with exact source support sets. Declaration and co-occurrence evidence stay separate.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3425,12 +3635,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for SOURCE_DECLARATION_AND_COOCCURRENCE. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for SOURCE_DECLARATION_AND_COOCCURRENCE. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Co-occurrence remains noncausal; unknown sources and full-body flags refused by original; stronger versioned validation in successor.",
@@ -3445,6 +3657,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3509,6 +3722,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for SOURCE_EXPLICIT_CORRECTION is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Exact correction landmark reddit:t3_1wd7mjl retained; correction/source-synthesis flags survive original compilation.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3523,12 +3738,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for SOURCE_EXPLICIT_CORRECTION. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for SOURCE_EXPLICIT_CORRECTION. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Preserve both source assertion and researcher interpretation; no automatic chronological authority.",
@@ -3543,6 +3760,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3610,6 +3828,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for HELD_OUT_RECONSTRUCTION is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Pre-assay Git freeze bound; historical four constrained placements and EchoCore failure verified as saved receipts; no new prediction run.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3624,12 +3844,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for HELD_OUT_RECONSTRUCTION. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for HELD_OUT_RECONSTRUCTION. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "C1 order effect unidentified at DAY precision; C2/C3 structural ablations only; C4 NOT_BOUND_NOT_EXECUTED / HELD; full success unearned.",
@@ -3644,6 +3866,10 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": {
+          "S5_CONVERGENCE_DIVERGENCE_LINEAGE": "HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY",
+          "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK"
+        },
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3708,6 +3934,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for BOUNDED_NOMENCLATURE_OPERATOR_CROSSWALK is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "14 rows: 4 BETTER_NAME, 1 BETTER_OPERATOR, 6 BOTH, 2 NEITHER, 1 REJECTED; source references preserved.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3722,12 +3950,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for BOUNDED_NOMENCLATURE_OPERATOR_CROSSWALK. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for BOUNDED_NOMENCLATURE_OPERATOR_CROSSWALK. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Conventional terminology confers no donor provenance; lineage, novelty and foreign donor chamber remain held.",
@@ -3742,6 +3972,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3806,6 +4037,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for RESIDUAL_LITERATURE_SIEVE is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Seven saved verdict rows; original source supplement retained.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3820,12 +4053,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for RESIDUAL_LITERATURE_SIEVE. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for RESIDUAL_LITERATURE_SIEVE. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "External literature was not independently revalidated in this bounded source-method qualification; no source-poster authorship or novelty promotion.",
@@ -3840,6 +4075,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -3904,6 +4140,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for DEVASTATE_REPAIR_SIEVE is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Six saved zero-promotion verdicts and four surviving research targets preserved.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -3918,12 +4156,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for DEVASTATE_REPAIR_SIEVE. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for DEVASTATE_REPAIR_SIEVE. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Retained questions about evidence-state utility, AIA governance, PRCS-A stage witnesses and scoped holonomy remain prospective.",
@@ -3938,6 +4178,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4002,6 +4243,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for ORDERING_SCAB is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "24 permutations reproduce 5 terminal classes and canonical class size 9; selected pair has an intermediate distinction; commuting control one class.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4016,12 +4259,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for ORDERING_SCAB. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for ORDERING_SCAB. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Finite declared synthetic operators only; no original executable recovered, no native public-poster or external pipeline claim.",
@@ -4036,6 +4281,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4100,6 +4346,8 @@
       "scientific_result": {
         "state": "HISTORICAL_RECORDED",
         "text": "The qualified observation for PORTABLE_AIA_ASSURANCE_DELTA is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Four accepted operator-sharpening distinctions preserved: direct edges, source/path provenance, observation boundary, carriage/enforcement.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4114,12 +4362,14 @@
         "state": "HISTORICAL_RESULT_ONLY"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for PORTABLE_AIA_ASSURANCE_DELTA. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for PORTABLE_AIA_ASSURANCE_DELTA. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Uses September 11 parent corpus; September 13 date carries no source refresh. Freshness, update propagation, robustness/recovery extensions remain HELD.",
@@ -4134,6 +4384,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4198,6 +4449,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for UNIFIED_PUBLIC_QUERY is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "39,308 indexed metadata/receipt records; lexical/weighted-concept/recent/resolve APIs remain distinct. Held capture debt stays queryable.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4212,12 +4465,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for UNIFIED_PUBLIC_QUERY. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for UNIFIED_PUBLIC_QUERY. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Weighted token concept semantics supplies no embeddings or causal relation inference; 39,308 records are not 39,308 posts or full bodies.",
@@ -4232,6 +4487,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4296,6 +4552,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for CAPTURE_RECONCILIATION is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "25 observed = 0 persisted + 25 explicit failures; negative unexplained-gap control refused.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4310,12 +4568,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for CAPTURE_RECONCILIATION. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for CAPTURE_RECONCILIATION. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Reconciled debt remains lost historical payload; no inferred recovery or silent erase.",
@@ -4330,6 +4590,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4394,6 +4655,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for SEALED_PUBLIC_EPOCH_QUERY is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "20 route/action cases on original sealed epoch; 2,062 manifestations / 6,763 captures; wrong seal, unknown action/route and mutated member refused.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4408,12 +4671,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for SEALED_PUBLIC_EPOCH_QUERY. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for SEALED_PUBLIC_EPOCH_QUERY. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "All 6,703 present edges are MANIFESTATION; preserve separate nine-family legacy scientific topology. Metadata queries establish no private-body availability.",
@@ -4428,6 +4693,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4492,6 +4758,8 @@
       "scientific_result": {
         "state": "BOUNDED_COMPUTATIONAL_OBSERVATION",
         "text": "The qualified observation for TIME_INDEXED_CAPTURE_COMPILATION is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Pure compileSync: time-indexed capture changes with stable source/manifestation and one blob for unchanged content; removed source held; predecessor unchanged.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4506,12 +4774,14 @@
         "state": "SUPPORTED_BOUNDED_EXECUTION"
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for TIME_INDEXED_CAPTURE_COMPILATION. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for TIME_INDEXED_CAPTURE_COMPILATION. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "No live discovery, gate activation, encryption/writeProjection or private bootstrap executed.",
@@ -4526,6 +4796,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"
@@ -4590,6 +4861,8 @@
       "scientific_result": {
         "state": "UNESTABLISHED",
         "text": "The qualified observation for VERBATIM_ACQUISITION_AND_PRIVATE_QUERY is confined to its recorded input, epoch and evidence class.",
+        "recorded_native_observation": "Private query/audit/restore, archive/OAuth rescue and chat-export tools discovered from original estate.",
+        "interpretation_status": "BOUNDED_HISTORICAL_OR_QUALIFICATION_OBSERVATION; HUMAN_ENTAILMENT_REVIEW_REQUIRED",
         "evidence_refs": [
           "qualification",
           "native"
@@ -4605,12 +4878,14 @@
         "reason": "No determinate achieved scientific ceiling established for VERBATIM_ACQUISITION_AND_PRIVATE_QUERY; human adjudication remains required."
       },
       "evidence_required_for_promotion": {
-        "text": "Independently meet the source-specific witnesses and controls, adjudicate their applicability and approve any expanded claim for VERBATIM_ACQUISITION_AND_PRIVATE_QUERY. This requirement grants no authority.",
+        "text": "A promotion requirement has not been scientifically adjudicated for VERBATIM_ACQUISITION_AND_PRIVATE_QUERY. Independently evaluate the retained native requirements and evidence before proposing a specific expanded claim.",
         "evidence_refs": [
           "qualification",
           "native"
         ],
-        "classification": "SOURCE_BOUND_REVIEW_REQUIREMENT"
+        "classification": "UNADJUDICATED_PROMOTION_REQUIREMENT",
+        "native_required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+        "native_continuity_requirement": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
       },
       "falsifiers_and_negative_controls": {
         "text": "Original DBs, raw source captures, private keys/archives, provider authorization and exact environment remain separate custody dependencies; none acquired or admitted.",
@@ -4625,6 +4900,7 @@
           "qualification",
           "native"
         ],
+        "native_held_or_human_gated_state": "Original declared state preserved",
         "automatic_authorization": false
       },
       "source_entailment_adjudication": "HUMAN_REVIEW_REQUIRED"

@@ -21,7 +21,7 @@ def execute(t,node):
  return read_json(r.stdout)
 def returned(t,result,*,return_id,recipient_id):
  validate(t)
- if not return_id or not recipient_id:raise ValueError('RETURN_IDENTITIES')
+ if any(not isinstance(x,str) or not x for x in (return_id,recipient_id)):raise ValueError('RETURN_IDENTITIES')
  return {'schema':'td613.experiment-a.blind-return/v1','episode_id':t['episode_id'],'task_id':t['task_id'],'task_sha256':commitment(t),'return_id':return_id,'recipient_id':recipient_id,'result':result}
 def compare(origin,ret,*,return_id,recipient_id):
  t=validate(origin['task'])
