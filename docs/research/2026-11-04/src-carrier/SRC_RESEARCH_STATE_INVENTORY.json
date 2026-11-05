@@ -1,0 +1,516 @@
+{
+  "authority": {
+    "execute_on_restore": false,
+    "human_closure_required": true,
+    "migration": false,
+    "succession": false
+  },
+  "pending_human_decisions": "NO_COMPLETE_RUNTIME_DECISION_REGISTER_ESTABLISHED; proposed/held status strings retained in their original evidence classes",
+  "recorded_snapshot_identity": {
+    "atelier_snapshot_id": "src-20260824-p2-001",
+    "path": "04-RECEIPTS/phase2/projection-seal.json",
+    "projection_profile": "public",
+    "projection_seal_id": "src-projection-seal:26d8d72ee76d2fcdc22bf53b3da5144d1a71424879cb0fa5a80b6f0c4c7110b7",
+    "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a"
+  },
+  "research_session_identity": "SNAPSHOT_IDENTITIES_RECOVERED; complete independent session identity/state not established",
+  "schema": "td613.src.research-state-inventory/v1",
+  "selection": "BOUNDED_DECLARED_PATHS_NOT_FULL_RUNTIME_STATE",
+  "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+  "surfaces": {
+    "historical_execution_and_capture_receipts": [
+      {
+        "bytes": 642,
+        "field_names": [
+          "human_closure_required",
+          "non_rewrite_rule",
+          "operator_instruction",
+          "preserved_facts",
+          "prior_state",
+          "recorded_at",
+          "run_state",
+          "schema_version",
+          "source_status"
+        ],
+        "git_blob": "ef878c7d1c1927f8da6600854c2fab16314fd6ff",
+        "path": "04-RECEIPTS/phase2/transition-receipt.json",
+        "sha256": "1918405713b5edd75be2596c9d0ffcdef8c24c73b050db973bae3c3c20d1e910",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 530,
+        "field_names": [
+          "at",
+          "baseline_counts",
+          "disk_gate",
+          "dry_run",
+          "free_bytes",
+          "phase15_validator_present",
+          "python",
+          "required_free_bytes",
+          "root",
+          "runner",
+          "source_bytes_expected"
+        ],
+        "git_blob": "ab9cc60b82ffe19a1d08ef3e2359bc05d71ed93b",
+        "path": "04-RECEIPTS/phase2/preflight.json",
+        "sha256": "48cffe2c28a9c546731b881bd26f596866ef694df584194f770609b047c8b315",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 4949579,
+        "field_names": [
+          "after_state",
+          "at",
+          "before_state",
+          "detail",
+          "operation",
+          "sequence",
+          "target_id"
+        ],
+        "git_blob": "4899c12ddcddca7e5c1d2b68222dad0e25f5de97",
+        "path": "01-MANIFESTS/phase2/journal.jsonl",
+        "record_count": 21179,
+        "sha256": "394019f515f986defa8e3214de4625650431d8d10fba8e0f236b5316922de341",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {}
+      }
+    ],
+    "hypotheses": [
+      {
+        "bytes": 6406,
+        "field_names": [
+          "candidate_sources",
+          "default_relationship",
+          "definition_limit",
+          "hypothesis_id",
+          "input_status",
+          "label",
+          "must_not_assume",
+          "proposed_alias_pairs",
+          "proposed_fictional_classes",
+          "proposed_sequence",
+          "question",
+          "required_evidence",
+          "status",
+          "witnessed_formulations_proposed"
+        ],
+        "git_blob": "d5b40e68efe7f432cd3e57b13d76f3d70741dc64",
+        "path": "05-OPERATIONS/hypotheses/2026-08-23-amari-seeds.jsonl",
+        "record_count": 9,
+        "sha256": "e9a04f3d4adc91bd939bdeb5771bff6d839e8002ee4953224063d45254ef31e6",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "status:META_HYPOTHESIS": 1,
+          "status:RESEARCH_QUESTION": 8
+        }
+      },
+      {
+        "bytes": 35020,
+        "field_names": [
+          "candidate_pairs",
+          "candidate_sources",
+          "evidence_ids",
+          "hypothesis_id",
+          "input_status",
+          "interpretive_limit",
+          "label",
+          "local_anchor_ids",
+          "must_not_assume",
+          "proposed_state",
+          "question",
+          "required_evidence",
+          "schema_version",
+          "status"
+        ],
+        "git_blob": "49919156ae64108ac194a560a0a941939942f8aa",
+        "path": "05-OPERATIONS/hypotheses/2026-08-24-amari-recompilation-topology-seeds.jsonl",
+        "record_count": 35,
+        "sha256": "1a0432773de271eab6d4d254514ea3d133a0f55c8b80a0b2a58406fb3115894c",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "status:BOTH_SUPPORTED_IN_BOUNDED_LINEAGES": 1,
+          "status:CONTRACT_INSTALLED_NOT_RUN": 1,
+          "status:CONTROL_WITNESSED_LOCAL": 1,
+          "status:CURRENT_CHAIN_WITNESSED_ANCESTRY_INFERRED": 1,
+          "status:EARLIEST_LOCAL_METADATA_CANDIDATE_ONLY": 1,
+          "status:EXPLORATORY_LOCAL_ASSOCIATION": 1,
+          "status:INFERRED_MODEL_WITH_PARTIAL_ANCHORS": 1,
+          "status:INSTRUMENT_INSTALLED_DATA_PARTIAL": 1,
+          "status:LOCALLY_REQUIRED": 1,
+          "status:LOCALLY_REQUIRED_BY_LEGACY": 1,
+          "status:LOCAL_CANDIDATES_WITNESSED": 1,
+          "status:MODEL_SPECIFIED_NOT_PROMOTED": 1,
+          "status:NOT_TESTABLE_LOCAL": 1,
+          "status:NOT_WITNESSED_IN_LOCAL_METADATA": 1,
+          "status:OPEN_WITH_LOCAL_ANOMALY": 2,
+          "status:PARTIALLY_WITNESSED_LOCAL": 7,
+          "status:ROUTER_WITNESSED_DESTINATIONS_UNRESOLVED": 1,
+          "status:SEQUENCE_WITNESSED_COMPILER_PARTIAL": 1,
+          "status:SERIOUS_HYPOTHESIS_LOCAL": 1,
+          "status:SERIOUS_LOCAL_HUNT": 2,
+          "status:THREE_LOCAL_SNAPSHOTS_WITNESSED": 1,
+          "status:TWO_ASSERTIONS_LINK_UNRESOLVED": 2,
+          "status:WITNESSED_CASES_OPEN_ASSAY": 1,
+          "status:WITNESSED_FOUNDATION_LOCAL": 1,
+          "status:WITNESSED_IN_BOUNDED_LINEAGES": 2
+        }
+      }
+    ],
+    "investigations_and_trails": [
+      {
+        "bytes": 10357,
+        "field_names": [
+          "atelier_snapshot_id",
+          "order",
+          "phase_2_run",
+          "schema_version",
+          "source_status",
+          "status",
+          "trail_id"
+        ],
+        "git_blob": "a3473600d43f5f5e8543943e97cbe8f166586e43",
+        "path": "04-RECEIPTS/assays/2026-08-24-phase2-kiln/coverage-ledger.jsonl",
+        "record_count": 42,
+        "sha256": "c7a4e9c2a72febfd24993e10b0a220c543b2d43ec79b678290448bcdd4a0130b",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "source_status:ARCHIVE_OBSERVATION": 10,
+          "source_status:RESEARCHER_PROPOSED": 32,
+          "status:EXECUTED_BOUNDED": 1,
+          "status:INSTRUMENT_READY_BODY_ADJUDICATION_PENDING": 9,
+          "status:REGISTERED_REQUIRES_BODY_OR_HUMAN_DISPOSITION": 32
+        }
+      },
+      {
+        "bytes": 9627,
+        "field_names": [
+          "claim_ceiling",
+          "hypothesis_id",
+          "label",
+          "proposal",
+          "source_evidence",
+          "source_status"
+        ],
+        "git_blob": "0664e0f0fa6ac09b99957a06a1e38a95dd907656",
+        "path": "05-OPERATIONS/phase2/researcher-proposed-trails.jsonl",
+        "record_count": 26,
+        "sha256": "4af0825a65bb9dfaba72e55f0c4185b2246fbd0de95457fa57d256cdb9a1c30f",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "source_status:RESEARCHER_PROPOSED": 26
+        }
+      },
+      {
+        "bytes": 20911,
+        "field_names": [
+          "assay_candidate_id",
+          "design",
+          "inspired_by",
+          "null",
+          "promotion",
+          "question",
+          "status"
+        ],
+        "git_blob": "eaaa9c6fc6c2a47e614e2c962b6765b9e7b1e416",
+        "path": "06-INSTRUMENTS/phase2/inspired-assay-notebook.jsonl",
+        "record_count": 30,
+        "sha256": "3dc0ff7c802b95f84b18c8b33a3babc9cb3232033fe38c9fd58703dc10898eb6",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "promotion:HUMAN_DISPOSITION_AND_CONTROL_CORPORA_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_DEFENSIVE_USE_ONLY": 1,
+          "promotion:HUMAN_DISPOSITION_AND_HELD_OUT_VALIDATION_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_PREREGISTRATION_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_PRIMARY_RECEIPTS_REQUIRED": 5,
+          "promotion:HUMAN_DISPOSITION_AND_PROSPECTIVE_BLIND_VALIDATION_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_PROSPECTIVE_PREREGISTRATION_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_SOURCE_SPAN_EVIDENCE_REQUIRED": 1,
+          "promotion:HUMAN_DISPOSITION_AND_TD613_EXPERIMENT_AUTHORITY_REQUIRED": 2,
+          "promotion:HUMAN_DISPOSITION_REQUIRED": 16,
+          "status:OPTIONAL_RESEARCH_DESIGN": 30
+        }
+      }
+    ],
+    "method_configuration": [
+      {
+        "bytes": 2610,
+        "field_names": [
+          "analytical_schema_path",
+          "interfaces",
+          "master_invariant",
+          "portable_source_of_truth",
+          "schema_version",
+          "sqlite_role"
+        ],
+        "git_blob": "7732d1af6bbfc13b389a3cd250493bd78d594d79",
+        "path": "01-MANIFESTS/phase2/interface-registry.json",
+        "sha256": "e45fc35336f97f57d7360c3ed993dfff1157026399ec5b1c0e80dff9776eb5ef",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 1865,
+        "field_names": [
+          "authority",
+          "closure",
+          "exit",
+          "external_research_fixture",
+          "fabricated_decoys",
+          "forbidden_payloads",
+          "governance_context",
+          "governed_invariants",
+          "host_station",
+          "nested_surface",
+          "outside_posture",
+          "projections",
+          "promotion",
+          "rest",
+          "route_inference_forbidden",
+          "route_selection",
+          "routes",
+          "schema_version",
+          "surface_id"
+        ],
+        "git_blob": "e00e3f5f0b096abcf7d63a1ef74aa2a9e9d7665f",
+        "path": "aia/surface-declaration.json",
+        "sha256": "99bc23dfe6d4858ab12a7bb15a12ff4b92f5c833a1e5189c6bae27b0e01b08e5",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 4910,
+        "git_blob": "75684ba52dd2f2c95cc52c80e9535c76526e3345",
+        "path": "06-INSTRUMENTS/PROJECTIVE_ROUTING_GRAMMAR.md",
+        "sha256": "24b32cdc291baf5db12ba0acb7f79a0954c013680aa485215d58fd2ae819c532",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      }
+    ],
+    "refusal_and_authority_contracts": [
+      {
+        "bytes": 3465,
+        "git_blob": "8da32c6451e1217a6673a27e206e65d79d497462",
+        "path": "CONNECTOR_ENTRY.md",
+        "sha256": "c7ffd18d64a6a823aabde129fc6912dfc6b6b0b41df8c93c75fc1365cb4d06be",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 2955,
+        "git_blob": "6e13cba38039eec973af15e58364148bb7ce52af",
+        "path": "06-INSTRUMENTS/QUERY_RECIPES.md",
+        "sha256": "ceebe6b5b9b8f9eee7982832aa136f5750f03ce0ec10813f95bf67fc2b04651b",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 1236,
+        "git_blob": "898e0523eb1df847537670658ee33dc2eb890a9b",
+        "path": "06-INSTRUMENTS/SURFACE_WITHDRAWAL_ASSAY.md",
+        "sha256": "2f7350857e1ec07ff35aee40a8751b83ca4e2e7bccb2ca48d8758ac37e820eca",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      }
+    ],
+    "snapshot_epoch": [
+      {
+        "bytes": 340,
+        "field_names": [
+          "atelier_snapshot_id",
+          "path",
+          "projection_profile",
+          "projection_seal_id",
+          "seal_id"
+        ],
+        "git_blob": "3e15f406c2d4fbfe16d78c05628c34451ca81f66",
+        "path": "04-RECEIPTS/phase2/current-seal.json",
+        "sha256": "19ed6a29d6c39173f7359d3339fb795434c57cbc6976d7a3840e0d223ff595cf",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      },
+      {
+        "bytes": 1141342,
+        "field_names": [
+          "atelier_snapshot_id",
+          "entries",
+          "generated_at",
+          "projection_profile",
+          "projection_seal_id",
+          "schema_version",
+          "seal_id"
+        ],
+        "git_blob": "60b69ffc967ebc1c8e6d50e20a7b83f46e63a54e",
+        "path": "04-RECEIPTS/phase2/projection-seal.json",
+        "sha256": "f7e98f08c91ee1f0cca4a85c782c1324cf27f00aeb46e88359a17278851d060a",
+        "status": "RECOVERABLE_RECORD_BYTES"
+      }
+    ],
+    "versioned_inputs_outputs": [
+      {
+        "bytes": 30557,
+        "field_names": [
+          "adjudication_status",
+          "claim_effects",
+          "commutation_family_id",
+          "declared_by_id",
+          "evidence_ids",
+          "from_id",
+          "interpretive_limit",
+          "origin",
+          "relation_provenance_mode",
+          "schema_version",
+          "to_id",
+          "transformation_id",
+          "transformation_kind"
+        ],
+        "git_blob": "3e9fe0fdc540e346bc3157f5eb35944536fef7e1",
+        "path": "05-OPERATIONS/relations/representation-lift-candidates.jsonl",
+        "record_count": 34,
+        "sha256": "4db525d5ec791ff42315acd4df0b0dce97b9484c1ab1cfb5c28af36e82459146",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "adjudication_status:CANDIDATE": 16,
+          "adjudication_status:WITNESSED": 18
+        }
+      },
+      {
+        "bytes": 35774,
+        "field_names": [
+          "atelier_snapshot_id",
+          "claim_evidence_tomography_id",
+          "composite_score",
+          "delta_asserted_authority",
+          "delta_evidence",
+          "delta_falsifier_granularity",
+          "delta_scope",
+          "evidence_ids",
+          "from_id",
+          "interpretive_limit",
+          "observation_status",
+          "other_observed_effects",
+          "schema_version",
+          "seal_epoch_binding",
+          "source_status",
+          "to_id",
+          "transformation_id"
+        ],
+        "git_blob": "97b4b2bc1bbfad5ccb9691f6226329bcd2808984",
+        "path": "05-OPERATIONS/phase2/claim-evidence-tomography.jsonl",
+        "record_count": 34,
+        "sha256": "d004ed7c90982447fe44f91d792dafa4eb3125d64bd1acfe9b991ffe3d020c7a",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "observation_status:CANDIDATE": 16,
+          "observation_status:WITNESSED": 18,
+          "source_status:ARCHIVE_INFERRED": 14,
+          "source_status:EXPLICIT_SOURCE": 20
+        }
+      },
+      {
+        "bytes": 44174,
+        "field_names": [
+          "adjudication_status",
+          "compiled_into_id",
+          "declared_by_id",
+          "derived_from_edge_ids",
+          "edge_id",
+          "evidence_ids",
+          "from_id",
+          "graph_kind",
+          "interpretive_limit",
+          "ordinal",
+          "origin",
+          "relation",
+          "relation_provenance_mode",
+          "route_context",
+          "schema_version",
+          "scope",
+          "source_predicate_raw",
+          "source_time",
+          "subject_time",
+          "to_id"
+        ],
+        "git_blob": "b97430b7a0870a6528266c3c81bf128711dd59ec",
+        "path": "05-OPERATIONS/relations/recompilation-edges.jsonl",
+        "record_count": 50,
+        "sha256": "501c5d2ee63dc940c84896b07441ef227171a5c383e808f60966fc0028f6b822",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "adjudication_status:CANDIDATE": 2,
+          "adjudication_status:UNRESOLVED": 2,
+          "adjudication_status:WITNESSED": 46
+        }
+      },
+      {
+        "bytes": 97441,
+        "field_names": [
+          "adjudication_status",
+          "architecture_id",
+          "asserted_at",
+          "atelier_snapshot_id",
+          "contextual_role_assertion_id",
+          "evidence_ids",
+          "interpretive_limit",
+          "observation_status",
+          "relation_provenance_mode",
+          "role_normalized",
+          "role_raw",
+          "schema_version",
+          "scope",
+          "seal_epoch_binding",
+          "source_status",
+          "subject_id"
+        ],
+        "git_blob": "a51942b8c6804db8b180bf241acd061fbd7a75f4",
+        "path": "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+        "record_count": 107,
+        "sha256": "de1f3311cf00d4ee53bc9449b0099fa2fcf640b5ea5071766ffe942ca7c557ac",
+        "status": "RECOVERABLE_RECORD_BYTES",
+        "status_observations": {
+          "adjudication_status:CANDIDATE": 11,
+          "adjudication_status:MULTIPLE_TITLE_ALIGNED_CANDIDATES": 6,
+          "adjudication_status:PARTIAL": 8,
+          "adjudication_status:TITLE_ALIGNED_CANDIDATE": 2,
+          "adjudication_status:UNRESOLVED": 10,
+          "adjudication_status:WITNESSED": 65,
+          "adjudication_status:WITNESSED_CONCEPT_NAMES_CANDIDATE_WORK_MAPPING": 5,
+          "observation_status:CANDIDATE": 11,
+          "observation_status:PARTIAL": 8,
+          "observation_status:SOURCE_DECLARES_CONCEPT_CLUSTERS_EXACT_WORK_IDS_PARTIAL": 8,
+          "observation_status:UNRESOLVED": 10,
+          "observation_status:WITNESSED": 65,
+          "observation_status:WITNESSED_CONCEPT_NAMES_CANDIDATE_WORK_MAPPING": 5,
+          "source_status:ARCHIVE_DERIVED": 23,
+          "source_status:ARCHIVE_INFERRED": 9,
+          "source_status:EXPLICIT_SOURCE": 75
+        }
+      }
+    ]
+  },
+  "unavailable_state": [
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "ephemeral_research_session_memory"
+    },
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "paused_in_process_continuation"
+    },
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "hidden_model_state"
+    },
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "unsaved_work_conversations"
+    },
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "human_decisions_not_committed_as_records"
+    },
+    {
+      "claim": "Not recovered by this bounded file inventory; absence here supplies no proof of historical nonexistence",
+      "state": "UNRECORDED_OR_UNAVAILABLE",
+      "surface": "private_original_vault_runtime"
+    }
+  ]
+}
