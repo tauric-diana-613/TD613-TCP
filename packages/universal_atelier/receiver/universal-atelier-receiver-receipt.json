@@ -1,0 +1,288 @@
+{
+  "schema": "td613.universal-atelier.receiver-receipt/v1",
+  "generated_at": "2026-11-05T18:13:44.729Z",
+  "recipient_id": "ua_rcp_synth_crossing_t_01",
+  "episode_id": "ua_ep_crossing_t",
+  "initial_zero_row_witness": {
+    "attestation_type": "INITIAL_ZERO_ROW_STATE_WITNESS",
+    "schema": "td613.universal-atelier/v1",
+    "recipient_id": "ua_rcp_synth_crossing_t_01",
+    "episode_id": "ua_ep_crossing_t",
+    "initialized_at": "2026-11-05T18:13:44.716Z",
+    "entropy": "32576d1d-f7d3-4f0e-bf6c-de7d998c8043",
+    "tables": [
+      "ua_records",
+      "ua_links",
+      "ua_proposals",
+      "ua_adjudication_events",
+      "ua_reverse_citations"
+    ],
+    "zero_row_counts": {
+      "ua_records": 0,
+      "ua_links": 0,
+      "ua_proposals": 0,
+      "ua_adjudication_events": 0,
+      "ua_reverse_citations": 0
+    },
+    "witness_hash": "aad019dc3ac76e940021e078e03ac0aef33c63e4920dc30b0c71cd1eef8b47d3"
+  },
+  "all_passed": true,
+  "total_tests": 45,
+  "passed_tests": 45,
+  "failed_tests": 0,
+  "covenant_khonalit_po_preserved": true,
+  "operations_tested": [
+    "prepareImport",
+    "registerAdjudicationEvent",
+    "admitRecord",
+    "admitLink",
+    "search",
+    "get",
+    "cite",
+    "neighbors",
+    "route",
+    "context",
+    "verify",
+    "export"
+  ],
+  "adversarial_controls_tested": [
+    "INVALID_JSON",
+    "INVALID_KIND",
+    "INVALID_ADJUDICATOR_ROLE",
+    "INVALID_ADJUDICATION_DECISION",
+    "HUMAN_REVIEW_REF_REQUIRED",
+    "UNREGISTERED_ADJUDICATION_EVENT",
+    "ADJUDICATOR_HASH_MISMATCH",
+    "MISSING_SPAN_PROOF",
+    "INVALID_SPAN_BOUNDS",
+    "INVALID_SPAN_PROOF_DIGEST",
+    "TARGET_ENDPOINT_UNADMITTED"
+  ],
+  "results": [
+    {
+      "name": "Witness conforms to td613.universal-atelier/v1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Witness attestation type is INITIAL_ZERO_ROW_STATE_WITNESS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Attested exactly 5 receiver tables in initial state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Attested table list matches all expected 5 tables",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Measured initial zero-row counts across all 5 receiver tables",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Witness hash is valid 64-char hex SHA-256",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Covenant string contains interior Zero-Width Non-Joiner (U+200C)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Covenant string byte length reflects U+200C (3 UTF-8 bytes: E2 80 8C)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "prepareImport returns proposal object",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "prepareImport stages proposal in ua_proposals",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "prepareImport does NOT mutate ua_records table (still 0 records)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "prepareImport computed matching input_sha256",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused invalid JSON string in prepareImport",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused unapproved ontology kind in prepareImport",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Registered positive adjudication receipt in ua_adjudication_events",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused unauthorized adjudicator role",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused unrecognized adjudication decision",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission without human review ref",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission with unregistered adjudicator receipt",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission when adjudicator evidence hash mismatches proposal",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted Record 1 through custodial gate",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "ua_records count incremented to 1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted Record 2 through custodial gate",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link without spanProof",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link with negative span start coordinate",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link with invalid span digest",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link targeting unadmitted endpoint",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted directed link from Record 1 to Record 2",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "ua_links table count incremented to 1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Automatic reverse citation created for target Record 2",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "search returns matching records",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "search respects kind facet filter",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "get returns record with parsed payload and outgoing links",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "get returns record with cited_by incoming references",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "cite produces formatted reference string TD613·UA[...]::sha256(...)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "cite reports correct claim ceiling and evidence class",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "neighbors returns outgoing edge to Record 2",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "neighbors returns incoming edge from Record 1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "route discovers acyclic directed path of depth 1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "route respects directed edge orientation (not found in reverse)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "context packages root and related neighborhood records",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "context reports accurate truncation indicator",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "verify recomputes SHA-256 for all stored records with 0 mismatches",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "export produces complete lossless serialization with initial witness",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "export carries initial witness hash identical to startup witness",
+      "passed": true,
+      "details": {}
+    }
+  ]
+}
