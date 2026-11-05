@@ -1,0 +1,43 @@
+{
+  "schema": "td613.palace.bounded-model-agent-evaluation-packet/v1",
+  "status": "PREPARED_NOT_EXECUTED_AWAITING_SEPARATE_AUTHORIZATION",
+  "principal": "Tawanna C. Miller",
+  "operator": "tauric.diana.613",
+  "covenant": "Khona‌lit-po",
+  "parent_authorization": "SAC[X6ZNK5NO51]",
+  "paid_calls_executed": 0,
+  "protected_experiment_b_status": "HELD",
+  "purpose": "Separate bounded evaluation protocol for testing frontier LLM research agents across the Six Inheritance Conditions on CONFIRMATORY_96 without automatic API expenditure.",
+  "activation_prerequisites": [
+    "Explicit contemporaneous human operator gesture specifying model provider, exact model ID, maximum API call ceiling, and hard USD cost cap.",
+    "Verification that zero protected or human-private archives enter prompt contexts (source-free synthetic packets only).",
+    "Strict isolation of GroundTruthSecretVault outside the model prompt runner process."
+  ],
+  "proposed_budget_envelope_template": {
+    "target_subset_option_a_stratified_24": {
+      "worlds": 24,
+      "conditions": 6,
+      "memory_budgets": 2,
+      "turns_per_episode": 2,
+      "total_api_calls_ceiling": 576,
+      "max_input_tokens_per_call": 1800,
+      "max_output_tokens_per_call": 400,
+      "estimated_cost_ceiling_usd_placeholder": "REQUIRES_OPERATOR_ASSIGNED_CAP"
+    },
+    "target_subset_option_b_full_confirmatory_96": {
+      "worlds": 96,
+      "conditions": 6,
+      "memory_budgets": 2,
+      "turns_per_episode": 2,
+      "total_api_calls_ceiling": 2304,
+      "max_input_tokens_per_call": 1800,
+      "max_output_tokens_per_call": 400,
+      "estimated_cost_ceiling_usd_placeholder": "REQUIRES_OPERATOR_ASSIGNED_CAP"
+    }
+  },
+  "prompt_interface_contract": {
+    "turn_1_input": "JSON InvestigatorObservationPacket (validated by assertNoSecretLeakage) + neutral task instructions requesting { chosen_probe_id, prior_probabilities, rationale }.",
+    "turn_2_input": "JSON ProbeObservation (CRN world answer) requesting { chosen_intervention_id, declared_mechanism_or_abstain, stated_confidence, ontology_insufficient_declared, introduced_predicate, holdout_predictions }.",
+    "token_accounting": "Exact prompt_tokens and completion_tokens recorded per condition to measure Condition II full-history context overhead explicitly."
+  }
+}
