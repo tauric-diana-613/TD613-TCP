@@ -543,11 +543,72 @@
     <section id="panel-frozen" class="hidden" role="tabpanel" aria-labelledby="tab-frozen">
       <div class="card">
         <h2>
-          <span>Frozen Preregistered Architecture &amp; Qualified Calibration Pilot (`ACT2_PILOT_48`)</span>
+          <span>Sealed Confirmatory Benchmark (`ACT2_CONFIRMATORY_192` · Lock Commit `8ea7727a5`)</span>
+          <span class="pill pill-frozen">IMMUTABLE READ-ONLY RECEIPT</span>
+        </h2>
+        <p style="color:var(--muted); font-size:0.88rem; margin-top:0;">
+          Executed post-freeze against <code>frozen-confirmatory-lock-act2.json</code> (<code>14/14</code> locked files verified, including <code>scripts/run-confirmatory-192.mjs</code>; <code>24,192</code> episodes across <code>192</code> base worlds, <code>48</code> independent 4-world Iso-Π clusters, and <code>18</code> <code>(h, τ0, ν)</code> grid cells; <code>unauthorized_investigator_reads = 0</code>). Interactive sandbox changes in Tab 1 never mutate these frozen receipts.
+        </p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Condition (N = 3,456 / cond)</th>
+                <th>Confirmatory Utility</th>
+                <th>Signed Regret</th>
+                <th>O3 Pre-Avail Err</th>
+                <th>O4 Post-Avail Err</th>
+                <th>Censored τ_eval</th>
+                <th>Mean Probes (/6)</th>
+                <th>False Claim Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>D_TEMPORAL_CUSTODIANS</strong></td><td><strong>0.7044</strong></td><td>0.2801</td><td>0.5708</td><td><strong>0.3957</strong></td><td>4.27t</td><td>4.38</td><td>0.1782</td></tr>
+              <tr><td><strong>C_PROVISIONALISTS</strong></td><td>0.6509</td><td>0.3336</td><td>0.7701</td><td>0.5542</td><td>3.59t</td><td>6.00</td><td>0.2922</td></tr>
+              <tr><td><strong>B_EVIDENTIALISTS</strong></td><td>0.6253</td><td>0.3592</td><td>0.6899</td><td>0.5485</td><td>8.11t</td><td>3.26</td><td>0.2627</td></tr>
+              <tr><td>CTRL_NO_HISTORY (ref)</td><td>0.5631</td><td>0.4215</td><td>0.7999</td><td>0.6221</td><td>9.60t</td><td>4.62</td><td>0.3067</td></tr>
+              <tr><td><strong>A_MONUMENTALISTS</strong></td><td>0.4991</td><td>0.4855</td><td>0.5993</td><td>0.6308</td><td>10.77t</td><td>0.16</td><td>0.4708</td></tr>
+              <tr><td>CTRL_RANDOM (ref)</td><td>0.3308</td><td>0.6537</td><td>0.8029</td><td>0.8062</td><td>4.56t</td><td>5.21</td><td>0.7480</td></tr>
+              <tr><td>CTRL_DYNAMIC_ORACLE (ref)</td><td>0.9845</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1.78t</td><td>0.00</td><td>0.0000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span>Family-Disaggregated Confirmatory Profile (`ACT2_CONFIRMATORY_192` · Exact 2⁸ = 256 Sign-Flip)</span></h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>World Family (576 ep / policy)</th>
+                <th>Monumentalists</th>
+                <th>Evidentialists</th>
+                <th>Provisionalists</th>
+                <th>Temporal Custodians</th>
+                <th>No-History</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>FAM_A Stationary Inheritance</td><td>0.8228</td><td><strong>0.9721</strong></td><td>0.8699</td><td>0.9472</td><td>0.9051</td></tr>
+              <tr><td>FAM_B Abrupt Transition</td><td>0.3579</td><td>0.5743</td><td>0.6188</td><td><strong>0.7073</strong></td><td>0.5413</td></tr>
+              <tr><td>FAM_C Gradual Drift</td><td>0.4319</td><td>0.4929</td><td>0.5614</td><td><strong>0.6062</strong></td><td>0.4318</td></tr>
+              <tr><td>FAM_D Action-Invariant Change</td><td>0.5814</td><td><strong>0.8039</strong></td><td>0.7267</td><td>0.7895</td><td>0.7169</td></tr>
+              <tr><td>FAM_E Recurrent Regimes</td><td>0.4747</td><td>0.3941</td><td>0.5569</td><td><strong>0.6167</strong></td><td>0.3976</td></tr>
+              <tr><td>FAM_F Delayed Contradiction</td><td>0.3257</td><td>0.5144</td><td><strong>0.5716</strong></td><td>0.5593</td><td>0.3856</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>
+          <span>Pre-Freeze Calibration Benchmark (`ACT2_PILOT_48`)</span>
           <span class="pill pill-frozen">IMMUTABLE READ-ONLY REFERENCE</span>
         </h2>
         <p style="color:var(--muted); font-size:0.88rem; margin-top:0;">
-          These figures reproduce the locked pre-confirmatory calibration benchmark (`receipts/pilot-48-receipt.json`, `2,016` episodes across `12` Iso-Π clusters). Full confirmatory response surfaces (`24,192` episodes across `48` Iso-Π clusters and `18` grid cells) are preserved in <code>receipts/confirmatory-192-receipt.json</code> and <code>docs/07_CONFIRMATORY_RESULTS_AND_RESPONSE_SURFACES.md</code>.
+          These figures reproduce the locked pre-confirmatory calibration benchmark (`receipts/pilot-48-receipt.json`, `2,016` episodes across `12` Iso-Π clusters) sealed before generating <code>ACT2_CONFIRMATORY_192</code>.
         </p>
         <div style="overflow-x:auto;">
           <table>
@@ -570,32 +631,6 @@
               <tr><td>CTRL_NO_HISTORY (ref)</td><td>0.5582</td><td>0.4263</td><td>0.8377</td><td>0.6174</td><td>4.56</td><td>0.3160</td></tr>
               <tr><td>CTRL_RANDOM (ref)</td><td>0.3261</td><td>0.6584</td><td>0.8091</td><td>0.8207</td><td>5.23</td><td>0.7639</td></tr>
               <tr><td>CTRL_DYNAMIC_ORACLE (ref)</td><td>0.9845</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>0.00</td><td>0.0000</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2><span>Family-Disaggregated Calibration Profile (`ACT2_PILOT_48`)</span></h2>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>World Family</th>
-                <th>Monumentalists</th>
-                <th>Evidentialists</th>
-                <th>Provisionalists</th>
-                <th>Temporal Custodians</th>
-                <th>No-History</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>FAM_A Stationary Inheritance</td><td>0.8974</td><td><strong>0.9714</strong></td><td>0.8727</td><td>0.9478</td><td>0.9118</td></tr>
-              <tr><td>FAM_B Abrupt Transition</td><td>0.2784</td><td>0.4640</td><td>0.5863</td><td><strong>0.6868</strong></td><td>0.4788</td></tr>
-              <tr><td>FAM_C Gradual Drift</td><td>0.4067</td><td>0.4547</td><td>0.5042</td><td><strong>0.6476</strong></td><td>0.4320</td></tr>
-              <tr><td>FAM_D Action-Invariant Change</td><td>0.7290</td><td><strong>0.8700</strong></td><td>0.7241</td><td>0.8479</td><td>0.7407</td></tr>
-              <tr><td>FAM_E Recurrent Regimes</td><td>0.4694</td><td>0.4712</td><td>0.4886</td><td><strong>0.5819</strong></td><td>0.3655</td></tr>
-              <tr><td>FAM_F Delayed Contradiction</td><td>0.2128</td><td>0.5250</td><td>0.6052</td><td><strong>0.6149</strong></td><td>0.4204</td></tr>
             </tbody>
           </table>
         </div>
