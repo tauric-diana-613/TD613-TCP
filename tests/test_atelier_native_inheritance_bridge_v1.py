@@ -46,13 +46,13 @@ class NativeIndependentPreservation(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):cls.temp.cleanup()
 
-    def test_real_pinned_src_native_query_epoch_compiler_summary(self):
+    def test_real_pinned_src_native_query_refuses_stale_seal_registry(self):
         current=json.loads((self.src/"04-RECEIPTS/phase2/current-seal.json").read_text("utf8"))
-        rec=m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
+        # Historical labels survive, but several registries already drifted from
+        # their projection-seal entries. Preserve this negative source evidence.
+        with self.assertRaisesRegex(ValueError,"QUERY_INPUT_SEAL_DRIFT"):
+            m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
                                "summary",expected_source_sha=self.src_hashes[m.SRC_METHODS["src_query"]])
-        self.assertEqual(rec["method"],"ORIGINAL_NATIVE_SRCQUERY_EXECUTED")
-        self.assertEqual(rec["method_sha256"],self.src_hashes["99-ADMIN/srcquery.py"])
-        self.assertGreater(rec["result"]["compiler_map"]["compilation_passes"],0)
         with self.assertRaisesRegex(ValueError,"EXACT_NATIVE_SRC_QUERY_SHA256_REQUIRED"):
             m.native_src_query(self.src,current["atelier_snapshot_id"],current["seal_id"],
                                "summary",expected_source_sha="0"*64)
@@ -69,6 +69,17 @@ class NativeIndependentPreservation(unittest.TestCase):
         empty=m.native_projection(self.src,"RELATIONAL_TOPOLOGY",term="NO_SUCH_SOURCE_IDENTIFIER")
         self.assertEqual(empty["returned"],0)
         self.assertRaises(ValueError,m.native_projection,self.src,"FAKE_TOPOLOGY")
+
+    def test_native_projection_truncated_only_when_more_matches_exist(self):
+        # Original cartography registry contains exactly three documented snapshots.
+        full=m.native_projection(self.src,"CARTOGRAPHIC",limit=3)
+        self.assertEqual(full["returned"],3)
+        self.assertFalse(full["truncated"])
+        clipped=m.native_projection(self.src,"CARTOGRAPHIC",limit=2)
+        self.assertEqual(clipped["returned"],2)
+        self.assertTrue(clipped["truncated"])
+        with self.assertRaisesRegex(ValueError,"EXPLICIT_BOUNDED_SRC_PROJECTION_REQUIRED"):
+            m.native_projection(self.src,"CARTOGRAPHIC",limit=True)
 
     def test_em_actual_identity_lineage_and_null_controls_retained_without_false_equality(self):
         c=m.census(self.src,self.em)
@@ -114,5 +125,22 @@ class NativeIndependentPreservation(unittest.TestCase):
             m.root_check,self.em,"SRC")
         self.assertRaisesRegex(ValueError,"NATIVE_FIXTURE_MISSING",
             m.native_projection,Path(self.temp.name)/"SRC-missing","CARTOGRAPHIC")
+
+    def test_sourcebound_sealed_replay_is_reachable_through_universal(self):
+        current=json.loads((self.src/"04-RECEIPTS/phase2/current-seal.json").read_text("utf8"))
+        spec=importlib.util.spec_from_file_location("universal_sealed_replay",
+            ROOT/"scripts/universal-atelier-sourcebound-readonly-v1.py")
+        u=importlib.util.module_from_spec(spec);spec.loader.exec_module(u)
+        args=dict(operation="summary",snapshot=current["atelier_snapshot_id"],seal=current["seal_id"],
+                  source_sha256=self.src_hashes["99-ADMIN/srcquery.py"])
+        with self.assertRaisesRegex(ValueError,"EXPLICIT_SEALED_NEWLINE_REPLAY_REQUIRED"):
+            u.native_dispatch(self.src,self.em,"src-sealed-byte-replay",**args)
+        result=u.native_dispatch(self.src,self.em,"src-sealed-byte-replay",**args,
+                                 allow_line_ending_replay=True)
+        self.assertEqual(result["result"]["compiler_map"],
+                         {"compilation_passes":27,"contextual_role_assertions":107})
+        self.assertFalse(result["replay"]["retained_sources_modified"])
+        self.assertFalse(result["replay"]["receiver_admission"])
+        self.assertGreater(len(result["replay"]["transforms"]),0)
 
 if __name__=="__main__":unittest.main()

@@ -1,0 +1,401 @@
+{
+  "checks": [
+    {
+      "detail": {
+        "ordered_values_sha256": "af4ea3891d5ff50dd65522f436224486e156657fd661ab48e587f74d7795540f",
+        "original_builder_executed": true,
+        "rows": 34
+      },
+      "name": "original-builder:claim-evidence-tomography",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "ordered_values_sha256": "3c11b1436c798938fa779c47f45a0e2f89ddc9895148d7bb71bff0d026eb0546",
+        "original_builder_executed": true,
+        "rows": 107
+      },
+      "name": "original-builder:contextual-role-assertions",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "ordered_values_sha256": "517c7daf6459ca9b4468375ae383b2b6348787ae328071fc1f0a0503dc01325a",
+        "original_builder_executed": true,
+        "rows": 27
+      },
+      "name": "original-builder:compilation-passes",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "bytes_sha256": "d004ed7c90982447fe44f91d792dafa4eb3125d64bd1acfe9b991ffe3d020c7a",
+        "receiver": "NOT_ADMITTED_PUBLIC_SOURCE",
+        "rows": 34,
+        "seal_binding": "DECLARED_PLACEHOLDER_ONLY"
+      },
+      "name": "source-to-adapter-exact-readback-unknown-null-absence",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "distinct_resolved_evidence_ids": 56,
+        "line_locators_in_bounds": 55,
+        "scope": "GIT_VERIFIED_METADATA_AND_ARCHIVE_LOCATORS; semantic entailment and external source custody unestablished",
+        "source_kinds": {
+          "ARCHIVE_DERIVED_RECEIPT": 1,
+          "AUTHOR_SUPPLIED_PLATFORM_METADATA": 54,
+          "CAPTURED_PLATFORM_CATALOG_METADATA": 1
+        },
+        "tomography_rows": 34
+      },
+      "name": "source-witness-identities-paths-and-locator-bounds",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "geometric_engine_qualification": false,
+        "native_registry_readback_counts": {
+          "CARTOGRAPHIC": 3,
+          "HETEROSTRATIGRAPHIC_CONTEXT_ROLES": 107,
+          "ORDINAL_CHRONOLOGY": 7,
+          "RECOMPILATION": 50,
+          "RELATIONAL_TOPOLOGY": 50,
+          "SOURCE_GENEALOGY": 67,
+          "TOMOGRAPHIC_EVIDENCE": 34
+        }
+      },
+      "name": "seven-native-projections-and-unsupported-relation-controls",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "cli_direct_equal": true,
+        "documents": 442,
+        "native_cue": "Explore X.",
+        "observations": 417
+      },
+      "name": "original-projective-routing-cli-direct-differential",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "classification_changes_after_logical_target_withdrawal": 52,
+        "historical_records_rewritten": 0,
+        "later_exact_cases": 53,
+        "scope": "DOCUMENT_TARGET_WITHDRAWAL_ONLY; six-dimensional platform withdrawal remains documentary",
+        "source_availability_events_written": 0
+      },
+      "name": "chronology-and-logical-destination-withdrawal",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "assertions": 107,
+        "compiler_passes": 27,
+        "intrinsic_role_inference": false,
+        "subjects_with_multiple_contexts": 20
+      },
+      "name": "typed-role-context-traversal",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "negative_missing_hops": [
+          "PHASE15_ENTITY",
+          "CAPTURE",
+          "DERIVATIVE",
+          "EXACT_SOURCE_LOCATOR",
+          "TYPED_RELATION",
+          "AUTHORITY_ASSERTION"
+        ],
+        "scope": "ORIGINAL_QUERY_ON_GIT_VERIFIED_BYTES; STALE_SEAL_NOT_ACCEPTED",
+        "witnessed_trace_relations": 3
+      },
+      "name": "original-exact-id-traversal-and-missing-hop-control",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "controlling_formulation": null,
+        "retained_formulations": 1,
+        "scope": "ORIGINAL_READBACK_WITHOUT_SEALED_QUERY_ADMISSION"
+      },
+      "name": "authority-chronology-nonpromotion",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "drift_paths": [
+          ".gitattributes",
+          "01-MANIFESTS/candidate-corpus.jsonl",
+          "01-MANIFESTS/integrity-ledger.jsonl",
+          "01-MANIFESTS/phase2/attribution-v1.jsonl",
+          "01-MANIFESTS/snapshots/src-20260824-p2-001/01-MANIFESTS/candidate-corpus.jsonl",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-001.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-002.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-003.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-004.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-005.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-006.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-007.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-008.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-009.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-010.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-011.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-012.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-013.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-014.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-015.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-016.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-017.json",
+          "01-MANIFESTS/zenodo-pages/zenodo-page-018.json",
+          "04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/input-hashes.jsonl",
+          "04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/summary.json",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/curated-summary.json",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/input-hashes.jsonl",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/lexical/retitle-phase-controls.json",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/lexical/summary.json",
+          "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/output-hashes.jsonl",
+          "04-RECEIPTS/assays/2026-08-24-phase2-kiln/non-collapse-audit.json",
+          "04-RECEIPTS/phase-2-acquisition-receipt.json",
+          "04-RECEIPTS/phase2/concurrency-recovery.json",
+          "04-RECEIPTS/zenodo-discovery-receipt.json",
+          "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+          "05-OPERATIONS/phase2/canon-map-speech-acts.jsonl",
+          "05-OPERATIONS/phase2/capture-repetition-observations.jsonl",
+          "05-OPERATIONS/phase2/claim-evidence-tomography.jsonl",
+          "05-OPERATIONS/phase2/compilation-passes.jsonl",
+          "05-OPERATIONS/phase2/compiler-conservation-observations.jsonl",
+          "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+          "05-OPERATIONS/phase2/evidence-lineage-assertions.jsonl",
+          "05-OPERATIONS/phase2/evidence-unit-fingerprints.jsonl",
+          "05-OPERATIONS/phase2/expected-object-observations.jsonl",
+          "05-OPERATIONS/phase2/publishing-regime-observations.jsonl",
+          "05-OPERATIONS/phase2/reference-assertions.jsonl",
+          "99-ADMIN/projection-overlays/CONNECTOR_ENTRY.md",
+          "99-ADMIN/projection-overlays/README.md",
+          "ATTRIBUTION.md",
+          "CONNECTOR_ENTRY.md",
+          "README.md"
+        ],
+        "entry_counts": {
+          "drift_or_missing": 51,
+          "match": 5742
+        },
+        "exact_crlf_replay_matches": 51,
+        "external_source_authentication": false,
+        "original_seal_rewritten": false,
+        "query_admission": {
+          "authority": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+          "resolve": "CONSUMED_FILES_VERIFIED",
+          "summary": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/expected-object-observations.jsonl",
+          "trace": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/contextual-role-assertions.jsonl"
+        }
+      },
+      "name": "seal-digest-membership-and-stale-query-refusal",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "original_source_bytes_changed": false,
+        "predecessor_accepted_stale_epoch": true,
+        "predecessor_bridge_sha256": "ba9c4415248a0e80477eeb9c2e77fe8be667bde3bd93896d65d89c2ca1a10689",
+        "repaired_bridge_refused_stale_epoch": true
+      },
+      "name": "reproduced-predecessor-seal-bypass-and-completed-repair",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "external_origin_authenticated": false,
+        "operations": {
+          "authority": {
+            "native_result_exact": true,
+            "transforms": 1,
+            "verified_consumed_files": 2
+          },
+          "resolve": {
+            "native_result_exact": true,
+            "transforms": 0,
+            "verified_consumed_files": 2
+          },
+          "summary": {
+            "native_result_exact": true,
+            "transforms": 5,
+            "verified_consumed_files": 8
+          },
+          "trace": {
+            "native_result_exact": true,
+            "transforms": 4,
+            "verified_consumed_files": 12
+          }
+        },
+        "originals_changed": false,
+        "scope": "EXACT_CONSUMED_SEAL_BYTES_IN_TEMPORARY_COPY",
+        "seal_rewritten": false
+      },
+      "name": "explicit-sealed-byte-replay-four-native-query-operations",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "documentary_proposals": 30,
+        "literal_markers": 17,
+        "receiver_path": "SYNTHETIC_ONLY_UNCHANGED",
+        "signature_groups": 34,
+        "src_native_holonomy_tomography_integration": "NOT_ESTABLISHED"
+      },
+      "name": "proposal-holonomy-and-signature-nonpromotion",
+      "status": "PASS"
+    },
+    {
+      "detail": {
+        "all_original_git_objects_match_before_after": true,
+        "files": 6501
+      },
+      "name": "retained-original-source-immutability",
+      "status": "PASS"
+    }
+  ],
+  "declared_epoch": {
+    "atelier_snapshot_id": "src-20260824-p2-001",
+    "path": "04-RECEIPTS/phase2/projection-seal.json",
+    "projection_profile": "public",
+    "projection_seal_id": "src-projection-seal:26d8d72ee76d2fcdc22bf53b3da5144d1a71424879cb0fa5a80b6f0c4c7110b7",
+    "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a"
+  },
+  "disposition": "BOUNDED_NATIVE_METHODS_AND_EXPLICIT_SEALED_REPLAY_CONFIRMED_FLIGHTS_HELD",
+  "evidence_class": "PUBLIC_REPOSITORY_SOURCE_BOUND_EXECUTION",
+  "failed": 0,
+  "human_scientific_closure": "RESERVED",
+  "implementation_base": "9d044b4074a8bce8a974c7213b8ba2d8da4ef4fa",
+  "independent_empirical_replications": 0,
+  "passed": 16,
+  "projective_summary": {
+    "atelier_snapshot_id": "src-20260824-p2-001",
+    "automatic_promotions_forbidden": [
+      "LATER_SEMANTIC_RESOLUTION",
+      "PROMISSORY_OBJECT_CONFIRMED",
+      "SIGNATURE_COORDINATE_AXIS_CONFIRMED",
+      "MACHINE_ROUTING_EFFECT_CONFIRMED",
+      "TOMOGRAPHY",
+      "HOLONOMY",
+      "HIDDEN_MESSAGE",
+      "SURVEILLANCE_OR_PRIVATE_PROMPT_ACCESS"
+    ],
+    "claim_ceiling": "This pass inventories candidate routing structure. It cannot establish intentional puzzle design, semantic resolution, machine retrieval effects, tomography, holonomy, provenance, or private access.",
+    "document_count": 442,
+    "explore_classification_counts": {
+      "LATER_EXACT_RESOLUTION_CANDIDATE": 53,
+      "LATER_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED": 26,
+      "PREEXISTING_DESTINATION_CANDIDATE": 48,
+      "PREEXISTING_LEXICAL_CANDIDATE_HUMAN_REVIEW_REQUIRED": 46,
+      "UNRESOLVED_MACHINE": 244
+    },
+    "explore_observation_count": 417,
+    "field_marker_counts": {
+      "dual_gradient": 6,
+      "field_graph_not_sequence": 1,
+      "field_machine_legibility": 1,
+      "ontological_instantiation": 1,
+      "parallel_structural_transmission": 1,
+      "partial_projections": 1,
+      "semantic_space_anchor": 1,
+      "signature_coordinates": 2,
+      "signature_instructions": 1,
+      "structural_simulation_narrative": 1,
+      "unified_epistemic_entity": 1
+    },
+    "field_marker_observation_count": 17,
+    "next_human_steps": [
+      "adjudicate later exact/title-substring Explore candidates against source wording and chronology",
+      "blind-code structural roles before examining signature identity",
+      "separate pre-existing Explore destinations from future-resolving nodes",
+      "inspect unresolved high-frequency Explore nodes without inventing missing works",
+      "build theory-versus-Pressureborn primitive alignment as a separate non-empirical representation assay"
+    ],
+    "schema_version": "src-projective-routing-summary/v1",
+    "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+    "signature_classification_counts": {
+      "RECURRING_EXACT_SIGNATURE": 2,
+      "SINGLETON_SIGNATURE": 32
+    },
+    "signature_group_count": 34,
+    "status": "BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED"
+  },
+  "protected_flights": "HELD",
+  "real_source_receiver_admissions": 0,
+  "schema": "td613.src.sourcebound-method-qualification/v1",
+  "seal_audit": {
+    "drift_paths": [
+      ".gitattributes",
+      "01-MANIFESTS/candidate-corpus.jsonl",
+      "01-MANIFESTS/integrity-ledger.jsonl",
+      "01-MANIFESTS/phase2/attribution-v1.jsonl",
+      "01-MANIFESTS/snapshots/src-20260824-p2-001/01-MANIFESTS/candidate-corpus.jsonl",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-001.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-002.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-003.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-004.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-005.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-006.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-007.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-008.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-009.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-010.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-011.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-012.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-013.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-014.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-015.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-016.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-017.json",
+      "01-MANIFESTS/zenodo-pages/zenodo-page-018.json",
+      "04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/input-hashes.jsonl",
+      "04-RECEIPTS/assays/2026-08-23-phase15-local-architecture/summary.json",
+      "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/curated-summary.json",
+      "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/input-hashes.jsonl",
+      "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/lexical/retitle-phase-controls.json",
+      "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/lexical/summary.json",
+      "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/output-hashes.jsonl",
+      "04-RECEIPTS/assays/2026-08-24-phase2-kiln/non-collapse-audit.json",
+      "04-RECEIPTS/phase-2-acquisition-receipt.json",
+      "04-RECEIPTS/phase2/concurrency-recovery.json",
+      "04-RECEIPTS/zenodo-discovery-receipt.json",
+      "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+      "05-OPERATIONS/phase2/canon-map-speech-acts.jsonl",
+      "05-OPERATIONS/phase2/capture-repetition-observations.jsonl",
+      "05-OPERATIONS/phase2/claim-evidence-tomography.jsonl",
+      "05-OPERATIONS/phase2/compilation-passes.jsonl",
+      "05-OPERATIONS/phase2/compiler-conservation-observations.jsonl",
+      "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+      "05-OPERATIONS/phase2/evidence-lineage-assertions.jsonl",
+      "05-OPERATIONS/phase2/evidence-unit-fingerprints.jsonl",
+      "05-OPERATIONS/phase2/expected-object-observations.jsonl",
+      "05-OPERATIONS/phase2/publishing-regime-observations.jsonl",
+      "05-OPERATIONS/phase2/reference-assertions.jsonl",
+      "99-ADMIN/projection-overlays/CONNECTOR_ENTRY.md",
+      "99-ADMIN/projection-overlays/README.md",
+      "ATTRIBUTION.md",
+      "CONNECTOR_ENTRY.md",
+      "README.md"
+    ],
+    "entry_counts": {
+      "drift_or_missing": 51,
+      "match": 5742
+    },
+    "exact_crlf_replay_matches": 51,
+    "external_source_authentication": false,
+    "original_seal_rewritten": false,
+    "query_admission": {
+      "authority": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+      "resolve": "CONSUMED_FILES_VERIFIED",
+      "summary": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/expected-object-observations.jsonl",
+      "trace": "QUERY_INPUT_SEAL_DRIFT:05-OPERATIONS/phase2/contextual-role-assertions.jsonl"
+    }
+  },
+  "source_files_verified": 6501,
+  "source_manifest_sha256": "bd8c1fd10dd9e5b7e2b161f7a1f74bd3c562a8693b30c96d4af5f895458c4233",
+  "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320"
+}

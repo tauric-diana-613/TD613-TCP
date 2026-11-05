@@ -1,0 +1,226 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793839329233-0827f66b",
+  "timestamp": "2026-11-05T00:42:09.233Z",
+  "source_revision": "0f929b94a355c17c667eda22ab44263a4f1d5948",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "0f929b94a355c17c667eda22ab44263a4f1d5948",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "0f929b94a355c17c667eda22ab44263a4f1d5948",
+    "audit_execution_revision": "0f929b94a355c17c667eda22ab44263a4f1d5948",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [],
+  "is_historical_commit_only": false,
+  "task_scope": "SRC_NATIVE_SOURCEBOUND_READBACK_AND_RETURN_BOUNDARY",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "scripts/atelier-native-inheritance-bridge-v1.py",
+    "scripts/atelier-src-method-adapter-v1.py",
+    "scripts/qualify-src-native-sourcebound-v1.py",
+    "tests/test_atelier_src_epoch_binding_v1.py"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "scripts/atelier-native-inheritance-bridge-v1.py",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "8b027590cd8325d39aad9deab657445927df0d6121ae3bc3b05942982d91d88f",
+      "byte_digest_verified": true,
+      "sha256": "8b027590cd8325d39aad9deab657445927df0d6121ae3bc3b05942982d91d88f"
+    },
+    {
+      "reference": "scripts/atelier-src-method-adapter-v1.py",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "7c6699c531e608bec0edcd3534a8886ed923e41bba6f382091aa98c839789fbb",
+      "byte_digest_verified": true,
+      "sha256": "7c6699c531e608bec0edcd3534a8886ed923e41bba6f382091aa98c839789fbb"
+    },
+    {
+      "reference": "scripts/qualify-src-native-sourcebound-v1.py",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1054bbad0950e03ed2cc4ef4caa05c82c95502b3e4b36cb8be7daf6d03da768d",
+      "byte_digest_verified": true,
+      "sha256": "1054bbad0950e03ed2cc4ef4caa05c82c95502b3e4b36cb8be7daf6d03da768d"
+    },
+    {
+      "reference": "tests/test_atelier_src_epoch_binding_v1.py",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "628263201598966376e1a2822c7a416a426a2a3f176b75d138aeccde6aaca786",
+      "byte_digest_verified": true,
+      "sha256": "628263201598966376e1a2822c7a416a426a2a3f176b75d138aeccde6aaca786"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "ATLAS",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "FADT"
+  ],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "consequence-order-route-burden-practice-and-research-transfer",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability-identifiability-reconstruction-conditioning-and-replay-audit",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "SEAM_DETECTED",
+      "defect_class": "NONE",
+      "claim": "content-invariant-custody-variable-projection-event",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "phason_custody_diff": {
+          "schema": "td613.phason.custody-diff/v0.5-governed",
+          "status": "SEAM_DETECTED",
+          "content_invariant": true,
+          "projection_changed": true,
+          "collision_detected": false,
+          "decision": "content-invariant-custody-variable-projection-event",
+          "verified_algorithm": "fnv32",
+          "claim_ceiling": "phason-custody-diff-not-external-enforcement-or-permission-proof",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "audit-finite-quotient-fibres-for-exact-admissibility-descent-and-preserve-union-intersection-gap",
+      "verdict": "NOT_EVALUATED",
+      "status": "INPUT_MISSING",
+      "defect_class": "NONE",
+      "claim": "No observation input supplied for FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": null
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "HELD",
+      "status": "VIOLATION_DETECTED",
+      "defect_class": "CALLER_SUPPLIED_MATHEMATICAL_VIOLATION",
+      "claim": "Local component success cannot mask failed, held, unknown or unperformed route phases.",
+      "infractions": [
+        "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION"
+      ],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "HELD",
+          "veto_applied": true,
+          "veto_authority": "LOCAL_PASS_PLUS_GLOBAL_ROUTE_REGRESSION",
+          "evaluations": {
+            "NATIVE_EXECUTION": "PASS",
+            "SEALED_QUERY": "PASS",
+            "SOURCE_RECEIVER_RETURN": "NOT_RUN"
+          },
+          "violations": [],
+          "rationale": "Local component success cannot mask failed, held, unknown or unperformed route phases."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [
+    "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION",
+    "MALFORMED_OBSERVATION_SCHEMA"
+  ],
+  "orchestrator": {
+    "decision": "HELD",
+    "consensus": "HELD_DISSENT",
+    "primary_verdicts_consensus": "HELD_DISSENT",
+    "nested_extension_holds": [],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [
+      "UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION",
+      "MALFORMED_OBSERVATION_SCHEMA"
+    ],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [
+    "Missing domain observation inputs for: PEDAGOGUE, APERTURE, FADT.",
+    "Infractions detected: UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION, MALFORMED_OBSERVATION_SCHEMA."
+  ],
+  "next_permissible_action": "Human operator review required. Auditing held fail-closed. Operator must resolve domain infractions or missing observations before proceeding.",
+  "execution_duration_ms": 93
+}
