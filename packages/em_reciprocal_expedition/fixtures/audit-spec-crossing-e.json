@@ -1,0 +1,118 @@
+{
+  "source_revision": "db40ba3c53d59be89e8c2943fc14297c02510fe0",
+  "task_scope": "STAGE_A_S22_CROSSING_E_EPISTEMIC_INHERITANCE_AUDIT",
+  "evidence_class": "RECIPROCAL_EXPEDITION_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/src_reciprocal_expedition/CHAMBER_1_SIGNALRUPTURE_CLOSURE.md",
+    "packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
+    "packages/em_reciprocal_expedition/em-capability-receipt.json",
+    "packages/em_reciprocal_expedition/receiver/em-empty-receiver.mjs",
+    "packages/em_reciprocal_expedition/receiver/em-receiver-receipt.json",
+    "packages/em_reciprocal_expedition/assay/run-em-reciprocal-assay.mjs",
+    "packages/em_reciprocal_expedition/assay/em-reciprocal-assay-receipt.json",
+    "packages/em_reciprocal_expedition/fixtures/dollhouse-design-receipt-crossing-e.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-stage-as22-crossing-e",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Emergence HQ Independent Redpen #5787153904 issued on PR #1691 with 7 finite findings (S21-F01 through S21-F07)"
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Executed Chamber 1 correctness repairs: Shadow Graph v3 default-deny, backward citation allowed, Receiver v3 binary separation, mechanism assay v3 reconciled |Delta(C1,C3)|=3, Python query.trace missing hops bound directly"
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Executed Chamber 2 & 3: EMSTD613 estate verified (87 sources, 53 derivatives, 32 Work routes, 21 instruments, 256 partitions, 0 standalone executors); independent Empty Receiver v1 initialized"
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Executed Chamber 4 & 5: 3-path matched reciprocal assay completed, Dollhouse design & audit executed, Four Crossings updated (S qualified, E executed/qualified, W held, T reverse losslessness held)"
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [2.0, 0.3],
+        [0.1, 1.4]
+      ],
+      "candidate_probe": [1.0, 0.5],
+      "noise_covariance": [
+        [0.08, 0.01],
+        [0.01, 0.08]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [2.0, 0.3],
+        [0.1, 1.4]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:em_work_route_manifestation_quotient",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:em_work_route_manifestation_quotient",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": { "sources": 87, "derivatives": 53, "works": 32, "partitions": 256, "path": ["S", "E"] },
+        "right": { "sources": 87, "derivatives": 53, "works": 32, "partitions": 256, "path": ["S", "E"] }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "with_human_gated_work_identity",
+          "support": [
+            "ROBUST_SINGLETON",
+            "PENDING_HUMAN_CUSTODIAL_RESOLUTION",
+            "MIN_CONTRIBUTION_1",
+            "MAX_CONTRIBUTION_2"
+          ]
+        },
+        {
+          "state_id": "ungated_forced_unification_erased",
+          "support": ["SINGLETON_FORCED"]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "CHAMBER_1_SRC_CLOSURE",
+        "CHAMBER_2_EM_ESTATE_INVENTORY",
+        "CHAMBER_3_EMPTY_RECEIVER_CROSSING_E",
+        "CHAMBER_4_RECIPROCAL_RESEARCH_ASSAY",
+        "CHAMBER_5_WILD_FIELD_EXPLORATION",
+        "CHAMBER_6_FOUR_CROSSING_CONSEQUENCES"
+      ],
+      "phases": {
+        "CHAMBER_1_SRC_CLOSURE": { "status": "PASS", "entry_id": "chamber_1_src_closure" },
+        "CHAMBER_2_EM_ESTATE_INVENTORY": { "status": "PASS", "entry_id": "chamber_2_em_estate_inventory" },
+        "CHAMBER_3_EMPTY_RECEIVER_CROSSING_E": { "status": "PASS", "entry_id": "chamber_3_empty_receiver_crossing_e" },
+        "CHAMBER_4_RECIPROCAL_RESEARCH_ASSAY": { "status": "PASS", "entry_id": "chamber_4_reciprocal_research_assay" },
+        "CHAMBER_5_WILD_FIELD_EXPLORATION": { "status": "PASS", "entry_id": "chamber_5_wild_field_exploration" },
+        "CHAMBER_6_FOUR_CROSSING_CONSEQUENCES": { "status": "PASS", "entry_id": "chamber_6_four_crossing_consequences" }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

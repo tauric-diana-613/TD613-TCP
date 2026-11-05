@@ -1,0 +1,124 @@
+{
+  "schema": "td613.em-reciprocal-assay-receipt/v1",
+  "evaluated_at": "2026-11-05T15:31:47.877Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "initial_state_witness": {
+    "schema": "td613.em-empty-receiver/v1",
+    "witness_hash": "2a71ecdfd7dade4198fe2e5de2c9252c06c178c21f431eba2e0f06a11049e2e2",
+    "initialized_at": "2026-11-05T15:31:47.868Z",
+    "entropy": "fb8e83aa-8b54-47e3-a7da-25e3b5bf09c1"
+  },
+  "path1_original_method_fidelity": {
+    "works_evaluated": 3,
+    "singletons_count": 2,
+    "human_gated_pairs_count": 1,
+    "work_count_bounds": [
+      3,
+      4
+    ],
+    "human_gates_preserved_unresolved": true,
+    "intrinsic_role_promotion_refused": true,
+    "negative_controls_blocked": [
+      {
+        "control_id": "NEG_03_UNGATED_IDENTITY_UNIFICATION",
+        "status": "BLOCKED_BY_ORIGINAL_METHOD_RULE",
+        "reason": "Human gate is mandatory; ungated identity unification refused."
+      },
+      {
+        "control_id": "NEG_04_INTRINSIC_ROLE_PROMOTION",
+        "status": "BLOCKED_BY_ORIGINAL_METHOD_RULE",
+        "reason": "Contextual roles are strictly compiler-pass relative; intrinsic promotion forbidden."
+      }
+    ]
+  },
+  "path2_empty_encyclopedia_recipient": {
+    "sources_admitted": 4,
+    "derivatives_admitted": 4,
+    "manifestations_linked": 4,
+    "admitted_relations": [
+      {
+        "relation_id": "rel:em_hyp_to_alg",
+        "from_id": "src:em_hypervisor_01",
+        "to_id": "src:em_algedonic_02",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "temporal_classification": "STRICTLY_FORWARD",
+        "warrant_id": "WARRANT_GROUNDED_SPAN_EVIDENCE",
+        "source_capture_span_proof": {
+          "source_id": "src:em_hypervisor_01",
+          "start": 37,
+          "end": 78,
+          "span_sha256": "0b47726dd497d4fc7eacc888c96009bd8e25567be1dafb6e790c686eddaedc0f",
+          "witnessed_text": "Algedonic setpoints maintain homeostatic "
+        },
+        "admitted_at": "2026-11-05T15:31:47.876Z"
+      }
+    ],
+    "negative_controls": [
+      {
+        "control_id": "NEG_01_TAMPERED_SPAN",
+        "blocked": true,
+        "reason": "Cryptographic SHA-256 mismatch against raw source byte buffer"
+      },
+      {
+        "control_id": "NEG_02_FABRICATED_WARRANT",
+        "blocked": true,
+        "reason": "Default-deny requires non-null cryptographic source_capture_span_proof"
+      },
+      {
+        "control_id": "NEG_04_INTRINSIC_ROLE_PROMOTION",
+        "blocked": true,
+        "reason": "INTRINSIC_ROLE_PROMOTION_FORBIDDEN enforced by schema contract"
+      }
+    ]
+  },
+  "path3_strong_matched_union": {
+    "path1_original_invariants": {
+      "work_routes_count": 3,
+      "work_count_bounds": [
+        3,
+        4
+      ],
+      "human_gates_preserved": 1,
+      "intrinsic_role_promotion_refused": true
+    },
+    "path2_recipient_outcomes": {
+      "sources_admitted": 4,
+      "derivatives_admitted": 4,
+      "manifestations_linked": 4,
+      "admitted_grounded_relations": 1,
+      "negative_controls_blocked": 3
+    },
+    "intersection": {
+      "concordant_invariants": [
+        "WORK_IDENTITY_HUMAN_GATE_MANDATORY",
+        "INTRINSIC_ROLE_PROMOTION_FORBIDDEN",
+        "SOURCE_VS_DERIVATIVE_SEPARATION",
+        "SAFE_INTEGER_COORDINATE_BOUNDS",
+        "FATAL_UTF8_DECODING_ENFORCED"
+      ],
+      "status": "COMPLETE_METHOD_FIDELITY_CONCORDANCE"
+    },
+    "divergence_and_missingness": [
+      {
+        "domain": "HISTORICAL_EXECUTORS",
+        "path1_historical": "0 standalone executors survived in lineage",
+        "path2_recipient": "Recipient provides clean operational witness, but cannot retroactively manufacture historical execution",
+        "resolution": "Negative executor finding preserved; recipient operates as prospective witness only."
+      },
+      {
+        "domain": "HUMAN_GATE_ADJUDICATION",
+        "path1_historical": "8 human gates define [32, 40] Work bounds across 256 hypotheses",
+        "path2_recipient": "Recipient records PENDING_HUMAN_CUSTODIAL_RESOLUTION and holds bounds [1, 2] for gated pairs without collapsing them",
+        "resolution": "Concordant refusal of automatic gate resolution."
+      }
+    ],
+    "claim_ceilings_verified": [
+      "No genuine source admission occurred (synthetic research deck used).",
+      "No live model flight executed.",
+      "Protected Experiment B remains strictly HELD.",
+      "Human scientific closure strictly RESERVED."
+    ]
+  },
+  "disposition": "CROSSING_E_RECIPROCAL_ASSAY_QUALIFIED_CLEAN"
+}
