@@ -7,6 +7,7 @@ native source digest is rechecked against the independent native text index.
 from pathlib import Path
 from contextlib import closing
 import argparse,sqlite3,importlib.util,hashlib,math,struct,heapq,json
+from collections import Counter
 HERE=Path(__file__).resolve().parent
 s=importlib.util.spec_from_file_location('native_encoder',HERE/'native-offline-onnx-v1.py');encoder=importlib.util.module_from_spec(s);s.loader.exec_module(encoder)
 def build(source_index,destination,model_dir,estate,*,reuse_vectors=None):
@@ -52,30 +53,41 @@ def build(source_index,destination,model_dir,estate,*,reuse_vectors=None):
  return {'estate':estate,'source_count':len(sources),'vectors':count,'reused_source_bound_vectors':reused,'model_sha256':mh,'scientific_independent_replication':False}
 
 def search(source_index,vector_index,model_dir,query,estate,*,limit=20):
- if estate not in ('SRC','EMSTD613') or not isinstance(query,str) or not query.strip() or not 1<=limit<=100:raise ValueError('NATIVE_SEMANTIC_QUERY_REQUIRED')
+ if estate not in ('SRC','EMSTD613') or not isinstance(query,str) or not query.strip() or type(limit) is not int or not 1<=limit<=100:raise ValueError('NATIVE_SEMANTIC_QUERY_REQUIRED')
  for p in (source_index,vector_index,model_dir):
   if not Path(p).is_absolute() or Path(p).is_symlink():raise ValueError('NATIVE_LOCAL_PATH_REQUIRED')
  model_hash=encoder.fingerprint(model_dir)
  with closing(sqlite3.connect(Path(source_index).as_uri()+'?mode=ro',uri=True)) as c:
-  sources={sid:digest for sid,digest in c.execute('SELECT source_id,source_sha256 FROM records')}
+  source_rows=c.execute('SELECT source_id,source_sha256,text FROM records').fetchall()
+  sources={sid:digest for sid,digest,_ in source_rows}
+  if len(sources)!=len(source_rows):raise ValueError('NATIVE_SOURCE_INDEX_DUPLICATE')
+  expected_spans=Counter()
   meta=dict(c.execute('SELECT key,value FROM meta'))
   if meta.get('estate')!=estate:raise ValueError('NATIVE_SEMANTIC_ESTATE_MISMATCH')
-  for sid,digest,text in c.execute('SELECT source_id,source_sha256,text FROM records'):
+  for sid,digest,text in source_rows:
    if hashlib.sha256(text.encode('utf8')).hexdigest()!=digest:raise ValueError('NATIVE_SOURCE_INDEX_TAMPERED')
+   for begin in range(0,len(text),1100):
+    chunk=text[begin:begin+1200]
+    if not chunk:break
+    expected_spans[(sid,digest,hashlib.sha256(chunk.encode('utf8')).hexdigest(),len(text[:begin].encode('utf8')))]+=1
+    if begin+1200>=len(text):break
  with closing(sqlite3.connect(Path(vector_index).as_uri()+'?mode=ro',uri=True)) as c:
   metadata=dict(c.execute('SELECT key,value FROM metadata'))
   if metadata.get('model_sha256')!=model_hash or metadata.get('state')!='COMPLETE_INDEX_REQUIRES_FRESH_SOURCE_REVALIDATION':raise ValueError('NATIVE_MODEL_OR_VECTOR_STATE_MISMATCH')
   data=c.execute('SELECT source_id,source_sha256,chunk_sha256,byte_offset,dims,vector FROM vectors WHERE estate=?',(estate,)).fetchall()
   if {r[0] for r in data}!=set(sources):raise ValueError('NATIVE_VECTOR_SOURCE_COVERAGE_INCOMPLETE')
   if any(sources.get(r[0])!=r[1] for r in data):raise ValueError('NATIVE_VECTOR_SOURCE_DIGEST_DRIFT')
+  if any(type(r[3]) is not int or r[3]<0 for r in data) or Counter(tuple(r[:4]) for r in data)!=expected_spans:raise ValueError('NATIVE_VECTOR_EXACT_SPAN_COVERAGE_MISMATCH')
  model=encoder.LocalSentenceEncoder(model_dir);q=model.encode([query])[0];ranked=[]
+ if not q or not all(math.isfinite(v) for v in q) or not math.isfinite(sum(v*v for v in q)) or sum(v*v for v in q)<=0:raise ValueError('NATIVE_QUERY_VECTOR_INVALID')
  for sid,digest,chunk_hash,offset,dims,blob in data:
-  if len(blob)!=dims*4 or len(q)!=dims:raise ValueError('NATIVE_VECTOR_DIMENSION')
+  if type(dims) is not int or dims<1 or not isinstance(blob,bytes) or len(blob)!=dims*4 or len(q)!=dims:raise ValueError('NATIVE_VECTOR_DIMENSION')
   vector=struct.unpack('<'+str(dims)+'f',blob)
   if not all(math.isfinite(v) for v in vector):raise ValueError('NATIVE_VECTOR_NONFINITE')
   norm=math.sqrt(sum(v*v for v in vector))
   if norm<=0:raise ValueError('NATIVE_VECTOR_ZERO')
   score=sum(a*b/norm for a,b in zip(q,vector))
+  if not math.isfinite(score):raise ValueError('NATIVE_SEMANTIC_SCORE_NONFINITE')
   ranked.append({'source_id':sid,'source_sha256':digest,'chunk_sha256':chunk_hash,'byte_offset':offset,'score':float(score),'estate':estate,'retrieval_class':'LOCAL_SEMANTIC_CANDIDATE_NO_RELATION_PROMOTION'})
  return {'results':heapq.nlargest(limit,ranked,key=lambda x:(x['score'],x['source_id'],x['byte_offset'])),'model_sha256':model_hash,'independent_native_runtime':True,'scientific_parity':'REQUIRES_HUMAN_RELEVANCE_ADJUDICATION'}
 if __name__=='__main__':

@@ -18,10 +18,15 @@ def route(root,work_id):
     if not isinstance(work_id,str) or not work_id.startswith("emwork_"):raise ValueError("EM_WORK_ID_REQUIRED")
     source={};digest={}
     for key,rel in TABLES.items():source[key],digest[key]=load(root,rel)
+    for key,field in (("work","work_id"),("sources","source_file_id"),("links","source_file_id"),("derivatives","source_file_id")):
+        ids=[row.get(field) for row in source[key]]
+        if any(not isinstance(value,str) for value in ids) or len(ids)!=len(set(ids)):
+            raise ValueError("EM_DUPLICATE_OR_INVALID_REGISTRY_ID:"+key)
     works=[w for w in source["work"] if w.get("work_id")==work_id]
     if len(works)!=1:return {"work_id":work_id,"status":"UNRESOLVED_WORK_ID"}
     work=works[0]
     identities=set(work.get("manifestation_source_file_ids") or [])
+    if len(identities)!=len(work.get("manifestation_source_file_ids") or []):raise ValueError("EM_DUPLICATE_MANIFESTATION_ID")
     bysource={v["source_file_id"]:v for v in source["sources"]}
     members=[]
     for link in source["links"]:

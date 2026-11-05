@@ -1,0 +1,26 @@
+{
+  "implementations": [
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-work-route-v1.py",
+      "predecessor_revision": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+      "predecessor_sha256": "a611b79f1aef48c46836ae86b5c790fe9d7b1e82bcbfd2437c614d911c9275eb",
+      "repaired_sha256": "4c288a5fe9d470d3dc63b6982d8b271d97282d4efca4346d8976983828fa385a"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-native-text-search-v1.py",
+      "predecessor_revision": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+      "predecessor_sha256": "f772252942ac3a0860843c6da279027b4b028906323e7d9136088bbc4bab42cc",
+      "repaired_sha256": "2b2fb0e03b18bc22a6b2b070a82e370af32ddfb4411aed5f78f9b0888ecaa4bd"
+    },
+    {
+      "path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/native-semantic-search-v1.py",
+      "predecessor_revision": "9b9c9392d99975a8770b336eeae3c6ab1ae88d55",
+      "predecessor_sha256": "f06ea7d043a41b4e6645c1a5eb7595f9fc8dfa831ee2ad16e7da59504d282719",
+      "repaired_sha256": "dd4a8d30b71f0fe5be3780959664f6c4fa6bd6fa2b05738e344637707a2274bc"
+    }
+  ],
+  "additional_predecessor_probe": {
+    "text_boolean_limit_accepted": true,
+    "fixture": "FICTIONAL_SOURCE_ONLY"
+  }
+}
