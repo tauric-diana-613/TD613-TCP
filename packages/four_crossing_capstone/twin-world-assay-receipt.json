@@ -1,13 +1,13 @@
 {
   "schema": "td613.four-crossing-capstone.twin-world-assay-receipt/v1",
-  "evaluated_at": "2026-11-05T18:48:21.979Z",
+  "evaluated_at": "2026-11-05T19:52:16.230Z",
   "authority": "SAC[X6ZNK5NO51]",
   "covenant": "Khona‌lit-po",
   "preregistered_theorems": {
-    "terminal_projection_quotient": "Pi(G_A) === Pi(G_B) holds across all 4 estates; canonical graph serialization yields identical SHA-256 digest.",
+    "terminal_projection_quotient": "Pi(G_A) === Pi(G_B) holds across all 4 estates; canonical graph serialization of admitted nodes/edges yields identical SHA-256 digest.",
     "historical_trace_divergence": "H_A !== H_B holds across all 4 estates; retained adjudication events, rejections, and intake lineage yield distinct digests.",
-    "inquiry_1_terminal_information": "Mutual information I(World; Pi(G)) = 0. Blinded discriminator accuracy = 50% (random guess).",
-    "inquiry_2_witness_identifiability": "When process trace H is provided, discriminator accuracy = 100%. Hidden historical divergence is fully observable.",
+    "inquiry_1_theoretical_separability": "Under Pi alone, terminal graphs are identical. Mutual information I(World; Pi(G)) = 0. Under a balanced symmetric prior, expected chance accuracy is 50%. This is a theoretical property of the lossy quotient, NOT an empirically scored blinded classifier result.",
+    "inquiry_2_construction_separability": "When process trace H is provided, the signed rejection/override events render World A and World B distinguishable in-sample (1.0 trace separability within this constructed synthetic assay). This demonstrates internal trace preservation, NOT an empirical blinded evaluation.",
     "externality_boundary_preserved": "Synthetic process trace restores internal discriminability within the constructed experiment without proving external empirical origin. Shared acquisition adds zero independent replication credit."
   },
   "estates_evaluated": [
@@ -17,8 +17,11 @@
       "pi_equality": true,
       "pi_digest": "83904876e455bc3ddad6330e09e0a78289c7d2815601554be97af60838ab47f5",
       "h_inequality": true,
-      "inquiry_1_terminal_discriminability": 0,
-      "inquiry_2_history_identifiability": 1,
+      "inquiry_1_terminal_mutual_information": 0,
+      "inquiry_1_theoretical_discriminability_under_balanced_prior": 0.5,
+      "inquiry_2_construction_history_separability": 1,
+      "separability_classification": "THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY",
+      "empirical_blinded_classifier_executed": false,
       "rejection_event_preserved": true,
       "verdict": "INVARIANT_CONFIRMED"
     },
@@ -28,8 +31,11 @@
       "pi_equality": true,
       "pi_digest": "b43b34104cfec308c2ec9305a9ac781a85c7d3b281536c5d4a178c5643115c63",
       "h_inequality": true,
-      "inquiry_1_terminal_discriminability": 0,
-      "inquiry_2_history_identifiability": 1,
+      "inquiry_1_terminal_mutual_information": 0,
+      "inquiry_1_theoretical_discriminability_under_balanced_prior": 0.5,
+      "inquiry_2_construction_history_separability": 1,
+      "separability_classification": "THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY",
+      "empirical_blinded_classifier_executed": false,
       "rejection_event_preserved": true,
       "verdict": "INVARIANT_CONFIRMED"
     },
@@ -39,8 +45,11 @@
       "pi_equality": true,
       "pi_digest": "82966929ff0b58f009234508db868e5130c5098e410f52d2ade0d27fc07bc48e",
       "h_inequality": true,
-      "inquiry_1_terminal_discriminability": 0,
-      "inquiry_2_history_identifiability": 1,
+      "inquiry_1_terminal_mutual_information": 0,
+      "inquiry_1_theoretical_discriminability_under_balanced_prior": 0.5,
+      "inquiry_2_construction_history_separability": 1,
+      "separability_classification": "THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY",
+      "empirical_blinded_classifier_executed": false,
       "rejection_event_preserved": true,
       "verdict": "INVARIANT_CONFIRMED"
     },
@@ -50,8 +59,11 @@
       "pi_equality": true,
       "pi_digest": "7682a155ba426fbb459ae70732cfc7a1bc820347c5e02d326b516ac35d08a622",
       "h_inequality": true,
-      "inquiry_1_terminal_discriminability": 0,
-      "inquiry_2_history_identifiability": 1,
+      "inquiry_1_terminal_mutual_information": 0,
+      "inquiry_1_theoretical_discriminability_under_balanced_prior": 0.5,
+      "inquiry_2_construction_history_separability": 1,
+      "separability_classification": "THEORETICAL_QUOTIENT_LOSS_AND_IN_SAMPLE_TRACE_SEPARABILITY",
+      "empirical_blinded_classifier_executed": false,
       "rejection_event_preserved": true,
       "verdict": "INVARIANT_CONFIRMED"
     }

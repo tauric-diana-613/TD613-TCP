@@ -1,14 +1,14 @@
 {
   "schema": "td613.universal-atelier.custodial-gate-and-time-receipt/v1",
-  "evaluated_at": "2026-11-05T18:48:05.827Z",
+  "evaluated_at": "2026-11-05T19:52:15.428Z",
   "authority": "SAC[X6ZNK5NO51]",
   "covenant": "Khona‌lit-po",
   "chambers": [
     "CHAMBER_2_CUSTODIAL_GATE_REPAIR",
     "CHAMBER_3_LINK_AND_TIME_REPAIR"
   ],
-  "total_tests": 17,
-  "passed_tests": 17,
+  "total_tests": 32,
+  "passed_tests": 32,
   "failed_tests": 0,
   "all_passed": true,
   "jurisdictions_enforced": [
@@ -44,7 +44,32 @@
       "details": {}
     },
     {
-      "name": "Refused real-source record inside TEST_ONLY_SYNTHETIC_ADJUDICATION",
+      "name": "Refused real-source admission with arbitrary external token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused real-source admission with syntactically plausible token (fail-closed)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused self-issued MACHINE_SYNTHETIC event under external human jurisdiction",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused self-issued HUMAN event without external trust root",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused record with synthetic: false inside TEST_ONLY_SYNTHETIC_ADJUDICATION",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused OPERATOR_ADMITTED_SOURCE_RECORD inside TEST_ONLY_SYNTHETIC_ADJUDICATION",
       "passed": true,
       "details": {}
     },
@@ -60,6 +85,31 @@
     },
     {
       "name": "Refused cross-episode adjudication replay",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused proposal when raw_json mutated after staging",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused proposal when caller mutated record.id after staging",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused proposal when caller mutated record.label after staging",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused record with omitted synthetic flag",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused record with string synthetic flag (\"true\")",
       "passed": true,
       "details": {}
     },
@@ -99,6 +149,26 @@
       "details": {}
     },
     {
+      "name": "Unvalidated predicate accepted as CANDIDATE_UNVALIDATED_PREDICATE status",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Candidate link excluded from admitted reverse citations (ua_reverse_citations)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Candidate link excluded from neighbors() by default",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "canonicalProjectionPi strictly excludes candidate-only links",
+      "passed": true,
+      "details": {}
+    },
+    {
       "name": "Historical citation from 2024 document to 2020 document admitted successfully",
       "passed": true,
       "details": {}
@@ -110,6 +180,11 @@
     },
     {
       "name": "Refused link with empty span (start == end)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Dollhouse runner fails closed immediately on unrecognized positional argument without hanging",
       "passed": true,
       "details": {}
     }

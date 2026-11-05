@@ -1,6 +1,6 @@
 {
   "schema": "td613.four-crossing-capstone.encyclopedia-matched-receipt/v1",
-  "evaluated_at": "2026-11-05T18:48:21.374Z",
+  "evaluated_at": "2026-11-05T19:52:15.739Z",
   "authority": "SAC[X6ZNK5NO51]",
   "covenant": "Khona‌lit-po",
   "fixture": {
@@ -177,7 +177,7 @@
         "status": "THEORY",
         "claim_ceiling": "Consult source record for limitations."
       },
-      "measured_differential": "Claim ceilings and research status classifications are preserved verbatim.",
+      "measured_differential": "Record status is concordant (ACTIVE === ACTIVE). Claim ceiling is an intentional structural adaptation rather than verbatim parity: Reference Edition 1.4 records lack an explicit claim_ceiling property (returning undefined), whereas Universal Atelier mandates an explicit claim_ceiling on all admitted records (falling back to \"Consult source record for limitations\" if not explicitly specified).",
       "notes": null
     },
     {
@@ -210,8 +210,8 @@
         "creation_time": null,
         "publication_time": "2026-10-23T00:00:00Z",
         "observation_time": null,
-        "recording_time": "2026-11-05T18:48:21.299Z",
-        "admission_time": "2026-11-05T18:48:21.300Z"
+        "recording_time": "2026-11-05T19:52:15.673Z",
+        "admission_time": "2026-11-05T19:52:15.673Z"
       },
       "measured_differential": "T1 has a static edition snapshot without temporal tracking; T2 tracks 6 distinct time-bases.",
       "notes": null

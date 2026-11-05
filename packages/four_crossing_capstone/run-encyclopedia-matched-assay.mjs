@@ -345,9 +345,9 @@ evaluateDimension(8, 'STATUS_AND_CLAIM_CEILING_PRESERVATION', () => {
   const statusPreserved = t1.status === t2.status;
   return {
     concordant: ceilingPreserved && statusPreserved,
-    t1_result: { status: t1.status, claim_ceiling: t1.claim_ceiling },
+    t1_result: { status: t1.status, claim_ceiling: t1.claim_ceiling || null },
     t2_result: { status: t2.status, claim_ceiling: t2.claim_ceiling },
-    differential: 'Claim ceilings and research status classifications are preserved verbatim.',
+    differential: 'Record status is concordant (ACTIVE === ACTIVE). Claim ceiling is an intentional structural adaptation rather than verbatim parity: Reference Edition 1.4 records lack an explicit claim_ceiling property (returning undefined), whereas Universal Atelier mandates an explicit claim_ceiling on all admitted records (falling back to "Consult source record for limitations" if not explicitly specified).',
   };
 });
 

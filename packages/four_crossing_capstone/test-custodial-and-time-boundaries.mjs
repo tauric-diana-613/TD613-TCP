@@ -20,6 +20,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 
 import {
   UniversalAtelierReceiver,
@@ -92,25 +93,104 @@ try {
   recordTest('Refused real-source admission without external auth token', err.code === 'REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH');
 }
 
-// Adversarial: attempt real-source payload in test-only jurisdiction
-const realSourcePayload = {
+// Adversarial Amendment A: attempt external admission with arbitrary string token
+try {
+  receiver.admitRecord(prop1, {
+    jurisdiction: JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]',
+    externalAuthToken: 'bearer_token_xyz_arbitrary_string',
+    adjudicatorReceiptId: 'adj:none',
+  });
+  recordTest('Refused real-source admission with arbitrary external token', false);
+} catch (err) {
+  recordTest('Refused real-source admission with arbitrary external token', err.code === 'REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH');
+}
+
+// Adversarial Amendment A: attempt external admission with syntactically plausible token
+try {
+  receiver.admitRecord(prop1, {
+    jurisdiction: JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]',
+    externalAuthToken: 'td613-human-auth-v1:ecdsa-p256:3bad9aade0d90e6786ea7df11cae962ec3bc4726',
+    adjudicatorReceiptId: 'adj:none',
+  });
+  recordTest('Refused real-source admission with syntactically plausible token (fail-closed)', false);
+} catch (err) {
+  recordTest('Refused real-source admission with syntactically plausible token (fail-closed)', err.code === 'REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH');
+}
+
+// Adversarial Amendment A: attempt to register external HUMAN adjudication via self-issued event
+try {
+  receiver.registerAdjudicationEvent({
+    receiptId: 'adj:test:forged_human_synth',
+    jurisdiction: JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION,
+    adjudicatorKind: 'MACHINE_SYNTHETIC',
+    adjudicatorRole: 'ORCHESTRATOR',
+    action: 'RECORD_ADMISSION',
+    decision: 'ADMIT',
+    targetId: syntheticRec1.id,
+    evidenceSha256: prop1.input_sha256,
+  });
+  recordTest('Refused self-issued MACHINE_SYNTHETIC event under external human jurisdiction', false);
+} catch (err) {
+  recordTest('Refused self-issued MACHINE_SYNTHETIC event under external human jurisdiction', err.code === 'MACHINE_CANNOT_ISSUE_HUMAN_ADMISSION');
+}
+
+try {
+  receiver.registerAdjudicationEvent({
+    receiptId: 'adj:test:forged_human_root',
+    jurisdiction: JURISDICTIONS.EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION,
+    adjudicatorKind: 'HUMAN',
+    adjudicatorRole: 'ORCHESTRATOR',
+    action: 'RECORD_ADMISSION',
+    decision: 'ADMIT',
+    targetId: syntheticRec1.id,
+    evidenceSha256: prop1.input_sha256,
+  });
+  recordTest('Refused self-issued HUMAN event without external trust root', false);
+} catch (err) {
+  recordTest('Refused self-issued HUMAN event without external trust root', err.code === 'EXTERNAL_HUMAN_AUTH_ROOT_UNAVAILABLE');
+}
+
+// Adversarial: attempt synthetic: false in test-only jurisdiction
+const falseSynthPayload = {
   id: 'ua:real:protected_source_attempt',
   kind: 'source',
   label: 'Attempted Real Source Ingestion',
   synthetic: false,
-  evidence_class: 'OPERATOR_ADMITTED_SOURCE_RECORD',
   body: 'Private unredacted field data',
 };
-const realProp = receiver.prepareImport(JSON.stringify(realSourcePayload, null, 2));
+const falseSynthProp = receiver.prepareImport(JSON.stringify(falseSynthPayload, null, 2));
 try {
-  receiver.admitRecord(realProp, {
+  receiver.admitRecord(falseSynthProp, {
     jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
     humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
     adjudicatorReceiptId: 'adj:test:001',
   });
-  recordTest('Refused real-source record inside TEST_ONLY_SYNTHETIC_ADJUDICATION', false);
+  recordTest('Refused record with synthetic: false inside TEST_ONLY_SYNTHETIC_ADJUDICATION', false);
 } catch (err) {
-  recordTest('Refused real-source record inside TEST_ONLY_SYNTHETIC_ADJUDICATION', err.code === 'TEST_JURISDICTION_REAL_SOURCE_REFUSED');
+  recordTest('Refused record with synthetic: false inside TEST_ONLY_SYNTHETIC_ADJUDICATION', err.code === 'SYNTHETIC_DECLARATION_INVALID');
+}
+
+// Adversarial: attempt real-source evidence class with spoofed synthetic: true
+const spoofedSynthPayload = {
+  id: 'ua:real:spoofed_synthetic_attempt',
+  kind: 'source',
+  label: 'Attempted Real Source with Spoofed Flag',
+  synthetic: true,
+  evidence_class: 'OPERATOR_ADMITTED_SOURCE_RECORD',
+  body: 'Private unredacted field data',
+};
+const spoofedProp = receiver.prepareImport(JSON.stringify(spoofedSynthPayload, null, 2));
+try {
+  receiver.admitRecord(spoofedProp, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: 'adj:test:001',
+  });
+  recordTest('Refused OPERATOR_ADMITTED_SOURCE_RECORD inside TEST_ONLY_SYNTHETIC_ADJUDICATION', false);
+} catch (err) {
+  recordTest('Refused OPERATOR_ADMITTED_SOURCE_RECORD inside TEST_ONLY_SYNTHETIC_ADJUDICATION', err.code === 'TEST_JURISDICTION_REAL_SOURCE_REFUSED');
 }
 
 // -------------------------------------------------------------
@@ -200,6 +280,95 @@ try {
   recordTest('Refused cross-episode adjudication replay', false);
 } catch (err) {
   recordTest('Refused cross-episode adjudication replay', err.code === 'ADJUDICATION_CROSS_EPISODE_REPLAY_REJECTED');
+}
+
+// Adversarial Amendment B: post-staging mutation of proposal.raw_json
+const mutatedRawProposal = { ...prop1, raw_json: prop1.raw_json + ' ' };
+try {
+  receiver.admitRecord(mutatedRawProposal, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: adjRec1Id,
+  });
+  recordTest('Refused proposal when raw_json mutated after staging', false);
+} catch (err) {
+  recordTest('Refused proposal when raw_json mutated after staging', err.code === 'STAGED_PAYLOAD_MUTATED');
+}
+
+// Adversarial Amendment B: post-staging mutation of proposal.record.id
+const mutatedRecordIdProposal = { ...prop1, record: { ...prop1.record, id: 'ua:forged:new_id' } };
+try {
+  receiver.admitRecord(mutatedRecordIdProposal, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: adjRec1Id,
+  });
+  recordTest('Refused proposal when caller mutated record.id after staging', false);
+} catch (err) {
+  recordTest('Refused proposal when caller mutated record.id after staging', err.code === 'PROPOSAL_RECORD_ID_MISMATCH');
+}
+
+// Adversarial Amendment B: post-staging mutation of proposal.record.label
+const mutatedLabelProposal = { ...prop1, record: { ...prop1.record, label: 'Altered Label' } };
+try {
+  receiver.admitRecord(mutatedLabelProposal, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: adjRec1Id,
+  });
+  recordTest('Refused proposal when caller mutated record.label after staging', false);
+} catch (err) {
+  recordTest('Refused proposal when caller mutated record.label after staging', err.code === 'PROPOSAL_RECORD_MUTATED');
+}
+
+// Adversarial Amendment B: omitted synthetic flag
+const missingSynthRec = { id: 'ua:synth:missing_flag', kind: 'contract', label: 'Missing Synthetic Flag' };
+const propMissingSynth = receiver.prepareImport(JSON.stringify(missingSynthRec));
+const adjMissingSynthId = 'adj:test:missing_synth';
+receiver.registerAdjudicationEvent({
+  receiptId: adjMissingSynthId,
+  jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+  adjudicatorKind: 'MACHINE_SYNTHETIC',
+  adjudicatorRole: 'ORCHESTRATOR',
+  action: 'RECORD_ADMISSION',
+  decision: 'ADMIT',
+  targetId: missingSynthRec.id,
+  evidenceSha256: propMissingSynth.input_sha256,
+});
+try {
+  receiver.admitRecord(propMissingSynth, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: adjMissingSynthId,
+  });
+  recordTest('Refused record with omitted synthetic flag', false);
+} catch (err) {
+  recordTest('Refused record with omitted synthetic flag', err.code === 'SYNTHETIC_DECLARATION_INVALID');
+}
+
+// Adversarial Amendment B: ambiguously typed synthetic flag (string "true")
+const strSynthRec = { id: 'ua:synth:str_flag', kind: 'contract', label: 'String Synthetic Flag', synthetic: 'true' };
+const propStrSynth = receiver.prepareImport(JSON.stringify(strSynthRec));
+const adjStrSynthId = 'adj:test:str_synth';
+receiver.registerAdjudicationEvent({
+  receiptId: adjStrSynthId,
+  jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+  adjudicatorKind: 'MACHINE_SYNTHETIC',
+  adjudicatorRole: 'ORCHESTRATOR',
+  action: 'RECORD_ADMISSION',
+  decision: 'ADMIT',
+  targetId: strSynthRec.id,
+  evidenceSha256: propStrSynth.input_sha256,
+});
+try {
+  receiver.admitRecord(propStrSynth, {
+    jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+    humanReviewRef: 'SAC[X6ZNK5NO51]:TEST_ONLY',
+    adjudicatorReceiptId: adjStrSynthId,
+  });
+  recordTest('Refused record with string synthetic flag ("true")', false);
+} catch (err) {
+  recordTest('Refused record with string synthetic flag ("true")', err.code === 'SYNTHETIC_DECLARATION_INVALID');
 }
 
 // Valid admission of syntheticRec1
@@ -429,6 +598,54 @@ try {
   recordTest('Refused link admission when bound predicate mismatches proposed link_type', err.code === 'LINK_ADJUDICATION_PREDICATE_MISMATCH');
 }
 
+// Adversarial Amendment C: admitLink with unvalidated candidate predicate
+const candidateLinkId = 'link:test:candidate_predicate';
+const candidateProof = { start: startIdx, end: endIdx, span_sha256: spanSha };
+const adjCandLinkId = 'adj:test:link:candidate_pred';
+receiver.registerAdjudicationEvent({
+  receiptId: adjCandLinkId,
+  jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+  adjudicatorKind: 'MACHINE_SYNTHETIC',
+  adjudicatorRole: 'ATLAS_AUDITOR',
+  action: 'LINK_ADMISSION',
+  decision: 'ADMIT',
+  targetId: candidateLinkId,
+  evidenceSha256: candidateProof.span_sha256,
+  binding: {
+    from_id: syntheticRec1.id,
+    to_id: syntheticRec2.id,
+    link_type: 'CUSTOM_UNVALIDATED_SPECULATION',
+    span_sha256: candidateProof.span_sha256,
+    start: candidateProof.start,
+    end: candidateProof.end,
+  },
+});
+
+const admittedCandLink = receiver.admitLink({
+  linkId: candidateLinkId,
+  fromId: syntheticRec1.id,
+  toId: syntheticRec2.id,
+  linkType: 'CUSTOM_UNVALIDATED_SPECULATION',
+  spanProof: candidateProof,
+  adjudicatorReceiptId: adjCandLinkId,
+});
+
+recordTest('Unvalidated predicate accepted as CANDIDATE_UNVALIDATED_PREDICATE status', admittedCandLink.status === 'CANDIDATE_UNVALIDATED_PREDICATE');
+
+// Test that candidate link is NOT in reverse citations
+const revCitsForTarget = receiver.db.prepare('SELECT * FROM ua_reverse_citations WHERE target_id = ? AND link_type = ?').all(syntheticRec2.id, 'CUSTOM_UNVALIDATED_SPECULATION');
+recordTest('Candidate link excluded from admitted reverse citations (ua_reverse_citations)', revCitsForTarget.length === 0);
+
+// Test that candidate link is excluded from neighbors()
+const nbrsOut = receiver.neighbors(syntheticRec1.id, { direction: 'outgoing' });
+const candidateInNeighbors = nbrsOut.outgoing.some(l => l.link_type === 'CUSTOM_UNVALIDATED_SPECULATION');
+recordTest('Candidate link excluded from neighbors() by default', !candidateInNeighbors);
+
+// Test that canonicalProjectionPi strictly excludes candidate-only links
+const proj = receiver.canonicalProjectionPi();
+const candidateInPi = proj.canonical_payload.edges.some(e => e.type === 'CUSTOM_UNVALIDATED_SPECULATION');
+recordTest('canonicalProjectionPi strictly excludes candidate-only links', !candidateInPi);
+
 // -------------------------------------------------------------
 // TEST 6: Historical Time Bases Separation & Non-Retroactivity
 // -------------------------------------------------------------
@@ -505,6 +722,24 @@ try {
 } catch (err) {
   recordTest('Refused link with empty span (start == end)', err.code === 'INVALID_SPAN_BOUNDS');
 }
+
+// -------------------------------------------------------------
+// TEST 7: Regression Test: Dollhouse CLI Runner Positional Argument Fail-Closed
+// -------------------------------------------------------------
+console.log('\n--- TEST 7: Dollhouse CLI Runner Positional Argument Fail-Closed ---');
+
+let cliPositionalRejected = false;
+try {
+  execSync('node scripts/run-dollhouse-skill-audit.mjs positional-dummy-spec.json', {
+    stdio: 'pipe',
+  });
+} catch (err) {
+  const stderr = err.stderr ? err.stderr.toString() : '';
+  if (stderr.includes("Unrecognized positional argument 'positional-dummy-spec.json'")) {
+    cliPositionalRejected = true;
+  }
+}
+recordTest('Dollhouse runner fails closed immediately on unrecognized positional argument without hanging', cliPositionalRejected);
 
 // -------------------------------------------------------------
 // Summary & Receipt Generation
