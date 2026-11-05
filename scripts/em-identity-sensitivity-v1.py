@@ -9,6 +9,8 @@ from fractions import Fraction
 
 
 def partitions(works):
+    if not works:
+        raise ValueError('EM_WORKS_REQUIRED')
     fixed, uncertain, source_ids, work_ids = [], [], set(), set()
     for work in works:
         wid = work.get('work_id')

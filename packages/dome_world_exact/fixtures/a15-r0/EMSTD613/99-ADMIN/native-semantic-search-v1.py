@@ -78,7 +78,7 @@ def search(source_index,vector_index,model_dir,query,estate,*,limit=20):
   if {r[0] for r in data}!=set(sources):raise ValueError('NATIVE_VECTOR_SOURCE_COVERAGE_INCOMPLETE')
   if any(sources.get(r[0])!=r[1] for r in data):raise ValueError('NATIVE_VECTOR_SOURCE_DIGEST_DRIFT')
   if any(type(r[3]) is not int or r[3]<0 for r in data) or Counter(tuple(r[:4]) for r in data)!=expected_spans:raise ValueError('NATIVE_VECTOR_EXACT_SPAN_COVERAGE_MISMATCH')
- model=encoder.LocalSentenceEncoder(model_dir);q=model.encode([query])[0];ranked=[]
+ model=encoder.LocalSentenceEncoder(model_dir);q=[float(v) for v in model.encode([query])[0]];ranked=[]
  if not q or not all(math.isfinite(v) for v in q) or not math.isfinite(sum(v*v for v in q)) or sum(v*v for v in q)<=0:raise ValueError('NATIVE_QUERY_VECTOR_INVALID')
  for sid,digest,chunk_hash,offset,dims,blob in data:
   if type(dims) is not int or dims<1 or not isinstance(blob,bytes) or len(blob)!=dims*4 or len(q)!=dims:raise ValueError('NATIVE_VECTOR_DIMENSION')

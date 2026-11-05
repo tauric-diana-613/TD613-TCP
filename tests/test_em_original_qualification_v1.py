@@ -69,6 +69,9 @@ class IdentitySensitivity(unittest.TestCase):
         with self.assertRaises(ValueError): sensitivity.qualify(works(), {'unrelated': True})
         with self.assertRaises(ValueError): sensitivity.qualify(works(), {'a': 1})
 
+    def test_empty_estate_refused_without_invented_partition(self):
+        with self.assertRaisesRegex(ValueError, 'WORKS_REQUIRED'): sensitivity.qualify([])
+
 
 class DuplicateIdentityControls(unittest.TestCase):
     def fixture(self, root):
@@ -132,6 +135,17 @@ class SemanticSpanControls(unittest.TestCase):
                 def encode(self, *args): return [[float('nan'), 0]]
             with patch.object(semantic.encoder, 'LocalSentenceEncoder', BadEncoder):
                 with self.assertRaisesRegex(ValueError, 'QUERY_VECTOR'): semantic.search(*paths, 'fixture', 'EMSTD613')
+
+    def test_encoder_array_protocol_does_not_require_boolean_coercion(self):
+        class ArrayVector(list):
+            def __bool__(self): raise ValueError('array truth value ambiguous')
+        class ArrayEncoder:
+            def __init__(self, *args): pass
+            def encode(self, *args): return [ArrayVector([1.0, 0.0])]
+        with tempfile.TemporaryDirectory() as folder:
+            paths = self.fixture(Path(folder))
+            with patch.object(semantic.encoder, 'LocalSentenceEncoder', ArrayEncoder):
+                self.assertEqual(len(semantic.search(*paths, 'fixture', 'EMSTD613')['results']), 1)
 
     def test_multichunk_unicode_source_binds_exact_byte_offsets(self):
         with tempfile.TemporaryDirectory() as folder:
