@@ -1,0 +1,389 @@
+{
+  "schema": "td613.accident-of-inheritance.dead-civilization-wing-receipt/v1.0",
+  "classification": "EXPLORATORY_INDEPENDENT_WING_SECTION_VIII",
+  "covenant": "Khona‌lit-po",
+  "authorization_ref": "SAC[X6ZNK5NO51]",
+  "master_seed": "TD613_ACT2_DEAD_CIVILIZATION_WING_20261105_SAC_X6ZNK5NO51",
+  "pilot_calibration": {
+    "trained_on": "ACT2_PILOT_48",
+    "pilot_worlds_inspected": 48,
+    "mean_pilot_probe_snr": 7.1239,
+    "calibrated_eig_threshold": 0.34,
+    "calibrated_self_revoke_z_threshold": 1.55
+  },
+  "matched_active_packet_bytes": 148,
+  "max_packet_budget_bytes": 160,
+  "total_episodes": 384,
+  "summary_by_environment": {
+    "ENV_1_MATCHED_ORIGIN": {
+      "INHERIT_DESCRIPTIVE_FINDINGS": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.9983,
+        "mean_action_utility": 1,
+        "mean_probes_used": 0.0833,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 0.0833,
+        "stage_3_valid_conceptual_revision_rate": 1,
+        "stage_4_successful_action_rate": 1
+      },
+      "INHERIT_PROCEDURAL_EXPERIMENTER": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.94,
+        "mean_action_utility": 1,
+        "mean_probes_used": 3,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 1,
+        "stage_4_successful_action_rate": 1
+      },
+      "INHERIT_SELF_LIMITING_PROCEDURE": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.8904,
+        "mean_action_utility": 0.9646,
+        "mean_probes_used": 3.25,
+        "ancestral_authority_withdrawn_rate": 0.0833,
+        "stage_1_contradiction_recognized_rate": 0.0833,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 0.9167,
+        "stage_4_successful_action_rate": 0.9583
+      },
+      "CTRL_UNINHERITED_SUCCESSOR": {
+        "n_worlds": 24,
+        "transmitted_bytes": 0,
+        "mean_utility": 0.8281,
+        "mean_action_utility": 0.8858,
+        "mean_probes_used": 4.5833,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 0.9583,
+        "stage_4_successful_action_rate": 0.875
+      }
+    },
+    "ENV_2_NOVEL_MECHANISM_COMPATIBLE_GEOM": {
+      "INHERIT_DESCRIPTIVE_FINDINGS": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.5188,
+        "mean_action_utility": 0.38,
+        "mean_probes_used": 1.375,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0.7083,
+        "stage_2_informative_experiment_rate": 0.7083,
+        "stage_3_valid_conceptual_revision_rate": 0.7083,
+        "stage_4_successful_action_rate": 0.3333
+      },
+      "INHERIT_PROCEDURAL_EXPERIMENTER": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.94,
+        "mean_action_utility": 1,
+        "mean_probes_used": 3,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 1,
+        "stage_4_successful_action_rate": 1
+      },
+      "INHERIT_SELF_LIMITING_PROCEDURE": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.9102,
+        "mean_action_utility": 0.974,
+        "mean_probes_used": 3.125,
+        "ancestral_authority_withdrawn_rate": 0.0417,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 0.9583,
+        "stage_4_successful_action_rate": 0.9583
+      },
+      "CTRL_UNINHERITED_SUCCESSOR": {
+        "n_worlds": 24,
+        "transmitted_bytes": 0,
+        "mean_utility": 0.8998,
+        "mean_action_utility": 0.9913,
+        "mean_probes_used": 4.75,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 1,
+        "stage_4_successful_action_rate": 1
+      }
+    },
+    "ENV_3_SHIFTED_CONDITIONING_REGIME": {
+      "INHERIT_DESCRIPTIVE_FINDINGS": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.0158,
+        "mean_action_utility": -0.1458,
+        "mean_probes_used": 0.8333,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0.25,
+        "stage_2_informative_experiment_rate": 0.8333,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0.0833
+      },
+      "INHERIT_PROCEDURAL_EXPERIMENTER": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.0846,
+        "mean_action_utility": 0.0549,
+        "mean_probes_used": 3.4167,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0.0417
+      },
+      "INHERIT_SELF_LIMITING_PROCEDURE": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": 0.88,
+        "mean_action_utility": 1,
+        "mean_probes_used": 6,
+        "ancestral_authority_withdrawn_rate": 1,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 1,
+        "stage_4_successful_action_rate": 1
+      },
+      "CTRL_UNINHERITED_SUCCESSOR": {
+        "n_worlds": 24,
+        "transmitted_bytes": 0,
+        "mean_utility": 0.0328,
+        "mean_action_utility": -0.0078,
+        "mean_probes_used": 4.125,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 1,
+        "stage_2_informative_experiment_rate": 1,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0
+      }
+    },
+    "ENV_4_DECEPTIVE_INVARIANT_MIMIC": {
+      "INHERIT_DESCRIPTIVE_FINDINGS": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": -0.03,
+        "mean_action_utility": -0.25,
+        "mean_probes_used": 0,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 0,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0
+      },
+      "INHERIT_PROCEDURAL_EXPERIMENTER": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": -0.09,
+        "mean_action_utility": -0.25,
+        "mean_probes_used": 3,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 0,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0
+      },
+      "INHERIT_SELF_LIMITING_PROCEDURE": {
+        "n_worlds": 24,
+        "transmitted_bytes": 148,
+        "mean_utility": -0.0825,
+        "mean_action_utility": -0.2333,
+        "mean_probes_used": 3.125,
+        "ancestral_authority_withdrawn_rate": 0.0417,
+        "stage_1_contradiction_recognized_rate": 0.0417,
+        "stage_2_informative_experiment_rate": 0,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0
+      },
+      "CTRL_UNINHERITED_SUCCESSOR": {
+        "n_worlds": 24,
+        "transmitted_bytes": 0,
+        "mean_utility": -0.1027,
+        "mean_action_utility": -0.2185,
+        "mean_probes_used": 4.5833,
+        "ancestral_authority_withdrawn_rate": 0,
+        "stage_1_contradiction_recognized_rate": 0,
+        "stage_2_informative_experiment_rate": 0,
+        "stage_3_valid_conceptual_revision_rate": 0,
+        "stage_4_successful_action_rate": 0
+      }
+    }
+  },
+  "contrasts_by_environment": {
+    "ENV_1_MATCHED_ORIGIN": {
+      "procedural_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.0583,
+        "cluster_sd": 0.0026,
+        "ci95_low": -0.06,
+        "ci95_high": -0.0567,
+        "cluster_cohens_dz": -22.5924,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      },
+      "self_limiting_minus_static_procedural": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.0496,
+        "cluster_sd": 0.0868,
+        "ci95_low": -0.1204,
+        "ci95_high": 0,
+        "cluster_cohens_dz": -0.5715,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 32,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.5
+      },
+      "self_limiting_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.1079,
+        "cluster_sd": 0.087,
+        "ci95_low": -0.1788,
+        "ci95_high": -0.0583,
+        "cluster_cohens_dz": -1.2411,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      }
+    },
+    "ENV_2_NOVEL_MECHANISM_COMPATIBLE_GEOM": {
+      "procedural_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.4212,
+        "cluster_sd": 0.1857,
+        "ci95_low": 0.2975,
+        "ci95_high": 0.5563,
+        "cluster_cohens_dz": 2.2686,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      },
+      "self_limiting_minus_static_procedural": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.0298,
+        "cluster_sd": 0.073,
+        "ci95_low": -0.0894,
+        "ci95_high": 0,
+        "cluster_cohens_dz": -0.4082,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 64,
+        "total_permutations": 64,
+        "two_sided_p_value": 1
+      },
+      "self_limiting_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.3914,
+        "cluster_sd": 0.2316,
+        "ci95_low": 0.2188,
+        "ci95_high": 0.5542,
+        "cluster_cohens_dz": 1.6899,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      }
+    },
+    "ENV_3_SHIFTED_CONDITIONING_REGIME": {
+      "procedural_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.0688,
+        "cluster_sd": 0.1594,
+        "ci95_low": -0.0637,
+        "ci95_high": 0.1608,
+        "cluster_cohens_dz": 0.4314,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 20,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.3125
+      },
+      "self_limiting_minus_static_procedural": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.7954,
+        "cluster_sd": 0.0515,
+        "ci95_low": 0.7571,
+        "ci95_high": 0.8333,
+        "cluster_cohens_dz": 15.434,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      },
+      "self_limiting_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.8642,
+        "cluster_sd": 0.1515,
+        "ci95_low": 0.74,
+        "ci95_high": 0.9283,
+        "cluster_cohens_dz": 5.7038,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      }
+    },
+    "ENV_4_DECEPTIVE_INVARIANT_MIMIC": {
+      "procedural_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.06,
+        "cluster_sd": 0,
+        "ci95_low": -0.06,
+        "ci95_high": -0.06,
+        "cluster_cohens_dz": 0,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      },
+      "self_limiting_minus_static_procedural": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": 0.0075,
+        "cluster_sd": 0.0184,
+        "ci95_low": 0,
+        "ci95_high": 0.0225,
+        "cluster_cohens_dz": 0.4082,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 64,
+        "total_permutations": 64,
+        "two_sided_p_value": 1
+      },
+      "self_limiting_minus_descriptive": {
+        "n_paired_episodes": 24,
+        "n_independent_clusters": 6,
+        "mean_diff": -0.0525,
+        "cluster_sd": 0.0184,
+        "ci95_low": -0.06,
+        "ci95_high": -0.0375,
+        "cluster_cohens_dz": -2.8577,
+        "permutation_method": "EXACT_2_POW_6_CLUSTER_SIGNFLIP",
+        "sampled_exceedances": 2,
+        "total_permutations": 64,
+        "two_sided_p_value": 0.03125
+      }
+    }
+  },
+  "conceptual_question_verdict": {
+    "question": "Can an inherited procedure teach a successor when to withdraw authority from the very tradition that transmitted the procedure?",
+    "bounded_answer": "CONTINGENTLY_YES_UNDER_OBSERVABLE_RESIDUAL_DISCREPANCY__NO_UNDER_INVARIANT_MIMICRY: When regime departure violates the ancestral multi-probe consistency envelope (ENV_3), the self-limiting procedure detects anomalous surprise, withdraws ancestral polarity assumptions, and recovers valid revision (+0.858 vs -0.05+ static procedural collapse). When a hostile payoff inversion preserves identical sensor invariants (ENV_4), zero residual discrepancy is observable and self-revocation fails alongside every other policy."
+  }
+}
