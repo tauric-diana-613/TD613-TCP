@@ -1,0 +1,186 @@
+{
+  "schema": "td613.em-receiver-receipt/v1",
+  "evaluated_at": "2026-11-05T16:22:37.961Z",
+  "receiver_schema": "td613.em-empty-receiver/v1",
+  "total_tests": 29,
+  "passed_tests": 29,
+  "failed_tests": 0,
+  "all_passed": true,
+  "initial_state_witness": {
+    "attestation_type": "INITIAL_ZERO_ROW_STATE_WITNESS",
+    "schema": "td613.em-empty-receiver/v1",
+    "recipient_id": "em_rcp_578ef7e1",
+    "episode_id": "ep_d6fd-437",
+    "initialized_at": "2026-11-05T16:22:37.951Z",
+    "entropy": "578ef7e1-d6fd-4374-9452-575f22dcc20b",
+    "tables": [
+      "em_sources",
+      "em_derivatives",
+      "em_work_routes",
+      "em_manifestations",
+      "em_contextual_roles",
+      "em_admitted_relations"
+    ],
+    "zero_row_counts": {
+      "em_sources": 0,
+      "em_derivatives": 0,
+      "em_work_routes": 0,
+      "em_manifestations": 0,
+      "em_contextual_roles": 0,
+      "em_admitted_relations": 0
+    },
+    "witness_hash": "9f7de4f3a64e70903fc4442a524a0d3c1d0d34ff7ba66a9e20810cb141260cf3"
+  },
+  "test_census": [
+    {
+      "name": "Unique initial witness created",
+      "passed": true,
+      "details": {
+        "schema": "td613.em-empty-receiver/v1",
+        "witness_hash": "9f7de4f3a64e70903fc4442a524a0d3c1d0d34ff7ba66a9e20810cb141260cf3"
+      }
+    },
+    {
+      "name": "Schema conforms to td613.em-empty-receiver/v1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Attestation type is INITIAL_ZERO_ROW_STATE_WITNESS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Measured initial zero-row counts across all 6 receiver tables",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected malformed UTF-8 lone continuation bytes with MALFORMED_UTF8_SEQUENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid UTF-8 text containing Covenant Khona‌lit-po",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Classified binary data as BYTE_EVIDENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected fractional coordinate with INVALID_COORDINATES",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected NaN coordinate with INVALID_COORDINATES",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected out-of-bounds span with INVALID_SPAN",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused text decoding on BYTE_EVIDENCE span (span_text is null)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Exact raw binary bytes roundtrip losslessly",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Text span correctly decoded",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Extracted derivative registered linking parent source",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected derivative for nonexistent source with PARENT_SOURCE_NOT_FOUND",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Singleton Work route admitted without human gate",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Paired Work route admitted with human gate required",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected invalid work identity status with INVALID_WORK_IDENTITY_STATUS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Linked manifestation with cryptographic evidence hash",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Contextual role asserted with compiler-pass scoping",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected intrinsic role promotion with INTRINSIC_ROLE_PROMOTION_FORBIDDEN",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted relation with cryptographic span proof and adjudicator receipt",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation missing span proof with MISSING_SPAN_PROOF",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected fabricated span SHA-256 digest with INVALID_SPAN_PROOF_DIGEST",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unadmitted source endpoint with SOURCE_ENDPOINT_UNADMITTED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unadmitted target endpoint with TARGET_ENDPOINT_UNADMITTED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected arbitrary warrant with UNRECOGNIZED_WARRANT_DENIED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation missing adjudicator receipt with ADJUDICATOR_RECEIPT_REQUIRED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected out-of-bounds span coordinates with INVALID_SPAN_BOUNDS",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "governing_covenant": "Khona‌lit-po",
+  "disposition": "EM_EMPTY_RECEIVER_VERIFIED_CLEAN"
+}

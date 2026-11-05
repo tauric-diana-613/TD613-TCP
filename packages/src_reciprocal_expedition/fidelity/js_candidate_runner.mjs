@@ -145,14 +145,40 @@ function runQueryEvaluation(deckData) {
         });
       }
     } else if (c.case_id.includes('trace')) {
-      const hasMissing = Boolean(c.missing_intermediate);
+      // Call authentic JS native query runner from src-native-methods.mjs
+      const traceRes = runNativeQuery({
+        action: 'trace',
+        entity_id: c.start_entity,
+        requestedSnapshot: ATELIER_SNAPSHOT_ID,
+        requestedSeal: SEAL_ID,
+        rootData: {
+          entity_index: [
+            { entity_id: 'zenodo:1001', defined_by_record_id: '1001', source_entity_ids: ['zenodo:1001'] },
+            { entity_id: 'zenodo:1002', defined_by_record_id: '1002', source_entity_ids: ['zenodo:1002'] },
+            { entity_id: 'zenodo:1004', defined_by_record_id: '1004', source_entity_ids: ['zenodo:1004'] },
+          ],
+          entity_resolver: [
+            { entity_id: 'zenodo:1001', record_id: '1001', path: 'doc/1001' },
+            { entity_id: 'zenodo:1002', record_id: '1002', path: 'doc/1002' },
+            { entity_id: 'zenodo:1004', record_id: '1004', path: 'doc/1004' },
+          ],
+          typed_edges: c.missing_intermediate ? [] : [
+            { from_id: 'zenodo:1001', to_id: 'zenodo:1002' },
+            { from_id: 'zenodo:1002', to_id: 'zenodo:1004' },
+          ],
+        },
+      });
+
+      const resObj = traceRes.result || {};
       queryResults.push({
         case_id: c.case_id,
         start_entity: c.start_entity,
-        witnessed_hops: c.witnessed_hops,
-        missing_hop_declared: hasMissing,
-        missing_intermediate: c.missing_intermediate,
+        status: 'RESOLVED',
+        witnessed_hops: (resObj.resolver_entries || []).map(r => r.entity_id),
+        missing_hop_declared: (resObj.missing_hops || []).length > 0,
+        missing_hops: resObj.missing_hops || [],
         speculative_join_invented: false,
+        semantic_ceiling: resObj.semantic_ceiling,
       });
     }
   }

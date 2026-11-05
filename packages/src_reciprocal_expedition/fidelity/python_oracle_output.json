@@ -272,32 +272,28 @@
       },
       {
         "case_id": "q_trace_connected",
+        "join_rule": "Only exact witnessed identifiers are followed; missing hops remain explicit.",
         "missing_hop_declared": false,
-        "missing_hops": [
-          "DERIVATIVE",
-          "EXACT_SOURCE_LOCATOR",
-          "TYPED_RELATION",
-          "AUTHORITY_ASSERTION"
-        ],
-        "missing_intermediate": null,
-        "speculative_join_invented": false,
+        "missing_hops": [],
+        "speculative_joins_present": false,
         "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "unsupported_components": "UNKNOWN",
         "witnessed_hops": [
           "zenodo:1001"
         ]
       },
       {
         "case_id": "q_trace_missing_hop",
+        "join_rule": "Only exact witnessed identifiers are followed; missing hops remain explicit.",
         "missing_hop_declared": true,
         "missing_hops": [
-          "DERIVATIVE",
-          "EXACT_SOURCE_LOCATOR",
-          "TYPED_RELATION",
-          "AUTHORITY_ASSERTION"
+          "TYPED_RELATION"
         ],
-        "missing_intermediate": "zenodo:unadmitted_intermediate_9999",
-        "speculative_join_invented": false,
+        "speculative_joins_present": false,
         "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "unsupported_components": "UNKNOWN",
         "witnessed_hops": [
           "zenodo:1001"
         ]

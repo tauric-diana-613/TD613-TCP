@@ -540,7 +540,25 @@ export class EmptyEncyclopediaReceiverV3 {
         throw new ReceiverError('INVALID_SPAN', `Span [${byteStart}, ${byteEnd}] out of range for buffer length ${buf.length}.`);
       }
 
-      // Strict UTF-8 code point boundary validation
+      // Pure raw binary byte retrieval for BYTE_EVIDENCE (S21-F06 fix)
+      if (cap.evidence_class === 'BYTE_EVIDENCE' || target === 'raw_binary') {
+        const spanBytes = buf.subarray(byteStart, byteEnd);
+        return {
+          source_id: sourceId,
+          capture_id: cap.capture_id,
+          target_buffer: target,
+          evidence_class: 'BYTE_EVIDENCE',
+          byte_start: byteStart,
+          byte_end: byteEnd,
+          byte_length: spanBytes.length,
+          span_bytes_sha256: sha256(spanBytes),
+          raw_bytes_slice: spanBytes,
+          span_text: null, // text decoding refused for raw binary
+          verified: true,
+        };
+      }
+
+      // For TEXT_DOCUMENT: Strict UTF-8 code point boundary validation
       if (!isCodepointBoundary(buf, byteStart)) {
         throw new ReceiverError(
           'INVALID_CODEPOINT_BOUNDARY',
@@ -567,6 +585,7 @@ export class EmptyEncyclopediaReceiverV3 {
         source_id: sourceId,
         capture_id: cap.capture_id,
         target_buffer: target,
+        evidence_class: 'TEXT_DOCUMENT',
         byte_start: byteStart,
         byte_end: byteEnd,
         byte_length: spanBytes.length,
