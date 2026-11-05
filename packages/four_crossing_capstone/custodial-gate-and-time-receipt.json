@@ -1,0 +1,117 @@
+{
+  "schema": "td613.universal-atelier.custodial-gate-and-time-receipt/v1",
+  "evaluated_at": "2026-11-05T18:48:05.827Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "chambers": [
+    "CHAMBER_2_CUSTODIAL_GATE_REPAIR",
+    "CHAMBER_3_LINK_AND_TIME_REPAIR"
+  ],
+  "total_tests": 17,
+  "passed_tests": 17,
+  "failed_tests": 0,
+  "all_passed": true,
+  "jurisdictions_enforced": [
+    "TEST_ONLY_SYNTHETIC_ADJUDICATION",
+    "EXTERNALLY_AUTHENTICATED_HUMAN_ADMISSION"
+  ],
+  "adversarial_controls_passed": [
+    "REAL_SOURCE_ADMISSION_HELD_WITHOUT_EXTERNAL_AUTH",
+    "TEST_JURISDICTION_REAL_SOURCE_REFUSED",
+    "ADJUDICATION_TARGET_MISMATCH",
+    "ADJUDICATION_ACTION_MISMATCH",
+    "ADJUDICATION_CROSS_EPISODE_REPLAY_REJECTED",
+    "RECORD_PREVIOUSLY_REJECTED_OR_WITHDRAWN",
+    "LINK_ADJUDICATION_ENDPOINT_MISMATCH",
+    "LINK_ADJUDICATION_PREDICATE_MISMATCH",
+    "ANACHRONISTIC_CITATION_TARGET_FUTURE",
+    "INVALID_SPAN_BOUNDS_EMPTY_SPAN"
+  ],
+  "results": [
+    {
+      "name": "Witness conforms to schema v1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Attested exactly 5 receiver tables with 0 rows",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused real-source admission without external auth token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused real-source record inside TEST_ONLY_SYNTHETIC_ADJUDICATION",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission when adjudication target_id mismatches record ID",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission when adjudication action is not RECORD_ADMISSION",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused cross-episode adjudication replay",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Successfully admitted Record 1 under TEST_ONLY_SYNTHETIC_ADJUDICATION",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted record assigned evidence_class TEST_ONLY_SYNTHETIC_WITNESS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused admission of previously rejected record without reparative override",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted previously rejected record when explicit reparative override supplied",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link admission when adjudicator receipt target_id mismatches linkId",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link admission when bound endpoints mismatch proposal",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link admission when bound predicate mismatches proposed link_type",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Historical citation from 2024 document to 2020 document admitted successfully",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused anachronistic citation claiming 2020 document cited 2024 document as preexisting",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Refused link with empty span (start == end)",
+      "passed": true,
+      "details": {}
+    }
+  ]
+}
