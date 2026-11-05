@@ -1,0 +1,53 @@
+test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) ... 
+  test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=True) ... FAIL
+  test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=inf) ... ERROR
+  test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=nan) ... FAIL
+  test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=1e+308) ... FAIL
+test_realistic_integer_and_fractional_seconds_preserved (test_wendbine_native_qualification_v1.PublicationDateControls.test_realistic_integer_and_fractional_seconds_preserved) ... ok
+
+======================================================================
+ERROR: test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=inf)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_wendbine_native_qualification_v1.py", line 23, in test_nonfinite_boolean_and_overflow_dates_refused
+    m.validate_post(post(value))
+  File "$QUALIFICATION_WORKTREE/scripts/wendbine-live-research-index-v1.py", line 128, in validate_post
+    "published_unix":int(created),"title":title_bytes,"selftext":body_bytes,
+                     ^^^^^^^^^^^^
+OverflowError: cannot convert float infinity to integer
+
+======================================================================
+FAIL: test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_wendbine_native_qualification_v1.py", line 22, in test_nonfinite_boolean_and_overflow_dates_refused
+    with self.subTest(value=value),self.assertRaisesRegex(ValueError,'INVALID_PUBLICATION_DATE'):
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=nan)
+----------------------------------------------------------------------
+ValueError: cannot convert float NaN to integer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_wendbine_native_qualification_v1.py", line 22, in test_nonfinite_boolean_and_overflow_dates_refused
+    with self.subTest(value=value),self.assertRaisesRegex(ValueError,'INVALID_PUBLICATION_DATE'):
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "INVALID_PUBLICATION_DATE" does not match "cannot convert float NaN to integer"
+
+======================================================================
+FAIL: test_nonfinite_boolean_and_overflow_dates_refused (test_wendbine_native_qualification_v1.PublicationDateControls.test_nonfinite_boolean_and_overflow_dates_refused) (value=1e+308)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_wendbine_native_qualification_v1.py", line 22, in test_nonfinite_boolean_and_overflow_dates_refused
+    with self.subTest(value=value),self.assertRaisesRegex(ValueError,'INVALID_PUBLICATION_DATE'):
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+FAILED (failures=3, errors=1)

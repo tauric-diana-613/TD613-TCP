@@ -1,0 +1,67 @@
+name: TD613 original Wendbine qualification (read-only)
+on:
+  push:
+    branches: [research/wendbine-original-native-qualification-20261104]
+  pull_request:
+    paths:
+      - 'scripts/wendbine-native-*'
+      - 'scripts/wendbine-ordering-sensitivity-v1.py'
+      - 'scripts/qualify-wendbine-*'
+      - 'scripts/wendbine-live-research-index-v1.py'
+      - 'tests/wendbine-native-contract-v1.test.mjs'
+      - 'tests/test_wendbine_native_qualification_v1.py'
+      - '.github/workflows/td613-wendbine-original-sourcebound.yml'
+permissions:
+  contents: read
+jobs:
+  original-public-methods:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          sparse-checkout: |
+            scripts
+            tests
+            packages/dome_world_exact/fixtures/a15-r0/WENDBINE
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Source-free current restoration regressions and adversarial numeric controls
+        run: python -B -m unittest discover -s tests -p 'test_wendbine_*.py' -v
+      - name: Strict successor controls over preserved original executable
+        run: node --test tests/wendbine-native-contract-v1.test.mjs
+      - name: Retained original compiler and historical receipt assertion suites
+        run: |
+          node tests/wendbine-public-atelier-compiler.test.mjs
+          node tests/wendbine-td613-bounded-assay-v01.test.mjs
+      - uses: actions/checkout@v4
+        with:
+          ref: 520e3db76af8f1c76618bd678456c543ec37b3e5
+          fetch-depth: 0
+          path: origin-wendbine
+          persist-credentials: false
+          sparse-checkout: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
+      - uses: actions/checkout@v4
+        with:
+          ref: 4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1
+          path: evolved-wendbine
+          persist-credentials: false
+          sparse-checkout: packages/dome_world_exact/fixtures/a15-r0/WENDBINE
+      - name: Read-only original operations and independent source-bound oracle
+        run: python -B scripts/qualify-wendbine-original-sourcebound-v1.py --original-checkout origin-wendbine --evolved-checkout evolved-wendbine --output "$RUNNER_TEMP/wendbine-original-qualification.json"
+      - name: Preserve both original source revisions
+        run: |
+          git diff --exit-code
+          git -C origin-wendbine diff --exit-code
+          git -C evolved-wendbine diff --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wendbine-original-public-method-qualification
+          path: ${{ runner.temp }}/wendbine-original-qualification.json

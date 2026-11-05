@@ -1,0 +1,8 @@
+{
+  "path": "scripts/wendbine-live-research-index-v1.py",
+  "predecessor_revision": "61c09e54c1acd2223685eb4638fddffdd28e9515",
+  "predecessor_sha256": "e4273252d3649e24f6f1da3d6c2608fe5c9aa2d2408de0f6e4fd61d2040f2204",
+  "repaired_sha256": "c7671f9248af0cb6fd568da27fa99cf16397fae20978e735a4ee5b3d91bf9318",
+  "original_compiler_unchanged": true,
+  "strict_successor_contract": "scripts/wendbine-native-compiler-contract-v1.json"
+}

@@ -114,7 +114,10 @@ def validate_post(x: Any) -> dict:
     except UnicodeEncodeError as e: raise ValueError("INVALID_UTF8_SOURCE") from e
     if max(len(title_bytes),len(body_bytes))>MAX_POST_UTF8:raise ValueError("OVERSIZE_POST")
     created=x.get("created_utc")
-    if not isinstance(created,(int,float)) or created<=0:raise ValueError("INVALID_PUBLICATION_DATE")
+    # Exact numeric type, finite supported calendar range, before int/SQLite use.
+    # The exclusive upper bound is 10000-01-01T00:00:00Z.
+    if type(created) not in (int,float) or not 0<created<253402300800:
+        raise ValueError("INVALID_PUBLICATION_DATE")
     if x.get("removed_by_category") or body.strip() in {"[removed]","[deleted]"}:
         raise ValueError("REMOVED_OR_DELETED_SOURCE_REFUSED")
     is_media=(x.get("is_self") is False or x.get("is_video") is True)
