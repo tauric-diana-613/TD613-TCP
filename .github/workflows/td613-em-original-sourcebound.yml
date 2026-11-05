@@ -1,0 +1,49 @@
+name: TD613 original Em qualification (read-only)
+on:
+  push:
+    branches: [research/em-original-native-qualification-20261104]
+  pull_request:
+    paths:
+      - 'scripts/em-identity-sensitivity-v1.py'
+      - 'scripts/qualify-em-original-sourcebound-v1.py'
+      - 'tests/test_em_original_qualification_v1.py'
+      - 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/**'
+      - '.github/workflows/td613-em-original-sourcebound.yml'
+permissions:
+  contents: read
+jobs:
+  em-source-and-controls:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            scripts
+            tests
+            packages/dome_world_exact/fixtures/a15-r0/EMSTD613
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: New source-free identity, span and refusal controls
+        run: python -B -m unittest discover -s tests -p test_em_original_qualification_v1.py -v
+      - name: Retained restoration regressions
+        run: python -B -m unittest discover -s packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN -p 'test_*.py' -v
+      - uses: actions/checkout@v4
+        with:
+          ref: 70b5a0f9e94626cba6068f41c6117e7978800bbd
+          path: origin-em
+          persist-credentials: false
+          sparse-checkout: packages/dome_world_exact/fixtures/a15-r0/EMSTD613
+      - name: Original estate discovery and independently labelled restored execution
+        run: python -B scripts/qualify-em-original-sourcebound-v1.py --em-checkout origin-em --output "$RUNNER_TEMP/em-original-qualification.json"
+      - name: Source and predecessor evidence remain unchanged
+        run: |
+          git diff --exit-code
+          git -C origin-em diff --exit-code
+      - uses: actions/upload-artifact@v4
+        with:
+          name: em-original-sourcebound-qualification
+          path: ${{ runner.temp }}/em-original-qualification.json

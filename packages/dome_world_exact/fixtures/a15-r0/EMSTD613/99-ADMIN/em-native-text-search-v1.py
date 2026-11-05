@@ -93,7 +93,7 @@ def verify(root,db,estate):
             raise ValueError("NATIVE_SOURCE_CHECKOUT_DRIFT")
     return {"verified":True,"indexed_sources":len(rows),"source_origin_inferred":False}
 def search(db,phrase,limit=30,*,offset=0,mode="lexical"):
-    if not isinstance(phrase,str) or not phrase.strip() or not 1<=limit<=100 or type(offset) is not int or not 0<=offset<=1000000:
+    if not isinstance(phrase,str) or not phrase.strip() or type(limit) is not int or not 1<=limit<=100 or type(offset) is not int or not 0<=offset<=1000000:
         raise ValueError("NATIVE_BOUNDED_QUERY_REQUIRED")
     if mode not in ("lexical","phrase","exact"):raise ValueError("NATIVE_QUERY_MODE")
     with closing(sqlite3.connect(local(db).as_uri()+"?mode=ro",uri=True)) as con:

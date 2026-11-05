@@ -1,0 +1,102 @@
+test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) ... 
+  test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='work') ... FAIL
+  test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='sources') ... FAIL
+  test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='links') ... FAIL
+  test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='derivatives') ... FAIL
+test_fixed_evidence_invariant (test_em_original_qualification_v1.IdentitySensitivity.test_fixed_evidence_invariant) ... ok
+test_independent_pair_split_changes_threshold_without_resolution (test_em_original_qualification_v1.IdentitySensitivity.test_independent_pair_split_changes_threshold_without_resolution) ... ok
+test_invalid_identity_and_types_refused (test_em_original_qualification_v1.IdentitySensitivity.test_invalid_identity_and_types_refused) ... ok
+test_missingness_preserved (test_em_original_qualification_v1.IdentitySensitivity.test_missingness_preserved) ... ok
+test_single_manifestation_support_never_copied (test_em_original_qualification_v1.IdentitySensitivity.test_single_manifestation_support_never_copied) ... ok
+test_boolean_limits_refused (test_em_original_qualification_v1.SemanticSpanControls.test_boolean_limits_refused) ... FAIL
+test_nonfinite_query_refused (test_em_original_qualification_v1.SemanticSpanControls.test_nonfinite_query_refused) ... FAIL
+test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) ... 
+  test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql="UPDATE vectors SET chunk_sha256='altered'") ... FAIL
+  test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql='UPDATE vectors SET byte_offset=1') ... FAIL
+  test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql='INSERT INTO vectors SELECT * FROM vectors') ... FAIL
+
+======================================================================
+FAIL: test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='work')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 88, in test_duplicate_records_refused
+    with self.assertRaisesRegex(ValueError, 'DUPLICATE'): route.route(root, 'emwork_1')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='sources')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 88, in test_duplicate_records_refused
+    with self.assertRaisesRegex(ValueError, 'DUPLICATE'): route.route(root, 'emwork_1')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='links')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 88, in test_duplicate_records_refused
+    with self.assertRaisesRegex(ValueError, 'DUPLICATE'): route.route(root, 'emwork_1')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) (table='derivatives')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 88, in test_duplicate_records_refused
+    with self.assertRaisesRegex(ValueError, 'DUPLICATE'): route.route(root, 'emwork_1')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_boolean_limits_refused (test_em_original_qualification_v1.SemanticSpanControls.test_boolean_limits_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 123, in test_boolean_limits_refused
+    with self.assertRaises(ValueError): self.search(paths, limit=True)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_nonfinite_query_refused (test_em_original_qualification_v1.SemanticSpanControls.test_nonfinite_query_refused)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 134, in test_nonfinite_query_refused
+    with self.assertRaisesRegex(ValueError, 'QUERY_VECTOR'): semantic.search(*paths, 'fixture', 'EMSTD613')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql="UPDATE vectors SET chunk_sha256='altered'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 118, in test_positive_then_span_tamper_refused
+    with self.assertRaisesRegex(ValueError, 'SPAN|COVERAGE'): self.search(paths)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql='UPDATE vectors SET byte_offset=1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 118, in test_positive_then_span_tamper_refused
+    with self.assertRaisesRegex(ValueError, 'SPAN|COVERAGE'): self.search(paths)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) (sql='INSERT INTO vectors SELECT * FROM vectors')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$QUALIFICATION_WORKTREE/tests/test_em_original_qualification_v1.py", line 118, in test_positive_then_span_tamper_refused
+    with self.assertRaisesRegex(ValueError, 'SPAN|COVERAGE'): self.search(paths)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.086s
+
+FAILED (failures=9)

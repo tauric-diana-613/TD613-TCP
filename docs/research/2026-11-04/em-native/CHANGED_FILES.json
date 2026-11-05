@@ -1,0 +1,15 @@
+[
+  ".github/workflows/td613-em-original-sourcebound.yml",
+  "docs/research/2026-11-04/em-native/CHANGED_FILES.json",
+  "docs/research/2026-11-04/em-native/EM_NATIVE_INHERITANCE_AND_CONTINUITY.md",
+  "docs/research/2026-11-04/em-native/EM_ORIGINAL_QUALIFICATION.json",
+  "docs/research/2026-11-04/em-native/PREDECESSOR_AND_REPAIR_PINS.json",
+  "docs/research/2026-11-04/em-native/PRE_REPAIR_NEGATIVE_CONTROLS.txt",
+  "docs/research/2026-11-04/em-native/UNIVERSAL_READBACK_COMPARISON.json",
+  "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-native-text-search-v1.py",
+  "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/em-work-route-v1.py",
+  "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/99-ADMIN/native-semantic-search-v1.py",
+  "scripts/em-identity-sensitivity-v1.py",
+  "scripts/qualify-em-original-sourcebound-v1.py",
+  "tests/test_em_original_qualification_v1.py"
+]
