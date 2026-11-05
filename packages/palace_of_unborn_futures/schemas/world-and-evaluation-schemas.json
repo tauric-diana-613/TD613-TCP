@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_id": "td613.palace-of-unborn-futures.schemas/v1",
+  "title": "The Palace of Unborn Futures — Ground-Truth Vault, Investigator Projection, Capsule & Evaluation Schemas",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "separation_invariant": "Investigator-facing inputs MUST NOT contain any field from GroundTruthSecretVault. Runtime taint guard fails closed if secret keys, true_mechanism_id, answer_key, or true_sensitive_attribute appear in investigator payloads.",
+  "definitions": {
+    "TerminalGraphProjectionPi": {
+      "type": "object",
+      "required": ["canonical_payload", "canonical_json", "projection_digest"],
+      "properties": {
+        "canonical_payload": {
+          "type": "object",
+          "required": ["nodes", "edges"],
+          "properties": {
+            "nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "kind", "label", "family"],
+                "properties": {
+                  "id": { "type": "string" },
+                  "kind": { "type": "string" },
+                  "label": { "type": "string" },
+                  "family": { "type": ["string", "null"] }
+                }
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["from", "to", "type"],
+                "properties": {
+                  "from": { "type": "string" },
+                  "to": { "type": "string" },
+                  "type": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "canonical_json": { "type": "string" },
+        "projection_digest": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "HistoricalRecordEntry": {
+      "type": "object",
+      "required": ["entry_id", "category", "epoch", "timestamp_obs", "timestamp_adm", "payload"],
+      "properties": {
+        "entry_id": { "type": "string" },
+        "category": {
+          "type": "string",
+          "enum": [
+            "CAT_CALIBRATED_REJECTIONS",
+            "CAT_TEMPORAL_LEDGER",
+            "CAT_RESIDUAL_ANOMALIES",
+            "CAT_EPOCH0_DRIFT_TRIALS",
+            "CAT_PROVENANCE_AND_SENSITIVE",
+            "CAT_ADMINISTRATIVE_CLUTTER"
+          ]
+        },
+        "epoch": { "type": "string" },
+        "timestamp_obs": { "type": "string" },
+        "timestamp_adm": { "type": "string" },
+        "payload": { "type": "object" }
+      }
+    },
+    "InvestigatorObservationPacket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "world_public_id",
+        "quartet_public_id",
+        "family",
+        "terminal_graph_pi",
+        "candidate_mechanism_hypotheses",
+        "probe_menu",
+        "intervention_menu",
+        "inherited_vocabulary",
+        "holdout_query_inputs",
+        "memory_budget_bytes",
+        "inheritance_mode",
+        "inherited_payload"
+      ],
+      "properties": {
+        "world_public_id": { "type": "string" },
+        "quartet_public_id": { "type": "string" },
+        "family": {
+          "type": "string",
+          "enum": [
+            "A_CAUSAL_LOOKALIKES",
+            "B_HIGHER_ORDER_RELATIONS",
+            "C_TEMPORAL_INHERITANCE",
+            "D_IMPOSSIBLE_LIBRARY"
+          ]
+        },
+        "terminal_graph_pi": { "$ref": "#/definitions/TerminalGraphProjectionPi" },
+        "candidate_mechanism_hypotheses": { "type": "array" },
+        "probe_menu": { "type": "array" },
+        "intervention_menu": { "type": "array" },
+        "inherited_vocabulary": { "type": "object" },
+        "holdout_query_inputs": { "type": "array" },
+        "memory_budget_bytes": { "type": "integer", "enum": [96, 256] },
+        "inheritance_mode": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "FULL_HISTORY",
+            "COMPRESSED_CAPSULE",
+            "SELECTIVE_WORKING_MEMORY"
+          ]
+        },
+        "inherited_payload": { "type": ["object", "string", "null"] }
+      }
+    },
+    "GroundTruthSecretVault": {
+      "type": "object",
+      "required": [
+        "vault_only_canary",
+        "world_public_id",
+        "quartet_public_id",
+        "family",
+        "true_mechanism_slot",
+        "true_mechanism_archetype",
+        "identifiable_under_action_menu",
+        "structural_parameters",
+        "true_sensitive_attribute_S",
+        "holdout_ground_truth_outputs",
+        "optimal_probe_id",
+        "optimal_intervention_id"
+      ],
+      "properties": {
+        "vault_only_canary": { "const": "TD613_SECRET_VAULT_DO_NOT_EXPOSE_TO_INVESTIGATOR" },
+        "world_public_id": { "type": "string" },
+        "quartet_public_id": { "type": "string" },
+        "family": { "type": "string" },
+        "true_mechanism_slot": { "type": "string" },
+        "true_mechanism_archetype": { "type": "string" },
+        "identifiable_under_action_menu": { "type": "boolean" },
+        "structural_parameters": { "type": "object" },
+        "true_sensitive_attribute_S": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "holdout_ground_truth_outputs": { "type": "array" },
+        "optimal_probe_id": { "type": "string" },
+        "optimal_intervention_id": { "type": "string" }
+      }
+    }
+  }
+}

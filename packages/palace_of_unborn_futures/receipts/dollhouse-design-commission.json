@@ -1,0 +1,53 @@
+{
+  "commission_id": "COMM-PALACE-UNBORN-FUTURES-ARGON-01",
+  "seed": "Two research worlds arrive at an identical terminal Encyclopedia graph while their historical processes diverge: investigate when finite inherited memory liberates future discovery, when authoritative or misattributed history imprisons inquiry, and when an investigator must rupture its inherited ontology or abstain.",
+  "medium": "SCHOLARLY",
+  "instruments": [
+    "DIALECTICAL_TENSION",
+    "CARO_INSTITUTIONAL_RECONSTRUCTION"
+  ],
+  "human_coordinates": {
+    "what": "Scholarly research monograph on counterfactual scientific inheritance, finite sufficiency compression, selective forgetting, and ontological rupture",
+    "who": "Six successor investigator lineages (Amnesiacs, Archivists, Heirs, False Prophets, Exiles, Revisionists) and the human scientific custodian who retains sovereign closure",
+    "where": "The Palace of Unborn Futures — isolated postflight laboratory over the frozen Experiment A Universal Atelier estate",
+    "how": "Pairing FADT quotient fibres, Aperture nullspace abstention, and Information-Bottleneck capsule compression with adversarial falsification",
+    "when": "Across generational handoffs separating historical adjudication clocks from future experimental action",
+    "why": "To distinguish living diagnostic inheritance from the tyranny of authoritative or misattributed archives without fabricating external empirical proof"
+  },
+  "historical_references": [
+    {
+      "reference_id": "REF-AGENTS-LAW",
+      "source_path": "AGENTS.md",
+      "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "TD613 Agent Entry Contract: interactive operator-direct scope, consequence before ontology, and human closure."
+    },
+    {
+      "reference_id": "REF-FADT-THEOREM",
+      "source_path": "FADT.md",
+      "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Finite Admissibility Descent Theorem: union/intersection gap on occupied quotient fibres."
+    },
+    {
+      "reference_id": "REF-APERTURE-DEFICIT",
+      "source_path": "APERTURE.md",
+      "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Aperture identifiability, rank/nullity, conditioning, and mandatory abstention under unobservable nullspaces."
+    },
+    {
+      "reference_id": "REF-EXP-A-ADJUDICATION",
+      "source_path": "packages/four_crossing_capstone/FOUR_CROSSING_FINAL_ADJUDICATION.md",
+      "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Frozen Experiment A Four-Crossing Capstone adjudication and Equal-Graph Twin-World existence result."
+    }
+  ],
+  "deliverable_count": 1,
+  "scientific_audit_requested": true
+}
