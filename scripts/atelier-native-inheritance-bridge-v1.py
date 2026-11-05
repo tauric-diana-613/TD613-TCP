@@ -213,18 +213,20 @@ def literal_match(x,term):
     return False
 
 def native_projection(src,projection,term=None,limit=100):
-    if projection not in PROJECTIONS or not isinstance(limit,int) or not 1<=limit<=1000:
+    if projection not in PROJECTIONS or type(limit) is not int or not 1<=limit<=1000:
         raise ValueError("EXPLICIT_BOUNDED_SRC_PROJECTION_REQUIRED")
     path=SRC_METHODS[PROJECTIONS[projection]]
     blob,h=verified_bytes(src,path)
     records=[]
+    additional_match=False
     for n,line in enumerate(blob.decode("utf-8-sig").splitlines(),1):
         if not line.strip():continue
         row=json.loads(line)
         if term is not None and not literal_match(row,term):continue
         if len(records)<limit:records.append({"source_line":n,"record":row})
+        else:additional_match=True
     return {"projection":projection,"native_registry":path,"registry_sha256":h,
-       "matches":records,"returned":len(records),"truncated":len(records)==limit,
+       "matches":records,"returned":len(records),"truncated":additional_match,
        "query":"EXACT_NESTED_LITERAL" if term is not None else "FIRST_N_NATIVE_ROWS",
        "operator_class":"NATIVE_TYPED_REGISTRY_READBACK",
        "scientific_topology_established":False}
