@@ -1,26 +1,77 @@
 {
   "contextual_roles": {
+    "compilation_passes": [
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "build_target_id": "compiler_pass_1",
+        "compilation_pass_id": "src-compilation-pass:626ad03f2737d717172a5ea7",
+        "compiler_id": "compiler_pass_1",
+        "compiler_status": "WITNESSED_OR_CANDIDATE_AS_RECORDED_PER_INPUT",
+        "contextual_role_count": 2,
+        "input_ids": [
+          "ent:alpha",
+          "ent:beta"
+        ],
+        "input_role_assertion_ids": [
+          "src-contextual-role:228bdda24c40126a538b91df",
+          "src-contextual-role:c74327ac9c5faaa21fdf4d31"
+        ],
+        "interpretive_limit": "A compiler grouping preserves each input's own provenance and adjudication state.",
+        "observation_status": "BOUNDED_COMPILATION_VIEW",
+        "schema_version": "compilation-pass/v1",
+        "seal_epoch_binding": "RESOLVE_MATCHED_CURRENT_SEAL",
+        "source_status": "MIXED_SOURCE_AND_ARCHIVE_OBSERVATION"
+      },
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "build_target_id": "compiler_pass_2",
+        "compilation_pass_id": "src-compilation-pass:b990ac69371552653a745ef7",
+        "compiler_id": "compiler_pass_2",
+        "compiler_status": "WITNESSED_OR_CANDIDATE_AS_RECORDED_PER_INPUT",
+        "contextual_role_count": 1,
+        "input_ids": [
+          "ent:alpha"
+        ],
+        "input_role_assertion_ids": [
+          "src-contextual-role:741c68cb69643b7e6e0e654f"
+        ],
+        "interpretive_limit": "A compiler grouping preserves each input's own provenance and adjudication state.",
+        "observation_status": "BOUNDED_COMPILATION_VIEW",
+        "schema_version": "compilation-pass/v1",
+        "seal_epoch_binding": "RESOLVE_MATCHED_CURRENT_SEAL",
+        "source_status": "MIXED_SOURCE_AND_ARCHIVE_OBSERVATION"
+      }
+    ],
     "contextual_role_assertions": [
       {
         "compiler_pass": "compiler_pass_1",
         "contextual_role": "COMPILER_SOURCE",
+        "contextual_role_assertion_id": "src-contextual-role:228bdda24c40126a538b91df",
         "entity_id": "ent:alpha",
         "intrinsic_role_promotion": false,
-        "scope": "INITIAL_PASS"
+        "scope": {
+          "pass_scope": "INITIAL_PASS"
+        }
       },
       {
         "compiler_pass": "compiler_pass_2",
         "contextual_role": "TRANSFORMATION_TARGET",
+        "contextual_role_assertion_id": "src-contextual-role:741c68cb69643b7e6e0e654f",
         "entity_id": "ent:alpha",
         "intrinsic_role_promotion": false,
-        "scope": "SECONDARY_OPTIMIZATION"
+        "scope": {
+          "pass_scope": "SECONDARY_OPTIMIZATION"
+        }
       },
       {
         "compiler_pass": "compiler_pass_1",
         "contextual_role": "INVARIANT_WITNESS",
+        "contextual_role_assertion_id": "src-contextual-role:c74327ac9c5faaa21fdf4d31",
         "entity_id": "ent:beta",
         "intrinsic_role_promotion": false,
-        "scope": "INITIAL_PASS"
+        "scope": {
+          "pass_scope": "INITIAL_PASS"
+        }
       }
     ]
   },
@@ -222,18 +273,28 @@
       {
         "case_id": "q_trace_connected",
         "missing_hop_declared": false,
+        "missing_hops": [
+          "DERIVATIVE",
+          "EXACT_SOURCE_LOCATOR",
+          "TYPED_RELATION",
+          "AUTHORITY_ASSERTION"
+        ],
         "missing_intermediate": null,
         "speculative_join_invented": false,
         "start_entity": "zenodo:1001",
         "witnessed_hops": [
-          "zenodo:1001",
-          "zenodo:1002",
-          "zenodo:1004"
+          "zenodo:1001"
         ]
       },
       {
         "case_id": "q_trace_missing_hop",
         "missing_hop_declared": true,
+        "missing_hops": [
+          "DERIVATIVE",
+          "EXACT_SOURCE_LOCATOR",
+          "TYPED_RELATION",
+          "AUTHORITY_ASSERTION"
+        ],
         "missing_intermediate": "zenodo:unadmitted_intermediate_9999",
         "speculative_join_invented": false,
         "start_entity": "zenodo:1001",
@@ -244,41 +305,41 @@
     ]
   },
   "runtime": "Python 3.12.16",
-  "schema": "td613.python-oracle-output/v1",
+  "schema": "td613.python-oracle-output/v2",
   "tomography": {
     "tomography_observations": [
       {
         "case_id": "tomo_01_narrowed",
+        "claim_evidence_tomography_id": "src-claim-evidence:a04c59a9d7b94699db4d95c4",
         "composite_score": null,
         "declared_falsifiers": [
           "falsifier_subsystem_divergence"
         ],
-        "epistemic_status": "ADMISSIBLE_DELTA",
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "NARROWED",
         "observed_delta": "NARROWED",
-        "source_scope": "GENERAL_SYSTEM",
-        "target_scope": "BOUNDED_SUBSYSTEM",
         "transformation_id": "tr:01"
       },
       {
         "case_id": "tomo_02_expanded",
+        "claim_evidence_tomography_id": "src-claim-evidence:f38946c8cfb4320874b46560",
         "composite_score": null,
         "declared_falsifiers": [
           "falsifier_field_incoherence"
         ],
-        "epistemic_status": "ADMISSIBLE_DELTA",
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "EXPANDED",
         "observed_delta": "EXPANDED",
-        "source_scope": "LOCAL_NODE",
-        "target_scope": "DISTRIBUTED_FIELD",
         "transformation_id": "tr:02"
       },
       {
         "case_id": "tomo_03_unknown_null_score",
+        "claim_evidence_tomography_id": "src-claim-evidence:96091d3d725223f879002d31",
         "composite_score": null,
         "declared_falsifiers": [],
-        "epistemic_status": "REFUSED_SCALAR_COMPOSITE",
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "UNKNOWN",
         "observed_delta": "UNKNOWN",
-        "source_scope": "UNKNOWN",
-        "target_scope": "UNKNOWN",
         "transformation_id": "tr:03"
       }
     ]
