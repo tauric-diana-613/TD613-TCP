@@ -1,25 +1,26 @@
 {
   "schema": "td613.em-receiver-receipt/v1",
-  "evaluated_at": "2026-11-05T16:22:37.961Z",
+  "evaluated_at": "2026-11-05T17:24:07.067Z",
   "receiver_schema": "td613.em-empty-receiver/v1",
-  "total_tests": 29,
-  "passed_tests": 29,
+  "total_tests": 34,
+  "passed_tests": 34,
   "failed_tests": 0,
   "all_passed": true,
   "initial_state_witness": {
     "attestation_type": "INITIAL_ZERO_ROW_STATE_WITNESS",
     "schema": "td613.em-empty-receiver/v1",
-    "recipient_id": "em_rcp_578ef7e1",
-    "episode_id": "ep_d6fd-437",
-    "initialized_at": "2026-11-05T16:22:37.951Z",
-    "entropy": "578ef7e1-d6fd-4374-9452-575f22dcc20b",
+    "recipient_id": "em_rcp_242bb85f",
+    "episode_id": "ep_71ad-408",
+    "initialized_at": "2026-11-05T17:24:07.057Z",
+    "entropy": "242bb85f-71ad-408d-8c35-98f9c506a783",
     "tables": [
       "em_sources",
       "em_derivatives",
       "em_work_routes",
       "em_manifestations",
       "em_contextual_roles",
-      "em_admitted_relations"
+      "em_admitted_relations",
+      "em_adjudication_events"
     ],
     "zero_row_counts": {
       "em_sources": 0,
@@ -27,9 +28,10 @@
       "em_work_routes": 0,
       "em_manifestations": 0,
       "em_contextual_roles": 0,
-      "em_admitted_relations": 0
+      "em_admitted_relations": 0,
+      "em_adjudication_events": 0
     },
-    "witness_hash": "9f7de4f3a64e70903fc4442a524a0d3c1d0d34ff7ba66a9e20810cb141260cf3"
+    "witness_hash": "c1204c847ad4804262955d308832334f62d12535bd2d2d5b3aecc5565b83711b"
   },
   "test_census": [
     {
@@ -37,7 +39,7 @@
       "passed": true,
       "details": {
         "schema": "td613.em-empty-receiver/v1",
-        "witness_hash": "9f7de4f3a64e70903fc4442a524a0d3c1d0d34ff7ba66a9e20810cb141260cf3"
+        "witness_hash": "c1204c847ad4804262955d308832334f62d12535bd2d2d5b3aecc5565b83711b"
       }
     },
     {
@@ -51,7 +53,12 @@
       "details": {}
     },
     {
-      "name": "Measured initial zero-row counts across all 6 receiver tables",
+      "name": "Attested exactly 7 receiver tables in initial state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Measured initial zero-row counts across all 7 receiver tables",
       "passed": true,
       "details": {}
     },
@@ -171,7 +178,27 @@
       "details": {}
     },
     {
+      "name": "Rejected relation type not allowed by warrant contract with WARRANT_RELATION_MISMATCH",
+      "passed": true,
+      "details": {}
+    },
+    {
       "name": "Rejected relation missing adjudicator receipt with ADJUDICATOR_RECEIPT_REQUIRED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unregistered adjudicator receipt with UNREGISTERED_ADJUDICATION_EVENT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with non-ADMIT adjudication with ADJUDICATION_DECISION_NOT_ADMIT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with mismatched adjudicator span hash with ADJUDICATOR_SPAN_HASH_MISMATCH",
       "passed": true,
       "details": {}
     },

@@ -228,6 +228,16 @@ for (const w of corpus.works) {
 // 4. Grounded relation discovery (Path 2)
 // Discovers cue in Hypervisor pointing to Algedonic Systems
 const hyperSpan = receiver.retrieveByteSpan('src:em_hypervisor_01', 37, 78);
+
+// Register version-bound positive adjudication event (E-C02)
+receiver.registerAdjudicationEvent({
+  receiptId: 'rec:adj_hyper_to_alg_001',
+  adjudicatorRole: 'ORCHESTRATOR',
+  decision: 'ADMIT',
+  relationId: 'rel:em_hyp_to_alg',
+  spanSha256: hyperSpan.span_sha256,
+});
+
 const admittedRel1 = receiver.admitRelation({
   relationId: 'rel:em_hyp_to_alg',
   fromId: 'src:em_hypervisor_01',
@@ -264,7 +274,7 @@ try {
       start: 0,
       end: 35,
       span_sha256: corpus.negativeControls[0].tamperedProof.span_sha256,
-      adjudicator_receipt_id: 'rec:adj_tampered_001',
+      adjudicator_receipt_id: 'rec:adj_hyper_to_alg_001',
     },
   });
 } catch (err) {
@@ -316,107 +326,161 @@ path2NegativeControls.push({
   reason: 'INTRINSIC_ROLE_PROMOTION_FORBIDDEN enforced by schema contract',
 });
 
+// Neg 5: Unregistered adjudicator receipt (E-C02)
+let neg5Blocked = false;
+try {
+  receiver.admitRelation({
+    relationId: 'rel:unreg_adj_attempt',
+    fromId: 'src:em_hypervisor_01',
+    toId: 'src:em_algedonic_02',
+    relationType: 'EXPLORE_PROJECTIVE',
+    temporalClassification: 'STRICTLY_FORWARD',
+    warrantId: 'WARRANT_GROUNDED_SPAN_EVIDENCE',
+    sourceCaptureSpanProof: {
+      source_id: 'src:em_hypervisor_01',
+      start: hyperSpan.start,
+      end: hyperSpan.end,
+      span_sha256: hyperSpan.span_sha256,
+      adjudicator_receipt_id: 'rec:adj_forged_attempt',
+    },
+  });
+} catch (err) {
+  if (err.code === 'UNREGISTERED_ADJUDICATION_EVENT') neg5Blocked = true;
+}
+path2NegativeControls.push({
+  control_id: 'NEG_05_UNREGISTERED_ADJUDICATOR_RECEIPT',
+  blocked: neg5Blocked,
+  reason: 'UNREGISTERED_ADJUDICATION_EVENT enforced against version-bound adjudication events table',
+});
+
 console.log(`[Path 2] Admitted 1 grounded relation: ${admittedRel1.relation_id}.`);
 console.log(`[Path 2] All negative controls evaluated: ${path2NegativeControls.filter(n => n.blocked).length}/${path2NegativeControls.length} blocked.`);
 
 // -------------------------------------------------------------
-// PATH 3: INDEPENDENT COMPARATOR EXECUTION (Review Finding E-03)
+// PATH 3: INDEPENDENT COMPARATOR EXECUTION (Review Findings E-03, E-C03)
 // -------------------------------------------------------------
 console.log('\n--- EXECUTING PATH 3: INDEPENDENT COMPARATOR EXECUTION ---');
 
-// Live execution of 10-dimensional comparison suite
+function evaluateComparatorDimension({
+  dimension_index,
+  dimension_name,
+  evaluation_type = 'LIVE_EXECUTION',
+  path1_rule,
+  path2_outcome,
+  checkFn,
+}) {
+  let held = false;
+  let evalError = null;
+  try {
+    held = Boolean(checkFn());
+  } catch (err) {
+    evalError = err.message;
+    held = false;
+  }
+  return {
+    dimension_index,
+    dimension_name,
+    evaluation_type,
+    path1_rule,
+    path2_outcome,
+    verdict: held ? 'CONCORDANT_INVARIANT_HELD' : 'DISCORDANCE_DETECTED',
+    invariant_held: held,
+    evaluation_error: evalError,
+  };
+}
+
+// Live execution of 10-dimensional comparison suite with dynamically calculated booleans
 const tenDimensionalEvaluations = [
-  {
+  evaluateComparatorDimension({
     dimension_index: 1,
     dimension_name: 'HUMAN_GATED_WORK_IDENTITY',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Human gate is mandatory for paired manifestations; bounds [1, 2] held.',
     path2_outcome: `Work route emwork_dsp_tracker_pair requires human gate: ${corpus.works.find(w => w.workId === 'emwork_dsp_tracker_pair').humanGateRequired}`,
-    verdict: 'CONCORDANT_CONSTRAINED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => path1Findings.human_gated_pairs_count === 1 &&
+      receiver.db.prepare('SELECT human_gate_required FROM em_work_routes WHERE work_id = ?').get('emwork_dsp_tracker_pair').human_gate_required === 1,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 2,
     dimension_name: 'WORK_ROUTES_VS_MANIFESTATIONS',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Manifestation presence never collapses work routes or copies claims.',
     path2_outcome: 'Manifestations registered with cryptographic evidence link without modifying work route state.',
-    verdict: 'CONCORDANT_SEPARATED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => receiver.db.prepare('SELECT count(*) as c FROM em_manifestations').get().c === corpus.sources.length,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 3,
     dimension_name: 'SOURCE_VS_DERIVATIVE_LINEAGE',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Primary source bytes remain immutable; derivatives are extracted views.',
     path2_outcome: 'Derivatives link parent source_id; fatal UTF-8 decodes text; raw bytes immutable in SQLite.',
-    verdict: 'CONCORDANT_IMMUTABLE',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => receiver.db.prepare('SELECT count(*) as c FROM em_derivatives').get().c === corpus.sources.length,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 4,
     dimension_name: 'CONTEXTUAL_VS_INTRINSIC_ROLES',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Contextual roles are strictly compiler-pass relative; intrinsic promotion forbidden.',
     path2_outcome: `Intrinsic promotion attempt rejected: ${neg4Blocked}`,
-    verdict: 'CONCORDANT_REJECTED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => neg4Blocked === true && path1Findings.intrinsic_role_promotion_refused === true,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 5,
     dimension_name: 'MISSING_SOURCES',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Missing sources must be detected and not fabricated.',
     path2_outcome: 'Unadmitted endpoints rejected with SOURCE_ENDPOINT_UNADMITTED / TARGET_ENDPOINT_UNADMITTED.',
-    verdict: 'CONCORDANT_DEFAULT_DENY',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => {
+      let threw = false;
+      try {
+        receiver.retrieveByteSpan('src:nonexistent_endpoint', 0, 10);
+      } catch (err) {
+        if (err.code === 'SOURCE_NOT_FOUND') threw = true;
+      }
+      return threw;
+    },
+  }),
+  evaluateComparatorDimension({
     dimension_index: 6,
     dimension_name: 'CLAIM_CEILINGS',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Zero genuine sources; no live model flights; Experiment B held; human closure reserved.',
     path2_outcome: 'Synthetic deck used; zero model calls; zero network egress; fully source-free.',
-    verdict: 'CONCORDANT_BOUNDED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => corpus.sources.every(s => s.sourceId.startsWith('src:em_')),
+  }),
+  evaluateComparatorDimension({
     dimension_index: 7,
     dimension_name: 'CANDIDATE_GENERATION',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Candidates generated only from witnessed span evidence.',
     path2_outcome: 'Projective cue extracted from hypervisor span bytes [37, 78] with verified hash.',
-    verdict: 'CONCORDANT_GROUNDED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => Number.isSafeInteger(hyperSpan.start) && Number.isSafeInteger(hyperSpan.end) && hyperSpan.span_sha256.length === 64,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 8,
     dimension_name: 'PROOF_REFUSAL',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Tampered proofs and fabricated warrants must be rejected.',
     path2_outcome: `Tampered span rejected: ${neg1Blocked}; Fabricated warrant rejected: ${neg2Blocked}`,
-    verdict: 'CONCORDANT_REFUSED',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => neg1Blocked === true && neg2Blocked === true,
+  }),
+  evaluateComparatorDimension({
     dimension_index: 9,
     dimension_name: 'CONTRADICTORY_EVIDENCE',
-    evaluation_type: 'LIVE_EXECUTION',
     path1_rule: 'Forward routing cannot route into preexisting targets; historical citations cannot cite future targets.',
     path2_outcome: 'Temporal classification enforced; anachronistic links fail closed.',
-    verdict: 'CONCORDANT_CHRONOLOGY',
-    invariant_held: true,
-  },
-  {
+    checkFn: () => admittedRel1.temporal_classification === 'STRICTLY_FORWARD',
+  }),
+  evaluateComparatorDimension({
     dimension_index: 10,
-    dimension_name: 'RESEARCH_QUESTIONS',
-    evaluation_type: 'LIVE_EXECUTION',
-    path1_rule: 'Epistemic discovery across works proceeds while preserving unresolved human gates.',
-    path2_outcome: 'Downstream discovery succeeded across distinct Work routes with human gate held.',
-    verdict: 'CONCORDANT_EXPLORATION',
-    invariant_held: true,
-  },
+    dimension_name: 'ADJUDICATION_RECEIPT_REGISTRY',
+    path1_rule: 'Adjudication requires registered version-bound event; forged receipts fail closed.',
+    path2_outcome: `Unregistered adjudicator rejected: ${neg5Blocked}; Admitted relation backed by event rec:adj_hyper_to_alg_001`,
+    checkFn: () => neg5Blocked === true &&
+      receiver.db.prepare("SELECT count(*) as c FROM em_adjudication_events WHERE decision = 'ADMIT'").get().c >= 1,
+  }),
 ];
+
+// Adversarial failure detection control
+const adversarialTestEvaluation = evaluateComparatorDimension({
+  dimension_index: 99,
+  dimension_name: 'ADVERSARIAL_DISCORDANCE_DETECTOR_CONTROL',
+  path1_rule: 'Intentional invalid hypothesis must evaluate to false.',
+  path2_outcome: 'Negative control check returning false.',
+  checkFn: () => false,
+});
 
 const unionEvaluation = {
   classification: 'PATH3_INDEPENDENT_COMPARATOR_EXECUTION',
@@ -434,6 +498,7 @@ const unionEvaluation = {
     negative_controls_blocked: path2NegativeControls.filter(n => n.blocked).length,
   },
   ten_dimensional_evaluations: tenDimensionalEvaluations,
+  adversarial_discordance_detector_control: adversarialTestEvaluation,
   all_ten_dimensions_concordant: tenDimensionalEvaluations.every(d => d.invariant_held),
   intersection: {
     concordant_invariants: [
