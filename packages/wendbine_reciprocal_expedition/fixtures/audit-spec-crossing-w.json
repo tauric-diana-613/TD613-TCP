@@ -1,0 +1,115 @@
+{
+  "source_revision": "653e19c3cf76f35f610338054aa57523eabda5fa",
+  "task_scope": "CROSSING_W_TWO_ESTATE_RECIPROCAL_EXPEDITION_AUDIT",
+  "evidence_class": "WENDBINE_RECIPROCAL_EXPEDITION_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/wendbine_reciprocal_expedition/WENDBINE_ORIGINAL_EVOLVED_METHOD_ATLAS.md",
+    "packages/wendbine_reciprocal_expedition/wendbine-capability-receipt.json",
+    "packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs",
+    "packages/wendbine_reciprocal_expedition/receiver/wendbine-receiver-receipt.json",
+    "packages/wendbine_reciprocal_expedition/assay/run-wendbine-reciprocal-assay.mjs",
+    "packages/wendbine_reciprocal_expedition/assay/wendbine-reciprocal-assay-receipt.json",
+    "packages/wendbine_reciprocal_expedition/fixtures/dollhouse-design-receipt-crossing-w.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-crossing-w",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Received sovereign commission for Crossing W: Pinned PR #1685 Wendbine checkpoint (33 posts, 191 concepts, 146 typed relations across 9 families, 143 co-occurrences)"
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Implemented independent WendbineEmptyEncyclopediaReceiver (v1) with zero-row state witness, public bounded scope (refusal of selftext/body), and 9-graph default-deny registry"
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Executed 3-path matched reciprocal assay: 10/10 comparative dimensions concordant; live span SHA-256 verification and co-occurrence thresholding verified"
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Executed Dollhouse Design & Audit: Four Crossings updated (S qualified, E qualified with limitations, W reported, T held)"
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.8, 0.2],
+        [0.1, 1.5]
+      ],
+      "candidate_probe": [1.0, 0.5],
+      "noise_covariance": [
+        [0.05, 0.01],
+        [0.01, 0.05]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [1.8, 0.2],
+        [0.1, 1.5]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:wendbine_nine_graph_relational_topology",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:wendbine_nine_graph_relational_topology",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": { "posts": 33, "concepts": 191, "relations": 146, "path": ["S", "E", "W"] },
+        "right": { "posts": 33, "concepts": 191, "relations": 146, "path": ["S", "E", "W"] }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "public_bounded_scope_with_metadata_only",
+          "support": [
+            "TEXT_METADATA",
+            "DECLARED_CONCEPTS",
+            "TYPED_RELATIONS",
+            "COOCCURRENCE_OVERLAY"
+          ]
+        },
+        {
+          "state_id": "forbidden_full_body_injected",
+          "support": ["WENDBINE_FULL_BODY_FIELD_REFUSED"]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "CHAMBER_4_WENDBINE_ESTATE_INVENTORY",
+        "CHAMBER_5_EMPTY_RECEIVER_CROSSING_W",
+        "CHAMBER_6_RECIPROCAL_RESEARCH_ASSAY_W",
+        "CHAMBER_7_WILD_FIELD_EXPLORATION_W",
+        "CHAMBER_8_FOUR_CROSSING_STATUS_REGISTER"
+      ],
+      "phases": {
+        "CHAMBER_4_WENDBINE_ESTATE_INVENTORY": { "status": "PASS", "entry_id": "chamber_4_wendbine_estate_inventory" },
+        "CHAMBER_5_EMPTY_RECEIVER_CROSSING_W": { "status": "PASS", "entry_id": "chamber_5_empty_receiver_crossing_w" },
+        "CHAMBER_6_RECIPROCAL_RESEARCH_ASSAY_W": { "status": "PASS", "entry_id": "chamber_6_reciprocal_research_assay_w" },
+        "CHAMBER_7_WILD_FIELD_EXPLORATION_W": { "status": "PASS", "entry_id": "chamber_7_wild_field_exploration_w" },
+        "CHAMBER_8_FOUR_CROSSING_STATUS_REGISTER": { "status": "PASS", "entry_id": "chamber_8_four_crossing_status_register" }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}
