@@ -1,0 +1,105 @@
+{
+  "SRC_NATIVE_QUERY": {
+    "data_dependencies": {
+      "authority": [
+        "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"
+      ],
+      "resolve": [
+        "01-MANIFESTS/phase2/entity-resolver-v2.jsonl"
+      ],
+      "summary": [
+        "01-MANIFESTS/phase2/acquisition-outcomes.jsonl",
+        "05-OPERATIONS/phase2/expected-object-observations.jsonl",
+        "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+        "05-OPERATIONS/phase2/compilation-passes.jsonl",
+        "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl",
+        "05-OPERATIONS/phase2/evidence-lineage-assertions.jsonl",
+        "04-RECEIPTS/assays/2026-08-24-phase2-kiln/coverage-ledger.jsonl"
+      ],
+      "trace": [
+        "01-MANIFESTS/entity-index.jsonl",
+        "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
+        "01-MANIFESTS/phase2/capture-v2.jsonl",
+        "01-MANIFESTS/phase2/derivative-v1.jsonl",
+        "04-RECEIPTS/assays/2026-08-24-phase15-authority-recompilation/witnessed-evidence.jsonl",
+        "05-OPERATIONS/relations/typed-edges.jsonl",
+        "05-OPERATIONS/relations/recompilation-edges.jsonl",
+        "05-OPERATIONS/phase2/contextual-role-assertions.jsonl",
+        "05-OPERATIONS/phase2/compilation-passes.jsonl",
+        "05-OPERATIONS/phase2/reference-assertions.jsonl",
+        "05-OPERATIONS/phase2/authority-jurisdiction-assertions.jsonl"
+      ]
+    },
+    "dynamic_context": "resolve/trace derive referenced paths from original resolver results; require exact staged bytes or explicit absent_paths; withheld_paths hold execution",
+    "entrypoint": "query_dispatch",
+    "epoch_control_paths": [
+      "04-RECEIPTS/phase2/current-seal.json",
+      "04-RECEIPTS/phase2/projection-seal.json"
+    ],
+    "executable": "native/query.py",
+    "external_packages": [],
+    "filesystem_scope": "new temporary input tree only",
+    "network_dependency": false,
+    "semantic_contract": {
+      "authority": "NO_LATEST_WINS",
+      "missing_hops": "EXPLICIT",
+      "operator": "original_exact_identifier_readonly_query",
+      "path_context": "EXACT_STAGED_BYTES_OR_EXPLICIT_ABSENCE;_WITHHELD_CONTEXT_HELD",
+      "scientific_ceiling": "WITNESSED_RECORDS_ONLY"
+    }
+  },
+  "SRC_PHASE2_CONTEXT_ROLES": {
+    "data_dependencies": [
+      "05-OPERATIONS/relations/recompilation-edges.jsonl",
+      "05-OPERATIONS/relations/compiler-input-candidates.jsonl"
+    ],
+    "dynamic_context": "none",
+    "entrypoint": "contextual_roles_and_compilers",
+    "executable": "native/phase2.py",
+    "external_packages": [],
+    "filesystem_scope": "new temporary input tree only",
+    "network_dependency": false,
+    "semantic_contract": {
+      "candidate_status": "PRESERVED",
+      "operator": "compiler_scope_time_context_roles",
+      "role": "CONTEXTUAL_NOT_INTRINSIC",
+      "scientific_ceiling": "RECORDED_CONTEXT_ONLY"
+    }
+  },
+  "SRC_PHASE2_TOMOGRAPHY": {
+    "data_dependencies": [
+      "05-OPERATIONS/relations/representation-lift-candidates.jsonl"
+    ],
+    "dynamic_context": "none",
+    "entrypoint": "conservation_and_tomography",
+    "executable": "native/phase2.py",
+    "external_packages": [],
+    "filesystem_scope": "new temporary input tree only",
+    "network_dependency": false,
+    "semantic_contract": {
+      "authority_delta": "UNKNOWN_AS_ORIGINAL",
+      "composite": "NULL_AS_ORIGINAL",
+      "evidence_delta": "UNKNOWN_AS_ORIGINAL",
+      "operator": "claim_effect_dimensions_forward",
+      "scientific_ceiling": "DECLARED_EFFECTS_ONLY"
+    }
+  },
+  "SRC_PROJECTIVE_ROUTING": {
+    "data_dependencies": [
+      "03-DERIVATIVES/text/zenodo/zenodo-{record_id}-file-0.md",
+      "03-DERIVATIVES/text/zenodo/zenodo-{record_id}-metadata.md"
+    ],
+    "dynamic_context": "none",
+    "entrypoint": "summary",
+    "executable": "native/projective.py",
+    "external_packages": [],
+    "filesystem_scope": "new temporary input tree only",
+    "network_dependency": false,
+    "semantic_contract": {
+      "candidates": "NO_SEMANTIC_OR_CAUSAL_PROMOTION",
+      "native_cue": "Explore X.",
+      "native_epoch": "FIXED_LITERAL_NOT_AUTHENTICATION",
+      "operator": "original_lexical_projective_census"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "authority": {
+    "deployment": false,
+    "execute_on_restore": false,
+    "flight": false,
+    "human_closure_required": true,
+    "merge": false,
+    "release": false,
+    "source_admission": false
+  },
+  "counts_after": {
+    "captures": 1,
+    "chunks": 0,
+    "method_rows": 1,
+    "packets": 1,
+    "relations": 0,
+    "sources": 1,
+    "vectors": 0
+  },
+  "epoch_binding": "ORIGIN_RUNNER_VALIDATED_WITHIN_METHOD_SCOPE",
+  "executable_source_revision": "6827a0bd2f59d77706a55fad0b98ad475bcec31f",
+  "genuine_receiver_admission": "NOT_APPLICABLE_SYNTHETIC",
+  "independent_external_origin": "UNESTABLISHED",
+  "isolated_reasoning_worker_exposure": 0,
+  "native_operation": "ORIGIN_REEXECUTION_MATCHED",
+  "observed_local_recipient_process": true,
+  "origin_sha256": "f09b89bc377322e998db5a6fb16f557f1228768d424dd177b2eab1490d5f017f",
+  "package_manifest_sha256": "477b6432692f0b6ad4e1d0050ec6aa11f5c29c832edaee5d2bdb25825df05cc8",
+  "recipient_execution_authenticated": false,
+  "recipient_exit_code": 0,
+  "recipient_id": "LOCAL-SYNTHETIC-PYTHON-PROCESS",
+  "return_id": "LOCAL-SYN-RETURN",
+  "return_sha256": "7256e0323cfb982088f02a243f8f158d6b4e9f9829fd7e58a83bfa3e4ca46521",
+  "schema": "td613.research-method-comparison/v1",
+  "scientific_interpretation": "UNESTABLISHED",
+  "serialization": "PRESERVED",
+  "source_class": "SYNTHETIC",
+  "sqlite_source_readback_exact": true,
+  "zero_before": {
+    "captures": 0,
+    "chunks": 0,
+    "method_rows": 0,
+    "packets": 0,
+    "relations": 0,
+    "sources": 0,
+    "vectors": 0
+  }
+}
