@@ -1,0 +1,2165 @@
+{
+  "schema": "td613.native-method-qualification/v1",
+  "estate": "WENDBINE",
+  "original_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+  "evolved_original_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+  "restoration_comparator_revision": "61c09e54c1acd2223685eb4638fddffdd28e9515",
+  "original_witnesses": {
+    "01-MANIFESTS/public-reddit-48h-snapshot-v01.json": {
+      "git_blob": "f75d965ee628a50f343119c24a5037044c734519",
+      "sha256": "5501d04d20819a0524c0a6a683d837bd7cd27141ea2e2b2487fb37c593c1d75d",
+      "bytes": 1910
+    },
+    "01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl": {
+      "git_blob": "4cc9feff9c9478eb9ae3e9ae3a4093dcda1806ce",
+      "sha256": "12f7bf7614b0c6218ab62b12c89a597d094ca7c058f3e98fb5a7d7afa786acda",
+      "bytes": 31316
+    },
+    "01-MANIFESTS/typed-relation-registry-v01.json": {
+      "git_blob": "849abbcf1b26b5f362820e8acd1acba5f0528346",
+      "sha256": "218b7c581cf4f7f77e3b039d0e9339d07b98b382fcd712512cc3cd7c18ebc879",
+      "bytes": 17774
+    },
+    "02-ORIGINALS/public-reddit/README.md": {
+      "git_blob": "c314843d425d36fd1606078fa5f20aa06947f83e",
+      "sha256": "a87928c5c95c4d49886ea9a883e21a9fc242a3396b6b83608980af0d76261cb8",
+      "bytes": 683
+    },
+    "03-DERIVATIVES/public-reddit-48h/topology-index.v0.1.json": {
+      "git_blob": "eaa1a5d07476cd5bae0e3f0ac743d12fd9666a89",
+      "sha256": "1795190b36eeed2a181ce0114e876ba511ac958639140aa4ed6ac03de58ee62b",
+      "bytes": 2571
+    },
+    "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json": {
+      "git_blob": "3b745480d4d2fb07a5683b0237e4978ebe8ef061",
+      "sha256": "1d14f629579534fc8f4260449d998d520ea8664918d45308620b98242d07be26",
+      "bytes": 5482
+    },
+    "04-RECEIPTS/assays/2026-09-11-residual-sieve-source-supplement-v01.json": {
+      "git_blob": "8f6fec6f9b7a49dc750abc4ff921265d8a023a75",
+      "sha256": "fbcec7bbecedae13ebc97033a949a8ffe9a245b378752d2c5e4790c4645c2eeb",
+      "bytes": 2239
+    },
+    "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json": {
+      "git_blob": "8d3d7c065a621eb53dc2904e162891d7ac166a0c",
+      "sha256": "dd21c509b681c9370afb24ff37e3bcaac26177ccac92561a82ac4467967201b2",
+      "bytes": 7739
+    },
+    "04-RECEIPTS/assays/2026-09-11-td613-residual-literature-sieve-v02.json": {
+      "git_blob": "d59217db5bbce85f07551b428abe6483a1ff3bcd",
+      "sha256": "8bdba3c5b5743fc197c80d6aac2c447c60c1eef644d4bf78433773f4844e9389",
+      "bytes": 12885
+    },
+    "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json": {
+      "git_blob": "64371856088aa748f619f0c161e83d4287a4bdef",
+      "sha256": "8779f9bc41a2f661977904f8aa9f033650716b893d96e2d486435e011ba353f3",
+      "bytes": 19697
+    },
+    "04-RECEIPTS/intake/2026-09-11-public-reddit-48h-intake.json": {
+      "git_blob": "728d7e852f28feb5f3bc430943dbc8270dbb2c6a",
+      "sha256": "df6a8950bc3fd69ed9f7bea2f562c07e7d4b1de775425f38447334ebf32c0164",
+      "bytes": 1498
+    },
+    "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md": {
+      "git_blob": "34a6eb7fa1a93656db82b7012165245b0b1fae81",
+      "sha256": "cd51159bf7f06bbd75fb4091e56bcac8ec72d439b3d2c946c256a9f6b4dddf82",
+      "bytes": 8244
+    },
+    "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md": {
+      "git_blob": "3083ef617ca626a613edfbd87473e39ac64bc0b5",
+      "sha256": "22c45c72ed5467aecf5424d7d5242fcb97c330e6069fb1530c434557cdb6d4c0",
+      "bytes": 6328
+    },
+    "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md": {
+      "git_blob": "16aa1e3c11593aea90d18bd34ec6f15c1746ddc3",
+      "sha256": "fd73477160813a30636832be509b890c6e30be21419ecf579bb6090b48d0a640",
+      "bytes": 7743
+    },
+    "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md": {
+      "git_blob": "73ae56fa7e207cc406715de77f5e6e56de9712b8",
+      "sha256": "450ff5652c26d196ea7687e8c2bd575c05dba7eb50a9e972feaf26f45ff5ff7d",
+      "bytes": 14117
+    },
+    "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md": {
+      "git_blob": "6e15ffc2c671f6b2ea345abb5cc1481ddcefd602",
+      "sha256": "852a3d832dc81e58cea8409127b3001d52257b359d173bcf6a021a8168926848",
+      "bytes": 20281
+    },
+    "05-OPERATIONS/2026-09-13-PORTABLE-AIA-ASSURANCE-DELTA-V0_1.md": {
+      "git_blob": "1bb194dfa457ff604e67c29de15f65061c3526d3",
+      "sha256": "37d3018f7f125843087f1d346c69f2b89614c2f996a5e9a4da747d8a0d6f5c92",
+      "bytes": 4443
+    },
+    "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md": {
+      "git_blob": "4ba1be413c75362c2eb9a1f468b3e51035b1a476",
+      "sha256": "c0d98170f0d369c9f7cae87bfa73c7f76079c57fb24389b9d4ed1c71971554c2",
+      "bytes": 1769
+    },
+    "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md": {
+      "git_blob": "b4117f267f2a1a3e744b2516ae95a1a688a56c83",
+      "sha256": "c315585a65130bbc75f2790796edc390cd397fd5d425d62e4a731d835f3b64d9",
+      "bytes": 2847
+    },
+    "07-ARCHIVE-LEDGER/README.md": {
+      "git_blob": "407f7fcd8a89b5ce48899fb4fd4e144dde9793ea",
+      "sha256": "20f8012b41e7a31e9a89dd662285dec2f4d728813281f0a7e0834463a9463d70",
+      "bytes": 619
+    },
+    "08-EXTERNAL-CORPORA/README.md": {
+      "git_blob": "88e7ed3cab77dd9463c7842be24e3adbcc4b5953",
+      "sha256": "5cc1157dbb0118d7ab331537a6a58e506782c898e2d7ab9bb5da3107b897c1c7",
+      "bytes": 550
+    },
+    "99-ADMIN/wendbine-compile.mjs": {
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "bytes": 9876
+    },
+    "ATELIER_PROFILE.json": {
+      "git_blob": "9eeb62d42b5ae63e7c60b7939968c7dd1c0c6adf",
+      "sha256": "7b33bbf29e3607dc5d860946cbd7b7efac6b9bee5dd2d7635ddf63e793f98e3d",
+      "bytes": 2401
+    },
+    "ATTRIBUTION.md": {
+      "git_blob": "daadf3d4bf8eabc39f8a8db249a08ef613c97686",
+      "sha256": "2383c0f46f4ea9e4c22bca6546890d6ee2fae0fcbe6d76e6431ce7dd3e34f429",
+      "bytes": 998
+    },
+    "CONNECTOR_ENTRY.md": {
+      "git_blob": "579f7cc30410b9a3cb5f4843ae66d3cb53035cd6",
+      "sha256": "9672c2c0c65bd22f42a1f692274481652dde4cf0aeb636e4eba32ca3f86d6650",
+      "bytes": 1028
+    },
+    "README.md": {
+      "git_blob": "871a89908206a37b757f5cfbe4400b9152a2fdfa",
+      "sha256": "2b29334cd5985cbe503237f9829d497aa1d5681fcd64d9cb78c2856f6ec3cbdf",
+      "bytes": 5685
+    }
+  },
+  "evolved_witnesses": {
+    "01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json": {
+      "git_blob": "886103a283e732f3aa30c2bd9c9ff5d2f874cf05",
+      "sha256": "f2115380a782f428918f7df32a75954afea557e0a3e986f43d5ce41ea7cc5256",
+      "bytes": 26703
+    },
+    "01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json": {
+      "git_blob": "472f8df067a71377bc1ab6b4b1af7c1117f71222",
+      "sha256": "16fc95aa0e391b7aa8a7089ec3bd568c1597d3e17085dddb26afa14f9f1155ae",
+      "bytes": 18874
+    },
+    "01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json": {
+      "git_blob": "2cdda9464eb2ee495cafdb0105a0688c0cbdf85b",
+      "sha256": "2231ea1ea78ff5c7ef9a500e196d5abf5a465ff5181aa36fb027e63c5ee248cc",
+      "bytes": 24275
+    },
+    "01-MANIFESTS/phase2/blob-v1.jsonl": {
+      "git_blob": "fb8534fe24fa90638b0398270e01791355edb79b",
+      "sha256": "6113c23ae3cdcaa25a8ffcbe4994d74d8fa882752a952377db183df9eb9ae742",
+      "bytes": 417638
+    },
+    "01-MANIFESTS/phase2/capture-v2.jsonl": {
+      "git_blob": "e1c54b2dcb95238f759abd8a2ab3bf6e8cd635fa",
+      "sha256": "89fd7ee5f06ec80aa8cf5f0cb41d195bfcfc936ea53409b96772d3a314b3ca7b",
+      "bytes": 6481314
+    },
+    "01-MANIFESTS/phase2/derivative-v1.jsonl": {
+      "git_blob": "dec12156af0910c2ad44e541279f9ab31e474b59",
+      "sha256": "f7e6e600be71b64ebc0b5a01ce6e009c5fe52afbc6fd095119fa5c0780b25c10",
+      "bytes": 2441443
+    },
+    "01-MANIFESTS/phase2/entity-resolver-v2.jsonl": {
+      "git_blob": "6a88e94bb5c3a94d4fc1b23d5527473d3db780fe",
+      "sha256": "6f2c5121baac458275865225b450874b79a8798324fb049c03f7e0b0b4d51999",
+      "bytes": 1514912
+    },
+    "01-MANIFESTS/phase2/interface-registry.json": {
+      "git_blob": "e4a057857653007f02fa4c8f4ed072471ade055a",
+      "sha256": "e09d021454d15ae75701f9ddfc4f782640969657c63c25f40e85d42b9f5ff3e3",
+      "bytes": 1835
+    },
+    "01-MANIFESTS/phase2/manifestations.jsonl": {
+      "git_blob": "774e9de5c54b96e02683d46395d39d03e02bbb51",
+      "sha256": "708dd6f7a0d0daeaccd9dcd77fd00e0b7f6e9ed57fa42618e5c8813c58eb6d6a",
+      "bytes": 981806
+    },
+    "01-MANIFESTS/phase2/rights-decision-v1.jsonl": {
+      "git_blob": "358ed7314737916acda8565152debe02223b6987",
+      "sha256": "670b371b2f5a8dff2552eed1e3c735d752b93cc3527799d05bb8a79e837551b3",
+      "bytes": 476322
+    },
+    "01-MANIFESTS/public-reddit-48h-snapshot-v01.json": {
+      "git_blob": "f75d965ee628a50f343119c24a5037044c734519",
+      "sha256": "5501d04d20819a0524c0a6a683d837bd7cd27141ea2e2b2487fb37c593c1d75d",
+      "bytes": 1910
+    },
+    "01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl": {
+      "git_blob": "4cc9feff9c9478eb9ae3e9ae3a4093dcda1806ce",
+      "sha256": "12f7bf7614b0c6218ab62b12c89a597d094ca7c058f3e98fb5a7d7afa786acda",
+      "bytes": 31316
+    },
+    "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl": {
+      "git_blob": "34e3fa2afaddb32eeac0f8726e9048010e6cfdd1",
+      "sha256": "706133449ce6471ce9edfa9b84af65fb8dc3719be7b6a5af7f88e6a384f1bdf6",
+      "bytes": 31188
+    },
+    "01-MANIFESTS/public-reddit-account-card-sync-20260922-v05.json": {
+      "git_blob": "07701624a4718cfea235cbcefe467d82ae916c84",
+      "sha256": "769796c5c82965a05d0ccf85a7d957f5825135e59bcc7c6c999c96b93267b741",
+      "bytes": 2462
+    },
+    "01-MANIFESTS/public-reddit-delta-20260913-snapshot-v02.json": {
+      "git_blob": "092df2c76de57fe56e9035580353f21e32ecd432",
+      "sha256": "25c734893e1fffc1c7261fa01274405683f3b23430644b714f9031307abcc63c",
+      "bytes": 1904
+    },
+    "01-MANIFESTS/public-reddit-delta-20260913-source-registry-v02.jsonl": {
+      "git_blob": "4b10105449b1bb0aea409723b5322524dcde2a54",
+      "sha256": "4d07ff7421c76b35563cd3144313122a77ce6827138d96272e38539ce3b723d2",
+      "bytes": 2295
+    },
+    "01-MANIFESTS/public-reddit-hydration-20260915-v03.json": {
+      "git_blob": "8a5391afeb391fe2f90289163fe3e02dc3d19e91",
+      "sha256": "6fcf2afa0529aa29e0661af8ce5d4b8aef72f612ddd113fe0da4794bd5cff0db",
+      "bytes": 2083
+    },
+    "01-MANIFESTS/public-reddit-hydration-20260916-v04.json": {
+      "git_blob": "92ed65284bb912863f98011c5d52c29ec1e99130",
+      "sha256": "227d733121f9f7a8a2e6b9ed4d8b292acfab69665ea2b0a0ba925d74625485b2",
+      "bytes": 2135
+    },
+    "01-MANIFESTS/public-reddit-profile-delta-20260916-snapshot-v04.json": {
+      "git_blob": "d8deac26eb2fa539f35b712ee264c7e5d1c94f9e",
+      "sha256": "05896f571c26f278e0d88b8701cbd1c91380d21bc006abd260a1c04d78d8a723",
+      "bytes": 2378
+    },
+    "01-MANIFESTS/registry-index.json": {
+      "git_blob": "aafd37447ac7d57f286338a9a8b30cbdb37542ce",
+      "sha256": "6a98689adf4260cce917f9745374f42127c5f7f12562f82142bffbe5b65b51a4",
+      "bytes": 1752
+    },
+    "01-MANIFESTS/sticker-label-taxonomy-v01.json": {
+      "git_blob": "4bd2762d08901b6f48e9640e5348ff868fc19e75",
+      "sha256": "d8d315ef38cc886b48d9f97906a879807ead62da31b94e7f6fccac4ae812c81d",
+      "bytes": 3390
+    },
+    "01-MANIFESTS/typed-relation-registry-v01.json": {
+      "git_blob": "849abbcf1b26b5f362820e8acd1acba5f0528346",
+      "sha256": "218b7c581cf4f7f77e3b039d0e9339d07b98b382fcd712512cc3cd7c18ebc879",
+      "bytes": 17774
+    },
+    "01-MANIFESTS/typed-relation-registry-v02.json": {
+      "git_blob": "2e68413a0c39ebf445532dd5de16f98cbf8c255b",
+      "sha256": "61b5e386e2c33ffda20acc82b8a78c9bb7a7266f22933fcf149ae6647fc6d891",
+      "bytes": 1895
+    },
+    "01-MANIFESTS/user-supplied-facebook-cross-platform-source-registry-v01.jsonl": {
+      "git_blob": "ea1e5185b08d0f65e1d9a212f055fbb4ea24e804",
+      "sha256": "ab1da6865f666c75df89b9cfc0db98ff89222fe5c2ff8ca36f84c065a36c2bb7",
+      "bytes": 3181
+    },
+    "02-ORIGINALS/public-reddit/README.md": {
+      "git_blob": "c314843d425d36fd1606078fa5f20aa06947f83e",
+      "sha256": "a87928c5c95c4d49886ea9a883e21a9fc242a3396b6b83608980af0d76261cb8",
+      "bytes": 683
+    },
+    "03-DERIVATIVES/public-reddit-20260913-delta/topology-index.v0.2.json": {
+      "git_blob": "b4f1178fdc3b979b4cb0d539d321f223a02ce2aa",
+      "sha256": "3d083407b01e2c3a45223b7b5b345c4460b7b0283e1e06427cc511618c22c426",
+      "bytes": 1653
+    },
+    "03-DERIVATIVES/public-reddit-48h/topology-index.v0.1.json": {
+      "git_blob": "eaa1a5d07476cd5bae0e3f0ac743d12fd9666a89",
+      "sha256": "1795190b36eeed2a181ce0114e876ba511ac958639140aa4ed6ac03de58ee62b",
+      "bytes": 2571
+    },
+    "03-DERIVATIVES/user-supplied-facebook-20260916/topology-index.v0.1.json": {
+      "git_blob": "706df563263eeaab5576a5d6b01c367de801e749",
+      "sha256": "02c3566486098b59d2dd51ea77548ee7370dc7ff0cbc5bb0ee11ad140aa016b8",
+      "bytes": 2563
+    },
+    "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json": {
+      "git_blob": "789d79016c4f0f414d6412994e837eab5799f367",
+      "sha256": "92e061940d3649a2d98ba8068b5e981eebdf1dc306f134ad295db49d4c8af605",
+      "bytes": 2998
+    },
+    "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json": {
+      "git_blob": "3ea77b801d78a1569e286b3828db5e2242bf3cd2",
+      "sha256": "aa40bbfb7ea3ba84d03972414d4cfe7c750e1c7b5b070c29094d375bd32c2f5c",
+      "bytes": 2000
+    },
+    "04-RECEIPTS/2026-09-22-live-author-search-witness-v01.json": {
+      "git_blob": "695e9a2c108f8d06b6714506157e64f4d5fd799c",
+      "sha256": "77e79355fb629211b01a6eae5a8e72d6599f892f8028f22a0da1a470bdec4777",
+      "bytes": 2562
+    },
+    "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json": {
+      "git_blob": "dbcc876464f22dc175c6be9fbcf457c23544b62f",
+      "sha256": "021f7f68be5db74de1d330693186847861ed6768f5a3bb8344f7a1853e61f5c8",
+      "bytes": 1900
+    },
+    "04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json": {
+      "git_blob": "8c9c35421a382d44d8732f4536ce1144e862f609",
+      "sha256": "c22250b8d15ab8554a0a33b5858112f67aef006d84a98336275c3314d499ca46",
+      "bytes": 1622
+    },
+    "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json": {
+      "git_blob": "a0091d330b098bb38130052426f3d78a96eba401",
+      "sha256": "cf12c347b8997a3a1c9e3ab86948767acdc39032cc9abba639e0edff07099fb0",
+      "bytes": 56763
+    },
+    "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json": {
+      "git_blob": "3b745480d4d2fb07a5683b0237e4978ebe8ef061",
+      "sha256": "1d14f629579534fc8f4260449d998d520ea8664918d45308620b98242d07be26",
+      "bytes": 5482
+    },
+    "04-RECEIPTS/assays/2026-09-11-residual-sieve-source-supplement-v01.json": {
+      "git_blob": "8f6fec6f9b7a49dc750abc4ff921265d8a023a75",
+      "sha256": "fbcec7bbecedae13ebc97033a949a8ffe9a245b378752d2c5e4790c4645c2eeb",
+      "bytes": 2239
+    },
+    "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json": {
+      "git_blob": "8d3d7c065a621eb53dc2904e162891d7ac166a0c",
+      "sha256": "dd21c509b681c9370afb24ff37e3bcaac26177ccac92561a82ac4467967201b2",
+      "bytes": 7739
+    },
+    "04-RECEIPTS/assays/2026-09-11-td613-residual-literature-sieve-v02.json": {
+      "git_blob": "d59217db5bbce85f07551b428abe6483a1ff3bcd",
+      "sha256": "8bdba3c5b5743fc197c80d6aac2c447c60c1eef644d4bf78433773f4844e9389",
+      "bytes": 12885
+    },
+    "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json": {
+      "git_blob": "64371856088aa748f619f0c161e83d4287a4bdef",
+      "sha256": "8779f9bc41a2f661977904f8aa9f033650716b893d96e2d486435e011ba353f3",
+      "bytes": 19697
+    },
+    "04-RECEIPTS/intake/2026-09-11-public-reddit-48h-intake.json": {
+      "git_blob": "728d7e852f28feb5f3bc430943dbc8270dbb2c6a",
+      "sha256": "df6a8950bc3fd69ed9f7bea2f562c07e7d4b1de775425f38447334ebf32c0164",
+      "bytes": 1498
+    },
+    "04-RECEIPTS/intake/2026-09-13-public-reddit-delta-intake.json": {
+      "git_blob": "f63c02b3ab0ac9083ad4f8fedc870ca979539a15",
+      "sha256": "e693a7681e0c0a228d6bfcd032f447b6871f527f3b75a496c21a7b870c888c38",
+      "bytes": 1754
+    },
+    "04-RECEIPTS/intake/2026-09-15-public-hydration-sticker-taxonomy.json": {
+      "git_blob": "b924a697741edb063367ab8b819ac3805a6665a2",
+      "sha256": "b6246adf74e291faf2617281b116916ab070adea4a981a66bae04c812e78d45a",
+      "bytes": 1831
+    },
+    "04-RECEIPTS/intake/2026-09-16-public-reddit-refresh-current-burst-unbound.json": {
+      "git_blob": "2e91ca0872cea9e0be162e17d0fbbf33cfac5c09",
+      "sha256": "5ba1d9cd40ab64970c3c703d707d380f2d31bc7f3579b235f68ff27c019a5fc7",
+      "bytes": 1670
+    },
+    "04-RECEIPTS/intake/2026-09-16-user-supplied-facebook-cross-platform-intake.json": {
+      "git_blob": "68df2bd56355e327874fc4becaeefb313f5d04a2",
+      "sha256": "2677a137f646730edba76be527bc1d195a289fcb9d1cde98139939885c7386ae",
+      "bytes": 1597
+    },
+    "04-RECEIPTS/phase2/current-seal.json": {
+      "git_blob": "87939fe5837a4cb0352032413c0670040bfc59f4",
+      "sha256": "a6c890d016d6adac23eada1d9c25cb5240150d26315dfb66f7a95e4b48668648",
+      "bytes": 2096
+    },
+    "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md": {
+      "git_blob": "34a6eb7fa1a93656db82b7012165245b0b1fae81",
+      "sha256": "cd51159bf7f06bbd75fb4091e56bcac8ec72d439b3d2c946c256a9f6b4dddf82",
+      "bytes": 8244
+    },
+    "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md": {
+      "git_blob": "3083ef617ca626a613edfbd87473e39ac64bc0b5",
+      "sha256": "22c45c72ed5467aecf5424d7d5242fcb97c330e6069fb1530c434557cdb6d4c0",
+      "bytes": 6328
+    },
+    "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md": {
+      "git_blob": "16aa1e3c11593aea90d18bd34ec6f15c1746ddc3",
+      "sha256": "fd73477160813a30636832be509b890c6e30be21419ecf579bb6090b48d0a640",
+      "bytes": 7743
+    },
+    "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md": {
+      "git_blob": "73ae56fa7e207cc406715de77f5e6e56de9712b8",
+      "sha256": "450ff5652c26d196ea7687e8c2bd575c05dba7eb50a9e972feaf26f45ff5ff7d",
+      "bytes": 14117
+    },
+    "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md": {
+      "git_blob": "6e15ffc2c671f6b2ea345abb5cc1481ddcefd602",
+      "sha256": "852a3d832dc81e58cea8409127b3001d52257b359d173bcf6a021a8168926848",
+      "bytes": 20281
+    },
+    "05-OPERATIONS/2026-09-13-PUBLIC-DELTA-SYNC-AND-AIA-PRESSURE.md": {
+      "git_blob": "59cb1e65f910c420cf77c4708df6cb82abf1b0fd",
+      "sha256": "0c5adc9f695b4a47dd40d41cd89c82e48f075a8b993d7378ae8e4f4d00f0f47c",
+      "bytes": 4196
+    },
+    "05-OPERATIONS/2026-09-15-PUBLIC-HYDRATION-AND-STICKER-TAXONOMY-SYNC.md": {
+      "git_blob": "5d49acc40a2fc9e24e678f08674b79c1482a1332",
+      "sha256": "fb2c3f4c83ec936c34383f06ac2d89a49cbc4e325accf5d74ca51b967dd4f440",
+      "bytes": 2451
+    },
+    "05-OPERATIONS/2026-09-16-PUBLIC-REFRESH-CURRENT-BURST-HOLD.md": {
+      "git_blob": "cac34fc76000a75427d26081dd6bb979cfd46377",
+      "sha256": "a8b06999dba4c5156fb170a773941d22cfebf084404e891298d7702d5606ae7e",
+      "bytes": 2935
+    },
+    "05-OPERATIONS/phase2/version-observations.jsonl": {
+      "git_blob": "d5d9f47b312b91936875aa552964b45ebaddfc3b",
+      "sha256": "fad9f8a6c4e8d6c32fe8b62df89c9ad6d674c573d17f7f36cbef38f6a3e3f1b2",
+      "bytes": 3589706
+    },
+    "05-OPERATIONS/relations/typed-edges.jsonl": {
+      "git_blob": "d13d20f0f5b3b99865aefe9f1bc402158aa3e2e3",
+      "sha256": "d0dc40bb42d2a501fdd560cf03607e428149be5554a65a8e90833a4c0e0d9f6a",
+      "bytes": 4055315
+    },
+    "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md": {
+      "git_blob": "4ba1be413c75362c2eb9a1f468b3e51035b1a476",
+      "sha256": "c0d98170f0d369c9f7cae87bfa73c7f76079c57fb24389b9d4ed1c71971554c2",
+      "bytes": 1769
+    },
+    "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md": {
+      "git_blob": "b4117f267f2a1a3e744b2516ae95a1a688a56c83",
+      "sha256": "c315585a65130bbc75f2790796edc390cd397fd5d425d62e4a731d835f3b64d9",
+      "bytes": 2847
+    },
+    "06-INSTRUMENTS/WENDBINE_QUERY_RECIPES_V0_1.md": {
+      "git_blob": "fb4ded574eae323e29f92afb2aa90b8b955419a5",
+      "sha256": "1e7da6af1aa122fbb7be466e5cdbbd23c84eceebf4f76048dd97a21105f5c4ea",
+      "bytes": 3402
+    },
+    "06-INSTRUMENTS/WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1.md": {
+      "git_blob": "0530955e087b39096fc647d69a82346fcefc1ae0",
+      "sha256": "9adbc79a11843bbfe2616b93e1deeaba5272789a107d126061ea60522fed89b0",
+      "bytes": 2805
+    },
+    "06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md": {
+      "git_blob": "c8656eb02ccd971bf8d16fd13179bf05bf144465",
+      "sha256": "06d4362ce4753a182b45599c34c2d106ffb5c8b59a24997a9362faba135029a4",
+      "bytes": 13412
+    },
+    "07-ARCHIVE-LEDGER/README.md": {
+      "git_blob": "407f7fcd8a89b5ce48899fb4fd4e144dde9793ea",
+      "sha256": "20f8012b41e7a31e9a89dd662285dec2f4d728813281f0a7e0834463a9463d70",
+      "bytes": 619
+    },
+    "07-ARCHIVE-LEDGER/syncs/wendbine-20261002214251-312aa0bfc983.json": {
+      "git_blob": "b235070abd2cbeeb0502febf3382c3fe67e26c25",
+      "sha256": "641f70d9e396d94267154199f7edd119e2277646a83a06ef14609f6f31e767f8",
+      "bytes": 37005
+    },
+    "07-ARCHIVE-LEDGER/syncs/wendbine-20261002220512-58f084b90335.json": {
+      "git_blob": "6e713f5fcf1fbe030166858fb7242c56cb7f7a21",
+      "sha256": "f9386e08e7304f70671a94ebc0239459c439f49368cecd9f849bd13a0411b7cd",
+      "bytes": 37005
+    },
+    "07-ARCHIVE-LEDGER/syncs/wendbine-20261102175835-2861f2e0326f.json": {
+      "git_blob": "be9bdb195dc0931f60be5e4876ff94f6de4369c4",
+      "sha256": "f90738c8cdceed1afa343e7eb123c17c503e29d0f8670fbf2ab978af342da007",
+      "bytes": 55776
+    },
+    "07-ARCHIVE-LEDGER/syncs/wendbine-20261104014208-6d200e3ff3a0.json": {
+      "git_blob": "1bbe903c5e90897aa1a59cff22ac4c0fd1ed7f8e",
+      "sha256": "e1e6511bb09d9b51ea25b4e81518ffd78b036686150f23b1f1996c76aab5e5c4",
+      "bytes": 57382
+    },
+    "08-EXTERNAL-CORPORA/README.md": {
+      "git_blob": "88e7ed3cab77dd9463c7842be24e3adbcc4b5953",
+      "sha256": "5cc1157dbb0118d7ab331537a6a58e506782c898e2d7ab9bb5da3107b897c1c7",
+      "bytes": 550
+    },
+    "99-ADMIN/20260922-one-time-rescue-public-key.pem": {
+      "git_blob": "bfa63bf2bcba1f5a73e960823cc0d573c8899325",
+      "sha256": "3447a5aaa1cd7bb998e1da88d6a51580a121747fdc9f22f32c58a5cafdf7b734",
+      "bytes": 625
+    },
+    "99-ADMIN/wendbine-archive-provider-probe.mjs": {
+      "git_blob": "b9e2be609441d9297754b74bcb0075335d2fc8f5",
+      "sha256": "31e449a2f12a062f96760f0f712c7a0b51c9cd59bc68c332cfc13bb7df343169",
+      "bytes": 8243
+    },
+    "99-ADMIN/wendbine-capture-contract.mjs": {
+      "git_blob": "e135ac31ccfc406c43c5c59930ceee998e52cde7",
+      "sha256": "4eec9b3ab221ca21bb4a8baeb1c423fcad5f3ce358bf8e49aea87d6ea45b951e",
+      "bytes": 3147
+    },
+    "99-ADMIN/wendbine-chat-export-rescue.mjs": {
+      "git_blob": "1b78af87bf96f91f944e2f287d97cc99f9bba12d",
+      "sha256": "0fa38fa2956f63ed9f7228462e67acd010973bcee1e11a80b54a37d10075d80e",
+      "bytes": 4887
+    },
+    "99-ADMIN/wendbine-ci-sealed-rescue.mjs": {
+      "git_blob": "ed286f93b3ab87c5f3389f21fdc3ac754878b1eb",
+      "sha256": "0c78c7fac1b4e7697532cd37ef26b29468717f3af39657d23aa71464762f77ca",
+      "bytes": 6536
+    },
+    "99-ADMIN/wendbine-ci-secondary-sealed-rescue.mjs": {
+      "git_blob": "0c111f9e97bb227939e09a8a381c8ad65dbc3db0",
+      "sha256": "5712cf5a3f3deee4e789ce219e6179d908e46a44a57714ed5db32f4fff8588e2",
+      "bytes": 8969
+    },
+    "99-ADMIN/wendbine-compile.mjs": {
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "bytes": 9876
+    },
+    "99-ADMIN/wendbine-originals-intake.mjs": {
+      "git_blob": "a8586580333df8bfb9d29090893f388e85e751f6",
+      "sha256": "473f5df983a099f051f367a4fb7ad33afb3bf76b2c7aaf0803d0bba19d310329",
+      "bytes": 7482
+    },
+    "99-ADMIN/wendbine-private-archive-audit.mjs": {
+      "git_blob": "6215f8839dffda696630bca45da69b84f86ff439",
+      "sha256": "ad6a835051dbfda782e8a96577fe57063cdab56d45a225604f88d3cf157ba281",
+      "bytes": 4752
+    },
+    "99-ADMIN/wendbine-private-custody-audit.mjs": {
+      "git_blob": "954838de3162cdbdd9bb52d56e393a3e06744b4e",
+      "sha256": "c6a62b11f1c0382b7197105f244575caf5dd911a54a2c1a83bec89dfb5846a4e",
+      "bytes": 4765
+    },
+    "99-ADMIN/wendbine-private-originals-query.mjs": {
+      "git_blob": "03156a9d17f431adab8ca68a26b64de3927007c2",
+      "sha256": "62cadd49ee65120308dcedebd612429de29dd2000a283a257922ebd8e5257f95",
+      "bytes": 2973
+    },
+    "99-ADMIN/wendbine-private-p0-restore.mjs": {
+      "git_blob": "bfd2e3a1a10224f9730983631a8e664e5befdd69",
+      "sha256": "339fe3b492cd05fcd9cff43a662bf499ef6e3adaaf086bd49083fab2b39de94f",
+      "bytes": 5563
+    },
+    "99-ADMIN/wendbine-private-p0-source-query.mjs": {
+      "git_blob": "2a35feef06e01f5e113b4efeedaa12debd66bb96",
+      "sha256": "2ff80463d49b2eb7e50131e1765a07c9a9117a756c7aa98d3fea1ad97118436e",
+      "bytes": 4372
+    },
+    "99-ADMIN/wendbine-private-secondary-restore.mjs": {
+      "git_blob": "3149238b70ebc28d09a9867e390b8a43676d9e24",
+      "sha256": "c87bf86c0b82bf21460f16e18d1bb423fd9d031c6bfd84b7b7de05e1f5442334",
+      "bytes": 6279
+    },
+    "99-ADMIN/wendbine-private-unified-query.py": {
+      "git_blob": "92c873f832c76b79892a24eb51f7651d3874b887",
+      "sha256": "11c7b1f61308f7971e09860950bcb461e6e3e24c30585814aa0721fae0200e94",
+      "bytes": 6359
+    },
+    "99-ADMIN/wendbine-query.mjs": {
+      "git_blob": "1900a395238f7e6dbc8d2a6b17b28b4726a7de11",
+      "sha256": "405f6ad6ccfc781f2cda4edb5ad7e7fb6c273203573eb676c7c0b307723def05",
+      "bytes": 12783
+    },
+    "99-ADMIN/wendbine-reddit-oauth-rescue.mjs": {
+      "git_blob": "ef57f95aab5f7b5cf353f616b73c5c3ea1a582fa",
+      "sha256": "6b989fa0daf2522b4c441ba0ff6b4154f65ddd035896075fa38697a4d8242779",
+      "bytes": 8714
+    },
+    "99-ADMIN/wendbine-src-autosync.mjs": {
+      "git_blob": "016223db295423d8c5e43055c01e2b99fb847abe",
+      "sha256": "eb0a24c80eb4a5ecdff139e5cacc41f79fa449350acc6e1682f1cac4d76e3bc6",
+      "bytes": 23082
+    },
+    "99-ADMIN/wendbine-srcquery.mjs": {
+      "git_blob": "fc0e879e6014bddf35fdfcfe8b579f582fcd0891",
+      "sha256": "72d4e80566f1e796ec2548325b0838ccd221a08656d324277f57b77e13cf7521",
+      "bytes": 4843
+    },
+    "ATELIER_PROFILE.json": {
+      "git_blob": "6915fb34d68b7e7e0a04c499e2f5b2df8e1971a5",
+      "sha256": "e5c1f79bd7258e78f7bf14f4d7406cb343b30d796f3c0a553809fa1c8d3d205a",
+      "bytes": 10364
+    },
+    "ATTRIBUTION.md": {
+      "git_blob": "daadf3d4bf8eabc39f8a8db249a08ef613c97686",
+      "sha256": "2383c0f46f4ea9e4c22bca6546890d6ee2fae0fcbe6d76e6431ce7dd3e34f429",
+      "bytes": 998
+    },
+    "CONNECTOR_ENTRY.md": {
+      "git_blob": "36fd402f543b7c5216d86541825a12a8f300cb56",
+      "sha256": "06e25c49325d16ed36bd9a65c7da8b0150b19c9a95d5d143ddda0ff02412cd60",
+      "bytes": 21247
+    },
+    "README.md": {
+      "git_blob": "c4edf8c4216fb06005d25c5c74256bf2b1288089",
+      "sha256": "4f0c23e06330fba6c98d88c07315ff683bad910e9a812c4b2d8e75ed46368175",
+      "bytes": 27258
+    }
+  },
+  "verified_original_files": 26,
+  "verified_evolved_files": 89,
+  "native_execution": {
+    "schema": "td613.wendbine.native-public-execution/v1",
+    "runtime": "v24.22.1",
+    "compiler": {
+      "native_output_sha256": "831e783447a7671545557cec42f23ef42a8528460e92cab72b8f4e8fabaf3206",
+      "strict_successor_identical": true,
+      "row_order_invariant": true,
+      "source_count": 33,
+      "concepts": 191,
+      "typed_relations": 146,
+      "cooccurrences": 143,
+      "graph_counts": {
+        "G_A": 15,
+        "G_D": 14,
+        "G_F": 3,
+        "G_I": 6,
+        "G_O": 9,
+        "G_P": 10,
+        "G_R": 18,
+        "G_T": 25,
+        "G_X": 46
+      },
+      "dependency_files": [
+        "99-ADMIN/wendbine-compile.mjs",
+        "01-MANIFESTS/public-reddit-48h-snapshot-v01.json",
+        "01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl",
+        "01-MANIFESTS/typed-relation-registry-v01.json"
+      ]
+    },
+    "public_query": {
+      "indexed_records": 39308,
+      "index_paths": [
+        "01-MANIFESTS/foundational-sept10-11-originals-rescue-v01.json",
+        "01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json",
+        "01-MANIFESTS/p1p2-archived-source-field-receipts-20260922-v07.json",
+        "01-MANIFESTS/phase2/blob-v1.jsonl",
+        "01-MANIFESTS/phase2/capture-v2.jsonl",
+        "01-MANIFESTS/phase2/derivative-v1.jsonl",
+        "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
+        "01-MANIFESTS/phase2/interface-registry.json",
+        "01-MANIFESTS/phase2/manifestations.jsonl",
+        "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
+        "01-MANIFESTS/public-reddit-48h-snapshot-v01.json",
+        "01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl",
+        "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl",
+        "01-MANIFESTS/public-reddit-account-card-sync-20260922-v05.json",
+        "01-MANIFESTS/public-reddit-delta-20260913-snapshot-v02.json",
+        "01-MANIFESTS/public-reddit-delta-20260913-source-registry-v02.jsonl",
+        "01-MANIFESTS/public-reddit-hydration-20260915-v03.json",
+        "01-MANIFESTS/public-reddit-hydration-20260916-v04.json",
+        "01-MANIFESTS/public-reddit-profile-delta-20260916-snapshot-v04.json",
+        "01-MANIFESTS/registry-index.json",
+        "01-MANIFESTS/sticker-label-taxonomy-v01.json",
+        "01-MANIFESTS/typed-relation-registry-v01.json",
+        "01-MANIFESTS/typed-relation-registry-v02.json",
+        "01-MANIFESTS/user-supplied-facebook-cross-platform-source-registry-v01.jsonl",
+        "03-DERIVATIVES/public-reddit-20260913-delta/topology-index.v0.2.json",
+        "03-DERIVATIVES/public-reddit-48h/topology-index.v0.1.json",
+        "03-DERIVATIVES/user-supplied-facebook-20260916/topology-index.v0.1.json",
+        "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+        "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json",
+        "04-RECEIPTS/2026-09-22-live-author-search-witness-v01.json",
+        "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
+        "04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json",
+        "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json",
+        "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json",
+        "04-RECEIPTS/assays/2026-09-11-residual-sieve-source-supplement-v01.json",
+        "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json",
+        "04-RECEIPTS/assays/2026-09-11-td613-residual-literature-sieve-v02.json",
+        "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+        "04-RECEIPTS/intake/2026-09-11-public-reddit-48h-intake.json",
+        "04-RECEIPTS/intake/2026-09-13-public-reddit-delta-intake.json",
+        "04-RECEIPTS/intake/2026-09-15-public-hydration-sticker-taxonomy.json",
+        "04-RECEIPTS/intake/2026-09-16-public-reddit-refresh-current-burst-unbound.json",
+        "04-RECEIPTS/intake/2026-09-16-user-supplied-facebook-cross-platform-intake.json",
+        "04-RECEIPTS/phase2/current-seal.json",
+        "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+        "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md",
+        "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
+        "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md",
+        "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md",
+        "05-OPERATIONS/2026-09-13-PUBLIC-DELTA-SYNC-AND-AIA-PRESSURE.md",
+        "05-OPERATIONS/2026-09-15-PUBLIC-HYDRATION-AND-STICKER-TAXONOMY-SYNC.md",
+        "05-OPERATIONS/2026-09-16-PUBLIC-REFRESH-CURRENT-BURST-HOLD.md",
+        "05-OPERATIONS/phase2/version-observations.jsonl",
+        "05-OPERATIONS/relations/typed-edges.jsonl",
+        "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md",
+        "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md",
+        "06-INSTRUMENTS/WENDBINE_QUERY_RECIPES_V0_1.md",
+        "06-INSTRUMENTS/WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1.md",
+        "06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md",
+        "07-ARCHIVE-LEDGER/README.md",
+        "07-ARCHIVE-LEDGER/syncs/wendbine-20261002214251-312aa0bfc983.json",
+        "07-ARCHIVE-LEDGER/syncs/wendbine-20261002220512-58f084b90335.json",
+        "07-ARCHIVE-LEDGER/syncs/wendbine-20261102175835-2861f2e0326f.json",
+        "07-ARCHIVE-LEDGER/syncs/wendbine-20261104014208-6d200e3ff3a0.json",
+        "08-EXTERNAL-CORPORA/README.md",
+        "ATELIER_PROFILE.json",
+        "CONNECTOR_ENTRY.md",
+        "README.md"
+      ],
+      "lexical_absent_control_passed": true,
+      "concept_query_executed": true,
+      "concept_semantic_meaning": "DETERMINISTIC_WEIGHTED_TOKENS_WITH_CONCEPT_FIELDS_NO_EMBEDDINGS",
+      "positive_lexical_query_executed": true,
+      "recent_source_records": 20,
+      "recent_date_bases": [
+        "FILENAME_INFERENCE_OR_UNDATED"
+      ],
+      "held_debt_record_retrievable": true,
+      "debt_path": "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+      "claims_promoted": false
+    },
+    "capture_reconciliation": {
+      "result": {
+        "state": "RECONCILED_WITH_EXPLICIT_CAPTURE_DEBT",
+        "observed_count": 25,
+        "persisted_count": 0,
+        "explicit_failure_count": 25,
+        "unexplained_remainder": 0
+      },
+      "unexplained_gap_refused": true,
+      "dependency_files": [
+        "99-ADMIN/wendbine-capture-contract.mjs",
+        "01-MANIFESTS/public-reddit-profile-delta-20260916-snapshot-v04.json",
+        "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json"
+      ]
+    },
+    "sealed_query": {
+      "snapshot_id": "wendbine-20261104014208-6d200e3ff3a0",
+      "seal_id": "wendbine-seal:6d200e3ff3a0d7d79d7a135d676141fea8dfab3ae9496b525c5a93b55e31edf2",
+      "summary": {
+        "manifestations": 2062,
+        "captures": 6763,
+        "body_states": {
+          "ARCHIVED_TEXT_BODY_PRESENT": 4337,
+          "VERIFIED_EMPTY_MEDIA_OR_LINK_BODY": 2424,
+          "VERIFIED_EMPTY_BODY_MEDIA_OR_LINK_POST": 2
+        },
+        "typed_edges": 6703,
+        "graph_counts": {
+          "MANIFESTATION": 6703
+        },
+        "private_source_body_query_authorized": false,
+        "source_version_claim": "ARCHIVE_OBSERVED_NOT_FIRST_PUBLICATION_OR_LIVE_REDDIT"
+      },
+      "route_action_cases": [
+        {
+          "route": "EXPERIENTIAL",
+          "action": "summary",
+          "result_sha256": "b8a381b5b1001b6e715ea493b3cb80ea5e31f1af28b963408645a8b777ad9d9f"
+        },
+        {
+          "route": "EXPERIENTIAL",
+          "action": "chronology",
+          "result_sha256": "684a7f83303e62e2fc42c3738072974faba878b88e6f6b7a7adb7b2439339dd2"
+        },
+        {
+          "route": "EXPERIENTIAL",
+          "action": "resolve",
+          "result_sha256": "08a09faa31c683c5ca7ebe7d6b22a919fe8dd15ca332f26208a7d8d9983e8a9d"
+        },
+        {
+          "route": "EXPERIENTIAL",
+          "action": "versions",
+          "result_sha256": "5bdd34050341203bad5424b0ddfcac1d9187b8dca6c9d0835859090cab39f59d"
+        },
+        {
+          "route": "EXPERIENTIAL",
+          "action": "relations",
+          "result_sha256": "4738ddcf6a67be958149ac2e1027678e0aabea048d7a31be140c14d891b686da"
+        },
+        {
+          "route": "CUSTODIAL",
+          "action": "summary",
+          "result_sha256": "d4d5b37d46742545debc8b3ebb7ad303b3245269e23c4747327d6791305bca2f"
+        },
+        {
+          "route": "CUSTODIAL",
+          "action": "chronology",
+          "result_sha256": "17680309e2312e21c9a4377a0c36f3a6de67c9154c1d8bb77d78c4cd98396ae3"
+        },
+        {
+          "route": "CUSTODIAL",
+          "action": "resolve",
+          "result_sha256": "5cdf2d4787d295b5df5f52e725b230a2dfde64e216680709c23b20071c2823dc"
+        },
+        {
+          "route": "CUSTODIAL",
+          "action": "versions",
+          "result_sha256": "5cad27dd4333abd4ca0ff7b3b0673572797ec3e4395b6d6d9145b68605ba81fa"
+        },
+        {
+          "route": "CUSTODIAL",
+          "action": "relations",
+          "result_sha256": "e2a2ed9d22031157ab46d4ccd0c8a3a311db2481c4f9e0695cd239f1aedde866"
+        },
+        {
+          "route": "AUDIT",
+          "action": "summary",
+          "result_sha256": "8751023d1ef5572855a957e208ce4986fea8fdb50a2ca51a8df877774526e122"
+        },
+        {
+          "route": "AUDIT",
+          "action": "chronology",
+          "result_sha256": "422d86813e0d701719950076adf98da8d73f22f06d0546db73a634e2fe04a3b9"
+        },
+        {
+          "route": "AUDIT",
+          "action": "resolve",
+          "result_sha256": "65781dbfd52b83918f6e543d011276e2ae410f1f37b0cbafc19f3dd541014328"
+        },
+        {
+          "route": "AUDIT",
+          "action": "versions",
+          "result_sha256": "2f6641ecc3a296707592250faa327ca40dc9810d484cec0dda48a0799c6f47b1"
+        },
+        {
+          "route": "AUDIT",
+          "action": "relations",
+          "result_sha256": "47629c25a413ab96d41878339603e49a5b31a83248c286d05f4296d772e273e0"
+        },
+        {
+          "route": "IMPLEMENTATION",
+          "action": "summary",
+          "result_sha256": "f404e51853dd9d662312231cb8f97084fc90289a083b5bba3f020170fcfcc724"
+        },
+        {
+          "route": "IMPLEMENTATION",
+          "action": "chronology",
+          "result_sha256": "913a25b1160a543672a08fad10debdb37ee411f1554245a4bd5aa192bfaec939"
+        },
+        {
+          "route": "IMPLEMENTATION",
+          "action": "resolve",
+          "result_sha256": "696f5dbb07eb1d7b1165e75720b244b79b92a89add83a838e61d594060af9437"
+        },
+        {
+          "route": "IMPLEMENTATION",
+          "action": "versions",
+          "result_sha256": "05de90eeaad53f8de6b821340b8417bb26e3e35273ce8707d66df0872c62f2a4"
+        },
+        {
+          "route": "IMPLEMENTATION",
+          "action": "relations",
+          "result_sha256": "0c58f1e6e95ffd47da0cbe821e4d77fc415ba88d5e5c823f99eae670c734f641"
+        }
+      ],
+      "wrong_seal_refused": true,
+      "unsupported_route_and_action_refused": true,
+      "temporary_member_tamper_refused": true,
+      "dependency_files": [
+        "01-MANIFESTS/phase2/blob-v1.jsonl",
+        "01-MANIFESTS/phase2/capture-v2.jsonl",
+        "01-MANIFESTS/phase2/derivative-v1.jsonl",
+        "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
+        "01-MANIFESTS/phase2/interface-registry.json",
+        "01-MANIFESTS/phase2/manifestations.jsonl",
+        "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
+        "01-MANIFESTS/registry-index.json",
+        "04-RECEIPTS/phase2/current-seal.json",
+        "05-OPERATIONS/phase2/version-observations.jsonl",
+        "05-OPERATIONS/relations/typed-edges.jsonl",
+        "99-ADMIN/wendbine-srcquery.mjs"
+      ]
+    },
+    "pure_sync_control": {
+      "source_class": "SYNTHETIC",
+      "native_code_executed": true,
+      "dependency_files": [
+        "99-ADMIN/wendbine-src-autosync.mjs"
+      ],
+      "network_discovery_executed": false,
+      "projection_or_encrypted_write_executed": false,
+      "observations": 2,
+      "captures": 2,
+      "unique_body_blobs": 1,
+      "predecessor_state_unchanged": true,
+      "removed_source_held": true
+    },
+    "receiver_admission_executed": false,
+    "held_research_resumed": false,
+    "flights": "HELD"
+  },
+  "independent_python_compiler_oracle": {
+    "concept_source_sets_match": true,
+    "pair_support_sets_match": true,
+    "nine_graph_counts_match": true,
+    "declarations_checked": 326
+  },
+  "pre_assay_freeze": {
+    "commit": "80e3c7bad4832a3e67b2865987b82382e8bb6aac",
+    "blob_bindings": {
+      "01-MANIFESTS/public-reddit-48h-source-registry-v01.jsonl": "4cc9feff9c9478eb9ae3e9ae3a4093dcda1806ce",
+      "01-MANIFESTS/typed-relation-registry-v01.json": "849abbcf1b26b5f362820e8acd1acba5f0528346",
+      "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md": "4ba1be413c75362c2eb9a1f468b3e51035b1a476"
+    },
+    "ancestor_of_recorded_adjudication": true,
+    "blind_prediction_independently_established": false
+  },
+  "historical_held_out_result": {
+    "targets": [
+      {
+        "source_id": "reddit:t3_1wcuqg9",
+        "target_class": "dependency-induced observability loss",
+        "actual_graph_families": [
+          "G_O",
+          "G_P",
+          "G_R"
+        ],
+        "predicted_neighborhood_from_remaining_public_topology": [
+          "hidden_mediation",
+          "observability_loss",
+          "state_estimation",
+          "provenance"
+        ],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "PARTIAL",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wcv2hz",
+        "target_class": "dependency-induced state-estimation error",
+        "actual_graph_families": [
+          "G_R"
+        ],
+        "predicted_neighborhood_from_remaining_public_topology": [
+          "observability_loss",
+          "state_estimation",
+          "stale_state",
+          "provenance"
+        ],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "PARTIAL",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "PARTIAL",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd5j3w",
+        "target_class": "causal reconstruction across third parties",
+        "actual_graph_families": [
+          "G_R",
+          "G_P"
+        ],
+        "predicted_neighborhood_from_remaining_public_topology": [
+          "causal_reconstruction",
+          "provenance",
+          "partial_observability",
+          "event_sequence_vs_causation"
+        ],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd6sdm",
+        "target_class": "dependency boundaries and operational digital twin",
+        "actual_graph_families": [
+          "G_O",
+          "G_D",
+          "G_R"
+        ],
+        "predicted_neighborhood_from_remaining_public_topology": [
+          "system_boundary",
+          "observation_boundary",
+          "external_interface",
+          "observed_state",
+          "estimated_state",
+          "unknown_state"
+        ],
+        "graph_family": "SUPPORTED",
+        "immediate_neighbors": "SUPPORTED",
+        "role": "SYNTHESIS_OR_EXPANSION_SUPPORTED",
+        "closes_named_deficit": "SUPPORTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "CONSTRAINED_PLACEMENT"
+      },
+      {
+        "source_id": "reddit:t3_1wd7mjl",
+        "target_class": "EchoCore correction",
+        "actual_graph_families": [
+          "G_X"
+        ],
+        "predicted_neighborhood_from_remaining_public_topology": [
+          "echocore",
+          "relational_state",
+          "drift"
+        ],
+        "graph_family": "PARTIAL",
+        "immediate_neighbors": "NOT_RECONSTRUCTED",
+        "role": "CORRECTION_NOT_RECONSTRUCTED",
+        "closes_named_deficit": "NOT_RECONSTRUCTED",
+        "claim_ceiling": "SUPPORTED",
+        "adjudication": "NEGATIVE_CONTROL_LIKE_RESULT"
+      }
+    ],
+    "controls": {
+      "C0_ordered_minus_target": {
+        "state": "ADJUDICATED",
+        "result": "FOUR_OF_FIVE_TARGETS_SHOW_CONSTRAINED_ARCHITECTURAL_PLACEMENT"
+      },
+      "C1_shuffled_source_order": {
+        "state": "NON_DISCRIMINATING_UNDER_DAY_PRECISION",
+        "result": "ORDER_EFFECT_NOT_IDENTIFIED",
+        "note": "The v0.1 evidence has day-level time only and the adjudication uses typed topology, so a within-day shuffle cannot lawfully create or destroy chronology."
+      },
+      "C2_concept_label_permutation": {
+        "state": "STRUCTURAL_ABLATION_ONLY",
+        "result": "SEMANTIC_NEIGHBORHOOD_IDENTIFICATION_IS_NOT_CREDITED_AFTER_LABEL_PERMUTATION"
+      },
+      "C3_typed_edge_ablation": {
+        "state": "STRUCTURAL_ABLATION_ONLY",
+        "result": "GRAPH_FAMILY_IDENTIFICATION_IS_NOT_CREDITED_AFTER_EDGE_TYPE_ABLATION"
+      },
+      "C4_unrelated_technical_post_decoy": {
+        "state": "NOT_BOUND_NOT_EXECUTED",
+        "result": "HELD"
+      }
+    },
+    "full_success_earned": false,
+    "new_held_out_research_executed": false
+  },
+  "td613_side_synthetic_transcription": {
+    "schema": "td613.wendbine-derived.ordering-sensitivity/v1",
+    "implementation": "NEW_TRANSCRIPTION_OF_TD613_SIDE_DOCUMENTED_SYNTHETIC_FIXTURE",
+    "inputs": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "permutations": 24,
+    "terminal_signature_classes": 5,
+    "canonical_equivalence_class_size": 9,
+    "canonical_class": [
+      "AKNP",
+      "AKPN",
+      "ANKP",
+      "ANPK",
+      "APKN",
+      "APNK",
+      "KANP",
+      "KAPN",
+      "KPAN"
+    ],
+    "selected_pair_terminal_equal": true,
+    "selected_pair_first_stage_input_3": {
+      "KPAN": [
+        2,
+        null,
+        null
+      ],
+      "AKPN": [
+        0,
+        false,
+        null
+      ]
+    },
+    "commuting_control_signature_classes": 1,
+    "external_system_claim": false,
+    "native_public_poster_method": false,
+    "novelty_promoted": false
+  },
+  "original_to_evolved_source_identity": {
+    "original_post_ids": 33,
+    "all_ids_in_evolved_manifest": true,
+    "evolved_manifestations": 2062,
+    "genuine_body_byte_continuity_established": false
+  },
+  "restored_2767_3473_database": {
+    "predecessor_reported_counts": [
+      2767,
+      3473
+    ],
+    "genuine_database_available_in_this_qualification": false,
+    "new_execution_credit": 0,
+    "old_method_state_migration_established": false
+  },
+  "native_inheritance_matrix": [
+    {
+      "original_method_or_investigation_id": "PUBLIC_TYPED_TOPOLOGY_COMPILER",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "99-ADMIN/wendbine-compile.mjs",
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "bytes": 9876,
+      "native_implementation_and_version": "99-ADMIN/wendbine-compile.mjs",
+      "classification": "EXECUTABLE_ORIGINAL_PUBLIC_METHOD_REPRODUCED",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "33 posts; 191 concepts; 146 typed relations; nine independent graph families. New strict successor matches exact native output; independent Python oracle agrees.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Original permissive inputs remain versioned; successor refuses unsupported graph/relation/evidence, identity substitution, duplicated witnesses and body-field masking.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Original permissive inputs remain versioned; successor refuses unsupported graph/relation/evidence, identity substitution, duplicated witnesses and body-field masking.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "SOURCE_DECLARATION_AND_COOCCURRENCE",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md",
+      "git_blob": "b4117f267f2a1a3e744b2516ae95a1a688a56c83",
+      "sha256": "c315585a65130bbc75f2790796edc390cd397fd5d425d62e4a731d835f3b64d9",
+      "bytes": 2847,
+      "native_implementation_and_version": "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md",
+      "classification": "EXECUTABLE_AS_PART_OF_ORIGINAL_COMPILER",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "43 recurrent concepts and 143 co-occurrences reproduced with exact source support sets. Declaration and co-occurrence evidence stay separate.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Co-occurrence remains noncausal; unknown sources and full-body flags refused by original; stronger versioned validation in successor.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Co-occurrence remains noncausal; unknown sources and full-body flags refused by original; stronger versioned validation in successor.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "SOURCE_EXPLICIT_CORRECTION",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md",
+      "git_blob": "3083ef617ca626a613edfbd87473e39ac64bc0b5",
+      "sha256": "22c45c72ed5467aecf5424d7d5242fcb97c330e6069fb1530c434557cdb6d4c0",
+      "bytes": 6328,
+      "native_implementation_and_version": "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md",
+      "classification": "ORIGINAL_FLAGS_EXECUTED_WITH_HISTORICAL_READING",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Exact correction landmark reddit:t3_1wd7mjl retained; correction/source-synthesis flags survive original compilation.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Preserve both source assertion and researcher interpretation; no automatic chronological authority.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Preserve both source assertion and researcher interpretation; no automatic chronological authority.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "HELD_OUT_RECONSTRUCTION",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md",
+      "git_blob": "4ba1be413c75362c2eb9a1f468b3e51035b1a476",
+      "sha256": "c0d98170f0d369c9f7cae87bfa73c7f76079c57fb24389b9d4ed1c71971554c2",
+      "bytes": 1769,
+      "native_implementation_and_version": "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md",
+      "classification": "DOCUMENTARY_PREREGISTRATION_AND_LATER_PARTIAL_ADJUDICATION",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Pre-assay Git freeze bound; historical four constrained placements and EchoCore failure verified as saved receipts; no new prediction run.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "C1 order effect unidentified at DAY precision; C2/C3 structural ablations only; C4 NOT_BOUND_NOT_EXECUTED / HELD; full success unearned.",
+      "held_or_human_gated_state": {
+        "S5_CONVERGENCE_DIVERGENCE_LINEAGE": "HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY",
+        "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK"
+      },
+      "scientific_claim_ceiling": "C1 order effect unidentified at DAY precision; C2/C3 structural ablations only; C4 NOT_BOUND_NOT_EXECUTED / HELD; full success unearned.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "BOUNDED_NOMENCLATURE_OPERATOR_CROSSWALK",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+      "git_blob": "64371856088aa748f619f0c161e83d4287a4bdef",
+      "sha256": "8779f9bc41a2f661977904f8aa9f033650716b893d96e2d486435e011ba353f3",
+      "bytes": 19697,
+      "native_implementation_and_version": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+      "classification": "HISTORICAL_SOURCE_READING_NOT_REEXECUTED_SCIENCE",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "14 rows: 4 BETTER_NAME, 1 BETTER_OPERATOR, 6 BOTH, 2 NEITHER, 1 REJECTED; source references preserved.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Conventional terminology confers no donor provenance; lineage, novelty and foreign donor chamber remain held.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Conventional terminology confers no donor provenance; lineage, novelty and foreign donor chamber remain held.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "RESIDUAL_LITERATURE_SIEVE",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md",
+      "git_blob": "73ae56fa7e207cc406715de77f5e6e56de9712b8",
+      "sha256": "450ff5652c26d196ea7687e8c2bd575c05dba7eb50a9e972feaf26f45ff5ff7d",
+      "bytes": 14117,
+      "native_implementation_and_version": "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md",
+      "classification": "SUBSEQUENT_TD613_DOCUMENTARY_COMPARATOR",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Seven saved verdict rows; original source supplement retained.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "External literature was not independently revalidated in this bounded source-method qualification; no source-poster authorship or novelty promotion.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "External literature was not independently revalidated in this bounded source-method qualification; no source-poster authorship or novelty promotion.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "DEVASTATE_REPAIR_SIEVE",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
+      "git_blob": "16aa1e3c11593aea90d18bd34ec6f15c1746ddc3",
+      "sha256": "fd73477160813a30636832be509b890c6e30be21419ecf579bb6090b48d0a640",
+      "bytes": 7743,
+      "native_implementation_and_version": "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
+      "classification": "SUBSEQUENT_TD613_DOCUMENTARY_COMPARATOR",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Six saved zero-promotion verdicts and four surviving research targets preserved.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Retained questions about evidence-state utility, AIA governance, PRCS-A stage witnesses and scoped holonomy remain prospective.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Retained questions about evidence-state utility, AIA governance, PRCS-A stage witnesses and scoped holonomy remain prospective.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "ORDERING_SCAB",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+      "git_blob": "34a6eb7fa1a93656db82b7012165245b0b1fae81",
+      "sha256": "cd51159bf7f06bbd75fb4091e56bcac8ec72d439b3d2c946c256a9f6b4dddf82",
+      "bytes": 8244,
+      "native_implementation_and_version": "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+      "classification": "NEW_EXECUTABLE_TRANSCRIPTION_OF_TD613_SIDE_SYNTHETIC_METHOD",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "24 permutations reproduce 5 terminal classes and canonical class size 9; selected pair has an intermediate distinction; commuting control one class.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Finite declared synthetic operators only; no original executable recovered, no native public-poster or external pipeline claim.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Finite declared synthetic operators only; no original executable recovered, no native public-poster or external pipeline claim.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "PORTABLE_AIA_ASSURANCE_DELTA",
+      "original_source_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+      "exact_witness": "05-OPERATIONS/2026-09-13-PORTABLE-AIA-ASSURANCE-DELTA-V0_1.md",
+      "git_blob": "1bb194dfa457ff604e67c29de15f65061c3526d3",
+      "sha256": "37d3018f7f125843087f1d346c69f2b89614c2f996a5e9a4da747d8a0d6f5c92",
+      "bytes": 4443,
+      "native_implementation_and_version": "05-OPERATIONS/2026-09-13-PORTABLE-AIA-ASSURANCE-DELTA-V0_1.md",
+      "classification": "TD613_APPLICATION_DESIGN_WITH_HELD_EXTENSIONS",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Four accepted operator-sharpening distinctions preserved: direct edges, source/path provenance, observation boundary, carriage/enforcement.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Uses September 11 parent corpus; September 13 date carries no source refresh. Freshness, update propagation, robustness/recovery extensions remain HELD.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Uses September 11 parent corpus; September 13 date carries no source refresh. Freshness, update propagation, robustness/recovery extensions remain HELD.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "UNIFIED_PUBLIC_QUERY",
+      "original_source_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+      "exact_witness": "99-ADMIN/wendbine-query.mjs",
+      "git_blob": "1900a395238f7e6dbc8d2a6b17b28b4726a7de11",
+      "sha256": "405f6ad6ccfc781f2cda4edb5ad7e7fb6c273203573eb676c7c0b307723def05",
+      "bytes": 12783,
+      "native_implementation_and_version": "99-ADMIN/wendbine-query.mjs",
+      "classification": "EVOLVED_ORIGINAL_EXECUTABLE_PUBLIC_METHOD_REPRODUCED",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "39,308 indexed metadata/receipt records; lexical/weighted-concept/recent/resolve APIs remain distinct. Held capture debt stays queryable.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Weighted token concept semantics supplies no embeddings or causal relation inference; 39,308 records are not 39,308 posts or full bodies.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Weighted token concept semantics supplies no embeddings or causal relation inference; 39,308 records are not 39,308 posts or full bodies.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "CAPTURE_RECONCILIATION",
+      "original_source_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+      "exact_witness": "99-ADMIN/wendbine-capture-contract.mjs",
+      "git_blob": "e135ac31ccfc406c43c5c59930ceee998e52cde7",
+      "sha256": "4eec9b3ab221ca21bb4a8baeb1c423fcad5f3ce358bf8e49aea87d6ea45b951e",
+      "bytes": 3147,
+      "native_implementation_and_version": "99-ADMIN/wendbine-capture-contract.mjs",
+      "classification": "EVOLVED_ORIGINAL_EXECUTABLE_PUBLIC_METHOD_REPRODUCED",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "25 observed = 0 persisted + 25 explicit failures; negative unexplained-gap control refused.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Reconciled debt remains lost historical payload; no inferred recovery or silent erase.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Reconciled debt remains lost historical payload; no inferred recovery or silent erase.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "SEALED_PUBLIC_EPOCH_QUERY",
+      "original_source_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+      "exact_witness": "99-ADMIN/wendbine-srcquery.mjs",
+      "git_blob": "fc0e879e6014bddf35fdfcfe8b579f582fcd0891",
+      "sha256": "72d4e80566f1e796ec2548325b0838ccd221a08656d324277f57b77e13cf7521",
+      "bytes": 4843,
+      "native_implementation_and_version": "99-ADMIN/wendbine-srcquery.mjs",
+      "classification": "EVOLVED_ORIGINAL_EXECUTABLE_PUBLIC_METHOD_REPRODUCED",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "20 route/action cases on original sealed epoch; 2,062 manifestations / 6,763 captures; wrong seal, unknown action/route and mutated member refused.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "All 6,703 present edges are MANIFESTATION; preserve separate nine-family legacy scientific topology. Metadata queries establish no private-body availability.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "All 6,703 present edges are MANIFESTATION; preserve separate nine-family legacy scientific topology. Metadata queries establish no private-body availability.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "TIME_INDEXED_CAPTURE_COMPILATION",
+      "original_source_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+      "exact_witness": "99-ADMIN/wendbine-src-autosync.mjs",
+      "git_blob": "016223db295423d8c5e43055c01e2b99fb847abe",
+      "sha256": "eb0a24c80eb4a5ecdff139e5cacc41f79fa449350acc6e1682f1cac4d76e3bc6",
+      "bytes": 23082,
+      "native_implementation_and_version": "99-ADMIN/wendbine-src-autosync.mjs",
+      "classification": "ORIGINAL_EXECUTABLE_SYNTHETIC_CONTROL_ONLY",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Pure compileSync: time-indexed capture changes with stable source/manifestation and one blob for unchanged content; removed source held; predecessor unchanged.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "No live discovery, gate activation, encryption/writeProjection or private bootstrap executed.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "No live discovery, gate activation, encryption/writeProjection or private bootstrap executed.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    },
+    {
+      "original_method_or_investigation_id": "VERBATIM_ACQUISITION_AND_PRIVATE_QUERY",
+      "original_source_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+      "exact_witness": "06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md",
+      "git_blob": "c8656eb02ccd971bf8d16fd13179bf05bf144465",
+      "sha256": "06d4362ce4753a182b45599c34c2d106ffb5c8b59a24997a9362faba135029a4",
+      "bytes": 13412,
+      "native_implementation_and_version": "06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md",
+      "classification": "EVOLVED_CODE_PRESENT_GENUINE_RUNTIME_UNEXECUTED",
+      "original_input_output_and_provenance": "Pinned original public source/metadata and historical receipts; synthetic controls explicitly labelled.",
+      "reproduction_or_differential_result": "Private query/audit/restore, archive/OAuth rescue and chat-export tools discovered from original estate.",
+      "current_universal_atelier_support": "Later observed-body/link retrieval; original native operations qualified separately, not integrated by corpus counts.",
+      "negative_controls_and_unresolved_observations": "Original DBs, raw source captures, private keys/archives, provider authorization and exact environment remain separate custody dependencies; none acquired or admitted.",
+      "held_or_human_gated_state": "Original declared state preserved",
+      "scientific_claim_ceiling": "Original DBs, raw source captures, private keys/archives, provider authorization and exact environment remain separate custody dependencies; none acquired or admitted.",
+      "required_repair": "Strict origin-side successor validation; current timestamp guard repaired. Other missing genuine execution remains explicitly unestablished.",
+      "v2_and_capsule_requirements": "Preserve estate-specific snapshot/method IDs, graph type, capture and Work missingness, experiment provenance, negative controls and human holds."
+    }
+  ],
+  "evolved_code_inventory": [
+    {
+      "path": "99-ADMIN/wendbine-archive-provider-probe.mjs",
+      "git_blob": "b9e2be609441d9297754b74bcb0075335d2fc8f5",
+      "sha256": "31e449a2f12a062f96760f0f712c7a0b51c9cd59bc68c332cfc13bb7df343169",
+      "bytes": 8243,
+      "exported_functions": [
+        "providerUrl",
+        "parseArchiveEnvelope",
+        "assessArchiveObject",
+        "probeP0Archives"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url",
+        "./wendbine-reddit-oauth-rescue.mjs",
+        "./wendbine-originals-intake.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-capture-contract.mjs",
+      "git_blob": "e135ac31ccfc406c43c5c59930ceee998e52cde7",
+      "sha256": "4eec9b3ab221ca21bb4a8baeb1c423fcad5f3ce358bf8e49aea87d6ea45b951e",
+      "bytes": 3147,
+      "exported_functions": [
+        "validateCaptureReconciliation",
+        "validateSept16Scar"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-chat-export-rescue.mjs",
+      "git_blob": "1b78af87bf96f91f944e2f287d97cc99f9bba12d",
+      "sha256": "0fa38fa2956f63ed9f7228462e67acd010973bcee1e11a80b54a37d10075d80e",
+      "bytes": 4887,
+      "exported_functions": [
+        "recoverChatExport"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url",
+        "./wendbine-originals-intake.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-ci-sealed-rescue.mjs",
+      "git_blob": "ed286f93b3ab87c5f3389f21fdc3ac754878b1eb",
+      "sha256": "0c78c7fac1b4e7697532cd37ef26b29468717f3af39657d23aa71464762f77ca",
+      "bytes": 6536,
+      "exported_functions": [
+        "verifyArchiveBatch",
+        "sealArchivePayload",
+        "captureAndSeal"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url",
+        "node:crypto",
+        "node:zlib",
+        "./wendbine-reddit-oauth-rescue.mjs",
+        "./wendbine-archive-provider-probe.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-ci-secondary-sealed-rescue.mjs",
+      "git_blob": "0c111f9e97bb227939e09a8a381c8ad65dbc3db0",
+      "sha256": "5712cf5a3f3deee4e789ce219e6179d908e46a44a57714ed5db32f4fff8588e2",
+      "bytes": 8969,
+      "exported_functions": [
+        "secondaryTargets",
+        "judgeSecondary",
+        "captureSecondary"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:zlib",
+        "node:url",
+        "./wendbine-archive-provider-probe.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-compile.mjs",
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "bytes": 9876,
+      "exported_functions": [
+        "compilePublicCorpus",
+        "compileFiles"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-originals-intake.mjs",
+      "git_blob": "a8586580333df8bfb9d29090893f388e85e751f6",
+      "sha256": "473f5df983a099f051f367a4fb7ad33afb3bf76b2c7aaf0803d0bba19d310329",
+      "bytes": 7482,
+      "exported_functions": [
+        "sha256Utf8",
+        "loadGapLedger",
+        "validateOriginal",
+        "assertPrivateDestination",
+        "ingestAuthorizedOriginals"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-archive-audit.mjs",
+      "git_blob": "6215f8839dffda696630bca45da69b84f86ff439",
+      "sha256": "ad6a835051dbfda782e8a96577fe57063cdab56d45a225604f88d3cf157ba281",
+      "bytes": 4752,
+      "exported_functions": [
+        "auditPrivateArchive"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url",
+        "./wendbine-archive-provider-probe.mjs",
+        "./wendbine-reddit-oauth-rescue.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-custody-audit.mjs",
+      "git_blob": "954838de3162cdbdd9bb52d56e393a3e06744b4e",
+      "sha256": "c6a62b11f1c0382b7197105f244575caf5dd911a54a2c1a83bec89dfb5846a4e",
+      "bytes": 4765,
+      "exported_functions": [
+        "auditPrivateOriginals"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "./wendbine-originals-intake.mjs",
+        "./wendbine-reddit-oauth-rescue.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-originals-query.mjs",
+      "git_blob": "03156a9d17f431adab8ca68a26b64de3927007c2",
+      "sha256": "62cadd49ee65120308dcedebd612429de29dd2000a283a257922ebd8e5257f95",
+      "bytes": 2973,
+      "exported_functions": [
+        "loadPrivateOriginals",
+        "queryPrivateOriginals"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url",
+        "./wendbine-originals-intake.mjs",
+        "./wendbine-private-custody-audit.mjs",
+        "./wendbine-private-archive-audit.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-p0-restore.mjs",
+      "git_blob": "bfd2e3a1a10224f9730983631a8e664e5befdd69",
+      "sha256": "339fe3b492cd05fcd9cff43a662bf499ef6e3adaaf086bd49083fab2b39de94f",
+      "bytes": 5563,
+      "exported_functions": [
+        "decryptSealedP0",
+        "restoreVerifiedP0"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:zlib",
+        "node:url",
+        "./wendbine-originals-intake.mjs",
+        "./wendbine-private-p0-source-query.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-p0-source-query.mjs",
+      "git_blob": "2a35feef06e01f5e113b4efeedaa12debd66bb96",
+      "sha256": "2ff80463d49b2eb7e50131e1765a07c9a9117a756c7aa98d3fea1ad97118436e",
+      "bytes": 4372,
+      "exported_functions": [
+        "loadVerifiedP0",
+        "exactSearch"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-secondary-restore.mjs",
+      "git_blob": "3149238b70ebc28d09a9867e390b8a43676d9e24",
+      "sha256": "c87bf86c0b82bf21460f16e18d1bb423fd9d031c6bfd84b7b7de05e1f5442334",
+      "bytes": 6279,
+      "exported_functions": [
+        "decryptSecondary",
+        "validateSecondaryPayload",
+        "restoreSecondary"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:zlib",
+        "node:url",
+        "./wendbine-originals-intake.mjs",
+        "./wendbine-ci-secondary-sealed-rescue.mjs",
+        "./wendbine-archive-provider-probe.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-private-unified-query.py",
+      "git_blob": "92c873f832c76b79892a24eb51f7651d3874b887",
+      "sha256": "11c7b1f61308f7971e09860950bcb461e6e3e24c30585814aa0721fae0200e94",
+      "bytes": 6359,
+      "exported_functions": [],
+      "imports": [],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-query.mjs",
+      "git_blob": "1900a395238f7e6dbc8d2a6b17b28b4726a7de11",
+      "sha256": "405f6ad6ccfc781f2cda4edb5ad7e7fb6c273203573eb676c7c0b307723def05",
+      "bytes": 12783,
+      "exported_functions": [
+        "buildIndex",
+        "lexicalSearch",
+        "semanticSearch",
+        "recentEntries",
+        "resolveEntry"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-reddit-oauth-rescue.mjs",
+      "git_blob": "ef57f95aab5f7b5cf353f616b73c5c3ea1a582fa",
+      "sha256": "6b989fa0daf2522b4c441ba0ff6b4154f65ddd035896075fa38697a4d8242779",
+      "bytes": 8714,
+      "exported_functions": [
+        "loadFoundationalTargets",
+        "parseRedditPostBytes",
+        "acquireP0"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url",
+        "./wendbine-originals-intake.mjs"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-src-autosync.mjs",
+      "git_blob": "016223db295423d8c5e43055c01e2b99fb847abe",
+      "sha256": "eb0a24c80eb4a5ecdff139e5cacc41f79fa449350acc6e1682f1cac4d76e3bc6",
+      "bytes": 23082,
+      "exported_functions": [
+        "queryUrl",
+        "checkPost",
+        "discover",
+        "compileSync",
+        "writeProjection",
+        "loadState"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:zlib",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    },
+    {
+      "path": "99-ADMIN/wendbine-srcquery.mjs",
+      "git_blob": "fc0e879e6014bddf35fdfcfe8b579f582fcd0891",
+      "sha256": "72d4e80566f1e796ec2548325b0838ccd221a08656d324277f57b77e13cf7521",
+      "bytes": 4843,
+      "exported_functions": [
+        "openEpoch",
+        "queryEpoch"
+      ],
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:crypto",
+        "node:url"
+      ],
+      "execution_scope": "Only named public methods above executed; private acquisition/restore paths unexecuted"
+    }
+  ],
+  "research_continuity_inventory": [
+    {
+      "path": "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+      "git_blob": "789d79016c4f0f414d6412994e837eab5799f367",
+      "sha256": "92e061940d3649a2d98ba8068b5e981eebdf1dc306f134ad295db49d4c8af605",
+      "bytes": 2998,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/2026-09-22-linked-audiovisual-discovery-v01.json",
+      "git_blob": "3ea77b801d78a1569e286b3828db5e2242bf3cd2",
+      "sha256": "aa40bbfb7ea3ba84d03972414d4cfe7c750e1c7b5b070c29094d375bd32c2f5c",
+      "bytes": 2000,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/2026-09-22-live-author-search-witness-v01.json",
+      "git_blob": "695e9a2c108f8d06b6714506157e64f4d5fd799c",
+      "sha256": "77e79355fb629211b01a6eae5a8e72d6599f892f8028f22a0da1a470bdec4777",
+      "bytes": 2562,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/2026-09-22-prior-chat-originals-recovery-leads-v01.json",
+      "git_blob": "dbcc876464f22dc175c6be9fbcf457c23544b62f",
+      "sha256": "021f7f68be5db74de1d330693186847861ed6768f5a3bb8344f7a1853e61f5c8",
+      "bytes": 1900,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/2026-09-22-public-account-card-capture-reconciliation-v05.json",
+      "git_blob": "8c9c35421a382d44d8732f4536ce1144e862f609",
+      "sha256": "c22250b8d15ab8554a0a33b5858112f67aef006d84a98336275c3314d499ca46",
+      "bytes": 1622,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/2026-09-22-verbatim-originals-gap-ledger-v01.json",
+      "git_blob": "a0091d330b098bb38130052426f3d78a96eba401",
+      "sha256": "cf12c347b8997a3a1c9e3ab86948767acdc39032cc9abba639e0edff07099fb0",
+      "bytes": 56763,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-09-11-prcsa-ordering-scab-assay-v04.json",
+      "git_blob": "3b745480d4d2fb07a5683b0237e4978ebe8ef061",
+      "sha256": "1d14f629579534fc8f4260449d998d520ea8664918d45308620b98242d07be26",
+      "bytes": 5482,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-09-11-residual-sieve-source-supplement-v01.json",
+      "git_blob": "8f6fec6f9b7a49dc750abc4ff921265d8a023a75",
+      "sha256": "fbcec7bbecedae13ebc97033a949a8ffe9a245b378752d2c5e4790c4645c2eeb",
+      "bytes": 2239,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-09-11-td613-devastate-repair-sieve-v03.json",
+      "git_blob": "8d3d7c065a621eb53dc2904e162891d7ac166a0c",
+      "sha256": "dd21c509b681c9370afb24ff37e3bcaac26177ccac92561a82ac4467967201b2",
+      "bytes": 7739,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-09-11-td613-residual-literature-sieve-v02.json",
+      "git_blob": "d59217db5bbce85f07551b428abe6483a1ff3bcd",
+      "sha256": "8bdba3c5b5743fc197c80d6aac2c447c60c1eef644d4bf78433773f4844e9389",
+      "bytes": 12885,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/assays/2026-09-11-wendbine-td613-bounded-assay-v01.json",
+      "git_blob": "64371856088aa748f619f0c161e83d4287a4bdef",
+      "sha256": "8779f9bc41a2f661977904f8aa9f033650716b893d96e2d486435e011ba353f3",
+      "bytes": 19697,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/intake/2026-09-11-public-reddit-48h-intake.json",
+      "git_blob": "728d7e852f28feb5f3bc430943dbc8270dbb2c6a",
+      "sha256": "df6a8950bc3fd69ed9f7bea2f562c07e7d4b1de775425f38447334ebf32c0164",
+      "bytes": 1498,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/intake/2026-09-13-public-reddit-delta-intake.json",
+      "git_blob": "f63c02b3ab0ac9083ad4f8fedc870ca979539a15",
+      "sha256": "e693a7681e0c0a228d6bfcd032f447b6871f527f3b75a496c21a7b870c888c38",
+      "bytes": 1754,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/intake/2026-09-15-public-hydration-sticker-taxonomy.json",
+      "git_blob": "b924a697741edb063367ab8b819ac3805a6665a2",
+      "sha256": "b6246adf74e291faf2617281b116916ab070adea4a981a66bae04c812e78d45a",
+      "bytes": 1831,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/intake/2026-09-16-public-reddit-refresh-current-burst-unbound.json",
+      "git_blob": "2e91ca0872cea9e0be162e17d0fbbf33cfac5c09",
+      "sha256": "5ba1d9cd40ab64970c3c703d707d380f2d31bc7f3579b235f68ff27c019a5fc7",
+      "bytes": 1670,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/intake/2026-09-16-user-supplied-facebook-cross-platform-intake.json",
+      "git_blob": "68df2bd56355e327874fc4becaeefb313f5d04a2",
+      "sha256": "2677a137f646730edba76be527bc1d195a289fcb9d1cde98139939885c7386ae",
+      "bytes": 1597,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "04-RECEIPTS/phase2/current-seal.json",
+      "git_blob": "87939fe5837a4cb0352032413c0670040bfc59f4",
+      "sha256": "a6c890d016d6adac23eada1d9c25cb5240150d26315dfb66f7a95e4b48668648",
+      "bytes": 2096,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-11-PRCSA-ORDERING-SCAB-ASSAY-V0_4.md",
+      "git_blob": "34a6eb7fa1a93656db82b7012165245b0b1fae81",
+      "sha256": "cd51159bf7f06bbd75fb4091e56bcac8ec72d439b3d2c946c256a9f6b4dddf82",
+      "bytes": 8244,
+      "headings": [
+        "# PRCS-A Ordering Scab Assay v0.4",
+        "## 0. Question",
+        "## 1. Conventional neighbors",
+        "## 2. Immediate formal devastation",
+        "## 3. Hostile finite permutation fixture",
+        "### Result A — ordering can matter",
+        "### Result B — the canonical order is not terminally identifiable",
+        "### Result C — an intermediate witness breaks the equivalence",
+        "## 4. Commuting control",
+        "## 5. Verdict",
+        "## 6. Repair contract",
+        "## 7. What survives",
+        "## 8. Claim ceiling"
+      ],
+      "state_lines": [
+        "**State:** SOURCE-BOUND SYNTHETIC ORDERING ASSAY / ZERO NOVELTY PROMOTION  "
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-11-PUBLIC-SERIALIZED-TOPOLOGY-FIRST-PASS.md",
+      "git_blob": "3083ef617ca626a613edfbd87473e39ac64bc0b5",
+      "sha256": "22c45c72ed5467aecf5424d7d5242fcb97c330e6069fb1530c434557cdb6d4c0",
+      "bytes": 6328,
+      "headings": [
+        "# Wendbine Public Serialized Topology — 48-hour first pass",
+        "## Result in one sentence",
+        "## Why this is stronger than vocabulary overlap",
+        "## Compiled geometry",
+        "## Topological center of gravity",
+        "## Particularly important non-equivalences surfaced by the source",
+        "## The EchoCore correction",
+        "## Immediate next falsifier",
+        "## Missingness",
+        "## No donor promotion"
+      ],
+      "state_lines": [
+        "**State:** COMPILED PUBLIC-SURFACE OBSERVATION / NOT AUTHOR-INTENT ADJUDICATION  "
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-11-TD613-DEVASTATE-THEN-REPAIR-SIEVE-V0_3.md",
+      "git_blob": "16aa1e3c11593aea90d18bd34ec6f15c1746ddc3",
+      "sha256": "fd73477160813a30636832be509b890c6e30be21419ecf579bb6090b48d0a640",
+      "bytes": 7743,
+      "headings": [
+        "# TD613 Devastate-Then-Repair Sieve v0.3",
+        "## Purpose",
+        "## Source-bound attacks",
+        "### FADT / finite admissibility descent",
+        "### V/C/P/L temporal non-retroactivity",
+        "### AIA",
+        "### PRCS-A",
+        "### Holonomy Loom governance stack",
+        "### Safe Harbor / Right of Resignation",
+        "## Result",
+        "## Repair map",
+        "## What is still scientifically worth attacking"
+      ],
+      "state_lines": [
+        "**State:** SOURCE-BOUND TAXONOMY / ZERO NOVELTY PROMOTION / REPAIR AFTER DEFLATION  "
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-11-TD613-RESIDUAL-LITERATURE-SIEVE-V0_2.md",
+      "git_blob": "73ae56fa7e207cc406715de77f5e6e56de9712b8",
+      "sha256": "450ff5652c26d196ea7687e8c2bd575c05dba7eb50a9e972feaf26f45ff5ff7d",
+      "bytes": 14117,
+      "headings": [
+        "# TD613 Residual Literature Sieve v0.2",
+        "## 0. Purpose",
+        "## 1. Source bank admitted in this pass",
+        "### Q1 — quotient factorization",
+        "### Q2 — rough lower / upper approximation",
+        "### I1 — structural identifiability",
+        "### O1 — observability",
+        "### S1 — information-flow / reference-monitor architecture",
+        "### C1 — coarsened observations",
+        "### P1 — event history and authorization proof",
+        "### R1 — withdrawal and revocation",
+        "## 2. Sieve verdicts",
+        "### 2.1 FADT — the broad theorem claim dies",
+        "### 2.2 Western Horizon — the non-identifiability theorem claim dies",
+        "### 2.3 V/C/P/L — useful taxonomy, but V has a nomenclature collision",
+        "### 2.4 AIA — known multi-view / IFC neighborhood; governance composition remains held",
+        "### 2.5 PRCS-A — components become ordinary; exact composition remains held",
+        "### 2.6 Holonomy Loom — most governance machinery has ordinary homes",
+        "### 2.7 Safe Harbor / Right of Resignation — withdrawal is old; post-exit utility is the residue",
+        "## 3. Sieve summary",
+        "## 4. Highest-information next attacks",
+        "## 5. Branch posture"
+      ],
+      "state_lines": [
+        "**State:** SOURCE-BOUND TAXONOMY / AGGRESSIVE NOVELTY DEFLATION / NO SCIENTIFIC PROMOTION  "
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-11-WENDBINE-TD613-BOUNDED-ASSAY-V0_1.md",
+      "git_blob": "6e15ffc2c671f6b2ea345abb5cc1481ddcefd602",
+      "sha256": "852a3d832dc81e58cea8409127b3001d52257b359d173bcf6a021a8168926848",
+      "bytes": 20281,
+      "headings": [
+        "# Wendbine → TD613 bounded nomenclature/operator assay v0.1",
+        "## 1. Source and custody wall",
+        "## 2. First: the held-out reconstruction assay",
+        "### 2.1 Dependency-induced observability loss",
+        "### 2.2 Dependency-induced state-estimation error",
+        "### 2.3 Causal reconstruction across third parties",
+        "### 2.4 Dependency boundaries and the operational digital twin",
+        "### 2.5 EchoCore correction",
+        "## 3. Reconstruction-control result",
+        "## 4. Nomenclature/operator crosswalk",
+        "### 4.1 `NEITHER` — dependency graph",
+        "### 4.2 `BETTER_NAME` — information-flow control / noninterference",
+        "### 4.3 `BOTH` — partial observability and state estimation",
+        "### 4.4 `BOTH` — source provenance versus path provenance",
+        "### 4.5 `BOTH` — typed trust, delegation, and revocation",
+        "### 4.6 `BOTH` — authoritative versus replicated state",
+        "### 4.7 `BOTH` — data plane versus control plane",
+        "### 4.8 `BOTH` — system boundary versus observation boundary",
+        "### 4.9 `BETTER_NAME` — multiplex identity / entity resolution",
+        "### 4.10 `BETTER_NAME` — causal reconstruction / attribution",
+        "### 4.11 `BETTER_NAME` — operational digital twin",
+        "### 4.12 `BETTER_OPERATOR` — robustness versus recovery",
+        "### 4.13 `NEITHER` for now — EchoCore nonlinear cross-effects",
+        "### 4.14 `REJECTED` as nomenclature — Wendbine-local component names",
+        "## 5. Aggregate result",
+        "## 6. What remains stubbornly TD613 after the ordinary names arrive",
+        "### PRCS-A composition",
+        "### FADT",
+        "### V/C/P/L as a four-coordinate calculus",
+        "### AIA receiver-indexed non-equivalence",
+        "### Western Horizon exteriority",
+        "### Holonomy Loom composition",
+        "### Safe Harbor / Right of Resignation",
+        "## 7. The answer after demystification",
+        "## 8. Why the full foreign-donor chamber remains HELD",
+        "## 9. Final classification"
+      ],
+      "state_lines": [
+        "**State:** ADJUDICATED / SOURCE-BOUND / HELD CONTROLS EXPLICIT  "
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-13-PUBLIC-DELTA-SYNC-AND-AIA-PRESSURE.md",
+      "git_blob": "59cb1e65f910c420cf77c4708df6cb82abf1b0fd",
+      "sha256": "0c5adc9f695b4a47dd40d41cd89c82e48f075a8b993d7378ae8e4f4d00f0f47c",
+      "bytes": 4196,
+      "headings": [
+        "# Wendbine public delta sync + portable AIA pressure pass",
+        "## Fresh intake",
+        "## New pressure on portable AIA",
+        "### 1. Comparative claims need an explicit evaluation scope",
+        "### 2. Failure should remain a study object before it becomes attribution",
+        "### 3. Correlation must not become a truth claim",
+        "### 4. Sketchy edges belong in provenance review, not silent admission",
+        "## Proposed #1133 delta",
+        "## Claim ceiling"
+      ],
+      "state_lines": [
+        "**State:** SOURCE-BOUND PUBLIC DELTA / NOT EXHAUSTIVE CENSUS / NO DONOR AUTHORITY"
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-15-PUBLIC-HYDRATION-AND-STICKER-TAXONOMY-SYNC.md",
+      "git_blob": "5d49acc40a2fc9e24e678f08674b79c1482a1332",
+      "sha256": "fb2c3f4c83ec936c34383f06ac2d89a49cbc4e325accf5d74ca51b967dd4f440",
+      "bytes": 2451,
+      "headings": [
+        "# Wendbine public hydration + sticker taxonomy sync — 2026-09-15",
+        "## Scope",
+        "## Sticker-label hydration",
+        "## Repair-route hydration",
+        "## Claim ceiling"
+      ],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/2026-09-16-PUBLIC-REFRESH-CURRENT-BURST-HOLD.md",
+      "git_blob": "cac34fc76000a75427d26081dd6bb979cfd46377",
+      "sha256": "a8b06999dba4c5156fb170a773941d22cfebf084404e891298d7702d5606ae7e",
+      "bytes": 2935,
+      "headings": [
+        "# Wendbine public production sync — Sept 16 current-burst HOLD",
+        "## Production route",
+        "## Fresh acquisition result",
+        "## Lawful stop",
+        "## Existing corpus remains intact",
+        "## Next admissible event",
+        "## Claim ceiling"
+      ],
+      "state_lines": [
+        "**State:** FRESH PUBLIC ACQUISITION ATTEMPTED / CURRENT BURST UNBOUND / NO CORPUS PROMOTION"
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/phase2/version-observations.jsonl",
+      "git_blob": "d5d9f47b312b91936875aa552964b45ebaddfc3b",
+      "sha256": "fad9f8a6c4e8d6c32fe8b62df89c9ad6d674c573d17f7f36cbef38f6a3e3f1b2",
+      "bytes": 3589706,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "05-OPERATIONS/relations/typed-edges.jsonl",
+      "git_blob": "d13d20f0f5b3b99865aefe9f1bc402158aa3e2e3",
+      "sha256": "d0dc40bb42d2a501fdd560cf03607e428149be5554a65a8e90833a4c0e0d9f6a",
+      "bytes": 4055315,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "06-INSTRUMENTS/HELD_OUT_RECONSTRUCTION_PROTOCOL_V0_1.md",
+      "git_blob": "4ba1be413c75362c2eb9a1f468b3e51035b1a476",
+      "sha256": "c0d98170f0d369c9f7cae87bfa73c7f76079c57fb24389b9d4ed1c71971554c2",
+      "bytes": 1769,
+      "headings": [
+        "# Held-Out Public Reconstruction Protocol v0.1",
+        "## Question",
+        "## Target classes",
+        "## Controls",
+        "## Scoring dimensions",
+        "## Success ceiling"
+      ],
+      "state_lines": [
+        "**State:** PREREGISTERED / NOT YET ADJUDICATED"
+      ],
+      "automatic_resumption": false
+    },
+    {
+      "path": "06-INSTRUMENTS/WENDBINE_PUBLIC_CORPUS_COMPILER_V0_1.md",
+      "git_blob": "b4117f267f2a1a3e744b2516ae95a1a688a56c83",
+      "sha256": "c315585a65130bbc75f2790796edc390cd397fd5d425d62e4a731d835f3b64d9",
+      "bytes": 2847,
+      "headings": [
+        "# Wendbine Public Corpus Compiler v0.1",
+        "## Research question",
+        "## Inputs",
+        "## Output graph families",
+        "## Evidence classes",
+        "## Determinism",
+        "## Missingness",
+        "## Conventional nomenclature membrane"
+      ],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "06-INSTRUMENTS/WENDBINE_QUERY_RECIPES_V0_1.md",
+      "git_blob": "fb4ded574eae323e29f92afb2aa90b8b955419a5",
+      "sha256": "1e7da6af1aa122fbb7be466e5cdbbd23c84eceebf4f76048dd97a21105f5c4ea",
+      "bytes": 3402,
+      "headings": [
+        "# Wendbine Atelier query recipes v0.1",
+        "## Commands",
+        "### Ordinary word / phrase search",
+        "### Concept-semantic search",
+        "### Chronology",
+        "### Resolve a stable record ID",
+        "## Human-facing actor aliases",
+        "## Required membranes",
+        "## September 16 recovery rule"
+      ],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "06-INSTRUMENTS/WENDBINE_SYNC_CAPTURE_CONTRACT_V0_1.md",
+      "git_blob": "0530955e087b39096fc647d69a82346fcefc1ae0",
+      "sha256": "9adbc79a11843bbfe2616b93e1deeaba5272789a107d126061ea60522fed89b0",
+      "bytes": 2805,
+      "headings": [
+        "# Wendbine public-sync capture contract v0.1",
+        "## Reconciliation law",
+        "## Minimum durable observation",
+        "## Pagination",
+        "## Searchability",
+        "## Forbidden collapse",
+        "## September 16 scar"
+      ],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "06-INSTRUMENTS/WENDBINE_VERBATIM_ORIGINALS_ACQUISITION_V0_1.md",
+      "git_blob": "c8656eb02ccd971bf8d16fd13179bf05bf144465",
+      "sha256": "06d4362ce4753a182b45599c34c2d106ffb5c8b59a24997a9362faba135029a4",
+      "bytes": 13412,
+      "headings": [
+        "# Wendbine verbatim originals acquisition v0.1",
+        "## The gap",
+        "## Acquisition / rights",
+        "## Executable P0 rescue, in priority order",
+        "## Route D — public archive ID lookup, not a stale-index guess",
+        "## Completeness gate before topological reconstruction"
+      ],
+      "state_lines": [],
+      "automatic_resumption": false
+    },
+    {
+      "path": "ATELIER_PROFILE.json",
+      "git_blob": "6915fb34d68b7e7e0a04c499e2f5b2df8e1971a5",
+      "sha256": "e5c1f79bd7258e78f7bf14f4d7406cb343b30d796f3c0a553809fa1c8d3d205a",
+      "bytes": 10364,
+      "headings": [],
+      "state_lines": [],
+      "automatic_resumption": false
+    }
+  ],
+  "historical_holds": {
+    "S5_CONVERGENCE_DIVERGENCE_LINEAGE": "HELD_UNTIL_INTERNAL_PUBLIC_RECONSTRUCTABILITY_ASSAY",
+    "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION": "HELD_UNTIL_CONVENTIONAL_NOMENCLATURE_CROSSWALK"
+  },
+  "common_method_comparator": {
+    "pr": 1118,
+    "head": "3021cfbf94e33ad2935367056e4a33b01f43daad",
+    "merged": false,
+    "meaning": "Documentary shared evidence/authority interface; physical homogenization forbidden"
+  },
+  "unrecoverable_or_unexecuted_state": [
+    "Private source text and original archive bytes",
+    "Genuine restored database and exact historical runtime",
+    "Unrecorded held-out reasoning/scoring runtime",
+    "Unrun C4 unrelated-post decoy",
+    "Unsaved annotations, external literature reevaluation and private group material"
+  ],
+  "disposition": "PUBLIC_ORIGINAL_NATIVE_METHODS_REPRODUCED_WITH_LIMITATIONS; PRIVATE_EXECUTION_AND_RECIPROCAL_INHERITANCE_UNESTABLISHED",
+  "receiver_admission": "UNEXECUTED",
+  "protected_flights": "HELD",
+  "human_scientific_closure": "RESERVED",
+  "original_bytes_unchanged": true
+}

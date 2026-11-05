@@ -1,0 +1,18 @@
+[
+  ".github/workflows/td613-wendbine-original-sourcebound.yml",
+  "docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION_MATRICES.json",
+  "docs/research/2026-11-04/THREE_ATELIER_NATIVE_SUCCESSION_CHECKPOINT.md",
+  "docs/research/2026-11-04/wendbine-native/CHANGED_FILES.json",
+  "docs/research/2026-11-04/wendbine-native/PREDECESSOR_AND_REPAIR_PINS.json",
+  "docs/research/2026-11-04/wendbine-native/PRE_REPAIR_DATE_CONTROLS.txt",
+  "docs/research/2026-11-04/wendbine-native/WENDBINE_NATIVE_INHERITANCE_AND_CONTINUITY.md",
+  "docs/research/2026-11-04/wendbine-native/WENDBINE_ORIGINAL_QUALIFICATION.json",
+  "scripts/qualify-wendbine-native-operations-v1.mjs",
+  "scripts/qualify-wendbine-original-sourcebound-v1.py",
+  "scripts/wendbine-live-research-index-v1.py",
+  "scripts/wendbine-native-compiler-contract-v1.json",
+  "scripts/wendbine-native-method-adapter-v1.mjs",
+  "scripts/wendbine-ordering-sensitivity-v1.py",
+  "tests/test_wendbine_native_qualification_v1.py",
+  "tests/wendbine-native-contract-v1.test.mjs"
+]
