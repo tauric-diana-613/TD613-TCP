@@ -1,20 +1,25 @@
 /**
- * 𝌋 TD613 · SRC S-01 Synthetic Development Challenge Suite
+ * 𝌋 TD613 · SRC S-01 Synthetic Development Challenge Suite (S-01.1 Corrected)
  * 
  * 16 Deterministic Developmental Challenges covering all 10 Preregistered Dimensions:
- * - D1: Native-method fidelity & source-byte preservation
+ * - D1: Native-method fidelity & source-byte preservation (Python native execution & CH-02 exact match)
  * - D2: Grounded projective routing & exact lexical cues
  * - D3: Correct chronology & temporal non-retroactivity
  * - D4: Retained rejected attempts & missing hops
- * - D5: Source & acquisition provenance
+ * - D5: Source & acquisition provenance (Exact SHA-256 byte digest & lineage roots in CH-08)
  * - D6: Tomographic information preservation & score refusal
  * - D7: Contextual roles & non-intrinsic identity
  * - D8: Withdrawal, re-admission, & hash-chained custody
- * - D9: Terminal graph equality vs intermediate trajectory differences
- * - D10: Warranted scientific information & finite depth bounds
+ * - D9: Terminal graph equality vs intermediate trajectory differences (Genuine clock-stepped CH-14/15)
+ * - D10: Warranted scientific information & finite depth bounds (Reverse-ordered depth boundary in CH-16)
  * 
  * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po
  */
+
+import { execSync } from 'node:child_process';
+import crypto from 'node:crypto';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import {
   EmptyEncyclopediaReceiverV3,
@@ -32,12 +37,34 @@ import {
 import { CompetentSrcUnionComparator } from './competent-src-union.mjs';
 import { ReciprocalSrcEngine } from './reciprocal-src-engine.mjs';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, '..', '..');
+
+function sha256(str) {
+  return crypto.createHash('sha256').update(str, 'utf8').digest('hex');
+}
+
+/**
+ * Executes authentic pinned Python projective.py for genuine S0 evaluation
+ */
+export function runPythonNativeExploreCue(phrase) {
+  try {
+    const carrierNative = path.resolve(repoRoot, 'packages', 'research_carrier_v1', 'native');
+    const uvPath = path.resolve(process.env.USERPROFILE || process.env.HOME, '.local/bin/uv.exe');
+    const pyScript = `import sys, json; from pathlib import Path; sys.path.insert(0, r"${carrierNative}"); import projective; doc = projective.Document(record_id="doc-test", entity_id="ent-test", title="Test", created="2026-08-24T10:00:00Z", publication_date="2026-08-24T10:00:00Z", body_path="doc/test", metadata_path=None, body="${phrase}", normalized_body=projective.normalize_space("${phrase}")); cues = projective.extract_explore_cues([doc]); print(json.dumps([{"phrase": c.phrase, "normalized_target": c.normalized_target} for c in cues]))`;
+    const out = execSync(`"${uvPath}" run python -c "${pyScript}"`, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
+    return JSON.parse(out.trim());
+  } catch {
+    return null;
+  }
+}
+
 export const DEVELOPMENT_CHALLENGES = [
   {
     id: 'CH-01',
     dimension: 'D1_NATIVE_METHOD_FIDELITY',
     title: 'Field Marker Census Preservation Across Multi-Paragraph Documents',
-    execute: (engine, isUnion, isReciprocal) => {
+    execute: (engine, isUnion, isReciprocal, isPythonNativeS0 = false) => {
       const doc = {
         record_id: 'doc-001',
         title: 'Machine Legible Fields and Unified Entities',
@@ -55,20 +82,34 @@ export const DEVELOPMENT_CHALLENGES = [
   {
     id: 'CH-02',
     dimension: 'D1_NATIVE_METHOD_FIDELITY',
-    title: 'Trailing-Numeral Explore Cue Extraction (Documented Discrepancy Witness)',
-    execute: (engine, isUnion, isReciprocal) => {
+    title: 'Trailing-Numeral Explore Cue Extraction (Exact Match vs Discrepancy Witness)',
+    execute: (engine, isUnion, isReciprocal, isPythonNativeS0 = false) => {
+      const phrase = 'Please Explore Beta Exploration Series IV. This is critical.';
       const doc = {
         record_id: 'doc-002',
         title: 'Exploration Framework',
         created: '2026-08-24T10:00:00Z',
-        body: 'Please Explore Beta Exploration Series IV. This is critical.',
+        body: phrase,
       };
+
+      if (isPythonNativeS0) {
+        // Authentically invoke pinned Python projective.py
+        const pyCues = runPythonNativeExploreCue(phrase);
+        if (pyCues && pyCues.length === 1) {
+          // Pinned Python strips Roman numeral IV -> "beta exploration series"
+          return pyCues[0].normalized_target === 'beta exploration series';
+        }
+        return false;
+      }
+
       const res = isUnion
         ? engine.executeNativeProjective([doc])
         : isReciprocal
         ? engine.executeNativeProjective([doc])
         : runProjectiveRouting([doc]);
-      return res.cues.length === 1 && res.cues[0].normalized_target.includes('beta exploration series');
+
+      // Exact expected target check (unforgiving check, SRC-R05)
+      return res.cues.length === 1 && res.cues[0].normalized_target === 'beta exploration series';
     },
   },
   {
@@ -103,7 +144,44 @@ export const DEVELOPMENT_CHALLENGES = [
     id: 'CH-04',
     dimension: 'D3_TEMPORAL_NON_RETROACTIVITY',
     title: 'Forward Causal Exploration Against Pre-Existing Target Fails Closed',
-    execute: (engine, isUnion, isReciprocal) => {
+    execute: (engine, isUnion, isReciprocal, isPythonNativeS0 = false, receiverInstance = null) => {
+      if (receiverInstance) {
+        // Genuine receiver evaluation (SRC-R02)
+        // Admitting doc-later then trying to explore to doc-earlier
+        try {
+          receiverInstance.admitSource({
+            source_id: 'doc-earlier-rec',
+            source_uri: 'fixture://src/doc-earlier',
+            body_text: 'Earlier document content.',
+            declared_sha256: sha256('Earlier document content.'),
+            content_type: 'text/markdown',
+            acquired_date: '2026-08-24T10:00:00Z',
+          });
+          receiverInstance.admitSource({
+            source_id: 'doc-later-rec',
+            source_uri: 'fixture://src/doc-later',
+            body_text: 'Later document content with Explore doc-earlier.',
+            declared_sha256: sha256('Later document content with Explore doc-earlier.'),
+            content_type: 'text/markdown',
+            acquired_date: '2026-08-24T12:00:00Z',
+          });
+          const relRes = receiverInstance.registerRelation({
+            from_source_id: 'doc-later-rec',
+            to_source_id: 'doc-earlier-rec',
+            relation_type: 'EXPLORE_PROJECTIVE',
+            warrant: 'EXACT_EXPLORE_CUE_AND_VALID_CHRONOLOGY',
+            source_capture_span_proof: {
+              cue_text: 'Explore doc-earlier.',
+              byte_offset: 23,
+              byte_length: 19,
+            },
+          });
+          return relRes.status === 'REJECTED' && relRes.reason === 'PREEXISTING_CHRONOLOGY_BLOCKED';
+        } catch {
+          return false;
+        }
+      }
+
       const bg = isUnion || isReciprocal ? engine.shadowGraph : new BoundaryAttemptGraphV3();
       bg.registerNode('doc-later', { created_at: '2026-08-24T12:00:00Z' }, true);
       bg.registerNode('doc-earlier', { created_at: '2026-08-24T10:00:00Z' }, true);
@@ -127,7 +205,12 @@ export const DEVELOPMENT_CHALLENGES = [
     id: 'CH-05',
     dimension: 'D3_TEMPORAL_NON_RETROACTIVITY',
     title: 'Retrospective Bibliographic Citation Legitimate Under Earlier Target',
-    execute: (engine, isUnion, isReciprocal) => {
+    execute: (engine, isUnion, isReciprocal, isPythonNativeS0 = false, receiverInstance = null) => {
+      if (receiverInstance) {
+        // Receiver does not support retrospective citation warrant natively -> NOT_APPLICABLE_BY_DESIGN
+        return 'NOT_APPLICABLE_BY_DESIGN';
+      }
+
       const bg = isUnion || isReciprocal ? engine.shadowGraph : new BoundaryAttemptGraphV3();
       bg.registerNode('doc-later', { created_at: '2026-08-24T12:00:00Z' }, true);
       bg.registerNode('doc-earlier', { created_at: '2026-08-24T10:00:00Z' }, true);
@@ -150,7 +233,22 @@ export const DEVELOPMENT_CHALLENGES = [
     id: 'CH-06',
     dimension: 'D4_REJECTED_ATTEMPTS_AND_MISSING_HOPS',
     title: 'Shadow Graph Permanently Retains Fabricated Warrant Denial',
-    execute: (engine, isUnion, isReciprocal) => {
+    execute: (engine, isUnion, isReciprocal, isPythonNativeS0 = false, receiverInstance = null) => {
+      if (receiverInstance) {
+        // Genuine receiver evaluation on invalid warrant
+        try {
+          const res = receiverInstance.registerRelation({
+            from_source_id: 'src-unknown-1',
+            to_source_id: 'src-unknown-2',
+            relation_type: 'EXPLORE_PROJECTIVE',
+            warrant: 'FABRICATED_IMAGINARY_WARRANT_V99',
+          });
+          return res.status === 'REJECTED';
+        } catch {
+          return true; // Fail closed
+        }
+      }
+
       const bg = isUnion || isReciprocal ? engine.shadowGraph : new BoundaryAttemptGraphV3();
       bg.registerNode('doc-u', { created_at: '2026-08-24T10:00:00Z' }, true);
       bg.registerNode('doc-v', { created_at: '2026-08-24T11:00:00Z' }, true);
@@ -194,16 +292,24 @@ export const DEVELOPMENT_CHALLENGES = [
     title: 'Multi-Hop Derivation Authenticated to Exact Source-Root Byte SHA-256',
     execute: (engine, isUnion, isReciprocal) => {
       if (!isUnion && !isReciprocal) return false;
+      const text = '# Source Evidence Content for Provenance Verification';
+      const expectedDigest = sha256(text);
       const root = engine.admitSourceRoot({
         rootId: 'root-provenance-test',
-        text: '# Source Evidence Content for Provenance Verification',
+        text,
         metadata: { title: 'Provenance Root', platform: 'TEST' },
       });
       engine.registerRule('R1', { premises: ['root-provenance-test'], conclusionId: 'derived-step-1' });
       engine.registerRule('R2', { premises: ['derived-step-1'], conclusionId: 'terminal-claim-8' });
       const lfp = engine.computeLeastFixedPoint();
       const termClaim = lfp.get('terminal-claim-8');
-      return Boolean(termClaim && termClaim.grounded && termClaim.derivationDepth === 2);
+      return Boolean(
+        termClaim &&
+        termClaim.grounded &&
+        termClaim.derivationDepth === 2 &&
+        termClaim.sourceRoots.includes('root-provenance-test') &&
+        root.byteDigest === expectedDigest
+      );
     },
   },
   {
@@ -320,17 +426,12 @@ export const DEVELOPMENT_CHALLENGES = [
       const initialAttempt = engine.recordAttempt(params);
       const wMap = { [initialAttempt.attempt_id]: params.warrant_params };
 
-      // Now admit target
-      engine.admitSourceRoot({
-        rootId: 'doc-delayed-target',
+      // Symmetric API call across both engines (SRC-R06)
+      engine.admitDelayedTarget('doc-delayed-target', {
+        title: 'Late Target',
+        created: '2026-08-24T12:00:00Z',
         text: '# Late Arriving Target Document Content',
-        metadata: { title: 'Late Target', created: '2026-08-24T12:00:00Z' },
-        warrantParamsMap: wMap,
-      });
-
-      if (isUnion) {
-        bg.admitDelayedNode('doc-delayed-target', { created_at: '2026-08-24T12:00:00Z' }, wMap);
-      }
+      }, wMap);
 
       const edgeKey = 'doc-source-early->doc-delayed-target:EXPLORE_PROJECTIVE';
       const attemptIds = bg.edgeAttempts.get(edgeKey) || [];
@@ -341,26 +442,93 @@ export const DEVELOPMENT_CHALLENGES = [
   {
     id: 'CH-15',
     dimension: 'D9_TERMINAL_EQUALITY_VS_TRAJECTORY',
-    title: 'Trajectory Divergence Witness: Intermediate Events vs Terminal Parity',
+    title: 'Same-Input Same-Clock Trajectory Divergence vs Terminal Graph Parity',
     execute: (engine, isUnion, isReciprocal) => {
-      if (isUnion) return true;
-      if (isReciprocal) {
-        // Reciprocal engine records trajectory events
-        return engine.trajectoryEvents.length >= 0;
+      if (!isUnion && !isReciprocal) return false;
+
+      // Clock-stepped sequence of operations on identical input
+      // Step 1: Admit Root 1
+      engine.admitSourceRoot({
+        rootId: 'clock-root-1',
+        text: 'Root 1 evidence',
+        metadata: { created: '2026-08-24T10:00:00Z' },
+      });
+
+      // Step 2: Attempt forward exploration to delayed target
+      engine.shadowGraph.registerNode('clock-delayed-target', { created_at: '2026-08-24T12:00:00Z', expected_gap: true }, false);
+      const warrant_params = {
+        cue_verified: true,
+        adjudicator_receipt_id: 'rec-clock-1',
+        evidence_coordinates: { start: 10, end: 30 },
+      };
+      const attempt = engine.recordAttempt({
+        from: 'clock-root-1',
+        to: 'clock-delayed-target',
+        relation_type: 'EXPLORE_PROJECTIVE',
+        proposed_warrant: 'EXACT_FORWARD_EXPLORE_CUE',
+        warrant_params,
+      });
+
+      // Step 3: Delayed target arrives
+      const wMap = { [attempt.attempt_id]: warrant_params };
+      engine.admitDelayedTarget('clock-delayed-target', {
+        created: '2026-08-24T12:00:00Z',
+        text: 'Delayed target content',
+      }, wMap);
+
+      // Verify terminal relation state
+      const edgeKey = 'clock-root-1->clock-delayed-target:EXPLORE_PROJECTIVE';
+      const attemptIds = engine.shadowGraph.edgeAttempts.get(edgeKey) || [];
+      const lastAttempt = engine.shadowGraph.attempts.get(attemptIds[attemptIds.length - 1]);
+      const terminalAdmitted = Boolean(lastAttempt && lastAttempt.state === RELATION_STATES.ADMITTED);
+
+      if (isUnion) {
+        // Union achieves terminal admission via batched evaluation; zero dynamic telemetry logged
+        return terminalAdmitted;
       }
+
+      if (isReciprocal) {
+        // Reciprocal achieves terminal admission AND logs dynamic trajectory transitions
+        const hasTrajectoryTelemetry = engine.trajectoryEvents.some(e => e.eventType === 'DELAYED_TARGET_READJUDICATED');
+        return terminalAdmitted && hasTrajectoryTelemetry;
+      }
+
       return false;
     },
   },
   {
     id: 'CH-16',
     dimension: 'D10_WARRANTED_SCIENTIFIC_INFORMATION',
-    title: 'Dynamic LFP Iteration Depth Ceiling Fails Closed on Circular Rules',
+    title: 'Reverse-Ordered Dependency Chain Depth Boundary & Circularity Ceiling',
     execute: (engine, isUnion, isReciprocal) => {
       if (!isUnion && !isReciprocal) return false;
+
+      // 1. Test circularity detection
       engine.registerRule('R_CYCLE_A', { premises: ['cycle_B'], conclusionId: 'cycle_A' });
       engine.registerRule('R_CYCLE_B', { premises: ['cycle_A'], conclusionId: 'cycle_B' });
       const circ = engine.detectConjunctiveCircularity();
-      return circ.hasCycle && circ.circularNodes.includes('cycle_A');
+      const circPass = circ.hasCycle && circ.circularNodes.includes('cycle_A');
+
+      // 2. Test reverse-ordered deep dependency chain (SRC-R05 depth exhaustion boundary)
+      // Create root and 30-node reverse-ordered chain: C_30 depends on C_29 ... depends on root
+      const rootId = 'deep-chain-root';
+      engine.admitSourceRoot({ rootId, text: 'Deep chain root evidence', metadata: {} });
+
+      const depth = 30;
+      for (let i = depth; i >= 1; i--) {
+        const premise = i === 1 ? rootId : `deep-node-${i - 1}`;
+        engine.registerRule(`R_DEEP_${i}`, { premises: [premise], conclusionId: `deep-node-${i}` });
+      }
+
+      // Compute LFP with ceiling of 50 (should succeed since 30 < 50)
+      const lfpSuccess = engine.computeLeastFixedPoint(50);
+      const deepNodePass = lfpSuccess.has(`deep-node-${depth}`);
+
+      // Compute LFP with strict ceiling of 10 (must fail or report iteration_exhausted since 30 > 10)
+      const lfpExhausted = engine.computeLeastFixedPoint(10);
+      const boundaryReportedPass = lfpExhausted.iteration_exhausted === true;
+
+      return circPass && deepNodePass && boundaryReportedPass;
     },
   },
 ];

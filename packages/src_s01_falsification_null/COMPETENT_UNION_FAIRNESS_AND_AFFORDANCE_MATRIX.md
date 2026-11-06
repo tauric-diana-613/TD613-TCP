@@ -37,16 +37,29 @@ Every arm is audited against identical operational affordances to prevent asymme
 | Affordance / Capability | S0 (Native Alone) | S1 (Receiver Alone) | S2 (Competent Union) | S3 (Reciprocal Candidate) | Fair Equality Enforcement |
 |---|:---:|:---:|:---:|:---:|---|
 | **Admissible Source Bytes** | Authenticated | Authenticated | Authenticated | Authenticated | **IDENTICAL** byte arrays passed to all arms. |
-| **Lexical Candidate Generators** | Native Regex | None | Native Regex | Native Regex | S2 and S3 use identical `runProjectiveRouting()`. |
+| **Lexical Candidate Generators** | Native Python / Regex | None | Native Regex | Native Regex | S2 and S3 use identical `runProjectiveRouting()`. |
 | **Relational Database Affordance** | None | SQLite Receiver v3 | SQLite Receiver v3 | SQLite Receiver v3 | S2 and S3 use identical relational backing tables. |
-| **Tomographic Scope Analysis** | Native Phase2 | None | Native Phase2 | Native Phase2 | S2 and S3 use identical `runPhase2Tomography()`. |
-| **Compiler Contextual Roles** | Native Phase2 | None | Native Phase2 | Native Phase2 | S2 and S3 use identical `runPhase2ContextRoles()`. |
+| **Tomographic Scope Analysis** | Native Python Phase2 | None | Native Phase2 | Native Phase2 | S2 and S3 use identical `runPhase2Tomography()`. |
+| **Compiler Contextual Roles** | Native Python Phase2 | None | Native Phase2 | Native Phase2 | S2 and S3 use identical `runPhase2ContextRoles()`. |
 | **Least-Fixed-Point (LFP) Engine** | None | None | Monotone LFP | Monotone LFP | S2 and S3 use identical graph closure engine. |
 | **Shadow Graph Attempt History** | None | None | BoundaryAttemptGraph v3 | BoundaryAttemptGraph v3 | S2 and S3 use identical `BoundaryAttemptGraphV3`. |
+| **Two-Phase Delayed Admission API** | None | None | `admitDelayedTarget()` | `admitDelayedTarget()` | Identical symmetric API across S2 and S3. |
+| **Canonical Terminal Graph Extractor** | None | None | Dynamic `exportCanonicalTerminalGraph()` | Dynamic `exportCanonicalTerminalGraph()` | Dynamically computes node, edge, root, rejection deltas. |
 | **Temporal Non-Retroactivity** | Lexical Parse | Span Bounds | Strict $t_v \ge t_u$ | Strict $t_v \ge t_u$ | S2 and S3 enforce identical chronological rules. |
 | **Withdrawal / Tombstoning** | None | Raw Delete | Hash-Chained Tombstones | Hash-Chained Tombstones | S2 and S3 use identical SHA-256 chained ledgers. |
 | **Resource Budget (Ticks / Passes)** | N/A | N/A | Max 1000 Passes | Max 1000 Passes | S2 and S3 enforce identical dynamic ceilings. |
 | **Fail-Closed Error Handling** | SystemExit | ReceiverError | UnionError | ManifestError | Both fail-closed on ungrounded or circular inputs. |
+
+---
+
+### 3.1 Structural Baseline Separation (SRC-R02)
+
+To prevent strawmanning the single-receiver arms ($S_0$ and $S_1$), the measurement suite strictly distinguishes between:
+1. `NOT_APPLICABLE_BY_DESIGN`: The challenge tests a capability outside the architectural jurisdiction of that arm (e.g. S0 cannot execute SQLite queries; S1 cannot execute projective lexical routing). S0 has 9 N/A challenges; S1 has 14 N/A challenges.
+2. `EXECUTED_FAILED`: The challenge falls within the declared capability of the arm, but execution produced an error, invalid warrant, or divergence.
+3. `EXECUTED_PASSED`: The arm correctly executed the capability.
+
+This ensures baseline single-receiver scores are reported as rates over applicable challenges rather than artificially depressed totals.
 
 ---
 

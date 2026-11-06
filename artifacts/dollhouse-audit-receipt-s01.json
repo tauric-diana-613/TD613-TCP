@@ -1,19 +1,19 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793941964221-0c2d86b8",
-  "timestamp": "2026-11-06T05:12:44.222Z",
-  "source_revision": "4feed846e3279b84569334436b6df1bab3200b2f",
+  "invocation_id": "dollhouse-audit-1793992077152-b43f8fe7",
+  "timestamp": "2026-11-06T19:07:57.152Z",
+  "source_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "4feed846e3279b84569334436b6df1bab3200b2f",
+  "executing_checkout_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "4feed846e3279b84569334436b6df1bab3200b2f",
-    "audit_execution_revision": "4feed846e3279b84569334436b6df1bab3200b2f",
+    "executable_source_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
+    "audit_execution_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -36,7 +36,7 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "SRC_S01_NATIVE_RESEARCH_FALSIFICATION_AND_COMPETENT_NULL_AUDIT",
+  "task_scope": "SRC_S011_MEASUREMENT_REHABILITATION_AND_COMPETENT_NULL_AUDIT",
   "evidence_class": "SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/src_s01_falsification_null/SRC_METHOD_INVENTORY_AND_SOURCE_PINS.md",
@@ -56,81 +56,81 @@
       "reference": "packages/src_s01_falsification_null/SRC_METHOD_INVENTORY_AND_SOURCE_PINS.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "686696f76f4a9d656668fdf652005cbad3c284419816a71e7849182d848686af",
+      "byte_digest": "10e9fd031916db08e2ce61874c3d8464c5f89b48c0620866964d6537217ad657",
       "byte_digest_verified": true,
-      "sha256": "686696f76f4a9d656668fdf652005cbad3c284419816a71e7849182d848686af"
+      "sha256": "10e9fd031916db08e2ce61874c3d8464c5f89b48c0620866964d6537217ad657"
     },
     {
       "reference": "packages/src_s01_falsification_null/COMPETENT_UNION_FAIRNESS_AND_AFFORDANCE_MATRIX.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "edcf4e9c63450633a675ba973e12e1cdd8c682a00c0e47c4ec012a1f47b82132",
+      "byte_digest": "18d04bc9c64bd1cf5658161edf1465a99c3fdc452347f70884702c60be241556",
       "byte_digest_verified": true,
-      "sha256": "edcf4e9c63450633a675ba973e12e1cdd8c682a00c0e47c4ec012a1f47b82132"
+      "sha256": "18d04bc9c64bd1cf5658161edf1465a99c3fdc452347f70884702c60be241556"
     },
     {
       "reference": "packages/src_s01_falsification_null/PREREGISTRATION_SRC_S01.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "46d7d5e4f40d5c5f0ce748b6b77288012455a8de4a42546b8cdcd3057bde5bf8",
+      "byte_digest": "97bdccf5c477555227a8baeeae22d897d91dd66ebc56029ee318fef272c3de34",
       "byte_digest_verified": true,
-      "sha256": "46d7d5e4f40d5c5f0ce748b6b77288012455a8de4a42546b8cdcd3057bde5bf8"
+      "sha256": "97bdccf5c477555227a8baeeae22d897d91dd66ebc56029ee318fef272c3de34"
     },
     {
       "reference": "packages/src_s01_falsification_null/competent-src-union.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "7ab05c761b0e40c97049aa769bf8ae00c274bc989104ea4ecc6c0b14fe7e888a",
+      "byte_digest": "4426129f296c9f9d97c943f19653eaedfc47546c9ed8c309b2f1e600de30c8d8",
       "byte_digest_verified": true,
-      "sha256": "7ab05c761b0e40c97049aa769bf8ae00c274bc989104ea4ecc6c0b14fe7e888a"
+      "sha256": "4426129f296c9f9d97c943f19653eaedfc47546c9ed8c309b2f1e600de30c8d8"
     },
     {
       "reference": "packages/src_s01_falsification_null/reciprocal-src-engine.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e332dac879348f4ac9068936d067914d2c420e7a98608d1786d84459457c06fc",
+      "byte_digest": "11e16e0c9c02dd5d6935c2db52b64026d3cb63242e86bc527b0b60ebd2617030",
       "byte_digest_verified": true,
-      "sha256": "e332dac879348f4ac9068936d067914d2c420e7a98608d1786d84459457c06fc"
+      "sha256": "11e16e0c9c02dd5d6935c2db52b64026d3cb63242e86bc527b0b60ebd2617030"
     },
     {
       "reference": "packages/src_s01_falsification_null/synthetic-development-suite.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ba09628188ed294a767f5d3fca81bab336b3221573718b6a0ee5f149e3d0ba86",
+      "byte_digest": "55dcbba741d6d90329f2199020d3a917de07991fb47efe75606069463900faaf",
       "byte_digest_verified": true,
-      "sha256": "ba09628188ed294a767f5d3fca81bab336b3221573718b6a0ee5f149e3d0ba86"
+      "sha256": "55dcbba741d6d90329f2199020d3a917de07991fb47efe75606069463900faaf"
     },
     {
       "reference": "packages/src_s01_falsification_null/run-src-s01-development-pilot.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "3d9d84515a737493b2a3d4e4cd7b02eb5365644327e754ce34aa15bacab9f471",
+      "byte_digest": "c970d12434a86c1e4966fea9cce9ae3e3756e830256d8d674694346421632483",
       "byte_digest_verified": true,
-      "sha256": "3d9d84515a737493b2a3d4e4cd7b02eb5365644327e754ce34aa15bacab9f471"
+      "sha256": "c970d12434a86c1e4966fea9cce9ae3e3756e830256d8d674694346421632483"
     },
     {
       "reference": "packages/src_s01_falsification_null/src_s01_development_pilot_receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "9b81334f7d169ba5545e4c35a3817f88a038e4eb29caf3e88981f369fee3f1e3",
+      "byte_digest": "f2ae20ed36dd786beac5fe7d59b7ed6dced22428e639fe49c955a5b924b6b4ba",
       "byte_digest_verified": true,
-      "sha256": "9b81334f7d169ba5545e4c35a3817f88a038e4eb29caf3e88981f369fee3f1e3"
+      "sha256": "f2ae20ed36dd786beac5fe7d59b7ed6dced22428e639fe49c955a5b924b6b4ba"
     },
     {
       "reference": "packages/src_s01_falsification_null/ADVERSARIAL_NEGATIVE_RESULTS_REGISTER.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "3cad40659e25ee997e15e0702e8ea3064d4849d140fa51131fdc47acbdc1e478",
+      "byte_digest": "a025a82e95a538a822bf89065254511b5b75780450107fc02364ea0cf7c3430c",
       "byte_digest_verified": true,
-      "sha256": "3cad40659e25ee997e15e0702e8ea3064d4849d140fa51131fdc47acbdc1e478"
+      "sha256": "a025a82e95a538a822bf89065254511b5b75780450107fc02364ea0cf7c3430c"
     },
     {
       "reference": "packages/src_s01_falsification_null/INDEPENDENT_FALSIFICATION_HANDOFF.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "51c7d757569d38b2805293d98d96700a75e877add270197dc1fbf47d08efb012",
+      "byte_digest": "eb3cb243927cbf12818f7b3cf30952af625d7e17624e9e45845c59f6d3560bb0",
       "byte_digest_verified": true,
-      "sha256": "51c7d757569d38b2805293d98d96700a75e877add270197dc1fbf47d08efb012"
+      "sha256": "eb3cb243927cbf12818f7b3cf30952af625d7e17624e9e45845c59f6d3560bb0"
     },
     {
       "reference": "packages/src_s01_falsification_null/EXPERIMENT_B_CONSEQUENCE_MATRIX.md",
@@ -436,5 +436,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 661
+  "execution_duration_ms": 621
 }
