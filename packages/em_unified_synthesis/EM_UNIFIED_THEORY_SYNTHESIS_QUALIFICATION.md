@@ -1,6 +1,6 @@
-# 𝌋 TD613 · EM E-00.1 INDEPENDENT-FINDING REPAIR, SOURCE-WARRANT INTEGRITY & NON-PREDETERMINED SYNTHESIS QUALIFICATION REPORT
+# 𝌋 TD613 · EM E-00.1a FINAL COMPARATOR WIRING, SOURCE-ATTESTATION & ZIP CONTRACT RECONCILIATION REPORT
 
-**Commission Reference:** EM E-00.1  
+**Commission Reference:** EM E-00.1a  
 **Principal / Human Scientific Closure:** Tawanna C. Miller  
 **Operator Identity:** `tauric.diana.613`  
 **Heritage Custodianship:** Tauric Diana — Crimean heritage custodianship  
@@ -13,33 +13,29 @@
 
 ## I. Executive Summary & Lineage Foundations
 
-This qualification report records the comprehensive engineering repairs, empirical validations, and epistemic reconciliations completed under **Commission EM E-00.1**, responding to the findings of independent review PR #1710 (commit `d28eb2e4335e6a0447c471ae61039a9fd97ccac3`) and the sanitized successor repair specification (`research/em-e00-independent-20261106/E00_1_REPAIR_SPECIFICATION.md`).
+This qualification report records the implementation corrections, empirical validations, and epistemic reconciliations completed under **Commission EM E-00.1a**, responding directly to Emergence HQ's exact-head code review of candidate PR #1711 (Review `#5807992291`).
 
-### 1. Governed Predecessor Pins
-- **Frozen E-00 Predecessor:** PR #1709  
+### 1. Governed Predecessor Pins & Diagnostic Lineage
+- **Direct Predecessor Repair Candidate:** PR #1711  
+  - Exact HEAD: `f3dd8d54ba423409317aa239d9dd6bdb6da618ef`  
+  - Status: **FROZEN REPAIR CANDIDATE** (Basis of E-00.1a branch).
+- **Emergence HQ Exact-Head Diagnostic Review:**  
+  - Docket URL: `https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291`  
+  - Review ID: `5807992291`  
+  - Subject: Identified 4 wiring deficiencies (WIRE-01 to WIRE-04).
+- **Historical Frozen E-00 Predecessor:** PR #1709  
   - Exact HEAD: `7488e5fd2b4fc0b2f222e0214f21129bbe143a17`  
-  - Status: **FROZEN FOR INDEPENDENT REVIEW** (Zero retroactive modification).
-- **Frozen U-00 Predecessor:** PR #1708  
-  - Exact HEAD: `9c82f8b614bd66b3f2652cf115e5eb172c2c6170`  
-  - Tree SHA: `3539d319ab65457c70678b55303909c115bdbca1`  
-  - Status: **FROZEN FOR INDEPENDENT REVIEW**.
-- **Independent Scientific Review:** PR #1710  
+  - Status: **FROZEN ORIGINAL SUBJECT OF REPAIR**.
+- **Independent Scientific Evaluation:** PR #1710  
   - Exact HEAD: `d28eb2e4335e6a0447c471ae61039a9fd97ccac3`  
   - Review Docket: Issue comment `#6697090567`.
 - **Historical Em Research Estate:**  
   - PR #1684 checkpoint `30630575ade616a5a47e4066b30d2159c2bd32be` (`packages/dome_world_exact/fixtures/a15-r0/EMSTD613/`).
 
-### 2. Adoption of Actual Independent Review Findings
-The independent evaluation executed **94 cases** (58 concealed, 24 ZIP, 8 historical, 4 public), including 18 matched graph cases comparing the reciprocal candidate against an independently constructed competent strong union:
-- **Graph Target Decisions:** 30/30 correct graph decisions for both reciprocal synthesis and equal-affordance strong union.
-- **Unsupported Target Rejection:** 18/18 unsupported targets rejected by both systems.
-- **Measured Graph Fidelity:** 100% in both systems.
-- **False Graph Convergence:** 0 observed in both systems.
-- **Withdrawal Operations:** Equivalent observed counts across both systems.
-- **Epistemic Determination:** **BOUNDED TIE OBSERVED**.
-- **Scientific Reciprocal Surplus:** **UNESTABLISHED**.
-- **Historical Score Disposition:** The prior 65% versus 100% developer score is formally recognized as a historical authored fixture declaration, superseded by the empirical tie.
-- **Anti-Predetermined-Discovery Invariant:** In accordance with scientific integrity, the engine is explicitly engineered to permit ties, null outcomes, and unexpected divergences rather than being programmed to force a reciprocal victory.
+### 2. Distinction Between Independent Review and Candidate Test Suites
+A strict distinction is maintained between:
+- **Independent Evaluation Suite (PR #1710):** Executed **94 external/concealed cases** (58 concealed, 24 ZIP, 8 historical, 4 public) evaluating candidate behavior against historical fixtures, confirming a bounded tie on matched graph cases.
+- **Candidate Internal Matched Comparator Suite (E-00.1a WIRE-01):** Evaluates a shared canonical paired ledger (`CANONICAL_PAIRED_CASE_LEDGER`) of exactly **6 matched cases** across both Arm 3 (Competent Strong Union) and Arm 4 (Reciprocal Synthesis), ensuring strictly identical denominators ($6/6$), inputs, and evaluation criteria without hardcoded oracles.
 
 ---
 
@@ -156,9 +152,9 @@ Engine `packages/em_unified_synthesis/operator-zip-intake.mjs` was completely re
 
 ---
 
-## IX. Deliverable 9: Genuinely Executable Competent-Null Comparator (Task E001-F01)
+## IX. Deliverable 9: Genuinely Executable Competent-Null Comparator (Task E001-F01 & WIRE-01)
 
-`packages/em_unified_synthesis/competent-null-comparator.mjs` executes matched comparisons across 4 arms with all metrics derived from actual event traces:
+`packages/em_unified_synthesis/competent-null-comparator.mjs` executes matched comparisons across 4 arms with all metrics derived from actual event traces over a canonical shared ledger:
 
 ### 1. Evaluated Arms
 - **Arm 1 (Documentary Practice):** Read-only historical baseline without automated execution (`NOT_MEASURED` for automated metrics).
@@ -166,11 +162,20 @@ Engine `packages/em_unified_synthesis/operator-zip-intake.mjs` was completely re
 - **Arm 3 (Competent Non-Reciprocal Strong Union):** Standard graph reachability and transitive closure over union graph.
 - **Arm 4 (Reciprocal Unified Synthesis):** Reciprocal bridge with cryptographic span-proof warrants and LFP closure.
 
-### 2. Empirical Trace-Derived Differential Matrix
+### 2. WIRE-01 Canonical Paired Case Ledger
+Both Arm 3 and Arm 4 evaluate the exact same 6 paired cases (`CANONICAL_PAIRED_CASE_LEDGER`) with identical inputs, evaluation criteria, and denominators ($6/6$):
+1. **Case 1 (`case_1_hypervisor_supported`):** Directly supported hypervisor claim from admitted premise (`claim:priority_bypass`). Reachable in Arm 3; grounded in LFP in Arm 4. (Admissible: `true`).
+2. **Case 2 (`case_2_algedonic_supported`):** Directly supported algedonic recovery claim from admitted premise (`claim:algedonic_recovery`). Reachable in Arm 3; grounded in LFP in Arm 4. (Admissible: `true`).
+3. **Case 3 (`case_3_hypervisor_unsupported_rejection`):** Unsupported teleportation target disconnected from premise graph (`claim:unsupported_teleportation`). Unreachable in Arm 3; ungrounded in Arm 4. (Admissible: `false`).
+4. **Case 4 (`case_4_algedonic_unsupported_rejection`):** Unsupported perpetual motion target disconnected from premise graph (`claim:unsupported_perpetual_motion`). Unreachable in Arm 3; ungrounded in Arm 4. (Admissible: `false`).
+5. **Case 5 (`case_5_incommensurable_contradiction`):** Attempted unification across contradictory non-stationary vs deterministic axioms (`claim:incommensurable_bypass`). Unreachable in Arm 3; ungrounded in Arm 4 fail-closed. (Admissible: `false`).
+6. **Case 6 (`case_6_post_withdrawal_consequence`):** Target claim reachability and warrant grounding evaluated after upstream source withdrawal (`claim:priority_bypass`). Unreachable in Arm 3 post-withdrawal; ungrounded in Arm 4 post-withdrawal. (Admissible: `false`).
+
+### 3. Empirical Trace-Derived Differential Matrix
 | Evaluation Metric | Arm 1: Documentary | Arm 2: Isolated | Arm 3: Competent Union | Arm 4: Reciprocal Synthesis | Observed Determination |
 |---|---|---|---|---|---|
-| **Graph Target Decisions** | NOT_MEASURED | LOCAL_ONLY | 4/4 (100%) | 4/4 (100%) | **BOUNDED TIE (100%)** |
-| **Unsupported Targets Rejected** | NOT_MEASURED | LOCAL_ONLY | 2/2 (100%) | 2/2 (100%) | **BOUNDED TIE (100%)** |
+| **Graph Target Decisions** | NOT_MEASURED | LOCAL_ONLY | 6/6 (100%) | 6/6 (100%) | **BOUNDED TIE (100%)** |
+| **Unsupported Targets Rejected** | NOT_MEASURED | LOCAL_ONLY | 4/4 (100%) | 4/4 (100%) | **BOUNDED TIE (100%)** |
 | **False Graph Convergence** | 0 | 0 | 0 | 0 | **ZERO IN BOTH SYSTEMS** |
 | **Source Bytes Read** | 48,847 B | 48,847 B | 48,847 B | 48,847 B | **IDENTICAL INPUT BUDGET** |
 | **Withdrawal Operations** | NOT_MEASURED | 0 | 2 Ops | 2 Ops | **EQUIVALENT WITHDRAWAL** |
@@ -179,15 +184,19 @@ Engine `packages/em_unified_synthesis/operator-zip-intake.mjs` was completely re
 | **Semantic Entailment Quality** | NOT_MEASURED | NOT_MEASURED | NOT_MEASURED | **NOT_MEASURED** | **UNSUPPORTED DIMENSION** |
 | **Historical Authored Score** | 1.0 (Claimed) | 1.0 (Claimed) | 0.65 (Superseded) | 1.0 (Claimed) | **SUPERSEDED BY TIE** |
 
-*Conclusion:* On matched graph reachability and target decisions, both systems achieve 100% graph fidelity. Reciprocal synthesis demonstrates architectural value in fail-closed contradiction retention and non-retroactive tombstoning, but empirical scientific reciprocal surplus remains **UNESTABLISHED**.
+*Conclusion:* On matched graph reachability and target decisions across all 6 cases, both systems achieve 100% graph fidelity ($6/6$). Reciprocal synthesis demonstrates architectural value in fail-closed contradiction retention and non-retroactive tombstoning, but empirical scientific reciprocal surplus remains **UNESTABLISHED**.
 
 ---
 
 ## X. Verification Suite & Dollhouse Six-Specialist Audit
 
 ### 1. Test Suite Execution
-- **Comprehensive E-00.1 Suite (`test-em-unified-synthesis.mjs`):**  
-  **15 / 15 PASS** (2.1s duration, zero failures, zero skipped).
+- **Comprehensive E-00.1a Suite (`test-em-unified-synthesis.mjs`):**  
+  **18 / 18 PASS** (1.3s duration, zero failures, zero skipped).
+  - Tests 1–15: Corpus census, readback, bridge, synthesis engine, ZIP intake, and baseline comparator.
+  - Test 16 (WIRE-01): Paired case ledger regression, denominator parity ($6/6$), and dynamic trace evaluation.
+  - Test 17 (WIRE-02): Operator attestation provenance, quotation digest verification, and lawful discretization.
+  - Test 18 (WIRE-03): Adversarial ZIP header reconciliation, streaming descriptors, and atomic rollback.
 - **Qualification Runner (`run-em-unified-synthesis-qualification.mjs`):**  
   **Exit Code 0** (Receipt emitted: `em_unified_synthesis_receipt.json`).
 - **Historical Python Suite (`test_em_original_qualification_v1.py`):**  
@@ -200,7 +209,8 @@ Engine `packages/em_unified_synthesis/operator-zip-intake.mjs` was completely re
   **4 / 4 PASS** (0.4s duration).
 
 ### 2. Dollhouse Six-Specialist Audit
-- Bound to predecessor revision: `7488e5fd2b4fc0b2f222e0214f21129bbe143a17` (PR #1709 HEAD).
+- Bound to candidate revision: `f3dd8d54ba423409317aa239d9dd6bdb6da618ef` (PR #1711 HEAD).
+- Lineage citations: Historical E-00 PR #1709 (`7488e5fd2b4fc0b2f222e0214f21129bbe143a17`), Independent Review PR #1710 (`d28eb2e4335e6a0447c471ae61039a9fd97ccac3`), Diagnostic Review `#5807992291`.
 - Verification across `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, and `ORCHESTRATOR`.
 - Replication Status: `SYNTHETIC_OFFLINE_FIXTURE` (0 independent empirical credit; `SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
 - Release & Deployment Authority: Strictly **CLOSED (false)**.
@@ -209,9 +219,31 @@ Engine `packages/em_unified_synthesis/operator-zip-intake.mjs` was completely re
 
 ## XI. Stopping Boundary & Independent Reviewer Handoff
 
-1. **Candidate Engineering Frozen:** All code, fixtures, and qualification assets for Commission EM E-00.1 are frozen on branch `research/em-e00-1-independent-repair-20261106`.
+1. **Candidate Engineering Frozen:** All code, fixtures, and qualification assets for Commission EM E-00.1a are frozen on branch `research/em-e00-1a-comparator-wiring-20261106`.
 2. **Reviewer Separation Maintained:** The candidate author has not inspected or adapted code against concealed challenge fixtures.
 3. **Fresh Challenge Requirement:** The revised candidate requires a fresh independent challenge rather than evaluation against previously observed test worlds.
 4. **Human Scientific Closure Reserved:** Scientific interpretation and release authority remain strictly **RESERVED** for Tawanna C. Miller under `SAC[X6ZNK5NO51]`.
+
+---
+
+## XII. Prospective Research Steer Record: RGI-01 (Experiment B Preflight)
+
+**Proposal Reference:** `RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY`  
+**Date of Proposal:** November 6, 2026  
+**Status:** `PROPOSED_PROSPECTIVE_RECORD_ONLY`  
+**Experimental Activation:** `DEFERRED_UNTIL_EXPERIMENT_B_PREFLIGHT`  
+**Human Scientific Closure:** `RESERVED`  
+**Authority:** `SAC[X6ZNK5NO51]`  
+**Covenant:** Khona‌lit-po (*literal interior U+200C preserved*)  
+
+### Summary of Governed Proposition
+Experiment B should permit executing agents to discover that two or more existing research rules imply a previously unencoded relationship, and to propose a new rule, alteration, exception, or experimental suspension when that relationship produces a testable structural or relational-geometric consequence.
+Governed by Ash Keep's **Anti-Predetermined-Discovery Condition**:
+> An agent must be free to produce new rules, preserve existing rules, expose contradictions, discover failed compositions, or return no innovation without any outcome being predetermined as scientific success.
+
+- **Wolfram Multiway Formalization:** $S_t = (H_t, \mathcal{R}_t, \mathcal{A}_t, \mathcal{P}_t)$ with multiway evolution $\mathcal{M}(S_0, \mathcal{R}_0)$, causal dependency graphs, branchial relations, and operational geometric observables (e.g. cycle rank $\beta_1 = |E| - |V| + c$).
+- **Arm Parity Constraint:** Both `ARM_2A_MODULAR` and `ARM_2B_MATCHED_UNION` must receive equivalent permissions to propose and test rule transformations.
+- **Non-Retroactivity & Western Horizon:** Cryptographic digests and append-only traces support replay, not physical emergence. Golden Egg $E^\star = \{L, R, J, G, C\}$ remains governed under its original external-witness requirements.
+- **Current Posture:** Zero runtime implementation or activation in E-00.1a. Preserved as a prospective research steer for future preflight evaluation.
 
 *Khona‌lit-po ⟐ Sealed.*

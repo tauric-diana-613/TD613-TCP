@@ -172,20 +172,25 @@ export class OperatorZipIntakeEngine {
       const externalAttrs = buf.readUInt32LE(p + 38);
       const localOffset = buf.readUInt32LE(p + 42);
 
-      // 1. Encryption check (bit 0)
-      if ((flags & 0x01) !== 0) {
+      // 1. Encryption checks (bit 0 standard encryption, bit 6 strong encryption)
+      if ((flags & 0x01) !== 0 || (flags & 0x40) !== 0) {
         throw new ZipIntakeError('ENCRYPTED_ZIP_UNSUPPORTED', 'Encrypted archive members are not permitted.');
       }
 
-      // 2. Data descriptor without local match (bit 3)
+      // 2. Unsupported special flags check (bit 13: masked local headers)
+      if ((flags & 0x2000) !== 0) {
+        throw new ZipIntakeError('UNSUPPORTED_ZIP_FLAG', `Masked local headers (bit 13) are rejected fail-closed.`);
+      }
+
+      // 3. Data descriptor flag (bit 3)
       const hasDataDescriptor = (flags & 0x08) !== 0;
 
-      // 3. Compression method check: only 0 (Stored) or 8 (Deflate)
+      // 4. Compression method check: only 0 (Stored) or 8 (Deflate)
       if (compMethod !== 0 && compMethod !== 8) {
         throw new ZipIntakeError('UNSUPPORTED_COMPRESSION_METHOD', `Compression method ${compMethod} is not supported.`);
       }
 
-      // 4. External attributes: POSIX file mode check (bits 16-31)
+      // 5. External attributes: POSIX file mode check (bits 16-31)
       const posixMode = (externalAttrs >>> 16) & 0o170000;
       if (posixMode === 0o120000) {
         throw new ZipIntakeError('SYMLINK_REJECTED', 'Symbolic links are strictly prohibited in operator ZIP intake.');
@@ -194,7 +199,7 @@ export class OperatorZipIntakeEngine {
         throw new ZipIntakeError('UNSUPPORTED_SPECIAL_FILE', `Special POSIX file mode 0${posixMode.toString(8)} rejected.`);
       }
 
-      // 5. Decode filename with fatal UTF-8
+      // 6. Decode filename with fatal UTF-8
       if (p + 46 + fnameLen > cdEnd) {
         throw new ZipIntakeError('TRUNCATED_FILENAME', 'Filename exceeds Central Directory bounds.');
       }
@@ -206,7 +211,7 @@ export class OperatorZipIntakeEngine {
         throw new ZipIntakeError('MALFORMED_UTF8_FILENAME', `Filename contains invalid UTF-8 bytes: ${e.message}`);
       }
 
-      // 6. Path Traversal & Zip-Slip defense
+      // 7. Path Traversal & Zip-Slip defense
       if (filename.includes('\0')) {
         throw new ZipIntakeError('ZIP_PATH_TRAVERSAL_REFUSED', `Filename contains null byte.`);
       }
@@ -220,7 +225,7 @@ export class OperatorZipIntakeEngine {
         }
       }
 
-      // 7. Path normalization and duplicate path detection
+      // 8. Path normalization and duplicate path detection
       const normalizedPath = parts.filter(Boolean).join('/');
       const isDirectory = filename.endsWith('/') || filename.endsWith('\\') || (posixMode === 0o040000);
 
@@ -231,7 +236,7 @@ export class OperatorZipIntakeEngine {
         seenNormalizedPaths.add(normalizedPath);
       }
 
-      // 8. Resource limits check
+      // 9. Resource limits check
       if (uncompSize > this.limits.maxSingleFileSize) {
         throw new ZipIntakeError(
           'ZIP_RESOURCE_LIMIT_EXCEEDED',
@@ -247,7 +252,7 @@ export class OperatorZipIntakeEngine {
         );
       }
 
-      // 9. Zip-Bomb compression ratio check
+      // 10. Zip-Bomb compression ratio check
       if (compSize > 0 && uncompSize / compSize > this.limits.maxCompressionRatio) {
         throw new ZipIntakeError(
           'ZIP_RESOURCE_LIMIT_EXCEEDED',
@@ -255,9 +260,41 @@ export class OperatorZipIntakeEngine {
         );
       }
 
+      // 11. Validate local header offset within buffer bounds
+      if (localOffset + 30 > eocd.cdOffset) {
+        throw new ZipIntakeError('CORRUPT_LOCAL_HEADER_OFFSET', `Local header offset ${localOffset} exceeds Central Directory start ${eocd.cdOffset}.`);
+      }
+      const localFnameLen = buf.readUInt16LE(localOffset + 26);
+      const localExtraLen = buf.readUInt16LE(localOffset + 28);
+      const dataStart = localOffset + 30 + localFnameLen + localExtraLen;
+      const dataEnd = dataStart + compSize;
+
+      let memberEnd = dataEnd;
+      let descriptorLength = 0;
+      if (hasDataDescriptor) {
+        if (dataEnd + 12 > eocd.cdOffset) {
+          throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `Data descriptor for ${normalizedPath} exceeds Central Directory offset.`);
+        }
+        const descSig = buf.readUInt32LE(dataEnd);
+        if (descSig === 0x08074b50) {
+          if (dataEnd + 16 > eocd.cdOffset) {
+            throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `16-byte data descriptor for ${normalizedPath} exceeds Central Directory offset.`);
+          }
+          descriptorLength = 16;
+        } else {
+          descriptorLength = 12;
+        }
+        memberEnd = dataEnd + descriptorLength;
+      }
+
+      if (memberEnd > eocd.cdOffset) {
+        throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `Member ${normalizedPath} byte span exceeds Central Directory offset.`);
+      }
+
       entries.push({
         filename: normalizedPath,
         rawFilename: filename,
+        rawFilenameBytes: Buffer.from(rawNameBuf),
         isDirectory,
         compressionMethod: compMethod,
         flags,
@@ -265,21 +302,41 @@ export class OperatorZipIntakeEngine {
         crc32,
         compressedSize: compSize,
         uncompressedSize: uncompSize,
-        localOffset
+        localOffset,
+        dataStart,
+        dataEnd,
+        memberEnd,
+        descriptorLength
       });
 
       p += 46 + fnameLen + extraLen + commentLen;
+    }
+
+    // 12. Verify non-overlapping member ranges
+    const sortedRanges = [...entries].sort((a, b) => a.localOffset - b.localOffset);
+    for (let i = 0; i < sortedRanges.length; i++) {
+      if (i > 0) {
+        const prev = sortedRanges[i - 1];
+        const curr = sortedRanges[i];
+        if (curr.localOffset < prev.memberEnd) {
+          throw new ZipIntakeError(
+            'CORRUPT_OR_OVERLAPPING_MEMBER_RANGE',
+            `Member '${curr.filename}' at offset ${curr.localOffset} overlaps previous member '${prev.filename}' ending at ${prev.memberEnd}.`
+          );
+        }
+      }
     }
 
     return entries;
   }
 
   /**
-   * Validates the Local File Header and decompresses entry with strict bounds and CRC check.
+   * Validates the Local File Header, data descriptor, and decompresses entry with strict bounds and CRC check.
    */
-  decompressAndVerifyEntry(buf, entry) {
+  decompressAndVerifyEntry(buf, entry, cdOffset = null) {
     const localOffset = entry.localOffset;
-    if (localOffset + 30 > buf.length) {
+    const boundary = cdOffset || buf.length;
+    if (localOffset + 30 > boundary) {
       throw new ZipIntakeError('CORRUPT_LOCAL_HEADER', `Local header offset ${localOffset} beyond buffer bounds.`);
     }
 
@@ -297,30 +354,71 @@ export class OperatorZipIntakeEngine {
     const localFnameLen = buf.readUInt16LE(localOffset + 26);
     const localExtraLen = buf.readUInt16LE(localOffset + 28);
 
+    // Reconcile general purpose bit flags
+    if (localFlags !== entry.flags) {
+      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Flags mismatch: local 0x${localFlags.toString(16)} vs central 0x${entry.flags.toString(16)} for ${entry.filename}.`);
+    }
+
     // Reconcile compression method
     if (localMethod !== entry.compressionMethod) {
-      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compression method mismatch: local ${localMethod} vs central ${entry.compressionMethod}.`);
+      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compression method mismatch: local ${localMethod} vs central ${entry.compressionMethod} for ${entry.filename}.`);
     }
 
-    // If no data descriptor, reconcile sizes and CRC
-    if (!entry.hasDataDescriptor && (localFlags & 0x08) === 0) {
-      if (localCrc32 !== entry.crc32 && entry.crc32 !== 0) {
-        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `CRC-32 mismatch: local ${localCrc32} vs central ${entry.crc32}.`);
+    // Reconcile raw filename bytes exactly
+    if (localFnameLen !== entry.rawFilenameBytes.length) {
+      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Filename byte length mismatch: local ${localFnameLen} vs central ${entry.rawFilenameBytes.length} for ${entry.filename}.`);
+    }
+    const localRawFname = buf.subarray(localOffset + 30, localOffset + 30 + localFnameLen);
+    if (!localRawFname.equals(entry.rawFilenameBytes)) {
+      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Local filename bytes do not match central directory filename bytes for ${entry.filename}.`);
+    }
+
+    // Reconcile sizes, CRC-32 and descriptors
+    if (entry.hasDataDescriptor) {
+      const dataEnd = entry.dataEnd;
+      let descCrc, descComp, descUncomp;
+      if (entry.descriptorLength === 16) {
+        descCrc = buf.readUInt32LE(dataEnd + 4);
+        descComp = buf.readUInt32LE(dataEnd + 8);
+        descUncomp = buf.readUInt32LE(dataEnd + 12);
+      } else {
+        descCrc = buf.readUInt32LE(dataEnd);
+        descComp = buf.readUInt32LE(dataEnd + 4);
+        descUncomp = buf.readUInt32LE(dataEnd + 8);
+      }
+      if (descCrc !== entry.crc32 || descComp !== entry.compressedSize || descUncomp !== entry.uncompressedSize) {
+        throw new ZipIntakeError(
+          'DATA_DESCRIPTOR_RECONCILIATION_FAILED',
+          `Data descriptor mismatch for ${entry.filename}: descriptor [crc=0x${descCrc.toString(16)}, comp=${descComp}, uncomp=${descUncomp}] vs central [crc=0x${entry.crc32.toString(16)}, comp=${entry.compressedSize}, uncomp=${entry.uncompressedSize}].`
+        );
+      }
+      if (localCrc32 !== 0 && localCrc32 !== entry.crc32) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Local CRC-32 (0x${localCrc32.toString(16)}) != central (0x${entry.crc32.toString(16)}) for ${entry.filename}.`);
+      }
+      if (localCompSize !== 0 && localCompSize !== entry.compressedSize) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Local compressed size (${localCompSize}) != central (${entry.compressedSize}) for ${entry.filename}.`);
+      }
+      if (localUncompSize !== 0 && localUncompSize !== entry.uncompressedSize) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Local uncompressed size (${localUncompSize}) != central (${entry.uncompressedSize}) for ${entry.filename}.`);
+      }
+    } else {
+      if (localCrc32 !== entry.crc32) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `CRC-32 mismatch: local 0x${localCrc32.toString(16)} vs central 0x${entry.crc32.toString(16)} for ${entry.filename}.`);
       }
       if (localCompSize !== entry.compressedSize) {
-        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compressed size mismatch: local ${localCompSize} vs central ${entry.compressedSize}.`);
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compressed size mismatch: local ${localCompSize} vs central ${entry.compressedSize} for ${entry.filename}.`);
       }
       if (localUncompSize !== entry.uncompressedSize) {
-        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Uncompressed size mismatch: local ${localUncompSize} vs central ${entry.uncompressedSize}.`);
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Uncompressed size mismatch: local ${localUncompSize} vs central ${entry.uncompressedSize} for ${entry.filename}.`);
       }
     }
 
-    const dataStart = localOffset + 30 + localFnameLen + localExtraLen;
-    if (dataStart + entry.compressedSize > buf.length) {
+    const dataStart = entry.dataStart;
+    if (entry.dataEnd > boundary) {
       throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `Data slice for ${entry.filename} exceeds buffer length.`);
     }
 
-    const slice = buf.subarray(dataStart, dataStart + entry.compressedSize);
+    const slice = buf.subarray(dataStart, entry.dataEnd);
     let decompressed;
 
     if (entry.compressionMethod === 0) {
@@ -365,6 +463,7 @@ export class OperatorZipIntakeEngine {
    * If ANY member fails validation, decompression, CRC, or decoding, ZERO state is admitted.
    */
   processZipArchive(buf, archiveId = 'intake:zip:default') {
+    const eocd = this.findEocd(buf);
     const entries = this.enumerateZip(buf);
 
     // Staging structures for atomic admission
@@ -380,7 +479,7 @@ export class OperatorZipIntakeEngine {
         continue;
       }
 
-      const rawBytes = this.decompressAndVerifyEntry(buf, entry);
+      const rawBytes = this.decompressAndVerifyEntry(buf, entry, eocd.cdOffset);
       const digest = sha256Hex(rawBytes);
       const sourceId = `src:intake:${archiveId}:${sha256Hex(Buffer.from(entry.filename)).slice(0, 16)}`;
 
@@ -390,7 +489,12 @@ export class OperatorZipIntakeEngine {
       let isTextBearing = false;
 
       const lowerName = entry.filename.toLowerCase();
-      if (lowerName.endsWith('.md')) {
+      const isAppleDouble = entry.filename.startsWith('__MACOSX/') || entry.filename.includes('/._') || entry.filename.startsWith('._');
+
+      if (isAppleDouble) {
+        fileType = 'APPLEDOUBLE_RESOURCE_FORK';
+        isTextBearing = false;
+      } else if (lowerName.endsWith('.md')) {
         fileType = 'TEXT_MARKDOWN';
         try {
           extractedText = utf8Decoder.decode(rawBytes);
