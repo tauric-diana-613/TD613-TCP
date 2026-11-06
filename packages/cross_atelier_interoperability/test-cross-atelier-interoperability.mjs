@@ -1,19 +1,25 @@
 /**
- * 𝌋 TD613 · CROSS-ATELIER INTEROPERABILITY QUALIFICATION SUITE
+ * 𝌋 TD613 · CROSS-ATELIER INTEROPERABILITY QUALIFICATION SUITE (U-00 REPAIRED)
  * Exhaustive source-free synthetic qualification of the unified research route:
- * Wendbine -> SRC -> Manifest -> Palace Act I -> Palace Act II
+ * Wendbine -> SRC -> Manifest -> Universal Estates -> Palace Act I -> Palace Act II
  * 
- * Tests 10 Distinct Interoperability Boundaries & Operator Decisions:
- *   1. Full-circuit same-episode synthetic research route
+ * Verifies All U-00 Critical Reparations & Governance Invariants:
+ *   1. Full-circuit same-episode synthetic research route with U-00 repairs
  *   2. Strict 256-byte capsule budget enforcement (PR1705-R01)
  *   3. Admission-time availability gating (PR1705-R03)
  *   4. Chronological sequence ordering validation (PR1705-R03)
- *   5. Provenance-sensitive terminal graph comparison (PR1706-R01)
+ *   5. Provenance-sensitive terminal graph comparison over complete payloads (PR1706-R01)
  *   6. Cost-of-curiosity throttle & regret avoidance (Operator Decision 1)
  *   7. Corrected latency convention & Family D masking witness (Operator Decision 2)
- *   8. Cascading source withdrawal & immutable tombstone ledger (Point 6)
+ *   8. Cascading source withdrawal & immutable tombstone ledger
  *   9. Fail-closed Default-Deny negative controls (retroactive target & fabricated warrant)
  *  10. Scalar composite score refusal in tomography (SRC D6 invariant)
+ *  11. U00-F01: Zero observed cues produce zero cue-based admitted relations (fail-closed canary)
+ *  12. U00-F01: Genuine source-bound positive warrant passes with exact UTF-8 span and chronology
+ *  13. U00-F02: Admission-clock qualified capsule prior; future mutation has ZERO effect on tick-10 state
+ *  14. U00-F02: Lawful temporal advance at tick 30 without retroactively modifying tick-10 capsule
+ *  15. U00-F03: Adversarial content mutation detection across identical identifiers
+ *  16. Section III: Real native entry, query, and bridge execution for Universal Atelier & Encyclopedia
  * 
  * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po
  */
@@ -23,10 +29,7 @@ import assert from 'node:assert';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import {
-  CrossAtelierOrchestrator,
-  CROSS_ATELIER_SCHEMA,
-} from './cross-atelier-orchestrator.mjs';
+import { CrossAtelierOrchestrator } from './cross-atelier-orchestrator.mjs';
 import {
   compareTerminalGraphsProvenanceSensitive,
   extractFullCanonicalPayload,
@@ -49,39 +52,57 @@ describe('Cross-Atelier Operational Interoperability Qualification Suite', () =>
   const SNAPSHOT_ID = 'wendbine-20261104014208-6d200e3ff3a0';
   const SEAL_ID = 'wendbine-seal:6d200e3ff3a0d7d79d7a135d676141fea8dfab3ae9496b525c5a93b55e31edf2';
 
-  it('1. Full-circuit same-episode research route across Wendbine -> SRC -> Manifest -> Palace I -> Palace II', async () => {
-    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_full_circuit' });
+  it('1. Full-circuit same-episode research route across Wendbine -> SRC -> Manifest -> Universal -> Palace I -> Palace II', async () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_full_circuit_u00' });
 
-    // Step 1: Wendbine Ingestion
+    // Step 1: Authentic Wendbine Ingestion (Metadata-bound classification)
     const wendbineRec = await orchestrator.executeWendbineIngestion({
       rootPath: WENDBINE_ROOT,
       snapshotId: SNAPSHOT_ID,
       sealId: SEAL_ID,
     });
     assert.ok(wendbineRec.source_id);
-    assert.strictEqual(wendbineRec.sha256.length, 64);
+    assert.strictEqual(wendbineRec.crossing_classification, 'METADATA_BOUND_SYNTHETIC_FIXTURE');
+    assert.strictEqual(wendbineRec.source_text_stored, false);
+    assert.strictEqual(wendbineRec.raw_text, '');
 
-    // Step 2: SRC Native Routing & Tomography
+    // Step 2: SRC Native Routing on metadata (0 explore cues extracted)
     const srcRouting = orchestrator.executeSrcRouting({ wendbineRecord: wendbineRec });
-    assert.ok(srcRouting.projectiveResult);
+    assert.strictEqual(srcRouting.cues_extracted, 0);
     assert.strictEqual(srcRouting.tomographyResult.tomography[0].composite_score, null);
     assert.strictEqual(srcRouting.contextRolesResult.roles[0].contextual_role, 'EXTERNAL_SEALED_INGRESS_ROOT');
 
-    // Step 3: Manifest Grounding & Dual-State Shadow Graph
-    const manifestGrounding = orchestrator.executeManifestGrounding({
+    // Step 3: Zero-cue Canary (Fails closed on forward exploration warrant)
+    const canaryResult = orchestrator.executeManifestGroundingZeroCueCanary({
       wendbineRecord: wendbineRec,
       srcRouting,
       targetNodeId: 'target_alpha_series_doc',
     });
-    assert.strictEqual(manifestGrounding.admittedAttempt.state, 'ADMITTED');
-    assert.strictEqual(manifestGrounding.retroactiveAttempt.state, 'ATTEMPTED_REJECTED');
-    assert.strictEqual(manifestGrounding.fabricatedAttempt.state, 'ATTEMPTED_REJECTED');
-    assert.ok(manifestGrounding.lfp.P.has('target_alpha_series_doc'));
+    assert.strictEqual(canaryResult.zeroCueCanaryPassed, true);
+    assert.strictEqual(canaryResult.zeroCueAttempt.state, 'ATTEMPTED_REJECTED');
 
-    // Step 4: Palace Act I Capsule Compression
-    const capsule = orchestrator.executePalaceAct1Capsule({ manifestGrounding });
+    // Step 3b: Genuine Source-Bound Positive Warrant Route
+    const sourceBoundResult = orchestrator.executeSourceBoundWarrantRoute({
+      sourcePassage: 'We must Explore Advanced Kinematics. It guides subsequent work.',
+      sourceCreated: '2026-08-24T10:00:00Z',
+      targetTitle: 'Advanced Kinematics',
+      targetCreated: '2026-08-24T14:00:00Z',
+    });
+    assert.strictEqual(sourceBoundResult.admittedAttempt.state, 'ADMITTED');
+    assert.strictEqual(sourceBoundResult.isGrounded, true);
+
+    // Step 3c: Universal Estates Crossing (Universal Atelier -> Universal Encyclopedia)
+    const universalResult = orchestrator.executeUniversalEstatesRoute({
+      encyclopediaContractId: 'APT-01',
+    });
+    assert.strictEqual(universalResult.bridgeResult.is_grounded, true);
+    assert.strictEqual(universalResult.bridgeResult.census.record_count, 1141);
+
+    // Step 4: Palace Act I Capsule Compression (asOfTick: 10 excludes tick-30 records)
+    const capsule = orchestrator.executePalaceAct1Capsule({ asOfTick: 10 });
     assert.ok(capsule.within_budget);
     assert.ok(capsule.serialized_bytes <= 256);
+    assert.strictEqual(capsule.withheld_future_records_count, 1);
     assert.strictEqual(capsule.anti_evidence_ledger.length, 1);
 
     // Step 5: Palace Act II Policy Update with Curiosity Throttle
@@ -95,18 +116,20 @@ describe('Cross-Atelier Operational Interoperability Qualification Suite', () =>
 
     // Step 6: Cascading Custodial Withdrawal
     const withdrawal = orchestrator.executeCascadingWithdrawal({
-      rootId: manifestGrounding.rootId,
+      rootId: sourceBoundResult.sourceId,
       withdrawalTick: 15,
       reason: 'EMPIRICAL_AUDIT_SUPERSEDED',
     });
     assert.ok(withdrawal.readmissionFailedClosed);
     assert.strictEqual(withdrawal.palaceTombstone.withdrawn_at_tick, 15);
 
-    // Terminal Export
+    // Step 7: Terminal Graph Export & Adversarial Content Mutation Detection
     const terminalGraph = orchestrator.exportCanonicalTerminalGraph();
     assert.ok(terminalGraph.nodes.length >= 3);
     assert.ok(terminalGraph.rejections.length >= 2);
-    assert.strictEqual(terminalGraph.negativeControlsVerified, 3);
+
+    const mutationCheck = orchestrator.verifyAdversarialContentMutationDetection();
+    assert.strictEqual(mutationCheck.detectedDiscrepancy, true);
   });
 
   it('2. Strict 256-byte capsule budget enforcement with fail-closed assertion (PR1705-R01)', () => {
@@ -238,19 +261,15 @@ describe('Cross-Atelier Operational Interoperability Qualification Suite', () =>
   });
 
   it('7. Latency convention and Family D action invariance masking witness (Operator Decision 2)', () => {
-    // Correct sign convention: t_action_aligned - t_belief_revised
-    // Pooled mean: +4.2740 ticks (belief revised before action aligned)
     const pooledActionTick = 7.2740;
     const pooledBeliefTick = 3.0000;
     const pooledLatency = pooledActionTick - pooledBeliefTick;
     assert.strictEqual(Number(pooledLatency.toFixed(4)), 4.2740);
 
-    // Family D (Action-Invariant Change): action aligned at tick 2.00, belief revised at tick 6.8125
     const famDActionTick = 2.0000;
     const famDBeliefTick = 6.8125;
     const famDLatency = famDActionTick - famDBeliefTick;
     assert.strictEqual(Number(famDLatency.toFixed(4)), -4.8125);
-    // Negative sign witnesses that apparent behavioral success preceded truth discovery
     assert.ok(famDLatency < 0);
   });
 
@@ -323,5 +342,88 @@ describe('Cross-Atelier Operational Interoperability Qualification Suite', () =>
     ]);
     assert.strictEqual(tomo.tomography[0].composite_score, null);
     assert.strictEqual(tomo.conservation[0].outcome, 'NARROWED');
+  });
+
+  it('11. U00-F01: Zero observed cues produce zero cue-based admitted relations (Fail-Closed Canary)', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_canary' });
+    const bg = orchestrator.shadowGraph;
+    bg.registerNode('src_node', { created_at: '2026-08-24T10:00:00Z' }, true);
+    bg.registerNode('tgt_node', { created_at: '2026-08-24T12:00:00Z' }, true);
+
+    // Attempt forward explore warrant with 0 cues observed
+    const attempt = bg.recordAttempt({
+      from: 'src_node',
+      to: 'tgt_node',
+      relation_type: 'EXPLORE_PROJECTIVE',
+      proposed_warrant: 'EXACT_FORWARD_EXPLORE_CUE',
+      warrant_params: { cues_observed: 0, cue_verified: false },
+    });
+
+    assert.strictEqual(attempt.state, 'ATTEMPTED_REJECTED');
+    assert.ok(attempt.reason.includes('ZERO_CUES_NO_WARRANT_ADMITTED') || attempt.reason.includes('EXPLORE_CUE_NOT_VERIFIED'));
+  });
+
+  it('12. U00-F01: Genuine source-bound positive warrant passes with exact UTF-8 span proof and chronology', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_sourcebound_warrant' });
+    const result = orchestrator.executeSourceBoundWarrantRoute({
+      sourcePassage: 'Research Directive: Please Explore Advanced Kinematics. Immediate study required.',
+      sourceCreated: '2026-08-24T09:00:00Z',
+      targetTitle: 'Advanced Kinematics',
+      targetCreated: '2026-08-24T11:00:00Z',
+    });
+
+    assert.strictEqual(result.admittedAttempt.state, 'ADMITTED');
+    assert.strictEqual(result.isGrounded, true);
+    assert.ok(result.spanProof.start >= 0);
+    assert.ok(result.spanProof.end > result.spanProof.start);
+    assert.strictEqual(result.spanProof.span_sha256.length, 64);
+  });
+
+  it('13. U00-F02: Admission-clock qualified capsule prior; future-record mutation has ZERO effect on tick-10 state', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_mutation_invariance' });
+    const invarianceResult = orchestrator.verifyFutureRecordMutationInvariance({ asOfTick: 10 });
+
+    assert.strictEqual(invarianceResult.mutationInvarianceVerified, true);
+    assert.strictEqual(invarianceResult.priorMatch, true);
+    assert.strictEqual(invarianceResult.bridgeMatch, true);
+    // Prior at tick 10 cleanly excludes the future tick-30 record (M_SLOT_0 = 2/3)
+    assert.strictEqual(invarianceResult.baselinePrior.M_SLOT_0, 0.6667);
+  });
+
+  it('14. U00-F02: Lawful temporal advance: tick-30 clock lawfully incorporates deferred record without rewriting tick-10 state', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_temporal_advance' });
+    const advanceResult = orchestrator.verifyLawfulTemporalAdvance();
+
+    assert.strictEqual(advanceResult.lawfulAdvanceVerified, true);
+    assert.strictEqual(advanceResult.tick10Withheld, true);
+    assert.strictEqual(advanceResult.tick30Admitted, true);
+    assert.strictEqual(advanceResult.priorShiftedLawfully, true);
+    // Tick 10 prior = 0.6667 (2/3); Tick 30 prior = 0.7500 (3/4)
+    assert.strictEqual(advanceResult.tick10CapsulePrior.M_SLOT_0, 0.6667);
+    assert.strictEqual(advanceResult.tick30CapsulePrior.M_SLOT_0, 0.7500);
+  });
+
+  it('15. U00-F03: Adversarial content mutation test detects altered evidentiary content across identical IDs', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_adversarial_mutation' });
+    orchestrator.executeSourceBoundWarrantRoute();
+    const mutationResult = orchestrator.verifyAdversarialContentMutationDetection();
+
+    assert.strictEqual(mutationResult.detectedDiscrepancy, true);
+    assert.ok(mutationResult.discrepancyCategories.includes('NODES'));
+    assert.ok(mutationResult.discrepancyCategories.includes('EDGES'));
+  });
+
+  it('16. Section III: Universal Atelier and Universal Encyclopedia execute real native entry/query paths', () => {
+    const orchestrator = new CrossAtelierOrchestrator({ episodeId: 'ep_test_universal_estates' });
+    const result = orchestrator.executeUniversalEstatesRoute({ encyclopediaContractId: 'APT-01' });
+
+    assert.ok(result.admittedAtelierRecord);
+    assert.ok(result.admittedAtelierRecord.record_id);
+    assert.ok(result.admittedAtelierRecord.admission_time);
+    assert.ok(result.bridgeResult);
+    assert.strictEqual(result.bridgeResult.encyclopedia_contract_id, 'APT-01');
+    assert.strictEqual(result.bridgeResult.is_grounded, true);
+    assert.strictEqual(result.bridgeResult.census.record_count, 1141);
+    assert.strictEqual(result.bridgeResult.census.edge_count, 2131);
   });
 });

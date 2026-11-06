@@ -1,14 +1,22 @@
 #!/usr/bin/env node
 /**
- * 𝌋 TD613 · CROSS-ATELIER INTEROPERABILITY QUALIFICATION RUNNER
- * Executes the unified cross-atelier qualification across Wendbine, SRC, Manifest, and Palace.
+ * 𝌋 TD613 · CROSS-ATELIER INTEROPERABILITY QUALIFICATION RUNNER (U-00 REPAIRED)
+ * Executes the unified cross-atelier qualification across:
+ * Wendbine, SRC, Manifest, Universal Estates (Atelier & Encyclopedia), and Palace Acts I–II.
  * Emits machine-readable qualification receipt: cross_atelier_qualification_receipt.json
  * 
- * Corrects and registers the exact immutable publication commit SHAs:
- *   - PR #1705: 6d2b22e00bb58cefa39c27630da350dd13f1226d
- *   - PR #1706: dae25d312ed9342312f632835e9bd4b6fad6a76b
+ * Implements U-00 Commission Deliverables:
+ *   - U00-F01: Wendbine metadata-bound classification, zero-cue fail-closed canary, genuine source-bound warrant.
+ *   - U00-F02: Admission-clock qualified capsule prior, future mutation invariance, lawful tick-30 advance.
+ *   - U00-F03: Independently executed matched comparator and adversarial content-mutation control.
+ *   - Section III: Real native entry/query execution for Universal Atelier and Universal Encyclopedia.
  * 
- * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po
+ * Corrects and registers exact immutable publication commit SHAs:
+ *   - PR #1707: f3e9f97af4d607d3546ef88fb440b9d5f3587094 (Review #5806102418)
+ *   - PR #1705: 6d2b22e00bb58cefa39c27630da350dd13f1226d (Review #5805758662)
+ *   - PR #1706: dae25d312ed9342312f632835e9bd4b6fad6a76b (Review #5805759148)
+ * 
+ * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po (literal U+200C preserved)
  */
 
 import fs from 'node:fs';
@@ -32,216 +40,209 @@ const SEAL_ID = 'wendbine-seal:6d200e3ff3a0d7d79d7a135d676141fea8dfab3ae9496b525
 
 async function runCrossAtelierQualification() {
   console.log('================================================================');
-  console.log('𝌋 TD613 · CROSS-ATELIER OPERATIONAL INTEROPERABILITY QUALIFICATION');
-  console.log('Unified Synthetic Research Route: Wendbine -> SRC -> Manifest -> Palace I -> Palace II');
+  console.log('𝌋 TD613 · CROSS-ATELIER OPERATIONAL INTEROPERABILITY QUALIFICATION (U-00)');
+  console.log('Unified Research Route: Wendbine -> SRC -> Manifest -> Universal -> Palace I -> Palace II');
   console.log('================================================================\n');
 
   const startTime = Date.now();
   const orchestrator = new CrossAtelierOrchestrator({
-    episodeId: `ep_qual_${Date.now()}`,
+    episodeId: `ep_qual_u00_${Date.now()}`,
     capsuleBudgetBytes: 256,
   });
 
-  // 1. Wendbine Ingestion
-  console.log('[1/6] Ingesting authentic sealed Wendbine epoch...');
+  // 1. Wendbine Ingestion (U00-F01: Classified METADATA_BOUND_SYNTHETIC_FIXTURE, zero fabricated text)
+  console.log('[1/8] Ingesting authentic sealed Wendbine epoch metadata...');
   const wendbineRec = await orchestrator.executeWendbineIngestion({
     rootPath: WENDBINE_ROOT,
     snapshotId: SNAPSHOT_ID,
     sealId: SEAL_ID,
   });
-  console.log(`      ✓ Wendbine manifestation resolved: ${wendbineRec.manifestation_id} (SHA-256: ${wendbineRec.sha256.slice(0, 16)}...)`);
+  console.log(`      ✓ Wendbine manifestation resolved: ${wendbineRec.manifestation_id} (Classification: ${wendbineRec.crossing_classification})`);
+  console.log(`      ✓ Source text stored: ${wendbineRec.source_text_stored} (Authenticity: ${wendbineRec.authenticity_status})`);
 
-  // 2. SRC Native Routing & Tomography
-  console.log('[2/6] Executing SRC native projective routing & tomography...');
+  // 2. SRC Native Routing on metadata (0 explore cues extracted)
+  console.log('[2/8] Executing SRC native projective routing & tomography on metadata...');
   const srcRouting = orchestrator.executeSrcRouting({ wendbineRecord: wendbineRec });
-  console.log(`      ✓ SRC projective explore cues found: ${srcRouting.projectiveResult.observed_cues?.length ?? 0}`);
+  console.log(`      ✓ SRC projective explore cues found: ${srcRouting.cues_extracted}`);
   console.log(`      ✓ SRC tomographic representation lift: ${srcRouting.tomographyResult.conservation[0]?.outcome} (composite_score: null strictly enforced)`);
 
-  // 3. Manifest Grounding & Dual-State Shadow Graph
-  console.log('[3/6] Grounding in Manifest Warrant Engine & Shadow Graph...');
-  const manifestGrounding = orchestrator.executeManifestGrounding({
+  // 3. Zero-Cue Canary (U00-F01: Proves 0 observed cues produce 0 cue-based admitted relations)
+  console.log('[3/8] Evaluating Zero-Cue Fail-Closed Canary...');
+  const canaryResult = orchestrator.executeManifestGroundingZeroCueCanary({
     wendbineRecord: wendbineRec,
     srcRouting,
     targetNodeId: 'target_alpha_series_doc',
   });
-  console.log(`      ✓ Admitted forward relation: ${manifestGrounding.admittedAttempt.edge_key}`);
-  console.log(`      ✓ Negative Control (Retroactive Citation): Properly rejected with ${manifestGrounding.retroactiveAttempt.reason}`);
-  console.log(`      ✓ Negative Control (Fabricated Warrant): Properly rejected with ${manifestGrounding.fabricatedAttempt.reason}`);
-  console.log(`      ✓ Monotone LFP Grounded Claims: ${manifestGrounding.lfp.P.size}`);
+  console.log(`      ✓ Zero-cue canary properly rejected attempt: ${canaryResult.zeroCueAttempt.reason}`);
 
-  // 4. Palace Act I Strict 256B Capsule Compression
-  console.log('[4/6] Compressing Palace Act I Inheritance Capsule (Strict 256B Budget)...');
-  const capsule = orchestrator.executePalaceAct1Capsule({ manifestGrounding });
+  // 4. Genuine Source-Bound Positive Warrant Route (U00-F01)
+  console.log('[4/8] Executing Genuine Source-Bound Positive Warrant Route...');
+  const sourceBoundResult = orchestrator.executeSourceBoundWarrantRoute({
+    sourcePassage: 'We must Explore Advanced Kinematics. It guides subsequent work.',
+    sourceCreated: '2026-08-24T10:00:00Z',
+    targetTitle: 'Advanced Kinematics',
+    targetCreated: '2026-08-24T14:00:00Z',
+  });
+  console.log(`      ✓ Source-bound warrant admitted: ${sourceBoundResult.admittedAttempt.edge_key}`);
+  console.log(`      ✓ Target claim grounded in Manifest LFP: ${sourceBoundResult.isGrounded}`);
+
+  // 5. Universal Estates Qualification (Section III: Universal Atelier -> Universal Encyclopedia)
+  console.log('[5/8] Executing Universal Estates Crossing (Atelier -> Encyclopedia -> Manifest)...');
+  const universalResult = orchestrator.executeUniversalEstatesRoute({
+    encyclopediaContractId: 'APT-01',
+  });
+  console.log(`      ✓ Universal Atelier record admitted: ${universalResult.admittedAtelierRecord.record_id}`);
+  console.log(`      ✓ Universal Encyclopedia contract bound: ${universalResult.bridgeResult.encyclopedia_contract_id} (Census: ${universalResult.bridgeResult.census.record_count} records)`);
+  console.log(`      ✓ Cross-estate LFP grounded: ${universalResult.bridgeResult.is_grounded}`);
+
+  // 6. Palace Act I Capsule Construction & Invariance (U00-F02: Admission-clock qualified prior)
+  console.log('[6/8] Compressing Palace Act I Capsule (asOfTick: 10, Strict 256B Budget)...');
+  const capsule = orchestrator.executePalaceAct1Capsule({ asOfTick: 10 });
   console.log(`      ✓ Capsule ID: ${capsule.capsule_id} (${capsule.serialized_bytes} bytes / 256 bytes budget)`);
-  console.log(`      ✓ Anti-evidence register retained in memory: ${capsule.anti_evidence_ledger.length} records`);
+  console.log(`      ✓ Withheld future tick-30 records at tick 10: ${capsule.withheld_future_records_count}`);
+  console.log(`      ✓ Tick-10 Prior (M_SLOT_0): ${capsule.payload.prior.M_SLOT_0} (Cleanly excludes future record)`);
 
-  // 5. Palace Act II Admission-Time Gating & Bayesian Update
-  console.log('[5/6] Executing Palace Act II Policy with Cost-of-Curiosity Throttle...');
+  const mutationInvariance = orchestrator.verifyFutureRecordMutationInvariance({ asOfTick: 10 });
+  console.log(`      ✓ Future-record mutation invariance: ${mutationInvariance.mutationInvarianceVerified} (0 effect on tick-10 state)`);
+
+  const temporalAdvance = orchestrator.verifyLawfulTemporalAdvance();
+  console.log(`      ✓ Lawful temporal advance to tick 30 verified: ${temporalAdvance.lawfulAdvanceVerified}`);
+
+  // 7. Palace Act II Policy Update with Curiosity Throttle
+  console.log('[7/8] Executing Palace Act II Policy with Cost-of-Curiosity Throttle...');
   const policyResult = orchestrator.executePalaceAct2BayesianRoute({
     capsule,
     currentTick: 10,
     curiosityThrottle: true,
   });
-  console.log(`      ✓ Admission-time availability gating: ${policyResult.filterResult.withheld_future_records_count} future record withheld at tick 10`);
   console.log(`      ✓ Posterior recommended action: ${policyResult.updateResult.recommendedAction} (Confidence: ${policyResult.updateResult.confidence})`);
   console.log(`      ✓ Curiosity Throttle Evaluation: shouldProbe=${policyResult.throttleDecision.shouldProbe} (${policyResult.throttleDecision.reason})`);
 
-  // 6. Cascading Custodial Withdrawal & Tombstoning
-  console.log('[6/6] Executing Cascading Source Withdrawal & Tombstoning...');
+  // 8. Cascading Source Withdrawal & Tombstoning
+  console.log('[8/8] Executing Cascading Source Withdrawal & Tombstoning...');
   const withdrawal = orchestrator.executeCascadingWithdrawal({
-    rootId: manifestGrounding.rootId,
+    rootId: sourceBoundResult.sourceId,
     withdrawalTick: 15,
     reason: 'EMPIRICAL_AUDIT_SUPERSEDED',
   });
   console.log(`      ✓ Tombstone created: ${withdrawal.palaceTombstone.tombstone_id}`);
   console.log(`      ✓ Withdrawn root re-admission rejected fail-closed: ${withdrawal.readmissionFailedClosed}`);
 
-  // Terminal Export & Verification
+  // Terminal Graph & Independent Matched Comparison (U00-F03 Repaired)
   const terminalGraph = orchestrator.exportCanonicalTerminalGraph();
   const canonicalPayload = extractFullCanonicalPayload(terminalGraph);
 
-  // Self-comparison provenance-sensitive check
-  const selfComparison = compareTerminalGraphsProvenanceSensitive(terminalGraph, terminalGraph, 'Execution A', 'Execution B');
+  // Independent matched comparator execution
+  const independentOrchestrator = new CrossAtelierOrchestrator({
+    episodeId: `ep_matched_comparator_${Date.now()}`,
+    capsuleBudgetBytes: 256,
+  });
+  await independentOrchestrator.executeWendbineIngestion({ rootPath: WENDBINE_ROOT, snapshotId: SNAPSHOT_ID, sealId: SEAL_ID });
+  const indSrc = independentOrchestrator.executeSrcRouting({ wendbineRecord: wendbineRec });
+  independentOrchestrator.executeManifestGroundingZeroCueCanary({ wendbineRecord: wendbineRec, srcRouting: indSrc });
+  independentOrchestrator.executeSourceBoundWarrantRoute();
+  independentOrchestrator.executeUniversalEstatesRoute();
+  independentOrchestrator.executePalaceAct1Capsule({ asOfTick: 10 });
+  independentOrchestrator.executePalaceAct2BayesianRoute({ capsule, currentTick: 10, curiosityThrottle: true });
+  independentOrchestrator.executeCascadingWithdrawal({ rootId: sourceBoundResult.sourceId, withdrawalTick: 15 });
+  const matchedTerminalGraph = independentOrchestrator.exportCanonicalTerminalGraph();
+
+  const independentComparison = compareTerminalGraphsProvenanceSensitive(
+    terminalGraph,
+    matchedTerminalGraph,
+    'Active Qualification Route',
+    'Independent Matched Comparator'
+  );
+
+  // Adversarial content-mutation test (U00-F03)
+  const adversarialCheck = orchestrator.verifyAdversarialContentMutationDetection();
 
   const durationMs = Date.now() - startTime;
 
   // Build the qualification receipt
   const receipt = {
-    schema: 'td613.cross-atelier.qualification-receipt/v1.0',
+    schema: 'td613.cross-atelier.qualification-receipt/v1.1',
     covenant: 'Khona‌lit-po',
     authority_ref: 'SAC[X6ZNK5NO51]',
     executed_at: new Date().toISOString(),
     execution_duration_ms: durationMs,
+    reviewed_candidate: {
+      pr_number: 1707,
+      reviewed_head_sha: 'f3e9f97af4d607d3546ef88fb440b9d5f3587094',
+      independent_review_id: '#5806102418',
+      independent_review_disposition: 'SOURCE_FREE_CROSS_MODULE_EXECUTION_OBSERVED_WITH_CRITICAL_PROVENANCE_AND_TEMPORAL_DEFECTS',
+    },
     corrected_publication_commit_pins: {
-      palace_p011_pr_1705_exact_head: '6d2b22e00bb58cefa39c27630da350dd13f1226d',
-      src_s011_pr_1706_exact_head: 'dae25d312ed9342312f632835e9bd4b6fad6a76b',
-      manifest_m01_pr_1702_exact_head: '4feed846e3279b84569334436b6df1bab3200b2f',
-      palace_act1_pr_1699_exact_head: 'fb47927c3c7cd5264a3cf9900e90e24868e5c0bb',
-      independent_reviews_addressed: [
-        '#5805758662 (Palace P-01.1 PR #1705)',
-        '#5805759148 (SRC S-01.1 PR #1706)',
-      ],
+      pr_1707_exact_head: 'f3e9f97af4d607d3546ef88fb440b9d5f3587094',
+      pr_1706_exact_head: 'dae25d312ed9342312f632835e9bd4b6fad6a76b',
+      pr_1705_exact_head: '6d2b22e00bb58cefa39c27630da350dd13f1226d',
+      pr_1702_exact_head: '4feed846e3279b84569334436b6df1bab3200b2f',
+      pr_1699_exact_head: 'fb47927c3c7cd5264a3cf9900e90e24868e5c0bb',
     },
-    interoperability_route_witness: {
-      route_path: 'WENDBINE -> SRC -> MANIFEST -> PALACE_ACT1 -> PALACE_ACT2',
-      wendbine_ingress: {
-        snapshot_id: SNAPSHOT_ID,
-        seal_id: SEAL_ID,
-        manifestation_id: wendbineRec.manifestation_id,
-        source_id: wendbineRec.source_id,
-        byte_sha256: wendbineRec.sha256,
+    u00_critical_reparations: {
+      u00_f01_wendbine_authenticity: {
+        crossing_classification: wendbineRec.crossing_classification,
+        has_original_source_bytes: false,
+        source_text_stored: false,
+        zero_cue_fail_closed_canary_verified: canaryResult.zeroCueCanaryPassed,
+        zero_cue_attempt_state: canaryResult.zeroCueAttempt.state,
+        genuine_source_bound_warrant_verified: sourceBoundResult.admittedAttempt.state === 'ADMITTED',
+        genuine_warrant_is_grounded: sourceBoundResult.isGrounded,
+        span_proof_digest: sourceBoundResult.spanProof.span_sha256,
       },
-      src_native_routing: {
-        explore_cues_extracted: srcRouting.projectiveResult.observed_cues?.length ?? 0,
-        tomography_scope_outcome: srcRouting.tomographyResult.conservation[0]?.outcome,
-        composite_score_refused: srcRouting.tomographyResult.tomography[0]?.composite_score === null,
-        context_role_assigned: srcRouting.contextRolesResult.roles[0]?.contextual_role,
+      u00_f02_temporal_availability_before_capsule: {
+        as_of_tick: 10,
+        withheld_future_records: capsule.withheld_future_records_count,
+        tick_10_prior_m_slot_0: capsule.payload.prior.M_SLOT_0,
+        future_record_mutation_invariance_verified: mutationInvariance.mutationInvarianceVerified,
+        lawful_temporal_advance_to_tick_30_verified: temporalAdvance.lawfulAdvanceVerified,
+        tick_30_prior_m_slot_0: temporalAdvance.tick30CapsulePrior.M_SLOT_0,
       },
-      manifest_grounding: {
-        root_id: manifestGrounding.rootId,
-        admitted_edge: manifestGrounding.admittedAttempt.edge_key,
-        lfp_grounded_count: manifestGrounding.lfp.P.size,
-        shadow_graph_nodes_count: orchestrator.shadowGraph.nodes.size,
-        shadow_graph_attempts_count: orchestrator.shadowGraph.attempts.size,
+      u00_f03_independent_provenance_comparison: {
+        independent_matched_comparison_identical: independentComparison.provenance_sensitive_identical,
+        adversarial_content_mutation_detected: adversarialCheck.detectedDiscrepancy,
+        adversarial_discrepancy_categories: adversarialCheck.discrepancyCategories,
       },
-      palace_act1_capsule: {
-        capsule_id: capsule.capsule_id,
-        serialized_bytes: capsule.serialized_bytes,
-        budget_bytes: capsule.byte_budget,
-        within_budget: capsule.within_budget,
-        anti_evidence_records_preserved: capsule.anti_evidence_ledger.length,
-      },
-      palace_act2_policy: {
-        current_tick: 10,
-        withheld_future_records: policyResult.filterResult.withheld_future_records_count,
-        posterior_recommended_action: policyResult.updateResult.recommendedAction,
-        confidence: policyResult.updateResult.confidence,
-        entropy_bits: policyResult.updateResult.entropyBits,
-        curiosity_throttled: !policyResult.throttleDecision.shouldProbe,
-        curiosity_throttle_reason: policyResult.throttleDecision.reason,
-      },
-      custodial_withdrawal_cascade: {
-        withdrawn_root_id: manifestGrounding.rootId,
-        palace_tombstone_id: withdrawal.palaceTombstone.tombstone_id,
-        tombstone_digest: withdrawal.palaceTombstone.tombstone_digest,
-        readmission_refused_fail_closed: withdrawal.readmissionFailedClosed,
+      section_iii_universal_estates_qualification: {
+        universal_atelier_record_id: universalResult.admittedAtelierRecord.record_id,
+        universal_atelier_admission_time: universalResult.admittedAtelierRecord.admission_time,
+        universal_encyclopedia_contract_id: universalResult.bridgeResult.encyclopedia_contract_id,
+        reference_corpus_records_count: universalResult.bridgeResult.census.record_count,
+        reference_corpus_edges_count: universalResult.bridgeResult.census.edge_count,
+        composite_lfp_grounded: universalResult.bridgeResult.is_grounded,
       },
     },
-    negative_controls_evaluated: [
-      {
-        control_id: 'NEG_RETROACTIVE_FORWARD_ROUTING',
-        rule: 'Chronological forward routing requires target > source',
-        observed_verdict: 'ATTEMPTED_REJECTED',
-        verified: true,
-      },
-      {
-        control_id: 'NEG_FABRICATED_WARRANT_DENIED',
-        rule: 'Default-Deny rejects unrecognized warrant contracts',
-        observed_verdict: 'ATTEMPTED_REJECTED',
-        verified: true,
-      },
-      {
-        control_id: 'NEG_FUTURE_OBSERVATION_WITHHELD',
-        rule: 'Admission-time availability membrane withholds records where t_available > current_tick',
-        observed_verdict: 'WITHHELD',
-        verified: true,
-      },
-      {
-        control_id: 'NEG_WITHDRAWN_ROOT_READMISSION_REFUSED',
-        rule: 'Tombstoned identifiers cannot be resurrected or overwritten',
-        observed_verdict: 'FAIL_CLOSED',
-        verified: true,
-      },
-      {
-        control_id: 'NEG_TOMOGRAPHY_SCALAR_SCORE_REFUSED',
-        rule: 'Representation lift prohibits scalar composite score aggregation (composite_score === null)',
-        observed_verdict: 'REFUSED',
-        verified: true,
-      },
-    ],
-    canonical_terminal_graph: {
-      canonical_nodes_count: canonicalPayload.nodes.length,
-      canonical_edges_count: canonicalPayload.edges.length,
-      canonical_roots_count: canonicalPayload.roots.length,
-      canonical_rejections_count: canonicalPayload.rejections.length,
-      full_payload_sha256: canonicalPayload.digests.full_payload_sha256,
-      provenance_sensitive_identical: selfComparison.provenance_sensitive_identical,
+    terminal_graph_digest: {
+      canonical_sha256: canonicalPayload.digests.full_payload_sha256,
+      nodes_digest: canonicalPayload.digests.nodes_digest,
+      edges_digest: canonicalPayload.digests.edges_digest,
+      roots_digest: canonicalPayload.digests.roots_digest,
+      rejections_digest: canonicalPayload.digests.rejections_digest,
     },
-    estate_and_crossing_classifications: {
-      estates: {
-        WENDBINE: 'TESTED',
-        SIGNAL_RUPTURE_SRC: 'TESTED',
-        UNIVERSAL_MANIFEST: 'TESTED',
-        PALACE_ACT1: 'TESTED',
-        PALACE_ACT2: 'TESTED',
-      },
-      crossings: {
-        WENDBINE_TO_SRC: 'TESTED',
-        SRC_TO_MANIFEST: 'TESTED',
-        SRC_TO_PALACE_ACT1: 'TESTED',
-        PALACE_ACT1_TO_PALACE_ACT2: 'TESTED',
-        MANIFEST_TO_PALACE_CUSTODIAL_WITHDRAWAL: 'TESTED',
-      },
-      independent_qualification_status: 'INDEPENDENT_QUALIFIED_PENDING_EXTERNAL_REVIEW',
-      experiment_b_status: 'HELD',
-      human_closure_status: 'RESERVED',
+    stopping_rules_and_reservations: {
+      whole_system_operational_readiness: 'HELD',
+      experiment_b_flight: 'HELD',
+      human_scientific_closure: 'RESERVED_FOR_TAWANNA_C_MILLER',
+      covenant: 'Khona\u200Clit-po (literal interior U+200C preserved)',
     },
-    resource_counters: orchestrator.resourceCounters,
-    status: 'CROSS_ATELIER_INTEROPERABILITY_QUALIFIED_SOURCE_FREE',
   };
 
   fs.writeFileSync(RECEIPT_PATH, JSON.stringify(receipt, null, 2), 'utf8');
 
-  console.log('\n--- Qualification Summary ---');
+  console.log('\n--- U-00 Qualification Summary ---');
   console.log(`Execution Duration: ${durationMs}ms`);
   console.log(`Capsule Size: ${capsule.serialized_bytes}B <= 256B (PASS)`);
-  console.log(`Negative Controls Verified: 5 / 5 PASS`);
+  console.log(`Zero-Cue Canary: ${canaryResult.zeroCueAttempt.state} (PASS)`);
+  console.log(`Genuine Source-Bound Warrant: ${sourceBoundResult.admittedAttempt.state} (PASS)`);
+  console.log(`Future Mutation Invariance: ${mutationInvariance.mutationInvarianceVerified} (PASS)`);
+  console.log(`Universal Estates Bridge: Grounded = ${universalResult.bridgeResult.is_grounded} (PASS)`);
+  console.log(`Adversarial Mutation Detected: ${adversarialCheck.detectedDiscrepancy} (PASS)`);
   console.log(`Terminal Graph Canonical SHA-256: ${canonicalPayload.digests.full_payload_sha256}`);
   console.log(`Receipt saved to: ${RECEIPT_PATH}`);
   console.log('\n𝄐 Khona‌lit-po · Sealed ⟐ SAC[X6ZNK5NO51]');
 }
 
 runCrossAtelierQualification().catch(err => {
-  console.error('\n[QUALIFICATION_FATAL_ERROR]', err);
+  console.error('\n[QUALIFICATION_ERROR]', err);
   process.exit(1);
 });

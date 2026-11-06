@@ -1,19 +1,19 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793994209911-271cf216",
-  "timestamp": "2026-11-06T19:43:29.912Z",
-  "source_revision": "349517d78898fa6c976c5813497f417cda82db53",
+  "invocation_id": "dollhouse-audit-1793996010518-d0c478b9",
+  "timestamp": "2026-11-06T20:13:30.518Z",
+  "source_revision": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "349517d78898fa6c976c5813497f417cda82db53",
+  "executing_checkout_revision": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "349517d78898fa6c976c5813497f417cda82db53",
-    "audit_execution_revision": "349517d78898fa6c976c5813497f417cda82db53",
+    "executable_source_revision": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
+    "audit_execution_revision": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -36,14 +36,16 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "CROSS_ATELIER_OPERATIONAL_INTEROPERABILITY_QUALIFICATION",
+  "task_scope": "CROSS_ATELIER_OPERATIONAL_INTEROPERABILITY_QUALIFICATION_U00",
   "evidence_class": "SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/cross_atelier_interoperability/CROSS_ATELIER_INTEROPERABILITY_QUALIFICATION.md",
     "packages/cross_atelier_interoperability/cross-atelier-orchestrator.mjs",
+    "packages/cross_atelier_interoperability/universal-estates-bridge.mjs",
     "packages/cross_atelier_interoperability/provenance-sensitive-comparator.mjs",
     "packages/cross_atelier_interoperability/curiosity-throttled-policy.mjs",
     "packages/cross_atelier_interoperability/test-cross-atelier-interoperability.mjs",
+    "packages/cross_atelier_interoperability/test-universal-estates-qualification.mjs",
     "packages/cross_atelier_interoperability/run-cross-atelier-qualification.mjs",
     "packages/cross_atelier_interoperability/cross_atelier_qualification_receipt.json",
     "packages/accident_of_inheritance/src/palace-operationalization-interface.mjs",
@@ -54,17 +56,25 @@
       "reference": "packages/cross_atelier_interoperability/CROSS_ATELIER_INTEROPERABILITY_QUALIFICATION.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "6baa9db63a818efc8e9536f1c00c1e065db7827b03e08d3ad9a846c129fb1f0c",
+      "byte_digest": "029554a57ba1f3ce130cef179e47d29ae53d6d9fa5bfba51927b9006f5531b09",
       "byte_digest_verified": true,
-      "sha256": "6baa9db63a818efc8e9536f1c00c1e065db7827b03e08d3ad9a846c129fb1f0c"
+      "sha256": "029554a57ba1f3ce130cef179e47d29ae53d6d9fa5bfba51927b9006f5531b09"
     },
     {
       "reference": "packages/cross_atelier_interoperability/cross-atelier-orchestrator.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "0102774182073a0d12e78876652d74417db33f1cb06d167e59da5bf6a9998506",
+      "byte_digest": "2b6204f69f7df446081863bfa9f74b33d9f59d3dad3a9eb81a84e94436606a61",
       "byte_digest_verified": true,
-      "sha256": "0102774182073a0d12e78876652d74417db33f1cb06d167e59da5bf6a9998506"
+      "sha256": "2b6204f69f7df446081863bfa9f74b33d9f59d3dad3a9eb81a84e94436606a61"
+    },
+    {
+      "reference": "packages/cross_atelier_interoperability/universal-estates-bridge.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "d43c348a544af20cb20f5cec2672418a51161608a109be1c49222be147eab043",
+      "byte_digest_verified": true,
+      "sha256": "d43c348a544af20cb20f5cec2672418a51161608a109be1c49222be147eab043"
     },
     {
       "reference": "packages/cross_atelier_interoperability/provenance-sensitive-comparator.mjs",
@@ -86,33 +96,41 @@
       "reference": "packages/cross_atelier_interoperability/test-cross-atelier-interoperability.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "d2b9eb6b9ed6d6b76b442808a41ff307ac30e9e7a947b1a8dfb23723db3b16bb",
+      "byte_digest": "3d4477529ffa4c4ee3373287eeb5cab58676ff3dbb8785c97e33f6838bbf300b",
       "byte_digest_verified": true,
-      "sha256": "d2b9eb6b9ed6d6b76b442808a41ff307ac30e9e7a947b1a8dfb23723db3b16bb"
+      "sha256": "3d4477529ffa4c4ee3373287eeb5cab58676ff3dbb8785c97e33f6838bbf300b"
+    },
+    {
+      "reference": "packages/cross_atelier_interoperability/test-universal-estates-qualification.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "fc85bdaf9a26b63e2859e8d76a928230ddd6980d0e294317c80a215d3045ade9",
+      "byte_digest_verified": true,
+      "sha256": "fc85bdaf9a26b63e2859e8d76a928230ddd6980d0e294317c80a215d3045ade9"
     },
     {
       "reference": "packages/cross_atelier_interoperability/run-cross-atelier-qualification.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "0074bc6bd72b2da0e52e8cd9edb5e12b3bdd0401f7ae831efe53508fc8b40deb",
+      "byte_digest": "e932c29fe7457aaec8e17c9ad5c57861e0be2bf9ea511ab20421a231f1483e7f",
       "byte_digest_verified": true,
-      "sha256": "0074bc6bd72b2da0e52e8cd9edb5e12b3bdd0401f7ae831efe53508fc8b40deb"
+      "sha256": "e932c29fe7457aaec8e17c9ad5c57861e0be2bf9ea511ab20421a231f1483e7f"
     },
     {
       "reference": "packages/cross_atelier_interoperability/cross_atelier_qualification_receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e34765c19411a95d9d21a69c2e68eae19eb7709d22d6b1d8639a163861663bf4",
+      "byte_digest": "22b6b4929ac3020bfdcc7de73498d75f6800659d6aaa435d9d2f348a09c45fac",
       "byte_digest_verified": true,
-      "sha256": "e34765c19411a95d9d21a69c2e68eae19eb7709d22d6b1d8639a163861663bf4"
+      "sha256": "22b6b4929ac3020bfdcc7de73498d75f6800659d6aaa435d9d2f348a09c45fac"
     },
     {
       "reference": "packages/accident_of_inheritance/src/palace-operationalization-interface.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "45a46f45347bec2be4b213ef2302abc05a06819000a8e5e5573b046967729645",
+      "byte_digest": "35403ef3c32cdc3bf07e37d7266f29955e278c61ce22f30b0c40eded7f07ef69",
       "byte_digest_verified": true,
-      "sha256": "45a46f45347bec2be4b213ef2302abc05a06819000a8e5e5573b046967729645"
+      "sha256": "35403ef3c32cdc3bf07e37d7266f29955e278c61ce22f30b0c40eded7f07ef69"
     },
     {
       "reference": "packages/src_s01_falsification_null/src_s01_development_pilot_receipt.json",
@@ -382,7 +400,11 @@
             "OPERATOR_DECISIONS_THROTTLE_LATENCY": "PASS",
             "CASCADING_NON_RETROACTIVE_WITHDRAWAL": "PASS",
             "FAIL_CLOSED_NEGATIVE_CONTROLS": "PASS",
-            "FROZEN_CANDIDATE_STOPPING_BOUNDARY": "PASS"
+            "FROZEN_CANDIDATE_STOPPING_BOUNDARY": "PASS",
+            "U00_F01_WENDBINE_AUTHENTICITY": "PASS",
+            "U00_F02_TEMPORAL_AVAILABILITY_INVARIANCE": "PASS",
+            "U00_F03_INDEPENDENT_PROVENANCE_COMPARISON": "PASS",
+            "SECTION_III_UNIVERSAL_ESTATES_QUALIFICATION": "PASS"
           },
           "violations": [],
           "rationale": "All required declared phases passed in the explicit route order."
@@ -424,5 +446,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 532
+  "execution_duration_ms": 809
 }
