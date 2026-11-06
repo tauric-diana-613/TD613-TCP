@@ -1,0 +1,210 @@
+{
+  "schema": "td613.wendbine-receiver-receipt/v1",
+  "evaluated_at": "2026-11-06T03:32:46.120Z",
+  "receiver_schema": "td613.wendbine-empty-receiver/v1",
+  "total_tests": 33,
+  "passed_tests": 33,
+  "failed_tests": 0,
+  "all_passed": true,
+  "initial_state_witness": {
+    "attestation_type": "INITIAL_ZERO_ROW_STATE_WITNESS",
+    "schema": "td613.wendbine-empty-receiver/v1",
+    "recipient_id": "wb_rcp_synth_expedition_01",
+    "episode_id": "wb_ep_crossing_w",
+    "initialized_at": "2026-11-06T03:32:46.102Z",
+    "entropy": "b37d5e60-d3fc-4f81-a7b9-bf7406e6a4d8",
+    "tables": [
+      "wb_sources",
+      "wb_concepts",
+      "wb_concept_declarations",
+      "wb_typed_relations",
+      "wb_cooccurrences",
+      "wb_captures",
+      "wb_adjudication_events"
+    ],
+    "zero_row_counts": {
+      "wb_sources": 0,
+      "wb_concepts": 0,
+      "wb_concept_declarations": 0,
+      "wb_typed_relations": 0,
+      "wb_cooccurrences": 0,
+      "wb_captures": 0,
+      "wb_adjudication_events": 0
+    },
+    "witness_hash": "615d522d7185563b6fe0f87becb598fc7652537991361b8de2a6b4f5bb10b2a8"
+  },
+  "test_census": [
+    {
+      "name": "Witness conforms to td613.wendbine-empty-receiver/v1",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Witness attestation type is INITIAL_ZERO_ROW_STATE_WITNESS",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Attested exactly 7 receiver tables in initial state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Measured initial zero-row counts across all 7 receiver tables",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with selftext field (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with body field (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with nested selftext in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected post with escaped body string in raw_payload (WENDBINE_FULL_BODY_FIELD_REFUSED)",
+      "passed": true,
+      "details": {
+        "error": {
+          "code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+          "msg": "[WENDBINE_FULL_BODY_FIELD_REFUSED] Forbidden full-body field 'body' detected in raw_payload."
+        }
+      }
+    },
+    {
+      "name": "Rejected unallowlisted field in payload (WENDBINE_UNALLOWLISTED_PAYLOAD_FIELD)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected malformed UTF-8 lone continuation bytes with MALFORMED_UTF8_SEQUENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid UTF-8 source with Covenant Khona‌lit-po",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Classified binary source as BYTE_EVIDENCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Computed concept co-occurrence overlay with minThreshold=2",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Identified pair concept:covenant <-> concept:topological_closure with weight 2",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid G_A relation BOUNDS with live span proof and registered adjudication receipt",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_D (CONNECTS_TO)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_F (PROPAGATES_ACROSS)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_I (SUPPORTS)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_O (PROJECTS_TO)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_P (CONSTRAINS)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_R (SHAPES)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_T (CAN_INITIATE)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Admitted valid relation for family G_X (TRACKS)",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unsupported predicate with WENDBINE_UNSUPPORTED_GRAPH_RELATION",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unsupported graph family with WENDBINE_UNSUPPORTED_GRAPH_FAMILY",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation missing span proof with MISSING_SPAN_PROOF",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with undeclared concept with CONCEPT_NOT_DECLARED_FOR_SOURCE",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unregistered adjudicator receipt with UNREGISTERED_ADJUDICATION_EVENT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with non-ADMIT adjudication with ADJUDICATION_DECISION_NOT_ADMIT",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected relation with mismatched adjudicator span hash with ADJUDICATOR_SPAN_HASH_MISMATCH",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected fabricated span SHA-256 with INVALID_SPAN_PROOF_DIGEST",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected unadmitted source with SOURCE_ENDPOINT_UNADMITTED",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Rejected out-of-bounds span coordinates with INVALID_SPAN_BOUNDS",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "governing_covenant": "Khona‌lit-po",
+  "disposition": "WENDBINE_EMPTY_RECEIVER_VERIFIED_CLEAN"
+}

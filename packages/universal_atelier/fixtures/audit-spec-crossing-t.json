@@ -1,0 +1,191 @@
+{
+  "source_revision": "f9c7962a95910c0efc072c372c14cb7bf5e04906",
+  "task_scope": "UNIVERSAL_ATELIER_CROSSING_T_AUDIT",
+  "evidence_class": "UNIVERSAL_ATELIER_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/universal_atelier/TD613_ENCYCLOPEDIA_ORIGINAL_METHOD_ATLAS.md",
+    "packages/universal_atelier/encyclopedia-capability-receipt.json",
+    "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
+    "packages/universal_atelier/receiver/test-universal-atelier.mjs",
+    "packages/universal_atelier/receiver/universal-atelier-receiver-receipt.json",
+    "packages/universal_atelier/assay/run-universal-atelier-assay.mjs",
+    "packages/universal_atelier/assay/universal-atelier-assay-receipt.json",
+    "packages/universal_atelier/fixtures/dollhouse-design-receipt-crossing-t.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-crossing-t",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Received sovereign commission for Crossing T: Reference Encyclopedia Original Method (1,141 records, 2,131 edges) and Universal Atelier prospective receiver."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Implemented empty UniversalAtelierReceiver with zero-row witness across 5 tables, 10 canonical operations, custodial human review ref gate, live span SHA-256 proofs, and reverse citation indexing."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Executed 3-path matched reciprocal assay: 10/10 comparative dimensions concordant; live span proof verification and reverse crossing limitation awareness verified."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Executed Dollhouse Design & Multi-Role Audit: Four-crossing capability matrix unified across S, E, W, T."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ],
+      "candidate_probe": [
+        1,
+        0.5
+      ],
+      "noise_covariance": [
+        [
+          0.05,
+          0.01
+        ],
+        [
+          0.01,
+          0.05
+        ]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:universal_atelier_relational_topology",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:universal_atelier_relational_topology",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 10,
+          "path": [
+            "S",
+            "E",
+            "W",
+            "T"
+          ]
+        },
+        "right": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 10,
+          "path": [
+            "S",
+            "E",
+            "W",
+            "T"
+          ]
+        }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "prospective_universal_atelier_receiver",
+          "support": [
+            "FIVE_TABLE_WITNESS",
+            "CUSTODIAL_ADMISSION",
+            "LIVE_SPAN_SHA256",
+            "REVERSE_CITATION_INDEX",
+            "TEN_CANONICAL_OPERATIONS"
+          ]
+        },
+        {
+          "state_id": "reverse_crossing_projection_into_reference_corpus",
+          "support": [
+            "DIRECTIONAL_ONTOLOGY_GAP_ACKNOWLEDGED",
+            "NON_LOSSLESS_REVERSE_TRAVERSAL"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "CHAMBER_1_PR_A_COMPANION_COMPLETION",
+        "CHAMBER_2_PR_A_PUBLICATION",
+        "CHAMBER_3_ENCYCLOPEDIA_ORIGINAL_METHOD_ATLAS",
+        "CHAMBER_4_UNIVERSAL_ATELIER_RECEIVER",
+        "CHAMBER_5_REVERSE_CROSSING_ASSAY",
+        "CHAMBER_6_UNIVERSAL_WILD_FIELD",
+        "CHAMBER_7_FOUR_CROSSING_STATUS_MATRIX",
+        "CHAMBER_8_PR_B_PUBLICATION"
+      ],
+      "phases": {
+        "CHAMBER_1_PR_A_COMPANION_COMPLETION": {
+          "status": "PASS",
+          "entry_id": "chamber_1_pr_a_companion_completion"
+        },
+        "CHAMBER_2_PR_A_PUBLICATION": {
+          "status": "PASS",
+          "entry_id": "chamber_2_pr_a_publication"
+        },
+        "CHAMBER_3_ENCYCLOPEDIA_ORIGINAL_METHOD_ATLAS": {
+          "status": "PASS",
+          "entry_id": "chamber_3_encyclopedia_original_method_atlas"
+        },
+        "CHAMBER_4_UNIVERSAL_ATELIER_RECEIVER": {
+          "status": "PASS",
+          "entry_id": "chamber_4_universal_atelier_receiver"
+        },
+        "CHAMBER_5_REVERSE_CROSSING_ASSAY": {
+          "status": "PASS",
+          "entry_id": "chamber_5_reverse_crossing_assay"
+        },
+        "CHAMBER_6_UNIVERSAL_WILD_FIELD": {
+          "status": "PASS",
+          "entry_id": "chamber_6_universal_wild_field"
+        },
+        "CHAMBER_7_FOUR_CROSSING_STATUS_MATRIX": {
+          "status": "PASS",
+          "entry_id": "chamber_7_four_crossing_status_matrix"
+        },
+        "CHAMBER_8_PR_B_PUBLICATION": {
+          "status": "PASS",
+          "entry_id": "chamber_8_pr_b_publication"
+        }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}

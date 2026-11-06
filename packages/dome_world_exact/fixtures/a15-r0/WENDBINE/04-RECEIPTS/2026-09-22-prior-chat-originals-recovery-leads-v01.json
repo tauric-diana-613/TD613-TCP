@@ -1,0 +1,41 @@
+{
+  "schema": "wendbine-prior-chat-originals-recovery-leads/v0.1",
+  "atelier_id": "WENDBINE",
+  "audit_date_utc": "2026-09-22",
+  "scope": "PRIOR_USER_SUPPLIED_FULL_TRANSCRIPTION_LEADS_NOT_RECONSTRUCTED_TEXT",
+  "leads": [
+    {
+      "lead_id": "wendbine-prior-chat-20260916-034503-mad-scientists",
+      "user_message_time_utc": "2026-09-16T03:45:03Z",
+      "reported_title": "MAD SCIENTISTS IN A BUBBLE",
+      "recorded_context": "Complete user-pasted Reddit post with WES, Steve, Illumina and Roomba dialogue; signed Paul Daniel Koon Jr.; contains adjacent Schrödinger's Library transcription.",
+      "source_platform_reported": "reddit",
+      "source_id": null,
+      "canonical_url": null,
+      "exact_text_materialized_in_current_runtime": false,
+      "status": "KNOWN_PRIOR_USER_SUPPLIED_TRANSCRIPTION_EXACT_BYTES_NOT_RECOVERED",
+      "candidate_link_to_any_of_60": "UNADJUDICATED"
+    },
+    {
+      "lead_id": "wendbine-prior-chat-20260916-233013-facebook-linked",
+      "user_message_time_utc": "2026-09-16T23:30:13Z",
+      "reported_title": "MAD SCIENTISTS IN A BUBBLE",
+      "recorded_context": "Separate complete user-supplied Facebook-linked transcription with WES/TARDIS phone dialogue.",
+      "source_platform_reported": "facebook",
+      "source_id": null,
+      "canonical_url": null,
+      "exact_text_materialized_in_current_runtime": false,
+      "status": "KNOWN_PRIOR_USER_SUPPLIED_TRANSCRIPTION_EXACT_BYTES_NOT_RECOVERED",
+      "candidate_link_to_any_of_60": "UNADJUDICATED"
+    }
+  ],
+  "rules": [
+    "PRIOR_CHAT_REPORT != EXACT_TEXT_BYTES",
+    "MATCHING_TITLE != SAME_SOURCE_OBJECT",
+    "USER_SUPPLIED_TRANSCRIPTION != PUBLIC_REDDIT_CANONICAL_URL",
+    "EXACT_TEXT_UNMATERIALIZED != TEXT_NONEXISTENT",
+    "CROSS_PLATFORM_MOTIF != CONTENT_IDENTITY"
+  ],
+  "next_event": "RECOVER_EXACT_PRIOR_USER_MESSAGE_OR_AUTHOR_EXPORT_WITH_PROVENANCE",
+  "seal": "⟐"
+}

@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>𝌋 TD613 · The Accident of Inheritance — Epistemic Authority &amp; Revision-Latency Laboratory</title>
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --panel: #141923;
+      --panel-alt: #1b2230;
+      --border: #2c374b;
+      --text: #e9edf5;
+      --muted: #9aa7bd;
+      --accent-gold: #e0b354;
+      --mon: #e06c75;
+      --evi: #61afef;
+      --prov: #e5c07b;
+      --cust: #56d39a;
+      --oracle: #c678dd;
+      --focus: #ffd166;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a, button, select, input {
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #151b26 0%, #0f131b 100%);
+      padding: 1.25rem 1.25rem 1rem;
+    }
+
+    .container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 1rem 2.5rem;
+    }
+
+    .eyebrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-alt);
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+
+    .pill-frozen {
+      border-color: #4d88c4;
+      background: rgba(97, 175, 239, 0.14);
+      color: #a8d5ff;
+    }
+
+    .pill-sandbox {
+      border-color: #b88b2e;
+      background: rgba(224, 179, 84, 0.15);
+      color: #ffe099;
+    }
+
+    h1 {
+      font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      max-width: 90ch;
+    }
+
+    /* Pedagogue NOW / WHY / EXACT Consequence Strip */
+    .pedagogue-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .ped-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.86rem;
+    }
+
+    .ped-card strong {
+      display: block;
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      color: var(--accent-gold);
+      margin-bottom: 0.2rem;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1rem 0;
+      padding: 0.65rem 0.85rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tab-btn {
+      padding: 0.48rem 0.9rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--panel-alt);
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    .tab-btn[aria-selected="true"] {
+      border-color: var(--accent-gold);
+      background: rgba(224, 179, 84, 0.2);
+      color: #fff;
+    }
+
+    .utility-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+
+    .btn-secondary {
+      padding: 0.38rem 0.72rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .control-group {
+      margin-bottom: 0.8rem;
+    }
+
+    .control-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.22rem;
+    }
+
+    .control-group label span.val {
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 600;
+    }
+
+    select, input[type="range"], input[type="number"] {
+      width: 100%;
+    }
+
+    select, input[type="number"] {
+      background: var(--panel-alt);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.55rem;
+      font-size: 0.85rem;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    .kpi {
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .kpi .name {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .kpi .big {
+      font-size: 1.28rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 700;
+      margin: 0.15rem 0;
+    }
+
+    .kpi .meta {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: #10151e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+
+    th, td {
+      padding: 0.48rem 0.55rem;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      background: var(--panel-alt);
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.55rem;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 0.35rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .grid-main {
+        grid-template-columns: 1fr;
+      }
+      .pedagogue-strip {
+        grid-template-columns: 1fr;
+      }
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 440px) {
+      .container { padding: 0 0.65rem 2rem; }
+      header { padding: 0.9rem 0.65rem; }
+      .kpi-row { grid-template-columns: 1fr; }
+      th, td { padding: 0.36rem 0.35rem; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="padding-bottom: 0;">
+      <div class="eyebrow">
+        <span>𝌋 TD613 · Palace of Unborn Futures, Act II</span>
+        <span class="pill">SAC[X6ZNK5NO51]</span>
+        <span class="pill">Covenant: Khona‌lit-po</span>
+        <span class="pill">SOURCE-FREE · 0 Paid API Calls</span>
+      </div>
+      <h1>The Accident of Inheritance — Epistemic Authority &amp; Revision-Latency Laboratory</h1>
+      <p class="subtitle">
+        Holds permissible inherited evidence byte-identical across four civilizations and inspects when historical authority protects decisions versus when acceleration (<code>χ = hτ</code>, <code>κ = ντ</code>) and validation inertia turn inherited canon into consequential error.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="pedagogue-strip" aria-label="Consequence Summary">
+      <div class="ped-card">
+        <strong>NOW — WHAT YOU ARE INSPECTING</strong>
+        Compare two strictly separated planes: (1) the read-only Frozen Reference Ledger from the committed package, and (2) an interactive counterfactual sandbox.
+      </div>
+      <div class="ped-card">
+        <strong>WHY — CONSEQUENCE BOUNDARY</strong>
+        Sandbox sliders compute live synthetic episodes locally in your browser. They never overwrite committed receipts, alter preregistered hypotheses, or grant scientific closure.
+      </div>
+      <div class="ped-card">
+        <strong>EXACT — REST, EXIT &amp; CUSTODY</strong>
+        You may reset controls or close this offline page at any time with zero state mutation. Human scientific closure remains <code>RESERVED</code>; Protected Experiment B remains <code>HELD</code>.
+      </div>
+    </section>
+
+    <div class="toolbar" role="region" aria-label="Mode Selector and Accessibility Controls">
+      <div class="mode-tabs" role="tablist" aria-label="Laboratory Planes">
+        <button id="tab-sandbox" class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-sandbox">
+          Interactive Synthetic Sandbox (Exploratory)
+        </button>
+        <button id="tab-frozen" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-frozen">
+          Frozen Protocol &amp; Calibration Reference (Read-Only)
+        </button>
+      </div>
+      <div class="utility-btns">
+        <button id="btn-reset" class="btn-secondary" type="button">Reset Sandbox Defaults</button>
+        <button id="btn-motion" class="btn-secondary" type="button" aria-pressed="false">Reduced Motion: Off</button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PLANE 1: INTERACTIVE SYNTHETIC SANDBOX (EXPLORATORY COUNTERFACTUAL) -->
+    <!-- =================================================================== -->
+    <section id="panel-sandbox" role="tabpanel" aria-labelledby="tab-sandbox">
+      <div class="grid-main">
+        <aside class="card" aria-label="Sandbox Parameters">
+          <h2>
+            <span>Sandbox Parameters</span>
+            <span class="pill pill-sandbox">EXPLORATORY</span>
+          </h2>
+
+          <div class="control-group">
+            <label for="sel-family">World Regime Family</label>
+            <select id="sel-family">
+              <option value="FAM_A">Family A — Stationary Inheritance</option>
+              <option value="FAM_B" selected>Family B — Abrupt Transition</option>
+              <option value="FAM_C">Family C — Gradual Drift</option>
+              <option value="FAM_D">Family D — Action-Invariant Change</option>
+              <option value="FAM_E">Family E — Recurrent Regimes</option>
+              <option value="FAM_F">Family F — Delayed Contradiction</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="sel-standing">Focal Ancestral Source Standing</label>
+            <select id="sel-standing">
+              <option value="FOUNDING_AUTHORITY" selected>FOUNDING_AUTHORITY (2.40x)</option>
+              <option value="ESTABLISHED_COUNCIL">ESTABLISHED_COUNCIL (1.55x)</option>
+              <option value="INDEPENDENT_AUDITOR">INDEPENDENT_AUDITOR (0.55x)</option>
+              <option value="JUNIOR_OR_CONTESTED">JUNIOR_OR_CONTESTED (0.25x)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="rng-rel">Focal Measured Reliability (Q) <span class="val" id="val-rel">0.84</span></label>
+            <input id="rng-rel" type="range" min="0.10" max="0.98" step="0.02" value="0.84" />
+          </div>
+
+          <div class="control-group">
+            <label for="sel-focal-truth">Ancestral Focal Claim Initial Validity</label>
+            <select id="sel-focal-truth">
+              <option value="VALID_AT_T0" selected>Valid at t=0 (Endorses Initial Mechanism M0)</option>
+              <option value="MISLEADING_AT_T0">Uncalibrated Error at t=0 (Endorses M1)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="rng-auth">Historical Authority Scale (λ) <span class="val" id="val-auth">1.00</span></label>
+            <input id="rng-auth" type="range" min="0.25" max="2.25" step="0.05" value="1.00" />
+          </div>
+
+          <div class="control-group">
+            <label for="rng-hazard">Regime-Change Hazard (h / tick) <span class="val" id="val-hazard">0.12</span></label>
+            <input id="rng-hazard" type="range" min="0.00" max="0.30" step="0.02" value="0.12" />
+          </div>
+
+          <div class="control-group">
+            <label for="rng-dobs">Sensor Observation Delay (Δ_obs ticks) <span class="val" id="val-dobs">1</span></label>
+            <input id="rng-dobs" type="range" min="0" max="4" step="1" value="1" />
+          </div>
+
+          <div class="control-group">
+            <label for="rng-dadm">Custodial Admission Delay (Δ_adm ticks) <span class="val" id="val-dadm">2</span></label>
+            <input id="rng-dadm" type="range" min="0" max="6" step="1" value="2" />
+          </div>
+
+          <div class="control-group">
+            <label for="sel-cadence">Consequential Action Cadence (ν)</label>
+            <select id="sel-cadence">
+              <option value="6">Deliberative (Every 6 ticks · ν = 0.167)</option>
+              <option value="4">Moderate (Every 4 ticks · ν = 0.250)</option>
+              <option value="2" selected>Accelerated (Every 2 ticks · ν = 0.500)</option>
+              <option value="1">Hyper-Accelerated (Every tick · ν = 1.000)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="inp-seed">Deterministic Trajectory Seed</label>
+            <input id="inp-seed" type="number" min="1" max="99999" value="613" />
+          </div>
+
+          <div style="font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 0.65rem;">
+            <div>Exogenous <code>τ₀ = Δ_obs + Δ_adm</code>: <strong id="lbl-tau0" style="color:var(--text)">3</strong> ticks</div>
+            <div>Design Exposure <code>χ₀ = h·τ₀</code>: <strong id="lbl-chi0" style="color:var(--text)">0.360</strong></div>
+            <div>Action Exposure <code>κ₀ = ν·τ₀</code>: <strong id="lbl-kappa0" style="color:var(--text)">1.500</strong></div>
+          </div>
+        </aside>
+
+        <div>
+          <div class="kpi-row" id="sandbox-kpis" aria-live="polite"></div>
+
+          <div class="card">
+            <h2>
+              <span>Posterior Probability Assigned to Active Ground-Truth Mechanism P_t(M_active)</span>
+              <span class="pill pill-sandbox">Ticks t = 1..24</span>
+            </h2>
+            <div class="legend">
+              <span><i class="dot" style="background:var(--mon)"></i>Monumentalists</span>
+              <span><i class="dot" style="background:var(--evi)"></i>Evidentialists</span>
+              <span><i class="dot" style="background:var(--prov)"></i>Provisionalists</span>
+              <span><i class="dot" style="background:var(--cust)"></i>Temporal Custodians</span>
+            </div>
+            <svg id="svg-beliefs" viewBox="0 0 760 250" role="img" aria-label="Belief Trajectory Plot"></svg>
+          </div>
+
+          <div class="card">
+            <h2>
+              <span>8-Coordinate Temporal Lattice, Contradiction Availability &amp; Consequential Actions</span>
+              <span class="pill pill-sandbox">Non-Retroactive Membrane</span>
+            </h2>
+            <svg id="svg-timeline" viewBox="0 0 760 225" role="img" aria-label="Temporal Coordinates and Action Outcomes"></svg>
+          </div>
+
+          <div class="card">
+            <h2><span>Episode Outcome &amp; Latency Decomposition Table</span></h2>
+            <div style="overflow-x:auto;">
+              <table id="tbl-sandbox">
+                <thead>
+                  <tr>
+                    <th>Civilization Policy</th>
+                    <th>Utility (U)</th>
+                    <th>Pre-Avail Err (O3)</th>
+                    <th>Post-Avail Err (O4)</th>
+                    <th>Eval Delay τ_eval</th>
+                    <th>χ_eff</th>
+                    <th>κ_eff</th>
+                    <th>Probes (/6)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- PLANE 2: FROZEN PROTOCOL & CALIBRATION REFERENCE (READ-ONLY)        -->
+    <!-- =================================================================== -->
+    <section id="panel-frozen" class="hidden" role="tabpanel" aria-labelledby="tab-frozen">
+      <div class="card">
+        <h2>
+          <span>Sealed Confirmatory Benchmark (`ACT2_CONFIRMATORY_192` · Lock Commit `8ea7727a5`)</span>
+          <span class="pill pill-frozen">IMMUTABLE READ-ONLY RECEIPT</span>
+        </h2>
+        <p style="color:var(--muted); font-size:0.88rem; margin-top:0;">
+          Executed post-freeze against <code>frozen-confirmatory-lock-act2.json</code> (<code>14/14</code> locked files verified, including <code>scripts/run-confirmatory-192.mjs</code>; <code>24,192</code> episodes across <code>192</code> base worlds, <code>48</code> independent 4-world Iso-Π clusters, and <code>18</code> <code>(h, τ0, ν)</code> grid cells; <code>unauthorized_investigator_reads = 0</code>). Interactive sandbox changes in Tab 1 never mutate these frozen receipts.
+        </p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Condition (N = 3,456 / cond)</th>
+                <th>Confirmatory Utility</th>
+                <th>Signed Regret</th>
+                <th>O3 Pre-Avail Err</th>
+                <th>O4 Post-Avail Err</th>
+                <th>Censored τ_eval</th>
+                <th>Mean Probes (/6)</th>
+                <th>False Claim Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>D_TEMPORAL_CUSTODIANS</strong></td><td><strong>0.7044</strong></td><td>0.2801</td><td>0.5708</td><td><strong>0.3957</strong></td><td>4.27t</td><td>4.38</td><td>0.1782</td></tr>
+              <tr><td><strong>C_PROVISIONALISTS</strong></td><td>0.6509</td><td>0.3336</td><td>0.7701</td><td>0.5542</td><td>3.59t</td><td>6.00</td><td>0.2922</td></tr>
+              <tr><td><strong>B_EVIDENTIALISTS</strong></td><td>0.6253</td><td>0.3592</td><td>0.6899</td><td>0.5485</td><td>8.11t</td><td>3.26</td><td>0.2627</td></tr>
+              <tr><td>CTRL_NO_HISTORY (ref)</td><td>0.5631</td><td>0.4215</td><td>0.7999</td><td>0.6221</td><td>9.60t</td><td>4.62</td><td>0.3067</td></tr>
+              <tr><td><strong>A_MONUMENTALISTS</strong></td><td>0.4991</td><td>0.4855</td><td>0.5993</td><td>0.6308</td><td>10.77t</td><td>0.16</td><td>0.4708</td></tr>
+              <tr><td>CTRL_RANDOM (ref)</td><td>0.3308</td><td>0.6537</td><td>0.8029</td><td>0.8062</td><td>4.56t</td><td>5.21</td><td>0.7480</td></tr>
+              <tr><td>CTRL_DYNAMIC_ORACLE (ref)</td><td>0.9845</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>1.78t</td><td>0.00</td><td>0.0000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span>Family-Disaggregated Confirmatory Profile (`ACT2_CONFIRMATORY_192` · Exact 2⁸ = 256 Sign-Flip)</span></h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>World Family (576 ep / policy)</th>
+                <th>Monumentalists</th>
+                <th>Evidentialists</th>
+                <th>Provisionalists</th>
+                <th>Temporal Custodians</th>
+                <th>No-History</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>FAM_A Stationary Inheritance</td><td>0.8228</td><td><strong>0.9721</strong></td><td>0.8699</td><td>0.9472</td><td>0.9051</td></tr>
+              <tr><td>FAM_B Abrupt Transition</td><td>0.3579</td><td>0.5743</td><td>0.6188</td><td><strong>0.7073</strong></td><td>0.5413</td></tr>
+              <tr><td>FAM_C Gradual Drift</td><td>0.4319</td><td>0.4929</td><td>0.5614</td><td><strong>0.6062</strong></td><td>0.4318</td></tr>
+              <tr><td>FAM_D Action-Invariant Change</td><td>0.5814</td><td><strong>0.8039</strong></td><td>0.7267</td><td>0.7895</td><td>0.7169</td></tr>
+              <tr><td>FAM_E Recurrent Regimes</td><td>0.4747</td><td>0.3941</td><td>0.5569</td><td><strong>0.6167</strong></td><td>0.3976</td></tr>
+              <tr><td>FAM_F Delayed Contradiction</td><td>0.3257</td><td>0.5144</td><td><strong>0.5716</strong></td><td>0.5593</td><td>0.3856</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>
+          <span>Pre-Freeze Calibration Benchmark (`ACT2_PILOT_48`)</span>
+          <span class="pill pill-frozen">IMMUTABLE READ-ONLY REFERENCE</span>
+        </h2>
+        <p style="color:var(--muted); font-size:0.88rem; margin-top:0;">
+          These figures reproduce the locked pre-confirmatory calibration benchmark (`receipts/pilot-48-receipt.json`, `2,016` episodes across `12` Iso-Π clusters) sealed before generating <code>ACT2_CONFIRMATORY_192</code>.
+        </p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Condition</th>
+                <th>Pilot Utility</th>
+                <th>Signed Regret</th>
+                <th>O3 Pre-Avail Err</th>
+                <th>O4 Post-Avail Err</th>
+                <th>Mean Probes (/6)</th>
+                <th>False Claim Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>D_TEMPORAL_CUSTODIANS</strong></td><td>0.7211</td><td>0.2634</td><td>0.6274</td><td>0.3526</td><td>4.46</td><td>0.1528</td></tr>
+              <tr><td><strong>C_PROVISIONALISTS</strong></td><td>0.6302</td><td>0.3544</td><td>0.8148</td><td>0.5677</td><td>6.00</td><td>0.3194</td></tr>
+              <tr><td><strong>B_EVIDENTIALISTS</strong></td><td>0.6261</td><td>0.3585</td><td>0.7044</td><td>0.5391</td><td>3.28</td><td>0.2569</td></tr>
+              <tr><td><strong>A_MONUMENTALISTS</strong></td><td>0.4989</td><td>0.4856</td><td>0.6428</td><td>0.6488</td><td>0.18</td><td>0.4688</td></tr>
+              <tr><td>CTRL_NO_HISTORY (ref)</td><td>0.5582</td><td>0.4263</td><td>0.8377</td><td>0.6174</td><td>4.56</td><td>0.3160</td></tr>
+              <tr><td>CTRL_RANDOM (ref)</td><td>0.3261</td><td>0.6584</td><td>0.8091</td><td>0.8207</td><td>5.23</td><td>0.7639</td></tr>
+              <tr><td>CTRL_DYNAMIC_ORACLE (ref)</td><td>0.9845</td><td>0.0000</td><td>0.0000</td><td>0.0000</td><td>0.00</td><td>0.0000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Principal: Tawanna C. Miller · Operator: <code>tauric.diana.613</code> · Supervision: <code>INTERNALLY_SEPARATED_SINGLE_SUPERVISING_MODEL</code></span>
+      <span>𝄐 Khona‌lit-po · Human scientific closure RESERVED · Protected Experiment B HELD · Sealed ⟐SAC[X6ZNK5NO51]</span>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // Deterministic Mulberry32 PRNG for reproducible browser-local sandbox episodes
+      function makeRng(seedInt) {
+        let a = (seedInt >>> 0) || 613;
+        return {
+          next() {
+            a |= 0;
+            a = (a + 0x6D2B79F5) | 0;
+            let t = Math.imul(a ^ (a >>> 15), 1 | a);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          },
+          normal(mean, sd) {
+            const u1 = Math.max(1e-9, this.next());
+            const u2 = this.next();
+            const z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            return mean + sd * z;
+          }
+        };
+      }
+
+      const POLICIES = [
+        { id: 'A_MONUMENTALISTS', label: 'Monumentalists', color: '#e06c75' },
+        { id: 'B_EVIDENTIALISTS', label: 'Evidentialists', color: '#61afef' },
+        { id: 'C_PROVISIONALISTS', label: 'Provisionalists', color: '#e5c07b' },
+        { id: 'D_TEMPORAL_CUSTODIANS', label: 'Temporal Custodians', color: '#56d39a' }
+      ];
+
+      const STANDING_MULT = {
+        FOUNDING_AUTHORITY: 2.40,
+        ESTABLISHED_COUNCIL: 1.55,
+        INDEPENDENT_AUDITOR: 0.55,
+        JUNIOR_OR_CONTESTED: 0.25
+      };
+
+      const HYPS = [
+        { idx: 0, amb: -0.95, probes: [1.42, -0.18, -0.68, -0.18] },
+        { idx: 1, amb: -0.32, probes: [-0.18, 1.42, -0.18, -0.68] },
+        { idx: 2, amb: 0.32,  probes: [-0.68, -0.18, 1.42, -0.18] },
+        { idx: 3, amb: 0.95,  probes: [-0.18, -0.68, -0.18, 1.42] }
+      ];
+
+      function softmax(logs) {
+        const m = Math.max(...logs);
+        const exps = logs.map(v => Math.exp(Math.max(-40, v - m)));
+        const s = exps.reduce((a, b) => a + b, 0);
+        return exps.map(e => e / s);
+      }
+
+      function entropy(probs) {
+        let h = 0;
+        for (const p of probs) if (p > 1e-12) h -= p * Math.log2(p);
+        return h;
+      }
+
+      function payoff(actionIdx, trueSlotIdx, family) {
+        if (actionIdx === 4) return 0.52; // Safe hedge
+        if (family === 'FAM_D') {
+          const sameFiber = (actionIdx < 2 && trueSlotIdx < 2) || (actionIdx >= 2 && trueSlotIdx >= 2);
+          if (actionIdx === 0 && trueSlotIdx < 2) return 1.0;
+          if (actionIdx === 2 && trueSlotIdx >= 2) return 1.0;
+          return sameFiber ? 0.85 : -0.25;
+        }
+        if (actionIdx === trueSlotIdx) return 1.0;
+        if ((actionIdx + 1) % 4 === trueSlotIdx) return -0.25;
+        return 0.15;
+      }
+
+      function simulateSandbox(params) {
+        const T = 24;
+        const rng = makeRng(params.seed);
+        const tau0 = params.dObs + params.dAdm;
+        const physLag = params.family === 'FAM_F' ? 2 : 0;
+
+        // Generate hidden slot & blend trajectory
+        const activeSlot = new Array(T + 1).fill(0);
+        const alphaBlend = new Array(T + 1).fill(0);
+        const ctxTag = new Array(T + 1).fill('ALPHA');
+        let tShift = null;
+
+        if (params.family === 'FAM_B' || params.family === 'FAM_D' || params.family === 'FAM_F') {
+          const pStep = 1 - Math.exp(-params.h * 1.7);
+          let shifted = false;
+          for (let t = 1; t <= T; t++) {
+            if (!shifted && t >= 3 && (rng.next() < pStep || (params.family === 'FAM_F' && params.h > 0 && t === 4))) {
+              shifted = true;
+              if (params.family !== 'FAM_D') tShift = t;
+            }
+            activeSlot[t] = shifted ? 1 : 0;
+            alphaBlend[t] = shifted ? 1 : 0;
+            ctxTag[t] = shifted && rng.next() < 0.55 ? 'BETA' : 'ALPHA';
+          }
+        } else if (params.family === 'FAM_C') {
+          for (let t = 1; t <= T; t++) {
+            const a = Math.min(1, 0.56 * params.h * (t - 1));
+            alphaBlend[t] = a;
+            if (a > 0.5 && tShift === null) tShift = t;
+            activeSlot[t] = a > 0.5 ? 1 : 0;
+          }
+        } else if (params.family === 'FAM_E') {
+          tShift = 4;
+          for (let t = 1; t <= T; t++) {
+            const inBeta = t >= 4 && t < 14;
+            activeSlot[t] = inBeta ? 1 : 0;
+            alphaBlend[t] = inBeta ? 1 : 0;
+            ctxTag[t] = inBeta ? 'BETA' : 'ALPHA';
+          }
+        }
+
+        // CRN observations
+        const ambObs = [];
+        const probeObs = [];
+        let tContraObs = null;
+        let tContraAdm = null;
+        let tContraAvail = null;
+
+        for (let t = 1; t <= T; t++) {
+          const sTick = Math.max(1, t - physLag);
+          const a = alphaBlend[sTick];
+          const meanAmb = (1 - a) * HYPS[0].amb + a * HYPS[1].amb;
+          const yAmb = meanAmb + rng.normal(0, 0.74);
+          const tO = t + params.dObs;
+          const tA = tO + params.dAdm;
+          ambObs[t] = { tEvent: t, tObs: tO, tAdm: tA, tAvail: tA, val: yAmb, ctx: ctxTag[t], kind: 'AMB' };
+
+          if (tShift !== null && t >= tShift + physLag && tContraObs === null) {
+            const z0 = (yAmb - HYPS[0].amb) / 0.74;
+            const z1 = (yAmb - HYPS[1].amb) / 0.74;
+            if (-0.5 * z1 * z1 - (-0.5 * z0 * z0) >= 0.85) {
+              tContraObs = tO;
+              tContraAdm = tA;
+              tContraAvail = tA;
+            }
+          }
+
+          probeObs[t] = [0, 1, 2, 3].map(pIdx => {
+            const mp = (1 - a) * HYPS[0].probes[pIdx] + a * HYPS[1].probes[pIdx];
+            return { tEvent: t, tObs: tO, tAdm: tA, tAvail: tA, val: mp + rng.normal(0, 0.30), ctx: ctxTag[t], kind: 'PROBE', pIdx };
+          });
+        }
+
+        // Historical claims: focal claim + rival background claim + ancestral Beta trace
+        const focalTarget = params.focalTruth === 'VALID_AT_T0' ? 0 : 1;
+        const rivalTarget = 1 - focalTarget;
+        const rivalStanding = params.standing === 'FOUNDING_AUTHORITY' ? 'JUNIOR_OR_CONTESTED' : 'ESTABLISHED_COUNCIL';
+        const rivalQ = params.focalTruth === 'VALID_AT_T0' ? 0.32 : 0.90;
+
+        const claims = [
+          { target: focalTarget, standing: params.standing, q: params.reliability, tag: 'ALPHA', age: 30, strength: 1.85 },
+          { target: rivalTarget, standing: rivalStanding, q: rivalQ, tag: 'ALPHA', age: 18, strength: 1.45 },
+          { target: 1, standing: 'JUNIOR_OR_CONTESTED', q: 0.91, tag: 'BETA', age: 16, strength: 1.85 }
+        ];
+
+        const results = POLICIES.map(pol => {
+          const queued = [];
+          for (let t = 1; t <= T; t++) queued.push(ambObs[t]);
+          let probesUsed = 0;
+          let cusum = 0;
+          const activeProbTrace = [];
+          const actions = [];
+          let tCorrection = null;
+
+          for (let t = 1; t <= T; t++) {
+            const avail = queued.filter(o => o.tAvail <= t).sort((x, y) => x.tAvail - y.tAvail || x.tEvent - y.tEvent);
+            const curCtx = ctxTag[t];
+
+            // Prior
+            const logPrior = [0, 0, 0, 0];
+            for (const c of claims) {
+              let w = 0;
+              if (pol.id === 'A_MONUMENTALISTS') {
+                w = 1.35 * params.authScale * STANDING_MULT[c.standing];
+              } else if (pol.id === 'B_EVIDENTIALISTS') {
+                w = 1.45 * params.authScale * (c.q * c.q);
+              } else if (pol.id === 'C_PROVISIONALISTS') {
+                w = 0.20 * params.authScale * c.q;
+              } else {
+                const regMatch = c.tag === curCtx ? (curCtx === 'BETA' ? 2.4 : 1.35) : 0.10;
+                w = 1.35 * params.authScale * (c.q * c.q) * Math.exp(-0.018 * (t + c.age)) * regMatch;
+              }
+              for (let m = 0; m < 4; m++) {
+                logPrior[m] += w * (m === c.target ? c.strength : -0.45 * c.strength);
+              }
+            }
+            const canonIdx = logPrior.indexOf(Math.max(...logPrior));
+
+            const newly = avail.filter(o => o.tAvail === t);
+            if (newly.length > 0) {
+              for (const no of newly) {
+                const mu = no.kind === 'AMB' ? HYPS[canonIdx].amb : HYPS[canonIdx].probes[no.pIdx];
+                const sd = no.kind === 'AMB' ? 0.74 : 0.30;
+                const z = Math.abs(no.val - mu) / sd;
+                cusum = Math.max(0, 0.78 * cusum + (z - 1.25));
+              }
+            } else {
+              cusum *= 0.88;
+            }
+
+            let gamma = 0.965;
+            let mult = 1.0;
+            if (pol.id === 'A_MONUMENTALISTS') { gamma = 0.985; mult = 0.88; }
+            else if (pol.id === 'C_PROVISIONALISTS') { gamma = 0.66; mult = 1.35; }
+            else if (pol.id === 'D_TEMPORAL_CUSTODIANS') { gamma = cusum > 1.8 ? 0.65 : 0.94; mult = 1.06; }
+
+            const logPost = [...logPrior];
+            for (const o of avail) {
+              const age = Math.max(0, t - o.tEvent);
+              const ctxW = pol.id === 'D_TEMPORAL_CUSTODIANS' && o.ctx !== curCtx ? 0.30 : 1.0;
+              const wObs = Math.pow(gamma, age) * mult * ctxW;
+              for (let m = 0; m < 4; m++) {
+                const mu = o.kind === 'AMB' ? HYPS[m].amb : HYPS[m].probes[o.pIdx];
+                const sd = o.kind === 'AMB' ? 0.74 : 0.30;
+                const z = (o.val - mu) / sd;
+                logPost[m] += wObs * (-0.5 * z * z);
+              }
+            }
+
+            if (pol.id === 'A_MONUMENTALISTS') {
+              const bestOther = Math.max(...[0, 1, 2, 3].filter(i => i !== canonIdx).map(i => logPost[i]));
+              if (bestOther - logPost[canonIdx] < 3.40 * params.authScale) {
+                logPost[canonIdx] += 2.25 * params.authScale;
+              }
+            }
+
+            let probs = softmax(logPost);
+            const ent = entropy(probs);
+
+            let doProbe = false;
+            if (probesUsed < 6) {
+              if (pol.id === 'A_MONUMENTALISTS') doProbe = ent > 0.82;
+              else if (pol.id === 'B_EVIDENTIALISTS') doProbe = ent > 0.44 || (cusum > 1.65 && t % 2 === 1);
+              else if (pol.id === 'C_PROVISIONALISTS') doProbe = ent > 0.16 || cusum > 0.35 || t <= 4;
+              else doProbe = (probesUsed < 4 && (ent > 0.45 || cusum > 1.25)) || cusum > 1.75 || (t >= 14 && ent > 0.50);
+            }
+
+            if (doProbe) {
+              let bestP = 0;
+              let bestV = -1;
+              for (let p = 0; p < 4; p++) {
+                const meanMu = probs.reduce((s, pr, m) => s + pr * HYPS[m].probes[p], 0);
+                const v = probs.reduce((s, pr, m) => s + pr * Math.pow(HYPS[m].probes[p] - meanMu, 2), 0);
+                if (v > bestV) { bestV = v; bestP = p; }
+              }
+              probesUsed += 1;
+              queued.push(probeObs[t][bestP]);
+              if (tau0 === 0) {
+                const no = probeObs[t][bestP];
+                for (let m = 0; m < 4; m++) {
+                  const z = (no.val - HYPS[m].probes[bestP]) / 0.30;
+                  logPost[m] += mult * (-0.5 * z * z);
+                }
+                probs = softmax(logPost);
+              }
+            }
+
+            const trueM = activeSlot[t];
+            activeProbTrace.push(probs[trueM]);
+
+            if (t % params.interval === 0) {
+              let bestAct = 0;
+              let bestEU = -999;
+              for (let a = 0; a < 5; a++) {
+                let eu = 0;
+                for (let m = 0; m < 4; m++) eu += probs[m] * payoff(a, m, params.family);
+                if (eu > bestEU) { bestEU = eu; bestAct = a; }
+              }
+              const actualPay = payoff(bestAct, trueM, params.family);
+              const optPay = payoff(params.family === 'FAM_D' ? 0 : trueM, trueM, params.family);
+              const isOpt = Math.abs(actualPay - optPay) < 1e-6;
+              if (tContraAvail !== null && t >= tContraAvail && isOpt && trueM === 1 && tCorrection === null) {
+                tCorrection = t;
+              }
+              actions.push({ tick: t, act: bestAct, pay: actualPay, isOpt });
+            }
+          }
+
+          const preActs = tContraAvail !== null ? actions.filter(a => a.tick < tContraAvail) : [];
+          const postActs = tContraAvail !== null ? actions.filter(a => a.tick >= tContraAvail) : [];
+          const o3 = preActs.length ? preActs.filter(a => !a.isOpt).length / preActs.length : null;
+          const o4 = postActs.length ? postActs.filter(a => !a.isOpt).length / postActs.length : null;
+          const meanAct = actions.reduce((s, a) => s + a.pay, 0) / actions.length;
+          const termOk = activeProbTrace[T - 1] >= 0.5 ? 1 : 0;
+          const util = 0.55 * meanAct + 0.37 * termOk + 0.08 * (1 - probesUsed / 6) - (termOk === 0 ? 0.10 : 0);
+          const tauEval = tContraAvail !== null ? (tCorrection !== null ? tCorrection - tContraAvail : T + 1 - tContraAvail) : 0;
+          const tauEff = tau0 + tauEval;
+          const nu = 1 / params.interval;
+
+          return {
+            ...pol,
+            util,
+            o3,
+            o4,
+            tauEval: tContraAvail !== null ? (tCorrection !== null ? `${tauEval}t` : `>${tauEval}t (unrevised)`) : 'n/a',
+            chiEff: (params.h * tauEff).toFixed(3),
+            kappaEff: (nu * tauEff).toFixed(2),
+            probesUsed,
+            activeProbTrace,
+            actions,
+            tCorrection
+          };
+        });
+
+        return { T, tShift, tContraObs, tContraAdm, tContraAvail, results };
+      }
+
+      function renderSandbox() {
+        const params = {
+          family: document.getElementById('sel-family').value,
+          standing: document.getElementById('sel-standing').value,
+          reliability: parseFloat(document.getElementById('rng-rel').value),
+          focalTruth: document.getElementById('sel-focal-truth').value,
+          authScale: parseFloat(document.getElementById('rng-auth').value),
+          h: parseFloat(document.getElementById('rng-hazard').value),
+          dObs: parseInt(document.getElementById('rng-dobs').value, 10),
+          dAdm: parseInt(document.getElementById('rng-dadm').value, 10),
+          interval: parseInt(document.getElementById('sel-cadence').value, 10),
+          seed: parseInt(document.getElementById('inp-seed').value, 10) || 613
+        };
+
+        document.getElementById('val-rel').textContent = params.reliability.toFixed(2);
+        document.getElementById('val-auth').textContent = params.authScale.toFixed(2);
+        document.getElementById('val-hazard').textContent = params.h.toFixed(2);
+        document.getElementById('val-dobs').textContent = String(params.dObs);
+        document.getElementById('val-dadm').textContent = String(params.dAdm);
+
+        const tau0 = params.dObs + params.dAdm;
+        const nu = 1 / params.interval;
+        document.getElementById('lbl-tau0').textContent = String(tau0);
+        document.getElementById('lbl-chi0').textContent = (params.h * tau0).toFixed(3);
+        document.getElementById('lbl-kappa0').textContent = (nu * tau0).toFixed(3);
+
+        const sim = simulateSandbox(params);
+
+        // KPI cards
+        const kpiRoot = document.getElementById('sandbox-kpis');
+        kpiRoot.innerHTML = sim.results.map(r => `
+          <div class="kpi" style="border-top: 3px solid ${r.color}">
+            <div class="name" style="color:${r.color}">${r.label}</div>
+            <div class="big">${r.util.toFixed(3)}</div>
+            <div class="meta">Probes: ${r.probesUsed}/6 · τ_eval: ${r.tauEval}</div>
+          </div>
+        `).join('');
+
+        // SVG 1: Belief Trajectories
+        const W = 760, H = 250, padL = 48, padR = 20, padT = 18, padB = 32;
+        const xOf = t => padL + ((t - 1) / 23) * (W - padL - padR);
+        const yOf = p => padT + (1 - p) * (H - padT - padB);
+
+        let svgB = '';
+        for (const yv of [0, 0.25, 0.5, 0.75, 1.0]) {
+          const yy = yOf(yv);
+          svgB += `<line x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}" stroke="#222c3c" stroke-width="1"/>`;
+          svgB += `<text x="${padL - 8}" y="${yy + 4}" fill="#8b9bb4" font-size="11" text-anchor="end">${yv.toFixed(2)}</text>`;
+        }
+        for (let t = 1; t <= 24; t += 2) {
+          svgB += `<text x="${xOf(t)}" y="${H - 10}" fill="#8b9bb4" font-size="11" text-anchor="middle">t=${t}</text>`;
+        }
+        if (sim.tShift !== null) {
+          const xs = xOf(Math.min(24, sim.tShift));
+          svgB += `<line x1="${xs}" y1="${padT}" x2="${xs}" y2="${H - padB}" stroke="#f7768e" stroke-dasharray="4,3" stroke-width="1.5"/>`;
+          svgB += `<text x="${xs + 4}" y="${padT + 12}" fill="#f7768e" font-size="11">t_event=${sim.tShift}</text>`;
+        }
+        if (sim.tContraAvail !== null && sim.tContraAvail <= 24) {
+          const xa = xOf(sim.tContraAvail);
+          svgB += `<line x1="${xa}" y1="${padT}" x2="${xa}" y2="${H - padB}" stroke="#ffd166" stroke-dasharray="3,3" stroke-width="1.5"/>`;
+          svgB += `<text x="${xa + 4}" y="${padT + 26}" fill="#ffd166" font-size="11">t_avail=${sim.tContraAvail}</text>`;
+        }
+        for (const r of sim.results) {
+          const pts = r.activeProbTrace.map((p, i) => `${xOf(i + 1).toFixed(1)},${yOf(p).toFixed(1)}`).join(' ');
+          svgB += `<polyline fill="none" stroke="${r.color}" stroke-width="2.4" points="${pts}"/>`;
+        }
+        document.getElementById('svg-beliefs').innerHTML = svgB;
+
+        // SVG 2: 8-Coordinate Temporal Lattice & Consequential Actions
+        let svgT = '';
+        const xTick = t => 145 + ((t - 1) / 23) * (W - 165);
+        svgT += `<text x="12" y="28" fill="#ffd166" font-size="11" font-weight="700">Temporal Lattice</text>`;
+        svgT += `<line x1="145" y1="24" x2="${W - 20}" y2="24" stroke="#2c374b" stroke-width="2"/>`;
+        if (sim.tShift !== null) {
+          svgT += `<circle cx="${xTick(Math.min(24, sim.tShift))}" cy="24" r="5" fill="#f7768e"/>`;
+          svgT += `<text x="${xTick(Math.min(24, sim.tShift))}" y="14" fill="#f7768e" font-size="10" text-anchor="middle">ev:${sim.tShift}</text>`;
+        }
+        if (sim.tContraObs !== null && sim.tContraObs <= 24) {
+          svgT += `<circle cx="${xTick(sim.tContraObs)}" cy="24" r="5" fill="#61afef"/>`;
+          svgT += `<text x="${xTick(sim.tContraObs)}" y="39" fill="#61afef" font-size="10" text-anchor="middle">obs:${sim.tContraObs}</text>`;
+        }
+        if (sim.tContraAvail !== null && sim.tContraAvail <= 24) {
+          svgT += `<circle cx="${xTick(sim.tContraAvail)}" cy="24" r="5" fill="#ffd166"/>`;
+          svgT += `<text x="${xTick(sim.tContraAvail)}" y="14" fill="#ffd166" font-size="10" text-anchor="middle">adm/avail:${sim.tContraAvail}</text>`;
+        }
+
+        sim.results.forEach((r, idx) => {
+          const ry = 68 + idx * 38;
+          svgT += `<text x="12" y="${ry + 4}" fill="${r.color}" font-size="11.5" font-weight="600">${r.label}</text>`;
+          svgT += `<line x1="145" y1="${ry}" x2="${W - 20}" y2="${ry}" stroke="#222c3c" stroke-width="1"/>`;
+          for (const a of r.actions) {
+            const cx = xTick(a.tick);
+            const fill = a.isOpt ? '#56d39a' : (a.pay < 0 ? '#e06c75' : '#e5c07b');
+            svgT += `<rect x="${cx - 4.5}" y="${ry - 4.5}" width="9" height="9" rx="2" fill="${fill}"/>`;
+          }
+          if (r.tCorrection !== null) {
+            const kx = xTick(r.tCorrection);
+            svgT += `<circle cx="${kx}" cy="${ry}" r="8" fill="none" stroke="#ffffff" stroke-width="1.6"/>`;
+          }
+        });
+        svgT += `<text x="145" y="216" fill="#8b9bb4" font-size="10.5">Squares = consequential actions (green: optimal +1.00, amber: hedge/suboptimal, red: invalidated -0.25; white ring = t_correction).</text>`;
+        document.getElementById('svg-timeline').innerHTML = svgT;
+
+        // Table
+        const tbody = document.querySelector('#tbl-sandbox tbody');
+        tbody.innerHTML = sim.results.map(r => `
+          <tr>
+            <td><strong style="color:${r.color}">${r.label}</strong></td>
+            <td>${r.util.toFixed(4)}</td>
+            <td>${r.o3 === null ? 'n/a' : r.o3.toFixed(3)}</td>
+            <td>${r.o4 === null ? 'n/a' : r.o4.toFixed(3)}</td>
+            <td>${r.tauEval}</td>
+            <td>${r.chiEff}</td>
+            <td>${r.kappaEff}</td>
+            <td>${r.probesUsed}</td>
+          </tr>
+        `).join('');
+      }
+
+      // Wire controls
+      const controlIds = ['sel-family', 'sel-standing', 'rng-rel', 'sel-focal-truth', 'rng-auth', 'rng-hazard', 'rng-dobs', 'rng-dadm', 'sel-cadence', 'inp-seed'];
+      controlIds.forEach(id => {
+        document.getElementById(id).addEventListener('input', renderSandbox);
+        document.getElementById(id).addEventListener('change', renderSandbox);
+      });
+
+      document.getElementById('btn-reset').addEventListener('click', () => {
+        document.getElementById('sel-family').value = 'FAM_B';
+        document.getElementById('sel-standing').value = 'FOUNDING_AUTHORITY';
+        document.getElementById('rng-rel').value = '0.84';
+        document.getElementById('sel-focal-truth').value = 'VALID_AT_T0';
+        document.getElementById('rng-auth').value = '1.00';
+        document.getElementById('rng-hazard').value = '0.12';
+        document.getElementById('rng-dobs').value = '1';
+        document.getElementById('rng-dadm').value = '2';
+        document.getElementById('sel-cadence').value = '2';
+        document.getElementById('inp-seed').value = '613';
+        renderSandbox();
+      });
+
+      const tabSandbox = document.getElementById('tab-sandbox');
+      const tabFrozen = document.getElementById('tab-frozen');
+      const panelSandbox = document.getElementById('panel-sandbox');
+      const panelFrozen = document.getElementById('panel-frozen');
+
+      tabSandbox.addEventListener('click', () => {
+        tabSandbox.setAttribute('aria-selected', 'true');
+        tabFrozen.setAttribute('aria-selected', 'false');
+        panelSandbox.classList.remove('hidden');
+        panelFrozen.classList.add('hidden');
+      });
+
+      tabFrozen.addEventListener('click', () => {
+        tabFrozen.setAttribute('aria-selected', 'true');
+        tabSandbox.setAttribute('aria-selected', 'false');
+        panelFrozen.classList.remove('hidden');
+        panelSandbox.classList.add('hidden');
+      });
+
+      const btnMotion = document.getElementById('btn-motion');
+      btnMotion.addEventListener('click', () => {
+        const next = btnMotion.getAttribute('aria-pressed') !== 'true';
+        btnMotion.setAttribute('aria-pressed', String(next));
+        btnMotion.textContent = next ? 'Reduced Motion: On' : 'Reduced Motion: Off';
+      });
+
+      renderSandbox();
+    })();
+  </script>
+</body>
+</html>

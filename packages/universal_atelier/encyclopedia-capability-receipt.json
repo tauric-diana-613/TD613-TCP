@@ -1,0 +1,102 @@
+{
+  "schema": "td613.universal-atelier.capability-receipt/v1",
+  "evaluated_at": "2026-11-05T17:32:00.000Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona\u200Clit-po",
+  "reference_edition": {
+    "version": "1.4",
+    "edition_source_commit": "78c7ea6b974e176611fb2ed4d0c59649ebf05f62",
+    "manifest_schema": "td613.encyclopedia.reference/v1"
+  },
+  "quantitative_census": {
+    "total_records": 1141,
+    "canonical_records": 843,
+    "accession_records": 298,
+    "graph_edges_total": 2131,
+    "unresolved_graph_edges": 0,
+    "kind_breakdown": {
+      "glossary": 533,
+      "research_assessment": 279,
+      "source": 92,
+      "formula": 49,
+      "evidence": 48,
+      "contract": 40,
+      "open_question": 37,
+      "crosswalk": 28,
+      "research_program": 16,
+      "lineage_note": 11,
+      "pdf": 7,
+      "edition": 1
+    }
+  },
+  "operations_certified": [
+    {
+      "index": 1,
+      "name": "search",
+      "capability": "DETERMINISTIC_FACET_AND_PHRASE_FILTERING",
+      "hit_ceiling": 100
+    },
+    {
+      "index": 2,
+      "name": "get",
+      "capability": "VERBATIM_ORIGINAL_RECORD_AND_POINTER_RETRIEVAL",
+      "fail_closed_missing": true
+    },
+    {
+      "index": 3,
+      "name": "cite",
+      "capability": "CRYPTOGRAPHIC_CITATION_AND_CLAIM_CEILING_PACK",
+      "sha256_verified": true
+    },
+    {
+      "index": 4,
+      "name": "neighbors",
+      "capability": "BIDIRECTIONAL_GRAPH_TRAVERSAL_WITH_CITEDBY",
+      "reverse_citations_tracked": true
+    },
+    {
+      "index": 5,
+      "name": "route",
+      "capability": "DIRECTED_ACYCLIC_PATH_DISCOVERY",
+      "max_depth_ceiling": 8
+    },
+    {
+      "index": 6,
+      "name": "context",
+      "capability": "EPISTEMIC_BUNDLE_PACKING_WITH_EXPLICIT_TRUNCATION",
+      "budget_enforced": true
+    },
+    {
+      "index": 7,
+      "name": "verify",
+      "capability": "LIVE_BYTE_SHA256_RECALCULATION",
+      "internal_integrity_only": true
+    },
+    {
+      "index": 8,
+      "name": "export",
+      "capability": "COMPLETE_LOSSLESS_SERIALIZATION",
+      "deterministic_output": true
+    },
+    {
+      "index": 9,
+      "name": "prepareImport",
+      "capability": "READ_ONLY_PROPOSAL_VALIDATION",
+      "zero_database_mutations": true
+    },
+    {
+      "index": 10,
+      "name": "admitRecord",
+      "capability": "CUSTODIAL_HUMAN_REVIEW_GATED_ADMISSION",
+      "human_review_ref_mandatory": true
+    }
+  ],
+  "claim_ceilings": [
+    "Zero genuine private source admission.",
+    "Zero live model flights; protected Experiment B strictly HELD.",
+    "Verification establishes carried-byte and graph integrity only; no external scientific promotion.",
+    "Reverse citations track provenance without collapsing temporal boundaries.",
+    "Human scientific closure strictly reserved."
+  ],
+  "disposition": "TD613_ENCYCLOPEDIA_CAPABILITY_CERTIFIED_CLEAN"
+}

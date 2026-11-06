@@ -1,0 +1,430 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1793888370209-8d956199",
+  "timestamp": "2026-11-05T14:19:30.209Z",
+  "source_revision": "ce9b6c6e053505e8f005e27ad2af4631ce2ed140",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "ce9b6c6e053505e8f005e27ad2af4631ce2ed140",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": false,
+  "exact_checkout_verified": false,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "ce9b6c6e053505e8f005e27ad2af4631ce2ed140",
+    "audit_execution_revision": "ce9b6c6e053505e8f005e27ad2af4631ce2ed140",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": false,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
+  "is_historical_commit_only": false,
+  "task_scope": "EXPERIMENT_A_STAGE_AS2_MECHANISM_FALSIFICATION_DOLLHOUSE_AUDIT",
+  "evidence_class": "REPARATIVE_FALSIFICATION_EVIDENCE",
+  "evidence_references": [
+    "packages/src_reciprocal_expedition/STAGE_1_BASELINE_LEDGER.md",
+    "packages/src_reciprocal_expedition/STAGE_2_UTF8_COORDINATE_REPAIR.md",
+    "packages/src_reciprocal_expedition/STAGE_3_METHOD_FIDELITY.md",
+    "packages/src_reciprocal_expedition/STAGE_4_MECHANISM_ASSAY.md",
+    "packages/src_reciprocal_expedition/STAGE_5_SHADOW_GRAPH.md"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "packages/src_reciprocal_expedition/STAGE_1_BASELINE_LEDGER.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "ccc7637838619abd4765dc3d4432b2a2ca9417bbc9988563c8d69ecb46a6c64e",
+      "byte_digest_verified": true,
+      "sha256": "ccc7637838619abd4765dc3d4432b2a2ca9417bbc9988563c8d69ecb46a6c64e"
+    },
+    {
+      "reference": "packages/src_reciprocal_expedition/STAGE_2_UTF8_COORDINATE_REPAIR.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "4344a2dbae3f2273e22c19ec407791689d0392d2b38c5321735e918985e6ca58",
+      "byte_digest_verified": true,
+      "sha256": "4344a2dbae3f2273e22c19ec407791689d0392d2b38c5321735e918985e6ca58"
+    },
+    {
+      "reference": "packages/src_reciprocal_expedition/STAGE_3_METHOD_FIDELITY.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1ebfb2852a503d7101582e77439fd7c8af17f74542ed71303666efcc8f5108be",
+      "byte_digest_verified": true,
+      "sha256": "1ebfb2852a503d7101582e77439fd7c8af17f74542ed71303666efcc8f5108be"
+    },
+    {
+      "reference": "packages/src_reciprocal_expedition/STAGE_4_MECHANISM_ASSAY.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "21b67822629ea0b47ad635707597c55afb0ef02a0cfb1dd46703f148bc3c7b71",
+      "byte_digest_verified": true,
+      "sha256": "21b67822629ea0b47ad635707597c55afb0ef02a0cfb1dd46703f148bc3c7b71"
+    },
+    {
+      "reference": "packages/src_reciprocal_expedition/STAGE_5_SHADOW_GRAPH.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "736324708f702a059fecaf8a396b05def9dd5e8a6ec92842cbe007d5e4cd3378",
+      "byte_digest_verified": true,
+      "sha256": "736324708f702a059fecaf8a396b05def9dd5e8a6ec92842cbe007d5e4cd3378"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": false,
+            "exit_required": false,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 10,
+            "ACT": 20,
+            "WORLD_ANSWERS": 30,
+            "NAME": 40
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "ped-audit-stage-as2-falsification",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 10,
+              "ACT": 20,
+              "WORLD_ANSWERS": 30,
+              "NAME": 40
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": false,
+              "exit_required": false,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 2,
+            "current_rank": 2,
+            "sigma_min": 1,
+            "condition_number": 1,
+            "uncertainty_status": "VALID_DECLARED",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL"
+          },
+          "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "disposition": "ASK_NOTHING",
+          "admissible_question_criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+          "reason": "declared local rank and stability posture is presently satisfied",
+          "pedagogue_companion_cue": "PEDAGOGUE_SHOULD_NOT_MANUFACTURE_A_QUESTION",
+          "candidate_probe_evaluation": null,
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        },
+        "matrix_svd": {
+          "m": 2,
+          "n": 2,
+          "rank": 2,
+          "singular_values": [
+            2,
+            1
+          ],
+          "sigma_max": 2,
+          "sigma_min": 1,
+          "condition_number": 2
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "target:beta_relation_set",
+          "endpoint_b": "target:beta_relation_set",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 0,
+          "winding_delta": 0,
+          "history_parity_equal": true,
+          "modulo_2_parity_equal": true,
+          "disposition": "PASS",
+          "reason": "endpoints and winding histories match exactly",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        },
+        "relation_identity": {
+          "schema": "td613.dollhouse.atlas-relation-identity/v0.1",
+          "relation": "FIXED_SELF",
+          "held": false,
+          "left_custody": {
+            "a": 1,
+            "b": 1,
+            "s": 1,
+            "path": [
+              "D"
+            ]
+          },
+          "right_custody": {
+            "a": 1,
+            "b": 1,
+            "s": 1,
+            "path": [
+              "D"
+            ]
+          },
+          "shared_orbit": true,
+          "left_is_palindrome": true,
+          "right_is_palindrome": true,
+          "concrete_paths_preserved": true,
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 2,
+          "union_support": [
+            "ADMITTED",
+            "ATTEMPTED_REJECTED",
+            "WITHDRAWN"
+          ],
+          "union_cardinality": 3,
+          "intersection_support": [
+            "ADMITTED",
+            "ATTEMPTED_REJECTED",
+            "WITHDRAWN"
+          ],
+          "intersection_cardinality": 3,
+          "irreducible_gap": [],
+          "irreducible_gap_cardinality": 0,
+          "exact_descent_exists": true,
+          "universally_sound_available": true,
+          "disposition": "EXACT_DESCENT",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "STAGE_1_BASELINE": "PASS",
+            "STAGE_2_UTF8_REPAIR": "PASS",
+            "STAGE_3_METHOD_FIDELITY": "PASS",
+            "STAGE_4_MECHANISM_ASSAY": "PASS",
+            "STAGE_5_SHADOW_GRAPH": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "SUPPORTED",
+    "consensus": "UNANIMOUS_SUPPORT",
+    "primary_verdicts_consensus": "UNANIMOUS_SUPPORT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [],
+  "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
+  "execution_duration_ms": 589
+}

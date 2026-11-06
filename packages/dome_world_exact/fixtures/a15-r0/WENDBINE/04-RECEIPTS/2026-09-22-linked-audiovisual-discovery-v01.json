@@ -1,0 +1,51 @@
+{
+  "schema": "wendbine-linked-audiovisual-discovery/v0.1",
+  "receipt_id": "wendbine-20260922-linked-audiovisual-discovery-v01",
+  "atelier_id": "WENDBINE",
+  "retrieval_day_utc": "2026-09-22",
+  "target": "Publicly linked Suno/YouTube creative works from the u/Upset-Ratio502 account surface",
+  "platforms": [
+    "youtube",
+    "suno"
+  ],
+  "source_account": "u/Upset-Ratio502",
+  "discovery_state": "CHANNEL_OR_VIDEO_LINK_NOT_SOURCE_BOUND",
+  "verified_channel_url": null,
+  "verified_video_count": 0,
+  "video_records": [],
+  "observed_context": "Account-surface Reddit cards discuss a song graph, love-song motif, playlists and dynamic media; thematic mention alone does not establish channel ownership or an individual video URL.",
+  "admission_rule": "Admit a separate audiovisual source record only after an explicit public Reddit link, verified channel/profile cross-link, or another source-specific public witness connects the work to the account.",
+  "future_fields": [
+    "source_id",
+    "canonical_video_url",
+    "channel_url",
+    "title",
+    "published_at",
+    "publication_precision",
+    "duration",
+    "description_summary",
+    "lyrics_or_transcript_availability",
+    "audio_visual_observation_basis",
+    "parent_reddit_source_id",
+    "cross_platform_binding_witness",
+    "rights_status",
+    "source_binding_state"
+  ],
+  "reported_quote_search": {
+    "recollection": "yes Paul, it does expose a topology. It's like you're shouting X, brother",
+    "verified_exact_quote": false,
+    "source_id": null,
+    "transcript_source": null,
+    "status": "SEARCH_TARGET_UNBOUND_DO_NOT_QUOTE_AS_VERBATIM"
+  },
+  "membranes": [
+    "MEDIA_THEME_RESEMBLANCE != ACCOUNT_ATTRIBUTION",
+    "REDDIT_MEDIA_CARD != YOUTUBE_WORK",
+    "VIDEO_DESCRIPTION != VERIFIED_AUDIO_TRANSCRIPT",
+    "SYNTHETIC_DIALOGUE_IN_POST != INDEPENDENT_ARCHITECTURAL_WITNESS",
+    "NO_VERIFIED_LINK != NO_VIDEO_EXISTED"
+  ],
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}

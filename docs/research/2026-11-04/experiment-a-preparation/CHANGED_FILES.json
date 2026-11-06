@@ -1,0 +1,202 @@
+{
+  "schema": "td613.changed-files-inventory/v1",
+  "base": "eb9bf1e8a837737bb50d0d0add11ca4de70f7be6",
+  "files": [
+    {
+      "path": ".github/workflows/td613-experiment-a-preparation.yml",
+      "bytes": 3070,
+      "sha256": "e3f2c0058ea4f8e7c3483c26d82039cbb1d31df9d105f02121de5cf4bc07849c"
+    },
+    {
+      "path": "docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION_MATRICES.json",
+      "bytes": 160756,
+      "sha256": "7b4e866f28ef70ed5c94987e7e03db5cc808c02e8907206e2bcbf704943a1bba"
+    },
+    {
+      "path": "docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION_REGISTER_V2.json",
+      "bytes": 440240,
+      "sha256": "b1e45c7213639225a377fec0149078d3164aea9c6d62b53409ad893e6b354e0c"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/ANTIGRAVITY_COMPATIBILITY_CONTRACT.json",
+      "bytes": 2852,
+      "sha256": "d073ac691d6662987e98f5ba1eafea7edc9404af8a1ea765b2765534a3e93d17"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/ANTIGRAVITY_READINESS.md",
+      "bytes": 4238,
+      "sha256": "c097ded5cf169aeb26be7c4581b5aac47da6c21cb38d1ef2f4741f19871a4215"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/CLEAN_EXECUTION_MANIFEST.json",
+      "bytes": 2126,
+      "sha256": "80d7abd81313f5683f6ee32e0ce0a78d440de52a4c87f41bcdff1a93e93732c5"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/CUSTODY_RUNTIME_AND_POSTFLIGHT.md",
+      "bytes": 13520,
+      "sha256": "fa10dc3bae250e847ca908f90c12f00142e54866f9830e58ea6dc95d3bcda591"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/EVIDENCE_FREEZE.json",
+      "bytes": 6689,
+      "sha256": "53d35cf20f2f1ae3856d84f044c642f2a5812583b1a3a841ab2e01bee3b79bb0"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/EXPERIMENT_A_SUCCESSOR_DRAFT.md",
+      "bytes": 8450,
+      "sha256": "56432e5764f4ee8e634fa377c713e6bd0f547794e8795d3880797773eaad6ce0"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/HISTORICAL_EXPERIMENT_A_WITNESS.json",
+      "bytes": 2911,
+      "sha256": "d9d3328287915e27845420e6540cca032b9e73d310ee13dd313a0739650a328d"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/INTERMEDIATE_CALIBRATION_02.json",
+      "bytes": 5131,
+      "sha256": "2c54c48a4d9220e0638d996a43b07f816e1dbc4e56fd931069fef8ea73d2d1d4"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/INTERMEDIATE_CALIBRATION_02_LEDGER.jsonl",
+      "bytes": 3016,
+      "sha256": "c0235db922a5c35627dd5b75e9098deb962c0b8d71c36b178148195de2617144"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/MISSING_OBSERVATIONS_AUDIT.json",
+      "bytes": 5364,
+      "sha256": "d646941c027dc39542b5d51eb917ad7a76ac72b0e40427b219643826f3a0f4ba"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/MISSING_OBSERVATIONS_AUDIT_INPUT.json",
+      "bytes": 391,
+      "sha256": "2ca0222c0e0a14a486da7f170a5e6d3cdbf685100413dcb052cecc9aae0ffd63"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/README.md",
+      "bytes": 11596,
+      "sha256": "139bbcda57ee85afffec63b771c39ffbbda663f065f0e846aa94cb250a4d61f9"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/RECOVERED_CALIBRATION_01.json",
+      "bytes": 5131,
+      "sha256": "79e69bd1d02de88153b3108931aa610a8b3ec289b38b9bab89387129f9966e22"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/RECOVERED_CALIBRATION_01_LEDGER.jsonl",
+      "bytes": 3016,
+      "sha256": "c0235db922a5c35627dd5b75e9098deb962c0b8d71c36b178148195de2617144"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/SOURCE_FREE_TESTS.txt",
+      "bytes": 4733,
+      "sha256": "a3a3e7ba6d5379199090a4b4bb975c23caa083ff79f07687dd099404de8f7a19"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/SYNTHETIC_ATTEMPT_LEDGER.jsonl",
+      "bytes": 3406,
+      "sha256": "801ab931e8fe0b7d749ab03dfb4fbc1d5e21d379a63d27596cccac159f170971"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/THREE_WAY_SYNTHETIC_MANIFEST.json",
+      "bytes": 1017,
+      "sha256": "d155b395a0519329c89fb106d06ffbb1ebea5d6082435e6d8566adb0e83e08d5"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/WENDBINE_LOCAL_EXECUTION_CONTRACT.json",
+      "bytes": 1712,
+      "sha256": "799477ded914437aba17d15cb0ec0466d8855d1e29aefab79d02505149dfddf7"
+    },
+    {
+      "path": "docs/research/2026-11-04/experiment-a-preparation/WORK_SYNTHETIC_QUALIFICATION.json",
+      "bytes": 5371,
+      "sha256": "0224fb3cd2289236e18bfd819c84fafb14f0e1112b466b1bae379ee9e078bdb6"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/__init__.py",
+      "bytes": 76,
+      "sha256": "d9c63311bb0197c205b437dbe3ea3506e1deee980c4d8347c2b9cc987906145f"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/blind_task.py",
+      "bytes": 3546,
+      "sha256": "d2f11e7bb82d79cc6947697f2905d2676b36d045acbbbed74fbb6b066611b512"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/common.py",
+      "bytes": 960,
+      "sha256": "5e25a831428e18051650ca1f1b1c379c9a8053407ed1e363b56683e5a348b7b6"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/isolation.py",
+      "bytes": 2925,
+      "sha256": "0e8b345e236e8905df3ccbbd859927671e7eaa9af80f75cf767f011fad026279"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/kit.py",
+      "bytes": 4562,
+      "sha256": "f7e1567099e4ce59808a8120bd4a1b1ea82217b446866da3806ef68778f320c1"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/ledger.py",
+      "bytes": 3520,
+      "sha256": "69f56289af47efebed25cf0fc80ef6b8c6177f679f3462462c0185b8193ea49d"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/PINS.json",
+      "bytes": 1043,
+      "sha256": "acfee2aded776f2b1dbebaf04e48b1922a516c751b0787cb4f45e2e9ed09b289"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-compile.mjs",
+      "bytes": 9876,
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-native-compiler-contract-v1.json",
+      "bytes": 2564,
+      "sha256": "de33e16dc6d5fa445217e547b745d934301c96c6946b0b2ea93f3e5339236918"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-native-method-adapter-v1.mjs",
+      "bytes": 4719,
+      "sha256": "cd3b7784f5660925993e66c66251fc6311984c3aed8d8c8224e0872837acb453"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/register.py",
+      "bytes": 3914,
+      "sha256": "fa9d50b5693260d600fac70f2c16ea2e5a864f6d2a11cc19df109fa3148c3032"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/run-wendbine-task.mjs",
+      "bytes": 392,
+      "sha256": "cd459e5925204b0e7b8d83f92438b33cac9439750efef36123f6293ad98ee95f"
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/wendbine.py",
+      "bytes": 8375,
+      "sha256": "0d0e793f98a44e8efad3168a28a8b774490730305301c22ee0009567c26025d3"
+    },
+    {
+      "path": "scripts/qualify-experiment-a-preparation-v1.py",
+      "bytes": 4870,
+      "sha256": "98f154f466332cf182516959bd6febb49e83f175f1da3fe4d92083fc0cc7b0ee"
+    },
+    {
+      "path": "scripts/qualify-wendbine-custody-local-v1.py",
+      "bytes": 5430,
+      "sha256": "b8e04cb3a8f884c8dd8076cc57bb8d0cd9a9ffb8612a25a401474a48e6dd6c67"
+    },
+    {
+      "path": "scripts/reconcile-three-atelier-register-v2.py",
+      "bytes": 10208,
+      "sha256": "2e03db6fe3d1573419d9d6c6cd4dca10afbe6cfc4a55ade8d99eec24a0f78444"
+    },
+    {
+      "path": "tests/test_experiment_a_preparation_v1.py",
+      "bytes": 16994,
+      "sha256": "b354796d71c9ead45a60e73fafd1120e785c835b8725dd8915b0e7f85d109428"
+    }
+  ],
+  "self_entry": "Included in Git tree; no recursive self-digest."
+}

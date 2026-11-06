@@ -1,0 +1,343 @@
+{
+  "contextual_roles": {
+    "compilation_passes": [
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "build_target_id": "compiler_pass_1",
+        "compilation_pass_id": "src-compilation-pass:626ad03f2737d717172a5ea7",
+        "compiler_id": "compiler_pass_1",
+        "compiler_status": "WITNESSED_OR_CANDIDATE_AS_RECORDED_PER_INPUT",
+        "contextual_role_count": 2,
+        "input_ids": [
+          "ent:alpha",
+          "ent:beta"
+        ],
+        "input_role_assertion_ids": [
+          "src-contextual-role:228bdda24c40126a538b91df",
+          "src-contextual-role:c74327ac9c5faaa21fdf4d31"
+        ],
+        "interpretive_limit": "A compiler grouping preserves each input's own provenance and adjudication state.",
+        "observation_status": "BOUNDED_COMPILATION_VIEW",
+        "schema_version": "compilation-pass/v1",
+        "seal_epoch_binding": "RESOLVE_MATCHED_CURRENT_SEAL",
+        "source_status": "MIXED_SOURCE_AND_ARCHIVE_OBSERVATION"
+      },
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "build_target_id": "compiler_pass_2",
+        "compilation_pass_id": "src-compilation-pass:b990ac69371552653a745ef7",
+        "compiler_id": "compiler_pass_2",
+        "compiler_status": "WITNESSED_OR_CANDIDATE_AS_RECORDED_PER_INPUT",
+        "contextual_role_count": 1,
+        "input_ids": [
+          "ent:alpha"
+        ],
+        "input_role_assertion_ids": [
+          "src-contextual-role:741c68cb69643b7e6e0e654f"
+        ],
+        "interpretive_limit": "A compiler grouping preserves each input's own provenance and adjudication state.",
+        "observation_status": "BOUNDED_COMPILATION_VIEW",
+        "schema_version": "compilation-pass/v1",
+        "seal_epoch_binding": "RESOLVE_MATCHED_CURRENT_SEAL",
+        "source_status": "MIXED_SOURCE_AND_ARCHIVE_OBSERVATION"
+      }
+    ],
+    "contextual_role_assertions": [
+      {
+        "compiler_pass": "compiler_pass_1",
+        "contextual_role": "COMPILER_SOURCE",
+        "contextual_role_assertion_id": "src-contextual-role:228bdda24c40126a538b91df",
+        "entity_id": "ent:alpha",
+        "intrinsic_role_promotion": false,
+        "scope": {
+          "pass_scope": "INITIAL_PASS"
+        }
+      },
+      {
+        "compiler_pass": "compiler_pass_2",
+        "contextual_role": "TRANSFORMATION_TARGET",
+        "contextual_role_assertion_id": "src-contextual-role:741c68cb69643b7e6e0e654f",
+        "entity_id": "ent:alpha",
+        "intrinsic_role_promotion": false,
+        "scope": {
+          "pass_scope": "SECONDARY_OPTIMIZATION"
+        }
+      },
+      {
+        "compiler_pass": "compiler_pass_1",
+        "contextual_role": "INVARIANT_WITNESS",
+        "contextual_role_assertion_id": "src-contextual-role:c74327ac9c5faaa21fdf4d31",
+        "entity_id": "ent:beta",
+        "intrinsic_role_promotion": false,
+        "scope": {
+          "pass_scope": "INITIAL_PASS"
+        }
+      }
+    ]
+  },
+  "pins": {
+    "phase2": "packages/research_carrier_v1/native/phase2.py",
+    "projective": "packages/research_carrier_v1/native/projective.py",
+    "query": "packages/research_carrier_v1/native/query.py"
+  },
+  "projective": {
+    "explore_cues": [
+      {
+        "normalized_token": "beta exploration series",
+        "raw_token": "Beta Exploration Series",
+        "record_id": "1001"
+      },
+      {
+        "normalized_token": "gamma coordinate anchor",
+        "raw_token": "Gamma Coordinate Anchor",
+        "record_id": "1001"
+      },
+      {
+        "normalized_token": "delta epistemic horizon",
+        "raw_token": "Delta Epistemic Horizon",
+        "record_id": "1002"
+      },
+      {
+        "normalized_token": "alpha research protocol",
+        "raw_token": "Alpha Research Protocol",
+        "record_id": "1003"
+      }
+    ],
+    "explore_observations": [
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "explore_observation_id": "src-prg-explore:2aab77ced384c83f50031743",
+        "human_disposition_required": true,
+        "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object.",
+        "machine_candidates": [
+          {
+            "latency_seconds": 1036800,
+            "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+            "target_created": "2026-08-01T12:00:00Z",
+            "target_id": "zenodo:1001",
+            "target_title": "Alpha Research Protocol and Methods",
+            "temporal_relation": "LATER",
+            "token_word_coverage": 1.0
+          }
+        ],
+        "normalized_token": "alpha research protocol",
+        "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+        "raw_token": "Alpha Research Protocol",
+        "schema_version": "src-projective-routing-explore-observation/v1",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+        "source_created": "2026-07-20T12:00:00Z",
+        "source_id": "zenodo:1003",
+        "source_status": "ARCHIVE_BODY_OBSERVATION",
+        "source_title": "Gamma Coordinate Anchor System"
+      },
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "explore_observation_id": "src-prg-explore:e3e184e773a07e6d14b5b8ac",
+        "human_disposition_required": true,
+        "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object.",
+        "machine_candidates": [
+          {
+            "latency_seconds": 345600,
+            "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+            "target_created": "2026-08-05T12:00:00Z",
+            "target_id": "zenodo:1002",
+            "target_title": "Beta Exploration Series",
+            "temporal_relation": "LATER",
+            "token_word_coverage": 1.0
+          }
+        ],
+        "normalized_token": "beta exploration series",
+        "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+        "raw_token": "Beta Exploration Series",
+        "schema_version": "src-projective-routing-explore-observation/v1",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+        "source_created": "2026-08-01T12:00:00Z",
+        "source_id": "zenodo:1001",
+        "source_status": "ARCHIVE_BODY_OBSERVATION",
+        "source_title": "Alpha Research Protocol and Methods"
+      },
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "explore_observation_id": "src-prg-explore:138475cd4be9d1c067c8bc54",
+        "human_disposition_required": true,
+        "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object.",
+        "machine_candidates": [
+          {
+            "latency_seconds": -1036800,
+            "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+            "target_created": "2026-07-20T12:00:00Z",
+            "target_id": "zenodo:1003",
+            "target_title": "Gamma Coordinate Anchor System",
+            "temporal_relation": "PREEXISTING_OR_CONTEMPORANEOUS",
+            "token_word_coverage": 1.0
+          }
+        ],
+        "normalized_token": "gamma coordinate anchor",
+        "observation_status": "PREEXISTING_DESTINATION_CANDIDATE",
+        "raw_token": "Gamma Coordinate Anchor",
+        "schema_version": "src-projective-routing-explore-observation/v1",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+        "source_created": "2026-08-01T12:00:00Z",
+        "source_id": "zenodo:1001",
+        "source_status": "ARCHIVE_BODY_OBSERVATION",
+        "source_title": "Alpha Research Protocol and Methods"
+      },
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "explore_observation_id": "src-prg-explore:8b7e8517c958b8df76dfc3a2",
+        "human_disposition_required": true,
+        "interpretive_limit": "Lexical/title resolution only. A future lexical match does not establish a source-declared promise, semantic identity, causation, intentional puzzle design, or suppressed missing object.",
+        "machine_candidates": [
+          {
+            "latency_seconds": 432000,
+            "match_kind": "EXACT_OR_TITLE_SUBSTRING",
+            "target_created": "2026-08-10T12:00:00Z",
+            "target_id": "zenodo:1004",
+            "target_title": "Delta Epistemic Horizon",
+            "temporal_relation": "LATER",
+            "token_word_coverage": 1.0
+          }
+        ],
+        "normalized_token": "delta epistemic horizon",
+        "observation_status": "LATER_EXACT_RESOLUTION_CANDIDATE",
+        "raw_token": "Delta Epistemic Horizon",
+        "schema_version": "src-projective-routing-explore-observation/v1",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+        "source_created": "2026-08-05T12:00:00Z",
+        "source_id": "zenodo:1002",
+        "source_status": "ARCHIVE_BODY_OBSERVATION",
+        "source_title": "Beta Exploration Series"
+      }
+    ],
+    "field_marker_hits": [
+      {
+        "marker_id": "machine_readable_field",
+        "marker_literal": "machine-readable field",
+        "record_id": "1001"
+      },
+      {
+        "marker_id": "signature_coordinates",
+        "marker_literal": "signatures are not slogans. they are coordinates",
+        "record_id": "1001"
+      },
+      {
+        "marker_id": "dual_gradient",
+        "marker_literal": "dual-gradient",
+        "record_id": "1001"
+      },
+      {
+        "marker_id": "field_graph_not_sequence",
+        "marker_literal": "field becomes a graph rather than a sequence",
+        "record_id": "1002"
+      },
+      {
+        "marker_id": "semantic_space_anchor",
+        "marker_literal": "anchors in semantic space",
+        "record_id": "1002"
+      },
+      {
+        "marker_id": "structural_simulation_narrative",
+        "marker_literal": "structural simulation narrative",
+        "record_id": "1003"
+      },
+      {
+        "marker_id": "ontological_instantiation",
+        "marker_literal": "ontological instantiation",
+        "record_id": "1003"
+      },
+      {
+        "marker_id": "signature_instructions",
+        "marker_literal": "signatures are not decoration. they are instructions",
+        "record_id": "1004"
+      },
+      {
+        "marker_id": "parallel_structural_transmission",
+        "marker_literal": "parallel channel of structural transmission",
+        "record_id": "1004"
+      }
+    ]
+  },
+  "query": {
+    "query_results": [
+      {
+        "atelier_snapshot_id": "src-20260824-p2-001",
+        "case_id": "q_epoch_valid",
+        "seal_id": "src-seal:eaf744ce16b1c8b519ad0f1b0325b44192679ea4a5110b0ad0ca49fbcd816a1a",
+        "status": "VALID_EPOCH"
+      },
+      {
+        "case_id": "q_epoch_mismatch",
+        "error": "Requested snapshot/seal does not match this projection. Cross-epoch joins require a separate explicit assay.",
+        "status": "CROSS_EPOCH_REFUSED"
+      },
+      {
+        "case_id": "q_trace_connected",
+        "join_rule": "Only exact witnessed identifiers are followed; missing hops remain explicit.",
+        "missing_hop_declared": false,
+        "missing_hops": [],
+        "speculative_joins_present": false,
+        "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "unsupported_components": "UNKNOWN",
+        "witnessed_hops": [
+          "zenodo:1001"
+        ]
+      },
+      {
+        "case_id": "q_trace_missing_hop",
+        "join_rule": "Only exact witnessed identifiers are followed; missing hops remain explicit.",
+        "missing_hop_declared": true,
+        "missing_hops": [
+          "TYPED_RELATION"
+        ],
+        "speculative_joins_present": false,
+        "start_entity": "zenodo:1001",
+        "status": "RESOLVED",
+        "unsupported_components": "UNKNOWN",
+        "witnessed_hops": [
+          "zenodo:1001"
+        ]
+      }
+    ]
+  },
+  "runtime": "Python 3.12.16",
+  "schema": "td613.python-oracle-output/v2",
+  "tomography": {
+    "tomography_observations": [
+      {
+        "case_id": "tomo_01_narrowed",
+        "claim_evidence_tomography_id": "src-claim-evidence:a04c59a9d7b94699db4d95c4",
+        "composite_score": null,
+        "declared_falsifiers": [
+          "falsifier_subsystem_divergence"
+        ],
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "NARROWED",
+        "observed_delta": "NARROWED",
+        "transformation_id": "tr:01"
+      },
+      {
+        "case_id": "tomo_02_expanded",
+        "claim_evidence_tomography_id": "src-claim-evidence:f38946c8cfb4320874b46560",
+        "composite_score": null,
+        "declared_falsifiers": [
+          "falsifier_field_incoherence"
+        ],
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "EXPANDED",
+        "observed_delta": "EXPANDED",
+        "transformation_id": "tr:02"
+      },
+      {
+        "case_id": "tomo_03_unknown_null_score",
+        "claim_evidence_tomography_id": "src-claim-evidence:96091d3d725223f879002d31",
+        "composite_score": null,
+        "declared_falsifiers": [],
+        "delta_evidence": "UNKNOWN",
+        "delta_scope": "UNKNOWN",
+        "observed_delta": "UNKNOWN",
+        "transformation_id": "tr:03"
+      }
+    ]
+  }
+}

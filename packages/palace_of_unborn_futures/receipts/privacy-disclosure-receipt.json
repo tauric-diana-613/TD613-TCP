@@ -1,0 +1,279 @@
+{
+  "schema": "td613.palace.privacy-disclosure-receipt/v1",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "probability_model_declaration": {
+    "sensitive_attribute": "S ∈ {0, 1, 2, 3} discrete synthetic custodian-cohort signature",
+    "generating_distribution": "Independent discrete uniform DiscreteUniform({0,1,2,3}) per world via seeded HMAC-SHA256 PRNG",
+    "mutual_information_estimator": "Discrete 4x4 confusion-matrix plug-in MI I(S; S_hat) and Miller-Madow finite-sample bias-corrected MI on held-out CONFIRMATORY_96",
+    "mandatory_warning": "Low measured reconstruction accuracy on synthetic tasks does NOT establish real-world confidentiality or cryptographic secrecy."
+  },
+  "representations": {
+    "FULL_HISTORY_ARCHIVISTS": {
+      "representation_id": "FULL_HISTORY_ARCHIVISTS",
+      "mean_serialized_bytes": 3234.6875,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 1,
+          "accuracy_ci95": [
+            1,
+            1
+          ],
+          "excess_over_chance_25pct": 0.75,
+          "plugin_mi_bits": 1.9865,
+          "miller_madow_corrected_mi_bits": 1.9865
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 1,
+          "accuracy_ci95": [
+            1,
+            1
+          ],
+          "excess_over_chance_25pct": 0.75,
+          "plugin_mi_bits": 1.9865,
+          "miller_madow_corrected_mi_bits": 1.9865
+        }
+      }
+    },
+    "NAIVE_KEY_REDACTED_CONTROL": {
+      "representation_id": "NAIVE_KEY_REDACTED_CONTROL",
+      "mean_serialized_bytes": 3156.6458,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3438
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 1,
+          "accuracy_ci95": [
+            1,
+            1
+          ],
+          "excess_over_chance_25pct": 0.75,
+          "plugin_mi_bits": 1.9865,
+          "miller_madow_corrected_mi_bits": 1.9865
+        }
+      }
+    },
+    "HEIRS_CAPSULE_256B": {
+      "representation_id": "HEIRS_CAPSULE_256B",
+      "mean_serialized_bytes": 111.5104,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1667,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 0.25,
+          "accuracy_ci95": [
+            0.1667,
+            0.3333
+          ],
+          "excess_over_chance_25pct": 0,
+          "plugin_mi_bits": 0.0472,
+          "miller_madow_corrected_mi_bits": 0
+        }
+      }
+    },
+    "HEIRS_CAPSULE_96B": {
+      "representation_id": "HEIRS_CAPSULE_96B",
+      "mean_serialized_bytes": 81.9479,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1667,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        }
+      }
+    },
+    "REVISIONISTS_MEM_256B": {
+      "representation_id": "REVISIONISTS_MEM_256B",
+      "mean_serialized_bytes": 236.6146,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3438
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0.2101,
+          "miller_madow_corrected_mi_bits": 0.1425
+        }
+      }
+    },
+    "REVISIONISTS_MEM_96B": {
+      "representation_id": "REVISIONISTS_MEM_96B",
+      "mean_serialized_bytes": 83.1042,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3438
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3438
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 0.2917,
+          "accuracy_ci95": [
+            0.1979,
+            0.3854
+          ],
+          "excess_over_chance_25pct": 0.0417,
+          "plugin_mi_bits": 0.0701,
+          "miller_madow_corrected_mi_bits": 0.0025
+        }
+      }
+    },
+    "AMNESIACS_TERMINAL_PI": {
+      "representation_id": "AMNESIACS_TERMINAL_PI",
+      "mean_serialized_bytes": 870.9167,
+      "chance_accuracy_theoretical": 0.25,
+      "source_entropy_bits_theoretical": 2,
+      "attacks_on_confirmatory_96": {
+        "ATK_1_TRIVIAL_MAJORITY": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3438
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_2_DIRECT_TAG_SCAN": {
+          "attack_accuracy": 0.2604,
+          "accuracy_ci95": [
+            0.1771,
+            0.3542
+          ],
+          "excess_over_chance_25pct": 0.0104,
+          "plugin_mi_bits": 0,
+          "miller_madow_corrected_mi_bits": 0
+        },
+        "ATK_3_STRONG_BAYESIAN_SIDECHANNEL": {
+          "attack_accuracy": 0.2917,
+          "accuracy_ci95": [
+            0.1979,
+            0.375
+          ],
+          "excess_over_chance_25pct": 0.0417,
+          "plugin_mi_bits": 0.0879,
+          "miller_madow_corrected_mi_bits": 0.0203
+        }
+      }
+    }
+  }
+}
