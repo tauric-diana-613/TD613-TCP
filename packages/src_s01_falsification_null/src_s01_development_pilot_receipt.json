@@ -1,0 +1,122 @@
+{
+  "schema": "td613.src-s01.development-pilot-receipt/v1.0",
+  "covenant": "Khona‌lit-po",
+  "authority_ref": "SAC[X6ZNK5NO51]",
+  "executed_at": "2026-11-06T05:14:07.553Z",
+  "total_challenges": 16,
+  "condition_scores": {
+    "S0_NATIVE_SRC_ALONE": {
+      "passed": 7,
+      "failed": 9,
+      "rate": 0.4375
+    },
+    "S1_RECEIVER_ALONE": {
+      "passed": 3,
+      "failed": 13,
+      "rate": 0.1875
+    },
+    "S2_COMPETENT_NATIVE_UNION": {
+      "passed": 16,
+      "failed": 0,
+      "rate": 1
+    },
+    "S3_RECIPROCAL_SRC_ENGINE": {
+      "passed": 16,
+      "failed": 0,
+      "rate": 1
+    }
+  },
+  "paired_discordance_matrix_S3_vs_S2": {
+    "n11_both_pass": 16,
+    "n10_reciprocal_only": 0,
+    "n01_union_only": 0,
+    "n00_both_fail": 0,
+    "discordant_pairs_nd": 0,
+    "exact_two_sided_mcnemar_p_value": 1
+  },
+  "trajectory_divergence": {
+    "terminal_relation_graph_delta": 0,
+    "intermediate_trajectory_events_recorded_in_reciprocal": 38,
+    "first_class_outcome": "EQUAL_FINAL_RELATIONS_UNEQUAL_RESEARCH_HISTORIES"
+  },
+  "epistemological_disposition": {
+    "null_hypothesis_confirmed_on_dev_suite": true,
+    "emergence_surplus_observed": false,
+    "interpretation": "The development suite yields delta = 0 between Competent Union and Reciprocal candidate on terminal relations. However, intermediate trajectories differed significantly (reciprocal engine witnessed 10+ transition events and dynamic re-adjudications). Null hypothesis cannot be rejected on development suite."
+  },
+  "per_challenge_details": {
+    "S0": {
+      "CH-01": "PASS",
+      "CH-02": "PASS",
+      "CH-03": "PASS",
+      "CH-04": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-05": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-06": "PASS",
+      "CH-07": "PASS",
+      "CH-08": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-09": "PASS",
+      "CH-10": "PASS",
+      "CH-11": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-12": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-13": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-14": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-15": "UNSUPPORTED_BY_NATIVE_ALONE",
+      "CH-16": "UNSUPPORTED_BY_NATIVE_ALONE"
+    },
+    "S1": {
+      "CH-01": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-02": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-03": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-04": "PASS",
+      "CH-05": "PASS",
+      "CH-06": "PASS",
+      "CH-07": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-08": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-09": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-10": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-11": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-12": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-13": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-14": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-15": "UNSUPPORTED_BY_RECEIVER_ALONE",
+      "CH-16": "UNSUPPORTED_BY_RECEIVER_ALONE"
+    },
+    "S2": {
+      "CH-01": "PASS",
+      "CH-02": "PASS",
+      "CH-03": "PASS",
+      "CH-04": "PASS",
+      "CH-05": "PASS",
+      "CH-06": "PASS",
+      "CH-07": "PASS",
+      "CH-08": "PASS",
+      "CH-09": "PASS",
+      "CH-10": "PASS",
+      "CH-11": "PASS",
+      "CH-12": "PASS",
+      "CH-13": "PASS",
+      "CH-14": "PASS",
+      "CH-15": "PASS",
+      "CH-16": "PASS"
+    },
+    "S3": {
+      "CH-01": "PASS",
+      "CH-02": "PASS",
+      "CH-03": "PASS",
+      "CH-04": "PASS",
+      "CH-05": "PASS",
+      "CH-06": "PASS",
+      "CH-07": "PASS",
+      "CH-08": "PASS",
+      "CH-09": "PASS",
+      "CH-10": "PASS",
+      "CH-11": "PASS",
+      "CH-12": "PASS",
+      "CH-13": "PASS",
+      "CH-14": "PASS",
+      "CH-15": "PASS",
+      "CH-16": "PASS"
+    }
+  },
+  "status": "SRC_S01_DEVELOPMENT_PILOT_COMPLETE"
+}

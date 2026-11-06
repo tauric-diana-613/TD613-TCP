@@ -2,24 +2,23 @@
 /**
  * 𝌋 TD613 · Reference Concealed Challenge Generator for Independent Reviewer
  * 
- * Generates an independent, concealed synthetic falsification suite of N >= 24 challenges
- * parameterized by an undisclosed reviewer seed. Evaluates all 8 preregistered dimensions:
- * 1. Correctly grounded claims
- * 2. False corroboration
- * 3. Circularity detection
- * 4. Source-withdrawal propagation
- * 5. Preservation of evidentiary history
- * 6. Accuracy of source & acquisition attribution
- * 7. Route-dependent operator-relevant information
- * 8. Unique reciprocal interaction operations
+ * CLASSIFICATION: NONEXECUTABLE_REVIEWER_SCAFFOLD
+ * CANDIDATE_STATUS: CANDIDATE_FROZEN_INDEPENDENT_FALSIFICATION_PENDING
+ * 
+ * NOTICE (Review Finding M01-R08 & Directive S-01.II):
+ * This script is designated as non-executable reviewer scaffolding.
+ * The candidate author must NOT generate or inspect concealed test cases.
+ * The independent reviewer will author the concealed falsification suite under their own commission.
  * 
  * Authority: SAC[X6ZNK5NO51]
  * Covenant: Khona‌lit-po (literal U+200C interior retained)
  */
 
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
+console.error('[NONEXECUTABLE_REVIEWER_SCAFFOLD] Execution halted fail-closed.');
+console.error('The candidate author must not generate or inspect concealed test cases.');
+console.error('The independent evaluator and concealed suite must be authored independently by the external reviewer.');
+console.error('Candidate classification: CANDIDATE_FROZEN_INDEPENDENT_FALSIFICATION_PENDING');
+process.exit(1);
 
 function parseArgs() {
   const args = process.argv.slice(2);

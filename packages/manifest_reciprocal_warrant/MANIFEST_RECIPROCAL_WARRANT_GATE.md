@@ -27,7 +27,7 @@
 | **M-01.4: Preregistration Protocol** | **FROZEN & CONCEALED** | Preregistered 8-dimension independent falsification protocol in `PREREGISTRATION_INDEPENDENT_FALSIFICATION.md` with concealed test requirements |
 | **M-01.5: Stopping Boundary** | **HALTED BEFORE EVALUATION** | Candidate execution ceases prior to running concealed evaluation; zero self-awarded emergence |
 | **Dollhouse Specialist Skill Audit** | **🟢 SUPPORTED (5/5)** | Pedagogue: `SUPPORTED`, Aperture: `SUPPORTED`, Atlas: `SUPPORTED`, FADT: `SUPPORTED`, Temporal Custodian: `SUPPORTED` |
-| **Final Commission Classification** | `M01_CUSTODY_VERIFIED_COMPARATOR_READY_FOR_INDEPENDENT_FALSIFICATION` | Experiment B remains HELD; human scientific closure strictly reserved |
+| **Final Commission Classification** | `CANDIDATE_FROZEN_INDEPENDENT_FALSIFICATION_PENDING` | M01 candidate frozen at 4feed846e; reviewer scripts classified as non-executable scaffolding; Experiment B remains HELD; human closure reserved |
 
 ---
 
