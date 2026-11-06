@@ -1,0 +1,46 @@
+name: TD613 Gate F-01 Unadmitted Signal Source-Free Witness
+on:
+  push:
+    branches:
+      - research/gate-f01-unadmitted-signal-source-free-20261105
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bounded-source-free-ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CI: "true"
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Record exact source SHA and deny direct protected execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_HEAD=$(git rev-parse HEAD)"
+          echo "SOURCE_FREE_ONLY=1"
+          echo "PROTECTED_EXPERIMENT_B=HELD"
+          echo "PAID_API_CALLS=0"
+          test ! -e "gate-f01-output/receipt.json"
+      - name: Validate and run finite source-free original Act II ablation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check packages/accident_of_inheritance/experiments/gate-f01-native-ablation.mjs
+          node packages/accident_of_inheritance/experiments/gate-f01-native-ablation.mjs
+          node -e 'const a=require("./gate-f01-output/receipt.json"); if(a.design.n_episodes_total!==2880||a.diagnostics.unauthorized_vault_reads!==0) process.exit(4); console.log("F01_INVARIANT_PASS",a.design.n_episodes_total,"episodes",a.design.n_clusters,"clusters")'
+      - name: Upload exact source-free receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-gate-f01-source-free-receipt
+          path: gate-f01-output/receipt.json
+          if-no-files-found: warn
