@@ -40,7 +40,8 @@ import {
 } from './em-unified-theory-synthesis.mjs';
 
 import {
-  CompetentNullComparator
+  CompetentNullComparator,
+  CANONICAL_PAIRED_CASE_LEDGER
 } from './competent-null-comparator.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -54,10 +55,13 @@ function buildSyntheticZip(files) {
 
   for (const f of files) {
     const fnameBuf = Buffer.from(f.name, 'utf8');
+    const localFnameBuf = f.localName !== undefined ? Buffer.from(f.localName, 'utf8') : fnameBuf;
     const contentBuf = Buffer.isBuffer(f.content) ? f.content : Buffer.from(String(f.content), 'utf8');
     const crc = f.crc !== undefined ? f.crc : computeCrc32(contentBuf);
+    const localCrc = f.localCrc !== undefined ? f.localCrc : crc;
     let compData;
     let method = f.method !== undefined ? f.method : 8; // default deflate
+    let localMethod = f.localMethod !== undefined ? f.localMethod : method;
 
     if (method === 0) {
       compData = contentBuf;
@@ -67,25 +71,35 @@ function buildSyntheticZip(files) {
 
     const compSize = f.compSize !== undefined ? f.compSize : compData.length;
     const uncompSize = f.uncompSize !== undefined ? f.uncompSize : contentBuf.length;
+    const localCompSize = f.localCompSize !== undefined ? f.localCompSize : compSize;
+    const localUncompSize = f.localUncompSize !== undefined ? f.localUncompSize : uncompSize;
     const flags = f.flags !== undefined ? f.flags : 0;
+    const localFlags = f.localFlags !== undefined ? f.localFlags : flags;
     const externalAttrs = f.externalAttrs !== undefined ? f.externalAttrs : 0;
 
     // Local Header: PK\x03\x04
-    const local = Buffer.alloc(30 + fnameBuf.length);
+    const local = Buffer.alloc(30 + localFnameBuf.length);
     local.writeUInt32LE(0x04034b50, 0);
     local.writeUInt16LE(20, 4);
-    local.writeUInt16LE(flags, 6);
-    local.writeUInt16LE(method, 8);
+    local.writeUInt16LE(localFlags, 6);
+    local.writeUInt16LE(localMethod, 8);
     local.writeUInt16LE(0, 10);
     local.writeUInt16LE(0, 12);
-    local.writeUInt32LE(crc, 14);
-    local.writeUInt32LE(compSize, 18);
-    local.writeUInt32LE(uncompSize, 22);
-    local.writeUInt16LE(fnameBuf.length, 26);
+    local.writeUInt32LE(localCrc, 14);
+    local.writeUInt32LE(localCompSize, 18);
+    local.writeUInt32LE(localUncompSize, 22);
+    local.writeUInt16LE(localFnameBuf.length, 26);
     local.writeUInt16LE(0, 28);
-    fnameBuf.copy(local, 30);
+    localFnameBuf.copy(local, 30);
 
-    localHeaders.push(Buffer.concat([local, compData]));
+    let memberBody = compData;
+    if (f.descriptor) {
+      memberBody = Buffer.concat([compData, f.descriptor]);
+    }
+
+    localHeaders.push(Buffer.concat([local, memberBody]));
+
+    const entryOffset = f.cdOffset !== undefined ? f.cdOffset : currentOffset;
 
     // Central Directory Header: PK\x01\x02
     const cd = Buffer.alloc(46 + fnameBuf.length);
@@ -105,11 +119,11 @@ function buildSyntheticZip(files) {
     cd.writeUInt16LE(0, 34);
     cd.writeUInt16LE(0, 36);
     cd.writeUInt32LE(externalAttrs >>> 0, 38);
-    cd.writeUInt32LE(currentOffset, 42);
+    cd.writeUInt32LE(entryOffset, 42);
     fnameBuf.copy(cd, 46);
 
     cdHeaders.push(cd);
-    currentOffset += local.length + compData.length;
+    currentOffset += local.length + memberBody.length;
   }
 
   const cdTotalBuf = Buffer.concat(cdHeaders);
@@ -450,14 +464,30 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
         title: 'Hypervisor Control',
         domain: 'CYBERNETICS',
         assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
-        operators: ['Hypervisor.vector_cull()']
+        operators: ['Hypervisor.vector_cull()'],
+        sourcePassages: [{
+          source_id: 'emsrc_hypervisor_test',
+          byteOffset: 0,
+          length: 40,
+          span_text: 'Hypervisor control mathematics and chaos',
+          span_sha256: sha256Hex('Hypervisor control mathematics and chaos'),
+          operator: 'Hypervisor.vector_cull()'
+        }]
       },
       algedonicWork: {
         workId: 'work:algedonic_test',
         title: 'Algedonic Loop',
         domain: 'CYBERNETICS',
         assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
-        operators: ['Algedonic.bypass_hierarchy()']
+        operators: ['Algedonic.bypass_hierarchy()'],
+        sourcePassages: [{
+          source_id: 'emsrc_algedonic_test',
+          byteOffset: 0,
+          length: 40,
+          span_text: 'Algedonic systems provide immediate pain',
+          span_sha256: sha256Hex('Algedonic systems provide immediate pain'),
+          operator: 'Algedonic.bypass_hierarchy()'
+        }]
       }
     };
 
@@ -475,6 +505,14 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     // Both systems achieve 100% graph fidelity on observed cases
     assert.equal(comp.arms.arm_3_non_reciprocal_union.measured_graph_fidelity, 1.0);
     assert.equal(comp.arms.arm_4_reciprocal.measured_graph_fidelity, 1.0);
+
+    // Both systems evaluate identical case counts (WIRE-01 matched denominator)
+    assert.equal(comp.arms.arm_3_non_reciprocal_union.cases_evaluated, 6);
+    assert.equal(comp.arms.arm_4_reciprocal.cases_evaluated, 6);
+    assert.equal(comp.arms.arm_3_non_reciprocal_union.correct_decisions, 6);
+    assert.equal(comp.arms.arm_4_reciprocal.correct_decisions, 6);
+    assert.equal(comp.arms.arm_3_non_reciprocal_union.unsupported_targets_rejected, 4);
+    assert.equal(comp.arms.arm_4_reciprocal.unsupported_targets_rejected, 4);
 
     // Historical authored declarations preserved without polluting active metrics
     assert.equal(comp.arms.arm_3_non_reciprocal_union.historical_authored_declaration.status, 'HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE');
@@ -526,19 +564,37 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
 
   it('14. Continuous-Discrete Correspondence: permits unification when correspondence mapping is declared', () => {
     const engine = new EmUnifiedTheorySynthesisEngine();
+    const contText = 'Continuous differential flow integration dynamics.';
+    const discText = 'Discrete automaton step transition updates.';
     engine.extractWorkAnatomy({
       workId: 'work:continuous_model',
       title: 'Continuous Differential Flow',
       domain: 'DYNAMICS',
       assumptions: ['CONTINUOUS_FLOW'],
-      operators: ['Flow.integrate()']
+      operators: ['Flow.integrate()'],
+      sourcePassages: [{
+        source_id: 'src:continuous_dynamics',
+        byteOffset: 0,
+        length: contText.length,
+        span_text: contText,
+        span_sha256: sha256Hex(contText),
+        operator: 'Flow.integrate()'
+      }]
     });
     engine.extractWorkAnatomy({
       workId: 'work:discrete_model',
       title: 'Discrete Event Automaton',
       domain: 'AUTOMATA',
       assumptions: ['DISCRETE_TRANSITION'],
-      operators: ['Automaton.step()']
+      operators: ['Automaton.step()'],
+      sourcePassages: [{
+        source_id: 'src:discrete_automaton',
+        byteOffset: 0,
+        length: discText.length,
+        span_text: discText,
+        span_sha256: sha256Hex(discText),
+        operator: 'Automaton.step()'
+      }]
     });
 
     // 1. Without correspondence: fails closed
@@ -555,13 +611,18 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(resNoBridge.verdict, 'NO_UNIFICATION_WARRANTED');
     assert.equal(resNoBridge.reason, 'COMPOSABILITY_FAILURE_DUE_TO_INCOMMENSURABLE_ASSUMPTIONS');
 
-    // 2. With explicit discretization correspondence: admitted as candidate
+    // 2. With formal discretization correspondence: admitted as candidate
     const resWithBridge = engine.synthesizeCrossDomainCandidate({
       candidateId: 'cand:with_bridge',
       workAId: 'work:continuous_model',
       workBId: 'work:discrete_model',
       proposedBridgeHypothesis: 'Runge-Kutta discrete sampling step maps to continuous flow integration',
-      proposedCorrespondence: { handlesContinuousDiscrete: true, type: 'DISCRETIZATION_CORRESPONDENCE' },
+      proposedCorrespondence: {
+        type: 'DISCRETIZATION_CORRESPONDENCE',
+        discretization_method: 'RUNGE_KUTTA_SAMPLING',
+        step_size: 0.01,
+        bounded_error_guarantee: 'O(dt^2) <= 0.05'
+      },
       formalOperatorMapping: [
         { opA: 'Flow.integrate()', opB: 'Automaton.step()', morphismType: 'DISCRETIZATION_CORRESPONDENCE' }
       ],
@@ -611,6 +672,275 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     // 5. Atomic admission verification: on failure, zero sources admitted
     assert.equal(engine.admittedSources.size, 0);
     assert.equal(engine.admittedDerivatives.size, 0);
+  });
+
+  it('16. WIRE-01 Matched Comparator: paired case ledger regression, denominator parity & dynamic evaluation', () => {
+    const comparator = new CompetentNullComparator();
+    const testCorpus = {
+      hypervisorSource: {
+        id: 'emsrc_hypervisor_test',
+        filename: 'Hypervisor.md',
+        text: 'Hypervisor control mathematics and chaos steering.'
+      },
+      algedonicSource: {
+        id: 'emsrc_algedonic_test',
+        filename: 'Algedonic.md',
+        text: 'Algedonic systems provide immediate pain signals.'
+      },
+      hypervisorWork: {
+        workId: 'work:hypervisor_test',
+        title: 'Hypervisor Control',
+        domain: 'CYBERNETICS',
+        assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
+        operators: ['Hypervisor.vector_cull()'],
+        sourcePassages: [{
+          source_id: 'emsrc_hypervisor_test',
+          byteOffset: 0,
+          length: 40,
+          span_text: 'Hypervisor control mathematics and chaos',
+          span_sha256: sha256Hex('Hypervisor control mathematics and chaos'),
+          operator: 'Hypervisor.vector_cull()'
+        }]
+      },
+      algedonicWork: {
+        workId: 'work:algedonic_test',
+        title: 'Algedonic Loop',
+        domain: 'CYBERNETICS',
+        assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
+        operators: ['Algedonic.bypass_hierarchy()'],
+        sourcePassages: [{
+          source_id: 'emsrc_algedonic_test',
+          byteOffset: 0,
+          length: 40,
+          span_text: 'Algedonic systems provide immediate pain',
+          span_sha256: sha256Hex('Algedonic systems provide immediate pain'),
+          operator: 'Algedonic.bypass_hierarchy()'
+        }]
+      }
+    };
+
+    // 1. Verify ledger length and immutability
+    assert.equal(CANONICAL_PAIRED_CASE_LEDGER.length, 6);
+    assert.ok(Object.isFrozen(CANONICAL_PAIRED_CASE_LEDGER));
+
+    // 2. Reject empty or invalid ledger fail-closed
+    assert.throws(() => {
+      comparator.evaluateComparison(testCorpus, []);
+    }, /ASYMMETRIC_CASE_LEDGER_DETECTED/);
+
+    assert.throws(() => {
+      comparator.evaluateComparison(testCorpus, null);
+    }, /ASYMMETRIC_CASE_LEDGER_DETECTED/);
+
+    // 3. Matched execution across 6 cases with identical denominators
+    const findings = comparator.evaluateComparison(testCorpus);
+    assert.equal(findings.arms.arm_3_non_reciprocal_union.cases_evaluated, 6);
+    assert.equal(findings.arms.arm_4_reciprocal.cases_evaluated, 6);
+    assert.equal(findings.arms.arm_3_non_reciprocal_union.measured_graph_fidelity, 1.0);
+    assert.equal(findings.arms.arm_4_reciprocal.measured_graph_fidelity, 1.0);
+    assert.equal(findings.arms.arm_3_non_reciprocal_union.unsupported_targets_rejected, 4);
+    assert.equal(findings.arms.arm_4_reciprocal.unsupported_targets_rejected, 4);
+    assert.equal(findings.arms.arm_3_non_reciprocal_union.false_graph_convergences, 0);
+    assert.equal(findings.arms.arm_4_reciprocal.false_graph_convergences, 0);
+
+    // 4. Equal withdrawal counts verified
+    assert.equal(findings.differential_matrix.withdrawal_operation_counts.arm_3_non_reciprocal, 2);
+    assert.equal(findings.differential_matrix.withdrawal_operation_counts.arm_4_reciprocal, 2);
+    assert.equal(findings.differential_matrix.withdrawal_operation_counts.determination, 'EQUIVALENT_WITHDRAWAL_OPERATIONS');
+  });
+
+  it('17. WIRE-02 Source-Attested Operator & Morphism Qualification: rejects unattested, unverified, or digest-mismatched proposals', () => {
+    const engine = new EmUnifiedTheorySynthesisEngine();
+
+    // 1. Works with empty source passages: rejected fail-closed
+    engine.extractWorkAnatomy({
+      workId: 'work:empty_passages_a',
+      title: 'Empty Passages Work A',
+      domain: 'CYBERNETICS',
+      operators: ['OpA.action()'],
+      sourcePassages: []
+    });
+    engine.extractWorkAnatomy({
+      workId: 'work:empty_passages_b',
+      title: 'Empty Passages Work B',
+      domain: 'CYBERNETICS',
+      operators: ['OpB.action()'],
+      sourcePassages: []
+    });
+
+    const resEmpty = engine.synthesizeCrossDomainCandidate({
+      candidateId: 'cand:empty_passages',
+      workAId: 'work:empty_passages_a',
+      workBId: 'work:empty_passages_b',
+      proposedBridgeHypothesis: 'Empty passages test',
+      formalOperatorMapping: [{ opA: 'OpA.action()', opB: 'OpB.action()', morphismType: 'HOMOMORPHIC_INTERVENTION' }],
+      proposedPredictions: [{ metric: 'm', expected_direction: 'ZERO', minimum_effect: 0 }]
+    });
+    assert.equal(resEmpty.verdict, 'NO_UNIFICATION_WARRANTED');
+    assert.equal(resEmpty.reason, 'EMPTY_SOURCE_PASSAGES_CANNOT_ATTEST_OPERATORS');
+
+    // 2. Operator quotation digest mismatch: rejected fail-closed
+    engine.extractWorkAnatomy({
+      workId: 'work:digest_mismatch_a',
+      title: 'Digest Mismatch Work A',
+      domain: 'CYBERNETICS',
+      operators: [
+        {
+          name: 'OpBad.action()',
+          source_attestation: {
+            source_id: 'src:fake',
+            passage_coordinates: { start: 0, end: 10 },
+            quoted_text: 'Valid text passage',
+            content_digest: 'tampered_sha256_digest_1234567890abcdef'
+          }
+        }
+      ],
+      sourcePassages: [{ source_id: 'src:fake', span_text: 'Valid text passage' }]
+    });
+    engine.extractWorkAnatomy({
+      workId: 'work:valid_b',
+      title: 'Valid Work B',
+      domain: 'CYBERNETICS',
+      operators: ['OpB.action()'],
+      sourcePassages: [{ source_id: 'src:valid', span_text: 'OpB text' }]
+    });
+
+    const resMismatch = engine.synthesizeCrossDomainCandidate({
+      candidateId: 'cand:digest_mismatch',
+      workAId: 'work:digest_mismatch_a',
+      workBId: 'work:valid_b',
+      proposedBridgeHypothesis: 'Digest mismatch test',
+      formalOperatorMapping: [{ opA: 'OpBad.action()', opB: 'OpB.action()', morphismType: 'HOMOMORPHIC_INTERVENTION' }],
+      proposedPredictions: [{ metric: 'm', expected_direction: 'ZERO', minimum_effect: 0 }]
+    });
+    assert.equal(resMismatch.verdict, 'NO_UNIFICATION_WARRANTED');
+    assert.equal(resMismatch.reason, 'SOURCE_QUOTATION_DIGEST_MISMATCH_REJECTED');
+
+    // 3. Bare boolean continuous/discrete correspondence flag rejected
+    engine.extractWorkAnatomy({
+      workId: 'work:cont_bare',
+      title: 'Continuous Model Bare',
+      domain: 'DYNAMICS',
+      assumptions: ['CONTINUOUS_FLOW'],
+      operators: ['Flow.run()'],
+      sourcePassages: [{ source_id: 'src:cont', span_text: 'Flow text' }]
+    });
+    engine.extractWorkAnatomy({
+      workId: 'work:disc_bare',
+      title: 'Discrete Model Bare',
+      domain: 'AUTOMATA',
+      assumptions: ['DISCRETE_TRANSITION'],
+      operators: ['Step.run()'],
+      sourcePassages: [{ source_id: 'src:disc', span_text: 'Step text' }]
+    });
+
+    const resBareBool = engine.synthesizeCrossDomainCandidate({
+      candidateId: 'cand:bare_bool_rejection',
+      workAId: 'work:cont_bare',
+      workBId: 'work:disc_bare',
+      proposedBridgeHypothesis: 'Bare boolean correspondence',
+      proposedCorrespondence: { handlesContinuousDiscrete: true }, // bare flag without formal method
+      formalOperatorMapping: [{ opA: 'Flow.run()', opB: 'Step.run()', morphismType: 'HOMOMORPHIC_INTERVENTION' }],
+      proposedPredictions: [{ metric: 'm', expected_direction: 'ZERO', minimum_effect: 0 }]
+    });
+    assert.equal(resBareBool.verdict, 'NO_UNIFICATION_WARRANTED');
+    assert.equal(resBareBool.reason, 'UNVERIFIED_CONTINUOUS_DISCRETE_CORRESPONDENCE_REJECTED');
+
+    // 4. Unverified / unobserved mapping relationship: classified as HELD_UNVERIFIED
+    const resUnverified = engine.synthesizeCrossDomainCandidate({
+      candidateId: 'cand:unverified_relationship',
+      workAId: 'work:valid_b',
+      workBId: 'work:valid_b',
+      proposedBridgeHypothesis: 'Unverified relationship test',
+      formalOperatorMapping: [
+        { opA: 'OpB.action()', opB: 'OpB.action()', morphismType: 'HOMOMORPHIC_INTERVENTION', unverified: true }
+      ],
+      proposedPredictions: [{ metric: 'm', expected_direction: 'ZERO', minimum_effect: 0 }]
+    });
+    assert.equal(resUnverified.verdict, 'NO_UNIFICATION_WARRANTED');
+    assert.equal(resUnverified.status, 'HELD_UNVERIFIED');
+    assert.equal(resUnverified.reason, 'MAPPING_RELATIONSHIP_UNVERIFIED_OR_UNOBSERVED');
+  });
+
+  it('18. WIRE-03 Complete ZIP Header & Admission Contract: adversarial header mismatches, descriptors, and atomic rollback', () => {
+    const engine = new OperatorZipIntakeEngine();
+
+    // 1. Local-Central Flags Mismatch
+    const flagsMismatchZip = buildSyntheticZip([
+      { name: 'file1.txt', content: 'test content', flags: 0x0000, localFlags: 0x0008 }
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(flagsMismatchZip, 'flags_mismatch');
+    }, /LOCAL_CENTRAL_METADATA_MISMATCH/);
+
+    // 2. Local-Central Filename Mismatch
+    const fnameMismatchZip = buildSyntheticZip([
+      { name: 'central_name.txt', localName: 'local_name.txt', content: 'test content' }
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(fnameMismatchZip, 'fname_mismatch');
+    }, /LOCAL_CENTRAL_METADATA_MISMATCH/);
+
+    // 3. Local-Central CRC-32 Mismatch
+    const crcMismatchZip = buildSyntheticZip([
+      { name: 'file_crc.txt', content: 'test content', crc: 0x12345678, localCrc: 0x87654321 }
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(crcMismatchZip, 'crc_mismatch');
+    }, /LOCAL_CENTRAL_METADATA_MISMATCH/);
+
+    // 4. Local-Central Compression Method Mismatch
+    const methodMismatchZip = buildSyntheticZip([
+      { name: 'file_method.txt', content: 'test content', method: 0, localMethod: 8 }
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(methodMismatchZip, 'method_mismatch');
+    }, /LOCAL_CENTRAL_METADATA_MISMATCH/);
+
+    // 5. Corrupt Streaming Data Descriptor (bit 3 set with invalid CRC in descriptor)
+    const badDesc = Buffer.alloc(16);
+    badDesc.writeUInt32LE(0x08074b50, 0); // Signature
+    badDesc.writeUInt32LE(0xdeadbeef, 4);  // Corrupt CRC
+    badDesc.writeUInt32LE(20, 8);          // compSize
+    badDesc.writeUInt32LE(20, 12);         // uncompSize
+    const badDescZip = buildSyntheticZip([
+      {
+        name: 'streaming.txt',
+        content: 'hello streaming world',
+        flags: 0x0008,
+        localFlags: 0x0008,
+        localCrc: 0,
+        localCompSize: 0,
+        localUncompSize: 0,
+        descriptor: badDesc
+      }
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(badDescZip, 'bad_descriptor');
+    }, /DATA_DESCRIPTOR_RECONCILIATION_FAILED/);
+
+    // 6. Overlapping Member Spans (member 2 CD offset overlaps member 1)
+    const overlapZip = buildSyntheticZip([
+      { name: 'first.txt', content: 'first content' },
+      { name: 'second.txt', content: 'second content', cdOffset: 0 } // Points back to offset 0!
+    ]);
+    assert.throws(() => {
+      engine.processZipArchive(overlapZip, 'overlap_test');
+    }, /CORRUPT_OR_OVERLAPPING_MEMBER_RANGE/);
+
+    // 7. Atomic Admission Rollback on Mid-Archive Failure
+    const midFailEngine = new OperatorZipIntakeEngine();
+    const midFailZip = buildSyntheticZip([
+      { name: 'valid_first.md', content: '# Valid first member' },
+      { name: 'corrupt_second.md', content: '# Corrupt member', crc: 0x11111111, localCrc: 0x22222222 }
+    ]);
+    assert.throws(() => {
+      midFailEngine.processZipArchive(midFailZip, 'mid_fail_test');
+    }, /LOCAL_CENTRAL_METADATA_MISMATCH/);
+
+    // Verify ZERO state committed from failed archive
+    assert.equal(midFailEngine.admittedSources.size, 0);
+    assert.equal(midFailEngine.admittedDerivatives.size, 0);
   });
 
 });

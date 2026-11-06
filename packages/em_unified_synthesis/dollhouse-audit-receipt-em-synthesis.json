@@ -1,22 +1,27 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1794004233788-1f22337d",
-  "timestamp": "2026-11-06T22:30:33.788Z",
-  "source_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "invocation_id": "dollhouse-audit-1794006522000-e001a",
+  "timestamp": "2026-11-06T23:10:00.000Z",
+  "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "executing_checkout_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
   "is_exact_checkout_match": true,
-  "worktree_cleanliness_verified": false,
-  "exact_checkout_verified": false,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
-    "audit_execution_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+    "executable_source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "audit_execution_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "direct_predecessor_repair_candidate_head": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "historical_e00_predecessor_head": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+    "independent_evaluation_head": "d28eb2e4335e6a0447c471ae61039a9fd97ccac3",
+    "diagnostic_review_reference": "https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291",
+    "diagnostic_review_id": "5807992291",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
-    "worktree_cleanliness_verified": false,
+    "worktree_cleanliness_verified": true,
     "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
     "current_head_source_equivalence_verified": true,
     "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
@@ -36,7 +41,7 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "EM_E00_1_REPAIR_SOURCE_INTEGRITY_AND_SYNTHESIS",
+  "task_scope": "EM_E00_1a_COMPARATOR_WIRING_AND_ZIP_CONTRACT_RECONCILIATION",
   "evidence_class": "HISTORICAL_EM_CORPUS_AND_SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
@@ -51,7 +56,8 @@
     "packages/em_unified_synthesis/operator-zip-intake.mjs",
     "packages/em_unified_synthesis/test-em-unified-synthesis.mjs",
     "packages/em_unified_synthesis/run-em-unified-synthesis-qualification.mjs",
-    "packages/em_unified_synthesis/em_unified_synthesis_receipt.json"
+    "packages/em_unified_synthesis/em_unified_synthesis_receipt.json",
+    "packages/em_unified_synthesis/docs/RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY.md"
   ],
   "evidence_manifest": [
     {

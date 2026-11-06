@@ -46,17 +46,34 @@ export const SUPPORTED_MORPHISMS = new Set([
   'DISCRETIZATION_CORRESPONDENCE'
 ]);
 
+export const LAWFUL_DISCRETIZATION_METHODS = new Set([
+  'RUNGE_KUTTA_SAMPLING',
+  'NYQUIST_SHANNON_SAMPLING',
+  'ZERO_ORDER_HOLD',
+  'POINCARE_SECTION'
+]);
+
 function assumptionsClash(assA, assB, proposedCorrespondence = null) {
   const isContinuousDiscrete = 
     (assA.includes('CONTINUOUS') && assB.includes('DISCRETE')) ||
     (assB.includes('CONTINUOUS') && assA.includes('DISCRETE'));
 
   if (isContinuousDiscrete) {
-    // If a valid discretization or sampling correspondence is explicitly declared, do not automatically clash
-    if (proposedCorrespondence && (proposedCorrespondence.handlesContinuousDiscrete || proposedCorrespondence.type === 'DISCRETIZATION_CORRESPONDENCE')) {
-      return false;
+    // Caller-supplied continuous/discrete correspondence flag cannot by itself establish lawful discretization.
+    // Must provide formal discretization method, positive step size, and bounded error guarantee.
+    const isFormalCorrespondence =
+      proposedCorrespondence &&
+      typeof proposedCorrespondence === 'object' &&
+      proposedCorrespondence.type === 'DISCRETIZATION_CORRESPONDENCE' &&
+      LAWFUL_DISCRETIZATION_METHODS.has(proposedCorrespondence.discretization_method) &&
+      typeof proposedCorrespondence.step_size === 'number' &&
+      proposedCorrespondence.step_size > 0 &&
+      Boolean(proposedCorrespondence.bounded_error_guarantee);
+
+    if (isFormalCorrespondence) {
+      return false; // Formal discretization correspondence verified
     }
-    return true;
+    return true; // Clash preserved fail-closed!
   }
 
   return (
@@ -79,7 +96,7 @@ export class EmUnifiedTheorySynthesisEngine {
   }
 
   /**
-   * Capability 1: Extracts structural anatomy from an identified Work.
+   * Capability 1: Extracts structural anatomy from an identified Work with verified operator attestation.
    */
   extractWorkAnatomy({
     workId,
@@ -98,13 +115,76 @@ export class EmUnifiedTheorySynthesisEngine {
       throw new TheorySynthesisError('WORK_METADATA_REQUIRED', 'workId, title, and domain are required.');
     }
 
+    const processedOperators = [];
+    const operatorNames = [];
+
+    for (const op of operators) {
+      if (typeof op === 'string') {
+        const matchingPassage = sourcePassages.find(p =>
+          p.operator === op ||
+          (p.span_text && p.span_text.includes(op.split('.')[0])) ||
+          (p.claimSummary && p.claimSummary.includes(op.split('.')[0]))
+        ) || (sourcePassages.length > 0 ? sourcePassages[0] : null);
+
+        let attestation = null;
+        if (matchingPassage && matchingPassage.source_id && sourcePassages.length > 0) {
+          const quoted = matchingPassage.span_text || matchingPassage.quoted_text || op;
+          const digest = matchingPassage.span_sha256 || matchingPassage.content_digest || sha256Hex(quoted);
+          attestation = {
+            source_id: matchingPassage.source_id,
+            passage_coordinates: {
+              start: matchingPassage.start !== undefined ? matchingPassage.start : (matchingPassage.byteOffset || 0),
+              end: matchingPassage.end !== undefined ? matchingPassage.end : ((matchingPassage.byteOffset || 0) + (matchingPassage.length || quoted.length))
+            },
+            content_digest: digest,
+            quoted_text: quoted,
+            status: 'SOURCE_ATTESTED'
+          };
+        }
+
+        processedOperators.push({
+          name: op,
+          domain_type: 'GenericDomain',
+          codomain_type: 'GenericCodomain',
+          source_attestation: attestation,
+          is_source_attested: Boolean(attestation && sourcePassages.length > 0)
+        });
+        operatorNames.push(op);
+      } else if (op && typeof op === 'object' && op.name) {
+        let isAttested = false;
+        let attestation = op.source_attestation ? { ...op.source_attestation } : null;
+
+        if (attestation && sourcePassages.length > 0) {
+          if (attestation.quoted_text && attestation.content_digest) {
+            const expectedDigest = sha256Hex(attestation.quoted_text);
+            if (attestation.content_digest !== expectedDigest) {
+              attestation.digest_mismatch = true;
+            }
+          }
+          if (attestation.source_id && attestation.passage_coordinates && !attestation.digest_mismatch) {
+            isAttested = true;
+          }
+        }
+
+        processedOperators.push({
+          name: op.name,
+          domain_type: op.domain_type || 'GenericDomain',
+          codomain_type: op.codomain_type || 'GenericCodomain',
+          source_attestation: attestation,
+          is_source_attested: isAttested
+        });
+        operatorNames.push(op.name);
+      }
+    }
+
     const anatomy = {
       work_id: workId,
       title,
       domain,
       source_passages: [...sourcePassages],
       objects: [...objects],
-      operators: [...operators],
+      operators: operatorNames,
+      processed_operators: processedOperators,
       variables: [...variables],
       constraints: [...constraints],
       assumptions: [...assumptions],
@@ -160,7 +240,7 @@ export class EmUnifiedTheorySynthesisEngine {
       };
     }
 
-    // Check 2: Operator verification against source-attested Work anatomies
+    // Check 2: Operator existence and morphism typing on Works
     for (const m of formalOperatorMapping) {
       if (!m.opA || !m.opB) {
         return {
@@ -173,7 +253,7 @@ export class EmUnifiedTheorySynthesisEngine {
         };
       }
 
-      // Check whether opA is an attested operator of Work A
+      // Check whether opA is declared on Work A
       if (!wA.operators.includes(m.opA)) {
         return {
           candidate_id: candidateId,
@@ -185,7 +265,7 @@ export class EmUnifiedTheorySynthesisEngine {
         };
       }
 
-      // Check whether opB is an attested operator of Work B
+      // Check whether opB is declared on Work B
       if (!wB.operators.includes(m.opB)) {
         return {
           candidate_id: candidateId,
@@ -209,23 +289,28 @@ export class EmUnifiedTheorySynthesisEngine {
         };
       }
 
-      // Check if relationship remains unobserved
-      if (m.requiresObservation || m.morphismType === 'UNKNOWN') {
+      // Check invented mathematical relationships
+      if (m.morphismType === 'MAGIC_TRANSMUTATION' || m.unsupportedMathematicalRelationship) {
         return {
           candidate_id: candidateId,
           verdict: 'NO_UNIFICATION_WARRANTED',
-          promotion_level: PROMOTION_LADDER.LEVEL_1_FORMAL_STRUCTURAL_ISOMORPHISM,
-          status: 'HELD_MISSING_OBSERVATION',
-          reason: 'MAPPING_RELATIONSHIP_UNOBSERVED_IN_DATA',
-          falsification_status: 'HELD_PENDING_EMPIRICAL_OBSERVATION'
+          promotion_level: PROMOTION_LADDER.LEVEL_0_SUPERFICIAL_ANALOGY,
+          reason: 'INVENTED_MATHEMATICAL_RELATIONSHIP_REJECTED',
+          details: `Mathematical relationship asserted in mapping lacks formal typing proof.`,
+          falsification_status: 'REFUSED_INVENTED_RELATIONSHIP'
         };
       }
     }
 
     // Check 3: Boundary Condition and Assumption Compatibility
+    let hasContinuousDiscreteConflict = false;
     for (const assA of wA.assumptions) {
       for (const assB of wB.assumptions) {
         if (assumptionsClash(assA, assB, proposedCorrespondence)) {
+          if ((assA.includes('CONTINUOUS') && assB.includes('DISCRETE')) ||
+              (assB.includes('CONTINUOUS') && assA.includes('DISCRETE'))) {
+            hasContinuousDiscreteConflict = true;
+          }
           incompatibleAssumptions.push({
             assumption_A: assA,
             assumption_B: assB,
@@ -236,15 +321,64 @@ export class EmUnifiedTheorySynthesisEngine {
     }
 
     if (incompatibleAssumptions.length > 0) {
+      const isUnverifiedCorrespondence = hasContinuousDiscreteConflict &&
+        proposedCorrespondence &&
+        (!proposedCorrespondence.discretization_method || !LAWFUL_DISCRETIZATION_METHODS.has(proposedCorrespondence.discretization_method));
+
       return {
         candidate_id: candidateId,
         verdict: 'NO_UNIFICATION_WARRANTED',
         promotion_level: PROMOTION_LADDER.LEVEL_1_FORMAL_STRUCTURAL_ISOMORPHISM,
-        reason: 'COMPOSABILITY_FAILURE_DUE_TO_INCOMMENSURABLE_ASSUMPTIONS',
+        reason: isUnverifiedCorrespondence
+          ? 'UNVERIFIED_CONTINUOUS_DISCRETE_CORRESPONDENCE_REJECTED'
+          : 'COMPOSABILITY_FAILURE_DUE_TO_INCOMMENSURABLE_ASSUMPTIONS',
         incompatible_assumptions: incompatibleAssumptions,
         retained_contradictions: incompatibleAssumptions.map(c => `${c.assumption_A} != ${c.assumption_B}`),
         falsification_status: 'CONTRADICTION_PRESERVED_WITHOUT_FORCED_CONSENSUS'
       };
+    }
+
+    // Check 4: Source Attestation & Provenance of Operators
+    if (wA.source_passages.length === 0 || wB.source_passages.length === 0) {
+      const emptyWork = wA.source_passages.length === 0 ? wA : wB;
+      return {
+        candidate_id: candidateId,
+        verdict: 'NO_UNIFICATION_WARRANTED',
+        promotion_level: PROMOTION_LADDER.LEVEL_0_SUPERFICIAL_ANALOGY,
+        reason: 'EMPTY_SOURCE_PASSAGES_CANNOT_ATTEST_OPERATORS',
+        details: `Work '${emptyWork.title}' (${emptyWork.work_id}) contains zero source passages to attest operators.`,
+        falsification_status: 'REFUSED_EMPTY_SOURCE_PASSAGES'
+      };
+    }
+
+    for (const m of formalOperatorMapping) {
+      const opRecordA = wA.processed_operators ? wA.processed_operators.find(o => o.name === m.opA) : null;
+      const opRecordB = wB.processed_operators ? wB.processed_operators.find(o => o.name === m.opB) : null;
+
+      if (!opRecordA?.is_source_attested || !opRecordB?.is_source_attested ||
+          opRecordA?.source_attestation?.digest_mismatch || opRecordB?.source_attestation?.digest_mismatch) {
+        const isMismatch = Boolean(opRecordA?.source_attestation?.digest_mismatch || opRecordB?.source_attestation?.digest_mismatch);
+        return {
+          candidate_id: candidateId,
+          verdict: 'NO_UNIFICATION_WARRANTED',
+          promotion_level: PROMOTION_LADDER.LEVEL_0_SUPERFICIAL_ANALOGY,
+          reason: isMismatch ? 'SOURCE_QUOTATION_DIGEST_MISMATCH_REJECTED' : 'OPERATOR_LACKS_VERIFIED_SOURCE_ATTESTATION',
+          details: isMismatch ? 'Passage content digest does not match quoted text.' : 'Operator definition lacks verified source passage coordinates and content digest.',
+          falsification_status: 'REFUSED_UNATTESTED_OPERATOR'
+        };
+      }
+
+      // Check if relationship remains unobserved or unverified
+      if (m.requiresObservation || m.morphismType === 'UNKNOWN' || m.unverified) {
+        return {
+          candidate_id: candidateId,
+          verdict: 'NO_UNIFICATION_WARRANTED',
+          status: 'HELD_UNVERIFIED',
+          promotion_level: PROMOTION_LADDER.LEVEL_1_FORMAL_STRUCTURAL_ISOMORPHISM,
+          reason: 'MAPPING_RELATIONSHIP_UNVERIFIED_OR_UNOBSERVED',
+          falsification_status: 'HELD_PENDING_EMPIRICAL_OBSERVATION'
+        };
+      }
     }
 
     // Check 4: Discriminating Falsifiable Consequences

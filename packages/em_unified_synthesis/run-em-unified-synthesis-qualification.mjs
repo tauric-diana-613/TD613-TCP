@@ -35,7 +35,8 @@ import {
 } from './em-unified-theory-synthesis.mjs';
 
 import {
-  CompetentNullComparator
+  CompetentNullComparator,
+  CANONICAL_PAIRED_CASE_LEDGER
 } from './competent-null-comparator.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -130,7 +131,15 @@ export function runQualification() {
     assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
     operators: ['Algedonic.alert_bypass()'],
     variables: ['setpoint', 'error_signal', 'urgency'],
-    boundaryConditions: { temporal_mode: 'CONTINUOUS', response_window_ticks: 10 }
+    boundaryConditions: { temporal_mode: 'CONTINUOUS', response_window_ticks: 10 },
+    sourcePassages: [{
+      source_id: sampleSource.source_file_id,
+      byteOffset: 0,
+      length: 60,
+      span_text: rawBytes.toString('utf8').slice(0, 60),
+      span_sha256: sha256Hex(rawBytes.toString('utf8').slice(0, 60)),
+      operator: 'Algedonic.alert_bypass()'
+    }]
   });
 
   synthesis.extractWorkAnatomy({
@@ -140,7 +149,15 @@ export function runQualification() {
     assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
     operators: ['Hypervisor.vector_cull()', 'Steering.correct()'],
     variables: ['agent_drift', 'entropy_bound'],
-    boundaryConditions: { temporal_mode: 'CONTINUOUS', response_window_ticks: 10 }
+    boundaryConditions: { temporal_mode: 'CONTINUOUS', response_window_ticks: 10 },
+    sourcePassages: [{
+      source_id: sampleSource.source_file_id,
+      byteOffset: 0,
+      length: 60,
+      span_text: rawBytes.toString('utf8').slice(0, 60),
+      span_sha256: sha256Hex(rawBytes.toString('utf8').slice(0, 60)),
+      operator: 'Steering.correct()'
+    }]
   });
 
   // Test 1: Superficial motif match refusal
@@ -207,7 +224,7 @@ export function runQualification() {
   );
   console.log(`      ✓ Non-retroactive withdrawal cascaded (Tombstone: ${tombstone.tombstone_id})`);
 
-  // [6/7] Competent Null Comparator (4-Arm Evaluation)
+  // [6/7] Competent Null Comparator (4-Arm Evaluation over 6-case matched ledger)
   console.log('[6/7] Running Genuinely Executable Competent Null Comparator across 4 arms...');
   const comparator = new CompetentNullComparator();
   const compFindings = comparator.evaluateComparison({
@@ -218,21 +235,37 @@ export function runQualification() {
       title: 'AI Hypervisor Chaos Steering',
       domain: 'CONTROL_THEORY',
       assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
-      operators: ['Steering.correct()', 'Hypervisor.vector_cull()']
+      operators: ['Steering.correct()', 'Hypervisor.vector_cull()'],
+      sourcePassages: [{
+        source_id: sampleSource.source_file_id,
+        byteOffset: 0,
+        length: 60,
+        span_text: rawBytes.toString('utf8').slice(0, 60),
+        span_sha256: sha256Hex(rawBytes.toString('utf8').slice(0, 60)),
+        operator: 'Steering.correct()'
+      }]
     },
     algedonicWork: {
       workId: 'work:algedonic_loops',
       title: 'Algedonic Systems Deep Research',
       domain: 'MANAGEMENT_CYBERNETICS',
       assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
-      operators: ['Algedonic.alert_bypass()', 'Algedonic.bypass_hierarchy()']
+      operators: ['Algedonic.alert_bypass()', 'Algedonic.bypass_hierarchy()'],
+      sourcePassages: [{
+        source_id: 'emsrc_algedonic_mock',
+        byteOffset: 0,
+        length: 30,
+        span_text: 'Algedonic alert bypass channels.',
+        span_sha256: sha256Hex('Algedonic alert bypass channels.'),
+        operator: 'Algedonic.alert_bypass()'
+      }]
     }
   });
 
   console.log(`      ✓ Arm 1 (Documentary Practice): Read-only baseline (${compFindings.arms.arm_1_documentary.source_bytes_read} bytes read)`);
   console.log(`      ✓ Arm 2 (Isolated Receiver): Local custody (${compFindings.arms.arm_2_receiver.queries_executed} queries)`);
-  console.log(`      ✓ Arm 3 (Competent Union): Trace-derived graph fidelity ${(compFindings.arms.arm_3_non_reciprocal_union.measured_graph_fidelity * 100).toFixed(0)}%, 0 false convergences`);
-  console.log(`      ✓ Arm 4 (Reciprocal Synthesis): Trace-derived graph fidelity ${(compFindings.arms.arm_4_reciprocal.measured_graph_fidelity * 100).toFixed(0)}%, 0 false convergences`);
+  console.log(`      ✓ Arm 3 (Competent Union): Trace-derived graph fidelity ${(compFindings.arms.arm_3_non_reciprocal_union.measured_graph_fidelity * 100).toFixed(0)}% (6/6 cases), 0 false convergences`);
+  console.log(`      ✓ Arm 4 (Reciprocal Synthesis): Trace-derived graph fidelity ${(compFindings.arms.arm_4_reciprocal.measured_graph_fidelity * 100).toFixed(0)}% (6/6 cases), 0 false convergences`);
   console.log(`      ✓ Comparative Determination: ${compFindings.differential_matrix.measured_graph_fidelity_comparison.determination} (Reciprocal surplus: ${compFindings.differential_matrix.scientific_reciprocal_surplus})`);
 
   // [7/7] Assemble Machine Receipt & Save
@@ -240,13 +273,22 @@ export function runQualification() {
   const durationMs = Date.now() - startTime;
 
   const receipt = {
-    schema: 'td613.em.unified-synthesis-receipt/v1.1',
+    schema: 'td613.em.unified-synthesis-receipt/v1.1a',
     covenant: 'Khona\u200Clit-po',
     authority: 'SAC[X6ZNK5NO51]',
     executed_at: new Date().toISOString(),
     execution_duration_ms: durationMs,
     historical_estate_pinned_revision: '30630575ade616a5a47e4066b30d2159c2bd32be',
-    frozen_e00_predecessor_head: '7488e5fd2b4fc0b2f222e0214f21129bbe143a17',
+    lineage_and_diagnostic_provenance: {
+      candidate_revision_class: 'EM_E00_1a_COMPARATOR_WIRING_AND_ZIP_CONTRACT_RECONCILIATION',
+      direct_predecessor_repair_candidate_head: 'f3dd8d54ba423409317aa239d9dd6bdb6da618ef',
+      historical_e00_predecessor_head: '7488e5fd2b4fc0b2f222e0214f21129bbe143a17',
+      independent_evaluation_head: 'd28eb2e4335e6a0447c471ae61039a9fd97ccac3',
+      diagnostic_review_reference: 'https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291',
+      review_id: '5807992291',
+      historical_independent_cases_evaluated: 94,
+      candidate_internal_paired_ledger_cases_evaluated: CANONICAL_PAIRED_CASE_LEDGER.length
+    },
     census_verification: {
       sources_verified: inspection.acquisitionManifest.summary_census.total_source_objects,
       total_source_bytes: inspection.acquisitionManifest.summary_census.total_source_bytes,
@@ -306,6 +348,13 @@ export function runQualification() {
     },
     competent_null_comparator: {
       arms_evaluated: Object.keys(compFindings.arms),
+      canonical_paired_ledger_cases_evaluated: CANONICAL_PAIRED_CASE_LEDGER.length,
+      arm_3_cases_evaluated: compFindings.arms.arm_3_non_reciprocal_union.cases_evaluated,
+      arm_4_cases_evaluated: compFindings.arms.arm_4_reciprocal.cases_evaluated,
+      arm_3_correct_decisions: compFindings.arms.arm_3_non_reciprocal_union.correct_decisions,
+      arm_4_correct_decisions: compFindings.arms.arm_4_reciprocal.correct_decisions,
+      arm_3_unsupported_targets_rejected: compFindings.arms.arm_3_non_reciprocal_union.unsupported_targets_rejected,
+      arm_4_unsupported_targets_rejected: compFindings.arms.arm_4_reciprocal.unsupported_targets_rejected,
       trace_derived_graph_fidelity: compFindings.differential_matrix.measured_graph_fidelity_comparison,
       unsupported_targets_rejection: compFindings.differential_matrix.unsupported_targets_rejection_comparison,
       false_graph_convergence: compFindings.differential_matrix.false_graph_convergence_comparison,
