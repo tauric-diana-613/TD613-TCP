@@ -1,0 +1,77 @@
+{
+  "schema": "td613.em.lexical-readback-witness/v1",
+  "covenant": "Khona‌lit-po",
+  "authority": "SAC[X6ZNK5NO51]",
+  "executed_at": "2026-11-06T20:52:17.621Z",
+  "index_census": {
+    "indexed_sources_count": 53,
+    "manifest_sha256": "85d96c9678d1bc90440d67406a9a276a625109ffd1fa517d6932e256c6167abc",
+    "sqlite_engine": "node:sqlite DatabaseSync with FTS5 unicode61 tokenizer"
+  },
+  "representative_markdown_readback": {
+    "query": "algedonic",
+    "matched_sources_count": 13,
+    "top_source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+    "span_readback": {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "relative_path": "03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "source_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+      "byte_offset": 0,
+      "length_utf8": 400,
+      "span_sha256": "e16bb421ba50399b31fd6be2fe916dc518b98b71b4200c6340b115f58342786e",
+      "text": "# **Autonomous Cybernetic Hypervisor: Architectural Evolution and Deep Research Analysis**\n\n## **1\\. System Context and Immutable Architectural Constraints**\n\nWe are developing a local multi-agent Large Language Model (LLM) hypervisor on Apple Silicon (M-series), orchestrated by a custom Python backend and integrated with a C++ audio telemetry extension operating within the Mixxx digital signal pr"
+    },
+    "verified_hash": true
+  },
+  "representative_pdf_derived_readback": {
+    "source_id": "derivative:03-DERIVATIVES/text/emsrc_ae5d4155056773c8a50db1b9.txt",
+    "original_source_file": "Algedonic Systems Deep Research.pdf",
+    "extracted_page_text_verified": true,
+    "span_readback": {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_ae5d4155056773c8a50db1b9.txt",
+      "relative_path": "03-DERIVATIVES/text/emsrc_ae5d4155056773c8a50db1b9.txt",
+      "source_sha256": "cf665aa737c79d7ba1acf3dc914a5b2886e3e5e039a5478e9493238905797c4e",
+      "byte_offset": 100,
+      "length_utf8": 500,
+      "span_sha256": "4e900ba1b7a26a2a4cf8a793318e99fb487d27bfa20fd61c385fb4a3cfb41a0f",
+      "text": "izational\n \nViability,\n \nand\n \nAgentic\n \nAI\n \nResilience\n \nThe  Foundations  of  Cybernetic  Theory  and  Regulation  \nThe  survival  of  any  autonomous  system—whether  it  is  a  biological  organism,  an  industrial  \ncontrol\n \nloop,\n \na\n \nmultinational\n \ncorporation,\n \nor\n \na\n \ncomplex\n \nartificial\n \nintelligence\n \narchitecture—depends\n \nentirely\n \non\n \nits\n \ncapacity\n \nto\n \nmanage\n \nenvironmental\n \ncomplexity\n \nthrough\n \ncontinuous\n \nregulation.\n \nThis\n \nfoundational\n \nprinciple\n \nform"
+    },
+    "verified_hash": true
+  },
+  "multi_manifestation_works_readback": {
+    "query": "hypervisor",
+    "matched_manifestations_count": 8,
+    "sample_manifestation_sources": [
+      "derivative:03-DERIVATIVES/text/emsrc_6205df11a1e35b1a7828c7e7.txt",
+      "derivative:03-DERIVATIVES/text/emsrc_b20ff4bfe278f8cf39d805f6.txt",
+      "derivative:03-DERIVATIVES/text/emsrc_6c9e38d8872e3fab6ae8a0c3.txt",
+      "derivative:03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "derivative:03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt"
+    ]
+  },
+  "unicode_sensitive_span_verification": {
+    "sample_span": {
+      "source_id": "derivative:03-DERIVATIVES/text/emsrc_e76a321b3df071303fe41538.txt",
+      "relative_path": "03-DERIVATIVES/text/emsrc_e76a321b3df071303fe41538.txt",
+      "source_sha256": "da6955889440de1977eff56be1db65f0f38b37de64c2ff0e2ca6489ec539d78e",
+      "byte_offset": 0,
+      "length_utf8": 250,
+      "span_sha256": "c4871dd3e79f7a14f6337d6f9fa79345b1ddd3f5017a19c8b8598d302ac41c60",
+      "text": "# **The Cognitive Singularity: A Mathematical, Physical, and Neurodynamical Investigation into the Zero-Point of Human Consciousness**\n\nThe conceptualization of the human mind has historically vacillated between philosophical abstractions and reducti"
+    },
+    "mid_codepoint_boundary_safety_verified": true,
+    "fatal_utf8_guarantee": true
+  },
+  "unavailable_format_negative_controls": {
+    "appledouble_sidecar_query_hits": 0,
+    "raw_zip_binary_query_hits": 0,
+    "disposition": "FAIL_CLOSED_NO_BINARY_MANUFACTURE"
+  },
+  "semantic_retrieval_status": {
+    "driver_script_exists": true,
+    "checkpoint_model_exists": false,
+    "classification": "SEMANTIC_MODEL_UNAVAILABLE_IN_HISTORICAL_FIXTURE",
+    "semantic_parity_asserted": false,
+    "disposition": "REFUSED_TO_PREVENT_FALSE_PARITY"
+  }
+}

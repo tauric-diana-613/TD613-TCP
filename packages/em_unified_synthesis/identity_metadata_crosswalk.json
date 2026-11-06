@@ -1,0 +1,802 @@
+{
+  "schema": "td613.em.identity-crosswalk/v1",
+  "covenant": "Khona‌lit-po",
+  "authority": "SAC[X6ZNK5NO51]",
+  "generated_at": "2026-11-06T20:52:16.083Z",
+  "total_work_routes": 32,
+  "human_gated_count": 8,
+  "work_count_interval": [
+    32,
+    40
+  ],
+  "partitions_count": 256,
+  "works": [
+    {
+      "work_id": "emwork_074ccf9ad783c9c9047d73a8",
+      "declared_title": "Comprehensive Guide to Deploying Hermes AI via Ollama on macOS and Virtual Linux Environments",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_f9d7bff007dd9547d42db2c1",
+          "original_filename": "Hermes (Ollama) Terminal User Guide.md",
+          "sha256": "f322383ec57c67072df62a2043cfef33d3723c927e11ba2fe32af7b8d87a21de",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_a3675ad3117d3d35cb099ceb",
+          "original_filename": "Hermes (Ollama) Terminal User Guide.pdf",
+          "sha256": "e07c0e10166ed6974dfb480b44a6217a31e975d6b89f75b93bcba707a7a258c8",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_085223e721130117f5510975",
+      "declared_title": "The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_ae5d4155056773c8a50db1b9",
+          "original_filename": "Algedonic Systems Deep Research.pdf",
+          "sha256": "8c78c3333fe2f3f3ae6a7116adf61e850b371f043c93056985558cb8187b46b7",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_b7e4e42924d33bdaf666a4f8",
+          "original_filename": "Algedonic Systems Deep Research.md",
+          "sha256": "644bf2ee84c20e1f9b4a6ef8b595cb7bf0eaed7f4892fdb07f80b2cc3cc98c79",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_0885af7e4851a2e81618b37a",
+      "declared_title": "System Architecture and Mathematical Modeling for a Wearable 7-Node Kinematic Drone Coordination Interface",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_57021f0d10d938f524b738c5",
+          "original_filename": "Wearable Drone Control System Design.md",
+          "sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_a6aca36fd835bdb7157a6551",
+          "original_filename": "Wearable Drone Control System Design.pdf",
+          "sha256": "838f02462395a859719273a2d665da7083775661f8b740be90d1503e0c515993",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_0d33e61fc09e51761acb87d9",
+      "declared_title": "Architectural and Algorithmic Deep Dive into Advanced Large Language Model Memory Systems",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_1f16bbf644e7fa9b057ca122",
+          "original_filename": "Cybernetic Memory Algorithms Research.md",
+          "sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_3c6593d85fd5b744f24c7a9f",
+      "declared_title": "1 + 1 = 3; how the occupants define the room, and how the room and occupants in it can define a singular occupant (Or, You Are What You Eat)",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_c01c49eb755108563b9e58c6",
+          "original_filename": "1+1=3.md",
+          "sha256": "d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_402a8e202524efd197192c39",
+      "declared_title": "Cybernetic Governance of Autonomous Multi-Agent AI Estates: Architectural Frameworks, Cryptographic Delegation, and Data-Plane Enforcement",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_15cead109dfe2886a22f8320",
+          "original_filename": "Autonomous Agent Governance Research.md",
+          "sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_48f6c55fadb2e4d6b9dc4be8",
+      "declared_title": "Architecting Viable Artificial Systems: Vector Culling, Memory Persistence, and Cybernetic Control in Long-Horizon AI",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_31ed6fb3bdc15d3c29b8ae13",
+          "original_filename": "LLM Architecture Deep Dive.md",
+          "sha256": "66d3311ac7b5265ff71144f2e7670f9d1e471a3874638a40a27d4efe1127788e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_4e3f81f01a95e4a7a5e69d1c",
+      "declared_title": "Design and Implementation of an Advanced Musical Key Detection Plugin for Audio Loops, Stems, and Tracks",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_63897276d473f6147166ca90",
+          "original_filename": "Audio Key Detection Plugin Design.md",
+          "sha256": "5cad6f5caa6830f226d326e74627ec244812c7796afa1af99bc9081f5f378f77",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_cb7da53c98ed3a010af186a1",
+          "original_filename": "Audio Key Detection Plugin Design (1).pdf",
+          "sha256": "4658acb9ae0f97afe9d85e61079956c3e9d1c534847e9478daba8678822b0da1",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_529ae2e9c9423c17886b137d",
+      "declared_title": "Autonomous Cybernetic Hypervisor: Architectural Evolution and Deep Research Analysis",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_0b285152e5c5268e658c59e8",
+          "original_filename": "Cybernetic Hypervisor Architecture Research.md",
+          "sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_5b76a62b0dd1c587aee49b10",
+      "declared_title": "Architecture and Synchronization of Low-Latency Audio Systems: A Deep Dive into macOS Routing, Software Integration, and Hardware Clocking",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_8846b63345a07422139815fb",
+          "original_filename": "Audio Routing and Sync Research.md",
+          "sha256": "2a4f04e313d11585ddd9068fcdb588e0be60de17106ea24f87c59366c08b4d3a",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_96d522b0d573766dfb0f3c0e",
+          "original_filename": "Audio Routing and Sync Research.pdf",
+          "sha256": "1f20de3ced42c72a9b759ca6cb91d0508d5555f0462cd60f7d1cd4760b5f63c5",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_6377a9e4c9fd59e427517771",
+      "declared_title": "Cyber-Physical Architecture and Theoretical Frameworks for Capacitive E-Textile Drone Interfaces",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_d7c7ed8ff483a72d2bf48bda",
+          "original_filename": "Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+          "sha256": "af2a534fba7051a2863552c6e05ea67a89089c1c6474bb98b1b184e62dcd5ef7",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_5f9ca473b3a0f7694bca742c",
+          "original_filename": "Theremin Drone Glove Build Plan and Full Suit Roadmap.pdf",
+          "sha256": "7baf2dba97f6186a9a0ee5bb7bfac98cc29f46cf6abe4441b2fb1c4f18fcd564",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_67768e8d5148dd461eb34cac",
+      "declared_title": "High-Performance Concurrency in Real-Time Audio: Lock-Free SPSC Ring Buffers, Memory Ordering, and Microarchitectural Optimization",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_2ddaf8197adecc8c5ba09c33",
+          "original_filename": "Lock-Free DSP Architecture Research.md",
+          "sha256": "ad31f4c57c2009eaede56c738c29b4bb35602ab7eadb8857eea159d0ce25da83",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_6a883e491c0a1e01cd8e7776",
+      "declared_title": "The Cybernetic Synthesis: Architecting Autonomous AI through Control Theory, Memory Stratification, and Edge-Physical Integration",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_20228928591ae11052bf2622",
+          "original_filename": "Cybernetic Multi-Agent Systems Research.md",
+          "sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_80ef3cd291f5f4fe6fdbcdbb",
+      "declared_title": "Mathematical Rigor and Cybernetic Validation of Stylometric Lineage Tracking within OSSL Ecosystems",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_1a5f7e8bd71f3b1914d9dfc0",
+          "original_filename": "OSSL Stylometric Lineage Tracking Framework.md",
+          "sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_c2a22c120e32b746513447b5",
+          "original_filename": "OSSL Stylometric Lineage Tracking Framework.pdf",
+          "sha256": "b5410495dedd68353f281e0464bc2a809bd29fa477c53e5e0cc736725187cf7e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_834ed287303df08a7a955877",
+      "declared_title": "Comprehensive User Guide to the macOS Terminal: From Basic Operations to Advanced Shell Customization",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_24e3ec262e064fe98ed974b8",
+          "original_filename": "Mac OS Terminal Basic Guide.md",
+          "sha256": "ee34d5401b3a8e414b7eeb056acf77a289f913485f02a8ddf342458793a9ba7a",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_a1aa372da945a7db22e73f4c",
+          "original_filename": "Mac OS Terminal Basic Guide.pdf",
+          "sha256": "658bc90d63280d23a357363b16c0c97f60ad0a0ef7bd753ff72a5ea2b851eb9e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_85db62061b1e1bd0a4f6038e",
+      "declared_title": "Legal and Archival Framework Analysis for a Novel \"Pay-It-Forward\" Open Seed License for Agentic Systems and Prompt Architectures",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_9fcc229e5404e76d30c5726f",
+          "original_filename": "Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+          "sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_9fecefb1208f278c7ba0d4d5",
+          "original_filename": "Open Seed License- Multi-Party Framework & Stylometry Integration.pdf",
+          "sha256": "2015e56af5f710bd4e774e73507d42b83a394eb6b10fcccc2894ff56a0bf7a69",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_9373eb730b45f7f5afe6b7ae",
+      "declared_title": "A Cybernetic and Information-Theoretic Framework for the Transmission of Mythic Motifs in the Eastern Mediterranean (3000–700 BCE)",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_265f3181ee73ce04b8240885",
+          "original_filename": "Cybernetic Modeling of Myth Transmission.md",
+          "sha256": "aca3e1f14d16f79874e3b8882d3ffdabd4dc5e11c8e46bcd40d4fb129b839cb2",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_67937de5ebf818d8bc7c4e68",
+          "original_filename": "Cybernetic Modeling of Myth Transmission.pdf",
+          "sha256": "0107e740fd54900dfc881797fcd15ff2d064455b16392d9fcd553888f74fef06",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_9768cccf3741f3b03974e9cc",
+      "declared_title": "The Cognitive Singularity: A Mathematical, Physical, and Neurodynamical Investigation into the Zero-Point of Human Consciousness",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_e76a321b3df071303fe41538",
+          "original_filename": "Consciousness Singularity Research Plan.md",
+          "sha256": "da6955889440de1977eff56be1db65f0f38b37de64c2ff0e2ca6489ec539d78e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_98c122a6f1451221afc1cc5c",
+      "declared_title": "Architectural Paradigms for Resilient Multi-Agent LLM Systems: Cybernetic Coordination, Telemetry, and Contextual Resource Allocation",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_fc1c117130df363bba90b5c1",
+          "original_filename": "Chat Context Research Dive.md",
+          "sha256": "c5b7650ac12ec1cb8ad2db27173de0a687043953925726a9cdea38135049f5c6",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_7b3a68bdf0d263ae74751b99",
+          "original_filename": "Chat Context Research Dive.pdf",
+          "sha256": "f73839919505a65bbc85224d5c0080d9c319d4286015a61e755af79d5deb1b89",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_a7490990aa7cfc48afe40dc0",
+      "declared_title": "Architectural Dynamics of Dynamic Token Allocation Fallbacks and Cybernetic Control Loops in Autonomous Machine Intelligence",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_4753469dce968cf7c48bd1fe",
+          "original_filename": "Dynamic Token Allocation Research.md",
+          "sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_536415ee2a02f2530392c78e",
+          "original_filename": "Dynamic Token Allocation Research.pdf",
+          "sha256": "e14fac88508e84eb30878327703d3b82c751b80a25298b2ffdc6cb19b233092e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_b5f602e223e39e15b6437a0c",
+      "declared_title": "DAW Engineering Blueprint & Reference Guide: Third-Order Cybernetic Architecture in Mixxx",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_fb1c9ba084467b28d6106148",
+          "original_filename": "Mixxx DAW Architecture Research.md",
+          "sha256": "e06c5d0da6eedfd92272e855a020eec9f7c81c5287e514fe92a2ca6fca5ad2a4",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_f336eedac7c12acb372b7929",
+          "original_filename": "Mixxx DAW Architecture Research (1).pdf",
+          "sha256": "8e7ee2e446b29f1e76e4810fa3d4ee202a98162d26eb950b1e4591d79d4a1517",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_c14c3c415b4c0614335a7f45",
+      "declared_title": "Advanced Cybernetic DSP Architecture: Low-Latency Tracker Engines and Phase-Coherent UI Synchronization",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_a32017341296da30079229dc",
+          "original_filename": "Low-Latency DSP Tracker Engine.md",
+          "sha256": "66d053ae17865526fa410122bd24fb45c456586f3930b1f1a3d60df775ae8235",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_c79701febd7d0a53501e7b97",
+      "declared_title": "Mathematical Control Models for Multi-Agent AI Hypervisors: Vector Culling, Chaos Steering, and PID Recovery",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_b20ff4bfe278f8cf39d805f6",
+          "original_filename": "AI Hypervisor Control Mathematics.md",
+          "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_6205df11a1e35b1a7828c7e7",
+          "original_filename": "Deep Research on AI Hypervisor Control Mathematics.md",
+          "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_d536dc230d89ac9fef9fa13a",
+      "declared_title": "Architecting Linux Environments on macOS: A Comprehensive Guide to Virtualization, Emulation, and Deployment Strategy",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_8925ddeda663016b041255dc",
+          "original_filename": "macOS Virtualization Guide for Linux Environments.md",
+          "sha256": "19f32b0a96371fb5ecc926d6395d3277349de626fc01a017a0642baef3844d75",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_199220ad2cfb300f96ed3ab6",
+          "original_filename": "macOS Virtualization Guide for Linux Environments.pdf",
+          "sha256": "e4656c1b2e39b15134d46586f9e2c6489ba4c439fe4ce5b54d2dd6034808535f",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_d8cf61d54e4db92e96eec6fd",
+      "declared_title": "Cybernetic Orchestration of Local Large Language Models: An Architectural and Mathematical Analysis",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_6c9e38d8872e3fab6ae8a0c3",
+          "original_filename": "Cybernetic LLM Orchestration Analysis.md",
+          "sha256": "1bf2b892b762cc3bf73cdd1b22c0bf450ac436df13d0066bb6d9d9885c618d12",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_d9462f54ea32585c5d4f05ac",
+      "declared_title": "Advanced Mathematical Determination of Optimal Smoothing Factors for Dynamic Signal Processing",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_2adcca73b83fb64e8cf22fd9",
+          "original_filename": "Optimal Gamma Smoothing Factor.md",
+          "sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_0769dac7cdd95a5ca0577963",
+          "original_filename": "Optimal Gamma Smoothing Factor.pdf",
+          "sha256": "a6e1ca3b7144f89d5393cc499d4bf91f32910129ae53b381dcca1140c10a6800",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_dd9a66eba0e2dde8e29f00f6",
+      "declared_title": "Advanced Digital Signal Processing Architecture for an Ultra-Low-Latency 8-Bit Chiptune Synthesizer and Modular Effects Chain",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_8e672cb8123058c8fa47d8d9",
+          "original_filename": "Chiptune DSP Synth Architecture.md",
+          "sha256": "4e8bbedbc8e906e2d541bcceedc8039aef5a524a41ab67fd0f88bbb25ef55374",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_1b44cb39e440056ed325b372",
+          "original_filename": "Chiptune DSP Synth Architecture.pdf",
+          "sha256": "1835c8425dfe69ebba659c1d0a7db4c0232ccb9e9c6d5748edcc6d1e3d2c788c",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_de337e6b46b378a834fb3c00",
+      "declared_title": "Deep Research Initialization: OSSL-Seed Framework & Symbiotic Lineage",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_d785210930150a03fed14930",
+          "original_filename": "OSSL-Seed Framework Research.md",
+          "sha256": "ee3112f9c68412a13fb586073c2cc34336e61a1ad8635055c3b0a0ba2f4edc4e",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_66bc27767a635cd4b2ce3e21",
+          "original_filename": "OSSL-Seed Framework Research.pdf",
+          "sha256": "de7b34161e72f787071bdc60ca9d8691f7bc05299721fccb5ba696f6f0a0d943",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_e026dfda7f98393d8c020067",
+      "declared_title": "Architecture and Implementation of a 128-Step Hybrid Tracker Engine in Mixxx",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_cf77e65eeefe19ca69b44064",
+          "original_filename": "Mixxx Tracker Engine Architecture.md",
+          "sha256": "d45c469b329115042107d0f8c34827745d4482a51f89f6b5689ec23b1b7185ca",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_ba63df8a7bab4ca14b1d21e0",
+          "original_filename": "Mixxx Tracker Engine Architecture.pdf",
+          "sha256": "0afc4d7a95af785099acf4ca4437d73a1e717ef4905e8d9cce0fb9ec78fd96df",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_f0154bf9da11f273a2d6cb18",
+      "declared_title": "The Hermes Architecture: A Cybernetic Framework for System 4 Intelligence and Multi-Agent Orchestration",
+      "identity_status": "SAME_WORK_SUPPORTED",
+      "human_gate_required": true,
+      "contribution_interval": [
+        1,
+        2
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_a87fa4366209a707705beb16",
+          "original_filename": "Hermes AI Prompt Design.md",
+          "sha256": "5503894ac2800aff29bd69b45a756630aa7683a50ce708bb44203a1c500ad3bc",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+          "original_filename": "Hermes AI Prompt Design.pdf",
+          "sha256": "eacbd33a60aeafdcf6963b77c91b970ba995cf47f915d347644a707e28cfdd97",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_f2c89864337f162e88991e28",
+      "declared_title": "Emergent Topologies and Quantum Field Mechanics: A Framework for Spacetime Engineering, Zero-Point Energy, and Traversable Wormholes",
+      "identity_status": "SAME_WORK_CONFIRMED",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 2,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_58fa977424385e8b9892de77",
+          "original_filename": "Quantum Topology Research Prompt Formulation.md",
+          "sha256": "691b95ca7d11cf42e282c5bb0c31de88647a315201c8fe052a9cfdd9ab7cd924",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        },
+        {
+          "source_file_id": "emsrc_a794c13e8e0b9bd6d7be3ca6",
+          "original_filename": "Quantum Topology Research Prompt Formulation.pdf",
+          "sha256": "3335a0b0e4fcba8fc1595e78f7b8b40e98275816a6c74abe7e15539aba471487",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    },
+    {
+      "work_id": "emwork_f4cfab9c72c147e15fa5ebe7",
+      "declared_title": "Architectural Analysis and Formal Specification of the Mixxx Real-Time Audio Engine, Non-Blocking Memory Layout, and Lock-Free Queue Topology",
+      "identity_status": "SINGLETON_WORK_SURFACE",
+      "human_gate_required": false,
+      "contribution_interval": [
+        1,
+        1
+      ],
+      "manifestations_count": 1,
+      "linked_sources": [
+        {
+          "source_file_id": "emsrc_80724e9a6c5be3004c6385f4",
+          "original_filename": "Mixxx Engine Architecture Deep Dive.md",
+          "sha256": "f312594ca7801fdd6b37c065e4d5ed39b8b3f12aef68bba9e1cefe99d5729075",
+          "extraction_status": "EXTRACTED_NATIVE_TEXT",
+          "is_retrievable_text": true
+        }
+      ]
+    }
+  ]
+}
