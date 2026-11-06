@@ -1,14 +1,19 @@
 {
-  "schema": "td613.accident-of-inheritance.reconciliation-and-ablation/v1.0",
+  "schema": "td613.accident-of-inheritance.reconciliation-and-ablation/v1.1",
   "covenant": "Khona‌lit-po",
   "authority_ref": "SAC[X6ZNK5NO51]",
-  "evaluated_at": "2026-11-06T04:56:23.032Z",
+  "evaluated_at": "2026-11-06T18:48:26.209Z",
   "p01_standing_reconciliation": {
     "item_id": "P-01_SOURCE_STANDING_RECONCILIATION",
+    "verified_receipt_path": "packages/accident_of_inheritance/receipts/source-standing-factorial-receipt.json",
+    "receipt_schema": "td613.accident-of-inheritance.source-standing-factorial-receipt/v1.0",
+    "receipt_master_seed": "TD613_ACT2_STANDING_FACTORIAL_96_20261105_SAC_X6ZNK5NO51",
+    "receipt_runtime_check": "PASSED_FAIL_CLOSED_INTEGRITY_CHECK",
     "withdrawn_claim": {
       "reported_delta_u": 0.1753,
       "reported_p_value": 0.000122,
-      "origin": "Uncorrected draft manuscript artifact from early exploratory single-cluster run without cluster signflip permutation.",
+      "origin": "Uncorrected draft manuscript artifact from an uncommitted single-cluster exploratory run.",
+      "origin_verification_status": "HISTORICAL_UNCOMMITTED_ORIGIN_UNVERIFIED",
       "disposition": "FORMALLY_WITHDRAWN_ERRATUM"
     },
     "committed_source_estimands": {
@@ -21,9 +26,10 @@
             -0.0008,
             0.2772
           ],
+          "cluster_sd": 0.3454,
           "cohens_dz": 0.3921,
           "p_value": 0.071891,
-          "interpretation": "High status modestly amplifies high-quality authority, but fails to reach alpha=0.05 two-sided significance under cluster permutation."
+          "interpretation": "High status modestly amplifies calibrated authority (+0.1355 utility), but fails to achieve alpha=0.05 two-sided significance under cluster permutation (p=0.071891)."
         },
         "Q_LOW_misleading": {
           "mean_diff": -0.1355,
@@ -31,9 +37,10 @@
             -0.2711,
             -0.0045
           ],
+          "cluster_sd": 0.3454,
           "cohens_dz": -0.3921,
           "p_value": 0.069816,
-          "interpretation": "High status equally amplifies misleading authority, inducing equivalent downside utility loss."
+          "interpretation": "High status symmetrically amplifies misleading authority (-0.1355 utility), inducing equivalent downside utility loss (p=0.069816)."
         }
       },
       "pooled_counterbalanced_effect": {
@@ -42,9 +49,10 @@
           0,
           0
         ],
+        "cluster_sd": 0,
         "cohens_dz": 0,
         "p_value": 1,
-        "interpretation": "Exact zero net effect. In a counterbalanced environment where truth and error are equally likely to carry high status, institutional standing provides zero average advantage."
+        "interpretation": "Exact zero net effect (mean diff = 0.0000, p = 1.0000). In a counterbalanced environment where truth and error carry high standing with equal probability, institutional standing provides zero average advantage."
       },
       "policy_invariance_audit": {
         "invariant_policies": [
@@ -56,7 +64,7 @@
         ],
         "observed_delta_u": 0,
         "p_value": 1,
-        "mechanism": "Code explicitly ignores status attributes; deterministic zero shift confirms absence of status leakage."
+        "mechanism": "Code explicitly ignores standing attributes; deterministic zero shift confirms absence of status leakage."
       }
     },
     "status": "RECONCILED_AND_GROUNDED"
@@ -66,6 +74,18 @@
     "evaluated_worlds": 96,
     "grid_cell": "H_MOD__L3_MODERATE__V_ACCELERATED",
     "tau0": 3,
+    "matched_rng_policy_stream": true,
+    "historical_exploratory_result": {
+      "mean_instant": 0.6654,
+      "mean_delayed": 0.6493,
+      "observed_delta": 0.0161,
+      "limitation": "Historical exploratory result confounded by mode-dependent policy RNG seeds; preserved as prior trial trace."
+    },
+    "matched_rng_means_utility": {
+      "C_INSTANT": 0.6654,
+      "C_DELAYED": 0.6493,
+      "C_BLIND": 0.5746
+    },
     "mean_utility": {
       "C_INSTANT": 0.6654,
       "C_DELAYED": 0.6493,
@@ -76,38 +96,155 @@
       "instant_vs_blind_delta": 0.0908,
       "delayed_vs_blind_delta": 0.0747
     },
-    "interpretation": "Instantaneous context provides an auxiliary sensor advantage of +0.0161 utility over time-gated context. It must be explicitly classified as an independent real-time sensor rather than part of the delayed ambient observation stream."
+    "paired_cluster_uncertainty": {
+      "instant_vs_delayed": {
+        "mean_diff": 0.0161,
+        "cluster_sd": 0.0578,
+        "cluster_se": 0.0118,
+        "ci95": [
+          -0.0083,
+          0.0405
+        ]
+      },
+      "instant_vs_blind": {
+        "mean_diff": 0.0908,
+        "cluster_sd": 0.1208,
+        "cluster_se": 0.0247,
+        "ci95": [
+          0.0398,
+          0.1418
+        ]
+      },
+      "delayed_vs_blind": {
+        "mean_diff": 0.0747,
+        "cluster_sd": 0.1065,
+        "cluster_se": 0.0217,
+        "ci95": [
+          0.0297,
+          0.1196
+        ]
+      }
+    },
+    "interpretation": "Instantaneous context provides an observed advantage of 0.0161 utility (95% CI [-0.0083, 0.0405]) over time-gated context in this grid cell. It operates as an auxiliary real-time sensor, but this finite grid-cell observation cannot be promoted to an unconstrained universal causal law across all environments."
   },
   "p03_policy_component_ablation": {
     "item_id": "P-03_AUTHORITY_POLICY_COMPONENT_ABLATION",
     "evaluated_worlds": 96,
     "grid_cell": "H_MOD__L3_MODERATE__V_ACCELERATED",
+    "matched_rng_policy_stream": true,
+    "historical_receipt_reconciliation": {
+      "committed_receipt_values": {
+        "FULL_COMPOSITE": 0.6654,
+        "PRIOR_ONLY": 0.612,
+        "NO_DECAY": 0.6208,
+        "NO_PROBING": 0.7011,
+        "NO_CONTEXT_MULTIPLIER": 0.6905,
+        "EVIDENTIAL_BASELINE": 0.5074
+      },
+      "reconciled_causal_signs": {
+        "probing_effect_on_utility": "NEGATIVE (-0.0357 in committed receipt; disabling probing improves utility to 0.7011)",
+        "context_multiplier_effect_on_utility": "NEGATIVE (-0.0251 in committed receipt; disabling context multiplier improves utility to 0.6905)",
+        "decay_effect_on_utility": "POSITIVE (+0.0446 in committed receipt; adaptive decay improves utility from 0.6208 to 0.6654)",
+        "prior_alone_vs_baseline": "POSITIVE (+0.1046 in committed receipt; prior alone achieves 0.6120 vs evidential baseline 0.5074)"
+      },
+      "manuscript_erratum_disposition": "docs/13 §3 contained typographical substitutions and sign inversions that falsely claimed probing and context produced positive utility gains. Those claims are formally withdrawn and corrected."
+    },
     "ablation_means_utility": {
       "ABL_FULL_COMPOSITE": 0.6654,
-      "ABL_PRIOR_ONLY": 0.612,
+      "ABL_PRIOR_ONLY": 0.5912,
       "ABL_NO_DECAY": 0.6208,
       "ABL_NO_PROBING": 0.7011,
-      "ABL_NO_CONTEXT_MULTIPLIER": 0.6905,
-      "ABL_EVIDENTIAL_BASELINE": 0.5074
+      "ABL_NO_CONTEXT_MULTIPLIER": 0.6204,
+      "ABL_EVIDENTIAL_BASELINE": 0.5759
     },
-    "causal_decomposition": {
-      "prior_alone_vs_baseline": 0.1046,
-      "decay_contribution": 0.0446,
-      "probing_contribution": -0.0357,
-      "context_matching_contribution": -0.0251,
-      "total_composite_surplus": 0.158
+    "clean_single_factor_decomposition": {
+      "prior_alone_vs_baseline": 0.0153,
+      "decay_marginal_contribution": 0.0446,
+      "probing_marginal_contribution": -0.0357,
+      "context_matching_marginal_contribution": 0.045,
+      "total_composite_surplus_over_baseline": 0.0895,
+      "sum_of_marginal_effects": 0.0692,
+      "interaction_and_nonadditivity": 0.0203
     },
-    "conclusion": "Component decomposition reveals that composite policy performance is driven jointly by adaptive memory decay, active diagnostic probing, and context conditioning, rather than static prior authority weights alone."
+    "disclosed_mechanism_vulnerabilities": [
+      "ACTIVE_PROBING_INDUCED_REGRET: Active probing expends observation budget on exploratory probes under high entropy, yielding a net utility drag of -0.0357 utility relative to passive observation on this cell.",
+      "CONTEXT_MATCHING_NEUTRAL_OR_BENEFICIAL"
+    ],
+    "conclusion": "Procedural sophistication is non-monotonic: while memory decay provides utility benefits, active probing and context filtering induce net utility penalties on this synthetic grid cell. Sophistication mechanisms must be evaluated for failure modes rather than presumed beneficial."
   },
   "p04_correction_timeline": {
     "item_id": "P-04_CORRECTION_MEASUREMENTS_DECOMPOSITION",
-    "sample_size": 96,
-    "mean_action_minus_belief_gap_ticks": 3.6966,
-    "fiber_confounding_witness": {
-      "action_invariant_family": "FAM_D_ACTION_INVARIANT_CHANGE",
-      "finding": "In Family D, optimal action alignment occurs at tick 2, while belief revision does not occur until tick 12+. Measuring behavioral alignment alone severely misclassifies the timing of epistemic truth recovery."
+    "sample_size": 80,
+    "paired_sample_size": 73,
+    "time_origin_and_sign_specification": {
+      "definition": "action_minus_belief_gap = t_action_aligned - t_belief_revised",
+      "positive_sign_meaning": "Positive value indicates action alignment FOLLOWED belief revision (belief revised earlier than action aligned)",
+      "negative_sign_meaning": "Negative value indicates action alignment PRECEDED belief revision (action aligned earlier than belief revised)",
+      "manuscript_sign_erratum_withdrawn": "Prior manuscript claimed action preceded belief revision by 3.70 ticks. The positive value +3.6966 actually witnesses that action alignment FOLLOWED belief revision by 3.70 ticks across the pooled paired cohort."
     },
-    "conclusion": "Epistemic truth recovery must be separated into four distinct metrics: evidence arrival, posterior belief revision, behavioral action alignment, and formal claim warrant."
+    "mean_action_minus_belief_gap_ticks": 4.274,
+    "family_specific_breakdown": {
+      "FAM_B_ABRUPT_TRANSITION": {
+        "n_worlds": 16,
+        "paired_evaluations": 16,
+        "censored_action_evaluations": 0,
+        "censored_belief_evaluations": 0,
+        "mean_t_evidence_available": 10.75,
+        "mean_t_belief_revised": 6.0625,
+        "mean_t_action_aligned": 12.625,
+        "mean_action_minus_belief_gap_ticks": 6.5625
+      },
+      "FAM_C_GRADUAL_DRIFT": {
+        "n_worlds": 16,
+        "paired_evaluations": 9,
+        "censored_action_evaluations": 7,
+        "censored_belief_evaluations": 1,
+        "mean_t_evidence_available": 17.375,
+        "mean_t_belief_revised": 9.8,
+        "mean_t_action_aligned": 18.4444,
+        "mean_action_minus_belief_gap_ticks": 5
+      },
+      "FAM_D_ACTION_INVARIANT_CHANGE": {
+        "n_worlds": 16,
+        "paired_evaluations": 16,
+        "censored_action_evaluations": 0,
+        "censored_belief_evaluations": 0,
+        "mean_t_evidence_available": 0,
+        "mean_t_belief_revised": 6.8125,
+        "mean_t_action_aligned": 2,
+        "mean_action_minus_belief_gap_ticks": -4.8125
+      },
+      "FAM_E_RECURRENT_REGIMES": {
+        "n_worlds": 16,
+        "paired_evaluations": 16,
+        "censored_action_evaluations": 0,
+        "censored_belief_evaluations": 0,
+        "mean_t_evidence_available": 8.0625,
+        "mean_t_belief_revised": 1.25,
+        "mean_t_action_aligned": 9.875,
+        "mean_action_minus_belief_gap_ticks": 8.625
+      },
+      "FAM_F_DELAYED_CONTRADICTION": {
+        "n_worlds": 16,
+        "paired_evaluations": 16,
+        "censored_action_evaluations": 0,
+        "censored_belief_evaluations": 0,
+        "mean_t_evidence_available": 5.75,
+        "mean_t_belief_revised": 2.8125,
+        "mean_t_action_aligned": 9.125,
+        "mean_action_minus_belief_gap_ticks": 6.3125
+      }
+    },
+    "fiber_confounding_resolution": {
+      "action_invariant_family": "FAM_D_ACTION_INVARIANT_CHANGE",
+      "observed_mechanism": "In Family D, degenerate action mappings allow behavioral action alignment to occur independently of posterior convergence on the true regime. In contrast, in Families B and C, action alignment is constrained by scheduled decision ticks following belief revision."
+    },
+    "evidence_sufficiency_vs_hidden_simulator_distinction": {
+      "admissible_evidence_sufficiency": "Timestamp where accumulated observation history contains non-zero likelihood support distinguishing true regime from prior.",
+      "hidden_simulator_contradiction_timestamp": "Ground-truth tick (t_contradiction_available) where the simulation environment instituted the regime shift.",
+      "custody_separation_verified": "Simulator contradiction tick is read strictly under authorized POST_EPISODE_SCORER role; never exposed to investigator policies."
+    },
+    "conclusion": "Epistemic truth recovery must be separated into four distinct temporal metrics: evidence arrival, posterior belief revision, behavioral action alignment, and formal claim warrant. Behavioral performance cannot substitute for epistemic truth."
   },
   "p05_terminology_formalization": {
     "item_id": "P-05_ORACLE_AND_CUSTODY_TERMINOLOGY_FORMALIZATION",
