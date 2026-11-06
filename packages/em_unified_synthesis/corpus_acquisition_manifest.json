@@ -2,7 +2,7 @@
   "schema": "td613.em.corpus-acquisition-manifest/v1",
   "covenant": "Khona‌lit-po",
   "authority": "SAC[X6ZNK5NO51]",
-  "inspected_at": "2026-11-06T20:52:16.081Z",
+  "inspected_at": "2026-11-06T22:32:08.036Z",
   "historical_git_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
   "fixture_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613",
   "summary_census": {
@@ -12,6 +12,28 @@
       ".pdf": 20,
       ".zip": 1,
       ".md": 66
+    },
+    "source_format_byte_breakdown": {
+      "pdf": {
+        "count": 20,
+        "bytes": 5642539
+      },
+      "zip_container": {
+        "count": 1,
+        "bytes": 697429
+      },
+      "markdown_documents": {
+        "count": 33,
+        "bytes": 1534070
+      },
+      "appledouble_metadata": {
+        "count": 33,
+        "bytes": 64896
+      },
+      "total": {
+        "count": 87,
+        "bytes": 7938934
+      }
     },
     "total_extracted_derivatives": 53,
     "total_unsupported_formats": 34,

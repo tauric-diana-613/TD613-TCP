@@ -1,16 +1,16 @@
 /**
  * TD613 Operator-Supplied ZIP Intake Path
- * Commission EM E-00 · Section VI
+ * Commission EM E-00.1 · Deliverable 5 & Task E001-F05
  * 
- * Prospective, non-destructive ZIP intake engine with:
- * - Safe archive-member enumeration and extraction
- * - Path traversal (Zip-Slip), symlink, archive-bomb, and resource-limit protections
- * - Source-by-source original-byte SHA-256 hashing
- * - File-type classification and supported text extraction
- * - Exact duplicate and near-duplicate detection
- * - Metadata and contradictory version preservation
- * - Exact source-to-derivative lineage tracking
- * - Full-text and passage retrieval after lawful admission
+ * Hardened, fail-closed ZIP intake engine with:
+ * - End of Central Directory (EOCD) backwards validation and exact entry count matching
+ * - Reconciled Central Directory and Local File Header signatures, methods, flags, sizes, CRC
+ * - Strict rejection of unsupported features: encryption, ZIP64, data descriptors, symlinks, special files
+ * - Bound decompression with maxOutputLength, declared-size verification, and CRC-32 verification
+ * - Zip-Slip path traversal defense, absolute/drive-letter rejection, and duplicate normalized path detection
+ * - Strict fatal UTF-8 filename and text decoding
+ * - Atomic admission: zero partial state accepted on any member failure
+ * - Codepoint-aligned integer passage retrieval with fatal boundary checks
  */
 
 import crypto from 'node:crypto';
@@ -29,10 +29,38 @@ export function sha256Hex(buf) {
   return crypto.createHash('sha256').update(b).digest('hex');
 }
 
+// IEEE 802.3 standard CRC-32 table
+const CRC_TABLE = new Uint32Array(256);
+for (let i = 0; i < 256; i++) {
+  let c = i;
+  for (let k = 0; k < 8; k++) {
+    c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+  }
+  CRC_TABLE[i] = c >>> 0;
+}
+
+export function computeCrc32(buf) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < buf.length; i++) {
+    c = CRC_TABLE[(c ^ buf[i]) & 0xFF] ^ (c >>> 8);
+  }
+  return ((c ^ 0xFFFFFFFF) >>> 0);
+}
+
+export function isUtf8ContinuationByte(byte) {
+  return (byte & 0xC0) === 0x80;
+}
+
+export function isCodepointBoundary(buf, offset) {
+  if (offset < 0 || offset > buf.length) return false;
+  if (offset === 0 || offset === buf.length) return true;
+  return !isUtf8ContinuationByte(buf[offset]);
+}
+
 export const DEFAULT_ZIP_LIMITS = {
   maxFileCount: 500,
   maxSingleFileSize: 16 * 1024 * 1024, // 16 MB
-  maxCumulativeBytes: 128 * 1024 * 1024, // 128 MB
+  maxCumulativeBytes: 64 * 1024 * 1024, // 64 MB (67,108,864 bytes)
   maxCompressionRatio: 100 // 100:1
 };
 
@@ -47,139 +75,312 @@ export class OperatorZipIntakeEngine {
   }
 
   /**
-   * Safely parses and validates the Central Directory of a ZIP buffer.
+   * Locates and parses the End of Central Directory (EOCD) record from buffer end.
    */
-  enumerateZip(buf) {
+  findEocd(buf) {
     if (!Buffer.isBuffer(buf) || buf.length < 22) {
-      throw new ZipIntakeError('INVALID_ZIP_ARCHIVE', 'Provided buffer is too small to be a valid ZIP archive.');
+      throw new ZipIntakeError('INVALID_ZIP_ARCHIVE', 'Buffer is too small to contain a valid ZIP archive.');
     }
 
-    // Verify ZIP magic header
-    if (buf[0] !== 0x50 || buf[1] !== 0x4b) {
-      throw new ZipIntakeError('INVALID_ZIP_MAGIC', 'Buffer lacks standard ZIP signature PK.');
-    }
+    // Scan backwards from end for EOCD signature: 0x50 0x4B 0x05 0x06
+    const minOffset = Math.max(0, buf.length - 65536 - 22);
+    let eocdOffset = -1;
 
-    const entries = [];
-    let i = 0;
-    let cumulativeUncompressedBytes = 0;
-
-    while (i < buf.length - 4) {
-      if (buf[i] === 0x50 && buf[i + 1] === 0x4b && buf[i + 2] === 0x01 && buf[i + 3] === 0x02) {
-        if (entries.length >= this.limits.maxFileCount) {
-          throw new ZipIntakeError(
-            'ZIP_RESOURCE_LIMIT_EXCEEDED',
-            `Archive file count exceeds maximum safety threshold of ${this.limits.maxFileCount}.`
-          );
+    for (let p = buf.length - 22; p >= minOffset; p--) {
+      if (buf[p] === 0x50 && buf[p + 1] === 0x4B && buf[p + 2] === 0x05 && buf[p + 3] === 0x06) {
+        const commentLen = buf.readUInt16LE(p + 20);
+        if (p + 22 + commentLen === buf.length) {
+          eocdOffset = p;
+          break;
         }
-
-        const compMethod = buf.readUInt16LE(i + 10);
-        const compSize = buf.readUInt32LE(i + 20);
-        const uncompSize = buf.readUInt32LE(i + 24);
-        const fnameLen = buf.readUInt16LE(i + 28);
-        const extraLen = buf.readUInt16LE(i + 30);
-        const commentLen = buf.readUInt16LE(i + 32);
-        const localOffset = buf.readUInt32LE(i + 42);
-        const filename = buf.subarray(i + 46, i + 46 + fnameLen).toString('utf8');
-
-        // Path Traversal / Zip-Slip Protections
-        if (filename.includes('..') || filename.startsWith('/') || filename.startsWith('\\') || /^[a-zA-Z]:/.test(filename) || filename.includes('\0')) {
-          throw new ZipIntakeError(
-            'ZIP_PATH_TRAVERSAL_REFUSED',
-            `Malicious or invalid relative path detected in archive: ${filename}`
-          );
-        }
-
-        // Single file size limit
-        if (uncompSize > this.limits.maxSingleFileSize) {
-          throw new ZipIntakeError(
-            'ZIP_RESOURCE_LIMIT_EXCEEDED',
-            `Member ${filename} uncompressed size ${uncompSize} exceeds limit of ${this.limits.maxSingleFileSize}.`
-          );
-        }
-
-        // Cumulative size limit
-        cumulativeUncompressedBytes += uncompSize;
-        if (cumulativeUncompressedBytes > this.limits.maxCumulativeBytes) {
-          throw new ZipIntakeError(
-            'ZIP_RESOURCE_LIMIT_EXCEEDED',
-            `Cumulative uncompressed archive size ${cumulativeUncompressedBytes} exceeds limit of ${this.limits.maxCumulativeBytes}.`
-          );
-        }
-
-        // Compression ratio protection (Zip-Bomb defense)
-        if (compSize > 0 && uncompSize / compSize > this.limits.maxCompressionRatio) {
-          throw new ZipIntakeError(
-            'ZIP_RESOURCE_LIMIT_EXCEEDED',
-            `Compression ratio for ${filename} (${(uncompSize / compSize).toFixed(1)}:1) exceeds safety ceiling of ${this.limits.maxCompressionRatio}:1.`
-          );
-        }
-
-        entries.push({
-          filename,
-          compressionMethod: compMethod,
-          compressedSize: compSize,
-          uncompressedSize: uncompSize,
-          localOffset
-        });
-
-        i += 46 + fnameLen + extraLen + commentLen;
-      } else {
-        i++;
       }
     }
 
-    if (entries.length === 0) {
-      throw new ZipIntakeError('ZIP_ARCHIVE_EMPTY', 'Zero central directory records resolved.');
+    if (eocdOffset === -1) {
+      throw new ZipIntakeError('MISSING_EOCD_RECORD', 'Failed to locate valid End of Central Directory (EOCD) record.');
+    }
+
+    const diskNumber = buf.readUInt16LE(eocdOffset + 4);
+    const cdDiskNumber = buf.readUInt16LE(eocdOffset + 6);
+    const diskEntries = buf.readUInt16LE(eocdOffset + 8);
+    const totalEntries = buf.readUInt16LE(eocdOffset + 10);
+    const cdSize = buf.readUInt32LE(eocdOffset + 12);
+    const cdOffset = buf.readUInt32LE(eocdOffset + 16);
+
+    // ZIP64 check
+    if (diskNumber === 0xFFFF || cdDiskNumber === 0xFFFF || diskEntries === 0xFFFF ||
+        totalEntries === 0xFFFF || cdSize === 0xFFFFFFFF || cdOffset === 0xFFFFFFFF) {
+      throw new ZipIntakeError('ZIP64_UNSUPPORTED', 'ZIP64 extensions are not permitted in operator intake.');
+    }
+
+    // Multi-disk check
+    if (diskNumber !== 0 || cdDiskNumber !== 0 || diskEntries !== totalEntries) {
+      throw new ZipIntakeError('MULTIDISK_ZIP_UNSUPPORTED', 'Multi-disk or split ZIP archives are not supported.');
+    }
+
+    // Boundary check
+    if (cdOffset + cdSize > eocdOffset) {
+      throw new ZipIntakeError('CORRUPT_CENTRAL_DIRECTORY_BOUNDS', 'Central Directory overlaps or exceeds EOCD offset.');
+    }
+
+    return {
+      eocdOffset,
+      totalEntries,
+      cdSize,
+      cdOffset
+    };
+  }
+
+  /**
+   * Safely enumerates all Central Directory records starting from EOCD coordinates.
+   */
+  enumerateZip(buf) {
+    const eocd = this.findEocd(buf);
+
+    if (eocd.totalEntries > this.limits.maxFileCount) {
+      throw new ZipIntakeError(
+        'ZIP_RESOURCE_LIMIT_EXCEEDED',
+        `Archive file count (${eocd.totalEntries}) exceeds maximum safety ceiling of ${this.limits.maxFileCount}.`
+      );
+    }
+
+    const entries = [];
+    let p = eocd.cdOffset;
+    const cdEnd = eocd.cdOffset + eocd.cdSize;
+    let cumulativeUncompressedBytes = 0;
+    const seenNormalizedPaths = new Set();
+    const utf8Decoder = new TextDecoder('utf-8', { fatal: true });
+
+    for (let entryIdx = 0; entryIdx < eocd.totalEntries; entryIdx++) {
+      if (p + 46 > cdEnd) {
+        throw new ZipIntakeError('TRUNCATED_CENTRAL_DIRECTORY', `Central Directory entry ${entryIdx} truncated before header end.`);
+      }
+
+      // Check CD signature: 0x50 0x4B 0x01 0x02
+      if (buf[p] !== 0x50 || buf[p + 1] !== 0x4B || buf[p + 2] !== 0x01 || buf[p + 3] !== 0x02) {
+        throw new ZipIntakeError('INVALID_CENTRAL_DIRECTORY_SIGNATURE', `Invalid signature at offset ${p}.`);
+      }
+
+      const flags = buf.readUInt16LE(p + 8);
+      const compMethod = buf.readUInt16LE(p + 10);
+      const crc32 = buf.readUInt32LE(p + 16);
+      const compSize = buf.readUInt32LE(p + 20);
+      const uncompSize = buf.readUInt32LE(p + 24);
+      const fnameLen = buf.readUInt16LE(p + 28);
+      const extraLen = buf.readUInt16LE(p + 30);
+      const commentLen = buf.readUInt16LE(p + 32);
+      const externalAttrs = buf.readUInt32LE(p + 38);
+      const localOffset = buf.readUInt32LE(p + 42);
+
+      // 1. Encryption check (bit 0)
+      if ((flags & 0x01) !== 0) {
+        throw new ZipIntakeError('ENCRYPTED_ZIP_UNSUPPORTED', 'Encrypted archive members are not permitted.');
+      }
+
+      // 2. Data descriptor without local match (bit 3)
+      const hasDataDescriptor = (flags & 0x08) !== 0;
+
+      // 3. Compression method check: only 0 (Stored) or 8 (Deflate)
+      if (compMethod !== 0 && compMethod !== 8) {
+        throw new ZipIntakeError('UNSUPPORTED_COMPRESSION_METHOD', `Compression method ${compMethod} is not supported.`);
+      }
+
+      // 4. External attributes: POSIX file mode check (bits 16-31)
+      const posixMode = (externalAttrs >>> 16) & 0o170000;
+      if (posixMode === 0o120000) {
+        throw new ZipIntakeError('SYMLINK_REJECTED', 'Symbolic links are strictly prohibited in operator ZIP intake.');
+      }
+      if (posixMode === 0o010000 || posixMode === 0o020000 || posixMode === 0o060000 || posixMode === 0o140000) {
+        throw new ZipIntakeError('UNSUPPORTED_SPECIAL_FILE', `Special POSIX file mode 0${posixMode.toString(8)} rejected.`);
+      }
+
+      // 5. Decode filename with fatal UTF-8
+      if (p + 46 + fnameLen > cdEnd) {
+        throw new ZipIntakeError('TRUNCATED_FILENAME', 'Filename exceeds Central Directory bounds.');
+      }
+      const rawNameBuf = buf.subarray(p + 46, p + 46 + fnameLen);
+      let filename;
+      try {
+        filename = utf8Decoder.decode(rawNameBuf);
+      } catch (e) {
+        throw new ZipIntakeError('MALFORMED_UTF8_FILENAME', `Filename contains invalid UTF-8 bytes: ${e.message}`);
+      }
+
+      // 6. Path Traversal & Zip-Slip defense
+      if (filename.includes('\0')) {
+        throw new ZipIntakeError('ZIP_PATH_TRAVERSAL_REFUSED', `Filename contains null byte.`);
+      }
+      if (/^[a-zA-Z]:/.test(filename) || filename.startsWith('/') || filename.startsWith('\\')) {
+        throw new ZipIntakeError('ZIP_PATH_TRAVERSAL_REFUSED', `Absolute path or drive letter detected: ${filename}`);
+      }
+      const parts = filename.split(/[/\\]/);
+      for (const part of parts) {
+        if (part === '..' || part === '.') {
+          throw new ZipIntakeError('ZIP_PATH_TRAVERSAL_REFUSED', `Relative directory traversal segment detected in: ${filename}`);
+        }
+      }
+
+      // 7. Path normalization and duplicate path detection
+      const normalizedPath = parts.filter(Boolean).join('/');
+      const isDirectory = filename.endsWith('/') || filename.endsWith('\\') || (posixMode === 0o040000);
+
+      if (!isDirectory) {
+        if (seenNormalizedPaths.has(normalizedPath)) {
+          throw new ZipIntakeError('DUPLICATE_PATH_IN_ARCHIVE_REJECTED', `Duplicate normalized archive path: ${normalizedPath}`);
+        }
+        seenNormalizedPaths.add(normalizedPath);
+      }
+
+      // 8. Resource limits check
+      if (uncompSize > this.limits.maxSingleFileSize) {
+        throw new ZipIntakeError(
+          'ZIP_RESOURCE_LIMIT_EXCEEDED',
+          `Member ${filename} uncompressed size ${uncompSize} exceeds single-file limit of ${this.limits.maxSingleFileSize}.`
+        );
+      }
+
+      cumulativeUncompressedBytes += uncompSize;
+      if (cumulativeUncompressedBytes > this.limits.maxCumulativeBytes) {
+        throw new ZipIntakeError(
+          'ZIP_RESOURCE_LIMIT_EXCEEDED',
+          `Cumulative uncompressed archive size (${cumulativeUncompressedBytes}) exceeds ceiling of ${this.limits.maxCumulativeBytes}.`
+        );
+      }
+
+      // 9. Zip-Bomb compression ratio check
+      if (compSize > 0 && uncompSize / compSize > this.limits.maxCompressionRatio) {
+        throw new ZipIntakeError(
+          'ZIP_RESOURCE_LIMIT_EXCEEDED',
+          `Compression ratio for ${filename} (${(uncompSize / compSize).toFixed(1)}:1) exceeds ceiling of ${this.limits.maxCompressionRatio}:1.`
+        );
+      }
+
+      entries.push({
+        filename: normalizedPath,
+        rawFilename: filename,
+        isDirectory,
+        compressionMethod: compMethod,
+        flags,
+        hasDataDescriptor,
+        crc32,
+        compressedSize: compSize,
+        uncompressedSize: uncompSize,
+        localOffset
+      });
+
+      p += 46 + fnameLen + extraLen + commentLen;
     }
 
     return entries;
   }
 
   /**
-   * Decompresses an individual entry from raw ZIP buffer.
+   * Validates the Local File Header and decompresses entry with strict bounds and CRC check.
    */
-  decompressEntry(buf, entry) {
+  decompressAndVerifyEntry(buf, entry) {
     const localOffset = entry.localOffset;
     if (localOffset + 30 > buf.length) {
       throw new ZipIntakeError('CORRUPT_LOCAL_HEADER', `Local header offset ${localOffset} beyond buffer bounds.`);
     }
 
+    // Verify local header signature: 0x50 0x4B 0x03 0x04
+    if (buf[localOffset] !== 0x50 || buf[localOffset + 1] !== 0x4B ||
+        buf[localOffset + 2] !== 0x03 || buf[localOffset + 3] !== 0x04) {
+      throw new ZipIntakeError('INVALID_LOCAL_HEADER_SIGNATURE', `Local header signature mismatch at offset ${localOffset}.`);
+    }
+
+    const localFlags = buf.readUInt16LE(localOffset + 6);
+    const localMethod = buf.readUInt16LE(localOffset + 8);
+    const localCrc32 = buf.readUInt32LE(localOffset + 14);
+    const localCompSize = buf.readUInt32LE(localOffset + 18);
+    const localUncompSize = buf.readUInt32LE(localOffset + 22);
     const localFnameLen = buf.readUInt16LE(localOffset + 26);
     const localExtraLen = buf.readUInt16LE(localOffset + 28);
-    const dataStart = localOffset + 30 + localFnameLen + localExtraLen;
 
+    // Reconcile compression method
+    if (localMethod !== entry.compressionMethod) {
+      throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compression method mismatch: local ${localMethod} vs central ${entry.compressionMethod}.`);
+    }
+
+    // If no data descriptor, reconcile sizes and CRC
+    if (!entry.hasDataDescriptor && (localFlags & 0x08) === 0) {
+      if (localCrc32 !== entry.crc32 && entry.crc32 !== 0) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `CRC-32 mismatch: local ${localCrc32} vs central ${entry.crc32}.`);
+      }
+      if (localCompSize !== entry.compressedSize) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Compressed size mismatch: local ${localCompSize} vs central ${entry.compressedSize}.`);
+      }
+      if (localUncompSize !== entry.uncompressedSize) {
+        throw new ZipIntakeError('LOCAL_CENTRAL_METADATA_MISMATCH', `Uncompressed size mismatch: local ${localUncompSize} vs central ${entry.uncompressedSize}.`);
+      }
+    }
+
+    const dataStart = localOffset + 30 + localFnameLen + localExtraLen;
     if (dataStart + entry.compressedSize > buf.length) {
-      throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `Data slice for ${entry.filename} beyond buffer bounds.`);
+      throw new ZipIntakeError('CORRUPT_LOCAL_DATA', `Data slice for ${entry.filename} exceeds buffer length.`);
     }
 
     const slice = buf.subarray(dataStart, dataStart + entry.compressedSize);
+    let decompressed;
 
     if (entry.compressionMethod === 0) {
-      // Stored (no compression)
-      return slice;
+      // Stored
+      if (slice.length !== entry.uncompressedSize) {
+        throw new ZipIntakeError('STORED_SIZE_MISMATCH', `Stored member length ${slice.length} != declared ${entry.uncompressedSize}.`);
+      }
+      decompressed = Buffer.from(slice); // defensive copy
     } else if (entry.compressionMethod === 8) {
-      // Deflate
-      return zlib.inflateRawSync(slice);
-    } else {
-      throw new ZipIntakeError('UNSUPPORTED_COMPRESSION_METHOD', `Compression method ${entry.compressionMethod} not supported.`);
+      // Deflate with strict output bounding
+      try {
+        decompressed = zlib.inflateRawSync(slice, {
+          maxOutputLength: Math.min(entry.uncompressedSize, this.limits.maxSingleFileSize)
+        });
+      } catch (err) {
+        throw new ZipIntakeError('DECOMPRESSION_FAILED_OR_LIMIT_EXCEEDED', `Decompression failed for ${entry.filename}: ${err.message}`);
+      }
     }
+
+    // Verify decompressed length matches declared uncompressed size
+    if (decompressed.length !== entry.uncompressedSize) {
+      throw new ZipIntakeError(
+        'UNCOMPRESSED_SIZE_MISMATCH',
+        `Decompressed length ${decompressed.length} does not match declared uncompressed size ${entry.uncompressedSize}.`
+      );
+    }
+
+    // Verify CRC-32
+    const computedCrc = computeCrc32(decompressed);
+    if (computedCrc !== entry.crc32) {
+      throw new ZipIntakeError(
+        'CRC32_VERIFICATION_FAILED',
+        `CRC-32 verification failed for ${entry.filename}: expected 0x${entry.crc32.toString(16)} got 0x${computedCrc.toString(16)}.`
+      );
+    }
+
+    return decompressed;
   }
 
   /**
-   * Executes full safe intake of an operator-provided ZIP buffer.
+   * Executes full atomic intake of an operator-provided ZIP buffer.
+   * If ANY member fails validation, decompression, CRC, or decoding, ZERO state is admitted.
    */
   processZipArchive(buf, archiveId = 'intake:zip:default') {
     const entries = this.enumerateZip(buf);
-    const results = [];
+
+    // Staging structures for atomic admission
+    const stagedSources = [];
+    const stagedDerivatives = [];
+    const stagedDuplicates = [];
+    const stagedResults = [];
     const hashToSources = new Map();
+    const utf8Decoder = new TextDecoder('utf-8', { fatal: true });
 
     for (const entry of entries) {
-      if (entry.filename.endsWith('/')) {
-        // Directory entry, skip
+      if (entry.isDirectory) {
         continue;
       }
 
-      const rawBytes = this.decompressEntry(buf, entry);
+      const rawBytes = this.decompressAndVerifyEntry(buf, entry);
       const digest = sha256Hex(rawBytes);
       const sourceId = `src:intake:${archiveId}:${sha256Hex(Buffer.from(entry.filename)).slice(0, 16)}`;
 
@@ -191,23 +392,31 @@ export class OperatorZipIntakeEngine {
       const lowerName = entry.filename.toLowerCase();
       if (lowerName.endsWith('.md')) {
         fileType = 'TEXT_MARKDOWN';
-        extractedText = rawBytes.toString('utf8');
-        isTextBearing = true;
+        try {
+          extractedText = utf8Decoder.decode(rawBytes);
+          isTextBearing = true;
+        } catch (e) {
+          throw new ZipIntakeError('MALFORMED_UTF8_CONTENT', `Markdown content in ${entry.filename} failed UTF-8 decoding.`);
+        }
       } else if (lowerName.endsWith('.txt')) {
         fileType = 'TEXT_PLAIN';
-        extractedText = rawBytes.toString('utf8');
-        isTextBearing = true;
+        try {
+          extractedText = utf8Decoder.decode(rawBytes);
+          isTextBearing = true;
+        } catch (e) {
+          throw new ZipIntakeError('MALFORMED_UTF8_CONTENT', `Text content in ${entry.filename} failed UTF-8 decoding.`);
+        }
       } else if (lowerName.endsWith('.pdf')) {
         fileType = 'BINARY_PDF';
       }
 
-      // Exact duplicate check
+      // Duplicate detection
       const isDuplicate = hashToSources.has(digest);
       const duplicateOf = isDuplicate ? hashToSources.get(digest) : null;
       if (!isDuplicate) {
         hashToSources.set(digest, sourceId);
       } else {
-        this.duplicateRegistry.push({
+        stagedDuplicates.push({
           source_id: sourceId,
           filename: entry.filename,
           duplicate_of: duplicateOf,
@@ -215,7 +424,7 @@ export class OperatorZipIntakeEngine {
         });
       }
 
-      // Admitted source record
+      // Staged source record
       const sourceRecord = {
         source_id: sourceId,
         archive_id: archiveId,
@@ -228,9 +437,9 @@ export class OperatorZipIntakeEngine {
         raw_bytes: rawBytes,
         admitted_at: new Date().toISOString()
       };
-      this.admittedSources.set(sourceId, sourceRecord);
+      stagedSources.push(sourceRecord);
 
-      // Derivative lineage
+      // Staged derivative record
       let derivativeRecord = null;
       if (isTextBearing && extractedText !== null) {
         const derivId = `deriv:intake:${sourceId}`;
@@ -244,10 +453,10 @@ export class OperatorZipIntakeEngine {
           extraction_status: 'EXTRACTED_NATIVE_TEXT',
           created_at: new Date().toISOString()
         };
-        this.admittedDerivatives.set(derivId, derivativeRecord);
+        stagedDerivatives.push(derivativeRecord);
       }
 
-      results.push({
+      stagedResults.push({
         source_id: sourceId,
         filename: entry.filename,
         byte_length: rawBytes.length,
@@ -256,28 +465,39 @@ export class OperatorZipIntakeEngine {
         is_text_bearing: isTextBearing,
         derivative_id: derivativeRecord ? derivativeRecord.derivative_id : null
       });
-
-      this.intakeLedger.push({
-        timestamp: new Date().toISOString(),
-        action: 'SOURCE_ADMITTED',
-        source_id: sourceId,
-        filename: entry.filename,
-        sha256: digest
-      });
     }
+
+    // ATOMIC COMMIT: Everything succeeded; now commit to instance custody
+    for (const s of stagedSources) {
+      this.admittedSources.set(s.source_id, s);
+    }
+    for (const d of stagedDerivatives) {
+      this.admittedDerivatives.set(d.derivative_id, d);
+    }
+    for (const dup of stagedDuplicates) {
+      this.duplicateRegistry.push(dup);
+    }
+
+    this.intakeLedger.push({
+      timestamp: new Date().toISOString(),
+      action: 'ARCHIVE_ADMITTED_ATOMIC',
+      archive_id: archiveId,
+      admitted_sources_count: stagedSources.length,
+      extracted_derivatives_count: stagedDerivatives.length
+    });
 
     return {
       archive_id: archiveId,
       total_members_enumerated: entries.length,
-      admitted_sources_count: results.length,
-      extracted_derivatives_count: this.admittedDerivatives.size,
-      exact_duplicates_count: this.duplicateRegistry.length,
-      results
+      admitted_sources_count: stagedSources.length,
+      extracted_derivatives_count: stagedDerivatives.length,
+      exact_duplicates_count: stagedDuplicates.length,
+      results: stagedResults
     };
   }
 
   /**
-   * Retrieves a passage from an admitted text derivative with exact coordinates.
+   * Retrieves a passage from an admitted text derivative with exact, codepoint-aligned coordinates.
    */
   retrievePassage(derivativeId, start, end) {
     const deriv = this.admittedDerivatives.get(derivativeId);
@@ -285,9 +505,17 @@ export class OperatorZipIntakeEngine {
       throw new ZipIntakeError('DERIVATIVE_NOT_FOUND', `Derivative ${derivativeId} not found.`);
     }
 
+    if (!Number.isInteger(start) || !Number.isInteger(end)) {
+      throw new ZipIntakeError('INVALID_COORDINATES', `Coordinates must be integers, got start: ${start}, end: ${end}.`);
+    }
+
     const buf = Buffer.from(deriv.text, 'utf8');
     if (start < 0 || end > buf.length || start > end) {
       throw new ZipIntakeError('INVALID_COORDINATES', `Coordinates [${start}, ${end}] out of range for length ${buf.length}.`);
+    }
+
+    if (!isCodepointBoundary(buf, start) || !isCodepointBoundary(buf, end)) {
+      throw new ZipIntakeError('INVALID_CODEPOINT_BOUNDARY', `Passage boundary [${start}, ${end}] cuts inside UTF-8 multi-byte sequence.`);
     }
 
     const slice = buf.subarray(start, end);

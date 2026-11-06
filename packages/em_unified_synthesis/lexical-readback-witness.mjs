@@ -88,6 +88,9 @@ export function buildNativeTextIndex(dbPath) {
 }
 
 export function executeSearch(db, phrase, options = {}) {
+  if (typeof phrase !== 'string') {
+    throw new Error('NATIVE_QUERY_INVALID_ARGUMENT: phrase must be a string');
+  }
   const limit = options.limit || 30;
   const offset = options.offset || 0;
   const mode = options.mode || 'lexical';
@@ -101,7 +104,8 @@ export function executeSearch(db, phrase, options = {}) {
     countSql = 'SELECT COUNT(*) as cnt FROM records WHERE text LIKE ?';
     sql = 'SELECT source_id, relative_path, source_sha256, 0 as score FROM records WHERE text LIKE ? ORDER BY source_id LIMIT ? OFFSET ?';
   } else {
-    const words = phrase.match(/\w+/gu);
+    // Unicode-aware word tokenization matching letters, numbers, and connector marks
+    const words = phrase.match(/[\p{L}\p{N}_]+/gu);
     if (!words || words.length === 0) {
       throw new Error('NATIVE_QUERY_NO_WORDS');
     }
@@ -141,6 +145,12 @@ export function executeSearch(db, phrase, options = {}) {
 }
 
 export function retrieveContextSpan(db, sourceId, byteOffset, length = 600) {
+  if (!Number.isInteger(byteOffset) || !Number.isInteger(length)) {
+    throw new Error(`NATIVE_CONTEXT_INVALID_COORDINATES: byteOffset and length must be integers.`);
+  }
+  if (length < 0) {
+    throw new Error(`NATIVE_CONTEXT_NEGATIVE_LENGTH: length cannot be negative.`);
+  }
   const row = db.prepare('SELECT source_id, relative_path, source_sha256, text FROM records WHERE source_id = ?').get(sourceId);
   if (!row) {
     throw new Error(`SOURCE_NOT_IN_INDEX: ${sourceId}`);

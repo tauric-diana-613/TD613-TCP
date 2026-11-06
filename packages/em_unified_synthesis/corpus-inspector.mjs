@@ -57,6 +57,13 @@ export function inspectCorpus() {
   const auditedSources = [];
   let totalSourceBytes = 0;
   let sourceFormatCounts = {};
+  const sourceFormatBytes = {
+    pdf: { count: 0, bytes: 0 },
+    zip_container: { count: 0, bytes: 0 },
+    markdown_documents: { count: 0, bytes: 0 },
+    appledouble_metadata: { count: 0, bytes: 0 },
+    total: { count: 0, bytes: 0 }
+  };
 
   for (const s of sourcesManifest) {
     const diskPath = path.join(EM_ROOT, s.archive_relative_path);
@@ -71,6 +78,26 @@ export function inspectCorpus() {
     totalSourceBytes += rawBytes.length;
     const ext = s.extension || path.extname(s.original_filename);
     sourceFormatCounts[ext] = (sourceFormatCounts[ext] || 0) + 1;
+
+    let formatCategory;
+    if (s.original_filename.endsWith('.pdf')) {
+      formatCategory = 'pdf';
+    } else if (s.original_filename.endsWith('.zip')) {
+      formatCategory = 'zip_container';
+    } else if (s.archive_relative_path.includes('__MACOSX')) {
+      formatCategory = 'appledouble_metadata';
+    } else if (s.original_filename.endsWith('.md')) {
+      formatCategory = 'markdown_documents';
+    } else {
+      formatCategory = 'other';
+    }
+
+    if (sourceFormatBytes[formatCategory]) {
+      sourceFormatBytes[formatCategory].count += 1;
+      sourceFormatBytes[formatCategory].bytes += rawBytes.length;
+    }
+    sourceFormatBytes.total.count += 1;
+    sourceFormatBytes.total.bytes += rawBytes.length;
 
     auditedSources.push({
       source_file_id: s.source_file_id,
@@ -262,6 +289,7 @@ export function inspectCorpus() {
       total_source_objects: auditedSources.length,
       total_source_bytes: totalSourceBytes,
       source_format_breakdown: sourceFormatCounts,
+      source_format_byte_breakdown: sourceFormatBytes,
       total_extracted_derivatives: extractedCount,
       total_unsupported_formats: unsupportedCount,
       zip_archive_central_directory_entries: zipEntries.length,
