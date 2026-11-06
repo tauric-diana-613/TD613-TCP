@@ -1,6 +1,6 @@
 {
-  "source_revision": "4feed846e3279b84569334436b6df1bab3200b2f",
-  "task_scope": "SRC_S01_NATIVE_RESEARCH_FALSIFICATION_AND_COMPETENT_NULL_AUDIT",
+  "source_revision": "a18ddb101208383b3b14435ba0a8523027ab989a",
+  "task_scope": "SRC_S011_MEASUREMENT_REHABILITATION_AND_COMPETENT_NULL_AUDIT",
   "evidence_class": "SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/src_s01_falsification_null/SRC_METHOD_INVENTORY_AND_SOURCE_PINS.md",

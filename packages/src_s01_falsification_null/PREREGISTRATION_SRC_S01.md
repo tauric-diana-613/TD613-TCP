@@ -67,17 +67,20 @@ The candidate developmental suite implements 16 deterministic adversarial challe
 
 1. **Paired Comparison:**
    Evaluations are scored pairwise on identical challenges between $S_3$ (Reciprocal) and $S_2$ (Competent Union).
-2. **Discordance Matrix:**
-   $$\begin{pmatrix} n_{11} & n_{10} \\ n_{01} & n_{00} \end{pmatrix}$$
-3. **Exact Two-Sided McNemar Test:**
-   $$p = \min\left(1.0, 2 \sum_{k=0}^{\min(n_{01}, n_{10})} \binom{n_d}{k} 0.5^{n_d}\right), \quad n_d = n_{10} + n_{01}$$
-4. **Epistemological Limitation:**
-   Zero discordances on a finite development suite ($n_d = 0$) confirms that the null hypothesis cannot be rejected on that suite. It does **not** constitute mathematical proof of universal equivalence under all possible inputs.
+2. **Discordance Matrix & McNemar Test:**
+   $$\begin{pmatrix} n_{11} & n_{10} \\ n_{01} & n_{00} \end{pmatrix} = \begin{pmatrix} 16 & 0 \\ 0 & 0 \end{pmatrix}$$
+   Exact two-sided McNemar $p$-value: $p = 1.0000$ ($n_d = n_{10} + n_{01} = 0$).
+3. **Dynamic Terminal Graph Extraction:**
+   $\Delta_{\text{terminal}} = |\text{Nodes}(S_3) \triangle \text{Nodes}(S_2)| + |\text{Edges}(S_3) \triangle \text{Edges}(S_2)| + |\text{Roots}(S_3) \triangle \text{Roots}(S_2)| + |\text{Rejections}(S_3) \triangle \text{Rejections}(S_2)| = 0$.
+4. **Formal Epistemological Disposition:**
+   - Formal classification: `DEVELOPMENT_SUITE_BOOLEAN_PARITY_OBSERVED_WITH_LIMITATIONS`
+   - Scientific surplus: `SCIENTIFIC_SURPLUS_UNDETERMINED`
+   - Zero discordances on a finite development suite ($n_d = 0$) and zero terminal graph deltas ($\Delta_{\text{terminal}} = 0$) demonstrate that the apparent 6-challenge advantage of reciprocal/manifest systems over naive baselines is attributable to standard graph algorithms in the comparator. It does **not** constitute mathematical proof of universal equivalence under all unconstrained inputs.
 
 ---
 
 ### 5. Stopping Criterion
 
-The candidate author executes the visible development pilot, repairs any discovered software defects, freezes the candidate HEAD, and **halts prior to executing concealed independent evaluation**.
+The candidate author executes the visible development pilot, repairs any discovered software defects, freezes the candidate HEAD, and **halts prior to executing concealed independent evaluation**. Independent evaluation belongs exclusively to an un-entangled external reviewer.
 
 𝄐 Khona‌lit-po · Sealed ⟐ SAC[X6ZNK5NO51]

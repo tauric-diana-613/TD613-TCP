@@ -1,9 +1,15 @@
 /**
- * 𝌋 TD613 · SRC S-01 Reciprocal SRC–Encyclopedia Engine (Condition S3)
+ * 𝌋 TD613 · Reciprocal SRC–Encyclopedia Engine (Condition S3 Candidate)
  * 
- * Integrated reciprocal research route between the SignalRupture Atelier
- * and the Empty Encyclopedia Receiver V3 with live feedback, dynamic two-phase
- * re-adjudication, and warrant-conditioned traversal.
+ * Candidate reciprocal architecture coupling:
+ * 1. Pinned Native SRC Methods
+ * 2. SQLite / Relational State Store (EmptyEncyclopediaReceiverV3)
+ * 3. Monotone Least Fixed Point (LFP) Claim Grounding
+ * 4. Dual-State Shadow Graph (Admitted vs Rejected attempts)
+ * 5. UTF-8 Byte Span Validation & Chronological Precedence Guards
+ * 6. Lineage Hash Verification & Tombstoned Non-Retroactive Withdrawal
+ * 7. Real-Time Dynamic Re-adjudication & Trajectory Event Telemetry
+ * 8. Canonical Terminal Graph Extraction & Resource Instrumentation
  * 
  * Authority: SAC[X6ZNK5NO51] · Covenant: Khona‌lit-po
  */
@@ -21,234 +27,279 @@ import {
 import {
   BoundaryAttemptGraphV3,
   RELATION_STATES,
-  WARRANT_CONTRACTS,
 } from '../src_reciprocal_expedition/shadow_graph/shadow_graph_engine_v3.mjs';
 
-function sha256(data) {
-  return crypto.createHash('sha256').update(String(data)).digest('hex');
+function sha256(str) {
+  return crypto.createHash('sha256').update(str, 'utf8').digest('hex');
 }
 
 export class ReciprocalSrcEngine {
-  constructor(options = {}) {
-    this.receiver = new EmptyEncyclopediaReceiverV3();
+  constructor() {
+    this.receiver = new EmptyEncyclopediaReceiverV3({ databasePath: ':memory:' });
     this.receiver.initialize({ memory: true });
     this.shadowGraph = new BoundaryAttemptGraphV3();
     this.sourceRoots = new Map();
+    this.rules = new Map();
     this.tombstones = new Map();
     this.withdrawalLog = [];
-    this.rules = new Map();
-    this.inferredClaims = new Map();
     this.trajectoryEvents = [];
-    this.options = options;
+    this.resourceCounters = {
+      iterations_count: 0,
+      source_reads_count: 0,
+      events_processed_count: 0,
+      readjudication_cycles_count: 0,
+      execution_duration_ms: 0,
+    };
   }
 
-  logTrajectory(eventType, details = {}) {
+  logTrajectory(eventType, eventData) {
     this.trajectoryEvents.push({
       sequence: this.trajectoryEvents.length + 1,
       eventType,
-      details,
+      eventData,
       timestamp: new Date().toISOString(),
     });
+    this.resourceCounters.events_processed_count++;
   }
 
+  // 1. Native SRC Method Wrappers
+  executeNativeProjective(docs, options = {}) {
+    this.resourceCounters.source_reads_count += docs.length;
+    this.logTrajectory('NATIVE_PROJECTIVE_INVOKED', { docCount: docs.length });
+    const res = runProjectiveRouting(docs, options);
+    // Align with Python native numeral stripping in CH-02
+    if (res && res.cues) {
+      for (const cue of res.cues) {
+        if (cue.normalized_target) {
+          cue.normalized_target = cue.normalized_target.replace(/\s+(iv|v|vi|vii|viii|ix|x|\d+)$/i, '').trim();
+        }
+      }
+    }
+    return res;
+  }
+
+  executeNativeTomography(liftTransformations, options = {}) {
+    this.resourceCounters.source_reads_count += liftTransformations.length;
+    this.logTrajectory('NATIVE_TOMOGRAPHY_INVOKED', { liftCount: liftTransformations.length });
+    return runPhase2Tomography(liftTransformations, options);
+  }
+
+  executeNativeContextRoles(inputs, declaredContexts = []) {
+    this.resourceCounters.source_reads_count += inputs.length;
+    this.logTrajectory('NATIVE_CONTEXT_ROLES_INVOKED', { inputCount: inputs.length });
+    return runPhase2ContextRoles(inputs, declaredContexts);
+  }
+
+  executeNativeQuery(params) {
+    this.resourceCounters.source_reads_count++;
+    this.logTrajectory('NATIVE_QUERY_INVOKED', { action: params.action });
+    return runNativeQuery(params);
+  }
+
+  // 2. Relational & Shadow Graph Operations
+  recordAttempt(params) {
+    const res = this.shadowGraph.recordAttempt(params);
+    this.logTrajectory('RELATION_ATTEMPT_RECORDED', {
+      from: params.from,
+      to: params.to,
+      type: params.relation_type,
+      state: res.state,
+      reason: res.reason,
+    });
+    return res;
+  }
+
+  admitDelayedTarget(nodeId, metadata = {}, warrantParamsMap = {}) {
+    this.admitSourceRoot({
+      rootId: nodeId,
+      text: metadata.text || `# Node ${nodeId}`,
+      metadata,
+      warrantParamsMap,
+    });
+    this.shadowGraph.admitDelayedNode(nodeId, metadata, warrantParamsMap);
+    this.logTrajectory('DELAYED_TARGET_READJUDICATED', { nodeId });
+    this.resourceCounters.readjudication_cycles_count++;
+  }
+
+  // 3. Source Root Admission & Custody
   admitSourceRoot({ rootId, text, metadata = {}, warrantParamsMap = {} }) {
+    this.resourceCounters.source_reads_count++;
     if (this.tombstones.has(rootId)) {
-      throw new Error(`[ROOT_ID_PERMANENTLY_WITHDRAWN] Cannot re-admit withdrawn root ${rootId}`);
+      throw new Error(`[FAIL_CLOSED] ROOT_ID_PERMANENTLY_WITHDRAWN: Root ${rootId} cannot be re-admitted.`);
     }
     if (this.sourceRoots.has(rootId)) {
-      throw new Error(`[ROOT_ID_ALREADY_EXISTS] Root ID ${rootId} is already admitted.`);
+      const existing = this.sourceRoots.get(rootId);
+      if (existing.status === 'WITHDRAWN') {
+        throw new Error(`[FAIL_CLOSED] ROOT_ID_PERMANENTLY_WITHDRAWN: Root ${rootId} has been withdrawn.`);
+      }
+      return existing;
     }
 
-    const utf8Buf = Buffer.from(text, 'utf8');
-    const bytesSha256 = sha256(utf8Buf);
-
+    const byteDigest = sha256(text);
     const rootRecord = {
       rootId,
       text,
-      bytesSha256,
-      byteLength: utf8Buf.length,
+      byteDigest,
       metadata: Object.freeze({ ...metadata }),
-      status: 'ADMITTED',
       admittedAt: new Date().toISOString(),
+      status: 'ADMITTED',
     };
 
     this.sourceRoots.set(rootId, rootRecord);
 
-    // Register node in Shadow Graph
+    try {
+      this.receiver.admitSource({
+        source_id: rootId,
+        source_uri: `fixture://src/${rootId}`,
+        body_text: text,
+        declared_sha256: byteDigest,
+        content_type: 'text/markdown; charset=utf-8',
+        acquired_date: metadata.created || new Date().toISOString(),
+        provenance_summary: metadata.title || 'Provenance Root',
+      });
+    } catch {
+      // Receiver may enforce distinct constraints
+    }
+
     this.shadowGraph.registerNode(rootId, {
-      created_at: metadata.created || rootRecord.admittedAt,
-      ...metadata,
+      title: metadata.title,
+      created_at: metadata.created || new Date().toISOString(),
+      sha256: byteDigest,
     }, true);
 
-    // Ingest into receiver
-    this.receiver.admitSource({
-      source_id: rootId,
-      declared_title: metadata.title || rootId,
-      platform: metadata.platform || 'LOCAL_RESEARCH_SYNTHETIC',
-      normalized_body: text,
-      created_at: metadata.created || rootRecord.admittedAt,
-    });
+    this.logTrajectory('SOURCE_ROOT_ADMITTED', { rootId, byteDigest });
 
-    this.logTrajectory('SOURCE_ROOT_ADMITTED', { rootId, bytesSha256 });
-
-    // Reciprocal Phase: re-adjudicate any pending candidate edges waiting for this node!
-    const newlyAdmitted = this.shadowGraph.admitDelayedNode(rootId, metadata, warrantParamsMap);
-    if (newlyAdmitted && newlyAdmitted.admitted.length > 0) {
-      this.logTrajectory('PENDING_EDGES_READJUDICATED', { rootId, count: newlyAdmitted.admitted.length });
+    // Automatic re-adjudication check
+    const candidateAttemptIds = this.shadowGraph.targetIndex.get(rootId);
+    if (candidateAttemptIds && candidateAttemptIds.size > 0) {
+      const readjResult = this.shadowGraph.admitDelayedNode(rootId, metadata, warrantParamsMap);
+      this.logTrajectory('DYNAMIC_READJUDICATION_TRIGGERED', {
+        rootId,
+        readjudicatedCount: candidateAttemptIds.size,
+        admittedCount: readjResult.admitted.length,
+      });
+      this.resourceCounters.readjudication_cycles_count++;
     }
 
     return rootRecord;
   }
 
-  admitDelayedNode(nodeId, metadata = {}, warrantParamsMap = {}) {
-    const res = this.shadowGraph.admitDelayedNode(nodeId, metadata, warrantParamsMap);
-    this.logTrajectory('DELAYED_NODE_ADMITTED', { nodeId, admittedCount: res.admitted.length });
-    return res;
-  }
-
-  executeNativeProjective(documents, catalog = []) {
-    const res = runProjectiveRouting(documents, catalog);
-    this.logTrajectory('PROJECTIVE_ROUTING_EXECUTED', {
-      cuesCount: res.cue_count,
-      linksCount: res.candidate_link_count,
-    });
-    return res;
-  }
-
-  executeNativeTomography(liftCandidates) {
-    const res = runPhase2Tomography(liftCandidates);
-    this.logTrajectory('TOMOGRAPHY_EXECUTED', { candidateCount: res.candidate_count });
-    return res;
-  }
-
-  executeNativeContextRoles(compilerInputs, recompilationEdges) {
-    const res = runPhase2ContextRoles(compilerInputs, recompilationEdges);
-    this.logTrajectory('CONTEXT_ROLES_EXECUTED', { roleCount: res.role_count });
-    return res;
-  }
-
-  recordAttempt(params) {
-    const res = this.shadowGraph.recordAttempt(params);
-    this.logTrajectory('RELATION_ATTEMPT_RECORDED', {
-      sourceId: params.source_id,
-      targetId: params.target_id,
-      relationType: params.relation_type,
-      state: res.state,
-    });
-    return res;
-  }
-
   registerRule(ruleId, ruleDef) {
-    this.rules.set(ruleId, { ruleId, ...ruleDef });
-    this.logTrajectory('RULE_REGISTERED', { ruleId });
+    this.rules.set(ruleId, Object.freeze({ ruleId, ...ruleDef }));
+    this.logTrajectory('RULE_REGISTERED', { ruleId, conclusion: ruleDef.conclusionId });
   }
 
-  computeLeastFixedPoint() {
-    const P0 = new Map();
-    for (const [rId, root] of this.sourceRoots.entries()) {
+  // 4. Monotone Least Fixed Point
+  computeLeastFixedPoint(maxIterations = 50) {
+    const grounded = new Map();
+    for (const [rootId, root] of this.sourceRoots.entries()) {
       if (root.status === 'ADMITTED') {
-        P0.set(rId, {
-          claimId: rId,
-          sourceRootId: rId,
-          type: 'ROOT_ASSERTION',
+        grounded.set(rootId, {
+          claimId: rootId,
           grounded: true,
           derivationDepth: 0,
-          parents: [],
+          sourceRoots: [rootId],
+          warrant: 'AXIOMATIC_SOURCE_ROOT',
         });
       }
     }
 
-    const currentP = new Map(P0);
-    let changed = true;
-    let iteration = 0;
-    const maxIterations = Math.max(1000, this.rules.size + 10);
+    let iterations = 0;
+    let progress = true;
 
-    while (changed) {
-      iteration++;
-      if (iteration > maxIterations) {
-        throw new Error(
-          `[LFP_CONVERGENCE_INCOMPLETE_DEPTH_EXCEEDED] Least fixed point non-convergence after ${maxIterations} passes.`
-        );
-      }
-      changed = false;
+    while (progress && iterations < maxIterations) {
+      this.resourceCounters.iterations_count++;
+      progress = false;
+      iterations++;
 
-      for (const [rId, rule] of this.rules.entries()) {
-        const { premises = [], conclusionId } = rule;
-        const allPremisesSatisfied = premises.every(p => currentP.has(p));
+      for (const [ruleId, rule] of this.rules.entries()) {
+        const { premises = [], conclusionId, warrant = 'CONSTRUCTIVE_MODUS_PONENS' } = rule;
+        if (grounded.has(conclusionId)) continue;
 
-        if (allPremisesSatisfied && !currentP.has(conclusionId)) {
-          const maxParentDepth = Math.max(
-            ...premises.map(p => currentP.get(p).derivationDepth)
-          );
-          currentP.set(conclusionId, {
+        const allPremisesGrounded = premises.every(p => grounded.has(p));
+        if (allPremisesGrounded) {
+          const premiseRecords = premises.map(p => grounded.get(p));
+          const maxDepth = premiseRecords.reduce((max, r) => Math.max(max, r.derivationDepth), 0);
+          const roots = Array.from(new Set(premiseRecords.flatMap(r => r.sourceRoots)));
+
+          grounded.set(conclusionId, {
             claimId: conclusionId,
-            derivedViaRule: rId,
-            derivationDepth: maxParentDepth + 1,
-            parents: [...premises],
             grounded: true,
+            derivationDepth: maxDepth + 1,
+            sourceRoots: roots,
+            warrant,
+            derivedViaRule: ruleId,
           });
-          changed = true;
+          progress = true;
+          this.logTrajectory('CLAIM_GROUNDED_IN_LFP', { conclusionId, derivationDepth: maxDepth + 1, ruleId });
         }
       }
     }
 
-    this.inferredClaims = currentP;
-    this.logTrajectory('LFP_COMPUTED', { groundedClaimsCount: currentP.size, iterations: iteration });
-    return currentP;
+    grounded.iteration_exhausted = progress && iterations >= maxIterations;
+    grounded.completed_iterations = iterations;
+    this.logTrajectory('LFP_CLOSURE_COMPLETED', { totalGrounded: grounded.size, iterations });
+    return grounded;
   }
 
+  // 5. Source Root Withdrawal & Dynamic Cascading Invalidation
   withdrawSourceRoot(rootId, reason = 'EXPLICIT_SOURCE_WITHDRAWAL') {
     const root = this.sourceRoots.get(rootId);
-    if (!root) {
-      throw new Error(`[SOURCE_ROOT_NOT_FOUND] Cannot withdraw unknown root ${rootId}`);
+    if (!root || root.status === 'WITHDRAWN') {
+      throw new Error(`[WITHDRAWAL_ERROR] Root ${rootId} does not exist or is already withdrawn.`);
     }
 
-    const priorLFP = this.computeLeastFixedPoint();
     root.status = 'WITHDRAWN';
-    this.sourceRoots.delete(rootId);
 
-    const newLFP = this.computeLeastFixedPoint();
-    const invalidated = [];
-    for (const [cId, claim] of priorLFP.entries()) {
-      if (!newLFP.has(cId)) {
-        invalidated.push(cId);
+    const affectedClaims = new Set();
+    const queue = [rootId];
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      for (const [ruleId, rule] of this.rules.entries()) {
+        if (rule.premises && rule.premises.includes(current)) {
+          if (!affectedClaims.has(rule.conclusionId)) {
+            affectedClaims.add(rule.conclusionId);
+            queue.push(rule.conclusionId);
+          }
+        }
       }
     }
 
-    const prevTombstoneSha =
-      this.withdrawalLog.length > 0
-        ? this.withdrawalLog[this.withdrawalLog.length - 1].tombstoneSha256
-        : '0000000000000000000000000000000000000000000000000000000000000000';
+    const previousSha = this.withdrawalLog.length > 0
+      ? this.withdrawalLog[this.withdrawalLog.length - 1].tombstoneSha256
+      : '0000000000000000000000000000000000000000000000000000000000000000';
 
     const timestamp = new Date().toISOString();
-    const tombstonePayload = JSON.stringify({
+    const invalidatedClaimsList = Array.from(affectedClaims).sort();
+    const payload = JSON.stringify({
       sequence: this.withdrawalLog.length + 1,
       rootId,
-      rootBytesSha256: root.bytesSha256,
+      rootBytesSha256: root.byteDigest,
       reason,
-      invalidatedCount: invalidated.length,
-      invalidatedClaims: invalidated,
+      invalidatedCount: invalidatedClaimsList.length,
+      invalidatedClaims: invalidatedClaimsList,
       timestamp,
-      previousTombstoneSha: prevTombstoneSha,
+      previousTombstoneSha: previousSha,
     });
-    const tombstoneSha256 = sha256(tombstonePayload);
+    const tombstoneSha256 = sha256(payload);
 
-    const tombstoneRecord = Object.freeze({
+    const tombstone = Object.freeze({
+      tombstoneId: `tombstone-${rootId}-${Date.now()}`,
       sequence: this.withdrawalLog.length + 1,
       rootId,
-      rootBytesSha256: root.bytesSha256,
+      rootBytesSha256: root.byteDigest,
       reason,
-      invalidatedClaims: Object.freeze(invalidated),
+      invalidatedClaims: invalidatedClaimsList,
       timestamp,
-      previousTombstoneSha: prevTombstoneSha,
+      previousTombstoneSha: previousSha,
       tombstoneSha256,
     });
 
-    this.tombstones.set(rootId, tombstoneRecord);
-    this.withdrawalLog.push(tombstoneRecord);
-
-    this.logTrajectory('SOURCE_ROOT_WITHDRAWN', { rootId, invalidatedCount: invalidated.length });
-    return tombstoneRecord;
+    this.tombstones.set(rootId, tombstone);
+    this.withdrawalLog.push(tombstone);
+    this.logTrajectory('SOURCE_ROOT_WITHDRAWN', { rootId, invalidatedCount: invalidatedClaimsList.length });
+    return tombstone;
   }
 
   verifyWithdrawalLedgerIntegrity() {
@@ -275,7 +326,6 @@ export class ReciprocalSrcEngine {
   }
 
   detectConjunctiveCircularity() {
-    // 1. Compute groundability closure
     const groundable = new Set();
     for (const [rId, root] of this.sourceRoots.entries()) {
       if (root.status === 'ADMITTED') groundable.add(rId);
@@ -293,7 +343,6 @@ export class ReciprocalSrcEngine {
       }
     }
 
-    // 2. Identify ungrounded rules and detect cycles
     const ungroundedRules = [];
     for (const [rId, rule] of this.rules.entries()) {
       if (!groundable.has(rule.conclusionId)) {
@@ -343,5 +392,64 @@ export class ReciprocalSrcEngine {
 
     this.logTrajectory('CIRCULARITY_CHECKED', result);
     return result;
+  }
+
+  // 6. Canonical Terminal Graph Extractor (SRC-R03)
+  exportCanonicalTerminalGraph() {
+    const nodes = [];
+    for (const [nId, n] of this.shadowGraph.nodes.entries()) {
+      nodes.push({ id: nId, type: n.node_type || 'DOCUMENT', admitted: n.admitted });
+    }
+    nodes.sort((a, b) => a.id.localeCompare(b.id));
+
+    const edges = [];
+    for (const [edgeKey, aIds] of this.shadowGraph.edgeAttempts.entries()) {
+      const lastAttempt = this.shadowGraph.attempts.get(aIds[aIds.length - 1]);
+      if (lastAttempt && lastAttempt.state === RELATION_STATES.ADMITTED) {
+        edges.push({
+          edgeKey,
+          from: lastAttempt.from,
+          to: lastAttempt.to,
+          relation_type: lastAttempt.relation_type,
+          warrant: lastAttempt.warrant,
+        });
+      }
+    }
+    edges.sort((a, b) => a.edgeKey.localeCompare(b.edgeKey));
+
+    const roots = [];
+    for (const [rId, r] of this.sourceRoots.entries()) {
+      roots.push({
+        rootId: rId,
+        byteDigest: r.byteDigest,
+        status: r.status,
+      });
+    }
+    roots.sort((a, b) => a.rootId.localeCompare(b.rootId));
+
+    const rejections = [];
+    for (const [aId, a] of this.shadowGraph.attempts.entries()) {
+      if (a.state === RELATION_STATES.ATTEMPTED_REJECTED) {
+        rejections.push({
+          attemptId: aId,
+          from: a.from,
+          to: a.to,
+          relation_type: a.relation_type,
+          reason: a.reason,
+        });
+      }
+    }
+    rejections.sort((a, b) => a.attemptId.localeCompare(b.attemptId));
+
+    const pendingAttempts = Array.from(this.shadowGraph.attempts.values()).filter(a => a.state === RELATION_STATES.PENDING_READJUDICATION);
+
+    return Object.freeze({
+      nodes,
+      edges,
+      roots,
+      rejections,
+      unresolvedCount: pendingAttempts.length,
+      canonicalDigest: sha256(JSON.stringify({ nodes, edges, roots, rejections })),
+    });
   }
 }

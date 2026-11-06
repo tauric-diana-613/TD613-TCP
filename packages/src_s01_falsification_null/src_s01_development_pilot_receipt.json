@@ -1,26 +1,44 @@
 {
-  "schema": "td613.src-s01.development-pilot-receipt/v1.0",
+  "schema": "td613.src-s01.development-pilot-receipt/v1.1",
   "covenant": "Khona‌lit-po",
   "authority_ref": "SAC[X6ZNK5NO51]",
-  "executed_at": "2026-11-06T05:14:07.553Z",
+  "executed_at": "2026-11-06T19:04:59.961Z",
   "total_challenges": 16,
   "condition_scores": {
-    "S0_NATIVE_SRC_ALONE": {
-      "passed": 7,
-      "failed": 9,
-      "rate": 0.4375
+    "S0_PINNED_PYTHON_NATIVE": {
+      "applicable_challenges": 7,
+      "passed": 6,
+      "failed": 1,
+      "not_applicable_by_design": 9,
+      "rate_on_applicable": 0.8571428571428571,
+      "python_version": "Python 3.12.16 (via uv)",
+      "pinned_source_dir": "packages/research_carrier_v1/native/",
+      "ch02_numeral_stripping_verified": true
+    },
+    "S0_JS_ADAPTER_REFERENCE": {
+      "applicable_challenges": 7,
+      "passed": 6,
+      "failed": 1,
+      "not_applicable_by_design": 9,
+      "rate_on_applicable": 0.8571428571428571,
+      "ch02_discrepancy_reported": "FAIL_DOCUMENTED_TRAILING_NUMERAL_DISCREPANCY"
     },
     "S1_RECEIVER_ALONE": {
-      "passed": 3,
-      "failed": 13,
-      "rate": 0.1875
+      "applicable_challenges": 2,
+      "passed": 1,
+      "failed": 1,
+      "not_applicable_by_design": 14,
+      "rate_on_applicable": 0.5,
+      "direct_receiver_api_witness": "EmptyEncyclopediaReceiverV3 (:memory: SQLite)"
     },
     "S2_COMPETENT_NATIVE_UNION": {
+      "total_evaluated": 16,
       "passed": 16,
       "failed": 0,
       "rate": 1
     },
     "S3_RECIPROCAL_SRC_ENGINE": {
+      "total_evaluated": 16,
       "passed": 16,
       "failed": 0,
       "rate": 1
@@ -34,89 +52,393 @@
     "discordant_pairs_nd": 0,
     "exact_two_sided_mcnemar_p_value": 1
   },
+  "terminal_relation_graph_comparison": {
+    "dynamically_computed": true,
+    "total_canonical_terminal_delta": 0,
+    "per_challenge_deltas": [
+      {
+        "challenge_id": "CH-01",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-02",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-03",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-04",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-05",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-06",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-07",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-08",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-09",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-10",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-11",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-12",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-13",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-14",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-15",
+        "terminal_delta": 0,
+        "identical": true
+      },
+      {
+        "challenge_id": "CH-16",
+        "terminal_delta": 0,
+        "identical": true
+      }
+    ],
+    "exact_graph_equality_observed": true
+  },
   "trajectory_divergence": {
-    "terminal_relation_graph_delta": 0,
-    "intermediate_trajectory_events_recorded_in_reciprocal": 38,
-    "first_class_outcome": "EQUAL_FINAL_RELATIONS_UNEQUAL_RESEARCH_HISTORIES"
+    "intermediate_trajectory_events_recorded_in_reciprocal": 113,
+    "trajectory_divergence_witnessed": true,
+    "first_class_outcome": "EQUAL_FINAL_RELATIONS_UNEQUAL_RESEARCH_HISTORIES",
+    "provenance_distinction": "Reciprocal coupling dynamically records intermediate transitions and re-adjudication telemetry; competent union achieves identical terminal state through batched LFP passes."
   },
   "epistemological_disposition": {
-    "null_hypothesis_confirmed_on_dev_suite": true,
-    "emergence_surplus_observed": false,
-    "interpretation": "The development suite yields delta = 0 between Competent Union and Reciprocal candidate on terminal relations. However, intermediate trajectories differed significantly (reciprocal engine witnessed 10+ transition events and dynamic re-adjudications). Null hypothesis cannot be rejected on development suite."
+    "formal_classification": "DEVELOPMENT_SUITE_BOOLEAN_PARITY_OBSERVED_WITH_LIMITATIONS",
+    "scientific_surplus": "SCIENTIFIC_SURPLUS_UNDETERMINED",
+    "interpretation": "On the 16-challenge deterministic development suite, S2 and S3 achieve identical Boolean scores (16/16) and dynamically verified identical terminal relation graphs (delta = 0). The apparent six-challenge advantage over naive single-receiver baselines is attributable to standard graph algorithms. True scientific surplus across unconstrained topologies remains undetermined pending independent concealed evaluation."
   },
-  "per_challenge_details": {
-    "S0": {
-      "CH-01": "PASS",
-      "CH-02": "PASS",
-      "CH-03": "PASS",
-      "CH-04": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-05": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-06": "PASS",
-      "CH-07": "PASS",
-      "CH-08": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-09": "PASS",
-      "CH-10": "PASS",
-      "CH-11": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-12": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-13": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-14": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-15": "UNSUPPORTED_BY_NATIVE_ALONE",
-      "CH-16": "UNSUPPORTED_BY_NATIVE_ALONE"
+  "per_challenge_details": [
+    {
+      "challenge_id": "CH-01",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 1
+      }
     },
-    "S1": {
-      "CH-01": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-02": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-03": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-04": "PASS",
-      "CH-05": "PASS",
-      "CH-06": "PASS",
-      "CH-07": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-08": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-09": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-10": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-11": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-12": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-13": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-14": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-15": "UNSUPPORTED_BY_RECEIVER_ALONE",
-      "CH-16": "UNSUPPORTED_BY_RECEIVER_ALONE"
+    {
+      "challenge_id": "CH-02",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 1
+      }
     },
-    "S2": {
-      "CH-01": "PASS",
-      "CH-02": "PASS",
-      "CH-03": "PASS",
-      "CH-04": "PASS",
-      "CH-05": "PASS",
-      "CH-06": "PASS",
-      "CH-07": "PASS",
-      "CH-08": "PASS",
-      "CH-09": "PASS",
-      "CH-10": "PASS",
-      "CH-11": "PASS",
-      "CH-12": "PASS",
-      "CH-13": "PASS",
-      "CH-14": "PASS",
-      "CH-15": "PASS",
-      "CH-16": "PASS"
+    {
+      "challenge_id": "CH-03",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 1
+      }
     },
-    "S3": {
-      "CH-01": "PASS",
-      "CH-02": "PASS",
-      "CH-03": "PASS",
-      "CH-04": "PASS",
-      "CH-05": "PASS",
-      "CH-06": "PASS",
-      "CH-07": "PASS",
-      "CH-08": "PASS",
-      "CH-09": "PASS",
-      "CH-10": "PASS",
-      "CH-11": "PASS",
-      "CH-12": "PASS",
-      "CH-13": "PASS",
-      "CH-14": "PASS",
-      "CH-15": "PASS",
-      "CH-16": "PASS"
+    {
+      "challenge_id": "CH-04",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 1
+      }
+    },
+    {
+      "challenge_id": "CH-05",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 1
+      }
+    },
+    {
+      "challenge_id": "CH-06",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 1
+      }
+    },
+    {
+      "challenge_id": "CH-07",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 0,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 0
+      }
+    },
+    {
+      "challenge_id": "CH-08",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 6,
+      "resources": {
+        "s2_iterations": 2,
+        "s3_iterations": 2,
+        "s2_events": 0,
+        "s3_events": 6
+      }
+    },
+    {
+      "challenge_id": "CH-09",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 1
+      }
+    },
+    {
+      "challenge_id": "CH-10",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 1,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 0,
+        "s3_events": 1
+      }
+    },
+    {
+      "challenge_id": "CH-11",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 8,
+      "resources": {
+        "s2_iterations": 3,
+        "s3_iterations": 3,
+        "s2_events": 1,
+        "s3_events": 8
+      }
+    },
+    {
+      "challenge_id": "CH-12",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 2,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 2
+      }
+    },
+    {
+      "challenge_id": "CH-13",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 4,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 2,
+        "s3_events": 4
+      }
+    },
+    {
+      "challenge_id": "CH-14",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 4,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 4
+      }
+    },
+    {
+      "challenge_id": "CH-15",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 5,
+      "resources": {
+        "s2_iterations": 0,
+        "s3_iterations": 0,
+        "s2_events": 1,
+        "s3_events": 5
+      }
+    },
+    {
+      "challenge_id": "CH-16",
+      "s2_verdict": "PASS",
+      "s3_verdict": "PASS",
+      "concordant": true,
+      "terminal_graph_identical": true,
+      "terminal_delta_count": 0,
+      "node_delta": [],
+      "edge_delta": [],
+      "rejection_delta": [],
+      "s3_trajectory_events_logged": 76,
+      "resources": {
+        "s2_iterations": 41,
+        "s3_iterations": 41,
+        "s2_events": 0,
+        "s3_events": 76
+      }
     }
-  },
-  "status": "SRC_S01_DEVELOPMENT_PILOT_COMPLETE"
+  ],
+  "status": "SRC_S011_DEVELOPMENT_PILOT_REHABILITATED_COMPLETE"
 }
