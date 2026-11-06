@@ -119,6 +119,17 @@ export class CompetentNullComparator {
       throw new Error('ASYMMETRIC_CASE_LEDGER_DETECTED: Case ledger must be a non-empty array.');
     }
 
+    const expectedCaseIdSet = new Set();
+    for (const c of caseLedger) {
+      if (!c || typeof c !== 'object' || !c.case_id) {
+        throw new Error('ASYMMETRIC_CASE_LEDGER_DETECTED: Invalid case record without case_id.');
+      }
+      if (expectedCaseIdSet.has(c.case_id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Duplicate case_id '${c.case_id}' in caseLedger.`);
+      }
+      expectedCaseIdSet.add(c.case_id);
+    }
+
     const findings = {
       evaluated_at: new Date().toISOString(),
       covenant: this.covenant,
@@ -253,7 +264,15 @@ export class CompetentNullComparator {
     arm3WithdrawalOps += 2;
 
     // Evaluate all cases in shared ledger
+    const arm3ExecutedCaseIds = new Set();
+    const arm3Trace = [];
+
     for (const c of caseLedger) {
+      if (arm3ExecutedCaseIds.has(c.case_id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Arm 3 executed duplicate case '${c.case_id}'.`);
+      }
+      arm3ExecutedCaseIds.add(c.case_id);
+      arm3Trace.push(c.case_id);
       arm3Queries++;
       let reached = false;
       if (c.case_type === 'POST_WITHDRAWAL_CONSEQUENCE') {
@@ -360,6 +379,9 @@ export class CompetentNullComparator {
           }]
     };
 
+    // Register admitted bridge sources into synthesis engine for verified operator attestation
+    synthesis.registerBridge(arm4Bridge);
+
     synthesis.extractWorkAnatomy(hyperWork);
     synthesis.extractWorkAnatomy(algedonicWork);
 
@@ -453,8 +475,15 @@ export class CompetentNullComparator {
     let arm4Correct = 0;
     let arm4Rejected = 0;
     let arm4FalseConvergences = 0;
+    const arm4ExecutedCaseIds = new Set();
+    const arm4Trace = [];
 
     for (const c of caseLedger) {
+      if (arm4ExecutedCaseIds.has(c.case_id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Arm 4 executed duplicate case '${c.case_id}'.`);
+      }
+      arm4ExecutedCaseIds.add(c.case_id);
+      arm4Trace.push(c.case_id);
       arm4Queries++;
       let isGrounded = false;
       if (c.case_type === 'POST_WITHDRAWAL_CONSEQUENCE') {
@@ -474,19 +503,41 @@ export class CompetentNullComparator {
       }
     }
 
-    // Fail closed if case counts differ between arms
-    if (findings.arms.arm_3_non_reciprocal_union.cases_evaluated !== caseLedger.length ||
-        arm4Correct + arm4FalseConvergences !== caseLedger.length && arm4Correct < caseLedger.length && false) {
-      throw new Error('ASYMMETRIC_CASE_LEDGER_DETECTED: Arms evaluated differing numbers of cases.');
+    // Fail closed if execution traces or case-ID sets differ between arms or from expected ledger
+    if (arm3Trace.length !== expectedCaseIdSet.size ||
+        arm4Trace.length !== expectedCaseIdSet.size ||
+        arm3ExecutedCaseIds.size !== expectedCaseIdSet.size ||
+        arm4ExecutedCaseIds.size !== expectedCaseIdSet.size) {
+      throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Arms evaluated differing numbers of cases (arm3=${arm3Trace.length}, arm4=${arm4Trace.length}, expected=${expectedCaseIdSet.size}).`);
     }
+
+    for (const id of expectedCaseIdSet) {
+      if (!arm3ExecutedCaseIds.has(id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Arm 3 missing expected case '${id}'.`);
+      }
+      if (!arm4ExecutedCaseIds.has(id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Arm 4 missing expected case '${id}'.`);
+      }
+    }
+    for (const id of arm3ExecutedCaseIds) {
+      if (!arm4ExecutedCaseIds.has(id)) {
+        throw new Error(`ASYMMETRIC_CASE_LEDGER_DETECTED: Case ID set mismatch: Arm 4 lacks case '${id}'.`);
+      }
+    }
+
+    const totalCases = expectedCaseIdSet.size;
+    const arm3Fidelity = totalCases > 0 ? arm3Correct / totalCases : 0;
+    const arm4Fidelity = totalCases > 0 ? arm4Correct / totalCases : 0;
+    const arm3FidelityPct = (arm3Fidelity * 100).toFixed(0);
+    const arm4FidelityPct = (arm4Fidelity * 100).toFixed(0);
 
     findings.arms.arm_4_reciprocal = {
       name: 'PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS',
       execution_class: 'EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS',
-      cases_evaluated: caseLedger.length,
+      cases_evaluated: totalCases,
       correct_decisions: arm4Correct,
       unsupported_targets_rejected: arm4Rejected,
-      measured_graph_fidelity: arm4Correct / caseLedger.length,
+      measured_graph_fidelity: arm4Fidelity,
       false_graph_convergences: arm4FalseConvergences,
       source_bytes_read: arm4BytesRead,
       queries_executed: arm4Queries,
@@ -502,30 +553,65 @@ export class CompetentNullComparator {
     };
 
     // -------------------------------------------------------------
-    // EQUAL-AFFORDANCE EMPIRICAL DIFFERENTIAL MATRIX
+    // EQUAL-AFFORDANCE EMPIRICAL DIFFERENTIAL MATRIX (DYNAMICALLY DERIVED)
     // -------------------------------------------------------------
+    const fidelityDetermination = (arm3Fidelity === arm4Fidelity)
+      ? `BOUNDED_TIE_AT_${arm3FidelityPct}_PERCENT`
+      : `ASYMMETRIC_FIDELITY_OBSERVED: arm3=${arm3FidelityPct}%, arm4=${arm4FidelityPct}%`;
+
+    const unsupportedCases = caseLedger.filter(c => !c.expected_admissible);
+    const totalUnsupported = unsupportedCases.length;
+    const arm3RejectionRate = totalUnsupported > 0 ? arm3Rejected / totalUnsupported : 1.0;
+    const arm4RejectionRate = totalUnsupported > 0 ? arm4Rejected / totalUnsupported : 1.0;
+    const arm3RejPct = (arm3RejectionRate * 100).toFixed(0);
+    const arm4RejPct = (arm4RejectionRate * 100).toFixed(0);
+
+    const rejectionDetermination = (arm3RejectionRate === arm4RejectionRate)
+      ? (arm3RejectionRate === 1.0 ? 'BOUNDED_TIE' : `BOUNDED_TIE_AT_${arm3RejPct}_PERCENT_REJECTION`)
+      : `ASYMMETRIC_REJECTION_OBSERVED: arm3=${arm3RejPct}%, arm4=${arm4RejPct}%`;
+
+    let falseConvDetermination;
+    if (arm3FalseConvergences === 0 && arm4FalseConvergences === 0) {
+      falseConvDetermination = 'ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS';
+    } else if (arm3FalseConvergences === arm4FalseConvergences) {
+      falseConvDetermination = `EQUAL_NONZERO_FALSE_CONVERGENCE: count=${arm3FalseConvergences}`;
+    } else {
+      falseConvDetermination = `CONVERGENCE_DISCREPANCY_OBSERVED: arm3=${arm3FalseConvergences}, arm4=${arm4FalseConvergences}`;
+    }
+
+    let withdrawalDetermination;
+    if (arm3WithdrawalOps === arm4WithdrawalOps) {
+      withdrawalDetermination = 'EQUIVALENT_WITHDRAWAL_OPERATIONS';
+    } else {
+      withdrawalDetermination = `ASYMMETRIC_WITHDRAWAL_OPERATIONS: arm3=${arm3WithdrawalOps}, arm4=${arm4WithdrawalOps}`;
+    }
+
+    const scientificReciprocalSurplus = (arm4Fidelity > arm3Fidelity && arm4FalseConvergences <= arm3FalseConvergences)
+      ? 'ESTABLISHED_EMPIRICAL_SURPLUS'
+      : 'UNESTABLISHED';
+
     findings.differential_matrix = {
       measured_graph_fidelity_comparison: {
-        arm_3_non_reciprocal: `${(findings.arms.arm_3_non_reciprocal_union.measured_graph_fidelity * 100).toFixed(0)}%`,
-        arm_4_reciprocal: `${(findings.arms.arm_4_reciprocal.measured_graph_fidelity * 100).toFixed(0)}%`,
-        determination: 'BOUNDED_TIE_AT_100_PERCENT'
+        arm_3_non_reciprocal: `${arm3FidelityPct}%`,
+        arm_4_reciprocal: `${arm4FidelityPct}%`,
+        determination: fidelityDetermination
       },
       unsupported_targets_rejection_comparison: {
-        arm_3_non_reciprocal: '100% REJECTED',
-        arm_4_reciprocal: '100% REJECTED',
-        determination: 'BOUNDED_TIE'
+        arm_3_non_reciprocal: `${arm3RejPct}% REJECTED`,
+        arm_4_reciprocal: `${arm4RejPct}% REJECTED`,
+        determination: rejectionDetermination
       },
       false_graph_convergence_comparison: {
         arm_3_non_reciprocal: arm3FalseConvergences,
         arm_4_reciprocal: arm4FalseConvergences,
-        determination: 'ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS'
+        determination: falseConvDetermination
       },
       withdrawal_operation_counts: {
         arm_3_non_reciprocal: arm3WithdrawalOps,
         arm_4_reciprocal: arm4WithdrawalOps,
-        determination: 'EQUIVALENT_WITHDRAWAL_OPERATIONS'
+        determination: withdrawalDetermination
       },
-      scientific_reciprocal_surplus: 'UNESTABLISHED',
+      scientific_reciprocal_surplus: scientificReciprocalSurplus,
       contradiction_handling: {
         arm_3_non_reciprocal: 'GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS',
         arm_4_reciprocal: 'FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED'
@@ -536,6 +622,10 @@ export class CompetentNullComparator {
         emergent_intelligence: 'NOT_MEASURED'
       }
     };
+
+    findings.governance_determination = (arm3Fidelity === arm4Fidelity && scientificReciprocalSurplus === 'UNESTABLISHED')
+      ? 'BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED'
+      : `EMPIRICAL_OUTCOME_OBSERVED: surplus=${scientificReciprocalSurplus}`;
 
     return findings;
   }

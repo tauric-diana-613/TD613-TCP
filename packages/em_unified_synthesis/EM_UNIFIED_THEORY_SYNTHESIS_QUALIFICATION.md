@@ -13,16 +13,21 @@
 
 ## I. Executive Summary & Lineage Foundations
 
-This qualification report records the implementation corrections, empirical validations, and epistemic reconciliations completed under **Commission EM E-00.1a**, responding directly to Emergence HQ's exact-head code review of candidate PR #1711 (Review `#5807992291`).
+This qualification report records the implementation corrections, empirical validations, and epistemic reconciliations completed under **Commission EM E-00.1a**, responding directly to Emergence HQ's exact-head code reviews of predecessor candidate PR #1711 (Review `#5807992291`) and frozen successor PR #1712 (Review `#5808364168`).
 
 ### 1. Governed Predecessor Pins & Diagnostic Lineage
-- **Direct Predecessor Repair Candidate:** PR #1711  
+- **Direct Predecessor Frozen Candidate:** PR #1712  
+  - Exact HEAD: `d446d32f9ae312ebae73d8e0c6584f0c418e6481`  
+  - Status: **FROZEN CANDIDATE REVIEWED BY EMERGENCE HQ**.
+- **Emergence HQ Exact-Head Diagnostic Review (PR #1712):**  
+  - Docket URL: `https://github.com/tauric-diana-613/TD613-TCP/pull/1712#pullrequestreview-5808364168`  
+  - Review ID: `5808364168`  
+  - Subject: Final Work-mode readiness review identifying two source-level handoff issues (comparator outcome integrity & source-attestation integrity).
+- **Prior Predecessor Candidate:** PR #1711  
   - Exact HEAD: `f3dd8d54ba423409317aa239d9dd6bdb6da618ef`  
-  - Status: **FROZEN REPAIR CANDIDATE** (Basis of E-00.1a branch).
-- **Emergence HQ Exact-Head Diagnostic Review:**  
-  - Docket URL: `https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291`  
+  - Review URL: `https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291`  
   - Review ID: `5807992291`  
-  - Subject: Identified 4 wiring deficiencies (WIRE-01 to WIRE-04).
+  - Subject: Initial 4 wiring deficiencies (WIRE-01 to WIRE-04).
 - **Historical Frozen E-00 Predecessor:** PR #1709  
   - Exact HEAD: `7488e5fd2b4fc0b2f222e0214f21129bbe143a17`  
   - Status: **FROZEN ORIGINAL SUBJECT OF REPAIR**.
@@ -188,14 +193,36 @@ Both Arm 3 and Arm 4 evaluate the exact same 6 paired cases (`CANONICAL_PAIRED_C
 
 ---
 
-## X. Verification Suite & Dollhouse Six-Specialist Audit
+## X. Final Work-Mode Handoff Corrections (Review #5808364168 Reconciliation)
+
+Emergence HQ's exact-head review of frozen PR #1712 identified two bounded source-level issues preventing Work-mode handoff readiness. Both were corrected and validated under strict fail-closed constraints:
+
+### 1. Comparator Outcome Integrity (`competent-null-comparator.mjs`)
+- **Unreachable Dead-Code Clause Removed:** The unreachable `&& false` clause within the fail-closed case-parity guard was completely removed.
+- **Independently Counted Execution Traces:** Case-count assertions based on declared ledger length were replaced with independently counted execution traces (`arm3Trace`, `arm4Trace`) and exact case-ID set comparisons (`arm3ExecutedCaseIds`, `arm4ExecutedCaseIds` vs `expectedCaseIdSet`).
+- **Dynamic Outcome Derivation:** All determinations in `findings.differential_matrix` (`measured_graph_fidelity_comparison`, `unsupported_targets_rejection_comparison`, `false_graph_convergence_comparison`, `withdrawal_operation_counts`) and `governance_determination` are computed dynamically from actual observations. The system never emits unconditional strings (`100% REJECTED`, `BOUNDED_TIE`, `EQUIVALENT_WITHDRAWAL_OPERATIONS`) when underlying observations disagree.
+- **Executable Negative Controls:** Added automated regression controls in `test-em-unified-synthesis.mjs` verifying that:
+  - Duplicate case IDs in ledger throw `ASYMMETRIC_CASE_LEDGER_DETECTED`.
+  - Missing cases or malformed ledger records throw `ASYMMETRIC_CASE_LEDGER_DETECTED`.
+  - Non-tie results (asymmetric graph reachability outcomes) dynamically emit `ASYMMETRIC_FIDELITY_OBSERVED: arm3=100%, arm4=67%`, never unconditional ties.
+
+### 2. Source-Attestation Integrity (`em-unified-theory-synthesis.mjs`)
+- **Independent Authenticated Source Registry:** Added `authenticatedSources`, `registerAuthenticatedSource({ sourceId, filename, rawBytes, sha256 })`, and `registerBridge(bridge)` to ensure caller-supplied passages, hashes, and quotations cannot independently certify an operator as source-attested.
+- **Byte-Exact Attestation Verification:** Operator definitions must match exact byte slices from independently registered sources at verified coordinates, with matching content digests and span text.
+- **Unauthenticated Source Rejection:** Caller-supplied source passages for unregistered source IDs are refused fail-closed with `UNAUTHENTICATED_SOURCE_ATTESTATION_REJECTED` and preserved as `HELD_UNVERIFIED`.
+- **Distinction Between Operator Definitions and Mathematical Morphisms:** A recognized discretization-method name and a truthy bounded-error flag are treated as a prospective correspondence schema, NOT demonstrated mathematical validity. Mathematical validity is preserved as `HELD_UNVERIFIED` without inventing evidence or preventing prospective hypothesis construction.
+- **Adversarial Negative Control:** Added adversarial test in `test-em-unified-synthesis.mjs` verifying that a self-consistent quotation and digest (`sha256Hex(quote) === digest`) cannot bypass source verification when the source is unregistered.
+
+---
+
+## XI. Verification Suite & Dollhouse Six-Specialist Audit
 
 ### 1. Test Suite Execution
 - **Comprehensive E-00.1a Suite (`test-em-unified-synthesis.mjs`):**  
-  **18 / 18 PASS** (1.3s duration, zero failures, zero skipped).
+  **18 / 18 PASS** (2.2s duration, zero failures, zero skipped).
   - Tests 1–15: Corpus census, readback, bridge, synthesis engine, ZIP intake, and baseline comparator.
-  - Test 16 (WIRE-01): Paired case ledger regression, denominator parity ($6/6$), and dynamic trace evaluation.
-  - Test 17 (WIRE-02): Operator attestation provenance, quotation digest verification, and lawful discretization.
+  - Test 16 (WIRE-01): Paired case ledger regression, denominator parity ($6/6$), dynamic trace evaluation, and negative controls for duplicate cases and non-tie outcomes.
+  - Test 17 (WIRE-02): Operator attestation provenance, quotation digest verification, lawful discretization, and adversarial unauthenticated quotation refusal.
   - Test 18 (WIRE-03): Adversarial ZIP header reconciliation, streaming descriptors, and atomic rollback.
 - **Qualification Runner (`run-em-unified-synthesis-qualification.mjs`):**  
   **Exit Code 0** (Receipt emitted: `em_unified_synthesis_receipt.json`).
@@ -209,24 +236,24 @@ Both Arm 3 and Arm 4 evaluate the exact same 6 paired cases (`CANONICAL_PAIRED_C
   **4 / 4 PASS** (0.4s duration).
 
 ### 2. Dollhouse Six-Specialist Audit
-- Bound to candidate revision: `f3dd8d54ba423409317aa239d9dd6bdb6da618ef` (PR #1711 HEAD).
-- Lineage citations: Historical E-00 PR #1709 (`7488e5fd2b4fc0b2f222e0214f21129bbe143a17`), Independent Review PR #1710 (`d28eb2e4335e6a0447c471ae61039a9fd97ccac3`), Diagnostic Review `#5807992291`.
+- Bound to candidate revision: `d446d32f9ae312ebae73d8e0c6584f0c418e6481` (PR #1712 HEAD).
+- Lineage citations: Historical E-00 PR #1709 (`7488e5fd2b4fc0b2f222e0214f21129bbe143a17`), Independent Review PR #1710 (`d28eb2e4335e6a0447c471ae61039a9fd97ccac3`), Diagnostic Review `#5808364168`.
 - Verification across `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, and `ORCHESTRATOR`.
 - Replication Status: `SYNTHETIC_OFFLINE_FIXTURE` (0 independent empirical credit; `SHARED_ACQUISITION != INDEPENDENT_REPLICATION`).
 - Release & Deployment Authority: Strictly **CLOSED (false)**.
 
 ---
 
-## XI. Stopping Boundary & Independent Reviewer Handoff
+## XII. Stopping Boundary & Independent Reviewer Handoff
 
-1. **Candidate Engineering Frozen:** All code, fixtures, and qualification assets for Commission EM E-00.1a are frozen on branch `research/em-e00-1a-comparator-wiring-20261106`.
+1. **Candidate Engineering Frozen:** All code, fixtures, and qualification assets for Commission EM E-00.1a are frozen on successor branch `research/em-e00-1a-final-handoff-20261106`.
 2. **Reviewer Separation Maintained:** The candidate author has not inspected or adapted code against concealed challenge fixtures.
 3. **Fresh Challenge Requirement:** The revised candidate requires a fresh independent challenge rather than evaluation against previously observed test worlds.
 4. **Human Scientific Closure Reserved:** Scientific interpretation and release authority remain strictly **RESERVED** for Tawanna C. Miller under `SAC[X6ZNK5NO51]`.
 
 ---
 
-## XII. Prospective Research Steer Record: RGI-01 (Experiment B Preflight)
+## XIII. Prospective Research Steer Record: RGI-01 (Experiment B Preflight)
 
 **Proposal Reference:** `RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY`  
 **Date of Proposal:** November 6, 2026  

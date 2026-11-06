@@ -2,7 +2,7 @@
   "schema": "td613.em.corpus-acquisition-manifest/v1",
   "covenant": "Khona‌lit-po",
   "authority": "SAC[X6ZNK5NO51]",
-  "inspected_at": "2026-11-06T23:11:44.847Z",
+  "inspected_at": "2026-11-06T23:37:04.423Z",
   "historical_git_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
   "fixture_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613",
   "summary_census": {
