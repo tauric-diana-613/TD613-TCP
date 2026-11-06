@@ -1,0 +1,75 @@
+{
+  "schema": "wendbine-public-archive-author-search-witness/v0.1",
+  "observed_utc": "2026-09-22T23:56:34Z",
+  "provider": "ARCTIC_SHIFT",
+  "source_endpoint": "https://arctic-shift.photon-reddit.com/api/posts/search",
+  "account_filter": "Upset-Ratio502",
+  "subreddit_filter": "Wendbine",
+  "after_filter": "2026-09-09",
+  "github_workflow": "TD613 Consolidated Validation",
+  "workflow_run_number": 4294,
+  "workflow_run_id": 35799693239,
+  "job_id": 106987015666,
+  "head": "2edc1f35ee5f93ff841e40d6813936f0be6877c1",
+  "step": "Wendbine one-time live author-search witness (PR 1134 only)",
+  "step_result": "SUCCESS",
+  "overall_workflow_result": "FAILURE_IN_SEPARATE_OPERATOR_GATE_TEST_AFTER_LIVE_WITNESS",
+  "discovery_complete": true,
+  "source_objects_returned": 772,
+  "pages": 8,
+  "invalid_source_objects": 0,
+  "held_source_objects": 0,
+  "raw_page_receipts": [
+    {
+      "page": 0,
+      "sha256": "4b8b890d76c41dac495eaeb6fc0be68ea1a23c4f1674bbbd59d9c1bc51ab6718",
+      "bytes": 987015
+    },
+    {
+      "page": 1,
+      "sha256": "8d52251724cb085850f1e816b882fc05d54a8b69a1412cf18ddd984f417e00f6",
+      "bytes": 625276
+    },
+    {
+      "page": 2,
+      "sha256": "3d8fb9b6eff618ae007f1f949682f1c3dd742172aa3d10622d1f4296d7174f6",
+      "bytes": 816189
+    },
+    {
+      "page": 3,
+      "sha256": "b5b97319fcf7d9f735a787882cfbaca7df86090062893a59811702247829c6c6",
+      "bytes": 672577
+    },
+    {
+      "page": 4,
+      "sha256": "e330bcb7bfa68563fd7c3c44a964fed617baba025b67cce931dbc1bcdd3c5dd4",
+      "bytes": 677024
+    },
+    {
+      "page": 5,
+      "sha256": "22a0dd665c703a4b444d0f89bb592a68030f3ad032d5bc2390bba2383fa0775f",
+      "bytes": 629528
+    },
+    {
+      "page": 6,
+      "sha256": "6e7b94cdbf5b817bb12970cb2527cc7779511f72ab67ec4a4664ad18ae09ae14",
+      "bytes": 609070
+    },
+    {
+      "page": 7,
+      "sha256": "62bd096393a4c2ce479bd2be977faca318674851bcb45c10ba4c6908ddb1657e",
+      "bytes": 522116
+    }
+  ],
+  "raw_response_bytes_private_recovered": false,
+  "all_772_original_fields_privately_custodied": false,
+  "existing_60_private_archive_custody": "PREVIOUSLY_VERIFIED_SEPARATE_V06_V07_CAPTURE",
+  "scope": "Live discoverability witness, not a sealed operator sync or 772-body private import",
+  "claim_ceiling": [
+    "ARCHIVE_DISCOVERED != PRIVATE_SOURCE_CUSTODY",
+    "ARCHIVE_SNAPSHOT != FIRST_PUBLICATION_OR_CURRENT_REDDIT_STATE",
+    "773RD_OR_LATER_SOURCE_EXISTENCE_UNOBSERVED",
+    "PASSING_LIVE_STEP != PASSING_WHOLE_WORKFLOW",
+    "SOURCE_OBJECT_COUNT != NONEMPTY_TEXT_BODY_COUNT"
+  ]
+}

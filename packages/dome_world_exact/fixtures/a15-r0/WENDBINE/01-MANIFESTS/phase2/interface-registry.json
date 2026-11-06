@@ -1,0 +1,50 @@
+{
+  "schema_version": "wendbine-src-interface-registry/v1",
+  "portable_source_of_truth": "JSONL_AND_MARKDOWN",
+  "sqlite_role": "RESUMABLE_WORK_JOURNAL_OR_PRIVATE_DERIVATIVE_ONLY",
+  "src_reference": "SRC/01-MANIFESTS/phase2/interface-registry.json",
+  "interfaces": [
+    {
+      "path": "01-MANIFESTS/phase2/manifestations.jsonl",
+      "count": 2062,
+      "sha256": "708dd6f7a0d0daeaccd9dcd77fd00e0b7f6e9ed57fa42618e5c8813c58eb6d6a"
+    },
+    {
+      "path": "01-MANIFESTS/phase2/capture-v2.jsonl",
+      "count": 6763,
+      "sha256": "89fd7ee5f06ec80aa8cf5f0cb41d195bfcfc936ea53409b96772d3a314b3ca7b"
+    },
+    {
+      "path": "01-MANIFESTS/phase2/blob-v1.jsonl",
+      "count": 1312,
+      "sha256": "6113c23ae3cdcaa25a8ffcbe4994d74d8fa882752a952377db183df9eb9ae742"
+    },
+    {
+      "path": "01-MANIFESTS/phase2/derivative-v1.jsonl",
+      "count": 6763,
+      "sha256": "f7e6e600be71b64ebc0b5a01ce6e009c5fe52afbc6fd095119fa5c0780b25c10"
+    },
+    {
+      "path": "01-MANIFESTS/phase2/rights-decision-v1.jsonl",
+      "count": 2062,
+      "sha256": "670b371b2f5a8dff2552eed1e3c735d752b93cc3527799d05bb8a79e837551b3"
+    },
+    {
+      "path": "01-MANIFESTS/phase2/entity-resolver-v2.jsonl",
+      "count": 6763,
+      "sha256": "6f2c5121baac458275865225b450874b79a8798324fb049c03f7e0b0b4d51999"
+    },
+    {
+      "path": "05-OPERATIONS/phase2/version-observations.jsonl",
+      "count": 6763,
+      "sha256": "fad9f8a6c4e8d6c32fe8b62df89c9ad6d674c573d17f7f36cbef38f6a3e3f1b2"
+    },
+    {
+      "path": "05-OPERATIONS/relations/typed-edges.jsonl",
+      "count": 6703,
+      "sha256": "d0dc40bb42d2a501fdd560cf03607e428149be5554a65a8e90833a4c0e0d9f6a"
+    }
+  ],
+  "epoch_path": "04-RECEIPTS/phase2/current-seal.json",
+  "non_collapse": "work != edition != manifestation != capture != blob != derivative != authority"
+}
