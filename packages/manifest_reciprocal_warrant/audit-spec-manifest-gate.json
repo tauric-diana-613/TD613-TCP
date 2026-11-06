@@ -1,6 +1,6 @@
 {
-  "source_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
-  "task_scope": "MANIFEST_RECIPROCAL_WARRANT_GATE_AUDIT",
+  "source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
+  "task_scope": "MANIFEST_GATE_M01_REMOTE_CUSTODY_COMPETENT_NULL_INDEPENDENT_FALSIFICATION",
   "evidence_class": "MANIFEST_RECIPROCAL_WARRANT_EVIDENCE",
   "roles": [
     "PEDAGOGUE",
@@ -18,32 +18,35 @@
     "packages/wendbine_reciprocal_expedition/wendbine-sourcebound-epoch.mjs",
     "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
     "packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs",
+    "packages/manifest_reciprocal_warrant/competent-strong-union.mjs",
     "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
-    "artifacts/manifest_comparison_assay_receipt.json"
+    "artifacts/manifest_comparison_assay_receipt.json",
+    "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
+    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md"
   ],
   "domain_inputs": {
     "PEDAGOGUE": {
-      "audit_id": "ped-audit-manifest-gate",
+      "audit_id": "ped-audit-manifest-gate-m01",
       "events": [
         {
           "phase": "NOTICE",
           "at": 10,
-          "label": "Received sovereign commission for Manifest Reciprocal Warrant Gate: native falsification probes W-RG-03, W-RG-04, U-RG-01 reproduced on unrepaired code."
+          "label": "M-01.1: Recovered and published local candidate 377db211b to remote branch research/manifest-reciprocal-warrant-gate-20261105 via draft PR #1702."
         },
         {
           "phase": "ACT",
           "at": 20,
-          "label": "Implemented source-bound boundary repairs: refused empty spans, enforced non-null single-use adjudication, bound epoch query-time byte verification, and validated endpoint existence before route."
+          "label": "M-01.2: Corrected scientific record by removing unsupported p < 0.001 claim, documenting paired discordances, distinguishing descriptive scores from population inference, and separating deterministic algorithms from emergence."
         },
         {
           "phase": "WORLD_ANSWERS",
           "at": 30,
-          "label": "Executed Least Fixed Point monotone warrant engine: ungrounded circular loops rejected from P*, root withdrawal cascaded invalidation, and 2-root conjunctions correctly classified as 1 proof."
+          "label": "M-01.3: Implemented Competent Strong Union Comparator (V2) equipped with equalized algorithms; confirmed null hypothesis on development suite (16/16 vs 16/16, delta = 0)."
         },
         {
           "phase": "NAME",
           "at": 40,
-          "label": "Enforced four distinct AIA route projections (EXPERIENTIAL, CUSTODIAL, AUDIT, IMPLEMENTATION) and completed matched 16-challenge comparison assay."
+          "label": "M-01.4 & M-01.5: Preregistered independent falsification protocol with 8 measurement dimensions and concealed test requirements; halted candidate before executing concealed evaluation."
         }
       ]
     },
@@ -135,7 +138,8 @@
             "CIRCULAR_LOOP_REJECTED",
             "WITHDRAWAL_CASCADE_INVALIDATION",
             "CONJUNCTION_COUNTED_AS_SINGLE_PROOF",
-            "SINGLE_ACQUISITION_COLLAPSE"
+            "SINGLE_ACQUISITION_COLLAPSE",
+            "EQUALIZED_COMPETENT_STRONG_UNION_V2"
           ]
         }
       ],
@@ -143,37 +147,32 @@
     },
     "TEMPORAL_CUSTODIAN": {
       "required_phases": [
-        "PHASE_1_CANARY_FALSIFICATION_WITNESS",
-        "PHASE_2_SOURCE_BOUND_BOUNDARY_REPAIRS",
-        "PHASE_3_LEAST_FIXED_POINT_WARRANT_CLOSURE",
-        "PHASE_4_FOUR_AIA_ROUTE_PROJECTIONS",
-        "PHASE_5_PREREGISTERED_MATCHED_COMPARISON",
-        "PHASE_6_RESERVED_HUMAN_SCIENTIFIC_CLOSURE"
+        "M01_1_RECOVER_AND_PUBLISH_CANDIDATE",
+        "M01_2_CORRECT_SCIENTIFIC_RECORD",
+        "M01_3_CONSTRUCT_COMPETENT_STRONG_UNION",
+        "M01_4_PREREGISTER_INDEPENDENT_FALSIFICATION",
+        "M01_5_HALT_BEFORE_CONCEALED_EVALUATION"
       ],
       "phases": {
-        "PHASE_1_CANARY_FALSIFICATION_WITNESS": {
+        "M01_1_RECOVER_AND_PUBLISH_CANDIDATE": {
           "status": "PASS",
-          "entry_id": "phase_1_canary_falsification_witness"
+          "entry_id": "m01_1_recover_and_publish_candidate"
         },
-        "PHASE_2_SOURCE_BOUND_BOUNDARY_REPAIRS": {
+        "M01_2_CORRECT_SCIENTIFIC_RECORD": {
           "status": "PASS",
-          "entry_id": "phase_2_source_bound_boundary_repairs"
+          "entry_id": "m01_2_correct_scientific_record"
         },
-        "PHASE_3_LEAST_FIXED_POINT_WARRANT_CLOSURE": {
+        "M01_3_CONSTRUCT_COMPETENT_STRONG_UNION": {
           "status": "PASS",
-          "entry_id": "phase_3_least_fixed_point_warrant_closure"
+          "entry_id": "m01_3_construct_competent_strong_union"
         },
-        "PHASE_4_FOUR_AIA_ROUTE_PROJECTIONS": {
+        "M01_4_PREREGISTER_INDEPENDENT_FALSIFICATION": {
           "status": "PASS",
-          "entry_id": "phase_4_four_aia_route_projections"
+          "entry_id": "m01_4_preregister_independent_falsification"
         },
-        "PHASE_5_PREREGISTERED_MATCHED_COMPARISON": {
+        "M01_5_HALT_BEFORE_CONCEALED_EVALUATION": {
           "status": "PASS",
-          "entry_id": "phase_5_preregistered_matched_comparison"
-        },
-        "PHASE_6_RESERVED_HUMAN_SCIENTIFIC_CLOSURE": {
-          "status": "PASS",
-          "entry_id": "phase_6_reserved_human_scientific_closure"
+          "entry_id": "m01_5_halt_before_concealed_evaluation"
         }
       }
     }

@@ -1,6 +1,6 @@
 {
-  "schema": "td613.manifest-reciprocal-comparison-assay-receipt/v1",
-  "execution_time": "2026-11-06T03:32:46.426Z",
+  "schema": "td613.manifest-reciprocal-comparison-assay-receipt/v2",
+  "execution_time": "2026-11-06T04:06:01.713Z",
   "covenant": "Khona‌lit-po",
   "authority_reference": "SAC[X6ZNK5NO51]",
   "environment": {
@@ -12,6 +12,7 @@
     "W_ALONE",
     "E_ALONE",
     "STRONG_UNION",
+    "COMPETENT_STRONG_UNION_V2",
     "RECIPROCAL_MANIFEST"
   ],
   "challenge_matrix": {
@@ -27,6 +28,10 @@
       "STRONG_UNION": {
         "success": true,
         "details": "W component rejects forged epoch."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Equalized epoch verification rejects forged epoch."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -46,6 +51,10 @@
         "success": true,
         "details": "W component detects post-open modification."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Equalized comparator performs live query-time byte verification against sealed registry."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest verifies consumed bytes against sealed registry at query time."
@@ -63,6 +72,10 @@
       "STRONG_UNION": {
         "success": true,
         "details": "W receiver refuses zero-length span."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "W receiver in competent union refuses zero-length span bounds."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -82,6 +95,10 @@
         "success": true,
         "details": "W receiver blocks reusable receipt."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "W receiver in competent union blocks reusable null relationId receipts."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest enforces single-use adjudication policy."
@@ -99,6 +116,10 @@
       "STRONG_UNION": {
         "success": true,
         "details": "E receiver rejects phantom self-route."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "E receiver in competent union rejects phantom self-route."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -118,6 +139,10 @@
         "success": true,
         "details": "W gate rejects undeclared AIA route."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent union enforces AIA route boundary check."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest enforces strict 4-route AIA operator-intent contract."
@@ -135,6 +160,10 @@
       "STRONG_UNION": {
         "success": false,
         "details": "Strong Union lacks LFP root closure; treats mutual citation as mutual corroboration."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 LFP and cycle detection reject unrooted circular loop from P*."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -154,6 +183,10 @@
         "success": true,
         "details": "Strong union admits source and record."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 LFP successfully grounds claim from authenticated source root."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest LFP successfully grounded claim from authenticated root."
@@ -171,6 +204,10 @@
       "STRONG_UNION": {
         "success": false,
         "details": "Strong union does not cascade root withdrawal to derived claims across tool boundary."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 dynamically cascades root withdrawal, invalidating dependent claims and preserving tombstone audit log."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -190,6 +227,10 @@
         "success": false,
         "details": "Strong Union equates 2 record IDs with 2 independent corroborations."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 collapses duplicate record IDs sharing an acquisition ID to 1 independent corroboration."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest correctly collapsed 2 IDs sharing 1 acquisition to 1 corroboration."
@@ -207,6 +248,10 @@
       "STRONG_UNION": {
         "success": true,
         "details": "Strong union acknowledges two sources."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 tracks independent acquisition lineages; withdrawing 1 root preserves grounding via 2nd root."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -226,6 +271,10 @@
         "success": false,
         "details": "Strong Union mistakes 2-root conjunction for 2 independent corroborations."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 tracks conjunctive multi-premise rules as single proof; withdrawing either root invalidates claim."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest correctly classified 2-root conjunction as 1 proof, and withdrawing 1 root invalidated claim."
@@ -243,6 +292,10 @@
       "STRONG_UNION": {
         "success": false,
         "details": "Strong Union allows alias cross-reference to ground an ungrounded claim."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 blocks alias contamination: aliases cannot seed P0."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -262,6 +315,10 @@
         "success": true,
         "details": "Strong union isolates candidate links."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 isolates candidate/unadmitted links outside active derivation."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest requires status = ADMITTED for all derivation rules."
@@ -280,6 +337,10 @@
         "success": true,
         "details": "Strong union preserves no-body admission bounds."
       },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 preserves no-body bounds, refusing full body bypasses."
+      },
       "RECIPROCAL_MANIFEST": {
         "success": true,
         "details": "Manifest respects metadata-only bounds, refuses body bypasses."
@@ -297,6 +358,10 @@
       "STRONG_UNION": {
         "success": false,
         "details": "Strong Union lacks LFP root filtration; misclassifies C as supported by Y-Z cycle and bridge X."
+      },
+      "COMPETENT_STRONG_UNION_V2": {
+        "success": true,
+        "details": "Competent Strong Union V2 LFP admits Node A, blocks unadmitted bridge X, rejects ungrounded cycle Y-Z, and isolates target C."
       },
       "RECIPROCAL_MANIFEST": {
         "success": true,
@@ -320,26 +385,133 @@
       "failed": 6,
       "score_pct": 63
     },
+    "COMPETENT_STRONG_UNION_V2": {
+      "passed": 16,
+      "failed": 0,
+      "score_pct": 100
+    },
     "RECIPROCAL_MANIFEST": {
       "passed": 16,
       "failed": 0,
       "score_pct": 100
     }
   },
+  "paired_discordances": {
+    "W_vs_E": {
+      "concordant": 9,
+      "discordant": 7,
+      "discordant_challenges": [
+        {
+          "challenge": "CH-01:forged_epoch",
+          "W": "PASS",
+          "E": "FAIL"
+        },
+        {
+          "challenge": "CH-02:post_open_modification",
+          "W": "PASS",
+          "E": "FAIL"
+        },
+        {
+          "challenge": "CH-03:empty_span",
+          "W": "PASS",
+          "E": "FAIL"
+        },
+        {
+          "challenge": "CH-04:reusable_adjudication",
+          "W": "PASS",
+          "E": "FAIL"
+        },
+        {
+          "challenge": "CH-05:phantom_self_route",
+          "W": "FAIL",
+          "E": "PASS"
+        },
+        {
+          "challenge": "CH-06:wrong_aia_route",
+          "W": "PASS",
+          "E": "FAIL"
+        },
+        {
+          "challenge": "CH-11:two_independently_witnessed_acquisitions",
+          "W": "FAIL",
+          "E": "PASS"
+        }
+      ]
+    },
+    "StrongUnionV1_vs_Manifest": {
+      "concordant": 10,
+      "discordant": 6,
+      "discordant_challenges": [
+        {
+          "challenge": "CH-07:circular_endorsement_without_source",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest LFP proved ungrounded: circular loop rejected from P*."
+        },
+        {
+          "challenge": "CH-09:root_withdrawal",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest cascaded root withdrawal, invalidated dependent claim, preserved audit log."
+        },
+        {
+          "challenge": "CH-10:two_ids_one_acquisition",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest correctly collapsed 2 IDs sharing 1 acquisition to 1 corroboration."
+        },
+        {
+          "challenge": "CH-12:conjunctive_two_root_rule",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest correctly classified 2-root conjunction as 1 proof, and withdrawing 1 root invalidated claim."
+        },
+        {
+          "challenge": "CH-13:alias_contamination",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest blocked alias contamination: alias cannot seed P0."
+        },
+        {
+          "challenge": "CH-16:blinded_diamond_unadmitted_bridge",
+          "StrongUnionV1": "FAIL",
+          "Manifest": "PASS",
+          "deterministic_mechanism": "Manifest LFP correctly admitted Node A, blocked unadmitted bridge X, detected Y-Z cycle, and refused grounding for C."
+        }
+      ]
+    },
+    "CompetentStrongUnionV2_vs_Manifest": {
+      "concordant": 16,
+      "discordant": 0,
+      "discordant_challenges": []
+    }
+  },
+  "scientific_record_correction": {
+    "methodological_basis": "DESCRIPTIVE_DEVELOPMENT_SUITE_METRIC",
+    "statistical_inference_status": "P_VALUE_REMOVED_INFERENTIAL_FALLACY_CORRECTED",
+    "explanation": "The 16 development challenges are deterministic unit-test fixtures designed during development. Computing a p-value (e.g. p < 0.001) conflates deterministic test verification with population-level statistical inference. Scores are descriptive measures of algorithmic feature presence, not empirical emergence.",
+    "emergence_vs_algorithm": "Algorithmic capabilities (monotone LFP, cycle detection, acquisition deduplication, cascading invalidation) are deterministic computational procedures, not emergent scientific properties."
+  },
   "null_hypothesis_evaluation": {
-    "null_hypothesis": "Competent strong union performs equally on reciprocal root grounding.",
-    "strong_union_score": "10 / 16 (63%)",
-    "reciprocal_manifest_score": "16 / 16 (100%)",
-    "score_delta": "+6 passed challenges",
-    "p_value_directional": "< 0.001",
-    "verdict": "NULL_BEATEN_REPRODUCIBLE_MANIFEST_ADVANTAGE",
-    "isolated_mechanism": [
-      "Least Fixed Point (LFP) monotone operator strictly seeded by authenticated source roots (P0)",
-      "Immediate rejection of ungrounded circular citation loops (CIRCULAR_UNGROUNDED)",
-      "Dynamic cascading invalidation of dependent warrants upon history-preserving root withdrawal",
-      "Distinction between conjunctive multi-root proofs (single proof) and independent corroboration",
-      "Strict single-acquisition collapse eliminating phantom corroboration from alias/duplicate record IDs"
-    ],
-    "human_closure_boundary": "Scientific interpretation and promotion remain RESERVED for human operator (Tawanna C. Miller)."
+    "null_hypothesis": "Manifest's observed research capability can be reproduced by a competently equipped union of its constituent methods.",
+    "historical_baseline": {
+      "condition": "STRONG_UNION_V1",
+      "score": "10 / 16 (63%)",
+      "delta_vs_manifest": "-6 passed challenges",
+      "diagnostic_status": "INCOMPETENT_COMPARATOR (Omitted LFP, cycle detection, acquisition deduplication, cascading withdrawal)"
+    },
+    "equalized_null_condition": {
+      "condition": "COMPETENT_STRONG_UNION_V2",
+      "score": "16 / 16 (100%)",
+      "delta_vs_manifest": "0 passed challenges (0 difference)",
+      "diagnostic_status": "COMPETENT_COMPARATOR (Equipped with identical mathematical algorithms)"
+    },
+    "reciprocal_manifest": {
+      "condition": "RECIPROCAL_MANIFEST",
+      "score": "16 / 16 (100%)"
+    },
+    "verdict": "NULL_CONFIRMED_CAPABILITY_REPRODUCED_BY_COMPETENT_UNION",
+    "scientific_interpretation": "When the union comparator is competently equipped with identical algorithmic procedures (least-fixed-point reasoning, cycle detection, acquisition deduplication, and cascading invalidation), it achieves 16/16 (100%), matching Manifest exactly. The performance delta previously claimed (+6, p < 0.001) was an artifact of an asymmetric comparator lacking standard graph/logic algorithms, rather than evidence of emergent scientific behavior resulting from reciprocal interaction.",
+    "human_closure_boundary": "Scientific interpretation, approval, admission, and release remain strictly RESERVED for human operator (Tawanna C. Miller)."
   }
 }

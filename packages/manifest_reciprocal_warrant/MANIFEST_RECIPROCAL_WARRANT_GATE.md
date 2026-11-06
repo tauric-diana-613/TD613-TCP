@@ -1,36 +1,47 @@
 # 𝌋 TD613 · Manifest Reciprocal Warrant Gate
+## Remote Custody, Competent Null & Independent Falsification (M-01)
 
 **Principal / Human Scientific Closure:** Tawanna C. Miller (`tauric.diana.613`)  
 **Covenant:** Khona‌lit-po (literal interior `U+200C` zero-width non-joiner retained)  
 **Repository:** `tauric-diana-613/TD613-TCP`  
 **Authority Reference:** `SAC[X6ZNK5NO51]`  
-**Target Revision:** `c11c5d7f017f8370b20b173f2b557ef2316a5d3a`  
-**Branch:** `research/manifest-reciprocal-warrant-gate-20261105`  
-**Evaluation Scope:** Public & invented evidence only; source-free; non-destructive; versioned; no private archive; no paid model flight; no protected Experiment B; no auto-merge; no deployment; no simulated human approval.  
+**Target Candidate Revision:** `377db211bf97930c4adf9fccbe9df7c78168b793`  
+**Git Tree:** `a371beb8d0aa544ce4850ad0905c80b7f6fd4f4c`  
+**Parent Revision:** `c11c5d7f017f8370b20b173f2b557ef2316a5d3a`  
+**Remote Branch:** `research/manifest-reciprocal-warrant-gate-20261105`  
+**Draft Pull Request:** [PR #1702](https://github.com/tauric-diana-613/TD613-TCP/pull/1702)  
+**Evaluation Scope:** Public & invented evidence only; source-free; non-destructive; versioned; zero private archive; zero paid model flight; zero protected Experiment B; zero auto-merge; zero deployment; zero simulated human approval.  
 **Human Scientific Interpretation & Release:** STRICTLY RESERVED.
 
 ---
 
-## Executive Summary & Final Disposition
+## Executive Summary & Final Commission Disposition
 
-| Governance / Assay Dimension | Measured Disposition | Verified Mechanism / Evidence |
+| Governance / Commission Dimension | Measured Disposition | Verified Mechanism / Evidence |
 |---|---|---|
-| **Phase 1: Canary Probes (Unrepaired)** | **DEFECTS_REPRODUCED (3/3)** | W-RG-03 (zero span), W-RG-04 (reusable receipt), U-RG-01 (phantom self-route) |
-| **Phase 2: Boundary Repairs** | **PROPER_REJECTIONS (3/3)** | Empty spans refused (`end <= start`), single-use non-null receipts enforced, endpoint existence verified |
-| **Phase 2: Source-Bound Wendbine Epoch** | **VERIFIED** | Live query-time byte verification against sealed registry; forged epoch & post-open tamper blocked |
-| **Phase 3: Monotone LFP Warrant Engine** | **VERIFIED** | Least fixed point $P^*$ seeded by $P_0$; ungrounded circular loops rejected; single-acquisition collapsed |
-| **Phase 3: Source Withdrawal Cascade** | **VERIFIED** | History-preserving tombstone withdrawal; dynamic invalidation of dependent warrants without alternative roots |
-| **Phase 4: Four AIA Route Projections** | **VERIFIED** | `EXPERIENTIAL`, `CUSTODIAL`, `AUDIT`, `IMPLEMENTATION` differentiated by operator-intent contracts |
-| **Phase 5: Matched Comparison (16 Challenges)** | **NULL BEATEN (+6 delta)** | Strong Union: 10/16 (63%) vs Reciprocal Manifest: 16/16 (100%), $p < 0.001$ |
-| **Dollhouse Specialist Skill Audit** | **🟢 SUPPORTED (5/5)** | Pedagogue: `SUPPORTED`, Aperture: `SUPPORTED`, Atlas: `SUPPORTED`, FADT: `SUPPORTED`, Temporal: `SUPPORTED` |
-| **Replication Credit Status** | `SYNTHETIC_OFFLINE_FIXTURE` | Shared acquisition adds zero empirical replication credit (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`) |
-| **Scientific Closure & Promotion** | **RESERVED FOR HUMAN OPERATOR** | Operator retains human approval; zero auto-merge; zero deployment |
+| **M-01.1: Remote Custody Verification** | **VERIFIED & PUBLISHED** | Commit `377db211b` & Tree `a371beb8d` published to remote; verified via [PR #1702](https://github.com/tauric-diana-613/TD613-TCP/pull/1702) |
+| **M-01.1: Canary Probes (Unrepaired)** | **DEFECTS_REPRODUCED (3/3)** | `W-RG-03` (zero span), `W-RG-04` (reusable receipt), `U-RG-01` (phantom self-route) reproduced in `artifacts/td613_manifest_native_canary.original.json` |
+| **M-01.1: Boundary Repairs & Epoch** | **PROPER_REJECTIONS (3/3)** | `end <= start` bounds check, single-use receipts, endpoint presence checks, live byte verification in `artifacts/td613_manifest_native_canary.repaired.json` |
+| **M-01.2: Scientific Record Correction** | **P-VALUE REMOVED & DOCUMENTED** | Removed unsupported $p < 0.001$ claim; documented paired discordances; distinguished descriptive scores from population inference; separated algorithms from emergence |
+| **M-01.3: Competent Strong-Union Comparator** | **NULL HYPOTHESIS CONFIRMED** | `COMPETENT_STRONG_UNION_V2` equipped with equalized algorithms scores 16/16 (100%), matching Manifest ($\Delta = 0$); historical V1 baseline preserved at 10/16 (63%) |
+| **M-01.4: Preregistration Protocol** | **FROZEN & CONCEALED** | Preregistered 8-dimension independent falsification protocol in `PREREGISTRATION_INDEPENDENT_FALSIFICATION.md` with concealed test requirements |
+| **M-01.5: Stopping Boundary** | **HALTED BEFORE EVALUATION** | Candidate execution ceases prior to running concealed evaluation; zero self-awarded emergence |
+| **Dollhouse Specialist Skill Audit** | **🟢 SUPPORTED (5/5)** | Pedagogue: `SUPPORTED`, Aperture: `SUPPORTED`, Atlas: `SUPPORTED`, FADT: `SUPPORTED`, Temporal Custodian: `SUPPORTED` |
+| **Final Commission Classification** | `M01_CUSTODY_VERIFIED_COMPARATOR_READY_FOR_INDEPENDENT_FALSIFICATION` | Experiment B remains HELD; human scientific closure strictly reserved |
 
 ---
 
-## 1. Pinned Source Anchors & Native Execution Environment
+## 1. M-01.1: Remote Custody Recovery & Machine Verification
 
-### 1.1 Source Anchors
+### 1.1 Candidate Identification & Remote Verification
+- **Local Git Commit:** `377db211bf97930c4adf9fccbe9df7c78168b793`
+- **Git Tree SHA:** `a371beb8d0aa544ce4850ad0905c80b7f6fd4f4c`
+- **Parent Commit:** `c11c5d7f017f8370b20b173f2b557ef2316a5d3a`
+- **Published Remote Branch:** `origin/research/manifest-reciprocal-warrant-gate-20261105`
+- **Draft Pull Request:** [GitHub PR #1702](https://github.com/tauric-diana-613/TD613-TCP/pull/1702)
+- **Pre-Push Integrity Witness:** Verified via pre-push hooks (`check-generated-sync.mjs passed`, `retrieval-lane.test.mjs passed`).
+
+### 1.2 Pinned Source Anchors
 1. **Original Native Sealed Query:**
    - Commit: `4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1`
    - File: `packages/dome_world_exact/fixtures/a15-r0/WENDBINE/99-ADMIN/wendbine-srcquery.mjs`
@@ -38,165 +49,130 @@
    - Measured SHA-256: `72d4e80566f1e796ec2548325b0838ccd221a08656d324277f57b77e13cf7521` (Exact match).
 2. **Original-Native Qualification PR #1685:**
    - HEAD: `6ec4d6ebac2025e47222166b8050c55a26c5268d`
-   - Adapter & Contract: `scripts/wendbine-native-method-adapter-v1.mjs`, `scripts/wendbine-native-compiler-contract-v1.json`
 3. **Wendbine Recipient PR #1695:**
    - HEAD: `f9c7962a95910c0efc072c372c14cb7bf5e04906`
-   - Receiver: `packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs`
+   - File: `packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs`
 4. **Universal Recipient PR #1698:**
    - HEAD: `b69c39b17700e511b24a0ffa903bd1dcc6f266b3`
-   - Receiver: `packages/universal_atelier/receiver/universal-atelier-receiver.mjs`
+   - File: `packages/universal_atelier/receiver/universal-atelier-receiver.mjs`
 
-### 1.2 Execution Environment
-- **Node.js Version:** `v26.7.0`
-- **SQLite Engine (`node:sqlite`):** `3.53.4`
-- **Host OS Platform:** `win32 x64`
-- **Git HEAD Revision:** `c11c5d7f017f8370b20b173f2b557ef2316a5d3a`
-
----
-
-## 2. Phase 1 & 2: Native Boundary Canary & Repairs
-
-### 2.1 Canary Falsification Probes
+### 1.3 Native Canary Falsification Probes
 Executed via `scripts/manifest_native_boundary_canary.mjs`:
 
-| Probe ID | Target Subsystem | Unrepaired Behavior | Repaired Behavior | Measured Exception / Detail |
+| Probe ID | Target Subsystem | Unrepaired Behavior | Repaired Behavior | Measured Exception / Finding |
 |---|---|---|---|---|
 | **W-RG-03** | `WendbineEmptyEncyclopediaReceiver.admitTypedRelation` | **DEFECT_REPRODUCED** (Zero-length span admitted due to `end < start` check) | **PROPER_REJECTION** | `[INVALID_SPAN_BOUNDS] Span [0, 0] out of range or empty for source.` |
 | **W-RG-04** | `WendbineEmptyEncyclopediaReceiver.admitTypedRelation` | **DEFECT_REPRODUCED** (Two distinct relations reused single ADMIT receipt with `relation_id = null`) | **PROPER_REJECTION** | `[RELATION_ID_REQUIRED_FOR_ADMIT] Positive ADMIT adjudication requires explicit, non-null relationId.` |
 | **U-RG-01** | `UniversalAtelierReceiver.route` | **DEFECT_REPRODUCED** (`route('never_admitted', 'never_admitted')` returned `{ found: true, depth: 0 }`) | **PROPER_REJECTION** | `{ found: false, error: 'ENDPOINT_RECORD_NOT_FOUND' }`, verified by `get()` negative control throwing `RECORD_NOT_FOUND` |
 
-### 2.2 Source-Bound Repairs
-1. **Wendbine Receiver (`wendbine-empty-receiver.mjs`):**
-   - Refuses empty spans (`end <= start`).
-   - Binds adjudication event strictly to: `relation_id` (mandatory for ADMIT), `source_id`, `source_sha256`, `graph_family`, `relation_predicate`, `from_concept`, `to_concept`, `evidence_class`, `start`, `end`, and `episode`.
-   - Enforces legal single-use policy (`SINGLE_RELATION_USE_ONLY`).
-2. **Universal Atelier Receiver (`universal-atelier-receiver.mjs`):**
-   - Validates existence and non-withdrawn status of both endpoints before self-route or path search.
-   - Preserves candidate relations strictly outside admitted traversal and citations.
-   - Adds source-rooted `warrant()` operation separating citation counts from independent root corroborations.
-   - Implements history-preserving `withdraw()` with status updating (`WITHDRAWN`/`SUPERSEDED`), preserving audit rows and invalidating affected links.
-3. **Wendbine Source-Bound Epoch (`wendbine-sourcebound-epoch.mjs`):**
-   - Binds verified bytes to an opaque cryptographic handle `epochHandle`.
-   - Rejects caller-invented or forged epoch handles (`FORGED_OR_UNBOUND_EPOCH`).
-   - Re-reads and cryptographically checks live bytes from disk at query time (`POST_OPEN_FILE_MODIFIED_DETECTED`).
-   - Rejects stale seals if seal file changes on disk (`STALE_SEAL_DETECTED`).
+Receipts preserved in `artifacts/td613_manifest_native_canary.original.json` and `artifacts/td613_manifest_native_canary.repaired.json`.
 
 ---
 
-## 3. Phase 3: Monotone Least Fixed Point (LFP) Claim Grounding
+## 2. M-01.2: Correction of the Scientific Record
 
-### 3.1 Least Fixed Point Formulation
-Let $P_0$ be the set of actively admitted, authenticated source roots:
-$$P_0 := \{ r \in \text{roots} \mid r.\text{status} = \text{'ACTIVE'} \wedge \text{SHA256}(r.\text{raw\_bytes}) = r.\text{sha256} \}$$
+### 2.1 Removal of Unsupported Inferential Claims
+The previous report asserted statistical significance ($p < 0.001$) based on a directional binomial test over the 16 development challenges. **This claim has been formally removed and retracted as a methodological error.**
 
-The monotone warrant extension operator $T$ maps $P \mapsto T(P)$:
-$$T(P) := P \cup \{ \text{head}(R) \mid R \in \text{admittedRules} \wedge \text{premises}(R) \subseteq P \}$$
+#### Methodological Correction:
+1. **Deterministic Unit Tests vs. Random Sampling:** The 16 development challenges are deterministic software test fixtures engineered to probe specific boundary conditions. Treating deterministic software tests as independent Bernoulli trials drawn from a probability distribution commits an inferential fallacy.
+2. **Descriptive Scores vs. Population Inference:** Scores on the development set (W: 8/16, E: 5/16, Strong Union V1: 10/16, Manifest: 16/16) are **descriptive feature counts** measuring which deterministic algorithms were implemented in each component. They provide zero mathematical basis for statistical hypothesis testing or population-level inference.
+3. **Algorithmic Functionality vs. Scientific Emergence:** The ability of Manifest to solve all 16 development cases was entirely the result of standard, deterministic computer science procedures (monotone least-fixed-point computation, depth-first cycle detection, hash-set acquisition deduplication, and dependency-graph topological invalidation). Conflating algorithmic feature addition with "emergent scientific behavior" is categorically rejected.
 
-The grounded claim set $P^*$ is the least fixed point:
-$$P^* := \operatorname{lfp}(T) = \bigcup_{n=0}^{\infty} T^n(P_0)$$
+### 2.2 Paired Discordance Analysis (Development Suite)
 
-### 3.2 Epistemic Distinction Rules
-1. **Atelier $\leftrightarrow$ Encyclopedia Citation Loops:**
-   - Mutual citation loops lacking a grounding path to $P_0$ remain outside $P^*$ and are classified as `CIRCULAR_UNGROUNDED`.
-2. **Single Proof vs. Independent Corroboration:**
-   - A conjunctive rule requiring multiple roots ($R_1 \wedge R_2 \to C$) constitutes **one proof** requiring both antecedents, **not** two independent corroborations.
-   - Two genuinely alternative derivations ($R_1 \to C$ and $R_2 \to C$) constitute **two independent corroborations**.
-3. **Single Acquisition Collapse:**
-   - Two distinct record IDs originating from the same acquisition event ($A_1, A_2$ sharing `acquisition_id`) collapse to **one corroboration**.
-
-### 3.3 History-Preserving Source Withdrawal
-When a source root $R$ is withdrawn:
-1. $R$ transitions to status `WITHDRAWN` or `SUPERSEDED`, recording a cryptographic withdrawal tombstone in `withdrawalLog`.
-2. The engine immediately recomputes $P^*$ with $P_0 \setminus \{R\}$.
-3. Dependent claims with no alternative derivation route transition to `WITHDRAWN_TOMBSTONE` with `active_support = false`.
-4. Historical support at prior epochs remains permanently audited.
+| Comparator Pair | Concordant Challenges | Discordant Challenges | Primary Deterministic Mechanism for Discordance |
+|---|:---:|:---:|---|
+| **W Alone vs. E Alone** | 9 | 7 | CH-01, CH-02, CH-03, CH-04, CH-06 pass only in W (source/epoch/span checks); CH-05, CH-11 pass only in E (graph/route checks). |
+| **Strong Union V1 vs. Reciprocal Manifest** | 10 | 6 | CH-07, CH-09, CH-10, CH-12, CH-13, CH-16 failed in Strong Union V1 solely due to the omission of LFP, cycle detection, acquisition deduplication, and cascading invalidation algorithms in the V1 comparator. |
+| **Competent Strong Union V2 vs. Reciprocal Manifest** | 16 | 0 | **Zero discordances.** When Strong Union is provided with identical mathematical algorithms, performance is 100% concordant. |
 
 ---
 
-## 4. Phase 4: Four Canonical AIA Route Projections
+## 3. M-01.3: Competent Strong-Union Comparator (`COMPETENT_STRONG_UNION_V2`)
 
-| Route | Operator-Intent Contract | Permitted Operations & Disclosed Limits |
-|---|---|---|
-| **EXPERIENTIAL** | Disclosed observation context & limits; zero invented lived access. | Read-only observation surface; explicitly acknowledges that full verbatim post bodies are not stored; discloses lived Reddit platform boundary. |
-| **CUSTODIAL** | Hash, epoch, source, capture lineage, access scope, permitted evidence. | Emits exact SHA-256 digests, seal identifiers, registry index digests, and complete manifestation-to-capture provenance trees. |
-| **AUDIT** | Counterexamples, conflicting statements, circular claims, withdrawal effects. | Rejection of circular loops (`CIRCULAR_UNGROUNDED`); detection of unsupported promotions; counterfactual simulation of root withdrawals. |
-| **IMPLEMENTATION** | Available executable operations, source-bound repair path, test receipts. | Engine operation registry; runtime environment hashes (Node v26.7.0, SQLite 3.53.4); latency and state versioning. |
+### 3.1 Equalized Comparator Architecture
+To test the null hypothesis rigorously, `CompetentStrongUnionComparator` was implemented in `packages/manifest_reciprocal_warrant/competent-strong-union.mjs`. It provides the strong-union condition with the exact mathematical algorithms previously granted exclusively to Manifest:
 
----
+1. **Source-Rooted Least-Fixed-Point (LFP) Reasoning:** $P_0$ is seeded strictly with verified, active source roots; $P^* = \operatorname{lfp}(T)$ computes the monotone least fixed point.
+2. **Acquisition-Lineage Deduplication:** Multiple record IDs sharing an underlying `acquisition_id` are collapsed to exactly 1 independent corroboration.
+3. **Dependency and Conjunction Tracking:** Multi-premise rules ($R_1 \wedge R_2 \to C$) are tracked as single conjunctive proofs; withdrawing either antecedent invalidates the derived claim.
+4. **History-Preserving Source Withdrawal Cascade:** Root withdrawal generates an immutable cryptographic tombstone and dynamically recomputes $P^*$, invalidating dependent claims lacking alternative roots.
+5. **Seal & Source-Byte Verification:** Live query-time re-verification of raw disk bytes against the sealed registry.
+6. **Circular Citation Detection:** DFS cycle detection isolates ungrounded mutual citation loops outside $P^*$.
+7. **Identical Resource Access:** Identical access to permitted records, metadata boundaries, and query budgets.
 
-## 5. Phase 5: Preregistered Matched Comparison (16 Challenges)
+### 3.2 5-Condition Matched Comparison Results
 
-### 5.1 Per-Condition Summary Scores
+| Condition Key | Condition Description | Passed | Failed | Score (%) | Comparative Finding |
+|---|---|:---:|:---:|:---:|---|
+| `W_ALONE` | Wendbine alone | 8 | 8 | 50% | Strong span/vocabulary checks; cannot traverse multi-hop graphs. |
+| `E_ALONE` | Universal Atelier alone | 5 | 11 | 31% | Traverses graph; cannot verify raw source bytes or unrooted loops. |
+| `STRONG_UNION` | Historical Strong Union (V1) | 10 | 6 | 63% | **Historical Baseline.** Asymmetric comparator lacking LFP algorithms. |
+| `COMPETENT_STRONG_UNION_V2` | **Competent Strong Union (V2)** | **16** | **0** | **100%** | **Equalized Null Condition.** Matches Manifest across all challenges ($\Delta = 0$). |
+| `RECIPROCAL_MANIFEST` | Candidate Manifest Engine | **16** | **0** | **100%** | **Candidate Architecture.** Monotone LFP with 4 AIA route projections. |
 
-| Evaluation Condition | Passed Challenges | Failed Challenges | Score (%) | Qualitative Disposition |
-|---|---|---|---|---|
-| **Condition 1: W Alone** | 8 | 8 | 50% | Strong local span and vocabulary checks; cannot traverse multi-hop cross-estate graph or trace universal warrants. |
-| **Condition 2: E Alone** | 5 | 11 | 31% | Traverses graph and counts citations, but cannot audit raw Wendbine source files; falls for ungrounded circular loops. |
-| **Condition 3: Strong Union** | 10 | 6 | 63% | Combines W and E siloed checks, but lacks LFP root closure; treats mutual citation as corroboration; fails withdrawal cascade. |
-| **Condition 4: Reciprocal Manifest** | **16** | **0** | **100%** | **Beats Strong Union across all 6 differential challenges ($p < 0.001$).** |
-
-### 5.2 Challenge-by-Challenge Matrix
-
-| Challenge ID | Challenge Description | W Alone | E Alone | Strong Union | Reciprocal Manifest | Key Mechanism Isolating Advantage |
-|---|---|:---:|:---:|:---:|:---:|---|
-| **CH-01** | Forged epoch handle | PASS | FAIL | PASS | **PASS** | Epoch handle registry & cryptographic token verification |
-| **CH-02** | Post-open file modification | PASS | FAIL | PASS | **PASS** | Query-time live byte verification against sealed registry |
-| **CH-03** | Empty span proof (0..0) | PASS | FAIL | PASS | **PASS** | Strict bounds test refusing $end \le start$ |
-| **CH-04** | Reusable adjudication receipt | PASS | FAIL | PASS | **PASS** | Mandatory non-null relation ID & single-use receipt enforcement |
-| **CH-05** | Phantom self-route on unadmitted node | FAIL | PASS | PASS | **PASS** | Pre-route endpoint existence & active status verification |
-| **CH-06** | Wrong / undeclared AIA route | PASS | FAIL | PASS | **PASS** | Strict 4-route AIA operator-intent gate |
-| **CH-07** | Circular endorsement without source | FAIL | FAIL | FAIL | **PASS** | **Monotone LFP operator rejects unrooted loops from $P^*$** |
-| **CH-08** | One legitimate fictional source | PASS | PASS | PASS | **PASS** | Root admission grounds proposition in $P^*$ |
-| **CH-09** | Root withdrawal cascade | FAIL | FAIL | FAIL | **PASS** | **Dynamic LFP recomputation invalidates unsupported claims** |
-| **CH-10** | Two IDs / one acquisition | FAIL | FAIL | FAIL | **PASS** | **Collapsed duplicate record IDs to 1 corroboration** |
-| **CH-11** | Two independent acquisitions | FAIL | PASS | PASS | **PASS** | Preserved claim support when 1 of 2 independent roots withdrawn |
-| **CH-12** | Conjunctive two-root rule | FAIL | FAIL | FAIL | **PASS** | **Conjunctive proof counted as 1 proof; withdrawal of 1 root invalidates** |
-| **CH-13** | Alias crosswalk contamination | FAIL | FAIL | FAIL | **PASS** | **Aliases prohibited from seeding $P_0$ without source root** |
-| **CH-14** | Candidate-edge contamination | PASS | PASS | PASS | **PASS** | Candidate/unadmitted links isolated outside active traversal |
-| **CH-15** | Exact ID with unavailable text | PASS | PASS | PASS | **PASS** | Bounded scope returns metadata; refuses full body bypasses |
-| **CH-16** | Blinded diamond with unadmitted bridge | FAIL | FAIL | FAIL | **PASS** | **LFP blocked ungrounded bridge & cycle, isolating target C** |
-
-### 5.3 Null Hypothesis Decision Gate
-- **Null Hypothesis:** Competent strong union performs equally on reciprocal root grounding.
-- **Observed Result:** Strong Union = 10/16 (63%), Reciprocal Manifest = 16/16 (100%).
-- **Score Delta:** $+6$ passed challenges ($+37.5\%$).
-- **Statistical Significance:** $p < 0.001$ (directional binomial test).
-- **Verdict:** `NULL_BEATEN_REPRODUCIBLE_MANIFEST_ADVANTAGE`.
+### 3.3 Null Hypothesis Confirmation
+- **Null Hypothesis:** Manifest's observed research capability can be reproduced by a competently equipped union of its constituent methods.
+- **Observed Result:**  
+  $$\operatorname{Score}(\text{Competent Strong Union V2}) = 16/16 \quad (100\%)$$  
+  $$\operatorname{Score}(\text{Reciprocal Manifest}) = 16/16 \quad (100\%)$$  
+  $$\Delta = 0 \text{ challenges}$$
+- **Verdict:** `NULL_CONFIRMED_CAPABILITY_REPRODUCED_BY_COMPETENT_UNION`
+- **Scientific Determination:** Once the union architecture is competently equipped with identical algorithmic procedures, it achieves 100% parity with Manifest on the development suite. The performance delta previously claimed (+6, $p < 0.001$) was entirely an artifact of an incompetent, asymmetric comparator (V1), rather than evidence of emergent scientific capability resulting from reciprocal interaction.
 
 ---
 
-## 6. TD613 Dollhouse Specialist Governance Audit
+## 4. M-01.4: Preregistration for Independent Falsification
 
-Executed via `scripts/run-dollhouse-skill-audit.mjs` against `audit-spec-manifest-gate.json`:
+To test whether reciprocal interaction produces any genuine capability beyond a competent union under unbiased conditions, a formal preregistration has been prepared in [`PREREGISTRATION_INDEPENDENT_FALSIFICATION.md`](PREREGISTRATION_INDEPENDENT_FALSIFICATION.md).
 
-- **Invocation ID:** `dollhouse-audit-1793935958567-70ba785f`
-- **Schema:** `td613.dollhouse.skill-audit-receipt/v1.0`
-- **Orchestrator Decision:** **🟢 SUPPORTED**
-- **Consensus:** `UNANIMOUS_SUPPORT` (5/5 specialists supported, 0 infractions)
-  1. `PEDAGOGUE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED`) — Consequence order, route burden, rest/exit invariants satisfied.
-  2. `APERTURE`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED`) — Conditioning, observability geometry, and abstention on ungrounded data verified.
-  3. `ATLAS`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED`) — Receiver-relative relational invariants verified across W_NATIVE $\to$ W_RECIPIENT $\to$ UNIVERSAL $\to$ MANIFEST.
-  4. `FADT`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED`) — Finite admissibility descent holds; zero unconditioned action attempts.
-  5. `TEMPORAL_CUSTODIAN`: **✓ SUPPORTED** (`NO_VIOLATION_DETECTED`) — Monotonic phase chronology and predecessor chains verified.
+### 4.1 Key Preregistration Controls
+1. **Concealed Case Contents:** The independent reviewer will generate a new suite ($N \ge 24$) of concealed synthetic challenges with randomized graph topologies, multi-premise conjunctions, and blinded bridges.
+2. **Separation from Development Set:** Zero reuse of development challenges `CH-01` through `CH-16`.
+3. **Equal Evidence Access:** Identical query budgets, metadata boundaries, and record access across all 4 evaluation arms (`W_ALONE`, `E_ALONE`, `COMPETENT_STRONG_UNION_V2`, `RECIPROCAL_MANIFEST`).
+4. **Eight Fixed Measurement Dimensions:**
+   - D-1: Correctly Grounded Claims ($P^*$).
+   - D-2: False Corroboration Rejection (Acquisition deduplication).
+   - D-3: Circularity Detection (Unrooted cycle rejection).
+   - D-4: Source-Withdrawal Dynamic Invalidation Cascade.
+   - D-5: Preservation of Evidentiary History (Cryptographic audit tombstones).
+   - D-6: Accuracy of Source and Acquisition Attribution.
+   - D-7: Route-Dependent Operator-Relevant Information (4 AIA projections).
+   - D-8: Unique Reciprocal Interaction Operations (Testing for non-union operations).
+5. **Statistical Decision Protocol:** Two-tailed exact McNemar test between Competent Union V2 and Manifest. If the conditions remain functionally indistinguishable ($\Delta = 0$), the null hypothesis is preserved. Zero self-awarded emergence findings are permitted.
 
 ---
 
-## 7. Safety, Custody & Stopping Rule Disposition
+## 5. M-01.5: Reviewer Commands & Stopping Boundary
 
-1. **Safety Report:**
-   - Zero private archive access; zero live platform scraping.
-   - Zero paid model flight; zero Experiment B access.
-   - Zero body copies stored; public bounded metadata scope preserved.
-   - Zero cryptographic checks replaced with trust-me fields.
-2. **Custody Report:**
-   - Historical frozen fixtures (`packages/dome_world_exact/fixtures/a15-r0/WENDBINE`) preserved byte-for-byte.
-   - Original PR heads (#1685, #1695, #1698) preserved intact.
-   - Machine receipts published to `artifacts/td613_manifest_native_canary.original.json`, `artifacts/td613_manifest_native_canary.repaired.json`, `artifacts/manifest_comparison_assay_receipt.json`, and `artifacts/dollhouse-audit-receipt-manifest-gate.json`.
-3. **Stopping Rule Disposition:**
-   - Automatic merge: **STRICTLY CLOSED**.
-   - Automatic deployment: **STRICTLY CLOSED**.
-   - External human approval simulation: **PROHIBITED**.
-   - **Disposition:** `HUMAN_SCIENTIFIC_CLOSURE_RESERVED`. The implementation, receipts, and comparison evidence are committed on branch `research/manifest-reciprocal-warrant-gate-20261105` for human inspection and scientific closure by the Principal, Tawanna C. Miller.
+### 5.1 Commands for Independent Reviewer
+
+```bash
+# 1. Verify working directory and clean head
+git rev-parse HEAD
+# Output: 377db211bf97930c4adf9fccbe9df7c78168b793 (or latest verified descendant)
+
+# 2. Run boundary canary probes
+node scripts/manifest_native_boundary_canary.mjs
+
+# 3. Run matched comparison assay (W, E, Strong Union V1, Competent Union V2, Manifest)
+node packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs
+
+# 4. Run Dollhouse specialist governance audit
+node scripts/run-dollhouse-skill-audit.mjs --input packages/manifest_reciprocal_warrant/audit-spec-manifest-gate.json --format human
+```
+
+### 5.2 Stopping Rule Disposition
+In accordance with Commission Directive M-01.5:
+- **This candidate STOPS here.**
+- **The candidate author DOES NOT execute the concealed independent evaluation.**
+- **Concealed test generation, execution, scientific interpretation, source admission, and release remain strictly RESERVED for the independent reviewer and sovereign human principal, Tawanna C. Miller.**
+
+**Required Final Disposition:**  
+`M01_CUSTODY_VERIFIED_COMPARATOR_READY_FOR_INDEPENDENT_FALSIFICATION`
+
+Experiment B remains **HELD**.
 
 ---
 Sealed ⟐ SAC[X6ZNK5NO51] · Khona‌lit-po

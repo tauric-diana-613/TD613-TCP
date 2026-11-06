@@ -1,19 +1,19 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793936081427-e9e9310c",
-  "timestamp": "2026-11-06T03:34:41.427Z",
-  "source_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
+  "invocation_id": "dollhouse-audit-1793937954384-56be6eaf",
+  "timestamp": "2026-11-06T04:05:54.384Z",
+  "source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
+  "executing_checkout_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
-    "audit_execution_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
+    "executable_source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
+    "audit_execution_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -42,7 +42,7 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "MANIFEST_RECIPROCAL_WARRANT_GATE_AUDIT",
+  "task_scope": "MANIFEST_GATE_M01_REMOTE_CUSTODY_COMPETENT_NULL_INDEPENDENT_FALSIFICATION",
   "evidence_class": "MANIFEST_RECIPROCAL_WARRANT_EVIDENCE",
   "evidence_references": [
     "scripts/manifest_native_boundary_canary.mjs",
@@ -52,8 +52,11 @@
     "packages/wendbine_reciprocal_expedition/wendbine-sourcebound-epoch.mjs",
     "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
     "packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs",
+    "packages/manifest_reciprocal_warrant/competent-strong-union.mjs",
     "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
-    "artifacts/manifest_comparison_assay_receipt.json"
+    "artifacts/manifest_comparison_assay_receipt.json",
+    "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
+    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md"
   ],
   "evidence_manifest": [
     {
@@ -113,20 +116,44 @@
       "sha256": "944ac09fe67000993c423e7545a252c14a5f5d3c00d6a17d397bc9beb5132244"
     },
     {
+      "reference": "packages/manifest_reciprocal_warrant/competent-strong-union.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "53f3a461d817beac1de33fa891174bd6677c734943cffa92acba6e3e5b923d95",
+      "byte_digest_verified": true,
+      "sha256": "53f3a461d817beac1de33fa891174bd6677c734943cffa92acba6e3e5b923d95"
+    },
+    {
       "reference": "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "5cdbf147361bcb05bc8be12c40250ece34858823cf6b30db19c8b708e8ec90f2",
+      "byte_digest": "4d364550c539c7c1ac876d47753b4d186fd4268c20f0a927ed3cf934f9e3e235",
       "byte_digest_verified": true,
-      "sha256": "5cdbf147361bcb05bc8be12c40250ece34858823cf6b30db19c8b708e8ec90f2"
+      "sha256": "4d364550c539c7c1ac876d47753b4d186fd4268c20f0a927ed3cf934f9e3e235"
     },
     {
       "reference": "artifacts/manifest_comparison_assay_receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "de04fc86bd608e36affcc938b6a052867cdac1f1e98d726b29b09a69fbdead9f",
+      "byte_digest": "0c725bb314bda6f6be12d0816df4dd09fa6b74e122bf8f8aa59a0f821d4d5541",
       "byte_digest_verified": true,
-      "sha256": "de04fc86bd608e36affcc938b6a052867cdac1f1e98d726b29b09a69fbdead9f"
+      "sha256": "0c725bb314bda6f6be12d0816df4dd09fa6b74e122bf8f8aa59a0f821d4d5541"
+    },
+    {
+      "reference": "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "ab911542487610305b9a175855b4bc9a466d41899751b5b127edac9ff7c440f0",
+      "byte_digest_verified": true,
+      "sha256": "ab911542487610305b9a175855b4bc9a466d41899751b5b127edac9ff7c440f0"
+    },
+    {
+      "reference": "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "b08477d98007db264c1f99e8744f91dbffcdea02369ce1eba7c6bd4b1790b37d",
+      "byte_digest_verified": true,
+      "sha256": "b08477d98007db264c1f99e8744f91dbffcdea02369ce1eba7c6bd4b1790b37d"
     }
   ],
   "roles_requested": [
@@ -200,7 +227,7 @@
           },
           "raw_audit": {
             "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
-            "audit_id": "ped-audit-manifest-gate",
+            "audit_id": "ped-audit-manifest-gate-m01",
             "clock_unit": "DECLARED_INTEGER_TICK",
             "phase_times": {
               "NOTICE": 10,
@@ -380,6 +407,7 @@
           "union_support": [
             "CIRCULAR_LOOP_REJECTED",
             "CONJUNCTION_COUNTED_AS_SINGLE_PROOF",
+            "EQUALIZED_COMPETENT_STRONG_UNION_V2",
             "MANDATORY_ADMIT_RELATION_ID",
             "QUERY_TIME_BYTE_VERIFICATION",
             "SINGLE_ACQUISITION_COLLAPSE",
@@ -387,12 +415,13 @@
             "WITHDRAWAL_CASCADE_INVALIDATION",
             "ZERO_LENGTH_SPAN_REFUSED"
           ],
-          "union_cardinality": 8,
+          "union_cardinality": 9,
           "intersection_support": [],
           "intersection_cardinality": 0,
           "irreducible_gap": [
             "CIRCULAR_LOOP_REJECTED",
             "CONJUNCTION_COUNTED_AS_SINGLE_PROOF",
+            "EQUALIZED_COMPETENT_STRONG_UNION_V2",
             "MANDATORY_ADMIT_RELATION_ID",
             "QUERY_TIME_BYTE_VERIFICATION",
             "SINGLE_ACQUISITION_COLLAPSE",
@@ -400,7 +429,7 @@
             "WITHDRAWAL_CASCADE_INVALIDATION",
             "ZERO_LENGTH_SPAN_REFUSED"
           ],
-          "irreducible_gap_cardinality": 8,
+          "irreducible_gap_cardinality": 9,
           "exact_descent_exists": false,
           "universally_sound_available": false,
           "disposition": "HOLD_IRREDUCIBLE_GAP",
@@ -430,12 +459,11 @@
           "veto_applied": false,
           "veto_authority": null,
           "evaluations": {
-            "PHASE_1_CANARY_FALSIFICATION_WITNESS": "PASS",
-            "PHASE_2_SOURCE_BOUND_BOUNDARY_REPAIRS": "PASS",
-            "PHASE_3_LEAST_FIXED_POINT_WARRANT_CLOSURE": "PASS",
-            "PHASE_4_FOUR_AIA_ROUTE_PROJECTIONS": "PASS",
-            "PHASE_5_PREREGISTERED_MATCHED_COMPARISON": "PASS",
-            "PHASE_6_RESERVED_HUMAN_SCIENTIFIC_CLOSURE": "PASS"
+            "M01_1_RECOVER_AND_PUBLISH_CANDIDATE": "PASS",
+            "M01_2_CORRECT_SCIENTIFIC_RECORD": "PASS",
+            "M01_3_CONSTRUCT_COMPETENT_STRONG_UNION": "PASS",
+            "M01_4_PREREGISTER_INDEPENDENT_FALSIFICATION": "PASS",
+            "M01_5_HALT_BEFORE_CONCEALED_EVALUATION": "PASS"
           },
           "violations": [],
           "rationale": "All required declared phases passed in the explicit route order."
@@ -483,5 +511,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 473
+  "execution_duration_ms": 490
 }
