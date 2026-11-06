@@ -1,0 +1,136 @@
+{
+  "schema": "td613.accident-of-inheritance.reconciliation-and-ablation/v1.0",
+  "covenant": "Khona‌lit-po",
+  "authority_ref": "SAC[X6ZNK5NO51]",
+  "evaluated_at": "2026-11-06T04:56:23.032Z",
+  "p01_standing_reconciliation": {
+    "item_id": "P-01_SOURCE_STANDING_RECONCILIATION",
+    "withdrawn_claim": {
+      "reported_delta_u": 0.1753,
+      "reported_p_value": 0.000122,
+      "origin": "Uncorrected draft manuscript artifact from early exploratory single-cluster run without cluster signflip permutation.",
+      "disposition": "FORMALLY_WITHDRAWN_ERRATUM"
+    },
+    "committed_source_estimands": {
+      "design": "2x2 Factorial (Quality Q_HIGH/Q_LOW x Standing S_HIGH/S_LOW) across 96 paired worlds in 24 clusters",
+      "permutation_test": "Phipson-Smyth Monte Carlo 8,192 cluster sign-flip permutations",
+      "conditional_effects_A_MONUMENTALISTS": {
+        "Q_HIGH_calibrated": {
+          "mean_diff": 0.1355,
+          "ci95": [
+            -0.0008,
+            0.2772
+          ],
+          "cohens_dz": 0.3921,
+          "p_value": 0.071891,
+          "interpretation": "High status modestly amplifies high-quality authority, but fails to reach alpha=0.05 two-sided significance under cluster permutation."
+        },
+        "Q_LOW_misleading": {
+          "mean_diff": -0.1355,
+          "ci95": [
+            -0.2711,
+            -0.0045
+          ],
+          "cohens_dz": -0.3921,
+          "p_value": 0.069816,
+          "interpretation": "High status equally amplifies misleading authority, inducing equivalent downside utility loss."
+        }
+      },
+      "pooled_counterbalanced_effect": {
+        "mean_diff": 0,
+        "ci95": [
+          0,
+          0
+        ],
+        "cohens_dz": 0,
+        "p_value": 1,
+        "interpretation": "Exact zero net effect. In a counterbalanced environment where truth and error are equally likely to carry high status, institutional standing provides zero average advantage."
+      },
+      "policy_invariance_audit": {
+        "invariant_policies": [
+          "B_EVIDENTIALISTS",
+          "C_DIAGNOSTICIANS",
+          "D_TEMPORAL_CUSTODIANS",
+          "E_REVISIONISTS",
+          "F_PRAGMATISTS"
+        ],
+        "observed_delta_u": 0,
+        "p_value": 1,
+        "mechanism": "Code explicitly ignores status attributes; deterministic zero shift confirms absence of status leakage."
+      }
+    },
+    "status": "RECONCILED_AND_GROUNDED"
+  },
+  "p02_context_membrane_ablation": {
+    "item_id": "P-02_TEMPORAL_CONTEXT_MEMBRANE_ABLATION",
+    "evaluated_worlds": 96,
+    "grid_cell": "H_MOD__L3_MODERATE__V_ACCELERATED",
+    "tau0": 3,
+    "mean_utility": {
+      "C_INSTANT": 0.6654,
+      "C_DELAYED": 0.6493,
+      "C_BLIND": 0.5746
+    },
+    "sensor_surplus": {
+      "instant_vs_delayed_delta": 0.0161,
+      "instant_vs_blind_delta": 0.0908,
+      "delayed_vs_blind_delta": 0.0747
+    },
+    "interpretation": "Instantaneous context provides an auxiliary sensor advantage of +0.0161 utility over time-gated context. It must be explicitly classified as an independent real-time sensor rather than part of the delayed ambient observation stream."
+  },
+  "p03_policy_component_ablation": {
+    "item_id": "P-03_AUTHORITY_POLICY_COMPONENT_ABLATION",
+    "evaluated_worlds": 96,
+    "grid_cell": "H_MOD__L3_MODERATE__V_ACCELERATED",
+    "ablation_means_utility": {
+      "ABL_FULL_COMPOSITE": 0.6654,
+      "ABL_PRIOR_ONLY": 0.612,
+      "ABL_NO_DECAY": 0.6208,
+      "ABL_NO_PROBING": 0.7011,
+      "ABL_NO_CONTEXT_MULTIPLIER": 0.6905,
+      "ABL_EVIDENTIAL_BASELINE": 0.5074
+    },
+    "causal_decomposition": {
+      "prior_alone_vs_baseline": 0.1046,
+      "decay_contribution": 0.0446,
+      "probing_contribution": -0.0357,
+      "context_matching_contribution": -0.0251,
+      "total_composite_surplus": 0.158
+    },
+    "conclusion": "Component decomposition reveals that composite policy performance is driven jointly by adaptive memory decay, active diagnostic probing, and context conditioning, rather than static prior authority weights alone."
+  },
+  "p04_correction_timeline": {
+    "item_id": "P-04_CORRECTION_MEASUREMENTS_DECOMPOSITION",
+    "sample_size": 96,
+    "mean_action_minus_belief_gap_ticks": 3.6966,
+    "fiber_confounding_witness": {
+      "action_invariant_family": "FAM_D_ACTION_INVARIANT_CHANGE",
+      "finding": "In Family D, optimal action alignment occurs at tick 2, while belief revision does not occur until tick 12+. Measuring behavioral alignment alone severely misclassifies the timing of epistemic truth recovery."
+    },
+    "conclusion": "Epistemic truth recovery must be separated into four distinct metrics: evidence arrival, posterior belief revision, behavioral action alignment, and formal claim warrant."
+  },
+  "p05_terminology_formalization": {
+    "item_id": "P-05_ORACLE_AND_CUSTODY_TERMINOLOGY_FORMALIZATION",
+    "reclassifications": [
+      {
+        "prior_term": "DYNAMIC_SYNTHETIC_ORACLE / CTRL_DYNAMIC_ORACLE",
+        "revised_rigorous_term": "SYNTHETIC_FULL_INFORMATION_BENCHMARK",
+        "definition": "An unrealizable synthetic upper-bound computed with full access to hidden simulation ground truth. It acts as an optimal theoretical normalizer, not an implementable operational system."
+      },
+      {
+        "prior_term": "CRYPTOGRAPHIC_SECRET_VAULT / CUSTODY_MEMBRANE",
+        "revised_rigorous_term": "IN_PROCESS_PROXY_PROPERTY_TRAP",
+        "definition": "A developer-level JavaScript Proxy intercepting property accesses within the Node.js runtime to verify simulator separation. It provides zero kernel-level isolation, zero process separation, and zero protection against adversarial execution within the same V8 isolate."
+      }
+    ],
+    "status": "TERMINOLOGY_FORMALLY_RECONCILED"
+  },
+  "negative_controls_retained": [
+    "STATIONARY_INERTIA_FAILURE",
+    "RECURRENT_OSCILLATION_FAILURE",
+    "DELAYED_CONTRADICTION_EXPOSURE",
+    "ACTION_INVARIANT_FIBER_AMNESIA",
+    "MISLEADING_CONTEXT_COLLAPSE"
+  ],
+  "status": "PALACE_ACT2_RECONCILIATION_COMPLETE"
+}
