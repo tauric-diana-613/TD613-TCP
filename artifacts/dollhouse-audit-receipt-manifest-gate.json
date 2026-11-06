@@ -1,31 +1,31 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793937954384-56be6eaf",
-  "timestamp": "2026-11-06T04:05:54.384Z",
+  "invocation_id": "dollhouse-audit-1793939726567-56be6eaf",
+  "timestamp": "2026-11-06T04:35:26.567Z",
   "source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
-  "is_exact_checkout_match": true,
+  "executing_checkout_revision": "122041e5a5ca3d9741f7c89ed000ef054cd7c971",
+  "is_exact_checkout_match": false,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
-  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
-  "current_head_source_equivalence_verified": true,
+  "current_head_source_equivalence": "EXECUTABLE_SOURCE_DRIFT_DETECTED",
+  "current_head_source_equivalence_verified": false,
   "provenance_identities": {
     "executable_source_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
-    "audit_execution_revision": "377db211bf97930c4adf9fccbe9df7c78168b793",
+    "audit_execution_revision": "122041e5a5ca3d9741f7c89ed000ef054cd7c971",
     "git_commit_verified": true,
-    "is_exact_checkout_match": true,
+    "is_exact_checkout_match": false,
     "worktree_cleanliness_verified": false,
-    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
-    "current_head_source_equivalence_verified": true,
+    "current_head_source_equivalence": "EXECUTABLE_SOURCE_DRIFT_DETECTED",
+    "current_head_source_equivalence_verified": false,
     "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
   },
   "provenance_acceptance": {
     "SOURCE_REVISION_VERIFIED": true,
-    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": false,
     "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
-    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "HELD"
   },
   "nested_extension_holds": [
     {
@@ -41,7 +41,7 @@
       "description": "one or both members violate valid Atlas member constraints"
     }
   ],
-  "is_historical_commit_only": false,
+  "is_historical_commit_only": true,
   "task_scope": "MANIFEST_GATE_M01_REMOTE_CUSTODY_COMPETENT_NULL_INDEPENDENT_FALSIFICATION",
   "evidence_class": "MANIFEST_RECIPROCAL_WARRANT_EVIDENCE",
   "evidence_references": [
@@ -56,7 +56,9 @@
     "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
     "artifacts/manifest_comparison_assay_receipt.json",
     "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
-    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md"
+    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md",
+    "scripts/generate-concealed-manifest-falsification-suite.mjs",
+    "scripts/run-concealed-manifest-falsification-assay.mjs"
   ],
   "evidence_manifest": [
     {
@@ -111,17 +113,17 @@
       "reference": "packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "944ac09fe67000993c423e7545a252c14a5f5d3c00d6a17d397bc9beb5132244",
+      "byte_digest": "2b3ef0dde67e158887a8ad29cd782f8c8c96926f4539a085ebc2fc7432c4cb07",
       "byte_digest_verified": true,
-      "sha256": "944ac09fe67000993c423e7545a252c14a5f5d3c00d6a17d397bc9beb5132244"
+      "sha256": "2b3ef0dde67e158887a8ad29cd782f8c8c96926f4539a085ebc2fc7432c4cb07"
     },
     {
       "reference": "packages/manifest_reciprocal_warrant/competent-strong-union.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "53f3a461d817beac1de33fa891174bd6677c734943cffa92acba6e3e5b923d95",
+      "byte_digest": "e175338623b717950266647b21cba9465f1490e81b88b7e3a8bc62ddca76080b",
       "byte_digest_verified": true,
-      "sha256": "53f3a461d817beac1de33fa891174bd6677c734943cffa92acba6e3e5b923d95"
+      "sha256": "e175338623b717950266647b21cba9465f1490e81b88b7e3a8bc62ddca76080b"
     },
     {
       "reference": "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
@@ -135,17 +137,17 @@
       "reference": "artifacts/manifest_comparison_assay_receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "0c725bb314bda6f6be12d0816df4dd09fa6b74e122bf8f8aa59a0f821d4d5541",
+      "byte_digest": "3152ebe28172ee73e3db46b5bfbf0b16b894fe5f22175b6b28ed96a2c9049d1a",
       "byte_digest_verified": true,
-      "sha256": "0c725bb314bda6f6be12d0816df4dd09fa6b74e122bf8f8aa59a0f821d4d5541"
+      "sha256": "3152ebe28172ee73e3db46b5bfbf0b16b894fe5f22175b6b28ed96a2c9049d1a"
     },
     {
       "reference": "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ab911542487610305b9a175855b4bc9a466d41899751b5b127edac9ff7c440f0",
+      "byte_digest": "dd546224d3d3f32aa1c2a3e8120098b7313108e24b2d37c7214d9af564e2e3a7",
       "byte_digest_verified": true,
-      "sha256": "ab911542487610305b9a175855b4bc9a466d41899751b5b127edac9ff7c440f0"
+      "sha256": "dd546224d3d3f32aa1c2a3e8120098b7313108e24b2d37c7214d9af564e2e3a7"
     },
     {
       "reference": "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md",
@@ -154,6 +156,22 @@
       "byte_digest": "b08477d98007db264c1f99e8744f91dbffcdea02369ce1eba7c6bd4b1790b37d",
       "byte_digest_verified": true,
       "sha256": "b08477d98007db264c1f99e8744f91dbffcdea02369ce1eba7c6bd4b1790b37d"
+    },
+    {
+      "reference": "scripts/generate-concealed-manifest-falsification-suite.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "2b4d24dbacc9038ff6ecdc092984d0dd2d944819b8f468d612bb709a4302287e",
+      "byte_digest_verified": true,
+      "sha256": "2b4d24dbacc9038ff6ecdc092984d0dd2d944819b8f468d612bb709a4302287e"
+    },
+    {
+      "reference": "scripts/run-concealed-manifest-falsification-assay.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "d285d106a4199de9bec9bf247e37598a6733c609d79aeb7975182a3423569864",
+      "byte_digest_verified": true,
+      "sha256": "d285d106a4199de9bec9bf247e37598a6733c609d79aeb7975182a3423569864"
     }
   ],
   "roles_requested": [
@@ -511,5 +529,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 490
+  "execution_duration_ms": 497
 }

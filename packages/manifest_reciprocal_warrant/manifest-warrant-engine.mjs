@@ -64,6 +64,19 @@ export class ManifestWarrantEngine {
     if (!root_id || !source_id) {
       throw new Error('ROOT_AND_SOURCE_ID_REQUIRED');
     }
+
+    // Source-custody wall: prevent overwriting or resurrecting withdrawn roots
+    if (this.roots.has(root_id)) {
+      const existing = this.roots.get(root_id);
+      if (existing.status === 'WITHDRAWN' || existing.status === 'SUPERSEDED') {
+        throw new Error(`ROOT_ID_PERMANENTLY_WITHDRAWN: Source root '${root_id}' was withdrawn and cannot be re-admitted or overwritten.`);
+      }
+      throw new Error(`ROOT_ID_ALREADY_EXISTS: Source root '${root_id}' is already admitted and cannot be overwritten.`);
+    }
+    if (this.withdrawalLog.some((t) => t.root_id === root_id)) {
+      throw new Error(`ROOT_ID_TOMBSTONED_REUSE_PROHIBITED: Source root '${root_id}' exists in the immutable withdrawal ledger.`);
+    }
+
     const buf = Buffer.isBuffer(raw_bytes) ? raw_bytes : Buffer.from(String(raw_bytes), 'utf8');
     if (buf.length === 0) {
       throw new Error('EMPTY_SOURCE_ROOT_BYTES_REFUSED: Zero-length root bytes cannot ground warrants.');
@@ -185,7 +198,9 @@ export class ManifestWarrantEngine {
     const P = new Map(P0);
     let changed = true;
     let iteration = 0;
-    const maxIterations = 50;
+    // Dynamic iteration bound: any monotone extension on a finite graph converges
+    // in at most |claims| + |rules| + 1 steps.
+    const maxIterations = Math.max(1000, this.claims.size + this.rules.size + 1);
 
     while (changed && iteration < maxIterations) {
       changed = false;
@@ -252,16 +267,12 @@ export class ManifestWarrantEngine {
       }
     }
 
-    // Detect circular ungrounded loops
-    const circularUngrounded = new Set();
-    for (const [cId] of this.claims.entries()) {
-      if (!P.has(cId)) {
-        // Check if involved in circular rule dependencies
-        if (this._detectCycle(cId)) {
-          circularUngrounded.add(cId);
-        }
-      }
+    if (changed) {
+      throw new Error(`LFP_CONVERGENCE_INCOMPLETE_DEPTH_EXCEEDED: Least fixed point did not converge within ${maxIterations} iterations. Refusing to emit ungrounded partial state.`);
     }
+
+    // Detect circular ungrounded loops using conjunctive dependency closure
+    const circularUngrounded = this._detectCircularUngrounded(P);
 
     const lfpResult = {
       epoch_snapshot_id: this.epochSnapshotId,
@@ -277,23 +288,80 @@ export class ManifestWarrantEngine {
     return { P, lfpResult, circularUngrounded };
   }
 
-  _detectCycle(startId, visited = new Set(), stack = new Set()) {
-    if (stack.has(startId)) return true;
-    if (visited.has(startId)) return false;
-
-    visited.add(startId);
-    stack.add(startId);
+  _detectCircularUngrounded(P) {
+    const circularSet = new Set();
+    const ungroundedAdj = new Map();
 
     for (const [, rule] of this.rules.entries()) {
-      if (rule.head_claim_id === startId) {
+      if (rule.status !== 'ADMITTED') continue;
+      const headId = rule.head_claim_id;
+      if (!P.has(headId)) {
         for (const p of rule.premise_ids) {
-          if (this._detectCycle(p, visited, stack)) return true;
+          if (!P.has(p)) {
+            if (!ungroundedAdj.has(p)) ungroundedAdj.set(p, []);
+            ungroundedAdj.get(p).push(headId);
+          }
         }
       }
     }
 
-    stack.delete(startId);
-    return false;
+    const visited = new Map();
+    const pathStack = [];
+    const inStack = new Set();
+
+    const dfs = (node) => {
+      visited.set(node, 1);
+      inStack.add(node);
+      pathStack.push(node);
+
+      const neighbors = ungroundedAdj.get(node) || [];
+      for (const nbr of neighbors) {
+        if (inStack.has(nbr)) {
+          const cycleStart = pathStack.indexOf(nbr);
+          const cycleNodes = pathStack.slice(cycleStart);
+          for (const cn of cycleNodes) {
+            circularSet.add(cn);
+          }
+        } else if (!visited.has(nbr)) {
+          dfs(nbr);
+        }
+      }
+
+      pathStack.pop();
+      inStack.delete(node);
+      visited.set(node, 2);
+    };
+
+    for (const node of ungroundedAdj.keys()) {
+      if (!visited.has(node)) {
+        dfs(node);
+      }
+    }
+
+    return circularSet;
+  }
+
+  /**
+   * Verifies the cryptographic hash-chain integrity of the withdrawal ledger.
+   */
+  verifyWithdrawalLedgerIntegrity() {
+    let prevHash = 'GENESIS_TOMBSTONE_ROOT';
+    for (let i = 0; i < this.withdrawalLog.length; i++) {
+      const entry = this.withdrawalLog[i];
+      if (entry.sequence !== i + 1) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Sequence mismatch at index ${i}. Expected ${i + 1}, found ${entry.sequence}.`);
+      }
+      if (entry.previous_tombstone_sha256 !== prevHash) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Hash chain broken at index ${i}. Expected ${prevHash}, found ${entry.previous_tombstone_sha256}.`);
+      }
+      const { event_id, tombstone_sha256, ...payload } = entry;
+      const expectedHash = sha256(JSON.stringify(payload));
+      if (tombstone_sha256 !== expectedHash) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Payload hash invalid at index ${i}.`);
+      }
+      prevHash = tombstone_sha256;
+    }
+    return { valid: true, count: this.withdrawalLog.length, head_hash: prevHash };
   }
 
   /**
@@ -333,8 +401,13 @@ export class ManifestWarrantEngine {
       }
     }
 
-    const auditEntry = {
-      event_id: `ev_wd_${sha256(`${root_id}:${now}`).slice(0, 16)}`,
+    const previous_tombstone_sha256 = this.withdrawalLog.length > 0
+      ? this.withdrawalLog[this.withdrawalLog.length - 1].tombstone_sha256
+      : 'GENESIS_TOMBSTONE_ROOT';
+
+    const tombstonePayload = {
+      sequence: this.withdrawalLog.length + 1,
+      previous_tombstone_sha256,
       root_id,
       source_id: root.source_id,
       reason,
@@ -343,6 +416,14 @@ export class ManifestWarrantEngine {
       timestamp: now,
       state_version: this.stateVersion,
     };
+
+    const tombstone_sha256 = sha256(JSON.stringify(tombstonePayload));
+
+    const auditEntry = Object.freeze({
+      event_id: `ev_wd_${tombstone_sha256.slice(0, 16)}`,
+      tombstone_sha256,
+      ...tombstonePayload,
+    });
 
     this.withdrawalLog.push(auditEntry);
 

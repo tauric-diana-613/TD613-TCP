@@ -22,7 +22,9 @@
     "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
     "artifacts/manifest_comparison_assay_receipt.json",
     "packages/manifest_reciprocal_warrant/PREREGISTRATION_INDEPENDENT_FALSIFICATION.md",
-    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md"
+    "packages/manifest_reciprocal_warrant/MANIFEST_RECIPROCAL_WARRANT_GATE.md",
+    "scripts/generate-concealed-manifest-falsification-suite.mjs",
+    "scripts/run-concealed-manifest-falsification-assay.mjs"
   ],
   "domain_inputs": {
     "PEDAGOGUE": {

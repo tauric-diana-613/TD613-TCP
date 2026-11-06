@@ -91,6 +91,19 @@ export class CompetentStrongUnionComparator {
     if (!root_id || !source_id) {
       throw new Error('ROOT_AND_SOURCE_ID_REQUIRED');
     }
+
+    // Source-custody wall: prevent overwriting or resurrecting withdrawn roots
+    if (this.roots.has(root_id)) {
+      const existing = this.roots.get(root_id);
+      if (existing.status === 'WITHDRAWN' || existing.status === 'SUPERSEDED') {
+        throw new Error(`ROOT_ID_PERMANENTLY_WITHDRAWN: Source root '${root_id}' was withdrawn and cannot be re-admitted or resurrected.`);
+      }
+      throw new Error(`ROOT_ID_ALREADY_EXISTS: Source root '${root_id}' is already admitted and cannot be overwritten.`);
+    }
+    if (this.withdrawalLog.some((t) => t.root_id === root_id)) {
+      throw new Error(`ROOT_ID_TOMBSTONED_REUSE_PROHIBITED: Source root '${root_id}' exists in the immutable withdrawal ledger.`);
+    }
+
     const buf = Buffer.isBuffer(raw_bytes) ? raw_bytes : Buffer.from(String(raw_bytes), 'utf8');
     if (buf.length === 0) {
       throw new Error('EMPTY_SOURCE_ROOT_BYTES_REFUSED: Zero-length root bytes cannot ground warrants.');
@@ -176,48 +189,51 @@ export class CompetentStrongUnionComparator {
   }
 
   // =========================================================================
-  // 4. Circular Citation Detection
+  // 4. Circular Citation Detection (Conjunctive Groundability Closure)
   // =========================================================================
   detectCircularUngrounded() {
     const circularSet = new Set();
-    const adj = new Map();
 
-    for (const [ruleId, rule] of this.derivationRules.entries()) {
-      if (rule.status !== 'ADMITTED') continue;
-      for (const p of rule.premise_ids) {
-        if (!adj.has(p)) adj.set(p, []);
-        adj.get(p).push(rule.head_claim_id);
-      }
-    }
-
-    // Reachable from active source roots
-    const rootReachable = new Set();
-    const queue = [];
+    // 1. Compute groundable nodes under conjunctive semantics:
+    // A node is groundable iff all premises of at least one admitted rule are groundable.
+    const groundableNodes = new Set();
     for (const [rId, root] of this.roots.entries()) {
       if (root.status === 'ACTIVE') {
-        rootReachable.add(rId);
-        queue.push(rId);
+        groundableNodes.add(rId);
       }
     }
 
-    while (queue.length > 0) {
-      const curr = queue.shift();
-      const nbrs = adj.get(curr) || [];
-      for (const nbr of nbrs) {
-        if (!rootReachable.has(nbr)) {
-          rootReachable.add(nbr);
-          queue.push(nbr);
+    let expanded = true;
+    while (expanded) {
+      expanded = false;
+      for (const [, rule] of this.derivationRules.entries()) {
+        if (rule.status !== 'ADMITTED') continue;
+        if (groundableNodes.has(rule.head_claim_id)) continue;
+        const allPremisesGroundable = rule.premise_ids.every((p) => groundableNodes.has(p));
+        if (allPremisesGroundable) {
+          groundableNodes.add(rule.head_claim_id);
+          expanded = true;
         }
       }
     }
 
-    // Tarjan or cycle detection on non-root nodes
-    const visited = new Map(); // node -> 0=unvisited, 1=visiting, 2=visited
-    const allNodes = new Set([...adj.keys()]);
-    for (const nbrs of adj.values()) {
-      nbrs.forEach((n) => allNodes.add(n));
+    // 2. Build dependency adjacency among non-groundable nodes
+    const ungroundedAdj = new Map();
+    for (const [, rule] of this.derivationRules.entries()) {
+      if (rule.status !== 'ADMITTED') continue;
+      // Head is ungroundable
+      if (!groundableNodes.has(rule.head_claim_id)) {
+        for (const p of rule.premise_ids) {
+          if (!groundableNodes.has(p)) {
+            if (!ungroundedAdj.has(p)) ungroundedAdj.set(p, []);
+            ungroundedAdj.get(p).push(rule.head_claim_id);
+          }
+        }
+      }
     }
 
+    // 3. DFS cycle detection over ungrounded subgraph
+    const visited = new Map();
     const pathStack = [];
     const inStack = new Set();
 
@@ -226,16 +242,13 @@ export class CompetentStrongUnionComparator {
       inStack.add(node);
       pathStack.push(node);
 
-      const neighbors = adj.get(node) || [];
+      const neighbors = ungroundedAdj.get(node) || [];
       for (const nbr of neighbors) {
         if (inStack.has(nbr)) {
-          // Cycle found!
           const cycleStart = pathStack.indexOf(nbr);
           const cycleNodes = pathStack.slice(cycleStart);
           for (const cn of cycleNodes) {
-            if (!rootReachable.has(cn)) {
-              circularSet.add(cn);
-            }
+            circularSet.add(cn);
           }
         } else if (!visited.has(nbr)) {
           dfs(nbr);
@@ -247,8 +260,8 @@ export class CompetentStrongUnionComparator {
       visited.set(node, 2);
     };
 
-    for (const node of allNodes) {
-      if (!visited.has(node) && !rootReachable.has(node)) {
+    for (const node of ungroundedAdj.keys()) {
+      if (!visited.has(node)) {
         dfs(node);
       }
     }
@@ -279,7 +292,9 @@ export class CompetentStrongUnionComparator {
     const P = new Map(P0);
     let changed = true;
     let iteration = 0;
-    const maxIterations = 50;
+    // Dynamic iteration bound: any monotone extension on a finite graph converges
+    // in at most |claims| + |rules| + 1 steps.
+    const maxIterations = Math.max(1000, this.claims.size + this.derivationRules.size + 1);
 
     while (changed && iteration < maxIterations) {
       changed = false;
@@ -354,12 +369,39 @@ export class CompetentStrongUnionComparator {
       }
     }
 
+    if (changed) {
+      throw new Error(`LFP_CONVERGENCE_INCOMPLETE_DEPTH_EXCEEDED: Least fixed point did not converge within ${maxIterations} iterations. Refusing to emit ungrounded partial state.`);
+    }
+
     return {
       P0: new Set(P0.keys()),
       P,
       iterations: iteration,
       circularUngrounded,
     };
+  }
+
+  /**
+   * Verifies the cryptographic hash-chain integrity of the withdrawal ledger.
+   */
+  verifyWithdrawalLedgerIntegrity() {
+    let prevHash = 'GENESIS_TOMBSTONE_ROOT';
+    for (let i = 0; i < this.withdrawalLog.length; i++) {
+      const entry = this.withdrawalLog[i];
+      if (entry.sequence !== i + 1) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Sequence mismatch at index ${i}. Expected ${i + 1}, found ${entry.sequence}.`);
+      }
+      if (entry.previous_tombstone_sha256 !== prevHash) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Hash chain broken at index ${i}. Expected ${prevHash}, found ${entry.previous_tombstone_sha256}.`);
+      }
+      const { tombstone_id, tombstone_sha256, ...payload } = entry;
+      const expectedHash = sha256(JSON.stringify(payload));
+      if (tombstone_sha256 !== expectedHash) {
+        throw new Error(`WITHDRAWAL_LEDGER_TAMPERED: Payload hash invalid at index ${i}.`);
+      }
+      prevHash = tombstone_sha256;
+    }
+    return { valid: true, count: this.withdrawalLog.length, head_hash: prevHash };
   }
 
   // =========================================================================
@@ -401,8 +443,13 @@ export class CompetentStrongUnionComparator {
       }
     }
 
-    const tombstone = {
-      tombstone_id: `tomb:${sha256(`${root_id}:${this.stateVersion}:${Date.now()}`).slice(0, 16)}`,
+    const previous_tombstone_sha256 = this.withdrawalLog.length > 0
+      ? this.withdrawalLog[this.withdrawalLog.length - 1].tombstone_sha256
+      : 'GENESIS_TOMBSTONE_ROOT';
+
+    const tombstonePayload = {
+      sequence: this.withdrawalLog.length + 1,
+      previous_tombstone_sha256,
       root_id,
       reason,
       withdrawn_by,
@@ -413,6 +460,14 @@ export class CompetentStrongUnionComparator {
       invalidated_claims_count: invalidatedClaims.length,
       invalidated_claims: invalidatedClaims,
     };
+
+    const tombstone_sha256 = sha256(JSON.stringify(tombstonePayload));
+
+    const tombstone = Object.freeze({
+      tombstone_id: `tomb:${tombstone_sha256.slice(0, 16)}`,
+      tombstone_sha256,
+      ...tombstonePayload,
+    });
 
     this.withdrawalLog.push(tombstone);
 

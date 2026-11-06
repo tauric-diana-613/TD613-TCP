@@ -1,12 +1,12 @@
 {
   "schema": "td613.manifest-native-boundary-canary-receipt/v1",
-  "execution_time": "2026-11-06T04:06:01.386Z",
+  "execution_time": "2026-11-06T04:35:42.604Z",
   "environment": {
     "node_version": "v26.7.0",
     "sqlite_version": "3.53.4",
     "platform": "win32",
     "arch": "x64",
-    "git_revision": "377db211bf97930c4adf9fccbe9df7c78168b793"
+    "git_revision": "122041e5a5ca3d9741f7c89ed000ef054cd7c971"
   },
   "code_hashes": {
     "wendbine_empty_receiver_sha256": "394687e1901897b38aac1c8e27120679a364b3c8c4d4be75b8d8e4f6a7d08992",

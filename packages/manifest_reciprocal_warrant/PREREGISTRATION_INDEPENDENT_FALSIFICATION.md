@@ -77,16 +77,21 @@ Every concealed challenge in the evaluation set must evaluate and score across t
    - $n_{11}$: Both pass.
    - $n_{10}$: Competent Union passes, Manifest fails.
    - $n_{01}$: Manifest passes, Competent Union fails.
-3. **Hypothesis Decision:**
-   - If $n_{10} + n_{01} = 0$, the conditions are functionally identical. $H_0$ is confirmed.
-   - If $n_{10} + n_{01} > 0$, compute two-tailed McNemar exact test:
-     $$p = 2 \sum_{k=n_{01}}^{n_{10}+n_{01}} \binom{n_{10}+n_{01}}{k} 0.5^{n_{10}+n_{01}}$$
-     $H_0$ is rejected if and only if $p < 0.01$ AND the difference is shown to be non-algorithmic.
+3. **Hypothesis Decision & Exact Two-Sided McNemar Test:**
+   - Let $n_d = n_{01} + n_{10}$ be the total discordant challenge count, and let $b = \min(n_{01}, n_{10})$.
+   - The exact two-sided p-value under the null hypothesis $H_0: p_{\text{discordant}} = 0.5$ is:
+     $$p = \begin{cases} 1.0 & \text{if } n_d = 0 \\ \min\left(1.0, \; 2 \sum_{k=0}^{b} \binom{n_d}{k} 0.5^{n_d}\right) & \text{if } n_d > 0 \end{cases}$$
+   - **Epistemological Bound on Zero Discordance:** If $n_d = 0$, the conditions are observationally indistinguishable on that finite evaluation suite. Zero discordance on a finite suite does **not** prove mathematical equivalence across all possible graphs or dependency configurations; it establishes only that no differentiating operation was observed in the evaluated sample.
+   - $H_0$ is rejected if and only if $p < 0.01$ AND the observed difference is demonstrated to be non-algorithmic (i.e. cannot be accounted for by missing graph or logic procedures).
 4. **No Self-Awarded Emergence:** The candidate author and automated runners are strictly prohibited from declaring "emergence". Any performance difference must be scrutinized for missing algorithms before claiming emergence.
 
 ---
 
 ### 5. Independent Reviewer Execution Instructions
+
+The reference implementation scripts for the independent reviewer are provided in `scripts/`:
+- [`scripts/generate-concealed-manifest-falsification-suite.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/scripts/generate-concealed-manifest-falsification-suite.mjs): Generates a concealed suite with parameterizable `--seed` and `--count`.
+- [`scripts/run-concealed-manifest-falsification-assay.mjs`](file:///c:/Users/timst/OneDrive/Desktop/tcp-repository/scripts/run-concealed-manifest-falsification-assay.mjs): Executes the blind evaluation and computes exact two-sided McNemar statistics.
 
 The independent reviewer executes the falsification trial using the following commands:
 
