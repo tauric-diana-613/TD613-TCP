@@ -1,0 +1,62 @@
+{
+  "schema": "td613.em.negative-refusal-register/v1",
+  "covenant": "Khona‌lit-po",
+  "authority": "SAC[X6ZNK5NO51]",
+  "compiled_at": "2026-11-06T20:52:16.083Z",
+  "registers": [
+    {
+      "control_id": "REFUSAL_TAMPERED_SPAN_DIGEST",
+      "description": "Refuses relation admission when claimed span SHA-256 does not match source byte slice",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "EXACT_SPAN_DIGEST_MISMATCH"
+    },
+    {
+      "control_id": "REFUSAL_FABRICATED_WARRANT",
+      "description": "Refuses relation admission when warrant lacks non-null cryptographic source_capture_span_proof",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "MISSING_SPAN_PROOF"
+    },
+    {
+      "control_id": "REFUSAL_UNGATED_IDENTITY_UNIFICATION",
+      "description": "Refuses automatic collapsing of human-gated Work routes into a single identity",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "HUMAN_GATE_REQUIRED"
+    },
+    {
+      "control_id": "REFUSAL_INTRINSIC_ROLE_PROMOTION",
+      "description": "Refuses promotion of compiler-pass contextual roles into intrinsic entity assertions",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "INTRINSIC_ROLE_PROMOTION_FORBIDDEN"
+    },
+    {
+      "control_id": "REFUSAL_ZIP_PATH_TRAVERSAL_AND_SLIP",
+      "description": "Refuses ZIP extraction of archive members containing path escapes (..), absolute paths, or symlinks",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "ZIP_PATH_TRAVERSAL_REFUSED"
+    },
+    {
+      "control_id": "REFUSAL_ZIP_RESOURCE_EXHAUSTION",
+      "description": "Refuses ZIP extraction exceeding size ratio limits, file count limits, or cumulative byte bounds",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "ZIP_RESOURCE_LIMIT_EXCEEDED"
+    },
+    {
+      "control_id": "REFUSAL_UNSUPPORTED_FORMAT_TEXT_EXTRACTION",
+      "description": "Refuses text queries against AppleDouble metadata sidecars and raw ZIP containers",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "UNSUPPORTED_FORMAT"
+    },
+    {
+      "control_id": "REFUSAL_UNSUPPORTED_SEMANTIC_MODEL_CLAIMS",
+      "description": "Refuses asserting semantic retrieval parity when ONNX model checkpoint is unavailable in historical fixture",
+      "disposition": "FAIL_CLOSED",
+      "error_code": "SEMANTIC_MODEL_UNAVAILABLE"
+    },
+    {
+      "control_id": "REFUSAL_NO_UNIFICATION_WARRANTED",
+      "description": "Returns NO_UNIFICATION_WARRANTED when cross-domain theories fail composability, boundary compatibility, or empirical distinction",
+      "disposition": "FAIL_CLOSED",
+      "verdict": "NO_UNIFICATION_WARRANTED"
+    }
+  ]
+}

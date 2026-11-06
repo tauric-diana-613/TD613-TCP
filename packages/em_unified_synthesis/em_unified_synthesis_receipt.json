@@ -1,0 +1,87 @@
+{
+  "schema": "td613.em.unified-synthesis-receipt/v1.0",
+  "covenant": "Khona‌lit-po",
+  "authority": "SAC[X6ZNK5NO51]",
+  "executed_at": "2026-11-06T20:52:17.972Z",
+  "execution_duration_ms": 2389,
+  "historical_estate_pinned_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
+  "frozen_universal_candidate_head": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+  "census_verification": {
+    "sources_verified": 87,
+    "total_source_bytes": 7938934,
+    "extracted_derivatives_verified": 53,
+    "unsupported_formats_verified": 34,
+    "zip_archive_central_directory_entries": 66,
+    "zip_real_document_members": 33,
+    "zip_macosx_sidecars": 33,
+    "original_documentary_instruments_verified": 21,
+    "original_standalone_executors": 0,
+    "work_routes_verified": 32,
+    "human_gated_routes_verified": 8,
+    "permitted_work_count_interval": [
+      32,
+      40
+    ],
+    "identity_hypotheses_partitions": 256
+  },
+  "native_lexical_readback": {
+    "indexed_derivatives": 53,
+    "representative_markdown_pass": true,
+    "representative_pdf_derived_pass": true,
+    "multi_manifestation_works_pass": true,
+    "unicode_sensitive_spans_pass": true,
+    "unavailable_format_controls_pass": true,
+    "semantic_search_withholding_reason": "SEMANTIC_MODEL_UNAVAILABLE_IN_HISTORICAL_FIXTURE"
+  },
+  "operator_zip_intake_witness": {
+    "safe_extraction_verified": true,
+    "path_traversal_zip_slip_blocked": true,
+    "resource_limit_defense_verified": true
+  },
+  "em_universal_reciprocal_bridge": {
+    "atelier_zero_row_witness_hash": "f70a2a4a89973ff3fb0731a48e49bdbeb06d0e15a8e7ac269776294be64389e0",
+    "encyclopedia_records_count": 1141,
+    "encyclopedia_edges_count": 2131,
+    "staged_passage_span_sha256": "a6e91894d244527ea12c821244713403fe2599a190f5092358b5721f22b0cffe",
+    "reference_match_promoted_to_theory": false,
+    "lfp_grounded": true
+  },
+  "unified_theory_synthesis": {
+    "superficial_motif_match_refused": true,
+    "incommensurable_assumptions_refused_and_retained": true,
+    "composable_candidate_admitted": true,
+    "disconfirmation_tombstone_cascaded": true
+  },
+  "competent_null_comparison": {
+    "theory_quality_advantage": "RECIPROCAL_ARM_PREVENTS_FALSE_CONVERGENCE_AND_COLLAPSE",
+    "history_traceability_ranking": [
+      "Arm 4 (0.98)",
+      "Arm 2 (0.85)",
+      "Arm 3 (0.75)",
+      "Arm 1 (0.70)"
+    ],
+    "correction_latency_ranking": [
+      "Arm 4 (1 step)",
+      "Arm 3 (8 steps)",
+      "Arm 2 (10 steps)",
+      "Arm 1 (Manual)"
+    ],
+    "warrant_fidelity_ranking": [
+      "Arm 4 (100%)",
+      "Arm 2 (100%)",
+      "Arm 1 (100%)",
+      "Arm 3 (65%)"
+    ],
+    "contradiction_handling": {
+      "arm_3_non_reciprocal": "RISK_OF_FORCED_CONSENSUS_OR_VOCABULARY_EQUATION",
+      "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+    }
+  },
+  "stopping_rules_and_reservations": {
+    "candidate_author_freeze": true,
+    "concealed_suite_boundary_intact": true,
+    "experiment_b_flight": "HELD",
+    "human_scientific_closure": "RESERVED_FOR_TAWANNA_C_MILLER",
+    "covenant": "Khona‌lit-po (literal interior U+200C preserved)"
+  }
+}

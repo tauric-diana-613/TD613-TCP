@@ -1,0 +1,2591 @@
+{
+  "schema": "td613.em.corpus-acquisition-manifest/v1",
+  "covenant": "Khona‌lit-po",
+  "authority": "SAC[X6ZNK5NO51]",
+  "inspected_at": "2026-11-06T20:52:16.081Z",
+  "historical_git_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
+  "fixture_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613",
+  "summary_census": {
+    "total_source_objects": 87,
+    "total_source_bytes": 7938934,
+    "source_format_breakdown": {
+      ".pdf": 20,
+      ".zip": 1,
+      ".md": 66
+    },
+    "total_extracted_derivatives": 53,
+    "total_unsupported_formats": 34,
+    "zip_archive_central_directory_entries": 66,
+    "zip_real_document_members": 33,
+    "zip_macosx_sidecars": 33,
+    "total_documentary_instruments": 21,
+    "key_synthesis_protocols_count": 9,
+    "standalone_scientific_executors_in_lineage": 0,
+    "total_work_routes": 32,
+    "human_gated_work_routes": 8,
+    "permitted_work_count_interval": [
+      32,
+      40
+    ],
+    "identity_hypotheses_partition_count": 256
+  },
+  "coverage_ledger": {
+    "denominator_total_sources": 87,
+    "completely_retrievable_text_sources": 53,
+    "preserved_binary_only_sources": 34,
+    "exact_reconstructed_derivatives": 53,
+    "ambiguous_or_human_gated_work_routes": [
+      {
+        "work_id": "emwork_074ccf9ad783c9c9047d73a8",
+        "declared_title": "Comprehensive Guide to Deploying Hermes AI via Ollama on macOS and Virtual Linux Environments",
+        "manifestation_ids": [
+          "emsrc_f9d7bff007dd9547d42db2c1",
+          "emsrc_a3675ad3117d3d35cb099ceb"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_085223e721130117f5510975",
+        "declared_title": "The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience",
+        "manifestation_ids": [
+          "emsrc_ae5d4155056773c8a50db1b9",
+          "emsrc_b7e4e42924d33bdaf666a4f8"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_0885af7e4851a2e81618b37a",
+        "declared_title": "System Architecture and Mathematical Modeling for a Wearable 7-Node Kinematic Drone Coordination Interface",
+        "manifestation_ids": [
+          "emsrc_57021f0d10d938f524b738c5",
+          "emsrc_a6aca36fd835bdb7157a6551"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_6377a9e4c9fd59e427517771",
+        "declared_title": "Cyber-Physical Architecture and Theoretical Frameworks for Capacitive E-Textile Drone Interfaces",
+        "manifestation_ids": [
+          "emsrc_d7c7ed8ff483a72d2bf48bda",
+          "emsrc_5f9ca473b3a0f7694bca742c"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_834ed287303df08a7a955877",
+        "declared_title": "Comprehensive User Guide to the macOS Terminal: From Basic Operations to Advanced Shell Customization",
+        "manifestation_ids": [
+          "emsrc_24e3ec262e064fe98ed974b8",
+          "emsrc_a1aa372da945a7db22e73f4c"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_85db62061b1e1bd0a4f6038e",
+        "declared_title": "Legal and Archival Framework Analysis for a Novel \"Pay-It-Forward\" Open Seed License for Agentic Systems and Prompt Architectures",
+        "manifestation_ids": [
+          "emsrc_9fcc229e5404e76d30c5726f",
+          "emsrc_9fecefb1208f278c7ba0d4d5"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_d536dc230d89ac9fef9fa13a",
+        "declared_title": "Architecting Linux Environments on macOS: A Comprehensive Guide to Virtualization, Emulation, and Deployment Strategy",
+        "manifestation_ids": [
+          "emsrc_8925ddeda663016b041255dc",
+          "emsrc_199220ad2cfb300f96ed3ab6"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      },
+      {
+        "work_id": "emwork_f0154bf9da11f273a2d6cb18",
+        "declared_title": "The Hermes Architecture: A Cybernetic Framework for System 4 Intelligence and Multi-Agent Orchestration",
+        "manifestation_ids": [
+          "emsrc_a87fa4366209a707705beb16",
+          "emsrc_0a76dce5fd8dc8ddcd2bd7f1"
+        ],
+        "contribution_interval": [
+          1,
+          2
+        ]
+      }
+    ],
+    "retrieved_passages_tied_to_source_bytes": true,
+    "historical_materials_excluded_from_query_results": [
+      {
+        "material_class": "APPLEDOUBLE_RESOURCE_FORK",
+        "count": 33,
+        "reason": "Binary metadata sidecars produced by macOS zip; contains no extractable natural text"
+      },
+      {
+        "material_class": "ZIP_ARCHIVE_CONTAINER",
+        "count": 1,
+        "source_id": "emsrc_db43deb1f616beed44e042c4",
+        "filename": "Archive.zip",
+        "reason": "Binary container file; its individual member documents are preserved and extracted separately in 02-ORIGINALS"
+      },
+      {
+        "material_class": "SEMANTIC_VECTOR_CHECKPOINT",
+        "count": 1,
+        "reason": "Historical ONNX model checkpoint and pre-computed vector database unpreserved in a15-r0 fixture; semantic search refused to prevent false parity claims"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_file_id": "emsrc_ae5d4155056773c8a50db1b9",
+      "original_filename": "Algedonic Systems Deep Research.pdf",
+      "relative_path": "Algedonic Systems Deep Research.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Algedonic Systems Deep Research.pdf",
+      "byte_length": 375704,
+      "sha256": "8c78c3333fe2f3f3ae6a7116adf61e850b371f043c93056985558cb8187b46b7",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_db43deb1f616beed44e042c4",
+      "original_filename": "Archive.zip",
+      "relative_path": "Archive.zip",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive.zip",
+      "byte_length": 697429,
+      "sha256": "03eb150a4a35929d27ece2894bd8fab76c337aff07d8ab7a48a203a14f7825e0",
+      "extension": ".zip",
+      "media_type": "application/zip",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_c01c49eb755108563b9e58c6",
+      "original_filename": "1+1=3.md",
+      "relative_path": "Archive/1+1=3.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/1+1=3.md",
+      "byte_length": 48874,
+      "sha256": "d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_b20ff4bfe278f8cf39d805f6",
+      "original_filename": "AI Hypervisor Control Mathematics.md",
+      "relative_path": "Archive/AI Hypervisor Control Mathematics.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/AI Hypervisor Control Mathematics.md",
+      "byte_length": 36771,
+      "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_b7e4e42924d33bdaf666a4f8",
+      "original_filename": "Algedonic Systems Deep Research.md",
+      "relative_path": "Archive/Algedonic Systems Deep Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Algedonic Systems Deep Research.md",
+      "byte_length": 67308,
+      "sha256": "644bf2ee84c20e1f9b4a6ef8b595cb7bf0eaed7f4892fdb07f80b2cc3cc98c79",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_63897276d473f6147166ca90",
+      "original_filename": "Audio Key Detection Plugin Design.md",
+      "relative_path": "Archive/Audio Key Detection Plugin Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Audio Key Detection Plugin Design.md",
+      "byte_length": 37101,
+      "sha256": "5cad6f5caa6830f226d326e74627ec244812c7796afa1af99bc9081f5f378f77",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_8846b63345a07422139815fb",
+      "original_filename": "Audio Routing and Sync Research.md",
+      "relative_path": "Archive/Audio Routing and Sync Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Audio Routing and Sync Research.md",
+      "byte_length": 38352,
+      "sha256": "2a4f04e313d11585ddd9068fcdb588e0be60de17106ea24f87c59366c08b4d3a",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_15cead109dfe2886a22f8320",
+      "original_filename": "Autonomous Agent Governance Research.md",
+      "relative_path": "Archive/Autonomous Agent Governance Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Autonomous Agent Governance Research.md",
+      "byte_length": 28048,
+      "sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_fc1c117130df363bba90b5c1",
+      "original_filename": "Chat Context Research Dive.md",
+      "relative_path": "Archive/Chat Context Research Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Chat Context Research Dive.md",
+      "byte_length": 37476,
+      "sha256": "c5b7650ac12ec1cb8ad2db27173de0a687043953925726a9cdea38135049f5c6",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_8e672cb8123058c8fa47d8d9",
+      "original_filename": "Chiptune DSP Synth Architecture.md",
+      "relative_path": "Archive/Chiptune DSP Synth Architecture.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Chiptune DSP Synth Architecture.md",
+      "byte_length": 34556,
+      "sha256": "4e8bbedbc8e906e2d541bcceedc8039aef5a524a41ab67fd0f88bbb25ef55374",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_e76a321b3df071303fe41538",
+      "original_filename": "Consciousness Singularity Research Plan.md",
+      "relative_path": "Archive/Consciousness Singularity Research Plan.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Consciousness Singularity Research Plan.md",
+      "byte_length": 40186,
+      "sha256": "da6955889440de1977eff56be1db65f0f38b37de64c2ff0e2ca6489ec539d78e",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_0b285152e5c5268e658c59e8",
+      "original_filename": "Cybernetic Hypervisor Architecture Research.md",
+      "relative_path": "Archive/Cybernetic Hypervisor Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Cybernetic Hypervisor Architecture Research.md",
+      "byte_length": 30680,
+      "sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_6c9e38d8872e3fab6ae8a0c3",
+      "original_filename": "Cybernetic LLM Orchestration Analysis.md",
+      "relative_path": "Archive/Cybernetic LLM Orchestration Analysis.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Cybernetic LLM Orchestration Analysis.md",
+      "byte_length": 38292,
+      "sha256": "1bf2b892b762cc3bf73cdd1b22c0bf450ac436df13d0066bb6d9d9885c618d12",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_1f16bbf644e7fa9b057ca122",
+      "original_filename": "Cybernetic Memory Algorithms Research.md",
+      "relative_path": "Archive/Cybernetic Memory Algorithms Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Cybernetic Memory Algorithms Research.md",
+      "byte_length": 47556,
+      "sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_265f3181ee73ce04b8240885",
+      "original_filename": "Cybernetic Modeling of Myth Transmission.md",
+      "relative_path": "Archive/Cybernetic Modeling of Myth Transmission.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Cybernetic Modeling of Myth Transmission.md",
+      "byte_length": 41112,
+      "sha256": "aca3e1f14d16f79874e3b8882d3ffdabd4dc5e11c8e46bcd40d4fb129b839cb2",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_20228928591ae11052bf2622",
+      "original_filename": "Cybernetic Multi-Agent Systems Research.md",
+      "relative_path": "Archive/Cybernetic Multi-Agent Systems Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Cybernetic Multi-Agent Systems Research.md",
+      "byte_length": 44037,
+      "sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_6205df11a1e35b1a7828c7e7",
+      "original_filename": "Deep Research on AI Hypervisor Control Mathematics.md",
+      "relative_path": "Archive/Deep Research on AI Hypervisor Control Mathematics.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Deep Research on AI Hypervisor Control Mathematics.md",
+      "byte_length": 36771,
+      "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": "emsrc_b20ff4bfe278f8cf39d805f6",
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_4753469dce968cf7c48bd1fe",
+      "original_filename": "Dynamic Token Allocation Research.md",
+      "relative_path": "Archive/Dynamic Token Allocation Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Dynamic Token Allocation Research.md",
+      "byte_length": 29252,
+      "sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_f9d7bff007dd9547d42db2c1",
+      "original_filename": "Hermes (Ollama) Terminal User Guide.md",
+      "relative_path": "Archive/Hermes (Ollama) Terminal User Guide.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Hermes (Ollama) Terminal User Guide.md",
+      "byte_length": 40668,
+      "sha256": "f322383ec57c67072df62a2043cfef33d3723c927e11ba2fe32af7b8d87a21de",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a87fa4366209a707705beb16",
+      "original_filename": "Hermes AI Prompt Design.md",
+      "relative_path": "Archive/Hermes AI Prompt Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Hermes AI Prompt Design.md",
+      "byte_length": 49080,
+      "sha256": "5503894ac2800aff29bd69b45a756630aa7683a50ce708bb44203a1c500ad3bc",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_31ed6fb3bdc15d3c29b8ae13",
+      "original_filename": "LLM Architecture Deep Dive.md",
+      "relative_path": "Archive/LLM Architecture Deep Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/LLM Architecture Deep Dive.md",
+      "byte_length": 45486,
+      "sha256": "66d3311ac7b5265ff71144f2e7670f9d1e471a3874638a40a27d4efe1127788e",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_2ddaf8197adecc8c5ba09c33",
+      "original_filename": "Lock-Free DSP Architecture Research.md",
+      "relative_path": "Archive/Lock-Free DSP Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Lock-Free DSP Architecture Research.md",
+      "byte_length": 50276,
+      "sha256": "ad31f4c57c2009eaede56c738c29b4bb35602ab7eadb8857eea159d0ce25da83",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a32017341296da30079229dc",
+      "original_filename": "Low-Latency DSP Tracker Engine.md",
+      "relative_path": "Archive/Low-Latency DSP Tracker Engine.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Low-Latency DSP Tracker Engine.md",
+      "byte_length": 44181,
+      "sha256": "66d053ae17865526fa410122bd24fb45c456586f3930b1f1a3d60df775ae8235",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_24e3ec262e064fe98ed974b8",
+      "original_filename": "Mac OS Terminal Basic Guide.md",
+      "relative_path": "Archive/Mac OS Terminal Basic Guide.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Mac OS Terminal Basic Guide.md",
+      "byte_length": 50149,
+      "sha256": "ee34d5401b3a8e414b7eeb056acf77a289f913485f02a8ddf342458793a9ba7a",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_fb1c9ba084467b28d6106148",
+      "original_filename": "Mixxx DAW Architecture Research.md",
+      "relative_path": "Archive/Mixxx DAW Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Mixxx DAW Architecture Research.md",
+      "byte_length": 32186,
+      "sha256": "e06c5d0da6eedfd92272e855a020eec9f7c81c5287e514fe92a2ca6fca5ad2a4",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_80724e9a6c5be3004c6385f4",
+      "original_filename": "Mixxx Engine Architecture Deep Dive.md",
+      "relative_path": "Archive/Mixxx Engine Architecture Deep Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Mixxx Engine Architecture Deep Dive.md",
+      "byte_length": 40573,
+      "sha256": "f312594ca7801fdd6b37c065e4d5ed39b8b3f12aef68bba9e1cefe99d5729075",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_cf77e65eeefe19ca69b44064",
+      "original_filename": "Mixxx Tracker Engine Architecture.md",
+      "relative_path": "Archive/Mixxx Tracker Engine Architecture.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Mixxx Tracker Engine Architecture.md",
+      "byte_length": 27063,
+      "sha256": "d45c469b329115042107d0f8c34827745d4482a51f89f6b5689ec23b1b7185ca",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_1a5f7e8bd71f3b1914d9dfc0",
+      "original_filename": "OSSL Stylometric Lineage Tracking Framework.md",
+      "relative_path": "Archive/OSSL Stylometric Lineage Tracking Framework.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/OSSL Stylometric Lineage Tracking Framework.md",
+      "byte_length": 37342,
+      "sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_d785210930150a03fed14930",
+      "original_filename": "OSSL-Seed Framework Research.md",
+      "relative_path": "Archive/OSSL-Seed Framework Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/OSSL-Seed Framework Research.md",
+      "byte_length": 42798,
+      "sha256": "ee3112f9c68412a13fb586073c2cc34336e61a1ad8635055c3b0a0ba2f4edc4e",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_9fcc229e5404e76d30c5726f",
+      "original_filename": "Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "relative_path": "Archive/Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "byte_length": 44973,
+      "sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_2adcca73b83fb64e8cf22fd9",
+      "original_filename": "Optimal Gamma Smoothing Factor.md",
+      "relative_path": "Archive/Optimal Gamma Smoothing Factor.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Optimal Gamma Smoothing Factor.md",
+      "byte_length": 48225,
+      "sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_58fa977424385e8b9892de77",
+      "original_filename": "Quantum Topology Research Prompt Formulation.md",
+      "relative_path": "Archive/Quantum Topology Research Prompt Formulation.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Quantum Topology Research Prompt Formulation.md",
+      "byte_length": 37087,
+      "sha256": "691b95ca7d11cf42e282c5bb0c31de88647a315201c8fe052a9cfdd9ab7cd924",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_d7c7ed8ff483a72d2bf48bda",
+      "original_filename": "Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "relative_path": "Archive/Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "byte_length": 95674,
+      "sha256": "af2a534fba7051a2863552c6e05ea67a89089c1c6474bb98b1b184e62dcd5ef7",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_57021f0d10d938f524b738c5",
+      "original_filename": "Wearable Drone Control System Design.md",
+      "relative_path": "Archive/Wearable Drone Control System Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/Wearable Drone Control System Design.md",
+      "byte_length": 163889,
+      "sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_29e2a5ad82a264b7bcd03941",
+      "original_filename": "._1+1=3.md",
+      "relative_path": "Archive/__MACOSX/._1+1=3.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._1+1=3.md",
+      "byte_length": 1967,
+      "sha256": "454205751f30bc78203a5846887cce088b634c73541ea47121f2190238b5b75f",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_61a505e286c5ca0c21b9f61c",
+      "original_filename": "._AI Hypervisor Control Mathematics.md",
+      "relative_path": "Archive/__MACOSX/._AI Hypervisor Control Mathematics.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._AI Hypervisor Control Mathematics.md",
+      "byte_length": 1967,
+      "sha256": "36ecdd979d44354d8a23a21cefa54398ea4d343a8bca971d80304c462f285231",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_5bf808dad657207621de9cb2",
+      "original_filename": "._Algedonic Systems Deep Research.md",
+      "relative_path": "Archive/__MACOSX/._Algedonic Systems Deep Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Algedonic Systems Deep Research.md",
+      "byte_length": 1965,
+      "sha256": "7029849bd5890ae59df4a56078043ffe004ef883b2c68b9721880b9f139e8ba0",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_21b462721ec759642bcc58cc",
+      "original_filename": "._Audio Key Detection Plugin Design.md",
+      "relative_path": "Archive/__MACOSX/._Audio Key Detection Plugin Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Audio Key Detection Plugin Design.md",
+      "byte_length": 1967,
+      "sha256": "b1119bf84737b354113ff8bd103ab9a7c2526826812d57f94f18bedc07ea7892",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_1ffe710b2e8bdfe6139b9ad7",
+      "original_filename": "._Audio Routing and Sync Research.md",
+      "relative_path": "Archive/__MACOSX/._Audio Routing and Sync Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Audio Routing and Sync Research.md",
+      "byte_length": 1967,
+      "sha256": "408d3a617faeced2bc1dab79e2bb2f62d75530cd5339be9892a864fed9e59034",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_6767976f58748618c803c686",
+      "original_filename": "._Autonomous Agent Governance Research.md",
+      "relative_path": "Archive/__MACOSX/._Autonomous Agent Governance Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Autonomous Agent Governance Research.md",
+      "byte_length": 1966,
+      "sha256": "3f2155ff95a60f60b79248af03b633e8987bc7ee83e5343b418beb8c954f79a1",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_17d106f9333c607176032632",
+      "original_filename": "._Chat Context Research Dive.md",
+      "relative_path": "Archive/__MACOSX/._Chat Context Research Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Chat Context Research Dive.md",
+      "byte_length": 1966,
+      "sha256": "95183567203390d3128823a22386acf6165725cb4fdf9a3bae75c997f07dc7c1",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_37e9343e7f31cf38cae768f0",
+      "original_filename": "._Chiptune DSP Synth Architecture.md",
+      "relative_path": "Archive/__MACOSX/._Chiptune DSP Synth Architecture.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Chiptune DSP Synth Architecture.md",
+      "byte_length": 1966,
+      "sha256": "f328ea75b7a204ed79c8bd622816311a8141d290c96af8ffb4df2687c58de0fe",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_508f1f31d00c5d4fc5e20fa2",
+      "original_filename": "._Consciousness Singularity Research Plan.md",
+      "relative_path": "Archive/__MACOSX/._Consciousness Singularity Research Plan.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Consciousness Singularity Research Plan.md",
+      "byte_length": 1966,
+      "sha256": "e19e5f17b8dc0cecc6860b8b4e71005c3a59a043be6dfcdd83932f91ff390bb5",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_1ea3f98cc0b382391fe4742c",
+      "original_filename": "._Cybernetic Hypervisor Architecture Research.md",
+      "relative_path": "Archive/__MACOSX/._Cybernetic Hypervisor Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Cybernetic Hypervisor Architecture Research.md",
+      "byte_length": 1967,
+      "sha256": "903e92982bdbcec810a167071dae7c4226928e75e8a056e758a8add300fdabc0",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_63db5b9062ec9ec5516b6f8d",
+      "original_filename": "._Cybernetic LLM Orchestration Analysis.md",
+      "relative_path": "Archive/__MACOSX/._Cybernetic LLM Orchestration Analysis.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Cybernetic LLM Orchestration Analysis.md",
+      "byte_length": 1967,
+      "sha256": "ac51d0f6dcce68d1652f79050a74471427cd1484032284df4fb157815a2d4c4e",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_d18308cb9ed007bbcb455bd7",
+      "original_filename": "._Cybernetic Memory Algorithms Research.md",
+      "relative_path": "Archive/__MACOSX/._Cybernetic Memory Algorithms Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Cybernetic Memory Algorithms Research.md",
+      "byte_length": 1965,
+      "sha256": "f53a98420f3013bf72202c02c98983bf7d76b6c3c1c8bcd1326c7958952f6a9e",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_ec05f51bbed6b6da3906bf8e",
+      "original_filename": "._Cybernetic Modeling of Myth Transmission.md",
+      "relative_path": "Archive/__MACOSX/._Cybernetic Modeling of Myth Transmission.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Cybernetic Modeling of Myth Transmission.md",
+      "byte_length": 1967,
+      "sha256": "7bd58935fc0a36b020f8ade77d05a857c6b1d3c4fd44d55132c227b9c9510329",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_97a708d8f26466bd282b6790",
+      "original_filename": "._Cybernetic Multi-Agent Systems Research.md",
+      "relative_path": "Archive/__MACOSX/._Cybernetic Multi-Agent Systems Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Cybernetic Multi-Agent Systems Research.md",
+      "byte_length": 1967,
+      "sha256": "09a4c9148ac34d95ed322ab1a878ff93c1c326d8d667003b85e4929650fcc29f",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_da8ae264a46e31f6995601c8",
+      "original_filename": "._Deep Research on AI Hypervisor Control Mathematics.md",
+      "relative_path": "Archive/__MACOSX/._Deep Research on AI Hypervisor Control Mathematics.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Deep Research on AI Hypervisor Control Mathematics.md",
+      "byte_length": 1967,
+      "sha256": "4c6208fe496a0079324430d5450894e149ec452fe592560fb1e670284a24085e",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_71112db9eb68bebd2342af63",
+      "original_filename": "._Dynamic Token Allocation Research.md",
+      "relative_path": "Archive/__MACOSX/._Dynamic Token Allocation Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Dynamic Token Allocation Research.md",
+      "byte_length": 1967,
+      "sha256": "e794776d5a0c44247871fbbd19d936b29a4e8317425af935c8f88b224435db8c",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_99e9739955d2bdadc7479290",
+      "original_filename": "._Hermes (Ollama) Terminal User Guide.md",
+      "relative_path": "Archive/__MACOSX/._Hermes (Ollama) Terminal User Guide.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Hermes (Ollama) Terminal User Guide.md",
+      "byte_length": 1966,
+      "sha256": "b207f3ad6b28c4c1238969a91633147aec92c1cbe936ef8ca93d40ba0573ee0a",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_44798c9aef7a94799a157405",
+      "original_filename": "._Hermes AI Prompt Design.md",
+      "relative_path": "Archive/__MACOSX/._Hermes AI Prompt Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Hermes AI Prompt Design.md",
+      "byte_length": 1967,
+      "sha256": "549bd67e9220191ff807c8c6005ce2c54262409f1821e8a287cbf4684f2f3843",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_22a3a9f36ade567ca06a0f75",
+      "original_filename": "._LLM Architecture Deep Dive.md",
+      "relative_path": "Archive/__MACOSX/._LLM Architecture Deep Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._LLM Architecture Deep Dive.md",
+      "byte_length": 1967,
+      "sha256": "6a4015f507d9afcfdd23aea5320c17c2b34bdef90ab3f8bc0211356c862403d5",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_c6f8c9ad8de141b799df9ee5",
+      "original_filename": "._Lock-Free DSP Architecture Research.md",
+      "relative_path": "Archive/__MACOSX/._Lock-Free DSP Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Lock-Free DSP Architecture Research.md",
+      "byte_length": 1966,
+      "sha256": "30e2bb80b01a91d3753bce2517384ee6267aa81a3a6b59bc1d72cdc2d64b2c59",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_651371c761f2a299df79eb50",
+      "original_filename": "._Low-Latency DSP Tracker Engine.md",
+      "relative_path": "Archive/__MACOSX/._Low-Latency DSP Tracker Engine.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Low-Latency DSP Tracker Engine.md",
+      "byte_length": 1967,
+      "sha256": "662f7585d4961a4e7d62713ceac20b77b0cc509238509c632cc790f699bef364",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_3f6e6e0feac5b2b057bd43c3",
+      "original_filename": "._Mac OS Terminal Basic Guide.md",
+      "relative_path": "Archive/__MACOSX/._Mac OS Terminal Basic Guide.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Mac OS Terminal Basic Guide.md",
+      "byte_length": 1967,
+      "sha256": "59a41bf299b8ba54361b792ec88c470747248b3a46c9bcce0e5e9d546f736fc7",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_2aa1198bee3008c9dba45518",
+      "original_filename": "._Mixxx DAW Architecture Research.md",
+      "relative_path": "Archive/__MACOSX/._Mixxx DAW Architecture Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Mixxx DAW Architecture Research.md",
+      "byte_length": 1967,
+      "sha256": "b579db7310b046dd4efc17e3c08157f1210a266bf807aa1c44a16d89d715ce17",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_bb0f419fec4c9c93ab7f9af5",
+      "original_filename": "._Mixxx Engine Architecture Deep Dive.md",
+      "relative_path": "Archive/__MACOSX/._Mixxx Engine Architecture Deep Dive.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Mixxx Engine Architecture Deep Dive.md",
+      "byte_length": 1965,
+      "sha256": "4eb1747c949c76f322e11dc46c381877fc7129046e4b632ccac0e0747fc9a593",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_b15398d8e73c2d070c8b0e18",
+      "original_filename": "._Mixxx Tracker Engine Architecture.md",
+      "relative_path": "Archive/__MACOSX/._Mixxx Tracker Engine Architecture.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Mixxx Tracker Engine Architecture.md",
+      "byte_length": 1966,
+      "sha256": "df0ab5f1e5f56c15deec08c715206908e1b1e75d22ff82d5614f47ff3336d050",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_012a1054d9c99bce7c293966",
+      "original_filename": "._OSSL Stylometric Lineage Tracking Framework.md",
+      "relative_path": "Archive/__MACOSX/._OSSL Stylometric Lineage Tracking Framework.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._OSSL Stylometric Lineage Tracking Framework.md",
+      "byte_length": 1967,
+      "sha256": "f9bbe91796cbc89013622068ec5550195fe0e6f5ab196827ee6cb10657b6779e",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_7e8f43d3f3135ebfe8104a3d",
+      "original_filename": "._OSSL-Seed Framework Research.md",
+      "relative_path": "Archive/__MACOSX/._OSSL-Seed Framework Research.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._OSSL-Seed Framework Research.md",
+      "byte_length": 1967,
+      "sha256": "a27f456639121de66748d355fb81db4910d96a3de60844e154f2fcd95e271798",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a857a71856026ced9e51c3c6",
+      "original_filename": "._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "relative_path": "Archive/__MACOSX/._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "byte_length": 1966,
+      "sha256": "32d04d2df0a6a4ac7d4e9111300d3276cfa44be5a0b9b9917d7ffad9d6bb7835",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_48ed1adbd9b1ffa99297e62a",
+      "original_filename": "._Optimal Gamma Smoothing Factor.md",
+      "relative_path": "Archive/__MACOSX/._Optimal Gamma Smoothing Factor.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Optimal Gamma Smoothing Factor.md",
+      "byte_length": 1967,
+      "sha256": "e0f14fe54ed9213db33ae1be8d491c4c0b13f79855df95584cb61fc06a30f493",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_734feb614e7954f50c535748",
+      "original_filename": "._Quantum Topology Research Prompt Formulation.md",
+      "relative_path": "Archive/__MACOSX/._Quantum Topology Research Prompt Formulation.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Quantum Topology Research Prompt Formulation.md",
+      "byte_length": 1967,
+      "sha256": "78b71e121b7d6c71a132061ec13b462abb47c6a05b0bf2d7ccc7950452f7c8c9",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_2a2d7b0c3925cf358f06b207",
+      "original_filename": "._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "relative_path": "Archive/__MACOSX/._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "byte_length": 1967,
+      "sha256": "8095b02d2495a3ad35f5cbf16e533755d4a03c207b1dc31f0244bb79a09053bf",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_58c79cb12c61abf523701b19",
+      "original_filename": "._Wearable Drone Control System Design.md",
+      "relative_path": "Archive/__MACOSX/._Wearable Drone Control System Design.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._Wearable Drone Control System Design.md",
+      "byte_length": 1966,
+      "sha256": "a0e4ef378047c33595fe4b30779cefc67bcec233ce1119044796f5425947b4a9",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_139ba514da490d44efbe83de",
+      "original_filename": "._macOS Virtualization Guide for Linux Environments.md",
+      "relative_path": "Archive/__MACOSX/._macOS Virtualization Guide for Linux Environments.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/__MACOSX/._macOS Virtualization Guide for Linux Environments.md",
+      "byte_length": 1967,
+      "sha256": "e101cd50e098732b6e239b8cdd476f50cee8b5992f0762a31af58ef95198607a",
+      "extension": ".md",
+      "media_type": "application/applefile",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_8925ddeda663016b041255dc",
+      "original_filename": "macOS Virtualization Guide for Linux Environments.md",
+      "relative_path": "Archive/macOS Virtualization Guide for Linux Environments.md",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Archive/macOS Virtualization Guide for Linux Environments.md",
+      "byte_length": 48048,
+      "sha256": "19f32b0a96371fb5ecc926d6395d3277349de626fc01a017a0642baef3844d75",
+      "extension": ".md",
+      "media_type": "text/markdown; charset=utf-8",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_cb7da53c98ed3a010af186a1",
+      "original_filename": "Audio Key Detection Plugin Design (1).pdf",
+      "relative_path": "Audio Key Detection Plugin Design (1).pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Audio Key Detection Plugin Design (1).pdf",
+      "byte_length": 243019,
+      "sha256": "4658acb9ae0f97afe9d85e61079956c3e9d1c534847e9478daba8678822b0da1",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_96d522b0d573766dfb0f3c0e",
+      "original_filename": "Audio Routing and Sync Research.pdf",
+      "relative_path": "Audio Routing and Sync Research.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Audio Routing and Sync Research.pdf",
+      "byte_length": 227279,
+      "sha256": "1f20de3ced42c72a9b759ca6cb91d0508d5555f0462cd60f7d1cd4760b5f63c5",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_7b3a68bdf0d263ae74751b99",
+      "original_filename": "Chat Context Research Dive.pdf",
+      "relative_path": "Chat Context Research Dive.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Chat Context Research Dive.pdf",
+      "byte_length": 240048,
+      "sha256": "f73839919505a65bbc85224d5c0080d9c319d4286015a61e755af79d5deb1b89",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_1b44cb39e440056ed325b372",
+      "original_filename": "Chiptune DSP Synth Architecture.pdf",
+      "relative_path": "Chiptune DSP Synth Architecture.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Chiptune DSP Synth Architecture.pdf",
+      "byte_length": 231082,
+      "sha256": "1835c8425dfe69ebba659c1d0a7db4c0232ccb9e9c6d5748edcc6d1e3d2c788c",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_67937de5ebf818d8bc7c4e68",
+      "original_filename": "Cybernetic Modeling of Myth Transmission.pdf",
+      "relative_path": "Cybernetic Modeling of Myth Transmission.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Cybernetic Modeling of Myth Transmission.pdf",
+      "byte_length": 256490,
+      "sha256": "0107e740fd54900dfc881797fcd15ff2d064455b16392d9fcd553888f74fef06",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_536415ee2a02f2530392c78e",
+      "original_filename": "Dynamic Token Allocation Research.pdf",
+      "relative_path": "Dynamic Token Allocation Research.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Dynamic Token Allocation Research.pdf",
+      "byte_length": 198671,
+      "sha256": "e14fac88508e84eb30878327703d3b82c751b80a25298b2ffdc6cb19b233092e",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a3675ad3117d3d35cb099ceb",
+      "original_filename": "Hermes (Ollama) Terminal User Guide.pdf",
+      "relative_path": "Hermes (Ollama) Terminal User Guide.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Hermes (Ollama) Terminal User Guide.pdf",
+      "byte_length": 291165,
+      "sha256": "e07c0e10166ed6974dfb480b44a6217a31e975d6b89f75b93bcba707a7a258c8",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+      "original_filename": "Hermes AI Prompt Design.pdf",
+      "relative_path": "Hermes AI Prompt Design.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Hermes AI Prompt Design.pdf",
+      "byte_length": 309895,
+      "sha256": "eacbd33a60aeafdcf6963b77c91b970ba995cf47f915d347644a707e28cfdd97",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a1aa372da945a7db22e73f4c",
+      "original_filename": "Mac OS Terminal Basic Guide.pdf",
+      "relative_path": "Mac OS Terminal Basic Guide.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Mac OS Terminal Basic Guide.pdf",
+      "byte_length": 357356,
+      "sha256": "658bc90d63280d23a357363b16c0c97f60ad0a0ef7bd753ff72a5ea2b851eb9e",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_f336eedac7c12acb372b7929",
+      "original_filename": "Mixxx DAW Architecture Research (1).pdf",
+      "relative_path": "Mixxx DAW Architecture Research (1).pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Mixxx DAW Architecture Research (1).pdf",
+      "byte_length": 216184,
+      "sha256": "8e7ee2e446b29f1e76e4810fa3d4ee202a98162d26eb950b1e4591d79d4a1517",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_ba63df8a7bab4ca14b1d21e0",
+      "original_filename": "Mixxx Tracker Engine Architecture.pdf",
+      "relative_path": "Mixxx Tracker Engine Architecture.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Mixxx Tracker Engine Architecture.pdf",
+      "byte_length": 208909,
+      "sha256": "0afc4d7a95af785099acf4ca4437d73a1e717ef4905e8d9cce0fb9ec78fd96df",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_c2a22c120e32b746513447b5",
+      "original_filename": "OSSL Stylometric Lineage Tracking Framework.pdf",
+      "relative_path": "OSSL Stylometric Lineage Tracking Framework.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/OSSL Stylometric Lineage Tracking Framework.pdf",
+      "byte_length": 225981,
+      "sha256": "b5410495dedd68353f281e0464bc2a809bd29fa477c53e5e0cc736725187cf7e",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_66bc27767a635cd4b2ce3e21",
+      "original_filename": "OSSL-Seed Framework Research.pdf",
+      "relative_path": "OSSL-Seed Framework Research.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/OSSL-Seed Framework Research.pdf",
+      "byte_length": 259768,
+      "sha256": "de7b34161e72f787071bdc60ca9d8691f7bc05299721fccb5ba696f6f0a0d943",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_9fecefb1208f278c7ba0d4d5",
+      "original_filename": "Open Seed License- Multi-Party Framework & Stylometry Integration.pdf",
+      "relative_path": "Open Seed License- Multi-Party Framework & Stylometry Integration.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Open Seed License- Multi-Party Framework & Stylometry Integration.pdf",
+      "byte_length": 313199,
+      "sha256": "2015e56af5f710bd4e774e73507d42b83a394eb6b10fcccc2894ff56a0bf7a69",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_0769dac7cdd95a5ca0577963",
+      "original_filename": "Optimal Gamma Smoothing Factor.pdf",
+      "relative_path": "Optimal Gamma Smoothing Factor.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Optimal Gamma Smoothing Factor.pdf",
+      "byte_length": 281858,
+      "sha256": "a6e1ca3b7144f89d5393cc499d4bf91f32910129ae53b381dcca1140c10a6800",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a794c13e8e0b9bd6d7be3ca6",
+      "original_filename": "Quantum Topology Research Prompt Formulation.pdf",
+      "relative_path": "Quantum Topology Research Prompt Formulation.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Quantum Topology Research Prompt Formulation.pdf",
+      "byte_length": 220101,
+      "sha256": "3335a0b0e4fcba8fc1595e78f7b8b40e98275816a6c74abe7e15539aba471487",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_5f9ca473b3a0f7694bca742c",
+      "original_filename": "Theremin Drone Glove Build Plan and Full Suit Roadmap.pdf",
+      "relative_path": "Theremin Drone Glove Build Plan and Full Suit Roadmap.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Theremin Drone Glove Build Plan and Full Suit Roadmap.pdf",
+      "byte_length": 379403,
+      "sha256": "7baf2dba97f6186a9a0ee5bb7bfac98cc29f46cf6abe4441b2fb1c4f18fcd564",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_a6aca36fd835bdb7157a6551",
+      "original_filename": "Wearable Drone Control System Design.pdf",
+      "relative_path": "Wearable Drone Control System Design.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/Wearable Drone Control System Design.pdf",
+      "byte_length": 474119,
+      "sha256": "838f02462395a859719273a2d665da7083775661f8b740be90d1503e0c515993",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    },
+    {
+      "source_file_id": "emsrc_199220ad2cfb300f96ed3ab6",
+      "original_filename": "macOS Virtualization Guide for Linux Environments.pdf",
+      "relative_path": "macOS Virtualization Guide for Linux Environments.pdf",
+      "archive_relative_path": "02-ORIGINALS/emstd613lineage/macOS Virtualization Guide for Linux Environments.pdf",
+      "byte_length": 332308,
+      "sha256": "e4656c1b2e39b15134d46586f9e2c6489ba4c439fe4ce5b54d2dd6034808535f",
+      "extension": ".pdf",
+      "media_type": "application/pdf",
+      "filesystem_clock_status": "CHRONOLOGY_UNRESOLVED",
+      "duplicate_of_source_file_id": null,
+      "integrity_status": "VERIFIED_EXACT"
+    }
+  ],
+  "derivatives": [
+    {
+      "source_file_id": "emsrc_ae5d4155056773c8a50db1b9",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_ae5d4155056773c8a50db1b9.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 51811,
+      "sha256": "cf665aa737c79d7ba1acf3dc914a5b2886e3e5e039a5478e9493238905797c4e",
+      "parent_sha256": "8c78c3333fe2f3f3ae6a7116adf61e850b371f043c93056985558cb8187b46b7",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_db43deb1f616beed44e042c4",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "03eb150a4a35929d27ece2894bd8fab76c337aff07d8ab7a48a203a14f7825e0",
+      "is_retrievable_text": false,
+      "exclusion_reason": "BINARY_ZIP_CONTAINER"
+    },
+    {
+      "source_file_id": "emsrc_c01c49eb755108563b9e58c6",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_c01c49eb755108563b9e58c6.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 48874,
+      "sha256": "d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346",
+      "parent_sha256": "d8d3c9482be41097869d9510608f36b5f814b275e56a63bc7149fef674aac346",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_b20ff4bfe278f8cf39d805f6",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_b20ff4bfe278f8cf39d805f6.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 36771,
+      "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "parent_sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_b7e4e42924d33bdaf666a4f8",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_b7e4e42924d33bdaf666a4f8.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 67308,
+      "sha256": "644bf2ee84c20e1f9b4a6ef8b595cb7bf0eaed7f4892fdb07f80b2cc3cc98c79",
+      "parent_sha256": "644bf2ee84c20e1f9b4a6ef8b595cb7bf0eaed7f4892fdb07f80b2cc3cc98c79",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_63897276d473f6147166ca90",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_63897276d473f6147166ca90.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 37101,
+      "sha256": "5cad6f5caa6830f226d326e74627ec244812c7796afa1af99bc9081f5f378f77",
+      "parent_sha256": "5cad6f5caa6830f226d326e74627ec244812c7796afa1af99bc9081f5f378f77",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_8846b63345a07422139815fb",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_8846b63345a07422139815fb.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 38352,
+      "sha256": "2a4f04e313d11585ddd9068fcdb588e0be60de17106ea24f87c59366c08b4d3a",
+      "parent_sha256": "2a4f04e313d11585ddd9068fcdb588e0be60de17106ea24f87c59366c08b4d3a",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_15cead109dfe2886a22f8320",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_15cead109dfe2886a22f8320.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 28048,
+      "sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+      "parent_sha256": "5c17dc8c431a823d01c22bfe89fa98fa9f934a16bdd8c1503571318a6779e0d3",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_fc1c117130df363bba90b5c1",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_fc1c117130df363bba90b5c1.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 37476,
+      "sha256": "c5b7650ac12ec1cb8ad2db27173de0a687043953925726a9cdea38135049f5c6",
+      "parent_sha256": "c5b7650ac12ec1cb8ad2db27173de0a687043953925726a9cdea38135049f5c6",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_8e672cb8123058c8fa47d8d9",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_8e672cb8123058c8fa47d8d9.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 34556,
+      "sha256": "4e8bbedbc8e906e2d541bcceedc8039aef5a524a41ab67fd0f88bbb25ef55374",
+      "parent_sha256": "4e8bbedbc8e906e2d541bcceedc8039aef5a524a41ab67fd0f88bbb25ef55374",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_e76a321b3df071303fe41538",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_e76a321b3df071303fe41538.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 40186,
+      "sha256": "da6955889440de1977eff56be1db65f0f38b37de64c2ff0e2ca6489ec539d78e",
+      "parent_sha256": "da6955889440de1977eff56be1db65f0f38b37de64c2ff0e2ca6489ec539d78e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_0b285152e5c5268e658c59e8",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_0b285152e5c5268e658c59e8.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 30680,
+      "sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+      "parent_sha256": "cf7fa6cea21b8adc328b60f15ba2cacbd489a594bad3c672b88f34c08f93a68a",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_6c9e38d8872e3fab6ae8a0c3",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_6c9e38d8872e3fab6ae8a0c3.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 38292,
+      "sha256": "1bf2b892b762cc3bf73cdd1b22c0bf450ac436df13d0066bb6d9d9885c618d12",
+      "parent_sha256": "1bf2b892b762cc3bf73cdd1b22c0bf450ac436df13d0066bb6d9d9885c618d12",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_1f16bbf644e7fa9b057ca122",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_1f16bbf644e7fa9b057ca122.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 47556,
+      "sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+      "parent_sha256": "c6a0d0457e1b3438328b633a1056a9b7a633cca023b231258ca595d34e2e4e4f",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_265f3181ee73ce04b8240885",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_265f3181ee73ce04b8240885.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 41112,
+      "sha256": "aca3e1f14d16f79874e3b8882d3ffdabd4dc5e11c8e46bcd40d4fb129b839cb2",
+      "parent_sha256": "aca3e1f14d16f79874e3b8882d3ffdabd4dc5e11c8e46bcd40d4fb129b839cb2",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_20228928591ae11052bf2622",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_20228928591ae11052bf2622.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 44037,
+      "sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+      "parent_sha256": "9e04e412ef23e97f9b39541daf1a110ed7a9a49302e91940d339f530890cf4e2",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_6205df11a1e35b1a7828c7e7",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_6205df11a1e35b1a7828c7e7.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 36771,
+      "sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "parent_sha256": "31e32e4218fa82cfde375b604dcebed8e4048a8a4b6b8f5b07f0cb540355db8c",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_4753469dce968cf7c48bd1fe",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_4753469dce968cf7c48bd1fe.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 29252,
+      "sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+      "parent_sha256": "02b3047507df197f2c1856f98f7bda0192e5e7e7b3582775bd448ba783a82c4a",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_f9d7bff007dd9547d42db2c1",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_f9d7bff007dd9547d42db2c1.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 40668,
+      "sha256": "f322383ec57c67072df62a2043cfef33d3723c927e11ba2fe32af7b8d87a21de",
+      "parent_sha256": "f322383ec57c67072df62a2043cfef33d3723c927e11ba2fe32af7b8d87a21de",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a87fa4366209a707705beb16",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a87fa4366209a707705beb16.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 49080,
+      "sha256": "5503894ac2800aff29bd69b45a756630aa7683a50ce708bb44203a1c500ad3bc",
+      "parent_sha256": "5503894ac2800aff29bd69b45a756630aa7683a50ce708bb44203a1c500ad3bc",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_31ed6fb3bdc15d3c29b8ae13",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_31ed6fb3bdc15d3c29b8ae13.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 45486,
+      "sha256": "66d3311ac7b5265ff71144f2e7670f9d1e471a3874638a40a27d4efe1127788e",
+      "parent_sha256": "66d3311ac7b5265ff71144f2e7670f9d1e471a3874638a40a27d4efe1127788e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_2ddaf8197adecc8c5ba09c33",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_2ddaf8197adecc8c5ba09c33.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 50276,
+      "sha256": "ad31f4c57c2009eaede56c738c29b4bb35602ab7eadb8857eea159d0ce25da83",
+      "parent_sha256": "ad31f4c57c2009eaede56c738c29b4bb35602ab7eadb8857eea159d0ce25da83",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a32017341296da30079229dc",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a32017341296da30079229dc.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 44181,
+      "sha256": "66d053ae17865526fa410122bd24fb45c456586f3930b1f1a3d60df775ae8235",
+      "parent_sha256": "66d053ae17865526fa410122bd24fb45c456586f3930b1f1a3d60df775ae8235",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_24e3ec262e064fe98ed974b8",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_24e3ec262e064fe98ed974b8.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 50149,
+      "sha256": "ee34d5401b3a8e414b7eeb056acf77a289f913485f02a8ddf342458793a9ba7a",
+      "parent_sha256": "ee34d5401b3a8e414b7eeb056acf77a289f913485f02a8ddf342458793a9ba7a",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_fb1c9ba084467b28d6106148",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_fb1c9ba084467b28d6106148.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 32186,
+      "sha256": "e06c5d0da6eedfd92272e855a020eec9f7c81c5287e514fe92a2ca6fca5ad2a4",
+      "parent_sha256": "e06c5d0da6eedfd92272e855a020eec9f7c81c5287e514fe92a2ca6fca5ad2a4",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_80724e9a6c5be3004c6385f4",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_80724e9a6c5be3004c6385f4.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 40573,
+      "sha256": "f312594ca7801fdd6b37c065e4d5ed39b8b3f12aef68bba9e1cefe99d5729075",
+      "parent_sha256": "f312594ca7801fdd6b37c065e4d5ed39b8b3f12aef68bba9e1cefe99d5729075",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_cf77e65eeefe19ca69b44064",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_cf77e65eeefe19ca69b44064.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 27063,
+      "sha256": "d45c469b329115042107d0f8c34827745d4482a51f89f6b5689ec23b1b7185ca",
+      "parent_sha256": "d45c469b329115042107d0f8c34827745d4482a51f89f6b5689ec23b1b7185ca",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_1a5f7e8bd71f3b1914d9dfc0",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_1a5f7e8bd71f3b1914d9dfc0.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 37342,
+      "sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+      "parent_sha256": "e8a74e4c81dd5a8e14c1166d6b96456dd75621e2bc58e9b619367fade438f8b0",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_d785210930150a03fed14930",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_d785210930150a03fed14930.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 42798,
+      "sha256": "ee3112f9c68412a13fb586073c2cc34336e61a1ad8635055c3b0a0ba2f4edc4e",
+      "parent_sha256": "ee3112f9c68412a13fb586073c2cc34336e61a1ad8635055c3b0a0ba2f4edc4e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_9fcc229e5404e76d30c5726f",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_9fcc229e5404e76d30c5726f.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 44973,
+      "sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+      "parent_sha256": "fd0c29161e600dbd49f94445eb74106b65e1318b45816fef5c891c05a1e94f78",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_2adcca73b83fb64e8cf22fd9",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_2adcca73b83fb64e8cf22fd9.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 48225,
+      "sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+      "parent_sha256": "e68a774e04ba1a3f2a0873c571bba4776142fd12a133d34ae26c5de596be61e3",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_58fa977424385e8b9892de77",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_58fa977424385e8b9892de77.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 37087,
+      "sha256": "691b95ca7d11cf42e282c5bb0c31de88647a315201c8fe052a9cfdd9ab7cd924",
+      "parent_sha256": "691b95ca7d11cf42e282c5bb0c31de88647a315201c8fe052a9cfdd9ab7cd924",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_d7c7ed8ff483a72d2bf48bda",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_d7c7ed8ff483a72d2bf48bda.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 95674,
+      "sha256": "af2a534fba7051a2863552c6e05ea67a89089c1c6474bb98b1b184e62dcd5ef7",
+      "parent_sha256": "af2a534fba7051a2863552c6e05ea67a89089c1c6474bb98b1b184e62dcd5ef7",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_57021f0d10d938f524b738c5",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_57021f0d10d938f524b738c5.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 163889,
+      "sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+      "parent_sha256": "3c857981d855e156aaf6595c1d5985bbc8619b8564cdcafb84e6e0b08734e361",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_29e2a5ad82a264b7bcd03941",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "454205751f30bc78203a5846887cce088b634c73541ea47121f2190238b5b75f",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_61a505e286c5ca0c21b9f61c",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "36ecdd979d44354d8a23a21cefa54398ea4d343a8bca971d80304c462f285231",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_5bf808dad657207621de9cb2",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "7029849bd5890ae59df4a56078043ffe004ef883b2c68b9721880b9f139e8ba0",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_21b462721ec759642bcc58cc",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "b1119bf84737b354113ff8bd103ab9a7c2526826812d57f94f18bedc07ea7892",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_1ffe710b2e8bdfe6139b9ad7",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "408d3a617faeced2bc1dab79e2bb2f62d75530cd5339be9892a864fed9e59034",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_6767976f58748618c803c686",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "3f2155ff95a60f60b79248af03b633e8987bc7ee83e5343b418beb8c954f79a1",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_17d106f9333c607176032632",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "95183567203390d3128823a22386acf6165725cb4fdf9a3bae75c997f07dc7c1",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_37e9343e7f31cf38cae768f0",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "f328ea75b7a204ed79c8bd622816311a8141d290c96af8ffb4df2687c58de0fe",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_508f1f31d00c5d4fc5e20fa2",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "e19e5f17b8dc0cecc6860b8b4e71005c3a59a043be6dfcdd83932f91ff390bb5",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_1ea3f98cc0b382391fe4742c",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "903e92982bdbcec810a167071dae7c4226928e75e8a056e758a8add300fdabc0",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_63db5b9062ec9ec5516b6f8d",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "ac51d0f6dcce68d1652f79050a74471427cd1484032284df4fb157815a2d4c4e",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_d18308cb9ed007bbcb455bd7",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "f53a98420f3013bf72202c02c98983bf7d76b6c3c1c8bcd1326c7958952f6a9e",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_ec05f51bbed6b6da3906bf8e",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "7bd58935fc0a36b020f8ade77d05a857c6b1d3c4fd44d55132c227b9c9510329",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_97a708d8f26466bd282b6790",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "09a4c9148ac34d95ed322ab1a878ff93c1c326d8d667003b85e4929650fcc29f",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_da8ae264a46e31f6995601c8",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "4c6208fe496a0079324430d5450894e149ec452fe592560fb1e670284a24085e",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_71112db9eb68bebd2342af63",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "e794776d5a0c44247871fbbd19d936b29a4e8317425af935c8f88b224435db8c",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_99e9739955d2bdadc7479290",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "b207f3ad6b28c4c1238969a91633147aec92c1cbe936ef8ca93d40ba0573ee0a",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_44798c9aef7a94799a157405",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "549bd67e9220191ff807c8c6005ce2c54262409f1821e8a287cbf4684f2f3843",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_22a3a9f36ade567ca06a0f75",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "6a4015f507d9afcfdd23aea5320c17c2b34bdef90ab3f8bc0211356c862403d5",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_c6f8c9ad8de141b799df9ee5",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "30e2bb80b01a91d3753bce2517384ee6267aa81a3a6b59bc1d72cdc2d64b2c59",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_651371c761f2a299df79eb50",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "662f7585d4961a4e7d62713ceac20b77b0cc509238509c632cc790f699bef364",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_3f6e6e0feac5b2b057bd43c3",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "59a41bf299b8ba54361b792ec88c470747248b3a46c9bcce0e5e9d546f736fc7",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_2aa1198bee3008c9dba45518",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "b579db7310b046dd4efc17e3c08157f1210a266bf807aa1c44a16d89d715ce17",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_bb0f419fec4c9c93ab7f9af5",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "4eb1747c949c76f322e11dc46c381877fc7129046e4b632ccac0e0747fc9a593",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_b15398d8e73c2d070c8b0e18",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "df0ab5f1e5f56c15deec08c715206908e1b1e75d22ff82d5614f47ff3336d050",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_012a1054d9c99bce7c293966",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "f9bbe91796cbc89013622068ec5550195fe0e6f5ab196827ee6cb10657b6779e",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_7e8f43d3f3135ebfe8104a3d",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "a27f456639121de66748d355fb81db4910d96a3de60844e154f2fcd95e271798",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_a857a71856026ced9e51c3c6",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "32d04d2df0a6a4ac7d4e9111300d3276cfa44be5a0b9b9917d7ffad9d6bb7835",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_48ed1adbd9b1ffa99297e62a",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "e0f14fe54ed9213db33ae1be8d491c4c0b13f79855df95584cb61fc06a30f493",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_734feb614e7954f50c535748",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "78b71e121b7d6c71a132061ec13b462abb47c6a05b0bf2d7ccc7950452f7c8c9",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_2a2d7b0c3925cf358f06b207",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "8095b02d2495a3ad35f5cbf16e533755d4a03c207b1dc31f0244bb79a09053bf",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_58c79cb12c61abf523701b19",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "a0e4ef378047c33595fe4b30779cefc67bcec233ce1119044796f5425947b4a9",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_139ba514da490d44efbe83de",
+      "derivative_relative_path": null,
+      "extraction_status": "UNSUPPORTED_FORMAT",
+      "negative_state": "UNSUPPORTED_FORMAT",
+      "parent_sha256": "e101cd50e098732b6e239b8cdd476f50cee8b5992f0762a31af58ef95198607a",
+      "is_retrievable_text": false,
+      "exclusion_reason": "APPLEDOUBLE_RESOURCE_FORK"
+    },
+    {
+      "source_file_id": "emsrc_8925ddeda663016b041255dc",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_8925ddeda663016b041255dc.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "python-stdlib utf-8 decoder",
+      "byte_length": 48048,
+      "sha256": "19f32b0a96371fb5ecc926d6395d3277349de626fc01a017a0642baef3844d75",
+      "parent_sha256": "19f32b0a96371fb5ecc926d6395d3277349de626fc01a017a0642baef3844d75",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_cb7da53c98ed3a010af186a1",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_cb7da53c98ed3a010af186a1.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 44921,
+      "sha256": "8bc375869b13b98ff08dc52d5251ee58fa6defc092e1b37970c867dd7bff7bc9",
+      "parent_sha256": "4658acb9ae0f97afe9d85e61079956c3e9d1c534847e9478daba8678822b0da1",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_96d522b0d573766dfb0f3c0e",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_96d522b0d573766dfb0f3c0e.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 46102,
+      "sha256": "416a51788ca8c4d9289f7d6d118db0374a979e6026bac5167657b8d8659bcd90",
+      "parent_sha256": "1f20de3ced42c72a9b759ca6cb91d0508d5555f0462cd60f7d1cd4760b5f63c5",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_7b3a68bdf0d263ae74751b99",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_7b3a68bdf0d263ae74751b99.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 44743,
+      "sha256": "5915c282966712f9e622c73ddc59d10735400bb6ce8d51e5c1394b47fdc07e9a",
+      "parent_sha256": "f73839919505a65bbc85224d5c0080d9c319d4286015a61e755af79d5deb1b89",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_1b44cb39e440056ed325b372",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_1b44cb39e440056ed325b372.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 41162,
+      "sha256": "38cf818816985fbee2cd345aa3bb414d9b992e13da9ef7daeee15010e559622c",
+      "parent_sha256": "1835c8425dfe69ebba659c1d0a7db4c0232ccb9e9c6d5748edcc6d1e3d2c788c",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_67937de5ebf818d8bc7c4e68",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_67937de5ebf818d8bc7c4e68.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 49382,
+      "sha256": "7ef72fbb0bbe65482247cc632315e96ca17fc7af11afa09bd837c152b286f7e1",
+      "parent_sha256": "0107e740fd54900dfc881797fcd15ff2d064455b16392d9fcd553888f74fef06",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_536415ee2a02f2530392c78e",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_536415ee2a02f2530392c78e.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 34134,
+      "sha256": "b95dbec204eefa7854887df0c09f59f1ddc73672e9312484a17d570f1b297e14",
+      "parent_sha256": "e14fac88508e84eb30878327703d3b82c751b80a25298b2ffdc6cb19b233092e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a3675ad3117d3d35cb099ceb",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a3675ad3117d3d35cb099ceb.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 44860,
+      "sha256": "f35b60462fa2cd592002f5185bc849154818aad7ca7dad2fb2178160e350d46a",
+      "parent_sha256": "e07c0e10166ed6974dfb480b44a6217a31e975d6b89f75b93bcba707a7a258c8",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_0a76dce5fd8dc8ddcd2bd7f1",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_0a76dce5fd8dc8ddcd2bd7f1.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 49302,
+      "sha256": "fcb09350bdedc05fa263a10933a67fe090cd414c13a96232dc87b9c89b0ffc69",
+      "parent_sha256": "eacbd33a60aeafdcf6963b77c91b970ba995cf47f915d347644a707e28cfdd97",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a1aa372da945a7db22e73f4c",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a1aa372da945a7db22e73f4c.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 55081,
+      "sha256": "c6dfd9f02a1731fea71a02498627b60b2ba4ad193ab7e1c2d1b61fc409d37fb7",
+      "parent_sha256": "658bc90d63280d23a357363b16c0c97f60ad0a0ef7bd753ff72a5ea2b851eb9e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_f336eedac7c12acb372b7929",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_f336eedac7c12acb372b7929.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 37592,
+      "sha256": "7143abbdb7f08415db6d7dc76bcb83511a53e2ce4427a46929a0cfe7ca70c5e5",
+      "parent_sha256": "8e7ee2e446b29f1e76e4810fa3d4ee202a98162d26eb950b1e4591d79d4a1517",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_ba63df8a7bab4ca14b1d21e0",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_ba63df8a7bab4ca14b1d21e0.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 31709,
+      "sha256": "96b7fa338f633dc1301d46c7e50fc5fe92bcd7fe36dd92158669f3321b67ac96",
+      "parent_sha256": "0afc4d7a95af785099acf4ca4437d73a1e717ef4905e8d9cce0fb9ec78fd96df",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_c2a22c120e32b746513447b5",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_c2a22c120e32b746513447b5.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 40605,
+      "sha256": "dd922066073164f79e4a119dc90a26cc915d21b5fbce725306a20bc0a975285e",
+      "parent_sha256": "b5410495dedd68353f281e0464bc2a809bd29fa477c53e5e0cc736725187cf7e",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_66bc27767a635cd4b2ce3e21",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_66bc27767a635cd4b2ce3e21.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 50812,
+      "sha256": "ce257fa7df5083dc9bd7f57f002a8977f952b68052502cdbed0dc3e272971323",
+      "parent_sha256": "de7b34161e72f787071bdc60ca9d8691f7bc05299721fccb5ba696f6f0a0d943",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_9fecefb1208f278c7ba0d4d5",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_9fecefb1208f278c7ba0d4d5.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 47623,
+      "sha256": "0accb62b6630f14ed21313784ec3da81beb24b37cf5f2ee58ffd56368f3c9329",
+      "parent_sha256": "2015e56af5f710bd4e774e73507d42b83a394eb6b10fcccc2894ff56a0bf7a69",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_0769dac7cdd95a5ca0577963",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_0769dac7cdd95a5ca0577963.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 57142,
+      "sha256": "9d71ff94d0d72a8a0487d1f8cb8677cbcd382a550b0304d5408b879abdcae76c",
+      "parent_sha256": "a6e1ca3b7144f89d5393cc499d4bf91f32910129ae53b381dcca1140c10a6800",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a794c13e8e0b9bd6d7be3ca6",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a794c13e8e0b9bd6d7be3ca6.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 43988,
+      "sha256": "f824666cb5c51b0d16b893b8f67e6e4fced453b549f7a6994df8aab4fa782edf",
+      "parent_sha256": "3335a0b0e4fcba8fc1595e78f7b8b40e98275816a6c74abe7e15539aba471487",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_5f9ca473b3a0f7694bca742c",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_5f9ca473b3a0f7694bca742c.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 40261,
+      "sha256": "53692f7ba9cb1da786518bd652b4b0c8e1ff6e0a61ca2294ab79c9b9c9c6f70c",
+      "parent_sha256": "7baf2dba97f6186a9a0ee5bb7bfac98cc29f46cf6abe4441b2fb1c4f18fcd564",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_a6aca36fd835bdb7157a6551",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_a6aca36fd835bdb7157a6551.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 43409,
+      "sha256": "1b7aff72757f1b80a2e6631d598cfdcd7d614c4ed6bbaf74041fb6135bf225f0",
+      "parent_sha256": "838f02462395a859719273a2d665da7083775661f8b740be90d1503e0c515993",
+      "is_retrievable_text": true
+    },
+    {
+      "source_file_id": "emsrc_199220ad2cfb300f96ed3ab6",
+      "derivative_relative_path": "03-DERIVATIVES/text/emsrc_199220ad2cfb300f96ed3ab6.txt",
+      "extraction_status": "EXTRACTED_NATIVE_TEXT",
+      "extraction_tool": "pypdf",
+      "byte_length": 52498,
+      "sha256": "3ac12646a8e5f36f30953bcfe20f7f08115f0c0b70f0c96f31538c5ddf33cc66",
+      "parent_sha256": "e4656c1b2e39b15134d46586f9e2c6489ba4c439fe4ce5b54d2dd6034808535f",
+      "is_retrievable_text": true
+    }
+  ],
+  "zip_directory": [
+    {
+      "filename": "1+1=3.md",
+      "uncompressed_size_bytes": 48874,
+      "compressed_size_bytes": 23735,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._1+1=3.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1424,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "LLM Architecture Deep Dive.md",
+      "uncompressed_size_bytes": 45486,
+      "compressed_size_bytes": 17542,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._LLM Architecture Deep Dive.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1430,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "AI Hypervisor Control Mathematics.md",
+      "uncompressed_size_bytes": 36771,
+      "compressed_size_bytes": 12650,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._AI Hypervisor Control Mathematics.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1421,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Deep Research on AI Hypervisor Control Mathematics.md",
+      "uncompressed_size_bytes": 36771,
+      "compressed_size_bytes": 12650,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Deep Research on AI Hypervisor Control Mathematics.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1424,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Cybernetic Hypervisor Architecture Research.md",
+      "uncompressed_size_bytes": 30680,
+      "compressed_size_bytes": 11545,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Cybernetic Hypervisor Architecture Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1430,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Cybernetic Memory Algorithms Research.md",
+      "uncompressed_size_bytes": 47556,
+      "compressed_size_bytes": 17968,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Cybernetic Memory Algorithms Research.md",
+      "uncompressed_size_bytes": 1965,
+      "compressed_size_bytes": 1431,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Optimal Gamma Smoothing Factor.md",
+      "uncompressed_size_bytes": 48225,
+      "compressed_size_bytes": 17599,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Optimal Gamma Smoothing Factor.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Consciousness Singularity Research Plan.md",
+      "uncompressed_size_bytes": 40186,
+      "compressed_size_bytes": 14804,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Consciousness Singularity Research Plan.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1424,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Quantum Topology Research Prompt Formulation.md",
+      "uncompressed_size_bytes": 37087,
+      "compressed_size_bytes": 13499,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Quantum Topology Research Prompt Formulation.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Lock-Free DSP Architecture Research.md",
+      "uncompressed_size_bytes": 50276,
+      "compressed_size_bytes": 19056,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Lock-Free DSP Architecture Research.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1423,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Dynamic Token Allocation Research.md",
+      "uncompressed_size_bytes": 29252,
+      "compressed_size_bytes": 11609,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Dynamic Token Allocation Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1425,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Chat Context Research Dive.md",
+      "uncompressed_size_bytes": 37476,
+      "compressed_size_bytes": 14616,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Chat Context Research Dive.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1420,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Cybernetic Multi-Agent Systems Research.md",
+      "uncompressed_size_bytes": 44037,
+      "compressed_size_bytes": 17254,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Cybernetic Multi-Agent Systems Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1428,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Cybernetic LLM Orchestration Analysis.md",
+      "uncompressed_size_bytes": 38292,
+      "compressed_size_bytes": 14391,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Cybernetic LLM Orchestration Analysis.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Hermes AI Prompt Design.md",
+      "uncompressed_size_bytes": 49080,
+      "compressed_size_bytes": 18905,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Hermes AI Prompt Design.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1431,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Algedonic Systems Deep Research.md",
+      "uncompressed_size_bytes": 67308,
+      "compressed_size_bytes": 30045,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Algedonic Systems Deep Research.md",
+      "uncompressed_size_bytes": 1965,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Audio Routing and Sync Research.md",
+      "uncompressed_size_bytes": 38352,
+      "compressed_size_bytes": 14489,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Audio Routing and Sync Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Autonomous Agent Governance Research.md",
+      "uncompressed_size_bytes": 28048,
+      "compressed_size_bytes": 10501,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Autonomous Agent Governance Research.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1428,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "OSSL Stylometric Lineage Tracking Framework.md",
+      "uncompressed_size_bytes": 37342,
+      "compressed_size_bytes": 11541,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._OSSL Stylometric Lineage Tracking Framework.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1431,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Mixxx Engine Architecture Deep Dive.md",
+      "uncompressed_size_bytes": 40573,
+      "compressed_size_bytes": 12277,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Mixxx Engine Architecture Deep Dive.md",
+      "uncompressed_size_bytes": 1965,
+      "compressed_size_bytes": 1428,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "OSSL-Seed Framework Research.md",
+      "uncompressed_size_bytes": 42798,
+      "compressed_size_bytes": 16639,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._OSSL-Seed Framework Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Low-Latency DSP Tracker Engine.md",
+      "uncompressed_size_bytes": 44181,
+      "compressed_size_bytes": 17577,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Low-Latency DSP Tracker Engine.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1430,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "uncompressed_size_bytes": 44973,
+      "compressed_size_bytes": 15848,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Open Seed License_ Multi-Party Framework & Stylometry Integration.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "uncompressed_size_bytes": 95674,
+      "compressed_size_bytes": 54798,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Theremin Drone Glove Build Plan and Full Suit Roadmap.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Mixxx Tracker Engine Architecture.md",
+      "uncompressed_size_bytes": 27063,
+      "compressed_size_bytes": 10595,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Mixxx Tracker Engine Architecture.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Hermes (Ollama) Terminal User Guide.md",
+      "uncompressed_size_bytes": 40668,
+      "compressed_size_bytes": 14254,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Hermes (Ollama) Terminal User Guide.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1422,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Chiptune DSP Synth Architecture.md",
+      "uncompressed_size_bytes": 34556,
+      "compressed_size_bytes": 13279,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Chiptune DSP Synth Architecture.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1425,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "macOS Virtualization Guide for Linux Environments.md",
+      "uncompressed_size_bytes": 48048,
+      "compressed_size_bytes": 16484,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._macOS Virtualization Guide for Linux Environments.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1428,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Mac OS Terminal Basic Guide.md",
+      "uncompressed_size_bytes": 50149,
+      "compressed_size_bytes": 17073,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Mac OS Terminal Basic Guide.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1429,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Audio Key Detection Plugin Design.md",
+      "uncompressed_size_bytes": 37101,
+      "compressed_size_bytes": 14076,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Audio Key Detection Plugin Design.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Mixxx DAW Architecture Research.md",
+      "uncompressed_size_bytes": 32186,
+      "compressed_size_bytes": 12126,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Mixxx DAW Architecture Research.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1426,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Cybernetic Modeling of Myth Transmission.md",
+      "uncompressed_size_bytes": 41112,
+      "compressed_size_bytes": 16419,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Cybernetic Modeling of Myth Transmission.md",
+      "uncompressed_size_bytes": 1967,
+      "compressed_size_bytes": 1427,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    },
+    {
+      "filename": "Wearable Drone Control System Design.md",
+      "uncompressed_size_bytes": 163889,
+      "compressed_size_bytes": 98931,
+      "is_macosx_sidecar": false,
+      "entry_class": "PRESERVED_DOCUMENT_MEMBER"
+    },
+    {
+      "filename": "__MACOSX/._Wearable Drone Control System Design.md",
+      "uncompressed_size_bytes": 1966,
+      "compressed_size_bytes": 1424,
+      "is_macosx_sidecar": true,
+      "entry_class": "APPLEDOUBLE_METADATA_SIDECAR"
+    }
+  ]
+}

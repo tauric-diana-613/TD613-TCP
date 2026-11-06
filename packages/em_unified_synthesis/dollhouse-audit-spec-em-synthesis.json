@@ -1,0 +1,161 @@
+{
+  "source_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+  "task_scope": "EM_UNIFIED_THEORY_SYNTHESIS_AND_RECIPROCAL_INHERITANCE",
+  "evidence_class": "HISTORICAL_EM_CORPUS_AND_SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+    "packages/em_unified_synthesis/corpus_acquisition_manifest.json",
+    "packages/em_unified_synthesis/lexical_readback_witness.json",
+    "packages/em_unified_synthesis/identity_metadata_crosswalk.json",
+    "packages/em_unified_synthesis/original_methods_inventory.json",
+    "packages/em_unified_synthesis/negative_refusal_register.json",
+    "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs",
+    "packages/em_unified_synthesis/competent-null-comparator.mjs",
+    "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+    "packages/em_unified_synthesis/operator-zip-intake.mjs",
+    "packages/em_unified_synthesis/test-em-unified-synthesis.mjs",
+    "packages/em_unified_synthesis/run-em-unified-synthesis-qualification.mjs",
+    "packages/em_unified_synthesis/em_unified_synthesis_receipt.json"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Acquire and verify 87 original Em historical sources, 53 derivatives, and 21 documentary instruments with zero standalone executors."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Execute native lexical index and Em-to-Universal reciprocal bridge with exact cryptographic span proofs."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Evaluate 4-arm competent null comparison and refuse superficial motif convergence fail-closed."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Cascade non-retroactive theory withdrawal tombstones and seal qualification receipt under Khona\u200Clit-po."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.25, 0.0],
+        [0.0, 1.15]
+      ],
+      "noise_covariance": [
+        [0.0625, 0.0],
+        [0.0, 0.0625]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "EM_UNIVERSAL_RECIPROCAL_TERMINAL_RELATIONS",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "EM_UNIVERSAL_RECIPROCAL_TERMINAL_RELATIONS",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": [
+            "CORPUS_CENSUS_VERIFIED",
+            "LEXICAL_READBACK_WITNESSED",
+            "IDENTITY_256_PARTITIONS",
+            "RECIPROCAL_BRIDGE_LFP",
+            "NULL_COMPARATOR_EVALUATED"
+          ],
+          "condition": "EM_RECIPROCAL_INTEGRATED_FIBER"
+        },
+        {
+          "support": [
+            "CORPUS_CENSUS_VERIFIED",
+            "LEXICAL_READBACK_WITNESSED",
+            "IDENTITY_256_PARTITIONS",
+            "RECIPROCAL_BRIDGE_LFP",
+            "NULL_COMPARATOR_EVALUATED"
+          ],
+          "condition": "REPRESENTATIVE_SYNTHETIC_FIBER"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "HISTORICAL_CORPUS_ACQUISITION_VERIFIED": {
+          "status": "PASS",
+          "entry_id": "87-sources-53-derivatives-verified"
+        },
+        "ARCHIVE_ZIP_RECONCILIATION_66_ENTRIES": {
+          "status": "PASS",
+          "entry_id": "33-docs-33-sidecars-reconciled"
+        },
+        "IDENTITY_INTERVAL_AND_HUMAN_GATES": {
+          "status": "PASS",
+          "entry_id": "32-40-works-256-hypotheses-preserved"
+        },
+        "DOCUMENTARY_METHODS_ZERO_STANDALONE_EXECUTORS": {
+          "status": "PASS",
+          "entry_id": "21-instruments-0-executors-verified"
+        },
+        "NATIVE_LEXICAL_READBACK_WITNESS": {
+          "status": "PASS",
+          "entry_id": "53-derivatives-indexed-exact-spans"
+        },
+        "OPERATOR_ZIP_INTAKE_PATH_SECURITY": {
+          "status": "PASS",
+          "entry_id": "zip-slip-and-resource-limits-defended"
+        },
+        "EM_UNIVERSAL_RECIPROCAL_BRIDGE_U00_INHERITANCE": {
+          "status": "PASS",
+          "entry_id": "universal-estates-inherited-clean"
+        },
+        "UNIFIED_THEORY_SYNTHESIS_FAIL_CLOSED_CANARIES": {
+          "status": "PASS",
+          "entry_id": "motif-clash-refused-valid-admitted"
+        },
+        "COMPETENT_NULL_FOUR_ARM_COMPARISON": {
+          "status": "PASS",
+          "entry_id": "equal-affordance-matrix-witnessed"
+        },
+        "NON_RETROACTIVE_TOMBSTONE_WITHDRAWAL": {
+          "status": "PASS",
+          "entry_id": "cascade-tombstone-preserves-lineage"
+        },
+        "CANDIDATE_AUTHOR_FREEZE_STOPPING_BOUNDARY": {
+          "status": "PASS",
+          "entry_id": "author-freeze-boundary-sealed"
+        }
+      },
+      "required_phases": [
+        "HISTORICAL_CORPUS_ACQUISITION_VERIFIED",
+        "ARCHIVE_ZIP_RECONCILIATION_66_ENTRIES",
+        "IDENTITY_INTERVAL_AND_HUMAN_GATES",
+        "DOCUMENTARY_METHODS_ZERO_STANDALONE_EXECUTORS",
+        "NATIVE_LEXICAL_READBACK_WITNESS",
+        "OPERATOR_ZIP_INTAKE_PATH_SECURITY",
+        "EM_UNIVERSAL_RECIPROCAL_BRIDGE_U00_INHERITANCE",
+        "UNIFIED_THEORY_SYNTHESIS_FAIL_CLOSED_CANARIES",
+        "COMPETENT_NULL_FOUR_ARM_COMPARISON",
+        "NON_RETROACTIVE_TOMBSTONE_WITHDRAWAL",
+        "CANDIDATE_AUTHOR_FREEZE_STOPPING_BOUNDARY"
+      ]
+    }
+  }
+}
