@@ -1,0 +1,71 @@
+{
+  "schema": "td613.manifest-native-boundary-canary-receipt/v1",
+  "execution_time": "2026-11-06T03:32:45.793Z",
+  "environment": {
+    "node_version": "v26.7.0",
+    "sqlite_version": "3.53.4",
+    "platform": "win32",
+    "arch": "x64",
+    "git_revision": "c11c5d7f017f8370b20b173f2b557ef2316a5d3a"
+  },
+  "code_hashes": {
+    "wendbine_empty_receiver_sha256": "394687e1901897b38aac1c8e27120679a364b3c8c4d4be75b8d8e4f6a7d08992",
+    "universal_atelier_receiver_sha256": "7b5d7f1d9362bcdb41558d1356904da213aa6b1ac6cc3488b65d23b172b3b424"
+  },
+  "probes": {
+    "W-RG-03": {
+      "probe_id": "W-RG-03",
+      "target": "WendbineEmptyEncyclopediaReceiver.admitTypedRelation",
+      "description": "Zero-length spanProof (start=end=0) with SHA-256 of empty bytes",
+      "status": "PROPER_REJECTION",
+      "empty_bytes_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "admission_succeeded": false,
+      "exception_code": "INVALID_SPAN_BOUNDS",
+      "exception_message": "[INVALID_SPAN_BOUNDS] Span [0, 0] out of range or empty for source.",
+      "finding": "Properly rejected zero-length spanProof."
+    },
+    "W-RG-04": {
+      "probe_id": "W-RG-04",
+      "target": "WendbineEmptyEncyclopediaReceiver.admitTypedRelation",
+      "description": "Two different valid relations reusing one local ADMIT receipt with relation_id=null (NONEMPTY span)",
+      "status": "PROPER_REJECTION",
+      "span_length_bytes": 10,
+      "span_sha256": "bc948ac3b96fde69c9b9af74aca57ac018c7466e92eb6d1e6662226303d11625",
+      "registration_threw": true,
+      "registration_error": {
+        "code": "RELATION_ID_REQUIRED_FOR_ADMIT",
+        "message": "[RELATION_ID_REQUIRED_FOR_ADMIT] Positive ADMIT adjudication requires explicit, non-null relationId."
+      },
+      "relation_1_admitted": false,
+      "relation_2_admitted": false,
+      "relation_1_exception": null,
+      "relation_2_exception": null,
+      "finding": "Properly rejected reuse / null relation_id adjudication receipt for distinct relations."
+    },
+    "U-RG-01": {
+      "probe_id": "U-RG-01",
+      "target": "UniversalAtelierReceiver.route",
+      "description": "route('fictional:never_admitted', 'fictional:never_admitted') self-route vs get() negative control",
+      "status": "PROPER_REJECTION",
+      "route_result": {
+        "found": false,
+        "depth": null,
+        "path": null,
+        "error": "ENDPOINT_RECORD_NOT_FOUND",
+        "missing": [
+          "fictional:never_admitted",
+          "fictional:never_admitted"
+        ]
+      },
+      "get_negative_control_threw": true,
+      "get_exception_code": "RECORD_NOT_FOUND",
+      "get_exception_message": "[RECORD_NOT_FOUND] Record fictional:never_admitted is not admitted.",
+      "finding": "Properly rejected self-route when endpoint node is unadmitted."
+    }
+  },
+  "summary": {
+    "total": 3,
+    "defects_reproduced": 0,
+    "proper_rejections": 3
+  }
+}

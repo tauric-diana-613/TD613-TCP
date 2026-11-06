@@ -224,6 +224,18 @@ export class WendbineEmptyEncyclopediaReceiver {
         decision TEXT NOT NULL,
         relation_id TEXT,
         span_sha256 TEXT NOT NULL,
+        source_id TEXT,
+        source_sha256 TEXT,
+        graph_family TEXT,
+        relation_predicate TEXT,
+        from_concept TEXT,
+        to_concept TEXT,
+        evidence_class TEXT,
+        start_coord INTEGER,
+        end_coord INTEGER,
+        episode_id TEXT,
+        reuse_policy TEXT NOT NULL DEFAULT 'SINGLE_RELATION_USE_ONLY',
+        jurisdiction TEXT NOT NULL DEFAULT 'TEST_ONLY_SYNTHETIC_ADJUDICATION',
         registered_at TEXT NOT NULL
       );
     `);
@@ -420,7 +432,25 @@ export class WendbineEmptyEncyclopediaReceiver {
   /**
    * Registers a version-bound positive or negative adjudication event.
    */
-  registerAdjudicationEvent({ receiptId, adjudicatorRole, decision = 'ADMIT', relationId = null, spanSha256 }) {
+  registerAdjudicationEvent({
+    receiptId,
+    adjudicatorRole,
+    decision = 'ADMIT',
+    relationId = null,
+    spanSha256,
+    sourceId = null,
+    sourceSha256 = null,
+    graphFamily = null,
+    relationPredicate = null,
+    fromConcept = null,
+    toConcept = null,
+    evidenceClass = null,
+    start = null,
+    end = null,
+    episodeId = null,
+    reusePolicy = 'SINGLE_RELATION_USE_ONLY',
+    jurisdiction = 'TEST_ONLY_SYNTHETIC_ADJUDICATION',
+  }) {
     if (!this.db) throw new WendbineReceiverError('NOT_INITIALIZED', 'Receiver is not initialized.');
     if (!receiptId) throw new WendbineReceiverError('MISSING_RECEIPT_ID', 'receiptId is required.');
     const validRoles = ['ORCHESTRATOR', 'APERTURE_AUDITOR', 'PEDAGOGUE_AUDITOR', 'ATLAS_AUDITOR', 'FADT_AUDITOR', 'TEMPORAL_CUSTODIAN', 'INDEPENDENT_AUDITOR'];
@@ -433,13 +463,46 @@ export class WendbineEmptyEncyclopediaReceiver {
     if (!spanSha256 || !/^[0-9a-f]{64}$/i.test(spanSha256)) {
       throw new WendbineReceiverError('INVALID_SPAN_HASH', 'Valid 64-char hex span_sha256 required.');
     }
+    if (decision === 'ADMIT' && (!relationId || typeof relationId !== 'string')) {
+      throw new WendbineReceiverError('RELATION_ID_REQUIRED_FOR_ADMIT', 'Positive ADMIT adjudication requires explicit, non-null relationId.');
+    }
+
     const now = new Date().toISOString();
     const stmt = this.db.prepare(`
-      INSERT INTO wb_adjudication_events (receipt_id, adjudicator_role, decision, relation_id, span_sha256, registered_at)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO wb_adjudication_events (
+        receipt_id, adjudicator_role, decision, relation_id, span_sha256,
+        source_id, source_sha256, graph_family, relation_predicate,
+        from_concept, to_concept, evidence_class, start_coord, end_coord,
+        episode_id, reuse_policy, jurisdiction, registered_at
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
-    stmt.run(receiptId, adjudicatorRole, decision, relationId, spanSha256, now);
-    return { receipt_id: receiptId, adjudicator_role: adjudicatorRole, decision, relation_id: relationId, span_sha256: spanSha256, registered_at: now };
+    stmt.run(
+      receiptId, adjudicatorRole, decision, relationId, spanSha256,
+      sourceId, sourceSha256, graphFamily, relationPredicate,
+      fromConcept, toConcept, evidenceClass, start, end,
+      episodeId, reusePolicy, jurisdiction, now
+    );
+    return {
+      receipt_id: receiptId,
+      adjudicator_role: adjudicatorRole,
+      decision,
+      relation_id: relationId,
+      span_sha256: spanSha256,
+      source_id: sourceId,
+      source_sha256: sourceSha256,
+      graph_family: graphFamily,
+      relation_predicate: relationPredicate,
+      from_concept: fromConcept,
+      to_concept: toConcept,
+      evidence_class: evidenceClass,
+      start_coord: start,
+      end_coord: end,
+      episode_id: episodeId,
+      reuse_policy: reusePolicy,
+      jurisdiction,
+      registered_at: now,
+    };
   }
 
   /**
@@ -519,8 +582,8 @@ export class WendbineEmptyEncyclopediaReceiver {
     if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) {
       throw new WendbineReceiverError('INVALID_SPAN_COORDINATES', 'Span coordinates must be safe integers.');
     }
-    if (start < 0 || end < start || end > source.byte_length) {
-      throw new WendbineReceiverError('INVALID_SPAN_BOUNDS', `Span [${start}, ${end}] out of range for source.`);
+    if (start < 0 || end <= start || end > source.byte_length) {
+      throw new WendbineReceiverError('INVALID_SPAN_BOUNDS', `Span [${start}, ${end}] out of range or empty for source.`);
     }
     const rawBuf = Buffer.from(source.raw_bytes);
     const slice = rawBuf.subarray(start, end);
@@ -555,10 +618,81 @@ export class WendbineEmptyEncyclopediaReceiver {
         `Adjudication event span hash ${adjEvent.span_sha256} does not match provided span proof hash ${span_sha256}.`
       );
     }
-    if (adjEvent.relation_id && adjEvent.relation_id !== relationId) {
+    if (!adjEvent.relation_id || adjEvent.relation_id !== relationId) {
       throw new WendbineReceiverError(
         'ADJUDICATOR_RELATION_ID_MISMATCH',
         `Adjudication event relation_id ${adjEvent.relation_id} does not match relationId ${relationId}.`
+      );
+    }
+
+    // Legal single-use policy check: refuse reuse across distinct relations
+    const existingUse = this.db.prepare('SELECT relation_id FROM wb_typed_relations WHERE adjudicator_receipt_id = ?').get(adjudicatorReceiptId);
+    if (existingUse && (adjEvent.reuse_policy === 'SINGLE_RELATION_USE_ONLY' || existingUse.relation_id !== relationId)) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_RECEIPT_ALREADY_USED',
+        `Adjudication receipt ${adjudicatorReceiptId} has already been consumed by relation ${existingUse.relation_id} under SINGLE_RELATION_USE_ONLY.`
+      );
+    }
+
+    // Strict parameter bindings when declared on the adjudication receipt
+    if (adjEvent.source_id && adjEvent.source_id !== sourceId) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_SOURCE_MISMATCH',
+        `Adjudication event source_id ${adjEvent.source_id} does not match sourceId ${sourceId}.`
+      );
+    }
+    if (adjEvent.source_sha256 && adjEvent.source_sha256 !== source.sha256) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_SOURCE_HASH_MISMATCH',
+        `Adjudication event source hash ${adjEvent.source_sha256} does not match source hash ${source.sha256}.`
+      );
+    }
+    if (adjEvent.graph_family && adjEvent.graph_family !== graphFamily) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_GRAPH_FAMILY_MISMATCH',
+        `Adjudication event graph_family ${adjEvent.graph_family} does not match graphFamily ${graphFamily}.`
+      );
+    }
+    if (adjEvent.relation_predicate && adjEvent.relation_predicate !== relationPredicate) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_PREDICATE_MISMATCH',
+        `Adjudication event relation_predicate ${adjEvent.relation_predicate} does not match relationPredicate ${relationPredicate}.`
+      );
+    }
+    if (adjEvent.from_concept && adjEvent.from_concept !== fromConcept) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_FROM_CONCEPT_MISMATCH',
+        `Adjudication event from_concept ${adjEvent.from_concept} does not match fromConcept ${fromConcept}.`
+      );
+    }
+    if (adjEvent.to_concept && adjEvent.to_concept !== toConcept) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_TO_CONCEPT_MISMATCH',
+        `Adjudication event to_concept ${adjEvent.to_concept} does not match toConcept ${toConcept}.`
+      );
+    }
+    if (adjEvent.evidence_class && adjEvent.evidence_class !== evidenceClass) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_EVIDENCE_CLASS_MISMATCH',
+        `Adjudication event evidence_class ${adjEvent.evidence_class} does not match evidenceClass ${evidenceClass}.`
+      );
+    }
+    if (adjEvent.start_coord !== null && adjEvent.start_coord !== undefined && adjEvent.start_coord !== start) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_SPAN_COORD_MISMATCH',
+        `Adjudication event start coordinate ${adjEvent.start_coord} does not match start ${start}.`
+      );
+    }
+    if (adjEvent.end_coord !== null && adjEvent.end_coord !== undefined && adjEvent.end_coord !== end) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_SPAN_COORD_MISMATCH',
+        `Adjudication event end coordinate ${adjEvent.end_coord} does not match end ${end}.`
+      );
+    }
+    if (adjEvent.episode_id && this.initialWitness?.episode_id && adjEvent.episode_id !== this.initialWitness.episode_id) {
+      throw new WendbineReceiverError(
+        'ADJUDICATOR_EPISODE_MISMATCH',
+        `Adjudication event episode_id ${adjEvent.episode_id} does not match receiver episode ${this.initialWitness.episode_id}.`
       );
     }
 

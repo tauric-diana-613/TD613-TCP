@@ -1,0 +1,181 @@
+{
+  "source_revision": "c8012d93c5528b05da9496e44159d85a251ba624",
+  "task_scope": "MANIFEST_RECIPROCAL_WARRANT_GATE_AUDIT",
+  "evidence_class": "MANIFEST_RECIPROCAL_WARRANT_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "scripts/manifest_native_boundary_canary.mjs",
+    "artifacts/td613_manifest_native_canary.original.json",
+    "artifacts/td613_manifest_native_canary.repaired.json",
+    "packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs",
+    "packages/wendbine_reciprocal_expedition/wendbine-sourcebound-epoch.mjs",
+    "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
+    "packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs",
+    "packages/manifest_reciprocal_warrant/run-manifest-comparison-assay.mjs",
+    "artifacts/manifest_comparison_assay_receipt.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-manifest-gate",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Received sovereign commission for Manifest Reciprocal Warrant Gate: native falsification probes W-RG-03, W-RG-04, U-RG-01 reproduced on unrepaired code."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Implemented source-bound boundary repairs: refused empty spans, enforced non-null single-use adjudication, bound epoch query-time byte verification, and validated endpoint existence before route."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Executed Least Fixed Point monotone warrant engine: ungrounded circular loops rejected from P*, root withdrawal cascaded invalidation, and 2-root conjunctions correctly classified as 1 proof."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Enforced four distinct AIA route projections (EXPERIENTIAL, CUSTODIAL, AUDIT, IMPLEMENTATION) and completed matched 16-challenge comparison assay."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ],
+      "candidate_probe": [
+        1.0,
+        0.5
+      ],
+      "noise_covariance": [
+        [
+          0.05,
+          0.01
+        ],
+        [
+          0.01,
+          0.05
+        ]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [
+          1.8,
+          0.2
+        ],
+        [
+          0.1,
+          1.5
+        ]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:manifest_reciprocal_warrant_topology",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:manifest_reciprocal_warrant_topology",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 12,
+          "path": [
+            "W_NATIVE",
+            "W_RECIPIENT",
+            "UNIVERSAL_ENCYCLOPEDIA",
+            "MANIFEST"
+          ]
+        },
+        "right": {
+          "records": 1141,
+          "edges": 2131,
+          "operations": 12,
+          "path": [
+            "W_NATIVE",
+            "W_RECIPIENT",
+            "UNIVERSAL_ENCYCLOPEDIA",
+            "MANIFEST"
+          ]
+        }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "authenticated_admissible_source_roots_P0",
+          "support": [
+            "ZERO_LENGTH_SPAN_REFUSED",
+            "SINGLE_RELATION_USE_ONLY",
+            "QUERY_TIME_BYTE_VERIFICATION",
+            "MANDATORY_ADMIT_RELATION_ID"
+          ]
+        },
+        {
+          "state_id": "least_fixed_point_derivation_closure_Pstar",
+          "support": [
+            "CIRCULAR_LOOP_REJECTED",
+            "WITHDRAWAL_CASCADE_INVALIDATION",
+            "CONJUNCTION_COUNTED_AS_SINGLE_PROOF",
+            "SINGLE_ACQUISITION_COLLAPSE"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "PHASE_1_CANARY_FALSIFICATION_WITNESS",
+        "PHASE_2_SOURCE_BOUND_BOUNDARY_REPAIRS",
+        "PHASE_3_LEAST_FIXED_POINT_WARRANT_CLOSURE",
+        "PHASE_4_FOUR_AIA_ROUTE_PROJECTIONS",
+        "PHASE_5_PREREGISTERED_MATCHED_COMPARISON",
+        "PHASE_6_RESERVED_HUMAN_SCIENTIFIC_CLOSURE"
+      ],
+      "phases": {
+        "PHASE_1_CANARY_FALSIFICATION_WITNESS": {
+          "status": "PASS",
+          "entry_id": "phase_1_canary_falsification_witness"
+        },
+        "PHASE_2_SOURCE_BOUND_BOUNDARY_REPAIRS": {
+          "status": "PASS",
+          "entry_id": "phase_2_source_bound_boundary_repairs"
+        },
+        "PHASE_3_LEAST_FIXED_POINT_WARRANT_CLOSURE": {
+          "status": "PASS",
+          "entry_id": "phase_3_least_fixed_point_warrant_closure"
+        },
+        "PHASE_4_FOUR_AIA_ROUTE_PROJECTIONS": {
+          "status": "PASS",
+          "entry_id": "phase_4_four_aia_route_projections"
+        },
+        "PHASE_5_PREREGISTERED_MATCHED_COMPARISON": {
+          "status": "PASS",
+          "entry_id": "phase_5_preregistered_matched_comparison"
+        },
+        "PHASE_6_RESERVED_HUMAN_SCIENTIFIC_CLOSURE": {
+          "status": "PASS",
+          "entry_id": "phase_6_reserved_human_scientific_closure"
+        }
+      }
+    }
+  }
+}

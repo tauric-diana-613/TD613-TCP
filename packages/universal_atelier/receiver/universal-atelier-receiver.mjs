@@ -844,6 +844,20 @@ export class UniversalAtelierReceiver {
     if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
     const safeMax = Math.min(Math.max(1, maxDepth), 8);
 
+    // Validate both endpoints exist in ua_records and are not withdrawn
+    const fromRecord = this.db.prepare("SELECT record_id, status FROM ua_records WHERE record_id = ?").get(from_id);
+    const toRecord = this.db.prepare("SELECT record_id, status FROM ua_records WHERE record_id = ?").get(to_id);
+
+    if (!fromRecord || !toRecord || fromRecord.status === 'WITHDRAWN' || toRecord.status === 'WITHDRAWN' || fromRecord.status === 'SUPERSEDED' || toRecord.status === 'SUPERSEDED') {
+      return {
+        found: false,
+        depth: null,
+        path: null,
+        error: 'ENDPOINT_RECORD_NOT_FOUND',
+        missing: [!fromRecord ? from_id : null, !toRecord ? to_id : null].filter(Boolean),
+      };
+    }
+
     if (from_id === to_id) return { found: true, depth: 0, path: [from_id] };
 
     const queue = [[from_id]];
@@ -934,8 +948,9 @@ export class UniversalAtelierReceiver {
 
   // -------------------------------------------------------------
   // Governed Operation 7: verify
+  // Supports 'RECORD_BYTES' (default) or full active-graph integrity 'FULL_GRAPH'
   // -------------------------------------------------------------
-  verify() {
+  verify({ scope = 'RECORD_BYTES' } = {}) {
     if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
     const records = this.db.prepare('SELECT record_id, raw_payload, sha256 FROM ua_records').all();
     let mismatches = 0;
@@ -945,12 +960,166 @@ export class UniversalAtelierReceiver {
       if (recomputed !== r.sha256) mismatches++;
     }
 
-    return {
+    const res = {
       total_records_checked: records.length,
       matches: records.length - mismatches,
       mismatches,
       valid: mismatches === 0,
+      scope,
       verified_at: new Date().toISOString(),
+    };
+
+    if (scope === 'FULL_GRAPH') {
+      const links = this.db.prepare("SELECT * FROM ua_links WHERE status = 'ADMITTED'").all();
+      let linkIssues = 0;
+      for (const l of links) {
+        if (!l.from_id || !l.to_id || !l.span_proof_json) linkIssues++;
+      }
+      res.link_issues = linkIssues;
+      res.full_graph_valid = res.valid && linkIssues === 0;
+    }
+
+    return res;
+  }
+
+  // -------------------------------------------------------------
+  // Governed Operation 11: warrant (Source-Rooted Warrant Reconstruction)
+  // Traces derivation paths to active source roots, separating raw citation counts from independent root corroboration.
+  // -------------------------------------------------------------
+  warrant(record_id) {
+    if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
+    const record = this.db.prepare("SELECT record_id, kind, label, status, evidence_class, claim_ceiling, raw_payload, sha256 FROM ua_records WHERE record_id = ?").get(record_id);
+    if (!record) {
+      throw new UniversalAtelierError('RECORD_NOT_FOUND', `Record ${record_id} is not found in receiver.`);
+    }
+
+    if (record.status !== 'ACTIVE' && record.status !== 'ADMITTED') {
+      return {
+        record_id,
+        status: record.status,
+        warranted: false,
+        warrant_roots: [],
+        independent_corroboration_count: 0,
+        derivation_paths: [],
+        reason: `Record status is ${record.status}.`,
+      };
+    }
+
+    const isRoot = record.kind === 'source' || record.evidence_class === 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE' || record.evidence_class === 'BYTE_EVIDENCE';
+    const rootsFound = new Map();
+    const derivationPaths = [];
+    const visited = new Set();
+
+    const traverse = (currId, currentPath) => {
+      if (visited.has(currId) || currentPath.length > 8) return;
+      visited.add(currId);
+
+      const currRec = this.db.prepare("SELECT record_id, kind, label, status, evidence_class, sha256 FROM ua_records WHERE record_id = ?").get(currId);
+      if (!currRec || (currRec.status !== 'ACTIVE' && currRec.status !== 'ADMITTED')) {
+        visited.delete(currId);
+        return;
+      }
+
+      if ((currRec.kind === 'source' || currRec.evidence_class === 'SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE' || currRec.evidence_class === 'BYTE_EVIDENCE') && currId !== record_id) {
+        if (!rootsFound.has(currId)) {
+          rootsFound.set(currId, {
+            root_id: currId,
+            label: currRec.label,
+            sha256: currRec.sha256,
+            evidence_class: currRec.evidence_class,
+          });
+        }
+        derivationPaths.push([...currentPath, currId]);
+      }
+
+      const outgoing = this.db.prepare(`
+        SELECT to_id, link_type FROM ua_links 
+        WHERE from_id = ? AND status = 'ADMITTED' 
+        AND link_type IN ('warranted_by', 'cites_source', 'WARRANTED_BY', 'CITES_SOURCE', 'supports', 'SUPPORTS')
+      `).all(currId);
+
+      for (const edge of outgoing) {
+        traverse(edge.to_id, [...currentPath, edge.to_id]);
+      }
+      visited.delete(currId);
+    };
+
+    if (isRoot) {
+      rootsFound.set(record_id, {
+        root_id: record_id,
+        label: record.label,
+        sha256: record.sha256,
+        evidence_class: record.evidence_class,
+      });
+      derivationPaths.push([record_id]);
+    } else {
+      traverse(record_id, [record_id]);
+    }
+
+    const warrantRoots = Array.from(rootsFound.values());
+    const incomingCites = this.db.prepare("SELECT count(*) as c FROM ua_reverse_citations WHERE target_id = ?").get(record_id);
+
+    return {
+      record_id,
+      label: record.label,
+      status: record.status,
+      warranted: warrantRoots.length > 0,
+      warrant_roots: warrantRoots,
+      independent_corroboration_count: warrantRoots.length,
+      derivation_paths: derivationPaths,
+      is_self_rooted: isRoot,
+      citation_count: incomingCites ? incomingCites.c : 0,
+    };
+  }
+
+  // -------------------------------------------------------------
+  // Governed Operation 12: withdraw (History-Preserving Source Withdrawal)
+  // Replaces destructive deletion with status tombstoning and cascades warrant recomputation.
+  // -------------------------------------------------------------
+  withdraw(record_id, { reason = 'CUSTODIAL_WITHDRAWAL', superseded_by = null } = {}) {
+    if (!this.db) throw new UniversalAtelierError('NOT_INITIALIZED', 'Receiver is not initialized.');
+    const record = this.db.prepare("SELECT record_id, status FROM ua_records WHERE record_id = ?").get(record_id);
+    if (!record) {
+      throw new UniversalAtelierError('RECORD_NOT_FOUND', `Cannot withdraw unadmitted record ${record_id}.`);
+    }
+
+    const now = new Date().toISOString();
+    const newStatus = superseded_by ? 'SUPERSEDED' : 'WITHDRAWN';
+
+    // 1. Update record status in ua_records (preserves row for audit!)
+    this.db.prepare("UPDATE ua_records SET status = ? WHERE record_id = ?").run(newStatus, record_id);
+
+    // 2. Invalidate links where record is an endpoint
+    this.db.prepare("UPDATE ua_links SET status = 'WITHDRAWN' WHERE from_id = ? OR to_id = ?").run(record_id, record_id);
+
+    // 3. Register withdrawal adjudication event
+    const withdrawalReceiptId = `rcpt:wd:${sha256(`${record_id}:${now}`).slice(0, 16)}`;
+    const proofDigest = sha256(JSON.stringify({ record_id, reason, superseded_by, withdrawn_at: now }));
+
+    this.registerAdjudicationEvent({
+      receipt_id: withdrawalReceiptId,
+      jurisdiction: JURISDICTIONS.TEST_ONLY_SYNTHETIC_ADJUDICATION,
+      adjudicator_kind: 'HUMAN_OPERATOR_DELEGATE',
+      adjudicator_role: 'CUSTODIAL_CUSTODIAN',
+      evidence_class: 'SOURCE_WITHDRAWAL_TOMBSTONE',
+      action: 'WITHDRAWAL',
+      decision: 'WITHDRAWN',
+      evidence_hash: proofDigest,
+      adjudication_time: now,
+      justification: reason,
+      target_id: record_id,
+      notes: superseded_by ? `Superseded by ${superseded_by}` : 'Custodial tombstone withdrawal',
+    });
+
+    return {
+      record_id,
+      previous_status: record.status,
+      new_status: newStatus,
+      withdrawal_receipt_id: withdrawalReceiptId,
+      reason,
+      superseded_by,
+      withdrawn_at: now,
+      history_preserved: true,
     };
   }
 

@@ -1,6 +1,6 @@
 {
   "schema": "td613.wendbine-receiver-receipt/v1",
-  "evaluated_at": "2026-11-05T17:24:06.775Z",
+  "evaluated_at": "2026-11-06T03:32:46.120Z",
   "receiver_schema": "td613.wendbine-empty-receiver/v1",
   "total_tests": 33,
   "passed_tests": 33,
@@ -11,8 +11,8 @@
     "schema": "td613.wendbine-empty-receiver/v1",
     "recipient_id": "wb_rcp_synth_expedition_01",
     "episode_id": "wb_ep_crossing_w",
-    "initialized_at": "2026-11-05T17:24:06.762Z",
-    "entropy": "740bad10-98c2-4d68-b6e7-ce2058f56bc4",
+    "initialized_at": "2026-11-06T03:32:46.102Z",
+    "entropy": "b37d5e60-d3fc-4f81-a7b9-bf7406e6a4d8",
     "tables": [
       "wb_sources",
       "wb_concepts",
@@ -31,7 +31,7 @@
       "wb_captures": 0,
       "wb_adjudication_events": 0
     },
-    "witness_hash": "57b07005c1ea521333edee067ddf01e682824119b1b969c2ec42ca5d2d5eb8a2"
+    "witness_hash": "615d522d7185563b6fe0f87becb598fc7652537991361b8de2a6b4f5bb10b2a8"
   },
   "test_census": [
     {

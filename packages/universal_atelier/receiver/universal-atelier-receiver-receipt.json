@@ -1,6 +1,6 @@
 {
   "schema": "td613.universal-atelier.receiver-receipt/v1",
-  "generated_at": "2026-11-05T19:52:14.979Z",
+  "generated_at": "2026-11-06T03:32:46.294Z",
   "recipient_id": "ua_rcp_synth_crossing_t_01",
   "episode_id": "ua_ep_crossing_t",
   "initial_zero_row_witness": {
@@ -8,8 +8,8 @@
     "schema": "td613.universal-atelier/v1",
     "recipient_id": "ua_rcp_synth_crossing_t_01",
     "episode_id": "ua_ep_crossing_t",
-    "initialized_at": "2026-11-05T19:52:14.961Z",
-    "entropy": "b3b2cf4f-6b5e-4668-b59c-5fbb5b656672",
+    "initialized_at": "2026-11-06T03:32:46.276Z",
+    "entropy": "e0089a1b-f5b7-4e18-b1f8-1cc7de1587a3",
     "tables": [
       "ua_records",
       "ua_links",
@@ -24,7 +24,7 @@
       "ua_adjudication_events": 0,
       "ua_reverse_citations": 0
     },
-    "witness_hash": "c6ceed954ff117e83266bb3a819089ec12f87820f12178f6efc127fd41c1770b"
+    "witness_hash": "674e64ed9f2a46c99f38ee7c94f633010d458bf251d2cec984b72573c1967270"
   },
   "all_passed": true,
   "total_tests": 45,
