@@ -77,14 +77,29 @@ export function ingestHistoricalRecord(rawRecord) {
 }
 
 /**
- * Point 2 & 3: Strict Budget-Matched Capsule Compression (PR1705-R01)
+ * Point 2 & 3: Strict Budget-Matched Capsule Compression (PR1705-R01, U00-F02)
  * Enforces strict byte budget <= byteBudget (default 256).
+ * Enforces admission-time availability: only records with t_available <= asOfTick
+ * are included in the capsule prior and summary statistics (XA-R03 / U00-F02).
  * Uses deterministic salience selection, stores compact anti-evidence digest in capsule,
  * and retains full anti-evidence register separately in accessible memory.
  */
-export function compressToInheritanceCapsule(fullHistoryRecords, byteBudget = DEFAULT_CAPSULE_BUDGET_BYTES) {
-  const activeRecords = fullHistoryRecords.filter(r => r.withdrawal_status === 'ACTIVE');
-  const contradictoryRecords = fullHistoryRecords.filter(r => r.epistemic_status === 'CONTRADICTED' || r.is_negative_evidence);
+export function compressToInheritanceCapsule(
+  fullHistoryRecords,
+  byteBudget = DEFAULT_CAPSULE_BUDGET_BYTES,
+  options = {}
+) {
+  const asOfTick = options.asOfTick ?? options.currentTick ?? Infinity;
+
+  // Filter by admission-time availability: t_available <= asOfTick (U00-F02 / XA-R03)
+  // Records available only in the future are strictly excluded from the capsule and its prior.
+  const timeAdmissibleRecords = fullHistoryRecords.filter(r => {
+    const tAvail = r.temporal_coordinates?.t_available ?? 0;
+    return tAvail <= asOfTick;
+  });
+
+  const activeRecords = timeAdmissibleRecords.filter(r => r.withdrawal_status === 'ACTIVE');
+  const contradictoryRecords = timeAdmissibleRecords.filter(r => r.epistemic_status === 'CONTRADICTED' || r.is_negative_evidence);
 
   // Anti-evidence and negative control register (Point 4) - full ledger preserved separately
   const fullAntiEvidenceLedger = contradictoryRecords.map(cr => deepFreeze({
@@ -112,7 +127,7 @@ export function compressToInheritanceCapsule(fullHistoryRecords, byteBudget = DE
   }
 
   // Cryptographic lineage chain digest (PR1705-R04: accurately labeled chain digest)
-  const sortedDigests = fullHistoryRecords.map(r => r.canonical_byte_digest).sort();
+  const sortedDigests = timeAdmissibleRecords.map(r => r.canonical_byte_digest).sort();
   const lineageChainDigest = sha256Hex(sortedDigests.join('::'));
   const antiEvidenceDigest = sha256Hex(fullAntiEvidenceLedger.map(a => a.digest).sort().join('::'));
 
@@ -140,6 +155,9 @@ export function compressToInheritanceCapsule(fullHistoryRecords, byteBudget = DE
     serialized_bytes: byteSize,
     byte_budget: byteBudget,
     within_budget: true,
+    as_of_tick: asOfTick,
+    time_admissible_count: timeAdmissibleRecords.length,
+    withheld_future_records_count: fullHistoryRecords.length - timeAdmissibleRecords.length,
     full_history_count: fullHistoryRecords.length,
     anti_evidence_ledger: fullAntiEvidenceLedger,
     lineage_chain_digest: lineageChainDigest,

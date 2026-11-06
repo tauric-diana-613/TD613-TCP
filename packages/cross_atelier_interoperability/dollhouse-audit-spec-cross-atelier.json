@@ -1,13 +1,15 @@
 {
-  "source_revision": "349517d78898fa6c976c5813497f417cda82db53",
-  "task_scope": "CROSS_ATELIER_OPERATIONAL_INTEROPERABILITY_QUALIFICATION",
+  "source_revision": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
+  "task_scope": "CROSS_ATELIER_OPERATIONAL_INTEROPERABILITY_QUALIFICATION_U00",
   "evidence_class": "SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/cross_atelier_interoperability/CROSS_ATELIER_INTEROPERABILITY_QUALIFICATION.md",
     "packages/cross_atelier_interoperability/cross-atelier-orchestrator.mjs",
+    "packages/cross_atelier_interoperability/universal-estates-bridge.mjs",
     "packages/cross_atelier_interoperability/provenance-sensitive-comparator.mjs",
     "packages/cross_atelier_interoperability/curiosity-throttled-policy.mjs",
     "packages/cross_atelier_interoperability/test-cross-atelier-interoperability.mjs",
+    "packages/cross_atelier_interoperability/test-universal-estates-qualification.mjs",
     "packages/cross_atelier_interoperability/run-cross-atelier-qualification.mjs",
     "packages/cross_atelier_interoperability/cross_atelier_qualification_receipt.json",
     "packages/accident_of_inheritance/src/palace-operationalization-interface.mjs",
@@ -127,6 +129,22 @@
         "FROZEN_CANDIDATE_STOPPING_BOUNDARY": {
           "status": "PASS",
           "entry_id": "whole-system-held-boundary"
+        },
+        "U00_F01_WENDBINE_AUTHENTICITY": {
+          "status": "PASS",
+          "entry_id": "zero-cue-canary-genuine-span-pass"
+        },
+        "U00_F02_TEMPORAL_AVAILABILITY_INVARIANCE": {
+          "status": "PASS",
+          "entry_id": "future-mutation-invariance-pass"
+        },
+        "U00_F03_INDEPENDENT_PROVENANCE_COMPARISON": {
+          "status": "PASS",
+          "entry_id": "independent-matched-adversarial-pass"
+        },
+        "SECTION_III_UNIVERSAL_ESTATES_QUALIFICATION": {
+          "status": "PASS",
+          "entry_id": "universal-estates-bridge-pass"
         }
       },
       "required_phases": [
@@ -138,7 +156,11 @@
         "OPERATOR_DECISIONS_THROTTLE_LATENCY",
         "CASCADING_NON_RETROACTIVE_WITHDRAWAL",
         "FAIL_CLOSED_NEGATIVE_CONTROLS",
-        "FROZEN_CANDIDATE_STOPPING_BOUNDARY"
+        "FROZEN_CANDIDATE_STOPPING_BOUNDARY",
+        "U00_F01_WENDBINE_AUTHENTICITY",
+        "U00_F02_TEMPORAL_AVAILABILITY_INVARIANCE",
+        "U00_F03_INDEPENDENT_PROVENANCE_COMPARISON",
+        "SECTION_III_UNIVERSAL_ESTATES_QUALIFICATION"
       ]
     }
   }

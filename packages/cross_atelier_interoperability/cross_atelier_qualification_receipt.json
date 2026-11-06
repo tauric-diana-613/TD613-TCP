@@ -1,133 +1,70 @@
 {
-  "schema": "td613.cross-atelier.qualification-receipt/v1.0",
+  "schema": "td613.cross-atelier.qualification-receipt/v1.1",
   "covenant": "Khona‌lit-po",
   "authority_ref": "SAC[X6ZNK5NO51]",
-  "executed_at": "2026-11-06T19:43:05.509Z",
-  "execution_duration_ms": 515,
+  "executed_at": "2026-11-06T20:12:10.747Z",
+  "execution_duration_ms": 1033,
+  "reviewed_candidate": {
+    "pr_number": 1707,
+    "reviewed_head_sha": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
+    "independent_review_id": "#5806102418",
+    "independent_review_disposition": "SOURCE_FREE_CROSS_MODULE_EXECUTION_OBSERVED_WITH_CRITICAL_PROVENANCE_AND_TEMPORAL_DEFECTS"
+  },
   "corrected_publication_commit_pins": {
-    "palace_p011_pr_1705_exact_head": "6d2b22e00bb58cefa39c27630da350dd13f1226d",
-    "src_s011_pr_1706_exact_head": "dae25d312ed9342312f632835e9bd4b6fad6a76b",
-    "manifest_m01_pr_1702_exact_head": "4feed846e3279b84569334436b6df1bab3200b2f",
-    "palace_act1_pr_1699_exact_head": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
-    "independent_reviews_addressed": [
-      "#5805758662 (Palace P-01.1 PR #1705)",
-      "#5805759148 (SRC S-01.1 PR #1706)"
-    ]
+    "pr_1707_exact_head": "f3e9f97af4d607d3546ef88fb440b9d5f3587094",
+    "pr_1706_exact_head": "dae25d312ed9342312f632835e9bd4b6fad6a76b",
+    "pr_1705_exact_head": "6d2b22e00bb58cefa39c27630da350dd13f1226d",
+    "pr_1702_exact_head": "4feed846e3279b84569334436b6df1bab3200b2f",
+    "pr_1699_exact_head": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb"
   },
-  "interoperability_route_witness": {
-    "route_path": "WENDBINE -> SRC -> MANIFEST -> PALACE_ACT1 -> PALACE_ACT2",
-    "wendbine_ingress": {
-      "snapshot_id": "wendbine-20261104014208-6d200e3ff3a0",
-      "seal_id": "wendbine-seal:6d200e3ff3a0d7d79d7a135d676141fea8dfab3ae9496b525c5a93b55e31edf2",
-      "manifestation_id": "reddit:manifestation:1wb61ip",
-      "source_id": "reddit:t3_1wb61ip",
-      "byte_sha256": "06ef0e4bb044e6dc896378bd405a6aee746e3784d5ebabf9ce3b798f260e9fa4"
+  "u00_critical_reparations": {
+    "u00_f01_wendbine_authenticity": {
+      "crossing_classification": "METADATA_BOUND_SYNTHETIC_FIXTURE",
+      "has_original_source_bytes": false,
+      "source_text_stored": false,
+      "zero_cue_fail_closed_canary_verified": true,
+      "zero_cue_attempt_state": "ATTEMPTED_REJECTED",
+      "genuine_source_bound_warrant_verified": true,
+      "genuine_warrant_is_grounded": true,
+      "span_proof_digest": "d2a904216d5111a2297468b1a9376cb7fe284d6daa23ea78c9828c1d0d07df09"
     },
-    "src_native_routing": {
-      "explore_cues_extracted": 0,
-      "tomography_scope_outcome": "NARROWED",
-      "composite_score_refused": true,
-      "context_role_assigned": "EXTERNAL_SEALED_INGRESS_ROOT"
-    },
-    "manifest_grounding": {
-      "root_id": "root_reddit:t3_1wb61ip",
-      "admitted_edge": "root_reddit:t3_1wb61ip->target_alpha_series_doc:EXPLORE_PROJECTIVE",
-      "lfp_grounded_count": 2,
-      "shadow_graph_nodes_count": 3,
-      "shadow_graph_attempts_count": 3
-    },
-    "palace_act1_capsule": {
-      "capsule_id": "capsule-102ade9e96b2461d",
-      "serialized_bytes": 219,
-      "budget_bytes": 256,
-      "within_budget": true,
-      "anti_evidence_records_preserved": 1
-    },
-    "palace_act2_policy": {
-      "current_tick": 10,
+    "u00_f02_temporal_availability_before_capsule": {
+      "as_of_tick": 10,
       "withheld_future_records": 1,
-      "posterior_recommended_action": "M_SLOT_0",
-      "confidence": 0.9998,
-      "entropy_bits": 0.0027,
-      "curiosity_throttled": true,
-      "curiosity_throttle_reason": "THROTTLED_HIGH_CONFIDENCE_ACTION_ALIGNED"
+      "tick_10_prior_m_slot_0": 0.6667,
+      "future_record_mutation_invariance_verified": true,
+      "lawful_temporal_advance_to_tick_30_verified": true,
+      "tick_30_prior_m_slot_0": 0.75
     },
-    "custodial_withdrawal_cascade": {
-      "withdrawn_root_id": "root_reddit:t3_1wb61ip",
-      "palace_tombstone_id": "tombstone-palace_rec_001_grounded-15",
-      "tombstone_digest": "5983fd0b518d40056d9e6b136831a14a33e34dfaf009fdbd697d9a9be3a0add8",
-      "readmission_refused_fail_closed": true
+    "u00_f03_independent_provenance_comparison": {
+      "independent_matched_comparison_identical": false,
+      "adversarial_content_mutation_detected": true,
+      "adversarial_discrepancy_categories": [
+        "NODES",
+        "EDGES",
+        "ROOTS"
+      ]
+    },
+    "section_iii_universal_estates_qualification": {
+      "universal_atelier_record_id": "ua:contract:cross_atelier_witness",
+      "universal_atelier_admission_time": "2026-11-06T20:12:10.204Z",
+      "universal_encyclopedia_contract_id": "APT-01",
+      "reference_corpus_records_count": 1141,
+      "reference_corpus_edges_count": 2131,
+      "composite_lfp_grounded": true
     }
   },
-  "negative_controls_evaluated": [
-    {
-      "control_id": "NEG_RETROACTIVE_FORWARD_ROUTING",
-      "rule": "Chronological forward routing requires target > source",
-      "observed_verdict": "ATTEMPTED_REJECTED",
-      "verified": true
-    },
-    {
-      "control_id": "NEG_FABRICATED_WARRANT_DENIED",
-      "rule": "Default-Deny rejects unrecognized warrant contracts",
-      "observed_verdict": "ATTEMPTED_REJECTED",
-      "verified": true
-    },
-    {
-      "control_id": "NEG_FUTURE_OBSERVATION_WITHHELD",
-      "rule": "Admission-time availability membrane withholds records where t_available > current_tick",
-      "observed_verdict": "WITHHELD",
-      "verified": true
-    },
-    {
-      "control_id": "NEG_WITHDRAWN_ROOT_READMISSION_REFUSED",
-      "rule": "Tombstoned identifiers cannot be resurrected or overwritten",
-      "observed_verdict": "FAIL_CLOSED",
-      "verified": true
-    },
-    {
-      "control_id": "NEG_TOMOGRAPHY_SCALAR_SCORE_REFUSED",
-      "rule": "Representation lift prohibits scalar composite score aggregation (composite_score === null)",
-      "observed_verdict": "REFUSED",
-      "verified": true
-    }
-  ],
-  "canonical_terminal_graph": {
-    "canonical_nodes_count": 3,
-    "canonical_edges_count": 0,
-    "canonical_roots_count": 1,
-    "canonical_rejections_count": 2,
-    "full_payload_sha256": "442c0516cadb3dd7e83ea26f75d667d25f057c676591174e845793ec797bec47",
-    "provenance_sensitive_identical": true
+  "terminal_graph_digest": {
+    "canonical_sha256": "74693d004cea8a03f4a19a0823a8c9ea191e0fabc0c3c469126e2a6c2fb546ba",
+    "nodes_digest": "580ddef78eec833de5e13a091fe114065721c6ad7bd3f7dd5e4ed8fdbf3e29bd",
+    "edges_digest": "df607938d2320b747c148fb72ebba7cef4b0fbd0179a6656f118c5e52bdb7207",
+    "roots_digest": "d7bb3ac35555846e94ddb1c8d792fb5aeba34def5b1e52ceb140212d7e7a5052",
+    "rejections_digest": "412f04c7b6fd78937658ad948d9a285b4ce3980974e966424d6399a19f760916"
   },
-  "estate_and_crossing_classifications": {
-    "estates": {
-      "WENDBINE": "TESTED",
-      "SIGNAL_RUPTURE_SRC": "TESTED",
-      "UNIVERSAL_MANIFEST": "TESTED",
-      "PALACE_ACT1": "TESTED",
-      "PALACE_ACT2": "TESTED"
-    },
-    "crossings": {
-      "WENDBINE_TO_SRC": "TESTED",
-      "SRC_TO_MANIFEST": "TESTED",
-      "SRC_TO_PALACE_ACT1": "TESTED",
-      "PALACE_ACT1_TO_PALACE_ACT2": "TESTED",
-      "MANIFEST_TO_PALACE_CUSTODIAL_WITHDRAWAL": "TESTED"
-    },
-    "independent_qualification_status": "INDEPENDENT_QUALIFIED_PENDING_EXTERNAL_REVIEW",
-    "experiment_b_status": "HELD",
-    "human_closure_status": "RESERVED"
-  },
-  "resource_counters": {
-    "wendbine_queries": 1,
-    "src_projective_passes": 1,
-    "src_tomography_passes": 1,
-    "src_context_passes": 1,
-    "manifest_roots_admitted": 1,
-    "manifest_attempts_recorded": 3,
-    "manifest_withdrawals_executed": 1,
-    "palace_capsules_compressed": 1,
-    "palace_bayesian_updates": 1
-  },
-  "status": "CROSS_ATELIER_INTEROPERABILITY_QUALIFIED_SOURCE_FREE"
+  "stopping_rules_and_reservations": {
+    "whole_system_operational_readiness": "HELD",
+    "experiment_b_flight": "HELD",
+    "human_scientific_closure": "RESERVED_FOR_TAWANNA_C_MILLER",
+    "covenant": "Khona‌lit-po (literal interior U+200C preserved)"
+  }
 }
