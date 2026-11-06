@@ -1,19 +1,19 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1793998287116-3b157a6b",
-  "timestamp": "2026-11-06T20:51:27.116Z",
-  "source_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+  "invocation_id": "dollhouse-audit-1794004233788-1f22337d",
+  "timestamp": "2026-11-06T22:30:33.788Z",
+  "source_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+  "executing_checkout_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
-    "audit_execution_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+    "executable_source_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+    "audit_execution_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -36,7 +36,7 @@
     }
   ],
   "is_historical_commit_only": false,
-  "task_scope": "EM_UNIFIED_THEORY_SYNTHESIS_AND_RECIPROCAL_INHERITANCE",
+  "task_scope": "EM_E00_1_REPAIR_SOURCE_INTEGRITY_AND_SYNTHESIS",
   "evidence_class": "HISTORICAL_EM_CORPUS_AND_SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
@@ -58,105 +58,105 @@
       "reference": "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "ad305a47f40aa50e6c612551d24c9725747d2a6f7b90a3d0f42637d21d8205dd",
+      "byte_digest": "1c304dcedb9e3e1a46ed98f2c0168a6539690e5d96bb704831eceec7c9e175d3",
       "byte_digest_verified": true,
-      "sha256": "ad305a47f40aa50e6c612551d24c9725747d2a6f7b90a3d0f42637d21d8205dd"
+      "sha256": "1c304dcedb9e3e1a46ed98f2c0168a6539690e5d96bb704831eceec7c9e175d3"
     },
     {
       "reference": "packages/em_unified_synthesis/corpus_acquisition_manifest.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e989ea992337c3084e31233531e8247d3ca869bea8f0b31c4cb894a01cef21c1",
+      "byte_digest": "9be902980faefa5774241734c615e18306a3e36de26ec6ce549315b1021a2688",
       "byte_digest_verified": true,
-      "sha256": "e989ea992337c3084e31233531e8247d3ca869bea8f0b31c4cb894a01cef21c1"
+      "sha256": "9be902980faefa5774241734c615e18306a3e36de26ec6ce549315b1021a2688"
     },
     {
       "reference": "packages/em_unified_synthesis/lexical_readback_witness.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "28af6d0fb572a46e9596c0b4ee683be85c034d8ee3da3ed02f297a88ebe6ab41",
+      "byte_digest": "591fbe1a87f5e192b11a219447d64bdd27434eb2ef016abc03e48f290b5948fa",
       "byte_digest_verified": true,
-      "sha256": "28af6d0fb572a46e9596c0b4ee683be85c034d8ee3da3ed02f297a88ebe6ab41"
+      "sha256": "591fbe1a87f5e192b11a219447d64bdd27434eb2ef016abc03e48f290b5948fa"
     },
     {
       "reference": "packages/em_unified_synthesis/identity_metadata_crosswalk.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "7a139b7013b00569ecf6c1b811832c026a516fedff4f87962d53a23db3ef012f",
+      "byte_digest": "93e88c248119c58650c6dbfe4ad7ef5abf78a6e599a75ef8a2216799d7e0ff6b",
       "byte_digest_verified": true,
-      "sha256": "7a139b7013b00569ecf6c1b811832c026a516fedff4f87962d53a23db3ef012f"
+      "sha256": "93e88c248119c58650c6dbfe4ad7ef5abf78a6e599a75ef8a2216799d7e0ff6b"
     },
     {
       "reference": "packages/em_unified_synthesis/original_methods_inventory.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "6b6d33673fbeea720c42e64162bc81eecdd93d7d543571494a919d5a1e379701",
+      "byte_digest": "96d8f432e903a24fa8900f586ca2b404a186117d64471640d2abe08bc488bfe1",
       "byte_digest_verified": true,
-      "sha256": "6b6d33673fbeea720c42e64162bc81eecdd93d7d543571494a919d5a1e379701"
+      "sha256": "96d8f432e903a24fa8900f586ca2b404a186117d64471640d2abe08bc488bfe1"
     },
     {
       "reference": "packages/em_unified_synthesis/negative_refusal_register.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "430247ade001a6fc5bccbaac5074a8d09b427a3d722a525277cf3dc45923d21d",
+      "byte_digest": "47cb322ebd5ab78b4b066981b8427856c15ad587d0a153a6b342641c7d1342cd",
       "byte_digest_verified": true,
-      "sha256": "430247ade001a6fc5bccbaac5074a8d09b427a3d722a525277cf3dc45923d21d"
+      "sha256": "47cb322ebd5ab78b4b066981b8427856c15ad587d0a153a6b342641c7d1342cd"
     },
     {
       "reference": "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "5fd120e4af3cf588ab111092e640b00ade363ee4e82f2864c3e3b6b12422d2ad",
+      "byte_digest": "e72ebd8cdba13545ebf4553983ba71c6befd856dda2cb0a02545292ab090208f",
       "byte_digest_verified": true,
-      "sha256": "5fd120e4af3cf588ab111092e640b00ade363ee4e82f2864c3e3b6b12422d2ad"
+      "sha256": "e72ebd8cdba13545ebf4553983ba71c6befd856dda2cb0a02545292ab090208f"
     },
     {
       "reference": "packages/em_unified_synthesis/competent-null-comparator.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "2777c860894b5bc1b77ef24f30abae637a5b1c4ec8120d2a7b78bffcee2a03b8",
+      "byte_digest": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1",
       "byte_digest_verified": true,
-      "sha256": "2777c860894b5bc1b77ef24f30abae637a5b1c4ec8120d2a7b78bffcee2a03b8"
+      "sha256": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1"
     },
     {
       "reference": "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "29b9fd8b9b7878ce31c91aa9d939d3bfad56ea401601750c094fef8de823964d",
+      "byte_digest": "5c160fa3c32a41540748dea43db0bc7c5523bbd1c4faa8279b7f7a0a72a8d70e",
       "byte_digest_verified": true,
-      "sha256": "29b9fd8b9b7878ce31c91aa9d939d3bfad56ea401601750c094fef8de823964d"
+      "sha256": "5c160fa3c32a41540748dea43db0bc7c5523bbd1c4faa8279b7f7a0a72a8d70e"
     },
     {
       "reference": "packages/em_unified_synthesis/operator-zip-intake.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "26f50c41a08c287403a7efe6e2d6122ad4fdb30809366a14d6ade01851b14b21",
+      "byte_digest": "74a4400748ecdfb0443b547e2d44c497ab45fa9fcfefc27b6ed4e7359c2a4151",
       "byte_digest_verified": true,
-      "sha256": "26f50c41a08c287403a7efe6e2d6122ad4fdb30809366a14d6ade01851b14b21"
+      "sha256": "74a4400748ecdfb0443b547e2d44c497ab45fa9fcfefc27b6ed4e7359c2a4151"
     },
     {
       "reference": "packages/em_unified_synthesis/test-em-unified-synthesis.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "581494527b9835edb718b57d783c4e00d2ec96e510d800a0a077fa706bdbbf28",
+      "byte_digest": "222953761892a26ff5b74f0804f8b3d3464eddc18eb6a7ee5f565e021ec013ae",
       "byte_digest_verified": true,
-      "sha256": "581494527b9835edb718b57d783c4e00d2ec96e510d800a0a077fa706bdbbf28"
+      "sha256": "222953761892a26ff5b74f0804f8b3d3464eddc18eb6a7ee5f565e021ec013ae"
     },
     {
       "reference": "packages/em_unified_synthesis/run-em-unified-synthesis-qualification.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "8aab122edfc5eca6035b877e69017875953eb5f62026027731e195aa2f5097e7",
+      "byte_digest": "e1b189385c7a5d86f211e08e8b8b26acaa5f95a456dba99ba4025e352fd5f7ff",
       "byte_digest_verified": true,
-      "sha256": "8aab122edfc5eca6035b877e69017875953eb5f62026027731e195aa2f5097e7"
+      "sha256": "e1b189385c7a5d86f211e08e8b8b26acaa5f95a456dba99ba4025e352fd5f7ff"
     },
     {
       "reference": "packages/em_unified_synthesis/em_unified_synthesis_receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "5ebc843b4fc8f6c2cc8e4237c71a91e04fb6072a59d08af37d2b5e72612918c5",
+      "byte_digest": "a719a29217b15979cc9a6db4fbae5a4e137ebd067f2d24cd29208f146010371c",
       "byte_digest_verified": true,
-      "sha256": "5ebc843b4fc8f6c2cc8e4237c71a91e04fb6072a59d08af37d2b5e72612918c5"
+      "sha256": "a719a29217b15979cc9a6db4fbae5a4e137ebd067f2d24cd29208f146010371c"
     }
   ],
   "roles_requested": [
@@ -464,5 +464,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 501
+  "execution_duration_ms": 779
 }

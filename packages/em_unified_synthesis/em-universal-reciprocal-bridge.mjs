@@ -62,8 +62,25 @@ export class EmUniversalReciprocalBridge {
     if (!sourceId || !rawBytes) {
       throw new EmUniversalBridgeError('SOURCE_ID_AND_BYTES_REQUIRED', 'Source ID and raw bytes are required.');
     }
-    const buf = Buffer.isBuffer(rawBytes) ? rawBytes : Buffer.from(rawBytes, 'utf8');
+
+    // Defense: reject duplicate source admission before mutating custody
+    if (this.admittedEmSources.has(sourceId)) {
+      throw new EmUniversalBridgeError('DUPLICATE_SOURCE_ADMISSION_REJECTED', `Source ID ${sourceId} is already admitted in bridge.`);
+    }
+
+    // Defensive buffer copy
+    const buf = Buffer.isBuffer(rawBytes) ? Buffer.from(rawBytes) : Buffer.from(String(rawBytes), 'utf8');
     const digest = sha256Hex(buf);
+
+    // Defense: raw PDF bytes cannot masquerade as extracted text support
+    const isPdfBytes = buf.length >= 4 && buf.subarray(0, 4).toString('ascii') === '%PDF';
+    const isPdfFilename = Boolean(filename && filename.toLowerCase().endsWith('.pdf'));
+    if ((isPdfBytes || isPdfFilename) && evidenceClass === 'TEXT_DOCUMENT') {
+      throw new EmUniversalBridgeError(
+        'RAW_PDF_CANNOT_SERVE_AS_TEXT_EVIDENCE',
+        `Raw PDF bytes for ${filename || sourceId} cannot be admitted as TEXT_DOCUMENT evidence without extracted text derivative.`
+      );
+    }
 
     const sourceRecord = {
       source_id: sourceId,
@@ -104,6 +121,12 @@ export class EmUniversalReciprocalBridge {
       throw new EmUniversalBridgeError('SOURCE_NOT_FOUND', `Source ${sourceId} not admitted in bridge.`);
     }
 
+    if (!Number.isInteger(byteOffset) || !Number.isInteger(length)) {
+      throw new EmUniversalBridgeError('INVALID_COORDINATES', `byteOffset and length must be integers.`);
+    }
+    if (length <= 0) {
+      throw new EmUniversalBridgeError('EMPTY_SPAN_REJECTED', `Passage length must be strictly positive.`);
+    }
     if (byteOffset < 0 || byteOffset + length > src.raw_bytes.length) {
       throw new EmUniversalBridgeError('SPAN_OUT_OF_BOUNDS', `Span [${byteOffset}, ${byteOffset + length}] exceeds source length ${src.raw_bytes.length}.`);
     }
@@ -178,6 +201,12 @@ export class EmUniversalReciprocalBridge {
 
   /**
    * Executes Manifest Least Fixed Point Grounding over verified derivation premises.
+   * Returns independent multilayer warrant coordinates:
+   * 1. source_byte_integrity: source exists and raw byte digest verified
+   * 2. span_validity: exact slice byte digest verified
+   * 3. graph_reachability: target claim derivable in least fixed point closure
+   * 4. derivation_rule_valid: valid rule structure and premise linkages
+   * 5. claim_entailment: explicitly distinguishing syntax from empirical truth
    */
   groundTheoryWarrant({
     ruleId,
@@ -190,43 +219,67 @@ export class EmUniversalReciprocalBridge {
       throw new EmUniversalBridgeError('MISSING_SPAN_PROOF', 'Grounded theory warrant requires valid cryptographic span proof.');
     }
 
-    // Verify span against admitted source
+    if (!Number.isInteger(sourceCaptureSpanProof.start) || !Number.isInteger(sourceCaptureSpanProof.end) ||
+        sourceCaptureSpanProof.start < 0 || sourceCaptureSpanProof.start >= sourceCaptureSpanProof.end) {
+      throw new EmUniversalBridgeError('INVALID_SPAN_BOUNDS', 'Span proof bounds must be valid non-empty integer range.');
+    }
+
+    // Coordinate 1: Source byte integrity
     const src = this.admittedEmSources.get(sourceCaptureSpanProof.source_id);
     if (!src) {
       throw new EmUniversalBridgeError('SOURCE_NOT_FOUND', `Source ${sourceCaptureSpanProof.source_id} not admitted.`);
     }
+    const sourceByteIntegrity = sha256Hex(src.raw_bytes) === src.sha256;
 
+    if (sourceCaptureSpanProof.end > src.raw_bytes.length) {
+      throw new EmUniversalBridgeError('SPAN_OUT_OF_BOUNDS', `Span end ${sourceCaptureSpanProof.end} exceeds source size ${src.raw_bytes.length}.`);
+    }
+
+    // Coordinate 2: Span validity
     const slice = src.raw_bytes.subarray(sourceCaptureSpanProof.start, sourceCaptureSpanProof.end);
     const hash = sha256Hex(slice);
     if (hash !== sourceCaptureSpanProof.span_sha256) {
       throw new EmUniversalBridgeError('EXACT_SPAN_DIGEST_MISMATCH', `Span digest mismatch: expected ${sourceCaptureSpanProof.span_sha256} got ${hash}.`);
     }
+    const spanValidity = true;
 
-    // Register claim
+    // Coordinate 4: Derivation rule structure
     this.warrantEngine.registerClaim({
       claim_id: targetClaimId,
       claim_text: claimStatement || targetClaimId,
       derivation_premises: premises,
     });
 
-    // Register derivation rule in Manifest Warrant Engine
     this.warrantEngine.addDerivationRule({
       rule_id: ruleId,
       head_claim_id: targetClaimId,
       premise_ids: premises,
       rule_type: 'DIRECT_WARRANT',
     });
+    const derivationRuleValid = true;
 
+    // Coordinate 3: Graph reachability in least fixed point closure
     const lfp = this.warrantEngine.computeLeastFixedPoint();
     const isGrounded = (lfp.P && lfp.P.has(targetClaimId)) ||
       (lfp.lfpResult && lfp.lfpResult.grounded_ids && lfp.lfpResult.grounded_ids.includes(targetClaimId));
+    const graphReachability = Boolean(isGrounded);
+
+    // Coordinate 5: Scientific entailment (cannot be verified by syntactic reachability alone)
+    const claimEntailment = 'HELD_UNVERIFIED_BY_SYNTAX_ALONE';
 
     return {
       rule_id: ruleId,
       target_claim_id: targetClaimId,
-      is_grounded_in_lfp: Boolean(isGrounded),
+      is_grounded_in_lfp: graphReachability,
       total_grounded_claims: lfp.P ? lfp.P.size : 0,
-      span_proof_verified: true
+      span_proof_verified: spanValidity,
+      warrant_coordinates: {
+        source_byte_integrity: sourceByteIntegrity,
+        span_validity: spanValidity,
+        graph_reachability: graphReachability,
+        derivation_rule_valid: derivationRuleValid,
+        claim_entailment: claimEntailment
+      }
     };
   }
 

@@ -1,14 +1,36 @@
 {
-  "schema": "td613.em.unified-synthesis-receipt/v1.0",
+  "schema": "td613.em.unified-synthesis-receipt/v1.1",
   "covenant": "Khona‌lit-po",
   "authority": "SAC[X6ZNK5NO51]",
-  "executed_at": "2026-11-06T20:52:17.972Z",
-  "execution_duration_ms": 2389,
+  "executed_at": "2026-11-06T22:32:09.855Z",
+  "execution_duration_ms": 2309,
   "historical_estate_pinned_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
-  "frozen_universal_candidate_head": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+  "frozen_e00_predecessor_head": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
   "census_verification": {
     "sources_verified": 87,
     "total_source_bytes": 7938934,
+    "source_format_byte_breakdown": {
+      "pdf": {
+        "count": 20,
+        "bytes": 5642539
+      },
+      "zip_container": {
+        "count": 1,
+        "bytes": 697429
+      },
+      "markdown_documents": {
+        "count": 33,
+        "bytes": 1534070
+      },
+      "appledouble_metadata": {
+        "count": 33,
+        "bytes": 64896
+      },
+      "total": {
+        "count": 87,
+        "bytes": 7938934
+      }
+    },
     "extracted_derivatives_verified": 53,
     "unsupported_formats_verified": 34,
     "zip_archive_central_directory_entries": 66,
@@ -25,63 +47,87 @@
     "identity_hypotheses_partitions": 256
   },
   "native_lexical_readback": {
-    "indexed_derivatives": 53,
-    "representative_markdown_pass": true,
-    "representative_pdf_derived_pass": true,
-    "multi_manifestation_works_pass": true,
-    "unicode_sensitive_spans_pass": true,
-    "unavailable_format_controls_pass": true,
-    "semantic_search_withholding_reason": "SEMANTIC_MODEL_UNAVAILABLE_IN_HISTORICAL_FIXTURE"
+    "total_indexed_derivatives": 53,
+    "representative_markdown_span_verified": true,
+    "representative_pdf_derived_page_verified": true,
+    "unicode_context_span_verified": true,
+    "apple_double_excluded": true,
+    "semantic_model_status": "SEMANTIC_MODEL_UNAVAILABLE_IN_HISTORICAL_FIXTURE"
   },
-  "operator_zip_intake_witness": {
-    "safe_extraction_verified": true,
-    "path_traversal_zip_slip_blocked": true,
-    "resource_limit_defense_verified": true
+  "operator_zip_intake_hardening": {
+    "eocd_validated": true,
+    "zip64_rejected": true,
+    "encryption_rejected": true,
+    "symlinks_rejected": true,
+    "local_central_headers_reconciled": true,
+    "crc32_verified": true,
+    "max_output_length_enforced": true,
+    "zip_slip_rejected": true,
+    "duplicate_paths_rejected": true,
+    "fatal_utf8_decoding_enforced": true,
+    "atomic_admission_verified": true
   },
-  "em_universal_reciprocal_bridge": {
-    "atelier_zero_row_witness_hash": "f70a2a4a89973ff3fb0731a48e49bdbeb06d0e15a8e7ac269776294be64389e0",
-    "encyclopedia_records_count": 1141,
-    "encyclopedia_edges_count": 2131,
-    "staged_passage_span_sha256": "a6e91894d244527ea12c821244713403fe2599a190f5092358b5721f22b0cffe",
-    "reference_match_promoted_to_theory": false,
-    "lfp_grounded": true
+  "multilayer_warrant_integrity": {
+    "source_byte_integrity_verified": true,
+    "span_validity_verified": true,
+    "graph_reachability_lfp_verified": true,
+    "derivation_rule_valid": true,
+    "claim_entailment_status": "HELD_UNVERIFIED_BY_SYNTAX_ALONE"
   },
   "unified_theory_synthesis": {
-    "superficial_motif_match_refused": true,
-    "incommensurable_assumptions_refused_and_retained": true,
-    "composable_candidate_admitted": true,
-    "disconfirmation_tombstone_cascaded": true
+    "operator_verification_enforced": true,
+    "invented_operators_rejected": true,
+    "unsupported_morphisms_rejected": true,
+    "superficial_motif_refusal": "SUPERFICIAL_MOTIF_CONVERGENCE_WITHOUT_FORMAL_OPERATOR_MAPPING",
+    "incommensurable_assumptions_refusal": "COMPOSABILITY_FAILURE_DUE_TO_INCOMMENSURABLE_ASSUMPTIONS",
+    "contradiction_retained": [
+      "NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME",
+      "VARIABLE_DELAY != ZERO_LATENCY"
+    ],
+    "candidate_theory_admitted": "theory:cybernetic_hypervisor_algedonic_synthesis",
+    "promotion_level": "COMPOSABLE_THEORY_CANDIDATE",
+    "competing_models_count": 2,
+    "immutable_snapshots_stored": true,
+    "non_retroactive_tombstoning_verified": true
   },
-  "competent_null_comparison": {
-    "theory_quality_advantage": "RECIPROCAL_ARM_PREVENTS_FALSE_CONVERGENCE_AND_COLLAPSE",
-    "history_traceability_ranking": [
-      "Arm 4 (0.98)",
-      "Arm 2 (0.85)",
-      "Arm 3 (0.75)",
-      "Arm 1 (0.70)"
+  "competent_null_comparator": {
+    "arms_evaluated": [
+      "arm_1_documentary",
+      "arm_2_receiver",
+      "arm_3_non_reciprocal_union",
+      "arm_4_reciprocal"
     ],
-    "correction_latency_ranking": [
-      "Arm 4 (1 step)",
-      "Arm 3 (8 steps)",
-      "Arm 2 (10 steps)",
-      "Arm 1 (Manual)"
-    ],
-    "warrant_fidelity_ranking": [
-      "Arm 4 (100%)",
-      "Arm 2 (100%)",
-      "Arm 1 (100%)",
-      "Arm 3 (65%)"
-    ],
-    "contradiction_handling": {
-      "arm_3_non_reciprocal": "RISK_OF_FORCED_CONSENSUS_OR_VOCABULARY_EQUATION",
-      "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+    "trace_derived_graph_fidelity": {
+      "arm_3_non_reciprocal": "100%",
+      "arm_4_reciprocal": "100%",
+      "determination": "BOUNDED_TIE_AT_100_PERCENT"
+    },
+    "unsupported_targets_rejection": {
+      "arm_3_non_reciprocal": "100% REJECTED",
+      "arm_4_reciprocal": "100% REJECTED",
+      "determination": "BOUNDED_TIE"
+    },
+    "false_graph_convergence": {
+      "arm_3_non_reciprocal": 0,
+      "arm_4_reciprocal": 0,
+      "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+    },
+    "withdrawal_operation_counts": {
+      "arm_3_non_reciprocal": 2,
+      "arm_4_reciprocal": 2,
+      "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+    },
+    "scientific_reciprocal_surplus": "UNESTABLISHED",
+    "unsupported_dimensions_status": {
+      "semantic_entailment_quality": "NOT_MEASURED",
+      "general_prediction_accuracy": "NOT_MEASURED",
+      "emergent_intelligence": "NOT_MEASURED"
     }
   },
-  "stopping_rules_and_reservations": {
-    "candidate_author_freeze": true,
-    "concealed_suite_boundary_intact": true,
-    "experiment_b_flight": "HELD",
-    "human_scientific_closure": "RESERVED_FOR_TAWANNA_C_MILLER",
-    "covenant": "Khona‌lit-po (literal interior U+200C preserved)"
+  "epistemic_disposition": {
+    "reciprocal_surplus_status": "UNESTABLISHED",
+    "comparator_verdict": "BOUNDED_TIE_ON_MATCHED_GRAPH_CASES",
+    "arbitrary_operator_zip_intake": "HARDENED_FAIL_CLOSED_DEFENSES_IMPLEMENTED",
+    "reproducibility": "100% DETERMINISTIC LOCAL EXECUTION"
   }
 }

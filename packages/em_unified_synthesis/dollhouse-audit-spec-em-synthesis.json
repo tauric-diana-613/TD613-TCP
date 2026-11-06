@@ -1,6 +1,6 @@
 {
-  "source_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
-  "task_scope": "EM_UNIFIED_THEORY_SYNTHESIS_AND_RECIPROCAL_INHERITANCE",
+  "source_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "task_scope": "EM_E00_1_REPAIR_SOURCE_INTEGRITY_AND_SYNTHESIS",
   "evidence_class": "HISTORICAL_EM_CORPUS_AND_SYNTHETIC_TEST_FIXTURE",
   "evidence_references": [
     "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
