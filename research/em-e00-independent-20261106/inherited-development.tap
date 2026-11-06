@@ -1,0 +1,47 @@
+▶ Palace Act I–II Operationalization Contract Suite
+  ✔ Point 1: Ingests historical records with immutable byte-digest provenance and chronological verification (2.666476ms)
+  ✔ Point 2 & 3: Compresses full history into strict 256-byte bounded capsule (PR1705-R01) (0.979865ms)
+  ✔ Point 4: Retains explicit anti-evidence register in accessible memory without silent pruning (0.509297ms)
+  ✔ Point 5: Distinguishes preserved, retrieved, and decision-used information with admission-time gating (PR1705-R03) (0.509598ms)
+  ✔ Point 6: Non-retroactive withdrawal via append-only tombstone ledger (PR1705-R04) (0.554085ms)
+  ✔ Point 7: Competent comparator evaluates capsule against equalized full-history baseline (0.536077ms)
+  ✔ Point 8: Real Act II policy execution bridge with cost-of-curiosity throttle (Operator Decision 1) (0.850702ms)
+✔ Palace Act I–II Operationalization Contract Suite (8.254002ms)
+▶ Cross-Atelier Operational Interoperability Qualification Suite
+  ✔ 1. Full-circuit same-episode research route across Wendbine -> SRC -> Manifest -> Universal -> Palace I -> Palace II (153.801ms)
+  ✔ 2. Strict 256-byte capsule budget enforcement with fail-closed assertion (PR1705-R01) (0.649187ms)
+  ✔ 3. Admission-time availability gating prevents future temporal leakage (PR1705-R03) (0.376137ms)
+  ✔ 4. Chronological sequence consistency check enforces t_event <= t_observed <= t_admitted <= t_available (0.144738ms)
+  ✔ 5. Provenance-sensitive terminal graph comparison over all serialized fields (PR1706-R01) (0.41229ms)
+  ✔ 6. Cost-of-curiosity policy throttle prevents diagnostic probing regret (Operator Decision 1) (0.161754ms)
+  ✔ 7. Latency convention and Family D action invariance masking witness (Operator Decision 2) (0.161704ms)
+  ✔ 8. Cascading source withdrawal and non-retroactive tombstoning (0.480634ms)
+  ✔ 9. Fail-closed Default-Deny negative controls (retroactive target & fabricated warrant) (0.275845ms)
+  ✔ 10. Tomographic scope delta analysis enforces scalar composite score refusal (SRC D6) (0.256126ms)
+  ✔ 11. U00-F01: Zero observed cues produce zero cue-based admitted relations (Fail-Closed Canary) (0.264709ms)
+  ✔ 12. U00-F01: Genuine source-bound positive warrant passes with exact UTF-8 span proof and chronology (2.409179ms)
+  ✔ 13. U00-F02: Admission-clock qualified capsule prior; future-record mutation has ZERO effect on tick-10 state (0.534915ms)
+  ✔ 14. U00-F02: Lawful temporal advance: tick-30 clock lawfully incorporates deferred record without rewriting tick-10 state (1.223343ms)
+  ✔ 15. U00-F03: Adversarial content mutation test detects altered evidentiary content across identical IDs (1.187478ms)
+  ✔ 16. Section III: Universal Atelier and Universal Encyclopedia execute real native entry/query paths (11.55328ms)
+✔ Cross-Atelier Operational Interoperability Qualification Suite (175.909167ms)
+▶ Universal Estates Independent Qualification (Crossing T & U-00)
+  ✔ 1. Universal Atelier initializes in-memory SQLite with zero-row witness (4.298675ms)
+  ✔ 2. Preserves literal interior U+200C zero-width non-joiner in covenant string (0.174723ms)
+  ✔ 3. Enforces strict synthetic declaration and admits valid record (2.564803ms)
+  ✔ 4. Admits directed link with authentic cryptographic span proof (8.740043ms)
+  ✔ 5. Executes complete 10 canonical operations suite on Universal Atelier (2.596691ms)
+  ✔ 6. Loads authentic Universal Encyclopedia Reference Corpus v1.4 (1,141 records, 2,131 edges) (8.146129ms)
+  ✔ 7. Universal Encyclopedia executes query, search, and neighbor tracing (7.992317ms)
+  ✔ 8. Executes composite crossing: Universal Atelier -> Universal Encyclopedia -> Manifest LFP Grounding (13.14594ms)
+✔ Universal Estates Independent Qualification (Crossing T & U-00) (50.303112ms)
+Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.
+✔ tests/workflow-estate.test.mjs (117.553908ms)
+ℹ tests 32
+ℹ suites 3
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 324.181214

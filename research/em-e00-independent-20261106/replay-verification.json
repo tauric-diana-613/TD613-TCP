@@ -1,0 +1,9 @@
+{
+  "same_58_criteria_and_18_matched_terminal_states": true,
+  "timing_and_wall_clock_fields_excluded": true,
+  "normalized_sha256": "a5946c07dd838b380f70b667bfb13db1b035ade222935eba3bcde17c5f1dfb65",
+  "additional_unique_test_cases": 0,
+  "first_normalizer_included_contradiction_trace_durations_and_reported_false": true,
+  "equalized_budget_rerun_same_outcomes": true,
+  "final_graph_pass_cap_both_arms": 1000
+}

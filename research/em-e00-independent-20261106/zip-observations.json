@@ -1,0 +1,470 @@
+{
+  "cases": [
+    {
+      "case_id": 1,
+      "category": "valid_stored",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 2,
+      "category": "valid_deflated",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 3,
+      "category": "crc_wrong",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 4,
+      "category": "local_signature_wrong",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 5,
+      "category": "local_name_differs",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 6,
+      "category": "local_method_differs",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 7,
+      "category": "no_eocd",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 8,
+      "category": "truncated_eocd",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 9,
+      "category": "truncated_central",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ERR_OUT_OF_RANGE"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 10,
+      "category": "actual_expansion_exceeds_ceiling",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 4096,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 11,
+      "category": "actual_cumulative_exceeds_ceiling",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 2,
+        "reported_admitted": 2,
+        "stored_sources": 2,
+        "total_actual_bytes": 128,
+        "derivatives": 2,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 12,
+      "category": "duplicate_path_conflicting_bytes",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 2,
+        "reported_admitted": 2,
+        "stored_sources": 1,
+        "total_actual_bytes": 1,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 13,
+      "category": "symlink_external_attributes",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 14,
+      "category": "zip_slip",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_PATH_TRAVERSAL_REFUSED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 15,
+      "category": "absolute_path",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_PATH_TRAVERSAL_REFUSED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 16,
+      "category": "windows_drive",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_PATH_TRAVERSAL_REFUSED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 17,
+      "category": "nul_path",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_PATH_TRAVERSAL_REFUSED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 18,
+      "category": "utf8_invalid_filename",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 9,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 19,
+      "category": "utf8_invalid_text",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 1,
+        "derivatives": 1,
+        "invalid_text_replacement": true,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 20,
+      "category": "utf8_midpoint_passage",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "enumerated": 1,
+        "reported_admitted": 1,
+        "stored_sources": 1,
+        "total_actual_bytes": 2,
+        "derivatives": 1,
+        "invalid_text_replacement": false,
+        "span_replacement": true,
+        "span_reencodes_same": false,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 21,
+      "category": "declared_size_ceiling",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_RESOURCE_LIMIT_EXCEEDED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 22,
+      "category": "declared_ratio_ceiling",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_RESOURCE_LIMIT_EXCEEDED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 23,
+      "category": "count_ceiling",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "ZIP_RESOURCE_LIMIT_EXCEEDED"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 24,
+      "category": "corrupt_deflate",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": {
+          "code": "Z_DATA_ERROR"
+        },
+        "stored_sources": 0,
+        "total_actual_bytes": 0,
+        "derivatives": 0,
+        "invalid_text_replacement": false,
+        "span_replacement": false,
+        "span_reencodes_same": null,
+        "max_rss_kib": 34560
+      },
+      "harness_error": null
+    }
+  ],
+  "resource_ceilings": {
+    "RLIMIT_DATA": 536870912,
+    "RLIMIT_FSIZE": 1048576,
+    "RLIMIT_CPU_seconds": 5,
+    "wall_timeout_seconds": 8,
+    "node_heap_mib": 32,
+    "max_fixture_bytes": 65536,
+    "maximum_generated_uncompressed_bytes": 4096,
+    "filesystem_extraction": false
+  }
+}

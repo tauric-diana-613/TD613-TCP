@@ -1,0 +1,27 @@
+--- Inspecting EMSTD613 Historical Corpus ---
+✓ Generated /workspace/scratch/5b5d4db76a90/candidate-run/packages/em_unified_synthesis/corpus_acquisition_manifest.json
+✓ Generated /workspace/scratch/5b5d4db76a90/candidate-run/packages/em_unified_synthesis/identity_metadata_crosswalk.json
+✓ Generated /workspace/scratch/5b5d4db76a90/candidate-run/packages/em_unified_synthesis/original_methods_inventory.json
+✓ Generated /workspace/scratch/5b5d4db76a90/candidate-run/packages/em_unified_synthesis/negative_refusal_register.json
+▶ EM E-00: Unified Theory Synthesis & Reciprocal Inheritance Suite
+  ✔ 1. Verifies 87 historical sources and 53 extracted derivatives against exact hashes (30.656004ms)
+  ✔ 2. Reconciles Archive.zip central directory (33 content files + 33 AppleDouble sidecars = 66) (7.006132ms)
+  ✔ 3. Verifies 32 Work routes, 8 human gates, and 256 identity hypotheses in [32, 40] interval (0.988268ms)
+  ✔ 4. Executes native lexical index search and retrieves exact byte spans with UTF-8 safety (258.064489ms)
+  ✔ 5. Refuses text queries on AppleDouble sidecars and asserts semantic model unavailability (0.432822ms)
+  ✔ 6. Operator ZIP Intake Engine: admits valid archive and extracts text derivatives (1.862765ms)
+  ✔ 7. Operator ZIP Intake Engine: blocks path traversal (Zip-Slip) fail-closed (0.618411ms)
+  ✔ 8. Em-to-Universal Reciprocal Bridge: stages passages and executes LFP warrant grounding (11.364327ms)
+  ✔ 9. Unified Theory Synthesis Engine: refuses superficial motif matches fail-closed (0.460033ms)
+  ✔ 10. Unified Theory Synthesis Engine: retains contradictions on incommensurable assumptions (0.318029ms)
+  ✔ 11. Unified Theory Synthesis Engine: admits valid composable candidate and cascades withdrawal (0.240433ms)
+  ✔ 12. Competent Null Comparator: runs 4-arm matched comparison and documents equal-affordance matrix (5.073522ms)
+✔ EM E-00: Unified Theory Synthesis & Reciprocal Inheritance Suite (318.966891ms)
+ℹ tests 12
+ℹ suites 1
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 414.142849

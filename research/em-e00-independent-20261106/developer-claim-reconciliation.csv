@@ -1,0 +1,59 @@
+section,claim,developer,independent,classification
+II–IV,Original sources,87,87,INDEPENDENTLY_REPRODUCED
+II–IV,Source bytes,7938934,7938934,INDEPENDENTLY_REPRODUCED
+II–IV,Text derivatives,53,53,INDEPENDENTLY_REPRODUCED
+II–IV,Unsupported source formats,34,34,INDEPENDENTLY_REPRODUCED
+II–IV,Markdown documents,33,33,INDEPENDENTLY_REPRODUCED
+II–IV,PDF documents,20,20,INDEPENDENTLY_REPRODUCED
+II–IV,AppleDouble sidecars,33,33,INDEPENDENTLY_REPRODUCED
+II–IV,ZIP containers,1,1,INDEPENDENTLY_REPRODUCED
+II–IV,ZIP entries,66,66,INDEPENDENTLY_REPRODUCED
+II–IV,Content members,33,33,INDEPENDENTLY_REPRODUCED
+II–IV,Metadata members,33,33,INDEPENDENTLY_REPRODUCED
+II–IV,Canonical Work routes,32,32,INDEPENDENTLY_REPRODUCED
+II–IV,Human Work gates,8,8,INDEPENDENTLY_REPRODUCED
+II–IV,Identity hypotheses,256,256,INDEPENDENTLY_REPRODUCED
+II–IV,Work interval,"[32,40]","[32,40]",INDEPENDENTLY_REPRODUCED
+II,Markdown bytes,412854,1534070,INDEPENDENTLY_FALSIFIED
+II,PDF bytes,5876498,5642539,INDEPENDENTLY_FALSIFIED
+II,AppleDouble bytes,134818,64896,INDEPENDENTLY_FALSIFIED
+II,ZIP bytes,1514764,697429,INDEPENDENTLY_FALSIFIED
+II,Derivative integrity / parent mapping,100%; zero unparented,53/53 exact hashes and source-parent matches,INDEPENDENTLY_REPRODUCED
+III,Derivative index size,53,53 in both historical Python and E-00 JS,INDEPENDENTLY_REPRODUCED
+III,Representative 600-byte spans,Offsets 0–600,API trims requested ends to complete codepoints; all 53 full reconstructions independently checked,IMPLEMENTED
+III,Binary query zero hits,0,Structural exclusion verified; historical text index excludes 34 negative extraction states; search strings alone do not prove safety,INDEPENDENTLY_REPRODUCED
+III,Tokenizer preserves international/math retrieval,unicode61,Stored bytes reconstruct; JS lexical parser rejects π-only query before FTS; integer span start guards partly work,INDEPENDENTLY_FALSIFIED
+III,Semantic checkpoint / embedding parity,Unavailable / refused,Unavailable; semantic quality NOT_MEASURED,HELD_MISSING_OBSERVATION
+V,Documentary instrument inventory,21,21 Markdown files enumerated in candidate inspector; ATTRIBUTION and CONNECTOR_ENTRY included,INDEPENDENTLY_REPRODUCED
+V,Standalone scientific executors in documentary folder,0,0 implementations in that folder; native administrative retrieval/identity scripts do execute,IMPLEMENTED
+V,Administrative scripts,5,11 .py files: five test files and six non-test scripts; taxonomy needs explicit definition,INDEPENDENTLY_FALSIFIED
+VI,Ten synthesizing capabilities,1–10,"Declaration storage/refusal templates exist; authentic mapping checks, generated predictions and source-to-theory cascade fail challenges",INDEPENDENTLY_FALSIFIED
+VI,Promotion ladder,LEVEL_0 through LEVEL_3,Code LEVEL_1_MOTIF_MATCH through LEVEL_4_WARRANTED_MECHANISM; Level 4 reserved for human,INDEPENDENTLY_FALSIFIED
+VII,Four matched arms,4,Only Arm 4 executes research operations; other three have assigned metrics,INDEPENDENTLY_FALSIFIED
+VII,Arm 1 fidelity,0.2,Code constant 1.0; original scientific metric NOT_MEASURED,NOT_MEASURED
+VII,Arm 2 fidelity,0.4,Code constant 1.0; original scientific metric NOT_MEASURED,NOT_MEASURED
+VII,Arm 3 fidelity,0.65,Code constant 0.65; original scientific metric NOT_MEASURED,NOT_MEASURED
+VII,Arm 4 fidelity,1.0,Code constant 1.0; original scientific metric NOT_MEASURED,NOT_MEASURED
+VII,Traceability scores,.70/.85/.75/.98,Constants; history traceability quality NOT_MEASURED,NOT_MEASURED
+VII,Retrieval query costs,1/3/6/4,"Constants; independent graph arms each 30 queries, 24 source reads, 216 source bytes",NOT_MEASURED
+VII,Correction latency,Manual hours/days; N/A; 8 ticks; 1 tick,Code Infinity/10/8/1; all assigned. Independent withdrawal+query uses 2 external operations in both graph arms,NOT_MEASURED
+VII,Contradiction retention,Ignored/Ignored/Collapsed/Preserved,Code true/true/false/true. Independent explicit opposite claims retained in both graph arms,INDEPENDENTLY_FALSIFIED
+VII,Arm quality levels,0/0/1/3,No executable quality scoring; theory quality NOT_MEASURED,NOT_MEASURED
+VII,Reciprocal fidelity advantage,35 percentage points over union,Independent graph fidelity 30/30 vs 30/30; difference 0 percentage points on bounded graph decisions,INDEPENDENTLY_FALSIFIED
+VIII,Reference record census,1141,1141,INDEPENDENTLY_REPRODUCED
+VIII,Reference edge census,2131,2131 developer suite reproduced; local suite passes,INDEPENDENTLY_REPRODUCED
+VIII,Reference results avoid theory auto-promotion,false flag,Bibliographic wrapper preserves false flag; separate groundTheoryWarrant still permits arbitrary content,IMPLEMENTED
+IX,Negative registers,5,Five narrative categories and nine JSON refusal-register entries; counts refer to different groupings,IMPLEMENTED
+X,ZIP file count limit,500,Code default 500; configured small-count rejection reproduced,IMPLEMENTED
+X,ZIP member size limit,16777216,Code default matches; actual-output ceiling bypass independently executed,INDEPENDENTLY_FALSIFIED
+X,ZIP aggregate bytes limit,67108864,Code 134217728 (128 MiB); actual-output ceiling bypass independently executed,INDEPENDENTLY_FALSIFIED
+X,Compression ratio limit,100:1,Declared ratio rejection works; dishonest declared length bypasses actual size protection,IMPLEMENTED
+XI,E-00 tests,"12/12, 1.4s",12/12; local duration 414.143 ms,DEVELOPMENT_TESTED
+XI,Historical Python tests,"12/12, 1.9s",12/12 at original revision; local 0.016 s,DEVELOPMENT_TESTED
+XI,Cross-Atelier tests,"16/16, 0.8s",16/16 in combined 32-test Node execution,DEVELOPMENT_TESTED
+XI,Workflow estate,"4/4, 0.4s",Four workflow assertions within one Node file-level test; combined suite duration 324.181 ms,DEVELOPMENT_TESTED
+XI,Six-role support,All supported,Independent five specialists executed; Orchestrator HELD / HELD_DISSENT,HELD_MISSING_OBSERVATION
+XI,Aperture condition number,1.087,Authored 1.25/1.15 diagonal gives 1.0869565; unrelated to experimental discrimination. Independent identical-score columns have rank 1,IMPLEMENTED
+XI,Atlas winding parity,0,"Author supplies zero to both; independent observation did not measure winding, so engine holds missing explicit winding",HELD_MISSING_OBSERVATION
+XI,Additional independent empirical replication,0,0,IMPLEMENTED
+XI,Dollhouse source binding,U-00 predecessor 9c82…,Candidate spec points to predecessor; independent audit binds current 7488… and clean exact Git tree,IMPLEMENTED
