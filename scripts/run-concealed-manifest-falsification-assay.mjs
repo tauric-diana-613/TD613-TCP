@@ -2,27 +2,24 @@
 /**
  * 𝌋 TD613 · Reference Concealed Falsification Runner for Independent Reviewer
  * 
- * Executes an independent, concealed synthetic falsification suite across 4 conditions:
- * 1. W_ALONE
- * 2. E_ALONE
- * 3. COMPETENT_STRONG_UNION_V2
- * 4. RECIPROCAL_MANIFEST
+ * CLASSIFICATION: NONEXECUTABLE_REVIEWER_SCAFFOLD
+ * CANDIDATE_STATUS: CANDIDATE_FROZEN_INDEPENDENT_FALSIFICATION_PENDING
  * 
- * Calculates exact two-sided McNemar test and reports per-dimension metrics.
- * 
- * NOTE: Candidate author HALTS prior to executing this script.
- * Execution is reserved for the independent reviewer with a concealed suite.
+ * NOTICE (Review Finding M01-R08 & Directive S-01.II):
+ * This script is designated as non-executable reviewer scaffolding.
+ * The candidate author is strictly prohibited from generating, inspecting, or executing
+ * concealed evaluation suites. Execution of the independent trial is reserved exclusively
+ * for the independent reviewer under their own external custody and commission.
  * 
  * Authority: SAC[X6ZNK5NO51]
  * Covenant: Khona‌lit-po (literal U+200C interior retained)
  */
 
-import fs from 'node:fs';
-import path from 'node:path';
-import crypto from 'node:crypto';
-
-import { ManifestWarrantEngine } from '../packages/manifest_reciprocal_warrant/manifest-warrant-engine.mjs';
-import { CompetentStrongUnionComparator } from '../packages/manifest_reciprocal_warrant/competent-strong-union.mjs';
+console.error('[NONEXECUTABLE_REVIEWER_SCAFFOLD] Execution halted fail-closed.');
+console.error('The candidate author must not execute or tune against concealed evaluation suites.');
+console.error('The independent evaluator and concealed suite must be authored independently by the external reviewer.');
+console.error('Candidate classification: CANDIDATE_FROZEN_INDEPENDENT_FALSIFICATION_PENDING');
+process.exit(1);
 
 function parseArgs() {
   const args = process.argv.slice(2);
