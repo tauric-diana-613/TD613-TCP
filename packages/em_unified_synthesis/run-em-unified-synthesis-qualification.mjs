@@ -124,6 +124,13 @@ export function runQualification() {
   console.log('[5/7] Executing Prospective Unified Theory Synthesis Candidate...');
   const synthesis = new EmUnifiedTheorySynthesisEngine();
 
+  // Register authenticated source record for operator attestation
+  synthesis.registerAuthenticatedSource({
+    sourceId: sampleSource.source_file_id,
+    filename: sampleSource.original_filename,
+    rawBytes
+  });
+
   synthesis.extractWorkAnatomy({
     workId: 'work:algedonic_loops',
     title: 'Algedonic Systems Deep Research',
@@ -254,7 +261,7 @@ export function runQualification() {
       sourcePassages: [{
         source_id: 'emsrc_algedonic_mock',
         byteOffset: 0,
-        length: 30,
+        length: 'Algedonic alert bypass channels.'.length,
         span_text: 'Algedonic alert bypass channels.',
         span_sha256: sha256Hex('Algedonic alert bypass channels.'),
         operator: 'Algedonic.alert_bypass()'
@@ -280,12 +287,12 @@ export function runQualification() {
     execution_duration_ms: durationMs,
     historical_estate_pinned_revision: '30630575ade616a5a47e4066b30d2159c2bd32be',
     lineage_and_diagnostic_provenance: {
-      candidate_revision_class: 'EM_E00_1a_COMPARATOR_WIRING_AND_ZIP_CONTRACT_RECONCILIATION',
-      direct_predecessor_repair_candidate_head: 'f3dd8d54ba423409317aa239d9dd6bdb6da618ef',
+      candidate_revision_class: 'EM_E00_1a_FINAL_HANDOFF_CORRECTION',
+      direct_predecessor_repair_candidate_head: 'd446d32f9ae312ebae73d8e0c6584f0c418e6481',
       historical_e00_predecessor_head: '7488e5fd2b4fc0b2f222e0214f21129bbe143a17',
       independent_evaluation_head: 'd28eb2e4335e6a0447c471ae61039a9fd97ccac3',
-      diagnostic_review_reference: 'https://github.com/tauric-diana-613/TD613-TCP/pull/1711#pullrequestreview-5807992291',
-      review_id: '5807992291',
+      diagnostic_review_reference: 'https://github.com/tauric-diana-613/TD613-TCP/pull/1712#pullrequestreview-5808364168',
+      review_id: '5808364168',
       historical_independent_cases_evaluated: 94,
       candidate_internal_paired_ledger_cases_evaluated: CANONICAL_PAIRED_CASE_LEDGER.length
     },

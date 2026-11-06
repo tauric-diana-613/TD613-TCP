@@ -395,13 +395,34 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
 
   it('11. Unified Theory Synthesis Engine: admits valid composable candidate and cascades withdrawal with immutable snapshots', () => {
     const engine = new EmUnifiedTheorySynthesisEngine();
+    const algedonicRaw = Buffer.from('Algedonic Alert Channels provide bypass mechanisms for homeostatic regulation.', 'utf8');
+    const hypervisorRaw = Buffer.from('AI Hypervisor Chaos Steering dynamically corrects agent trajectory.', 'utf8');
+
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:algedonic_root',
+      filename: 'AlgedonicRoot.md',
+      rawBytes: algedonicRaw
+    });
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:hypervisor_root',
+      filename: 'HypervisorRoot.md',
+      rawBytes: hypervisorRaw
+    });
+
     engine.extractWorkAnatomy({
       workId: 'work:algedonic_01',
       title: 'Algedonic Alert Channels',
       domain: 'MANAGEMENT_CYBERNETICS',
       assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
       operators: ['Alert.bypass()'],
-      sourcePassages: [{ source_id: 'src:algedonic_root' }]
+      sourcePassages: [{
+        source_id: 'src:algedonic_root',
+        byteOffset: 0,
+        length: algedonicRaw.length,
+        span_text: algedonicRaw.toString('utf8'),
+        span_sha256: sha256Hex(algedonicRaw),
+        operator: 'Alert.bypass()'
+      }]
     });
     engine.extractWorkAnatomy({
       workId: 'work:hypervisor_02',
@@ -409,7 +430,14 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
       domain: 'CONTROL_THEORY',
       assumptions: ['HOMEOSTATIC_EQUILIBRIUM'],
       operators: ['Steering.correct()'],
-      sourcePassages: [{ source_id: 'src:hypervisor_root' }]
+      sourcePassages: [{
+        source_id: 'src:hypervisor_root',
+        byteOffset: 0,
+        length: hypervisorRaw.length,
+        span_text: hypervisorRaw.toString('utf8'),
+        span_sha256: sha256Hex(hypervisorRaw),
+        operator: 'Steering.correct()'
+      }]
     });
 
     const candidate = engine.synthesizeCrossDomainCandidate({
@@ -566,6 +594,16 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     const engine = new EmUnifiedTheorySynthesisEngine();
     const contText = 'Continuous differential flow integration dynamics.';
     const discText = 'Discrete automaton step transition updates.';
+
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:continuous_dynamics',
+      rawBytes: Buffer.from(contText, 'utf8')
+    });
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:discrete_automaton',
+      rawBytes: Buffer.from(discText, 'utf8')
+    });
+
     engine.extractWorkAnatomy({
       workId: 'work:continuous_model',
       title: 'Continuous Differential Flow',
@@ -611,7 +649,7 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(resNoBridge.verdict, 'NO_UNIFICATION_WARRANTED');
     assert.equal(resNoBridge.reason, 'COMPOSABILITY_FAILURE_DUE_TO_INCOMMENSURABLE_ASSUMPTIONS');
 
-    // 2. With formal discretization correspondence: admitted as candidate
+    // 2. With formal discretization correspondence: admitted as candidate but mathematical validity preserved as HELD_UNVERIFIED
     const resWithBridge = engine.synthesizeCrossDomainCandidate({
       candidateId: 'cand:with_bridge',
       workAId: 'work:continuous_model',
@@ -630,6 +668,8 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     });
     assert.equal(resWithBridge.verdict, 'COMPOSABLE_THEORY_CANDIDATE_ADMITTED');
     assert.equal(resWithBridge.promotion_level, PROMOTION_LADDER.LEVEL_2_COMPOSABLE_THEORY_CANDIDATE);
+    assert.equal(resWithBridge.mathematical_validity_status, 'HELD_UNVERIFIED');
+    assert.equal(resWithBridge.discretization_correspondence.mathematical_validity, 'HELD_UNVERIFIED');
   });
 
   it('15. Hardened ZIP Intake: rejects symlinks, encryption, duplicate paths, and zip bombs', () => {
@@ -747,6 +787,56 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(findings.differential_matrix.withdrawal_operation_counts.arm_3_non_reciprocal, 2);
     assert.equal(findings.differential_matrix.withdrawal_operation_counts.arm_4_reciprocal, 2);
     assert.equal(findings.differential_matrix.withdrawal_operation_counts.determination, 'EQUIVALENT_WITHDRAWAL_OPERATIONS');
+
+    // 5. Negative Control A: Duplicate case_id in ledger is rejected fail-closed
+    const duplicateLedger = [
+      ...CANONICAL_PAIRED_CASE_LEDGER,
+      { ...CANONICAL_PAIRED_CASE_LEDGER[0] }
+    ];
+    assert.throws(() => {
+      comparator.evaluateComparison(testCorpus, duplicateLedger);
+    }, /ASYMMETRIC_CASE_LEDGER_DETECTED/);
+
+    // 6. Negative Control B: Missing case_id or malformed entry rejected fail-closed
+    assert.throws(() => {
+      comparator.evaluateComparison(testCorpus, [
+        { case_id: 'case_1_valid' },
+        { target: 'missing_case_id' }
+      ]);
+    }, /ASYMMETRIC_CASE_LEDGER_DETECTED/);
+
+    // 7. Negative Control C: Asymmetric outcomes dynamically emit ASYMMETRIC determinations, never unconditional ties
+    const asymmetricLedger = [
+      {
+        case_id: 'asym_case_1',
+        case_type: 'PRE_WITHDRAWAL_TARGET',
+        root: 'root:hypervisor',
+        target: 'claim:priority_bypass',
+        expected_admissible: true
+      },
+      {
+        case_id: 'asym_case_2',
+        case_type: 'PRE_WITHDRAWAL_TARGET',
+        root: 'root:hypervisor',
+        target: 'claim:unreachable_target_arm3',
+        expected_admissible: false
+      },
+      {
+        case_id: 'asym_case_3',
+        case_type: 'PRE_WITHDRAWAL_TARGET',
+        root: 'root:hypervisor',
+        target: 'premise:priority_inversion', // Reachable in Arm 3 union graph, but ungrounded in Arm 4 LFP.P
+        expected_admissible: true
+      }
+    ];
+
+    const asymFindings = comparator.evaluateComparison(testCorpus, asymmetricLedger);
+    assert.equal(asymFindings.arms.arm_3_non_reciprocal_union.measured_graph_fidelity, 1.0);
+    assert.equal(asymFindings.arms.arm_4_reciprocal.measured_graph_fidelity < 1.0, true);
+    assert.ok(asymFindings.differential_matrix.measured_graph_fidelity_comparison.determination.startsWith('ASYMMETRIC_FIDELITY_OBSERVED'));
+    assert.notEqual(asymFindings.differential_matrix.measured_graph_fidelity_comparison.determination, 'BOUNDED_TIE_AT_100_PERCENT');
+    assert.equal(asymFindings.differential_matrix.scientific_reciprocal_surplus, 'UNESTABLISHED');
+    assert.ok(asymFindings.governance_determination.startsWith('EMPIRICAL_OUTCOME_OBSERVED'));
   });
 
   it('17. WIRE-02 Source-Attested Operator & Morphism Qualification: rejects unattested, unverified, or digest-mismatched proposals', () => {
@@ -779,7 +869,16 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(resEmpty.verdict, 'NO_UNIFICATION_WARRANTED');
     assert.equal(resEmpty.reason, 'EMPTY_SOURCE_PASSAGES_CANNOT_ATTEST_OPERATORS');
 
-    // 2. Operator quotation digest mismatch: rejected fail-closed
+    // 2. Operator quotation digest mismatch: rejected fail-closed against authenticated source
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:fake',
+      rawBytes: Buffer.from('Valid text passage for testing', 'utf8')
+    });
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:valid',
+      rawBytes: Buffer.from('OpB text for testing', 'utf8')
+    });
+
     engine.extractWorkAnatomy({
       workId: 'work:digest_mismatch_a',
       title: 'Digest Mismatch Work A',
@@ -802,7 +901,14 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
       title: 'Valid Work B',
       domain: 'CYBERNETICS',
       operators: ['OpB.action()'],
-      sourcePassages: [{ source_id: 'src:valid', span_text: 'OpB text' }]
+      sourcePassages: [{
+        source_id: 'src:valid',
+        byteOffset: 0,
+        length: 'OpB text for testing'.length,
+        span_text: 'OpB text for testing',
+        span_sha256: sha256Hex('OpB text for testing'),
+        operator: 'OpB.action()'
+      }]
     });
 
     const resMismatch = engine.synthesizeCrossDomainCandidate({
@@ -817,13 +923,29 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(resMismatch.reason, 'SOURCE_QUOTATION_DIGEST_MISMATCH_REJECTED');
 
     // 3. Bare boolean continuous/discrete correspondence flag rejected
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:cont',
+      rawBytes: Buffer.from('Flow text', 'utf8')
+    });
+    engine.registerAuthenticatedSource({
+      sourceId: 'src:disc',
+      rawBytes: Buffer.from('Step text', 'utf8')
+    });
+
     engine.extractWorkAnatomy({
       workId: 'work:cont_bare',
       title: 'Continuous Model Bare',
       domain: 'DYNAMICS',
       assumptions: ['CONTINUOUS_FLOW'],
       operators: ['Flow.run()'],
-      sourcePassages: [{ source_id: 'src:cont', span_text: 'Flow text' }]
+      sourcePassages: [{
+        source_id: 'src:cont',
+        byteOffset: 0,
+        length: 'Flow text'.length,
+        span_text: 'Flow text',
+        span_sha256: sha256Hex('Flow text'),
+        operator: 'Flow.run()'
+      }]
     });
     engine.extractWorkAnatomy({
       workId: 'work:disc_bare',
@@ -831,7 +953,14 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
       domain: 'AUTOMATA',
       assumptions: ['DISCRETE_TRANSITION'],
       operators: ['Step.run()'],
-      sourcePassages: [{ source_id: 'src:disc', span_text: 'Step text' }]
+      sourcePassages: [{
+        source_id: 'src:disc',
+        byteOffset: 0,
+        length: 'Step text'.length,
+        span_text: 'Step text',
+        span_sha256: sha256Hex('Step text'),
+        operator: 'Step.run()'
+      }]
     });
 
     const resBareBool = engine.synthesizeCrossDomainCandidate({
@@ -860,6 +989,48 @@ describe('EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suit
     assert.equal(resUnverified.verdict, 'NO_UNIFICATION_WARRANTED');
     assert.equal(resUnverified.status, 'HELD_UNVERIFIED');
     assert.equal(resUnverified.reason, 'MAPPING_RELATIONSHIP_UNVERIFIED_OR_UNOBSERVED');
+
+    // 5. Adversarial negative test: caller supplies a self-consistent quotation and digest,
+    // but the source is NOT registered in the authenticated source registry.
+    const unauthQuote = 'Adversarial unauthenticated operator claim and definition.';
+    const unauthDigest = sha256Hex(unauthQuote); // perfectly self-consistent with quoted text!
+    engine.extractWorkAnatomy({
+      workId: 'work:adversarial_unauth_a',
+      title: 'Adversarial Unauthenticated Work A',
+      domain: 'CYBERNETICS',
+      operators: [
+        {
+          name: 'OpAdversarial.run()',
+          source_attestation: {
+            source_id: 'src:unregistered_external_source',
+            passage_coordinates: { start: 0, end: unauthQuote.length },
+            quoted_text: unauthQuote,
+            content_digest: unauthDigest
+          }
+        }
+      ],
+      sourcePassages: [{
+        source_id: 'src:unregistered_external_source',
+        byteOffset: 0,
+        length: unauthQuote.length,
+        span_text: unauthQuote,
+        span_sha256: unauthDigest
+      }]
+    });
+
+    const resUnauth = engine.synthesizeCrossDomainCandidate({
+      candidateId: 'cand:adversarial_unauth',
+      workAId: 'work:adversarial_unauth_a',
+      workBId: 'work:valid_b',
+      proposedBridgeHypothesis: 'Adversarial unauthenticated attestation test',
+      formalOperatorMapping: [{ opA: 'OpAdversarial.run()', opB: 'OpB.action()', morphismType: 'HOMOMORPHIC_INTERVENTION' }],
+      proposedPredictions: [{ metric: 'm', expected_direction: 'ZERO', minimum_effect: 0 }]
+    });
+
+    assert.equal(resUnauth.verdict, 'NO_UNIFICATION_WARRANTED');
+    assert.equal(resUnauth.status, 'HELD_UNVERIFIED');
+    assert.equal(resUnauth.reason, 'UNAUTHENTICATED_SOURCE_ATTESTATION_REJECTED');
+    assert.equal(resUnauth.falsification_status, 'HELD_UNVERIFIED_SOURCE');
   });
 
   it('18. WIRE-03 Complete ZIP Header & Admission Contract: adversarial header mismatches, descriptors, and atomic rollback', () => {
