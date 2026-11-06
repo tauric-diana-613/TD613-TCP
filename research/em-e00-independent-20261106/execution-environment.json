@@ -1,0 +1,23 @@
+{
+  "candidate_revision": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "candidate_tree": "faf998458a3b04931bd8a2557179ef184623d771",
+  "original_audit_checkout_clean": true,
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "python_sqlite": "3.53.1",
+  "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "candidate_source_files": {
+    "packages/em_unified_synthesis/competent-null-comparator.mjs": "2777c860894b5bc1b77ef24f30abae637a5b1c4ec8120d2a7b78bffcee2a03b8",
+    "packages/em_unified_synthesis/corpus-inspector.mjs": "04f9caeca59c4b270b3366e38ee194c47bfb28e14b376d311727e614faf7a4d7",
+    "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs": "5fd120e4af3cf588ab111092e640b00ade363ee4e82f2864c3e3b6b12422d2ad",
+    "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs": "29b9fd8b9b7878ce31c91aa9d939d3bfad56ea401601750c094fef8de823964d",
+    "packages/em_unified_synthesis/lexical-readback-witness.mjs": "532f95512e78d82464948621c338fd88ac34cd03263c4cfa5ffb52dcfc403fed",
+    "packages/em_unified_synthesis/operator-zip-intake.mjs": "26f50c41a08c287403a7efe6e2d6122ad4fdb30809366a14d6ade01851b14b21",
+    "packages/em_unified_synthesis/run-em-unified-synthesis-qualification.mjs": "8aab122edfc5eca6035b877e69017875953eb5f62026027731e195aa2f5097e7",
+    "packages/em_unified_synthesis/test-em-unified-synthesis.mjs": "581494527b9835edb718b57d783c4e00d2ec96e510d800a0a077fa706bdbbf28"
+  },
+  "no_candidate_code_repair": true,
+  "no_protected_B_archive": true,
+  "no_paid_calls": true,
+  "human_closure_required": true
+}

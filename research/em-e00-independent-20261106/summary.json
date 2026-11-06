@@ -1,0 +1,76 @@
+{
+  "candidate": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "independent_cases": 94,
+  "concealed_cases": 90,
+  "public_examples": 4,
+  "criteria_met": 56,
+  "counts_by_group": {
+    "concealed_main": {
+      "cases": 58,
+      "met": 35
+    },
+    "zip": {
+      "cases": 24,
+      "met": 11
+    },
+    "historical": {
+      "cases": 8,
+      "met": 8
+    },
+    "public": {
+      "cases": 4,
+      "met": 2
+    }
+  },
+  "matched_metrics": {
+    "candidate": {
+      "cases": 18,
+      "target_decisions": 30,
+      "graph_fidelity": 1.0,
+      "rejection_accuracy": 1,
+      "unsupported_targets": 18,
+      "false_graph_convergence": 0,
+      "source_reads": 24,
+      "source_bytes": 216,
+      "query_calls": 30,
+      "median_query_ms": 0.01112150000000156,
+      "mean_query_ms": 0.026322033333333415,
+      "correction_external_operations": [
+        2,
+        2,
+        2
+      ],
+      "content_entailment_accuracy": "NOT_MEASURED_AS_GENERAL_SEMANTIC_METRIC",
+      "prediction_quality": "NOT_MEASURED",
+      "cross_domain_theory_quality": "NOT_MEASURED"
+    },
+    "union": {
+      "cases": 18,
+      "target_decisions": 30,
+      "graph_fidelity": 1.0,
+      "rejection_accuracy": 1,
+      "unsupported_targets": 18,
+      "false_graph_convergence": 0,
+      "source_reads": 24,
+      "source_bytes": 216,
+      "query_calls": 30,
+      "median_query_ms": 0.004957499999999726,
+      "mean_query_ms": 0.011041666666666571,
+      "correction_external_operations": [
+        2,
+        2,
+        2
+      ],
+      "content_entailment_accuracy": "NOT_MEASURED_AS_GENERAL_SEMANTIC_METRIC",
+      "prediction_quality": "NOT_MEASURED",
+      "cross_domain_theory_quality": "NOT_MEASURED"
+    }
+  },
+  "hypothesis_disposition": "RECIPROCAL_SURPLUS_NOT_ESTABLISHED_BOUNDED_NULL_TIE",
+  "software_disposition": "PARTIAL_REPRODUCTION_WITH_INDEPENDENT_FALSIFICATIONS",
+  "zip_disposition": "HELD",
+  "protected_flight": "HELD",
+  "human_scientific_closure": "RESERVED",
+  "source_pins_verified": true,
+  "exact_head_PR_triggered_CI_runs_returned": 0
+}

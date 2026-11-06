@@ -1,0 +1,121 @@
+{
+  "executed": 4,
+  "criterion_met": 2,
+  "harness_errors": 0,
+  "integrated": {
+    "candidate": {
+      "events": [
+        {
+          "sequence": 1,
+          "operation": "initialize_and_load_reference",
+          "wall_ms": 8.335636999999998
+        },
+        {
+          "sequence": 2,
+          "operation": "source_read_and_admit",
+          "wall_ms": 0.2806020000000018
+        },
+        {
+          "sequence": 3,
+          "operation": "stage_exact_passage",
+          "wall_ms": 0.9628009999999989
+        },
+        {
+          "sequence": 4,
+          "operation": "reference_query",
+          "wall_ms": 1.2964330000000004
+        },
+        {
+          "sequence": 5,
+          "operation": "proof_check_and_derivation",
+          "wall_ms": 0.5787310000000048
+        },
+        {
+          "sequence": 6,
+          "operation": "query_before_withdrawal",
+          "wall_ms": 0.03826800000000219
+        },
+        {
+          "sequence": 7,
+          "operation": "withdraw_root",
+          "wall_ms": 0.2884339999999952
+        },
+        {
+          "sequence": 8,
+          "operation": "query_after_withdrawal",
+          "wall_ms": 0.03226899999999944
+        }
+      ],
+      "reference_matches": 20,
+      "reference_record_count": 1141,
+      "source_reads": 1,
+      "source_bytes": 54,
+      "reference_query_calls": 1,
+      "warrant_query_calls": 2,
+      "terminal_outputs": {
+        "before": true,
+        "after": false
+      },
+      "correction_latency_external_ops": 2,
+      "source_warrant_fidelity": 1,
+      "proof_checked": true
+    },
+    "strong_union": {
+      "events": [
+        {
+          "sequence": 1,
+          "operation": "initialize_and_load_reference",
+          "wall_ms": 4.655493000000007
+        },
+        {
+          "sequence": 2,
+          "operation": "source_read_and_admit",
+          "wall_ms": 0.07856900000000167
+        },
+        {
+          "sequence": 3,
+          "operation": "stage_exact_passage",
+          "wall_ms": 0.24349599999999327
+        },
+        {
+          "sequence": 4,
+          "operation": "reference_query",
+          "wall_ms": 1.4247960000000006
+        },
+        {
+          "sequence": 5,
+          "operation": "proof_check_and_derivation",
+          "wall_ms": 0.35015700000001004
+        },
+        {
+          "sequence": 6,
+          "operation": "query_before_withdrawal",
+          "wall_ms": 0.033010000000004425
+        },
+        {
+          "sequence": 7,
+          "operation": "withdraw_root",
+          "wall_ms": 0.04742200000001162
+        },
+        {
+          "sequence": 8,
+          "operation": "query_after_withdrawal",
+          "wall_ms": 0.003836000000006834
+        }
+      ],
+      "reference_matches": 20,
+      "reference_record_count": 1141,
+      "source_reads": 1,
+      "source_bytes": 54,
+      "reference_query_calls": 1,
+      "warrant_query_calls": 2,
+      "terminal_outputs": {
+        "before": true,
+        "after": false
+      },
+      "correction_latency_external_ops": 2,
+      "source_warrant_fidelity": 1,
+      "proof_checked": true
+    }
+  }
+}

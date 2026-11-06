@@ -1,0 +1,78 @@
+{
+  "executed": 58,
+  "criterion_met": 35,
+  "criterion_unmet": 23,
+  "harness_errors": 0,
+  "by_category": {
+    "MATCHED_GRAPH": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "MATCHED_CONTRADICTIONS": [
+      true,
+      true
+    ],
+    "SYNTHESIS": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      true
+    ],
+    "CONTENT_WARRANT": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    "CHRONOLOGY": [
+      false,
+      false,
+      true,
+      false
+    ],
+    "LEXICAL": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true
+    ]
+  }
+}

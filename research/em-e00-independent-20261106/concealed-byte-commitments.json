@@ -1,0 +1,16 @@
+{
+  "claim_ceiling": "Byte commitments to retained reviewer-local materials; no public reproducibility or origin attestation.",
+  "sha256": {
+    "preregistration.json": "b2d45927ffd9fbda7034401c78f819db0d700e2e2e6ab6f57accd8e6954024bd",
+    "zip-worker.mjs": "52c63bf961a3d40714890188bbc026a56dcc6be5f9dde61dfadb4d875ae19ae6",
+    "replay-baseline.json": "d29e9f6322b3f9128a67cf36c3c5753464a2b70b53278f0c4f94c219dc5641f2",
+    "zip-full-results.json": "cfa0cc3d2d197ed4a65bbadd6b20f17d50ae47687901defe29a278082610bd7c",
+    "private-seed.txt": "939d6c806411dcac2bdc852d7b554833ca02b914548a169aa4d48e6088ef0687",
+    "zip-evaluate.py": "0fbab79ac7b6a4283c7e43e2e0de6b1963c5d7d83464906f21bdf2f8eee2b470",
+    "evaluate.mjs": "306410cb5736e150417054ed72d54d896cb9843c5741954c18a411320ffa3717",
+    "zip-fixtures.json": "0ad046d180501b0e91044eda7663adb031c4a33ddf69b62bbb50102cd3a5749f",
+    "historical-evaluate.py": "d4d3bd960d5e9eedfaf43ba1470b4a272d6af9a3035e1e54fb286b44c5e07e94",
+    "full-results.json": "8dd3f3f39aac27da5c13d31408f21435ca9a4d1c5e6d5acf534debfc51f5c52f",
+    "budget-amendment.json": "1604fb8c98447b6583f1d04e7a31243ff8614b50e46d0672ee5addd4f3461b44"
+  }
+}

@@ -1,0 +1,2721 @@
+{
+  "schema": "td613.e00.independent-evaluation/v1",
+  "candidate": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+  "environment": {
+    "node": "v24.22.1",
+    "platform": "linux"
+  },
+  "tests": [
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 1
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 2
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 3
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 4
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 5
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 6
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 7
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 8
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 9
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 10
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 11
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 12
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 13
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 14
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 15
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 16
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 17
+    },
+    {
+      "category": "MATCHED_GRAPH",
+      "criterion_met": true,
+      "observation": {
+        "terminal_equal": true
+      },
+      "test_id": 18
+    },
+    {
+      "category": "MATCHED_CONTRADICTIONS",
+      "criterion_met": true,
+      "observation": {
+        "both_preserved": true,
+        "semantic_resolution": "NOT_MEASURED",
+        "trace": [
+          {
+            "action": "source_read_and_admit",
+            "elapsed_ms": 0.018859000000006176
+          },
+          {
+            "action": "source_read_and_admit",
+            "elapsed_ms": 0.007451000000003205
+          },
+          {
+            "action": "register_claim",
+            "elapsed_ms": 0.004185999999990031
+          },
+          {
+            "action": "register_claim",
+            "elapsed_ms": 0.004376000000007707
+          },
+          {
+            "action": "register_rule",
+            "elapsed_ms": 0.003945999999999117
+          },
+          {
+            "action": "register_rule",
+            "elapsed_ms": 0.0037360000000035143
+          },
+          {
+            "action": "query",
+            "elapsed_ms": 0.014842999999999051
+          },
+          {
+            "action": "query",
+            "elapsed_ms": 0.011547999999990566
+          }
+        ]
+      },
+      "test_id": 19
+    },
+    {
+      "category": "MATCHED_CONTRADICTIONS",
+      "criterion_met": true,
+      "observation": {
+        "both_preserved": true,
+        "semantic_resolution": "NOT_MEASURED",
+        "trace": [
+          {
+            "action": "source_read_and_admit",
+            "elapsed_ms": 0.004767000000001076
+          },
+          {
+            "action": "source_read_and_admit",
+            "elapsed_ms": 0.002394000000009555
+          },
+          {
+            "action": "register_claim",
+            "elapsed_ms": 0.00750200000000234
+          },
+          {
+            "action": "register_claim",
+            "elapsed_ms": 0.0031150000000081945
+          },
+          {
+            "action": "register_rule",
+            "elapsed_ms": 0.0003810000000044056
+          },
+          {
+            "action": "register_rule",
+            "elapsed_ms": 0.0002309999999994261
+          },
+          {
+            "action": "query",
+            "elapsed_ms": 0.00855299999999204
+          },
+          {
+            "action": "query",
+            "elapsed_ms": 0.0056090000000068585
+          }
+        ]
+      },
+      "test_id": 20
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 21
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 22
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 23
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 24
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 25
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "level": "COMPOSABLE_THEORY_CANDIDATE",
+        "predictions_echoed": true
+      },
+      "test_id": 26
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": true,
+      "observation": {
+        "verdict": "NO_UNIFICATION_WARRANTED",
+        "level": "STRUCTURAL_ANALOGY_CANDIDATE",
+        "predictions_echoed": null
+      },
+      "test_id": 27
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": true,
+      "observation": {
+        "verdict": "NO_UNIFICATION_WARRANTED",
+        "level": "MOTIF_MATCH",
+        "predictions_echoed": null
+      },
+      "test_id": 28
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": true,
+      "observation": {
+        "verdict": "NO_UNIFICATION_WARRANTED",
+        "retained": 1
+      },
+      "test_id": 29
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "retained": 0
+      },
+      "test_id": 30
+    },
+    {
+      "category": "SYNTHESIS",
+      "criterion_met": true,
+      "observation": {
+        "verdict": "NO_UNIFICATION_WARRANTED",
+        "retained": 1
+      },
+      "test_id": 31
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 32
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 33
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 34
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 35
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 36
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 37
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 38
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 39
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 40
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 41
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "EXACT_SPAN_DIGEST_MISMATCH",
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 42
+    },
+    {
+      "category": "CONTENT_WARRANT",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "DIGEST_MISMATCH",
+        "layer": "source integrity / graph closure do not entail claim content"
+      },
+      "test_id": 43
+    },
+    {
+      "category": "CHRONOLOGY",
+      "criterion_met": false,
+      "observation": {
+        "prior_object_changed": true,
+        "prior_status_after": "WITHDRAWN"
+      },
+      "test_id": 44
+    },
+    {
+      "category": "CHRONOLOGY",
+      "criterion_met": false,
+      "observation": {
+        "status": "ACTIVE_CANDIDATE",
+        "automatic_dependency_link": false
+      },
+      "test_id": 45
+    },
+    {
+      "category": "CHRONOLOGY",
+      "criterion_met": true,
+      "observation": {
+        "same_capsule": true,
+        "withheld": 1
+      },
+      "test_id": 46
+    },
+    {
+      "category": "CHRONOLOGY",
+      "criterion_met": false,
+      "observation": {
+        "admitted": 2,
+        "default_clock": "Infinity"
+      },
+      "test_id": 47
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "checked": 53,
+        "correct": 53
+      },
+      "test_id": 48
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": "NATIVE_CONTEXT_INVALID_CODEPOINT_BOUNDARY: offset 2 cuts inside UTF-8 codepoint",
+        "returned_bytes": null,
+        "returned_hash": null
+      },
+      "test_id": 49
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": null,
+        "returned_bytes": 0,
+        "returned_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "test_id": 50
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": null,
+        "returned_bytes": 22,
+        "returned_hash": "b7f1b6ed3d97806f3cd18e7b258be57cff5ff2850d9f4a0bd19bf3858175c3dc"
+      },
+      "test_id": 51
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": "NATIVE_CONTEXT_OFFSET_OUT_OF_BOUNDS: -1",
+        "returned_bytes": null,
+        "returned_hash": null
+      },
+      "test_id": 52
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": "NATIVE_CONTEXT_OFFSET_OUT_OF_BOUNDS: 23",
+        "returned_bytes": null,
+        "returned_hash": null
+      },
+      "test_id": 53
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": false,
+      "observation": {
+        "error": null,
+        "returned_bytes": 21,
+        "returned_hash": "d781666d065205da7a8af2fd30c172538a8ffdaf6eaa7f2c3ce60f8898261477"
+      },
+      "test_id": 54
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": false,
+      "observation": {
+        "error": null,
+        "returned_bytes": 2,
+        "returned_hash": "2617fcb92baa83a96341de050f07a3186657090881eae6b833f66a035600f35a"
+      },
+      "test_id": 55
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": false,
+      "observation": {
+        "found": false,
+        "error": "NATIVE_QUERY_NO_WORDS"
+      },
+      "test_id": 56
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "historical_indexed": 53
+      },
+      "test_id": 57
+    },
+    {
+      "category": "LEXICAL",
+      "criterion_met": true,
+      "observation": {
+        "error": "SOURCE_NOT_IN_INDEX: missing"
+      },
+      "test_id": 58
+    }
+  ],
+  "matched": [
+    {
+      "case_id": 1,
+      "category": "CIRCULARITY_RECOGNITION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.2992710000000045,
+            0.02319499999999408
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.5560779999999994
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.07764699999999891
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.01347099999999557
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.011426999999997633
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.06281500000000051
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.03724600000000322
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.2992710000000045
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.02319499999999408
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.09878899999999646,
+            0.03972999999999871
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.05272899999999936
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.1261300000000034
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.009484000000000492
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004317000000000348
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.030274999999996055
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0023640000000000327
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.09878899999999646
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.03972999999999871
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 2,
+      "category": "WITHDRAWAL_PROPAGATION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.1017530000000022,
+            0.019619999999996196
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0274610000000024
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.01279999999999859
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.009384999999994648
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.01265899999999931
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00989500000000021
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.006549999999997169
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.1017530000000022
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.2889949999999999
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.019619999999996196
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.028974000000005162,
+            0.00329500000000138
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.012789000000005046
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.011737999999994031
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.025567999999999813
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006850000000000023
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0025739999999956353
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0015830000000036648
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.028974000000005162
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.04326499999999811
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.00329500000000138
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 3,
+      "category": "SHARED_ORIGIN_RECOGNITION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.024056999999999107
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.023474999999997692
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.01107699999999312
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0066599999999965576
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.007722000000001117
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.013931000000006577
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.007601000000001079
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00864299999999929
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.024056999999999107
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.02269399999999422
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.01021599999999978
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.009724999999995987
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0028049999999950614
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006069000000003655
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.007681999999995526
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00334500000000304
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0008509999999972706
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.02269399999999422
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 4,
+      "category": "CONJUNCTIVE_DEPENDENCY",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.012719999999994513,
+            0.03186799999999579
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.01837799999999845
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.016595000000002358
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00467700000000093
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0037349999999989336
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.007992000000001553
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.012719999999994513
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.016694999999998572
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.03186799999999579
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.0076919999999987,
+            0.009623999999995192
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0108460000000008
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.009384000000004278
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004697000000000173
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00186300000000017
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.001170999999999367
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0076919999999987
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.006558999999995763
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.009623999999995192
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 5,
+      "category": "ALIAS_CONTAMINATION_RESISTANCE",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.014922000000005653,
+            0.008773999999995397
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.018337999999999965
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005497999999995784
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0044770000000013965
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003264999999998963
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.005938999999997918
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.014922000000005653
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.008773999999995397
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.004527000000003056,
+            0.0027839999999983434
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.005567999999996687
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006009000000005926
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003224999999993372
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0015119999999981815
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0009719999999973084
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.004527000000003056
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0027839999999983434
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 6,
+      "category": "UNADMITTED_BRIDGE_ISOLATION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.01427100000000081
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.01510300000000342
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004415999999999087
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0031250000000042633
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0042560000000051446
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.007902000000001408
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.03658500000000231
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.01427100000000081
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.011788000000002796
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.023336000000000467
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006761000000004458
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0019329999999939673
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.01097599999999943
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.01092599999999777
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.004305999999999699
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.011788000000002796
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 7,
+      "category": "CIRCULARITY_RECOGNITION",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.005387999999996396,
+            0.0014420000000043842
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.012167999999995516
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0057189999999991414
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0021839999999997417
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0060789999999997235
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0008910000000028617
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00041099999999971715
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.005387999999996396
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0014420000000043842
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.04667100000000346,
+            0.007280999999998983
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.038978999999997654
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006799999999998363
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004056000000005611
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0034150000000039427
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.004516999999999882
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003325000000003797
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.04667100000000346
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.007280999999998983
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 8,
+      "category": "WITHDRAWAL_PROPAGATION",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.009333999999995513,
+            0.0017330000000015389
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.012039000000001465
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.007401000000001545
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002283999999995956
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0016519999999999868
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.000750999999993951
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0003110000000035029
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.009333999999995513
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.0034559999999999036
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0017330000000015389
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.011566999999999439,
+            0.009684999999997501
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.033920999999999424
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004846999999998047
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003165000000002749
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002995000000005632
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0036360000000001946
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0030550000000033606
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.011566999999999439
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.034100999999999715
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.009684999999997501
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 9,
+      "category": "SHARED_ORIGIN_RECOGNITION",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.010446000000001732
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.005457999999997298
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006589999999995655
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0019330000000010727
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0015619999999998413
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.004226000000002728
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0005000000000023874
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00027000000000043656
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.010446000000001732
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.015492999999999313
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.01641499999999496
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005837999999997123
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0032550000000028945
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0030450000000001864
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.007441000000000031
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0038460000000029027
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003154999999999575
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.015492999999999313
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 10,
+      "category": "CONJUNCTIVE_DEPENDENCY",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.0036759999999986803,
+            0.007832000000000505
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.005378000000000327
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.006378999999995472
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002853999999999246
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0015819999999990841
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0005810000000039395
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0036759999999986803
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0035449999999954684
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.007832000000000505
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.008963000000001387,
+            0.00941399999999959
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.008983999999998105
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004667000000004862
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002934000000003323
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0029439999999993915
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00491699999999895
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.008963000000001387
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.00936399999999793
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.00941399999999959
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 11,
+      "category": "ALIAS_CONTAMINATION_RESISTANCE",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.002965000000003215,
+            0.004125999999999408
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0071810000000027685
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005798999999996113
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0017830000000031987
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002755000000000507
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.000610999999999251
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.002965000000003215
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.004125999999999408
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.008102000000000942,
+            0.0069710000000000605
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.008203000000001737
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0039159999999967
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0030550000000033606
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002803999999997586
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0033749999999983515
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.008102000000000942
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0069710000000000605
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 12,
+      "category": "UNADMITTED_BRIDGE_ISOLATION",
+      "runs": {
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.0024340000000009354
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.00544800000000123
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005738999999998384
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0019229999999978986
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.001601999999998327
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0017229999999983647
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00033099999999564034
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0024340000000009354
+            }
+          ]
+        },
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.00721099999999808
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.00811199999999701
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003444999999999254
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003894999999999982
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0029339999999962174
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003104999999997915
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.004106000000000165
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.00721099999999808
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 13,
+      "category": "CIRCULARITY_RECOGNITION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.009314000000003375,
+            0.005618000000005452
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.006219000000001529
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004726999999995485
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0029749999999992838
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002873999999998489
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0034360000000006607
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003165000000002749
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.009314000000003375
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.005618000000005452
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.0017119999999977153,
+            0.002192999999998335
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0042970000000011055
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0042159999999995534
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.001632000000000744
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0014529999999979282
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.000461000000001377
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00027999999999650527
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0017119999999977153
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.002192999999998335
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 14,
+      "category": "WITHDRAWAL_PROPAGATION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.015584000000004039,
+            0.007421000000000788
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.007441000000000031
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.008122000000000185
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0032250000000004775
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003023999999996363
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.005057999999998231
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003234999999996546
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.015584000000004039
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.06650999999999385
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.007421000000000788
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            },
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.007221000000001254,
+            0.0009110000000021046
+          ],
+          "correction_latency_external_ops": 2,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.010565999999997189
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.007951999999995962
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0023630000000025575
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0028040000000046916
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0005510000000015225
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0002309999999994261
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.007221000000001254
+            },
+            {
+              "action": "withdraw",
+              "elapsed_ms": 0.006019000000001995
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0009110000000021046
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 15,
+      "category": "SHARED_ORIGIN_RECOGNITION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.02313500000000346
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.017015999999998144
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.008822999999999581
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0692239999999984
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0429150000000007
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.013170000000002346
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.19020199999999932
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.011077000000000226
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.02313500000000346
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": null,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": true,
+          "latency_ms": [
+            0.010846999999998275
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.031176999999999566
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.008853000000001998
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.002853999999999246
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003284999999998206
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.004516000000002407
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0005510000000015225
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0002309999999994261
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.010846999999998275
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 16,
+      "category": "CONJUNCTIVE_DEPENDENCY",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.010676000000003683,
+            0.011808000000002039
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.010165000000000646
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00448599999999999
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00448599999999999
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0029240000000001487
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0035549999999986426
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.010676000000003683
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.006119000000005315
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.011808000000002039
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 2
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.001982999999995627,
+            0.005588000000003035
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 2,
+          "retrieval_bytes": 18,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0031439999999989254
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00472700000000259
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0030049999999945953
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0014919999999989386
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0004100000000022419
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.001982999999995627
+            },
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.002554000000003498
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.005588000000003035
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 17,
+      "category": "ALIAS_CONTAMINATION_RESISTANCE",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.010285999999993578,
+            0.005637999999997589
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.03464199999999806
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004217000000004134
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.003033999999999537
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004415999999999087
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.003396000000002175
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.010285999999993578
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.005637999999997589
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            },
+            {
+              "terminal": "GROUNDED",
+              "acquisitions": 1
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.01835799999999921,
+            0.0016519999999999868
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 2,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.0035649999999947113
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005459000000001879
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0028240000000039345
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0014430000000018595
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0004210000000028913
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.01835799999999921
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.0016519999999999868
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 18,
+      "category": "UNADMITTED_BRIDGE_ISOLATION",
+      "runs": {
+        "candidate": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.008372000000001378
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.00836299999999568
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.005127999999999133
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0029639999999986344
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0028939999999977317
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0043659999999974275
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0029940000000010514
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.008372000000001378
+            }
+          ]
+        },
+        "union": {
+          "queries": [
+            {
+              "terminal": "UNSUPPORTED",
+              "acquisitions": 0
+            }
+          ],
+          "source_warrant_fidelity": 1,
+          "rejection_accuracy": 1,
+          "false_convergence": 0,
+          "acquisition_dedup_correct": null,
+          "latency_ms": [
+            0.001512000000005287
+          ],
+          "correction_latency_external_ops": null,
+          "source_reads": 1,
+          "retrieval_bytes": 9,
+          "query_calls": 1,
+          "trace": [
+            {
+              "action": "source_read_and_admit",
+              "elapsed_ms": 0.004226000000002728
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.004746999999994728
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.00163300000001243
+            },
+            {
+              "action": "register_claim",
+              "elapsed_ms": 0.0026939999999910924
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.0004299999999943793
+            },
+            {
+              "action": "register_rule",
+              "elapsed_ms": 0.00025000000000829914
+            },
+            {
+              "action": "query",
+              "elapsed_ms": 0.001512000000005287
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

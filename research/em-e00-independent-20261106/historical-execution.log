@@ -1,0 +1,106 @@
+{
+  "executed": 8,
+  "criterion_met": 8,
+  "tests": [
+    {
+      "case_id": 1,
+      "category": "original_byte_integrity",
+      "criterion_met": true,
+      "observation": {
+        "total": 87,
+        "correct": 87,
+        "bytes": 7938934
+      }
+    },
+    {
+      "case_id": 2,
+      "category": "derivative_hash_and_parent",
+      "criterion_met": true,
+      "observation": {
+        "total": 53,
+        "correct": 53,
+        "negative_states": 34
+      }
+    },
+    {
+      "case_id": 3,
+      "category": "negative_extraction_states",
+      "criterion_met": true,
+      "observation": {
+        "count": 34,
+        "states": {
+          "UNSUPPORTED_FORMAT": 34
+        }
+      }
+    },
+    {
+      "case_id": 4,
+      "category": "historical_zip_crc",
+      "criterion_met": true,
+      "observation": {
+        "members": 66,
+        "content": 33,
+        "sidecars": 33,
+        "crc_all_valid": true
+      }
+    },
+    {
+      "case_id": 5,
+      "category": "historical_native_index",
+      "criterion_met": true,
+      "observation": {
+        "indexed": 53,
+        "verified": true
+      }
+    },
+    {
+      "case_id": 6,
+      "category": "all_historical_readback",
+      "criterion_met": true,
+      "observation": {
+        "full_text_hashes": 53,
+        "context_hashes": 53,
+        "query_retrievable": 53
+      }
+    },
+    {
+      "case_id": 7,
+      "category": "all_work_routes",
+      "criterion_met": true,
+      "observation": {
+        "routes": 32,
+        "human_gated": 8,
+        "no_lineage_promoted": true
+      }
+    },
+    {
+      "case_id": 8,
+      "category": "identity_gate_partition",
+      "criterion_met": true,
+      "observation": {
+        "partitions": 256,
+        "lower": 32,
+        "upper": 40,
+        "human_gates_resolved": false
+      }
+    }
+  ],
+  "formats": {
+    ".pdf": {
+      "count": 20,
+      "bytes": 5642539
+    },
+    ".zip": {
+      "count": 1,
+      "bytes": 697429
+    },
+    ".md": {
+      "count": 33,
+      "bytes": 1534070
+    },
+    "APPLEDOUBLE": {
+      "count": 33,
+      "bytes": 64896
+    }
+  }
+}

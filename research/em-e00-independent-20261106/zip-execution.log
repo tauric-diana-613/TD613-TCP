@@ -1,0 +1,20 @@
+{
+  "executed": 24,
+  "criterion_met": 11,
+  "criterion_unmet": [
+    "crc_wrong",
+    "local_signature_wrong",
+    "local_name_differs",
+    "local_method_differs",
+    "no_eocd",
+    "truncated_eocd",
+    "actual_expansion_exceeds_ceiling",
+    "actual_cumulative_exceeds_ceiling",
+    "duplicate_path_conflicting_bytes",
+    "symlink_external_attributes",
+    "utf8_invalid_filename",
+    "utf8_invalid_text",
+    "utf8_midpoint_passage"
+  ],
+  "harness_errors": 0
+}

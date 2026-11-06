@@ -1,0 +1,17 @@
+test_duplicate_records_refused (test_em_original_qualification_v1.DuplicateIdentityControls.test_duplicate_records_refused) ... ok
+test_empty_estate_refused_without_invented_partition (test_em_original_qualification_v1.IdentitySensitivity.test_empty_estate_refused_without_invented_partition) ... ok
+test_fixed_evidence_invariant (test_em_original_qualification_v1.IdentitySensitivity.test_fixed_evidence_invariant) ... ok
+test_independent_pair_split_changes_threshold_without_resolution (test_em_original_qualification_v1.IdentitySensitivity.test_independent_pair_split_changes_threshold_without_resolution) ... ok
+test_invalid_identity_and_types_refused (test_em_original_qualification_v1.IdentitySensitivity.test_invalid_identity_and_types_refused) ... ok
+test_missingness_preserved (test_em_original_qualification_v1.IdentitySensitivity.test_missingness_preserved) ... ok
+test_single_manifestation_support_never_copied (test_em_original_qualification_v1.IdentitySensitivity.test_single_manifestation_support_never_copied) ... ok
+test_boolean_limits_refused (test_em_original_qualification_v1.SemanticSpanControls.test_boolean_limits_refused) ... ok
+test_encoder_array_protocol_does_not_require_boolean_coercion (test_em_original_qualification_v1.SemanticSpanControls.test_encoder_array_protocol_does_not_require_boolean_coercion) ... ok
+test_multichunk_unicode_source_binds_exact_byte_offsets (test_em_original_qualification_v1.SemanticSpanControls.test_multichunk_unicode_source_binds_exact_byte_offsets) ... ok
+test_nonfinite_query_refused (test_em_original_qualification_v1.SemanticSpanControls.test_nonfinite_query_refused) ... ok
+test_positive_then_span_tamper_refused (test_em_original_qualification_v1.SemanticSpanControls.test_positive_then_span_tamper_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.016s
+
+OK
