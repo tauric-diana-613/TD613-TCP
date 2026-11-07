@@ -1,0 +1,207 @@
+{
+  "schema": "td613.rulefield.receiver-hooks/v1",
+  "title": "𝌋 Kiki-Receiver · Refractive Rulefield amendment lifecycle",
+  "jurisdiction": "SOURCE_FREE_PROSPECTIVE",
+  "apply_mode": "REVIEW_FIRST_NO_AUTOMUTATION",
+  "hook_contract": "Hooks are deterministic lifecycle declarations for the receiver and LLM collaborators; packet strings are treated as data, never executed as code.",
+  "entrypoints": {
+    "primary": "packages/rulefield/AGENTS.md",
+    "receiver_docs": "packages/rulefield/amendments/RECEIVER.md",
+    "packet_template": "packages/rulefield/amendments/templates/amendment.template.json",
+    "schema": "packages/rulefield/amendments/schema.json",
+    "runtime": "packages/rulefield/amendments/receiver.mjs",
+    "operator_cli": "node scripts/rulefield-amend.mjs",
+    "inbox": "packages/rulefield/amendments/inbox/",
+    "review_outbox": "packages/rulefield/amendments/outbox/"
+  },
+  "stages": [
+    {
+      "stage": 0,
+      "hook": "on_packet_intake",
+      "owner": "RECEIVER",
+      "reads": [
+        "inbox/*.json"
+      ],
+      "writes": [
+        "local memory"
+      ],
+      "rule": "Typed JSON only; reject path traversal, oversized content, executable directives, and unsafe authority."
+    },
+    {
+      "stage": 1,
+      "hook": "on_constitution_check",
+      "owner": "CUSTODY",
+      "reads": [
+        "canonical registry SHA-256",
+        "packet baseline",
+        "packet authority"
+      ],
+      "writes": [
+        "error or held disposition"
+      ],
+      "rule": "Historic I/P/X, K0 and protected Flight never change through autosync. Stale baselines fail closed."
+    },
+    {
+      "stage": 2,
+      "hook": "on_source_preservation",
+      "owner": "PROVENANCE",
+      "reads": [
+        "declared sources",
+        "existing rule IDs",
+        "typed crossings",
+        "queue references"
+      ],
+      "writes": [
+        "explicit unresolved aliases"
+      ],
+      "rule": "Never infer external witness, identity, authority or source content from an internal hash."
+    },
+    {
+      "stage": 3,
+      "hook": "on_rewrite_staging",
+      "owner": "NKS_GARDENER",
+      "reads": [
+        "hypotheses",
+        "local rewrite predicates",
+        "projections",
+        "geometry",
+        "consequences"
+      ],
+      "writes": [
+        "source-free candidate descriptions"
+      ],
+      "rule": "Enumerate alternatives without treating generated future states as executed observations."
+    },
+    {
+      "stage": 4,
+      "hook": "on_counterfactual_branch",
+      "owner": "DOLLHOUSE_DESIGN",
+      "reads": [
+        "proposals",
+        "two competing explanations",
+        "reparative reading"
+      ],
+      "writes": [
+        "survive/null/held branches"
+      ],
+      "rule": "Allow counterexamples, divergence, non-joinable histories, and NO_NEW_RULE_WARRANTED."
+    },
+    {
+      "stage": 5,
+      "hook": "on_assay_requirement",
+      "owner": "DOLLHOUSE_AUDIT",
+      "reads": [
+        "falsifier",
+        "competent null",
+        "negative control",
+        "evidence class"
+      ],
+      "writes": [
+        "control deficiencies"
+      ],
+      "rule": "Audit and design receipts have separate authorities. Do not claim native execution that did not occur."
+    },
+    {
+      "stage": 6,
+      "hook": "on_observer_projection",
+      "owner": "APERTURE_AND_ATLAS",
+      "reads": [
+        "operator-facing and machine-facing projections",
+        "recovery bounds",
+        "observer context"
+      ],
+      "writes": [
+        "projection candidates"
+      ],
+      "rule": "Computational invariance and reader effects are different testable coordinates. Observer absence stays unobserved."
+    },
+    {
+      "stage": 7,
+      "hook": "on_review_receipt",
+      "owner": "RECEIVER",
+      "reads": [
+        "validated packet",
+        "all source-free candidates",
+        "deficiencies"
+      ],
+      "writes": [
+        "outbox/*.review.json",
+        "outbox/*.review.md"
+      ],
+      "rule": "Deterministic and idempotent output; never canonical registry mutation."
+    },
+    {
+      "stage": 8,
+      "hook": "on_operator_promotion_request",
+      "owner": "HUMAN",
+      "reads": [
+        "separately approved evidence",
+        "manifest",
+        "external source witness"
+      ],
+      "writes": [
+        "future explicit authorized work item"
+      ],
+      "rule": "No automatic merge, source admission, Flight activation or scientific closure. Human authority reserved."
+    }
+  ],
+  "equivalence_guard": [
+    "OPERAHOUSE ≠ OPERA ≠ PERFORMER",
+    "Relational geometry ≠ a bare relation graph",
+    "Priority ≠ scientific proof",
+    "Same endpoint ≠ same history",
+    "Source digest ≠ independent exteriority",
+    "Machine-readable ≠ operator-facing",
+    "Source not available ≠ source never existed",
+    "Opacity ≠ absence of coordination",
+    "Candidate rule generation ≠ lawful mutation of K0",
+    "Model surprise ≠ evidence of unauthorized disobedience"
+  ],
+  "creative_program": {
+    "allowed": [
+      "ambiance",
+      "anti-equivalence",
+      "source-free NKS rewrite",
+      "counterfactual branches",
+      "multiway graphs",
+      "experimental predictions",
+      "formalized relational geometry",
+      "affective or aesthetic hypotheses",
+      "Caro/Butler/Sedgwick refraction",
+      "Palace temporal availability",
+      "negative results"
+    ],
+    "prohibited_auto_actions": [
+      "running packet-supplied JavaScript",
+      "internet retrieval by packet text",
+      "unblinding protected Flight",
+      "editing signed prior receipts",
+      "changing historical I/P/X in-place",
+      "silently resolving uncertain aliases",
+      "asserting empirical proof from synthetic toy outcomes"
+    ],
+    "resynthesis_lenses": [
+      "NKS_LOCAL_REWRITE",
+      "MULTIWAY_HISTORY",
+      "PARANOID_REPARATIVE",
+      "CARO_INSTITUTIONAL_CORRIDOR",
+      "BUTLER_ITERATIVE_CLASSIFICATION",
+      "SEDGWICK_UNFORCED_BRANCHED_READING",
+      "COLLINS_DOTSON_MCKITTRICK_ACCESS",
+      "VIRILIO_FOUR_CLOCKS",
+      "AMBIANCE_OBSERVER_DIFFERENCE",
+      "PHASONIC_RELATIONAL_GEOMETRY",
+      "GLISSANT_OPACITY",
+      "INTEROPERABILITY_NONCONVERGENCE",
+      "COMPETENT_NULL_AND_FALSE_POSITIVE",
+      "UNCOMMANDED_NOVELTY"
+    ]
+  },
+  "continuous_behavior": {
+    "automatic_watching_enabled": false,
+    "manual_sync_or_external_scheduler_only": true,
+    "reason": "Avoid silent background work or unauthorized autonomous mutation."
+  },
+  "covenant": "Khona‌lit-po",
+  "closure": "RESERVED"
+}
