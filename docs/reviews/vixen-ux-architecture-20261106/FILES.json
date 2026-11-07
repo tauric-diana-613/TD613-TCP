@@ -1,10 +1,11 @@
 {
   "schema": "td613.review-packet.files-manifest/v1.2",
-  "commission_id": "COMM-VIXEN-PROTOTYPE-BUILD-20261107-V4",
-  "document_id": "TD613-VIXEN-PROTOTYPE-PACKET-20261107-V4",
-  "predecessor_v3_commit": "51de572172fadd5c3c85b42729785c8c2a1fcfcb",
-  "predecessor_v4_candidate_commit": "893e391a522eda0f9ad66100c948f4cd19e56917",
-  "predecessor_v4_html_sha256": "e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017",
+  "commission_id": "COMM-VIXEN-PROTOTYPE-BUILD-20261107-V4.1-FINAL",
+  "document_id": "TD613-VIXEN-PROTOTYPE-PACKET-20261107-V4.1-FINAL",
+  "frozen_application_source_commit": "0ca94c8f43a27b97832b81232a6b10e472f406d3",
+  "frozen_application_html_sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4",
+  "frozen_application_html_bytes": 664108,
+  "predecessor_evidence_commit": "514384371f955e23d5c5c44a559bab92ebc39982",
   "external_resource_requests_contract": "STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0",
   "standalone_external_dependencies_count": 0,
   "base_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
@@ -20,7 +21,10 @@
     "executable_codex_mentions_present": false,
     "local_workstation_paths_present": false,
     "release_authority": false,
-    "deployment_authority": false
+    "deployment_authority": false,
+    "empirical_replication_count": 0,
+    "specialist_roles_executed": 5,
+    "orchestrator_consensus_derived": 1
   },
   "packet_files": [
     {
@@ -72,6 +76,12 @@
       "sha256": "ebfbf5f0ef91f0f53fe1abde23bf283d9f9090334ab7f2af72c0770e2f0584dc"
     },
     {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-audit-receipt-vixen-surgical.json",
+      "zip_path": "review-packet/dollhouse-audit-receipt-vixen-surgical.json",
+      "bytes": 15284,
+      "sha256": "403ea1a57f726901022a3bde77b1c1f3feba0bf06141e8018c9bd5df61ed22dc"
+    },
+    {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-design-receipt-vixen-correction.json",
       "zip_path": "review-packet/dollhouse-design-receipt-vixen-correction.json",
       "bytes": 188359,
@@ -98,8 +108,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
       "zip_path": "review-packet/PRE_FREEZE_VERIFICATION_REPORT.md",
-      "bytes": 28667,
-      "sha256": "4d344d4d1b650de8beac4e90f877015b9ab225295d737fdf265bf7c9cbdf64ff"
+      "bytes": 31064,
+      "sha256": "d960e9cf4ea819290235db424a70992444cafdbb86f2883ef262b484c8dfb194"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
@@ -392,8 +402,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
       "zip_path": "review-packet/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
-      "bytes": 20245,
-      "sha256": "fe0e6a75fd6cb4f00cf17bc041c8f2f784b0152640c40051f8ae7a1c5ea55fd9"
+      "bytes": 20907,
+      "sha256": "b9480fd4f83660a91c523ff36eeef8b446af7b6e45e3a47f42a04f9adfa2d5c5"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
@@ -412,6 +422,12 @@
       "zip_path": "review-packet/vixen-prototype-commission.json",
       "bytes": 17543,
       "sha256": "09eaf595167b7cd1f00b0b36523cf06eff12e5abfd81b92803bd93e19c4744f1"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-surgical-successor-audit.json",
+      "zip_path": "review-packet/vixen-surgical-successor-audit.json",
+      "bytes": 2528,
+      "sha256": "83a643640c691110e6070a9c42228dc6e88f86bfaac61a4c5ec7cb9e441e50f9"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-ux-commission.json",
@@ -789,6 +805,24 @@
       "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1.md",
       "bytes": 3175,
       "sha256": "51a0df7ed0ee4905f9b1e54d4a146b66f662148eaa0cae53a021bea3332b983c"
+    },
+    {
+      "repo_path": "artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "source_commit": "0ca94c8f43a27b97832b81232a6b10e472f406d3",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/0ca94c8f43a27b97832b81232a6b10e472f406d3/artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "bytes": 15284,
+      "sha256": "403ea1a57f726901022a3bde77b1c1f3feba0bf06141e8018c9bd5df61ed22dc"
+    },
+    {
+      "repo_path": "tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "source_commit": "0ca94c8f43a27b97832b81232a6b10e472f406d3",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/0ca94c8f43a27b97832b81232a6b10e472f406d3/tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "bytes": 2528,
+      "sha256": "83a643640c691110e6070a9c42228dc6e88f86bfaac61a4c5ec7cb9e441e50f9"
     }
   ]
 }

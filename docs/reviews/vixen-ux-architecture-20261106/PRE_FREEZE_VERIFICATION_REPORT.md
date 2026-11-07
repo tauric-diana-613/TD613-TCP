@@ -30,7 +30,9 @@ The historical succession of candidate HTML artifacts across the Vixen Cyberneti
 | **External Dependency Elimination** | `1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8` | 658,050 bytes | `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2` | D01–D06 zero-dependency freeze |
 | **Evidence-Closure Candidate** | `3f4c0feed57da9688a6578d9bb99dd875cab3751` | 658,050 bytes | `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2` | E01–E06 browser witness reconciliation |
 | **Cross-Feature Predecessor** | `c62530f7f6fc3e6e40134ee5c43df9cb46f80776` | 662,020 bytes | `413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0` | X01–X03 reader-state consistency repair |
-| **Consolidated Successor Candidate** | `884b989b7faf7aba3f432ec3552266719a9a2fff` | **664,412 bytes** | **`737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`** | **C01–C04 navigation integrity, V01 legibility, D01/D02 Astra qualification** |
+| **Consolidated Predecessor** | `884b989b7faf7aba3f432ec3552266719a9a2fff` | **664,412 bytes** | **`737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`** | C01–C04 navigation integrity, V01 legibility, D01/D02 Astra qualification |
+| **Evaluated Surgical Successor (Executable Frozen)** | `0ca94c8f43a27b97832b81232a6b10e472f406d3` | **664,108 bytes** | **`cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4`** | **SR-01 deduplication, sole reference owner, scroll preservation; independently qualified for Astra** |
+| **Predecessor Evidence Publication** | `514384371f955e23d5c5c44a559bab92ebc39982` | (documentary/audit) | (evidence commit) | Atlas Delannoy member reconciliation, negative controls tracking, FILES.json update |
 
 ---
 
@@ -296,5 +298,18 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 **SR-03 — Prompt/packet synchronization:** The canonical, fuller Astra commission is the ZIP/GitHub 19,159-byte predecessor version, extended only with a navigation behavior annotation; the separately supplied abbreviated 17,934-byte draft is historical and not the active instruction.
 
 **SR-04 — Provenance honesty:** Competing historical digest assertions for a 640,649-byte candidate are retained as unresolved; neither is silently identified with a Git commit. SHA-256 provides byte identity, not independent origin proof.
+
+### 11.1 Dollhouse Evidence Attribution & Specialization Boundaries
+
+The companion six-role Dollhouse scientific audit receipt (`artifacts/dollhouse-audit-receipt-vixen-surgical.json` and review packet copy) is governed by strict epistemic limits:
+- **Five Executed Specialist Roles:** `PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, and `TEMPORAL_CUSTODIAN` executed their respective domain checks against declared inputs.
+- **One Derived Orchestrator Consensus:** The Orchestrator compiled the 5 primary specialist verdicts into a unanimous support finding (`UNANIMOUS_SUPPORT`). This unanimous consensus is **one aggregated finding**, not six independent external replications.
+- **Atlas Delannoy Synthetic Identity Fixture:** The test fixture (`tests/fixtures/dollhouse/vixen-surgical-successor-audit.json`) verifies self-identity on a canonical Delannoy path pair (`{ a: 2, b: 2, s: 1, path: ["D", "E", "N"] }`). This is a valid synthetic identity-case test. It must **not** be converted into evidence of external cross-system identity, empirical emergence, or physical observation.
+- **Retained Specialist & Provenance Ceilings:**
+  - `replication_status = SYNTHETIC_OFFLINE_FIXTURE`
+  - `empirical_replication_count = 0` (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`)
+  - `classification_replay_stability = HELD_NOT_YET_WITNESSED` (Aperture multi-epoch hold preserved)
+  - `exact_checkout_verified = false`, `worktree_cleanliness_verified = false` (reflecting development-tree state; source equivalence was separately verified as `current_head_source_equivalence: EXACT_CHECKOUT_IDENTICAL`)
+- **Isolation of Unadjudicated Monograph Claims:** The Refractive Couture scholarly monograph (`REFRACTIVE_COUTURE_SCHOLARLY_MONOGRAPH.md`) contains historical and mathematical assertions that remain independently unadjudicated; they are strictly quarantined from the Vixen executable qualification.
 
 **Evidence ceiling:** These surgical changes and independently executed local browser tests qualify the observed paths only. Do not treat them as remote CI, proof of deterministic cross-platform pixels, scientific replication, production release, or human closure.

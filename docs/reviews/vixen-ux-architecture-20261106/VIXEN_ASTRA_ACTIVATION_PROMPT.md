@@ -4,10 +4,11 @@
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
 **Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`  
 **Governing Draft PR:** [#1718](https://github.com/tauric-diana-613/TD613-TCP/pull/1718) · Review branch: `review/vixen-ux-architecture-20261106`  
-**Predecessor Engineering HEAD:** `c62530f7f6fc3e6e40134ee5c43df9cb46f80776`  
+**Frozen Application Source HEAD:** `0ca94c8f43a27b97832b81232a6b10e472f406d3` (frozen executable source)  
+**Predecessor Evidence-Publication HEAD:** `514384371f955e23d5c5c44a559bab92ebc39982` (documentary & audit reconciliation)  
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving literal interior U+200C)  
 **Principal / Human Scientific & Creative Closure:** Tawanna C. Miller — **RESERVED**  
-**Succession State:** `VIXEN_V4_1_CONSOLIDATED_REGRESSION_QUALIFIED_ASTRA_SUCCESSOR_STAGED`
+**Succession State:** `VIXEN_V4_1_DOCUMENTARY_RECEIPT_RECONCILED_FOR_FINAL_INDEPENDENT_REVIEW`
 
 ---
 
@@ -15,7 +16,7 @@
 
 To initiate the Stage 2 creative succession with Astra:
 1. Open the original **TD613 Encyclopedia** design conversation with GPT-6 Astra.
-2. Upload the single-file artifact **`VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`** (available in your `Downloads` folder, repository root, or artifacts directory).
+2. Upload the single-file artifact **`VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`** (available in your `Downloads` folder, at `app/encyclopedia/vix-cyb.html` in the repository, or in the review packet artifacts directory).
 3. Copy and paste the prompt block below in its entirety into the conversation.
 
 ---
@@ -31,6 +32,11 @@ Emergence HQ and TD613 Custody commission you to perform the Stage 2 creative tr
 > — Amari, Emergence HQ Review Directive
 
 You receive `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`. This is a fully self-contained, runnable, source-free HTML5 artifact containing a functioning research apparatus: embedded high-resolution chromepunk couture artwork, a 32-Work lineage catalogue, 21 documentary instruments, 8 split-plane human gates, an interactive Canvas synthesis observatory, and a concealed cybernetic inspector.
+
+- **Exact Delivered Byte Length:** `664,108` bytes
+- **Exact Delivered SHA-256 Digest:** `cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4`
+- **External Resource Requests Contract:** `STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0` (Zero external network dependencies, fonts, or CDNs)
+- **Source-Free Public Boundary:** Proprietary source code bodies remain strictly unavailable on the public surface (`UNAVAILABLE_IN_PUBLIC_SURFACE`)
 
 ### Credit-Economy Guarantee
 You do **not** need to inspect GitHub pull requests, branch histories, or repository ZIP archives. Everything you need—data schemas, corpus bundles, structural CSS, theme rules, and client runtime—is completely embedded inside this single file. You can read the JSON manifests directly from:
