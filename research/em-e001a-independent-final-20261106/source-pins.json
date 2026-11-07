@@ -1,0 +1,42 @@
+{
+  "pins": [
+    {
+      "pr": 1713,
+      "head": "5c7c48313cf25bcb75a0045f91e01337eed5c0af",
+      "branch": "research/em-e00-1a-final-handoff-20261106",
+      "base": "d446d32f9ae312ebae73d8e0c6584f0c418e6481",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1713",
+      "draft": true
+    },
+    {
+      "pr": 1712,
+      "head": "d446d32f9ae312ebae73d8e0c6584f0c418e6481",
+      "branch": "research/em-e00-1a-comparator-wiring-20261106",
+      "base": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1712",
+      "draft": true
+    },
+    {
+      "pr": 1709,
+      "head": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+      "branch": "research/em-unified-theory-synthesis-e00-20261106",
+      "base": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1709",
+      "draft": true
+    },
+    {
+      "pr": 1710,
+      "head": "d28eb2e4335e6a0447c471ae61039a9fd97ccac3",
+      "branch": "research/em-e00-independent-adjudication-20261106",
+      "base": "7488e5fd2b4fc0b2f222e0214f21129bbe143a17",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1710",
+      "draft": true
+    }
+  ],
+  "review": {
+    "id": 5808575937,
+    "head": "5c7c48313cf25bcb75a0045f91e01337eed5c0af",
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1713#pullrequestreview-5808575937",
+    "body": "𝌋 TD613 · EM E-00.1a FINAL HANDOFF: DEVELOPMENT-READY / INDEPENDENT SCIENTIFIC QUALIFICATION HELD · 2026-11-06\n\nExact candidate PR #1713 HEAD 5c7c48313cf25bcb75a0045f91e01337eed5c0af; direct predecessor PR #1712 HEAD d446d32f9ae312ebae73d8e0c6584f0c418e6481; original E-00 #1709 HEAD 7488e5fd2b4fc0b2f222e0214f21129bbe143a17. Source-level inspection of actual #1713 patches confirms concrete implementation of the two bounded handoff corrections: no dead `&& false` guard, case-ID set and trace checks, dynamic non-tie reporting, source-registry byte/coordinate/digest comparisons, and unauthenticated-source negative controls. Reported author-side suites 18/18 E-00.1, 16/16 cross-atelier, 4/4 workflow; no PR-triggered CI workflow run returned at exact HEAD in this review.\n\nDisposition: DEVELOPMENT HANDOFF READY FOR FRESH INDEPENDENT WORK REVIEW. Do not send Kenough back into author-side repair for routine prequalification. Freeze #1713. Work must execute novel independent falsification and establish the actual limitations; human scientific closure remains reserved.\n\nMANDATORY INDEPENDENT CHALLENGES:\n1. The comparator computes `scientificReciprocalSurplus = 'ESTABLISHED_EMPIRICAL_SURPLUS'` when Arm4 graph fidelity exceeds Arm3 on developer-controlled synthetic cases, without any independent empirical experiment. Test that this label cannot be cited as scientific promotion. Distinguish synthetic differential, demonstrated bounded operational improvement, and independent scientific surplus.\n2. Verify both arms actually evaluate equivalent information and affordances, not just identical case IDs: source bindings, pre/post withdrawal histories, contradictory axioms, graph premise semantics, query budgets, and claim-versus-premise types. Test deliberate divergence and competent-union wins. 6-case developer tie is not a general equivalence result.\n3. `registerAuthenticatedSource` authenticates byte consistency inside an in-memory registry; it cannot independently establish external acquisition origin. Operator `SOURCE_ATTESTED` may result from a matching source slice even if that slice does not define the named operator; `extractWorkAnatomy` permits fallback to first passage. Validate source text content/definition, exact origin/custody and nonself attestations separately. Treat arbitrary `formal_proof` truthy flags and method-name membership as proposals until validated by a typed proof checker.\n4. Challenge the ZIP parser's complete supported feature contract, data descriptors, malformed flags, partial state, boundaries, resource limits, filename handling and symlink attacks with bounded privately held synthetic adversarial inputs. Historical 87-source/53-derivative estate is distinct from 94+53 later receiver.\n5. Verify prior source withdrawal, immutable snapshots, temporal nonretroactivity, claim-entailment held, rejection of unsupported source-to-claim assertions, and all six graph behavior candidates under truly new cases. RGI-01 Wolfram multiway proposal is versioned prospective record only, with zero E-00 runtime permission.\n6. Reproduce authentic exact-head test commands, source hashes, author-reported 18/18, 16/16, 4/4 and qualification receipt where feasible; preserve `NOT_MEASURED` when unexecuted. No PR-triggered exact-head CI returned in handoff check.\n\nSTAGING RULES: Independent Work GPT-6.1 Sol High with /dollhouse-audit; fresh reviewer-owned concealed challenges remain secret from Kenough; no importing prior reviewer concealed fixtures or leaking those bytes into public PR, code, LLM author context or published comments. Work can publish a separate sanitized draft evidence PR and independent review, but must leave candidate #1713 untouched. Work may conclude HELD / FAILED / BOUNDED_SUPPORTED; don't force positive outcomes or another unbounded developer repair. Preserve Em's two recorded research permissions and distinguish public distribution access controls. Protected Experiment B ZIP, Flight, merge, deployment, paid model activation and human closure all HELD / RESERVED. Preserve Codex skill-free status. Ash Anti-Predetermined-Discovery Condition prospective measurement criteria remain governing.\n\n𝄐 Khona‌lit-po · Sealed ⟐ SAC[X6ZNK5NO51]"
+  }
+}

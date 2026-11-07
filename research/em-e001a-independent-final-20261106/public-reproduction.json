@@ -1,0 +1,75 @@
+{
+  "candidate": "5c7c48313cf25bcb75a0045f91e01337eed5c0af",
+  "checks": [
+    {
+      "name": "synthetic_label_overpromotion",
+      "contract_met": false,
+      "observation": {
+        "arm3": 0,
+        "arm4": 1,
+        "label": "ESTABLISHED_EMPIRICAL_SURPLUS"
+      }
+    },
+    {
+      "name": "union_victory_retained",
+      "contract_met": true,
+      "observation": {
+        "arm3": 1,
+        "arm4": 0,
+        "label": "UNESTABLISHED"
+      }
+    },
+    {
+      "name": "unrelated_content_attests_operator",
+      "contract_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "overall_mathematical_status": "HELD_UNVERIFIED"
+      }
+    },
+    {
+      "name": "unverified_proof_label",
+      "contract_met": false,
+      "observation": {
+        "mapping": "PROVEN",
+        "overall": "HELD_UNVERIFIED"
+      }
+    },
+    {
+      "name": "source_replacement_invalidates_cached_attestation",
+      "contract_met": false,
+      "observation": {
+        "replacement_rejected": false,
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED"
+      }
+    },
+    {
+      "name": "historical_snapshot_id_reuse",
+      "contract_met": false,
+      "observation": {
+        "rejected": false,
+        "initial_snapshot_changed": true,
+        "before": {
+          "candidate_id": "public:theory",
+          "status": "ACTIVE_CANDIDATE",
+          "version": 1,
+          "hypothesis": null
+        },
+        "after": {
+          "candidate_id": "public:theory",
+          "status": "ACTIVE_CANDIDATE",
+          "version": 1,
+          "hypothesis": "second public proposal"
+        }
+      }
+    },
+    {
+      "name": "explicit_cascade_and_snapshot_getter",
+      "contract_met": true,
+      "observation": {
+        "original": "ACTIVE_CANDIDATE",
+        "withdrawn": "WITHDRAWN"
+      }
+    }
+  ]
+}

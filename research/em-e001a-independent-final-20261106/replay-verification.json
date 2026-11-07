@@ -1,0 +1,20 @@
+{
+  "checks": [
+    {
+      "scope": "main",
+      "identical_normalized_outcomes": true,
+      "sha256": "f981e438110d034c35252e6c4d6196e5c30954614678cd97b83e29698227f82b",
+      "main_checks": 41
+    },
+    {
+      "scope": "archive",
+      "identical_normalized_outcomes": true,
+      "sha256": "628ea818457bea47745aeed2f8eeac620af1a4c29c5a15286af314a558b22d3d"
+    }
+  ],
+  "excluded_measurements": [
+    "elapsed_ms",
+    "max_rss_kib"
+  ],
+  "additional_unique_cases": 0
+}

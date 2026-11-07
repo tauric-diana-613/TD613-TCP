@@ -1,0 +1,19 @@
+{
+  "custody": "Separate complete operator-custody artifact; excluded from public PR.",
+  "origin_authentication": "NOT_ESTABLISHED_BY_HASH",
+  "files": {
+    "commission.json": "7440c25975b98098210a2762bc589c5ff969688fed2d07c711826665e538f232",
+    "challenge.mjs": "d4e583532cc177895f1c07d603efb6a5b4e9b38a655403e24b0aae4bbba9bb3b",
+    "new-seed": "de34a5f0556d931686eafc7c41624e1a7494cf4234bbeec8134f083bcfed3095",
+    "archive-worker.mjs": "b1775c7d378564fc39a46a300cf782489de89b088f59d00a320a45723345a960",
+    "archive-challenges.py": "7fb73160452c6eae531a85e80f2a97fa7a471612eb2137112d8e47c648ccb042",
+    "archive-fixtures.json": "0a63c6931ce6864364d7416f99aa0f8a493c1d8be8836f619979bd5c3f6b7e43",
+    "archive-noise.bin": "4920b249531b5fac99e238ff0dfa78b984e6ddcee291a390067ed48b7cac9abc",
+    "full-observations.json": "7e54afb648ceca1f6f1bab74d297198ca4be97a4192cc1a2f4dee19f4e9b9768",
+    "archive-full-results.json": "47a51ccaa8490f5df2d0af006d324e5a011a1e4c3431fdbf68550e50d042b447",
+    "preservation.py": "5b8aacd90627621cada208547268baa85ff0279cb9ab937d9a2cfa327ed938f7",
+    "dollhouse-adapter-attempt.json": "af3e1550c0ab798b91acaf86c903158a71e2bdf70ced931fe2ee087e17391972",
+    "archive-pilot-results.json": "2852333c5b25a55fc96104cf5bf6183bf5e221a56532ecee401dea119cd5cecc",
+    "archive-pilot-fixtures.json": "759f96250b831db1e9dfa91734690fe3a7a3771730c7a5d27a1471a7de21c543"
+  }
+}
