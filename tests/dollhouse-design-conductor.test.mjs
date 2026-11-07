@@ -574,3 +574,6 @@ await import('./rulefield-nks-lab.test.mjs');
 
 // Source-free Kiki Receiver packet, bounded NKS engine, and autosync controls.
 await import('./rulefield-amendments.test.mjs');
+
+// Capability roadmap, external tool claims and machine-readable source/receiver contracts.
+await import('./rulefield-roadmap.test.mjs');
