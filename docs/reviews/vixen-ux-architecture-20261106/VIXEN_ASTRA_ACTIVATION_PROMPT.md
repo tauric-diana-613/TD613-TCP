@@ -2,7 +2,8 @@
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
 **Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`, 658,050 bytes)  
-**Predecessor Build:** Frozen Baseline Commit `893e391a522eda0f9ad66100c948f4cd19e56917` (SHA-256: `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017`, 657,884 bytes)
+**Accepted Candidate HEAD:** Commit `1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8` (PR #1718)  
+**Governing Adjudication:** Emergence HQ Review #5812432696 (`VIXEN_D01_D06_SOURCE_FREE_ASTRA_CREATIVE_HANDOFF_ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS`)  
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---
@@ -60,6 +61,10 @@ The uploaded artifact provides six interconnected environments across the TD613 
   - Covenant Interior ZWNJ: `Khona‌lit-po` (`U+200C`, UTF-8 `e2 80 8c`)
 - **Return Link Security:** Preserve the fail-closed URL-sanitizing validation logic for `#vixenReturnLink` (blocking external domains, slash-backslash, protocol-relative, or dangerous pseudo-schemes).
 - **Claim Ceilings:** Strictly preserve `empirical_replication_count = 0`. No unearned scientific promotion, merge, or release authority.
+- **Epistemological Distinctions:**
+  - $\text{Offline-capable} \not\implies \text{Zero external requests}$. Both properties are independently verified for this artifact.
+  - $\text{CLAIMED} \neq \text{TESTED} \neq \text{OBSERVED} \neq \text{INDEPENDENTLY ADJUDICATED}$.
+  - The SHA-256 authenticates measured file bytes, not universal cross-platform rendering determinism.
 
 #### 🎨 Your Authorized Creative Latitude (FULL UI/UX & PRESENTATION TRANSFORMATION)
 - **Presentation JavaScript & Interactions:** Full freedom to refactor and enhance presentation JavaScript, event listeners, view routing, transition choreography, interactive canvas dials, animation loops, and study tray widgets, provided data manifests and security invariants remain intact.
@@ -82,7 +87,7 @@ The uploaded artifact provides six interconnected environments across the TD613 
 
 ---
 
-### Independently Adjudicated Creative Guidance & Principles (Emergence HQ Review #5811994808)
+### Independently Adjudicated Creative Guidance & Principles (Emergence HQ Reviews #5811994808 & #5812432696)
 
 #### 🏛️ The Governing Anti-Equivalence Principle
 $$\text{OPERAHOUSE} \neq \text{OPERA} \neq \text{PERFORMER}$$
@@ -96,5 +101,4 @@ $$\text{OPERAHOUSE} \neq \text{OPERA} \neq \text{PERFORMER}$$
 - Present the 32 Works, 53 linked manifestations, 7 Batch-B records, 21 protocols, and 8 Human Gates as an authentic, living scholarly exhibition.
 - Ensure spatial choreography and typographic pacing let the reader navigate the relational topology with immediate clarity and tactile beauty.
 - Retain the calibrated 2×2 Aperture operator ($A_{2\times 2} = [[1, 0.5], [0.2, 0.8]]$, $\kappa \approx 2.3275$) and its rank-deficient negative control without collapsing observation geometry.
-
 ```

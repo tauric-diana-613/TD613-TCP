@@ -1,9 +1,9 @@
 # TD613 · VIXEN V4.1 PRE-FREEZE VERIFICATION REPORT
 **Report ID:** `PRE_FREEZE_VERIFICATION_REPORT.md`  
-**Review Target:** GitHub Reviews #5810725365, #5811085212, #5811435392, #5811601958, #5811994808, and Sovereign Operator Engineering Commission (External-Dependency Elimination & Execution-Contract Reconciliation) on Draft PR #1718  
+**Review Target:** GitHub Reviews #5810725365, #5811085212, #5811435392, #5811601958, #5811994808, #5812432696, and Sovereign Operator Evidence-Closure Intervention (E01–E06) on Draft PR #1718  
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C)  
-**Human Closure:** RESERVED (Tawanna C. Miller) · **Operator:** tauric.diana.613  
-**Status:** ALL COMMISSION DIRECTIVES RESOLVED (F1–F4, P-V4-01–05, P-V4-06–08, V41-F01–F05, Q06, F07, R01–R04, M01, D01–D06) · PEDAGOGUE DESIGN GATE PASSED · ZERO EXTERNAL REQUESTS VERIFIED · PROTOTYPE STAGED FOR INDEPENDENT ADJUDICATION · ASTRA PRE-SUCCESSION CANDIDATE DELIVERED
+**Human Closure:** RESERVED (Tawanna C. Miller) · **Operator:** `tauric.diana.613`  
+**Status:** ALL COMMISSION DIRECTIVES RESOLVED (D01–D06, E01–E06) · FOUR BROWSER WITNESS RECEIPT DISCREPANCIES RESOLVED · EVIDENCE CLASSES RECONCILED · HTML BYTE IDENTITY FROZEN · ASTRA STAGING CANDIDATE SEALED
 
 ---
 
@@ -20,7 +20,7 @@
 | **Review #5811435392 Base** | `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` | 641,510 bytes | `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a` | Review #5811435392 committed reconciliation |
 | **Review #5811601958 Base** | `fb4e9cf21cfe3b25ee3e1a97c1f0429b20578a48` | 652,893 bytes | `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff` | Review #5811601958 committed baseline |
 | **Review #5811994808 Base** | `893e391a522eda0f9ad66100c948f4cd19e56917` | 657,884 bytes | `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017` | Frozen predecessor for Commission D01–D06 |
-| **Current Successor Head** | Successor Head (PR #1718) | **658,050 bytes** | **`0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`** | Complete external-dependency elimination & execution-contract reconciliation (D01–D06) |
+| **Accepted Candidate HEAD** | `1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8` | **658,050 bytes** | **`0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`** | Emergence HQ Review #5812432696 accepted candidate |
 
 ### Verified Byte-Identical Distribution Targets (658,050 bytes · SHA-256: `0cf03304...`)
 1. `app/encyclopedia/vix-cyb.html` (Repository application route)
@@ -49,94 +49,130 @@
 
 ---
 
-## 2.3 Implementation of Sovereign Operator Commission Directives D01–D06
+## 3. Implementation of Sovereign Operator Commission Directives D01–D06
 
 ### Directive D01 · Inventory and Eliminate External Resource Dependencies
-- **Defect:** HTML head previously contained 5 external resource declarations requesting Google Fonts and KaTeX assets from third-party CDNs.
-- **Implementation:**
-  - Removed all 5 declarations: 2 preconnect links (`fonts.googleapis.com`, `fonts.gstatic.com`), 1 Google Fonts CSS link, 1 KaTeX CSS link, and 1 KaTeX JS script tag.
-  - Performed full document-wide regex inventory verifying:
-    - `<script src>`: **0**
-    - Remote `<link href>`: **0**
-    - CSS `@import`: **0**
-    - Remote CSS `url(...)`: **0**
-    - Remote `<img>`, `<video>`, `<audio>`, `<iframe>`: **0** (only 1 inline base64 WebP image)
-    - Dynamic network APIs (`fetch`, `XMLHttpRequest`, `WebSocket`, `Worker`, `serviceWorker`): **0**
-  - Contract achieved: **`STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`**.
+- Removed all 5 declarations: 2 preconnect links (`fonts.googleapis.com`, `fonts.gstatic.com`), 1 Google Fonts CSS link, 1 KaTeX CSS link, and 1 KaTeX JS script tag.
+- Performed full document-wide regex inventory verifying:
+  - `<script src>`: **0**
+  - Remote `<link href>`: **0**
+  - CSS `@import`: **0**
+  - Remote CSS `url(...)`: **0**
+  - Remote `<img>`, `<video>`, `<audio>`, `<iframe>`: **0** (only 1 inline base64 WebP image)
+  - Dynamic network APIs (`fetch`, `XMLHttpRequest`, `WebSocket`, `Worker`, `serviceWorker`): **0**
+- Contract achieved: **`STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`**.
 
 ### Directive D02 · Preserve Mathematical Legibility without Network KaTeX
-- **Implementation:**
-  - Preserved complete underlying LaTeX strings in `data-latex` and comprehensive semantic mathematical fallbacks in `.math-fallback`.
-  - Verified all 22 synthesis folios, 10 spine stages, 4 Observatory models, and gates present clear formulas offline.
-  - Enhanced `renderMathSlots()` to ensure all math blocks have `role="math"` and non-empty `aria-label` attributes.
-  - Preserved the calibrated 2×2 calibration operator:
-    $$A_{2\times 2} = \begin{bmatrix}1 & 0.5\\ 0.2 & 0.8\end{bmatrix}, \quad \kappa \approx 2.3275$$
-    and plain-text fallback `A_{2×2} = [[1, 0.5], [0.2, 0.8]] (κ ≈ 2.3275)`.
-  - Preserved rank-deficient negative control `[[1, 1], [0.15, 0.15]]` (rank 1, det = 0) and lifted 3×2 probe ($\kappa \approx 2.6311$).
-  - Matrices remain clearly distinguishable as bracketed matrix rows `[[...], [...]]`, preventing ambiguous flattened prose.
+- Preserved complete underlying LaTeX strings in `data-latex` and comprehensive semantic mathematical fallbacks in `.math-fallback`.
+- Verified all 22 synthesis folios, 10 spine stages, 4 Observatory models, and gates present clear formulas offline.
+- Enhanced `renderMathSlots()` to ensure all math blocks have `role="math"` and non-empty `aria-label` attributes.
+- Preserved calibrated 2×2 operator $A_{2\times 2}$ ($\kappa \approx 2.3275$), rank-1 negative control, and lifted 3×2 probe ($\kappa \approx 2.6311$).
+- Matrices remain clearly distinguishable as bracketed matrix rows `[[...], [...]]`.
 
 ### Directive D03 · Preserve Typography, Layout and Couture Identity
-- **Implementation:**
-  - Configured robust local system font fallback stacks:
-    - `--font-sans`: `'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;`
-    - `--font-display`: `'Syne','Trebuchet MS','Arial Black','Arial Narrow',Impact,sans-serif;`
-    - `--font-serif`: `'Cormorant Garamond',Didot,'Bodoni MT','Palatino Linotype',Palatino,Georgia,serif;`
-    - `--font-mono`: `'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,'Courier New',monospace;`
-  - Tested on Windows desktop and Chromium emulation at 1440px and 390px.
-  - Verified zero horizontal overflow across all 6 departments and reader sheets.
-
-### Directive D04 · Browser Witness & Network-Request Assay
-- **Run A — Normal Network Permissions:**
-  - 3 total requests recorded (local document and internal checks over `http://127.0.0.1:<port>`).
-  - **Zero external requests** (`external_requests_count = 0`).
-- **Run B — Network Disabled (Offline):**
-  - Full view transitions, 22 math folios, Canvas simulator, study tray JSON export, and catalogue empty states verified offline.
-  - Concealed Alt+I inspector fatal UTF-8 negative controls fail closed (`ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT`).
-  - Runtime errors: **0**, Console errors: **0**.
-- **Genuine Browser History Navigation:**
-  - Verified deep link selection, `history.back()`, `history.forward()`, and `Page.reload` recovery under genuine local HTTP origin.
-- **Run C — Physical file:// Protocol Assay:**
-  - Executed directly under Chromium; verified offline context notice (`FILE_PROTOCOL_OBSERVED_IN_CHROMIUM`).
-- **Four Distinct Evidence Classes Documented:**
-  1. *Local Node Execution:* Unit & synthetic tests PASS GREEN (14/14 tests).
-  2. *Chromium Browser Witness:* Live CDP network assay, offline assay, history navigation, mobile sweep.
-  3. *GitHub Actions / Commit Checks:* Local pre-push guard passed; remote CI noted as not independently executed locally.
-  4. *Independent External Adjudication:* Reserved for Emergence HQ / Sovereign Operator review.
-
-### Directive D05 · Reproduce Existing Native Regression Suites
-- `node --test tests/vixen-pedagogue-membrane.test.mjs`: **14/14 PASS GREEN** (duration 11.6s).
-- `npm run test:pedagogue`: **55 passed, 1 skipped, 0 failed** (duration 4.2s).
-- `node docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs`: **PASS**.
-- `node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/vixen-cybernetics-design.json`: **PASS**.
-
-### Directive D06 · Synchronized Handoff Contract
-- Documented across all manifests, activation prompts, and verification reports as:  
-  **A self-contained, source-free Vixen Cybernetics research HTML artifact with no automatic external resource dependencies, subject to observed environment-specific behavior.**
+- Configured local system font fallback stacks for `--font-sans`, `--font-display`, `--font-serif`, and `--font-mono`.
+- Tested on desktop (1440px) and mobile responsive sweep (390px). Verified zero horizontal overflow (`scrollWidth <= clientWidth`).
 
 ---
 
-## 3. Epistemic Ceilings & Verification Boundaries
+## 4. Sovereign Operator Evidence-Closure Intervention (E01–E06)
 
-> [!IMPORTANT]
-> **Declaration of Verification Boundaries:**
-> - **Synthetic & Unit Test Verification:** All 14 tests in `tests/vixen-pedagogue-membrane.test.mjs` pass GREEN under Node test runner and JSDOM, confirming DOM event routing, URL sanitization, search reconciliation, and numerical SVD conditioning.
-> - **Headless Browser Witness:** Headless Chromium verifies visual layout, absence of horizontal viewport overflow at 1440px and 390px, Canvas rendering, and in-memory reload recovery.
-> - **Sandbox Testing Boundaries:** Physical desktop OS double-click `file://` launch and physical hardware mouse Back/Forward buttons remain environment-bounded where sandboxed execution prevented physical device interaction.
-> - **Claim Ceilings:** Scientific promotion authority remains `false`, empirical replication credit remains `0`, release and deployment authority remain `closed`, and human closure remains strictly **`RESERVED`** (`Tawanna C. Miller`).
+### 4.1 Directive E01 · Correction of the Offline / Network Logical Implication
+The flawed implication $\text{Offline-capable} \implies \text{Zero external requests}$ is formally corrected. As a general technical truth, an application may function offline while contacting external services when network access is present.
+
+The Vixen V4.1 candidate possesses two separately demonstrated properties:
+1. **Offline capability** under tested browser and execution conditions.
+2. **Zero automatic external-resource requests** under tested networking conditions.
+
+Neither property is presented as a logical consequence of the other; each is supported by independent empirical observation.
+
+Furthermore, the four distinct epistemological dimensions are separated:
+- **Artifact Byte Integrity:** Authenticated by SHA-256 digest (`0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`).
+- **Resource-Dependency Containment:** Zero remote tags or APIs present in the document.
+- **Runtime Behavioral Reproducibility:** Verified by deterministic test suites and browser witness automation.
+- **Cross-Platform Visual Determinism:** Bounded; byte integrity does not prove pixel-identical rendering across differing GPUs, font rasterizers, OS display scalings, or browser engines.
+
+### 4.2 Directive E02 · Resolution of Four Browser-Witness Receipt Discrepancies
+The four incomplete measurement surfaces identified in Emergence HQ Review #5812432696 were re-witnessed in Chromium CDP against the exact production HTML:
+
+1. **E02-A · Canvas Simulation Witness:**
+   - **Element ID:** `#observatoryCanvas` (verified).
+   - **Visibility:** Visible in `#observatory` environment (`offsetParent !== null`).
+   - **Dimensions:** Attribute width: 700px, height: 400px; rendered bounding box: 700×400px (DPR 1).
+   - **2D Context:** Available and functional (`canvas.getContext('2d')`).
+   - **Drawing Verification:** Confirmed drawing occurred: 80,000 non-zero alpha pixels; 4,357 non-backdrop feature pixels (grid lines, orbital planes, nodes, algedonic lance).
+   - **Root Cause of Previous `false`:** The previous witness script queried non-existent selector `#obsCanvas`; repaired to canonical `#observatoryCanvas`. No application code modification was required.
+
+2. **E02-B · Search Empty-State Evidence:**
+   - **Works Catalogue:** Query `"impossible-work-query-xyz-999"` yielded `filtered_count = 0`. Verified `.lexicon-item.empty-state[data-state="NO_MATCHING_RECORDS"]` in list pane and `.reader-empty-state[data-state="NO_MATCHING_RECORDS"]` with heading *"No Matching Research Works"* in reader pane. Query cleared $\to$ restored 32 works.
+   - **Documentary Protocols:** Query `"impossible-protocol-query-xyz-999"` yielded `filtered_count = 0`. Verified matching `NO_MATCHING_RECORDS` states in list and reader with heading *"No Matching Documentary Protocols"*. Query cleared $\to$ restored 21 protocols.
+   - **Prospective Research Tracks:** Switch to `TRACKS` family + query `"impossible-tracks-query-xyz-999"` yielded `filtered_count = 0`. Verified matching `NO_MATCHING_RECORDS` states in list and reader with heading *"No Matching Prospective Research Tracks"*. Query cleared $\to$ restored 6 tracks.
+   - **Root Cause of Previous `null`:** The previous witness script queried `data-state` on the outer containers (`#worksListContainer`, `#worksReaderPanel`) rather than the child empty-state DOM nodes. Repaired to inspect child elements.
+
+3. **E02-C · Reload Recovery & Browser History Navigation:**
+   - **Work Route Reload:** Navigated to `#works/emwork_085223e721130117f5510975`. Full page reload executed over local HTTP origin. Verified URL hash, `data-view="works"`, selected work ID, and reader heading restored cleanly (`url_addressable_reading_context_restored: true`).
+   - **Protocol Route Reload:** Navigated to `#protocols/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1`. Full page reload executed over local HTTP origin. Verified URL hash, `data-view="protocols"`, selected protocol ID, and reader heading restored cleanly (`url_addressable_reading_context_restored: true`).
+   - **History Transitions:** `window.history.back()` returned to Work #2; `window.history.forward()` returned to Protocol; all DOM states synchronized (`transitions_observed: true`).
+   - **Custody Boundary Distinction:** URL-addressable reading context (hash route, view department, selected work or protocol ID) is durably restored upon reload via client-side hash routing (`applyHashRoute()`). Session-local experimental state (temporary slider settings in Observatory, unstored filter permutations, or uncommitted hypothesis state) is NOT persisted across full reloads, and is explicitly not claimed as durable session persistence.
+
+4. **E02-D · Standalone `file://` Protocol Execution & Footer Notice:**
+   - Executed complete HTML directly under `file://` protocol in Chromium with `--allow-file-access-from-files`.
+   - Verified offline/standalone context detection (`offline_standalone_detected: true`).
+   - Verified footer return notice element `#footerEncyclopediaLink`:
+     - Location: `footer.footer .footer-actions #footerEncyclopediaLink`
+     - Text content: `"𝌋 Atelier Overview (Offline) ↑"`
+     - Title attribute: `"Local Standalone Mode: Return to Atelier Overview (Host Encyclopedia unavailable offline)"`
+     - Target href: `"#overview"`
+   - Click navigation tested: safely transitioned to `#overview` within the `file:` document without unintended filesystem-root navigation (`safely_retained_in_file_protocol: true`, `absence_of_filesystem_root_navigation: true`).
+   - **Root Cause of Previous `null`:** The previous witness script searched for non-existent attribute `data-offline-context`; repaired to inspect actual visible `textContent`, `title`, and `href`.
+
+### 4.3 Directive E03 · Reconfirmation of Network Independence
+- Executed normal-networking browser witness against the exact candidate.
+- Captured full request log across initial load and all 6 departments.
+- Result: **0 external requests recorded**.
+- Attestation: **`AUTOMATIC_EXTERNAL_RESOURCE_REQUESTS = 0`**.
+- Reconfirmed zero external runtime scripts, zero remote stylesheets, zero CDN KaTeX assets.
+
+### 4.4 Directive E04 · Reconciliation of the Four Scientific Evidence Classes
+The evidentiary attestation strictly separates four distinct non-fungible evidence classes:
+
+| Evidence Class | Scope & Authority | Status | Recorded Findings |
+| :--- | :--- | :--- | :--- |
+| **Class A: Local Developer Execution** | Node test runners, JSDOM, Pedagogue design gate, pre-push guards | **PASS** | 14/14 membrane tests PASS; 55 Pedagogue tests PASS; reconciliation verifier PASS; git pre-push sync guards PASS. |
+| **Class B: Browser Observations** | Chromium headless automation, CDP network logs, DOM inspections, screenshots | **PASS** | `AUTOMATIC_EXTERNAL_RESOURCE_REQUESTS = 0`; Canvas witness verified; empty states verified; reload recovery verified; `file://` execution verified. |
+| **Class C: Remote Repository Checks** | GitHub HEAD, exact blob identity, draft PR state, remote CI checks | **REMOTE_CI_NOT_OBSERVED** | Draft PR #1718 has no remote GitHub Actions status check rollups on commit `1dd7c1bfd`. Local tests are not substituted for remote CI. |
+| **Class D: Independent Adjudication** | Emergence HQ reviews and dispositions | **ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS** | Review #5812432696 accepted candidate D01–D06 handoff with explicit evidence ceilings. |
 
 ---
 
-## 4. Verification & Regression Checklist
+## 5. Frozen Implementation & Custody Attestation (E05)
 
-- [x] Frozen predecessor baseline: Commit `893e391a522eda0f9ad66100c948f4cd19e56917` (657,884 bytes, SHA-256 `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017`)
-- [x] Successor candidate artifact: **658,050 bytes** (SHA-256 `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`)
-- [x] Four distribution targets verified byte-identical across application route, review packet, downloads folder, and session artifacts
-- [x] D01: External font and KaTeX declarations removed; zero external script or link tags; `STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`
-- [x] D02: Full LaTeX metadata preserved; semantic mathematical fallbacks active across 22 folios, 10 spine stages, 4 observatory models, and gates; matrices bracketed `[[...], [...]]`
-- [x] D03: Local system font fallback stacks verified; zero horizontal overflow at 1440px and 390px
-- [x] D04: Browser witness network assay (Run A: 0 external requests; Run B: offline pass; Run C: file:// observed; history Back/Forward verified; 4 evidence classes recorded)
-- [x] D05: Automated test suite `tests/vixen-pedagogue-membrane.test.mjs` (14/14 tests PASS GREEN)
-- [x] D05: Core Pedagogue test suite `npm run test:pedagogue` (55 passed, 1 skipped, 0 failed)
-- [x] D05: Reconciliation verifier `verify-vixen-ux-spec-reconciliation.mjs` PASS GREEN
-- [x] D06: Handoff contract synchronized across all artifacts and manifests
-- [x] Deterministic review package `Vixen-Cybernetics-Prototype-V4-2026-11-07.zip` updated with synchronized contents
+The accepted Vixen executable HTML remains **100% byte-frozen** and unchanged:
+- **Byte Length:** `658,050` bytes
+- **SHA-256 Digest:** `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`
+
+All underlying structures and invariants remain authentic:
+- 32 canonical Works across 5 clusters.
+- 53 linked manifestations.
+- 7 unpaired Batch-B records.
+- 21 documentary instruments across 4 method families.
+- 8 split-plane human gates initialized at `UNADJUDICATED_PAIR`.
+- 22 formula folios with semantic fallbacks and accessible `role="math"`.
+- Calibrated 2×2 operator $A_{2\times 2}$ ($\kappa \approx 2.3275$), 3×2 probe ($\kappa \approx 2.6311$), and rank-deficient control.
+- Exact Unicode identities: `𝌋` (`U+1D30B`), `\u{10D613}` (`U+10D613`), `Khona‌lit-po` (`U+200C`).
+- Claim ceilings: `empirical_replication_count = 0`, `release_authority = false`, `deployment_authority = false`.
+- Human scientific and creative closure: **RESERVED** (`Tawanna C. Miller`).
+
+---
+
+## 6. Verification Checklist
+
+- [x] E01: Corrected offline/network logical implication; distinguished byte integrity, dependency containment, behavioral reproducibility, and visual determinism.
+- [x] E02-A: Canvas simulation witness on `#observatoryCanvas` recorded (700×400px, 2D context active, 80,000 alpha pixels, 4,357 feature pixels).
+- [x] E02-B: Synchronized search empty-state evidence recorded across Works, Protocols, and Tracks (`NO_MATCHING_RECORDS`, headings verified, restoration confirmed).
+- [x] E02-C: Reload recovery verified under local HTTP origin; URL-addressable reading context restored; session-local state boundary distinguished.
+- [x] E02-D: Standalone `file://` protocol execution verified; footer notice `"𝌋 Atelier Overview (Offline) ↑"` and safe click navigation observed.
+- [x] E03: Network independence reconfirmed; `AUTOMATIC_EXTERNAL_RESOURCE_REQUESTS = 0`.
+- [x] E04: Reconciled four distinct evidence classes; Class C recorded as `REMOTE_CI_NOT_OBSERVED`.
+- [x] E05: Accepted HTML byte identity strictly preserved (`658,050` bytes · SHA-256: `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`).
+- [x] E06: Synchronized documentation, receipts, manifests, and review archive across repo, Downloads, and brain.

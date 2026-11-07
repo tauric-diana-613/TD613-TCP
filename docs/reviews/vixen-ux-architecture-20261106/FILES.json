@@ -56,8 +56,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/browser-witness-receipt.json",
       "zip_path": "review-packet/browser-witness-receipt.json",
-      "bytes": 166416,
-      "sha256": "8df4ae75c19804bd3a881b3eb74a6db3681de17450a2e8f63fc7d7382c2c31d9"
+      "bytes": 175518,
+      "sha256": "a15621858c93557d93e7995addd8a1b1477865395c816c0980f40cac0c806ac0"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-audit-receipt-vixen-prototype.json",
@@ -80,8 +80,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
       "zip_path": "review-packet/PRE_FREEZE_VERIFICATION_REPORT.md",
-      "bytes": 12678,
-      "sha256": "be3f610cf66487ec069bfa9826f17624d92d92fdb67b7e4c8b5ed71b6a86e408"
+      "bytes": 16804,
+      "sha256": "c8156d4fc6b3c2ffb28912653911249513d5bd2b4d61817c789cc1816f7e8c56"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
@@ -164,8 +164,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/03-synthesis-observatory-desktop.png",
       "zip_path": "review-packet/screenshots/03-synthesis-observatory-desktop.png",
-      "bytes": 121855,
-      "sha256": "3ec72c4eeba5ca10ca2bf654d10978dca39de4470b67fbbd3cfd90465bb24828"
+      "bytes": 117929,
+      "sha256": "b60bcfcdc46b495db91ef9041948c425380f6ffadd6641e416bf6bd1c24046e8"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/04-works-catalogue-desktop.png",
@@ -200,20 +200,20 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/09-cover-mobile-390px.png",
       "zip_path": "review-packet/screenshots/09-cover-mobile-390px.png",
-      "bytes": 49885,
-      "sha256": "cb148dc16e75f972563ef1bfe1ab723e9b05d0b838b9a30dbd09d1eb5d22cd48"
+      "bytes": 167028,
+      "sha256": "b729d48cc6f4091781e75f7defdbdd949f6d78ffa82aea279836424ea18ee9af"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/10-works-mobile-390px.png",
       "zip_path": "review-packet/screenshots/10-works-mobile-390px.png",
-      "bytes": 49885,
-      "sha256": "cb148dc16e75f972563ef1bfe1ab723e9b05d0b838b9a30dbd09d1eb5d22cd48"
+      "bytes": 119618,
+      "sha256": "47fee5e211cdf4138390d48ff4daef8e8441b3ae6072d7efb801fc859f2755c3"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/11-file-protocol-desktop.png",
       "zip_path": "review-packet/screenshots/11-file-protocol-desktop.png",
-      "bytes": 782086,
-      "sha256": "411a5b83ed9d2c107241028d76934546794c008fcc01eaf24f3c3c54f2b52cff"
+      "bytes": 770491,
+      "sha256": "c780a95b51f6c16d5115930da4edb9af13a8e1deca1f8352f17b897479cb1fc3"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs",
@@ -224,8 +224,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
       "zip_path": "review-packet/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
-      "bytes": 9940,
-      "sha256": "93f5fe24727b876c0cfc8c2f13d84090bff7c83f1ea60ba26a7fde6a5b44d009"
+      "bytes": 10394,
+      "sha256": "0c735af4aefb1a9fb162ffa7180a69d1df726efc35ebe5b8e99dc89f7ae4fa53"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
