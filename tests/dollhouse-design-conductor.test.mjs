@@ -567,3 +567,7 @@ await import('./cbfe-competent-null-probe.v04.test.mjs');
 
 // Rulefield v1: provenance, priority, source-free null and fail-closed RGI-01 contracts.
 await import('./rulefield-v1.test.mjs');
+
+// Source-free, event-preserving complexity science and Garden format synchronization.
+await import('./rulefield-garden-triptych.test.mjs');
+await import('./rulefield-nks-lab.test.mjs');
