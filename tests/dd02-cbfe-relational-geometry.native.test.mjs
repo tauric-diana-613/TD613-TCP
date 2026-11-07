@@ -47,7 +47,7 @@ function routeCost({standing, policy, tick, appealConsent=false}) {
   return dist.get('claim')??Infinity;
 }
 
-// A source-neutral hearing policy must commute with swaps of external status labels.
+// A standing-neutral hearing policy is conditioned on evidence availability only in this toy assay; it makes no reliability-calibration claim.
 test('CBFE geometry: byte-identical source and static relations admit divergent situated routes',()=>{
   const common={tick:3,appealConsent:false};
   const standingSwapA={...SOURCE,standing:'FOUNDING_AUTHORITY'};
@@ -55,12 +55,12 @@ test('CBFE geometry: byte-identical source and static relations admit divergent 
   assert.equal(standingSwapA.digest,standingSwapB.digest);
   assert.equal(standingSwapA.digest,digest(SOURCE_BODY));
   assert.notEqual(standingSwapA.digest,digest(SOURCE_BODY+' altered'));
-  assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'FOUNDING_AUTHORITY'}),3);
-  assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'JUNIOR_OR_CONTESTED'}),3);
+  assert.equal(routeCost({...common,policy:'STANDING_NEUTRAL',standing:'FOUNDING_AUTHORITY'}),3);
+  assert.equal(routeCost({...common,policy:'STANDING_NEUTRAL',standing:'JUNIOR_OR_CONTESTED'}),3);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'FOUNDING_AUTHORITY'}),3);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'JUNIOR_OR_CONTESTED'}),Infinity);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'JUNIOR_OR_CONTESTED',appealConsent:true}),8);
-  assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'FOUNDING_AUTHORITY',tick:1}),Infinity);
+  assert.equal(routeCost({...common,policy:'STANDING_NEUTRAL',standing:'FOUNDING_AUTHORITY',tick:1}),Infinity);
   assert.match(SOURCE.digest,/^[a-f0-9]{64}$/);
 });
 
@@ -87,7 +87,7 @@ test('CBFE geometry: evidence, belief, action, and claim clocks remain distinct'
 // Theme alone cannot mutate the data kernel; observation routes require separate interventions.
 test('CBFE geometry: visual ambiance only changes presentation, not admission or authority',()=>{
   const state={...SOURCE, graph:RELATIONS, authority:'HUMAN_OPERATOR_ONLY'};
-  const project=(ambiance)=>({source:state.digest,routeCost:routeCost({standing:'JUNIOR_OR_CONTESTED',policy:'RELIABILITY_GATED',tick:3}),authority:state.authority});
+  const project=(ambiance)=>({source:state.digest,routeCost:routeCost({standing:'JUNIOR_OR_CONTESTED',policy:'STANDING_NEUTRAL',tick:3}),authority:state.authority});
   assert.deepEqual(project('minimal'),project('dome-weather'));
   assert.equal(state.authority,'HUMAN_OPERATOR_ONLY');
 });
