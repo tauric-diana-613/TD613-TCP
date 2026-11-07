@@ -117,10 +117,11 @@
     "dollhouse:claim-ceilings": "node scripts/run-dollhouse-claim-ceiling-audit.mjs"
   },
   "devDependencies": {
-    "jsdom": "^29.1.0"
+    "jsdom": "^29.1.1"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0"
+    "@vercel/speed-insights": "^2.0.0",
+    "tough-cookie": "^6.1.0"
   }
 }

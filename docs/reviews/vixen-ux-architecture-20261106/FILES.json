@@ -1,0 +1,840 @@
+{
+  "schema": "td613.review-packet.files-manifest/v1.2",
+  "commission_id": "COMM-VIXEN-PROTOTYPE-BUILD-20261107-V4.1-FINAL",
+  "document_id": "TD613-VIXEN-PROTOTYPE-PACKET-20261107-V4.1-FINAL",
+  "frozen_application_source_commit": "0ca94c8f43a27b97832b81232a6b10e472f406d3",
+  "frozen_application_html_sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4",
+  "frozen_application_html_bytes": 664108,
+  "predecessor_evidence_commit": "514384371f955e23d5c5c44a559bab92ebc39982",
+  "external_resource_requests_contract": "STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0",
+  "standalone_external_dependencies_count": 0,
+  "base_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+  "primary_executable_deliverable": "app/encyclopedia/vix-cyb.html",
+  "related_pr_commits": {
+    "pr_1711_e00_1_synthesis_base": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "pr_1715_a_pfr0_initial_redo": "9c01da8c0c59fcbdd06d6497a5818664337488aa",
+    "pr_1716_a_pfr0_functional_wiring": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+    "pr_1717_a_pfr0_1_independent_qualification": "d9cb81ab2b4d2dca053a80fa62c00ec789f64f3d"
+  },
+  "privacy_and_consent_posture": {
+    "raw_02_originals_binaries_exported": false,
+    "executable_codex_mentions_present": false,
+    "local_workstation_paths_present": false,
+    "release_authority": false,
+    "deployment_authority": false,
+    "empirical_replication_count": 0,
+    "specialist_roles_executed": 5,
+    "orchestrator_consensus_derived": 1
+  },
+  "packet_files": [
+    {
+      "packet_path": "app/encyclopedia/vix-cyb.html",
+      "zip_path": "prototype/app/encyclopedia/vix-cyb.html",
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1716-7b6b4887f/vixen-cybernetics-engine.mjs.snapshot",
+      "zip_path": "review-packet/associated-snapshots/pr-1716-7b6b4887f/vixen-cybernetics-engine.mjs.snapshot",
+      "bytes": 15147,
+      "sha256": "e86c9a1f7c0903ebeb2c87aef64e58b460ed4ad6d56f331029d9f562bbeb71e6"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1717-d9cb81ab2/A-PFR0.1-qualification-report.md",
+      "zip_path": "review-packet/associated-snapshots/pr-1717-d9cb81ab2/A-PFR0.1-qualification-report.md",
+      "bytes": 22473,
+      "sha256": "5a98d2d6b573b9c02c17d71a618a505c9e3e411bd7582a566647e68567d00986"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1717-d9cb81ab2/Screenshot-atlas.md",
+      "zip_path": "review-packet/associated-snapshots/pr-1717-d9cb81ab2/Screenshot-atlas.md",
+      "bytes": 16627,
+      "sha256": "f9753c44c584a784ec7340af6759bc071d7f2ed754e8d8996336e90647bcd04f"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "zip_path": "review-packet/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "bytes": 4264,
+      "sha256": "c7addb7c81350c59bb236f730daeac0051919bb8302313138c0bffdb9ee4db75"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md",
+      "zip_path": "review-packet/BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md",
+      "bytes": 9283,
+      "sha256": "d7b5ac2598f4815914f9ea3c4a2fd2cc26600dde2d417b2ef34b311f3eb3922f"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/browser-witness-receipt.json",
+      "zip_path": "review-packet/browser-witness-receipt.json",
+      "bytes": 829125,
+      "sha256": "b295073f7a75fa8cc9371b7ea9c3537baf201e33aa87011ce6f8eefea0861773"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-audit-receipt-vixen-prototype.json",
+      "zip_path": "review-packet/dollhouse-audit-receipt-vixen-prototype.json",
+      "bytes": 20900,
+      "sha256": "ebfbf5f0ef91f0f53fe1abde23bf283d9f9090334ab7f2af72c0770e2f0584dc"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-audit-receipt-vixen-surgical.json",
+      "zip_path": "review-packet/dollhouse-audit-receipt-vixen-surgical.json",
+      "bytes": 15284,
+      "sha256": "403ea1a57f726901022a3bde77b1c1f3feba0bf06141e8018c9bd5df61ed22dc"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-design-receipt-vixen-correction.json",
+      "zip_path": "review-packet/dollhouse-design-receipt-vixen-correction.json",
+      "bytes": 188359,
+      "sha256": "5b0966275bb09178cef6ac06fa20a5fd8bde3fd5ce8f39f0ec881c69b6eaf7bd"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-design-receipt-vixen-prototype.json",
+      "zip_path": "review-packet/dollhouse-design-receipt-vixen-prototype.json",
+      "bytes": 299571,
+      "sha256": "34757b786203730110596d7f68601d06075666e7d96a53a03152ce140684581b"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "zip_path": "review-packet/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "bytes": 4358,
+      "sha256": "d0f4d87845d39b2433fb8dfc6a06f3a6eb80877ab4ca2ef8966a0fed087373d9"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "zip_path": "review-packet/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "bytes": 2818,
+      "sha256": "c0d4ccb71984178f95e44f411b82563b082788f88151553d395e25c343092b2f"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
+      "zip_path": "review-packet/PRE_FREEZE_VERIFICATION_REPORT.md",
+      "bytes": 32024,
+      "sha256": "ddc5d40dccb8ac1e04b326381aa241acaeb17b5ce20e37e7f2aba9d577ee2204"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
+      "zip_path": "review-packet/README.md",
+      "bytes": 5906,
+      "sha256": "8652156d03836c3625119d93c7581e2637846d023ad073fcfc15609f61016193"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/reconciliation-verification-receipt.json",
+      "zip_path": "review-packet/reconciliation-verification-receipt.json",
+      "bytes": 5264,
+      "sha256": "c01e51489596970505789ee75f95ced9b7a62e2b17c3afbf7b7d74d1c2a27ced"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/dollhouse-audit-receipt-refractive-couture.json",
+      "zip_path": "review-packet/refractive-couture/dollhouse-audit-receipt-refractive-couture.json",
+      "bytes": 16221,
+      "sha256": "7232b20f12fb6d413c4547cc14c5499aff163fe184793bb424c476d9cfde0eda"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/Hyperreal Chrome Star Sculpture.png",
+      "zip_path": "review-packet/refractive-couture/Hyperreal Chrome Star Sculpture.png",
+      "bytes": 2382298,
+      "sha256": "245a0029d58efdf4dec189149ac1355eb57d3592301047c306eeeda0c6060d30"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/REFRACTIVE_COUTURE_SCHOLARLY_MONOGRAPH.md",
+      "zip_path": "review-packet/refractive-couture/REFRACTIVE_COUTURE_SCHOLARLY_MONOGRAPH.md",
+      "bytes": 14940,
+      "sha256": "d678a8ef9c0c6e76d2707ffca52681e3a8b53df311a165ac223b3ccec8fcc8de"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/TD613_B_PostPostflight_Research_Dossier_CHECKSUMS.sha256",
+      "zip_path": "review-packet/refractive-couture/TD613_B_PostPostflight_Research_Dossier_CHECKSUMS.sha256",
+      "bytes": 554,
+      "sha256": "38a72f203c608c3e070f7bcca5199b67ef83cbf7076867c073a1b429851c1f6d"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/TD613_Experiment_B_PostPostflight_Deferred_Activation_Contract_2026-10-31.json",
+      "zip_path": "review-packet/refractive-couture/TD613_Experiment_B_PostPostflight_Deferred_Activation_Contract_2026-10-31.json",
+      "bytes": 4300,
+      "sha256": "6020b05564c394ee10e02a3122ce763f723a4e26611a52b0c89e2e738787cee4"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/TD613_Experiment_B_PostPostflight_Refractive_Couture_Mathematical_Dossier_2026-10-31.md",
+      "zip_path": "review-packet/refractive-couture/TD613_Experiment_B_PostPostflight_Refractive_Couture_Mathematical_Dossier_2026-10-31.md",
+      "bytes": 47250,
+      "sha256": "62c42567f3343cebe9b92d20f5b1ae164918c6dd84a2118365818812ea23533a"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/TD613_Refractive_Couture_Finite_Verifier_2026-10-31.py",
+      "zip_path": "review-packet/refractive-couture/TD613_Refractive_Couture_Finite_Verifier_2026-10-31.py",
+      "bytes": 4758,
+      "sha256": "250695f3c0d95ad5b3797767a4280472ffa93e88bccf8e6daa2f394cb0f681e2"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/TD613_Refractive_Couture_Independent_Finite_Receipt_2026-10-31.json",
+      "zip_path": "review-packet/refractive-couture/TD613_Refractive_Couture_Independent_Finite_Receipt_2026-10-31.json",
+      "bytes": 2976,
+      "sha256": "b84e7e405cab3aba59ef6e407397c5048a913069ef76e7c3915740449f2418bd"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/repro_browser.py",
+      "zip_path": "review-packet/repro_browser.py",
+      "bytes": 2774,
+      "sha256": "ab48ef4113b5f680e1d0457943cb4c3e07fdc70f732ce677c9db978436801860"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/00-mugler-unchained-frontispiece-plate.jpg",
+      "zip_path": "review-packet/screenshots/00-mugler-unchained-frontispiece-plate.jpg",
+      "bytes": 556667,
+      "sha256": "a85c58ca69784ec5a30ff49953d19347de8a9d7b64d64fcee8843768a19d14fc"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/01-cover-desktop.png",
+      "zip_path": "review-packet/screenshots/01-cover-desktop.png",
+      "bytes": 782086,
+      "sha256": "411a5b83ed9d2c107241028d76934546794c008fcc01eaf24f3c3c54f2b52cff"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/01-cover-frontispiece-desktop.png",
+      "zip_path": "review-packet/screenshots/01-cover-frontispiece-desktop.png",
+      "bytes": 781572,
+      "sha256": "be9e9592d54e9942d409f809bfa68bc13be93edf099bf70314813f403bf7b8e3"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/02-archive-directory-baker-miller.png",
+      "zip_path": "review-packet/screenshots/02-archive-directory-baker-miller.png",
+      "bytes": 167883,
+      "sha256": "7355d0d7fed3761b561a1d912161e76dffb0f7104a8e350f455b3b217d7be907"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/02-observatory-canvas-desktop.png",
+      "zip_path": "review-packet/screenshots/02-observatory-canvas-desktop.png",
+      "bytes": 122874,
+      "sha256": "362630d761a8ff2da47101f171b04fe523221a7aaca3ceba5894fba96d55900a"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/03-synthesis-observatory-desktop.png",
+      "zip_path": "review-packet/screenshots/03-synthesis-observatory-desktop.png",
+      "bytes": 117929,
+      "sha256": "b60bcfcdc46b495db91ef9041948c425380f6ffadd6641e416bf6bd1c24046e8"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/03-works-empty-state-desktop.png",
+      "zip_path": "review-packet/screenshots/03-works-empty-state-desktop.png",
+      "bytes": 99337,
+      "sha256": "38548993bd9f4f483aab9e2dda03f823692d50ac9632934d34924021e05e666b"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/04-protocols-empty-state-desktop.png",
+      "zip_path": "review-packet/screenshots/04-protocols-empty-state-desktop.png",
+      "bytes": 106300,
+      "sha256": "3ee8b3572b56879f78a03eba6bb57c951e1f2c76d4cc1efbb5cda2ca70706695"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/04-works-catalogue-desktop.png",
+      "zip_path": "review-packet/screenshots/04-works-catalogue-desktop.png",
+      "bytes": 122305,
+      "sha256": "b78a4fb20a8a04e8ed22b4139a920ba9119c81800ef23b2262a738fdf513d596"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/04-works-search-empty-state.png",
+      "zip_path": "review-packet/screenshots/04-works-search-empty-state.png",
+      "bytes": 98796,
+      "sha256": "c9c300e821a851342f6001319fde65e401c478d55add2f2e83f44b3d2c56e4df"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/05-protocols-search-empty-state.png",
+      "zip_path": "review-packet/screenshots/05-protocols-search-empty-state.png",
+      "bytes": 100839,
+      "sha256": "4b1d8637b972b0a9692c509a9a8fb681f84970fb9a0c8553ac06c7cec52ddac2"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/05-split-gates-desktop.png",
+      "zip_path": "review-packet/screenshots/05-split-gates-desktop.png",
+      "bytes": 117691,
+      "sha256": "e2958a735b05e78017c6879efd0669220d92b2b7ce8de9a873b7986747234675"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/05-tracks-empty-state-desktop.png",
+      "zip_path": "review-packet/screenshots/05-tracks-empty-state-desktop.png",
+      "bytes": 100406,
+      "sha256": "3e530488b870597e60c93eeef4770f3adae70637ecc1eee084e1d77d05b9d7ce"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/06-gates-reload-recovery-desktop.png",
+      "zip_path": "review-packet/screenshots/06-gates-reload-recovery-desktop.png",
+      "bytes": 109896,
+      "sha256": "deee0c681ce89483d737bb9d7aaea877adad12b5166a3832b0b66dedd4e89da8"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/06-protocols-desktop.png",
+      "zip_path": "review-packet/screenshots/06-protocols-desktop.png",
+      "bytes": 112239,
+      "sha256": "98f19f7e7eb9bbaaeb781c045b32b6cad740a8705d8a910c0dc301037765aa30"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/06-tracks-search-empty-state.png",
+      "zip_path": "review-packet/screenshots/06-tracks-search-empty-state.png",
+      "bytes": 100245,
+      "sha256": "95e5d5e8f3d07be1e05029ae6ab2088f9a7b1216f29c75c6567d8b802961437f"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/07-file-protocol-desktop.png",
+      "zip_path": "review-packet/screenshots/07-file-protocol-desktop.png",
+      "bytes": 781572,
+      "sha256": "be9e9592d54e9942d409f809bfa68bc13be93edf099bf70314813f403bf7b8e3"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/07-holds-desktop.png",
+      "zip_path": "review-packet/screenshots/07-holds-desktop.png",
+      "bytes": 109564,
+      "sha256": "1c486b8f049ed916ef14dd6ee7484c84a1cdc2ce24fc089ef2fea738542c89c7"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/07-works-deep-link-recovery.png",
+      "zip_path": "review-packet/screenshots/07-works-deep-link-recovery.png",
+      "bytes": 116921,
+      "sha256": "ad99407592376879175bb0d91be46a0d0b43073995e831991cf1bd8d36f5e262"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/08-file-protocol-offline-mode.png",
+      "zip_path": "review-packet/screenshots/08-file-protocol-offline-mode.png",
+      "bytes": 776833,
+      "sha256": "b0699ceb51951db17c3b54a18789c829b16293c980d3629452fb38f0b76955c3"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/08-inspector-alt-i-desktop.png",
+      "zip_path": "review-packet/screenshots/08-inspector-alt-i-desktop.png",
+      "bytes": 132935,
+      "sha256": "c2d3fa0a0dc2b0114641ed3b623028941c1472ca307b902d81e7906983c4d1ba"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/08-observatory-offline-desktop.png",
+      "zip_path": "review-packet/screenshots/08-observatory-offline-desktop.png",
+      "bytes": 121084,
+      "sha256": "10d8ccd58e4e681fae7715ec8dce706ff5f034c094075b78fdc3c42cce3e3eb2"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/09-cover-mobile-390px.png",
+      "zip_path": "review-packet/screenshots/09-cover-mobile-390px.png",
+      "bytes": 230084,
+      "sha256": "9a910af09f63d234b79d52b6afee689d0ed0b8afe46ffb6feb74c6b804fc0134"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/10-works-mobile-390px.png",
+      "zip_path": "review-packet/screenshots/10-works-mobile-390px.png",
+      "bytes": 220372,
+      "sha256": "771965055eeb95abdd4a79e085aefe6e10825b44fb95aff40dac0950d9209f16"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/11-file-protocol-desktop.png",
+      "zip_path": "review-packet/screenshots/11-file-protocol-desktop.png",
+      "bytes": 770491,
+      "sha256": "c780a95b51f6c16d5115930da4edb9af13a8e1deca1f8352f17b897479cb1fc3"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/11-works-mobile-320px.png",
+      "zip_path": "review-packet/screenshots/11-works-mobile-320px.png",
+      "bytes": 92977,
+      "sha256": "3e43e23b8638525b2d19c5c951aee76b883eea18214418526e42296fcfdefb2d"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/11-x01-search-clearing-desktop.png",
+      "zip_path": "review-packet/screenshots/11-x01-search-clearing-desktop.png",
+      "bytes": 116588,
+      "sha256": "f085d3f06d6b62d6f72143723c39b3127a7d09f5ed83b1b572c1bc619d4900e2"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/12-works-laptop-1366px.png",
+      "zip_path": "review-packet/screenshots/12-works-laptop-1366px.png",
+      "bytes": 106522,
+      "sha256": "59a27dc61e4fc25ef750cf16d5ee9756fbf2929308cf449dae0855050d04ca1b"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/12-x02-singleton-fallback-desktop.png",
+      "zip_path": "review-packet/screenshots/12-x02-singleton-fallback-desktop.png",
+      "bytes": 113373,
+      "sha256": "16c2e6fc6ed78c7513ee3883f9f3b2a9f40737aa705011fad0cfcac0c8559691"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/13-x01-search-clearing-desktop.png",
+      "zip_path": "review-packet/screenshots/13-x01-search-clearing-desktop.png",
+      "bytes": 116662,
+      "sha256": "5e61a80b267036a4cdb7b37dfe03dd4fd7942a6a8e94348565e4669a7aa254ad"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/13-x03-batch-b-dimmed-status-desktop.png",
+      "zip_path": "review-packet/screenshots/13-x03-batch-b-dimmed-status-desktop.png",
+      "bytes": 120602,
+      "sha256": "5f24175fa36300d448bb142b946f8480d85b288ce9cdf71fd56561f098dd88ff"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/14-x02-singleton-fallback-desktop.png",
+      "zip_path": "review-packet/screenshots/14-x02-singleton-fallback-desktop.png",
+      "bytes": 114436,
+      "sha256": "3aad90548f5528da167e72b1643ec08df5734016646d497b4e283defccf25df1"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/15-x03-batch-b-dimmed-status-desktop.png",
+      "zip_path": "review-packet/screenshots/15-x03-batch-b-dimmed-status-desktop.png",
+      "bytes": 114752,
+      "sha256": "e924e4daef5b26720e625e1005ba23a76f8267ba9aaca4676b9ce8464fb10558"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/16-c01-negative-controls-desktop.png",
+      "zip_path": "review-packet/screenshots/16-c01-negative-controls-desktop.png",
+      "bytes": 132517,
+      "sha256": "84735670031c77763ff8124f8b9b491cbf764372711907cad2f6af29e14ce103"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/17-c02-ten-step-history-replay-desktop.png",
+      "zip_path": "review-packet/screenshots/17-c02-ten-step-history-replay-desktop.png",
+      "bytes": 141562,
+      "sha256": "78244db66534ecbd9049ba07d290dd82909b178bb2e0ca507716e30e1e2e9237"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/18-v01-visual-grammar-desktop.png",
+      "zip_path": "review-packet/screenshots/18-v01-visual-grammar-desktop.png",
+      "bytes": 759839,
+      "sha256": "e8815f2f201a533b907140d461b74e05bffd9d3f4933fa8bf3d7e0f1eecd70c6"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs",
+      "zip_path": "review-packet/verify-vixen-ux-spec-reconciliation.mjs",
+      "bytes": 25268,
+      "sha256": "30728e5fe0c583a4bd8608c856d3cd6ca31c2dd91985c9178e2e54630103577d"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
+      "zip_path": "review-packet/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
+      "bytes": 20907,
+      "sha256": "b9480fd4f83660a91c523ff36eeef8b446af7b6e45e3a47f42a04f9adfa2d5c5"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
+      "zip_path": "review-packet/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_OPUS_HANDOFF.html",
+      "zip_path": "review-packet/VIXEN_CYBERNETICS_OPUS_HANDOFF.html",
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
+      "zip_path": "review-packet/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
+      "bytes": 68032,
+      "sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_OPUS_ACTIVATION_PROMPT.md",
+      "zip_path": "review-packet/VIXEN_OPUS_ACTIVATION_PROMPT.md",
+      "bytes": 20890,
+      "sha256": "3c7a23f74e515f85d2470394023ccf56905ce87603a38c9d81ad21d5a63d0526"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-prototype-commission.json",
+      "zip_path": "review-packet/vixen-prototype-commission.json",
+      "bytes": 17543,
+      "sha256": "09eaf595167b7cd1f00b0b36523cf06eff12e5abfd81b92803bd93e19c4744f1"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-surgical-successor-audit.json",
+      "zip_path": "review-packet/vixen-surgical-successor-audit.json",
+      "bytes": 2528,
+      "sha256": "83a643640c691110e6070a9c42228dc6e88f86bfaac61a4c5ec7cb9e441e50f9"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-ux-commission.json",
+      "zip_path": "review-packet/vixen-ux-commission.json",
+      "bytes": 7381,
+      "sha256": "8330bb9b91a2b8cb156bebd575a05a0cdeb470c9743a1dc289e30b961a1eb389"
+    }
+  ],
+  "referenced_repository_files": [
+    {
+      "repo_path": "AGENTS.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/AGENTS.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/AGENTS.md",
+      "bytes": 25186,
+      "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c"
+    },
+    {
+      "repo_path": "PEDAGOGUE.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/PEDAGOGUE.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/PEDAGOGUE.md",
+      "bytes": 30118,
+      "sha256": "8088e42d0b04847f7a63ae806faa6655ec654790fba75e8874f2d84d615303da"
+    },
+    {
+      "repo_path": "APERTURE.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/APERTURE.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/APERTURE.md",
+      "bytes": 17025,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d"
+    },
+    {
+      "repo_path": "ATLAS.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/ATLAS.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/ATLAS.md",
+      "bytes": 12364,
+      "sha256": "6600263f9e572ecff679a792709a4c3315b605794ba9454ad7d0b14d6c7d1a27"
+    },
+    {
+      "repo_path": "FADT.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/FADT.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/FADT.md",
+      "bytes": 9196,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e"
+    },
+    {
+      "repo_path": "DOLLHOUSE.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/DOLLHOUSE.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/DOLLHOUSE.md",
+      "bytes": 12404,
+      "sha256": "f0f840b37009c83f719e3c63d28596e7a697cdd1c3c7ab2214ff5f2e3b371aca"
+    },
+    {
+      "repo_path": "app/encyclopedia/index.html",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/app/encyclopedia/index.html",
+      "included_in_standalone_zip": false,
+      "zip_path": null,
+      "bytes": 7214198,
+      "sha256": "118214bfe7fd69afb42fa5f3206fc365e1905210254f852b9d0e1d1f4088d62d"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
+      "bytes": 2312,
+      "sha256": "3ee80f4f4c01d64122b5101f18a9e4ed28f8aa6e66f96ee40398306e17a5e562"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATTRIBUTION.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATTRIBUTION.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATTRIBUTION.md",
+      "bytes": 1060,
+      "sha256": "d9433eba04d3336b7b0c5f47a7135e4c00bdee6ca5fe8cafe0bcf94aa3063db5"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "bytes": 49412,
+      "sha256": "e3448b04b0fbe00ac159f2f29e1bfc07f7ae6880bfe435990ed1599b1e0209ec"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "bytes": 80693,
+      "sha256": "8af1515beab4451976c403ffaba869b93a175efef2c6fb184567e29444eba659"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "bytes": 3103,
+      "sha256": "bfe0a19da10b905757de03d1cdf5a9112cd19f60d001907b93b66418627e0673"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "bytes": 233339,
+      "sha256": "5aa217b5dc2cc5aef7574f167c329325d3b95893dcbabe4267266778aad554da"
+    },
+    {
+      "repo_path": "packages/em_unified_synthesis/identity_metadata_crosswalk.json",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/identity_metadata_crosswalk.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/identity_metadata_crosswalk.json",
+      "bytes": 31695,
+      "sha256": "3773b930bb0cea2c374623adc4d7981b930b6d2ea0524eb02739fcd56e8dbfb8"
+    },
+    {
+      "repo_path": "packages/em_unified_synthesis/original_methods_inventory.json",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/original_methods_inventory.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/original_methods_inventory.json",
+      "bytes": 14847,
+      "sha256": "a6ed4a55ba0742b1f9be17342b6bc41127a48db34a74049fe57dabe3992f65de"
+    },
+    {
+      "repo_path": "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+      "bytes": 15943,
+      "sha256": "1c304dcedb9e3e1a46ed98f2c0168a6539690e5d96bb704831eceec7c9e175d3"
+    },
+    {
+      "repo_path": "packages/em_unified_synthesis/competent-null-comparator.mjs",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/competent-null-comparator.mjs",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/competent-null-comparator.mjs",
+      "bytes": 14605,
+      "sha256": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1"
+    },
+    {
+      "repo_path": "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "bytes": 10798,
+      "sha256": "5c160fa3c32a41540748dea43db0bc7c5523bbd1c4faa8279b7f7a0a72a8d70e"
+    },
+    {
+      "repo_path": "packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
+      "bytes": 13422,
+      "sha256": "9408bfca593b861379d61a980ddb1e92a0b8bf8bb616e1026ef541c8a4d95115"
+    },
+    {
+      "repo_path": "packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "bytes": 74887,
+      "sha256": "98f34a0f3912ec3104588c2488d44fab95143931b312400960ce26d007d123a1"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md",
+      "bytes": 5411,
+      "sha256": "1e854ebb80e006ffddb7d4692f44125b20e3e85becfee491cc4511c5e66bf229"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1.md",
+      "bytes": 10791,
+      "sha256": "676f7ca0dc5654fdc182e8e6bdb02672ce4fb4e61691234fb324d780da1f8149"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1.md",
+      "bytes": 8243,
+      "sha256": "6990ab582e8a9119bc4d97ec5f0a64da674e4d2efb1a49636f56b08a1ab60d12"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1.md",
+      "bytes": 5140,
+      "sha256": "227680382fe6b3ce8f5b23b585fd98b37ea7f3a09f6af0ffc159e96c10fe6a6e"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1.md",
+      "bytes": 8091,
+      "sha256": "16a770b36dbf2f29264ce55cedba3ea40bef0e7f2b72161b22231167bb2d29e3"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PATH_CATEGORY_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PATH_CATEGORY_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PATH_CATEGORY_ASSAY_V0_1.md",
+      "bytes": 4737,
+      "sha256": "beb41e2accf720cc1c6fa0859e5584d16cb24a95599d5f683fde19b1be70ff86"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1.md",
+      "bytes": 7315,
+      "sha256": "4e5b1a98bef1382430f2f3b84115b6422b67e5fe9838bfcf62b7dab4e69c12f8"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1.md",
+      "bytes": 6906,
+      "sha256": "a8c46ef0a517f7aff38966567c02cd95af7c2b6edfb1f864787f1264ceb46324"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1.md",
+      "bytes": 4367,
+      "sha256": "2cfee2d2be80ac57f631e68ea6cda125483c1623e45827e14d36b324732459a4"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CLAIM_CEILING_PROPAGATION_V0_1.md",
+      "bytes": 2883,
+      "sha256": "f46082c0e9c861eab3da3f1d62a5ebb8b9dbd8581d7b3af3cb5d447fb1b2f399"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX.md",
+      "bytes": 1957,
+      "sha256": "c998e58362af8c400f6800c867c1d6b248976ce4575129f30ba1ece4dfd695bb"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1.md",
+      "bytes": 6046,
+      "sha256": "d14c1452683802527ece567195f22dfe600492102a8764003ee2539df620de50"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DERIVATIVE_CLOCK_CUSTODY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DERIVATIVE_CLOCK_CUSTODY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/DERIVATIVE_CLOCK_CUSTODY_V0_1.md",
+      "bytes": 2639,
+      "sha256": "e4e974f07c61df222932d47659724b766f1bef8897ffb20c648d723642b71b2f"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1.md",
+      "bytes": 6561,
+      "sha256": "be40e78e6b377317c05c59775330876007b86b147f216b77affb5270e648159b"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1.md",
+      "bytes": 4951,
+      "sha256": "5cb3d9add7ab1869bbf7e868a8804a1f679c6828a854d0eca6369c7407da5a8d"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMAL_OPERATOR_CUSTODY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMAL_OPERATOR_CUSTODY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/FORMAL_OPERATOR_CUSTODY_V0_1.md",
+      "bytes": 3877,
+      "sha256": "04f666e451b1bb2a9dba0375e0fef196bb603153c4a380673030ce511d2355a2"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/LINEAGE_ASSAY_PROTOCOL.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/LINEAGE_ASSAY_PROTOCOL.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/LINEAGE_ASSAY_PROTOCOL.md",
+      "bytes": 4189,
+      "sha256": "819e033fcf879b78b35a1eb45838bb3f11d311c1a1c04beff12724453ce7c235"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/MOTIF_TO_MECHANISM_TRANSLATION.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/MOTIF_TO_MECHANISM_TRANSLATION.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/MOTIF_TO_MECHANISM_TRANSLATION.md",
+      "bytes": 664,
+      "sha256": "c41cbe0692790f4e7d6aefacf6f5068aa1f80be70b348f27ae86b5468da36617"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1.md",
+      "bytes": 6955,
+      "sha256": "0bf3e11d696a4bf1c61ca6859a851887e8cb23fe85553c0c76e70f1f02d5a117"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/OBFUSCATION_DECOMPRESSION_PROTOCOL.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/OBFUSCATION_DECOMPRESSION_PROTOCOL.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/OBFUSCATION_DECOMPRESSION_PROTOCOL.md",
+      "bytes": 1946,
+      "sha256": "55fe3d6ad2da7e1fec5805fffa0b91f294a30ea795215aceaeaa2b13b9ddf829"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1.md",
+      "bytes": 3175,
+      "sha256": "51a0df7ed0ee4905f9b1e54d4a146b66f662148eaa0cae53a021bea3332b983c"
+    },
+    {
+      "repo_path": "artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "source_commit": "514384371f955e23d5c5c44a559bab92ebc39982",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/514384371f955e23d5c5c44a559bab92ebc39982/artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/artifacts/dollhouse-audit-receipt-vixen-surgical.json",
+      "bytes": 15284,
+      "sha256": "403ea1a57f726901022a3bde77b1c1f3feba0bf06141e8018c9bd5df61ed22dc"
+    },
+    {
+      "repo_path": "tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "source_commit": "514384371f955e23d5c5c44a559bab92ebc39982",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/514384371f955e23d5c5c44a559bab92ebc39982/tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/tests/fixtures/dollhouse/vixen-surgical-successor-audit.json",
+      "bytes": 2528,
+      "sha256": "83a643640c691110e6070a9c42228dc6e88f86bfaac61a4c5ec7cb9e441e50f9"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "schema": "td613.refractive-couture.independent-finite-check/v1",
+  "adjudication_scope": "mathematical model calculations plus optional historical byte/hash replay; no B flight credit",
+  "ideal_icosahedron_axis_111": {
+    "radii": [
+      {
+        "radius": 1.15470054,
+        "count": 6
+      },
+      {
+        "radius": 1.86834472,
+        "count": 6
+      }
+    ],
+    "expected_radii": [
+      1.1547005383792517,
+      1.8683447179254316
+    ],
+    "ratio": 1.618033988749895
+  },
+  "ideal_tetrahedral_compound_axis_111": {
+    "radii": [
+      {
+        "radius": 0.0,
+        "count": 2
+      },
+      {
+        "radius": 1.63299316,
+        "count": 6
+      }
+    ],
+    "expected_center_count": 2
+  },
+  "symmetric_scalar_observation": {
+    "shape": [
+      2,
+      2
+    ],
+    "singular_values": [
+      1.4300349646075095,
+      5.614891602187312e-18
+    ],
+    "rank": 1,
+    "condition_number": null
+  },
+  "actual_two_by_two_proposed_sensor": {
+    "shape": [
+      2,
+      2
+    ],
+    "singular_values": [
+      1.2764198740087587,
+      0.5484088850807071
+    ],
+    "rank": 2,
+    "condition_number": 2.327496706806479
+  },
+  "augmented_three_by_two_sensor": {
+    "shape": [
+      3,
+      2
+    ],
+    "singular_values": [
+      1.6311661716144943,
+      0.6199168658622819
+    ],
+    "rank": 2,
+    "condition_number": 2.6312659994265544
+  },
+  "xor_information": {
+    "x1_y_bits": 0,
+    "x2_y_bits": 0,
+    "joint_y_bits": 1,
+    "co_information_bits": -1,
+    "architectural_union_surplus_implied": false
+  },
+  "reported_sample_design_effect_check": {
+    "n": 33,
+    "rho_assumed": 0.65,
+    "n_effective_if_exchangeable": 1.5137614678899083,
+    "not_ancestral_proof": true
+  },
+  "fadt_aperture_generic_identity_counterexample": {
+    "disjoint_support_gap": 2,
+    "one_dimensional_gram_kernel_dimension": 0,
+    "identity_valid": false
+  },
+  "historical_archive": {
+    "path_basename": "TD613_Em_Manifest_Rendered_Review_Evidence_Closure_2026-10-29.zip",
+    "sha256": "2b92e074c05677f1f0e464ecf1d24396bd31d1bd2676f2f9f1b605a810789f36",
+    "internal_ledger_count": 55,
+    "internal_ledger_failures": [],
+    "r2_html_sha256": "a1009bf56d17c663aea8d3df75228bb9c0ee90b4081a31b0fe19c70101b36996",
+    "verified_webp_assets": [
+      {
+        "sha256": "e4a20f9d094f116f22391daaaaca6cec5007807247c0e665ec87f0273f54aac3",
+        "size": [
+          941,
+          1672
+        ],
+        "bytes": 2020880,
+        "mirror_mae_rec709": 0.08981513977050781,
+        "algorithm": "whole-frame normalized Rec.709 luma mean absolute left-right reflection discrepancy"
+      },
+      {
+        "sha256": "01d71b797fa1e58d87dfc1a447c51343a2288add0c913bb16f781a596737a8bd",
+        "size": [
+          1678,
+          937
+        ],
+        "bytes": 1472400,
+        "mirror_mae_rec709": 0.054813191294670105,
+        "algorithm": "whole-frame normalized Rec.709 luma mean absolute left-right reflection discrepancy"
+      }
+    ]
+  }
+}
