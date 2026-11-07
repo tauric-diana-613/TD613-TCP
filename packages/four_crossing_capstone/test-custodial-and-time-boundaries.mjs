@@ -19,6 +19,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 
@@ -33,7 +34,8 @@ import {
 } from '../universal_atelier/receiver/universal-atelier-receiver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const RECEIPT_PATH = path.resolve(__dirname, 'custodial-gate-and-time-receipt.json');
+const receiptDir = process.env.TD613_UPDATE_RECEIPTS === '1' ? __dirname : os.tmpdir();
+const RECEIPT_PATH = path.resolve(receiptDir, 'custodial-gate-and-time-receipt.json');
 
 console.log('================================================================');
 console.log('CHAMBERS 2 & 3: CUSTODIAL GATES & HISTORICAL TIME BOUNDARIES');
