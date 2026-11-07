@@ -250,7 +250,7 @@ export function executeProbe(){
   return {record,outcomes};
 }
 
-if(process.argv[1]?.endsWith('cbfe-competent-null-probe.v04.mjs')||process.argv[1]?.endsWith('cbfe_strong_union_probe_v04.mjs')){
+if(process.argv[1]?.endsWith('cbfe-competent-null-probe.v04.mjs')||process.argv[1]?.endsWith('cbfe-competent-null-probe.v04.mjs')){
   const {record}=executeProbe();
   if(process.argv[2]==='--json'){
     invariant(typeof process.argv[3]==='string','expected output path');
