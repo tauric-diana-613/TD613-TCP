@@ -46,6 +46,14 @@ test('NKS-LAB 06: a proposed completion rule can make the selected fork join in 
  assert.ok(p);assert.equal(p.resolution.joinable_within_bound,true);
  assert.equal(p.resolution.witness_state,'AA');
 });
+test('NKS-LAB 06B: independent disjoint redex forks remain branches but not overlapping critical pairs',()=>{
+ const b=enumerate('AA',mono,{depth:1});
+ assert.equal(b.branchPairs.length,1);
+ assert.equal(b.branchPairs[0].redex_overlap,false);
+ assert.deepEqual(criticalPairs('AA',mono,{depth:1,horizon:2}),[]);
+ const c=criticalPairs('AB',open,{depth:1,horizon:4});
+ assert.ok(c.every(p=>p.redex_overlap===true));
+});
 test('NKS-LAB 07: an unresolved finite search is not automatically labeled global failure',()=>{
  const p=resolveFork('AAAA','BBBB',[{id:'G',from:'A',to:'AA'},{id:'C',from:'B',to:'BB'}],{horizon:0});
  assert.equal(p.disposition,'UNKNOWN_OUTSIDE_SEARCH_BOUND');
