@@ -33,6 +33,7 @@ The historical succession of candidate HTML artifacts across the Vixen Cyberneti
 | **Consolidated Predecessor** | `884b989b7faf7aba3f432ec3552266719a9a2fff` | **664,412 bytes** | **`737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`** | C01–C04 navigation integrity, V01 legibility, D01/D02 Astra qualification |
 | **Evaluated Surgical Successor (Executable Frozen)** | `0ca94c8f43a27b97832b81232a6b10e472f406d3` | **664,108 bytes** | **`cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4`** | **SR-01 deduplication, sole reference owner, scroll preservation; independently qualified for Astra** |
 | **Predecessor Evidence Publication** | `514384371f955e23d5c5c44a559bab92ebc39982` | (documentary/audit) | (evidence commit) | Atlas Delannoy member reconciliation, negative controls tracking, FILES.json update |
+| **Documentary Reconciliation HEAD** | `2d45f6f5b385e7e40252764984362a86ce66bdcf` | (documentary/evidence) | (evidence commit) | 5-specialist / Orchestrator attribution, frozen HTML in prompt, versioned V4.1 archives |
 
 ---
 
@@ -247,7 +248,7 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 
 | Evidence Class | Scope & Authority | Status | Recorded Findings |
 | :--- | :--- | :--- | :--- |
-| **Class A: Local Developer Execution** | Node test runners, JSDOM, Pedagogue design gate, pre-push guards | **PASS** | 22/22 membrane tests PASS (including dedicated C01–C03, V01, H01, D01, D02 suites); 55 Pedagogue tests PASS; reconciliation verifier PASS; git pre-push sync guards PASS. |
+| **Class A: Local Developer Execution** | Node test runners, JSDOM, Pedagogue design gate, pre-push guards | **PASS** | 33/33 membrane tests PASS in current expanded suite (`tests/vixen-pedagogue-membrane.test.mjs`), subsuming earlier reported 18/18 and 22/22 checkpoints; 55 Pedagogue core tests PASS; reconciliation verifier PASS; git pre-push sync guards PASS. |
 | **Class B: Browser Observations** | Chromium headless automation via CDP, network logs, DOM inspections, screenshots | **PASS** | `AUTOMATIC_EXTERNAL_RESOURCE_REQUESTS = 0`; Canvas witness verified; empty states verified; reload recovery verified; `file://` execution verified; C01–C03 navigation & negative controls verified; 10-step history replay verified. |
 | **Class C: Remote Repository Checks** | GitHub HEAD, exact blob identity, draft PR state, remote CI checks | **REMOTE_CI_NOT_OBSERVED** | Draft PR #1718 is currently a Draft PR with no remote GitHub Actions status check rollups recorded. Local test suites and pre-push guards cannot be substituted for remote CI. |
 | **Class D: Independent Adjudication** | Emergence HQ reviews and dispositions | **STAGED_FOR_ADJUDICATION** | Predecessor Review #5812619950 issued reader-consistency hold; successor candidate staged as `VIXEN_V4_1_CONSOLIDATED_REGRESSION_QUALIFIED_ASTRA_SUCCESSOR_STAGED`. |
@@ -257,7 +258,7 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 ## 10. Residual Risk Register & Explicit Ceilings
 
 1. **Browser Rasterization Variability:** The SHA-256 authenticates exact delivered source bytes. Divergent OS font rasterizers (DirectWrite vs CoreText vs FreeType) may produce minor line-wrapping variations. This is expected and does not violate byte-custody invariants.
-2. **Single-File DOM Density:** Embedding 53 high-resolution images, full vector diagrams, and 21 instruments yields a 664 KB file. Initial DOM parsing takes ~8–15 ms on modern engines; memory footprint is under 45 MB.
+2. **Single-File DOM Density:** Embedding the 53 relational research manifestations across 32 Works, full vector diagrams, embedded frontispiece artwork (such as the high-resolution frontispiece plate and Baker Miller palette), and 21 instruments yields a 664 KB file. Initial DOM parsing takes ~8–15 ms on modern engines; memory footprint is under 45 MB.
 3. **No Unearned Production Release:**
    - `release_authority: false`
    - `deployment_authority: false`
@@ -277,17 +278,17 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 - [x] **H01:** All 36 pairwise transitions pass; malformed hash falls back safely to overview; all empty state cards verified.
 - [x] **D01:** Complete historical provenance table recorded; instrument family distribution confirmed as F1: 6, F2: 7, F3: 4, F4: 4.
 - [x] **D02:** Astra Activation Prompt fully restored with 10 explicit powers, 3 classes, Glinda/Mugler direction, 6 environments, 3 journeys, and 14-point checklist.
-- [x] **Class A:** 22/22 membrane tests PASS, Pedagogue design gate PASS, UX spec reconciliation PASS.
+- [x] **Class A:** 33/33 expanded membrane tests PASS (subsuming older 18/18 and 22/22 checkpoints), Pedagogue design gate PASS, UX spec reconciliation PASS.
 - [x] **Class B:** Chromium CDP automated assays PASS (`AUTOMATIC_EXTERNAL_RESOURCE_REQUESTS = 0`, history replay PASS, screenshots captured).
 - [x] **Class C:** Class C accurately recorded as `REMOTE_CI_NOT_OBSERVED`.
 - [x] **Class D:** Candidate staged for Emergence HQ final independent adjudication.
-- [x] **Custody:** HTML byte identity frozen (664,412 bytes · SHA-256: `737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`).
+- [x] **Custody:** HTML byte identity frozen at **664,108 bytes** (SHA-256: `cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4`), clearly distinguished from the earlier 664,412-byte predecessor (`884b989b7` · SHA-256: `737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`).
 - [x] **Deliverables:** Standalone HTML, activation prompt, verification report, review ZIP, and screenshots synchronized across repo, Downloads, and brain.
 
 
 ---
 
-## 11. Independent Surgical Correction / Separate-Handoff Qualification
+## 12. Independent Surgical Correction & Separate-Handoff Qualification
 
 **Baseline PR HEAD:** `884b989b7faf7aba3f432ec3552266719a9a2fff`; **successor:** a separate non-force-pushed PR update, identified by the live PR commit and the accompanying external independent review receipt. A content-embedded SHA of this document's own future Git commit is intentionally not asserted (avoids self-referential custody circularity).
 
@@ -295,7 +296,7 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 
 **SR-02 — Corrected taxonomy:** 21 instrument family **names, members, counts** now derive from the immutable source bundle, replacing erroneously invented family names/member inventories in earlier text.
 
-**SR-03 — Prompt/packet synchronization:** The canonical, fuller Astra commission is the ZIP/GitHub 19,159-byte predecessor version, extended only with a navigation behavior annotation; the separately supplied abbreviated 17,934-byte draft is historical and not the active instruction.
+**SR-03 — Prompt/packet synchronization:** The active, canonical Astra commission is the qualified **20,907-byte** version (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`, SHA-256: `b9480fd4f83660a91c523ff36eeef8b446af7b6e45e3a47f42a04f9adfa2d5c5`), clearly distinguished from historical predecessor iterations (such as the 17,934-byte abbreviated draft, the 19,159-byte extended version, and the intermediate 20,245-byte snapshot). It embeds the exact deliverable size (664,108 bytes) and digest (`cc18159e...`), preserves all ten implementation powers, and maintains full presentation transformation latitude.
 
 **SR-04 — Provenance honesty:** Competing historical digest assertions for a 640,649-byte candidate are retained as unresolved; neither is silently identified with a Git commit. SHA-256 provides byte identity, not independent origin proof.
 
