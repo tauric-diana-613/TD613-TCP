@@ -1,0 +1,52 @@
+{
+  "schema": "td613.vixen-ux.source-reconciliation-receipt/v1.0",
+  "document_id": "TD613-VIXEN-MANIFEST-UX-SPEC-20261106-V3",
+  "specification_sha256": "9dfe6e5f55d0d660f576a2c1fd4147535b410bb8314aa17aae691a5f212d6e9d",
+  "disposition": "CATALOGUE_MAPPING_RECONCILED_OFFLINE",
+  "invariants_verified": {
+    "canonical_works_bijection": {
+      "expected": 32,
+      "verified_rows": 32,
+      "human_gated_supported": 8,
+      "same_work_confirmed": 13,
+      "singleton_work_surfaces": 11,
+      "linked_manifestations_emsrc": 53,
+      "prospective_batch_b_annex_emb": 7,
+      "exact_match": true
+    },
+    "documentary_instruments_bijection": {
+      "expected": 21,
+      "verified_rows": 21,
+      "family_partition": {
+        "F1": 6,
+        "F2": 7,
+        "F3": 4,
+        "F4": 4
+      },
+      "phantom_ids_in_family_tables": 0,
+      "exact_match": true
+    },
+    "attribution_membrane": {
+      "work_index_authorship_unresolved_rows": 32,
+      "alias_merging_prohibited": true,
+      "prohibited_compression_phrases_detected": 0
+    },
+    "public_capability_honesty": {
+      "three_tier_contract_present": true,
+      "human_gate_study_default": "UNADJUDICATED_PAIR",
+      "conditional_merged_baseline": 32,
+      "sensitivity_interval": [
+        32,
+        40
+      ]
+    }
+  },
+  "explicit_non_claims": {
+    "ui_build_delivered": false,
+    "browser_witness_executed": false,
+    "a_pfr0_2_engine_repaired": false,
+    "scientific_proof": false,
+    "empirical_replication_credit": 0,
+    "merge_or_release_authority": false
+  }
+}

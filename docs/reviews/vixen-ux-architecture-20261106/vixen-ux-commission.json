@@ -1,6 +1,6 @@
 {
-  "commission_id": "COMM-VIXEN-UX-CORRECTION-20261106",
-  "seed": "Reverse the Glinda Inversion in Vixen Cybernetics (app/encyclopedia/vix-cyb.html): restore an authored scholarly research world in front of a concealed-on-demand cybernetic nervous system across 32 EMSTD613 works, 8 human-gated manifestation pairs, 21 documentary instruments, and the Refractive Couture four-coordinate circuit (M_0 -> I -> V_t -> Q_{t+1}).",
+  "commission_id": "COMM-VIXEN-UX-CORRECTION-20261106-V3",
+  "seed": "Reverse the Glinda Inversion in Vixen Cybernetics (app/encyclopedia/vix-cyb.html): restore a spatial scholarly atelier in front of a concealed-on-demand cybernetic nervous system across all 32 EMSTD613 Work routes, 8 UNADJUDICATED_PAIR human-gated manifestation splits, 21 bijectively mapped documentary instruments, non-merging authorship custody, and the Refractive Couture four-coordinate circuit (M_0 -> I -> V_t -> Q_{t+1}).",
   "medium": "PRODUCT",
   "deliverable_count": 1,
   "instruments": [
@@ -10,12 +10,12 @@
     "PHASONIC_COUNTERPOINT"
   ],
   "human_coordinates": {
-    "what": "Source-grounded Research UX Architecture, Reparative Design Specification, and Structural Wireframes for Vixen Cybernetics (Vixen Manifest)",
-    "who": "Commissioned by Emergence HQ / Tawanna C. Miller (SAC[X6ZNK5NO51]) for scholarly visitors encountering the EMSTD613 estate (authored by Em / Vix / Cass / Cassie) prior to Codex/Astra visual couture composition and Independent Work browser qualification",
-    "where": "TD613 Information Dome / Vixen Manifest (app/encyclopedia/vix-cyb.html architectural specification; strict staging firebreak from A-PFR0.2 headless integrity fixes Q01-Q09)",
-    "how": "By inverting Badge->Disclaimer->Census->ByteBench->Held into Sculptural Encounter & Rendered S_eOrnament -> Founding Lineage Question -> 5 Thematic Work Clusters & 32 Work Routes -> 21 Documentary Protocol Readers -> Navigable Uncertainty & 8 Human Gates -> Concealed Cybernetic Inspector Drawer -> Return & Rest",
-    "when": "2026-11-06 Post-A-PFR0.1 Architectural Correction; tau_ambiance provisional creative artwork permitted immediately while Experiment B Post-Postflight (PP0-PP6) remains B_POSTPOSTFLIGHT_PROCEDURE_PINNED_UNEXECUTED",
-    "why": "So visitors encounter Em's cybernetic, acoustic, e-textile, and speculative research corpus and its genuine open lineage questions rather than an evaluator's compliance dashboard or laundered branding calculator"
+    "what": "Reconciled V3 Source-Grounded Research UX Architecture, Complete 32-Work & 21-Instrument Crosswalk, Three-Tier Public Capability Contract, and Spatial Couture Wireframes for Vixen Cybernetics",
+    "who": "Commissioned by Emergence HQ / Tawanna C. Miller (SAC[X6ZNK5NO51]) for visitors encountering the EMSTD613 research estate while preserving respective stated authors and unresolved aliases (authorship=UNRESOLVED across 32 Work routes; Em / Vix / Cass / Cassie / Echo--Squirrel Research never merged without evidence)",
+    "where": "TD613 Information Dome / Vixen Manifest (app/encyclopedia/vix-cyb.html V3 specification; strict staging firebreak keeping Track 1 A-PFR0.2 Q01-Q09 engine repair ahead of production UI integration)",
+    "how": "By replacing evaluator telemetry with a distinct Vixen-specific Glinda frontispiece (tau_ambiance), Founding Lineage Question, 5 proportional Work Catalogue & Lineage Navigator bands (32 emwork_* metadata routes + 7 Batch-B annex), 8 bilateral UNADJUDICATED_PAIR folio planes, 21 bijective 06-INSTRUMENTS sheets, inline custody micro-badges, and a concealed Cybernetic Inspector drawer",
+    "when": "2026-11-06 V3 Post-Review-#5810153980 Source Reconciliation; tau_ambiance provisional Vixen frontispiece authorized upon human selection while Experiment B Post-Postflight (PP0-PP6) remains B_POSTPOSTFLIGHT_PROCEDURE_PINNED_UNEXECUTED",
+    "why": "So visitors encounter the corpus's genuine cybernetic, Mixxx/DSP, e-textile, OSSL, and sui-generis lineage questions with honest metadata-vs-body boundaries rather than compliance dashboards, phantom registry entries, or merged authorship claims"
   },
   "historical_references": [
     {
@@ -40,7 +40,7 @@
       "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "classification": "BINDING_CUSTODY_LAW",
       "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
-      "summary": "Authorship membrane preserving Em / Vix / Cass / Cassie sole authorship and EMSTD613 as comparative lineage question rather than ownership assimilation."
+      "summary": "Non-merging authorship membrane: respective stated authors retain authorship; aliases preserved verbatim without inferring civil identity or merging authors."
     },
     {
       "reference_id": "REF-EM-ATELIER-PROFILE",
@@ -56,7 +56,7 @@
       "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "classification": "BINDING_CONSTRAINT",
       "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
-      "summary": "32 canonical EMSTD613 Work routes and the 8 human-gated .md/.pdf manifestation pairs yielding [32, 40] / 2^8 = 256 identity configurations."
+      "summary": "All 32 canonical EMSTD613 Work routes (53 linked manifestations) and the 8 human-gated .md/.pdf manifestation pairs yielding [32, 40] / 2^8 = 256 partitions."
     },
     {
       "reference_id": "REF-EM-METHODS-INVENTORY",
@@ -64,7 +64,7 @@
       "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "classification": "BINDING_CONSTRAINT",
       "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
-      "summary": "21 documentary EMSTD613 instruments including MOTIF_TO_MECHANISM_TRANSLATION, FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1, and NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1."
+      "summary": "Exact 21 documentary EMSTD613 instruments in 06-INSTRUMENTS/*.md (0 standalone executors)."
     },
     {
       "reference_id": "REF-ENCYCLOPEDIA-ANCHOR",
@@ -72,7 +72,7 @@
       "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "classification": "NEGOTIABLE_AESTHETIC_DIRECTION",
       "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
-      "summary": "Reference attention architecture: sculptural hero encounter -> Enter the record -> research questions -> Flow-Core 8-glyph guided reading -> faceted readers."
+      "summary": "Architectural attention precedent (spatial integration of scholarship); hero sculpture itself remains exclusive to Encyclopedia."
     },
     {
       "reference_id": "REF-VIXEN-CANDIDATE-PR1716",
@@ -80,7 +80,7 @@
       "source_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
       "classification": "CONDUCTOR_HEURISTICS",
       "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
-      "summary": "A-PFR0.1 candidate engine exhibiting Glinda Inversion and Q01-Q09 integrity holds requiring clean architectural separation."
+      "summary": "A-PFR0.1 candidate engine exhibiting Glinda Inversion and Q01-Q09 integrity holds requiring Track 1 source-free repair prior to UI integration."
     },
     {
       "reference_id": "REF-REFRACTIVE-COUTURE-MONOGRAPH",
@@ -88,16 +88,13 @@
       "source_revision": "WORKING_TREE",
       "classification": "NEGOTIABLE_AESTHETIC_DIRECTION",
       "provenance_class": "WORKING_TREE_LOCAL_SUBSTITUTE",
-      "summary": "Refractive Couture monograph (TD613-MONOGRAPH-REFRACTIVE-COUTURE-20261106-V1) formalizing M_0->I->V_t->Q_{t+1}, three orthogonal clocks, and Atlas Seam placeholder precedent."
+      "summary": "Refractive Couture monograph (TD613-MONOGRAPH-REFRACTIVE-COUTURE-20261106-V1) formalizing M_0->I->V_t->Q_{t+1}, three orthogonal clocks, and Atlas Seam precedent."
     }
   ],
   "scientific_audit_requested": true,
   "audit_roles": [
     "PEDAGOGUE",
-    "APERTURE",
-    "ATLAS",
-    "FADT",
-    "TEMPORAL_CUSTODIAN"
+    "APERTURE"
   ],
   "audit_domain_inputs": {
     "PEDAGOGUE": {

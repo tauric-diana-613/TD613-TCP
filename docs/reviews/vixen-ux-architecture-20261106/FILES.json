@@ -1,7 +1,8 @@
 {
-  "schema": "td613.review-packet.files-manifest/v1.0",
-  "commission_id": "COMM-VIXEN-UX-CORRECTION-20261106",
-  "document_id": "TD613-VIXEN-MANIFEST-UX-SPEC-20261106-V2",
+  "schema": "td613.review-packet.files-manifest/v1.1",
+  "commission_id": "COMM-VIXEN-UX-CORRECTION-20261106-V3",
+  "document_id": "TD613-VIXEN-MANIFEST-UX-SPEC-20261106-V3",
+  "remediated_review_id": "5810153980",
   "base_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
   "related_pr_commits": {
     "pr_1711_e00_1_synthesis_base": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
@@ -19,14 +20,14 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
       "zip_path": "review-packet/README.md",
-      "bytes": 5261,
-      "sha256": "4f75727841c947e771de2533284fe5e2dcefe76f623908bf8696285da514591c"
+      "bytes": 4141,
+      "sha256": "2d139f5e688782a27f883456496f030d6267ec19050873ed4c4feec6b09c9b5b"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
       "zip_path": "review-packet/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
-      "bytes": 46298,
-      "sha256": "9669ba428a7861ca28799cd838788b313e518f03db3a6dc8f9430a846f07e7aa"
+      "bytes": 68032,
+      "sha256": "9dfe6e5f55d0d660f576a2c1fd4147535b410bb8314aa17aae691a5f212d6e9d"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1716-7b6b4887f/vixen-cybernetics-engine.mjs.snapshot",
@@ -49,8 +50,14 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/dollhouse-design-receipt-vixen-correction.json",
       "zip_path": "review-packet/dollhouse-design-receipt-vixen-correction.json",
-      "bytes": 187677,
-      "sha256": "7d8524f35d24832561ffa55e1e9e7b350f597f93173bb9d3a7e1a05af48f64cf"
+      "bytes": 188359,
+      "sha256": "5b0966275bb09178cef6ac06fa20a5fd8bde3fd5ce8f39f0ec881c69b6eaf7bd"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/reconciliation-verification-receipt.json",
+      "zip_path": "review-packet/reconciliation-verification-receipt.json",
+      "bytes": 1562,
+      "sha256": "ccede80488f53e6b407a4a39e17d328d38aa1821750530b0c36a44852f90147b"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/refractive-couture/Hyperreal Chrome Star Sculpture.png",
@@ -101,10 +108,16 @@
       "sha256": "7232b20f12fb6d413c4547cc14c5499aff163fe184793bb424c476d9cfde0eda"
     },
     {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs",
+      "zip_path": "review-packet/verify-vixen-ux-spec-reconciliation.mjs",
+      "bytes": 9256,
+      "sha256": "65e3cad81b774c6a4f97909ecf6556dc40aa6a60657a37b9529b4fb6dce9905c"
+    },
+    {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-ux-commission.json",
       "zip_path": "review-packet/vixen-ux-commission.json",
-      "bytes": 7174,
-      "sha256": "6f8223a47cba992f9ae40becf60f98a60743089e92cc5f07dae566517d514dfe"
+      "bytes": 7381,
+      "sha256": "8330bb9b91a2b8cb156bebd575a05a0cdeb470c9743a1dc289e30b961a1eb389"
     }
   ],
   "referenced_repository_files": [
@@ -190,6 +203,42 @@
       "sha256": "d9433eba04d3336b7b0c5f47a7135e4c00bdee6ca5fe8cafe0bcf94aa3063db5"
     },
     {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl",
+      "bytes": 49412,
+      "sha256": "e3448b04b0fbe00ac159f2f29e1bfc07f7ae6880bfe435990ed1599b1e0209ec"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl",
+      "bytes": 80693,
+      "sha256": "8af1515beab4451976c403ffaba869b93a175efef2c6fb184567e29444eba659"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl",
+      "bytes": 3103,
+      "sha256": "bfe0a19da10b905757de03d1cdf5a9112cd19f60d001907b93b66418627e0673"
+    },
+    {
+      "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/em-tic-archaeological-control.jsonl",
+      "bytes": 233339,
+      "sha256": "5aa217b5dc2cc5aef7574f167c329325d3b95893dcbabe4267266778aad554da"
+    },
+    {
       "repo_path": "packages/em_unified_synthesis/identity_metadata_crosswalk.json",
       "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/identity_metadata_crosswalk.json",
@@ -226,6 +275,15 @@
       "sha256": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1"
     },
     {
+      "repo_path": "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+      "bytes": 10798,
+      "sha256": "5c160fa3c32a41540748dea43db0bc7c5523bbd1c4faa8279b7f7a0a72a8d70e"
+    },
+    {
       "repo_path": "packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
       "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
       "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
@@ -233,6 +291,15 @@
       "zip_path": "referenced-repo-sources/packages/em_reciprocal_expedition/EMSTD613_ORIGINAL_METHOD_AND_RESEARCH_CAPABILITY_ATLAS.md",
       "bytes": 13422,
       "sha256": "9408bfca593b861379d61a980ddb1e92a0b8bf8bb616e1026ef541c8a4d95115"
+    },
+    {
+      "repo_path": "packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "source_commit": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+      "github_url": "https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "included_in_standalone_zip": true,
+      "zip_path": "referenced-repo-sources/packages/em_reciprocal_expedition/EM_FILE_PROVENANCE_LEDGER.md",
+      "bytes": 74887,
+      "sha256": "98f34a0f3912ec3104588c2488d44fab95143931b312400960ce26d007d123a1"
     },
     {
       "repo_path": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/06-INSTRUMENTS/ACADEMIA_SUI_GENERIS_SIEVE_V0_1.md",
