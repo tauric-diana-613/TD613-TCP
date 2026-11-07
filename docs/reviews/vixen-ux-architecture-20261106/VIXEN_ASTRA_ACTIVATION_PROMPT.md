@@ -1,8 +1,8 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff`, 652,893 bytes)  
-**Predecessor Build:** Frozen Baseline Commit `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` (SHA-256: `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`, 641,510 bytes)
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017`, 657,884 bytes)  
+**Predecessor Build:** Frozen Baseline Commit `fb4e9cf21cfe3b25ee3e1a97c1f0429b20578a48` (SHA-256: `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff`, 652,893 bytes)
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---
@@ -79,4 +79,22 @@ The uploaded artifact provides six interconnected environments across the TD613 
 > - **DO NOT return partial snippets, diff chunks, or code placeholders** (e.g., avoid `/* ... rest of code unchanged ... */` or truncated blocks).
 > - **Return the complete, self-contained `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` file in full** (as a downloadable integrated HTML file attachment rather than printing hundreds of kilobytes inline).
 > - Accompany your deliverable with an **Editorial Summary** walking through your visual, spatial, and typographic decisions, highlighting how they elevate Em's cybernetic research world while honoring the underlying invariants.
+
+---
+
+### Independently Adjudicated Creative Guidance & Principles (Emergence HQ Review #5811994808)
+
+#### 🏛️ The Governing Anti-Equivalence Principle
+$$\text{OPERAHOUSE} \neq \text{OPERA} \neq \text{PERFORMER}$$
+- **Operahouse:** The TD613 hosting infrastructure, Aperture, FADT, Pedagogue, Information Architecture (AIA), provenance machinery, route compilers, scientific safeguards, and deployment systems.
+- **Opera:** The independently intelligible Vixen Cybernetics research experience, its encounters, demonstrations, investigative routes, and questions.
+- **Performers:** The individual works, documentary methods, recorded authors, manifestations, and their unresolved scholarly relationships.
+
+*Guidance for Astra:* Keep default public surfaces focused on the **Opera** and **Performers**. Diagnostic operahouse machinery belongs in expert inspection contexts (such as the concealed Alt+I inspector dialog), not cluttering default scholarly wayfinding.
+
+#### 🌌 Source-Linked Corpus-Topology Exhibition
+- Present the 32 Works, 53 linked manifestations, 7 Batch-B records, 21 protocols, and 8 Human Gates as an authentic, living scholarly exhibition.
+- Ensure spatial choreography and typographic pacing let the reader navigate the relational topology with immediate clarity and tactile beauty.
+- Retain the calibrated 2×2 Aperture operator ($A_{2\times 2} = [[1, 0.5], [0.2, 0.8]]$, $\kappa \approx 2.3275$) and its rank-deficient negative control without collapsing observation geometry.
+
 ```

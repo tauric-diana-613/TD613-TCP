@@ -3,9 +3,9 @@
   "document_id": "TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4",
   "specification_sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c",
   "prototype_html_path": "app/encyclopedia/vix-cyb.html",
-  "prototype_html_bytes": 652893,
-  "prototype_html_sha256": "36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff",
-  "prototype_structural_dom_excluding_theme_sha256": "93d195356f15f3ee58372c677b2a6b3d3d3e510dba4ea37b9ddfc6fb1dbc0882",
+  "prototype_html_bytes": 657884,
+  "prototype_html_sha256": "e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017",
+  "prototype_structural_dom_excluding_theme_sha256": "257bfd417bc04c046ed40c59e422a3dfc25c6957aa6b17ea51be47de4dff3eaa",
   "disposition": "SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED",
   "invariants_verified": {
     "canonical_works_row_level_bijection": {
@@ -74,7 +74,7 @@
       "f2_session_local_predecessor_retention_verified": true,
       "f3_webcrypto_fail_closed_rejection_verified": true,
       "astra_single_file_handoff_byte_identical": true,
-      "predecessor_v4_html_sha256_preserved": "c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a"
+      "predecessor_v4_html_sha256_preserved": "36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff"
     },
     "pedagogue_membrane_and_reader_journeys": {
       "governing_anti_equivalence": "OPERAHOUSE ≠ OPERA ≠ PERFORMER",

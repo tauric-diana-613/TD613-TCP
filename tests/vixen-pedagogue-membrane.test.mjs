@@ -620,4 +620,158 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     assert.ok(docLens.getElementById('worksResultSummary').textContent.includes('Curatorial Custody perspective'));
   });
 
+
+  test('12. Emergence HQ Review #5811994808 Directives (R01 Tracks Search, R02 Deep Link Reconciliation, R03 Runtime Gate Witness & Negative Control, M01 2x2 Operator Calibration)', async () => {
+    const html = fs.readFileSync(vixenHtmlPath, 'utf8');
+    const dom = createVixenDOM(html);
+    const win = dom.window;
+    const doc = win.document;
+
+    // --- R01: Prospective Research Tracks Respect Active Search ---
+    doc.querySelector('[data-view="protocols"]').click();
+    doc.querySelector('[data-inst-family="TRACKS"]').click();
+    assert.strictEqual(doc.getElementById('protocolsResultSummary').textContent.includes('Showing 6 of 6'), true);
+
+    const protoInput = doc.getElementById('protocolSearchInput');
+    // Search for single track keyword
+    protoInput.value = 'Five-Clock';
+    protoInput.dispatchEvent(new win.Event('input'));
+    assert.strictEqual(doc.getElementById('protocolsResultSummary').textContent.includes('Showing 1 of 6'), true);
+    assert.strictEqual(doc.getElementById('protocolsReaderPanel').innerHTML.includes('Track B · Five-Clock Derivative Custody'), true);
+
+    // Zero-match search on tracks
+    protoInput.value = 'impossible_giveback_track_xyz';
+    protoInput.dispatchEvent(new win.Event('input'));
+    assert.strictEqual(doc.getElementById('protocolsResultSummary').textContent.includes('Showing 0 of 6'), true);
+    assert.ok(doc.getElementById('protocolsListContainer').innerHTML.includes('NO_MATCHING_RECORDS'));
+    assert.ok(doc.getElementById('protocolsReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    // Clear search on tracks restores 6 tracks and active selection
+    protoInput.value = '';
+    protoInput.dispatchEvent(new win.Event('input'));
+    assert.strictEqual(doc.getElementById('protocolsResultSummary').textContent.includes('Showing 6 of 6'), true);
+    assert.strictEqual(doc.getElementById('protocolsListContainer').querySelectorAll('.lexicon-item').length, 6);
+    assert.strictEqual(doc.getElementById('protocolsReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'), false);
+
+    // --- R02: Explicit Deep Links Reconcile Obstructing Search State ---
+    // Sequence A: Impossible works search -> valid registered work deep link
+    doc.querySelector('[data-view="works"]').click();
+    const workInput = doc.getElementById('workSearchInput');
+    workInput.value = 'impossible_work_search_query_123';
+    workInput.dispatchEvent(new win.Event('input'));
+    assert.ok(doc.getElementById('worksReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    // Navigate to deep link
+    win.location.hash = '#works/emwork_085223e721130117f5510975';
+    win.dispatchEvent(new win.HashChangeEvent('hashchange'));
+
+    // Verify search query reconciled
+    assert.strictEqual(workInput.value, '');
+    assert.strictEqual(doc.getElementById('worksReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'), false);
+    assert.ok(doc.getElementById('worksReaderPanel').textContent.includes('emwork_085223e721130117f5510975'));
+    const activeWorkBtn = doc.querySelector('[data-select-work="emwork_085223e721130117f5510975"]');
+    assert.ok(activeWorkBtn);
+    assert.strictEqual(activeWorkBtn.getAttribute('aria-current'), 'true');
+
+    // Sequence B: Impossible protocols search -> valid registered protocol deep link
+    doc.querySelector('[data-view="protocols"]').click();
+    protoInput.value = 'impossible_proto_query_456';
+    protoInput.dispatchEvent(new win.Event('input'));
+    assert.ok(doc.getElementById('protocolsReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    win.location.hash = '#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1';
+    win.dispatchEvent(new win.HashChangeEvent('hashchange'));
+
+    assert.strictEqual(protoInput.value, '');
+    assert.strictEqual(doc.getElementById('protocolsReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'), false);
+    assert.ok(doc.getElementById('protocolsReaderPanel').textContent.includes('EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1'));
+    const activeProtoBtn = doc.querySelector('[data-select-inst="EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1"]');
+    assert.ok(activeProtoBtn);
+    assert.strictEqual(activeProtoBtn.getAttribute('aria-current'), 'true');
+
+    // Sequence C: Return link with configured internal deep link destination
+    const domReturn = createVixenDOM(html, { hostConfig: { returnUrl: '#works/emwork_085223e721130117f5510975' } });
+    const docReturn = domReturn.window.document;
+    // Set obstructing search
+    const wSearch = docReturn.getElementById('workSearchInput');
+    wSearch.value = 'obstructing_search_query_789';
+    wSearch.dispatchEvent(new domReturn.window.Event('input'));
+    assert.ok(docReturn.getElementById('worksReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    // Click return link
+    const rLink = docReturn.getElementById('vixenReturnLink');
+    assert.strictEqual(rLink.getAttribute('href'), '#works/emwork_085223e721130117f5510975');
+    rLink.click();
+    assert.strictEqual(wSearch.value, '');
+    assert.strictEqual(docReturn.getElementById('worksReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'), false);
+    assert.ok(docReturn.getElementById('worksReaderPanel').textContent.includes('emwork_085223e721130117f5510975'));
+
+    // --- R03: Runtime Gate Initialization Witness & Negative Control ---
+    const v = win.VixenReference.verify();
+    // 1. Canonical source data defaults
+    assert.strictEqual(v.canonical_gates_default_unadjudicated, true);
+    assert.strictEqual(Object.keys(v.canonical_gate_defaults).length, 8);
+    for (let i = 1; i <= 8; i++) {
+      assert.strictEqual(v.canonical_gate_defaults[i], 'UNADJUDICATED_PAIR');
+    }
+
+    // 2. Initial runtime gate assignments witness
+    assert.strictEqual(v.initial_runtime_gates_unadjudicated, true);
+    assert.strictEqual(Object.keys(v.initial_runtime_gate_assignments).length, 8);
+    for (let i = 1; i <= 8; i++) {
+      assert.strictEqual(v.initial_runtime_gate_assignments[i], 'UNADJUDICATED_PAIR');
+    }
+    assert.strictEqual(v.initial_runtime_gates_witness.all_unadjudicated, true);
+
+    // 3. Subsequent session-local hypothetical modifications
+    assert.strictEqual(v.session_gates_hypothetically_modified, false);
+
+    // 4. Negative-control fixture: Deliberately incorrect runtime initialization
+    const badRuntimeAssignments = { ...v.initial_runtime_gate_assignments, 1: 'HYP_SPLIT' };
+    const badWitness = win.VixenReference.evaluateRuntimeGateWitness(badRuntimeAssignments);
+    assert.strictEqual(badWitness.ok, false);
+    assert.strictEqual(badWitness.all_unadjudicated, false);
+    // Canonical source defaults remain unaffected
+    assert.strictEqual(win.VixenReference.verify().canonical_gates_default_unadjudicated, true);
+
+    // Missing gate count in assignments
+    const incompleteAssignments = { 1: 'UNADJUDICATED_PAIR', 2: 'UNADJUDICATED_PAIR' };
+    const incompleteWitness = win.VixenReference.evaluateRuntimeGateWitness(incompleteAssignments);
+    assert.strictEqual(incompleteWitness.ok, false);
+    assert.strictEqual(incompleteWitness.all_unadjudicated, false);
+
+    // --- M01: Mathematical Operator Calibration & Regression ---
+    function svd2x2(a, b, c, d) {
+      const e = a*a + c*c;
+      const f = a*b + c*d;
+      const g = b*b + d*d;
+      const tr = e + g;
+      const det = e*g - f*f;
+      const disc = Math.sqrt(Math.max(0, tr*tr - 4*det));
+      const lambda1 = (tr + disc) / 2;
+      const lambda2 = (tr - disc) / 2;
+      return {
+        sigma1: Math.sqrt(lambda1),
+        sigma2: Math.sqrt(lambda2),
+        kappa: Math.sqrt(lambda1) / Math.sqrt(lambda2)
+      };
+    }
+
+    // Repaired 2x2 calibration operator: [[1, 0.5], [0.2, 0.8]]
+    const repOp = svd2x2(1, 0.5, 0.2, 0.8);
+    assert.ok(Math.abs(repOp.kappa - 2.3275) < 0.0001, 'Repaired operator must have kappa ≈ 2.3275');
+
+    // Old operator [[1, 1], [0.15, 0.85]] had kappa ≈ 3.6472
+    const oldOp = svd2x2(1, 1, 0.15, 0.85);
+    assert.ok(Math.abs(oldOp.kappa - 3.6472) < 0.0001, 'Old operator had kappa ≈ 3.6472');
+
+    // Rank-1 negative control [[1, 1], [0.15, 0.15]]
+    const rank1Op = svd2x2(1, 1, 0.15, 0.15);
+    assert.strictEqual(rank1Op.sigma2, 0); // det = 0, rank 1
+
+    // Verify HTML displays the calibrated [[1, 0.5], [0.2, 0.8]] in Observatory aperture tab
+    assert.ok(html.includes("0.2 & 0.8"));
+    assert.ok(html.includes("A_{2×2} = [[1, 0.5], [0.2, 0.8]] (κ ≈ 2.3275)"));
+  });
+
 });

@@ -1,6 +1,6 @@
 {
   "schema": "td613.vixen.browser-witness-receipt/v2.1",
-  "executed_at": "2026-11-07T11:23:45.993Z",
+  "executed_at": "2026-11-07T12:14:04.889Z",
   "witness_environment": "Headless Chromium via Chrome DevTools Protocol (simulated desktop 1440x900 and simulated mobile 390x844; not a physical-device witness)",
   "target_route": "/encyclopedia/vix-cyb.html",
   "runtime_errors_count": 0,
@@ -14,7 +14,42 @@
         "batch_b_count": 7,
         "human_gates_count": 8,
         "canonical_gates_default_unadjudicated": true,
+        "canonical_gate_defaults": {
+          "1": "UNADJUDICATED_PAIR",
+          "2": "UNADJUDICATED_PAIR",
+          "3": "UNADJUDICATED_PAIR",
+          "4": "UNADJUDICATED_PAIR",
+          "5": "UNADJUDICATED_PAIR",
+          "6": "UNADJUDICATED_PAIR",
+          "7": "UNADJUDICATED_PAIR",
+          "8": "UNADJUDICATED_PAIR"
+        },
         "initial_runtime_gates_unadjudicated": true,
+        "initial_runtime_gate_assignments": {
+          "1": "UNADJUDICATED_PAIR",
+          "2": "UNADJUDICATED_PAIR",
+          "3": "UNADJUDICATED_PAIR",
+          "4": "UNADJUDICATED_PAIR",
+          "5": "UNADJUDICATED_PAIR",
+          "6": "UNADJUDICATED_PAIR",
+          "7": "UNADJUDICATED_PAIR",
+          "8": "UNADJUDICATED_PAIR"
+        },
+        "initial_runtime_gates_witness": {
+          "ok": true,
+          "all_unadjudicated": true,
+          "gate_count": 8,
+          "assignments": {
+            "1": "UNADJUDICATED_PAIR",
+            "2": "UNADJUDICATED_PAIR",
+            "3": "UNADJUDICATED_PAIR",
+            "4": "UNADJUDICATED_PAIR",
+            "5": "UNADJUDICATED_PAIR",
+            "6": "UNADJUDICATED_PAIR",
+            "7": "UNADJUDICATED_PAIR",
+            "8": "UNADJUDICATED_PAIR"
+          }
+        },
         "human_gates_default_unadjudicated": true,
         "session_gate_hypotheses": {
           "1": "UNADJUDICATED_PAIR",
