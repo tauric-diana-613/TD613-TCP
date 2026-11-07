@@ -558,3 +558,9 @@ test('DD-02: skill and authoring cycle must not impose experimental paired outpu
   assert.doesNotMatch(skill, /Deliver the inspectable artifact, its refractive counterpart/);
   assert.doesNotMatch(cycle, /presents the materialized work, its refractive counterpart/);
 });
+
+// DD-02 source-free Wolframian CBFE relational geometry; invokes real conductor; no Flight mutation.
+await import('./dd02-cbfe-relational-geometry.native.test.mjs');
+
+// Prospective source-free 384-episode competent-null differential challenge; original Flight HELD.
+await import('./cbfe-competent-null-probe.v04.test.mjs');
