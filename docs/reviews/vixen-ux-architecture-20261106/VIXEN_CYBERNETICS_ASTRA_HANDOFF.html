@@ -388,6 +388,7 @@ body[data-view="overview"] main{padding-top:0}
   --line-strong:#24282A85;
 }
 .site-header,body[data-view="overview"] .site-header{background:#FF91AFF2;color:var(--graphite)}
+body[data-view="overview"] .reading-back{display:none}
 .brand-name .project-math{display:block;font:italic 500 11.5px/1.35 var(--font-serif);letter-spacing:0;color:var(--graphite);text-transform:none}
 .mobile-nav{background:var(--vixen-pink);color:var(--graphite)}
 .archive-directory,.procession-section{background:var(--vixen-pink);color:var(--graphite);--text:var(--graphite);--muted:var(--graphite);--dim:var(--graphite);--line:#24282A40;--line-strong:#24282A85}
@@ -477,14 +478,14 @@ body[data-view="overview"] main{padding-top:0}
     </nav>
 
     <div class="header-actions">
-      <button type="button" class="hdr-pill" data-action="search" aria-label="Search Catalogue (Ctrl+K)">
+      <button type="button" class="hdr-pill" data-action="search" aria-label="Search Catalogue (Ctrl/⌘+K)">
         <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <span class="lbl-desktop">Search</span> <kbd>⌘K</kbd>
+        <span class="lbl-desktop">Search</span> <kbd id="searchShortcutKbd">Ctrl/⌘+K</kbd>
       </button>
       <button type="button" class="hdr-pill hide-mobile-hdr" data-view="collection" aria-label="Session Study Tray">
         <span class="lbl-desktop">Tray</span> (<span id="collectionCount">0</span>)
       </button>
-      <button type="button" class="hdr-pill hide-mobile-hdr" id="motionBtn" aria-pressed="false" aria-label="Pause or resume motion">
+      <button type="button" class="hdr-pill hide-mobile-hdr" id="motionBtn" aria-pressed="false" aria-label="Pause animations (Still mode)">
         <span class="lbl-desktop">Still</span> ‖
       </button>
       <button type="button" class="hdr-pill hide-mobile-hdr" data-action="inspector" data-pua-emblem="􍘓" aria-label="Concealed Cybernetic Inspector (Alt+I)">
@@ -1055,7 +1056,7 @@ body[data-view="overview"] main{padding-top:0}
   </section>
 </main>
 
-<!-- GLOBAL SEARCH DIALOG (Cmd/Ctrl + K) -->
+<!-- GLOBAL SEARCH DIALOG (Ctrl/⌘+K) -->
 <dialog class="dialog search-dialog" id="searchDialog" aria-label="Search Vixen Cybernetics Catalogue">
   <div class="dialog-shell">
     <div class="dialog-header">
@@ -1094,7 +1095,7 @@ body[data-view="overview"] main{padding-top:0}
   </div>
   <div class="footer-actions">
     <button type="button" class="text-link" data-action="inspector">Open Concealed Inspector (Alt+I)</button>
-    <button type="button" class="text-link" data-action="search">Search Catalogue (⌘K)</button>
+    <button type="button" class="text-link" data-action="search">Search Catalogue (Ctrl/⌘+K)</button>
     <a class="text-link footer-td613-mark" id="footerEncyclopediaLink" href="#overview">𝌋 TD613 Encyclopedia →</a>
   </div>
 </footer>
@@ -1236,7 +1237,7 @@ body[data-view="overview"] main{padding-top:0}
   // Application State
   const state = {
     view: 'overview',
-    motionPaused: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    motionPaused: Boolean(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches),
     spineStage: 'S3',
     obsModel: 'planes',
     obsHostileMode: 'nominal',
@@ -1361,10 +1362,12 @@ body[data-view="overview"] main{padding-top:0}
       if (target === 'works' && state.selectedWorkId) hashParts.push(state.selectedWorkId);
       if (target === 'protocols' && state.selectedInstId) hashParts.push(state.selectedInstId);
       const newHash = '#' + hashParts.join('/');
-      if (opts && opts.pushHistory) {
-        history.pushState(null, '', newHash);
-      } else {
-        history.replaceState(null, '', newHash);
+      if (window.location.hash !== newHash) {
+        if (opts && opts.pushHistory) {
+          history.pushState(null, '', newHash);
+        } else {
+          history.replaceState(null, '', newHash);
+        }
       }
     }
     if (target === 'observatory') {
@@ -1961,7 +1964,7 @@ body[data-view="overview"] main{padding-top:0}
   }
 
   // 3. Render 02 Works: Exhaustive 32-Work Catalogue & Lineage Navigator (+7 Batch-B Annex)
-  function renderWorksView() {
+  function renderWorksView(opts) {
     const listEl = $('worksListContainer');
     const readerEl = $('worksReaderPanel');
     const summaryEl = $('worksResultSummary');
@@ -2004,14 +2007,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Prospective Batch-B Records</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No unpaired Batch-B PDF files match the active search query &ldquo;' + esc(q) + '&rdquo;. Clear search or choose another filter to view records.</p>' +
           '</div>';
-        if (state.view === 'works') {
-          history.replaceState(null, '', '#works');
+        if (state.view === 'works' && (!opts || !opts.skipHistory)) {
+          if (window.location.hash !== '#works') history.replaceState(null, '', '#works');
         }
       } else {
         const selB = bRows.find((r) => r.source_file_id === state.selectedWorkId) || bRows[0];
         state.selectedWorkId = selB.source_file_id;
-        if (state.view === 'works') {
-          history.replaceState(null, '', '#works/' + selB.source_file_id);
+        if (state.view === 'works' && (!opts || !opts.skipHistory)) {
+          const targetHash = '#works/' + selB.source_file_id;
+          if (window.location.hash !== targetHash) history.replaceState(null, '', targetHash);
         }
         listEl.innerHTML = bRows.map((r, i) =>
           '<li class="lexicon-item"><button type="button" data-select-batchb="' + esc(r.source_file_id) + '" aria-current="' + (r.source_file_id === selB.source_file_id) + '">' +
@@ -2083,14 +2087,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Research Works</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No works in the 32-Work Catalogue match the active filter criteria or search query. Adjust the cluster, status, or search keywords to view records.</p>' +
           '</div>';
-        if (state.view === 'works') {
-          history.replaceState(null, '', '#works');
+        if (state.view === 'works' && (!opts || !opts.skipHistory)) {
+          if (window.location.hash !== '#works') history.replaceState(null, '', '#works');
         }
       } else {
         const sel = filtered.find((w) => w.work_id === state.selectedWorkId) || filtered[0];
         state.selectedWorkId = sel.work_id;
-        if (state.view === 'works') {
-          history.replaceState(null, '', '#works/' + sel.work_id);
+        if (state.view === 'works' && (!opts || !opts.skipHistory)) {
+          const targetHash = '#works/' + sel.work_id;
+          if (window.location.hash !== targetHash) history.replaceState(null, '', targetHash);
         }
 
         listEl.innerHTML = filtered.map((w) => {
@@ -2183,10 +2188,17 @@ body[data-view="overview"] main{padding-top:0}
 
         const jBtn = $('jumpToGateFromWork');
         if (jBtn) {
-          jBtn.addEventListener('click', () => {
-            setView('gates');
-            const gCard = document.getElementById('gate-card-' + sel.gate_num);
-            if (gCard) gCard.scrollIntoView({ behavior: state.motionPaused ? 'auto' : 'smooth', block: 'center' });
+          jBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setView('gates', { pushHistory: true, preserveScroll: true });
+            requestAnimationFrame(() => {
+              const gCard = document.getElementById('gate-card-' + sel.gate_num);
+              if (gCard) {
+                gCard.scrollIntoView({ behavior: state.motionPaused ? 'auto' : 'smooth', block: 'center' });
+                const focusable = gCard.querySelector('button, [tabindex]');
+                if (focusable) focusable.focus({ preventScroll: true });
+              }
+            });
           });
         }
          }
@@ -2196,7 +2208,6 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedWorkId = b.getAttribute('data-select-work');
             state.mobileWorkReaderOpen = true;
             renderWorksView();
-            history.replaceState(null, '', '#works/' + state.selectedWorkId);
           });
         });
       }
@@ -2304,7 +2315,7 @@ body[data-view="overview"] main{padding-top:0}
   }
 
   // 5. Render 04 Protocols: Bijective 21 Documentary Instruments (6+7+4+4=21, 0 Phantoms)
-  function renderProtocolsView() {
+  function renderProtocolsView(opts) {
     const listEl = $('protocolsListContainer');
     const readerEl = $('protocolsReaderPanel');
     const summaryEl = $('protocolsResultSummary');
@@ -2337,14 +2348,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Prospective Research Tracks</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No prospective giveback tracks match the active search query &ldquo;' + esc(q) + '&rdquo;. Clear search or choose another filter to view tracks.</p>' +
           '</div>';
-        if (state.view === 'protocols') {
-          history.replaceState(null, '', '#protocols');
+        if (state.view === 'protocols' && (!opts || !opts.skipHistory)) {
+          if (window.location.hash !== '#protocols') history.replaceState(null, '', '#protocols');
         }
       } else {
         const selT = filteredTracks.find((t) => t.id === state.selectedInstId) || filteredTracks[0];
         state.selectedInstId = selT.id;
-        if (state.view === 'protocols') {
-          history.replaceState(null, '', '#protocols/' + selT.id);
+        if (state.view === 'protocols' && (!opts || !opts.skipHistory)) {
+          const targetHash = '#protocols/' + selT.id;
+          if (window.location.hash !== targetHash) history.replaceState(null, '', targetHash);
         }
         listEl.innerHTML = filteredTracks.map((tr) =>
           '<li class="lexicon-item"><button type="button" data-select-track="' + esc(tr.id) + '" aria-current="' + (selT.id === tr.id) + '">' +
@@ -2368,7 +2380,6 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedInstId = b.getAttribute('data-select-track');
             state.mobileInstReaderOpen = true;
             renderProtocolsView();
-            history.replaceState(null, '', '#protocols/' + state.selectedInstId);
           });
         });
         readerEl.querySelectorAll('[data-open-ref]').forEach((btn) => {
@@ -2403,14 +2414,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Documentary Protocols</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No documentary instruments match the active family filter or search query &ldquo;' + esc(q) + '&rdquo;. Adjust the family selection or search keywords to view protocols.</p>' +
           '</div>';
-        if (state.view === 'protocols') {
-          history.replaceState(null, '', '#protocols');
+        if (state.view === 'protocols' && (!opts || !opts.skipHistory)) {
+          if (window.location.hash !== '#protocols') history.replaceState(null, '', '#protocols');
         }
       } else {
         const sel = filtered.find((i) => i.instrument_id === state.selectedInstId) || filtered[0];
         state.selectedInstId = sel.instrument_id;
-        if (state.view === 'protocols') {
-          history.replaceState(null, '', '#protocols/' + sel.instrument_id);
+        if (state.view === 'protocols' && (!opts || !opts.skipHistory)) {
+          const targetHash = '#protocols/' + sel.instrument_id;
+          if (window.location.hash !== targetHash) history.replaceState(null, '', targetHash);
         }
 
         listEl.innerHTML = filtered.map((inst) => {
@@ -2468,7 +2480,6 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedInstId = b.getAttribute('data-select-inst');
             state.mobileInstReaderOpen = true;
             renderProtocolsView();
-            history.replaceState(null, '', '#protocols/' + state.selectedInstId);
           });
         });
       }
@@ -2692,8 +2703,8 @@ body[data-view="overview"] main{padding-top:0}
       if (wInput) wInput.value = '';
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
-      renderWorksView();
-      setView('works', { pushHistory: true });
+      renderWorksView({ skipHistory: true });
+      setView('works', { pushHistory: true, preserveScroll: false });
     } else if (id.startsWith('emb_')) {
       if (state.workCluster !== 'BATCH_B') {
         state.lastCanonicalWorkStatus = state.workStatus;
@@ -2705,8 +2716,8 @@ body[data-view="overview"] main{padding-top:0}
       if (wInput) wInput.value = '';
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
-      renderWorksView();
-      setView('works', { pushHistory: true });
+      renderWorksView({ skipHistory: true });
+      setView('works', { pushHistory: true, preserveScroll: false });
     } else if (DATA.instruments.some((i) => i.instrument_id === id)) {
       state.protocolFamily = 'ALL';
       state.protocolQuery = '';
@@ -2714,8 +2725,8 @@ body[data-view="overview"] main{padding-top:0}
       if (pInput) pInput.value = '';
       state.selectedInstId = id;
       state.mobileInstReaderOpen = true;
-      renderProtocolsView();
-      setView('protocols', { pushHistory: true });
+      renderProtocolsView({ skipHistory: true });
+      setView('protocols', { pushHistory: true, preserveScroll: false });
     } else if (DATA.giveback_tracks.some((t) => t.id === id)) {
       state.protocolFamily = 'TRACKS';
       state.protocolQuery = '';
@@ -2723,8 +2734,8 @@ body[data-view="overview"] main{padding-top:0}
       if (pInput) pInput.value = '';
       state.selectedInstId = id;
       state.mobileInstReaderOpen = true;
-      renderProtocolsView();
-      setView('protocols', { pushHistory: true });
+      renderProtocolsView({ skipHistory: true });
+      setView('protocols', { pushHistory: true, preserveScroll: false });
     } else if (DATA.formula_folios.some((f) => f.id === id)) {
       state.formulaGroup = 'all';
       state.formulaQuery = id;
@@ -2945,7 +2956,7 @@ body[data-view="overview"] main{padding-top:0}
             if (wInput) wInput.value = '';
             state.selectedWorkId = resolved.id;
             state.mobileWorkReaderOpen = true;
-            renderWorksView();
+            renderWorksView({ skipHistory: true });
           } else if (resolved.view === 'protocols' && resolved.id) {
             state.protocolFamily = resolved.isTrack ? 'TRACKS' : 'ALL';
             state.protocolQuery = '';
@@ -2953,7 +2964,7 @@ body[data-view="overview"] main{padding-top:0}
             if (pInput) pInput.value = '';
             state.selectedInstId = resolved.id;
             state.mobileInstReaderOpen = true;
-            renderProtocolsView();
+            renderProtocolsView({ skipHistory: true });
           }
           setView(resolved.view, { pushHistory: true });
         }
@@ -2996,9 +3007,12 @@ body[data-view="overview"] main{padding-top:0}
       }
     }
 
-    // View Navigation Buttons
-    document.querySelectorAll('[data-view]').forEach((btn) => {
-      btn.addEventListener('click', () => setView(btn.getAttribute('data-view'), { pushHistory: true }));
+    // View Navigation Buttons (bind ONLY to interactive buttons, excluding document.body)
+    document.querySelectorAll('button[data-view]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetView = btn.getAttribute('data-view');
+        if (targetView) setView(targetView, { pushHistory: true });
+      });
     });
 
     // Mobile Menu Toggle
@@ -3012,14 +3026,24 @@ body[data-view="overview"] main{padding-top:0}
       });
     }
 
-    // Motion Pause Control
+    // Motion Pause Control (V01-F: distinct visible text, accessible label & pressed state)
     const motionBtn = $('motionBtn');
     if (motionBtn) {
-      motionBtn.setAttribute('aria-pressed', String(state.motionPaused));
+      const updateMotionBtn = () => {
+        motionBtn.setAttribute('aria-pressed', String(state.motionPaused));
+        motionBtn.innerHTML = state.motionPaused
+          ? '<span class="lbl-desktop">Resume</span> ▶'
+          : '<span class="lbl-desktop">Still</span> ‖';
+        motionBtn.setAttribute(
+          'aria-label',
+          state.motionPaused ? 'Resume animations (Live mode)' : 'Pause animations (Still mode)'
+        );
+      };
+      updateMotionBtn();
       motionBtn.addEventListener('click', () => {
         state.motionPaused = !state.motionPaused;
-        motionBtn.setAttribute('aria-pressed', String(state.motionPaused));
-        showToast(state.motionPaused ? 'Motion paused (still couture mode)' : 'Motion resumed');
+        updateMotionBtn();
+        showToast(state.motionPaused ? 'Motion paused (still mode)' : 'Motion resumed');
       });
     }
 
@@ -3240,9 +3264,17 @@ body[data-view="overview"] main{padding-top:0}
     if (searchInput) {
       searchInput.addEventListener('input', () => runGlobalSearch(searchInput.value));
     }
+    // V01-C: Platform-aware shortcut indicator
+    const isMac = typeof navigator !== 'undefined' && /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent || '');
+    const shortcutText = isMac ? '⌘K' : 'Ctrl+K';
+    const kbd = $('searchShortcutKbd');
+    if (kbd) kbd.textContent = shortcutText;
+    const searchBtn = document.querySelector('[data-action="search"]');
+    if (searchBtn) searchBtn.setAttribute('aria-label', 'Search Catalogue (' + shortcutText + ')');
+
     if (searchDlg) {
       $('closeSearchBtn').addEventListener('click', () => searchDlg.close());
-      searchDlg.addEventListener('close', () => { if (lastTrigger && lastTrigger.focus) lastTrigger.focus(); });
+      searchDlg.addEventListener('close', () => { if (lastTrigger && lastTrigger.focus) lastTrigger.focus({ preventScroll: true }); });
     }
 
     const inspDlg = $('inspectorDialog');
@@ -3264,7 +3296,7 @@ body[data-view="overview"] main{padding-top:0}
     });
     if (inspDlg) {
       $('closeInspectorBtn').addEventListener('click', () => inspDlg.close());
-      inspDlg.addEventListener('close', () => { if (lastTrigger && lastTrigger.focus) lastTrigger.focus(); });
+      inspDlg.addEventListener('close', () => { if (lastTrigger && lastTrigger.focus) lastTrigger.focus({ preventScroll: true }); });
     }
 
     // Global Keyboard Shortcuts (Cmd/Ctrl+K for Search, Alt+I for Concealed Inspector)
@@ -3325,7 +3357,7 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedWorkId = DATA.works[0].work_id;
           }
         }
-        renderWorksView();
+        renderWorksView({ skipHistory: true });
       } else if (hView === 'protocols') {
         state.view = 'protocols';
         if (hId) {
@@ -3348,7 +3380,7 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedInstId = DATA.instruments[0].instrument_id;
           }
         }
-        renderProtocolsView();
+        renderProtocolsView({ skipHistory: true });
       }
       const targetView = VALID_VIEWS.includes(hView) ? hView : 'overview';
       setView(targetView, { skipHash: true, preserveScroll: true });

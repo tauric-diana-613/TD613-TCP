@@ -25,7 +25,7 @@ function createVixenDOM(vixenHtml, opts = {}) {
       }
       if (win.HTMLDialogElement) {
         if (!win.HTMLDialogElement.prototype.showModal) win.HTMLDialogElement.prototype.showModal = function() { this.open = true; };
-        if (!win.HTMLDialogElement.prototype.close) win.HTMLDialogElement.prototype.close = function() { this.open = false; };
+        if (!win.HTMLDialogElement.prototype.close) win.HTMLDialogElement.prototype.close = function() { this.open = false; this.dispatchEvent(new win.Event('close')); };
       }
       win.HTMLCanvasElement.prototype.getContext = () => ({
         clearRect: () => {}, beginPath: () => {}, arc: () => {}, fill: () => {}, stroke: () => {},
@@ -1060,6 +1060,354 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
 
       const worksItems = doc.querySelectorAll('[data-select-work]');
       assert.strictEqual(worksItems.length, 13, 'Must display the 13 Confirmed Dual works restored from memory');
+    });
+  });
+
+  // 15. Consolidated Navigation Integrity (C01 Body Navigation Decoupling, C02 Centralized History Transaction, C03 Scroll & Focus)
+  await t.test('15. Consolidated Navigation Integrity (C01, C02, C03)', async (t2) => {
+    // C01 Subtest: Negative controls for click handlers
+    await t2.test('C01: Clicks on document body and descendant elements do NOT trigger navigation or scrollTo(0,0)', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#overview' });
+      const win = dom.window;
+      const doc = win.document;
+
+      let scrollCalls = 0;
+      win.scrollTo = (opts) => {
+        if (opts && opts.top === 0) scrollCalls++;
+      };
+
+      // 1. Click document body directly
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'overview', 'Initial view must be overview');
+      doc.body.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true }));
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'overview', 'Clicking body must NOT re-trigger setView');
+      assert.strictEqual(scrollCalls, 0, 'Clicking body must NOT invoke scrollTo(0,0)');
+
+      // 2. Navigate to Works view
+      const worksNavBtn = doc.querySelector('button[data-view="works"]');
+      assert.ok(worksNavBtn, 'Works nav button must exist');
+      worksNavBtn.click();
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'works', 'View must be works');
+
+      // Reset scroll counter
+      scrollCalls = 0;
+
+      // Click on a work card
+      const workCard = doc.querySelector('[data-select-work]');
+      assert.ok(workCard, 'Work card must exist');
+      workCard.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true }));
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'works', 'Clicking work card must stay in works view');
+      assert.strictEqual(scrollCalls, 0, 'Clicking work card must NOT invoke scrollTo(0,0)');
+
+      // Click on search input
+      const searchInput = doc.getElementById('workSearchInput');
+      assert.ok(searchInput, 'Work search input must exist');
+      searchInput.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true }));
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'works', 'Clicking search input must stay in works view');
+      assert.strictEqual(scrollCalls, 0, 'Clicking search input must NOT invoke scrollTo(0,0)');
+
+      // Click on filter button
+      const filterBtn = doc.querySelector('[data-work-status="SAME_WORK_CONFIRMED"]');
+      assert.ok(filterBtn, 'Filter button must exist');
+      filterBtn.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true }));
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'works', 'Clicking filter button must stay in works view');
+      assert.strictEqual(scrollCalls, 0, 'Clicking filter button must NOT invoke scrollTo(0,0)');
+
+      // Click on motion control button
+      const motionBtn = doc.getElementById('motionBtn');
+      assert.ok(motionBtn, 'Motion button must exist');
+      motionBtn.dispatchEvent(new win.MouseEvent('click', { bubbles: true, cancelable: true }));
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'works', 'Clicking motion button must stay in works view');
+      assert.strictEqual(scrollCalls, 0, 'Clicking motion button must NOT invoke scrollTo(0,0)');
+    });
+
+    // C02 Subtest: Centralized URL, Selection & History Ownership
+    await t2.test('C02: Strict history transaction policy (Push 1 on new route, Replace 1 on filter, 0 on replay/repeat)', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#overview' });
+      const win = dom.window;
+      const doc = win.document;
+
+      let pushCount = 0;
+      let replaceCount = 0;
+      const origPush = win.history.pushState.bind(win.history);
+      const origReplace = win.history.replaceState.bind(win.history);
+
+      win.history.pushState = (data, title, url) => {
+        pushCount++;
+        return origPush(data, title, url);
+      };
+      win.history.replaceState = (data, title, url) => {
+        replaceCount++;
+        return origReplace(data, title, url);
+      };
+
+      // 1. Intentional new route switch: pushCount === 1, replaceCount === 0
+      const worksNavBtn = doc.querySelector('button[data-view="works"]');
+      worksNavBtn.click();
+      assert.strictEqual(pushCount, 1, 'Intentional new route switch must push history exactly once');
+      assert.strictEqual(replaceCount, 0, 'Intentional new route switch must NOT replace history');
+
+      // Reset counters
+      pushCount = 0;
+      replaceCount = 0;
+
+      // 2. Select a different unselected work item in the same department
+      const workButtons = doc.querySelectorAll('[data-select-work]');
+      assert.ok(workButtons.length > 2, 'Must have work buttons');
+      // Button 0 is selected by default; click button 2
+      const unselectedBtn = workButtons[2];
+      unselectedBtn.click();
+      assert.strictEqual(pushCount, 0, 'Routine item selection must NOT push history');
+      assert.strictEqual(replaceCount, 1, 'Routine item selection must replace history exactly once to update accession ID');
+
+      // Reset counters
+      pushCount = 0;
+      replaceCount = 0;
+
+      // 3. Repeated click on the already-selected item: 0 mutations
+      unselectedBtn.click();
+      assert.strictEqual(pushCount, 0, 'Repeated click on active selection must NOT push history');
+      assert.strictEqual(replaceCount, 0, 'Repeated click on active selection must NOT replace history');
+
+      // 4. Repeated click on the active view button: 0 mutations
+      worksNavBtn.click();
+      assert.strictEqual(pushCount, 0, 'Repeated click on active view nav button must NOT push history');
+      assert.strictEqual(replaceCount, 0, 'Repeated click on active view nav button must NOT replace history');
+
+      // 5. History replay (popstate): 0 mutations
+      pushCount = 0;
+      replaceCount = 0;
+      win.location.hash = '#protocols';
+      win.dispatchEvent(new win.PopStateEvent('popstate', { state: null }));
+      assert.strictEqual(pushCount, 0, 'History replay (popstate) must NOT push history');
+      assert.strictEqual(replaceCount, 0, 'History replay (popstate) must NOT replace history');
+    });
+
+    // C03 Subtest: Scroll and Focus Policies
+    await t2.test('C03: Scroll position preserved on record selection; dialog dismissal uses preventScroll: true', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#works' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // 1. Same-department record selection preserves reading position
+      let scrollCalls = 0;
+      win.scrollTo = () => { scrollCalls++; };
+      const workButtons = doc.querySelectorAll('[data-select-work]');
+      if (workButtons[1]) {
+        workButtons[1].click();
+      }
+      assert.strictEqual(scrollCalls, 0, 'Record selection within works must preserve scroll position');
+
+      // 2. Dialog dismissal restores focus with preventScroll: true
+      const searchTrigger = doc.querySelector('[data-action="search"]');
+      assert.ok(searchTrigger, 'Search trigger button must exist');
+      let focusOptsPassed = null;
+      searchTrigger.focus = (opts) => { focusOptsPassed = opts; };
+
+      searchTrigger.click();
+      const closeSearchBtn = doc.getElementById('closeSearchBtn');
+      assert.ok(closeSearchBtn, 'Close search button must exist');
+      closeSearchBtn.click();
+
+      assert.ok(focusOptsPassed, 'Focus must be restored on dialog close');
+      assert.strictEqual(focusOptsPassed.preventScroll, true, 'Dialog dismissal must pass { preventScroll: true } to focus()');
+
+      // 3. Jump to gate from work preserves scroll
+      const jumpBtn = doc.getElementById('jumpToGateFromWork');
+      assert.ok(jumpBtn, 'Jump to gate button must exist');
+      const gateCard = doc.querySelector('.gate-card');
+      if (gateCard) {
+        gateCard.scrollIntoView = () => {};
+      }
+      jumpBtn.click();
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'gates', 'Jump to gate must transition to gates view');
+    });
+  });
+
+  // 16. Consolidated State Transitions & Route Boundaries (H01)
+  await t.test('16. Consolidated State Transitions & Route Boundaries (H01)', async (t2) => {
+    await t2.test('H01-A: Pairwise navigation transitions across all 6 research environments', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#overview' });
+      const win = dom.window;
+      const doc = win.document;
+
+      const views = ['overview', 'observatory', 'works', 'gates', 'protocols', 'holds'];
+      for (let i = 0; i < views.length; i++) {
+        const v = views[i];
+        const btn = doc.querySelector('button[data-view="' + v + '"]');
+        assert.ok(btn, 'Nav button for ' + v + ' must exist');
+        btn.click();
+        assert.strictEqual(doc.body.getAttribute('data-view'), v, 'Body data-view must match ' + v);
+        assert.ok(win.location.hash.startsWith('#' + v), 'URL hash must start with #' + v);
+      }
+    });
+
+    await t2.test('H01-B: Unknown/malformed hash resilience falls back safely to overview', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#nonexistent_view_404/abc/123' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // In applyHashRoute, unrecognized view falls back to 'overview'
+      assert.strictEqual(doc.body.getAttribute('data-view'), 'overview', 'Malformed hash must safely fall back to overview');
+    });
+
+    await t2.test('H01-C: Empty state resilience across all searchable views', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#works' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // 1. Works zero-match
+      const workInput = doc.getElementById('workSearchInput');
+      workInput.value = 'query_with_no_matches_xyz';
+      workInput.dispatchEvent(new win.Event('input'));
+      assert.ok(doc.querySelector('[data-state="NO_MATCHING_RECORDS"]'), 'Works must show empty state card');
+      assert.ok(doc.getElementById('worksReaderPanel').innerHTML.includes('No Matching'), 'Works reader must show empty state card');
+
+      // 2. Batch-B zero-match
+      const batchBBtn = doc.querySelector('[data-work-cluster="BATCH_B"]');
+      batchBBtn.click();
+      workInput.value = 'batchb_no_matches_123';
+      workInput.dispatchEvent(new win.Event('input'));
+      assert.ok(doc.getElementById('worksReaderPanel').innerHTML.includes('No Matching Prospective Batch-B'), 'Batch-B reader must show empty state card');
+
+      // 3. Protocols zero-match
+      doc.querySelector('button[data-view="protocols"]').click();
+      const protoInput = doc.getElementById('protocolSearchInput');
+      protoInput.value = 'proto_no_matches_456';
+      protoInput.dispatchEvent(new win.Event('input'));
+      assert.ok(doc.getElementById('protocolsReaderPanel').innerHTML.includes('No Matching'), 'Protocols reader must show empty state card');
+
+      // 4. Tracks zero-match
+      doc.querySelector('[data-inst-family="TRACKS"]').click();
+      protoInput.value = 'track_no_matches_789';
+      protoInput.dispatchEvent(new win.Event('input'));
+      assert.ok(doc.getElementById('protocolsReaderPanel').innerHTML.includes('No Matching Prospective Research Tracks'), 'Tracks reader must show empty state card');
+    });
+  });
+
+  // 17. Consolidated Visual Controls & Legibility (V01)
+  await t.test('17. Consolidated Visual Controls & Legibility (V01)', async (t2) => {
+    await t2.test('V01-B: .reading-back is hidden on overview via CSS', () => {
+      assert.ok(
+        html.includes('body[data-view="overview"] .reading-back{display:none}'),
+        'CSS rule body[data-view="overview"] .reading-back{display:none} must exist'
+      );
+    });
+
+    await t2.test('V01-C: Platform-aware shortcut indicator in header and dialog', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html' });
+      const win = dom.window;
+      const doc = win.document;
+
+      const kbd = doc.getElementById('searchShortcutKbd');
+      assert.ok(kbd, '#searchShortcutKbd must exist');
+      assert.ok(['Ctrl+K', '⌘K'].includes(kbd.textContent), 'Shortcut text must be either Ctrl+K or ⌘K');
+
+      const searchBtn = doc.querySelector('[data-action="search"]');
+      assert.ok(searchBtn.getAttribute('aria-label').includes(kbd.textContent), 'Search button aria-label must include shortcut');
+    });
+
+    await t2.test('V01-F: Motion button toggles visible text, aria-pressed, and accessible label', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html' });
+      const win = dom.window;
+      const doc = win.document;
+
+      const motionBtn = doc.getElementById('motionBtn');
+      assert.ok(motionBtn, '#motionBtn must exist');
+      assert.strictEqual(motionBtn.getAttribute('aria-pressed'), 'false', 'Initial aria-pressed must be false');
+      assert.ok(motionBtn.textContent.includes('Still'), 'Initial visible text must include Still');
+      assert.ok(motionBtn.getAttribute('aria-label').includes('Pause'), 'Initial aria-label must describe pausing animations');
+
+      // Click motion button
+      motionBtn.click();
+      assert.strictEqual(motionBtn.getAttribute('aria-pressed'), 'true', 'Toggled aria-pressed must be true');
+      assert.ok(motionBtn.textContent.includes('Resume'), 'Toggled visible text must include Resume');
+      assert.ok(motionBtn.getAttribute('aria-label').includes('Resume'), 'Toggled aria-label must describe resuming animations');
+
+      // Click again
+      motionBtn.click();
+      assert.strictEqual(motionBtn.getAttribute('aria-pressed'), 'false', 'Re-toggled aria-pressed must be false');
+      assert.ok(motionBtn.textContent.includes('Still'), 'Re-toggled visible text must include Still');
+    });
+  });
+
+  // 18. Consolidated Documentary and Prompt Qualification Suite (D01 & D02)
+  await t.test('18. Consolidated Documentary and Prompt Qualification Suite (D01 & D02)', async (t2) => {
+    await t2.test('D01: Historical provenance report and 21-instrument taxonomy', () => {
+      const reportPath = path.join(rootDir, 'docs', 'reviews', 'vixen-ux-architecture-20261106', 'PRE_FREEZE_VERIFICATION_REPORT.md');
+      assert.ok(fs.existsSync(reportPath), 'PRE_FREEZE_VERIFICATION_REPORT.md must exist');
+      const reportContent = fs.readFileSync(reportPath, 'utf8');
+
+      // Must contain all historical commit hashes
+      const expectedCommits = [
+        'd9e1051ebd',
+        '7e60bc6477',
+        'fb554ff639',
+        '27f5a9e3ec',
+        'fb4e9cf21c',
+        '893e391a52',
+        '1dd7c1bfdf',
+        '3f4c0feed5',
+        'c62530f7f6'
+      ];
+      for (const commit of expectedCommits) {
+        assert.ok(reportContent.includes(commit), 'Report must record historical commit ' + commit);
+      }
+
+      // Must record distinction between delivered 640,649 and commit 641,510
+      assert.ok(reportContent.includes('640,649'), 'Report must record 640,649 delivered candidate');
+      assert.ok(reportContent.includes('641,510'), 'Report must record 641,510 commit blob');
+
+      // Must record successor identity: 664,412 bytes and SHA-256
+      assert.ok(reportContent.includes('664,412'), 'Report must record successor byte length 664,412');
+      assert.ok(reportContent.includes('737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac'), 'Report must record successor SHA-256');
+
+      // Corpus instrument distribution verification: F1=6, F2=7, F3=4, F4=4
+      const bundleMatch = html.match(/<script\b[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+      assert.ok(bundleMatch, 'Corpus bundle must be present in HTML');
+      const bundle = JSON.parse(bundleMatch[1]);
+      const instruments = bundle.instruments;
+      assert.strictEqual(instruments.length, 21, 'Must have exactly 21 instruments');
+      const f1 = instruments.filter(i => i.family === 'F1').length;
+      const f2 = instruments.filter(i => i.family === 'F2').length;
+      const f3 = instruments.filter(i => i.family === 'F3').length;
+      const f4 = instruments.filter(i => i.family === 'F4').length;
+      assert.strictEqual(f1, 6, 'F1 family must have 6 instruments');
+      assert.strictEqual(f2, 7, 'F2 family must have 7 instruments');
+      assert.strictEqual(f3, 4, 'F3 family must have 4 instruments');
+      assert.strictEqual(f4, 4, 'F4 family must have 4 instruments');
+    });
+
+    await t2.test('D02: Astra Activation Prompt qualification and 14-point anti-regression checklist', () => {
+      const promptPath = path.join(rootDir, 'docs', 'reviews', 'vixen-ux-architecture-20261106', 'VIXEN_ASTRA_ACTIVATION_PROMPT.md');
+      assert.ok(fs.existsSync(promptPath), 'VIXEN_ASTRA_ACTIVATION_PROMPT.md must exist');
+      const promptContent = fs.readFileSync(promptPath, 'utf8');
+
+      // 1. Creative autonomy vs scientific authority distinction
+      assert.ok(promptContent.includes('Creative implementation autonomy') && promptContent.includes('Scientific or custodial promotion authority'), 'Prompt must state formal distinction equation');
+
+      // 2. 10 explicit implementation powers
+      assert.ok(promptContent.includes("Ten Explicit Implementation Powers") || promptContent.includes("10 Explicit Implementation Powers"), 'Prompt must detail 10 explicit powers');
+
+      // 3. Three implementation classes
+      assert.ok(promptContent.includes('Class 1') && promptContent.includes('Class 2') && promptContent.includes('Class 3'), 'Prompt must define 3 implementation classes');
+
+      // 4. Glinda / Mugler creative brief
+      assert.ok(promptContent.includes('Glinda') && promptContent.includes('Mugler'), 'Prompt must include Glinda/Mugler creative brief');
+
+      // 5. Six environments and three reader journeys
+      assert.ok(promptContent.includes('Journey A') && promptContent.includes('Journey B') && promptContent.includes('Journey C'), 'Prompt must detail 3 reader journeys');
+
+      // 6. OPERAHOUSE != OPERA != PERFORMER
+      assert.ok(promptContent.includes('OPERAHOUSE') && promptContent.includes('PERFORMER'), 'Prompt must formalize 3-tier language membrane');
+
+      // 7. 21-instrument taxonomy
+      assert.ok((promptContent.includes('F1 = 6') || promptContent.includes('F1: 6')) && (promptContent.includes('F2 = 7') || promptContent.includes('F2: 7')) && (promptContent.includes('F3 = 4') || promptContent.includes('F3: 4')) && (promptContent.includes('F4 = 4') || promptContent.includes('F4: 4')), 'Prompt must record exact instrument distribution F1=6, F2=7, F3=4, F4=4');
+
+      // 8. 14-point anti-regression checklist
+      assert.ok(promptContent.includes('D02-J 14-Point Anti-Regression Qualification Checklist'), 'Prompt must include 14-point anti-regression checklist');
+      for (let i = 1; i <= 14; i++) {
+        assert.ok(promptContent.includes(`- [x] **${i}.`), `Checklist item ${i} must be checked in prompt`);
+      }
     });
   });
 
