@@ -1,0 +1,262 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613://rulefield/amendments/schema/v1",
+  "title": "TD613 Rulefield Kiki-Receiver Amendment Packet",
+  "description": "Prospective source-free amendment proposal, never an automatic mutation. Runtime receiver enforces baseline, anchors, safe opcodes and authority contract beyond this structural schema.",
+  "type": "object",
+  "required": [
+    "schema",
+    "packet_id",
+    "baseline",
+    "creator",
+    "operator_authority",
+    "research_intent",
+    "proposals"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.rulefield.amendment-packet/v1"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{6,79}$"
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "registry_schema",
+        "registry_sha256",
+        "flight"
+      ],
+      "properties": {
+        "registry_schema": {
+          "const": "td613.rulefield.v1/rc1"
+        },
+        "registry_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "queue_version": {
+          "type": "string"
+        },
+        "flight": {
+          "const": "HELD"
+        }
+      }
+    },
+    "creator": {
+      "type": "object",
+      "required": [
+        "name",
+        "thread_ref",
+        "role"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "thread_ref": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "human_authorship": {
+          "const": "RESERVED"
+        }
+      }
+    },
+    "operator_authority": {
+      "type": "object",
+      "required": [
+        "scope",
+        "auto_apply",
+        "auto_merge",
+        "auto_deploy",
+        "protected_flight"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "scope": {
+          "const": "SOURCE_FREE_PROSPECTIVE"
+        },
+        "auto_apply": {
+          "const": false
+        },
+        "auto_merge": {
+          "const": false
+        },
+        "auto_deploy": {
+          "const": false
+        },
+        "protected_flight": {
+          "const": "HELD"
+        }
+      }
+    },
+    "research_intent": {
+      "type": "string",
+      "minLength": 10
+    },
+    "creative_invitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_lenses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "context": {
+      "type": "object"
+    },
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "hypothesis",
+          "anchors",
+          "controls",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_-]{1,39}$"
+          },
+          "kind": {
+            "enum": [
+              "PROPOSE_RULE",
+              "PROPOSE_RELATION",
+              "PROPOSE_PROJECTION",
+              "PROPOSE_PREDICTION",
+              "PROPOSE_GEOMETRY",
+              "PROPOSE_CONSEQUENCE",
+              "PROPOSE_ASSAY",
+              "RECORD_COUNTEREXAMPLE",
+              "REQUEST_ALIAS_ADJUDICATION",
+              "REPAIR_INTEGRATION",
+              "PROPOSE_AMBIANCE_OBSERVER_ASSAY",
+              "REFRACT_RULE",
+              "DOCUMENT_FAILED_ASSAY"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "hypothesis": {
+            "type": "string",
+            "minLength": 20
+          },
+          "anchors": {
+            "type": "object",
+            "properties": {
+              "rules": {
+                "type": "array",
+                "maxItems": 40,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "crossings": {
+                "type": "array",
+                "maxItems": 40,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "queue_ranks": {
+                "type": "array",
+                "maxItems": 40,
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 70
+                }
+              }
+            }
+          },
+          "relation": {
+            "type": "object"
+          },
+          "projection": {
+            "type": "object"
+          },
+          "geometry": {
+            "type": "object"
+          },
+          "nks": {
+            "type": "object"
+          },
+          "prediction": {
+            "type": "string"
+          },
+          "consequence": {
+            "type": "string"
+          },
+          "controls": {
+            "type": "object",
+            "properties": {
+              "falsifier": {
+                "type": "string"
+              },
+              "competent_null": {
+                "type": "string"
+              },
+              "negative_control": {
+                "type": "string"
+              }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "required": [
+              "source_class"
+            ],
+            "properties": {
+              "source_class": {
+                "enum": [
+                  "SOURCE_FREE_SYNTHETIC",
+                  "PUBLIC_SOURCE_REPORTED",
+                  "DOCUMENTARY_UNVERIFIED",
+                  "OPERATOR_PROVIDED_THEORY",
+                  "UNOBSERVED_HYPOTHESIS"
+                ]
+              },
+              "source_refs": {
+                "type": "array",
+                "maxItems": 60,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "observation_status": {
+                "type": "string"
+              },
+              "independent_replication": {
+                "type": "boolean"
+              }
+            }
+          },
+          "uncertainty": {
+            "type": "object"
+          },
+          "artistic_notes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
