@@ -12,7 +12,10 @@
     "runtime": "packages/rulefield/amendments/receiver.mjs",
     "operator_cli": "node scripts/rulefield-amend.mjs",
     "inbox": "packages/rulefield/amendments/inbox/",
-    "review_outbox": "packages/rulefield/amendments/outbox/"
+    "review_outbox": "packages/rulefield/amendments/outbox/",
+    "complexity_lab": "packages/rulefield/lab/multiway_lab.mjs",
+    "external_tools": "packages/rulefield/lab/tool_registry.json",
+    "roadmap": "packages/rulefield/ROADMAP.md"
   },
   "stages": [
     {
@@ -74,6 +77,23 @@
     },
     {
       "stage": 4,
+      "hook": "on_finite_experiment",
+      "owner": "RULEFIELD_NKS_LAB",
+      "reads": [
+        "proposal.experiment.engine",
+        "source-free rule deck",
+        "finite initial state",
+        "explicit resource bounds"
+      ],
+      "writes": [
+        "review-only bounded experiment result",
+        "event or CA history",
+        "claim_ceiling"
+      ],
+      "rule": "Dispatch only FINITE_STRING_MULTIWAY, FINITE_CRITICAL_PAIRS and ELEMENTARY_CA with explicit limits. No arbitrary packet code, no Wolfram kernel claim, no automatic Rulefield mutation."
+    },
+    {
+      "stage": 5,
       "hook": "on_counterfactual_branch",
       "owner": "DOLLHOUSE_DESIGN",
       "reads": [
@@ -87,7 +107,7 @@
       "rule": "Allow counterexamples, divergence, non-joinable histories, and NO_NEW_RULE_WARRANTED."
     },
     {
-      "stage": 5,
+      "stage": 6,
       "hook": "on_assay_requirement",
       "owner": "DOLLHOUSE_AUDIT",
       "reads": [
@@ -102,7 +122,7 @@
       "rule": "Audit and design receipts have separate authorities. Do not claim native execution that did not occur."
     },
     {
-      "stage": 6,
+      "stage": 7,
       "hook": "on_observer_projection",
       "owner": "APERTURE_AND_ATLAS",
       "reads": [
@@ -116,7 +136,7 @@
       "rule": "Computational invariance and reader effects are different testable coordinates. Observer absence stays unobserved."
     },
     {
-      "stage": 7,
+      "stage": 8,
       "hook": "on_review_receipt",
       "owner": "RECEIVER",
       "reads": [
@@ -131,7 +151,7 @@
       "rule": "Deterministic and idempotent output; never canonical registry mutation."
     },
     {
-      "stage": 8,
+      "stage": 9,
       "hook": "on_operator_promotion_request",
       "owner": "HUMAN",
       "reads": [
@@ -169,7 +189,9 @@
       "affective or aesthetic hypotheses",
       "Caro/Butler/Sedgwick refraction",
       "Palace temporal availability",
-      "negative results"
+      "negative results",
+      "bounded finite cellular automaton reference model",
+      "finite event-instance and critical-pair experiment"
     ],
     "prohibited_auto_actions": [
       "running packet-supplied JavaScript",
@@ -200,7 +222,9 @@
   "continuous_behavior": {
     "automatic_watching_enabled": false,
     "manual_sync_or_external_scheduler_only": true,
-    "reason": "Avoid silent background work or unauthorized autonomous mutation."
+    "reason": "Avoid silent background work or unauthorized autonomous mutation.",
+    "experimental_dispatch_requires_typed_spec": true,
+    "no_continuous_monitoring": true
   },
   "covenant": "Khona‌lit-po",
   "closure": "RESERVED"
