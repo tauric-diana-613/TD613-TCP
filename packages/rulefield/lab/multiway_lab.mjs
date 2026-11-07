@@ -79,6 +79,8 @@ export function enumerate(initial,rules,{depth=3,maxPaths=10000,maxLength=18}={}
  for(const [source,es] of forks){
   for(let i=0;i<es.length;i++)for(let j=i+1;j<es.length;j++){
    branchPairs.push({source_path:source,left_event:es[i].event_id,right_event:es[j].event_id,left_state:es[i].target_state,right_state:es[j].target_state,
+     source_state:es[i].source_state,left_span:es[i].span,right_span:es[j].span,
+     redex_overlap:Math.max(es[i].span[0],es[j].span[0])<Math.min(es[i].span[1],es[j].span[1]),
      same_immediate_state:es[i].target_state===es[j].target_state});
   }
  }
@@ -117,7 +119,11 @@ export function resolveFork(left,right,rules,{horizon=3}={}){
 }
 export function criticalPairs(initial,rules,{depth=1,horizon=3}={}){
  const m=enumerate(initial,rules,{depth,maxPaths:1500,maxLength:32});
- return m.branchPairs.map(p=>({...p,resolution:resolveFork(p.left_state,p.right_state,rules,{horizon})}));
+ // In finite string rewriting, an overlapping pair of redexes is a critical
+ // pair candidate. Independent disjoint redex forks are branch pairs, but not
+ // overlapping critical pairs. This is intentionally narrower than a global
+ // critical-pair theorem for arbitrary higher-order or variable term rewriting.
+ return m.branchPairs.filter(p=>p.redex_overlap).map(p=>({...p,resolution:resolveFork(p.left_state,p.right_state,rules,{horizon})}));
 }
 export function finiteCA(rule,{width=41,steps=24,seed=null,perturb=null,boundary='periodic'}={}){
  insist(Number.isInteger(rule)&&rule>=0&&rule<=255,'Elementary CA rule 0–255');
