@@ -23,6 +23,10 @@ function createVixenDOM(vixenHtml, opts = {}) {
       if (opts.hostConfig) {
         win.VIXEN_HOST_CONFIG = opts.hostConfig;
       }
+      if (win.HTMLDialogElement) {
+        if (!win.HTMLDialogElement.prototype.showModal) win.HTMLDialogElement.prototype.showModal = function() { this.open = true; };
+        if (!win.HTMLDialogElement.prototype.close) win.HTMLDialogElement.prototype.close = function() { this.open = false; };
+      }
       win.HTMLCanvasElement.prototype.getContext = () => ({
         clearRect: () => {}, beginPath: () => {}, arc: () => {}, fill: () => {}, stroke: () => {},
         moveTo: () => {}, lineTo: () => {}, closePath: () => {}, fillRect: () => {}, strokeRect: () => {},
@@ -860,6 +864,203 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     assert.ok(html.includes('system-ui'), 'Sans must include system-ui fallback');
     assert.ok(html.includes('Georgia'), 'Serif must include Georgia fallback');
     assert.ok(html.includes('Consolas'), 'Mono must include Consolas fallback');
+  });
+
+  await t.test('14. Emergence HQ Review #5812619950 Directives (X01 Visible Search Clearing, X02 Selection/URL Agreement, X03 Batch-B Status Inapplicability)', async (t2) => {
+    // Subtest X01: Stale Visible Search Fields After Cross-Feature Navigation
+    await t2.test('X01: openRecordById synchronizes visible input value and application query state', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#works' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // 1. Works: set impossible query into #workSearchInput
+      const workInput = doc.getElementById('workSearchInput');
+      assert.ok(workInput, '#workSearchInput must exist');
+      workInput.value = 'impossible_query_xyz';
+      workInput.dispatchEvent(new win.Event('input'));
+
+      // Verify empty state rendered
+      const summaryEl = doc.getElementById('worksResultSummary');
+      assert.ok(summaryEl.textContent.includes('0 of 32'), 'Must report 0 of 32 Works for impossible query');
+
+      // Now pick a registered work via global search modal (Cmd+K flow)
+      const globalInput = doc.getElementById('globalSearchInput');
+      assert.ok(globalInput, '#globalSearchInput must exist');
+      globalInput.value = 'algedonic';
+      globalInput.dispatchEvent(new win.Event('input'));
+
+      const results = doc.getElementById('globalSearchResults');
+      const pick = results.querySelector('[data-search-pick]');
+      assert.ok(pick, 'Must have at least one search pick');
+      const pickedWorkId = pick.getAttribute('data-search-pick');
+      pick.click();
+
+      // Verification of X01 acceptance predicate in Works:
+      assert.strictEqual(workInput.value, '', 'Visible work search input value must be cleared after cross-feature navigation');
+      assert.strictEqual(summaryEl.textContent.includes('32 of 32'), true, 'Works summary must report 32 of 32 after clearing obstructing query');
+
+      // Verify target work is selected, aria-current is true, reader displays it, and URL hash reflects it
+      const currentWorkBtn = doc.querySelector('[data-select-work="' + pickedWorkId + '"]');
+      assert.ok(currentWorkBtn, 'Target work button must be rendered in list');
+      assert.strictEqual(currentWorkBtn.getAttribute('aria-current'), 'true', 'Target work button must have aria-current="true"');
+      const readerHeader = doc.querySelector('#worksReaderPanel h2');
+      assert.ok(readerHeader, 'Works reader panel must have header');
+      assert.ok(win.location.hash.includes(pickedWorkId), 'URL hash must reflect selected work ID');
+
+      // 2. Protocols: set impossible query into #protocolSearchInput
+      // Navigate to Protocols view first
+      const protoNavBtn = doc.querySelector('.nav-btn[data-view="protocols"]');
+      assert.ok(protoNavBtn, 'Protocols nav button must exist');
+      protoNavBtn.click();
+
+      const protoInput = doc.getElementById('protocolSearchInput');
+      assert.ok(protoInput, '#protocolSearchInput must exist');
+      protoInput.value = 'impossible_proto_query_xyz';
+      protoInput.dispatchEvent(new win.Event('input'));
+
+      const protoSummary = doc.getElementById('protocolsResultSummary');
+      assert.ok(protoSummary.textContent.includes('0 of 21'), 'Must report 0 of 21 Protocols for impossible query');
+
+      // Pick a registered protocol via global search
+      globalInput.value = 'epistemic';
+      globalInput.dispatchEvent(new win.Event('input'));
+      const protoPick = results.querySelector('[data-search-pick]');
+      assert.ok(protoPick, 'Must find protocol search pick');
+      const pickedInstId = protoPick.getAttribute('data-search-pick');
+      protoPick.click();
+
+      // Verification of X01 in Protocols:
+      assert.strictEqual(protoInput.value, '', 'Visible protocol search input value must be cleared after cross-feature navigation');
+      assert.strictEqual(protoSummary.textContent.includes('21 of 21'), true, 'Protocols summary must report 21 of 21 after clearing obstructing query');
+      const currentInstBtn = doc.querySelector('[data-select-inst="' + pickedInstId + '"]');
+      assert.ok(currentInstBtn, 'Target instrument button must be rendered in list');
+      assert.strictEqual(currentInstBtn.getAttribute('aria-current'), 'true', 'Target instrument button must have aria-current="true"');
+      assert.ok(win.location.hash.includes(pickedInstId), 'URL hash must reflect selected instrument ID');
+    });
+
+    // Subtest X02: Selected-record, filtered-reader and URL disagreement
+    await t2.test('X02: Filter transitions synchronize selected ID, aria-current, reader, and URL hash', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#works' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // 1. Works: Switch to Confirmed Dual (13 works)
+      const confirmedBtn = doc.querySelector('[data-work-status="SAME_WORK_CONFIRMED"]');
+      assert.ok(confirmedBtn, 'Confirmed Dual button must exist');
+      confirmedBtn.click();
+
+      // Check current selection
+      const confirmedSelected = doc.querySelector('[data-select-work][aria-current="true"]');
+      assert.ok(confirmedSelected, 'A work must be selected under Confirmed Dual');
+      const confWorkId = confirmedSelected.getAttribute('data-select-work');
+      assert.ok(win.location.hash.includes(confWorkId), 'URL hash must match selected work under Confirmed Dual');
+
+      // 2. Switch to Singleton filter (11 works)
+      const singletonBtn = doc.querySelector('[data-work-status="SINGLETON_WORK_SURFACE"]');
+      assert.ok(singletonBtn, 'Singleton button must exist');
+      singletonBtn.click();
+
+      // Under Singleton, the previous Confirmed Dual work is excluded.
+      // Selection must deterministically fall back to the first singleton work (emwork_0d33e61fc09e51761acb87d9).
+      const singletonSelected = doc.querySelector('[data-select-work][aria-current="true"]');
+      assert.ok(singletonSelected, 'A work must be selected under Singleton');
+      const singWorkId = singletonSelected.getAttribute('data-select-work');
+      assert.notStrictEqual(singWorkId, confWorkId, 'Previous selection must not persist when excluded by filter');
+
+      // Acceptance predicate: URL record ID === state selected ID === aria-current ID === reader record ID
+      const expectedSingletonId = 'emwork_0d33e61fc09e51761acb87d9';
+      assert.strictEqual(singWorkId, expectedSingletonId, 'Deterministic fallback selection must be emwork_0d33e61fc09e51761acb87d9');
+      assert.strictEqual(win.location.hash, '#works/' + expectedSingletonId, 'URL hash must synchronize to fallback selection');
+      const readerHeader = doc.querySelector('#worksReaderPanel h2').textContent;
+      assert.ok(readerHeader.length > 0, 'Reader header must be populated');
+
+      // 3. Zero-match query in Works: URL must drop record ID to #works
+      const workInput = doc.getElementById('workSearchInput');
+      workInput.value = 'zero_match_test_query';
+      workInput.dispatchEvent(new win.Event('input'));
+      assert.strictEqual(win.location.hash, '#works', 'URL hash must fall back to base #works when 0 matches remain');
+      assert.ok(doc.querySelector('[data-state="NO_MATCHING_RECORDS"]'), 'Empty state must be displayed');
+
+      // 4. Protocols: Navigate to Protocols tab
+      const protoNavBtn = doc.querySelector('.nav-btn[data-view="protocols"]');
+      assert.ok(protoNavBtn, 'Protocols nav button must exist');
+      protoNavBtn.click();
+
+      // Switch to F1 (4 instruments)
+      const f1Btn = doc.querySelector('[data-inst-family="F1"]');
+      assert.ok(f1Btn, 'F1 button must exist');
+      f1Btn.click();
+
+      const f1Selected = doc.querySelector('[data-select-inst][aria-current="true"]');
+      assert.ok(f1Selected, 'An instrument must be selected under F1');
+      const f1InstId = f1Selected.getAttribute('data-select-inst');
+      assert.strictEqual(f1InstId, 'ACADEMIA_SUI_GENERIS_SIEVE_V0_1', 'F1 must select ACADEMIA_SUI_GENERIS_SIEVE_V0_1');
+      assert.strictEqual(win.location.hash, '#protocols/ACADEMIA_SUI_GENERIS_SIEVE_V0_1', 'URL hash must match visible F1 selection');
+
+      // 5. Protocols: Switch to TRACKS (6 tracks)
+      const tracksBtn = doc.querySelector('[data-inst-family="TRACKS"]');
+      assert.ok(tracksBtn, 'TRACKS button must exist');
+      tracksBtn.click();
+
+      const trackSelected = doc.querySelector('[data-select-track][aria-current="true"]');
+      assert.ok(trackSelected, 'A track must be selected under TRACKS');
+      const trackId = trackSelected.getAttribute('data-select-track');
+      assert.strictEqual(trackId, 'TRACK-A', 'TRACKS must select TRACK-A');
+      assert.strictEqual(win.location.hash, '#protocols/TRACK-A', 'URL hash must match visible track selection');
+    });
+
+    // Subtest X03: Incompatible Work-status control during Batch-B browsing
+    await t2.test('X03: Entering Batch-B dims and disables status controls; returning restores canonical status', () => {
+      const dom = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#works' });
+      const win = dom.window;
+      const doc = win.document;
+
+      // 1. In canonical works, select Confirmed Dual
+      const confirmedBtn = doc.querySelector('[data-work-status="SAME_WORK_CONFIRMED"]');
+      confirmedBtn.click();
+      assert.strictEqual(confirmedBtn.getAttribute('aria-pressed'), 'true', 'Confirmed Dual must be pressed in canonical works');
+
+      // 2. Switch cluster to Batch-B (+7 Batch-B Annex)
+      const batchBBtn = doc.querySelector('[data-work-cluster="BATCH_B"]');
+      assert.ok(batchBBtn, 'Batch-B cluster button must exist');
+      batchBBtn.click();
+
+      // Check 7 Batch-B records rendered
+      const batchBItems = doc.querySelectorAll('[data-select-batchb]');
+      assert.strictEqual(batchBItems.length, 7, 'Must display exactly 7 Batch-B records');
+
+      // X03 acceptance: Confirmed Dual must NOT remain pressed
+      assert.strictEqual(confirmedBtn.getAttribute('aria-pressed'), 'false', 'Confirmed Dual must NOT be aria-pressed under Batch-B');
+      assert.strictEqual(confirmedBtn.disabled, true, 'Status buttons must be disabled under Batch-B');
+      assert.strictEqual(confirmedBtn.getAttribute('aria-disabled'), 'true', 'Status buttons must have aria-disabled="true" under Batch-B');
+
+      // Status group must indicate inapplicability
+      const statusGroup = doc.querySelector('[role="group"][aria-label*="Status Filter"]');
+      assert.ok(statusGroup, 'Status group must exist');
+      assert.ok(statusGroup.getAttribute('aria-label').includes('Inapplicable to Batch-B Annex'), 'Status group label must indicate inapplicability to Batch-B');
+      assert.strictEqual(statusGroup.style.opacity, '0.45', 'Status group must be dimmed');
+
+      // Clicking a status button during Batch-B must be a no-op
+      const singletonBtn = doc.querySelector('[data-work-status="SINGLETON_WORK_SURFACE"]');
+      singletonBtn.click();
+      const stillBatchBItems = doc.querySelectorAll('[data-select-batchb]');
+      assert.strictEqual(stillBatchBItems.length, 7, 'Batch-B records must still be displayed after clicking status button');
+      assert.strictEqual(singletonBtn.getAttribute('aria-pressed'), 'false', 'Singleton must remain unpressed under Batch-B');
+
+      // 3. Switch back to canonical Works (e.g. All 32)
+      const allClusterBtn = doc.querySelector('[data-work-cluster="ALL"]');
+      allClusterBtn.click();
+
+      // Canonical status must be restored (Confirmed Dual restored from state.lastCanonicalWorkStatus)
+      assert.strictEqual(confirmedBtn.disabled, false, 'Status buttons must be re-enabled when returning to canonical Works');
+      assert.strictEqual(confirmedBtn.getAttribute('aria-disabled'), 'false', 'Status buttons must have aria-disabled="false"');
+      assert.strictEqual(confirmedBtn.getAttribute('aria-pressed'), 'true', 'Confirmed Dual must be restored to aria-pressed="true"');
+      assert.strictEqual(statusGroup.style.opacity, '1', 'Status group must return to full opacity');
+      assert.strictEqual(statusGroup.getAttribute('aria-label'), 'Identity Status Filter', 'Status group label must be restored');
+
+      const worksItems = doc.querySelectorAll('[data-select-work]');
+      assert.strictEqual(worksItems.length, 13, 'Must display the 13 Confirmed Dual works restored from memory');
+    });
   });
 
 });

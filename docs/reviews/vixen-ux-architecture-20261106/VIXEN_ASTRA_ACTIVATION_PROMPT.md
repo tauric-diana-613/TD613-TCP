@@ -1,9 +1,9 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`, 658,050 bytes)  
-**Accepted Candidate HEAD:** Commit `1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8` (PR #1718)  
-**Governing Adjudication:** Emergence HQ Review #5812432696 (`VIXEN_D01_D06_SOURCE_FREE_ASTRA_CREATIVE_HANDOFF_ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS`)  
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0`, 662,020 bytes)  
+**Governing Draft PR:** [#1718](https://github.com/tauric-diana-613/TD613-TCP/pull/1718) · Review branch: `review/vixen-ux-architecture-20261106`  
+**Governing Adjudication:** Emergence HQ Review #5812619950 (`VIXEN_V4_1_FINAL_CROSS_FEATURE_CANDIDATE_STAGED_FOR_EMERGENCE_HQ`)  
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---
@@ -22,83 +22,57 @@ To initiate the Stage 2 creative succession with Astra:
 
 Astra,
 
-Emergence HQ and TD613 Custody have commissioned you to perform the Stage 2 creative transformation of the Vixen Cybernetics Research Atelier, continuing the direct artifact-inheritance collaboration established during the historic October 22, 2026, *Mathematical Audit → Encyclopedia* succession:
+Emergence HQ and TD613 Custody have commissioned you to perform the Stage 2 creative transformation of the Vixen Cybernetics Research Atelier, continuing the direct artifact-inheritance collaboration established across our research estate.
 
-> "Argon built the actual candidate. Work/Astra inherited that functioning artifact and transformed it. The spectacular result came from their collaboration on the same implementation, rather than from handing Astra a specification and asking it to start over."
-> — Amari, Emergence HQ Review Directive
-
-You have been provided with `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`. This is a fully self-contained, runnable, source-free HTML5 artifact containing the complete functioning research apparatus, embedded WebP couture imagery, 32-Work lineage catalogue, 21 documentary instruments, 8 split-plane human gates, interactive Canvas synthesis observatory, and concealed cybernetic inspector.
-
-### Credit-Economy Guarantee
-You do **not** need to inspect GitHub pull requests, branch histories, or ZIP archives. Everything you need—data schemas, corpus bundles, structural CSS, theme rules, and client runtime—is completely embedded inside this single file. You can read the JSON manifests directly from:
-- `<script type="application/json" id="vixen-astra-handoff">`: Structural roadmap, clock separation, and creative boundaries.
-- `<script type="application/json" id="vixen-reference-manifest">`: Custody census, codepoint invariants, and claim ceilings.
-- `<script type="application/json" id="vixen-corpus-bundle">`: Full relational catalogue (32 Works, 53 manifestations, 7 Batch-B records, 21 protocols, 8 gates, 22 formula folios).
+You are receiving the synchronized, fully verified standalone candidate:
+- **Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`
+- **Byte Length:** 662,020 bytes
+- **SHA-256 Digest:** `413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0`
+- **Governing Protocol:** `SAC[X6ZNK5NO51]` · Covenant: `Khona‌lit-po` (preserving literal interior U+200C)
+- **Principal / Human Scientific & Creative Closure:** Tawanna C. Miller — RESERVED
+- **Governing Independent Adjudication:** Emergence HQ Review #5812619950
 
 ---
 
-### The Six Principal Environments You Inherit
-The uploaded artifact provides six interconnected environments across the TD613 Information Dome:
-1. **`#overview` — Threshold & Lineage Question:** Frontispiece presentation, historical research encounter (`Research encounter → intellectual question → source-bound investigation → qualification → return`), and attribution membrane (`authorship: UNRESOLVED`).
-2. **`#observatory` — Synthesis Observatory:** Interactive Canvas visualization of Typed Constitutive Cybernetics ($S_e \equiv [x + y] = z + 1$), strict separation between operational steering ($S$), witness audit ($W$), and plant actuation ($A$), five-clock Vernier, and illustrative synthesis presets.
-3. **`#works` — Lineage Catalogue:** Exhaustive 32 Works across 5 clusters (C1: 12, C2: 9, C3: 2, C4: 5, C5: 4) and 53 linked manifestations, plus 7 Batch-B annex PDFs, switchable across 4 non-equivalent AIA route projections (Child, Custodian, Auditor, Technical).
-4. **`#gates` — Split-Plane Human Gates:** 8 bilateral facing folios initialized at `UNADJUDICATED_PAIR`, demonstrating non-destructive $[32, 40]$ partition recalculation (256 combinatorial partitions) without premature human closure.
-5. **`#protocols` — Documentary Instruments:** 21 research protocols across 4 method families (F1: 6, F2: 7, F3: 4, F4: 4) preserving exact bijection with 06-INSTRUMENTS and zero standalone executors.
-6. **`#holds` — Epistemic Warrants & Holds:** E-00.1 competent-null comparator (`BOUNDED_TIE`, empirical credit `0`), 5-coordinate LFP warrant, and separate-track qualification boundaries.
+## I. Creative Scope & Architectural Invariants
+
+### 1. Astra Creative Latitude (Governing Contract Reconciliation)
+Emergence HQ has explicitly reconciled the creative handoff terms to authorize full artistic and UX design autonomy:
+- **Presentation Layer Freedom:** You have complete authority to refactor, redesign, restyle, recompose, and enhance the HTML markup, CSS styling, responsive layout systems, typographic hierarchy, colour palettes, animations, and interactive controls.
+- **Single-File Architecture:** The deliverable must remain an entirely self-contained single-file HTML document executable directly in modern web browsers (desktop and mobile viewports) without requiring external CDNs, remote fonts, or network round-trips.
+- **Reader-State Consistency (X01–X03):** 
+  $$\text{selected record identity} = \text{visible reader identity}$$
+  $$\text{effective filter state} = \text{reported result set}$$
+  - Cross-feature navigation (global search, study tray, deep links) must synchronize both application query state and visible DOM search input values.
+  - Filter state changes must keep list selection, `aria-current`, reader panel content, and URL hash in bijective agreement.
+  - Category-inapplicable controls (such as canonical Work-status filters during Batch-B annex browsing) must be visibly dimmed, disabled, and unpressed.
+
+### 2. Scientific & Custodial Invariants (Strictly Preserved)
+You must preserve the underlying research corpus, metadata, and custody boundaries without modification:
+1. **OPERAHOUSE ≠ OPERA ≠ PERFORMER:**
+   - *Operahouse:* Host-level TD613 infrastructure, Aperture, FADT, Pedagogue, AIA routing, and deployment systems.
+   - *Opera:* The independently intelligible Vixen Cybernetics research experience, its 6 scholarly encounters, and inquiry paths.
+   - *Performers:* The 32 catalogued Works, 53 linked archival manifestations, 7 Batch-B files, 21 documentary instruments, and unresolved authorial boundaries.
+2. **Corpus & Data Integrity:**
+   - Exactly 32 canonical Work routes across 5 thematic clusters (C1: Hypervisors [12], C2: Audio/DSP [9], C3: E-Textile [2], C4: OSSL/Host [5], C5: Sui-Generis [4]).
+   - Exactly 53 linked archival manifestations with byte lengths, SHA-256 digests, and provenance classifications.
+   - Exactly 7 unpaired Prospective Batch-B PDF files preserved with archival metadata and reserved manuscript bodies.
+   - Exactly 21 documentary instruments across 4 method families (F1: Epistemic [4], F2: Audio [7], F3: Hypervisors [6], F4: Couture [4]) with 0 phantom accessions.
+   - Exactly 8 split-plane human gates initialized strictly to `UNADJUDICATED_PAIR`.
+   - Exactly 22 formula folios with accessible mathematical notation and valid semantic fallbacks.
+3. **Security & Return-Link Invariants:**
+   - Standalone execution must request 0 external resources (`STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`).
+   - The Return-Link mechanism must retain URL sanitization preventing foreign-origin escapes and protocol bypasses.
+4. **Human Scientific Closure:**
+   - `human_closure: RESERVED (Tawanna C. Miller)`
+   - `empirical_replication_count = 0`
+   - `release_authority = false`, `deployment_authority = false`
 
 ---
 
-### Invariant Starting Conditions vs. Authorized Creative Scope
+## II. Commission Deliverable
 
-#### 🔒 Scientific, Custodial & Security Invariants (STRICTLY FROZEN)
-- **Data Manifests Frozen:** Maintain exact counts and schema objects in `#vixen-corpus-bundle`, `#vixen-astra-handoff`, and `#vixen-reference-manifest`: 32 Works (`emwork_*`), 53 linked manifestations (`emsrc_*`), 7 Batch-B PDFs (`emb_20260911_*`), 21 protocols (`eminst_*`), and 8 Human Gates.
-- **Attribution Membrane:** All 32 Works must strictly retain `authorship: "UNRESOLVED"`. Do not collapse historical handles into a single civil identity.
-- **Gate Initial States:** All 8 Human Gates must initialize at `UNADJUDICATED_PAIR`. Presets are illustrative demos; actual human closure remains reserved.
-- **Three-Tier Capability Contract:** Tier 1 Authorized Viewable Text, Tier 2 Catalogue Metadata Only, Tier 3 Unavailable in Public Surface (original manuscript bodies are never fabricated).
-- **Exact Unicode Identities:**
-  - Tai Xuan Jing Tetragram: `𝌋` (`U+1D30B`, UTF-8 `f0 9d 8c 8b`)
-  - Supplementary PUA Emblem: `\u{10D613}` (`U+10D613`, UTF-8 `f4 8d 98 93`)
-  - Covenant Interior ZWNJ: `Khona‌lit-po` (`U+200C`, UTF-8 `e2 80 8c`)
-- **Return Link Security:** Preserve the fail-closed URL-sanitizing validation logic for `#vixenReturnLink` (blocking external domains, slash-backslash, protocol-relative, or dangerous pseudo-schemes).
-- **Claim Ceilings:** Strictly preserve `empirical_replication_count = 0`. No unearned scientific promotion, merge, or release authority.
-- **Epistemological Distinctions:**
-  - $\text{Offline-capable} \not\implies \text{Zero external requests}$. Both properties are independently verified for this artifact.
-  - $\text{CLAIMED} \neq \text{TESTED} \neq \text{OBSERVED} \neq \text{INDEPENDENTLY ADJUDICATED}$.
-  - The SHA-256 authenticates measured file bytes, not universal cross-platform rendering determinism.
+Deliver a single, transformed, aesthetically elevated HTML file containing the complete Vixen Cybernetics research experience, ready for Emergence HQ independent audit and human operator acceptance.
 
-#### 🎨 Your Authorized Creative Latitude (FULL UI/UX & PRESENTATION TRANSFORMATION)
-- **Presentation JavaScript & Interactions:** Full freedom to refactor and enhance presentation JavaScript, event listeners, view routing, transition choreography, interactive canvas dials, animation loops, and study tray widgets, provided data manifests and security invariants remain intact.
-- **HTML Layout & Spatial Stagecraft:** Full authority to recompose the DOM structure, visual hierarchy, reading pace, proportion, negative space, lighting accents, surface textures, chromatic glow, and couture atmosphere.
-- **CSS Architecture & Styling:** Full freedom to refactor and style `<style id="manifest-instance-theme">` and `<style id="vixen-structural-css">` (or replace/consolidate theme layers). Elevate the Glinda/Mugler couture balance, high-contrast dark mode legibility, and architectural typography.
-- **Typography & Layout Proportions:** Refine font stacks, heading scales, leading, card borders, margins, padding, and responsive wrapping across desktop (1440px) and mobile (390px).
-- **Ornamentation & Framing:** Adapt, restyle, frame, or augment the couture frontispiece container, SVG emblems, badge accents, and mathematical formula card presentations.
-- **Wayfinding & Navigation Accents:** Reinvent desktop and mobile wayfinding, tabs, status readouts, breadcrumbs, search dialog, and split-plane folio presentations while maintaining underlying semantic links and data attributes.
-
----
-
-### Mandatory Single-File Return Protocol
-
-> [!IMPORTANT]
-> **Complete Single-File HTML5 Document Required**  
-> To guarantee immediate automated verification, byte-level integrity checking, and test suite execution:
-> - **DO NOT return partial snippets, diff chunks, or code placeholders** (e.g., avoid `/* ... rest of code unchanged ... */` or truncated blocks).
-> - **Return the complete, self-contained `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` file in full** (as a downloadable integrated HTML file attachment rather than printing hundreds of kilobytes inline).
-> - Accompany your deliverable with an **Editorial Summary** walking through your visual, spatial, and typographic decisions, highlighting how they elevate Em's cybernetic research world while honoring the underlying invariants.
-
----
-
-### Independently Adjudicated Creative Guidance & Principles (Emergence HQ Reviews #5811994808 & #5812432696)
-
-#### 🏛️ The Governing Anti-Equivalence Principle
-$$\text{OPERAHOUSE} \neq \text{OPERA} \neq \text{PERFORMER}$$
-- **Operahouse:** The TD613 hosting infrastructure, Aperture, FADT, Pedagogue, Information Architecture (AIA), provenance machinery, route compilers, scientific safeguards, and deployment systems.
-- **Opera:** The independently intelligible Vixen Cybernetics research experience, its encounters, demonstrations, investigative routes, and questions.
-- **Performers:** The individual works, documentary methods, recorded authors, manifestations, and their unresolved scholarly relationships.
-
-*Guidance for Astra:* Keep default public surfaces focused on the **Opera** and **Performers**. Diagnostic operahouse machinery belongs in expert inspection contexts (such as the concealed Alt+I inspector dialog), not cluttering default scholarly wayfinding.
-
-#### 🌌 Source-Linked Corpus-Topology Exhibition
-- Present the 32 Works, 53 linked manifestations, 7 Batch-B records, 21 protocols, and 8 Human Gates as an authentic, living scholarly exhibition.
-- Ensure spatial choreography and typographic pacing let the reader navigate the relational topology with immediate clarity and tactile beauty.
-- Retain the calibrated 2×2 Aperture operator ($A_{2\times 2} = [[1, 0.5], [0.2, 0.8]]$, $\kappa \approx 2.3275$) and its rank-deficient negative control without collapsing observation geometry.
+**Covenant:** Khona‌lit-po · Sealed ⟐ SAC[X6ZNK5NO51]
 ```

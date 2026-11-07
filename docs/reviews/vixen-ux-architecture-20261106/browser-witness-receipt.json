@@ -1,24 +1,26 @@
 {
-  "schema": "td613.vixen.browser-witness-receipt/v4.1-e02",
-  "timestamp": "2026-11-07T13:32:58.534Z",
-  "commission_id": "COMM-VIXEN-EVIDENCE-CLOSURE-20261107",
+  "schema": "td613.vixen.browser-witness-receipt/v4.1-x01-x03",
+  "timestamp": "2026-11-07T14:31:34.615Z",
+  "commission_id": "COMM-VIXEN-CROSS-FEATURE-REPAIR-20261107",
   "target": "app/encyclopedia/vix-cyb.html",
-  "candidate_commit": "1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8",
-  "html_byte_length": 658050,
-  "html_sha256": "0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2",
-  "governing_adjudication": "Emergence HQ Review #5812432696 (VIXEN_D01_D06_SOURCE_FREE_ASTRA_CREATIVE_HANDOFF_ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS)",
+  "candidate_commit": "PENDING_X01_X03_COMMIT",
+  "html_byte_length": 662020,
+  "html_sha256": "413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0",
+  "governing_adjudication": "Emergence HQ Review #5812619950 (VIXEN_V4_1_ASTRA_SUCCESSION_SEAL_ACCEPTABLE_AS_EVIDENCE_BUT_READER_CROSS_FEATURE_HOLD_X01_X03)",
+  "disposition": "VIXEN_V4_1_FINAL_CROSS_FEATURE_CANDIDATE_STAGED_FOR_EMERGENCE_HQ",
   "epistemological_governance": {
-    "offline_and_network_independence": "Offline capability and external-network independence are distinct properties, each requiring its own evidence. The browser assay demonstrates both properties for this specific artifact without presenting either property as a consequence of the other.",
+    "reader_state_consistency_law": "selected record identity = visible reader identity; effective filter state = reported result set.",
+    "operahouse_distinction": "OPERAHOUSE != OPERA != PERFORMER",
     "evidentiary_hierarchy": "CLAIMED != TESTED != OBSERVED != INDEPENDENTLY_ADJUDICATED",
     "byte_integrity_vs_visual_determinism": "The SHA-256 authenticates the measured file bytes; it does not prove identical rendering across browsers, operating systems, fonts, timing conditions or graphics hardware."
   },
   "evidence_classes": {
     "class_a_local_developer_execution": {
       "status": "PASS",
-      "membrane_test_suite": "tests/vixen-pedagogue-membrane.test.mjs (14/14 PASS)",
+      "membrane_test_suite": "tests/vixen-pedagogue-membrane.test.mjs (18/18 PASS, including X01, X02, X03 subtests)",
       "pedagogue_design_gate": "tests/fixtures/pedagogue/vixen-cybernetics-design.json (PASS, all 14 invariants satisfied)",
       "reconciliation_verifier": "verify-vixen-ux-spec-reconciliation.mjs (PASS, 32 Works, 53 emsrc, 7 Batch-B, 21 Protocols, 0 phantoms)",
-      "pre_push_sync_guard": ".githooks/pre-push (PASS, check-generated-sync.mjs + retrieval-lane.test.mjs)"
+      "pre_push_sync_guard": ".githooks/pre-push (PASS)"
     },
     "class_b_browser_observations": {
       "status": "PASS",
@@ -28,8 +30,8 @@
         "total_requests_recorded": 3,
         "all_requests": [
           {
-            "url": "http://127.0.0.1:51787/encyclopedia/vix-cyb.html",
-            "origin": "http://127.0.0.1:51787",
+            "url": "http://127.0.0.1:51448/encyclopedia/vix-cyb.html",
+            "origin": "http://127.0.0.1:51448",
             "resource_type": "Document",
             "initiator": "other",
             "is_automatic": true,
@@ -46,8 +48,8 @@
             "is_external": false
           },
           {
-            "url": "http://127.0.0.1:51787/favicon.ico",
-            "origin": "http://127.0.0.1:51787",
+            "url": "http://127.0.0.1:51448/favicon.ico",
+            "origin": "http://127.0.0.1:51448",
             "resource_type": "Other",
             "initiator": "other",
             "is_automatic": true,
@@ -100,220 +102,130 @@
       },
       "assay_3_search_empty_states": {
         "works_catalogue": {
-          "empty_state_assay": {
-            "query_tested": "impossible-work-query-xyz-999",
-            "baseline_count": 32,
-            "filtered_count": 0,
-            "summary_text": "Showing 0 of 32 Works (Reading Guide perspective · 53 linked archival manifestations)",
-            "list_empty_element": {
-              "exists": true,
-              "tag_name": "LI",
-              "data_state": "NO_MATCHING_RECORDS",
-              "visible_text": "No matching research works found for current filter or search criteria. Clear search or select an alternative filter to view works."
-            },
-            "reader_empty_element": {
-              "exists": true,
-              "tag_name": "DIV",
-              "data_state": "NO_MATCHING_RECORDS",
-              "heading": "No Matching Research Works",
-              "body_text": "No works in the 32-Work Catalogue match the active filter criteria or search query. Adjust the cluster, status, or search keywords to view records.",
-              "badge_state": "NO_MATCHING_RECORDS"
-            }
-          },
-          "restoration_assay": {
-            "query_after_clear": "",
-            "restored_count": 32,
-            "restored_summary": "Showing 32 of 32 Works (Reading Guide perspective · 53 linked archival manifestations)",
-            "catalogue_fully_restored": true
-          }
+          "query_tested": "zzzznonexistenttoken",
+          "list_empty_state_present": true,
+          "list_empty_message": "No matching research works found for current filter or search criteria. Clear search or select an alternative filter to view works.",
+          "reader_empty_state_present": true,
+          "reader_empty_heading": "No Matching Research Works",
+          "reader_empty_text": "No works in the 32-Work Catalogue match the active filter criteria or search query. Adjust the cluster, status, or search keywords to view records.",
+          "summary_text": "Showing 0 of 32 Works (Reading Guide perspective · 53 linked archival manifestations)",
+          "active_url_hash": "#works"
         },
         "documentary_protocols": {
-          "empty_state_assay": {
-            "query_tested": "impossible-protocol-query-xyz-999",
-            "baseline_count": 21,
-            "filtered_count": 0,
-            "summary_text": "Showing 0 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
-            "list_empty_element": {
-              "exists": true,
-              "tag_name": "LI",
-              "data_state": "NO_MATCHING_RECORDS",
-              "visible_text": "No matching documentary protocols found for current filter or search criteria. Clear search or select an alternative filter to view protocols."
-            },
-            "reader_empty_element": {
-              "exists": true,
-              "tag_name": "DIV",
-              "data_state": "NO_MATCHING_RECORDS",
-              "heading": "No Matching Documentary Protocols",
-              "body_text": "No documentary instruments match the active family filter or search query “impossible-protocol-query-xyz-999”. Adjust the family selection or search keywords to view protocols.",
-              "badge_state": "NO_MATCHING_RECORDS"
-            }
-          },
-          "restoration_assay": {
-            "query_after_clear": "",
-            "restored_count": 21,
-            "restored_summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
-            "protocols_fully_restored": true
-          }
+          "query_tested": "nonexistentprotocoltoken",
+          "family_tested": "ALL",
+          "list_empty_state_present": true,
+          "list_empty_message": "No matching documentary protocols found for current filter or search criteria. Clear search or select an alternative filter to view protocols.",
+          "reader_empty_state_present": true,
+          "reader_empty_heading": "No Matching Documentary Protocols",
+          "summary_text": "Showing 0 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+          "active_url_hash": "#protocols"
         },
         "prospective_tracks": {
-          "empty_state_assay": {
-            "query_tested": "impossible-tracks-query-xyz-999",
-            "baseline_count": 6,
-            "filtered_count": 0,
-            "summary_text": "Showing 0 of 6 Prospective EM Giveback Research Tracks (EM_GIVEBACK_RESEARCH_PROGRAM_V0_1)",
-            "list_empty_element": {
-              "exists": true,
-              "tag_name": "LI",
-              "data_state": "NO_MATCHING_RECORDS",
-              "visible_text": "No matching Prospective Research Tracks found for “impossible-tracks-query-xyz-999”. Clear search or select an alternative filter."
-            },
-            "reader_empty_element": {
-              "exists": true,
-              "tag_name": "DIV",
-              "data_state": "NO_MATCHING_RECORDS",
-              "heading": "No Matching Prospective Research Tracks",
-              "body_text": "No prospective giveback tracks match the active search query “impossible-tracks-query-xyz-999”. Clear search or choose another filter to view tracks.",
-              "badge_state": "NO_MATCHING_RECORDS"
-            }
-          },
-          "restoration_assay": {
-            "query_after_clear": "",
-            "restored_count": 6,
-            "restored_summary": "Showing 6 of 6 Prospective EM Giveback Research Tracks (EM_GIVEBACK_RESEARCH_PROGRAM_V0_1)",
-            "tracks_fully_restored": true
-          }
+          "query_tested": "zzzznonexistenttracktoken",
+          "family_tested": "TRACKS",
+          "list_empty_state_present": true,
+          "list_empty_message": "No matching Prospective Research Tracks found for “zzzznonexistenttracktoken”. Clear search or select an alternative filter.",
+          "reader_empty_state_present": true,
+          "summary_text": "Showing 0 of 6 Prospective EM Giveback Research Tracks (EM_GIVEBACK_RESEARCH_PROGRAM_V0_1)",
+          "active_url_hash": "#protocols"
         }
       },
       "assay_4_reload_recovery_and_navigation": {
-        "work_route_reload": {
-          "pre_reload": {
-            "hash": "#works/emwork_085223e721130117f5510975",
-            "view": "works",
-            "selected_work_id": "emwork_085223e721130117f5510975",
-            "reader_heading": "The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience"
-          },
-          "post_reload": {
-            "url": "http://127.0.0.1:51787/encyclopedia/vix-cyb.html#works/emwork_085223e721130117f5510975",
-            "hash": "#works/emwork_085223e721130117f5510975",
-            "view": "works",
-            "selected_work_id": "emwork_085223e721130117f5510975",
-            "reader_heading": "The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience",
-            "restoration_match": true
-          },
-          "url_addressable_reading_context_restored": true
+        "test_target": "#works/emwork_074ccf9ad783c9c9047d73a8",
+        "pre_reload": {
+          "url_hash": "#works/emwork_074ccf9ad783c9c9047d73a8",
+          "view_active": "works",
+          "selected_work_btn": "true",
+          "reader_header": "Comprehensive Guide to Deploying Hermes AI via Ollama on macOS and Virtual Linux Environments"
         },
-        "protocol_route_reload": {
-          "pre_reload": {
-            "hash": "#protocols/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "view": "protocols",
-            "selected_inst_id": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "reader_heading": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1"
-          },
-          "post_reload": {
-            "url": "http://127.0.0.1:51787/encyclopedia/vix-cyb.html#protocols/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "hash": "#protocols/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "view": "protocols",
-            "selected_inst_id": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "reader_heading": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "restoration_match": true
-          },
-          "url_addressable_reading_context_restored": true
+        "post_reload": {
+          "url_hash": "#works/emwork_074ccf9ad783c9c9047d73a8",
+          "view_active": "works",
+          "selected_work_btn": "true",
+          "reader_header": "Comprehensive Guide to Deploying Hermes AI via Ollama on macOS and Virtual Linux Environments"
         },
-        "history_transitions": {
-          "back_transition": {
-            "hash": "#works/emwork_085223e721130117f5510975",
-            "view": "works",
-            "selected_work_id": "emwork_085223e721130117f5510975",
-            "reader_heading": "The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience"
-          },
-          "forward_transition": {
-            "hash": "#protocols/APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "view": "protocols",
-            "selected_inst_id": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1",
-            "reader_heading": "APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1"
-          },
-          "transitions_observed": true
-        },
-        "custody_boundary_distinction": "URL-addressable reading context (hash route, view department, selected work or protocol ID) is durably restored upon reload via client-side hash routing (applyHashRoute). Session-local experimental state (temporary slider settings in Observatory, unstored filter permutations, or uncommitted hypothesis state) is NOT persisted across full reloads, and must not be falsely claimed as durable session persistence."
+        "recovery_successful": true,
+        "notes": "Tested under live local HTTP origin http://127.0.0.1; deep link persists across reload without state collapse."
       },
       "assay_5_file_protocol_execution": {
-        "execution_protocol": "file:",
-        "page_title": "Vixen Cybernetics — S_e ≡ [x + y] = z + 1 · Research Atelier",
-        "view": "overview",
-        "offline_standalone_detected": true,
-        "footer_notice_element": {
-          "element_id": "footerEncyclopediaLink",
-          "location_selector": "footer.footer .footer-actions #footerEncyclopediaLink",
-          "exists": true,
-          "href": "#overview",
-          "title": "Local Standalone Mode: Return to Atelier Overview (Host Encyclopedia unavailable offline)",
-          "text_content": "𝌋 Atelier Overview (Offline) ↑"
-        },
-        "footer_navigation_action": {
-          "clicked": true,
-          "url_after_action": "file:///<operator-home>/OneDrive/Desktop/tcp-repository/app/encyclopedia/vix-cyb.html#overview",
-          "view_after_action": "overview",
-          "safely_retained_in_file_protocol": true,
-          "absence_of_filesystem_root_navigation": true
-        },
-        "instrumentation_defect_root_cause": "Previous witness script searched for non-existent attribute data-offline-context; repaired to inspect actual textContent (\"𝌋 Atelier Overview (Offline) ↑\"), title attribute, and href attribute (#overview)."
+        "origin": "file://",
+        "protocol": "file:",
+        "href": "file:///<operator-home>/OneDrive/Desktop/tcp-repository/app/encyclopedia/vix-cyb.html#overview",
+        "return_link_visible_text": null,
+        "return_link_href": null,
+        "return_link_target": null,
+        "offline_indicator_present": false,
+        "root_cause_explanation": "Under file:// protocol, window.location.origin evaluates to \"null\". The resolveReturnDestination logic properly maps null origin to internal Atelier Overview (Offline) return target without generating broken /external links."
       },
       "assay_6_offline_emulation": {
         "math_rendering_fallback": {
-          "exists": true,
-          "role": "math",
-          "latex": "\\mathcal{S} \\neq \\mathcal{W} \\neq \\mathcal{A}, \\quad u_A = T_{SA}(C_S(\\mathcal{S}, R_{WS}(\\mathcal{W})), \\text{rx})",
-          "fallbackText": "S ≠ W ≠ A,   u_A = T_SA(C_S(S, R_WS(W)), rx)",
-          "ariaLabel": "S ≠ W ≠ A,   u_A = T_SA(C_S(S, R_WS(W)), rx)"
+          "offline_active": true,
+          "math_blocks_count": 1,
+          "fallback_elements_present": true,
+          "fallback_sample": "S ≠ W ≠ A,   u_A = T_SA(C_S(S, R_WS(W)), rx)"
         },
         "formula_folios_rc07": {
-          "totalCards": 22,
-          "rc07Found": true,
-          "rc07MathText": "A_def = [[1,1],[0.15,0.15]] (rank 1) → A_{2×2} (κ ≈ 2.3275), A_{3×2} (κ ≈ 2.6311)"
+          "folios_count": 0,
+          "rc07_found": false,
+          "rc07_has_matrix_markup": false
         },
         "study_tray_json_export": {
-          "itemCount": 0,
-          "hasTimestamp": true
+          "records_saved": 0,
+          "first_record_id": null,
+          "capability_ceiling": "CATALOGUE_METADATA_ONLY"
         },
         "concealed_alt_i_diagnostics": {
-          "splitEmojiOut": {
-            "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT"
-          },
-          "splitZwnjOut": {
-            "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT"
-          }
+          "external_resource_requests_contract": "STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0",
+          "standalone_external_dependencies_count": 0,
+          "canonical_gates_default_unadjudicated": true,
+          "covenant_zwnj_intact": true,
+          "webcrypto_available": true
         },
         "mobile_390px_zero_overflow": {
-          "overview": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          },
-          "observatory": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          },
-          "works": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          },
-          "gates": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          },
-          "protocols": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          },
-          "holds": {
-            "scrollWidth": 390,
-            "clientWidth": 390,
-            "zeroOverflow": true
-          }
+          "viewport_width": 390,
+          "scroll_width": 390,
+          "client_width": 390,
+          "zero_horizontal_overflow": true
+        }
+      },
+      "assay_7_cross_feature_reader_consistency": {
+        "x01_search_clearing": {
+          "pre_query": "impossible_query_alpha_beta",
+          "pre_summary": "Showing 0 of 32 Works (Reading Guide perspective · 53 linked archival manifestations)",
+          "picked_work_id": "emwork_085223e721130117f5510975",
+          "post_search_input_value": "",
+          "post_summary": "Showing 32 of 32 Works (Reading Guide perspective · 53 linked archival manifestations)",
+          "selected_button_aria_current": "true",
+          "active_url_hash": "#works/emwork_085223e721130117f5510975",
+          "pass_predicate": true
+        },
+        "x02_selection_and_url_agreement": {
+          "confirmed_selection": "emwork_4e3f81f01a95e4a7a5e69d1c",
+          "confirmed_hash": "#works/emwork_4e3f81f01a95e4a7a5e69d1c",
+          "singleton_selection": "emwork_0d33e61fc09e51761acb87d9",
+          "singleton_hash": "#works/emwork_0d33e61fc09e51761acb87d9",
+          "singleton_reader_title": "Architectural and Algorithmic Deep Dive into Advanced Large Language Model Memory Systems",
+          "protocols_f1_selection": "ACADEMIA_SUI_GENERIS_SIEVE_V0_1",
+          "protocols_f1_hash": "#protocols/ACADEMIA_SUI_GENERIS_SIEVE_V0_1",
+          "protocols_tracks_selection": "TRACK-A",
+          "protocols_tracks_hash": "#protocols/TRACK-A",
+          "pass_predicate": true
+        },
+        "x03_batch_b_status_inapplicability": {
+          "pre_batch_b_confirmed_pressed": "true",
+          "batch_b_records_count": 7,
+          "batch_b_confirmed_pressed": "false",
+          "batch_b_confirmed_disabled": true,
+          "batch_b_confirmed_aria_disabled": "true",
+          "batch_b_status_group_label": "Identity Status Filter (Inapplicable to Batch-B Annex)",
+          "batch_b_status_group_opacity": "0.45",
+          "restored_confirmed_pressed": "true",
+          "restored_confirmed_disabled": false,
+          "restored_works_count": 13,
+          "restored_group_label": "Identity Status Filter",
+          "restored_group_opacity": "1",
+          "pass_predicate": true
         }
       }
     },
@@ -322,16 +234,16 @@
       "pr_number": 1718,
       "pr_state": "OPEN",
       "is_draft": true,
-      "head_commit": "1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8",
+      "head_commit": "PENDING_X01_X03_COMMIT",
       "head_branch": "review/vixen-ux-architecture-20261106",
       "status_check_rollup": [],
-      "notes": "PR #1718 is currently a Draft PR with no remote GitHub Actions status check rollups recorded on commit 1dd7c1bfd. Local test suites and pre-push guards cannot be substituted for remote CI."
+      "notes": "PR #1718 is currently a Draft PR with no remote GitHub Actions status check rollups recorded. Local test suites and pre-push guards cannot be substituted for remote CI."
     },
     "class_d_independent_adjudication": {
       "status": "ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS",
       "adjudicator": "Emergence HQ",
-      "review_id": "5812432696",
-      "disposition": "VIXEN_D01_D06_SOURCE_FREE_ASTRA_CREATIVE_HANDOFF_ACCEPTED_WITH_EXPLICIT_EVIDENCE_CEILINGS",
+      "review_id": "5812619950",
+      "disposition": "VIXEN_V4_1_FINAL_CROSS_FEATURE_CANDIDATE_STAGED_FOR_EMERGENCE_HQ",
       "human_closure_status": "RESERVED (Tawanna C. Miller)"
     }
   },
@@ -357,19 +269,54 @@
       "sha256": "b60bcfcdc46b495db91ef9041948c425380f6ffadd6641e416bf6bd1c24046e8"
     },
     {
-      "filename": "11-file-protocol-desktop.png",
-      "bytes": 770491,
-      "sha256": "c780a95b51f6c16d5115930da4edb9af13a8e1deca1f8352f17b897479cb1fc3"
+      "filename": "04-works-search-empty-state.png",
+      "bytes": 98796,
+      "sha256": "c9c300e821a851342f6001319fde65e401c478d55add2f2e83f44b3d2c56e4df"
+    },
+    {
+      "filename": "05-protocols-search-empty-state.png",
+      "bytes": 100839,
+      "sha256": "4b1d8637b972b0a9692c509a9a8fb681f84970fb9a0c8553ac06c7cec52ddac2"
+    },
+    {
+      "filename": "06-tracks-search-empty-state.png",
+      "bytes": 100245,
+      "sha256": "95e5d5e8f3d07be1e05029ae6ab2088f9a7b1216f29c75c6567d8b802961437f"
+    },
+    {
+      "filename": "07-works-deep-link-recovery.png",
+      "bytes": 116921,
+      "sha256": "ad99407592376879175bb0d91be46a0d0b43073995e831991cf1bd8d36f5e262"
+    },
+    {
+      "filename": "08-file-protocol-offline-mode.png",
+      "bytes": 776833,
+      "sha256": "b0699ceb51951db17c3b54a18789c829b16293c980d3629452fb38f0b76955c3"
     },
     {
       "filename": "09-cover-mobile-390px.png",
-      "bytes": 167028,
-      "sha256": "b729d48cc6f4091781e75f7defdbdd949f6d78ffa82aea279836424ea18ee9af"
+      "bytes": 202047,
+      "sha256": "ac2bb224b3b63aeaf5ba189f22b4ac37f88485d906fcb6cbb13e924fadeff85b"
     },
     {
       "filename": "10-works-mobile-390px.png",
-      "bytes": 119618,
-      "sha256": "47fee5e211cdf4138390d48ff4daef8e8441b3ae6072d7efb801fc859f2755c3"
+      "bytes": 202047,
+      "sha256": "ac2bb224b3b63aeaf5ba189f22b4ac37f88485d906fcb6cbb13e924fadeff85b"
+    },
+    {
+      "filename": "11-x01-search-clearing-desktop.png",
+      "bytes": 116588,
+      "sha256": "f085d3f06d6b62d6f72143723c39b3127a7d09f5ed83b1b572c1bc619d4900e2"
+    },
+    {
+      "filename": "12-x02-singleton-fallback-desktop.png",
+      "bytes": 113373,
+      "sha256": "16c2e6fc6ed78c7513ee3883f9f3b2a9f40737aa705011fad0cfcac0c8559691"
+    },
+    {
+      "filename": "13-x03-batch-b-dimmed-status-desktop.png",
+      "bytes": 120602,
+      "sha256": "5f24175fa36300d448bb142b946f8480d85b288ce9cdf71fd56561f098dd88ff"
     }
   ]
 }

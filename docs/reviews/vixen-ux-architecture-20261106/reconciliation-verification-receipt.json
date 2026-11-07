@@ -3,9 +3,9 @@
   "document_id": "TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4",
   "specification_sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c",
   "prototype_html_path": "app/encyclopedia/vix-cyb.html",
-  "prototype_html_bytes": 658050,
-  "prototype_html_sha256": "0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2",
-  "prototype_structural_dom_excluding_theme_sha256": "4885142b6dea4bb527914f50bae0555204d35cc5473621ef6f7f3eddd2630adf",
+  "prototype_html_bytes": 662020,
+  "prototype_html_sha256": "413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0",
+  "prototype_structural_dom_excluding_theme_sha256": "32f01abd5aef2532d0595c081225fbb08deddc1e42e05c1b2f1c0f6dc7c17a53",
   "disposition": "SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED",
   "invariants_verified": {
     "canonical_works_row_level_bijection": {

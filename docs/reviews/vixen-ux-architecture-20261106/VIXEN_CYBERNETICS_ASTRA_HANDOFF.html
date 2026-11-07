@@ -1246,6 +1246,7 @@ body[data-view="overview"] main{padding-top:0}
     aiaProjection: 'EXPERIENTIAL',
     workCluster: 'ALL',
     workStatus: 'ALL',
+    lastCanonicalWorkStatus: 'ALL',
     workQuery: '',
     selectedWorkId: DATA.works[1] ? DATA.works[1].work_id : DATA.works[0].work_id, // default Algedonic Systems (#02)
     mobileWorkReaderOpen: false,
@@ -1408,8 +1409,14 @@ body[data-view="overview"] main{padding-top:0}
       barsEl.innerHTML = clusterHtml;
       barsEl.querySelectorAll('[data-jump-cluster]').forEach((btn) => {
         btn.addEventListener('click', () => {
-          state.workCluster = btn.getAttribute('data-jump-cluster');
-          state.workStatus = 'ALL';
+          const nextCluster = btn.getAttribute('data-jump-cluster');
+          if (nextCluster === 'BATCH_B' && state.workCluster !== 'BATCH_B') {
+            state.lastCanonicalWorkStatus = state.workStatus;
+            state.workStatus = 'ALL';
+          } else if (nextCluster !== 'BATCH_B' && state.workCluster === 'BATCH_B') {
+            state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+          }
+          state.workCluster = nextCluster;
           renderWorksView();
           setView('works');
         });
@@ -1967,8 +1974,18 @@ body[data-view="overview"] main{padding-top:0}
     document.querySelectorAll('[data-work-cluster]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-work-cluster') === state.workCluster));
     });
+
+    const isBatchB = state.workCluster === 'BATCH_B';
+    const statusGroup = document.querySelector('[role="group"][aria-label*="Status Filter"]');
+    if (statusGroup) {
+      statusGroup.setAttribute('aria-label', isBatchB ? 'Identity Status Filter (Inapplicable to Batch-B Annex)' : 'Identity Status Filter');
+      statusGroup.style.opacity = isBatchB ? '0.45' : '1';
+    }
     document.querySelectorAll('[data-work-status]').forEach((b) => {
-      b.setAttribute('aria-pressed', String(b.getAttribute('data-work-status') === state.workStatus));
+      b.disabled = isBatchB;
+      b.setAttribute('aria-disabled', String(isBatchB));
+      const match = !isBatchB && (b.getAttribute('data-work-status') === state.workStatus);
+      b.setAttribute('aria-pressed', String(match));
     });
 
     const q = state.workQuery.trim().toLowerCase();
@@ -1987,8 +2004,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Prospective Batch-B Records</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No unpaired Batch-B PDF files match the active search query &ldquo;' + esc(q) + '&rdquo;. Clear search or choose another filter to view records.</p>' +
           '</div>';
+        if (state.view === 'works') {
+          history.replaceState(null, '', '#works');
+        }
       } else {
         const selB = bRows.find((r) => r.source_file_id === state.selectedWorkId) || bRows[0];
+        state.selectedWorkId = selB.source_file_id;
+        if (state.view === 'works') {
+          history.replaceState(null, '', '#works/' + selB.source_file_id);
+        }
         listEl.innerHTML = bRows.map((r, i) =>
           '<li class="lexicon-item"><button type="button" data-select-batchb="' + esc(r.source_file_id) + '" aria-current="' + (r.source_file_id === selB.source_file_id) + '">' +
             '<span class="record-num">B' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -2059,8 +2083,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Research Works</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No works in the 32-Work Catalogue match the active filter criteria or search query. Adjust the cluster, status, or search keywords to view records.</p>' +
           '</div>';
+        if (state.view === 'works') {
+          history.replaceState(null, '', '#works');
+        }
       } else {
         const sel = filtered.find((w) => w.work_id === state.selectedWorkId) || filtered[0];
+        state.selectedWorkId = sel.work_id;
+        if (state.view === 'works') {
+          history.replaceState(null, '', '#works/' + sel.work_id);
+        }
 
         listEl.innerHTML = filtered.map((w) => {
           const current = w.work_id === sel.work_id;
@@ -2306,9 +2337,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Prospective Research Tracks</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No prospective giveback tracks match the active search query &ldquo;' + esc(q) + '&rdquo;. Clear search or choose another filter to view tracks.</p>' +
           '</div>';
+        if (state.view === 'protocols') {
+          history.replaceState(null, '', '#protocols');
+        }
       } else {
         const selT = filteredTracks.find((t) => t.id === state.selectedInstId) || filteredTracks[0];
         state.selectedInstId = selT.id;
+        if (state.view === 'protocols') {
+          history.replaceState(null, '', '#protocols/' + selT.id);
+        }
         listEl.innerHTML = filteredTracks.map((tr) =>
           '<li class="lexicon-item"><button type="button" data-select-track="' + esc(tr.id) + '" aria-current="' + (selT.id === tr.id) + '">' +
             '<span class="record-num">' + esc(tr.id.replace('TRACK-', 'T')) + '</span>' +
@@ -2366,8 +2403,15 @@ body[data-view="overview"] main{padding-top:0}
             '<h2 style="font-size:18px;margin:12px 0 8px">No Matching Documentary Protocols</h2>' +
             '<p style="font-size:13px;line-height:1.75;color:var(--text-muted)">No documentary instruments match the active family filter or search query &ldquo;' + esc(q) + '&rdquo;. Adjust the family selection or search keywords to view protocols.</p>' +
           '</div>';
+        if (state.view === 'protocols') {
+          history.replaceState(null, '', '#protocols');
+        }
       } else {
         const sel = filtered.find((i) => i.instrument_id === state.selectedInstId) || filtered[0];
+        state.selectedInstId = sel.instrument_id;
+        if (state.view === 'protocols') {
+          history.replaceState(null, '', '#protocols/' + sel.instrument_id);
+        }
 
         listEl.innerHTML = filtered.map((inst) => {
           const cur = inst.instrument_id === sel.instrument_id;
@@ -2638,34 +2682,56 @@ body[data-view="overview"] main{padding-top:0}
   function openRecordById(id) {
     if (!id) return;
     if (id.startsWith('emwork_')) {
+      if (state.workCluster === 'BATCH_B') {
+        state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+      }
       state.workCluster = 'ALL';
       state.workStatus = 'ALL';
       state.workQuery = '';
+      const wInput = $('workSearchInput');
+      if (wInput) wInput.value = '';
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
       renderWorksView();
-      setView('works');
+      setView('works', { pushHistory: true });
     } else if (id.startsWith('emb_')) {
+      if (state.workCluster !== 'BATCH_B') {
+        state.lastCanonicalWorkStatus = state.workStatus;
+      }
       state.workCluster = 'BATCH_B';
+      state.workStatus = 'ALL';
       state.workQuery = '';
+      const wInput = $('workSearchInput');
+      if (wInput) wInput.value = '';
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
       renderWorksView();
-      setView('works');
+      setView('works', { pushHistory: true });
     } else if (DATA.instruments.some((i) => i.instrument_id === id)) {
       state.protocolFamily = 'ALL';
       state.protocolQuery = '';
+      const pInput = $('protocolSearchInput');
+      if (pInput) pInput.value = '';
       state.selectedInstId = id;
       state.mobileInstReaderOpen = true;
       renderProtocolsView();
-      setView('protocols');
+      setView('protocols', { pushHistory: true });
+    } else if (DATA.giveback_tracks.some((t) => t.id === id)) {
+      state.protocolFamily = 'TRACKS';
+      state.protocolQuery = '';
+      const pInput = $('protocolSearchInput');
+      if (pInput) pInput.value = '';
+      state.selectedInstId = id;
+      state.mobileInstReaderOpen = true;
+      renderProtocolsView();
+      setView('protocols', { pushHistory: true });
     } else if (DATA.formula_folios.some((f) => f.id === id)) {
       state.formulaGroup = 'all';
       state.formulaQuery = id;
       const fq = $('formulaSearchInput');
       if (fq) fq.value = id;
       renderFormulaFolios();
-      setView('observatory');
+      setView('observatory', { pushHistory: true });
     }
   }
 
@@ -2727,7 +2793,11 @@ body[data-view="overview"] main{padding-top:0}
     resEl.querySelectorAll('[data-search-pick]').forEach((b) => {
       b.addEventListener('click', () => {
         const id = b.getAttribute('data-search-pick');
-        $('searchDialog').close();
+        const searchDlg = $('searchDialog');
+        if (searchDlg) {
+          if (typeof searchDlg.close === 'function') searchDlg.close();
+          else searchDlg.open = false;
+        }
         openRecordById(id);
       });
     });
@@ -3085,12 +3155,20 @@ body[data-view="overview"] main{padding-top:0}
     });
     document.querySelectorAll('[data-work-cluster]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        state.workCluster = btn.getAttribute('data-work-cluster');
+        const nextCluster = btn.getAttribute('data-work-cluster');
+        if (nextCluster === 'BATCH_B' && state.workCluster !== 'BATCH_B') {
+          state.lastCanonicalWorkStatus = state.workStatus;
+          state.workStatus = 'ALL';
+        } else if (nextCluster !== 'BATCH_B' && state.workCluster === 'BATCH_B') {
+          state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+        }
+        state.workCluster = nextCluster;
         renderWorksView();
       });
     });
     document.querySelectorAll('[data-work-status]').forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (state.workCluster === 'BATCH_B') return;
         state.workStatus = btn.getAttribute('data-work-status');
         renderWorksView();
       });
@@ -3214,8 +3292,12 @@ body[data-view="overview"] main{padding-top:0}
       }
       const [hView, hId] = rawHash.split('/');
       if (hView === 'works') {
+        state.view = 'works';
         if (hId) {
           if (DATA.batch_b_files.some((b) => b.source_file_id === hId)) {
+            if (state.workCluster !== 'BATCH_B') {
+              state.lastCanonicalWorkStatus = state.workStatus;
+            }
             state.workCluster = 'BATCH_B';
             state.workStatus = 'ALL';
             state.workQuery = '';
@@ -3224,6 +3306,9 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedWorkId = hId;
             state.mobileWorkReaderOpen = true;
           } else if (DATA.works.some((w) => w.work_id === hId)) {
+            if (state.workCluster === 'BATCH_B') {
+              state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+            }
             state.workCluster = 'ALL';
             state.workStatus = 'ALL';
             state.workQuery = '';
@@ -3232,6 +3317,9 @@ body[data-view="overview"] main{padding-top:0}
             state.selectedWorkId = hId;
             state.mobileWorkReaderOpen = true;
           } else {
+            if (state.workCluster === 'BATCH_B') {
+              state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+            }
             state.workCluster = 'ALL';
             state.workStatus = 'ALL';
             state.selectedWorkId = DATA.works[0].work_id;
@@ -3239,6 +3327,7 @@ body[data-view="overview"] main{padding-top:0}
         }
         renderWorksView();
       } else if (hView === 'protocols') {
+        state.view = 'protocols';
         if (hId) {
           if (DATA.giveback_tracks.some((t) => t.id === hId)) {
             state.protocolFamily = 'TRACKS';
