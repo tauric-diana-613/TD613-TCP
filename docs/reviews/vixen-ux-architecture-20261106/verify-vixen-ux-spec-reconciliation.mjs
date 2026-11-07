@@ -279,10 +279,10 @@ if (!manifestMatch || !bundleMatch || !themeMatch) {
       if (astraHandoff.document_identity !== 'VIXEN_CYBERNETICS_ASTRA_HANDOFF.html') {
         errors.push(`Astra handoff document_identity mismatch: ${astraHandoff.document_identity}`);
       }
-      if (astraHandoff.predecessor_commit !== 'd9e1051ebd23cadf8f032a71e8ef553e6129cd33') {
+      if (astraHandoff.predecessor_commit !== '27f5a9e3ecf754809b3b6adc54042454ed5a2ed9') {
         errors.push(`Astra handoff predecessor_commit mismatch: ${astraHandoff.predecessor_commit}`);
       }
-      if (astraHandoff.predecessor_html_sha256 !== '41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18') {
+      if (astraHandoff.predecessor_html_sha256 !== 'c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a') {
         errors.push(`Astra handoff predecessor_html_sha256 mismatch: ${astraHandoff.predecessor_html_sha256}`);
       }
       if (!astraHandoff.six_principal_environments || Object.keys(astraHandoff.six_principal_environments).length !== 6) {
@@ -432,7 +432,7 @@ const receipt = {
       f2_session_local_predecessor_retention_verified: true,
       f3_webcrypto_fail_closed_rejection_verified: true,
       astra_single_file_handoff_byte_identical: true,
-      predecessor_v4_html_sha256_preserved: '41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18'
+      predecessor_v4_html_sha256_preserved: 'c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a'
     },
     pedagogue_membrane_and_reader_journeys: {
       governing_anti_equivalence: 'OPERAHOUSE ≠ OPERA ≠ PERFORMER',

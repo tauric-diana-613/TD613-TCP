@@ -1,8 +1,8 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`, 641,510 bytes)  
-**Predecessor Build:** PR #1718 Intermediate Pre-Freeze Candidate (SHA-256: `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac`, 640,649 bytes)  
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff`, 652,893 bytes)  
+**Predecessor Build:** Frozen Baseline Commit `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` (SHA-256: `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`, 641,510 bytes)
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---
@@ -77,6 +77,6 @@ The uploaded artifact provides six interconnected environments across the TD613 
 > **Complete Single-File HTML5 Document Required**  
 > To guarantee immediate automated verification, byte-level integrity checking, and test suite execution:
 > - **DO NOT return partial snippets, diff chunks, or code placeholders** (e.g., avoid `/* ... rest of code unchanged ... */` or truncated blocks).
-> - **Return the complete, self-contained `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` file in full.**
+> - **Return the complete, self-contained `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` file in full** (as a downloadable integrated HTML file attachment rather than printing hundreds of kilobytes inline).
 > - Accompany your deliverable with an **Editorial Summary** walking through your visual, spatial, and typographic decisions, highlighting how they elevate Em's cybernetic research world while honoring the underlying invariants.
 ```

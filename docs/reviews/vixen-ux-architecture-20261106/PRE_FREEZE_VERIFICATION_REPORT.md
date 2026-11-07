@@ -1,24 +1,24 @@
-# TD613 · VIXEN V4 PRE-FREEZE VERIFICATION REPORT
+# TD613 · VIXEN V4.1 PRE-FREEZE VERIFICATION REPORT
 **Report ID:** `PRE_FREEZE_VERIFICATION_REPORT.md`  
-**Review Target:** GitHub Review #5810725365, Emergence HQ Adjudication #5811085212, and Independent Examination Review #5811435392 on Draft PR #1718  
+**Review Target:** GitHub Review #5810725365, Emergence HQ Adjudication #5811085212, Independent Examination Review #5811435392, and Sovereign Operator Engineering Commission Review #5811601958 on Draft PR #1718  
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C)  
-**Human Closure:** RESERVED (Tawanna C. Miller)  
-**Status:** ALL FINDINGS RESOLVED (F1–F4, P-V4-01–P-V4-05, P-V4-06–P-V4-08) · PEDAGOGUE DESIGN GATE PASSED · PROTOTYPE FREEZE-READY · ASTRA SUCCESSION ARTIFACT DELIVERED
+**Human Closure:** RESERVED (Tawanna C. Miller) · **Operator:** tauric.diana.613  
+**Status:** ALL COMMISSION DIRECTIVES RESOLVED (F1–F4, P-V4-01–P-V4-05, P-V4-06–P-V4-08, V41-F01–V41-F05, V41-Q06, V41-F07) · PEDAGOGUE DESIGN GATE PASSED · PROTOTYPE STAGED FOR INDEPENDENT ADJUDICATION · ASTRA SUCCESSION ARTIFACT DELIVERED
 
 ---
 
 ## 1. Candidate Succession & Byte-Identity Custody
 
-| Attribute | Predecessor V4 Candidate (Post-Adjudication #5811085212) | Final Successor Candidate (Post-Review #5811435392) | Byte Identity Status |
-| :--- | :--- | :--- | :--- |
-| **Commit Reference** | `fb554ff63909b5c69262cd57ba63a8dd3e28442b` | Successor Head (PR #1718) | Clean, non-force-pushed successor |
-| **Primary Route** | `app/encyclopedia/vix-cyb.html` | `app/encyclopedia/vix-cyb.html` | Finalized with P-V4-06..08 protections |
-| **Handoff Artifact** | `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` | `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` | Byte-identical across 4 canonical paths |
-| **File Byte Length** | `640,649` bytes | `641,510` bytes | Stable single-file self-contained bundle |
-| **SHA-256 Digest** | `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac` | `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a` | Verified matching across all 4 destinations |
+| Attribute | Frozen Baseline Predecessor (Commit 27f5a9e) | Intermediate Candidate (Review #5811435392) | Final V4.1 Pre-Astra Successor Candidate (Commission #5811601958) | Succession / Custody Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Commit Reference** | `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` | `fb554ff63909b5c69262cd57ba63a8dd3e28442b` | Successor Head (PR #1718) | Clean, non-force-pushed succession |
+| **Primary Route** | `app/encyclopedia/vix-cyb.html` | `app/encyclopedia/vix-cyb.html` | `app/encyclopedia/vix-cyb.html` | Finalized with V4.1 repairs |
+| **Handoff Artifact** | `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` | `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` | `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` | Byte-identical across 4 canonical paths |
+| **File Byte Length** | `641,510` bytes | `640,649` bytes | `652,893` bytes | Stable single-file self-contained bundle |
+| **SHA-256 Digest** | `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a` | `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac` | `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff` | Verified matching across all 4 destinations |
 
 ### Verified Byte-Identical Distribution Targets
-The following four targets have been verified to have the exact SHA-256 `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a` (641,510 bytes):
+The following four targets have been verified to have the exact SHA-256 `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff` (652,893 bytes):
 1. `app/encyclopedia/vix-cyb.html` (Repository application route)
 2. `docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (Repository review packet)
 3. `<Downloads>/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (Local operator download)
@@ -32,22 +32,16 @@ The following four targets have been verified to have the exact SHA-256 `c8edea1
 - **Issue:** The standalone return link `#vixenReturnLink` parsed `window.location.search` or `window.VIXEN_HOST_CONFIG.returnUrl` directly, presenting an injection vector if untrusted schemes (e.g., `javascript:`, `data:`, `vbscript:`, or external cross-origin URLs) were supplied.
 - **Resolution:**
   - Implemented `sanitizeReturnUrl(raw)` in the client initialization routine.
-  - Permits strictly:
-    1. In-page fragment anchors starting with `#` (e.g. `#overview`).
-    2. Same-origin relative paths starting with `/` (e.g. `/`, `/aperture`), rejecting protocol-relative URLs (`//`).
-    3. Absolute URLs only if their origin strictly matches `window.location.origin` and uses `http:` or `https:`.
-  - Rejects: `javascript:`, `data:`, `vbscript:`, `file:`, protocol-relative strings (`//...`), unparseable URIs, and external domains.
-  - Fails closed safely to `#overview`.
+  - Permits strictly in-page fragment anchors starting with `#`, same-origin relative paths starting with `/`, and absolute same-origin URLs with whitelist schemes (`http:`, `https:`).
+  - Rejects: `javascript:`, `data:`, `vbscript:`, `file:`, protocol-relative strings (`//...`), unparseable URIs, and external domains. Fails closed safely to `#overview`.
 
 ### Directive P-V4-02 · Public-Language Cleanliness & Anti-Leakage Second Pass
-- **Issue:** Residual machine vocabulary, internal asset filenames, and technical identifiers remained in default public surfaces (e.g., `ATELIER_PROFILE.json`, raw `emwork_*` accession IDs, truncated SHA hash fragments in preset labels, and machine status badges).
+- **Issue:** Residual machine vocabulary, internal asset filenames, and technical identifiers remained in default public surfaces.
 - **Resolution:**
   - **Works Overview:** Replaced raw references to `ATELIER_PROFILE.json` with reader-facing editorial prose (*"preserved in the atelier portfolio manifest"*).
   - **Search & Filters:** Search placeholder cleaned to `"Search 32 works by title, method, year, or alias..."` (removed raw `emwork_` syntax cue).
   - **Preset Hypotheses:** Removed truncated hash tags (`#d849...`) from preset pair buttons; updated to clean conceptual descriptions (*"Hypothetical Candidate: Autopoietic Drift"*, etc.).
-  - **Public Badges:** Replaced machine status `UNAVAILABLE_IN_PUBLIC_SURFACE` with scholarly descriptive badges:
-    - `Archival Metadata Preserved`
-    - `Manuscript Body Reserved`
+  - **Public Badges:** Replaced machine status `UNAVAILABLE_IN_PUBLIC_SURFACE` with scholarly descriptive badges: `Archival Metadata Preserved` and `Manuscript Body Reserved`.
   - **Study Tray Empty State:** Replaced internal instruction jargon with clear visitor guidance: *"No works pinned to study tray. Click 'Pin to Study Tray' on any work card to inspect comparative attributes."*
 
 ### Directive P-V4-03 · Pedagogue Burden Scores Qualification & Membrane Clarification
@@ -63,25 +57,14 @@ The following four targets have been verified to have the exact SHA-256 `c8edea1
   - It is **not** an operating system process boundary, capability sandbox, or cryptographic security perimeter.
 
 ### Directive P-V4-04 · Astra Creative Scope Specification & Full-File Mandate
-- **Scope Tightening:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md` explicitly isolates Astra's creative latitude to:
-  - Visual and spatial stagecraft, lighting accents, chromepunk reflections, and atmospheric depth.
-  - CSS styling via `<style id="manifest-instance-theme">` and `<style id="vixen-structural-css">`.
-  - Glinda/Mugler couture balance and architectural typography.
-- **Frozen Infrastructure:**
-  - `<script id="vixen-client-runtime">` and embedded JSON data manifests are strictly frozen.
-  - WebCrypto negative control benches, offline fallbacks, and human gate initial states must remain untouched.
-- **Mandatory Single-File Return Protocol:**
-  - Strictly prohibits partial snippets, diff chunks, or code placeholders (e.g., `/* ... rest of code unchanged ... */`).
-  - Mandates returning the 100% complete, runnable `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` document in full to ensure immediate hash verification and zero merge regressions.
+- **Scope Tightening:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md` explicitly isolates Astra's creative latitude to visual and spatial stagecraft, lighting accents, chromepunk reflections, atmospheric depth, CSS styling, and Glinda/Mugler couture balance.
+- **Frozen Invariants:** Scientific invariants, data manifests, custody schemas, WebCrypto negative control benches, and human gate initial states remain strictly frozen.
+- **Mandatory Single-File Return Protocol:** Strictly prohibits partial snippets or placeholders; mandates returning the 100% complete, runnable `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` document in full as a downloadable HTML file.
 
 ### Directive P-V4-05 · Pre-Freeze Report & Multi-Target Propagation
 - Predecessor and successor digests synchronized in Section 1.
-- Updated HTML propagated across all 4 canonical paths with matching SHA-256 `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac`.
+- Updated HTML propagated across all 4 canonical paths with matching SHA-256.
 - Review bundle `Vixen-Cybernetics-Prototype-V4-2026-11-07.zip` re-packaged with synchronized contents.
-
----
-
-
 
 ---
 
@@ -95,23 +78,73 @@ The following four targets have been verified to have the exact SHA-256 `c8edea1
   - Added automated unit tests including browser-resolved destination checks verifying that simulated anchors strictly resolve to same origin.
 
 ### Directive P-V4-07 · Product Language Membrane (OPERAHOUSE ≠ OPERA ≠ PERFORMER) & Visible Surface De-Leakage
-- **Issue:** Lingering host-specific vocabulary and machine status codes (`EMSTD613`, `FADT`, `CATALOGUE_METADATA_ONLY`, `UNAVAILABLE_IN_PUBLIC_SURFACE`) persisted in default rendered public surfaces.
+- **Issue:** Lingering host-specific vocabulary and machine status codes persisted in default rendered public surfaces.
 - **Resolution:**
   - Systematically eliminated host codes from all rendered public text:
     - Page title, meta description, brand subhead, cover registration, cover spine, and footer brand display clean research atelier branding (`Research Atelier · Typed Constitutive Cybernetics`, `VIXEN CYBERNETICS · RESEARCH ATELIER`).
     - Attribution membrane updated to clarify inquiry context without leaking host machine codes.
-    - Study tray intro updated to reader-facing language.
-    - Public badges in single work reader, gate left/right folios, and protocol reader display `Archival Metadata Preserved` and `Manuscript Body Reserved`.
+    - Public badges in single work reader, gate folios, and protocol reader display `Archival Metadata Preserved` and `Manuscript Body Reserved`.
     - `renderFormulaFolios()` dynamically formats RC-06 title as `RC-06 · Finite Admissibility & Packaging Quarantine (c₄)` and status badge as `EXACT DESCENT (FIBER QUOTIENT)`.
     - `VixenReference.cite()` outputs `[Vixen Cybernetics Research Atelier]`.
-  - Verified that canonical data manifests (`#vixen-astra-handoff`, `#vixen-reference-manifest`, `#vixen-corpus-bundle`) and expert diagnostics (`#inspectorDialog` / `#inspectorTabBody`, Alt+I) retain authentic historical identifiers intact.
+  - Verified that canonical data manifests and expert diagnostics (`#inspectorDialog` / `#inspectorTabBody`, Alt+I) retain authentic historical identifiers intact.
 
 ### Directive P-V4-08 · Astra Creative Latitude Scope Reconciliation & Single-File Return
 - **Issue:** Contradiction existed between the handoff manifest (which authorized code refactoring of presentation scripts) and `VIXEN_ASTRA_ACTIVATION_PROMPT.md` (which froze all runtime scripts). Freezing presentation scripts defeated Astra's commissioned UI/UX transformation.
 - **Resolution:**
   - Reconciled the handoff contracts in `VIXEN_ASTRA_ACTIVATION_PROMPT.md`.
   - Unfroze presentation JavaScript, DOM layout, CSS architecture, navigation, animations, and interactions for GPT-6 Astra, while keeping scientific invariants, data manifests, custodial rules, and security sanitization strictly frozen.
-  - Reaffirmed mandatory single-file complete HTML5 return protocol (no partial snippets or placeholders).
+  - Reaffirmed mandatory single-file complete HTML5 return protocol as a downloadable attachment.
+
+---
+
+## 2.6 Implementation of Sovereign Operator Engineering Commission Review #5811601958 Directives (V41-F01 to V41-F05, V41-Q06, V41-F07)
+
+### Directive V41-F01 · Return-Link Multi-Destination Routing & Navigation Parity
+- **Defect:** In `app/encyclopedia/vix-cyb.html`, `#vixenReturnLink` accepted safe fragments like `#works`, `#gates`, `#protocols`, etc., but its click handler unconditionally executed `setView('overview')`. An independent Chromium test configuring `returnUrl = '#gates'` advertised `#gates` but routed to `#overview`.
+- **Resolution:**
+  - Preserved WHATWG URL sanitizer with strict slash/backslash/control character rejection.
+  - Implemented multi-destination router `resolveReturnDestination(cleanUrl)` routing approved internal fragments (`#overview`, `#works`, `#gates`, `#protocols`, `#observatory`, `#holds`, `#collection`, as well as nested routes `#works/<id>` and `#protocols/<id>`) to their respective environments.
+  - Nested routes validate candidate record IDs against embedded registered catalogue sets before routing; unknown/invalid fragments fall back cleanly to `#overview`.
+  - Dynamically updates link text label and `aria-label` to match the actual destination (*"Return to Gates"*, *"Return to Lineage Catalogue"*, *"Return to Documentary Instruments"*, etc.).
+
+### Directive V41-F02 · Filtered Catalogue and Reader-Panel Empty State Consistency
+- **Defect:** In the Lineage Catalogue (Works, Batch-B) and Documentary Instruments (Protocols), when a search query or filter produced zero matches, previous UI state failed to display an explicit empty state in the reader detail panel, leaving stale or previously viewed records visible.
+- **Resolution:**
+  - When `filtered.length === 0`, both the record list container and the detail reader pane render explicit, accessible empty states with `data-state="NO_MATCHING_RECORDS"` and clear reader guidance (*"No works match your current search query or active filter."*).
+  - Active selection and `aria-current="true"` strictly synchronize with matching records; stale selection states are cleared.
+  - Upon clearing or resetting the search input, previous valid selection is restored (or defaults to the first available record).
+
+### Directive V41-F03 · Standalone Offline Footer Navigation
+- **Defect:** Footer link `#footerEncyclopediaLink` previously navigated to `/encyclopedia/` unconditionally, resulting in broken navigation when opening the standalone HTML file in an offline `file:` environment.
+- **Resolution:**
+  - The click handler inspects current protocol context.
+  - Under `file:` protocol, prevents default unload navigation, smoothly returns to the `#overview` environment, scrolls to the top of the atelier, and provides a clear non-disruptive offline status message (*"Running in standalone offline mode. Top of atelier reached."*).
+  - Under hosted `http:` / `https:` protocols, navigates safely to `/encyclopedia/` or a host-configured sanitized target.
+
+### Directive V41-F04 · Decoupled Canonical Gate Defaults from Session-Local Hypotheses
+- **Defect:** Toggling bilateral gate choices during reader exploration could cause runtime verification `verify()` to report gate status drift or falsify default integrity claims.
+- **Resolution:**
+  - Canonical gate integrity in `verify()` evaluates the immutable property `g.default_state === 'UNADJUDICATED_PAIR'` across all 8 gates.
+  - Reader interactive adjustments are recorded in `state.session_gate_hypotheses` under flag `session_gates_hypothetically_modified: true`.
+  - Guarantees that `canonical_gates_default_unadjudicated`, `initial_runtime_gates_unadjudicated`, and `human_gates_default_unadjudicated` evaluate to `true` at all times, preventing session-local hypothesis testing from corrupting canonical custody records.
+
+### Directive V41-F05 · Direct JSDOM Production Testing of Runtime Sanitizers
+- **Defect:** Prior test suites contained duplicated, locally maintained copies of `sanitizeReturnUrl`, verifying mock logic rather than the production implementation in `vix-cyb.html`.
+- **Resolution:**
+  - Exposed `sanitizeReturnUrl` and `resolveReturnDestination` on `window.VixenReference`.
+  - Test 10 and Test 11 in `tests/vixen-pedagogue-membrane.test.mjs` load the live production HTML directly into JSDOM and execute assertions against the actual exposed production methods and live DOM interactions.
+
+### Directive V41-Q06 · Route History Preservation & Four Catalogue Perspectives
+- **Resolution:**
+  - Browser History: `setView()` supports `pushHistory: true`, registering `popstate` and `hashchange` listeners. Forward and backward browser navigation smoothly synchronizes the active environment and URL hash.
+  - Four Non-Equivalent Perspectives: Clarified that the 4 AIA catalogue perspectives (Experiential / Reading Guide, Historical / Curatorial Custody, Audit / Evidence & Verification, Technical / System Architecture) represent non-equivalent editorial, custodial, and structural lenses over invariant underlying metadata (32 works, 53 manifestations, 7 Batch-B records, 21 protocols).
+
+### Directive V41-F07 · Predecessor Handoff & Hash Requalification
+- **Resolution:**
+  - Embedded handoff manifest `#vixen-astra-handoff` synchronized to frozen predecessor commit `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` and predecessor SHA `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`.
+  - All checksums, byte counts, and succession paths reconciled across the review packet, downloads directory, session artifacts, and repository.
+
+---
 
 ## 3. Implementation of Review #5810725365 Findings (F1–F4)
 
@@ -168,14 +201,17 @@ Executed Design Gate verifier via `node scripts/run-pedagogue-design-gate.mjs`:
 
 ## 5. Verification & Regression Checklist
 
-- [x] Predecessor HTML digest preserved: `6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794` (639,815 bytes)
-- [x] Successor HTML digest published: `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac` (640,649 bytes)
-- [x] Four distribution targets verified byte-identical
-- [x] P-V4-01: `sanitizeReturnUrl` verified fail-closed against javascript:, data:, vbscript:, protocol-relative //, and foreign origins
-- [x] P-V4-02: Public reading surfaces scrubbed of internal filenames, raw `emwork_*` IDs, hash fragments, and machine statuses
-- [x] P-V4-03: Route burden reductions accurately labeled as synthetic fixture models ($\Delta B_{\text{synthetic}} \ne \Delta B_{\text{observed human}}$); `data-membrane` clarified as presentation boundary
-- [x] P-V4-04: Astra prompt updated to freeze runtime scripts/manifests, restrict to visual stagecraft/styling, and require 100% complete single-file return
-- [x] P-V4-05: Verification report, activation prompt, and review ZIP re-synchronized
+- [x] Baseline predecessor commit: `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` (641,510 bytes, SHA-256 `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`)
+- [x] Intermediate pre-freeze build recorded: 640,649 bytes (SHA-256 `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac`)
+- [x] Successor V4.1 HTML digest published: `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff` (652,893 bytes)
+- [x] Four distribution targets verified byte-identical across application route, review packet, downloads folder, and session artifacts
+- [x] V41-F01: Return-link multi-destination routing and WHATWG URL sanitization verified
+- [x] V41-F02: Filtered catalogue 0-match empty states (`NO_MATCHING_RECORDS`) and reader selection synchronization verified
+- [x] V41-F03: Standalone offline footer navigation verified (`#footerEncyclopediaLink`)
+- [x] V41-F04: Canonical gate defaults decoupled from session-local reader hypotheses (`g.default_state === 'UNADJUDICATED_PAIR'`)
+- [x] V41-F05: Native JSDOM production testing of `window.VixenReference.sanitizeReturnUrl` and `resolveReturnDestination` verified
+- [x] V41-Q06: Browser history navigation (`pushHistory`, `popstate`, `hashchange`) and 4 non-equivalent catalogue perspectives verified
+- [x] V41-F07: Embedded handoff manifest synchronized with predecessor commit and SHA
 - [x] 32 Works and 53 linked manifestations verified distinct
 - [x] 7 Batch-B annex PDFs verified intact
 - [x] 8 Human Gates verified at initial state `UNADJUDICATED_PAIR` ([32, 40] sensitivity)
@@ -187,10 +223,6 @@ Executed Design Gate verifier via `node scripts/run-pedagogue-design-gate.mjs`:
 - [x] WebCrypto digest fail-closed rejection handling verified with negative controls
 - [x] Offline font and math fallback verified under network-blocked conditions
 - [x] Anti-leakage rule: zero forbidden host terms in public navigation
-- [x] Standalone return link decoupled from `/aperture/` (defaults to `#overview`)
-- [x] Three reader journeys verified (A: Scholarly Encounter, B: Split Gates, C: Concealed `Alt+I` Inspector)
-- [x] Pedagogue Design Gate & Practice Fixtures compiled and passed GREEN
-- [x] P-V4-06: Return-link security verified fail-closed against slash-backslash bypass (/\evil.example, /\\evil.example) and cross-origin destinations
-- [x] P-V4-07: Public reading surfaces scrubbed of EMSTD613, FADT, CATALOGUE_METADATA_ONLY, and UNAVAILABLE_IN_PUBLIC_SURFACE; canonical data and expert diagnostics preserved
-- [x] P-V4-08: Astra creative latitude reconciled (presentation JS, DOM layout, CSS architecture, navigation unfrozen for Astra; data/scientific/security invariants strictly frozen)
-- [x] Automated test suite `tests/vixen-pedagogue-membrane.test.mjs` (11/11 tests PASS GREEN)
+- [x] Automated test suite `tests/vixen-pedagogue-membrane.test.mjs` (12/12 tests PASS GREEN)
+- [x] Pedagogue test suite `npm run test:pedagogue` (55 passed, 1 skipped, 0 failed)
+- [x] Deterministic review package `Vixen-Cybernetics-Prototype-V4-2026-11-07.zip` generated with updated manifest

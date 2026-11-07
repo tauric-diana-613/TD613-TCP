@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import jsdom from 'jsdom';
+const { JSDOM } = jsdom;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,6 +13,30 @@ const rootDir = path.resolve(__dirname, '..');
 const vixenHtmlPath = path.join(rootDir, 'app', 'encyclopedia', 'vix-cyb.html');
 const designFixturePath = path.join(rootDir, 'tests', 'fixtures', 'pedagogue', 'vixen-cybernetics-design.json');
 const practiceFixturePath = path.join(rootDir, 'tests', 'fixtures', 'pedagogue', 'vixen-cybernetics-practice.json');
+
+function createVixenDOM(vixenHtml, opts = {}) {
+  const dom = new JSDOM(vixenHtml, {
+    url: opts.url || 'http://localhost:3000/encyclopedia/vix-cyb.html',
+    runScripts: 'dangerously',
+    resources: 'usable',
+    beforeParse(win) {
+      if (opts.hostConfig) {
+        win.VIXEN_HOST_CONFIG = opts.hostConfig;
+      }
+      win.HTMLCanvasElement.prototype.getContext = () => ({
+        clearRect: () => {}, beginPath: () => {}, arc: () => {}, fill: () => {}, stroke: () => {},
+        moveTo: () => {}, lineTo: () => {}, closePath: () => {}, fillRect: () => {}, strokeRect: () => {},
+        fillText: () => {}, measureText: () => ({ width: 0 }), save: () => {}, restore: () => {},
+        scale: () => {}, translate: () => {}, rotate: () => {}
+      });
+      win.scrollTo = () => {};
+      win.requestAnimationFrame = () => 1;
+      win.cancelAnimationFrame = () => {};
+    }
+  });
+  return dom;
+}
+
 
 test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async (t) => {
   assert.ok(fs.existsSync(vixenHtmlPath), 'vix-cyb.html must exist at primary path');
@@ -303,7 +329,7 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
   await t.test('10. Emergence HQ Review #5811435392 Directives (P-V4-06 Return-Link Security, P-V4-07 OPERAHOUSE ≠ OPERA ≠ PERFORMER Text Membrane, P-V4-08 Astra Creative Scope)', () => {
     // P-V4-06: Strict return-link sanitizer logic and slash-backslash bypass immunity
     assert.ok(
-      html.includes('// Return-Link Security Sanitizer (P-V4-06 Fail-Closed Normalized Invariant)'),
+      html.includes('// Return-Link Security Sanitizer (P-V4-06'),
       'P-V4-06 sanitizer must be present'
     );
     assert.ok(
@@ -311,30 +337,14 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
       'Sanitizer must reject backslashes and control characters'
     );
 
-    // Reconstruct and test sanitizeReturnUrl with simulated window.location
+    // Test sanitizeReturnUrl directly from production window.VixenReference
     const testLocation = {
       href: 'http://localhost:3000/encyclopedia/vix-cyb.html',
       origin: 'http://localhost:3000'
     };
 
-    function testSanitizer(raw, loc = testLocation) {
-      if (!raw || typeof raw !== 'string') return '#overview';
-      const trimmed = raw.trim();
-      if (!trimmed) return '#overview';
-      if (/^#[a-zA-Z0-9_\-]+$/.test(trimmed)) return trimmed;
-      if (/[\\<>'"`\s\x00-\x1f]/.test(trimmed)) return '#overview';
-      const lower = trimmed.toLowerCase();
-      if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:') || lower.startsWith('file:')) {
-        return '#overview';
-      }
-      try {
-        const parsed = new URL(trimmed, loc.href);
-        if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.origin === loc.origin) {
-          return parsed.pathname + parsed.search + parsed.hash;
-        }
-      } catch (e) {}
-      return '#overview';
-    }
+    const domForSanitizer = createVixenDOM(html);
+    const prodSanitizer = (vec) => domForSanitizer.window.VixenReference.sanitizeReturnUrl(vec);
 
     // Hostile vectors must fail closed to #overview
     const hostileVectors = [
@@ -357,7 +367,7 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     ];
 
     for (const vec of hostileVectors) {
-      const sanitized = testSanitizer(vec);
+      const sanitized = prodSanitizer(vec);
       assert.strictEqual(
         sanitized,
         '#overview',
@@ -379,12 +389,12 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     }
 
     // Safe vectors must be admitted cleanly
-    assert.strictEqual(testSanitizer('#overview'), '#overview');
-    assert.strictEqual(testSanitizer('#gates'), '#gates');
-    assert.strictEqual(testSanitizer('#works'), '#works');
-    assert.strictEqual(testSanitizer('/encyclopedia/vix-cyb.html'), '/encyclopedia/vix-cyb.html');
-    assert.strictEqual(testSanitizer('/app/home?lang=en#top'), '/app/home?lang=en#top');
-    assert.strictEqual(testSanitizer('http://localhost:3000/encyclopedia/'), '/encyclopedia/');
+    assert.strictEqual(prodSanitizer('#overview'), '#overview');
+    assert.strictEqual(prodSanitizer('#gates'), '#gates');
+    assert.strictEqual(prodSanitizer('#works'), '#works');
+    assert.strictEqual(prodSanitizer('/encyclopedia/vix-cyb.html'), '/encyclopedia/vix-cyb.html');
+    assert.strictEqual(prodSanitizer('/app/home?lang=en#top'), '/app/home?lang=en#top');
+    assert.strictEqual(prodSanitizer('http://localhost:3000/encyclopedia/'), '/encyclopedia/');
 
     // P-V4-07: Verify default public surfaces omit host vocabulary
     // Extract public markup up to scripts and inspector
@@ -454,4 +464,160 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
       'Handoff manifest must permit Astra code refactoring of presentation JS'
     );
   });
+  await t.test('11. Emergence HQ Review #5811601958 Directives (V41-F01 Return Link, V41-F02 Filter Consistency, V41-F03 Footer Nav, V41-F04 Gate Decoupling, V41-F05 Production Test, V41-Q06 Route History)', () => {
+    // --- V41-F01: Return-Link Multi-Destination Agreement & Native Routing ---
+    // A. #gates returnUrl
+    const domGates = createVixenDOM(html, { hostConfig: { returnUrl: '#gates' } });
+    const winGates = domGates.window;
+    const docGates = winGates.document;
+    const returnLinkGates = docGates.getElementById('vixenReturnLink');
+    assert.strictEqual(returnLinkGates.getAttribute('href'), '#gates');
+    assert.strictEqual(returnLinkGates.getAttribute('aria-label'), 'Return to Split-Plane Gates');
+    assert.strictEqual(returnLinkGates.querySelector('span').textContent, 'Gates');
+    // Click return link
+    returnLinkGates.click();
+    assert.strictEqual(docGates.body.getAttribute('data-view'), 'gates');
+    assert.strictEqual(docGates.getElementById('view-gates').hidden, false);
+    assert.strictEqual(docGates.getElementById('view-overview').hidden, true);
+    assert.ok(winGates.location.hash.includes('gates'));
+
+    // B. Registered Nested Route: #works/<first_work_id>
+    const firstWork = winGates.VixenReference.search('')[0];
+    const domNested = createVixenDOM(html, { hostConfig: { returnUrl: '#works/' + firstWork.id } });
+    const winNested = domNested.window;
+    const docNested = winNested.document;
+    const returnLinkNested = docNested.getElementById('vixenReturnLink');
+    assert.strictEqual(returnLinkNested.getAttribute('href'), '#works/' + firstWork.id);
+    assert.strictEqual(returnLinkNested.getAttribute('aria-label'), 'Return to Work ' + firstWork.id);
+    returnLinkNested.click();
+    assert.strictEqual(docNested.body.getAttribute('data-view'), 'works');
+    assert.strictEqual(docNested.getElementById('view-works').hidden, false);
+    assert.ok(winNested.location.hash.includes(firstWork.id));
+
+    // C. #protocols returnUrl
+    const domProto = createVixenDOM(html, { hostConfig: { returnUrl: '#protocols' } });
+    const winProto = domProto.window;
+    const docProto = winProto.document;
+    const returnLinkProto = docProto.getElementById('vixenReturnLink');
+    assert.strictEqual(returnLinkProto.getAttribute('href'), '#protocols');
+    assert.strictEqual(returnLinkProto.getAttribute('aria-label'), 'Return to Documentary Protocols');
+    returnLinkProto.click();
+    assert.strictEqual(docProto.body.getAttribute('data-view'), 'protocols');
+
+    // D. Unknown fragment fallback to #overview
+    const domUnknown = createVixenDOM(html, { hostConfig: { returnUrl: '#invalid_fragment_xyz' } });
+    const winUnknown = domUnknown.window;
+    const docUnknown = winUnknown.document;
+    const returnLinkUnknown = docUnknown.getElementById('vixenReturnLink');
+    assert.strictEqual(returnLinkUnknown.getAttribute('href'), '#overview');
+    assert.strictEqual(returnLinkUnknown.getAttribute('aria-label'), 'Return to Overview');
+
+    // --- V41-F02: Filtered Catalogue & Reader-Panel Consistency ---
+    const domFilter = createVixenDOM(html);
+    const winFilter = domFilter.window;
+    const docFilter = winFilter.document;
+
+    // Switch to Works view
+    docFilter.querySelector('[data-view="works"]').click();
+    assert.strictEqual(docFilter.body.getAttribute('data-view'), 'works');
+
+    // 1. Normal state: reader shows selected work
+    const workSummaryBefore = docFilter.getElementById('worksResultSummary').textContent;
+    assert.ok(workSummaryBefore.includes('Showing 32 of 32 Works'));
+    const readerBefore = docFilter.getElementById('worksReaderPanel');
+    assert.strictEqual(readerBefore.innerHTML.includes('NO_MATCHING_RECORDS'), false);
+
+    // 2. Zero-match query in Works: reader MUST show NO_MATCHING_RECORDS, never unrelated work
+    const workInput = docFilter.getElementById('workSearchInput');
+    workInput.value = 'query_with_absolutely_zero_matches_xyz';
+    workInput.dispatchEvent(new winFilter.Event('input'));
+    const workSummaryZero = docFilter.getElementById('worksResultSummary').textContent;
+    assert.ok(workSummaryZero.includes('Showing 0 of 32 Works'));
+    const listHtmlZero = docFilter.getElementById('worksListContainer').innerHTML;
+    const readerHtmlZero = docFilter.getElementById('worksReaderPanel').innerHTML;
+    assert.ok(listHtmlZero.includes('NO_MATCHING_RECORDS'));
+    assert.ok(readerHtmlZero.includes('NO_MATCHING_RECORDS'));
+    assert.strictEqual(readerHtmlZero.includes('Catalog Accession:'), false, 'Zero-match must not display archival accession');
+
+    // 3. Clear search restores records and reader
+    workInput.value = '';
+    workInput.dispatchEvent(new winFilter.Event('input'));
+    const workSummaryRestored = docFilter.getElementById('worksResultSummary').textContent;
+    assert.ok(workSummaryRestored.includes('Showing 32 of 32 Works'));
+    const readerHtmlRestored = docFilter.getElementById('worksReaderPanel').innerHTML;
+    assert.strictEqual(readerHtmlRestored.includes('NO_MATCHING_RECORDS'), false);
+    assert.ok(readerHtmlRestored.includes('Catalog Accession:'));
+
+    // 4. Batch-B zero-match query
+    docFilter.querySelector('[data-work-cluster="BATCH_B"]').click();
+    assert.ok(docFilter.getElementById('worksResultSummary').textContent.includes('Showing 7 of 7'));
+    workInput.value = 'no_batch_b_match_xyz';
+    workInput.dispatchEvent(new winFilter.Event('input'));
+    assert.ok(docFilter.getElementById('worksResultSummary').textContent.includes('Showing 0 of 7'));
+    assert.ok(docFilter.getElementById('worksReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    // 5. Protocols zero-match query
+    docFilter.querySelector('[data-view="protocols"]').click();
+    assert.strictEqual(docFilter.body.getAttribute('data-view'), 'protocols');
+    const protoInput = docFilter.getElementById('protocolSearchInput');
+    protoInput.value = 'zero_match_protocol_query_xyz';
+    protoInput.dispatchEvent(new winFilter.Event('input'));
+    assert.ok(docFilter.getElementById('protocolsResultSummary').textContent.includes('Showing 0 of 21'));
+    assert.ok(docFilter.getElementById('protocolsReaderPanel').innerHTML.includes('NO_MATCHING_RECORDS'));
+
+    // --- V41-F03: Standalone Offline Footer Navigation ---
+    // A. Offline file: execution
+    const domOffline = createVixenDOM(html, { url: 'file:///C:/test/vix-cyb.html' });
+    const docOffline = domOffline.window.document;
+    const footLinkOffline = docOffline.getElementById('footerEncyclopediaLink');
+    assert.strictEqual(footLinkOffline.getAttribute('href'), '#overview');
+    assert.ok(footLinkOffline.textContent.includes('Offline'));
+
+    // B. Hosted http: execution
+    const domHosted = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html' });
+    const docHosted = domHosted.window.document;
+    const footLinkHosted = docHosted.getElementById('footerEncyclopediaLink');
+    assert.strictEqual(footLinkHosted.getAttribute('href'), '/encyclopedia/');
+
+    // --- V41-F04: Gate Decoupling & Local Hypothesis Verification ---
+    const domGateTest = createVixenDOM(html);
+    const winGateTest = domGateTest.window;
+    const initialVerify = winGateTest.VixenReference.verify();
+    assert.strictEqual(initialVerify.canonical_gates_default_unadjudicated, true);
+    assert.strictEqual(initialVerify.initial_runtime_gates_unadjudicated, true);
+    assert.strictEqual(initialVerify.human_gates_default_unadjudicated, true);
+    assert.strictEqual(initialVerify.session_gates_hypothetically_modified, false);
+    assert.strictEqual(initialVerify.human_closure_authority, 'RESERVED_TAWANNA_C_MILLER');
+
+    // Reader experiments with HYP_MERGED on Gate 1 and HYP_SPLIT on Gate 2
+    domGateTest.window.document.querySelector('[data-view="gates"]').click();
+    domGateTest.window.document.querySelector('[data-gate-set="1:HYP_MERGED"]').click();
+    domGateTest.window.document.querySelector('[data-gate-set="2:HYP_SPLIT"]').click();
+
+    const postHypothesisVerify = winGateTest.VixenReference.verify();
+    // Canonical default integrity remains TRUE
+    assert.strictEqual(postHypothesisVerify.canonical_gates_default_unadjudicated, true);
+    assert.strictEqual(postHypothesisVerify.initial_runtime_gates_unadjudicated, true);
+    assert.strictEqual(postHypothesisVerify.human_gates_default_unadjudicated, true);
+    // Session hypothesis state correctly reflects reader experimentation
+    assert.strictEqual(postHypothesisVerify.session_gates_hypothetically_modified, true);
+    assert.strictEqual(postHypothesisVerify.session_gate_hypotheses['1'], 'HYP_MERGED');
+    assert.strictEqual(postHypothesisVerify.session_gate_hypotheses['2'], 'HYP_SPLIT');
+    assert.strictEqual(postHypothesisVerify.scientific_authority, false);
+
+    // --- V41-Q06: Route History & Four Presentation Perspectives ---
+    // Direct hash routing on initialization
+    const domHashRoute = createVixenDOM(html, { url: 'http://localhost:3000/encyclopedia/vix-cyb.html#gates' });
+    assert.strictEqual(domHashRoute.window.document.body.getAttribute('data-view'), 'gates');
+
+    // Four presentation perspectives transform editorial labels over shared metadata
+    const domLens = createVixenDOM(html);
+    const docLens = domLens.window.document;
+    docLens.querySelector('[data-view="works"]').click();
+    docLens.querySelector('[data-aia-proj="AUDIT"]').click();
+    assert.ok(docLens.getElementById('worksResultSummary').textContent.includes('Evidence & Verification perspective'));
+    docLens.querySelector('[data-aia-proj="CUSTODIAL"]').click();
+    assert.ok(docLens.getElementById('worksResultSummary').textContent.includes('Curatorial Custody perspective'));
+  });
+
 });

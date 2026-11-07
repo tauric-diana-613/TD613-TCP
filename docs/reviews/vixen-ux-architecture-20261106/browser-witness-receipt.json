@@ -1,6 +1,6 @@
 {
   "schema": "td613.vixen.browser-witness-receipt/v2.1",
-  "executed_at": "2026-11-07T08:01:42.946Z",
+  "executed_at": "2026-11-07T11:23:45.993Z",
   "witness_environment": "Headless Chromium via Chrome DevTools Protocol (simulated desktop 1440x900 and simulated mobile 390x844; not a physical-device witness)",
   "target_route": "/encyclopedia/vix-cyb.html",
   "runtime_errors_count": 0,
@@ -13,7 +13,21 @@
         "linked_manifestations_count": 53,
         "batch_b_count": 7,
         "human_gates_count": 8,
+        "canonical_gates_default_unadjudicated": true,
+        "initial_runtime_gates_unadjudicated": true,
         "human_gates_default_unadjudicated": true,
+        "session_gate_hypotheses": {
+          "1": "UNADJUDICATED_PAIR",
+          "2": "UNADJUDICATED_PAIR",
+          "3": "UNADJUDICATED_PAIR",
+          "4": "UNADJUDICATED_PAIR",
+          "5": "UNADJUDICATED_PAIR",
+          "6": "UNADJUDICATED_PAIR",
+          "7": "UNADJUDICATED_PAIR",
+          "8": "UNADJUDICATED_PAIR"
+        },
+        "session_gates_hypothetically_modified": false,
+        "human_closure_authority": "RESERVED_TAWANNA_C_MILLER",
         "instruments_count": 21,
         "standalone_executors_count": 0,
         "all_work_authorship_unresolved": true,
@@ -32,7 +46,7 @@
       "footerTd613Text": "𝌋 TD613 Encyclopedia →"
     },
     "observatory_check": {
-      "benchText": "ILLUSTRATIVE_PRESET_DEMO\nEMPIRICAL_CREDIT: 0\nE-00.1: BOUNDED_TIE\nPAIR: C1 Algedonic Hypervisor (emwork_085223...) ⊕ C2 Lock-Free DSP (emwork_67768e...)\nSOURCES: emsrc_b7e4e42924d33bdaf666a4f8 [WITHDRAWN] · emsrc_2ddaf8197adecc8c5ba09c33\nPRESET HYPOTHESIS: WITHDRAWN_TOMBSTONE\nHYPOTHETICAL OUTCOME: TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)\nCANDIDATE ID: theory:cybernetic_hypervisor_algedonic_synthesis\nRETAINED CONTRADICTIONS: NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME · VARIABLE_DELAY != ZERO_LATENCY\nWARRANT CEILING: claim_entailment: HELD_UNVERIFIED_BY_SYNTAX_ALONE · Competent-Null E-00.1: BOUNDED_TIE\nIllustrative typed operator mapping between bounded-queue backpressure and algedonic preemption (preset demonstration; zero live scientific admission), while refusing to erase the clock contradiction between LLM token jitter and 48 kHz real-time DSP.\nSESSION_LOCAL_SNAPSHOT COUNT: 1 · DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)",
+      "benchText": "ILLUSTRATIVE_PRESET_DEMO\nEMPIRICAL_CREDIT: 0\nE-00.1: BOUNDED_TIE\nPAIR: C1 Algedonic Hypervisor ⊕ C2 Lock-Free DSP (Illustrative Pair)\nSOURCES: emsrc_b7e4e42924d33bdaf666a4f8 [WITHDRAWN] · emsrc_2ddaf8197adecc8c5ba09c33\nPRESET HYPOTHESIS: WITHDRAWN_TOMBSTONE\nHYPOTHETICAL OUTCOME: TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)\nCANDIDATE ID: theory:cybernetic_hypervisor_algedonic_synthesis\nRETAINED CONTRADICTIONS: NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME · VARIABLE_DELAY != ZERO_LATENCY\nWARRANT CEILING: claim_entailment: HELD_UNVERIFIED_BY_SYNTAX_ALONE · Competent-Null E-00.1: BOUNDED_TIE\nIllustrative typed operator mapping between bounded-queue backpressure and algedonic preemption (preset demonstration; zero live scientific admission), while refusing to erase the clock contradiction between LLM token jitter and 48 kHz real-time DSP.\nSESSION_LOCAL_SNAPSHOT COUNT: 1 · DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)",
       "folioCount": 22,
       "snapshotCount": 1,
       "predecessorRetained": true,
@@ -43,7 +57,7 @@
     "works_check": {
       "allCount": 32,
       "batchBCount": 7,
-      "readerText": "C1 · HYPERVISORS & VIABLE AI\nCATALOGUE_METADATA_ONLY\nUNAVAILABLE_IN_PUBLIC_SURFACE\nRECORDED AUTHORSHIP: UNRESOLVED\nGATE #2 · UNADJUDICATED_PAIR\nThe Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience\n\nCatalog Accession: emwork_085223e721130117f5510975 · Identity Status: SAME_WORK_SUPPORTED · Contribution Interval: [1, 2]\n\nS-PLANE\nW-PLANE\nA-PLA",
+      "readerText": "C1 · HYPERVISORS & VIABLE AI\nARCHIVAL METADATA PRESERVED\nMANUSCRIPT BODY RESERVED\nRECORDED AUTHORSHIP: UNRESOLVED\nGATE #2 · UNADJUDICATED_PAIR\nThe Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience\n\nCatalog Accession: emwork_085223e721130117f5510975 · Identity Status: SAME_WORK_SUPPORTED · Contribution Interval: [1, 2]\n\nS-PLANE\nW-PLANE\nA-PLAN",
       "scrollWidth": 1440,
       "clientWidth": 1440
     },
@@ -206,53 +220,53 @@
     },
     {
       "filename": "01-cover-desktop.png",
-      "bytes": 865594,
-      "sha256": "f425cc6e4c9d5080ebf59625803198685e13cb8e9b65fd9ab4ba626795255975"
+      "bytes": 866878,
+      "sha256": "011bce4851032eaf16ae70c0d1061e251d41ba75fa864df82a6577b343d52ad8"
     },
     {
       "filename": "02-archive-directory-baker-miller.png",
-      "bytes": 195864,
-      "sha256": "fc8e3687854b67c0bc4df7617a8a8813b4436f880f67bbf4235f5b3506754166"
+      "bytes": 195975,
+      "sha256": "86823377a3ae7ba17f55e0238f4e67c13c3e23518564388f56f600b1d8085d20"
     },
     {
       "filename": "03-synthesis-observatory-desktop.png",
-      "bytes": 158446,
-      "sha256": "d68e77ba0818f085a8867ad63ba4044079e424a4c9fb1b3ab9f9dc39dafd4e11"
+      "bytes": 158783,
+      "sha256": "d6a49e1a882b2bb450d6c3c53a1777f63daf820ecbe0545057e798f552cf849f"
     },
     {
       "filename": "04-works-catalogue-desktop.png",
-      "bytes": 168009,
-      "sha256": "6635446662ee7581b3e9b930db64026859b3146b846001969c6a2ec60f921fc1"
+      "bytes": 166830,
+      "sha256": "62a83f8b4a9fc3e5ebf4ea3ce5cd0cfbc3db2223b6bf940cc3402e6371dc63f1"
     },
     {
       "filename": "05-split-gates-desktop.png",
-      "bytes": 156952,
-      "sha256": "04d661ff8a7f160b1ca70bf381271e3f76920386f9dd3c9fe86158f755dbcbf2"
+      "bytes": 157564,
+      "sha256": "d831e95688639c840f9f708670ad92f86cae538e9fe82034a6633b5f604f0b8d"
     },
     {
       "filename": "06-protocols-desktop.png",
-      "bytes": 141278,
-      "sha256": "05f73c6cbc55becfc2b5500931cf8b927115136220d0f59fbd865872df8cd95a"
+      "bytes": 141748,
+      "sha256": "cc0f70c3b77c0b085327f45cd6f83b38ae5a2548ce6fd0b5858ea379bcb88b8e"
     },
     {
       "filename": "07-holds-desktop.png",
-      "bytes": 138681,
-      "sha256": "05772c44bc658800d74dff1ad0d9a1e536a8479910ff1302abec3ddd9d5dd5e0"
+      "bytes": 138969,
+      "sha256": "ea6e58fe2c8d878038ab257efe9d6b2f98409d68cf4ae205c41e478d20c3f49e"
     },
     {
       "filename": "08-inspector-alt-i-desktop.png",
-      "bytes": 150875,
-      "sha256": "cff16ac9ba5be7336e2932955c81b4389a6d45cd1cfe6207ebb1c595c87fb2c5"
+      "bytes": 151039,
+      "sha256": "8f31f13db62359c62ea7dc8ae1b5209a6556d547cce02846c5c27610267b2a8d"
     },
     {
       "filename": "09-cover-mobile-390px.png",
-      "bytes": 783884,
-      "sha256": "8a6abacff7de1a2d5e6aa1b38fb6a9a5007ba908308b0a790afb12d3bcd5b9eb"
+      "bytes": 784998,
+      "sha256": "e5a9cff59caec502d729de6e1fbbc191972786cc0e73ddbaff28bb6da2b98a5f"
     },
     {
       "filename": "10-works-mobile-390px.png",
-      "bytes": 148776,
-      "sha256": "a3ba7609d37dd4d6450b6ffb4c6f1757e02941e17fed738f478b010b2dadcd32"
+      "bytes": 148868,
+      "sha256": "9d962114d78e802b090598d70376cd33c4da549d0bb2c639f92ef9bb78ab708a"
     }
   ]
 }
