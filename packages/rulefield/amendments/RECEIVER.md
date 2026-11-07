@@ -34,7 +34,7 @@ A folder alone does not monitor anything. \`sync\` is an **explicit on-demand co
 
 The source files are:
 - [\`schema.json\`](schema.json): typed JSON structure.
-- [\`hooks.json\`](hooks.json): nine deterministic lifecycle hooks for LLM and tool orchestration.
+- [\`hooks.json\`](hooks.json): ten deterministic lifecycle hooks for LLM and tool orchestration.
 - [\`receiver.mjs\`](receiver.mjs): local receiver implementation; never evals or imports packet source.
 - [\`templates/amendment.template.json\`](templates/amendment.template.json): worked example with a *deliberately unbound* baseline.
 - [\`../rulebook/LLM_QUICK_START.md\`](../rulebook/LLM_QUICK_START.md): historical source recovery, connector routing and evidence classification.
@@ -58,6 +58,30 @@ Every consequential proposal specifies:
 6. Distinct status of intended experiment versus actually executed result. A toy event history is a synthetic observation only within its own declared model.
 
 A source-free assistant may propose novel physics analogies, but it may not reclassify them as empirical exteriority. It may generate semantic refractions inspired by Collins, Dotson, McKittrick, Sedgwick, Butler, Berlant, Caro, Glissant or Virilio, but these intellectual traditions are not a model's built-in endorsement or a substitute for human knowledge.
+
+### Executable finite experiment fields
+
+A proposal can include `experiment`, in addition to its research hypothesis, source lineage, falsifier and competent null. Allowed engines:
+
+```json
+{
+  "engine": "FINITE_STRING_MULTIWAY",
+  "initial": "AA",
+  "rules": [{"id":"R","from":"A","to":"B"}],
+  "depth": 2,
+  "maxPaths": 100,
+  "maxLength": 8
+}
+```
+
+Also supported:
+
+- `FINITE_CRITICAL_PAIRS`: the same finite rewriting fields plus `horizon` (0–4). Only **overlapping string redexes** are counted as critical pairs; disjoint branch pairs remain separately recorded by the lab.
+- `ELEMENTARY_CA`: `rule` (0–255), `width` (5–61), `steps` (1–48), optional `seed`, `perturb`, and `boundary` (`periodic` or `zero`).
+
+`inspect` and `sync` evaluate **only these allowlisted bounded functions**; the packet cannot supply executable JavaScript or network calls. The review records `scope=EXECUTED_LOCAL_FINITE_SOURCE_FREE_MODEL` when an experiment actually runs, retains event/endpoint/entropy evidence and still marks the **scientific proposal** as staged and unresolved. A bounded computation is evidence about the declared finite model, not proof of an independent physical or social observation.
+
+For unimplemented WolframModel, external NetLogo, protected Flight or long-horizon experiment requests, preserve a proposed recipe and add/consult [`../ROADMAP.md`](../ROADMAP.md). Do not fabricate a native result.
 
 ### NKS computational pattern
 
