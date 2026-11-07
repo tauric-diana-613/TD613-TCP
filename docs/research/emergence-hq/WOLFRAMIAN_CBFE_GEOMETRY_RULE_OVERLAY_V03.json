@@ -1,0 +1,169 @@
+{
+  "schema": "td613.wolframian.cbfe-geometry-overlay/v0.3",
+  "date": "2026-11-07",
+  "origin_index": {
+    "rules": 190,
+    "crossings": 30,
+    "sha256": "b5adff0500d4dceed56f0fc6c555a9d2f8cb7e828b89e2a6cdf18f4958add007",
+    "records_mutated": 0
+  },
+  "queue_rank": 4,
+  "separate_tradition_rank": 47,
+  "geometry": "G=(V,E,tau) != H(o,t)=(G,K0,A_t,H_t,O_o,t,P_t,C_t,R_t)",
+  "claim_ceiling": "SOURCE_FREE_DESIGN_NOT_VALIDATED_EPISTEMIC_JUSTICE",
+  "Palace_II_reconciled_synthetic_effects": {
+    "Q_high": 0.1355,
+    "Q_low": -0.1355,
+    "pooled": 0,
+    "withdrawn_unverified": 0.1753
+  },
+  "warrant_sources": [
+    "https://github.com/tauric-diana-613/TD613-TCP/pull/1705",
+    "https://github.com/tauric-diana-613/TD613-TCP/pull/1703",
+    "https://github.com/tauric-diana-613/TD613-TCP/pull/1719"
+  ],
+  "commission": "docs/research/emergence-hq/DD02_CBFE_RELATIONAL_GEOMETRY_COMMISSION_V03.json",
+  "finished_design": "docs/research/emergence-hq/WOLFRAMIAN_CBFE_RELATIONAL_GEOMETRY_DD02_V03.md",
+  "native_test": "tests/dd02-cbfe-relational-geometry.native.test.mjs",
+  "rules": [
+    {
+      "id": "CBFE-RG-01",
+      "proposition": "Typed incidence differs from standing- and time-admissible paths",
+      "discriminating_control": "Same typed edges, finite vs infinite admissible routes",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-02",
+      "proposition": "Source byte identity survives prestige permutations",
+      "discriminating_control": "Same digest across standing labels",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-03",
+      "proposition": "Evidence calibration and institutional standing remain separate variables",
+      "discriminating_control": "Permute only prestige; hold reliability and source constant",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-04",
+      "proposition": "Conditional contrasts precede pooled averages",
+      "discriminating_control": "Opposite conditional signs with pooled zero",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-05",
+      "proposition": "Availability time gates hearing and inference",
+      "discriminating_control": "No admissible hearing at t earlier than source availability",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-06",
+      "proposition": "Evidence, belief, action, and claim clocks are distinct",
+      "discriminating_control": "Action-before-belief scenario remains representable",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-07",
+      "proposition": "Unheard testimony is not evidence of falsehood",
+      "discriminating_control": "Blocked source retains unadjudicated truth",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-08",
+      "proposition": "Appeal is consented, optional, and non-retroactive",
+      "discriminating_control": "Non-consented appeal path remains blocked",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-09",
+      "proposition": "Source, hearing, warrant and public claim are different types",
+      "discriminating_control": "Forged claim-as-source cannot pass admission",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-10",
+      "proposition": "Theme-only ambiance preserves kernel output and human authority",
+      "discriminating_control": "Two themes; identical source and authority fields",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-11",
+      "proposition": "Claim recoverability depends on observer partition",
+      "discriminating_control": "Equal-cardinality observations with incompatible claim fibers",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-RG-12",
+      "proposition": "Novel rules must outperform competent existing-rule closure",
+      "discriminating_control": "Identical strong-union endpoint yields no emergence credit",
+      "class": "PROPOSED_NON_RETROACTIVE",
+      "scientific_credit": 0
+    }
+  ],
+  "crossings": [
+    {
+      "id": "CBFE-CX-01",
+      "domain": "Palace I capsule loss",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-02",
+      "domain": "Palace II standing crossover",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-03",
+      "domain": "RGI-01 rule generation",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-04",
+      "domain": "Virilio temporal consequence",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-05",
+      "domain": "Dotson testimonial quieting",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-06",
+      "domain": "McKittrick situated routes",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-07",
+      "domain": "Ambiance observer response",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    },
+    {
+      "id": "CBFE-CX-08",
+      "domain": "Atlas/Aperture identifiability",
+      "execution": "UNEXECUTED_PROPOSED",
+      "scientific_credit": 0
+    }
+  ],
+  "guard": {
+    "historical_IPX_classes_preserved": true,
+    "protected_flight": "HELD",
+    "human_closure": "RESERVED"
+  }
+}
