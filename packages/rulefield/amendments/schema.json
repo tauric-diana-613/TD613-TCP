@@ -253,6 +253,122 @@
           },
           "artistic_notes": {
             "type": "string"
+          },
+          "experiment": {
+            "type": "object",
+            "required": [
+              "engine"
+            ],
+            "additionalProperties": true,
+            "oneOf": [
+              {
+                "properties": {
+                  "engine": {
+                    "const": "FINITE_STRING_MULTIWAY"
+                  },
+                  "initial": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{0,18}$"
+                  },
+                  "rules": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8
+                  },
+                  "depth": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  },
+                  "maxPaths": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 1000
+                  },
+                  "maxLength": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 18
+                  }
+                },
+                "required": [
+                  "engine",
+                  "initial",
+                  "rules"
+                ]
+              },
+              {
+                "properties": {
+                  "engine": {
+                    "const": "FINITE_CRITICAL_PAIRS"
+                  },
+                  "initial": {
+                    "type": "string",
+                    "pattern": "^[A-Z]{0,18}$"
+                  },
+                  "rules": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 8
+                  },
+                  "depth": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  },
+                  "horizon": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  }
+                },
+                "required": [
+                  "engine",
+                  "initial",
+                  "rules"
+                ]
+              },
+              {
+                "properties": {
+                  "engine": {
+                    "const": "ELEMENTARY_CA"
+                  },
+                  "rule": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 255
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 61
+                  },
+                  "steps": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 48
+                  },
+                  "seed": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "perturb": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "boundary": {
+                    "enum": [
+                      "periodic",
+                      "zero"
+                    ]
+                  }
+                },
+                "required": [
+                  "engine",
+                  "rule"
+                ]
+              }
+            ]
           }
         }
       }
