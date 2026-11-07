@@ -1,6 +1,6 @@
 {
-  "schema": "td613.vixen.browser-witness-receipt/v1",
-  "executed_at": "2026-11-07T06:44:03.873Z",
+  "schema": "td613.vixen.browser-witness-receipt/v2.1",
+  "executed_at": "2026-11-07T07:30:44.046Z",
   "witness_environment": "Headless Chromium via Chrome DevTools Protocol (simulated desktop 1440x900 and simulated mobile 390x844; not a physical-device witness)",
   "target_route": "/encyclopedia/vix-cyb.html",
   "runtime_errors_count": 0,
@@ -32,8 +32,11 @@
       "footerTd613Text": "𝌋 TD613 Encyclopedia →"
     },
     "observatory_check": {
-      "benchText": "PAIR: C1 Algedonic Hypervisor (emwork_085223...) ⊕ C2 Lock-Free DSP (emwork_67768e...)\nSOURCES: emsrc_b7e4e42924d33bdaf666a4f8 [WITHDRAWN] · emsrc_2ddaf8197adecc8c5ba09c33\nPROMOTION LEVEL: WITHDRAWN_TOMBSTONE\nDISPOSITION: TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)\nCANDIDATE ID: theory:cybernetic_hypervisor_algedonic_synthesis\nRETAINED CONTRADICTIONS: NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME · VARIABLE_DELAY != ZERO_LATENCY\nWARRANT CEILING: claim_entailment: HELD_UNVERIFIED_BY_SYNTAX_ALONE · Competent-Null E-00.1: BOUNDED_TIE\nValid typed operator mapping between bounded-queue backpressure and algedonic preemption, while refusing to erase the clock contradiction between LLM token jitter and 48 kHz real-time DSP.\nIMMUTABLE SNAPSHOT LOGGED COUNT: 1 (Predecessor snapshots never mutated on withdrawal)",
+      "benchText": "ILLUSTRATIVE_PRESET_DEMO\nEMPIRICAL_CREDIT: 0\nE-00.1: BOUNDED_TIE\nPAIR: C1 Algedonic Hypervisor (emwork_085223...) ⊕ C2 Lock-Free DSP (emwork_67768e...)\nSOURCES: emsrc_b7e4e42924d33bdaf666a4f8 [WITHDRAWN] · emsrc_2ddaf8197adecc8c5ba09c33\nPRESET HYPOTHESIS: WITHDRAWN_TOMBSTONE\nHYPOTHETICAL OUTCOME: TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)\nCANDIDATE ID: theory:cybernetic_hypervisor_algedonic_synthesis\nRETAINED CONTRADICTIONS: NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME · VARIABLE_DELAY != ZERO_LATENCY\nWARRANT CEILING: claim_entailment: HELD_UNVERIFIED_BY_SYNTAX_ALONE · Competent-Null E-00.1: BOUNDED_TIE\nIllustrative typed operator mapping between bounded-queue backpressure and algedonic preemption (preset demonstration; zero live scientific admission), while refusing to erase the clock contradiction between LLM token jitter and 48 kHz real-time DSP.\nSESSION_LOCAL_SNAPSHOT COUNT: 1 · DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)",
       "folioCount": 22,
+      "snapshotCount": 1,
+      "predecessorRetained": true,
+      "snapshotScope": "SESSION_LOCAL_SNAPSHOT",
       "scrollWidth": 1440,
       "clientWidth": 1440
     },
@@ -80,6 +83,8 @@
         "ok": false,
         "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT",
         "status": "REJECTED_FAIL_CLOSED",
+        "verified": false,
+        "verified_original_source": false,
         "sliceHex": "f0 9d",
         "stateUnmutated": true
       },
@@ -87,8 +92,19 @@
         "ok": false,
         "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT",
         "status": "REJECTED_FAIL_CLOSED",
+        "verified": false,
+        "verified_original_source": false,
         "sliceHex": "e2 80",
         "stateUnmutated": true
+      },
+      "cryptoRejectOut": {
+        "ok": false,
+        "code": "ERR_WEBCRYPTO_DIGEST_FAILED",
+        "status": "REJECTED_FAIL_CLOSED",
+        "verified": false,
+        "verified_original_source": false,
+        "stateUnmutated": true,
+        "error": "Simulated WebCrypto subtle.digest rejection (F3 negative control)"
       }
     },
     "search_check": {
@@ -164,6 +180,24 @@
       }
     }
   },
+  "offline_fallback_smoke_witness": {
+    "network_blocked": true,
+    "blocked_domains": [
+      "fonts.googleapis.com",
+      "fonts.gstatic.com",
+      "cdn.jsdelivr.net"
+    ],
+    "system_font_applied": true,
+    "math_fallback_text": "Se ≡ [x + y] = z + 1",
+    "runtime_state": "overview"
+  },
+  "receipt_ceilings": {
+    "dollhouse_supported_claim": "Bounded specialist input over synthetic offline fixtures (not adversarial empirical proof)",
+    "browser_witness_claim": "Simulated headless Chromium routes (physical mobile ergonomics, full a11y, and CDN production performance remain unobserved)",
+    "empirical_replication_credit": 0,
+    "scientific_promotion_authority": false,
+    "human_closure": "RESERVED"
+  },
   "screenshots": [
     {
       "filename": "00-mugler-unchained-frontispiece-plate.jpg",
@@ -182,8 +216,8 @@
     },
     {
       "filename": "03-synthesis-observatory-desktop.png",
-      "bytes": 158421,
-      "sha256": "1789c0bd6c2814b623efd6b1289db00bd9e4e7bfa0d714a6748b5aede2a24c48"
+      "bytes": 159005,
+      "sha256": "ffe6fc0b07ccaac7b25493228a6c0435ccc51ea12106225b88cbd811c87dff26"
     },
     {
       "filename": "04-works-catalogue-desktop.png",
@@ -207,8 +241,8 @@
     },
     {
       "filename": "08-inspector-alt-i-desktop.png",
-      "bytes": 147636,
-      "sha256": "2fb91e995beb6d6f05770de5adf64c2111b8e7a24258398bffa7b5509ee2737b"
+      "bytes": 150818,
+      "sha256": "6f147ef2de3e4f9cd55fd83e7060353fc71b29be2683c57eace4c1fcff0d84ce"
     },
     {
       "filename": "09-cover-mobile-390px.png",
@@ -217,8 +251,8 @@
     },
     {
       "filename": "10-works-mobile-390px.png",
-      "bytes": 149152,
-      "sha256": "44fde1d065c166e092863d7990b72bcdb14df94fefef14638f04706dbae525b1"
+      "bytes": 134321,
+      "sha256": "81bae3c0cb5d366dbcb75b8c7394ae0ee8e128e0430182fffc1bcbf4a468b01d"
     }
   ]
 }

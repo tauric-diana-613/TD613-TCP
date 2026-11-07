@@ -262,6 +262,68 @@ if (!manifestMatch || !bundleMatch || !themeMatch) {
   if (manifest.frontispiece?.human_skeleton_anatomy_present !== false || manifest.frontispiece?.encyclopedia_asset_reused !== false) {
     errors.push('Frontispiece provenance flags violated');
   }
+
+  // B6. F1–F4 Bounded Pre-Freeze Finalization & Astra Succession Seams
+  const handoffMatch = htmlText.match(/<script type="application\/json" id="vixen-astra-handoff">([\s\S]*?)<\/script>/);
+  if (!handoffMatch) {
+    errors.push('Missing <script type="application/json" id="vixen-astra-handoff"> block in HTML');
+  } else {
+    try {
+      const astraHandoff = JSON.parse(handoffMatch[1]);
+      if (astraHandoff.document_identity !== 'VIXEN_CYBERNETICS_ASTRA_HANDOFF.html') {
+        errors.push(`Astra handoff document_identity mismatch: ${astraHandoff.document_identity}`);
+      }
+      if (astraHandoff.predecessor_commit !== 'd9e1051ebd23cadf8f032a71e8ef553e6129cd33') {
+        errors.push(`Astra handoff predecessor_commit mismatch: ${astraHandoff.predecessor_commit}`);
+      }
+      if (astraHandoff.predecessor_html_sha256 !== '41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18') {
+        errors.push(`Astra handoff predecessor_html_sha256 mismatch: ${astraHandoff.predecessor_html_sha256}`);
+      }
+      if (!astraHandoff.six_principal_environments || Object.keys(astraHandoff.six_principal_environments).length !== 6) {
+        errors.push('Astra handoff missing 6 principal environments');
+      }
+    } catch (e) {
+      errors.push(`Failed to parse astra handoff JSON: ${e.message}`);
+    }
+  }
+
+  // F1 Verification: Illustrative presets vs live admission
+  if (
+    !htmlText.includes('PRESET HYPOTHESIS') ||
+    !htmlText.includes('HYPOTHETICAL OUTCOME') ||
+    !htmlText.includes('HYPOTHETICAL_L2_PRESET_WITH_RETAINED_RESIDUE') ||
+    !htmlText.includes('ILLUSTRATIVE_PRESET_DEMO') ||
+    !htmlText.includes('EMPIRICAL_CREDIT: 0')
+  ) {
+    errors.push('F1 illustrative preset badges and hypothetical outcome labels missing in HTML');
+  }
+
+  // F2 Verification: Session-local snapshot retention
+  if (
+    !htmlText.includes('SESSION_LOCAL_SNAPSHOT') ||
+    !htmlText.includes('DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)')
+  ) {
+    errors.push('F2 session-local snapshot non-retroactive retention UI labels missing in HTML');
+  }
+
+  // F3 Verification: WebCrypto throw/reject fail-closed
+  if (
+    !htmlText.includes('ERR_WEBCRYPTO_DIGEST_FAILED') ||
+    !htmlText.includes('simulateCryptoReject')
+  ) {
+    errors.push('F3 WebCrypto reject/throw fail-closed error code and negative-control missing in HTML');
+  }
+
+  // Byte-Identity Verification with VIXEN_CYBERNETICS_ASTRA_HANDOFF.html
+  const handoffPath = path.join(packetDir, 'VIXEN_CYBERNETICS_ASTRA_HANDOFF.html');
+  if (fs.existsSync(handoffPath)) {
+    const handoffBytes = fs.readFileSync(handoffPath);
+    if (sha256(handoffBytes) !== sha256(htmlBytes)) {
+      errors.push('Byte-identity mismatch between vix-cyb.html and VIXEN_CYBERNETICS_ASTRA_HANDOFF.html');
+    }
+  } else {
+    errors.push('Missing VIXEN_CYBERNETICS_ASTRA_HANDOFF.html in review packet directory');
+  }
 }
 
 if (errors.length > 0) {
@@ -272,7 +334,7 @@ if (errors.length > 0) {
 const htmlWithoutTheme = htmlText.replace(/<style id="manifest-instance-theme">[\s\S]*?<\/style>/, '<style id="manifest-instance-theme"></style>');
 
 const receipt = {
-  schema: 'td613.vixen-ux.source-reconciliation-receipt/v2.0',
+  schema: 'td613.vixen-ux.source-reconciliation-receipt/v2.1',
   document_id: 'TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4',
   specification_sha256: sha256(specBytes),
   prototype_html_path: 'app/encyclopedia/vix-cyb.html',
@@ -311,6 +373,13 @@ const receipt = {
       palette_tokens_verified: ['#FF91AF', '#F9F36D', '#24282A', '#667078', '#F6F4F0'],
       mobile_only_couture_logo_present: true,
       three_codepoints_utf8_verified: ['U+1D30B (f09d8c8b)', 'U+10D613 (f48d9893)', 'U+200C (e2808c)']
+    },
+    pre_freeze_findings_and_succession: {
+      f1_illustrative_presets_verified: true,
+      f2_session_local_predecessor_retention_verified: true,
+      f3_webcrypto_fail_closed_rejection_verified: true,
+      astra_single_file_handoff_byte_identical: true,
+      predecessor_v4_html_sha256_preserved: '41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18'
     }
   },
   epistemic_scope_boundary: {

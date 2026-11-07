@@ -1,19 +1,19 @@
-﻿{
+{
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1794034127940-26945ff1",
-  "timestamp": "2026-11-07T06:48:47.940Z",
-  "source_revision": "51de572172fadd5c3c85b42729785c8c2a1fcfcb",
+  "invocation_id": "dollhouse-audit-1794036747580-c1a1646b",
+  "timestamp": "2026-11-07T07:32:27.581Z",
+  "source_revision": "d9e1051ebd23cadf8f032a71e8ef553e6129cd33",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "51de572172fadd5c3c85b42729785c8c2a1fcfcb",
+  "executing_checkout_revision": "d9e1051ebd23cadf8f032a71e8ef553e6129cd33",
   "is_exact_checkout_match": true,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
   "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
   "current_head_source_equivalence_verified": true,
   "provenance_identities": {
-    "executable_source_revision": "51de572172fadd5c3c85b42729785c8c2a1fcfcb",
-    "audit_execution_revision": "51de572172fadd5c3c85b42729785c8c2a1fcfcb",
+    "executable_source_revision": "d9e1051ebd23cadf8f032a71e8ef553e6129cd33",
+    "audit_execution_revision": "d9e1051ebd23cadf8f032a71e8ef553e6129cd33",
     "git_commit_verified": true,
     "is_exact_checkout_match": true,
     "worktree_cleanliness_verified": false,
@@ -46,6 +46,8 @@
     "docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs",
     "docs/reviews/vixen-ux-architecture-20261106/reconciliation-verification-receipt.json",
     "docs/reviews/vixen-ux-architecture-20261106/browser-witness-receipt.json",
+    "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
+    "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
     "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
     "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATTRIBUTION.md",
     "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/04-RECEIPTS/synthesis/2026-09-11-em-unified-working-reconstruction.md",
@@ -75,9 +77,9 @@
       "reference": "app/encyclopedia/vix-cyb.html",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18",
+      "byte_digest": "168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37",
       "byte_digest_verified": true,
-      "sha256": "41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18"
+      "sha256": "168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37"
     },
     {
       "reference": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
@@ -91,25 +93,41 @@
       "reference": "docs/reviews/vixen-ux-architecture-20261106/verify-vixen-ux-spec-reconciliation.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "f2bf39f68005ed6df51a765e55dd3d81d3336844e136fba80f5a7d332a3eb10f",
+      "byte_digest": "c9a98214f7be61cd7f5b6e337460d06987baf973adc2b56e85ee2f6573ee2cbf",
       "byte_digest_verified": true,
-      "sha256": "f2bf39f68005ed6df51a765e55dd3d81d3336844e136fba80f5a7d332a3eb10f"
+      "sha256": "c9a98214f7be61cd7f5b6e337460d06987baf973adc2b56e85ee2f6573ee2cbf"
     },
     {
       "reference": "docs/reviews/vixen-ux-architecture-20261106/reconciliation-verification-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "e75e0de5e428dcf977b9f814bc089860d4ea53e3fa5c5f051adee0ac1e20bbef",
+      "byte_digest": "2df9bdb244504a61d886a8fbc1b889904242a343a45c59b3b94d847e61482e4f",
       "byte_digest_verified": true,
-      "sha256": "e75e0de5e428dcf977b9f814bc089860d4ea53e3fa5c5f051adee0ac1e20bbef"
+      "sha256": "2df9bdb244504a61d886a8fbc1b889904242a343a45c59b3b94d847e61482e4f"
     },
     {
       "reference": "docs/reviews/vixen-ux-architecture-20261106/browser-witness-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "0e203f4a0ea19a248304ce07b6935ce2df7a806a9a3892fb6faa7272f97ae5ba",
+      "byte_digest": "ef42d733411c09266d30dd921be2aa772a8216eb2e0a9f2839e5ac9792639c30",
       "byte_digest_verified": true,
-      "sha256": "0e203f4a0ea19a248304ce07b6935ce2df7a806a9a3892fb6faa7272f97ae5ba"
+      "sha256": "ef42d733411c09266d30dd921be2aa772a8216eb2e0a9f2839e5ac9792639c30"
+    },
+    {
+      "reference": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "44fa839f3991266f8e320b00c1c521cc3dfa2611819f07b96992223fadfd36d6",
+      "byte_digest_verified": true,
+      "sha256": "44fa839f3991266f8e320b00c1c521cc3dfa2611819f07b96992223fadfd36d6"
+    },
+    {
+      "reference": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6fc7f5f6343e6830a3d856fbfd584075a02664411457a2299824116b86c06866",
+      "byte_digest_verified": true,
+      "sha256": "6fc7f5f6343e6830a3d856fbfd584075a02664411457a2299824116b86c06866"
     },
     {
       "reference": "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
@@ -494,5 +512,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 782
+  "execution_duration_ms": 577
 }

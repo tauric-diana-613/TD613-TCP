@@ -1,11 +1,11 @@
 {
-  "schema": "td613.vixen-ux.source-reconciliation-receipt/v2.0",
+  "schema": "td613.vixen-ux.source-reconciliation-receipt/v2.1",
   "document_id": "TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4",
   "specification_sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c",
   "prototype_html_path": "app/encyclopedia/vix-cyb.html",
-  "prototype_html_bytes": 626851,
-  "prototype_html_sha256": "41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18",
-  "prototype_structural_dom_excluding_theme_sha256": "cb58d0aa7bb9e78c5e2a3c8c75b5ee5cccc190a8f56498098f35c9b1fa9f34ca",
+  "prototype_html_bytes": 634287,
+  "prototype_html_sha256": "168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37",
+  "prototype_structural_dom_excluding_theme_sha256": "47df1357f259a8997111da968b34d04f5d78aa306fbacfb57902c3b19df6856e",
   "disposition": "SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED",
   "invariants_verified": {
     "canonical_works_row_level_bijection": {
@@ -68,6 +68,13 @@
         "U+10D613 (f48d9893)",
         "U+200C (e2808c)"
       ]
+    },
+    "pre_freeze_findings_and_succession": {
+      "f1_illustrative_presets_verified": true,
+      "f2_session_local_predecessor_retention_verified": true,
+      "f3_webcrypto_fail_closed_rejection_verified": true,
+      "astra_single_file_handoff_byte_identical": true,
+      "predecessor_v4_html_sha256_preserved": "41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18"
     }
   },
   "epistemic_scope_boundary": {
