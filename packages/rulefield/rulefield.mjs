@@ -67,7 +67,7 @@ export function traceRule(index,id){
  source_resolution:r.sources.map(s=>({key:s,source_kind:s.split(':')[0],independent_external_origin_attested:false})),
  scientific_ceiling:r.scientific_disposition};
 }
-export function inspectPriority(index,rank,{limit=60}={}){
+export function inspectPriority(index,rank,{limit=100}={}){
  const q=index.priority_queue.find(x=>x.rank===Number(rank));if(!q)stop('UNKNOWN_PRIORITY_RANK');
  const members=q.rule_links.slice(0,limit).map(x=>({id:x.id,role:x.role,lane:index.rules.find(r=>r.id===x.id).lane}));
  return {rank:q.rank,title:q.title,total:q.rule_links.length,members};
