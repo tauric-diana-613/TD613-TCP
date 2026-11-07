@@ -59,7 +59,10 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-006"
+      ]
     },
     {
       "id": "RF-INT-002",
@@ -78,7 +81,11 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-007",
+        "RMAP-015"
+      ]
     },
     {
       "id": "RF-INT-003",
@@ -96,7 +103,11 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-006",
+        "RMAP-011"
+      ]
     },
     {
       "id": "RF-INT-004",
@@ -114,7 +125,11 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-002",
+        "RMAP-008"
+      ]
     },
     {
       "id": "RF-INT-005",
@@ -133,7 +148,10 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-003"
+      ]
     },
     {
       "id": "RF-INT-006",
@@ -152,7 +170,10 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-009"
+      ]
     },
     {
       "id": "RF-INT-007",
@@ -171,7 +192,10 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-009"
+      ]
     },
     {
       "id": "RF-INT-008",
@@ -189,7 +213,11 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-009",
+        "RMAP-010"
+      ]
     },
     {
       "id": "RF-INT-009",
@@ -207,7 +235,10 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-010"
+      ]
     },
     {
       "id": "RF-INT-010",
@@ -226,12 +257,16 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-004",
+        "RMAP-014"
+      ]
     },
     {
       "id": "RF-INT-011",
       "title": "Information Dome / ambiance controlled observer study",
-      "tier": "T3_EMPIRICAL_APPROVAL_REQUIRED",
+      "tier": "T3_PROOF_OR_EMPIRICAL",
       "status": "UNOBSERVED",
       "reference_url": "https://www.wolframphysics.org/tools/",
       "goal": "Randomize source-equivalent diagrams, ambiance, and sham displays; measure correct hypothesis recovery and confidence calibration.",
@@ -245,12 +280,16 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-013"
+      ],
+      "historical_tier_label_before_normalization": "T3_EMPIRICAL_APPROVAL_REQUIRED"
     },
     {
       "id": "RF-INT-012",
       "title": "Sheaf/gluing and phasonic relational geometry formalization",
-      "tier": "T3_PROOF_OR_SPECIALIST_REVIEW",
+      "tier": "T3_PROOF_OR_EMPIRICAL",
       "status": "CONJECTURAL",
       "reference_url": "https://www.wolframphysics.org/tools/",
       "goal": "Define local sections, restriction maps, overlap consistency, gluing obstruction, holonomy equivalence and theorem obligations.",
@@ -263,12 +302,16 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-022"
+      ],
+      "historical_tier_label_before_normalization": "T3_PROOF_OR_SPECIALIST_REVIEW"
     },
     {
       "id": "RF-INT-013",
       "title": "Western Horizon five-surface Golden Egg acquisition",
-      "tier": "T4_NEW_EXTERNAL_DATA_REQUIRED",
+      "tier": "T4_NEW_EXTERNAL_OR_RELEASE",
       "status": "HELD_UNEARNED",
       "reference_url": "https://www.wolframphysics.org/tools/",
       "goal": "Acquire one external immutable same-episode L,R,J,G,C trace with independent custody and preregistered distinct routes.",
@@ -282,7 +325,11 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-018"
+      ],
+      "historical_tier_label_before_normalization": "T4_NEW_EXTERNAL_DATA_REQUIRED"
     },
     {
       "id": "RF-INT-014",
@@ -301,12 +348,15 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-017"
+      ]
     },
     {
       "id": "RF-INT-015",
       "title": "Protected Experiment B scientific continuation",
-      "tier": "T4_HUMAN_OPERATOR_RELEASE_GATE",
+      "tier": "T4_NEW_EXTERNAL_OR_RELEASE",
       "status": "HELD",
       "reference_url": "https://www.wolframphysics.org/tools/",
       "goal": "Future separate authorized post-flight/post-postflight and possible Experiment C designs. Existing frozen blinded Flight remains untouched.",
@@ -320,12 +370,16 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-019"
+      ],
+      "historical_tier_label_before_normalization": "T4_HUMAN_OPERATOR_RELEASE_GATE"
     },
     {
       "id": "RF-INT-016",
       "title": "Distributed/cloud accelerated multiway hypergraph scaling",
-      "tier": "T3_RESOURCES_AND_PARITY_GATED",
+      "tier": "T3_PROOF_OR_EMPIRICAL",
       "status": "FUTURE_WISHLIST",
       "reference_url": "https://github.com/WolframInstitute/Hypergraph",
       "goal": "Explore parallel rule enumeration and causal DAG storage only after deterministic single-host equivalence and cost ceilings.",
@@ -339,7 +393,12 @@
       "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
       "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
       "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
-      "protected_flight": "HELD"
+      "protected_flight": "HELD",
+      "corresponding_human_roadmap_ids": [
+        "RMAP-015",
+        "RMAP-016"
+      ],
+      "historical_tier_label_before_normalization": "T3_RESOURCES_AND_PARITY_GATED"
     }
   ],
   "workflow": [
@@ -352,5 +411,8 @@
     "separate implementation from empirical claims",
     "operator adjudicates promotion"
   ],
-  "foreign_tool_execution_observed": false
+  "foreign_tool_execution_observed": false,
+  "human_roadmap_reference": "packages/rulefield/ROADMAP.md",
+  "crosswalk_status": "16 backlog entries mapped to 22 separately staged human roadmap capabilities; many-to-many interpretation, not evidence of execution",
+  "normalization_note": "Original item tier labels preserved where they had unregistered substage values; canonical tier ids now match tiers[].id"
 }
