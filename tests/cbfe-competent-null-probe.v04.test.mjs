@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {VERSION,SEED,STRATA,generateEpisode,executeProbe,conditionalGeometry,competentUnionRelaxation,competentStrongUnion,staticIncidence} from './cbfe_strong_union_probe_v04.mjs';
+import {VERSION,SEED,STRATA,generateEpisode,executeProbe,conditionalGeometry,competentUnionRelaxation,competentStrongUnion,staticIncidence} from './cbfe-competent-null-probe.v04.mjs';
 
 const {record,outcomes}=executeProbe();
 const digest=x=>createHash('sha256').update(String(x)).digest('hex');
