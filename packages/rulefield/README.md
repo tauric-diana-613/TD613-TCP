@@ -6,6 +6,22 @@
 
 The old Wolframian rule index has become too complex for one increasing list. It intermingled the original 190 NKS records, later source-recovered propositions, design candidates, crossing hypotheses, execution receipts and the operator's changing research priorities. The Living Rulefield **replaces that structure without removing its ancestors**.
 
+## The three updated Garden editions
+
+These three files live **directly in `packages/rulefield/`** and are synchronized representations of this source-free Living Rulefield edition:
+
+| File | Purpose | Expected consistency |
+|---|---|---|
+| [`TD613_NKS_Wolframian_Garden_Advancement_20261107.md`](TD613_NKS_Wolframian_Garden_Advancement_20261107.md) | Reader-facing full historical Garden manuscript **plus** successor appendices, all 70 queue topics and all 406 later rule records | 190 inherited rules preserved in the historic section; 406 appended; 58 additional crossings |
+| [`TD613_NKS_Wolframian_Garden_Advancement_20261107.json`](TD613_NKS_Wolframian_Garden_Advancement_20261107.json) | **Standalone bridge JSON** preserving the v2 Garden root fields, with complete compiled Rulefield under `living_rulefield` | Root `rules` = 190 / `crossings` = 30; nested `comprehensive_records` = 596 / `comprehensive_crossings` = 88; queue = 70 |
+| [`TD613_NKS_Wolframian_Garden_Advancement_20261107.csv`](TD613_NKS_Wolframian_Garden_Advancement_20261107.csv) | Searchable flat research register including role, source lineage, scientific limits, typed lane and queue rank | 596 data rows; 27 columns; original 15 CSV columns retain their headings and historical values |
+
+**Authoritative query corpus:** [`data/rulefield.v1.json`](data/rulefield.v1.json). **Historical structured Garden:** [`sources/nks-garden-190.snapshot.json`](sources/nks-garden-190.snapshot.json). **Earlier recovery:** [`sources/emergence-recovery-112.snapshot.json`](sources/emergence-recovery-112.snapshot.json). These separate snapshots remain the provenance anchors; the expanded three files are **derived views** and may be regenerated or reviewed without automatically promoting a scientific proposition.
+
+**Versioning guidance:** Because the filenames retain their original November 7 date, downstream consumers should inspect the JSON's `schema = td613.nks.garden-index/v2.1-rulefield-bridge` and use `living_rulefield.comprehensive_records` for the expanded catalogue. Code expecting the original Garden can still read the *root* `rules` and `crossings`, but should separately check the version marker. The CSV is the expanded export (not a drop-in 190-row-only CSV).
+
+**Regression check:** `node --test tests/rulefield-garden-triptych.test.mjs` crosschecks all three views, the historical Garden, and the canonical Rulefield. Run it whenever the compiled register changes. An absence of an independent CI witness leaves validation at the level actually executed.
+
 ## Five planes
 
 | Plane | Question it answers | Boundary |
