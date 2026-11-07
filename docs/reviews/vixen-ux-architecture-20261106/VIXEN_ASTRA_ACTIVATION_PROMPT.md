@@ -1,7 +1,7 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37`, 634,287 bytes)  
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794`, 639,815 bytes)  
 **Predecessor Build:** Commit `d9e1051ebd23cadf8f032a71e8ef553e6129cd33` (SHA-256: `41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18`)  
 **Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 

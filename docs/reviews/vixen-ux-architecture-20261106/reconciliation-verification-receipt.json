@@ -1,11 +1,11 @@
 {
-  "schema": "td613.vixen-ux.source-reconciliation-receipt/v2.1",
+  "schema": "td613.vixen-ux.source-reconciliation-receipt/v2.2",
   "document_id": "TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4",
   "specification_sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c",
   "prototype_html_path": "app/encyclopedia/vix-cyb.html",
-  "prototype_html_bytes": 634287,
-  "prototype_html_sha256": "168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37",
-  "prototype_structural_dom_excluding_theme_sha256": "47df1357f259a8997111da968b34d04f5d78aa306fbacfb57902c3b19df6856e",
+  "prototype_html_bytes": 639815,
+  "prototype_html_sha256": "6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794",
+  "prototype_structural_dom_excluding_theme_sha256": "bb28d7b5dafae7c1919efb2f9d69d43fe92a37dcd6e897a3550d9b3f49942fbe",
   "disposition": "SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED",
   "invariants_verified": {
     "canonical_works_row_level_bijection": {
@@ -75,6 +75,23 @@
       "f3_webcrypto_fail_closed_rejection_verified": true,
       "astra_single_file_handoff_byte_identical": true,
       "predecessor_v4_html_sha256_preserved": "41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18"
+    },
+    "pedagogue_membrane_and_reader_journeys": {
+      "governing_anti_equivalence": "OPERAHOUSE ≠ OPERA ≠ PERFORMER",
+      "product_language_membrane_tiers": [
+        "RESEARCH_OBJECT",
+        "SCHOLARLY_INTERPRETATION",
+        "HOST_INFRASTRUCTURE"
+      ],
+      "anti_leakage_rule_verified": true,
+      "three_reader_journeys_verified": {
+        "journey_a_scholarly_encounter": true,
+        "journey_b_manifestation_comparison": true,
+        "journey_c_expert_investigation_alt_i": true
+      },
+      "standalone_return_route_safe": true,
+      "pedagogue_design_gate_verified": "PASS",
+      "pedagogue_practice_fixture_verified": "PASS"
     }
   },
   "epistemic_scope_boundary": {

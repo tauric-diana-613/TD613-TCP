@@ -1,0 +1,295 @@
+{
+  "schema": "td613.pedagogue-design-fixture/v0.1",
+  "design_id": "vixen-cybernetics-reader-experience",
+  "surface_reference": "VixenCybernetics/Atelier",
+  "governance_context": "TD613",
+  "determinism": {
+    "frozenClock": "2026-11-07T02:00:00Z",
+    "idSeed": "vixen-reader-experience-v1",
+    "idScope": "VixenCybernetics/Atelier"
+  },
+  "scene_input": {
+    "scene_kind": "GENERIC",
+    "station_owner": "Dome-World",
+    "source_status": "E2",
+    "observation_status": "OBSERVED",
+    "world_state_reference": "vixen_cybernetics_atelier_v4",
+    "provenance": {
+      "source_references": [
+        "app/encyclopedia/vix-cyb.html",
+        "packages/em_unified_synthesis/identity_metadata_crosswalk.json",
+        "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json",
+        "packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATTRIBUTION.md"
+      ],
+      "evidence_basis": [
+        "Source-free 32-Work and 21-Protocol catalogue",
+        "Product-language membrane separating research objects from host infrastructure",
+        "Bilateral facing folios at UNADJUDICATED_PAIR"
+      ],
+      "transformations": [
+        "Present preserved research works directly before derivative comparative inquiries",
+        "Remove host infrastructure terminology from default public navigation",
+        "Preserve advanced provenance diagnostics and fatal negative controls in concealed Alt+I inspector"
+      ],
+      "station_owners": ["Dome-World"]
+    },
+    "visible_condition": {
+      "plain_language": "Visitors encounter the 32 preserved cybernetic research works and interactive demonstrations in research-native terms without being required to learn host infrastructure nomenclature.",
+      "surface_reference": "VixenCybernetics/Atelier"
+    },
+    "available_affordances": [{
+      "action_id": "explore_scholarly_catalogue_with_membrane",
+      "purpose": "Read and compare preserved works, test synthesis hypotheses, inspect manifestation boundaries, and return without host vocabulary leakage or forced adjudication.",
+      "authorized_by_station": "Human",
+      "reversible": true
+    }],
+    "route_topology": {
+      "entry": "Overview Cover Frontispiece",
+      "exit": "Overview return or local exit without penalty",
+      "same_endpoint_not_same_history": true,
+      "missing_inputs": [],
+      "steps": [
+        {
+          "step_id": "journey_notice_works",
+          "label": "Encounter preserved works in research-native terms",
+          "phase": "NOTICE",
+          "required_fields": [
+            "preserved_works_overview",
+            "editorial_inquiry_pathways",
+            "clear_evidence_limits"
+          ],
+          "dependencies": [],
+          "legibility_millipoints": 940,
+          "affordance_millipoints": 920,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 0,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "journey_select_work",
+          "label": "Select work and inspect under research-native lenses",
+          "phase": "ACT",
+          "required_fields": [
+            "select_work_action",
+            "reading_perspective",
+            "work_metadata"
+          ],
+          "dependencies": ["journey_notice_works"],
+          "legibility_millipoints": 930,
+          "affordance_millipoints": 950,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 0,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        },
+        {
+          "step_id": "journey_inspect_manifestations",
+          "label": "Observe metadata boundaries and withheld manuscript bodies",
+          "phase": "WORLD_ANSWERS",
+          "required_fields": [
+            "manifestation_metadata_displayed",
+            "manuscript_body_omitted",
+            "control_plane_mappings"
+          ],
+          "dependencies": ["journey_select_work"],
+          "legibility_millipoints": 950,
+          "affordance_millipoints": 930,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": false
+        },
+        {
+          "step_id": "journey_return_overview",
+          "label": "Return to overview or explore gates without forced adjudication",
+          "phase": "TRANSFER",
+          "required_fields": [
+            "return_navigation",
+            "unadjudicated_gates_available",
+            "human_closure_reserved"
+          ],
+          "dependencies": ["journey_inspect_manifestations"],
+          "legibility_millipoints": 930,
+          "affordance_millipoints": 940,
+          "gluing_obstruction_millipoints": 0,
+          "projection_crossings": 1,
+          "route_memory_edges": 1,
+          "operator_action_required": true
+        }
+      ]
+    },
+    "causal_structure": {
+      "input": "visitor selection of work, perspective, or gate case",
+      "operator": "product-language membrane separating research objects from host machinery",
+      "observable": "authentic research titles, exact metadata, and clear custody limits displayed without host ontology leakage",
+      "authority": "TD613 custody law; human action; Dome-World scene host",
+      "equations": []
+    },
+    "research_frame": {
+      "question": "Can the Vixen research atelier present authentic cybernetic works and comparative questions without requiring visitors to learn TD613 host ontology?",
+      "hypothesis": "Separating research objects from host infrastructure with research-native navigation and local returns will reduce route burden while preserving underlying scientific invariants and concealed auditability.",
+      "observable_behavior": [
+        "researcher can select and study works without reading internal engine names",
+        "researcher understands available metadata versus omitted manuscript bodies",
+        "researcher can compare dual manifestations at UNADJUDICATED_PAIR and exit freely",
+        "expert can access exact raw IDs and fatal negative controls via Alt+I inspector"
+      ],
+      "alternative_explanations": [
+        "raw database primary keys may appear more rigorous to technical operators",
+        "host framework branding may feel familiar to TD613 system engineers"
+      ],
+      "expected_failure_modes": [
+        "host infrastructure names leak into default navigation tabs",
+        "visitors infer internal framework acronyms are part of source scholarship",
+        "return links force navigation into unrelated external host routes"
+      ],
+      "falsifier": [
+        "visitors repeatedly fail to understand research content due to host jargon",
+        "standalone HTML breaks when external host route is unreachable"
+      ],
+      "abstention_conditions": [
+        "source manuscript bodies become public without explicit custody review",
+        "host integration forces unearned automated identity adjudication"
+      ]
+    },
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "claim_ceiling": {
+      "allowed_claims": [
+        "Vixen Cybernetics works are preserved source-free with exact metadata",
+        "Synthesis outcomes are illustrative presets",
+        "Authorship is unresolved across 32 works",
+        "Human gates remain at UNADJUDICATED_PAIR"
+      ],
+      "forbidden_claims": [
+        "Standalone HTML proves empirical replication",
+        "Synthesis bench grants live scientific promotion",
+        "Host infrastructure terminology is part of source scholarship",
+        "Visiting the atelier grants deployment authority"
+      ]
+    },
+    "technical_terms_withheld": [
+      "PEDAGOGUE CADENCE",
+      "AIA ROUTE PROJECTION LENS",
+      "Aperture κ",
+      "FADT c4",
+      "/aperture/ return"
+    ]
+  },
+  "baseline_route_steps": [
+    {
+      "step_id": "baseline_host_framework_header",
+      "label": "Parse host infrastructure and framework telemetry",
+      "phase": "NOTICE",
+      "required_fields": [
+        "PEDAGOGUE CADENCE",
+        "/aperture/ return",
+        "raw emwork IDs"
+      ],
+      "dependencies": [],
+      "legibility_millipoints": 420,
+      "affordance_millipoints": 400,
+      "gluing_obstruction_millipoints": 240,
+      "projection_crossings": 1,
+      "route_memory_edges": 0,
+      "operator_action_required": false
+    },
+    {
+      "step_id": "baseline_decode_aia_lenses",
+      "label": "Infer abstract AIA projection lenses before seeing content",
+      "phase": "ACT",
+      "required_fields": [
+        "AIA: EXPERIENTIAL",
+        "AIA: CUSTODIAL",
+        "AIA: AUDIT",
+        "AIA: IMPLEMENTATION"
+      ],
+      "dependencies": ["baseline_host_framework_header"],
+      "legibility_millipoints": 480,
+      "affordance_millipoints": 520,
+      "gluing_obstruction_millipoints": 220,
+      "projection_crossings": 2,
+      "route_memory_edges": 1,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_aperture_observatory",
+      "label": "Attempt observatory exploration under host tool labels",
+      "phase": "WORLD_ANSWERS",
+      "required_fields": [
+        "Aperture κ & FADT c4",
+        "APERTURE OPERATOR",
+        "06-INSTRUMENTS"
+      ],
+      "dependencies": ["baseline_decode_aia_lenses"],
+      "legibility_millipoints": 490,
+      "affordance_millipoints": 540,
+      "gluing_obstruction_millipoints": 200,
+      "projection_crossings": 2,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    },
+    {
+      "step_id": "baseline_forced_aperture_exit",
+      "label": "Exit via hard-coded external /aperture/ link causing context loss",
+      "phase": "TRANSFER",
+      "required_fields": [
+        "/aperture/ destination",
+        "context rupture",
+        "unrelated workspace"
+      ],
+      "dependencies": ["baseline_aperture_observatory"],
+      "legibility_millipoints": 460,
+      "affordance_millipoints": 500,
+      "gluing_obstruction_millipoints": 260,
+      "projection_crossings": 3,
+      "route_memory_edges": 2,
+      "operator_action_required": true
+    }
+  ],
+  "action": {"action_id": "explore_scholarly_catalogue_with_membrane"},
+  "world_delta": {
+    "observation_status": "OBSERVED",
+    "causal_trace": [
+      "the visitor encounters 32 preserved works in research-native terms",
+      "the product-language membrane keeps host infrastructure separate from scholarship",
+      "the visitor compares dual manifestations at UNADJUDICATED_PAIR without forced closure",
+      "the visitor returns to overview or exits without host terminology leakage"
+    ],
+    "losses": [],
+    "missingness": ["human comprehension evidence is not yet observed"],
+    "contradictions": [],
+    "unresolved_relations": ["authorship remains UNRESOLVED across 32 works"],
+    "glyph_candidates": [],
+    "static_equivalent": {
+      "summary": "Explore preserved cybernetic works in research-native terms, inspect manifestation boundaries, and return without host vocabulary leakage.",
+      "steps": ["encounter works", "select perspective", "inspect metadata", "return safely"]
+    }
+  },
+  "name": {
+    "plain_language": "The research experience remains intelligible on its own terms while the host infrastructure quietly supports auditability and custody.",
+    "glyph_relation": null,
+    "technical_term": "product-language membrane",
+    "non_equivalence": [
+      "operahouse is not opera",
+      "opera is not performers",
+      "catalogue metadata is not original manuscript body",
+      "comparative inquiry is not source authorship"
+    ]
+  },
+  "transfer_context": {
+    "context": {"surface": "Dome-hosted scholarly exploration surfaces"},
+    "shared_relation_candidate": "a research portal can preserve rigorous evidence bounds and concealed diagnostics without forcing host ontology into default visitor navigation",
+    "observable_correspondence": [
+      "another research surface can provide research-native perspectives while preserving exact custody manifests in advanced inspector tools"
+    ],
+    "alternative_explanations": [
+      "some internal administrative portals may legitimately use host-native terminology when operators are TD613 engineers"
+    ],
+    "abstention_conditions": [
+      "a surface merges raw database primary keys into default presentation without providing human-readable titles",
+      "a surface requires visitors to learn host engine names before exploring preserved works"
+    ]
+  }
+}

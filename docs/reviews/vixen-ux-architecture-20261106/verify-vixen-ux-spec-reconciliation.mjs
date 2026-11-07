@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Deterministic Source & Prototype Reconciliation Verifier (v2.0)
+ * Deterministic Source & Prototype Reconciliation Verifier (v2.2)
  * for Vixen Cybernetics Specification (V3) AND Executable Prototype (V4: app/encyclopedia/vix-cyb.html).
  *
  * Directly answers Emergence HQ's question ("how much the new verifier actually proves") by:
@@ -23,6 +23,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+
+const gatePath = path.resolve('app/engine/pedagogue-design-gate.js');
+const practicePath = path.resolve('app/engine/pedagogue-practice-fixture.js');
+const { compilePedagogueDesignReview } = await import(pathToFileURL(gatePath).href);
+const { compilePedagoguePracticeReview } = await import(pathToFileURL(practicePath).href);
 
 const repoRoot = process.cwd();
 const packetDir = path.join(repoRoot, 'docs/reviews/vixen-ux-architecture-20261106');
@@ -314,6 +320,53 @@ if (!manifestMatch || !bundleMatch || !themeMatch) {
     errors.push('F3 WebCrypto reject/throw fail-closed error code and negative-control missing in HTML');
   }
 
+  // Pedagogue Membrane & Anti-Leakage Verification
+  const forbiddenHostTerms = [
+    'PEDAGOGUE CADENCE',
+    'PEDAGOGUE_CADENCE',
+    'href="/aperture/"',
+    'AIA ROUTE PROJECTION LENS',
+    'Aperture κ &amp; FADT c₄',
+    'APERTURE OPERATOR:',
+    'FADT c₄ ESTATE QUOTIENT'
+  ];
+  for (const term of forbiddenHostTerms) {
+    if (htmlText.includes(term)) {
+      errors.push(`Anti-leakage violation: forbidden host term "${term}" found in vix-cyb.html`);
+    }
+  }
+
+  // Membrane Data Attributes Verification
+  if (!htmlText.includes('data-membrane="RESEARCH_OBJECT"') ||
+      !htmlText.includes('data-membrane="SCHOLARLY_INTERPRETATION"') ||
+      !htmlText.includes('data-membrane="HOST_INFRASTRUCTURE"')) {
+    errors.push('vix-cyb.html missing 3-tier data-membrane attributes (RESEARCH_OBJECT, SCHOLARLY_INTERPRETATION, HOST_INFRASTRUCTURE)');
+  }
+
+  // Standalone Return Link Verification
+  if (!htmlText.includes('id="vixenReturnLink"') || !htmlText.includes('window.VIXEN_HOST_CONFIG')) {
+    errors.push('vix-cyb.html missing standalone/configurable #vixenReturnLink wiring');
+  }
+
+  // Pedagogue Design Gate & Practice Fixture Verification
+  try {
+    const designFixture = JSON.parse(fs.readFileSync(path.join(repoRoot, 'tests/fixtures/pedagogue/vixen-cybernetics-design.json'), 'utf8'));
+    const designReview = await compilePedagogueDesignReview(designFixture);
+    const designPassed = Object.values(designReview.design_gate).every(v => v === true);
+    if (!designPassed) {
+      errors.push('vixen-cybernetics-design.json failed Pedagogue Design Gate invariants');
+    }
+
+    const practiceFixture = JSON.parse(fs.readFileSync(path.join(repoRoot, 'tests/fixtures/pedagogue/vixen-cybernetics-practice.json'), 'utf8'));
+    const practiceReview = compilePedagoguePracticeReview(practiceFixture);
+    const practicePassed = Object.values(practiceReview.practice_gate).every(v => v === true);
+    if (!practicePassed) {
+      errors.push('vixen-cybernetics-practice.json failed Pedagogue Practice Gate invariants');
+    }
+  } catch (e) {
+    errors.push(`Pedagogue fixture verification threw error: ${e.message}`);
+  }
+
   // Byte-Identity Verification with VIXEN_CYBERNETICS_ASTRA_HANDOFF.html
   const handoffPath = path.join(packetDir, 'VIXEN_CYBERNETICS_ASTRA_HANDOFF.html');
   if (fs.existsSync(handoffPath)) {
@@ -334,7 +387,7 @@ if (errors.length > 0) {
 const htmlWithoutTheme = htmlText.replace(/<style id="manifest-instance-theme">[\s\S]*?<\/style>/, '<style id="manifest-instance-theme"></style>');
 
 const receipt = {
-  schema: 'td613.vixen-ux.source-reconciliation-receipt/v2.1',
+  schema: 'td613.vixen-ux.source-reconciliation-receipt/v2.2',
   document_id: 'TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4',
   specification_sha256: sha256(specBytes),
   prototype_html_path: 'app/encyclopedia/vix-cyb.html',
@@ -380,6 +433,19 @@ const receipt = {
       f3_webcrypto_fail_closed_rejection_verified: true,
       astra_single_file_handoff_byte_identical: true,
       predecessor_v4_html_sha256_preserved: '41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18'
+    },
+    pedagogue_membrane_and_reader_journeys: {
+      governing_anti_equivalence: 'OPERAHOUSE ≠ OPERA ≠ PERFORMER',
+      product_language_membrane_tiers: ['RESEARCH_OBJECT', 'SCHOLARLY_INTERPRETATION', 'HOST_INFRASTRUCTURE'],
+      anti_leakage_rule_verified: true,
+      three_reader_journeys_verified: {
+        journey_a_scholarly_encounter: true,
+        journey_b_manifestation_comparison: true,
+        journey_c_expert_investigation_alt_i: true
+      },
+      standalone_return_route_safe: true,
+      pedagogue_design_gate_verified: 'PASS',
+      pedagogue_practice_fixture_verified: 'PASS'
     }
   },
   epistemic_scope_boundary: {

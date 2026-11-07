@@ -1,6 +1,6 @@
 {
   "schema": "td613.vixen.browser-witness-receipt/v2.1",
-  "executed_at": "2026-11-07T07:30:44.046Z",
+  "executed_at": "2026-11-07T08:01:42.946Z",
   "witness_environment": "Headless Chromium via Chrome DevTools Protocol (simulated desktop 1440x900 and simulated mobile 390x844; not a physical-device witness)",
   "target_route": "/encyclopedia/vix-cyb.html",
   "runtime_errors_count": 0,
@@ -43,7 +43,7 @@
     "works_check": {
       "allCount": 32,
       "batchBCount": 7,
-      "readerText": "C1 · HYPERVISORS & VIABLE AI\nCATALOGUE_METADATA_ONLY\nUNAVAILABLE_IN_PUBLIC_SURFACE\nRECORDED AUTHORSHIP: UNRESOLVED\nGATE #2 · UNADJUDICATED_PAIR\nThe Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience\n\nwork_id: emwork_085223e721130117f5510975 · Identity Status: SAME_WORK_SUPPORTED · Contribution Interval: [1, 2]\n\nS-PLANE\nW-PLANE\nA-PLANE\nAIA PRO",
+      "readerText": "C1 · HYPERVISORS & VIABLE AI\nCATALOGUE_METADATA_ONLY\nUNAVAILABLE_IN_PUBLIC_SURFACE\nRECORDED AUTHORSHIP: UNRESOLVED\nGATE #2 · UNADJUDICATED_PAIR\nThe Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience\n\nCatalog Accession: emwork_085223e721130117f5510975 · Identity Status: SAME_WORK_SUPPORTED · Contribution Interval: [1, 2]\n\nS-PLANE\nW-PLANE\nA-PLA",
       "scrollWidth": 1440,
       "clientWidth": 1440
     },
@@ -206,43 +206,43 @@
     },
     {
       "filename": "01-cover-desktop.png",
-      "bytes": 865026,
-      "sha256": "caee2d9a8e88f71a25049a57c71788cee0c5325ad1dc47025f58f47d4e8229c7"
+      "bytes": 865594,
+      "sha256": "f425cc6e4c9d5080ebf59625803198685e13cb8e9b65fd9ab4ba626795255975"
     },
     {
       "filename": "02-archive-directory-baker-miller.png",
-      "bytes": 197588,
-      "sha256": "15de1dcb2f497147d2b416a35b67f68cc1f79d5ef34d71a163fd8f41a6d1c8aa"
+      "bytes": 195864,
+      "sha256": "fc8e3687854b67c0bc4df7617a8a8813b4436f880f67bbf4235f5b3506754166"
     },
     {
       "filename": "03-synthesis-observatory-desktop.png",
-      "bytes": 159005,
-      "sha256": "ffe6fc0b07ccaac7b25493228a6c0435ccc51ea12106225b88cbd811c87dff26"
+      "bytes": 158446,
+      "sha256": "d68e77ba0818f085a8867ad63ba4044079e424a4c9fb1b3ab9f9dc39dafd4e11"
     },
     {
       "filename": "04-works-catalogue-desktop.png",
-      "bytes": 163913,
-      "sha256": "14744f47f3cdee03c425dcb19f2bc781f4915d17a1db8289a652bf9d61f8ce96"
+      "bytes": 168009,
+      "sha256": "6635446662ee7581b3e9b930db64026859b3146b846001969c6a2ec60f921fc1"
     },
     {
       "filename": "05-split-gates-desktop.png",
-      "bytes": 156574,
-      "sha256": "d61d85e3aff071059ae749bfaccdf6b1422a313d1277d86b0f88bb2ea6c003c5"
+      "bytes": 156952,
+      "sha256": "04d661ff8a7f160b1ca70bf381271e3f76920386f9dd3c9fe86158f755dbcbf2"
     },
     {
       "filename": "06-protocols-desktop.png",
-      "bytes": 140777,
-      "sha256": "333d8168e41e0739a6e1c29b3a3ca896d021db2473af04721f2691bda9d05fe0"
+      "bytes": 141278,
+      "sha256": "05f73c6cbc55becfc2b5500931cf8b927115136220d0f59fbd865872df8cd95a"
     },
     {
       "filename": "07-holds-desktop.png",
-      "bytes": 138276,
-      "sha256": "43491f1a6513ac0fe936417fbfe01c52820f5c002305e7d89ff56715e5ae48bf"
+      "bytes": 138681,
+      "sha256": "05772c44bc658800d74dff1ad0d9a1e536a8479910ff1302abec3ddd9d5dd5e0"
     },
     {
       "filename": "08-inspector-alt-i-desktop.png",
-      "bytes": 150818,
-      "sha256": "6f147ef2de3e4f9cd55fd83e7060353fc71b29be2683c57eace4c1fcff0d84ce"
+      "bytes": 150875,
+      "sha256": "cff16ac9ba5be7336e2932955c81b4389a6d45cd1cfe6207ebb1c595c87fb2c5"
     },
     {
       "filename": "09-cover-mobile-390px.png",
@@ -251,8 +251,8 @@
     },
     {
       "filename": "10-works-mobile-390px.png",
-      "bytes": 134321,
-      "sha256": "81bae3c0cb5d366dbcb75b8c7394ae0ee8e128e0430182fffc1bcbf4a468b01d"
+      "bytes": 148776,
+      "sha256": "a3ba7609d37dd4d6450b6ffb4c6f1757e02941e17fed738f478b010b2dadcd32"
     }
   ]
 }
