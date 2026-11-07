@@ -43,6 +43,12 @@ It sits **beside**, not above, the operator's 70-item subject priority queue. A 
 | RMAP-021 | H2 | **Long-lived multi-agent monitoring or cloud autosync.** | Human opts in to a specific schedule/trigger, scoped connector authority, audit log, revocation, retries, secrets handling and no automatic canonical promotions. | An \`inbox\` folder alone is not continuous monitoring; hidden work is not implied. |
 | RMAP-022 | H2 | **Physical phasonic supermoiré / topological and higher-order relation models.** | Define physical variables, units, gauge/invariance assumptions and independent measurements. Keep aesthetic simulation and graph analogy independently traceable. | Mathematical metaphors are not evidence of a new physical field or experimentally measured geometry. |
 
+## Machine-readable companion backlog
+
+The [`lab/integration_backlog.json`](lab/integration_backlog.json) companion contains **16 source-linked future integrations** organized by five canonical machine readiness tiers (`T0_CURRENT` through `T4_NEW_EXTERNAL_OR_RELEASE`). Every entry has a `corresponding_human_roadmap_ids` list pointing to the appropriate item(s) in this 22-capability narrative roadmap. The two numbering systems serve different documentation needs and **do not imply one-to-one equivalent experiments**.
+
+Five original backlog items used more specific noncanonical tier labels; the machine register now stores the canonical tier in `tier` and preserves the earlier spelling as `historical_tier_label_before_normalization`. The crosswalk is a taxonomy repair, **not an execution or scientific-grade promotion**.
+
 ## Tool registry and adapter practice
 
 The machine-readable public-tool catalogue is [\`lab/tool_registry.json\`](lab/tool_registry.json). It links the Wolfram Physics tools, Wolfram Function Repository \`MultiwaySystem\`, \`WolframModel\`, hands-on notebook, open hypergraph documentation, interactive demonstrations, NetLogo and the Santa Fe Institute's Complexity Explorer. These public references are *external capabilities*, not active connections. Verify their current requirements and terms before use.
