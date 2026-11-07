@@ -88,9 +88,9 @@
         "counterexample": "two paths with distinct consent and same scalar cost"
       },
       "nks": {
-        "local_rewrite": "enumerate enabled synthetic actions",
-        "branching": "retain non-joinable paths",
-        "gluing": "only admit equivalence when exact provenance maps are declared"
+        "local_rewrite": "Match each A independently, create B; preserve event instance identifiers even where terminal states merge.",
+        "branching": "Enumerate all enabled redex placements up to depth 2.",
+        "gluing": "Treat BB public state as projection, not a claim that its two histories coincide."
       },
       "prediction": "Scalar-only output may hide a route difference that a complete-history comparator can recover.",
       "consequence": "Do not claim novelty unless a competent null with the same information is outperformed.",
@@ -114,7 +114,26 @@
           "empirical cross-episode confirmation"
         ]
       },
-      "artistic_notes": "Wild Field is permitted; a missing warrant is a space for inquiry, not a hidden fact."
+      "artistic_notes": "No mirrors at the kiki: the event histories differ although their endpoint is the same; test the difference instead of smoothing it away.",
+      "experiment": {
+        "engine": "FINITE_STRING_MULTIWAY",
+        "initial": "AA",
+        "rules": [
+          {
+            "id": "R",
+            "from": "A",
+            "to": "B"
+          }
+        ],
+        "depth": 2,
+        "maxPaths": 100,
+        "maxLength": 8,
+        "expected": {
+          "path_count": 2,
+          "unique_final_states": 1,
+          "uniform_path_identity_loss_bits": 1
+        }
+      }
     }
   ]
 }
