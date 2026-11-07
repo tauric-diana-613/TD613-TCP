@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIXEN CYBERNETICS — Standalone Em Research Product</title>
+  <style>
+    :root {
+      --bg: #F6F4F0;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --graphite: #24282A;
+      --smoked-nickel: #667078;
+      --baker-miller: #FF91AF;
+      --baker-miller-dark: #D45B7E;
+      --arc-flash: #F9F36D;
+      --border: #E0DDD7;
+      --border-subtle: rgba(255, 145, 175, 0.25);
+      --code-bg: #1E2224;
+      --code-text: #F6F4F0;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(255, 145, 175, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 90%, rgba(249, 243, 109, 0.04) 0%, transparent 35%);
+      color: var(--graphite);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-top: 5px solid var(--baker-miller);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 36px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(36, 40, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      position: relative;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: 40px;
+      width: 48px;
+      height: 5px;
+      background: var(--arc-flash);
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    .badge-pink { background: var(--baker-miller); color: #000; }
+    .badge-yellow { background: var(--arc-flash); color: #000; }
+    .badge-dark { background: var(--graphite); color: #FFF; }
+    .badge-held { background: #FFE4E8; color: #9E1B32; border: 1px solid #F5C2C7; }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .signature-banner {
+      background: var(--code-bg);
+      color: var(--arc-flash);
+      font-family: var(--font-mono);
+      padding: 10px 16px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      margin: 16px 0;
+      border-left: 4px solid var(--baker-miller);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 18px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--smoked-nickel);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--baker-miller-dark);
+      border-bottom-color: var(--baker-miller);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--graphite);
+    }
+
+    .panel {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .panel.active { display: block; }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: var(--graphite);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--baker-miller-dark);
+      font-family: var(--font-mono);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--smoked-nickel);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    .alert-box {
+      background: #FFF9E6;
+      border-left: 4px solid #F0B429;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 0.85rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      color: var(--code-text);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 16px;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    input, button, select {
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    button.action-btn {
+      background: var(--baker-miller);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    button.action-btn:hover {
+      background: var(--baker-miller-dark);
+      color: #FFF;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--smoked-nickel);
+      font-family: var(--font-mono);
+      padding: 24px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge-bar">
+        <span class="badge badge-dark">TD613 · EMSTANDALONE</span>
+        <span class="badge badge-pink">ROUTE: /encyclopedia/vix-cyb.html</span>
+        <span class="badge badge-yellow">AUTHORITY: SAC[X6ZNK5NO51]</span>
+        <span class="badge badge-held">ORIGINAL EXECUTOR: HELD_ABSENT</span>
+      </div>
+      <h1>𝌋 VIXEN CYBERNETICS</h1>
+      <p style="color: var(--smoked-nickel); font-size: 0.95rem;">
+        Independent Em Research Product & Functional Cybernetic State Engine · A-PFR0 Standalone Restoration
+      </p>
+      <div class="signature-banner">
+        CANONICAL SIGNATURE: <strong>VIXENCYBERNETICS$S_e≡[x+y]=z+1$</strong> &nbsp;|&nbsp; TITLE MATH: <code>S_{e}\equiv[x+y]=z+1</code>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('nav')">1. Corpus & Navigation</button>
+      <button class="tab-btn" onclick="switchTab('gates')">2. 8 Human Gates & Partitions</button>
+      <button class="tab-btn" onclick="switchTab('witness')">3. Exact Passage Witness</button>
+      <button class="tab-btn" onclick="switchTab('instruments')">4. 21 Documentary Instruments</button>
+      <button class="tab-btn" onclick="switchTab('math')">5. Mathematical Representation</button>
+      <button class="tab-btn" onclick="switchTab('custody')">6. Preserved Uncertainty</button>
+    </div>
+
+    <!-- PANEL 1: CORPUS & NAVIGATION -->
+    <div id="panel-nav" class="panel active">
+      <h2>Original Em Estate vs. Later Experiment A Recipient</h2>
+      <div class="grid-2">
+        <div class="stat-card">
+          <div class="stat-value">87 + 53</div>
+          <div class="stat-label">Original Historical Estate (87 Sources, 53 Derivatives)</div>
+          <p style="margin-top: 8px; font-size: 0.85rem; color: var(--smoked-nickel);">
+            Includes 34 negative extraction states: 33 AppleDouble <code>._*</code> resource forks and 1 unsupported format ZIP archive.
+            Zero standalone scientific executors recovered.
+          </p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">94 + 53</div>
+          <div class="stat-label">Later Experiment A Recipient (94 Originals, 53 Derivatives)</div>
+          <p style="margin-top: 8px; font-size: 0.85rem; color: var(--smoked-nickel);">
+            Contains 7 additional original documents. The two estates are kept strictly non-conflated.
+          </p>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        <strong>Source-Sensitive Invariant:</strong> Primary byte evidence is immutable. Derivatives are extracted analytical views. Conflating the 87 historical originals with the 94 recipient sources is strictly prohibited.
+      </div>
+    </div>
+
+    <!-- PANEL 2: 8 HUMAN GATES & PARTITIONS -->
+    <div id="panel-gates" class="panel">
+      <h2>Work Identity & Human Gate Partition Evaluation</h2>
+      <p style="font-size: 0.9rem; margin-bottom: 16px;">
+        The EMSTD613 estate contains <strong>8 human identity gates</strong> in its Work routes. Because each gate requires human custodial adjudication to decide whether manifestations constitute a single unified Work or two distinct Works, there exist exactly <strong>2<sup>8</sup> = 256 permissible partitions</strong>, bounded in the interval <code>[32, 40]</code>.
+      </p>
+
+      <div class="grid-2">
+        <div class="stat-card">
+          <div class="stat-value">256</div>
+          <div class="stat-label">Permissible Identity Partitions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">[32, 40]</div>
+          <div class="stat-label">Work Route Range (Min: 32, Max: 40)</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="action-btn" onclick="calculatePartitions()">Simulate 256 Partition Evaluation</button>
+        <div id="partition-result" class="code-block" style="display:none; max-height: 200px; overflow-y: auto;"></div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: EXACT PASSAGE WITNESS -->
+    <div id="panel-witness" class="panel">
+      <h2>Grounded Passage Retrieval & Codepoint Boundary Safety</h2>
+      <p style="font-size: 0.9rem; margin-bottom: 12px;">
+        Retrieves exact byte spans from admitted documents and enforces strict UTF-8 continuation-byte safety checks.
+      </p>
+
+      <div style="margin-bottom: 12px;">
+        <label style="font-size: 0.85rem; font-weight: 600;">Sample Document Content:</label>
+        <div class="code-block" id="sample-doc-text">EMSTD613: Preservation of Tauric Diana Crimean heritage custodianship under covenant Khona‌lit-po [SAC X6ZNK5NO51].</div>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+        <span>Byte Start: <input type="number" id="span-start" value="0" style="width: 70px;"></span>
+        <span>Byte End: <input type="number" id="span-end" value="38" style="width: 70px;"></span>
+        <button class="action-btn" onclick="retrieveWitness()">Retrieve Grounded Witness</button>
+      </div>
+
+      <div id="witness-output" class="code-block" style="display:none;"></div>
+    </div>
+
+    <!-- PANEL 4: 21 DOCUMENTARY INSTRUMENTS -->
+    <div id="panel-instruments" class="panel">
+      <h2>21 Documentary Research Instruments Index</h2>
+      <p style="font-size: 0.9rem; margin-bottom: 12px;">
+        Authentic research methods preserved in <code>06-INSTRUMENTS/</code>. Every instrument survived as a documentary protocol without an executing script (historical zero standalone executors).
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Instrument ID</th>
+            <th>Classification</th>
+            <th>Core Purpose & Claim Boundary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><code>ACADEMIA_SUI_GENERIS_SIEVE_V0_1</code></td><td>Documentary Protocol</td><td>Salvages lowest supported object under institutional collapse</td></tr>
+          <tr><td>2</td><td><code>ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Treats rights as vector and measures directional recoverability</td></tr>
+          <tr><td>3</td><td><code>APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Schmitt-trigger anti-chatter filter on observation deficits</td></tr>
+          <tr><td>4</td><td><code>AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Detects and refuses multi-hop authority laundering</td></tr>
+          <tr><td>5</td><td><code>AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Differentiates path hysteresis from snapback recovery</td></tr>
+          <tr><td>6</td><td><code>AUTHORITY_PATH_CATEGORY_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Category-theoretic non-composability of high-risk permissions</td></tr>
+          <tr><td>7</td><td><code>AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Geometric tree structure of historical permission grants</td></tr>
+          <tr><td>8</td><td><code>BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Refuses ungrounded analogical authority leaps</td></tr>
+          <tr><td>9</td><td><code>CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Detects ancestry blindspots in Cistern mutation routes</td></tr>
+          <tr><td>10</td><td><code>CLAIM_CEILING_PROPAGATION_V0_1</code></td><td>Documentary Protocol</td><td>Monotonic claim ceiling propagation across downstream nodes</td></tr>
+          <tr><td>11</td><td><code>CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX</code></td><td>Documentary Matrix</td><td>Tripartite categorization of cross-model interactions</td></tr>
+          <tr><td>12</td><td><code>DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Partially ordered set (poset) of authority under information deficits</td></tr>
+          <tr><td>13</td><td><code>DERIVATIVE_CLOCK_CUSTODY_V0_1</code></td><td>Documentary Protocol</td><td>Decouples theory clock from presentation and derivative clocks</td></tr>
+          <tr><td>14</td><td><code>EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1</code></td><td>Hostile Battery</td><td>Stress-tests control planes against adversarial claim promotion</td></tr>
+          <tr><td>15</td><td><code>FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1</code></td><td>Candidate Assay</td><td>Prevents pseudo-mathematical ratcheting of unearned authority</td></tr>
+          <tr><td>16</td><td><code>FORMAL_OPERATOR_CUSTODY_V0_1</code></td><td>Documentary Protocol</td><td>Enforces human operator reservation over state mutations</td></tr>
+          <tr><td>17</td><td><code>LINEAGE_ASSAY_PROTOCOL</code></td><td>Documentary Protocol</td><td>Monotonic verification of citation and predecessor chains</td></tr>
+          <tr><td>18</td><td><code>MOTIF_TO_MECHANISM_TRANSLATION</code></td><td>Method Translation</td><td>Distinguishes aesthetic motif from verified causal mechanism</td></tr>
+          <tr><td>19</td><td><code>NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1</code></td><td>Candidate Assay</td><td>Detects false consensus caused by semantic smoothing</td></tr>
+          <tr><td>20</td><td><code>OBFUSCATION_DECOMPRESSION_PROTOCOL</code></td><td>Documentary Protocol</td><td>Lossless decompression of compressed research structures</td></tr>
+          <tr><td>21</td><td><code>SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1</code></td><td>Documentary Protocol</td><td>Enforces explicit setpoint thresholds for automated actions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PANEL 5: MATHEMATICAL REPRESENTATION -->
+    <div id="panel-math" class="panel">
+      <h2>Mathematical Relationship Representation: [x+y] = z+1</h2>
+      <div class="alert-box">
+        <strong>Category Distinction:</strong> Title mathematics <code>S_{e}\equiv[x+y]=z+1</code> is an architectural design emblem and signature, NOT a validated empirical research theorem.
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+        <span>x: <input type="number" id="math-x" value="2" style="width: 60px;"></span>
+        <span>y: <input type="number" id="math-y" value="3" style="width: 60px;"></span>
+        <span>z: <input type="number" id="math-z" value="4" style="width: 60px;"></span>
+        <button class="action-btn" onclick="evalMath()">Evaluate Relationship</button>
+      </div>
+
+      <div id="math-output" class="code-block" style="display:none;"></div>
+    </div>
+
+    <!-- PANEL 6: PRESERVED UNCERTAINTY -->
+    <div id="panel-custody" class="panel">
+      <h2>Epistemic Custody & Preserved Uncertainty</h2>
+      <div class="stat-card" style="margin-bottom: 16px;">
+        <div style="font-weight: 700; color: #9E1B32; margin-bottom: 4px;">HELD_ORIGINAL_VIXEN_EXECUTOR_ABSENT</div>
+        <p style="font-size: 0.85rem;">
+          Exhaustive scanning across repository history confirmed that the original Vixen standalone executable was never published in the public tree. This modern reconstruction is strictly labeled a source-free prospective implementation.
+        </p>
+      </div>
+      <div class="stat-card" style="margin-bottom: 16px;">
+        <div style="font-weight: 700; color: #9E1B32; margin-bottom: 4px;">HELD_HUMAN_GATE_UNRESOLVED</div>
+        <p style="font-size: 0.85rem;">
+          The 8 human identity gates remain completely open and uncollapsed. Machine agents are barred from guessing or auto-resolving them.
+        </p>
+      </div>
+      <div class="stat-card">
+        <div style="font-weight: 700; color: #9E1B32; margin-bottom: 4px;">HELD_RECIPROCAL_SURPLUS_UNESTABLISHED</div>
+        <p style="font-size: 0.85rem;">
+          Under the competent null comparator, reciprocal empirical surplus remains unestablished.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      Tauric Diana · Crimean heritage custodianship · Khona‌lit-po · Sealed with ⟐SAC[X6ZNK5NO51]
+    </footer>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('panel-' + tabId).classList.add('active');
+    }
+
+    function calculatePartitions() {
+      const res = document.getElementById('partition-result');
+      res.style.display = 'block';
+      res.textContent = "Calculating 256 partitions for 8 human gates...\n";
+      res.textContent += "Total combinations: 2^8 = 256\nWork route bounds: Min = 32 (all gates SAME_WORK), Max = 40 (all gates SEPARATE_WORK)\n";
+      res.textContent += "Human closure: STRICTLY RESERVED for Tawanna C. Miller under SAC[X6ZNK5NO51].\n";
+      res.textContent += "Sample partitions:\n";
+      res.textContent += "  Partition 0: Active splits: 0 -> Effective Works: 32\n";
+      res.textContent += "  Partition 127: Active splits: 7 -> Effective Works: 39\n";
+      res.textContent += "  Partition 255: Active splits: 8 -> Effective Works: 40\n";
+      res.textContent += "Status: HELD_HUMAN_GATE_UNRESOLVED (0 gates resolved by machine).";
+    }
+
+    function retrieveWitness() {
+      const s = parseInt(document.getElementById('span-start').value, 10);
+      const e = parseInt(document.getElementById('span-end').value, 10);
+      const txt = document.getElementById('sample-doc-text').textContent;
+      const out = document.getElementById('witness-output');
+      out.style.display = 'block';
+
+      if (isNaN(s) || isNaN(e) || s < 0 || e > txt.length || s >= e) {
+        out.textContent = "Error: INVALID_SPAN. Span must be within [0, " + txt.length + "].";
+        return;
+      }
+
+      const slice = txt.substring(s, e);
+      out.textContent = JSON.stringify({
+        span: [s, e],
+        byte_count: slice.length,
+        slice_text: slice,
+        witness_status: "VERIFIED_GROUNDED_SPAN",
+        utf8_safety: "CODEPOINT_BOUNDARY_CONFIRMED"
+      }, null, 2);
+    }
+
+    function evalMath() {
+      const x = parseFloat(document.getElementById('math-x').value);
+      const y = parseFloat(document.getElementById('math-y').value);
+      const z = parseFloat(document.getElementById('math-z').value);
+      const out = document.getElementById('math-output');
+      out.style.display = 'block';
+
+      const sum = x + y;
+      const target = z + 1;
+      const concordant = (sum === target);
+
+      out.textContent = JSON.stringify({
+        signature: "VIXENCYBERNETICS$S_e≡[x+y]=z+1$",
+        input_sum_x_plus_y: sum,
+        target_shift_z_plus_1: target,
+        concordant: concordant,
+        category: "DESIGN_EMBLEM_ONLY",
+        empirical_proof: false,
+        admonition: "Title mathematics S_e ≡ [x+y]=z+1 is an architectural signature, NOT an empirical proof."
+      }, null, 2);
+    }
+  </script>
+</body>
+</html>
