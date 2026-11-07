@@ -165,5 +165,7 @@
     "historical_IPX_classes_preserved": true,
     "protected_flight": "HELD",
     "human_closure": "RESERVED"
-  }
+  },
+  "lexical_non_equivalence": "relation-geometry ≠ relational-geometry",
+  "lexical_scope": "Bounded operationalization: relation-geometry maps to static typed incidence only in this assay, not a universal definition of Antigravity's earlier lexical mutation"
 }
