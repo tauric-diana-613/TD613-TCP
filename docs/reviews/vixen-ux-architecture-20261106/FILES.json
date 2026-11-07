@@ -26,8 +26,8 @@
     {
       "packet_path": "app/encyclopedia/vix-cyb.html",
       "zip_path": "prototype/app/encyclopedia/vix-cyb.html",
-      "bytes": 664412,
-      "sha256": "737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac"
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1716-7b6b4887f/vixen-cybernetics-engine.mjs.snapshot",
@@ -80,8 +80,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
       "zip_path": "review-packet/PRE_FREEZE_VERIFICATION_REPORT.md",
-      "bytes": 25231,
-      "sha256": "dc386455543ed8a9c49e2ea1549d1ab50e33bdc859a14274ae19063828fb801c"
+      "bytes": 28667,
+      "sha256": "4d344d4d1b650de8beac4e90f877015b9ab225295d737fdf265bf7c9cbdf64ff"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
@@ -368,14 +368,14 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
       "zip_path": "review-packet/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
-      "bytes": 19159,
-      "sha256": "cbd134347c918c231b7b52ff0ece711420c8b962e0ed1e91653f9ea512385eb3"
+      "bytes": 20245,
+      "sha256": "fe0e6a75fd6cb4f00cf17bc041c8f2f784b0152640c40051f8ae7a1c5ea55fd9"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
       "zip_path": "review-packet/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
-      "bytes": 664412,
-      "sha256": "737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac"
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
@@ -394,6 +394,30 @@
       "zip_path": "review-packet/vixen-ux-commission.json",
       "bytes": 7381,
       "sha256": "8330bb9b91a2b8cb156bebd575a05a0cdeb470c9743a1dc289e30b961a1eb389"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "zip_path": "review-packet/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "bytes": 4358,
+      "sha256": "d0f4d87845d39b2433fb8dfc6a06f3a6eb80877ab4ca2ef8966a0fed087373d9"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "zip_path": "review-packet/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "bytes": 2818,
+      "sha256": "c0d4ccb71984178f95e44f411b82563b082788f88151553d395e25c343092b2f"
+    },
+    {
+      "packet_path": "ARCHIVE_ONLY/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "zip_path": "review-packet/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "bytes": 4264,
+      "sha256": "c7addb7c81350c59bb236f730daeac0051919bb8302313138c0bffdb9ee4db75"
+    },
+    {
+      "packet_path": "ARCHIVE_ONLY/repro_browser.py",
+      "zip_path": "review-packet/repro_browser.py",
+      "bytes": 2774,
+      "sha256": "ab48ef4113b5f680e1d0457943cb4c3e07fdc70f732ce677c9db978436801860"
     }
   ],
   "referenced_repository_files": [

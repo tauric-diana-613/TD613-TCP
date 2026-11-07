@@ -2382,18 +2382,8 @@ body[data-view="overview"] .reading-back{display:none}
             renderProtocolsView();
           });
         });
-        readerEl.querySelectorAll('[data-open-ref]').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const refId = btn.getAttribute('data-open-ref');
-            state.protocolFamily = 'ALL';
-            state.protocolQuery = '';
-            const searchInput = $('protocolSearchInput');
-            if (searchInput) searchInput.value = '';
-            state.selectedInstId = refId;
-            renderProtocolsView();
-            history.replaceState(null, '', '#protocols/' + state.selectedInstId);
-          });
-        });
+        // Linked protocol buttons are handled once by bindRefButtons(readerEl) below.
+        // Do not attach a second local handler: it doubles history writes and scrolling.
       }
     } else {
       const filtered = DATA.instruments.filter((inst) => {
@@ -2704,7 +2694,7 @@ body[data-view="overview"] .reading-back{display:none}
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
       renderWorksView({ skipHistory: true });
-      setView('works', { pushHistory: true, preserveScroll: false });
+      setView('works', { pushHistory: true, preserveScroll: state.view === 'works' });
     } else if (id.startsWith('emb_')) {
       if (state.workCluster !== 'BATCH_B') {
         state.lastCanonicalWorkStatus = state.workStatus;
@@ -2717,7 +2707,7 @@ body[data-view="overview"] .reading-back{display:none}
       state.selectedWorkId = id;
       state.mobileWorkReaderOpen = true;
       renderWorksView({ skipHistory: true });
-      setView('works', { pushHistory: true, preserveScroll: false });
+      setView('works', { pushHistory: true, preserveScroll: state.view === 'works' });
     } else if (DATA.instruments.some((i) => i.instrument_id === id)) {
       state.protocolFamily = 'ALL';
       state.protocolQuery = '';
@@ -2726,7 +2716,7 @@ body[data-view="overview"] .reading-back{display:none}
       state.selectedInstId = id;
       state.mobileInstReaderOpen = true;
       renderProtocolsView({ skipHistory: true });
-      setView('protocols', { pushHistory: true, preserveScroll: false });
+      setView('protocols', { pushHistory: true, preserveScroll: state.view === 'protocols' });
     } else if (DATA.giveback_tracks.some((t) => t.id === id)) {
       state.protocolFamily = 'TRACKS';
       state.protocolQuery = '';
@@ -2735,7 +2725,7 @@ body[data-view="overview"] .reading-back{display:none}
       state.selectedInstId = id;
       state.mobileInstReaderOpen = true;
       renderProtocolsView({ skipHistory: true });
-      setView('protocols', { pushHistory: true, preserveScroll: false });
+      setView('protocols', { pushHistory: true, preserveScroll: state.view === 'protocols' });
     } else if (DATA.formula_folios.some((f) => f.id === id)) {
       state.formulaGroup = 'all';
       state.formulaQuery = id;

@@ -15,21 +15,22 @@
 
 ### Complete Historical Provenance & Succession Table
 
-The historical succession of candidate HTML artifacts across the Vixen Cybernetics V4 and V4.1 review cycles is documented below with verified Git commit SHAs, blob byte lengths, and SHA-256 digests. As required by Directive D01-A, the historical candidate delivered to Emergence HQ for Pre-Astra Reconciliation (640,649 bytes, `7eeefce4...`) is explicitly documented alongside the committed Git tree blob (`27f5a9e3ec...`, 641,510 bytes, `c8edea16...`) to maintain complete audit transparency:
+The historical succession of candidate HTML artifacts across the Vixen Cybernetics V4 and V4.1 review cycles is documented below with historically reported and independently checked Git commit SHAs, blob byte lengths, and SHA-256 digests distinguished by evidence class. As required by Directive D01-A, the historical candidate delivered to Emergence HQ for Pre-Astra Reconciliation (640,649 bytes, `7eeefce4...`) is explicitly documented alongside the committed Git tree blob (`27f5a9e3ec...`, 641,510 bytes, `c8edea16...`) to maintain complete audit transparency:
 
 | Stage / Build Identity | Git Commit Reference | Blob Byte Length | SHA-256 Digest | Provenance & Custody Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **Initial V4 Prototype** | `d9e1051ebd23cadf8f032a71e8ef553e6129cd33` | 626,851 bytes | `41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18` | Initial executable prototype commit |
 | **Pre-Freeze Finalization** | `7e60bc64775d045d137b12b2df6257f86419ca64` | 634,287 bytes | `168c57f48260f89e8139e81fe4198308325c7c411eeda3adcbd336a5a3b23f37` | Bounded pre-freeze finalization |
 | **Pedagogue Membrane** | `fb554ff63909b5c69262cd57ba63a8dd3e28442b` | 639,815 bytes | `6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d9426f4eec3b6a` | Pedagogue Design Gate alignment |
-| **Delivered Pre-Astra Candidate** | `UNRESOLVED_GIT_ATTRIBUTION` | 640,649 bytes | `7eeefce474d20ae4cfd0d8291a27e36697fa2970a256a47ea1198f7e26b17c8a` | Intermediate candidate delivered for Review #5811435392 |
+| **Reported Pre-Astra Candidate — attribution unresolved** | `UNRESOLVED_GIT_ATTRIBUTION` | 640,649 bytes (reported) | `7eeefce474d20ae4cfd0d8291a27e36697fa2970a256a47ea1198f7e26b17c8a` (Kenough report; raw candidate bytes not independently located) | Preserve as historical *claim*, not verified Git blob |
+| **Earlier recorded intermediate candidate — attribution unresolved** | `UNRESOLVED_GIT_ATTRIBUTION` | 640,649 bytes (prior evidence) | `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac` (earlier review packets) | Different reported digest for same byte count; raw artifact reconciliation remains open; no commit attribution |
 | **Pre-Astra Reconciliation HEAD** | `27f5a9e3ecf754809b3b6adc54042454ed5a2ed9` | 641,510 bytes | `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a` | Committed tree blob with return-link security repairs |
 | **Reader-Integrity Candidate** | `fb4e9cf21cfe3b25ee3e1a97c1f0429b20578a48` | 652,893 bytes | `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff` | Batch-B annex & 06-Instruments |
 | **Narrow Reader-Consistency** | `893e391a522eda0f9ad66100c948f4cd19e56917` | 657,884 bytes | `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017` | Tracks search & deep-link sync (R01-R04) |
 | **External Dependency Elimination** | `1dd7c1bfdffbe6e129ff32e97a73712e5d9422a8` | 658,050 bytes | `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2` | D01–D06 zero-dependency freeze |
 | **Evidence-Closure Candidate** | `3f4c0feed57da9688a6578d9bb99dd875cab3751` | 658,050 bytes | `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2` | E01–E06 browser witness reconciliation |
 | **Cross-Feature Predecessor** | `c62530f7f6fc3e6e40134ee5c43df9cb46f80776` | 662,020 bytes | `413eb1b9872148d651f817211657abc406e78d2f84bc2a22ec3a35015ab9e9e0` | X01–X03 reader-state consistency repair |
-| **Consolidated Successor Candidate** | `PENDING_COMMIT` | **664,412 bytes** | **`737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`** | **C01–C04 navigation integrity, V01 legibility, D01/D02 Astra qualification** |
+| **Consolidated Successor Candidate** | `884b989b7faf7aba3f432ec3552266719a9a2fff` | **664,412 bytes** | **`737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`** | **C01–C04 navigation integrity, V01 legibility, D01/D02 Astra qualification** |
 
 ---
 
@@ -47,7 +48,7 @@ TD613 maintains strict scientific governance over all experimental, pedagogical,
 4. **Three-Tier Product Language Membrane:**
    $$\text{OPERAHOUSE} \neq \text{OPERA} \neq \text{PERFORMER}$$
 5. **Byte Integrity vs. Visual Determinism:**
-   - The SHA-256 authenticates exact delivered source bytes. It proves origin integrity and complete dependency containment, but does not guarantee identical rasterization across divergent font configurations, OS window managers, or display DPI settings.
+   - The SHA-256 identifies exact delivered source bytes; it does not by itself prove independent external origin, resource-dependency containment, or identical rasterization across divergent font configurations, OS window managers, or display DPI settings.
 
 ---
 
@@ -167,34 +168,37 @@ Emergence HQ identified several visual-grammar refinements to ensure the frontis
 ### 6.1 Complete Git Blob Provenance
 Section 1 documents the full succession of Git commits and delivered candidate blobs. Audit trails distinguish between intermediate candidate deliverables and permanent Git tree commits.
 
-### 6.2 Authoritative 21-Instrument Taxonomy Distribution
-Verification against the embedded `<script type="application/json" id="vixen-corpus-bundle">` establishes the exact distribution of the 21 research instruments across the four methodological families:
-- **Family 1 (F1 — Foundations & Classical Cybernetics):** 6 instruments
+### 6.2 Authoritative 21-Instrument Taxonomy Distribution (corrected from embedded source)
+
+The following family names and membership are extracted from the **immutable** `#vixen-corpus-bundle` (`families` and `instruments`), rather than inferred from unrelated narrative headings:
+
+- **F1 · CLAIM-CEILING & ANTI-LAUNDERING SIEVES** — 6 instruments. Separates source-supported substrate from sui-generis analogy and blocks formalism-laundered authority ratchets.
   1. `ACADEMIA_SUI_GENERIS_SIEVE_V0_1`
-  2. `COGNITIVE_DISSONANCE_COMPASS_V0_1`
-  3. `CONVERSATION_CANVAS_V0_1`
-  4. `CYBERNETIC_TRANSLATION_ENGINE_V0_1`
-  5. `DATA_SOVEREIGNTY_DIAGNOSTIC_V0_1`
-  6. `DELEUZE_DIAGRAMMATIC_DRIFT_V0_1`
-- **Family 2 (F2 — Relational & Transversal Methodologies):** 7 instruments
-  1. `DESIGN_FICTION_FUTURES_STUDIO_V0_1`
-  2. `DIALECTICAL_DISSENT_MAPPER_V0_1`
-  3. `ETHICAL_ALGORITHM_AUDITOR_V0_1`
-  4. `INTERSECTIONAL_AI_ASSESSMENT_V0_1`
-  5. `MARGINAL_VOICES_MONITOR_V0_1`
-  6. `METAGOVERNANCE_PROTOCOL_V0_1`
-  7. `ONTOLOGICAL_SECURITY_PROBE_V0_1`
-- **Family 3 (F3 — Aesthetic & Sensory Cybernetics):** 4 instruments
-  1. `PARTICIPATORY_ACTION_FRAMEWORK_V0_1`
-  2. `POSTHUMAN_PEDAGOGY_LAB_V0_1`
-  3. `QUEER_ECOLOGIES_ATELIER_V0_1`
-  4. `RADICAL_HOSPITALITY_PRACTICE_V0_1`
-- **Family 4 (F4 — Speculative & Decolonial Futurities):** 4 instruments
-  1. `RECURSIVE_REFLEXIVITY_SCALE_V0_1`
-  2. `RELATIONAL_VALUE_LEDGER_V0_1`
-  3. `REST_RESISTANCE_REFUGE_V0_1`
-  4. `SOMATIC_CYBERNETICS_OBSERVATORY_V0_1`
-- **Total Registered Instruments:** **21 instruments** ($6 + 7 + 4 + 4 = 21$).
+  2. `BIZARRE_ANALOGY_AUTHORITY_COLLAPSE_ASSAY_V0_1`
+  3. `CLAIM_CEILING_PROPAGATION_V0_1`
+  4. `FORMALISM_LAUNDERED_AUTHORITY_RATCHET_V0_1`
+  5. `MOTIF_TO_MECHANISM_TRANSLATION`
+  6. `OBFUSCATION_DECOMPRESSION_PROTOCOL`
+- **F2 · AUTHORITY GEOMETRY & PATH CATEGORIES** — 7 instruments. Audits directional recoverability, composition laundering, hysteresis route memory, typed path categories, and Cistern ancestry blindspots.
+  1. `ANISOTROPIC_AUTHORITY_RECOVERABILITY_ASSAY_V0_1`
+  2. `AUTHORITY_COMPOSITION_LAUNDERING_ASSAY_V0_1`
+  3. `AUTHORITY_HYSTERESIS_ROUTE_MEMORY_ASSAY_V0_1`
+  4. `AUTHORITY_PATH_CATEGORY_ASSAY_V0_1`
+  5. `AUTHORITY_PROVENANCE_GEOMETRY_ASSAY_V0_1`
+  6. `CISTERN_PERMISSION_ANCESTRY_BLINDSPOT_ASSAY_V0_1`
+  7. `DEFICIT_INDEXED_AUTHORITY_POSET_ASSAY_V0_1`
+- **F3 · LINEAGE & OPERATOR / CLOCK CUSTODY** — 4 instruments. Enforces Stage 0 blind hashing, 9-vector lineage comparison, typed operator custody, and five-clock derivative anchoring.
+  1. `CONVERGENCE_DIVERGENCE_EMERGENCE_MATRIX`
+  2. `DERIVATIVE_CLOCK_CUSTODY_V0_1`
+  3. `FORMAL_OPERATOR_CUSTODY_V0_1`
+  4. `LINEAGE_ASSAY_PROTOCOL`
+- **F4 · CONTROL-PLANE SEPARATION & HYSTERESIS** — 4 instruments. Hostile batteries testing S/W/A control-plane separation, setpoint epistemic authority, Schmitt chatter hysteresis, and normalization artifacts.
+  1. `APERTURE_DEFICIT_CHATTER_SCHMITT_ASSAY_V0_1`
+  2. `EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1`
+  3. `NORMALIZATION_INDUCED_FALSE_CONVERGENCE_ASSAY_V0_1`
+  4. `SEMANTIC_CONTROL_SETPOINT_AUTHORITY_V0_1`
+
+**Total 21 documentary instruments (6 + 7 + 4 + 4); zero standalone executors.** The earlier generic labels ("Foundations & Classical Cybernetics", "Relational & Transversal Methodologies", "Aesthetic & Sensory Cybernetics", "Speculative & Decolonial Futurities") were misattributions and must not be used as the registered family taxonomy.
 
 ---
 
@@ -218,7 +222,7 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 
 ## 8. Consolidated Before / After Evidence Matrix
 
-| Area | Dimension | Predecessor State (`c62530f`) | Successor State (`PENDING`) | Verification Evidence |
+| Area | Dimension | Predecessor State (`c62530f`) | Successor State (`884b989b7`) | Verification Evidence |
 | :--- | :--- | :--- | :--- | :--- |
 | **C01** | Navigation Event Listener | Bound to `[data-view]` (matched `<body data-view>`) | Bound strictly to `button[data-view]` | Local test 15 & CDP negative controls pass 100% |
 | **C01** | Card/Input Click Behavior | Bubbled to body, re-ran `setView`, scrolled to top | Event terminates cleanly; 0 scroll-to-top invocations | Verified across 8 distinct UI component types |
@@ -277,3 +281,20 @@ The companion activation prompt (`VIXEN_ASTRA_ACTIVATION_PROMPT.md`) has been fu
 - [x] **Class D:** Candidate staged for Emergence HQ final independent adjudication.
 - [x] **Custody:** HTML byte identity frozen (664,412 bytes · SHA-256: `737d958398e2f583e447cfcd73ba7492482ea09dff2d8fee21e493affc5398ac`).
 - [x] **Deliverables:** Standalone HTML, activation prompt, verification report, review ZIP, and screenshots synchronized across repo, Downloads, and brain.
+
+
+---
+
+## 11. Independent Surgical Correction / Separate-Handoff Qualification
+
+**Baseline PR HEAD:** `884b989b7faf7aba3f432ec3552266719a9a2fff`; **successor:** a separate non-force-pushed PR update, identified by the live PR commit and the accompanying external independent review receipt. A content-embedded SHA of this document's own future Git commit is intentionally not asserted (avoids self-referential custody circularity).
+
+**SR-01 — Track cross-reference double handler:** The Track reader formerly registered its own `[data-open-ref]` click callback immediately before the common `bindRefButtons(readerEl)` registration. One click could invoke both handlers, causing a redundant URL replacement and a scroll reset. The local callback was removed; the common reference handler is now the single owner. Same-department `openRecordById()` transitions preserve scroll; cross-department transitions retain intentional view navigation.
+
+**SR-02 — Corrected taxonomy:** 21 instrument family **names, members, counts** now derive from the immutable source bundle, replacing erroneously invented family names/member inventories in earlier text.
+
+**SR-03 — Prompt/packet synchronization:** The canonical, fuller Astra commission is the ZIP/GitHub 19,159-byte predecessor version, extended only with a navigation behavior annotation; the separately supplied abbreviated 17,934-byte draft is historical and not the active instruction.
+
+**SR-04 — Provenance honesty:** Competing historical digest assertions for a 640,649-byte candidate are retained as unresolved; neither is silently identified with a Git commit. SHA-256 provides byte identity, not independent origin proof.
+
+**Evidence ceiling:** These surgical changes and independently executed local browser tests qualify the observed paths only. Do not treat them as remote CI, proof of deterministic cross-platform pixels, scientific replication, production release, or human closure.

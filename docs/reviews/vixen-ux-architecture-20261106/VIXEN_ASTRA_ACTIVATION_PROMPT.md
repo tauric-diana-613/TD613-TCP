@@ -218,3 +218,14 @@ The restrictions previously placed on Kenough during engineering stabilization *
 - [x] **12. Reserves final qualification and human closure:** Confirmed in Section III and Section VII.
 - [x] **13. Preserves the instruction to avoid `/dollhouse-design` in the initial Astra encounter:** Confirmed in Section VI.
 - [x] **14. Contains no inherited engineering-phase prohibition that materially narrows Astra's visual or operative scope:** Confirmed in Section VI.
+
+
+---
+
+## X. Independent Surgical Succession Annotation — Reference Navigation
+
+The delivered HTML has an independently inspected correction to the **Track → linked Instrument** interaction: a single shared reference handler owns the click; a same-department cross-reference does not reset the reader's scroll position. This is a preserved behavior contract, **not** a new constraint on Astra's authorized DOM/CSS/presentation JavaScript redesign.
+
+On transformation, ensure that every clickable research reference has **one intentional navigation outcome**, coherent selected record and URL, and no unrequested scroll-to-top. All separately catalogued research objects remain immutable. The Source-Free/zero-automatic-external-request and human scientific-closure boundaries remain in force.
+
+**Astra retains complete creative and implementation latitude** documented in Sections I–VII. The engineering defect correction must not be translated into a limitation on layout re-architecture, artwork, spatial editorial design, interaction choreography, or frontispiece composition.
