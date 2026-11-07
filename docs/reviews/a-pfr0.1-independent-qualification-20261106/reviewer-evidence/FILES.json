@@ -312,9 +312,19 @@
       "sha256": "5d1334a63c168bcacfc46702ba295a6ab8eebc06ac10f47524d3e952e308c9b4"
     },
     {
+      "path": "original-captures/encyclopedia-overview-bottom-detail.png",
+      "bytes": 22810,
+      "sha256": "88761bde11149943f99453d12602fc38f1ff2e735555963ffd28c771dd10c1e5"
+    },
+    {
+      "path": "original-captures/encyclopedia-overview-entire.png",
+      "bytes": 2489387,
+      "sha256": "d1605319a47b48a815bdcc3821e44c2a3e3d1011fc5dd7f4ec4c670b6caea451"
+    },
+    {
       "path": "README.md",
-      "bytes": 4845,
-      "sha256": "461b89d48650b97bd8e7745bf5d98fcb346da9d88e01cf6ed555a7c1073feb4e"
+      "bytes": 5273,
+      "sha256": "cf49d00b0463c1aa3b1bc71c9abf71ea454cb383b46677959d809647bf4f835e"
     },
     {
       "path": "review-pr-receipt.json",

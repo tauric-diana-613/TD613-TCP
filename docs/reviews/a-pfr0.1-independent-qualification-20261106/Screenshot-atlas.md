@@ -10,7 +10,7 @@ The authoring used the repository /dollhouse-design conductor with SEDGWICK_REPA
 
 ## The entire Encyclopedia homepage
 
-![The entire Encyclopedia homepage](screenshots/encyclopedia-overview-entire.jpg)
+![The entire Encyclopedia homepage](reviewer-evidence/original-captures/encyclopedia-overview-entire.png)
 
 The page opens in near-black, with a sculptural silver structure occupying the visual field like a piece of articulated couture. Curved ribs sweep inward from the shoulders of the composition; mirrored facets, narrow struts, and nested triangular forms concentrate light around its centre. The cream word TAURIC spreads across the upper left, while DIANA sits lower and farther right. The small, rust-coloured 613 behaves as a signature beside that name. Its scale and placement make it an identifying accent, not an instruction for interpreting every research record.
 

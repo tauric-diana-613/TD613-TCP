@@ -27,3 +27,10 @@ A short-path checkout on Windows may require Git core.longpaths=true, core.autoc
 The evidence directory retains preliminary and final captures and the initial failed receipt-write attempt. Raw section screenshots may contain a compositor transition or a viewport helper that did not apply. The curated captures in ../screenshots/ and their manifest identify the final visual atlas. The 390-pixel layout was separately measured through CDP; it is not a physical-device witness. The screenshot audit's provisional HELD result recorded the still-unwritten description phase; the later scoped receipt checks the completed description order. Neither receipt sees pixels or certifies aesthetics. The design conductor's candidate/refraction text is internal scaffolding, not an extra product, source assertion or empirical discovery. The finished artifact is [the atlas](../Screenshot-atlas.md).
 
 Local path strings in the original logs identify the run environment. Historical review-PR receipts name the head and publication posture at the time they were captured; they do not replace the live PR's current head. This publication introduces no new scientific execution, source admission, deployment, merge, release or closure authority.
+
+## Original full-page capture
+
+- [Lossless complete Overview PNG](original-captures/encyclopedia-overview-entire.png), original capture bytes, 1898 × 4601 pixels.
+- [Original lower-edge PNG](original-captures/encyclopedia-overview-bottom-detail.png), showing the footer coverage.
+
+The JPEG in the curated screenshots directory is a display derivative; the original PNG is also available here for review and hash verification.

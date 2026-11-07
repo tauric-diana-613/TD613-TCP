@@ -44,7 +44,8 @@
       "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY",
       "published_file": "encyclopedia-overview-entire.jpg",
       "published_encoding": "JPEG quality 85 derivative, same 1898 x 4601 pixels; original PNG retained in local deliverables",
-      "published_sha256": "81313c15b3bfa59fc627eb2db532f0b40046c673b246c1414ccbb687c57c4321"
+      "published_sha256": "81313c15b3bfa59fc627eb2db532f0b40046c673b246c1414ccbb687c57c4321",
+      "original_capture_path": "reviewer-evidence/original-captures/encyclopedia-overview-entire.png"
     },
     {
       "file": "encyclopedia-overview-footer.jpg",
