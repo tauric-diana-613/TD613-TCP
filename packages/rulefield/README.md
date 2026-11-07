@@ -6,6 +6,36 @@
 
 The old Wolframian rule index has become too complex for one increasing list. It intermingled the original 190 NKS records, later source-recovered propositions, design candidates, crossing hypotheses, execution receipts and the operator's changing research priorities. The Living Rulefield **replaces that structure without removing its ancestors**.
 
+## LLM receiver and experimental laboratory
+
+The Rulefield now functions as a **versioned research registry, scientific starter laboratory and review-first amendment intake system**. A connected agent can recover evidence and propose new rules or relationships without silently changing historical data. When the requested computation exceeds the current engine, the capability enters the future-integration backlog rather than being claimed as already available.
+
+**For a fresh agent or Antigravity thread, begin here:**
+
+1. [`AGENTS.md`](AGENTS.md) — scoped source/authority entry contract.
+2. [`rulebook/LLM_QUICK_START.md`](rulebook/LLM_QUICK_START.md) and [`rulebook/source_locator.json`](rulebook/source_locator.json) — discover original evidence across GitHub revisions, project files, Library/archives, Ateliers, Encyclopedia, research instruments and publicly accessible Wolfram tools.
+3. [`lab/README.md`](lab/README.md), [`lab/tool_registry.json`](lab/tool_registry.json), [`lab/multiway_lab.mjs`](lab/multiway_lab.mjs) — bounded multiway rewriting, overlapping critical-pair controls, event histories, cellular automata and clearly separated external computation.
+4. [`amendments/RECEIVER.md`](amendments/RECEIVER.md), [`amendments/schema.json`](amendments/schema.json), [`amendments/hooks.json`](amendments/hooks.json) — propose NKS-style geometry, projections, relationships, tests and consequences as typed review packets.
+5. [`ROADMAP.md`](ROADMAP.md) — **22 capability-gated future integrations**, including Wolfram kernels, NetLogo, larger causal graphs, scientific observer experiments, source-bearing Atelier coordination and experimental successors.
+
+**Runnable reference commands** (from the repository root, Node.js 22):
+
+```bash
+node scripts/rulefield.mjs stats
+node scripts/rulefield-lab.mjs suite
+node scripts/rulefield-lab.mjs diamond
+node scripts/rulefield-lab.mjs critical
+node scripts/rulefield-lab.mjs ca 30
+node scripts/rulefield-amend.mjs init RF-AP-20261107-001
+node scripts/rulefield-amend.mjs dry-run
+node scripts/rulefield-amend.mjs sync
+node --test tests/rulefield-garden-triptych.test.mjs tests/rulefield-v1.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs
+```
+
+`sync` means **inbox to content-addressed review outbox** only. It does not watch continuously, rewrite the canonical registry, merge a PR, qualify physical or social emergence, access protected archives, or activate Experiment B.
+
+The native Wolfram comparison script at [`lab/wolfram_comparator.wl`](lab/wolfram_comparator.wl) is **staged but unexecuted**. It requires a genuine Wolfram Language runtime and a source-level execution receipt before any parity or physical claim.
+
 ## The three updated Garden editions
 
 These three files live **directly in `packages/rulefield/`** and are synchronized representations of this source-free Living Rulefield edition:
