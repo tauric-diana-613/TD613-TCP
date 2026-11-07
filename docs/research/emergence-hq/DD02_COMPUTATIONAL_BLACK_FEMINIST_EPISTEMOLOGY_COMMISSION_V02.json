@@ -1,0 +1,42 @@
+{
+  "commission_id": "COMM-CBFE-PALACEII-DD02-REPAIR-20261107",
+  "seed": "Distinguish Black feminist epistemology (lived experience, dialogue, care, personal accountability; Dotson's silencing and McKittrick's Black geographies) from computational Black feminist epistemology (falsifiable source-standing, hearing, access routes, Palace Act II evidence-belief-action-claim clocks, and ambiance-observer effects). Preserve source dignity, operator controls, protected Flight and the possibility of a null result.",
+  "medium": "THEORETICAL",
+  "instruments": [
+    "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "BUTLER_PERFORMATIVE_ITERATION",
+    "SEDGWICK_REPARATIVE_TEXTURE"
+  ],
+  "deliverable_count": 1,
+  "scientific_audit_requested": true,
+  "historical_references": [
+    {
+      "reference_id": "PALACE-ACT-II-RECONCILED",
+      "source_path": "packages/accident_of_inheritance/docs/14_PALACE_ACT1_ACT2_OPERATIONALIZATION_CONTRACT_AND_EXPERIMENT_B_MATRIX.md",
+      "source_revision": "6d2b22e008ba85b0d0ce0543fe7d6eb9ee70f5e7",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Palace I-II prospective source-free interface and temporal/standing gates"
+    },
+    {
+      "reference_id": "DOLLHOUSE-THINKERS",
+      "source_path": ".agents/skills/dollhouse-design/references/selectable-instruments.md",
+      "source_revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Caro, Butler, and Sedgwick construction grammars"
+    },
+    {
+      "reference_id": "MANIFEST-AMBIANCE",
+      "source_path": "docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md",
+      "source_revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Situated ambiance and representation causality assay"
+    }
+  ],
+  "source_free_research": true,
+  "protected_flight": "HELD",
+  "human_scientific_closure": "RESERVED",
+  "native_runner_note": "This is a future execution commission. The companion DD02 manuscript is a source-free scholarly design, NOT a native conductor receipt, not a repair to /dollhouse-audit, and not scientific proof."
+}
