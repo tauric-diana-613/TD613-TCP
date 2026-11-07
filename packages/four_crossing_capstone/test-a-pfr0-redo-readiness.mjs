@@ -19,6 +19,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { fileURLToPath } from 'node:url';
 import {
   APFR0RedoApparatus,
   A_PFR0_SCHEMA_V1,
@@ -123,19 +125,57 @@ test('4. Execution Boundary Separation: A-PFR0 vs A-PFR1 vs Experiment B', () =>
   assert.equal(boundaries.authority, 'SAC[X6ZNK5NO51]');
 });
 
-test('5. Full Readiness Receipt Generation', () => {
+test('5. Full Readiness Receipt Generation & Measured Probe Observations', () => {
   const apparatus = new APFR0RedoApparatus();
-  const testReceiptPath = path.resolve('C:/td613-worktrees/a-pfr0-vixen-readiness/packages/four_crossing_capstone/a-pfr0-readiness-receipt.json');
+  const testReceiptDir = process.env.TD613_UPDATE_RECEIPTS === '1'
+    ? path.dirname(fileURLToPath(import.meta.url))
+    : path.join(os.tmpdir(), 'td613-a-pfr0-test');
+  fs.mkdirSync(testReceiptDir, { recursive: true });
+  const testReceiptPath = path.resolve(testReceiptDir, 'a-pfr0-readiness-receipt.json');
 
   const receipt = apparatus.generateReadinessReceipt(testReceiptPath);
 
   assert.equal(receipt.schema, A_PFR0_SCHEMA_V1);
   assert.equal(receipt.status, 'A_PFR0_READINESS_QUALIFIED');
-  assert.equal(receipt.four_crossing_preflight_readiness.crossing_s.status, 'READY');
-  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.status, 'READY');
-  assert.equal(receipt.four_crossing_preflight_readiness.crossing_w.status, 'READY');
-  assert.equal(receipt.four_crossing_preflight_readiness.crossing_t.status, 'READY');
 
+  // Verify Crossing S measured readiness
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_s.status, 'PREFLIGHT_VERIFIED');
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_s.zero_rows_attested, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_s.flight_execution_status, 'HELD_NOT_EXECUTED');
+  assert.ok(typeof receipt.four_crossing_preflight_readiness.crossing_s.measured_latency_ms === 'number');
+
+  // Verify Crossing E measured readiness
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.status, 'PREFLIGHT_VERIFIED');
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.zero_rows_attested, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.vixen_standalone_restored, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.vixen_methods_executed, 3);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.vixen_methods_verified, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_e.flight_execution_status, 'HELD_NOT_EXECUTED');
+  assert.ok(typeof receipt.four_crossing_preflight_readiness.crossing_e.measured_latency_ms === 'number');
+
+  // Verify Crossing W measured readiness
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_w.status, 'PREFLIGHT_VERIFIED');
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_w.zero_rows_attested, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_w.flight_execution_status, 'HELD_NOT_EXECUTED');
+  assert.ok(typeof receipt.four_crossing_preflight_readiness.crossing_w.measured_latency_ms === 'number');
+
+  // Verify Crossing T measured readiness
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_t.status, 'PREFLIGHT_VERIFIED');
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_t.zero_rows_attested, true);
+  assert.equal(receipt.four_crossing_preflight_readiness.crossing_t.flight_execution_status, 'HELD_NOT_EXECUTED');
+  assert.ok(typeof receipt.four_crossing_preflight_readiness.crossing_t.measured_latency_ms === 'number');
+
+  // Verify measured negative controls (observed codes & fail-closed statuses)
+  assert.equal(receipt.preflight_negative_controls.unadmitted_postflight_file.observed_code, 'UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED');
+  assert.equal(receipt.preflight_negative_controls.unadmitted_postflight_file.observed_status, 'FAIL_CLOSED_CONFIRMED');
+  assert.equal(receipt.preflight_negative_controls.simulated_flight_promotion.observed_code, 'SIMULATED_FLIGHT_PROMOTION_FORBIDDEN');
+  assert.equal(receipt.preflight_negative_controls.simulated_flight_promotion.observed_status, 'FAIL_CLOSED_CONFIRMED');
+  assert.equal(receipt.preflight_negative_controls.claim_from_hash_conflation.observed_code, 'CLAIM_ENTAILMENT_HELD');
+  assert.equal(receipt.preflight_negative_controls.claim_from_hash_conflation.observed_status, 'FAIL_CLOSED_CONFIRMED');
+  assert.equal(receipt.preflight_negative_controls.unauthorized_human_gate_resolution.observed_code, 'UNAUTHORIZED_HUMAN_GATE_RESOLUTION');
+  assert.equal(receipt.preflight_negative_controls.unauthorized_human_gate_resolution.observed_status, 'FAIL_CLOSED_CONFIRMED');
+
+  // Verify convenience boolean flags
   assert.equal(receipt.preflight_negative_controls.unadmitted_postflight_file_rejected, true);
   assert.equal(receipt.preflight_negative_controls.simulated_flight_promotion_refused, true);
   assert.equal(receipt.preflight_negative_controls.claim_from_hash_conflation_refused, true);

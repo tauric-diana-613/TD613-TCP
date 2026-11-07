@@ -6,10 +6,10 @@
   "covenant": "Khona‌lit-po (literal interior U+200C preserved)",
   "authority": "SAC[X6ZNK5NO51]",
   "status": "A_PFR0_READINESS_QUALIFIED",
-  "execution_timestamp": "2026-11-07T01:05:40.402Z",
+  "execution_timestamp": "2026-11-07T01:26:03.618Z",
   "zero_state_witness": {
     "schema": "td613.a-pfr0-redo-readiness/v1",
-    "timestamp": "2026-11-07T01:05:40.402Z",
+    "timestamp": "2026-11-07T01:26:03.614Z",
     "all_crossings_zero_state": true,
     "witness_sha256": "14e3fef9d7d1ed3b0d0e5f306ee6a2b28a7f72b92f1d0e44fdebad4867a79b3d",
     "crossings": {
@@ -96,28 +96,83 @@
   },
   "four_crossing_preflight_readiness": {
     "crossing_s": {
-      "status": "READY",
+      "crossing_id": "CROSSING_S_SIGNALRUPTURE",
+      "label": "SignalRupture First",
+      "status": "PREFLIGHT_VERIFIED",
       "recipient": "EMPTY_ENCYCLOPEDIA_RECEIVER",
-      "zero_rows_attested": true
+      "tables_verified": 7,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "native_methods_indexed": [
+        "SRC_PROJECTIVE_ROUTING",
+        "SRC_SHADOW_GRAPH_TRANSFORMATION"
+      ],
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.099
     },
     "crossing_e": {
-      "status": "READY",
+      "crossing_id": "CROSSING_E_EMSTD613",
+      "label": "EMSTD613 & Vixen Cybernetics",
+      "status": "PREFLIGHT_VERIFIED",
       "recipient": "EM_EMPTY_ENCYCLOPEDIA_RECEIVER",
+      "tables_verified": 6,
+      "total_rows_observed": 0,
       "zero_rows_attested": true,
-      "vixen_standalone_restored": true
+      "vixen_standalone_restored": true,
+      "vixen_methods_executed": 3,
+      "vixen_methods_verified": true,
+      "historical_census_sources": 87,
+      "recipient_census_sources": 94,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.936
     },
     "crossing_w": {
-      "status": "READY",
+      "crossing_id": "CROSSING_W_WENDBINE",
+      "label": "Wendbine Evolved Compiler",
+      "status": "PREFLIGHT_VERIFIED",
       "recipient": "WENDBINE_EMPTY_RECEIVER",
-      "zero_rows_attested": true
+      "tables_verified": 5,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "census_concepts": 191,
+      "census_families": 9,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.11
     },
     "crossing_t": {
-      "status": "READY",
+      "crossing_id": "CROSSING_T_UNIVERSAL_ATELIER",
+      "label": "Universal Atelier (TD613 Reference Encyclopedia)",
+      "status": "PREFLIGHT_VERIFIED",
       "recipient": "UNIVERSAL_ATELIER_RECEIVER",
-      "zero_rows_attested": true
+      "tables_verified": 5,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "comparator_dimensions": 12,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.075
     }
   },
   "preflight_negative_controls": {
+    "unadmitted_postflight_file": {
+      "rejection_enforced": true,
+      "observed_code": "UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "simulated_flight_promotion": {
+      "rejection_enforced": true,
+      "observed_code": "SIMULATED_FLIGHT_PROMOTION_FORBIDDEN",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "claim_from_hash_conflation": {
+      "rejection_enforced": true,
+      "observed_code": "CLAIM_ENTAILMENT_HELD",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "unauthorized_human_gate_resolution": {
+      "rejection_enforced": true,
+      "observed_code": "UNAUTHORIZED_HUMAN_GATE_RESOLUTION",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
     "unadmitted_postflight_file_rejected": true,
     "simulated_flight_promotion_refused": true,
     "claim_from_hash_conflation_refused": true,

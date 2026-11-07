@@ -82,6 +82,7 @@
     .badge-yellow { background: var(--arc-flash); color: #000; }
     .badge-dark { background: var(--graphite); color: #FFF; }
     .badge-held { background: #FFE4E8; color: #9E1B32; border: 1px solid #F5C2C7; }
+    .badge-demo { background: #EBF8FF; color: #2B6CB0; border: 1px solid #BEE3F8; }
 
     h1 {
       font-size: 1.8rem;
@@ -203,6 +204,7 @@
       border-radius: 4px;
       overflow-x: auto;
       margin-top: 12px;
+      white-space: pre-wrap;
     }
 
     input, button, select {
@@ -225,6 +227,22 @@
     button.action-btn:hover {
       background: var(--baker-miller-dark);
       color: #FFF;
+    }
+
+    button.neg-btn {
+      background: #FFF5F5;
+      color: #C53030;
+      border: 1px solid #FEB2B2;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    button.neg-btn:hover {
+      background: #FED7D7;
     }
 
     table {
@@ -265,7 +283,7 @@
       </div>
       <h1>𝌋 VIXEN CYBERNETICS</h1>
       <p style="color: var(--smoked-nickel); font-size: 0.95rem;">
-        Independent Em Research Product & Functional Cybernetic State Engine · A-PFR0 Standalone Restoration
+        Glinda Cyberpunk Architectural Serenity · Concealed Cybernetic Nervous System · A-PFR0 Standalone Restoration
       </p>
       <div class="signature-banner">
         CANONICAL SIGNATURE: <strong>VIXENCYBERNETICS$S_e≡[x+y]=z+1$</strong> &nbsp;|&nbsp; TITLE MATH: <code>S_{e}\equiv[x+y]=z+1</code>
@@ -275,7 +293,7 @@
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('nav')">1. Corpus & Navigation</button>
       <button class="tab-btn" onclick="switchTab('gates')">2. 8 Human Gates & Partitions</button>
-      <button class="tab-btn" onclick="switchTab('witness')">3. Exact Passage Witness</button>
+      <button class="tab-btn" onclick="switchTab('witness')">3. Exact Passage Witness (UTF-8)</button>
       <button class="tab-btn" onclick="switchTab('instruments')">4. 21 Documentary Instruments</button>
       <button class="tab-btn" onclick="switchTab('math')">5. Mathematical Representation</button>
       <button class="tab-btn" onclick="switchTab('custody')">6. Preserved Uncertainty</button>
@@ -331,22 +349,47 @@
       </div>
     </div>
 
-    <!-- PANEL 3: EXACT PASSAGE WITNESS -->
+    <!-- PANEL 3: EXACT PASSAGE WITNESS (REAL BROWSER UTF-8 IMPLEMENTATION) -->
     <div id="panel-witness" class="panel">
-      <h2>Grounded Passage Retrieval & Codepoint Boundary Safety</h2>
+      <h2>Grounded Passage Retrieval & Genuine UTF-8 Byte-Span Verification</h2>
       <p style="font-size: 0.9rem; margin-bottom: 12px;">
-        Retrieves exact byte spans from admitted documents and enforces strict UTF-8 continuation-byte safety checks.
+        Executes genuine browser-compatible, source-bound UTF-8 byte-span verification using <code>TextEncoder</code> and <code>TextDecoder</code> with fatal continuation-byte safety checks. Slicing on UTF-16 code units is strictly forbidden.
       </p>
 
-      <div style="margin-bottom: 12px;">
-        <label style="font-size: 0.85rem; font-weight: 600;">Sample Document Content:</label>
-        <div class="code-block" id="sample-doc-text">EMSTD613: Preservation of Tauric Diana Crimean heritage custodianship under covenant Khona‌lit-po [SAC X6ZNK5NO51].</div>
+      <div style="margin-bottom: 16px;">
+        <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 6px;">Select Admitted Document Record:</label>
+        <select id="doc-selector" onchange="onDocumentChange()" style="width: 100%; max-width: 600px; margin-bottom: 8px;">
+          <option value="doc:demo:vixen-signature">DEMO-01: VIXENCYBERNETICS$S_e≡[x+y]=z+1$ & Unicode (Demonstration Record)</option>
+          <option value="doc:demo:heritage-custody">DEMO-02: Tauric Diana & Khona‌lit-po Heritage (Demonstration Record)</option>
+        </select>
+        <div id="doc-classification-badge">
+          <span class="badge badge-demo">CLASSIFICATION: SOURCE_FREE_DEMONSTRATION_RECORD</span>
+          <span style="font-size: 0.75rem; color: #C53030; margin-left: 8px; font-weight: 600;">(Authenticated Original Research Sources: NONE ADMITTED IN STANDALONE DEMO)</span>
+        </div>
       </div>
 
-      <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
-        <span>Byte Start: <input type="number" id="span-start" value="0" style="width: 70px;"></span>
-        <span>Byte End: <input type="number" id="span-end" value="38" style="width: 70px;"></span>
-        <button class="action-btn" onclick="retrieveWitness()">Retrieve Grounded Witness</button>
+      <div style="margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <label style="font-size: 0.85rem; font-weight: 600;">Document Content:</label>
+          <span id="doc-byte-len-indicator" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--smoked-nickel);">Length: 0 bytes</span>
+        </div>
+        <div class="code-block" id="doc-display-text" style="max-height: 120px; overflow-y: auto;"></div>
+      </div>
+
+      <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+        <span>Byte Start: <input type="number" id="span-start" value="0" style="width: 80px;"></span>
+        <span>Byte End: <input type="number" id="span-end" value="44" style="width: 80px;"></span>
+        <button class="action-btn" onclick="executeBrowserWitness()">Retrieve Grounded Witness (UTF-8)</button>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 6px;">Adversarial Negative Control Probes:</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button class="neg-btn" onclick="runNegativeTest('CUT_GLYPH')">Probe 1: Cut Mid-Codepoint on 𝌋 (Bytes 1..4)</button>
+          <button class="neg-btn" onclick="runNegativeTest('CUT_ZWNJ')">Probe 2: Cut Mid-Codepoint on Khona‌lit-po (U+200C)</button>
+          <button class="neg-btn" onclick="runNegativeTest('OUT_OF_BOUNDS')">Probe 3: Out-of-Bounds Span [0, 9999]</button>
+          <button class="neg-btn" onclick="runNegativeTest('MISSING_DOC')">Probe 4: Missing Source Identity</button>
+        </div>
       </div>
 
       <div id="witness-output" class="code-block" style="display:none;"></div>
@@ -440,6 +483,51 @@
   </div>
 
   <script>
+    // --- REAL BROWSER UTF-8 REPOSITORY ---
+    const BROWSER_DOCUMENTS = {
+      'doc:demo:vixen-signature': {
+        doc_id: 'doc:demo:vixen-signature',
+        classification: 'SOURCE_FREE_DEMONSTRATION_RECORD',
+        title: 'DEMO-01: VIXENCYBERNETICS$S_e≡[x+y]=z+1$ & Unicode',
+        text: '𝌋 VIXEN CYBERNETICS: Testing state transition S_e ≡ [x+y]=z+1 under covenant Khona\u200Clit-po [SAC X6ZNK5NO51].'
+      },
+      'doc:demo:heritage-custody': {
+        doc_id: 'doc:demo:heritage-custody',
+        classification: 'SOURCE_FREE_DEMONSTRATION_RECORD',
+        title: 'DEMO-02: Tauric Diana & Khona‌lit-po Heritage',
+        text: 'EMSTD613: Preservation of Tauric Diana Crimean heritage custodianship under covenant Khona\u200Clit-po [SAC X6ZNK5NO51].'
+      }
+    };
+
+    function isUtf8ContinuationByte(b) {
+      return (b & 0xC0) === 0x80;
+    }
+
+    async function sha256Hex(uint8Array) {
+      if (window.crypto && window.crypto.subtle) {
+        const hashBuf = await window.crypto.subtle.digest('SHA-256', uint8Array);
+        const hashArray = Array.from(new Uint8Array(hashBuf));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      return 'UNSUPPORTED_CRYPTO_API';
+    }
+
+    function onDocumentChange() {
+      const select = document.getElementById('doc-selector');
+      const doc = BROWSER_DOCUMENTS[select.value];
+      if (!doc) return;
+
+      document.getElementById('doc-display-text').textContent = doc.text;
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(doc.text);
+      document.getElementById('doc-byte-len-indicator').textContent = 'Length: ' + bytes.length + ' UTF-8 bytes';
+    }
+
+    // Initialize display on load
+    window.addEventListener('DOMContentLoaded', () => {
+      onDocumentChange();
+    });
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -460,26 +548,121 @@
       res.textContent += "Status: HELD_HUMAN_GATE_UNRESOLVED (0 gates resolved by machine).";
     }
 
-    function retrieveWitness() {
+    async function retrievePassageWitnessInBrowser(docId, byteStart, byteEnd) {
+      const doc = BROWSER_DOCUMENTS[docId];
+      if (!doc) {
+        throw { code: 'DOCUMENT_NOT_FOUND', message: 'Document ' + docId + ' not found in demonstration registry.' };
+      }
+
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(doc.text);
+
+      if (isNaN(byteStart) || isNaN(byteEnd) || byteStart < 0 || byteEnd > bytes.length || byteStart >= byteEnd) {
+        throw { 
+          code: 'INVALID_SPAN', 
+          message: 'Requested span [' + byteStart + ', ' + byteEnd + '] is out of bounds for UTF-8 byte length ' + bytes.length + '.' 
+        };
+      }
+
+      // Codepoint boundary checks on genuine UTF-8 bytes
+      if (byteStart > 0 && isUtf8ContinuationByte(bytes[byteStart])) {
+        throw {
+          code: 'INVALID_UTF8_BOUNDARY',
+          message: 'byteStart ' + byteStart + ' lands on UTF-8 continuation byte (0x' + bytes[byteStart].toString(16).toUpperCase() + '). Mid-codepoint slicing refused.'
+        };
+      }
+      if (byteEnd < bytes.length && isUtf8ContinuationByte(bytes[byteEnd])) {
+        throw {
+          code: 'INVALID_UTF8_BOUNDARY',
+          message: 'byteEnd ' + byteEnd + ' lands on UTF-8 continuation byte (0x' + bytes[byteEnd].toString(16).toUpperCase() + '). Mid-codepoint slicing refused.'
+        };
+      }
+
+      const sliceBytes = bytes.subarray(byteStart, byteEnd);
+      const decoder = new TextDecoder('utf-8', { fatal: true });
+      const sliceText = decoder.decode(sliceBytes);
+      const sliceDigest = await sha256Hex(sliceBytes);
+
+      return {
+        doc_id: doc.doc_id,
+        classification: doc.classification,
+        is_authenticated_original_source: false,
+        admonition: 'DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.',
+        byte_start: byteStart,
+        byte_end: byteEnd,
+        byte_count: sliceBytes.length,
+        slice_sha256: sliceDigest,
+        slice_text: sliceText,
+        witness_status: 'VERIFIED_GROUNDED_BYTE_SPAN',
+        codepoint_boundary_verified: true,
+        utf8_decoder_status: 'FATAL_UTF8_DECODED_CLEAN'
+      };
+    }
+
+    async function executeBrowserWitness() {
+      const select = document.getElementById('doc-selector');
+      const docId = select.value;
       const s = parseInt(document.getElementById('span-start').value, 10);
       const e = parseInt(document.getElementById('span-end').value, 10);
-      const txt = document.getElementById('sample-doc-text').textContent;
       const out = document.getElementById('witness-output');
       out.style.display = 'block';
 
-      if (isNaN(s) || isNaN(e) || s < 0 || e > txt.length || s >= e) {
-        out.textContent = "Error: INVALID_SPAN. Span must be within [0, " + txt.length + "].";
-        return;
+      try {
+        const result = await retrievePassageWitnessInBrowser(docId, s, e);
+        out.textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        out.textContent = JSON.stringify({
+          error: true,
+          code: err.code || 'UNKNOWN_ERROR',
+          message: err.message || String(err)
+        }, null, 2);
       }
+    }
 
-      const slice = txt.substring(s, e);
-      out.textContent = JSON.stringify({
-        span: [s, e],
-        byte_count: slice.length,
-        slice_text: slice,
-        witness_status: "VERIFIED_GROUNDED_SPAN",
-        utf8_safety: "CODEPOINT_BOUNDARY_CONFIRMED"
-      }, null, 2);
+    async function runNegativeTest(testType) {
+      const out = document.getElementById('witness-output');
+      out.style.display = 'block';
+
+      try {
+        if (testType === 'CUT_GLYPH') {
+          // In doc:demo:vixen-signature, 𝌋 is bytes 0..4 (0xF0 0x90 0xB6 0x93).
+          // Attempting span [1, 4] lands on byte 1 (0x90), a continuation byte.
+          document.getElementById('doc-selector').value = 'doc:demo:vixen-signature';
+          document.getElementById('span-start').value = 1;
+          document.getElementById('span-end').value = 4;
+          onDocumentChange();
+          await retrievePassageWitnessInBrowser('doc:demo:vixen-signature', 1, 4);
+        } else if (testType === 'CUT_ZWNJ') {
+          // In doc:demo:heritage-custody, find where Khona‌lit-po is:
+          // 'Khona' (5 bytes) + U+200C (3 bytes: 0xE2 0x80 0x8C) + 'lit-po' (6 bytes).
+          // Cutting into middle of U+200C triggers continuation byte error.
+          const encoder = new TextEncoder();
+          const doc = BROWSER_DOCUMENTS['doc:demo:heritage-custody'];
+          const bytes = encoder.encode(doc.text);
+          // Find 'Khona'
+          const khonaIdx = doc.text.indexOf('Khona');
+          const prefixBytes = encoder.encode(doc.text.substring(0, khonaIdx + 5)).length; // byte offset of U+200C
+          const midZwnjOffset = prefixBytes + 1; // continuation byte of U+200C
+          document.getElementById('doc-selector').value = 'doc:demo:heritage-custody';
+          document.getElementById('span-start').value = midZwnjOffset;
+          document.getElementById('span-end').value = midZwnjOffset + 5;
+          onDocumentChange();
+          await retrievePassageWitnessInBrowser('doc:demo:heritage-custody', midZwnjOffset, midZwnjOffset + 5);
+        } else if (testType === 'OUT_OF_BOUNDS') {
+          document.getElementById('span-start').value = 0;
+          document.getElementById('span-end').value = 9999;
+          await retrievePassageWitnessInBrowser('doc:demo:vixen-signature', 0, 9999);
+        } else if (testType === 'MISSING_DOC') {
+          await retrievePassageWitnessInBrowser('doc:non_existent_unadmitted', 0, 10);
+        }
+      } catch (err) {
+        out.textContent = JSON.stringify({
+          negative_control_passed: true,
+          observed_rejection_code: err.code || 'UNKNOWN_ERROR',
+          rejection_message: err.message || String(err),
+          status: 'FAIL_CLOSED_CONFIRMED'
+        }, null, 2);
+      }
     }
 
     function evalMath() {

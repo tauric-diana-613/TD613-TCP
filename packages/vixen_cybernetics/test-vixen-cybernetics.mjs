@@ -86,19 +86,27 @@ test('3. Work Identity & The 256 Permissible Partitions in [32, 40]', () => {
   );
 });
 
-test('4. Grounded Document Admission & Exact Passage Retrieval', () => {
+test('4. Grounded Document Admission & Exact Passage Retrieval (Source vs Demo Distinction)', () => {
   const engine = new VixenCyberneticsEngine();
   const docId = 'doc:em:heritage-custody';
   const text = 'EMSTD613: Tauric Diana Crimean heritage custodianship under covenant Khona\u200Clit-po.';
 
-  const admission = engine.admitDocument(docId, 'Heritage Custody Note', text);
-  assert.equal(admission.status, 'ADMITTED');
-  assert.equal(admission.byte_length, Buffer.byteLength(text, 'utf8'));
+  // Default admission is classified as SOURCE_FREE_DEMONSTRATION_RECORD
+  const demoAdmission = engine.admitDocument(docId, 'Heritage Custody Note', text);
+  assert.equal(demoAdmission.status, 'ADMITTED');
+  assert.equal(demoAdmission.classification, 'SOURCE_FREE_DEMONSTRATION_RECORD');
+  assert.equal(demoAdmission.is_authenticated_original_source, false);
+  assert.equal(demoAdmission.byte_length, Buffer.byteLength(text, 'utf8'));
 
   // Retrieve valid span [0, 9] ("EMSTD613:")
   const witness = engine.retrievePassageWitness(docId, 0, 9);
   assert.equal(witness.slice_text, 'EMSTD613:');
   assert.equal(witness.witness_verified, true);
+  assert.equal(witness.codepoint_boundary_verified, true);
+  assert.equal(witness.utf8_decoder_status, 'FATAL_UTF8_DECODED_CLEAN');
+  assert.equal(witness.classification, 'SOURCE_FREE_DEMONSTRATION_RECORD');
+  assert.equal(witness.is_authenticated_original_source, false);
+  assert.match(witness.admonition, /DEMONSTRATION RECORD ONLY/);
   assert.equal(witness.slice_sha256, sha256(Buffer.from('EMSTD613:', 'utf8')));
 
   // Negative control 1: Out of bounds span
@@ -120,7 +128,7 @@ test('4. Grounded Document Admission & Exact Passage Retrieval', () => {
   );
 });
 
-test('5. Fatal UTF-8 Codepoint Boundary Enforcement', () => {
+test('5. Fatal UTF-8 Codepoint Boundary Enforcement (𝌋 U+10D613 & Khona\u200Clit-po U+200C)', () => {
   const engine = new VixenCyberneticsEngine();
   const docId = 'doc:em:utf8-stress';
   // 𝌋 is 4 bytes: 0xF0 0x90 0xB6 0x93
@@ -134,15 +142,45 @@ test('5. Fatal UTF-8 Codepoint Boundary Enforcement', () => {
   const validWitness = engine.retrievePassageWitness(docId, 0, 4);
   assert.equal(validWitness.slice_text, '𝌋');
 
-  // Attempt to slice mid-codepoint at byte offset 1 (inside 𝌋)
+  // Negative Case 1: Mid-codepoint cut inside 𝌋 (offset 1, 2, or 3)
   assert.throws(
     () => engine.retrievePassageWitness(docId, 1, 4),
     { code: 'INVALID_UTF8_BOUNDARY' }
   );
-
-  // Attempt to slice mid-codepoint at byte offset 2
   assert.throws(
     () => engine.retrievePassageWitness(docId, 0, 2),
+    { code: 'INVALID_UTF8_BOUNDARY' }
+  );
+  assert.throws(
+    () => engine.retrievePassageWitness(docId, 0, 3),
+    { code: 'INVALID_UTF8_BOUNDARY' }
+  );
+
+  // Negative Case 2: Mid-codepoint cut inside Khona‌lit-po interior U+200C
+  // U+200C is 3 bytes: 0xE2 0x80 0x8C
+  const zwnjDocId = 'doc:em:zwnj-test';
+  const zwnjText = 'Khona\u200Clit-po'; // 'Khona' (5) + U+200C (3) + 'lit-po' (6) = 14 bytes
+  const zwnjBuf = Buffer.from(zwnjText, 'utf8');
+  assert.equal(zwnjBuf.length, 14);
+  assert.equal(zwnjBuf[5], 0xE2);
+  assert.equal(zwnjBuf[6], 0x80);
+  assert.equal(zwnjBuf[7], 0x8C);
+
+  engine.admitDocument(zwnjDocId, 'Khona\u200Clit-po ZWNJ Doc', zwnjText);
+
+  // Valid span [0, 8] extracts 'Khona\u200C'
+  const validZwnjWitness = engine.retrievePassageWitness(zwnjDocId, 0, 8);
+  assert.equal(validZwnjWitness.slice_text, 'Khona\u200C');
+
+  // Mid-codepoint cut at byte 6 (continuation byte 0x80)
+  assert.throws(
+    () => engine.retrievePassageWitness(zwnjDocId, 6, 14),
+    { code: 'INVALID_UTF8_BOUNDARY' }
+  );
+
+  // Mid-codepoint cut at byte 7 (continuation byte 0x8C)
+  assert.throws(
+    () => engine.retrievePassageWitness(zwnjDocId, 0, 7),
     { code: 'INVALID_UTF8_BOUNDARY' }
   );
 });

@@ -206,7 +206,7 @@ export class VixenCyberneticsEngine {
   }
 
   // --- 3. Original Document Retrieval & Exact Passage Witness ---
-  admitDocument(docId, title, contentUtf8, classification = 'ORIGINAL_SOURCE') {
+  admitDocument(docId, title, contentUtf8, classification = 'SOURCE_FREE_DEMONSTRATION_RECORD') {
     const rawBuffer = Buffer.from(contentUtf8, 'utf8');
     const digest = sha256(rawBuffer);
 
@@ -222,6 +222,9 @@ export class VixenCyberneticsEngine {
 
     return {
       doc_id: docId,
+      title,
+      classification,
+      is_authenticated_original_source: classification === 'ORIGINAL_SOURCE',
       byte_length: rawBuffer.length,
       sha256: digest,
       status: 'ADMITTED',
@@ -244,12 +247,12 @@ export class VixenCyberneticsEngine {
 
     // Enforce UTF-8 codepoint boundary safety
     if (!isCodepointBoundary(doc.raw_buffer, byteStart)) {
-      const err = new Error(`INVALID_UTF8_BOUNDARY: byteStart ${byteStart} lands inside a multi-byte UTF-8 codepoint.`);
+      const err = new Error(`INVALID_UTF8_BOUNDARY: byteStart ${byteStart} lands on a UTF-8 continuation byte (0x${doc.raw_buffer[byteStart].toString(16).toUpperCase()}). Mid-codepoint slicing refused.`);
       err.code = 'INVALID_UTF8_BOUNDARY';
       throw err;
     }
     if (!isCodepointBoundary(doc.raw_buffer, byteEnd)) {
-      const err = new Error(`INVALID_UTF8_BOUNDARY: byteEnd ${byteEnd} lands inside a multi-byte UTF-8 codepoint.`);
+      const err = new Error(`INVALID_UTF8_BOUNDARY: byteEnd ${byteEnd} lands on a UTF-8 continuation byte (0x${doc.raw_buffer[byteEnd].toString(16).toUpperCase()}). Mid-codepoint slicing refused.`);
       err.code = 'INVALID_UTF8_BOUNDARY';
       throw err;
     }
@@ -260,12 +263,19 @@ export class VixenCyberneticsEngine {
 
     return {
       doc_id: docId,
+      classification: doc.classification,
+      is_authenticated_original_source: doc.classification === 'ORIGINAL_SOURCE',
+      admonition: doc.classification === 'SOURCE_FREE_DEMONSTRATION_RECORD'
+        ? 'DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.'
+        : null,
       byte_start: byteStart,
       byte_end: byteEnd,
       byte_count: sliceBuf.length,
       slice_sha256: sliceSha256,
       slice_text: sliceText,
       witness_verified: true,
+      codepoint_boundary_verified: true,
+      utf8_decoder_status: 'FATAL_UTF8_DECODED_CLEAN',
     };
   }
 

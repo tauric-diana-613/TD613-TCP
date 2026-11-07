@@ -1,31 +1,31 @@
 {
   "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
-  "invocation_id": "dollhouse-audit-1794013520494-9eb94cf4",
-  "timestamp": "2026-11-07T01:05:20.494Z",
+  "invocation_id": "dollhouse-audit-1794014835544-9eb94cf4",
+  "timestamp": "2026-11-07T01:27:15.544Z",
   "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
   "source_revision_verified": true,
   "git_commit_verified": true,
-  "executing_checkout_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
-  "is_exact_checkout_match": true,
+  "executing_checkout_revision": "9c01da8c0c59fcbdd06d6497a5818664337488aa",
+  "is_exact_checkout_match": false,
   "worktree_cleanliness_verified": false,
   "exact_checkout_verified": false,
-  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
-  "current_head_source_equivalence_verified": true,
+  "current_head_source_equivalence": "EXECUTABLE_SOURCE_DRIFT_DETECTED",
+  "current_head_source_equivalence_verified": false,
   "provenance_identities": {
     "executable_source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
-    "audit_execution_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+    "audit_execution_revision": "9c01da8c0c59fcbdd06d6497a5818664337488aa",
     "git_commit_verified": true,
-    "is_exact_checkout_match": true,
+    "is_exact_checkout_match": false,
     "worktree_cleanliness_verified": false,
-    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
-    "current_head_source_equivalence_verified": true,
+    "current_head_source_equivalence": "EXECUTABLE_SOURCE_DRIFT_DETECTED",
+    "current_head_source_equivalence_verified": false,
     "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
   },
   "provenance_acceptance": {
     "SOURCE_REVISION_VERIFIED": true,
-    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": false,
     "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
-    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "HELD"
   },
   "nested_extension_holds": [
     {
@@ -41,7 +41,7 @@
       "description": "one or both members violate valid Atlas member constraints"
     }
   ],
-  "is_historical_commit_only": false,
+  "is_historical_commit_only": true,
   "task_scope": "EXPERIMENT_A_PFR0_POSTFLIGHT_REDO_READINESS_AND_VIXEN_RESTORATION",
   "evidence_class": "SOURCE_FREE_READINESS_EVIDENCE",
   "evidence_references": [
@@ -58,9 +58,9 @@
       "reference": "packages/vixen_cybernetics/vixen-cybernetics-engine.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "74394c25d993261249861f2b41099248e233f98394339b7e679697491e15590c",
+      "byte_digest": "e86c9a1f7c0903ebeb2c87aef64e58b460ed4ad6d56f331029d9f562bbeb71e6",
       "byte_digest_verified": true,
-      "sha256": "74394c25d993261249861f2b41099248e233f98394339b7e679697491e15590c"
+      "sha256": "e86c9a1f7c0903ebeb2c87aef64e58b460ed4ad6d56f331029d9f562bbeb71e6"
     },
     {
       "reference": "packages/vixen_cybernetics/VIXEN_ARCHAEOLOGY_AND_CAPABILITY_MATRIX.md",
@@ -74,17 +74,17 @@
       "reference": "packages/vixen_cybernetics/test-vixen-cybernetics.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "3e1dfd9baef1d3092c4edbc1d4a77d9ac0e92cb7ec11a155a2d40fcf9757ecc2",
+      "byte_digest": "ce9a736ff650f0d8bbf568ca18acc718d962b86922d528e0c94c325660ea736c",
       "byte_digest_verified": true,
-      "sha256": "3e1dfd9baef1d3092c4edbc1d4a77d9ac0e92cb7ec11a155a2d40fcf9757ecc2"
+      "sha256": "ce9a736ff650f0d8bbf568ca18acc718d962b86922d528e0c94c325660ea736c"
     },
     {
       "reference": "packages/four_crossing_capstone/a-pfr0-postflight-redo-apparatus.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "09641144dd9d523da3d93f4ab9d5f7eae9b8c8be3169a0262708ed9273be9893",
+      "byte_digest": "f23b1b17818be4303da93864c626d7cdcfffa58a42bdf88d16ceef2972cbdeb7",
       "byte_digest_verified": true,
-      "sha256": "09641144dd9d523da3d93f4ab9d5f7eae9b8c8be3169a0262708ed9273be9893"
+      "sha256": "f23b1b17818be4303da93864c626d7cdcfffa58a42bdf88d16ceef2972cbdeb7"
     },
     {
       "reference": "packages/four_crossing_capstone/A_PFR0_POSTFLIGHT_REDO_SPECIFICATION.md",
@@ -98,17 +98,17 @@
       "reference": "packages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "74a96a270b5b8e4346125663ac593be7494a2519993ad5be9c332d523da1ad2c",
+      "byte_digest": "74597b16be98011f47518bc6c9de14d8ac412284ff664b7eac1e97b91f24ad43",
       "byte_digest_verified": true,
-      "sha256": "74a96a270b5b8e4346125663ac593be7494a2519993ad5be9c332d523da1ad2c"
+      "sha256": "74597b16be98011f47518bc6c9de14d8ac412284ff664b7eac1e97b91f24ad43"
     },
     {
       "reference": "packages/four_crossing_capstone/a-pfr0-readiness-receipt.json",
       "type": "WORKSPACE_FILE",
       "verified": true,
-      "byte_digest": "c4fd1c235ba5d34a5b04f5685312d4d8e34267352af8d5719ed0d1e90db7f70d",
+      "byte_digest": "837538ccef2b18d085f6605bcb05be64431af8d27b7fc0341e1148afd7145a69",
       "byte_digest_verified": true,
-      "sha256": "c4fd1c235ba5d34a5b04f5685312d4d8e34267352af8d5719ed0d1e90db7f70d"
+      "sha256": "837538ccef2b18d085f6605bcb05be64431af8d27b7fc0341e1148afd7145a69"
     }
   ],
   "roles_requested": [
@@ -468,5 +468,5 @@
   "synthetic_vs_empirical": "SYNTHETIC",
   "unresolved_questions": [],
   "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
-  "execution_duration_ms": 528
+  "execution_duration_ms": 406
 }

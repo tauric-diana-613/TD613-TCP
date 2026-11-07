@@ -1,10 +1,10 @@
-﻿# ≡¥îï TD613 ┬╖ EXPERIMENT B ┬╖ RGI-01
+# 𝌋 TD613 · EXPERIMENT B · RGI-01
 ## Rule-Generative Inquiry, Wolfram Multiway Formalization & Relational Geometry
 
 **Principal / Human Scientific Closure:** Tawanna C. Miller  
 **Operator:** `tauric.diana.613`  
-**Heritage:** Tauric Diana ΓÇö Crimean heritage custodianship  
-**Covenant:** KhonaΓÇîlit-po ΓÇö preserve literal interior U+200C  
+**Heritage:** Tauric Diana — Crimean heritage custodianship  
+**Covenant:** Khona‌lit-po — preserve literal interior U+200C  
 **Authority:** `SAC[X6ZNK5NO51]`  
 **Date of proposal:** November 6, 2026  
 **Status:** `PROPOSED_PROSPECTIVE_RECORD_ONLY`  
@@ -186,4 +186,4 @@ Preserve the distinctions:
 - **Experiment B Activation:** HELD
 - **Human Scientific Closure:** RESERVED
 
-*KhonaΓÇîlit-po ΓƒÉ Sealed.*
+*Khona‌lit-po ⟐ Sealed.*

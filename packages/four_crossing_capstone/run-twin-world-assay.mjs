@@ -31,6 +31,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -41,7 +42,8 @@ import {
 } from '../universal_atelier/receiver/universal-atelier-receiver.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const RECEIPT_PATH = path.resolve(__dirname, 'twin-world-assay-receipt.json');
+const receiptDir = process.env.TD613_UPDATE_RECEIPTS === '1' ? __dirname : os.tmpdir();
+const RECEIPT_PATH = path.resolve(receiptDir, 'twin-world-assay-receipt.json');
 
 console.log('================================================================');
 console.log('CHAMBER 6: EQUAL-GRAPH TWIN-WORLD ASSAY');
