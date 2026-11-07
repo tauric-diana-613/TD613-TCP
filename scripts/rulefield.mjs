@@ -29,7 +29,7 @@ try{
  if(command==='stats')output={...state,by_kind:index.totals.lanes,source_issues:index.issues,v04:index.v04_competent_null,priority_4:index.priority_queue[3].title,priority_47:index.priority_queue[46].title};
  else if(command==='validate')output=state;
  else if(command==='queue')output=priorityLens(index);
- else if(command==='priority')output=inspectPriority(index,Number(args[1]),{limit:Number(field('--limit',60))});
+ else if(command==='priority')output=inspectPriority(index,Number(args[1]),{limit:Number(field('--limit',100))});
  else if(command==='search')output=searchRules(index,{term:args.slice(1).filter(x=>!x.startsWith('--')&&x!==field('--rank')&&x!==field('--limit')).join(' '),queue_rank:field('--rank'),limit:Number(field('--limit',15))});
  else if(command==='trace')output=traceRule(index,args[1]);
  else if(command==='crossing')output=inspectCrossing(index,args[1]);
