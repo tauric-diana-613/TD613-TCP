@@ -233,7 +233,7 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     assert.ok(html.includes('System Architecture (Technical)'), 'System Architecture label');
   });
 
-  await t.test('7. Standalone offline execution integrity', () => {
+  await t.test('7. Standalone offline execution integrity & zero external requests (D01)', () => {
     // Must contain all inline assets
     assert.ok(
       html.includes('image/webp;base64,'),
@@ -250,6 +250,35 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     assert.ok(
       html.includes('𝌋'),
       'Tetragram of contrariety U+1D30B must be preserved'
+    );
+
+    // D01: Zero automatic external resource declarations
+    const externalScripts = [...html.matchAll(/<script\b[^>]*\bsrc\s*=\s*['"]([^'"]+)['"]/gi)];
+    assert.strictEqual(
+      externalScripts.length,
+      0,
+      'Document must contain ZERO external <script src> tags'
+    );
+
+    const remoteLinks = [...html.matchAll(/<link\b[^>]*\bhref\s*=\s*['"]https?:\/\/([^'"]+)['"]/gi)];
+    assert.strictEqual(
+      remoteLinks.length,
+      0,
+      'Document must contain ZERO remote <link href="http..."> stylesheet or preconnect tags'
+    );
+
+    const preconnectLinks = [...html.matchAll(/<link\b[^>]*\brel\s*=\s*['"]preconnect['"]/gi)];
+    assert.strictEqual(
+      preconnectLinks.length,
+      0,
+      'Document must contain ZERO <link rel="preconnect"> tags'
+    );
+
+    const cssImports = [...html.matchAll(/@import\b[^;]+;/gi)];
+    assert.strictEqual(
+      cssImports.length,
+      0,
+      'Document must contain ZERO CSS @import declarations'
     );
   });
 
@@ -772,6 +801,65 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     // Verify HTML displays the calibrated [[1, 0.5], [0.2, 0.8]] in Observatory aperture tab
     assert.ok(html.includes("0.2 & 0.8"));
     assert.ok(html.includes("A_{2×2} = [[1, 0.5], [0.2, 0.8]] (κ ≈ 2.3275)"));
+  });
+
+  await t.test('13. Emergence HQ Review Findings (D01-D06: Zero External Dependencies, Execution Contract & Semantic Math Fallback)', () => {
+    // Contract verification in handoff manifest
+    const manifestMatch = html.match(/<script type="application\/json" id="vixen-astra-handoff">([\s\S]*?)<\/script>/);
+    assert.ok(manifestMatch, 'Handoff manifest #vixen-astra-handoff must exist');
+    const handoff = JSON.parse(manifestMatch[1]);
+    assert.strictEqual(handoff.predecessor_commit, '893e391a522eda0f9ad66100c948f4cd19e56917');
+    assert.strictEqual(handoff.predecessor_html_sha256, 'e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017');
+    assert.strictEqual(handoff.external_resource_requests_contract, 'STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0');
+    assert.strictEqual(handoff.standalone_external_dependencies_count, 0);
+
+    // Verify window.VixenReference.verify() attestation
+    const dom = createVixenDOM(html);
+    const win = dom.window;
+    const v = win.VixenReference.verify();
+    assert.strictEqual(v.external_resource_requests_contract, 'STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0');
+    assert.strictEqual(v.standalone_external_dependencies_count, 0);
+
+    // D02: Semantic mathematical fallbacks across all 22 folios
+    const corpusMatch = html.match(/<script id="vixen-corpus-bundle" type="application\/json">([\s\S]*?)<\/script>/);
+    assert.ok(corpusMatch, 'Corpus bundle must exist');
+    const corpus = JSON.parse(corpusMatch[1]);
+    assert.strictEqual(corpus.formula_folios.length, 22, 'Must contain 22 formula folios');
+    corpus.formula_folios.forEach((folio) => {
+      assert.ok(folio.latex && folio.latex.length > 0, `Folio ${folio.id} must have non-empty LaTeX`);
+      assert.ok(folio.fallback && folio.fallback.length > 0, `Folio ${folio.id} must have non-empty fallback`);
+    });
+
+    // Check 10 spine stages have LaTeX & fallback
+    assert.strictEqual(corpus.spine_stages.length, 10, 'Must contain 10 spine stages');
+    corpus.spine_stages.forEach((stage) => {
+      assert.ok(stage.latex && stage.latex.length > 0, `Stage ${stage.code} must have non-empty LaTeX`);
+      assert.ok(stage.fallback && stage.fallback.length > 0, `Stage ${stage.code} must have non-empty fallback`);
+    });
+
+    // Check Observatory models have LaTeX & fallback
+    const obsBlocks = win.document.querySelectorAll('#obsMathBox');
+    assert.ok(obsBlocks.length > 0, '#obsMathBox must exist in DOM');
+    const obsMath = obsBlocks[0];
+    assert.ok(obsMath.getAttribute('data-latex'), 'Obs math must have data-latex');
+    assert.ok(obsMath.querySelector('.math-fallback'), 'Obs math must contain .math-fallback');
+    assert.ok(obsMath.getAttribute('role') === 'math', 'Obs math must have role="math"');
+
+    // Matrix legibility: RC-07 must preserve rank-deficient negative control and lifted 2x2/3x2 operators
+    const rc07 = corpus.formula_folios.find((f) => f.id === 'RC-07');
+    assert.ok(rc07, 'RC-07 folio must exist');
+    assert.ok(rc07.fallback.includes('[[1, 1], [0.15, 0.15]]') || rc07.fallback.includes('[[1,1],[0.15,0.15]]'), 'RC-07 must format rank-1 negative control matrix with brackets');
+    assert.ok(rc07.fallback.includes('A_{2×2} (κ ≈ 2.3275)'), 'RC-07 must reference calibrated A_{2×2}');
+    assert.ok(rc07.fallback.includes('A_{3×2} (κ ≈ 2.6311)'), 'RC-07 must reference 3×2 probe');
+
+    // D03: Native system font stacks declared in structural CSS
+    assert.ok(html.includes('--font-sans'), 'Must define --font-sans');
+    assert.ok(html.includes('--font-display'), 'Must define --font-display');
+    assert.ok(html.includes('--font-serif'), 'Must define --font-serif');
+    assert.ok(html.includes('--font-mono'), 'Must define --font-mono');
+    assert.ok(html.includes('system-ui'), 'Sans must include system-ui fallback');
+    assert.ok(html.includes('Georgia'), 'Serif must include Georgia fallback');
+    assert.ok(html.includes('Consolas'), 'Mono must include Consolas fallback');
   });
 
 });

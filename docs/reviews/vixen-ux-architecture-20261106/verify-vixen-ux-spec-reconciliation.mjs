@@ -279,12 +279,28 @@ if (!manifestMatch || !bundleMatch || !themeMatch) {
       if (astraHandoff.document_identity !== 'VIXEN_CYBERNETICS_ASTRA_HANDOFF.html') {
         errors.push(`Astra handoff document_identity mismatch: ${astraHandoff.document_identity}`);
       }
-      if (astraHandoff.predecessor_commit !== 'fb4e9cf21cfe3b25ee3e1a97c1f0429b20578a48') {
+      if (astraHandoff.predecessor_commit !== '893e391a522eda0f9ad66100c948f4cd19e56917') {
         errors.push(`Astra handoff predecessor_commit mismatch: ${astraHandoff.predecessor_commit}`);
       }
-      if (astraHandoff.predecessor_html_sha256 !== '36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff') {
+      if (astraHandoff.predecessor_html_sha256 !== 'e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017') {
         errors.push(`Astra handoff predecessor_html_sha256 mismatch: ${astraHandoff.predecessor_html_sha256}`);
       }
+      
+      if (astraHandoff.external_resource_requests_contract !== 'STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0') {
+        errors.push(`Astra handoff external_resource_requests_contract mismatch: ${astraHandoff.external_resource_requests_contract}`);
+      }
+      if (astraHandoff.standalone_external_dependencies_count !== 0) {
+        errors.push(`Astra handoff standalone_external_dependencies_count must be 0: ${astraHandoff.standalone_external_dependencies_count}`);
+      }
+      const extScriptMatches = [...htmlText.matchAll(/<script\b[^>]*\bsrc\s*=\s*['"]([^'"]+)['"]/gi)];
+      if (extScriptMatches.length > 0) {
+        errors.push(`Found ${extScriptMatches.length} external <script src> tags: ${extScriptMatches.map(m => m[1]).join(', ')}`);
+      }
+      const remoteLinkMatches = [...htmlText.matchAll(/<link\b[^>]*\bhref\s*=\s*['"]https?:\/\/([^'"]+)['"]/gi)];
+      if (remoteLinkMatches.length > 0) {
+        errors.push(`Found ${remoteLinkMatches.length} remote <link href> tags: ${remoteLinkMatches.map(m => m[1]).join(', ')}`);
+      }
+
       if (!astraHandoff.six_principal_environments || Object.keys(astraHandoff.six_principal_environments).length !== 6) {
         errors.push('Astra handoff missing 6 principal environments');
       }
@@ -432,7 +448,7 @@ const receipt = {
       f2_session_local_predecessor_retention_verified: true,
       f3_webcrypto_fail_closed_rejection_verified: true,
       astra_single_file_handoff_byte_identical: true,
-      predecessor_v4_html_sha256_preserved: '36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff'
+      predecessor_v4_html_sha256_preserved: 'e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017'
     },
     pedagogue_membrane_and_reader_journeys: {
       governing_anti_equivalence: 'OPERAHOUSE ≠ OPERA ≠ PERFORMER',

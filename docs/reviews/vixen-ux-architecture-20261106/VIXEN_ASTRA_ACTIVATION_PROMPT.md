@@ -1,8 +1,8 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017`, 657,884 bytes)  
-**Predecessor Build:** Frozen Baseline Commit `fb4e9cf21cfe3b25ee3e1a97c1f0429b20578a48` (SHA-256: `36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff`, 652,893 bytes)
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `0cf03304b97508b4e0cb10c5a6313adbbb41df2b05d4b9384fe640902f1627e2`, 658,050 bytes)  
+**Predecessor Build:** Frozen Baseline Commit `893e391a522eda0f9ad66100c948f4cd19e56917` (SHA-256: `e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017`, 657,884 bytes)
 **Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---

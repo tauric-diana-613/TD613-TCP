@@ -53,5 +53,6 @@
 | [`08-inspector-alt-i-desktop.png`](./screenshots/08-inspector-alt-i-desktop.png) | `1440×900` | Concealed Cybernetic Inspector (`Alt+I`) — Tab II live WebCrypto SHA-256 & fatal `TextDecoder('utf-8', { fatal: true })` negative-control bench | Mid-`𝌋` (`F0 9D`) & mid-`U+200C` (`E2 80`) splits fail closed (`ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT`) |
 | [`09-cover-mobile-390px.png`](./screenshots/09-cover-mobile-390px.png) | `390×844` | Mobile `390px` Cover + Fox Emblem (`VIXEN` / `Sₑ ≡ [x + y] = z + 1`) + `2×2` Spatial Wayfinder | `scrollWidth: 390`, `headerClearancePx: 84`, `headerNonOverlapping: true` |
 | [`10-works-mobile-390px.png`](./screenshots/10-works-mobile-390px.png) | `390×844` | Mobile `390px` `02 Works` — Fox logo + full `Sₑ ≡ [x + y] = z + 1` header, AIA projection pills, and mobile Work sheet | Zero horizontal overflow (`390 <= 390`) across all 6 mobile views |
+| [`11-file-protocol-desktop.png`](./screenshots/11-file-protocol-desktop.png) | `1440×900` | `file://` protocol direct launch in Chromium — Standalone execution with zero network requests | `STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`, offline footer navigation verified |
 
 `Khona‌lit-po` · `⟐`
