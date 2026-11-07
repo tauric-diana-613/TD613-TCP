@@ -1,0 +1,27 @@
+{
+  "files": [
+    "A-PFR0.1-qualification-report.md",
+    "frozen-execution-manifest.json",
+    "qualification-summary.json",
+    "README.md",
+    "Screenshot-atlas.md",
+    "screenshots",
+    "screenshots-manifest.json"
+  ],
+  "candidate": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "screenshot_files": [
+    "encyclopedia-00-cover.jpg",
+    "encyclopedia-01-observatory.jpg",
+    "encyclopedia-02-lexicon.jpg",
+    "encyclopedia-03-evidence.jpg",
+    "encyclopedia-04-sources.jpg",
+    "encyclopedia-overview-entire.png",
+    "encyclopedia-overview-footer.jpg",
+    "vixen-01-corpus-navigation.jpg",
+    "vixen-02-human-gates.jpg",
+    "vixen-03-passage-witness.jpg",
+    "vixen-04-documentary-instruments.jpg",
+    "vixen-05-mathematical-representation.jpg",
+    "vixen-06-preserved-uncertainty.jpg"
+  ]
+}

@@ -1,0 +1,14 @@
+✔ 1. Demonstrable Zero-Row Initial Witness Verification (All 4 Crossings) (21.039ms)
+✔ 2. Four-Crossing Preflight Specifications and Censuses (0.2883ms)
+✔ 3. Source-to-Claim Warrant Boundary Enforcement (0.5337ms)
+✔ 4. Execution Boundary Separation: A-PFR0 vs A-PFR1 vs Experiment B (0.3715ms)
+✔ 5. Full Readiness Receipt Generation & Measured Probe Observations (13.1466ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 255.7929
+

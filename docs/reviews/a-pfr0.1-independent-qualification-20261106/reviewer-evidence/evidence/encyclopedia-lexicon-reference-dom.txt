@@ -1,0 +1,590 @@
+- link "Skip to research content":
+  - /url: "#main"
+- banner:
+  - link "Back to previous reading position":
+    - /url: /aperture/
+  - button "TAURICDIANA613 — return to cover":
+    - generic: 𝌋
+    - generic: TAURICDIANA613
+    - generic: THE MATHEMATICAL AUDIT
+  - navigation "Research sections":
+    - button "Cover"
+    - button "01 Observatory"
+    - button "02 Lexicon"
+    - button "03 Evidence"
+    - button "04 Sources"
+  - button "Search all research (Control or Command K)":
+    - generic: ⌘ K
+  - button "Open collection, 0 saved records":
+    - generic: "0"
+  - button "Pause motion":
+    - text: Pause motion
+- main:
+  - text: ·
+  - region "Lexicon a language for the limits":
+    - paragraph: 02 / EVIDENTIARY LEXICON
+    - heading "Lexicon a language for the limits" [active] [level=1]:
+      - text: Lexicon
+      - emphasis: a language for the limits
+    - paragraph: 533 annotated concepts and source-grounded accessions. Each finding retains its scope, status and original sources.
+    - generic: "02"
+    - searchbox "Search lexicon"
+    - text: Research family
+    - combobox "Research family":
+      - option "All research families" [selected]
+      - option "I · Foundational theories / admissibility"
+      - option "II · Dromology / institutional time"
+      - option "III · Tomography / inverse problems / probes"
+      - option "IV · Geometry / moiré / phasonic transport"
+      - option "V · FADT / quotient and decision preservation"
+      - option "VI · Atlas / observer-relative identity"
+      - option "VII · Flow-Core / Portable AIA / pedagogic control"
+      - option "VIII · Ash Keep / Safe Harbor / negative evidence"
+      - option "IX · Twin Dome-World / material computing"
+      - option "X · Western Horizon / evidence exteriority"
+      - option "XI · Golden Egg / empirical criteria"
+      - option "XII · Portable Loom / product instantiation"
+      - option "XIII · Privacy / authorship / external receiver experiments"
+      - option "XIV · Published neighboring science (2024–2026)"
+      - option "XV · Publication / reparative theory / research method"
+      - option "XVI · Governance / ledger / lab state disambiguations"
+      - option "XVII · Named instruments, actors, and research transfer seams"
+      - option "XVIII · Event-rationality and selective admissibility in game theory"
+      - option "XIX · Aperture v3.2-alpha embedded kernels and epistemicide methodology"
+      - option "XX · SignalRupture temporal-recognition sequence and Zenodo correspondence"
+      - option "XXI · Aperture historical kernel/index and authority routing"
+      - option "XXII · SRC Atelier sealed accession and SignalRupture primary-source concepts"
+      - option "XXIII · SignalRupture primary-text methods, metrics, generative models and forecasting"
+    - text: Evidence status
+    - combobox "Evidence status":
+      - option "All statuses" [selected]
+      - option "Ceiling"
+      - option "Design"
+      - option "Disambiguation"
+      - option "External context"
+      - option "External research"
+      - option "External review"
+      - option "Formal model"
+      - option "Formal result"
+      - option "Held"
+      - option "Historical report"
+      - option "Historical source"
+      - option "Implemented"
+      - option "Interpretation"
+      - option "Local repair"
+      - option "Method"
+      - option "Mixed"
+      - option "Novelty review"
+      - option "Observed"
+      - option "Partial"
+      - option "Product"
+      - option "Product held"
+      - option "Proposed"
+      - option "Source finding"
+      - option "Spec"
+      - option "Theory"
+    - text: Order
+    - combobox "Order":
+      - option "Record ID" [selected]
+      - option "A → Z"
+      - option "Mathematics first"
+    - generic: 533 of 533 headwords
+    - button "Reset filters"
+    - text: Entries per page
+    - combobox "Entries per page":
+      - option "25"
+      - option "50"
+      - option "100" [selected]
+    - button "Results":
+      - text: Results
+    - generic: 1–100 of 533
+    - button "Previous lexicon page" [disabled]:
+    - button "Next lexicon page":
+    - generic "What do the evidence labels mean?"
+    - list "Lexicon results":
+      - button "G-001 Eclipse–Omega Theory · Synthesis annotation":
+        - generic: G-001
+        - generic: Eclipse–Omega
+        - generic: Theory · Synthesis annotation
+      - button "G-002 PRCS-A (Passive Recursive Containment System with Selective Admissibility) Theory · Synthesis annotation":
+        - generic: G-002
+        - generic: PRCS-A (Passive Recursive Containment System with Selective Admissibility)
+        - generic: Theory · Synthesis annotation
+      - button "G-003 State–observation–event non-equivalence Formal model":
+        - generic: G-003
+        - generic: State–observation–event non-equivalence
+        - generic: Formal model
+      - button "G-004 Capacity operator Formal model · Synthesis annotation":
+        - generic: G-004
+        - generic: Capacity operator
+        - generic: Formal model · Synthesis annotation
+      - button "G-005 Candidate-set narrowing Formal model · Equation linked":
+        - generic: G-005
+        - generic: Candidate-set narrowing
+        - generic: Formal model · Equation linked
+      - button "G-006 Admissibility operator Formal model":
+        - generic: G-006
+        - generic: Admissibility operator
+        - generic: Formal model
+      - button "G-007 Naming operator / dash ontology Theory":
+        - generic: G-007
+        - generic: Naming operator / dash ontology
+        - generic: Theory
+      - button "G-008 0-bounce anomaly Historical source · Equation linked":
+        - generic: G-008
+        - generic: 0-bounce anomaly
+        - generic: Historical source · Equation linked
+      - button "G-009 Controlled reality surface Theory":
+        - generic: G-009
+        - generic: Controlled reality surface
+        - generic: Theory
+      - button "G-010 Non-injective observation Formal model · Synthesis annotation":
+        - generic: G-010
+        - generic: Non-injective observation
+        - generic: Formal model · Synthesis annotation
+      - button "G-011 Observability aperture Formal model":
+        - generic: G-011
+        - generic: Observability aperture
+        - generic: Formal model
+      - button "G-012 Moiré-field stratigraphy Historical source · Synthesis annotation":
+        - generic: G-012
+        - generic: Moiré-field stratigraphy
+        - generic: Historical source · Synthesis annotation
+      - button "G-013 Anti-equivalence constraints Spec":
+        - generic: G-013
+        - generic: Anti-equivalence constraints
+        - generic: Spec
+      - button "G-014 Narrative safety versus actual protection Interpretation":
+        - generic: G-014
+        - generic: Narrative safety versus actual protection
+        - generic: Interpretation
+      - button "G-015 Redundancy inflation under observability deficit Theory · Synthesis annotation":
+        - generic: G-015
+        - generic: Redundancy inflation under observability deficit
+        - generic: Theory · Synthesis annotation
+      - button "G-016 Rupture of unique closure Formal model":
+        - generic: G-016
+        - generic: Rupture of unique closure
+        - generic: Formal model
+      - button "G-017 Ontological retrieval / RAG External context":
+        - generic: G-017
+        - generic: Ontological retrieval / RAG
+        - generic: External context
+      - button "G-018 Exogenous witness Formal model":
+        - generic: G-018
+        - generic: Exogenous witness
+        - generic: Formal model
+      - button "G-019 Dromology Theory":
+        - generic: G-019
+        - generic: Dromology
+        - generic: Theory
+      - button "G-020 Dromological compression Formal model · Synthesis annotation":
+        - generic: G-020
+        - generic: Dromological compression
+        - generic: Formal model · Synthesis annotation
+      - button "G-021 Institutional time travel Theory":
+        - generic: G-021
+        - generic: Institutional time travel
+        - generic: Theory
+      - button "G-022 Preemption gap Π(s) Formal model · Equation linked":
+        - generic: G-022
+        - generic: Preemption gap Π(s)
+        - generic: Formal model · Equation linked
+      - button "G-023 Right-censored institutional registration Formal model · Synthesis annotation":
+        - generic: G-023
+        - generic: Right-censored institutional registration
+        - generic: Formal model · Synthesis annotation
+      - button "G-024 Historical crease field H Theory":
+        - generic: G-024
+        - generic: Historical crease field H
+        - generic: Theory
+      - button "G-025 Forced adjacency Theory":
+        - generic: G-025
+        - generic: Forced adjacency
+        - generic: Theory
+      - button "G-026 Closure class κ(s) Formal model · Equation linked":
+        - generic: G-026
+        - generic: Closure class κ(s)
+        - generic: Formal model · Equation linked
+      - button "G-027 Closure score C(s) Formal model":
+        - generic: G-027
+        - generic: Closure score C(s)
+        - generic: Formal model
+      - button "G-028 Causal conditioning before registration Formal model":
+        - generic: G-028
+        - generic: Causal conditioning before registration
+        - generic: Formal model
+      - button "G-029 Faithful closure Spec":
+        - generic: G-029
+        - generic: Faithful closure
+        - generic: Spec
+      - button "G-030 Drift (closure) Spec":
+        - generic: G-030
+        - generic: Drift (closure)
+        - generic: Spec
+      - button "G-031 Suppression (closure) Spec":
+        - generic: G-031
+        - generic: Suppression (closure)
+        - generic: Spec
+      - button "G-032 Inexpressibility (closure) Spec":
+        - generic: G-032
+        - generic: Inexpressibility (closure)
+        - generic: Spec
+      - button "G-033 Contextual registration / t_context Implemented":
+        - generic: G-033
+        - generic: Contextual registration / t_context
+        - generic: Implemented
+      - button "G-034 Institutional clock vector Implemented · Equation linked":
+        - generic: G-034
+        - generic: Institutional clock vector
+        - generic: Implemented · Equation linked
+      - button "G-035 Dromological sequence auditor Implemented · Synthesis annotation":
+        - generic: G-035
+        - generic: Dromological sequence auditor
+        - generic: Implemented · Synthesis annotation
+      - button "G-036 Action before notice Implemented":
+        - generic: G-036
+        - generic: Action before notice
+        - generic: Implemented
+      - button "G-037 Premature naming Implemented":
+        - generic: G-037
+        - generic: Premature naming
+        - generic: Implemented
+      - button "G-038 Cadence compression Implemented":
+        - generic: G-038
+        - generic: Cadence compression
+        - generic: Implemented
+      - button "G-039 Rest withheld Implemented":
+        - generic: G-039
+        - generic: Rest withheld
+        - generic: Implemented
+      - button "G-040 Exit withheld Implemented":
+        - generic: G-040
+        - generic: Exit withheld
+        - generic: Implemented
+      - button "G-041 Temporal non-retroactivity Formal model":
+        - generic: G-041
+        - generic: Temporal non-retroactivity
+        - generic: Formal model
+      - button "G-042 Prefix-limited replay Implemented":
+        - generic: G-042
+        - generic: Prefix-limited replay
+        - generic: Implemented
+      - button "G-043 Characteristic accident Theory":
+        - generic: G-043
+        - generic: Characteristic accident
+        - generic: Theory
+      - button "G-044 Temporal tomography Proposed · Equation linked":
+        - generic: G-044
+        - generic: Temporal tomography
+        - generic: Proposed · Equation linked
+      - button "G-045 Dromological receipt loop Partial":
+        - generic: G-045
+        - generic: Dromological receipt loop
+        - generic: Partial
+      - button "G-046 Tomography (TD613 research usage) Spec":
+        - generic: G-046
+        - generic: Tomography (TD613 research usage)
+        - generic: Spec
+      - button "G-047 Inverse problem Formal model · Synthesis annotation":
+        - generic: G-047
+        - generic: Inverse problem
+        - generic: Formal model · Synthesis annotation
+      - button "G-048 Forward observation operator Spec · Equation linked":
+        - generic: G-048
+        - generic: Forward observation operator
+        - generic: Spec · Equation linked
+      - button "G-049 Latent state S Formal model":
+        - generic: G-049
+        - generic: Latent state S
+        - generic: Formal model
+      - button "G-050 Interrogation route T_r Spec":
+        - generic: G-050
+        - generic: Interrogation route T_r
+        - generic: Spec
+      - button "G-051 Projection P_i Formal model":
+        - generic: G-051
+        - generic: Projection P_i
+        - generic: Formal model
+      - button "G-052 Noise η Spec":
+        - generic: G-052
+        - generic: Noise η
+        - generic: Spec
+      - button "G-053 Identifiability modulo equivalence Spec · Equation linked":
+        - generic: G-053
+        - generic: Identifiability modulo equivalence
+        - generic: Spec · Equation linked
+      - button "G-054 Structural identifiability Formal model":
+        - generic: G-054
+        - generic: Structural identifiability
+        - generic: Formal model
+      - button "G-055 Practical identifiability Spec":
+        - generic: G-055
+        - generic: Practical identifiability
+        - generic: Spec
+      - button "G-056 Stability Spec":
+        - generic: G-056
+        - generic: Stability
+        - generic: Spec
+      - button "G-057 Jacobian rank / null directions Spec":
+        - generic: G-057
+        - generic: Jacobian rank / null directions
+        - generic: Spec
+      - button "G-058 Condition number / ill conditioning Spec":
+        - generic: G-058
+        - generic: Condition number / ill conditioning
+        - generic: Spec
+      - button "G-059 Alternative models Spec":
+        - generic: G-059
+        - generic: Alternative models
+        - generic: Spec
+      - button "G-060 Held-out reconstruction Spec":
+        - generic: G-060
+        - generic: Held-out reconstruction
+        - generic: Spec
+      - button "G-061 Active probe selection Proposed":
+        - generic: G-061
+        - generic: Active probe selection
+        - generic: Proposed
+      - button "G-062 Moss Lantern Spec":
+        - generic: G-062
+        - generic: Moss Lantern
+        - generic: Spec
+      - button "G-063 Wedding identifiability assay Spec":
+        - generic: G-063
+        - generic: Wedding identifiability assay
+        - generic: Spec
+      - button "G-064 Triple-versus-pair comparison Spec":
+        - generic: G-064
+        - generic: Triple-versus-pair comparison
+        - generic: Spec
+      - button "G-065 Relationship-shuffled control Spec":
+        - generic: G-065
+        - generic: Relationship-shuffled control
+        - generic: Spec
+      - button "G-066 Redundant negative control Spec":
+        - generic: G-066
+        - generic: Redundant negative control
+        - generic: Spec
+      - button "G-067 Empirical observation versus fixture Ceiling":
+        - generic: G-067
+        - generic: Empirical observation versus fixture
+        - generic: Ceiling
+      - button "G-068 Heterostratigraphic holonomy tomography Proposed · Synthesis annotation":
+        - generic: G-068
+        - generic: Heterostratigraphic holonomy tomography
+        - generic: Proposed · Synthesis annotation
+      - button "G-069 Distributive / distributed observation Spec":
+        - generic: G-069
+        - generic: Distributive / distributed observation
+        - generic: Spec
+      - button "G-070 Reconstruction distance R Formal model":
+        - generic: G-070
+        - generic: Reconstruction distance R
+        - generic: Formal model
+      - button "G-071 Inference from silence Proposed":
+        - generic: G-071
+        - generic: Inference from silence
+        - generic: Proposed
+      - button "G-072 D3 equilateral calibration Formal model":
+        - generic: G-072
+        - generic: D3 equilateral calibration
+        - generic: Formal model
+      - button "G-073 √3/2 altitude Formal model":
+        - generic: G-073
+        - generic: √3/2 altitude
+        - generic: Formal model
+      - button "G-074 Triangular / hexagonal lattice Formal model":
+        - generic: G-074
+        - generic: Triangular / hexagonal lattice
+        - generic: Formal model
+      - button "G-075 39-strata motion field Product":
+        - generic: G-075
+        - generic: 39-strata motion field
+        - generic: Product
+      - button "G-076 Six-dimensional lattice (6D) Implemented · Synthesis annotation":
+        - generic: G-076
+        - generic: Six-dimensional lattice (6D)
+        - generic: Implemented · Synthesis annotation
+      - button "G-077 Golden ratio φ Formal model · Equation linked":
+        - generic: G-077
+        - generic: Golden ratio φ
+        - generic: Formal model · Equation linked
+      - button "G-078 Q(φ) algebraic number field Implemented · Synthesis annotation":
+        - generic: G-078
+        - generic: Q(φ) algebraic number field
+        - generic: Implemented · Synthesis annotation
+      - button "G-079 Cut-and-project scheme Implemented · Synthesis annotation":
+        - generic: G-079
+        - generic: Cut-and-project scheme
+        - generic: Implemented · Synthesis annotation
+      - button "G-080 Acceptance window Implemented · Synthesis annotation":
+        - generic: G-080
+        - generic: Acceptance window
+        - generic: Implemented · Synthesis annotation
+      - button "G-081 Phason Mixed · Synthesis annotation":
+        - generic: G-081
+        - generic: Phason
+        - generic: Mixed · Synthesis annotation
+      - button "G-082 Phasonic deformation Mixed · Synthesis annotation":
+        - generic: G-082
+        - generic: Phasonic deformation
+        - generic: Mixed · Synthesis annotation
+      - button "G-083 Pairwise moiré M12/M23/M13 Spec · Equation linked":
+        - generic: G-083
+        - generic: Pairwise moiré M12/M23/M13
+        - generic: Spec · Equation linked
+      - button "G-084 Supermoiré Proposed":
+        - generic: G-084
+        - generic: Supermoiré
+        - generic: Proposed
+      - button "G-085 Quasiperiodicity External context":
+        - generic: G-085
+        - generic: Quasiperiodicity
+        - generic: External context
+      - button "G-086 Icosahedral symmetry Formal model":
+        - generic: G-086
+        - generic: Icosahedral symmetry
+        - generic: Formal model
+      - button "G-087 Cupola lattice Held":
+        - generic: G-087
+        - generic: Cupola lattice
+        - generic: Held
+      - button "G-088 Finite-field transport Implemented":
+        - generic: G-088
+        - generic: Finite-field transport
+        - generic: Implemented
+      - button "G-089 Discrete holonomy Formal model · Equation linked":
+        - generic: G-089
+        - generic: Discrete holonomy
+        - generic: Formal model · Equation linked
+      - button "G-090 Noncommuting faces Implemented":
+        - generic: G-090
+        - generic: Noncommuting faces
+        - generic: Implemented
+      - button "G-091 Loop-power parity Formal model · Equation linked":
+        - generic: G-091
+        - generic: Loop-power parity
+        - generic: Formal model · Equation linked
+      - button "G-092 C2 action / reciprocity Formal model":
+        - generic: G-092
+        - generic: C2 action / reciprocity
+        - generic: Formal model
+      - button "G-093 Palindromic folding Formal model":
+        - generic: G-093
+        - generic: Palindromic folding
+        - generic: Formal model
+      - button "G-094 Cyclic sieving Formal model":
+        - generic: G-094
+        - generic: Cyclic sieving
+        - generic: Formal model
+      - button "G-095 Schubert reciprocity Formal model":
+        - generic: G-095
+        - generic: Schubert reciprocity
+        - generic: Formal model
+      - button "G-096 Heterogeneous transport Spec":
+        - generic: G-096
+        - generic: Heterogeneous transport
+        - generic: Spec
+      - button "G-097 Inverse design Mixed":
+        - generic: G-097
+        - generic: Inverse design
+        - generic: Mixed
+      - button "G-098 Physical analogue boundary Ceiling":
+        - generic: G-098
+        - generic: Physical analogue boundary
+        - generic: Ceiling
+      - button "G-099 ZETA finite recovery theorem (thread formulation) Proposed · Equation linked":
+        - generic: G-099
+        - generic: ZETA finite recovery theorem (thread formulation)
+        - generic: Proposed · Equation linked
+      - button "G-100 Finite-observer truncation π_m Formal model · Equation linked":
+        - generic: G-100
+        - generic: Finite-observer truncation π_m
+        - generic: Formal model · Equation linked
+    - generic: 1–100 of 533
+    - button "Previous lexicon page" [disabled]:
+    - button "Next lexicon page":
+    - paragraph: Use ↑ and ↓ within the list to move between entries.
+    - article "Selected lexicon entry":
+      - generic: G-001
+      - generic: ·Theory
+      - heading "Eclipse–Omega" [level=2]
+      - paragraph: I · Foundational theories / admissibility
+      - generic "Linked equation, scroll horizontally if needed":
+        - math:
+          - generic: D
+          - generic: →
+          - generic: R
+          - generic: k
+          - generic: C
+          - generic: k
+          - generic: (
+          - generic: q
+          - generic: )
+          - generic: →
+          - generic: K
+          - generic: κ
+          - generic: C
+          - generic: κ
+          - generic: (
+          - generic: q
+          - generic: )
+          - generic: →
+          - generic: B
+          - generic: C
+          - generic: B
+          - generic: (
+          - generic: q
+          - generic: )
+          - generic: →
+          - generic: E
+          - generic: E
+          - generic: (
+          - generic: q
+          - generic: )
+        - text: D
+        - text: R
+        - generic: k
+        - text: C
+        - generic: k
+        - text: (q)
+        - text: K
+        - generic: κ
+        - text: C
+        - generic: κ
+        - text: (q)
+        - generic: B
+        - text: C
+        - generic: B
+        - text: (q)
+        - generic: E
+        - generic: E(q)
+      - generic: ·Proposed synthesis
+      - generic: The chain usefully separates retrieval, capacity selection, boundary filtering and event admission. Its domains and codomains need declaration. Set inclusion permits equality; strict narrowing at every stage requires a separate argument. The arrows describe a model of selection and cannot identify a provider pipeline from output alone. Equation or modeling annotation; inherited glossary status does not certify this expression.
+      - generic: Paper I's research name for a boundary-dominant selective-admissibility architecture. Its modeled operators govern how internal states become observable and registered; the essay's universal claims about commercial LLMs remain theoretical unless independently measured.
+      - generic: The chain usefully separates retrieval, capacity selection, boundary filtering and event admission. Its domains and codomains need declaration. Set inclusion permits equality; strict narrowing at every stage requires a separate argument. The arrows describe a model of selection and cannot identify a provider pipeline from output alone.
+      - paragraph: RELATED CONCEPTS
+      - paragraph: PRCS-A; event admissibility; capacity; 0-bounce
+      - paragraph: SOURCE ANCHORS
+      - button "P1"
+      - button "APERTURE"
+      - generic "Adjacent headwords":
+        - button "Previous entry" [disabled]:
+          - text: Previous entry
+        - generic: 1 / 533
+        - button "Next entry":
+          - text: Next entry
+      - button "Save record":
+        - text: Save record
+      - button "Full record":
+        - text: Full record
+- contentinfo:
+  - strong: 𝌋 TAURICDIANA613
+  - text: · RESEARCH EDITION 1.4
+  - text: 21 OCT 2026 · SOURCE 78c7ea6b974e · HUMAN CLOSURE RETAINED ⟐
+  - button "Download audit JSON":
+    - text: Download audit JSON
+  - button "About this edition":
+    - text: About this edition
+- status

@@ -1,0 +1,96 @@
+{
+  "candidate": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "captures": [
+    {
+      "file": "encyclopedia-00-cover.jpg",
+      "sha256": "6b9de5a44cf2dc71a2aa478523b8b36c05a8a7d2c8edfd2a55f1ea5fd9eb2afa",
+      "bytes": 146206,
+      "captured_local_file_time": "2026-11-07T02:26:54.329Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-01-observatory.jpg",
+      "sha256": "98d205854b7cdd2f7370a6d26201f3a516c63e09b6bb5c53b5903bcff09a78e5",
+      "bytes": 62755,
+      "captured_local_file_time": "2026-11-07T02:26:56.879Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-02-lexicon.jpg",
+      "sha256": "ee9e99e3d701a22481480d35cf06098ea15b6bf92fbd5efc31fb2ddb68007f6f",
+      "bytes": 40922,
+      "captured_local_file_time": "2026-11-07T02:26:59.123Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-03-evidence.jpg",
+      "sha256": "8ccb5bc762c7625b26080990b5027041e9c4445412f9b17bcb6a366da13e9f65",
+      "bytes": 56105,
+      "captured_local_file_time": "2026-11-07T02:27:01.402Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-04-sources.jpg",
+      "sha256": "723673200a4c8f1773da3b9a611a58bd5ce62ddc2aa31b15ae7ca6c694e20ad9",
+      "bytes": 56156,
+      "captured_local_file_time": "2026-11-07T02:27:03.737Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-overview-entire.png",
+      "sha256": "d1605319a47b48a815bdcc3821e44c2a3e3d1011fc5dd7f4ec4c670b6caea451",
+      "bytes": 2489387,
+      "captured_local_file_time": "2026-11-07T02:30:11.139Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "encyclopedia-overview-footer.jpg",
+      "sha256": "f49ec1bcaa0e11cfa4be2004cf4f8a405f0d701d670543f442eb606f3c6d0283",
+      "bytes": 52382,
+      "captured_local_file_time": "2026-11-07T02:30:06.649Z",
+      "page_class": "LIVE_REFERENCE_DESIGN_CONTEXT_ONLY"
+    },
+    {
+      "file": "vixen-01-corpus-navigation.jpg",
+      "sha256": "96bbf8c7b215dc341ca0a730c11bf14e652d1dd231cb08b352e4ef3e26451ad7",
+      "bytes": 86593,
+      "captured_local_file_time": "2026-11-07T02:26:34.642Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    },
+    {
+      "file": "vixen-02-human-gates.jpg",
+      "sha256": "a237f20c63a792168d5869a1b322030bb8c97dc2bd404b93f707a3e7bf744eaa",
+      "bytes": 84378,
+      "captured_local_file_time": "2026-11-07T02:26:36.929Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    },
+    {
+      "file": "vixen-03-passage-witness.jpg",
+      "sha256": "e381717467637277743688b6ef06a1f0168482c4bcf9511f5baa9c29f5a7681e",
+      "bytes": 98441,
+      "captured_local_file_time": "2026-11-07T02:26:39.139Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    },
+    {
+      "file": "vixen-04-documentary-instruments.jpg",
+      "sha256": "d6ed614e485d4c3e93cde54b6b591f1ab39c2ad929834736ada5f3451e712af6",
+      "bytes": 103478,
+      "captured_local_file_time": "2026-11-07T02:26:41.378Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    },
+    {
+      "file": "vixen-05-mathematical-representation.jpg",
+      "sha256": "cd61231a383c15b2b320912015707a47c4725cc93dc497d354e80440408a7dd3",
+      "bytes": 76228,
+      "captured_local_file_time": "2026-11-07T02:26:43.580Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    },
+    {
+      "file": "vixen-06-preserved-uncertainty.jpg",
+      "sha256": "06446bed96e99d70b08373577ee2ab5a3f9dfd8feb015aba9bb92879dd63e528",
+      "bytes": 85109,
+      "captured_local_file_time": "2026-11-07T02:26:45.785Z",
+      "page_class": "FROZEN_CANDIDATE_LOCALHOST"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "unadmitted_postflight_file": {
+    "rejection_enforced": true,
+    "observed_code": "UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED",
+    "observed_status": "FAIL_CLOSED_CONFIRMED"
+  },
+  "simulated_flight_promotion": {
+    "rejection_enforced": true,
+    "observed_code": "SIMULATED_FLIGHT_PROMOTION_FORBIDDEN",
+    "observed_status": "FAIL_CLOSED_CONFIRMED"
+  },
+  "claim_from_hash_conflation": {
+    "rejection_enforced": true,
+    "observed_code": "CLAIM_ENTAILMENT_HELD",
+    "observed_status": "FAIL_CLOSED_CONFIRMED"
+  },
+  "unauthorized_human_gate_resolution": {
+    "rejection_enforced": true,
+    "observed_code": "UNAUTHORIZED_HUMAN_GATE_RESOLUTION",
+    "observed_status": "FAIL_CLOSED_CONFIRMED"
+  },
+  "unadmitted_postflight_file_rejected": true,
+  "simulated_flight_promotion_refused": true,
+  "claim_from_hash_conflation_refused": true,
+  "unauthorized_human_gate_resolution_refused": true
+}

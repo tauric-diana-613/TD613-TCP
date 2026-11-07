@@ -1,0 +1,367 @@
+{
+  "source": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "tree": "a01929d2dfe9bb2a6686d2be7669fcac14729b11",
+  "builtins": [
+    ",",
+    ",\n  ",
+    ", ",
+    "node:assert/strict",
+    "node:child_process",
+    "node:crypto",
+    "node:fs",
+    "node:fs/promises",
+    "node:os",
+    "node:path",
+    "node:sqlite",
+    "node:test",
+    "node:url"
+  ],
+  "unresolved": [],
+  "files": [
+    {
+      "path": ".agents/skills/dollhouse-audit/SKILL.md",
+      "bytes": 6841,
+      "sha256": "e0d5c45992055f45ba6c117347fce996de921f6ad3d1ba6a5c65bbcee054fb89",
+      "git_blob": "d4684feb648fe8c1beb1b14e98c6bb92190c72bf",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 25186,
+      "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c",
+      "git_blob": "63abc5dc679715ea3370a8b289e930abb940efd5",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/dome-world/ash/canonical-json.js",
+      "bytes": 5607,
+      "sha256": "4d2e1112ed3030e8996480e2fcdae41ed1defc1260786605c5f814b149efe425",
+      "git_blob": "3269a59eb544b5442a7717a80437b37713e66d6f",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/dome-world/data/flowcore-aia-route-registry-v01.js",
+      "bytes": 2696,
+      "sha256": "df773e97397dc470d7c02ae2c6781bfb1bbb0adb8847ee83a28d3a4f22b7adc7",
+      "git_blob": "ea3058bd4b5ca134ebe424f75e84205512d2b3f5",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/dome-world/data/flowcore-glyph-semantics-v01.js",
+      "bytes": 6866,
+      "sha256": "88f3e8119ce5b3a27822615f08df0b8f2c23cf7b385c1db534099d908658657f",
+      "git_blob": "634e9c8e16eac47f02e601552a22f9dc7bbcd1cf",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/encyclopedia/vix-cyb.html",
+      "bytes": 30147,
+      "sha256": "def23216f2f60e65be22fbf11cbf8086bb04ee467efcd73036746963f6fda8c4",
+      "git_blob": "51b0b390a4c747cf4cb61d8d725db3f67262571d",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+      "bytes": 20280,
+      "sha256": "3eb293c4367e7e82faf3008f1b68a73e95bbd3798aac899ba4c0fab8bc70f806",
+      "git_blob": "0ea6a8705c967e7f5861e8c0bdbd506a098ccafb",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/atlas-mathematical-engine.js",
+      "bytes": 79637,
+      "sha256": "752080cd65126cf0d8a5147c750e3b145e7f08be9397c774b63c383ac4aac6bd",
+      "git_blob": "b32f021cf49a3d925dfcf00e4a84dd3eee006e7c",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-ablation-harness.js",
+      "bytes": 51153,
+      "sha256": "6cd08501f80c7313c2f0654ceb16315ea52e5aa5a155f065dd1eab2a8a2560e7",
+      "git_blob": "d453261fb7a6da63e38e0cd52b1c8ad61811af77",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-agent-registry.js",
+      "bytes": 5954,
+      "sha256": "65d23757621fd4a5ebe6b0baf27ac55a6b1e46cb1ea7511733c26a0e0e2687a9",
+      "git_blob": "11fe2e873fc151514e973c576f29d958c5ec7b70",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-atlas-relational-custody.js",
+      "bytes": 39722,
+      "sha256": "6f8b9dbc66f4bd7fe36352b76a44291348da8f5684fcfab52b871a8009a5cd83",
+      "git_blob": "ce820b28b4a42ef37c0e5d61872a6724e45ad2cd",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-case-dossier.js",
+      "bytes": 28043,
+      "sha256": "fa53373bf827772a064e21d87ac61791b009a5debf78f36a9e24020980e9f3b7",
+      "git_blob": "1619b7953e5a93bb2dbbed2fb7cc68a2a96256a8",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-fadt-reparative-assistance.js",
+      "bytes": 15555,
+      "sha256": "3d8fc2158fde25b720c94273529f6ebb227a32b60067b9ab427ea6352dcbb66f",
+      "git_blob": "de423fa98c491d4a966e40b55adffb1eb296b15d",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-pedagogue-dromological.js",
+      "bytes": 5802,
+      "sha256": "a79729cd1294db4c5e1a94aa99e84a2a0d5e400203f62a054b3a53bae14e92b0",
+      "git_blob": "6ab3dc5a7ba8e0253cf9817154653ebde0f08123",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-skill-dispatcher.js",
+      "bytes": 72076,
+      "sha256": "ddbc33c7bb6bfa6a043ed0ee7fc2819f2a0141eaf6b351b06e1bb99c1b0ebeb6",
+      "git_blob": "6dac8e5ffa39eb374e0c6e5531e060301e6e9c88",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/dollhouse-temporal-custodian.js",
+      "bytes": 12501,
+      "sha256": "7eefdaf46d8bfc2374f6e52b80b26534cb3f5738c4faa6442f5883436d30c205",
+      "git_blob": "1b9de6ca45bee7f6c39e3378aca460464d1c0c82",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-law.js",
+      "bytes": 2137,
+      "sha256": "3993fe76254aa18ba7c2f9b2bee499b84a4b169daf5e7c096b26e610f9a10de9",
+      "git_blob": "bc8cfd0f260cbe95271721f12869f4d52bf331de",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/flowcore-pedagogue-utils.js",
+      "bytes": 5274,
+      "sha256": "ccca358e72867a55cfff31402067dcd8eb16eb433fb6d5d462d911842e8bb571",
+      "git_blob": "ecb1d6b0e568fddb75b54db0cdf5134b658ff3c8",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/pedagogue-gesture-consequence.js",
+      "bytes": 12738,
+      "sha256": "42f9979488101aa10aeee570d1843d9bb21047b00cdf192538e4f9e59fff55a9",
+      "git_blob": "e0446f9274de3115d4291dbf57f6188ee2ca1bc0",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/pedagogue-institutional-time.js",
+      "bytes": 10732,
+      "sha256": "c6f95165bbcb91f15aca387b33ddbfc816232eabd4f40eac71792e91f6aa572c",
+      "git_blob": "6bb68f359e5dceb9b29f51f8e4cf342452402438",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/pedagogue-interface-diagnosis.js",
+      "bytes": 17117,
+      "sha256": "3f866de1018ce47a524be6b2bf6dd7bfc98222462e000a37df3c554a950e9b77",
+      "git_blob": "488b29ec520f8b47059d3c0e4a4fe13c3ab10fd2",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/pedagogue-lineage-second-pass.js",
+      "bytes": 9140,
+      "sha256": "1e9c24f07baf0b846f5519bcb94bdb70650b39a2410eb48ef40320123c33bb4d",
+      "git_blob": "c82aa5daf0ed9e38bbe90cc65587b3b2706fbdc3",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "app/engine/pedagogue-lineage-spine.js",
+      "bytes": 25183,
+      "sha256": "88b7bce61051efab6db6d37a4495bb8ab367ca507ba060d84e942d35e465b8aa",
+      "git_blob": "a8316ac34f13b708522817489cf5563a6506db16",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "artifacts/a_pfr0_pr_body.md",
+      "bytes": 10431,
+      "sha256": "8159325e60134989ee2b98bc388a5caa65d41e895810cdb7e4e40322c8d63f40",
+      "git_blob": "d21ba80aecd53e4e4c12a51bf49295bcb70a9e89",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "artifacts/dollhouse-audit-receipt-a-pfr0.json",
+      "bytes": 17616,
+      "sha256": "08c065d3c72a668a9dba64013d9f0f953c77af323485dc6cf4b6849a3ed7d1a8",
+      "git_blob": "2a9503271ff6fc25fe3aa756f7770882f0020a72",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 21706,
+      "sha256": "2233ff6c640134d57b39906a3028ba621d9497a1954dbb4aaa487c462a606b73",
+      "git_blob": "2e407f4ab6827a4e91bdd77fa8fcbcc752ff0a59",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "package.json",
+      "bytes": 19116,
+      "sha256": "d885fc3bca5ccb6192a53afc9814837eb96e2123f0af059ddc8f8654ab570c45",
+      "git_blob": "4e983d520f644101973455718dea74e80ed95822",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/em_unified_synthesis/docs/RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY.md",
+      "bytes": 9197,
+      "sha256": "3ee8d35b3d1dfe00ec5565989dc3964ddd2e82907ef194a8c4352b81a30feff6",
+      "git_blob": "69b6a2bd27557d25c80b7c97cf11f8b1653fd6d5",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-compile.mjs",
+      "bytes": 9876,
+      "sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+      "git_blob": "a625df5c76f7e3295d5a4066dc3f8236c38b64be",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-native-compiler-contract-v1.json",
+      "bytes": 2564,
+      "sha256": "de33e16dc6d5fa445217e547b745d934301c96c6946b0b2ea93f3e5339236918",
+      "git_blob": "2e9d1b7fe045e9f31f2479be452d37dcfbe72ba3",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/experiment_a_preparation_v1/native/wendbine-native-method-adapter-v1.mjs",
+      "bytes": 4719,
+      "sha256": "cd3b7784f5660925993e66c66251fc6311984c3aed8d8c8224e0872837acb453",
+      "git_blob": "a8eb7ea3e81c4975f000cd96089b6aac48f18e2c",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/A_PFR0_POSTFLIGHT_REDO_SPECIFICATION.md",
+      "bytes": 9669,
+      "sha256": "07b4ad7f6c0e189ae769e168bf29f9de62a2b34104c93a96e51f1b70380ec9ba",
+      "git_blob": "2a7a061b01d75c81b250e287f2b73b32a4ce1734",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/a-pfr0-postflight-redo-apparatus.mjs",
+      "bytes": 20313,
+      "sha256": "f23b1b17818be4303da93864c626d7cdcfffa58a42bdf88d16ceef2972cbdeb7",
+      "git_blob": "e70fcae0e3001e7704ba99e8e358ff3626f948cd",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/a-pfr0-readiness-receipt.json",
+      "bytes": 6566,
+      "sha256": "837538ccef2b18d085f6605bcb05be64431af8d27b7fc0341e1148afd7145a69",
+      "git_blob": "83d89e929bd360bde0fba7c9d9ee53989ca8bd01",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/fixtures/audit-spec-a-pfr0.json",
+      "bytes": 5485,
+      "sha256": "6c4dd1123c5a25534787de4693984b803ed0af39f9a30703e08ef6a6b8d35fcf",
+      "git_blob": "92d0ae77fcc52ce1f3907c1d26eea6151732a635",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/run-twin-world-assay.mjs",
+      "bytes": 25376,
+      "sha256": "d96dddba6dfb3908b19a5e8a1ef663c29e7dfc27bc236d46f81e1fa9d6dc658d",
+      "git_blob": "49649b674c07c405f35dc91e286af5575f571c76",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs",
+      "bytes": 9995,
+      "sha256": "74597b16be98011f47518bc6c9de14d8ac412284ff664b7eac1e97b91f24ad43",
+      "git_blob": "d3f4904fa61b93d5ad43b671178de73e5fcb6bca",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs",
+      "bytes": 32331,
+      "sha256": "8cee52aa967979b5778c079cbf6c1c39b8974da3abd30b785375b3f06907ea37",
+      "git_blob": "b897d2567abe7d0b5bcd280b60cd924f329b4518",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/src_reciprocal_expedition/native_atlas/src-native-methods.mjs",
+      "bytes": 15119,
+      "sha256": "023afff00f155ec57393b95d27b3bbf0678cd331aa9d406e7142b1bccd7d6381",
+      "git_blob": "9e7a65129d422cb775cd5fe254ef9e37b70db800",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/src_reciprocal_expedition/shadow_graph/shadow_graph_engine_v3.mjs",
+      "bytes": 16545,
+      "sha256": "acd44f34cdc020b757bfb986c2c421a666006e5c82b57e5e268dd16e8611e311",
+      "git_blob": "8a976d9f07173928ed9bdf2871c7c84372b1fd22",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
+      "bytes": 42341,
+      "sha256": "0829338cec24b2f2bea94b6bf1c0ccecd830a68d299c9223f0d102e7cf948daf",
+      "git_blob": "b12cb9b321400d2bc816c11fa62344f4b27fea42",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/VIXEN_ARCHAEOLOGY_AND_CAPABILITY_MATRIX.md",
+      "bytes": 8847,
+      "sha256": "2b62e77a08ca3727ee9e8f262475f23e0038044c9fcac8430e8ca84a76d14733",
+      "git_blob": "d379237c3b2178fada5a92bb0e52677e392820e5",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/dollhouse-design-commission.json",
+      "bytes": 2687,
+      "sha256": "2764f330646ea4eb22287937cee8eb74dc066a80c977031242409687026af321",
+      "git_blob": "980ba662cf247b4cd23aac87a1548c90d66df517",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/dollhouse-design-receipt.json",
+      "bytes": 97225,
+      "sha256": "4dea56e45c17cf12c8b40d9ba24f289a3c12dada4a6c28f59687d31e425168fe",
+      "git_blob": "15ed72c1ea6e9e0641200d5bd7890a9cf4755d33",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/test-vixen-cybernetics.mjs",
+      "bytes": 10650,
+      "sha256": "ce9a736ff650f0d8bbf568ca18acc718d962b86922d528e0c94c325660ea736c",
+      "git_blob": "afc2e7e56d01c91375498e25fdfdad8152e7242c",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/vix-cyb.html",
+      "bytes": 30147,
+      "sha256": "def23216f2f60e65be22fbf11cbf8086bb04ee467efcd73036746963f6fda8c4",
+      "git_blob": "51b0b390a4c747cf4cb61d8d725db3f67262571d",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/vixen_cybernetics/vixen-cybernetics-engine.mjs",
+      "bytes": 15147,
+      "sha256": "e86c9a1f7c0903ebeb2c87aef64e58b460ed4ad6d56f331029d9f562bbeb71e6",
+      "git_blob": "b93d37094200fe310baf1de3f6f99f98e086c599",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "packages/wendbine_reciprocal_expedition/receiver/wendbine-empty-receiver.mjs",
+      "bytes": 24534,
+      "sha256": "97f0cb808e5ddfc8410245095f6275b8558aad3e3f5674a9307b9f6cb77f2935",
+      "git_blob": "fee37fbe5362645c6e03daf8f4fca03bc572f96d",
+      "exact_git_bytes": true
+    },
+    {
+      "path": "scripts/run-dollhouse-skill-audit.mjs",
+      "bytes": 9004,
+      "sha256": "2803f7b64bc05f0683f77ca5db6d48ef3674280f1d56dbe4e9c0989e2b22011c",
+      "git_blob": "b1292712c7576de0ba3a5fad30913ef5fa772f73",
+      "exact_git_bytes": true
+    }
+  ],
+  "all_exact": true,
+  "dependency_installation": "none"
+}

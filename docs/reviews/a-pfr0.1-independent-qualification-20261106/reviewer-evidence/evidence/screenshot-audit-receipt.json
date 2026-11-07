@@ -1,0 +1,214 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1794019241506-52ea461f",
+  "timestamp": "2026-11-07T02:40:41.507Z",
+  "source_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+    "audit_execution_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [],
+  "is_historical_commit_only": false,
+  "task_scope": "SCREENSHOT_CUSTODY_AND_DESCRIPTION_SEQUENCE_ONLY",
+  "evidence_class": "AGENT_OBSERVED_BROWSER_CAPTURES_NOT_EMPIRICAL_SCIENTIFIC_REPLICATION",
+  "evidence_references": [
+    "app/encyclopedia/vix-cyb.html",
+    ".agents/skills/dollhouse-audit/SKILL.md"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "app/encyclopedia/vix-cyb.html",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "def23216f2f60e65be22fbf11cbf8086bb04ee467efcd73036746963f6fda8c4",
+      "byte_digest_verified": true,
+      "sha256": "def23216f2f60e65be22fbf11cbf8086bb04ee467efcd73036746963f6fda8c4"
+    },
+    {
+      "reference": ".agents/skills/dollhouse-audit/SKILL.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "e0d5c45992055f45ba6c117347fce996de921f6ad3d1ba6a5c65bbcee054fb89",
+      "byte_digest_verified": true,
+      "sha256": "e0d5c45992055f45ba6c117347fce996de921f6ad3d1ba6a5c65bbcee054fb89"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": false,
+            "exit_required": false,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 1794018394641,
+            "ACT": 1794018394642,
+            "WORLD_ANSWERS": 1794018611139,
+            "NAME": 1794019159065
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "screenshot-description-order",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 1794018394641,
+              "ACT": 1794018394642,
+              "WORLD_ANSWERS": 1794018611139,
+              "NAME": 1794019159065
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": false,
+              "exit_required": false,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "CAPTURE": "PASS",
+            "DESCRIBE": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "SUPPORTED",
+    "consensus": "PARTIAL_ROLE_SUPPORT",
+    "primary_verdicts_consensus": "PARTIAL_ROLE_SUPPORT",
+    "nested_extension_holds": [],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 2,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [],
+  "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
+  "execution_duration_ms": 1916
+}

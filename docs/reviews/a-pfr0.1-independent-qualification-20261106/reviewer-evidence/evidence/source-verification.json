@@ -1,0 +1,42 @@
+{
+  "head": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "tree": "a01929d2dfe9bb2a6686d2be7669fcac14729b11",
+  "predecessor_is_ancestor": true,
+  "base_is_ancestor": true,
+  "head_commit": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34 a01929d2dfe9bb2a6686d2be7669fcac14729b11 9c01da8c0c59fcbdd06d6497a5818664337488aa",
+  "base_diff": [
+    "A\tapp/encyclopedia/vix-cyb.html",
+    "A\tartifacts/a_pfr0_pr_body.md",
+    "A\tartifacts/dollhouse-audit-receipt-a-pfr0.json",
+    "A\tpackages/em_unified_synthesis/docs/RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY.md",
+    "A\tpackages/four_crossing_capstone/A_PFR0_POSTFLIGHT_REDO_SPECIFICATION.md",
+    "A\tpackages/four_crossing_capstone/a-pfr0-postflight-redo-apparatus.mjs",
+    "A\tpackages/four_crossing_capstone/a-pfr0-readiness-receipt.json",
+    "A\tpackages/four_crossing_capstone/fixtures/audit-spec-a-pfr0.json",
+    "M\tpackages/four_crossing_capstone/run-twin-world-assay.mjs",
+    "A\tpackages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs",
+    "M\tpackages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs",
+    "A\tpackages/vixen_cybernetics/VIXEN_ARCHAEOLOGY_AND_CAPABILITY_MATRIX.md",
+    "A\tpackages/vixen_cybernetics/dollhouse-design-commission.json",
+    "A\tpackages/vixen_cybernetics/dollhouse-design-receipt.json",
+    "A\tpackages/vixen_cybernetics/test-vixen-cybernetics.mjs",
+    "A\tpackages/vixen_cybernetics/vix-cyb.html",
+    "A\tpackages/vixen_cybernetics/vixen-cybernetics-engine.mjs"
+  ],
+  "predecessor_diff": [
+    "M\tapp/encyclopedia/vix-cyb.html",
+    "M\tartifacts/a_pfr0_pr_body.md",
+    "M\tartifacts/dollhouse-audit-receipt-a-pfr0.json",
+    "M\tpackages/em_unified_synthesis/docs/RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY.md",
+    "M\tpackages/four_crossing_capstone/a-pfr0-postflight-redo-apparatus.mjs",
+    "M\tpackages/four_crossing_capstone/a-pfr0-readiness-receipt.json",
+    "M\tpackages/four_crossing_capstone/run-twin-world-assay.mjs",
+    "M\tpackages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs",
+    "M\tpackages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs",
+    "M\tpackages/vixen_cybernetics/test-vixen-cybernetics.mjs",
+    "M\tpackages/vixen_cybernetics/vix-cyb.html",
+    "M\tpackages/vixen_cybernetics/vixen-cybernetics-engine.mjs"
+  ],
+  "git_status": "",
+  "dependency_change": ""
+}

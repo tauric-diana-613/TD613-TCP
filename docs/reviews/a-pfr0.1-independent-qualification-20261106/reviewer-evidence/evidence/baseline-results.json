@@ -1,0 +1,89 @@
+{
+  "node": "v26.7.0",
+  "versions": {
+    "node": "26.7.0",
+    "acorn": "8.18.0",
+    "ada": "4.0.0",
+    "amaro": "1.1.11",
+    "ares": "1.34.8",
+    "brotli": "1.2.0",
+    "cldr": "48.0",
+    "icu": "78.3",
+    "libffi": "3.7.1",
+    "lief": "0.17.0",
+    "llhttp": "9.4.3",
+    "merve": "1.2.2",
+    "modules": "147",
+    "napi": "10",
+    "nbytes": "0.1.4",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.70.0",
+    "nghttp3": "",
+    "ngtcp2": "",
+    "openssl": "3.5.7",
+    "simdjson": "4.6.6",
+    "simdutf": "7.7.0",
+    "sqlite": "3.53.4",
+    "tz": "2026c",
+    "undici": "8.9.0",
+    "unicode": "17.0",
+    "uv": "1.52.1",
+    "uvwasi": "0.0.23",
+    "v8": "14.6.202.34-node.28",
+    "zlib": "1.3.2.1-motley-42c2f19",
+    "zstd": "1.5.7"
+  },
+  "platform": "win32",
+  "arch": "x64",
+  "results": [
+    {
+      "name": "vixen",
+      "args": [
+        "--test",
+        "packages/vixen_cybernetics/test-vixen-cybernetics.mjs"
+      ],
+      "start": "2026-11-07T02:09:09.276Z",
+      "status": 0
+    },
+    {
+      "name": "apfr0",
+      "args": [
+        "--test",
+        "packages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs"
+      ],
+      "start": "2026-11-07T02:09:09.778Z",
+      "status": 0
+    },
+    {
+      "name": "custodial",
+      "args": [
+        "--test",
+        "packages/four_crossing_capstone/test-custodial-and-time-boundaries.mjs"
+      ],
+      "start": "2026-11-07T02:09:10.231Z",
+      "status": 0
+    },
+    {
+      "name": "twin-world",
+      "args": [
+        "packages/four_crossing_capstone/run-twin-world-assay.mjs"
+      ],
+      "start": "2026-11-07T02:09:10.963Z",
+      "status": 0
+    },
+    {
+      "name": "dollhouse",
+      "args": [
+        "scripts/run-dollhouse-skill-audit.mjs",
+        "-i",
+        "packages/four_crossing_capstone/fixtures/audit-spec-a-pfr0.json",
+        "-o",
+        "C:\\Users\\timst\\Documents\\Codex\\2026-11-06\\td613-sovereign-operator-activation-a-pfr0-4\\work\\evidence\\dollhouse-author-fixture.json",
+        "--format",
+        "both"
+      ],
+      "start": "2026-11-07T02:09:11.155Z",
+      "status": 1
+    }
+  ]
+}

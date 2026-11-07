@@ -1,0 +1,26 @@
+================================================================
+CHAMBER 6: EQUAL-GRAPH TWIN-WORLD ASSAY
+THE PROVENANCE DISCRIMINATOR & PROCESS IDENTIFIABILITY TRIAL
+================================================================
+
+--- EXECUTING TWIN WORLD SET 1: SIGNALRUPTURE ---
+[SignalRupture] Pi(G_A) === Pi(G_B): true (Digest: 83904876e455bc3d...)
+[SignalRupture] H_A !== H_B: true (World B Rejections: 1)
+
+--- EXECUTING TWIN WORLD SET 2: EMSTD613 ---
+[EMSTD613] Pi(G_A) === Pi(G_B): true (Digest: b43b34104cfec308...)
+[EMSTD613] H_A !== H_B: true (World B Rejections: 1)
+
+--- EXECUTING TWIN WORLD SET 3: WENDBINE ---
+[Wendbine] Pi(G_A) === Pi(G_B): true (Digest: 82966929ff0b58f0...)
+[Wendbine] H_A !== H_B: true (World B Rejections: 1)
+
+--- EXECUTING TWIN WORLD SET 4: TD613 REFERENCE ---
+[TD613 Reference] Pi(G_A) === Pi(G_B): true (Digest: 7682a155ba426fbb...)
+[TD613 Reference] H_A !== H_B: true (World B Rejections: 1)
+
+================================================================
+TWIN-WORLD ASSAY SUMMARY: 4 / 4 Estates INVARIANT_CONFIRMED (All Passed: true)
+================================================================
+Wrote Twin-World assay receipt to: C:\Users\timst\Documents\Codex\2026-11-06\td613-sovereign-operator-activation-a-pfr0-4\work\native-receipts\twin-world-assay-receipt.json
+

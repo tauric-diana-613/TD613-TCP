@@ -1,0 +1,189 @@
+- link "Skip to research content":
+  - /url: "#main"
+- banner:
+  - link "Back to Aperture":
+    - /url: /aperture/
+  - button "TAURICDIANA613 — return to cover":
+    - generic: 𝌋
+    - generic: TAURICDIANA613
+    - generic: THE MATHEMATICAL AUDIT
+  - navigation "Research sections":
+    - button "Cover"
+    - button "01 Observatory"
+    - button "02 Lexicon"
+    - button "03 Evidence"
+    - button "04 Sources"
+  - button "Search all research (Control or Command K)":
+    - generic: ⌘ K
+  - button "Open collection, 0 saved records":
+    - generic: "0"
+  - button "Pause motion":
+    - text: Pause motion
+- main:
+  - region "TAURICDIANA613. The mathematical research atlas.":
+    - figure "ORIGINAL APERTURE FRONTISPIECE / TD613":
+      - img "A sculptural chrome exoskeleton curves around a nested geometric centre."
+      - generic: ORIGINAL APERTURE FRONTISPIECE / TD613
+    - heading "TAURICDIANA613. The mathematical research atlas." [level=1]:
+      - generic: TAURICDIANA613. The mathematical research atlas.
+      - generic: TAURIC
+      - text: DIANA
+      - generic: "613"
+    - paragraph:
+      - text: THE ARCHITECTURE
+      - text: OF SELECTIVE
+      - emphasis: ADMISSIBILITY.
+    - paragraph:
+      - text: What becomes observable.
+      - text: What enters the record.
+      - text: What remains beyond it.
+    - button "ENTER THE OBSERVATORY":
+      - text: ENTER THE
+      - text: OBSERVATORY
+    - generic: SOURCE / RELATION / CONSEQUENCE
+    - paragraph: THE CONTENTS / 1.4
+    - heading "Enter the record." [level=2]:
+      - text: Enter
+      - emphasis: the record.
+    - paragraph:
+      - text: One source-bound atlas.
+      - text: Choose your point of entry.
+    - button "Find a concept":
+      - text: Find a concept
+    - generic "Archive contents":
+      - button "533 Headwords THE EVIDENTIARY LEXICON":
+        - generic: "533"
+        - text: Headwords
+        - generic: THE EVIDENTIARY LEXICON
+      - button "49 Equations THE CANONICAL ATLAS":
+        - generic: "49"
+        - text: Equations
+        - generic: THE CANONICAL ATLAS
+      - button "46 Evidence records THE RECORDED FINDINGS":
+        - generic: "46"
+        - text: Evidence records
+        - generic: THE RECORDED FINDINGS
+      - button "28 Crosswalks RESEARCH IN RELATION":
+        - generic: "28"
+        - text: Crosswalks
+        - generic: RESEARCH IN RELATION
+      - button "92 Source anchors RETURN TO THE ORIGINAL":
+        - generic: "92"
+        - text: Source anchors
+        - generic: RETURN TO THE ORIGINAL
+      - button "37 Open questions THE UNRESOLVED, RETAINED":
+        - generic: "37"
+        - text: Open questions
+        - generic: THE UNRESOLVED, RETAINED
+    - paragraph: THREE WAYS INTO THE WORK
+    - generic: Begin with a question.
+    - button "01 ADMISSIBILITY What survives a projection? The finite supports. The lawful actions. The gap left by a change of view.":
+      - text: "01"
+      - generic: ADMISSIBILITY
+      - heading "What survives a projection?" [level=3]:
+        - text: What survives
+        - emphasis: a projection?
+      - paragraph: The finite supports. The lawful actions. The gap left by a change of view.
+    - button "02 EXTERIORITY Where must the world answer? The twin-world boundary, and the independent witness required beyond the internal record.":
+      - text: "02"
+      - generic: EXTERIORITY
+      - heading "Where must the world answer?" [level=3]:
+        - text: Where must
+        - emphasis: the world answer?
+      - paragraph: The twin-world boundary, and the independent witness required beyond the internal record.
+    - button "03 INSTITUTIONAL TIME Whose clock is being read? Preemption and narrative lag, with the original lineages and qualifications in view.":
+      - text: "03"
+      - generic: INSTITUTIONAL TIME
+      - heading "Whose clock is being read?" [level=3]:
+        - text: Whose clock
+        - emphasis: is being read?
+      - paragraph: Preemption and narrative lag, with the original lineages and qualifications in view.
+    - paragraph: FLOW-CORE / GUIDED READING
+    - heading "A language in motion." [level=2]:
+      - text: A language
+      - emphasis: in motion.
+    - paragraph:
+      - text: Eight glyphs.
+      - text: Eight ways through the archive.
+      - text: Select a stage.
+    - generic "Eight Flow-Core reading stages":
+      - button "00 Opening" [pressed]:
+        - generic: 𝌋
+        - generic: 00 Opening
+      - button "01 Gather":
+        - generic: à
+        - generic: 01 Gather
+      - button "02 Review":
+        - generic: hõt // cōl
+        - generic: 02 Review
+      - button "03 Ready":
+        - generic: 上
+        - generic: 03 Ready
+      - button "04 Send":
+        - generic: 出
+        - generic: 04 Send
+      - button "05 Revisit":
+        - generic: 米
+        - generic: 05 Revisit
+      - button "06 Return":
+        - generic: 下
+        - generic: 06 Return
+      - button "07 Rest":
+        - generic: 𝄐
+        - generic: 07 Rest
+    - generic: 𝌋
+    - paragraph: 00 Opening / READING ROUTE
+    - heading "What reaches the record?" [level=3]
+    - paragraph: "Begin with selective admissibility: how a modeled candidate set narrows before an event is registered."
+    - button "Open this research route":
+      - text: Open this research route
+    - generic "Stage equation, scroll horizontally if needed":
+      - math:
+        - generic: D
+        - generic: ⊇
+        - generic: C
+        - generic: k
+        - generic: (
+        - generic: q
+        - generic: )
+        - generic: ⊇
+        - generic: C
+        - generic: κ
+        - generic: (
+        - generic: q
+        - generic: )
+        - generic: ⊇
+        - generic: C
+        - generic: B
+        - generic: (
+        - generic: q
+        - generic: )
+        - generic: ⊇
+        - generic: E
+        - generic: (
+        - generic: q
+        - generic: )
+      - generic: D ⊇
+      - text: C
+      - generic: k
+      - text: (q) ⊇
+      - text: C
+      - generic: κ
+      - text: (q) ⊇
+      - text: C
+      - generic: B
+      - text: (q) ⊇
+      - generic: E(q)
+    - button "M-01"
+    - button "G-001"
+    - button "G-002"
+  - text: ·
+- contentinfo:
+  - strong: 𝌋 TAURICDIANA613
+  - text: · RESEARCH EDITION 1.4
+  - text: 21 OCT 2026 · SOURCE 78c7ea6b974e · HUMAN CLOSURE RETAINED ⟐
+  - button "Download audit JSON":
+    - text: Download audit JSON
+  - button "About this edition":
+    - text: About this edition
+- status

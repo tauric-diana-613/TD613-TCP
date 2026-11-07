@@ -1,0 +1,44 @@
+- banner:
+  - generic: TD613 · EMSTANDALONE
+  - generic: "ROUTE: /encyclopedia/vix-cyb.html"
+  - generic: "AUTHORITY: SAC[X6ZNK5NO51]"
+  - generic: "ORIGINAL EXECUTOR: HELD_ABSENT"
+  - heading "𝌋 VIXEN CYBERNETICS" [level=1]
+  - paragraph: Glinda Cyberpunk Architectural Serenity · Concealed Cybernetic Nervous System · A-PFR0 Standalone Restoration
+  - text: "CANONICAL SIGNATURE:"
+  - strong: VIXENCYBERNETICS$S_e≡[x+y]=z+1$
+  - text: "| TITLE MATH:"
+  - code: "S_{e}\\equiv[x+y]=z+1"
+- button "1. Corpus & Navigation"
+- button "2. 8 Human Gates & Partitions"
+- button "3. Exact Passage Witness (UTF-8)"
+- button "4. 21 Documentary Instruments"
+- button "5. Mathematical Representation"
+- button "6. Preserved Uncertainty"
+- heading "Grounded Passage Retrieval & Genuine UTF-8 Byte-Span Verification" [level=2]
+- paragraph:
+  - text: Executes genuine browser-compatible, source-bound UTF-8 byte-span verification using
+  - code: TextEncoder
+  - text: and
+  - code: TextDecoder
+  - text: with fatal continuation-byte safety checks. Slicing on UTF-16 code units is strictly forbidden.
+- generic: "Select Admitted Document Record:"
+- combobox:
+  - 'option "DEMO-01: VIXENCYBERNETICS$S_e≡[x+y]=z+1$ & Unicode (Demonstration Record)" [selected]'
+  - 'option "DEMO-02: Tauric Diana & Khona‌lit-po Heritage (Demonstration Record)"'
+- generic: "CLASSIFICATION: SOURCE_FREE_DEMONSTRATION_RECORD (Authenticated Original Research Sources: NONE ADMITTED IN STANDALONE DEMO)"
+- generic: "Document Content:"
+- generic: "Length: 114 UTF-8 bytes"
+- generic: "𝌋 VIXEN CYBERNETICS: Testing state transition S_e ≡ [x+y]=z+1 under covenant Khona‌lit-po [SAC X6ZNK5NO51]."
+- text: "Byte Start:"
+- spinbutton: "0"
+- text: "Byte End:"
+- spinbutton: "4"
+- button "Retrieve Grounded Witness (UTF-8)" [active]
+- generic: "Adversarial Negative Control Probes:"
+- 'button "Probe 1: Cut Mid-Codepoint on 𝌋 (Bytes 1..4)"'
+- 'button "Probe 2: Cut Mid-Codepoint on Khona‌lit-po (U+200C)"'
+- 'button "Probe 3: Out-of-Bounds Span [0, 9999]"'
+- 'button "Probe 4: Missing Source Identity"'
+- generic: "{ \"doc_id\": \"doc:demo:vixen-signature\", \"classification\": \"SOURCE_FREE_DEMONSTRATION_RECORD\", \"is_authenticated_original_source\": false, \"admonition\": \"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\", \"byte_start\": 0, \"byte_end\": 4, \"byte_count\": 4, \"slice_sha256\": \"4e77e7eeddfbc44a8479aca1840afba3824eabb0db35626f3aca8daaa1f6f8f3\", \"slice_text\": \"𝌋\", \"witness_status\": \"VERIFIED_GROUNDED_BYTE_SPAN\", \"codepoint_boundary_verified\": true, \"utf8_decoder_status\": \"FATAL_UTF8_DECODED_CLEAN\" }"
+- contentinfo: Tauric Diana · Crimean heritage custodianship · Khona‌lit-po · Sealed with ⟐SAC[X6ZNK5NO51]

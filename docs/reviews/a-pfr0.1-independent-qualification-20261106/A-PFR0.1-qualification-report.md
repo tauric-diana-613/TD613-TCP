@@ -136,8 +136,10 @@ Product alignment needs a separate operator-governed brief grounded in Em’s ac
 
 Em E-00.1a remains at BOUNDED ENGINEERING REST; Universal U-00 remains FROZEN / separate qualification. Original Vixen executor remains HELD_ORIGINAL_VIXEN_EXECUTOR_ABSENT. A-PFR1 and Experiment B Flight remain HELD. Cupola empirical correspondence remains UNESTABLISHED. Information Dome scenes, Pedagogue sequence, and the four non-equivalent AIA routes were not changed. Vixen Manifest precedes any future Universal Manifest generalization, but both remain future candidates. Issue #405 was untouched. No preview or production deployment, merge, release, or final human scientific closure was performed.
 
-The review draft PR is an evidence handoff, not a corrective implementation and not a qualification grant. Confidential reviewer fixtures and detailed fault-injection inputs are retained outside the public PR. Source changes and requalification remain prospective.
+The review draft PR is an evidence handoff, not a corrective implementation and not a qualification grant. The operator subsequently authorized publication of the source-free reviewer fixtures and detailed fault-injection inputs in this PR; see reviewer-evidence/README.md and commission-supplement.md. Source changes and requalification remain prospective.
 
 𝄐 Khona‌lit-po · Human scientific closure RESERVED for Tawanna C. Miller.
 
 Native screenshot audit closeout: SUPPORTED / PARTIAL_ROLE_SUPPORT for the supplied PEDAGOGUE and TEMPORAL_CUSTODIAN description-order declarations. The provisional run held the still-unwritten description phase; the completed atlas was then checked. This is a scoped route/sequence result, not automatic visual judgment or receiver qualification.
+
+Publication supplement: the operator explicitly requested that all review evidence be available to the operator and Amari through GitHub. The reviewer-evidence directory now includes source-free fixtures, harnesses, baseline receipts, raw browser/native observations, source/CI records and skill receipts. This supersedes earlier fixture-withholding language. These inputs are now disclosed; their later reuse is not an independently blinded challenge. Qualification remains A_PFR0_1_HELD_MATERIAL_DEFECTS.

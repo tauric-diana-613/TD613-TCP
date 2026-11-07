@@ -1,0 +1,12 @@
+/* Run in the isolated frozen Vixen page's developer console. Function probes only; not a UI click witness. */
+(async()=>{
+ const out=[];const capture=async(label,fn)=>{try{out.push({label,result:await fn()})}catch(e){out.push({label,error:{code:e.code??null,name:e.name??null,message:e.message??String(e)}})}};
+ for(const [id,doc] of Object.entries(BROWSER_DOCUMENTS)){const bytes=new TextEncoder().encode(doc.text);for(let i=0;i<bytes.length;i++)if((bytes[i]&192)===128){await capture(id+':start:'+i,()=>retrievePassageWitnessInBrowser(id,i,bytes.length));await capture(id+':end:'+i,()=>retrievePassageWitnessInBrowser(id,0,i));}await capture(id+':whole',()=>retrievePassageWitnessInBrowser(id,0,bytes.length));}
+ for(const [s,e] of [[0,0],[4,0],[-1,4],[0,9999],[0,NaN],[NaN,4],[4.5,10.5],['x',4],[null,4],[0,Infinity]])await capture('coords:'+String(s)+':'+String(e),()=>retrievePassageWitnessInBrowser('doc:demo:vixen-signature',s,e));
+ await capture('missing',()=>retrievePassageWitnessInBrowser('unadmitted',0,4));await capture('prototype-id',()=>retrievePassageWitnessInBrowser('toString',0,4));
+ const id='synthetic:scalar-qualification',text='A'+String.fromCodePoint(0x1d30b)+'B'+String.fromCodePoint(0x10d613)+'C'+'Khona\u200clit-po';
+ BROWSER_DOCUMENTS[id]={doc_id:id,classification:'SOURCE_FREE_DEMONSTRATION_RECORD',text};
+ try{let n=0;const boundaries=[0];for(const c of text){n+=new TextEncoder().encode(c).length;boundaries.push(n);}for(let s=0;s<boundaries.length;s++)for(let e=s+1;e<boundaries.length;e++)await capture('scalar:'+boundaries[s]+':'+boundaries[e],()=>retrievePassageWitnessInBrowser(id,boundaries[s],boundaries[e]));const bytes=new TextEncoder().encode(text);for(let i=1;i<bytes.length;i++)if((bytes[i]&192)===128){await capture('scalar-illegal-start:'+i,()=>retrievePassageWitnessInBrowser(id,i,bytes.length));await capture('scalar-illegal-end:'+i,()=>retrievePassageWitnessInBrowser(id,0,i));}}finally{delete BROWSER_DOCUMENTS[id]}
+ const descriptor=Object.getOwnPropertyDescriptor(window,'crypto');try{Object.defineProperty(window,'crypto',{configurable:true,value:undefined});await capture('missing-crypto',()=>retrievePassageWitnessInBrowser('doc:demo:vixen-signature',0,4));}finally{if(descriptor)Object.defineProperty(window,'crypto',descriptor);else delete window.crypto;}
+ console.log(JSON.stringify({classification:'DIRECT_FUNCTION_PROBES_NOT_UI_AUTOMATION',results:out},null,2));return out;
+})()

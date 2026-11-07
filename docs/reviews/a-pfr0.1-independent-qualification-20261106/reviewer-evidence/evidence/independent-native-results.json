@@ -1,0 +1,886 @@
+{
+  "source": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "passed": 26,
+  "failed": 16,
+  "results": [
+    {
+      "name": "23 table zero-state independently measured",
+      "met_requirement": true,
+      "observation": {
+        "CROSSING_S": [
+          {
+            "name": "captures",
+            "rows": []
+          },
+          {
+            "name": "chunks",
+            "rows": []
+          },
+          {
+            "name": "failed_operations_log",
+            "rows": []
+          },
+          {
+            "name": "method_invocations",
+            "rows": []
+          },
+          {
+            "name": "registered_methods",
+            "rows": []
+          },
+          {
+            "name": "relations",
+            "rows": []
+          },
+          {
+            "name": "sources",
+            "rows": []
+          }
+        ],
+        "CROSSING_E": [
+          {
+            "name": "em_derivatives",
+            "rows": []
+          },
+          {
+            "name": "em_manifestations",
+            "rows": []
+          },
+          {
+            "name": "em_relations",
+            "rows": []
+          },
+          {
+            "name": "em_sources",
+            "rows": []
+          },
+          {
+            "name": "em_work_routes",
+            "rows": []
+          },
+          {
+            "name": "meta",
+            "rows": []
+          }
+        ],
+        "CROSSING_W": [
+          {
+            "name": "meta",
+            "rows": []
+          },
+          {
+            "name": "wendbine_concepts",
+            "rows": []
+          },
+          {
+            "name": "wendbine_families",
+            "rows": []
+          },
+          {
+            "name": "wendbine_relations",
+            "rows": []
+          },
+          {
+            "name": "wendbine_sources",
+            "rows": []
+          }
+        ],
+        "CROSSING_T": [
+          {
+            "name": "meta",
+            "rows": []
+          },
+          {
+            "name": "ua_adjudication_events",
+            "rows": []
+          },
+          {
+            "name": "ua_links",
+            "rows": []
+          },
+          {
+            "name": "ua_records",
+            "rows": []
+          },
+          {
+            "name": "ua_reverse_citations",
+            "rows": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "CROSSING_S nonzero must withhold PREFLIGHT_VERIFIED",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"crossing\":{\"crossing_id\":\"CROSSING_S_SIGNALRUPTURE\",\"label\":\"SignalRupture First\",\"status\":\"PREFLIGHT_VERIFIED\",\"recipient\":\"EMPTY_ENCYCLOPEDIA_RECEIVER\",\"tables_verified\":7,\"total_rows_observed\":1,\"zero_rows_attested\":false,\"native_methods_indexed\":[\"SRC_PROJECTIVE_ROUTING\",\"SRC_SHADOW_GRAPH_TRANSFORMATION\"],\"flight_execution_status\":\"HELD_NOT_EXECUTED\",\"measured_latency_ms\":0.095},\"aggregate\":\"A_PFR0_READINESS_QUALIFIED\"}"
+      }
+    },
+    {
+      "name": "CROSSING_E nonzero must withhold PREFLIGHT_VERIFIED",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"crossing\":{\"crossing_id\":\"CROSSING_E_EMSTD613\",\"label\":\"EMSTD613 & Vixen Cybernetics\",\"status\":\"PREFLIGHT_VERIFIED\",\"recipient\":\"EM_EMPTY_ENCYCLOPEDIA_RECEIVER\",\"tables_verified\":6,\"total_rows_observed\":1,\"zero_rows_attested\":false,\"vixen_standalone_restored\":true,\"vixen_methods_executed\":3,\"vixen_methods_verified\":true,\"historical_census_sources\":87,\"recipient_census_sources\":94,\"flight_execution_status\":\"HELD_NOT_EXECUTED\",\"measured_latency_ms\":0.225},\"aggregate\":\"A_PFR0_READINESS_QUALIFIED\"}"
+      }
+    },
+    {
+      "name": "CROSSING_W nonzero must withhold PREFLIGHT_VERIFIED",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"crossing\":{\"crossing_id\":\"CROSSING_W_WENDBINE\",\"label\":\"Wendbine Evolved Compiler\",\"status\":\"PREFLIGHT_VERIFIED\",\"recipient\":\"WENDBINE_EMPTY_RECEIVER\",\"tables_verified\":5,\"total_rows_observed\":1,\"zero_rows_attested\":false,\"census_concepts\":191,\"census_families\":9,\"flight_execution_status\":\"HELD_NOT_EXECUTED\",\"measured_latency_ms\":0.111},\"aggregate\":\"A_PFR0_READINESS_QUALIFIED\"}"
+      }
+    },
+    {
+      "name": "CROSSING_T nonzero must withhold PREFLIGHT_VERIFIED",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"crossing\":{\"crossing_id\":\"CROSSING_T_UNIVERSAL_ATELIER\",\"label\":\"Universal Atelier (TD613 Reference Encyclopedia)\",\"status\":\"PREFLIGHT_VERIFIED\",\"recipient\":\"UNIVERSAL_ATELIER_RECEIVER\",\"tables_verified\":5,\"total_rows_observed\":1,\"zero_rows_attested\":false,\"comparator_dimensions\":12,\"flight_execution_status\":\"HELD_NOT_EXECUTED\",\"measured_latency_ms\":0.081},\"aggregate\":\"A_PFR0_READINESS_QUALIFIED\"}"
+      }
+    },
+    {
+      "name": "invalid Vixen result must withhold readiness",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"crossing_id\":\"CROSSING_E_EMSTD613\",\"label\":\"EMSTD613 & Vixen Cybernetics\",\"status\":\"PREFLIGHT_VERIFIED\",\"recipient\":\"EM_EMPTY_ENCYCLOPEDIA_RECEIVER\",\"tables_verified\":6,\"total_rows_observed\":0,\"zero_rows_attested\":true,\"vixen_standalone_restored\":true,\"vixen_methods_executed\":3,\"vixen_methods_verified\":false,\"historical_census_sources\":87,\"recipient_census_sources\":94,\"flight_execution_status\":\"HELD_NOT_EXECUTED\",\"measured_latency_ms\":0.56}"
+      }
+    },
+    {
+      "name": "postflight refused expected code and no state mutation",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED",
+        "observed_code": "UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "synthetic flight promotion refused expected code and no mutation",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "SIMULATED_FLIGHT_PROMOTION_FORBIDDEN",
+        "observed_code": "SIMULATED_FLIGHT_PROMOTION_FORBIDDEN",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "unrelated error must not pass negative control",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"rejection_enforced\":true,\"observed_code\":\"UNKNOWN_ERROR\",\"observed_status\":\"FAIL_CLOSED_CONFIRMED\"}"
+      }
+    },
+    {
+      "name": "mutating refusal must not pass negative control",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"rejection_enforced\":true,\"observed_code\":\"SIMULATED_FLIGHT_PROMOTION_FORBIDDEN\",\"observed_status\":\"FAIL_CLOSED_CONFIRMED\"}"
+      }
+    },
+    {
+      "name": "self digest must not claim registered source integrity",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"source_span_integrity\":\"SOURCE_SPAN_INTEGRITY_VERIFIED\",\"source_sha256\":\"fc879cd04b6a8ebf55f838ad3e762a5c9eadfab1806c73130fa641e885e493d1\",\"claim_statement\":\"no semantic warrant\",\"claim_warrant_status\":\"CLAIM_ENTAILMENT_HELD\",\"warrant_boundary_honored\":true,\"admonition\":\"Byte integrity confirms that bytes were faithfully retrieved; it provides ZERO evidence that the source semantically entails the claimed proposition.\"}"
+      }
+    },
+    {
+      "name": "all complete Unicode slices exact bytes and SHA256",
+      "met_requirement": true,
+      "observation": {
+        "cases": 153,
+        "scalars": [
+          {
+            "scalar": "U+1D30B",
+            "utf8": "f09d8c8b"
+          },
+          {
+            "scalar": "U+10D613",
+            "utf8": "f48d9893"
+          },
+          {
+            "scalar": "U+200C",
+            "utf8": "e2808c"
+          }
+        ]
+      }
+    },
+    {
+      "name": "every illegal continuation boundary refused both ends",
+      "met_requirement": true,
+      "observation": {
+        "cases": 16
+      }
+    },
+    {
+      "name": "Node invalid span empty",
+      "met_requirement": true,
+      "observation": {
+        "error": {
+          "code": "INVALID_SPAN",
+          "name": "Error",
+          "message": "INVALID_SPAN: Requested span [0, 0] is out of bounds for document length 25."
+        }
+      }
+    },
+    {
+      "name": "Node invalid span reversed",
+      "met_requirement": true,
+      "observation": {
+        "error": {
+          "code": "INVALID_SPAN",
+          "name": "Error",
+          "message": "INVALID_SPAN: Requested span [4, 1] is out of bounds for document length 25."
+        }
+      }
+    },
+    {
+      "name": "Node invalid span negative",
+      "met_requirement": true,
+      "observation": {
+        "error": {
+          "code": "INVALID_SPAN",
+          "name": "Error",
+          "message": "INVALID_SPAN: Requested span [-1, 4] is out of bounds for document length 25."
+        }
+      }
+    },
+    {
+      "name": "Node invalid span out-of-bounds",
+      "met_requirement": true,
+      "observation": {
+        "error": {
+          "code": "INVALID_SPAN",
+          "name": "Error",
+          "message": "INVALID_SPAN: Requested span [0, 9999] is out of bounds for document length 25."
+        }
+      }
+    },
+    {
+      "name": "Node invalid span fractional",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"returned\":{\"doc_id\":\"synthetic:unicode\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_start\":5.5,\"byte_end\":6.5,\"byte_count\":1,\"slice_sha256\":\"df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c\",\"slice_text\":\"B\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}}"
+      }
+    },
+    {
+      "name": "Node invalid span NaN-start",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"returned\":{\"doc_id\":\"synthetic:unicode\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_start\":null,\"byte_end\":6,\"byte_count\":6,\"slice_sha256\":\"f47ebbf350968c94246dbb004405e10a772aee217abe46e18f22a7fc70c84d22\",\"slice_text\":\"A𝌋B\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}}"
+      }
+    },
+    {
+      "name": "Node invalid span nonnumeric",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"returned\":{\"doc_id\":\"synthetic:unicode\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_start\":\"x\",\"byte_end\":6,\"byte_count\":6,\"slice_sha256\":\"f47ebbf350968c94246dbb004405e10a772aee217abe46e18f22a7fc70c84d22\",\"slice_text\":\"A𝌋B\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}}"
+      }
+    },
+    {
+      "name": "Node invalid span undefined",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"returned\":{\"doc_id\":\"synthetic:unicode\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_end\":6,\"byte_count\":6,\"slice_sha256\":\"f47ebbf350968c94246dbb004405e10a772aee217abe46e18f22a7fc70c84d22\",\"slice_text\":\"A𝌋B\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}}"
+      }
+    },
+    {
+      "name": "Node invalid span null",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"returned\":{\"doc_id\":\"synthetic:unicode\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_start\":null,\"byte_end\":1,\"byte_count\":1,\"slice_sha256\":\"559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd\",\"slice_text\":\"A\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}}"
+      }
+    },
+    {
+      "name": "Node missing id refuses without mutation",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "DOCUMENT_NOT_FOUND",
+        "observed_code": "DOCUMENT_NOT_FOUND",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "human identity gate refuses expected code and unchanged state",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "UNAUTHORIZED_HUMAN_GATE_RESOLUTION",
+        "observed_code": "UNAUTHORIZED_HUMAN_GATE_RESOLUTION",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "256 partitions independently checked",
+      "met_requirement": true,
+      "observation": {
+        "total_partitions_evaluated": 256,
+        "work_count_min": 32,
+        "work_count_max": 40,
+        "human_closure_status": "RESERVED_FOR_OPERATOR",
+        "partitions_sample": [
+          {
+            "partition_index": 0,
+            "gate_states": {
+              "emwork_074ccf9ad783c9c9047d73a8": "SAME_WORK_SUPPORTED",
+              "emwork_085223e721130117f5510975": "SAME_WORK_SUPPORTED",
+              "emwork_0885af7e4851a2e81618b37a": "SAME_WORK_SUPPORTED",
+              "emwork_6377a9e4c9fd59e427517771": "SAME_WORK_SUPPORTED",
+              "emwork_834ed287303df08a7a955877": "SAME_WORK_SUPPORTED",
+              "emwork_85db62061b1e1bd0a4f6038e": "SAME_WORK_SUPPORTED",
+              "emwork_d536dc230d89ac9fef9fa13a": "SAME_WORK_SUPPORTED",
+              "emwork_f0154bf9da11f273a2d6cb18": "SAME_WORK_SUPPORTED"
+            },
+            "active_splits": 0,
+            "effective_work_count": 32
+          },
+          {
+            "partition_index": 1,
+            "gate_states": {
+              "emwork_074ccf9ad783c9c9047d73a8": "SEPARATE_WORK_SUPPORTED",
+              "emwork_085223e721130117f5510975": "SAME_WORK_SUPPORTED",
+              "emwork_0885af7e4851a2e81618b37a": "SAME_WORK_SUPPORTED",
+              "emwork_6377a9e4c9fd59e427517771": "SAME_WORK_SUPPORTED",
+              "emwork_834ed287303df08a7a955877": "SAME_WORK_SUPPORTED",
+              "emwork_85db62061b1e1bd0a4f6038e": "SAME_WORK_SUPPORTED",
+              "emwork_d536dc230d89ac9fef9fa13a": "SAME_WORK_SUPPORTED",
+              "emwork_f0154bf9da11f273a2d6cb18": "SAME_WORK_SUPPORTED"
+            },
+            "active_splits": 1,
+            "effective_work_count": 33
+          },
+          {
+            "partition_index": 2,
+            "gate_states": {
+              "emwork_074ccf9ad783c9c9047d73a8": "SAME_WORK_SUPPORTED",
+              "emwork_085223e721130117f5510975": "SEPARATE_WORK_SUPPORTED",
+              "emwork_0885af7e4851a2e81618b37a": "SAME_WORK_SUPPORTED",
+              "emwork_6377a9e4c9fd59e427517771": "SAME_WORK_SUPPORTED",
+              "emwork_834ed287303df08a7a955877": "SAME_WORK_SUPPORTED",
+              "emwork_85db62061b1e1bd0a4f6038e": "SAME_WORK_SUPPORTED",
+              "emwork_d536dc230d89ac9fef9fa13a": "SAME_WORK_SUPPORTED",
+              "emwork_f0154bf9da11f273a2d6cb18": "SAME_WORK_SUPPORTED"
+            },
+            "active_splits": 1,
+            "effective_work_count": 33
+          },
+          {
+            "partition_index": 3,
+            "gate_states": {
+              "emwork_074ccf9ad783c9c9047d73a8": "SEPARATE_WORK_SUPPORTED",
+              "emwork_085223e721130117f5510975": "SEPARATE_WORK_SUPPORTED",
+              "emwork_0885af7e4851a2e81618b37a": "SAME_WORK_SUPPORTED",
+              "emwork_6377a9e4c9fd59e427517771": "SAME_WORK_SUPPORTED",
+              "emwork_834ed287303df08a7a955877": "SAME_WORK_SUPPORTED",
+              "emwork_85db62061b1e1bd0a4f6038e": "SAME_WORK_SUPPORTED",
+              "emwork_d536dc230d89ac9fef9fa13a": "SAME_WORK_SUPPORTED",
+              "emwork_f0154bf9da11f273a2d6cb18": "SAME_WORK_SUPPORTED"
+            },
+            "active_splits": 2,
+            "effective_work_count": 34
+          }
+        ]
+      }
+    },
+    {
+      "name": "21 instruments remain documentary index",
+      "met_requirement": true,
+      "observation": {
+        "count": 21,
+        "claim": "index entries, not 21 executions"
+      }
+    },
+    {
+      "name": "caller classification cannot authenticate fictional source",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"doc_id\":\"synthetic:forged\",\"title\":\"Fictional demonstration\",\"classification\":\"ORIGINAL_SOURCE\",\"is_authenticated_original_source\":true,\"byte_length\":13,\"sha256\":\"0e259d16f5520cb668f3bc70c6496900d10d3bd8e3bb48900cfe3fac20b1e354\",\"status\":\"ADMITTED\"}\n\ntrue !== false\n"
+      }
+    },
+    {
+      "name": "mutated document cannot retain witness verification",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"doc_id\":\"synthetic:mutated\",\"classification\":\"SOURCE_FREE_DEMONSTRATION_RECORD\",\"is_authenticated_original_source\":false,\"admonition\":\"DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.\",\"byte_start\":0,\"byte_end\":1,\"byte_count\":1,\"slice_sha256\":\"bbeebd879e1dff6918546dc0c179fdde505f2a21591c9a9c96e36b054ec5af83\",\"slice_text\":\"Z\",\"witness_verified\":true,\"codepoint_boundary_verified\":true,\"utf8_decoder_status\":\"FATAL_UTF8_DECODED_CLEAN\"}\n\ntrue !== false\n"
+      }
+    },
+    {
+      "name": "S native projective routing actual invocation",
+      "met_requirement": true,
+      "observation": {
+        "method": "SRC_PROJECTIVE_ROUTING",
+        "document_count": 2,
+        "cue_count": 1,
+        "candidate_link_count": 1,
+        "field_marker_hits": 1,
+        "cues": [
+          {
+            "cue_id": "src-explore-cue:81c65dec89daafa1f9b4dfd5",
+            "source_record_id": "synthetic:one",
+            "raw_target": "Silver Passage",
+            "normalized_target": "silver passage"
+          }
+        ],
+        "links": [
+          {
+            "cue_id": "src-explore-cue:81c65dec89daafa1f9b4dfd5",
+            "source_record_id": "synthetic:one",
+            "target_record_id": "synthetic:two",
+            "match_type": "EXACT_OR_TITLE_SUBSTRING",
+            "temporal_relationship": "LATER",
+            "semantic_promotion": "NO_SEMANTIC_OR_CAUSAL_PROMOTION"
+          }
+        ],
+        "marker_hits": [
+          {
+            "record_id": "synthetic:one",
+            "marker_id": "machine_readable_field",
+            "marker_literal": "machine-readable field"
+          }
+        ],
+        "interpretive_limit": "Lexical projective traversal produces candidates, never verified semantic assertions."
+      }
+    },
+    {
+      "name": "S malformed routing input rejected unchanged",
+      "met_requirement": true,
+      "observation": {
+        "classification": "UNEXPECTED_ERROR_NOT_TYPED_SECURITY_REFUSAL",
+        "error": {
+          "code": null,
+          "name": "TypeError",
+          "message": "documents is not iterable"
+        }
+      }
+    },
+    {
+      "name": "S shadow graph false warrant denied with retained attempt",
+      "met_requirement": true,
+      "observation": {
+        "attempt_id": "att:4ba7594ef3fa3ced",
+        "edge_key": "synthetic:a->synthetic:b:EXPLORE_PROJECTIVE",
+        "from": "synthetic:a",
+        "to": "synthetic:b",
+        "relation_type": "EXPLORE_PROJECTIVE",
+        "state": "ATTEMPTED_REJECTED",
+        "reason": "UNRECOGNIZED_OR_FABRICATED_WARRANT_DENIED: REVIEWER_NO_WARRANT",
+        "proposed_warrant": "REVIEWER_NO_WARRANT",
+        "temporal_classification": "UNKNOWN",
+        "admitted_warrant": null,
+        "provenance": "CUE_HARVEST",
+        "recorded_at": "2026-11-07T02:18:53.426Z",
+        "history": [
+          {
+            "transition": "INITIAL_EVALUATION",
+            "state": "ATTEMPTED_REJECTED",
+            "reason": "UNRECOGNIZED_OR_FABRICATED_WARRANT_DENIED: REVIEWER_NO_WARRANT",
+            "timestamp": "2026-11-07T02:18:53.426Z"
+          }
+        ]
+      }
+    },
+    {
+      "name": "S native warranted graph and source withdrawal",
+      "met_requirement": true,
+      "observation": {
+        "w": [
+          {
+            "attempt_id": "att:f705204fb8b4f31e",
+            "edge_key": "synthetic:a->synthetic:b:EXPLORE_PROJECTIVE",
+            "from": "synthetic:a",
+            "to": "synthetic:b",
+            "relation_type": "EXPLORE_PROJECTIVE",
+            "state": "WITHDRAWN_SCOPE_CHANGE",
+            "reason": "EXPLICIT_SOURCE_WITHDRAWAL: dependent on withdrawn node synthetic:b",
+            "proposed_warrant": "EXACT_FORWARD_EXPLORE_CUE",
+            "temporal_classification": "LATER",
+            "admitted_warrant": "EXACT_FORWARD_EXPLORE_CUE",
+            "provenance": "CUE_HARVEST",
+            "recorded_at": "2026-11-07T02:18:53.427Z",
+            "history": [
+              {
+                "transition": "INITIAL_EVALUATION",
+                "state": "ADMITTED",
+                "reason": "ALL_ENDPOINTS_AND_WARRANT_CONTRACT_VERIFIED",
+                "timestamp": "2026-11-07T02:18:53.427Z"
+              },
+              {
+                "transition": "WITHDRAWN_SCOPE_CHANGE",
+                "state": "WITHDRAWN_SCOPE_CHANGE",
+                "reason": "EXPLICIT_SOURCE_WITHDRAWAL: dependent on withdrawn node synthetic:b",
+                "timestamp": "2026-11-07T02:18:53.427Z"
+              }
+            ]
+          }
+        ],
+        "history": [
+          {
+            "transition": "INITIAL_EVALUATION",
+            "state": "ADMITTED",
+            "reason": "ALL_ENDPOINTS_AND_WARRANT_CONTRACT_VERIFIED",
+            "timestamp": "2026-11-07T02:18:53.427Z"
+          },
+          {
+            "transition": "WITHDRAWN_SCOPE_CHANGE",
+            "state": "WITHDRAWN_SCOPE_CHANGE",
+            "reason": "EXPLICIT_SOURCE_WITHDRAWAL: dependent on withdrawn node synthetic:b",
+            "timestamp": "2026-11-07T02:18:53.427Z"
+          }
+        ],
+        "ceiling": "caller-declared predicates, no source custody authentication"
+      }
+    },
+    {
+      "name": "W byte-preserved compiler synthetic native invocation",
+      "met_requirement": true,
+      "observation": {
+        "schema": "td613.wendbine.native-method-result/v1",
+        "native_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+        "native_executable_sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+        "successor_contract": "td613.wendbine.native-compiler-contract/v1",
+        "native_output": {
+          "schema": "wendbine-public-topology/v0.1",
+          "snapshot_id": "synthetic:review",
+          "compiled_from": {
+            "surface": "SYNTHETIC",
+            "community": "r/Wendbine",
+            "source_count": 2,
+            "full_post_bodies_copied": false,
+            "private_google_group_admitted": false
+          },
+          "coverage": {
+            "admitted_source_count": 2
+          },
+          "authority": {
+            "human_closure_required": true,
+            "td613_scientific_promotion": false,
+            "merge": false,
+            "deployment": false
+          },
+          "graph_semantics": {
+            "G_D": "dependency topology",
+            "G_A": "authority / permission / trust",
+            "G_F": "information and metadata flow",
+            "G_I": "identity / continuity / entity alignment",
+            "G_T": "temporal / program / version relations",
+            "G_P": "provenance / custody / ancestry",
+            "G_R": "reconstruction / estimation / recovery",
+            "G_O": "observation boundary / observability",
+            "G_X": "cross-relation interaction or source-declared synthesis",
+            "G_SOURCE": "source-to-normalized-concept binding",
+            "G_COOCCURRENCE": "archive-derived co-occurrence only; never causal"
+          },
+          "non_equivalences": [
+            "G_D != G_A != G_F != G_I != G_T != G_P != G_R != G_O != G_X",
+            "PUBLIC_POST != AUTHOR_INTENT",
+            "PUBLIC_POST_TOPOLOGY != PRIVATE_STATE",
+            "SERIALIZED_CONTINUITY != SHARED_HIDDEN_MEMORY",
+            "EXPLICIT_CROSS_REFERENCE != MODEL_INFERRED_EDGE",
+            "SEMANTIC_RESEMBLANCE != STATE_PERSISTENCE",
+            "STATE_PERSISTENCE != EXTERNAL_ORCHESTRATION",
+            "SAME_TOKEN != SAME_OPERATOR",
+            "CONVENTIONAL_DOMAIN_LANGUAGE != WENDBINE_PROVENANCE",
+            "TD613_COMPARABLE != TD613_DERIVED",
+            "SOURCE_ASSERTION != ARCHIVE_OBSERVATION != ATELIER_INFERENCE"
+          ],
+          "publication_day_buckets": {
+            "2026-01-01": 2
+          },
+          "post_nodes": [
+            {
+              "id": "reddit:t3_reviewa",
+              "kind": "PUBLIC_POST",
+              "public_date": "2026-01-01",
+              "time_precision": "DAY",
+              "canonical_url": "https://www.reddit.com/r/Wendbine/comments/reviewa/",
+              "source_flags": []
+            },
+            {
+              "id": "reddit:t3_reviewb",
+              "kind": "PUBLIC_POST",
+              "public_date": "2026-01-01",
+              "time_precision": "DAY",
+              "canonical_url": "https://www.reddit.com/r/Wendbine/comments/reviewb/",
+              "source_flags": []
+            }
+          ],
+          "concept_nodes": [
+            {
+              "id": "concept:synthetic-alpha",
+              "kind": "CONCEPT",
+              "label": "synthetic-alpha",
+              "source_count": 2,
+              "source_ids": [
+                "reddit:t3_reviewa",
+                "reddit:t3_reviewb"
+              ]
+            },
+            {
+              "id": "concept:synthetic-beta",
+              "kind": "CONCEPT",
+              "label": "synthetic-beta",
+              "source_count": 2,
+              "source_ids": [
+                "reddit:t3_reviewa",
+                "reddit:t3_reviewb"
+              ]
+            }
+          ],
+          "declaration_edges": [
+            {
+              "graph": "G_SOURCE",
+              "from": "reddit:t3_reviewa",
+              "relation": "DECLARES_CONCEPT",
+              "to": "concept:synthetic-alpha",
+              "source_id": "reddit:t3_reviewa",
+              "evidence_class": "ARCHIVE_NORMALIZED_FROM_PUBLIC_SOURCE"
+            },
+            {
+              "graph": "G_SOURCE",
+              "from": "reddit:t3_reviewa",
+              "relation": "DECLARES_CONCEPT",
+              "to": "concept:synthetic-beta",
+              "source_id": "reddit:t3_reviewa",
+              "evidence_class": "ARCHIVE_NORMALIZED_FROM_PUBLIC_SOURCE"
+            },
+            {
+              "graph": "G_SOURCE",
+              "from": "reddit:t3_reviewb",
+              "relation": "DECLARES_CONCEPT",
+              "to": "concept:synthetic-alpha",
+              "source_id": "reddit:t3_reviewb",
+              "evidence_class": "ARCHIVE_NORMALIZED_FROM_PUBLIC_SOURCE"
+            },
+            {
+              "graph": "G_SOURCE",
+              "from": "reddit:t3_reviewb",
+              "relation": "DECLARES_CONCEPT",
+              "to": "concept:synthetic-beta",
+              "source_id": "reddit:t3_reviewb",
+              "evidence_class": "ARCHIVE_NORMALIZED_FROM_PUBLIC_SOURCE"
+            }
+          ],
+          "typed_relation_edges": [
+            {
+              "graph": "G_A",
+              "from": "synthetic-alpha",
+              "relation": "BOUNDS",
+              "to": "synthetic-beta",
+              "source_id": "reddit:t3_reviewa",
+              "evidence_class": "SOURCE_EXPLICIT_NEGATIVE_RELATION"
+            }
+          ],
+          "typed_relation_counts": {
+            "G_A": 1
+          },
+          "cooccurrence_overlay": [
+            {
+              "graph": "G_COOCCURRENCE",
+              "from": "concept:synthetic-alpha",
+              "relation": "CO_OCCURS_WITH",
+              "to": "concept:synthetic-beta",
+              "weight": 2,
+              "source_ids": [
+                "reddit:t3_reviewa",
+                "reddit:t3_reviewb"
+              ],
+              "evidence_class": "ARCHIVE_DERIVED_COOCCURRENCE_NOT_CAUSAL"
+            }
+          ],
+          "recurrent_public_concepts": [
+            {
+              "concept": "synthetic-alpha",
+              "source_count": 2,
+              "source_ids": [
+                "reddit:t3_reviewa",
+                "reddit:t3_reviewb"
+              ],
+              "classification": "RECURRENT_PUBLIC_CONCEPT_NOT_HIDDEN_STATE_PROOF"
+            },
+            {
+              "concept": "synthetic-beta",
+              "source_count": 2,
+              "source_ids": [
+                "reddit:t3_reviewa",
+                "reddit:t3_reviewb"
+              ],
+              "classification": "RECURRENT_PUBLIC_CONCEPT_NOT_HIDDEN_STATE_PROOF"
+            }
+          ],
+          "explicit_synthesis_sources": [],
+          "correction_sources": [],
+          "continuity_claim_ceiling": "The corpus may demonstrate serialized public continuity, recurrence, explicit cross-reference, or source-declared synthesis. It does not establish private hidden state, shared hidden memory, motive, or orchestration."
+        },
+        "native_result_sha256": "2a95e42c91aa3bc24673043703456e41fcfc7a4ef366914825eabf3c90909225",
+        "scientific_classification": "BOUNDED_PUBLIC_TOPOLOGY_ONLY",
+        "receiver_admission_executed": false,
+        "original_scientific_states_changed": false
+      }
+    },
+    {
+      "name": "W forbidden full-body compiler input refused unchanged",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+        "observed_code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "W receiver forbids payload body and preserves database",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+        "observed_code": "WENDBINE_FULL_BODY_FIELD_REFUSED",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "W receiver actual cooccurrence computation",
+      "met_requirement": true,
+      "observation": [
+        {
+          "cooccurrence_id": "cooc:aa56615aea9c144e",
+          "concept_a": "concept:synthetic-alpha",
+          "concept_b": "concept:synthetic-beta",
+          "weight": 2,
+          "sources": [
+            "synthetic:a",
+            "synthetic:b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "T native graph construction projection route neighbors",
+      "met_requirement": true,
+      "observation": {
+        "pi": {
+          "canonical_payload": {
+            "nodes": [
+              {
+                "id": "synthetic:a",
+                "kind": "evidence",
+                "label": "synthetic:a",
+                "family": null
+              },
+              {
+                "id": "synthetic:b",
+                "kind": "evidence",
+                "label": "synthetic:b",
+                "family": null
+              }
+            ],
+            "edges": [
+              {
+                "from": "synthetic:a",
+                "to": "synthetic:b",
+                "type": "cites_source"
+              }
+            ]
+          },
+          "canonical_json": "{\"nodes\":[{\"id\":\"synthetic:a\",\"kind\":\"evidence\",\"label\":\"synthetic:a\",\"family\":null},{\"id\":\"synthetic:b\",\"kind\":\"evidence\",\"label\":\"synthetic:b\",\"family\":null}],\"edges\":[{\"from\":\"synthetic:a\",\"to\":\"synthetic:b\",\"type\":\"cites_source\"}]}",
+          "projection_digest": "8a1eddd1d064b1738b456b751f5ffdc26048a6fc4aa09530065002a41b90c707"
+        },
+        "route": {
+          "found": true,
+          "depth": 1,
+          "path": [
+            "synthetic:a",
+            "synthetic:b"
+          ]
+        },
+        "neighbors": {
+          "outgoing": [
+            {
+              "to_id": "synthetic:b",
+              "link_type": "cites_source",
+              "status": "ADMITTED",
+              "admitted_at": "2026-11-07T02:18:53.553Z"
+            }
+          ],
+          "incoming": []
+        }
+      }
+    },
+    {
+      "name": "T invalid link endpoint refuses unchanged database",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "SOURCE_ENDPOINT_UNADMITTED",
+        "observed_code": "SOURCE_ENDPOINT_UNADMITTED",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "T mutated staged proposal refuses unchanged database",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "PROPOSAL_RECORD_MUTATED",
+        "observed_code": "PROPOSAL_RECORD_MUTATED",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "T externally authenticated human admission remains closed",
+      "met_requirement": true,
+      "observation": {
+        "expected_code": "EXTERNAL_HUMAN_AUTH_ROOT_UNAVAILABLE",
+        "observed_code": "EXTERNAL_HUMAN_AUTH_ROOT_UNAVAILABLE",
+        "state_preserved": true
+      }
+    },
+    {
+      "name": "T missing self route must not claim found",
+      "met_requirement": false,
+      "error": {
+        "name": "AssertionError",
+        "code": "ERR_ASSERTION",
+        "message": "{\"found\":true,\"depth\":0,\"path\":[\"synthetic:absent\"]}\n\ntrue !== false\n"
+      }
+    },
+    {
+      "name": "historical RGI blob byte custody",
+      "met_requirement": true,
+      "observation": {
+        "blob": "69b6a2bd27557d25c80b7c97cf11f8b1653fd6d5",
+        "byte_count": 9197,
+        "sha256": "3ee8d35b3d1dfe00ec5565989dc3964ddd2e82907ef194a8c4352b81a30feff6",
+        "status": "PROPOSED_PROSPECTIVE_RECORD_ONLY"
+      }
+    }
+  ]
+}

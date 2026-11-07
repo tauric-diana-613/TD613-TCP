@@ -1,0 +1,317 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "results": [
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 1 lands on UTF-8 continuation byte (0x9D). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:1"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 1 lands on UTF-8 continuation byte (0x9D). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:1"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 2 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:2"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 2 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:2"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 3 lands on UTF-8 continuation byte (0x8B). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:3"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 3 lands on UTF-8 continuation byte (0x8B). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:3"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 54 lands on UTF-8 continuation byte (0x89). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:54"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 54 lands on UTF-8 continuation byte (0x89). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:54"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 55 lands on UTF-8 continuation byte (0xA1). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:55"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 55 lands on UTF-8 continuation byte (0xA1). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:55"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 88 lands on UTF-8 continuation byte (0x80). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:88"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 88 lands on UTF-8 continuation byte (0x80). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:88"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 89 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:start:89"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 89 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:vixen-signature:end:89"
+        },
+        {
+          "label": "doc:demo:vixen-signature:whole",
+          "result": {
+            "admonition": "DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.",
+            "byte_count": 114,
+            "byte_end": 114,
+            "byte_start": 0,
+            "classification": "SOURCE_FREE_DEMONSTRATION_RECORD",
+            "codepoint_boundary_verified": true,
+            "doc_id": "doc:demo:vixen-signature",
+            "is_authenticated_original_source": false,
+            "slice_sha256": "9f2620431748b6e5a47f23a244ab2d6f3593b955fed9fb4a5cb019629172e779",
+            "slice_text": "𝌋 VIXEN CYBERNETICS: Testing state transition S_e ≡ [x+y]=z+1 under covenant Khona‌lit-po [SAC X6ZNK5NO51].",
+            "utf8_decoder_status": "FATAL_UTF8_DECODED_CLEAN",
+            "witness_status": "VERIFIED_GROUNDED_BYTE_SPAN"
+          }
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 91 lands on UTF-8 continuation byte (0x80). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:heritage-custody:start:91"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 91 lands on UTF-8 continuation byte (0x80). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:heritage-custody:end:91"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteStart 92 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:heritage-custody:start:92"
+        },
+        {
+          "error": {
+            "code": "INVALID_UTF8_BOUNDARY",
+            "message": "byteEnd 92 lands on UTF-8 continuation byte (0x8C). Mid-codepoint slicing refused.",
+            "name": null
+          },
+          "label": "doc:demo:heritage-custody:end:92"
+        },
+        {
+          "label": "doc:demo:heritage-custody:whole",
+          "result": {
+            "admonition": "DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.",
+            "byte_count": 117,
+            "byte_end": 117,
+            "byte_start": 0,
+            "classification": "SOURCE_FREE_DEMONSTRATION_RECORD",
+            "codepoint_boundary_verified": true,
+            "doc_id": "doc:demo:heritage-custody",
+            "is_authenticated_original_source": false,
+            "slice_sha256": "da14e2cb53e8ebb1349d05bdf54c8e98b48c280acf53fd258a2ea104329f2787",
+            "slice_text": "EMSTD613: Preservation of Tauric Diana Crimean heritage custodianship under covenant Khona‌lit-po [SAC X6ZNK5NO51].",
+            "utf8_decoder_status": "FATAL_UTF8_DECODED_CLEAN",
+            "witness_status": "VERIFIED_GROUNDED_BYTE_SPAN"
+          }
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [0, 0] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:0:0"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [4, 0] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:4:0"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [-1, 4] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:-1:4"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [0, 9999] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:0:9999"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [0, NaN] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:0:NaN"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [NaN, 4] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:NaN:4"
+        },
+        {
+          "label": "coords:4.5:10.5",
+          "result": {
+            "admonition": "DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.",
+            "byte_count": 6,
+            "byte_end": 10.5,
+            "byte_start": 4.5,
+            "classification": "SOURCE_FREE_DEMONSTRATION_RECORD",
+            "codepoint_boundary_verified": true,
+            "doc_id": "doc:demo:vixen-signature",
+            "is_authenticated_original_source": false,
+            "slice_sha256": "8c44623122fba3cc84ba0aaa768f587c6da00e60dd36f8098cf6728e540f3a6d",
+            "slice_text": " VIXEN",
+            "utf8_decoder_status": "FATAL_UTF8_DECODED_CLEAN",
+            "witness_status": "VERIFIED_GROUNDED_BYTE_SPAN"
+          }
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [x, 4] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:x:4"
+        },
+        {
+          "label": "coords:null:4",
+          "result": {
+            "admonition": "DEMONSTRATION RECORD ONLY — No authenticated original sources admitted.",
+            "byte_count": 4,
+            "byte_end": 4,
+            "byte_start": null,
+            "classification": "SOURCE_FREE_DEMONSTRATION_RECORD",
+            "codepoint_boundary_verified": true,
+            "doc_id": "doc:demo:vixen-signature",
+            "is_authenticated_original_source": false,
+            "slice_sha256": "4e77e7eeddfbc44a8479aca1840afba3824eabb0db35626f3aca8daaa1f6f8f3",
+            "slice_text": "𝌋",
+            "utf8_decoder_status": "FATAL_UTF8_DECODED_CLEAN",
+            "witness_status": "VERIFIED_GROUNDED_BYTE_SPAN"
+          }
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [0, Infinity] is out of bounds for UTF-8 byte length 114.",
+            "name": null
+          },
+          "label": "coords:0:Infinity"
+        },
+        {
+          "error": {
+            "code": "DOCUMENT_NOT_FOUND",
+            "message": "Document unadmitted not found in demonstration registry.",
+            "name": null
+          },
+          "label": "missing"
+        },
+        {
+          "error": {
+            "code": "INVALID_SPAN",
+            "message": "Requested span [0, 4] is out of bounds for UTF-8 byte length 0.",
+            "name": null
+          },
+          "label": "prototype-id"
+        }
+      ],
+      "scalars": [
+        {
+          "cp": 119563,
+          "hex": "f0 9d 8c 8b"
+        },
+        {
+          "cp": 1103379,
+          "hex": "f4 8d 98 93"
+        },
+        {
+          "cp": 8204,
+          "hex": "e2 80 8c"
+        }
+      ],
+      "secureContext": true,
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+    }
+  }
+}

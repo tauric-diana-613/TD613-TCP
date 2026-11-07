@@ -1,0 +1,221 @@
+{
+  "pr": {
+    "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1717",
+    "number": 1717,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "draft": true,
+    "body": "Frozen #1716 HEAD `7b6b4887f646155ba62b5c1b7bc0afc382fcaa34` does not earn full Vixen receiver or aggregate A-PFR0 qualification. Independent native and actual localhost-browser execution reproduced the critical verified-witness-with-placeholder-digest falsifier and additional readiness, refusal, coordinate, and custody defects.\n\nThis evidence-only draft preserves the candidate bytes. It adds the original A-PFR0.1 qualification packet and the operator's contemporaneously added screenshot/design supplement for Emergence HQ review. It repairs no candidate code and grants no promotion.\n\n## Review deliverables\n\n- [Complete qualification report](https://github.com/tauric-diana-613/TD613-TCP/blob/584321fdce581b6a9ffaba79e4b3ae272e5db81d/docs/reviews/a-pfr0.1-independent-qualification-20261106/A-PFR0.1-qualification-report.md): source/ancestry, environment and baseline runs, browser-versus-Node matrix, four-crossing matrix, expected/observed refusal codes and state checks, exact Unicode/RGI-01 custody, limits, and stopping condition.\n- [Illustrated screenshot atlas](https://github.com/tauric-diana-613/TD613-TCP/blob/584321fdce581b6a9ffaba79e4b3ae272e5db81d/docs/reviews/a-pfr0.1-independent-qualification-20261106/Screenshot-atlas.md): all six Vixen panels; Encyclopedia Cover, Observatory, Lexicon, Evidence, and Sources; the **entire scrolling Overview through its footer**, plus a separate footer witness. Rich descriptions were materialized after the repository `/dollhouse-design` conductor; `/dollhouse-audit` checked scoped description sequence declarations. These engines do not inspect pixels or certify aesthetic merit.\n- [Machine-readable disposition](https://github.com/tauric-diana-613/TD613-TCP/blob/584321fdce581b6a9ffaba79e4b3ae272e5db81d/docs/reviews/a-pfr0.1-independent-qualification-20261106/qualification-summary.json), [exact-byte execution manifest](https://github.com/tauric-diana-613/TD613-TCP/blob/584321fdce581b6a9ffaba79e4b3ae272e5db81d/docs/reviews/a-pfr0.1-independent-qualification-20261106/frozen-execution-manifest.json), and [capture hashes](https://github.com/tauric-diana-613/TD613-TCP/blob/584321fdce581b6a9ffaba79e4b3ae272e5db81d/docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots-manifest.json).\n\n## Operator-added scope and provenance correction\n\nThe screenshot review and authored descriptions **supplement the original commission**. Live TD613 Encyclopedia was viewed solely as the explicitly requested design reference; exact-candidate functionality was tested locally.\n\nThe operator clarified that Em supplied `S_e≡[x+y]=z+1$` as a branding replacement for **613**. That exchange does not establish a research method, a mathematical filter over the corpus, or a reason for a major x/y/z calculator panel. The atlas distinguishes observable form and affordances from interpretation, and preserves useful diagnostic pieces without mistaking them for an equivalent scholarly reading experience.\n\n## Validation and disposition\n\n- Baselines: Vixen 8/8, A-PFR0 5/5, custodial suite 32/32 assertions; twin-world constructions ran.\n- Independent native harness: 42 grouped checks; 26 met their stated checks and 16 exposed counterexamples, including repeated variants of the same defect families.\n- Real S routing/shadow-graph, W compiler/co-occurrence, E Vixen, and T graph/projection operations executed on synthetic inputs. No source-bound operational readiness was earned.\n- Supplementary scalar fixture: 153 complete spans matched Node/Buffer text and SHA-256; all 16 illegal-boundary cases refused. U+1D30B, U+10D613, and U+200C remained distinct.\n- RGI-01 matches historical blob `69b6a2bd27557d25c80b7c97cf11f8b1653fd6d5`; original bytes are unchanged. Frozen checkout remained clean.\n- Explicit limits: T's advertised 12-dimensional matched comparator remains `HELD_NATIVE_METHOD_NOT_EXECUTED`; an actual insecure-origin browser witness remains unexecuted. Missing-WebCrypto fault injection was executed and is not described as an insecure-origin observation.\n- **Final classification: `A_PFR0_1_HELD_MATERIAL_DEFECTS`.** Stop promotion of #1716. Any correction requires a separately identified exact HEAD, regression coverage, and actual browser/native requalification.\n\nDetailed confidential challenge fixtures and raw fault-injection inputs remain in a separate local reviewer archive and are excluded from this public draft. Screenshots contain public/reference or source-free demonstration content only. The full PNG is retained locally; the PR carries a same-dimension JPEG derivative with separate hashes.\n\nIssue #405 is untouched; no preview/production deployment, source admission, protected Flight, Wolfram execution, Manifest construction, interface redesign, merge, or release occurred. Vixen Manifest remains the first future product candidate, ahead of any independently justified Universal Manifest. Human scientific closure remains RESERVED for Tawanna C. Miller.\n\n𝄐 Khona‌lit-po · SAC[X6ZNK5NO51]",
+    "title": "𝌋 docs(a-pfr0.1): qualification HELD and screenshot/design review",
+    "base": "research/a-pfr0-functional-wiring-20261106",
+    "base_sha": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+    "head": "review/a-pfr01-independent-qualification-20261106-01a1",
+    "head_sha": "584321fdce581b6a9ffaba79e4b3ae272e5db81d",
+    "head_repo_id": 1185252498,
+    "head_repo_full_name": "tauric-diana-613/TD613-TCP",
+    "merge_commit_sha": "a08d37e59fcd70bc001198869ea42b67286d41ea",
+    "user": {
+      "login": "tauric-diana-613",
+      "name": "tauric-diana-613",
+      "email": null,
+      "avatar_url": "https://avatars.githubusercontent.com/u/248391538?v=4",
+      "id": 248391538
+    },
+    "requested_reviewers": null,
+    "requested_team_reviewers": null,
+    "diff": null,
+    "comments": null,
+    "created_at": "2026-11-07T02:48:33Z",
+    "updated_at": "2026-11-07T02:52:38Z",
+    "closed_at": null,
+    "merged_at": null,
+    "commits": 2,
+    "changed_files": 19,
+    "additions": 928,
+    "deletions": 0,
+    "display_url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1717",
+    "display_title": "𝌋 docs(a-pfr0.1): qualification HELD and screenshot/design review"
+  },
+  "comparison": {
+    "repository_full_name": "tauric-diana-613/TD613-TCP",
+    "base": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+    "head": "584321fdce581b6a9ffaba79e4b3ae272e5db81d",
+    "status": "ahead",
+    "ahead_by": 2,
+    "behind_by": 0,
+    "total_commits": 2,
+    "too_large": null,
+    "base_commit": {
+      "sha": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+      "url": "https://api.github.com/repos/tauric-diana-613/TD613-TCP/commits/7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+      "html_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/7b6b4887f646155ba62b5c1b7bc0afc382fcaa34"
+    },
+    "merge_base_commit": {
+      "sha": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+      "url": "https://api.github.com/repos/tauric-diana-613/TD613-TCP/commits/7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+      "html_url": "https://github.com/tauric-diana-613/TD613-TCP/commit/7b6b4887f646155ba62b5c1b7bc0afc382fcaa34"
+    },
+    "files": [
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/A-PFR0.1-qualification-report.md",
+        "status": "added",
+        "additions": 143,
+        "deletions": 0,
+        "changes": 143,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/README.md",
+        "status": "added",
+        "additions": 11,
+        "deletions": 0,
+        "changes": 11,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/Screenshot-atlas.md",
+        "status": "added",
+        "additions": 103,
+        "deletions": 0,
+        "changes": 103,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/frozen-execution-manifest.json",
+        "status": "added",
+        "additions": 365,
+        "deletions": 0,
+        "changes": 365,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/qualification-summary.json",
+        "status": "added",
+        "additions": 207,
+        "deletions": 0,
+        "changes": 207,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots-manifest.json",
+        "status": "added",
+        "additions": 99,
+        "deletions": 0,
+        "changes": 99,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-00-cover.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-01-observatory.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-02-lexicon.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-03-evidence.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-04-sources.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-overview-entire.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/encyclopedia-overview-footer.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-01-corpus-navigation.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-02-human-gates.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-03-passage-witness.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-04-documentary-instruments.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-05-mathematical-representation.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      },
+      {
+        "filename": "docs/reviews/a-pfr0.1-independent-qualification-20261106/screenshots/vixen-06-preserved-uncertainty.jpg",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "previous_filename": null
+      }
+    ]
+  },
+  "statuses": {
+    "statuses": []
+  },
+  "workflow_runs": {
+    "workflow_runs": []
+  },
+  "vercel_git_deployment_enabled": false
+}

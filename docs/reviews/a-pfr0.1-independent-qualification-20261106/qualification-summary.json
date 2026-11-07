@@ -203,5 +203,7 @@
   "protected_flight": "HELD",
   "issue_405": "UNTOUCHED",
   "scientific_closure": "RESERVED_TAWANNA_C_MILLER",
-  "private_challenge_fixtures": "EXCLUDED_FROM_PUBLICATION"
+  "private_challenge_fixtures": "PUBLISHED_BY_SUBSEQUENT_EXPLICIT_OPERATOR_INSTRUCTION",
+  "reviewer_evidence": "reviewer-evidence/README.md",
+  "challenge_disclosure": "DISCLOSED_FOR_EMERGENCE_HQ_REVIEW; FUTURE_REUSE_NOT_BLINDED"
 }
