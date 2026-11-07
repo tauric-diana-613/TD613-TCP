@@ -48,6 +48,12 @@
       "sha256": "f9753c44c584a784ec7340af6759bc071d7f2ed754e8d8996336e90647bcd04f"
     },
     {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "zip_path": "review-packet/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
+      "bytes": 4264,
+      "sha256": "c7addb7c81350c59bb236f730daeac0051919bb8302313138c0bffdb9ee4db75"
+    },
+    {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md",
       "zip_path": "review-packet/BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md",
       "bytes": 9283,
@@ -76,6 +82,18 @@
       "zip_path": "review-packet/dollhouse-design-receipt-vixen-prototype.json",
       "bytes": 299571,
       "sha256": "34757b786203730110596d7f68601d06075666e7d96a53a03152ce140684581b"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "zip_path": "review-packet/INDEPENDENT_REVIEW_ACTIVATION.md",
+      "bytes": 4358,
+      "sha256": "d0f4d87845d39b2433fb8dfc6a06f3a6eb80877ab4ca2ef8966a0fed087373d9"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "zip_path": "review-packet/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
+      "bytes": 2818,
+      "sha256": "c0d4ccb71984178f95e44f411b82563b082788f88151553d395e25c343092b2f"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
@@ -142,6 +160,12 @@
       "zip_path": "review-packet/refractive-couture/TD613_Refractive_Couture_Independent_Finite_Receipt_2026-10-31.json",
       "bytes": 2976,
       "sha256": "b84e7e405cab3aba59ef6e407397c5048a913069ef76e7c3915740449f2418bd"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/repro_browser.py",
+      "zip_path": "review-packet/repro_browser.py",
+      "bytes": 2774,
+      "sha256": "ab48ef4113b5f680e1d0457943cb4c3e07fdc70f732ce677c9db978436801860"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/screenshots/00-mugler-unchained-frontispiece-plate.jpg",
@@ -394,30 +418,6 @@
       "zip_path": "review-packet/vixen-ux-commission.json",
       "bytes": 7381,
       "sha256": "8330bb9b91a2b8cb156bebd575a05a0cdeb470c9743a1dc289e30b961a1eb389"
-    },
-    {
-      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_REVIEW_ACTIVATION.md",
-      "zip_path": "review-packet/INDEPENDENT_REVIEW_ACTIVATION.md",
-      "bytes": 4358,
-      "sha256": "d0f4d87845d39b2433fb8dfc6a06f3a6eb80877ab4ca2ef8966a0fed087373d9"
-    },
-    {
-      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
-      "zip_path": "review-packet/INDEPENDENT_SURGICAL_REPAIR_RECEIPT.md",
-      "bytes": 2818,
-      "sha256": "c0d4ccb71984178f95e44f411b82563b082788f88151553d395e25c343092b2f"
-    },
-    {
-      "packet_path": "ARCHIVE_ONLY/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
-      "zip_path": "review-packet/BROWSER_NEGATIVE_CONTROL_RECEIPT.json",
-      "bytes": 4264,
-      "sha256": "c7addb7c81350c59bb236f730daeac0051919bb8302313138c0bffdb9ee4db75"
-    },
-    {
-      "packet_path": "ARCHIVE_ONLY/repro_browser.py",
-      "zip_path": "review-packet/repro_browser.py",
-      "bytes": 2774,
-      "sha256": "ab48ef4113b5f680e1d0457943cb4c3e07fdc70f732ce677c9db978436801860"
     }
   ],
   "referenced_repository_files": [

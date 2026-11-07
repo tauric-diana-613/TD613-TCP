@@ -1,0 +1,122 @@
+[
+  {
+    "events": {
+      "replace": 2,
+      "push": 0,
+      "scroll": 1
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF(10).html",
+    "width": 1440,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  },
+  {
+    "events": {
+      "replace": 2,
+      "push": 0,
+      "scroll": 1
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF(10).html",
+    "width": 390,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  },
+  {
+    "events": {
+      "replace": 2,
+      "push": 0,
+      "scroll": 1
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF(10).html",
+    "width": 320,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  },
+  {
+    "events": {
+      "replace": 0,
+      "push": 1,
+      "scroll": 0
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
+    "width": 1440,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  },
+  {
+    "events": {
+      "replace": 0,
+      "push": 1,
+      "scroll": 0
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
+    "width": 390,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  },
+  {
+    "events": {
+      "replace": 0,
+      "push": 1,
+      "scroll": 0
+    },
+    "hash": "#protocols/EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "view": "protocols",
+    "selected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "reader": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "summary": "Showing 21 of 21 Committed 06-INSTRUMENTS Protocols (Bijective 6 + 7 + 4 + 4 = 21 · standalone_executors_count: 0 · 0 Phantom IDs)",
+    "focus": "BUTTON",
+    "externalScripts": 0,
+    "overflow": false,
+    "input": "VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
+    "width": 320,
+    "expected": "EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1",
+    "pageErrors": [],
+    "requests": []
+  }
+]
