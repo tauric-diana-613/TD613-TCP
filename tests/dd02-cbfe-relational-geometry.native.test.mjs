@@ -8,6 +8,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {runDollhouseDesignCycle, DOLLHOUSE_DESIGN_SCHEMA} from '../app/engine/dollhouse-design-conductor.js';
 
 const commission = JSON.parse(readFileSync(
@@ -15,7 +16,9 @@ const commission = JSON.parse(readFileSync(
   'utf8'
 ));
 
-const SOURCE = Object.freeze({id:'synthetic-testimony-01', digest:'SOURCE_HASH_IDENTICAL', quality:'CALIBRATED', available_at:2});
+const SOURCE_BODY = 'fictional testimony: independently measured evidence';
+const digest=(s)=>createHash('sha256').update(s,'utf8').digest('hex');
+const SOURCE = Object.freeze({id:'synthetic-testimony-01', digest:digest(SOURCE_BODY), quality:'CALIBRATED', available_at:2});
 const RELATIONS = Object.freeze([
   Object.freeze({from:'source',to:'intake',cost:1,kind:'submit'}),
   Object.freeze({from:'intake',to:'hearer',cost:1,kind:'hearing'}),
@@ -47,14 +50,18 @@ function routeCost({standing, policy, tick, appealConsent=false}) {
 // A source-neutral hearing policy must commute with swaps of external status labels.
 test('CBFE geometry: byte-identical source and static relations admit divergent situated routes',()=>{
   const common={tick:3,appealConsent:false};
-  assert.deepEqual(RELATIONS, RELATIONS);
+  const standingSwapA={...SOURCE,standing:'FOUNDING_AUTHORITY'};
+  const standingSwapB={...SOURCE,standing:'JUNIOR_OR_CONTESTED'};
+  assert.equal(standingSwapA.digest,standingSwapB.digest);
+  assert.equal(standingSwapA.digest,digest(SOURCE_BODY));
+  assert.notEqual(standingSwapA.digest,digest(SOURCE_BODY+' altered'));
   assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'FOUNDING_AUTHORITY'}),3);
   assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'JUNIOR_OR_CONTESTED'}),3);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'FOUNDING_AUTHORITY'}),3);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'JUNIOR_OR_CONTESTED'}),Infinity);
   assert.equal(routeCost({...common,policy:'PRESTIGE_GATED',standing:'JUNIOR_OR_CONTESTED',appealConsent:true}),8);
   assert.equal(routeCost({...common,policy:'RELIABILITY_GATED',standing:'FOUNDING_AUTHORITY',tick:1}),Infinity);
-  assert.equal(SOURCE.digest,'SOURCE_HASH_IDENTICAL');
+  assert.match(SOURCE.digest,/^[a-f0-9]{64}$/);
 });
 
 // Equal pooled standing results can conceal conditional crossover differences.
