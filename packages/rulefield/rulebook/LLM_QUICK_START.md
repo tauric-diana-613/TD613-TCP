@@ -5,6 +5,25 @@
 **Version:** 1.0 · **Authority:** \`SAC[X6ZNK5NO51]\` · **Covenant:** Khona‌lit-po (U+200C interior retained).  
 **Custody:** Human authorship / final scientific closure RESERVED; protected Experiment B Flight HELD.
 
+## Computational-science first move
+
+A new Rulefield contribution must first decide which scientific operation is being proposed:
+
+| Question | Use the present finite reference lab | When to defer |
+|---|---|---|
+| Do alternative rules generate different histories? | `node scripts/rulefield-lab.mjs diamond` and `enumerate` | Hypergraph event semantics, asynchronous causal dependencies or unbounded rewrite spaces → [ROADMAP](../ROADMAP.md) |
+| Is a fork locally joinable? | `criticalPairs`, `resolveFork`, explicit overlap predicate | Proving **global** confluence / causal invariance or formal completion → H1/H2 |
+| What information is lost to an observer? | Declare a projection and path sampling distribution, compare endpoint weights and history entropy | Empirical human-observer effects → consented human study |
+| How do finite simple rules create patterns? | `node scripts/rulefield-lab.mjs ca 30` or `ca 90` | Quantum analogy, physical spacetime or validated chaos metric → separately qualified experiment |
+| Can a public Wolfram function independently reproduce a finite case? | [`../lab/wolfram_comparator.wl`](../lab/wolfram_comparator.wl) staged for native runtime | Wolfram execution unavailable → record unexecuted adapter, never synthesize outputs |
+| Can new rules be generated or refuted? | [`../amendments/schema.json`](../amendments/schema.json) plus bounded declared experiment | Fully automated discovery or theorem proof → capability-gated roadmap |
+
+**Mathematical experiment card:** record the state space, initial state, rewrite relation, redex overlaps and event identities, branch scheduler, time/depth/path caps, observer quotient, criterion for joining states, information distribution, null comparator, falsifier and type of claim the output could support. Distinguish exact finite proof, bounded computational witness, statistical estimator, and creative theoretical conjecture.
+
+**Public tools:** consult [`../lab/tool_registry.json`](../lab/tool_registry.json) for Wolfram Physics Project, Function Repository `MultiwaySystem`, `WolframModel`, NetLogo and Complexity Explorer, and [`../ROADMAP.md`](../ROADMAP.md) to understand which capabilities are available, which require external runtimes and which are held pending new scientific evidence. Do not replace a real Function Repository calculation with a fictional output.
+
+**Operator-facing posture:** allow speculative recombination and surprising non-confluent paths; do not confuse experiment generation with lawful rule promotion. Many candidates can be useful if their source provenance, nulls and rejection cases are tracked.
+
 ## 0 · Read me, Kenough. Read me, Amari. Read me, future stranger.
 
 Your task is to turn a user request and whatever thread they drop you into into a **falsifiable, source-aware Rulefield amendment packet**. The project spans multiple disciplines, systems, historical copies, private archives, software engines, art, interface design, conversations and evidence gates. The easiest failure is to search a single directory and assume you have the whole thing. The second easiest is to conflate a compelling theoretical metaphor with tested computation.
