@@ -1,0 +1,120 @@
+{
+  "schema": "td613.rulefield.amendment-packet/v1",
+  "packet_id": "RF-AP-20261107-EXAMPLE",
+  "baseline": {
+    "registry_schema": "td613.rulefield.v1/rc1",
+    "registry_sha256": "__RUN_INIT_COMMAND_TO_BIND_CURRENT_REGISTRY_DIGEST__",
+    "queue_version": "70_APPEND_ONLY",
+    "flight": "HELD"
+  },
+  "creator": {
+    "name": "Kenough / Antigravity / Amari / human operator",
+    "thread_ref": "INSERT_THREAD_OR_DO_NOT_DISCLOSE",
+    "role": "RESEARCH_RECEIVER",
+    "human_authorship": "RESERVED"
+  },
+  "operator_authority": {
+    "reference": "SAC[X6ZNK5NO51]",
+    "scope": "SOURCE_FREE_PROSPECTIVE",
+    "auto_apply": false,
+    "auto_merge": false,
+    "auto_deploy": false,
+    "protected_flight": "HELD"
+  },
+  "research_intent": "Explore a falsifiable new rule or relational structure while preserving exact source and experiment boundaries.",
+  "creative_invitations": [
+    "Enumerate more than one possible future without presupposing which one wins",
+    "Let unjoined historical paths remain distinct",
+    "Distinguish mathematical invariance from interpretive response",
+    "Record every failed assay rather than laundering it into prose"
+  ],
+  "default_lenses": [
+    "NKS_LOCAL_REWRITE",
+    "MULTIWAY_HISTORY",
+    "PARANOID_REPARATIVE",
+    "COMPETENT_NULL_AND_FALSE_POSITIVE"
+  ],
+  "context": {
+    "historical_thread_excerpt": "COPY_ONLY_TEXT_AUTHORIZED_BY_OPERATOR",
+    "operator_request": "STATE_SCIENTIFIC_OR_CREATIVE_AIM",
+    "source_notes": [],
+    "do_not_infer_unseen_sources": true
+  },
+  "proposals": [
+    {
+      "id": "AP01",
+      "kind": "PROPOSE_RELATION",
+      "label": "An invented crossing with explicit possible refutation",
+      "anchors": {
+        "rules": [
+          "CBFE-RG-11",
+          "CBFE-RG-PATH-FIBER-01"
+        ],
+        "crossings": [
+          "RF-X01"
+        ],
+        "queue_ranks": [
+          4
+        ]
+      },
+      "hypothesis": "Equal-cost routes can conceal source-warrant histories, even when their scalar minimum distance agrees.",
+      "relation": {
+        "from": "CBFE-RG-11",
+        "to": "CBFE-RG-PATH-FIBER-01",
+        "type": "HISTORY_FIBER_CROSSING_PROPOSED"
+      },
+      "projection": {
+        "observer": "synthetic route reader",
+        "visible": [
+          "minimum cost"
+        ],
+        "hidden": [
+          "consent-bearing alternative path labels"
+        ],
+        "disclosure_boundary": "NO_PROTECTED_DATA"
+      },
+      "geometry": {
+        "objects": [
+          "admissible states",
+          "typed paths"
+        ],
+        "morphisms": [
+          "admit",
+          "appeal",
+          "withdraw"
+        ],
+        "metric": "finite path cost",
+        "equivalence": "equal-cost public projection",
+        "counterexample": "two paths with distinct consent and same scalar cost"
+      },
+      "nks": {
+        "local_rewrite": "enumerate enabled synthetic actions",
+        "branching": "retain non-joinable paths",
+        "gluing": "only admit equivalence when exact provenance maps are declared"
+      },
+      "prediction": "Scalar-only output may hide a route difference that a complete-history comparator can recover.",
+      "consequence": "Do not claim novelty unless a competent null with the same information is outperformed.",
+      "controls": {
+        "falsifier": "An information-matched comparator recovers all the same admissible route differences.",
+        "competent_null": "Independent full-history graph traversal with identical clocks, source access and actions.",
+        "negative_control": "Swap only non-informational ambiance with source and kernel fixed."
+      },
+      "evidence": {
+        "source_class": "SOURCE_FREE_SYNTHETIC",
+        "source_refs": [
+          "CBFE_DD02_COMPETENT_NULL_RESULT_V04.json"
+        ],
+        "observation_status": "HYPOTHESIS_ONLY",
+        "independent_replication": false
+      },
+      "uncertainty": {
+        "claim_ceiling": "UNQUALIFIED_PROPOSAL",
+        "unresolved": [
+          "human observation",
+          "empirical cross-episode confirmation"
+        ]
+      },
+      "artistic_notes": "Wild Field is permitted; a missing warrant is a space for inquiry, not a hidden fact."
+    }
+  ]
+}
