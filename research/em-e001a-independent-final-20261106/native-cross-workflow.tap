@@ -1,0 +1,28 @@
+▶ Cross-Atelier Operational Interoperability Qualification Suite
+  ✔ 1. Full-circuit same-episode research route across Wendbine -> SRC -> Manifest -> Universal -> Palace I -> Palace II (261.12031ms)
+  ✔ 2. Strict 256-byte capsule budget enforcement with fail-closed assertion (PR1705-R01) (0.774352ms)
+  ✔ 3. Admission-time availability gating prevents future temporal leakage (PR1705-R03) (0.203022ms)
+  ✔ 4. Chronological sequence consistency check enforces t_event <= t_observed <= t_admitted <= t_available (0.209942ms)
+  ✔ 5. Provenance-sensitive terminal graph comparison over all serialized fields (PR1706-R01) (0.529408ms)
+  ✔ 6. Cost-of-curiosity policy throttle prevents diagnostic probing regret (Operator Decision 1) (0.226069ms)
+  ✔ 7. Latency convention and Family D action invariance masking witness (Operator Decision 2) (0.181712ms)
+  ✔ 8. Cascading source withdrawal and non-retroactive tombstoning (0.420015ms)
+  ✔ 9. Fail-closed Default-Deny negative controls (retroactive target & fabricated warrant) (2.791315ms)
+  ✔ 10. Tomographic scope delta analysis enforces scalar composite score refusal (SRC D6) (0.377031ms)
+  ✔ 11. U00-F01: Zero observed cues produce zero cue-based admitted relations (Fail-Closed Canary) (0.235377ms)
+  ✔ 12. U00-F01: Genuine source-bound positive warrant passes with exact UTF-8 span proof and chronology (0.326372ms)
+  ✔ 13. U00-F02: Admission-clock qualified capsule prior; future-record mutation has ZERO effect on tick-10 state (1.700071ms)
+  ✔ 14. U00-F02: Lawful temporal advance: tick-30 clock lawfully incorporates deferred record without rewriting tick-10 state (0.311415ms)
+  ✔ 15. U00-F03: Adversarial content mutation test detects altered evidentiary content across identical IDs (2.266339ms)
+  ✔ 16. Section III: Universal Atelier and Universal Encyclopedia execute real native entry/query paths (42.095121ms)
+✔ Cross-Atelier Operational Interoperability Qualification Suite (315.543141ms)
+Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.
+✔ tests/workflow-estate.test.mjs (104.694192ms)
+ℹ tests 17
+ℹ suites 1
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 562.654383

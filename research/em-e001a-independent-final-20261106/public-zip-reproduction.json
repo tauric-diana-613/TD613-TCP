@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "name": "valid",
+      "contract_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "sources": 1,
+        "ledger": 1
+      }
+    },
+    {
+      "name": "central_extra_escapes_declared_bounds",
+      "contract_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "sources": 1,
+        "ledger": 1
+      }
+    },
+    {
+      "name": "skipped_directory_local_header",
+      "contract_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "sources": 0,
+        "ledger": 1
+      }
+    }
+  ],
+  "no_extraction": true,
+  "fixture_size_ceiling": 1024
+}

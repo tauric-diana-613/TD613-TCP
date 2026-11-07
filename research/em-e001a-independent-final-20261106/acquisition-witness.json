@@ -1,0 +1,89 @@
+{
+  "source_revisions": {
+    "5c7c48313cf25bcb75a0045f91e01337eed5c0af": {
+      "tree": "7992f65db8b022f30f031e164a3e44190d55ca4c",
+      "parents": [
+        "d446d32f9ae312ebae73d8e0c6584f0c418e6481"
+      ]
+    },
+    "d446d32f9ae312ebae73d8e0c6584f0c418e6481": {
+      "tree": "13faefda3adfd8cc68e893423b2f9347fd606d5e",
+      "parents": [
+        "f3dd8d54ba423409317aa239d9dd6bdb6da618ef"
+      ]
+    },
+    "7488e5fd2b4fc0b2f222e0214f21129bbe143a17": {
+      "tree": "faf998458a3b04931bd8a2557179ef184623d771",
+      "parents": [
+        "9c82f8b614bd66b3f2652cf115e5eb172c2c6170"
+      ]
+    },
+    "d28eb2e4335e6a0447c471ae61039a9fd97ccac3": {
+      "tree": "58d1423b8cf5174ad50efd826ecd966e4cc58167",
+      "parents": [
+        "7488e5fd2b4fc0b2f222e0214f21129bbe143a17"
+      ]
+    }
+  },
+  "candidate_clean": true,
+  "ancestry": {
+    "1712_direct_parent_1713": true,
+    "1709_ancestor_1713": true,
+    "1710_is_original_review_sibling_not_candidate_ancestor": true
+  },
+  "files": {
+    "packages/em_unified_synthesis/competent-null-comparator.mjs": {
+      "sha256": "09839aa7460b3578c5b5dff0ff468ce59428150d58dea324f8ab055afd5b8356",
+      "git_blob": "92f132ee853d789a7e69627334635dd2a36ee4a0",
+      "bytes": 25256
+    },
+    "packages/em_unified_synthesis/corpus-inspector.mjs": {
+      "sha256": "5cf0aee140549e0812cf0a5dd725c664400e668402b3ce14413043f0ea4506db",
+      "git_blob": "8609961081d69d56b9d767a45f09b01c954c958f",
+      "bytes": 18408
+    },
+    "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs": {
+      "sha256": "aec0b7556d3e6c71b5e51089294ea70bae032c232c2f2227f34d26a37fe2f15f",
+      "git_blob": "e2a7284db4aa632c880520099d08b9b5cb9cfb31",
+      "bytes": 29524
+    },
+    "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs": {
+      "sha256": "5c160fa3c32a41540748dea43db0bc7c5523bbd1c4faa8279b7f7a0a72a8d70e",
+      "git_blob": "26bfbab4ae7fd7111e2e3fb86465269523bdf92c",
+      "bytes": 10798
+    },
+    "packages/em_unified_synthesis/lexical-readback-witness.mjs": {
+      "sha256": "8af608d600ae3ad584bf67303689ff023eed576ebb644284f0563b8b61eedd41",
+      "git_blob": "178e233cf383c62d3b800a79ff563556a58278af",
+      "bytes": 10747
+    },
+    "packages/em_unified_synthesis/operator-zip-intake.mjs": {
+      "sha256": "b7bc0c6c5ee74cf798e2cd983fe17a0f864200791080b099d2a7d914a718bf6a",
+      "git_blob": "434303e0fb01617fe9917f67cf19562f2eb2b823",
+      "bytes": 25715
+    },
+    "packages/em_unified_synthesis/run-em-unified-synthesis-qualification.mjs": {
+      "sha256": "e587fe0f9ef377f3a5a23367b283517086805f49f9ec6a19e856addee819115f",
+      "git_blob": "3bee80c1b5f7e484b57d936234f70566f8fff1fc",
+      "bytes": 20747
+    },
+    "packages/em_unified_synthesis/test-em-unified-synthesis.mjs": {
+      "sha256": "b909dd523c3c8857801c6d76e722bd3f2e24b1ae6c3abe13b94d4826d72ee9f2",
+      "git_blob": "baeeec1d0b02ed1fa2930faf7bee55801fd9d781",
+      "bytes": 45836
+    }
+  },
+  "environment": {
+    "node": "v24.22.1",
+    "python": "3.12.14",
+    "sqlite_python": "3.53.1",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+  },
+  "exact_head_PR_triggered_workflow_runs_returned": 0,
+  "CI_lookup_limit": "PR-trigger filter and first page only",
+  "paid_calls": 0,
+  "protected_B_access": false,
+  "RGI_activation": false,
+  "new_runtime_dependencies": 0,
+  "Codex_environment_modification": false
+}

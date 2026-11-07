@@ -1,0 +1,135 @@
+{
+  "source_revision": "5c7c48313cf25bcb75a0045f91e01337eed5c0af",
+  "task_scope": "EM_E001A_FINAL_INDEPENDENT_QUALIFICATION",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_references": [
+    "packages/em_unified_synthesis/competent-null-comparator.mjs",
+    "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs",
+    "packages/em_unified_synthesis/em-universal-reciprocal-bridge.mjs",
+    "packages/em_unified_synthesis/operator-zip-intake.mjs"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 1,
+          "label": "Synthetic source declaration"
+        },
+        {
+          "phase": "ACT",
+          "at": 2,
+          "label": "Register source and extract Work"
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 3,
+          "label": "Execute candidate synthesis"
+        },
+        {
+          "phase": "NAME",
+          "at": 4,
+          "label": "Record bounded outcome"
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "previous": {
+        "payload": {
+          "candidate_id": "public:theory",
+          "status": "ACTIVE_CANDIDATE",
+          "version": 1,
+          "hypothesis": null
+        },
+        "metadata": {
+          "artifact_digest": "fnv32:d2723429"
+        }
+      },
+      "current": {
+        "payload": {
+          "candidate_id": "public:theory",
+          "status": "ACTIVE_CANDIDATE",
+          "version": 1,
+          "hypothesis": "second public proposal"
+        },
+        "metadata": {
+          "artifact_digest": "fnv32:275025f9"
+        }
+      },
+      "trajectoryA": {
+        "endpoint": "fnv32:d2723429",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "fnv32:275025f9",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "UNREGISTERED_QUOTE",
+          "support": [
+            "RETURN_PROPOSAL"
+          ]
+        },
+        {
+          "condition": "REGISTERED_BYTE_SLICE",
+          "support": [
+            "RETURN_PROPOSAL",
+            "ATTEST_INTERNAL_SLICE"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INITIAL_SNAPSHOT": {
+          "status": "PASS",
+          "entry_id": "original-snapshot-read"
+        },
+        "SAME_ID_HISTORICAL_PRESERVATION": {
+          "status": "FAIL",
+          "entry_id": "same-id-snapshot-read"
+        }
+      },
+      "required_phases": [
+        "INITIAL_SNAPSHOT",
+        "SAME_ID_HISTORICAL_PRESERVATION"
+      ]
+    }
+  }
+}

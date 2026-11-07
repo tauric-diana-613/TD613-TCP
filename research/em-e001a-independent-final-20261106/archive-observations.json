@@ -1,0 +1,626 @@
+{
+  "cases": [
+    {
+      "case_id": 1,
+      "category": "stored_unicode",
+      "expected_contract": "accept",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 24,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 2,
+      "category": "signed_descriptor",
+      "expected_contract": "accept",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 3,
+      "category": "unsigned_descriptor",
+      "expected_contract": "accept",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 4,
+      "category": "descriptor_crc_changed",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "DATA_DESCRIPTOR_RECONCILIATION_FAILED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 5,
+      "category": "descriptor_missing",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "CORRUPT_LOCAL_DATA",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 6,
+      "category": "local_flags_disagree",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "LOCAL_CENTRAL_METADATA_MISMATCH",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 7,
+      "category": "local_method_disagree",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "LOCAL_CENTRAL_METADATA_MISMATCH",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 8,
+      "category": "local_name_disagree",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "LOCAL_CENTRAL_METADATA_MISMATCH",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 9,
+      "category": "crc_fails_late",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "CRC32_VERIFICATION_FAILED",
+        "unchanged_on_failure": true,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 16,
+        "passage_error": null,
+        "max_rss_kib": 34944
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 10,
+      "category": "unicode_fails_late",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "MALFORMED_UTF8_CONTENT",
+        "unchanged_on_failure": true,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 16,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 11,
+      "category": "size_lie_expand",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "DECOMPRESSION_FAILED_OR_LIMIT_EXCEEDED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 12,
+      "category": "total_size_limit",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ZIP_RESOURCE_LIMIT_EXCEEDED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 13,
+      "category": "ratio_limit",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ZIP_RESOURCE_LIMIT_EXCEEDED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34432
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 14,
+      "category": "overlapping_offsets",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "CORRUPT_OR_OVERLAPPING_MEMBER_RANGE",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 15,
+      "category": "nested_traversal",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ZIP_PATH_TRAVERSAL_REFUSED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 16,
+      "category": "windows_traversal",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ZIP_PATH_TRAVERSAL_REFUSED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 17,
+      "category": "normalized_collision",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "DUPLICATE_PATH_IN_ARCHIVE_REJECTED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 18,
+      "category": "nul_filename",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ZIP_PATH_TRAVERSAL_REFUSED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 19,
+      "category": "invalid_utf8_filename",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "MALFORMED_UTF8_FILENAME",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 20,
+      "category": "symlink_mode",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "SYMLINK_REJECTED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 21,
+      "category": "fifo_mode",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "UNSUPPORTED_SPECIAL_FILE",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 22,
+      "category": "encrypted_member",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "ENCRYPTED_ZIP_UNSUPPORTED",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34176
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 23,
+      "category": "directory_crc_not_checked",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 1,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 24,
+      "category": "directory_bad_local_signature",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 1,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 25,
+      "category": "central_extra_past_end",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 26,
+      "category": "central_comment_past_end",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 27,
+      "category": "zero_count_nonempty_directory",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 1,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34688
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 28,
+      "category": "directory_after_end",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "CORRUPT_CENTRAL_DIRECTORY_BOUNDS",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34304
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 29,
+      "category": "truncated_end",
+      "expected_contract": "reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": false,
+        "error": "MISSING_EOCD_RECORD",
+        "unchanged_on_failure": true,
+        "source_count": 0,
+        "derivative_count": 0,
+        "ledger_count": 0,
+        "actual_total_bytes": 0,
+        "passage_error": null,
+        "max_rss_kib": 34048
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 30,
+      "category": "utf8_passage_interior",
+      "expected_contract": "passage_reject",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 7,
+        "passage_error": "INVALID_CODEPOINT_BOUNDARY",
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 31,
+      "category": "bounded_deflate_noise",
+      "expected_contract": "accept",
+      "criterion_met": true,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 0,
+        "ledger_count": 1,
+        "actual_total_bytes": 128,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 32,
+      "category": "unsupported_flag",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34944
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 33,
+      "category": "empty_filename",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 0,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    },
+    {
+      "case_id": 34,
+      "category": "windows_reserved_filename",
+      "expected_contract": "reject",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "error": null,
+        "unchanged_on_failure": null,
+        "source_count": 1,
+        "derivative_count": 1,
+        "ledger_count": 1,
+        "actual_total_bytes": 38,
+        "passage_error": null,
+        "max_rss_kib": 34816
+      },
+      "harness_error": null
+    }
+  ],
+  "limits": {
+    "zip_generated_total_output_bytes": 16384,
+    "zip_input_bytes": 65536,
+    "node_heap_mib": 32,
+    "data_limit_mib": 512,
+    "cpu_seconds": 5,
+    "wall_seconds": 8,
+    "disk_file_bytes": 1048576
+  },
+  "no_filesystem_extraction": true
+}

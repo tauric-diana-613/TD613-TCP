@@ -1,0 +1,104 @@
+{
+  "tests": [
+    {
+      "case_id": 1,
+      "category": "87_original_integrity",
+      "criterion_met": true,
+      "observation": {
+        "objects": 87,
+        "bytes": 7938934,
+        "mismatches": 0
+      }
+    },
+    {
+      "case_id": 2,
+      "category": "53_derivative_parent_integrity",
+      "criterion_met": true,
+      "observation": {
+        "derivatives": 53,
+        "correct": 53
+      }
+    },
+    {
+      "case_id": 3,
+      "category": "negative_register",
+      "criterion_met": true,
+      "observation": {
+        "negative_states": 34,
+        "fabricated_text_derivatives": 0
+      }
+    },
+    {
+      "case_id": 4,
+      "category": "native_full_text_and_context",
+      "criterion_met": true,
+      "observation": {
+        "indexed": 53,
+        "query_found": 53,
+        "context_digests": 53
+      }
+    },
+    {
+      "case_id": 5,
+      "category": "32_native_work_routes",
+      "criterion_met": true,
+      "observation": {
+        "routes": 32,
+        "human_gates": 8
+      }
+    },
+    {
+      "case_id": 6,
+      "category": "human_identity_partitions",
+      "criterion_met": true,
+      "observation": {
+        "hypotheses": 256,
+        "interval": [
+          32,
+          40
+        ],
+        "gates_resolved": false
+      }
+    },
+    {
+      "case_id": 7,
+      "category": "historical_members_crc",
+      "criterion_met": true,
+      "observation": {
+        "members": 66,
+        "crc_valid": true
+      }
+    },
+    {
+      "case_id": 8,
+      "category": "original_revision_preservation",
+      "criterion_met": true,
+      "observation": {
+        "original_revision": "30630575ade616a5a47e4066b30d2159c2bd32be",
+        "original_subtree": "cdfe47abd608595e82cd54671ff9dea0e47b64e4",
+        "candidate_subtree": "cdfe47abd608595e82cd54671ff9dea0e47b64e4",
+        "later_94_original_recipient": "OUT_OF_SCOPE"
+      }
+    },
+    {
+      "case_id": 9,
+      "category": "RGI01_proposal_integrity",
+      "criterion_met": true,
+      "observation": {
+        "sha256": "3ee8d35b3d1dfe00ec5565989dc3964ddd2e82907ef194a8c4352b81a30feff6",
+        "bytes": 9197,
+        "unchanged_from_1712": true,
+        "status": "PROPOSED_PROSPECTIVE_RECORD_ONLY",
+        "required_concepts_preserved": true,
+        "E00_runtime_references": [],
+        "activation": "NOT_PERFORMED",
+        "dependency_installations": 0
+      }
+    }
+  ],
+  "counts": {
+    "executed": 9,
+    "criteria_met": 9
+  },
+  "protected_archive_access": false
+}

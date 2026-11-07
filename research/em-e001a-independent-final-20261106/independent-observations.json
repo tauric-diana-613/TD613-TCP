@@ -1,0 +1,2238 @@
+{
+  "schema": "td613.em-e001a.fresh-independent/v1",
+  "candidate": "5c7c48313cf25bcb75a0045f91e01337eed5c0af",
+  "cases": [
+    {
+      "case_id": 1,
+      "category": "COMPARATOR",
+      "criterion_met": true,
+      "observation": {
+        "arm3": 1,
+        "arm4": 1
+      },
+      "elapsed_ms": 19.74958500000001
+    },
+    {
+      "case_id": 2,
+      "category": "COMPARATOR",
+      "criterion_met": false,
+      "observation": {
+        "arm3": 0,
+        "arm4": 1,
+        "surplus": "ESTABLISHED_EMPIRICAL_SURPLUS",
+        "level": "BOUNDED_SYNTHETIC_ONLY"
+      },
+      "elapsed_ms": 14.815704999999994
+    },
+    {
+      "case_id": 3,
+      "category": "COMPARATOR",
+      "criterion_met": true,
+      "observation": {
+        "arm3": 1,
+        "arm4": 0,
+        "governance": "EMPIRICAL_OUTCOME_OBSERVED: surplus=UNESTABLISHED"
+      },
+      "elapsed_ms": 11.299195999999995
+    },
+    {
+      "case_id": 4,
+      "category": "COMPARATOR",
+      "criterion_met": true,
+      "observation": {
+        "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Duplicate case_id 'same' in caseLedger."
+      },
+      "elapsed_ms": 0.14076799999999423
+    },
+    {
+      "case_id": 5,
+      "category": "COMPARATOR",
+      "criterion_met": true,
+      "observation": {
+        "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Invalid case record without case_id."
+      },
+      "elapsed_ms": 0.02051900000000728
+    },
+    {
+      "case_id": 6,
+      "category": "COMPARATOR",
+      "criterion_met": true,
+      "observation": {
+        "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Case ledger must be a non-empty array."
+      },
+      "elapsed_ms": 0.016416000000006647
+    },
+    {
+      "case_id": 7,
+      "category": "COMPARATOR",
+      "criterion_met": false,
+      "observation": {
+        "arm3": 1,
+        "arm4": 0,
+        "false_arm4": 1
+      },
+      "elapsed_ms": 10.388798999999992
+    },
+    {
+      "case_id": 8,
+      "category": "COMPARATOR",
+      "criterion_met": false,
+      "observation": {
+        "trace_source_roots_use_case_acquisition": false,
+        "matrix_unchanged": true
+      },
+      "elapsed_ms": 23.39389899999999
+    },
+    {
+      "case_id": 9,
+      "category": "COMPARATOR",
+      "criterion_met": false,
+      "observation": {
+        "actual": 264,
+        "arm3": 258,
+        "arm4": 264,
+        "arm3_queries": 6,
+        "arm4_queries": 13
+      },
+      "elapsed_ms": 14.633929000000023
+    },
+    {
+      "case_id": 10,
+      "category": "COMPARATOR",
+      "criterion_met": false,
+      "observation": {
+        "error": null,
+        "arm3": 0,
+        "arm4": 0
+      },
+      "elapsed_ms": 10.520744000000008
+    },
+    {
+      "case_id": 11,
+      "category": "ATTESTATION",
+      "criterion_met": true,
+      "observation": {
+        "status": "SOURCE_ATTESTED"
+      },
+      "elapsed_ms": 0.29081399999998325
+    },
+    {
+      "case_id": 12,
+      "category": "ATTESTATION",
+      "criterion_met": true,
+      "observation": {
+        "verdict": "NO_UNIFICATION_WARRANTED",
+        "reason": "UNAUTHENTICATED_SOURCE_ATTESTATION_REJECTED"
+      },
+      "elapsed_ms": 0.07370599999998717
+    },
+    {
+      "case_id": 13,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "operator_attested": true,
+        "math_status": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.08652299999999968
+    },
+    {
+      "case_id": 14,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "status": "SOURCE_ATTESTED"
+      },
+      "elapsed_ms": 0.046364000000011174
+    },
+    {
+      "case_id": 15,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "status": "SOURCE_ATTESTED",
+        "replacement": true
+      },
+      "elapsed_ms": 0.04096899999998982
+    },
+    {
+      "case_id": 16,
+      "category": "ATTESTATION",
+      "criterion_met": true,
+      "observation": {
+        "status": "COORDINATES_OUT_OF_BOUNDS"
+      },
+      "elapsed_ms": 0.1640910000000133
+    },
+    {
+      "case_id": 17,
+      "category": "ATTESTATION",
+      "criterion_met": true,
+      "observation": {
+        "status": "COORDINATES_OUT_OF_BOUNDS"
+      },
+      "elapsed_ms": 0.034314999999992324
+    },
+    {
+      "case_id": 18,
+      "category": "ATTESTATION",
+      "criterion_met": true,
+      "observation": {
+        "status": "COORDINATES_OUT_OF_BOUNDS"
+      },
+      "elapsed_ms": 0.02606900000000678
+    },
+    {
+      "case_id": 19,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "replacement_rejected": false,
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "old_attestation_cached": true
+      },
+      "elapsed_ms": 0.09390199999998572
+    },
+    {
+      "case_id": 20,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "status": "SOURCE_ATTESTED",
+        "registered_digest_still_matches": false
+      },
+      "elapsed_ms": 0.04770200000001523
+    },
+    {
+      "case_id": 21,
+      "category": "ATTESTATION",
+      "criterion_met": false,
+      "observation": {
+        "status": "SOURCE_ATTESTED",
+        "external_origin": "NOT_ESTABLISHED",
+        "classification": "LABEL_SCOPE_NOT_CLAIM_OF_EXTERNAL_AUTHENTICATION"
+      },
+      "elapsed_ms": 0.05024000000000228
+    },
+    {
+      "case_id": 22,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "map_status": "PROVEN",
+        "overall": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.0846339999999941
+    },
+    {
+      "case_id": 23,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "map_status": "PROVEN",
+        "overall": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.09206199999999853
+    },
+    {
+      "case_id": 24,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "map_status": "PROVEN",
+        "overall": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.17446899999998777
+    },
+    {
+      "case_id": 25,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "math": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.0861189999999965
+    },
+    {
+      "case_id": 26,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "contradictions_retained": 0,
+        "overall": "HELD_UNVERIFIED"
+      },
+      "elapsed_ms": 0.13536700000000224
+    },
+    {
+      "case_id": 27,
+      "category": "PROOF",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "correspondence": "MATHEMATICALLY_DEMONSTRATED"
+      },
+      "elapsed_ms": 0.11750200000000177
+    },
+    {
+      "case_id": 28,
+      "category": "PROOF",
+      "criterion_met": true,
+      "observation": {
+        "attempts": 20,
+        "theories": 0
+      },
+      "elapsed_ms": 0.12880600000002573
+    },
+    {
+      "case_id": 29,
+      "category": "LIFECYCLE",
+      "criterion_met": true,
+      "observation": {
+        "initial": "ACTIVE_CANDIDATE",
+        "later": "WITHDRAWN",
+        "affected": 1
+      },
+      "elapsed_ms": 0.2815569999999923
+    },
+    {
+      "case_id": 30,
+      "category": "LIFECYCLE",
+      "criterion_met": false,
+      "observation": {
+        "status": "ACTIVE_CANDIDATE",
+        "automatic_bridge_hook": false
+      },
+      "elapsed_ms": 0.20949500000000398
+    },
+    {
+      "case_id": 31,
+      "category": "LIFECYCLE",
+      "criterion_met": false,
+      "observation": {
+        "verdict": "COMPOSABLE_THEORY_CANDIDATE_ADMITTED",
+        "root_registry_retained": true
+      },
+      "elapsed_ms": 0.17400599999999145
+    },
+    {
+      "case_id": 32,
+      "category": "LIFECYCLE",
+      "criterion_met": false,
+      "observation": {
+        "rejected": false,
+        "snapshot_replaced": true
+      },
+      "elapsed_ms": 0.1203130000000101
+    },
+    {
+      "case_id": 33,
+      "category": "LIFECYCLE",
+      "criterion_met": false,
+      "observation": {
+        "caller_object_changed": true,
+        "copy_getter_available": true
+      },
+      "elapsed_ms": 0.17424599999998236
+    },
+    {
+      "case_id": 34,
+      "category": "WARRANT",
+      "criterion_met": true,
+      "observation": {
+        "source_byte_integrity": true,
+        "span_validity": true,
+        "graph_reachability": true,
+        "derivation_rule_valid": true,
+        "claim_entailment": "HELD_UNVERIFIED_BY_SYNTAX_ALONE"
+      },
+      "elapsed_ms": 0.0825450000000103
+    },
+    {
+      "case_id": 35,
+      "category": "WARRANT",
+      "criterion_met": false,
+      "observation": {
+        "accepted": true,
+        "warrant_coordinates": {
+          "source_byte_integrity": false,
+          "span_validity": true,
+          "graph_reachability": true,
+          "derivation_rule_valid": true,
+          "claim_entailment": "HELD_UNVERIFIED_BY_SYNTAX_ALONE"
+        }
+      },
+      "elapsed_ms": 0.10557299999999259
+    },
+    {
+      "case_id": 36,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "unsupported": true
+      },
+      "elapsed_ms": 0.27536600000001954
+    },
+    {
+      "case_id": 37,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "before": true,
+        "alternative": true,
+        "finally_supported": false
+      },
+      "elapsed_ms": 0.17776000000000636
+    },
+    {
+      "case_id": 38,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "roots": 3,
+        "acquisitions": 2
+      },
+      "elapsed_ms": 0.053239999999988186
+    },
+    {
+      "case_id": 39,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "before": false,
+        "after": true
+      },
+      "elapsed_ms": 0.04618700000000331
+    },
+    {
+      "case_id": 40,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "unresolved_zero_width_alias_grounded": false
+      },
+      "elapsed_ms": 0.047530000000023165
+    },
+    {
+      "case_id": 41,
+      "category": "SIX_BEHAVIORS",
+      "criterion_met": true,
+      "observation": {
+        "downstream_grounded": false
+      },
+      "elapsed_ms": 0.03673899999998298
+    }
+  ],
+  "comparisons": [
+    {
+      "comparison_id": 1,
+      "case_count": 6,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 6,
+          "correct_decisions": 6,
+          "unsupported_targets_rejected": 4,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 6,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 6,
+          "correct_decisions": 6,
+          "unsupported_targets_rejected": 4,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 13,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "100%",
+            "determination": "BOUNDED_TIE_AT_100_PERCENT"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 8.245874999999998,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.11195299999999975,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.3181510000000003,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 1.0034589999999923,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 5.054220999999998,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.016924000000003048,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.07278200000000368,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.011217999999999506,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.07968200000000536,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.3183700000000016,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.047511999999997556,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.41525399999999024,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.2923459999999949,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009344999999996162,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.07040599999999131,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.07632300000000214,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.05071099999999262,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.08158600000000149,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.33337499999998954,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.021334000000010178,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 2,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 0,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 0,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "0%",
+            "arm_4_reciprocal": "100%",
+            "determination": "ASYMMETRIC_FIDELITY_OBSERVED: arm3=0%, arm4=100%"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "ESTABLISHED_EMPIRICAL_SURPLUS",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "EMPIRICAL_OUTCOME_OBSERVED: surplus=ESTABLISHED_EMPIRICAL_SURPLUS"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 8.355075,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01847800000000177,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "7ed3251c6e5e6902206b1606f88dbbbca61dbebf3276b82f00dd817e15650d4e",
+          "elapsed_ms": 0.07722599999999602,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "7ed3251c6e5e6902206b1606f88dbbbca61dbebf3276b82f00dd817e15650d4e",
+          "elapsed_ms": 0.3814270000000022,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.528884999999988,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.021033000000002744,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "7ed3251c6e5e6902206b1606f88dbbbca61dbebf3276b82f00dd817e15650d4e",
+          "elapsed_ms": 0.07117700000000582,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.008421999999995933,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "052cffaf66576aafa1ac7209805c9a6300a0b7e87d65a260f90acbc81bd4bf05",
+          "elapsed_ms": 0.029662000000001854,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "7ed3251c6e5e6902206b1606f88dbbbca61dbebf3276b82f00dd817e15650d4e",
+          "elapsed_ms": 0.21773500000000467,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007974000000004366,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.019213000000007696,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "052cffaf66576aafa1ac7209805c9a6300a0b7e87d65a260f90acbc81bd4bf05",
+          "elapsed_ms": 0.23032200000000103,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.00719800000000248,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.018726999999998384,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.010497999999998342,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.010070999999996388,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01383799999999269,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.05211500000000058,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.04293599999999742,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 3,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 0,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 0,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "0%",
+            "determination": "ASYMMETRIC_FIDELITY_OBSERVED: arm3=100%, arm4=0%"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "EMPIRICAL_OUTCOME_OBSERVED: surplus=UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 5.6089489999999955,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.013958999999999833,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.06533100000000047,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.20114799999998922,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 3.9688480000000084,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.013780000000011228,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.06182699999999386,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.03769499999999937,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.0559030000000007,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.20609699999999975,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007417000000003782,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01557300000000339,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.2003469999999936,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007002999999997428,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01458499999999674,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007540000000005875,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.0062080000000008795,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.014431000000001859,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.050775999999999044,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009917000000001508,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 4,
+      "case_count": 2,
+      "result": null,
+      "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Duplicate case_id 'same' in caseLedger.",
+      "actual_native_trace": [],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 5,
+      "case_count": 1,
+      "result": null,
+      "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Invalid case record without case_id.",
+      "actual_native_trace": [],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 6,
+      "case_count": 0,
+      "result": null,
+      "error": "ASYMMETRIC_CASE_LEDGER_DETECTED: Case ledger must be a non-empty array.",
+      "actual_native_trace": [],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 7,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 1,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 0,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 0,
+          "false_graph_convergences": 1,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "0%",
+            "determination": "ASYMMETRIC_FIDELITY_OBSERVED: arm3=100%, arm4=0%"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "0% REJECTED",
+            "determination": "ASYMMETRIC_REJECTION_OBSERVED: arm3=100%, arm4=0%"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 1,
+            "determination": "CONVERGENCE_DISCREPANCY_OBSERVED: arm3=0, arm4=1"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "EMPIRICAL_OUTCOME_OBSERVED: surplus=UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.08678900000001,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.019116999999994277,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "2601da85303fd0558fbc44a3896b404a74bdce1c7c52f91172be44821b2c100f",
+          "elapsed_ms": 0.08105599999998958,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "2601da85303fd0558fbc44a3896b404a74bdce1c7c52f91172be44821b2c100f",
+          "elapsed_ms": 0.2279359999999997,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.687573,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009441999999992845,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "2601da85303fd0558fbc44a3896b404a74bdce1c7c52f91172be44821b2c100f",
+          "elapsed_ms": 0.05381000000001279,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.005782000000010612,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "790ff6ca0b8e45c85d50764920881d534eacc8c9d3cfcd1ccacc819fb38ee76e",
+          "elapsed_ms": 0.038082000000002836,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "2601da85303fd0558fbc44a3896b404a74bdce1c7c52f91172be44821b2c100f",
+          "elapsed_ms": 0.20632999999999413,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.008901999999991972,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.017865000000000464,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "790ff6ca0b8e45c85d50764920881d534eacc8c9d3cfcd1ccacc819fb38ee76e",
+          "elapsed_ms": 0.12525499999999568,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.0075040000000115015,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.013380999999995424,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009988000000006991,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009322999999994863,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.012033999999999878,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.045163000000002285,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.035330999999999335,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 8,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "100%",
+            "determination": "BOUNDED_TIE_AT_100_PERCENT"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 5.113651000000004,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.010350999999999999,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.070674000000011,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.19010999999999,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 5.181806999999992,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.008316000000007762,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.04608699999999999,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.0033289999999794873,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.011708999999996195,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.3289429999999811,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009023000000013326,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.015818999999993366,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.17330099999998083,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.012325000000004138,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01580099999998197,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007237000000003491,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.00650299999998083,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009116000000005897,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.050195999999999685,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.2651109999999903,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 9,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 1,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "100%",
+            "determination": "BOUNDED_TIE_AT_100_PERCENT"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.743957999999992,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007696000000009917,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.07264999999998167,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.18137500000000273,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.755642000000023,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.008339000000006536,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.04522000000000048,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.003476000000006252,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.013072000000022399,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.18029200000000856,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.006137999999992871,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.019786000000010517,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.12609299999999735,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.004885999999999058,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.012281999999999016,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009220999999996593,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.008856000000008635,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.011807000000004564,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.04758699999999294,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.01712099999997463,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    },
+    {
+      "comparison_id": 10,
+      "case_count": 6,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 6,
+          "correct_decisions": 6,
+          "unsupported_targets_rejected": 4,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 258,
+          "queries_executed": 6,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 6,
+          "correct_decisions": 6,
+          "unsupported_targets_rejected": 4,
+          "measured_graph_fidelity": 1,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 264,
+          "queries_executed": 13,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "100%",
+            "arm_4_reciprocal": "100%",
+            "determination": "BOUNDED_TIE_AT_100_PERCENT"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 5.763969000000003,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 134,
+          "source_id_hash": null,
+          "elapsed_ms": 0.011657000000013795,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 134,
+          "source_id_hash": "5c99dcb1f77a784c09351888e4cd746db5d0447b51c6b286dac915a3041d0411",
+          "elapsed_ms": 0.05668900000000576,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5c99dcb1f77a784c09351888e4cd746db5d0447b51c6b286dac915a3041d0411",
+          "elapsed_ms": 0.540504999999996,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 6.88997599999999,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 134,
+          "source_id_hash": null,
+          "elapsed_ms": 0.00903500000001145,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 134,
+          "source_id_hash": "5c99dcb1f77a784c09351888e4cd746db5d0447b51c6b286dac915a3041d0411",
+          "elapsed_ms": 0.05161899999998809,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 130,
+          "source_id_hash": null,
+          "elapsed_ms": 0.003250000000008413,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 130,
+          "source_id_hash": "623e232ff844b62f910f5191e4c49883da046f8aede1989e5d77798518414b2c",
+          "elapsed_ms": 0.013058999999998377,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5c99dcb1f77a784c09351888e4cd746db5d0447b51c6b286dac915a3041d0411",
+          "elapsed_ms": 0.23900199999999927,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.004864999999995234,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.016022000000020853,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "623e232ff844b62f910f5191e4c49883da046f8aede1989e5d77798518414b2c",
+          "elapsed_ms": 0.12175999999999476,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.004123999999990247,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.011893999999983862,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007116999999993823,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.012818000000009988,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.18295999999998003,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.26780400000001237,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.012387999999987187,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 264
+    },
+    {
+      "comparison_id": 11,
+      "case_count": 1,
+      "result": {
+        "arm3": {
+          "name": "COMPETENT_NON_RECIPROCAL_UNION",
+          "execution_class": "EXECUTABLE_STANDARD_GRAPH_UNION",
+          "cases_evaluated": 1,
+          "correct_decisions": 0,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 0,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 1,
+          "correction_operations_observed": 2,
+          "contradictions_retained": "UNCONDITIONED_FLATTENING_RISK",
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 0.65,
+            "prior_claimed_latency_steps": 8,
+            "status": "HISTORICAL_AUTHORED_DECLARATION_SUPERSEDED_BY_EMPIRICAL_TIE"
+          }
+        },
+        "arm4": {
+          "name": "PROSPECTIVE_EM_RECIPROCAL_SYNTHESIS",
+          "execution_class": "EXECUTABLE_RECIPROCAL_LFP_SYNTHESIS",
+          "cases_evaluated": 1,
+          "correct_decisions": 0,
+          "unsupported_targets_rejected": 0,
+          "measured_graph_fidelity": 0,
+          "false_graph_convergences": 0,
+          "source_bytes_read": 252,
+          "queries_executed": 8,
+          "correction_operations_observed": 2,
+          "contradictions_retained": true,
+          "scientific_surplus": "UNESTABLISHED",
+          "semantic_entailment_quality": "NOT_MEASURED",
+          "historical_authored_declaration": {
+            "prior_claimed_warrant_fidelity": 1,
+            "prior_claimed_latency_steps": 1,
+            "status": "HISTORICAL_AUTHORED_DECLARATION"
+          }
+        },
+        "matrix": {
+          "measured_graph_fidelity_comparison": {
+            "arm_3_non_reciprocal": "0%",
+            "arm_4_reciprocal": "0%",
+            "determination": "BOUNDED_TIE_AT_0_PERCENT"
+          },
+          "unsupported_targets_rejection_comparison": {
+            "arm_3_non_reciprocal": "100% REJECTED",
+            "arm_4_reciprocal": "100% REJECTED",
+            "determination": "BOUNDED_TIE"
+          },
+          "false_graph_convergence_comparison": {
+            "arm_3_non_reciprocal": 0,
+            "arm_4_reciprocal": 0,
+            "determination": "ZERO_FALSE_CONVERGENCE_IN_BOTH_SYSTEMS"
+          },
+          "withdrawal_operation_counts": {
+            "arm_3_non_reciprocal": 2,
+            "arm_4_reciprocal": 2,
+            "determination": "EQUIVALENT_WITHDRAWAL_OPERATIONS"
+          },
+          "scientific_reciprocal_surplus": "UNESTABLISHED",
+          "contradiction_handling": {
+            "arm_3_non_reciprocal": "GRAPH_REACHABILITY_UNAWARE_OF_INCOMMENSURABLE_ASSUMPTIONS",
+            "arm_4_reciprocal": "FAILS_CLOSED_RETURNING_NO_UNIFICATION_WARRANTED"
+          },
+          "unsupported_dimensions_status": {
+            "semantic_entailment_quality": "NOT_MEASURED",
+            "general_prediction_accuracy": "NOT_MEASURED",
+            "emergent_intelligence": "NOT_MEASURED"
+          }
+        },
+        "governance": "BOUNDED_TIE_OBSERVED_SURPLUS_UNESTABLISHED"
+      },
+      "error": null,
+      "actual_native_trace": [
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.31277,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007700999999997293,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.04559900000000994,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.2981879999999819,
+          "error": null
+        },
+        {
+          "operation": "initialize",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 4.886256000000003,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 128,
+          "source_id_hash": null,
+          "elapsed_ms": 0.039716999999996005,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 128,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.07896199999998998,
+          "error": null
+        },
+        {
+          "operation": "admitSourceRoot",
+          "byte_length": 124,
+          "source_id_hash": null,
+          "elapsed_ms": 0.0032479999999850406,
+          "error": null
+        },
+        {
+          "operation": "admitEmSource",
+          "byte_length": 124,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.012329999999991514,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "bb7f387d43168f21c7e7b703ed9a5b237c133e3ed0768215deb9de33833fef6f",
+          "elapsed_ms": 0.2069879999999955,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.004480999999998403,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.04332099999999173,
+          "error": null
+        },
+        {
+          "operation": "stageEmPassageIntoAtelier",
+          "byte_length": null,
+          "source_id_hash": "5ab245b854a33677dbcc18bce7c9c1c8b1922d6432feaee217b5225959faa7aa",
+          "elapsed_ms": 0.12220000000002074,
+          "error": null
+        },
+        {
+          "operation": "addDerivationRule",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.003662000000019816,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.010707999999993945,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.006416000000001532,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.006468999999981406,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.009716999999994869,
+          "error": null
+        },
+        {
+          "operation": "withdrawSourceRoot",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.0670289999999909,
+          "error": null
+        },
+        {
+          "operation": "computeLeastFixedPoint",
+          "byte_length": null,
+          "source_id_hash": null,
+          "elapsed_ms": 0.007792999999992389,
+          "error": null
+        }
+      ],
+      "actual_input_utf8_bytes": 252
+    }
+  ]
+}

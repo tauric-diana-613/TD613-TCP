@@ -1,0 +1,33 @@
+--- Inspecting EMSTD613 Historical Corpus ---
+✓ Generated /workspace/scratch/5b5d4db76a90/final-native-run/packages/em_unified_synthesis/corpus_acquisition_manifest.json
+✓ Generated /workspace/scratch/5b5d4db76a90/final-native-run/packages/em_unified_synthesis/identity_metadata_crosswalk.json
+✓ Generated /workspace/scratch/5b5d4db76a90/final-native-run/packages/em_unified_synthesis/original_methods_inventory.json
+✓ Generated /workspace/scratch/5b5d4db76a90/final-native-run/packages/em_unified_synthesis/negative_refusal_register.json
+▶ EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suite
+  ✔ 1. Verifies 87 historical sources, exact format bytes, and 53 extracted derivatives (35.653921ms)
+  ✔ 2. Reconciles Archive.zip central directory (33 content files + 33 AppleDouble sidecars = 66) (6.623783ms)
+  ✔ 3. Verifies 32 Work routes, 8 human gates, and 256 identity hypotheses in [32, 40] interval (1.051803ms)
+  ✔ 4. Executes native lexical index search with Unicode support and integer coordinate safety (114.725777ms)
+  ✔ 5. Refuses text queries on AppleDouble sidecars and asserts semantic model unavailability (0.284618ms)
+  ✔ 6. Operator ZIP Intake Engine: admits valid archive with CRC-32 and extracts text derivatives (3.545131ms)
+  ✔ 7. Operator ZIP Intake Engine: blocks path traversal (Zip-Slip) fail-closed (1.459442ms)
+  ✔ 8. Em-to-Universal Reciprocal Bridge: multilayer warrant integrity coordinates and duplicate rejection (17.45537ms)
+  ✔ 9. Unified Theory Synthesis Engine: refuses superficial motif matches fail-closed (1.013335ms)
+  ✔ 10. Unified Theory Synthesis Engine: retains contradictions on incommensurable assumptions (0.374817ms)
+  ✔ 11. Unified Theory Synthesis Engine: admits valid composable candidate and cascades withdrawal with immutable snapshots (2.723125ms)
+  ✔ 12. Competent Null Comparator: runs trace-derived comparison and reports verified bounded tie (43.570277ms)
+  ✔ 13. Verified Operator Mappings: rejects invented operators and unsupported morphism labels (0.172096ms)
+  ✔ 14. Continuous-Discrete Correspondence: permits unification when correspondence mapping is declared (0.411655ms)
+  ✔ 15. Hardened ZIP Intake: rejects symlinks, encryption, duplicate paths, and zip bombs (1.753036ms)
+  ✔ 16. WIRE-01 Matched Comparator: paired case ledger regression, denominator parity & dynamic evaluation (58.551338ms)
+  ✔ 17. WIRE-02 Source-Attested Operator & Morphism Qualification: rejects unattested, unverified, or digest-mismatched proposals (0.467389ms)
+  ✔ 18. WIRE-03 Complete ZIP Header & Admission Contract: adversarial header mismatches, descriptors, and atomic rollback (5.855408ms)
+✔ EM E-00.1: Unified Theory Synthesis & Reciprocal Inheritance Test Suite (299.201374ms)
+ℹ tests 18
+ℹ suites 1
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 457.570702
