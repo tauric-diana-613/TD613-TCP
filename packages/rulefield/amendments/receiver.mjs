@@ -9,6 +9,7 @@ import {createHash} from 'node:crypto';
 import {basename,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {readRulefield,validateRulefield} from '../rulefield.mjs';
+import {enumerate,criticalPairs,finiteCA} from '../lab/multiway_lab.mjs';
 
 export const PACKET_SCHEMA='td613.rulefield.amendment-packet/v1';
 export const REVIEW_SCHEMA='td613.rulefield.amendment-review/v1';
@@ -76,6 +77,53 @@ function insideFile(folder,name){
  return join(folder,validSimpleName(basename(name)));
 }
 function getIndex(){const index=readRulefield();validateRulefield(index);return index;}
+/**
+ * Source-free bounded experiment dispatcher; no eval or packet-defined callbacks.
+ * A result attests ONLY the explicit deterministic toy model and finite bounds.
+ */
+export function runDeclaredFiniteExperiment(spec){
+ requireOk(isObj(spec)&&string(spec.engine),'EXPERIMENT_ENGINE_UNDECLARED');
+ const engine=spec.engine;
+ const bound=(x,min,max,name)=>{requireOk(Number.isInteger(x)&&x>=min&&x<=max,'INVALID_EXPERIMENT_BOUND_'+name);return x;};
+ if(engine==='FINITE_STRING_MULTIWAY'||engine==='FINITE_CRITICAL_PAIRS'){
+   requireOk(Array.isArray(spec.rules)&&spec.rules.length>=1&&spec.rules.length<=8,'EXPERIMENT_RULE_COUNT_EXCEEDED');
+   requireOk(typeof spec.initial==='string'&&/^[A-Z]{0,18}$/.test(spec.initial),'EXPERIMENT_INITIAL_INVALID');
+   const depth=bound(spec.depth??2,0,4,'DEPTH');
+   const maxLength=bound(spec.maxLength??18,1,18,'MAX_LENGTH');
+   if(engine==='FINITE_STRING_MULTIWAY'){
+    const maxPaths=bound(spec.maxPaths??500,2,1000,'MAX_PATHS');
+    const out=enumerate(spec.initial,spec.rules,{depth,maxPaths,maxLength});
+    const events=out.events.map(e=>({event_id:e.event_id,from:e.from,to:e.to,rule:e.rule,offset:e.offset,source_state:e.source_state,target_state:e.target_state}));
+    return {engine,scope:'EXECUTED_LOCAL_FINITE_SOURCE_FREE_MODEL',initial:spec.initial,depth,
+     event_count:events.length,event_digest:sha(JSON.stringify(events)),events_preview:events.slice(0,32),
+     branch_pair_count:out.branchPairs.length,
+     overlapping_branch_pair_count:out.branchPairs.filter(e=>e.redex_overlap).length,
+     endpoint:out.endpoint,layer_counts:out.layerCounts,truncated:out.truncated,
+     claim_ceiling:'BOUNDED_SYNTHETIC_ONLY',independent_replication:false,
+     no_wolfram_kernel_claim:true,no_physical_inference:true};
+   }
+   const horizon=bound(spec.horizon??3,0,4,'HORIZON');
+   const pairs=criticalPairs(spec.initial,spec.rules,{depth,horizon});
+   return {engine,scope:'EXECUTED_LOCAL_FINITE_SOURCE_FREE_MODEL',initial:spec.initial,depth,horizon,
+    critical_pair_count:pairs.length,pairs:pairs.slice(0,64),
+    truncated_output:pairs.length>64,claim_ceiling:'BOUNDED_STRING_CRITICAL_PAIRS_ONLY',
+    global_confluence_proven:false,independent_replication:false};
+ }
+ if(engine==='ELEMENTARY_CA'){
+  const rule=bound(spec.rule,0,255,'CA_RULE');
+  const width=bound(spec.width??41,5,61,'CA_WIDTH');
+  const steps=bound(spec.steps??24,1,48,'CA_STEPS');
+  const initial=spec.seed??null,perturb=spec.perturb??null;
+  if(initial!==null)bound(initial,0,width-1,'CA_SEED');
+  if(perturb!==null)bound(perturb,0,width-1,'CA_PERTURB');
+  const out=finiteCA(rule,{width,steps,seed:initial,perturb,boundary:spec.boundary??'periodic'});
+  return {engine,scope:'EXECUTED_LOCAL_FINITE_SOURCE_FREE_MODEL',rule,width,steps,boundary:out.boundary,
+    rows:out.rows,spatial_binary_entropy_bits:out.spatial_binary_entropy_bits,
+    perturbation_hamming_distance:out.perturbation_hamming_distance,
+    claim_ceiling:'FINITE_SHANNON_AND_HAMMING_ONLY',proof_of_chaos:false,independent_replication:false};
+ }
+ fail('EXPERIMENT_ENGINE_NOT_IMPLEMENTED');
+}
 export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
  requireOk(isObj(packet)&&packet.schema===PACKET_SCHEMA,'PACKET_SCHEMA_UNSUPPORTED');
  requireOk(string(packet.packet_id)&&/^[A-Za-z0-9][A-Za-z0-9_-]{6,79}$/.test(packet.packet_id),'INVALID_PACKET_ID');
@@ -122,6 +170,7 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
    candidate_relations:item.relation?[{...item.relation,warrant:'PROPOSED_UNVERIFIED'}]:[],
    proposed_projection:item.projection||null, proposed_geometry:item.geometry||null,
    local_rewrite:item.nks?.local_rewrite||null,
+   declared_finite_experiment:item.experiment?runDeclaredFiniteExperiment(item.experiment):{status:'NOT_REQUESTED',execution_credit:0},
    predicted_consequence:{prediction:item.prediction||'UNSPECIFIED',consequence:item.consequence||'UNSPECIFIED',observed:false},
    counterfactual_branches:[
     {branch:'PROPOSAL_SURVIVES_NULL',status:'UNEXECUTED',predicate:'independent matched null is outperformed'},
@@ -148,7 +197,7 @@ export function reviewPacket(packet,index=getIndex(),opts={}){
   as_source_free:assessment,operator_review_required:true,
   original_registry_mutated:false, historical_190_mutated:false, inherited_IPX_mutated:false,
   automatic_branch_merge:false,automatic_experiment_adoption:false,protected_experiment_b:'HELD',
-  interpretation:'Candidate branch descriptions, not executed NKS transitions or observed empirical outcomes.',
+  interpretation:'Candidate branches remain proposed. Any declared finite lab model is executed only as a bounded source-free computational example; no independent empirical outcome, Wolfram kernel run, protected Flight or scientific novelty is thereby demonstrated.',
   human_closure:'RESERVED'
  };
 }
@@ -167,6 +216,7 @@ function markdownReceipt(receipt){
     '- **Competent comparison:** '+p.controls.competent_null,
     '- **Prediction:** '+p.predicted_consequence.prediction,
     '- **Consequence:** '+p.predicted_consequence.consequence,
+    '- **Finite experiment:** '+(p.declared_finite_experiment?.engine||'NOT_REQUESTED')+' / '+(p.declared_finite_experiment?.scope||'UNEXECUTED'),
     '- **Status:** '+p.scientific_state,'');
  }
  if(receipt.as_source_free.issues.length)lines.push('## Held deficiencies','',...receipt.as_source_free.issues.map(x=>'- '+x.proposal+': '+x.kind+' / '+JSON.stringify(x.items)));
