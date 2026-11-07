@@ -11,7 +11,7 @@
 
 **Black feminist epistemology** is an intellectual tradition of lived experience, dialogue, ethics of caring, accountability, situated knowledge and critique of epistemic oppression (including work by Collins, Dotson and McKittrick). **Computational Black feminist epistemology** here names a *limited methodological translation*: construct falsifiable computer experiments about how an institution receives, weights, retains and revises evidence. Software must never claim to have instantiated or measured lived Black feminist epistemology by passing tests.
 
-A static **relation geometry** is a typed graph G=(V,E,τ) with possible SUBMITS, HEARS, ADJUDICATES, APPEALS, WITHHOLDS and REVISES edges. It is insufficient for knowing when those edges are lawful or reachable. The **relational-geometry** research object adds hearing conditions, historical custody and observation:
+For this bounded assay, **relation-geometry** denotes a static typed graph; it is a *study-local operational choice*, not a universal definition of the lexeme. A static typed graph G=(V,E,τ) with possible SUBMITS, HEARS, ADJUDICATES, APPEALS, WITHHOLDS and REVISES edges. It is insufficient for knowing when those edges are lawful or reachable. The expressly distinct **relational-geometry** research object adds hearing conditions, historical custody and observation:
 
 \[
 \mathfrak H_{o,t}=(G,K_0,A_t,H_t,O_{o,t},P_t,C_t,\mathcal R_t).
@@ -26,7 +26,7 @@ d_{H,o,t}(s,c)=\inf_{\gamma\in {\rm AdmissiblePaths}_{H,o,t}(s,c)}
 \sum_{e\in\gamma}w_{H,o,t}(e),\qquad \inf\varnothing=+\infty.
 \]
 
-This is **a designed shortest-path construct**, not a Riemannian metric, a physical curvature measurement or a valuation of human suffering. It is sensitive to temporal admissibility and speaker routes even where G and source bytes stay fixed.
+The study preserves the lexical non-equivalence **relation-geometry ≠ relational-geometry**, including the original creative mutation's broader possibilities; this specific graph model does not exhaust them. This is **a designed shortest-path construct**, not a Riemannian metric, a physical curvature measurement or a valuation of human suffering. It is sensitive to temporal admissibility and speaker routes even where G and source bytes stay fixed.
 
 **Non-equivalences:** Source ≠ testimony receipt ≠ hearing ≠ evidence warrant ≠ public claim; prestige ≠ reliability; graph adjacency ≠ accessible path; successful action ≠ revised belief; rebuilt access ≠ reparative justice; computational Black feminist epistemology ≠ the Black feminist scholarly and lived tradition.
 
