@@ -1,0 +1,163 @@
+{
+  "source_revision": "b69c39b17700e511b24a0ffa903bd1dcc6f266b3",
+  "task_scope": "EXPERIMENT_A_PFR0_POSTFLIGHT_REDO_READINESS_AND_VIXEN_RESTORATION",
+  "evidence_class": "SOURCE_FREE_READINESS_EVIDENCE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/vixen_cybernetics/vixen-cybernetics-engine.mjs",
+    "packages/vixen_cybernetics/VIXEN_ARCHAEOLOGY_AND_CAPABILITY_MATRIX.md",
+    "packages/vixen_cybernetics/test-vixen-cybernetics.mjs",
+    "packages/four_crossing_capstone/a-pfr0-postflight-redo-apparatus.mjs",
+    "packages/four_crossing_capstone/A_PFR0_POSTFLIGHT_REDO_SPECIFICATION.md",
+    "packages/four_crossing_capstone/test-a-pfr0-redo-readiness.mjs",
+    "packages/four_crossing_capstone/a-pfr0-readiness-receipt.json"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "audit_id": "ped-audit-a-pfr0-vixen-readiness",
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "E-00.1a enters bounded rest; original Vixen standalone executor verified absent in repository lineage; Experiment A postflight-redo requires source-free preflight apparatus."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Restored standalone Vixen Cybernetics engine and web UI at /encyclopedia/vix-cyb.html preserving canonical signature VIXENCYBERNETICS$S_e≡[x+y]=z+1$; implemented A-PFR0 four-crossing redo apparatus with demonstrable zero-state witnesses."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Zero rows verified across all 4 recipient databases; all 8 Vixen tests pass; all 5 A-PFR0 redo-readiness tests pass; fatal UTF-8 codepoint boundary enforcement confirmed."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "A-PFR0 instrument readiness and Vixen restoration qualified; A-PFR1 held pending genuine flight; protected postflight record absent; human scientific closure reserved."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [2.0, 0.05],
+        [0.05, 1.95]
+      ],
+      "candidate_probe": [1.0, 0.5],
+      "noise_covariance": [
+        [0.04, 0.005],
+        [0.005, 0.04]
+      ],
+      "latent_dimension": 2,
+      "matrix": [
+        [2.0, 0.05],
+        [0.05, 1.95]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "target:four_crossing_pfr0_redo_apparatus",
+        "winding_number": 0
+      },
+      "trajectoryB": {
+        "endpoint": "target:four_crossing_pfr0_redo_apparatus",
+        "winding_number": 0
+      },
+      "relation_entry": {
+        "left": {
+          "crossings": 4,
+          "vixen_route": "/encyclopedia/vix-cyb.html",
+          "estate_census": "87_sources_53_derivatives",
+          "recipient_census": "94_sources_53_derivatives",
+          "path": ["S", "E", "W", "T"]
+        },
+        "right": {
+          "crossings": 4,
+          "vixen_route": "/encyclopedia/vix-cyb.html",
+          "estate_census": "87_sources_53_derivatives",
+          "recipient_census": "94_sources_53_derivatives",
+          "path": ["S", "E", "W", "T"]
+        }
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "state_id": "historical_em_estate_fiber",
+          "support": [
+            "87_SOURCES",
+            "53_DERIVATIVES",
+            "34_NEGATIVE_STATES",
+            "32_WORK_ROUTES",
+            "8_HUMAN_GATES"
+          ]
+        },
+        {
+          "state_id": "experiment_a_recipient_fiber",
+          "support": [
+            "94_SOURCES",
+            "53_DERIVATIVES",
+            "7_ADDITIONAL_DOCS",
+            "FOUR_CROSSING_ZERO_WITNESS"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "required_phases": [
+        "PHASE_1_E001A_BOUNDED_REST",
+        "PHASE_2_VIXEN_ARCHAEOLOGY",
+        "PHASE_3_VIXEN_STANDALONE_RESTORATION",
+        "PHASE_4_ESTATE_CENSUS_SEPARATION",
+        "PHASE_5_APFR0_REDO_APPARATUS",
+        "PHASE_6_ZERO_STATE_WITNESS_VERIFICATION",
+        "PHASE_7_WARRANT_SEPARATION_ENFORCEMENT",
+        "PHASE_8_EXECUTION_BOUNDARY_LOCK"
+      ],
+      "phases": {
+        "PHASE_1_E001A_BOUNDED_REST": {
+          "status": "PASS",
+          "entry_id": "phase_1_e001a_bounded_rest"
+        },
+        "PHASE_2_VIXEN_ARCHAEOLOGY": {
+          "status": "PASS",
+          "entry_id": "phase_2_vixen_archaeology"
+        },
+        "PHASE_3_VIXEN_STANDALONE_RESTORATION": {
+          "status": "PASS",
+          "entry_id": "phase_3_vixen_standalone_restoration"
+        },
+        "PHASE_4_ESTATE_CENSUS_SEPARATION": {
+          "status": "PASS",
+          "entry_id": "phase_4_estate_census_separation"
+        },
+        "PHASE_5_APFR0_REDO_APPARATUS": {
+          "status": "PASS",
+          "entry_id": "phase_5_apfr0_redo_apparatus"
+        },
+        "PHASE_6_ZERO_STATE_WITNESS_VERIFICATION": {
+          "status": "PASS",
+          "entry_id": "phase_6_zero_state_witness_verification"
+        },
+        "PHASE_7_WARRANT_SEPARATION_ENFORCEMENT": {
+          "status": "PASS",
+          "entry_id": "phase_7_warrant_separation_enforcement"
+        },
+        "PHASE_8_EXECUTION_BOUNDARY_LOCK": {
+          "status": "PASS",
+          "entry_id": "phase_8_execution_boundary_lock"
+        }
+      }
+    }
+  },
+  "allow_overwrite": true,
+  "format": "both"
+}
