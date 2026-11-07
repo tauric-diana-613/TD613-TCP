@@ -564,3 +564,6 @@ await import('./dd02-cbfe-relational-geometry.native.test.mjs');
 
 // Prospective source-free 384-episode competent-null differential challenge; original Flight HELD.
 await import('./cbfe-competent-null-probe.v04.test.mjs');
+
+// Rulefield v1: provenance, priority, source-free null and fail-closed RGI-01 contracts.
+await import('./rulefield-v1.test.mjs');
