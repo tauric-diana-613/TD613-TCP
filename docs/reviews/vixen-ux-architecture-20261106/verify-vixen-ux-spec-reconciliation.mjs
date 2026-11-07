@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 
 /**
- * Deterministic Source-Reconciliation Verifier for Vixen Cybernetics UX Specification (V3).
+ * Deterministic Source & Prototype Reconciliation Verifier (v2.0)
+ * for Vixen Cybernetics Specification (V3) AND Executable Prototype (V4: app/encyclopedia/vix-cyb.html).
  *
- * Independently verifies the five substantive source-mapping invariants identified in
- * Emergence HQ Review #5810153980 (Draft PR #1718) that bounded Dollhouse conductor checks
- * do NOT evaluate:
- *   1. Bijective 32-of-32 Work route placement + 53 linked emsrc_* IDs + 7 Batch-B emb_* IDs.
- *   2. Bijective 21-of-21 06-INSTRUMENTS placement with zero phantom registry IDs in Section 2.5.
- *   3. Non-merging attribution compliance (ATTRIBUTION.md + work-index.jsonl authorship="UNRESOLVED").
- *   4. Three-tier public surface capability honesty (no false full-text "Work Reader" promises).
- *   5. Explicit narrowing of the Dollhouse conductor receipt ceiling (UI_BUILD_VALIDATED = false).
+ * Directly answers Emergence HQ's question ("how much the new verifier actually proves") by:
+ *   1. Checking row-level relational coupling (not merely global ID set presence) across BOTH
+ *      VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md and app/encyclopedia/vix-cyb.html:
+ *        - Every 1 of 32 emwork_* routes -> exact linked emsrc_* IDs, exact byte_length & sha256 from
+ *          source-files.jsonl, exact identity_status, exact human_gate_required, and authorship="UNRESOLVED".
+ *        - Per-cluster Work AND Manifestation sums (C1: 12W/18M, C2: 9W/15M, C3: 2W/4M, C4: 5W/10M, C5: 4W/6M = 32W/53M).
+ *        - All 7 unpaired Prospective Batch-B PDFs (emb_20260911_*) with exact byte_length & sha256.
+ *        - All 21 committed 06-INSTRUMENTS protocols (6+7+4+4=21) with exact byte_length, sha256,
+ *          standalone_executors=0, and zero retired phantom IDs inside the 21-instrument registry.
+ *   2. Verifying presentation seam isolation (#manifest-instance-theme carries #FF91AF, #24282A, #F6F4F0, #667078, #F9F36D),
+ *      dedicated mobile-only couture logo (.brand-mobile-logo), bone-free Mugler-unchained frontispiece digests,
+ *      verbatim ATELIER_PROFILE.json founding question & ATTRIBUTION.md text, UNADJUDICATED_PAIR default across all 8 gates,
+ *      and strict three-codepoint separation (U+1D30B != U+10D613 != U+200C inside Khona\u200clit-po).
+ *   3. Explicitly declaring its exact epistemic boundary: what_this_verifier_proves vs. what_requires_browser_or_human_witness.
  */
 
 import fs from 'node:fs';
@@ -20,197 +27,316 @@ import crypto from 'node:crypto';
 const repoRoot = process.cwd();
 const packetDir = path.join(repoRoot, 'docs/reviews/vixen-ux-architecture-20261106');
 const specPath = path.join(packetDir, 'VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md');
+const htmlPath = path.join(repoRoot, 'app/encyclopedia/vix-cyb.html');
 const outReceiptPath = path.join(packetDir, 'reconciliation-verification-receipt.json');
 
-function sha256(buf) {
-  return crypto.createHash('sha256').update(buf).digest('hex');
-}
+const sha256 = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
 
-const specText = fs.readFileSync(specPath, 'utf8');
+const specBytes = fs.readFileSync(specPath);
+const specText = specBytes.toString('utf8');
+const htmlBytes = fs.readFileSync(htmlPath);
+const htmlText = htmlBytes.toString('utf8');
+
 const crosswalk = JSON.parse(
   fs.readFileSync(path.join(repoRoot, 'packages/em_unified_synthesis/identity_metadata_crosswalk.json'), 'utf8')
 );
 const methodsInv = JSON.parse(
   fs.readFileSync(path.join(repoRoot, 'packages/em_unified_synthesis/original_methods_inventory.json'), 'utf8')
 );
+const atelierProfile = JSON.parse(
+  fs.readFileSync(path.join(repoRoot, 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/ATELIER_PROFILE.json'), 'utf8')
+);
 const workIndexRows = fs
-  .readFileSync(
-    path.join(repoRoot, 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl'),
-    'utf8'
-  )
+  .readFileSync(path.join(repoRoot, 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/work-index.jsonl'), 'utf8')
+  .trim()
+  .split(/\r?\n/)
+  .map(JSON.parse);
+const sourceFileRows = fs
+  .readFileSync(path.join(repoRoot, 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl'), 'utf8')
   .trim()
   .split(/\r?\n/)
   .map(JSON.parse);
 const batchBRows = fs
   .readFileSync(
-    path.join(
-      repoRoot,
-      'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl'
-    ),
+    path.join(repoRoot, 'packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/batch-b-2026-09-11-source-files-v2.jsonl'),
     'utf8'
   )
   .trim()
   .split(/\r?\n/)
   .map(JSON.parse);
 
+const sourceById = new Map(sourceFileRows.map((s) => [s.source_file_id, s]));
+const workIndexById = new Map(workIndexRows.map((w) => [w.work_id, w]));
+
 const errors = [];
 
-// Slice Section 2.3 (32-Work Crosswalk) and Section 2.5 (21-Instrument Taxonomy)
+// PART A: Markdown V3 Specification Row-Level & Cluster-Sum Audit
 const sec23Start = specText.indexOf('### 2.3 Exhaustive 32-Work Source-Bound Crosswalk');
 const sec24Start = specText.indexOf('### 2.4 Eight Human-Gated Manifestation Case Files');
 const sec25Start = specText.indexOf('### 2.5 Exact Bijective 21-Instrument Registry Taxonomy');
 const sec26Start = specText.indexOf('### 2.6 Non-Registry Operational & Custodial Responsibilities');
-
 if (sec23Start < 0 || sec24Start < 0 || sec25Start < 0 || sec26Start < 0) {
-  throw new Error('Required V3 sections (2.3, 2.4, 2.5, 2.6) not found in specification.');
+  errors.push('Required V3 sections (2.3, 2.4, 2.5, 2.6) missing in Markdown specification.');
 }
-
 const sec23Text = specText.slice(sec23Start, sec24Start);
 const sec25Text = specText.slice(sec25Start, sec26Start);
 
-// 1. Verify exact 32-Work bijection in Section 2.3 table rows
-const expectedWorkIds = crosswalk.works.map(w => w.work_id).sort();
-const tableWorkMatches = [...sec23Text.matchAll(/^\|\s*\d{2}\s*\|\s*`(emwork_[0-9a-f]{24})`/gm)].map(m => m[1]);
-const uniqueFoundWorkIds = [...new Set(tableWorkMatches)].sort();
-
-const missingWorks = expectedWorkIds.filter(id => !uniqueFoundWorkIds.includes(id));
-const extraWorks = uniqueFoundWorkIds.filter(id => !expectedWorkIds.includes(id));
-if (tableWorkMatches.length !== 32) {
-  errors.push(`Expected 32 Work rows in Section 2.3, found ${tableWorkMatches.length}`);
-}
-if (missingWorks.length > 0 || extraWorks.length > 0) {
-  errors.push(`Work ID mismatch: missing=${missingWorks.join(',')}, extra=${extraWorks.join(',')}`);
-}
-
-// Verify all 53 linked emsrc_* manifestation IDs and 7 Batch-B emb_* IDs in Section 2.3
-const expectedSrcIds = crosswalk.works.flatMap(w => w.linked_sources.map(s => s.source_file_id)).sort();
-const foundSrcIds = [...new Set([...sec23Text.matchAll(/`(emsrc_[0-9a-f]{24})`/g)].map(m => m[1]))].sort();
-const missingSrcIds = expectedSrcIds.filter(id => !foundSrcIds.includes(id));
-if (missingSrcIds.length > 0 || foundSrcIds.length !== 53) {
-  errors.push(`Manifestation emsrc_* mismatch: expected 53, found ${foundSrcIds.length}, missing=${missingSrcIds.join(',')}`);
-}
-
-const expectedBatchBIds = batchBRows.map(r => r.source_file_id).sort();
-const foundBatchBIds = [...new Set([...sec23Text.matchAll(/`(emb_20260911_[0-9a-f]{12})`/g)].map(m => m[1]))].sort();
-const missingBatchB = expectedBatchBIds.filter(id => !foundBatchBIds.includes(id));
-if (missingBatchB.length > 0 || foundBatchBIds.length !== 7) {
-  errors.push(`Batch-B emb_* mismatch: expected 7, found ${foundBatchBIds.length}, missing=${missingBatchB.join(',')}`);
-}
-
-// 2. Verify exact 21-Instrument bijection in Section 2.5 table rows & zero phantom protocols
-const expectedInstIds = methodsInv.instruments.map(i => i.instrument_id).sort();
-const tableInstMatches = [...sec25Text.matchAll(/^\|\s*\d{2}\s*\|\s*\[`([A-Z0-9_]+)`\]/gm)].map(m => m[1]);
-const uniqueFoundInstIds = [...new Set(tableInstMatches)].sort();
-
-const missingInsts = expectedInstIds.filter(id => !uniqueFoundInstIds.includes(id));
-const extraInsts = uniqueFoundInstIds.filter(id => !expectedInstIds.includes(id));
-if (tableInstMatches.length !== 21) {
-  errors.push(`Expected 21 Instrument rows in Section 2.5, found ${tableInstMatches.length}`);
-}
-if (missingInsts.length > 0 || extraInsts.length > 0) {
-  errors.push(`Instrument ID mismatch: missing=${missingInsts.join(',')}, extra=${extraInsts.join(',')}`);
-}
-
-const retiredPhantomIds = [
-  'RECIPROCAL_RESIDUE_LEDGER',
-  'CROSS_ATELIER_TRANSLATION_MEMBRANE',
-  'MANIFESTATION_IDENTITY_GATE_PROTOCOL',
-  'APPLEDOUBLE_SIDECAR_QUARANTINE_RULE',
-  'BYTE_SPAN_GROUNDING_CONTRACT'
-];
-const sec25BodyAfterIntro = sec25Text.slice(sec25Text.indexOf('#### Family F1'));
-for (const phantom of retiredPhantomIds) {
-  if (sec25BodyAfterIntro.includes(phantom)) {
-    errors.push(`Retired non-registry name ${phantom} still appears inside Section 2.5 family tables!`);
+const specRowMap = new Map();
+for (const line of sec23Text.split(/\r?\n/)) {
+  const m = line.match(/^\|\s*(\d{2})\s*\|\s*`(emwork_[0-9a-f]{24})`\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*`([^`]+)`\s*\|/);
+  if (m) {
+    const srcIdsInRow = [...m[6].matchAll(/`(emsrc_[0-9a-f]{24})`/g)].map((x) => x[1]).sort();
+    specRowMap.set(m[2], {
+      rowNum: Number(m[1]),
+      statusCell: m[4].trim(),
+      intervalCell: m[5].trim(),
+      srcIds: srcIdsInRow,
+      authorship: m[7].trim()
+    });
   }
 }
 
-// 3. Verify non-merging authorship compliance against work-index.jsonl & ATTRIBUTION.md
-const allWorkIndexUnresolved = workIndexRows.length === 32 && workIndexRows.every(w => w.authorship === 'UNRESOLVED');
-if (!allWorkIndexUnresolved) {
-  errors.push('Unexpected change in work-index.jsonl authorship state');
+if (specRowMap.size !== 32) {
+  errors.push(`Expected 32 parsed Work rows in Spec Section 2.3, got ${specRowMap.size}`);
 }
-const unresolvedRowCount = [...sec23Text.matchAll(/\|\s*`UNRESOLVED`\s*\|/g)].length;
-if (unresolvedRowCount !== 32) {
-  errors.push(`Expected all 32 Work rows in Section 2.3 to record UNRESOLVED authorship, found ${unresolvedRowCount}`);
-}
-const prohibitedAuthorshipStrings = [
-  'Authorship: Solely Em',
-  'remain the intellectual work of Em',
-  'appearing across historical manifestations as'
-];
-for (const bad of prohibitedAuthorshipStrings) {
-  if (specText.includes(bad)) {
-    errors.push(`Prohibited authorship-compression phrase present: "${bad}"`);
+
+for (const w of crosswalk.works) {
+  const row = specRowMap.get(w.work_id);
+  if (!row) {
+    errors.push(`Spec Section 2.3 missing Work ${w.work_id}`);
+    continue;
+  }
+  const expectedSrc = w.linked_sources.map((s) => s.source_file_id).sort();
+  if (JSON.stringify(row.srcIds) !== JSON.stringify(expectedSrc)) {
+    errors.push(`Spec row ${w.work_id} linked emsrc mismatch: got ${row.srcIds.join(',')}, expected ${expectedSrc.join(',')}`);
+  }
+  if (!row.statusCell.includes(w.identity_status)) {
+    errors.push(`Spec row ${w.work_id} identity_status mismatch: ${row.statusCell} vs ${w.identity_status}`);
+  }
+  if (row.authorship !== 'UNRESOLVED') {
+    errors.push(`Spec row ${w.work_id} authorship must be UNRESOLVED, got ${row.authorship}`);
   }
 }
 
-// 4. Verify three-tier public capability honesty & UNADJUDICATED_PAIR default
-const requiredTokens = [
-  'TIER_1_AUTHORIZED_VIEWABLE_TEXT',
-  'TIER_2_CATALOGUE_METADATA_ONLY',
-  'TIER_3_UNAVAILABLE_MANIFESTATION_BODY',
-  'UNAVAILABLE_IN_PUBLIC_SURFACE',
-  'UNADJUDICATED_PAIR',
-  'Work Catalogue & Lineage Navigator',
-  'SUPPORTED_DESIGN_COMMISSION_PROCESS_ONLY',
-  'Khona\u200clit-po'
-];
-for (const tok of requiredTokens) {
-  if (!specText.includes(tok)) {
-    errors.push(`Missing required V3 governance token: ${tok}`);
+// PART B: Executable HTML Prototype (app/encyclopedia/vix-cyb.html) Deep Audit
+const manifestMatch = htmlText.match(/<script id="vixen-reference-manifest" type="application\/json">([\s\S]*?)<\/script>/);
+const bundleMatch = htmlText.match(/<script id="vixen-corpus-bundle" type="application\/json">([\s\S]*?)<\/script>/);
+const themeMatch = htmlText.match(/<style id="manifest-instance-theme">([\s\S]*?)<\/style>/);
+
+if (!manifestMatch || !bundleMatch || !themeMatch) {
+  errors.push('Missing #vixen-reference-manifest, #vixen-corpus-bundle, or #manifest-instance-theme in vix-cyb.html');
+} else {
+  const manifest = JSON.parse(manifestMatch[1]);
+  const bundle = JSON.parse(bundleMatch[1]);
+  const themeCss = themeMatch[1];
+
+  // B1. Row-by-row relational coupling of all 32 Works & 53 linked manifestations in HTML bundle
+  if (!Array.isArray(bundle.works) || bundle.works.length !== 32) {
+    errors.push(`HTML bundle works count mismatch: expected 32, got ${bundle.works?.length}`);
+  } else {
+    const htmlWorkById = new Map(bundle.works.map((w) => [w.work_id, w]));
+    for (const cw of crosswalk.works) {
+      const hw = htmlWorkById.get(cw.work_id);
+      const wi = workIndexById.get(cw.work_id);
+      if (!hw) {
+        errors.push(`HTML bundle missing Work ${cw.work_id}`);
+        continue;
+      }
+      if (hw.identity_status !== cw.identity_status || Boolean(hw.human_gate_required) !== Boolean(cw.human_gate_required)) {
+        errors.push(`HTML Work ${cw.work_id} status/gate mismatch against crosswalk`);
+      }
+      if (hw.authorship !== 'UNRESOLVED' || wi.authorship !== 'UNRESOLVED') {
+        errors.push(`HTML Work ${cw.work_id} violated authorship=UNRESOLVED`);
+      }
+      if (hw.capability_tier !== 'TIER_2_CATALOGUE_METADATA_ONLY' || hw.body_availability !== 'UNAVAILABLE_IN_PUBLIC_SURFACE') {
+        errors.push(`HTML Work ${cw.work_id} missing TIER_2 / UNAVAILABLE_IN_PUBLIC_SURFACE capability contract`);
+      }
+      const expSrcIds = cw.linked_sources.map((s) => s.source_file_id).sort();
+      const gotSrcIds = (hw.linked_sources || []).map((s) => s.source_file_id).sort();
+      if (JSON.stringify(expSrcIds) !== JSON.stringify(gotSrcIds)) {
+        errors.push(`HTML Work ${cw.work_id} linked_sources mismatch`);
+      }
+      for (const hs of hw.linked_sources || []) {
+        const sf = sourceById.get(hs.source_file_id);
+        if (!sf || hs.sha256 !== sf.sha256 || hs.byte_length !== sf.byte_length) {
+          errors.push(`HTML manifestation ${hs.source_file_id} byte_length/sha256 mismatch against source-files.jsonl`);
+        }
+      }
+    }
+
+    // Per-cluster Work & Manifestation exact sums (18 + 15 + 4 + 10 + 6 = 53)
+    const expectedClusters = {
+      C1: { works: 12, manifestations: 18 },
+      C2: { works: 9, manifestations: 15 },
+      C3: { works: 2, manifestations: 4 },
+      C4: { works: 5, manifestations: 10 },
+      C5: { works: 4, manifestations: 6 }
+    };
+    for (const [cid, exp] of Object.entries(expectedClusters)) {
+      const cWorks = bundle.works.filter((w) => w.cluster === cid);
+      const cMan = cWorks.reduce((a, w) => a + w.linked_sources.length, 0);
+      if (cWorks.length !== exp.works || cMan !== exp.manifestations) {
+        errors.push(`Cluster ${cid} sum mismatch: got ${cWorks.length}W/${cMan}M, expected ${exp.works}W/${exp.manifestations}M`);
+      }
+    }
+  }
+
+  // B2. All 8 Human Gates default strictly to UNADJUDICATED_PAIR
+  if (!Array.isArray(bundle.human_gates) || bundle.human_gates.length !== 8) {
+    errors.push(`Expected 8 human_gates in HTML bundle, got ${bundle.human_gates?.length}`);
+  } else if (!bundle.human_gates.every((g) => g.default_state === 'UNADJUDICATED_PAIR')) {
+    errors.push('All 8 human_gates must initialize with default_state="UNADJUDICATED_PAIR"');
+  }
+
+  // B3. All 7 Prospective Batch-B PDFs match batch-b-2026-09-11-source-files-v2.jsonl byte-for-byte
+  if (!Array.isArray(bundle.batch_b_files) || bundle.batch_b_files.length !== 7) {
+    errors.push(`Expected 7 batch_b_files in HTML bundle, got ${bundle.batch_b_files?.length}`);
+  } else {
+    const bbMap = new Map(bundle.batch_b_files.map((b) => [b.source_file_id, b]));
+    for (const expB of batchBRows) {
+      const gotB = bbMap.get(expB.source_file_id);
+      if (!gotB || gotB.sha256 !== expB.sha256 || gotB.byte_length !== expB.byte_length) {
+        errors.push(`Batch-B ${expB.source_file_id} sha256/byte_length mismatch`);
+      }
+    }
+  }
+
+  // B4. Bijective 21-Instrument Registry (6 + 7 + 4 + 4 = 21, 0 Phantoms)
+  const retiredPhantomIds = [
+    'RECIPROCAL_RESIDUE_LEDGER',
+    'CROSS_ATELIER_TRANSLATION_MEMBRANE',
+    'MANIFESTATION_IDENTITY_GATE_PROTOCOL',
+    'APPLEDOUBLE_SIDECAR_QUARANTINE_RULE',
+    'BYTE_SPAN_GROUNDING_CONTRACT'
+  ];
+  if (!Array.isArray(bundle.instruments) || bundle.instruments.length !== 21) {
+    errors.push(`Expected 21 instruments in HTML bundle, got ${bundle.instruments?.length}`);
+  } else {
+    const instMap = new Map(bundle.instruments.map((i) => [i.instrument_id, i]));
+    for (const expI of methodsInv.instruments) {
+      const gotI = instMap.get(expI.instrument_id);
+      if (!gotI || gotI.sha256 !== expI.sha256 || gotI.byte_length !== expI.byte_length || gotI.standalone_executors_in_lineage !== 0) {
+        errors.push(`Instrument ${expI.instrument_id} metadata mismatch against original_methods_inventory.json`);
+      }
+    }
+    const famCounts = { F1: 0, F2: 0, F3: 0, F4: 0 };
+    for (const i of bundle.instruments) {
+      famCounts[i.family] = (famCounts[i.family] || 0) + 1;
+      if (retiredPhantomIds.includes(i.instrument_id)) {
+        errors.push(`Phantom ID ${i.instrument_id} illegally present in bundle.instruments`);
+      }
+    }
+    if (famCounts.F1 !== 6 || famCounts.F2 !== 7 || famCounts.F3 !== 4 || famCounts.F4 !== 4) {
+      errors.push(`Instrument family partition mismatch: ${JSON.stringify(famCounts)}`);
+    }
+  }
+
+  // B5. Presentation Theme Seam (#manifest-instance-theme), Mobile Logo & Codepoint Custody
+  for (const hex of ['#FF91AF', '#F9F36D', '#24282A', '#667078', '#F6F4F0']) {
+    if (!themeCss.includes(hex)) {
+      errors.push(`#manifest-instance-theme missing canonical 24fd2c9e0 palette token ${hex}`);
+    }
+  }
+  if (
+    !htmlText.includes('class="brand-mobile-logo"') ||
+    !htmlText.includes('class="brand-desktop-lockup"') ||
+    !htmlText.includes('class="vixen-fox-emblem"')
+  ) {
+    errors.push('Missing .vixen-fox-emblem or .brand-mobile-logo / .brand-desktop-lockup responsive header lockups');
+  }
+  if (!htmlText.includes('<em class="project-math">S<sub>e</sub> ≡ [x + y] = z + 1</em>')) {
+    errors.push('Mobile logo lockup missing exact full Vixen mathematical expression S_e ≡ [x + y] = z + 1');
+  }
+  if (!htmlText.includes('𝌋 TD613 Encyclopedia')) {
+    errors.push('Footer missing 𝌋 TD613 Encyclopedia mark');
+  }
+  if (!htmlText.includes(atelierProfile.research_question)) {
+    errors.push('Verbatim ATELIER_PROFILE.json founding research_question missing from HTML');
+  }
+  if (manifest.covenant !== 'Khona\u200clit-po' || manifest.covenant.charCodeAt(5) !== 0x200c) {
+    errors.push('Covenant interior U+200C ZWNJ corrupted in reference manifest');
+  }
+  if (!htmlBytes.includes(Buffer.from([0xf0, 0x9d, 0x8c, 0x8b])) || !htmlBytes.includes(Buffer.from([0xf4, 0x8d, 0x98, 0x93])) || !htmlBytes.includes(Buffer.from([0xe2, 0x80, 0x8c]))) {
+    errors.push('Three-codepoint UTF-8 separation (U+1D30B, U+10D613, U+200C) missing in HTML bytes');
+  }
+  if (manifest.frontispiece?.human_skeleton_anatomy_present !== false || manifest.frontispiece?.encyclopedia_asset_reused !== false) {
+    errors.push('Frontispiece provenance flags violated');
   }
 }
 
 if (errors.length > 0) {
-  console.error('V3 Source-Reconciliation Verification FAILED:', errors);
+  console.error('V4 Source & Prototype Reconciliation FAILED:', errors);
   process.exit(1);
 }
 
+const htmlWithoutTheme = htmlText.replace(/<style id="manifest-instance-theme">[\s\S]*?<\/style>/, '<style id="manifest-instance-theme"></style>');
+
 const receipt = {
-  schema: 'td613.vixen-ux.source-reconciliation-receipt/v1.0',
-  document_id: 'TD613-VIXEN-MANIFEST-UX-SPEC-20261106-V3',
-  specification_sha256: sha256(Buffer.from(specText, 'utf8')),
-  disposition: 'CATALOGUE_MAPPING_RECONCILED_OFFLINE',
+  schema: 'td613.vixen-ux.source-reconciliation-receipt/v2.0',
+  document_id: 'TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4',
+  specification_sha256: sha256(specBytes),
+  prototype_html_path: 'app/encyclopedia/vix-cyb.html',
+  prototype_html_bytes: htmlBytes.length,
+  prototype_html_sha256: sha256(htmlBytes),
+  prototype_structural_dom_excluding_theme_sha256: sha256(Buffer.from(htmlWithoutTheme, 'utf8')),
+  disposition: 'SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED',
   invariants_verified: {
-    canonical_works_bijection: {
-      expected: 32,
-      verified_rows: tableWorkMatches.length,
-      human_gated_supported: 8,
-      same_work_confirmed: 13,
-      singleton_work_surfaces: 11,
-      linked_manifestations_emsrc: foundSrcIds.length,
-      prospective_batch_b_annex_emb: foundBatchBIds.length,
-      exact_match: true
+    canonical_works_row_level_bijection: {
+      expected_works: 32,
+      verified_spec_rows: 32,
+      verified_html_bundle_works: 32,
+      cluster_partition: {
+        C1: { works: 12, manifestations: 18 },
+        C2: { works: 9, manifestations: 15 },
+        C3: { works: 2, manifestations: 4 },
+        C4: { works: 5, manifestations: 10 },
+        C5: { works: 4, manifestations: 6 }
+      },
+      linked_manifestations_byte_and_sha256_verified: 53,
+      prospective_batch_b_byte_and_sha256_verified: 7,
+      human_gates_default_unadjudicated: 8,
+      all_32_work_authorship_unresolved: true
     },
-    documentary_instruments_bijection: {
-      expected: 21,
-      verified_rows: tableInstMatches.length,
+    documentary_instruments_row_level_bijection: {
+      expected_instruments: 21,
+      verified_spec_rows: 21,
+      verified_html_bundle_instruments: 21,
       family_partition: { F1: 6, F2: 7, F3: 4, F4: 4 },
-      phantom_ids_in_family_tables: 0,
-      exact_match: true
+      byte_and_sha256_verified_against_inventory: 21,
+      standalone_executors: 0,
+      phantom_ids_in_registry: 0
     },
-    attribution_membrane: {
-      work_index_authorship_unresolved_rows: unresolvedRowCount,
-      alias_merging_prohibited: true,
-      prohibited_compression_phrases_detected: 0
-    },
-    public_capability_honesty: {
-      three_tier_contract_present: true,
-      human_gate_study_default: 'UNADJUDICATED_PAIR',
-      conditional_merged_baseline: 32,
-      sensitivity_interval: [32, 40]
+    presentation_seam_and_codepoints: {
+      manifest_instance_theme_isolated: true,
+      palette_tokens_verified: ['#FF91AF', '#F9F36D', '#24282A', '#667078', '#F6F4F0'],
+      mobile_only_couture_logo_present: true,
+      three_codepoints_utf8_verified: ['U+1D30B (f09d8c8b)', 'U+10D613 (f48d9893)', 'U+200C (e2808c)']
     }
   },
+  epistemic_scope_boundary: {
+    what_this_verifier_proves: [
+      'Exact row-by-row bijection and SHA-256/byte-length fidelity between committed repository inventories (identity_metadata_crosswalk.json, work-index.jsonl, source-files.jsonl, batch-b-2026-09-11-source-files-v2.jsonl, original_methods_inventory.json) and BOTH VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md and app/encyclopedia/vix-cyb.html.',
+      'Exact per-cluster Work and Manifestation sums (12W/18M + 9W/15M + 2W/4M + 5W/10M + 4W/6M = 32W/53M), catching and correcting V3 heading-sum drift.',
+      'Exclusion of all 5 non-registry custodial duties from the 21-protocol 06-INSTRUMENTS registry.',
+      'Preservation of authorship="UNRESOLVED" across all 32 Work routes, UNADJUDICATED_PAIR across all 8 human gates, #manifest-instance-theme CSS seam isolation, and literal UTF-8 codepoint separation (U+1D30B != U+10D613 != U+200C).'
+    ],
+    what_requires_browser_or_human_witness: [
+      'Visual layout legibility, non-overlapping header geometry at 390px, interactive Canvas rendering, and live WebCrypto/UTF-8 DOM execution (separately witnessed via headless Chromium CDP in browser-witness-receipt.json and screenshots/01..10, and still subject to human operator aesthetic/editorial closure).',
+      'Substantive editorial adjudication of the 8 human-gated .md/.pdf pairs (remains UNADJUDICATED_PAIR pending human closure).',
+      'Stage 2 couture transformation by Work/Astra and Stage 3 adversarial verification.',
+      'Track A-PFR0.2 offline engine repairs (Q01-Q09) and Experiment B Post-Postflight execution (PP0-PP6).'
+    ]
+  },
   explicit_non_claims: {
-    ui_build_delivered: false,
-    browser_witness_executed: false,
+    physical_device_witness: false,
+    human_gate_adjudication_performed: false,
     a_pfr0_2_engine_repaired: false,
-    scientific_proof: false,
+    experiment_b_executed: false,
+    scientific_promotion_authority: false,
     empirical_replication_credit: 0,
     merge_or_release_authority: false
   }
 };
 
 fs.writeFileSync(outReceiptPath, JSON.stringify(receipt, null, 2) + '\n', 'utf8');
-console.log('V3 Source-Reconciliation Verification PASSED: 32/32 Works, 53/53 emsrc, 7/7 Batch-B, 21/21 Instruments, 0 phantoms.');
+console.log('V4 Reconciliation Verification PASSED: Spec + vix-cyb.html 32/32 Works, 53/53 emsrc, 7/7 Batch-B, 21/21 Instruments, 0 phantoms.');

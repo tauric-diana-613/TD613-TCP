@@ -73,7 +73,7 @@ Because `app/encyclopedia/vix-cyb.html` is a **source-free standalone public sur
 ### 2.3 Exhaustive 32-Work Source-Bound Crosswalk (Finding 1 Remediation)
 Every single one of the **32 canonical Work routes** in [identity_metadata_crosswalk.json](https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/packages/em_unified_synthesis/identity_metadata_crosswalk.json) (`8` `SAME_WORK_SUPPORTED` human-gated + `13` `SAME_WORK_CONFIRMED` dual-manifestation + `11` `SINGLETON_WORK_SURFACE` = `32` Works; `16 + 26 + 11 = 53` linked manifestations) is assigned to exactly one primary thematic cluster (`C1`–`C5`). Across all 32 routes, `work-index.jsonl` records `authorship: "UNRESOLVED"`, and manifestation bodies on the source-free surface carry `TIER_2_CATALOGUE_METADATA_ONLY` + `UNAVAILABLE_IN_PUBLIC_SURFACE`:
 
-#### Cluster C1 — Cybernetic Control, Viable Systems & Multi-Agent Hypervisors (`12` Works · `19` Manifestations)
+#### Cluster C1 — Cybernetic Control, Viable Systems & Multi-Agent Hypervisors (`12` Works · `18` Manifestations)
 
 | # | `work_id` | Declared Work Title | Identity Status & Gate | Interval | Linked Manifestations (`source_file_id` · `original_filename`) | Recorded Authorship |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -121,7 +121,7 @@ Every single one of the **32 canonical Work routes** in [identity_metadata_cross
 | 27 | `emwork_d536dc230d89ac9fef9fa13a` | *Architecting Linux Environments on macOS: A Comprehensive Guide to Virtualization, Emulation, and Deployment Strategy* | `SAME_WORK_SUPPORTED` (**Gate #7**) | `[1, 2]` | `emsrc_8925ddeda663016b041255dc` (`macOS Virtualization Guide for Linux Environments.md`); `emsrc_199220ad2cfb300f96ed3ab6` (`macOS Virtualization Guide for Linux Environments.pdf`) | `UNRESOLVED` |
 | 28 | `emwork_de337e6b46b378a834fb3c00` | *Deep Research Initialization: OSSL-Seed Framework & Symbiotic Lineage* | `SAME_WORK_CONFIRMED` | `[1, 1]` | `emsrc_d785210930150a03fed14930` (`OSSL-Seed Framework Research.md`); `emsrc_66bc27767a635cd4b2ce3e21` (`OSSL-Seed Framework Research.pdf`) | `UNRESOLVED` |
 
-#### Cluster C5 — Sui-Generis, Mythic-Information & High-Risk Conceptual Frontiers ("Bizarre Panel" Salvage under `ACADEMIA_SUI_GENERIS_SIEVE_V0_1`) (`4` Works · `5` Manifestations)
+#### Cluster C5 — Sui-Generis, Mythic-Information & High-Risk Conceptual Frontiers ("Bizarre Panel" Salvage under `ACADEMIA_SUI_GENERIS_SIEVE_V0_1`) (`4` Works · `6` Manifestations)
 
 | # | `work_id` | Declared Work Title | Identity Status & Gate | Interval | Linked Manifestations (`source_file_id` · `original_filename`) | Recorded Authorship |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |

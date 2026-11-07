@@ -1,0 +1,224 @@
+{
+  "schema": "td613.vixen.browser-witness-receipt/v1",
+  "executed_at": "2026-11-07T06:44:03.873Z",
+  "witness_environment": "Headless Chromium via Chrome DevTools Protocol (simulated desktop 1440x900 and simulated mobile 390x844; not a physical-device witness)",
+  "target_route": "/encyclopedia/vix-cyb.html",
+  "runtime_errors_count": 0,
+  "console_errors_count": 0,
+  "desktop_1440x900": {
+    "runtime_check": {
+      "verify": {
+        "schema": "td613.vixen.runtime-check/v1",
+        "works_count": 32,
+        "linked_manifestations_count": 53,
+        "batch_b_count": 7,
+        "human_gates_count": 8,
+        "human_gates_default_unadjudicated": true,
+        "instruments_count": 21,
+        "standalone_executors_count": 0,
+        "all_work_authorship_unresolved": true,
+        "covenant_zwnj_intact": true,
+        "webcrypto_available": true,
+        "scientific_authority": false
+      },
+      "defensive_copy_preserved": true,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "coverTitleColor": "rgb(255, 145, 175)",
+      "coverSerialColor": "rgb(249, 243, 109)",
+      "headerBg": "rgba(255, 145, 175, 0.95)",
+      "desktopFoxEmblemVisible": true,
+      "desktopMathText": "Se ≡ [x + y] = z + 1",
+      "footerTd613Text": "𝌋 TD613 Encyclopedia →"
+    },
+    "observatory_check": {
+      "benchText": "PAIR: C1 Algedonic Hypervisor (emwork_085223...) ⊕ C2 Lock-Free DSP (emwork_67768e...)\nSOURCES: emsrc_b7e4e42924d33bdaf666a4f8 [WITHDRAWN] · emsrc_2ddaf8197adecc8c5ba09c33\nPROMOTION LEVEL: WITHDRAWN_TOMBSTONE\nDISPOSITION: TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)\nCANDIDATE ID: theory:cybernetic_hypervisor_algedonic_synthesis\nRETAINED CONTRADICTIONS: NON_STATIONARY_HEURISTIC != DETERMINISTIC_REALTIME · VARIABLE_DELAY != ZERO_LATENCY\nWARRANT CEILING: claim_entailment: HELD_UNVERIFIED_BY_SYNTAX_ALONE · Competent-Null E-00.1: BOUNDED_TIE\nValid typed operator mapping between bounded-queue backpressure and algedonic preemption, while refusing to erase the clock contradiction between LLM token jitter and 48 kHz real-time DSP.\nIMMUTABLE SNAPSHOT LOGGED COUNT: 1 (Predecessor snapshots never mutated on withdrawal)",
+      "folioCount": 22,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "works_check": {
+      "allCount": 32,
+      "batchBCount": 7,
+      "readerText": "C1 · HYPERVISORS & VIABLE AI\nCATALOGUE_METADATA_ONLY\nUNAVAILABLE_IN_PUBLIC_SURFACE\nRECORDED AUTHORSHIP: UNRESOLVED\nGATE #2 · UNADJUDICATED_PAIR\nThe Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience\n\nwork_id: emwork_085223e721130117f5510975 · Identity Status: SAME_WORK_SUPPORTED · Contribution Interval: [1, 2]\n\nS-PLANE\nW-PLANE\nA-PLANE\nAIA PRO",
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "gates_check": {
+      "gateCards": 8,
+      "initialReadout": "ACTIVE SENSITIVITY INTERVAL\n[32, 40]\nConditional All-Merged Baseline: 32 Works · Full Corpus Envelope: [32, 40] (256 partitions)\nUnadjudicated Gates Remaining: 8 / 8 (256 open states) · LOCAL_HYPOTHETICAL_STUDY_NOT_HUMAN_ADJUDICATION",
+      "afterSplitReadout": "ACTIVE SENSITIVITY INTERVAL\n[33, 40]\nConditional All-Merged Baseline: 32 Works · Full Corpus Envelope: [32, 40] (256 partitions)\nUnadjudicated Gates Remaining: 7 / 8 (128 open states) · LOCAL_HYPOTHETICAL_STUDY_NOT_HUMAN_ADJUDICATION",
+      "afterResetReadout": "ACTIVE SENSITIVITY INTERVAL\n[32, 40]\nConditional All-Merged Baseline: 32 Works · Full Corpus Envelope: [32, 40] (256 partitions)\nUnadjudicated Gates Remaining: 8 / 8 (256 open states) · LOCAL_HYPOTHETICAL_STUDY_NOT_HUMAN_ADJUDICATION",
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "protocols_check": {
+      "instrumentItems": 21,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "holds_check": {
+      "holdsTextSample": "05 · SCIENTIFIC HONESTY · E-00.1 BOUNDED TIE, WARRANTS & SEPARATE-TRACK HOLDS\n\nCompetent Null, Warrants\n& Honest Negative Findings\n\nPreserves the negative and bounded determinations that prevent decorative self-congratulation: the E-00.1 four-arm BOUNDED_TIE, syntax-bounded LFP warrants, archaeological attribution negative controls, and unexecuted separate-track gates.\n\n05\nE-00.1 · COMPETENT-NULL ",
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "inspector_negative_controls": {
+      "validOut": {
+        "ok": true,
+        "code": "DIGEST_COMPUTED",
+        "attestation_ceiling": "SOURCE_DIGEST_COMPUTED_UNATTESTED",
+        "verified_original_source": false,
+        "total_utf8_bytes": 42,
+        "span": [
+          0,
+          19
+        ],
+        "decoded_slice": "𝌋 Khona‌lit-po",
+        "sha256": "872c990df54da15e4f3bcb41b910cc8b9a0e03f88bac35f542efcaef5854c7bc"
+      },
+      "splitEmojiOut": {
+        "ok": false,
+        "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT",
+        "status": "REJECTED_FAIL_CLOSED",
+        "sliceHex": "f0 9d",
+        "stateUnmutated": true
+      },
+      "splitZwnjOut": {
+        "ok": false,
+        "code": "ERR_UTF8_MID_CODEPOINT_BOUNDARY_SPLIT",
+        "status": "REJECTED_FAIL_CLOSED",
+        "sliceHex": "e2 80",
+        "stateUnmutated": true
+      }
+    },
+    "search_check": {
+      "pos": 3,
+      "neg": 0
+    },
+    "reload_recovery": {
+      "activeView": "works",
+      "readerHeading": "High-Performance Concurrency in Real-Time Audio: Lock-Free SPSC Ring Buffers, Memory Ordering, and Microarchitectural Optimization"
+    }
+  },
+  "mobile_390x844": {
+    "overview": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "mobileLogoDisplay": "flex",
+      "desktopLockupDisplay": "none",
+      "brandRightPx": 182,
+      "actionsLeftPx": 266,
+      "headerClearancePx": 84,
+      "headerNonOverlapping": true,
+      "mobileFoxEmblemVisible": true,
+      "mobileMathText": "Se ≡ [x + y] = z + 1",
+      "wayfinderButtons": [
+        {
+          "w": 195,
+          "h": 56
+        },
+        {
+          "w": 195,
+          "h": 56
+        },
+        {
+          "w": 195,
+          "h": 56
+        },
+        {
+          "w": 195,
+          "h": 56
+        }
+      ]
+    },
+    "department_overflow_sweep": {
+      "observatory": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      },
+      "works": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      },
+      "gates": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      },
+      "protocols": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      },
+      "holds": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      },
+      "worksReaderSheet": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "zeroOverflow": true
+      }
+    }
+  },
+  "screenshots": [
+    {
+      "filename": "00-mugler-unchained-frontispiece-plate.jpg",
+      "bytes": 556667,
+      "sha256": "a85c58ca69784ec5a30ff49953d19347de8a9d7b64d64fcee8843768a19d14fc"
+    },
+    {
+      "filename": "01-cover-desktop.png",
+      "bytes": 865026,
+      "sha256": "caee2d9a8e88f71a25049a57c71788cee0c5325ad1dc47025f58f47d4e8229c7"
+    },
+    {
+      "filename": "02-archive-directory-baker-miller.png",
+      "bytes": 197588,
+      "sha256": "15de1dcb2f497147d2b416a35b67f68cc1f79d5ef34d71a163fd8f41a6d1c8aa"
+    },
+    {
+      "filename": "03-synthesis-observatory-desktop.png",
+      "bytes": 158421,
+      "sha256": "1789c0bd6c2814b623efd6b1289db00bd9e4e7bfa0d714a6748b5aede2a24c48"
+    },
+    {
+      "filename": "04-works-catalogue-desktop.png",
+      "bytes": 163913,
+      "sha256": "14744f47f3cdee03c425dcb19f2bc781f4915d17a1db8289a652bf9d61f8ce96"
+    },
+    {
+      "filename": "05-split-gates-desktop.png",
+      "bytes": 156574,
+      "sha256": "d61d85e3aff071059ae749bfaccdf6b1422a313d1277d86b0f88bb2ea6c003c5"
+    },
+    {
+      "filename": "06-protocols-desktop.png",
+      "bytes": 140777,
+      "sha256": "333d8168e41e0739a6e1c29b3a3ca896d021db2473af04721f2691bda9d05fe0"
+    },
+    {
+      "filename": "07-holds-desktop.png",
+      "bytes": 138276,
+      "sha256": "43491f1a6513ac0fe936417fbfe01c52820f5c002305e7d89ff56715e5ae48bf"
+    },
+    {
+      "filename": "08-inspector-alt-i-desktop.png",
+      "bytes": 147636,
+      "sha256": "2fb91e995beb6d6f05770de5adf64c2111b8e7a24258398bffa7b5509ee2737b"
+    },
+    {
+      "filename": "09-cover-mobile-390px.png",
+      "bytes": 783884,
+      "sha256": "8a6abacff7de1a2d5e6aa1b38fb6a9a5007ba908308b0a790afb12d3bcd5b9eb"
+    },
+    {
+      "filename": "10-works-mobile-390px.png",
+      "bytes": 149152,
+      "sha256": "44fde1d065c166e092863d7990b72bcdb14df94fefef14638f04706dbae525b1"
+    }
+  ]
+}

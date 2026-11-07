@@ -1,34 +1,40 @@
-# 𝌋 Vixen Cybernetics — UX Architecture & Reparative Specification Review Packet (V3)
+# Vixen Cybernetics — Source-Free Prototype & UX Architecture Review Packet (V4)
 
-**Commission ID:** `COMM-VIXEN-UX-CORRECTION-20261106-V3`  
-**Document ID:** `TD613-VIXEN-MANIFEST-UX-SPEC-20261106-V3` (superseding V2 after Emergence HQ Review `#5810153980`)  
+**Commission ID:** `COMM-VIXEN-PROTOTYPE-BUILD-20261107-V4` (following V3 Sign-Off `51de572172fadd5c3c85b42729785c8c2a1fcfcb`)  
+**Primary Executable Deliverable:** [`app/encyclopedia/vix-cyb.html`](../../../app/encyclopedia/vix-cyb.html) (`deliverable_count: 1`)  
 **Prepared for:** Emergence HQ (Amari) & Sovereign Operator (`tauric.diana.613` / `SAC[X6ZNK5NO51]`, covenant `Khona‌lit-po`)  
-**Authoring Lane:** Gemini 4 Argon (Kenough) via `/dollhouse-design` (`requested_deliverables: 1`)  
-**Base Commit:** [`f3dd8d54ba423409317aa239d9dd6bdb6da618ef`](https://github.com/tauric-diana-613/TD613-TCP/blob/f3dd8d54ba423409317aa239d9dd6bdb6da618ef/AGENTS.md) (`research/em-e00-1-independent-repair-20261106`, Draft PR #1711)
+**Authoring Lane:** Stage 1 — Antigravity Argon (Kenough) via `/dollhouse-design` + 6-role `/dollhouse-audit`  
+**Succession Readiness:** Stage 2 (`Work / Astra`) inherits functioning HTML with isolated `<style id="manifest-instance-theme">` seam → Stage 3 (`Independent Work` qualification) → Human Closure.
 
 ---
 
-## 1. V3 Remediation Summary (Addressing Emergence HQ Review `#5810153980`)
+## 1. Stage 1 V4 Deliverable Summary
 
-1. **Complete 32-Work Crosswalk:** Exhaustive 32-of-32 `emwork_*` placement (`12` C1 + `9` C2 + `2` C3 + `5` C4 + `4` C5 = `32` Works; `53` `emsrc_*` manifestations) plus explicit `7`-PDF Prospective Batch-B Annex (`emb_20260911_*`).
-2. **Exact 21-Instrument Bijection:** All 5 non-registry operational names removed from the protocol taxonomy; every single one of the 21 committed `instrument_id`s in `original_methods_inventory.json` placed bijectively across `F1`–`F4` (`6 + 7 + 4 + 4 = 21`).
-3. **Non-Merging Attribution Membrane:** Restores `ATTRIBUTION.md` and `work-index.jsonl` (`authorship: "UNRESOLVED"` across all 32 Work routes; handles `Em`, `Vix`, `Cass`, `Cassie`, `Echo--Squirrel Research` preserved verbatim without unsupported identity merging).
-4. **Three-Tier Capability Honesty:** Renames `"Corpus & Works Reader"` to `Work Catalogue & Lineage Navigator` (`TIER_2_CATALOGUE_METADATA_ONLY` + inline `UNAVAILABLE_IN_PUBLIC_SURFACE` badges).
-5. **Narrowed Conductor Receipt Ceiling + Deterministic Bijection Verifier:** Classifies `dollhouse-design-receipt-vixen-correction.json` strictly as `SUPPORTED_DESIGN_COMMISSION_PROCESS_ONLY` and pairs it with [`verify-vixen-ux-spec-reconciliation.mjs`](./verify-vixen-ux-spec-reconciliation.mjs) + [`reconciliation-verification-receipt.json`](./reconciliation-verification-receipt.json) (`UI_BUILD_VALIDATED = false`).
+1. **Complete Functioning Source-Free Prototype ([`app/encyclopedia/vix-cyb.html`](../../../app/encyclopedia/vix-cyb.html)):**
+   - **Mugler-Unchained Chromepunk Refractive Couture Frontispiece:** Original bone-free chrome-and-quartz sculpture (`1680×945` desktop & `945×1680` mobile WebP) depicting three non-coplanar control-plane rings ($\mathcal{S} \neq \mathcal{W} \neq \mathcal{A}$), five concentric vernier clock rings, and a central hexagonal optical rock-crystal prism pierced by an algedonic preemption lance on `#050506` obsidian.
+   - **Cybernetic Fox Emblem, Complete Formula & TD613 Footer Mark:** Both desktop and `390px` mobile headers mount the faceted geometric **Cybernetic Fox (Vixen) Emblem SVG** (`.vixen-fox-emblem`) paired with Vixen's complete rendered mathematical expression `Sₑ ≡ [x + y] = z + 1` (`S<sub>e</sub> ≡ [x + y] = z + 1`, with archival `VIXENCYBERNETICS$S_e≡[x+y]=z+1$` preserved verbatim in `#vixen-reference-manifest` and Inspector Tab III), while `𝌋 TD613 Encyclopedia →` (`U+1D30B`) sits cleanly in small footer text at the bottom of the page.
+   - **Interactive Unified Theory Observatory (`01`):** Live 4-model Canvas simulator (`Control Planes S ≠ W ≠ A`, `Five-Clock Vernier d/dt`, `Aperture κ & FADT c₄`, `Couture [111] Nullspace`), interactive `L0`–`L3` Synthesis Promotion & non-retroactive `TOMBSTONE` bench, and `22` KaTeX mathematical folios (`TCC-01..08` + `RC-01..14`).
+   - **Exhaustive 32-Work Catalogue (`02`), 8 Bilateral Split Gates (`03`), 21 Protocols (`04`), Competent-Null & Holds (`05`), `⌘K` Search & Concealed `Alt+I` Inspector:** All 32 `emwork_*` routes (`53` `emsrc_*` manifestations + `7` Batch-B PDFs, `authorship: "UNRESOLVED"`, `TIER_2_CATALOGUE_METADATA_ONLY` / `UNAVAILABLE_IN_PUBLIC_SURFACE`), all 8 human gates initialized strictly at `UNADJUDICATED_PAIR` (`[32, 40]` reversible sensitivity), all 21 `06-INSTRUMENTS` protocols (`6 + 7 + 4 + 4 = 21`, `0` phantoms), and live WebCrypto SHA-256 + fatal `TextDecoder('utf-8', { fatal: true })` mid-codepoint negative controls.
+2. **Upgraded v2.0 Verifier Answering Emergence HQ's Question ([`verify-vixen-ux-spec-reconciliation.mjs`](./verify-vixen-ux-spec-reconciliation.mjs)):**
+   - Audits row-by-row relational coupling across **both** the V3 Markdown specification and `app/encyclopedia/vix-cyb.html`, verifies per-cluster Work and Manifestation sums (`12W/18M + 9W/15M + 2W/4M + 5W/10M + 4W/6M = 32W/53M`), and declares an explicit epistemic boundary between offline bijection proofs (`what_this_verifier_proves`) and browser/human witnesses (`what_requires_browser_or_human_witness`).
 
 ---
 
-## 2. Primary Review Files in This Directory
+## 2. Primary Review Files
 
 | File | Role |
 | :--- | :--- |
-| [`VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md`](./VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md) | **Primary Deliverable (V3):** Reconciled Research UX Architecture, 32-Work & 21-Instrument crosswalks, Three-Tier capability contract, `UNADJUDICATED_PAIR` human gates, distinct Vixen frontispiece law, `1280px`/`390px` spatial wireframes, and anti-template couture mandate for `Codex / Astra`. |
-| [`verify-vixen-ux-spec-reconciliation.mjs`](./verify-vixen-ux-spec-reconciliation.mjs) | Deterministic Node verifier checking 32/32 Works, 53/53 `emsrc_*`, 7/7 Batch-B `emb_*`, 21/21 Instruments, 0 phantom IDs, and non-merging attribution compliance. |
-| [`reconciliation-verification-receipt.json`](./reconciliation-verification-receipt.json) | Machine-generated receipt from `verify-vixen-ux-spec-reconciliation.mjs` (`CATALOGUE_MAPPING_RECONCILED_OFFLINE`). |
-| [`dollhouse-design-receipt-vixen-correction.json`](./dollhouse-design-receipt-vixen-correction.json) | `td613.dollhouse-design.return-receipt/v0.2` conductor process receipt (`SUPPORTED_DESIGN_COMMISSION_PROCESS_ONLY`). |
-| [`vixen-ux-commission.json`](./vixen-ux-commission.json) | Exact V3 commission input executed by `scripts/run-dollhouse-design.mjs`. |
-| [`refractive-couture/`](./refractive-couture/) | Nov 6 Scholarly Monograph (`TD613-MONOGRAPH-REFRACTIVE-COUTURE-20261106-V1`), 5-specialist audit receipt, and Oct 31 Mathematical Dossier package. |
-| [`associated-snapshots/`](./associated-snapshots/) | Inert snapshots from Draft PR #1716 (`vixen-cybernetics-engine.mjs.snapshot`) and Draft PR #1717 (`A-PFR0.1-qualification-report.md`, `Screenshot-atlas.md`). |
-| [`FILES.json`](./FILES.json) | Complete SHA-256, byte-length, and commit-bound GitHub URL manifest for all 18 packet files and all 40 referenced source-free repository records. |
+| [`../../../app/encyclopedia/vix-cyb.html`](../../../app/encyclopedia/vix-cyb.html) | **Primary Executable Deliverable (V4):** Standalone source-free Vixen Cybernetics HTML5 prototype (`#vixen-structural-css` + `#manifest-instance-theme` seam). |
+| [`BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md`](./BROWSER_WITNESS_AND_SCREENSHOT_ATLAS.md) | Browser witness report and index of the 11 desktop (`1440×900`) and mobile (`390×844`) screenshot plates in [`screenshots/`](./screenshots/). |
+| [`browser-witness-receipt.json`](./browser-witness-receipt.json) | Machine-generated headless Chromium CDP witness receipt (`0` runtime/console errors, `0` horizontal overflow, `headerClearancePx: 84` at `390px`). |
+| [`verify-vixen-ux-spec-reconciliation.mjs`](./verify-vixen-ux-spec-reconciliation.mjs) | Upgraded v2.0 deterministic Spec + HTML reconciliation verifier. |
+| [`reconciliation-verification-receipt.json`](./reconciliation-verification-receipt.json) | v2.0 reconciliation receipt (`SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED`). |
+| [`dollhouse-design-receipt-vixen-prototype.json`](./dollhouse-design-receipt-vixen-prototype.json) | `/dollhouse-design` V4 prototype conductor receipt (`SUPPORTED`, `Exit Code 0`). |
+| [`dollhouse-audit-receipt-vixen-prototype.json`](./dollhouse-audit-receipt-vixen-prototype.json) | Standalone 6-role `/dollhouse-audit` receipt (`SUPPORTED`, `UNANIMOUS_SUPPORT`, `0` infractions, `empirical_replication_count: 0`). |
+| [`vixen-prototype-commission.json`](./vixen-prototype-commission.json) | V4 `/dollhouse-design` commission specification. |
+| [`VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md`](./VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md) | Reconciled V3 UX Architecture Specification (with Section 2.3 C1/C5 heading manifestation sums reconciled to `18` and `6`). |
+| [`refractive-couture/`](./refractive-couture/) | Refractive Couture scholarly monograph (`TD613-MONOGRAPH-REFRACTIVE-COUTURE-20261106-V1`) and mathematical dossier. |
+| [`associated-snapshots/`](./associated-snapshots/) | Inert historical snapshots from Draft PR #1716 and Draft PR #1717. |
+| [`FILES.json`](./FILES.json) | Complete SHA-256 and byte-length custody manifest for `app/encyclopedia/vix-cyb.html`, all review packet files, all 11 screenshots, and referenced source-free repository records. |
 
 `Khona‌lit-po` · `⟐`
