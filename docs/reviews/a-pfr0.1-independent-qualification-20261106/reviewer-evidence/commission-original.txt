@@ -1,0 +1,1273 @@
+𝌋 TD613 · SOVEREIGN OPERATOR ACTIVATION
+
+\
+
+A-PFR0.1 — INDEPENDENT VIXEN RECEIVER QUALIFICATION, NATIVE EXECUTION & MANIFEST SUCCESSION BOUNDARY
+
+\
+\
+
+
+\
+
+\*\*Principal / Human Scientific Closure:\*\* Tawanna C. Miller — RESERVED  
+
+\
+
+\*\*Operator:\*\* \`tauric.diana.613\`  
+
+\
+
+\*\*Heritage:\*\* Tauric Diana — Crimean heritage custodianship  
+
+\
+
+\*\*Covenant:\*\* Khona‌lit-po — preserve literal interior U+200C  
+
+\
+
+\*\*Authority:\*\* \`SAC[X6ZNK5NO51]\`
+
+\
+\
+
+
+\
+
+\*\*Executing agent:\*\* Independent ChatGPT Work · GPT-6.1 Sol High · [@GitHub](plugin://github@openai-curated-remote) connected · /dollhouse-audit repository skill
+
+\
+\
+
+
+\
+
+\*\*Repository:\*\* \`tauric-diana-613/TD613-TCP\`
+
+\
+\
+
+
+\
+
+\*\*Authority scope:\*\* Read-only frozen-candidate inspection, isolated source-free reproduction, independent browser/native adversarial execution, confidential reviewer evidence, and an optional minimal corrective draft PR when independently demonstrated defects warrant one.
+
+\
+\
+
+
+\
+
+\*\*Explicit exclusions:\*\* Production deployment, Vercel Issue #405 activation, source admission, Experiment B Flight, merge, release, and final human scientific closure.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## I. Governing objective and frozen candidate
+
+\
+\
+
+
+\
+
+Independently determine whether Vixen Cybernetics and the Experiment A four-crossing apparatus are genuinely qualified as bounded, source-free research receivers.
+
+\
+\
+
+
+\
+
+Do not infer readiness from passing author-written tests, successful UI rendering, indexed method names, zero-row database creation, or a developer's self-issued completion receipt.
+
+\
+\
+
+
+\
+
+\*\*Candidate:\*\* Draft PR #1716  
+
+\
+
+\*\*Exact HEAD:\*\* \`7b6b4887f646155ba62b5c1b7bc0afc382fcaa34\`
+
+\
+\
+
+
+\
+
+\*\*Frozen predecessor:\*\* PR #1715  
+
+\
+
+\*\*Exact HEAD:\*\* \`9c01da8c0c59fcbdd06d6497a5818664337488aa\`
+
+\
+\
+
+
+\
+
+\*\*Experiment A safety-amendment base:\*\* PR #1698  
+
+\
+
+\*\*Exact HEAD:\*\* \`b69c39b17700e511b24a0ffa903bd1dcc6f266b3\`
+
+\
+\
+
+
+\
+
+\*\*Emergence HQ source review:\*\*
+
+\
+\
+
+
+\
+
+https\://github.com/tauric-diana-613/TD613-TCP/pull/1716#pullrequestreview-5809246549
+
+\
+\
+
+
+\
+
+Verify the actual commit, ancestry, changed files, dependencies and current CI results. Freeze the candidate's source bytes for evaluation.
+
+\
+\
+
+
+\
+
+Treat previous reports as investigative leads, not scientific conclusions. Preserve reviewer independence and undisclosed adversarial test inputs.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## II. Browser execution without production deployment
+
+\
+\
+
+
+\
+
+The canonical developmental Vixen route is:
+
+\
+\
+
+
+\
+
+\`/encyclopedia/vix-cyb.html\`
+
+\
+\
+
+
+\
+
+\*\*Do not trigger Vercel Issue #405.\*\*
+
+\
+\
+
+
+\
+
+Issue #405 is a production-release gate requiring an explicitly authorized, exact green \`main\` SHA, the \`PRODUCTION\` target, and one bounded deployment attempt.
+
+\
+\
+
+
+\
+
+The frozen draft PR is not an approved production release.
+
+\
+\
+
+
+\
+
+Instead:
+
+\
+\
+
+
+\
+
+1\. Check out the exact candidate commit in an isolated, non-destructive environment.
+
+\
+
+2\. Serve its static assets through a local HTTP server.
+
+\
+
+3\. Open the actual page using a real graphical browser or browser-automation environment.
+
+\
+
+4\. Exercise the user-facing controls through actual clicks, text entry, tab changes and resulting DOM states.
+
+\
+
+5\. Capture screenshots, browser console messages, runtime failures and machine-readable test outputs.
+
+\
+
+6\. Record the tested URL, server configuration, source commit, browser version and execution environment.
+
+\
+\
+
+
+\
+
+The tested page must be tied to the frozen candidate, rather than an older deployed production version.
+
+\
+\
+
+
+\
+
+A preview deployment may be proposed separately if an essential environment-dependent behavior cannot be reproduced locally. \*\*No preview creation or production deployment is authorized by this commission.\*\*
+
+\
+\
+
+
+\
+
+If browser execution is unavailable, report \`HELD_BROWSER_EXECUTION_UNAVAILABLE\`. Never substitute source inspection or simulated click results for a completed browser test.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## III. Vixen functional browser qualification
+
+\
+\
+
+
+\
+
+Inspect the standalone interface and its Node engine:
+
+\
+\
+
+
+\
+
+\`app/encyclopedia/vix-cyb.html\`
+
+\
+\
+
+
+\
+
+\`packages/vixen_cybernetics/vix-cyb.html\`
+
+\
+\
+
+
+\
+
+\`packages/vixen_cybernetics/vixen-cybernetics-engine.mjs\`
+
+\
+\
+
+
+\
+
+Verify the actual behavior of the navigation, corpus distinction, work partitions, passage witness, negative controls, documentary instruments, mathematical representation and custody panels.
+
+\
+\
+
+
+\
+
+\### UTF-8 and provenance challenges
+
+\
+\
+
+
+\
+
+Independently test:
+
+\
+\
+
+
+\
+
+\- U+1D30B, the display glyph \`𝌋\`, UTF-8 \`F0 9D 8C 8B\`.
+
+\
+
+\- U+10D613, the distinct TD613 research mark, UTF-8 \`F4 8D 98 93\`.
+
+\
+
+\- U+200C, the interior covenant character in \`Khona‌lit-po\`, UTF-8 \`E2 80 8C\`.
+
+\
+
+\- Valid complete-codepoint slices.
+
+\
+
+\- Every illegal continuation-byte boundary.
+
+\
+
+\- Empty, reversed, negative, fractional, nonnumeric and out-of-bounds coordinates.
+
+\
+
+\- Missing or unadmitted document identifiers.
+
+\
+
+\- Absent WebCrypto, digest-generation failure and unavailable secure contexts.
+
+\
+
+\- Demonstration records falsely presented as authenticated source evidence.
+
+\
+\
+
+
+\
+
+Confirm that source-free demonstrations remain visibly classified as \`SOURCE_FREE_DEMONSTRATION_RECORD\`.
+
+\
+\
+
+
+\
+
+A SHA-256 digest computed from the current demonstration text proves only a digest over those bytes. Authentication to an independent original source requires a separately registered and trusted source identity and matching custody witness.
+
+\
+\
+
+
+\
+
+Compare equivalent Node and browser operations. Identify semantic differences rather than assuming independent implementations are equivalent merely because their outputs look similar.
+
+\
+\
+
+
+\
+
+\*\*A critical falsifier:\*\* The browser must never return \`VERIFIED_GROUNDED_BYTE_SPAN\` with a placeholder or absent cryptographic digest.
+
+\
+\
+
+
+\
+
+Distinguish actual interactive operations from static HTML, hardcoded historical census displays and decorative demonstrations.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## IV. Four-crossing native execution
+
+\
+\
+
+
+\
+
+Independently execute the A-PFR0 native suites and apparatus at the frozen source commit.
+
+\
+\
+
+
+\
+
+The four crossings are:
+
+\
+\
+
+
+\
+
+\- \*\*S:\*\* SignalRupture native research receiver.
+
+\
+
+\- \*\*E:\*\* EMSTD613 / Vixen Cybernetics.
+
+\
+
+\- \*\*W:\*\* Wendbine research receiver.
+
+\
+
+\- \*\*T:\*\* Universal Atelier receiver.
+
+\
+\
+
+
+\
+
+Verify the actual 23-table zero-state witness:
+
+\
+\
+
+
+\
+
+S: 7 tables; E: 6; W: 5; T: 5.
+
+\
+\
+
+
+\
+
+\*\*For each crossing, classify separately:\*\*
+
+\
+\
+
+
+\
+
+1\. Schema initialized.
+
+\
+
+2\. Initial zero-row state measured.
+
+\
+
+3\. Native research method identified.
+
+\
+
+4\. Native research method executable in this environment.
+
+\
+
+5\. Method actually invoked.
+
+\
+
+6\. Output independently checked.
+
+\
+
+7\. Invalid input refused without unauthorized mutation.
+
+\
+
+8\. Source-bound operational readiness independently established, if earned.
+
+\
+\
+
+
+\
+
+Crossing E's Vixen methods must be executed and challenged independently.
+
+\
+\
+
+
+\
+
+For S, W and T, find genuine source-free native executors if available. Run them in the authorized isolated test environment. If unavailable, record \`HELD_NATIVE_METHOD_NOT_EXECUTED\`.
+
+\
+\
+
+
+\
+
+Do not equate a SQLite \`COUNT(\*)\` probe with native SignalRupture routing, Wendbine compilation or Universal Atelier graph operations.
+
+\
+\
+
+
+\
+
+Challenge whether \`PREFLIGHT_VERIFIED\` can be emitted when a row-count assertion fails or a native method returns an invalid result.
+
+\
+\
+
+
+\
+
+The aggregate classification must be computed from the measured status of every required component, with no unconditional promotion to \`A_PFR0_READINESS_QUALIFIED\`.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## V. Adversarial refusals and source-warrant separation
+
+\
+\
+
+
+\
+
+Independently challenge the refusal paths associated with:
+
+\
+\
+
+
+\
+
+\- Unadmitted postflight records.
+
+\
+
+\- Synthetic Flight promotion.
+
+\
+
+\- Unauthorized human identity resolution.
+
+\
+
+\- Hash-to-semantic-entailment promotion.
+
+\
+
+\- False native-method readiness.
+
+\
+
+\- Withdrawn or mutated evidence, where supported by the native source-free interfaces.
+
+\
+\
+
+
+\
+
+A passing negative control requires an observed expected refusal code, verified failure of the prohibited operation, and preservation of relevant state.
+
+\
+\
+
+
+\
+
+An unrelated exception must be classified as an unexpected error, not successful security enforcement.
+
+\
+\
+
+
+\
+
+Distinguish these evidentiary conditions:
+
+\
+\
+
+
+\
+
+\`DIGEST_COMPUTED\`
+
+\
+\
+
+
+\
+
+\`BYTE_INTEGRITY_MATCHED_TO_REGISTERED_SOURCE\`
+
+\
+\
+
+
+\
+
+\`SOURCE_AUTHENTICATED_UNDER_DECLARED_CUSTODY\`
+
+\
+\
+
+
+\
+
+\`CLAIM_ENTAILMENT_INDEPENDENTLY_WARRANTED\`
+
+\
+\
+
+
+\
+
+\`EXTERNAL_ORIGIN_INDEPENDENTLY_OBSERVED\`
+
+\
+\
+
+
+\
+
+Do not promote one category into another.
+
+\
+\
+
+
+\
+
+The original Vixen standalone executor remains \`HELD_ORIGINAL_VIXEN_EXECUTOR_ABSENT\`. The reconstructed engine must retain its prospective implementation identity.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## VI. Exact Unicode and original-source custody
+
+\
+\
+
+
+\
+
+Verify RGI-01 against its frozen historical Git blob:
+
+\
+\
+
+
+\
+
+\`69b6a2bd27557d25c80b7c97cf11f8b1653fd6d5\`
+
+\
+\
+
+
+\
+
+Preserve original source bytes, character identities and historic ancestry.
+
+\
+\
+
+
+\
+
+Independently distinguish U+1D30B, U+10D613 and U+200C in tests and user-facing explanatory annotations.
+
+\
+\
+
+
+\
+
+Existing contradictions in newer test comments may be corrected through a distinct prospective change. The frozen historical original must remain intact.
+
+\
+\
+
+
+\
+
+RGI-01 stays:
+
+\
+\
+
+
+\
+
+\`PROPOSED_PROSPECTIVE_RECORD_ONLY\`
+
+\
+\
+
+
+\
+
+No Wolfram multiway execution or new rule-generative experiment is authorized.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## VII. Manifest product succession — research context, not current construction
+
+\
+\
+
+
+\
+
+Preserve the operator's intended product development order:
+
+\
+\
+
+
+\
+
+\*\*First: Vixen Cybernetics Manifest\*\*
+
+\
+\
+
+
+\
+
+Proposed future route:
+
+\
+\
+
+
+\
+
+\`/manifest/vix-cyb.html\`
+
+\
+\
+
+
+\
+
+\*\*Later: Universal Manifest\*\*
+
+\
+\
+
+
+\
+
+Only after genuinely distinct research-specific implementations support an independently qualified generalization.
+
+\
+\
+
+
+\
+
+This preference follows the original research architecture:
+
+\
+\
+
+
+\
+
+\`Atelier + Encyclopedia → Manifest\`
+
+\
+\
+
+
+\
+
+The Universal Atelier and Universal Encyclopedia already contain real reusable software machinery. Their existence does not automatically qualify a general-purpose web Manifest.
+
+\
+\
+
+
+\
+
+Vixen's future research product should be shaped by Em's actual scholarly methods, original corpus, historical uncertainty, authorized source rights, mathematical vocabulary and operator-governed transformations.
+
+\
+\
+
+
+\
+
+Preserve the distinction between:
+
+\
+\
+
+
+\
+
+\- Existing Universal research infrastructure.
+
+\
+
+\- Vixen's bounded source-free demonstration environment.
+
+\
+
+\- Future authorized research-specific context hydration.
+
+\
+
+\- Manifest's reusable warrant and relation machinery.
+
+\
+
+\- Independently established postflight scientific findings.
+
+\
+
+\- Optional post-postflight creative image-generation work.
+
+\
+\
+
+
+\
+
+The established \*\*Glinda Cyberpunk / Mugler-inspired cybernetic couture\*\* direction is a design-provenance constraint, not a demand to redesign the present Vixen candidate.
+
+\
+\
+
+
+\
+
+Future Em-specific chromepunk geometry may draw upon verified mathematics and independently adjudicated Experiment B observations, but its artistic interpretation must remain distinguishable from empirical mathematical proof.
+
+\
+\
+
+
+\
+
+Do not generate new imagery, create \`/manifest/vix-cyb.html\`, build Universal Manifest, merge product branches or alter the current web interface under this qualification commission.
+
+\
+\
+
+
+\
+
+These are future product considerations, not authorization to expand A-PFR0.1.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## VIII. Information Dome and Cupola scientific conservation
+
+\
+\
+
+
+\
+
+Preserve the existing Information Dome architecture as a distinct scientific heritage, including its canonical scenes:
+
+\
+\
+
+
+\
+
+\`GLUING_OBSTRUCTION\`
+
+\
+\
+
+
+\
+
+\`CONTENT_INVARIANT_PHASON\`
+
+\
+\
+
+
+\
+
+\`PAIR_EMERGENT_MOIRE\`
+
+\
+\
+
+
+\
+
+Preserve the Pedagogue's:
+
+\
+\
+
+
+\
+
+\`NOTICE → ACT → WORLD_ANSWERS → NAME → REST\`
+
+\
+\
+
+
+\
+
+Maintain the four non-equivalent AIA routes:
+
+\
+\
+
+
+\
+
+\`EXPERIENTIAL\`, \`CUSTODIAL\`, \`AUDIT\`, \`IMPLEMENTATION\`.
+
+\
+\
+
+
+\
+
+Ambiance retains its local relational and ecological meaning; projective geometry retains its distinct exactness requirements; path histories retain their non-retroactive evidence boundaries.
+
+\
+\
+
+
+\
+
+Project Cupola's mathematical construction, the repository's observed structure and any independently reported external cupola remain distinct objects.
+
+\
+\
+
+
+\
+
+Cupola-to-repository correspondence is \`UNESTABLISHED\`.
+
+\
+\
+
+
+\
+
+None of these frameworks may be injected into the protected Experiment B prompt, rubric or outcome classification as a discovered result.
+
+\
+\
+
+
+\
+
+No new Dome-World or Cupola implementation is authorized.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## IX. Independent evidence and publication
+
+\
+\
+
+
+\
+
+Produce a bounded qualification packet containing:
+
+\
+\
+
+
+\
+
+1\. Exact-head source and ancestry verification.
+
+\
+
+2\. Executed native test results and environment metadata.
+
+\
+
+3\. Actual browser interaction evidence, screenshots and console output.
+
+\
+
+4\. Browser-versus-Node discrepancy matrix.
+
+\
+
+5\. Four-crossing native capability and readiness matrix.
+
+\
+
+6\. Adversarial refusal results with expected and observed codes.
+
+\
+
+7\. Exact Unicode scalar and byte tests.
+
+\
+
+8\. Git cleanliness and non-destructive test verification.
+
+\
+
+9\. Source-bound evidence versus inferred capability distinctions.
+
+\
+
+10\. Explicit final classification and recommended stopping condition.
+
+\
+\
+
+
+\
+
+Keep concealed reviewer challenge material separate from the sanitized public record. Do not disclose protected archives, private sources, credentials or confidential adversarial fixtures in a public PR.
+
+\
+\
+
+
+\
+
+If independently observed material defects require repairs, an isolated \*\*minimal, source-free corrective draft PR\*\* is authorized. Provide failing reproductions, corrected tests, exact HEADs and a clear requalification requirement.
+
+\
+\
+
+
+\
+
+Avoid additional engineering loops for terminology-only or decorative concerns when a narrower, truthful capability classification would suffice.
+
+\
+\
+
+
+\
+
+\---
+
+\
+\
+
+
+\
+
+\## X. Authority and scientific closure
+
+\
+\
+
+
+\
+
+\*\*Em E-00.1a:\*\* BOUNDED ENGINEERING REST  
+
+\
+
+\*\*Universal U-00:\*\* FROZEN / SEPARATE INDEPENDENT QUALIFICATION  
+
+\
+
+\*\*Original Vixen executor:\*\* HELD ABSENT  
+
+\
+
+\*\*A-PFR0.1:\*\* INDEPENDENT QUALIFICATION REQUESTED  
+
+\
+
+\*\*A-PFR1:\*\* HELD  
+
+\
+
+\*\*Experiment B Flight:\*\* HELD  
+
+\
+
+\*\*RGI-01:\*\* PROSPECTIVE / INACTIVE  
+
+\
+
+\*\*Cupola empirical correspondence:\*\* UNESTABLISHED  
+
+\
+
+\*\*Vixen Manifest web product:\*\* FUTURE DESIGN CANDIDATE  
+
+\
+
+\*\*Universal Manifest web product:\*\* FUTURE GENERALIZATION CANDIDATE  
+
+\
+
+\*\*Vercel Issue #405:\*\* UNTOUCHED / PRODUCTION RELEASE UNAUTHORIZED  
+
+\
+
+\*\*Merge and deployment:\*\* RESERVED  
+
+\
+
+\*\*Human scientific closure:\*\* RESERVED for Tawanna C. Miller
+
+\
+\
+
+
+\
+
+\*\*Final question for the independent reviewer:\*\*
+
+\
+\
+
+
+\
+
+\*Which Vixen and four-crossing capabilities have actually survived independent executable falsification, which remain demonstrations or specifications, and what is the minimum additional evidence required before bounded engineering rest?\*
+
+\
+\
+
+
+\
+
+The purpose is to qualify the instrument, preserve genuine research differences and leave the future Manifest free to encounter unexpected evidence.
+
+\
+
+Execution priority: If Cloud Browser is unavailable, attempt an isolated local browser execution against PR #1716's exact HEAD. If neither browser capability is available, complete the independent native/source qualification, classify browser execution as HELD_BROWSER_EXECUTION_UNAVAILABLE, and preserve Issue #405 as unauthorized. Never substitute a live production-page inspection for exact-candidate testing.
+
+\
+
+𝄐 Khona‌lit-po · Sealed ⟐SAC[X6ZNK5NO51]

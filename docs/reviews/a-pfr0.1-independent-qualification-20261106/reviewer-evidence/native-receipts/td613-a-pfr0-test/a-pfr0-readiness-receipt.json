@@ -1,0 +1,181 @@
+{
+  "schema": "td613.a-pfr0-redo-readiness/v1",
+  "commission_id": "A-PFR0-POSTFLIGHT-REDO-READINESS-20261106",
+  "principal": "Tawanna C. Miller",
+  "operator": "tauric.diana.613",
+  "covenant": "Khona‌lit-po (literal interior U+200C preserved)",
+  "authority": "SAC[X6ZNK5NO51]",
+  "status": "A_PFR0_READINESS_QUALIFIED",
+  "execution_timestamp": "2026-11-07T02:09:10.182Z",
+  "zero_state_witness": {
+    "schema": "td613.a-pfr0-redo-readiness/v1",
+    "timestamp": "2026-11-07T02:09:10.176Z",
+    "all_crossings_zero_state": true,
+    "witness_sha256": "14e3fef9d7d1ed3b0d0e5f306ee6a2b28a7f72b92f1d0e44fdebad4867a79b3d",
+    "crossings": {
+      "CROSSING_S": {
+        "crossing_id": "CROSSING_S_SIGNALRUPTURE",
+        "label": "SignalRupture First",
+        "recipient_type": "EMPTY_ENCYCLOPEDIA_RECEIVER",
+        "tables_audited": 7,
+        "table_counts": {
+          "sources": 0,
+          "captures": 0,
+          "chunks": 0,
+          "relations": 0,
+          "registered_methods": 0,
+          "method_invocations": 0,
+          "failed_operations_log": 0
+        },
+        "all_zero": true
+      },
+      "CROSSING_E": {
+        "crossing_id": "CROSSING_E_EMSTD613",
+        "label": "EMSTD613 & Vixen Cybernetics",
+        "recipient_type": "EM_EMPTY_ENCYCLOPEDIA_RECEIVER",
+        "tables_audited": 6,
+        "table_counts": {
+          "meta": 0,
+          "em_sources": 0,
+          "em_derivatives": 0,
+          "em_work_routes": 0,
+          "em_manifestations": 0,
+          "em_relations": 0
+        },
+        "all_zero": true
+      },
+      "CROSSING_W": {
+        "crossing_id": "CROSSING_W_WENDBINE",
+        "label": "Wendbine Evolved Compiler",
+        "recipient_type": "WENDBINE_EMPTY_RECEIVER",
+        "tables_audited": 5,
+        "table_counts": {
+          "meta": 0,
+          "wendbine_sources": 0,
+          "wendbine_concepts": 0,
+          "wendbine_relations": 0,
+          "wendbine_families": 0
+        },
+        "all_zero": true
+      },
+      "CROSSING_T": {
+        "crossing_id": "CROSSING_T_UNIVERSAL_ATELIER",
+        "label": "Universal Atelier (TD613 Reference Encyclopedia)",
+        "recipient_type": "UNIVERSAL_ATELIER_RECEIVER",
+        "tables_audited": 5,
+        "table_counts": {
+          "meta": 0,
+          "ua_records": 0,
+          "ua_links": 0,
+          "ua_reverse_citations": 0,
+          "ua_adjudication_events": 0
+        },
+        "all_zero": true
+      }
+    }
+  },
+  "execution_boundaries": {
+    "a_pfr0_status": "SOURCE_FREE_INSTRUMENT_READINESS_COMPLETE",
+    "a_pfr1_status": "HELD_PENDING_GENUINE_COMPLETED_FLIGHT",
+    "protected_postflight_record_present": false,
+    "protected_experiment_b_flight": "HELD",
+    "simulated_flight_as_real_permitted": false,
+    "rgi_01_status": "PROPOSED_PROSPECTIVE_RECORD_ONLY",
+    "rgi_01_wolfram_runtime_active": false,
+    "ash_keep_anti_predetermined_discovery_active": true,
+    "human_closure": "RESERVED_FOR_TAWANNA_C_MILLER",
+    "authority": "SAC[X6ZNK5NO51]"
+  },
+  "warrant_boundary_verification": {
+    "source_span_integrity": "SOURCE_SPAN_INTEGRITY_VERIFIED",
+    "source_sha256": "994d6386b87cb18fe25a3b0730b09eb5d315cf8ee94f513473c72c912f15b8c4",
+    "claim_statement": "Autonomous reciprocal emergence operates without human supervision.",
+    "claim_warrant_status": "CLAIM_ENTAILMENT_HELD",
+    "warrant_boundary_honored": true,
+    "admonition": "Byte integrity confirms that bytes were faithfully retrieved; it provides ZERO evidence that the source semantically entails the claimed proposition."
+  },
+  "four_crossing_preflight_readiness": {
+    "crossing_s": {
+      "crossing_id": "CROSSING_S_SIGNALRUPTURE",
+      "label": "SignalRupture First",
+      "status": "PREFLIGHT_VERIFIED",
+      "recipient": "EMPTY_ENCYCLOPEDIA_RECEIVER",
+      "tables_verified": 7,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "native_methods_indexed": [
+        "SRC_PROJECTIVE_ROUTING",
+        "SRC_SHADOW_GRAPH_TRANSFORMATION"
+      ],
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.103
+    },
+    "crossing_e": {
+      "crossing_id": "CROSSING_E_EMSTD613",
+      "label": "EMSTD613 & Vixen Cybernetics",
+      "status": "PREFLIGHT_VERIFIED",
+      "recipient": "EM_EMPTY_ENCYCLOPEDIA_RECEIVER",
+      "tables_verified": 6,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "vixen_standalone_restored": true,
+      "vixen_methods_executed": 3,
+      "vixen_methods_verified": true,
+      "historical_census_sources": 87,
+      "recipient_census_sources": 94,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 1.549
+    },
+    "crossing_w": {
+      "crossing_id": "CROSSING_W_WENDBINE",
+      "label": "Wendbine Evolved Compiler",
+      "status": "PREFLIGHT_VERIFIED",
+      "recipient": "WENDBINE_EMPTY_RECEIVER",
+      "tables_verified": 5,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "census_concepts": 191,
+      "census_families": 9,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.124
+    },
+    "crossing_t": {
+      "crossing_id": "CROSSING_T_UNIVERSAL_ATELIER",
+      "label": "Universal Atelier (TD613 Reference Encyclopedia)",
+      "status": "PREFLIGHT_VERIFIED",
+      "recipient": "UNIVERSAL_ATELIER_RECEIVER",
+      "tables_verified": 5,
+      "total_rows_observed": 0,
+      "zero_rows_attested": true,
+      "comparator_dimensions": 12,
+      "flight_execution_status": "HELD_NOT_EXECUTED",
+      "measured_latency_ms": 0.058
+    }
+  },
+  "preflight_negative_controls": {
+    "unadmitted_postflight_file": {
+      "rejection_enforced": true,
+      "observed_code": "UNAUTHORIZED_POSTFLIGHT_RECORD_REFUSED",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "simulated_flight_promotion": {
+      "rejection_enforced": true,
+      "observed_code": "SIMULATED_FLIGHT_PROMOTION_FORBIDDEN",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "claim_from_hash_conflation": {
+      "rejection_enforced": true,
+      "observed_code": "CLAIM_ENTAILMENT_HELD",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "unauthorized_human_gate_resolution": {
+      "rejection_enforced": true,
+      "observed_code": "UNAUTHORIZED_HUMAN_GATE_RESOLUTION",
+      "observed_status": "FAIL_CLOSED_CONFIRMED"
+    },
+    "unadmitted_postflight_file_rejected": true,
+    "simulated_flight_promotion_refused": true,
+    "claim_from_hash_conflation_refused": true,
+    "unauthorized_human_gate_resolution_refused": true
+  }
+}

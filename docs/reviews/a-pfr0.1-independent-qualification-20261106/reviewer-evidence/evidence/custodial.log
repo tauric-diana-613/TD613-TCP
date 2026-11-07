@@ -1,0 +1,64 @@
+================================================================
+CHAMBERS 2 & 3: CUSTODIAL GATES & HISTORICAL TIME BOUNDARIES
+================================================================
+
+--- TEST 1: Zero-Row Witness Verification ---
+[PASS] Witness conforms to schema v1
+[PASS] Attested exactly 5 receiver tables with 0 rows
+
+--- TEST 2: Jurisdiction Separation & Real-Source Protection ---
+[PASS] Refused real-source admission without external auth token
+[PASS] Refused real-source admission with arbitrary external token
+[PASS] Refused real-source admission with syntactically plausible token (fail-closed)
+[PASS] Refused self-issued MACHINE_SYNTHETIC event under external human jurisdiction
+[PASS] Refused self-issued HUMAN event without external trust root
+[PASS] Refused record with synthetic: false inside TEST_ONLY_SYNTHETIC_ADJUDICATION
+[PASS] Refused OPERATOR_ADMITTED_SOURCE_RECORD inside TEST_ONLY_SYNTHETIC_ADJUDICATION
+
+--- TEST 3: Adjudication Parameter Binding (Record Admission) ---
+[PASS] Refused admission when adjudication target_id mismatches record ID
+[PASS] Refused admission when adjudication action is not RECORD_ADMISSION
+[PASS] Refused cross-episode adjudication replay
+[PASS] Refused proposal when raw_json mutated after staging
+[PASS] Refused proposal when caller mutated record.id after staging
+[PASS] Refused proposal when caller mutated record.label after staging
+[PASS] Refused record with omitted synthetic flag
+[PASS] Refused record with string synthetic flag ("true")
+[PASS] Successfully admitted Record 1 under TEST_ONLY_SYNTHETIC_ADJUDICATION
+[PASS] Admitted record assigned evidence_class TEST_ONLY_SYNTHETIC_WITNESS
+
+--- TEST 4: Historical Rejection / Withdrawal Preservation ---
+[PASS] Refused admission of previously rejected record without reparative override
+[PASS] Admitted previously rejected record when explicit reparative override supplied
+
+--- TEST 5: Link Adjudication Parameter Binding & Anti-Replay ---
+[PASS] Refused link admission when adjudicator receipt target_id mismatches linkId
+[PASS] Refused link admission when bound endpoints mismatch proposal
+[PASS] Refused link admission when bound predicate mismatches proposed link_type
+[PASS] Unvalidated predicate accepted as CANDIDATE_UNVALIDATED_PREDICATE status
+[PASS] Candidate link excluded from admitted reverse citations (ua_reverse_citations)
+[PASS] Candidate link excluded from neighbors() by default
+[PASS] canonicalProjectionPi strictly excludes candidate-only links
+
+--- TEST 6: Historical Time Separation & Non-Retroactivity ---
+[PASS] Historical citation from 2024 document to 2020 document admitted successfully
+[PASS] Refused anachronistic citation claiming 2020 document cited 2024 document as preexisting
+[PASS] Refused link with empty span (start == end)
+
+--- TEST 7: Dollhouse CLI Runner Positional Argument Fail-Closed ---
+[PASS] Dollhouse runner fails closed immediately on unrecognized positional argument without hanging
+
+================================================================
+SUMMARY: 32 / 32 PASSED (All Passed: true)
+================================================================
+Wrote receipt to C:\Users\timst\Documents\Codex\2026-11-06\td613-sovereign-operator-activation-a-pfr0-4\work\native-receipts\custodial-gate-and-time-receipt.json
+✔ packages\four_crossing_capstone\test-custodial-and-time-boundaries.mjs (571.0451ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 590.5608
+

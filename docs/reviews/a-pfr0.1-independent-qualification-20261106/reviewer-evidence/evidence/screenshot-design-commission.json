@@ -1,0 +1,29 @@
+{
+  "commission_id": "A-PFR0.1-SCREENSHOT-DESCRIPTIONS",
+  "seed": "Author one illustrated prose atlas of actual Vixen and TD613 Encyclopedia captures. Describe light, material, typography, spacing, affect and visible affordances with rich reparative texture; keep observation beside interpretation and retain the tension between a research reading environment and a diagnostic interface. Em supplied S_e≡[x+y]=z+1$ only as a branding replacement for 613: never infer a research law, equation for the entire corpus, or mathematical lens from that branding. Do not redesign, create imagery, infer intent or diagnose the user. Preserve each captured page and its distinct evidence class.",
+  "medium": "SCHOLARLY",
+  "instruments": [
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "DIALECTICAL_TENSION"
+  ],
+  "deliverable_count": 1,
+  "human_coordinates": {
+    "what": "One illustrated atlas containing a textured description of every captured section and the full scrolling Overview",
+    "who": "The operator comparing the commissioned candidate with an existing reading environment",
+    "where": "Frozen candidate screenshots and separately identified live design-reference screenshots",
+    "how": "Concrete sensory description, observed affordances, explicit interpretation, and section-by-section comparison",
+    "when": "After actual browser capture; before any future redesign or requalification",
+    "why": "Recover the operator intent and research differences without converting branding or aesthetics into scientific proof"
+  },
+  "historical_references": [
+    {
+      "reference_id": "INTERACTIVE-BOUNDARY",
+      "source_path": "AGENTS.md",
+      "source_revision": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Direct bounded commission; no release or experimental authority"
+    }
+  ],
+  "scientific_audit_requested": false
+}
