@@ -561,3 +561,6 @@ test('DD-02: skill and authoring cycle must not impose experimental paired outpu
 
 // DD-02 source-free Wolframian CBFE relational geometry; invokes real conductor; no Flight mutation.
 await import('./dd02-cbfe-relational-geometry.native.test.mjs');
+
+// Prospective source-free 384-episode competent-null differential challenge; original Flight HELD.
+await import('./cbfe-competent-null-probe.v04.test.mjs');
