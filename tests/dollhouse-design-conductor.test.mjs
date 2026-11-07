@@ -571,3 +571,6 @@ await import('./rulefield-v1.test.mjs');
 // Source-free, event-preserving complexity science and Garden format synchronization.
 await import('./rulefield-garden-triptych.test.mjs');
 await import('./rulefield-nks-lab.test.mjs');
+
+// Source-free Kiki Receiver packet, bounded NKS engine, and autosync controls.
+await import('./rulefield-amendments.test.mjs');
