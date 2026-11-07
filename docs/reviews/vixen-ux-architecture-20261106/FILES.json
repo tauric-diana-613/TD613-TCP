@@ -412,10 +412,22 @@
       "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
     },
     {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_OPUS_HANDOFF.html",
+      "zip_path": "review-packet/VIXEN_CYBERNETICS_OPUS_HANDOFF.html",
+      "bytes": 664108,
+      "sha256": "cc18159e9b34fe5eaf4c84308962db34a9d88c489b8ae4d734d670114b257da4"
+    },
+    {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
       "zip_path": "review-packet/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",
       "bytes": 68032,
       "sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c"
+    },
+    {
+      "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_OPUS_ACTIVATION_PROMPT.md",
+      "zip_path": "review-packet/VIXEN_OPUS_ACTIVATION_PROMPT.md",
+      "bytes": 20890,
+      "sha256": "3c7a23f74e515f85d2470394023ccf56905ce87603a38c9d81ad21d5a63d0526"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/vixen-prototype-commission.json",
