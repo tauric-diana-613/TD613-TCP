@@ -1,0 +1,356 @@
+{
+  "schema": "td613.rulefield.capability-integration-backlog/v1",
+  "date": "2026-11-07",
+  "status": "PROSPECTIVE_NOT_IMPLEMENTED_UNLESS_SPECIFIC_LOCAL_PRECURSOR_NOTED",
+  "terminology": "INTEGRATION_ROADMAP + CAPABILITY_BACKLOG",
+  "operator_reference": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "human_closure": "RESERVED",
+  "protected_experiment_b": "HELD",
+  "automatic_integration": false,
+  "baseline_gate": "Current Lawful Rulefield/Conductor must remain functional without proposed external tool",
+  "tiers": [
+    {
+      "id": "T0_CURRENT",
+      "label": "Local reproducible finite laboratory",
+      "criteria": "Executable source-free finite rewrite/CA code and review-only packet intake",
+      "state": "IMPLEMENTED_CODE_NOT_YET_VERIFIED_BY_NATIVE_CI",
+      "authority": "local experiment only"
+    },
+    {
+      "id": "T1_NEAR_TERM",
+      "label": "Independent comparison and source pinning",
+      "criteria": "Known models + public tools + controlled rerun + model parity",
+      "state": "PLANNED"
+    },
+    {
+      "id": "T2_DEPENDENCY_GATED",
+      "label": "New algorithms or agent models",
+      "criteria": "New runtime, license/provider, bounded design and matched null",
+      "state": "NOT_ENABLED"
+    },
+    {
+      "id": "T3_PROOF_OR_EMPIRICAL",
+      "label": "Formal/multidisciplinary evaluation",
+      "criteria": "Independent proof obligation or ethically consented observer study",
+      "state": "NOT_AUTHORIZED"
+    },
+    {
+      "id": "T4_NEW_EXTERNAL_OR_RELEASE",
+      "label": "Exteriority or protected experiment continuation",
+      "criteria": "Independent observation and explicit operator release",
+      "state": "HELD"
+    }
+  ],
+  "items": [
+    {
+      "id": "RF-INT-001",
+      "title": "Wolfram Function Repository MultiwaySystem parity",
+      "tier": "T1_NEAR_TERM",
+      "status": "EXTERNAL_ADAPTER_SPEC",
+      "reference_url": "https://resources.wolframcloud.com/FunctionRepository/resources/MultiwaySystem",
+      "goal": "Compare AA→BA/AB→BB two-history diamond, event instances, path counts and state graph against local finite string rewrite results.",
+      "entry_gates": [
+        "External Wolfram kernel/Cloud entitlement verified",
+        "Exact function/version and invocation recorded",
+        "Two independent implementations agree on event multiplicities and joinability"
+      ],
+      "falsifier": "Probe cannot distinguish state-merged from event-preserving outputs, or Wolfram tool inaccessible.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-002",
+      "title": "WolframModel hypergraph rewriting and event causal graph",
+      "tier": "T2_DEPENDENCY_GATED",
+      "status": "NOT_IMPLEMENTED",
+      "reference_url": "https://resources.wolframcloud.com/FunctionRepository/resources/WolframModel",
+      "goal": "Translate a small typed incidence hypergraph with event IDs; compare causal dependencies against an independently coded finite reference.",
+      "entry_gates": [
+        "Formal vertex-edge matching semantics",
+        "Immutable event recording",
+        "Event causality defined via input/output overlap",
+        "Wolfram runtime available"
+      ],
+      "falsifier": "Finite event graph mismatch or unproved physical causal correspondence.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-003",
+      "title": "Wolfram Physics notebooks and notable-universes archive",
+      "tier": "T1_NEAR_TERM",
+      "status": "EXTERNAL_REFERENCE_ONLY",
+      "reference_url": "https://wolframphysics.org/tools/",
+      "goal": "Use runnable public notebook sources as controlled references with licensing/provenance and no implied execution.",
+      "entry_gates": [
+        "Pin source notebook and version",
+        "Record exact model/rule and declared input",
+        "Separate notebook reproduction from physical interpretation"
+      ],
+      "falsifier": "Unreproducible notebook or ambiguous external origin.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-004",
+      "title": "Knuth–Bendix completion / critical-pair challenge",
+      "tier": "T1_NEAR_TERM",
+      "status": "LOCAL_FINITE_PRECURSOR_ONLY",
+      "reference_url": "https://resources.wolframcloud.com/FunctionRepository/resources/MultiwayFunctionSystem",
+      "goal": "Propose completion rules for finite string rewrite peaks; distinguish bounded joinability from proved termination and global confluence.",
+      "entry_gates": [
+        "Well-defined string rewrite orientation",
+        "Enumerated critical pairs and completion ordering",
+        "Independent termination argument where claimed"
+      ],
+      "falsifier": "Completion rule changes protected semantics or only patches the selected fork.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-005",
+      "title": "Cellular-automaton Golly parity",
+      "tier": "T1_NEAR_TERM",
+      "status": "EXTERNAL_REFERENCE_ONLY",
+      "reference_url": "https://golly.sourceforge.io/",
+      "goal": "Export Rule 30, Rule 90 and Rule 110 finite seeds/step/boundaries, compare bitwise traces with Golly or controlled independent code.",
+      "entry_gates": [
+        "Matching boundary conditions and bit convention",
+        "Exportable machine traces",
+        "Explicit seed and width",
+        "No unsupported entropy-to-chaos inference"
+      ],
+      "falsifier": "Boundary mismatch or output differs across engines.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-006",
+      "title": "NetLogo BehaviorSpace parameter sweeps",
+      "tier": "T2_DEPENDENCY_GATED",
+      "status": "REFERENCE_ONLY",
+      "reference_url": "https://docs.netlogo.org/behaviorspace",
+      "goal": "Model agent-based reception of testimony under matched route permissions; run factorial parameter sweeps with seeds, preregistered outcomes and controls.",
+      "entry_gates": [
+        "Agent behavior justified as a synthetic model",
+        "Validated simulator configuration",
+        "Matched null and blinded interpretation",
+        "NetLogo runtime"
+      ],
+      "falsifier": "Agent simulation conflated with empirical Black feminist lived conditions.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-007",
+      "title": "Mesa Python ABM alternative implementation",
+      "tier": "T2_DEPENDENCY_GATED",
+      "status": "REFERENCE_ONLY",
+      "reference_url": "https://mesa.readthedocs.io/stable/",
+      "goal": "Build independent ABM implementation with identical institutional standing and observation parameters to compare with NetLogo.",
+      "entry_gates": [
+        "Mesa version pinned",
+        "Shared agent schedule and stochastic seeds",
+        "Same measurement function",
+        "External independent implementation tested"
+      ],
+      "falsifier": "Scheduler differences mistaken for emergence.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-008",
+      "title": "Santa Fe Complexity Explorer curricula",
+      "tier": "T1_NEAR_TERM",
+      "status": "PUBLIC_EDUCATIONAL_REFERENCE_ONLY",
+      "reference_url": "https://www.complexityexplorer.org/",
+      "goal": "Curate reproducible demonstrations and method cards for nonlinear dynamics, information theory and agent-based systems.",
+      "entry_gates": [
+        "Course availability and license verified",
+        "Reference not used as experimental proof",
+        "Clear linkage to Rulefield domain"
+      ],
+      "falsifier": "Educational resource presented as experiment.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-009",
+      "title": "Algorithmic-information / compression estimator challenge",
+      "tier": "T2_DEPENDENCY_GATED",
+      "status": "PROPOSED",
+      "reference_url": "https://www.wolframphysics.org/tools/",
+      "goal": "Separate exact finite Shannon entropies from heuristic compression ratios; calibrate on regular, random and constructed counterexample sequences.",
+      "entry_gates": [
+        "Matched sample length, encoding and compressor",
+        "Prespecified null and confidence intervals",
+        "Do not claim exact Kolmogorov complexity"
+      ],
+      "falsifier": "Finite compression ratio mislabeled as fundamental complexity.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-010",
+      "title": "Observer coarse-graining and branching path fibers",
+      "tier": "T1_NEAR_TERM",
+      "status": "LOCAL_FINITE_PRECURSOR_ONLY",
+      "reference_url": "https://resources.wolframcloud.com/FunctionRepository/resources/MultiwaySystem",
+      "goal": "Construct distinct history paths with equal projected states and compare event-instance preservation, fiber entropy and full-history null.",
+      "entry_gates": [
+        "Explicit observer map",
+        "Predeclared sampling measure over path histories",
+        "Competent full-history comparator",
+        "Any future human observer study separately authorized"
+      ],
+      "falsifier": "Constructed fiber presented as novel predictive capability.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-011",
+      "title": "Information Dome / ambiance controlled observer study",
+      "tier": "T3_EMPIRICAL_APPROVAL_REQUIRED",
+      "status": "UNOBSERVED",
+      "reference_url": "https://www.wolframphysics.org/tools/",
+      "goal": "Randomize source-equivalent diagrams, ambiance, and sham displays; measure correct hypothesis recovery and confidence calibration.",
+      "entry_gates": [
+        "Consent, accessibility review, preregistration",
+        "Human recruitment approved",
+        "Fixed kernel and source rights",
+        "Independent scoring and proper power analysis"
+      ],
+      "falsifier": "Aesthetic salience mislabeled as scientific correctness.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-012",
+      "title": "Sheaf/gluing and phasonic relational geometry formalization",
+      "tier": "T3_PROOF_OR_SPECIALIST_REVIEW",
+      "status": "CONJECTURAL",
+      "reference_url": "https://www.wolframphysics.org/tools/",
+      "goal": "Define local sections, restriction maps, overlap consistency, gluing obstruction, holonomy equivalence and theorem obligations.",
+      "entry_gates": [
+        "Well-defined category and topological cover",
+        "Actual restriction maps and composability",
+        "Explicit theorem statement with proofs or counterexample"
+      ],
+      "falsifier": "Metaphorical gluing taken for an actual cohomological obstruction.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-013",
+      "title": "Western Horizon five-surface Golden Egg acquisition",
+      "tier": "T4_NEW_EXTERNAL_DATA_REQUIRED",
+      "status": "HELD_UNEARNED",
+      "reference_url": "https://www.wolframphysics.org/tools/",
+      "goal": "Acquire one external immutable same-episode L,R,J,G,C trace with independent custody and preregistered distinct routes.",
+      "entry_gates": [
+        "New lawful empirical source",
+        "Same episode under common comparison frame",
+        "Continuous custody and actual matched control/protected return",
+        "External origin verified"
+      ],
+      "falsifier": "Archive recombination or self-attestation passed off as exteriority.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-014",
+      "title": "Inter-Atelier interoperability and operator-facing receivers",
+      "tier": "T2_DEPENDENCY_GATED",
+      "status": "HISTORICAL_INTEROP_PARTIAL",
+      "reference_url": "https://www.netlogo.org/",
+      "goal": "Run SRC↔Wendbine↔EMSTD613 source-preserving portability tests, with independent source/receipt counts, failure survival, and no forced conceptual union.",
+      "entry_gates": [
+        "Original Atelier manifest and source limits located",
+        "Schema and Unicode parity",
+        "Human-visible operations survive integration",
+        "Failure isolation/rollback"
+      ],
+      "falsifier": "Integration silently destroys standalone capability.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-015",
+      "title": "Protected Experiment B scientific continuation",
+      "tier": "T4_HUMAN_OPERATOR_RELEASE_GATE",
+      "status": "HELD",
+      "reference_url": "https://www.wolframphysics.org/tools/",
+      "goal": "Future separate authorized post-flight/post-postflight and possible Experiment C designs. Existing frozen blinded Flight remains untouched.",
+      "entry_gates": [
+        "Distinct prospective protocol and arms",
+        "Operator explicit human authorization",
+        "Provider/model/effort proof",
+        "Protected custody and independent evaluation"
+      ],
+      "falsifier": "Theoretical Rulefield amendments inserted retroactively into frozen arms.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    },
+    {
+      "id": "RF-INT-016",
+      "title": "Distributed/cloud accelerated multiway hypergraph scaling",
+      "tier": "T3_RESOURCES_AND_PARITY_GATED",
+      "status": "FUTURE_WISHLIST",
+      "reference_url": "https://github.com/WolframInstitute/Hypergraph",
+      "goal": "Explore parallel rule enumeration and causal DAG storage only after deterministic single-host equivalence and cost ceilings.",
+      "entry_gates": [
+        "Bounded memory/time/cost",
+        "Repeatable source-free baseline",
+        "Partition independence and deterministic replay",
+        "Resource budget operator-reviewed"
+      ],
+      "falsifier": "Parallel nondeterminism masks missing paths or changes semantics.",
+      "confidence": "PUBLIC_CAPABILITY_DOCUMENTED; NO TD613 EXTERNAL EXECUTION CREDIT",
+      "next_legal_action": "PRODUCE_PROPOSAL_AND_REVIEW_RECEIPT",
+      "adoption": "EXPLICIT_OPERATOR_DECISION_REQUIRED",
+      "protected_flight": "HELD"
+    }
+  ],
+  "workflow": [
+    "retrieve exact provider source",
+    "propose typed adapter packet",
+    "declare external runtime and version",
+    "match source-free benchmark",
+    "execute only with permission and reproducible witness",
+    "compare against competent null",
+    "separate implementation from empirical claims",
+    "operator adjudicates promotion"
+  ],
+  "foreign_tool_execution_observed": false
+}
