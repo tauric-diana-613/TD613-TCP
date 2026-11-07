@@ -1,0 +1,207 @@
+{
+  "commission": "A-PFR0.1",
+  "candidate": "7b6b4887f646155ba62b5c1b7bc0afc382fcaa34",
+  "classification": "A_PFR0_1_HELD_MATERIAL_DEFECTS",
+  "browser_execution": "ACTUAL_LOCALHOST_EXACT_CANDIDATE",
+  "native_grouped_checks": {
+    "met": 26,
+    "counterexamples": 16,
+    "checks": [
+      {
+        "name": "23 table zero-state independently measured",
+        "met_requirement": true
+      },
+      {
+        "name": "CROSSING_S nonzero must withhold PREFLIGHT_VERIFIED",
+        "met_requirement": false
+      },
+      {
+        "name": "CROSSING_E nonzero must withhold PREFLIGHT_VERIFIED",
+        "met_requirement": false
+      },
+      {
+        "name": "CROSSING_W nonzero must withhold PREFLIGHT_VERIFIED",
+        "met_requirement": false
+      },
+      {
+        "name": "CROSSING_T nonzero must withhold PREFLIGHT_VERIFIED",
+        "met_requirement": false
+      },
+      {
+        "name": "invalid Vixen result must withhold readiness",
+        "met_requirement": false
+      },
+      {
+        "name": "postflight refused expected code and no state mutation",
+        "met_requirement": true
+      },
+      {
+        "name": "synthetic flight promotion refused expected code and no mutation",
+        "met_requirement": true
+      },
+      {
+        "name": "unrelated error must not pass negative control",
+        "met_requirement": false
+      },
+      {
+        "name": "mutating refusal must not pass negative control",
+        "met_requirement": false
+      },
+      {
+        "name": "self digest must not claim registered source integrity",
+        "met_requirement": false
+      },
+      {
+        "name": "all complete Unicode slices exact bytes and SHA256",
+        "met_requirement": true
+      },
+      {
+        "name": "every illegal continuation boundary refused both ends",
+        "met_requirement": true
+      },
+      {
+        "name": "Node invalid span empty",
+        "met_requirement": true
+      },
+      {
+        "name": "Node invalid span reversed",
+        "met_requirement": true
+      },
+      {
+        "name": "Node invalid span negative",
+        "met_requirement": true
+      },
+      {
+        "name": "Node invalid span out-of-bounds",
+        "met_requirement": true
+      },
+      {
+        "name": "Node invalid span fractional",
+        "met_requirement": false
+      },
+      {
+        "name": "Node invalid span NaN-start",
+        "met_requirement": false
+      },
+      {
+        "name": "Node invalid span nonnumeric",
+        "met_requirement": false
+      },
+      {
+        "name": "Node invalid span undefined",
+        "met_requirement": false
+      },
+      {
+        "name": "Node invalid span null",
+        "met_requirement": false
+      },
+      {
+        "name": "Node missing id refuses without mutation",
+        "met_requirement": true
+      },
+      {
+        "name": "human identity gate refuses expected code and unchanged state",
+        "met_requirement": true
+      },
+      {
+        "name": "256 partitions independently checked",
+        "met_requirement": true
+      },
+      {
+        "name": "21 instruments remain documentary index",
+        "met_requirement": true
+      },
+      {
+        "name": "caller classification cannot authenticate fictional source",
+        "met_requirement": false
+      },
+      {
+        "name": "mutated document cannot retain witness verification",
+        "met_requirement": false
+      },
+      {
+        "name": "S native projective routing actual invocation",
+        "met_requirement": true
+      },
+      {
+        "name": "S malformed routing input rejected unchanged",
+        "met_requirement": true
+      },
+      {
+        "name": "S shadow graph false warrant denied with retained attempt",
+        "met_requirement": true
+      },
+      {
+        "name": "S native warranted graph and source withdrawal",
+        "met_requirement": true
+      },
+      {
+        "name": "W byte-preserved compiler synthetic native invocation",
+        "met_requirement": true
+      },
+      {
+        "name": "W forbidden full-body compiler input refused unchanged",
+        "met_requirement": true
+      },
+      {
+        "name": "W receiver forbids payload body and preserves database",
+        "met_requirement": true
+      },
+      {
+        "name": "W receiver actual cooccurrence computation",
+        "met_requirement": true
+      },
+      {
+        "name": "T native graph construction projection route neighbors",
+        "met_requirement": true
+      },
+      {
+        "name": "T invalid link endpoint refuses unchanged database",
+        "met_requirement": true
+      },
+      {
+        "name": "T mutated staged proposal refuses unchanged database",
+        "met_requirement": true
+      },
+      {
+        "name": "T externally authenticated human admission remains closed",
+        "met_requirement": true
+      },
+      {
+        "name": "T missing self route must not claim found",
+        "met_requirement": false
+      },
+      {
+        "name": "historical RGI blob byte custody",
+        "met_requirement": true
+      }
+    ]
+  },
+  "browser_byte_comparison": {
+    "complete_spans": 153,
+    "all_exact_text": true,
+    "all_matching_digest": true,
+    "illegal_boundary_cases": 16,
+    "all_illegal_refused": true
+  },
+  "screenshot_captures": 13,
+  "screenshot_audit": {
+    "roles": [
+      "PEDAGOGUE",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "decision": "SUPPORTED",
+    "scope": "description chronology declarations only; images reviewed by interactive author; no aesthetic score"
+  },
+  "held_methods": [
+    "UA_MATCHED_COMPARATOR_12D"
+  ],
+  "held_environment_witness": [
+    "ACTUAL_INSECURE_ORIGIN_BROWSER"
+  ],
+  "source_bound_readiness": false,
+  "protected_flight": "HELD",
+  "issue_405": "UNTOUCHED",
+  "scientific_closure": "RESERVED_TAWANNA_C_MILLER",
+  "private_challenge_fixtures": "EXCLUDED_FROM_PUBLICATION"
+}
