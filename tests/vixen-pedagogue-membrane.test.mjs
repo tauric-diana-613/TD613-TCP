@@ -250,4 +250,208 @@ test('Vixen Cybernetics · Pedagogue Membrane & Reader Experience Suite', async 
     const practicePassed = Object.values(practiceReview.practice_gate).every((v) => v === true);
     assert.strictEqual(practicePassed, true, 'Practice fixture must PASS Pedagogue Practice Gate');
   });
+
+  await t.test('9. Amari Adjudication #5811085212 Regressions (P-V4-01 Return-Link Security & P-V4-02 Public Language Cleanup)', () => {
+    // P-V4-01: Return-link security sanitization logic must be present in client runtime
+    assert.ok(
+      html.includes('function sanitizeReturnUrl(raw)'),
+      'sanitizeReturnUrl function must be implemented in client runtime'
+    );
+    assert.ok(
+      html.includes("lower.startsWith('javascript:')"),
+      'Must explicitly block javascript: URIs'
+    );
+    assert.ok(
+      html.includes("lower.startsWith('data:')"),
+      'Must explicitly block data: URIs'
+    );
+    assert.ok(
+      html.includes("lower.startsWith('vbscript:')"),
+      'Must explicitly block vbscript: URIs'
+    );
+
+    // P-V4-02: Public language leakage eliminated
+    assert.strictEqual(
+      html.includes('Every canonical <code>emwork_*</code> route from <code>identity_metadata_crosswalk.json</code>'),
+      false,
+      'Works intro must not contain raw internal filenames or emwork_* code keys'
+    );
+    assert.ok(
+      html.includes('The preserved catalogue comprises thirty-two canonical works'),
+      'Works intro must present human-legible editorial language'
+    );
+    assert.strictEqual(
+      html.includes('placeholder="Search title, emwork_* ID, emsrc_* ID'),
+      false,
+      'Work search input placeholder must not contain emwork_* internal key names'
+    );
+    assert.strictEqual(
+      html.includes('C1 Algedonic Hypervisor (emwork_085223...)'),
+      false,
+      'Preset dropdown labels must not contain truncated emwork_ hash IDs'
+    );
+    assert.ok(
+      html.includes('C1 Algedonic Hypervisor ⊕ C2 Lock-Free DSP (Illustrative Pair)'),
+      'Preset dropdown must present clean illustrative pair labels'
+    );
+    assert.ok(
+      html.includes('Manuscript Body Reserved'),
+      'Public badges must state Manuscript Body Reserved rather than raw machine status'
+    );
+  });
+
+  await t.test('10. Emergence HQ Review #5811435392 Directives (P-V4-06 Return-Link Security, P-V4-07 OPERAHOUSE ≠ OPERA ≠ PERFORMER Text Membrane, P-V4-08 Astra Creative Scope)', () => {
+    // P-V4-06: Strict return-link sanitizer logic and slash-backslash bypass immunity
+    assert.ok(
+      html.includes('// Return-Link Security Sanitizer (P-V4-06 Fail-Closed Normalized Invariant)'),
+      'P-V4-06 sanitizer must be present'
+    );
+    assert.ok(
+      html.includes('/[\\\\<>\'"`\\s\\x00-\\x1f]/'),
+      'Sanitizer must reject backslashes and control characters'
+    );
+
+    // Reconstruct and test sanitizeReturnUrl with simulated window.location
+    const testLocation = {
+      href: 'http://localhost:3000/encyclopedia/vix-cyb.html',
+      origin: 'http://localhost:3000'
+    };
+
+    function testSanitizer(raw, loc = testLocation) {
+      if (!raw || typeof raw !== 'string') return '#overview';
+      const trimmed = raw.trim();
+      if (!trimmed) return '#overview';
+      if (/^#[a-zA-Z0-9_\-]+$/.test(trimmed)) return trimmed;
+      if (/[\\<>'"`\s\x00-\x1f]/.test(trimmed)) return '#overview';
+      const lower = trimmed.toLowerCase();
+      if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:') || lower.startsWith('file:')) {
+        return '#overview';
+      }
+      try {
+        const parsed = new URL(trimmed, loc.href);
+        if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.origin === loc.origin) {
+          return parsed.pathname + parsed.search + parsed.hash;
+        }
+      } catch (e) {}
+      return '#overview';
+    }
+
+    // Hostile vectors must fail closed to #overview
+    const hostileVectors = [
+      '/\\evil.example/entry',
+      '/\\\\evil.example/entry',
+      '\\evil.example',
+      '//evil.example',
+      '///evil.example',
+      'https://evil.example/phish',
+      'http://attacker.com/bypass',
+      'javascript:alert(document.domain)',
+      'data:text/html,<script>alert(1)</script>',
+      'vbscript:msgbox(1)',
+      'file:///etc/passwd',
+      '   ',
+      null,
+      undefined,
+      '/valid/path\\with\\backslash',
+      '/path<script>'
+    ];
+
+    for (const vec of hostileVectors) {
+      const sanitized = testSanitizer(vec);
+      assert.strictEqual(
+        sanitized,
+        '#overview',
+        `Hostile vector ${JSON.stringify(vec)} must fail closed to #overview, got ${JSON.stringify(sanitized)}`
+      );
+
+      // Verify browser resolution test
+      const resolved = new URL(sanitized, testLocation.href);
+      assert.strictEqual(
+        resolved.origin,
+        testLocation.origin,
+        `Browser resolved origin for ${JSON.stringify(vec)} must remain on same origin`
+      );
+      assert.strictEqual(
+        resolved.protocol,
+        'http:',
+        `Browser resolved protocol must be http:`
+      );
+    }
+
+    // Safe vectors must be admitted cleanly
+    assert.strictEqual(testSanitizer('#overview'), '#overview');
+    assert.strictEqual(testSanitizer('#gates'), '#gates');
+    assert.strictEqual(testSanitizer('#works'), '#works');
+    assert.strictEqual(testSanitizer('/encyclopedia/vix-cyb.html'), '/encyclopedia/vix-cyb.html');
+    assert.strictEqual(testSanitizer('/app/home?lang=en#top'), '/app/home?lang=en#top');
+    assert.strictEqual(testSanitizer('http://localhost:3000/encyclopedia/'), '/encyclopedia/');
+
+    // P-V4-07: Verify default public surfaces omit host vocabulary
+    // Extract public markup up to scripts and inspector
+    const mainMarkup = html.slice(html.indexOf('<main id="main">'), html.indexOf('<footer class="footer"'));
+    const footerMarkup = html.slice(html.indexOf('<footer class="footer"'), html.indexOf('<script id="vixen-reference-manifest"'));
+
+    // Public markup must not contain EMSTD613
+    assert.strictEqual(
+      mainMarkup.includes('EMSTD613'),
+      false,
+      'Main public markup must not contain EMSTD613'
+    );
+    assert.strictEqual(
+      footerMarkup.includes('EMSTD613'),
+      false,
+      'Footer brand must not contain EMSTD613'
+    );
+
+    // Public markup must not contain raw CATALOGUE_METADATA_ONLY or UNAVAILABLE_IN_PUBLIC_SURFACE
+    assert.strictEqual(
+      mainMarkup.includes('>CATALOGUE_METADATA_ONLY<'),
+      false,
+      'Main public markup must not contain rendered >CATALOGUE_METADATA_ONLY<'
+    );
+    assert.strictEqual(
+      mainMarkup.includes('>UNAVAILABLE_IN_PUBLIC_SURFACE<'),
+      false,
+      'Main public markup must not contain rendered >UNAVAILABLE_IN_PUBLIC_SURFACE<'
+    );
+
+    // Formula card rendering for RC-06 must display Finite Admissibility & Packaging Quarantine (c₄)
+    assert.ok(
+      html.includes("displayTitle = 'RC-06 · Finite Admissibility & Packaging Quarantine (c₄)'"),
+      'RC-06 formula card must map title to scholarly Finite Admissibility'
+    );
+    assert.ok(
+      html.includes("displayStatus = 'EXACT DESCENT (FIBER QUOTIENT)'"),
+      'RC-06 status must map to EXACT DESCENT (FIBER QUOTIENT)'
+    );
+
+    // VixenReference.cite must use scholarly citation brand
+    assert.ok(
+      html.includes("[Vixen Cybernetics Research Atelier]"),
+      'VixenReference.cite must output [Vixen Cybernetics Research Atelier]'
+    );
+    assert.strictEqual(
+      html.includes("[EMSTD613 · Vixen Cybernetics]"),
+      false,
+      'VixenReference.cite must not output [EMSTD613 · Vixen Cybernetics]'
+    );
+
+    // Preserved canonical manifests must still contain authentic data
+    assert.ok(
+      html.includes('"atelier_id":"EMSTD613"'),
+      'Canonical data manifest must retain atelier_id EMSTD613'
+    );
+    assert.ok(
+      html.includes('"id":"RC-06"'),
+      'RC-06 must exist in formula folios'
+    );
+
+    // P-V4-08: Astra creative latitude declaration in handoff manifest
+    const handoffMatch = html.match(/<script type="application\/json" id="vixen-astra-handoff">([\s\S]*?)<\/script>/);
+    const handoff = JSON.parse(handoffMatch[1]);
+    assert.ok(
+      handoff.authorized_creative_latitude_for_astra.code_refactoring.includes('client presentation JS'),
+      'Handoff manifest must permit Astra code refactoring of presentation JS'
+    );
+  });
 });

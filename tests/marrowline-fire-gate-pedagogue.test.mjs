@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { JSDOM } from 'jsdom';
+import jsdom from 'jsdom';
+const { JSDOM } = jsdom;
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
 import {
   MARROWLINE_GATE_ASSAY_CLAIM_CEILING,

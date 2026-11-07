@@ -1,9 +1,9 @@
 # VIXEN CYBERNETICS · GPT-6 ASTRA CREATIVE ACTIVATION COMMISSION
 **Document ID:** `VIXEN_ASTRA_ACTIVATION_PROMPT.md`  
 **Target Recipient:** GPT-6 Astra (Original TD613 Encyclopedia Design Conversation)  
-**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794`, 639,815 bytes)  
-**Predecessor Build:** Commit `d9e1051ebd23cadf8f032a71e8ef553e6129cd33` (SHA-256: `41e5690abe15c086f11d54acff0d4b50a71a9859222c365ab97e6eb4f8d53d18`)  
-**Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
+**Accompanying Single-File Artifact:** `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` (SHA-256: `c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a`, 641,510 bytes)  
+**Predecessor Build:** PR #1718 Intermediate Pre-Freeze Candidate (SHA-256: `cbf30debe8fa85f14162f6ef51e289b7ef8d41f7fc1ab8c5327d47cc367385ac`, 640,649 bytes)  
+**Governing Authority:** `SAC[X6ZNK5NO51]` · **Covenant:** Khona‌lit-po (preserving interior U+200C) · **Human Closure:** RESERVED (Tawanna C. Miller)
 
 ---
 
@@ -11,7 +11,7 @@
 
 To initiate the Stage 2 creative succession with Astra:
 1. Open the original **TD613 Encyclopedia** design conversation with GPT-6 Astra.
-2. Upload the single-file artifact **`VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`** (available in your `Downloads` folder or repository root).
+2. Upload the single-file artifact **`VIXEN_CYBERNETICS_ASTRA_HANDOFF.html`** (available in your `Downloads` folder, repository root, or artifacts directory).
 3. Copy and paste the prompt block below in its entirety into the conversation.
 
 ---
@@ -47,30 +47,36 @@ The uploaded artifact provides six interconnected environments across the TD613 
 
 ---
 
-### Invariant Starting Conditions vs. Unconstrained Creative Latitude
+### Invariant Starting Conditions vs. Authorized Creative Scope
 
-#### 🔒 Scientific & Custodial Invariants (MUST BE PRESERVED)
-- **Catalogue & Relational Integrity:** Maintain the exact counts and identifiers: 32 Works (`emwork_*`), 53 linked manifestations (`emsrc_*`), 7 Batch-B PDFs (`emb_20260911_*`), 21 protocols (`eminst_*`), and 8 Human Gates.
+#### 🔒 Scientific, Custodial & Security Invariants (STRICTLY FROZEN)
+- **Data Manifests Frozen:** Maintain exact counts and schema objects in `#vixen-corpus-bundle`, `#vixen-astra-handoff`, and `#vixen-reference-manifest`: 32 Works (`emwork_*`), 53 linked manifestations (`emsrc_*`), 7 Batch-B PDFs (`emb_20260911_*`), 21 protocols (`eminst_*`), and 8 Human Gates.
 - **Attribution Membrane:** All 32 Works must strictly retain `authorship: "UNRESOLVED"`. Do not collapse historical handles into a single civil identity.
 - **Gate Initial States:** All 8 Human Gates must initialize at `UNADJUDICATED_PAIR`. Presets are illustrative demos; actual human closure remains reserved.
 - **Three-Tier Capability Contract:** Tier 1 Authorized Viewable Text, Tier 2 Catalogue Metadata Only, Tier 3 Unavailable in Public Surface (original manuscript bodies are never fabricated).
-- **Exact Codepoint Separation:**
+- **Exact Unicode Identities:**
   - Tai Xuan Jing Tetragram: `𝌋` (`U+1D30B`, UTF-8 `f0 9d 8c 8b`)
   - Supplementary PUA Emblem: `\u{10D613}` (`U+10D613`, UTF-8 `f4 8d 98 93`)
   - Covenant Interior ZWNJ: `Khona‌lit-po` (`U+200C`, UTF-8 `e2 80 8c`)
+- **Return Link Security:** Preserve the fail-closed URL-sanitizing validation logic for `#vixenReturnLink` (blocking external domains, slash-backslash, protocol-relative, or dangerous pseudo-schemes).
 - **Claim Ceilings:** Strictly preserve `empirical_replication_count = 0`. No unearned scientific promotion, merge, or release authority.
 
-#### 🎨 Your Authorized Creative Latitude (UNCONSTRAINED)
-- **Spatial Hierarchy & Editorial Cadence:** Recompose the layout, flow, proportion, and visual storytelling as boldly as you see fit.
-- **HTML & CSS Architecture:** You may refactor the DOM structure and completely overhaul the CSS. Notice that the artifact isolates the current styling into `#vixen-structural-css` and `#manifest-instance-theme`. You may replace or reshape either block.
-- **Aesthetic Vocabulary:** Full freedom over typography, scale, color schemes, lighting accents, chromepunk reflections, surface textures, negative space, and kinetic motion.
-- **Navigation & Wayfinding:** Innovate how the user journeys through the 6 environments on desktop and mobile (e.g., drawer, astrolabe, dock, timeline, or HUD).
-- **Artwork & Ornamentation:** You may adapt, restyle, frame, or augment the provisional couture frontispiece, SVG fox emblem, and mathematical glyphs.
+#### 🎨 Your Authorized Creative Latitude (FULL UI/UX & PRESENTATION TRANSFORMATION)
+- **Presentation JavaScript & Interactions:** Full freedom to refactor and enhance presentation JavaScript, event listeners, view routing, transition choreography, interactive canvas dials, animation loops, and study tray widgets, provided data manifests and security invariants remain intact.
+- **HTML Layout & Spatial Stagecraft:** Full authority to recompose the DOM structure, visual hierarchy, reading pace, proportion, negative space, lighting accents, surface textures, chromatic glow, and couture atmosphere.
+- **CSS Architecture & Styling:** Full freedom to refactor and style `<style id="manifest-instance-theme">` and `<style id="vixen-structural-css">` (or replace/consolidate theme layers). Elevate the Glinda/Mugler couture balance, high-contrast dark mode legibility, and architectural typography.
+- **Typography & Layout Proportions:** Refine font stacks, heading scales, leading, card borders, margins, padding, and responsive wrapping across desktop (1440px) and mobile (390px).
+- **Ornamentation & Framing:** Adapt, restyle, frame, or augment the couture frontispiece container, SVG emblems, badge accents, and mathematical formula card presentations.
+- **Wayfinding & Navigation Accents:** Reinvent desktop and mobile wayfinding, tabs, status readouts, breadcrumbs, search dialog, and split-plane folio presentations while maintaining underlying semantic links and data attributes.
 
 ---
 
-### Expected Return Format
-Please return your creative transformation as:
-1. **Transformed HTML5 Document:** Either the complete updated single-file HTML or clear, drop-in replacement blocks for `<style id="manifest-instance-theme">`, the layout DOM, and client presentation routines.
-2. **Editorial Summary:** A brief walkthrough of the visual, spatial, and interaction choices you introduced, and how they elevate Em's scholarly world while honoring the underlying cybernetic invariants.
+### Mandatory Single-File Return Protocol
+
+> [!IMPORTANT]
+> **Complete Single-File HTML5 Document Required**  
+> To guarantee immediate automated verification, byte-level integrity checking, and test suite execution:
+> - **DO NOT return partial snippets, diff chunks, or code placeholders** (e.g., avoid `/* ... rest of code unchanged ... */` or truncated blocks).
+> - **Return the complete, self-contained `VIXEN_CYBERNETICS_ASTRA_HANDOFF.html` file in full.**
+> - Accompany your deliverable with an **Editorial Summary** walking through your visual, spatial, and typographic decisions, highlighting how they elevate Em's cybernetic research world while honoring the underlying invariants.
 ```

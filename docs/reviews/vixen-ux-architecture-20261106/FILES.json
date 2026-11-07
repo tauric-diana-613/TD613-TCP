@@ -24,8 +24,8 @@
     {
       "packet_path": "app/encyclopedia/vix-cyb.html",
       "zip_path": "prototype/app/encyclopedia/vix-cyb.html",
-      "bytes": 639815,
-      "sha256": "6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794"
+      "bytes": 641510,
+      "sha256": "c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/associated-snapshots/pr-1716-7b6b4887f/vixen-cybernetics-engine.mjs.snapshot",
@@ -78,8 +78,8 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/PRE_FREEZE_VERIFICATION_REPORT.md",
       "zip_path": "review-packet/PRE_FREEZE_VERIFICATION_REPORT.md",
-      "bytes": 10925,
-      "sha256": "d52aeedc146a8f94f59c6f4e3c1c867fcf2ea79479c50846a6ad7df848cc3c7b"
+      "bytes": 17032,
+      "sha256": "99e65528df75e1e5e2102ef71ae6ec38e699275bee35c8f77c03b882bb99ba8f"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/README.md",
@@ -216,14 +216,14 @@
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
       "zip_path": "review-packet/VIXEN_ASTRA_ACTIVATION_PROMPT.md",
-      "bytes": 7246,
-      "sha256": "7993618ab6e7b990da98c94d4825b8767d719656d6907cff786b63aae28316d9"
+      "bytes": 8309,
+      "sha256": "370cdee6a680baf6a39769c490e0d1638865077f1f29a5553975bb81cabc37dd"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
       "zip_path": "review-packet/VIXEN_CYBERNETICS_ASTRA_HANDOFF.html",
-      "bytes": 639815,
-      "sha256": "6b5f5c14ef807267414c7913a95749d36426b69593c131d6c4d94b75bd941794"
+      "bytes": 641510,
+      "sha256": "c8edea1630e4fa48b7a041ff97587e5f7796625faf377e1bd092a505142d1e2a"
     },
     {
       "packet_path": "docs/reviews/vixen-ux-architecture-20261106/VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md",

@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { webcrypto } from 'node:crypto';
 import { compilePedagogueDesignReview } from '../app/engine/pedagogue-design-gate.js';
-import { JSDOM } from 'jsdom';
+import jsdom from 'jsdom';
+const { JSDOM } = jsdom;
 import { loomWorkspaceTemplate } from '../app/dome-world/holonomy-loom/workspace-template.js';
 import { renderLoomAiResult } from '../app/dome-world/holonomy-loom/ai-result-view.js';
 
