@@ -1,0 +1,61 @@
+{
+  "schema": "td613.pedagogue-practice-fixture/v0.1",
+  "fixture_id": "vixen.cybernetics-practice/v0.1",
+  "surface_reference": "vixen/atelier",
+  "operator_label": "Vixen Cybernetics practice case",
+  "manifestly_fictional": true,
+  "runtime_binding": true,
+  "operator_read_only_retrieval_allowed": true,
+  "practice_custody_write_allowed": false,
+  "fictional_payload": {
+    "fictional": true,
+    "container_label": "SAMPLE — Vixen Cybernetics practice inquiry",
+    "principal_label": "Practice Work: Real-Time SPSC Audio Transducer",
+    "secondary_labels": [
+      "Practice Manifestation A (Markdown Draft)",
+      "Practice Manifestation B (Typeset PDF)"
+    ],
+    "prepared_cybernetic_object": "S != W != A Control-Plane Calibration",
+    "starter_work_count": 32,
+    "discoverable_protocol_count": 21
+  },
+  "teaching_contrasts": [
+    {
+      "contrast_id": "operahouse-versus-opera",
+      "now": "A visitor enters the Vixen research portal and explores authentic cybernetic works without being forced to learn host infrastructure nomenclature.",
+      "why": "The host platform must sustain the performance without displacing the research object.",
+      "exact": "Host infrastructure terminology is strictly partitioned from default public navigation; internal engine metrics remain accessible in advanced inspection tools."
+    },
+    {
+      "contrast_id": "metadata-versus-manuscript-body",
+      "now": "Exact byte counts, SHA-256 digests, and contribution intervals are fully catalogued while original text bodies remain withheld from the public surface.",
+      "why": "Catalog completeness must not be confused with unearned public release of sensitive manuscript bodies.",
+      "exact": "Three-tier capability contract separates Authorized Viewable Text, Catalogue Metadata Only, and Unavailable Original Bodies; missing bodies are never fabricated."
+    },
+    {
+      "contrast_id": "illustrative-preset-versus-scientific-admission",
+      "now": "Synthesis bench demonstrates candidate control-plane mappings under explicit illustrative preset labels.",
+      "why": "Exploratory UI controls must not be misconstrued as live automated peer review or scientific admission.",
+      "exact": "Presets are explicitly marked ILLUSTRATIVE_PRESET_DEMO with empirical_credit = 0; actual scientific promotion authority remains false."
+    },
+    {
+      "contrast_id": "session-local-snapshot-versus-durable-ledger",
+      "now": "Captured snapshot entries retain recorded predecessor state upon subsequent source withdrawal within the active browser session.",
+      "why": "Demonstrating non-retroactivity in-session must not fabricate claims of durable cross-session database persistence.",
+      "exact": "Snapshot entries are frozen in-memory via Object.freeze under scope SESSION_LOCAL_SNAPSHOT; page refresh cleanly clears the session array."
+    },
+    {
+      "contrast_id": "unadjudicated-gate-versus-forced-closure",
+      "now": "Eight dual-manifestation cases initialize at UNADJUDICATED_PAIR, allowing researchers to explore hypothetical splits without being forced to decide identity.",
+      "why": "Scholarly exploration must preserve ambiguity and negative space until authorized human closure occurs.",
+      "exact": "Default state remains UNADJUDICATED_PAIR with [32, 40] partition recalculation; visitors may freely explore and exit without penalty."
+    }
+  ],
+  "expected_route_steps": [
+    "load-practice-container",
+    "select-practice-work",
+    "inspect-manifestations",
+    "return-overview"
+  ],
+  "expected_endpoint": "return-overview"
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "td613.vixen-ux.source-reconciliation-receipt/v2.2",
+  "document_id": "TD613-VIXEN-PROTOTYPE-RECONCILIATION-20261107-V4",
+  "specification_sha256": "6f3564f51f3b3365cc0e1771f84d2713ead7f7ec070795f66b20702fa4150a4c",
+  "prototype_html_path": "app/encyclopedia/vix-cyb.html",
+  "prototype_html_bytes": 657884,
+  "prototype_html_sha256": "e4388e0a6a538b98d695a40fc7e46d342d5072d9f75fe86cf10d14188c556017",
+  "prototype_structural_dom_excluding_theme_sha256": "257bfd417bc04c046ed40c59e422a3dfc25c6957aa6b17ea51be47de4dff3eaa",
+  "disposition": "SPECIFICATION_AND_EXECUTABLE_PROTOTYPE_RECONCILED",
+  "invariants_verified": {
+    "canonical_works_row_level_bijection": {
+      "expected_works": 32,
+      "verified_spec_rows": 32,
+      "verified_html_bundle_works": 32,
+      "cluster_partition": {
+        "C1": {
+          "works": 12,
+          "manifestations": 18
+        },
+        "C2": {
+          "works": 9,
+          "manifestations": 15
+        },
+        "C3": {
+          "works": 2,
+          "manifestations": 4
+        },
+        "C4": {
+          "works": 5,
+          "manifestations": 10
+        },
+        "C5": {
+          "works": 4,
+          "manifestations": 6
+        }
+      },
+      "linked_manifestations_byte_and_sha256_verified": 53,
+      "prospective_batch_b_byte_and_sha256_verified": 7,
+      "human_gates_default_unadjudicated": 8,
+      "all_32_work_authorship_unresolved": true
+    },
+    "documentary_instruments_row_level_bijection": {
+      "expected_instruments": 21,
+      "verified_spec_rows": 21,
+      "verified_html_bundle_instruments": 21,
+      "family_partition": {
+        "F1": 6,
+        "F2": 7,
+        "F3": 4,
+        "F4": 4
+      },
+      "byte_and_sha256_verified_against_inventory": 21,
+      "standalone_executors": 0,
+      "phantom_ids_in_registry": 0
+    },
+    "presentation_seam_and_codepoints": {
+      "manifest_instance_theme_isolated": true,
+      "palette_tokens_verified": [
+        "#FF91AF",
+        "#F9F36D",
+        "#24282A",
+        "#667078",
+        "#F6F4F0"
+      ],
+      "mobile_only_couture_logo_present": true,
+      "three_codepoints_utf8_verified": [
+        "U+1D30B (f09d8c8b)",
+        "U+10D613 (f48d9893)",
+        "U+200C (e2808c)"
+      ]
+    },
+    "pre_freeze_findings_and_succession": {
+      "f1_illustrative_presets_verified": true,
+      "f2_session_local_predecessor_retention_verified": true,
+      "f3_webcrypto_fail_closed_rejection_verified": true,
+      "astra_single_file_handoff_byte_identical": true,
+      "predecessor_v4_html_sha256_preserved": "36b5634886d7722f9543abd00af0b4648d655cb4028027a6855131d252cd1cff"
+    },
+    "pedagogue_membrane_and_reader_journeys": {
+      "governing_anti_equivalence": "OPERAHOUSE ≠ OPERA ≠ PERFORMER",
+      "product_language_membrane_tiers": [
+        "RESEARCH_OBJECT",
+        "SCHOLARLY_INTERPRETATION",
+        "HOST_INFRASTRUCTURE"
+      ],
+      "anti_leakage_rule_verified": true,
+      "three_reader_journeys_verified": {
+        "journey_a_scholarly_encounter": true,
+        "journey_b_manifestation_comparison": true,
+        "journey_c_expert_investigation_alt_i": true
+      },
+      "standalone_return_route_safe": true,
+      "pedagogue_design_gate_verified": "PASS",
+      "pedagogue_practice_fixture_verified": "PASS"
+    }
+  },
+  "epistemic_scope_boundary": {
+    "what_this_verifier_proves": [
+      "Exact row-by-row bijection and SHA-256/byte-length fidelity between committed repository inventories (identity_metadata_crosswalk.json, work-index.jsonl, source-files.jsonl, batch-b-2026-09-11-source-files-v2.jsonl, original_methods_inventory.json) and BOTH VIXEN_CYBERNETICS_UX_ARCHITECTURE_SPECIFICATION.md and app/encyclopedia/vix-cyb.html.",
+      "Exact per-cluster Work and Manifestation sums (12W/18M + 9W/15M + 2W/4M + 5W/10M + 4W/6M = 32W/53M), catching and correcting V3 heading-sum drift.",
+      "Exclusion of all 5 non-registry custodial duties from the 21-protocol 06-INSTRUMENTS registry.",
+      "Preservation of authorship=\"UNRESOLVED\" across all 32 Work routes, UNADJUDICATED_PAIR across all 8 human gates, #manifest-instance-theme CSS seam isolation, and literal UTF-8 codepoint separation (U+1D30B != U+10D613 != U+200C)."
+    ],
+    "what_requires_browser_or_human_witness": [
+      "Visual layout legibility, non-overlapping header geometry at 390px, interactive Canvas rendering, and live WebCrypto/UTF-8 DOM execution (separately witnessed via headless Chromium CDP in browser-witness-receipt.json and screenshots/01..10, and still subject to human operator aesthetic/editorial closure).",
+      "Substantive editorial adjudication of the 8 human-gated .md/.pdf pairs (remains UNADJUDICATED_PAIR pending human closure).",
+      "Stage 2 couture transformation by Work/Astra and Stage 3 adversarial verification.",
+      "Track A-PFR0.2 offline engine repairs (Q01-Q09) and Experiment B Post-Postflight execution (PP0-PP6)."
+    ]
+  },
+  "explicit_non_claims": {
+    "physical_device_witness": false,
+    "human_gate_adjudication_performed": false,
+    "a_pfr0_2_engine_repaired": false,
+    "experiment_b_executed": false,
+    "scientific_promotion_authority": false,
+    "empirical_replication_credit": 0,
+    "merge_or_release_authority": false
+  }
+}

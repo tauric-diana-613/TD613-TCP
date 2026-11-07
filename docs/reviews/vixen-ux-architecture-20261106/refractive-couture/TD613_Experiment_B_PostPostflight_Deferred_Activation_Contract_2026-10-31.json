@@ -1,0 +1,77 @@
+{
+  "schema": "td613.experiment-b.postpostflight.refractive-couture.activation/v0.1",
+  "record_id": "TD613-B-PPF-REFRACTIVE-COUTURE-20261031-R1",
+  "status": "PIN_CANDIDATE_UNEXECUTED",
+  "project": "tauric-diana-613/TD613-TCP",
+  "covenant": "Khona‌lit-po",
+  "historical_operator_authority": "Tawanna C. Miller — human closure reserved",
+  "scientific_principal": "Amari / Emergence HQ",
+  "implementing_agent": "Kenough / Antigravity",
+  "canonical_experiment_b_arms": [
+    "ARM_0_TRANSPORT",
+    "ARM_1_ARCHIVAL",
+    "ARM_2A_MODULAR",
+    "ARM_2B_MATCHED_UNION"
+  ],
+  "prerequisites_all_required": [
+    "B_FLIGHT_ACTUALLY_COMPLETED_WITH_EXACT_BOUNDED_CUSTODY",
+    "B_POSTFLIGHT_INDEPENDENT_BLINDED_ADJUDICATION_COMPLETE",
+    "HUMAN_APPROVED_SOURCE_RELEASE_SCOPE_FOR_CREATIVE_REUSE",
+    "SOURCE_RIGHTS_AND_PRIVATE_PUBLIC_DESTINATIONS_VALIDATED",
+    "HISTORICAL_IMAGE_AND_MATH_CALIBRATION_IDENTITIES_VERIFIED",
+    "HUMAN_EXPLICIT_POSTPOSTFLIGHT_CREATIVE_GRANT"
+  ],
+  "stages": [
+    {"id":"PP0", "name":"custody_scope_and_branch_quarantine", "requires_explicit_source_grant":false},
+    {"id":"PP1", "name":"source_grounded_mathematical_inventory", "requires_explicit_source_grant":true},
+    {"id":"PP2", "name":"three_lanes_plus_unhandicapped_comparator", "requires_explicit_source_grant":true},
+    {"id":"PP3", "name":"image_and_renderer_replay_with_optics", "requires_explicit_source_grant":true},
+    {"id":"PP4", "name":"predeclared_refractive_discrepancy_assays", "requires_explicit_source_grant":true},
+    {"id":"PP5", "name":"blinded_math_assessment_and_separate_operator_aesthetic_jury", "requires_explicit_source_grant":true},
+    {"id":"PP6", "name":"human_optional_manifest_candidate_admission_and_three_clocks", "requires_explicit_source_grant":true}
+  ],
+  "three_clocks": {
+    "theory_generation":"initial model and artwork synthesis, separate record",
+    "ambiance_presentation":"bounded receiver/environment rendering; ambiance is not asserted to be a physical field",
+    "optional_resynthesis":"new source-linked derivative only after human grant"
+  },
+  "retained_historical_artwork": [
+    {"type":"origin_jpeg", "sha256":"e41e77eba227ef06620093420e31d296006b332b265aea0bfa7e56f6df583336", "byte_review_status":"HISTORICAL_REPORTED_NOT_INDEPENDENTLY_REPLAYED_THIS_TURN"},
+    {"type":"desktop_webp", "sha256":"01d71b797fa1e58d87dfc1a447c51343a2288add0c913bb16f781a596737a8bd", "byte_review_status":"INDEPENDENTLY_VERIFIED_FROM_HISTORICAL_ARCHIVE"},
+    {"type":"mobile_webp", "sha256":"e4a20f9d094f116f22391daaaaca6cec5007807247c0e665ec87f0273f54aac3", "byte_review_status":"INDEPENDENTLY_VERIFIED_FROM_HISTORICAL_ARCHIVE"}
+  ],
+  "independent_historical_ledger": {
+    "archive_basename":"TD613_Em_Manifest_Rendered_Review_Evidence_Closure_2026-10-29.zip",
+    "archive_sha256":"2b92e074c05677f1f0e464ecf1d24396bd31d1bd2676f2f9f1b605a810789f36",
+    "verified_entries":55,
+    "failed_entries":0,
+    "custody":"PRIVATE_DO_NOT_AUTOPUBLISH"
+  },
+  "falsification_boundaries": [
+    "unique_3d_source_not_identifiable_from_single_raster",
+    "H3_TO_D3D_TO_D3_TO_CS_TO_C1_IS_INTERPRETIVE_GRAMMAR_NOT_PHYSICAL_SUBGROUP_PROOF",
+    "pixel_fourier_metrics_require_predeclared_region_and_normalization",
+    "fadt_support_gap_does_not_universally_equal_aperture_nullity",
+    "negative_co_information_is_not_architectural_surplus",
+    "strong_union_comparator_must_be_unhandicapped",
+    "model_conditional_ancestry_Neff_IS_NOT_INDEPENDENT_REPLICATION_PROOF",
+    "artwork_only_creative_success_CANNOT_REWRITE_EXPERIMENT_B_POSTFLIGHT"
+  ],
+  "posture": {
+    "b_native_flight_readiness":"HELD_UNTIL_INDEPENDENTLY_PROVEN",
+    "gate_e":"HELD",
+    "empirical_replication_credit":0,
+    "protected_em_challenge_archive":"SEALED_UNLESS_SEPARATELY_AUTHORIZED",
+    "human_closure_required":true,
+    "release_authority":false,
+    "deployment_authority":false,
+    "automatic_merge_authority":false,
+    "image_generation_authorized_now":false
+  },
+  "source_free_repository_candidate": {
+    "path":"docs/research/experiment-b-postpostflight/TD613_REFRACTIVE_COUTURE_PROTOCOL_2026-10-31.md",
+    "public_commit_requires_operator_review":true,
+    "exclude_private_zip_transcripts_and_corpus_bytes":true,
+    "no_changes_to_experiment_b_preregistration":true
+  }
+}
