@@ -115,5 +115,5 @@ test('DOCKET 15 full in-chat procedural contract and human file are present',()=
  const s=readFileSync(p,'utf8');
  assert.match(s,/same chat response/);
  assert.match(s,/GenUI.issueNewTurn/);
- assert.match(s,/complete original/);
+ assert.match(s,/all 80 original field expressions/);
 });
