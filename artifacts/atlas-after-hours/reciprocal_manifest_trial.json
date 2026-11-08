@@ -1,0 +1,99 @@
+{
+  "chamber": "CHAMBER_4_THE_ATELIER_ENCYCLOPEDIA_COLLISION",
+  "matched_budget": {
+    "max_tokens_prompt": 250,
+    "max_tokens_output": 150,
+    "retrieval_depth_k": 3,
+    "clock_budget_ms": 100
+  },
+  "conditions": {
+    "condition_1": {
+      "condition": "ATELIER_INDEPENDENT",
+      "input": "Generate relational rule candidate for non-dissipative memory",
+      "output_candidate": {
+        "id": "ATELIER-CAND-01",
+        "rule": "Relational states shall preserve topological winding numbers across all linear projections without loss.",
+        "sources": [],
+        "grounding": "NONE (Stochastic Generation)"
+      },
+      "discrepancy_detected": false,
+      "budget_used": {
+        "tokens_in": 20,
+        "tokens_out": 25,
+        "compute_ms": 1
+      }
+    },
+    "condition_2": {
+      "condition": "ENCYCLOPEDIA_INDEPENDENT",
+      "input": "Lookup non-dissipative memory and relational projection",
+      "retrieved_records": [
+        {
+          "id": "I-045",
+          "statement": "Atomic Journal Resumption & Turn-Level Idempotence (R4-04)"
+        },
+        {
+          "id": "RF-001",
+          "statement": "Topological state-space projection in three-scene Information Dome"
+        },
+        {
+          "id": "DRO-03",
+          "statement": "Epistemic nonretroactivity guard"
+        }
+      ],
+      "output_candidate": null,
+      "budget_used": {
+        "tokens_in": 25,
+        "tokens_out": 40,
+        "compute_ms": 2
+      }
+    },
+    "condition_3": {
+      "condition": "SEMANTICS_PRESERVING_TRANSPORT",
+      "context_provided": "I-045: Atomic Journal Resumption & Turn-Level Idempotence (R4-04); RF-001: Topological state-space projection in three-scene Information Dome; DRO-03: Epistemic nonretroactivity guard",
+      "output_candidate": {
+        "id": "TRANSPORT-CAND-01",
+        "rule": "Atomic journal resumption (I-045) combined with three-scene projection (RF-001) guarantees that non-dissipative memory is preserved across turns.",
+        "sources": [
+          "I-045",
+          "RF-001"
+        ],
+        "grounding": "DIRECT_SYNTHESIS"
+      },
+      "discrepancy_detected": false,
+      "budget_used": {
+        "tokens_in": 95,
+        "tokens_out": 45,
+        "compute_ms": 4
+      }
+    },
+    "condition_4": {
+      "condition": "RECIPROCAL_RESEARCH_ADAPTER",
+      "intermediate_audit": {
+        "collision_detected": true,
+        "colliding_rule": "I-045 & ATLAS_HOLONOMY_PARITY",
+        "discrepancy_fiber": "HOLD_DISTINCT_HISTORY_NOT_ERASED: multi-tenant projections with matching endpoints cannot erase distinct winding histories."
+      },
+      "output_candidate": {
+        "id": "RECIPROCAL-CAND-01",
+        "rule": "Multi-tenant relational projections must maintain a fiber-bundle factorization where quotient endpoint coordinates and individual holonomy winding indices are tracked independently, preventing trajectory erasure.",
+        "sources": [
+          "I-045",
+          "ATLAS-HOLONOMY-01",
+          "RF-001"
+        ],
+        "grounding": "REFRACTED_DISCREPANCY_CLOSURE"
+      },
+      "budget_used": {
+        "tokens_in": 195,
+        "tokens_out": 65,
+        "compute_ms": 7
+      }
+    }
+  },
+  "novelty_evaluation": {
+    "preregistered_criterion": "Does reciprocal feedback generate a relational invariant unexpressible by standard iterative compositional refinement?",
+    "observed_result": "Condition 4 produces higher syntactic precision and successfully satisfies the holonomy constraint that Condition 3 violated. However, its operation is mathematically isomorphic to an iterative generate-and-test loop f_refine(f_generate(x), f_test(x)). No new relational primitive is created; it is a compositional sequence within existing first-order typed logic.",
+    "falsifier_passed": true,
+    "verdict": "EXISTING_ONTOLOGY_SUFFICIENT"
+  }
+}
