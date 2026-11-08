@@ -1,0 +1,18 @@
+{
+  "schema": "td613.atlas-after-hours.eighth-order-docket/v1",
+  "case": "TD613-AAH-ORD8-0009",
+  "sourceClass": "SOURCE_FREE_SYNTHETIC",
+  "researchStatus": "EXECUTABLE_LOCAL_RESEARCH_ONLY",
+  "contentSha256": "be8e3cee00e89912d34da51edc9f38f30b73fd04948d10b5dd8a86d62a0fce44",
+  "operator": "tauric.diana.613",
+  "covenant": "Khona‌lit-po",
+  "humanClosure": "RESERVED",
+  "baseline": "f1928fcafd359f071cc9ded5750fe00b22bb8b02",
+  "scientificHolds": [
+    "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+    "HOLD_HOLONOMY_HISTORY_PARITY_FAILED",
+    "CLASSIFICATION_REPLAY_STABILITY_HELD_NOT_YET_WITNESSED"
+  ],
+  "postExecutionSkillAudit": "NOT_EXECUTED_BY_THIS_RUNNER_REQUIRES_REPO_NATIVE_CONTEXT",
+  "verdict": "SYNTHETIC_DISTINCTION_DEMONSTRATED_NO_EMPIRICAL_GENERALIZATION"
+}

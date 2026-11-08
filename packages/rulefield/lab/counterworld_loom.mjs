@@ -1481,3 +1481,15 @@ export {
   evaluateGraeberDotsonGlissantSynthesis,
   answerOperatorsQuestionOnIndependentMetrology
 } from './seventh_order_independent_metrology.mjs';
+
+// ============================================================================
+// 22. EIGHTH-ORDER REPARATIVE CONSEQUENCE — VERIFIED SOURCE-FREE EXTENSION
+// ============================================================================
+export {
+  EIGHTH_ORDER_CONTRACT, RESIDENTIAL_LEDGER_FIELDS, COUNTERWORLD_FIXTURES,
+  WEIGHT_PROFILES, SYNTHETIC_SUBJECTS,
+  computeLongitudinalAttrition, auditAttachmentOpacity,
+  adjudicateObserverEquivalence, evaluateWeightSensitivity,
+  evaluateFiniteExample, terminalObservationNullity, evaluateProtectionTiming,
+  runEighthOrderTrial
+} from './eighth_order_reparative_consequence.mjs';
