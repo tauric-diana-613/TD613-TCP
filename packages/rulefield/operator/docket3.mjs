@@ -33,6 +33,7 @@ export function buildDocket3({head=observedGitHead(),as_of='2026-11-08T12:00:00Z
   first_pass_type:x.previous_triage_primary_role,second_pass_type:x.proposed_primary_role,
   review_level:x.semantic_review_level,interpretation:x.semantic_interpretation,
   discriminating_challenge:x.discriminating_challenge,
+  role_bindings:x.role_bindings,additional_rulefield_view_proposed:x.additional_rulefield_view_proposed,
   type_changed:x.changed_from_preliminary_role,claim_credit:x.claim_credit_added,
   human_approved:x.human_ratified,authorized_for_execution:x.local_execution_authorized}));
  const body={schema:'td613.rulefield.operator-docket-3/v1',id:'RF-OD-0003',
@@ -44,6 +45,7 @@ export function buildDocket3({head=observedGitHead(),as_of='2026-11-08T12:00:00Z
   semantic_source_digest:review.digest,paired_instrument_digest:priority.digest,
   total_registry_count:596,legacy_audited_before_this_round:37,semantic_review_count:559,
   agent_reviewed_total:132,auto_only:427,proposed_type_changes:review.totals.changed_during_second_pass,
+  nonexclusive_role_views:review.totals.nonexclusive_new_research_role_views,
   roles:review.totals.by_proposed_primary_role,methodological_warnings:[
    'An agent-reviewed record is not independently scientifically adjudicated or human ratified.',
    'The purposively chosen 94 records cannot supply a population classification error rate.',
@@ -68,7 +70,7 @@ export function validateDocket3(x){
  const {digest,...b}=x;
  return sha(JSON.stringify(b))===digest&&x.rows.length===559&&
   x.original_historical_priorities.length===70&&x.original_field_expressions.length===86&&
-  x.agent_reviewed_total===132&&x.auto_only===427&&
+  x.agent_reviewed_total===132&&x.auto_only===427&&x.nonexclusive_role_views===14&&
   x.authority.od02==='HELD'&&x.authority.source_registry_mutated===false;
 }
 export function renderDocket3(d){
@@ -82,6 +84,7 @@ export function renderDocket3(d){
  lines.push('','## Actual source-level findings','',
   '- 596 original historical objects retained (37 assessed previously, 559 in residual ledger).',
   '- 38 prior source-read examples, 94 new agent-read records, 427 deterministic-only candidates.',
+  '- 14 additional same-historical-object Rulefield role views (non-exclusive, no authority transfer).',
   '- '+d.proposed_type_changes+' proposed changes between the earlier lexical and current casebook primary types. No error rate inferred.',
   '- Zero canonically adopted local rules, zero independently authenticated empirical outcomes.',
   '- All 86 candidate Rulefields and the original 70 priorities remain proposal/source history, not evidence ranking.',
@@ -89,11 +92,11 @@ export function renderDocket3(d){
  for(const s of d.methodological_warnings)lines.push('- '+s);
  lines.push('','## Every residual original statement and current role proposal','');
  for(const lane of [...new Set(d.rows.map(x=>x.lane))]){
-  lines.push('','### '+lane,'','| ID | Source original expression | Previous type | Proposed type | Evidence level | Reason and discriminant |',
-   '|---|---|---|---|---|---|');
+  lines.push('','### '+lane,'','| ID | Source original expression | Previous type | Proposed type | Qualified role views | Evidence level | Reason and discriminant |',
+   '|---|---|---|---|---|---|---|');
   for(const x of d.rows.filter(x=>x.lane===lane)){
    lines.push('| '+x.id+' | '+esc(x.original_statement)+' | '+x.first_pass_type+' | '+x.second_pass_type+
-    ' | '+x.review_level+' | '+esc([x.interpretation,x.discriminating_challenge].filter(Boolean).join(' // '))+' |');
+    ' | '+esc(x.role_bindings.map(v=>v.role+'@'+v.context).join('; '))+' | '+x.review_level+' | '+esc([x.interpretation,x.discriminating_challenge].filter(Boolean).join(' // '))+' |');
   }
  }
  lines.push('','## All 86 original user-authored Rulefield expressions','',
@@ -113,7 +116,7 @@ export function chatDocket3(d){
   total:d.rows.filter(x=>x.lane===lane).length,
   agent_read:d.rows.filter(x=>x.lane===lane&&x.review_level!=='DETERMINISTIC_TRIAGE_ONLY').length,
   items:d.rows.filter(x=>x.lane===lane).map(x=>({id:x.id,original:x.original_statement,
-   proposed_type:x.second_pass_type,review_status:x.review_level,reason:x.interpretation,
+   proposed_type:x.second_pass_type,role_bindings:x.role_bindings,review_status:x.review_level,reason:x.interpretation,
    challenge:x.discriminating_challenge}))}));
  return {schema:'td613.rulefield.in-chat-docket-3/v1',id:d.id,digest:d.digest,
   source_head:d.source_head,workstreams:d.workstreams,groups,
