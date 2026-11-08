@@ -217,7 +217,7 @@ test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→
   const annotation=rootEl.querySelector('.vxe-name');assert(annotation);
   annotation.value='Potential question only';annotation.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
   click('Rest without penalty');assert.equal(chamber.phase(),'REST');
-  assert(rootEl.querySelector('a.vxe-exit').getAttribute('href')==='/encyclopedia/');
+  assert.equal(rootEl.querySelector('a.vxe-exit').getAttribute('href'),new URL('../app/encyclopedia/',import.meta.url).href,'exit must resolve relative to module location for both project-prefix Pages and root domains');
   click('Return to inquiry');assert.equal(chamber.phase(),'WORLD_ANSWERS');
   assert(chamber.history().some(x=>x.action==='RECORD_SOURCE_VERIFIED'));
   assert(chamber.history().some(x=>x.action==='UNPENALIZED_REST'));
