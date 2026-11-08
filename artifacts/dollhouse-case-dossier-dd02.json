@@ -1,0 +1,192 @@
+{
+  "schema": "td613.dollhouse.case-dossier/v0.1",
+  "case_id": "DOSSIER-DD02-POST-REPAIR-20261108",
+  "source_revision": "d166ea4fbcbeff83ab51e5d31800e5ef051ac04a",
+  "findings": [
+    {
+      "id": "FINDING-DD02-PEDAGOGUE-01",
+      "agent": "PEDAGOGUE",
+      "claim_key": "DOLLHOUSE_DESIGN_DROMOLOGICAL_CADENCE_AND_CARDINALITY",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-design-conductor.js",
+        "instrument": "DOLLHOUSE_PEDAGOGUE_DROMOLOGICAL_ENGINE",
+        "condition": "CANONICAL_8_STAGE_CONSEQUENCE_ORDER_AND_CARDINALITY_INVARIANTS",
+        "temporal_window": "2026-11-08T01:00:00Z/2026-11-08T01:20:00Z"
+      },
+      "reference": {
+        "artifact": "app/engine/dollhouse-design-conductor.js",
+        "sha256": "a8025e03db7992aa18550b2d7d0349680936ae24a016de13896045cbd6882761"
+      },
+      "limitations": [
+        "Verified against unit test suite and deterministic conductor execution; human operator browser witness required for interactive tactile cadence."
+      ]
+    },
+    {
+      "id": "FINDING-DD02-APERTURE-01",
+      "agent": "APERTURE",
+      "claim_key": "DOLLHOUSE_DESIGN_NUMERICAL_CONDITIONING_AND_OBSERVABILITY",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-design-conductor.js",
+        "instrument": "APERTURE_V32_TYPED_EPISTEMIC_DEFICIT_ENGINE",
+        "condition": "PHASONIC_TRIPLE_OVERLAY_AND_SVD_CONDITIONING_BOUNDS",
+        "temporal_window": "2026-11-08T01:00:00Z/2026-11-08T01:20:00Z"
+      },
+      "reference": {
+        "artifact": "app/engine/dollhouse-design-conductor.js",
+        "sha256": "a8025e03db7992aa18550b2d7d0349680936ae24a016de13896045cbd6882761"
+      },
+      "limitations": [
+        "Conditioning verified via one-sided Jacobi SVD kappa(A) <= 1000; multi-epoch classification replay stability held unobserved in single run."
+      ]
+    },
+    {
+      "id": "FINDING-DD02-ATLAS-01",
+      "agent": "ATLAS",
+      "claim_key": "DOLLHOUSE_DESIGN_RELATIONAL_CUSTODY_AND_INJECTIVE_DEDUPLICATION",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-design-conductor.js",
+        "instrument": "DOLLHOUSE_ATLAS_RELATIONAL_CUSTODY_ENGINE",
+        "condition": "ATLAS_V1_INJECTIVE_SERIALIZATION_AND_HOLONOMY_HISTORY_PARITY",
+        "temporal_window": "2026-11-08T01:00:00Z/2026-11-08T01:20:00Z"
+      },
+      "reference": {
+        "artifact": "tests/dollhouse-design-conductor.test.mjs",
+        "sha256": "a3e2b3f16c226bb51f9dea944d5303e84e3d8e2776a87c6ab09dc08bcb94c8f7"
+      },
+      "limitations": [
+        "Prior veto verified resolved; mathematical premise retention and injective deduplication proven across 20/20 test cases."
+      ]
+    },
+    {
+      "id": "FINDING-DD02-FADT-01",
+      "agent": "FADT",
+      "claim_key": "DOLLHOUSE_DESIGN_EXACT_DESCENT_AND_STAGE_PROJECTIONS",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-design-conductor.js",
+        "instrument": "DOLLHOUSE_FADT_REPARATIVE_ASSISTANCE_ENGINE",
+        "condition": "FINITE_QUOTIENT_STAGE_PROJECTIONS_AND_UNCONDITIONED_GAP_PRESERVATION",
+        "temporal_window": "2026-11-08T01:00:00Z/2026-11-08T01:20:00Z"
+      },
+      "reference": {
+        "artifact": ".agents/skills/dollhouse-design/SKILL.md",
+        "sha256": "587aa14333036e3ba3ee5f942cbae62298741105b2177512d20288d0afa801d8"
+      },
+      "limitations": [
+        "Exact finite descent verified with zero irreducible gap; coordinate recovery capped under 10,000 evaluation budget."
+      ]
+    },
+    {
+      "id": "FINDING-DD02-TEMPORAL-01",
+      "agent": "TEMPORAL_CUSTODIAN",
+      "claim_key": "DOLLHOUSE_DESIGN_CHRONOLOGY_AND_FULL_SOURCE_INGESTION",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-design-conductor.js",
+        "instrument": "DOLLHOUSE_TEMPORAL_CUSTODIAN_ENGINE",
+        "condition": "HISTORICAL_REFERENCE_GIT_PROVENANCE_AND_CARO_CLEARANCE_LATENCY",
+        "temporal_window": "2026-11-08T01:00:00Z/2026-11-08T01:20:00Z"
+      },
+      "reference": {
+        "artifact": "app/engine/dollhouse-design-conductor.js",
+        "sha256": "a8025e03db7992aa18550b2d7d0349680936ae24a016de13896045cbd6882761"
+      },
+      "limitations": [
+        "Historical references authenticated via 40-hex commit SHAs; non-blocking identifier alignment observation noted between candidate_id and id."
+      ]
+    }
+  ],
+  "disagreements": [],
+  "agent_coverage": [
+    {
+      "agent": "PEDAGOGUE",
+      "present": true
+    },
+    {
+      "agent": "APERTURE",
+      "present": true
+    },
+    {
+      "agent": "ATLAS",
+      "present": true
+    },
+    {
+      "agent": "FADT",
+      "present": true
+    },
+    {
+      "agent": "TEMPORAL_CUSTODIAN",
+      "present": true
+    }
+  ],
+  "unresolved_finding_ids": [],
+  "evidence_posture": {
+    "evidence_class_is_caller_declared": true,
+    "artifact_bytes_checked": true,
+    "reference_authentication": "BYTE_AUTHENTICATED",
+    "findings_independently_scoped": true,
+    "evidence_classes_aggregated": false,
+    "majority_vote": false,
+    "global_score": null,
+    "knowledge_survival": {
+      "retrievability": 1,
+      "attributable_provenance": 1,
+      "interpretability": 1,
+      "transmissibility": 1,
+      "contestability": 0.5,
+      "repairability": 0.5,
+      "capacities": {
+        "retrievability": {
+          "status": "VERIFIED",
+          "score": 1,
+          "evidence": "All referenced artifact files exist on local disk at declared paths."
+        },
+        "attributable_provenance": {
+          "status": "LOCAL_BYTE_CONSISTENT",
+          "score": 1,
+          "evidence": "All referenced local artifact files match declared SHA-256 digests exactly.",
+          "limitations": "Verifies local byte consistency only; external author origin remains unauthenticated."
+        },
+        "interpretability": {
+          "status": "VERIFIED",
+          "score": 1,
+          "evidence": "All findings declare strict four-vector observation scopes and explicit epistemic limitations."
+        },
+        "transmissibility": {
+          "status": "DEMONSTRATED",
+          "score": 1,
+          "evidence": "Finding records survive JSON serialization/deserialization without mutation or data loss."
+        },
+        "contestability": {
+          "status": "CALIBRATED_CONSENSUS",
+          "score": 0.5,
+          "evidence": "All agents in unanimous consensus; score calibrated to 0.5 reflecting absence of active dispute to contest."
+        },
+        "repairability": {
+          "status": "CALLER_DECLARED_RECOVERY",
+          "score": 0.5,
+          "evidence": "Caller self-attested recovery via Applied DD-02 architectural repairs (commit ac2b6e5e4): normalized commission retains mathematical_premise and audit_roles, candidate override deduplication uses injective atlas-v1 serialization, candidate snapshot domain validation enforced fail-closed, and companion audit trajectories dynamically grounded. without independently validated witness receipt.",
+          "limitations": "Caller assertion only; unverified by independent witness receipt."
+        }
+      }
+    }
+  },
+  "decision": "HUMAN_REVIEW_REQUIRED",
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}

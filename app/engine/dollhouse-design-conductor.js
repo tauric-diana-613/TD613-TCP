@@ -1284,7 +1284,7 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
 
   // 5. COMPARE (What survived, what changed, open decisions)
   const candidateEvaluations = candidates.map((cand, idx) => {
-    const candId = cand.candidate_id || `CANDIDATE_${String.fromCharCode(65 + idx)}`;
+    const candId = cand.candidate_id || cand.id || `CANDIDATE_${String.fromCharCode(65 + idx)}`;
     const instId = cand.governing_instrument || commission.instruments[idx] || commission.instruments[0];
     const isPrimary = idx === 0;
 
