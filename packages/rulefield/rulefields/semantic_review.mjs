@@ -10,6 +10,23 @@ const casebookURL=new URL('./type_assessment/SEMANTIC_CASEBOOK_ROD0003.json',imp
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const fail=x=>{throw Object.assign(new Error(x),{code:x})};
 const ALLOWED=new Set(['RULE','RULEFIELD','ASSAY','MODEL','SOURCE','CLAIM','THEOREM','EVIDENCE_BOUNDARY','RESEARCH_PROGRAM','UNRESOLVED']);
+// Additional typed views use one source identity; none confers execution authority.
+export const SECOND_PASS_FIELD_VIEWS=Object.freeze({
+ 'I-043':'PROMPT_TOOL_EXCLUSION_RESEARCH',
+ 'I-045':'JOURNAL_IDEMPOTENCE_RESEARCH',
+ 'I-047':'FAIL_CLOSED_CRYPTOGRAPHIC_ADMISSION_RESEARCH',
+ 'X-019':'SRC_HETEROGENEOUS_METHODS_RESEARCH',
+ 'X-025':'PHASON_SEAM_MODEL_VARIANTS_RESEARCH',
+ 'X-030':'HOLONOMY_EVIDENCE_BOUNDARY_RESEARCH',
+ 'Q04-A02':'FOUR_CLOCK_EPISTEMIC_COMPARISONS',
+ 'Q19-R03':'EXTERIORITY_IDENTIFIABILITY_RESEARCH',
+ 'Q21-R03':'ARCHIVE_FINITE_NONREALIZATION_RESEARCH',
+ 'Q28-R01':'RELATION_GEOMETRY_COMPARATIVE_RESEARCH',
+ 'AE-12':'PRESENTATION_OBSERVER_COMPARATIVE_RESEARCH',
+ 'TC15':'DIRECT_PROXY_TESTIMONY_RESEARCH',
+ 'CBFE-RG-11':'OBSERVER_PARTITION_RECOVERABILITY_RESEARCH',
+ 'CBFE-RG-12':'COMPETENT_NULL_RULE_NOVELTY_RESEARCH'
+});
 export function readSemanticCasebook(){
  const json=JSON.parse(readFileSync(casebookURL,'utf8'));
  if(json.schema!=='td613.rulefield.semantic-casebook/v2'||json.parent_docket!=='RF-OD-0002'||
@@ -38,13 +55,22 @@ export function buildSemanticReview({registry=readRulefield(),triage=buildResidu
    oldCurator?'EARLIER_AGENT_SOURCE_READ_PROPOSAL':'DETERMINISTIC_TRIAGE_ONLY';
   const explanation=examined?.interpretation??row.curator_note??null;
   const challenge=examined?.discriminating_challenge??null;
+  const fieldContext=SECOND_PASS_FIELD_VIEWS[row.id]??null;
+  const bindings=[{role:chosen,view_ref:'legacy_rule:'+row.id+'#role:'+chosen.toLowerCase(),
+    context:'SOURCE_SPECIFIC_PROPOSED_PRIMARY_ROLE',executable_authority:false}];
+  if(fieldContext)bindings.push({role:'RULEFIELD',
+    view_ref:'legacy_rule:'+row.id+'#role:rulefield',context:fieldContext,executable_authority:false});
   return {...row,proposed_primary_role:chosen,previous_triage_primary_role:row.proposed_primary_role,
    semantic_review_level:level,semantic_interpretation:explanation,discriminating_challenge:challenge,
+   role_bindings:bindings,additional_rulefield_view_proposed:!!fieldContext,
    changed_from_preliminary_role:!!examined&&chosen!==row.proposed_primary_role,
    human_ratified:false,role_assignment_scientifically_adjudicated:false,
    local_execution_authorized:false,empirical_consequence_witnessed:false,
    explicit_context_qualifier:'PROPOSED_ROLE_VIEW_WITHOUT_CROSS_ROLE_AUTHORITY'};
  });
+ const views=new Set(Object.keys(SECOND_PASS_FIELD_VIEWS));
+ if(rows.filter(x=>x.additional_rulefield_view_proposed).length!==views.size||
+   [...views].some(id=>!sample.has(id)))fail('SECOND_PASS_FIELD_VIEW_SOURCE_INVALID');
  const roles={},byLane={},transitions={};
  for(const r of rows){
   roles[r.proposed_primary_role]=(roles[r.proposed_primary_role]||0)+1;
@@ -61,6 +87,7 @@ export function buildSemanticReview({registry=readRulefield(),triage=buildResidu
   methodology:'38 prior author-curated exemplar statements + 94 new directly read source statements, each with testable discriminant; remaining 427 deterministic proposals. Purposive selections prohibit population error-rate claims.',
   totals:{original:596,prior_selected:37,residual:559,curator_previous:38,curator_new:94,
    selected_agent_interpretations:132,deterministic_only:427,changed_during_second_pass:changeCount,
+   nonexclusive_new_research_role_views:views.size,
    by_proposed_primary_role:roles,by_lane:byLane,observed_role_changes_in_purposive_cases:transitions,
    scientific_adjudications:0,adopted_local_rules:0},
   rows,authority:{canonical_mutation:false,original_ids_preserved:true,operator_approval:false,
@@ -73,11 +100,14 @@ export function validateSemanticReview(review,{registry=readRulefield()}={}){
  const {digest,...other}=review;if(digest!==sha(JSON.stringify(other)))return false;
  const source=new Map(registry.rules.map(x=>[x.id,x]));
  return review.totals.selected_agent_interpretations===132&&
-   review.totals.deterministic_only===427&&review.totals.scientific_adjudications===0&&
+   review.totals.deterministic_only===427&&review.totals.nonexclusive_new_research_role_views===14&&
+   review.totals.scientific_adjudications===0&&
    new Set(review.rows.map(x=>x.id)).size===559&&review.rows.every(x=>
     source.get(x.id)?.statement===x.source_statement&&
     x.human_ratified===false&&x.local_execution_authorized===false&&
-    x.role_assignment_scientifically_adjudicated===false)&&
+    x.role_assignment_scientifically_adjudicated===false&&
+    Array.isArray(x.role_bindings)&&x.role_bindings.every(v=>v.executable_authority===false)&&
+    (x.additional_rulefield_view_proposed?x.role_bindings.length===2:x.role_bindings.length===1))&&
    review.authority.canonical_mutation===false&&review.authority.protected_flight==='HELD';
 }
 export function semanticInspection(id,review=buildSemanticReview()){
