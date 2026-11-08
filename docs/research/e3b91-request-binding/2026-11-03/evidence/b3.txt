@@ -1,0 +1,19 @@
+✔ authentic-seed interface is invoked in isolated copy; original status stays empty and all 44 declared IDs unchanged (9.809832ms)
+✔ original TD native search/get/cite/verify/graph/context vs independently initialized recipient execution (29.892426ms)
+✔ source-matched transport only has zero native research executions and exact bytes (7.634339ms)
+✔ new named Universal Encyclopedia candidate runs original compiler and original query operators (22.19853ms)
+✔ genuine executed zero for no-edge topology; lexical false-twin checked against original (6.24948ms)
+✔ independent receipt, changed original bytes and wrong epoch fail closed (5.143592ms)
+✔ contradictory public/private rights, invented body and date precision fail before synthetic admission (3.575504ms)
+✔ false-twin citation digest, missing original and unknown operation refuse or return declared negative (14.718628ms)
+✔ exact replay, interrupted restart and witness withdrawal invalidate already admitted source (2.454333ms)
+✔ unknown graph family remains unclassified instead of laundering syntax into semantic authority (2.028346ms)
+✔ interrupted admission is held without unilateral repair or synthetic credit (1.267076ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 207.881005

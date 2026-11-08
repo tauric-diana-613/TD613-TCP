@@ -1,0 +1,32 @@
+{
+  "schema": "td613.e3b6-frozen-expectations/v1",
+  "evidence_class": "SYNTHETIC_REPLAY_ONLY",
+  "manifestations": 6,
+  "source_files": 6,
+  "originals": 4,
+  "derivatives": 6,
+  "operational_works": 3,
+  "unassigned_manifestations": 1,
+  "independent_work_bounds": [
+    3,
+    5
+  ],
+  "default_counterfactual_count": 4,
+  "split_counterfactual_count": 5,
+  "merge_counterfactual_count": 3,
+  "ancestor_count": 4,
+  "known_hash_groups": 3,
+  "signed_compatible": [
+    "DIFFERENCE"
+  ],
+  "nonunique_compatible": [
+    "DIFFERENCE",
+    "SUM",
+    "ABS_DIFFERENCE"
+  ],
+  "revoked_O3_remaining_derivatives": [
+    "FIXTURE-D1",
+    "FIXTURE-D2",
+    "FIXTURE-D5"
+  ]
+}
