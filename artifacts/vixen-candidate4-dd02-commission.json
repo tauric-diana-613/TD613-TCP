@@ -1,0 +1,67 @@
+{
+  "commission_id": "DD02-VIXEN-CANDIDATE4-20261108",
+  "seed": "Build an original Vixen Cybernetics research chamber that holds live relational questions beside a separate immutable Universal Encyclopedia reference estate, preserving Em custodial identity, human refusal, and delight under a Glinda-chrome astrolabe without imposing a monolithic cross-corpus collapse.",
+  "medium": "HYBRID",
+  "instruments": [
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "DIALECTICAL_TENSION",
+    "PHASONIC_COUNTERPOINT"
+  ],
+  "human_coordinates": {
+    "what": "One standalone interactive Candidate 4 HTML application (no alternate production variant)",
+    "who": "Em/Vixen's original custodians, human identity adjudicator, and future scientific reader; no agent assumes authorial closure",
+    "where": "artifacts/vixen-candidate4/vix-cyb-candidate4.html on isolated draft branch; separate canonical Reference Corpus v1.4 remains at app/encyclopedia/reference/",
+    "how": "Original five-clock astrolabe with typed S/W/A control planes; genuine 32 Works 8 Gates 21 protocols; same-origin optional read-only reference aperture, finite census verification, honest cryptographic/source-origin holds",
+    "when": "2026-11-08 development candidate; C1-C3 retained as historical failure witnesses; protected Experiment B Flight HELD",
+    "why": "Receive future independently adjudicated questions or null outcomes without predetermining discoveries, flattening authorship, conflating source estates, or commercializing research"
+  },
+  "historical_references": [
+    {
+      "reference_id": "BINDING-CUSTODY-LAW",
+      "source_path": "AGENTS.md",
+      "source_revision": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+      "classification": "BINDING_CUSTODY_LAW",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Repository operating authority and consequence-first principles"
+    },
+    {
+      "reference_id": "RULE-U00",
+      "source_path": "packages/universal_atelier/receiver/universal-atelier-receiver.mjs",
+      "source_revision": "9c82f8b614bd66b3f2652cf115e5eb172c2c6170",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Actual ten reference operations and five-table receiver schema; no invented engine"
+    },
+    {
+      "reference_id": "REF-VIXEN-ARCHIVE",
+      "source_path": "app/encyclopedia/vix-cyb.html",
+      "source_revision": "5c2efc313c4ae527da5760f8883a4c882773018e",
+      "classification": "NEGOTIABLE_AESTHETIC_DIRECTION",
+      "provenance_class": "RECONSTRUCTED_RECORD",
+      "summary": "32 Works, 8 gates, 21 protocols, historical emblem, authorial title-locus data without reusing prior interface code"
+    },
+    {
+      "reference_id": "REF-CORPUS-MANIFEST",
+      "source_path": "app/encyclopedia/reference/manifest.json",
+      "source_revision": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+      "classification": "BINDING_CONSTRAINT",
+      "provenance_class": "CONTEMPORANEOUS_ORIGINAL",
+      "summary": "Universal Encyclopedia v1.4 1141 record census; separate evidence estate"
+    }
+  ],
+  "deliverable_count": 1,
+  "scientific_audit_requested": false,
+  "authority": {
+    "release_authority": false,
+    "merge_authority": false,
+    "deployment_authority": false,
+    "experiment_b_flight": "HELD",
+    "human_closure_required": true
+  },
+  "predecessor_local_zip_shas": {
+    "candidate_1": "19137898f1a1d66471b16fdcba815164c422a4b2cb9147bb8a22d0944cc381eb",
+    "candidate_2": "8ae5be8ff1ac3dfed316f5155a385e5a31aa146e640e09da89a148bc7daddaf3",
+    "candidate_3": "930f4c79860737c64619627b14f6718f6833dfd45509849dd365303bce22a10a"
+  },
+  "verification_note": "Native design conductor has not executed on GitHub or local worktree; this design follows the documented DD02 eight-stage contract. Future native receipt must be created by running the actual repository CLI. Human operator scientific closure reserved."
+}
