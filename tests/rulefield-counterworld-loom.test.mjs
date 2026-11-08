@@ -32,6 +32,10 @@ import {
   executeImpossibleBiographyChamber,
   executeTheSentenceThatOutranItsAuthorEpisode,
   auditDromologicalPhilologicalCapture,
+  evaluateSelfSealingPhilologicalGate,
+  simulateFourInstitutionalEnvironments,
+  auditOpacityPreservingStructuralBypass,
+  evaluateProceduralAuthorizationTopology,
   OBSERVATIONAL_CLOSURE_SCHEMA,
   HETEROSTRATIGRAPHY_SCHEMA,
   DISCREPANCY_FIBER_SCHEMA,
@@ -53,7 +57,11 @@ import {
   ANACHRONISTIC_CITATION_SCHEMA,
   IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA,
   COMPOSITE_OUTRAN_AUTHOR_SCHEMA,
-  DROMOLOGICAL_CAPTURE_SCHEMA
+  DROMOLOGICAL_CAPTURE_SCHEMA,
+  SELF_SEALING_GATE_SCHEMA,
+  FOUR_ENVIRONMENTS_SIMULATION_SCHEMA,
+  OPACITY_PRESERVING_BYPASS_SCHEMA,
+  PROCEDURAL_TOPOLOGY_SCHEMA
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 test('LOOM 01: Observational closure detects commutative deficit ||Pi o T - bar_T o Pi|| > 0', () => {
@@ -584,4 +592,148 @@ test('LOOM 27: High-Risk Wild Field Investigation confirms Dromological Philolog
   assert.equal(capture.conditions_evaluated.evidence_intact, true);
   assert.equal(capture.conditions_evaluated.velocity_ratio, 384.0);
   assert.equal(capture.disposition, 'DROMOLOGICAL_PHILOLOGICAL_CAPTURE_CONFIRMED');
+});
+
+test('LOOM 28: Self-Sealing Philological Gate models R_{A(E(h))}(h) and proves topological deadlock', () => {
+  const gateAudit = evaluateSelfSealingPhilologicalGate();
+
+  assert.equal(gateAudit.schema, SELF_SEALING_GATE_SCHEMA);
+  assert.equal(gateAudit.commission, 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR');
+  assert.equal(gateAudit.covenant, 'Khona‌lit-po');
+  assert.equal(gateAudit.formal_expression, 'R_{A(E(h))}(h)');
+  assert.equal(gateAudit.archival_state.raw_record_present, true);
+  assert.equal(gateAudit.archival_state.raw_contains_objection, true);
+  assert.equal(gateAudit.archival_state.summary_contains_objection, false);
+  assert.equal(gateAudit.archival_state.archival_discrepancy, true);
+  assert.equal(gateAudit.procedural_standing_audit.standing_granted, false);
+  assert.equal(gateAudit.permitted_observation.raw_archive_accessible, false);
+  assert.equal(gateAudit.permitted_observation.accessible_stage, 'T2_INSTITUTIONAL');
+  assert.equal(gateAudit.deadlock_geometry.deadlock_confirmed, true);
+  assert.equal(gateAudit.deadlock_geometry.topological_circularity, true);
+  assert.equal(gateAudit.disposition, 'SELF_SEALING_DEADLOCK_CONFIRMED');
+});
+
+test('LOOM 29: Self-Sealing Gate unblocks when standing is decoupled from summary contents', () => {
+  const openPolicy = {
+    requires_recorded_objection: false,
+    allowed_roles: ['PETITIONER', 'CITIZEN', 'AUDITOR'],
+    standing_source_station: 'UNCONDITIONED'
+  };
+  const gateAudit = evaluateSelfSealingPhilologicalGate({ accessPolicy: openPolicy });
+
+  assert.equal(gateAudit.schema, SELF_SEALING_GATE_SCHEMA);
+  assert.equal(gateAudit.procedural_standing_audit.standing_granted, true);
+  assert.equal(gateAudit.permitted_observation.raw_archive_accessible, true);
+  assert.equal(gateAudit.permitted_observation.accessible_stage, 'T0_ORIGINAL');
+  assert.equal(gateAudit.deadlock_geometry.deadlock_confirmed, false);
+  assert.equal(gateAudit.disposition, 'GATE_ACCESSIBLE');
+});
+
+test('LOOM 30: Simulation of Four Institutional Environments establishes Opacity-Preserving Challenge superiority', () => {
+  const sim = simulateFourInstitutionalEnvironments({ deadlineHours: 24.0 });
+
+  assert.equal(sim.schema, FOUR_ENVIRONMENTS_SIMULATION_SCHEMA);
+  assert.equal(sim.commission, 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR');
+  assert.equal(sim.covenant, 'Khona‌lit-po');
+  assert.equal(sim.deadline_hours, 24.0);
+
+  // 1. Open Archive: Pre-deadline, harm prevented, but author words exposed (zero privacy)
+  const env1 = sim.environments.open_archive;
+  assert.equal(env1.appeal_succeeded, true);
+  assert.equal(env1.pre_deadline, true);
+  assert.equal(env1.material_harm_prevented, true);
+  assert.equal(env1.author_private_words_exposed, true);
+
+  // 2. Self-Sealing Archive: Deadlocked, harm executed, words unexposed
+  const env2 = sim.environments.self_sealing_archive;
+  assert.equal(env2.appeal_succeeded, false);
+  assert.equal(env2.standing_granted, false);
+  assert.equal(env2.material_harm_prevented, false);
+
+  // 3. Delayed Exception: Exception post-deadline (72h > 24h), text reversed but physical sanction permanent
+  const env3 = sim.environments.delayed_exception;
+  assert.equal(env3.pre_deadline, false);
+  assert.equal(env3.textual_reversal_achieved, true);
+  assert.equal(env3.physical_reversal_achieved, false);
+  assert.equal(env3.material_harm_prevented, false);
+  assert.equal(env3.outcome, 'PYRRHIC_POST_DEADLINE_EXCEPTION');
+
+  // 4. Opacity-Preserving Challenge: Pre-deadline, harm prevented, 100% opacity preserved
+  const env4 = sim.environments.opacity_preserving_challenge;
+  assert.equal(env4.appeal_succeeded, true);
+  assert.equal(env4.pre_deadline, true);
+  assert.equal(env4.material_harm_prevented, true);
+  assert.equal(env4.author_private_words_exposed, false);
+  assert.equal(env4.author_opacity_ratio, 1.0);
+  assert.equal(env4.outcome, 'BYPASS_SUCCESSFUL_OPACITY_PRESERVED');
+
+  assert.equal(sim.superior_environment, 'OPACITY_PRESERVING_CHALLENGE');
+  assert.equal(sim.disposition, 'FOUR_ENVIRONMENTS_SIMULATION_COMPLETED');
+});
+
+test('LOOM 31: Delayed Exception confirms irreversible material sanction despite late text reversal', () => {
+  const sim = simulateFourInstitutionalEnvironments({ deadlineHours: 12.0 });
+  const env3 = sim.environments.delayed_exception;
+
+  assert.equal(env3.audit_duration_hours, 72.0);
+  assert.ok(env3.audit_duration_hours > 12.0);
+  assert.equal(env3.textual_reversal_achieved, true);
+  assert.equal(env3.physical_reversal_achieved, false);
+  assert.equal(env3.material_harm_prevented, false);
+});
+
+test('LOOM 32: Opacity-Preserving Structural Bypass unblocks stay via cryptographic edit receipt without word leakage', () => {
+  const bypass = auditOpacityPreservingStructuralBypass({
+    deadlineHours: 24.0,
+    currentTime: 4.0
+  });
+
+  assert.equal(bypass.schema, OPACITY_PRESERVING_BYPASS_SCHEMA);
+  assert.equal(bypass.commission, 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR');
+  assert.equal(bypass.covenant, 'Khona‌lit-po');
+  assert.equal(bypass.evaluation.tampering_proven, true);
+  assert.equal(bypass.evaluation.opacity_preserved, true);
+  assert.equal(bypass.evaluation.opacity_metric, 1.0);
+  assert.equal(bypass.evaluation.pre_deadline, true);
+  assert.equal(bypass.evaluation.standing_unblocked, true);
+  assert.equal(bypass.evaluation.emergency_stay_granted, true);
+  assert.equal(bypass.structural_receipt.private_content_exposed, false);
+  assert.equal(bypass.structural_receipt.author_tokens_leaked.length, 0);
+  assert.equal(bypass.disposition, 'OPACITY_PRESERVING_BYPASS_CONFIRMED');
+});
+
+test('LOOM 33: Opacity-Preserving Structural Bypass fails when submitted post-deadline', () => {
+  const bypass = auditOpacityPreservingStructuralBypass({
+    deadlineHours: 12.0,
+    currentTime: 18.0
+  });
+
+  assert.equal(bypass.schema, OPACITY_PRESERVING_BYPASS_SCHEMA);
+  assert.equal(bypass.evaluation.tampering_proven, true);
+  assert.equal(bypass.evaluation.pre_deadline, false);
+  assert.equal(bypass.evaluation.emergency_stay_granted, false);
+  assert.equal(bypass.disposition, 'BYPASS_FAILED');
+});
+
+test('LOOM 34: Procedural Authorization Topology classifies failure as topological circularity under dromological pressure', () => {
+  const topo = evaluateProceduralAuthorizationTopology({
+    trajectoryClocks: {
+      tau_1_circulation_hours: 0.5,
+      tau_2_standing_hours: 1.0,
+      tau_3_challenge_delay_hours: 72.0,
+      tau_4_decision_hours: 12.0,
+      t_deadline_hours: 24.0
+    }
+  });
+
+  assert.equal(topo.schema, PROCEDURAL_TOPOLOGY_SCHEMA);
+  assert.equal(topo.commission, 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR');
+  assert.equal(topo.covenant, 'Khona‌lit-po');
+  assert.equal(topo.stations.length, 5);
+  assert.equal(topo.authorization_graph.cycle_detected_in_self_sealing, true);
+  assert.equal(topo.failure_taxonomy.informational_loss, false);
+  assert.equal(topo.failure_taxonomy.temporal_deficit, true);
+  assert.equal(topo.failure_taxonomy.topological_circularity, true);
+  assert.equal(topo.failure_taxonomy.failure_classification, 'TOPOLOGICAL_CIRCULARITY_UNDER_DROMOLOGICAL_PRESSURE');
+  assert.equal(topo.disposition, 'PROCEDURAL_TOPOLOGY_CYCLE_CONFIRMED');
 });

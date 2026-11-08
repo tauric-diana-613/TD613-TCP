@@ -27,7 +27,11 @@ import {
   buildThreePhilologicalHistories,
   auditPhilologicalEquivalence,
   executeTheSentenceThatOutranItsAuthorEpisode,
-  auditDromologicalPhilologicalCapture
+  auditDromologicalPhilologicalCapture,
+  evaluateSelfSealingPhilologicalGate,
+  simulateFourInstitutionalEnvironments,
+  auditOpacityPreservingStructuralBypass,
+  evaluateProceduralAuthorizationTopology
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -43,6 +47,10 @@ Commands:
   outran-author          Execute 'The Sentence That Outran Its Author' composite episode
   dromological-capture   Audit Dromological Philological Capture hypothesis
   philology              Audit Three Philological Histories under source ancestry diff
+  self-sealing-gate      Audit Self-Sealing Philological Gate R_{A(E(h))}(h)
+  four-environments      Simulate Four Institutional Environments under summary error
+  opacity-bypass         Execute Opacity-Preserving Structural Bypass audit
+  procedural-topology    Evaluate 5-station procedural authorization topology
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -111,6 +119,30 @@ async function main() {
   if (cmd === 'philology') {
     const histories = buildThreePhilologicalHistories();
     const report = auditPhilologicalEquivalence(histories, 'SOURCE_ANCESTRY_DIFF');
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'self-sealing-gate') {
+    const report = evaluateSelfSealingPhilologicalGate();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'four-environments') {
+    const report = simulateFourInstitutionalEnvironments({ deadlineHours: 24.0 });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'opacity-bypass') {
+    const report = auditOpacityPreservingStructuralBypass({ deadlineHours: 24.0, currentTime: 4.0 });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'procedural-topology') {
+    const report = evaluateProceduralAuthorizationTopology();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }

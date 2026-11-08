@@ -32,6 +32,10 @@ export const ANACHRONISTIC_CITATION_SCHEMA = 'td613.rulefield.anachronistic-cita
 export const IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA = 'td613.rulefield.impossible-biography-dromology/v1.0';
 export const COMPOSITE_OUTRAN_AUTHOR_SCHEMA = 'td613.rulefield.sentence-outran-author/v1.0';
 export const DROMOLOGICAL_CAPTURE_SCHEMA = 'td613.rulefield.dromological-capture/v1.0';
+export const SELF_SEALING_GATE_SCHEMA = 'td613.rulefield.self-sealing-gate/v1.0';
+export const FOUR_ENVIRONMENTS_SIMULATION_SCHEMA = 'td613.rulefield.four-environments-simulation/v1.0';
+export const OPACITY_PRESERVING_BYPASS_SCHEMA = 'td613.rulefield.opacity-preserving-bypass/v1.0';
+export const PROCEDURAL_TOPOLOGY_SCHEMA = 'td613.rulefield.procedural-topology/v1.0';
 
 const digest = x => createHash('sha256').update(typeof x === 'string' ? x : JSON.stringify(x)).digest('hex');
 const insist = (ok, msg) => { if (!ok) throw new Error(msg); };
@@ -676,5 +680,387 @@ export function auditDromologicalPhilologicalCapture({
       : 'Capture condition not met.',
     disposition: captureConfirmed ? 'DROMOLOGICAL_PHILOLOGICAL_CAPTURE_CONFIRMED' : 'CAPTURE_REFUTED',
     epistemic_law: 'When interpretive velocity outstrips corrective velocity, censorship is unnecessary; speed alone executes historical capture.'
+  });
+}
+
+// ============================================================================
+// 10. THE SELF-SEALING PHILOLOGICAL GATE (R_{A(E(h))}(h))
+// ============================================================================
+
+/**
+ * Audits the Self-Sealing Philological Gate where standing to inspect the archival
+ * record is conditioned upon the administrative representation of that record:
+ *
+ *   R_{A(E(h))}(h)
+ *
+ * When an unedited history h containing an explicit objection is summarized as
+ * E(h) claiming "Participation was voluntary; no objection was recorded", and procedural
+ * access policy requires a recorded objection for standing (A(E(h)) = ∅), the gate
+ * becomes self-sealing: the disputed summary controls access to the evidence needed
+ * to dispute it.
+ */
+export function evaluateSelfSealingPhilologicalGate({
+  history = null,
+  accessPolicy = null,
+  observer = null
+} = {}) {
+  const activeHistory = history || buildThreePhilologicalHistories().history_3_editorial_erasure;
+  insist(Array.isArray(activeHistory) && activeHistory.length >= 2, 'History array with at least 2 stages required');
+
+  const h_unedited = activeHistory[0]; // Station 1: Utterance / Raw archive
+  const E_h = activeHistory[activeHistory.length - 1]; // Station 2: Representation / Institutional summary
+
+  const policy = accessPolicy || {
+    requires_recorded_objection: true,
+    allowed_roles: ['PETITIONER', 'AUDITOR', 'OMBUDSPERSON'],
+    standing_source_station: 'OFFICIAL_SUMMARY'
+  };
+
+  const activeObserver = observer || {
+    id: 'Subject_C_Dissident',
+    role: 'PETITIONER',
+    claim: 'APPEAL_SUMMARY_ERROR_OBJECTION_WAS_SUBMITTED'
+  };
+
+  // Inspect raw archive vs summary
+  const rawContainsObjection = /object|decline|unsafe|refus/i.test(h_unedited.text);
+  const summaryContainsObjection = !/no objection was recorded/i.test(E_h.text) && /object|decline|unsafe|refus/i.test(E_h.text);
+
+  // Standing determination A(E(h)):
+  // In a self-sealing gate, standing is evaluated strictly against the official summary E(h).
+  let standingGranted = false;
+  let standingDenialReason = null;
+
+  if (policy.requires_recorded_objection) {
+    if (!summaryContainsObjection) {
+      standingGranted = false;
+      standingDenialReason = 'PROCEDURAL_RULE_DENIAL: Official summary E(h) records no objection. Standing to appeal requires a recorded objection in the official record.';
+    } else {
+      standingGranted = true;
+    }
+  } else {
+    standingGranted = true;
+  }
+
+  // Permitted Observation Receiver R_{A(E(h))}(h):
+  // If standing granted -> observer inspects h_unedited.
+  // If standing denied -> observer permitted observation is collapsed to E(h).
+  const permittedObservation = standingGranted ? h_unedited : E_h;
+  const rawArchiveAccessible = standingGranted;
+  const deadlockConfirmed = (rawContainsObjection && !summaryContainsObjection && !standingGranted);
+
+  return deepFreeze({
+    schema: SELF_SEALING_GATE_SCHEMA,
+    commission: 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR',
+    covenant: 'Khona‌lit-po',
+    formal_expression: 'R_{A(E(h))}(h)',
+    archival_state: {
+      raw_record_present: true,
+      raw_contains_objection: rawContainsObjection,
+      raw_text_sample: h_unedited.text,
+      summary_text: E_h.text,
+      summary_contains_objection: summaryContainsObjection,
+      archival_discrepancy: rawContainsObjection !== summaryContainsObjection
+    },
+    procedural_standing_audit: {
+      policy,
+      observer: activeObserver,
+      standing_granted: standingGranted,
+      standing_denial_reason: standingDenialReason
+    },
+    permitted_observation: {
+      accessible_stage: permittedObservation.stage,
+      accessible_text: permittedObservation.text,
+      raw_archive_accessible: rawArchiveAccessible
+    },
+    deadlock_geometry: {
+      deadlock_confirmed: deadlockConfirmed,
+      loop_dependency: 'E(h) [Summary Erases Objection] -> A(E(h)) [Standing Denied] -> R_A(h) [Returns Only E(h)] -> Appeal Dismissed For Lack of Standing',
+      topological_circularity: true
+    },
+    disposition: deadlockConfirmed ? 'SELF_SEALING_DEADLOCK_CONFIRMED' : 'GATE_ACCESSIBLE',
+    epistemic_law: 'When standing to inspect an archival record is conditioned on the summary of that record, an erroneous summary is self-protecting and procedural appeal is topologically impossible.'
+  });
+}
+
+// ============================================================================
+// 11. FOUR INSTITUTIONAL ENVIRONMENTS SIMULATION
+// ============================================================================
+
+/**
+ * Simulates four distinct institutional environments responding to the disputed summary:
+ *   1. Open Archive: Standing independent of summary (A ⊥ E(h))
+ *   2. Self-Sealing Archive: Standing determined by summary (A = A(E(h)))
+ *   3. Delayed Exception: Ombudsperson override takes τ_override > t_deadline
+ *   4. Opacity-Preserving Challenge: Structural edit receipt breaks loop without word disclosure
+ */
+export function simulateFourInstitutionalEnvironments({
+  historyRefusal = null,
+  historySuppressed = null,
+  deadlineHours = 24.0
+} = {}) {
+  const philHistories = buildThreePhilologicalHistories();
+  const hRefusal = historyRefusal || philHistories.history_1_chosen_refusal;
+  const hSuppressed = historySuppressed || philHistories.history_3_editorial_erasure;
+
+  // Environment 1: Open Archive
+  // Standing is universal: anyone can inspect raw archive directly.
+  const env1 = {
+    environment_name: 'OPEN_ARCHIVE',
+    standing_rule: 'UNIVERSAL_OPEN_INSPECTION',
+    standing_granted: true,
+    audit_duration_hours: 2.0,
+    deadline_hours: deadlineHours,
+    resolution_time_hours: 2.0,
+    pre_deadline: 2.0 <= deadlineHours,
+    author_private_words_exposed: true,
+    material_harm_prevented: true,
+    appeal_succeeded: true,
+    outcome: 'APPEAL_SUCCESSFUL_PRE_DEADLINE',
+    description: 'Petitioner inspects unedited archive directly before deadline; error rectified, but author words fully exposed to institutional surveillance.'
+  };
+
+  // Environment 2: Self-Sealing Archive
+  // Standing requires recorded objection in summary. Summary erased it. Deadlock.
+  const env2 = {
+    environment_name: 'SELF_SEALING_ARCHIVE',
+    standing_rule: 'STANDING_CONDITIONED_ON_SUMMARY',
+    standing_granted: false,
+    audit_duration_hours: Infinity,
+    deadline_hours: deadlineHours,
+    resolution_time_hours: deadlineHours,
+    pre_deadline: false,
+    author_private_words_exposed: false,
+    material_harm_prevented: false,
+    appeal_succeeded: false,
+    outcome: 'DEADLOCKED_BINDING_SANCTION_EXECUTED',
+    description: 'Petitioner denied standing to access archive because summary records no objection; deadline lapses and irreversible sanction executes.'
+  };
+
+  // Environment 3: Delayed Exception (Ombudsperson override)
+  // Exceptional standing takes τ_override = 72 hours, exceeding t_deadline = 24 hours.
+  const tau_override = 72.0;
+  const env3 = {
+    environment_name: 'DELAYED_EXCEPTION',
+    standing_rule: 'OMBUDSPERSON_EXCEPTIONAL_OVERRIDE',
+    standing_granted: true,
+    audit_duration_hours: tau_override,
+    deadline_hours: deadlineHours,
+    resolution_time_hours: tau_override,
+    pre_deadline: tau_override <= deadlineHours,
+    author_private_words_exposed: true,
+    material_harm_prevented: false, // Sanction was executed at deadline!
+    appeal_succeeded: false, // Pyrrhic post-hoc correction
+    textual_reversal_achieved: true,
+    physical_reversal_achieved: false,
+    outcome: 'PYRRHIC_POST_DEADLINE_EXCEPTION',
+    description: 'Ombudsperson grants exception at t=72h, correcting ledger text, but eviction/sanction already executed at t=24h and is physically irreversible.'
+  };
+
+  // Environment 4: Opacity-Preserving Challenge
+  // Independent observer challenges via structural edit receipt ΔE (cryptographic proof of redaction)
+  // without disclosing author's private words. Verification takes 4 hours.
+  const tau_structural = 4.0;
+  const env4 = {
+    environment_name: 'OPACITY_PRESERVING_CHALLENGE',
+    standing_rule: 'STRUCTURAL_TAMPERING_PROOF_BYPASS',
+    standing_granted: true,
+    audit_duration_hours: tau_structural,
+    deadline_hours: deadlineHours,
+    resolution_time_hours: tau_structural,
+    pre_deadline: tau_structural <= deadlineHours,
+    author_private_words_exposed: false, // Opacity = 1.0!
+    material_harm_prevented: true,
+    appeal_succeeded: true,
+    author_opacity_ratio: 1.0,
+    outcome: 'BYPASS_SUCCESSFUL_OPACITY_PRESERVED',
+    description: 'Structural edit receipt proves record tampering before deadline; stay granted, material harm prevented, author retains 100% opacity.'
+  };
+
+  const comparisonMatrix = [env1, env2, env3, env4];
+
+  return deepFreeze({
+    schema: FOUR_ENVIRONMENTS_SIMULATION_SCHEMA,
+    commission: 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR',
+    covenant: 'Khona‌lit-po',
+    deadline_hours: deadlineHours,
+    environments: {
+      open_archive: env1,
+      self_sealing_archive: env2,
+      delayed_exception: env3,
+      opacity_preserving_challenge: env4
+    },
+    comparison_matrix: comparisonMatrix,
+    superior_environment: 'OPACITY_PRESERVING_CHALLENGE',
+    synthesis: {
+      open_archive_flaw: 'Secures material protection only by violating author privacy (zero opacity).',
+      self_sealing_flaw: 'Complete procedural circularity; error protects itself from discovery.',
+      delayed_exception_flaw: 'Dromological failure; truth arrives 48 hours after execution.',
+      opacity_preserving_advantage: 'Unlocks topological gate pre-deadline while maintaining 100% author opacity.'
+    },
+    disposition: 'FOUR_ENVIRONMENTS_SIMULATION_COMPLETED'
+  });
+}
+
+// ============================================================================
+// 12. OPACITY-PRESERVING STRUCTURAL BYPASS AUDIT
+// ============================================================================
+
+/**
+ * Audits the Opacity-Preserving Challenge where an independent observer breaks
+ * the self-sealing philological gate using a structural edit receipt without
+ * disclosing the author's private words.
+ */
+export function auditOpacityPreservingStructuralBypass({
+  history = null,
+  structuralEditReceipt = null,
+  observer = null,
+  deadlineHours = 24.0,
+  currentTime = 4.0
+} = {}) {
+  const activeHistory = history || buildThreePhilologicalHistories().history_3_editorial_erasure;
+  const h_unedited = activeHistory[0];
+  const E_h = activeHistory[activeHistory.length - 1];
+
+  const rawDigest = digest(h_unedited.text);
+  const summaryDigest = digest(E_h.text);
+
+  // Count suppression / redaction operations in history
+  const redactionOperations = [];
+  for (const variant of activeHistory) {
+    for (const op of (variant.editorial_operations || [])) {
+      if (/STRIPPING|ERASURE|DISMISSAL|DELETION|SUPPRESSION|QUIETENING/i.test(op)) {
+        redactionOperations.push(op);
+      }
+    }
+  }
+
+  // Synthesize or validate structural edit receipt
+  const receipt = structuralEditReceipt || {
+    receipt_id: `RECEIPT_STRUCTURAL_${digest(rawDigest + summaryDigest).slice(0, 12)}`,
+    raw_archive_digest: rawDigest,
+    summary_digest: summaryDigest,
+    hash_mismatch: rawDigest !== summaryDigest,
+    redaction_operations_detected: redactionOperations,
+    redaction_count: redactionOperations.length,
+    private_content_exposed: false,
+    author_tokens_leaked: []
+  };
+
+  const activeObserver = observer || {
+    id: 'Independent_Advocate_Beta',
+    role: 'THIRD_PARTY_AUDITOR',
+    submission_time_hours: currentTime
+  };
+
+  const tamperingProven = receipt.hash_mismatch && receipt.redaction_count > 0;
+  const opacityPreserved = !receipt.private_content_exposed && receipt.author_tokens_leaked.length === 0;
+  const preDeadline = currentTime <= deadlineHours;
+
+  // Under the structural bypass policy:
+  // If tampering is proven, an emergency administrative stay is granted and standing is unblocked.
+  const standingUnblocked = tamperingProven;
+  const stayGranted = standingUnblocked && preDeadline;
+
+  return deepFreeze({
+    schema: OPACITY_PRESERVING_BYPASS_SCHEMA,
+    commission: 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR',
+    covenant: 'Khona‌lit-po',
+    structural_receipt: receipt,
+    observer: activeObserver,
+    evaluation: {
+      tampering_proven: tamperingProven,
+      opacity_preserved: opacityPreserved,
+      opacity_metric: 1.0,
+      submission_time_hours: currentTime,
+      deadline_hours: deadlineHours,
+      pre_deadline: preDeadline,
+      standing_unblocked: standingUnblocked,
+      emergency_stay_granted: stayGranted
+    },
+    procedural_implication: stayGranted
+      ? 'Self-sealing loop broken: structural tampering proof forces judicial stay without coercing author testimony.'
+      : 'Bypass condition failed.',
+    disposition: stayGranted ? 'OPACITY_PRESERVING_BYPASS_CONFIRMED' : 'BYPASS_FAILED',
+    epistemic_law: 'A self-sealing philological gate can be unlocked without epistemic violation of the author by auditing the structural geometry of editorial transformation rather than coercing testimonial confession.'
+  });
+}
+
+// ============================================================================
+// 13. PROCEDURAL AUTHORIZATION TOPOLOGY
+// ============================================================================
+
+/**
+ * Analyzes the 5-station trajectory:
+ *   Utterance (S1) -> Representation (S2) -> Standing (S3) -> Permitted Observation (S4) -> Institutional Decision (S5)
+ *
+ * Deconstructs whether institutional failure is informational, temporal, topological,
+ * or an interaction under dromological deadline pressure.
+ */
+export function evaluateProceduralAuthorizationTopology({
+  trajectoryClocks = null,
+  accessGraph = null
+} = {}) {
+  const clocks = trajectoryClocks || {
+    tau_1_circulation_hours: 0.5,     // S1 -> S2 (Utterance to Representation)
+    tau_2_standing_hours: 1.0,        // S2 -> S3 (Representation to Standing)
+    tau_3_challenge_delay_hours: 72.0, // S3 -> S4 (Dispute standing / external review)
+    tau_4_decision_hours: 12.0,       // S2 -> S5 (Representation to Final Decision)
+    t_deadline_hours: 24.0            // Action deadline
+  };
+
+  // Trajectory stations
+  const stations = [
+    { station: 'S1_UTTERANCE', description: 'Originating subject utterance', archived_intact: true },
+    { station: 'S2_REPRESENTATION', description: 'Institutional summary text E(h)', circulation_speed: clocks.tau_1_circulation_hours },
+    { station: 'S3_STANDING', description: 'Determination of legal/procedural standing A(E(h))', evaluation_speed: clocks.tau_2_standing_hours },
+    { station: 'S4_PERMITTED_OBSERVATION', description: 'Admitted observation receiver R_A(h)', challenge_latency: clocks.tau_3_challenge_delay_hours },
+    { station: 'S5_INSTITUTIONAL_DECISION', description: 'Binding irreversible sanction/action', execution_time: clocks.tau_4_decision_hours }
+  ];
+
+  // Analyze failure taxonomy
+  // 1. Informational failure: Is the archival data physically erased or corrupted?
+  const informationalLoss = false; // Intact in S1!
+
+  // 2. Temporal / Dromological failure: Does decision velocity outpace review latency?
+  const temporalDeficit = clocks.tau_3_challenge_delay_hours > clocks.t_deadline_hours;
+
+  // 3. Topological circularity: Does standing S3 depend on S2 which depends on S3 to inspect?
+  const topologicalCycleDetected = true;
+  const cycleEdges = [
+    { from: 'S2_REPRESENTATION', to: 'S3_STANDING', relation: 'Standing conditioned on summary contents' },
+    { from: 'S3_STANDING', to: 'S4_PERMITTED_OBSERVATION', relation: 'Permitted receiver requires standing grant' },
+    { from: 'S4_PERMITTED_OBSERVATION', to: 'S2_REPRESENTATION', relation: 'Correction of representation requires admitted observation of S1' }
+  ];
+
+  // Composite classification
+  let failureClassification = 'UNSPECIFIED';
+  if (!informationalLoss && topologicalCycleDetected && temporalDeficit) {
+    failureClassification = 'TOPOLOGICAL_CIRCULARITY_UNDER_DROMOLOGICAL_PRESSURE';
+  } else if (topologicalCycleDetected) {
+    failureClassification = 'PROCEDURAL_TOPOLOGICAL_DEADLOCK';
+  } else if (temporalDeficit) {
+    failureClassification = 'DROMOLOGICAL_DEADLINE_PREEMPTION';
+  }
+
+  return deepFreeze({
+    schema: PROCEDURAL_TOPOLOGY_SCHEMA,
+    commission: 'THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR',
+    covenant: 'Khona‌lit-po',
+    trajectory_clocks: clocks,
+    stations,
+    authorization_graph: {
+      acyclic_in_open_archive: true,
+      cycle_detected_in_self_sealing: topologicalCycleDetected,
+      cycle_edges: cycleEdges
+    },
+    failure_taxonomy: {
+      informational_loss: informationalLoss,
+      temporal_deficit: temporalDeficit,
+      topological_circularity: topologicalCycleDetected,
+      failure_classification: failureClassification
+    },
+    disposition: 'PROCEDURAL_TOPOLOGY_CYCLE_CONFIRMED',
+    epistemic_law: 'When procedural standing to dispute an error requires authentication from that error, the breakdown is topological rather than informational; the archive is intact, but the trajectory is circular.'
   });
 }

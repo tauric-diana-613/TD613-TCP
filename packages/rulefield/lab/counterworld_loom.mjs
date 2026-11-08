@@ -1340,6 +1340,10 @@ export {
   IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA,
   COMPOSITE_OUTRAN_AUTHOR_SCHEMA,
   DROMOLOGICAL_CAPTURE_SCHEMA,
+  SELF_SEALING_GATE_SCHEMA,
+  FOUR_ENVIRONMENTS_SIMULATION_SCHEMA,
+  OPACITY_PRESERVING_BYPASS_SCHEMA,
+  PROCEDURAL_TOPOLOGY_SCHEMA,
   createUtteranceVariant,
   buildThreePhilologicalHistories,
   auditPhilologicalEquivalence,
@@ -1350,5 +1354,9 @@ export {
   evaluateInterpretationAncestry,
   executeImpossibleBiographyChamber,
   executeTheSentenceThatOutranItsAuthorEpisode,
-  auditDromologicalPhilologicalCapture
+  auditDromologicalPhilologicalCapture,
+  evaluateSelfSealingPhilologicalGate,
+  simulateFourInstitutionalEnvironments,
+  auditOpacityPreservingStructuralBypass,
+  evaluateProceduralAuthorizationTopology
 } from './dromological_philology.mjs';
