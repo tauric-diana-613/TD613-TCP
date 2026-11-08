@@ -17,7 +17,7 @@ const READABLE_REFUSALS = Object.freeze({
   REFERENCE_NOT_LOADED:'A deliberate opening of the reference estate has not yet been completed.',
   RECORD_NOT_IN_EDITION:'This identifier does not occur in the selected Universal reference edition.',
   RECORD_PATH_OUTSIDE_ESTATE:'A source locator would cross the reference-estate boundary.',
-  RECORD_DIGEST_MISMATCH:'Retrieved source bytes differ from the recorded SHA-256.',
+  RECORD_DIGEST_MISMATCH:'Canonical JSON payload bytes differ from the indexed SHA-256.',
   RECORD_SCHEMA_MISMATCH:'The verified bytes are not a record of the requested identity.',
   WEBCRYPTO_UNAVAILABLE:'No independent browser SHA-256 verifier was available.',
   BOUNDARY_REFUSAL:'The request would cross into an unauthorised origin or method.'
