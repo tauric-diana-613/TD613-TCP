@@ -1459,3 +1459,25 @@ export {
   auditObserversBlindSpot,
   answerOperatorsQuestionOnAnticipatoryDisappearance
 } from './sixth_order_anticipatory_testimony.mjs';
+
+// ============================================================================
+// 21. SEVENTH-ORDER INDEPENDENT METROLOGY EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  SEVENTH_ORDER_COMMISSION_SCHEMA,
+  FOUR_SILENT_WORLDS_SCHEMA,
+  PHYSICAL_METROLOGY_SCHEMA,
+  CONDITIONAL_INFORMATION_SCHEMA,
+  TEMPORAL_COUNTERWORLD_SCHEMA,
+  EVIDENTIARY_TRANSLATION_SCHEMA,
+  THREE_AUDITORS_SCHEMA,
+  buildFourSilentWorlds,
+  evaluatePhysicalMetrologyModel,
+  evaluateConditionalInformationDissociation,
+  evaluateTemporalCounterworldRecovery,
+  auditEvidentiaryTranslationLattice,
+  evaluateThreeAuditorsComparison,
+  evaluateGraeberDotsonGlissantSynthesis,
+  answerOperatorsQuestionOnIndependentMetrology
+} from './seventh_order_independent_metrology.mjs';

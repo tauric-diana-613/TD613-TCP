@@ -62,7 +62,15 @@ import {
   evaluateGraeberDotsonInterpretiveLabor,
   simulateFeedbackRegimesTrial,
   auditObserversBlindSpot,
-  answerOperatorsQuestionOnAnticipatoryDisappearance
+  answerOperatorsQuestionOnAnticipatoryDisappearance,
+  buildFourSilentWorlds,
+  evaluatePhysicalMetrologyModel,
+  evaluateConditionalInformationDissociation,
+  evaluateTemporalCounterworldRecovery,
+  auditEvidentiaryTranslationLattice,
+  evaluateThreeAuditorsComparison,
+  evaluateGraeberDotsonGlissantSynthesis,
+  answerOperatorsQuestionOnIndependentMetrology
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -110,6 +118,13 @@ Commands:
   feedback-experiment    Simulate Feedback Regimes Trial (Regimes A, B, C) & Campbell-Goodhart-Lucas Law
   observers-blindspot    Audit Observer's Blind Spot (Institutional Surface vs Ground Truth)
   anticipatory-answer    Answer Operator's Question on anticipatory disappearance
+  four-silent-worlds     Audit Four Silent Worlds (Alpha, Beta, Gamma, Delta) under (Q=0, D=0)
+  physical-metrology     Evaluate Independent Physical Metrology Model P(X|H) vs P(X|G)
+  conditional-info       Audit Conditional Mutual Information Dissociation I(H;X|QD) vs I(G;X|QD)
+  temporal-counterworld  Evaluate Temporal Counterworld Recovery (World Alpha vs World Gamma)
+  evidentiary-lattice    Audit 6-Level Evidentiary Translation Lattice (Hazard vs Grievance vs Remedy)
+  three-auditors         Compare Discrimination Horizons of Three Auditors (A, B, C)
+  independent-metrology-answer Answer Operator's Question on independent physical metrology
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -379,6 +394,48 @@ async function main() {
 
   if (cmd === 'anticipatory-answer') {
     const report = answerOperatorsQuestionOnAnticipatoryDisappearance();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'four-silent-worlds') {
+    const report = buildFourSilentWorlds();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'physical-metrology') {
+    const report = evaluatePhysicalMetrologyModel();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'conditional-info') {
+    const report = evaluateConditionalInformationDissociation();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'temporal-counterworld') {
+    const report = evaluateTemporalCounterworldRecovery({ admitAuthenticHistoricalObservation: true });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'evidentiary-lattice') {
+    const report = auditEvidentiaryTranslationLattice();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'three-auditors') {
+    const report = evaluateThreeAuditorsComparison();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'independent-metrology-answer') {
+    const report = answerOperatorsQuestionOnIndependentMetrology();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
