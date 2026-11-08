@@ -69,7 +69,7 @@ const result = await runDollhouseSkillAudit({
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
   evidence_class: 'SOURCE_CODE_AUDIT',
-  evidence_references: ['app/engine/portable-loom-challenge.js', 'docs/reentry/'],
+  evidence_references: ['app/engine/portable-loom-challenge.js', 'docs/reentry/RELATION_MAP.md'],
   domain_inputs: {
     PEDAGOGUE: { /* events, clocks, lineage */ },
     APERTURE: { /* operator matrix, noise covariance */ },

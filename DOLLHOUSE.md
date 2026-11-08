@@ -27,13 +27,15 @@ This diagram is an operational map, not a sovereign ontology or canonical UI top
 
 Consequence order, route burden, practice pedagogy, route memory, research transfer, and falsifier design.
 
-Canonical shortcut: [`PEDAGOGUE.md`](PEDAGOGUE.md)
+Canonical shortcut: [`PEDAGOGUE.md`](PEDAGOGUE.md)  
+Specialist Agent: [`.agents/agents/dollhouse-pedagogue.md`](.agents/agents/dollhouse-pedagogue.md)
 
 ### Aperture
 
 Observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, and replay.
 
-Canonical shortcut: [`APERTURE.md`](APERTURE.md)
+Canonical shortcut: [`APERTURE.md`](APERTURE.md)  
+Specialist Agent: [`.agents/agents/dollhouse-aperture.md`](.agents/agents/dollhouse-aperture.md)
 
 ### Atlas
 
@@ -47,19 +49,28 @@ Research Estate: [`docs/atlas/README.md`](docs/atlas/README.md) · [`ATLAS_WILD_
 
 Finite erasure/quotient audit. It checks whether lawful support remains constant after conditioning state is erased and preserves the exact union/intersection gap when it does not.
 
-Canonical shortcut: [`FADT.md`](FADT.md)
+Canonical shortcut: [`FADT.md`](FADT.md)  
+Specialist Agent: [`.agents/agents/dollhouse-fadt.md`](.agents/agents/dollhouse-fadt.md)
 
 ### Temporal Custodian
 
 Monotonic chronology, non-retroactivity, phase progression, and predecessor citation chains.
 
-Implementation: [`app/engine/dollhouse-temporal-custodian.js`](app/engine/dollhouse-temporal-custodian.js)
+Implementation: [`app/engine/dollhouse-temporal-custodian.js`](app/engine/dollhouse-temporal-custodian.js)  
+Specialist Agent: [`.agents/agents/dollhouse-temporal-custodian.md`](.agents/agents/dollhouse-temporal-custodian.md)
 
 ### Orchestrator
 
 Multi-role scientific governance, evidence adjudication, consensus aggregation, and replication discipline (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). Produces recommendation and verification records only; strictly closed to release or deployment authority.
 
-Implementation: [`app/engine/dollhouse-ablation-harness.js`](app/engine/dollhouse-ablation-harness.js)
+Implementation: [`app/engine/dollhouse-ablation-harness.js`](app/engine/dollhouse-ablation-harness.js)  
+Orchestrator Agent: [`.agents/agents/dollhouse-orchestrator.md`](.agents/agents/dollhouse-orchestrator.md)  
+Native Skills: [`.agents/skills/dollhouse-audit/SKILL.md`](.agents/skills/dollhouse-audit/SKILL.md) · [`.agents/skills/dollhouse-design/SKILL.md`](.agents/skills/dollhouse-design/SKILL.md)
+
+### Native Skills
+
+- **Governance & Evidence Audit:** [`.agents/skills/dollhouse-audit/SKILL.md`](.agents/skills/dollhouse-audit/SKILL.md)
+- **Generative & Motion Design:** [`.agents/skills/dollhouse-design/SKILL.md`](.agents/skills/dollhouse-design/SKILL.md)
 
 ## Shared operational rule
 
@@ -70,6 +81,48 @@ PEDAGOGUE != APERTURE != ATLAS != FADT != TEMPORAL_CUSTODIAN != ORCHESTRATOR
 ```
 
 Their outputs meet at Loom / Flow-Core through explicit bounded contracts. None receives automatic release, redesign, merge, deployment, provider, or Vercel authority.
+
+### Affective Custody Matrix & Relational Interoperability
+
+The six roles operate under an explicit relational geometry where each doll maintains its affective disciplinary temperament and honors strict pairwise custody handoffs:
+
+| Inter-Doll Relation | Affective Disciplinary Temperament | Governing Custody Contract | Operational Law & Invariants |
+|---|---|---|---|
+| **Pedagogue ↔ Aperture** | Protective Pacing meets Austere Numerical Skepticism | **The Contract of Human-Epistemic Pacing** | $\text{NOTICE} < \text{ACT} < \text{WORLD\_ANSWERS} < \text{NAME}$ meets SVD $\kappa(A)$ conditioning. Pedagogue defends human notice; Aperture calculates whether the physical observation surface possesses the numerical rank to distinguish candidate questions. |
+| **Aperture ↔ Atlas** | Metric Calibration meets Relational Loyalty | **The Contract of Projection Invariance** | Observable manifold bounds meet multi-receiver presentation preservation. Aperture determines what is distinguishable; Atlas audits whether projecting these observables across non-equivalent presentations preserves the invariant Flow-Core trace without collapsing member custody. |
+| **Atlas ↔ FADT** | Relational Invariance meets Boundary Preservation | **The Contract of Invariant Support** | Relational coordinates meet finite quotient stage erasure and gap defense. Atlas tracks relational coordinates; FADT audits whether erasing conditioning state collapses different lawful supports into an unconditioned gap ($U \setminus \bigcap S_i$). |
+| **FADT ↔ Temporal Custodian** | Reparative Search meets Chronological Vigilance | **The Contract of Reparative Chronology** | Bounded coordinate recovery meets monotonic predecessor citation chains. FADT bounds reparative recovery ($\le 10{,}000$ evaluations); Temporal Custodian validates that repairs link valid predecessor citations ($c_{k+1} > c_k$) without retroactive amnesia. |
+| **Temporal Custodian ↔ Orchestrator** | Sensory Vigilance meets Judicial Adjudication | **The Contract of Uncollapsible Dissent** | Monotonic proofs delivered to multi-role adjudication. Orchestrator preserves specialist vetoes; missing senses remain `HELD_MISSING_OBSERVATION`; shared acquisition yields zero additional replication credit (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). |
+
+### Canonical Interoperability Sequence
+
+```text
+Operator Task / Bounded Ingress
+       │
+       ▼
+TD613 Dollhouse Orchestrator (Judicial Sobriety)
+       │
+       ▼
+[1] Flow-Core Pedagogue (Protective Pacing)
+       │ (Human-Epistemic Pacing: NOTICE < ACT < WORLD_ANSWERS < NAME)
+       ▼
+[2] TD613 Aperture (Austere Numerical Skepticism)
+       │ (Projection Invariance: SVD kappa(A) conditioning, noise covariance Sigma > 0)
+       ▼
+[3] Atlas Receiver-Relation Auditor (Relational Loyalty)
+       │ (Invariant Support: 9-domain math, holonomy winding parity, atlas-v1 typed serialization)
+       ▼
+[4] Finite Admissibility Descent / FADT (Boundary Preservation)
+       │ (Reparative Chronology: finite quotient descent, union/intersection gap, search <= 10k evals)
+       ▼
+[5] TD613 Temporal Custodian (Monotonic Vigilance)
+       │ (Uncollapsible Dissent: monotonic chronology, predecessor citations, non-retroactivity)
+       ▼
+TD613 Dollhouse Orchestrator (Adjudication & Verification)
+       │ (Zero Release Authority · Human Closure Required)
+       ▼
+Structured Machine & Human Receipts delivered to Operator
+```
 
 ## Bounded audit extensions · 2026-09-30
 

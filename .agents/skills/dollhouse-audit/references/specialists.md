@@ -145,3 +145,54 @@ The TD613 Dollhouse architecture enforces jurisdictional independence between fi
     - `UNANIMOUS_SUPPORT`: All five canonical specialists verified with zero holds.
     - `PARTIAL_ROLE_SUPPORT`: Subset of specialists verified without holds.
   - Strict non-authority: Orchestrator **never** has merge, release, or deployment authority. Human closure remains mandatory.
+
+---
+
+## 7. Inter-Doll Interoperability Lineage & Custody Routing
+
+The six roles form an unbroken chain of custody where specialist findings and reparative packets flow in canonical sequence:
+
+```text
+[PEDAGOGUE] ──► [APERTURE] ──► [ATLAS] ──► [FADT] ──► [TEMPORAL_CUSTODIAN] ──► [ORCHESTRATOR]
+```
+
+### Governing Custody Contracts
+
+1. **Pedagogue ↔ Aperture (`CONTRACT_OF_HUMAN_EPISTEMIC_PACING`):**
+   - *Sequence:* `NOTICE < ACT < WORLD_ANSWERS < NAME` meets SVD $\kappa(A)$ conditioning.
+   - *Invariants:* `consequence-before-ontology`, `numerical-conditioning-bound`, `anti-preemption`.
+2. **Aperture ↔ Atlas (`CONTRACT_OF_PROJECTION_INVARIANCE`):**
+   - *Sequence:* Observable manifold bounds meet multi-receiver presentation preservation.
+   - *Invariants:* `observable-rank-deficiency`, `holonomy-history-parity`, `injective-serialization`.
+3. **Atlas ↔ FADT (`CONTRACT_OF_INVARIANT_SUPPORT`):**
+   - *Sequence:* Relational coordinates meet finite quotient stage erasure and gap defense.
+   - *Invariants:* `receiver-relative-identity`, `union-intersection-gap-preservation`, `unlawful-action-widening-refusal`.
+4. **FADT ↔ Temporal Custodian (`CONTRACT_OF_REPARATIVE_CHRONOLOGY`):**
+   - *Sequence:* Budget-bounded coordinate repair ($< 10{,}000$ evaluations) meets non-retroactive sequence progression.
+   - *Invariants:* `bounded-search-limit`, `monotonic-sequence-counting`, `predecessor-citation-integrity`.
+5. **Temporal Custodian ↔ Orchestrator (`CONTRACT_OF_UNCOLLAPSIBLE_DISSENT`):**
+   - *Sequence:* Verified ledger lineage and domain findings delivered for uncollapsible adjudication.
+   - *Invariants:* `uncollapsible-specialist-veto`, `zero-unearned-replication-credit`, `human-closure-required`.
+
+### Structured Return Envelope Specification
+
+When executing specialist audits or delivering subagent findings, each doll produces a parseable structured receipt envelope:
+
+```json
+{
+  "role": "PEDAGOGUE | APERTURE | ATLAS | FADT | TEMPORAL_CUSTODIAN",
+  "verdict": "SUPPORTED | HELD",
+  "defect_class": null,
+  "detected_infractions": [],
+  "evidence_class": "SOURCE_CODE_AUDIT | SYNTHETIC_TEST_FIXTURE | CANONICAL_PRACTICE_FIXTURE",
+  "claim_boundaries": {
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "receipt": {}
+}
+```
+
+Orchestrator aggregates these envelopes using [`dollhouse-ablation-harness.js`](../../../../app/engine/dollhouse-ablation-harness.js) and produces both machine-readable JSON and human-readable markdown receipts.
+
