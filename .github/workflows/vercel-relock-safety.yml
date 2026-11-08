@@ -431,3 +431,46 @@ jobs:
         shell: bash
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
+
+  atelier-inbox-sync-v2-dispatch:
+    name: Issue-bound three-Atelier local-inbox relay (no source access)
+    if: >-
+      github.event.issue.pull_request == null &&
+      (
+        (github.event.issue.number == 1675 && startsWith(github.event.comment.body, '/atelier-sync SRC ')) ||
+        (github.event.issue.number == 1676 && startsWith(github.event.comment.body, '/atelier-sync WENDBINE ')) ||
+        (github.event.issue.number == 1677 && startsWith(github.event.comment.body, '/atelier-sync EMSTD613 '))
+      ) &&
+      (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'chatgpt-codex-connector[bot]')
+    concurrency:
+      group: atelier-inbox-v2-${{ github.repository }}-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - name: Validate exact issue-scoped V2 command and return local-agent handoff
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMAND: ${{ github.event.comment.body }}
+          COMMENT_ID: ${{ github.event.comment.id }}
+        run: |
+          set -euo pipefail
+          case "$ISSUE_NUMBER:$COMMAND" in
+            '1675:/atelier-sync SRC LOCAL_INBOX') ESTATE=SRC; MODE=LOCAL_INBOX ;;
+            '1676:/atelier-sync WENDBINE LOCAL_INBOX') ESTATE=WENDBINE; MODE=LOCAL_INBOX ;;
+            '1677:/atelier-sync EMSTD613 LOCAL_INBOX') ESTATE=EMSTD613; MODE=LOCAL_INBOX ;;
+            '1675:/atelier-sync SRC PROVIDER') ESTATE=SRC; MODE=PROVIDER ;;
+            '1676:/atelier-sync WENDBINE PROVIDER') ESTATE=WENDBINE; MODE=PROVIDER ;;
+            '1677:/atelier-sync EMSTD613 PROVIDER') ESTATE=EMSTD613; MODE=PROVIDER ;;
+            *) echo 'UNRECOGNIZED_V2_ISSUE_COMMAND' >&2; exit 1 ;;
+          esac
+          if [[ "$MODE" == LOCAL_INBOX ]]; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments" -f body="𝌋 ATELIER_SYNC_V2_LOCAL_AGENT_REQUIRED; issue=$ISSUE_NUMBER; estate=$ESTATE; gesture=github-comment-$COMMENT_ID; workflow=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. This GitHub runner cannot read operator-local inbox files. The operator-authorized Windows collaborator must independently verify the original operator gesture, run scripts/atelier-operator-inbox-sync-v2.py from the reviewed code, keep source bytes and index OUT OF GIT, and return a sanitized exact-source readback receipt. Local sync not executed; no source publication, source admission, merge or protected Flight authority. ⟐"
+          else
+            gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments" -f body="𝌋 ATELIER_SYNC_V2_PROVIDER_HELD; issue=$ISSUE_NUMBER; estate=$ESTATE; gesture=github-comment-$COMMENT_ID; workflow=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Provider-specific adapters and rights/identity/custody controls require independent certification before this replacement gate may acquire remote source bytes. No provider request executed. Historical #758/#1308 lanes retain separate dormant operator gesture requirements. No retry or promotion. ⟐"
+          fi
