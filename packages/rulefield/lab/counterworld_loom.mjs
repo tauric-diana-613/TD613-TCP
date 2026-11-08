@@ -1360,3 +1360,22 @@ export {
   auditOpacityPreservingStructuralBypass,
   evaluateProceduralAuthorizationTopology
 } from './dromological_philology.mjs';
+
+// ============================================================================
+// 16. SECOND-ORDER INSTITUTION LABORATORY EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  SECOND_ORDER_COMMISSION_SCHEMA,
+  FIVE_COUNTERWORLDS_SCHEMA,
+  PROOF_LATTICE_SCHEMA,
+  ADAPTIVE_GAME_SCHEMA,
+  JURISDICTIONAL_BOOTSTRAP_SCHEMA,
+  FINAL_ADAPTIVE_EXPERIMENT_SCHEMA,
+  buildFiveCounterworlds,
+  evaluateFiveCounterworlds,
+  evaluatePhilologicalProofLattice,
+  simulateAdaptiveInstitutionGame,
+  evaluateJurisdictionalBootstrap,
+  executeFinalAdaptiveExperiment
+} from './second_order_institution.mjs';

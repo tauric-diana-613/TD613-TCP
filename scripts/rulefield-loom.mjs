@@ -31,7 +31,13 @@ import {
   evaluateSelfSealingPhilologicalGate,
   simulateFourInstitutionalEnvironments,
   auditOpacityPreservingStructuralBypass,
-  evaluateProceduralAuthorizationTopology
+  evaluateProceduralAuthorizationTopology,
+  buildFiveCounterworlds,
+  evaluateFiveCounterworlds,
+  evaluatePhilologicalProofLattice,
+  simulateAdaptiveInstitutionGame,
+  evaluateJurisdictionalBootstrap,
+  executeFinalAdaptiveExperiment
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -51,6 +57,11 @@ Commands:
   four-environments      Simulate Four Institutional Environments under summary error
   opacity-bypass         Execute Opacity-Preserving Structural Bypass audit
   procedural-topology    Evaluate 5-station procedural authorization topology
+  five-counterworlds     Evaluate Five Counterworlds (A through E) under lattice policy
+  proof-lattice          Audit Philological Proof Lattice Levels 1 through 4
+  adaptive-game          Simulate 3-round Adaptive Institution repeated game
+  jurisdictional-boot    Evaluate Jurisdictional Bootstrap & External Constitutional Anchor
+  final-adaptive         Execute Final Adaptive Experiment satisfying all 5 Section VI reqs
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -143,6 +154,45 @@ async function main() {
 
   if (cmd === 'procedural-topology') {
     const report = evaluateProceduralAuthorizationTopology();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'five-counterworlds') {
+    const report = evaluateFiveCounterworlds({ reviewerPolicy: 'STRUCTURAL_CATEGORY_NOTARIZATION', externalNotaryAvailable: true });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'proof-lattice') {
+    const report = evaluatePhilologicalProofLattice({
+      sourceDigest: 'abc1234',
+      summaryDigest: 'def5678',
+      operationLogs: ['PASSIVE_CONVERSION', 'OBJECTION_EXPUNGEMENT'],
+      intakeCategoryReceipt: {
+        raw_contains_qualifying_objection: true,
+        summary_recorded_objection: false
+      },
+      repeatedGameCohortData: null
+    });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'adaptive-game') {
+    const report = simulateAdaptiveInstitutionGame({ rounds: 3, independentNotaryEnabled: true });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'jurisdictional-boot') {
+    const report = evaluateJurisdictionalBootstrap();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'final-adaptive') {
+    const report = executeFinalAdaptiveExperiment();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
