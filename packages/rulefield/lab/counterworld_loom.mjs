@@ -1398,3 +1398,25 @@ export {
   simulateThreeConditionsTrial,
   answerOperatorsQuestionOnWitnessIndependence
 } from './third_order_notary.mjs';
+
+// ============================================================================
+// 18. FOURTH-ORDER INTERPRETIVE LABOR EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  FOURTH_ORDER_COMMISSION_SCHEMA,
+  GRAEBERIAN_CROSSWALK_SCHEMA,
+  SEMANTIC_COUNTERWORLDS_SCHEMA,
+  INTERPRETIVE_BURDEN_LEDGER_SCHEMA,
+  INTERPRETIVE_ENVIRONMENTS_SCHEMA,
+  DROMOLOGICAL_READING_EXPERIMENT_SCHEMA,
+  CBFE_OPACITY_SYNTHESIS_SCHEMA,
+  WILD_FIELD_DISCOVERY_DOCKET_SCHEMA,
+  buildGraeberianCrosswalk,
+  buildSemanticCounterworlds,
+  auditSemanticExteriority,
+  simulateAsymmetricInterpretiveLaborTrial,
+  simulateDromologicalReadingExperiment,
+  answerOperatorsQuestionOnEpistemicFailure,
+  buildFourthOrderDiscoveryDocket
+} from './fourth_order_interpretive_labor.mjs';

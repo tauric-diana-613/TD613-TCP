@@ -43,7 +43,14 @@ import {
   evaluateDataProcessingComposition,
   evaluateExteriorityChallenge,
   simulateThreeConditionsTrial,
-  answerOperatorsQuestionOnWitnessIndependence
+  answerOperatorsQuestionOnWitnessIndependence,
+  buildGraeberianCrosswalk,
+  buildSemanticCounterworlds,
+  auditSemanticExteriority,
+  simulateAsymmetricInterpretiveLaborTrial,
+  simulateDromologicalReadingExperiment,
+  answerOperatorsQuestionOnEpistemicFailure,
+  buildFourthOrderDiscoveryDocket
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -73,6 +80,12 @@ Commands:
   exteriority-challenge  Audit Exteriority Challenge and multi-signer rank collapse
   three-conditions       Execute Three Conditions Trial (A vs B vs C) & portal counterexample
   witness-independence   Audit Operator's Question on what an independent witness must observe
+  graeber-crosswalk      Display Graeberian Interpretive Labor Crosswalk (Graeber 2012)
+  semantic-counterworlds Audit Semantic Counterworlds (W_alpha, W_beta, W_gamma) & P_L collision
+  interpretive-labor     Execute Asymmetric Interpretive Labor Trial (Envs A, B, C)
+  dromological-reading   Simulate Dromological Reading Experiment & extractive hearing danger
+  epistemic-failure      Answer Operator's Question on location of epistemic failure
+  fourth-order-docket    Build complete Fourth-Order Discovery Docket
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -234,6 +247,42 @@ async function main() {
 
   if (cmd === 'witness-independence') {
     const report = answerOperatorsQuestionOnWitnessIndependence();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'graeber-crosswalk') {
+    const report = buildGraeberianCrosswalk();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'semantic-counterworlds') {
+    const report = auditSemanticExteriority();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'interpretive-labor') {
+    const report = simulateAsymmetricInterpretiveLaborTrial();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'dromological-reading') {
+    const report = simulateDromologicalReadingExperiment({ deadlineHours: 24.0 });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'epistemic-failure') {
+    const report = answerOperatorsQuestionOnEpistemicFailure();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'fourth-order-docket') {
+    const report = buildFourthOrderDiscoveryDocket();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
