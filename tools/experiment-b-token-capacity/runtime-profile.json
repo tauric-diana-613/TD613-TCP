@@ -1,0 +1,7 @@
+{
+  "node": "26.7.0",
+  "v8": "14.6.202.34-node.28",
+  "unicode": "17.0",
+  "icu": "78.3",
+  "claim": "Exact local counts are relative to this implementation/runtime; cross-runtime regex equivalence is not independently attested"
+}

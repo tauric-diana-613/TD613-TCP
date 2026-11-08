@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "node": "v26.7.0",
+  "checks": [
+    {
+      "file": "bin/size-synthetic.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "bin/synthetic-matrix.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "bin/verify-package.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/capacity.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/errors.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/private-custody.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/templates.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/tokenizer.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "lib/zip.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "sources/pr1617-capacity-model.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "test/fixtures.mjs",
+      "status": "PASS"
+    },
+    {
+      "file": "test/run.mjs",
+      "status": "PASS"
+    }
+  ],
+  "new_model_calls": 0
+}
