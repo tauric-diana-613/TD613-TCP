@@ -54,7 +54,7 @@ jobs:
           node-version: '22'
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs tests/rulefield-docket2.test.mjs tests/rulefield-tomography.test.mjs tests/rulefield-semantic-paired.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs tests/rulefield-docket2.test.mjs tests/rulefield-tomography.test.mjs tests/rulefield-semantic-paired.test.mjs tests/rulefield-docket3.test.mjs
           python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
       - name: Verify reversible Rulefield and Rule type correction
         run: |
@@ -104,6 +104,12 @@ jobs:
           node ../scripts/rulefield-qualification.mjs semantic-export RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json
           node ../scripts/rulefield-qualification.mjs paired-export RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json 2026-11-08T12:00:00Z
           node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json','utf8'));const p=JSON.parse(fs.readFileSync('RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json','utf8'));if(x.rows.length!==559||x.totals.selected_agent_interpretations!==132||x.totals.deterministic_only!==427||x.totals.scientific_adjudications!==0||p.counts.qualified_internal!==0||p.authority.canonical_mutation!==false)process.exit(1);console.log('RULEFIELD_ROD0003_BOUNDED_INTERPRETATION_AND_PAIRED_ASSAY_WITNESS',x.digest,p.digest)"
+
+      - name: Render complete RF-OD-0003 historical/semantic/empirical operator docket
+        run: |
+          node scripts/rulefield-docket3.mjs validate
+          node scripts/rulefield-docket3.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.startsWith('RF-OD-0003--')&&x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.rows.length!==559||d.original_field_expressions.length!==86||d.original_historical_priorities.length!==70||d.agent_reviewed_total!==132||d.auto_only!==427||d.authority.od02!=='HELD'||d.preview.priority_moves!==0)process.exit(1);console.log('FULL_ROD0003_SOURCE_BOUNDED_WITNESS',d.digest)"
 
       - name: Run native Dollhouse Design for the engine-only field commission
         run: |
