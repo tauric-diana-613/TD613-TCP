@@ -7,6 +7,7 @@
  */
 import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {intakeOne,OUTBOX} from '../packages/rulefield/amendments/receiver.mjs';
 import {inspectHumanDecision} from '../packages/rulefield/operator/decision.mjs';
 const args=process.argv.slice(2),cmd=args[0]||'help';
@@ -30,7 +31,7 @@ try{
     human_authority_attestation:'HUMAN_MUST_SUPPLY_IN_AUTHORIZED_CHANNEL'});
  }
  else if(cmd==='decision-check'){
-  const decision=JSON.parse(readFileSync(join(new URL('../packages/rulefield/operator/decisions/',import.meta.url).pathname,safe(args[1])),'utf8'));
+  const decision=JSON.parse(readFileSync(join(fileURLToPath(new URL('../packages/rulefield/operator/decisions/',import.meta.url)),safe(args[1])),'utf8'));
   const d=readDisclosure(args[2]);print(inspectHumanDecision(decision,d));
  }
  else{print({error:'UNKNOWN_COMMAND',cmd});process.exitCode=2;}

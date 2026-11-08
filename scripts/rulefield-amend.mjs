@@ -18,7 +18,7 @@ try{
  if(cmd==='help')print({...receiverCapabilities,commands:{
   init:'Create one inbox packet with the exact current registry digest; refuses overwrite.',
   inspect:'Dry-run a named inbox JSON packet and show review disposition; no writes.',
-  sync:'Scan all inbox JSON packets, create deterministic outbox review JSON + Markdown; never apply.',
+  sync:'Scan all inbox JSON packets, create complete JSON/Markdown review AND Light/Medium/Heavy human disclosure; never apply.',
   'dry-run':'Scan all inbox packets, validate only; no writes.',
   baseline:'Print SHA-256 of canonical source-free Rulefield registry.',
   template:'Show a sample machine-readable packet (without writing it).',

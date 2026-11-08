@@ -6,6 +6,16 @@
 
 The old Wolframian rule index has become too complex for one increasing list. It intermingled the original 190 NKS records, later source-recovered propositions, design candidates, crossing hypotheses, execution receipts and the operator's changing research priorities. The Living Rulefield **replaces that structure without removing its ancestors**.
 
+## Human operator interface and authorization
+
+**Human researchers start in [operator/README.md](operator/README.md)**, not the machine registry. The [extensive operator guide](operator/OPERATOR_GUIDE.md), [eleven-act Antigravity activation](operator/ACTIVATION_PROMPT.md), and the [human-only research submission](operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md) accompany the source-free [full disclosure dossier](operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md). [Human authorization](operator/templates/HUMAN_AUTHORIZATION_DECISION.md) is an independent, content-bound later decision. The receiver writes one comprehensive dossier with Light / Medium / Heavy views and complete JSON annexes; its JSON is never an automatic signature or a canonical change. [Quarantined archive intake](operator/INTAKE_AND_SYNC.md) verifies returned ZIPs before proposing an amendment.
+
+    node scripts/rulefield-operator.mjs help
+    node scripts/rulefield-operator.mjs disclose RF-AP-20261107-NEW.json
+    python3 scripts/rulefield-intake.py verify /path/to/returned.zip
+
+**Present status:** source-free review and disclosure; protected Flight HELD; real human approval and future exact Git patch remain separately gated.
+
 ## LLM receiver and experimental laboratory
 
 The Rulefield now functions as a **versioned research registry, scientific starter laboratory and review-first amendment intake system**. A connected agent can recover evidence and propose new rules or relationships without silently changing historical data. When the requested computation exceeds the current engine, the capability enters the future-integration backlog rather than being claimed as already available.

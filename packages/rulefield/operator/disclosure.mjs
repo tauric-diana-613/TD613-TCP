@@ -71,7 +71,7 @@ export function buildOperatorDisclosure(packet,review){
   scope:'PROSPECTIVE_SOURCE_FREE_STAGING_ONLY',
   proposal_count:proposals.length,
   proposal_ids:originalIds,
-  completeness:{all_packet_proposals_enumerated:true,all_packet_json_embedded:true,all_review_json_embedded:true,unknown_extension_fields_retained:true,information_not_currently_observable:'EXPLICIT_UNKNOWN_NOT_DISGUISED_AS_COMPLETE'},
+  completeness:{all_packet_proposals_enumerated:true,all_packet_proposals_unique:new Set(originalIds).size===originalIds.length,all_packet_json_embedded:true,all_review_json_embedded:true,unknown_extension_fields_retained:true,information_not_currently_observable:'EXPLICIT_UNKNOWN_NOT_DISGUISED_AS_COMPLETE'},
   executive_summary:{what:'Review bounded source-free Rulefield research candidates and decide whether to request separate staged synthesis.',proposal_count:proposals.length,issue_count:missing.length,
    exact_execution_class_counts:stateCounts,protected_experiment_b:'HELD',canonical_registry_mutated:false,exact_merge_patch_available:false},
   effect_and_authority_boundary:universe,

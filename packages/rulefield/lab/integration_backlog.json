@@ -414,5 +414,14 @@
   "foreign_tool_execution_observed": false,
   "human_roadmap_reference": "packages/rulefield/ROADMAP.md",
   "crosswalk_status": "16 backlog entries mapped to 22 separately staged human roadmap capabilities; many-to-many interpretation, not evidence of execution",
-  "normalization_note": "Original item tier labels preserved where they had unregistered substage values; canonical tier ids now match tiers[].id"
+  "normalization_note": "Original item tier labels preserved where they had unregistered substage values; canonical tier ids now match tiers[].id",
+  "operator_interface": {
+    "documentation": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+    "review_renderer": "packages/rulefield/operator/disclosure.mjs",
+    "human_decision_checker": "packages/rulefield/operator/decision.mjs",
+    "quarantine_intake": "scripts/rulefield-intake.py",
+    "integrated_now": "SOURCE_FREE_DISCLOSURE_AND_REVIEW",
+    "unreleased": "CANONICAL_ADOPTION_AUTOSYNC_OR_PROTECTED_FLIGHT",
+    "zero_source_change_to_historic_rules": true
+  }
 }

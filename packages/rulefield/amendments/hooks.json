@@ -15,7 +15,14 @@
     "review_outbox": "packages/rulefield/amendments/outbox/",
     "complexity_lab": "packages/rulefield/lab/multiway_lab.mjs",
     "external_tools": "packages/rulefield/lab/tool_registry.json",
-    "roadmap": "packages/rulefield/ROADMAP.md"
+    "roadmap": "packages/rulefield/ROADMAP.md",
+    "operator_manual": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+    "operator_start": "packages/rulefield/operator/README.md",
+    "activation_prompt": "packages/rulefield/operator/ACTIVATION_PROMPT.md",
+    "human_submission": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+    "operator_disclosure": "packages/rulefield/operator/disclosure.mjs",
+    "operator_decision_schema": "packages/rulefield/operator/decision.schema.json",
+    "handoff_intake": "scripts/rulefield-intake.py"
   },
   "stages": [
     {
@@ -152,6 +159,37 @@
     },
     {
       "stage": 9,
+      "hook": "on_pre_synthesis_full_disclosure",
+      "owner": "RULEFIELD_OPERATOR_INTERFACE",
+      "reads": [
+        "actual amendment packet",
+        "complete source-free review",
+        "packet/baseline SHA-256",
+        "source and model caveats"
+      ],
+      "writes": [
+        "content-bound .disclosure.json",
+        ".disclosure.md with Light, Medium and Heavy views"
+      ],
+      "rule": "Complete known-information disclosure of every proposal and review; entire packet and experiment appendix retained; unknown integration diffs remain explicitly unknown; no approval inferred."
+    },
+    {
+      "stage": 10,
+      "hook": "on_human_decision_request",
+      "owner": "HUMAN_OPERATOR",
+      "reads": [
+        "bound full dossier",
+        "selected proposal IDs",
+        "missing source/patch risk",
+        "separate human-authored decision"
+      ],
+      "writes": [
+        "future human-controlled, explicit staged-synthesis request only"
+      ],
+      "rule": "No agent may self-authorize. A typed form lacks identity authentication. Human decision binds exact packet/dossier SHA and can authorize staged candidate only; not canonical integration."
+    },
+    {
+      "stage": 11,
       "hook": "on_operator_promotion_request",
       "owner": "HUMAN",
       "reads": [
@@ -227,5 +265,13 @@
     "no_continuous_monitoring": true
   },
   "covenant": "Khona‌lit-po",
-  "closure": "RESERVED"
+  "closure": "RESERVED",
+  "human_authorization_contract": {
+    "required_for": "STAGED_SYNTHESIS_OF_SELECTED_PROPOSALS",
+    "packet_and_disclosure_sha_bound": true,
+    "full_readable_and_raw_disclosure": true,
+    "canonical_adoption_separately_gated": true,
+    "auto_authorization": false,
+    "physical_human_identity_proved_by_text": false
+  }
 }

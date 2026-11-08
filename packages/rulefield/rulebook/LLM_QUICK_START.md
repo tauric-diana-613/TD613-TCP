@@ -5,6 +5,10 @@
 **Version:** 1.0 · **Authority:** \`SAC[X6ZNK5NO51]\` · **Covenant:** Khona‌lit-po (U+200C interior retained).  
 **Custody:** Human authorship / final scientific closure RESERVED; protected Experiment B Flight HELD.
 
+## Human-facing preparation — required before proposals that could be synthesized
+
+Start at [operator/README.md](../operator/README.md) and [operator/OPERATOR_GUIDE.md](../operator/OPERATOR_GUIDE.md) when a human is commissioning or reviewing amendments. Preserve the human-only [research submission](../operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md) as their own words; the machine must instead fill the [full pre-synthesis disclosure](../operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md) from the actual packet and its receiver review. The disclosure has Light/Medium/Heavy views and full unabridged JSON. A separate human-controlled [authorization decision](../operator/templates/HUMAN_AUTHORIZATION_DECISION.md) can request only a staged candidate. Never merge or rewrite a historical record based solely on a schema or Markdown approval string.
+
 ## Computational-science first move
 
 A new Rulefield contribution must first decide which scientific operation is being proposed:

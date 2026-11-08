@@ -8,6 +8,8 @@ const decisions=new Set(['REQUEST_STAGED_SYNTHESIS','REQUEST_REVISION','DEFER','
 export function inspectHumanDecision(candidate,dossier){
  const issues=[];
  if(!validateDisclosure(dossier))issues.push('INVALID_DOSSIER_BINDING');
+ if(dossier && dossier.completeness?.all_packet_proposals_unique===false)issues.push('DUPLICATE_PROPOSAL_IDS');
+ if(dossier && dossier.receiver_disposition!=='STAGED_FOR_REVIEW')issues.push('HELD_OR_UNQUALIFIED_REVIEW');
  if(!candidate||typeof candidate!=='object')issues.push('DECISION_MISSING');
  if(issues.length)return {status:'HELD',issues,action_executed:false,canonical_changed:false};
  const d=candidate;

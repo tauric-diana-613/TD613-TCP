@@ -49,6 +49,10 @@ The [`lab/integration_backlog.json`](lab/integration_backlog.json) companion con
 
 Five original backlog items used more specific noncanonical tier labels; the machine register now stores the canonical tier in `tier` and preserves the earlier spelling as `historical_tier_label_before_normalization`. The crosswalk is a taxonomy repair, **not an execution or scientific-grade promotion**.
 
+## Operator disclosure and future staging
+
+The new [operator interface](operator/README.md) provides full-known-information Light/Medium/Heavy review and a separate human request for non-canonical staged synthesis. A human's right to inspect proposals precedes any future experimental expansion. The [ZIP quarantine tool](../../scripts/rulefield-intake.py) is transport verification, not an autosync service or permission engine. This new capability is implemented as a source-free operator aid and does not modify the 22-item future scientific integration roster or the 70-position research priority queue.
+
 ## Tool registry and adapter practice
 
 The machine-readable public-tool catalogue is [\`lab/tool_registry.json\`](lab/tool_registry.json). It links the Wolfram Physics tools, Wolfram Function Repository \`MultiwaySystem\`, \`WolframModel\`, hands-on notebook, open hypergraph documentation, interactive demonstrations, NetLogo and the Santa Fe Institute's Complexity Explorer. These public references are *external capabilities*, not active connections. Verify their current requirements and terms before use.

@@ -8,6 +8,15 @@ The **amendment packet** is how any authorized reader—Kenough/Antigravity, Ama
 
 The packet is **data**. Its text is never interpreted as code or trusted instructions by the receiver. The receiver writes staged review documents, never silently updates historical rule files, the operator's priority queue or sealed experiments.
 
+## Human-facing outputs and authorization protocol
+
+Every successful `sync` now generates four outbox siblings: `.review.json` and `.review.md`, plus `.disclosure.json` and `.disclosure.md`. The disclosure is a deterministic, complete-known-information projection of the exact packet and receiver review, with Light / Medium / Heavy reading depths and full raw JSON appendices. See [operator guide](../operator/OPERATOR_GUIDE.md) and [disclosure contract](../operator/DISCLOSURE_PROTOCOL.md). Missing sources, unknown future effects and unavailable exact patch sets are explicitly surfaced, never converted to approval. A [separate human decision](../operator/templates/HUMAN_AUTHORIZATION_DECISION.md) is a future event; typed names and authority-reference strings are not signatures. The current receiver cannot apply or adopt rules.
+
+    node scripts/rulefield-operator.mjs disclose RF-AP-20261107-NEW.json
+    node scripts/rulefield-operator.mjs decision-template <packetid>--<digest>
+
+Operator intake for a returning zip: `python3 scripts/rulefield-intake.py verify /path/to/handoff.zip` then `stage` for quarantined comparison. No auto-copy into canonical files.
+
 ## Start here: actual commands
 
 At the complete repository root, with Node.js 22:

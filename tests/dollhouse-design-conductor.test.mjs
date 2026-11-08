@@ -577,3 +577,6 @@ await import('./rulefield-amendments.test.mjs');
 
 // Capability roadmap, external tool claims and machine-readable source/receiver contracts.
 await import('./rulefield-roadmap.test.mjs');
+
+// Human-reviewed, non-omissive operator interface and authorization gates.
+await import('./rulefield-operator.test.mjs');
