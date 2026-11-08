@@ -78,6 +78,14 @@ node --test tests/rulefield-garden-triptych.test.mjs tests/rulefield-v1.test.mjs
 
 The native Wolfram comparison script at [`lab/wolfram_comparator.wl`](lab/wolfram_comparator.wl) is **staged but unexecuted**. It requires a genuine Wolfram Language runtime and a source-level execution receipt before any parity or physical claim.
 
+## Wolframian research source lineage
+
+The November 7 **164-rule and 179-rule atlases, convergence edition, Virilian/Wolframian/Berlantian relational-geometry and phasonic observatory research, rule indices and selected original audit receipts** are archived as **byte-identical historical source records** at [`sources/wolfram-rule-atlas-20261107/`](sources/wolfram-rule-atlas-20261107/README.md). The [machine provenance map](sources/wolfram-rule-atlas-20261107/SOURCE_LINEAGE.json) records 14 exact Git blob SHA identities and their original locations from the subsequently merged [Dollhouse repair #1725](https://github.com/tauric-diana-613/TD613-TCP/pull/1725).
+
+The original source files remain at their preexisting paths on `main`; Rulefield copies are **source inheritance**, not 14 novel rules, replicated experiments or evidence of independent scientific exteriority. The original binary Wolfram handoff ZIP is retained at `artifacts/TD613_WOLFRAMIAN_RULE_ATLAS_CONVERGENCE_AMARI_HANDOFF.zip` on `main`, linked in the provenance map but not byte-copied into this portable Rulefield branch.
+
+`OPERAHOUSE ≠ OPERA ≠ PERFORMER` governs the identity of these artifacts: mathematical infrastructure is not the subject matter or the attributed agent.
+
 ## The three updated Garden editions
 
 These three files live **directly in `packages/rulefield/`** and are synchronized representations of this source-free Living Rulefield edition:
