@@ -1,3 +1,7 @@
+## RF-OD-0003 — source-complete operator review artifact
+
+\`node scripts/rulefield-docket3.mjs validate|render|chat|export\` now produces a full-source, digest-bound **review-only** docket containing all 559 residual original records, 94 new source-read interpretations and discriminating challenges, 38 prior agent-read examples, 427 deterministic-only records, 86 complete original Rulefield expressions, and 70 historical rank positions. The program distinguishes *agent interpretation* from scientific adjudication; OD-02 and human closure remain HELD/RESERVED. The machine-readable docket and human Markdown are generated as GitHub Actions operator-witness artifacts alongside the source-complete 559-row semantic overlay.
+
 ## 𝌋 RF-OD-0003 — Source-read semantic casebook and paired empirical priority
 
 **Standing:** DRAFT RESEARCH COMMISSION; human ratification and scientific closure RESERVED. This successor adds **94 individually source-read agent semantic interpretations** with explicit falsifying challenges to the earlier 38, for **132 agent-screened records** in the 559-record residual ledger. The other **427** retain deterministic triage only. These readings are reviewed *by the executing agent*, not independently refereed, and are NOT accepted local rules, scientific discoveries or approved academic nomenclature. The 596 historical objects and 86 candidate Rulefields remain byte-identical in their source files; ten context-indexed role-multiplicity examples remain separate from canonical typing.
