@@ -26,6 +26,11 @@ import { readFileSync, existsSync, realpathSync } from 'node:fs';
 import { resolve, relative, isAbsolute, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { runDollhouseSkillAudit, resolveCurrentSourceRevision } from './dollhouse-skill-dispatcher.js';
+import {
+  serializeWithProfile,
+  validateStructuredSnapshotDomain,
+  SERIALIZATION_PROFILES
+} from './dollhouse-atlas-relational-custody.js';
 
 export const DOLLHOUSE_DESIGN_SCHEMA = 'td613.dollhouse-design.return-receipt/v0.2';
 export const DOLLHOUSE_DESIGN_VERSION = 'v0.2-candidate';
@@ -855,7 +860,10 @@ export function deriveCommissionCandidates(commission) {
       medium_consequence: String(cand.medium_consequence || `Custom structural consequence in ${commission.medium}.`),
       scaffolding_class: 'AUTHOR_DECLARED_PROPOSAL',
       proposal_origin: 'OPERATOR_OVERRIDE',
-      seed_anchor_terms: Array.isArray(cand.seed_anchor_terms) ? cand.seed_anchor_terms : []
+      seed_anchor_terms: Array.isArray(cand.seed_anchor_terms) ? cand.seed_anchor_terms : [],
+      ...(cand.trajectory ? { trajectory: cand.trajectory } : {}),
+      ...(cand.winding !== undefined ? { winding: cand.winding } : {}),
+      ...(cand.lattice_path ? { lattice_path: cand.lattice_path } : {})
     }));
   }
 
@@ -1105,7 +1113,12 @@ export function normalizeCommission(raw = {}) {
       if (!AVAILABLE_INSTRUMENTS[inst]) {
         throw new TypeError(`Unrecognized instrument "${inst}" in candidate override at index ${idx}. Available: ${Object.keys(AVAILABLE_INSTRUMENTS).join(', ')}`);
       }
-      const comboKey = `${title}::${prop}::${inst}`;
+      const candBasis = {
+        concept_title: title,
+        formal_proposition: prop,
+        governing_instrument: inst
+      };
+      const comboKey = serializeWithProfile(candBasis, SERIALIZATION_PROFILES.ATLAS_V1);
       if (seenCombos.has(comboKey)) {
         throw new TypeError(`Exact duplicate candidate override detected at index ${idx}: "${title}"`);
       }
@@ -1116,7 +1129,10 @@ export function normalizeCommission(raw = {}) {
         formal_proposition: prop,
         structural_mechanisms: Array.isArray(cand.structural_mechanisms) ? cand.structural_mechanisms : [],
         medium_consequence: String(cand.medium_consequence || `Custom structural consequence in ${medium}.`).trim(),
-        seed_anchor_terms: Array.isArray(cand.seed_anchor_terms) ? cand.seed_anchor_terms : []
+        seed_anchor_terms: Array.isArray(cand.seed_anchor_terms) ? cand.seed_anchor_terms : [],
+        ...(cand.trajectory ? { trajectory: cand.trajectory } : {}),
+        ...(cand.winding !== undefined ? { winding: cand.winding } : {}),
+        ...(cand.lattice_path ? { lattice_path: cand.lattice_path } : {})
       };
     });
   }
@@ -1135,7 +1151,8 @@ export function normalizeCommission(raw = {}) {
       classification: r.classification
     })),
     candidate_overrides: candidateOverrides,
-    refractive_parameters: raw.refractive_parameters || {}
+    refractive_parameters: raw.refractive_parameters || {},
+    mathematical_premise: raw.mathematical_premise || null
   };
   const commissionDigest = sha256(canonicalBasis);
   const commissionId = String(raw.commission_id || `COMM-${commissionDigest.slice(0, 8)}`);
@@ -1152,7 +1169,13 @@ export function normalizeCommission(raw = {}) {
     candidate_overrides: deepFreeze(candidateOverrides),
     refractive_parameters: deepFreeze(raw.refractive_parameters || {}),
     scientific_audit_requested: raw.scientific_audit_requested === true,
-    audit_domain_inputs: raw.audit_domain_inputs || raw.domain_inputs || null
+    audit_domain_inputs: raw.audit_domain_inputs || raw.domain_inputs || null,
+    audit_roles: Array.isArray(raw.audit_roles)
+      ? Object.freeze(raw.audit_roles.map(r => String(r).trim().toUpperCase()))
+      : (Array.isArray(raw.roles) ? Object.freeze(raw.roles.map(r => String(r).trim().toUpperCase())) : null),
+    mathematical_premise: raw.mathematical_premise && typeof raw.mathematical_premise === 'object'
+      ? deepFreeze(raw.mathematical_premise)
+      : null
   });
 }
 
@@ -1170,6 +1193,12 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
 
   // 3. GENERATE COMMISSION-DERIVED ALTERNATIVES
   const candidates = deriveCommissionCandidates(commission);
+  for (const cand of candidates) {
+    const domainCheck = validateStructuredSnapshotDomain(cand);
+    if (!domainCheck.valid) {
+      throw new TypeError(`Generated candidate out of snapshot domain: ${domainCheck.reason} at ${domainCheck.path}`);
+    }
+  }
   const candidateA = candidates[0];
   const candidateB = candidates[1] || candidates[0];
 
@@ -1388,13 +1417,31 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
         : (commission.mathematical_premise ? ['PEDAGOGUE', 'APERTURE', 'ATLAS'] : ['PEDAGOGUE', 'APERTURE']);
 
       const auditDomainInputs = { ...(commission.audit_domain_inputs || commission.domain_inputs || {}) };
-      if (commission.mathematical_premise && !auditDomainInputs.ATLAS) {
-        auditDomainInputs.ATLAS = {
-          trajectoryA: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 0 },
-          trajectoryB: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 0 },
-          mathematical_operation: commission.mathematical_premise.operation || commission.mathematical_premise.capability_id || 'A-01',
-          input: commission.mathematical_premise.problem || commission.mathematical_premise.input
+      if ((commission.mathematical_premise || auditRoles.includes('ATLAS')) && !auditDomainInputs.ATLAS) {
+        const prem = commission.mathematical_premise || {};
+        const trajA = prem.trajectoryA || candidates[0]?.trajectory || {
+          endpoint: candidates[0]?.endpoint || 'REST_CUSTODY_ORIGIN',
+          winding: candidates[0]?.winding ?? 0
         };
+        const trajB = prem.trajectoryB || candidates[1]?.trajectory || {
+          endpoint: candidates[1]?.endpoint || 'REST_CUSTODY_ORIGIN',
+          winding: candidates[1]?.winding ?? 0
+        };
+        auditDomainInputs.ATLAS = {
+          trajectoryA: trajA,
+          trajectoryB: trajB,
+          mathematical_operation: prem.operation || prem.capability_id || 'A-01',
+          input: prem.problem || prem.input || { seed: commission.seed }
+        };
+        if (prem.relation_entry) {
+          auditDomainInputs.ATLAS.relation_entry = prem.relation_entry;
+        }
+        if (prem.relation_identity || (candidates[0]?.lattice_path && candidates[1]?.lattice_path)) {
+          auditDomainInputs.ATLAS.relation_identity = prem.relation_identity || {
+            left_custody: candidates[0].lattice_path,
+            right_custody: candidates[1].lattice_path
+          };
+        }
       }
 
       const auditResult = await runDollhouseSkillAudit({
@@ -1412,6 +1459,9 @@ export async function runDollhouseDesignCycle(commissionInput = {}, options = {}
         decision: orchestratorDecision,
         exit_code: auditResult.exit_code,
         consensus: auditResult.machine_receipt?.orchestrator?.consensus || 'NONE',
+        roles_requested: auditResult.machine_receipt?.roles_requested || auditRoles,
+        roles_executed: auditResult.machine_receipt?.roles_executed || [],
+        active_roles: auditResult.machine_receipt?.orchestrator?.active_roles || auditResult.machine_receipt?.roles_executed || [],
         missing_inputs: auditResult.machine_receipt?.missing_inputs || [],
         detected_infractions: auditResult.machine_receipt?.detected_infractions || [],
         specialist_findings: auditResult.machine_receipt?.specialist_findings || [],
