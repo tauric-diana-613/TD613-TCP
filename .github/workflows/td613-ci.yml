@@ -55,7 +55,7 @@ jobs:
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
           node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs
-          python3 -m unittest discover -s tests -p 'rulefield-intake.test.py'
+          python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
       - name: Exercise complete human disclosure on an example source-free packet
         run: |
           node scripts/rulefield-amend.mjs init RF-AP-20261107-OPERATORCI

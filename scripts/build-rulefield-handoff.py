@@ -24,7 +24,7 @@ SUPPORT = (
     "tests/rulefield-amendments.test.mjs",
     "tests/rulefield-roadmap.test.mjs",
     "tests/rulefield-operator.test.mjs",
-    "tests/rulefield-intake.test.py",
+    "tests/test_rulefield_intake.py",
     "scripts/rulefield-operator.mjs",
     "scripts/rulefield-intake.py",
     "scripts/build-rulefield-handoff.py",
