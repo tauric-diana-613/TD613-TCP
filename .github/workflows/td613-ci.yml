@@ -136,6 +136,15 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Independently test exact GA01 source-free integration and adverse boundaries
+        run: node scripts/ga02-independent-ga01-exact-head-review-v01.mjs
+      - name: Preserve GA01/GA02 integration receipt even on falsification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ga01-ga02-sourcefree-${{ github.event.pull_request.head.sha || github.sha }}
+          path: artifacts/ga01-ga02-readonly-review/ga01-exact-head-review.json
+          if-no-files-found: warn
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
