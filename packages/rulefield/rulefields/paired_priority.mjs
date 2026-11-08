@@ -19,10 +19,11 @@ function nullScore(id,reasons,diagnostics={}){
  return {rulefield_id:id,standing:'HELD_UNQUALIFIED_PAIRED_EPISODE',reasons:[...new Set(reasons)],
   measures:null,assay_diagnostics:diagnostics,independent_exteriority_witness:false,scientific_utility_proved:false};
 }
-export function evaluatePairedEpisode(episode,{as_of}={}){
+export function evaluatePairedEpisode(episode,{as_of,familywise_tests=1}={}){
  const id=episode?.rulefield_id??'UNKNOWN',errors=[];
  if(!episode||episode.schema!=='td613.rulefield.paired-episode/v1')errors.push('EPISODE_SCHEMA_INVALID');
  if(!iso(as_of))errors.push('AS_OF_INVALID');
+ if(!Number.isInteger(familywise_tests)||familywise_tests<1||familywise_tests>86)errors.push('INVALID_MULTIPLICITY_CORRECTION');
  for(const key of ['evaluation_source_sha256','training_source_sha256','protocol_sha256','cohort_sha256',
    'comparison_frame_sha256','preregistration_sha256','randomization_commitment_sha256']){
   if(!shaOK(episode?.[key]))errors.push('MISSING_OR_INVALID_'+key.toUpperCase());
@@ -67,12 +68,12 @@ export function evaluatePairedEpisode(episode,{as_of}={}){
  const n=deltas.length,mean=deltas.reduce((a,b)=>a+b,0)/n;
  // Hoeffding for [-1,1] independent bounded paired differences:
  // P(|mean-Edelta| >= eps) <= 2 exp(-n*eps^2/2).
- const eps=Math.sqrt(2*Math.log(2/episode.alpha)/n);
+ const eps=Math.sqrt(2*Math.log(2*familywise_tests/episode.alpha)/n);
  const bounds=[Math.max(-1,mean-eps),Math.min(1,mean+eps)];
  const positive=deltas.filter(x=>x===1).length,negative=deltas.filter(x=>x===-1).length;
  const report={rulefield_id:id,standing:'QUALIFIED_WITHIN_DECLARED_FINITE_EPISODE_EXTERIORITY_HELD',
   reasons:[],assay_diagnostics:{metric:episode.metric,confidence_assumption:'INDEPENDENT_BOUNDED_PAIRS_DECLARED_NOT_EXTERNALLY_VERIFIED',
-   statistical_interval:'TWO_SIDED_HOEFFDING_95_PERCENT',population_generalization:false,
+   statistical_interval:'TWO_SIDED_HOEFFDING_BONFERRONI_UP_TO_86',population_generalization:false,
    placebo_or_randomization_checks_independently_validated:false,preregistration_time_independently_verified:false},
   frame:{evaluation_source_sha256:episode.evaluation_source_sha256,
    protocol_sha256:episode.protocol_sha256,cohort_sha256:episode.cohort_sha256,
@@ -82,7 +83,7 @@ export function evaluatePairedEpisode(episode,{as_of}={}){
    trial_set_sha256:hash(JSON.stringify([...ids].sort()))},
   measures:{n,mean_paired_gain:mean,confidence_bounds:bounds,
    positive_pairs:positive,negative_pairs:negative,ties:n-positive-negative,
-   confidence_level:0.95,confidence_lower_above_zero:bounds[0]>0},
+   familywise_tests,conditional_joint_coverage_at_least:1-episode.alpha,confidence_lower_above_zero:bounds[0]>0},
   independent_exteriority_witness:false,scientific_utility_proved:false,
   human_authorization:false};
  return report;
@@ -104,7 +105,7 @@ export function pairedPriorityPreview({episodes={},as_of,plan=proposedTemporalPr
   if(!ids.has(id)||episodes[id]?.rulefield_id!==id)fail('UNKNOWN_OR_MISMATCHED_FIELD_EPISODE');
  }
  const evaluations=Object.fromEntries(plan.proposed_rulefield_order.map(id=>
-  [id,evaluatePairedEpisode(episodes[id],{as_of})]));
+  [id,evaluatePairedEpisode(episodes[id],{as_of,familywise_tests:86})]));
  const order=[...plan.proposed_rulefield_order],comparisons=[];
  // Adjacent, information/budget/cohort matched tests; no jumps past missing evidence.
  for(let pass=0;pass<86;pass++){
