@@ -94,3 +94,82 @@ test('equations retain scoped assumptions and public exports carry current mater
  assert(!JSON.stringify(api.export()).includes('correction_history'));
  assert(!JSON.stringify(api.export()).includes('original_callout'));
 });
+
+
+test('Vixen dual-estate Encyclopedia retains its own Work lineage and routes to a distinct reference scene',async()=>{
+ const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
+ assert(candidate.includes('id="td613-sitewide-reset-preflight"'));
+ assert(candidate.includes('id="view-reference"'));
+ assert(candidate.includes('data-view="reference"'));
+ assert(candidate.includes('vixen-estate/reference-bridge.mjs'));
+ assert(candidate.includes('vixen-estate/research-chamber.mjs'));
+ const m=candidate.match(/<script type="application\/json" id="vixen-estate-manifest">([\s\S]*?)<\/script>/);
+ assert(m,'distinct present-tense estate manifest required');
+ const live=JSON.parse(m[1]);
+ assert.equal(live.route,'/encyclopedia/vix-cyb.html');
+ assert.equal(live.source_vixen.works,32);assert.equal(live.source_vixen.manifestations,53);
+ assert.equal(live.source_vixen.unadjudicated_gates,8);assert.equal(live.source_vixen.instruments,21);
+ assert.equal(live.source_universal.records,1141);assert.equal(live.source_universal.edges,2131);
+ assert.equal(live.release_authority,false);
+ assert.equal(live.experiment_b_flight,'HELD');
+ assert.match(candidate,/const VALID_VIEWS = \[[^\]]*'reference'\]/);
+ assert.match(candidate,/function scheduleObservatoryFrame\(/);
+ assert.match(candidate,/function stopObservatoryFrame\(/);
+ assert.match(candidate,/vixenParticleField/);
+ assert(!candidate.includes('renderCart('),'No commercial cart may inhabit Vixen');
+ assert.equal((candidate.match(/id="vixen-corpus-bundle"/g)||[]).length,1);
+ assert(candidate.includes('UNADJUDICATED_PAIR'),'all eight historic human-gate contracts remain on the source');
+});
+
+test('Vixen reference membrane serves actual source-bound search, exact bytes, graph relations and honest refusal',async()=>{
+ const {createVixenReferenceMembrane,BridgeHold}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
+ const {webcrypto}=await import('node:crypto');
+ const base='https://vixen.example/encyclopedia/reference/';
+ let fetched=[];
+ const fetcher=async(input,opts)=>{
+  const u=new URL(input);fetched.push({pathname:u.pathname,method:opts?.method,credentials:opts?.credentials});
+  assert.equal(u.origin,'https://vixen.example');assert(u.pathname.startsWith('/encyclopedia/reference/'));
+  assert.equal(opts.method,'GET');assert.equal(opts.credentials,'omit');
+  const raw=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
+  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw};
+ };
+ const bridge=createVixenReferenceMembrane({baseURL:base,fetcher,cryptoProvider:webcrypto});
+ assert.equal(bridge.status().state,'UNOPENED');
+ await assert.rejects(()=>bridge.getRecord('G-001'),e=>e instanceof BridgeHold&&e.code==='REFERENCE_NOT_LOADED');
+ const open=await bridge.open();assert.equal(open.state,'CENSUS_MATCHED');
+ assert.equal(open.records,1141);assert.equal(open.edges,2131);
+ assert.equal(open.cryptographic_index_authentication,'NOT_CLAIMED');
+ const hits=bridge.search('Eclipse');assert(hits.some(x=>x.id==='G-001'));
+ assert(hits.every(x=>x.claim_role==='SEARCH_MATCH_ONLY_NOT_ENTAILMENT'));
+ const item=await bridge.getRecord('G-001');
+ assert.equal(item.estate,'UNIVERSAL_REFERENCE');
+ assert.equal(item.warrant,'SOURCE_BYTES_VERIFIED_NOT_CLAIM_ENTAILMENT');
+ assert.equal(item.record.id,'G-001');assert.match(item.record.record.description,/boundary/);
+ const edges=bridge.related('G-001');assert(edges.length>0);
+ assert(edges.every(e=>e.relation_warrant==='RECORDED_GRAPH_EDGE_NOT_CAUSAL_PROOF'));
+ assert(fetched.some(f=>f.pathname.endsWith('/records/G-001.json')));
+ assert(fetched.every(f=>f.method==='GET'&&f.credentials==='omit'));
+ assert(bridge.history().some(e=>e.action==='SOURCE_WITNESSED'));
+ assert.deepEqual(bridge.search('term-unknown-does-not-exist'),[]);
+});
+
+test('Vixen reference membrane refuses missing and tampered source bodies without claim promotion',async()=>{
+ const {createVixenReferenceMembrane,BridgeHold}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
+ const {webcrypto}=await import('node:crypto');
+ const base='https://vixen.example/encyclopedia/reference/';
+ const asset=async u=>await readFile(new URL('.'+new URL(u).pathname,new URL('../app/',import.meta.url)),'utf8');
+ const tampered=async(input)=>{const u=new URL(input);let raw=await asset(u);if(u.pathname.endsWith('/records/G-001.json'))raw=raw.replace('Eclipse','Allegedly Eclipse');
+  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw}};
+ const bridge=createVixenReferenceMembrane({baseURL:base,fetcher:tampered,cryptoProvider:webcrypto});
+ await bridge.open();
+ await assert.rejects(()=>bridge.getRecord('G-001'),e=>e instanceof BridgeHold&&e.code==='RECORD_DIGEST_MISMATCH');
+ assert(bridge.history().some(e=>e.action==='SOURCE_DIGEST_REFUSED'));
+ await assert.rejects(()=>bridge.getRecord('G-9999'),e=>e instanceof BridgeHold&&e.code==='RECORD_NOT_IN_EDITION');
+ const missing=async(input)=>{const u=new URL(input);let raw=await asset(u);if(u.pathname.endsWith('/directory.json'))raw='[]';return {ok:true,url:u.href,status:200,headers:{get:()=>null},text:async()=>raw}};
+ const absent=createVixenReferenceMembrane({baseURL:base,fetcher:missing,cryptoProvider:webcrypto});
+ await assert.rejects(()=>absent.open(),e=>e instanceof BridgeHold&&e.code==='REFERENCE_CENSUS_MISMATCH');
+ assert.equal(absent.status().state,'HELD');
+ const offline=createVixenReferenceMembrane({baseURL:'file:///tmp/vix/reference/'});
+ await assert.rejects(()=>offline.open(),e=>e instanceof BridgeHold&&e.code==='FILE_SCHEME_NOT_BACKEND_BOUND');
+ assert.equal(offline.rest().state,'HELD');
+});
