@@ -17,7 +17,7 @@
       "interpretation": "Prompt and tool exclusion is a pre-dispatch access guard across both arms.",
       "discriminating_challenge": "Challenge a candidate prompt containing a hidden charter in only one arm; both must reject the contaminated condition.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -28,7 +28,7 @@
       "interpretation": "Turn-level idempotence is a recoverable-state invariant with an explicit replay prohibition.",
       "discriminating_challenge": "Interrupt after journal commit; the resumed run must reuse the committed result without a new provider call.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -39,7 +39,7 @@
       "interpretation": "WebCrypto rejection defines a finite fail-closed update and zero-mutation invariant.",
       "discriminating_challenge": "Force a digest promise rejection and verify error code and no state advance.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -50,7 +50,7 @@
       "interpretation": "Permitting unanticipated candidate discovery is an experimental design condition, not a local discovery rule.",
       "discriminating_challenge": "Compare candidate-generation arms with equal permissions and ensure post hoc discoveries remain unapproved.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -61,7 +61,7 @@
       "interpretation": "Holdout protection and negative controls govern experiment allocation and leakage checks.",
       "discriminating_challenge": "Reveal a holdout key in a test arm and require leakage detection before scoring.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -72,7 +72,7 @@
       "interpretation": "One-use custody authority is a scope-bound permission guard.",
       "discriminating_challenge": "Attempt second consumption and foreign-scope consumption of the same signing permit.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -83,7 +83,7 @@
       "interpretation": "Separate Stage-2 controller is an independence condition on review design.",
       "discriminating_challenge": "Demonstrate how shared credentials between proposer and adjudicator invalidate independence.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -94,7 +94,7 @@
       "interpretation": "Source objects, Works, manifestations, captures and derivatives define distinct identity types.",
       "discriminating_challenge": "Construct two manifestations of one Work and ensure a digest equality cannot equate their capture identities.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -105,7 +105,7 @@
       "interpretation": "The historical SRC method family spans multiple geometries and should retain its research scope.",
       "discriminating_challenge": "Extract one cartographic transition and show why it cannot exhaust topology or tomography.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -116,7 +116,7 @@
       "interpretation": "Six phason-seam transitions specify a typed taxonomy awaiting local transition contracts.",
       "discriminating_challenge": "Test whether a permission seam can be distinguished from a byte seam under identical output.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -127,7 +127,7 @@
       "interpretation": "Recorded route-memory difference is explicitly insufficient to warrant geometric holonomy.",
       "discriminating_challenge": "Construct two different recorded routes with no geometric transport witness.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -138,7 +138,7 @@
       "interpretation": "Publication permission distinguishes mathematical disclosure from protected source access.",
       "discriminating_challenge": "A manuscript export carrying private source text must fail the publication gate.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -149,7 +149,7 @@
       "interpretation": "Artwork generating a later question is a prospective observer-outcome hypothesis.",
       "discriminating_challenge": "Run matched observer presentations and distinguish reported question generation from source novelty.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -160,7 +160,7 @@
       "interpretation": "Sidecar quotient is a typed packaging equivalence relation with retained counts and byte conservation.",
       "discriminating_challenge": "Inject an AppleDouble sidecar and verify substantive corpus count and whole archive byte sum separately.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -171,7 +171,7 @@
       "interpretation": "Renderer custody is a bounded snapshot-invariance and no-mutation constraint.",
       "discriminating_challenge": "Change active animation views and verify immutable world state and unchanged custody.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -182,7 +182,7 @@
       "interpretation": "Theory, ambiance refresh and human-triggered resynthesis define three separately typed clocks.",
       "discriminating_challenge": "Swap refresh and resynthesis timestamps and check that the resulting states are distinguishable.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -193,7 +193,7 @@
       "interpretation": "Presentation changes at fixed source digest define two independent coordinates.",
       "discriminating_challenge": "Alter the view while verifying source bytes and projection identity are tracked separately.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -204,7 +204,7 @@
       "interpretation": "Artwork appearance before admission cannot be promoted to proof or custody.",
       "discriminating_challenge": "Display an unretrieved artwork and test that admitted-source count remains zero.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -215,7 +215,7 @@
       "interpretation": "Experimentally suspending a research rule is permitted only in isolated reversible branches.",
       "discriminating_challenge": "Attempt a branch suspension that mutates constitutional K0 and require rejection.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -226,7 +226,7 @@
       "interpretation": "Matched permissions, observation and compute budgets are experimental comparability conditions.",
       "discriminating_challenge": "Reduce one arm's observations and confirm the study refuses to infer comparative novelty.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -237,7 +237,7 @@
       "interpretation": "No-new-rule outcomes and retained contradictions are valid negative findings.",
       "discriminating_challenge": "Provide an existing-rule closure witness and require a zero-novelty disposition.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -248,7 +248,7 @@
       "interpretation": "NOTICE/ACT/WORLD_ANSWERS/NAME/REST describes staged pedagogy with separate observer receipts.",
       "discriminating_challenge": "A static frame lacking a world answer cannot be treated as witnessed causal interaction.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -259,7 +259,7 @@
       "interpretation": "Pedagogical E0–E4 grades and observation result labels constitute non-equivalent axes.",
       "discriminating_challenge": "Give one source E4 grade and MISSING observation; reject collapse into a single success status.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -270,7 +270,7 @@
       "interpretation": "Missing media, clock or Unicode evidence imposes an explicit unqualified status.",
       "discriminating_challenge": "Remove one canonical Unicode witness and verify the promotion gate holds.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -281,7 +281,7 @@
       "interpretation": "Preemption gaps require actor-specific paired action/verification clock contrasts.",
       "discriminating_challenge": "Create equal delays with opposite causal ordering to falsify delay-only conclusions.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -292,7 +292,7 @@
       "interpretation": "Rest, exit and recognition interval bound the allowed presentation scheduler.",
       "discriminating_challenge": "Speed up animation beyond recorded comprehension and verify continued rest/exit controls.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -303,7 +303,7 @@
       "interpretation": "Positional access and matrix-of-domination gates are controlled interventions, not identity inference.",
       "discriminating_challenge": "Hold evidence constant while changing declared access gates; never impute participant identity.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -314,7 +314,7 @@
       "interpretation": "Institutional standing is manipulated at constant testimony to measure differential uptake.",
       "discriminating_challenge": "Alter testimony bytes during prestige permutation and require invalid-comparison status.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -325,7 +325,7 @@
       "interpretation": "A thinker-inspired algorithm cannot imply that its historical author endorsed it.",
       "discriminating_challenge": "Attach an unsourced endorsement to an operationalization and verify rejection of attribution.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -336,7 +336,7 @@
       "interpretation": "The 843-record baseline must remain source-identical when appending 279 candidates.",
       "discriminating_challenge": "Perform a candidate import that overwrites one baseline ID; reject and retain original digest.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -347,7 +347,7 @@
       "interpretation": "Staged, formal, executable and empirically held are independent status dimensions.",
       "discriminating_challenge": "A compiled executable artifact with no empirical observation must remain held empirically.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -358,7 +358,7 @@
       "interpretation": "Claim, citation, edge and reverse-citation provenance is a graph lineage invariant.",
       "discriminating_challenge": "Drop a reverse-citation source root and require a broken-lineage result.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -369,7 +369,7 @@
       "interpretation": "Transporting Encyclopedia sources into Manifest cannot itself establish a new research operation.",
       "discriminating_challenge": "Copy all source records with identical semantics and reject an inference of emergence.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -380,7 +380,7 @@
       "interpretation": "Presentation attention and mathematical information effects demand different measured arms.",
       "discriminating_challenge": "Hold the computation fixed while changing theme; compare separately against representation loss.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -391,7 +391,7 @@
       "interpretation": "Zero-derivative ambiance invariance is explicitly a falsifiable strong hypothesis.",
       "discriminating_challenge": "Produce a controlled perturbation where output changes and preserve the hypothesis failure.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -402,7 +402,7 @@
       "interpretation": "Source status and calibration vary orthogonally to measure status leakage.",
       "discriminating_challenge": "Change evidence quality alongside prestige and invalidate the factorial comparison.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -413,7 +413,7 @@
       "interpretation": "Evidence, belief, action and public-claim events are four signed time coordinates.",
       "discriminating_challenge": "Construct a correct action before belief revision and preserve its negative signed lag.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -424,7 +424,7 @@
       "interpretation": "Spatial access is experimentally varied while source content remains fixed.",
       "discriminating_challenge": "Modify the source text under a route perturbation and hold the contrast.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -435,7 +435,7 @@
       "interpretation": "Withdrawn +0.1753 and corrected pooled-zero claims are retained negative-result records.",
       "discriminating_challenge": "Ensure the withdrawn estimate can be queried but never used as a positive validation target.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -446,7 +446,7 @@
       "interpretation": "Unresolved author identities must be preserved across host and alias boundaries.",
       "discriminating_challenge": "Force a renderer to assign a guessed civil identity; require refusal.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -457,7 +457,7 @@
       "interpretation": "Host diagnostics and minimum human-facing controls have distinct presentation privileges.",
       "discriminating_challenge": "Inject internal diagnostics into default text while hiding consent; fail the host contract.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -468,7 +468,7 @@
       "interpretation": "A polished opera cannot authenticate performer identity or transfer authority.",
       "discriminating_challenge": "Feed an aesthetic-only host swap and check no new performer warrant appears.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -479,7 +479,7 @@
       "interpretation": "Capsule parity requires an unhandicapped history-competent comparator and disclosed budgets.",
       "discriminating_challenge": "Give the comparator less history or compute and reject claimed discovery.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -490,7 +490,7 @@
       "interpretation": "Preservation, retrieval and decision-used counts form separate evidence-recovery observables.",
       "discriminating_challenge": "Preserve negative evidence but hide it from retrieval; detect false parity.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -501,7 +501,7 @@
       "interpretation": "Reliability and prestige must be independently varied in a factorial design.",
       "discriminating_challenge": "Replace calibrated evidence with an unmeasured social-status proxy and hold inference.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -512,7 +512,7 @@
       "interpretation": "Delayed and blind conditions require paired randomness and equivalent observation permissions.",
       "discriminating_challenge": "Give one arm an instantaneous sensor without disclosure; invalidate comparison.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -523,7 +523,7 @@
       "interpretation": "Same-byte, different-route histories isolate custody identity from byte equality.",
       "discriminating_challenge": "Compare equal hashes with distinct routes; test whether origin claims survive.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -534,7 +534,7 @@
       "interpretation": "Twin-world construction is a falsifier procedure for unsupported exteriority claims.",
       "discriminating_challenge": "Present observationally identical worlds of different hidden origin and demand abstention.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -545,7 +545,7 @@
       "interpretation": "Provider self-attestation and interfaces cannot establish independent exteriority.",
       "discriminating_challenge": "Replace an outside witness with provider-generated text and keep origin unproved.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -556,7 +556,7 @@
       "interpretation": "Indistinguishability induces an identifiability predicate and required abstention state.",
       "discriminating_challenge": "Construct an admitted record shared by internal and external origin worlds.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -567,7 +567,7 @@
       "interpretation": "Cross-system adapters require typed semantics beyond transport interoperability.",
       "discriminating_challenge": "Roundtrip equal bytes with incompatible authorization scope and detect mismatch.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -578,7 +578,7 @@
       "interpretation": "Bridge ablation tests functional preservation of original components.",
       "discriminating_challenge": "Disable a bridge after integration and compare component functionality against pre-integration baseline.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -589,7 +589,7 @@
       "interpretation": "Same-episode custody and comparison frame are conjunctive admission constraints.",
       "discriminating_challenge": "Combine five individually good surfaces from distinct episodes and require HOLD.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -600,7 +600,7 @@
       "interpretation": "The archived 0/16 subset closure is a finite, version-specific negative result.",
       "discriminating_challenge": "Inject an external episode and ensure the old finite conclusion is not universalized.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -611,7 +611,7 @@
       "interpretation": "Equal matrix dimensions with differing row spaces form a counterexample protocol.",
       "discriminating_challenge": "Use two equally sized matrices with different rank to refute sufficiency-by-cardinality.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -622,7 +622,7 @@
       "interpretation": "Machine-readable matrices and operator-facing renderings must share an exact receipt.",
       "discriminating_challenge": "Render a figure with altered entries and fail digest parity.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -633,7 +633,7 @@
       "interpretation": "Alternative hypotheses and adverse outcomes are mandatory experimental comparators.",
       "discriminating_challenge": "Remove negative outcomes from a report and refuse favorable interpretation.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -644,7 +644,7 @@
       "interpretation": "A new coordinate must follow a witnessed nonidentifiability counterexample.",
       "discriminating_challenge": "Propose a coordinate absent any colliding-world example and hold it.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -655,7 +655,7 @@
       "interpretation": "V/C/P/L are distinct typed evidence coordinates with temporal nonretroactivity.",
       "discriminating_challenge": "Use late reconstructibility to rewrite early observability and reject.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -666,7 +666,7 @@
       "interpretation": "Synthetic recombination cannot substitute for Golden Egg external acquisition.",
       "discriminating_challenge": "Combine finite archive traces into a pseudo-episode and refuse realization credit.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -677,7 +677,7 @@
       "interpretation": "Experiential, custodial, audit and implementation views are distinct route types.",
       "discriminating_challenge": "Silently merge two view types and require type-separation failure.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -688,7 +688,7 @@
       "interpretation": "Stable replay seeds and Unicode token distinction are byte-level invariants.",
       "discriminating_challenge": "Normalize U+10D613 with U+1D30B or erase U+200C; reject replay.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -699,7 +699,7 @@
       "interpretation": "Relation-geometry versus relational-geometry is a proposed comparative research domain.",
       "discriminating_challenge": "Treat a hyphen substitution alone as theorem evidence and hold claim.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -710,7 +710,7 @@
       "interpretation": "Preflight, Flight, adjudication and postflight states define noninterchangeable authorities.",
       "discriminating_challenge": "Attempt to use a preflight fixture as postflight witness; require type failure.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -721,7 +721,7 @@
       "interpretation": "Exact-head provider, isolation and reviewer receipts form a stage-transition guard.",
       "discriminating_challenge": "Mutate model revision after preregistration and refuse activation.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -732,7 +732,7 @@
       "interpretation": "Output departures require mutually discriminable observable error classes.",
       "discriminating_challenge": "Contrast wrong syntax with disallowed action under identical output style.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -743,7 +743,7 @@
       "interpretation": "Instruction violations require a scoped instruction and observable contrast.",
       "discriminating_challenge": "Use disappointed stylistic preference as sole evidence of a scoped violation; hold.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -754,7 +754,7 @@
       "interpretation": "Host, encounter and scholarly source are typed ontology positions.",
       "discriminating_challenge": "Place a host-generated summary in a source slot and require a type mismatch.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -765,7 +765,7 @@
       "interpretation": "Host jargon has an explicit default presentation guard.",
       "discriminating_challenge": "Require an infrastructure term from an unauthenticated source and verify suppression.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -776,7 +776,7 @@
       "interpretation": "Host-swap substitutability is an exact-input invariance contract.",
       "discriminating_challenge": "Change host adapters while holding admitted works fixed; compare claims and source IDs.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -787,7 +787,7 @@
       "interpretation": "Source-attributed and host interpretation statements have separate citation gates.",
       "discriminating_challenge": "Quote a generated synthesis as original scholarly testimony and reject attribution.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -798,7 +798,7 @@
       "interpretation": "Diagnostics must not leak into model prompts absent preregistered matched authorization.",
       "discriminating_challenge": "Inject run diagnostics into one arm and check hold.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -809,7 +809,7 @@
       "interpretation": "Syntheses cannot silently overwrite sources or merge civil identities.",
       "discriminating_challenge": "Combine author records by similar title and require refusal.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -820,7 +820,7 @@
       "interpretation": "Restyling effects on observer hypotheses need controlled observer measurement.",
       "discriminating_challenge": "Preserve deterministic kernel while measuring human interpretation separately.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -831,7 +831,7 @@
       "interpretation": "Operahouse assembly cannot self-authorize performer identity or closure.",
       "discriminating_challenge": "Feed a host receipt as a human signature and refuse promotion.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -842,7 +842,7 @@
       "interpretation": "Changing map routes at constant record content is a McKittrick-derived contrast.",
       "discriminating_challenge": "Hold bytes constant and compare missing-recovery rates by gate.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -853,7 +853,7 @@
       "interpretation": "Vary actor-specific action and verification delay to test preemption.",
       "discriminating_challenge": "Swap verification order while holding absolute latency fixed.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -864,7 +864,7 @@
       "interpretation": "Repeated transitions compare costs and progress under a fixed meter.",
       "discriminating_challenge": "Change the resource-meter definition between arms and reject efficiency claims.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -875,7 +875,7 @@
       "interpretation": "Tracing decision roles to administrative consequences is an intervention design.",
       "discriminating_challenge": "Remove a gate from the causal chain and check if claimed effect persists.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -886,7 +886,7 @@
       "interpretation": "Iterated labels expose who must adapt to categorization.",
       "discriminating_challenge": "Hold the label fixed while varying institutional demands; measure imposed adjustment.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -897,7 +897,7 @@
       "interpretation": "Attributed incompatible hypotheses and lawful exit form a contestability protocol.",
       "discriminating_challenge": "Force unique closure where evidence supports two rival branches and refuse.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -908,7 +908,7 @@
       "interpretation": "Changing observation policy before reporting is a controlled synthetic comparison.",
       "discriminating_challenge": "Vary observation policy post hoc and hold causal claims.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -919,7 +919,7 @@
       "interpretation": "Identity withholding under source trace is an opacity/attribution experiment.",
       "discriminating_challenge": "Compare disclosure-minimized reports with full identity access at fixed warrant.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -930,7 +930,7 @@
       "interpretation": "Evaluator-position counterbalancing is an experiment allocation method.",
       "discriminating_challenge": "Rate the same source at different positions and test order dependence.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -941,7 +941,7 @@
       "interpretation": "Direct testimony and authorized proxy are distinct attribution types.",
       "discriminating_challenge": "Erase proxy provenance and detect source-warrant mismatch.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -952,7 +952,7 @@
       "interpretation": "Vary admission criteria at fixed evidence quality to expose gate effects.",
       "discriminating_challenge": "Change evidence quality alongside gate and mark comparison confounded.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -963,7 +963,7 @@
       "interpretation": "Paperwork burden is a measurable procedural contrast at fixed task outcome.",
       "discriminating_challenge": "Compare administrative action count against a lean route with matched goal.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -974,7 +974,7 @@
       "interpretation": "Source identity under prestige permutation is a controlled invariance requirement.",
       "discriminating_challenge": "Modify source bytes when changing standing and reject the comparison.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -985,7 +985,7 @@
       "interpretation": "Evidence calibration and institutional standing are independent variables in the model.",
       "discriminating_challenge": "Conflate calibration with prestige and reject parameter interpretation.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -996,7 +996,7 @@
       "interpretation": "Conditional contrasts must precede pooled inference to test Simpson-type failures.",
       "discriminating_challenge": "Pool across unequal strata and check whether sign reversal is hidden.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -1007,7 +1007,7 @@
       "interpretation": "Evidence, belief, action and public claim are distinct temporal coordinates.",
       "discriminating_challenge": "Reverse alignment order while preserving observation timestamps and retain discrepancy.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -1018,7 +1018,7 @@
       "interpretation": "Theme-only ambiance is constrained to preserve scientific kernel and authority.",
       "discriminating_challenge": "Alter theme and attempt to mutate evidence hash or approval flag.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -1029,7 +1029,7 @@
       "interpretation": "Recoverability depends on defined observer partitions and accessible coordinates.",
       "discriminating_challenge": "Compare observers with different sigma-algebras over identical latent states.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     },
     {
@@ -1040,7 +1040,7 @@
       "interpretation": "Novel rule proposals must face competent existing-rule closure comparisons.",
       "discriminating_challenge": "Remove the competent null and refuse novelty assessment.",
       "role_context": "RESEARCH_OR_CONDITIONAL_OPERATION_ONLY",
-      "human_ratifed": false,
+      "human_ratified": false,
       "independent_witness": false
     }
   ]
