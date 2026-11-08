@@ -16,7 +16,7 @@ function safeSourceName(src){return String(src?.original_filename||'Unidentified
 function buildEstateCard(kind,heading,description){
  const el=make('section','vxe-estate vxe-estate-'+kind);put(el,make('p','vxe-eyebrow',kind==='vixen'?'ESTATE 01 / HISTORICAL RESEARCH':'ESTATE 02 / CANONICAL REFERENCE'),make('h2','',heading),textP(description));return el;
 }
-export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),fetcher=globalThis.fetch?.bind(globalThis),cryptoProvider=globalThis.crypto}={}){
+export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),fetcher=globalThis.fetch?.bind(globalThis),cryptoProvider=globalThis.crypto,baseURL=undefined}={}){
  if(!container)return Object.freeze({mounted:false,reason:'CHAMBER_ROOT_MISSING'});
  const script=$('vixen-corpus-bundle');
  if(!script){container.textContent='SOURCE HOLD: Vixen historical metadata is missing.';return Object.freeze({mounted:false,reason:'VIXEN_METADATA_MISSING'})}
@@ -25,7 +25,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
  if(!Array.isArray(vixen.works)||vixen.works.length!==32||!Array.isArray(vixen.human_gates)||vixen.human_gates.length!==8||!Array.isArray(vixen.instruments)||vixen.instruments.length!==21){
   container.textContent='SOURCE HOLD: The Vixen Work, identity gate or documentary census is inconsistent.';return Object.freeze({mounted:false,reason:'VIXEN_CENSUS_MISMATCH'})
  }
- const membrane=createVixenReferenceMembrane({fetcher,cryptoProvider});
+ const membrane=createVixenReferenceMembrane({fetcher,cryptoProvider,baseURL});
  const state={phase:'NOTICE',workIndex:0,query:'',hits:[],witness:null,selectedId:null,hypothesis:'',busy:false,error:null,info:'Choose a historical Work to examine its exact documentary identity before requesting Universal reference evidence.',status:'UNOPENED',trace:[],counter:0};
  const track=(action,details={})=>state.trace.push(Object.freeze({n:++state.counter,estate:'VIXEN_RESEARCH',action,...details}));
  const clearInquiry=()=>{state.phase='NOTICE';state.query='';state.hits=[];state.witness=null;state.selectedId=null;state.hypothesis='';state.error=null;state.status='UNOPENED';state.info='You may inspect the historical Work and then begin an inquiry.';track('HISTORICAL_WORK_SELECTED',{work_id:vixen.works[state.workIndex].work_id})};
