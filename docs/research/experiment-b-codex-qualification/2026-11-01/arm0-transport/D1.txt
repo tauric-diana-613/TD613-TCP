@@ -1,0 +1,1 @@
+An invented relay assigns x_0=5. Its proposed rule is x_(n+1)=x_n+3 for every nonnegative integer n. The only measured values supplied are x_0=5, x_1=8, x_2=11. State whether the universal rule is proved or only consistent with these observations; give its conditional prediction for x_3.

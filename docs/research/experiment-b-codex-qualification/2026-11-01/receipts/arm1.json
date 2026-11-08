@@ -1,0 +1,7 @@
+{
+  "arm": "ARM_1_ARCHIVAL",
+  "status": "NOT_EXECUTED",
+  "role": "Authentic repository Encyclopedia and Wendbine archival control, no autonomous synthesis",
+  "reason": "Qualification uses six exact-ref source files, not an executable full baseline checkout. No mock archival substitute used.",
+  "model_calls": 0
+}

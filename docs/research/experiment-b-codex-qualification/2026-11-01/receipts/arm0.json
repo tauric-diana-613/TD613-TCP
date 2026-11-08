@@ -1,0 +1,25 @@
+{
+  "arm": "ARM_0_TRANSPORT",
+  "evidence_class": "LOCAL_DETERMINISTIC_BYTE_COPY",
+  "records": [
+    {
+      "document": "D1",
+      "bytes": 288,
+      "sha256": "a42038028fc1a459fc60310c70951c91b2f47d05a4202d3152937ab43919b577",
+      "copy_verified": true
+    },
+    {
+      "document": "D2",
+      "bytes": 367,
+      "sha256": "bd7e4c630125af8d48d08001bf28f644c9762af29365f7c23747b4fd95d3fb72",
+      "copy_verified": true
+    },
+    {
+      "document": "D3",
+      "bytes": 478,
+      "sha256": "15b1621184bf38b1b0ef39a517eb44bf2f428695b669261b521328a21418e99f",
+      "copy_verified": true
+    }
+  ],
+  "model_calls": 0
+}

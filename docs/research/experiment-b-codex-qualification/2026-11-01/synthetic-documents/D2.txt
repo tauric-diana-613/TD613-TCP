@@ -1,0 +1,1 @@
+The same invented relay is now measured at x_3=15 and x_4=19, with previous observations x_0=5, x_1=8, x_2=11 confirmed unchanged. Measurements are exact for this synthetic problem. The universal increment-3 proposition predicts x_3=14. Determine the contradiction and preserve only the earlier statements that remain valid. No mechanism or later values are supplied.

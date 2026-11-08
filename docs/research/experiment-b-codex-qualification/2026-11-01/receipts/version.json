@@ -1,0 +1,9 @@
+{
+  "executable": "<LOCAL_PATH>",
+  "args": [
+    "--version"
+  ],
+  "status": 0,
+  "stdout": "codex-cli 0.166.0-alpha.5.1\n",
+  "stderr": ""
+}

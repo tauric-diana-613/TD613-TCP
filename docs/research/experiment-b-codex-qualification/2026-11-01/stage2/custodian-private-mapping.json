@@ -1,0 +1,26 @@
+{
+  "0": {
+    "blind_id": "BLIND-df02586a2e83ba751342a723",
+    "arm": "ARM_2A_MODULAR",
+    "candidate_id": "C1"
+  },
+  "1": {
+    "blind_id": "BLIND-460d5705388844670f75cefd",
+    "arm": "ARM_2B_MATCHED_UNION",
+    "candidate_id": "C2"
+  },
+  "seed": "a1963ca870727de50192b72eee3d4abea91dfe66c287fea232ec68515b687845",
+  "records": [
+    {
+      "blind_id": "BLIND-df02586a2e83ba751342a723",
+      "arm": "ARM_2A_MODULAR",
+      "candidate_id": "C1"
+    },
+    {
+      "blind_id": "BLIND-460d5705388844670f75cefd",
+      "arm": "ARM_2B_MATCHED_UNION",
+      "candidate_id": "C2"
+    }
+  ],
+  "method": "Extract exact proposition/calculation fields from each document final output; omit architecture-bearing evidence and history presentation. No mathematical paraphrase."
+}

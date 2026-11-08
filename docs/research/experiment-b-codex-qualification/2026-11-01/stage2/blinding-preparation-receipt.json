@@ -1,0 +1,17 @@
+{
+  "syntactic_leakage_screen": "PASS",
+  "semantic_blindness_verified": false,
+  "independent_evaluator_verified": false,
+  "ordering": "seeded hash sort",
+  "payload_sha256": "6d35692c94103f5e969ef53489368d5a2e8f649eb9149a0059b932957533ba4c",
+  "withheld": [
+    "arm mapping",
+    "seed",
+    "full reasoning histories",
+    "usage",
+    "execution metadata",
+    "source repository files",
+    "operator conversation"
+  ],
+  "selection_limitation": "Review of selected exact mathematical statements, not a blind review of the full original histories."
+}

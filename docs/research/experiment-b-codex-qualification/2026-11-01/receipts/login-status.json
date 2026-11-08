@@ -1,0 +1,10 @@
+{
+  "executable": "<LOCAL_PATH>",
+  "args": [
+    "login",
+    "status"
+  ],
+  "status": 0,
+  "stdout": "",
+  "stderr": "Logged in using ChatGPT\n"
+}

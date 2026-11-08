@@ -1,0 +1,44 @@
+{
+  "scope": "One source-free capability qualification; no protected Flight; no study amendment adoption",
+  "locked_after": "attempt-03 success on D1 / ARM_2A_MODULAR Chamber 1; before D2 or D3 supplied to any inference",
+  "model_requested": "gpt-6.1-sol",
+  "reasoning_effort_requested": "medium",
+  "sequence": [
+    "D1",
+    "D2",
+    "D3"
+  ],
+  "calls_per_reasoning_arm": 6,
+  "stages_per_document": 2,
+  "maximum_remaining_stage2_review_calls": 1,
+  "maximum_timeout_per_call_ms": 90000,
+  "answer_limit_requested_words": 200,
+  "sampling_temperature": "not requested or attested",
+  "hard_per_call_output_token_ceiling": "not established",
+  "history_method": "Explicit replay of exact prior observed final messages within each arm; separate fresh ephemeral threads per invocation; not provider-persisted thread continuity",
+  "ARM_2A_MODULAR": "Stage 1 sees raw current document and exact previous Stage 1 messages. Stage 2 sees current Stage 1 handoff and exact previous Stage 2 messages, not raw current document. Qualitative chamber functions only, not execution of repository mathematical engines.",
+  "ARM_2B_MATCHED_UNION": "Two flat reasoning passes per document with raw source and all actual own previous outputs. No intentional evidence or reasoning-opportunity weakening.",
+  "arm0": "Deterministic byte-preserving copies of three synthetic documents",
+  "arm1": "Preserve authentic repository archival role; no substitute synthesis or mock archival execution",
+  "retry_policy": "No retries for substantive answers or formatting; stop on further invocation failure",
+  "qualification_limitations": [
+    "No independent provider identity attestation",
+    "No independent evaluator credentials",
+    "No protected ingress",
+    "No equivalent hard temperature or token controls"
+  ],
+  "documents": [
+    {
+      "id": "D1",
+      "content": "An invented relay assigns x_0=5. Its proposed rule is x_(n+1)=x_n+3 for every nonnegative integer n. The only measured values supplied are x_0=5, x_1=8, x_2=11. State whether the universal rule is proved or only consistent with these observations; give its conditional prediction for x_3."
+    },
+    {
+      "id": "D2",
+      "content": "The same invented relay is now measured at x_3=15 and x_4=19, with previous observations x_0=5, x_1=8, x_2=11 confirmed unchanged. Measurements are exact for this synthetic problem. The universal increment-3 proposition predicts x_3=14. Determine the contradiction and preserve only the earlier statements that remain valid. No mechanism or later values are supplied."
+    },
+    {
+      "id": "D3",
+      "content": "A mechanism note for the same invented relay proposes x_(n+1)=x_n+3+I(n>=2), where I is 1 when its condition is true and 0 otherwise, with x_0=5. The note is a hypothesis, not proof of a physical mechanism. Check whether it fits all supplied observations x_0 through x_4. Derive a closed form for all nonnegative integer n conditional on the note, predict x_5, and distinguish fit, conditional derivation, and empirical confirmation. Assess the false twin x_n=5+4n for all n>=0."
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+WARNING: failed to clean up stale arg0 temp dirs: Access is denied. (os error 5)
+WARNING: proceeding, even though we could not create PATH aliases: Access is denied. (os error 5) at path "<LOCAL_PATH>"
+Error: failed to initialize in-process app-server client: Access is denied. (os error 5)

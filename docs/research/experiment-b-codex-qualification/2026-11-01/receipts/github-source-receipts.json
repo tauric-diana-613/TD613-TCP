@@ -1,0 +1,42 @@
+{
+  "commit": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "repository": "tauric-diana-613/TD613-TCP",
+  "files": [
+    {
+      "path": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
+      "github_blob_sha": "3effb998cca006bf6bf43ab48ff4bc5bd6a51164",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/research/experiment-b-preflight/04_evaluation_and_preregistration/CODEX_NATIVE_PROTOCOL_AMENDMENT_CANDIDATE.md",
+      "github_blob_sha": "7abfe5e96171f5f70e06355216ee01d0a19ab1e3",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/CODEX_NATIVE_PROTOCOL_AMENDMENT_CANDIDATE.md",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "scripts/experiment-b-codex-exec-adapter.mjs",
+      "github_blob_sha": "69ea8b1a1d4f0a745058341a6d6dd707f3f99936",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/experiment-b-codex-exec-adapter.mjs",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "scripts/experiment-b-codex-flight-controls.mjs",
+      "github_blob_sha": "942957388303063c9d4b907b1411a09bbd296647",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/experiment-b-codex-flight-controls.mjs",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "scripts/run-experiment-b-flight.mjs",
+      "github_blob_sha": "bc0f1369f4dec9a249fa8d9185fdc5f09d88b8fb",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/scripts/run-experiment-b-flight.mjs",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
+      "github_blob_sha": "b09306703c91186e439d35599175e2bd86cb2fcf",
+      "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/50cc9d161f8f72c2d4b6ea33ece17ace88f35eff/docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
+      "encoding": "utf-8"
+    }
+  ]
+}
