@@ -56,7 +56,7 @@ export function createVixenReferenceMembrane({
   cryptoProvider = globalThis.crypto
 }={}){
   const root=new URL(baseURL);
-  if(!['http:','https:'].includes(root.protocol)){return Object.freeze({status:()=>({state:'HELD',reason:'FILE_SCHEME_NOT_BACKEND_BOUND'}),open:async()=>{throw new BridgeHold('FILE_SCHEME_NOT_BACKEND_BOUND')}})}
+  if(!['http:','https:'].includes(root.protocol)){const reject=()=>{throw new BridgeHold('FILE_SCHEME_NOT_BACKEND_BOUND')};return Object.freeze({schema:MEMBRANE_SCHEMA,status:()=>({state:'HELD',reason:'FILE_SCHEME_NOT_BACKEND_BOUND'}),open:async()=>reject(),search:reject,related:reject,getRecord:async()=>reject(),rest:()=>({state:'HELD',reason:'FILE_SCHEME_NOT_BACKEND_BOUND'}),history:()=>[]})}
   if(typeof fetcher!=='function')throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','FETCH_NOT_AVAILABLE');
   const origin=root.origin;
   const base=()=>safeURL(root.href,origin);
