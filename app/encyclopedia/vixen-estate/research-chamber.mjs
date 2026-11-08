@@ -56,8 +56,8 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   if(state.busy||!state.hits.some(r=>r.id===id))return;
   state.busy=true;state.status='VERIFYING_SOURCE';state.info='Fetching the exact reference record and checking its SHA-256 digest against the separately indexed source identity.';render();
   try{
-   const witness=await membrane.getRecord(id);state.witness=witness;state.selectedId=id;state.phase='WORLD_ANSWERS';state.status='SOURCE_BYTES_VERIFIED';state.error=null;
-   state.info='The exact reference bytes have been verified. The proposed relation to the selected Vixen Work remains unestablished until independently argued.';
+   const witness=await membrane.getRecord(id);state.witness=witness;state.selectedId=id;state.phase='WORLD_ANSWERS';state.status='CANONICAL_PAYLOAD_VERIFIED';state.error=null;
+   state.info='The indexed canonical JSON payload has been SHA-256 verified (separate served-file digest recorded). The proposed relation to Vixen remains unestablished.';
    track('RECORD_SOURCE_VERIFIED',{id,source_sha256:witness.record_sha256,work_id:vixen.works[state.workIndex].work_id});
   }catch(e){
    state.witness=null;state.selectedId=null;state.phase='WORLD_ANSWERS';state.status='HELD_SOURCE_WITNESS';state.error=e instanceof BridgeHold?e.code:'UNKNOWN_WITNESS_ERROR';
@@ -82,9 +82,9 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   const r=w.record;const doc=make('article','vxe-evidence');
   put(doc,make('p','vxe-eyebrow','UNIVERSAL · '+w.id+' · SHA-256 WITNESSED'),make('h3','',r.label),textP('Record class: '+r.kind+' · source status: '+(r.status||'UNCLASSIFIED'),'vxe-source-note'));
   const description=r.record?.description||r.record?.assessment||r.record?.summary||r.record?.note||'No viewable description was supplied by this record.';
-  put(doc,textP(description),make('div','vxe-digest','SOURCE: '+w.source_path+'\nSHA-256: '+w.record_sha256));
+  put(doc,textP(description),make('div','vxe-digest','SOURCE: '+w.source_path+'\nCANONICAL JSON SHA-256: '+w.record_sha256+'\nSERVED FILE SHA-256: '+w.served_file_sha256));
   const note=r.record?.note;if(typeof note==='string'&&note!==description)put(doc,textP(note,'vxe-source-note'));
-  put(doc,small('SOURCE-BYTES VERIFIED ≠ CLAIM ENTAILMENT ≠ CROSS-ESTATE AUTHORSHIP'));
+  put(doc,small('CANONICAL PAYLOAD VERIFIED ≠ CLAIM ENTAILMENT ≠ CROSS-ESTATE AUTHORSHIP'));
   const link=make('a','vxe-link','Read record in Universal Encyclopedia ↗');
   link.href=new URL('../#record='+encodeURIComponent(w.id),new URL('../reference/',import.meta.url)).href;
   link.target='_blank';link.rel='noopener noreferrer';doc.append(link);
