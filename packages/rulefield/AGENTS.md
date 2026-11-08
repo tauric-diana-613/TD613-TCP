@@ -1,3 +1,7 @@
+## Rulefield/Rule multiplicity & reviewed successor docket
+
+Read `rulefields/revised_docket.mjs`, `operator/contracts/NOMENCLATURE_V1_ROLE_MULTIPLICITY_ADDENDUM.md` and `rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md`. A single historical rule can be researched as a full Rulefield, with context-indexed roles and no implied permission or scientific authority. `RF-OD-0002` must show these alternatives in the chat before operator acceptance. Preserve the immutable original `RF-OD-0001` and OD-02 HOLD. Do not merge, deploy or touch protected Flight.
+
 ## Context-indexed multiplicity — mandatory
 
 `RULEFIELD ≠ RULE` is a statement of non-equivalence, **not exclusive identity assignment**. A source rule can be researched as a field while retaining its local execution role, under separately qualified views. Consult [ROLE_MULTIPLICITY_ROD0002.md](rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md), `node scripts/rulefield-types.mjs roles I-001`, and require separate roles/contexts/no-transfer declarations for a dual-role amendment. Never suggest the two roles authorize one another. **OD-02 remains HELD.**

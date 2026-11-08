@@ -1,3 +1,7 @@
+## ROD-0002 successor renderer
+
+Run `node scripts/rulefield-docket2.mjs export` to generate three exact-digest artifacts: a complete Markdown review of 86 human original expressions and 70 historical priority positions, a full JSON with 26/31 type crosswalk, and a chat navigator with **ten simultaneous role bindings**. The assistant must show workstreams and meaningful original examples directly in-message; provide verified file links if available. Present five scoped operator decisions; a click sends a new user turn and never assumes merge or Flight authority. OD-02 academic labels remain HELD.
+
 ## ROD-0002 typed crosswalk decision
 
 When presenting the successor docket, show concrete original IDs and corrected types for at least one model, assay, retained rule, derivative child and preserved broad field. Report **26 / 31 / 11 / 14** as overlapping assessment sets (not additive discoveries). Clearly disclose 559 legacy records still needing deeper assessment. Provide the full source assessment Markdown and JSON and make the decision actionable in-chat: accept the nonmutating projection, request a corrected mapping, or HOLD selected IDs. The human's OD-02 HOLD of academic title ratification persists. **Approval of a typed projection is not approval to rewrite 596 historical records or merge a branch.**

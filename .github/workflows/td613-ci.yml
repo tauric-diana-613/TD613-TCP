@@ -54,7 +54,7 @@ jobs:
           node-version: '22'
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs tests/rulefield-docket2.test.mjs
           python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
       - name: Verify reversible Rulefield and Rule type correction
         run: |
@@ -81,6 +81,11 @@ jobs:
           node scripts/rulefield-docket.mjs validate
           node scripts/rulefield-docket.mjs export dist
           node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.fields.length!==80||d.inherited_priorities.length!==70||d.authority.canonical_registry_mutated!==false)process.exit(1);console.log('FULL_IN_CHAT_OPERATOR_DOCKET_VERIFIED',d.id,d.docket_sha256)"
+      - name: Generate full source-bound revised operator docket (86 fields + role multiplicity)
+        run: |
+          node scripts/rulefield-docket2.mjs validate
+          node scripts/rulefield-docket2.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.startsWith('RF-OD-0002--')&&x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.fields.length!==86||d.original_priorities.length!==70||d.ontology.role_bindings.length!==10||d.authority.od02!=='HELD')process.exit(1);console.log('ROD0002_FULL_SUCCESSOR_WITNESSED',d.sha256)"
       - name: Run native Dollhouse Design for the engine-only field commission
         run: |
           mkdir -p dist

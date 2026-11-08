@@ -29,6 +29,8 @@ SUPPORT = (
     "scripts/rulefield-operator.mjs",
     "scripts/rulefield-fields.mjs",
     "scripts/rulefield-docket.mjs",
+    "scripts/rulefield-docket2.mjs",
+    "tests/rulefield-docket2.test.mjs",
     "scripts/rulefield-types.mjs",
     "tests/rulefield-types.test.mjs",
     "tests/rulefield-docket.test.mjs",
@@ -55,6 +57,8 @@ def main():
     expected = (
         "packages/rulefield/AGENTS.md",
         "packages/rulefield/operator/docket.mjs",
+        "packages/rulefield/rulefields/revised_docket.mjs",
+        "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md",
         "packages/rulefield/rulefields/type_system.mjs",
         "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md",
         "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",

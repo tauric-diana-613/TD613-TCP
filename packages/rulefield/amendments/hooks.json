@@ -36,7 +36,10 @@
     "nomenclature_v1": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
     "type_projection_engine": "packages/rulefield/rulefields/type_system.mjs",
     "type_migration_assessment": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
-    "type_review_cli": "node scripts/rulefield-types.mjs"
+    "type_review_cli": "node scripts/rulefield-types.mjs",
+    "successor_docket_engine": "packages/rulefield/rulefields/revised_docket.mjs",
+    "successor_docket_cli": "node scripts/rulefield-docket2.mjs",
+    "simultaneous_roles_contract": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.json"
   },
   "stages": [
     {
@@ -348,6 +351,17 @@
     "duplicates_still_held": true,
     "historical_reclassifications": "REVIEW_ONLY",
     "canonical_mutation": false,
+    "protected_flight": "HELD"
+  },
+  "role_multiplicity": {
+    "contract": "td613.rulefield.role-multiplicity-addendum/v1",
+    "non_equivalence_without_disjointness": true,
+    "qualified_historical_referents": 10,
+    "automatic_authority_transfer": false,
+    "same_source_multiple_roles": true,
+    "source_id_unchanged": true,
+    "review_docket": "RF-OD-0002",
+    "od02": "HELD",
     "protected_flight": "HELD"
   }
 }

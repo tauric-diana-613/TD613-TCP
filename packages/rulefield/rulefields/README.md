@@ -1,3 +1,7 @@
+## Source-complete revised human docket
+
+`node scripts/rulefield-docket2.mjs validate|render|chat|export` runs the revised 86-field source-complete dossier. It includes the six thermodynamic prerequisites, Temporal Guardian reviewed ordering, original 70 positions, role multiplicity, all audited type corrections, derived candidate children and explicit OD-02 HOLD. Historic source filenames and IDs remain untouched. A rule can be examined as a rulefield; the research role does not execute its rule or grant source custody.
+
 ## Executable ontology correction — after source audit
 
 See [TYPE_SYSTEM.md](TYPE_SYSTEM.md) and [typed projection code](type_system.mjs). **26** high-impact historical records have reviewed target types, **11** operational rules are explicitly retained, **31** candidate child rules/assays are modelled without scientific promotion, and **14** broad fields remain protected. The other **559** historical records remain `HISTORICAL_RECORD`, pending future assessment. The full 596-record registry, 70 rank positions, old 80-field source and OD-02 six new fields remain byte-preserved. Run `node scripts/rulefield-types.mjs validate`, `rule INF-01`, `field RF-060` for direct source-linked inspection.
