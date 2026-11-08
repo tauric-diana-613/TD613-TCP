@@ -1,0 +1,192 @@
+{
+  "schema": "td613.dollhouse.case-dossier/v0.1",
+  "case_id": "CASE-DOLLHOUSE-AUDIT-SKILL-20261108T055800Z",
+  "source_revision": "ac2b6e5e419a085c8b80f653a5079dd098890ef3",
+  "findings": [
+    {
+      "id": "FINDING-PEDAGOGUE-01",
+      "agent": "PEDAGOGUE",
+      "claim_key": "DOLLHOUSE_AUDIT_CONSEQUENCE_ORDER",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-skill-dispatcher.js",
+        "instrument": "node --test tests/dollhouse-pedagogue-dromological.test.mjs",
+        "condition": "DETERMINISTIC_TEST_SUITE",
+        "temporal_window": "2026-11-08T05:54:35Z"
+      },
+      "reference": {
+        "artifact": "receipts/dollhouse-audit-receipt.json",
+        "sha256": "9dc86ae943fa7ea92c7724d2bf2a57401f6d05175cd18f997288cdf32818ad55"
+      },
+      "limitations": [
+        "Synthetic and offline verification only; no production deployment authority."
+      ]
+    },
+    {
+      "id": "FINDING-APERTURE-01",
+      "agent": "APERTURE",
+      "claim_key": "DOLLHOUSE_AUDIT_OBSERVABILITY_AND_CONDITIONING",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/aperture-v32-typed-epistemic-deficit.js",
+        "instrument": "node scripts/run-dollhouse-skill-audit.mjs -r APERTURE",
+        "condition": "CYCLIC_JACOBI_SVD_AND_COVARIANCE_AUDIT",
+        "temporal_window": "2026-11-08T05:57:34Z"
+      },
+      "reference": {
+        "artifact": "receipts/dollhouse-audit-receipt.json",
+        "sha256": "9dc86ae943fa7ea92c7724d2bf2a57401f6d05175cd18f997288cdf32818ad55"
+      },
+      "limitations": [
+        "Synthetic and offline verification only; condition number bounded to 1,000."
+      ]
+    },
+    {
+      "id": "FINDING-ATLAS-01",
+      "agent": "ATLAS",
+      "claim_key": "DOLLHOUSE_AUDIT_RELATIONAL_CUSTODY_AND_MATH",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-atlas-relational-custody.js",
+        "instrument": "node --test tests/dollhouse-atlas-relational-custody.test.mjs",
+        "condition": "9_DOMAIN_MATHEMATICAL_DISCOVERY_SUITE",
+        "temporal_window": "2026-11-08T05:57:56Z"
+      },
+      "reference": {
+        "artifact": "receipts/dollhouse-audit-receipt.json",
+        "sha256": "9dc86ae943fa7ea92c7724d2bf2a57401f6d05175cd18f997288cdf32818ad55"
+      },
+      "limitations": [
+        "Synthetic and offline verification only; no cross-receiver collapse."
+      ]
+    },
+    {
+      "id": "FINDING-FADT-01",
+      "agent": "FADT",
+      "claim_key": "DOLLHOUSE_AUDIT_FINITE_ADMISSIBILITY_DESCENT",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-fadt-reparative-assistance.js",
+        "instrument": "node --test tests/dollhouse-fadt-reparative-assistance.test.mjs",
+        "condition": "QUOTIENT_FIBER_DESCENT_EVALUATION",
+        "temporal_window": "2026-11-08T05:55:21Z"
+      },
+      "reference": {
+        "artifact": "receipts/dollhouse-audit-receipt.json",
+        "sha256": "9dc86ae943fa7ea92c7724d2bf2a57401f6d05175cd18f997288cdf32818ad55"
+      },
+      "limitations": [
+        "Synthetic and offline verification only; coordinate recovery bounded to 10,000 evaluations."
+      ]
+    },
+    {
+      "id": "FINDING-TEMPORAL-CUSTODIAN-01",
+      "agent": "TEMPORAL_CUSTODIAN",
+      "claim_key": "DOLLHOUSE_AUDIT_CHRONOLOGY_AND_PROVENANCE",
+      "verdict": "SUPPORTED",
+      "evidence_class": "OFFLINE_TEST",
+      "observation_scope": {
+        "source": "app/engine/dollhouse-temporal-custodian.js",
+        "instrument": "node --test tests/dollhouse-temporal-custodian.test.mjs",
+        "condition": "MONOTONIC_CHRONOLOGY_AND_JOURNEY_VETO",
+        "temporal_window": "2026-11-08T05:56:44Z"
+      },
+      "reference": {
+        "artifact": "receipts/dollhouse-audit-receipt.json",
+        "sha256": "9dc86ae943fa7ea92c7724d2bf2a57401f6d05175cd18f997288cdf32818ad55"
+      },
+      "limitations": [
+        "Synthetic and offline verification only; whole-route progression required."
+      ]
+    }
+  ],
+  "disagreements": [],
+  "agent_coverage": [
+    {
+      "agent": "PEDAGOGUE",
+      "present": true
+    },
+    {
+      "agent": "APERTURE",
+      "present": true
+    },
+    {
+      "agent": "ATLAS",
+      "present": true
+    },
+    {
+      "agent": "FADT",
+      "present": true
+    },
+    {
+      "agent": "TEMPORAL_CUSTODIAN",
+      "present": true
+    }
+  ],
+  "unresolved_finding_ids": [],
+  "evidence_posture": {
+    "evidence_class_is_caller_declared": true,
+    "artifact_bytes_checked": true,
+    "reference_authentication": "BYTE_AUTHENTICATED",
+    "findings_independently_scoped": true,
+    "evidence_classes_aggregated": false,
+    "majority_vote": false,
+    "global_score": null,
+    "knowledge_survival": {
+      "retrievability": 1,
+      "attributable_provenance": 1,
+      "interpretability": 1,
+      "transmissibility": 1,
+      "contestability": 0.5,
+      "repairability": 0,
+      "capacities": {
+        "retrievability": {
+          "status": "VERIFIED",
+          "score": 1,
+          "evidence": "All referenced artifact files exist on local disk at declared paths."
+        },
+        "attributable_provenance": {
+          "status": "LOCAL_BYTE_CONSISTENT",
+          "score": 1,
+          "evidence": "All referenced local artifact files match declared SHA-256 digests exactly.",
+          "limitations": "Verifies local byte consistency only; external author origin remains unauthenticated."
+        },
+        "interpretability": {
+          "status": "VERIFIED",
+          "score": 1,
+          "evidence": "All findings declare strict four-vector observation scopes and explicit epistemic limitations."
+        },
+        "transmissibility": {
+          "status": "DEMONSTRATED",
+          "score": 1,
+          "evidence": "Finding records survive JSON serialization/deserialization without mutation or data loss."
+        },
+        "contestability": {
+          "status": "CALIBRATED_CONSENSUS",
+          "score": 0.5,
+          "evidence": "All agents in unanimous consensus; score calibrated to 0.5 reflecting absence of active dispute to contest."
+        },
+        "repairability": {
+          "status": "UNMEASURED",
+          "score": 0,
+          "evidence": "No structured before/after repair demonstration supplied.",
+          "limitations": null
+        }
+      }
+    }
+  },
+  "decision": "HUMAN_REVIEW_REQUIRED",
+  "authority": {
+    "execute": false,
+    "automatic_redesign": false,
+    "release": false,
+    "merge": false,
+    "deployment": false,
+    "provider": false,
+    "human_closure_required": true
+  }
+}
