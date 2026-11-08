@@ -1,3 +1,31 @@
+## 𝌋 RF-OD-0003 — Source-read semantic casebook and paired empirical priority
+
+**Standing:** DRAFT RESEARCH COMMISSION; human ratification and scientific closure RESERVED. This successor adds **94 individually source-read agent semantic interpretations** with explicit falsifying challenges to the earlier 38, for **132 agent-screened records** in the 559-record residual ledger. The other **427** retain deterministic triage only. These readings are reviewed *by the executing agent*, not independently refereed, and are NOT accepted local rules, scientific discoveries or approved academic nomenclature. The 596 historical objects and 86 candidate Rulefields remain byte-identical in their source files; ten context-indexed role-multiplicity examples remain separate from canonical typing.
+
+- [SEMANTIC_CASEBOOK_ROD0003.json](type_assessment/SEMANTIC_CASEBOOK_ROD0003.json): 94 source-bound ID, exact statement, primary-role proposal, interpretation, discriminating challenge, authority hold.
+- [semantic_review.mjs](semantic_review.mjs): fail-closed crosswalk of 38 + 94 + 427, exact historical source comparisons, typed role disagreements, 559-source conservation and zero scientific promotion.
+- [paired_priority.mjs](paired_priority.mjs): paired binary-outcome measurements against competent matched controls, independent trial IDs and pre-declared scope, temporal nonretroactivity, equal budgets, distinct train/eval source digest, Hoeffding bounded-difference confidence intervals, multiplicity correction over up to 86 fields, strict adjacent comparison with no missing-evidence leapfrogging.
+- [tests/rulefield-semantic-paired.test.mjs](../../../tests/rulefield-semantic-paired.test.mjs) is a synthetic/source-free scientific instrument test, **not** an outside empirical witness.
+- [rulefield-qualification.mjs](../../../scripts/rulefield-qualification.mjs) stages the source-complete JSON review and empty-evidence priority reports.
+
+**Technical comparison gate:** For independent bounded paired outcomes \(D_i\in[-1,1]\), the finite-sample two-sided Hoeffding interval uses radius \(\sqrt{2\ln(2m/\alpha)/n}\), where \(m\) is the explicitly bounded number of simultaneously inspected fields (86 for priority preview). It remains conditional on IID/independence assumptions and declared records. A field may rise only across an immediately adjacent field measured under the same actual trial-set digest, source digest, cohort, protocol, comparison frame, randomization commitment and budget. The operator's six thermosocial prerequisite fields retain explicit precedence over RF-079. **An identical hash or a user's statement of independent witnessing does not authenticate source exteriority.**
+
+Run from repo root or extracted ZIP root:
+
+~~~bash
+node --test tests/rulefield-semantic-paired.test.mjs
+node scripts/rulefield-qualification.mjs semantic-summary
+node scripts/rulefield-qualification.mjs semantic Q21-R03
+node scripts/rulefield-qualification.mjs paired-empty 2026-11-08T12:00:00Z
+mkdir -p dist && cd dist
+node ../scripts/rulefield-qualification.mjs semantic-export RULEFIELD_559_SEMANTIC_REVIEW_ROD0003.json
+node ../scripts/rulefield-qualification.mjs paired-export RULEFIELD_PAIRED_PRIORITY_EMPTY_ROD0003.json 2026-11-08T12:00:00Z
+~~~
+
+For a future authorized actual paired assay, supply a source-declared object keyed by exact RF ID, with \`schema=td613.rulefield.paired-episode/v1\`, unique trials, preregistered timestamp and protocol digest, evaluation/training source digests, comparison/cohort/randomization commitments, binary paired correctness observations, equal per-trial budgets and event/record/availability clocks. The runner returns a **conditional finite-sample estimate** or HELD, not an authenticated causal effect, a new natural law or human approval.
+
+**Next gated scientific task:** Review 427 outstanding source items individually; secure independently authenticated, preregistered and matched empirical data before claiming predictive priority utility; challenge the comparison family, outcomes and independence assumptions; then present a new source-linked ROD for operator judgment. OD-02 academic nomenclature, canonical adoption, protected Experiment B and scientific closure remain HELD / RESERVED.
+
 ## 𝌋 Residual 559-classification + Temporal Guardian II (provisional)
 
 This successor is **engineering triage, not scientific adjudication of 559 rules**. The pre-existing 37 explicit source assessments are retained; every remaining historical ID is represented once in a source-linked typed proposal with its exact statement, inherited kind, proposed primary role, alternative possible roles, lexical/structured inference basis, authority holds and evidence ceiling. An explicitly curator-read illustrative subset is distinguished from deterministic linguistic triage. A role classified RULE retains **no executable permission** until a separate formal contract and human review.
