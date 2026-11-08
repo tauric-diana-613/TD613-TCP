@@ -47,3 +47,12 @@ test('ROD3 06 stage is byte-idempotent and preserves canonical registry',()=>{
  }finally{rmSync(dir,{recursive:true,force:true})}
  assert.deepEqual(readFileSync(registryURL),source);
 });
+
+test('ROD3 07 full operator docket renders fourteen dual-role subjects without adoption',()=>{
+ const d=docket();
+ assert.equal(d.nonexclusive_role_views,14);
+ assert.equal(d.rows.filter(x=>x.additional_rulefield_view_proposed).length,14);
+ const s=renderDocket3(d);
+ assert.match(s,/RULEFIELD@/);
+ assert.equal(d.authority.merge_allowed,false);
+});
