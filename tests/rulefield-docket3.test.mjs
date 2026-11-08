@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {buildDocket3,validateDocket3,renderDocket3,chatDocket3,stageDocket3} from '../packages/rulefield/operator/docket3.mjs';
+import {buildDocket3,validateDocket3,renderDocket3,chatDocket3,stageDocket3,portableHeadFromManifest} from '../packages/rulefield/operator/docket3.mjs';
 const registryURL=new URL('../packages/rulefield/data/rulefield.v1.json',import.meta.url),source=readFileSync(registryURL);
 const docket=()=>buildDocket3({head:'c'.repeat(40),as_of:'2026-11-08T12:00:00Z'});
 test('ROD3 01 all 559 original statements and 86 field expressions are retained',()=>{
@@ -55,4 +55,13 @@ test('ROD3 07 full operator docket renders fourteen dual-role subjects without a
  const s=renderDocket3(d);
  assert.match(s,/RULEFIELD@/);
  assert.equal(d.authority.merge_allowed,false);
+});
+
+test('ROD3 08 detached manifest preserves source identity without claiming external proof',()=>{
+ const manifest={schema:'td613.rulefield.portable-handoff/v1',
+  repository:'tauric-diana-613/TD613-TCP',source_exact_git_head:'a'.repeat(40),files:[{path:'packages/rulefield/README.md'}]};
+ assert.equal(portableHeadFromManifest(manifest),'a'.repeat(40));
+ assert.equal(portableHeadFromManifest({...manifest,source_exact_git_head:'not-a-sha'}),null);
+ assert.equal(portableHeadFromManifest({...manifest,repository:'other/repo'}),null);
+ assert.equal(portableHeadFromManifest({...manifest,files:[]}),null);
 });
