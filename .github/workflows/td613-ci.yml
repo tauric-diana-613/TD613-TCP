@@ -35,6 +35,38 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  rulefield_handoff:
+    name: Rulefield exact-head Node contracts and portable Antigravity ZIP
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'research/living-rulefield-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact Rulefield PR head
+        id: source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-free Rulefield, triptych, NKS, receiver, roadmap
+        run: |
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs
+      - name: Build tracked-source Antigravity handoff ZIP
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        run: python3 scripts/build-rulefield-handoff.py --exact-head "${{ github.event.pull_request.head.sha }}"
+      - name: Preserve exact-head portable Rulefield even when tests fail
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-handoff-${{ github.event.pull_request.head.sha }}
+          path: dist/TD613_Rulefield_Antigravity_Handoff_*.zip
+          if-no-files-found: error
+          retention-days: 14
+
   scope:
     name: Classify exact-head browser witness scope
     if: github.event_name != 'workflow_dispatch' || inputs.mode != 'gemini-observation' && inputs.mode != 'gemini-quality-pilot'
