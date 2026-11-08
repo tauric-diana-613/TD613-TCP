@@ -1324,3 +1324,31 @@ export function auditDimensionMinimality() {
     law: 'No coordinate is decorative; every dimension in (K, A, T, R; \\sigma, \\rho, V) separates a demonstrated observational collision.'
   });
 }
+
+// ============================================================================
+// 15. DROMOLOGICAL PHILOLOGY LABORATORY EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  DROMOLOGY_SCHEMA,
+  PHILOLOGICAL_COUNTERWORLD_SCHEMA,
+  YOON_RECEIVER_INVERSION_SCHEMA,
+  DROMOLOGICAL_RACE_SCHEMA,
+  REVERSAL_CHANGED_NOTHING_SCHEMA,
+  TWO_LEDGER_ECHO_SCHEMA,
+  ANACHRONISTIC_CITATION_SCHEMA,
+  IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA,
+  COMPOSITE_OUTRAN_AUTHOR_SCHEMA,
+  DROMOLOGICAL_CAPTURE_SCHEMA,
+  createUtteranceVariant,
+  buildThreePhilologicalHistories,
+  auditPhilologicalEquivalence,
+  evaluateYoonReceiverInversion,
+  simulateDromologicalRace,
+  evaluateComponentVsTotalReversal,
+  evaluateTwoLedgerConfounding,
+  evaluateInterpretationAncestry,
+  executeImpossibleBiographyChamber,
+  executeTheSentenceThatOutranItsAuthorEpisode,
+  auditDromologicalPhilologicalCapture
+} from './dromological_philology.mjs';

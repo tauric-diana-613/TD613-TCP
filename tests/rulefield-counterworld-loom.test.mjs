@@ -22,6 +22,16 @@ import {
   auditStructuralInducedSilenceWithoutDisclosure,
   executeWitnessRefusedToBeProvenChamber,
   auditDimensionMinimality,
+  buildThreePhilologicalHistories,
+  auditPhilologicalEquivalence,
+  evaluateYoonReceiverInversion,
+  simulateDromologicalRace,
+  evaluateComponentVsTotalReversal,
+  evaluateTwoLedgerConfounding,
+  evaluateInterpretationAncestry,
+  executeImpossibleBiographyChamber,
+  executeTheSentenceThatOutranItsAuthorEpisode,
+  auditDromologicalPhilologicalCapture,
   OBSERVATIONAL_CLOSURE_SCHEMA,
   HETEROSTRATIGRAPHY_SCHEMA,
   DISCREPANCY_FIBER_SCHEMA,
@@ -34,7 +44,16 @@ import {
   DECISIONAL_PROVENANCE_SCHEMA,
   STRUCTURAL_WITNESS_OPACITY_SCHEMA,
   WITNESS_REFUSED_TO_BE_PROVEN_SCHEMA,
-  DIMENSION_MINIMALITY_SCHEMA
+  DIMENSION_MINIMALITY_SCHEMA,
+  PHILOLOGICAL_COUNTERWORLD_SCHEMA,
+  YOON_RECEIVER_INVERSION_SCHEMA,
+  DROMOLOGICAL_RACE_SCHEMA,
+  REVERSAL_CHANGED_NOTHING_SCHEMA,
+  TWO_LEDGER_ECHO_SCHEMA,
+  ANACHRONISTIC_CITATION_SCHEMA,
+  IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA,
+  COMPOSITE_OUTRAN_AUTHOR_SCHEMA,
+  DROMOLOGICAL_CAPTURE_SCHEMA
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 test('LOOM 01: Observational closure detects commutative deficit ||Pi o T - bar_T o Pi|| > 0', () => {
@@ -423,4 +442,146 @@ test('LOOM 18: Dimension Minimality & Temporal Custodian Audit proves non-redund
   assert.equal(audit.temporal_custodian_verdict, 'ALL_SEVEN_DIMENSIONS_NON_REDUNDANT');
   assert.ok(audit.dimension_progression.some(d => d.dimension.includes('sigma')));
   assert.ok(audit.dimension_progression.some(d => d.dimension.includes('V')));
+});
+
+test('LOOM 19: Chamber One Philological Counterworld demonstrates surface equivalence vs ancestry separation', () => {
+  const histories = buildThreePhilologicalHistories();
+  
+  // Surface summary inspection collapses all three histories to identical text
+  const surfaceAudit = auditPhilologicalEquivalence(histories, 'SURFACE_SUMMARY');
+  assert.equal(surfaceAudit.schema, PHILOLOGICAL_COUNTERWORLD_SCHEMA);
+  assert.equal(surfaceAudit.all_colliding, true);
+  assert.equal(surfaceAudit.disposition, 'HISTORIES_OBSERVATIONALLY_INDISTINGUISHABLE');
+
+  // Deep source ancestry inspection separates all three histories
+  const deepAudit = auditPhilologicalEquivalence(histories, 'SOURCE_ANCESTRY_DIFF');
+  assert.equal(deepAudit.all_colliding, false);
+  assert.equal(deepAudit.disposition, 'HISTORIES_SEPARATED_BY_INTERVENTION');
+});
+
+test('LOOM 20: Chamber Two Yoon Receiver Inversion (Y-01) separates histories under intervention', () => {
+  const histories = buildThreePhilologicalHistories();
+  const h1 = histories.history_1_chosen_refusal;
+  const h3 = histories.history_3_editorial_erasure;
+
+  // Passive observation collapses
+  const passive = evaluateYoonReceiverInversion(h1, h3, 'PASSIVE_SUMMARY');
+  assert.equal(passive.equivalent_under_receiver, true);
+
+  // Authorized query intervention separates
+  const active = evaluateYoonReceiverInversion(h1, h3, 'AUTHORIZED_SOURCE_ANCESTRY_QUERY');
+  assert.equal(active.equivalent_under_receiver, false);
+  assert.equal(active.intervention_executed, true);
+
+  // Belated query is barred by deadline
+  const belated = evaluateYoonReceiverInversion(h1, h3, 'AUTHORIZED_QUERY_BELATED_EXPIRED');
+  assert.equal(belated.equivalent_under_receiver, true);
+
+  // Opacity-preserving structural diff separates by deletion count without exposing words
+  const opacityDiff = evaluateYoonReceiverInversion(h1, h3, 'OPACITY_PRESERVING_EDITORIAL_DIFF');
+  assert.equal(opacityDiff.equivalent_under_receiver, false);
+});
+
+test('LOOM 21: Chamber Three Dromological Race proves procedural openess becomes functional inaccessibility', () => {
+  const race = simulateDromologicalRace({
+    v_circulation_hours: 0.5,
+    v_recovery_hours: 48.0,
+    v_authorization_hours: 72.0,
+    t_action_deadline_hours: 12.0
+  });
+
+  assert.equal(race.schema, DROMOLOGICAL_RACE_SCHEMA);
+  assert.equal(race.systemic_verdict.procedurally_open, true);
+  assert.equal(race.systemic_verdict.functionally_accessible, false);
+  assert.equal(race.systemic_verdict.dromological_trap, true);
+  assert.equal(race.race_outcomes.remedy_margin_hours, -60.0);
+  assert.equal(race.disposition, 'FUNCTIONALLY_INACCESSIBLE_THROUGH_SPEED');
+});
+
+test('LOOM 22: Chamber Four Component vs Total Reversal (Y-03) proves text repair leaves historical damage intact', () => {
+  const reversal = evaluateComponentVsTotalReversal({
+    original_statement: 'I decline.',
+    distorted_statement: 'Consented.',
+    administrative_action_name: 'EVICTION_EXECUTED',
+    correction_arrival_time: 48.0,
+    decision_execution_time: 12.0
+  });
+
+  assert.equal(reversal.schema, REVERSAL_CHANGED_NOTHING_SCHEMA);
+  assert.equal(reversal.state_components.text_component.reversed, true);
+  assert.equal(reversal.state_components.administrative_action_component.reversed, false);
+  assert.equal(reversal.state_components.administrative_action_component.irreversible_damage_persists, true);
+  assert.equal(reversal.total_system_reversed, false);
+  assert.equal(reversal.disposition, 'REPRESENTATION_REPAIRED_HISTORY_PRESERVED_UNCHANGED');
+});
+
+test('LOOM 23: Chamber Five Two-Ledger Echo (Y-02 & Y-04) proves scalar participation metric confounding', () => {
+  const echo = evaluateTwoLedgerConfounding({
+    regime1: { name: 'HIGH_TRUST_PUNITIVE_BARRIER', trust_n: 9.0, access_eta: 0.50 },
+    regime2: { name: 'LOW_TRUST_ZERO_BARRIER', trust_n: 1.0, access_eta: 0.90 }
+  });
+
+  assert.equal(echo.schema, TWO_LEDGER_ECHO_SCHEMA);
+  assert.equal(echo.regime_1.observed_participation_metric, 0.450);
+  assert.equal(echo.regime_2.observed_participation_metric, 0.450);
+  assert.equal(echo.scalar_collision, true);
+  assert.equal(echo.nuisance_parameter_confounding, true);
+  assert.ok(echo.auxiliary_calibration_required.length >= 2);
+});
+
+test('LOOM 24: Chamber Six Anachronistic Citation (Y-05) enforces non-retroactive interpretation ancestry', () => {
+  const citationAudit = evaluateInterpretationAncestry([
+    { date: '2026-10-20', author: 'Author_T0', vocabulary: ['refusal', 'safety'], claims_proved: ['protest_filed'], retroactive_projection: false },
+    { date: '2026-10-22', author: 'Adjudicator_T1', vocabulary: ['uncontested_hearing'], claims_proved: ['summary_judgment'], retroactive_projection: false },
+    { date: '2026-11-01', author: 'Historian_T2', vocabulary: ['time_qubit_superposition'], claims_proved: ['author_proved_quantum_refusal'], retroactive_projection: true }
+  ]);
+
+  assert.equal(citationAudit.schema, ANACHRONISTIC_CITATION_SCHEMA);
+  assert.equal(citationAudit.valid_ancestry, false);
+  assert.equal(citationAudit.violations.length, 1);
+  assert.equal(citationAudit.disposition, 'UNEARNED_RETROACTIVE_CITATION_DETECTED');
+});
+
+test('LOOM 25: Chamber Seven Impossible Biography reveals accelerated correction as erasure technique', () => {
+  const bio = executeImpossibleBiographyChamber({
+    institutional_correction_speed_hours: 0.1,
+    archival_audit_delay_hours: 24.0
+  });
+
+  assert.equal(bio.schema, IMPOSSIBLE_BIOGRAPHY_DROMOLOGY_SCHEMA);
+  assert.equal(bio.official_records.apparent_equivalence, true);
+  assert.equal(bio.erasure_mechanism, 'ACCELERATED_CORRECTION_PREEMPTS_ARCHIVAL_AUDIT');
+  assert.equal(bio.disposition, 'HISTORICAL_ERASURE_BY_ACCELERATED_CORRECTION');
+});
+
+test('LOOM 26: Chamber Eight Composite Episode The Sentence That Outran Its Author verifies continuous custody', () => {
+  const episode = executeTheSentenceThatOutranItsAuthorEpisode();
+  assert.equal(episode.schema, COMPOSITE_OUTRAN_AUTHOR_SCHEMA);
+  assert.equal(episode.commission, 'THE_SENTENCE_THAT_OUTRAN_ITS_AUTHOR');
+  assert.equal(episode.covenant, 'Khona‌lit-po');
+  assert.ok(episode.chamber_1_philology);
+  assert.ok(episode.chamber_2_yoon_inversion);
+  assert.ok(episode.chamber_3_dromological_race);
+  assert.ok(episode.chamber_4_irreversible_reversal);
+  assert.ok(episode.chamber_5_two_ledger_confounding);
+  assert.ok(episode.chamber_6_citation_ancestry);
+  assert.ok(episode.chamber_7_impossible_biography);
+  assert.equal(episode.disposition, 'COMPOSITE_DROMOLOGICAL_PHILOLOGY_EPISODE_VERIFIED');
+});
+
+test('LOOM 27: High-Risk Wild Field Investigation confirms Dromological Philological Capture', () => {
+  const capture = auditDromologicalPhilologicalCapture({
+    v_circulation_hours: 0.25,
+    v_correction_hours: 96.0,
+    institutional_binding_action_hours: 24.0,
+    archival_evidence_destroyed: false,
+    testimony_banned: false,
+    final_source_falsified: false
+  });
+
+  assert.equal(capture.schema, DROMOLOGICAL_CAPTURE_SCHEMA);
+  assert.equal(capture.capture_confirmed, true);
+  assert.equal(capture.conditions_evaluated.evidence_intact, true);
+  assert.equal(capture.conditions_evaluated.velocity_ratio, 384.0);
+  assert.equal(capture.disposition, 'DROMOLOGICAL_PHILOLOGICAL_CAPTURE_CONFIRMED');
 });

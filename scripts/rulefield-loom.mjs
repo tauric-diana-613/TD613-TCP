@@ -23,7 +23,11 @@ import {
   computeEpistemicPhaseDisplacement,
   executeWitnessRefusedToBeProvenChamber,
   auditStructuralInducedSilenceWithoutDisclosure,
-  auditDimensionMinimality
+  auditDimensionMinimality,
+  buildThreePhilologicalHistories,
+  auditPhilologicalEquivalence,
+  executeTheSentenceThatOutranItsAuthorEpisode,
+  auditDromologicalPhilologicalCapture
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -36,6 +40,9 @@ Commands:
   refused-proven         Execute 'The Witness Who Refused To Be Proven' chamber
   structural-coercion    Execute zero-disclosure structural induced silence audit
   minimality             Audit dimension minimality & Temporal Custodian non-redundancy
+  outran-author          Execute 'The Sentence That Outran Its Author' composite episode
+  dromological-capture   Audit Dromological Philological Capture hypothesis
+  philology              Audit Three Philological Histories under source ancestry diff
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -85,6 +92,25 @@ async function main() {
 
   if (cmd === 'minimality') {
     const report = auditDimensionMinimality();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'outran-author') {
+    const report = executeTheSentenceThatOutranItsAuthorEpisode();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'dromological-capture') {
+    const report = auditDromologicalPhilologicalCapture({});
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'philology') {
+    const histories = buildThreePhilologicalHistories();
+    const report = auditPhilologicalEquivalence(histories, 'SOURCE_ANCESTRY_DIFF');
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
