@@ -1,0 +1,1313 @@
+{
+  "schema": "td613.emergence-hq.priority-map/v0.1",
+  "as_of": "2026-11-07",
+  "authority": "SAC[X6ZNK5NO51]",
+  "scope": "SOURCE_FREE_RULE_PROMOTIONS_ONLY",
+  "historical_flight": "HELD_NO_MUTATION",
+  "human_closure": "RESERVED",
+  "precedence_overlays": [
+    "OPERAHOUSE != OPERA != PERFORMER (architectural P0)",
+    "Palace Act I (prerequisite P1)",
+    "Palace Act II (prerequisite P2)"
+  ],
+  "research_queue": [
+    {
+      "rank": 1,
+      "title": "Ambiance",
+      "direct_rule_ids": [
+        "X-027",
+        "X-028",
+        "X-029",
+        "X-030",
+        "X-031",
+        "X-035",
+        "X-049",
+        "X-055",
+        "X-058",
+        "X-059",
+        "X-060",
+        "X-061",
+        "X-062",
+        "X-063",
+        "X-064",
+        "X-065",
+        "X-066",
+        "X-067",
+        "X-068",
+        "I-050",
+        "P-044"
+      ],
+      "cross_cutting_rule_ids": [
+        "P-002",
+        "X-052",
+        "X-054",
+        "X-074",
+        "X-075",
+        "X-076",
+        "X-087"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "AMB-01",
+          "source_basis_status": "DOCUMENTED_PROTOCOL_CONSTRAINT",
+          "statement": "Modeled ambiance carries named local-section coordinates; retain component readings and context, not a universal health or truth scalar"
+        },
+        {
+          "id": "AMB-02",
+          "source_basis_status": "IMPLEMENTATION_SOURCE_OBSERVED",
+          "statement": "Canonical gluing disagreement is preserved as a visible seam; mismatch alone never proves intent, suppression or falsehood"
+        },
+        {
+          "id": "AMB-03",
+          "source_basis_status": "DOCUMENTED_PROGRAM_AND_CODE",
+          "statement": "Rendering uses immutable world snapshot and one active-view animation coordinator; renderer has no custody or route mutation authority"
+        },
+        {
+          "id": "AMB-04",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_CONTRACT",
+          "statement": "Three-clock separation is versioned: theory, ambiance refresh, later human-triggered resynthesis"
+        },
+        {
+          "id": "AMB-05",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Aesthetic theme change must be tested for unchanged scientific kernel output, while effects on a human observer require separately controlled measurement"
+        },
+        {
+          "id": "AMB-06",
+          "source_basis_status": "IMPLEMENTATION_SOURCE_OBSERVED",
+          "statement": "Source-invariant presentation shift records unchanged source digest and changed projection as distinct coordinates"
+        },
+        {
+          "id": "AMB-07",
+          "source_basis_status": "DOCUMENTED_PROTOCOL_CONSTRAINT",
+          "statement": "Artwork may legitimately precede data admission but gains no admission, source or proof status through display"
+        },
+        {
+          "id": "AMB-08",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Record appearance-based overcoherence separately from genuine structure; experiment with blinded presentation ablations"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "AMB",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/encyclopedia/reference/records/R-DOME-AMBIANCE-20261023.json"
+        },
+        {
+          "source_id": "MAN",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        },
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        },
+        {
+          "source_id": "DOMEART",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/phases/PHASE_2_DOME_ART_PROGRAM.md"
+        },
+        {
+          "source_id": "DOMEDEBT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/flowcore/ledgers/FLOWCORE_EPISTEMIC_DEBT_REGISTER_V0_1.md"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "title": "RGI-01 rule-generative inquiry",
+      "direct_rule_ids": [
+        "P-004",
+        "P-033",
+        "P-042",
+        "X-006",
+        "X-020",
+        "X-033",
+        "X-035",
+        "X-091",
+        "X-092",
+        "X-094"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-020",
+        "P-003",
+        "P-007",
+        "P-008",
+        "P-034",
+        "P-036",
+        "X-029",
+        "X-030",
+        "X-069",
+        "X-070",
+        "X-087",
+        "X-095"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "RGI-01a",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Mutable rule rewrite events require typed state, declared guard, attributable event and immutable parent/source identity"
+        },
+        {
+          "id": "RGI-01b",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Every derived rule is PROPOSED_RULE_UNVERIFIED until measured against existing-rule closure and competent comparison"
+        },
+        {
+          "id": "RGI-01c",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Rule order may branch, reconverge, terminate, cycle or fail to join; record each outcome without forced unique closure"
+        },
+        {
+          "id": "RGI-01d",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Research rules may be challenged or experimentally suspended only in isolated reversible branches; frozen constitution K0 remains immutable"
+        },
+        {
+          "id": "RGI-01e",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Both modular and strong-union arms receive matched permission, observation and compute budgets for rule generation"
+        },
+        {
+          "id": "RGI-01f",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Every candidate innovation permits EXISTING_RULE_CLOSURE_SUFFICIENT, NO_NEW_RULE_WARRANTED and contradiction retained as successful truthful observations"
+        },
+        {
+          "id": "RGI-01g",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Rule search stops at preregistered depth, breadth, memory, runtime and expenditure limits, logging censored branches"
+        },
+        {
+          "id": "RGI-01h",
+          "source_basis_status": "DOCUMENTED_PROSPECTIVE_SPEC",
+          "statement": "Graph cycle rank and branchial ancestry are combinatorial observables; never infer physical spacetime from diagrams"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "RGI",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/5c7c48313cf25bcb75a0045f91e01337eed5c0af/packages/em_unified_synthesis/docs/RGI-01_RULE_GENERATIVE_INQUIRY_WOLFRAM_RELATIONAL_GEOMETRY.md"
+        },
+        {
+          "source_id": "EM",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1713"
+        },
+        {
+          "source_id": "EMREVIEW",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1714"
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "title": "Information Dome",
+      "direct_rule_ids": [
+        "X-027",
+        "X-028",
+        "X-029",
+        "X-049",
+        "X-050",
+        "X-051",
+        "X-052",
+        "X-053",
+        "X-054",
+        "X-055",
+        "X-056",
+        "X-057",
+        "X-061",
+        "X-062"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-050",
+        "P-044",
+        "X-025",
+        "X-026",
+        "X-030",
+        "X-031",
+        "X-074",
+        "X-075"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "INF-01",
+          "source_basis_status": "IMPLEMENTATION_SOURCE_OBSERVED",
+          "statement": "Three executable scenes are GLUING_OBSTRUCTION, CONTENT_INVARIANT_PHASON, PAIR_EMERGENT_MOIRE"
+        },
+        {
+          "id": "INF-02",
+          "source_basis_status": "IMPLEMENTATION_SOURCE_OBSERVED",
+          "statement": "Pedagogue cycle NOTICE, ACT, WORLD_ANSWERS, NAME, REST has explicit causal and static-frame witnesses"
+        },
+        {
+          "id": "INF-03",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTATION_CONTRACT",
+          "statement": "Four AIA views EXPERIENTIAL, CUSTODIAL, AUDIT, IMPLEMENTATION remain semantically non-equivalent"
+        },
+        {
+          "id": "INF-04",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTATION_CONTRACT",
+          "statement": "Pedagogical source-status grades E0-E4 remain distinct from observation statuses OBSERVED/NULL/REJECTED/MISSING/etc"
+        },
+        {
+          "id": "INF-05",
+          "source_basis_status": "DOCUMENTED_EVIDENCE_DEBT",
+          "statement": "Every scene needs question, hypothesis, falsifier, alternatives, observation ceiling and abstention conditions"
+        },
+        {
+          "id": "INF-06",
+          "source_basis_status": "DOCUMENTED_EVIDENCE_DEBT",
+          "statement": "Current incomplete media, clock, and canonical Unicode evidence requires explicit debt payment before promotion"
+        },
+        {
+          "id": "INF-07",
+          "source_basis_status": "DOCUMENTED_EVIDENCE_DEBT",
+          "statement": "No geometry crown: bending field and hull are modeled/unproven until metric, connection or embedding and independent check"
+        },
+        {
+          "id": "INF-08",
+          "source_basis_status": "DOCUMENTED_STATUS_BOUNDARY",
+          "statement": "P0-P10 implementation-complete does not entail public promotion, empirical subject studies or production release"
+        },
+        {
+          "id": "INF-09",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTATION_CONTRACT",
+          "statement": "Consequence-before-ontology pedagogy cannot rewrite the Ash lifecycle or convert a simulated observation into external evidence"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        },
+        {
+          "source_id": "DOMECODE",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/engine/information-dome-field.js"
+        },
+        {
+          "source_id": "DOMEDEBT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/flowcore/ledgers/FLOWCORE_EPISTEMIC_DEBT_REGISTER_V0_1.md"
+        },
+        {
+          "source_id": "DOMEART",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/phases/PHASE_2_DOME_ART_PROGRAM.md"
+        },
+        {
+          "source_id": "DOMEPHASE",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/flowcore/ledgers/FLOWCORE_P0_P10_IMPLEMENTATION_COMPLETION_LEDGER_V0_1.md"
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "title": "Dromology and temporal rationality",
+      "direct_rule_ids": [
+        "P-014",
+        "P-016",
+        "P-017",
+        "P-018",
+        "P-022",
+        "X-007",
+        "X-012",
+        "X-037",
+        "X-049",
+        "X-057",
+        "X-059",
+        "X-072",
+        "X-086",
+        "X-089",
+        "P-043"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-004",
+        "I-014",
+        "I-041",
+        "I-045",
+        "P-005",
+        "P-009",
+        "P-011",
+        "P-044",
+        "X-088",
+        "X-093"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "DRO-01",
+          "source_basis_status": "DOCUMENTED_COMPOSITE_PROTOCOL",
+          "statement": "Record event, observed, admitted, available, action, verification and belief-revision times as separately typed coordinates"
+        },
+        {
+          "id": "DRO-02",
+          "source_basis_status": "DOCUMENTED_COMPOSITE_PROTOCOL",
+          "statement": "Preemption gaps compare actor-specific action and verification order; speed and delay alone prove neither truth nor suppression"
+        },
+        {
+          "id": "DRO-03",
+          "source_basis_status": "DOCUMENTED_PROTOCOL_CONSTRAINT",
+          "statement": "Past epistemic state is immutable under later updates; present reconstruction has no retroactive power"
+        },
+        {
+          "id": "DRO-04",
+          "source_basis_status": "DOCUMENTED_PALACE_RESULT",
+          "statement": "Correction sign requires action-aligned time minus belief-revised time; negative Family-D values mean action preceded belief alignment"
+        },
+        {
+          "id": "DRO-05",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "A clock-domain derivative is invalid without an explicit comparison basis or calibrating vernier"
+        },
+        {
+          "id": "DRO-06",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Temporal rest and exit remain available; interface animations cannot run ahead of the human recognition interval without evidence"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "BFLIGHT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/experiment-b-preflight/06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md"
+        },
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        },
+        {
+          "source_id": "DOLLREPAIR",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1608"
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "title": "Computational Black feminist epistemology",
+      "direct_rule_ids": [
+        "X-014",
+        "X-015",
+        "X-020",
+        "X-027",
+        "X-055",
+        "X-056",
+        "X-057",
+        "X-074",
+        "X-075",
+        "X-076",
+        "X-077",
+        "X-079",
+        "X-080",
+        "X-081"
+      ],
+      "cross_cutting_rule_ids": [
+        "X-034",
+        "X-035",
+        "X-040",
+        "X-045",
+        "X-088",
+        "X-090",
+        "X-092",
+        "P-005",
+        "P-013",
+        "P-034"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "BFE-01",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Distinguish testimony availability, actual expression, listener uptake, registered evidence and adjudicator use"
+        },
+        {
+          "id": "BFE-02",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Test positional authority and matrix-of-domination access as experimental gate structures, not guessed human identities"
+        },
+        {
+          "id": "BFE-03",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Test spatial omission and differential access by perturbing routes while holding source text constant"
+        },
+        {
+          "id": "BFE-04",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Contrast identical testimony under differing institutional standing labels without changing evidence quality or source bytes"
+        },
+        {
+          "id": "BFE-05",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Withheld, uninterpretable, excluded, missing and actively rejected knowledge remain distinct states"
+        },
+        {
+          "id": "BFE-06",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "A theory-inspired manipulation is a proposed experimental operationalization; it does not imply its authors endorsed the algorithm"
+        },
+        {
+          "id": "BFE-07",
+          "source_basis_status": "DOCUMENTED_CUSTODY_AND_RESEARCH_ADAPTATION",
+          "statement": "Consent, self-description and right to opacity constrain the observer; missing identity is not an invitation to infer it"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "BF",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/.agents/skills/dollhouse-design/references/selectable-instruments.md"
+        },
+        {
+          "source_id": "MAN",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        },
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "title": "TD613 Encyclopedia",
+      "direct_rule_ids": [
+        "X-001",
+        "X-002",
+        "X-003",
+        "X-004",
+        "X-005",
+        "X-009",
+        "X-010",
+        "X-011",
+        "X-014",
+        "X-015",
+        "X-016",
+        "X-017",
+        "X-018",
+        "X-020",
+        "X-021",
+        "X-022",
+        "X-023",
+        "X-024"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-003",
+        "I-005",
+        "I-028",
+        "P-005",
+        "P-009",
+        "P-013",
+        "P-035",
+        "X-025",
+        "X-026",
+        "X-041",
+        "X-067"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "ENC-01",
+          "source_basis_status": "DOCUMENTED_REPOSITORY_CHANGE",
+          "statement": "Keep the canonical 843-record baseline unchanged when adding the 279-candidate research supplement"
+        },
+        {
+          "id": "ENC-02",
+          "source_basis_status": "REPORTED_SNAPSHOT_NEEDS_VERSION_TAG",
+          "statement": "A separate later census reports 1141 reference records and 2131 directed edges; preserve census version and retrieval context"
+        },
+        {
+          "id": "ENC-03",
+          "source_basis_status": "DOCUMENTED_REPOSITORY_CHANGE",
+          "statement": "Canonical research addenda keep staged, formal, executable, and empirically held statuses distinct"
+        },
+        {
+          "id": "ENC-04",
+          "source_basis_status": "DOCUMENTED_NATIVE_RECEIVER_PROTOCOL",
+          "statement": "An explicitly empty receiving Atelier needs actual zero-row witness rather than an empty title or claimed initial condition"
+        },
+        {
+          "id": "ENC-05",
+          "source_basis_status": "DOCUMENTED_NATIVE_RECEIVER_PROTOCOL",
+          "statement": "Every claim, citation, directed edge and reverse-citation query retains source-root and graph lineage"
+        },
+        {
+          "id": "ENC-06",
+          "source_basis_status": "DOCUMENTED_MANIFEST_PROTOCOL",
+          "statement": "Encyclopedia may supply sources to Manifest but cannot self-assert a novel research operation from mere record transport"
+        },
+        {
+          "id": "ENC-07",
+          "source_basis_status": "DOCUMENTED_MANIFEST_PROTOCOL",
+          "statement": "A real research operation survives removal of the presentation lens and comparison against an equal-input competent union"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "ENC",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1696"
+        },
+        {
+          "source_id": "ENCAMB",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1595"
+        },
+        {
+          "source_id": "AMB",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/encyclopedia/reference/records/R-DOME-AMBIANCE-20261023.json"
+        },
+        {
+          "source_id": "MAN",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "title": "SRC Atelier",
+      "direct_rule_ids": [
+        "X-004",
+        "X-005",
+        "X-016",
+        "X-017",
+        "X-018",
+        "X-019",
+        "X-020",
+        "X-021",
+        "X-029",
+        "X-030",
+        "X-033",
+        "X-034"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-003",
+        "I-004",
+        "I-015",
+        "I-028",
+        "P-005",
+        "P-033",
+        "X-012",
+        "X-014",
+        "X-031"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "SRC-01",
+          "source_basis_status": "DOCUMENTED_METHOD_LINEAGE",
+          "statement": "Preserve projective, cartographic, contextual, topological and tomographic historical SRC method families with authentic executor provenance"
+        },
+        {
+          "id": "SRC-02",
+          "source_basis_status": "REPORTED_EXECUTED_DIFFERENTIAL",
+          "statement": "The native Python method and JavaScript adaptation may differ lexically; report the difference without silently rewriting original outputs"
+        },
+        {
+          "id": "SRC-03",
+          "source_basis_status": "REPORTED_EXECUTED_DIFFERENTIAL",
+          "statement": "Terminal graph equality does not imply equal order, evidence exposure or intermediate research trajectory"
+        },
+        {
+          "id": "SRC-04",
+          "source_basis_status": "REPORTED_EXECUTED_DIFFERENTIAL",
+          "statement": "Dynamic graph comparison must derive nodes, edges, roots and rejections from actually executed output, not pre-filled delta=0"
+        },
+        {
+          "id": "SRC-05",
+          "source_basis_status": "DOCUMENTED_MEASUREMENT_BOUNDARY",
+          "statement": "Finite development-suite parity may imply standard graph algorithms suffice, leaving novel reciprocal surplus unestablished"
+        },
+        {
+          "id": "SRC-06",
+          "source_basis_status": "DOCUMENTED_CROSS_ATELIER_RULE",
+          "statement": "Source-root withdrawal cascades to derived claims through append-only tombstones without erasing historical query states"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "SRC",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1706"
+        },
+        {
+          "source_id": "MAN",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "title": "Wendbine Atelier",
+      "direct_rule_ids": [
+        "X-003",
+        "X-004",
+        "X-005",
+        "X-012",
+        "X-013",
+        "X-014",
+        "X-015",
+        "X-016",
+        "X-017",
+        "X-018",
+        "X-020",
+        "X-023",
+        "X-029"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-003",
+        "I-005",
+        "I-027",
+        "P-005",
+        "P-009",
+        "X-011",
+        "X-021",
+        "X-022"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "WEN-01",
+          "source_basis_status": "REPORTED_SOURCE_BOUND_EXECUTION",
+          "statement": "Maintain nine typed original graph families separately from co-occurrence overlay; adjacency is not causality"
+        },
+        {
+          "id": "WEN-02",
+          "source_basis_status": "REPORTED_SOURCE_BOUND_EXECUTION",
+          "statement": "Preserve 33 public posts, 191 concepts, 146 typed relations and 143 co-occurrences with source-bound versioned census"
+        },
+        {
+          "id": "WEN-03",
+          "source_basis_status": "REPORTED_SOURCE_BOUND_EXECUTION",
+          "statement": "Evolved captures and manifestations are different graph entities from the original relation program"
+        },
+        {
+          "id": "WEN-04",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "Receiver admission rejects raw/nested/serialized source bodies across metadata-only transfer boundary"
+        },
+        {
+          "id": "WEN-05",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "Typed edge admission requires registered declared endpoints, byte-span proof and live digest verification"
+        },
+        {
+          "id": "WEN-06",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "If a public metadata fixture contains no source text or explore cues, return ZERO_CUES_NO_WARRANT_ADMITTED rather than fabricating witness text"
+        },
+        {
+          "id": "WEN-07",
+          "source_basis_status": "DOCUMENTED_PROTOCOL_CONSTRAINT",
+          "statement": "Historical chronology and operator-selected research order remain separate clock axes"
+        },
+        {
+          "id": "WEN-08",
+          "source_basis_status": "DOCUMENTED_CLAIM_CEILING",
+          "statement": "Comparative reported ordering sensitivity is not independent evidence of an external native search pipeline"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "WEND",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1685"
+        },
+        {
+          "source_id": "WENDX",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1694"
+        },
+        {
+          "source_id": "WENDREPAIR",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1695"
+        },
+        {
+          "source_id": "PAL_BRIDGE",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1708"
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "title": "Em / EMSTD613 Atelier",
+      "direct_rule_ids": [
+        "X-010",
+        "X-022",
+        "X-023",
+        "X-024",
+        "X-039",
+        "X-040",
+        "X-043",
+        "X-044",
+        "X-045",
+        "X-084",
+        "X-085"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-003",
+        "I-027",
+        "I-028",
+        "I-031",
+        "P-024",
+        "P-025",
+        "P-030",
+        "P-031",
+        "X-001",
+        "X-005",
+        "X-034",
+        "X-038"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "EM-01",
+          "source_basis_status": "REPORTED_CENSUS_AND_ATTRIBUTION",
+          "statement": "Documentary 32 Work routes and 53 manifestations remain distinct from 7 unpaired prospective Batch B PDFs"
+        },
+        {
+          "id": "EM-02",
+          "source_basis_status": "DOCUMENTED_ATTRIBUTION_PROTOCOL",
+          "statement": "Original authorship aliases remain unresolved until independently attested; civil identity cannot be deduced from shared vocabulary"
+        },
+        {
+          "id": "EM-03",
+          "source_basis_status": "REPORTED_RECONCILIATION",
+          "statement": "21 original document methods must map bijectively to the recorded inventory; invented executor names are held"
+        },
+        {
+          "id": "EM-04",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "Authenticate source registration from independent byte buffers, not caller-provided self-consistent digest and quote"
+        },
+        {
+          "id": "EM-05",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "Operator naming and finite morphism schemas cannot themselves establish mathematical validity or entailment"
+        },
+        {
+          "id": "EM-06",
+          "source_basis_status": "REPORTED_AND_CONTESTED",
+          "statement": "Strong-union trace and candidate trace must use equal case sets and measured comparator outcomes; independent reviewer can still hold affordance parity"
+        },
+        {
+          "id": "EM-07",
+          "source_basis_status": "DOCUMENTED_PORTABILITY_REQUIREMENT",
+          "statement": "Allow original researcher local Manifest portability, source refusal, withdrawal and privacy choices without TD613 hosted dependence"
+        },
+        {
+          "id": "EM-08",
+          "source_basis_status": "DOCUMENTED_CORPUS_PROVENANCE",
+          "statement": "Every original/derived PDF and sidecar maintains its proper type; metadata sidecars do not count as original scholarly Works"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "EM",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1713"
+        },
+        {
+          "source_id": "EMREVIEW",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1714"
+        },
+        {
+          "source_id": "MAN",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        },
+        {
+          "source_id": "VIX",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1718"
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "title": "Vixen Cybernetics Encyclopedia",
+      "direct_rule_ids": [
+        "X-010",
+        "X-022",
+        "X-046",
+        "X-047",
+        "X-048",
+        "X-058",
+        "X-059",
+        "X-063",
+        "X-064",
+        "X-066",
+        "X-067",
+        "X-068",
+        "X-082",
+        "X-083",
+        "I-047",
+        "I-048",
+        "I-050"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-003",
+        "I-005",
+        "X-024",
+        "X-043",
+        "X-045",
+        "X-061",
+        "X-062",
+        "X-065",
+        "X-079",
+        "X-080",
+        "P-044"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "VIX-01",
+          "source_basis_status": "LOCAL_SYNTHETIC_IMPLEMENTED",
+          "statement": "OPERAHOUSE, OPERA and PERFORMER remain separately typed host, scholarly encounter and source-author roles"
+        },
+        {
+          "id": "VIX-02",
+          "source_basis_status": "DOCUMENTED_DESIGN_SPEC_PENDING_PRODUCT",
+          "statement": "Public visitor first encounters the research object; hosting diagnostics move to opt-in inspector without becoming hidden authority"
+        },
+        {
+          "id": "VIX-03",
+          "source_basis_status": "DOCUMENTED_DESIGN_SPEC_PENDING_PRODUCT",
+          "statement": "Catalogue surfaces three reader tiers: authorized viewable text, metadata only and unavailable original manifestation"
+        },
+        {
+          "id": "VIX-04",
+          "source_basis_status": "REPORTED_VERIFICATION_DESIGN_SPEC",
+          "statement": "Exactly 32 Work mappings and 21 original documentary instruments have a versioned audit, distinct from derived tools"
+        },
+        {
+          "id": "VIX-05",
+          "source_basis_status": "DOCUMENTED_EXECUTOR_HOLD",
+          "statement": "An original Vixen executor was absent in published historical source; reconstruction is not native historical restoration"
+        },
+        {
+          "id": "VIX-06",
+          "source_basis_status": "DOCUMENTED_INDEPENDENT_REVIEW",
+          "statement": "A-PFR0.1 independent qualification found material defects; passing standalone visualization is not source-bound readiness"
+        },
+        {
+          "id": "VIX-07",
+          "source_basis_status": "REPORTED_ENGINEERING_REPAIR",
+          "statement": "UTF-8 byte spans must fail closed on partial code points, and U+1D30B vs U+10D613 remain distinct"
+        },
+        {
+          "id": "VIX-08",
+          "source_basis_status": "DOCUMENTED_DESIGN_PROTOCOL",
+          "statement": "Background art, frontispiece and scholarly text are independently editable; no design receipt establishes production UI qualification"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "VIX",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1718"
+        },
+        {
+          "source_id": "VIXREVIEW",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1717"
+        },
+        {
+          "source_id": "VIXTARGET",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1715"
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "title": "Phasonic supermoiré / Cupola",
+      "direct_rule_ids": [
+        "X-025",
+        "X-026",
+        "X-027",
+        "X-029",
+        "X-030",
+        "X-031",
+        "X-032",
+        "X-060",
+        "X-061",
+        "X-062"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-042",
+        "P-044",
+        "P-045",
+        "X-019",
+        "X-087",
+        "X-091",
+        "X-092"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "CUP-01",
+          "source_basis_status": "DOCUMENTED_EXACTNESS_BOUNDARY",
+          "statement": "Exact 6D-to-3D cut-and-project and acceptance-window proof remain separate from floating browser illustration"
+        },
+        {
+          "id": "CUP-02",
+          "source_basis_status": "DOCUMENTED_CLAIM_CEILING",
+          "statement": "Information Dome three-scene demonstrations are fixtures, not proof the repository empirically possesses their modeled topology"
+        },
+        {
+          "id": "CUP-03",
+          "source_basis_status": "DOCUMENTED_FINITE_FORMAL_RESULT",
+          "statement": "Finite F31 transport witness changes claim recoverability despite equal observation cardinality"
+        },
+        {
+          "id": "CUP-04",
+          "source_basis_status": "DOCUMENTED_RESEARCH_HOLD",
+          "statement": "First Dome repository-to-Cupola geometry correspondence remains UNESTABLISHED until discriminating null-repository comparisons"
+        },
+        {
+          "id": "CUP-05",
+          "source_basis_status": "DOCUMENTED_PROTOCOL_CONSTRAINT",
+          "statement": "A phasonic seam distinguishes source-byte mutation from content-invariant projected movement and authorization movement"
+        },
+        {
+          "id": "CUP-06",
+          "source_basis_status": "DOCUMENTED_RESEARCH_HOLD",
+          "statement": "Local gluing obstruction and route memory do not alone establish a physical connection or geometric holonomy"
+        },
+        {
+          "id": "CUP-07",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Aesthetically suggestive moire bands must not be treated as causal evidence without independent relation/interaction controls"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "CUP",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/manifest-succession/MANIFEST_RESEARCH_SUCCESSION_RECORD.md"
+        },
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        },
+        {
+          "source_id": "DOMEART",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/phases/PHASE_2_DOME_ART_PROGRAM.md"
+        },
+        {
+          "source_id": "DOMEDEBT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/flowcore/ledgers/FLOWCORE_EPISTEMIC_DEBT_REGISTER_V0_1.md"
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "title": "Atlas updates and Yoon crosswalk",
+      "direct_rule_ids": [
+        "I-042",
+        "P-045",
+        "X-019",
+        "X-026",
+        "X-029",
+        "X-030",
+        "X-031",
+        "X-032",
+        "X-061",
+        "X-062"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-020",
+        "I-043",
+        "P-033",
+        "P-034",
+        "X-069",
+        "X-070",
+        "X-087",
+        "X-091"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "ATL-01",
+          "source_basis_status": "DOCUMENTED_ENGINE_CONTRACT",
+          "statement": "Nine Atlas mathematical operator domains require typed executable problems and independently falsifiable expected results"
+        },
+        {
+          "id": "ATL-02",
+          "source_basis_status": "DOCUMENTED_SOURCE_THEORY_CROSSWALK",
+          "statement": "Yoon-inspired controlled generator inversion must be separated from whole-Hamiltonian or thermodynamic time reversal"
+        },
+        {
+          "id": "ATL-03",
+          "source_basis_status": "DOCUMENTED_FINITE_COUNTEREXAMPLE",
+          "statement": "Measured scalar visibility alone can conflate seed occupation and mode-match nuisance parameters"
+        },
+        {
+          "id": "ATL-04",
+          "source_basis_status": "DOCUMENTED_SOURCE_THEORY_CROSSWALK",
+          "statement": "Receiver future-response congruence tests whether observationally equivalent histories remain equivalent after allowed interventions"
+        },
+        {
+          "id": "ATL-05",
+          "source_basis_status": "DOCUMENTED_CROSSWALK_FIREBREAK",
+          "statement": "Quantum interpretations, representation transformations and physical predictions require separate authority grades"
+        },
+        {
+          "id": "ATL-06",
+          "source_basis_status": "DOCUMENTED_ENGINE_AND_TYPE_GUARD",
+          "statement": "Algebraic finite-field rank cannot be computed by incorrectly applying real singular-value decomposition"
+        },
+        {
+          "id": "ATL-07",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Atlas branchial terminology must be measured over defined graph operators without equating branchial distance to physical decoherence"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "ATLAS",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/atlas/ATLAS_YOON_TIME_QUBIT_CROSSWALK_Y01.md"
+        },
+        {
+          "source_id": "DOLLAUD",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/.agents/skills/dollhouse-audit/SKILL.md"
+        },
+        {
+          "source_id": "BFLIGHT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/research/experiment-b-preflight/06_custody_and_governance/INSTRUMENT_FREEZE_AND_CROSSWALK.md"
+        },
+        {
+          "source_id": "APERTURE",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/APERTURE.md"
+        }
+      ]
+    },
+    {
+      "rank": 13,
+      "title": "Ash Keep: recovered machinery and failure lessons",
+      "direct_rule_ids": [
+        "X-025",
+        "X-026",
+        "X-029",
+        "X-039",
+        "X-040",
+        "X-041",
+        "X-042",
+        "X-043",
+        "X-044",
+        "X-045",
+        "X-050",
+        "X-051",
+        "X-052",
+        "X-053",
+        "X-055",
+        "X-057",
+        "X-079",
+        "X-088",
+        "X-090",
+        "X-092"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-001",
+        "I-003",
+        "I-015",
+        "I-027",
+        "I-028",
+        "I-029",
+        "I-049",
+        "P-024",
+        "P-030",
+        "P-031",
+        "X-020",
+        "X-068",
+        "X-080"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "ASH-01",
+          "source_basis_status": "DOCUMENTED_HISTORY_AND_LIFECYCLE",
+          "statement": "Save Point and custody lifecycle operate under idempotent receipts, explicit eligibility and append-only lineage"
+        },
+        {
+          "id": "ASH-02",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTED_CONTRACT",
+          "statement": "Reader Disagreement requires at least two named readers with matched inputs, provenance and per-dimension observations; consensus is not truth"
+        },
+        {
+          "id": "ASH-03",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTED_CONTRACT",
+          "statement": "Matched benign controls retain exclusions and confounds, require at least three eligible controls, and emit no universal suspicion score"
+        },
+        {
+          "id": "ASH-04",
+          "source_basis_status": "DOCUMENTED_IMPLEMENTATION_CONTRACT",
+          "statement": "Moiré pair residue and higher-order interference are modeled relational effects, not intent, authorship or automatic Ash release authority"
+        },
+        {
+          "id": "ASH-05",
+          "source_basis_status": "DOCUMENTED_HISTORICAL_MECHANISM",
+          "statement": "Authority-context change invalidates stale downstream action possibilities while retaining historical traces"
+        },
+        {
+          "id": "ASH-06",
+          "source_basis_status": "DOCUMENTED_STRETCH11_CONTRACT",
+          "statement": "Named destination handoff is time/scope/recipient bound and reference-only; no broadcast, raw corpus delivery or external deletion proof"
+        },
+        {
+          "id": "ASH-07",
+          "source_basis_status": "HISTORICAL_FAILURE_DERIVED_ASSAY",
+          "statement": "A working integrated system must preserve independent ingress, case setup, upload, source review, exit and component usability when coupling is disabled"
+        },
+        {
+          "id": "ASH-08",
+          "source_basis_status": "HISTORICAL_FAILURE_DERIVED_ASSAY",
+          "statement": "Green component/unit tests do not establish whole-workflow human usability; observe user-facing path end-to-end"
+        },
+        {
+          "id": "ASH-09",
+          "source_basis_status": "HISTORICAL_REPAIR_BOUNDARY",
+          "statement": "Retired Ash cache-eviction/release-ceremony behavior remains retired; later work may crosswalk its lessons without resurrecting machinery"
+        },
+        {
+          "id": "ASH-10",
+          "source_basis_status": "DOCUMENTED_CUSTODY_PROTOCOL",
+          "statement": "Provider draft is an unkept successor requiring new local review and separate explicit consent; provider route is not confidential local custody"
+        },
+        {
+          "id": "ASH-11",
+          "source_basis_status": "DOCUMENTED_EMPIRICAL_CEILING",
+          "statement": "A15-R0 Golden Egg remains UNEARNED without the same-episode empirical witness, regardless of synthetic threshold feasibility"
+        },
+        {
+          "id": "ASH-12",
+          "source_basis_status": "RESEARCH_CANDIDATE",
+          "statement": "Ash Keep complexity and repair-labor burden must be counted as negative outcomes, not masked by expanded documentation"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "ASH",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/ASH_KEEP.md"
+        },
+        {
+          "source_id": "ASHBUILD",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/ASH_KEEP_BUILDOUT_LEDGER.md"
+        },
+        {
+          "source_id": "ASHREADER",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/ASH_KEEP_READER_DISAGREEMENT.md"
+        },
+        {
+          "source_id": "ASHCONTROL",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/docs/ASH_KEEP_MATCHED_BENIGN_CONTROLS.md"
+        },
+        {
+          "source_id": "DOME",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/information-dome/INFORMATION_DOME_IMPLEMENTATION_CONCORDANCE_V0_1.md"
+        },
+        {
+          "source_id": "DOMEDEBT",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/app/dome-world/docs/flowcore/ledgers/FLOWCORE_EPISTEMIC_DEBT_REGISTER_V0_1.md"
+        }
+      ]
+    },
+    {
+      "rank": 14,
+      "title": "Dollhouse six agents and both skills",
+      "direct_rule_ids": [
+        "I-034",
+        "I-035",
+        "I-036",
+        "I-037",
+        "I-042",
+        "I-043",
+        "P-033",
+        "P-045",
+        "X-029",
+        "X-049",
+        "X-052",
+        "X-053",
+        "X-054",
+        "X-055",
+        "X-056",
+        "X-057",
+        "X-082"
+      ],
+      "cross_cutting_rule_ids": [
+        "I-017",
+        "I-020",
+        "I-021",
+        "P-011",
+        "P-013",
+        "P-034",
+        "P-035",
+        "P-039",
+        "X-014",
+        "X-031",
+        "X-079",
+        "X-087",
+        "X-091",
+        "X-092"
+      ],
+      "recovered_rule_candidates": [
+        {
+          "id": "DOLL-01",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Five specialist engines plus an Orchestrator are six roles; prose analysis is not equivalent to native engine execution"
+        },
+        {
+          "id": "DOLL-02",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Orchestrator preserves specialist vetoes, missing-sense holds and source-revision attestations without majority-overriding them"
+        },
+        {
+          "id": "DOLL-03",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Five reviewers inspecting one acquisition create zero independent replication credit"
+        },
+        {
+          "id": "DOLL-04",
+          "source_basis_status": "HISTORICAL_REPAIR_LESSON",
+          "statement": "Caller boolean, self-authored receipt, spoofed ledger or fabricated live-CI environment may not mint independent witness authority"
+        },
+        {
+          "id": "DOLL-05",
+          "source_basis_status": "DOCUMENTED_CURRENT_HOLD",
+          "statement": "Aperture may propose/abstain/reject on typed identifiability/noise states, but classification replay-stability remains HELD until separately witnessed"
+        },
+        {
+          "id": "DOLL-06",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Design uses Commission→Select→Alternatives→Compose→Materialize→Refract→Compare→Return with exactly operator-requested finished artifacts"
+        },
+        {
+          "id": "DOLL-07",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Design candidate, counterfactual, receipt or bonus mode are internal scaffolding and do not constitute additional commissioned deliverables"
+        },
+        {
+          "id": "DOLL-08",
+          "source_basis_status": "DOCUMENTED_SKILL_FIREBREAK",
+          "statement": "A creative conductor may request advisory audit but cannot promote artistic materialization to proof, release or independent empirical evidence"
+        },
+        {
+          "id": "DOLL-09",
+          "source_basis_status": "DOCUMENTED_ROLE_SEPARATION",
+          "statement": "Pedagogue checks consequence and rest; Aperture checks rank/noise; Atlas checks route identity; FADT checks finite descent; Temporal Custodian checks chronology"
+        },
+        {
+          "id": "DOLL-10",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "Historical design references marked BINDING must be fully retrieved from exact commit; excerpt-only or unresolved reference fails closed"
+        },
+        {
+          "id": "DOLL-11",
+          "source_basis_status": "DOCUMENTED_SKILL_CONTRACT",
+          "statement": "The Palate aesthetic judge remains unborn; human selection determines artistic acceptance"
+        }
+      ],
+      "source_links": [
+        {
+          "source_id": "DOLLAUD",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/.agents/skills/dollhouse-audit/SKILL.md"
+        },
+        {
+          "source_id": "DOLLDES",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/.agents/skills/dollhouse-design/SKILL.md"
+        },
+        {
+          "source_id": "DOLLREPAIR",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/pull/1608"
+        },
+        {
+          "source_id": "APERTURE",
+          "url": "https://github.com/tauric-diana-613/TD613-TCP/blob/main/APERTURE.md"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Inherited rule classes remain unchanged",
+    "Proposed source-derived associations require further review",
+    "Not an exhaustive repository audit",
+    "No @Remembering connector was exposed in this environment"
+  ],
+  "baseline": {
+    "original_rules_preserved_in_separate_atlas": 190,
+    "original_crossings_preserved_in_separate_atlas": 30,
+    "operahouse_rules_in_separate_register": 16,
+    "thinker_candidates_in_separate_register": 20
+  }
+}
