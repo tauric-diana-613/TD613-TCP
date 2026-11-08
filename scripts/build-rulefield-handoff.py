@@ -35,6 +35,8 @@ SUPPORT = (
     "tests/rulefield-types.test.mjs",
     "tests/rulefield-tomography.test.mjs",
     "tests/rulefield-semantic-paired.test.mjs",
+    "tests/rulefield-docket3.test.mjs",
+    "scripts/rulefield-docket3.mjs",
     "scripts/rulefield-tomography.mjs",
     "scripts/rulefield-qualification.mjs",
     "tests/rulefield-docket.test.mjs",
