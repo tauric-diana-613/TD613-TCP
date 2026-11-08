@@ -37,7 +37,13 @@ import {
   evaluatePhilologicalProofLattice,
   simulateAdaptiveInstitutionGame,
   evaluateJurisdictionalBootstrap,
-  executeFinalAdaptiveExperiment
+  executeFinalAdaptiveExperiment,
+  buildTwoCertifiedWorlds,
+  auditTwoCertifiedWorldsDiscrimination,
+  evaluateDataProcessingComposition,
+  evaluateExteriorityChallenge,
+  simulateThreeConditionsTrial,
+  answerOperatorsQuestionOnWitnessIndependence
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -62,6 +68,11 @@ Commands:
   adaptive-game          Simulate 3-round Adaptive Institution repeated game
   jurisdictional-boot    Evaluate Jurisdictional Bootstrap & External Constitutional Anchor
   final-adaptive         Execute Final Adaptive Experiment satisfying all 5 Section VI reqs
+  two-certified-worlds   Audit Two Certified Worlds (W_alpha vs W_beta) discrimination failure
+  data-processing        Evaluate Data Processing Inequality H -> E(H) -> N(E(H))
+  exteriority-challenge  Audit Exteriority Challenge and multi-signer rank collapse
+  three-conditions       Execute Three Conditions Trial (A vs B vs C) & portal counterexample
+  witness-independence   Audit Operator's Question on what an independent witness must observe
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -193,6 +204,36 @@ async function main() {
 
   if (cmd === 'final-adaptive') {
     const report = executeFinalAdaptiveExperiment();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'two-certified-worlds') {
+    const report = auditTwoCertifiedWorldsDiscrimination();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'data-processing') {
+    const report = evaluateDataProcessingComposition();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'exteriority-challenge') {
+    const report = evaluateExteriorityChallenge({ numSigners: 5 });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'three-conditions') {
+    const report = simulateThreeConditionsTrial({ deadlineHours: 24.0, intakeProbeMediatedByPortal: false });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'witness-independence') {
+    const report = answerOperatorsQuestionOnWitnessIndependence();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }

@@ -1379,3 +1379,22 @@ export {
   evaluateJurisdictionalBootstrap,
   executeFinalAdaptiveExperiment
 } from './second_order_institution.mjs';
+
+// ============================================================================
+// 17. THIRD-ORDER NOTARY LABORATORY EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  THIRD_ORDER_COMMISSION_SCHEMA,
+  TWO_CERTIFIED_WORLDS_SCHEMA,
+  DATA_PROCESSING_INEQUALITY_SCHEMA,
+  EXTERIORITY_CHALLENGE_SCHEMA,
+  THREE_CONDITIONS_TRIAL_SCHEMA,
+  INDEPENDENT_WITNESS_TAXONOMY_SCHEMA,
+  buildTwoCertifiedWorlds,
+  auditTwoCertifiedWorldsDiscrimination,
+  evaluateDataProcessingComposition,
+  evaluateExteriorityChallenge,
+  simulateThreeConditionsTrial,
+  answerOperatorsQuestionOnWitnessIndependence
+} from './third_order_notary.mjs';
