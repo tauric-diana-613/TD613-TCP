@@ -154,3 +154,10 @@ test('R3 19 finite CI assay cannot claim Golden Egg or independent external evid
  assert.equal(p.constraints.independent_witness_verified,false);
  assert.equal(p.authority.protected_flight,'HELD');
 });
+
+test('R3 20 impossible calendar dates fail before any paired-outcome interpretation',()=>{
+ const x=episode('RF-001');x.trials[0].clocks.recorded_at='2026-02-30T00:00:00Z';
+ const report=evaluatePairedEpisode(x,{as_of:'2026-04-01T00:00:00Z'});
+ assert.equal(report.standing,'HELD_UNQUALIFIED_PAIRED_EPISODE');
+ assert.ok(report.reasons.includes('INVALID_OR_RETROACTIVE_TRIAL_CLOCKS'));
+});
