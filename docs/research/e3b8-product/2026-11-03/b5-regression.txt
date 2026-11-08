@@ -1,0 +1,24 @@
+✔ B5 single shell initializes original empty seed, preserves profile bytes and 44 statuses across fresh restart (116.890621ms)
+✔ B5 assembled TD native/recipient/transport lanes match weighted retrieval, each record citation, integrity and explicit relations (158.180582ms)
+✔ B5 separate NEW Encyclopedia executes original Wendbine query/compiler in matched lanes and never routes through Atelier (88.425505ms)
+✔ B5 original Python vs assembled SRC recipient vs transport: all four frozen native grammar fixtures, raw Spanish and dates (580.474413ms)
+✔ B5 public mixed research trace actually retrieves, cites, selects a surface and traverses two typed edges while cross bridge stays HELD (28.778141ms)
+✔ B5 lexical/signature false twins across sources refuse identity, genealogy and causation, unqualified mixed query abstains (27.202453ms)
+✔ B5 source/route/epoch/rights/receipt swaps and forged citation fail across namespaces and lanes (79.247712ms)
+✔ B5 exact replay and multiple concurrent identities survive restart; global source ID collisions are refused (34.13964ms)
+✔ B5 withdrawal disables only its source and a dependent trace, retained SRC and Wendbine remain executable (36.548304ms)
+✔ B5 corrupt receipt/body, partial persisted state, source namespace injection and symlink substitution fail closed (82.369871ms)
+✔ B5 interrupted pending admission refuses reconstruction; foreign root anchor and original profile mutation refuse reopening (23.452015ms)
+✔ B5 unknown graph semantics, unadmitted source relations and private source rights never gain bridge credit (61.544861ms)
+✔ B5 zero, unexecuted, absent and held are distinguishable; unavailable operations refuse (28.264395ms)
+✔ B5 numeric punctuation, lexical ambiguity and unavailable history surface survive assembled native comparison (126.639085ms)
+✔ B5 separately spawned process reopens caller-bound source and distinguishes custody twins without inferred shared origin (109.636919ms)
+✔ B5 assembled role compilation actually invokes pinned semantic engine and preserves mixed contextual status and non-lift (17.492788ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1739.033287
