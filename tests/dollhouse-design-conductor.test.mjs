@@ -580,3 +580,5 @@ await import('./rulefield-roadmap.test.mjs');
 
 // Human-reviewed, non-omissive operator interface and authorization gates.
 await import('./rulefield-operator.test.mjs');
+// Existing-entry content collision guard, operator disclosure, and human decision.
+await import('./rulefield-duplicate-gate.test.mjs');

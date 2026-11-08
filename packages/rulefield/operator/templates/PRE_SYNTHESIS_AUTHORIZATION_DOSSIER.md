@@ -51,3 +51,6 @@ Append the following **in full**, with original byte binding and counts:
 **A human reviewer may request any missing detail without penalty. No silence, filename, copied badge, signed-looking string or model confidence constitutes approval.**
 
 𝄐 OPERAHOUSE ≠ OPERA ≠ PERFORMER · Full visibility ≠ forced action.
+### Mandatory machine field · Existing-entry collision and novel-claim review
+
+Include `duplicate_admission_gate` with original matched Rulefield IDs, source lanes, exact source excerpts, comparison method and evidence ceiling. For `HELD_EXISTING_ENTRY_DUPLICATE` or `HELD_POSSIBLE_ENTRY_OVERLAP`, the agent must ask the operator to **REFERENCE_EXISTING / REQUEST_DIFFERENCE_ANALYSIS / PROPOSE_AN_EXPLICIT_REVISION / RETAIN_SEPARATE_CANDIDATE_WITH_NEW_WARRANT / DECLINE**, and cannot request immediate staged synthesis. A new qualified packet and new content-bound disclosure are needed afterward. No-match gives zero novelty credit.

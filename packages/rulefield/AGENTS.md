@@ -45,3 +45,7 @@ You may not:
 **First actionable command** (in a full repository checkout): \`node scripts/rulefield.mjs stats\`, then \`node scripts/rulefield-amend.mjs help\`. When the receiver is provided only a zip, read \`rulebook/LLM_QUICK_START.md\` and \`amendments/RECEIVER.md\` first; do not assume the GitHub tool or Node runner is installed.
 
 𝄐 Khona‌lit-po · Reader custody, not automatic authority ⟐
+
+## Prior-entry duplicate-admission HOLD (binding)
+
+Before treating new Rulefield material as a new rule, crossing or queue heading, execute `amendments/duplicate_gate.mjs` via the receiver. `HELD_EXISTING_ENTRY_DUPLICATE` and `HELD_POSSIBLE_ENTRY_OVERLAP` must be shown with prior ID, source lane, match method, and informed operator choices. Existing rule IDs in `anchors` are legitimate references and cannot alone trigger a HOLD. A detector no-match does not establish original scientific novelty. A fresh versioned packet and renewed operator disclosure are required for later staging; no human decision can auto-override an existing HOLD.

@@ -12,6 +12,14 @@
 - **Excluded proposal IDs:** [                                  ]
 - **Consciously reviewed outstanding unknowns:** [                                  ]
 
+### Earlier-rule collision (only if the dossier flags it)
+
+**Matched Rulefield IDs:** [                                  ]
+
+**My preferred action:** [ ] Reference prior rule  [ ] Difference analysis  [ ] Versioned revision  [ ] Preserve distinct warranted branch  [ ] Decline
+
+When the current packet is held as a duplicate or possible overlap, staged synthesis cannot proceed. Request a new versioned packet, then inspect its new review and disclosure before any later positive decision.
+
 ### Decision (human makes exactly one selection)
 
 - [ ] **REQUEST_STAGED_SYNTHESIS** — I authorize an agent to implement only the selected proposals on a separate review branch as an *unadopted candidate*. Return exact diffs, tests, attribution, source effects and a second approval request. This grants **zero canonical adoption/merge/deployment authority**.

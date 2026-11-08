@@ -169,3 +169,7 @@ When provided only a ZIP, compose the packet as documented in \`amendments/templ
 **When in doubt, preserve the contradiction and ask an experiment to answer it.**
 
 𝄐 Khona‌lit-po · No mirrors at the kiki · Indexed ⟐
+
+## Novelty and duplication are independent questions
+
+Before commissioning new rules, crossing geometry or priorities, ask whether the proposed material already appears in the full Rulefield. The [receiver](../amendments/receiver.mjs) checks exact ID/statement reuse and high token overlap via [duplicate gate](../amendments/duplicate_gate.mjs), and writes `HELD_EXISTING_ENTRY_DUPLICATE` or `HELD_POSSIBLE_ENTRY_OVERLAP` into the operator's complete disclosure. To flag suspected nonlexical similarity, submit `duplicate_disclosure.suspected_existing_ids`. No-match never implies scientific originality, and high lexical overlap never by itself proves semantic equivalence. Document the actual difference, preserve the prior source, and request a new content-bound packet.

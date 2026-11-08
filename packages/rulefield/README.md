@@ -146,3 +146,7 @@ Negative results and nonjoinable hypotheses may remain beside one another. What 
 **Flight HELD · Automatic promotion false · Original I/P/X frozen · No unblinding, merge or deployment · Human closure RESERVED.**
 
 𝄐 Khona‌lit-po · Marked ⟐
+
+## Prior-entry duplicate admission
+
+The [duplicate-admission sieve](amendments/duplicate_gate.mjs) compares proposed new-entry text and candidate IDs against existing rules, crossings and 70 queue headings, plus earlier candidates in the same packet. It fails closed for exact repeats and reused IDs, and holds likely lexical or operator-declared overlaps for review. All prior IDs, comparison methods and unresolved consequences appear in the [human disclosure](operator/DISCLOSURE_PROTOCOL.md). A human can request a difference analysis or an explicit versioned revision rather than losing an independent hypothesis. This is a computational admission HOLD, never an allegation of plagiarism.

@@ -216,6 +216,8 @@ Bind the packet to the actual registry digest:
     node scripts/rulefield-amend.mjs dry-run
     node scripts/rulefield-amend.mjs sync
 
+**NEW PRIOR-ENTRY HOLD:** Compare any proposed new rule, crossing, or priority heading against the actual current Rulefield registry and earlier proposals in the packet. Exact collisions and reused IDs enter `HELD_EXISTING_ENTRY_DUPLICATE`; plausible token overlap or an operator-identified prior match enters `HELD_POSSIBLE_ENTRY_OVERLAP`. Display matched IDs, original statements, source lanes and comparison method. Existing anchors remain lawful. Neither a no-match nor a small rephrasing proves novelty. Resolve with a source-grounded difference analysis and a fresh versioned packet; approval cannot bypass a held review.
+
 **NEW OPERATOR GATE:** The receiver must produce a **complete pre-synthesis disclosure dossier**, in human-readable Light/Medium/Heavy form, and preserve every machine field in the forensic appendix. An agent cannot replace it with a summary. The dossier is a separate, content-bound request for the human to choose whether a selection may become an **unmerged, staged candidate**. The human-only submission and authorization forms remain authored by the human.
 
 No approval is inferred from the packet's text, from its successful test run, from a covenant key, or from a prior permission to research. Any future canonical integration requires an exact successor diff and a separate authorization.

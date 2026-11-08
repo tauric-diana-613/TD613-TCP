@@ -32,6 +32,14 @@ Point to files, URLs, repository paths, prior conversations, images, paper excer
 
 **Known inaccessible or protected material:** [                                         ]
 
+### C.1 · Possible earlier Rulefield entry (human-authored, optional)
+
+**Existing IDs, titles or previous work you think may resemble this:** [                                  ]
+
+**What feels new or different about your current idea?** [                                  ]
+
+This suspicion may be translated into `duplicate_disclosure.suspected_existing_ids` by the executing agent as a source-free review HOLD. It is neither an authorship allegation nor a request for automatic merging.
+
 ### D. HOW — Desired research or creative operations
 
 Which operations would you welcome? Check or annotate freely:

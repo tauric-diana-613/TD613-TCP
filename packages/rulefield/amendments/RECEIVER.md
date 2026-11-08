@@ -132,3 +132,11 @@ An agent joining a new conversation should request or locate the \`packages/rule
 **Success = an insightful, falsifiable, source-grounded proposal with its negative outcomes and uncertainty still visible.** It does not require granting the proposal scientific authority.
 
 𝄐 Khona‌lit-po · Unmerged, observable, amendable ⟐
+
+## Prior-entry duplicate admission (new, source-free)
+
+A proposed Rulefield entry that repeats an existing rule, crossing or priority heading cannot pass as a new discovery. The receiver compares against the current 596 rules, 88 crossings, 70 operator priorities, and earlier proposals within the same packet. `EXPLICIT_ID_COLLISION` and `EXACT_EXISTING_ENTRY` / `EXACT_INTRA_PACKET` cause `HELD_EXISTING_ENTRY_DUPLICATE`. High lexical overlap or an operator/agent declared potential match causes `HELD_POSSIBLE_ENTRY_OVERLAP`.
+
+The receipt contains exact source IDs, matched passages, match method and the boundaries of similarity inference. The full human disclosure contains this information at all reading depths. Existing rule IDs in `anchors` are lawful references and do not trigger the new-entry gate. The proposed `duplicate_disclosure.suspected_existing_ids` field can preserve manually identified possible paraphrases; the detector does not certify the originality of any unflagged proposal.
+
+The human can reference the previous result, request a difference analysis, propose a source-bound revision, retain a distinguishable research branch, or decline. **HELD blocks staged synthesis and adoption, never free investigation or recording a failed assay.** Resolve with a new packet and new review/dossier; no string substitution or copied human authorization can bypass the HOLD.

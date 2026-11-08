@@ -47,3 +47,10 @@ A beautiful Markdown report with only 10 of 64 proposals fails. A JSON appendix 
 A Heavy reviewer should be able to regenerate the dossier from the exact packet and canonical registry; compare SHA256 hashes; verify every source and uncertainty claim; read all branches and assay results; and identify the point where future human approval is still needed. A different scientific reviewer may disagree with the theory without invalidating the historical record.
 
 **No mirrors at the kiki:** Human-visible ≠ Machine-internal; Complete-known disclosure ≠ Omniscience; Staged candidate ≠ Canonical integration.
+## Prior-entry duplicate admission — reversible HOLD
+
+The machine must compare all genuinely new statements and proposed IDs with the full current Rulefield corpus (rules, crossings, priority titles) and the current packet's earlier proposals. **Exact normalized repeats/ID collisions:** `HELD_EXISTING_ENTRY_DUPLICATE`. **Likely token overlaps or declared suspected prior IDs:** `HELD_POSSIBLE_ENTRY_OVERLAP`. Both are blocks against `REQUEST_STAGED_SYNTHESIS` until a distinct, versioned packet is reviewed anew. Reporting does not erase any candidate, determine plagiarism, or assert semantic equivalence.
+
+The full unabridged receipt and dossier must show matched IDs, source lanes, statement excerpts, compare method, score (if calculated), affected hypothesis, and operator options: **REFERENCE_EXISTING**, **REQUEST_DIFFERENCE_ANALYSIS**, **PROPOSE_AN_EXPLICIT_REVISION**, **RETAIN_SEPARATE_CANDIDATE_WITH_NEW_WARRANT**, **DECLINE**. A manual suspected match uses `duplicate_disclosure.suspected_existing_ids` and remains a review HOLD even when lexical overlap is low.
+
+**Human decision ≠ disambiguation theorem.** A selected existing anchor is allowed; an attempted new admission of the same claim is not automatically allowed. No-match cannot be used to certify novel intellectual property or originality.

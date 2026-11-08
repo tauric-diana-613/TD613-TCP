@@ -258,3 +258,10 @@ If a detail matters and is missing, request correction. The correct system can s
 **Coda:** The operator brings questions to the theatre. The engine can build a beautiful and rigorous opera. Neither the building nor its instruments may assume the performer's authority.
 
 𝌋 Filed · SAC[X6ZNK5NO51] · Khona‌lit-po · Human closure RESERVED.
+## 17 · When you or an agent accidentally re-enter an existing rule
+
+The full corpus is tested, not merely the current thread's memory. A new statement matching a registered rule or crossing, a reused proposed ID, or a repeated proposed statement in the same amendment packet enters `HELD_EXISTING_ENTRY_DUPLICATE`. Likely lexical overlap or a suspected match disclosed by the human or agent enters `HELD_POSSIBLE_ENTRY_OVERLAP`. The 70-position priority queue is also checked when a new priority heading is proposed.
+
+The machine's disclosure must identify the earlier entry, original wording and exact comparison method. Existing entries cited as *anchors* are permitted. A researcher may reference the earlier entry, commission a rigorous difference analysis, propose an explicitly versioned revision, preserve a demonstrably distinct hypothesis with its new warrant, or decline. The original source and both paths remain visible, and a synthetic software match is not a judgment of authorship.
+
+A HOLD is an *admission state*, not a prohibition on researching or discussing the idea. A high lexical score cannot prove conceptual sameness, and the absence of a match cannot prove novelty. To flag a possible conceptual recurrence the computer may miss, list its IDs in `duplicate_disclosure.suspected_existing_ids`. A held synthesis request cannot be approved merely by filling out a human decision; the agent must reconcile the difference into a fresh packet, then produce a new disclosure and request.
