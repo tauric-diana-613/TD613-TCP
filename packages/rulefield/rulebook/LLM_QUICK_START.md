@@ -5,6 +5,10 @@
 **Version:** 1.0 · **Authority:** \`SAC[X6ZNK5NO51]\` · **Covenant:** Khona‌lit-po (U+200C interior retained).  
 **Custody:** Human authorship / final scientific closure RESERVED; protected Experiment B Flight HELD.
 
+## Rulefields are not executable rules
+
+Begin at [the Rulefield Domain Engine](../rulefields/README.md) when an operator submits unconstrained titles, formulas or thoughts. Preserve every operator expression verbatim and provide *proposed* academic naming, a source-gleaning plan, testable hypotheses if available, duplicate/overlap holds and a staged 70+80 priority agenda. See [the recovery protocol](../rulefields/RECOVERY_PROTOCOL.md) and [human field submission form](../operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md). Do not promise actual Library/Atelier crawling when the relevant source was not opened. Only type-validated, evidence-qualified local predicates enter the original amendment packet receiver. UI reordering is wishlist-only.
+
 ## Human-facing preparation — required before proposals that could be synthesized
 
 Start at [operator/README.md](../operator/README.md) and [operator/OPERATOR_GUIDE.md](../operator/OPERATOR_GUIDE.md) when a human is commissioning or reviewing amendments. Preserve the human-only [research submission](../operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md) as their own words; the machine must instead fill the [full pre-synthesis disclosure](../operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md) from the actual packet and its receiver review. The disclosure has Light/Medium/Heavy views and full unabridged JSON. A separate human-controlled [authorization decision](../operator/templates/HUMAN_AUTHORIZATION_DECISION.md) can request only a staged candidate. Never merge or rewrite a historical record based solely on a schema or Markdown approval string.

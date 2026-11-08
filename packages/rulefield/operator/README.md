@@ -13,6 +13,10 @@ This directory is **the human-user entrypoint inside `packages/rulefield/`**. It
 - [`INTAKE_AND_SYNC.md`](INTAKE_AND_SYNC.md) — ZIP round-trip path: verify → quarantine → compare → draft amendments → disclose → human review; never automatic repository overwrite.
 - [`design/COMMISSION.json`](design/COMMISSION.json) — actual /dollhouse-design commission input. Its native receipt must be verified independently.
 
+### Submit research *rulefields*, not only fully specified rules
+
+Use [HUMAN_RULEFIELD_SUBMISSION_REQUEST.md](templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md) to send one word, a mathematical formula, a collection of interests or an unfinished essay. The agent preserves your original wording, proposes optional research-grade titles and source-retrieval plans, identifies existing rules without conflating them with the research field, and stages a reversible priority preview using [the engine](../rulefields/README.md). No research-topic title becomes an implemented scientific rule by naming alone. The requested scrolling/reorder interface remains a roadmap wish.
+
 ### Operator routes
 
 **Light** — read one-page disposition, counts, release boundary, top risks and decision request; the complete dossier remains attached and accessible.

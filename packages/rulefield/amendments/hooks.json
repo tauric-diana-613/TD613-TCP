@@ -23,7 +23,12 @@
     "operator_disclosure": "packages/rulefield/operator/disclosure.mjs",
     "operator_decision_schema": "packages/rulefield/operator/decision.schema.json",
     "handoff_intake": "scripts/rulefield-intake.py",
-    "prior_entry_collision_sieve": "packages/rulefield/amendments/duplicate_gate.mjs"
+    "prior_entry_collision_sieve": "packages/rulefield/amendments/duplicate_gate.mjs",
+    "rulefield_engine": "packages/rulefield/rulefields/engine.mjs",
+    "rulefield_source_seed": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+    "rulefield_human_submission": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+    "rulefield_ontology": "packages/rulefield/rulefields/schema.json",
+    "rulefield_priority_cli": "node scripts/rulefield-fields.mjs"
   },
   "stages": [
     {
@@ -300,5 +305,19 @@
     "automatic_bypass": false,
     "operator_disclosure_required": true,
     "human_revision_requires_new_packet": true
+  },
+  "rulefield_domain_intake": {
+    "status": "IMPLEMENTED_SOURCE_FREE_DOMAIN_STAGE",
+    "non_equivalence": "RULEFIELD_NOT_EQUIVALENT_TO_RULE",
+    "human_original_expressions": 80,
+    "historical_priority_positions": 70,
+    "priority_posture": "APPEND_ONLY_PROPOSAL_NO_CANONICAL_REORDER",
+    "discovery": "UNEXECUTED_SOURCE_GLEANING_PLAN_NOT_ACTUAL_ARCHIVE_SEARCH",
+    "proposed_academic_titles": "REVERSIBLE_AGENT_WORKING_LABELS",
+    "actual_rule_promotion": "SEPARATE_AMENDMENT_REVIEW_DISCLOSURE_HUMAN_APPROVAL",
+    "future_reorder_workbench": "ROADMAP_ONLY",
+    "operator_writes_preserved": true,
+    "auto_rerank": false,
+    "protected_experiment_b": "HELD"
   }
 }

@@ -54,8 +54,23 @@ jobs:
           node-version: '22'
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs
           python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Run typed rulefield agenda and staged priority permutation without visual UI
+        run: |
+          node scripts/rulefield-fields.mjs validate
+          node scripts/rulefield-fields.mjs stats
+          node scripts/rulefield-fields.mjs field RF-002 > /tmp/rulefield-RF-002.json
+          node scripts/rulefield-fields.mjs move RF-002 before Q05 > /tmp/rulefield-move-review.json
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('/tmp/rulefield-move-review.json','utf8'));if(x.canonical_queue_mutated!==false||x.historical_relative_order_preserved!==true||x.agenda.find(y=>y.id==='RF-002').rank!==5)process.exit(1);console.log('RULEFIELD_TYPED_QUEUE_WITNESSED')"
+          mkdir -p dist
+          node scripts/rulefield-fields.mjs queue-md > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
+          node scripts/rulefield-fields.mjs queue > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+      - name: Run native Dollhouse Design for the engine-only field commission
+        run: |
+          mkdir -p dist
+          node scripts/run-dollhouse-design.mjs --input packages/rulefield/rulefields/design/COMMISSION.json --output dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json --format human
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json','utf8'));if(x.output_contract.requested_deliverables!==1||x.governance.human_closure_required!==true)process.exit(1);console.log('DOLLHOUSE_ENGINE_DESIGN_PROCESS_WITNESSED',x.commission_id)"
       - name: Exercise complete human disclosure on an example source-free packet
         run: |
           node scripts/rulefield-amend.mjs init RF-AP-20261107-OPERATORCI
@@ -74,6 +89,9 @@ jobs:
           name: rulefield-operator-witness-${{ github.event.pull_request.head.sha }}
           path: |
             dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json
+            dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json
+            dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
+            dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
             packages/rulefield/amendments/outbox/*.disclosure.json
             packages/rulefield/amendments/outbox/*.disclosure.md
           if-no-files-found: warn

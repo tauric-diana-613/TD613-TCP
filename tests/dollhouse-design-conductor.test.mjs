@@ -582,3 +582,6 @@ await import('./rulefield-roadmap.test.mjs');
 await import('./rulefield-operator.test.mjs');
 // Existing-entry content collision guard, operator disclosure, and human decision.
 await import('./rulefield-duplicate-gate.test.mjs');
+
+// Rulefield domain ontology, stable 150-item agenda and source-free priority previews.
+await import('./rulefield-fields.test.mjs');

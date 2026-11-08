@@ -27,6 +27,8 @@ SUPPORT = (
     "tests/rulefield-duplicate-gate.test.mjs",
     "tests/test_rulefield_intake.py",
     "scripts/rulefield-operator.mjs",
+    "scripts/rulefield-fields.mjs",
+    "tests/rulefield-fields.test.mjs",
     "scripts/rulefield-intake.py",
     "scripts/build-rulefield-handoff.py",
 )
@@ -48,6 +50,10 @@ def main():
     paths = sorted(set(paths))
     expected = (
         "packages/rulefield/AGENTS.md",
+        "packages/rulefield/rulefields/engine.mjs",
+        "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+        "packages/rulefield/rulefields/design/COMMISSION.json",
+        "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
         "packages/rulefield/README.md",
         "packages/rulefield/ROADMAP.md",
         "packages/rulefield/data/rulefield.v1.json",

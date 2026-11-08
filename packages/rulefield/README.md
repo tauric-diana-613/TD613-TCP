@@ -6,6 +6,17 @@
 
 The old Wolframian rule index has become too complex for one increasing list. It intermingled the original 190 NKS records, later source-recovered propositions, design candidates, crossing hypotheses, execution receipts and the operator's changing research priorities. The Living Rulefield **replaces that structure without removing its ancestors**.
 
+## Rulefields (research domains) and local rules — separate types
+
+`RULEFIELD ≠ RULE`: The [source-free research-domain engine](rulefields/README.md) preserves 80 verbatim operator expressions as provisional rulefields, proposes 80 scholarly working labels and retrieval plans, and generates a **150-position staging preview** (70 original priorities unchanged, followed by 80 new proposed fields). It offers dry-run stable-ID priority permutations and Markdown/JSON exports, without a graphical interface or canonical mutation.
+
+    node scripts/rulefield-fields.mjs validate
+    node scripts/rulefield-fields.mjs queue-md
+    node scripts/rulefield-fields.mjs field RF-002
+    node scripts/rulefield-fields.mjs move RF-002 before Q05
+
+New [human-authored research field requests](operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md) can contain single words, mathematical formulas, long thoughts, unresolved subjects or contradictory ideas. An authorized agent uses [the source-gleaning protocol](rulefields/RECOVERY_PROTOCOL.md) to recover actual literature/source witnesses before creating any executable rule or scientific claim. The desired visual drag/reorder interface is [wishlist-only](ROADMAP.md); the running engine comes first.
+
 ## Human operator interface and authorization
 
 **Human researchers start in [operator/README.md](operator/README.md)**, not the machine registry. The [extensive operator guide](operator/OPERATOR_GUIDE.md), [eleven-act Antigravity activation](operator/ACTIVATION_PROMPT.md), and the [human-only research submission](operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md) accompany the source-free [full disclosure dossier](operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md). [Human authorization](operator/templates/HUMAN_AUTHORIZATION_DECISION.md) is an independent, content-bound later decision. The receiver writes one comprehensive dossier with Light / Medium / Heavy views and complete JSON annexes; its JSON is never an automatic signature or a canonical change. [Quarantined archive intake](operator/INTAKE_AND_SYNC.md) verifies returned ZIPs before proposing an amendment.
