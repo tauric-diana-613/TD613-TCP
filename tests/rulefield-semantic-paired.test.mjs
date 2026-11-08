@@ -161,3 +161,18 @@ test('R3 20 impossible calendar dates fail before any paired-outcome interpretat
  assert.equal(report.standing,'HELD_UNQUALIFIED_PAIRED_EPISODE');
  assert.ok(report.reasons.includes('INVALID_OR_RETROACTIVE_TRIAL_CLOCKS'));
 });
+
+test('R3 21 fourteen non-exclusive research views preserve original ID and no execution authority',()=>{
+ const r=buildSemanticReview();
+ const qualified=r.rows.filter(x=>x.additional_rulefield_view_proposed);
+ assert.equal(qualified.length,14);
+ for(const x of qualified){
+  assert.equal(x.role_bindings.length,2);
+  assert.equal(x.role_bindings[0].view_ref,'legacy_rule:'+x.id+'#role:'+x.proposed_primary_role.toLowerCase());
+  assert.equal(x.role_bindings[1].view_ref,'legacy_rule:'+x.id+'#role:rulefield');
+  assert.equal(x.role_bindings[1].role,'RULEFIELD');
+  assert.notEqual(x.role_bindings[0].context,x.role_bindings[1].context);
+  assert.ok(x.role_bindings.every(y=>y.executable_authority===false));
+ }
+ assert.equal(r.totals.nonexclusive_new_research_role_views,14);
+});
