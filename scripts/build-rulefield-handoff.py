@@ -33,6 +33,8 @@ SUPPORT = (
     "tests/rulefield-docket2.test.mjs",
     "scripts/rulefield-types.mjs",
     "tests/rulefield-types.test.mjs",
+    "tests/rulefield-tomography.test.mjs",
+    "scripts/rulefield-tomography.mjs",
     "tests/rulefield-docket.test.mjs",
     "tests/rulefield-fields.test.mjs",
     "scripts/rulefield-intake.py",
