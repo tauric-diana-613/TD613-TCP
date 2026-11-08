@@ -55,7 +55,14 @@ import {
   evaluateFourRemedyConditions,
   evaluateObserverRelativeChannels,
   evaluateReparativeInterventionEthics,
-  answerOperatorsQuestionOnRemedyLeakage
+  answerOperatorsQuestionOnRemedyLeakage,
+  evaluateAnticipatorySpeakerModel,
+  buildTwoIdenticalAdministrativeRecords,
+  evaluateInformationTheoreticParadox,
+  evaluateGraeberDotsonInterpretiveLabor,
+  simulateFeedbackRegimesTrial,
+  auditObserversBlindSpot,
+  answerOperatorsQuestionOnAnticipatoryDisappearance
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -96,6 +103,13 @@ Commands:
   observer-channels      Evaluate Observer-Relative Leakage Channels (Institution vs Public vs Author)
   reparative-ethics      Audit Reparative Intervention Ethics and speaker consent / unrequested stay
   stay-leakage-answer    Answer Operator's Question on how the stay testifies against its author
+  anticipatory-speaker   Evaluate Anticipatory Speaker Decision Model U(F=1) vs U(F=0)
+  identical-records      Audit Two Identical Administrative Records (World Alpha vs World Beta)
+  information-paradox    Audit Information-Theoretic Paradox I(Q; D)=0 under complete suppression
+  graeber-dotson         Display Graeber-Dotson Interpretive Labor Crosswalk & Nonparticipation Taxonomy
+  feedback-experiment    Simulate Feedback Regimes Trial (Regimes A, B, C) & Campbell-Goodhart-Lucas Law
+  observers-blindspot    Audit Observer's Blind Spot (Institutional Surface vs Ground Truth)
+  anticipatory-answer    Answer Operator's Question on anticipatory disappearance
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -323,6 +337,48 @@ async function main() {
 
   if (cmd === 'stay-leakage-answer') {
     const report = answerOperatorsQuestionOnRemedyLeakage();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'anticipatory-speaker') {
+    const report = evaluateAnticipatorySpeakerModel();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'identical-records') {
+    const report = buildTwoIdenticalAdministrativeRecords();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'information-paradox') {
+    const report = evaluateInformationTheoreticParadox();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'graeber-dotson') {
+    const report = evaluateGraeberDotsonInterpretiveLabor();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'feedback-experiment') {
+    const report = simulateFeedbackRegimesTrial();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'observers-blindspot') {
+    const report = auditObserversBlindSpot();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'anticipatory-answer') {
+    const report = answerOperatorsQuestionOnAnticipatoryDisappearance();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }

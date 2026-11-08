@@ -1438,3 +1438,24 @@ export {
   evaluateReparativeInterventionEthics,
   answerOperatorsQuestionOnRemedyLeakage
 } from './fifth_order_decision_channel.mjs';
+
+// ============================================================================
+// 20. SIXTH-ORDER ANTICIPATORY TESTIMONY EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  SIXTH_ORDER_COMMISSION_SCHEMA,
+  ANTICIPATORY_SPEAKER_SCHEMA,
+  ADMINISTRATIVE_EQUIVALENCE_SCHEMA,
+  INFORMATION_PARADOX_SCHEMA,
+  GRAEBER_DOTSON_CROSSWALK_SCHEMA,
+  FEEDBACK_REGIMES_SCHEMA,
+  OBSERVERS_BLIND_SPOT_SCHEMA,
+  evaluateAnticipatorySpeakerModel,
+  buildTwoIdenticalAdministrativeRecords,
+  evaluateInformationTheoreticParadox,
+  evaluateGraeberDotsonInterpretiveLabor,
+  simulateFeedbackRegimesTrial,
+  auditObserversBlindSpot,
+  answerOperatorsQuestionOnAnticipatoryDisappearance
+} from './sixth_order_anticipatory_testimony.mjs';
