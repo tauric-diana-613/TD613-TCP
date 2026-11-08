@@ -71,7 +71,7 @@ test('TYPES 10 field as rule is explicitly held even with apparent child metadat
  const x=proposedRuleGate({kind:'PROPOSE_RULE',object_type:'RULEFIELD',source_rulefield_id:'RF-060',
  formal_rule:{state_space:'binary grid',guard:'every tick',local_transition:'B3/S23',observer:'synthetic detector'}});
  assert.equal(x.status,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
- assert.ok(x.issues.includes('RULEFIELD_AS_RULE_TYPE_COLLAPSE'));
+ assert.ok(x.issues.includes('MISSING_EXECUTION_ROLE_FOR_LOCAL_RULE'));
 });
 test('TYPES 11 field-derived child requires a formal rule contract',()=>{
  const x=proposedRuleGate({kind:'PROPOSE_RULE',source_rulefield_id:'RF-060'});
