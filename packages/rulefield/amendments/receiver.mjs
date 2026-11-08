@@ -11,6 +11,7 @@ import {fileURLToPath} from 'node:url';
 import {readRulefield,validateRulefield} from '../rulefield.mjs';
 import {enumerate,criticalPairs,finiteCA} from '../lab/multiway_lab.mjs';
 import {buildOperatorDisclosure,renderOperatorDisclosure} from '../operator/disclosure.mjs';
+import {detectPriorEntryCollisions} from './duplicate_gate.mjs';
 
 export const PACKET_SCHEMA='td613.rulefield.amendment-packet/v1';
 export const REVIEW_SCHEMA='td613.rulefield.amendment-review/v1';
@@ -139,6 +140,8 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
  const knownCrossings=new Set(index.crossings.map(x=>x.id));
  const knownRanks=new Set(index.priority_queue.map(x=>x.rank));
  const proposalIds=new Set(),staged=[],issues=[];
+ const duplicateChecks=detectPriorEntryCollisions(packet.proposals,index);
+ const dupById=new Map(duplicateChecks.map(x=>[x.proposal,x]));
  for(const item of packet.proposals){
   requireOk(isObj(item)&&string(item.id)&&/^[A-Z][A-Z0-9_-]{1,39}$/.test(item.id),'BAD_PROPOSAL_ID');
   requireOk(!proposalIds.has(item.id),'DUPLICATE_PROPOSAL_ID');proposalIds.add(item.id);
@@ -163,6 +166,10 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
   if(item.uncertainty?.claim_ceiling==='EMPIRICALLY_PROVEN'||item.uncertainty?.claim_ceiling==='SCIENTIFIC_LAW')deficiencies.push('CLAIM_PROMOTION_REQUIRES_INDEPENDENT_WITNESS');
   if(unresolved.length)issues.push({proposal:item.id,kind:'UNRESOLVED_REFERENCE',items:unresolved});
   if(deficiencies.length)issues.push({proposal:item.id,kind:'INCOMPLETE_RESEARCH_SPECIFICATION',items:deficiencies});
+  const duplicates=dupById.get(item.id);
+  if(duplicates?.matches.length)issues.push({proposal:item.id,kind:duplicates.status==='HELD_EXISTING_ENTRY_DUPLICATE'
+   ?'EXISTING_RULEFIELD_ENTRY_DUPLICATE':'POSSIBLE_RULEFIELD_ENTRY_OVERLAP',items:duplicates.matches,
+   operator_resolution:'Review the prior entry. Reuse it, distinguish an extension, or propose an explicitly anchored revision with a fresh dossier. No direct adoption.'});
   const readonlyAnchors=[...new Set(anchors.rules)].sort();
   const branchKey=packet.packet_id+':'+item.id;
   staged.push({
@@ -180,13 +187,18 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
    ],
    controls:{falsifier:controls.falsifier||'UNSPECIFIED',competent_null:controls.competent_null||'UNSPECIFIED',negative_control:controls.negative_control||'UNSPECIFIED'},
    evidence:{...evidence,scientific_credit:0,external_origin_confirmed:false},
-   diagnostic:{unresolved_references:unresolved,deficiencies,requires_human_scientific_closure:true},
-   scientific_state:'STAGED_RESEARCH_PROPOSAL_ONLY',
+   diagnostic:{unresolved_references:unresolved,deficiencies,duplicates,requires_human_scientific_closure:true},
+   scientific_state:duplicates?.status!=='NO_DUPLICATE_FOUND'?duplicates.status:'STAGED_RESEARCH_PROPOSAL_ONLY',
    never_merge_contradictions_automatically:true
   });
  }
  return {packet_id:packet.packet_id,packet_schema:PACKET_SCHEMA,baseline_matches:matches,
-  status:!matches?'STALE_BASELINE_HELD':issues.length?'HELD_REVIEW_GAPS':'STAGED_FOR_REVIEW',
+  status:!matches?'STALE_BASELINE_HELD':duplicateChecks.some(x=>x.status==='HELD_EXISTING_ENTRY_DUPLICATE')
+   ?'HELD_EXISTING_ENTRY_DUPLICATE':duplicateChecks.some(x=>x.status==='HELD_POSSIBLE_ENTRY_OVERLAP')
+   ?'HELD_POSSIBLE_ENTRY_OVERLAP':issues.length?'HELD_REVIEW_GAPS':'STAGED_FOR_REVIEW',
+  duplicate_gate:{status:duplicateChecks.some(x=>x.matches.length)?'HELD_REVIEW_REQUIRED':'NO_COLLISION_DETECTED',
+   checks:duplicateChecks, automatic_resolution:false, corpus_coverage:'EXACT_AND_LEXICAL_RULES_CROSSINGS_PRIORITY_AND_SAME_PACKET',
+   semantic_equivalence_proven:false},
   issues,proposals:staged,proposal_count:staged.length,release_authority:false,scientific_credit:0};
 }
 export function reviewPacket(packet,index=getIndex(),opts={}){

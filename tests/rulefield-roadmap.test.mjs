@@ -32,11 +32,13 @@ test('RULEFIELD-ROADMAP 04: source locator gives usable retrieval surfaces but n
  assert.equal(locator.required_packet_fields.includes('proposals[].controls.falsifier'),true);
 });
 test('RULEFIELD-ROADMAP 05: bounded scientific hook stage and no automatic adoption',()=>{
- assert.equal(hooks.stages.length,12);
- assert.deepEqual(hooks.stages.map(x=>x.stage),Array.from({length:12},(_,i)=>i));
- assert.equal(hooks.stages[4].hook,'on_finite_experiment');
- assert.equal(hooks.stages[9].hook,'on_pre_synthesis_full_disclosure');
- assert.equal(hooks.stages[10].hook,'on_human_decision_request');
+ assert.equal(hooks.stages.length,13);
+ assert.deepEqual(hooks.stages.map(x=>x.stage),Array.from({length:13},(_,i)=>i));
+ assert.equal(hooks.stages[5].hook,'on_finite_experiment');
+ assert.equal(hooks.stages[10].hook,'on_pre_synthesis_full_disclosure');
+ assert.equal(hooks.stages[11].hook,'on_human_decision_request');
+ assert.equal(hooks.stages[3].hook,'on_prior_entry_duplicate_admission');
+ assert.equal(hooks.duplicate_hold_policy.automatic_bypass,false);
  assert.equal(hooks.apply_mode,'REVIEW_FIRST_NO_AUTOMUTATION');
  assert.equal(hooks.continuous_behavior.automatic_watching_enabled,false);
 });

@@ -9,7 +9,6 @@ export function inspectHumanDecision(candidate,dossier){
  const issues=[];
  if(!validateDisclosure(dossier))issues.push('INVALID_DOSSIER_BINDING');
  if(dossier && dossier.completeness?.all_packet_proposals_unique===false)issues.push('DUPLICATE_PROPOSAL_IDS');
- if(dossier && dossier.receiver_disposition!=='STAGED_FOR_REVIEW')issues.push('HELD_OR_UNQUALIFIED_REVIEW');
  if(!candidate||typeof candidate!=='object')issues.push('DECISION_MISSING');
  if(issues.length)return {status:'HELD',issues,action_executed:false,canonical_changed:false};
  const d=candidate;
@@ -21,6 +20,7 @@ export function inspectHumanDecision(candidate,dossier){
  const chosen=d.selected_proposal_ids;
  if(!Array.isArray(chosen)||new Set(chosen).size!==chosen.length||chosen.some(id=>!dossier.proposal_ids.includes(id)))issues.push('SELECTED_PROPOSAL_IDS_INVALID');
  if(d.decision==='REQUEST_STAGED_SYNTHESIS'){
+  if(dossier.receiver_disposition!=='STAGED_FOR_REVIEW')issues.push('HELD_OR_UNQUALIFIED_REVIEW');
   if(!chosen?.length)issues.push('NO_PROPOSALS_SELECTED');
   if(typeof d.human_statement!=='string'||d.human_statement.trim().length<30)issues.push('HUMAN_INSTRUCTION_NOT_SPECIFIED');
   if(d.scope!=='STAGED_CANDIDATE_ONLY')issues.push('SCOPE_EXCEEDS_STAGING');

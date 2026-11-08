@@ -22,7 +22,8 @@
     "human_submission": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
     "operator_disclosure": "packages/rulefield/operator/disclosure.mjs",
     "operator_decision_schema": "packages/rulefield/operator/decision.schema.json",
-    "handoff_intake": "scripts/rulefield-intake.py"
+    "handoff_intake": "scripts/rulefield-intake.py",
+    "prior_entry_collision_sieve": "packages/rulefield/amendments/duplicate_gate.mjs"
   },
   "stages": [
     {
@@ -68,6 +69,23 @@
     },
     {
       "stage": 3,
+      "hook": "on_prior_entry_duplicate_admission",
+      "owner": "RULEFIELD_RECEIVER_AND_OPERATOR",
+      "reads": [
+        "full existing Rulefield rules, crossings and queue labels",
+        "proposed new-entry assertions and candidate IDs",
+        "earlier proposals in current packet",
+        "declared suspected_existing_ids"
+      ],
+      "writes": [
+        "HELD_EXISTING_ENTRY_DUPLICATE or HELD_POSSIBLE_ENTRY_OVERLAP",
+        "matched IDs, source lanes and match methods in review receipt",
+        "full operator disclosure, no silent deletion"
+      ],
+      "rule": "Fail closed for exact prior entries/ID collisions and request review for lexical or declared possible overlap. Referencing an existing anchor is permitted. Human choice requires a new versioned packet, never automatic promotion or erasure."
+    },
+    {
+      "stage": 4,
       "hook": "on_rewrite_staging",
       "owner": "NKS_GARDENER",
       "reads": [
@@ -83,7 +101,7 @@
       "rule": "Enumerate alternatives without treating generated future states as executed observations."
     },
     {
-      "stage": 4,
+      "stage": 5,
       "hook": "on_finite_experiment",
       "owner": "RULEFIELD_NKS_LAB",
       "reads": [
@@ -100,7 +118,7 @@
       "rule": "Dispatch only FINITE_STRING_MULTIWAY, FINITE_CRITICAL_PAIRS and ELEMENTARY_CA with explicit limits. No arbitrary packet code, no Wolfram kernel claim, no automatic Rulefield mutation."
     },
     {
-      "stage": 5,
+      "stage": 6,
       "hook": "on_counterfactual_branch",
       "owner": "DOLLHOUSE_DESIGN",
       "reads": [
@@ -114,7 +132,7 @@
       "rule": "Allow counterexamples, divergence, non-joinable histories, and NO_NEW_RULE_WARRANTED."
     },
     {
-      "stage": 6,
+      "stage": 7,
       "hook": "on_assay_requirement",
       "owner": "DOLLHOUSE_AUDIT",
       "reads": [
@@ -129,7 +147,7 @@
       "rule": "Audit and design receipts have separate authorities. Do not claim native execution that did not occur."
     },
     {
-      "stage": 7,
+      "stage": 8,
       "hook": "on_observer_projection",
       "owner": "APERTURE_AND_ATLAS",
       "reads": [
@@ -143,7 +161,7 @@
       "rule": "Computational invariance and reader effects are different testable coordinates. Observer absence stays unobserved."
     },
     {
-      "stage": 8,
+      "stage": 9,
       "hook": "on_review_receipt",
       "owner": "RECEIVER",
       "reads": [
@@ -158,7 +176,7 @@
       "rule": "Deterministic and idempotent output; never canonical registry mutation."
     },
     {
-      "stage": 9,
+      "stage": 10,
       "hook": "on_pre_synthesis_full_disclosure",
       "owner": "RULEFIELD_OPERATOR_INTERFACE",
       "reads": [
@@ -174,7 +192,7 @@
       "rule": "Complete known-information disclosure of every proposal and review; entire packet and experiment appendix retained; unknown integration diffs remain explicitly unknown; no approval inferred."
     },
     {
-      "stage": 10,
+      "stage": 11,
       "hook": "on_human_decision_request",
       "owner": "HUMAN_OPERATOR",
       "reads": [
@@ -189,7 +207,7 @@
       "rule": "No agent may self-authorize. A typed form lacks identity authentication. Human decision binds exact packet/dossier SHA and can authorize staged candidate only; not canonical integration."
     },
     {
-      "stage": 11,
+      "stage": 12,
       "hook": "on_operator_promotion_request",
       "owner": "HUMAN",
       "reads": [
@@ -273,5 +291,14 @@
     "canonical_adoption_separately_gated": true,
     "auto_authorization": false,
     "physical_human_identity_proved_by_text": false
+  },
+  "duplicate_hold_policy": {
+    "exact": "HELD_EXISTING_ENTRY_DUPLICATE",
+    "potential": "HELD_POSSIBLE_ENTRY_OVERLAP",
+    "detector_scope": "CURRENT_596_RULES_88_CROSSINGS_70_QUEUE_POSITIONS_AND_SAME_PACKET",
+    "semantic_identity_proved": false,
+    "automatic_bypass": false,
+    "operator_disclosure_required": true,
+    "human_revision_requires_new_packet": true
   }
 }
