@@ -636,6 +636,9 @@ function parseArgs(args) {
     derivativesManifest: null,
     strictTreatment: false,
     resume: false,
+    resumableConfig: null,
+    resumableRoots: null,
+    resumableCheckpointKeyFile: null,
     help: false
   };
 
@@ -649,6 +652,12 @@ function parseArgs(args) {
       options.strictTreatment = true;
     } else if (arg === '--resume') {
       options.resume = true;
+    } else if (arg === '--resumable-config' && args[i + 1]) {
+      options.resumableConfig = args[++i];
+    } else if (arg === '--resumable-roots' && args[i + 1]) {
+      options.resumableRoots = args[++i];
+    } else if (arg === '--resumable-checkpoint-key-file' && args[i + 1]) {
+      options.resumableCheckpointKeyFile = args[++i];
     } else if (arg === '--backend' && args[i + 1]) {
       options.backend = args[++i].toLowerCase();
     } else if (arg === '--archive-path' && args[i + 1]) {
@@ -706,7 +715,10 @@ Usage:
 
 Options:
   --dry-run                 Run source-free verification with synthetic fixtures (default in preflight)
-  --backend <name>          Execution backend: native (Antigravity In-App Agent, Primary) | rest (Gemini API, Optional) (default: native)
+  --backend <name>          native (Antigravity, default) | rest | codex-resumable (separate signed configuration)
+  --resumable-config <file> Private frozen execution configuration for codex-resumable
+  --resumable-roots <file>  Externally provisioned operator trust roots
+  --resumable-checkpoint-key-file <file> Externally provisioned private checkpoint key
   --archive-path <path>     Designated absolute path to physical ZIP archive (requires operator grant)
   --arm <name>              Arm to execute: ALL | ARM_0_TRANSPORT | ARM_1_ARCHIVAL | ARM_2A_MODULAR | ARM_2B_MATCHED_UNION (default: ALL)
   --permutation <name>      Exposure sequence: CHRONOLOGICAL | REVERSE_CHRONOLOGICAL | TOPICAL (default: CHRONOLOGICAL)
@@ -935,6 +947,19 @@ async function main() {
   if (options.help) {
     printHelp();
     process.exit(0);
+  }
+
+  if (options.backend === 'codex-resumable') {
+    if (options.dryRun) throw new Error('USE_SOURCE_FREE_RESUMABLE_TESTS_NOT_PROTECTED_RUNNER');
+    const { runProtectedConfiguration } = await import('./experiment-b-resumable/runner.mjs');
+    try {
+      const result = await runProtectedConfiguration(options.resumableConfig, options.resumableRoots, options.resumableCheckpointKeyFile);
+      console.log(JSON.stringify(result));
+    } catch {
+      console.error('RESUMABLE_FLIGHT_HELD_SEE_PRIVATE_AUTHENTICATED_JOURNAL');
+      process.exitCode = 1;
+    }
+    return;
   }
 
   // 1. Live Flight Custody Verification
