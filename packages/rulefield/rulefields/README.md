@@ -1,3 +1,26 @@
+## 𝌋 Residual 559-classification + Temporal Guardian II (provisional)
+
+This successor is **engineering triage, not scientific adjudication of 559 rules**. The pre-existing 37 explicit source assessments are retained; every remaining historical ID is represented once in a source-linked typed proposal with its exact statement, inherited kind, proposed primary role, alternative possible roles, lexical/structured inference basis, authority holds and evidence ceiling. An explicitly curator-read illustrative subset is distinguished from deterministic linguistic triage. A role classified RULE retains **no executable permission** until a separate formal contract and human review.
+
+Read [residual_triage.mjs](residual_triage.mjs) and [evidence_priority.mjs](evidence_priority.mjs). The latter first checks event→record→source availability→observer as-of chronology, then compares declared uncertainty intervals **only under the same comparison frame and protocol digest**. If evidence is unavailable, uncertain, out-of-domain, future-dated or incomparable, the prior provisional order remains. Six prerequisite fields RF-081–086 must always precede RF-079. The historical 70 ranks are frozen. An evidence receipt is an input assertion, not independent provenance verification; all priority metrics are **explicit proposed policy scores**, never proof of scientific significance.
+
+Run from a full checkout or extracted Antigravity handoff root:
+
+~~~bash
+node scripts/rulefield-tomography.mjs triage-summary
+node scripts/rulefield-tomography.mjs triage I-010
+node scripts/rulefield-tomography.mjs triage Q21-R01
+mkdir -p dist && cd dist
+node ../scripts/rulefield-tomography.mjs triage-export RULEFIELD_559_RESIDUAL_TRIAGE_ROD0003.json
+cd ..
+node scripts/rulefield-tomography.mjs rank-empty 2026-11-08T12:00:00Z
+node --test tests/rulefield-tomography.test.mjs
+~~~
+
+For source-declared comparison fixtures, use a local JSON mapping of RF IDs to entries with \`evidence_id\`, \`source_sha256\`, \`comparison_frame\`, \`measurement_protocol_sha256\`, \`evidence_kind\`, four times (\`event_time\`, \`recorded_at\`, \`available_at\`, \`verification_time\`), and \`metric:{discrimination_bits_bounds:[lower,upper],assay_cost_units:number,falsification_readiness:number}\`. See [tomography tests](../../../tests/rulefield-tomography.test.mjs) for finite controls. Source-less receipt maps cannot make an operator-approved rank.
+
+**Remaining work:** Expert semantic adjudication of the unqualified machine-triaged records, formal executable-rule derivations, native independent-source comparison/measurement acquisition, and operator decisions. The complete original 596 object registry and 86-field proposal remain byte-preserved; OD-02 HELD, protected Flight HELD, human closure RESERVED.
+
 ## Source-complete revised human docket
 
 `node scripts/rulefield-docket2.mjs validate|render|chat|export` runs the revised 86-field source-complete dossier. It includes the six thermodynamic prerequisites, Temporal Guardian reviewed ordering, original 70 positions, role multiplicity, all audited type corrections, derived candidate children and explicit OD-02 HOLD. Historic source filenames and IDs remain untouched. A rule can be examined as a rulefield; the research role does not execute its rule or grant source custody.
