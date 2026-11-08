@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets
+ok 1 - paired quota pause survives close/reopen, accepted answers never rerun, episode accounting never resets
+  ---
+  duration_ms: 127.8106
+  type: 'test'
+  ...
+# Subtest: complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion
+ok 2 - complete three-document bookkeeping schedule, exact local replay, no future/raw chamber leakage, idempotent completion
+  ---
+  duration_ms: 470.6269
+  type: 'test'
+  ...
+# Subtest: captured answer is accepted after interruption without transport execution
+ok 3 - captured answer is accepted after interruption without transport execution
+  ---
+  duration_ms: 76.9503
+  type: 'test'
+  ...
+# Subtest: actual local process death after durable intent leaves uncertain unit, never retries
+ok 4 - actual local process death after durable intent leaves uncertain unit, never retries
+  ---
+  duration_ms: 240.5983
+  type: 'test'
+  ...
+# Subtest: writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection
+ok 5 - writer exclusion, key authentication, byte tamper, and trusted anchor rollback detection
+  ---
+  duration_ms: 102.583
+  type: 'test'
+  ...
+# Subtest: operator pause, source drift, model drift, and context limit preserve completed progress
+ok 6 - operator pause, source drift, model drift, and context limit preserve completed progress
+  ---
+  duration_ms: 53.2484
+  type: 'test'
+  ...
+# Subtest: unknown accounting remains unknown and reserved; spending stop is not scientific invalidation
+ok 7 - unknown accounting remains unknown and reserved; spending stop is not scientific invalidation
+  ---
+  duration_ms: 50.5693
+  type: 'test'
+  ...
+# Subtest: definitively rejected no-execution attempt can resume within frozen retry authority
+ok 8 - definitively rejected no-execution attempt can resume within frozen retry authority
+  ---
+  duration_ms: 337.798
+  type: 'test'
+  ...
+# Subtest: mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun
+ok 9 - mirror is derived/idempotent; loss of mirror cannot cause accepted inference rerun
+  ---
+  duration_ms: 345.0527
+  type: 'test'
+  ...
+# Subtest: protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed
+ok 10 - protected WeakMap capability cannot be minted by copied fixture or grant labels; live entry is fail-closed
+  ---
+  duration_ms: 2.1736
+  type: 'test'
+  ...
+# Subtest: native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools
+ok 11 - native utility wiring uses deterministic injected spawn, retains full JSONL and flags, flags unexpected tools
+  ---
+  duration_ms: 1.4453
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2090.9754
+
