@@ -117,3 +117,11 @@ test('TOM-14 future scenario cannot change present epistemic state',()=>{
 test('TOM-15 unknown field receipts cannot contaminate candidate priority map',()=>{
  assert.throws(()=>evidenceConditionedPriority({as_of:ASOF,receipts:{'RF-999':receipt(1,2)}}),/UNKNOWN_RECEIPT_RULEFIELD/);
 });
+
+test('TOM-16 a missing middle-field witness prevents leapfrogging',()=>{
+ const p=evidenceConditionedPriority({as_of:ASOF,receipts:{
+  'RF-001':receipt(.1,.2),'RF-003':receipt(4,5)}});
+ assert.equal(p.counts.rankable,2);
+ assert.equal(p.counts.moved,0);
+ assert.deepEqual(p.proposed_field_order.slice(0,3),['RF-001','RF-002','RF-003']);
+});
