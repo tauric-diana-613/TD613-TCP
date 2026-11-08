@@ -202,6 +202,10 @@ Let some conjectures be false. Do not require every poetic connection to become 
 
 ---
 
+### Mandatory operator-facing docket — substantive in-message review
+
+After the amendment packet and its complete Pre-Synthesis Disclosure, generate `RF-OD-XXXX` using `node scripts/rulefield-docket.mjs export` for research-field submissions or a schema-compatible source-bound review for other amendments. Show **the actual details and decision workstreams in the conversation**, using grouped, navigable in-chat items when available. Include complete original expressions and candidate labels in a verified linked Markdown artifact. Respect [frozen nomenclature v1](contracts/NOMENCLATURE_V1.md); never ask the user to approve an unseen file merely by describing it as complete. A clicked button sends a new human message, never GitHub automation.
+
 ## ACT VIII · Produce typed Rulefield amendments and full operator disclosure
 
 Use `td613.rulefield.amendment-packet/v1` and the existing Kiki Receiver; do not create a rival proposal schema. Preserve rule/crossing anchors, source revision, local rewrite, projection, hypothesis, predicted consequence, explicit falsifier, information-matched null, negative control, evidence class, execution receipt and unknowns.

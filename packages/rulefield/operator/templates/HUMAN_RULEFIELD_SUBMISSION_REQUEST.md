@@ -1,3 +1,7 @@
+# Rulefield v1 naming: Submission Request (RSR) → Operator Docket (ROD)
+
+This is the human-only RSR input. The machine subsequently returns a full ROD **in the chat**, with the original words preserved and an actual review decision request. Refer to `RF-OD-XXXX`, not a presumed automatic authorization or completed upload.
+
 # 𝌋 Human Rulefield Submission Request
 ## HUMAN-AUTHORED ONLY · One word, mathematical statement, topic collection, or stream of thought
 ### Rulefield research request ≠ verified computational rule

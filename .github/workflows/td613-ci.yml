@@ -54,7 +54,7 @@ jobs:
           node-version: '22'
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs
           python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
       - name: Run typed rulefield agenda and staged priority permutation without visual UI
         run: |
@@ -66,6 +66,11 @@ jobs:
           mkdir -p dist
           node scripts/rulefield-fields.mjs queue-md > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
           node scripts/rulefield-fields.mjs queue > dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+      - name: Generate full source-bound human operator docket
+        run: |
+          node scripts/rulefield-docket.mjs validate
+          node scripts/rulefield-docket.mjs export dist
+          node -e "const fs=require('fs');const f=fs.readdirSync('dist').find(x=>x.endsWith('.docket.json'));if(!f)process.exit(1);const d=JSON.parse(fs.readFileSync('dist/'+f,'utf8'));if(d.fields.length!==80||d.inherited_priorities.length!==70||d.authority.canonical_registry_mutated!==false)process.exit(1);console.log('FULL_IN_CHAT_OPERATOR_DOCKET_VERIFIED',d.id,d.docket_sha256)"
       - name: Run native Dollhouse Design for the engine-only field commission
         run: |
           mkdir -p dist
@@ -92,6 +97,9 @@ jobs:
             dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json
             dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
             dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+            dist/*.docket.json
+            dist/*.docket.md
+            dist/*.chat.json
             packages/rulefield/amendments/outbox/*.disclosure.json
             packages/rulefield/amendments/outbox/*.disclosure.md
           if-no-files-found: warn

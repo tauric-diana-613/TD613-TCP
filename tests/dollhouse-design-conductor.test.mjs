@@ -585,3 +585,6 @@ await import('./rulefield-duplicate-gate.test.mjs');
 
 // Rulefield domain ontology, stable 150-item agenda and source-free priority previews.
 await import('./rulefield-fields.test.mjs');
+
+// Frozen naming and lossless conversation-first operator docket.
+await import('./rulefield-docket.test.mjs');

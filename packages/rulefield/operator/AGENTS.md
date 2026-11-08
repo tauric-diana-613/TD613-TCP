@@ -1,3 +1,7 @@
+# 𝌋 RULEFIELD V1 · CONVERSATION-FIRST DECISION REQUIREMENT
+
+No assistant may ask for operator approval through a generic summary and a ZIP alone. Generate a content-bound `Rulefield Operator Docket` from the actual source and show the proposed changes, examples, unresolved ambiguities, exact known evidence, and review choices **in the chat**. See [IN_CHAT_DECISION_PROTOCOL.md](IN_CHAT_DECISION_PROTOCOL.md) and [contracts/NOMENCLATURE_V1.md](contracts/NOMENCLATURE_V1.md). The user's answer is an independent decision turn, never a signature fabricated by the assistant.
+
 # 𝌋 Rulefield Operator Interface — scoped agent contract
 
 **This is the human-facing constitutional entrypoint.** Read `README.md`, `OPERATOR_GUIDE.md`, `templates/HUMAN_RESEARCH_SUBMISSION_FORM.md`, and `templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md` BEFORE presenting a Rulefield change for operator adoption.

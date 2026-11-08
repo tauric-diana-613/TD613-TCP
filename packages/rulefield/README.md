@@ -6,6 +6,19 @@
 
 The old Wolframian rule index has become too complex for one increasing list. It intermingled the original 190 NKS records, later source-recovered propositions, design candidates, crossing hypotheses, execution receipts and the operator's changing research priorities. The Living Rulefield **replaces that structure without removing its ancestors**.
 
+## Conversation-first Rulefield Operator Dockets
+
+**The human decision is presented in the chat, not hidden behind a ZIP.** This package now implements the [frozen nomenclature v1](operator/contracts/NOMENCLATURE_V1.md) and [Rulefield Operator Docket](operator/IN_CHAT_DECISION_PROTOCOL.md) (ROD), produced from the *actual* 70 inherited topics and 80 operator-supplied candidate fields by [operator/docket.mjs](operator/docket.mjs).
+
+From repository root:
+
+    node scripts/rulefield-docket.mjs validate
+    node scripts/rulefield-docket.mjs render
+    node scripts/rulefield-docket.mjs chat
+    node scripts/rulefield-docket.mjs export
+
+Each exported docket includes `.docket.md` (all 80 original expressions, 80 academic working labels, 70 historical ranks), `.docket.json` (complete machine record), and `.chat.json` (eight navigable 10-item groups and digest-bound human decision prompts). The assistant must reproduce the *substantive* proposed changes in-message and provide useful controls or a textual decision fallback; a link alone cannot substitute. The user action creates a new turn; it cannot merge GitHub code or approve unknown future changes. **The independent graphical workbench remains wishlist-only.**
+
 ## Rulefields (research domains) and local rules — separate types
 
 `RULEFIELD ≠ RULE`: The [source-free research-domain engine](rulefields/README.md) preserves 80 verbatim operator expressions as provisional rulefields, proposes 80 scholarly working labels and retrieval plans, and generates a **150-position staging preview** (70 original priorities unchanged, followed by 80 new proposed fields). It offers dry-run stable-ID priority permutations and Markdown/JSON exports, without a graphical interface or canonical mutation.

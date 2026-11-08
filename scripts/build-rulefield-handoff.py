@@ -28,6 +28,8 @@ SUPPORT = (
     "tests/test_rulefield_intake.py",
     "scripts/rulefield-operator.mjs",
     "scripts/rulefield-fields.mjs",
+    "scripts/rulefield-docket.mjs",
+    "tests/rulefield-docket.test.mjs",
     "tests/rulefield-fields.test.mjs",
     "scripts/rulefield-intake.py",
     "scripts/build-rulefield-handoff.py",
@@ -50,6 +52,10 @@ def main():
     paths = sorted(set(paths))
     expected = (
         "packages/rulefield/AGENTS.md",
+        "packages/rulefield/operator/docket.mjs",
+        "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+        "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+        "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
         "packages/rulefield/rulefields/engine.mjs",
         "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
         "packages/rulefield/rulefields/design/COMMISSION.json",

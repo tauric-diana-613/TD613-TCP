@@ -9,6 +9,10 @@
 
 ---
 
+## Before the manual: your decision stays here
+
+For all consequential changes, the agent must bring you a **Rulefield Operator Docket (ROD)** in the actual conversation. It will display what changed, candidate IDs, your original wording alongside its academic relabeling, uncertainties, tests, source revision and precisely which action awaits your decision. It may use native in-chat tabs, group navigation, selection and clickable choice controls when supported; otherwise it gives short reply choices. The **complete** submitted source, including all 80 current research fields, will be attached as verified Markdown and JSON. Neither the document nor the control is a signature, and the operator retains the right to request amendments without approving the rest. Terminology is frozen in [NOMENCLATURE_V1.md](contracts/NOMENCLATURE_V1.md).
+
 ## 0 · What is this thing? Why should a human care?
 
 Rulefield is a structured, versioned research instrument for exploring the consequences of local computational rules, source-and-witness relations, alternative histories, observer-specific information, theoretical translations and possible emergent behavior. It is *not* a magical source of scientific authority. The corpus can host mutually incompatible conjectures. Its value depends on whether an experiment can discriminate among them and whether the reader can recover how each candidate came to be proposed.

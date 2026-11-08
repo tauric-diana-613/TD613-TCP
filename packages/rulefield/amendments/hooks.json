@@ -28,7 +28,12 @@
     "rulefield_source_seed": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
     "rulefield_human_submission": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
     "rulefield_ontology": "packages/rulefield/rulefields/schema.json",
-    "rulefield_priority_cli": "node scripts/rulefield-fields.mjs"
+    "rulefield_priority_cli": "node scripts/rulefield-fields.mjs",
+    "operator_docket_engine": "packages/rulefield/operator/docket.mjs",
+    "operator_docket_cli": "node scripts/rulefield-docket.mjs",
+    "operator_docket_template": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+    "operator_in_chat_protocol": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+    "nomenclature_v1": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json"
   },
   "stages": [
     {
@@ -192,9 +197,10 @@
       ],
       "writes": [
         "content-bound .disclosure.json",
-        ".disclosure.md with Light, Medium and Heavy views"
+        ".disclosure.md with Light, Medium and Heavy views",
+        "Content-bound Rulefield Operator Docket (ROD), human-readable 70+80 details and chat render payload for research-field intake"
       ],
-      "rule": "Complete known-information disclosure of every proposal and review; entire packet and experiment appendix retained; unknown integration diffs remain explicitly unknown; no approval inferred."
+      "rule": "Complete known-information disclosure of every proposal and review; entire packet and experiment appendix retained; unknown integration diffs remain explicitly unknown; no approval inferred. The operator must receive substantive in-chat preview and complete verified links, not just a technical attachment."
     },
     {
       "stage": 11,
@@ -318,6 +324,17 @@
     "future_reorder_workbench": "ROADMAP_ONLY",
     "operator_writes_preserved": true,
     "auto_rerank": false,
+    "protected_experiment_b": "HELD"
+  },
+  "in_chat_operator_docket": {
+    "status": "SOURCE_FREE_IMPLEMENTED",
+    "machine_schema": "td613.rulefield.operator-docket/v1",
+    "human_presentation": "COMPLETE_70_PLUS_80_WITH_CHAT_CONTROLS_OR_TEXT_FALLBACK",
+    "nomenclature": "FROZEN_V1",
+    "source_of_truth": "EXACT_SOURCE_REGISTRY_AND_OPERATOR_SEED",
+    "user_turn_required": true,
+    "buttons_have_no_direct_repository_side_effect": true,
+    "separately_authorized_canonical_mutation": true,
     "protected_experiment_b": "HELD"
   }
 }

@@ -2,6 +2,12 @@
 
 This directory is **the human-user entrypoint inside `packages/rulefield/`**. It is intentionally separate from the machine research engine, while wired to the same amendment packet, hash, receiver, hooks, and CI.
 
+## Start here: operator decision in the conversation
+
+**Rulefield Operator Docket (ROD)** is the canonical human-facing review instrument, not an engineering-only receipt. Its [contract](IN_CHAT_DECISION_PROTOCOL.md), [frozen names](contracts/NOMENCLATURE_V1.md), [machine renderer](docket.mjs), and [worked Markdown template](templates/RULEFIELD_OPERATOR_DOCKET_V1.md) guarantee a full 70+80 description alongside in-chat choices. A clicked control must submit a scoped *new conversation turn*, with exact docket digest. Readable links are provided only when the underlying files actually exist. Generate through `node scripts/rulefield-docket.mjs export`.
+
+**Naming note:** `RSR` human input → source-free `RAP` packet where a specific executable rule is warranted → `PSD` full evidence disclosure → `ROD` human conversation review → actual human `ODS` statement → optional separately authorized `SSC` staged candidate. The ROD cannot automatically adopt rules, merge or release protected Flight.
+
 ## Orientation
 
 - [`OPERATOR_GUIDE.md`](OPERATOR_GUIDE.md) — substantive human manual from first contact through staged change, source custody, tests, and succession.

@@ -4,6 +4,10 @@
 
 This file is both an LLM quick-start and a scoped agent contract. It applies to work initiated by a human operator, Antigravity/Kenough, Amari, Work, Codex or another reader. It does not grant repository, file-library, private archive, model-provider, deployment or human-signing permissions.
 
+## Frozen v1 nomenclature and in-chat human decision
+
+Read [NOMENCLATURE_V1.md](operator/contracts/NOMENCLATURE_V1.md), [IN_CHAT_DECISION_PROTOCOL.md](operator/IN_CHAT_DECISION_PROTOCOL.md), and [operator/docket.mjs](operator/docket.mjs) before asking the human to approve or decline any substantial Rulefield change. **Always present the actual submission details in-message**, with links to verified complete Markdown/JSON attachments. The ROD (`RF-OD-XXXX`) is a proposal-review instrument separate from the existing pre-synthesis disclosure and human-only source submission. Freeze naming conventions across v1; retain original historical IDs. Any operator click is a newly submitted human message—not an automatic merge, deployment, signed approval or canonical source mutation.
+
 ## Rulefield-type intake before rule promotion
 
 New operator terms are **rulefields**: typed research question-spaces, never automatically executable local rules. See [rulefields/README.md](rulefields/README.md), [rulefields/RECOVERY_PROTOCOL.md](rulefields/RECOVERY_PROTOCOL.md), [the 80 verbatim expressions](rulefields/data/operator-rulefields-20261107.json), and [rulefield-fields.mjs](../../scripts/rulefield-fields.mjs). The 70 historical topic ranks are immutable in this stage; the 80 operator-proposed fields append in a review-only 150-position agenda. Academic working labels are explicitly provisional. Use [the human-only Rulefield Submission Request](operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md) for additional original expressions; never misattribute agent naming to the human. Priority changes are reversible, source-free dry runs. Any implementation and human approval must use the later amendment/dossier system. The scrollable operator workbench is [ROADMAP-only](ROADMAP.md).

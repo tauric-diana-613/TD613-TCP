@@ -43,6 +43,10 @@ It sits **beside**, not above, the operator's 70-item subject priority queue. A 
 | RMAP-021 | H2 | **Long-lived multi-agent monitoring or cloud autosync.** | Human opts in to a specific schedule/trigger, scoped connector authority, audit log, revocation, retries, secrets handling and no automatic canonical promotions. | An \`inbox\` folder alone is not continuous monitoring; hidden work is not implied. |
 | RMAP-022 | H2 | **Physical phasonic supermoiré / topological and higher-order relation models.** | Define physical variables, units, gauge/invariance assumptions and independent measurements. Keep aesthetic simulation and graph analogy independently traceable. | Mathematical metaphors are not evidence of a new physical field or experimentally measured geometry. |
 
+## In-chat decision controls versus a separate graphical workbench
+
+**Already available as a conversation protocol:** structured Rulefield Operator Dockets with grouped human review and scoped choice prompts, backed by complete file snapshots and digest identifiers. They can use the chat host's actual supported controls when an agent authors a response. This **does not** create a browser application or a self-running UI. The graphical scroll/reorder workbench remains in the wishlist section below, pending separate design and review.
+
 ## Future human priority workbench · wishlist only
 
 **RMAP-WISH-OPERATOR-PRIORITY-UI · H1/H2 · NOT IMPLEMENTED / NOT AUTHORIZED IN THIS PHASE.** Provide a responsive, accessible, human-scrollable research-priority workbench backed by the stable IDs and reversible queue engine in [rulefields/engine.mjs](rulefields/engine.mjs). Potential affordances: keyboard-accessible drag-and-drop; full-text search; filters for research fields versus executable rules and crossings; side-by-side source/uncertainty and matched-null inspection; reorder preview and undo; conflict/duplicate hold notices; export of content-addressed priority plan and three-depth authorization dossier; and opt-in batch selection through a shopping-cart-style *review tray*, with deliberate commit semantics rather than unintentional adoption.

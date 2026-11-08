@@ -5,6 +5,10 @@
 **Version:** 1.0 · **Authority:** \`SAC[X6ZNK5NO51]\` · **Covenant:** Khona‌lit-po (U+200C interior retained).  
 **Custody:** Human authorship / final scientific closure RESERVED; protected Experiment B Flight HELD.
 
+## What the agent actually presents to its human
+
+For a request to approve Rulefield updates, generate and show a **Rulefield Operator Docket** (ROD) in the chat, with the source-derived review data, unresolved claims and explicit decision scope. Read [operator/IN_CHAT_DECISION_PROTOCOL.md](../operator/IN_CHAT_DECISION_PROTOCOL.md), [operator/contracts/NOMENCLATURE_V1.md](../operator/contracts/NOMENCLATURE_V1.md), and run `node scripts/rulefield-docket.mjs export` where available. Human review is not delegated to an unopenable attachment, silent machine schema or GitHub PR. Never claim that in-chat controls directly changed source history.
+
 ## Rulefields are not executable rules
 
 Begin at [the Rulefield Domain Engine](../rulefields/README.md) when an operator submits unconstrained titles, formulas or thoughts. Preserve every operator expression verbatim and provide *proposed* academic naming, a source-gleaning plan, testable hypotheses if available, duplicate/overlap holds and a staged 70+80 priority agenda. See [the recovery protocol](../rulefields/RECOVERY_PROTOCOL.md) and [human field submission form](../operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md). Do not promise actual Library/Atelier crawling when the relevant source was not opened. Only type-validated, evidence-qualified local predicates enter the original amendment packet receiver. UI reordering is wishlist-only.
