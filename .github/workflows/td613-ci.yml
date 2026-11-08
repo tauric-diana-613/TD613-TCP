@@ -1577,3 +1577,50 @@ jobs:
           path: gemini-observation.json
           if-no-files-found: error
           retention-days: 7
+
+
+  vixen_dd02_design_conception:
+    name: Vixen DD-02 · Native original-design conductor / non-release
+    if: github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dd02-design-conception-20261108'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact-source design commission
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Use Node.js 22 without provider credentials
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native /dollhouse-design DD-02 with ONE output
+        run: |
+          node scripts/run-dollhouse-design.mjs \
+            --input artifacts/vixen-dd02-conception/commission.json \
+            --output artifacts/vixen-dd02-conception/native-dd02-receipt.json \
+            --format human
+      - name: Verify actual native return receipt and authority boundary
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const r=JSON.parse(readFileSync('artifacts/vixen-dd02-conception/native-dd02-receipt.json','utf8'));
+          assert.equal(r.schema,'td613.dollhouse-design.return-receipt/v0.2');
+          assert.equal(r.output_contract.requested_deliverables,1);
+          assert.equal(r.candidates.length,2);
+          assert.equal(r.governance.scientific_proof,false);
+          assert.equal(r.governance.human_closure_required,true);
+          console.log('NATIVE_DD02_RECEIPT_VERIFIED · no creative approval, release or scientific proof awarded');
+          NODE
+      - name: Preserve the DD-02 receipt for operator inspection, without publication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-dd02-design-conception-receipt
+          path: artifacts/vixen-dd02-conception/native-dd02-receipt.json
+          if-no-files-found: warn
+          retention-days: 7
