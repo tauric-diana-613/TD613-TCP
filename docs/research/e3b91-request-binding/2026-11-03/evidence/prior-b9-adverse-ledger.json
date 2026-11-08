@@ -1,0 +1,210 @@
+{
+  "schema": "td613.b9-independent-adverse-ledger/v1",
+  "created_at": "2026-11-03T15:54:41.526083+00:00",
+  "head": "b9bf0df0b06edf82b0d4c3d910fec8fd9405209a",
+  "overall": "B9_SPECIFIC_DEFECT_FOUND_REPAIR_HELD",
+  "entries": [
+    {
+      "id": "B9-F01",
+      "classification": "ESTABLISHED_CONTRACT_DEFECT",
+      "severity": "HIGH_CONTRACT_INTEGRITY_BOUNDED_SYNTHETIC",
+      "source_path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
+      "lines": [
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104
+      ],
+      "expected": "Validated immutable product/source receipt binding or explicit refusal",
+      "observed": {
+        "status": "EXECUTED",
+        "family": "TD613_REFERENCE",
+        "product_id": "TD613_UNIVERSAL_ENCYCLOPEDIA_B8_CANDIDATE",
+        "source_receipt": "UNVALIDATED_RECEIPT",
+        "source_authorized": false,
+        "scientifically_validated": false
+      },
+      "cause": "Caller-owned request reread after await; emitted envelope and delegated binding diverge",
+      "evidence": [
+        "SUPPLEMENTAL_OBSERVATIONS.jsonl:C17:identity-and-receipt-mutation",
+        "MINIMAL_REPRODUCER_OUTPUT.jsonlog"
+      ],
+      "reproducer": "minimal-reproducer.mjs",
+      "repair_state": "PROPOSED_B9_1_ONLY_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "B9-F02",
+      "classification": "ESTABLISHED_PARAMETER_CONFORMANCE_DEFECT",
+      "severity": "MEDIUM_BOUNDED_IN_PROCESS",
+      "source_path": "packages/dome_world_exact/fixtures/a15-r0/ATELIER_METHOD/E3B8/product-entry-v01.mjs",
+      "lines": [
+        55
+      ],
+      "expected": "Descriptor guard refuses accessor without evaluating it",
+      "observed": {
+        "status": "EXECUTED",
+        "array_getter_calls": 3,
+        "late_installed_getter_calls": 2,
+        "source_authorized": false
+      },
+      "cause": "Array forEach invokes index accessor before object descriptor validation; async mutation adds another path",
+      "evidence": [
+        "SUPPLEMENTAL_OBSERVATIONS.jsonl:C09-corrected:array-getter-count",
+        "MINIMAL_REPRODUCER_OUTPUT.jsonlog"
+      ],
+      "reproducer": "minimal-reproducer.mjs",
+      "security_ceiling": "No OS escape, external read or provider confidentiality implication",
+      "repair_state": "PROPOSED_B9_1_ONLY_NOT_IMPLEMENTED"
+    },
+    {
+      "id": "B9-L01",
+      "classification": "EXPECTED_CUSTODY_LIMITATION",
+      "severity": "LIMITATION",
+      "observed": "Complete prior-store restoration resurrected withdrawn synthetic record under same static root/fixture receipt",
+      "expected_scope": "No independent current-head or durable custody promised",
+      "evidence": [
+        "RAW_OBSERVATIONS.jsonl:C18:whole-store-rollback"
+      ],
+      "next_substrate": "Separately authorized independent evolving custody witness"
+    },
+    {
+      "id": "B9-L02",
+      "classification": "REQUEST_SHAPE_GAP",
+      "severity": "LOW",
+      "observed": "Symbol-keyed extra request field accepted; Proxy traps execute",
+      "impact": "No authority escalation observed",
+      "evidence": [
+        "RAW_OBSERVATIONS.jsonl:C02:symbol-call",
+        "RAW_OBSERVATIONS.jsonl:C02:proxy-traps"
+      ]
+    },
+    {
+      "id": "B9-H01",
+      "classification": "HELD_HISTORY_UNAVAILABLE",
+      "severity": "HELD",
+      "observed": "29/30 B4/B41 regressions pass; git-show dependent archived-negative test fails before assertion because source materialization lacks authentic Git history",
+      "required_revision": "d7319f9d1c600a47cb1467ccb071971ca33a3444",
+      "evidence": [
+        "predecessor-B41-rerun-complete-support.log"
+      ],
+      "not_product_failure": true
+    },
+    {
+      "id": "B9-H02",
+      "classification": "HELD_GEOMETRY_INPUT_MISSING",
+      "severity": "HELD",
+      "observed": "Aperture role NOT_EVALUATED; direct actual engine invocation rejects missing metrics",
+      "evidence": [
+        "DOLLHOUSE_RECEIPT_FINAL.json",
+        "APERTURE_MISSING_INPUT_RECEIPT.json"
+      ],
+      "synthetic_geometry_fabricated": false
+    },
+    {
+      "id": "B9-R01",
+      "classification": "INDEPENDENTLY_CORROBORATED_PRIOR_REPAIR",
+      "severity": "RETAINED_HISTORY",
+      "observed": "Same catalog identity prior/future aliases refuse after withdrawal/restart in all four families",
+      "evidence": [
+        "RAW_OBSERVATIONS.jsonl:C06",
+        "withdrawal-alias-before.json in pinned GitHub source"
+      ],
+      "prior_adverse_erased": false
+    },
+    {
+      "id": "B9-R02",
+      "classification": "RETAINED_PREDECESSOR_ADVERSE_HISTORY",
+      "severity": "RETAINED_HISTORY",
+      "head": "6b5dff12fe9a527164763088e46d5a2eefe66791",
+      "run": 41579512391,
+      "attempt_1_job": 125730861668,
+      "attempt_2_job": 125732055076,
+      "observed_in_prior_records": "Unchanged Classic79 asynchronous teardown error; identical-head retry success",
+      "freshly_reauthenticated_historical_jobs": false,
+      "repaired": false
+    },
+    {
+      "id": "B9-R03",
+      "classification": "RETAINED_B8_DEVELOPMENT_FAILURE",
+      "severity": "RETAINED_HISTORY",
+      "observed_in_committed_ledger": "31-case intermediate run: 30 pass/one VM-array assertion failure; corrected comparison; original bytes preserved",
+      "fresh_historical_rerun": false
+    },
+    {
+      "id": "B9-A01",
+      "classification": "REVIEWER_HARNESS_FAILURE_CORRECTED",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "C08 child-script unescaped newline produced SyntaxError; subsequent charter-addendum five valid variants all refuse",
+      "evidence": [
+        "RAW_OBSERVATIONS.jsonl:C08:substitution",
+        "SUPPLEMENTAL_OBSERVATIONS.jsonl:C08-corrected"
+      ]
+    },
+    {
+      "id": "B9-A02",
+      "classification": "REVIEWER_HARNESS_FAILURE_CORRECTED",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "C09 file URL initially treated as out-of-closure path; normalized replay finds 67 unique allowed paths, zero unexpected",
+      "evidence": [
+        "RAW_OBSERVATIONS.jsonl:C09:read-spy",
+        "SUPPLEMENTAL_OBSERVATIONS.jsonl:C09-corrected:normalized-read-set"
+      ]
+    },
+    {
+      "id": "B9-A03",
+      "classification": "REVIEWER_ACQUISITION_SUPPORT_GAP_CORRECTED",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "Initial B5/B6 module and B41 fixture misses; exact pinned synthetic support acquired; B5/B6 pass, B41 29 pass plus history held",
+      "evidence": [
+        "predecessor-B5-rerun.log",
+        "predecessor-B6-rerun.log",
+        "predecessor-B41-rerun.log"
+      ]
+    },
+    {
+      "id": "B9-A04",
+      "classification": "REVIEWER_FORGE_CORRECTION",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "Initial C20 loop only mutated array-valued profile fields; modules are object-valued. Labelled post-comparison correction sets all 44 callable flags and confirms structural validity/public rejection",
+      "evidence": [
+        "POST_COMPARISON_CONFIRMATION.json"
+      ]
+    },
+    {
+      "id": "B9-A05",
+      "classification": "REVIEWER_DOLLHOUSE_OUTPUT_FAILURES_CORRECTED",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "Initial wrong working-directory input; sibling output/evidence path refusal; unapproved root filename; missing output directory. Final authorized output succeeds without error",
+      "evidence": [
+        "dollhouse-run.log",
+        "dollhouse-run-final.log",
+        "dollhouse-run-authorized-output.log",
+        "dollhouse-run-delivered.log"
+      ],
+      "candidate_source_modified": false
+    },
+    {
+      "id": "B9-A06",
+      "classification": "REVIEWER_TOOL_TRANSPORT_LIMITS",
+      "severity": "AUDIT_INFRASTRUCTURE",
+      "observed": "One GitHub fetch transport closed; two oversized exec argument submissions rejected; subsequent bounded fetch/write operations succeeded",
+      "candidate_finding": false
+    },
+    {
+      "id": "B9-N01",
+      "classification": "NO_EMPIRICAL_OR_AUTHORITY_PROMOTION",
+      "severity": "BOUNDARY",
+      "real_sources_admitted": 0,
+      "grants_issued": 0,
+      "empirical_replications": 0,
+      "merge": false,
+      "deployment": false,
+      "release": false,
+      "protected_corpus_access": false
+    }
+  ]
+}
