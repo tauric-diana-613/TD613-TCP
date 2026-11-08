@@ -71,28 +71,25 @@ export function evidenceConditionedPriority({plan=proposedTemporalPriority(),rec
  for(const id of Object.keys(receipts))if(!validIDs.has(id))fail('UNKNOWN_RECEIPT_RULEFIELD');
  const assessments=Object.fromEntries(plan.proposed_rulefield_order.map(id=>[id,assessReceipt(id,receipts[id],as_of)]));
  const output=[...plan.proposed_rulefield_order];
- const groups=new Map();
- for(const id of output){
-  const a=assessments[id];
-  if(!a.eligible)continue;
-  const group=a.comparison_frame+'|'+a.measurement_protocol_sha256;
-  if(!groups.has(group))groups.set(group,[]);
-  groups.get(group).push(id);
- }
  const comparisons=[],moves=[];
- for(const [frame,ids] of groups){
-  if(ids.length<2)continue;
-  const positions=ids.map(id=>output.indexOf(id)).sort((a,b)=>a-b);
-  const sorted=positions.map(i=>output[i]);
-  // Stable repeated adjacent dominance sweeps. Overlapping intervals do not authorize reversal.
-  for(let pass=0;pass<sorted.length;pass++)for(let j=0;j<sorted.length-1;j++){
-   const left=assessments[sorted[j]],right=assessments[sorted[j+1]];
+ // A missing, unmatched, or overlapping comparison forms a barrier: scored
+ // candidates may not jump across an unmeasured object and claim priority.
+ for(let pass=0;pass<output.length;pass++){
+  let changed=false;
+  for(let j=0;j<output.length-1;j++){
+   const left=assessments[output[j]],right=assessments[output[j+1]];
+   if(!left.eligible||!right.eligible)continue;
+   if(left.comparison_frame!==right.comparison_frame||
+      left.measurement_protocol_sha256!==right.measurement_protocol_sha256)continue;
    const relation=strictDominance(left,right);
-   comparisons.push({left:sorted[j],right:sorted[j+1],frame,relation,
-     actual_independent_empirical_witness:false});
-   if(relation==='B_OVER_A'){const t=sorted[j];sorted[j]=sorted[j+1];sorted[j+1]=t;}
+   comparisons.push({left:output[j],right:output[j+1],
+    frame:left.comparison_frame,relation,adjacent_source_positions:true,
+    actual_independent_empirical_witness:false});
+   if(relation==='B_OVER_A'){
+    const hold=output[j];output[j]=output[j+1];output[j+1]=hold;changed=true;
+   }
   }
-  positions.forEach((idx,i)=>{output[idx]=sorted[i]});
+  if(!changed)break;
  }
  const idx=output.indexOf(ANCHOR);
  const dependencyOk=PRE.every(x=>output.indexOf(x)<idx);
