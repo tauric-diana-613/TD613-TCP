@@ -1,0 +1,27 @@
+{
+  "kind": "OPERATOR_REPORT_AND_PROSPECTIVE_STEERS",
+  "outer_chat": {
+    "model": "GPT-6.1 Sol",
+    "effort": "High",
+    "basis": "Operator emphatic correction in current chat",
+    "independently_attested": false
+  },
+  "qualification_child_calls": {
+    "model_requested": "gpt-6.1-sol",
+    "reasoning_effort_requested": "medium",
+    "basis": "Immutable PR #1616 request receipts and independent review",
+    "effective_served_effort_independently_attested": false,
+    "high_requested_child_call_demonstrated": false
+  },
+  "budget": {
+    "historical_registered": 60000,
+    "earlier_prospective": 180000,
+    "superseded_prospective": 540000,
+    "current_prospective": 720000,
+    "current_basis": "Operator corrected triple it again to quadruple it; interpreted as 4 x 180000",
+    "retroactive_application": false,
+    "scope_approval_pending": true
+  },
+  "new_model_calls": 0,
+  "protected_archive_operations": 0
+}

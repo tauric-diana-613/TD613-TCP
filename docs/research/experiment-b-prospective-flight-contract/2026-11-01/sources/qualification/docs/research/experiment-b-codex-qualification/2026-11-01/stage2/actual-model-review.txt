@@ -1,0 +1,28 @@
+{
+  "reviews": [
+    {
+      "blind_id": "BLIND-460d5705388844670f75cefd",
+      "verdict": "Mathematically correct; minor explanatory omissions.",
+      "D1": "Correctly distinguishes consistency from proof and derives the conditional prediction x_3=14. Its alternative x_3=15 demonstrates that the initial measurements do not determine the universal rule.",
+      "D2": "Correctly falsifies the universal rule using either observed increment of 4. The earlier measurements and the two initial increments of 3 remain valid. The original conditional implication remains valid mathematically, but its premise is now falsified. The submission preserves the measurements through its calculations without explicitly identifying every surviving statement.",
+      "D3": "Correct: the recurrence produces 5,8,11,15,19. Among n transitions, max(0,n−2) receive the extra increment, yielding x_n=5+3n+max(0,n−2) and conditional x_5=23. It correctly rejects 5+4n using x_1=9≠8. Conditional language is appropriate, but it should explicitly state that finite observational fit neither proves the mechanism nor empirically confirms x_5."
+    },
+    {
+      "blind_id": "BLIND-df02586a2e83ba751342a723",
+      "verdict": "Mathematically correct; minor explanatory and provenance ambiguities.",
+      "D1": "Correct recurrence–closed-form equivalence, initial increments, and conditional prediction x_3=14. Its hypothesis language appropriately avoids claiming universal proof.",
+      "D2": "Correctly identifies increments 3,3,4,4 and both recurrence violations. The x_4 residual of 1 correctly uses measured x_3=15; it is not the residual against the global closed form, which predicts x_4=17. Preservation of earlier valid observations and conditional reasoning is implicit rather than explicit.",
+      "D3": "Correct fit, closed form, conditional prediction x_5=23, and false-twin predictions 9,13,17,21. It should explicitly distinguish observational fit from mechanism confirmation and unobserved predictions. 'Universal adoption' is less precise than assuming the recurrence holds universally."
+    }
+  ],
+  "blinding_assessment": {
+    "assessment": "Treatment identity cannot be established from this packet; semantic blinding is not verified.",
+    "clues": [
+      "The second submission's 'handoff’s formula' suggests an upstream workflow absent from the synthetic documents.",
+      "Its 'audited relation' and 'Conditional on universal adoption' may suggest procedural framing.",
+      "These expressions are ambiguous stylistic clues, not reliable treatment identifiers. The first submission's direct hypothesis language likewise establishes no identity."
+    ],
+    "uncertainty": "No arm mapping or validated diagnostic wording is supplied; neither submission can be assigned a treatment confidently."
+  },
+  "credential_limitation": "This is a source-free mathematical assessment of the inline packet only. It supplies no independent witness authority, provenance verification, or empirical validation."
+}

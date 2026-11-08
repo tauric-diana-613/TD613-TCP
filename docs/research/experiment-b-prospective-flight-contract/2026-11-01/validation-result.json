@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "kind": "STATIC_CONTRACT_VALIDATION_NOT_FLIGHT_QUALIFICATION",
+  "checks": [
+    "21 exact-ref snapshots match SHA-256, byte lengths and Git blob SHA-1",
+    "Independent filed review ID, exact qualification HEAD and COMMENTED scope preserved",
+    "Capacity arithmetic regenerated; historical 144/72, matched 1800/1800, replay overflow and conditional 712960 envelope agree",
+    "Historical usage, four arms, unresolved decision references and zero-authority Gate F/E states preserved",
+    "Operator outer-chat High, child Medium requests and corrected prospective budget remain distinct",
+    "Authored scripts use no process/network API; public artifact path/credential scan passed",
+    "Reproducibility manifest matches all package artifact hashes and inventory"
+  ],
+  "new_inference_calls": 0,
+  "protected_archive_operations": 0,
+  "current_prospective_token_ceiling_per_arm": 720000,
+  "gate_f": "HELD",
+  "gate_e": "HELD",
+  "human_closure": "RESERVED",
+  "platform_enforcement_verified": false,
+  "independent_authority_self_certified": false
+}

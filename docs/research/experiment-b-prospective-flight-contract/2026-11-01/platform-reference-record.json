@@ -1,0 +1,19 @@
+{
+  "retrieval_date": "2026-11-01",
+  "references": [
+    {
+      "id": "O01",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "kind": "DOCUMENTED_PLATFORM_CLAIM",
+      "summary": "Supports medium/high; published model context 1050000 and max output 128000, with a stated default context of 500K in Codex. Not this account/runtime attestation."
+    },
+    {
+      "id": "O02",
+      "url": "https://learn.chatgpt.com/docs/config-file/config-reference",
+      "kind": "DOCUMENTED_CONFIGURATION_SURFACE",
+      "summary": "Lists model_context_window, model_auto_compact_token_limit and memories.use_memories. Search of fetched page did not find model_max_output_tokens; no impossibility claim follows."
+    }
+  ],
+  "full_remote_page_bytes_hashed": false,
+  "new_inference_calls": 0
+}

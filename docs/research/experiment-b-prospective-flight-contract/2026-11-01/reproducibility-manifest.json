@@ -1,0 +1,237 @@
+{
+  "schema": "td613.prospective-flight-contract/reproducibility-v1",
+  "status": "PROPOSED_NOT_ADOPTED",
+  "baseline": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+  "baseline_tree": "43493e58c2620c8266213c17359c4e1f6de5627d",
+  "qualification_head": "2d98d519535870bdf01b8cc9bd6b0328ad3ae70c",
+  "independent_review": 5728990012,
+  "heritage": "Tauric Diana — Crimean heritage custodianship",
+  "covenant": "Khona‌lit-po",
+  "display_glyph": "𝌋",
+  "research_scalar": "􍘓",
+  "research_scalar_codepoint": "U+10D613",
+  "excluded_from_own_hash": [
+    "reproducibility-manifest.json"
+  ],
+  "self_binding": "Final Git commit tree; final HEAD in Draft PR body and external handoff",
+  "node_runtime": "v26.7.0",
+  "new_inference_calls": 0,
+  "protected_archive_operations": 0,
+  "artifacts": [
+    {
+      "path": "capacity-assumptions.json",
+      "bytes": 5574,
+      "sha256": "c6f9007589664154518d8bfc25e783f75390d65e8f394817c70671d5e6024ebd"
+    },
+    {
+      "path": "capacity-model.mjs",
+      "bytes": 4990,
+      "sha256": "f9f601645f80e13f06930c5ea7e1691d9ebc86c8782b84c313ec8d8dfc0abb24"
+    },
+    {
+      "path": "capacity-results.json",
+      "bytes": 10350,
+      "sha256": "4410f833ba9aa731243910856c14011d4f2ca35f6f34c95cd050c7ec4c986277"
+    },
+    {
+      "path": "CAPACITY.md",
+      "bytes": 7121,
+      "sha256": "22e3dbe5fd1a3d40937e56654a33e952f72eaea63eb77efd7f8bc053c158a957"
+    },
+    {
+      "path": "changed-file-inventory.json",
+      "bytes": 3294,
+      "sha256": "e081f307377d8c3abdc9d80c1508e10faf46aa8d399aceb7dc1b41985e890d10"
+    },
+    {
+      "path": "DOSSIER.md",
+      "bytes": 12433,
+      "sha256": "729156e8448f715542a05ba1ae427aa81d355cc01dae12eaf982d7cb5b21f2ba"
+    },
+    {
+      "path": "execution-contract.json",
+      "bytes": 1276,
+      "sha256": "4bdffe9ccffabbe5b66854c7ba19ba9d7f73ad0a792d60275efc5e77d83fc965"
+    },
+    {
+      "path": "gate-f-matrix.json",
+      "bytes": 6866,
+      "sha256": "1d7c562c03941095404c1ee25ec4ae4ee531de8bf60198ee441a2e49a5f1a23c"
+    },
+    {
+      "path": "ISOLATION_CONTRACT.md",
+      "bytes": 9581,
+      "sha256": "24ee89587240166cac76fe97ad97f14c8ce348462575b4b68f45f3daddae8a87"
+    },
+    {
+      "path": "NEGATIVE_CONTROLS.md",
+      "bytes": 6204,
+      "sha256": "6a34f8d2e30a121dbebb794b6621c6ef10e5add4fdbddfca48e427912814ebbf"
+    },
+    {
+      "path": "OPERATOR_DECISIONS.md",
+      "bytes": 5446,
+      "sha256": "dd6e134644cf215a989d2c67cdde392778b564519de2db0f71d8665dc23dc4e4"
+    },
+    {
+      "path": "operator-setting-and-budget-record.json",
+      "bytes": 932,
+      "sha256": "5011cb62f465fd873e3d99fe655fa1d99d14eef55a10e2c1e6714d568bf40162"
+    },
+    {
+      "path": "platform-reference-record.json",
+      "bytes": 816,
+      "sha256": "1de1cc748e9f5fabda9928c1a61c52190907e5b37dc7443afa27f33aefe0ab7b"
+    },
+    {
+      "path": "PROPOSED_AMENDMENT.md",
+      "bytes": 6824,
+      "sha256": "f439d89f549df42f0be13ea8c965d98a4337567ef00e699d6720e8c9fbe33ab9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3867,
+      "sha256": "a5b3ac4d09d4c41810806207525369a09cbb9a8df32d51620e54c591547c3bc4"
+    },
+    {
+      "path": "RISKS_AND_BLOCKERS.md",
+      "bytes": 4602,
+      "sha256": "297109b7dd98c77ce60340e5d29762ce690c4b675db49cfd923eb268b17e99a4"
+    },
+    {
+      "path": "SOURCE_TRANSFER_SPEC.md",
+      "bytes": 9386,
+      "sha256": "75ae57d03ca1a93c6931d24f06fbc1edf3b745a39b692794bec7df674979d0bd"
+    },
+    {
+      "path": "source-manifest.json",
+      "bytes": 16950,
+      "sha256": "afdfb2ffd1166443626b1ac66c9b01beaf0c7d7054fb5650490deab8d11e5f3d"
+    },
+    {
+      "path": "SOURCES.md",
+      "bytes": 8364,
+      "sha256": "fe9ae11c7b3053dbaa44df5010ed1b1a1602e39fb998b3fc7bd33130376a0723"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/antigravity-native-orchestrator.mjs",
+      "bytes": 7836,
+      "sha256": "12d9c183d3cb49a3b6d3582876c7c8902098f60c1850a70e04ef8869c7865914"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/atomic-custody-ledger.mjs",
+      "bytes": 17177,
+      "sha256": "e2f473cb805b7a2e81dccbb227daa53e0c31c7d1355ea15459b802acb6cd6bfa"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/controlled-archive-intake.mjs",
+      "bytes": 32825,
+      "sha256": "a85d00780f9b1bc68dd199551625f6064a001df1221faab15a57afd574e93788"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/run-arm1-archival.mjs",
+      "bytes": 6458,
+      "sha256": "9dc6a6a7ab46e4e61401098543670b4c9bb659154d35a2899456d33d303927fa"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/run-heterogeneous-discovery-harness.mjs",
+      "bytes": 59214,
+      "sha256": "d7242bd69b0304965ab5c468e187c3e40be1d0fc351e8e0ebf23fa1319d2707d"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/02_four_arm_harness/stage2-independent-evaluator.mjs",
+      "bytes": 33467,
+      "sha256": "95fdcb447e28cae13bf4cdeea3b2527b6531e120db1a2f3b3b68f1d668051922"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/CODEX_NATIVE_PROTOCOL_AMENDMENT_CANDIDATE.md",
+      "bytes": 1564,
+      "sha256": "780948844ea698e362be98a72953033280fd39c74a3e4afb87b9b436df2a7133"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/EXPERIMENT_B_PREREGISTERED_PROTOCOL.md",
+      "bytes": 13116,
+      "sha256": "eaba08cdd1bcdf8c1d64dec90903b157b16847b356b7526191aba7326bd4a9d7"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/RCA01_REPRESENTATION_CAUSALITY_ASSAY.md",
+      "bytes": 13111,
+      "sha256": "894429592ffa434d2ec900c8a0ed8c239a36d7b3313edf2a560dce72e4edad41"
+    },
+    {
+      "path": "sources/baseline/docs/research/experiment-b-preflight/04_evaluation_and_preregistration/THREE_LINEAGE_CUSTODY_PROTOCOL.md",
+      "bytes": 8437,
+      "sha256": "619104877aeb090c2e76000cf44f8a41573f5ea86e2fdbb1abed07e70f408ad5"
+    },
+    {
+      "path": "sources/baseline/scripts/experiment-b-codex-exec-adapter.mjs",
+      "bytes": 5121,
+      "sha256": "439edabf1e55e17b98d63ab465e1610324fc78cab9bf91508a1f2688ffc02986"
+    },
+    {
+      "path": "sources/baseline/scripts/experiment-b-codex-flight-controls.mjs",
+      "bytes": 2968,
+      "sha256": "03be97e0a49e2796ed8a4ce6cf553fd0ed59b0b399a20f49dc696cf0575c89a4"
+    },
+    {
+      "path": "sources/baseline/scripts/run-experiment-b-flight.mjs",
+      "bytes": 62784,
+      "sha256": "456f9f107a8ddb0e6df7c7c3f963bc2bcb0eef177915a55594c2b7f9164e4458"
+    },
+    {
+      "path": "sources/emergence-hq-review-5728990012.json",
+      "bytes": 4465,
+      "sha256": "88de4f8d059d72fa4dbdc5750a6364f168ac5ce9f79f040f8f2994aa0d6e9059"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/DOSSIER.md",
+      "bytes": 20359,
+      "sha256": "36d89caf89719cd823bd8a83e6e7501f6c470d395bd1ab9461754ff333c0a81e"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/evidence-manifest.json",
+      "bytes": 15907,
+      "sha256": "17b0ca928c66fa8e359121ba03c2c0eb3514fc7cec57d8e2d6efa10b9e36a68c"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/qualification-plan.json",
+      "bytes": 3114,
+      "sha256": "28018bdcadcddb9a2d90d9096a5aed4b9358fc710b18b052917332e8239fd215"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/receipts/model-catalog-selection.json",
+      "bytes": 1016,
+      "sha256": "3f4efbfa20be1fb6e2db736497a526f9a25852b85872bfd98e7636d2e07befde"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/receipts/prospective-budget-steer.json",
+      "bytes": 668,
+      "sha256": "5c6aa6c4337ed4558d767e5d1aa8585d8b2a3ec48b594ca59824521d19a77a28"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/receipts/reasoning-summary.json",
+      "bytes": 849,
+      "sha256": "b2d00f342d65d838853df1774ef039dbeccb3ae5aa0582c66ee126d4de194280"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/stage2/actual-model-review.txt",
+      "bytes": 3021,
+      "sha256": "0709503d5e35dd9a92be2d0f56fdea28d22c9734f73dc16decb62f50fb3281c5"
+    },
+    {
+      "path": "sources/qualification/docs/research/experiment-b-codex-qualification/2026-11-01/stage2/execution-receipt.json",
+      "bytes": 1150,
+      "sha256": "07a7506ee0f88dacb79e9990fa6fe849974b57e6492af81c6ee6e9eceea0aba2"
+    },
+    {
+      "path": "validate-contract.mjs",
+      "bytes": 7036,
+      "sha256": "6010a868062ce8231d258de72256c6d9f9326594fe6b7398da0d0aaeb0b0e4a0"
+    },
+    {
+      "path": "validation-result.json",
+      "bytes": 1082,
+      "sha256": "296d6b3e3f9baf514f76440a0d2a51bbce49949126cb3773327b51a70de17a4e"
+    }
+  ]
+}
