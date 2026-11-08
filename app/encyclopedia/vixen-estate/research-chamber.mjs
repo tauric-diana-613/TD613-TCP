@@ -4,6 +4,7 @@
  * No generated cross-estate identity claims; no scientific admission or execution authority.
  */
 import {createVixenReferenceMembrane,BridgeHold,normalizeSourceQuery} from './reference-bridge.mjs';
+import {castVixenPerformer,stageVixenOperaEvent,readOperahouseStatus,assertStageRoleSeparation} from './role-boundary.mjs';
 
 const DEFAULT_PHASES=Object.freeze(['NOTICE','ACT','WORLD_ANSWERS','NAME','REST']);
 const $=(id)=>document.getElementById(id);
@@ -26,18 +27,21 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   container.textContent='SOURCE HOLD: The Vixen Work, identity gate or documentary census is inconsistent.';return Object.freeze({mounted:false,reason:'VIXEN_CENSUS_MISMATCH'})
  }
  const membrane=createVixenReferenceMembrane({fetcher,cryptoProvider,baseURL});
- const state={phase:'NOTICE',workIndex:0,query:'',hits:[],witness:null,selectedId:null,hypothesis:'',busy:false,error:null,info:'Choose a historical Work to examine its exact documentary identity before requesting Universal reference evidence.',status:'UNOPENED',trace:[],counter:0};
- const track=(action,details={})=>state.trace.push(Object.freeze({n:++state.counter,estate:'VIXEN_RESEARCH',action,...details}));
- const clearInquiry=()=>{state.phase='NOTICE';state.query='';state.hits=[];state.witness=null;state.selectedId=null;state.hypothesis='';state.error=null;state.status='UNOPENED';state.info='You may inspect the historical Work and then begin an inquiry.';track('HISTORICAL_WORK_SELECTED',{work_id:vixen.works[state.workIndex].work_id})};
- const begin=()=>{state.phase='ACT';state.error=null;state.info='Enter a term or phrase to search the independent reference estate. A lexical match alone cannot prove a relationship.';track('OPERATOR_INQUIRY_STARTED',{work_id:vixen.works[state.workIndex].work_id});render()};
+ const state={phase:'NOTICE',workIndex:0,requestEpoch:0,restReturnPhase:'NOTICE',restInterrupted:false,query:'',hits:[],witness:null,selectedId:null,hypothesis:'',busy:false,error:null,info:'Choose a historical Work to examine its exact documentary identity before requesting Universal reference evidence.',status:'UNOPENED',trace:[],counter:0};
+ if(!assertStageRoleSeparation())throw new Error('OPERAHOUSE_OPERA_PERFORMER_ROLE_COLLAPSE');
+ const track=(action,details={})=>state.trace.push(Object.freeze({n:++state.counter,...stageVixenOperaEvent(action,castVixenPerformer(vixen.works[state.workIndex]),details)}));
+ const clearInquiry=()=>{state.requestEpoch++;state.busy=false;state.restInterrupted=false;state.phase='NOTICE';state.query='';state.hits=[];state.witness=null;state.selectedId=null;state.hypothesis='';state.error=null;state.status='UNOPENED';state.info='You may inspect the historical Work and then begin an inquiry.';track('HISTORICAL_WORK_SELECTED',{work_id:vixen.works[state.workIndex].work_id})};
+ const begin=()=>{if(state.phase!=='NOTICE')return;state.phase='ACT';state.error=null;state.info='Enter a term or phrase to search the independent reference estate. A lexical match alone cannot prove a relationship.';track('OPERATOR_INQUIRY_STARTED',{work_id:vixen.works[state.workIndex].work_id});render()};
  async function ask(){
+  if(state.phase!=='ACT'||state.busy)return;
   const query=normalizeSourceQuery(state.query);
   if(!query){state.info='Enter a research term to request an answer. The interface will not invent the question for you.';render();return}
-  if(state.busy)return;
+  const epoch=++state.requestEpoch;
   state.busy=true;state.status='CHECKING';state.error=null;state.hits=[];state.witness=null;state.selectedId=null;state.info='Requesting separately hosted source metadata; no interpretive result has been asserted.';
   track('REQUEST_REFERENCE',{work_id:vixen.works[state.workIndex].work_id,query});render();
   try{
    await membrane.open();
+   if(epoch!==state.requestEpoch)return; // A late reply has no authority over operator rest.
    state.hits=membrane.search(query,{limit:20});
    state.status=state.hits.length?'INDEX_MATCHES_UNVERIFIED':'HELD_NO_LEXICAL_MATCH';
    state.info=state.hits.length?
@@ -46,24 +50,27 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
    track('REFERENCE_QUERY_RETURNED',{query,hits:state.hits.length,classification:'LEXICAL_MATCH_ONLY'});
    if(!state.hits.length)state.phase='WORLD_ANSWERS';
   }catch(e){
+   if(epoch!==state.requestEpoch)return;
    const reason=e instanceof BridgeHold?e.code:'REFERENCE_NETWORK_UNAVAILABLE';
    state.phase='WORLD_ANSWERS';state.error=reason;state.status='HELD_REFERENCE_UNAVAILABLE';
    state.info='The independent reference estate did not supply an admissible answer: '+String(e?.message||e);
    track('REFERENCE_HELD',{reason});
-  }finally{state.busy=false;render()}
+  }finally{if(epoch===state.requestEpoch){state.busy=false;render()}}
  }
  async function inspectRecord(id){
-  if(state.busy||!state.hits.some(r=>r.id===id))return;
+  if(state.phase!=='ACT'||state.busy||!state.hits.some(r=>r.id===id))return;
+  const epoch=++state.requestEpoch;
   state.busy=true;state.status='VERIFYING_SOURCE';state.info='Fetching the exact reference record and checking its SHA-256 digest against the separately indexed source identity.';render();
   try{
-   const witness=await membrane.getRecord(id);state.witness=witness;state.selectedId=id;state.phase='WORLD_ANSWERS';state.status='CANONICAL_PAYLOAD_VERIFIED';state.error=null;
+   const witness=await membrane.getRecord(id);if(epoch!==state.requestEpoch)return;state.witness=witness;state.selectedId=id;state.phase='WORLD_ANSWERS';state.status='CANONICAL_PAYLOAD_VERIFIED';state.error=null;
    state.info='The indexed canonical JSON payload has been SHA-256 verified (separate served-file digest recorded). The proposed relation to Vixen remains unestablished.';
    track('RECORD_SOURCE_VERIFIED',{id,source_sha256:witness.record_sha256,work_id:vixen.works[state.workIndex].work_id});
   }catch(e){
+   if(epoch!==state.requestEpoch)return;
    state.witness=null;state.selectedId=null;state.phase='WORLD_ANSWERS';state.status='HELD_SOURCE_WITNESS';state.error=e instanceof BridgeHold?e.code:'UNKNOWN_WITNESS_ERROR';
    state.info='The reference could not be authenticated: '+String(e?.message||e);
    track('RECORD_WITNESS_REFUSED',{id,reason:state.error});
-  }finally{state.busy=false;render()}
+  }finally{if(epoch===state.requestEpoch){state.busy=false;render()}}
  }
  function nameQuestion(){
   if(state.phase!=='WORLD_ANSWERS')return;
@@ -71,11 +78,19 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   state.info='A human question may now be named, while scientific support, cross-estate authorship, and Experiment B postflight admission remain HELD.';render()
  }
  function rest(){
-  if(state.busy)return;
-  state.phase='REST';track('UNPENALIZED_REST',{source_record:state.selectedId||null});
-  state.info='Rest preserves this session in memory while this page stays open. No backend writes, persistence promise, or automatic scientific decision.';membrane.rest();render()
+  if(state.phase==='REST')return;
+  state.restReturnPhase=state.phase;state.restInterrupted=state.busy;
+  state.requestEpoch++; // Retire all pending UI completions before entering REST.
+  state.busy=false;state.phase='REST';
+  if(state.restInterrupted)state.status='HELD_OPERATOR_INTERRUPTED_REQUEST';
+  track('UNPENALIZED_REST',{source_record:state.selectedId||null,interrupted_inflight:state.restInterrupted});
+  state.info='Rest preserves the current session. Any late response is ignored; no archive write or scientific decision is authorized.';membrane.rest();render()
  }
- function resume(){state.phase=state.witness||state.error||state.status==='HELD_NO_LEXICAL_MATCH'?'WORLD_ANSWERS':'NOTICE';track('OPERATOR_RESUMED');render()}
+ function resume(){
+  if(state.phase!=='REST')return;
+  state.phase=state.restInterrupted?'ACT':state.restReturnPhase;
+  state.restInterrupted=false;track('OPERATOR_RESUMED');render()
+ }
  function renderWitness(parent){
   const w=state.witness;
   if(!w){put(parent,make('div','vxe-absence',state.status==='INDEX_MATCHES_UNVERIFIED'?'Metadata matches await exact-byte verification.':state.info));return}
@@ -91,7 +106,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   parent.append(doc);
  }
  function render(){
-  container.replaceChildren();
+  container.replaceChildren();container.setAttribute('data-stage-role','OPERA');
   const heading=make('div','vxe-heading');
   put(heading,make('p','vxe-eyebrow','07 · VIXEN CYBERNETICS / CROSS-ESTATE RESEARCH'),make('h1','','The Research Membrane'),textP('Two distinct research estates. One deliberately requested encounter. Neither archive has the authority to overwrite the other.','vxe-lede'));
   container.append(heading);
@@ -102,7 +117,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
    put(li,make('span','vxe-phase-num',String(i+1).padStart(2,'0')),make('span','',phase.replaceAll('_',' ')));phaseTrack.append(li)
   });
   container.append(phaseTrack);
-  const status=make('p','vxe-status',state.status+' · '+state.info);status.setAttribute('role','status');container.append(status);
+  const status=make('p','vxe-status',state.status+' · '+state.info);status.setAttribute('role','status');status.setAttribute('data-operahouse-read-state',readOperahouseStatus(membrane.status()).read_state);container.append(status);
   const spatial=make('div','vxe-spatial');
   const left=buildEstateCard('vixen','The Historical Work','The archival object is observed in its own recorded identity before any reference operation is attempted.');
   const right=buildEstateCard('universal','The Reference Counterpart','A separate, publicly served edition. Only records actually retrieved and checked may enter the evidence window.');
@@ -115,6 +130,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   workSel.value=String(state.workIndex);
   workSel.addEventListener('change',()=>{state.workIndex=Number(workSel.value);clearInquiry();render()});
   left.append(workSel);
+  left.setAttribute('data-stage-role','PERFORMER');
   const work=vixen.works[state.workIndex];
   const witness=make('article','vxe-document');
   put(witness,make('p','vxe-eyebrow','SOURCE A · ORIGINAL VIXEN ESTATE'),make('h3','',work.display_title||work.declared_title||work.work_id),textP('Work ID: '+work.work_id,'vxe-source-note'),textP('Identity disposition: '+(work.identity_status||'UNRESOLVED'),'vxe-source-note'));
@@ -154,7 +170,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   const actions=make('div','vxe-actions');
   const bName=button('Name the question',nameQuestion);bName.disabled=state.phase!=='WORLD_ANSWERS';
   actions.append(bName);
-  const bRest=button('Rest without penalty',rest,'vxe-rest');bRest.disabled=state.phase==='REST'||state.busy;actions.append(bRest);
+  const bRest=button('Rest without penalty',rest,'vxe-rest');bRest.disabled=state.phase==='REST';actions.append(bRest);
   if(state.phase==='REST')actions.append(button('Return to inquiry',resume,'vxe-primary'));
   const exit=make('a','vxe-control vxe-exit','Exit to Universal Encyclopedia ↗');exit.href=new URL('../',import.meta.url).href;actions.append(exit);
   tail.append(actions);
