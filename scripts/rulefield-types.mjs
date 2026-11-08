@@ -2,12 +2,13 @@
 /** 𝌋 Typed Rulefield audit — all commands read-only except optional staged export. */
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {resolve} from 'node:path';
-import {readTypeAssessment,buildTypedProjection,validateTypedProjection,inspectType,proposedRuleGate} from '../packages/rulefield/rulefields/type_system.mjs';
+import {readTypeAssessment,buildTypedProjection,validateTypedProjection,inspectType,inspectRoles,proposedRuleGate} from '../packages/rulefield/rulefields/type_system.mjs';
 const args=process.argv.slice(2),cmd=args[0]||'help',show=o=>console.log(JSON.stringify(o,null,2));
 try{
  if(cmd==='help')show({name:'TD613 Typed Rulefield Projection v1',
   commands:['validate — source and type invariants','summary — type counts and authority',
-   'rule ID — typed historical record','field RF-ID — research domain and child candidates',
+   'rule ID — typed historical record','roles ID — all qualified concurrent roles for that object',
+   'field RF-ID — research domain and child candidates',
    'children RF-ID — candidate child-rule or assay derivations','gate FILE.json — inspect prospective PROPOSE_RULE contract',
    'export OUTPUT.json — proposed typed snapshot; never the historical registry'],
   non_equivalence:'RULEFIELD ≠ RULE ≠ ASSAY ≠ CLAIM ≠ SOURCE',
@@ -24,6 +25,7 @@ try{
     assessed_rule_ids:q.objects.legacy.filter(x=>x.assessment_kind).map(x=>x.id),
     remaining_unadjudicated:q.unassessed_records.length,authority:q.authority});
   else if(cmd==='rule')show(inspectType(args[1],{projection:q}));
+  else if(cmd==='roles')show(inspectRoles(args[1],{projection:q}));
   else if(cmd==='field')show({field:inspectType(args[1],{projection:q}),
     children:q.objects.children.filter(x=>x.source_rulefield_id===args[1])});
   else if(cmd==='children')show({source_rulefield_id:args[1],

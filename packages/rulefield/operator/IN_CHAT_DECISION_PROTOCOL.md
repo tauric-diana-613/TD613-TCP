@@ -41,3 +41,7 @@ One docket payload includes:
 - `authority` showing canonical changes and operator approval absent.
 
 **Human comprehensibility must not depend on an LLM narrating invisible JSON.**
+
+## Rulefield/Rule role multiplicity in human review
+
+Do not present a forced choice between Rule and Rulefield. The **same historical object** may have a research Rulefield view and an executable Rule view, with no implicit authority transfer. In ROD-0002 disclose ten example qualified views, the ability to declare parallel roles on a prospective candidate and the exact separate scopes of execution and inquiry. This is a type-system distinction, not an automatic operator adoption or new scientific result. See `rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md`.

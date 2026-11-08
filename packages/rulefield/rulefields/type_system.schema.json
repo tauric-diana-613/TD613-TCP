@@ -48,6 +48,9 @@
         },
         "derived_child_candidates": {
           "const": 31
+        },
+        "explicit_nonexclusive_historical_roles": {
+          "const": 10
         }
       }
     },
@@ -89,6 +92,20 @@
     "projection_sha256": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
+    },
+    "role_axiom": {
+      "type": "object",
+      "properties": {
+        "non_equivalence_does_not_imply_disjointness": {
+          "const": true
+        },
+        "indexed_role_views": {
+          "const": true
+        },
+        "examples": {
+          "const": 10
+        }
+      }
     }
   },
   "additionalProperties": true

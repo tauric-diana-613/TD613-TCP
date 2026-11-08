@@ -52,3 +52,13 @@ The receiver retains the earlier falsifier, competent-null, duplicate-HOLD, sour
 The operator reviews the typed crosswalk and decides on the projection. This change alone does **not** authorize actual canonical registry reorganization, deletion of historical statements, scientific promotion, protected Flight, merge or deployment.
 
 𝄐 Khona‌lit-po · Type safety does not erase source history.
+
+## Role multiplicity — nonidentity without a partition
+
+**Rulefield ≠ Rule** denotes nonequivalent *role semantics*; a historical entity can simultaneously be a **Rule** in an execution context and a **Rulefield** in a research context. See [the source-preserving addendum](type_assessment/ROLE_MULTIPLICITY_ROD0002.md). The same principle extends to models, assays, theorems and research programs: a rule can be studied as a field, and a field can contain itself as an object of inquiry, without automatically licensing reflexive execution.
+
+We use **qualified views**, for example `legacy_rule:I-001#role:rule` and `legacy_rule:I-001#role:rulefield`, under one historical identity. No duplicate canonical rule ID is minted. Ten reviewed exemplar objects are equipped with nonexclusive roles; `node scripts/rulefield-types.mjs roles I-001` and `roles Q18-R01` print these role bindings.
+
+In the amendment receiver, `PROPOSE_RULE` always requires a formal local contract. For an explicit `roles: ['RULE','RULEFIELD']` proposal, supply separate `role_contexts.execution` and `role_contexts.inquiry`, `cross_role_authority_transfer: false`, and optionally `source_rule_id` or `source_rulefield_id`. The same entity may be the subject of both roles. A field-only object that lacks an execution role remains held. Correct dual roles are candidate views, not new scientific laws, permissions or canonical adoption.
+
+The [frozen v1 compatibility addendum](../operator/contracts/NOMENCLATURE_V1_ROLE_MULTIPLICITY_ADDENDUM.md) does not change the original nomenclature contract or the operator's OD-02 HOLD.

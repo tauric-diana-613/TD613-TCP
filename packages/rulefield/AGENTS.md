@@ -1,3 +1,7 @@
+## Context-indexed multiplicity — mandatory
+
+`RULEFIELD ≠ RULE` is a statement of non-equivalence, **not exclusive identity assignment**. A source rule can be researched as a field while retaining its local execution role, under separately qualified views. Consult [ROLE_MULTIPLICITY_ROD0002.md](rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md), `node scripts/rulefield-types.mjs roles I-001`, and require separate roles/contexts/no-transfer declarations for a dual-role amendment. Never suggest the two roles authorize one another. **OD-02 remains HELD.**
+
 ## Mandatory typed-ontology boundary
 
 Read [rulefields/TYPE_SYSTEM.md](rulefields/TYPE_SYSTEM.md), [rulefields/type_system.mjs](rulefields/type_system.mjs) and [the source-preserving type audit](rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md). An old record inside `rules[]` may actually be an assay, model, research program or evidence boundary; never infer executable-rule standing from its storage container. A field-derived PROPOSE_RULE requires explicit `formal_rule` domain/guard/update/observer and a separate review. `HELD_RULEFIELD_RULE_TYPE_COLLAPSE` blocks a field-as-rule attempt. Human OD-02 label ratification remains HELD.

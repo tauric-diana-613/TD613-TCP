@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {readRulefield} from '../packages/rulefield/rulefield.mjs';
 import {readRevisionSeed} from '../packages/rulefield/rulefields/temporal_guardian.mjs';
-import {readTypeAssessment,buildTypedProjection,validateTypedProjection,inspectType,proposedRuleGate} from '../packages/rulefield/rulefields/type_system.mjs';
+import {readTypeAssessment,buildTypedProjection,validateTypedProjection,inspectType,inspectRoles,readRoleMultiplicity,proposedRuleGate} from '../packages/rulefield/rulefields/type_system.mjs';
 import {packetTemplate,reviewPacket} from '../packages/rulefield/amendments/receiver.mjs';
 import {buildOperatorDisclosure} from '../packages/rulefield/operator/disclosure.mjs';
 import {inspectHumanDecision} from '../packages/rulefield/operator/decision.mjs';
@@ -159,4 +159,94 @@ test('TYPES 21 spoofed field ID cannot become a typed local rule',()=>{
 test('TYPES 22 unrelated non-rule research proposals remain free-form',()=>{
  const p=proposedRuleGate({kind:'PROPOSE_ASSAY',object_type:'RULEFIELD'});
  assert.equal(p.status,'NOT_APPLICABLE');
+});
+
+test('ROLES 01 Rule is not identical to Rulefield, but one historical object can occupy both',()=>{
+ const r=inspectRoles('I-001');
+ assert.equal(r.nonexclusive,true);
+ assert.deepEqual(r.views.map(x=>x.role),['RULE','RULEFIELD']);
+ assert.equal(r.source_id,'I-001');
+ assert.equal(r.research_view_does_not_transfer_execution_authority,true);
+});
+test('ROLES 02 model and assay become research fields without pretending to be executable rules',()=>{
+ const inf=inspectRoles('INF-01'),amb=inspectRoles('Q01-A04');
+ assert.deepEqual(inf.views.map(x=>x.role),['MODEL','RULEFIELD']);
+ assert.deepEqual(amb.views.map(x=>x.role),['ASSAY','RULEFIELD']);
+ assert.equal(inspectType('INF-01').proposed_effective_type,'MODEL');
+});
+test('ROLES 03 theorem and experiment and research field coexist with separate qualified views',()=>{
+ const x=inspectRoles('Q18-R01');
+ assert.deepEqual(x.views.map(v=>v.role),['THEOREM','ASSAY','RULEFIELD']);
+ assert.equal(new Set(x.views.map(v=>v.qualified_view)).size,3);
+ assert.ok(x.views.every(v=>v.authority_transfer===false));
+});
+test('ROLES 04 operator-origin RF-060 is a field and may have Rule 30 as a derived candidate',()=>{
+ const x=inspectRoles('RF-060');
+ assert.deepEqual(x.views.map(v=>v.role),['RULEFIELD']);
+ assert.equal(x.nonexclusive,false);
+ const p=buildTypedProjection();
+ assert.ok(p.objects.children.some(c=>c.source_rulefield_id==='RF-060'));
+});
+test('ROLES 05 direct field-as-rule with formal contract but without execution role remains held',()=>{
+ const x=proposedRuleGate({kind:'PROPOSE_RULE',object_type:'RULEFIELD',
+  formal_rule:{state_space:'binary row',guard:'each tick',local_transition:'Rule30',observer:'finite output'}});
+ assert.equal(x.status,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
+ assert.ok(x.issues.includes('MISSING_EXECUTION_ROLE_FOR_LOCAL_RULE'));
+});
+test('ROLES 06 an explicitly declared dual-role object can be a RULE candidate and RULEFIELD',()=>{
+ const x=proposedRuleGate({kind:'PROPOSE_RULE',object_type:'RULEFIELD',source_rule_id:'I-001',
+  roles:['RULE','RULEFIELD'],role_contexts:{execution:'finite typed guard execution',
+    inquiry:'research hypotheses and counterexamples'},
+  cross_role_authority_transfer:false,
+  formal_rule:{state_space:'finite simulated admission',guard:'on source admission',
+    local_transition:'evaluate declared source credentials',observer:'source-free event log'}});
+ assert.equal(x.status,'CANDIDATE_RULE_ONLY_NOT_ADOPTED');
+ assert.equal(x.dual_role,true);
+ assert.deepEqual(x.roles,['RULE','RULEFIELD']);
+ assert.equal(x.human_adoption_authorized,false);
+});
+test('ROLES 07 dual-role execution must declare separate contexts and block automatic authority transfer',()=>{
+ const a={kind:'PROPOSE_RULE',object_type:'RULE',roles:['RULE','RULEFIELD'],
+  source_rule_id:'I-001',formal_rule:{state_space:'finite states',guard:'every step',
+   local_transition:'update one state',observer:'finite sensor'}};
+ const x=proposedRuleGate(a);
+ assert.equal(x.status,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
+ assert.ok(x.issues.includes('MISSING_DISTINCT_DUAL_ROLE_CONTEXTS'));
+ assert.ok(x.issues.includes('AUTHORITY_TRANSFER_NOT_EXPLICITLY_FORBIDDEN'));
+});
+test('ROLES 08 role duplication and invented historical source are refused',()=>{
+ const x=proposedRuleGate({kind:'PROPOSE_RULE',object_type:'RULE',roles:['RULE','RULE'],
+   source_rule_id:'I-GHOST',
+   formal_rule:{state_space:'finite states',guard:'every step',
+    local_transition:'update one state',observer:'finite sensor'}});
+ assert.ok(x.issues.includes('INVALID_OR_DUPLICATE_ROLE_BINDING'));
+ assert.ok(x.issues.includes('UNKNOWN_HISTORICAL_RULE_SOURCE'));
+});
+test('ROLES 09 exactly ten historical objects have explicit multi-role fixtures; source bytes remain intact',()=>{
+ const p=buildTypedProjection(),m=readRoleMultiplicity();
+ assert.equal(m.examples.length,10);
+ assert.equal(p.counts.explicit_nonexclusive_historical_roles,10);
+ assert.equal(p.relations.filter(x=>x.kind==='RESEARCHABLE_AS').length,10);
+ assert.ok(p.relations.filter(x=>x.kind==='RESEARCHABLE_AS').every(x=>x.no_authority_transfer));
+ assert.deepEqual([origReg,origSeed,revision].map(url=>readFileSync(url)),before);
+});
+test('ROLES 10 a dual-role proposal is still held without a typed local rule',()=>{
+ const x=proposedRuleGate({kind:'PROPOSE_RULE',roles:['RULE','RULEFIELD'],
+   role_contexts:{execution:'constrained execution',inquiry:'unbounded hypotheses'},
+   cross_role_authority_transfer:false});
+ assert.ok(x.issues.includes('MISSING_TYPED_LOCAL_RULE_CONTRACT'));
+ assert.equal(x.status,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
+});
+test('ROLES 11 receiver preserves dual roles as candidate but does not merge',()=>{
+ const p=packetTemplate({packet_id:'RF-AP-DUAL-ROLES-001'});
+ const q=p.proposals[0];
+ q.kind='PROPOSE_RULE';q.object_type='RULE';q.roles=['RULE','RULEFIELD'];
+ q.role_contexts={execution:'finite declared execution',inquiry:'research and counterexamples'};
+ q.cross_role_authority_transfer=false;q.source_rule_id='I-001';
+ q.formal_rule={state_space:'finite admission states',guard:'after admission attempt',
+  local_transition:'inspect credential state',observer:'source-free event log'};
+ const r=reviewPacket(p);
+ assert.equal(r.as_source_free.proposals[0].diagnostic.type_admission.status,'CANDIDATE_RULE_ONLY_NOT_ADOPTED');
+ assert.equal(r.original_registry_mutated,false);
+ assert.equal(r.protected_experiment_b,'HELD');
 });

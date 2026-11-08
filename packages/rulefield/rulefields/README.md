@@ -58,3 +58,7 @@ The raw expressions remain independent until a source-based, reviewable merger o
 See the wishlist in [ROADMAP.md](../ROADMAP.md). A human-scrollable, searchable, drag/reorder UI and review tray will be developed only in a subsequent, independently commissioned product stage. This package supplies the engine and stable IDs first.
 
 𝄐 Khona‌lit-po · Rulefield ≠ Rule · Source-bound, not self-certifying.
+
+### Nonexclusive type system
+
+Rulefield ≠ Rule **does not entail disjoint object extensions**. See [Role Multiplicity](type_assessment/ROLE_MULTIPLICITY_ROD0002.md) and run `node scripts/rulefield-types.mjs roles I-001`. A historical rule is permitted to serve as a research field in another context while preserving the executable rule and evidence limits. Ten source-linked role fixtures are staged; none is a canonical change.
