@@ -62,8 +62,15 @@ export function temporalWitness(event,{as_of}={}){
  if(times.available_at!==null&&times.available_at>asof)flags.push('SOURCE_NOT_YET_AVAILABLE');
  if(times.projected_future_at!==null)flags.push('COUNTERFACTUAL_FUTURE_IS_NOT_CURRENT_EVIDENCE');
  if(times.operator_decided_at!==null&&times.operator_decided_at>asof)flags.push('DECISION_IN_THE_FUTURE_NOT_YET_AUTHORIZED');
- const eligible=times.available_at!==null&&times.available_at<=asof&&times.event_time!==null&&times.event_time<=asof&&
-  (times.recorded_at===null||times.recorded_at>=times.event_time);
+ // Source availability must be chronologically possible and witnessed by the cutoff.
+ // An unrecorded or future-recorded source cannot enter an earlier observer state.
+ if(times.recorded_at===null)flags.push('RECORD_TIME_UNKNOWN');
+ if(times.recorded_at!==null&&times.recorded_at>asof)flags.push('RECORD_NOT_YET_CREATED');
+ if(times.available_at!==null&&times.recorded_at!==null&&times.available_at<times.recorded_at)
+  flags.push('SOURCE_AVAILABLE_BEFORE_RECORD_ANOMALY');
+ const eligible=times.event_time!==null&&times.event_time<=asof&&
+  times.recorded_at!==null&&times.recorded_at>=times.event_time&&times.recorded_at<=asof&&
+  times.available_at!==null&&times.available_at>=times.recorded_at&&times.available_at<=asof;
  return {schema:'td613.rulefield.temporal-witness/v1',event_id:event.id||'UNKNOWN',as_of,
   clocks:{event_time:event.event_time??null,recorded_at:event.recorded_at??null,available_at:event.available_at??null,
    operator_decided_at:event.operator_decided_at??null,projected_future_at:event.projected_future_at??null},
