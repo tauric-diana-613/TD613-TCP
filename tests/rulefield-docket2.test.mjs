@@ -98,3 +98,27 @@ test('ROD2 14 a modified source-derived field invalidates docket',()=>{
  const d=docket();d.fields[0].academic_working_title='unapproved reinterpretation';
  assert.equal(validateRevisionDocket(d),false);
 });
+
+test('ROD2 15 future-recorded event cannot become admissible through earlier source availability',()=>{
+ const t=temporalWitness({id:'future-record',event_time:'2026-01-01T00:00:00Z',
+  recorded_at:'2026-03-01T00:00:00Z',available_at:'2026-01-10T00:00:00Z'},
+  {as_of:'2026-02-01T00:00:00Z'});
+ assert.equal(t.eligibility,'HELD_TEMPORAL_EVIDENCE');
+ assert.ok(t.flags.includes('RECORD_NOT_YET_CREATED'));
+ assert.ok(t.flags.includes('SOURCE_AVAILABLE_BEFORE_RECORD_ANOMALY'));
+});
+test('ROD2 16 missing source-record time fails closed instead of becoming a historical witness',()=>{
+ const t=temporalWitness({id:'unrecorded',event_time:'2026-01-01T00:00:00Z',
+  available_at:'2026-01-05T00:00:00Z'},{as_of:'2026-02-01T00:00:00Z'});
+ assert.equal(t.eligibility,'HELD_TEMPORAL_EVIDENCE');
+ assert.ok(t.flags.includes('RECORD_TIME_UNKNOWN'));
+});
+test('ROD2 17 ordered event-record-availability clocks admit historical evidence only by cutoff',()=>{
+ const row={id:'ordered',event_time:'2026-01-01T00:00:00Z',
+  recorded_at:'2026-01-02T00:00:00Z',available_at:'2026-01-05T00:00:00Z'};
+ const before=temporalWitness(row,{as_of:'2026-01-04T00:00:00Z'});
+ const after=temporalWitness(row,{as_of:'2026-01-06T00:00:00Z'});
+ assert.equal(before.eligibility,'HELD_TEMPORAL_EVIDENCE');
+ assert.equal(after.eligibility,'SOURCE_EVIDENCE_ADMISSIBLE_AS_OF');
+ assert.equal(after.no_human_authorization_inferred,true);
+});
