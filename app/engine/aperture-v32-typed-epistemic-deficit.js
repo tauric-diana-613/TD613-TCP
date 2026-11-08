@@ -479,6 +479,7 @@ export function auditTypedEpistemicDeficit(input = {}) {
     candidate_probe_evaluation: probeEvaluation,
     classification_replay_stability: APERTURE_V32_REPLAY_STABILITY,
     no_scalar_crown: true,
+    missing_is_neutral: false,
     proposal_is_execution: false,
     widening_is_validation: false,
     automatic_observation: false,

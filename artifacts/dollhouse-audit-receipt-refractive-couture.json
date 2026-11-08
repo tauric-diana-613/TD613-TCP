@@ -1,0 +1,435 @@
+{
+  "schema": "td613.dollhouse.skill-audit-receipt/v1.0",
+  "invocation_id": "dollhouse-audit-1794011606701-a3d3b318",
+  "timestamp": "2026-11-07T00:33:26.701Z",
+  "source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+  "source_revision_verified": true,
+  "git_commit_verified": true,
+  "executing_checkout_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+  "is_exact_checkout_match": true,
+  "worktree_cleanliness_verified": true,
+  "exact_checkout_verified": true,
+  "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+  "current_head_source_equivalence_verified": true,
+  "provenance_identities": {
+    "executable_source_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "audit_execution_revision": "f3dd8d54ba423409317aa239d9dd6bdb6da618ef",
+    "git_commit_verified": true,
+    "is_exact_checkout_match": true,
+    "worktree_cleanliness_verified": true,
+    "current_head_source_equivalence": "EXACT_CHECKOUT_IDENTICAL",
+    "current_head_source_equivalence_verified": true,
+    "receipt_publication_relationship": "FROZEN_SOURCE_AUDIT_PUBLISHED_IN_SUCCESSOR_COMMIT"
+  },
+  "provenance_acceptance": {
+    "SOURCE_REVISION_VERIFIED": true,
+    "AUDIT_EXECUTION_REVISION_VERIFIED": true,
+    "RECEIPT_PUBLICATION_IDENTITY_VERIFIED": true,
+    "CURRENT_HEAD_SOURCE_EQUIVALENCE_VERIFIED_OR_HELD": "VERIFIED"
+  },
+  "nested_extension_holds": [
+    {
+      "role": "APERTURE",
+      "property": "classification_replay_stability",
+      "status": "HELD_NOT_YET_WITNESSED",
+      "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+    }
+  ],
+  "is_historical_commit_only": false,
+  "task_scope": "REFRACTIVE_COUTURE_MATHEMATICAL_AND_CUSTODIAL_AUDIT",
+  "evidence_class": "SOURCE_CODE_AND_MATHEMATICAL_CALIBRATION_AUDIT",
+  "evidence_references": [
+    "AGENTS.md",
+    "PEDAGOGUE.md",
+    "APERTURE.md",
+    "ATLAS.md",
+    "FADT.md",
+    "DOLLHOUSE.md",
+    "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+    "packages/em_unified_synthesis/competent-null-comparator.mjs",
+    "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs",
+    "packages/em_unified_synthesis/em_unified_synthesis_receipt.json"
+  ],
+  "evidence_manifest": [
+    {
+      "reference": "AGENTS.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c",
+      "byte_digest_verified": true,
+      "sha256": "28a2d6f5bb9d15d4891069cff1455d8d83493f01058e41961ca8f6797577098c"
+    },
+    {
+      "reference": "PEDAGOGUE.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "8088e42d0b04847f7a63ae806faa6655ec654790fba75e8874f2d84d615303da",
+      "byte_digest_verified": true,
+      "sha256": "8088e42d0b04847f7a63ae806faa6655ec654790fba75e8874f2d84d615303da"
+    },
+    {
+      "reference": "APERTURE.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d",
+      "byte_digest_verified": true,
+      "sha256": "3f6225494e7f3b0a021699ae3f54f61d002f71bd6b7373e4bece2a699a7b5c1d"
+    },
+    {
+      "reference": "ATLAS.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "6600263f9e572ecff679a792709a4c3315b605794ba9454ad7d0b14d6c7d1a27",
+      "byte_digest_verified": true,
+      "sha256": "6600263f9e572ecff679a792709a4c3315b605794ba9454ad7d0b14d6c7d1a27"
+    },
+    {
+      "reference": "FADT.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e",
+      "byte_digest_verified": true,
+      "sha256": "c8b420ecc63621677dceee7c1530688cbc786503451cdeb157205b1fb67e8b6e"
+    },
+    {
+      "reference": "DOLLHOUSE.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "f0f840b37009c83f719e3c63d28596e7a697cdd1c3c7ab2214ff5f2e3b371aca",
+      "byte_digest_verified": true,
+      "sha256": "f0f840b37009c83f719e3c63d28596e7a697cdd1c3c7ab2214ff5f2e3b371aca"
+    },
+    {
+      "reference": "packages/em_unified_synthesis/EM_UNIFIED_THEORY_SYNTHESIS_QUALIFICATION.md",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "1c304dcedb9e3e1a46ed98f2c0168a6539690e5d96bb704831eceec7c9e175d3",
+      "byte_digest_verified": true,
+      "sha256": "1c304dcedb9e3e1a46ed98f2c0168a6539690e5d96bb704831eceec7c9e175d3"
+    },
+    {
+      "reference": "packages/em_unified_synthesis/competent-null-comparator.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1",
+      "byte_digest_verified": true,
+      "sha256": "f26f69a3df7081e3cc7bb6cc194a2fe93f7657347cd63e61e0d18fe7c01f25b1"
+    },
+    {
+      "reference": "packages/em_unified_synthesis/em-unified-theory-synthesis.mjs",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "e72ebd8cdba13545ebf4553983ba71c6befd856dda2cb0a02545292ab090208f",
+      "byte_digest_verified": true,
+      "sha256": "e72ebd8cdba13545ebf4553983ba71c6befd856dda2cb0a02545292ab090208f"
+    },
+    {
+      "reference": "packages/em_unified_synthesis/em_unified_synthesis_receipt.json",
+      "type": "WORKSPACE_FILE",
+      "verified": true,
+      "byte_digest": "e6f52a237c6136ac7102a8a38271c30d13dd1e5fea220f450aea34b6f8f786ce",
+      "byte_digest_verified": true,
+      "sha256": "e6f52a237c6136ac7102a8a38271c30d13dd1e5fea220f450aea34b6f8f786ce"
+    }
+  ],
+  "roles_requested": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "roles_attempted": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "roles_executed": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "missing_inputs": [],
+  "specialist_findings": [
+    {
+      "role": "PEDAGOGUE",
+      "jurisdiction": "human_consequence_and_burden",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by PEDAGOGUE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "cadence_audit": {
+          "schema": "td613.dollhouse.pedagogue-dromological/v0.1",
+          "kind": "DROMOLOGICAL_SEQUENCE_AUDIT",
+          "verdict": "SUPPORTED",
+          "violations": [],
+          "canonical_order_satisfied": true,
+          "cadence": {
+            "minimum_world_answer_dwell": null,
+            "observed_world_answer_dwell": null,
+            "rest_required": false,
+            "exit_required": false,
+            "timing_requirements_are_fixture_declared": true,
+            "age_inference_forbidden": true,
+            "developmental_rank_forbidden": true
+          },
+          "phase_times": {
+            "NOTICE": 10,
+            "ACT": 20,
+            "WORLD_ANSWERS": 30,
+            "NAME": 40
+          },
+          "context_registration_lag": null,
+          "authority": {
+            "recommendation_only": true,
+            "automatic_redesign": false,
+            "product_mutation_authorized": false,
+            "production_mutation_authorized": false,
+            "human_closure_required": true
+          },
+          "scope": {
+            "route_audit_not_person_diagnosis": true,
+            "learner_profile_created": false,
+            "developmental_rank_assigned": false,
+            "psychological_state_inferred": false,
+            "institutional_intent_inferred": false
+          },
+          "raw_audit": {
+            "schema": "td613.flowcore.pedagogue-dromological-sequence-audit/v0.1",
+            "audit_id": "dollhouse-pedagogue-cadence-audit",
+            "clock_unit": "DECLARED_INTEGER_TICK",
+            "phase_times": {
+              "NOTICE": 10,
+              "ACT": 20,
+              "WORLD_ANSWERS": 30,
+              "NAME": 40
+            },
+            "canonical_partial_order": [
+              "NOTICE",
+              "ACT",
+              "WORLD_ANSWERS",
+              "NAME"
+            ],
+            "canonical_phases_present": true,
+            "cadence": {
+              "minimum_world_answer_dwell": null,
+              "observed_world_answer_dwell": null,
+              "rest_required": false,
+              "exit_required": false,
+              "timing_requirements_are_fixture_declared": true,
+              "age_inference_forbidden": true,
+              "developmental_rank_forbidden": true
+            },
+            "context_registration_lag": null,
+            "violations": [],
+            "classification": "NO_DECLARED_SEQUENCE_OR_CADENCE_DEFICIT",
+            "compression": null,
+            "scope": {
+              "route_audit_not_person_diagnosis": true,
+              "learner_profile_created": false,
+              "developmental_rank_assigned": false,
+              "psychological_state_inferred": false,
+              "institutional_intent_inferred": false
+            },
+            "authority": {
+              "recommendation_only": true,
+              "automatic_redesign": false,
+              "product_mutation_authorized": false,
+              "production_mutation_authorized": false,
+              "human_closure_required": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "role": "APERTURE",
+      "jurisdiction": "observability_and_identifiability",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by APERTURE",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "epistemic_deficit": {
+          "schema": "td613.aperture.v32-typed-epistemic-deficit-receipt/v0.1",
+          "version": "v3.2-alpha",
+          "source_status": "DERIVED_FROM_OPERATOR_DECLARED_METRICS",
+          "authority_class": "A2_DERIVATIONAL",
+          "input": {
+            "latent_dimension": 2,
+            "current_rank": 2,
+            "sigma_min": 0.5484,
+            "condition_number": 2.327498176513494,
+            "uncertainty_status": "VALID_DECLARED",
+            "sigma_min_floor": 0.001,
+            "condition_number_ceiling": 1000,
+            "threshold_authority": "OPERATOR_DECLARED_LOCAL"
+          },
+          "deficit_class": "NO_DECLARED_LOCAL_IDENTIFIABILITY_DEFICIT",
+          "disposition": "ASK_NOTHING",
+          "admissible_question_criterion": "DO_NOT_MANUFACTURE_A_QUESTION",
+          "reason": "declared local rank and stability posture is presently satisfied",
+          "pedagogue_companion_cue": "PEDAGOGUE_SHOULD_NOT_MANUFACTURE_A_QUESTION",
+          "candidate_probe_evaluation": null,
+          "classification_replay_stability": "HELD_NOT_YET_WITNESSED",
+          "no_scalar_crown": true,
+          "proposal_is_execution": false,
+          "widening_is_validation": false,
+          "automatic_observation": false,
+          "automatic_experiment_execution": false,
+          "promotion_authority": false,
+          "production_mutation": false,
+          "human_closure_required": true
+        }
+      }
+    },
+    {
+      "role": "ATLAS",
+      "jurisdiction": "receiver_relative_custody",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by ATLAS",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "holonomy_parity": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "REFRACTIVE_COUTURE_PRESENTATION_SEAM_INVARIANT",
+          "endpoint_b": "REFRACTIVE_COUTURE_PRESENTATION_SEAM_INVARIANT",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 0,
+          "winding_delta": 0,
+          "history_parity_equal": true,
+          "modulo_2_parity_equal": true,
+          "disposition": "PASS",
+          "reason": "endpoints and winding histories match exactly",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    {
+      "role": "FADT",
+      "jurisdiction": "finite_support_boundary",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by FADT",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "fiber_bounds": {
+          "antecedent_count": 2,
+          "union_support": [
+            "EXTRACTED_PDFS_20",
+            "MARKDOWN_SOURCES_33",
+            "PACKAGING_ARTIFACT_SIDECARS_33",
+            "TEXT_DERIVATIVES_53",
+            "UNEXTRACTED_BINARIES_8"
+          ],
+          "union_cardinality": 5,
+          "intersection_support": [
+            "EXTRACTED_PDFS_20",
+            "MARKDOWN_SOURCES_33",
+            "PACKAGING_ARTIFACT_SIDECARS_33",
+            "TEXT_DERIVATIVES_53",
+            "UNEXTRACTED_BINARIES_8"
+          ],
+          "intersection_cardinality": 5,
+          "irreducible_gap": [],
+          "irreducible_gap_cardinality": 0,
+          "exact_descent_exists": true,
+          "universally_sound_available": true,
+          "disposition": "EXACT_DESCENT",
+          "laws": {
+            "exact_finite_admissibility_descent": true,
+            "universally_sound_support_never_widens_antecedents": true,
+            "sharp_discrepancy_identity_holds_universally": true,
+            "unlawful_widening_rejected": true,
+            "unoccupied_quotient_has_no_authority": true
+          }
+        }
+      }
+    },
+    {
+      "role": "TEMPORAL_CUSTODIAN",
+      "jurisdiction": "chronological_sequence",
+      "verdict": "SUPPORTED",
+      "status": "NO_VIOLATION_DETECTED",
+      "defect_class": "NONE",
+      "claim": "Invariants verified by TEMPORAL_CUSTODIAN",
+      "infractions": [],
+      "is_synthetic_injection": false,
+      "extensions": {
+        "journey_chronology": {
+          "input_valid": true,
+          "verdict": "PASS",
+          "veto_applied": false,
+          "veto_authority": null,
+          "evaluations": {
+            "DOLLHOUSE_DESIGN_QUALIFICATION": "PASS",
+            "HISTORICAL_CHROME_RECONSTRUCTION": "PASS",
+            "FINITE_MATHEMATICAL_VERIFICATION": "PASS",
+            "WILD_FIELD_EVIDENCE_CLOSURE_23MB": "PASS",
+            "EXPERIMENT_B_POSTPOSTFLIGHT_PIN_CANDIDATE": "PASS"
+          },
+          "violations": [],
+          "rationale": "All required declared phases passed in the explicit route order."
+        }
+      }
+    }
+  ],
+  "detected_infractions": [],
+  "orchestrator": {
+    "decision": "SUPPORTED",
+    "consensus": "UNANIMOUS_SUPPORT",
+    "primary_verdicts_consensus": "UNANIMOUS_SUPPORT",
+    "nested_extension_holds": [
+      {
+        "role": "APERTURE",
+        "property": "classification_replay_stability",
+        "status": "HELD_NOT_YET_WITNESSED",
+        "description": "Multi-epoch empirical classification replay stability not yet witnessed in single-run execution"
+      }
+    ],
+    "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+    "empirical_replication_count": 0,
+    "active_roles": [
+      "PEDAGOGUE",
+      "APERTURE",
+      "ATLAS",
+      "FADT",
+      "TEMPORAL_CUSTODIAN"
+    ],
+    "findings_count": 5,
+    "detected_infractions": [],
+    "release_authority": false,
+    "deployment_authority": false,
+    "human_closure_required": true
+  },
+  "case_dossier": null,
+  "replication_status": "SYNTHETIC_OFFLINE_FIXTURE",
+  "empirical_replication_count": 0,
+  "synthetic_vs_empirical": "SYNTHETIC",
+  "unresolved_questions": [],
+  "next_permissible_action": "Human operator review required. All active specialist domain invariants verified. Operator may proceed with next bounded development or review step.",
+  "execution_duration_ms": 588
+}

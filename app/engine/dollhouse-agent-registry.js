@@ -1,3 +1,5 @@
+import { FADT_MAX_COORDINATE_EVALUATION_BUDGET } from './dollhouse-fadt-reparative-assistance.js';
+
 const freeze = value => Object.freeze(value);
 
 export const DOLLHOUSE_AGENT_REGISTRY_SCHEMA = 'td613.dollhouse.agent-registry/v0.1';
@@ -136,6 +138,11 @@ export const DOLLHOUSE_AGENT_REGISTRY = freeze({
         'app/engine/dollhouse-fadt-reparative-assistance.js::compileFadtReparativePacket',
         'app/engine/dollhouse-fadt-reparative-assistance.js::computeFadtFiberBounds'
       ]),
+      constraints: freeze({
+        max_coordinate_evaluation_budget: FADT_MAX_COORDINATE_EVALUATION_BUDGET,
+        fail_closed_irreducible_gap: true,
+        unsupported_search_size_immediate_abort: true
+      }),
       authority_ceiling: 'finite-support-descent-audit-only-no-universal-ai-law-no-release-no-source-state-reconstruction'
     }),
     TEMPORAL_CUSTODIAN: freeze({

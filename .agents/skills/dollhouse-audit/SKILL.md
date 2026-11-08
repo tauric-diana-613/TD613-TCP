@@ -83,6 +83,12 @@ console.log(result.human_receipt);
 console.log('Exit code:', result.exit_code); // 0 = SUPPORTED, 1 = HELD
 ```
 
+### Anti-Recursion & Leaf Auditor Invariant
+Specialist dolls (`dollhouse-pedagogue`, `dollhouse-aperture`, `dollhouse-atlas`, 
+`dollhouse-fadt`, `dollhouse-temporal-custodian`) are leaf auditors. 
+They possess zero subagent invocation authority (`invoke_subagent: forbidden`).
+Only the TD613 Dollhouse Orchestrator possesses subagent delegation authority.
+
 ---
 
 ## Scientific Governance Laws
