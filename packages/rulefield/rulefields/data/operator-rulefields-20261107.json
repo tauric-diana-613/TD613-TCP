@@ -1,0 +1,1635 @@
+{
+  "schema": "td613.rulefield.operator-field-seed/v1",
+  "title": "Operator Rulefield Context Hydration — 80 original expressions",
+  "status": "STAGED_RESEARCH_TOPICS_NO_AUTOMATIC_RULE_PROMOTION",
+  "authority": "Operator supplied research topics; formal working titles are agent-proposed and reversible",
+  "theoretical_axiom": {
+    "name": "RULEFIELD_NOT_EQUIVALENT_TO_RULE",
+    "rulefield": "Research question-space, methods, conjectures, evidence, actors and potential executable local rules",
+    "rule": "Specific typed transition, predicate or admissibility constraint with specified variables and falsifier",
+    "non_identity": "RULEFIELD ≠ RULE",
+    "provenance": "operator-supplied in this conversation"
+  },
+  "count": 80,
+  "items": [
+    {
+      "id": "RF-001",
+      "original_sequence": 1,
+      "original_expression": "\\[\\text{Previously proposed}\\;\\not\\Rightarrow\\;\\text{scientifically redundant}\\]",
+      "proposed_academic_label": "Proposal Recurrence and Scientific Nonredundancy",
+      "object_type": "RULEFIELD",
+      "domain_class": "EPISTEMIC_CONSTRAINT",
+      "assay_family": "FINITE_COUNTEREXAMPLE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-002",
+      "original_sequence": 2,
+      "original_expression": "rulefield ≠ rule",
+      "proposed_academic_label": "Research-Domain Versus Local-Transition Type Separation",
+      "object_type": "RULEFIELD",
+      "domain_class": "TYPE_SYSTEM",
+      "assay_family": "TYPE_SAFETY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-003",
+      "original_sequence": 3,
+      "original_expression": "computational irreducibility",
+      "proposed_academic_label": "Computational Irreducibility and Predictive Shortcut Limits",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_MECHANISM",
+      "assay_family": "FINITE_COMPLEXITY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-004",
+      "original_sequence": 4,
+      "original_expression": "combinatorial explosion",
+      "proposed_academic_label": "Combinatorial State-Space Growth and Resource Scaling",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_MECHANISM",
+      "assay_family": "SCALING",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-005",
+      "original_sequence": 5,
+      "original_expression": "rupture",
+      "proposed_academic_label": "Discontinuous Transitions, Rupture, and Historical Nonretroactivity",
+      "object_type": "RULEFIELD",
+      "domain_class": "THEORETICAL_CONSTRUCT",
+      "assay_family": "TEMPORAL_WITNESS",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-006",
+      "original_sequence": 6,
+      "original_expression": "Add to Cart / Shopping Cart / Checkout nav & export vibes",
+      "proposed_academic_label": "Staged Selection, Basket Aggregation, and Explicit Commit Semantics",
+      "object_type": "RULEFIELD",
+      "domain_class": "WORKFLOW_PATTERN",
+      "assay_family": "TRANSACTION_PROTOTYPE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-007",
+      "original_sequence": 7,
+      "original_expression": "institutional Time",
+      "proposed_academic_label": "Institutional Temporal Asymmetry and Decision Latency",
+      "object_type": "RULEFIELD",
+      "domain_class": "SOCIAL_SYSTEMS_MODEL",
+      "assay_family": "TEMPORAL_WITNESS",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-008",
+      "original_sequence": 8,
+      "original_expression": "Rudolph Steiner",
+      "proposed_academic_label": "Rudolf Steiner: Historical Attribution and Source-Critical Interpretation",
+      "object_type": "RULEFIELD",
+      "domain_class": "HISTORICAL_REFERENT",
+      "assay_family": "SOURCE_DISAMBIGUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": true,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-009",
+      "original_sequence": 9,
+      "original_expression": "Evelyn",
+      "proposed_academic_label": "Evelyn: Unresolved Persona or Source Referent",
+      "object_type": "RULEFIELD",
+      "domain_class": "UNRESOLVED_REFERENT",
+      "assay_family": "SOURCE_DISAMBIGUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": true,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-010",
+      "original_sequence": 10,
+      "original_expression": "Princess Latifa",
+      "proposed_academic_label": "Princess Latifa: Source Attribution and Narrative Custody",
+      "object_type": "RULEFIELD",
+      "domain_class": "HISTORICAL_REFERENT",
+      "assay_family": "SOURCE_DISAMBIGUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": true,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-011",
+      "original_sequence": 11,
+      "original_expression": "Wild Field",
+      "proposed_academic_label": "Open-Ended Rule-Space Exploration Under Bounded Custody",
+      "object_type": "RULEFIELD",
+      "domain_class": "RESEARCH_PROGRAM",
+      "assay_family": "FINITE_SEARCH",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-012",
+      "original_sequence": 12,
+      "original_expression": "TD613 phason homology + operationalizations",
+      "proposed_academic_label": "Phasonic Correspondence, Invariants, and Homological Proof Obligations",
+      "object_type": "RULEFIELD",
+      "domain_class": "MATHEMATICAL_HYPOTHESIS",
+      "assay_family": "TOPOLOGICAL_TEST",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-013",
+      "original_sequence": 13,
+      "original_expression": "child-legible / radicalized simplicity",
+      "proposed_academic_label": "Accessible Consequence-First Explanations and Comprehension Constraints",
+      "object_type": "RULEFIELD",
+      "domain_class": "HUMAN_FACTORS",
+      "assay_family": "OBSERVER_STUDY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-014",
+      "original_sequence": 14,
+      "original_expression": "zero-bounce",
+      "proposed_academic_label": "Zero-Bounce Interaction Protocol and Termination Definition",
+      "object_type": "RULEFIELD",
+      "domain_class": "UNRESOLVED_TECHNICAL_TERM",
+      "assay_family": "DEFINITION_REQUIRED",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": true,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-015",
+      "original_sequence": 15,
+      "original_expression": "heterostratigraphy",
+      "proposed_academic_label": "Heterostratigraphic Source-Layer Separation and Temporal Provenance",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHOD",
+      "assay_family": "SOURCE_LINEAGE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-016",
+      "original_sequence": 16,
+      "original_expression": "Pedagogue",
+      "proposed_academic_label": "Pedagogical Transition Ordering and Explanatory Sufficiency",
+      "object_type": "RULEFIELD",
+      "domain_class": "SYSTEM_COMPONENT",
+      "assay_family": "STATE_TRANSITION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-017",
+      "original_sequence": 17,
+      "original_expression": "mass surveillance",
+      "proposed_academic_label": "Mass Surveillance: Observation Asymmetry and Institutional Control",
+      "object_type": "RULEFIELD",
+      "domain_class": "SOCIAL_SYSTEMS_MODEL",
+      "assay_family": "PRIVACY_THREAT_MODEL",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-018",
+      "original_sequence": 18,
+      "original_expression": "mass sousveillance",
+      "proposed_academic_label": "Mass Sousveillance: Reciprocal Observation and Power Asymmetry",
+      "object_type": "RULEFIELD",
+      "domain_class": "SOCIAL_SYSTEMS_MODEL",
+      "assay_family": "PRIVACY_THREAT_MODEL",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-019",
+      "original_sequence": 19,
+      "original_expression": "ambient AI hypothesis",
+      "proposed_academic_label": "Ambient Intelligence and Attention-Mediation Hypotheses",
+      "object_type": "RULEFIELD",
+      "domain_class": "EMPIRICAL_HYPOTHESIS",
+      "assay_family": "OBSERVER_STUDY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-020",
+      "original_sequence": 20,
+      "original_expression": "universal theory generator",
+      "proposed_academic_label": "Theory Generation as Constrained Search and Adversarial Selection",
+      "object_type": "RULEFIELD",
+      "domain_class": "RESEARCH_PROGRAM",
+      "assay_family": "HELDOUT_EVALUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-021",
+      "original_sequence": 21,
+      "original_expression": "queer semiotics",
+      "proposed_academic_label": "Queer Semiotics and Performed Classification Dynamics",
+      "object_type": "RULEFIELD",
+      "domain_class": "CRITICAL_THEORY",
+      "assay_family": "SOURCE_INTERPRETATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-022",
+      "original_sequence": 22,
+      "original_expression": "ablations protocols",
+      "proposed_academic_label": "Ablation Protocols and Information-Matched Baseline Design",
+      "object_type": "RULEFIELD",
+      "domain_class": "EXPERIMENTAL_METHOD",
+      "assay_family": "CONTROLLED_ABLATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-023",
+      "original_sequence": 23,
+      "original_expression": "zero-free parameters",
+      "proposed_academic_label": "Zero-Free-Parameter Models and Degrees-of-Freedom Accounting",
+      "object_type": "RULEFIELD",
+      "domain_class": "MATHEMATICAL_HYPOTHESIS",
+      "assay_family": "PARAMETER_AUDIT",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-024",
+      "original_sequence": 24,
+      "original_expression": "B. J. Fogg",
+      "proposed_academic_label": "Fogg Behavior Model: Motivation, Ability, and Prompt Conditions",
+      "object_type": "RULEFIELD",
+      "domain_class": "HISTORICAL_THEORY",
+      "assay_family": "BEHAVIORAL_EVALUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-025",
+      "original_sequence": 25,
+      "original_expression": "ambiance ≠ field ≠ ambience",
+      "proposed_academic_label": "Ambiance, Observational Field, and Ambient Conditions as Distinct Types",
+      "object_type": "RULEFIELD",
+      "domain_class": "TYPE_SYSTEM",
+      "assay_family": "OBSERVER_STUDY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-026",
+      "original_sequence": 26,
+      "original_expression": "postmodernism ≠ poststructuralism",
+      "proposed_academic_label": "Postmodernism and Poststructuralism: Distinct Interpretive Traditions",
+      "object_type": "RULEFIELD",
+      "domain_class": "CRITICAL_THEORY",
+      "assay_family": "SOURCE_DISAMBIGUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-027",
+      "original_sequence": 27,
+      "original_expression": "covenant-knowledge frameworks",
+      "proposed_academic_label": "Covenantal Knowledge, Authority, and Consent Boundaries",
+      "object_type": "RULEFIELD",
+      "domain_class": "EPISTEMIC_CONSTRAINT",
+      "assay_family": "AUTHORITY_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-028",
+      "original_sequence": 28,
+      "original_expression": "post-web governance",
+      "proposed_academic_label": "Post-Web Interface and Delegated Governance Regimes",
+      "object_type": "RULEFIELD",
+      "domain_class": "PROSPECTIVE_GOVERNANCE",
+      "assay_family": "AUTHORITY_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-029",
+      "original_sequence": 29,
+      "original_expression": "stylodynamics",
+      "proposed_academic_label": "Stylodynamic Variation and Authorship-Attribution Limits",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_PHILOLOGY",
+      "assay_family": "ATTRIBUTION_CONTROL",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-030",
+      "original_sequence": 30,
+      "original_expression": "parasitic AI",
+      "proposed_academic_label": "Parasitic-Agent Externality and Resource-Extraction Models",
+      "object_type": "RULEFIELD",
+      "domain_class": "SPECULATIVE_SYSTEM_HYPOTHESIS",
+      "assay_family": "THREAT_MODEL",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-031",
+      "original_sequence": 31,
+      "original_expression": "dyadic agent behavior",
+      "proposed_academic_label": "Dyadic Agent Interaction and Reciprocal Adaptation",
+      "object_type": "RULEFIELD",
+      "domain_class": "MULTIAGENT_HYPOTHESIS",
+      "assay_family": "AGENT_ABLATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-032",
+      "original_sequence": 32,
+      "original_expression": "AI psychosis",
+      "proposed_academic_label": "AI-Interaction Distress and Unsupported Mental-State Attribution",
+      "object_type": "RULEFIELD",
+      "domain_class": "HEALTH_SAFETY_TOPIC",
+      "assay_family": "HUMAN_SAFETY_REVIEW",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-033",
+      "original_sequence": 33,
+      "original_expression": "Any system or subsystem with simple building blocks that interact according to specific rules is a candidate for emergence",
+      "proposed_academic_label": "Local-Interaction Systems as Candidates for Emergent Macrostructure",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HEURISTIC",
+      "assay_family": "FINITE_CONSTRUCTION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-034",
+      "original_sequence": 34,
+      "original_expression": "If you think you've seen it all, you haven't: because of combinatorial explosions, there are always new, unseen arrangements and patterns worth discovering in systems of any complexity",
+      "proposed_academic_label": "Combinatorial Novelty Search and Unseen-Configuration Hypotheses",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HEURISTIC",
+      "assay_family": "BOUNDED_SEARCH",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-035",
+      "original_sequence": 35,
+      "original_expression": "Don't assume, experiment: It is often impossible to predict the outcome of a rule set until it is actually run. You must test, iterate, and experiment to find interesting emergent behavior",
+      "proposed_academic_label": "Execution-First Inquiry and Prediction–Simulation Comparison",
+      "object_type": "RULEFIELD",
+      "domain_class": "EXPERIMENTAL_METHOD",
+      "assay_family": "PREDICTIVE_BASELINE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-036",
+      "original_sequence": 36,
+      "original_expression": "Iteration is a powerful engine for emergent complexity because it allows simple rules to compound their effects over time. By repeatedly applying basic interaction rules to a set of building blocks, a system can evolve from a simple initial state into highly structured or chaotic patterns that were not explicitly programmed into the rules/Rulefield",
+      "proposed_academic_label": "Iterated Local Dynamics and Multi-Scale Pattern Formation",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HYPOTHESIS",
+      "assay_family": "CA_PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-037",
+      "original_sequence": 37,
+      "original_expression": "Pattern Evolution: As seen in cellular automata like Conway's Game of Life or Stephen Wolfram's one-dimensional rules, repeating a process step-by-step transforms basic inputs into complex, self-organizing structures",
+      "proposed_academic_label": "Cellular-Automaton Trajectories and Pattern Evolution",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_MECHANISM",
+      "assay_family": "CA_PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-038",
+      "original_sequence": 38,
+      "original_expression": "automata theory",
+      "proposed_academic_label": "Formal Automata, State Transitions, and Computational Expressiveness",
+      "object_type": "RULEFIELD",
+      "domain_class": "FORMAL_METHOD",
+      "assay_family": "AUTOMATA_CONSTRUCTION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-039",
+      "original_sequence": 39,
+      "original_expression": "inverse design",
+      "proposed_academic_label": "Inverse Design Under Constraints and Objective Identifiability",
+      "object_type": "RULEFIELD",
+      "domain_class": "EXPERIMENTAL_METHOD",
+      "assay_family": "OPTIMIZATION_COMPARATOR",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-040",
+      "original_sequence": 40,
+      "original_expression": "ontology-augmented generation (OAG)",
+      "proposed_academic_label": "Ontology-Augmented Generation and Retrieval-Grounded Constraint Checking",
+      "object_type": "RULEFIELD",
+      "domain_class": "PROPOSED_TECHNICAL_INTEGRATION",
+      "assay_family": "SOURCE_RETRIEVAL_ABLATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": true,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-041",
+      "original_sequence": 41,
+      "original_expression": "Unpredictability: Iteration often leads to computational irreducibility, meaning the final outcome cannot be predicted by a simple shortcut formula; the system must literally be run through its iterations to see what emerges",
+      "proposed_academic_label": "Predictability Limits of Iterative Programs",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTESTABLE_THEORETICAL_CLAIM",
+      "assay_family": "PREDICTIVE_BASELINE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-042",
+      "original_sequence": 42,
+      "original_expression": "Refinement: In the context of creative projects or iteration allows for an evolutionary design approach. By testing small variations and iterating on the results, you can coax a system into producing interesting, complex behavior that would be impossible to design directly by hand",
+      "proposed_academic_label": "Evolutionary Design Search Under a Declared Utility Function",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HEURISTIC",
+      "assay_family": "FINITE_SEARCH",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-043",
+      "original_sequence": 43,
+      "original_expression": "Because emergent behavior arises from the collective interactions of building blocks and rules, it is often impossible to predict the exact outcome in advance. Trial and error helps in the following ways: 1) Discovery over Design: Since the specific consequences of a rule set aren't intentionally designed by the creator, experimentation allows you to discover interesting, self-organizing patterns that you might not have otherwise imagined. 2) Finding the \"Sweet Spot\": Most combinations of rules or building blocks may result in boring, overly simplistic, or chaotic, unusable systems. Through iterative testing, you can identify the specific rule configurations that produce the desired complex and organized behavior 3) Evolutionary Refinement: By taking an evolutionary approach—trying small variations of a system and keeping the version that yields the best or most interesting results—you can slowly \"coax\" the system into producing complex behavior, similar to growing a plant rather than building a house, and 4) Managing Unintended Consequences: Trial and error allows you to catch and mitigate \"emergent misbehavior,\" such as broken game strategies or unintended side effects. Once these problems emerge, you can adjust, nerf, or buff the rules to steer the system toward more desirable outcome",
+      "proposed_academic_label": "Iterative Design: Discovery, Selection, Adaptation, and Failure Containment",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HEURISTIC",
+      "assay_family": "CONTROLLED_ABLATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-044",
+      "original_sequence": 44,
+      "original_expression": "When managing the \"control problem\" in emergent systems, fixing \"broken\" rules or unintended consequences requires an iterative, diagnostic approach rather than top-down enforcement. Because emergent behavior is unpredictable, you must identify and address issues only after they manifest",
+      "proposed_academic_label": "Post-Observation Control and Intervention Timing Hypothesis",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTROL_THEORY_HYPOTHESIS",
+      "assay_family": "INTERVENTION_TIMING",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-045",
+      "original_sequence": 45,
+      "original_expression": "Control problem: Balancing control with emergence is difficult, as strict control can stifle the very processes that create unexpected behavior",
+      "proposed_academic_label": "Constraint–Exploration Tradeoff and Control-Space Sensitivity",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTROL_THEORY_HYPOTHESIS",
+      "assay_family": "PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-046",
+      "original_sequence": 46,
+      "original_expression": "Accept misbehavior: You must be prepared for \"emergent misbehavior,\" including unintended consequences or side effects, as these are inherent to systems that allow for unplanned outcomes",
+      "proposed_academic_label": "Unexpected-Outcome Classification and Fault-Tolerant Observation",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HEURISTIC",
+      "assay_family": "ADVERSARIAL_FIXTURE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-047",
+      "original_sequence": 47,
+      "original_expression": "Iterative refinement: Rather than trying to dictate the final state, you should monitor the system once it is running. If specific outcomes are problematic, you can adjust, \"nerf,\" or \"buff\" the rules to guide the system toward better behavior",
+      "proposed_academic_label": "Iterative Feedback Control with Predeclared Intervention Limits",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTROL_THEORY_METHOD",
+      "assay_family": "CONTROLLED_ABLATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-048",
+      "original_sequence": 48,
+      "original_expression": "Sacrifice some control: Designing by emergence requires relaxing your grip on the final product, allowing the system's rules to generate the complex outcomes instead of pre-defining every detail",
+      "proposed_academic_label": "Constrained Autonomy and Open-Ended Generative Search",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTROL_THEORY_METHOD",
+      "assay_family": "AUTHORITY_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-049",
+      "original_sequence": 49,
+      "original_expression": "operator-controlled emergence",
+      "proposed_academic_label": "Human-Governed Emergent Search with Nondelegable Approval Gates",
+      "object_type": "RULEFIELD",
+      "domain_class": "GOVERNANCE_PROTOCOL",
+      "assay_family": "AUTHORITY_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-050",
+      "original_sequence": 50,
+      "original_expression": "Orestes–kerykeion inversion",
+      "proposed_academic_label": "Orestes–Kerykeion Inversion: Custody, Witnessing, and Spectacle",
+      "object_type": "RULEFIELD",
+      "domain_class": "THEORETICAL_CONSTRUCT",
+      "assay_family": "SOURCE_INTERPRETATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-051",
+      "original_sequence": 51,
+      "original_expression": "Observe and Identify: Since you cannot perfectly predict outcomes, wait for the emergent system to show its behavior. Identify specific strategies or side effects that \"break\" the game or produce unwanted outcomes",
+      "proposed_academic_label": "Observation-Led Anomaly Identification and Intervention Thresholds",
+      "object_type": "RULEFIELD",
+      "domain_class": "EXPERIMENTAL_METHOD",
+      "assay_family": "EVENT_TRACE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-052",
+      "original_sequence": 52,
+      "original_expression": "Buffing/Nerfing: Treat your rules as parameters that can be tweaked. You can adjust the mechanics—similar to balancing a game—by \"nerfing\" (weakening) broken strategies or \"buffing\" (strengthening) others to restore balance",
+      "proposed_academic_label": "Rule-Parameter Interventions and Sensitivity Analysis",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTROL_THEORY_METHOD",
+      "assay_family": "PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-053",
+      "original_sequence": 53,
+      "original_expression": "Continuous Experimentation: The process is never truly \"finished.\" Continue to iterate on your rule sets, testing how small changes impact the overall system behavior until you reach a desirable state",
+      "proposed_academic_label": "Sequential Experimentation with Resource and Stopping Rules",
+      "object_type": "RULEFIELD",
+      "domain_class": "EXPERIMENTAL_METHOD",
+      "assay_family": "SEQUENTIAL_DESIGN",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-054",
+      "original_sequence": 54,
+      "original_expression": "While emergent behavior is unruly, it can be tamed through a cycle of observation, adjustment, and iteration, allowing you to maintain control without destroying the underlying emergent potential of the system",
+      "proposed_academic_label": "Adaptive Governance Under Open-Ended Dynamics",
+      "object_type": "RULEFIELD",
+      "domain_class": "GOVERNANCE_HYPOTHESIS",
+      "assay_family": "INTERVENTION_TIMING",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-055",
+      "original_sequence": 55,
+      "original_expression": "holonomic brain theory",
+      "proposed_academic_label": "Holonomic Brain Proposals and Mathematical-Analogy Validation",
+      "object_type": "RULEFIELD",
+      "domain_class": "SPECULATIVE_NEUROSCIENCE",
+      "assay_family": "SOURCE_CRITICISM",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-056",
+      "original_sequence": 56,
+      "original_expression": "structural violence",
+      "proposed_academic_label": "Institutional Structures and Differential Harm Mechanisms",
+      "object_type": "RULEFIELD",
+      "domain_class": "CRITICAL_SOCIAL_THEORY",
+      "assay_family": "EMPIRICAL_SOCIAL_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-057",
+      "original_sequence": 57,
+      "original_expression": "building blocks",
+      "proposed_academic_label": "Local Constituents, Interaction Rules, and Compositional Granularity",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_MECHANISM",
+      "assay_family": "FINITE_CONSTRUCTION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-058",
+      "original_sequence": 58,
+      "original_expression": "Palantir (Gotham; Ontology; Apollo; AIP)",
+      "proposed_academic_label": "Palantir Platform Architecture as a Comparative Governance Case",
+      "object_type": "RULEFIELD",
+      "domain_class": "CONTEMPORARY_TECH_CASE",
+      "assay_family": "PUBLIC_DOCUMENT_REVIEW",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-059",
+      "original_sequence": 59,
+      "original_expression": "Conway's Game of Life: A famous two-dimensional cellular automaton capable of simulating universal computation",
+      "proposed_academic_label": "Conway's Life: Two-Dimensional Cellular Automaton and Universality Conditions",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_REFERENCE",
+      "assay_family": "CA_PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-060",
+      "original_sequence": 60,
+      "original_expression": "Rule 30: A specific one-dimensional cellular automaton rule identified by Stephen Wolfram that produces complex, chaotic, yet structured patterns",
+      "proposed_academic_label": "Elementary Cellular Automaton Rule 30 and Pattern Complexity",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_REFERENCE",
+      "assay_family": "CA_PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-061",
+      "original_sequence": 61,
+      "original_expression": "cellular automata: Computer programs consisting of a grid of cells that change state based on a set of local rules",
+      "proposed_academic_label": "Cellular-Automaton Local Transition Formalism",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_REFERENCE",
+      "assay_family": "CA_PARAMETER_SWEEP",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-062",
+      "original_sequence": 62,
+      "original_expression": "Wolfram's Four Categories of Complexity: A classification system for rule sets: (1) Flat and Boring, (2) Repetitive and Predictable, (3) Chaotic and Random, and (4) Complex and Organized",
+      "proposed_academic_label": "Wolfram's Four Cellular-Automaton Behavior Classes",
+      "object_type": "RULEFIELD",
+      "domain_class": "COMPUTATIONAL_REFERENCE",
+      "assay_family": "CLASSIFICATION_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-063",
+      "original_sequence": 63,
+      "original_expression": "Wolfram Physics Project: A research project using hypergraph systems to model the universe as an algorithmic process",
+      "proposed_academic_label": "Wolfram Physics Project: Hypergraph Rewriting and Empirical-Physics Boundaries",
+      "object_type": "RULEFIELD",
+      "domain_class": "RESEARCH_PROGRAM",
+      "assay_family": "HYPERGRAPH_COMPARATOR",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-064",
+      "original_sequence": 64,
+      "original_expression": "fractals",
+      "proposed_academic_label": "Fractal Scaling, Self-Similarity, and Dimension Estimation",
+      "object_type": "RULEFIELD",
+      "domain_class": "MATHEMATICAL_DOMAIN",
+      "assay_family": "FINITE_SCALING",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-065",
+      "original_sequence": 65,
+      "original_expression": "Turing completeness",
+      "proposed_academic_label": "Computational Universality and Formal Simulation Conditions",
+      "object_type": "RULEFIELD",
+      "domain_class": "FORMAL_METHOD",
+      "assay_family": "UNIVERSALITY_PROOF",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": false,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-066",
+      "original_sequence": 66,
+      "original_expression": "plutocracy",
+      "proposed_academic_label": "Concentrated Economic Power and Institutional Feedback Structures",
+      "object_type": "RULEFIELD",
+      "domain_class": "CRITICAL_SOCIAL_THEORY",
+      "assay_family": "EMPIRICAL_SOCIAL_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-067",
+      "original_sequence": 67,
+      "original_expression": "attractor basin",
+      "proposed_academic_label": "Attractor Basins in Defined Dynamical State Spaces",
+      "object_type": "RULEFIELD",
+      "domain_class": "DYNAMICAL_SYSTEMS",
+      "assay_family": "FINITE_STATE_GRAPH",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-068",
+      "original_sequence": 68,
+      "original_expression": "phase transitions",
+      "proposed_academic_label": "Finite-Size Transition Indicators and Thermodynamic Limits",
+      "object_type": "RULEFIELD",
+      "domain_class": "DYNAMICAL_SYSTEMS",
+      "assay_family": "FINITE_SCALING",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-069",
+      "original_sequence": 69,
+      "original_expression": "emergent simplicity",
+      "proposed_academic_label": "Emergent Macrolevel Compressibility and Model Selection",
+      "object_type": "RULEFIELD",
+      "domain_class": "METHODOLOGICAL_HYPOTHESIS",
+      "assay_family": "MODEL_SELECTION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-070",
+      "original_sequence": 70,
+      "original_expression": "Butterfly effect",
+      "proposed_academic_label": "Sensitive Dependence on Initial Conditions and Perturbation Growth",
+      "object_type": "RULEFIELD",
+      "domain_class": "DYNAMICAL_SYSTEMS",
+      "assay_family": "PERTURBATION_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-071",
+      "original_sequence": 71,
+      "original_expression": "chatbot cults",
+      "proposed_academic_label": "Group-Belief Dynamics and Human–AI Authority Amplification",
+      "object_type": "RULEFIELD",
+      "domain_class": "SOCIAL_RISK_TOPIC",
+      "assay_family": "HUMAN_SAFETY_REVIEW",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-072",
+      "original_sequence": 72,
+      "original_expression": "provenance attestation",
+      "proposed_academic_label": "Cryptographic Provenance Claims Versus Independent Origin",
+      "object_type": "RULEFIELD",
+      "domain_class": "FORENSIC_METHOD",
+      "assay_family": "TWIN_WORLD_CONTROL",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-073",
+      "original_sequence": 73,
+      "original_expression": "decision theory",
+      "proposed_academic_label": "Decision Theory Under Partial Information and Unequal Authority",
+      "object_type": "RULEFIELD",
+      "domain_class": "FORMAL_DOMAIN",
+      "assay_family": "DECISION_BASELINE",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-074",
+      "original_sequence": 74,
+      "original_expression": "consequence",
+      "proposed_academic_label": "Consequential Semantics of Rules and Interventions",
+      "object_type": "RULEFIELD",
+      "domain_class": "EPISTEMIC_CONSTRAINT",
+      "assay_family": "CAUSE_EFFECT_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-075",
+      "original_sequence": 75,
+      "original_expression": "antiepistemicide",
+      "proposed_academic_label": "Antiepistemicide: Knowledge Preservation and Institutional Accountability",
+      "object_type": "RULEFIELD",
+      "domain_class": "CRITICAL_EPISTEMOLOGY",
+      "assay_family": "SOURCE_CUSTODY_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-076",
+      "original_sequence": 76,
+      "original_expression": "Refraction > Reflection",
+      "proposed_academic_label": "Refraction as Multi-Interpretation Design, Not Evidence Superiority",
+      "object_type": "RULEFIELD",
+      "domain_class": "DESIGN_HEURISTIC",
+      "assay_family": "OBSERVER_COMPARATOR",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-077",
+      "original_sequence": 77,
+      "original_expression": "AI field tech",
+      "proposed_academic_label": "Situated AI Field Instruments and Validated Observation Protocols",
+      "object_type": "RULEFIELD",
+      "domain_class": "PROSPECTIVE_TECHNOLOGY",
+      "assay_family": "FIELD_VALIDATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-078",
+      "original_sequence": 78,
+      "original_expression": "social technologies of belonging",
+      "proposed_academic_label": "Social Technologies of Belonging and Participation Conditions",
+      "object_type": "RULEFIELD",
+      "domain_class": "SOCIAL_DESIGN_HYPOTHESIS",
+      "assay_family": "HUMAN_OBSERVER_ASSAY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-079",
+      "original_sequence": 79,
+      "original_expression": "in AI–human collaborations, thermodynamics ∈₌ social field theory",
+      "proposed_academic_label": "Thermodynamic–Social Field Analogy and Dimensional-Analysis Limits",
+      "object_type": "RULEFIELD",
+      "domain_class": "SPECULATIVE_CROSS_DISCIPLINARY",
+      "assay_family": "TYPE_SAFETY",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    {
+      "id": "RF-080",
+      "original_sequence": 80,
+      "original_expression": "nudge architecture",
+      "proposed_academic_label": "Choice Architecture, Behavioral Prompts, and Autonomy Constraints",
+      "object_type": "RULEFIELD",
+      "domain_class": "BEHAVIORAL_DESIGN",
+      "assay_family": "BEHAVIORAL_EVALUATION",
+      "evidence_status": "OPERATOR_NAMED_RESEARCH_FIELD_NOT_SCIENTIFIC_RULE",
+      "scientific_claim_ceiling": "UNQUALIFIED_RESEARCH_INTENT",
+      "original_source": {
+        "kind": "CURRENT_CONVERSATION_OPERATOR_INPUT",
+        "date": "2026-11-07",
+        "original_wording_preserved": true
+      },
+      "human_approval_to_rewrite_original": false,
+      "requires_sources": true,
+      "needs_referent_disambiguation": false,
+      "review_status": "STAGED_RULEFIELD_CANDIDATE"
+    }
+  ],
+  "controlled_evidence_refs": [
+    {
+      "ref": "WOLFRAM_1984",
+      "url": "https://content.wolfram.com/sw-publications/2020/07/universality-complexity-cellular-automata.pdf",
+      "scope": "four classes of one-dimensional CA, with historical context; no empirical credit to Rulefield"
+    },
+    {
+      "ref": "FOGG_BEHAVIOR_MODEL",
+      "url": "https://behaviordesign.stanford.edu/resources/fogg-behavior-model",
+      "scope": "Motivation, Ability and Prompt; future observer study required"
+    },
+    {
+      "ref": "WOLFRAM_NKS_CLASSES",
+      "url": "https://files.wolframcdn.com/pub/www.wolframscience.com/nks/nks-ch6.pdf",
+      "scope": "classification of simulated CA patterns; do not automatically equate to social processes"
+    }
+  ],
+  "protected_experiment_b": "HELD",
+  "canonical_rule_registry_mutated": false
+}
