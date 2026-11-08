@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613://rulefield/operator/decision/v1",
+  "title": "Operator Decision Record — Human confirmation required",
+  "type": "object",
+  "required": [
+    "schema",
+    "decision",
+    "packet_id",
+    "packet_sha256",
+    "disclosure_sha256",
+    "baseline_registry_sha256",
+    "selected_proposal_ids",
+    "scope",
+    "human_statement",
+    "accepts_unknown_future_patch"
+  ],
+  "properties": {
+    "schema": {
+      "const": "td613.rulefield.operator-decision/v1"
+    },
+    "decision": {
+      "enum": [
+        "REQUEST_STAGED_SYNTHESIS",
+        "REQUEST_REVISION",
+        "DEFER",
+        "DECLINE",
+        "ASK_QUESTIONS"
+      ]
+    },
+    "packet_id": {
+      "type": "string"
+    },
+    "packet_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "disclosure_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "baseline_registry_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "selected_proposal_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "scope": {
+      "const": "STAGED_CANDIDATE_ONLY"
+    },
+    "human_statement": {
+      "type": "string"
+    },
+    "accepts_unknown_future_patch": {
+      "const": false
+    },
+    "human_authority_attestation": {
+      "type": "string",
+      "description": "Human-origin claimed, not cryptographically authenticated."
+    }
+  },
+  "additionalProperties": false
+}

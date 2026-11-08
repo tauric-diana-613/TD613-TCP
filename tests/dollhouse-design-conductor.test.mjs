@@ -564,3 +564,27 @@ await import('./dd02-cbfe-relational-geometry.native.test.mjs');
 
 // Prospective source-free 384-episode competent-null differential challenge; original Flight HELD.
 await import('./cbfe-competent-null-probe.v04.test.mjs');
+
+// Rulefield v1: provenance, priority, source-free null and fail-closed RGI-01 contracts.
+await import('./rulefield-v1.test.mjs');
+
+// Source-free, event-preserving complexity science and Garden format synchronization.
+await import('./rulefield-garden-triptych.test.mjs');
+await import('./rulefield-nks-lab.test.mjs');
+
+// Source-free Kiki Receiver packet, bounded NKS engine, and autosync controls.
+await import('./rulefield-amendments.test.mjs');
+
+// Capability roadmap, external tool claims and machine-readable source/receiver contracts.
+await import('./rulefield-roadmap.test.mjs');
+
+// Human-reviewed, non-omissive operator interface and authorization gates.
+await import('./rulefield-operator.test.mjs');
+// Existing-entry content collision guard, operator disclosure, and human decision.
+await import('./rulefield-duplicate-gate.test.mjs');
+
+// Rulefield domain ontology, stable 150-item agenda and source-free priority previews.
+await import('./rulefield-fields.test.mjs');
+
+// Frozen naming and lossless conversation-first operator docket.
+await import('./rulefield-docket.test.mjs');

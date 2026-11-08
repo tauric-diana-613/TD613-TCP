@@ -1,0 +1,34 @@
+{
+  "schema": "td613.rulefield.rulefields-dollhouse-design-commission/v1",
+  "seed": "A laboratory without a visual UI should receive eighty human-origin named research fields (from equations to long chains of thought), preserve their verbatim expressions, propose academically qualified working titles, represent a research field as a typed question-space rather than an executable local rule, and compose a reproducible proposed 70+80-position priority engine with non-destructive permutations, source lineage, duplicate holds and full human disclosure. The final product is one running engine; the human scrolling/reorder workbench is deferred to the roadmap.",
+  "medium": "PRODUCT",
+  "deliverable_count": 1,
+  "instruments": [
+    "CARO_INSTITUTIONAL_RECONSTRUCTION",
+    "SEDGWICK_REPARATIVE_TEXTURE",
+    "BUTLER_PERFORMATIVE_ITERATION",
+    "DIALECTICAL_TENSION"
+  ],
+  "human_coordinates": {
+    "what": "One computational Rulefield ontology and priority engine, not an HTML interface",
+    "who": "Human author of the original topic expressions, separate from agent who proposes labels and any executing agent",
+    "where": "packages/rulefield/rulefields/ and existing source-free receiver, operator documentation, portable CLI and CI",
+    "how": "Verbatim seed capture -> typed field labels -> source-gleaning plans -> lexical duplicate holds -> prioritized staged agenda -> reversible positional previews -> scientific amendments",
+    "when": "Current branch before any UI iteration or protected Experiment B Flight",
+    "why": "Enable complex research triage, scientific comparison and human-controllable order without confusing conceptual fields with executable rules or surrendering provenance"
+  },
+  "scientific_audit_requested": false,
+  "historical_references": [],
+  "commission_governance": {
+    "reference": "SAC[X6ZNK5NO51]",
+    "human_closure": "RESERVED",
+    "protected_flight": "HELD",
+    "source_free": true,
+    "main_rule_registry_immutable": true,
+    "explicit_requested_deliverables": [
+      "rulefields/engine.mjs + scripts/rulefield-fields.mjs as one operational software product"
+    ],
+    "ui_delivery": "DEFERRED_WISHLIST_ONLY",
+    "note": "Actual conductor execution must be captured as process evidence; prototype scientific behavior is separately qualified by exact-head tests"
+  }
+}

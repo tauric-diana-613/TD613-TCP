@@ -1,0 +1,122 @@
+{
+  "schema": "td613.rulefield.historical-wolfram-atlas-source-lineage/v1",
+  "historical_cut": "2026-11-07",
+  "origin_merge_pr": 1725,
+  "origin_merge_sha": "f981ffd3c814bf229e7db8fb0fc7d297f3420ef7",
+  "canonical_integration_pr": 1722,
+  "role": "HISTORICAL_SOURCE_FAMILY_NOT_NEW_EXECUTED_FINDING",
+  "originals_remain_in_main": true,
+  "byte_identity": "Git blob SHA-1 exact equality (original == Rulefield mirrored path)",
+  "source_lineage": [
+    {
+      "original": "docs/research/wolfram-rule-atlas/DOLLHOUSE_SCIENTIFIC_AUDIT_REPORT.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/DOLLHOUSE_SCIENTIFIC_AUDIT_REPORT.md",
+      "git_blob_sha1": "c4584443624482a3af4bb589325bf249875f937b",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/README_AMARI_HANDOFF.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/README_AMARI_HANDOFF.md",
+      "git_blob_sha1": "5ea36831a62e7924e0467f245c905edb28d82b90",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_164_Rules.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_164_Rules.json",
+      "git_blob_sha1": "cf81f07f7260b72667fd815305cf6da6308e2790",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_179_Rules.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_179_Rules.json",
+      "git_blob_sha1": "8cd74b07bfaa32ade58e7248e5552b36eda89f00",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/TD613_NKS_Rule_Atlas_Convergence_Edition.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_Convergence_Edition.json",
+      "git_blob_sha1": "191c5295f85cdd2b67b9622e4cba394f2c06eacb",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md",
+      "git_blob_sha1": "00dab78b6fc701b5a1a43599cb1fc7ce7e0a3ce5",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html",
+      "git_blob_sha1": "c915221fc08c3b37cbfd91772236d4e327c99f94",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md",
+      "git_blob_sha1": "7806e501d237745607d9476e9222241b976943b4",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.csv",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_2026-11-07.csv",
+      "git_blob_sha1": "f7f7e88293bc7dcf09abfdad056aa17a43b0da01",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_2026-11-07.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_2026-11-07.md",
+      "git_blob_sha1": "704dad5d9a4b4f01353670efcd65ffb26fab1287",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "docs/research/wolfram-rule-atlas/Wolframian_Rule_Index_Expanded.md",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_Expanded.md",
+      "git_blob_sha1": "a41d21384a8d8d8eccd7af2ecf177dfcd0443285",
+      "evidence_role": "SOURCE_BEARING_HISTORICAL_RESEARCH"
+    },
+    {
+      "original": "artifacts/dollhouse-audit-receipt-wolfram-index.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/dollhouse-audit-receipt-wolfram-index.json",
+      "git_blob_sha1": "f09ef9c1deb7a3e7ea6f738a52d69d897a7fc6c5",
+      "evidence_role": "HISTORICAL_AUDIT_RECEIPT_NOT_INDEPENDENT_WITNESS"
+    },
+    {
+      "original": "artifacts/dollhouse-design-receipt-virilio-wolfram-berlant.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/dollhouse-design-receipt-virilio-wolfram-berlant.json",
+      "git_blob_sha1": "62fd865782a7afb8892ef285320b65fd3eaa48a6",
+      "evidence_role": "HISTORICAL_AUDIT_RECEIPT_NOT_INDEPENDENT_WITNESS"
+    },
+    {
+      "original": "artifacts/butler_receipt.json",
+      "rulefield": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/butler_receipt.json",
+      "git_blob_sha1": "9e13a892d2051edd6de0571561c790f117150ba1",
+      "evidence_role": "HISTORICAL_AUDIT_RECEIPT_NOT_INDEPENDENT_WITNESS"
+    }
+  ],
+  "additional_historical_binary": {
+    "path": "artifacts/TD613_WOLFRAMIAN_RULE_ATLAS_CONVERGENCE_AMARI_HANDOFF.zip",
+    "inherited_from_pr": 1725,
+    "inside_rulefield_zip": false,
+    "reason": "Binary archive remains at original GitHub path; no binary bytes altered or unverifiably reproduced",
+    "requires_original_access": true
+  },
+  "interfaces": {
+    "historic_garden": "packages/rulefield/sources/nks-garden-190.snapshot.json",
+    "living_rulefield": "packages/rulefield/data/rulefield.v1.json",
+    "operator_queue": "70 existing positions"
+  },
+  "boundary": {
+    "historic_164_179_convergence_editions_are_source_snapshots": true,
+    "auto_promote_to_596": false,
+    "claim_of_exterior_empirical_observation": false,
+    "source_free_receipts_not_independent_replication": true,
+    "operator_closure": "RESERVED",
+    "protected_flight": "HELD"
+  },
+  "role_typing": {
+    "operahouse": "computational and conceptual hosting infrastructure",
+    "opera": "subject-specific theory and performance work",
+    "performer": "model/human agent attributed according to actual artifact",
+    "rule": "OPERAHOUSE ≠ OPERA ≠ PERFORMER"
+  }
+}

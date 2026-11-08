@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="claim-ceiling" content="ambiance-reading-not-total-field">
+<meta name="provenance" content="TD613-DD-02-COMM-VWB-CONVERGENCE-20261107">
+<title>𝌋 TD613 · Virilian / Wolframian / Berlantian Relational-Geometry Observatory</title>
+<style>
+  :root {
+    --bg-primary: #0a0c10;
+    --bg-surface: #121620;
+    --bg-panel: #181e2b;
+    --border: #263248;
+    --text-primary: #f0f4fc;
+    --text-secondary: #94a3b8;
+    --accent-virilio: #ef4444;
+    --accent-wolfram: #3b82f6;
+    --accent-berlant: #ec4899;
+    --accent-suture: #10b981;
+    --accent-quench: #f59e0b;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body[data-ambiance="high-noon"] {
+    --bg-primary: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-panel: #f1f5f9;
+    --border: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+  }
+
+  body[data-ambiance="moire-rose"] {
+    --bg-primary: #1c131d;
+    --bg-surface: #281a29;
+    --bg-panel: #38243a;
+    --border: #5a385e;
+    --text-primary: #fdf2f8;
+    --text-secondary: #f472b6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    padding: 24px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+  .badge { font-family: var(--font-mono); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; background: var(--border); color: var(--text-secondary); }
+  .meta-pills { display: flex; gap: 8px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.75rem; margin-top: 6px; }
+  .meta-pill { padding: 2px 8px; border: 1px solid var(--border); border-radius: 4px; }
+  .meta-pill.virilio { border-color: var(--accent-virilio); color: var(--accent-virilio); }
+  .meta-pill.wolfram { border-color: var(--accent-wolfram); color: var(--accent-wolfram); }
+  .meta-pill.berlant { border-color: var(--accent-berlant); color: var(--accent-berlant); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+  }
+  @media (max-width: 1024px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .canvas-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .canvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  canvas {
+    width: 100%;
+    height: 520px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: block;
+  }
+
+  .control-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section-title {
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-wolfram);
+  }
+
+  .btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  button {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-panel);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  button:hover {
+    background: var(--border);
+  }
+  button.active {
+    border-color: var(--accent-berlant);
+    background: rgba(236, 72, 153, 0.15);
+  }
+  button.suture {
+    border-color: var(--accent-suture);
+    color: var(--accent-suture);
+  }
+  button.suture:hover {
+    background: rgba(16, 185, 129, 0.15);
+  }
+  button.quench {
+    border-color: var(--accent-quench);
+    color: var(--accent-quench);
+  }
+  button.quench:hover {
+    background: rgba(245, 158, 11, 0.15);
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .kpi { display: flex; flex-direction: column; }
+  .kpi-title { color: var(--text-secondary); font-size: 0.7rem; }
+  .kpi-val { font-size: 1.05rem; font-weight: 700; margin-top: 2px; }
+  .kpi-val.alert { color: var(--accent-virilio); }
+  .kpi-val.safe { color: var(--accent-suture); }
+
+  .ambiance-proof-box {
+    background: var(--bg-panel);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  .ambiance-proof-box strong { color: var(--text-primary); }
+</style>
+</head>
+<body data-ambiance="cyber-noir">
+
+<header>
+  <div>
+    <h1>𝌋 TD613 Relational-Geometry Observatory <span class="badge">DD-02 · LAB RIGOR</span></h1>
+    <div class="meta-pills">
+      <span class="meta-pill virilio">Virilio: Dromology / Integral Accident (X-086, X-093)</span>
+      <span class="meta-pill wolfram">Wolfram: Multiway Causal Invariance (X-087, X-091)</span>
+      <span class="meta-pill berlant">Berlant: Cruel Optimism Impasse (X-088, X-090)</span>
+      <span class="meta-pill">Dome-World: Ambiance-Orthogonal (P-044)</span>
+    </div>
+  </div>
+  <div style="text-align: right; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary);">
+    Authority: <code>SAC[X6ZNK5NO51]</code><br>
+    Covenant: <code>Khona‌lit-po</code> (U+200C preserved)
+  </div>
+</header>
+
+<main class="layout">
+  <div class="canvas-card">
+    <div class="canvas-header">
+      <span>MULTIWAY BRANCHIAL SPACE &amp; CAUSAL INVARIANCE PROJECTION</span>
+      <span id="regimeBadge" style="color: var(--accent-suture);">● SUB-DROMOLOGICAL STEADY STATE</span>
+    </div>
+    <canvas id="observatoryCanvas" width="900" height="520"></canvas>
+    <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); display: flex; justify-content: space-between;">
+      <span>Horizontal: Branchial Space Metric $d_B(b_1, b_2)$</span>
+      <span>Vertical: Timelike Observer Foliation $\Sigma_\tau$</span>
+      <span>Interactive: Click canvas to perturb local hypergraph</span>
+    </div>
+  </div>
+
+  <div class="control-card">
+    <div class="section-title">1. Virilian Dromological Velocity</div>
+    <div class="control-group">
+      <div class="slider-label">
+        <span>Actuation Ratio $\beta_{\text{drom}} = \frac{v_{\text{act}}}{v_{\text{ver}}}$</span>
+        <strong id="betaVal">0.75</strong>
+      </div>
+      <input type="range" id="betaSlider" min="0.2" max="2.5" step="0.05" value="0.75">
+      <div style="font-size: 0.7rem; color: var(--text-secondary);">
+        Rule X-086: When $\beta > 1.0$, actuation light-cone shears; preemption blind cone expands.
+      </div>
+    </div>
+
+    <div class="section-title">2. Berlantian Impasse &amp; Suture</div>
+    <div class="control-group">
+      <div class="btn-group">
+        <button id="impasseToggle">Cruel Optimism Loop</button>
+        <button id="sutureBtn" class="suture">Reparative Suture</button>
+      </div>
+      <div style="font-size: 0.7rem; color: var(--text-secondary);">
+        Rule X-088: Trap in non-ergodic attractor $\mathcal{B}_{\text{cruel}}$.<br>
+        Rule X-092: Direct-sum paratactic beside-ness ($\mathcal{S}_1 \parallel \mathcal{S}_2$).
+      </div>
+    </div>
+
+    <div class="section-title">3. Chaos Control &amp; Quench</div>
+    <div class="control-group">
+      <button id="quenchBtn" class="quench">OGY Ergodic Quench (X-095)</button>
+      <div style="font-size: 0.7rem; color: var(--text-secondary);">
+        Applies parameter perturbation $\delta \mu$ to collapse chaotic branches into a stable periodic orbit.
+      </div>
+    </div>
+
+    <div class="section-title">4. Relational Telemetry</div>
+    <div class="telemetry-grid">
+      <div class="kpi">
+        <span class="kpi-title">Blind Cone $\Delta \tau_{\text{blind}}$</span>
+        <span class="kpi-val" id="tauBlindVal">0.00 ms</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-title">Max Lyapunov $\lambda_{\max}$</span>
+        <span class="kpi-val" id="lyapunovVal">-0.14</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-title">Maint. Energy $\oint \mathcal{L} dt$</span>
+        <span class="kpi-val" id="maintEnergyVal">12.4 kJ</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-title">Graph Health $\mathbf{W}(t)$</span>
+        <span class="kpi-val safe" id="graphHealthVal">99.8%</span>
+      </div>
+    </div>
+
+    <div class="section-title">5. Dome-World Ambiance Switch</div>
+    <div class="control-group">
+      <div class="btn-group" style="grid-template-columns: 1fr 1fr 1fr;">
+        <button class="amb-btn active" data-theme="cyber-noir">Noir</button>
+        <button class="amb-btn" data-theme="high-noon">Silver</button>
+        <button class="amb-btn" data-theme="moire-rose">Moiré</button>
+      </div>
+      <div class="ambiance-proof-box">
+        <strong>Ambiance-Orthogonality Invariant (P-044):</strong><br>
+        $$\frac{\partial g_{\mu\nu}(\mathcal{RG})}{\partial \mathbf{u}_{\text{ambiance}}} \equiv \mathbf{0}$$
+        Changing the visual ambiance alters surface presentation, but relational curvature, Lyapunov exponents, and branchial distances remain strictly invariant.
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function() {
+  const canvas = document.getElementById('observatoryCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const betaSlider = document.getElementById('betaSlider');
+  const betaVal = document.getElementById('betaVal');
+  const regimeBadge = document.getElementById('regimeBadge');
+  const tauBlindVal = document.getElementById('tauBlindVal');
+  const lyapunovVal = document.getElementById('lyapunovVal');
+  const maintEnergyVal = document.getElementById('maintEnergyVal');
+  const graphHealthVal = document.getElementById('graphHealthVal');
+  const impasseToggle = document.getElementById('impasseToggle');
+  const sutureBtn = document.getElementById('sutureBtn');
+  const quenchBtn = document.getElementById('quenchBtn');
+
+  // Simulation State
+  let beta = 0.75;
+  let inImpasse = false;
+  let inSuture = false;
+  let energyTotal = 12.4;
+  let healthTotal = 0.998;
+  let timeStep = 0;
+
+  // Node Multiway Tree
+  const nodes = [];
+  const edges = [];
+  const maxDepth = 7;
+  const root = { id: 0, x: canvas.width / 2, y: 40, depth: 0, branch: 0, algedonic: false };
+  nodes.push(root);
+
+  function generateTree() {
+    nodes.length = 0;
+    edges.length = 0;
+    nodes.push(root);
+
+    let currentLayer = [root];
+    for (let d = 1; d <= maxDepth; d++) {
+      const nextLayer = [];
+      const branchFactor = inImpasse ? 1 : (d % 2 === 0 ? 2 : 1);
+      const span = (canvas.width * 0.75) / Math.pow(1.3, d);
+
+      currentLayer.forEach((parent, pIdx) => {
+        const count = branchFactor;
+        for (let k = 0; k < count; k++) {
+          const offsetX = (k - (count - 1) / 2) * span + (inImpasse ? Math.sin(timeStep + d) * 15 : 0);
+          const child = {
+            id: nodes.length,
+            x: Math.max(40, Math.min(canvas.width - 40, parent.x + offsetX)),
+            y: 40 + d * 65,
+            depth: d,
+            branch: k,
+            algedonic: beta > 1.0 && d >= 4,
+            parent: parent
+          };
+          nodes.push(child);
+          edges.push({ from: parent, to: child });
+          nextLayer.push(child);
+        }
+      });
+      currentLayer = nextLayer;
+    }
+  }
+
+  generateTree();
+
+  // Interactive controls
+  betaSlider.addEventListener('input', (e) => {
+    beta = parseFloat(e.target.value);
+    betaVal.textContent = beta.toFixed(2);
+    generateTree();
+  });
+
+  impasseToggle.addEventListener('click', () => {
+    inImpasse = !inImpasse;
+    inSuture = false;
+    impasseToggle.classList.toggle('active', inImpasse);
+    generateTree();
+  });
+
+  sutureBtn.addEventListener('click', () => {
+    inSuture = true;
+    inImpasse = false;
+    impasseToggle.classList.remove('active');
+    generateTree();
+  });
+
+  quenchBtn.addEventListener('click', () => {
+    beta = 0.65;
+    betaSlider.value = 0.65;
+    betaVal.textContent = '0.65';
+    inImpasse = false;
+    inSuture = false;
+    impasseToggle.classList.remove('active');
+    generateTree();
+  });
+
+  // Ambiance Themes
+  document.querySelectorAll('.amb-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.amb-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.body.setAttribute('data-ambiance', btn.getAttribute('data-theme'));
+    });
+  });
+
+  function render() {
+    timeStep += 0.03;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 1. Draw Foliation Hypersurfaces
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    for (let d = 1; d <= maxDepth; d++) {
+      const y = 40 + d * 65;
+      ctx.strokeStyle = beta > 1.0 ? 'rgba(239, 68, 68, 0.25)' : 'rgba(59, 130, 246, 0.15)';
+      ctx.beginPath();
+      // Introduce foliation shear when beta > 1.0
+      ctx.moveTo(20, y);
+      for (let x = 20; x < canvas.width - 20; x += 20) {
+        const shearY = y + (beta > 1.0 ? Math.sin((x / 60) + timeStep) * (beta - 1.0) * 12 : 0);
+        ctx.lineTo(x, shearY);
+      }
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // 2. Draw Edges
+    edges.forEach(edge => {
+      ctx.lineWidth = inSuture ? 2.5 : 1.5;
+      ctx.strokeStyle = edge.to.algedonic 
+        ? 'rgba(239, 68, 68, 0.7)' 
+        : (inSuture ? 'rgba(16, 185, 129, 0.7)' : 'rgba(148, 163, 184, 0.4)');
+      ctx.beginPath();
+      ctx.moveTo(edge.from.x, edge.from.y);
+      ctx.lineTo(edge.to.x, edge.to.y);
+      ctx.stroke();
+    });
+
+    // 3. Draw Nodes
+    nodes.forEach(node => {
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.algedonic ? 6 : 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = node.algedonic 
+        ? '#ef4444' 
+        : (inSuture ? '#10b981' : (inImpasse ? '#ec4899' : '#3b82f6'));
+      ctx.fill();
+      ctx.strokeStyle = '#0a0c10';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      if (node.algedonic) {
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 10 + Math.sin(timeStep * 4) * 3, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+        ctx.stroke();
+      }
+    });
+
+    // 4. Update Telemetry
+    if (beta > 1.0) {
+      const blind = ((beta - 1.0) * 18.4).toFixed(2);
+      const lyap = (0.22 + (beta - 1.0) * 0.85).toFixed(2);
+      tauBlindVal.textContent = blind + ' ms';
+      tauBlindVal.className = 'kpi-val alert';
+      lyapunovVal.textContent = '+' + lyap;
+      lyapunovVal.className = 'kpi-val alert';
+      regimeBadge.textContent = '⚠ HYPER-DROMOLOGICAL RUNAWAY (SHEAR ACTIVE)';
+      regimeBadge.style.color = 'var(--accent-virilio)';
+      healthTotal = Math.max(0.70, healthTotal - 0.0002);
+    } else {
+      tauBlindVal.textContent = '0.00 ms';
+      tauBlindVal.className = 'kpi-val';
+      lyapunovVal.textContent = ((-0.14) * (1.1 - beta)).toFixed(2);
+      lyapunovVal.className = 'kpi-val';
+      regimeBadge.textContent = inImpasse 
+        ? '● AFFECTIVE IMPASSE (CHURNING)' 
+        : (inSuture ? '● REPARATIVE BESIDE-NESS SUTURE' : '● SUB-DROMOLOGICAL STEADY STATE');
+      regimeBadge.style.color = inImpasse 
+        ? 'var(--accent-berlant)' 
+        : (inSuture ? 'var(--accent-suture)' : 'var(--accent-wolfram)');
+    }
+
+    if (inImpasse) {
+      energyTotal += 0.04;
+      maintEnergyVal.textContent = energyTotal.toFixed(1) + ' kJ';
+      healthTotal = Math.max(0.60, healthTotal - 0.0001);
+    }
+    graphHealthVal.textContent = (healthTotal * 100).toFixed(1) + '%';
+    graphHealthVal.className = healthTotal < 0.90 ? 'kpi-val alert' : 'kpi-val safe';
+
+    requestAnimationFrame(render);
+  }
+
+  requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>
