@@ -10,6 +10,7 @@ import {basename,join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {readRulefield,validateRulefield} from '../rulefield.mjs';
 import {enumerate,criticalPairs,finiteCA} from '../lab/multiway_lab.mjs';
+import {buildOperatorDisclosure,renderOperatorDisclosure} from '../operator/disclosure.mjs';
 
 export const PACKET_SCHEMA='td613.rulefield.amendment-packet/v1';
 export const REVIEW_SCHEMA='td613.rulefield.amendment-review/v1';
@@ -244,12 +245,17 @@ export function intakeOne(name,{write=false}={}){
  const packet=JSON.parse(readFileSync(path,'utf8'));
  const receipt=reviewPacket(packet);
  const stem=packet.packet_id+'--'+receipt.packet_sha256.slice(0,16);
+ const disclosure=buildOperatorDisclosure(packet,receipt);
  if(write){
   mkdirSync(OUTBOX,{recursive:true});
   writeIfAbsent(join(OUTBOX,stem+'.review.json'),JSON.stringify(receipt,null,2)+'\n');
   writeIfAbsent(join(OUTBOX,stem+'.review.md'),markdownReceipt(receipt));
+  writeIfAbsent(join(OUTBOX,stem+'.disclosure.json'),JSON.stringify(disclosure,null,2)+'\n');
+  writeIfAbsent(join(OUTBOX,stem+'.disclosure.md'),renderOperatorDisclosure(disclosure));
  }
- return {name,disposition:receipt.disposition,review_stem:stem,proposal_count:receipt.as_source_free.proposal_count,issues:receipt.as_source_free.issues.length,mutated_registry:false};
+ return {name,disposition:receipt.disposition,review_stem:stem,disclosure_stem:stem,disclosure_sha256:disclosure.disclosure_sha256,
+  human_decision_required:true,known_information_disclosed:true,canonical_integration_authority:false,
+  proposal_count:receipt.as_source_free.proposal_count,issues:receipt.as_source_free.issues.length,mutated_registry:false};
 }
 export function syncInbox({write=true}={}){
  const names=validatedInboxFiles(),results=[];
