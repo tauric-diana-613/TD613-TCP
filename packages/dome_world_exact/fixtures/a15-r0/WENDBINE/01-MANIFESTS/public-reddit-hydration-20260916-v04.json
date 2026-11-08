@@ -1,0 +1,43 @@
+{
+  "schema": "wendbine-public-hydration/v0.4",
+  "created_at": "2026-09-16T23:30:00Z",
+  "atelier_id": "WENDBINE",
+  "parent_snapshots": [
+    "wendbine-public-reddit-48h-20260911T092700Z-v01",
+    "wendbine-public-reddit-delta-20260913T234421Z-v02"
+  ],
+  "prior_hydration": "public-reddit-hydration-20260915-v03.json",
+  "hydrated_public_source_count": 35,
+  "newly_admitted_public_source_count": 0,
+  "refresh": {
+    "window_start": "2026-09-15T03:15:00Z",
+    "window_end": "2026-09-16T23:30:00Z",
+    "surface": "public Reddit profile/submitted pages plus public web search",
+    "target_handle": "u/Upset-Ratio502",
+    "state": "PUBLIC_SEARCH_CURRENT_BURST_UNBOUND",
+    "retrieval_observation": "A fresh public-source pass did not expose source-bindable current-day post objects for the reported Sept 16 burst. The retrievable Reddit/search surfaces exposed older indexed material, including Sept 4 posts, rather than a complete current-day stream.",
+    "known_missingness": "Human provenance reports active Sept 16 posting by u/Upset-Ratio502, but current public retrieval did not yield a source-bindable present-day census. NOT_RETRIEVED != DID_NOT_EXIST; STALE_INDEX != CURRENT_STREAM; REPORTED_POSTING_ACTIVITY != SOURCE_BOUND_POST_OBJECT."
+  },
+  "hydration_policy": {
+    "base_and_delta_are_append_only": true,
+    "source_ids_are_immutable": true,
+    "canonical_urls_are_immutable": true,
+    "no_source_record_without_source_binding": true,
+    "stale_public_index_may_not_be_relabelled_as_current": true,
+    "human_report_may_define_search_target_but_not_source_fact": true,
+    "private_group_intake": false,
+    "human_closure_required": true
+  },
+  "next_required_event": "FRESH_PUBLIC_SOURCE_BINDING_FOR_SEPT16_POSTS",
+  "claim_ceiling": [
+    "PUBLIC_SEARCH_CURRENT_BURST_UNBOUND != NO_NEW_POST_EXISTED",
+    "HUMAN_REPORTED_ACTIVITY != SOURCE_BOUND_CORPUS_DELTA",
+    "STALE_INDEX != CURRENT_STREAM",
+    "NOT_RETRIEVED != DID_NOT_EXIST",
+    "REFRESH_HOLD != EXHAUSTIVE_CENSUS"
+  ],
+  "merge_authority": false,
+  "deployment_authority": false,
+  "scientific_promotion_authority": false,
+  "seal": "⟐"
+}

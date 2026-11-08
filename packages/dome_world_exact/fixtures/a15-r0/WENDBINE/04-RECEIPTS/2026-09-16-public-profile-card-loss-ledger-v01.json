@@ -1,0 +1,72 @@
+{
+  "schema": "wendbine-observation-loss-ledger/v0.1",
+  "atelier_id": "WENDBINE",
+  "target_snapshot_id": "wendbine-public-reddit-profile-delta-20260916-v04",
+  "target_surface": "public Reddit user profile first visible page sorted new",
+  "source_account_handle": "Upset-Ratio502",
+  "observation_day_utc": "2026-09-16",
+  "state": "ARCHIVAL_DEBT_EXPLICIT_PER_CARD_PAYLOAD_NOT_PERSISTED",
+  "observed": {
+    "post_cards": 25,
+    "text_excerpt_cards": 14,
+    "media_only_or_unhydrated_cards": 11,
+    "next_page_link_observed": true
+  },
+  "persisted_at_original_capture": {
+    "aggregate_snapshot": true,
+    "per_card_records": 0,
+    "per_card_canonical_urls": 0,
+    "per_card_source_ids": 0,
+    "per_card_bounded_summaries": 0,
+    "per_card_ordering": 0
+  },
+  "git_archaeology": {
+    "creating_commit": "05f674ec811350e477f011731ff662da2bf57cd2",
+    "creating_commit_message": "Wendbine: add Sept 16 public profile delta snapshot",
+    "changed_file_count_for_capture": 1,
+    "only_capture_file": "01-MANIFESTS/public-reddit-profile-delta-20260916-snapshot-v04.json",
+    "per_card_registry_ever_committed_in_that_capture": false,
+    "conclusion": "LOSS_OCCURRED_AT_CAPTURE_NOT_LATER_DELETION"
+  },
+  "fresh_recovery_attempt": {
+    "attempt_day_utc": "2026-09-16",
+    "surface": "https://www.reddit.com/user/Upset-Ratio502/submitted.json?limit=100",
+    "result": "STALE_PUBLIC_LISTING_NOT_TARGET_DAY_RECOVERY",
+    "newest_sampled_created_utc": 1779861897,
+    "newest_sampled_created_at_utc": "2026-05-27T06:04:57Z",
+    "target_day_reconstructed": false,
+    "reason": "The retrievable listing window did not reach the 2026-09-16 observed profile cards, so it cannot lawfully repopulate the lost per-card records."
+  },
+  "unresolved": {
+    "observed_card_objects_without_persisted_identity": 25,
+    "known_text_card_count_without_individual_binding": 14,
+    "known_media_or_unhydrated_count_without_individual_binding": 11,
+    "individual_card_type_assignment_recoverable": false,
+    "individual_card_order_recoverable": false,
+    "individual_source_identity_recoverable": false
+  },
+  "recovery_rule": {
+    "allow_future_append_only_recovery": true,
+    "require_canonical_source_binding": true,
+    "require_recovery_provenance": true,
+    "may_invent_missing_card_ids": false,
+    "may_invent_profile_order": false,
+    "may_assign_text_or_media_class_to_unknown_slot": false,
+    "aggregate_counts_remain_first_class_observations": true
+  },
+  "membranes": [
+    "OBSERVED_CARD_COUNT != PERSISTED_PER_CARD_RECORD_SET",
+    "AGGREGATE_OBSERVATION != INDIVIDUAL_SOURCE_IDENTITY",
+    "RECOVERY_ATTEMPT != RECOVERY_SUCCESS",
+    "CURRENT_STALE_LISTING != HISTORICAL_TARGET_DAY",
+    "MISSING_PER_CARD_RECORD != CARD_DID_NOT_EXIST",
+    "SEARCHABILITY != SCIENTIFIC_PROMOTION"
+  ],
+  "authority": {
+    "merge_authority": false,
+    "deployment_authority": false,
+    "scientific_promotion_authority": false,
+    "human_closure_required": true
+  },
+  "seal": "⟐"
+}

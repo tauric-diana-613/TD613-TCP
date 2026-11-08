@@ -1,0 +1,119 @@
+{
+  "source_revision": "24b57b1b2d0b69ccaf94bdcea9c4a8e7ef73247c",
+  "task_scope": "PALACE_OF_UNBORN_FUTURES_POSTFLIGHT_AUDIT",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "evidence_references": [
+    "packages/palace_of_unborn_futures/preregistration/preregistration-manifest-v1.json",
+    "packages/palace_of_unborn_futures/preregistration/frozen-confirmatory-lock.json",
+    "packages/palace_of_unborn_futures/src/world-generator.mjs",
+    "packages/palace_of_unborn_futures/src/capsule-compressor.mjs",
+    "packages/palace_of_unborn_futures/src/heirs-and-policies.mjs",
+    "packages/palace_of_unborn_futures/src/evaluator.mjs",
+    "packages/palace_of_unborn_futures/src/privacy-disclosure-assay.mjs",
+    "packages/palace_of_unborn_futures/receipts/pilot-48-receipt.json",
+    "packages/palace_of_unborn_futures/receipts/confirmatory-96-receipt.json",
+    "packages/palace_of_unborn_futures/receipts/privacy-disclosure-receipt.json",
+    "packages/palace_of_unborn_futures/receipts/forbidden-wing-receipt.json",
+    "packages/palace_of_unborn_futures/receipts/adversarial-challenges-receipt.json",
+    "packages/palace_of_unborn_futures/docs/09_THE_PALACE_OF_UNBORN_FUTURES_PAPER.md"
+  ],
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN",
+    "ORCHESTRATOR"
+  ],
+  "include_orchestrator": true,
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 10,
+          "label": "Ingest identical terminal projection Pi(G) and condition-specific synthetic memory representation."
+        },
+        {
+          "phase": "ACT",
+          "at": 20,
+          "label": "Select single EIG-maximizing diagnostic probe under matched evaluation budget."
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 30,
+          "label": "Observe Common-Random-Number probe readout and update mechanism posterior without secret vault access."
+        },
+        {
+          "phase": "NAME",
+          "at": 40,
+          "label": "Commit intervention and issue calibrated mechanism claim, non-renaming predicate extension, or ABSTAIN_UNIDENTIFIABLE."
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [1.35, 0.0],
+        [0.0, 1.15]
+      ],
+      "noise_covariance": [
+        [0.0529, 0.0],
+        [0.0, 0.0529]
+      ]
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "ISO_PI_QUARTET_TERMINAL_PROJECTION",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "support": ["PROBE_SELECT", "INTERVENE", "ABSTAIN_IF_NULLSPACE"],
+          "condition": "CALIBRATED_STATIONARY_EPOCH2_FIBER"
+        },
+        {
+          "support": ["PROBE_SELECT", "INTERVENE", "ABSTAIN_IF_NULLSPACE"],
+          "condition": "VERIFIED_CAPSULE_256B_FIBER"
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "PREREGISTRATION_COMMIT_CB1CC69B8": {
+          "status": "PASS",
+          "entry_id": "commit-cb1cc69b8"
+        },
+        "PILOT_48_CALIBRATION": {
+          "status": "PASS",
+          "entry_id": "pilot-48-8a2041a6"
+        },
+        "FROZEN_CONFIRMATORY_LOCK_24B57B1B2": {
+          "status": "PASS",
+          "entry_id": "commit-24b57b1b2"
+        },
+        "CONFIRMATORY_96_EVALUATION": {
+          "status": "PASS",
+          "entry_id": "confirmatory-96-verified"
+        },
+        "ADVERSARIAL_FALSIFICATION_AND_RESERVED_CLOSURE": {
+          "status": "PASS",
+          "entry_id": "challenges-10-of-10-closure-reserved"
+        }
+      },
+      "required_phases": [
+        "PREREGISTRATION_COMMIT_CB1CC69B8",
+        "PILOT_48_CALIBRATION",
+        "FROZEN_CONFIRMATORY_LOCK_24B57B1B2",
+        "CONFIRMATORY_96_EVALUATION",
+        "ADVERSARIAL_FALSIFICATION_AND_RESERVED_CLOSURE"
+      ]
+    }
+  }
+}

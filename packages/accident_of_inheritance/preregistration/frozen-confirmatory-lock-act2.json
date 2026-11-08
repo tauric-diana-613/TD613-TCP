@@ -1,0 +1,82 @@
+{
+  "schema": "td613.accident-of-inheritance.frozen-confirmatory-lock/v1.0",
+  "experiment_id": "TD613-PALACE-ACT2-ACCIDENT-OF-INHERITANCE-20261105",
+  "covenant": "Khona‌lit-po",
+  "authorization_ref": "SAC[X6ZNK5NO51]",
+  "predecessor_base_commit": "fb47927c3c7cd5264a3cf9900e90e24868e5c0bb",
+  "supervision_classification": "INTERNALLY_SEPARATED_SINGLE_SUPERVISING_MODEL",
+  "chronological_lock_rule": "Committed in Git BEFORE generating or scoring ACT2_CONFIRMATORY_192. Explicitly locks all src/*.mjs modules AND scripts/run-confirmatory-192.mjs itself (remediating PR #1699 Review Finding #2).",
+  "locked_files_count": 14,
+  "locked_files": [
+    {
+      "path": "packages/accident_of_inheritance/preregistration/preregistration-manifest-act2-v1.json",
+      "bytes": 6786,
+      "sha256": "121e5db73b70c94b3a05d6aeb643422770bc4ce04ca03ebe880efe65432db970"
+    },
+    {
+      "path": "packages/accident_of_inheritance/schemas/temporal-and-authority-schemas.json",
+      "bytes": 5835,
+      "sha256": "c165fb5f0d7b2fed9fd7c1d9404d6d8e4e055d1c379745d9fb58f6133559af3e"
+    },
+    {
+      "path": "packages/accident_of_inheritance/receipts/pilot-48-receipt.json",
+      "bytes": 57211,
+      "sha256": "bcd802390767a35a9dafad0dc438756db0a74733a71bc169099cd455fea93be3"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/prng.mjs",
+      "bytes": 3137,
+      "sha256": "b56c73268c3f01b18a3519eff6e8b75136bee56285a0388aaba96d71ea2c8cfb"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/temporal-lattice.mjs",
+      "bytes": 10932,
+      "sha256": "a1ef75cf50497d0a8e157a52273993a811015749c39fb72413b62c98a4d95e9f"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/grid-definitions.mjs",
+      "bytes": 2641,
+      "sha256": "5e105f0ef1765cf8c68716e89f1120b81cffec7f5742c0fe3860d9fe4bbfaeef"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/world-generator.mjs",
+      "bytes": 33494,
+      "sha256": "1ee674b4f25c55d2e94ac2ca74fe1c43a46776d43403096bb8cc3d913319e449"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/authority-policies.mjs",
+      "bytes": 19355,
+      "sha256": "708ae093cf11512aefbe62b3f1379d15b60bc1ce6ddf5a82c1aad9d1e386b247"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/evaluator-and-stats.mjs",
+      "bytes": 31025,
+      "sha256": "37a16ebac067b050ca6a2d13459d307a6dbba5b33db289c5b073a391b6260df1"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/source-standing-factorial.mjs",
+      "bytes": 19496,
+      "sha256": "6adff7e04075ec5919c3fe3f2d1a7ed64c2e8322f47b003945bb595bf9729406"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/dead-civilization-wing.mjs",
+      "bytes": 21959,
+      "sha256": "836c995f44c5acef288f960fbb2b9304a24ca48e888eb4d6a7417a44c01c2214"
+    },
+    {
+      "path": "packages/accident_of_inheritance/src/adversarial-counterexamples.mjs",
+      "bytes": 39317,
+      "sha256": "2d1296320a63ce341dd543a9c4f38d98ce47d3ce36848fdae05893eed69547a7"
+    },
+    {
+      "path": "packages/accident_of_inheritance/scripts/run-pilot-48.mjs",
+      "bytes": 6891,
+      "sha256": "0967d033e22fca94a443f607a2022e2ad2b9dd32ccf7da20e059443fc6eec3e7"
+    },
+    {
+      "path": "packages/accident_of_inheritance/scripts/run-confirmatory-192.mjs",
+      "bytes": 24677,
+      "sha256": "d6085ec9a03fd5f679ab0521130ff3faf3da9d9e66da85d6fe7388382d30735d"
+    }
+  ]
+}

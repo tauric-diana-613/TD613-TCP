@@ -1,0 +1,78 @@
+[
+  {
+    "path": "synthetic_receiver.py",
+    "source_revision": "583c2b24a0680fcc1c3fba15dbace26dfe6c636e",
+    "source_path": "scripts/atelier-universal-encyclopedia-receiver-v1.py",
+    "git_blob": "681444a032db7f3904f82ab677778ced740d6c31",
+    "sha256": "b119f477b5fa28cf594350164f41ee657003a46de71df02433726def9361ac33",
+    "imports": [
+      "__future__",
+      "argparse",
+      "base64",
+      "contextlib",
+      "hashlib",
+      "json",
+      "math",
+      "pathlib",
+      "re",
+      "sqlite3"
+    ],
+    "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+  },
+  {
+    "path": "native/phase2.py",
+    "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/build-phase2-assays.py",
+    "git_blob": "4de177108f61a441321b484c2fdf3ab9aabeadc8",
+    "sha256": "fe9354825da2612271e8626e77a882563eb14f577a374e956066df84178a0577",
+    "imports": [
+      "__future__",
+      "argparse",
+      "collections",
+      "hashlib",
+      "json",
+      "pathlib",
+      "re",
+      "sqlite3",
+      "typing"
+    ],
+    "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+  },
+  {
+    "path": "native/query.py",
+    "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/srcquery.py",
+    "git_blob": "33d8524da5614c3fc74b850531f26e74c416f934",
+    "sha256": "1b106e5091f7d90d70ac0beb4a97d28065e257691bd8d92ec14a2370d693ba8c",
+    "imports": [
+      "__future__",
+      "argparse",
+      "json",
+      "pathlib",
+      "sys",
+      "typing"
+    ],
+    "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+  },
+  {
+    "path": "native/projective.py",
+    "source_revision": "b3e69acf587d534eeef2e01d0bb5bdbdecdbd320",
+    "source_path": "packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/run-projective-routing-grammar-assay.py",
+    "git_blob": "74cc9385785c3bb13660222d623f9f7ff0187013",
+    "sha256": "46064cf61399cd228141f4f51949d2840422fbc0737202258114a68a4b1cce43",
+    "imports": [
+      "__future__",
+      "argparse",
+      "collections",
+      "dataclasses",
+      "datetime",
+      "hashlib",
+      "json",
+      "pathlib",
+      "re",
+      "typing",
+      "unicodedata"
+    ],
+    "class": "PUBLIC_EXECUTABLE_CODE_ONLY"
+  }
+]

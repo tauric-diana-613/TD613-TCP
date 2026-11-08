@@ -1,0 +1,194 @@
+{
+  "schema": "td613.four-crossing-capstone.wendbine-matched-receipt/v1",
+  "evaluated_at": "2026-11-05T19:52:16.053Z",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "census": {
+    "sources_count": 33,
+    "concepts_count": 191,
+    "original_typed_relations": 146,
+    "receiver_admitted_sample_relations": 9,
+    "distinct_family_relation_pairs": 76,
+    "distinct_predicate_names": 59,
+    "evolved_manifestation_edges": 6703
+  },
+  "adversarial_controls": {
+    "unallowlisted_body_refused": true,
+    "unallowlisted_payload_keys_refused": true
+  },
+  "dimensions": [
+    {
+      "dimension_index": 1,
+      "dimension_name": "SOURCE_IDENTITY_AND_CENSUS",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "sources_count": 33
+      },
+      "path_w2_receiver": {
+        "sources_count": 33
+      },
+      "measured_differential": "Exact source census parity: exactly 33 public posts processed.",
+      "notes": null
+    },
+    {
+      "dimension_index": 2,
+      "dimension_name": "CONCEPT_DECLARATIONS_AND_INVERTED_SETS",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "concepts_count": 191
+      },
+      "path_w2_receiver": {
+        "unique_concepts_declared": 191
+      },
+      "measured_differential": "Inverted concept declarations map concepts to multi-source sets.",
+      "notes": null
+    },
+    {
+      "dimension_index": 3,
+      "dimension_name": "NINE_GRAPH_FAMILIES_COVERAGE",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "families": [
+          "G_A",
+          "G_D",
+          "G_F",
+          "G_I",
+          "G_O",
+          "G_P",
+          "G_R",
+          "G_T",
+          "G_X"
+        ]
+      },
+      "path_w2_receiver": {
+        "families": [
+          "G_A",
+          "G_D",
+          "G_F",
+          "G_I",
+          "G_O",
+          "G_P",
+          "G_R",
+          "G_T",
+          "G_X"
+        ]
+      },
+      "measured_differential": "Both systems represent all 9 graph families (G_A..G_X).",
+      "notes": null
+    },
+    {
+      "dimension_index": 4,
+      "dimension_name": "PREDICATE_LABELS_AND_DISTINCT_PAIRS",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "total_relations": 146,
+        "distinct_family_relation_pairs": 76,
+        "distinct_predicate_names": 59
+      },
+      "path_w2_receiver": {
+        "vocabulary_reference": "WENDBINE_NINE_GRAPH_VOCABULARY",
+        "families_represented": 9,
+        "receiver_admitted_sample_relations": 9,
+        "transfer_status_of_all_146": "HELD_PENDING_PER_EDGE_SOURCE_WITNESS_VALIDATION"
+      },
+      "measured_differential": "Preserves the authentic distinction: 146 total relation rows span 76 distinct (family::predicate) pairs with 59 unique predicate strings. Receiver admits 9 sampled relations across the 9 families; full per-edge admission of all 146 rows remains held.",
+      "notes": null
+    },
+    {
+      "dimension_index": 5,
+      "dimension_name": "INVERTED_SOURCE_INDEXES",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "indexing": "STATIC_INVERTED_ARRAYS"
+      },
+      "path_w2_receiver": {
+        "indexing": "SQLITE_INDEXED_TABLE",
+        "sources_found": 1
+      },
+      "measured_differential": "Inverted source indexes allow querying source support sets per concept.",
+      "notes": null
+    },
+    {
+      "dimension_index": 6,
+      "dimension_name": "COOCCURRENCE_THRESHOLDING",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "recurrent_concepts": 43
+      },
+      "path_w2_receiver": {
+        "overlay_edges": 143
+      },
+      "measured_differential": "Threshold >= 2 independent sources verified (143 co-occurrence edges computed). Co-occurrence does not imply causal relationship; per-edge source-support equality is not claimed until demonstrated.",
+      "notes": null
+    },
+    {
+      "dimension_index": 7,
+      "dimension_name": "DUPLICATE_CAPTURES_HANDLING",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "duplicate_policy": "REJECT_DUPLICATE_SOURCE_ID"
+      },
+      "path_w2_receiver": {
+        "duplicate_rejected": true
+      },
+      "measured_differential": "Both systems enforce idempotency and reject duplicate source IDs.",
+      "notes": null
+    },
+    {
+      "dimension_index": 8,
+      "dimension_name": "HISTORICAL_CHRONOLOGY_PRECISION",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "date_format": "YYYY-MM-DD_DAY_PRECISION"
+      },
+      "path_w2_receiver": {
+        "date_format": "YYYY-MM-DD_DAY_PRECISION"
+      },
+      "measured_differential": "Chronological ordering enforced with day-level precision across both pipelines.",
+      "notes": null
+    },
+    {
+      "dimension_index": 9,
+      "dimension_name": "PUBLIC_BOUNDED_SCOPE_AND_REFUSAL",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "refusal_rule": "WENDBINE_FULL_BODY_FIELD_REFUSED"
+      },
+      "path_w2_receiver": {
+        "unallowlisted_body_rejected": true,
+        "unallowlisted_field_rejected": true
+      },
+      "measured_differential": "Strict fail-closed refusal of full post body fields (selftext, body) and unallowlisted payload keys.",
+      "notes": null
+    },
+    {
+      "dimension_index": 10,
+      "dimension_name": "UNTRANSFERRED_METHODS_AND_RECONCILED_EVOLUTION",
+      "evaluation_status": "CONCORDANT_BEHAVIOR",
+      "concordant": true,
+      "path_w1_native": {
+        "original_scientific_relations": 146
+      },
+      "path_w2_receiver": {
+        "evolved_manifestation_edges_reconciled": 6703,
+        "sample_relations_admitted": 9,
+        "blanket_semantic_losslessness_claimed": false
+      },
+      "measured_differential": "Formally distinguishes the 146 original scientific relations from PR #1685, the 9 sample relations admitted into the receiver, and the 6,703 downstream evolved manifestation edges from PR #1694. Universal semantic losslessness is not claimed.",
+      "notes": null
+    }
+  ],
+  "scientific_finding": {
+    "finding_code": "WENDBINE_ORIGINAL_NATIVE_TO_RECIPIENT_COMMON_INPUT_QUALIFIED",
+    "determination": "Common-input execution of authentic Wendbine compiler against prospective receiver establishes concordant structure across 33 public sources, 191 concepts, and 9 graph families. Nine sample relations (one per family) are admitted into the receiver, while full per-edge admission and source-support parity for all 146 original relations remains held pending per-edge source witness validation. The 143 computed co-occurrence edges are verified at threshold >= 2 without claiming per-edge source-support equality. Downstream evolved manifestation edges (6,703) are explicitly distinguished from core scientific relations."
+  }
+}

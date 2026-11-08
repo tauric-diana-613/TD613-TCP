@@ -1,0 +1,20 @@
+{
+  "bounded_python_process": {
+    "environment_keys": [
+      "LANG"
+    ],
+    "history_metadata_path_reachable": true,
+    "shares_supervisor_network_namespace": true
+  },
+  "bubblewrap_network_probe": {
+    "error_class": "TimeoutExpired",
+    "status": "UNAVAILABLE_OR_TIMED_OUT"
+  },
+  "flight": "HELD_ISOLATION_AND_SPECIFIC_ADMISSION_CONTRACT",
+  "genuine_source_admissions": 0,
+  "host_history_boundary": "NOT_ENFORCED",
+  "isolated_reasoning_worker_exposure": 0,
+  "network_boundary": "NOT_ENFORCED",
+  "package_git_metadata_present": false,
+  "schema": "td613.carrier-host-isolation-inspection/v1"
+}

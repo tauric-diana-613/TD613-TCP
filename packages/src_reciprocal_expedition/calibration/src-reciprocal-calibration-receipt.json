@@ -1,0 +1,117 @@
+{
+  "schema": "td613.src-reciprocal-calibration-receipt/v1",
+  "timestamp": "2026-11-05T08:47:02.624Z",
+  "environment": "Node.js v26.7.0",
+  "total_challenges": 12,
+  "parity_count": 12,
+  "results": [
+    {
+      "challenge_id": "CHALLENGE_01_VALID_EXPLORE_CUE",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Standard well-formed Explore X. cue with trailing period.",
+      "parity": true,
+      "notes": "Identical cue (1) and link count (1); temporal relation: LATER",
+      "origin_trace_summary": "SRC_PROJECTIVE_ROUTING",
+      "recipient_trace_summary": "SRC_PROJECTIVE_ROUTING"
+    },
+    {
+      "challenge_id": "CHALLENGE_02_MALFORMED_EXPLORE_CUE",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Malformed Explore cue missing punctuation or exceeding length.",
+      "parity": true,
+      "notes": "Both origin and recipient refused malformed cue (0 cues detected).",
+      "origin_trace_summary": "SRC_PROJECTIVE_ROUTING",
+      "recipient_trace_summary": "SRC_PROJECTIVE_ROUTING"
+    },
+    {
+      "challenge_id": "CHALLENGE_03_PROJECTIVE_PATH_RESOLUTION",
+      "category": "PROJECTIVE_ROUTING",
+      "description": "Matching target title via exact or substring normalization.",
+      "parity": true,
+      "notes": "Both resolved target via EXACT_OR_TITLE_SUBSTRING.",
+      "origin_trace_summary": "SRC_PROJECTIVE_ROUTING",
+      "recipient_trace_summary": "SRC_PROJECTIVE_ROUTING"
+    },
+    {
+      "challenge_id": "CHALLENGE_04_CHRONOLOGICAL_INVALIDATION",
+      "category": "TEMPORAL_ORDERING",
+      "description": "Target was created BEFORE source; must not be marked LATER.",
+      "parity": true,
+      "notes": "Both marked temporal relation as PREEXISTING (causal downstream claim blocked).",
+      "origin_trace_summary": "SRC_PROJECTIVE_ROUTING",
+      "recipient_trace_summary": "SRC_PROJECTIVE_ROUTING"
+    },
+    {
+      "challenge_id": "CHALLENGE_05_CONTRADICTORY_PROPOSITIONS",
+      "category": "RELATIONAL_COMPILATION",
+      "description": "Two distinct sources assert opposing scope deltas on the same transformation.",
+      "parity": true,
+      "notes": "Both preserved opposing outcomes (NARROWED and EXPANDED) without collapse.",
+      "origin_trace_summary": "SRC_PHASE2_TOMOGRAPHY",
+      "recipient_trace_summary": "SRC_PHASE2_TOMOGRAPHY"
+    },
+    {
+      "challenge_id": "CHALLENGE_06_ALTERNATIVE_CONTEXTUAL_ROLES",
+      "category": "CONTEXT_ROLES",
+      "description": "Entity holds role X in Compiler Alpha and role Y in Compiler Beta.",
+      "parity": true,
+      "notes": "Both preserved distinct roles for the same entity across compiler passes.",
+      "origin_trace_summary": "SRC_PHASE2_CONTEXT_ROLES",
+      "recipient_trace_summary": "SRC_PHASE2_CONTEXT_ROLES"
+    },
+    {
+      "challenge_id": "CHALLENGE_07_CONTEXT_WITHDRAWAL_SOURCE_REMOVAL",
+      "category": "SOURCE_WITHDRAWAL",
+      "description": "Withdrawal of a bridge entity breaks transitive navigation.",
+      "parity": true,
+      "notes": "Withdrawn source resulted in 0 candidate links on both sides (dangling cue refused).",
+      "origin_trace_summary": "EXECUTED",
+      "recipient_trace_summary": "EXECUTED"
+    },
+    {
+      "challenge_id": "CHALLENGE_08_EQUIVALENT_TEXT_DISTINCT_SOURCES",
+      "category": "EVIDENCE_LINEAGE",
+      "description": "Two distinct records contain identical normalized text body.",
+      "parity": true,
+      "notes": "Receiver detected identical body and refused ancestral independence claim.",
+      "origin_trace_summary": "IDENTICAL_NORMALIZED_BODY_BLOCKS_ANCESTRAL_PROMOTION",
+      "recipient_trace_summary": "EXECUTED"
+    },
+    {
+      "challenge_id": "CHALLENGE_09_UNSUPPORTED_INTERMEDIATE_LINK",
+      "category": "GRAPH_TOPOLOGY",
+      "description": "A graph path with an unwitnessed intermediate node.",
+      "parity": true,
+      "notes": "Both explicitly declared missing hops without inventing joins.",
+      "origin_trace_summary": "src-query-result/v1",
+      "recipient_trace_summary": "src-query-result/v1"
+    },
+    {
+      "challenge_id": "CHALLENGE_10_MISSING_ENDPOINT_RELATION",
+      "category": "RELATION_REGISTRATION",
+      "description": "Register relation where target endpoint is not admitted.",
+      "parity": true,
+      "notes": "Recipient refused missing endpoint with UNSUPPORTED_GRAPH_LINK.",
+      "origin_trace_summary": "UNSUPPORTED_GRAPH_LINK_ON_MISSING_ENDPOINT",
+      "recipient_trace_summary": "UNSUPPORTED_GRAPH_LINK"
+    },
+    {
+      "challenge_id": "CHALLENGE_11_NULL_UNKNOWN_EVIDENCE",
+      "category": "TOMOGRAPHY",
+      "description": "Tomography candidate with scope UNKNOWN and no falsifiers.",
+      "parity": true,
+      "notes": "Both preserved composite_score: null and delta_evidence: UNKNOWN.",
+      "origin_trace_summary": "SRC_PHASE2_TOMOGRAPHY",
+      "recipient_trace_summary": "SRC_PHASE2_TOMOGRAPHY"
+    },
+    {
+      "challenge_id": "CHALLENGE_12_IMPOSSIBLE_REQUEST_WRONG_SEAL",
+      "category": "NATIVE_QUERY",
+      "description": "Query dispatch requesting mismatched seal epoch.",
+      "parity": true,
+      "notes": "Both refused mismatched epoch seal with identical typed error message.",
+      "origin_trace_summary": "src-query-result/v1",
+      "recipient_trace_summary": "src-query-result/v1"
+    }
+  ]
+}

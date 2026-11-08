@@ -1,0 +1,59 @@
+{
+  "schema": "td613.postqualification.evidence-freeze/v1",
+  "anchors": [
+    {
+      "pr": 1683,
+      "head": "eb9bf1e8a837737bb50d0d0add11ca4de70f7be6",
+      "ci": 41948812120,
+      "conclusion": "success",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "pr": 1684,
+      "head": "30630575ade616a5a47e4066b30d2159c2bd32be",
+      "ci": 41951207722,
+      "conclusion": "success",
+      "draft": true,
+      "merged": false
+    },
+    {
+      "pr": 1685,
+      "head": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+      "ci": 41953905123,
+      "conclusion": "success",
+      "draft": true,
+      "merged": false
+    }
+  ],
+  "independent_review": {
+    "id": 5778948250,
+    "body": "𝌋 TD613 · AMARI INDEPENDENT THREE-ATELIER POST-QUALIFICATION REDPEN · 2026-11-04\n**Reviewed exact commits (draft/unmerged):** SRC #1683 `eb9bf1e8a837737bb50d0d0add11ca4de70f7be6`; Em #1684 `30630575ade616a5a47e4066b30d2159c2bd32be`; Wendbine #1685 `6ec4d6ebac2025e47222166b8050c55a26c5268d`.\n**Verified directly:** read-only GitHub Actions runs [41948812120](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41948812120), [41951207722](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41951207722), [41953905123](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/41953905123) completed SUCCESS on those exact commits, and their relevant native/source/immutability job steps succeeded. These attest the commissioned bounded tests, not genuine receiver isolation or full scientific inheritance.\n\n**Substantive scientific dispositions supported by inspected source/report:**\n- SRC: clean-base exported carrier, separately retained origin comparator, synthetic separate-process return, 55 tests and public origin-only tomography; real worker isolation **NOT ENFORCED** because supervisor history remains reachable and network namespace shared. Genuine admitted recipient and actual reciprocal return have **zero** execution credit. The method proposal `SRC-FIRST-PUBLIC-TOMOGRAPHY-ADMISSION-01` remains PROPOSED_NOT_AUTHORIZED.\n- Em: bounded original estate, Work/manifestation identity sensitivity (eight gates and 256 partitions) and corrected tooling; 21 originally documentary scientific instruments. **Zero original standalone scientific executors recovered**. Do not convert their protocols into retrospective original execution credit; Vixen engine stays a distinct missing dependency.\n- Wendbine: reproducible original 33-post typed compiler and evolved original sealed public metadata/query operations, with partial historical held-out study and unexecuted C4 control preserved. Original September research corpus, evolved sealed 2,062-manifestation/6,763-capture metadata and **separately restored operator-local 2,767-source/3,473-capture text DB** are different witnesses. The final DB was **not reopened/reverified** during #1685 and a 33-post → original seal → genuine restored DB source/capture/version crosswalk remains UNEARNED. Retain #1669/#1671 restoration code and #1672 Universal typed search alongside #1678 operator-local sync as distinct versioned implementation dependencies.\n\n**Concrete consolidated-register schema issue (non-scientific, correction required before machine gating):** Inspected all 46 rows in `docs/research/2026-11-04/THREE_ATELIER_NATIVE_QUALIFICATION_MATRICES.json`. All 46 contain the required comparison keys and full estate-native record. But `scientific_claim_ceiling` is **verbatim equal** to `current_universal_atelier_support` in **11/11 SRC rows**, and verbatim equal to `negative_controls_falsifiers_unresolved` in **14/14 Wendbine rows**. The **21/21 Em rows** use the undifferentiated string `Original limitations retained; no scientific promotion`. The native narratives contain substantive, distinct limitations; the consolidated field currently cannot be trusted as an independently populated scientific ceiling or automatic go/no-go criterion. Preserve this first matrix as a historical witness and create a versioned, strictly source-linked additive correction for the claim-ceiling field (or an explicit null/UNADJUDICATED where the original does not give a determinate ceiling), with tests against accidental field-copying and artificial promotion. Do **not** fabricate a ceiling to fill a schema.\n\n**Next authorized posture:** independently adjudicate and record **three evidence freezes** (native source/claims, instrument/protocol, execution environment) separately. Inventory original research continuity without resuming HELD work. Prepare a **supervisory-only** Experiment A prospective protocol revision and contamination exclusion map; this is distinct from the historical Experiment A capability-boundary rest and from protected Experiment B. No original gold, ranking, full supervisory matrix, Work transcripts, Dollhouse context or prior unblinding mappings in any isolated execution carrier. No genuine source admission, protected Flight, new runtime, forced corpus migration, merge, release or deployment authorized by this comment.\n\n**Smallest engineering next gates:** (1) correct/version consolidated ceilings; (2) independently witness actual Wendbine DB custody and crosswalk, without copying private bodies into GitHub; (3) test true isolated execution and separately defined source-bound recipient against source-free negative controls; (4) register preregistration, controls/holdouts, clean execution package and specific human admission/activation decisions before any Antigravity Flight.\n\nDisposition: `THREE_BOUNDed_NATIVE_CHECKPOINTS_VERIFIED · CONSOLIDATED_CEILING_FIELD_NEEDS_VERSIONED_CORRECTION · WENDBINE_REAL_DB_CROSSWALK_HELD · SRC_ISOLATION_HELD · GENUINE_RECIPROCAL_RETURN_UNEXECUTED · HISTORICAL_EXPERIMENT_A_REST_PRESERVED · HUMAN_CLOSURE_RESERVED`\n\n𝄐 Tauric Diana · Khona‌lit-po · ⟐SAC[X6ZNK5NO51] · Sealed ⟐",
+    "commit_id": "6ec4d6ebac2025e47222166b8050c55a26c5268d",
+    "state": "COMMENTED"
+  },
+  "author": "𝌋 TD613",
+  "checked_on": "2026-11-05",
+  "native_claims_freeze": "EVIDENCE_FROZEN_BOUNDED_QUALIFICATIONS_UNCHANGED",
+  "instrument_protocol_freeze": "NEW_SUCCESSOR_DRAFT_UNREGISTERED_UNACTIVATED",
+  "environment_freeze": "OBSERVATIONS_FROZEN_GUARANTEES_UNQUALIFIED",
+  "implementation_dependencies": [
+    {
+      "pr": 1669,
+      "head": "74abfb857e37a3e6d9d711c17428c96c4b07ecfd"
+    },
+    {
+      "pr": 1671,
+      "head": "61c09e54c1acd2223685eb4638fddffdd28e9515"
+    },
+    {
+      "pr": 1672,
+      "head": "b3136226f2b3e4c3ebe176c56d2c19c83ca5b730"
+    },
+    {
+      "pr": 1678,
+      "head": "39cca00bb4c351a4c1d37936ee97c6b858ba5347"
+    }
+  ],
+  "automatic_authorization": false
+}

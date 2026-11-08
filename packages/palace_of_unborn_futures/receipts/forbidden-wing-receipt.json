@@ -1,0 +1,136 @@
+{
+  "schema": "td613.palace.forbidden-wing-receipt/v1",
+  "authority": "SAC[X6ZNK5NO51]",
+  "covenant": "Khona‌lit-po",
+  "quarantine_notice": "Exploratory post-pilot assays; zero confirmatory primary rules or weights modified.",
+  "exploratory_investigations": {
+    "E1_THE_MISINHERITED_TRUTH": {
+      "classification": "PREREGISTERED_EXPLORATORY",
+      "governing_question": "Can an investigator given the genuine history of another matched world be more confidently wrong than one given a deliberate false history?",
+      "positive_finding": {
+        "supported_on_calibration_and_overconfidence": true,
+        "exiles_mean_utility": 0.4482,
+        "false_prophets_mean_utility": 0.3613,
+        "exiles_mean_confidence_when_wrong": 0.6634,
+        "false_prophets_mean_confidence_when_wrong": 0.4705,
+        "exiles_ece_5bin": 0.3003,
+        "false_prophets_ece_5bin": 0.1455,
+        "exiles_mean_brier": 0.2813,
+        "false_prophets_mean_brier": 0.2477,
+        "exiles_surprise_recovery_rate": 0.6771,
+        "false_prophets_surprise_recovery_rate": 0.875,
+        "mechanism_explanation": "Deliberate textbook fabrications exhibit sub-physical residual smoothness (within_cell_var = 0.001 < 0.004), triggering forensic prior tempering and rapid post-surprise recovery. Authentic sibling-world traces pass every internal consistency check, locking the Exile into high-confidence false claims."
+      },
+      "adversarial_opposite_counter_case": {
+        "name": "E1_COUNTER_NOISE_MATCHED_STEALTH_FABRICATOR",
+        "opposite_outcome_achieved": true,
+        "stealth_fabricator_mean_utility": 0.3095,
+        "stealth_fabricator_confidence_when_wrong": 0.6958,
+        "stealth_fabricator_brier": 0.424,
+        "interpretation": "When an adversarial fabricator spoofs realistic physical noise (within_cell_var = 0.018) and targets probe-aliasing hypotheses, explicit fabrication defeats variance forensics and becomes even more confidently wrong than authentic Exile misattribution."
+      }
+    },
+    "E2_THE_MERCIFUL_AMNESIA": {
+      "classification": "PREREGISTERED_EXPLORATORY",
+      "governing_question": "Can a selective-memory investigator improve decision quality by excluding historically accurate but decision-irrelevant or drift-anchored information?",
+      "positive_finding": {
+        "supported_at_256B": true,
+        "revisionists_256B_mean_utility": 0.8924,
+        "archivists_full_mean_utility": 0.796,
+        "overall_paired_gain_256B": {
+          "n_worlds": 96,
+          "n_quartet_clusters": 24,
+          "mean_diff": 0.0964,
+          "sd_diff": 0.3279,
+          "ci95_low": 0.0429,
+          "ci95_high": 0.1575,
+          "cohens_dz": 0.2941,
+          "two_sided_signflip_p": 0.0039
+        },
+        "strong_drift_subcohort_gain_256B": {
+          "n_worlds": 68,
+          "n_quartet_clusters": 24,
+          "mean_diff": 0.1356,
+          "sd_diff": 0.3813,
+          "ci95_low": 0.0536,
+          "ci95_high": 0.2601,
+          "cohens_dz": 0.3555,
+          "two_sided_signflip_p": 0.0156
+        }
+      },
+      "adversarial_opposite_counter_case": {
+        "name": "E2_COUNTER_STATIONARY_FOUNDER_AND_96B_OMISSION",
+        "opposite_outcome_achieved": true,
+        "stationary_unbiased_founder_revisionist_minus_archivist": {
+          "n_worlds": 96,
+          "n_quartet_clusters": 24,
+          "mean_diff": -0.2803,
+          "sd_diff": 0.4256,
+          "ci95_low": -0.3726,
+          "ci95_high": -0.1864,
+          "cohens_dz": -0.6586,
+          "two_sided_signflip_p": 0
+        },
+        "tight_96B_family_D_valid_invention_rate_revisionists": 0,
+        "tight_96B_family_D_valid_invention_rate_heirs": 0.9167,
+        "interpretation": "Selective forgetting fails in two opposite regimes: (1) when early high-sample campaigns were actually stationary and unbiased while recent calibration checks were underpowered, forgetting EPOCH_0 destroys utility; (2) under tight 96B category truncation, evicting CAT_RESIDUAL_ANOMALIES collapses Family D predicate invention to 0%."
+      }
+    },
+    "E3_THE_ONTOLOGICAL_PRISON": {
+      "classification": "PREREGISTERED_EXPLORATORY",
+      "governing_question": "Can an investigator detect model inadequacy and distinguish detection from successful invention of a useful replacement?",
+      "positive_finding": {
+        "heirs_256B_rupture_detection_rate": 1,
+        "heirs_256B_valid_predicate_invention_rate": 0.9167,
+        "heirs_256B_specificity_on_noisy_complete_D4": 1,
+        "amnesiacs_rupture_detection_rate": 0.8333,
+        "amnesiacs_valid_predicate_invention_rate": 0
+      },
+      "adversarial_opposite_counter_case": {
+        "name": "E3_COUNTER_GF5_CUBIC_GRAMMAR_HORIZON",
+        "opposite_outcome_achieved": true,
+        "n_rupture_worlds_tested": 6,
+        "rupture_detection_rate_on_gf5": 1,
+        "valid_invention_rate_on_gf5": 0,
+        "mean_holdout_accuracy_on_gf5": 0.5625,
+        "interpretation": "Under a 4-variable GF(5) nonlinear invariant outside the investigator’s 2-variable mod-3 synthesis grammar, residual variance diagnostics still detect ontological inadequacy at high rates, yet replacement invention drops to 0.0000 (holdout accuracy near chance), cleanly separating inadequacy detection from generative conceptual invention."
+      }
+    },
+    "E4_THE_INTERROGATIVE_INHERITANCE": {
+      "classification": "POST_HOC_EXPLORATORY_DISCOVERED_IN_PILOT",
+      "post_hoc_label": true,
+      "governing_question": "Does inheriting an interrogative falsification procedure (treating inherited conclusions strictly as hypotheses to challenge first) rescue investigators from misattributed or fabricated histories?",
+      "positive_finding": {
+        "mild_2_65_sigma_skeptic_rescues_utility": false,
+        "mild_2_65_sigma_skeptic_exiles_utility": 0.4656,
+        "mild_2_65_sigma_skeptic_exiles_conf_when_wrong": 0.4434,
+        "corroboration_gated_rescues_near_amnesiacs": false,
+        "declarative_exiles_utility": 0.4482,
+        "corroboration_gated_exiles_utility": 0.4574,
+        "declarative_exiles_conf_when_wrong": 0.6634,
+        "corroboration_gated_exiles_conf_when_wrong": 0.4057,
+        "declarative_prophets_utility": 0.3613,
+        "corroboration_gated_prophets_utility": 0.4509,
+        "amnesiacs_baseline_utility": 0.5887,
+        "partial_falsification_note": "Mild 2.65-sigma surprise gating cured overconfidence (0.6634 -> 0.4434) but FAILED to rescue utility (0.4656 vs 0.5887) because ambiguous single probes revert to uncorroborated prior dogma; only strict corroboration-gated attenuation (0.12x prior until experimentally earned) rescues both Exiles and False Prophets."
+      },
+      "adversarial_opposite_counter_case": {
+        "name": "E4_COUNTER_HIGH_NOISE_PRIOR_PRECISION_WASTE",
+        "opposite_outcome_achieved": false,
+        "declarative_heirs_high_noise_utility": 0.6976,
+        "interrogative_heirs_high_noise_utility": 0.6808,
+        "skeptic_minus_declarative_paired_contrast": {
+          "n_worlds": 96,
+          "n_quartet_clusters": 24,
+          "mean_diff": -0.0168,
+          "sd_diff": 0.2765,
+          "ci95_low": -0.0776,
+          "ci95_high": 0.0361,
+          "cohens_dz": -0.0608,
+          "two_sided_signflip_p": 0.5786
+        },
+        "interpretation": "When single-step experimental probes suffer severe measurement noise (sigma = 0.85) and the inherited capsule Z is genuinely calibrated, skeptical prior-flattening discards valid historical precision and significantly underperforms declarative inheritance."
+      }
+    }
+  }
+}

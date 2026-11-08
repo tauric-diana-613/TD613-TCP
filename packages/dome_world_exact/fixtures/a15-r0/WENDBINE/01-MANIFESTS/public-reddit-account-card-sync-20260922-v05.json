@@ -1,0 +1,64 @@
+{
+  "schema": "wendbine-public-account-card-sync/v0.5",
+  "snapshot_id": "wendbine-public-reddit-account-card-sync-20260922-v05",
+  "atelier_id": "WENDBINE",
+  "retrieval_day_utc": "2026-09-22",
+  "source_surface": "https://www.reddit.com/r/Wendbine/new/",
+  "source_surface_crawl_recency": "2 days as displayed by retrieval tool",
+  "source_account_handle": "u/Upset-Ratio502",
+  "scope": "FIRST_RENDERED_PAGE_CACHED_LISTING_NOT_EXHAUSTIVE_ACCOUNT_CENSUS",
+  "source_registry": "01-MANIFESTS/public-reddit-account-card-source-registry-20260922-v05.jsonl",
+  "source_binding": "RENDERED_CARD_AUTHOR_AND_POST_LINK_ONLY",
+  "public_post_detail_retrieved": false,
+  "post_details_cache_miss": true,
+  "coverage": {
+    "observed_account_cards": 25,
+    "persisted_per_card_records": 25,
+    "explicitly_receipted_capture_failures": 0,
+    "unexplained_remainder": 0,
+    "text_discussion_cards": 23,
+    "media_only_cards": 2,
+    "next_page_observed": true,
+    "next_page_retrieved": false
+  },
+  "temporal_policy": {
+    "retrieval_day_utc": "2026-09-22",
+    "crawled_relative": "2 days before retrieval",
+    "per_post_publication_timestamp_adjudicated": false,
+    "post_day_adjudicated": false,
+    "card_order_not_exact_publication_sequence": true
+  },
+  "prior_state": {
+    "fully_hydrated_public_reddit_post_count": 35,
+    "sept16_capture_loss_receipt": "04-RECEIPTS/2026-09-16-public-profile-card-loss-ledger-v01.json",
+    "this_snapshot_updates_sept16_per_card_identity": false
+  },
+  "media_policy": {
+    "youtube_channel_verified": false,
+    "youtube_video_source_records_admitted": 0,
+    "reddit_media_cards_are_not_youtube_attribution": true
+  },
+  "approximate_quote_target": {
+    "user_recollection": "yes Paul, it does expose a topology. It's like you're shouting X, brother",
+    "verified_in_this_snapshot": false,
+    "transcript_admitted": false
+  },
+  "claim_ceiling": [
+    "LISTING_CARD_BOUND != FULL_POST_HYDRATED",
+    "RETRIEVAL_DAY != PUBLICATION_DAY",
+    "CACHED_LISTING != LIVE_ACCOUNT_CENSUS",
+    "VISIBLE_ACCOUNT_HANDLE != CIVIL_PERSON_IDENTITY",
+    "MEDIA_CARD != VERIFIED_YOUTUBE_WORK",
+    "BOT_DIALOGUE_REPRODUCED_ON_ACCOUNT != INDEPENDENT_BOT_AUTHORITY",
+    "REPORTED_QUOTE != SOURCE_VERIFIED_TRANSCRIPT",
+    "NOT_RETRIEVED != DID_NOT_EXIST"
+  ],
+  "authority": {
+    "merge": false,
+    "deploy": false,
+    "mark_ready": false,
+    "scientific_promotion": false,
+    "human_closure": true
+  },
+  "seal": "⟐"
+}

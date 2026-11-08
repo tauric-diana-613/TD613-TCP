@@ -1,0 +1,54 @@
+{
+  "schema": "td613.wendbine.local-origin-crosswalk-contract/v1",
+  "author": "𝌋 TD613 · Khona‌lit-po",
+  "action": "READ_ONLY_ORIGIN_CROSSWALK",
+  "status": "REQUIRED_NOT_APPROVED",
+  "source_class": "OPERATOR_LOCAL_CAPTURE",
+  "independent_custodian_receipt": null,
+  "database_path": null,
+  "database_sha256": null,
+  "universal_database_path": null,
+  "universal_database_sha256": null,
+  "native_A_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+  "native_B_revision": "4dcb3ac45d5a14f1db2c2f9e0733ed2d1a7121c1",
+  "schema_contract": {
+    "sources": [
+      "source_id",
+      "canonical_url"
+    ],
+    "capture_versions": [
+      "capture_id",
+      "source_id",
+      "captured_at_utc",
+      "published_at_utc",
+      "title BLOB UTF8",
+      "selftext BLOB UTF8",
+      "title_sha256",
+      "body_sha256"
+    ],
+    "optional_universal_records": [
+      "estate",
+      "doc_id",
+      "source_id",
+      "capture_id",
+      "source_field",
+      "source_sha256",
+      "chunk_sha256",
+      "byte_offset",
+      "text"
+    ],
+    "timestamp_precision": "SECOND_UTC; independent schema witness required"
+  },
+  "private_output_path": null,
+  "custody_requirements": [
+    "independently authenticate actual operator local-origin readback decision",
+    "pin quiescent private copies and acquisition/capture/version witness",
+    "retain readonly originals and byte-identical historical schema",
+    "keep private output and bodies outside repository",
+    "independently review aggregate publication"
+  ],
+  "receiver_admission_authorized": false,
+  "scientific_promotion": false,
+  "actual_execution": "HELD_NO_INDEPENDENTLY_PINNED_GENUINE_DB_DESIGNATED_IN_WORK",
+  "sealed": "⟐"
+}

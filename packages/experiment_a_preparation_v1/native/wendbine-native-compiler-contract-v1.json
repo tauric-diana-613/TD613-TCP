@@ -1,0 +1,111 @@
+{
+  "schema": "td613.wendbine.native-compiler-contract/v1",
+  "native_revision": "520e3db76af8f1c76618bd678456c543ec37b3e5",
+  "native_executable_sha256": "1e87e611524fc25ccb33c7ce63d51a7edfc92ea926c28ed2347c44f99fb45bb0",
+  "relation_registry_sha256": "218b7c581cf4f7f77e3b039d0e9339d07b98b382fcd712512cc3cd7c18ebc879",
+  "graph_relation_vocabulary": {
+    "G_A": [
+      "BOUNDS",
+      "CAN_BECOME",
+      "CAN_CAUSE",
+      "CAN_CHANGE",
+      "CAN_DELAY",
+      "CAN_PROPAGATE_THROUGH",
+      "DEPENDS_ON",
+      "DIFFERS_FROM",
+      "FAILURE_CAN_PROMOTE",
+      "LIMITS",
+      "MULTIPLIES",
+      "MUST_REMAIN_DISTINCT_FROM",
+      "REDUCES",
+      "REQUIRES",
+      "REQUIRES_TYPED"
+    ],
+    "G_D": [
+      "CAN_CHANGE_AS",
+      "CAN_CONVERGE_ON",
+      "CAN_CREATE",
+      "CAN_EXPLAIN",
+      "CAN_REACH",
+      "CONNECTS_TO",
+      "CONTAINS",
+      "CONTAINS_OR_CALLS",
+      "DIFFERS_FROM",
+      "EXPANDS_INTO",
+      "EXTENDS_THROUGH",
+      "REDUCES",
+      "SHAPES",
+      "SITS_WITHIN"
+    ],
+    "G_F": [
+      "CAN_PROPAGATE_TRANSITIVELY_THROUGH",
+      "DIFFERS_FROM",
+      "PROPAGATES_ACROSS"
+    ],
+    "G_I": [
+      "ALIGNS",
+      "ALIGNS_THROUGH",
+      "CAN_SUPPORT",
+      "EXPANDS",
+      "ORGANIZED_AS",
+      "SUPPORTS"
+    ],
+    "G_O": [
+      "CAN_CAUSE",
+      "CAN_HIDE_BEHIND",
+      "CAN_YIELD",
+      "DIFFERS_FROM",
+      "MUST_REMAIN_DISTINCT_FROM",
+      "PROJECTS_TO",
+      "REDUCES"
+    ],
+    "G_P": [
+      "BOUNDS",
+      "CONSTRAINS",
+      "DIFFERS_FROM",
+      "DISAMBIGUATES",
+      "LEAVES",
+      "MITIGATES",
+      "PRESERVES",
+      "PRESERVES_HISTORY_OF"
+    ],
+    "G_R": [
+      "CAN_DEGRADE",
+      "CAN_SUPPORT",
+      "CONSTRAINS",
+      "CONTRIBUTES_TO",
+      "DIFFERS_FROM",
+      "DOES_NOT_ESTABLISH",
+      "LIMITS",
+      "MUST_BE_PRESERVED_BY",
+      "OBSERVATIONALLY_CAN_RESEMBLE",
+      "SHAPES",
+      "SUPPORTS"
+    ],
+    "G_T": [
+      "CAN_CREATE",
+      "CAN_DIVERGE_TEMPORARILY_FROM",
+      "CAN_INITIATE",
+      "DECLARES_SECTION",
+      "DIFFERS_FROM"
+    ],
+    "G_X": [
+      "CAN_AMPLIFY",
+      "CAN_PRODUCE",
+      "DECLARED_CORRIDOR_TO",
+      "DECLARED_LAYER_CHAIN_TO",
+      "PARTICIPATES_IN",
+      "SOURCE_SYNTHESIS_LINKS_TO",
+      "TRACKS"
+    ]
+  },
+  "evidence_classes": [
+    "SOURCE_EXPLICIT_NEGATIVE_RELATION",
+    "SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE",
+    "SOURCE_EXPLICIT_PROGRAM",
+    "SOURCE_EXPLICIT_SEQUENCE",
+    "SOURCE_EXPLICIT_SYNTHESIS"
+  ],
+  "scope": "STRICT_SUCCESSOR_ORIGIN_SIDE_VALIDATION_OF_V01_VOCABULARY",
+  "scientific_promotion": false
+}
