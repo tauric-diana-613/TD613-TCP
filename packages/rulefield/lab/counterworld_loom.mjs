@@ -1420,3 +1420,21 @@ export {
   answerOperatorsQuestionOnEpistemicFailure,
   buildFourthOrderDiscoveryDocket
 } from './fourth_order_interpretive_labor.mjs';
+
+// ============================================================================
+// 19. FIFTH-ORDER DECISION CHANNEL EXTENSIONS (RE-EXPORTS)
+// ============================================================================
+
+export {
+  FIFTH_ORDER_COMMISSION_SCHEMA,
+  DECISION_CHANNEL_LEAKAGE_SCHEMA,
+  FOUR_REMEDY_CONDITIONS_SCHEMA,
+  OBSERVER_RELATIVE_CHANNELS_SCHEMA,
+  TEMPORAL_BATCHING_DILEMMA_SCHEMA,
+  REPARATIVE_INTERVENTION_SCHEMA,
+  evaluateDecisionChannelLeakage,
+  evaluateFourRemedyConditions,
+  evaluateObserverRelativeChannels,
+  evaluateReparativeInterventionEthics,
+  answerOperatorsQuestionOnRemedyLeakage
+} from './fifth_order_decision_channel.mjs';

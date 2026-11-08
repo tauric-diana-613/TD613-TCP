@@ -50,7 +50,12 @@ import {
   simulateAsymmetricInterpretiveLaborTrial,
   simulateDromologicalReadingExperiment,
   answerOperatorsQuestionOnEpistemicFailure,
-  buildFourthOrderDiscoveryDocket
+  buildFourthOrderDiscoveryDocket,
+  evaluateDecisionChannelLeakage,
+  evaluateFourRemedyConditions,
+  evaluateObserverRelativeChannels,
+  evaluateReparativeInterventionEthics,
+  answerOperatorsQuestionOnRemedyLeakage
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -86,6 +91,11 @@ Commands:
   dromological-reading   Simulate Dromological Reading Experiment & extractive hearing danger
   epistemic-failure      Answer Operator's Question on location of epistemic failure
   fourth-order-docket    Build complete Fourth-Order Discovery Docket
+  decision-leakage       Audit Decision-Channel Semantic Leakage I(Q; D) under deterministic policy
+  four-remedies          Evaluate Four Remedy Conditions (A, B, C, D) & dromological dilemma
+  observer-channels      Evaluate Observer-Relative Leakage Channels (Institution vs Public vs Author)
+  reparative-ethics      Audit Reparative Intervention Ethics and speaker consent / unrequested stay
+  stay-leakage-answer    Answer Operator's Question on how the stay testifies against its author
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -283,6 +293,36 @@ async function main() {
 
   if (cmd === 'fourth-order-docket') {
     const report = buildFourthOrderDiscoveryDocket();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'decision-leakage') {
+    const report = evaluateDecisionChannelLeakage();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'four-remedies') {
+    const report = evaluateFourRemedyConditions();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'observer-channels') {
+    const report = evaluateObserverRelativeChannels();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'reparative-ethics') {
+    const report = evaluateReparativeInterventionEthics();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'stay-leakage-answer') {
+    const report = answerOperatorsQuestionOnRemedyLeakage();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
