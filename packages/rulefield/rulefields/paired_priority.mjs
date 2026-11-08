@@ -10,7 +10,8 @@ import {proposedTemporalPriority,temporalWitness} from './temporal_guardian.mjs'
 const hash=s=>createHash('sha256').update(s).digest('hex');
 const fail=s=>{throw Object.assign(new Error(s),{code:s})};
 const shaOK=x=>typeof x==='string'&&/^[0-9a-f]{64}$/i.test(x);
-const iso=s=>typeof s==='string'&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(s)&&Number.isFinite(Date.parse(s));
+const iso=s=>{if(typeof s!=='string'||!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(s))return false;
+ const t=Date.parse(s);return Number.isFinite(t)&&new Date(t).toISOString().slice(0,19)===s.slice(0,19);};
 const PREC=['RF-081','RF-082','RF-083','RF-084','RF-085','RF-086'],ANCHOR='RF-079';
 const FINITE=n=>typeof n==='number'&&Number.isFinite(n);
 const sampleList=x=>Array.isArray(x)&&x.length>=64&&x.length<=4096;
