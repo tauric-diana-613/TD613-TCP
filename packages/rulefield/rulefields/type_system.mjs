@@ -13,6 +13,7 @@ import {createHash} from 'node:crypto';
 import {readRulefield,validateRulefield} from '../rulefield.mjs';
 import {readRevisionSeed,validateRevision} from './temporal_guardian.mjs';
 const auditURL=new URL('./type_assessment/TYPE_ASSESSMENT_ROD0002.json',import.meta.url);
+const multiplicityURL=new URL('./type_assessment/ROLE_MULTIPLICITY_ROD0002.json',import.meta.url);
 const registryURL=new URL('../data/rulefield.v1.json',import.meta.url);
 const fail=code=>{const e=new Error(code);e.code=code;throw e;};
 const hash=s=>createHash('sha256').update(s).digest('hex');
@@ -44,30 +45,61 @@ export function readTypeAssessment(){
  if(a.schema!=='td613.rulefield.type-assessment/v1'||a.authorization.canonical_rule_registry_changed!==false)fail('TYPE_ASSESSMENT_UNSAFE');
  return a;
 }
+export function readRoleMultiplicity(){
+ const x=JSON.parse(readFileSync(multiplicityURL,'utf8'));
+ if(x.schema!=='td613.rulefield.role-multiplicity-addendum/v1'||x.no_implicit_authority_transfer!==true||x.protected_flight!=='HELD')fail('ROLE_MULTIPLICITY_CONTRACT_INVALID');
+ return x;
+}
+const validContexts=new Set(['RULE','RULEFIELD','ASSAY','MODEL','THEOREM','RESEARCH_PROGRAM','SOURCE','CLAIM']);
+function roleView(b){return {role:b.role,qualified_view:b.view_ref,context:b.context,role_standing:b.binding_status,authority_transfer:false};}
 export function proposedRuleGate(proposal){
  if(proposal?.kind!=='PROPOSE_RULE')return {type:'NOT_A_RULE_PROPOSAL',status:'NOT_APPLICABLE',issues:[]};
  const issues=[];
- if(proposal.object_type==='RULEFIELD')issues.push('RULEFIELD_AS_RULE_TYPE_COLLAPSE');
- if(proposal.object_type!==undefined&&!['RULE','RULEFIELD'].includes(proposal.object_type))issues.push('UNSUPPORTED_LOCAL_RULE_OBJECT_TYPE');
+ const declared=Array.isArray(proposal.roles)?proposal.roles:proposal.object_type?[proposal.object_type]:['RULE'];
+ if(!declared.every(r=>validContexts.has(r))||new Set(declared).size!==declared.length)issues.push('INVALID_OR_DUPLICATE_ROLE_BINDING');
+ if(!declared.includes('RULE'))issues.push('MISSING_EXECUTION_ROLE_FOR_LOCAL_RULE');
+ if(proposal.object_type!==undefined&&!declared.includes(proposal.object_type))issues.push('INCONSISTENT_OBJECT_TYPE_AND_ROLES');
+ const dual=declared.includes('RULEFIELD')&&declared.includes('RULE');
+ if(dual){
+  const contexts=proposal.role_contexts;
+  if(!contexts||typeof contexts.execution!=='string'||contexts.execution.trim().length<3||
+     typeof contexts.inquiry!=='string'||contexts.inquiry.trim().length<3||
+     contexts.inquiry===contexts.execution)issues.push('MISSING_DISTINCT_DUAL_ROLE_CONTEXTS');
+  if(proposal.cross_role_authority_transfer!==false)issues.push('AUTHORITY_TRANSFER_NOT_EXPLICITLY_FORBIDDEN');
+ }
  const parent=proposal.source_rulefield_id??proposal.rulefield_id??null;
  if(parent!==null&&(typeof parent!=='string'||!readRevisionSeed().items.some(x=>x.id===parent)))issues.push('UNKNOWN_PARENT_RULEFIELD');
+ const origin=proposal.source_rule_id??null;
+ if(origin!==null&&(typeof origin!=='string'||!readRulefield().rules.some(x=>x.id===origin)))issues.push('UNKNOWN_HISTORICAL_RULE_SOURCE');
  const formal=proposal.formal_rule;
- {
-  if(!formal||typeof formal!=='object'||Array.isArray(formal))issues.push('MISSING_TYPED_LOCAL_RULE_CONTRACT');
-  else{
-   if(typeof formal.state_space!=='string'||formal.state_space.trim().length<3)issues.push('MISSING_STATE_SPACE');
-   if(typeof formal.local_transition!=='string'||formal.local_transition.trim().length<3)issues.push('MISSING_LOCAL_TRANSITION');
-   if(typeof formal.guard!=='string'||formal.guard.trim().length<3)issues.push('MISSING_GUARD');
-   if(typeof formal.observer!=='string'||formal.observer.trim().length<3)issues.push('MISSING_OBSERVER');
-  }
+ if(!formal||typeof formal!=='object'||Array.isArray(formal))issues.push('MISSING_TYPED_LOCAL_RULE_CONTRACT');
+ else{
+  if(typeof formal.state_space!=='string'||formal.state_space.trim().length<3)issues.push('MISSING_STATE_SPACE');
+  if(typeof formal.local_transition!=='string'||formal.local_transition.trim().length<3)issues.push('MISSING_LOCAL_TRANSITION');
+  if(typeof formal.guard!=='string'||formal.guard.trim().length<3)issues.push('MISSING_GUARD');
+  if(typeof formal.observer!=='string'||formal.observer.trim().length<3)issues.push('MISSING_OBSERVER');
  }
  return {type:'PROPOSED_LOCAL_RULE',status:issues.length?'HELD_RULEFIELD_RULE_TYPE_COLLAPSE':'CANDIDATE_RULE_ONLY_NOT_ADOPTED',
+  roles:declared,dual_role:dual,contexts:dual?proposal.role_contexts:null,
   issues,human_adoption_authorized:false,scientific_credit:0,
-  note:'A valid local-rule shape is not a tested theorem, human authorization or executable implementation.'};
+  no_cross_role_authority_transfer:true,
+  note:'Rule and Rulefield are non-equivalent roles, not necessarily disjoint subjects. A valid role-indexed local rule remains unadopted and unproven.'};
 }
 export function buildTypedProjection({index=readRulefield(),seed=readRevisionSeed(),audit=readTypeAssessment()}={}){
  validateRulefield(index);validateRevision(seed);
  const ids=new Set(index.rules.map(r=>r.id)),fields=new Set(seed.items.map(r=>r.id));
+ const multiplicity=readRoleMultiplicity();
+ const qualified=new Map();
+ for(const b of multiplicity.examples){
+  if(!ids.has(b.historical_id)||qualified.has(b.historical_id))fail('INVALID_ROLE_MULTIPLICITY_SOURCE');
+  if(!Array.isArray(b.role_bindings)||!b.role_bindings.some(x=>x.role==='RULEFIELD'))fail('NO_RESEARCH_ROLE');
+  const contexts=new Set();
+  for(const v of b.role_bindings){
+   if(!validContexts.has(v.role)||contexts.has(v.context)||v.view_ref!==`legacy_rule:${b.historical_id}#role:${v.role.toLowerCase()}`)fail('INVALID_ROLE_VIEW');
+   contexts.add(v.context);
+  }
+  qualified.set(b.historical_id,b);
+ }
  const decisions=new Map();
  for(const row of audit.promote_rule_records_to_field_or_assay){
   if(!ids.has(row.rule_id)||!(fields.has(row.field_or_priority_anchor)||index.priority_queue.some(q=>q.id===row.field_or_priority_anchor)))fail('CROSSWALK_UNKNOWN_ORIGINAL_ID');
@@ -85,11 +117,19 @@ export function buildTypedProjection({index=readRulefield(),seed=readRevisionSee
    proposed_effective_type:kind,assessment_kind:selected?.proposed_kind||null,
    review_status:selected?'TYPE_PROJECTION_REVIEW_ONLY':explicit?'RETAIN_AS_RULE':'LEGACY_TYPE_NOT_INDEPENDENTLY_ADJUDICATED',
    parent_refs:selected?[selected.field_or_priority_anchor]:[],
+   role_bindings:qualified.has(r.id)?qualified.get(r.id).role_bindings.map(roleView):[{
+    role:kind,qualified_view:`legacy_rule:${r.id}#role:${kind.toLowerCase()}`,
+    context:'PENDING_SOURCE_SPECIFIC_ADJUDICATION',role_standing:'CURRENT_SINGLE_VIEW',authority_transfer:false
+   }],
+   researchable_as_rulefield:qualified.has(r.id),
    original_id_preserved:true,original_record_mutated:false,scientific_credit_added:0};
  });
  const byField=seed.items.map(f=>({id:f.id,kind:'RULEFIELD',human_original_expression:f.original_expression,
   academic_working_title:f.revision_overlay?.revised_academic_working_label||f.proposed_academic_label,
-  source_snapshot:'RF-OD-0001_PLUS_RF-OD-0002_REVISION',review_status:'FIELD_NOT_AUTOMATIC_LOCAL_RULE'}));
+  source_snapshot:'RF-OD-0001_PLUS_RF-OD-0002_REVISION',
+  role_bindings:[{role:'RULEFIELD',qualified_view:`operator_field:${f.id}#role:rulefield`,
+   context:'RESEARCH_AND_COUNTEREXAMPLE_CONTEXT',role_standing:'PROPOSED_FIELD_ROLE',authority_transfer:false}],
+  review_status:'FIELD_NOT_AUTOMATIC_LOCAL_RULE'}));
  const childCandidates=audit.extract_rule_candidates_from_rulefields.map((c,i)=>{
   if(!fields.has(c.rulefield_id))fail('CHILD_RULE_WITHOUT_PARENT_FIELD');
   const kind=/PROTOCOL|ABLATION|MEASUREMENT|MODEL_SELECTION|ASSAY/.test(c.proposed_rule_title)?'ASSAY_CANDIDATE':'RULE_CANDIDATE';
@@ -102,7 +142,12 @@ export function buildTypedProjection({index=readRulefield(),seed=readRevisionSee
  const relations=[
   ...byRule.filter(r=>r.parent_refs.length).flatMap(r=>r.parent_refs.map(parent=>({from:r.id,to:parent,kind:'CONTEXTUALIZED_BY',source:'TYPE_ASSESSMENT_ROD0002',proposed_only:true}))),
   ...childCandidates.map(r=>({from:r.source_rulefield_id,to:r.id,kind:'PROPOSES_CHILD',source:'TYPE_ASSESSMENT_ROD0002',proposed_only:true})),
-  ...audit.protect_as_research_fields.map(f=>({from:f.rulefield_id,to:f.rulefield_id,kind:'PRESERVE_DOMAIN_SCOPE',source:'TYPE_ASSESSMENT_ROD0002',proposed_only:true}))
+  ...audit.protect_as_research_fields.map(f=>({from:f.rulefield_id,to:f.rulefield_id,kind:'PRESERVE_DOMAIN_SCOPE',source:'TYPE_ASSESSMENT_ROD0002',proposed_only:true})),
+  ...multiplicity.examples.map(x=>({from:x.historical_id,to:x.historical_id,
+    from_qualified_ref:`legacy_rule:${x.historical_id}#role:${x.role_bindings[0].role.toLowerCase()}`,
+    to_qualified_ref:`legacy_rule:${x.historical_id}#role:rulefield`,
+    kind:'RESEARCHABLE_AS',no_type_identity_claimed:true,
+    no_authority_transfer:true,source:'ROLE_MULTIPLICITY_ROD0002',proposed_only:true}))
  ];
  const counts=byRule.reduce((o,r)=>(o[r.proposed_effective_type]=(o[r.proposed_effective_type]||0)+1,o),{});
  const body={schema:'td613.rulefield.typed-projection/v1',
@@ -111,9 +156,14 @@ export function buildTypedProjection({index=readRulefield(),seed=readRevisionSee
   status:'REVIEW_ONLY_TYPED_PROJECTION_NO_HISTORICAL_REWRITE',
   counts:{original_legacy_rule_records:byRule.length,rulefields:byField.length,
    assessed_retypes:decisions.size,protected_rules:retained.size,
-   derived_child_candidates:childCandidates.length,by_effective_type:counts},
+   derived_child_candidates:childCandidates.length,
+   explicit_nonexclusive_historical_roles:qualified.size,
+   by_effective_type:counts},
   objects:{legacy:byRule,rulefields:byField,children:childCandidates},
   relations,
+  role_axiom:{non_equivalence_does_not_imply_disjointness:true,
+    indexed_role_views:true,authority_transfer_requires_independent_warrant:true,
+    examples:qualified.size},
   authority:{human_ontology_review_pending:true,canonical_mutation:false,protected_flight:'HELD',
     type_assessment_is_not_rule_adoption:true,scientific_claim_credit:0},
   unassessed_records:byRule.filter(r=>r.proposed_effective_type==='HISTORICAL_RECORD').map(r=>r.id)
@@ -127,9 +177,20 @@ export function validateTypedProjection(p){
  const a=p.objects?.legacy||[],b=p.objects?.rulefields||[],c=p.objects?.children||[];
  return a.length===596&&b.length===86&&c.length===31&&
  p.counts.assessed_retypes===26&&p.counts.protected_rules===11&&
+ p.counts.explicit_nonexclusive_historical_roles===10&&
+ p.role_axiom?.non_equivalence_does_not_imply_disjointness===true&&
+ a.filter(x=>x.researchable_as_rulefield).length===10&&
  p.counts.original_legacy_rule_records===596&&
  a.every(x=>x.original_record_mutated===false&&x.original_id_preserved)&&
  p.authority.canonical_mutation===false&&p.authority.protected_flight==='HELD';
+}
+export function inspectRoles(id,{projection=buildTypedProjection()}={}){
+ const x=[...projection.objects.legacy,...projection.objects.rulefields].find(y=>y.id===id);
+ if(!x)fail('ROLE_REFERENT_NOT_FOUND');
+ return {source_id:id,views:x.role_bindings,nonexclusive:x.role_bindings.length>1,
+  non_equivalence:'RULEFIELD_NOT_EQUIVALENT_TO_RULE',
+  research_view_does_not_transfer_execution_authority:true,
+  canonical_mutated:false,projection_sha256:projection.projection_sha256};
 }
 export function inspectType(id,{projection=buildTypedProjection()}={}){
  const target=[...projection.objects.legacy,...projection.objects.rulefields,...projection.objects.children].find(x=>x.id===id);
