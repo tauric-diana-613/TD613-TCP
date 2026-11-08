@@ -112,12 +112,17 @@ export function createVixenReferenceMembrane({
     // Exact record path is checked above; no search user text can become a file path.
     const payload=await boundedFetch(fetcher,u.href,origin,MAX_RECORD_BYTES);
     if(!cryptoProvider?.subtle?.digest)throw new BridgeHold('WEBCRYPTO_UNAVAILABLE');
-    const digest=toHex(await cryptoProvider.subtle.digest('SHA-256',payload.bytes));
+    // Edition 1.4 indexes the canonical JSON text, excluding the single
+    // serialization newline carried by each served .json file.
+    const canonicalText=payload.raw.endsWith('\n')?payload.raw.slice(0,-1):payload.raw;
+    const canonicalBytes=new TextEncoder().encode(canonicalText);
+    const digest=toHex(await cryptoProvider.subtle.digest('SHA-256',canonicalBytes));
+    const servedFileDigest=toHex(await cryptoProvider.subtle.digest('SHA-256',payload.bytes));
     if(digest!==row.record_sha256){stamp('SOURCE_DIGEST_REFUSED',{id,expected:row.record_sha256,actual:digest});throw new BridgeHold('RECORD_DIGEST_MISMATCH')}
     const record=decodeJson(payload.raw,'RECORD_SCHEMA_MISMATCH');
     if(record?.id!==id||record?.kind!==row.kind||record?.label!==row.label){stamp('RECORD_IDENTITY_REFUSED',{id});throw new BridgeHold('RECORD_SCHEMA_MISMATCH')}
-    const witness=Object.freeze({estate:'UNIVERSAL_REFERENCE',id,record,source_path:row.record_path,record_sha256:digest,verified_at_interaction:true,warrant:'SOURCE_BYTES_VERIFIED_NOT_CLAIM_ENTAILMENT',authorization:'READ_ONLY'});
-    stamp('SOURCE_WITNESSED',{id,record_sha256:digest,source_path:row.record_path});
+    const witness=Object.freeze({estate:'UNIVERSAL_REFERENCE',id,record,source_path:row.record_path,record_sha256:digest,verified_at_interaction:true,served_file_sha256:servedFileDigest,canonical_record_payload_sha256:digest,warrant:'CANONICAL_JSON_PAYLOAD_SHA256_VERIFIED_NOT_CLAIM_ENTAILMENT',authorization:'READ_ONLY'});
+    stamp('SOURCE_WITNESSED',{id,canonical_payload_sha256:digest,served_file_sha256:servedFileDigest,source_path:row.record_path});
     return witness;
   }
   const rest=()=>{stamp('OPERATOR_REST');return status()};
