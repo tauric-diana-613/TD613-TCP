@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const html=readFileSync(path.join(root,'app/encyclopedia/vix-cyb-candidate4.html'),'utf8');
+const html=readFileSync(path.join(root,'artifacts/vixen-candidate4/vix-cyb-candidate4.html'),'utf8');
 const match=(re,label)=>{const m=html.match(re);assert(m,label+' missing');return m[1]};
 const app=match(/<script>([\s\S]*?)<\/script>/,'inline runtime');
 const data=JSON.parse(match(/<script type="application\/json" id="vixen-data">([\s\S]*?)<\/script>/,'Vixen metadata'));
