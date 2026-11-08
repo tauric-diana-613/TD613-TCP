@@ -56,11 +56,9 @@ test('OPERATOR 06 refuse truncating 64 source-free amendment entries',()=>{
 });
 test('OPERATOR 07 duplicate proposal IDs invalidate completeness',()=>{
  const p=mk();p.proposals=[p.proposals[0],{...p.proposals[0]}];
- // The legacy receiver tolerates ID duplication; the disclosure cannot treat
- // duplicate branch IDs as independent proposals without an explicit refusal.
- const d=disclose(p);
- assert.deepEqual(d.proposal_ids,['AP01','AP01']);
- assert.ok(!d.completeness.all_packet_proposals_unique);
+ // The receiver already has a stronger fail-closed duplicate ID guard.
+ // A dossier must never be generated with two indistinguishable identifiers.
+ assert.throws(()=>disclose(p),{code:'DUPLICATE_PROPOSAL_ID'});
 });
 test('OPERATOR 08 a missing source or control still appears in the dossier',()=>{
  const p=mk();p.proposals[0].controls.falsifier='';
