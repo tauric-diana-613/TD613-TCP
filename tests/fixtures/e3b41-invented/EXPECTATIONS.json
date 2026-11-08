@@ -1,0 +1,44 @@
+{
+  "schema": "td613.e3b41.sourcefree-native-routing-fixtures/v1",
+  "synthetic_only": true,
+  "original_runner_git_blob": "74cc9385785c3bb13660222d623f9f7ff0187013",
+  "cases": {
+    "native_plain_later": {
+      "source": "SR - Keep the trace. Preface. Explore collapse governance. Explore nowhere theory.",
+      "target_title": "Collapse Governance: A Field",
+      "source_time": "2026-01-01T00:00:00+00:00",
+      "target_time": "2026-02-01T00:00:00+00:00",
+      "expected": {
+        "collapse governance": "LATER_EXACT_RESOLUTION_CANDIDATE",
+        "nowhere theory": "UNRESOLVED_MACHINE"
+      }
+    },
+    "colon_variant_negative": {
+      "source": "SR - Keep the trace. Preface. Explore: collapse governance.",
+      "target_title": "Collapse Governance: A Field",
+      "source_time": "2026-01-01T00:00:00+00:00",
+      "target_time": "2026-02-01T00:00:00+00:00",
+      "expected": {},
+      "note": "Native regex does not extract colon variant. A new parser accepting it must not present that as original SRC parity."
+    },
+    "native_plain_preexisting": {
+      "source": "SR - Keep the trace. Preface. Explore collapse governance.",
+      "target_title": "Collapse Governance: A Field",
+      "source_time": "2026-02-01T00:00:00+00:00",
+      "target_time": "2026-01-01T00:00:00+00:00",
+      "expected": {
+        "collapse governance": "PREEXISTING_DESTINATION_CANDIDATE"
+      }
+    },
+    "spanish_exact": {
+      "source": "SR - Tú puedes clonarme, pero no tienes mis genes. Preface. Explore la cartografía del umbral.",
+      "target_title": "La cartografía del umbral",
+      "source_time": "2026-01-01T00:00:00+00:00",
+      "target_time": "2026-02-01T00:00:00+00:00",
+      "expected": {
+        "la cartograf a del umbral": "LATER_EXACT_RESOLUTION_CANDIDATE"
+      },
+      "note": "The original normalizer uses an ASCII-only token key; retain raw accented phrase and independently document normalized key."
+    }
+  }
+}
