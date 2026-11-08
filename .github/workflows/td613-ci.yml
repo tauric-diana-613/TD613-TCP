@@ -52,9 +52,32 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify source-free Rulefield, triptych, NKS, receiver, roadmap
+      - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs
+          python3 -m unittest discover -s tests -p 'rulefield-intake.test.py'
+      - name: Exercise complete human disclosure on an example source-free packet
+        run: |
+          node scripts/rulefield-amend.mjs init RF-AP-20261107-OPERATORCI
+          node scripts/rulefield-operator.mjs disclose RF-AP-20261107-OPERATORCI.json
+          test -f packages/rulefield/amendments/outbox/RF-AP-20261107-OPERATORCI--*.disclosure.json
+          test -f packages/rulefield/amendments/outbox/RF-AP-20261107-OPERATORCI--*.disclosure.md
+      - name: Execute real /dollhouse-design conductor for operator protocol
+        run: |
+          mkdir -p dist
+          node scripts/run-dollhouse-design.mjs --input packages/rulefield/operator/design/COMMISSION.json --output dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json --format human
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json','utf8'));if(x.output_contract.requested_deliverables!==4||x.governance.human_closure_required!==true)process.exit(1);console.log('DOLLHOUSE_DESIGN_EXECUTED_PROCESS_ONLY',x.commission_id)"
+      - name: Upload operator design and source-free disclosure witnesses
+        if: ${{ always() && steps.source.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-operator-witness-${{ github.event.pull_request.head.sha }}
+          path: |
+            dist/RULEFIELD_DOLLHOUSE_DESIGN_RECEIPT.json
+            packages/rulefield/amendments/outbox/*.disclosure.json
+            packages/rulefield/amendments/outbox/*.disclosure.md
+          if-no-files-found: warn
+          retention-days: 14
       - name: Build tracked-source Antigravity handoff ZIP
         if: ${{ always() && steps.source.outcome == 'success' }}
         run: python3 scripts/build-rulefield-handoff.py --exact-head "${{ github.event.pull_request.head.sha }}"

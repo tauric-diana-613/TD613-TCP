@@ -23,6 +23,11 @@ SUPPORT = (
     "tests/rulefield-nks-lab.test.mjs",
     "tests/rulefield-amendments.test.mjs",
     "tests/rulefield-roadmap.test.mjs",
+    "tests/rulefield-operator.test.mjs",
+    "tests/rulefield-intake.test.py",
+    "scripts/rulefield-operator.mjs",
+    "scripts/rulefield-intake.py",
+    "scripts/build-rulefield-handoff.py",
 )
 
 def git(*args):
