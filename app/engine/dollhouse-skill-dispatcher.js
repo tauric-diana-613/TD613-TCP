@@ -685,10 +685,10 @@ function executeSpecialistExtensions(role, domainInput, options) {
         if (domainInput.trajectoryA && domainInput.trajectoryB) {
           ext.holonomy_parity = auditAtlasHolonomyHistoryParity(domainInput.trajectoryA, domainInput.trajectoryB);
         }
-        if (domainInput.relation_entry) {
-          const entry = domainInput.relation_entry;
-          const left = entry.left || (Array.isArray(entry.members) ? entry.members[0] : entry);
-          const right = entry.right || (Array.isArray(entry.members) ? entry.members[1] : undefined);
+        if (domainInput.relation_entry || domainInput.relation_identity) {
+          const entry = domainInput.relation_entry || domainInput.relation_identity;
+          const left = entry.left || entry.left_custody || (Array.isArray(entry.members) ? entry.members[0] : entry);
+          const right = entry.right || entry.right_custody || (Array.isArray(entry.members) ? entry.members[1] : undefined);
           ext.relation_identity = classifyAtlasRelationIdentity(left, right);
         }
         const prev = domainInput.previous || domainInput.phason_diff?.previous;

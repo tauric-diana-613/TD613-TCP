@@ -1,4 +1,5 @@
 {
+  "description": "Exercises canonical mirror-mate relation custody under Schubert/Delannoy lattice geometry.",
   "task_scope": "CUSTODY_RELATION_DESCENT_AUDIT",
   "evidence_class": "SOURCE_CODE_AUDIT",
   "evidence_references": [
@@ -19,8 +20,17 @@
       },
       "relation_entry": {
         "relation_class": "RECEIVER_INVARIANT",
-        "members": ["A", "B"],
+        "members": [
+          ["r", "u"],
+          ["u", "r"]
+        ],
+        "left_custody": ["r", "u"],
+        "right_custody": ["u", "r"],
         "source_receiver": "R_ALPHA"
+      },
+      "relation_identity": {
+        "left_custody": ["r", "u"],
+        "right_custody": ["u", "r"]
       }
     },
     "FADT": {

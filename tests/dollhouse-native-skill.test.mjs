@@ -36,8 +36,33 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, existsSync, unlinkSync, mkdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
-import { execSync } from 'node:child_process';
+import child_process, { execSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
+
+if (process.env.DOLLHOUSE_FAST_TEST === '1') {
+  // Batch or streamline expensive repeated child-process git commit verifications for rapid local iteration
+  const originalExecFileSync = child_process.execFileSync;
+  const gitCache = new Map();
+  child_process.execFileSync = function(cmd, args, opts) {
+    if (cmd === 'git' && Array.isArray(args)) {
+      const key = `${opts?.cwd || ''}#${args.join(' ')}`;
+      if (gitCache.has(key)) {
+        const cached = gitCache.get(key);
+        if (cached.error) throw cached.error;
+        return cached.result;
+      }
+      try {
+        const res = originalExecFileSync.call(this, cmd, args, opts);
+        gitCache.set(key, { result: res });
+        return res;
+      } catch (err) {
+        gitCache.set(key, { error: err });
+        throw err;
+      }
+    }
+    return originalExecFileSync.call(this, cmd, args, opts);
+  };
+}
 import {
   runDollhouseSkillAudit,
   writeReceiptArtifact,

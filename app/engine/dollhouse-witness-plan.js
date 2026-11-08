@@ -207,6 +207,7 @@ function authority() {
     release_authority: false,
     production_mutation: false,
     promotion_authority: false,
+    missing_is_neutral: false,
     human_closure_required: true
   };
 }
@@ -224,10 +225,10 @@ function auditClaim(claim) {
     epistemicHarms = mapEpistemicHarmsToPositiveSurvival(claim.unresolved_alternatives);
     if (numericalDeficitReceipt.disposition === 'REJECT') {
       disposition = 'REJECT';
-      basis = [`NUMERICAL_DEFICIT_${numericalDeficitReceipt.deficit_class}`, numericalDeficitReceipt.reason];
+      basis = [numericalDeficitReceipt.deficit_class, numericalDeficitReceipt.reason];
     } else if (numericalDeficitReceipt.disposition === 'ABSTAIN') {
       disposition = 'ABSTAIN';
-      basis = [`NUMERICAL_DEFICIT_${numericalDeficitReceipt.deficit_class}`, numericalDeficitReceipt.reason];
+      basis = [numericalDeficitReceipt.deficit_class, numericalDeficitReceipt.reason];
     } else if (numericalDeficitReceipt.disposition === 'PROPOSE') {
       if (numericalDeficitReceipt.candidate_probe_evaluation) {
         const evalResult = numericalDeficitReceipt.candidate_probe_evaluation;
