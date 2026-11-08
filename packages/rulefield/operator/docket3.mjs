@@ -13,9 +13,24 @@ const sha=s=>createHash('sha256').update(s).digest('hex');
 const fail=x=>{throw Object.assign(new Error(x),{code:x})};
 const root=fileURLToPath(new URL('../../../',import.meta.url));
 const esc=x=>String(x??'').replaceAll('|','\\|').replace(/\r?\n/g,' ⏎ ');
+/** Portable source identity is declared by the in-bundle manifest, NOT external authentication. */
+export function portableHeadFromManifest(manifest){
+ if(manifest?.schema!=='td613.rulefield.portable-handoff/v1'||
+    manifest?.repository!=='tauric-diana-613/TD613-TCP'||
+    !/^[a-f0-9]{40}$/.test(manifest.source_exact_git_head??'')||
+    !Array.isArray(manifest.files)||manifest.files.length<1) return null;
+ return manifest.source_exact_git_head;
+}
 function observedGitHead(){
- try{const x=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8',timeout:4500}).trim();
- if(/^[a-f0-9]{40}$/.test(x))return x;}catch{}
+ try{
+  const x=execFileSync('git',['rev-parse','HEAD'],
+   {cwd:root,encoding:'utf8',timeout:4500,stdio:['ignore','pipe','ignore']}).trim();
+  if(/^[a-f0-9]{40}$/.test(x))return x;
+ }catch{}
+ try{
+  const manifest=JSON.parse(readFileSync(join(root,'RULEFIELD_HANDOFF_MANIFEST.json'),'utf8'));
+  return portableHeadFromManifest(manifest)??'UNVERIFIED_SOURCE_HEAD';
+ }catch{}
  return 'UNVERIFIED_SOURCE_HEAD';
 }
 export function buildDocket3({head=observedGitHead(),as_of='2026-11-08T12:00:00Z'}={}){
