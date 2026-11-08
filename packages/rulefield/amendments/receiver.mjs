@@ -12,6 +12,7 @@ import {readRulefield,validateRulefield} from '../rulefield.mjs';
 import {enumerate,criticalPairs,finiteCA} from '../lab/multiway_lab.mjs';
 import {buildOperatorDisclosure,renderOperatorDisclosure} from '../operator/disclosure.mjs';
 import {detectPriorEntryCollisions} from './duplicate_gate.mjs';
+import {proposedRuleGate} from '../rulefields/type_system.mjs';
 
 export const PACKET_SCHEMA='td613.rulefield.amendment-packet/v1';
 export const REVIEW_SCHEMA='td613.rulefield.amendment-review/v1';
@@ -160,6 +161,12 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
   requireOk(sourceList.includes(evidence.source_class),'ILLEGAL_EVIDENCE_CLASS');
   requireOk(Array.isArray(evidence.source_refs||[])&&(evidence.source_refs||[]).length<=60,'INVALID_SOURCE_REFS');
   const deficiencies=[];
+  const typeGate=proposedRuleGate(item);
+  if(typeGate.issues.length){
+   deficiencies.push(...typeGate.issues);
+   issues.push({proposal:item.id,kind:'RULEFIELD_RULE_TYPE_COLLAPSE',items:typeGate.issues,
+    operator_resolution:'Separate a typed child rule from its parent field with state, guard, transition, observer and a new reviewable packet.'});
+  }
   if(!string(controls.falsifier)||controls.falsifier.length<12)deficiencies.push('FALSIFIER_UNSPECIFIED');
   if(!string(controls.competent_null)||controls.competent_null.length<12)deficiencies.push('COMPETENT_NULL_UNSPECIFIED');
   if((evidence.source_refs||[]).length===0)deficiencies.push('SOURCE_NOT_REGISTERED');
@@ -187,13 +194,13 @@ export function inspectPacket(packet,index=getIndex(),{strictBaseline=true}={}){
    ],
    controls:{falsifier:controls.falsifier||'UNSPECIFIED',competent_null:controls.competent_null||'UNSPECIFIED',negative_control:controls.negative_control||'UNSPECIFIED'},
    evidence:{...evidence,scientific_credit:0,external_origin_confirmed:false},
-   diagnostic:{unresolved_references:unresolved,deficiencies,duplicates,requires_human_scientific_closure:true},
-   scientific_state:duplicates?.status!=='NO_DUPLICATE_FOUND'?duplicates.status:'STAGED_RESEARCH_PROPOSAL_ONLY',
+   diagnostic:{unresolved_references:unresolved,deficiencies,duplicates,type_admission:typeGate,requires_human_scientific_closure:true},
+   scientific_state:typeGate.issues.length?'HELD_RULEFIELD_RULE_TYPE_COLLAPSE':duplicates?.status!=='NO_DUPLICATE_FOUND'?duplicates.status:'STAGED_RESEARCH_PROPOSAL_ONLY',
    never_merge_contradictions_automatically:true
   });
  }
  return {packet_id:packet.packet_id,packet_schema:PACKET_SCHEMA,baseline_matches:matches,
-  status:!matches?'STALE_BASELINE_HELD':duplicateChecks.some(x=>x.status==='HELD_EXISTING_ENTRY_DUPLICATE')
+  status:!matches?'STALE_BASELINE_HELD':issues.some(x=>x.kind==='RULEFIELD_RULE_TYPE_COLLAPSE')?'HELD_RULEFIELD_RULE_TYPE_COLLAPSE':duplicateChecks.some(x=>x.status==='HELD_EXISTING_ENTRY_DUPLICATE')
    ?'HELD_EXISTING_ENTRY_DUPLICATE':duplicateChecks.some(x=>x.status==='HELD_POSSIBLE_ENTRY_OVERLAP')
    ?'HELD_POSSIBLE_ENTRY_OVERLAP':issues.length?'HELD_REVIEW_GAPS':'STAGED_FOR_REVIEW',
   duplicate_gate:{status:duplicateChecks.some(x=>x.matches.length)?'HELD_REVIEW_REQUIRED':'NO_COLLISION_DETECTED',

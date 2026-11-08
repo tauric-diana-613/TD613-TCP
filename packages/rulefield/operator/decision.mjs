@@ -20,6 +20,7 @@ export function inspectHumanDecision(candidate,dossier){
  const chosen=d.selected_proposal_ids;
  if(!Array.isArray(chosen)||new Set(chosen).size!==chosen.length||chosen.some(id=>!dossier.proposal_ids.includes(id)))issues.push('SELECTED_PROPOSAL_IDS_INVALID');
  if(d.decision==='REQUEST_STAGED_SYNTHESIS'){
+  if(dossier.receiver_disposition==='HELD_RULEFIELD_RULE_TYPE_COLLAPSE')issues.push('UNRESOLVED_RULEFIELD_RULE_TYPE_COLLAPSE');
   if(dossier.receiver_disposition!=='STAGED_FOR_REVIEW')issues.push('HELD_OR_UNQUALIFIED_REVIEW');
   if(!chosen?.length)issues.push('NO_PROPOSALS_SELECTED');
   if(typeof d.human_statement!=='string'||d.human_statement.trim().length<30)issues.push('HUMAN_INSTRUCTION_NOT_SPECIFIED');

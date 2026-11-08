@@ -33,7 +33,10 @@
     "operator_docket_cli": "node scripts/rulefield-docket.mjs",
     "operator_docket_template": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
     "operator_in_chat_protocol": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
-    "nomenclature_v1": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json"
+    "nomenclature_v1": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+    "type_projection_engine": "packages/rulefield/rulefields/type_system.mjs",
+    "type_migration_assessment": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
+    "type_review_cli": "node scripts/rulefield-types.mjs"
   },
   "stages": [
     {
@@ -336,5 +339,15 @@
     "buttons_have_no_direct_repository_side_effect": true,
     "separately_authorized_canonical_mutation": true,
     "protected_experiment_b": "HELD"
+  },
+  "type_admission_contract": {
+    "schema": "td613.rulefield.typed-projection/v1",
+    "legacy_registry_unmutated": true,
+    "field_to_rule_requires_formal_contract": true,
+    "rulefield_not_rule_not_assay": true,
+    "duplicates_still_held": true,
+    "historical_reclassifications": "REVIEW_ONLY",
+    "canonical_mutation": false,
+    "protected_flight": "HELD"
   }
 }
