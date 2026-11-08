@@ -1,3 +1,7 @@
+## Successor docket type classification — mandatory disclosure
+
+Include a four-route table: (A) old rule record → assay/model/claim/field association; (B) rulefield → unqualified child rule or measurement contract; (C) retained operational rule; (D) broad rulefield preserved with child associations. List original statement, type decision, domain, test obligations and source uncertainty. Read from `rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json`, not a memorized summary. The user may ratify the **review-only type overlay** without accepting the machine's academic labels, approving a canonical rewrite, or releasing protected Flight.
+
 # 𝌋 Rulefield Operator Docket · Human Approval Template
 
 **Docket:** [RF-OD-XXXX] · **Edition:** [ ] · **Source revision:** [exact SHA] · **Docket SHA-256:** [ ]

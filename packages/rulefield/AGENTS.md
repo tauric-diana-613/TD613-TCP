@@ -1,3 +1,7 @@
+## Mandatory typed-ontology boundary
+
+Read [rulefields/TYPE_SYSTEM.md](rulefields/TYPE_SYSTEM.md), [rulefields/type_system.mjs](rulefields/type_system.mjs) and [the source-preserving type audit](rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md). An old record inside `rules[]` may actually be an assay, model, research program or evidence boundary; never infer executable-rule standing from its storage container. A field-derived PROPOSE_RULE requires explicit `formal_rule` domain/guard/update/observer and a separate review. `HELD_RULEFIELD_RULE_TYPE_COLLAPSE` blocks a field-as-rule attempt. Human OD-02 label ratification remains HELD.
+
 # 𝌋 Rulefield Agent Entry Contract
 
 **Read this before changing anything in \`packages/rulefield/\`.**

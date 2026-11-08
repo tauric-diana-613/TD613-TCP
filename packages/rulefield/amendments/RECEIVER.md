@@ -1,3 +1,7 @@
+## Rulefield-as-Rule type HOLD
+
+The amendment receiver now uses [type_system.mjs](../rulefields/type_system.mjs). A `PROPOSE_RULE` carrying a `source_rulefield_id` must declare `formal_rule.state_space`, `formal_rule.guard`, `formal_rule.local_transition` and `formal_rule.observer`; direct `object_type: RULEFIELD` admission is held regardless of the surrounding prose. The receiver reports `HELD_RULEFIELD_RULE_TYPE_COLLAPSE` and includes the diagnostic in the full operator disclosure. Specifying a typed child only qualifies a *proposal*, never source independence, novelty, production permission or scientific closure. [Type crosswalk](../rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md).
+
 # 𝌋 Rulefield Amendments — Kiki Receiver and Scientific Resynthesis
 
 **Version:** \`td613.rulefield.amendment-packet/v1\`  

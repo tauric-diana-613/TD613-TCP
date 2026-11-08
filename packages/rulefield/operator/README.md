@@ -1,3 +1,7 @@
+## The Rulefield ≠ Rule repair is now inspectable
+
+The [source-preserving type projection](../rulefields/TYPE_SYSTEM.md) shows exactly which historical records are being reinterpreted. New research fields that yield formal rules retain their parent field; old assay instructions no longer masquerade as local rules in the projection. The receiver fails closed if a field is submitted directly as `PROPOSE_RULE`. In-chat successor docket decisions can accept, revise or HOLD these typed assignments without altering historical source records.
+
 # 𝌋 Operator Interface & Authorization Protocol
 
 This directory is **the human-user entrypoint inside `packages/rulefield/`**. It is intentionally separate from the machine research engine, while wired to the same amendment packet, hash, receiver, hooks, and CI.

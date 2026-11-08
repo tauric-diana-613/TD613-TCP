@@ -1,3 +1,7 @@
+## ROD-0002 typed crosswalk decision
+
+When presenting the successor docket, show concrete original IDs and corrected types for at least one model, assay, retained rule, derivative child and preserved broad field. Report **26 / 31 / 11 / 14** as overlapping assessment sets (not additive discoveries). Clearly disclose 559 legacy records still needing deeper assessment. Provide the full source assessment Markdown and JSON and make the decision actionable in-chat: accept the nonmutating projection, request a corrected mapping, or HOLD selected IDs. The human's OD-02 HOLD of academic title ratification persists. **Approval of a typed projection is not approval to rewrite 596 historical records or merge a branch.**
+
 # 𝌋 In-Chat Operator Decision Protocol — Rulefield Operator Docket (ROD)
 
 **Required user experience:** The assistant must present the meaningful change details **in the same chat response that asks for approval**. A ZIP and a GitHub link are supplements, not the decision interface.

@@ -1,3 +1,7 @@
+## Typed ontology repair — source-preserving
+
+The [typed projection](rulefields/TYPE_SYSTEM.md) now distinguishes a research **Rulefield**, formal **Rule**, **Assay**, **Model**, **Claim**, **Theorem** and **Source**. A review-only crosswalk retypes 26 high-impact legacy rule records, preserves 11 explicitly operational rules and retains all 596 historical IDs/bytes. The 31 possible child rules are prospective and require a formal specification, independent tests and human review. `node scripts/rulefield-types.mjs validate` and `node scripts/rulefield-types.mjs summary` inspect the repair; no canon changes occur.
+
 # 𝌋 TD613 Living Rulefield
 ## Five-plane source-free research index · v1.0-rc1
 

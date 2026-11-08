@@ -29,6 +29,8 @@ SUPPORT = (
     "scripts/rulefield-operator.mjs",
     "scripts/rulefield-fields.mjs",
     "scripts/rulefield-docket.mjs",
+    "scripts/rulefield-types.mjs",
+    "tests/rulefield-types.test.mjs",
     "tests/rulefield-docket.test.mjs",
     "tests/rulefield-fields.test.mjs",
     "scripts/rulefield-intake.py",
@@ -53,6 +55,8 @@ def main():
     expected = (
         "packages/rulefield/AGENTS.md",
         "packages/rulefield/operator/docket.mjs",
+        "packages/rulefield/rulefields/type_system.mjs",
+        "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md",
         "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
         "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
         "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",

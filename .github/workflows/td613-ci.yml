@@ -54,8 +54,18 @@ jobs:
           node-version: '22'
       - name: Verify Rulefield source-free scientific and human-facing contracts
         run: |
-          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs
+          node --test tests/rulefield-v1.test.mjs tests/rulefield-garden-triptych.test.mjs tests/rulefield-nks-lab.test.mjs tests/rulefield-amendments.test.mjs tests/rulefield-roadmap.test.mjs tests/rulefield-operator.test.mjs tests/rulefield-duplicate-gate.test.mjs tests/rulefield-fields.test.mjs tests/rulefield-docket.test.mjs tests/rulefield-types.test.mjs
           python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Verify reversible Rulefield and Rule type correction
+        run: |
+          node scripts/rulefield-types.mjs validate
+          node scripts/rulefield-types.mjs summary > dist-type-summary.json
+          node scripts/rulefield-types.mjs rule INF-01 > dist-type-model-inventory.json
+          node scripts/rulefield-types.mjs field RF-060 > dist-type-local-rule-parent.json
+          mkdir -p dist
+          cd dist
+          node ../scripts/rulefield-types.mjs export RULEFIELD_TYPED_PROJECTION_ROD0002.json
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('RULEFIELD_TYPED_PROJECTION_ROD0002.json','utf8'));if(x.counts.original_legacy_rule_records!==596||x.counts.assessed_retypes!==26||x.objects.children.length!==31||x.authority.canonical_mutation!==false)process.exit(1);console.log('RULEFIELD_TYPE_PROJECTION_WITNESSED')"
       - name: Run typed rulefield agenda and staged priority permutation without visual UI
         run: |
           node scripts/rulefield-fields.mjs validate
@@ -97,6 +107,7 @@ jobs:
             dist/RULEFIELDS_ENGINE_DOLLHOUSE_DESIGN_RECEIPT.json
             dist/RULEFIELD_STAGED_PRIORITY_QUEUE.md
             dist/RULEFIELD_STAGED_PRIORITY_QUEUE.json
+            dist/RULEFIELD_TYPED_PROJECTION_ROD0002.json
             dist/*.docket.json
             dist/*.docket.md
             dist/*.chat.json

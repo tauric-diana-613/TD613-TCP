@@ -1,3 +1,7 @@
+## Executable ontology correction — after source audit
+
+See [TYPE_SYSTEM.md](TYPE_SYSTEM.md) and [typed projection code](type_system.mjs). **26** high-impact historical records have reviewed target types, **11** operational rules are explicitly retained, **31** candidate child rules/assays are modelled without scientific promotion, and **14** broad fields remain protected. The other **559** historical records remain `HISTORICAL_RECORD`, pending future assessment. The full 596-record registry, 70 rank positions, old 80-field source and OD-02 six new fields remain byte-preserved. Run `node scripts/rulefield-types.mjs validate`, `rule INF-01`, `field RF-060` for direct source-linked inspection.
+
 # 𝌋 Rulefields — Research-Domain Engine (not UI)
 
 **Status:** SOURCE-FREE ENGINE · STAGED PRIORITY APPEND · HUMAN CLOSURE RESERVED  
