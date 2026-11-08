@@ -173,3 +173,58 @@ test('Vixen reference membrane refuses missing and tampered source bodies withou
  await assert.rejects(()=>offline.open(),e=>e instanceof BridgeHold&&e.code==='FILE_SCHEME_NOT_BACKEND_BOUND');
  assert.equal(offline.rest().state,'HELD');
 });
+
+
+test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→NAME→REST with untouched public estates',async()=>{
+ const {JSDOM}=await import('jsdom');
+ const {webcrypto}=await import('node:crypto');
+ const {mountVixenResearchChamber}=await import('../app/encyclopedia/vixen-estate/research-chamber.mjs');
+ const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const match=candidate.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+ assert(match);
+ const dom=new JSDOM('<!doctype html><html><body><div id="vixenReferenceChamber"></div><script type="application/json" id="vixen-corpus-bundle">'+match[1]+'</script></body></html>',{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
+ const priorDocument=globalThis.document,priorWindow=globalThis.window;
+ const fetcher=async(input,opts)=>{
+  const u=new URL(input);assert.equal(u.origin,'https://vixen.example');assert.equal(opts.method,'GET');
+  const raw=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
+  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw};
+ };
+ try{
+  globalThis.document=dom.window.document;globalThis.window=dom.window;
+  const rootEl=dom.window.document.getElementById('vixenReferenceChamber');
+  const chamber=mountVixenResearchChamber({container:rootEl,baseURL:'https://vixen.example/encyclopedia/reference/',fetcher,cryptoProvider:webcrypto});
+  assert.equal(chamber.mounted,true);
+  assert.equal(chamber.phase(),'NOTICE');
+  assert.equal(rootEl.querySelectorAll('.vxe-work-select option').length,32);
+  assert.equal(rootEl.querySelectorAll('.vxe-estate').length,2);
+  const click=text=>{const b=Array.from(rootEl.querySelectorAll('button')).find(x=>x.textContent.includes(text));assert(b,'Missing button '+text);b.click()};
+  click('Begin an inquiry');
+  assert.equal(chamber.phase(),'ACT');
+  const input=rootEl.querySelector('input.vxe-query-input');assert(input);
+  input.value='Eclipse';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+  click('Query the independent reference');
+  for(let i=0;i<90&&chamber.status()==='CHECKING';i++)await new Promise(res=>setTimeout(res,10));
+  assert.equal(chamber.status(),'INDEX_MATCHES_UNVERIFIED');
+  const hit=Array.from(rootEl.querySelectorAll('button.vxe-hit')).find(x=>x.textContent.startsWith('G-001'));
+  assert(hit,'Original G-001 source must be selectable');
+  hit.click();
+  for(let i=0;i<90&&chamber.status()==='VERIFYING_SOURCE';i++)await new Promise(res=>setTimeout(res,10));
+  assert.equal(chamber.status(),'SOURCE_BYTES_VERIFIED');
+  assert.equal(chamber.phase(),'WORLD_ANSWERS');
+  assert.match(rootEl.textContent,/Eclipse–Omega/);
+  assert.match(rootEl.textContent,/SOURCE-BYTES VERIFIED ≠ CLAIM ENTAILMENT/);
+  click('Name the question');assert.equal(chamber.phase(),'NAME');
+  const annotation=rootEl.querySelector('.vxe-name');assert(annotation);
+  annotation.value='Potential question only';annotation.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+  click('Rest without penalty');assert.equal(chamber.phase(),'REST');
+  assert(rootEl.querySelector('a.vxe-exit').getAttribute('href')==='/encyclopedia/');
+  click('Return to inquiry');assert.equal(chamber.phase(),'WORLD_ANSWERS');
+  assert(chamber.history().some(x=>x.action==='RECORD_SOURCE_VERIFIED'));
+  assert(chamber.history().some(x=>x.action==='UNPENALIZED_REST'));
+  assert.equal(chamber.membraneStatus().authority,'READ_ONLY');
+ }finally{
+  if(priorDocument===undefined)delete globalThis.document;else globalThis.document=priorDocument;
+  if(priorWindow===undefined)delete globalThis.window;else globalThis.window=priorWindow;
+  dom.window.close();
+ }
+});
