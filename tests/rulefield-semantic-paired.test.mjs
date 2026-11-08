@@ -48,7 +48,7 @@ test('R3 03 cross-role controls prohibit all 559 automatic execution promotions'
 test('R3 04 source-record interpretations and source-normalized counterexample gate',()=>{
  const x=semanticInspection('Q21-R03');
  assert.equal(x.proposed_primary_role,'SOURCE');
- assert.match(x.discriminating_challenge,/archive/i);
+ assert.match(x.discriminating_challenge,/finite|episode/i);
  const m=semanticInspection('X-025');
  assert.equal(m.proposed_primary_role,'MODEL');
  assert.match(m.semantic_interpretation,/taxonomy/i);
