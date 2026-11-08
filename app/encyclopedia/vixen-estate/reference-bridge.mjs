@@ -25,7 +25,7 @@ const READABLE_REFUSALS = Object.freeze({
 export class BridgeHold extends Error{
   constructor(code, detail=''){super(READABLE_REFUSALS[code]||detail||code);this.name='BridgeHold';this.code=code;this.detail=detail}
 }
-export function isReferenceId(id){return typeof id==='string'&&VALID_ID.test(id)}
+export function isReferenceId(id){return typeof id==='string'&&(id==='EDITION'||VALID_ID.test(id))}
 export function normalizeSourceQuery(value){return String(value??'').normalize('NFKC').trim().slice(0,200)}
 function safeURL(url, expectedOrigin){
   let result;try{result=new URL(url)}catch(_){throw new BridgeHold('BOUNDARY_REFUSAL','INVALID_URL')}
