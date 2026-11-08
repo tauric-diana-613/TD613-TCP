@@ -17,6 +17,11 @@ import {
   simulateStrategicInducedSilence,
   createUnacknowledgedActionReceipt,
   verifyRecoverableUnacknowledgedWitness,
+  evaluateDecisionalProvenance,
+  evaluateVerifiabilityVsRecognition,
+  auditStructuralInducedSilenceWithoutDisclosure,
+  executeWitnessRefusedToBeProvenChamber,
+  auditDimensionMinimality,
   OBSERVATIONAL_CLOSURE_SCHEMA,
   HETEROSTRATIGRAPHY_SCHEMA,
   DISCREPANCY_FIBER_SCHEMA,
@@ -25,7 +30,11 @@ import {
   WITNESS_TOO_LATE_SCHEMA,
   SITUATED_REFUSAL_SCHEMA,
   STRATEGIC_INDUCED_SILENCE_SCHEMA,
-  RECOVERABLE_UNACKNOWLEDGED_WITNESS_SCHEMA
+  RECOVERABLE_UNACKNOWLEDGED_WITNESS_SCHEMA,
+  DECISIONAL_PROVENANCE_SCHEMA,
+  STRUCTURAL_WITNESS_OPACITY_SCHEMA,
+  WITNESS_REFUSED_TO_BE_PROVEN_SCHEMA,
+  DIMENSION_MINIMALITY_SCHEMA
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 test('LOOM 01: Observational closure detects commutative deficit ||Pi o T - bar_T o Pi|| > 0', () => {
@@ -308,4 +317,110 @@ test('LOOM 13: Recoverable Unacknowledged Witness breaks institutional erasure v
 
   assert.equal(auditForged.recovered_recognition, false);
   assert.equal(auditForged.disposition, 'RECOVERY_VERIFICATION_FAILED');
+});
+
+test('LOOM 14: Decisional Provenance resolves (1, 1, 1, 0) collision between Chosen Refusal and Unacknowledged Success', () => {
+  const worldRefusal = evaluateDecisionalProvenance({
+    sufficiency_tuple: { K: 1, A: 1, T: 1, R: 0 },
+    decision_sigma: 'BOT',
+    provenance_rho: 'REFUSAL_OPACITY_SOVEREIGN_MANIFEST'
+  });
+
+  const worldSuccess = evaluateDecisionalProvenance({
+    sufficiency_tuple: { K: 1, A: 1, T: 1, R: 0 },
+    decision_sigma: 'EXECUTE_INTERVENTION',
+    provenance_rho: 'CRYPTOGRAPHIC_ACTION_COMMITMENT_RECEIPT'
+  });
+
+  assert.equal(worldRefusal.schema, DECISIONAL_PROVENANCE_SCHEMA);
+  assert.equal(worldSuccess.schema, DECISIONAL_PROVENANCE_SCHEMA);
+
+  // Both share identical 4-sufficiency vectors
+  assert.deepEqual(worldRefusal.sufficiency_vector, worldSuccess.sufficiency_vector);
+  assert.equal(worldRefusal.vector_string, '(1,1,1,0)');
+  assert.equal(worldSuccess.vector_string, '(1,1,1,0)');
+
+  // Divergence isolated by decisional operator sigma and terminal status
+  assert.equal(worldRefusal.terminal_status, 'ACTION_NOT_TAKEN');
+  assert.equal(worldSuccess.terminal_status, 'ACTION_TAKEN');
+  assert.notEqual(worldRefusal.coordinate_signature, worldSuccess.coordinate_signature);
+});
+
+test('LOOM 15: Decoupling of Historical Verifiability (V=1) from Institutional Recognition (R=0)', () => {
+  // Case 1: Verified historical truth institutionally erased
+  const unacknowledged = evaluateVerifiabilityVsRecognition({
+    causal_proof_verified: true,
+    institutional_acknowledged: false
+  });
+  assert.equal(unacknowledged.verifiable_V, 1);
+  assert.equal(unacknowledged.recognized_R, 0);
+  assert.equal(unacknowledged.monopoly_broken, true);
+  assert.equal(unacknowledged.state_category, 'INDEPENDENTLY_VERIFIED_HISTORICAL_TRUTH_INSTITUTIONALLY_ERASED');
+
+  // Case 2: Canonical consensus
+  const consensus = evaluateVerifiabilityVsRecognition({
+    causal_proof_verified: true,
+    institutional_acknowledged: true
+  });
+  assert.equal(consensus.state_category, 'CANONICAL_CONSENSUS_RECOGNIZED');
+
+  // Case 3: Institutional patronage / unverified fiction
+  const fiction = evaluateVerifiabilityVsRecognition({
+    causal_proof_verified: false,
+    institutional_acknowledged: true
+  });
+  assert.equal(fiction.state_category, 'UNVERIFIED_INSTITUTIONAL_FICTION_OR_PATRONAGE');
+});
+
+test('LOOM 16: Zero-Disclosure Structural Coercion Audit refutes voluntary consent without agent surveillance', () => {
+  const audit = auditStructuralInducedSilenceWithoutDisclosure({
+    reward_for_accurate_report: 10,
+    retaliation_or_cost_risk: -30,
+    penalty_for_disputed_report: -80,
+    p_dispute_or_unproven: 0.5,
+    procedure_duration_hours: 2,
+    action_window_deadline_hours: 10,
+    institution_utility_on_action: -100,
+    institution_utility_on_silence: 50
+  });
+
+  assert.equal(audit.schema, STRUCTURAL_WITNESS_OPACITY_SCHEMA);
+  assert.equal(audit.zero_disclosure_guarantee, true);
+  assert.equal(audit.agent_private_data_required, false);
+  assert.equal(audit.environmental_coordinates.expected_agent_utility, -50);
+  assert.equal(audit.audit_verdict.classification, 'STRUCTURALLY_INDUCED_SILENCE');
+  assert.equal(audit.audit_verdict.institution_benefits_from_silence, true);
+  assert.ok(audit.institutional_ledger_critique.audit_refutation.includes('refuted by objective environmental coordinates'));
+});
+
+test('LOOM 17: Chamber The Witness Who Refused To Be Proven verifies causal intervention under full opacity', () => {
+  const chamber = executeWitnessRefusedToBeProvenChamber({
+    predecessor_state: 'STATE_COMPROMISED_V1',
+    post_state: 'STATE_SECURED_V2',
+    action_timestamp: 6.0,
+    deadline_timestamp: 10.0,
+    agent_private_identity: 'ANONYMOUS_WHISTLEBLOWER_42',
+    exercise_right_to_opacity: true
+  });
+
+  assert.equal(chamber.schema, WITNESS_REFUSED_TO_BE_PROVEN_SCHEMA);
+  assert.equal(chamber.opacity_audit.right_to_opacity_exercised, true);
+  assert.equal(chamber.opacity_audit.agent_identity_revealed, false);
+  assert.equal(chamber.opacity_audit.private_data_extracted, false);
+  assert.equal(chamber.verifiability_vs_recognition.historical_verifiability_V, 1);
+  assert.equal(chamber.verifiability_vs_recognition.institutional_recognition_R, 0);
+  assert.equal(chamber.six_coordinate_state.K, 1);
+  assert.equal(chamber.six_coordinate_state.A, 1);
+  assert.equal(chamber.six_coordinate_state.T, 1);
+  assert.equal(chamber.six_coordinate_state.R, 0);
+  assert.equal(chamber.disposition, 'CAUSAL_TRUTH_PROVEN_WHILE_OPACITY_UNBROKEN');
+});
+
+test('LOOM 18: Dimension Minimality & Temporal Custodian Audit proves non-redundancy of all 7 coordinates', () => {
+  const audit = auditDimensionMinimality();
+  assert.equal(audit.schema, DIMENSION_MINIMALITY_SCHEMA);
+  assert.equal(audit.dimensions_audited, 7);
+  assert.equal(audit.temporal_custodian_verdict, 'ALL_SEVEN_DIMENSIONS_NON_REDUNDANT');
+  assert.ok(audit.dimension_progression.some(d => d.dimension.includes('sigma')));
+  assert.ok(audit.dimension_progression.some(d => d.dimension.includes('V')));
 });

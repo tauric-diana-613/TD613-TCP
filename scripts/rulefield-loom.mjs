@@ -20,7 +20,10 @@ import {
   createDiscrepancyFiber,
   applyDiscrepancyRepair,
   evaluateInstitutionalHearing,
-  computeEpistemicPhaseDisplacement
+  computeEpistemicPhaseDisplacement,
+  executeWitnessRefusedToBeProvenChamber,
+  auditStructuralInducedSilenceWithoutDisclosure,
+  auditDimensionMinimality
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -29,9 +32,12 @@ TD613 Rulefield Counterworld Loom Laboratory CLI
 Usage: node scripts/rulefield-loom.mjs [command]
 
 Commands:
-  witness-too-late   Execute 'The Witness That Arrived Too Late' experimental suite
-  suite              Execute full five-engine composition suite
-  help               Show this help message
+  witness-too-late       Execute 'The Witness That Arrived Too Late' experimental suite
+  refused-proven         Execute 'The Witness Who Refused To Be Proven' chamber
+  structural-coercion    Execute zero-disclosure structural induced silence audit
+  minimality             Audit dimension minimality & Temporal Custodian non-redundancy
+  suite                  Execute full five-engine composition suite
+  help                   Show this help message
 `);
 }
 
@@ -45,6 +51,40 @@ async function main() {
 
   if (cmd === 'witness-too-late') {
     const report = executeWitnessArrivedTooLateSuite();
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'refused-proven') {
+    const report = executeWitnessRefusedToBeProvenChamber({
+      predecessor_state: 'STATE_COMPROMISED_V1',
+      post_state: 'STATE_SECURED_V2',
+      action_timestamp: 6.0,
+      deadline_timestamp: 10.0,
+      agent_private_identity: 'ANONYMOUS_WHISTLEBLOWER_42',
+      exercise_right_to_opacity: true
+    });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'structural-coercion') {
+    const report = auditStructuralInducedSilenceWithoutDisclosure({
+      reward_for_accurate_report: 10,
+      retaliation_or_cost_risk: -30,
+      penalty_for_disputed_report: -80,
+      p_dispute_or_unproven: 0.5,
+      procedure_duration_hours: 2,
+      action_window_deadline_hours: 10,
+      institution_utility_on_action: -100,
+      institution_utility_on_silence: 50
+    });
+    console.log(JSON.stringify(report, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'minimality') {
+    const report = auditDimensionMinimality();
     console.log(JSON.stringify(report, null, 2));
     process.exit(0);
   }
