@@ -35,7 +35,7 @@ node --test tests/rulefield-types.test.mjs
 
 ### Receiver integration
 
-If a candidate is submitted with `kind:'PROPOSE_RULE'` and an explicit `source_rulefield_id`, the amendment receiver must see `formal_rule.state_space`, `formal_rule.guard`, `formal_rule.local_transition` and `formal_rule.observer`. Passing that shape check yields **CANDIDATE_RULE_ONLY_NOT_ADOPTED**, never scientific acceptance. A field declared with `object_type:'RULEFIELD'` under `PROPOSE_RULE` fails **HELD_RULEFIELD_RULE_TYPE_COLLAPSE**, even if an agent claims to have given it a formal rule.
+If any candidate is submitted with `kind:'PROPOSE_RULE'` (with or without a source field ID), the amendment receiver must see `formal_rule.state_space`, `formal_rule.guard`, `formal_rule.local_transition` and `formal_rule.observer`. Passing that shape check yields **CANDIDATE_RULE_ONLY_NOT_ADOPTED**, never scientific acceptance. A field declared with `object_type:'RULEFIELD'` under `PROPOSE_RULE` fails **HELD_RULEFIELD_RULE_TYPE_COLLAPSE**, even if an agent claims to have given it a formal rule.
 
 The receiver retains the earlier falsifier, competent-null, duplicate-HOLD, source and separate human authorization checks.
 

@@ -45,12 +45,14 @@ export function readTypeAssessment(){
  return a;
 }
 export function proposedRuleGate(proposal){
- const explicitField=proposal?.object_type==='RULEFIELD'||typeof proposal?.source_rulefield_id==='string'||typeof proposal?.rulefield_id==='string';
  if(proposal?.kind!=='PROPOSE_RULE')return {type:'NOT_A_RULE_PROPOSAL',status:'NOT_APPLICABLE',issues:[]};
  const issues=[];
  if(proposal.object_type==='RULEFIELD')issues.push('RULEFIELD_AS_RULE_TYPE_COLLAPSE');
+ if(proposal.object_type!==undefined&&!['RULE','RULEFIELD'].includes(proposal.object_type))issues.push('UNSUPPORTED_LOCAL_RULE_OBJECT_TYPE');
+ const parent=proposal.source_rulefield_id??proposal.rulefield_id??null;
+ if(parent!==null&&(typeof parent!=='string'||!readRevisionSeed().items.some(x=>x.id===parent)))issues.push('UNKNOWN_PARENT_RULEFIELD');
  const formal=proposal.formal_rule;
- if(explicitField){
+ {
   if(!formal||typeof formal!=='object'||Array.isArray(formal))issues.push('MISSING_TYPED_LOCAL_RULE_CONTRACT');
   else{
    if(typeof formal.state_space!=='string'||formal.state_space.trim().length<3)issues.push('MISSING_STATE_SPACE');

@@ -142,3 +142,21 @@ test('TYPES 19 explicit OD-02 HOLD survives projected ontology',()=>{
  assert.equal(p.authority.human_ontology_review_pending,true);
  assert.equal(p.authority.protected_flight,'HELD');
 });
+
+test('TYPES 20 a generic PROPOSE_RULE without formal child metadata is held',()=>{
+ const p=packetTemplate({packet_id:'RF-AP-UNQUALIFIED-01'});
+ p.proposals[0].kind='PROPOSE_RULE';
+ const r=reviewPacket(p);
+ assert.equal(r.disposition,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
+ assert.ok(r.as_source_free.proposals[0].diagnostic.type_admission.issues.includes('MISSING_TYPED_LOCAL_RULE_CONTRACT'));
+});
+test('TYPES 21 spoofed field ID cannot become a typed local rule',()=>{
+ const p=proposedRuleGate({kind:'PROPOSE_RULE',object_type:'RULE',source_rulefield_id:'RF-999',
+ formal_rule:{state_space:'some lattice',guard:'every step',local_transition:'a definite rewrite',observer:'a finite observer'}});
+ assert.equal(p.status,'HELD_RULEFIELD_RULE_TYPE_COLLAPSE');
+ assert.ok(p.issues.includes('UNKNOWN_PARENT_RULEFIELD'));
+});
+test('TYPES 22 unrelated non-rule research proposals remain free-form',()=>{
+ const p=proposedRuleGate({kind:'PROPOSE_ASSAY',object_type:'RULEFIELD'});
+ assert.equal(p.status,'NOT_APPLICABLE');
+});
