@@ -63,6 +63,8 @@ Specialist Agent: [`.agents/agents/dollhouse-temporal-custodian.md`](.agents/age
 
 Multi-role scientific governance, evidence adjudication, consensus aggregation, and replication discipline (`SHARED_ACQUISITION != INDEPENDENT_REPLICATION`). Produces recommendation and verification records only; strictly closed to release or deployment authority.
 
+**Active Supervisory Custody Invariant:** When the Orchestrator dispatches specialist dolls, it must maintain active supervisory presence. The Orchestrator must not yield substantive turns or narrative conclusions to the human operator while delegated specialist dolls remain actively in-flight, nor synthesize conclusions on behalf of uncollected sensory receipts. The Orchestrator must continuously monitor in-flight execution, inspect interim deliverables, enforce pairwise handoff contracts, and await terminal receipt convergence before issuing multi-role adjudications.
+
 Implementation: [`app/engine/dollhouse-ablation-harness.js`](app/engine/dollhouse-ablation-harness.js)  
 Orchestrator Agent: [`.agents/agents/dollhouse-orchestrator.md`](.agents/agents/dollhouse-orchestrator.md)  
 Native Skills: [`.agents/skills/dollhouse-audit/SKILL.md`](.agents/skills/dollhouse-audit/SKILL.md) · [`.agents/skills/dollhouse-design/SKILL.md`](.agents/skills/dollhouse-design/SKILL.md)
