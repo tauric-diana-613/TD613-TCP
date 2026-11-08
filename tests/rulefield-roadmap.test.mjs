@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 const read = path => readFileSync(new URL('../packages/rulefield/'+path,import.meta.url),'utf8');
 const parse = path => JSON.parse(read(path));
 const roadmap=read('ROADMAP.md'),backlog=parse('lab/integration_backlog.json'),hooks=parse('amendments/hooks.json');
@@ -66,4 +67,24 @@ test('RULEFIELD-ROADMAP 10: Wolfram comparison is staged, never presented as exe
  assert.match(read('lab/wolfram_comparator.wl'),/NOT EXECUTED/);
  assert.match(read('lab/wolfram_comparator.wl'),/ResourceFunction\["MultiwaySystem"\]/);
  assert.match(roadmap,/no current implementation credit|not a promise/i);
+});
+
+test('RULEFIELD-ROADMAP 11: all 14 inherited Wolframian source copies preserve original exact Git blobs',()=>{
+ const lineage=parse('sources/wolfram-rule-atlas-20261107/SOURCE_LINEAGE.json');
+ assert.equal(lineage.schema,'td613.rulefield.historical-wolfram-atlas-source-lineage/v1');
+ assert.equal(lineage.origin_merge_pr,1725);
+ assert.equal(lineage.canonical_integration_pr,1722);
+ assert.equal(lineage.source_lineage.length,14);
+ assert.equal(new Set(lineage.source_lineage.map(x=>x.rulefield)).size,14);
+ for(const item of lineage.source_lineage){
+  assert.match(item.rulefield,/^packages\/rulefield\/sources\/wolfram-rule-atlas-20261107\//);
+  const bytes=readFileSync(new URL('../'+item.rulefield,import.meta.url));
+  const prefix=Buffer.from('blob '+bytes.length+'\x00','utf8');
+  const blob=createHash('sha1').update(prefix).update(bytes).digest('hex');
+  assert.equal(blob,item.git_blob_sha1,item.original+' must retain exact original Git blob bytes');
+ }
+ assert.equal(lineage.boundary.auto_promote_to_596,false);
+ assert.equal(lineage.boundary.protected_flight,'HELD');
+ assert.equal(lineage.additional_historical_binary.inside_rulefield_zip,false);
+ assert.match(read('README.md'),/Wolframian research source lineage/);
 });
