@@ -1,0 +1,17 @@
+---
+schema: src-live-zenodo-body-derivative/v1
+record_id: "22217652"
+source_title: "PLANETARY SR XXV — NIGERIA: Demographic Expansion, Oil-Fiscal Dependence, Informal Continuity, and Infrastructure Access Pressure"
+authority: LIVE_POST_SEAL_TEXT_DERIVATIVE
+---
+
+# PLANETARY SR XXV — NIGERIA: Demographic Expansion, Oil-Fiscal Dependence, Informal Continuity, and Infrastructure Access Pressure
+
+## Zenodo description
+
+PLANETARY SR XXV — NIGERIA 
+ Description 
+ Planetary SR XXV — Nigeria analyzes Nigeria as a coupled institutional–population system defined by rapid demographic expansion, oil‑fiscal dependence, informal continuity, and infrastructure‑access pressure . The study documents a continuity architecture where fast population and urban growth expand labour supply while simultaneously raising housing, education, health, transport, electricity, and employment requirements at high speed. IMF’s 2026 consultation estimated “poverty at 63% on the national line and about 27 million people facing food insecurity in fall 2025,” highlighting severe household‑margin constraints despite “4.0% growth in 2025 and 4.1% projected for 2026.” Effective access diverges sharply from formal provision across 36 states, the Federal Capital Territory, 774 local government areas, and major urban/rural service regions, where electricity reliability, transport, land, informal settlements, and service conversion shape household and firm capacity. Informal markets, remittances, entrepreneurial networks, and community provisioning systems supply continuity, but food prices, transport costs, energy pressure, and informal incomes create high exposure. Oil exports provide fiscal and external revenue, while domestic electricity unreliability forces widespread self‑generation, forming a central SR test of compensation versus restoration. Climate exposure—heat, flood, desertification, agriculture pressure—amplifies food, migration, and urban requirements.
+
+ How it Contributes 
+ This study contributes a distinct continuity topology to the Planetary SR comparative series by demonstrating how a federal republic maintains continuity through informal, household, and market buffering , while unresolved pressure propagates into poverty, food insecurity, electricity constraints, rapid urbanization, and oil‑linked fiscal dependence . Nigeria strengthens SR fields such as Systems Propagation Science , Infrastructural Political Economy , Institutional Cognition , and Drift Collapse Field by showing how electricity unreliability → self‑generation/business costs, food inflation → poverty/nutrition, oil revenue → fiscal/FX capacity, and rapid urbanization → housing/transport/service load operate as named propagation bridges. The paper expands the ATLAS architecture by providing the strongest test of SR’s requirement‑growth problem: even rising capacity may fail to close gaps when population and service requirements expand faster , offering a decisive case for surface–substrate divergence and unequal insulation . Nigeria’s mechanism is empirically distinguishable through its blend of “rapid demographic and urban expansion supported by informal/household/market continuity, with oil‑fiscal dependence, poverty and infrastructure‑access constraints,” adding a new structural configuration to the planetary series and supplying a critical test of reorganization vs restoration and agency‑conditioned response .

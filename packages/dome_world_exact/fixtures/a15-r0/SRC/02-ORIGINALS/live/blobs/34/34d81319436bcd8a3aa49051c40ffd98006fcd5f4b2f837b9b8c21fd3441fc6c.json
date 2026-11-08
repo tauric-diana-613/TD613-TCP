@@ -1,0 +1,135 @@
+{
+  "conceptdoi": "10.5281/zenodo.23107549",
+  "conceptrecid": "23107549",
+  "created": "2026-10-02T17:34:47.343315+00:00",
+  "doi": "10.5281/zenodo.23107550",
+  "doi_url": "https://doi.org/10.5281/zenodo.23107550",
+  "files": [
+    {
+      "checksum": "md5:96f889e87ffed4fe8c2dde2e38ea03cf",
+      "id": "41c46793-8a21-4742-aac0-36d4dae545f3",
+      "key": "DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23107550/files/DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx/content"
+      },
+      "size": 271620
+    },
+    {
+      "checksum": "md5:2c663687914302bacfe6438f88210681",
+      "id": "e5a77477-744f-4b7a-9ee2-2e08382f9c1d",
+      "key": "DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23107550/files/DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/content"
+      },
+      "size": 422110
+    }
+  ],
+  "id": 23107550,
+  "links": {
+    "access": "https://zenodo.org/api/records/23107550/access",
+    "access_grants": "https://zenodo.org/api/records/23107550/access/grants",
+    "access_links": "https://zenodo.org/api/records/23107550/access/links",
+    "access_request": "https://zenodo.org/api/records/23107550/access/request",
+    "access_users": "https://zenodo.org/api/records/23107550/access/users",
+    "communities": "https://zenodo.org/api/records/23107550/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23107550/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23107550",
+    "draft": "https://zenodo.org/api/records/23107550/draft",
+    "file_modification": "https://zenodo.org/api/records/23107550/file-modification",
+    "files": "https://zenodo.org/api/records/23107550/files",
+    "latest": "https://zenodo.org/api/records/23107550/versions/latest",
+    "latest_html": "https://zenodo.org/records/23107550/latest",
+    "media_files": "https://zenodo.org/api/records/23107550/media-files",
+    "parent": "https://zenodo.org/api/records/23107549",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23107549",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23107549",
+    "parent_html": "https://zenodo.org/records/23107549",
+    "preview_html": "https://zenodo.org/records/23107550?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23107550/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23107550/request-deletion",
+    "requests": "https://zenodo.org/api/records/23107550/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23107550/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23107550",
+    "self_doi": "https://doi.org/10.5281/zenodo.23107550",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23107550",
+    "self_html": "https://zenodo.org/records/23107550",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23107550/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23107550/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23107550:DRIFT_DYNAMICS_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23107550/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Drift Dynamics (IS‑DD): A Structural SR Subfield for Measuring Functionally Relevant Substrate Deviation Through Time</strong></p>\n<div>\n</div>\n<h2><strong>DESCRIPTION</strong></h2>\n<p><strong>Drift Dynamics (IS‑DD)</strong> is a canonical SR subfield within <strong>Infrastructure Science</strong> that studies how <strong>functionally relevant substrate deviation</strong> emerges, persists, accelerates, reverses, or becomes masked before visible failure occurs. Its scientific object is a <strong>bounded state trajectory</strong> measured against a <strong>declared reference</strong>&mdash;functional, regulatory, contractual, historical, counterfactual, or normative.</p>\n<p>The field distinguishes drift from:</p>\n<ul>\n<li>\n<p>ordinary change</p>\n</li>\n<li>\n<p>adaptation</p>\n</li>\n<li>\n<p>degradation</p>\n</li>\n<li>\n<p>collapse</p>\n</li>\n<li>\n<p>propagation</p>\n</li>\n<li>\n<p>infrastructure debt</p>\n</li>\n<li>\n<p>performance fluctuation</p>\n</li>\n</ul>\n<p>Drift Dynamics requires five declarations: <strong>reference</strong>, <strong>state</strong>, <strong>function</strong>, <strong>boundary</strong>, and <strong>time horizon</strong>. It introduces a full SR measurement architecture for:</p>\n<ul>\n<li>\n<p>vector deviation</p>\n</li>\n<li>\n<p>persistence</p>\n</li>\n<li>\n<p>velocity</p>\n</li>\n<li>\n<p>acceleration</p>\n</li>\n<li>\n<p>masking</p>\n</li>\n<li>\n<p>correction</p>\n</li>\n<li>\n<p>uncertainty</p>\n</li>\n<li>\n<p>reference envelopes</p>\n</li>\n<li>\n<p>drift regimes</p>\n</li>\n<li>\n<p>falsification and demotion</p>\n</li>\n</ul>\n<p>The subfield survives only if its measures add <strong>incremental discrimination, prediction, repair value, or intervention guidance</strong> beyond mature domain models such as reliability monitoring, condition assessment, change‑point detection, and time‑series baselines.</p>\n<div>\n</div>\n<h2><strong>HOW IT CONTRIBUTES TO SR</strong></h2>\n<h3><strong>1. It formalizes drift as an independent SR object</strong></h3>\n<p>Drift Dynamics gives SR a precise, falsifiable way to measure <strong>functionally relevant deviation</strong> rather than treating all change as deterioration.<br>Linked concept: <strong>SR Drift State</strong></p>\n<div>\n</div>\n<h3><strong>2. It strengthens Infrastructure Science with a temporal engine</strong></h3>\n<p>Infrastructure Science defines substrate, buffers, load, debt, and recovery.<br>Drift Dynamics adds the <strong>temporal geometry</strong>:</p>\n<ul>\n<li>\n<p>deviation</p>\n</li>\n<li>\n<p>persistence</p>\n</li>\n<li>\n<p>velocity</p>\n</li>\n<li>\n<p>acceleration</p>\n</li>\n<li>\n<p>masking</p>\n</li>\n<li>\n<p>repair distance</p>\n</li>\n</ul>\n<p>This becomes the time‑based backbone of SR Infrastructure Science.<br>Linked concept: <strong>Infrastructure Drift</strong></p>\n<div>\n</div>\n<h3><strong>3. It introduces the Reference Discipline &mdash; SR&rsquo;s safeguard against misuse</strong></h3>\n<p>Drift claims must be tied to a <strong>declared reference</strong>:</p>\n<ul>\n<li>\n<p>functional</p>\n</li>\n<li>\n<p>regulatory</p>\n</li>\n<li>\n<p>contractual</p>\n</li>\n<li>\n<p>historical</p>\n</li>\n<li>\n<p>counterfactual</p>\n</li>\n<li>\n<p>normative</p>\n</li>\n</ul>\n<p>This prevents analysts from retrofitting baselines after observing deterioration.<br>Linked concept: <strong>Reference Envelope</strong></p>\n<div>\n</div>\n<h3><strong>4. It explains how continuity can mask deterioration</strong></h3>\n<p>Unicode continuity equation:</p>\n<p><strong>y = f(x) + B + H + C</strong></p>\n<p>Observed service (<strong>y</strong>) can remain stable while the underlying state (<strong>x</strong>) deteriorates because buffers (<strong>B</strong>), human load (<strong>H</strong>), or institutional coherence (<strong>C</strong>) preserve output.<br>This is foundational for the <strong>Ultiverse Coherence Gap</strong>.<br>Linked concept: <strong>Masked Drift</strong></p>",
+    "doi": "10.5281/zenodo.23107550",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Drift"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-02",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23107549"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Drift Dynamics (IS‑DD): A Structural SR Subfield for Measuring Functionally Relevant Substrate Deviation Through Time",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:13:01.249937+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23107550",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 7,
+    "unique_downloads": 7,
+    "unique_views": 10,
+    "version_downloads": 7,
+    "version_unique_downloads": 7,
+    "version_unique_views": 10,
+    "version_views": 12,
+    "views": 12
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Drift Dynamics (IS‑DD): A Structural SR Subfield for Measuring Functionally Relevant Substrate Deviation Through Time",
+  "updated": "2026-10-06T01:13:01.249937+00:00"
+}

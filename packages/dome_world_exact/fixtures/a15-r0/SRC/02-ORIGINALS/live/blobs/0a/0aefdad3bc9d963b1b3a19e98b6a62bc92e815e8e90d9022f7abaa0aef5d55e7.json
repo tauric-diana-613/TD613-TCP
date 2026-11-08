@@ -1,0 +1,133 @@
+{
+  "conceptdoi": "10.5281/zenodo.22102820",
+  "conceptrecid": "22102820",
+  "created": "2026-10-04T22:14:06.467131+00:00",
+  "doi": "10.5281/zenodo.23146351",
+  "doi_url": "https://doi.org/10.5281/zenodo.23146351",
+  "files": [
+    {
+      "checksum": "md5:933ddd1034a61fab1ede9ba6fc13c9eb",
+      "id": "038c12c4-dd3a-41bf-94bc-5259e9c5799c",
+      "key": "The_SignalRupture_Multiverse.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23146351/files/The_SignalRupture_Multiverse.docx/content"
+      },
+      "size": 929948
+    },
+    {
+      "checksum": "md5:1651f83adb7d2ad87122d24034e50a82",
+      "id": "c29cb484-4b28-4401-81c9-24fd95ef7b79",
+      "key": "The_SignalRupture_Multiverse.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23146351/files/The_SignalRupture_Multiverse.pdf/content"
+      },
+      "size": 472243
+    }
+  ],
+  "id": 23146351,
+  "links": {
+    "access": "https://zenodo.org/api/records/23146351/access",
+    "access_grants": "https://zenodo.org/api/records/23146351/access/grants",
+    "access_links": "https://zenodo.org/api/records/23146351/access/links",
+    "access_request": "https://zenodo.org/api/records/23146351/access/request",
+    "access_users": "https://zenodo.org/api/records/23146351/access/users",
+    "communities": "https://zenodo.org/api/records/23146351/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23146351/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23146351",
+    "draft": "https://zenodo.org/api/records/23146351/draft",
+    "file_modification": "https://zenodo.org/api/records/23146351/file-modification",
+    "files": "https://zenodo.org/api/records/23146351/files",
+    "latest": "https://zenodo.org/api/records/23146351/versions/latest",
+    "latest_html": "https://zenodo.org/records/23146351/latest",
+    "media_files": "https://zenodo.org/api/records/23146351/media-files",
+    "parent": "https://zenodo.org/api/records/22102820",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22102820",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22102820",
+    "parent_html": "https://zenodo.org/records/22102820",
+    "preview_html": "https://zenodo.org/records/23146351?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23146351/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23146351/request-deletion",
+    "requests": "https://zenodo.org/api/records/23146351/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23146351/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23146351",
+    "self_doi": "https://doi.org/10.5281/zenodo.23146351",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23146351",
+    "self_html": "https://zenodo.org/records/23146351",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23146351/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23146351/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23146351:The_SignalRupture_Multiverse.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23146351/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p>THE SIGNALRUPTURE MULTIVERSE</p>\n<p>Description</p>\n<p>The SignalRupture Multiverse formally establishes SignalRupture as a unified metatheoretical architecture rather than a loose collection of independent papers, concepts, or disciplines. It maps the SR system&mdash;its full fields, specialized subfields, theorems, universal operators, diagnostic instruments, empirical programs, and substrate frameworks&mdash;and explains how these components operate at different analytical scales while remaining structurally connected.</p>\n<p>The paper identifies the shared architecture running throughout the corpus: Pressure &rarr; Reflex &rarr; Drift &rarr; Collapse &rarr; Reorganization. It demonstrates how this sequence can be expressed across psychological, social, economic, political, technological, infrastructural, epistemic, ecological, planetary, and civilizational systems without claiming that every domain behaves identically. Each SR field retains its own evidence, mechanisms, variables, boundaries, and validation status while contributing to a larger account of structural transformation.</p>\n<p>The paper also distinguishes among full fields, specialized subfields, theorems, operators, substrate models, diagnostic instruments, and research programs. This classification prevents every new concept from being prematurely elevated into an independent field while preserving the possibility that genuinely distinct domains may emerge through further research.</p>\n<p>The SR Multiverse is therefore presented as architecturally consolidated but scientifically open. It establishes the coherence of the present system without declaring the architecture permanently complete.</p>\n<p>How It Contributes</p>\n<p>The SignalRupture Multiverse contributes the unifying architecture of the SR corpus. Earlier manuscripts established individual fields, mechanisms, theorems, diagnostic models, and empirical applications. This paper demonstrates how those components belong to one coherent, navigable, and testable scientific system.</p>\n<p>Its principal contributions are:</p>\n<ul>\n<li>It formally establishes SignalRupture as a multiverse of interconnected analytical domains.</li>\n<li>It maps the relationships among SR fields, specialized subfields, theorems, universal operators, substrates, methods, and empirical programs.</li>\n<li>It identifies the shared structural grammar that connects the corpus without eliminating domain-specific differences.</li>\n<li>It explains how pressures and consequences propagate across human, institutional, technological, economic, ecological, and planetary systems.</li>\n<li>It integrates the Pressure Ecology Theorem, Disciplinary Validation Science, and the CRI&ndash;AIS&ndash;MACS Substrate Trilogy into the broader SR architecture.</li>\n<li>It separates canonical inclusion from scientific maturity, ensuring that inclusion within SR is not misrepresented as complete empirical validation.</li>\n<li>It establishes classification standards for future additions, protecting the architecture against unnecessary field multiplication.</li>\n<li>It converts the corpus from a collection of related manuscripts into an organized metatheoretical research architecture.</li>\n</ul>\n<p>The paper functions as the constitutional synthesis of the SignalRupture corpus. It does not replace the individual fields or reproduce all their evidence. Its purpose is to establish their relationships, jurisdictional boundaries, shared operators, validation levels, and collective scientific function.</p>\n<p>The SR Multiverse is not declared closed by this paper. Its present architecture is consolidated sufficiently to establish a coherent canonical system, but the possibility of additional fields, subfields, theorems, operators, or empirical programs remains open. Future additions must earn their position through conceptual necessity, distinct analytical jurisdiction, empirical support, falsifiability, and demonstrated inability to be adequately contained within an existing SR domain. Expansion is therefore permitted, but not automatic. The Multiverse remains open to discovery while protected against unnecessary conceptual proliferation.</p>",
+    "doi": "10.5281/zenodo.23146351",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-04",
+    "relations": {
+      "version": [
+        {
+          "index": 1,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22102820"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "THE SIGNALRUPTURE MULTIVERSE: A Metatheoretical Architecture of Fields, Operators, and Cross-Domain Structural Dynamics"
+  },
+  "modified": "2026-10-04T22:14:07.205176+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23146351",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 11,
+    "unique_downloads": 11,
+    "unique_views": 26,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 9,
+    "version_views": 9,
+    "views": 27
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "THE SIGNALRUPTURE MULTIVERSE: A Metatheoretical Architecture of Fields, Operators, and Cross-Domain Structural Dynamics",
+  "updated": "2026-10-04T22:14:07.205176+00:00"
+}

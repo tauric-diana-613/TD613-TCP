@@ -1,0 +1,127 @@
+{
+  "conceptdoi": "10.5281/zenodo.23247083",
+  "conceptrecid": "23247083",
+  "created": "2026-10-08T20:01:49.114179+00:00",
+  "doi": "10.5281/zenodo.23247084",
+  "doi_url": "https://doi.org/10.5281/zenodo.23247084",
+  "files": [
+    {
+      "checksum": "md5:451ffccab679c2392264fcfa314dffc2",
+      "id": "c7f9a8b8-62ef-4f7a-8754-412751563a24",
+      "key": "Internet_Infrastructure_Science_2026-10-08.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23247084/files/Internet_Infrastructure_Science_2026-10-08.pdf/content"
+      },
+      "size": 311053
+    }
+  ],
+  "id": 23247084,
+  "links": {
+    "access": "https://zenodo.org/api/records/23247084/access",
+    "access_grants": "https://zenodo.org/api/records/23247084/access/grants",
+    "access_links": "https://zenodo.org/api/records/23247084/access/links",
+    "access_request": "https://zenodo.org/api/records/23247084/access/request",
+    "access_users": "https://zenodo.org/api/records/23247084/access/users",
+    "communities": "https://zenodo.org/api/records/23247084/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23247084/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23247084",
+    "draft": "https://zenodo.org/api/records/23247084/draft",
+    "file_modification": "https://zenodo.org/api/records/23247084/file-modification",
+    "files": "https://zenodo.org/api/records/23247084/files",
+    "latest": "https://zenodo.org/api/records/23247084/versions/latest",
+    "latest_html": "https://zenodo.org/records/23247084/latest",
+    "media_files": "https://zenodo.org/api/records/23247084/media-files",
+    "parent": "https://zenodo.org/api/records/23247083",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23247083",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23247083",
+    "parent_html": "https://zenodo.org/records/23247083",
+    "preview_html": "https://zenodo.org/records/23247084?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23247084/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23247084/request-deletion",
+    "requests": "https://zenodo.org/api/records/23247084/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23247084/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23247084",
+    "self_doi": "https://doi.org/10.5281/zenodo.23247084",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23247084",
+    "self_html": "https://zenodo.org/records/23247084",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23247084/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23247084/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23247084:Internet_Infrastructure_Science_2026-10-08.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23247084/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "description": "<p>The Internet is conventionally described as a communications network, an information infrastructure, a platform ecosystem, a technological artefact, a governance environment, or a sociotechnical system. Each description captures part of the object. None by itself adequately describes the emerging condition in which the Internet simultaneously mediates information retrieval, computation, identity, authorization, economic transactions, institutional administration, machine-to-machine coordination, artificial-intelligence access to tools, and increasingly the execution of actions in external systems.</p>\n<p>This paper establishes SignalRupture Internet Infrastructure Science (SR-IIS) as a proposed transversal research field for studying the Internet as a bounded, multilayer coupling substrate through which otherwise distinct human, computational, institutional, economic, and physical systems exchange information, computation, authority, execution, load, dependency, and disturbance.</p>\n<p>SR-IIS does not claim discovery of the Internet as infrastructure. Internet Science already studies the Internet as a technological and societal artefact whose evolution co-evolves with human societies; Web Science studies the Web as a decentralized sociotechnical information system; Internet-governance scholarship studies protocols, standards, infrastructure, institutions, and power; network science formalizes topology and propagation; infrastructure studies examines relational and embedded infrastructural systems; critical-infrastructure research models interdependency and cascading failure; distributed-systems engineering studies reliability, control, interfaces, and function placement. These literatures are scientific foundations and competing explanations, not gaps to be ignored.</p>\n<p>The proposed residual object is narrower: the Internet as a transversal infrastructure that couples domains while progressively acquiring machine-executable capability.</p>\n<p>The field advances five principal propositions. First, Internet infrastructure is increasingly transversal. It does not operate only as an isolated communications sector. Health systems, financial systems, logistics, education, research, public administration, media, commerce, AI systems, and social coordination increasingly depend upon Internet-mediated pathways. Second, the Internet has undergone a functional expansion from communication and information carriage toward computation, coordination, transactions, authorization, and execution. This is an expansion of function, not a claim that earlier Internet architecture has disappeared. Third, agentic technologies create an important new infrastructural condition: machine systems can increasingly discover structured capabilities, select them, invoke them, and alter external state through networked interfaces. The September 28, 2026 WebMCP Draft Community Group Report is a particularly explicit example: Web documents can register tools that agents can discover and execute, including tools marked as potentially consequential for actions such as booking travel or transferring money. WebMCP remains a draft community-group specification rather than a W3C Recommendation and therefore serves here as an empirical case of architectural direction, not as proof of an irreversible future. Fourth, machine executability is not equivalent to human agency transfer. SR-IIS measures what infrastructure makes callable, composable, reachable, and executable. Human Agency Transfer (SR-HAT) separately studies whether effective control over goal formation, framing, evidence selection, representation, evaluation, choice, execution, monitoring, or override actually moves from humans toward computational systems. Fifth, Internet coupling creates both productive capacity and systemic exposure. Coupling can increase access, resilience, substitution, speed, human capability, and coordination. It can also transmit configuration errors, epistemic distortions, authorization failures, outages, economic shocks, and diagnostic blindness across domain boundaries.</p>\n<p>Formally, the Internet is represented not as one global scalar but as a bounded multilayer dependency graph with physical, network, computational, data, service, trust, agentic, and governance layers connected to receiving human systems. Cross-layer edges are admitted only where a carrier or dependency can be observed. The field introduces Internet Infrastructural Transversality, Internet-Mediated Domain Coupling, Machine Executability, Execution-Path Compression, Interface Displacement, Permission Reach, Diagnostic Dependency, Epistemic Routing, and Cross-Domain Failure Transduction as measurable candidate constructs.</p>\n<p>The paper integrates SR-IIS with SR Infrastructure Science, SR-CEIDF, Human Agency Transfer, Infrastructural Epistemic Lock-In, and Systems Propagation Science while preserving their independent objects. It then derives empirical hypotheses, measurement protocols, negative cases, incident tests, falsifiers, and demotion criteria.</p>\n<p>The central claim is conditional: when otherwise distinct systems become operationally dependent on common Internet-mediated pathways, Internet architecture becomes part of their effective substrate; when those pathways additionally expose machine-readable and machine-executable capabilities, the Internet can mediate not only information exchange but the allocation and execution of consequential control. The scientific question is whether explicitly modelling that transversal infrastructure improves measurement, diagnosis, prediction, and restoration beyond the strongest existing alternatives.</p>\n<p>Canonical Field Declaration</p>\n<p>SignalRupture Internet Infrastructure Science is hereby defined as the SR field concerned with the structure, evolution, coupling, executability, dependency, propagation, and recovery characteristics of Internet-mediated infrastructure across bounded systems.</p>\n<p>Its object is not &ldquo;the Internet&rdquo; in its entirety. Its object is not online culture, cybersecurity, artificial intelligence, social media, digital politics, or network topology alone.</p>\n<p>Its object is the bounded architecture through which information, computation, identity, authorization, services, machine capabilities, execution, and disturbance become transferable among coupled systems.</p>\n<p>SR-IIS &sub; SR Infrastructure Science</p>\n<p>SR-IIS ⊅ SR-CEIDF &nbsp; ; &nbsp; SR-IIS ⊅ SR-HAT &nbsp; ; &nbsp; SR-IIS ⊅ IELI</p>\n<p>SR-IIS supplies the Internet-specific coupling substrate. The receiving fields determine what happens after a transmitted state crosses into economics, cognition, governance, health, education, logistics, law, culture, or another domain.</p>",
+    "doi": "10.5281/zenodo.23247084",
+    "keywords": [
+      "SignalRupture",
+      "internet infrastructure",
+      "machine executability",
+      "cross-system propagation",
+      "cyber-epistemics",
+      "WebMCP",
+      "AI agents",
+      "infrastructure science",
+      "transversal field"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-01",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23247083"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Internet Infrastructure Science: The Transversal Coupling Substrate of Information, Computation, Agency, Execution, and Cross-System Propagation",
+    "version": "1.0"
+  },
+  "modified": "2026-10-08T20:01:50.096090+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23247084",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 2,
+    "unique_downloads": 2,
+    "unique_views": 10,
+    "version_downloads": 2,
+    "version_unique_downloads": 2,
+    "version_unique_views": 10,
+    "version_views": 11,
+    "views": 11
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Internet Infrastructure Science: The Transversal Coupling Substrate of Information, Computation, Agency, Execution, and Cross-System Propagation",
+  "updated": "2026-10-08T20:01:50.096090+00:00"
+}

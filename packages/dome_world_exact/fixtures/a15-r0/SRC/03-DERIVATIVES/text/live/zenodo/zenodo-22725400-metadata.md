@@ -1,0 +1,132 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22725400"
+source_title: "The Structural Drift Toward Political Discontinuity: An SR Model of Load, Buffer Erosion, Institutional Trust, and Extremity in Collapse-Trajectory Politics"
+metadata_blob_sha256: b60299cbaefd99bbb992b85bc1ac5ab1b1d485085ef23a0f0d1e268413870c63
+metadata_blob_path: 02-ORIGINALS/live/blobs/b6/b60299cbaefd99bbb992b85bc1ac5ab1b1d485085ef23a0f0d1e268413870c63.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22725399",
+  "conceptrecid": "22725399",
+  "created": "2026-09-12T12:22:06.501675+00:00",
+  "doi": "10.5281/zenodo.22725400",
+  "doi_url": "https://doi.org/10.5281/zenodo.22725400",
+  "files": [
+    {
+      "checksum": "md5:3a8d77b72aac9fff63ff459f157e032b",
+      "id": "eb35ab64-c056-42be-88f4-e629859fbb02",
+      "key": "The Structural Drift Toward Political Discontinuity - SR 2026.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/22725400/files/The%20Structural%20Drift%20Toward%20Political%20Discontinuity%20-%20SR%202026.docx/content"
+      },
+      "size": 786874
+    }
+  ],
+  "id": 22725400,
+  "links": {
+    "access": "https://zenodo.org/api/records/22725400/access",
+    "access_grants": "https://zenodo.org/api/records/22725400/access/grants",
+    "access_links": "https://zenodo.org/api/records/22725400/access/links",
+    "access_request": "https://zenodo.org/api/records/22725400/access/request",
+    "access_users": "https://zenodo.org/api/records/22725400/access/users",
+    "archive": "https://zenodo.org/api/records/22725400/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22725400/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22725400/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22725400/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22725400",
+    "draft": "https://zenodo.org/api/records/22725400/draft",
+    "file_modification": "https://zenodo.org/api/records/22725400/file-modification",
+    "files": "https://zenodo.org/api/records/22725400/files",
+    "latest": "https://zenodo.org/api/records/22725400/versions/latest",
+    "latest_html": "https://zenodo.org/records/22725400/latest",
+    "media_files": "https://zenodo.org/api/records/22725400/media-files",
+    "parent": "https://zenodo.org/api/records/22725399",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22725399",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22725399",
+    "parent_html": "https://zenodo.org/records/22725399",
+    "preview_html": "https://zenodo.org/records/22725400?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22725400/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22725400/request-deletion",
+    "requests": "https://zenodo.org/api/records/22725400/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22725400/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22725400",
+    "self_doi": "https://doi.org/10.5281/zenodo.22725400",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22725400",
+    "self_html": "https://zenodo.org/records/22725400",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22725400/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22725400/sequence/default",
+    "versions": "https://zenodo.org/api/records/22725400/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>The Structural Drift Toward Political Discontinuity</strong></h1>\n<p><strong>Description</strong><br>This manuscript develops a structural model explaining why populations become increasingly willing to replace, bypass, or substantially restructure an existing political equilibrium. Rather than treating polarization, populism, or extremity as the primary dependent variables, the paper reframes political instability as <strong>political discontinuity</strong>, defined as <em>&ldquo;a measurable increase in willingness to replace, bypass, substantially restructure, or withdraw support from the prevailing political equilibrium.&rdquo;</em> The model links rising <strong>structural load</strong>, declining <strong>buffer capacity</strong>, deteriorating <strong>effective access</strong>, weakening <strong>political agency</strong>, and falling <strong>institutional trust</strong> to increased discontinuity demand. It also formalizes <strong>Institutional Visibility Lag</strong>, the delay between cross‑domain deterioration and coordinated institutional recognition. The manuscript positions Political Discontinuity Dynamics (PDD) as a specialized SR subfield and candidate autonomous field, offering a theoretically specified but non‑deterministic architecture with multiple possible political trajectories.</p>\n<div>\n</div>\n<h1><strong>Contribution</strong></h1>\n<p>This paper contributes to political‑instability research in five major ways:</p>\n<ol>\n<li>\n<p><strong>Reframing the dependent variable</strong><br>It shifts the analytical focus from ideological outcomes (e.g., populism, extremity) to <strong>political discontinuity</strong>, allowing structural pressures to be studied without pathologizing ordinary democratic opposition.</p>\n</li>\n<li>\n<p><strong>Introducing a fully specified causal chain</strong><br>The manuscript provides a mechanistic, multi‑variable model connecting load, buffers, access, agency, trust, and discontinuity. The directional expectations (e.g., &part;D/&part;L &gt; 0) offer a structured foundation for empirical testing.</p>\n</li>\n<li>\n<p><strong>Formalizing Institutional Visibility Lag (IVL)</strong><br>IVL is defined as the interval between measurable buffer erosion and institutional recognition. This concept explains delayed political responses and offers a measurable variable for comparative research.</p>\n</li>\n<li>\n<p><strong>Proposing a branching collapse‑trajectory framework</strong><br>The paper replaces deterministic collapse narratives with five analytically distinct branches: buffer restoration, democratic substitution, structural reconstruction, chronic fragmentation, and extremity entrenchment. This enhances compatibility with comparative politics and avoids linear assumptions.</p>\n</li>\n<li>\n<p><strong>Establishing explicit falsification criteria</strong><br>The manuscript outlines conditions under which the integrated SR model would be weakened, ensuring that the framework remains testable and scientifically accountable rather than interpretively unfalsifiable.</p>\n</li>\n</ol>",
+    "doi": "10.5281/zenodo.22725400",
+    "keywords": [
+      "Politics",
+      "Institutions",
+      "Metatheory",
+      "Social issues"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-12",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22725399"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "The Structural Drift Toward Political Discontinuity: An SR Model of Load, Buffer Erosion, Institutional Trust, and Extremity in Collapse-Trajectory Politics",
+    "version": "1.0"
+  },
+  "modified": "2026-09-12T12:22:06.788550+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22725400",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 4,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 4,
+    "version_views": 4,
+    "views": 4
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "The Structural Drift Toward Political Discontinuity: An SR Model of Load, Buffer Erosion, Institutional Trust, and Extremity in Collapse-Trajectory Politics",
+  "updated": "2026-09-12T12:22:06.788550+00:00"
+}
+```

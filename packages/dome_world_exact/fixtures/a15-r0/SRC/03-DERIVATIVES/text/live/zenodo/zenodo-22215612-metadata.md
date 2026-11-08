@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22215612"
+source_title: "PLANETARY SR XX — BRAZIL: Federal Social Buffering, Renewable-Electric Capacity, Fiscal Rigidity, and Territorial Inequality"
+metadata_blob_sha256: 16615a43c76f7b60d33b24f9eaa411d5d7f00aa7b2eb56e334e0be10baebe8cd
+metadata_blob_path: 02-ORIGINALS/live/blobs/16/16615a43c76f7b60d33b24f9eaa411d5d7f00aa7b2eb56e334e0be10baebe8cd.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22215611",
+  "conceptrecid": "22215611",
+  "created": "2026-08-31T21:33:05.589026+00:00",
+  "doi": "10.5281/zenodo.22215612",
+  "doi_url": "https://doi.org/10.5281/zenodo.22215612",
+  "files": [
+    {
+      "checksum": "md5:a1fa3825dfde13629bc1d162cccfde6a",
+      "id": "8d17c169-8da7-4de2-bf29-20a742d2df41",
+      "key": "PLANETARY SR XX — BRAZIL.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22215612/files/PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/content"
+      },
+      "size": 404047
+    }
+  ],
+  "id": 22215612,
+  "links": {
+    "access": "https://zenodo.org/api/records/22215612/access",
+    "access_grants": "https://zenodo.org/api/records/22215612/access/grants",
+    "access_links": "https://zenodo.org/api/records/22215612/access/links",
+    "access_request": "https://zenodo.org/api/records/22215612/access/request",
+    "access_users": "https://zenodo.org/api/records/22215612/access/users",
+    "archive": "https://zenodo.org/api/records/22215612/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22215612/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22215612/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22215612/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22215612",
+    "draft": "https://zenodo.org/api/records/22215612/draft",
+    "file_modification": "https://zenodo.org/api/records/22215612/file-modification",
+    "files": "https://zenodo.org/api/records/22215612/files",
+    "latest": "https://zenodo.org/api/records/22215612/versions/latest",
+    "latest_html": "https://zenodo.org/records/22215612/latest",
+    "media_files": "https://zenodo.org/api/records/22215612/media-files",
+    "parent": "https://zenodo.org/api/records/22215611",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22215611",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22215611",
+    "parent_html": "https://zenodo.org/records/22215611",
+    "preview_html": "https://zenodo.org/records/22215612?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22215612/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22215612/request-deletion",
+    "requests": "https://zenodo.org/api/records/22215612/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22215612/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22215612",
+    "self_doi": "https://doi.org/10.5281/zenodo.22215612",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22215612",
+    "self_html": "https://zenodo.org/records/22215612",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22215612/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22215612/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22215612:PLANETARY%20SR%20XX%20%E2%80%94%20BRAZIL.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22215612/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>PLANETARY SR XX &mdash; BRAZIL</strong></h1>\n<h2><strong>Description</strong></h2>\n<p><em>Planetary SR XX &mdash; Brazil</em> analyzes Brazil as a coupled institutional&ndash;population system defined by <strong>federal social buffering, renewable‑electric capacity, fiscal rigidity, and deep territorial inequality</strong>. Brazil&rsquo;s continuity architecture combines universal systems&mdash;SUS health coverage, large social transfers, public banks, and federal programmes&mdash;with highly unequal municipal and regional conversion. The study documents strong structural countertrends such as <em>&ldquo;renewables supplying 86.8% of Brazil&rsquo;s electricity matrix in 2025&rdquo;</em> (EPE, 2026) and recent poverty reduction, alongside persistent constraints including <em>&ldquo;fiscal earmarking, debt pressure, and spending rigidity&rdquo;</em> (IMF, 2025). Effective access diverges sharply from formal coverage: municipal finance, specialist supply, transport, sanitation, housing, and informal‑income exposure create localized requirement&ndash;capacity gaps across 26 states, the Federal District, metropolitan regions, rural areas, and Amazonian geographies. Brazil&rsquo;s demographic transition&mdash;accelerating ageing from a still younger base&mdash;interacts with migration, urbanization, care burden, labour participation, and regional inequality to shape long‑run continuity. Renewable abundance stabilizes national capacity, while drought, transmission limits, industrial electrification, and Amazon‑linked climate exposure remain decisive conversion tests.</p>\n<h2><strong>How it Contributes</strong></h2>\n<p>This study contributes a <strong>distinct continuity topology</strong> to the Planetary SR comparative series by demonstrating how a continental federal system maintains national continuity through <strong>social‑policy buffering and renewable‑electric capacity</strong>, while unresolved pressure is transferred into <strong>territorial inequality, municipal service gaps, household compensation, and fiscal rigidity</strong>. Brazil strengthens SR fields such as <strong>Systems Propagation Science</strong>, <strong>Institutional Cognition</strong>, <strong>Infrastructural Political Economy</strong>, and <strong>Collapse Governance</strong> by showing how fiscal rigidity &rarr; investment/service space, poverty/formalization &rarr; household buffers, and Amazon/climate &rarr; agriculture/infrastructure/health operate as named propagation bridges. The paper expands the ATLAS architecture by illustrating how renewable‑electric abundance can coexist with uneven conversion, demonstrating that structural capacity does not automatically translate into effective access. Brazil&rsquo;s mechanism is empirically distinguishable through its blend of <em>&ldquo;federal and social‑policy buffering across a continental economy with strong renewable electricity and commodity capacity, but fiscal rigidity and deep territorial inequality,&rdquo;</em> adding a new structural configuration to the planetary series and providing a critical test of <strong>unequal insulation</strong>, <strong>surface&ndash;substrate divergence</strong>, and <strong>agency‑conditioned response</strong>.</p>",
+    "doi": "10.5281/zenodo.22215612",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "Brazil",
+      "Society",
+      "World"
+    ],
+    "language": "eng",
+    "publication_date": "2026-08-31",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22215611"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "PLANETARY SR XX — BRAZIL: Federal Social Buffering, Renewable-Electric Capacity, Fiscal Rigidity, and Territorial Inequality",
+    "version": "1.0"
+  },
+  "modified": "2026-08-31T21:33:05.907828+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22215612",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 1,
+    "unique_downloads": 1,
+    "unique_views": 1,
+    "version_downloads": 1,
+    "version_unique_downloads": 1,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "PLANETARY SR XX — BRAZIL: Federal Social Buffering, Renewable-Electric Capacity, Fiscal Rigidity, and Territorial Inequality",
+  "updated": "2026-08-31T21:33:05.907828+00:00"
+}
+```

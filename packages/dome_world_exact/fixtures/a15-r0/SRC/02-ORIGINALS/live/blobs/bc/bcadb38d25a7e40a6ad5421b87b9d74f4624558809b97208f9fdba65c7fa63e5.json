@@ -1,0 +1,132 @@
+{
+  "conceptdoi": "10.5281/zenodo.22548171",
+  "conceptrecid": "22548171",
+  "created": "2026-09-06T18:06:05.246783+00:00",
+  "doi": "10.5281/zenodo.22548172",
+  "doi_url": "https://doi.org/10.5281/zenodo.22548172",
+  "files": [
+    {
+      "checksum": "md5:fab5e3fc192612f49ef23ee99dc030d5",
+      "id": "f39f36c0-e0c0-44da-a767-79c54f67ebc3",
+      "key": "Planetary Pressure Ecology.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22548172/files/Planetary%20Pressure%20Ecology.pdf/content"
+      },
+      "size": 124751
+    }
+  ],
+  "id": 22548172,
+  "links": {
+    "access": "https://zenodo.org/api/records/22548172/access",
+    "access_grants": "https://zenodo.org/api/records/22548172/access/grants",
+    "access_links": "https://zenodo.org/api/records/22548172/access/links",
+    "access_request": "https://zenodo.org/api/records/22548172/access/request",
+    "access_users": "https://zenodo.org/api/records/22548172/access/users",
+    "archive": "https://zenodo.org/api/records/22548172/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22548172/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22548172/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22548172/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22548172",
+    "draft": "https://zenodo.org/api/records/22548172/draft",
+    "file_modification": "https://zenodo.org/api/records/22548172/file-modification",
+    "files": "https://zenodo.org/api/records/22548172/files",
+    "latest": "https://zenodo.org/api/records/22548172/versions/latest",
+    "latest_html": "https://zenodo.org/records/22548172/latest",
+    "media_files": "https://zenodo.org/api/records/22548172/media-files",
+    "parent": "https://zenodo.org/api/records/22548171",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22548171",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22548171",
+    "parent_html": "https://zenodo.org/records/22548171",
+    "preview_html": "https://zenodo.org/records/22548172?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22548172/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22548172/request-deletion",
+    "requests": "https://zenodo.org/api/records/22548172/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22548172/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22548172",
+    "self_doi": "https://doi.org/10.5281/zenodo.22548172",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22548172",
+    "self_html": "https://zenodo.org/records/22548172",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22548172/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22548172/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22548172:Planetary%20Pressure%20Ecology.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22548172/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Institutions",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>Planetary Pressure Ecology (PPE)</strong></h1>\n<p><strong>A Field Theory of Storage, Transfer, Absorption, Externalization, and Restoration Across Coupled Human Systems</strong></p>\n<h2><strong>Description</strong></h2>\n<p><strong>Planetary Pressure Ecology (PPE)</strong> evaluates a bounded and falsifiable proposition: systems stabilize themselves not only through transmission of disruption but through the generation, storage, transfer, absorption, externalization, and restoration of pressure across borders and nested human systems. The manuscript does not treat shocks as isolated events, nor diffusion as the sole mechanism of systemic change. Instead, it specifies the causal, temporal, and distributional conditions under which pressure moves, accumulates, remains latent, or reappears elsewhere&mdash;altering the burden and buffering capacity of states, infrastructures, firms, households, populations, and ecological systems.</p>\n<p>PPE formalizes pressure as a domain‑specific stock&ndash;flow system with explicit boundaries. It distinguishes <strong>pressure generation</strong>, <strong>storage</strong>, <strong>transfer</strong>, <strong>absorption</strong>, <strong>externalization</strong>, and <strong>restoration</strong>, each retaining native units rather than collapsing into a universal metric. The field introduces a pressure ledger that records how apparent stabilization in one node corresponds to load, depletion, or capacity change elsewhere. PPE is derived from the universal SR operator <strong>Society as a Pressure Ecology</strong> and expands it into a full empirical field with variables, hypotheses, rivals, falsifiers, and a cross‑domain measurement architecture.</p>\n<p>PPE is non‑duplicative within SR. <strong>Planetary Propagation Dynamics</strong> studies how disruption travels; PPE studies how burdens are redistributed before, during, and after travel, including pressures that remain latent. <strong>Household Absorption Science</strong> resolves one absorber at household scale; PPE resolves the cross‑system ecology. <strong>Essential‑Goods Dependency &amp; Survival Systems</strong> resolves survival‑critical goods; PPE resolves the planetary burden distribution that shapes those goods.</p>\n<p>The measurement architecture includes pressure stocks, transfer coefficients, absorptive capacity, expendable buffers, externalization flows, and restoration processes. PPE predicts displacement, buffer masking, asymmetric transfer, cross‑domain conversion, and restoration effects. It evaluates whether the directed pressure ledger improves prediction of burden redistribution, depletion, and recurrence beyond systemic‑risk, resilience, and diffusion models.</p>\n<p>PPE is a full SR field, empirically active but not yet fully validated. Its boundaries are explicit: it studies pressure ecology across nested systems, while disaster‑risk, resilience, world‑systems, and political‑ecology literatures remain adjacent but not owned.</p>\n<div>\n</div>\n<h2><strong>How It Contributes</strong></h2>\n<p><strong>1. A distinct planetary‑scale explanatory object</strong><br>PPE establishes the <strong>pressure ecology</strong> as a bounded configuration of sources, reservoirs, transfer channels, absorbers, externalization sites, feedbacks, and restoration processes. It shifts analysis from isolated shocks or contagion to the changing distribution of burden and buffering capacity across systems.</p>\n<p><strong>2. A formal stock&ndash;flow mechanism for pressure redistribution</strong><br>The field supplies a dynamic model of pressure generation, storage, transfer, absorption, externalization, and restoration. It distinguishes transfer from common exposure, latent storage from dissipation, and apparent relief from displaced burden. This mechanism is absent from propagation‑only or resilience‑only frameworks.</p>\n<p><strong>3. A pressure ledger that prevents false stabilization narratives</strong><br>PPE requires that stabilization in one node be evaluated against load, depletion, or capacity change elsewhere. It prevents misinterpretation of relief, growth, or resilience as genuine dissipation when pressure has merely moved to households, ecological systems, or lower‑power actors.</p>\n<p><strong>4. Incremental prediction over systemic‑risk and resilience models</strong><br>The field&rsquo;s distinct claim is empirical: the PPE ledger must outperform systemic‑risk, resilience, and diffusion baselines in predicting out‑of‑node burden, depletion, and recurrence. It tests whether directed transfer coefficients, buffer dynamics, and restoration processes add explanatory value beyond common shocks and exposure.</p>\n<p><strong>5. Integration of cross‑domain conversion and asymmetric transfer</strong><br>PPE embeds cross‑domain conversion (e.g., ecological pressure &rarr; fiscal pressure &rarr; household pressure) and asymmetric transfer shaped by bargaining power. It shows how unresolved pressure in one domain raises pressure in another through specified channels, enabling multi‑system causal inference.</p>\n<p><strong>6. Restoration architecture focused on durable capacity</strong><br>PPE distinguishes restoration from relocation. It predicts that interventions rebuilding durable capacity reduce recurrence more effectively than those that merely shift current load. This provides a scientifically grounded restoration logic for climate adaptation, fiscal policy, infrastructure planning, and social protection.</p>\n<p><strong>7. Boundary‑explicit, non‑totalizing scientific discipline</strong><br>The field establishes strict boundaries: no universal pressure metric, no conservation law without declared scope, no inference of responsibility from pressure alone, preregistered positive/negative/reversal cases, rival‑model comparison, and independent replication before validation. This ensures scientific integrity and prevents misuse.</p>",
+    "doi": "10.5281/zenodo.22548172",
+    "keywords": [
+      "Metatheory",
+      "Institutions",
+      "World",
+      "Ecology",
+      "Society",
+      "Society as a pressure ecology",
+      "Economics"
+    ],
+    "language": "eng",
+    "publication_date": "2026-09-06",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22548171"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "Planetary Pressure Ecology: A field theory of storage, transfer, absorption, externalization and restoration across coupled human systems",
+    "version": "1.0"
+  },
+  "modified": "2026-09-06T18:06:05.531740+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22548172",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 1,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 1,
+    "version_views": 1,
+    "views": 1
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Planetary Pressure Ecology: A field theory of storage, transfer, absorption, externalization and restoration across coupled human systems",
+  "updated": "2026-09-06T18:06:05.531740+00:00"
+}

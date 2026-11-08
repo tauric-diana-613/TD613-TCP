@@ -1,0 +1,141 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "22084219"
+source_title: "DRIFT OR MIGRATION? Testing SignalRupture Drift Against Rasmussen's Dynamic Risk Model"
+metadata_blob_sha256: a23593dd9a2de714c1e91fca5f33d7821fb53cede861e1117f26806dab220aec
+metadata_blob_path: 02-ORIGINALS/live/blobs/a2/a23593dd9a2de714c1e91fca5f33d7821fb53cede861e1117f26806dab220aec.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.22084218",
+  "conceptrecid": "22084218",
+  "created": "2026-08-24T16:24:29.352298+00:00",
+  "doi": "10.5281/zenodo.22084219",
+  "doi_url": "https://doi.org/10.5281/zenodo.22084219",
+  "files": [
+    {
+      "checksum": "md5:3d4ab6355f87ace4243480f96b25b44a",
+      "id": "dd9ec878-80d7-4e00-bded-61ff6e29bdf5",
+      "key": "DRIFT OR MIGRATION? .pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/22084219/files/DRIFT%20OR%20MIGRATION%3F%20.pdf/content"
+      },
+      "size": 240333
+    }
+  ],
+  "id": 22084219,
+  "links": {
+    "access": "https://zenodo.org/api/records/22084219/access",
+    "access_grants": "https://zenodo.org/api/records/22084219/access/grants",
+    "access_links": "https://zenodo.org/api/records/22084219/access/links",
+    "access_request": "https://zenodo.org/api/records/22084219/access/request",
+    "access_users": "https://zenodo.org/api/records/22084219/access/users",
+    "archive": "https://zenodo.org/api/records/22084219/files-archive",
+    "archive_media": "https://zenodo.org/api/records/22084219/media-files-archive",
+    "communities": "https://zenodo.org/api/records/22084219/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/22084219/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.22084219",
+    "draft": "https://zenodo.org/api/records/22084219/draft",
+    "file_modification": "https://zenodo.org/api/records/22084219/file-modification",
+    "files": "https://zenodo.org/api/records/22084219/files",
+    "latest": "https://zenodo.org/api/records/22084219/versions/latest",
+    "latest_html": "https://zenodo.org/records/22084219/latest",
+    "media_files": "https://zenodo.org/api/records/22084219/media-files",
+    "parent": "https://zenodo.org/api/records/22084218",
+    "parent_doi": "https://doi.org/10.5281/zenodo.22084218",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22084218",
+    "parent_html": "https://zenodo.org/records/22084218",
+    "preview_html": "https://zenodo.org/records/22084219?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/22084219/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/22084219/request-deletion",
+    "requests": "https://zenodo.org/api/records/22084219/requests",
+    "reserve_doi": "https://zenodo.org/api/records/22084219/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/22084219",
+    "self_doi": "https://doi.org/10.5281/zenodo.22084219",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.22084219",
+    "self_html": "https://zenodo.org/records/22084219",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:22084219/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:22084219/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:22084219:DRIFT%20OR%20MIGRATION%3F%20.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/22084219/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<h1><strong>DRIFT OR MIGRATION? &mdash; Rasmussen vs SignalRupture</strong></h1>\n<p>This manuscript is the <strong>drift‑mechanism adversarial test</strong> of SignalRupture. It confronts SR&rsquo;s drift architecture &mdash; <strong>SR Drift</strong>, <strong>Visibility Lag</strong>, <strong>Propagation &phi;</strong>, and <strong>Restoration Dynamics</strong> &mdash; with Jens Rasmussen&rsquo;s dynamic risk model, one of the most influential theories of gradual migration toward unsafe boundaries. The purpose is destructive: to determine whether SR&rsquo;s drift construct is genuinely distinct or simply a renaming of Rasmussen&rsquo;s migration mechanism.</p>\n<p>The manuscript contributes by demonstrating that <strong>SR cannot claim novelty</strong> for any of the following:<br>&bull; gradual deterioration under normal operation;<br>&bull; pressure‑driven migration toward unsafe boundaries;<br>&bull; multi‑level socio‑technical drift;<br>&bull; hidden erosion beneath successful operation;<br>&bull; delayed or ambiguous feedback;<br>&bull; normalization of risky excursions;<br>&bull; cross‑level dynamics from policy to operators.</p>\n<p>Rasmussen already models socio‑technical systems under economic, regulatory, workload, and technological pressures. He shows how local adaptation under efficiency gradients migrates the operating point toward a safety boundary while feedback remains weak. This adversarial test removes SR&rsquo;s ability to present drift as an original discovery.</p>\n<p>The manuscript&rsquo;s strongest contribution is identifying the <strong>SR remainder</strong> &mdash; the part of SR that Rasmussen does not fully absorb. SR Drift is broader in domain: it applies not only to safety boundaries but also to epistemic coherence, institutional capacity, diagnostic accuracy, infrastructural sufficiency, and restoration margin. SR also couples drift to <strong>explicit measurable variables</strong>: <strong>Visibility Lag</strong>, <strong>Propagation &phi;</strong>, and <strong>Recovery Slack</strong>. Rasmussen anticipates delayed feedback but does not formalize recognition delay as a separate diagnostic variable; Rasmussen models multi‑level systems but does not reduce cross‑domain propagation to a single operator; Rasmussen models migration toward safety boundaries but does not address restoration sufficiency or accumulated restoration deficit.</p>\n<p>The manuscript contributes by clarifying that SR&rsquo;s value cannot come from saying &ldquo;systems drift.&rdquo; Rasmussen already owns that territory. SR must show that its integrated architecture &mdash; drift + visibility + propagation + restoration &mdash; produces <strong>incremental predictive value</strong> beyond Rasmussen&rsquo;s pressure‑migration model. The paper specifies the decisive empirical test: nested models comparing Rasmussen variables with SR variables, evaluated out‑of‑sample, predicting future boundary violations, service deterioration, cascading impact, or restoration delay. This prevents SR from claiming superiority through conceptual argument alone.</p>\n<p>The paper defines explicit <strong>falsification rules</strong>: if Rasmussen variables predict future deterioration as well as SR&rsquo;s expanded model, SR Drift adds no value; if &phi; cannot outperform network‑science propagation metrics, it must be removed; if Visibility Lag is fully captured by conventional feedback delay, it becomes descriptive rather than diagnostic; if restoration variables improve post‑event management but not drift prediction, they belong to SRD rather than generic SR drift.</p>\n<p>Finally, the manuscript contributes by reframing SR Drift&rsquo;s identity. After this challenge, SR must stop claiming that it discovered drift into failure. A defensible SR position is:<br><strong>SR Drift = domain‑specific state deviation integrated with visibility, propagation, and restoration diagnostics</strong>,<br>not a replacement for Rasmussen&rsquo;s migration mechanism. SR&rsquo;s scientific burden becomes whether this integrated architecture predicts structural deterioration earlier or more accurately than dynamic safety theory.</p>\n<p>In unified form, the manuscript establishes that Rasmussen absorbs SR&rsquo;s generic drift mechanism but does not eliminate SR&rsquo;s emerging core: <strong>measurable drift across non‑safety domains, explicit recognition delay, cross‑layer propagation, and restoration sufficiency</strong>. It positions SR Drift as a candidate diagnostic extension that must prove predictive value rather than claiming conceptual novelty. It is one of the most important narrowing and strengthening documents in the SR canon.</p>",
+    "doi": "10.5281/zenodo.22084219",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "publication_date": "2026-08-24",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "22084218"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "article",
+      "title": "Journal article",
+      "type": "publication"
+    },
+    "title": "DRIFT OR MIGRATION? Testing SignalRupture Drift Against Rasmussen's Dynamic Risk Model",
+    "version": "1.0"
+  },
+  "modified": "2026-08-24T16:24:29.640435+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "22084219",
+  "revision": 3,
+  "state": "done",
+  "stats": {
+    "downloads": 0,
+    "unique_downloads": 0,
+    "unique_views": 4,
+    "version_downloads": 0,
+    "version_unique_downloads": 0,
+    "version_unique_views": 4,
+    "version_views": 4,
+    "views": 4
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "DRIFT OR MIGRATION? Testing SignalRupture Drift Against Rasmussen's Dynamic Risk Model",
+  "updated": "2026-08-24T16:24:29.640435+00:00"
+}
+```

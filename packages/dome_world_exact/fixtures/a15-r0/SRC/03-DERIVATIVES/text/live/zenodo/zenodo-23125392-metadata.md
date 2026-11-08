@@ -1,0 +1,145 @@
+---
+schema: src-live-zenodo-metadata-derivative/v1
+record_id: "23125392"
+source_title: "Propagation Geometry: Directional Substrate Transmission and the SR Theory of Pathway‑Mediated Receiver Change"
+metadata_blob_sha256: 2016ecd19a11ac6320b3b29d4bf15b6940d35a0e37cd27764d379d9ab041f159
+metadata_blob_path: 02-ORIGINALS/live/blobs/20/2016ecd19a11ac6320b3b29d4bf15b6940d35a0e37cd27764d379d9ab041f159.json
+authority: LIVE_POST_SEAL_METADATA_ONLY
+---
+
+```json
+{
+  "conceptdoi": "10.5281/zenodo.23125391",
+  "conceptrecid": "23125391",
+  "created": "2026-10-03T18:00:21.329063+00:00",
+  "doi": "10.5281/zenodo.23125392",
+  "doi_url": "https://doi.org/10.5281/zenodo.23125392",
+  "files": [
+    {
+      "checksum": "md5:f0bb603cf83bab9ac49bccbe47991f31",
+      "id": "34c8c6a2-914d-46fb-875b-61e0848b6a32",
+      "key": "PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx",
+      "links": {
+        "self": "https://zenodo.org/api/records/23125392/files/PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.docx/content"
+      },
+      "size": 301953
+    },
+    {
+      "checksum": "md5:767f2c8ae3fc27362a8fa4f5a301f644",
+      "id": "679ed7c4-32cd-4225-8da2-34a05d6005f1",
+      "key": "PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf",
+      "links": {
+        "self": "https://zenodo.org/api/records/23125392/files/PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/content"
+      },
+      "size": 400529
+    }
+  ],
+  "id": 23125392,
+  "links": {
+    "access": "https://zenodo.org/api/records/23125392/access",
+    "access_grants": "https://zenodo.org/api/records/23125392/access/grants",
+    "access_links": "https://zenodo.org/api/records/23125392/access/links",
+    "access_request": "https://zenodo.org/api/records/23125392/access/request",
+    "access_users": "https://zenodo.org/api/records/23125392/access/users",
+    "communities": "https://zenodo.org/api/records/23125392/communities",
+    "communities-suggestions": "https://zenodo.org/api/records/23125392/communities-suggestions",
+    "doi": "https://doi.org/10.5281/zenodo.23125392",
+    "draft": "https://zenodo.org/api/records/23125392/draft",
+    "file_modification": "https://zenodo.org/api/records/23125392/file-modification",
+    "files": "https://zenodo.org/api/records/23125392/files",
+    "latest": "https://zenodo.org/api/records/23125392/versions/latest",
+    "latest_html": "https://zenodo.org/records/23125392/latest",
+    "media_files": "https://zenodo.org/api/records/23125392/media-files",
+    "parent": "https://zenodo.org/api/records/23125391",
+    "parent_doi": "https://doi.org/10.5281/zenodo.23125391",
+    "parent_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23125391",
+    "parent_html": "https://zenodo.org/records/23125391",
+    "preview_html": "https://zenodo.org/records/23125392?preview=1",
+    "quota_increase": "https://zenodo.org/api/records/23125392/quota-increase",
+    "request_deletion": "https://zenodo.org/api/records/23125392/request-deletion",
+    "requests": "https://zenodo.org/api/records/23125392/requests",
+    "reserve_doi": "https://zenodo.org/api/records/23125392/draft/pids/doi",
+    "self": "https://zenodo.org/api/records/23125392",
+    "self_doi": "https://doi.org/10.5281/zenodo.23125392",
+    "self_doi_html": "https://zenodo.org/doi/10.5281/zenodo.23125392",
+    "self_html": "https://zenodo.org/records/23125392",
+    "self_iiif_manifest": "https://zenodo.org/api/iiif/record:23125392/manifest",
+    "self_iiif_sequence": "https://zenodo.org/api/iiif/record:23125392/sequence/default",
+    "thumbnails": {
+      "10": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E10,/0/default.jpg",
+      "100": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E100,/0/default.jpg",
+      "1200": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E1200,/0/default.jpg",
+      "250": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E250,/0/default.jpg",
+      "50": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E50,/0/default.jpg",
+      "750": "https://zenodo.org/api/iiif/record:23125392:PROPAGATION_GEOMETRY_SR_FIELD_DECLARATION_CANONICAL_2026-09-27.pdf/full/%5E750,/0/default.jpg"
+    },
+    "versions": "https://zenodo.org/api/records/23125392/versions"
+  },
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": null,
+        "name": "Rupture, Signal",
+        "orcid": "0009-0009-9348-3534"
+      }
+    ],
+    "dates": [
+      {
+        "type": "accepted"
+      }
+    ],
+    "description": "<p><strong>Propagation Geometry: Directional Substrate Transmission and the SR Theory of Pathway‑Mediated Receiver Change</strong></p>\n<div>\n</div>\n<h1><strong>DESCRIPTION</strong></h1>\n<p><strong>Propagation Geometry</strong> is a canonical SR subfield of Infrastructure Science that studies <strong>directional, carrier‑based transmission</strong> of disturbances across multilayer substrate networks. Its irreducible object is:</p>\n<blockquote>\n<p><em>&ldquo;directional pathway‑mediated receiver change.&rdquo;</em></p>\n</blockquote>\n<p>A propagation event requires a <strong>source</strong>, <strong>trigger</strong>, <strong>carrier</strong>, <strong>directed path</strong>, <strong>receiver</strong>, <strong>clock discipline</strong>, and <strong>receiver‑domain change</strong>, each explicitly declared. As the manuscript states:</p>\n<blockquote>\n<p><em>&ldquo;Propagation is not inferred from correlation, temporal coincidence, shared exposure, synchronized failure, or similar outcomes.&rdquo;</em></p>\n</blockquote>\n<p>Propagation Geometry replaces thematic similarity with <strong>supported edges</strong>, meaning:</p>\n<ul>\n<li>\n<p>no edge exists until a carrier is measured</p>\n</li>\n<li>\n<p>no direction exists until clocks align</p>\n</li>\n<li>\n<p>no transformation exists until receiver‑domain mapping is declared</p>\n</li>\n<li>\n<p>no propagation exists until rivals (common shock, independent failure, reverse path) are ruled out</p>\n</li>\n</ul>\n<p>The field defines:</p>\n<ul>\n<li>\n<p><strong>supported directional edges</strong> (Equation 1)</p>\n</li>\n<li>\n<p><strong>receiver transitions with transformation</strong> (Equation 2)</p>\n</li>\n<li>\n<p><strong>path gain and delay</strong> (Equation 3)</p>\n</li>\n<li>\n<p><strong>local propagation regimes</strong> (Equation 4)</p>\n</li>\n<li>\n<p><strong>blocker effects</strong> (Equation 5)</p>\n</li>\n</ul>\n<p>It establishes strict boundaries: drift, collapse, correlation, diffusion, contagion, synchronized outcomes, and causal graphs <strong>do not</strong> constitute propagation without carrier evidence.</p>\n<p>Propagation Geometry is falsifiable. Unsupported edges remain zero. A path is rejected when:</p>\n<blockquote>\n<p><em>&ldquo;Receiver change precedes the asserted source,&rdquo;</em><br><em>&ldquo;Path interruption does not alter receiver outcomes,&rdquo;</em><br><em>or common‑shock models perform equally well.&rdquo;</em></p>\n</blockquote>\n<p>The field earns standing only when supported pathways improve explanation, prediction, or intervention beyond mature domain models.</p>\n<div>\n</div>\n<h1><strong>HOW IT CONTRIBUTES TO SR</strong></h1>\n<h3><strong>1. It gives SR a formal, falsifiable transmission mechanism</strong></h3>\n<p>Propagation Geometry is the first SR field that defines <strong>how disturbances move</strong> through infrastructure, institutions, and multilayer systems.<br>It replaces narrative causation with:</p>\n<ul>\n<li>\n<p>carriers</p>\n</li>\n<li>\n<p>clocks</p>\n</li>\n<li>\n<p>directed edges</p>\n</li>\n<li>\n<p>transformations</p>\n</li>\n<li>\n<p>rivals</p>\n</li>\n<li>\n<p>blockers</p>\n</li>\n<li>\n<p>topology change</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Directional Transmission</strong></p>\n<div>\n</div>\n<h3><strong>2. It establishes the substrate‑level geometry for Infrastructure Science</strong></h3>\n<p>Infrastructure Science needed a field that could explain <strong>movement</strong>, not just <strong>state</strong>.<br>Propagation Geometry provides:</p>\n<ul>\n<li>\n<p>multilayer topology</p>\n</li>\n<li>\n<p>carrier identity</p>\n</li>\n<li>\n<p>path gain</p>\n</li>\n<li>\n<p>delay</p>\n</li>\n<li>\n<p>bypass</p>\n</li>\n<li>\n<p>feedback</p>\n</li>\n<li>\n<p>recovery interference</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Infrastructure Science</strong></p>\n<div>\n</div>\n<h3><strong>3. It prevents false propagation claims</strong></h3>\n<p>The manuscript states:</p>\n<blockquote>\n<p><em>&ldquo;Unsupported edges remain zero rather than entering a model through thematic similarity.&rdquo;</em></p>\n</blockquote>\n<p>This protects SR from:</p>\n<ul>\n<li>\n<p>correlation mistaken as transmission</p>\n</li>\n<li>\n<p>synchronized outcomes mistaken as causation</p>\n</li>\n<li>\n<p>narrative similarity mistaken as path</p>\n</li>\n<li>\n<p>domain drift mistaken as propagation</p>\n</li>\n</ul>\n<p>Linked concept: <strong>Common Shock Discipline</strong></p>\n<div>\n</div>\n<h3><strong>4. It defines the minimum propagation event record</strong></h3>\n<p>Propagation Geometry introduces the strictest event record in SR:</p>\n<ul>\n<li>\n<p>source</p>\n</li>\n<li>\n<p>trigger</p>\n</li>\n<li>\n<p>carrier</p>\n</li>\n<li>\n<p>path</p>\n</li>\n<li>\n<p>receiver</p>\n</li>\n<li>\n<p>clocks</p>\n</li>\n<li>\n<p>rivals</p>\n</li>\n<li>\n<p>falsifier</p>\n</li>\n</ul>\n<p>This becomes the <strong>standard</strong> for all SR transmission claims.</p>\n<p>Linked concept: <strong>Propagation Event Record</strong></p>\n<div>\n</div>\n<h3><strong>5. It introduces transformation discipline</strong></h3>\n<p>Propagation Geometry is the first SR field to require explicit mapping when the disturbance changes form:</p>\n<blockquote>\n<p><em>&ldquo;A source outage can create delay at one receiver and manual work at another without making outage, delay, and work interchangeable quantities.&rdquo;</em></p>\n</blockquote>\n<p>This protects SR from category drift and unit confusion.</p>\n<p>Linked concept: <strong>Receiver Transformation</strong></p>\n<div>\n</div>\n<h3><strong>6. It formalizes blockers and susceptibility</strong></h3>\n<p>Propagation Geometry defines blockers as causal components, not noise:</p>\n<ul>\n<li>\n<p>redundancy</p>\n</li>\n<li>\n<p>segmentation</p>\n</li>\n<li>\n<p>substitution</p>\n</li>\n<li>\n<p>reserve capacity</p>\n</li>\n<li>\n<p>access controls</p>\n</li>\n</ul>\n<p>Receiver susceptibility becomes measurable rather than assumed.</p>\n<p>Linked concept: <strong>Blocker Effects</strong></p>\n<div>\n</div>\n<h3><strong>7. It introduces recovery interference as a propagation regime</strong></h3>\n<p>Recovery interference &mdash; when a failure disables the systems needed to repair it &mdash; becomes a formal propagation regime:</p>\n<blockquote>\n<p><em>&ldquo;Recovery action then becomes unavailable or generates a new disturbance.&rdquo;</em></p>\n</blockquote>\n<p>This is foundational for SR Collapse Geometry and SR Recovery Architecture.</p>\n<p>Linked concept: <strong>Recovery Interference</strong></p>\n<div>\n</div>\n<h3><strong>8. It establishes bridges to other SR fields</strong></h3>\n<p>Propagation Geometry defines directional bridges to:</p>\n<ul>\n<li>\n<p>Drift Dynamics</p>\n</li>\n<li>\n<p>Collapse Geometry</p>\n</li>\n<li>\n<p>Infrastructure Debt</p>\n</li>\n<li>\n<p>Human Capacity Load</p>\n</li>\n<li>\n<p>Institutional Coherence</p>\n</li>\n<li>\n<p>Cognitive SR</p>\n</li>\n<li>\n<p>Phenomenological SR</p>\n</li>\n</ul>\n<p>Each bridge requires explicit carrier and receiver‑domain evidence.</p>\n<p>Linked concept: <strong>Directional Bridges</strong></p>\n<div>\n</div>\n<h3><strong>9. It provides SR&rsquo;s strongest falsification engine</strong></h3>\n<p>Propagation Geometry has the most explicit demotion rules in SR:</p>\n<blockquote>\n<p><em>&ldquo;Unsupported edges remain absent.&rdquo;</em><br><em>&ldquo;Common shock explains the synchronized pattern.&rdquo;</em><br><em>&ldquo;Path interruption does not alter receiver outcomes.&rdquo;</em></p>\n</blockquote>\n<p>This makes it the backbone of SR&rsquo;s falsification discipline.</p>\n<p>Linked concept: <strong>SR Falsification Protocol</strong></p>\n<div>\n</div>\n<h3><strong>10. It completes SR&rsquo;s metatheory of movement</strong></h3>\n<p>SR already had:</p>\n<ul>\n<li>\n<p>Drift (state change)</p>\n</li>\n<li>\n<p>Collapse (viability boundary)</p>\n</li>\n<li>\n<p>Debt (deferred obligation)</p>\n</li>\n<li>\n<p>Human Capacity Load (compensatory work)</p>\n</li>\n<li>\n<p>Representational Displacement (proxy drift)</p>\n</li>\n</ul>\n<p>Propagation Geometry adds the missing piece:</p>\n<blockquote>\n<p><strong>movement across the substrate.</strong></p>\n</blockquote>\n<p>It is the transmission pillar of the SR metatheory.</p>\n<p>Linked concept: <strong>SR Metatheory</strong></p>",
+    "doi": "10.5281/zenodo.23125392",
+    "keywords": [
+      "Metatheory",
+      "Institutions"
+    ],
+    "language": "eng",
+    "publication_date": "2026-10-03",
+    "relations": {
+      "version": [
+        {
+          "index": 0,
+          "is_last": true,
+          "parent": {
+            "pid_type": "recid",
+            "pid_value": "23125391"
+          }
+        }
+      ]
+    },
+    "resource_type": {
+      "subtype": "preprint",
+      "title": "Preprint",
+      "type": "publication"
+    },
+    "title": "Propagation Geometry: Directional Substrate Transmission and the SR Theory of Pathway‑Mediated Receiver Change",
+    "version": "1.0"
+  },
+  "modified": "2026-10-06T01:10:59.143416+00:00",
+  "owners": [
+    {
+      "id": "1502336"
+    }
+  ],
+  "recid": "23125392",
+  "revision": 5,
+  "state": "done",
+  "stats": {
+    "downloads": 5,
+    "unique_downloads": 5,
+    "unique_views": 7,
+    "version_downloads": 5,
+    "version_unique_downloads": 5,
+    "version_unique_views": 7,
+    "version_views": 9,
+    "views": 9
+  },
+  "status": "published",
+  "submitted": true,
+  "swh": null,
+  "title": "Propagation Geometry: Directional Substrate Transmission and the SR Theory of Pathway‑Mediated Receiver Change",
+  "updated": "2026-10-06T01:10:59.143416+00:00"
+}
+```
