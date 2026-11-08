@@ -12,6 +12,8 @@
  *   --instrument, -i <inst>    Selectable instrument (repeatable: PHASONIC_COUNTERPOINT, CARO_INSTITUTIONAL_RECONSTRUCTION, etc.)
  *   --deliverable-count <n>    Operator-requested number of finished artifacts (default 1)
  *   --input <path>             Path to full JSON commission specification
+ *   --operation <id>           Atlas mathematical capability ID (A-01 through A-09)
+ *   --premise-input <path>     Path to JSON input file for mathematical premise
  *   --output, -o <path>        Path to write the resulting design receipt
  *   --audit                    Request advisory /dollhouse-audit check
  *   --format <mode>            Console output format: human (default), json, or both
@@ -36,6 +38,8 @@ Options:
                              Available: ${Object.keys(AVAILABLE_INSTRUMENTS).join(', ')}
   --deliverable-count <n>    Requested finished artifacts (default 1; internal alternatives do not count)
   --input <path>             Path to JSON commission file (or "-" for stdin)
+  --operation <id>           Atlas mathematical capability ID (A-01 through A-09)
+  --premise-input <path>     Path to JSON input file for mathematical premise
   --stdin                    Read full JSON commission from standard input stream
   --output, -o <path>        Path to write return receipt (.json)
   --audit                    Include advisory /dollhouse-audit check
@@ -60,6 +64,8 @@ async function main() {
   let format = 'human';
   let audit = false;
   let useStdin = args.includes('--stdin');
+  let operation = null;
+  let premiseInputPath = null;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -73,6 +79,10 @@ async function main() {
       deliverableCount = Number(args[++i]);
     } else if (arg === '--input') {
       inputPath = args[++i];
+    } else if (arg === '--operation') {
+      operation = args[++i];
+    } else if (arg === '--premise-input') {
+      premiseInputPath = args[++i];
     } else if (arg === '--stdin') {
       useStdin = true;
     } else if (arg === '--output' || arg === '-o') {
@@ -85,7 +95,7 @@ async function main() {
   }
 
   let commissionInput = {};
-  if (inputPath === '-' || useStdin || (!inputPath && !seed && !process.stdin.isTTY)) {
+  if (inputPath === '-' || useStdin || (!inputPath && !seed && !process.stdin.isTTY && !operation)) {
     const chunks = [];
     for await (const chunk of process.stdin) {
       chunks.push(chunk);
@@ -100,13 +110,13 @@ async function main() {
     const rawContent = await readFile(resolve(process.cwd(), inputPath), 'utf8');
     commissionInput = JSON.parse(rawContent);
   } else {
-    if (!seed) {
-      console.error('Error: Must supply --seed, --input <file.json>, or stream via --stdin');
+    if (!seed && !operation) {
+      console.error('Error: Must supply --seed, --operation, --input <file.json>, or stream via --stdin');
       printHelp();
       process.exit(1);
     }
     commissionInput = {
-      seed,
+      seed: seed || `Atlas Mathematical Operation ${operation}`,
       medium,
       deliverable_count: deliverableCount,
       instruments: instruments.length > 0 ? instruments : undefined,
@@ -129,6 +139,13 @@ async function main() {
   }
   if (instruments.length > 0) {
     commissionInput.instruments = instruments;
+  }
+  if (operation) {
+    commissionInput.mathematical_premise = { operation };
+    if (premiseInputPath) {
+      const raw = await readFile(resolve(process.cwd(), premiseInputPath), 'utf8');
+      commissionInput.mathematical_premise.input = JSON.parse(raw);
+    }
   }
 
   try {

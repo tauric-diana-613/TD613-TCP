@@ -72,16 +72,33 @@ When passing `--input <file.json>`, the JSON file adheres to the following struc
       "noise_covariance": [[1.0, 0.0], [0.0, 1.0]]
     },
     "ATLAS": {
-      "trajectoryA": [{ "stage": "origin", "token": "T-001", "winding": 0 }],
-      "trajectoryB": [{ "stage": "origin", "token": "T-001", "winding": 0 }]
+      "trajectoryA": { "endpoint": "REST_CUSTODY_ORIGIN", "winding": 0 },
+      "trajectoryB": { "endpoint": "REST_CUSTODY_ORIGIN", "winding": 0 }
     },
     "FADT": {
-      "fiberRows": [{ "support_cardinality": 2, "condition": "A", "exact_descent": true }],
+      "fiberRows": [{ "support": ["READ", "VERIFY"], "condition": "A" }],
       "attempts_unconditioned_action": false
     },
     "TEMPORAL_CUSTODIAN": {
-      "phases": [{ "phase": "P0", "sequence": 1, "timestamp": "2026-10-23T10:00:00Z" }],
-      "required_phases": ["P0"]
+      "phases": {
+        "INGRESS": {
+          "status": "COMPLETED",
+          "entry_id": "service-entry-001",
+          "sequence_counter": 1,
+          "recorded_at": "2026-10-24T10:00:00.000Z"
+        },
+        "EXECUTION": {
+          "status": "COMPLETED",
+          "sequence_counter": 2,
+          "recorded_at": "2026-10-24T10:05:00.000Z"
+        },
+        "RELOCK": {
+          "status": "COMPLETED",
+          "sequence_counter": 3,
+          "recorded_at": "2026-10-24T10:10:00.000Z"
+        }
+      },
+      "required_phases": ["INGRESS", "EXECUTION", "RELOCK"]
     }
   },
   "options": {
