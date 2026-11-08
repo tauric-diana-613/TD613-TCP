@@ -156,7 +156,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   actions.append(bName);
   const bRest=button('Rest without penalty',rest,'vxe-rest');bRest.disabled=state.phase==='REST'||state.busy;actions.append(bRest);
   if(state.phase==='REST')actions.append(button('Return to inquiry',resume,'vxe-primary'));
-  const exit=make('a','vxe-control vxe-exit','Exit to Universal Encyclopedia ↗');exit.href='/encyclopedia/';actions.append(exit);
+  const exit=make('a','vxe-control vxe-exit','Exit to Universal Encyclopedia ↗');exit.href=new URL('../',import.meta.url).href;actions.append(exit);
   tail.append(actions);
   if(state.phase==='NAME'){
    put(tail,make('p','vxe-eyebrow','HUMAN INTERPRETATION / NO ADMISSION AUTHORITY'));
