@@ -71,6 +71,7 @@ import {
   evaluateThreeAuditorsComparison,
   evaluateGraeberDotsonGlissantSynthesis,
   answerOperatorsQuestionOnIndependentMetrology
+  ,runEighthOrderTrial
 } from '../packages/rulefield/lab/counterworld_loom.mjs';
 
 function printHelp() {
@@ -125,6 +126,7 @@ Commands:
   evidentiary-lattice    Audit 6-Level Evidentiary Translation Lattice (Hazard vs Grievance vs Remedy)
   three-auditors         Compare Discrimination Horizons of Three Auditors (A, B, C)
   independent-metrology-answer Answer Operator's Question on independent physical metrology
+  eighth-order           Execute repaired Berlantian reparative consequence synthetic trial
   suite                  Execute full five-engine composition suite
   help                   Show this help message
 `);
@@ -136,6 +138,11 @@ async function main() {
   if (cmd === 'help' || cmd === '-h' || cmd === '--help') {
     printHelp();
     process.exit(0);
+  }
+
+  if (cmd === 'eighth-order' || cmd === 'reparative-consequence') {
+    console.log(JSON.stringify(runEighthOrderTrial(), null, 2));
+    return;
   }
 
   if (cmd === 'witness-too-late') {

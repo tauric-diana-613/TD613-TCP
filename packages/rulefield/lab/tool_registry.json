@@ -199,5 +199,16 @@
       "adapter": "METHOD_LEARNING_REFERENCE",
       "evidence_ceiling": "EDUCATIONAL_BACKGROUND_NOT_EXECUTION"
     }
+  ],
+  "source_free_research_modules": [
+    {
+      "id": "eighth_order_reparative_consequence",
+      "module": "packages/rulefield/lab/eighth_order_reparative_consequence.mjs",
+      "test": "tests/rulefield-eighth-order-reparative-consequence.test.mjs",
+      "runner": "scripts/run-eighth-order-reparative-trial.mjs",
+      "researchStatus": "SYNTHETIC_EXECUTED_LOCAL_NOT_SCIENTIFIC_CLOSURE",
+      "protectedExperimentB": "HELD",
+      "postExecutionAudit": "NOT_EXECUTED_NATIVE_SKILL"
+    }
   ]
 }
