@@ -143,7 +143,7 @@ test('Vixen reference membrane serves actual source-bound search, exact bytes, g
  assert(hits.every(x=>x.claim_role==='SEARCH_MATCH_ONLY_NOT_ENTAILMENT'));
  const item=await bridge.getRecord('G-001');
  assert.equal(item.estate,'UNIVERSAL_REFERENCE');
- assert.equal(item.warrant,'SOURCE_BYTES_VERIFIED_NOT_CLAIM_ENTAILMENT');
+ assert.equal(item.warrant,'CANONICAL_JSON_PAYLOAD_SHA256_VERIFIED_NOT_CLAIM_ENTAILMENT');
  assert.equal(item.record.id,'G-001');assert.match(item.record.record.description,/boundary/);
  const edges=bridge.related('G-001');assert(edges.length>0);
  assert(edges.every(e=>e.relation_warrant==='RECORDED_GRAPH_EDGE_NOT_CAUSAL_PROOF'));
@@ -209,10 +209,10 @@ test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→
   assert(hit,'Original G-001 source must be selectable');
   hit.click();
   for(let i=0;i<90&&chamber.status()==='VERIFYING_SOURCE';i++)await new Promise(res=>setTimeout(res,10));
-  assert.equal(chamber.status(),'SOURCE_BYTES_VERIFIED');
+  assert.equal(chamber.status(),'CANONICAL_PAYLOAD_VERIFIED');
   assert.equal(chamber.phase(),'WORLD_ANSWERS');
   assert.match(rootEl.textContent,/Eclipse–Omega/);
-  assert.match(rootEl.textContent,/SOURCE-BYTES VERIFIED ≠ CLAIM ENTAILMENT/);
+  assert.match(rootEl.textContent,/CANONICAL PAYLOAD VERIFIED ≠ CLAIM ENTAILMENT/);
   click('Name the question');assert.equal(chamber.phase(),'NAME');
   const annotation=rootEl.querySelector('.vxe-name');assert(annotation);
   annotation.value='Potential question only';annotation.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
