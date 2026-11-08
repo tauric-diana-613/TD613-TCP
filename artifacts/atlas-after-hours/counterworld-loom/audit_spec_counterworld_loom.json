@@ -1,7 +1,7 @@
 {
   "task_scope": "WILD_FIELD_COUNTERWORLD_LOOM_TRIAL",
   "evidence_class": "SYNTHETIC_TEST_FIXTURE",
-  "source_revision": "08d01ecd279bf4b5335d114dc08c21332f04e6d5",
+  "source_revision": "8e7991759632007047f4229e1ebef1f07facf7f3",
   "evidence_references": [
     "packages/rulefield/data/rulefield.v1.json",
     "artifacts/atlas-after-hours/counterworld-loom/commutative_closure_audit.json",
