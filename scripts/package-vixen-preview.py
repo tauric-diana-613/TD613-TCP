@@ -83,8 +83,9 @@ and public TD613.com deployment are not required.
 
 ## Test the independent Operahouse reading room (intentional encounter)
 
-1. Scroll below Vixen's own Folios to the clearly separated OPERAHOUSE
-   READING ROOM. The two panels belong to independent source estates.
+1. While on Vixen Folios, explicitly choose **Enter Operahouse reading
+   room — Vixen leaves the stage**. Vixen becomes hidden as the separate
+   reading room opens; the two source estates remain independently typed.
 2. Select a Vixen Work and an actually recorded manifestation on the left.
 3. Explicitly click **Open independent read-only estate**. This loads the
    Universal directory and graph census only, without authorizing a link.
@@ -95,8 +96,9 @@ and public TD613.com deployment are not required.
    edge count. Then click **Observe separately** to obtain an unratified,
    session-local third-order receipt. It MUST report relationship
    UNESTABLISHED and zero human-ratified cross-opera warrants.
-6. Rest and resume. Inspect the Vixen Folios again: the Universal record
-   must never appear as a Vixen Performer or historical Vixen source.
+6. Rest and resume. Then choose **Return to Vixen Opera**. The separate
+   Operahouse room is hidden before Vixen becomes visible again. A Universal
+   record must never appear as a Vixen Performer or historical Vixen source.
 7. Alter a record payload or serve malformed UTF-8 in an isolated test
    fixture: integrity must fail CLOSED. The CI tests include both negatives.
 
