@@ -141,7 +141,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber'),
   left.append(witness);
   left.append(button('Examine the eight human identity gates ↗',()=>window.location.hash='#gates','vxe-text-control'));
   const ready=state.phase==='NOTICE';
-  left.append(button('Begin an inquiry with this Work',begin,'vxe-primary'+(!ready?' vxe-muted':'')));
+  const beginButton=button('Begin an inquiry with this Work',begin,'vxe-primary'+(!ready?' vxe-muted':''));beginButton.disabled=!ready;left.append(beginButton);
   // ACT: human-specified query; no suggested cross-estate equality.
   const entry=make('div','vxe-query');
   put(entry,make('label','vxe-eyebrow','HUMAN-DEFINED RESEARCH QUESTION'));
