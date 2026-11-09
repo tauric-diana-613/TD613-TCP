@@ -152,7 +152,7 @@ test('Cross-Opera reference registry starts empty and refuses unrelated or count
  const fabricated=[{opera:'VIXEN_CYBERNETICS',estate:'EMSTD613',work_id:work.work_id,
   source_file_id:work.linked_sources[0].source_file_id,source_sha256:work.linked_sources[0].sha256,
   warrant_sha256:'f'.repeat(64),human_ratification_ref:'fabricated',status:'HUMAN_RATIFIED',
-  universal_record_id:'G-001'}];
+  universal_record_id:'SYNTHETIC-TEST-ONLY'}];
  assert.equal(inspectVixenCrossOperaWarrant({work,source:work.linked_sources[0],registry:fabricated}).eligible,false,
   'Caller supplied registry cannot activate an unratified passage');
  assert.equal(inspectVixenCrossOperaWarrant({work,source:{source_file_id:'another',sha256:'a'.repeat(64)}}).reason,'SOURCE_NOT_IN_VIXEN_WORK');
@@ -191,6 +191,7 @@ test('Vixen native jsdom journey: NOTICE→ACT→documentary observation→NAME�
   assert.equal(app.mounted,true);
   assert.equal(app.phase(),'NOTICE');
   assert.equal(app.crossOperaWarrants(),0);
+ assert(!rootEl.textContent.includes('The Research Membrane'),'The unrelated generic crossing UI must not survive');
   assert.equal(rootEl.querySelectorAll('.vxe-work-selector option').length,32);
   assert.equal(rootEl.querySelectorAll('.vxe-estate').length,2);
   assert(rootEl.textContent.includes(corpus.works[0].linked_sources[0].original_filename));
