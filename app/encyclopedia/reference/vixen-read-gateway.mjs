@@ -45,11 +45,37 @@ async function boundedFetch(fetcher,url,expectedOrigin,maxBytes){
   if(length>maxBytes)throw new BridgeHold('BOUNDARY_REFUSAL','SIZE_LIMIT');
   // WENDBINE EXACT-BYTE CUSTODY: never transform text and re-encode it
   // before making a source-integrity claim. Decode only after retaining bytes.
-  if(typeof response.arrayBuffer!=='function')throw new BridgeHold('REFERENCE_BINARY_RESPONSE_UNSUPPORTED');
   let bytes;
-  try{bytes=new Uint8Array(await response.arrayBuffer())}
-  catch(_){throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','BODY_READ_FAILURE')}
-  if(bytes.byteLength>maxBytes)throw new BridgeHold('BOUNDARY_REFUSAL','BODY_SIZE_LIMIT');
+  if(response.body&&typeof response.body.getReader==='function'){
+    // The actual network stream is read under the declared byte budget.
+    // A forged or absent Content-Length cannot force an unbounded allocation.
+    const reader=response.body.getReader(),chunks=[];
+    let total=0;
+    try{
+      for(;;){
+        const {done,value}=await reader.read();
+        if(done)break;
+        if(!(value instanceof Uint8Array))throw new BridgeHold('BOUNDARY_REFUSAL','INVALID_BINARY_CHUNK');
+        total+=value.byteLength;
+        if(total>maxBytes){
+          await reader.cancel().catch(()=>{});
+          throw new BridgeHold('BOUNDARY_REFUSAL','BODY_SIZE_LIMIT');
+        }
+        chunks.push(value);
+      }
+    }catch(err){
+      if(err instanceof BridgeHold)throw err;
+      throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','BODY_READ_FAILURE');
+    }finally{try{reader.releaseLock()}catch(_){}}
+    bytes=new Uint8Array(total);let pos=0;
+    for(const chunk of chunks){bytes.set(chunk,pos);pos+=chunk.byteLength}
+  }else{
+    // Binary-only fixture/transport fallback; text() is intentionally absent.
+    if(typeof response.arrayBuffer!=='function')throw new BridgeHold('REFERENCE_BINARY_RESPONSE_UNSUPPORTED');
+    try{bytes=new Uint8Array(await response.arrayBuffer())}
+    catch(_){throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','BODY_READ_FAILURE')}
+    if(bytes.byteLength>maxBytes)throw new BridgeHold('BOUNDARY_REFUSAL','BODY_SIZE_LIMIT');
+  }
   let raw;
   try{raw=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
   catch(_){throw new BridgeHold('REFERENCE_UNDECODABLE_UTF8')}
