@@ -50,7 +50,7 @@ export function classifyIndependentEncounter({work,source,witness,warrant}={}){
  * intact. The warrant field remains HELD unless a source-specific external
  * ratification exists; verified bytes cannot silently become a relationship.
  */
-export function constructCrossAtelierWitness({work,source,witness,warrant,humanQuestion=''}={}){
+export function constructCrossAtelierWitness({work,source,witness,warrant,humanQuestion='',history=[]}={}){
  const disposition=classifyIndependentEncounter({work,source,witness,warrant});
  return Object.freeze({
   schema:CROSS_ATELIER_WITNESS_CONTRACT,version:1,
@@ -81,8 +81,12 @@ export function constructCrossAtelierWitness({work,source,witness,warrant,humanQ
   custody:Object.freeze({
    observer_class:'SESSION_LOCAL_BROWSER',external_trust_root:false,
    route_memory_not_durable_evidence:true,
-   empirical_replication_credit:0
-  })
+   empirical_replication_credit:0,
+   source_time_claim:'NOT_DERIVED_FROM_LOCAL_OBSERVATION'
+  }),
+  route_history:Object.freeze((Array.isArray(history)?history:[]).map(e=>Object.freeze({
+   sequence:e.sequence,action:e.action,local_observation_time:e.local_observation_time||null
+  })))
  });
 }
 export function mountVixenOperahouseEncounter({host=document.getElementById('operahouseEncounter'),
@@ -171,15 +175,15 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   state.disposition=classifyIndependentEncounter({
    work:currentWork(),source:currentSource(),witness:state.witness,warrant
   });
-  state.receipt=constructCrossAtelierWitness({
-   work:currentWork(),source:currentSource(),witness:state.witness,warrant,
-   humanQuestion:state.question
-  });
   stamp('SEPARATE_ESTATES_OBSERVED',{vixen_work_id:currentWork().work_id,
    vixen_source_id:currentSource()?.source_file_id||null,
    universal_record_id:state.witness.id,
    disposition:state.disposition.state,
    relation:'UNESTABLISHED',human_ratified_crosswalk:false});
+  state.receipt=constructCrossAtelierWitness({
+   work:currentWork(),source:currentSource(),witness:state.witness,warrant,
+   humanQuestion:state.question,history:state.events
+  });
   state.phase='OBSERVED';render();
  };
  const rest=()=>{
