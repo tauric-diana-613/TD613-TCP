@@ -18,6 +18,12 @@ def main(out):
     candidate=(APP/"encyclopedia"/"vix-cyb.html").read_text(encoding="utf8")
     assert 'id="vixen-estate-manifest"' in candidate and 'id="view-reference"' in candidate, "Wrong Vixen candidate"
     assert candidate.count('id="vixen-corpus-bundle"')==1
+    # A source identity match in another Opera never establishes an EMSTD613
+    # manifestation. Reject an accidental reintroduction into this page.
+    assert "Eclipse–Omega" not in candidate and "Eclipse-Omega" not in candidate and "G-001" not in candidate
+    chamber=(APP/"encyclopedia"/"vixen-estate"/"research-chamber.mjs").read_text(encoding="utf8")
+    assert "membrane.search(" not in chamber and "membrane.getRecord(" not in chamber
+
     index=json.loads((REF/"directory.json").read_text(encoding="utf8"))
     graph=json.loads((REF/"graph.json").read_text(encoding="utf8"))
     manifest=json.loads((REF/"manifest.json").read_text(encoding="utf8"))
@@ -56,12 +62,22 @@ Do not open the HTML by double-clicking (file scheme blocks the modules
 and reference requests). A local HTTP server is sufficient: GitHub main
 and public TD613.com deployment are not required.
 
-## Test the encounter
+## Test the Vixen Opera (source-bound Folios)
 
-Open the Reference chamber; select a Vixen Work; Begin Inquiry; enter
-Eclipse; query the Universal index; open G-001; inspect the canonical
-JSON SHA-256 verification and its claim ceiling; Name; Rest; resume.
-Also inspect the original Observatory and the eight unclosed identity gates.
+1. Open **07 · Vixen Folios**; select one of the 32 historical Vixen Works.
+2. Inspect its recorded manifestations. Choose two manifestations of the
+   **same Work**, then select **Begin this Work's comparison**.
+3. Select **Observe the recorded differences**. This observation reports
+   only declared catalogue metadata; original source bodies remain withheld.
+4. Choose **Name an unresolved question**, optionally annotate it locally,
+   **Rest without penalty**, and resume without an identity adjudication.
+5. Visit the Observatory and eight unclosed human gates. Review the phone
+   layout: the initial Folio should appear without scrolling past a giant
+   proscenium. Source records outside the Vixen estate are not performers here.
+
+The **separate** Universal reference estate is packaged for independent
+Encyclopedia research. Its index cannot automatically provide a counterpart
+to a Vixen Work or transfer authorship by lexical similarity.
 
 ## Scope and limits
 
