@@ -85,13 +85,13 @@ try {
 
     const stem = 'vixen-' + width + 'x' + height + (motion === 'reduce' ? '-reduced' : '');
     await page.screenshot({ path: path.join(output, stem + '-notice.png'), fullPage: false });
-    await page.getByRole('button', { name: /Begin this Work.s comparison/ }).click();
-    await page.getByRole('button', { name: /Observe the recorded differences/ }).click();
+    await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Begin this Work.s comparison/ }).click();
+    await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Observe the recorded differences/ }).click();
     assert.match(await page.locator('.vxe-result').innerText(), /METADATA_COMPARISON_ONLY|HELD_/);
-    await page.getByRole('button', { name: /Name an unresolved question/ }).click();
+    await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Name an unresolved question/ }).click();
     await page.locator('.vxe-name').fill('Leave cross-Opera authorship unasserted.');
-    await page.getByRole('button', { name: /Rest without penalty/ }).click();
-    await page.getByRole('button', { name: /Return to the Opera/ }).click();
+    await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Rest without penalty/ }).click();
+    await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Return to the Opera/ }).click();
     assert.equal(await page.locator('.vxe-name').inputValue(), 'Leave cross-Opera authorship unasserted.');
     assert.equal(errors.length, 0, 'Uncaught runtime errors during inquiry: ' + errors.join(' | '));
     await page.screenshot({ path: path.join(output, stem + '-resumed.png'), fullPage: false });
