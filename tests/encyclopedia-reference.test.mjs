@@ -213,6 +213,8 @@ test('Vixen native jsdom journey: NOTICE→ACT→documentary observation→NAME�
   assert.equal(rootEl.querySelectorAll('.vxe-work-selector option').length,32);
   assert.equal(rootEl.querySelectorAll('.vxe-estate').length,2);
   assert(rootEl.textContent.includes(corpus.works[0].linked_sources[0].original_filename));
+ assert(rootEl.textContent.includes('Authorship: UNRESOLVED'),'same-Work relationship must never imply author identity closure');
+ assert(!rootEl.textContent.includes('The Documentary Score'),'superseded generic display title excluded');
   assert(rootEl.textContent.includes(corpus.works[0].linked_sources[1].original_filename));
   assert(!rootEl.querySelector('.vxe-hit'));
   assert(!rootEl.querySelector('.vxe-query-input'));
@@ -247,6 +249,8 @@ test('Vixen native jsdom journey: NOTICE→ACT→documentary observation→NAME�
 test('Vixen source-first visual contract establishes two legible Vixen folios and reduced motion',async()=>{
  const css=await readFile(new URL('vixen-estate/research-chamber.css',root),'utf8');
  assert.match(css,/RGI-03 \/ OPERATIC RECONSTRUCTION/);
+ assert.match(css,/RGI-04 \/ VISIBLE CONTROL/);
+ assert.match(css,/select\.vxe-work-select\{[\s\S]*?min-width:0;[\s\S]*?max-width:100%;/);
  assert.match(css,/\.vxe-vixen-pair \.vxe-source-folio/);
  assert.match(css,/\.vxe-work-selector/);
  assert.match(css,/color:#302731/);
