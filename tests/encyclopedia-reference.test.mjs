@@ -228,3 +228,74 @@ test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→
   dom.window.close();
  }
 });
+
+
+test('Vixen Operahouse, Opera and Performer remain distinct typed roles with no authority inheritance',async()=>{
+ const {STAGE_ROLES,assertStageRoleSeparation,castVixenPerformer,stageVixenOperaEvent,readOperahouseStatus}=await import('../app/encyclopedia/vixen-estate/role-boundary.mjs');
+ assert.equal(assertStageRoleSeparation(),true);
+ assert.deepEqual(Object.keys(STAGE_ROLES).sort(),['OPERA','OPERAHOUSE','PERFORMER']);
+ const performer=castVixenPerformer({work_id:'EM-W01',display_title:'Original Work',identity_status:'UNRESOLVED'});
+ assert.equal(performer.role,'PERFORMER');assert.equal(performer.estate,'EMSTD613');
+ assert.equal(performer.identity_status,'UNRESOLVED');
+ const event=stageVixenOperaEvent('HISTORICAL_WORK_SELECTED',performer,{work_id:'EM-W01'});
+ assert.equal(event.role,'OPERA');assert.equal(event.performer.role,'PERFORMER');
+ assert.equal(event.authority,'OBSERVATION_AND_HUMAN_INTERPRETATION_ONLY');
+ assert.throws(()=>stageVixenOperaEvent('ADMIT',performer,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ assert.throws(()=>stageVixenOperaEvent('RELEASE',performer,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ assert.throws(()=>stageVixenOperaEvent('PROMOTE',performer,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ assert.throws(()=>stageVixenOperaEvent('SOURCE', {role:'OPERAHOUSE',estate:'EMSTD613'}),/TYPED_PERFORMER/);
+ const host=readOperahouseStatus({state:'CENSUS_MATCHED'});
+ assert.equal(host.role,'OPERAHOUSE');assert.equal(host.release_authority,false);
+ assert.equal(host.scientific_closure_authority,false);assert.equal(host.experiment_b_flight,'HELD');
+});
+
+test('Vixen Pedagogue rest remains possible mid-flight; late reference replies never reopen an operator-rested Opera',async()=>{
+ const {JSDOM}=await import('jsdom');
+ const {mountVixenResearchChamber}=await import('../app/encyclopedia/vixen-estate/research-chamber.mjs');
+ const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const match=candidate.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);assert(match);
+ const dom=new JSDOM('<html><body><div id="vixenReferenceChamber"></div><script type="application/json" id="vixen-corpus-bundle">'+match[1]+'</script></body></html>',{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
+ const beforeDocument=globalThis.document,beforeWindow=globalThis.window;
+ const held=[];
+ const fetcher=(input)=>new Promise(resolve=>{
+   const u=new URL(input);
+   held.push(async()=>{
+     const content=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
+     resolve({ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>content});
+   });
+ });
+ try{
+   globalThis.document=dom.window.document;globalThis.window=dom.window;
+   const scene=dom.window.document.getElementById('vixenReferenceChamber');
+   const app=mountVixenResearchChamber({container:scene,baseURL:'https://vixen.example/encyclopedia/reference/',fetcher});
+   const click=label=>{const b=Array.from(scene.querySelectorAll('button')).find(x=>x.textContent.includes(label));assert(b,'Missing '+label);assert.equal(b.disabled,false,'Operator action must remain enabled: '+label);b.click()};
+   click('Begin an inquiry');assert.equal(app.phase(),'ACT');
+   const input=scene.querySelector('.vxe-query-input');input.value='Eclipse';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+   click('Query the independent reference');
+   assert.equal(held.length,3,'Reference index requests must be truly in flight');
+   click('Rest without penalty');
+   assert.equal(app.phase(),'REST');
+   assert.equal(app.status(),'HELD_OPERATOR_INTERRUPTED_REQUEST');
+   assert(app.history().some(x=>x.role==='OPERA'&&x.action==='UNPENALIZED_REST'&&x.interrupted_inflight===true));
+   for(const complete of held)await complete();
+   await new Promise(r=>setTimeout(r,10));
+   assert.equal(app.phase(),'REST','late network responses must not resurrect ACT or WORLD_ANSWERS');
+   assert.equal(app.status(),'HELD_OPERATOR_INTERRUPTED_REQUEST');
+   assert(!app.history().some(x=>x.action==='REFERENCE_QUERY_RETURNED'));
+   click('Return to inquiry');assert.equal(app.phase(),'ACT');
+   assert.equal(scene.getAttribute('data-stage-role'),'OPERA');
+   assert.equal(scene.querySelector('.vxe-estate-vixen').getAttribute('data-stage-role'),'PERFORMER');
+ }finally{
+   if(beforeDocument===undefined)delete globalThis.document;else globalThis.document=beforeDocument;
+   if(beforeWindow===undefined)delete globalThis.window;else globalThis.window=beforeWindow;
+   dom.window.close();
+ }
+});
+
+test('Vixen Reference notice foregrounds Work and source before decorative proscenium at both breakpoints',async()=>{
+ const css=await readFile(new URL('vixen-estate/research-chamber.css',root),'utf8');
+ assert.match(css,/RGI-01 \/ REPARATIVE NOTICE/);
+ assert.match(css,/#view-reference \.vxe-heading h1/);
+ assert.match(css,/font-size:clamp\(2\.9rem,4\.5vw,5\.5rem\)/);
+ assert.match(css,/@media\(max-width:780px\)/);
+});
