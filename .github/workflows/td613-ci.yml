@@ -84,6 +84,52 @@ jobs:
             echo 'practice_fixture_changed=false' >> "$GITHUB_OUTPUT"
           fi
 
+  vixen_browser_qualification:
+    name: Vixen exact-head Chromium source-first geometry witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install source-bound Chromium witness engine
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Render Vixen Opera over HTTP and assert first-source geometry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 25); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-browser-visual-witness.mjs
+      - name: Preserve exact-head screenshots for human qualification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-browser-geometry-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-browser-witness/
+          if-no-files-found: warn
+          retention-days: 14
+
   budget_bundle:
     name: Neon budget deployment ZIP startup
     needs: scope
