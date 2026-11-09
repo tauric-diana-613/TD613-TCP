@@ -98,6 +98,12 @@ try {
 
     // The reader is a separately typed Operahouse stage, not the Vixen Opera.
     const house=page.locator('#operahouseEncounter');
+    assert.equal(await house.isHidden(),true,'The other Opera must be offstage by default');
+    await page.locator('#vixenReferenceChamber').getByRole('button',
+      {name:/Enter Operahouse reading room/}).click();
+    assert.equal(await page.locator('#vixenReferenceChamber').isHidden(),true,
+      'The Vixen Opera must leave the visible stage before a Universal record is inspected');
+    assert.equal(await house.isVisible(),true);
     assert.equal(await house.getAttribute('data-stage-role'),'OPERAHOUSE');
     assert.equal(await house.locator('[data-stage-role="INDEPENDENT_REFERENCE"]').count(),1);
     assert.equal(await house.locator('[data-stage-role="SOURCE_LOCUS"]').count(),1);
@@ -128,6 +134,11 @@ try {
     await house.getByRole('button',{name:'Resume without penalty'}).click();
     assert.equal(errors.length,0,'Uncaught errors across distinct Operahouse encounter');
     await page.screenshot({path:path.join(output,stem+'-operahouse.png'),fullPage:false});
+    await house.getByRole('button',{name:/Return to Vixen Opera/}).click();
+    assert.equal(await house.isHidden(),true,'Reference Opera must leave before Vixen returns');
+    assert.equal(await page.locator('#vixenReferenceChamber').isVisible(),true);
+    assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
+      'No independent Universal record may ride the return route into Vixen');
 
 
     witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, errors });
