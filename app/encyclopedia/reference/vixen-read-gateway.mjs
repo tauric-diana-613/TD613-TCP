@@ -20,6 +20,8 @@ const READABLE_REFUSALS = Object.freeze({
   RECORD_DIGEST_MISMATCH:'Canonical JSON payload bytes differ from the indexed SHA-256.',
   RECORD_SCHEMA_MISMATCH:'The verified bytes are not a record of the requested identity.',
   WEBCRYPTO_UNAVAILABLE:'No independent browser SHA-256 verifier was available.',
+  REFERENCE_UNDECODABLE_UTF8:'Reference response contained malformed UTF-8; exact source bytes were refused.',
+  REFERENCE_BINARY_RESPONSE_UNSUPPORTED:'The transport did not expose source response bytes.',
   BOUNDARY_REFUSAL:'The request would cross into an unauthorised origin or method.'
 });
 export class BridgeHold extends Error{
@@ -41,9 +43,16 @@ async function boundedFetch(fetcher,url,expectedOrigin,maxBytes){
   if(response.url&&safeURL(response.url,expectedOrigin).href!==u.href)throw new BridgeHold('BOUNDARY_REFUSAL','REDIRECTED_URL');
   const length=Number(response.headers?.get?.('content-length')||0);
   if(length>maxBytes)throw new BridgeHold('BOUNDARY_REFUSAL','SIZE_LIMIT');
-  let raw;try{raw=await response.text()}catch(_){throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','BODY_READ_FAILURE')}
-  const bytes=new TextEncoder().encode(raw);
+  // WENDBINE EXACT-BYTE CUSTODY: never transform text and re-encode it
+  // before making a source-integrity claim. Decode only after retaining bytes.
+  if(typeof response.arrayBuffer!=='function')throw new BridgeHold('REFERENCE_BINARY_RESPONSE_UNSUPPORTED');
+  let bytes;
+  try{bytes=new Uint8Array(await response.arrayBuffer())}
+  catch(_){throw new BridgeHold('REFERENCE_NETWORK_UNAVAILABLE','BODY_READ_FAILURE')}
   if(bytes.byteLength>maxBytes)throw new BridgeHold('BOUNDARY_REFUSAL','BODY_SIZE_LIMIT');
+  let raw;
+  try{raw=new TextDecoder('utf-8',{fatal:true}).decode(bytes)}
+  catch(_){throw new BridgeHold('REFERENCE_UNDECODABLE_UTF8')}
   return {raw,bytes,url:u.href};
 }
 function decodeJson(text,code){
@@ -112,10 +121,9 @@ export function createVixenReferenceMembrane({
     // Exact record path is checked above; no search user text can become a file path.
     const payload=await boundedFetch(fetcher,u.href,origin,MAX_RECORD_BYTES);
     if(!cryptoProvider?.subtle?.digest)throw new BridgeHold('WEBCRYPTO_UNAVAILABLE');
-    // Edition 1.4 indexes the canonical JSON text, excluding the single
-    // serialization newline carried by each served .json file.
-    const canonicalText=payload.raw.endsWith('\n')?payload.raw.slice(0,-1):payload.raw;
-    const canonicalBytes=new TextEncoder().encode(canonicalText);
+    // Edition 1.4 indexes the exact UTF-8 JSON bytes excluding one terminal
+    // LF from the served file. Preserve both byte envelopes independently.
+    const canonicalBytes=payload.bytes.at(-1)===10?payload.bytes.slice(0,-1):payload.bytes;
     const digest=toHex(await cryptoProvider.subtle.digest('SHA-256',canonicalBytes));
     const servedFileDigest=toHex(await cryptoProvider.subtle.digest('SHA-256',payload.bytes));
     if(digest!==row.record_sha256){stamp('SOURCE_DIGEST_REFUSED',{id,expected:row.record_sha256,actual:digest});throw new BridgeHold('RECORD_DIGEST_MISMATCH')}
