@@ -1,6 +1,6 @@
-/* 𝌋 Vixen Cybernetics · Glinda / Mugler dual-estate research scene.
+/* 𝌋 Vixen Cybernetics · Glinda / Mugler source-bound Folios.
    Inherits Vixen's historical C1 editorial grammar; C2 owns the Observatory.
-   The membrane differentiates estates spatially, not by generic card UI. */
+   The seam separates two recorded manifestations of the SAME Vixen Work. */
 #view-reference{--vxe-obsidian:#060709;--vxe-porcelain:#f6f4f0;--vxe-pink:#ff91af;--vxe-rose:#ffc6d7;--vxe-flash:#f9f36d;--vxe-chrome:#9fa8b3;color:var(--vxe-porcelain);background:radial-gradient(ellipse 75% 32% at 73% 12%,rgba(255,145,175,.16),transparent 68%),radial-gradient(ellipse 44% 23% at 0% 66%,rgba(255,145,175,.12),transparent 68%),#050609;min-height:100vh;position:relative;overflow:hidden}
 #view-reference:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.15;background:repeating-linear-gradient(90deg,transparent 0 138px,rgba(255,203,218,.16) 139px,transparent 140px),repeating-linear-gradient(0deg,transparent 0 159px,rgba(255,203,218,.12) 160px,transparent 161px)}
 #view-reference>.page-pad{position:relative;z-index:1;max-width:1600px;padding-top:calc(var(--hdr,68px) + 4.8rem)}
