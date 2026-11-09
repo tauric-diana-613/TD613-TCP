@@ -50,7 +50,7 @@ export function classifyIndependentEncounter({work,source,witness,warrant}={}){
  * intact. The warrant field remains HELD unless a source-specific external
  * ratification exists; verified bytes cannot silently become a relationship.
  */
-export function constructCrossAtelierWitness({work,source,witness,warrant}={}){
+export function constructCrossAtelierWitness({work,source,witness,warrant,humanQuestion=''}={}){
  const disposition=classifyIndependentEncounter({work,source,witness,warrant});
  return Object.freeze({
   schema:CROSS_ATELIER_WITNESS_CONTRACT,version:1,
@@ -69,8 +69,12 @@ export function constructCrossAtelierWitness({work,source,witness,warrant}={}){
    served_file_sha256:verified(witness)?witness.served_file_sha256:null,
    verified_at_interaction:verified(witness)
   }),
+  operator_proposal:Object.freeze({
+   text:String(humanQuestion).slice(0,700),source:'HUMAN_SESSION_ONLY',
+   evidence_class:'UNRATIFIED_QUESTION_NOT_SOURCE_DATA'
+  }),
   admissibility:Object.freeze({
-   human_ratified_crosswalk:Boolean(warrant?.eligible&&warrant.record_id===witness?.id),
+   human_ratified_crosswalk:verified(witness)&&Boolean(warrant?.eligible===true&&warrant.record_id===witness.id),
    lexical_similarity_is_warrant:false,claim_entailment:false,
    source_identity_collapsed:false,publication_eligible:false
   }),
@@ -94,7 +98,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
  }
  const reader=membrane||createVixenReferenceMembrane();
  const state={phase:'NOTICE',restReturn:'NOTICE',work:0,source:0,query:'',hits:[],witness:null,
-  graph:[],disposition:null,receipt:null,service:'UNOPENED',error:null,events:[],seq:0,epoch:0,busy:false};
+  graph:[],disposition:null,receipt:null,question:'',service:'UNOPENED',error:null,events:[],seq:0,epoch:0,busy:false};
  const currentWork=()=>corpus.works[state.work];
  const sources=()=>(currentWork().linked_sources||[]);
  const currentSource=()=>sources()[state.source];
@@ -103,7 +107,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
    local_observation_time:new Date().toISOString(),
    original_source_event_time:'NOT_DERIVED',...extra}));
  const rejectPending=()=>{state.epoch+=1;state.busy=false};
- const resetEncounter=()=>{state.disposition=null;state.receipt=null};
+ const resetEncounter=()=>{state.disposition=null;state.receipt=null;state.question=''};
  const selectWork=(value)=>{
   const n=Number(value);if(!Number.isInteger(n)||n<0||n>=corpus.works.length)return;
   rejectPending();state.work=n;state.source=0;state.phase='NOTICE';resetEncounter();
@@ -168,7 +172,8 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
    work:currentWork(),source:currentSource(),witness:state.witness,warrant
   });
   state.receipt=constructCrossAtelierWitness({
-   work:currentWork(),source:currentSource(),witness:state.witness,warrant
+   work:currentWork(),source:currentSource(),witness:state.witness,warrant,
+   humanQuestion:state.question
   });
   stamp('SEPARATE_ESTATES_OBSERVED',{vixen_work_id:currentWork().work_id,
    vixen_source_id:currentSource()?.source_file_id||null,
@@ -248,8 +253,16 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   }
   if(state.error)right.append(el('p','oh-error','HELD · '+state.error));
   grid.append(left,right);host.append(grid);
-  if(state.witness&&state.phase!=='REST')
+  if(state.witness&&state.phase!=='REST'){
+    const question=el('textarea','oh-question');question.rows=3;
+    question.placeholder='Optional: formulate a question the evidence cannot yet answer…';
+    question.setAttribute('aria-label','Operator-authored unratified research question');
+    question.value=state.question;
+    question.addEventListener('input',()=>{state.question=question.value.slice(0,700)});
+    host.append(label('HUMAN PROPOSAL · CANNOT PROMOTE EVIDENCE'));
+    host.append(question);
     host.append(button('Observe separately — do not ratify a relationship',compare));
+  }
   if(state.disposition){
    const d=el('section','oh-disposition');d.dataset.encounterState=state.disposition.state;
    add(d,label('THIRD-ORDER RECEIPT · INDEPENDENT SOURCES'),
