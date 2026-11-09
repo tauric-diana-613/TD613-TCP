@@ -157,11 +157,14 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   controls.append(backstage);
   // A real invitation across a visible stage boundary, with zero automatic
   // transport, source lookup or transfer of authorship.
-  controls.append(action('Explore the separate Operahouse witness room ↓',()=>{
-    document.getElementById('operahouseEncounter')?.scrollIntoView({
-      behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',
-      block:'start'
-    });
+  controls.append(action('Enter Operahouse reading room — Vixen leaves the stage',()=>{
+    const room=document.getElementById('operahouseEncounter');
+    if(!room)return;
+    // Exactly one performance stage is visible at a time.
+    container.hidden=true;room.hidden=false;
+    window.scrollTo({top:0,behavior:'instant'});
+    room.querySelector('.oh-title')?.setAttribute('tabindex','-1');
+    room.querySelector('.oh-title')?.focus({preventScroll:true});
   },'vxe-text-control'));
   const history=el('details','vxe-trace');history.append(el('summary','','This Opera’s local route history ('+state.events.length+')'));
   const list=el('ol','vxe-route-history');state.events.forEach(e=>list.append(el('li','',String(e.seq).padStart(2,'0')+' · '+e.action)));history.append(list);controls.append(history);
