@@ -11,6 +11,7 @@ import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 
 export const ENCOUNTER_SCHEMA='td613.operahouse.independent-witness-encounter/v1';
+export const CROSS_ATELIER_WITNESS_CONTRACT='ua:contract:cross_atelier_witness';
 const el=(tag,cl='',value)=>{
  const n=document.createElement(tag);
  if(cl)n.className=cl;
@@ -44,6 +45,42 @@ export function classifyIndependentEncounter({work,source,witness,warrant}={}){
    claim_ceiling:'INDEPENDENT_SOURCE_OBSERVATION_ONLY'});
 }
 
+/**
+ * Typed session receipt: a dual-source observation with identity coordinates
+ * intact. The warrant field remains HELD unless a source-specific external
+ * ratification exists; verified bytes cannot silently become a relationship.
+ */
+export function constructCrossAtelierWitness({work,source,witness,warrant}={}){
+ const disposition=classifyIndependentEncounter({work,source,witness,warrant});
+ return Object.freeze({
+  schema:CROSS_ATELIER_WITNESS_CONTRACT,version:1,
+  disposition:disposition.state,relation:disposition.relation,
+  vixen:Object.freeze({
+   estate:'EMSTD613',role:'SOURCE_LOCUS',work_id:work?.work_id||null,
+   manifestation_id:source?.source_file_id||null,
+   declared_manifestation_sha256:source?.sha256||null,
+   source_body_access:'UNAVAILABLE_IN_PUBLIC_SURFACE',
+   authorship_claim:'UNRESOLVED'
+  }),
+  universal:Object.freeze({
+   estate:'UNIVERSAL_REFERENCE',role:'INDEPENDENT_REFERENCE',
+   record_id:verified(witness)?witness.id:null,
+   canonical_payload_sha256:verified(witness)?witness.record_sha256:null,
+   served_file_sha256:verified(witness)?witness.served_file_sha256:null,
+   verified_at_interaction:verified(witness)
+  }),
+  admissibility:Object.freeze({
+   human_ratified_crosswalk:Boolean(warrant?.eligible&&warrant.record_id===witness?.id),
+   lexical_similarity_is_warrant:false,claim_entailment:false,
+   source_identity_collapsed:false,publication_eligible:false
+  }),
+  custody:Object.freeze({
+   observer_class:'SESSION_LOCAL_BROWSER',external_trust_root:false,
+   route_memory_not_durable_evidence:true,
+   empirical_replication_credit:0
+  })
+ });
+}
 export function mountVixenOperahouseEncounter({host=document.getElementById('operahouseEncounter'),
   corpus,membrane}={}){
  if(!host)return Object.freeze({mounted:false,reason:'NO_OPERAHOUSE_HOST'});
@@ -57,14 +94,16 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
  }
  const reader=membrane||createVixenReferenceMembrane();
  const state={phase:'NOTICE',restReturn:'NOTICE',work:0,source:0,query:'',hits:[],witness:null,
-  graph:[],disposition:null,service:'UNOPENED',error:null,events:[],seq:0,epoch:0,busy:false};
+  graph:[],disposition:null,receipt:null,service:'UNOPENED',error:null,events:[],seq:0,epoch:0,busy:false};
  const currentWork=()=>corpus.works[state.work];
  const sources=()=>(currentWork().linked_sources||[]);
  const currentSource=()=>sources()[state.source];
  const stamp=(action,extra={})=>state.events.push(Object.freeze({sequence:++state.seq,action,
-   evidence_class:'SESSION_LOCAL_INTERACTION_ONLY',...extra}));
+   evidence_class:'SESSION_LOCAL_INTERACTION_ONLY',
+   local_observation_time:new Date().toISOString(),
+   original_source_event_time:'NOT_DERIVED',...extra}));
  const rejectPending=()=>{state.epoch+=1;state.busy=false};
- const resetEncounter=()=>{state.disposition=null};
+ const resetEncounter=()=>{state.disposition=null;state.receipt=null};
  const selectWork=(value)=>{
   const n=Number(value);if(!Number.isInteger(n)||n<0||n>=corpus.works.length)return;
   rejectPending();state.work=n;state.source=0;state.phase='NOTICE';resetEncounter();
@@ -128,11 +167,14 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   state.disposition=classifyIndependentEncounter({
    work:currentWork(),source:currentSource(),witness:state.witness,warrant
   });
+  state.receipt=constructCrossAtelierWitness({
+   work:currentWork(),source:currentSource(),witness:state.witness,warrant
+  });
   stamp('SEPARATE_ESTATES_OBSERVED',{vixen_work_id:currentWork().work_id,
    vixen_source_id:currentSource()?.source_file_id||null,
    universal_record_id:state.witness.id,
    disposition:state.disposition.state,
-   relation:'UNESTABLISHED',human_ratifed_crosswalk:false});
+   relation:'UNESTABLISHED',human_ratified_crosswalk:false});
   state.phase='OBSERVED';render();
  };
  const rest=()=>{
@@ -191,12 +233,18 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
    const details=el('details','oh-payload');const summary=el('summary','','Inspect bounded canonical record text');details.append(summary);
    const raw=JSON.stringify(state.witness.record,null,2);
    details.append(el('pre','',raw.slice(0,6000)));
+   const relationList=el('details','oh-payload');
+   relationList.append(el('summary','','Inspect recorded Universal-only graph edges'));
+   const edges=el('ol','oh-edges');
+   for(const edge of state.graph)edges.append(el('li','',
+     edge.source+' · '+edge.type+' · '+edge.target+' · not a Vixen relation'));
+   relationList.append(edges);
    add(right,label('VERIFIED INDEPENDENT REFERENCE · '+state.witness.id),
     el('h4','',state.witness.record.label||state.witness.id),
     note('Canonical JSON payload SHA-256: '+state.witness.record_sha256),
     note('Served file SHA-256: '+state.witness.served_file_sha256),
     note('Read-only graph edges: '+state.graph.length+' (recorded Universal graph edges; never cross-estate proof)'),
-    details);
+    details,relationList);
   }
   if(state.error)right.append(el('p','oh-error','HELD · '+state.error));
   grid.append(left,right);host.append(grid);
@@ -210,6 +258,12 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
     note('Universal: '+state.witness.id+' / '+state.witness.record_sha256),
     note('Relationship: '+state.disposition.relation+' · Publication eligibility: false'),
     note('The original Vixen source body is unavailable; an independently verified Universal record cannot supply that missing source or establish shared authorship.'));
+   if(state.receipt){
+     const receipt=el('details','oh-payload');
+     receipt.append(el('summary','','Inspect typed cross-atêlier session witness (not an admitted crosswalk)'));
+     receipt.append(el('pre','',JSON.stringify(state.receipt,null,2)));
+     d.append(receipt);
+   }
    host.append(d);
   }
   const footer=el('div','oh-footer');
