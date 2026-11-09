@@ -298,4 +298,8 @@ test('Vixen Reference notice foregrounds Work and source before decorative prosc
  assert.match(css,/#view-reference \.vxe-heading h1/);
  assert.match(css,/font-size:clamp\(2\.9rem,4\.5vw,5\.5rem\)/);
  assert.match(css,/@media\(max-width:780px\)/);
+ assert.match(css,/RGI-02 \/ SOURCE LEGIBILITY/);
+ assert.match(css,/#view-reference \.vxe-evidence \.vxe-copy\{color:#342b35\}/);
+ const chamberSource=await readFile(new URL('vixen-estate/research-chamber.mjs',root),'utf8');
+ assert.match(chamberSource,/beginButton\.disabled=!ready/);
 });
