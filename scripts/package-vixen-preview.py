@@ -23,6 +23,12 @@ def main(out):
     assert "Eclipse–Omega" not in candidate and "Eclipse-Omega" not in candidate and "G-001" not in candidate
     chamber=(APP/"encyclopedia"/"vixen-estate"/"research-chamber.mjs").read_text(encoding="utf8")
     assert "membrane.search(" not in chamber and "membrane.getRecord(" not in chamber
+    assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
+    assert (REF/"vixen-operator-encounter.mjs").is_file()
+    assert (REF/"vixen-operator-encounter.css").is_file()
+    gateway=(REF/"vixen-read-gateway.mjs").read_text(encoding="utf8")
+    assert "new TextDecoder('utf-8',{fatal:true})" in gateway
+    assert "response.arrayBuffer()" in gateway
 
     index=json.loads((REF/"directory.json").read_text(encoding="utf8"))
     graph=json.loads((REF/"graph.json").read_text(encoding="utf8"))
@@ -75,9 +81,29 @@ and public TD613.com deployment are not required.
    layout: the initial Folio should appear without scrolling past a giant
    proscenium. Source records outside the Vixen estate are not performers here.
 
-The **separate** Universal reference estate is packaged for independent
-Encyclopedia research. Its index cannot automatically provide a counterpart
-to a Vixen Work or transfer authorship by lexical similarity.
+## Test the independent Operahouse reading room (intentional encounter)
+
+1. Scroll below Vixen's own Folios to the clearly separated OPERAHOUSE
+   READING ROOM. The two panels belong to independent source estates.
+2. Select a Vixen Work and an actually recorded manifestation on the left.
+3. Explicitly click **Open independent read-only estate**. This loads the
+   Universal directory and graph census only, without authorizing a link.
+4. Enter a separately chosen Universal query (e.g. G-101); search the
+   reference estate, then select a result to fetch and verify its exact
+   canonical JSON bytes using fatal UTF-8 and browser SHA-256.
+5. Inspect the bounded canonical payload and the separate Universal graph
+   edge count. Then click **Observe separately** to obtain an unratified,
+   session-local third-order receipt. It MUST report relationship
+   UNESTABLISHED and zero human-ratified cross-opera warrants.
+6. Rest and resume. Inspect the Vixen Folios again: the Universal record
+   must never appear as a Vixen Performer or historical Vixen source.
+7. Alter a record payload or serve malformed UTF-8 in an isolated test
+   fixture: integrity must fail CLOSED. The CI tests include both negatives.
+
+The **separate** Universal reference estate remains packaged for independent
+Encyclopedia research. The witness room makes a bounded, operator-initiated
+confrontation available without assigning a counterpart or transferring
+authorship by lexical proximity. The native SQLite receiver remains separate.
 
 ## Scope and limits
 
@@ -85,6 +111,8 @@ Source edition 1.4 is read-only. The separately developed native
 Universal Atelier SQLite backend is NOT wired into production here.
 No private Em source bodies; no backend source mutation or automatic
 scientific promotion; no protected Experiment B launch; no release.
+The browser witness verifies source bytes and distinct custody loci, not
+a substantive cross-estate relationship or a scientific surplus.
 Unmatched terms and unavailable references must produce honest HELD
 or bounded-negative outcomes.
 See PREVIEW-MANIFEST.json for exact commit and file hashes.
