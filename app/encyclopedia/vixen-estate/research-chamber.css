@@ -106,3 +106,110 @@
 #view-reference .vxe-evidence .vxe-copy{color:#342b35}
 #view-reference .vxe-document .vxe-copy a,
 #view-reference .vxe-evidence .vxe-copy a{color:#723452}
+
+
+/* RGI-03 / OPERATIC RECONSTRUCTION: Vixen's own performers on its own stage.
+   Do not mount another Opera's works inside the Vixen counter-folio. */
+#view-reference .vxe-work-selector{
+  position:relative;
+  padding:1.25rem 1.45rem 1.35rem;
+  margin:0 0 1.15rem;
+  border:1px solid rgba(255,200,223,.32);
+  background:linear-gradient(125deg,rgba(255,145,175,.13),rgba(255,255,255,.015) 65%);
+}
+#view-reference .vxe-work-selector .vxe-eyebrow{margin-bottom:.55rem}
+#view-reference .vxe-work-selector .vxe-work-select{margin:0 0 .75rem}
+#view-reference .vxe-work-identity{
+  margin:.2rem 0 .5rem;
+  color:#f6f4f0;
+  font:400 clamp(1.7rem,2.65vw,2.75rem)/1.13 "Didot","Bodoni 72",Georgia,serif;
+  overflow-wrap:anywhere;
+  letter-spacing:-.02em;
+}
+#view-reference .vxe-work-selector .vxe-source-note{font:.74rem/1.55 system-ui,sans-serif;color:#e2c6d4;margin:0}
+#view-reference .vxe-vixen-pair{min-height:0;align-items:stretch}
+#view-reference .vxe-vixen-pair .vxe-estate{
+  display:flex;
+  flex-direction:column;
+  min-height:370px;
+  gap:.7rem;
+  background:linear-gradient(150deg,rgba(255,255,255,.075),transparent 38%),#131017;
+}
+#view-reference .vxe-vixen-pair .vxe-estate .vxe-eyebrow{margin:0}
+#view-reference .vxe-vixen-pair .vxe-estate h2{
+  font-size:clamp(2rem,3.15vw,3.35rem);
+  margin:.2rem 0 .35rem;
+}
+#view-reference .vxe-vixen-pair .vxe-estate .vxe-work-select{
+  font-size:.78rem;
+  min-height:44px;
+  width:100%;
+  margin-bottom:.4rem;
+  text-overflow:ellipsis;
+}
+#view-reference .vxe-vixen-pair .vxe-source-folio{
+  flex:1;
+  transform:none;
+  margin:.55rem 0 .4rem;
+  padding:1.3rem 1.4rem;
+  min-width:0;
+  overflow-wrap:anywhere;
+  background:linear-gradient(135deg,#fbf4f7,#f6e8ec);
+}
+#view-reference .vxe-vixen-pair .vxe-source-folio h3{
+  overflow-wrap:anywhere;
+  color:#2c2430;
+  margin:.35rem 0 1rem;
+}
+#view-reference .vxe-vixen-pair .vxe-source-folio .vxe-source-note{color:#52434e;font:.78rem/1.65 system-ui,sans-serif}
+#view-reference .vxe-vixen-pair .vxe-source-folio .vxe-small{color:#62505c}
+#view-reference .vxe-vixen-pair .vxe-source-folio .vxe-digest{
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+  color:#fff6fb;
+  background:#25212b;
+  font-size:.69rem;
+  line-height:1.65;
+}
+#view-reference .vxe-vixen-pair .vxe-membrane strong{
+  max-height:245px;
+  letter-spacing:.14em;
+  font-size:.63rem;
+}
+#view-reference .vxe-result{
+  margin-top:1.35rem;
+  max-width:930px;
+  padding:1.5rem 1.7rem;
+  background:#f6f4f0;
+  border:1px solid #ffb8d1;
+  color:#2c2530;
+}
+#view-reference .vxe-result .vxe-eyebrow{color:#893b58}
+#view-reference .vxe-result .vxe-copy{color:#302731;font-size:1.03rem}
+#view-reference .vxe-result .vxe-small{color:#584957}
+#view-reference .vxe-observations{
+  display:grid;
+  grid-template-columns:minmax(120px,180px) minmax(0,1fr);
+  gap:0;
+  margin:1.1rem 0;
+  border-top:1px solid #ba9fb1;
+}
+#view-reference .vxe-observations dt,#view-reference .vxe-observations dd{
+  margin:0;padding:.85rem .5rem;border-bottom:1px solid #dcc9d2;
+  overflow-wrap:anywhere;font:.82rem/1.5 system-ui,sans-serif;color:#302731
+}
+#view-reference .vxe-observations dt{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.67rem;color:#5f3d50}
+#view-reference .vxe-name{margin:1.1rem 0;width:100%;max-width:930px;padding:1.1rem}
+@media(max-width:780px){
+ #view-reference .vxe-work-selector{padding:.9rem .9rem 1rem;margin-bottom:.85rem}
+ #view-reference .vxe-work-identity{font-size:clamp(1.45rem,6.5vw,2rem)}
+ #view-reference .vxe-vixen-pair .vxe-estate{padding:1rem;min-height:0}
+ #view-reference .vxe-vixen-pair .vxe-estate h2{font-size:2.35rem}
+ #view-reference .vxe-vixen-pair .vxe-source-folio{padding:1.05rem 1rem}
+ #view-reference .vxe-vixen-pair .vxe-membrane{min-height:65px}
+ #view-reference .vxe-vixen-pair .vxe-membrane strong{writing-mode:horizontal-tb;max-height:none}
+ #view-reference .vxe-observations{grid-template-columns:1fr}
+ #view-reference .vxe-observations dt{padding:.6rem .4rem .15rem;border-bottom:0}
+ #view-reference .vxe-observations dd{padding:.1rem .4rem .65rem}
+ #view-reference .vxe-result{padding:1rem 1.05rem}
+}
