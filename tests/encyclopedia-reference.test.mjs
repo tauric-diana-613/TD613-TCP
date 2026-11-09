@@ -107,7 +107,8 @@ test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separa
  assert.equal(m.source_vixen.manifestations,53);
  assert.equal(m.source_vixen.unadjudicated_gates,8);
  assert.equal(m.source_vixen.instruments,21);
- assert.equal(m.source_vixen.role,'PERFORMER');
+ assert.equal(m.source_vixen.role,'OPERA');
+ assert.equal(m.source_vixen.performer_type,'EMSTD613_HISTORICAL_WORK_OR_MANIFESTATION');
  assert.equal(m.source_universal.role,'OPERAHOUSE_REFERENCE_SERVICE_NOT_VIXEN_OPERA');
  assert.equal(m.bridge.cross_opera_warrant_status,'HELD_NO_HUMAN_RATIFIED_MAPPING');
  assert.equal(m.bridge.record_routing_into_vixen,'DENIED_BY_DEFAULT');
