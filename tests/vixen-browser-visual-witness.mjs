@@ -108,7 +108,7 @@ try {
     await house.getByRole('searchbox',{name:'Search independent Universal index'}).fill('G-101');
     await house.getByRole('button',{name:'Search Universal separately'}).click();
     await house.getByRole('button',{name:/G-101/}).first().click();
-    await house.locator('.oh-payload').waitFor({timeout:15000});
+    await house.locator('.oh-payload').first().waitFor({timeout:15000});
     assert.match(await house.innerText(),/VERIFIED INDEPENDENT REFERENCE · G-101/);
     assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
       'A separately witnessed Universal record must not become a Vixen Performer');
