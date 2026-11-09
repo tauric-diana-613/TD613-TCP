@@ -381,3 +381,34 @@ test('Operator-led two-estate encounter verifies independently and leaves relati
    'HELD_INDEPENDENT_REFERENCE_WITNESS');
  }finally{if(prev===undefined)delete globalThis.document;else globalThis.document=prev;dom.window.close()}
 });
+
+
+test('Palace temporal guard: Rest during in-flight reference census rejects stale completion',async()=>{
+ const {JSDOM}=await import('jsdom');
+ const {mountVixenOperahouseEncounter}=await import('../app/encyclopedia/reference/vixen-operator-encounter.mjs');
+ const page=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const corpus=JSON.parse(page.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
+ let resolveOpen;
+ const pending=new Promise(resolve=>{resolveOpen=resolve});
+ const mock={open:()=>pending,search:()=>[],getRecord:async()=>{throw Error('unexpected')},related:()=>[]};
+ const dom=new JSDOM('<!doctype html><div id="operahouseEncounter"></div>',{url:'https://independent.example/'});
+ const prior=globalThis.document;
+ try{
+  globalThis.document=dom.window.document;
+  const host=dom.window.document.getElementById('operahouseEncounter');
+  const room=mountVixenOperahouseEncounter({host,corpus,membrane:mock});
+  const click=name=>{
+   const b=[...host.querySelectorAll('button')].find(x=>x.textContent.includes(name));
+   assert(b,'Missing action: '+name);b.click();
+  };
+  click('Open independent');
+  assert.equal(room.phase(),'CHECKING');
+  click('Rest without penalty');assert.equal(room.phase(),'REST');
+  resolveOpen({state:'CENSUS_MATCHED',edition:'1.4',records:1141,edges:2131});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(room.phase(),'REST');
+  assert.equal(room.service(),'UNOPENED','A stale completion cannot silently become an admitted index');
+  click('Resume without penalty');assert.equal(room.phase(),'NOTICE');
+  assert(!room.history().some(e=>e.action==='INDEPENDENT_REFERENCE_CENSUS_OBSERVED'));
+ }finally{if(prior===undefined)delete globalThis.document;else globalThis.document=prior;dom.window.close()}
+});
