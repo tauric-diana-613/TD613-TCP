@@ -247,3 +247,51 @@
   #view-reference .vxe-heading h1{font-size:clamp(2.15rem,9vw,3.6rem);line-height:1.02}
   #view-reference .vxe-work-selector select.vxe-work-select{font-size:.78rem}
 }
+
+/* RGI-05 / SOURCE-FIRST PROSCENIUM. Preserve all metadata; compress setup,
+   not source evidence, so first manifestation is seen before the fold. */
+#view-reference>.page-pad{padding-top:calc(var(--hdr,68px) + .2rem)}
+#view-reference .vxe-heading{padding-bottom:.55rem}
+#view-reference .vxe-heading h1{font-size:clamp(2.55rem,3.7vw,4rem);margin:.05rem 0 .28rem;line-height:.95}
+#view-reference .vxe-lede{font-size:clamp(.88rem,1.15vw,1rem);line-height:1.3;max-width:1020px}
+#view-reference .vxe-steps{padding:.42rem 0;gap:.25rem}
+#view-reference .vxe-step{padding:.12rem 0}
+#view-reference .vxe-step-current:after{bottom:-.41rem}
+#view-reference .vxe-status{margin:.35rem 0 .5rem;padding:.48rem .7rem;line-height:1.35}
+#view-reference .vxe-work-selector{
+  display:grid;grid-template-columns:minmax(0,.44fr) minmax(0,.56fr);
+  column-gap:1.2rem;align-items:center;padding:.75rem .9rem;
+  margin-bottom:.65rem;overflow:visible;
+}
+#view-reference .vxe-work-selector>.vxe-eyebrow{grid-column:1;grid-row:1;margin:0 0 .2rem}
+#view-reference .vxe-work-selector>select.vxe-work-select{grid-column:1;grid-row:2;margin:0;min-height:43px}
+#view-reference .vxe-work-identity{grid-column:2;grid-row:1 / span 2;font-size:clamp(1.35rem,1.8vw,1.95rem);line-height:1.12;margin:0}
+#view-reference .vxe-work-selector>.vxe-source-note{grid-column:1 / -1;margin-top:.45rem;font-size:.7rem;line-height:1.4}
+#view-reference .vxe-vixen-pair .vxe-estate{padding:1.1rem;gap:.3rem;min-height:370px}
+#view-reference .vxe-vixen-pair .vxe-estate h2{font-size:clamp(1.7rem,2.7vw,2.75rem);margin:.15rem 0 .18rem}
+#view-reference .vxe-vixen-pair .vxe-source-folio{margin:.25rem 0 .3rem;padding:1.1rem}
+#view-reference .vxe-vixen-pair .vxe-estate .vxe-work-select{min-height:43px;margin:0}
+#view-reference .vxe-title-disclosure{display:none}
+@media(max-width:780px){
+ #view-reference>.page-pad{padding-top:calc(var(--hdr,68px) + .15rem)}
+ #view-reference .vxe-heading h1{font-size:clamp(2.05rem,8.6vw,3.4rem);line-height:.98}
+ #view-reference .vxe-heading .vxe-eyebrow{font-size:.55rem;letter-spacing:.14em;margin-bottom:.2rem}
+ #view-reference .vxe-lede{font-size:.82rem;line-height:1.35}
+ #view-reference .vxe-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.18rem;padding:.45rem 0}
+ #view-reference .vxe-step{display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:0;font-size:.49rem;line-height:1.4;letter-spacing:0}
+ #view-reference .vxe-phase-num{font-size:1rem}
+ #view-reference .vxe-step-current:after{bottom:-.45rem}
+ #view-reference .vxe-status{font-size:.72rem;padding:.4rem .55rem;margin:.4rem 0}
+ #view-reference .vxe-work-selector{display:block;padding:.55rem .7rem;margin-bottom:.5rem}
+ #view-reference .vxe-work-selector>.vxe-eyebrow{margin:0 0 .15rem;font-size:.58rem;letter-spacing:.12em}
+ #view-reference .vxe-work-selector>select.vxe-work-select{min-height:42px;margin:0 0 .3rem;font-size:.76rem}
+ #view-reference .vxe-work-identity{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:1.12rem;line-height:1.2;margin:0}
+ #view-reference .vxe-work-selector>.vxe-source-note{margin-top:.25rem;font-size:.6rem;line-height:1.35}
+ #view-reference .vxe-title-disclosure{display:block;max-width:100%;margin:.25rem 0 0;font:.68rem/1.4 system-ui,sans-serif;color:#f0c2d5}
+ #view-reference .vxe-title-disclosure summary{cursor:pointer;display:list-item;list-style:disclosure-closed}
+ #view-reference .vxe-title-disclosure[open] summary{list-style:disclosure-open}
+ #view-reference .vxe-title-disclosure p{margin:.25rem 0;font:400 .9rem/1.45 Georgia,serif;overflow-wrap:anywhere;color:#fff2f7}
+ #view-reference .vxe-vixen-pair .vxe-estate{padding:.75rem;min-height:0}
+ #view-reference .vxe-vixen-pair .vxe-estate h2{font-size:1.8rem;margin:.1rem 0}
+ #view-reference .vxe-vixen-pair .vxe-source-folio{padding:.8rem}
+}
