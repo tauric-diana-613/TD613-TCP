@@ -111,6 +111,8 @@ test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separa
  assert.equal(m.source_vixen.performer_type,'EMSTD613_HISTORICAL_WORK_OR_MANIFESTATION');
  assert.equal(m.source_universal.role,'OPERAHOUSE_REFERENCE_SERVICE_NOT_VIXEN_OPERA');
  assert.equal(m.bridge.cross_opera_warrant_status,'HELD_NO_HUMAN_RATIFIED_MAPPING');
+ assert.equal(m.bridge.owner,'OPERAHOUSE_SHARED_INFRASTRUCTURE');
+ assert.equal(m.bridge.module,'/encyclopedia/reference/vixen-read-gateway.mjs');
  assert.equal(m.bridge.record_routing_into_vixen,'DENIED_BY_DEFAULT');
  assert.equal(m.release_authority,false);
  assert.equal(m.experiment_b_flight,'HELD');
@@ -143,7 +145,7 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
 
 test('Cross-Opera reference registry starts empty and refuses unrelated or counterfeit warrants',async()=>{
  const {inspectVixenCrossOperaWarrant,ADMITTED_VIXEN_CROSSWALKS}=await import('../app/encyclopedia/vixen-estate/cross-opera-warrant.mjs');
- const {createVixenReferenceMembrane}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
+ const {createVixenReferenceMembrane}=await import('../app/encyclopedia/reference/vixen-read-gateway.mjs');
  assert.equal(ADMITTED_VIXEN_CROSSWALKS.length,0,'No cross-Opera mapping earned yet');
  const work={work_id:'emwork_fixture',linked_sources:[{source_file_id:'emsrc_fixture',sha256:'0'.repeat(64)}]};
  const result=inspectVixenCrossOperaWarrant({work,source:work.linked_sources[0]});
