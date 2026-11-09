@@ -27,6 +27,14 @@
 #operahouseEncounter .oh-select option{background:#fff3f8;color:#262027}
 #operahouseEncounter .oh-input:focus-visible,#operahouseEncounter .oh-select:focus-visible,
 #operahouseEncounter .oh-button:focus-visible{outline:2px solid var(--oh-gold);outline-offset:3px}
+#operahouseEncounter .oh-question{
+ display:block;width:100%;max-width:930px;min-width:0;min-height:90px;resize:vertical;
+ margin:0 0 1rem;padding:1rem;line-height:1.6;font:400 .96rem Georgia,serif;
+ background:#171923;color:#fff0f3;border:1px solid #d8b5c5
+}
+#operahouseEncounter .oh-question:focus-visible{outline:2px solid var(--oh-gold);outline-offset:3px}
+#operahouseEncounter .oh-edges{padding:0 0 0 1.2rem;max-height:250px;overflow-y:auto}
+#operahouseEncounter .oh-edges li{font:.76rem/1.65 ui-monospace,monospace;overflow-wrap:anywhere;color:#eedce9;padding:.3rem 0;border-bottom:1px solid #ffffff22}
 #operahouseEncounter .oh-button{
   display:inline-flex;align-items:center;justify-content:center;text-align:left;min-height:44px;max-width:100%;
   padding:.7rem 1rem;margin:.3rem .4rem .6rem 0;background:#eb92ad;color:#15151d;
