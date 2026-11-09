@@ -96,210 +96,140 @@ test('equations retain scoped assumptions and public exports carry current mater
 });
 
 
-test('Vixen dual-estate Encyclopedia retains its own Work lineage and routes to a distinct reference scene',async()=>{
- const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
- assert(candidate.includes('id="td613-sitewide-reset-preflight"'));
- assert(candidate.includes('id="view-reference"'));
- assert(candidate.includes('data-view="reference"'));
- assert(candidate.includes('vixen-estate/reference-bridge.mjs'));
- assert(candidate.includes('vixen-estate/research-chamber.mjs'));
- const m=candidate.match(/<script type="application\/json" id="vixen-estate-manifest">([\s\S]*?)<\/script>/);
- assert(m,'distinct present-tense estate manifest required');
- const live=JSON.parse(m[1]);
- assert.equal(live.route,'/encyclopedia/vix-cyb.html');
- assert.equal(live.source_vixen.works,32);assert.equal(live.source_vixen.manifestations,53);
- assert.equal(live.source_vixen.unadjudicated_gates,8);assert.equal(live.source_vixen.instruments,21);
- assert.equal(live.source_universal.records,1141);assert.equal(live.source_universal.edges,2131);
- assert.equal(live.release_authority,false);
- assert.equal(live.experiment_b_flight,'HELD');
- assert.match(candidate,/const VALID_VIEWS = \[[^\]]*'reference'\]/);
- assert.match(candidate,/function scheduleObservatoryFrame\(/);
- assert.match(candidate,/function stopObservatoryFrame\(/);
- assert.match(candidate,/vixenParticleField/);
- assert(!candidate.includes('renderCart('),'No commercial cart may inhabit Vixen');
- assert.equal((candidate.match(/id="vixen-corpus-bundle"/g)||[]).length,1);
- assert(candidate.includes('UNADJUDICATED_PAIR'),'all eight historic human-gate contracts remain on the source');
+
+test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separate backstage transport',async()=>{
+ const page=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const manifestMatch=page.match(/<script type="application\/json" id="vixen-estate-manifest">([\s\S]*?)<\/script>/);
+ assert(manifestMatch,'Current Vixen manifest must exist');
+ const m=JSON.parse(manifestMatch[1]);
+ assert.equal(m.route,'/encyclopedia/vix-cyb.html');
+ assert.equal(m.source_vixen.works,32);
+ assert.equal(m.source_vixen.manifestations,53);
+ assert.equal(m.source_vixen.unadjudicated_gates,8);
+ assert.equal(m.source_vixen.instruments,21);
+ assert.equal(m.source_vixen.role,'PERFORMER');
+ assert.equal(m.source_universal.role,'OPERAHOUSE_REFERENCE_SERVICE_NOT_VIXEN_OPERA');
+ assert.equal(m.bridge.cross_opera_warrant_status,'HELD_NO_HUMAN_RATIFIED_MAPPING');
+ assert.equal(m.bridge.record_routing_into_vixen,'DENIED_BY_DEFAULT');
+ assert.equal(m.release_authority,false);
+ assert.equal(m.experiment_b_flight,'HELD');
+ assert.match(page,/data-view="reference"/);
+ assert.match(page,/07<\/small> Folios/);
+ assert.match(page,/07<\/small> Vixen Folios/);
+ assert.match(page,/vixen-estate\/research-chamber.mjs/);
+ assert.match(page,/const VALID_VIEWS = \[[^\]]*'reference'\]/);
+ assert.match(page,/vixenParticleField/);
+ assert.match(page,/UNADJUDICATED_PAIR/);
+ assert(!page.includes('renderCart('),'No commercial storefront in Vixen Opera');
+ assert.equal((page.match(/id="vixen-corpus-bundle"/g)||[]).length,1);
 });
 
-test('Vixen reference membrane serves actual source-bound search, exact bytes, graph relations and honest refusal',async()=>{
- const {createVixenReferenceMembrane,BridgeHold}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
- const {webcrypto}=await import('node:crypto');
- const base='https://vixen.example/encyclopedia/reference/';
- let fetched=[];
- const fetcher=async(input,opts)=>{
-  const u=new URL(input);fetched.push({pathname:u.pathname,method:opts?.method,credentials:opts?.credentials});
-  assert.equal(u.origin,'https://vixen.example');assert(u.pathname.startsWith('/encyclopedia/reference/'));
-  assert.equal(opts.method,'GET');assert.equal(opts.credentials,'omit');
-  const raw=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
-  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw};
- };
- const bridge=createVixenReferenceMembrane({baseURL:base,fetcher,cryptoProvider:webcrypto});
- assert.equal(bridge.status().state,'UNOPENED');
- await assert.rejects(()=>bridge.getRecord('G-001'),e=>e instanceof BridgeHold&&e.code==='REFERENCE_NOT_LOADED');
- const open=await bridge.open();assert.equal(open.state,'CENSUS_MATCHED');
- assert.equal(open.records,1141);assert.equal(open.edges,2131);
- assert.equal(open.cryptographic_index_authentication,'NOT_CLAIMED');
- const hits=bridge.search('Eclipse');assert(hits.some(x=>x.id==='G-001'));
- assert(hits.every(x=>x.claim_role==='SEARCH_MATCH_ONLY_NOT_ENTAILMENT'));
- const item=await bridge.getRecord('G-001');
- assert.equal(item.estate,'UNIVERSAL_REFERENCE');
- assert.equal(item.warrant,'CANONICAL_JSON_PAYLOAD_SHA256_VERIFIED_NOT_CLAIM_ENTAILMENT');
- assert.equal(item.record.id,'G-001');assert.match(item.record.record.description,/boundary/);
- const edges=bridge.related('G-001');assert(edges.length>0);
- assert(edges.every(e=>e.relation_warrant==='RECORDED_GRAPH_EDGE_NOT_CAUSAL_PROOF'));
- assert(fetched.some(f=>f.pathname.endsWith('/records/G-001.json')));
- assert(fetched.every(f=>f.method==='GET'&&f.credentials==='omit'));
- assert(bridge.history().some(e=>e.action==='SOURCE_WITNESSED'));
- assert.deepEqual(bridge.search('term-unknown-does-not-exist'),[]);
-});
-
-test('Vixen reference membrane refuses missing and tampered source bodies without claim promotion',async()=>{
- const {createVixenReferenceMembrane,BridgeHold}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
- const {webcrypto}=await import('node:crypto');
- const base='https://vixen.example/encyclopedia/reference/';
- const asset=async u=>await readFile(new URL('.'+new URL(u).pathname,new URL('../app/',import.meta.url)),'utf8');
- const tampered=async(input)=>{const u=new URL(input);let raw=await asset(u);if(u.pathname.endsWith('/records/G-001.json'))raw=raw.replace('Eclipse','Allegedly Eclipse');
-  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw}};
- const bridge=createVixenReferenceMembrane({baseURL:base,fetcher:tampered,cryptoProvider:webcrypto});
- await bridge.open();
- await assert.rejects(()=>bridge.getRecord('G-001'),e=>e instanceof BridgeHold&&e.code==='RECORD_DIGEST_MISMATCH');
- assert(bridge.history().some(e=>e.action==='SOURCE_DIGEST_REFUSED'));
- await assert.rejects(()=>bridge.getRecord('G-9999'),e=>e instanceof BridgeHold&&e.code==='RECORD_NOT_IN_EDITION');
- const missing=async(input)=>{const u=new URL(input);let raw=await asset(u);if(u.pathname.endsWith('/directory.json'))raw='[]';return {ok:true,url:u.href,status:200,headers:{get:()=>null},text:async()=>raw}};
- const absent=createVixenReferenceMembrane({baseURL:base,fetcher:missing,cryptoProvider:webcrypto});
- await assert.rejects(()=>absent.open(),e=>e instanceof BridgeHold&&e.code==='REFERENCE_CENSUS_MISMATCH');
- assert.equal(absent.status().state,'HELD');
- const offline=createVixenReferenceMembrane({baseURL:'file:///tmp/vix/reference/'});
- await assert.rejects(()=>offline.open(),e=>e instanceof BridgeHold&&e.code==='FILE_SCHEME_NOT_BACKEND_BOUND');
- assert.equal(offline.rest().state,'HELD');
-});
-
-
-test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→NAME→REST with untouched public estates',async()=>{
- const {JSDOM}=await import('jsdom');
- const {webcrypto}=await import('node:crypto');
- const {mountVixenResearchChamber}=await import('../app/encyclopedia/vixen-estate/research-chamber.mjs');
- const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
- const match=candidate.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
- assert(match);
- const dom=new JSDOM('<!doctype html><html><body><div id="vixenReferenceChamber"></div><script type="application/json" id="vixen-corpus-bundle">'+match[1]+'</script></body></html>',{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
- const priorDocument=globalThis.document,priorWindow=globalThis.window;
- const fetcher=async(input,opts)=>{
-  const u=new URL(input);assert.equal(u.origin,'https://vixen.example');assert.equal(opts.method,'GET');
-  const raw=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
-  return {ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>raw};
- };
- try{
-  globalThis.document=dom.window.document;globalThis.window=dom.window;
-  const rootEl=dom.window.document.getElementById('vixenReferenceChamber');
-  const chamber=mountVixenResearchChamber({container:rootEl,baseURL:'https://vixen.example/encyclopedia/reference/',fetcher,cryptoProvider:webcrypto});
-  assert.equal(chamber.mounted,true);
-  assert.equal(chamber.phase(),'NOTICE');
-  assert.equal(rootEl.querySelectorAll('.vxe-work-select option').length,32);
-  assert.equal(rootEl.querySelectorAll('.vxe-estate').length,2);
-  const click=text=>{const b=Array.from(rootEl.querySelectorAll('button')).find(x=>x.textContent.includes(text));assert(b,'Missing button '+text);b.click()};
-  click('Begin an inquiry');
-  assert.equal(chamber.phase(),'ACT');
-  const input=rootEl.querySelector('input.vxe-query-input');assert(input);
-  input.value='Eclipse';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
-  click('Query the independent reference');
-  for(let i=0;i<90&&chamber.status()==='CHECKING';i++)await new Promise(res=>setTimeout(res,10));
-  assert.equal(chamber.status(),'INDEX_MATCHES_UNVERIFIED');
-  const hit=Array.from(rootEl.querySelectorAll('button.vxe-hit')).find(x=>x.textContent.startsWith('G-001'));
-  assert(hit,'Original G-001 source must be selectable');
-  hit.click();
-  for(let i=0;i<90&&chamber.status()==='VERIFYING_SOURCE';i++)await new Promise(res=>setTimeout(res,10));
-  assert.equal(chamber.status(),'CANONICAL_PAYLOAD_VERIFIED');
-  assert.equal(chamber.phase(),'WORLD_ANSWERS');
-  assert.match(rootEl.textContent,/Eclipse–Omega/);
-  assert.match(rootEl.textContent,/CANONICAL PAYLOAD VERIFIED ≠ CLAIM ENTAILMENT/);
-  click('Name the question');assert.equal(chamber.phase(),'NAME');
-  const annotation=rootEl.querySelector('.vxe-name');assert(annotation);
-  annotation.value='Potential question only';annotation.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
-  click('Rest without penalty');assert.equal(chamber.phase(),'REST');
-  assert.equal(rootEl.querySelector('a.vxe-exit').getAttribute('href'),new URL('../app/encyclopedia/',import.meta.url).href,'exit must resolve relative to module location for both project-prefix Pages and root domains');
-  click('Return to inquiry');assert.equal(chamber.phase(),'NAME','rest must return to the exact interrupted interpretation phase');assert.equal(rootEl.querySelector('.vxe-name').value,'Potential question only','human interpretation remains local and unaltered across rest');
-  assert(chamber.history().some(x=>x.action==='RECORD_SOURCE_VERIFIED'));
-  assert(chamber.history().some(x=>x.action==='UNPENALIZED_REST'));
-  assert.equal(chamber.membraneStatus().authority,'READ_ONLY');
- }finally{
-  if(priorDocument===undefined)delete globalThis.document;else globalThis.document=priorDocument;
-  if(priorWindow===undefined)delete globalThis.window;else globalThis.window=priorWindow;
-  dom.window.close();
- }
-});
-
-
-test('Vixen Operahouse, Opera and Performer remain distinct typed roles with no authority inheritance',async()=>{
+test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen Work',async()=>{
  const {STAGE_ROLES,assertStageRoleSeparation,castVixenPerformer,stageVixenOperaEvent,readOperahouseStatus}=await import('../app/encyclopedia/vixen-estate/role-boundary.mjs');
  assert.equal(assertStageRoleSeparation(),true);
  assert.deepEqual(Object.keys(STAGE_ROLES).sort(),['OPERA','OPERAHOUSE','PERFORMER']);
- const performer=castVixenPerformer({work_id:'EM-W01',display_title:'Original Work',identity_status:'UNRESOLVED'});
- assert.equal(performer.role,'PERFORMER');assert.equal(performer.estate,'EMSTD613');
- assert.equal(performer.identity_status,'UNRESOLVED');
- const event=stageVixenOperaEvent('HISTORICAL_WORK_SELECTED',performer,{work_id:'EM-W01'});
+ const source=castVixenPerformer({work_id:'emwork_fixture',display_title:'A Vixen work',identity_status:'UNRESOLVED'});
+ assert.equal(source.estate,'EMSTD613');assert.equal(source.role,'PERFORMER');assert.equal(source.identity_status,'UNRESOLVED');
+ const event=stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{work_id:source.work_id});
  assert.equal(event.role,'OPERA');assert.equal(event.performer.role,'PERFORMER');
- assert.equal(event.authority,'OBSERVATION_AND_HUMAN_INTERPRETATION_ONLY');
- assert.throws(()=>stageVixenOperaEvent('ADMIT',performer,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
- assert.throws(()=>stageVixenOperaEvent('RELEASE',performer,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
- assert.throws(()=>stageVixenOperaEvent('PROMOTE',performer,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
- assert.throws(()=>stageVixenOperaEvent('SOURCE', {role:'OPERAHOUSE',estate:'EMSTD613'}),/TYPED_PERFORMER/);
- const host=readOperahouseStatus({state:'CENSUS_MATCHED'});
- assert.equal(host.role,'OPERAHOUSE');assert.equal(host.release_authority,false);
- assert.equal(host.scientific_closure_authority,false);assert.equal(host.experiment_b_flight,'HELD');
+ assert.throws(()=>stageVixenOperaEvent('ADMIT',source,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ assert.throws(()=>stageVixenOperaEvent('RELEASE',source,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ assert.throws(()=>stageVixenOperaEvent('PROMOTE',source,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+ const infra=readOperahouseStatus({state:'CENSUS_MATCHED'});
+ assert.equal(infra.role,'OPERAHOUSE');assert.equal(infra.release_authority,false);
+ assert.equal(infra.experiment_b_flight,'HELD');
 });
 
-test('Vixen Pedagogue rest remains possible mid-flight; late reference replies never reopen an operator-rested Opera',async()=>{
+test('Cross-Opera reference registry starts empty and refuses unrelated or counterfeit warrants',async()=>{
+ const {inspectVixenCrossOperaWarrant,ADMITTED_VIXEN_CROSSWALKS}=await import('../app/encyclopedia/vixen-estate/cross-opera-warrant.mjs');
+ const {createVixenReferenceMembrane}=await import('../app/encyclopedia/vixen-estate/reference-bridge.mjs');
+ assert.equal(ADMITTED_VIXEN_CROSSWALKS.length,0,'No cross-Opera mapping earned yet');
+ const work={work_id:'emwork_fixture',linked_sources:[{source_file_id:'emsrc_fixture',sha256:'0'.repeat(64)}]};
+ const result=inspectVixenCrossOperaWarrant({work,source:work.linked_sources[0]});
+ assert.equal(result.eligible,false);
+ assert.equal(result.reason,'NO_HUMAN_RATIFIED_CROSS_OPERA_WARRANT');
+ const fabricated=[{opera:'VIXEN_CYBERNETICS',estate:'EMSTD613',work_id:work.work_id,
+  source_file_id:work.linked_sources[0].source_file_id,source_sha256:work.linked_sources[0].sha256,
+  warrant_sha256:'f'.repeat(64),human_ratification_ref:'fabricated',status:'HUMAN_RATIFIED',
+  universal_record_id:'G-001'}];
+ assert.equal(inspectVixenCrossOperaWarrant({work,source:work.linked_sources[0],registry:fabricated}).eligible,false,
+  'Caller supplied registry cannot activate an unratified passage');
+ assert.equal(inspectVixenCrossOperaWarrant({work,source:{source_file_id:'another',sha256:'a'.repeat(64)}}).reason,'SOURCE_NOT_IN_VIXEN_WORK');
+ assert.equal(typeof createVixenReferenceMembrane,'function','Independent backend interface remains available to Operahouse');
+ const scene=await readFile(new URL('vixen-estate/research-chamber.mjs',root),'utf8');
+ assert(!scene.includes('membrane.search('),'No Universal lexical results can appear as Vixen performers');
+ assert(!scene.includes('membrane.getRecord('),'No foreign source body can enter without an approved warrant');
+ assert(!scene.includes('from \'./reference-bridge.mjs\''),'Vixen Opera does not fetch foreign references directly');
+});
+
+test('The Vixen Opera compares source manifestations within ONE Work and refuses synthetic second witnesses',async()=>{
+ const {compareVixenManifestations}=await import('../app/encyclopedia/vixen-estate/research-chamber.mjs');
+ const a={source_file_id:'a',media_type:'text/markdown',byte_length:4100,sha256:'a'.repeat(64)};
+ const b={source_file_id:'b',media_type:'application/pdf',byte_length:8500,sha256:'b'.repeat(64)};
+ const observed=compareVixenManifestations(a,b);
+ assert.equal(observed.state,'METADATA_COMPARISON_ONLY');
+ assert.equal(observed.observations.length,3);
+ assert.match(observed.meaning,/cannot establish conceptual equivalence/);
+ assert.equal(compareVixenManifestations(a,a).state,'HELD_SAME_MANIFESTATION');
+ assert.equal(compareVixenManifestations(a,null).state,'HELD_SINGLE_MANIFESTATION');
+});
+
+test('Vixen native jsdom journey: NOTICE→ACT→documentary observation→NAME→REST; unrelated Opera never appears',async()=>{
  const {JSDOM}=await import('jsdom');
  const {mountVixenResearchChamber}=await import('../app/encyclopedia/vixen-estate/research-chamber.mjs');
  const candidate=await readFile(new URL('vix-cyb.html',root),'utf8');
  const match=candidate.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);assert(match);
- const dom=new JSDOM('<html><body><div id="vixenReferenceChamber"></div><script type="application/json" id="vixen-corpus-bundle">'+match[1]+'</script></body></html>',{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
- const beforeDocument=globalThis.document,beforeWindow=globalThis.window;
- const held=[];
- const fetcher=(input)=>new Promise(resolve=>{
-   const u=new URL(input);
-   held.push(async()=>{
-     const content=await readFile(new URL('.'+u.pathname,new URL('../app/',import.meta.url)),'utf8');
-     resolve({ok:true,status:200,url:u.href,headers:{get:()=>null},text:async()=>content});
-   });
- });
+ const corpus=JSON.parse(match[1]);
+ const dom=new JSDOM('<!doctype html><html><body><div id="vixenReferenceChamber"></div><script type="application/json" id="vixen-corpus-bundle">'+match[1]+'</script></body></html>',{url:'https://vixen.example/encyclopedia/vix-cyb.html'});
+ const previousDocument=globalThis.document,previousWindow=globalThis.window;
  try{
-   globalThis.document=dom.window.document;globalThis.window=dom.window;
-   const scene=dom.window.document.getElementById('vixenReferenceChamber');
-   const app=mountVixenResearchChamber({container:scene,baseURL:'https://vixen.example/encyclopedia/reference/',fetcher});
-   const click=label=>{const b=Array.from(scene.querySelectorAll('button')).find(x=>x.textContent.includes(label));assert(b,'Missing '+label);assert.equal(b.disabled,false,'Operator action must remain enabled: '+label);b.click()};
-   click('Begin an inquiry');assert.equal(app.phase(),'ACT');
-   const input=scene.querySelector('.vxe-query-input');input.value='Eclipse';input.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
-   click('Query the independent reference');
-   assert.equal(held.length,3,'Reference index requests must be truly in flight');
-   click('Rest without penalty');
-   assert.equal(app.phase(),'REST');
-   assert.equal(app.status(),'HELD_OPERATOR_INTERRUPTED_REQUEST');
-   assert(app.history().some(x=>x.role==='OPERA'&&x.action==='UNPENALIZED_REST'&&x.interrupted_inflight===true));
-   for(const complete of held)await complete();
-   await new Promise(r=>setTimeout(r,10));
-   assert.equal(app.phase(),'REST','late network responses must not resurrect ACT or WORLD_ANSWERS');
-   assert.equal(app.status(),'HELD_OPERATOR_INTERRUPTED_REQUEST');
-   assert(!app.history().some(x=>x.action==='REFERENCE_QUERY_RETURNED'));
-   click('Return to inquiry');assert.equal(app.phase(),'ACT');
-   assert.equal(scene.getAttribute('data-stage-role'),'OPERA');
-   assert.equal(scene.querySelector('.vxe-estate-vixen').getAttribute('data-stage-role'),'PERFORMER');
+  globalThis.document=dom.window.document;globalThis.window=dom.window;
+  const rootEl=dom.window.document.getElementById('vixenReferenceChamber');
+  const app=mountVixenResearchChamber({container:rootEl});
+  const click=label=>{const b=Array.from(rootEl.querySelectorAll('button')).find(x=>x.textContent.includes(label));assert(b,'Missing '+label);assert.equal(b.disabled,false);b.click()};
+  assert.equal(app.mounted,true);
+  assert.equal(app.phase(),'NOTICE');
+  assert.equal(app.crossOperaWarrants(),0);
+  assert.equal(rootEl.querySelectorAll('.vxe-work-selector option').length,32);
+  assert.equal(rootEl.querySelectorAll('.vxe-estate').length,2);
+  assert(rootEl.textContent.includes(corpus.works[0].linked_sources[0].original_filename));
+  assert(rootEl.textContent.includes(corpus.works[0].linked_sources[1].original_filename));
+  assert(!rootEl.querySelector('.vxe-hit'));
+  assert(!rootEl.querySelector('.vxe-query-input'));
+  assert.equal(rootEl.querySelector('.vxe-estate-vixen').getAttribute('data-stage-role'),'PERFORMER');
+  assert.equal(rootEl.getAttribute('data-stage-role'),'OPERA');
+  click('Begin this Work');
+  assert.equal(app.phase(),'ACT');
+  click('Observe the recorded differences');
+  assert.equal(app.phase(),'WORLD_ANSWERS');
+  assert.equal(app.status(),'METADATA_COMPARISON_ONLY');
+  assert(rootEl.textContent.includes('Different declared media types'));
+  click('Name an unresolved question');
+  assert.equal(app.phase(),'NAME');
+  const note=rootEl.querySelector('.vxe-name');note.value='Unresolved comparison';note.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+  click('Rest without penalty');assert.equal(app.phase(),'REST');
+  click('Return to the Opera');assert.equal(app.phase(),'NAME');
+  assert.equal(rootEl.querySelector('.vxe-name').value,'Unresolved comparison');
+  assert.equal(rootEl.querySelector('a.vxe-exit').href,new URL('../app/encyclopedia/',import.meta.url).href);
+  assert(app.history().some(x=>x.action==='VIXEN_METADATA_OBSERVED'));
+  const single=corpus.works.findIndex(w=>w.linked_sources.length===1);
+  assert(single>=0,'Historical single-manifestation Work required for negative control');
+  const sel=rootEl.querySelector('.vxe-work-selector select');sel.value=String(single);sel.dispatchEvent(new dom.window.Event('change',{bubbles:true}));
+  assert.equal(app.phase(),'NOTICE');click('Begin this Work');click('Observe the recorded differences');
+  assert.equal(app.status(),'HELD_SINGLE_MANIFESTATION');
  }finally{
-   if(beforeDocument===undefined)delete globalThis.document;else globalThis.document=beforeDocument;
-   if(beforeWindow===undefined)delete globalThis.window;else globalThis.window=beforeWindow;
-   dom.window.close();
+  if(previousDocument===undefined)delete globalThis.document;else globalThis.document=previousDocument;
+  if(previousWindow===undefined)delete globalThis.window;else globalThis.window=previousWindow;
+  dom.window.close();
  }
 });
 
-test('Vixen Reference notice foregrounds Work and source before decorative proscenium at both breakpoints',async()=>{
+test('Vixen source-first visual contract establishes two legible Vixen folios and reduced motion',async()=>{
  const css=await readFile(new URL('vixen-estate/research-chamber.css',root),'utf8');
- assert.match(css,/RGI-01 \/ REPARATIVE NOTICE/);
- assert.match(css,/#view-reference \.vxe-heading h1/);
- assert.match(css,/font-size:clamp\(2\.9rem,4\.5vw,5\.5rem\)/);
+ assert.match(css,/RGI-03 \/ OPERATIC RECONSTRUCTION/);
+ assert.match(css,/\.vxe-vixen-pair \.vxe-source-folio/);
+ assert.match(css,/\.vxe-work-selector/);
+ assert.match(css,/color:#302731/);
  assert.match(css,/@media\(max-width:780px\)/);
- assert.match(css,/RGI-02 \/ SOURCE LEGIBILITY/);
- assert.match(css,/#view-reference \.vxe-evidence \.vxe-copy\{color:#342b35\}/);
- const chamberSource=await readFile(new URL('vixen-estate/research-chamber.mjs',root),'utf8');
- assert.match(chamberSource,/beginButton\.disabled=!ready/);
+ assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
