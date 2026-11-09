@@ -96,6 +96,32 @@ try {
     assert.equal(errors.length, 0, 'Uncaught runtime errors during inquiry: ' + errors.join(' | '));
     await page.screenshot({ path: path.join(output, stem + '-resumed.png'), fullPage: false });
 
+    // The reader is a separately typed Operahouse stage, not the Vixen Opera.
+    const house=page.locator('#operahouseEncounter');
+    assert.equal(await house.getAttribute('data-stage-role'),'OPERAHOUSE');
+    assert.equal(await house.locator('[data-stage-role="INDEPENDENT_REFERENCE"]').count(),1);
+    assert.equal(await house.locator('[data-stage-role="SOURCE_LOCUS"]').count(),1);
+    assert(!/G-101|Eclipse[–-]Omega/.test(await house.innerText()),
+      'Independent Universal records cannot be auto-presented before operator inquiry');
+    await house.getByRole('button',{name:'Open independent read-only estate'}).click();
+    await house.getByRole('button',{name:'Search Universal separately'}).waitFor({timeout:15000});
+    await house.getByRole('searchbox',{name:'Search independent Universal index'}).fill('G-101');
+    await house.getByRole('button',{name:'Search Universal separately'}).click();
+    await house.getByRole('button',{name:/G-101/}).first().click();
+    await house.locator('.oh-payload').waitFor({timeout:15000});
+    assert.match(await house.innerText(),/VERIFIED INDEPENDENT REFERENCE · G-101/);
+    assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
+      'A separately witnessed Universal record must not become a Vixen Performer');
+    await house.getByRole('button',{name:'Observe separately — do not ratify a relationship'}).click();
+    assert.equal(await house.locator('.oh-disposition').getAttribute('data-encounter-state'),
+      'WITNESSED_UNLINKED_PAIR');
+    assert.match(await house.locator('.oh-disposition').innerText(),/Relationship: UNESTABLISHED/);
+    await house.getByRole('button',{name:'Rest without penalty'}).click();
+    await house.getByRole('button',{name:'Resume without penalty'}).click();
+    assert.equal(errors.length,0,'Uncaught errors across distinct Operahouse encounter');
+    await page.screenshot({path:path.join(output,stem+'-operahouse.png'),fullPage:false});
+
+
     witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, errors });
     await context.close();
   }
