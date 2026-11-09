@@ -155,6 +155,14 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   backstage.append(text('Cross-Opera source passage: '+policy.state+' · '+policy.reason+'. No mapping is currently human-ratified. This Opera displays its own Works only.','vxe-source-note'));
   backstage.append(text('Public Universal reference index remains available through the separate TD613 Encyclopedia. Its records cannot become Vixen performers through lexical search or proximity.','vxe-source-note'));
   controls.append(backstage);
+  // A real invitation across a visible stage boundary, with zero automatic
+  // transport, source lookup or transfer of authorship.
+  controls.append(action('Explore the separate Operahouse witness room ↓',()=>{
+    document.getElementById('operahouseEncounter')?.scrollIntoView({
+      behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',
+      block:'start'
+    });
+  },'vxe-text-control'));
   const history=el('details','vxe-trace');history.append(el('summary','','This Opera’s local route history ('+state.events.length+')'));
   const list=el('ol','vxe-route-history');state.events.forEach(e=>list.append(el('li','',String(e.seq).padStart(2,'0')+' · '+e.action)));history.append(list);controls.append(history);
   container.append(controls);
