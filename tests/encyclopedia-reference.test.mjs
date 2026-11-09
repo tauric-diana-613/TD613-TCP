@@ -97,6 +97,22 @@ test('equations retain scoped assumptions and public exports carry current mater
 
 
 
+
+test('Vixen Folios enforce source-bound stage copy and a non-colliding compact masthead',async()=>{
+  const page=await readFile(new URL('vix-cyb.html',root),'utf8');
+  assert(page.includes('VIX-UX-04 · HEADER FIT CONTRACT'));
+  assert(page.includes('@media (max-width:1580px)'));
+  assert(page.includes('.site-header .main-nav{display:none}'));
+  assert(page.includes('.site-header .menu-toggle{display:inline-flex}'));
+  assert(page.includes('aria-label="Vixen Work and manifestation comparison"'));
+  assert(page.includes('VIXEN FOLIOS / INITIALIZING'));
+  assert(!page.includes('Eclipse–Omega')&&!page.includes('Eclipse-Omega')&&!page.includes('G-001'),
+    'Vixen page must not embed unrelated Opera records');
+  assert(!page.includes('Cross-estate research encounter'));
+  assert(page.includes("window.scrollTo({ top: 0, behavior: 'instant' });"),
+    'Changing departments should not leave a transitional screenshot beneath the fixed masthead');
+});
+
 test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separate backstage transport',async()=>{
  const page=await readFile(new URL('vix-cyb.html',root),'utf8');
  const manifestMatch=page.match(/<script type="application\/json" id="vixen-estate-manifest">([\s\S]*?)<\/script>/);
