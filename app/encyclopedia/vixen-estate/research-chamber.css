@@ -219,3 +219,31 @@
 #view-reference .vxe-native-question-list{padding:0 0 0 1.3rem;color:#f0d9e2;font:400 .93rem/1.75 Georgia,serif}
 #view-reference .vxe-native-question-list li{margin:.6rem 0}
 #view-reference .vxe-native-questions .vxe-source-note{color:#ddb8ca;font:.74rem/1.6 system-ui,sans-serif}
+
+/* RGI-04 / VISIBLE CONTROL: No pale-on-pale selections or mobile overflow. */
+#view-reference .vxe-work-selector select.vxe-work-select{
+  display:block;
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  min-height:48px;
+  padding:.7rem 2.2rem .7rem .85rem;
+  color:#faf0f5;
+  background:#211a25;
+  border:1px solid #f4acc8;
+  font:500 .83rem/1.4 system-ui,sans-serif;
+  text-overflow:ellipsis;
+  outline-offset:3px;
+}
+#view-reference .vxe-work-selector select.vxe-work-select option{
+  color:#211a25;
+  background:#faf0f5;
+}
+#view-reference .vxe-work-selector select.vxe-work-select:focus-visible{outline:2px solid #f9f36d}
+#view-reference .vxe-vixen-pair select.vxe-work-select option{color:#211a25;background:#faf0f5}
+#view-reference .vxe-work-selector{min-width:0;overflow:hidden}
+@media(max-width:780px){
+  #view-reference .vxe-heading h1{font-size:clamp(2.15rem,9vw,3.6rem);line-height:1.02}
+  #view-reference .vxe-work-selector select.vxe-work-select{font-size:.78rem}
+}
