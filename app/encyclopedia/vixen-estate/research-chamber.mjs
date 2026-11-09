@@ -123,6 +123,15 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   else commands.append(action('Return to the Opera',resume,'vxe-primary'));
   const exit=el('a','vxe-control vxe-exit','Return to TD613 Encyclopedia ↗');exit.href=new URL('../',import.meta.url).href;commands.append(exit);
   controls.append(commands);
+  const lineage=el('details','vxe-native-questions');
+  lineage.append(el('summary','','Historical Vixen questions and declared lineage limits'));
+  const challengeList=el('ul','vxe-native-question-list');
+  (Array.isArray(w.unresolved_questions)?w.unresolved_questions:[]).forEach(q=>challengeList.append(el('li','',String(q))));
+  (Array.isArray(w.substantive_differences_if_any)?w.substantive_differences_if_any:[]).forEach(q=>challengeList.append(el('li','',String(q))));
+  if(!challengeList.children.length)challengeList.append(el('li','','No additional lineage question is public for this Work.'));
+  lineage.append(challengeList);
+  lineage.append(text('These questions are recorded Vixen source metadata, not freshly verified manuscript claims.','vxe-source-note'));
+  controls.append(lineage);
   if(state.result&&['WORLD_ANSWERS','NAME'].includes(state.phase)){
     const evidence=el('article','vxe-result');
     add(evidence,el('p','vxe-eyebrow','CATALOGUE OBSERVATION · '+state.result.state),text(state.result.meaning));
