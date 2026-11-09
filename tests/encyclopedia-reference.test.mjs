@@ -368,6 +368,20 @@ test('Operator-led two-estate encounter verifies independently and leaves relati
   assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
   assert.equal(receipt.admissibility.publication_eligible,false);
   assert.equal(receipt.custody.empirical_replication_credit,0);
+  assert(receipt.route_history.length>=3,'Recorded route must accompany the terminal receipt');
+  assert.equal(receipt.route_history.at(-1).action,'SEPARATE_ESTATES_OBSERVED');
+  assert(receipt.route_history.every(x=>x.local_observation_time&&x.sequence>0));
+  const leftFirst=constructCrossAtelierWitness({
+   work:corpus.works[0],source:corpus.works[0].linked_sources[0],witness,
+   history:[{sequence:1,action:'VIXEN_SELECTED'},{sequence:2,action:'UNIVERSAL_WITNESSED'}]
+  });
+  const rightFirst=constructCrossAtelierWitness({
+   work:corpus.works[0],source:corpus.works[0].linked_sources[0],witness,
+   history:[{sequence:1,action:'UNIVERSAL_WITNESSED'},{sequence:2,action:'VIXEN_SELECTED'}]
+  });
+  assert.equal(leftFirst.universal.record_id,rightFirst.universal.record_id);
+  assert.notDeepEqual(leftFirst.route_history,rightFirst.route_history,
+    'Twin-worlds with equal terminal sources must retain distinct local route memories');
   const missing=constructCrossAtelierWitness({
    work:corpus.works[0],source:corpus.works[0].linked_sources[0],
    witness:null,warrant:{eligible:true,record_id:undefined}
