@@ -124,6 +124,7 @@ try {
     assert.equal(await house.locator('.oh-disposition').getAttribute('data-encounter-state'),
       'WITNESSED_UNLINKED_PAIR');
     assert.match(await house.locator('.oh-disposition').innerText(),/Relationship: UNESTABLISHED/);
+    await house.locator('.oh-disposition .oh-payload summary').click();
     const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload pre').innerText());
     assert.equal(receipt.schema,'ua:contract:cross_atelier_witness');
     assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
