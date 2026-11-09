@@ -79,7 +79,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   container.setAttribute('data-stage-role','OPERA');
   const h=el('header','vxe-heading');
   add(h,el('p','vxe-eyebrow','VIXEN CYBERNETICS · HISTORICAL WORKS AND MANIFESTATIONS'),
-    el('h1','','The Documentary Score'),
+    el('h1','','The Vixen Folios'),
     text('One Work. Its recorded manifestations. Differences that can be observed—and questions that must remain open.','vxe-lede'));
   container.append(h);
   const phases=el('ol','vxe-steps');
@@ -96,7 +96,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   add(selection,el('label','vxe-eyebrow','THE PERFORMER · SELECT ONE HISTORICAL WORK'),
     selector(corpus.works.map((x,i)=>({value:i,label:String(i+1).padStart(2,'0')+' · '+(x.display_title||x.declared_title||x.work_id)})),state.workIndex,chooseWork,'Choose Vixen Work'));
   const identity=el('h2','vxe-work-identity',w.display_title||w.declared_title||w.work_id);
-  add(selection,identity,text('Work ID: '+w.work_id+' · Recorded manifestations: '+ss.length+' · Identity: '+(w.identity_status||'UNRESOLVED'),'vxe-source-note'));
+  add(selection,identity,text('Work ID: '+w.work_id+' · Manifestations: '+ss.length+' · Same-Work relation: '+(w.identity_status||'UNDETERMINED')+' · Authorship: '+(w.authorship||'UNRESOLVED'),'vxe-source-note'));
   container.append(selection);
   const grid=el('div','vxe-spatial vxe-vixen-pair');
   const first=el('section','vxe-estate vxe-estate-vixen');
