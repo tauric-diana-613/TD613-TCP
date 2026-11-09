@@ -109,6 +109,14 @@ try {
     assert.equal(await house.locator('[data-stage-role="SOURCE_LOCUS"]').count(),1);
     assert(!/G-101|Eclipse[–-]Omega/.test(await house.innerText()),
       'Independent Universal records cannot be auto-presented before operator inquiry');
+    // Capture the actual room entrance separately from downstream Playwright scrolling.
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.waitForTimeout(90);
+    const roomTitle=await house.locator('.oh-title').boundingBox();
+    const fixedHeader=await page.locator('.site-header').boundingBox();
+    assert(roomTitle&&fixedHeader&&roomTitle.y>=fixedHeader.y+fixedHeader.height-1,
+      'The room heading must not be hidden behind the fixed header on entry');
+    await page.screenshot({path:path.join(output,stem+'-operahouse-entry.png'),fullPage:false});
     await house.getByRole('button',{name:'Open independent read-only estate'}).click();
     await house.getByRole('button',{name:'Search Universal separately'}).waitFor({timeout:15000});
     await house.getByRole('searchbox',{name:'Search independent Universal index'}).fill('G-101');
@@ -134,7 +142,14 @@ try {
     await house.getByRole('button',{name:'Rest without penalty'}).click();
     await house.getByRole('button',{name:'Resume without penalty'}).click();
     assert.equal(errors.length,0,'Uncaught errors across distinct Operahouse encounter');
-    await page.screenshot({path:path.join(output,stem+'-operahouse.png'),fullPage:false});
+    // The evidence receipt is intentionally framed as a separate observation.
+    // Never send a cropped mid-scroll screenshot as an approved visual witness.
+    await page.evaluate(()=>{
+      const result=document.querySelector('#operahouseEncounter .oh-disposition');
+      if(result)window.scrollTo({top:Math.max(0,window.scrollY+result.getBoundingClientRect().top-96),behavior:'instant'});
+    });
+    await page.waitForTimeout(90);
+    await page.screenshot({path:path.join(output,stem+'-operahouse-receipt.png'),fullPage:false});
     await house.getByRole('button',{name:/Return to Vixen Opera/}).click();
     assert.equal(await house.isHidden(),true,'Reference Opera must leave before Vixen returns');
     assert.equal(await page.locator('#vixenReferenceChamber').isVisible(),true);
