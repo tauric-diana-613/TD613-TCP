@@ -257,3 +257,100 @@ test('Vixen source-first visual contract establishes two legible Vixen folios an
  assert.match(css,/@media\(max-width:780px\)/);
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });
+
+
+test('Wendbine-compatible exact response-byte custody rejects malformed UTF-8 and tampered records',async()=>{
+ const {webcrypto}=await import('node:crypto');
+ const {createVixenReferenceMembrane}=await import('../app/encyclopedia/reference/vixen-read-gateway.mjs');
+ let mode='authentic';
+ const fetcher=async url=>{
+  const u=new URL(url);
+  assert.equal(u.origin,'https://independent.example');
+  const relative=u.pathname.replace(/^\/encyclopedia\//,'');
+  let bytes=await readFile(new URL(relative,root));
+  if(relative==='reference/records/G-101.json'){
+   if(mode==='invalid')bytes=Buffer.from([0xff,0xfe,0x0a]);
+   if(mode==='tampered')bytes=Buffer.from(bytes.toString('utf8').replace('FADT','ALTERED'), 'utf8');
+  }
+  return {ok:true,status:200,url:u.href,headers:{get:k=>k==='content-length'?String(bytes.byteLength):null},
+   arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)};
+ };
+ const make=()=>createVixenReferenceMembrane({
+  baseURL:'https://independent.example/encyclopedia/reference/',fetcher,cryptoProvider:webcrypto
+ });
+ const genuine=make();assert.equal((await genuine.open()).state,'CENSUS_MATCHED');
+ const observed=await genuine.getRecord('G-101');
+ assert.equal(observed.verified_at_interaction,true);
+ assert.equal(observed.record_sha256,sha(JSON.stringify(observed.record).replace(/</g,'\\u003c')));
+ assert.equal(observed.authorization,'READ_ONLY');
+ assert.equal(genuine.related('G-101').length>0,true);
+ mode='invalid';const invalid=make();await invalid.open();
+ await assert.rejects(invalid.getRecord('G-101'),e=>e.code==='REFERENCE_UNDECODABLE_UTF8');
+ mode='tampered';const tampered=make();await tampered.open();
+ await assert.rejects(tampered.getRecord('G-101'),e=>e.code==='RECORD_DIGEST_MISMATCH');
+});
+
+test('Operahouse reader has a distinct sibling stage and never grants Vixen source status to a reference',async()=>{
+ const page=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const module=await readFile(new URL('reference/vixen-operator-encounter.mjs',root),'utf8');
+ const gateway=await readFile(new URL('reference/vixen-read-gateway.mjs',root),'utf8');
+ assert.match(page,/id="operahouseEncounter"[^>]*data-stage-role="OPERAHOUSE"/);
+ assert.match(page,/reference\/vixen-operator-encounter.mjs/);
+ assert.match(page,/reference\/vixen-operator-encounter.css/);
+ assert.match(module,/WITNESSED_UNLINKED_PAIR/);
+ assert.match(module,/SOURCE_LOCUS/);
+ assert.match(module,/INDEPENDENT_REFERENCE/);
+ assert.match(module,/NO_HUMAN_RATIFIED_CROSS_OPERA_WARRANT/);
+ assert(!module.includes('admitRecord('));
+ assert(!module.includes('prepareImport('));
+ assert.match(gateway,/new TextDecoder\('utf-8',\{fatal:true\}\)/);
+ assert.match(gateway,/response.arrayBuffer\(\)/);
+ assert(!gateway.includes('new TextEncoder().encode(raw)'), 'No decode/re-encode masquerading as served byte proof');
+});
+
+test('Operator-led two-estate encounter verifies independently and leaves relationship unestablished',async()=>{
+ const {JSDOM}=await import('jsdom');
+ const {mountVixenOperahouseEncounter,classifyIndependentEncounter}=await import('../app/encyclopedia/reference/vixen-operator-encounter.mjs');
+ const html=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const corpus=JSON.parse(html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
+ const ref=JSON.parse(await readFile(new URL('reference/records/G-101.json',root),'utf8'));
+ const raw=(await readFile(new URL('reference/records/G-101.json',root))).toString('utf8').trimEnd();
+ const witness={id:'G-101',record:ref,verified_at_interaction:true,authorization:'READ_ONLY',
+  record_sha256:sha(raw),served_file_sha256:sha(raw+'\n')};
+ const mock={
+  open:async()=>({state:'CENSUS_MATCHED',edition:'1.4',records:1141,edges:2131}),
+  search:()=>[{id:'G-101',label:ref.label,kind:ref.kind}],
+  getRecord:async()=>witness,related:()=>[{source:'G-101',target:'M-07',type:'mentions_record'}]
+ };
+ const dom=new JSDOM('<!doctype html><div id="operahouseEncounter"></div>',{url:'https://independent.example/'});
+ const prev=globalThis.document;
+ try{
+  globalThis.document=dom.window.document;
+  const host=dom.window.document.getElementById('operahouseEncounter');
+  const app=mountVixenOperahouseEncounter({host,corpus,membrane:mock});
+  const click=(label)=>{
+   const b=[...host.querySelectorAll('button')].find(x=>x.textContent.includes(label));
+   assert(b,'Button missing: '+label);b.click();
+  };
+  const settle=async()=>{for(let i=0;i<3;i++)await new Promise(resolve=>setImmediate(resolve))};
+  assert.equal(host.dataset.stageRole,'OPERAHOUSE');
+  assert.equal(host.querySelectorAll('[data-stage-role="SOURCE_LOCUS"]').length,1);
+  assert.equal(host.querySelectorAll('[data-stage-role="INDEPENDENT_REFERENCE"]').length,1);
+  assert(!host.textContent.includes('G-101'),'Universal record must not preload');
+  click('Open independent');await settle();assert.equal(app.service(),'CENSUS_MATCHED');
+  const query=host.querySelector('input.oh-input');query.value='FADT';
+  query.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
+  click('Search Universal separately');click('G-101');await settle();
+  assert(host.textContent.includes('VERIFIED INDEPENDENT REFERENCE'));
+  assert.equal(app.disposition(),null,'Source verification must not create a crosswalk');
+  click('Observe separately');assert.equal(app.disposition().state,'WITNESSED_UNLINKED_PAIR');
+  assert.equal(app.disposition().relation,'UNESTABLISHED');
+  assert.equal(app.disposition().publication_eligible,false);
+  assert(host.textContent.includes('UNESTABLISHED'));
+  click('Rest without penalty');assert.equal(app.phase(),'REST');
+  click('Resume without penalty');assert.equal(app.phase(),'OBSERVED');
+  assert(app.history().some(e=>e.action==='INDEPENDENT_RECORD_BYTES_VERIFIED'));
+  assert.equal(classifyIndependentEncounter({work:corpus.works[0],source:corpus.works[0].linked_sources[0],witness:null}).state,
+   'HELD_INDEPENDENT_REFERENCE_WITNESS');
+ }finally{if(prev===undefined)delete globalThis.document;else globalThis.document=prev;dom.window.close()}
+});
