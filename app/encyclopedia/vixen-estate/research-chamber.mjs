@@ -97,6 +97,9 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
     selector(corpus.works.map((x,i)=>({value:i,label:String(i+1).padStart(2,'0')+' · '+(x.display_title||x.declared_title||x.work_id)})),state.workIndex,chooseWork,'Choose Vixen Work'));
   const identity=el('h2','vxe-work-identity',w.display_title||w.declared_title||w.work_id);
   add(selection,identity,text('Work ID: '+w.work_id+' · Manifestations: '+ss.length+' · Same-Work relation: '+(w.identity_status||'UNDETERMINED')+' · Authorship: '+(w.authorship||'UNRESOLVED'),'vxe-source-note'));
+  const fullTitle=el('details','vxe-title-disclosure');
+  add(fullTitle,el('summary','','Read complete Work title'),text(w.display_title||w.declared_title||w.work_id));
+  selection.append(fullTitle);
   container.append(selection);
   const grid=el('div','vxe-spatial vxe-vixen-pair');
   const first=el('section','vxe-estate vxe-estate-vixen');
