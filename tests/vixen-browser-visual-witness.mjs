@@ -112,10 +112,18 @@ try {
     assert.match(await house.innerText(),/VERIFIED INDEPENDENT REFERENCE · G-101/);
     assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
       'A separately witnessed Universal record must not become a Vixen Performer');
+    await house.getByRole('textbox',{name:'Operator-authored unratified research question'}).fill(
+      'What separately acquired evidence could warrant this relationship?');
     await house.getByRole('button',{name:'Observe separately — do not ratify a relationship'}).click();
     assert.equal(await house.locator('.oh-disposition').getAttribute('data-encounter-state'),
       'WITNESSED_UNLINKED_PAIR');
     assert.match(await house.locator('.oh-disposition').innerText(),/Relationship: UNESTABLISHED/);
+    const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload pre').innerText());
+    assert.equal(receipt.schema,'ua:contract:cross_atelier_witness');
+    assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
+    assert.equal(receipt.admissibility.publication_eligible,false);
+    assert.equal(receipt.universal.record_id,'G-101');
+    assert.match(receipt.operator_proposal.text,/separately acquired evidence/);
     await house.getByRole('button',{name:'Rest without penalty'}).click();
     await house.getByRole('button',{name:'Resume without penalty'}).click();
     assert.equal(errors.length,0,'Uncaught errors across distinct Operahouse encounter');
