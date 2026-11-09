@@ -32,6 +32,7 @@ function sourceFolio(src,position){
 }
 function compare(a,b){
  if(!a||!b)return Object.freeze({state:'HELD_SINGLE_MANIFESTATION',meaning:'One recorded manifestation cannot furnish a pairwise comparison.',observations:[]});
+ if(a.source_file_id===b.source_file_id)return Object.freeze({state:'HELD_SAME_MANIFESTATION',meaning:'A single manifestation compared with itself cannot establish an independent second source.',observations:[]});
  const observations=[
    ['File representation',a.media_type===b.media_type?'Same declared media type':'Different declared media types'],
    ['Recorded size',a.byte_length===b.byte_length?'Same recorded length':'Different recorded lengths'],
@@ -94,7 +95,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   const selection=el('div','vxe-work-selector');
   add(selection,el('label','vxe-eyebrow','THE PERFORMER · SELECT ONE HISTORICAL WORK'),
     selector(corpus.works.map((x,i)=>({value:i,label:String(i+1).padStart(2,'0')+' · '+(x.display_title||x.declared_title||x.work_id)})),state.workIndex,chooseWork,'Choose Vixen Work'));
-  const identity=el('p','vxe-work-identity',w.display_title||w.declared_title||w.work_id);
+  const identity=el('h2','vxe-work-identity',w.display_title||w.declared_title||w.work_id);
   add(selection,identity,text('Work ID: '+w.work_id+' · Recorded manifestations: '+ss.length+' · Identity: '+(w.identity_status||'UNRESOLVED'),'vxe-source-note'));
   container.append(selection);
   const grid=el('div','vxe-spatial vxe-vixen-pair');
@@ -110,7 +111,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
     second.append(selector(ss.map((src,i)=>({value:i,label:sourceName(src)})),state.second,i=>{state.second=i;state.result=null;if(state.phase==='WORLD_ANSWERS'||state.phase==='NAME')state.phase='ACT';render()},'Select counterpart manifestation'));
   }
   second.append(sourceFolio(ss[state.second], 'B'));
-  add(hinge,el('span','','S ≠ W ≠ A'),el('strong','','ONE WORK · TWO SOURCE LOCI'),el('span','','AUTHORSHP UNRESOLVED'));
+  add(hinge,el('span','','S ≠ W ≠ A'),el('strong','','ONE WORK · TWO SOURCE LOCI'),el('span','','AUTHORSHIP UNRESOLVED'));
   grid.append(first,hinge,second);container.append(grid);
   const controls=el('section','vxe-tail');
   const commands=el('div','vxe-actions');
