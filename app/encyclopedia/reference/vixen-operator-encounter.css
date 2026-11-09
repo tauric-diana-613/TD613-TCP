@@ -3,7 +3,7 @@
    manuscript catalogue inherits the other's source or authorship status. */
 #operahouseEncounter{
   --oh-ink:#151820;--oh-paper:#f7f0e6;--oh-rose:#ff91af;--oh-gold:#f9f36d;
-  position:relative;isolation:isolate;box-sizing:border-box;margin:clamp(2rem,4vw,4rem) 0 1rem;
+  position:relative;isolation:isolate;box-sizing:border-box;scroll-margin-top:92px;margin:clamp(2rem,4vw,4rem) 0 1rem;
   padding:clamp(1.2rem,3vw,3rem);color:#faf4f1;background:
   radial-gradient(ellipse at 92% 9%,rgba(249,243,109,.12),transparent 45%),
   linear-gradient(150deg,#1d1a25,#090e16 65%,#14151e);
