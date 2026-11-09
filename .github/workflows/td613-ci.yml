@@ -35,6 +35,38 @@ env:
   PLAYWRIGHT_VERSION: '1.53.2'
 
 jobs:
+  atlas_rulefield_snapshot_export:
+    name: Export exact-commit Atlas and Rulefield research ZIPs
+    if: github.event_name == 'pull_request' && github.head_ref == 'research/atlas-rulefield-snapshot-export-20261109'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 7b4b9a4c955c94a0058261c2f5ec2eef00c07056
+          path: source/atlas
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 12dcc38adea8aeb04649900463566d67546cf025
+          path: source/rulefield
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: export
+          persist-credentials: false
+      - name: Build and verify immutable source snapshots
+        run: python3 export/scripts/export-atlas-rulefield-snapshots.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: atlas-rulefield-two-exact-head-snapshots
+          path: |
+            dist/TD613_Atlas_After_Hours_GitHub_7b4b9a4c.zip
+            dist/TD613_Rulefield_GitHub_12dcc38a.zip
+          if-no-files-found: error
+          retention-days: 7
+
   atlas_eighth_order:
     name: Atlas After Hours Eighth-Order exact-head research tests
     needs: scope
