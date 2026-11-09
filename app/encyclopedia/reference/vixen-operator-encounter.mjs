@@ -282,6 +282,12 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   const footer=el('div','oh-footer');
   footer.append(button(state.phase==='REST'?'Resume without penalty':'Rest without penalty',
     state.phase==='REST'?resume:rest));
+  footer.append(button('Return to Vixen Folios ↑',()=>{
+    document.getElementById('vixenReferenceChamber')?.scrollIntoView({
+      behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',
+      block:'start'
+    });
+  }));
   const path=el('details','oh-history');path.append(el('summary','','Session-only custody route ('+state.events.length+' events)'));
   const list=el('ol','');for(const event of state.events)list.append(el('li','',event.sequence+' · '+event.action));
   path.append(list);footer.append(path);host.append(footer);
