@@ -271,6 +271,10 @@ test('Wendbine-compatible exact response-byte custody rejects malformed UTF-8 an
   if(relative==='reference/records/G-101.json'){
    if(mode==='invalid')bytes=Buffer.from([0xff,0xfe,0x0a]);
    if(mode==='tampered')bytes=Buffer.from(bytes.toString('utf8').replace('FADT','ALTERED'), 'utf8');
+   if(mode==='oversizedStream')return {
+    ok:true,status:200,url:u.href,headers:{get:()=>null},
+    body:new ReadableStream({start(c){c.enqueue(new Uint8Array(250001));c.close()}})
+   };
   }
   return {ok:true,status:200,url:u.href,headers:{get:k=>k==='content-length'?String(bytes.byteLength):null},
    arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)};
@@ -288,6 +292,9 @@ test('Wendbine-compatible exact response-byte custody rejects malformed UTF-8 an
  await assert.rejects(invalid.getRecord('G-101'),e=>e.code==='REFERENCE_UNDECODABLE_UTF8');
  mode='tampered';const tampered=make();await tampered.open();
  await assert.rejects(tampered.getRecord('G-101'),e=>e.code==='RECORD_DIGEST_MISMATCH');
+ mode='oversizedStream';const oversized=make();await oversized.open();
+ await assert.rejects(oversized.getRecord('G-101'),e=>e.code==='BOUNDARY_REFUSAL',
+  'Missing Content-Length cannot bypass the streamed byte budget');
 });
 
 test('Operahouse reader has a distinct sibling stage and never grants Vixen source status to a reference',async()=>{
