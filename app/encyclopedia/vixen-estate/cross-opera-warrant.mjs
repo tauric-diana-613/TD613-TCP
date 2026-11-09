@@ -17,7 +17,8 @@ export const VIXEN_ESTATE='EMSTD613';
  */
 export const ADMITTED_VIXEN_CROSSWALKS=Object.freeze([]);
 const HASH=/^[0-9a-f]{64}$/;
-export function inspectVixenCrossOperaWarrant({work,source,registry=ADMITTED_VIXEN_CROSSWALKS}={}){
+export function inspectVixenCrossOperaWarrant({work,source}={}){
+ const registry=ADMITTED_VIXEN_CROSSWALKS;
  const workId=work?.work_id,sourceId=source?.source_file_id;
  const sourceBelongsToWork=typeof workId==='string'
    && typeof sourceId==='string'
@@ -37,7 +38,7 @@ export function inspectVixenCrossOperaWarrant({work,source,registry=ADMITTED_VIX
  if(!candidate)return Object.freeze({state:'HELD',reason:'NO_HUMAN_RATIFIED_CROSS_OPERA_WARRANT',eligible:false});
  return Object.freeze({state:'CANDIDATE',eligible:true,record_id:candidate.universal_record_id,warrant_sha256:candidate.warrant_sha256,claim_ceiling:'WARRANT_PRESENT_NOT_SCIENTIFIC_ENTAILMENT'});
 }
-export function assertNoAutomaticCrossOperaEntry({work,source,registry}={}){
- const r=inspectVixenCrossOperaWarrant({work,source,registry});
+export function assertNoAutomaticCrossOperaEntry({work,source}={}){
+ const r=inspectVixenCrossOperaWarrant({work,source});
  return r.eligible ? r : Object.freeze({state:'HELD',reason:r.reason,eligible:false});
 }
