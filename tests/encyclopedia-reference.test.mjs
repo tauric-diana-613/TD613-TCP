@@ -310,7 +310,8 @@ test('Operahouse reader has a distinct sibling stage and never grants Vixen sour
 
 test('Operator-led two-estate encounter verifies independently and leaves relationship unestablished',async()=>{
  const {JSDOM}=await import('jsdom');
- const {mountVixenOperahouseEncounter,classifyIndependentEncounter}=await import('../app/encyclopedia/reference/vixen-operator-encounter.mjs');
+ const {mountVixenOperahouseEncounter,classifyIndependentEncounter,constructCrossAtelierWitness,
+  CROSS_ATELIER_WITNESS_CONTRACT}=await import('../app/encyclopedia/reference/vixen-operator-encounter.mjs');
  const html=await readFile(new URL('vix-cyb.html',root),'utf8');
  const corpus=JSON.parse(html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
  const ref=JSON.parse(await readFile(new URL('reference/records/G-101.json',root),'utf8'));
@@ -343,10 +344,29 @@ test('Operator-led two-estate encounter verifies independently and leaves relati
   click('Search Universal separately');click('G-101');await settle();
   assert(host.textContent.includes('VERIFIED INDEPENDENT REFERENCE'));
   assert.equal(app.disposition(),null,'Source verification must not create a crosswalk');
+  const question=host.querySelector('.oh-question');
+  question.value='Which external relation, if any, could be independently warranted?';
+  question.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
   click('Observe separately');assert.equal(app.disposition().state,'WITNESSED_UNLINKED_PAIR');
   assert.equal(app.disposition().relation,'UNESTABLISHED');
   assert.equal(app.disposition().publication_eligible,false);
   assert(host.textContent.includes('UNESTABLISHED'));
+  const receiptText=host.querySelector('.oh-disposition .oh-payload pre').textContent;
+  const receipt=JSON.parse(receiptText);
+  assert.equal(receipt.schema,CROSS_ATELIER_WITNESS_CONTRACT);
+  assert.equal(receipt.operator_proposal.evidence_class,'UNRATIFIED_QUESTION_NOT_SOURCE_DATA');
+  assert.match(receipt.operator_proposal.text,/Which external relation/);
+  assert.equal(receipt.universal.record_id,'G-101');
+  assert.equal(receipt.vixen.estate,'EMSTD613');
+  assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
+  assert.equal(receipt.admissibility.publication_eligible,false);
+  assert.equal(receipt.custody.empirical_replication_credit,0);
+  const missing=constructCrossAtelierWitness({
+   work:corpus.works[0],source:corpus.works[0].linked_sources[0],
+   witness:null,warrant:{eligible:true,record_id:undefined}
+  });
+  assert.equal(missing.disposition,'HELD_INDEPENDENT_REFERENCE_WITNESS');
+  assert.equal(missing.admissibility.human_ratified_crosswalk,false);
   click('Rest without penalty');assert.equal(app.phase(),'REST');
   click('Resume without penalty');assert.equal(app.phase(),'OBSERVED');
   assert(app.history().some(e=>e.action==='INDEPENDENT_RECORD_BYTES_VERIFIED'));
