@@ -213,3 +213,9 @@
  #view-reference .vxe-observations dd{padding:.1rem .4rem .65rem}
  #view-reference .vxe-result{padding:1rem 1.05rem}
 }
+
+#view-reference .vxe-native-questions{margin:1.35rem 0;padding:1.1rem 1.3rem;border:1px solid rgba(255,145,175,.45);max-width:980px;background:rgba(255,145,175,.055)}
+#view-reference .vxe-native-questions summary{color:#ffcfdf;font:.82rem/1.6 system-ui,sans-serif;cursor:pointer;letter-spacing:.04em}
+#view-reference .vxe-native-question-list{padding:0 0 0 1.3rem;color:#f0d9e2;font:400 .93rem/1.75 Georgia,serif}
+#view-reference .vxe-native-question-list li{margin:.6rem 0}
+#view-reference .vxe-native-questions .vxe-source-note{color:#ddb8ca;font:.74rem/1.6 system-ui,sans-serif}
