@@ -11,7 +11,7 @@
 
 The predecessor Vixen Folios correctly removed an automatic cross-Opera search result from Em's performance. But they also removed the distinct, active cross-estate research encounter that Candidate 4 intended.
 
-This successor retains Vixen's own Opera and its authentic documented Performers, while adding an **independently typed Operahouse reading room** as a sibling surface, never as a foreign Vixen Performer. Neither source estate automatically selects a source from the other.
+This successor retains Vixen's own Opera and its authentic documented Performers, while adding an **independently typed Operahouse reading room** as a sibling surface, never as a foreign Vixen Performer. It is also an **exclusive stage switch**: the reader starts hidden, Vixen leaves the visible stage when the operator enters the Operahouse, and the reading room leaves when the operator returns. Neither estate automatically selects a source from the other.
 
 The human operator explicitly opens the Universal reference estate, chooses a query, selects a record, verifies that record's exact bytes, reads its original canonical JSON text and recorded Universal graph edges, and may place that independent witness beside a selected Vixen manifestation **without adjudicating a crosswalk**.
 
