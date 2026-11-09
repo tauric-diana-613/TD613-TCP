@@ -100,3 +100,9 @@
   #view-reference .vxe-step-current:after{bottom:-.6rem}
   #view-reference .vxe-status{margin:.8rem 0 .8rem;padding:.65rem .75rem}
 }
+
+/* RGI-02 / SOURCE LEGIBILITY: evidence on porcelain must retain readable ink. */
+#view-reference .vxe-document .vxe-copy,
+#view-reference .vxe-evidence .vxe-copy{color:#342b35}
+#view-reference .vxe-document .vxe-copy a,
+#view-reference .vxe-evidence .vxe-copy a{color:#723452}
