@@ -218,7 +218,7 @@ test('Vixen dual-estate jsdom encounter passes NOTICE→ACT→verified source→
   annotation.value='Potential question only';annotation.dispatchEvent(new dom.window.Event('input',{bubbles:true}));
   click('Rest without penalty');assert.equal(chamber.phase(),'REST');
   assert.equal(rootEl.querySelector('a.vxe-exit').getAttribute('href'),new URL('../app/encyclopedia/',import.meta.url).href,'exit must resolve relative to module location for both project-prefix Pages and root domains');
-  click('Return to inquiry');assert.equal(chamber.phase(),'WORLD_ANSWERS');
+  click('Return to inquiry');assert.equal(chamber.phase(),'NAME','rest must return to the exact interrupted interpretation phase');assert.equal(rootEl.querySelector('.vxe-name').value,'Potential question only','human interpretation remains local and unaltered across rest');
   assert(chamber.history().some(x=>x.action==='RECORD_SOURCE_VERIFIED'));
   assert(chamber.history().some(x=>x.action==='UNPENALIZED_REST'));
   assert.equal(chamber.membraneStatus().authority,'READ_ONLY');
