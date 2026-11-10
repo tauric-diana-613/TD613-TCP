@@ -28,7 +28,7 @@ jobs:
           expected='1ebdb1c57230cac54b58aa785a9dfbe67efe038e'
           assert sha==expected,(sha,expected)
           root=pathlib.Path('app/encyclopedia')
-          src=[pathlib.Path(os.fsdecode(s)) for s in subprocess.check_output(['git','ls-files','-z','app/encyclopedia']).split(b'\\0') if s]
+          src=[pathlib.Path(os.fsdecode(s)) for s in subprocess.check_output(['git','ls-files','-z','app/encyclopedia']).split(bytes([0])) if s]
           assert len(src)>=1000,len(src)
           htmlf=root/'index.html'
           assert htmlf.exists() and htmlf.stat().st_size>7000000
