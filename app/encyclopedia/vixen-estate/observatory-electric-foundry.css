@@ -402,15 +402,15 @@
 
 
 /* AUTHORITY: original #manifest-instance-theme, Vixen / Astra lineage.
- * #FF91AF Baker-Miller Pink · #F9F36D Arc Flash
+ * #FF91AF Baker-Miller Pink · #dfbfee Arc Flash
  * #24282A Graphite · #667078 Nickel · #F6F4F0 Porcelain
  * A chromatic shader is an INSTRUMENT, never a replacement for this Opera.
  */
 #vixenElectricFoundry{
- --ef-pink:#FF91AF;--ef-arc:#F9F36D;--ef-graphite:#24282A;
+ --ef-pink:#FF91AF;--ef-arc:#dfbfee;--ef-graphite:#24282A;
  --ef-nickel:#667078;--ef-porcelain:#F6F4F0;
- --ef-ultra:#6A4B62;--ef-ice:#F9F36D;
- --ef-hair:rgba(249,243,109,.34);--ef-rose:#FF91AF;
+ --ef-ultra:#6A4B62;--ef-ice:#dfbfee;
+ --ef-hair:rgba(223,191,238,.34);--ef-rose:#FF91AF;
  color:#F6F4F0;
  background:radial-gradient(ellipse at 81% -18%,rgba(255,145,175,.25),transparent 64%),
  linear-gradient(146deg,#24282A 2%,#32272E 47%,#111113 100%);
@@ -420,13 +420,13 @@
 }
 #vixenElectricFoundry:before{
  background:linear-gradient(90deg,transparent 0%,#FF91AF 13%,#F6F4F0 28%,
- #F9F36D 44%,#F9F36D 65%,#FF91AF 84%,transparent 100%);
- box-shadow:0 0 24px 3px rgba(249,243,109,.5);
+ #dfbfee 44%,#dfbfee 65%,#FF91AF 84%,transparent 100%);
+ box-shadow:0 0 24px 3px rgba(223,191,238,.5);
 }
 #vixenElectricFoundry .ef-header{
  background:radial-gradient(ellipse at 85% -40%,rgba(255,145,175,.28),transparent 74%),
  linear-gradient(100deg,#24282A,#30242D);
- border-bottom-color:rgba(249,243,109,.5);
+ border-bottom-color:rgba(223,191,238,.5);
 }
 #vixenElectricFoundry .ef-heading{
  background:linear-gradient(105deg,#F6F4F0 0%,#FF91AF 36%,
@@ -438,77 +438,77 @@
 #vixenElectricFoundry .ef-hero-tab small,
 #vixenElectricFoundry .ef-metric strong,
 #vixenElectricFoundry .ef-dial output,
-#vixenElectricFoundry .ef-raw summary{color:#F9F36D}
+#vixenElectricFoundry .ef-raw summary{color:#dfbfee}
 #vixenElectricFoundry .ef-hero-tab{
  background:linear-gradient(110deg,#29262B,#343136);color:#F6F4F0;
  border-color:rgba(255,145,175,.33);
 }
 #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
  color:#F6F4F0;background:linear-gradient(110deg,#654655,#32282F,#24282A);
- box-shadow:inset 0 3px #F9F36D,inset 0 -3px #FF91AF;
+ box-shadow:inset 0 3px #dfbfee,inset 0 -3px #FF91AF;
 }
 #vixenElectricFoundry .ef-pane{
  background:linear-gradient(160deg,#2F282E,#171719 82%);
 }
 #vixenElectricFoundry .ef-sourcebadge{
- color:#F9F36D;background:#24282A;border-color:#F9F36D;
+ color:#dfbfee;background:#24282A;border-color:#dfbfee;
 }
 #vixenElectricFoundry .ef-lab-title{color:#F6F4F0}
 #vixenElectricFoundry .ef-lab-subtitle,
 #vixenElectricFoundry .ef-metric small{color:#FF91AF}
 #vixenElectricFoundry .ef-equation{
  background:linear-gradient(120deg,#24282A,#343136);
- border-color:rgba(249,243,109,.63);
- box-shadow:0 0 18px rgba(249,243,109,.16);
+ border-color:rgba(223,191,238,.63);
+ box-shadow:0 0 18px rgba(223,191,238,.16);
 }
 #vixenElectricFoundry .ef-equation p:last-child{color:#F6F4F0}
 #vixenElectricFoundry .ef-toolbar{
- background:#24282A;border-bottom:1px solid #F9F36D;
+ background:#24282A;border-bottom:1px solid #dfbfee;
 }
 #vixenElectricFoundry .ef-toggle{
- color:#24282A;background:#F9F36D;border-color:#F9F36D;
+ color:#24282A;background:#dfbfee;border-color:#dfbfee;
 }
 #vixenElectricFoundry .ef-toggle:hover{background:#F6F4F0;color:#24282A}
 #vixenElectricFoundry .ef-button{
  color:#F6F4F0;background:#24282A;border-color:#FF91AF;
 }
 #vixenElectricFoundry .ef-button:hover{background:#654655;color:#F6F4F0}
-#vixenElectricFoundry .ef-eye{border-bottom-color:#F9F36D}
+#vixenElectricFoundry .ef-eye{border-bottom-color:#dfbfee}
 #vixenElectricFoundry .ef-stage{
  background:radial-gradient(ellipse at center,#3D343B,#141417 74%);
  box-shadow:inset 0 0 130px rgba(255,145,175,.18);
- border-right-color:rgba(249,243,109,.7);
+ border-right-color:rgba(223,191,238,.7);
 }
 #vixenElectricFoundry .ef-canvas{
  background:radial-gradient(ellipse at center,#50444C,#141416 70%);
 }
 #vixenElectricFoundry .ef-optic-chrome{
  background:linear-gradient(140deg,rgba(246,244,240,.2),transparent 16% 82%,rgba(255,145,175,.16));
- box-shadow:inset 0 0 0 1px #667078,inset 0 0 25px rgba(249,243,109,.24);
+ box-shadow:inset 0 0 0 1px #667078,inset 0 0 25px rgba(223,191,238,.24);
 }
 #vixenElectricFoundry .ef-aperture-ring{
- border-color:rgba(249,243,109,.72);
+ border-color:rgba(223,191,238,.72);
  box-shadow:0 0 0 24px rgba(255,145,175,.025),
- 0 0 0 25px rgba(249,243,109,.18),
+ 0 0 0 25px rgba(223,191,238,.18),
  0 0 0 66px rgba(255,145,175,.022),
- 0 0 0 67px rgba(249,243,109,.1),0 0 35px rgba(249,243,109,.23);
+ 0 0 0 67px rgba(223,191,238,.1),0 0 35px rgba(223,191,238,.23);
 }
 #vixenElectricFoundry .ef-scene-badge{
- border-color:#F9F36D;background:rgba(36,40,42,.88);color:#F6F4F0;
+ border-color:#dfbfee;background:rgba(36,40,42,.88);color:#F6F4F0;
 }
 #vixenElectricFoundry .ef-readout{background:linear-gradient(153deg,#2B252B,#151517)}
 #vixenElectricFoundry .ef-metric{
  border-color:rgba(255,145,175,.34);
  background:linear-gradient(105deg,#343136,#24282A);
 }
-#vixenElectricFoundry .ef-dial input{accent-color:#F9F36D}
-#vixenElectricFoundry .ef-score{background:#24282A;border-bottom-color:#F9F36D}
-#vixenElectricFoundry .ef-carrier-grid{border-bottom-color:#F9F36D}
-#vixenElectricFoundry .ef-carrier[data-plane="flight-near"]{border-top-color:#F9F36D}
+#vixenElectricFoundry .ef-dial input{accent-color:#dfbfee}
+#vixenElectricFoundry .ef-score{background:#24282A;border-bottom-color:#dfbfee}
+#vixenElectricFoundry .ef-carrier-grid{border-bottom-color:#dfbfee}
+#vixenElectricFoundry .ef-carrier[data-plane="flight-near"]{border-top-color:#dfbfee}
 #vixenElectricFoundry .ef-evidence{
- background:#24282A;border-bottom-color:rgba(249,243,109,.5);
+ background:#24282A;border-bottom-color:rgba(223,191,238,.5);
 }
-#vixenElectricFoundry .ef-census-cell{border-left-color:#F9F36D}
+#vixenElectricFoundry .ef-census-cell{border-left-color:#dfbfee}
 #vixenElectricFoundry .ef-census-cell strong{color:#FF91AF}
 #vixenElectricFoundry .ef-gallery{
  background:linear-gradient(155deg,#24282A,#342831 70%,#171719);
@@ -518,10 +518,10 @@
 }
 #vixenElectricFoundry .ef-gallery-tab[aria-pressed="true"],
 #vixenElectricFoundry .ef-gallery-item[aria-pressed="true"]{
- color:#24282A;background:#F9F36D;border-color:#F9F36D;
+ color:#24282A;background:#dfbfee;border-color:#dfbfee;
 }
 #vixenElectricFoundry :is(button,canvas,input,summary):focus-visible{
- outline:3px solid #F9F36D;
+ outline:3px solid #dfbfee;
 }
 
 /* Six native mathematical scenes rendered over the chrome optical engine.
@@ -533,7 +533,7 @@
  position:absolute;inset:0;z-index:2;
  width:100%;height:100%;min-height:540px;display:block;
  pointer-events:none;mix-blend-mode:normal;
- filter:drop-shadow(0 0 8px rgba(249,243,109,.17));
+ filter:drop-shadow(0 0 8px rgba(223,191,238,.17));
 }
 #vixenElectricFoundry .ef-optic-chrome{z-index:3}
 #vixenElectricFoundry .ef-scene-badge{z-index:4}
