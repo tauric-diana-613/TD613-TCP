@@ -1,0 +1,79 @@
+{
+  "schema": "td613.rulefield.ninth-order-confluence-review/v1",
+  "order": 9,
+  "commission": "TD613-AAH-ORD9-CATASTROPHE-OF-CONFLUENCE",
+  "type": "PROPOSE_ASSAY",
+  "admission": "RESEARCH_PROPOSAL_ONLY",
+  "source": {
+    "ref": "12dcc38adea8aeb04649900463566d67546cf025",
+    "ancestor": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_Convergence_Edition.json",
+    "blobSha": "191c5295f85cdd2b67b9622e4cba394f2c06eacb"
+  },
+  "anchors": {
+    "rules": [
+      "X-086",
+      "X-087",
+      "X-088",
+      "X-089",
+      "X-090",
+      "X-091",
+      "X-092",
+      "X-093",
+      "X-094",
+      "X-095"
+    ],
+    "crossings": [
+      "C-25",
+      "C-26",
+      "C-27",
+      "C-28",
+      "C-29",
+      "C-30"
+    ]
+  },
+  "researchClaims": [
+    {
+      "id": "N9-C1",
+      "kind": "DERIVED_FINITE_COUNTEREXAMPLE",
+      "claim": "Same terminal institutional score and same mean radial travel can coexist with different collective task feasibility when access windows differ.",
+      "empirical": "SOURCE_FREE_ONLY"
+    },
+    {
+      "id": "N9-C2",
+      "kind": "MATHEMATICAL_CORRECTION",
+      "claim": "Original 6x5 capability matrix is rank 5; row-masked Alpha rank 4. Neither rank measures task feasibility.",
+      "empirical": "EXACT_LINEAR_ALGEBRA"
+    },
+    {
+      "id": "N9-C3",
+      "kind": "RESEARCH_QUESTION",
+      "claim": "Compare capability co-presence hypergraphs, including nonconvex time sets and pairwise-vs-triple intersections.",
+      "empirical": "REQUIRES_ASSAY"
+    },
+    {
+      "id": "N9-C4",
+      "kind": "CONDITIONAL_THEOREM",
+      "claim": "Discrete Stokes determines boundary circulation from an explicitly specified 1-cochain; historical witness recovery requires additional measurements and justified coupling.",
+      "empirical": "FINITE_ALGEBRA"
+    },
+    {
+      "id": "N9-C5",
+      "kind": "ADVERSARIAL_OBSERVATION",
+      "claim": "Invertible holonomy may erase backtracking while an additive material-cost accumulator retains it.",
+      "empirical": "FINITE_ALGEBRA"
+    },
+    {
+      "id": "N9-C6",
+      "kind": "UNTESTED_DYNAMICAL_HYPOTHESIS",
+      "claim": "Z_C=sqrt(3)/2 is an exact unit equilateral apex; a claimed Marrowline phase attractor and zero mirror rate require separate actual observations.",
+      "empirical": "HOLD"
+    }
+  ],
+  "originalRulePriorityCount": 70,
+  "proposedRulefieldsCount": 86,
+  "retainedHistoricalRecords": 596,
+  "canonicalMutation": false,
+  "temporalGuardianDisposition": "NO_PROMOTION_WITHOUT_INDEPENDENT_MATCHED_EVIDENCE",
+  "experimentB": "HELD",
+  "humanClosure": "RESERVED"
+}
