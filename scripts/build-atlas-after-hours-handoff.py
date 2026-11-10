@@ -105,7 +105,9 @@ def dependency_closure(paths: set[str], tree:dict) -> set[str]:
             if not (
                 dep.startswith(("app/engine/","packages/rulefield/","packages/atlas-after-hours/"))
                 or dep.startswith(("scripts/","tests/"))
-                or dep == "app/dome-world/ash/canonical-json.js"  # exact read-only transitive geometry/custody codec
+                or dep == "app/dome-world/ash/canonical-json.js"
+                or dep in {"app/dome-world/data/flowcore-aia-route-registry-v01.js",
+                           "app/dome-world/data/flowcore-glyph-semantics-v01.js"}  # exact read-only Flow-Core audit registry dependencies
             ):
                 raise ValueError("IMPORT_OUTSIDE_SOURCE_FREE_SCOPE:"+path+":"+dep)
             if dep not in paths:
