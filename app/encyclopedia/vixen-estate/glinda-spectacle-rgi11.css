@@ -1,0 +1,360 @@
+/*
+ * 𝌋 VIXEN · GLINDA / ARC FLASH RGI11 · THE OPTICAL COSTUME
+ * ONE Opera, computed light, source-conditioned form. Style is supporting
+ * geometry; this file cannot license a Work, change a source, or fly B.
+ *
+ * Three pink registers: Baker-Miller pink, luminous mother-of-pearl blush,
+ * hot fuchsia-rose. Two yellow registers: champagne-blonde Arc Flash and
+ * white-hot core. Chrome is BLACK, not a monotone purple dashboard.
+ * OPERAHOUSE ≠ OPERA ≠ PERFORMER.
+ */
+body:not([data-active-research-stage="OPERAHOUSE"]){
+ --glinda-rose:#FF91AF;
+ --glinda-pearl:#FFE4F1;
+ --glinda-couture:#F6A5DD;
+ --glinda-fuchsia:#E64F91;
+ --arc-blonde:#FFF2A9;
+ --arc-white:#FFFBE2;
+ --nickel-silver:#DDE2E9;
+ --black-chrome:#0E0C13;
+ --vixen-pink:#FF91AF;
+ --arc-flash:#FFF2A9;
+ --vf-flash:#FFF2A9;
+ --gold:#FFF2A9;
+ --signal:#FFF2A9;
+}
+/* The body is a stage of lacquer-black and iridescent light, not plum plaster. */
+body:not([data-active-research-stage="OPERAHOUSE"]){
+ background:
+   radial-gradient(ellipse 45% 35% at 82% 8%,rgba(255,228,241,.20),transparent 72%),
+   radial-gradient(ellipse 35% 23% at 8% 26%,rgba(255,145,175,.17),transparent 78%),
+   radial-gradient(ellipse 41% 47% at 55% 72%,rgba(149,147,177,.09),transparent 83%),
+   #100D16;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection{
+ background:
+   radial-gradient(ellipse 62% 28% at 88% 1%,rgba(255,228,241,.17),transparent 71%),
+   radial-gradient(ellipse 48% 26% at 0 35%,rgba(255,145,175,.08),transparent 75%),
+   linear-gradient(133deg,#0D0B12 3%,#18141B 55%,#10101A 100%);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad{
+ padding-top:clamp(15px,2vw,30px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
+ margin-bottom:13px;min-height:0;padding:8px 0 20px;
+ border:0;border-bottom:1px solid rgba(255,228,241,.27);
+ align-items:center;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1{
+ font:600 clamp(13px,1.4vw,19px)/1.3 ui-monospace,monospace;
+ letter-spacing:.18em;color:var(--glinda-pearl);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .intro{
+ font:400 clamp(12px,1vw,15px)/1.4 Georgia,serif;
+ max-width:760px;color:#D9D1DC;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon{
+ position:relative;isolation:isolate;background:var(--black-chrome);
+ border:0;border-top:1px solid rgba(255,240,250,.75);
+ box-shadow:0 54px 110px rgba(3,2,9,.5);
+ overflow:clip;color:var(--glinda-pearl);
+ --vs-gold:var(--arc-blonde);
+ --vs-pink:var(--glinda-rose);
+ --vs-cream:var(--glinda-pearl);
+ --vs-fuchsia:var(--glinda-fuchsia);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:before{
+ content:'';position:absolute;inset:0 0 auto;height:3px;z-index:7;
+ background:linear-gradient(90deg,transparent,var(--glinda-rose),var(--arc-white),var(--arc-blonde),transparent);
+ box-shadow:0 0 32px rgba(255,242,169,.5);pointer-events:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
+ position:relative;display:flex;flex-direction:column;justify-content:center;
+ min-height:clamp(520px,59vw,740px);padding:clamp(40px,5vw,78px);
+ background:
+  radial-gradient(ellipse at 68% 46%,rgba(255,242,169,.09),transparent 47%),
+  radial-gradient(ellipse at 93% 6%,rgba(255,145,175,.17),transparent 51%),
+  linear-gradient(118deg,#101017 0%,#16131D 47%,#1E1524 100%);
+ color:#FFF8FD;border-bottom:0;overflow:hidden;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head:before,
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head:after{
+ display:none!important;content:none!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-luminous-canvas{
+ display:block;position:absolute;
+ width:79%;height:100%;right:-8%;top:0;
+ max-width:none;z-index:1;pointer-events:none;
+ opacity:.96;filter:saturate(1.23) contrast(1.10);
+ mix-blend-mode:screen;
+ -webkit-mask-image:linear-gradient(to right,transparent 0,black 26%,black 100%);
+ mask-image:linear-gradient(to right,transparent 0,black 26%,black 100%);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-hero-copy{
+ position:relative;z-index:3;width:min(73%,860px);
+ text-shadow:0 9px 22px rgba(9,6,16,.44);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head .vs-eyebrow{
+ color:var(--arc-blonde);letter-spacing:.20em;font-size:11px;
+ margin-bottom:clamp(24px,4vw,53px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title{
+ position:relative;font:400 clamp(61px,7.2vw,137px)/.85
+   Didot,'Bodoni MT','Bodoni 72',Georgia,serif;
+ max-width:970px;letter-spacing:-.07em;
+ color:#FFF2FA;text-wrap:balance;margin:0 0 29px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title-italics{
+ display:inline-block;font-weight:400;font-style:italic;
+ background:linear-gradient(115deg,var(--glinda-pearl) 0%,var(--glinda-rose) 55%,var(--glinda-couture) 95%);
+ background-clip:text;-webkit-background-clip:text;
+ color:transparent;text-shadow:none;
+ filter:drop-shadow(0 0 17px rgba(255,145,175,.16));
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-intro{
+ font:400 clamp(17px,1.4vw,22px)/1.55 Georgia,serif;
+ color:#E9DCE8;max-width:600px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-optical-label{
+ position:absolute;right:3%;bottom:28px;z-index:3;
+ color:var(--arc-blonde);font:600 9px/1.6 ui-monospace,monospace;
+ letter-spacing:.15em;max-width:315px;text-align:right;
+ text-shadow:0 2px 10px #04040A;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ritual{
+ display:none!important;
+}
+/* Two source costumes: pearl and smoked chrome, colliding diagonally.
+   Preserve both source pickers and original authorial coordinates. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
+ position:relative;display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);
+ align-items:stretch;gap:0;padding:clamp(26px,3vw,42px) clamp(20px,3vw,42px) 0;
+ background:
+  radial-gradient(ellipse at 46% 45%,rgba(255,242,169,.17),transparent 38%),
+  radial-gradient(ellipse at 88% 12%,rgba(255,145,175,.20),transparent 50%),
+  linear-gradient(125deg,#15131A,#28202B 50%,#141019);
+ border:0;overflow:visible;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card{
+ min-height:490px;padding:clamp(31px,4vw,65px);
+ color:#231B27;border:0!important;
+ background:
+  radial-gradient(ellipse at 10% 0%,rgba(255,255,255,.94),transparent 50%),
+  linear-gradient(145deg,#FFF9FD,#FFE4F1 75%,#F5C5DD);
+ clip-path:polygon(0 0,100% 0,100% calc(100% - 49px),calc(100% - 49px) 100%,0 100%);
+ box-shadow:none;transform:translateY(-12px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
+ color:#FCEEF9;background:
+  radial-gradient(ellipse at 76% 0%,rgba(253,213,241,.27),transparent 53%),
+  linear-gradient(135deg,#37323F,#1A1925 75%,#0D0D16);
+ clip-path:polygon(50px 0,100% 0,100% 100%,0 100%,0 50px);
+ transform:translateY(35px);
+ border:1px solid rgba(255,228,241,.39)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:before{
+ height:3px;background:linear-gradient(90deg,var(--glinda-fuchsia),var(--glinda-pearl),var(--arc-blonde));
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even):before{
+ background:linear-gradient(90deg,var(--arc-blonde),var(--glinda-rose),transparent);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-source-tag{
+ color:#93416B;letter-spacing:.16em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-source-tag{
+ color:var(--arc-blonde);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-work-title{
+ font:italic 400 clamp(28px,3.2vw,61px)/1.03 Didot,'Bodoni MT',Georgia,serif;
+ letter-spacing:-.058em;min-height:0;margin:26px 0 34px;
+ text-wrap:balance;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-note{
+ color:inherit;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-custody{
+ color:#625363;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-custody{
+ color:#D6C4D6;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-select{
+ background:#FFF9FD;color:#211524;border:1px solid #A97D9D;
+ min-height:56px;font:500 clamp(13px,1.25vw,17px)/1.3 Georgia,serif;
+ padding:13px 15px;max-width:100%;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-select{
+ background:#F5EAF4;color:#271D2B;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-field-label{
+ color:#885070;letter-spacing:.1em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-field-label{
+ color:#F3CFE6;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
+ position:relative;z-index:4;display:grid;place-items:center;
+ width:88px;height:88px;margin:-87px auto 0;
+ background:radial-gradient(circle at 34% 30%,var(--arc-white),var(--arc-blonde) 49%,#E49D96);
+ color:#171019;border:2px solid #FFFBE2;border-radius:50%;
+ box-shadow:0 0 25px rgba(255,242,169,.65),0 0 78px rgba(255,145,175,.37);
+ font:italic 400 49px/1 Georgia,serif;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ padding:34px 24px 28px;
+ background:#141119;border:0;border-top:1px solid rgba(255,228,241,.23);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-cell{
+ border:0;border-right:1px solid rgba(255,228,241,.21);
+ color:#F9E9F3;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-cell:last-child{border:0}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-label{
+ color:var(--arc-blonde);letter-spacing:.14em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-cell strong{
+ color:#FCEAF7;font:400 clamp(15px,1.4vw,22px)/1.18 Georgia,serif;
+}
+/* The methodological machine drops into the orchestra pit, not another
+   white administrative dashboard. Fields remain real, readable, actionable. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program{
+ padding:clamp(38px,5vw,80px);
+ border:0;border-top:1px solid rgba(255,228,241,.28);
+ background:
+  radial-gradient(ellipse at 96% 2%,rgba(255,242,169,.11),transparent 48%),
+  linear-gradient(140deg,#19131D 2%,#302432 55%,#16121B);
+ color:#FFEAF5;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program :is(.vs-note,.vs-track-scope,.vs-protocol-scope){
+ color:#F4DEE9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-eyebrow{
+ color:var(--arc-blonde);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-select{
+ background:#FBEAF4;color:#1F1722;
+ border:1px solid #BA97AE;min-height:52px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-field-label{
+ color:var(--glinda-pearl);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-order-button[aria-pressed="true"]{
+ color:#1A121C;background:var(--arc-blonde);border-color:var(--arc-white);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question{
+ color:#231A27;background:
+  radial-gradient(ellipse at 100% 0,rgba(255,242,169,.33),transparent 53%),
+  linear-gradient(120deg,#FFF9FC,#FFE7F2 68%,#F8D6E7);
+ border:0;border-top:1px solid #F4E2EE;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question:before{
+ color:#A84E82;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question .vs-eyebrow{
+ color:#8E3B70;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result{
+ background:linear-gradient(120deg,#17141D,#2A202F);
+ border-top:2px solid var(--arc-blonde);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result .vs-eyebrow{
+ color:var(--arc-blonde);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry{
+ --ef-arc:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
+ border-left-color:var(--arc-blonde);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker{
+ color:var(--glinda-pearl);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-iris-frame{
+ background:linear-gradient(135deg,#0C0B11,#16141C);
+}
+@media(max-width:1020px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
+  min-height:620px;padding:42px 29px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-hero-copy{
+  width:min(79%,680px);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-luminous-canvas{
+  right:-12%;width:87%;opacity:.85;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title{
+  font-size:clamp(59px,9vw,110px);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card{
+  min-height:380px;padding:32px 22px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
+  min-height:380px;
+ }
+}
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
+  min-height:660px;padding:45px 22px 36px;
+  justify-content:flex-start;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-luminous-canvas{
+  width:125%;height:84%;right:-32%;top:0;opacity:.60;
+  -webkit-mask-image:linear-gradient(to bottom,black 5%,black 62%,transparent);
+  mask-image:linear-gradient(to bottom,black 5%,black 62%,transparent);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-hero-copy{
+  width:100%;text-shadow:0 3px 13px #0A0910;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title{
+  font-size:clamp(52px,11vw,76px);line-height:.9;margin:15px 0;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head .vs-eyebrow{
+  margin-bottom:24px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-intro{
+  font-size:16px;line-height:1.55;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-optical-label{
+  max-width:200px;bottom:18px;right:19px;font-size:8px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
+  grid-template-columns:minmax(0,1fr);padding:14px 14px 0;gap:0;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(n){
+  min-height:0;transform:none;clip-path:none;
+  margin:0;padding:29px 23px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
+  margin-top:14px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
+  margin:-26px auto -26px;width:56px;height:56px;font-size:32px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail{
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  padding:17px 13px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-cell:nth-child(even){
+  border-right:0;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ledger-cell{
+  border-bottom:1px solid rgba(255,228,241,.2);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program{
+  grid-template-columns:minmax(0,1fr);padding:30px 21px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question{
+  padding:32px 20px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-luminous-canvas{
+  animation:none;transition:none;
+ }
+}
+@media(forced-colors:active){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon :is(.vs-luminous-canvas,.vs-optical-label){
+  display:none;
+ }
+}
