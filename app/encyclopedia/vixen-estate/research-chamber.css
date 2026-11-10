@@ -1,7 +1,7 @@
 /* 𝌋 Vixen Cybernetics · Glinda / Mugler source-bound Folios.
    Inherits Vixen's historical C1 editorial grammar; C2 owns the Observatory.
    The seam separates two recorded manifestations of the SAME Vixen Work. */
-#view-reference{--vxe-obsidian:#060709;--vxe-porcelain:#f6f4f0;--vxe-pink:#ff91af;--vxe-rose:#ffc6d7;--vxe-flash:#f9f36d;--vxe-chrome:#9fa8b3;color:var(--vxe-porcelain);background:radial-gradient(ellipse 75% 32% at 73% 12%,rgba(255,145,175,.16),transparent 68%),radial-gradient(ellipse 44% 23% at 0% 66%,rgba(255,145,175,.12),transparent 68%),#050609;min-height:100vh;position:relative;overflow:hidden}
+#view-reference{--vxe-obsidian:#060709;--vxe-porcelain:#f6f4f0;--vxe-pink:#ff91af;--vxe-rose:#ffc6d7;--vxe-flash:#dfbfee;--vxe-chrome:#9fa8b3;color:var(--vxe-porcelain);background:radial-gradient(ellipse 75% 32% at 73% 12%,rgba(255,145,175,.16),transparent 68%),radial-gradient(ellipse 44% 23% at 0% 66%,rgba(255,145,175,.12),transparent 68%),#050609;min-height:100vh;position:relative;overflow:hidden}
 #view-reference:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.15;background:repeating-linear-gradient(90deg,transparent 0 138px,rgba(255,203,218,.16) 139px,transparent 140px),repeating-linear-gradient(0deg,transparent 0 159px,rgba(255,203,218,.12) 160px,transparent 161px)}
 #view-reference>.page-pad{position:relative;z-index:1;max-width:1600px;padding-top:calc(var(--hdr,68px) + 4.8rem)}
 #view-reference *{box-sizing:border-box}
@@ -15,23 +15,23 @@
 #view-reference .vxe-step{font:600 .66rem/1.6 "Avenir Next Condensed",system-ui,sans-serif;letter-spacing:.12em;color:#b49ca9;text-transform:uppercase;display:flex;gap:.5rem;align-items:baseline;position:relative;padding:.6rem 0}
 #view-reference .vxe-phase-num{font:italic 400 1.2rem "Bodoni MT",Georgia,serif;color:#e8b2c4}
 #view-reference .vxe-step-current{color:#fff;text-shadow:0 0 22px #ff91af6b}
-#view-reference .vxe-step-current:after{content:"";position:absolute;bottom:-1.6rem;left:0;right:0;height:2px;background:#f9f36d;box-shadow:0 0 14px #f9f36d77}
-#view-reference .vxe-status{margin:2rem 0;padding:1.15rem 1.25rem;border-left:2px solid #f9f36d;background:linear-gradient(90deg,rgba(249,243,109,.07),rgba(255,145,175,.025));color:#f6e9ee;font:500 .83rem/1.7 "Segoe UI",system-ui,sans-serif}
+#view-reference .vxe-step-current:after{content:"";position:absolute;bottom:-1.6rem;left:0;right:0;height:2px;background:#dfbfee;box-shadow:0 0 14px #dfbfee77}
+#view-reference .vxe-status{margin:2rem 0;padding:1.15rem 1.25rem;border-left:2px solid #dfbfee;background:linear-gradient(90deg,rgba(223,191,238,.07),rgba(255,145,175,.025));color:#f6e9ee;font:500 .83rem/1.7 "Segoe UI",system-ui,sans-serif}
 #view-reference .vxe-spatial{display:grid;grid-template-columns:minmax(0,1fr) clamp(60px,8vw,130px) minmax(0,1fr);min-height:690px;position:relative;isolation:isolate}
 #view-reference .vxe-spatial:before{content:"";position:absolute;inset:-6px -1rem;z-index:-1;background:radial-gradient(ellipse 42% 58% at 50% 35%,rgba(255,145,175,.095),transparent 80%);pointer-events:none}
 #view-reference .vxe-estate{padding:clamp(1.2rem,3vw,2.6rem);border:1px solid rgba(255,213,228,.24);position:relative;min-width:0;background:linear-gradient(145deg,rgba(255,255,255,.08),transparent 26%,rgba(255,145,175,.065) 80%),rgba(12,11,17,.87);box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 20px 85px rgba(0,0,0,.3)}
 #view-reference .vxe-estate:before{content:"";pointer-events:none;position:absolute;inset:11px 11px auto;height:36px;border-top:1px solid rgba(246,244,240,.32);border-left:1px solid rgba(246,244,240,.15);border-right:1px solid rgba(246,244,240,.15);border-radius:100% 100% 0 0}
 #view-reference .vxe-estate:after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,145,175,.55),transparent)}
-#view-reference .vxe-estate-universal{background:radial-gradient(circle at 72% 2%,rgba(249,243,109,.12),transparent 40%),linear-gradient(145deg,rgba(255,255,255,.08),transparent 28%),#100e13}
+#view-reference .vxe-estate-universal{background:radial-gradient(circle at 72% 2%,rgba(223,191,238,.12),transparent 40%),linear-gradient(145deg,rgba(255,255,255,.08),transparent 28%),#100e13}
 #view-reference .vxe-estate h2{font:400 clamp(2.4rem,4.5vw,4rem)/1 "Didot","Bodoni 72",Georgia,serif;margin:.45rem 0 1.2rem;letter-spacing:-.035em;color:#ffe0e9}
 #view-reference .vxe-copy{font:400 .98rem/1.7 "Iowan Old Style",Georgia,serif;color:#e4d2dc}
-#view-reference .vxe-membrane{align-self:stretch;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.3rem;background:radial-gradient(ellipse 35% 57% at 50%,rgba(249,243,109,.16),transparent 85%);color:var(--vxe-flash)}
-#view-reference .vxe-membrane:before{content:"";position:absolute;top:4%;bottom:4%;left:50%;width:2px;background:linear-gradient(180deg,transparent,#ff91af,#f9f36d,#ff91af,transparent);box-shadow:0 0 16px #ff91af99;transform:translateX(-50%);z-index:0}
-#view-reference .vxe-membrane>*{z-index:1;writing-mode:vertical-rl;background:#141015;padding:.65rem .4rem;text-transform:uppercase;text-align:center;border:1px solid #f9f36d4a}
+#view-reference .vxe-membrane{align-self:stretch;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.3rem;background:radial-gradient(ellipse 35% 57% at 50%,rgba(223,191,238,.16),transparent 85%);color:var(--vxe-flash)}
+#view-reference .vxe-membrane:before{content:"";position:absolute;top:4%;bottom:4%;left:50%;width:2px;background:linear-gradient(180deg,transparent,#ff91af,#dfbfee,#ff91af,transparent);box-shadow:0 0 16px #ff91af99;transform:translateX(-50%);z-index:0}
+#view-reference .vxe-membrane>*{z-index:1;writing-mode:vertical-rl;background:#141015;padding:.65rem .4rem;text-transform:uppercase;text-align:center;border:1px solid #dfbfee4a}
 #view-reference .vxe-membrane strong{font:600 .68rem/1 "Avenir Next Condensed",system-ui,sans-serif;letter-spacing:.22em}
 #view-reference .vxe-membrane span{font:500 .52rem/1 ui-monospace,monospace;letter-spacing:.11em;color:#d8b8bf}
 #view-reference .vxe-estate select,#view-reference .vxe-query-input,#view-reference .vxe-name{display:block;width:100%;max-width:100%;min-height:48px;padding:.8rem 1rem;background:#17151b;color:#f5e1e9;border:1px solid #ffcadd69;font:500 .82rem "Segoe UI",system-ui,sans-serif;outline-offset:4px}
-#view-reference .vxe-estate select:focus,#view-reference .vxe-query-input:focus,#view-reference .vxe-name:focus{outline:2px solid #f9f36d;border-color:#f9f36d}
+#view-reference .vxe-estate select:focus,#view-reference .vxe-query-input:focus,#view-reference .vxe-name:focus{outline:2px solid #dfbfee;border-color:#dfbfee}
 #view-reference .vxe-document,#view-reference .vxe-evidence{margin:1.3rem 0;padding:1.5rem 1.3rem;background:linear-gradient(130deg,rgba(246,244,240,.97),rgba(255,224,234,.96));color:#252027;box-shadow:0 24px 38px #0005;transform-origin:top;border:1px solid #ffebee}
 #view-reference .vxe-evidence{background:linear-gradient(130deg,#f6f4f0,#fff4e0)}
 #view-reference .vxe-document .vxe-eyebrow,#view-reference .vxe-evidence .vxe-eyebrow{color:#8e2f52}
@@ -48,24 +48,24 @@
 #view-reference .vxe-control.vxe-primary:hover{background:#ffd3e0;border-color:#ffd3e0}
 #view-reference .vxe-control:disabled,#view-reference .vxe-control.vxe-muted{opacity:.4;cursor:not-allowed}
 #view-reference .vxe-control.vxe-text-control{background:transparent;color:#f7d7e4;border-color:transparent;text-decoration:underline;text-underline-offset:5px}
-#view-reference .vxe-control.vxe-rest{border-color:#f9f36d82;color:#f9f36d}
-#view-reference .vxe-control.vxe-exit{display:inline-flex;text-decoration:none;border-color:#f9f36d6c}
+#view-reference .vxe-control.vxe-rest{border-color:#dfbfee82;color:#dfbfee}
+#view-reference .vxe-control.vxe-exit{display:inline-flex;text-decoration:none;border-color:#dfbfee6c}
 #view-reference .vxe-query{margin:1.8rem 0}
 #view-reference .vxe-hit-list{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:.4rem;margin:1rem 0}
 #view-reference .vxe-hit{display:block;width:100%;text-align:left;font:500 .8rem/1.5 system-ui,sans-serif;text-transform:none;letter-spacing:0;overflow-wrap:anywhere;padding:1rem;border:1px solid #ff91af66;color:#fce5ed;background:#ff91af11}
-#view-reference .vxe-hit:hover{border-color:#f9f36d;background:#f9f36d15}
+#view-reference .vxe-hit:hover{border-color:#dfbfee;background:#dfbfee15}
 #view-reference .vxe-absence{padding:2rem 1rem;margin:1rem 0;border:1px dashed #ff91af4d;color:#e6c5d0;font:italic .95rem/1.65 Georgia,serif}
 #view-reference .vxe-digest{white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;background:#202028;color:#fce9f0;font:.67rem/1.8 ui-monospace,monospace;margin:1rem 0}
 #view-reference .vxe-link{display:inline-block;margin:1.5rem 0 0;font:600 .68rem/1.5 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em;color:#833d5c;text-decoration:underline;text-underline-offset:5px}
 #view-reference .vxe-tail{margin:2rem 0 0;padding:2.5rem 0;border-top:1px solid #ffd0e64b;max-width:1100px}
 #view-reference .vxe-actions{display:flex;flex-wrap:wrap;gap:.35rem}
 #view-reference .vxe-trace{padding:1rem 0;color:#ded0db;font:.78rem system-ui,sans-serif}
-#view-reference .vxe-trace summary{cursor:pointer;color:#f9f36d}
+#view-reference .vxe-trace summary{cursor:pointer;color:#dfbfee}
 #view-reference .vxe-route-history{margin:1.1rem 0 0;list-style:none;padding:0}
 #view-reference .vxe-route-history li{padding:.4rem 0;border-bottom:1px solid #fff2;font:.68rem ui-monospace,monospace}
 #view-reference .vxe-name{font:400 1.1rem/1.6 Georgia,serif;resize:vertical;background:#1b141e}
 @media(max-width:1080px){#view-reference .vxe-spatial{grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr)}#view-reference .vxe-estate{padding:1.5rem}#view-reference .vxe-estate h2{font-size:2.5rem}}
-@media(max-width:780px){#view-reference .vxe-spatial{grid-template-columns:1fr;gap:0}#view-reference .vxe-membrane{min-height:85px;flex-direction:row;gap:.5rem}#view-reference .vxe-membrane:before{top:50%;left:5%;right:5%;bottom:auto;width:auto;height:2px;background:linear-gradient(90deg,transparent,#ff91af,#f9f36d,#ff91af,transparent)}#view-reference .vxe-membrane>*{writing-mode:horizontal-tb;padding:.7rem .45rem;font-size:.5rem}#view-reference .vxe-estate{padding:1.6rem}#view-reference .vxe-heading h1{font-size:clamp(3.5rem,12vw,5.5rem)}#view-reference .vxe-steps{gap:.5rem;justify-content:flex-start}#view-reference .vxe-step{min-width:28%}#view-reference .vxe-step-current:after{bottom:-.7rem}#view-reference .vxe-status{margin:1.2rem 0}}
+@media(max-width:780px){#view-reference .vxe-spatial{grid-template-columns:1fr;gap:0}#view-reference .vxe-membrane{min-height:85px;flex-direction:row;gap:.5rem}#view-reference .vxe-membrane:before{top:50%;left:5%;right:5%;bottom:auto;width:auto;height:2px;background:linear-gradient(90deg,transparent,#ff91af,#dfbfee,#ff91af,transparent)}#view-reference .vxe-membrane>*{writing-mode:horizontal-tb;padding:.7rem .45rem;font-size:.5rem}#view-reference .vxe-estate{padding:1.6rem}#view-reference .vxe-heading h1{font-size:clamp(3.5rem,12vw,5.5rem)}#view-reference .vxe-steps{gap:.5rem;justify-content:flex-start}#view-reference .vxe-step{min-width:28%}#view-reference .vxe-step-current:after{bottom:-.7rem}#view-reference .vxe-status{margin:1.2rem 0}}
 @media(prefers-reduced-motion:reduce){#view-reference *,#view-reference *:before,#view-reference *:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
 
 /* RGI-01 / REPARATIVE NOTICE: the archival encounter outranks its proscenium.
@@ -240,7 +240,7 @@
   color:#211a25;
   background:#faf0f5;
 }
-#view-reference .vxe-work-selector select.vxe-work-select:focus-visible{outline:2px solid #f9f36d}
+#view-reference .vxe-work-selector select.vxe-work-select:focus-visible{outline:2px solid #dfbfee}
 #view-reference .vxe-vixen-pair select.vxe-work-select option{color:#211a25;background:#faf0f5}
 #view-reference .vxe-work-selector{min-width:0;overflow:hidden}
 @media(max-width:780px){
