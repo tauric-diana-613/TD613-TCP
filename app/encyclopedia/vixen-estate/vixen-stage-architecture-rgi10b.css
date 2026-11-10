@@ -500,3 +500,164 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-di
    transition:none;
  }
 }
+
+/* GATES AS EIGHT BILATERAL DRESS FORMS, NOT EIGHT OFFICE CARDS.
+   The explicit human UNADJUDICATED_PAIR controls remain the same; visuals
+   never collapse .md and .pdf bodies or invent manuscript equivalence. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gates-stack{
+  counter-reset:vixen-gate;display:flex;flex-direction:column;gap:clamp(35px,5vw,90px);
+  padding:clamp(25px,4vw,65px) 0 60px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card{
+  counter-increment:vixen-gate;position:relative;
+  width:92%;max-width:1490px;min-width:0;
+  margin-left:0;margin-right:auto;padding:clamp(27px,4vw,60px);
+  background:radial-gradient(ellipse at 88% 0,rgba(255,190,233,.16),transparent 49%),
+    linear-gradient(118deg,#39233f,#19131f 77%);
+  border:1px solid rgba(242,184,220,.35);
+  border-radius:0;
+  box-shadow:18px 22px 0 rgba(104,66,112,.13);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card:nth-child(even){
+  margin-left:auto;margin-right:0;
+  background:radial-gradient(ellipse at 9% 3%,rgba(201,168,239,.20),transparent 50%),
+    linear-gradient(125deg,#1c162b,#422b46 88%);
+  box-shadow:-18px 22px 0 rgba(104,66,112,.13);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card:before{
+  content:counter(vixen-gate,decimal-leading-zero);
+  position:absolute;right:clamp(19px,4vw,58px);top:-.4em;
+  font:italic 400 clamp(99px,10vw,180px)/1 Didot,Georgia,serif;
+  letter-spacing:-.13em;color:rgba(255,184,227,.12);
+  pointer-events:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-header{
+  position:relative;z-index:1;align-items:flex-end;gap:24px;
+  padding-bottom:clamp(20px,2vw,36px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-header h2{
+  max-width:990px;font:italic 400 clamp(29px,3.7vw,62px)/.99 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:-.05em;overflow-wrap:anywhere;color:#fff1fa;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .bilateral-seam{
+  position:relative;display:grid;
+  grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);
+  align-items:stretch;gap:0;
+  border:1px solid rgba(243,185,222,.4);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio{
+  min-width:0;border:0;border-radius:0;
+  background:linear-gradient(160deg,#33223c,#211628 82%);
+  padding:clamp(22px,3vw,42px);
+  overflow-wrap:anywhere;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio:nth-child(3){
+  background:linear-gradient(150deg,#2d2140,#1b1526);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio h3{
+  color:#f9cce8;letter-spacing:.12em;font-size:11px;
+  line-height:1.6;margin-bottom:23px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-folio code{
+  overflow-wrap:anywhere;word-break:break-all;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam{
+  display:grid;place-items:center;margin:0;
+  position:relative;z-index:2;
+  background:linear-gradient(180deg,#4c2a4e,#1f172f);
+  border-inline:1px solid rgba(242,182,222,.4);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam span{
+  font:italic 400 43px/1 Georgia,serif;
+  color:#f5cbe7;text-shadow:0 0 18px rgba(241,181,229,.3);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-controls{
+  display:flex;gap:13px;flex-wrap:wrap;align-items:center;
+  padding-top:19px;border-top:1px solid rgba(246,197,230,.24);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-controls .segmented{
+  flex:1;justify-content:flex-end;
+}
+@media(max-width:900px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card:nth-child(n){
+   width:100%;margin:0;padding:23px 17px;box-shadow:none;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .bilateral-seam{
+   grid-template-columns:minmax(0,1fr);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam{
+   min-height:46px;border:0;border-block:1px solid rgba(243,193,223,.35);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .optical-seam span{font-size:30px}
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-header h2{font-size:clamp(30px,7vw,49px)}
+}
+/* DOCUMENTARY APPARATUS AS A LIVING INDEX — selection and reading remain
+   two deliberately separate movements. Source IDs and filters unchanged. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-layout{
+  display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,1.7fr);
+  gap:clamp(22px,3.8vw,70px);align-items:start;
+  background:transparent;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-index{
+  position:sticky;top:100px;max-height:calc(100vh - 134px);
+  min-width:0;overflow:auto;border-right:1px solid rgba(249,188,230,.32);
+  padding-right:clamp(8px,2vw,27px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-list{
+  background:transparent;border:0;box-shadow:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-item{
+  background:transparent;border:0;border-bottom:1px solid rgba(249,188,230,.19);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-item button{
+  min-height:63px;padding:12px 18px;background:transparent;
+  border:0;text-align:left;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-reader{
+  min-width:0;min-height:550px;
+  padding:clamp(29px,4vw,64px);
+  background:radial-gradient(ellipse at 90% 1%,rgba(247,172,220,.17),transparent 48%),
+    linear-gradient(140deg,#30203a,#15111f);
+  border:1px solid rgba(246,200,231,.32);
+}
+@media(max-width:800px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-layout{
+   grid-template-columns:minmax(0,1fr);gap:17px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-index{
+   position:static;max-height:245px;border:1px solid rgba(248,186,228,.3);
+   padding:0;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-reader{
+   min-height:0;
+ }
+}
+/* THE BEAUTIFUL REFUSAL: one central tribunal, subsidiary evidence pieces.
+   Don't make a bounded tie look like a victory metric. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(17px,2.8vw,37px);align-items:start;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel{
+  min-width:0;margin:0;
+  background:linear-gradient(144deg,#291b31,#15111f);
+  border:1px solid rgba(249,201,232,.32);
+  padding:clamp(25px,3.7vw,52px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child{
+  grid-column:1/-1;
+  background:radial-gradient(ellipse at 88% 0,rgba(237,160,209,.15),transparent 52%),
+    linear-gradient(135deg,#3b2441,#1a1321);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel h2{
+  font:italic 400 clamp(26px,3.1vw,49px)/1.12 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:-.045em;color:#fff0fa;
+}
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid{
+   grid-template-columns:1fr;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child{
+   grid-column:auto;
+ }
+}
