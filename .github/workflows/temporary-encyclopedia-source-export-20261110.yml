@@ -1,0 +1,89 @@
+name: TD613 Encyclopedia — source snapshot export (temporary, no deployment)
+on:
+  push:
+    branches:
+      - research/encyclopedia-exact-source-export-20261110
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/research/encyclopedia-exact-source-export-20261110'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out frozen repository source (not deploy)
+        uses: actions/checkout@v4
+        with:
+          ref: 1ebdb1c57230cac54b58aa785a9dfbe67efe038e
+          persist-credentials: false
+      - name: Assemble exact-byte Encyclopedia source and generated reference corpus
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, json, hashlib, zipfile, subprocess, re, shutil, pathlib, html.parser
+          from datetime import datetime,timezone
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          expected='1ebdb1c57230cac54b58aa785a9dfbe67efe038e'
+          assert sha==expected,(sha,expected)
+          root=pathlib.Path('app/encyclopedia')
+          src=[pathlib.Path(os.fsdecode(s)) for s in subprocess.check_output(['git','ls-files','-z','app/encyclopedia']).split(b'\\0') if s]
+          assert len(src)>=1000,len(src)
+          htmlf=root/'index.html'
+          assert htmlf.exists() and htmlf.stat().st_size>7000000
+          class References(html.parser.HTMLParser):
+            def __init__(self):
+              super().__init__();self.external=set();self.internal=set()
+            def handle_starttag(self,tag,attrs):
+              if tag not in ('script','link','img','source','video','audio','iframe'):return
+              a=dict(attrs)
+              for key in ('src','href','poster'):
+                uri=a.get(key,'')
+                if not uri or uri.startswith(('#','data:','blob:','javascript:')):continue
+                if uri.startswith(('http://','https://','//')):self.external.add(uri)
+                else:self.internal.add(uri.split('?')[0].split('#')[0])
+          refs=References();refs.feed(htmlf.read_text('utf8'))
+          deps=[];missing=[]
+          for uri in sorted(refs.internal):
+            if not uri:continue
+            possible=[]
+            if uri.startswith('/'):
+              possible.append(pathlib.Path('app')/uri.lstrip('/'))
+              possible.append(pathlib.Path(uri.lstrip('/')))
+            else:
+              possible.append(root/uri)
+            match=next((p for p in possible if p.is_file() and p not in src),None)
+            if match:deps.append(match)
+            elif not any(p.is_file() for p in possible):missing.append(uri)
+          items={}
+          for s in src:items['encyclopedia/'+s.relative_to(root).as_posix()]=s
+          for s in deps:items[s.relative_to('app').as_posix()]=s
+          os.makedirs('artifacts',exist_ok=True)
+          receipt={'schema':'td613.encyclopedia.repository-source-export/v1','source_commit':sha,'source_subtree':'app/encyclopedia','not_a_live_deployment_verification':True,'site_path_assumed':'/encyclopedia/','source_file_count':len(src),'additional_static_dependencies':len(deps),'external_asset_or_service_references':sorted(refs.external),'unresolved_relative_html_references':missing,'files':[{'archive_path':a,'repository_path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for a,p in sorted(items.items())]}
+          receipt_path=pathlib.Path('artifacts/SNAPSHOT_RECEIPT.json');receipt_path.write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+'\\n',encoding='utf8')
+          instructions=pathlib.Path('artifacts/READ_FIRST.txt')
+          instructions.write_text('TD613 Encyclopedia exact-byte Git source snapshot at '+sha+'\\nThis package preserves every tracked file under app/encyclopedia/ and local static HTML dependencies. The current live td613.com deployment was NOT independently readable in the collecting environment; deploy equality remains unverified.\\nTo view: extract the ZIP and run python -m http.server 8000 from the extracted directory; open http://localhost:8000/encyclopedia/.\\nFor machine reference, use encyclopedia/reference/manifest.json and 1141 generated encyclopedia/reference/records files.\\nDo not rewrite the source or assume unavailable production APIs work offline.\\n',encoding='utf8')
+          archive=pathlib.Path('artifacts/TD613_Encyclopedia_Complete_Repo_1ebdb1c5.zip')
+          with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=7) as z:
+            for a,s in sorted(items.items()):z.write(s,a)
+            z.write(receipt_path,'SNAPSHOT_RECEIPT.json')
+            z.write(instructions,'READ_FIRST.txt')
+          shutil.copy2(htmlf,'artifacts/TD613_Encyclopedia_Standalone_Source_1ebdb1c5.html')
+          with zipfile.ZipFile(archive) as z:
+            assert z.testzip() is None
+            for e in receipt['files']:
+              assert hashlib.sha256(z.read(e['archive_path'])).hexdigest()==e['sha256']
+          print(json.dumps({'commit':sha,'source_files':len(src),'external_refs':len(refs.external),'extra_assets':len(deps),'unresolved_html_refs':missing[:30],'archive_size':archive.stat().st_size},indent=2))
+          PY
+      - name: Upload read-only Encyclopedia source artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: TD613-Encyclopedia-exact-repository-source-1ebdb1c5
+          path: |
+            artifacts/TD613_Encyclopedia_Complete_Repo_1ebdb1c5.zip
+            artifacts/TD613_Encyclopedia_Standalone_Source_1ebdb1c5.html
+            artifacts/SNAPSHOT_RECEIPT.json
+            artifacts/READ_FIRST.txt
+          if-no-files-found: error
+          retention-days: 2
