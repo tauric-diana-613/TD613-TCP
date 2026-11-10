@@ -35,3 +35,42 @@ jobs:
         run: |
           node --input-type=module -e "import {CONTRACT,runGeneralizationGrid} from './packages/rulefield/lab/ninth_order_generalization.mjs';const x=runGeneralizationGrid();if(CONTRACT.experimentalFlight!=='HELD'||CONTRACT.scientificClosure!=='RESERVED'||x.count!==1512)process.exit(1);"
           grep -F 'NO_ACQUISITION' dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md
+
+  native_dollhouse_audit:
+    name: Native Dollhouse five-specialist adversarial audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native /dollhouse-audit at exact GitHub HEAD
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input artifacts/atlas-after-hours/pr1735_dollhouse_adversarial_input.json \
+            --source "$GITHUB_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1735_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1735_stdout.json
+          EXIT_CODE=$?
+          echo "$EXIT_CODE" > audit-artifacts/pr1735_native_exit_code.txt
+          set -e
+          if [ "$EXIT_CODE" -gt 1 ]; then
+            echo "Native audit execution failed, exit $EXIT_CODE"
+            exit "$EXIT_CODE"
+          fi
+      - name: Validate native specialist execution, receipt integrity and retained holds
+        run: node scripts/check-atlas-pr1735-dollhouse-verdict.mjs audit-artifacts/pr1735_native_dollhouse_receipt.json
+      - name: Publish bounded native audit receipts (no authority conveyed)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-native-dollhouse-adversarial-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
