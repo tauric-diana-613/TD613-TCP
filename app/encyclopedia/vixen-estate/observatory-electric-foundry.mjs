@@ -335,7 +335,9 @@ export async function mountVixenElectricFoundry({
  }
  host.replaceChildren();
  host.dataset.stageRole='VIXEN_OPERA';
- add(host,heading,railHeading,heroRail,pane,toolbar,eye,controls,score,evidence,gallery);
+ // The live computed field is the centerpiece, not a reward after a wall
+ // of metadata. Source folio and provenance remain visible in its inspector.
+ add(host,heading,railHeading,heroRail,toolbar,eye,pane,controls,score,evidence,gallery);
  renderScore();renderEvidence();renderHero();renderCatalogue();
  stage.tabIndex=0;
  stage.setAttribute('aria-label','Calculated Vixen optical field; arrow keys move the computational probe; click to pin');
