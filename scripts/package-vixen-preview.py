@@ -29,6 +29,11 @@ def main(out):
     # with actual source-complete progressive gallery controls. It must not
     # replace or delete any original mathematical Folio.
     assert 'glinda-cybergoth-rgi10.css' in candidate, "Couture visual system not connected"
+    assert 'vixen-stage-architecture-rgi10b.css' in candidate, "Staged performance architecture absent"
+    assert 'ef-proscenium' in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8"), "Art remains dashboard tiles"
+    assert 'ef-dial-cabinet' in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8"), "Operator instrumentation curtain missing"
+    architecture=(APP/"encyclopedia"/"vixen-estate"/"vixen-stage-architecture-rgi10b.css")
+    assert architecture.is_file(), "Source-preserving theatrical architecture stylesheet omitted"
     assert 'id="formulaGalleryReveal"' in candidate and 'data-expanded="false"' in candidate, "Progressive original formula archive missing"
     visual=(APP/"encyclopedia"/"vixen-estate"/"glinda-cybergoth-rgi10.css")
     assert visual.is_file(), "RGI10 full-stack couture stylesheet omitted"
