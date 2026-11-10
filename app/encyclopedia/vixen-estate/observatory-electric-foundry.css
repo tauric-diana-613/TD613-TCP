@@ -9,16 +9,16 @@
  display:none!important;
 }
 #vixenElectricFoundry{
- --ef-void:#070a10;--ef-iron:#11151d;--ef-metal:#b3c4d2;
- --ef-ultra:#a798f0;--ef-ice:#8fe8ff;--ef-platinum:#e9f7ff;
- --ef-shell:#202630;--ef-hair:rgba(177,213,249,.33);
+ --ef-void:#070a10;--ef-iron:#11151d;--ef-metal:#C2BEBC;
+ --ef-ultra:#C2BEBC;--ef-ice:#DCD9D5;--ef-platinum:#e9f7ff;
+ --ef-shell:#202630;--ef-hair:rgba(220,217,213,.33);
  --ef-rose:#e2a0bf;
  color:#eaf0fb;
  position:relative;isolation:isolate;min-width:0;
  background:
- radial-gradient(ellipse 90% 60% at 74% -8%,rgba(71,64,139,.46),transparent 65%),
+ radial-gradient(ellipse 90% 60% at 74% -8%,rgba(102,112,120,.46),transparent 65%),
  linear-gradient(155deg,#0c0c13 3%,#1c1c29 40%,#05070c 100%);
- border:1px solid rgba(172,196,224,.73);
+ border:1px solid rgba(194,190,188,.73);
  box-shadow:inset 0 0 0 2px rgba(15,20,32,.86),
  0 0 0 2px rgba(7,9,15,.9),0 38px 70px rgba(0,4,9,.46);
  margin-bottom:56px;overflow:hidden;
@@ -27,25 +27,25 @@
 #vixenElectricFoundry *{box-sizing:border-box;min-width:0}
 #vixenElectricFoundry:before{
  content:'';position:absolute;inset:0 0 auto;height:2px;z-index:5;
- background:linear-gradient(90deg,transparent,#dcefff 21%,#fcffff 29%,
- #6aa3ff 56%,#b389e6 72%,transparent 100%);
- box-shadow:0 0 15px 3px rgba(159,204,255,.42);
+ background:linear-gradient(90deg,transparent,#F6F4F0 21%,#fcffff 29%,
+ #C2BEBC 56%,#928F8F 72%,transparent 100%);
+ box-shadow:0 0 15px 3px rgba(220,217,213,.42);
  pointer-events:none
 }
 #vixenElectricFoundry:after{
  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
- background:repeating-linear-gradient(165deg,transparent 0 33px,rgba(169,186,217,.016) 34px 35px);
+ background:repeating-linear-gradient(165deg,transparent 0 33px,rgba(194,190,188,.016) 34px 35px);
  mix-blend-mode:screen;
 }
 #vixenElectricFoundry .ef-header{
  position:relative;overflow:hidden;z-index:1;
  padding:clamp(18px,2.6vw,36px) clamp(20px,3.4vw,47px) 24px;
- border-bottom:1px solid rgba(187,217,246,.43);
+ border-bottom:1px solid rgba(220,217,213,.43);
  background:linear-gradient(95deg,rgba(12,15,25,.9),rgba(40,33,53,.6));
 }
 #vixenElectricFoundry .ef-header:before{
  content:'𝌋';position:absolute;right:3%;top:-45px;
- font:400 clamp(112px,15vw,225px)/1 Georgia,serif;color:rgba(174,203,241,.06);
+ font:400 clamp(112px,15vw,225px)/1 Georgia,serif;color:rgba(220,217,213,.06);
  transform:rotate(-14deg);pointer-events:none;
 }
 #vixenElectricFoundry .ef-kicker{
@@ -56,22 +56,22 @@
 #vixenElectricFoundry .ef-heading{
  font:400 clamp(35px,4.7vw,73px)/1.04 Georgia,serif;
  letter-spacing:-.055em;max-width:1150px;margin:0 0 11px;
- background:linear-gradient(108deg,#fffcff,#bfd9f0 39%,#e8a7cf 67%,#bdcced);
+ background:linear-gradient(108deg,#fffcff,#DCD9D5 39%,#e8a7cf 67%,#DCD9D5);
  -webkit-background-clip:text;background-clip:text;color:transparent;
- text-shadow:0 12px 33px rgba(40,84,120,.16);
+ text-shadow:0 12px 33px rgba(102,112,120,.16);
 }
 #vixenElectricFoundry .ef-dek{
- max-width:940px;color:#c1cce1;font:400 clamp(12px,1.2vw,15px)/1.55 Georgia,serif;
+ max-width:940px;color:#DCD9D5;font:400 clamp(12px,1.2vw,15px)/1.55 Georgia,serif;
  margin:0;
 }
 #vixenElectricFoundry .ef-hero-rail{
  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
- border-bottom:2px solid #90bad1;
+ border-bottom:2px solid #C2BEBC;
  position:relative;z-index:1;
 }
 #vixenElectricFoundry .ef-hero-tab{
- border:0;border-right:1px solid rgba(196,220,255,.29);
- border-bottom:1px solid rgba(196,220,255,.24);
+ border:0;border-right:1px solid rgba(220,217,213,.29);
+ border-bottom:1px solid rgba(220,217,213,.24);
  cursor:pointer;text-align:left;background:
  linear-gradient(110deg,rgba(26,30,39,.86),rgba(47,44,64,.8));
  min-height:71px;padding:13px 17px;
@@ -79,15 +79,15 @@
  letter-spacing:.05em;transition:background .2s,color .2s,box-shadow .2s;
 }
 #vixenElectricFoundry .ef-hero-tab small{
- display:block;margin-top:7px;color:#98abcb;
+ display:block;margin-top:7px;color:#C2BEBC;
  font:600 10px/1 ui-monospace,monospace;
 }
 #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
- background:linear-gradient(121deg,#8293a7 0%,#283348 13%,#282332 72%,#141823 100%);
- color:#fcfcff;box-shadow:inset 0 3px #9cefff,inset 0 -3px rgba(157,179,255,.6);
- text-shadow:0 0 16px rgba(195,231,255,.4)
+ background:linear-gradient(121deg,#928F8F 0%,#24282A 13%,#282332 72%,#141823 100%);
+ color:#fcfcff;box-shadow:inset 0 3px #DCD9D5,inset 0 -3px rgba(194,190,188,.6);
+ text-shadow:0 0 16px rgba(220,217,213,.4)
 }
-#vixenElectricFoundry .ef-hero-tab:hover{background-color:#343b53;color:white}
+#vixenElectricFoundry .ef-hero-tab:hover{background-color:#24282A;color:white}
 #vixenElectricFoundry .ef-pane{
  position:relative;z-index:1;padding:20px clamp(20px,3vw,44px) 20px;
  display:grid;grid-template-columns:1.1fr 1.35fr;column-gap:35px;align-items:start;
@@ -96,11 +96,11 @@
 }
 #vixenElectricFoundry .ef-pane>.ef-sourcebadge{grid-column:1/-1}
 #vixenElectricFoundry .ef-sourcebadge{
- color:#b6f1ff;letter-spacing:.08em;
+ color:#F6F4F0;letter-spacing:.08em;
  font:700 9px/1.55 ui-monospace,monospace;
  padding:6px 9px;display:inline-block;max-width:100%;
- border:1px solid rgba(132,220,246,.56);
- background:rgba(11,43,57,.43);overflow-wrap:anywhere;
+ border:1px solid rgba(220,217,213,.56);
+ background:rgba(36,40,42,.43);overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-lab-title{
  font:400 clamp(26px,3.5vw,50px)/1.06 Georgia,serif;color:#f0f7fc;
@@ -119,15 +119,15 @@
  grid-column:2;grid-row:2/span 3;align-self:stretch;
  padding:13px 18px;background:
  linear-gradient(115deg,rgba(16,20,28,.92),rgba(40,49,64,.67));
- border:1px solid rgba(168,202,255,.44);
- box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),0 0 16px rgba(70,125,196,.12);
+ border:1px solid rgba(220,217,213,.44);
+ box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),0 0 16px rgba(146,143,143,.12);
 }
 #vixenElectricFoundry .ef-equation p:last-child{
  font:italic clamp(16px,1.9vw,26px)/1.3 Georgia,serif;
- color:#d9f7ff;margin:3px 0;overflow-wrap:anywhere;
+ color:#F6F4F0;margin:3px 0;overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-linked-sources{
- grid-column:1/-1;border-top:1px solid rgba(177,213,249,.22);
+ grid-column:1/-1;border-top:1px solid rgba(220,217,213,.22);
  padding-top:13px;margin-top:10px;
  display:grid;gap:4px;grid-template-columns:repeat(3,minmax(0,1fr));
 }
@@ -139,56 +139,56 @@
 #vixenElectricFoundry .ef-toolbar{
  position:relative;z-index:1;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
  background:#0a0d15;padding:10px clamp(20px,2.6vw,35px);
- border-bottom:1px solid rgba(157,216,252,.65);
+ border-bottom:1px solid rgba(220,217,213,.65);
 }
 #vixenElectricFoundry .ef-toggle,
 #vixenElectricFoundry .ef-button{
  cursor:pointer;min-height:40px;padding:10px 13px;
- background:#161923;color:#d9f6ff;
- border:1px solid #728ba7;font:700 10px/1.4 ui-monospace,monospace;
+ background:#161923;color:#F6F4F0;
+ border:1px solid #928F8F;font:700 10px/1.4 ui-monospace,monospace;
  text-align:left;letter-spacing:.04em;
 }
 #vixenElectricFoundry .ef-toggle{
- background:linear-gradient(95deg,#334a66,#121f32);color:#fbffff;
- border-color:#a7edff;
+ background:linear-gradient(95deg,#667078,#181719);color:#fbffff;
+ border-color:#DCD9D5;
 }
 #vixenElectricFoundry .ef-button:hover,
 #vixenElectricFoundry .ef-toggle:hover{
- background:#385475;color:#fff;box-shadow:0 0 20px rgba(102,204,248,.32)
+ background:#667078;color:#fff;box-shadow:0 0 20px rgba(194,190,188,.32)
 }
 #vixenElectricFoundry .ef-stage-state{
- flex:1;text-align:right;color:#a9b9cc;
+ flex:1;text-align:right;color:#C2BEBC;
  font:600 9px/1.55 ui-monospace,monospace;
 }
 #vixenElectricFoundry .ef-eye{
  position:relative;z-index:1;
  display:grid;grid-template-columns:minmax(0,1.76fr) minmax(0,1fr);
- min-height:540px;border-bottom:2px solid #86cdf9;
+ min-height:540px;border-bottom:2px solid #C2BEBC;
 }
 #vixenElectricFoundry .ef-stage{
  position:relative;min-height:540px;overflow:hidden;
- background:#080e16;box-shadow:inset 0 0 120px rgba(53,67,120,.54);
- border-right:1px solid rgba(199,228,255,.55);
+ background:#080e16;box-shadow:inset 0 0 120px rgba(102,112,120,.54);
+ border-right:1px solid rgba(220,217,213,.55);
 }
 #vixenElectricFoundry .ef-canvas{
  width:100%;height:100%;min-height:540px;
  position:absolute;inset:0;display:block;cursor:crosshair;
- background:radial-gradient(ellipse at center,#223047,#070912 65%);
+ background:radial-gradient(ellipse at center,#24282A,#070912 65%);
 }
 #vixenElectricFoundry .ef-optic-chrome{
  position:absolute;inset:0;pointer-events:none;overflow:hidden;
  background:
- linear-gradient(145deg,rgba(210,245,255,.15) 0%,transparent 10% 81%,rgba(242,196,230,.15) 100%),
- repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),rgba(197,232,255,.055) 25% 25%);
- box-shadow:inset 0 0 0 1px #7a98b6,inset 0 0 26px rgba(167,221,255,.18);
+ linear-gradient(145deg,rgba(246,244,240,.15) 0%,transparent 10% 81%,rgba(242,196,230,.15) 100%),
+ repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),rgba(220,217,213,.055) 25% 25%);
+ box-shadow:inset 0 0 0 1px #928F8F,inset 0 0 26px rgba(220,217,213,.18);
 }
 #vixenElectricFoundry .ef-optic-chrome:before,
 #vixenElectricFoundry .ef-optic-chrome:after{
  content:'';position:absolute;pointer-events:none;inset:0;
 }
 #vixenElectricFoundry .ef-optic-chrome:before{
- background:radial-gradient(circle at 50% 50%,transparent 47%,rgba(184,223,255,.16) 47.15%,transparent 47.5%);
- filter:drop-shadow(0 0 6px #6bd4ff)
+ background:radial-gradient(circle at 50% 50%,transparent 47%,rgba(220,217,213,.16) 47.15%,transparent 47.5%);
+ filter:drop-shadow(0 0 6px #C2BEBC)
 }
 #vixenElectricFoundry .ef-optic-chrome:after{
  background:linear-gradient(90deg,#e2faff,transparent 8% 92%,#cba2d9);
@@ -196,30 +196,30 @@
 }
 #vixenElectricFoundry .ef-aperture-ring{
  position:absolute;left:50%;top:50%;width:min(60%,410px);aspect-ratio:1;
- border:1px solid rgba(188,221,255,.34);border-radius:50%;
+ border:1px solid rgba(220,217,213,.34);border-radius:50%;
  transform:translate(-50%,-50%) rotate(22deg);
- box-shadow:0 0 0 24px rgba(105,188,232,.018),
- 0 0 0 25px rgba(155,209,246,.12),0 0 0 66px rgba(107,137,196,.02),
- 0 0 0 67px rgba(155,209,246,.07),0 0 28px rgba(66,177,255,.17);
+ box-shadow:0 0 0 24px rgba(194,190,188,.018),
+ 0 0 0 25px rgba(220,217,213,.12),0 0 0 66px rgba(146,143,143,.02),
+ 0 0 0 67px rgba(220,217,213,.07),0 0 28px rgba(194,190,188,.17);
 }
 #vixenElectricFoundry .ef-aperture-ring:before{
- content:'';position:absolute;inset:10%;border:1px dashed rgba(178,212,249,.37);
+ content:'';position:absolute;inset:10%;border:1px dashed rgba(220,217,213,.37);
  border-radius:50%;transform:rotate(18deg);
 }
 #vixenElectricFoundry .ef-fiducial,
 #vixenElectricFoundry .ef-crossline{
  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
- width:1px;height:70%;background:linear-gradient(transparent,rgba(223,238,255,.25),transparent);
+ width:1px;height:70%;background:linear-gradient(transparent,rgba(246,244,240,.25),transparent);
 }
 #vixenElectricFoundry .ef-crossline{width:75%;height:1px}
 #vixenElectricFoundry .ef-phase-lock{
- position:absolute;inset:15px;border:1px solid rgba(147,203,252,.4);
+ position:absolute;inset:15px;border:1px solid rgba(220,217,213,.4);
  clip-path:polygon(0 0,7% 0,7% 1%,93% 1%,93% 0,100% 0,100% 100%,0 100%);
 }
 #vixenElectricFoundry .ef-scene-badge{
  position:absolute;bottom:16px;left:15px;right:15px;
  color:#f7fbff;background:rgba(5,12,22,.8);
- border:1px solid rgba(153,213,255,.6);padding:8px 11px;
+ border:1px solid rgba(220,217,213,.6);padding:8px 11px;
  font:700 9px/1.55 ui-monospace,monospace;letter-spacing:.06em;
  pointer-events:none;overflow-wrap:anywhere
 }
@@ -227,7 +227,7 @@
  min-height:540px;max-height:660px;overflow:auto;display:block;
  background:
  linear-gradient(155deg,#191c29 0%,#090c14 70%),
- radial-gradient(ellipse at 20% 50%,rgba(81,87,166,.13),transparent 85%);
+ radial-gradient(ellipse at 20% 50%,rgba(102,112,120,.13),transparent 85%);
  padding:24px 20px;color:#ebeffc;
 }
 #vixenElectricFoundry .ef-readout h3{
@@ -237,27 +237,27 @@
 #vixenElectricFoundry .ef-metrics{margin:16px 0;display:grid;gap:6px}
 #vixenElectricFoundry .ef-metric{
  padding:9px 12px;display:flex;flex-direction:column;gap:4px;min-width:0;
- border:1px solid rgba(164,188,229,.29);
- background:linear-gradient(115deg,rgba(103,129,161,.1),rgba(7,11,19,.6));
+ border:1px solid rgba(194,190,188,.29);
+ background:linear-gradient(115deg,rgba(146,143,143,.1),rgba(7,11,19,.6));
 }
 #vixenElectricFoundry .ef-metric small{
  color:#c7aad7;font:700 9px/1.45 ui-monospace,monospace;
  letter-spacing:.065em;text-transform:uppercase;overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-metric strong{
- color:#b4eeff;font:600 clamp(11px,1.35vw,15px)/1.5 ui-monospace,monospace;
+ color:#DCD9D5;font:600 clamp(11px,1.35vw,15px)/1.5 ui-monospace,monospace;
  white-space:pre-wrap;overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-metric span{
  color:#aeb8c7;font:500 9px/1.55 ui-monospace,monospace;
 }
 #vixenElectricFoundry .ef-raw{
- color:#d5e7f0;border:1px solid rgba(160,188,220,.31);
+ color:#DCD9D5;border:1px solid rgba(194,190,188,.31);
  padding:9px;margin-top:12px;overflow:hidden;
 }
 #vixenElectricFoundry .ef-raw summary{
  font:700 10px/1.6 ui-monospace,monospace;
- cursor:pointer;color:#c7eaff;
+ cursor:pointer;color:#F6F4F0;
 }
 #vixenElectricFoundry .ef-raw pre{
  white-space:pre-wrap;overflow-wrap:anywhere;
@@ -278,25 +278,25 @@
  margin-bottom:9px;overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-dial output{
- color:#9fddff;background:#111928;border:1px solid rgba(159,217,243,.3);
+ color:#DCD9D5;background:#111928;border:1px solid rgba(220,217,213,.3);
  font:600 11px/1.3 ui-monospace,monospace;padding:4px 6px;
 }
 #vixenElectricFoundry .ef-dial input{
- display:block;width:100%;height:28px;accent-color:#7abef2;
+ display:block;width:100%;height:28px;accent-color:#C2BEBC;
  cursor:ew-resize;
 }
 #vixenElectricFoundry .ef-score{
  padding:20px clamp(20px,3vw,45px);
- background:#0b111d;border-bottom:1px solid #87a8c2;
+ background:#0b111d;border-bottom:1px solid #C2BEBC;
  position:relative;z-index:1;
 }
 #vixenElectricFoundry .ef-score-note{
- font:400 11px/1.5 ui-monospace,monospace;color:#aebdd4;
+ font:400 11px/1.5 ui-monospace,monospace;color:#C2BEBC;
  margin:0 0 12px;
 }
 #vixenElectricFoundry .ef-carrier-grid{
  display:flex;align-items:flex-end;justify-content:space-between;gap:2px;
- height:57px;border-bottom:1px solid #6b9ec1;
+ height:57px;border-bottom:1px solid #928F8F;
 }
 #vixenElectricFoundry .ef-carrier{
  display:block;flex:1;min-width:1px;
@@ -308,7 +308,7 @@
  border-top:2px solid #e6faff;
 }
 #vixenElectricFoundry .ef-evidence{
- background:#0d121d;border-bottom:1px solid rgba(158,193,216,.5);
+ background:#0d121d;border-bottom:1px solid rgba(194,190,188,.5);
  padding:21px clamp(20px,3vw,45px);position:relative;z-index:1;
 }
 #vixenElectricFoundry .ef-evidence>.ef-custody{margin:12px 0 0;max-width:940px}
@@ -316,14 +316,14 @@
  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;
 }
 #vixenElectricFoundry .ef-census-cell{
- border-left:1px solid #a4cde8;padding:9px 15px;
+ border-left:1px solid #DCD9D5;padding:9px 15px;
  display:flex;flex-direction:column;gap:3px;
 }
 #vixenElectricFoundry .ef-census-cell strong{
  color:#f1fbff;font:400 38px/1.05 Georgia,serif;
 }
 #vixenElectricFoundry .ef-census-cell small{
- color:#aebac9;font:700 9px/1.3 ui-monospace,monospace;
+ color:#C2BEBC;font:700 9px/1.3 ui-monospace,monospace;
  letter-spacing:.08em;
 }
 #vixenElectricFoundry .ef-gallery{
@@ -339,11 +339,11 @@
 }
 #vixenElectricFoundry .ef-gallery-tab{
  cursor:pointer;min-height:36px;padding:8px 14px;
- border:1px solid #93b4ce;color:#d6eafb;
+ border:1px solid #C2BEBC;color:#F6F4F0;
  background:#252c3c;font:700 10px ui-monospace,monospace;
 }
 #vixenElectricFoundry .ef-gallery-tab[aria-pressed="true"]{
- border-color:#d4f5ff;background:#546f93;color:#fff;
+ border-color:#F6F4F0;background:#667078;color:#fff;
  box-shadow:inset 0 2px #e4f8ff;
 }
 #vixenElectricFoundry .ef-gallery-list{
@@ -351,17 +351,17 @@
 }
 #vixenElectricFoundry .ef-gallery-item{
  cursor:pointer;text-align:left;padding:12px 14px;
- border:1px solid rgba(175,200,231,.24);
+ border:1px solid rgba(220,217,213,.24);
  background:rgba(30,36,49,.72);
- font:500 11px/1.5 ui-monospace,monospace;color:#d1e1f0;
+ font:500 11px/1.5 ui-monospace,monospace;color:#DCD9D5;
  white-space:normal;overflow-wrap:anywhere;
 }
 #vixenElectricFoundry .ef-gallery-item[aria-pressed="true"]{
- border-color:#b8efff;color:#fff;
- background:linear-gradient(125deg,#315879,#171a29);
+ border-color:#F6F4F0;color:#fff;
+ background:linear-gradient(125deg,#667078,#171a29);
 }
 #vixenElectricFoundry :is(button,canvas,input,summary):focus-visible{
- outline:3px solid #a9e8ff;outline-offset:3px
+ outline:3px solid #DCD9D5;outline-offset:3px
 }
 @media(max-width:1050px){
  #vixenElectricFoundry .ef-hero-rail{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -400,83 +400,126 @@
  #vixenElectricFoundry :is(.ef-hero-tab,.ef-button,.ef-toggle){transition:none}
 }
 
-/*
- * RGI09 GLINDA CYBERGOTH CONTINUITY · ART DIRECTION
- * This is Vixen's existing pink-couture cathedral infused with platinum,
- * ultraviolet, electric photonics and smoky glass. These accents deliberately
- * preserve the existing fox/Glinda/Mugler aesthetic; the new optics perform
- * mathematics instead of replacing the established style.
+
+/* AUTHORITY: original #manifest-instance-theme, Vixen / Astra lineage.
+ * #FF91AF Baker-Miller Pink · #F9F36D Arc Flash
+ * #24282A Graphite · #667078 Nickel · #F6F4F0 Porcelain
+ * A chromatic shader is an INSTRUMENT, never a replacement for this Opera.
  */
 #vixenElectricFoundry{
- --ef-rose:#f3a3cf;--ef-ultra:#c49aff;--ef-ice:#a2e9ff;
- --ef-metal:#d1d6e4;--ef-shell:#342335;
- --ef-hair:rgba(225,162,209,.40);
- background:
-  radial-gradient(ellipse 80% 58% at 84% -12%,rgba(217,98,170,.31),transparent 70%),
-  radial-gradient(ellipse 72% 80% at -15% 80%,rgba(132,86,181,.20),transparent 70%),
-  linear-gradient(150deg,#1b1422 3%,#252130 44%,#080a10 100%);
- border-color:rgba(232,176,218,.7);
- box-shadow:inset 0 0 0 2px rgba(21,15,25,.88),
- 0 0 0 2px rgba(8,7,16,.9),0 35px 70px rgba(25,10,21,.45);
+ --ef-pink:#FF91AF;--ef-arc:#F9F36D;--ef-graphite:#24282A;
+ --ef-nickel:#667078;--ef-porcelain:#F6F4F0;
+ --ef-ultra:#6A4B62;--ef-ice:#F9F36D;
+ --ef-hair:rgba(249,243,109,.34);--ef-rose:#FF91AF;
+ color:#F6F4F0;
+ background:radial-gradient(ellipse at 81% -18%,rgba(255,145,175,.25),transparent 64%),
+ linear-gradient(146deg,#24282A 2%,#32272E 47%,#111113 100%);
+ border-color:#667078;
+ box-shadow:inset 0 0 0 1px #F6F4F0,0 0 0 3px #24282A,
+ 0 36px 72px rgba(23,17,21,.54);
 }
 #vixenElectricFoundry:before{
- background:linear-gradient(90deg,transparent,#eab5d8 12%,
-  #fff6fc 29%,#c59cff 54%,#9ce9ff 71%,#ffc6e5 85%,transparent);
- box-shadow:0 0 18px 3px rgba(224,125,210,.48);
+ background:linear-gradient(90deg,transparent 0%,#FF91AF 13%,#F6F4F0 28%,
+ #F9F36D 44%,#F9F36D 65%,#FF91AF 84%,transparent 100%);
+ box-shadow:0 0 24px 3px rgba(249,243,109,.5);
 }
 #vixenElectricFoundry .ef-header{
- background:
-  radial-gradient(ellipse 68% 200% at 90% -55%,rgba(244,146,200,.24),transparent 72%),
-  linear-gradient(90deg,rgba(30,17,32,.93),rgba(41,31,49,.72));
+ background:radial-gradient(ellipse at 85% -40%,rgba(255,145,175,.28),transparent 74%),
+ linear-gradient(100deg,#24282A,#30242D);
+ border-bottom-color:rgba(249,243,109,.5);
 }
 #vixenElectricFoundry .ef-heading{
- background:linear-gradient(103deg,#fff7fd,#f2c4df 30%,#eae4f9 57%,#bbd9f2 82%,#f5b8d8);
+ background:linear-gradient(105deg,#F6F4F0 0%,#FF91AF 36%,
+ #F6F4F0 65%,#D1CECA 83%,#FF91AF);
  -webkit-background-clip:text;background-clip:text;color:transparent;
+ text-shadow:none;
 }
+#vixenElectricFoundry .ef-kicker,
+#vixenElectricFoundry .ef-hero-tab small,
+#vixenElectricFoundry .ef-metric strong,
+#vixenElectricFoundry .ef-dial output,
+#vixenElectricFoundry .ef-raw summary{color:#F9F36D}
 #vixenElectricFoundry .ef-hero-tab{
- background:linear-gradient(115deg,rgba(39,25,42,.94),rgba(54,46,64,.82));
- border-right-color:rgba(232,174,218,.29);
+ background:linear-gradient(110deg,#29262B,#343136);color:#F6F4F0;
+ border-color:rgba(255,145,175,.33);
 }
 #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
- background:linear-gradient(116deg,#8f668a 0%,#49364f 12%,#282130 65%,#14141f 100%);
- box-shadow:inset 0 3px #ffb6e0,inset 0 -3px rgba(166,177,255,.72);
+ color:#F6F4F0;background:linear-gradient(110deg,#654655,#32282F,#24282A);
+ box-shadow:inset 0 3px #F9F36D,inset 0 -3px #FF91AF;
 }
 #vixenElectricFoundry .ef-pane{
- background:linear-gradient(165deg,rgba(47,30,48,.89),rgba(11,17,26,.94));
+ background:linear-gradient(160deg,#2F282E,#171719 82%);
+}
+#vixenElectricFoundry .ef-sourcebadge{
+ color:#F9F36D;background:#24282A;border-color:#F9F36D;
+}
+#vixenElectricFoundry .ef-lab-title{color:#F6F4F0}
+#vixenElectricFoundry .ef-lab-subtitle,
+#vixenElectricFoundry .ef-metric small{color:#FF91AF}
+#vixenElectricFoundry .ef-equation{
+ background:linear-gradient(120deg,#24282A,#343136);
+ border-color:rgba(249,243,109,.63);
+ box-shadow:0 0 18px rgba(249,243,109,.16);
+}
+#vixenElectricFoundry .ef-equation p:last-child{color:#F6F4F0}
+#vixenElectricFoundry .ef-toolbar{
+ background:#24282A;border-bottom:1px solid #F9F36D;
 }
 #vixenElectricFoundry .ef-toggle{
- background:linear-gradient(95deg,#69446d,#25314b);
- border-color:#f4bfe0;
+ color:#24282A;background:#F9F36D;border-color:#F9F36D;
 }
+#vixenElectricFoundry .ef-toggle:hover{background:#F6F4F0;color:#24282A}
+#vixenElectricFoundry .ef-button{
+ color:#F6F4F0;background:#24282A;border-color:#FF91AF;
+}
+#vixenElectricFoundry .ef-button:hover{background:#654655;color:#F6F4F0}
+#vixenElectricFoundry .ef-eye{border-bottom-color:#F9F36D}
 #vixenElectricFoundry .ef-stage{
- background:radial-gradient(ellipse at 50% 50%,#322541 2%,#0a0d16 75%);
- box-shadow:inset 0 0 130px rgba(115,53,125,.46);
+ background:radial-gradient(ellipse at center,#3D343B,#141417 74%);
+ box-shadow:inset 0 0 130px rgba(255,145,175,.18);
+ border-right-color:rgba(249,243,109,.7);
+}
+#vixenElectricFoundry .ef-canvas{
+ background:radial-gradient(ellipse at center,#50444C,#141416 70%);
 }
 #vixenElectricFoundry .ef-optic-chrome{
- background:
-  linear-gradient(145deg,rgba(255,214,242,.16) 0%,transparent 12% 81%,rgba(242,166,224,.16) 100%),
-  repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),rgba(222,193,244,.055) 25% 25%);
+ background:linear-gradient(140deg,rgba(246,244,240,.2),transparent 16% 82%,rgba(255,145,175,.16));
+ box-shadow:inset 0 0 0 1px #667078,inset 0 0 25px rgba(249,243,109,.24);
 }
 #vixenElectricFoundry .ef-aperture-ring{
- border-color:rgba(255,199,234,.45);
- box-shadow:0 0 0 24px rgba(242,110,185,.02),
- 0 0 0 25px rgba(235,160,230,.16),
- 0 0 0 66px rgba(99,105,195,.03),
- 0 0 0 67px rgba(189,180,244,.09),
- 0 0 40px rgba(255,101,199,.21);
+ border-color:rgba(249,243,109,.72);
+ box-shadow:0 0 0 24px rgba(255,145,175,.025),
+ 0 0 0 25px rgba(249,243,109,.18),
+ 0 0 0 66px rgba(255,145,175,.022),
+ 0 0 0 67px rgba(249,243,109,.1),0 0 35px rgba(249,243,109,.23);
 }
 #vixenElectricFoundry .ef-scene-badge{
- border-color:rgba(248,166,225,.61);
- box-shadow:inset 0 1px rgba(236,212,245,.12);
+ border-color:#F9F36D;background:rgba(36,40,42,.88);color:#F6F4F0;
 }
-#vixenElectricFoundry .ef-equation{
- border-color:rgba(244,186,226,.44);
- box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),
- 0 0 18px rgba(219,111,199,.14);
+#vixenElectricFoundry .ef-readout{background:linear-gradient(153deg,#2B252B,#151517)}
+#vixenElectricFoundry .ef-metric{
+ border-color:rgba(255,145,175,.34);
+ background:linear-gradient(105deg,#343136,#24282A);
 }
-#vixenElectricFoundry .ef-lab-subtitle,
-#vixenElectricFoundry .ef-metric small{color:#f2b0d5}
-#vixenElectricFoundry .ef-gallery-tab[aria-pressed="true"]{
- background:linear-gradient(110deg,#7b557e,#496583);
- border-color:#ffbfe8;
+#vixenElectricFoundry .ef-dial input{accent-color:#F9F36D}
+#vixenElectricFoundry .ef-score{background:#24282A;border-bottom-color:#F9F36D}
+#vixenElectricFoundry .ef-carrier-grid{border-bottom-color:#F9F36D}
+#vixenElectricFoundry .ef-carrier[data-plane="flight-near"]{border-top-color:#F9F36D}
+#vixenElectricFoundry .ef-evidence{
+ background:#24282A;border-bottom-color:rgba(249,243,109,.5);
+}
+#vixenElectricFoundry .ef-census-cell{border-left-color:#F9F36D}
+#vixenElectricFoundry .ef-census-cell strong{color:#FF91AF}
+#vixenElectricFoundry .ef-gallery{
+ background:linear-gradient(155deg,#24282A,#342831 70%,#171719);
+}
+#vixenElectricFoundry .ef-gallery-tab{
+ color:#F6F4F0;background:#24282A;border-color:#FF91AF;
+}
+#vixenElectricFoundry .ef-gallery-tab[aria-pressed="true"],
+#vixenElectricFoundry .ef-gallery-item[aria-pressed="true"]{
+ color:#24282A;background:#F9F36D;border-color:#F9F36D;
+}
+#vixenElectricFoundry :is(button,canvas,input,summary):focus-visible{
+ outline:3px solid #F9F36D;
 }
