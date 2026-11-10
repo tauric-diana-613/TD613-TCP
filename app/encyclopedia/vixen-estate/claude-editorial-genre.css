@@ -429,3 +429,100 @@ body .site-header .mobile-nav button:focus-visible{
  color:#FF91AF;
 }
 body .site-header .mobile-nav small{color:#F9F36D}
+
+
+/* ========================================================================
+   THE FOX HOUSE · C3 room-rail genre, C1 legible route discipline
+   Designed to replace the feeling of an administrative navigation array,
+   not to add another router, menu state, source estate, or modal.
+   The eight buttons use native data-view handlers and are visible only
+   where there is enough horizontal room to keep the Vixen work legible.
+   ======================================================================== */
+.vixen-room-rail{display:none}
+@media(min-width:1280px){
+  body{--vf-room-width:73px}
+  body #main{
+    margin-left:var(--vf-room-width);
+    width:calc(100% - var(--vf-room-width));
+  }
+  body .site-header .header-inner{padding-left:max(18px,calc(var(--vf-room-width) + 5px))}
+  .vixen-room-rail{
+    display:flex;position:fixed;z-index:88;
+    left:0;top:var(--header-height,72px);bottom:0;width:var(--vf-room-width);
+    flex-direction:column;align-items:stretch;
+    background:linear-gradient(180deg,#0C090F,#0D0A10 58%,#170E17);
+    border-right:1px solid rgba(255,145,175,.31);
+    box-shadow:5px 0 24px rgba(0,0,0,.23);
+    overflow-x:visible;overflow-y:auto;scrollbar-width:thin;
+  }
+  .vixen-room-crest{
+    display:grid;place-items:center;min-height:54px;
+    color:#FF91AF;font:400 25px/1 var(--vf-serif);
+    border-bottom:1px solid rgba(255,145,175,.14);
+    text-shadow:0 0 16px rgba(255,145,175,.28);
+  }
+  .vixen-room{
+    appearance:none;display:flex;position:relative;
+    flex-direction:column;align-items:center;justify-content:center;
+    gap:5px;min-height:66px;width:100%;
+    color:#B6A7B1;background:transparent;
+    border:0;border-left:2px solid transparent;
+    padding:8px 4px;cursor:pointer;
+    transition:color .18s,background .18s,border-color .18s;
+  }
+  .vixen-room-number{
+    font:400 22px/.98 var(--vf-serif);
+    letter-spacing:-.035em;
+  }
+  .vixen-room-name{
+    font:700 7px/1.15 var(--vf-mono);
+    text-align:center;letter-spacing:.055em;
+    text-transform:uppercase;
+  }
+  .vixen-room:hover,.vixen-room:focus-visible{
+    color:#F6F4F0;
+    background:linear-gradient(90deg,rgba(255,145,175,.14),transparent);
+  }
+  .vixen-room[aria-current="page"]{
+    color:#FF91AF;border-left-color:#FF91AF;
+    background:linear-gradient(90deg,rgba(255,145,175,.20),rgba(255,145,175,.014));
+    box-shadow:inset 0 0 20px rgba(255,145,175,.05);
+  }
+  .vixen-room[aria-current="page"] .vixen-room-number{
+    color:#F6F4F0;text-shadow:0 0 16px rgba(255,145,175,.31);
+  }
+  .vixen-room[aria-current="page"]:after{
+    content:'';position:absolute;top:13px;right:0;
+    width:1px;height:calc(100% - 26px);
+    background:linear-gradient(transparent,#F9F36D,transparent);
+  }
+  .vixen-room:focus-visible{
+    outline:2px solid #F9F36D;outline-offset:-4px;
+  }
+  .vixen-room-end{
+    margin-top:auto;display:flex;flex-direction:column;
+    align-items:center;gap:9px;padding:14px 0 18px;
+    border-top:1px solid rgba(255,145,175,.16);
+    color:#FF91AF;
+  }
+  .vixen-room-end>span{font-size:13px;letter-spacing:-3px}
+  .vixen-room-end small{
+    font:600 8px/1 var(--vf-mono);
+    letter-spacing:.04em;writing-mode:vertical-rl;
+  }
+  /* The historic shell's main nav is redundant with the room rail on
+     large screens; leave it in the DOM for native handlers and narrower
+     viewports, while restoring Candidate 3's uncluttered masthead. */
+  .site-header .main-nav{display:none!important}
+  .vixen-editorial-foyer{padding-left:clamp(28px,5vw,94px)}
+}
+@media(min-width:1280px) and (max-height:725px){
+  .vixen-room-crest{min-height:35px}
+  .vixen-room{min-height:52px}
+  .vixen-room-end{padding:8px 0}
+  .vixen-room-end small{display:none}
+}
+/* Existing menu remains responsible for mobile; no second menu flyout. */
+@media(max-width:1279px){
+  .vixen-room-rail{display:none!important}
+}
