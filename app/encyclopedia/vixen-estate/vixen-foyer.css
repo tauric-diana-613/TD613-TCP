@@ -1,0 +1,686 @@
+/**
+ * VIXEN / OPERA FOYER · three supplied interface studies, reconciled under Vixen source governance.
+ *
+ * SOURCE: user-supplied candidate 1 scholarly rail, candidate 2 atmospheric
+ * spaciousness and candidate 3 editorial invitation/doorways/carry-forward.
+ * Scientific runtime, research cart, source manifestations, gate states, and
+ * the chrome mathematical Observatory retain independent ownership.
+ *
+ * Genre: Glinda cybergoth / unchained Mugler chromepunk, obsessive Didone,
+ * sharp nickel foil, pink couture, Arc Flash accents, accessible actual doors.
+ * Palette anchors are historical; selective iridescence is welcome.
+ */
+:root{
+ --vf-rose:#FF91AF;
+ --vf-flash:#F9F36D;
+ --vf-porcelain:#F6F4F0;
+ --vf-metal:#667078;
+ --vf-night:#060608;
+ --vf-wine:#24282A;
+ --vf-blush:#E8A4BE;
+ --vf-foil:linear-gradient(115deg,#F6F4F0 0%,#BCC2C7 13%,#4B555D 29%,#FAF9F6 48%,#8C939B 64%,#F6F4F0 82%,#667078 100%);
+ --vf-serif:Didot,'Bodoni 72','Bodoni MT','Times New Roman',Georgia,serif;
+ --vf-sans:'Avenir Next Condensed','Arial Narrow','Helvetica Neue',Arial,system-ui,sans-serif;
+ --vf-mono:ui-monospace,'SFMono-Regular','Cascadia Code',Menlo,Consolas,monospace;
+}
+.vixen-editorial-foyer{
+ position:relative;
+ --vf-pointer-x:72%;--vf-pointer-y:0%;
+ background:
+  radial-gradient(ellipse 55% 75% at var(--vf-pointer-x) var(--vf-pointer-y),rgba(255,145,175,.12),transparent 78%),
+  radial-gradient(ellipse 65% 95% at 3% 110%,rgba(94,70,91,.22),transparent 74%),
+  linear-gradient(130deg,#08070A 0%,#20101B 50%,#060709 100%);
+ color:var(--vf-porcelain);
+ isolation:isolate;overflow:hidden;
+ padding:clamp(58px,7.8vw,120px) clamp(22px,5vw,96px) clamp(28px,3.3vw,54px);
+ border-top:1px solid rgba(255,145,175,.30);
+ border-bottom:2px solid rgba(255,145,175,.4);
+}
+.vixen-editorial-foyer:before{
+ content:'';position:absolute;inset:0 0 auto;height:1px;
+ background:linear-gradient(90deg,transparent 0%,rgba(255,145,175,.14) 16%,#FF91AF 48%,#F9F36D 65%,transparent 100%);
+ box-shadow:0 0 18px rgba(255,145,175,.53);pointer-events:none;
+}
+.vixen-editorial-foyer:after{
+ content:'';position:absolute;right:17%;top:0;bottom:0;width:1px;
+ background:linear-gradient(180deg,transparent,rgba(249,243,109,.16) 48%,transparent);
+ pointer-events:none;z-index:0;
+}
+.vixen-editorial-foyer > *{position:relative;z-index:1}
+.vixen-foyer-intro{max-width:1150px}
+.vixen-foyer-kicker{
+ font:700 10px/1.6 var(--vf-mono);letter-spacing:.19em;
+ text-transform:uppercase;color:var(--vf-rose);margin:0 0 21px;
+}
+.vixen-foyer-intro h2{
+ max-width:1140px;margin:0;
+ font:400 clamp(49px,6.5vw,105px)/.91 var(--vf-serif);
+ letter-spacing:-.055em;color:var(--vf-porcelain);
+ text-wrap:balance;
+}
+.vixen-foyer-intro h2 em{
+ display:inline;font-weight:400;color:var(--vf-rose);
+}
+.vixen-foyer-intro > p:not(.vixen-foyer-kicker){
+ max-width:750px;margin:clamp(22px,3vw,34px) 0 0;
+ font:400 clamp(16px,1.7vw,22px)/1.62 Georgia,serif;
+ color:#D2C2CE;
+}
+.vixen-foyer-annotation{
+ display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+ margin:25px 0 0;color:#D4BFCC;
+ font:600 9px/1.5 var(--vf-mono);letter-spacing:.08em;
+ text-transform:uppercase;
+}
+.vixen-foyer-annotation::first-letter{color:var(--vf-flash)}
+/* third supplied interface reference's four verbs, with first supplied interface reference's exact source hierarchy. */
+.mobile-wayfinder.vixen-doorways{
+ display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:0;margin:clamp(34px,4vw,58px) 0 0;
+ background:transparent;border:0;border-top:1px solid rgba(246,244,240,.25);
+ border-bottom:1px solid rgba(246,244,240,.16);
+}
+.mobile-wayfinder.vixen-doorways button{
+ position:relative;display:flex;flex-direction:column;align-items:flex-start;
+ background:transparent;border:0;border-right:1px solid rgba(246,244,240,.16);
+ padding:28px clamp(12px,1.7vw,26px) 27px;
+ min-height:238px;gap:0;
+ text-align:left;color:var(--vf-porcelain);
+ transition:background .32s cubic-bezier(.16,1,.3,1);
+}
+.mobile-wayfinder.vixen-doorways button:first-child{padding-left:0}
+.mobile-wayfinder.vixen-doorways button:last-child{border-right:0}
+.mobile-wayfinder.vixen-doorways button:after{
+ content:'';position:absolute;left:10px;right:10px;top:0;height:2px;
+ background:linear-gradient(90deg,var(--vf-rose),var(--vf-flash));
+ transform:scaleX(0);transform-origin:left;
+ transition:transform .36s cubic-bezier(.16,1,.3,1);
+}
+.mobile-wayfinder.vixen-doorways button:hover,
+.mobile-wayfinder.vixen-doorways button:focus-visible{
+ background:linear-gradient(170deg,rgba(255,145,175,.12),rgba(255,145,175,.01) 80%);
+}
+.mobile-wayfinder.vixen-doorways button:hover:after,
+.mobile-wayfinder.vixen-doorways button:focus-visible:after{transform:scaleX(1)}
+.mobile-wayfinder.vixen-doorways button .vixen-door-index{
+ font:700 9px/1.5 var(--vf-mono);letter-spacing:.09em;color:var(--vf-rose);
+ margin-bottom:19px;
+}
+.mobile-wayfinder.vixen-doorways button strong{
+ display:block;max-width:235px;
+ font:400 clamp(27px,2.3vw,42px)/.99 var(--vf-serif);
+ letter-spacing:-.045em;text-transform:none;
+ color:var(--vf-porcelain);margin:0;
+}
+.mobile-wayfinder.vixen-doorways button strong em{
+ color:var(--vf-rose);font-style:italic;
+}
+.mobile-wayfinder.vixen-doorways button .vixen-door-desc{
+ display:block;max-width:260px;margin:15px 0 0;
+ font:400 13px/1.57 Georgia,serif;color:#C5B4C3;
+}
+.mobile-wayfinder.vixen-doorways button .vixen-door-verb{
+ display:flex;align-items:center;justify-content:space-between;
+ width:100%;gap:8px;margin:auto 0 0;padding-top:19px;
+ font:700 10px/1.2 var(--vf-mono);
+ letter-spacing:.035em;color:var(--vf-flash);
+ text-transform:uppercase;
+}
+.mobile-wayfinder.vixen-doorways button .vixen-door-verb span{
+ font:400 22px/1 var(--vf-serif);
+ transition:transform .25s cubic-bezier(.16,1,.3,1);
+}
+.mobile-wayfinder.vixen-doorways button:hover .vixen-door-verb span{
+ transform:translate(4px,-4px)
+}
+.vixen-foyer-afterword{
+ display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+ padding-top:22px;
+ color:#AFA3AD;font:600 8px/1.6 var(--vf-mono);
+ letter-spacing:.12em;text-transform:uppercase;
+}
+/* Return editorial intelligence to the permanent rail. The rail still owns
+ * exactly the original eight typed routes; this is only presentation. */
+.main-nav .nav-btn{
+ font-family:var(--vf-sans);font-weight:600;
+ letter-spacing:.13em;transition:color .22s ease,background .22s ease;
+}
+.main-nav .nav-btn small{
+ font-family:var(--vf-serif);font-weight:400;
+}
+.main-nav .nav-btn[aria-current="page"]{
+ color:var(--vf-rose);
+ background:linear-gradient(90deg,rgba(255,145,175,.10),transparent 100%);
+}
+.main-nav .nav-btn[aria-current="page"]:before{
+ background:var(--vf-rose);
+ box-shadow:0 0 13px rgba(255,145,175,.52);
+}
+/* An unobtrusive working research-cart affordance. It is a route, never
+ * a fake purchase panel or an alternative owner of experiment state. */
+.vixen-carry-rail{
+ position:fixed;z-index:89;right:clamp(10px,2.5vw,30px);bottom:clamp(12px,2.2vw,30px);
+ width:min(226px,calc(100vw - 24px));
+ border:1px solid rgba(255,145,175,.64);
+ background:linear-gradient(145deg,rgba(43,28,40,.96),rgba(10,10,14,.98));
+ box-shadow:0 9px 32px rgba(0,0,0,.46),inset 0 1px rgba(246,244,240,.19);
+ backdrop-filter:blur(16px) saturate(1.45);
+ padding:11px 13px 12px;
+}
+.vixen-carry-rail:before{
+ content:'';position:absolute;top:0;left:0;right:0;height:1px;
+ background:linear-gradient(90deg,var(--vf-rose),var(--vf-flash),var(--vf-porcelain));
+}
+.vixen-carry-kicker{
+ display:block;font:700 8px/1.3 var(--vf-mono);
+ color:#FF91AF;letter-spacing:.13em;
+ margin-bottom:5px;
+}
+.vixen-carry-action{
+ border:0!important;background:transparent!important;
+ display:flex;gap:9px;align-items:center;justify-content:space-between;
+ min-width:0;width:100%;color:var(--vf-porcelain)!important;
+ padding:0!important;text-align:left;cursor:pointer;
+}
+.vixen-carry-title{
+ font:400 21px/1.1 var(--vf-serif);letter-spacing:-.02em;
+}
+.vixen-carry-count{
+ min-width:23px;height:23px;padding:4px;
+ border:1px solid rgba(249,243,109,.55);
+ text-align:center;color:var(--vf-flash);
+ font:700 11px/1.15 var(--vf-mono);
+}
+.vixen-carry-arrow{
+ color:var(--vf-flash);font:20px/1 var(--vf-serif);
+}
+.vixen-carry-action:hover .vixen-carry-title{color:var(--vf-rose)}
+body[data-view="collection"] .vixen-carry-rail{display:none}
+/* third supplied interface reference's literary display scale, without modifying original records. */
+#view-works .view-heading h1,
+#view-collection .view-heading h1,
+#view-gates .view-heading h1,
+#view-protocols .view-heading h1,
+#view-holds .view-heading h1{
+ font-family:var(--vf-serif);
+ font-size:clamp(57px,6.8vw,106px);
+ font-weight:400;line-height:.92;
+ letter-spacing:-.052em;
+}
+#view-works .view-heading .title-annotation,
+#view-collection .view-heading .title-annotation,
+#view-gates .view-heading .title-annotation,
+#view-protocols .view-heading .title-annotation,
+#view-holds .view-heading .title-annotation{
+ font-style:italic;color:var(--vf-rose);
+}
+/* Mathematical Opera gets editorial treatment rather than an engineer's
+ * console pasted inside the museum. No interference with GPU Canvas. */
+#vixenElectricFoundry .ef-heading{
+ font-family:var(--vf-serif)!important;
+ letter-spacing:-.045em!important;
+ font-size:clamp(42px,5.15vw,79px)!important;
+}
+#vixenElectricFoundry .ef-dek{
+ font:400 clamp(16px,1.4vw,21px)/1.5 Georgia,serif;
+ max-width:880px;
+}
+#vixenElectricFoundry .ef-hero-tab{
+ font-family:var(--vf-sans);
+ font-size:clamp(10px,1.05vw,13px);
+ letter-spacing:.095em;
+}
+#vixenElectricFoundry .ef-lab-title{
+ font-family:var(--vf-serif);font-weight:400;
+}
+#vixenElectricFoundry .ef-metrics{
+ gap:7px;
+}
+#vixenElectricFoundry .ef-metric{
+ border-left:2px solid rgba(255,145,175,.52);
+}
+#vixenElectricFoundry .ef-metric strong{
+ font-size:13px;
+}
+/* Breakpoints preserve the prior 2x2 mobile wayfinder genre. */
+@media(max-width:1050px){
+ .mobile-wayfinder.vixen-doorways{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .mobile-wayfinder.vixen-doorways button{min-height:210px;border-bottom:1px solid rgba(246,244,240,.2)}
+ .mobile-wayfinder.vixen-doorways button:nth-child(2){border-right:0}
+ .mobile-wayfinder.vixen-doorways button:nth-child(3){padding-left:0}
+}
+@media(max-width:680px){
+ .vixen-editorial-foyer{padding:45px 18px 28px}
+ .vixen-foyer-intro h2{font-size:clamp(39px,9.5vw,65px);line-height:.99}
+ .vixen-foyer-intro > p:not(.vixen-foyer-kicker){
+  font-size:15.5px;line-height:1.6;margin-top:18px;
+ }
+ .vixen-foyer-annotation{font-size:8px;gap:7px}
+ .mobile-wayfinder.vixen-doorways{grid-template-columns:1fr 1fr;margin-top:30px}
+ .mobile-wayfinder.vixen-doorways button{
+  min-height:167px;padding:17px 12px 14px;
+ }
+ .mobile-wayfinder.vixen-doorways button:first-child,
+ .mobile-wayfinder.vixen-doorways button:nth-child(3){padding-left:0}
+ .mobile-wayfinder.vixen-doorways button .vixen-door-index{
+  font-size:8px;letter-spacing:0;margin-bottom:11px;
+ }
+ .mobile-wayfinder.vixen-doorways button strong{
+  font-size:clamp(21px,5.6vw,30px);line-height:.98;
+ }
+ .mobile-wayfinder.vixen-doorways button .vixen-door-desc{display:none}
+ .mobile-wayfinder.vixen-doorways button .vixen-door-verb{font-size:8px}
+ .vixen-carry-rail{
+  right:10px;bottom:10px;width:161px;
+  padding:8px 10px 9px;
+ }
+ .vixen-carry-title{font-size:16px}
+ .vixen-carry-count{font-size:10px}
+ .vixen-carry-kicker{font-size:7px}
+ .vixen-foyer-afterword{font-size:7px}
+ #vixenElectricFoundry .ef-heading{font-size:clamp(35px,9vw,55px)!important}
+}
+
+/* third supplied interface reference's Investigate Source action is restored as a useful route
+ * into the original Vixen record—not a citation-shaped dead button. */
+#vixenElectricFoundry .ef-investigation-doors{
+ grid-column:1/-1;display:flex;flex-wrap:wrap;gap:7px;
+ border-top:1px solid rgba(255,145,175,.3);
+ padding-top:15px;margin-top:12px;
+}
+#vixenElectricFoundry .ef-investigate-door{
+ display:inline-flex;align-items:center;gap:10px;
+ min-height:40px;padding:10px 13px;
+ background:linear-gradient(110deg,#4B293E,#29232C);
+ border:1px solid rgba(255,145,175,.65);
+ color:#F6F4F0;font:700 10px/1.4 var(--vf-mono);
+ letter-spacing:.04em;text-decoration:none;
+ transition:background .2s,box-shadow .2s,color .2s;
+}
+#vixenElectricFoundry .ef-investigate-door:hover{
+ background:#6B3656;color:#F6F4F0;
+ box-shadow:0 0 17px rgba(255,145,175,.22)
+}
+#vixenElectricFoundry .ef-investigate-secondary{
+ border-color:rgba(249,243,109,.66);
+ background:linear-gradient(110deg,#33352C,#24282A);
+ color:#F9F36D;
+}
+
+/* Source census remains directly underneath the literary section headline.
+ * The editorial type provides third supplied interface reference's genre without concealing
+ * scientific counts, documentary status, or human-gated uncertainty. */
+#view-works .view-heading h1,
+#view-gates .view-heading h1,
+#view-protocols .view-heading h1,
+#view-holds .view-heading h1,
+#view-collection .view-heading h1{
+ text-transform:uppercase;
+ text-wrap:balance;
+ overflow-wrap:normal;
+ max-width:1180px;
+}
+#view-works .view-heading .title-annotation,
+#view-gates .view-heading .title-annotation,
+#view-protocols .view-heading .title-annotation,
+#view-holds .view-heading .title-annotation,
+#view-collection .view-heading .title-annotation{
+ text-transform:none;
+ font:italic 400 clamp(18px,1.9vw,28px)/1.25 var(--vf-serif);
+ letter-spacing:-.01em;
+ margin-top:15px;
+}
+@media(max-width:680px){
+ #view-works .view-heading h1,
+ #view-gates .view-heading h1,
+ #view-protocols .view-heading h1,
+ #view-holds .view-heading h1,
+ #view-collection .view-heading h1{
+   font-size:clamp(38px,10vw,57px);
+   letter-spacing:-.05em;
+   overflow-wrap:break-word;
+ }
+}
+
+/* Browser witness showed the empty cart occluding third supplied interface reference's fourth
+ * invitation on 1440px and 390px. Let the research itself summon the cart:
+ * invisible when empty and on entrance; usable after a Work is carried.
+ * At mobile width, the original operable navigation provides the Cart route. */
+.vixen-carry-rail[data-items="0"],
+body[data-view="overview"] .vixen-carry-rail,
+body[data-view="collection"] .vixen-carry-rail{display:none}
+@media(max-width:680px){
+ .vixen-carry-rail{display:none!important}
+}
+
+/*
+ * third supplied interface reference's chrome-fox masthead: stop flooding the entire navigation
+ * with Easter-matte Baker-Miller pink. Pink remains a couture highlight,
+ * yellow remains an Arc Flash, and the header becomes smoked chrome glass.
+ * This is a paint-level restoration, not a change to route functionality.
+ */
+body .site-header{
+ background:linear-gradient(180deg,rgba(11,10,14,.97),rgba(17,11,18,.90))!important;
+ border-bottom:1px solid rgba(255,145,175,.46);
+ color:#F6F4F0;
+ backdrop-filter:blur(18px) saturate(1.35);
+ -webkit-backdrop-filter:blur(18px) saturate(1.35);
+ box-shadow:0 8px 30px rgba(8,5,10,.32);
+}
+body .site-header:after{
+ content:'';position:absolute;inset:auto 0 -1px;
+ height:1px;pointer-events:none;
+ background:linear-gradient(90deg,transparent 5%,#FF91AF 32%,
+  #F6F4F0 53%,#F9F36D 70%,transparent 95%);
+ opacity:.58;
+}
+body .site-header .brand-name{
+ color:#F6F4F0;
+ font:400 clamp(17px,1.7vw,23px)/1 var(--vf-serif);
+ letter-spacing:.10em;
+}
+body .site-header .brand-sub{
+ color:#C8AFBC;opacity:.87;letter-spacing:.14em;
+}
+body .site-header .brand-name .project-math,
+body .site-header .brand-mobile-monogram em{
+ color:#FF91AF;
+ font-style:italic;
+}
+body .site-header .brand-mobile-monogram strong{
+ font:400 18px/1.04 var(--vf-serif);
+ letter-spacing:.12em;color:#F6F4F0;
+}
+body .site-header .vixen-fox-emblem{
+ filter:drop-shadow(0 0 11px rgba(255,145,175,.60)) brightness(1.22);
+ border-radius:50%;
+ background:radial-gradient(circle,
+  rgba(255,145,175,.55),rgba(255,145,175,.09) 74%,transparent);
+}
+body .site-header .hdr-pill,
+body .site-header .reading-back{
+ color:#F6F4F0;
+ border-color:rgba(255,145,175,.37);
+ background:rgba(37,25,35,.43);
+ font-weight:600;
+}
+body .site-header .hdr-pill:hover,
+body .site-header .reading-back:hover{
+ color:#F9F36D;
+ border-color:rgba(249,243,109,.67);
+ background:rgba(58,38,52,.67);
+}
+body .site-header .hdr-pill[aria-pressed="true"]{
+ color:#F9F36D;border-color:#F9F36D
+}
+body .site-header .hdr-pill svg.icon{stroke:currentColor}
+body .site-header .mobile-nav{
+ color:#F6F4F0;
+ background:linear-gradient(155deg,#20131D,#08080B);
+ border-bottom:1px solid #FF91AF;
+ box-shadow:0 32px 70px rgba(0,0,0,.74);
+}
+body .site-header .mobile-nav button{
+ color:#F6F4F0;
+ border-bottom:1px solid rgba(255,145,175,.23);
+}
+body .site-header .mobile-nav button:hover,
+body .site-header .mobile-nav button:focus-visible{
+ color:#FF91AF;
+}
+body .site-header .mobile-nav small{color:#F9F36D}
+
+
+/* ========================================================================
+   THE FOX HOUSE · Vixen Fox House navigation and source-disciplined route hierarchy
+   Designed to replace the feeling of an administrative navigation array,
+   not to add another router, menu state, source estate, or modal.
+   The eight buttons use native data-view handlers and are visible only
+   where there is enough horizontal room to keep the Vixen work legible.
+   ======================================================================== */
+.vixen-room-rail{display:none}
+@media(min-width:1280px){
+  body{--vf-room-width:73px}
+  body #main{
+    margin-left:var(--vf-room-width);
+    width:calc(100% - var(--vf-room-width));
+  }
+  body .site-header .header-inner{padding-left:max(18px,calc(var(--vf-room-width) + 5px))}
+  .vixen-room-rail{
+    display:flex;position:fixed;z-index:88;
+    left:0;top:var(--header-height,72px);bottom:0;width:var(--vf-room-width);
+    flex-direction:column;align-items:stretch;
+    background:linear-gradient(180deg,#0C090F,#0D0A10 58%,#170E17);
+    border-right:1px solid rgba(255,145,175,.31);
+    box-shadow:5px 0 24px rgba(0,0,0,.23);
+    overflow-x:visible;overflow-y:auto;scrollbar-width:thin;
+  }
+  .vixen-room-crest{
+    display:grid;place-items:center;min-height:54px;
+    color:#FF91AF;font:400 25px/1 var(--vf-serif);
+    border-bottom:1px solid rgba(255,145,175,.14);
+    text-shadow:0 0 16px rgba(255,145,175,.28);
+  }
+  .vixen-room{
+    appearance:none;display:flex;position:relative;
+    flex-direction:column;align-items:center;justify-content:center;
+    gap:5px;min-height:66px;width:100%;
+    color:#B6A7B1;background:transparent;
+    border:0;border-left:2px solid transparent;
+    padding:8px 4px;cursor:pointer;
+    transition:color .18s,background .18s,border-color .18s;
+  }
+  .vixen-room-number{
+    font:400 22px/.98 var(--vf-serif);
+    letter-spacing:-.035em;
+  }
+  .vixen-room-name{
+    font:700 7px/1.15 var(--vf-mono);
+    text-align:center;letter-spacing:.055em;
+    text-transform:uppercase;
+  }
+  .vixen-room:hover,.vixen-room:focus-visible{
+    color:#F6F4F0;
+    background:linear-gradient(90deg,rgba(255,145,175,.14),transparent);
+  }
+  .vixen-room[aria-current="page"]{
+    color:#FF91AF;border-left-color:#FF91AF;
+    background:linear-gradient(90deg,rgba(255,145,175,.20),rgba(255,145,175,.014));
+    box-shadow:inset 0 0 20px rgba(255,145,175,.05);
+  }
+  .vixen-room[aria-current="page"] .vixen-room-number{
+    color:#F6F4F0;text-shadow:0 0 16px rgba(255,145,175,.31);
+  }
+  .vixen-room[aria-current="page"]:after{
+    content:'';position:absolute;top:13px;right:0;
+    width:1px;height:calc(100% - 26px);
+    background:linear-gradient(transparent,#F9F36D,transparent);
+  }
+  .vixen-room:focus-visible{
+    outline:2px solid #F9F36D;outline-offset:-4px;
+  }
+  .vixen-room-end{
+    margin-top:auto;display:flex;flex-direction:column;
+    align-items:center;gap:9px;padding:14px 0 18px;
+    border-top:1px solid rgba(255,145,175,.16);
+    color:#FF91AF;
+  }
+  .vixen-room-end>span{font-size:13px;letter-spacing:-3px}
+  .vixen-room-end small{
+    font:600 8px/1 var(--vf-mono);
+    letter-spacing:.04em;writing-mode:vertical-rl;
+  }
+  /* The historic shell's main nav is redundant with the room rail on
+     large screens; leave it in the DOM for native handlers and narrower
+     viewports, while restoring third supplied interface reference's uncluttered masthead. */
+  .site-header .main-nav{display:none!important}
+  .vixen-editorial-foyer{padding-left:clamp(28px,5vw,94px)}
+}
+@media(min-width:1280px) and (max-height:725px){
+  .vixen-room-crest{min-height:35px}
+  .vixen-room{min-height:52px}
+  .vixen-room-end{padding:8px 0}
+  .vixen-room-end small{display:none}
+}
+/* Existing menu remains responsible for mobile; no second menu flyout. */
+@media(max-width:1279px){
+  .vixen-room-rail{display:none!important}
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * VIXEN FRONTISPIECE SOVEREIGNTY · original chromepunk artwork first.
+ * The four active research doors are a compact chrome instrument console
+ * AFTER the actual image—not a second, red typographic cover replacing it.
+ * No restrictions on future Vixen mathematical optics; this repairs the
+ * present visual hierarchy and keeps the operator's existing art present.
+ * ─────────────────────────────────────────────────────────────────────── */
+#view-overview > .hero{
+ display:block;position:relative;isolation:isolate;
+ min-height:760px;overflow:hidden;background:#050506;
+}
+#view-overview > .hero .hero-art{
+ display:grid;visibility:visible;opacity:1;z-index:1;
+}
+#view-overview > .hero .hero-art img{
+ visibility:visible;opacity:.97;filter:grayscale(1) contrast(1.27) brightness(1.08)
+ drop-shadow(0 0 22px rgba(246,244,240,.09));
+}
+#view-overview > .hero .cover-light{
+ background:
+  radial-gradient(ellipse 30% 32% at var(--light-x,54%) var(--light-y,46%),rgba(249,243,109,.17),transparent 81%),
+  radial-gradient(ellipse 44% 38% at 49% 50%,rgba(255,145,175,.09),transparent 75%),
+  radial-gradient(ellipse 65% 46% at 50% 36%,rgba(246,244,240,.042),transparent 78%);
+ mix-blend-mode:screen;
+}
+#view-overview > .hero .enter-orbit{
+ border:1px solid rgba(249,243,109,.84);
+ box-shadow:0 0 12px rgba(249,243,109,.19),
+  inset 0 0 21px rgba(255,145,175,.08);
+ color:#F9F36D;
+}
+#view-overview > .hero .cover-enter:hover .enter-orbit{
+ background:#F9F36D;color:#24282A;
+ box-shadow:0 0 28px rgba(249,243,109,.42),0 0 65px rgba(255,145,175,.17);
+}
+
+/* Chrome passage / research door console. Its typographic invitation is
+   concise, and every door directly enters a registered Vixen route. */
+#view-overview .vixen-editorial-foyer{
+ padding:22px clamp(20px,3.3vw,52px) 15px;
+ background:
+  radial-gradient(ellipse 90% 115% at 85% -46%,rgba(255,145,175,.075),transparent 72%),
+  linear-gradient(145deg,#161A1C 0%,#24282A 54%,#111317 100%);
+ border-top:2px solid #F9F36D;
+ border-bottom:1px solid rgba(246,244,240,.29);
+ box-shadow:inset 0 17px 28px rgba(0,0,0,.25);
+ color:#F6F4F0;min-height:0;
+}
+#view-overview .vixen-editorial-foyer::before{
+ height:1px;
+ background:linear-gradient(90deg,transparent,#FF91AF 22%,
+ #F6F4F0 46%,#F9F36D 70%,transparent);
+ box-shadow:0 0 16px rgba(249,243,109,.36);
+}
+#view-overview .vixen-editorial-foyer::after{
+ right:8%;opacity:.28;
+ background:linear-gradient(180deg,transparent,#F6F4F0 43%,transparent);
+}
+#view-overview .vixen-foyer-intro{
+ display:grid;max-width:none;
+ grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);
+ align-items:center;column-gap:36px;row-gap:8px;
+}
+#view-overview .vixen-foyer-kicker{
+ grid-column:1/-1;margin:0 0 1px;
+ color:#F9F36D;font-size:9px;letter-spacing:.15em;
+}
+#view-overview .vixen-foyer-intro h2{
+ max-width:none;margin:0;
+ font:400 clamp(26px,3.15vw,48px)/1.04 var(--vf-serif);
+ letter-spacing:-.045em;text-wrap:balance;
+ color:#F6F4F0;
+}
+#view-overview .vixen-foyer-intro h2 em{
+ color:#F6F4F0;font-style:italic;
+ background:linear-gradient(105deg,#F6F4F0 0%,#C8CDD0 38%,
+ #FF91AF 80%,#F6F4F0 100%);
+ -webkit-background-clip:text;background-clip:text;
+ -webkit-text-fill-color:transparent;
+}
+#view-overview .vixen-foyer-intro>p:not(.vixen-foyer-kicker){
+ max-width:550px;margin:0;font:400 clamp(12px,1.2vw,15px)/1.6 Georgia,serif;
+ color:#D1CFCD;
+}
+#view-overview .vixen-foyer-annotation{
+ grid-column:1/-1;margin:6px 0 0;
+ color:#C3BCBD;font-size:8px;letter-spacing:.065em;
+}
+#view-overview .mobile-wayfinder.vixen-doorways{
+ margin:17px 0 0;gap:1px;
+ background:rgba(246,244,240,.16);
+ border:1px solid rgba(246,244,240,.23);
+ border-bottom-color:rgba(249,243,109,.40);
+}
+#view-overview .mobile-wayfinder.vixen-doorways button{
+ padding:17px clamp(9px,1.45vw,19px) 16px;
+ min-height:154px;gap:0;
+ border-right:1px solid rgba(246,244,240,.14);
+ background:
+  linear-gradient(158deg,rgba(96,109,114,.22),rgba(14,17,20,.94) 46%),
+  radial-gradient(ellipse at 10% -15%,rgba(246,244,240,.11),transparent 70%);
+ transition:background .25s,box-shadow .25s,transform .25s;
+}
+#view-overview .mobile-wayfinder.vixen-doorways button:first-child{padding-left:17px}
+#view-overview .mobile-wayfinder.vixen-doorways button:last-child{border-right:0}
+#view-overview .mobile-wayfinder.vixen-doorways button:hover,
+#view-overview .mobile-wayfinder.vixen-doorways button:focus-visible{
+ background:linear-gradient(145deg,#31363A,#121518 68%);
+ box-shadow:inset 0 2px rgba(249,243,109,.62),
+  0 0 24px rgba(249,243,109,.10);
+}
+#view-overview .mobile-wayfinder.vixen-doorways button::after{
+ top:0;left:0;right:0;height:2px;
+ background:linear-gradient(90deg,#FF91AF,#F9F36D,#F6F4F0);
+}
+#view-overview .mobile-wayfinder.vixen-doorways .vixen-door-index{
+ font-size:8px;letter-spacing:.06em;margin-bottom:10px;color:#FF91AF;
+}
+#view-overview .mobile-wayfinder.vixen-doorways strong{
+ max-width:none;font:400 clamp(22px,2vw,31px)/1 var(--vf-serif);
+ color:#F6F4F0;letter-spacing:-.035em;
+}
+#view-overview .mobile-wayfinder.vixen-doorways strong em{
+ color:#F6F4F0;font-weight:400;
+}
+#view-overview .mobile-wayfinder.vixen-doorways .vixen-door-desc{
+ max-width:300px;margin-top:9px;font:400 11px/1.5 Georgia,serif;
+ color:#C4C4C2;
+}
+#view-overview .mobile-wayfinder.vixen-doorways .vixen-door-verb{
+ margin-top:auto;padding-top:13px;
+ font:700 9px/1.2 var(--vf-mono);color:#F9F36D;
+}
+#view-overview .vixen-foyer-afterword{
+ padding-top:11px;color:#C0BBB8;font-size:7px;
+}
+@media(max-width:940px){
+ #view-overview .vixen-foyer-intro{
+  grid-template-columns:1fr;gap:8px;
+ }
+ #view-overview .vixen-foyer-intro>p:not(.vixen-foyer-kicker){max-width:790px}
+ #view-overview .mobile-wayfinder.vixen-doorways{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #view-overview .mobile-wayfinder.vixen-doorways button{min-height:136px}
+}
+@media(max-width:560px){
+ #view-overview .vixen-editorial-foyer{padding:16px 12px 13px}
+ #view-overview .vixen-foyer-intro h2{font-size:clamp(27px,7.5vw,39px)}
+ #view-overview .vixen-foyer-annotation{font-size:7px;gap:7px}
+ #view-overview .mobile-wayfinder.vixen-doorways{margin-top:15px}
+ #view-overview .mobile-wayfinder.vixen-doorways button{
+  padding:13px 11px;min-height:142px
+ }
+ #view-overview .mobile-wayfinder.vixen-doorways strong{font-size:clamp(20px,6vw,28px)}
+ #view-overview .mobile-wayfinder.vixen-doorways .vixen-door-desc{font-size:10px}
+ #view-overview .vixen-foyer-afterword{display:none}
+}
