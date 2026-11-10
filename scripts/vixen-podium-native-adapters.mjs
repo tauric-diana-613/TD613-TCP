@@ -7,7 +7,6 @@
  * Engine results remain research proposals / audit receipts, not science.
  */
 import {execFileSync} from 'node:child_process';
-import {createRequire} from 'node:module';
 const allowedRoles=Object.freeze(['PEDAGOGUE','APERTURE','ATLAS','FADT','TEMPORAL_CUSTODIAN']);
 const evidenceRefs=Object.freeze([
  'app/encyclopedia/reference/vixen-podium.mjs',
@@ -16,9 +15,9 @@ const evidenceRefs=Object.freeze([
  'app/encyclopedia/reference/vixen-read-gateway.mjs',
  'tests/vixen-podium.test.mjs'
 ]);
-const head=()=>{try{return execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim()}
+const head=repoRoot=>{try{return execFileSync('git',['rev-parse','HEAD'],{cwd:repoRoot,encoding:'utf8'}).trim()}
  catch(_){return 'UNVERIFIED_LOCAL_REPO'}};
-export async function createPodiumNativeReadAdapters(){
+export async function createPodiumNativeReadAdapters({repoRoot=process.cwd()}={}){
  const adapters={};
  try{
   const api=await import('../app/engine/aperture-v32-typed-epistemic-deficit.js');
@@ -52,7 +51,7 @@ export async function createPodiumNativeReadAdapters(){
     const spec={
      task_scope:'VIXEN_PODIUM_NATIVE_FIVE_ROLE_AUDIT',
      evidence_class:'SYNTHETIC_TEST_FIXTURE',
-     source_revision:head(),roles:[...allowedRoles],
+     source_revision:head(repoRoot),roles:[...allowedRoles],
      include_orchestrator:true,evidence_references:[...evidenceRefs],
      domain_inputs:payload.domain_inputs
     };
