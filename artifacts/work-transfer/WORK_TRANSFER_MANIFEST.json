@@ -1,0 +1,146 @@
+{
+  "schema": "td613.dollhouse.work-transfer-manifest/v1",
+  "timestamp": "2026-11-01T15:08:30.032Z",
+  "git": {
+    "authoritative_commit": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff",
+    "authoritative_tree": "43493e58c2620c8266213c17359c4e1f6de5627d",
+    "local_branch": "main",
+    "worktree_status": "TRACKED_CLEAN_EXACT_MATCH"
+  },
+  "packets": {
+    "original_packet": {
+      "path": "artifacts/work-transfer/dollhouse-work-skill-refresh-packet.original.json",
+      "bytes": 97451,
+      "sha256": "625fd57b1ab9aba9a558964d25b8cf35950cd9026087c8ae6e2d6ea288be0c55",
+      "recorded_revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff"
+    },
+    "regenerated_packet": {
+      "path": "artifacts/work-transfer/dollhouse-work-skill-refresh-packet.regenerated.json",
+      "bytes": 97451,
+      "sha256": "625fd57b1ab9aba9a558964d25b8cf35950cd9026087c8ae6e2d6ea288be0c55",
+      "recorded_revision": "50cc9d161f8f72c2d4b6ea33ece17ace88f35eff"
+    },
+    "byte_for_byte_identical": true
+  },
+  "dependencies_7_reconciled": [
+    {
+      "path": ".agents/agents/dollhouse-atlas.md",
+      "bytes": 4361,
+      "sha256": "3ec86f6226f2a5b82db87e29f06e7e98fb012bc5faab0e2c2c301addd0182a32",
+      "committed_blob_sha256": "3ec86f6226f2a5b82db87e29f06e7e98fb012bc5faab0e2c2c301addd0182a32",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "app/engine/atlas-mathematical-engine.js",
+      "bytes": 79637,
+      "sha256": "752080cd65126cf0d8a5147c750e3b145e7f08be9397c774b63c383ac4aac6bd",
+      "committed_blob_sha256": "752080cd65126cf0d8a5147c750e3b145e7f08be9397c774b63c383ac4aac6bd",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "app/engine/dollhouse-atlas-relational-custody.js",
+      "bytes": 39722,
+      "sha256": "6f8b9dbc66f4bd7fe36352b76a44291348da8f5684fcfab52b871a8009a5cd83",
+      "committed_blob_sha256": "6f8b9dbc66f4bd7fe36352b76a44291348da8f5684fcfab52b871a8009a5cd83",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "app/engine/dollhouse-design-conductor.js",
+      "bytes": 74522,
+      "sha256": "50b2d888bab6799330126076df73e5ef064a437ff577ed5a5026462e88c33512",
+      "committed_blob_sha256": "50b2d888bab6799330126076df73e5ef064a437ff577ed5a5026462e88c33512",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "app/engine/dollhouse-skill-dispatcher.js",
+      "bytes": 72076,
+      "sha256": "ddbc33c7bb6bfa6a043ed0ee7fc2819f2a0141eaf6b351b06e1bb99c1b0ebeb6",
+      "committed_blob_sha256": "ddbc33c7bb6bfa6a043ed0ee7fc2819f2a0141eaf6b351b06e1bb99c1b0ebeb6",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "scripts/run-dollhouse-skill-audit.mjs",
+      "bytes": 8438,
+      "sha256": "0592176c8201c76011134cbe349b609d3ead681af2283f31dccb37bd99c00cff",
+      "committed_blob_sha256": "0592176c8201c76011134cbe349b609d3ead681af2283f31dccb37bd99c00cff",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "path": "scripts/run-dollhouse-design.mjs",
+      "bytes": 8336,
+      "sha256": "3363642f700fb6ed9c0998481a6441e1f512eeda59429b6098cc419a16ce6469",
+      "committed_blob_sha256": "3363642f700fb6ed9c0998481a6441e1f512eeda59429b6098cc419a16ce6469",
+      "status": "VERIFIED_EXACT_MATCH"
+    }
+  ],
+  "skill_files_9_verified": [
+    {
+      "skill": "dollhouse-audit",
+      "path": ".agents/skills/dollhouse-audit/SKILL.md",
+      "bytes": 6841,
+      "sha256": "e0d5c45992055f45ba6c117347fce996de921f6ad3d1ba6a5c65bbcee054fb89",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-audit",
+      "path": ".agents/skills/dollhouse-audit/references/cli.md",
+      "bytes": 4769,
+      "sha256": "ea122f1e515141ea8a58258071da99a5eedc52ab17d4b54bbe98b9cc560ed93c",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-audit",
+      "path": ".agents/skills/dollhouse-audit/references/examples.md",
+      "bytes": 7941,
+      "sha256": "c24bdf46431bf6b3cb9908703799957008efd9762360aba27410bf98dc8be0ed",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-audit",
+      "path": ".agents/skills/dollhouse-audit/references/specialists.md",
+      "bytes": 10654,
+      "sha256": "0be0d5e7417105b64859e75738ce44c2ec681984e714710bc3bddc0070917335",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-design",
+      "path": ".agents/skills/dollhouse-design/SKILL.md",
+      "bytes": 15452,
+      "sha256": "587aa14333036e3ba3ee5f942cbae62298741105b2177512d20288d0afa801d8",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-design",
+      "path": ".agents/skills/dollhouse-design/references/authoring-cycle.md",
+      "bytes": 4983,
+      "sha256": "57264ffbf734cf922a626daf02eedb25692b02ff4bbe93f2f3121af7ad5e6836",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-design",
+      "path": ".agents/skills/dollhouse-design/references/firebreak-and-provenance.md",
+      "bytes": 2733,
+      "sha256": "d45381e8f104207a138409c68201bca6ebe88f7bb30adc8fa331a4b54ca42aac",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-design",
+      "path": ".agents/skills/dollhouse-design/references/scholarly-calculus-of-absence.md",
+      "bytes": 24728,
+      "sha256": "691b5229d0fbf81843e6109be671d42f259438d128a7134322723a635e5344e5",
+      "status": "VERIFIED_EXACT_MATCH"
+    },
+    {
+      "skill": "dollhouse-design",
+      "path": ".agents/skills/dollhouse-design/references/selectable-instruments.md",
+      "bytes": 13059,
+      "sha256": "48e501fa50c959d60369a3964f77b5d074bb589518dc5c6bc5a674ff45eb6c79",
+      "status": "VERIFIED_EXACT_MATCH"
+    }
+  ],
+  "test_investigation": {
+    "dollhouse_native_skill_suite": "49/49 PASS (35.8s)",
+    "five_vs_six_classification": "CAUSALLY_CLASSIFIED_NATIVE_EXECUTION: Complete suite passes 49/49 when all 5 specialists execute and Orchestrator aggregates. In shallow/incomplete checkouts, unexecuted or missing specialists or counting Orchestrator as a 6th specialist produces discrepancy.",
+    "doc_links_classification": "CAUSALLY_CLASSIFIED_SHALLOW_CHECKOUT: Test 38 (Artifact 39 C11) verifies all markdown links in .agents/ resolve to existing files. Passed completely in full repository tree."
+  }
+}

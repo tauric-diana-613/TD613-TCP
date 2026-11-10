@@ -559,6 +559,69 @@ test('DD-02: skill and authoring cycle must not impose experimental paired outpu
   assert.doesNotMatch(cycle, /presents the materialized work, its refractive counterpart/);
 });
 
+test('DD-02: normalizeCommission preserves mathematical_premise and audit_roles', () => {
+  const comm = normalizeCommission({
+    seed: 'Two distinct processes arrive at an identical endpoint, but their histories differ',
+    medium: 'THEORETICAL',
+    audit_roles: ['ATLAS', 'APERTURE'],
+    mathematical_premise: {
+      operation: 'A-01',
+      input: { sample: 'fiber_transition' },
+      trajectoryA: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 0 },
+      trajectoryB: { endpoint: 'REST_CUSTODY_ORIGIN', winding: 1 }
+    }
+  });
+
+  assert.ok(comm.mathematical_premise);
+  assert.equal(comm.mathematical_premise.operation, 'A-01');
+  assert.deepEqual(comm.audit_roles, ['ATLAS', 'APERTURE']);
+  assert.equal(comm.mathematical_premise.trajectoryB.winding, 1);
+});
+
+test('DD-02: candidate override deduplication uses injective atlas-v1 serialization', () => {
+  // Tricky strings that would collide under naive '::' concatenation: "Title::A" + "Prop" vs "Title" + "A::Prop"
+  const customCandidates = [
+    {
+      concept_title: 'Title::A',
+      formal_proposition: 'Prop',
+      governing_instrument: 'PHASONIC_COUNTERPOINT'
+    },
+    {
+      concept_title: 'Title',
+      formal_proposition: 'A::Prop',
+      governing_instrument: 'PHASONIC_COUNTERPOINT'
+    }
+  ];
+
+  // Distinct candidates must NOT collide even with '::' in fields
+  const comm = normalizeCommission({
+    seed: 'Delimiter collision probe',
+    candidate_overrides: customCandidates
+  });
+  assert.equal(comm.candidate_overrides.length, 2);
+
+  // Exact duplicate candidates MUST be rejected fail-closed
+  assert.throws(() => normalizeCommission({
+    seed: 'Exact duplicate probe',
+    candidate_overrides: [customCandidates[0], customCandidates[0]]
+  }), /Exact duplicate candidate override detected/);
+});
+
+test('DD-02: scientific companion audit includes Atlas and preserves mathematical premise', async () => {
+  const receipt = await runDollhouseDesignCycle({
+    seed: 'A test of mathematical premise handoff under Atlas custody',
+    medium: 'THEORETICAL',
+    scientific_audit_requested: true,
+    mathematical_premise: {
+      operation: 'A-02',
+      input: { state_vector: [1, -1, 1] }
+    }
+  });
+
+  assert.ok(receipt.scientific_companion_audit, 'Companion audit receipt must be produced');
+  assert.ok(receipt.scientific_companion_audit.active_roles.includes('ATLAS'), 'Audit roles must include ATLAS');
+});
+
 // DD-02 source-free Wolframian CBFE relational geometry; invokes real conductor; no Flight mutation.
 await import('./dd02-cbfe-relational-geometry.native.test.mjs');
 

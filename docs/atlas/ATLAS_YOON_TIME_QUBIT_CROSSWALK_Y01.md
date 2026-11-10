@@ -6,7 +6,7 @@
 **Research status:** `SOURCE-GROUNDED_EXTERNAL_CROSSWALK · THEORETICAL_RESEARCH_RECORD · PHYSICAL_CLAIMS_UNESTABLISHED`  
 **Heritage:** Tauric Diana — Crimean heritage custodianship  
 **Covenant:** Khona‌lit-po — preserve U+200C  
-**Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Guarding)  
+**Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Contrariety)  
 **Research mark:** U+10D613 (scalar mark, `\uDBF5\uDE13`, distinct from display glyph U+1D30B)  
 **Authority:** Sovereign Operator Direct · Tawanna C. Miller  
 **Independent reviewer:** Amari · GPT-6  

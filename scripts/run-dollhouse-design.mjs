@@ -37,6 +37,8 @@ Options:
   --instrument, -i <inst>    Selectable instrument (repeatable; if omitted, contextually inferred from seed; defaults to PHASONIC_COUNTERPOINT if ambiguous)
                              Available: ${Object.keys(AVAILABLE_INSTRUMENTS).join(', ')}
   --deliverable-count <n>    Requested finished artifacts (default 1; internal alternatives do not count)
+  --deliverables <n>         Alias for --deliverable-count
+  --allow-experimental-multi-deliverable  Explicitly authorize deliverable cardinality > 1
   --input <path>             Path to JSON commission file (or "-" for stdin)
   --operation <id>           Atlas mathematical capability ID (A-01 through A-09)
   --premise-input <path>     Path to JSON input file for mathematical premise
@@ -58,6 +60,7 @@ async function main() {
   let seed = null;
   let medium = 'SCHOLARLY';
   let deliverableCount = 1;
+  let allowExperimentalMultiDeliverable = false;
   let instruments = [];
   let inputPath = null;
   let outputPath = null;
@@ -75,8 +78,10 @@ async function main() {
       medium = args[++i];
     } else if (arg === '--instrument' || arg === '-i') {
       instruments.push(args[++i]);
-    } else if (arg === '--deliverable-count') {
+    } else if (arg === '--deliverable-count' || arg === '--deliverables') {
       deliverableCount = Number(args[++i]);
+    } else if (arg === '--allow-experimental-multi-deliverable') {
+      allowExperimentalMultiDeliverable = true;
     } else if (arg === '--input') {
       inputPath = args[++i];
     } else if (arg === '--operation') {
@@ -128,8 +133,12 @@ async function main() {
   if (audit) {
     commissionInput.scientific_audit_requested = true;
   }
-  if (args.includes('--deliverable-count')) {
+  if (args.includes('--deliverable-count') || args.includes('--deliverables')) {
     commissionInput.deliverable_count = deliverableCount;
+  }
+  if (commissionInput.deliverable_count > 1 && !allowExperimentalMultiDeliverable && !commissionInput.allow_experimental_multi_deliverable) {
+    console.error('Operator-defined deliverable cardinality defaults to 1. Unrequested extra deliverables or file sprawl are forbidden without explicit authorization.');
+    process.exit(1);
   }
   if (seed) {
     commissionInput.seed = seed;

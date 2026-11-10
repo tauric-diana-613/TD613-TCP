@@ -49,6 +49,7 @@ test('R01 - Companion audit disposition and CLI flag precedence', async (t) => {
     '--input', tempFixturePath,
     '--audit',
     '--deliverable-count', '3',
+    '--allow-experimental-multi-deliverable',
     '--format', 'json'
   ], { encoding: 'utf8' });
 

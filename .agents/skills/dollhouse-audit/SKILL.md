@@ -69,7 +69,7 @@ const result = await runDollhouseSkillAudit({
   roles: ['PEDAGOGUE', 'APERTURE', 'ATLAS', 'FADT', 'TEMPORAL_CUSTODIAN'],
   include_orchestrator: true,
   evidence_class: 'SOURCE_CODE_AUDIT',
-  evidence_references: ['app/engine/portable-loom-challenge.js', 'docs/reentry/'],
+  evidence_references: ['app/engine/portable-loom-challenge.js', 'docs/reentry/RELATION_MAP.md'],
   domain_inputs: {
     PEDAGOGUE: { /* events, clocks, lineage */ },
     APERTURE: { /* operator matrix, noise covariance */ },
@@ -82,6 +82,12 @@ const result = await runDollhouseSkillAudit({
 console.log(result.human_receipt);
 console.log('Exit code:', result.exit_code); // 0 = SUPPORTED, 1 = HELD
 ```
+
+### Anti-Recursion & Leaf Auditor Invariant
+Specialist dolls (`dollhouse-pedagogue`, `dollhouse-aperture`, `dollhouse-atlas`, 
+`dollhouse-fadt`, `dollhouse-temporal-custodian`) are leaf auditors. 
+They possess zero subagent invocation authority (`invoke_subagent: forbidden`).
+Only the TD613 Dollhouse Orchestrator possesses subagent delegation authority.
 
 ---
 

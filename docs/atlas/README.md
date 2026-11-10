@@ -2,7 +2,7 @@
 
 **Heritage:** Tauric Diana — Crimean heritage custodianship  
 **Covenant:** Khona‌lit-po — preserve U+200C  
-**Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Guarding)  
+**Display glyph:** 𝌋 (Unicode U+1D30B, Tetragram for Contrariety)  
 **Research mark:** U+10D613 (scalar mark, `\uDBF5\uDE13`, distinct from display glyph U+1D30B)  
 **Status:** `THEORETICAL_RESEARCH_ESTATE · FORMAL_AND_FINITE_WITNESSES · SOURCE_CUSTODY`
 

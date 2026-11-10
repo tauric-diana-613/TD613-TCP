@@ -343,6 +343,7 @@ export function isPalindromePath(p) {
 
 export function cloneAtlasMember(m) {
   if (!m || typeof m !== 'object') return m;
+  if (Array.isArray(m)) return [...m];
   return {
     a: m.a,
     b: m.b,
@@ -352,7 +353,17 @@ export function cloneAtlasMember(m) {
 }
 
 export function validAtlasMember(m) {
-  if (!m || typeof m !== 'object') return false;
+  if (!m) return false;
+  if (Array.isArray(m)) {
+    if (m.length === 0) return true;
+    for (const step of m) {
+      if (typeof step !== 'string') return false;
+      const s = step.toUpperCase();
+      if (s !== 'D' && s !== 'E' && s !== 'N' && s !== 'R' && s !== 'U') return false;
+    }
+    return true;
+  }
+  if (typeof m !== 'object') return false;
   if (!Number.isInteger(m.a) || !Number.isInteger(m.b) || !Number.isInteger(m.s)) return false;
   if (m.a < 0 || m.b < 0 || m.s < 0 || m.s > Math.min(m.a, m.b) || !Array.isArray(m.path)) return false;
 
@@ -372,10 +383,10 @@ export function validAtlasMember(m) {
  * recognition NEVER replaces or erases individual member paths.
  */
 export function classifyAtlasRelationIdentity(left, right) {
-  if (left && typeof left === 'object' && right === undefined && (left.left || left.members)) {
+  if (left && typeof left === 'object' && right === undefined && (left.left || left.members || left.left_custody)) {
     const entry = left;
-    left = entry.left || (Array.isArray(entry.members) ? entry.members[0] : undefined);
-    right = entry.right || (Array.isArray(entry.members) ? entry.members[1] : undefined);
+    left = entry.left || entry.left_custody || (Array.isArray(entry.members) ? entry.members[0] : undefined);
+    right = entry.right || entry.right_custody || (Array.isArray(entry.members) ? entry.members[1] : undefined);
   }
   const lc = cloneAtlasMember(left);
   const rc = cloneAtlasMember(right);
@@ -389,6 +400,75 @@ export function classifyAtlasRelationIdentity(left, right) {
       right_custody: rc,
       shared_orbit: false,
       reason: 'one or both members violate valid Atlas member constraints',
+      laws: ATLAS_RELATION_CUSTODY_LAWS
+    });
+  }
+
+  // Handle canonical Schubert/Delannoy lattice step arrays
+  if (Array.isArray(left) && Array.isArray(right)) {
+    const normalizeSteps = p => p.map(s => {
+      const u = s.toUpperCase();
+      if (u === 'R' || u === 'E') return 'E';
+      if (u === 'U' || u === 'N') return 'N';
+      return 'D';
+    });
+    const leftNorm = normalizeSteps(left);
+    const rightNorm = normalizeSteps(right);
+
+    const countSteps = p => {
+      let E = 0, N = 0, D = 0;
+      for (const s of p) {
+        if (s === 'D') D += 1;
+        else if (s === 'E') E += 1;
+        else if (s === 'N') N += 1;
+      }
+      return { a: E + D, b: N + D, s: D };
+    };
+
+    const leftDim = countSteps(leftNorm);
+    const rightDim = countSteps(rightNorm);
+
+    if (leftDim.a !== rightDim.a || leftDim.b !== rightDim.b || leftDim.s !== rightDim.s) {
+      return deepFreeze({
+        schema: DOLLHOUSE_ATLAS_RELATION_IDENTITY_SCHEMA,
+        relation: 'CROSS_SLICE_DISTINCT',
+        held: false,
+        left_custody: lc,
+        right_custody: rc,
+        shared_orbit: false,
+        reason: 'members reside in distinct geometric slices',
+        laws: ATLAS_RELATION_CUSTODY_LAWS
+      });
+    }
+
+    const isLeftPalindrome = isPalindromePath(leftNorm);
+    const pathsEqual = samePath(leftNorm, rightNorm);
+    const pathsMirror = samePath(rightNorm, reversePath(leftNorm));
+
+    let relation;
+    let sharedOrbit = false;
+
+    if (pathsEqual) {
+      relation = isLeftPalindrome ? 'FIXED_SELF' : 'EXACT_IDENTITY';
+      sharedOrbit = true;
+    } else if (pathsMirror) {
+      relation = 'MIRROR_MATES';
+      sharedOrbit = true;
+    } else {
+      relation = 'DISTINCT_SAME_SLICE';
+      sharedOrbit = false;
+    }
+
+    return deepFreeze({
+      schema: DOLLHOUSE_ATLAS_RELATION_IDENTITY_SCHEMA,
+      relation,
+      held: false,
+      left_custody: lc,
+      right_custody: rc,
+      shared_orbit: sharedOrbit,
+      left_is_palindrome: isLeftPalindrome,
+      right_is_palindrome: isPalindromePath(rightNorm),
+      concrete_paths_preserved: true,
       laws: ATLAS_RELATION_CUSTODY_LAWS
     });
   }
