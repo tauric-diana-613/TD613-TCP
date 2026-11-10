@@ -281,7 +281,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     button('Rest without penalty',rest,'vs-action vs-quiet'));
   }
   inputPane.append(actions);
-  append(host,head,index,columns,seam,offer,clockBox,inputPane,notice());
+  // Source-first: the actual recorded Work appears before decorative census statistics.
+  append(host,head,columns,seam,index,offer,clockBox,inputPane,notice());
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
  }
