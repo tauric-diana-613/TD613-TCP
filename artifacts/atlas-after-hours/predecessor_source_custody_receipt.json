@@ -1,0 +1,105 @@
+{
+  "schema": "td613.atlas-after-hours.predecessor-source-custody/v1",
+  "sourceZip": "TD613_Atlas_After_Hours_Complete_Trial_Packet_20261108(1).zip",
+  "zipSha256": "98f4767fa1d6c4d792aeeca43c1c2105ce037b8468965b7a9961ca9be63e9db6",
+  "status": "PARTIAL_12_OF_18_PREDECESSOR_DOCS",
+  "restored": [
+    {
+      "path": "THE_INSPECTOR_WHO_FOUND_THE_BUILDING_BUT_COULD_NOT_FIND_ITS_PEOPLE.md",
+      "blobSha": "a09548fc71207125d9d1a59f18ff5b3b3f3acfb6",
+      "mirror": "dossier/THE_INSPECTOR_WHO_FOUND_THE_BUILDING_BUT_COULD_NOT_FIND_ITS_PEOPLE.md"
+    },
+    {
+      "path": "THE_REMEDY_THAT_MADE_ITS_OWN_WITNESS_DISAPPEAR.md",
+      "blobSha": "283e4e4da93440233cdb8a9144c0c9e166a194ac",
+      "mirror": "dossier/THE_REMEDY_THAT_MADE_ITS_OWN_WITNESS_DISAPPEAR.md"
+    },
+    {
+      "path": "THE_STAY_THAT_TESTIFIED_AGAINST_ITS_AUTHOR.md",
+      "blobSha": "1bd6978f6756d3941de23b0ad139d8f78733cda1",
+      "mirror": "dossier/THE_STAY_THAT_TESTIFIED_AGAINST_ITS_AUTHOR.md"
+    },
+    {
+      "path": "THE_NOTARY_WHO_COULD_READ_EVERY_WORD_EXCEPT_THE_OBJECTION.md",
+      "blobSha": "94b408050454f4b6b3913c2e570002412473cc89",
+      "mirror": "dossier/THE_NOTARY_WHO_COULD_READ_EVERY_WORD_EXCEPT_THE_OBJECTION.md"
+    },
+    {
+      "path": "THE_NOTARY_WHO_NEVER_SAW_THE_WITNESS.md",
+      "blobSha": "3c3a9ad0566bdfc616890a3523d6bf3bac3be0a4",
+      "mirror": "dossier/THE_NOTARY_WHO_NEVER_SAW_THE_WITNESS.md"
+    },
+    {
+      "path": "THE_INSTITUTION_THAT_LEARNED_TO_IMITATE_ITS_OWN_ERROR.md",
+      "blobSha": "92fb9300f6f74fe6750a0c6230fe7caeb6a64f64",
+      "mirror": "dossier/THE_INSTITUTION_THAT_LEARNED_TO_IMITATE_ITS_OWN_ERROR.md"
+    },
+    {
+      "path": "THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR.md",
+      "blobSha": "462599797cd58fd09501e2c2fe6446748bf62cf1",
+      "mirror": "dossier/THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR.md"
+    },
+    {
+      "path": "THE_SENTENCE_THAT_OUTRAN_ITS_AUTHOR.md",
+      "blobSha": "848ebc89f9ba96a27447dc05cf8b3164ef30b378",
+      "mirror": "dossier/THE_SENTENCE_THAT_OUTRAN_ITS_AUTHOR.md"
+    },
+    {
+      "path": "WITNESS_WHO_REFUSED_TO_BE_PROVEN.md",
+      "blobSha": "ea3c8b588775dde5432e6d6439ff08e3bee6dc92",
+      "mirror": "dossier/WITNESS_WHO_REFUSED_TO_BE_PROVEN.md"
+    },
+    {
+      "path": "GEOMETRY_OF_REFUSAL_AND_RECOGNITION.md",
+      "blobSha": "55cf62402365399ddd949cc044f554f35c808fe0",
+      "mirror": "dossier/GEOMETRY_OF_REFUSAL_AND_RECOGNITION.md"
+    },
+    {
+      "path": "WITNESS_THAT_ARRIVED_TOO_LATE_DOSSIER.md",
+      "blobSha": "c8609cfbd1c842e574d1c0fdd372f3fced677797",
+      "mirror": "dossier/WITNESS_THAT_ARRIVED_TOO_LATE_DOSSIER.md"
+    },
+    {
+      "path": "WILD_FIELD_COUNTERWORLD_LOOM_DIRECTIVE.md",
+      "blobSha": "f3973d19b03b7118e6444cb340085a237d37bcce",
+      "mirror": "dossier/WILD_FIELD_COUNTERWORLD_LOOM_DIRECTIVE.md"
+    }
+  ],
+  "yetToRestore": [
+    {
+      "path": "COUNTERWORLD_DOCKET.md",
+      "mirror": "dossier/COUNTERWORLD_DOCKET.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    },
+    {
+      "path": "NEW_PRIMITIVE_DECISION.md",
+      "mirror": "dossier/NEW_PRIMITIVE_DECISION.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    },
+    {
+      "path": "OPERATOR_REVIEW_PACKET.md",
+      "mirror": "dossier/OPERATOR_REVIEW_PACKET.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    },
+    {
+      "path": "RECIPROCAL_MANIFEST_TRIAL.md",
+      "mirror": "dossier/RECIPROCAL_MANIFEST_TRIAL.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    },
+    {
+      "path": "RELATIONAL_ATLAS_DOSSIER.md",
+      "mirror": "dossier/RELATIONAL_ATLAS_DOSSIER.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    },
+    {
+      "path": "SEVEN_CHAMBERS_RECORD.md",
+      "mirror": "dossier/SEVEN_CHAMBERS_RECORD.md",
+      "reason": "source bytes confirmed in attached ZIP; not yet written by connector"
+    }
+  ],
+  "existing": "Eighth and Ninth order root/dossier documents preserved untouched",
+  "method": "exact Git blobs, byte-verified SHA-1 against attached ZIP; root and dossier copies share blob",
+  "scope": "research only, no merge",
+  "protectedFlight": "HELD",
+  "humanClosure": "RESERVED"
+}
