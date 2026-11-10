@@ -42,20 +42,24 @@ try {
     // route surface, not a second set of dummy links or a second router.
     const foxRail=page.locator('#vixenRoomRail');
     assert.equal(await foxRail.locator('button[data-view]').count(),8);
-    if(width>=1280){
-      assert.equal(await foxRail.isVisible(),true,
-        'Wide desktop must restore the eight-room Vixen Fox House research rail');
-      assert.equal(await foxRail.locator('button[aria-current="page"]').count(),1);
-      await foxRail.locator('button[data-view="works"]').click();
-      assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
-      assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
-      await foxRail.locator('button[data-view="overview"]').click();
-      assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
-      assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),null);
-    }else{
-      assert.equal(await foxRail.isHidden(),true,
-        'Existing mobile/tablet routing must remain unobstructed');
-    }
+    assert.equal(await foxRail.isVisible(),true,
+      'Every viewport must have one visible Fox House research path (left rail or mobile dock)');
+    const navOrientation=await foxRail.evaluate(node=>{
+      const r=node.getBoundingClientRect(),s=getComputedStyle(node);
+      return {position:s.position,direction:s.flexDirection,left:r.left,bottom:innerHeight-r.bottom};
+    });
+    assert.equal(navOrientation.position,'fixed');
+    assert.equal(navOrientation.direction,width>=960?'column':'row',
+      'Fox House navigation must reflow responsively instead of vanishing at 1280 CSS pixels');
+    if(width<960)assert(navOrientation.bottom<4,'Mobile/tablet dock must sit at screen bottom');
+    else assert(navOrientation.left<4,'Desktop rail must anchor left');
+    assert.equal(await foxRail.locator('button[aria-current="page"]').count(),1);
+    await foxRail.locator('button[data-view="works"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
+    assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
+    await foxRail.locator('button[data-view="overview"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
+    assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),null);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,
       'The independent Fox House room rail must not add horizontal overflow');
     const foyer=page.locator('.vixen-editorial-foyer');
@@ -143,6 +147,32 @@ try {
       const api=window.VIXEN_ELECTRIC_FOUNDRY;
       return api&&api.status().backend!=='PENDING';
     },null,{timeout:25000});
+    const wardrobe=page.locator('#formulaFolioGrid');
+    assert.equal(await wardrobe.locator('.formula-card').count(),22,
+      'All twenty-two mathematical Folios must remain materially present in the original source archive');
+    assert.equal(await wardrobe.getAttribute('data-expanded'),'false');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
+      'Source-first couture gallery must not dump all twenty-two cards on initial encounter');
+    const galleryReveal=page.locator('#formulaGalleryReveal');
+    assert.equal(await galleryReveal.isVisible(),true);
+    await page.evaluate(()=>{
+      const node=document.querySelector('.formula-gallery-intro');
+      window.scrollTo({top:Math.max(0,window.scrollY+node.getBoundingClientRect().top-110),behavior:'instant'});
+    });
+    await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false});
+    await galleryReveal.click();
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),22,
+      'Explicit gallery opening must reveal every original mathematical Folio');
+    assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
+    await galleryReveal.click();
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
+      'Curated gallery should close without deleting or modifying original source nodes');
+    await page.locator('#formulaSearchInput').fill('RC-07');
+    assert.equal(await wardrobe.getAttribute('data-expanded'),'true',
+      'An explicit search must not hide matching source Folios behind curation');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),1);
+    await page.locator('#formulaSearchInput').fill('');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
     const foundry=page.locator('#vixenElectricFoundry');
     assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
       'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
