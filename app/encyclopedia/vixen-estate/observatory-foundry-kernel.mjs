@@ -41,7 +41,7 @@ export function classifyCarrier(index,count=39){
   near,mid,far:!near&&!mid,
   depth_gain:near?1.35:mid?.82:.46,
   css_opacity:near?.38:mid?.24:.20,
-  color:index%9===0?'#f3bd86':index%5===0?'#9ce7e4':'#b69be9'});
+  color:index%9===0?'#F9F36D':index%5===0?'#F6F4F0':'#FF91AF'});
 }
 export const CARRIERS=Object.freeze(Array.from({length:39},(_,i)=>classifyCarrier(i)));
 if([CARRIERS.filter(x=>x.near).length,CARRIERS.filter(x=>x.mid).length,
