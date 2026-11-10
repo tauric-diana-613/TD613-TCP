@@ -5,7 +5,7 @@
   "historical_manifest_pr": 1722,
   "historical_snapshot_role": "INHERITED_OLDER_SNAPSHOT_REFERENCE_NOT_CURRENT_HEAD_CERTIFICATE",
   "current_certificate": "ATLAS_AFTER_HOURS_HANDOFF_MANIFEST.json",
-  "current_source": "EXACT_HEAD_PACKAGER_MUST_RECOMPUTE_ALL_DIGESTS",
+  "current_source": "INTEGRATED_RF_1734_AND_ATLAS_1735_EXACT_HEAD_RECOMPUTED",
   "known_successor_divergences": [
     {
       "path": "packages/rulefield/lab/README.md",
@@ -20,6 +20,34 @@
       "current_sha256": "5eb20602cd6b93190734fdca633f87847b68c161137732529a852938a5cf258d",
       "historical_size_bytes": 6869,
       "current_size_bytes": 7881
+    },
+    {
+      "path": "packages/rulefield/README.md",
+      "historical_sha256": "9b75c1c70aa159668880f274f98b5e7bb96a1e92dd1279738e9dd6bc8083a70d",
+      "current_sha256": "87377c91033ff97c72aeeec340241bb6be6aa99fcb6a93070b04e90da5384b46",
+      "historical_size_bytes": 17806,
+      "current_size_bytes": 19065
+    },
+    {
+      "path": "scripts/build-rulefield-handoff.py",
+      "historical_sha256": "bc6daea351d2bec35157dd4354228fcc9285d16189d3edb1512b3bae0772969a",
+      "current_sha256": "8efd9fd0978a680238f88372509acb79f7ba85344963398b54cc5b1dba48b234",
+      "historical_size_bytes": 7009,
+      "current_size_bytes": 8978
+    },
+    {
+      "path": "scripts/rulefield-intake.py",
+      "historical_sha256": "aa19620165494236085d4d9ae1ff22bf127fa03808f872c6695bc1823ad3d108",
+      "current_sha256": "7997716c2f1ad18903e9bb940ca6716be1c043e2d1156c96abf674f5376dbf76",
+      "historical_size_bytes": 8164,
+      "current_size_bytes": 8557
+    },
+    {
+      "path": "tests/rulefield-roadmap.test.mjs",
+      "historical_sha256": "6a3c8b707576ae23df669726ec193f8781e4d81ceed1abc236a04f6621b65bd2",
+      "current_sha256": "968c11d48103e73e99bde17e9c2e99bbfdc146a2a84e4ce102244d62ad98cb25",
+      "historical_size_bytes": 4430,
+      "current_size_bytes": 5707
     }
   ],
   "assertion": "Inherited predecessor manifest is immutable. Only an exact-head successor certificate may certify current source files.",

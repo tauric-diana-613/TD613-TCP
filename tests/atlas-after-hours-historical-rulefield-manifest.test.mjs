@@ -21,7 +21,7 @@ test('historical-vs-successor divergences are accounted for without rewriting hi
  for(const e of historical.files) if(sha256(read(e.path))!==e.sha256)changed.push(e.path);
  const listed=crosswalk.known_successor_divergences.map(x=>x.path).sort();
  assert.deepEqual(changed.sort(),listed,'Unexpected predecessor divergence requires a new explicitly reviewed crosswalk');
- assert.deepEqual(listed,['packages/rulefield/lab/README.md','packages/rulefield/lab/tool_registry.json']);
+ assert.deepEqual(listed,["packages/rulefield/README.md","packages/rulefield/lab/README.md","packages/rulefield/lab/tool_registry.json","scripts/build-rulefield-handoff.py","scripts/rulefield-intake.py","tests/rulefield-roadmap.test.mjs"]);
  for(const x of crosswalk.known_successor_divergences){
    assert.equal(old.get(x.path).sha256,x.historical_sha256);
    assert.equal(old.get(x.path).size_bytes,x.historical_size_bytes);

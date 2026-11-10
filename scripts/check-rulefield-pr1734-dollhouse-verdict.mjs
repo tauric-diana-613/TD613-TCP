@@ -1,0 +1,21 @@
+/** PR1734 native Dollhouse receipt checker. Exact HEAD and HELD remain distinct from CI success. */
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+const receipt=JSON.parse(readFileSync(process.argv[2]||'audit-artifacts/pr1734_native_dollhouse_receipt.json','utf8'));
+const head=process.env.EXPECTED_AUDIT_SHA;
+assert.match(head||'',/^[a-f0-9]{40}$/);
+assert.equal(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),head,'checkout must be real PR head');
+assert.equal(receipt.source_revision,head,'audit source mismatch');
+assert.equal(receipt.source_revision_verified,true);
+assert.deepEqual([...receipt.roles_executed].sort(),['PEDAGOGUE','APERTURE','ATLAS','FADT','TEMPORAL_CUSTODIAN'].sort());
+assert.ok(receipt.evidence_manifest?.length>=12);
+assert.ok(receipt.evidence_manifest.every(x=>x.verified===true));
+assert.equal(receipt.empirical_replication_count,0,'synthetic fixtures carry zero independent replication credit');
+assert.equal(receipt.orchestrator?.human_closure_required,true);
+assert.equal(receipt.orchestrator?.release_authority,false);
+assert.equal(receipt.orchestrator?.deployment_authority,false);
+assert.ok(receipt.orchestrator?.decision?.startsWith('HELD'),'adversarial synthetic negative controls require preserved dissent');
+assert.equal(receipt.specialist_findings?.length,5);
+assert.ok(receipt.specialist_findings.some(x=>x.verdict==='HELD'));
+console.log(JSON.stringify({head,nativeDollhouseExecuted:true,scientificDisposition:receipt.orchestrator.decision,roles:receipt.roles_executed,findings:receipt.specialist_findings.map(x=>({role:x.role,verdict:x.verdict,status:x.status,infractions:x.infractions,apertureDeficit:x.extensions?.epistemic_deficit?.deficit_class??null,extensionError:x.extensions?.extension_error??null})),noEmpiricalReplication:true,releaseAuthority:false},null,2));

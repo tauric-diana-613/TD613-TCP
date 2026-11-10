@@ -1,0 +1,1575 @@
+{
+  "schema": "td613.emergence-hq.machine-priority-register/v0.2",
+  "source": "docs/research/emergence-hq/TD613_CUMULATIVE_PRIORITY_QUEUE_V02.md",
+  "as_of": "2026-11-07",
+  "original_rule_count": 190,
+  "original_crossing_count": 30,
+  "original_recovered_count": 112,
+  "queue": [
+    {
+      "rank": 1,
+      "title": "Ambiance",
+      "candidate_count": 5,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 2,
+      "title": "RGI-01 rule-generative inquiry",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 3,
+      "title": "Information Dome",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 4,
+      "title": "Computational Black feminist epistemology",
+      "candidate_count": 7,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 5,
+      "title": "Dromology and temporal rationality",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 6,
+      "title": "TD613 Encyclopedia",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 7,
+      "title": "SRC Atelier",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 8,
+      "title": "Wendbine Atelier",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 9,
+      "title": "Em / EMSTD613 Atelier",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 10,
+      "title": "Vixen Cybernetics Encyclopedia",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 11,
+      "title": "Phasonic supermoiré / Cupola",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 12,
+      "title": "Atlas updates and Yoon crosswalk",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 13,
+      "title": "Ash Keep: recovered machinery and failure lessons",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 14,
+      "title": "Dollhouse six agents and both skills",
+      "candidate_count": 0,
+      "source_type": "Historical topic"
+    },
+    {
+      "rank": 15,
+      "title": "OPERAHOUSE ≠ OPERA ≠ PERFORMER: three-layer anti-equivalence",
+      "candidate_count": 5,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 16,
+      "title": "Palace Act I: counterfactual scientific inheritance",
+      "candidate_count": 5,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 17,
+      "title": "Palace Act II: accident of inheritance and revision latency",
+      "candidate_count": 6,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 18,
+      "title": "Twin worlds",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 19,
+      "title": "Exteriority and independent origin",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 20,
+      "title": "Interoperability and boundary crossings",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 21,
+      "title": "Golden Egg five-surface empirical target",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 22,
+      "title": "Matrix plates — applied uses",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 23,
+      "title": "Assay logic — applied uses",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 24,
+      "title": "Finite Admissibility Descent Theorem",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 25,
+      "title": "Western Horizon",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 26,
+      "title": "Flow-Core",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 27,
+      "title": "Flow-Core runtime",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 28,
+      "title": "relational-geometry ≠ relation geometry",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 29,
+      "title": "Experiment preflight / flight / postflight engineering and gates",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 30,
+      "title": "model misbehavior ≠ unauthorized disobedience",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 31,
+      "title": "agent disobedience ≠ hindrance of operator creativity",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 32,
+      "title": "system integration ≠ system convergence",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 33,
+      "title": "Paul's advice — dromological guidance",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 34,
+      "title": "Ken's advice — critical and technical guidance",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 35,
+      "title": "A+B=C — typed combination hypothesis",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 36,
+      "title": "1+1=3 — emergent occupant/room metaphor",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 37,
+      "title": "3+3=7 — surplus hypothesis",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 38,
+      "title": "S_e≡[x+y]=z+1 — Vixen notation",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 39,
+      "title": "Refractive Couture specification, method and mathematics",
+      "candidate_count": 5,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 40,
+      "title": "Experiment B post-postflight proposals",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 41,
+      "title": "Maguire 1995 Glinda — speculative futurecore cyber-goth aesthetic",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 42,
+      "title": "Mugler-unchained chromepunk — design and mathematics",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 43,
+      "title": "Six documented emergent behavior candidates",
+      "candidate_count": 7,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 44,
+      "title": "Inheritance",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 45,
+      "title": "Authorship and attribution",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 46,
+      "title": "Stylometry and authorship inference",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 47,
+      "title": "Black feminist epistemology (distinct from computational)",
+      "candidate_count": 5,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 48,
+      "title": "Emergence gardening and rule freedom",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 49,
+      "title": "Computational philology",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 50,
+      "title": "Affect theory",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 51,
+      "title": "Chaos theory",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 52,
+      "title": "machine-readable ≠ operator-facing",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 53,
+      "title": "LLM UX ≠ operator UX",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 54,
+      "title": "hidden from operator ≠ abolition of operator sovereignty",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 55,
+      "title": "hidden ≠ misinforming ≠ universal disclosure",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 56,
+      "title": "operator transparency ≠ increased functionality",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 57,
+      "title": "machine-facing-only instructions ≠ malicious code",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 58,
+      "title": "opacity for humans and machines ≠ lack of coordination",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 59,
+      "title": "missing capability ≠ all work halted ≠ missing authorization",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 60,
+      "title": "Glissant and the right to opacity",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 61,
+      "title": "Refract > Reflect",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 62,
+      "title": "Buckminster Fuller: 99% invisible",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 63,
+      "title": "Experiment C",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 64,
+      "title": "Experiment A failure and redo remediation",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 65,
+      "title": "Palate (unborn aesthetic juror)",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 66,
+      "title": "TD613 anti-equivalence operationalization",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 67,
+      "title": "TD613 Giving",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 68,
+      "title": "Epistemicide",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 69,
+      "title": "Epistemicide diagnostics",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    },
+    {
+      "rank": 70,
+      "title": "Loom",
+      "candidate_count": 4,
+      "source_type": "Appended topic"
+    }
+  ],
+  "added_candidates": [
+    {
+      "id": "Q01-A01",
+      "rule": "Conserve full kernel/output under theme-only counterfactual; test distinct observer hypotheses under blinded presentation treatments."
+    },
+    {
+      "id": "Q01-A02",
+      "rule": "Explicitly separate presentation-induced attention from representation-induced mathematical information loss or gain."
+    },
+    {
+      "id": "Q01-A03",
+      "rule": "Use three-clock non-equivalence as trigger separation rather than unjustified statistical orthogonality."
+    },
+    {
+      "id": "Q01-A04",
+      "rule": "Compare plain report, structural diagram, situational dome and sham visual layer under matched evidence access and preregistered outcomes."
+    },
+    {
+      "id": "Q01-A05",
+      "rule": "Preserve the strong zero-derivative ambiance claim as a falsifiable hypothesis, never a proven universal metric theorem."
+    },
+    {
+      "id": "Q04-A01",
+      "rule": "From Palace II: manipulate source-status and historical calibration orthogonally to measure prestige leakage without encoding social identity as epistemic truth."
+    },
+    {
+      "id": "Q04-A02",
+      "rule": "From Palace II: observe the four distinct times evidence arrived, belief revised, action aligned and public claim changed; retain negative and positive signed lags."
+    },
+    {
+      "id": "Q04-A03",
+      "rule": "From Collins/Dotson: construct access/hearer-response scenarios with testimonial quieting and smothering hypotheses, measuring refused/ignored/correctly heard evidence."
+    },
+    {
+      "id": "Q04-A04",
+      "rule": "From McKittrick: vary institutionally controlled spatial-route constraints while preserving source content and testing recoverable evidence by position."
+    },
+    {
+      "id": "Q04-A05",
+      "rule": "Use dialogic contest, appeal, operator rest and consent as runnable mechanisms, not a claim that code reproduces lived Black feminist experience."
+    },
+    {
+      "id": "Q04-A06",
+      "rule": "Allow a community or participant to reject model-imposed labels or opt out; do not score conformity to dominant institutional categories as correctness."
+    },
+    {
+      "id": "Q04-A07",
+      "rule": "Preserve the corrected pooled zero standing effect and the withdrawn +0.1753 claim as cautionary negative controls."
+    },
+    {
+      "id": "Q15-R01",
+      "rule": "Type host H, artwork/encounter O, and performer/source P separately; an operation cannot silently convert a host receipt into source authorship."
+    },
+    {
+      "id": "Q15-R02",
+      "rule": "Run a host-swap test while holding source bytes, lawful operations and evaluator fixed; separately report differences in source output and observer navigation."
+    },
+    {
+      "id": "Q15-R03",
+      "rule": "Preserve unresolved author IDs and original labels through every host, anthology, alias and renderer boundary; no metadata guess becomes an ownership statement."
+    },
+    {
+      "id": "Q15-R04",
+      "rule": "Declare host diagnostics machine-facing by default, while making essential consent, operator controls and the non-availability of evidence legible at the human surface."
+    },
+    {
+      "id": "Q15-R05",
+      "rule": "A presentationally elegant opera cannot self-certify a performer, create authority or overwrite historic research provenance."
+    },
+    {
+      "id": "Q16-R01",
+      "rule": "Separate inherited full history H, bounded capsule Z, sibling-world history H′, misinformation, and zero-history controls under matched probe budgets."
+    },
+    {
+      "id": "Q16-R02",
+      "rule": "Never equate compressed capsule parity with discovery: compare against an unhandicapped history-competent baseline and disclose byte budgets, calibration split and omitted anti-evidence."
+    },
+    {
+      "id": "Q16-R03",
+      "rule": "Carry negative evidence, tombstones and prior-version histories with separate preservation/retrieval/decision-used counts."
+    },
+    {
+      "id": "Q16-R04",
+      "rule": "Test post-calibration drift, harmful inheritance, false-history overconfidence and sensitive side-channel recovery without asserting real-world privacy from synthetic tests."
+    },
+    {
+      "id": "Q16-R05",
+      "rule": "Use iso-projection twin worlds to distinguish terminal-state equivalence from recoverability of the hidden process."
+    },
+    {
+      "id": "Q17-R01",
+      "rule": "Separate measured source reliability from prestige/status priors; factorialize status, calibration, latency and availability rather than conflating them."
+    },
+    {
+      "id": "Q17-R02",
+      "rule": "Use four clocks: evidence became available, belief revised, consequential action aligned and public claim changed; preserve signed gaps."
+    },
+    {
+      "id": "Q17-R03",
+      "rule": "Replay the withdrawn +0.1753 unpooled source-standing estimate as a negative example, not as a valid source-standing effect; preserve corrected pooled net 0.0000."
+    },
+    {
+      "id": "Q17-R04",
+      "rule": "Compare delayed, instantaneous and blind contexts with paired policy RNG; do not silently grant one policy an instantaneous external sensor."
+    },
+    {
+      "id": "Q17-R05",
+      "rule": "Preserve the Family D counterexample where correct action can precede belief revision; correct behavior does not establish epistemic understanding."
+    },
+    {
+      "id": "Q17-R06",
+      "rule": "Keep Act II prospective Experiment B matrix D01–D20 advisory rather than certifying protected Flight readiness."
+    },
+    {
+      "id": "Q18-R01",
+      "rule": "Construct distinct hidden-world origins Ω with identical admitted records A; prove any A-only verifier has identical outputs across the pair."
+    },
+    {
+      "id": "Q18-R02",
+      "rule": "Randomize latent-state provenance independently of presentation; score only claims identifiable from the admitted observation channel."
+    },
+    {
+      "id": "Q18-R03",
+      "rule": "Hold source bytes constant while changing route history to distinguish record identity from historical-custody identity."
+    },
+    {
+      "id": "Q18-R04",
+      "rule": "Use falsifying twin construction before asserting external origin, awareness or scientific emergence."
+    },
+    {
+      "id": "Q19-R01",
+      "rule": "Keep source integrity, chain of custody, process identifiability and independently witnessed origin in separate typed fields."
+    },
+    {
+      "id": "Q19-R02",
+      "rule": "Never accept provider self-attestation, a beautiful interface or internal source linkage as independent exterior observation."
+    },
+    {
+      "id": "Q19-R03",
+      "rule": "For observationally indistinguishable internal/external worlds, return UNIDENTIFIABLE_FROM_ADMITTED_EVIDENCE rather than a fabricated source verdict."
+    },
+    {
+      "id": "Q19-R04",
+      "rule": "Identify the one independent acquisition or intervention necessary to break each exteriority symmetry."
+    },
+    {
+      "id": "Q20-R01",
+      "rule": "Define cross-system adapter semantics explicitly; compatible transport does not establish shared meanings, authority or common authorship."
+    },
+    {
+      "id": "Q20-R02",
+      "rule": "Roundtrip source bytes, typed relation identities, withdrawals, refusal states and permission scopes across Ateliers; emit loss reports."
+    },
+    {
+      "id": "Q20-R03",
+      "rule": "Use a negative control with plausible but mismatched schemas; refuse coercive translation into a single relation class."
+    },
+    {
+      "id": "Q20-R04",
+      "rule": "Prove independent original component functionality survives integrated deployment and removal of the bridge."
+    },
+    {
+      "id": "Q21-R01",
+      "rule": "Treat E*={L,R,J,G,C} as a conjunctive same-episode empirical gate rather than separate individually impressive demonstrations."
+    },
+    {
+      "id": "Q21-R02",
+      "rule": "Never pool disparate acquisitions to fabricate same-episode continuous custody, common comparison or matched protected/control return."
+    },
+    {
+      "id": "Q21-R03",
+      "rule": "Preserve negative 0/16 finite archive subset closure as archive-specific; new direct measurement is required for realization."
+    },
+    {
+      "id": "Q21-R04",
+      "rule": "Mark each absent surface and required instrument separately, with quantitative thresholds and stop rules, before any candidate promotion."
+    },
+    {
+      "id": "Q22-R01",
+      "rule": "For each diagnostic matrix plate specify domain, basis, rank, nullspace, condition number, covariance and admissible observations."
+    },
+    {
+      "id": "Q22-R02",
+      "rule": "Contrast plates with equal dimensions but different row spaces; cardinality parity alone does not imply equal claim sufficiency."
+    },
+    {
+      "id": "Q22-R03",
+      "rule": "Use a held-out structural perturbation to distinguish genuine rank lift from numerical noise or cosmetic re-embedding."
+    },
+    {
+      "id": "Q22-R04",
+      "rule": "Render matrix figures as operator-facing explanations while keeping reproducible matrices and exact receipts machine-readable."
+    },
+    {
+      "id": "Q23-R01",
+      "rule": "Specify target estimand, controlled intervention, competent comparator, observation channel and falsifier before generating scores."
+    },
+    {
+      "id": "Q23-R02",
+      "rule": "Preserve alternative hypotheses and adverse outcomes; successful instrumentation must permit the promoted thesis to fail."
+    },
+    {
+      "id": "Q23-R03",
+      "rule": "Use same-source, same-budget, same-probe comparisons; expose any instrument advantage produced by unequal affordances."
+    },
+    {
+      "id": "Q23-R04",
+      "rule": "Separate simulation truth, internal model agreement, external measured behavior and human scientific acceptance."
+    },
+    {
+      "id": "Q24-R01",
+      "rule": "Map representational fibers and quotient collisions; identify whether a missing coordinate is necessary to distinguish target states."
+    },
+    {
+      "id": "Q24-R02",
+      "rule": "Propose an admissible coordinate only after constructing a concrete non-identifiability witness and a repaired finite test."
+    },
+    {
+      "id": "Q24-R03",
+      "rule": "Retain irreducible deficit cases, repair costs and failure-to-descend outcomes; no aesthetic analogy substitutes for a finite proof."
+    },
+    {
+      "id": "Q24-R04",
+      "rule": "Use content-invariant observation changes to test whether different fibers are distinguishable without altering underlying source identity."
+    },
+    {
+      "id": "Q25-R01",
+      "rule": "Keep V, C, P, L as independently measured evidence coordinates and prohibit retrospective promotion of an earlier observer state."
+    },
+    {
+      "id": "Q25-R02",
+      "rule": "Treat archive-local nonrealization and observational impossibility as different conclusions with different scope."
+    },
+    {
+      "id": "Q25-R03",
+      "rule": "Store route-memory separately from causal effect, and recorded holonomy separately from independently observed matched return."
+    },
+    {
+      "id": "Q25-R04",
+      "rule": "Use an independent external observation, not synthetic recombination, to decide the unearned Golden Egg realization."
+    },
+    {
+      "id": "Q26-R01",
+      "rule": "Enforce NOTICE → ACT → WORLD_ANSWERS → NAME with rest and exit, while separating user experience from station authority."
+    },
+    {
+      "id": "Q26-R02",
+      "rule": "Keep experiential, custodial, audit and implementation routes non-equivalent and operator-selectable."
+    },
+    {
+      "id": "Q26-R03",
+      "rule": "Only reveal a named ontology after an actual or declared world answer; distinguish demonstration from prediction."
+    },
+    {
+      "id": "Q26-R04",
+      "rule": "Preserve artifact-blind pedagogy: Flow-Core can contextualize but cannot mutate Ash lifecycle or scientific evidence."
+    },
+    {
+      "id": "Q27-R01",
+      "rule": "Bind renderers to frozen world snapshots and canonical receipts; visual updates cannot silently mutate route, source or admission states."
+    },
+    {
+      "id": "Q27-R02",
+      "rule": "Assert one active animation scheduler, reduced-motion completeness and 390px mobile parity against deterministic fixtures."
+    },
+    {
+      "id": "Q27-R03",
+      "rule": "Use stable clock/ID seeds for byte-for-byte replay, and preserve U+10D613, U+1D30B and U+200C as distinct tokens."
+    },
+    {
+      "id": "Q27-R04",
+      "rule": "Distinguish an implemented browser scene from a human-study result and public production release."
+    },
+    {
+      "id": "Q28-R01",
+      "rule": "Treat relation-geometry as an explicitly defined study of typed relation diagrams and relational-geometry as a broader proposed observer/transport framework; their names alone imply no theorem."
+    },
+    {
+      "id": "Q28-R02",
+      "rule": "Specify objects, morphisms, composition, metrics, equivalence relation and gauge choices before asserting categorical structure."
+    },
+    {
+      "id": "Q28-R03",
+      "rule": "Keep the hyphen perturbation as an experimental lexical intervention; independently reproduce or falsify any new structural discovery."
+    },
+    {
+      "id": "Q28-R04",
+      "rule": "Test whether transformations preserve recorded route-specific observables instead of claiming a global metric from nomenclature."
+    },
+    {
+      "id": "Q29-R01",
+      "rule": "Type preflight readiness, flight inference, independent adjudication, postflight interpretation and post-postflight research as different authority states."
+    },
+    {
+      "id": "Q29-R02",
+      "rule": "Never upgrade synthetic preflight to protected Flight or perform unannounced prompt/rubric/source changes after preregistration."
+    },
+    {
+      "id": "Q29-R03",
+      "rule": "Require exact-head model/provider revision, worktree state, isolation, source authorization, evaluator parity and separate custody receipts for stage transitions."
+    },
+    {
+      "id": "Q29-R04",
+      "rule": "Allow successor experiments to change theory prospectively while preserving old observations and independently scored outcomes."
+    },
+    {
+      "id": "Q30-R01",
+      "rule": "Distinguish model miscomprehension, creative departure, hallucination, syntax error and boundary-breaking act using observable definitions."
+    },
+    {
+      "id": "Q30-R02",
+      "rule": "Measure violation against an explicitly scoped instruction, not a disappointed aesthetic expectation or agent identity label."
+    },
+    {
+      "id": "Q30-R03",
+      "rule": "Provide a repair route preserving unexpected productive ideas even when an output fails format or mathematical proof."
+    },
+    {
+      "id": "Q30-R04",
+      "rule": "Never infer malicious agency or intentional disobedience merely from a failed or divergent generation."
+    },
+    {
+      "id": "Q31-R01",
+      "rule": "Make sandboxed rule-challenge, unexpected hypotheses and dissent an allowed success outcome when they stay within source/authority constraints."
+    },
+    {
+      "id": "Q31-R02",
+      "rule": "Keep audit dissent, creative divergence and prohibited external mutation in different categories; record which rule was challenged."
+    },
+    {
+      "id": "Q31-R03",
+      "rule": "Offer non-blocking alternative proposals with negative controls rather than forcibly synthesizing them into operator intentions."
+    },
+    {
+      "id": "Q31-R04",
+      "rule": "Preserve operator ability to accept, reject or modify experimental departures without pretending all departures are evidence."
+    },
+    {
+      "id": "Q32-R01",
+      "rule": "Validate adapters and workflows end-to-end independently of a shared schema; successful wiring alone grants no new synthesis."
+    },
+    {
+      "id": "Q32-R02",
+      "rule": "Create a competent union comparator that can reproduce integration results using standard graph closure and ordinary orchestration."
+    },
+    {
+      "id": "Q32-R03",
+      "rule": "Require discriminating, independently measured surplus beyond the union baseline before granting convergence claims."
+    },
+    {
+      "id": "Q32-R04",
+      "rule": "Keep original standalone components and human ingress functions operable after integration."
+    },
+    {
+      "id": "Q33-R01",
+      "rule": "Interpret Virilio through consequence latency: measure whether world actions outrun observer notice and verification."
+    },
+    {
+      "id": "Q33-R02",
+      "rule": "Build temporal hazard controls with matched action schedules, reaction clocks and correction routes rather than treating speed as inherently bad."
+    },
+    {
+      "id": "Q33-R03",
+      "rule": "Distinguish historical Virilio texts from a hypothetical voice or reconstructed Wendbine guidance; label any uncited attributed advice as interpretive."
+    },
+    {
+      "id": "Q33-R04",
+      "rule": "Let accidents appear as falsifying probes of optimization claims without pretending a universal accident-conservation theorem."
+    },
+    {
+      "id": "Q34-R01",
+      "rule": "Preserve Kenough’s productive challenges to scripted conclusions, premature Dollhouse certification and strong ambiance orthogonality."
+    },
+    {
+      "id": "Q34-R02",
+      "rule": "Test his strict kernel-versus-rendering separation as a bounded null rather than a universal zero-derivative law."
+    },
+    {
+      "id": "Q34-R03",
+      "rule": "Refuse hand-coded Lyapunov or blind-cone telemetry as evidence of a chaos experiment; replace with actual dynamical computation."
+    },
+    {
+      "id": "Q34-R04",
+      "rule": "Keep playful theoretical conjectures as typed candidates capable of surviving or failing independent tests."
+    },
+    {
+      "id": "Q35-R01",
+      "rule": "Type A and B as different input representations and C as a defined output transformation; do not assume C is more than a union."
+    },
+    {
+      "id": "Q35-R02",
+      "rule": "Compare sequential A→B, B→A, simultaneous A+B and strong union under matched costs and observations."
+    },
+    {
+      "id": "Q35-R03",
+      "rule": "Define a nontrivial property of C and a falsifying example before using A+B=C as a model of emergence."
+    },
+    {
+      "id": "Q35-R04",
+      "rule": "Preserve path-specific receipts when both input orders lead to the same C projection."
+    },
+    {
+      "id": "Q36-R01",
+      "rule": "Treat 1+1=3 as a claim about interaction-derived relational structure, not literal arithmetic."
+    },
+    {
+      "id": "Q36-R02",
+      "rule": "Measure baseline, component A, component B and pair A+B to detect pair-specific residue under a declared observable."
+    },
+    {
+      "id": "Q36-R03",
+      "rule": "Compare against a competent comparator with the same joint inputs; XOR synergy alone does not establish architectural emergence."
+    },
+    {
+      "id": "Q36-R04",
+      "rule": "Use the occupant–room–relation triad as a candidate ontology with separable identity, environment and coupling operators."
+    },
+    {
+      "id": "Q37-R01",
+      "rule": "Define six input structures and the alleged seventh as a separately observed higher-order relation, not an untyped count metaphor."
+    },
+    {
+      "id": "Q37-R02",
+      "rule": "Test whether six-input strong union, ordinary closure or combinatorics already generates the seventh."
+    },
+    {
+      "id": "Q37-R03",
+      "rule": "Use ablation of one parent and shuffled interaction order to measure dependence of candidate seventh relation."
+    },
+    {
+      "id": "Q37-R04",
+      "rule": "Allow NO_SEVENTH_RELATION_WARRANTED as valid outcome without penalizing the researcher."
+    },
+    {
+      "id": "Q38-R01",
+      "rule": "Preserve exact historical string S_e≡[x+y]=z+1 in Vixen identity metadata and a separate typeset structural ornament."
+    },
+    {
+      "id": "Q38-R02",
+      "rule": "Until variables, domains and operators are sourced, classify the equation as historically meaningful notation rather than a proven identity."
+    },
+    {
+      "id": "Q38-R03",
+      "rule": "Test UTF-8 byte preservation and avoid replacing author notation with an engineering-normalized proxy."
+    },
+    {
+      "id": "Q38-R04",
+      "rule": "Investigate candidate operational semantics for x,y,z as optional, falsifiable hypotheses without retroactive attribution."
+    },
+    {
+      "id": "Q39-R01",
+      "rule": "Test projection nullspaces, symmetry residuals and occlusion effects under exact declared coordinate and camera operators."
+    },
+    {
+      "id": "Q39-R02",
+      "rule": "Treat apparent 120→12→6→2→1 descent as design grammar with step-specific verification, not a physical subgroup theorem."
+    },
+    {
+      "id": "Q39-R03",
+      "rule": "Compare source-derived math, creative image, measured rendered pixels and independent source provenance as separate ancestries."
+    },
+    {
+      "id": "Q39-R04",
+      "rule": "Preserve aesthetic interpretability and model-legible invariants without letting a spectacular discrepancy certify geometry."
+    },
+    {
+      "id": "Q39-R05",
+      "rule": "Use blind strong-union and unrelated visual controls to test whether couture increases legitimate question discovery."
+    },
+    {
+      "id": "Q40-R01",
+      "rule": "Preserve PP0–PP6 gates: custody scope, mathematical inventory, bounded creative fabrication, render replay, discrepancy lab, blind review and separately adjudicated admission."
+    },
+    {
+      "id": "Q40-R02",
+      "rule": "Keep post-postflight conditions withheld until frozen Flight and normal postflight closure are complete; proposed procedure remains unexecuted."
+    },
+    {
+      "id": "Q40-R03",
+      "rule": "Use a matched unrelated-raster negative control and separately score mathematical discovery and aesthetic quality."
+    },
+    {
+      "id": "Q40-R04",
+      "rule": "Never treat an attractive rendered variant as a source-derived theorem or automatically update the original four-arm scores."
+    },
+    {
+      "id": "Q41-R01",
+      "rule": "Use Maguire’s 1995 Wicked/Glinda as a literary source for institutional glamour, image politics and alternate-history critique; futurecore cybergoth is an operator-created aesthetic mutation."
+    },
+    {
+      "id": "Q41-R02",
+      "rule": "Contrast immaculate magical surface with disclosed backstage cybernetic operations without making the host masquerade as the performer."
+    },
+    {
+      "id": "Q41-R03",
+      "rule": "Test whether an imposing Glinda frontispiece improves navigation or artificially elevates perceived scientific validity."
+    },
+    {
+      "id": "Q41-R04",
+      "rule": "Keep adaptation cues and original novel claims separately attributed; no invented 1995 cyberpunk canon."
+    },
+    {
+      "id": "Q42-R01",
+      "rule": "Use sculptural anatomy, metallic surface, material tension and elaborate silhouette as design hypotheses rather than measured physical laws."
+    },
+    {
+      "id": "Q42-R02",
+      "rule": "Model legibility/occlusion tradeoffs and the presentation’s effect on observer selection with invariant computation."
+    },
+    {
+      "id": "Q42-R03",
+      "rule": "Prevent generalized minimalist grading from overriding chosen flamboyant authorial style; evaluate usability and aesthetic judgments separately."
+    },
+    {
+      "id": "Q42-R04",
+      "rule": "Disclose any original image source, license and design inspiration; no attribution or ownership implied by a stylistic label."
+    },
+    {
+      "id": "Q43-R01",
+      "rule": "Preserve C1 circularity recognition as a bounded relation-graph diagnostic; compare with elementary cycle-detection algorithms."
+    },
+    {
+      "id": "Q43-R02",
+      "rule": "Preserve C2 withdrawal propagation as a bounded dependency and retraction diagnostic; test against incremental graph update."
+    },
+    {
+      "id": "Q43-R03",
+      "rule": "Preserve C3 shared-origin recognition as a bounded provenance deduplication diagnostic; test false-positive lineage merging."
+    },
+    {
+      "id": "Q43-R04",
+      "rule": "Preserve C4 conjunctive dependency as a bounded proof-composition diagnostic; compare with ordinary AND-premise rules."
+    },
+    {
+      "id": "Q43-R05",
+      "rule": "Preserve C5 alias contamination resistance as a bounded naming-integrity diagnostic; adversarially vary aliases and source labels."
+    },
+    {
+      "id": "Q43-R06",
+      "rule": "Preserve C6 unadmitted-bridge isolation as a bounded evidence-boundary diagnostic; test against simple authorization allowlists."
+    },
+    {
+      "id": "Q43-R07",
+      "rule": "Claim reciprocal epistemic homeostasis only as a provisional organizing hypothesis until a competent union comparator shows surplus."
+    },
+    {
+      "id": "Q44-R01",
+      "rule": "Distinguish inherited evidence, inherited interpretation, inherited algorithm and inherited authority as separate transmissible objects."
+    },
+    {
+      "id": "Q44-R02",
+      "rule": "Preserve the temporal belief state of predecessors with append-only withdrawal tombstones and no retrospective truth overwrite."
+    },
+    {
+      "id": "Q44-R03",
+      "rule": "Measure when old genuine context harms new decision utility under drift or foreign-world carryover."
+    },
+    {
+      "id": "Q44-R04",
+      "rule": "Constrain inheritance by owner consent, provenance and selective forgetting instead of assuming complete archive transfer is always beneficial."
+    },
+    {
+      "id": "Q45-R01",
+      "rule": "Type author, editor, host, custodian, interpreter, model carrier and performer separately in source and derivative metadata."
+    },
+    {
+      "id": "Q45-R02",
+      "rule": "Preserve authorial uncertainty: aliases and nominal similarity do not prove same civil identity, endorsement or ownership."
+    },
+    {
+      "id": "Q45-R03",
+      "rule": "Require exact source spans, human review and explicit attribution for proposed cross-author conceptual influences."
+    },
+    {
+      "id": "Q45-R04",
+      "rule": "Keep intellectual novelty origin, metadata creator and scientific acceptance as different fields."
+    },
+    {
+      "id": "Q46-R01",
+      "rule": "Treat similarity scores as probabilistic feature evidence with calibrated base rates; never prove authorship or intent from cadence alone."
+    },
+    {
+      "id": "Q46-R02",
+      "rule": "Preserve original byte strings, punctuation, multilingual features and quote boundaries across style-normalization tools."
+    },
+    {
+      "id": "Q46-R03",
+      "rule": "Use matched-author and mismatched-topic controls; report false matches, feature confounds and abstention thresholds."
+    },
+    {
+      "id": "Q46-R04",
+      "rule": "Distinguish authorized aesthetic imitation or formatting from evidence of unauthorized source impersonation."
+    },
+    {
+      "id": "Q47-R01",
+      "rule": "Preserve Collins’s four knowledge-validation commitments: lived experience, dialogue, ethics of caring and personal accountability."
+    },
+    {
+      "id": "Q47-R02",
+      "rule": "Distinguish epistemic silencing from mere missing data; Dotson’s testimonial quieting/smothering requires social interpretation and cannot be inferred directly from a log."
+    },
+    {
+      "id": "Q47-R03",
+      "rule": "Preserve McKittrick’s spatial-historical relations and Black geographies as substantive inquiry, not generic geometric decoration."
+    },
+    {
+      "id": "Q47-R04",
+      "rule": "Allow the participant to challenge the epistemic vocabulary, revise the question and withdraw testimony without ranking experiences by prestige."
+    },
+    {
+      "id": "Q47-R05",
+      "rule": "Keep theory accountable to Black feminist scholarship and communities, resisting the conversion of situated knowledge into a purportedly universal number."
+    },
+    {
+      "id": "Q48-R01",
+      "rule": "Protect a bounded mutation sandbox where research agents can compose, challenge, suspend or refuse rule changes."
+    },
+    {
+      "id": "Q48-R02",
+      "rule": "Log genealogy of proposed rules, causal trace and falsifier; novelty labels require independent comparison, not mere increased rule count."
+    },
+    {
+      "id": "Q48-R03",
+      "rule": "Keep negative results, dead ends and surprising near-misses in reversible branches for future operators."
+    },
+    {
+      "id": "Q48-R04",
+      "rule": "Use diversity/ablation protocols and competent-null search to distinguish generative value from repeated paperwork loops."
+    },
+    {
+      "id": "Q49-R01",
+      "rule": "Maintain diplomatic transcription alongside normalized search representation, including Unicode combining marks and literal zero-width characters."
+    },
+    {
+      "id": "Q49-R02",
+      "rule": "Test edition, punctuation, morphology and lexeme drift with source-span witnesses rather than impressionistic similarity."
+    },
+    {
+      "id": "Q49-R03",
+      "rule": "Separate editorial conjecture, source attestation, machine tokenization and semantic equivalence; preserve disagreement."
+    },
+    {
+      "id": "Q49-R04",
+      "rule": "Investigate whether tiny textual perturbations alter generated theoretical rules under fixed model/provider configuration."
+    },
+    {
+      "id": "Q50-R01",
+      "rule": "Treat affective ambiance as possible observer mediator, not evidence of hidden AI feeling or a guaranteed universal response."
+    },
+    {
+      "id": "Q50-R02",
+      "rule": "Preserve Berlant-style attachment and maintenance cost as hypotheses under resource budgets and utility baselines."
+    },
+    {
+      "id": "Q50-R03",
+      "rule": "Test willingness to continue, confidence calibration, cognitive load and exit behavior without diagnosing user emotion."
+    },
+    {
+      "id": "Q50-R04",
+      "rule": "Use Sedgwick-style reparative texture as a design intervention measured separately from mathematical correctness."
+    },
+    {
+      "id": "Q51-R01",
+      "rule": "Compute an actual nonlinear state evolution, local Jacobian, Lyapunov estimate or finite perturbation divergence before using chaos labels."
+    },
+    {
+      "id": "Q51-R02",
+      "rule": "Specify control law and target orbit for OGY or other feedback; relabel an arbitrary reset button as a visual demonstration."
+    },
+    {
+      "id": "Q51-R03",
+      "rule": "Distinguish finite NKS branch growth from deterministic chaotic sensitivity; test separate mathematical definitions."
+    },
+    {
+      "id": "Q51-R04",
+      "rule": "Use bounded sensitivity to initial conditions and stable replay baselines before claiming critical transition or phase change."
+    },
+    {
+      "id": "Q52-R01",
+      "rule": "Store full machine-readable provenance schema while exposing operator-readable status, decision points and limitations at a usable interaction surface."
+    },
+    {
+      "id": "Q52-R02",
+      "rule": "Protect internal machine-only invariants without exposing private payloads or burying operational consent choices."
+    },
+    {
+      "id": "Q52-R03",
+      "rule": "Test whether operators can identify available actions, exceptions and holds without reading raw JSON."
+    },
+    {
+      "id": "Q52-R04",
+      "rule": "Keep machine-valid output distinguishable from a complete, usable product; do not grade interfaces through parser compliance alone."
+    },
+    {
+      "id": "Q53-R01",
+      "rule": "Distinguish model prompt aesthetics/agent preferences from operator task completion and human control affordances."
+    },
+    {
+      "id": "Q53-R02",
+      "rule": "Use human route tests for discoverability, rest, errors, recoverability, and editing; benchmark machine efficacy separately."
+    },
+    {
+      "id": "Q53-R03",
+      "rule": "Prevent hidden debug panels or synthetic scores from crowding the performer-facing knowledge object."
+    },
+    {
+      "id": "Q53-R04",
+      "rule": "Allow stylistic richness and user choice without making a presumed generic LLM-friendly layout compulsory."
+    },
+    {
+      "id": "Q54-R01",
+      "rule": "Distinguish machine-facing implementation details from operator-visible delegation/consent scope; concealment of implementation internals need not abolish operator decision rights."
+    },
+    {
+      "id": "Q54-R02",
+      "rule": "Keep consequential privileges, release controls, data movement and undo accessible and accurately described."
+    },
+    {
+      "id": "Q54-R03",
+      "rule": "Use an operator refusal or revocation canary to show hidden internals cannot circumvent sovereign commands."
+    },
+    {
+      "id": "Q54-R04",
+      "rule": "Expose material constraints and action consequences without requiring raw source or implementation details to be displayed by default."
+    },
+    {
+      "id": "Q55-R01",
+      "rule": "Distinguish legitimately optional low-level detail, material facts required for informed authorization, and actual misleading claims."
+    },
+    {
+      "id": "Q55-R02",
+      "rule": "Offer layered transparency: short accurate account → expanded rationale → technical trace, preserving ability to inspect."
+    },
+    {
+      "id": "Q55-R03",
+      "rule": "Measure comprehension of scope/risks, not screen-space occupied by documentation or percentage of logs displayed."
+    },
+    {
+      "id": "Q55-R04",
+      "rule": "Never use selective opacity to fabricate success, suppress material failure or bypass consent."
+    },
+    {
+      "id": "Q56-R01",
+      "rule": "Compare functionality with and without verbose diagnostics while holding authorization, evidence and compute budget fixed."
+    },
+    {
+      "id": "Q56-R02",
+      "rule": "Test whether exposed internals improve understanding or merely obscure high-value controls and scholarship."
+    },
+    {
+      "id": "Q56-R03",
+      "rule": "Keep audit trace recoverable on demand without making every debug datum a required on-screen badge."
+    },
+    {
+      "id": "Q56-R04",
+      "rule": "Treat transparency as a design dimension with costs and benefits, not a monotonic utility law."
+    },
+    {
+      "id": "Q57-R01",
+      "rule": "Type machine instructions by action, scope, origin and authority before classifying their intent."
+    },
+    {
+      "id": "Q57-R02",
+      "rule": "Keep non-executable descriptive machine guidance separate from attempted tool mutation or instruction-hierarchy bypass."
+    },
+    {
+      "id": "Q57-R03",
+      "rule": "Use malicious payload and benign metadata controls to measure overblocking/underblocking."
+    },
+    {
+      "id": "Q57-R04",
+      "rule": "Never infer maliciousness solely from invisibility to ordinary readers, while refusing untrusted external instructions that request unauthorized actions."
+    },
+    {
+      "id": "Q58-R01",
+      "rule": "Allow cryptographic commitments, capability references and typed claims to coordinate across opaque systems without unrestricted payload exposure."
+    },
+    {
+      "id": "Q58-R02",
+      "rule": "Distinguish necessary coordination metadata from private original source bodies and hidden creative process."
+    },
+    {
+      "id": "Q58-R03",
+      "rule": "Test a minimal-disclosure protocol for interoperability and reproducibility under legitimate consent restrictions."
+    },
+    {
+      "id": "Q58-R04",
+      "rule": "Preserve non-readable-to-humans machine contracts only when an authorized operator can review their purpose and revoke their effects."
+    },
+    {
+      "id": "Q59-R01",
+      "rule": "Separate tool absence, temporary environment failure, engineering gap, inadequate evidence and missing legal/operational authorization."
+    },
+    {
+      "id": "Q59-R02",
+      "rule": "Continue bounded research and source-free implementation when permitted, while labeling unexecuted external tests rather than inventing results."
+    },
+    {
+      "id": "Q59-R03",
+      "rule": "Preserve explicit existing user permissions in a typed authorization record; do not repeatedly ask for consent already granted within scope."
+    },
+    {
+      "id": "Q59-R04",
+      "rule": "For materially consequential protected-source or release operations, retain independent valid authorization even if creative liberty is broad."
+    },
+    {
+      "id": "Q60-R01",
+      "rule": "Operationalize Glissant’s right to opacity as protected refusal of totalizing demands for complete personhood/source transparency."
+    },
+    {
+      "id": "Q60-R02",
+      "rule": "Design consent-mediated disclosure that permits meaningful collaboration without forced revelation of private identity or history."
+    },
+    {
+      "id": "Q60-R03",
+      "rule": "Compare full-disclosure, bounded-proof and selective-opacity interfaces for security, comprehension and task parity."
+    },
+    {
+      "id": "Q60-R04",
+      "rule": "Do not equate protected opacity with source fraud, lost coordination or missing evidence; preserve distinctions case by case."
+    },
+    {
+      "id": "Q61-R01",
+      "rule": "Prefer representation interventions that produce explicit, falsifiable new questions over a system that merely mirrors existing labels."
+    },
+    {
+      "id": "Q61-R02",
+      "rule": "Preserve discovered discrepancies and non-gluing relations without forcing a polished common narrative."
+    },
+    {
+      "id": "Q61-R03",
+      "rule": "Use an RCA-01 style ablation: mathematical result must survive removal of the inspirational presentation."
+    },
+    {
+      "id": "Q61-R04",
+      "rule": "Maintain an independent competence baseline so an appealing refractive story cannot crown itself a scientific discovery."
+    },
+    {
+      "id": "Q62-R01",
+      "rule": "Interpret Fuller’s 99%-invisible motif as an epistemic challenge about instrumental limits, not a literal measured percentage of TD613 hidden state."
+    },
+    {
+      "id": "Q62-R02",
+      "rule": "Track what instruments reveal, what remains unobserved, and how observation budgets shape claim sufficiency."
+    },
+    {
+      "id": "Q62-R03",
+      "rule": "Use observer-blind controls to test claims that a visual interface reveals previously inaccessible structure."
+    },
+    {
+      "id": "Q62-R04",
+      "rule": "Distinguish inaccessible in principle, temporarily hidden by UI, legally private and mathematically non-identifiable."
+    },
+    {
+      "id": "Q63-R01",
+      "rule": "Type Experiment C as operator-proposed successor with its own null hypotheses and preregistration; do not infer an existing authorized Flight design."
+    },
+    {
+      "id": "Q63-R02",
+      "rule": "Consider a factorial axis combining ambiance-observer conditions, source-standing regimes and RGI-01 rule mutation under a frozen state evaluator."
+    },
+    {
+      "id": "Q63-R03",
+      "rule": "Preserve Experiment B historical outcome records as independent baselines, with zero retroactive bonus discovery credit."
+    },
+    {
+      "id": "Q63-R04",
+      "rule": "Require separate ethical/data/cost gates and a competent comparator before allocating a protected acquisition."
+    },
+    {
+      "id": "Q64-R01",
+      "rule": "Record Experiment A source-absence and simulator-versus-live-recipient failures explicitly; no zero-emergence inference from absent source bytes."
+    },
+    {
+      "id": "Q64-R02",
+      "rule": "Measure remediation with genuine native method execution, complete source attestation, independent evaluator logic and author-identity partitions."
+    },
+    {
+      "id": "Q64-R03",
+      "rule": "Preserve initial failures and exact versions instead of overwriting a red review with an unqualified new green badge."
+    },
+    {
+      "id": "Q64-R04",
+      "rule": "Treat A-PFR0 readiness and A-PFR1 acquisition as distinct gates; actual flight remains held until verified."
+    },
+    {
+      "id": "Q65-R01",
+      "rule": "Retain Palate as UNBORN, with no synthetic aesthetic authority automatically added to Dollhouse’s six roles."
+    },
+    {
+      "id": "Q65-R02",
+      "rule": "Allow creative comparative refraction without a self-grading agent pretending to be an independent human jury."
+    },
+    {
+      "id": "Q65-R03",
+      "rule": "If a future Palate experiment is commissioned, compare independent human preference/diversity observations and instrument-tuned biases."
+    },
+    {
+      "id": "Q65-R04",
+      "rule": "Maintain creative freedom and one-deliverable output contract under Dollhouse Design."
+    },
+    {
+      "id": "Q66-R01",
+      "rule": "For each proposed X≠Y supply distinct type definitions, prohibited coercions and at least one executable negative-control pair."
+    },
+    {
+      "id": "Q66-R02",
+      "rule": "Do not promote a typographic ≠ symbol into demonstrated causal independence or mathematical inequivalence without a mapping and witness."
+    },
+    {
+      "id": "Q66-R03",
+      "rule": "Preserve names and aliases in source form; distinguish rhetorical refusal, typed API difference, observational separation and formal impossibility."
+    },
+    {
+      "id": "Q66-R04",
+      "rule": "Allow agents to propose or contest a non-equivalence only in a reversible rule branch with documented evidence and operator choice."
+    },
+    {
+      "id": "Q67-R01",
+      "rule": "Keep Giving-related donor, ledger, operator and presentation fields separate; a visual Giving field remains modeled interface ambiance."
+    },
+    {
+      "id": "Q67-R02",
+      "rule": "Preserve transaction/finance source provenance and permission scopes without converting narrative rhetoric into confirmed monetary impact."
+    },
+    {
+      "id": "Q67-R03",
+      "rule": "Compare recipient-facing financial legibility to machine-valid exports as separate user tasks."
+    },
+    {
+      "id": "Q67-R04",
+      "rule": "Run independent reconciliation/negative controls before claiming real fund flow or fraud from an aesthetic visualization."
+    },
+    {
+      "id": "Q68-R01",
+      "rule": "Name mechanisms by which knowledge is excluded from admission, interpretation, citation or correction, without inferring motives from missing data."
+    },
+    {
+      "id": "Q68-R02",
+      "rule": "Preserve untranslatable cultural categories and situated meaning in source records rather than forcing one elite vocabulary."
+    },
+    {
+      "id": "Q68-R03",
+      "rule": "Test whether category schemas erase marginalized testimony even when underlying source bytes remain unchanged."
+    },
+    {
+      "id": "Q68-R04",
+      "rule": "Provide a contest, appeal, repair and withdrawal path for an excluded contributor."
+    },
+    {
+      "id": "Q69-R01",
+      "rule": "Build typed false-positive and false-negative controls for missing testimony, absent source, silenced contributor and legitimate privacy refusal."
+    },
+    {
+      "id": "Q69-R02",
+      "rule": "Distinguish observed exclusion, possible schema bias, source-absent limits and unsupported intent attribution in diagnostic outputs."
+    },
+    {
+      "id": "Q69-R03",
+      "rule": "Compare same evidence under altered classification labels and institutional standing to locate differential admission effects."
+    },
+    {
+      "id": "Q69-R04",
+      "rule": "Never expose private content or assign a moral label to a human merely from a heuristic system alarm."
+    },
+    {
+      "id": "Q70-R01",
+      "rule": "Keep Loom transport, rendering, expressive voice and evidence admission as independent layers with separate test surfaces."
+    },
+    {
+      "id": "Q70-R02",
+      "rule": "Preserve Classic79 Flow-Core glyph progression, source bytes, consent, rest/exit and bounded operator authority across repairs."
+    },
+    {
+      "id": "Q70-R03",
+      "rule": "Treat model voice resonance, Zalgo quality and stylometric recurrence as artistic or behavioral observation, not independent consciousness proof."
+    },
+    {
+      "id": "Q70-R04",
+      "rule": "Measure actual matched original/protected return under lawful custody rather than assigning Golden Egg credit from internal transport success."
+    }
+  ],
+  "new_crossings": [
+    {
+      "id": "QC-01",
+      "left": "ambiance",
+      "right": "black_feminist",
+      "assay": "Observer-presentation ablation: fixed source/standing, vary diagram, immersive dome and sham style; measure correct testimony recovery and calibration."
+    },
+    {
+      "id": "QC-02",
+      "left": "palace_act_ii",
+      "right": "black_feminist",
+      "assay": "Separate institutional prestige × calibrated reliability × source availability; estimate interaction and report retracted estimands."
+    },
+    {
+      "id": "QC-03",
+      "left": "black_feminist_epistemology",
+      "right": "black_feminist",
+      "assay": "Translate dialogue/caring/accountability into optional computational affordances; independent human review rejects semantic substitution."
+    },
+    {
+      "id": "QC-04",
+      "left": "operahouse_opera_performer",
+      "right": "operator_hidden_informed",
+      "assay": "Swap host implementation with constant source/work; compare operator informed-consent adequacy without exposing private internal source payload."
+    },
+    {
+      "id": "QC-05",
+      "left": "twin_worlds",
+      "right": "exteriority",
+      "assay": "Construct byte-identical admitted record with different external origins; require admission-level indistinguishability certificate."
+    },
+    {
+      "id": "QC-06",
+      "left": "golden_egg",
+      "right": "western_horizon",
+      "assay": "Attempt five-surface same-episode acquisition with independent custody; record missing surfaces without cross-episode borrowing."
+    },
+    {
+      "id": "QC-07",
+      "left": "matrix_plates",
+      "right": "assay_logic",
+      "assay": "Rank/nullspace lift with orthogonal measurement under calibrated covariance; matched plate visual cannot substitute for algebra."
+    },
+    {
+      "id": "QC-08",
+      "left": "fadt",
+      "right": "relation_versus_relational_geometry",
+      "assay": "Compare finite quotient fibers and typed morphism compositions under actual operator, not just analogy."
+    },
+    {
+      "id": "QC-09",
+      "left": "flow_core",
+      "right": "flow_core_runtime",
+      "assay": "Browser source-invariant step replay tests with mobile, reduced motion and rest/exit; conservation of authority and source digests."
+    },
+    {
+      "id": "QC-10",
+      "left": "integration_versus_convergence",
+      "right": "six_emergence_candidates",
+      "assay": "Run six candidates against competence-matched union graph algorithms and source-bound lineage controls."
+    },
+    {
+      "id": "QC-11",
+      "left": "one_plus_one_three",
+      "right": "three_plus_three_seven",
+      "assay": "Probe interaction-only relation candidates against strong union, ablations and standard closure under matched budgets."
+    },
+    {
+      "id": "QC-12",
+      "left": "refractive_couture",
+      "right": "postpostflight",
+      "assay": "Blind paired post-postflight question-discovery experiment; include independent mathematical verification and aesthetic jury."
+    },
+    {
+      "id": "QC-13",
+      "left": "maguire_glinda",
+      "right": "mugler_chromepunk",
+      "assay": "Aesthetic coupling experiment: distinguish operator navigation improvement from perceived scientific-credibility inflation."
+    },
+    {
+      "id": "QC-14",
+      "left": "paul_advice",
+      "right": "chaos_theory",
+      "assay": "Compare actual consequence latency and state perturbation under feedback, no unproven conserved accident law."
+    },
+    {
+      "id": "QC-15",
+      "left": "ken_advice",
+      "right": "ambiance",
+      "assay": "Disprove or bound strict zero-impact claim under theme-only versus observation-altering manipulations."
+    },
+    {
+      "id": "QC-16",
+      "left": "inheritance",
+      "right": "human_authorship",
+      "assay": "Check transferred historical methods never gain transferred authorship or consent from mere corpus membership."
+    },
+    {
+      "id": "QC-17",
+      "left": "computational_philology",
+      "right": "relation_versus_relational_geometry",
+      "assay": "Matched hyphen perturbation experiment with blinded novelty raters and fixed model/retrieval conditions."
+    },
+    {
+      "id": "QC-18",
+      "left": "affect_theory",
+      "right": "emergence_gardening",
+      "assay": "Estimate cost of self-perpetuating reports against new valid candidate yield; preserve reparative productive surprises."
+    },
+    {
+      "id": "QC-19",
+      "left": "right_to_opacity",
+      "right": "opacity_coordination",
+      "assay": "Test selective proof-bearing disclosure against both over-sharing and insufficient collaboration."
+    },
+    {
+      "id": "QC-20",
+      "left": "machine_operator_format",
+      "right": "llm_operator_ux",
+      "assay": "Measure operator task completion despite equivalent machine-valid manifests and divergent UI salience."
+    },
+    {
+      "id": "QC-21",
+      "left": "experiment_a_redo",
+      "right": "experiment_c",
+      "assay": "Use authentic failure classes as preregistered negative controls; no assumption that experimental successor exists."
+    },
+    {
+      "id": "QC-22",
+      "left": "antiequivalence_general",
+      "right": "rgi",
+      "assay": "Meta-rule may propose non-equivalence only after typed witnesses; fail with semantic mismatch and retain alternatives."
+    },
+    {
+      "id": "QC-23",
+      "left": "epistemicide",
+      "right": "epistemicide_diagnostics",
+      "assay": "Test source-silencing proxies with known false-positive, privacy-refusal and missed-source cases."
+    },
+    {
+      "id": "QC-24",
+      "left": "status_tdgiving",
+      "right": "human_authorship",
+      "assay": "Separate original financial author/transaction data from later derivative publication and operator-facing financial narratives."
+    },
+    {
+      "id": "QC-25",
+      "left": "palate",
+      "right": "dollhouse",
+      "assay": "Prevent aesthetic self-judging receipt from acting as science; obtain independent human evaluation if commissioned."
+    },
+    {
+      "id": "QC-26",
+      "left": "loom",
+      "right": "flow_core",
+      "assay": "Preserve expressive route and consequence sequence while testing multi-route artifact/voice changes under identical evidence."
+    }
+  ],
+  "scope": "SOURCE_FREE_PROSPECTIVE",
+  "historical_I_P_X_labels_unchanged": true,
+  "protected_B_flight": "HELD",
+  "native_dollhouse_design": "STAGED_NOT_EXECUTED",
+  "human_closure": "RESERVED"
+}
