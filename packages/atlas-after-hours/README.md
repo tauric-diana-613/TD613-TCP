@@ -41,3 +41,10 @@ Mathematics: rank/capability feasibility distinctions, interval Helly bounds, in
 **No automatic Tenth Order. No repository merge, release, autosynthesis, operator priority mutation or scientific closure from a portable ZIP.**
 
 𝄐 No mirrors at the kiki · ⟐
+
+
+## Restored Gemini Argon Ninth-Order research — complete handoff obligation
+
+The first Atlas Ninth-Order revision reduced the commissioned research to a brief adjudication. That omission is corrected by appending the full-depth commission reconstruction and the retained original short review to both `THE_CITY_THAT_ARRIVED_BEFORE_ITS_PEOPLE.md` and its `dossier/` mirror. A parallel, source-linked copy is at `packages/rulefield/rulefields/research/NINTH_ORDER_ARGON_COMMISSION_RESEARCH_ESTATE.md`; Candidate V's original submitted executable and test proposals have separate archival transcriptions. These transcriptions are not asserted byte-identical to the conversation. Every original Wolframian antecedent remains untouched.
+
+The portable Atlas ZIP must include those documents and the additional `ninth_order_hidalgo_stokes_research.mjs` module. Its extracted replay must pass both `tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs` and `tests/rulefield-ninth-order-full-commission-custody.test.mjs`. Rulefield's corresponding agent-neutral complete-source ZIP is owned by its distinct succession PR #1734; no cross-branch automatic canonical promotion is authorized.
