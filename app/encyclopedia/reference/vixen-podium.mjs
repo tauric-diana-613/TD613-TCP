@@ -8,6 +8,7 @@
  */
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
+import {composeSalonPlan,refractSalonPlan} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 
 export const PODIUM_SCHEMA='td613.vixen.podium.task/v1';
@@ -15,7 +16,8 @@ export const PODIUM_RECEIPT='td613.vixen.podium.receipt/v1';
 export const PODIUM_ROUTES=Object.freeze([
  'podium.describe','vixen.work.inspect','vixen.gates.inspect',
  'universal.open','universal.search','universal.get','universal.related',
- 'synthesis.propose','engine.capabilities','engine.invoke'
+ 'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
+ 'engine.capabilities','engine.invoke'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze(['compare_routes','trace_relations']),
@@ -173,6 +175,36 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      question_need:'INDEPENDENT_EVIDENCE_AND_HUMAN_WARRANT_REQUIRED',
      no_automatic_promotion:true,
      scientific_surplus:'UNESTABLISHED'
+    });
+   }
+   if(intent==='vixen.salon.compose'){
+    const plan=composeSalonPlan(corpus,params);
+    event('VIXEN_SOURCE_BOUND_THEORY_PROPOSED',{
+     source_work_ids:plan.source_coordinates.map(x=>x.work_id),
+     status:'OPEN_FIELD_UNRATIFIED_QUESTION',
+     independent_source_body_observed:false
+    });
+    return receipt(intent,'HELD',{
+     state:'CREATIVE_PROPOSAL_AWAITING_HUMAN_REVIEW',plan,
+     claim_ceiling:'SOURCE_METADATA_PLUS_OPERATOR_QUESTION_NOT_SCIENCE'
+    });
+   }
+   if(intent==='experiment_b.preregister'){
+    const plan=composeSalonPlan(corpus,params);
+    const counterfactual=refractSalonPlan(corpus,params);
+    event('EXPERIMENT_B_PROSPECTIVE_PREREG_ONLY',{
+     experiment_b_flight:'HELD',
+     human_closure:'RESERVED',
+     same_terminal_sources:true,
+     distinct_route_history:true
+    });
+    return receipt(intent,'HELD',{
+     state:'PREREGISTRATION_CANDIDATE_ONLY',
+     baseline:'COMPETENT_UNION_MATCHED_CONTROL',
+     plan:plan.experiment_b,counterfactual,
+     source_coordinates:plan.source_coordinates,
+     experiment_b_flight:'HELD',release_authority:false,
+     manifest_succession:'UNKNOWN',empirical_replication_credit:0
     });
    }
    if(intent==='engine.capabilities'){
