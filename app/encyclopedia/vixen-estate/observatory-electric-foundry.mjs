@@ -305,6 +305,32 @@ export async function mountVixenElectricFoundry({
    claim('Documentary methods: '+(current.instrument_refs.length?current.instrument_refs.join(' · '):'No direct method declared')),
    claim('Authority: '+current.ceiling));
   pane.append(labrefs);
+  // Candidate 3's "INVESTIGATE SOURCE" restored as actual native routes
+  // into the original Vixen Work/Method registry. No synthetic relationship
+  // is inferred from a folio's absence of direct linked Works.
+  const sourceDoors=node('nav','ef-investigation-doors');
+  sourceDoors.setAttribute('aria-label','Follow Vixen source coordinates');
+  const workIds=current.work_refs.slice(0,2);
+  for(const workId of workIds){
+   const work=source.works.find(w=>w.work_id===workId);
+   if(!work)continue;
+   const a=node('a','ef-investigate-door','FOLLOW THE SOURCE ↗');
+   a.href='#works/'+encodeURIComponent(workId);
+   a.title=work.display_title||work.declared_title||workId;
+   a.dataset.sourceWork=workId;
+   sourceDoors.append(a);
+  }
+  const methods=current.instrument_refs.filter(id=>source.instruments.some(m=>m.instrument_id===id));
+  if(methods.length){
+   const a=node('a','ef-investigate-door','EXAMINE THE METHOD ↗');
+   a.href='#protocols/'+encodeURIComponent(methods[0]);
+   a.dataset.sourceMethod=methods[0];
+   sourceDoors.append(a);
+  }
+  const archive=node('a','ef-investigate-door ef-investigate-secondary','OPEN VIXEN FOLIOS ↗');
+  archive.href='#reference';
+  sourceDoors.append(archive);
+  pane.append(sourceDoors);
  }
  function renderCatalogue(){
   gallery.replaceChildren();
