@@ -280,3 +280,29 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  .vixen-foyer-afterword{font-size:7px}
  #vixenElectricFoundry .ef-heading{font-size:clamp(35px,9vw,55px)!important}
 }
+
+/* Candidate 3's Investigate Source action is restored as a useful route
+ * into the original Vixen record—not a citation-shaped dead button. */
+#vixenElectricFoundry .ef-investigation-doors{
+ grid-column:1/-1;display:flex;flex-wrap:wrap;gap:7px;
+ border-top:1px solid rgba(255,145,175,.3);
+ padding-top:15px;margin-top:12px;
+}
+#vixenElectricFoundry .ef-investigate-door{
+ display:inline-flex;align-items:center;gap:10px;
+ min-height:40px;padding:10px 13px;
+ background:linear-gradient(110deg,#4B293E,#29232C);
+ border:1px solid rgba(255,145,175,.65);
+ color:#F6F4F0;font:700 10px/1.4 var(--vf-mono);
+ letter-spacing:.04em;text-decoration:none;
+ transition:background .2s,box-shadow .2s,color .2s;
+}
+#vixenElectricFoundry .ef-investigate-door:hover{
+ background:#6B3656;color:#F6F4F0;
+ box-shadow:0 0 17px rgba(255,145,175,.22)
+}
+#vixenElectricFoundry .ef-investigate-secondary{
+ border-color:rgba(249,243,109,.66);
+ background:linear-gradient(110deg,#33352C,#24282A);
+ color:#F9F36D;
+}
