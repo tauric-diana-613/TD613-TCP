@@ -42,7 +42,7 @@ def main(out):
     assert 'id="formulaGalleryReveal"' in candidate and 'data-expanded="false"' in candidate, "Progressive original formula archive missing"
     visual=(APP/"encyclopedia"/"vixen-estate"/"glinda-cybergoth-rgi10.css")
     assert visual.is_file(), "RGI10 full-stack couture stylesheet omitted"
-    assert "--arc-flash:#dbc9ff" in visual.read_text(encoding="utf8"), "Mustard accent remained authoritative"
+    assert "--arc-flash:#FFF2A9" in visual.read_text(encoding="utf8"), "Current Arc Flash must preserve pale blonde-electric discharge"
     assert "body[data-active-research-stage=\"OPERAHOUSE\"] #vixenRoomRail{display:none!important}" in visual.read_text(encoding="utf8"), "Foreign Opera rail may not enter Operahouse"
 
     assert 'observatory-electric-foundry.mjs' in candidate, "Live renderer not connected"
