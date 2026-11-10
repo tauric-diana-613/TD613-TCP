@@ -101,7 +101,8 @@ export async function mountVixenElectricFoundry({
   renderer:null,readout:null,canvas:null,bench:null,phase:'NOTICE',
   history:[],probe:null,held:null,visible:false,
   initialized:false,renderingBackend:'PENDING',
-  selectedCatalogueGroup:'UNIFIED'
+  selectedCatalogueGroup:'UNIFIED',
+  inspectorOpen:false
  };
  const log=(event,extra={})=>{
   state.history.push(Object.freeze({seq:state.history.length+1,event,clock:state.time,
@@ -231,13 +232,26 @@ export async function mountVixenElectricFoundry({
  const sceneBadge=node('div','ef-scene-badge');
  add(stage,canvas,notation,overlay,sceneBadge);
  const readout=node('div','ef-readout');state.readout=readout;state.canvas=canvas;
+ readout.id='vixenFoundryInspectorReadout';
+ readout.hidden=true;
  const eye=node('div','ef-eye');
- add(eye,stage,readout);
+ const iris=node('div','ef-iris-frame');
+ iris.setAttribute('aria-label','Vixen computational performance; original folio and synthetic data remain separate');
+ add(iris,stage,readout);
+ add(eye,iris);
  const heading=node('header','ef-header');
  add(heading,label('01 / ELECTRIC FOUNDRY · VIXEN MATHEMATICAL OPERA'),
   node('h2','ef-heading','A cathedral of computed consequences.'),
   node('p','ef-dek','Six individually choreographed instruments from Em’s original mathematical folios. Every caustic, charge and projection is tied to a declared model; the light makes no claim to prove the world.'));
- const railHeading=label('FLAGSHIP MATHEMATICAL PERFORMANCES · ORIGINAL VIXEN FOLIOS');
+ const railHeading=label('SIX ARIAS · SOURCE-RECORDED MATHEMATICS');
+ const proscenium=node('section','ef-proscenium');
+ proscenium.setAttribute('aria-label','Six mathematical arias and live computed Vixen stage');
+ const ariaScore=node('nav','ef-aria-score');
+ ariaScore.setAttribute('aria-label','Choose one of six original Vixen mathematical performances');
+ add(ariaScore,railHeading,heroRail);
+ const instrumentStage=node('div','ef-instrument-stage');
+ add(instrumentStage,toolbar,eye);
+ add(proscenium,ariaScore,instrumentStage);
  function renderRail(){
   heroRail.replaceChildren();
   for(const id of HEROES){
@@ -251,12 +265,22 @@ export async function mountVixenElectricFoundry({
  function renderToolbar(){
   toolbar.replaceChildren();
   const current=display();
+  const inspect=BTN(state.inspectorOpen?'CLOSE THE PROOF ×':'OPEN THE PROOF ⊕',()=>{
+    state.inspectorOpen=!state.inspectorOpen;
+    readout.hidden=!state.inspectorOpen;
+    eye.dataset.inspectorOpen=String(state.inspectorOpen);
+    log('INSPECTOR_EXPLICIT_DISCLOSURE',{visible:state.inspectorOpen});
+    renderToolbar();
+  },'ef-inspector-switch');
+  inspect.setAttribute('aria-controls',readout.id);
+  inspect.setAttribute('aria-expanded',String(state.inspectorOpen));
   const top=BTN(state.playing?'Ⅱ · HOLD FIELD':'▷ · PROPAGATE',
    ()=>state.playing?pause():resume(),'ef-toggle');
   top.setAttribute('aria-pressed',String(!state.playing));
   add(toolbar,top,
    BTN('→ SINGLE FRAME',step),
    BTN('↺ RESET LAB',reset),
+   inspect,
    node('span','ef-stage-state',
     (state.playing?'FIELD LIVE':'FIELD HELD')+' · '+state.renderingBackend));
   sceneBadge.textContent=current.folio_id+' · '+current.research_family+
@@ -371,7 +395,7 @@ export async function mountVixenElectricFoundry({
  host.dataset.stageRole='VIXEN_OPERA';
  // The live computed field is the centerpiece, not a reward after a wall
  // of metadata. Source folio and provenance remain visible in its inspector.
- add(host,heading,railHeading,heroRail,toolbar,eye,pane,controls,score,evidence,gallery);
+ add(host,heading,proscenium,pane,controls,score,evidence,gallery);
  renderScore();renderEvidence();renderHero();renderCatalogue();
  stage.tabIndex=0;
  stage.setAttribute('aria-label','Calculated Vixen optical field; arrow keys move the computational probe; click to pin');
