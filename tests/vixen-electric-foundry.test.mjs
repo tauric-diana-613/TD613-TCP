@@ -129,27 +129,27 @@ test('Glinda chromepunk lineage anchors the scene without banning deliberate spe
  const fallback=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-foundry-renderer.mjs',import.meta.url),'utf8');
  const score=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-computational-score.mjs',import.meta.url),'utf8');
  const liveCouture=await readFile(new URL('../app/encyclopedia/vixen-estate/glinda-cybergoth-rgi10.css',import.meta.url),'utf8');
- assert(liveCouture.includes('--arc-flash:#dbc9ff'),
+ assert(liveCouture.includes('--arc-flash:#FFF2A9'),
   'RGI10 active body palette must override archival yellow without mutating its historical declaration');
- for(const token of ['--ef-pink:#FF91AF','--ef-arc:#dfbfee',
+ for(const token of ['--ef-pink:#FF91AF','--ef-arc:#FFF2A9',
    '--ef-graphite:#24282A','--ef-nickel:#667078','--ef-porcelain:#F6F4F0']){
   assert(css.includes(token),'Absent original structural token or revised active foil '+token);
  }
- assert(shader.includes('vec3 arcFlash=vec3(.8745,.7490,.9333)'),
+ assert(shader.includes('vec3 arcFlash=vec3(1.,.9490,.6627)'),
   'WebGL must use the revised lilac-foil optical palette while preserving voltage calculation');
  assert(shader.includes('vec3 glinda=vec3(1.,.5686,.6863)'),
   'Shader must retain the historic pink Glinda refraction');
  assert(shader.includes('float arcSwitch=smoothstep(.26,.86,u_model.z)'),
   'Arc Flash must be governed by active simulation voltage');
- assert(shader.includes('vec3 bright=vec3(.8745,.7490,.9333)'),
+ assert(shader.includes('vec3 bright=vec3(1.,.9490,.6627)'),
   'Lilac electrical discharge must remain a computed event');
  assert(fallback.includes('const discharge=narrow(Math.abs(Math.sin('),
   'CPU fallback must calculate its own voltage-bound caustic');
  assert(fallback.includes('const opal=narrow('),
   'An intentional, bounded spectral excursion may exist');
- assert(fallback.includes('arc:[223,191,238]'),
+ assert(fallback.includes('arc:[255,242,169]'),
   'Canvas2D fallback must match the computed lilac-foil family');
- assert(score.includes("arc:'#dfbfee'"),
+ assert(score.includes("arc:'#FFF2A9'"),
   'The mathematical score must retain the new chromatic register');
  assert(score.includes('LAB_RC-10')&&score.includes('LAB_TCC-05'),
   'Optical composition must have differentiated source-native lab geometry');
