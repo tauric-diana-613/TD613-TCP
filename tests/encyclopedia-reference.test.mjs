@@ -287,6 +287,9 @@ test('Wendbine-compatible exact response-byte custody rejects malformed UTF-8 an
  assert.equal(observed.verified_at_interaction,true);
  assert.equal(observed.record_sha256,sha(JSON.stringify(observed.record).replace(/</g,'\\u003c')));
  assert.equal(observed.authorization,'READ_ONLY');
+ assert(genuine.history().every(e=>e.estate==='UNIVERSAL_REFERENCE'&&
+  e.invocation_locus==='OPERAHOUSE_READ_GATEWAY'),
+  'Shared reference gateway must never stamp Universal reads as Vixen source custody');
  assert.equal(genuine.related('G-101').length>0,true);
  mode='invalid';const invalid=make();await invalid.open();
  await assert.rejects(invalid.getRecord('G-101'),e=>e.code==='REFERENCE_UNDECODABLE_UTF8');
