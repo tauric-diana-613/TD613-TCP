@@ -695,3 +695,24 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection #exportTray
   display:block;margin:5px 0 0;
  }
 }
+
+/* VISUAL WITNESS REPAIR: literal registry identifiers have underscores, so
+   CSS word wrapping must not truncate their name in a narrow couture index.
+   Preserve every original identifier byte; repair presentation only. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols :is(
+ .lexicon-index,.lexicon-list,.lexicon-item,.lexicon-item button,
+ .lexicon-item .term-name,.lexicon-item strong,.lexicon-item span
+ ){
+ min-width:0;max-width:100%;
+ white-space:normal;overflow-wrap:anywhere;word-break:break-word;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-item button{
+ display:block;width:100%;box-sizing:border-box;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works :is(
+ .lexicon-index,.lexicon-list,.lexicon-item,.lexicon-item button,
+ .lexicon-item .term-name,.lexicon-item strong,.lexicon-item span
+ ){
+ min-width:0;max-width:100%;
+ white-space:normal;overflow-wrap:anywhere;word-break:break-word;
+}
