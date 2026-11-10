@@ -458,6 +458,34 @@ try {
     assert(!/Eclipse[–-]Omega/.test(await salon.innerText()),
       'Foreign research Opera may never appear in Vixen’s authored Salon');
     assert.equal(await salon.getAttribute('data-stage-role'),'VIXEN_OPERA');
+
+    // RGI11: a rendered mathematical costume, not an emoji label or a CSS
+    // adjective. Pixel alpha must come from actual source-driven Canvas2D.
+    assert.equal(await salon.getAttribute('data-optical-contract'),
+      'emstd613.vixen.glinda-electric-veil/v1');
+    const veil=salon.locator('canvas.vs-luminous-canvas');
+    assert.equal(await veil.count(),1,'One source-conditioned computed optical garment');
+    assert.equal(await veil.getAttribute('data-computation'),'D3_PHI_LOOM_39_COUTURE_111');
+    await page.waitForFunction(()=>{
+      const c=document.querySelector('#vixenSynthesisSalon .vs-luminous-canvas');
+      if(!c||c.width<200||c.height<200)return false;
+      const d=c.getContext('2d')?.getImageData(
+       Math.floor(c.width*.48),Math.floor(c.height*.20),
+       Math.max(1,Math.floor(c.width*.2)),Math.max(1,Math.floor(c.height*.56))
+      ).data;
+      if(!d)return false;
+      let px=0;
+      for(let i=3;i<d.length;i+=4)if(d[i]>10)px++;
+      return px>200;
+    },null,{timeout:10000});
+    const visualPalette=await page.evaluate(()=>({
+      arc:getComputedStyle(document.body).getPropertyValue('--arc-flash').trim().toUpperCase(),
+      sourceText:document.querySelector('#vixenSynthesisSalon').innerText
+    }));
+    assert.equal(visualPalette.arc,'#FFF2A9','Active Arc Flash must be blonde electric light');
+    assert(!/🩰|🚬/.test(visualPalette.sourceText),
+      'Literal ballet/shoe/cigarette emoji substitutes cannot pass the couture witness');
+
     const salonGeom=await page.evaluate(()=>{
       const root=document.querySelector('#vixenSynthesisSalon');
       const original=root.querySelector('.vs-source-card');
