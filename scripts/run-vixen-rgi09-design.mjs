@@ -14,7 +14,11 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const config=JSON.parse(await readFile(resolve(root,
  'artifacts/vixen-dual-estate/RGI09_DOLLHOUSE_DESIGN_OBSERVATORY.json'),'utf8'));
 assert.equal(config.operator_requirements.operator_correction_20261110.includes('four-model'),true);
-assert.equal(config.operator_requirements.conservation.includes('NO preservation authority'),true);
+assert.equal(config.operator_requirements.conservation.includes('no fixed design ceiling'),false);
+assert.equal(config.operator_requirements.conservation.includes('source/custody'),true);
+assert.equal(config.operator_requirements.layout_feedback.includes('generally well designed'),true);
+assert.equal(config.operator_requirements.palette_discipline.includes('never a five-color prison'),true);
+assert.equal(config.operator_requirements.operator_correction_20261110.includes('four-model'),true);
 const result=await runDollhouseDesignCycle(config);
 assert.equal(result.schema,'td613.dollhouse-design.return-receipt/v0.2');
 assert.equal(result.candidates.length>=2,true);
