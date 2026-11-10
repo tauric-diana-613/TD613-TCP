@@ -21,9 +21,9 @@ export function mountFoxHouseDock({document:doc=globalThis.document}={}){
  const schedule=()=>{
   if(queued||disposed)return;
   queued=true;
-  win.requestAnimationFrame(()=>{queued=false;synchronize()});
+  (win.requestAnimationFrame||((cb)=>win.setTimeout(cb,0)))(()=>{queued=false;synchronize()});
  };
- const observer=new MutationObserver(records=>{
+ const observer=new win.MutationObserver(records=>{
   if(records.some(r=>r.attributeName==='aria-current'))schedule();
  });
  observer.observe(dock,{subtree:true,attributes:true,attributeFilter:['aria-current']});
