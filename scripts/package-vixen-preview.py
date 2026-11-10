@@ -30,6 +30,11 @@ def main(out):
     # replace or delete any original mathematical Folio.
     assert 'glinda-cybergoth-rgi10.css' in candidate, "Couture visual system not connected"
     assert 'vixen-stage-architecture-rgi10b.css' in candidate, "Staged performance architecture absent"
+    assert 'glinda-spectacle-rgi11.css' in candidate, "Actual computational couture not enabled"
+    assert (APP/"encyclopedia"/"vixen-estate"/"vixen-salon-light.mjs").is_file(), "Computational 39-carrier Salon optical engine missing"
+    assert "vixen-salon-light.mjs" in (APP/"encyclopedia"/"vixen-estate"/"synthesis-salon.mjs").read_text(encoding="utf8"), "Salon did not mount the optical computation"
+    assert "🩰" not in (APP/"encyclopedia"/"vixen-estate"/"synthesis-salon.mjs").read_text(encoding="utf8"), "Literal emoji was substituted for costume"
+    assert "🚬" not in (APP/"encyclopedia"/"vixen-estate"/"synthesis-salon.mjs").read_text(encoding="utf8"), "Literal emoji was substituted for costume"
     assert 'ef-proscenium' in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8"), "Art remains dashboard tiles"
     assert 'ef-dial-cabinet' in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8"), "Operator instrumentation curtain missing"
     architecture=(APP/"encyclopedia"/"vixen-estate"/"vixen-stage-architecture-rgi10b.css")
