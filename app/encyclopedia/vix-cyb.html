@@ -378,7 +378,7 @@ body[data-view="overview"] main{padding-top:0}
    untouched monochrome Mugler-unchained chromepunk artwork; rare Arc Flash accents. */
 :root{
   --vixen-pink:#FF91AF;
-  --arc-flash:#F9F36D;
+  --arc-flash:#dfbfee;
   --graphite:#24282A;
   --nickel:#667078;
   --porcelain:#F6F4F0;
@@ -464,8 +464,8 @@ body[data-view="overview"] .reading-back{display:none}
   <polygon points="24,16.6 19.8,27.8 22.1,39.8 24,39.8" fill="#667078"/>
   <polygon points="24,16.6 28.2,27.8 25.9,39.8 24,39.8" fill="#383E42"/>
   <line x1="24" y1="16.6" x2="24" y2="40" stroke="#F6F4F0" stroke-width="1" opacity=".85"/>
-  <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3" fill="#F9F36D"/>
-  <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3" fill="#F9F36D"/>
+  <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3" fill="#dfbfee"/>
+  <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3" fill="#dfbfee"/>
   <polygon points="24,16.2 26.3,19.8 24,23.4 21.7,19.8" fill="#F6F4F0" stroke="#24282A" stroke-width=".85"/>
   <polygon points="21.2,40.2 26.8,40.2 24,45.4" fill="#24282A"/>
   <line x1="21.6" y1="40.2" x2="26.4" y2="40.2" stroke="#F6F4F0" stroke-width="1.05"/>
@@ -486,8 +486,8 @@ body[data-view="overview"] .reading-back{display:none}
   <polygon points="24,16.6 19.8,27.8 22.1,39.8 24,39.8" fill="#667078"/>
   <polygon points="24,16.6 28.2,27.8 25.9,39.8 24,39.8" fill="#383E42"/>
   <line x1="24" y1="16.6" x2="24" y2="40" stroke="#F6F4F0" stroke-width="1" opacity=".85"/>
-  <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3" fill="#F9F36D"/>
-  <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3" fill="#F9F36D"/>
+  <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3" fill="#dfbfee"/>
+  <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3" fill="#dfbfee"/>
   <polygon points="24,16.2 26.3,19.8 24,23.4 21.7,19.8" fill="#F6F4F0" stroke="#24282A" stroke-width=".85"/>
   <polygon points="21.2,40.2 26.8,40.2 24,45.4" fill="#24282A"/>
   <line x1="21.6" y1="40.2" x2="26.4" y2="40.2" stroke="#F6F4F0" stroke-width="1.05"/>
@@ -1865,12 +1865,12 @@ body[data-view="overview"] .reading-back{display:none}
       const nodes = [
         { id: 'S-PLANE (Semantic)', x: cx, y: cy - r * 0.82, col: '#FF91AF' },
         { id: 'W-PLANE (Witness)', x: cx - r * 0.95, y: cy + r * 0.62, col: '#F6F4F0' },
-        { id: 'A-PLANE (Actuator)', x: cx + r * 0.95, y: cy + r * 0.62, col: '#F9F36D' }
+        { id: 'A-PLANE (Actuator)', x: cx + r * 0.95, y: cy + r * 0.62, col: '#dfbfee' }
       ];
 
       // Candidate-2-derived multi-harmonic P-membrane: observable, not a source proof.
       const pPhase = animPhase * (1.2 + p);
-      ctx.strokeStyle = state.obsHostileMode === 'false_setpoint' ? 'rgba(249,243,109,.9)' : 'rgba(255,145,175,.65)';
+      ctx.strokeStyle = state.obsHostileMode === 'false_setpoint' ? 'rgba(223,191,238,.9)' : 'rgba(255,145,175,.65)';
       ctx.lineWidth = 1.6;
       ctx.setLineDash([]);
       ctx.beginPath();
@@ -1892,7 +1892,7 @@ body[data-view="overview"] .reading-back{display:none}
       edges.forEach((e) => {
         const a = nodes[e.from];
         const b = nodes[e.to];
-        ctx.strokeStyle = e.blocked ? 'rgba(249,243,109,0.85)' : 'rgba(246,244,240,0.65)';
+        ctx.strokeStyle = e.blocked ? 'rgba(223,191,238,0.85)' : 'rgba(246,244,240,0.65)';
         ctx.lineWidth = e.blocked ? 2.2 : 1.8;
         if (e.blocked) ctx.setLineDash([6, 4]);
         ctx.beginPath();
@@ -1902,7 +1902,7 @@ body[data-view="overview"] .reading-back{display:none}
         ctx.setLineDash([]);
         const mx = (a.x + b.x) / 2;
         const my = (a.y + b.y) / 2;
-        ctx.fillStyle = e.blocked ? '#F9F36D' : '#cfd3d6';
+        ctx.fillStyle = e.blocked ? '#dfbfee' : '#cfd3d6';
         ctx.font = '500 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(e.blocked ? e.label + ' [HELD]' : e.label, mx, my - 6);
@@ -1927,7 +1927,7 @@ body[data-view="overview"] .reading-back{display:none}
           const a=nodes[pt.lane],b=nodes[(pt.lane+1)%3];
           const t=(pt.t+animPhase*(.03+.04*p)+pt.shift*.2)%1;
           const x=a.x+(b.x-a.x)*t, y=a.y+(b.y-a.y)*t;
-          ctx.fillStyle=pt.lane===2?'rgba(249,243,109,.75)':'rgba(255,223,234,.55)';
+          ctx.fillStyle=pt.lane===2?'rgba(223,191,238,.75)':'rgba(255,223,234,.55)';
           ctx.beginPath();ctx.arc(x,y,.7+1.3*((pt.shift+.3)%1),0,Math.PI*2);ctx.fill();
         });
       }
@@ -1952,12 +1952,12 @@ body[data-view="overview"] .reading-back{display:none}
         { name: 'N_TOKEN', r: 0.25, rate: 0.8 + w, col: '#F6F4F0' },
         { name: 'TAU_CONT', r: 0.34, rate: 1.25, col: '#b8c4cc' },
         { name: 'T_WALL', r: 0.43, rate: 1.7, col: '#8fa1ad' },
-        { name: 'T_PLANT (48kHz)', r: 0.52, rate: 2.6 + p, col: '#F9F36D' }
+        { name: 'T_PLANT (48kHz)', r: 0.52, rate: 2.6 + p, col: '#dfbfee' }
       ];
       const scale = Math.min(W, H) * 0.82;
       clocks.forEach((cl, idx) => {
         const rad = scale * cl.r;
-        ctx.strokeStyle = state.obsHostileMode === 'unindexed_dt' && idx % 2 === 1 ? '#F9F36D' : cl.col;
+        ctx.strokeStyle = state.obsHostileMode === 'unindexed_dt' && idx % 2 === 1 ? '#dfbfee' : cl.col;
         ctx.globalAlpha = 0.82;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1992,7 +1992,7 @@ body[data-view="overview"] .reading-back{display:none}
       ctx.save();
       ctx.translate(cx - W * 0.14, cy);
       ctx.rotate(-0.42);
-      ctx.strokeStyle = state.obsHostileMode === 'rank1_collapse' ? '#F9F36D' : '#FF91AF';
+      ctx.strokeStyle = state.obsHostileMode === 'rank1_collapse' ? '#dfbfee' : '#FF91AF';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
@@ -2041,7 +2041,7 @@ body[data-view="overview"] .reading-back{display:none}
       ctx.moveTo(ix, 50);
       ctx.lineTo(ix, H - 50);
       ctx.stroke();
-      ctx.fillStyle = '#F9F36D';
+      ctx.fillStyle = '#dfbfee';
       ctx.beginPath();
       ctx.arc(ix, cy + lambdaShift, 6, 0, Math.PI * 2);
       ctx.fill();
@@ -2909,7 +2909,7 @@ body[data-view="overview"] .reading-back{display:none}
         '<div class="insp-card">' +
           '<h3>ORTHOGONAL CLOCKS &amp; #manifest-instance-theme SEAM (RC-02 / RC-13)</h3>' +
           '<div>• Three Atelier Clocks: <code>τ_theory ⊥ τ_ambiance ⊥ τ_resynthesis</code></div>' +
-          '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#F9F36D</code>).</div>' +
+          '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#dfbfee</code>).</div>' +
           '<div>• Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
         '</div>';
     }
