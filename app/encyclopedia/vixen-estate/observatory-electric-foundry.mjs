@@ -12,6 +12,7 @@
 import {buildVixenLaboratories,assessVixenLab,completeVixenSourceCensus}
  from './observatory-vixen-corpus.mjs';
 import {createFoundryRenderer} from './observatory-foundry-renderer.mjs';
+import {paintComputationalScore} from './observatory-computational-score.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
 
 export const ELECTRIC_STAGE_SCHEMA='emstd613.vixen.electric-foundry-stage/v1';
@@ -112,7 +113,8 @@ export async function mountVixenElectricFoundry({
  const report=()=>Object.freeze({
   schema:ELECTRIC_STAGE_SCHEMA,active_lab:state.labId,
   stage:state.phase,backend:state.renderingBackend,
-  frames:state.frames,source_folios:22,source_giveback_tracks:6,
+  frames:state.frames,computational_score:state.scoreState?.schema||'PENDING',
+  source_folios:22,source_giveback_tracks:6,
   flagship_curated:HEROES.length,registry_count:all.length,
   historical_original_corpus:'EMSTD613',empirical_credit:0,
   experiment_b_flight:'HELD',
@@ -138,6 +140,9 @@ export async function mountVixenElectricFoundry({
   try{
    state.renderer.paint({optic:lab().optic_program,model:state.model,pointer:state.pointer,
     time:state.time});
+   state.scoreState=paintComputationalScore(state.notation,{
+    labId:state.labId,model:state.model,pointer:state.pointer,time:state.time
+   });
    state.frames++;
   }catch(e){state.held=String(e.message||e);log('RENDER_REFUSED',{reason:state.held});stop()}
  }
@@ -217,11 +222,14 @@ export async function mountVixenElectricFoundry({
  canvas.setAttribute('aria-label','Interactive calculated Vixen mathematical optical field; move or click to probe a model coordinate');
  canvas.setAttribute('role','img');
  canvas.tabIndex=0;
+ const notation=node('canvas','ef-notation');
+ notation.setAttribute('aria-hidden','true');
+ state.notation=notation;
  const overlay=node('div','ef-optic-chrome');
  add(overlay,node('div','ef-fiducial'),node('div','ef-crossline'),
   node('div','ef-aperture-ring'),node('div','ef-phase-lock'));
  const sceneBadge=node('div','ef-scene-badge');
- add(stage,canvas,overlay,sceneBadge);
+ add(stage,canvas,notation,overlay,sceneBadge);
  const readout=node('div','ef-readout');state.readout=readout;state.canvas=canvas;
  const eye=node('div','ef-eye');
  add(eye,stage,readout);
