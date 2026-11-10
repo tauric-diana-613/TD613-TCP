@@ -45,6 +45,12 @@ try{
  receipt.renderer=result.status.backend;
  receipt.field_dimensions=result.fieldSize;
  receipt.shader_failure=result.status.renderer?.shader_failure||null;
+ receipt.backend_refusal_events=(result.status.history||[]).filter(x=>
+  /GPU|RENDER|FOUNDRY/.test(x.event||'')).slice(-12);
+ if(!receipt.shader_failure&&receipt.backend_refusal_events.length){
+  receipt.shader_failure=receipt.backend_refusal_events
+   .map(x=>x.reason||x.event).join(' | ').slice(0,2400);
+ }
  if(result.offered){
   assert.equal(result.status.backend,'WEBGL2_COMPUTED_CAUSTICS',
    'WebGL2 available but live authored shader fell back: '+receipt.shader_failure);
