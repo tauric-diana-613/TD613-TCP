@@ -15,6 +15,10 @@ test('historical Rulefield manifest is explicitly not a current-head certificate
  assert.equal(crosswalk.current_certificate,'ATLAS_AFTER_HOURS_HANDOFF_MANIFEST.json');
  assert.equal(crosswalk.scientific_closure,'RESERVED');
  assert.equal(crosswalk.protected_experiment_b,'HELD');
+ const sidecar=JSON.parse(read('packages/rulefield/rulefields/research/ATLAS_SUCCESSOR_BLOB_CUSTODY.json'));
+ assert.deepEqual(sidecar.successor_exceptions,crosswalk.predecessor_rulefield_blob_divergences);
+ assert.equal(sidecar.historical_exact_matches_still_required,97);
+
 });
 test('historical-vs-successor divergences are accounted for without rewriting historic receipt',()=>{
  const changed=[];

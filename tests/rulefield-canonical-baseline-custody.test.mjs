@@ -10,11 +10,18 @@ test('successor proves 99 inherited Living Rulefield blobs survived unchanged',(
  assert.equal(record.records.length,99);
  assert.equal(record.originalWolframianBlobs,16);
  assert.equal(record.missing,0);assert.equal(record.modified,0);
- const crosswalkPath=new URL('packages/atlas-after-hours/HISTORICAL_RULEFIELD_MANIFEST_DISPOSITION.json',root);
- const integrated=new URL('packages/atlas-after-hours/CROSS_ESTATE_MAINLINE_INTEGRATION_GATE.md',root);
- const accepted=(existsSync(integrated)&&existsSync(crosswalkPath))
-    ? JSON.parse(readFileSync(crosswalkPath,'utf8')).predecessor_rulefield_blob_divergences : [];
- const approvals=new Map(accepted.map(x=>[x.path,x]));
+ const successorPath=new URL('packages/rulefield/rulefields/research/ATLAS_SUCCESSOR_BLOB_CUSTODY.json',root);
+ const successor=existsSync(successorPath)
+   ? JSON.parse(readFileSync(successorPath,'utf8')) : null;
+ if(successor){
+   assert.equal(successor.original_rulefield_baseline,record.baseCommit);
+   assert.equal(successor.historical_count,99);
+   assert.equal(successor.historical_exact_matches_still_required,97);
+   assert.equal(successor.scientific_closure,'RESERVED');
+   assert.equal(successor.protected_experiment_b,'HELD');
+ }
+ const accepted=successor?.successor_exceptions || [];
+  const approvals=new Map(accepted.map(x=>[x.path,x]));
  assert.equal(approvals.size,accepted.length,'duplicate successor exception');
  assert.deepEqual([...approvals.keys()].sort(),
    accepted.length ? ['packages/rulefield/lab/README.md','packages/rulefield/lab/tool_registry.json'] : []);
