@@ -113,3 +113,40 @@ test('Tampered human gate or foreign folio identifier cannot inflate research st
  assert.throws(()=>buildVixenLaboratories(bad),/VIXEN_HUMAN_GATE_INTEGRITY/);
  assert.throws(()=>assessVixenLab(corpus,'LAB_APERTURE_FOREIGN'),/UNKNOWN_VIXEN_LAB/);
 });
+
+
+test('Vixen visual color lineage rejects uncommissioned blue/cyan, preserves Baker-Miller and Arc Flash through all rendering paths',async()=>{
+ const original=html.match(/<style id="manifest-instance-theme">([\s\S]*?)<\/style>/);
+ assert(original,'Historical Vixen color contract missing');
+ for(const [name,hex] of [
+  ['--vixen-pink','#FF91AF'],['--arc-flash','#F9F36D'],
+  ['--graphite','#24282A'],['--nickel','#667078'],
+  ['--porcelain','#F6F4F0']
+ ])assert(original[1].includes(name+':'+hex),name+' source lineage');
+ const css=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-electric-foundry.css',import.meta.url),'utf8');
+ const shader=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-foundry.frag',import.meta.url),'utf8');
+ const fallback=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-foundry-renderer.mjs',import.meta.url),'utf8');
+ for(const token of ['--ef-pink:#FF91AF','--ef-arc:#F9F36D','--ef-graphite:#24282A',
+  '--ef-nickel:#667078','--ef-porcelain:#F6F4F0'])
+  assert(css.includes(token),'Computed stage missing canonical theme token '+token);
+ const cool=(r,g,b)=>(Math.max(r,g,b)-Math.min(r,g,b)>26)&&(
+  (b>r+20&&b>g+8)||(g>r+26&&b>r+26));
+ for(const hex of (css.match(/#[0-9a-fA-F]{6}\b/g)||[])){
+  const values=hex.slice(1).match(/../g).map(x=>parseInt(x,16));
+  assert(!cool(...values),'Unauthorized blue/cyan reintroduced in Vixen Foundry: '+hex);
+ }
+ for(const rgb of css.matchAll(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g))
+  assert(!cool(+rgb[1],+rgb[2],+rgb[3]),'Unauthorized blue/cyan Foundry RGB '+rgb[0]);
+ assert(shader.includes('vec3 arcFlash=vec3(.9765,.9529,.4275)'),
+  'Shader must use canonical Arc Flash spectral energy');
+ assert(shader.includes('vec3 glinda=vec3(1.,.5686,.6863)'),
+  'Shader must use canonical Baker-Miller pink');
+ assert(shader.includes('float arcSwitch=smoothstep(.26,.86,u_model.z)'),
+  'Model-responsive electrical discharge must remain active');
+ assert(shader.includes('vec3 bright=vec3(.9765,.9529,.4275)'),
+  'Computed discharge must be Arc Flash, not introduced cyan');
+ assert(fallback.includes("halo.addColorStop(0,'rgba(249,243,109,.50)')"),
+  'Canvas2D should render the same Arc Flash fallback');
+ assert(CARRIERS.every(c=>['#F9F36D','#F6F4F0','#FF91AF'].includes(c.color)),
+  '39 Loom carrier colors must retain Vixen performers, not source tool branding');
+});
