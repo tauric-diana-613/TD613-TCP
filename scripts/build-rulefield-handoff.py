@@ -130,11 +130,14 @@ def main():
             "sha256": hashlib.sha256(contents).hexdigest(),
         })
     instructions = (
-        "# TD613 Rulefield · Antigravity handoff\n\n"
+        "# TD613 Rulefield · Agent-neutral succession and amendment relay\n\n"
         f"Exact Git HEAD: \\x60{sha}\\x60. This package contains the entire tracked "
         "\\x60packages/rulefield/\\x60 tree plus standalone CLI and source-free tests.\n\n"
-        "Start: \\x60packages/rulefield/AGENTS.md\\x60, then "
-        "\\x60packages/rulefield/rulebook/ANTIGRAVITY_KENOUGH_ACTIVATION.md\\x60.\n"
+        "Start: \\x60packages/rulefield/operator/AGENT_NEUTRAL_AMENDMENT_RELAY.md\\x60, then "
+        "\\x60packages/rulefield/operator/AGENTS.md\\x60 and "
+        "\\x60packages/rulefield/amendments/RECEIVER.md\\x60.\\n"
+        "For Antigravity specifically, the retained \\x60packages/rulefield/rulebook/"
+        "ANTIGRAVITY_KENOUGH_ACTIVATION.md\\x60 remains available but does not govern other agents.\\n"
         "On a Node 22 machine, from the extracted bundle root, run "
         "\\x60node --test tests/rulefield-*.test.mjs\\x60 then "
         "\\x60node scripts/rulefield-lab.mjs suite\\x60.\n\n"
