@@ -70,7 +70,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:before{
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
  position:relative;display:flex;flex-direction:column;justify-content:center;
- min-height:clamp(520px,59vw,740px);padding:clamp(40px,5vw,78px);
+ min-height:clamp(470px,39vw,605px);padding:clamp(38px,4.5vw,69px);
  background:
   radial-gradient(ellipse at 68% 46%,rgba(255,242,169,.09),transparent 47%),
   radial-gradient(ellipse at 93% 6%,rgba(255,145,175,.17),transparent 51%),
@@ -128,7 +128,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rit
    Preserve both source pickers and original authorial coordinates. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
  position:relative;display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);
- align-items:stretch;gap:0;padding:clamp(26px,3vw,42px) clamp(20px,3vw,42px) 0;
+ align-items:stretch;gap:0;margin-top:-clamp(85px,10vw,148px);
+ padding:clamp(26px,3vw,42px) clamp(20px,3vw,42px) 0;
  background:
   radial-gradient(ellipse at 46% 45%,rgba(255,242,169,.17),transparent 38%),
   radial-gradient(ellipse at 88% 12%,rgba(255,145,175,.20),transparent 50%),
@@ -275,7 +276,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
 }
 @media(max-width:1020px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
-  min-height:620px;padding:42px 29px;
+  min-height:475px;padding:32px 29px;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-hero-copy{
   width:min(79%,680px);
@@ -295,7 +296,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
 }
 @media(max-width:740px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
-  min-height:660px;padding:45px 22px 36px;
+  min-height:555px;padding:36px 22px 34px;
   justify-content:flex-start;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-luminous-canvas{
@@ -319,7 +320,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
   max-width:200px;bottom:18px;right:19px;font-size:8px;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
-  grid-template-columns:minmax(0,1fr);padding:14px 14px 0;gap:0;
+  grid-template-columns:minmax(0,1fr);margin-top:-105px;padding:14px 14px 0;gap:0;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(n){
   min-height:0;transform:none;clip-path:none;
