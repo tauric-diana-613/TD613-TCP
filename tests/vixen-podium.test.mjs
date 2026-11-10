@@ -141,3 +141,71 @@ test('Native five-specialist Dollhouse negative control executes without turning
  assert.equal(m.orchestrator.release_authority,false);
  assert.equal(m.orchestrator.deployment_authority,false);
 });
+
+
+test('Native Podium refuses CLI flag without operator-direct host attestation',async()=>{
+ const input=JSON.stringify(task('engine.invoke',{
+  engine:'APERTURE',operation:'audit_epistemic_deficit',
+  payload:{latent_dimension:2,current_rank:1,sigma_min:0,condition_number:5,
+   uncertainty_status:'VALID_DECLARED',sigma_min_floor:0.25,condition_number_ceiling:10}
+ }));
+ let failed=null;
+ try{execFileSync(process.execPath,['scripts/vixen-podium.mjs','--native-read-tools','--stdin'],{
+  cwd:new URL('../',import.meta.url).pathname,input,encoding:'utf8',timeout:25000,
+  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'0'}
+ })}catch(e){failed=e}
+ assert(failed,'Native read-tools flag alone should not grant tools');
+ const error=JSON.parse(failed.stderr.trim());
+ assert.equal(error.status,'HELD');
+ assert.equal(error.error,'HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED');
+});
+
+test('Explicit operator-direct native lane executes real Aperture v3.2 and retains advisory ceiling',async()=>{
+ const input=JSON.stringify(task('engine.invoke',{
+  engine:'APERTURE',operation:'audit_epistemic_deficit',
+  payload:{latent_dimension:2,current_rank:1,sigma_min:0,condition_number:5,
+   uncertainty_status:'VALID_DECLARED',sigma_min_floor:0.25,condition_number_ceiling:10}
+ }));
+ const output=execFileSync(process.execPath,['scripts/vixen-podium.mjs','--native-read-tools','--stdin'],{
+  cwd:new URL('../',import.meta.url).pathname,input,encoding:'utf8',timeout:30000,
+  env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}
+ });
+ const report=JSON.parse(output),r=report.results[0];
+ assert.equal(report.native_host_lane,'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF');
+ assert.equal(r.status,'HELD','A genuine native math result cannot acquire scientific closure by adapter success');
+ assert.equal(r.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+ assert.equal(r.result.engine,'APERTURE');
+ assert.equal(r.result.output.deficit_class,'STRUCTURAL_RANK_DEFICIT');
+ assert.equal(r.result.output.disposition,'PROPOSE');
+ assert.equal(r.result.output.classification_replay_stability,'HELD_NOT_YET_WITNESSED');
+ assert.equal(r.authority.release,false);
+ assert.equal(r.authority.empirical_replication_credit,0);
+});
+
+test('Shared active-stage controller changes masthead without changing source roles',async()=>{
+ const {JSDOM}=await import('jsdom');
+ const {setVixenStage}=await import('../app/encyclopedia/reference/vixen-stage-boundary.mjs');
+ const doc=new JSDOM('<!doctype html><html><head><title>Vixen Cybernetics</title></head><body>'+
+ '<header class="site-header"><div class="header-left">'+
+ '<button class="brand">Vixen Cybernetics</button></div>'+
+ '<nav class="main-nav">Works</nav><div class="header-actions">Search</div></header>'+
+ '<section id="vixenReferenceChamber"><h1>Vixen native Opera</h1></section>'+
+ '<aside id="operahouseEncounter" hidden><h2 class="oh-title">Independent Operahouse</h2></aside>'+
+ '</body></html>',{url:'https://example.test/'});
+ const document=doc.window.document;
+ try{
+  const x=setVixenStage('OPERAHOUSE',{document,focus:false});
+  assert.equal(x.visible_stage,'OPERAHOUSE');
+  assert.equal(document.getElementById('vixenReferenceChamber').hidden,true);
+  assert.equal(document.getElementById('operahouseEncounter').hidden,false);
+  assert.equal(document.body.dataset.activeResearchStage,'OPERAHOUSE');
+  assert.match(document.title,/Operahouse/);
+  assert.equal(document.getElementById('operahouseStageReturn').hidden,false);
+  const y=setVixenStage('VIXEN',{document,focus:false});
+  assert.equal(y.visible_stage,'VIXEN_OPERA');
+  assert.equal(document.getElementById('vixenReferenceChamber').hidden,false);
+  assert.equal(document.getElementById('operahouseEncounter').hidden,true);
+  assert.equal(document.title,'Vixen Cybernetics');
+  assert.equal(document.getElementById('operahouseStageReturn').hidden,true);
+ }finally{doc.window.close()}
+});
