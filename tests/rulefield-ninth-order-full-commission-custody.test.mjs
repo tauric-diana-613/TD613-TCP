@@ -9,6 +9,8 @@ const math=resolve(root,"packages/rulefield/lab/ninth_order_hidalgo_stokes_resea
 const main=resolve(root,"packages/rulefield/lab/ninth_order_confluence.mjs");
 const general=resolve(root,"packages/rulefield/lab/ninth_order_generalization.mjs");
 const ancestral=resolve(root,"packages/rulefield/sources/wolfram-rule-atlas-20261107/");
+const originalCode=resolve(root,"packages/rulefield/rulefields/research/ARGON_NINTH_ORDER_CANDIDATE_V_ORIGINAL_CODE_TRANSCRIPTION.mjs");
+const originalTests=resolve(root,"packages/rulefield/rulefields/research/ARGON_NINTH_ORDER_CANDIDATE_V_ORIGINAL_TESTS_TRANSCRIPTION.md");
 const ancestry=[
   "THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md",
   "VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md",
@@ -16,7 +18,7 @@ const ancestry=[
   "TD613_NKS_Rule_Atlas_Convergence_Edition.json"
 ];
 test("source historical estate and restored scientific inquiry are co-present",()=>{
- for(const p of [source,math,main,general,...ancestry.map(x=>resolve(ancestral,x))])
+ for(const p of [source,math,main,general,originalCode,originalTests,...ancestry.map(x=>resolve(ancestral,x))])
    assert.ok(existsSync(p),"Historical or Ninth-Order source omitted from portable ZIP: "+p);
 });
 test("full-size researcher commission preserves named crossings and candidate distinctions",()=>{
@@ -38,4 +40,15 @@ test("research source identifies analysis rather than claiming to have preserved
  assert.match(c,/original source claim|source claim/i);
  assert.match(c,/counterexample/i);
  assert.match(c,/human scientific decision/i);
+});
+
+test("Original Candidate V source is independently retained with its mathematically falsifiable prediction",async()=>{
+ const sourceCode=readFileSync(originalCode,"utf8");
+ const historicTests=readFileSync(originalTests,"utf8");
+ for(const phrase of ["HIDALGO_CAPABILITY_MATRIX","evaluateSynchronizedCapabilityRank","auditGeographicImpasseAndAffect","runHolonomyResearchChamber"])assert.ok(sourceCode.includes(phrase));
+ assert.match(historicTests,/rank 4 -> 2/);
+ const original=await import("../packages/rulefield/rulefields/research/ARGON_NINTH_ORDER_CANDIDATE_V_ORIGINAL_CODE_TRANSCRIPTION.mjs");
+ assert.equal(original.matrixRank(original.HIDALGO_CAPABILITY_MATRIX),5);
+ assert.equal(original.evaluateSynchronizedCapabilityRank("World_Alpha_Centralization").synchronizedCapabilityRank,4);
+ assert.equal(original.NINTH_ORDER_CONTRACT.humanScientificClosure,"STRICTLY_RESERVED");
 });
