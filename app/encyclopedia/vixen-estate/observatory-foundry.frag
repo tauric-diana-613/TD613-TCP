@@ -70,23 +70,31 @@ float field(vec2 p, int mode,float t){
  if(mode==14)return sin((p.x+p.y)*.05+t*.25)-sin((p.x-p.y)*.05-t*.25);
  return abs(sin(p.x*.075)*cos(p.y*.12))*(1.-volt);
 }
-// Canonical Vixen theme: Baker-Miller #FF91AF, Arc Flash #dfbfee,
+// Archived Vixen theme: Baker-Miller #FF91AF, Arc Flash #F9F36D.
 // Graphite #24282A, Nickel #667078, Porcelain #F6F4F0.
+// Active RGI11 optics: champagne Arc Flash #FFF2A9, three field-dependent pinks.
 // Optical machinery is derived from Vixen's computed field, never blue ink.
 vec3 palette(float t){
  vec3 graphite=vec3(.1412,.1569,.1647);
  vec3 nickel=vec3(.4,.4392,.4706);
  vec3 porcelain=vec3(.9647,.9569,.9412);
  vec3 glinda=vec3(1.,.5686,.6863);
+ vec3 pearl=vec3(1.,.8941,.9451);
+ vec3 orchid=vec3(.9647,.6471,.8667);
  vec3 arcFlash=vec3(1.,.9490,.6627);
  float silver=smoothstep(-.82,.88,t);
  vec3 albedo=mix(graphite,nickel,smoothstep(-.9,.15,t));
  albedo=mix(albedo,porcelain,silver*.74);
  float spectral=smoothstep(.12,.82,sin(t*8.+u_model.w*3.)*.5+.5);
  albedo=mix(albedo,glinda,spectral*.34);
- // The electrical lilac-foil phase depends on the same computed field.
+ // Three pink transmissions sampled from field geometry, not uniform tint.
+ float satin=smoothstep(.65,.98,sin(t*4.2+u_model.x*2.)*.5+.5);
+ float orchidPhase=smoothstep(.37,.86,cos(t*6.1+u_model.w*4.)*.5+.5);
+ albedo=mix(albedo,pearl,satin*.19);
+ albedo=mix(albedo,orchid,orchidPhase*.11);
+ // Champagne Arc Flash remains voltage-conditioned.
  float voltagePhase=smoothstep(.43,.92,sin(t*22.+u_model.z*6.)*.5+.5);
- albedo=mix(albedo,arcFlash,voltagePhase*.26);
+ albedo=mix(albedo,arcFlash,voltagePhase*.30);
  return albedo;
 }
 void main(){
