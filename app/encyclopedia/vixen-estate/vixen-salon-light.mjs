@@ -133,6 +133,30 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
  const charge=.49+.30*lagNorm+.18*crossing;
  filament(ctx,[cx-scale*.09,cy-scale*.17],[cx+scale*.12,cy+scale*.13],
   charge,time,phase);
+ // Eight bounded glints: six near-Loom carriers plus the TWO distinct
+ // source endpoints. They inherit position and intensity from the model,
+ // never from procedural randomness or a decorative emoji catalogue.
+ const near=CARRIERS.filter(c=>c.near);
+ const glints=near.map(c=>{
+  const angle=(c.index/39)*TAU+phase+time*.065*order;
+  const radius=scale*(.20+.16*((c.index%7)/7));
+  return [cx+Math.cos(angle)*radius*.88,cy+Math.sin(angle)*radius];
+ }).concat([left,right]);
+ ctx.save();ctx.globalCompositeOperation='screen';
+ for(let i=0;i<glints.length;i++){
+  const [gx,gy]=glints[i],energy=clamp(charge+.17*Math.sin(phase+i*1.7+time*1.5));
+  const alpha=clamp((energy-.57)*1.75);
+  if(alpha<.04)continue;
+  const ray=(i%3===0?13:8)*alpha+2;
+  ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=GLINDA_LIGHT.arcFlash;
+  ctx.lineWidth=i<6?1.3:1.7;ctx.shadowColor=GLINDA_LIGHT.arcFlash;
+  ctx.shadowBlur=17;ctx.beginPath();
+  ctx.moveTo(gx-ray,gy);ctx.lineTo(gx+ray,gy);
+  ctx.moveTo(gx,gy-ray*1.4);ctx.lineTo(gx,gy+ray*1.4);
+  ctx.moveTo(gx-ray*.4,gy-ray*.4);ctx.lineTo(gx+ray*.4,gy+ray*.4);
+  ctx.stroke();ctx.restore();
+ }
+ ctx.restore();
  ctx.save();ctx.globalCompositeOperation='screen';
  const spark=ctx.createRadialGradient(cx,cy,0,cx,cy,scale*.16);
  spark.addColorStop(0,'rgba(255,251,226,.50)');
@@ -143,7 +167,7 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
  return Object.freeze({
   frame_class:'SIMULATED_OPTICAL_COMPOSITION',
   carriers:CARRIERS.length,work_ids:[...works],route,lag:clamp(Number(lag),0,120),
-  arc_charge:Math.round(charge*10000)/10000,empirical_credit:0
+  arc_charge:Math.round(charge*10000)/10000,arc_glints:glints.length,empirical_credit:0
  });
 }
 export function mountSalonVeil(canvas,getState){
