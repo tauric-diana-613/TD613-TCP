@@ -172,6 +172,59 @@ try {
       'No independent Universal record may ride the return route into Vixen');
 
 
+    // RGI08 · Materialized human-facing Vixen Synthesis Salon.
+    // It must display genuine Work loci, not a foreign Universal performer.
+    await page.locator('#menuToggle').click();
+    await page.locator('#mobileNav button[data-view="collection"]').click();
+    const salon=page.locator('#vixenSynthesisSalon');
+    await salon.locator('.vs-source-card').first().waitFor({timeout:15000});
+    await page.waitForTimeout(510);
+    assert.equal(await salon.locator('.vs-source-card').count(),2);
+    assert.equal(await salon.locator('.vs-clock-row').count(),5);
+    assert.match(await salon.locator('.vs-rail').innerText(),/32/);
+    assert(!/Eclipse[–-]Omega/.test(await salon.innerText()),
+      'Foreign research Opera may never appear in Vixen’s authored Salon');
+    assert.equal(await salon.getAttribute('data-stage-role'),'VIXEN_OPERA');
+    const salonGeom=await page.evaluate(()=>{
+      const root=document.querySelector('#vixenSynthesisSalon');
+      const original=root.querySelector('.vs-source-card');
+      const header=document.querySelector('.site-header').getBoundingClientRect();
+      const r=original.getBoundingClientRect();
+      return {top:r.top,headerBottom:header.bottom,
+        documentWidth:document.documentElement.scrollWidth,viewport:innerWidth}
+    });
+    assert(salonGeom.documentWidth <= width+1,'Salon horizontal overflow at '+width);
+    assert(salonGeom.top<height-55,'Original Vixen source must be visible in first Salon viewport: '+width);
+    await page.screenshot({path:path.join(output,stem+'-salon-entry.png'),fullPage:false});
+    const beforeClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
+    await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).fill('105');
+    const afterClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
+    assert.notDeepEqual(beforeClock,afterClock,'The instrument dial must causally change rendered clock geometry');
+    await salon.getByRole('button',{name:/Place both Works in the research cart/}).click();
+    assert.equal(await page.locator('#collectionCount').innerText(),'2');
+    await salon.getByRole('textbox',{name:'Compose an original research question'}).fill(
+      'Which independently witnessed observation could falsify this proposed relation?');
+    await salon.getByRole('button',{name:/Compose an unratified theory/}).click();
+    await salon.locator('.vs-result').waitFor();
+    assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
+    assert.match(await salon.locator('.vs-result').innerText(),/Experiment B/);
+    assert.match(await salon.locator('.vs-result').innerText(),/HELD/);
+    await salon.getByRole('button',{name:'Refract the encounter order'}).click();
+    assert.match(await salon.innerText(),/Internal refraction/);
+    await salon.getByRole('button',{name:'Rest without penalty'}).click();
+    assert.match(await salon.innerText(),/REST · Your source/);
+    await salon.getByRole('button',{name:/Resume this unfinished inquiry/}).click();
+    assert.match(await salon.getByRole('textbox',{name:'Compose an original research question'}).inputValue(),
+      /independently witnessed observation/);
+    // Capture the theory cabinet as a separate, source-local observation.
+    await page.evaluate(()=>{
+      const n=document.querySelector('#vixenSynthesisSalon .vs-result');
+      if(n)window.scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-96),behavior:'instant'})
+    });
+    await page.waitForTimeout(90);
+    await page.screenshot({path:path.join(output,stem+'-salon-theorem.png'),fullPage:false});
+    assert.equal(errors.length,0,'Uncaught errors across source-bound Salon: '+errors.join(' | '));
+
     witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, errors });
     await context.close();
   }
