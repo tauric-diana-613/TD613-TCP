@@ -359,3 +359,61 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
   display:none;
  }
 }
+
+/* The research brief is preserved verbatim, but the opera enters on the first
+   screen. Collapsed explanatory copy is recoverable by explicit disclosure. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes{
+ margin-top:6px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes summary{
+ cursor:pointer;color:#EABAD8;
+ font:500 11px/1.5 ui-monospace,monospace;
+ letter-spacing:.045em;list-style:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes summary:before{
+ content:'＋';display:inline-block;margin-right:8px;color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes[open] summary:before{
+ content:'−';
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes p.intro{
+ margin:8px 0 0;font:400 clamp(12px,1.1vw,15px)/1.52 Georgia,serif;
+ max-width:740px;color:#D9C8D7;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
+ display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+ min-height:0;padding:8px 0 13px;gap:18px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .eyebrow{
+ margin-bottom:5px;font-size:8px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1{
+ margin:0;font-size:clamp(14px,1.6vw,22px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection #exportTrayBtn{
+ min-height:43px;padding:10px 15px;
+ font:600 10px/1.4 ui-monospace,monospace;
+ letter-spacing:.045em;
+}
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
+   flex-direction:row;align-items:center;gap:9px;
+   padding:5px 0 13px;margin:0 0 9px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .eyebrow{
+   display:none;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1{
+   font-size:14px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1 .title-annotation{
+   display:none;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection .vs-overture-notes summary{
+   font-size:10px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection #exportTrayBtn{
+   font-size:9px;min-height:39px;padding:7px 9px;max-width:142px;
+   text-wrap:balance;
+ }
+}
