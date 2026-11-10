@@ -160,7 +160,7 @@ try {
     assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'VIXEN');
     assert.equal(await page.locator('#operahouseStageReturn').isHidden(),true);
     assert.equal(await page.locator('.site-header .brand').isVisible(),true);
-    assert.match(await page.title(),/Vixen Cybernetics/);
+    assert.match(await page.title(),/Vixen Cybernetics/i);
     assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
       'No independent Universal record may ride the return route into Vixen');
 
