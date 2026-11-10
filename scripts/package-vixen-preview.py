@@ -52,6 +52,7 @@ def main(out):
     # The machine-only Podium CLI uses dynamically resolved modules; preserve
     # that runtime alongside the exact public assets without adding human UI.
     files["scripts/vixen-podium.mjs"]=(ROOT/"scripts"/"vixen-podium.mjs").read_bytes()
+    files["scripts/vixen-podium-native-adapters.mjs"]=(ROOT/"scripts"/"vixen-podium-native-adapters.mjs").read_bytes()
     readme="""# Vixen Cybernetics Encyclopedia / PR #1730 browser preview
 
 This exact-Git-HEAD preview contains the Vixen operator-facing page,
@@ -131,6 +132,14 @@ research engines. Rulefield, Atlas, Aperture, Dollhouse, and the native
 Universal Atelier receiver have **explicit adapter slots**, not
 imaginary built-in providers. They can execute only when a separately
 authorized host supplies real native tool implementations.
+
+A full repository checkout can enable the qualified native-read adapters
+through a separate, operator-directed invocation:
+  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --input YOUR_TASK_BATCH.json
+That shell-level attestation is a host declaration, not independent identity
+proof. The portable preview contains the adapter *source* but not the
+Dollhouse/Aperture/Atlas engine runtime; missing engines remain HELD.
+Task JSON cannot authorize native execution.
 
 The machine receipts are session-local research material, not signed
 human custody, empirical surplus, or automatic approval.
