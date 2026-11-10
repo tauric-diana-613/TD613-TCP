@@ -37,6 +37,7 @@ try {
     // User-supplied Claude Candidates 1/2/3 genre restoration:
     // editorial interface must be navigable and stateful, not a static
     // screenshot with inoperative buttons.
+    await page.waitForFunction(()=>window.VIXEN_EDITORIAL_GENRE?.mounted===true,null,{timeout:15000});
     const foyer=page.locator('.vixen-editorial-foyer');
     assert.equal(await foyer.locator('button[data-view]').count(),4,
       'Four callable research-doorway entrances missing');
