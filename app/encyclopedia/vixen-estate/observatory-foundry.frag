@@ -74,7 +74,12 @@ vec3 palette(float t){
  vec3 black=vec3(.008,.013,.022);
  vec3 platinum=vec3(.64,.79,.88),ultraviolet=vec3(.27,.14,.61);
  vec3 neon=vec3(.43,.82,1.);
+ vec3 glinda=vec3(.97,.39,.72);
  vec3 albedo=mix(ultraviolet,platinum,smoothstep(-.7,.95,t));
+ // The rose spectrum is derived from signed field phase, not a background
+ // photograph or a clock-independent randomized decoration.
+ float rosePhase=smoothstep(.24,.84,sin(t*8. + u_model.w*3.)*.5+.5);
+ albedo=mix(albedo,glinda,rosePhase*.24);
  albedo=mix(albedo,neon,pow(smoothstep(.12,.95,t),2.)*.48);
  return mix(black,albedo,clamp(.18+.68*(t+.65),0.,1.));
 }
@@ -106,7 +111,7 @@ void main(){
  float arcRibbon=pow(1.-abs(sin(f*36.+slope*37.+t*1.15)),38.);
  float arc=arcSwitch*arcRibbon*smoothstep(.10,.68,slope*22.)*
            (.4+.6*pow(max(0.,1.-potential*.3),2.));
- vec3 bright=vec3(.43,.78,1.)*arc*1.45;
+ vec3 bright=mix(vec3(.75,.34,.83),vec3(.43,.78,1.),smoothstep(.2,.8,slope*12.))*arc*1.45;
  bright+=vec3(.98,.99,1.)*pow(arc,3.)*2.4;
  float caustic=pow(max(0.,sin(f*31.+t*.06)),21.)*clamp(slope*19.,0.,1.);
  bright+=vec3(.6,.85,1.)*caustic*.22;
