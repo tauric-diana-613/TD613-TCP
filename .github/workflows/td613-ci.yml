@@ -189,6 +189,7 @@ jobs:
           node tests/tcp-smoke.test.mjs
           node scripts/build-encyclopedia-reference.mjs --check
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
+          node --test tests/vixen-podium.test.mjs
           node --test tests/loom-observer-channel.test.mjs tests/loom-observer-chamber.test.mjs tests/loom-targeted-ux.test.mjs
           node --test tests/loom-tutorial-temporal-20261014.test.mjs tests/loom-first-crossing-binding-race.test.mjs tests/loom-tutorial-gesture.test.mjs tests/loom-tutorial-artifact.test.mjs
           node scripts/sync-portable-loom-tomography-assets.mjs --check
