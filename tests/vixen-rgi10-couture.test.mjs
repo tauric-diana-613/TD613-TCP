@@ -31,7 +31,7 @@ test('The source-owned eight-room Fox House is never wholly hidden by a 1280px b
  assert.match(css,/scroll-snap-type:x proximity/);
 });
 test('Mustard is excluded from active Opera styling while original historic palette remains recoverable',async()=>{
- assert.match(css,/--arc-flash:#dbc9ff/);
+ assert.match(css,/--arc-flash:#FFF2A9/);
  for(const name of paths){
   const content=await readFile(new URL('vixen-estate/'+name,root),'utf8');
   assert(!/#F9F36D|#f9f36d|rgba\(249,243,109/i.test(content),
