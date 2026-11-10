@@ -465,3 +465,38 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-the
   transition:none!important;transform:none!important;
  }
 }
+
+/* The mathematical dials appear as a voluntary instrument cabinet, so the
+   operator can inspect the picture before touching the simulation. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-cabinet{
+  display:block;margin:0;padding:0;border:0;
+  border-block:1px solid rgba(248,189,222,.23);
+  background:linear-gradient(105deg,#1c1023,#321d36 62%,#1a1125);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-invitation{
+  min-height:85px;padding:25px clamp(24px,4vw,66px);
+  cursor:pointer;list-style:none;color:#f5e3f2;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;font:400 clamp(17px,1.7vw,25px)/1.35 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:.02em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-invitation::-webkit-details-marker{display:none}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-invitation:after{
+  content:'⌄';font:italic 35px/1 Georgia,serif;color:#e9b4d9;
+  transition:transform .25s;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-cabinet[open]>.ef-dial-invitation:after{
+  transform:rotate(180deg);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-invitation:focus-visible{
+  outline:2px solid #f3d3e9;outline-offset:-5px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-cabinet>.ef-controls{
+  background:linear-gradient(125deg,#27172d,#12101c);
+  border-top:1px solid rgba(245,173,220,.26);
+}
+@media(prefers-reduced-motion:reduce){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-invitation:after{
+   transition:none;
+ }
+}
