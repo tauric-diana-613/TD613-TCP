@@ -341,3 +341,14 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
    overflow-wrap:break-word;
  }
 }
+
+/* Browser witness showed the empty cart occluding Candidate 3's fourth
+ * invitation on 1440px and 390px. Let the research itself summon the cart:
+ * invisible when empty and on entrance; usable after a Work is carried.
+ * At mobile width, the original operable navigation provides the Cart route. */
+.vixen-carry-rail[data-items="0"],
+body[data-view="overview"] .vixen-carry-rail,
+body[data-view="collection"] .vixen-carry-rail{display:none}
+@media(max-width:680px){
+ .vixen-carry-rail{display:none!important}
+}
