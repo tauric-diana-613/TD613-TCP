@@ -12,7 +12,7 @@
  */
 :root{
  --vf-rose:#FF91AF;
- --vf-flash:#F9F36D;
+ --vf-flash:#dfbfee;
  --vf-porcelain:#F6F4F0;
  --vf-metal:#667078;
  --vf-night:#060608;
@@ -38,12 +38,12 @@
 }
 .vixen-editorial-foyer:before{
  content:'';position:absolute;inset:0 0 auto;height:1px;
- background:linear-gradient(90deg,transparent 0%,rgba(255,145,175,.14) 16%,#FF91AF 48%,#F9F36D 65%,transparent 100%);
+ background:linear-gradient(90deg,transparent 0%,rgba(255,145,175,.14) 16%,#FF91AF 48%,#dfbfee 65%,transparent 100%);
  box-shadow:0 0 18px rgba(255,145,175,.53);pointer-events:none;
 }
 .vixen-editorial-foyer:after{
  content:'';position:absolute;right:17%;top:0;bottom:0;width:1px;
- background:linear-gradient(180deg,transparent,rgba(249,243,109,.16) 48%,transparent);
+ background:linear-gradient(180deg,transparent,rgba(223,191,238,.16) 48%,transparent);
  pointer-events:none;z-index:0;
 }
 .vixen-editorial-foyer > *{position:relative;z-index:1}
@@ -187,7 +187,7 @@
 }
 .vixen-carry-count{
  min-width:23px;height:23px;padding:4px;
- border:1px solid rgba(249,243,109,.55);
+ border:1px solid rgba(223,191,238,.55);
  text-align:center;color:var(--vf-flash);
  font:700 11px/1.15 var(--vf-mono);
 }
@@ -302,9 +302,9 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  box-shadow:0 0 17px rgba(255,145,175,.22)
 }
 #vixenElectricFoundry .ef-investigate-secondary{
- border-color:rgba(249,243,109,.66);
+ border-color:rgba(223,191,238,.66);
  background:linear-gradient(110deg,#33352C,#24282A);
- color:#F9F36D;
+ color:#dfbfee;
 }
 
 /* Source census remains directly underneath the literary section headline.
@@ -371,7 +371,7 @@ body .site-header:after{
  content:'';position:absolute;inset:auto 0 -1px;
  height:1px;pointer-events:none;
  background:linear-gradient(90deg,transparent 5%,#FF91AF 32%,
-  #F6F4F0 53%,#F9F36D 70%,transparent 95%);
+  #F6F4F0 53%,#dfbfee 70%,transparent 95%);
  opacity:.58;
 }
 body .site-header .brand-name{
@@ -406,12 +406,12 @@ body .site-header .reading-back{
 }
 body .site-header .hdr-pill:hover,
 body .site-header .reading-back:hover{
- color:#F9F36D;
- border-color:rgba(249,243,109,.67);
+ color:#dfbfee;
+ border-color:rgba(223,191,238,.67);
  background:rgba(58,38,52,.67);
 }
 body .site-header .hdr-pill[aria-pressed="true"]{
- color:#F9F36D;border-color:#F9F36D
+ color:#dfbfee;border-color:#dfbfee
 }
 body .site-header .hdr-pill svg.icon{stroke:currentColor}
 body .site-header .mobile-nav{
@@ -428,7 +428,7 @@ body .site-header .mobile-nav button:hover,
 body .site-header .mobile-nav button:focus-visible{
  color:#FF91AF;
 }
-body .site-header .mobile-nav small{color:#F9F36D}
+body .site-header .mobile-nav small{color:#dfbfee}
 
 
 /* ========================================================================
@@ -494,10 +494,10 @@ body .site-header .mobile-nav small{color:#F9F36D}
   .vixen-room[aria-current="page"]:after{
     content:'';position:absolute;top:13px;right:0;
     width:1px;height:calc(100% - 26px);
-    background:linear-gradient(transparent,#F9F36D,transparent);
+    background:linear-gradient(transparent,#dfbfee,transparent);
   }
   .vixen-room:focus-visible{
-    outline:2px solid #F9F36D;outline-offset:-4px;
+    outline:2px solid #dfbfee;outline-offset:-4px;
   }
   .vixen-room-end{
     margin-top:auto;display:flex;flex-direction:column;
@@ -548,20 +548,20 @@ body .site-header .mobile-nav small{color:#F9F36D}
 }
 #view-overview > .hero .cover-light{
  background:
-  radial-gradient(ellipse 30% 32% at var(--light-x,54%) var(--light-y,46%),rgba(249,243,109,.17),transparent 81%),
+  radial-gradient(ellipse 30% 32% at var(--light-x,54%) var(--light-y,46%),rgba(223,191,238,.17),transparent 81%),
   radial-gradient(ellipse 44% 38% at 49% 50%,rgba(255,145,175,.09),transparent 75%),
   radial-gradient(ellipse 65% 46% at 50% 36%,rgba(246,244,240,.042),transparent 78%);
  mix-blend-mode:screen;
 }
 #view-overview > .hero .enter-orbit{
- border:1px solid rgba(249,243,109,.84);
- box-shadow:0 0 12px rgba(249,243,109,.19),
+ border:1px solid rgba(223,191,238,.84);
+ box-shadow:0 0 12px rgba(223,191,238,.19),
   inset 0 0 21px rgba(255,145,175,.08);
- color:#F9F36D;
+ color:#dfbfee;
 }
 #view-overview > .hero .cover-enter:hover .enter-orbit{
- background:#F9F36D;color:#24282A;
- box-shadow:0 0 28px rgba(249,243,109,.42),0 0 65px rgba(255,145,175,.17);
+ background:#dfbfee;color:#24282A;
+ box-shadow:0 0 28px rgba(223,191,238,.42),0 0 65px rgba(255,145,175,.17);
 }
 
 /* Chrome passage / research door console. Its typographic invitation is
@@ -571,7 +571,7 @@ body .site-header .mobile-nav small{color:#F9F36D}
  background:
   radial-gradient(ellipse 90% 115% at 85% -46%,rgba(255,145,175,.075),transparent 72%),
   linear-gradient(145deg,#161A1C 0%,#24282A 54%,#111317 100%);
- border-top:2px solid #F9F36D;
+ border-top:2px solid #dfbfee;
  border-bottom:1px solid rgba(246,244,240,.29);
  box-shadow:inset 0 17px 28px rgba(0,0,0,.25);
  color:#F6F4F0;min-height:0;
@@ -579,8 +579,8 @@ body .site-header .mobile-nav small{color:#F9F36D}
 #view-overview .vixen-editorial-foyer::before{
  height:1px;
  background:linear-gradient(90deg,transparent,#FF91AF 22%,
- #F6F4F0 46%,#F9F36D 70%,transparent);
- box-shadow:0 0 16px rgba(249,243,109,.36);
+ #F6F4F0 46%,#dfbfee 70%,transparent);
+ box-shadow:0 0 16px rgba(223,191,238,.36);
 }
 #view-overview .vixen-editorial-foyer::after{
  right:8%;opacity:.28;
@@ -593,7 +593,7 @@ body .site-header .mobile-nav small{color:#F9F36D}
 }
 #view-overview .vixen-foyer-kicker{
  grid-column:1/-1;margin:0 0 1px;
- color:#F9F36D;font-size:9px;letter-spacing:.15em;
+ color:#dfbfee;font-size:9px;letter-spacing:.15em;
 }
 #view-overview .vixen-foyer-intro h2{
  max-width:none;margin:0;
@@ -620,7 +620,7 @@ body .site-header .mobile-nav small{color:#F9F36D}
  margin:17px 0 0;gap:1px;
  background:rgba(246,244,240,.16);
  border:1px solid rgba(246,244,240,.23);
- border-bottom-color:rgba(249,243,109,.40);
+ border-bottom-color:rgba(223,191,238,.40);
 }
 #view-overview .mobile-wayfinder.vixen-doorways button{
  padding:17px clamp(9px,1.45vw,19px) 16px;
@@ -636,12 +636,12 @@ body .site-header .mobile-nav small{color:#F9F36D}
 #view-overview .mobile-wayfinder.vixen-doorways button:hover,
 #view-overview .mobile-wayfinder.vixen-doorways button:focus-visible{
  background:linear-gradient(145deg,#31363A,#121518 68%);
- box-shadow:inset 0 2px rgba(249,243,109,.62),
-  0 0 24px rgba(249,243,109,.10);
+ box-shadow:inset 0 2px rgba(223,191,238,.62),
+  0 0 24px rgba(223,191,238,.10);
 }
 #view-overview .mobile-wayfinder.vixen-doorways button::after{
  top:0;left:0;right:0;height:2px;
- background:linear-gradient(90deg,#FF91AF,#F9F36D,#F6F4F0);
+ background:linear-gradient(90deg,#FF91AF,#dfbfee,#F6F4F0);
 }
 #view-overview .mobile-wayfinder.vixen-doorways .vixen-door-index{
  font-size:8px;letter-spacing:.06em;margin-bottom:10px;color:#FF91AF;
@@ -659,7 +659,7 @@ body .site-header .mobile-nav small{color:#F9F36D}
 }
 #view-overview .mobile-wayfinder.vixen-doorways .vixen-door-verb{
  margin-top:auto;padding-top:13px;
- font:700 9px/1.2 var(--vf-mono);color:#F9F36D;
+ font:700 9px/1.2 var(--vf-mono);color:#dfbfee;
 }
 #view-overview .vixen-foyer-afterword{
  padding-top:11px;color:#C0BBB8;font-size:7px;
