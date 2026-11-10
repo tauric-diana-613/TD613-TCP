@@ -7,6 +7,7 @@
 <script id="td613-sitewide-reset-preflight" src="../site-epoch-preflight.js" defer></script>
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
+<link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
 <link rel="stylesheet" href="./reference/vixen-operator-encounter.css">
 <!-- Machine-only Podium. Separate route contract; never a Vixen visual panel. -->
 <link rel="alternate" type="application/json" title="Vixen Podium machine research contract"
@@ -731,6 +732,15 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="view-number" aria-hidden="true">01</div>
       </div>
 
+      <!-- RGI09 · Source-derived chrome foundry, with original mathematical
+           corpus as subject and Aperture/Dome/Loom as optics engines only. -->
+      <div id="vixenElectricFoundry" role="region"
+        data-stage-role="VIXEN_OPERA"
+        aria-label="Vixen Electric Foundry mathematical Observatory">
+        <p>Loading the recorded Vixen mathematical Observatory…</p>
+      </div>
+      <!-- Original four-mode instrument retained internally for bounded
+           predecessor audit; RGI09 does not give it UI or research authority. -->
       <div class="instrument-stage">
         <div class="engine-tabs" role="tablist" aria-label="Observatory Mathematical Models">
           <button type="button" data-obs-tab="planes" aria-pressed="true">I · Control Planes (S ≠ W ≠ A)</button>
@@ -1942,6 +1952,7 @@ body[data-view="overview"] .reading-back{display:none}
 
   // Lifecycle-aware observatory tick: zero perpetual background frames.
   function scheduleObservatoryFrame(){
+    if (document.getElementById('view-observatory')?.dataset.foundryMounted==='true')return;
     if (observatoryFrame || state.view!=='observatory' || state.motionPaused || document.hidden)return;
     observatoryFrame=requestAnimationFrame(tickObservatory);
   }
@@ -1951,11 +1962,14 @@ body[data-view="overview"] .reading-back{display:none}
   }
   function tickObservatory(){
     observatoryFrame=0;
+    if(document.getElementById('view-observatory')?.dataset.foundryMounted==='true')return;
     if(state.view!=='observatory'||state.motionPaused||document.hidden)return;
     animPhase+=.012;
     drawObservatoryCanvas();
     scheduleObservatoryFrame();
   }
+
+  window.VIXEN_LEGACY_OBSERVATORY_STOP=stopObservatoryFrame;
 
   // L0 -> L3 Interactive Unified Theory Synthesis Bench (Illustrative Presets · No Live Scientific Admission)
   const BENCH_CASES = {
@@ -3502,6 +3516,7 @@ body[data-view="overview"] .reading-back{display:none}
 </script>
 <script type="module" src="./vixen-estate/research-chamber.mjs"></script>
 <script type="module" src="./vixen-estate/synthesis-salon.mjs"></script>
+<script type="module" src="./vixen-estate/observatory-electric-foundry.mjs"></script>
 <script type="module" src="./reference/vixen-operator-encounter.mjs"></script>
 </body>
 </html>
