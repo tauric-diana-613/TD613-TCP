@@ -52,6 +52,7 @@ const constraints=[
   room.includes('WITNESSED_UNLINKED_PAIR')],
  ['FATAL_RAW_UTF8',gateway.includes("new TextDecoder('utf-8',{fatal:true})")&&
   gateway.includes('response.arrayBuffer()')],
+ ['GATEWAY_CORRECT_ESTATE',gateway.includes("estate:'UNIVERSAL_REFERENCE',invocation_locus:'OPERAHOUSE_READ_GATEWAY'")],
  ['EXCLUSIVE_PERFORMANCE',stage.includes('vixen.hidden=entering')&&
   stage.includes('operahouse.hidden=!entering')],
  ['ACTIVE_MASTHEAD',css.includes('data-active-research-stage="OPERAHOUSE"')&&
