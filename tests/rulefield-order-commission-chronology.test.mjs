@@ -52,6 +52,6 @@ const titles=[
   }
 ];
 const gitBlob=(buf)=>createHash('sha1').update(Buffer.from('blob '+buf.length+'\0')).update(buf).digest('hex');
-test('nine chronological narrative entries, issued titles intact',()=>{for(const s of shelves){if(!existsSync(new URL(s,base)))continue;const f=readdirSync(new URL(s,base)).filter(x=>/^ORDER-\\d{2}_.*\\.md$/.test(x)).sort();assert.equal(f.length,9,s);assert.deepEqual(f,titles.map(x=>'ORDER-'+x.order+'_'+x.title+'.md'),s)}});
+test('nine chronological narrative entries, issued titles intact',()=>{for(const s of shelves){if(!existsSync(new URL(s,base)))continue;const f=readdirSync(new URL(s,base)).filter(x=>x.startsWith('ORDER-')&&x.endsWith('.md')).sort();assert.equal(f.length,9,s);assert.deepEqual(f,titles.map(x=>'ORDER-'+x.order+'_'+x.title+'.md'),s)}});
 test('narrative dossiers retain exact original Git blobs and authoritative full IX',()=>{for(const s of shelves){if(!existsSync(new URL(s,base)))continue;for(const x of titles.slice(1)){const p=new URL(s+'ORDER-'+x.order+'_'+x.title+'.md',base);assert.equal(gitBlob(readFileSync(p)),x.sha,p.pathname)}}});
 test('first order entrypoint refuses to invent a missing commission',()=>{for(const s of shelves){if(!existsSync(new URL(s,base)))continue;const v=readFileSync(new URL(s+'ORDER-01_THE_RULE_THAT_STUDIES_ITSELF.md',base),'utf8');assert.match(v,/NOT a fabricated independent Order-I commission/);assert.match(v,/SEVEN_CHAMBER|SEVEN-CHAMBER|Seven-Chamber/i);}});
