@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -39,11 +41,15 @@ jobs:
   native_dollhouse_audit:
     name: Native Dollhouse five-specialist adversarial audit
     runs-on: ubuntu-latest
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     timeout-minutes: 12
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -54,7 +60,7 @@ jobs:
           set +e
           node scripts/run-dollhouse-skill-audit.mjs \
             --input artifacts/atlas-after-hours/pr1735_dollhouse_adversarial_input.json \
-            --source "$GITHUB_SHA" --strict-provenance \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
             --format json \
             --output audit-artifacts/pr1735_native_dollhouse_receipt.json \
             > audit-artifacts/pr1735_stdout.json
