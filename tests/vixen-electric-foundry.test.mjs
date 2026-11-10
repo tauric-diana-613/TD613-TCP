@@ -6,6 +6,7 @@ import {CARRIERS,LABS,fieldAt,sceneProbe,project111,
 import {buildVixenLaboratories,assessVixenLab,completeVixenSourceCensus,
  VIXEN_SOURCE_ESTATES} from '../app/encyclopedia/vixen-estate/observatory-vixen-corpus.mjs';
 import {RENDERER_CONTRACT} from '../app/encyclopedia/vixen-estate/observatory-foundry-renderer.mjs';
+import {SCORE_CONTRACT} from '../app/encyclopedia/vixen-estate/observatory-computational-score.mjs';
 import {ELECTRIC_STAGE_SCHEMA} from '../app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs';
 const html=await readFile(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
 const match=html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
@@ -115,38 +116,49 @@ test('Tampered human gate or foreign folio identifier cannot inflate research st
 });
 
 
-test('Vixen visual color lineage rejects uncommissioned blue/cyan, preserves Baker-Miller and Arc Flash through all rendering paths',async()=>{
+test('Glinda chromepunk lineage anchors the scene without banning deliberate spectral departures',async()=>{
  const original=html.match(/<style id="manifest-instance-theme">([\s\S]*?)<\/style>/);
- assert(original,'Historical Vixen color contract missing');
+ assert(original,'Historical Vixen authored color surface missing');
  for(const [name,hex] of [
   ['--vixen-pink','#FF91AF'],['--arc-flash','#F9F36D'],
   ['--graphite','#24282A'],['--nickel','#667078'],
   ['--porcelain','#F6F4F0']
- ])assert(original[1].includes(name+':'+hex),name+' source lineage');
+ ])assert(original[1].includes(name+':'+hex),'Historical theme '+name);
  const css=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-electric-foundry.css',import.meta.url),'utf8');
  const shader=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-foundry.frag',import.meta.url),'utf8');
  const fallback=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-foundry-renderer.mjs',import.meta.url),'utf8');
- for(const token of ['--ef-pink:#FF91AF','--ef-arc:#F9F36D','--ef-graphite:#24282A',
-  '--ef-nickel:#667078','--ef-porcelain:#F6F4F0'])
-  assert(css.includes(token),'Computed stage missing canonical theme token '+token);
- const cool=(r,g,b)=>(Math.max(r,g,b)-Math.min(r,g,b)>26)&&(
-  (b>r+20&&b>g+8)||(g>r+26&&b>r+26));
- for(const hex of (css.match(/#[0-9a-fA-F]{6}\b/g)||[])){
-  const values=hex.slice(1).match(/../g).map(x=>parseInt(x,16));
-  assert(!cool(...values),'Unauthorized blue/cyan reintroduced in Vixen Foundry: '+hex);
+ const score=await readFile(new URL('../app/encyclopedia/vixen-estate/observatory-computational-score.mjs',import.meta.url),'utf8');
+ for(const token of ['--ef-pink:#FF91AF','--ef-arc:#F9F36D',
+   '--ef-graphite:#24282A','--ef-nickel:#667078','--ef-porcelain:#F6F4F0']){
+  assert(css.includes(token),'Absent original style token '+token);
  }
- for(const rgb of css.matchAll(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/g))
-  assert(!cool(+rgb[1],+rgb[2],+rgb[3]),'Unauthorized blue/cyan Foundry RGB '+rgb[0]);
  assert(shader.includes('vec3 arcFlash=vec3(.9765,.9529,.4275)'),
-  'Shader must use canonical Arc Flash spectral energy');
+  'Shader must retain the historical yellow electric energy base');
  assert(shader.includes('vec3 glinda=vec3(1.,.5686,.6863)'),
-  'Shader must use canonical Baker-Miller pink');
+  'Shader must retain the historic pink Glinda refraction');
  assert(shader.includes('float arcSwitch=smoothstep(.26,.86,u_model.z)'),
-  'Model-responsive electrical discharge must remain active');
+  'Arc Flash must be governed by active simulation voltage');
  assert(shader.includes('vec3 bright=vec3(.9765,.9529,.4275)'),
-  'Computed discharge must be Arc Flash, not introduced cyan');
- assert(fallback.includes("halo.addColorStop(0,'rgba(249,243,109,.50)')"),
-  'Canvas2D should render the same Arc Flash fallback');
- assert(CARRIERS.every(c=>['#F9F36D','#F6F4F0','#FF91AF'].includes(c.color)),
-  '39 Loom carrier colors must retain Vixen performers, not source tool branding');
+  'Yellow electrical discharge must remain an event');
+ assert(fallback.includes('const discharge=narrow(Math.abs(Math.sin('),
+  'CPU fallback must calculate its own voltage-bound caustic');
+ assert(fallback.includes('const opal=narrow('),
+  'An intentional, bounded spectral excursion may exist');
+ assert(score.includes('LAB_RC-10')&&score.includes('LAB_TCC-05'),
+  'Optical composition must have differentiated source-native lab geometry');
+ assert(score.includes('fiveClockTicks(')&&score.includes('project111(')&&score.includes('singularValues2('),
+  'Score must use actual mathematical instruments, not only canvas styling');
+ assert(css.includes('#vixenElectricFoundry .ef-notation'),
+  'One host-timed computed score must be composited on top of the optics');
+ // Chromatic experimentation is allowed. Inherited colors are anchors,
+ // rather than an absolute prohibition on blue/cyan, ultraviolet or opal.
+});
+
+test('The computed source geometry lives in the same host-owned clock, not twenty-eight superficial loops',()=>{
+ assert.equal(SCORE_CONTRACT.subject,'EMSTD613_CANONICAL_FORMULA');
+ assert.equal(SCORE_CONTRACT.timebase,'HOST_FOUNDRY_FRAME');
+ assert.equal(SCORE_CONTRACT.observed_physical_results,false);
+ const code=html;
+ assert(code.includes('observatory-electric-foundry.mjs'));
+ assert(!code.includes('Eclipse–Omega'));
 });
