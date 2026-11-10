@@ -105,6 +105,7 @@ def dependency_closure(paths: set[str], tree:dict) -> set[str]:
             if not (
                 dep.startswith(("app/engine/","packages/rulefield/","packages/atlas-after-hours/"))
                 or dep.startswith(("scripts/","tests/"))
+                or dep == "app/dome-world/ash/canonical-json.js"  # exact read-only transitive geometry/custody codec
             ):
                 raise ValueError("IMPORT_OUTSIDE_SOURCE_FREE_SCOPE:"+path+":"+dep)
             if dep not in paths:
