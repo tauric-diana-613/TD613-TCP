@@ -515,6 +515,36 @@ try {
     await page.screenshot({path:path.join(output,stem+'-salon-theorem.png'),fullPage:false});
     assert.equal(errors.length,0,'Uncaught errors across source-bound Salon: '+errors.join(' | '));
 
+    // RGI10-B · The former administrative registry views are now genuine
+    // unequal manuscript / bilateral / tribunal compositions. Preserve their
+    // complete native data and controls; capture one source-first frame each.
+    const editorialViews=[
+      {id:'gates',container:'#gatesStackContainer',entry:'.gate-pair-card',expected:8,
+       file:'bilateral-gates'},
+      {id:'protocols',container:'#protocolsLexiconLayout',entry:'.lexicon-reader',expected:1,
+       file:'protocol-atlas'},
+      {id:'holds',container:'#view-holds .holds-grid',entry:'.hold-panel',expected:1,
+       file:'beautiful-refusal'}
+    ];
+    for(const v of editorialViews){
+      await page.locator('#menuToggle').click();
+      await page.locator('#mobileNav button[data-view="'+v.id+'"]').click();
+      await page.waitForFunction(id=>document.body.dataset.view===id,v.id,{timeout:6000});
+      await page.waitForTimeout(530);
+      const container=page.locator(v.container);
+      assert(await container.locator(v.entry).count()>=v.expected,
+        'Original source registry must survive architecture: '+v.id);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,
+        'Editorial '+v.id+' may not introduce horizontal viewport overflow');
+      await page.evaluate(css=>{
+        const n=document.querySelector(css);
+        if(n)window.scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-105),behavior:'instant'});
+      },v.container);
+      await page.waitForTimeout(85);
+      await page.screenshot({path:path.join(output,stem+'-'+v.file+'.png'),fullPage:false});
+    }
+    assert.equal(errors.length,0,'Styling must not produce runtime errors '+errors.join(' | '));
+
     witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, errors });
     await context.close();
   }
