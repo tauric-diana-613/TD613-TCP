@@ -1816,8 +1816,16 @@ jobs:
           echo "$status" > audit-artifacts/pr1734_native_exit_code.txt
           set -e
           if [ "$status" -gt 1 ]; then exit "$status"; fi
-      - name: Enforce authentic receipt, exact source revision and retained adversarial holds
-        run: node scripts/check-rulefield-pr1734-dollhouse-verdict.mjs audit-artifacts/pr1734_native_dollhouse_receipt.json
+      - name: Execute separately typed healthy Rulefield Dollhouse scenario
+        run: |
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_POSITIVE_CONTROL.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1734_native_positive_control_receipt.json \
+            > audit-artifacts/pr1734_positive_stdout.json
+      - name: Enforce Rulefield contrastive native audit (negative HELD, positive SUPPORTED)
+        run: node scripts/check-rulefield-pr1734-dollhouse-verdict.mjs audit-artifacts/pr1734_native_dollhouse_receipt.json audit-artifacts/pr1734_native_positive_control_receipt.json
       - name: Publish specialist receipts without human closure
         if: always()
         uses: actions/upload-artifact@v4
@@ -1879,8 +1887,16 @@ jobs:
             echo "Native audit execution failed, exit $EXIT_CODE"
             exit "$EXIT_CODE"
           fi
-      - name: Validate native specialist execution, receipt integrity and retained holds
-        run: node scripts/check-atlas-pr1735-dollhouse-verdict.mjs audit-artifacts/pr1735_native_dollhouse_receipt.json
+      - name: Execute separately typed healthy Atlas Dollhouse scenario
+        run: |
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input artifacts/atlas-after-hours/pr1735_dollhouse_positive_control.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1735_native_positive_control_receipt.json \
+            > audit-artifacts/pr1735_positive_stdout.json
+      - name: Enforce Atlas contrastive native audit (negative HELD, positive SUPPORTED)
+        run: node scripts/check-atlas-pr1735-dollhouse-verdict.mjs audit-artifacts/pr1735_native_dollhouse_receipt.json audit-artifacts/pr1735_native_positive_control_receipt.json
       - name: Publish bounded native audit receipts (no authority conveyed)
         if: always()
         uses: actions/upload-artifact@v4

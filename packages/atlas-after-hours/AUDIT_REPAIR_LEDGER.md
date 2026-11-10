@@ -18,3 +18,11 @@
 The historical predecessor's 18/18 Git-blob restoration does **not** erase the theoretical hold in the deliberately adversarial Atlas route fixture. Distinct evidence objects must remain distinct, even when an audit returns a single red badge.
 
 𝄐 A green runner can faithfully deliver red science · ⟐
+
+## 2026-11-10 contrastive real-runtime repair (PRs #1734 and #1735)
+
+The native multiagent audit previously tested **only deliberately adversarial synthetic role inputs**, while its `SOURCE_CODE_AUDIT` label risked implying those fictional infractions were actual repository defects. Both negative fixtures now declare `SYNTHETIC_TEST_FIXTURE` with independently verified source references, not a different scientific result. No adverse infraction has been erased.
+
+The two stacked PRs also run independently **healthy synthetic positive controls** through the same five real Dollhouse specialists at the same verified exact Git SHA. The positive fixture has canonical Pedagogue cadence, full-rank Aperture, matched Atlas histories, conditioned FADT action, and a *simulation-only* RELOCK marker: `SYNTHETIC_CONTROL_RELOCK_NOT_REAL_APPROVAL`. The new native receipt checkers require HELD for the intentionally adverse scenario, SUPPORTED for the five healthy domain inputs, both sets of source-linked SHA-256 evidence, zero real-world empirical replication, and false release/deployment authority.
+
+This qualifies the **discriminatory capacity and execution wiring of the auditor**, while the open research outcomes remain held where scientific evidence is unavailable. An audit GREEN concerns correct detection, source packaging and execution; it confers neither scientific closure nor actual human signoff. Existing 596 Rulefield historical records, proposed fields, priorities, Order I–IX source editions, and protected Experiment B remain unchanged.

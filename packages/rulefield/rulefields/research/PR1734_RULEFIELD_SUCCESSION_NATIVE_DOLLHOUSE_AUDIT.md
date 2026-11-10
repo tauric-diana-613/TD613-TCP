@@ -69,3 +69,11 @@ No receiving agent is instructed to execute imported ZIP code inside the trusted
 **Claim ceiling:** complete verified tracked Rulefield archive and usable source-free receiving/handoff instrumentation conditional on the latest exact-head CI. External independent witness work and protected scientific promotion require new evidence and distinct operator action.
 
 𝄐 Khona‌lit-po · Source-restorative, not authority-generative · ⟐
+
+## 6. Contrastive native-execution repair · 2026-11-10
+
+The earlier five-role audit was executed correctly, but its deliberate HELD-only input was a **synthetic negative control**, not a defect report for the real repository. Classifying it as a SOURCE_CODE_AUDIT invited the false inference that each injected violation occurred in actual source custody. The committed input now declares `SYNTHETIC_TEST_FIXTURE` while retaining verifiable source references and every dissenting violation.
+
+A separate **positive synthetic control** is now committed as `packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_POSITIVE_CONTROL.json`. It supplies a canonical NOTICE → ACT → WORLD_ANSWERS → NAME cadence, a full-rank local Aperture probe, matching Atlas route histories, conditioned FADT action, and an explicitly **fictional** successful relock. Its relock identifier `SYNTHETIC_CONTROL_RELOCK_NOT_REAL_APPROVAL` is prohibited from representing human authorization.
+
+Both scenarios execute the actual five-role native Dollhouse runner at the **same exact Git source HEAD**. The checker requires (a) all historical negative-control objections to remain HELD, (b) five SUPPORTED specialist findings in the healthy case, (c) source-verified references and SHA-256 evidence digests, (d) unchanged human-closure and no-release boundaries for *both* receipts. Thus the CI may be GREEN for reproducible **contrastive engineering** while the actual scientific program retains HELD pending independent empirical acquisition and principal closure. This change alters neither the 596-record registry nor historical priorities or protected Experiment B.

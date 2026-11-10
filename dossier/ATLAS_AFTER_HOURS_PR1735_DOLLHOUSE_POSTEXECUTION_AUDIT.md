@@ -79,3 +79,11 @@ with `+Infinity` when infeasible. Compare matched budgets, route accessibility, 
 **Bottom line:** The Ninth Order has produced an experimentally productive change in *what must be measured*: task-bearing **simultaneous capability access** rather than terminal connectedness or scalar travel speed. Its strict counterpart is that every asserted loss, repair, witness and closure must retain an inspectable, typed evidentiary coordinate.
 
 𝄐 Khona‌lit-po · U+200C preserved · human scientific closure RESERVED ⟐
+
+## 2026-11-10 contrastive real-runtime repair (PRs #1734 and #1735)
+
+The native multiagent audit previously tested **only deliberately adversarial synthetic role inputs**, while its `SOURCE_CODE_AUDIT` label risked implying those fictional infractions were actual repository defects. Both negative fixtures now declare `SYNTHETIC_TEST_FIXTURE` with independently verified source references, not a different scientific result. No adverse infraction has been erased.
+
+The two stacked PRs also run independently **healthy synthetic positive controls** through the same five real Dollhouse specialists at the same verified exact Git SHA. The positive fixture has canonical Pedagogue cadence, full-rank Aperture, matched Atlas histories, conditioned FADT action, and a *simulation-only* RELOCK marker: `SYNTHETIC_CONTROL_RELOCK_NOT_REAL_APPROVAL`. The new native receipt checkers require HELD for the intentionally adverse scenario, SUPPORTED for the five healthy domain inputs, both sets of source-linked SHA-256 evidence, zero real-world empirical replication, and false release/deployment authority.
+
+This qualifies the **discriminatory capacity and execution wiring of the auditor**, while the open research outcomes remain held where scientific evidence is unavailable. An audit GREEN concerns correct detection, source packaging and execution; it confers neither scientific closure nor actual human signoff. Existing 596 Rulefield historical records, proposed fields, priorities, Order I–IX source editions, and protected Experiment B remain unchanged.
