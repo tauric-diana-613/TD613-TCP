@@ -94,3 +94,23 @@ body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
 @media(max-width:680px){
   #operahouseStageReturn:not([hidden]){font-size:.63rem;padding:.5rem .8rem;letter-spacing:.035em}
 }
+
+/* RGI-07 visual evidence repair: the receipt is paper-coloured, so inherited
+   pale disclosure text violates contrast. Preserve the machine witness while
+   making its human interpretation legible at each review viewport. */
+#operahouseEncounter .oh-disposition .oh-payload{
+  color:#332334;background:#fffaf3;border-color:#875c6d;
+}
+#operahouseEncounter .oh-disposition .oh-payload summary{
+  color:#332334;font-weight:700;line-height:1.7;
+}
+#operahouseEncounter .oh-disposition .oh-payload summary:focus-visible{
+  outline:2px solid #6e3653;outline-offset:4px;
+}
+#operahouseEncounter .oh-disposition h3{
+  font-size:clamp(1.05rem,2.3vw,2rem);
+  overflow-wrap:anywhere;
+}
+body[data-active-research-stage="OPERAHOUSE"] footer.footer{
+  display:none!important;
+}
