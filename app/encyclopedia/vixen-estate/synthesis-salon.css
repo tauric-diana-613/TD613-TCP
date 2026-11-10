@@ -5,7 +5,7 @@
  */
 #vixenSynthesisSalon{
  --vs-ink:#22272a;--vs-cream:#f9f5ef;--vs-pink:#ff91af;--vs-fuchsia:#ed5a9a;
- --vs-gold:#dfbfee;--vs-steel:#667078;--vs-line:rgba(27,29,33,.3);
+ --vs-gold:#FFF2A9;--vs-steel:#667078;--vs-line:rgba(27,29,33,.3);
  font-family:var(--font-mono,ui-monospace,monospace);
  position:relative;isolation:isolate;min-width:0;color:var(--vs-ink);
  background:linear-gradient(143deg,#faf4ed 2%,#f6e6eb 48%,#e6d9e1 100%);
