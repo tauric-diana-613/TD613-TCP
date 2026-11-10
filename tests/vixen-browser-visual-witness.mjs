@@ -107,6 +107,8 @@ try {
     assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'OPERAHOUSE');
     assert.equal(await page.locator('#operahouseStageReturn').isVisible(),true);
     assert.equal(await page.locator('.site-header .brand').isHidden(),true);
+    assert.equal(await page.locator('footer.footer').isHidden(),true,
+      'The Vixen research footer cannot remain visible on the Operahouse stage');
     assert.match(await page.title(),/Operahouse/);
     assert.equal(await house.getAttribute('data-stage-role'),'OPERAHOUSE');
     assert.equal(await house.locator('[data-stage-role="INDEPENDENT_REFERENCE"]').count(),1);
@@ -137,6 +139,10 @@ try {
       'WITNESSED_UNLINKED_PAIR');
     assert.match(await house.locator('.oh-disposition').innerText(),/Relationship: UNESTABLISHED/);
     await house.locator('.oh-disposition .oh-payload summary').click();
+    const summaryColor=await house.locator('.oh-disposition .oh-payload summary')
+      .evaluate(n=>getComputedStyle(n).color);
+    assert.equal(summaryColor,'rgb(51, 35, 52)',
+      'The manuscript-paper receipt disclosure must render with legible dark ink');
     const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload pre').innerText());
     assert.equal(receipt.schema,'ua:contract:cross_atelier_witness');
     assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
@@ -160,6 +166,7 @@ try {
     assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'VIXEN');
     assert.equal(await page.locator('#operahouseStageReturn').isHidden(),true);
     assert.equal(await page.locator('.site-header .brand').isVisible(),true);
+    assert.equal(await page.locator('footer.footer').isVisible(),true);
     assert.match(await page.title(),/Vixen Cybernetics/i);
     assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
       'No independent Universal record may ride the return route into Vixen');
