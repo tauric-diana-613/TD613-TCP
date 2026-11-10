@@ -7,6 +7,7 @@ import {
  checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,
  makePodiumTasks,CLOCKS
 } from './synthesis-salon-engine.mjs';
+import {mountSalonVeil,VEIL_CONTRACT} from './vixen-salon-light.mjs';
 
 const mk=(tag,cl,text)=>{
  const el=document.createElement(tag);
@@ -73,6 +74,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   result:null,refraction:null,resting:false,history:[],
   notice:'Choose two recorded Works, one method, and a research question. Your source bodies remain unavailable.'
  };
+ let veilHandle=null;
+ const veilCoordinates=()=>({works:[...state.works],route:state.route,lag:state.lag});
  const getWork=index=>corpus.works.find(w=>w.work_id===state.works[index]);
  const getTrack=()=>corpus.giveback_tracks.find(x=>x.id===state.track);
  const getMethod=()=>corpus.instruments.find(x=>x.instrument_id===state.protocol);
@@ -181,6 +184,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   if(live)live.textContent=state.notice;
  }
  function render(){
+  veilHandle?.dispose();veilHandle=null;
   host.replaceChildren();host.dataset.stageRole='VIXEN_OPERA';
   const head=mk('header','vs-head');
   const eyebrow=mk('div','vs-eyebrow','06 · VIXEN SYNTHESIS SALON · COUTURE LABORATORY');
@@ -189,9 +193,16 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   title.append(document.createTextNode(' finished dressing.'));
   const description=paragraph(
    'Collect evidence like a fox; compose hypotheses like an opera. Every claim changes what the next question must ask. No source is sold, merged, or made to testify beyond its recorded boundary.','vs-intro');
-  const emblem=mk('div','vs-ritual','✦  🩰  ·  🚬  ·  ✦');
-  emblem.setAttribute('aria-label','Ballet shoes and cigarette: Vixen costume motifs, not research evidence');
-  append(head,eyebrow,title,description,emblem);
+  // Optical costume derived from Dome D3, phi, Loom carriers and [111] projection.
+  // Literal costume emojis are absent: visual rhetoric now lives in silhouette.
+  const veil=mk('canvas','vs-luminous-canvas');
+  veil.setAttribute('aria-hidden','true');
+  veil.dataset.computation='D3_PHI_LOOM_39_COUTURE_111';
+  const veilCaption=mk('div','vs-optical-label','VIXEN · 39 COMPUTED CARRIERS · OPTICAL COSTUME / MODEL ONLY');
+  veilCaption.setAttribute('aria-hidden','true');
+  const words=mk('div','vs-hero-copy');
+  append(words,eyebrow,title,description);
+  append(head,veil,words,veilCaption);
   const index=mk('div','vs-rail');
   append(index,
    atlasCell('ORIGINAL WORKS','32 / 53 manifestations'),
@@ -248,6 +259,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    const updated=toyClockAssay({lag:state.lag,routeOrder:state.route});
    lagLabel.textContent='Demonstration lag · '+state.lag+' dimensionless ticks';
    bars.replaceChildren(...makeBars(updated));
+   veilHandle?.renderOnce();
    if(state.result){changed();
     host.querySelector('.vs-result')?.remove();
     const live=host.querySelector('.vs-status');
@@ -285,6 +297,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   append(host,head,columns,seam,index,offer,clockBox,inputPane,notice());
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
+  veilHandle=mountSalonVeil(veil,veilCoordinates);
+  host.dataset.opticalContract=VEIL_CONTRACT.schema;
  }
  function titleText(w){return w.display_title||w.declared_title||w.work_id}
  function makeBars(clocks){
@@ -356,7 +370,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   getProposal:()=>state.result,
   history:()=>state.history.slice(),
   rest,resume,
-  phase:()=>state.resting?'REST':state.result?'PROPOSED':'NOTICE'
+  phase:()=>state.resting?'REST':state.result?'PROPOSED':'NOTICE',
+  opticalStatus:()=>veilHandle?.getStatus()||null,
+  dispose:()=>veilHandle?.dispose()
  });
 }
 if(typeof document!=='undefined')mountVixenSynthesisSalon();
