@@ -10,7 +10,9 @@ import {resolve,dirname} from 'node:path';
 import {runDollhouseSkillAudit} from '../app/engine/dollhouse-skill-dispatcher.js';
 const root=resolve(dirname(new URL(import.meta.url).pathname),'..');
 const path=resolve(root,'artifacts/vixen-dual-estate/podium-dollhouse-negative-control.json');
-const out=resolve(root,'artifacts/vixen-dual-estate/ci-podium-native-dollhouse-receipt.json');
+const out=process.env.RUNNER_TEMP?
+ resolve(process.env.RUNNER_TEMP,'ci-podium-native-dollhouse-receipt.json'):
+ resolve(root,'artifacts/vixen-dual-estate/ci-podium-native-dollhouse-receipt.json');
 const input=JSON.parse(await readFile(path,'utf8'));
 input.source_revision=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const result=await runDollhouseSkillAudit(input),m=result.machine_receipt;
