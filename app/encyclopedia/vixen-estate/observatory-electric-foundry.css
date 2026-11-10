@@ -399,3 +399,84 @@
 @media(prefers-reduced-motion:reduce){
  #vixenElectricFoundry :is(.ef-hero-tab,.ef-button,.ef-toggle){transition:none}
 }
+
+/*
+ * RGI09 GLINDA CYBERGOTH CONTINUITY · ART DIRECTION
+ * This is Vixen's existing pink-couture cathedral infused with platinum,
+ * ultraviolet, electric photonics and smoky glass. These accents deliberately
+ * preserve the existing fox/Glinda/Mugler aesthetic; the new optics perform
+ * mathematics instead of replacing the established style.
+ */
+#vixenElectricFoundry{
+ --ef-rose:#f3a3cf;--ef-ultra:#c49aff;--ef-ice:#a2e9ff;
+ --ef-metal:#d1d6e4;--ef-shell:#342335;
+ --ef-hair:rgba(225,162,209,.40);
+ background:
+  radial-gradient(ellipse 80% 58% at 84% -12%,rgba(217,98,170,.31),transparent 70%),
+  radial-gradient(ellipse 72% 80% at -15% 80%,rgba(132,86,181,.20),transparent 70%),
+  linear-gradient(150deg,#1b1422 3%,#252130 44%,#080a10 100%);
+ border-color:rgba(232,176,218,.7);
+ box-shadow:inset 0 0 0 2px rgba(21,15,25,.88),
+ 0 0 0 2px rgba(8,7,16,.9),0 35px 70px rgba(25,10,21,.45);
+}
+#vixenElectricFoundry:before{
+ background:linear-gradient(90deg,transparent,#eab5d8 12%,
+  #fff6fc 29%,#c59cff 54%,#9ce9ff 71%,#ffc6e5 85%,transparent);
+ box-shadow:0 0 18px 3px rgba(224,125,210,.48);
+}
+#vixenElectricFoundry .ef-header{
+ background:
+  radial-gradient(ellipse 68% 200% at 90% -55%,rgba(244,146,200,.24),transparent 72%),
+  linear-gradient(90deg,rgba(30,17,32,.93),rgba(41,31,49,.72));
+}
+#vixenElectricFoundry .ef-heading{
+ background:linear-gradient(103deg,#fff7fd,#f2c4df 30%,#eae4f9 57%,#bbd9f2 82%,#f5b8d8);
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+#vixenElectricFoundry .ef-hero-tab{
+ background:linear-gradient(115deg,rgba(39,25,42,.94),rgba(54,46,64,.82));
+ border-right-color:rgba(232,174,218,.29);
+}
+#vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
+ background:linear-gradient(116deg,#8f668a 0%,#49364f 12%,#282130 65%,#14141f 100%);
+ box-shadow:inset 0 3px #ffb6e0,inset 0 -3px rgba(166,177,255,.72);
+}
+#vixenElectricFoundry .ef-pane{
+ background:linear-gradient(165deg,rgba(47,30,48,.89),rgba(11,17,26,.94));
+}
+#vixenElectricFoundry .ef-toggle{
+ background:linear-gradient(95deg,#69446d,#25314b);
+ border-color:#f4bfe0;
+}
+#vixenElectricFoundry .ef-stage{
+ background:radial-gradient(ellipse at 50% 50%,#322541 2%,#0a0d16 75%);
+ box-shadow:inset 0 0 130px rgba(115,53,125,.46);
+}
+#vixenElectricFoundry .ef-optic-chrome{
+ background:
+  linear-gradient(145deg,rgba(255,214,242,.16) 0%,transparent 12% 81%,rgba(242,166,224,.16) 100%),
+  repeating-linear-gradient(90deg,transparent 0 calc(25% - 1px),rgba(222,193,244,.055) 25% 25%);
+}
+#vixenElectricFoundry .ef-aperture-ring{
+ border-color:rgba(255,199,234,.45);
+ box-shadow:0 0 0 24px rgba(242,110,185,.02),
+ 0 0 0 25px rgba(235,160,230,.16),
+ 0 0 0 66px rgba(99,105,195,.03),
+ 0 0 0 67px rgba(189,180,244,.09),
+ 0 0 40px rgba(255,101,199,.21);
+}
+#vixenElectricFoundry .ef-scene-badge{
+ border-color:rgba(248,166,225,.61);
+ box-shadow:inset 0 1px rgba(236,212,245,.12);
+}
+#vixenElectricFoundry .ef-equation{
+ border-color:rgba(244,186,226,.44);
+ box-shadow:inset 0 0 0 1px rgba(0,0,0,.8),
+ 0 0 18px rgba(219,111,199,.14);
+}
+#vixenElectricFoundry .ef-lab-subtitle,
+#vixenElectricFoundry .ef-metric small{color:#f2b0d5}
+#vixenElectricFoundry .ef-gallery-tab[aria-pressed="true"]{
+ background:linear-gradient(110deg,#7b557e,#496583);
+ border-color:#ffbfe8;
+}
