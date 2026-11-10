@@ -306,3 +306,38 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  background:linear-gradient(110deg,#33352C,#24282A);
  color:#F9F36D;
 }
+
+/* Source census remains directly underneath the literary section headline.
+ * The editorial type provides Candidate 3's genre without concealing
+ * scientific counts, documentary status, or human-gated uncertainty. */
+#view-works .view-heading h1,
+#view-gates .view-heading h1,
+#view-protocols .view-heading h1,
+#view-holds .view-heading h1,
+#view-collection .view-heading h1{
+ text-transform:uppercase;
+ text-wrap:balance;
+ overflow-wrap:normal;
+ max-width:1180px;
+}
+#view-works .view-heading .title-annotation,
+#view-gates .view-heading .title-annotation,
+#view-protocols .view-heading .title-annotation,
+#view-holds .view-heading .title-annotation,
+#view-collection .view-heading .title-annotation{
+ text-transform:none;
+ font:italic 400 clamp(18px,1.9vw,28px)/1.25 var(--vf-serif);
+ letter-spacing:-.01em;
+ margin-top:15px;
+}
+@media(max-width:680px){
+ #view-works .view-heading h1,
+ #view-gates .view-heading h1,
+ #view-protocols .view-heading h1,
+ #view-holds .view-heading h1,
+ #view-collection .view-heading h1{
+   font-size:clamp(38px,10vw,57px);
+   letter-spacing:-.05em;
+   overflow-wrap:break-word;
+ }
+}
