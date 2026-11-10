@@ -72,3 +72,25 @@
 @media(prefers-reduced-motion:reduce){
  #operahouseEncounter *{animation:none!important;transition:none!important}
 }
+/* Exclusive active-stage masthead. The common TD613 header names the
+   Operahouse when its independent reader is onstage. Vixen controls are
+   inaccessible until the operator returns to the Vixen Opera. */
+#operahouseStageReturn[hidden]{display:none!important}
+body[data-active-research-stage="OPERAHOUSE"] .site-header .reading-back,
+body[data-active-research-stage="OPERAHOUSE"] .site-header .brand,
+body[data-active-research-stage="OPERAHOUSE"] .site-header .main-nav,
+body[data-active-research-stage="OPERAHOUSE"] .site-header .header-actions,
+body[data-active-research-stage="OPERAHOUSE"] .site-header .mobile-nav{display:none!important}
+body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
+  justify-content:flex-start;min-height:64px;
+}
+#operahouseStageReturn:not([hidden]){
+  display:inline-flex;align-items:center;text-align:left;max-width:100%;min-height:46px;
+  padding:.6rem 1.2rem;border:1px solid #343540;color:#1c1926;
+  background:#f8ed75;letter-spacing:.075em;font:700 .7rem/1.5 ui-monospace,monospace;
+  text-transform:uppercase;white-space:normal;cursor:pointer;
+}
+#operahouseStageReturn:focus-visible{outline:3px solid #15151d;outline-offset:3px}
+@media(max-width:680px){
+  #operahouseStageReturn:not([hidden]){font-size:.63rem;padding:.5rem .8rem;letter-spacing:.035em}
+}
