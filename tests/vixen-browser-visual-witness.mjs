@@ -197,7 +197,10 @@ try {
     assert(salonGeom.top<height-55,'Original Vixen source must be visible in first Salon viewport: '+width);
     await page.screenshot({path:path.join(output,stem+'-salon-entry.png'),fullPage:false});
     const beforeClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
-    await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).fill('105');
+    await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).evaluate(n=>{
+      n.value='105';n.dispatchEvent(new Event('input',{bubbles:true}));
+      n.dispatchEvent(new Event('change',{bubbles:true}));
+    });
     const afterClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
     assert.notDeepEqual(beforeClock,afterClock,'The instrument dial must causally change rendered clock geometry');
     await salon.getByRole('button',{name:/Place both Works in the research cart/}).click();
