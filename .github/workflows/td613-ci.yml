@@ -240,6 +240,17 @@ jobs:
           node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Inspect exact Podium source contract and execute scoped five-role audit
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-podium-source-audit.mjs
+      - name: Preserve exact-source Podium audit and evidence hashes
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-podium-source-audit-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-dual-estate/ci-podium-source-audit.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Execute Podium native five-specialist Dollhouse synthetic refusal witness
         if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
         run: node scripts/verify-vixen-podium-dollhouse.mjs
