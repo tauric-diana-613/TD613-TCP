@@ -316,3 +316,152 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-reader:
    clip-path:none;min-height:0;
  }
 }
+
+/* THE FOYER AS A FOUR-DOOR COUTURE ATELIER
+   Each room is a different invitation, rather than four equal cards.
+   This retains the original foyer buttons, native routing and original fox. */
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
+  position:relative;overflow:hidden;padding-top:clamp(80px,9vw,155px);
+  padding-bottom:clamp(65px,8vw,132px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer:before{
+  width:110%;height:1px;
+  background:linear-gradient(90deg,transparent,#faacdc,#fff6fc,#d2b3ee,transparent);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-foyer-intro h2{
+  max-width:1050px;font-size:clamp(60px,8.8vw,153px);line-height:.84;
+  letter-spacing:-.075em;text-wrap:balance;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-foyer-intro h2 em{
+  color:#ffbcdf;text-shadow:0 18px 45px rgba(207,90,169,.23);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways{
+  display:grid!important;
+  grid-template-columns:1.2fr .78fr 1fr .9fr;align-items:stretch;
+  gap:0;margin-top:clamp(65px,7vw,128px);
+  border-top:1px solid rgba(250,213,241,.42);border-bottom:1px solid rgba(250,213,241,.35);
+  transform:rotate(-.4deg);transform-origin:center;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button{
+  position:relative;min-height:330px;padding:clamp(25px,3vw,51px);
+  border:0;border-right:1px solid rgba(249,220,240,.24);
+  background:transparent;
+  transition:background .3s,transform .3s;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:before{
+  content:'✶';position:absolute;top:10px;right:18px;
+  font:italic clamp(24px,3.3vw,49px)/1 Georgia,serif;
+  color:rgba(251,193,233,.15);pointer-events:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(1){
+  background:linear-gradient(180deg,rgba(255,186,222,.15),transparent 90%);margin-top:-30px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(2){
+  margin-top:47px;border-top:1px solid rgba(250,203,231,.25);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(3){
+  background:radial-gradient(ellipse at 85% 20%,rgba(255,191,232,.17),transparent 70%);
+  margin-top:-16px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(4){
+  margin-top:33px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:hover{
+  transform:translateY(-9px);background:rgba(244,166,222,.15);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button strong{
+  font:400 clamp(27px,2.7vw,48px)/.96 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:-.045em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button .vixen-door-index{
+  font-size:10px;letter-spacing:.2em;
+}
+@media(max-width:1050px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways{
+   grid-template-columns:repeat(2,minmax(0,1fr));transform:none;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(n){
+   margin:0;min-height:235px;padding:25px;
+   border-top:0;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(-n+2){
+   border-bottom:1px solid rgba(250,203,231,.3);
+ }
+}
+@media(max-width:540px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(n){
+   min-height:200px;padding:18px 15px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button strong{font-size:29px}
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-foyer-intro h2{
+   font-size:clamp(55px,12.5vw,88px);
+ }
+}
+/* TWO ORIGINAL PERFORMERS, ONE OPEN QUESTION.
+   The Salon is a pair of independent authorial silhouettes connected by a
+   seam, rather than stacked administrative input cards. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
+  position:relative;overflow:visible;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
+  background:linear-gradient(112deg,#eabbd6,#1d1327);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card{
+  min-height:440px;padding:clamp(28px,5vw,73px);
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 36px),calc(100% - 36px) 100%,0 100%);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(2){
+  clip-path:polygon(36px 0,100% 0,100% 100%,0 100%,0 36px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-work-title{
+  max-width:850px;font:italic 400 clamp(32px,4.2vw,73px)/.98 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:-.058em;margin:18px 0 33px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
+  width:84px;height:84px;font-size:60px;box-shadow:0 0 0 18px rgba(27,14,36,.35);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program{
+  position:relative;overflow:hidden;padding:clamp(33px,4.8vw,76px);
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program:after{
+  content:'∴';position:absolute;bottom:-.2em;right:.02em;
+  font:italic 230px/1 Georgia,serif;color:rgba(68,35,80,.05);
+  pointer-events:none;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks{
+  padding:clamp(41px,6vw,90px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question{
+  padding:clamp(44px,7vw,95px);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question:before{
+  content:'✶  THE QUESTION IS THE GARMENT  ✶';
+  display:block;margin-bottom:28px;
+  font:italic clamp(20px,2.6vw,36px)/1.2 Didot,Georgia,serif;
+  letter-spacing:.02em;color:#5f3c61;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-theorem{
+  font:italic 400 clamp(27px,4vw,58px)/1.22 Didot,'Bodoni MT',Georgia,serif;
+  max-width:1100px;
+}
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
+   grid-template-columns:minmax(0,1fr);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(n){
+   min-height:0;clip-path:none;padding:32px 22px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-work-title{
+   font-size:clamp(34px,9vw,54px);margin:12px 0 20px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
+   width:55px;height:55px;font-size:37px;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon :is(.vs-clocks,.vs-question){
+   padding:26px 20px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-doorways button{
+  transition:none!important;transform:none!important;
+ }
+}
