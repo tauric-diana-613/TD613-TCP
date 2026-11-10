@@ -1,0 +1,19 @@
+/** Verify exact-head native Dollhouse audit completion without equating HOLD to CI failure. */
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const path=process.argv[2]||'audit-artifacts/pr1735_native_dollhouse_receipt.json';
+const r=JSON.parse(readFileSync(path,'utf8'));
+const roles=['PEDAGOGUE','APERTURE','ATLAS','FADT','TEMPORAL_CUSTODIAN'];
+assert.equal(r.source_revision,process.env.GITHUB_SHA,'actual executing GitHub SHA required');
+assert.equal(r.source_revision_verified,true,'verified actual git SHA required');
+assert.deepEqual([...r.roles_executed].sort(),roles.sort(),'all five native specialists must run');
+assert.ok(r.evidence_manifest?.length>=8,'source-bound evidence verification required');
+assert.ok(r.evidence_manifest.every(e=>e.verified===true),'every cited code/custody item must exist and be verified');
+assert.equal(r.empirical_replication_count,0,'shared synthetic experiment earns zero empirical replication');
+assert.equal(r.orchestrator?.human_closure_required,true,'human science closure is reserved');
+assert.equal(r.orchestrator?.release_authority,false,'cannot grant release');
+assert.equal(r.orchestrator?.deployment_authority,false,'cannot grant deployment');
+assert.ok(r.orchestrator?.decision?.startsWith('HELD'),'deliberately adversarial counterworlds must not be rubber-stamped');
+assert.ok(r.specialist_findings?.length===5,'all five specialist receipts retained');
+assert.ok(r.specialist_findings.some(x=>x.verdict==='HELD'),'a real specialist veto must survive');
+console.log(JSON.stringify({nativeAudit:true,sourceSHA:r.source_revision,decision:r.orchestrator.decision,roles:r.roles_executed,specialists:r.specialist_findings.map(x=>({role:x.role,verdict:x.verdict,status:x.status,infractions:x.infractions})),infractions:r.detected_infractions,replication:r.empirical_replication_count,release:r.orchestrator.release_authority},null,2));
