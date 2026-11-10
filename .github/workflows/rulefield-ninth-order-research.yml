@@ -1,4 +1,4 @@
-name: Rulefield IX — source-linked research receptor
+name: Rulefield Succession — canonical custody, agent-neutral handoff and Ninth research
 
 on:
   push:
@@ -13,21 +13,109 @@ permissions:
   contents: read
 
 concurrency:
-  group: rulefield-ix-${{ github.event.pull_request.head.sha || github.sha }}
+  group: rulefield-succession-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
-  rulefield_ninth_order_receptor:
-    name: Rulefield IX source identity, typed holds and nonpromotion
+  canonical_and_research:
+    name: 99 inherited Git blobs + full Rulefield tests + Ninth-Order research holds
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Execute source-linked Rulefield receptor tests
-        run: node --test tests/rulefield-ninth-order-rulefield-receptor.test.mjs
-      - name: Preserve historical source and no authority promotion
+      - name: Execute full scoped Rulefield suite and original ancestry verification
+        run: node --test tests/rulefield-*.test.mjs
+      - name: Execute source-linked research receptor and invariants
         run: |
-          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const p=JSON.parse(readFileSync('packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json','utf8'));assert.equal(p.canonicalMutation,false);assert.equal(p.temporalGuardianDisposition,'NO_PROMOTION_WITHOUT_INDEPENDENT_MATCHED_EVIDENCE');assert.equal(p.humanClosure,'RESERVED');assert.equal(p.experimentB,'HELD');assert.equal(p.externalAssayRef.parameters,1512);"
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs baseline
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const p=JSON.parse(readFileSync('packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json','utf8'));assert.equal(p.canonicalMutation,false);assert.equal(p.originalRulePriorityCount,70);assert.equal(p.proposedRulefieldsCount,86);assert.equal(p.retainedHistoricalRecords,596);assert.equal(p.humanClosure,'RESERVED');assert.equal(p.experimentB,'HELD');assert.equal(p.externalAssayRef.parameters,1512);"
+      - name: Run verified ZIP intake negative and positive tests
+        run: python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+
+  portable_handoff:
+    name: Exact-head complete portable Rulefield ZIP — extract and retest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_ARCHIVE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate source-preserving full-stack archive
+        run: python3 scripts/build-rulefield-handoff.py --output-dir dist --exact-head "$EXPECTED_ARCHIVE_SHA"
+      - name: Verify portable ZIP contents and quarantine intake contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Rulefield_Succession_Handoff_*.zip)
+          test "${#files[@]}" -eq 1
+          python3 scripts/rulefield-intake.py verify "${files[0]}"
+          python3 -m zipfile -t "${files[0]}"
+          mkdir -p "$RUNNER_TEMP/rulefield-portable"
+          unzip -q "${files[0]}" -d "$RUNNER_TEMP/rulefield-portable"
+          cd "$RUNNER_TEMP/rulefield-portable"
+          node --test tests/rulefield-*.test.mjs
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs help > /dev/null
+          node scripts/rulefield-amend.mjs baseline > /dev/null
+          python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Upload sole inner source ZIP for agent-neutral handoff
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-agent-neutral-exact-head-handoff
+          path: dist/TD613_Rulefield_Succession_Handoff_*.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  native_dollhouse_audit:
+    name: Genuine five-specialist Dollhouse audit — retained HELD, no release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native five-specialist /dollhouse-audit on exact PR head
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_ADVERSARIAL_INPUT.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1734_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1734_stdout.json
+          status=$?
+          echo "$status" > audit-artifacts/pr1734_native_exit_code.txt
+          set -e
+          if [ "$status" -gt 1 ]; then exit "$status"; fi
+      - name: Enforce authentic receipt, exact source revision and retained adversarial holds
+        run: node scripts/check-rulefield-pr1734-dollhouse-verdict.mjs audit-artifacts/pr1734_native_dollhouse_receipt.json
+      - name: Publish specialist receipts without human closure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-native-dollhouse-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
