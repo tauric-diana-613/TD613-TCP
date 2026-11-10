@@ -23,6 +23,13 @@ def main(out):
     assert "Eclipse–Omega" not in candidate and "Eclipse-Omega" not in candidate and "G-001" not in candidate
     chamber=(APP/"encyclopedia"/"vixen-estate"/"research-chamber.mjs").read_text(encoding="utf8")
     assert "membrane.search(" not in chamber and "membrane.getRecord(" not in chamber
+    assert 'id="vixenSynthesisSalon"' in candidate, "Vixen Salon absent"
+    assert 'data-view="collection"' in candidate, "Research cart missing"
+    for name in ["synthesis-salon.mjs","synthesis-salon.css","synthesis-salon-engine.mjs"]:
+        assert (APP/"encyclopedia"/"vixen-estate"/name).is_file(), "Unpackaged Vixen Salon module: "+name
+    podium=(REF/"podium"/"manifest.json")
+    assert podium.is_file() and len(json.loads(podium.read_text(encoding="utf8"))["routes"])==12,
+        "Machine Podium / Salon bridge contract missing"
     assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
     assert (REF/"vixen-operator-encounter.mjs").is_file()
     assert (REF/"vixen-operator-encounter.css").is_file()
@@ -71,6 +78,30 @@ SEPARATE 1,141-record Universal reference estate.
 Do not open the HTML by double-clicking (file scheme blocks the modules
 and reference requests). A local HTTP server is sufficient: GitHub main
 and public TD613.com deployment are not required.
+
+## Test the source-first Vixen Synthesis Salon (one coherent creative Opera)
+
+1. Choose **06 · Salon** from the top menu, or **Synthesis Salon & Research Cart** from the mobile navigation.
+2. Inspect *two original Vixen Works* and deliberately select one archival
+   manifestation for each. Confirm IDs, distinct authorship, original filenames,
+   declared SHA-256 digests and any unadjudicated human gate.
+3. Choose one of the six source-recorded giveback tracks and a separate
+   documentary method from the 21-instrument source list.
+4. Switch encounter route I→II vs II→I. The route history changes while
+   source identities remain invariant.
+5. Move **Synthetic arrival lag** between 0 and 120 ticks. The five-clock
+   visual score must change causally, while its labels still refuse to claim
+   equivalence among transformer, token, surrogate, wall, and 48 kHz clocks.
+6. Add both Works to the **existing Research Cart**, which survives from the
+   previous Vixen implementation. Saved items must be visible in the source
+   tray; no sale, backend submission, or foreign performer is permitted.
+7. Compose a source-attributed question or supply your own; inspect the
+   falsifiable predicate, counterworld, evidence deficits and the
+   unexecuted four-arm Experiment B competent-union comparison. Refract
+   encounter order. Use Rest and Resume and inspect the preserved question.
+8. Export the **local** question receipt or copy an inert Podium JSON batch.
+   These operations invoke no native tools, run no protected Flight,
+   admit no record and grant no scientific closure.
 
 ## Test the Vixen Opera (source-bound Folios)
 
@@ -126,7 +157,11 @@ A task is a JSON object:
 
 A batch is a JSON array of such objects; their sequence matters.
 For actual read operations use universal.open, universal.search,
-universal.get, universal.related, then synthesis.propose. The system
+universal.get, universal.related, then synthesis.propose.
+New Opera-native tasks `vixen.salon.compose` and
+`experiment_b.preregister` use exactly the same source-bound kernel
+as the human Synthesis Salon, but return held unexecuted proposals.
+Neither converts a declared Work hash into original-body verification. The system
 refuses unseen records, unratified crosswalks and unconnected native
 research engines. Rulefield, Atlas, Aperture, Dollhouse, and the native
 Universal Atelier receiver have **explicit adapter slots**, not
