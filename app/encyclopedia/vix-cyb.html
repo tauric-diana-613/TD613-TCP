@@ -2151,6 +2151,14 @@ body[data-view="overview"] .reading-back{display:none}
       if (!q) return true;
       return (f.id + ' ' + f.title + ' ' + f.summary + ' ' + f.fallback + ' ' + f.status).toLowerCase().includes(q);
     });
+    // Deliberate editorial edit: the four flagship mathematical identities
+    // appear first, across both original folio families. This reorders only
+    // PRESENTATION, not the canonical DATA archive, source IDs or citations.
+    const curatedIds=['TCC-01','TCC-04','RC-03','RC-10'];
+    const displayFolios=(!q&&state.formulaGroup==='all')
+      ? [...curatedIds.map(id=>filtered.find(f=>f.id===id)).filter(Boolean),
+        ...filtered.filter(f=>!curatedIds.includes(f.id))]
+      : filtered;
     const searching = Boolean(q) || state.formulaGroup !== 'all';
     const expanded = Boolean(state.formulaExpanded || searching);
     listEl.dataset.expanded = String(expanded);
@@ -2166,7 +2174,7 @@ body[data-view="overview"] .reading-back{display:none}
       if (title) title.textContent = expanded ? 'Return to the four featured folios' : 'Explore the full mathematical wardrobe';
       if (count) count.textContent = expanded ? '− Fold the collection' : '+ ' + Math.max(0,filtered.length-4) + ' original folios';
     }
-    listEl.innerHTML = filtered.map((f) => {
+    listEl.innerHTML = displayFolios.map((f) => {
       let displayTitle = f.title;
       let displayStatus = f.status;
       let displayFallback = f.fallback;
