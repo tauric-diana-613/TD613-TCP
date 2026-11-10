@@ -458,6 +458,31 @@ try {
     assert(!/Eclipse[–-]Omega/.test(await salon.innerText()),
       'Foreign research Opera may never appear in Vixen’s authored Salon');
     assert.equal(await salon.getAttribute('data-stage-role'),'VIXEN_OPERA');
+
+    // RGI12 operator rejection regression: source-declared plum/pink values
+    // never constitute proof of a visible pearl proscenium. The browser must
+    // actually load the downstream stylesheet and compute a luminous header.
+    const glindaStage=await page.evaluate(()=>{
+      const stage=document.querySelector('#vixenSynthesisSalon .vs-head');
+      const title=document.querySelector('#vixenSynthesisSalon .vs-title');
+      const source=document.querySelector('#vixenSynthesisSalon .vs-source-card');
+      const bg=stage?getComputedStyle(stage).backgroundImage:'';
+      return {
+       loaded:[...document.styleSheets].some(x=>x.href?.includes('glinda-luminous-proscenium-rgi12.css')),
+       background:bg,
+       titleColor:title?getComputedStyle(title).color:'',
+       sourcePosition:source?.getBoundingClientRect().top??null,
+       stageBottom:stage?.getBoundingClientRect().bottom??null
+      };
+    });
+    assert.equal(glindaStage.loaded,true,
+      'The RGI12 visual architecture must ship to and load in Chromium');
+    assert(/rgb\(255,\s*253,\s*254\)/i.test(glindaStage.background),
+      'Rejected plum-only design is forbidden: large pearl-chrome Glinda area must be present');
+    assert.equal(glindaStage.titleColor,'rgb(32, 19, 33)',
+      'The headlining text must be dark ink on luminous pearl, never the prior white-on-plum');
+    assert(glindaStage.stageBottom>0,'Operator must encounter the computational optical stage');
+
     const overture=page.locator('#view-collection .vs-overture-notes');
     assert.equal(await overture.count(),1,'The original research briefing must remain available');
     assert.equal(await overture.getAttribute('open'),null,'The duplicate introduction begins folded');
