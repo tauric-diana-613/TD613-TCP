@@ -33,8 +33,10 @@ All inputs must specify \`{"schema":"td613.vixen.podium.task/v1","intent":"...",
 6. \`universal.get\`: fetch and verify exact canonical JSON from independently served Universal record, source-scoped.
 7. \`universal.related\`: return recorded Universal graph edges only after record verification; they are not Vixen relations.
 8. \`synthesis.propose\`: two *independent* source coordinates and a human question create a typed \`ua:contract:cross_atelier_witness\`; no crosswalk or surplus credit.
-9. \`engine.capabilities\`: show bounded native adapters and their actual connection state.
-10. \`engine.invoke\`: route ONLY to an explicitly injected, host-authorized native engine, on allowed read/analysis methods; output remains \`UNVERIFIED_ENGINE_ADAPTER_RETURN\` until provenance review.
+9. \`vixen.salon.compose\`: given **two exact, distinct Vixen Work IDs**, one declared giveback track and documentary protocol, construct a falsifiable **unratified** Vixen-only research question. It uses the same pure kernel as the visible Salon and returns \`HELD\` for scientific promotion. Unavailable source bodies remain unavailable.
+10. \`experiment_b.preregister\`: produce the source-preserving four-arm prospective design and internal opposite-order refraction. It cannot execute Experiment B, acquire an independent witness, or deduce a Manifest successor.
+11. \`engine.capabilities\`: show bounded native adapters and their actual connection state.
+12. \`engine.invoke\`: route ONLY to an explicitly injected, host-authorized native engine, on allowed read/analysis methods; output remains \`UNVERIFIED_ENGINE_ADAPTER_RETURN\` until provenance review.
 
 The optional engine slots are **not installed merely because their names appear in a manifest**: \`ATLAS\`, \`RULEFIELD\`, \`APERTURE\`, \`DOLLHOUSE\`, \`UNIVERSAL_ATELIER\`. For instance the native ten-operation Universal Atelier receiver remains separate; its \`prepareImport\`, \`admitRecord\`, and server export are expressly prohibited in Podium.
 
@@ -74,6 +76,16 @@ The Podium can author and stage *test designs*: counterworld operators with matc
 - No automatic detached agent, provider execution, credentials, internal/private EMSTD613 source access, external source ingestion, identity closure, mutation, publication, release, deployment, merge or protected Flight.
 - Output \`HELD\` for absent engine, absent witness, invalid provenance, missing uncertainty, unavailable source body, or an unratified relationship.
 - All route records are volatile and cannot be retroactively called immutable, independently acquired, empirical, signed, or externally witnessed.
+
+## RGI08 · The Reparative Salon materialization
+
+The one commissioned Vixen Opera now contains the **Synthesis Salon**, while the previously constructed Observatory, historical Works, source Folios, eight bilateral gates, twenty-one protocols, six giveback tracks and original session research cart survive. The Salon has two source selectors, an explicitly recorded original manifestation on each side, a prospective giveback track, documentary method, two counter-order routes, and five dimensionless toy-clock values that change under controlled parameter perturbation.
+
+A theory recipe produces an operator-authored or source-attributed **falsifiable question**, not a verified answer. The resulting study's independent reference requirements and missing original manuscript bodies are reported explicitly; the output can be exported locally and translated to a bounded *inert* Podium task batch. No clipboard operation, UI event, or JSON object self-authorizes native engine invocation.
+
+Conductor proposals and machine receipts are downstream research objects, **never** a licence for Vixen to claim an independently sourced Universal record as Performer. Opposite route order retains equal terminal source set while preserving the unequal route memory; equal endpoints alone cannot establish commutativity. Experiment B plans are **preregistration candidates**, with matched competent-union controls, fixed per-arm identification, no protected Flight, and an unknown Manifest successor.
+
+The native DD-02 conductor's two creative candidates and internal refraction remain design scaffolding, not competing installed Operas. The **Palate** remains unborn. Scientific and aesthetic human closure remains RESERVED. Standalone reference domains do not inherit Em's branding or authorship, and Aperture's separate Eclipse–Omega investigation stays outside this Opera.
 
 **Machine interface is operationally inspectable but not self-authorizing.**
 
