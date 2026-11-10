@@ -101,9 +101,15 @@ function makeCPU(canvas){
     const off=(y*w+x)*4;
     let f=fieldAt(optic,px,py,{...model,time});if(!Number.isFinite(f))f=0;
     const a=bounded((f+.85)/1.7,0,1),b=Math.abs(Math.sin(f*17))*a;
-    data[off]=Math.round(9+118*a+35*b);
-    data[off+1]=Math.round(17+157*a+38*b);
-    data[off+2]=Math.round(27+206*a+27*b);
+    const discharge=Math.pow(Math.abs(Math.sin(f*31+time*.06)),18)*
+      bounded((component(model.voltage)-.25)/.75,0,1);
+    // Nickel/porcelain metal + Baker-Miller pink + Arc Flash yellow.
+    // CPU fallback obeys exactly the same couture color contract as GLSL.
+    const metal=20+160*a+32*b;
+    const rose=b*.30;
+    data[off]=Math.round(bounded(metal+45*rose+76*discharge,0,255));
+    data[off+1]=Math.round(bounded(metal+7*rose+69*discharge,0,255));
+    data[off+2]=Math.round(bounded(metal+17*rose+12*discharge,0,255));
     data[off+3]=255;
    }
    sctx.putImageData(img,0,0);
@@ -111,11 +117,11 @@ function makeCPU(canvas){
    const cx=width/2,cy=height/2;
    for(const fraction of [.25,.36,.46]){
     ctx.beginPath();ctx.arc(cx,cy,Math.min(width,height)*fraction,0,Math.PI*2);
-    ctx.lineWidth=1.1;ctx.strokeStyle='rgba(185,221,251,.3)';ctx.stroke();
+    ctx.lineWidth=1.1;ctx.strokeStyle='rgba(246,244,240,.40)';ctx.stroke();
    }
    const bx=cx+pointer.x*cy*.65,by=cy-pointer.y*cy*.65;
    const halo=ctx.createRadialGradient(bx,by,0,bx,by,Math.min(width,height)*.22);
-   halo.addColorStop(0,'rgba(105,210,255,.48)');
+   halo.addColorStop(0,'rgba(249,243,109,.50)');
    halo.addColorStop(1,'rgba(0,0,0,0)');
    ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
   },
