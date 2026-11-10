@@ -28,8 +28,10 @@ def main(out):
     for name in ["synthesis-salon.mjs","synthesis-salon.css","synthesis-salon-engine.mjs"]:
         assert (APP/"encyclopedia"/"vixen-estate"/name).is_file(), "Unpackaged Vixen Salon module: "+name
     podium=(REF/"podium"/"manifest.json")
-    assert podium.is_file() and len(json.loads(podium.read_text(encoding="utf8"))["routes"])==12,
-        "Machine Podium / Salon bridge contract missing"
+    assert (
+        podium.is_file()
+        and len(json.loads(podium.read_text(encoding="utf8"))["routes"]) == 12
+    ), "Machine Podium / Salon bridge contract missing"
     assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
     assert (REF/"vixen-operator-encounter.mjs").is_file()
     assert (REF/"vixen-operator-encounter.css").is_file()
