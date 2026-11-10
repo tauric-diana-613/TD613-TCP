@@ -212,6 +212,13 @@ try {
     assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'true');
     await foundry.locator('.ef-inspector-switch').click();
     assert.equal(await foundry.locator('.ef-readout').isHidden(),true,'The evidence curtain must close safely');
+    const dials=foundry.locator('.ef-dial-cabinet');
+    assert.equal(await dials.getAttribute('open'),null,'The synthetic control cabinet begins gracefully folded');
+    await dials.locator('summary').click();
+    assert.notEqual(await dials.getAttribute('open'),null,'Operator can unfold and manipulate the original model controls');
+    assert.equal(await dials.locator('[data-foundry-dial]').count(),4);
+    await dials.locator('summary').click();
+    assert.equal(await dials.getAttribute('open'),null,'Research instrument controls return to a folded state');
 
     assert.equal(await foundry.locator('.ef-carrier').count(),39);
     assert.equal(await foundry.locator('[data-foundry-dial]').count(),4);
