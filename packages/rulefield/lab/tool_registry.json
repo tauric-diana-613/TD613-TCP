@@ -209,6 +209,16 @@
       "researchStatus": "SYNTHETIC_EXECUTED_LOCAL_NOT_SCIENTIFIC_CLOSURE",
       "protectedExperimentB": "HELD",
       "postExecutionAudit": "NOT_EXECUTED_NATIVE_SKILL"
+    },
+    {
+      "id": "ninth_order_catastrophe_of_confluence",
+      "module": "packages/rulefield/lab/ninth_order_confluence.mjs",
+      "test": "tests/rulefield-ninth-order-confluence.test.mjs",
+      "runner": "scripts/run-ninth-order-confluence-trial.mjs",
+      "researchStatus": "FINITE_SYNTHETIC_SOURCE_FREE_REVIEW_ONLY",
+      "protectedExperimentB": "HELD",
+      "claimCeiling": "NO_EMPIRICAL_EXTERIORITY_OR_CANONICAL_SCIENCE",
+      "historicalSourceTree": "7a91b15b73d850f4774fd07303e82383dc4b2405"
     }
   ]
 }

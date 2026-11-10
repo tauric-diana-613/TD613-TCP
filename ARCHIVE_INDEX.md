@@ -102,3 +102,11 @@ This portable archive contains the **source-free, locally executed** eighth-orde
 Local replay: `node --test tests/rulefield-*.test.mjs` **321/321 passing** on Node v22.16.0 in the patch worktree.
 
 **Corrections:** claimed endpoint-vs-uniform Beta/Gamma rank reversal withdrawn; weighted arithmetic and claimed weight-interval exhaustion invariance corrected; `Aperture_v3_2-alpha.html` DOM actuation and native `/dollhouse-audit` execution not demonstrated; preliminary Argon sigma receipt treated as hypothesis. Previous `PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK` and `HOLD_HOLONOMY_HISTORY_PARITY_FAILED` remain open despite test success. No release, deployment, Flight or scientific ratification.
+
+
+## Ninth-Order research-only successor (2026-11-09)
+
+- Historical source subtree imported byte-identically from Living Rulefield (tree `7a91b15b73d850f4774fd07303e82383dc4b2405`).
+- Executable `ninth_order_confluence.mjs`, independent ten-case tests, source-free trial CLI, and `THE_CITY_THAT_ARRIVED_BEFORE_ITS_PEOPLE.md` dossier.
+- Original Argon `Omega_SCR: 4→2` and unconstrained holonomy witness reconstruction explicitly withdrawn; review-only counterworld claims.
+- Historical predecessor dossier restoration outstanding. Scientific admission, Experiment B, and human closure remain HELD/RESERVED.

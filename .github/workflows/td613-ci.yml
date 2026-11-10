@@ -55,6 +55,7 @@ jobs:
           node scripts/rulefield.mjs stats > /dev/null
           node scripts/rulefield-loom.mjs eighth-order > /dev/null
           node scripts/run-eighth-order-reparative-trial.mjs
+          node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
       - name: Assert original custody/scientific holds stay visible
         run: |
           node --input-type=module -e "import {runEighthOrderTrial} from './packages/rulefield/lab/eighth_order_reparative_consequence.mjs';const x=runEighthOrderTrial();if(!x.preexistingHolds.includes('HOLD_HOLONOMY_HISTORY_PARITY_FAILED')||x.contract.protectedFlight!=='HELD'||x.auditStatus!=='POST_EXECUTION_AUDIT_NOT_RUN_BY_MODULE')process.exit(1)"
