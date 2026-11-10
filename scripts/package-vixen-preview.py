@@ -25,6 +25,16 @@ def main(out):
     assert "membrane.search(" not in chamber and "membrane.getRecord(" not in chamber
     assert 'id="vixenSynthesisSalon"' in candidate, "Vixen Salon absent"
     assert 'id="vixenElectricFoundry"' in candidate, "Vixen flagship Observatory missing"
+    # RGI10: a single end-of-cascade couture design system must be shipped
+    # with actual source-complete progressive gallery controls. It must not
+    # replace or delete any original mathematical Folio.
+    assert 'glinda-cybergoth-rgi10.css' in candidate, "Couture visual system not connected"
+    assert 'id="formulaGalleryReveal"' in candidate and 'data-expanded="false"' in candidate, "Progressive original formula archive missing"
+    visual=(APP/"encyclopedia"/"vixen-estate"/"glinda-cybergoth-rgi10.css")
+    assert visual.is_file(), "RGI10 full-stack couture stylesheet omitted"
+    assert "--arc-flash:#dbc9ff" in visual.read_text(encoding="utf8"), "Mustard accent remained authoritative"
+    assert "body[data-active-research-stage=\"OPERAHOUSE\"] #vixenRoomRail{display:none!important}" in visual.read_text(encoding="utf8"), "Foreign Opera rail may not enter Operahouse"
+
     assert 'observatory-electric-foundry.mjs' in candidate, "Live renderer not connected"
     for name in [
         "observatory-foundry.frag",
