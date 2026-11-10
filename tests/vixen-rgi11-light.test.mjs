@@ -54,6 +54,7 @@ test('Source selection, route and synthetic lag actually alter deterministic opt
  const b=makeVeilFrame({canvas:two.canvas,works:input.works,route:'B_A',lag:110,time:0});
  const c=makeVeilFrame({canvas:three.canvas,works:['W_17','W_02'],route:'A_B',lag:20,time:0});
  assert.equal(a.carriers,39);
+ assert.equal(a.arc_glints,8,'Six near-Loom carriers and two separately recorded source endpoints form eight computed sparks');
  assert.deepEqual(a,same);
  assert.deepEqual(one.steps,repeat.steps);
  assert.notDeepEqual(one.steps,two.steps);
