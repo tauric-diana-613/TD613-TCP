@@ -74,7 +74,16 @@ def open_validated(payload: bytes):
         if not isinstance(item, dict) or not isinstance(item.get("path"), str):
             raise ValueError("INVALID_MANIFEST_ENTRY")
         path = checked_name(item["path"])
-        if not (path.startswith("packages/rulefield/") or path.startswith("scripts/rulefield") or path.startswith("tests/rulefield")):
+        in_package = path.startswith("packages/rulefield/")
+        allowed_script = (
+            path in {"scripts/build-rulefield-handoff.py", "scripts/rulefield-intake.py", "scripts/rulefield.mjs"}
+            or (path.startswith("scripts/rulefield-") and path.endswith(".mjs"))
+        )
+        allowed_test = (
+            path == "tests/test_rulefield_intake.py"
+            or (path.startswith("tests/rulefield-") and path.endswith(".test.mjs"))
+        )
+        if not (in_package or allowed_script or allowed_test):
             raise ValueError("SOURCE_OUTSIDE_RULEFIELD")
         if path in expected_paths:
             raise ValueError("DUPLICATE_MANIFEST_PATH")
