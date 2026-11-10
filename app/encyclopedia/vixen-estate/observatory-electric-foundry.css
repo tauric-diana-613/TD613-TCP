@@ -532,7 +532,7 @@
 #vixenElectricFoundry .ef-notation{
  position:absolute;inset:0;z-index:2;
  width:100%;height:100%;min-height:540px;display:block;
- pointer-events:none;mix-blend-mode:screen;
+ pointer-events:none;mix-blend-mode:normal;
  filter:drop-shadow(0 0 8px rgba(249,243,109,.17));
 }
 #vixenElectricFoundry .ef-optic-chrome{z-index:3}
