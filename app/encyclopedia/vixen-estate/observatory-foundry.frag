@@ -103,32 +103,45 @@ void main(){
  float r=field(p+bend*.88,u_optic,t)*.5+.5;
  float g=f*.5+.5;
  float b=field(p-bend*1.05,u_optic,t)*.5+.5;
- float light=pow(clamp(g+.08,0.,1.),1.4);
- float edges=pow(clamp(slope*8.,0.,1.),2.0);
- float chrome=pow(abs(sin(f*13.+length(p)*.055)),18.);
- vec3 base=palette(f);
- base+=vec3(.67,.68,.67)*(edges*.65+chrome*.38);
- base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.4;
- base+=vec3(.9765,.9529,.4275)*max(0.,r-b)*.38;
- float bands=pow(abs(sin(f*24.+t*.035)),25.)*pow(clamp(light,0.,1.),2.);
- base+=vec3(.9765,.9529,.4275)*bands*.40;
+ // Chromed Vixen metal: normal-driven specular instead of repeated broad
+ // luminance bands. A sampled model derivative is the surface normal;
+ // the imaginary material remains a mathematical visualization.
+ vec3 normal=normalize(vec3(-grad.x*27.,-grad.y*27.,1.));
+ vec3 keyLight=normalize(vec3(-.53,.61,.71));
+ vec3 edgeLight=normalize(vec3(.54,-.38,.75));
+ float curvature=clamp(slope*12.,0.,1.);
+ float specular=pow(max(dot(normal,keyLight),0.),32.)*(.22+.78*curvature);
+ float edgeSpec=pow(max(dot(normal,edgeLight),0.),46.)*(.16+.84*curvature);
+ float steelLight=clamp(.15+.38*(f+.65),.05,.45);
+ vec3 base=palette(f)*steelLight;
+ base+=vec3(.77,.76,.74)*(specular*2.3+edgeSpec*1.12);
+ // Controlled opalescent departure (the operator expressly permits SOME).
+ // It follows actual computed refraction, without taking the Glinda stage
+ // hostage to an uncommissioned cyan background.
+ float opal=smoothstep(.01,.38,abs(r-b))*curvature;
+ base+=vec3(.49,.63,.67)*opal*.09;
+ base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.11;
+ base+=vec3(.9765,.9529,.4275)*max(0.,r-b)*.13;
+ float etched=pow(abs(sin(f*13.+length(p)*.027)),36.)*
+  pow(curvature,1.3);
+ base+=vec3(.9647,.9569,.9412)*etched*.18;
  float potential=length(uv-pointer);
  float arcSwitch=smoothstep(.26,.86,u_model.z);
- float arcRibbon=pow(1.-abs(sin(f*34.+slope*37.+t*1.15)),24.);
- float arc=arcSwitch*arcRibbon*smoothstep(.08,.63,slope*22.)*
-           (.5+.5*pow(max(0.,1.-potential*.3),2.));
- // Yellow is the authorized high-voltage Arc Flash. Pink marks the
- // refracting fringe; porcelain supplies the core of a computed discharge.
- vec3 bright=vec3(.9765,.9529,.4275)*arc*2.12;
- bright+=vec3(1.,.5686,.6863)*arc*.40;
- bright+=vec3(.9647,.9569,.9412)*pow(arc,2.6)*2.0;
- float caustic=pow(max(0.,sin(f*31.+t*.06)),19.)*clamp(slope*19.,0.,1.);
- bright+=vec3(.9765,.9529,.4275)*caustic*.49;
+ // Arc Flash follows model voltage and derivatives. It is spatially
+ // selective, with pink edge dispersion and porcelain-hot centers.
+ float arcRibbon=pow(1.-abs(sin(f*11.+slope*29.+t*.68)),35.);
+ float arc=arcSwitch*arcRibbon*smoothstep(.18,.71,curvature)*
+           (.47+.53*pow(max(0.,1.-potential*.22),2.));
+ vec3 bright=vec3(.9765,.9529,.4275)*arc*2.74;
+ bright+=vec3(1.,.5686,.6863)*arc*.53;
+ bright+=vec3(.9647,.9569,.9412)*pow(arc,2.2)*2.55;
+ float caustic=pow(max(0.,sin(f*18.+t*.10)),35.)*curvature;
+ bright+=vec3(.9765,.9529,.4275)*caustic*.17;
  float radial=length(uv);
  float ring=exp(-pow((radial-.66)*250.,2.))+
             exp(-pow((radial-.82)*200.,2.))*.36;
  float ringMarkers=pow(max(0.,sin(atan(uv.y,uv.x)*48.)),34.);
- base+=ring*(vec3(.72,.72,.71)+vec3(.9765,.9529,.4275)*ringMarkers*.60)*.54;
+ base+=ring*(vec3(.72,.72,.71)+vec3(.9765,.9529,.4275)*ringMarkers*.60)*.33;
  float wires=0.;
  for(int i=0;i<39;i++){
   float q=float(i);
@@ -143,8 +156,8 @@ void main(){
   wires+=stroke*depth*(.24+.76*smoothstep(.03,.62,slope*30.));
  }
  base+=vec3(.9765,.9529,.4275)*min(1.,wires)*.18;
- float vignette=clamp(1.-.21*dot(uv,uv),.25,1.);
+ float vignette=clamp(1.-.43*dot(uv,uv),.14,1.);
  vec3 outRGB=(base+bright)*vignette;
- outRGB=pow(max(outRGB,vec3(0.)),vec3(.83));
+ outRGB=pow(max(outRGB,vec3(0.)),vec3(.96));
  color=vec4(outRGB,1.);
 }
