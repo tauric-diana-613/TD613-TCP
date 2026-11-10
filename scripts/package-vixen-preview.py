@@ -49,6 +49,9 @@ def main(out):
     for folder in (APP/"encyclopedia"/"reference",APP/"encyclopedia"/"vixen-estate"):
         base += [f for f in folder.rglob("*") if f.is_file() and not f.name.startswith(".")]
     files={p.relative_to(APP).as_posix():p.read_bytes() for p in base}
+    # The machine-only Podium CLI uses dynamically resolved modules; preserve
+    # that runtime alongside the exact public assets without adding human UI.
+    files["scripts/vixen-podium.mjs"]=(ROOT/"scripts"/"vixen-podium.mjs").read_bytes()
     readme="""# Vixen Cybernetics Encyclopedia / PR #1730 browser preview
 
 This exact-Git-HEAD preview contains the Vixen operator-facing page,
@@ -106,6 +109,31 @@ The **separate** Universal reference estate remains packaged for independent
 Encyclopedia research. The witness room makes a bounded, operator-initiated
 confrontation available without assigning a counterpart or transferring
 authorship by lexical proximity. The native SQLite receiver remains separate.
+
+## Machine-only Podium · agent-led but human-authorized
+
+The machine-facing contract lives at `encyclopedia/reference/podium/manifest.json`.
+The operator-facing Vixen UI remains untouched by this extra task plane.
+Podium task routes are typed JSON, not hidden visual buttons or auto-agents.
+
+From this extracted preview root, the public-asset-only CLI supports:
+    node scripts/vixen-podium.mjs --manifest
+    node scripts/vixen-podium.mjs --input YOUR_TASK_BATCH.json
+
+A task is a JSON object:
+    {"schema":"td613.vixen.podium.task/v1","intent":"podium.describe","params":{}}
+
+A batch is a JSON array of such objects; their sequence matters.
+For actual read operations use universal.open, universal.search,
+universal.get, universal.related, then synthesis.propose. The system
+refuses unseen records, unratified crosswalks and unconnected native
+research engines. Rulefield, Atlas, Aperture, Dollhouse, and the native
+Universal Atelier receiver have **explicit adapter slots**, not
+imaginary built-in providers. They can execute only when a separately
+authorized host supplies real native tool implementations.
+
+The machine receipts are session-local research material, not signed
+human custody, empirical surplus, or automatic approval.
 
 ## Scope and limits
 
