@@ -661,3 +661,37 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel h2{
    grid-column:auto;
  }
 }
+
+/* SALON SOURCE-FIRST CORRECTION
+   Don't repeat a huge house-page title immediately before the native
+   theorem's own authored proscenium. Keep the real cart-export action. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:16px;min-height:0;margin-bottom:17px;padding:0 0 15px;
+ border-bottom:1px solid rgba(245,188,223,.32);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1{
+ font:600 clamp(16px,2vw,25px)/1.14 ui-monospace,monospace;
+ letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1 .title-annotation{
+ display:inline;margin-left:14px;font:italic 400 .65em/1.4 Georgia,serif;
+ text-transform:none;letter-spacing:0;color:#edc0df;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .intro{
+ font:400 12px/1.5 Georgia,serif;max-width:690px;margin:5px 0 0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .eyebrow{
+ font-size:8px;margin:0 0 7px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection #exportTrayBtn{
+ min-height:42px;white-space:normal;
+}
+@media(max-width:730px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
+  flex-direction:column;align-items:stretch;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1 .title-annotation{
+  display:block;margin:5px 0 0;
+ }
+}
