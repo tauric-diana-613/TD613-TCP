@@ -72,6 +72,67 @@ function glassPlane(ctx,points,color,alpha=.11){
  ctx.closePath();ctx.fillStyle=color;ctx.globalAlpha=alpha;ctx.fill();ctx.restore();
  poly(ctx,[...points,points[0]],color,1.6,8);
 }
+
+function smokeGlass(ctx,width,height,model,time){
+ // One local compositor under the computed diagram. Its radial absorption
+ // is stage-space optics, not a replacement of the original Vixen background.
+ // Leaving a dark optical window around the instrument avoids the previous
+ // overbright tiled field competing with source mathematics.
+ const cx=width*.5,cy=height*.52,r=Math.min(width,height)*.62;
+ ctx.save();
+ ctx.fillStyle='rgba(8,9,13,.21)';
+ ctx.fillRect(0,0,width,height);
+ const glass=ctx.createRadialGradient(cx,cy,r*.04,cx,cy,r);
+ glass.addColorStop(0,'rgba(8,8,14,.69)');
+ glass.addColorStop(.48,'rgba(16,14,22,.58)');
+ glass.addColorStop(.70,'rgba(24,20,27,.28)');
+ glass.addColorStop(1,'rgba(8,8,13,.035)');
+ ctx.fillStyle=glass;
+ ctx.fillRect(0,0,width,height);
+ // Light slits follow synthetic voltage and temporal phase. Grey-nickel
+ // mirror edges stay subordinate to the pink/yellow research score.
+ const sweep=(Math.sin(time*.23+model.twist*3)+1)*.5;
+ const slit=ctx.createLinearGradient(width*sweep-width*.12,0,width*sweep+width*.12,height);
+ slit.addColorStop(0,'rgba(246,244,240,0)');
+ slit.addColorStop(.49,'rgba(246,244,240,.015)');
+ slit.addColorStop(.5,'rgba(249,243,109,.047)');
+ slit.addColorStop(.51,'rgba(255,145,175,.015)');
+ slit.addColorStop(1,'rgba(246,244,240,0)');
+ ctx.fillStyle=slit;ctx.fillRect(0,0,width,height);
+ ctx.restore();
+}
+function computedArc(ctx,from,to,charge,time,phase=0){
+ // Only explicit simulated charge drives a lightning path. Endpoints
+ // are supplied by the current mathematical instrument geometry, rather
+ // than a random visual particle generator.
+ if(charge<.58)return;
+ const q=clip((charge-.58)/.42),steps=34;
+ const dx=to[0]-from[0],dy=to[1]-from[1];
+ const d=Math.max(1,Math.hypot(dx,dy));
+ const nx=-dy/d,ny=dx/d;
+ const amplitude=Math.min(14,d*.085)*q;
+ const points=[];
+ for(let i=0;i<=steps;i++){
+  const u=i/steps;
+  const env=Math.sin(Math.PI*u);
+  const jitter=(Math.sin(u*131+phase+time*2.9)*
+   Math.cos(u*71+phase*.8-time*1.7)+
+   .35*Math.sin(u*287+time*3.9))*.65*env*amplitude;
+  points.push([from[0]+dx*u+nx*jitter,from[1]+dy*u+ny*jitter]);
+ }
+ poly(ctx,points,ink.pink,5.2*q,21);
+ poly(ctx,points,ink.arc,2.7*q,15);
+ poly(ctx,points,ink.porcelain,.8*q,8);
+ for(const u of [.27,.63,.79]){
+  const i=Math.floor(u*steps),start=points[i];
+  const end=[start[0]+nx*d*.075*q+dx*.07,
+   start[1]+ny*d*.075*q+dy*.07];
+  poly(ctx,[start,
+   [start[0]+(end[0]-start[0])*.45+ny*amplitude,
+    start[1]+(end[1]-start[1])*.45-nx*amplitude],
+   end],ink.arc,1.2*q,12);
+ }
+}
 function sourceSeam(ctx,cx,cy,r,params){
  // Two archival loci never collapse into one frame. Their joint path
  // intersects a computed seam while preserving independent endpoints.
@@ -106,6 +167,7 @@ function control(ctx,w,h,params,time){
   mono(ctx,d.t,tx,ty+ry+26,10,d.col,'center');
   const to=[cx+r*d.x*.25,cy+r*d.y*.22];
   line(ctx,[tx,ty],to,d.col,1.3,9);
+  if(d.n==='W')computedArc(ctx,[tx,ty],to,params.voltage,time,1.7);
  }
  ring(ctx,cx,cy,r*.27,ink.porcelain,1.4,.74,Math.PI*.2,Math.PI*1.85,11);
  const alive=params.witness>.5&&params.voltage>.3;
@@ -156,6 +218,8 @@ function algedonic(ctx,w,h,params,time){
  poly(ctx,arr.map((a,i)=>pt(i,a.ema)),ink.porcelain,2,9);
  const spike=pt(5,params.voltage);
  diamond(ctx,spike[0],spike[1],8,ink.pink);
+ computedArc(ctx,spike,[spike[0]+ww*.26,thresholdY],
+  params.voltage,time,params.gain*6.);
  if(params.voltage>=trigger){
   for(let i=0;i<9;i++){
    const t=i/9;
@@ -270,6 +334,8 @@ export function paintComputationalScore(canvas,{labId='LAB_TCC-01',
  if(!ctx)throw new Error('COMPUTATIONAL_SCORE_CONTEXT_UNAVAILABLE');
  ctx.setTransform(pxWidth/width,0,0,pxHeight/height,0,0);
  ctx.clearRect(0,0,width,height);
+ smokeGlass(ctx,width,height,{
+  twist:clip(model.twist),voltage:clip(model.voltage)},time);
  const gain=clip(model.gain),witness=clip(model.witness),
   voltage=clip(model.voltage),twist=clip(model.twist);
  const params={gain,witness,voltage,twist};
