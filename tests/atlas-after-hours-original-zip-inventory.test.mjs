@@ -30,6 +30,6 @@ test('original ZIP is an external custody source rather than a byte-exact archiv
  assert.equal(source.restored.length,18);
  // ARCHIVE_INDEX is successor-edited; never assert full 187-file original-byte parity.
  const current=readFileSync(new URL('../ARCHIVE_INDEX.md',import.meta.url));
- const gitBlob=createHash('sha1').update('blob '+current.length+'\\0'.replace('\\0','\0')).update(current).digest('hex');
+ const gitBlob=createHash('sha1').update(Buffer.from('blob '+current.length+String.fromCharCode(0))).update(current).digest('hex');
  assert.notEqual(gitBlob,'47329ec30ac2df0005d84841dc98ad59afa4932a');
 });
