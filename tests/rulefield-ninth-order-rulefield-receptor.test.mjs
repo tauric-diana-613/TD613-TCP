@@ -5,3 +5,14 @@ const source=JSON.parse(readFileSync(new URL('../packages/rulefield/sources/wolf
 test('source-anchored rule and crossing identity without invented entries',()=>{for(const id of p.anchors.rules)assert.ok(source.rules.some(x=>x.id===id),id);for(const id of p.anchors.crossings)assert.ok(source.crossings.some(x=>x.id===id),id)});
 test('no canonical promotion or historic priority mutation',()=>{assert.equal(p.admission,'RESEARCH_PROPOSAL_ONLY');assert.equal(p.canonicalMutation,false);assert.equal(p.originalRulePriorityCount,70);assert.equal(p.proposedRulefieldsCount,86);assert.equal(p.retainedHistoricalRecords,596);assert.equal(p.experimentB,'HELD');assert.equal(p.humanClosure,'RESERVED')});
 test('retains failed Argon rank claim and separate calibration scope',()=>{assert.ok(p.researchClaims.some(x=>x.id==='N9-C2'&&x.claim.includes('rank 5')));assert.ok(p.researchClaims.some(x=>x.id==='N9-C6'&&x.empirical==='HOLD'));assert.equal(p.type,'PROPOSE_ASSAY')});
+
+test('generalization findings are bounded and anchored to independent finite trial',()=>{
+  const ids=new Set(p.researchClaims.map(x=>x.id));
+  for(const id of ['N9-C3','N9-C7','N9-C8','N9-C9'])assert.ok(ids.has(id),id);
+  assert.equal(p.externalAssayRef.parameters,1512);
+  assert.equal(p.externalAssayRef.testCount,p.externalAssayRef.pass);
+  assert.equal(p.externalAssayRef.scope,'SOURCE_FREE_NONCANONICAL');
+  assert.match(p.researchClaims.find(x=>x.id==='N9-C3').claim,/Helly/);
+  assert.match(p.researchClaims.find(x=>x.id==='N9-C8').claim,/exited/);
+  assert.equal(p.canonicalMutation,false);
+});

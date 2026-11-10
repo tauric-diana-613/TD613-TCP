@@ -46,9 +46,9 @@
     },
     {
       "id": "N9-C3",
-      "kind": "RESEARCH_QUESTION",
-      "claim": "Compare capability co-presence hypergraphs, including nonconvex time sets and pairwise-vs-triple intersections.",
-      "empirical": "REQUIRES_ASSAY"
+      "kind": "CONDITIONAL_INTERVAL_THEOREM_AND_NONCONVEX_COUNTEREXAMPLE",
+      "claim": "On a common time axis at one host, three single closed availability intervals with every pair overlapping for at least dwell d must have a triple overlap of at least d (one-dimensional Helly). Split nonconvex availability sets allow all three pairwise overlaps >=d while their triple intersection is empty.",
+      "empirical": "FINITE_MATHEMATICAL_VALIDATION_ONLY"
     },
     {
       "id": "N9-C4",
@@ -67,6 +67,24 @@
       "kind": "UNTESTED_DYNAMICAL_HYPOTHESIS",
       "claim": "Z_C=sqrt(3)/2 is an exact unit equilateral apex; a claimed Marrowline phase attractor and zero mirror rate require separate actual observations.",
       "empirical": "HOLD"
+    },
+    {
+      "id": "N9-C7",
+      "kind": "RESTRICTED_MONOTONICITY",
+      "claim": "Within a fixed symmetric four-node graph, fixed queue, fixed windows and deterministic FIFO routing, decreasing radial times cannot shrink feasible three-carrier overlap; the accident requires another changed constraint.",
+      "empirical": "EXHAUSTIVE_FINITE_PARAMETRIC_TEST"
+    },
+    {
+      "id": "N9-C8",
+      "kind": "INVERSE_PROBLEM_LIMIT",
+      "claim": "Headcounts initial=60 and retained=18 cannot identify 42 hidden displaced persons without observing independent exits: 42 displaced/0 exited and 0 displaced/42 exited have identical headline counts.",
+      "empirical": "TWO_SYNTHETIC_WORLDS"
+    },
+    {
+      "id": "N9-C9",
+      "kind": "FINITE_PARAMETER_GRID",
+      "claim": "Independent Atlas branch evaluates 1,512 synthetic policies; 625 have radial compression above one and infeasible triadic collaboration, conditional on specified graph and clocks.",
+      "empirical": "LOCAL_NODE_TEST_RUN_NOT_EXTERNAL_EMPIRICISM"
     }
   ],
   "originalRulePriorityCount": 70,
@@ -75,5 +93,17 @@
   "canonicalMutation": false,
   "temporalGuardianDisposition": "NO_PROMOTION_WITHOUT_INDEPENDENT_MATCHED_EVIDENCE",
   "experimentB": "HELD",
-  "humanClosure": "RESERVED"
+  "humanClosure": "RESERVED",
+  "externalAssayRef": {
+    "repo": "tauric-diana-613/TD613-TCP",
+    "pr": 1735,
+    "commit": "3ab629ae0eb60537b31fcbb221ad0bca5594630c",
+    "moduleBlobSha": "75970cee450d71c6c29ba49b99286795e9e84545",
+    "testBlobSha": "1ef07ad1e69ebbe527d6e999c13856774a244e94",
+    "testCount": 10,
+    "pass": 10,
+    "parameters": 1512,
+    "paradoxCount": 625,
+    "scope": "SOURCE_FREE_NONCANONICAL"
+  }
 }
