@@ -1,5 +1,5 @@
 /**
- * EMSTD613 / Vixen · editorial-genre choreography
+ * EMSTD613 / Vixen · source-owned research choreography
  *
  * User-supplied first design reference: disciplined reading/navigation
  * Second reference: atmospheric pause and layered couture
@@ -9,7 +9,7 @@
  * This module never receives authorship, laboratory or deployment authority.
  * It interacts with the already-working native Vixen study tray and routes.
  */
-export const EDITORIAL_CONTRACT=Object.freeze({
+export const VIXEN_FOYER_CONTRACT=Object.freeze({
  schema:'emstd613.vixen.editorial-genre/v1',
  candidate_lineage:['REFERENCE_1_RESEARCH_RAIL','REFERENCE_2_SPATIAL_ATMOSPHERE',
   'REFERENCE_3_INVITATION_AND_CART'],
@@ -26,7 +26,7 @@ function initialize(){
  const count=document.getElementById('vixenCarryCount');
  const native=document.getElementById('collectionCount');
  if(!foyer||!carry||!count||!native)return Object.freeze({
-  mounted:false,reason:'REQUIRED_CANDIDATE_GENRE_SURFACE_MISSING'
+  mounted:false,reason:'VIXEN_FOYER_SURFACE_MISSING'
  });
  const doors=Array.from(foyer.querySelectorAll('.vixen-doorways button[data-view]'));
  const targets=doors.map(x=>x.dataset.view);
@@ -103,7 +103,7 @@ function initialize(){
    foyer.removeEventListener('pointerleave',onLeave);
   }
  });
- window.VIXEN_EDITORIAL_GENRE=api;
+ window.VIXEN_FOYER=api;
  return api;
 }
 if(typeof document!=='undefined'){
