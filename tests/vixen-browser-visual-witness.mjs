@@ -34,17 +34,17 @@ try {
     page.on('pageerror', (error) => errors.push(error.message));
     const response = await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response?.status(), 200, 'Exact HTTP source must load');
-    // User-supplied Claude Candidates 1/2/3 genre restoration:
+    // User-supplied Vixen source-owned research encounter:
     // editorial interface must be navigable and stateful, not a static
     // screenshot with inoperative buttons.
-    await page.waitForFunction(()=>window.VIXEN_EDITORIAL_GENRE?.mounted===true,null,{timeout:15000});
-    // Candidate 3's signature Fox House room rail is now a true Vixen
+    await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:15000});
+    // Vixen's signature Fox House room rail is now a true Vixen
     // route surface, not a second set of dummy links or a second router.
     const foxRail=page.locator('#vixenRoomRail');
     assert.equal(await foxRail.locator('button[data-view]').count(),8);
     if(width>=1280){
       assert.equal(await foxRail.isVisible(),true,
-        'Wide desktop must restore the eight-room Claude C3 research rail');
+        'Wide desktop must restore the eight-room Vixen Fox House research rail');
       assert.equal(await foxRail.locator('button[aria-current="page"]').count(),1);
       await foxRail.locator('button[data-view="works"]').click();
       assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
@@ -67,22 +67,45 @@ try {
       return {
         display:getComputedStyle(document.querySelector('.vixen-doorways')).display,
         overflow:document.documentElement.scrollWidth-innerWidth,
-        active:window.VIXEN_EDITORIAL_GENRE?.getState?.(),
+        active:window.VIXEN_FOYER?.getState?.(),
         label:f.querySelector('h2')?.textContent,
         inheritedRuntime:!!window.VIXEN_STUDY_TRAY
       };
     });
-    assert.equal(genre.display,'grid','Candidate invitation must be spatial and interactive');
+    assert.equal(genre.display,'grid','Vixen invitation must be spatial and interactive');
     assert(genre.overflow<=1,'Editorial foyer must not cause horizontal overflow');
     assert.equal(genre.active?.source_estate,'EMSTD613');
     assert.equal(genre.active?.doorways?.length,4);
     assert.equal(genre.inheritedRuntime,true,'Source study tray must remain native owner');
     assert.equal(await page.locator('#vixenCarryRail').isHidden(),true,
       'The empty research-cart panel must not obscure editorial invitations');
+    // Visual qualification begins with the operator's ORIGINAL image.
+    // A screenshot scrolled to the secondary foyer cannot be called a
+    // frontispiece/entrance witness or substitute for the Mugler artwork.
+    const hero=page.locator('#view-overview > #cover');
+    const originalArt=hero.locator('.hero-art img');
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    await page.waitForTimeout(200);
+    assert.equal(await hero.isVisible(),true,'Original Mugler frontispiece missing');
+    const img=await originalArt.evaluate(node=>({
+      complete:node.complete,width:node.naturalWidth,height:node.naturalHeight,
+      alt:node.alt,visible:node.getBoundingClientRect().height>100,
+      source:node.currentSrc.slice(0,35)
+    }));
+    assert(img.complete&&img.width>=300&&img.height>=300&&img.visible,
+      'Original embedded Mugler sculpture must render in the first viewport: '+JSON.stringify(img));
+    assert(img.alt.includes('Mugler-unchained chromepunk'));
+    const topHero=await hero.boundingBox();
+    assert(topHero&&topHero.y<160&&topHero.height>=600,
+      'The real frontispiece must own the initial viewport');
+    await page.screenshot({
+      path:path.join(output,'vixen-'+width+'x'+height+'-mugler-chromepunk-frontispiece.png'),
+      fullPage:false
+    });
     await foyer.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     await page.screenshot({
-      path:path.join(output,'vixen-'+width+'x'+height+'-claude-editorial-foyer.png'),
+      path:path.join(output,'vixen-'+width+'x'+height+'-fox-house-research-console.png'),
       fullPage:false
     });
     await foyer.locator('button[data-view="works"]').click();
@@ -95,7 +118,7 @@ try {
       return id;
     });
     await page.waitForFunction(()=>{
-      return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===1;
+      return window.VIXEN_FOYER?.getState?.().carried_items===1;
     },null,{timeout:4000});
     assert.equal(await page.locator('#vixenCarryCount').textContent(),'1');
     if(width>680){
@@ -107,7 +130,7 @@ try {
     }
     await page.evaluate(id=>window.VIXEN_STUDY_TRAY.remove(id),carry);
     await page.waitForFunction(()=>{
-      return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===0;
+      return window.VIXEN_FOYER?.getState?.().carried_items===0;
     },null,{timeout:4000});
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="overview"]').click();
