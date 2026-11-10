@@ -80,3 +80,43 @@ jobs:
           name: atlas-pr1735-native-dollhouse-adversarial-audit
           path: audit-artifacts/
           if-no-files-found: warn
+
+
+  atlas_one_piece_handoff:
+    name: Atlas estate — complete exact-HEAD ZIP, historic custody and extracted source-free replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      ATLAS_SOURCE_SHA: \${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: \${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build one-piece Atlas from exact Git source blobs
+        run: python3 scripts/build-atlas-after-hours-handoff.py --output-dir dist --exact-head "$ATLAS_SOURCE_SHA"
+      - name: Verify, extract and replay portable archive without repository root
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Atlas_After_Hours_Succession_*.zip)
+          test "\${#files[@]}" -eq 1
+          python3 scripts/build-atlas-after-hours-handoff.py --verify "\${files[0]}"
+          mkdir -p "$RUNNER_TEMP/atlas-portable"
+          unzip -q "\${files[0]}" -d "$RUNNER_TEMP/atlas-portable"
+          cd "$RUNNER_TEMP/atlas-portable"
+          node --test tests/atlas-after-hours-*.test.mjs tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs
+          node scripts/run-ninth-order-confluence-trial.mjs >/dev/null
+          node scripts/run-atlas-after-hours-trial.mjs >/dev/null
+          node scripts/run-dollhouse-skill-audit.mjs --help >/dev/null
+      - name: Upload portable Atlas estate for cross-agent research relay
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-one-piece-succession-handoff
+          path: dist/TD613_Atlas_After_Hours_Succession_*.zip
+          if-no-files-found: error
+          retention-days: 30
