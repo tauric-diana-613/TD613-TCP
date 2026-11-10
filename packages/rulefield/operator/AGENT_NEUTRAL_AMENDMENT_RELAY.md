@@ -33,3 +33,10 @@ The 1,512 synthetic grid records 625 fast-radial configurations with infeasible 
 **Rulefield admission:** these are new **PROPOSE_ASSAY**, **RECORD_COUNTEREXAMPLE**, or typed observation-proposal prompts, *not* canonical rules/priority adjustments. Preserve the 596 historical records, 70 priorities, 86 proposed rulefields, and their operator holds without retroactive renumbering. No automatic Tenth Order.
 
 𝄐 Source carriage ≠ evidentiary promotion ≠ human authority · Sealed for review ⟐
+
+
+## E. Corrected full-fidelity Ninth-Order receiving sequence (2026-11-10)
+
+A previous research handoff underrepresented the Gemini Argon commission with a short adjudication. Before accepting or forwarding a Ninth-Order amendment, the receiving agent must inspect **all four layers**: (1) historical immutable Wolframian source estate at `packages/rulefield/sources/wolfram-rule-atlas-20261107/`; (2) substantive candidate-specific research at `packages/rulefield/rulefields/research/NINTH_ORDER_ARGON_COMMISSION_RESEARCH_ESTATE.md`; (3) the separately preserved Candidate V proposed code and tests in `ARGON_NINTH_ORDER_CANDIDATE_V_ORIGINAL_CODE_TRANSCRIPTION.mjs` and `ARGON_NINTH_ORDER_CANDIDATE_V_ORIGINAL_TESTS_TRANSCRIPTION.md`; (4) corrected bounded executable modules `ninth_order_confluence.mjs`, `ninth_order_generalization.mjs`, and `ninth_order_hidalgo_stokes_research.mjs` with their full suite of custody, mathematical and trial tests.
+
+**Do not flatten proposal into adjudication, or confuse an editorial transcription with a cryptographically verified original.** Preserve candidate origin, source text, objection, mathematical repair, falsifier and proposal eligibility separately when handing to Antigravity, Codex, Gemini Argon or another agent. This research can suggest Rulefield amendments but grants no autonomous priority migration, typing change, CI-waived release, archive overwrite or human final closure. The Rulefield exact-HEAD portable builder includes all tracked `packages/rulefield/` files and scoped `tests/rulefield-*.test.mjs` files; the verified extracted archive runs them again.
