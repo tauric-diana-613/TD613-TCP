@@ -1,0 +1,37 @@
+name: Atlas IX — source-free research & custody guard
+
+on:
+  push:
+    branches:
+      - research/atlas-after-hours-ninth-order-confluence-20261109
+  pull_request:
+    branches:
+      - research/atlas-after-hours-eighth-order-adjudicated-20261108
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atlas-ix-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  ninth_order_source_free:
+    name: Ninth Order executable + 18 original byte-hash holds
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run bounded Ninth-Order and predecessor regression suites
+        run: |
+          node --test tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/atlas-after-hours-predecessor-byte-custody.test.mjs
+      - name: Run independent source-free Ninth Order simulation
+        run: node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
+      - name: Assert laboratory holds and external protocol disposition
+        run: |
+          node --input-type=module -e "import {CONTRACT,runGeneralizationGrid} from './packages/rulefield/lab/ninth_order_generalization.mjs';const x=runGeneralizationGrid();if(CONTRACT.experimentalFlight!=='HELD'||CONTRACT.scientificClosure!=='RESERVED'||x.count!==1512)process.exit(1);"
+          grep -F 'NO_ACQUISITION' dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md
