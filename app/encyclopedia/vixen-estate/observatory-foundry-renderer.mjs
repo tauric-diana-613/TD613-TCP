@@ -85,7 +85,7 @@ function makeCPU(canvas){
  if(!ctx)return null;
  let small=null,cache='',fieldGrid=null;
  const palette={graphite:[36,40,42],nickel:[102,112,120],
-  porcelain:[246,244,240],pink:[255,145,175],arc:[249,243,109],
+  porcelain:[246,244,240],pink:[255,145,175],arc:[223,191,238],
   opal:[157,188,193]};
  const lerp=(a,b,t)=>a+(b-a)*t;
  const metalTone=(a,b,t)=>[
@@ -161,7 +161,7 @@ function makeCPU(canvas){
    const haloX=width*(bounded(pointer.x,-1,1)+1)*.5;
    const haloY=height*(1-bounded(pointer.y,-1,1))*.5;
    const outer=ctx.createRadialGradient(haloX,haloY,1,haloX,haloY,Math.min(width,height)*.48);
-   outer.addColorStop(0,'rgba(249,243,109,.18)');
+   outer.addColorStop(0,'rgba(223,191,238,.18)');
    outer.addColorStop(.25,'rgba(255,145,175,.08)');
    outer.addColorStop(.58,'rgba(157,188,193,.035)');
    outer.addColorStop(1,'rgba(36,40,42,0)');
@@ -172,7 +172,7 @@ function makeCPU(canvas){
    edge.addColorStop(.18,'rgba(102,112,120,.02)');
    edge.addColorStop(.36,'rgba(255,145,175,.05)');
    edge.addColorStop(.5,'rgba(36,40,42,0)');
-   edge.addColorStop(.75,'rgba(249,243,109,.04)');
+   edge.addColorStop(.75,'rgba(223,191,238,.04)');
    edge.addColorStop(1,'rgba(246,244,240,.08)');
    ctx.fillStyle=edge;ctx.fillRect(0,0,width,height);ctx.restore();
    // Optical caustics are now legible through dark negative space;
