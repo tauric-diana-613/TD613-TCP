@@ -1,0 +1,123 @@
+{
+  "schema": "td613.atlas-after-hours.pr1735.native-audit-input/v1",
+  "task_scope": "PR1735_ATLAS_AFTER_HOURS_SUCCESSION_NINTH_ORDER_ADVERSARIAL_DOLLHOUSE_EXACT_HEAD",
+  "evidence_class": "SOURCE_CODE_AUDIT",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/rulefield/lab/ninth_order_confluence.mjs",
+    "packages/rulefield/lab/ninth_order_generalization.mjs",
+    "tests/rulefield-ninth-order-confluence.test.mjs",
+    "tests/rulefield-ninth-order-generalization.test.mjs",
+    "tests/atlas-after-hours-predecessor-byte-custody.test.mjs",
+    "artifacts/atlas-after-hours/predecessor_source_custody_receipt.json",
+    "dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md",
+    "ATLAS_EIGHTH_ORDER_SUCCESSOR_MANIFEST.json"
+  ],
+  "assay_notes": {
+    "mode": "SOURCE_FREE_ADVERSARIAL_SCENARIO_NOT_EMPIRICAL_ATTESTATION",
+    "pedagogue": "World Alpha has actuation and dashboard verification at t=1 while downstream material effect appears at later t; NOTICE evidence is withheld, not fabricated.",
+    "aperture": "Rank-deficient 2-output probe of one terminal observable; synthetic projection counterexample, not claimed existing measurement matrix.",
+    "atlas": "Two distinct synthetic route histories share the completion endpoint but differ in hypothetical route/winding metadata.",
+    "fadt": "Counterworlds share terminal completion but diverge in collaboration support; unconditional claim widening is deliberately tested as a negative control.",
+    "temporal": "The archive succession remains before scientific and operator relock. HELD last phase is intentional and neither a forged final receipt nor a release."
+  },
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "ACT",
+          "at": 1
+        },
+        {
+          "phase": "NAME",
+          "at": 1
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 2
+        }
+      ],
+      "t_op": 1,
+      "t_inst": 1
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "TERMINAL_COMPLETION_1",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "TERMINAL_COMPLETION_1",
+        "winding": 1
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "WORLD_ALPHA",
+          "support": [
+            "TERMINAL_COMPLETE"
+          ]
+        },
+        {
+          "condition": "WORLD_GAMMA",
+          "support": [
+            "TERMINAL_COMPLETE",
+            "COLLABORATIVE_TASK"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": true
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INGRESS": {
+          "status": "PASS",
+          "entry_id": "PR1735_SOURCE_ARCHIVE_INTAKE"
+        },
+        "EXECUTION": {
+          "status": "PASS",
+          "entry_id": "PR1735_NINTH_RESEARCH_EXECUTION"
+        },
+        "RELOCK": {
+          "status": "HELD",
+          "entry_id": "PR1735_HUMAN_CLOSURE_RESERVED"
+        }
+      },
+      "required_phases": [
+        "INGRESS",
+        "EXECUTION",
+        "RELOCK"
+      ]
+    }
+  }
+}
