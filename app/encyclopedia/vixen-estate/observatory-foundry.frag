@@ -94,7 +94,12 @@ void main(){
  uv.x*=u_res.x/max(u_res.y,1.);
  vec2 pointer=u_probe*vec2(u_res.x/max(u_res.y,1.),1.);
  float t=u_time;
- vec2 p=uv*205.;
+ // Larger optical folds; the screen must not become an evenly tiled
+ // wallpaper. Vixen's source-specific vector score owns the central stage.
+ float aspect=u_res.x/max(u_res.y,1.);
+ float lensDist=length(vec2(uv.x/aspect,uv.y));
+ float quiet=1.-smoothstep(.20,.80,lensDist);
+ vec2 p=uv*(117.+u_model.x*30.);
  float f=field(p,u_optic,t);
  vec2 grad=vec2(field(p+vec2(1.8,0.),u_optic,t)-field(p-vec2(1.8,0.),u_optic,t),
                 field(p+vec2(0.,1.8),u_optic,t)-field(p-vec2(0.,1.8),u_optic,t))*.27778;
@@ -112,36 +117,53 @@ void main(){
  float curvature=clamp(slope*12.,0.,1.);
  float specular=pow(max(dot(normal,keyLight),0.),32.)*(.22+.78*curvature);
  float edgeSpec=pow(max(dot(normal,edgeLight),0.),46.)*(.16+.84*curvature);
- float steelLight=clamp(.15+.38*(f+.65),.05,.45);
- vec3 base=palette(f)*steelLight;
- base+=vec3(.77,.76,.74)*(specular*2.3+edgeSpec*1.12);
+ // A smoked graphite optical well makes the live S/W/A folio geometry
+ // readable, while the surrounding nickel shell can still catch caustics.
+ float metalDepth=.095+.10*u_model.w+.05*clamp(uv.y+.4,0.,1.);
+ vec3 base=mix(vec3(.026,.025,.030),vec3(.105,.111,.119),metalDepth*2.7);
+ base+=palette(f)*mix(.105,.025,quiet);
+ float brushed=smoothstep(.40,.80,curvature);
+ float specGate=mix(.34,.045,quiet);
+ base+=vec3(.77,.76,.74)*(specular*.73+edgeSpec*.34)*
+  specGate*(.25+.75*brushed);
  // Controlled opalescent departure (the operator expressly permits SOME).
  // It follows actual computed refraction, without taking the Glinda stage
  // hostage to an uncommissioned cyan background.
  float opal=smoothstep(.01,.38,abs(r-b))*curvature;
- base+=vec3(.49,.63,.67)*opal*.09;
- base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.11;
- base+=vec3(.9765,.9529,.4275)*max(0.,r-b)*.13;
+ // Specular opal is permitted as a *narrow* refracted edge, never
+ // a replacement for Glinda pink, chrome or canonical Arc Flash yellow.
+ base+=vec3(.49,.63,.67)*opal*.038*(1.-quiet*.8);
+ base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.075*(1.-quiet*.65);
+ base+=vec3(.9765,.9529,.4275)*max(0.,r-b)*.092*(1.-quiet*.65);
  float etched=pow(abs(sin(f*13.+length(p)*.027)),36.)*
   pow(curvature,1.3);
- base+=vec3(.9647,.9569,.9412)*etched*.18;
+ base+=vec3(.9647,.9569,.9412)*etched*.095*(1.-quiet*.88);
+ // A sparse, continuous specular blade follows the refracted field
+ // and spatial geometry. Unlike sin(f)-banding, it paints a few
+ // intentional high-polish chrome edges instead of wallpaper repeats.
+ float bladeCoordinate=uv.x*.64+uv.y*.82+.09*f+u_model.w*.21;
+ float blade=pow(max(0.,1.-abs(sin(bladeCoordinate*3.9+t*.016))),90.);
+ base+=vec3(.95,.91,.88)*blade*(.035+.16*curvature)*(1.-quiet*.7);
  float potential=length(uv-pointer);
  float arcSwitch=smoothstep(.26,.86,u_model.z);
  // Arc Flash follows model voltage and derivatives. It is spatially
  // selective, with pink edge dispersion and porcelain-hot centers.
  float arcRibbon=pow(1.-abs(sin(f*11.+slope*29.+t*.68)),35.);
  float arc=arcSwitch*arcRibbon*smoothstep(.18,.71,curvature)*
-           (.47+.53*pow(max(0.,1.-potential*.22),2.));
+           (.47+.53*pow(max(0.,1.-potential*.22),2.))*
+           mix(.85,.13,quiet);
+ // The main discharge is composed by the folio's endpoint geometry,
+ // never replaced by a uniform lattice of electric lines.
  vec3 bright=vec3(.9765,.9529,.4275)*arc*2.74;
  bright+=vec3(1.,.5686,.6863)*arc*.53;
  bright+=vec3(.9647,.9569,.9412)*pow(arc,2.2)*2.55;
  float caustic=pow(max(0.,sin(f*18.+t*.10)),35.)*curvature;
- bright+=vec3(.9765,.9529,.4275)*caustic*.17;
+ bright+=vec3(.9765,.9529,.4275)*caustic*.10*(1.-quiet*.82);
  float radial=length(uv);
  float ring=exp(-pow((radial-.66)*250.,2.))+
             exp(-pow((radial-.82)*200.,2.))*.36;
  float ringMarkers=pow(max(0.,sin(atan(uv.y,uv.x)*48.)),34.);
- base+=ring*(vec3(.72,.72,.71)+vec3(.9765,.9529,.4275)*ringMarkers*.60)*.33;
+ base+=ring*(vec3(.72,.72,.71)+vec3(.9765,.9529,.4275)*ringMarkers*.60)*.26;
  float wires=0.;
  for(int i=0;i<39;i++){
   float q=float(i);
@@ -155,8 +177,10 @@ void main(){
   float stroke=1.-smoothstep(width,width*4.,distance);
   wires+=stroke*depth*(.24+.76*smoothstep(.03,.62,slope*30.));
  }
- base+=vec3(.9765,.9529,.4275)*min(1.,wires)*.18;
- float vignette=clamp(1.-.43*dot(uv,uv),.14,1.);
+ base+=vec3(.9765,.9529,.4275)*min(1.,wires)*.055*(1.-quiet*.8);
+ // Full depth graphite behind the central apparatus; nickel reflection
+ // and sparse gold flares appear at its edges without burying its labels.
+ float vignette=clamp(1.-.37*dot(uv,uv),.22,1.);
  vec3 outRGB=(base+bright)*vignette;
  outRGB=pow(max(outRGB,vec3(0.)),vec3(.96));
  color=vec4(outRGB,1.);
