@@ -243,3 +243,65 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-he
    color:CanvasText;
  }
 }
+
+/* RGI12B: The Vixen foyer belongs to the same incandescent Opera.
+ * Full-width luminous invitation, four materially distinct couture doors.
+ * Existing native routing, source authority and all nine research surfaces
+ * remain unchanged. OPERAHOUSE ≠ OPERA ≠ PERFORMER. */
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
+ background:radial-gradient(ellipse 45% 60% at 21% 3%,rgba(255,255,255,.96),transparent 80%),
+  linear-gradient(110deg,#FFFDFE 0%,#FFE0EF 39%,#EF9FCB 54%,#28222C 62%,#080A11 100%);
+ color:#231725;border-top:2px solid #FFF2A9;border-bottom:3px solid #E64F91;
+ box-shadow:inset 0 -70px 90px rgba(10,9,16,.11);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer:after{
+ width:2px;right:39%;top:-20%;height:150%;bottom:auto;
+ transform:rotate(9deg);
+ background:linear-gradient(180deg,transparent,#FFFBE2 32%,#FFF2A9 63%,transparent);
+ box-shadow:0 0 14px rgba(255,242,169,.63);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro{max-width:min(60%,960px)}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro h2{
+ color:#231526;letter-spacing:-.075em;text-shadow:0 2px rgba(255,255,255,.3);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro h2 em{color:#CB347D}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-kicker{color:#8C3B70}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro>p:not(.vixen-foyer-kicker),
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-annotation{color:#4F3246}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways{
+ gap:10px;transform:rotate(-.35deg);border:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button{
+ color:#261626;border:1px solid rgba(177,74,123,.3);
+ background:linear-gradient(145deg,#FFF9FD,#FFD7EB 77%,#F3B5D5);
+ box-shadow:0 15px 36px rgba(44,16,39,.16);
+ clip-path:polygon(0 0,100% 0,100% calc(100% - 24px),calc(100% - 24px) 100%,0 100%);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(2),
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(4){
+ background:linear-gradient(145deg,#30303B,#0B0B12);
+ color:#FFF5FB;border-color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button:nth-child(3){
+ background:linear-gradient(145deg,#FFFBE2,#F5A9CC);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-doorways button:nth-child(odd) :is(strong,.vixen-door-desc){color:#2C1A29}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-doorways button:nth-child(even) :is(strong,.vixen-door-desc){color:#FFF1F8}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-doorways button:nth-child(even) :is(.vixen-door-index,.vixen-door-verb){color:#FFF2A9}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .vixen-doorways button:nth-child(odd) :is(.vixen-door-index,.vixen-door-verb){color:#923C71}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-afterword{color:#6D4D62}
+@media(max-width:920px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
+  background:linear-gradient(162deg,#FFF9FC 0%,#FFD9EA 37%,#F5A9CF 50%,#1B1924 60%,#08090E);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro{max-width:76%}
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways{transform:none}
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways button{clip-path:none;min-height:225px}
+}
+@media(max-width:600px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
+  background:linear-gradient(170deg,#FFFDFE 0%,#FAD6E6 30%,#F5A0CC 48%,#221624 55%,#0C0D13 100%);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro{max-width:100%}
+ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-foyer-intro h2{font-size:clamp(52px,12vw,76px)}
+}
