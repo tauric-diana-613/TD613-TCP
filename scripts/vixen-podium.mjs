@@ -7,6 +7,12 @@
  * node scripts/vixen-podium.mjs --manifest
  * node scripts/vixen-podium.mjs --input path/to/task-batch.json
  * cat task-batch.json | node scripts/vixen-podium.mjs --stdin
+ * TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --input native-commands.json
+ *
+ * Native read tools require both the host's direct-operator attestation and
+ * an explicit CLI switch. This is an execution-lane declaration, not a
+ * cryptographic proof of the human's presence or consent. The JSON task
+ * itself can never authorize native tools or turn read-only into mutation.
  */
 import {readFile,stat} from 'node:fs/promises';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -68,13 +74,26 @@ try{
  const membrane=createVixenReferenceMembrane({
   baseURL:base,fetcher:fileTransport,cryptoProvider:globalThis.crypto
  });
+ // The host supplies execution authority outside the untrusted task JSON.
+ // In portable ZIPs the native engines are intentionally absent; no manifest
+ // or human-facing source can silently import them.
+ const wantsNative=options.includes('--native-read-tools');
+ const hostDirect=process.env.TD613_PODIUM_OPERATOR_DIRECT==='1';
+ if(wantsNative&&!hostDirect)throw Error('HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED');
+ let engineAdapters={};
+ if(wantsNative&&hostDirect){
+  const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
+  engineAdapters=await adapterModule.createPodiumNativeReadAdapters({repoRoot:directory});
+ }
  const podium=createVixenPodium({corpus,membrane,sourceRevision:'LOCAL_CHECKOUT_UNVERIFIED',
-  operatorAuthorized:false,engineAdapters:{}});
+  operatorAuthorized:wantsNative&&hostDirect,engineAdapters});
  const results=[];
  for(const task of tasks)results.push(await podium.dispatch(task));
  const output={schema:'td613.vixen.podium.cli-batch/v1',task_schema:PODIUM_SCHEMA,
   source_custody:'LOCAL_PUBLIC_ASSETS_ONLY',remote_custody:'NOT_CLAIMED',results,
-  route_history:podium.history(),authority:'READ_ONLY_HUMAN_CLOSURE_RESERVED'};
+  route_history:podium.history(),
+  native_host_lane:wantsNative&&hostDirect?'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF':'DISCONNECTED',
+  authority:'READ_ONLY_HUMAN_CLOSURE_RESERVED'};
  console.log(JSON.stringify(output,null,2));
 }catch(e){
  console.error(JSON.stringify({schema:'td613.vixen.podium.cli-error/v1',
