@@ -1,0 +1,33 @@
+name: Rulefield IX — source-linked research receptor
+
+on:
+  push:
+    branches:
+      - research/rulefield-ninth-order-confluence-review-20261109
+  pull_request:
+    branches:
+      - research/living-rulefield-v1-20261107
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rulefield-ix-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  rulefield_ninth_order_receptor:
+    name: Rulefield IX source identity, typed holds and nonpromotion
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute source-linked Rulefield receptor tests
+        run: node --test tests/rulefield-ninth-order-rulefield-receptor.test.mjs
+      - name: Preserve historical source and no authority promotion
+        run: |
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const p=JSON.parse(readFileSync('packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json','utf8'));assert.equal(p.canonicalMutation,false);assert.equal(p.temporalGuardianDisposition,'NO_PROMOTION_WITHOUT_INDEPENDENT_MATCHED_EVIDENCE');assert.equal(p.humanClosure,'RESERVED');assert.equal(p.experimentB,'HELD');assert.equal(p.externalAssayRef.parameters,1512);"
