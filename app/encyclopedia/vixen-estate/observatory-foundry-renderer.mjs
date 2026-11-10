@@ -83,49 +83,102 @@ function makeWebGL(canvas,fragment){
 function makeCPU(canvas){
  const ctx=canvas.getContext('2d',{alpha:false});
  if(!ctx)return null;
- let small=null,cache='';
+ let small=null,cache='',fieldGrid=null;
+ const palette={graphite:[36,40,42],nickel:[102,112,120],
+  porcelain:[246,244,240],pink:[255,145,175],arc:[249,243,109],
+  opal:[157,188,193]};
+ const lerp=(a,b,t)=>a+(b-a)*t;
+ const metalTone=(a,b,t)=>[
+  lerp(a[0],b[0],t),lerp(a[1],b[1],t),lerp(a[2],b[2],t)
+ ];
+ const narrow=(v,power)=>Math.pow(Math.max(0,v),power);
+ const defaultNum=(v,d)=>Number.isFinite(+v)?+v:d;
  return {
   kind:'CANVAS2D_DETERMINISTIC_FIELD',
   paint({width,height,optic='CONTROL_PLANES',model={},pointer={x:0,y:0},time=0}){
-   const step=Math.max(3,Math.ceil(Math.max(width,height)/280));
+   // Layer I · source-driven spatial field. Independent of pixel dimensions,
+   // resampling creates a brushed, refracted material instead of tile art.
+   const step=Math.max(2,Math.ceil(Math.max(width,height)/360));
    const w=Math.ceil(width/step),h=Math.ceil(height/step);
    if(!small||cache!==w+'x'+h){
     small=(canvas.ownerDocument||document).createElement('canvas');
     small.width=w;small.height=h;cache=w+'x'+h;
+    fieldGrid=new Float32Array(w*h);
    }
    const sctx=small.getContext('2d');
    if(!sctx)return;
    const img=sctx.createImageData(w,h),data=img.data,asp=width/height;
+   const params={...model,time};
+   const twist=bounded(defaultNum(model.twist,.45),0,1);
+   const voltage=bounded(defaultNum(model.voltage,.8),0,1);
+   const gain=bounded(defaultNum(model.gain,.72),0,1);
    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
     const px=((x+.5)/w*2-1)*asp,py=((y+.5)/h*2-1);
-    const off=(y*w+x)*4;
-    let f=fieldAt(optic,px,py,{...model,time});if(!Number.isFinite(f))f=0;
-    const a=bounded((f+.85)/1.7,0,1),b=Math.abs(Math.sin(f*17))*a;
-    const discharge=Math.pow(Math.abs(Math.sin(f*31+time*.06)),18)*
-      bounded((component(model.voltage)-.25)/.75,0,1);
-    // Nickel/porcelain metal + Baker-Miller pink + Arc Flash yellow.
-    // CPU fallback obeys exactly the same couture color contract as GLSL.
-    const metal=20+160*a+32*b;
-    const rose=b*.30;
-    data[off]=Math.round(bounded(metal+45*rose+76*discharge,0,255));
-    data[off+1]=Math.round(bounded(metal+7*rose+69*discharge,0,255));
-    data[off+2]=Math.round(bounded(metal+17*rose+12*discharge,0,255));
-    data[off+3]=255;
+    const value=fieldAt(optic,px,py,params);
+    fieldGrid[y*w+x]=Number.isFinite(value)?value:0;
+   }
+   for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const k=y*w+x,o=k*4,f=fieldGrid[k];
+    const dx=(fieldGrid[y*w+Math.min(w-1,x+1)]-fieldGrid[y*w+Math.max(0,x-1)])*.5;
+    const dy=(fieldGrid[Math.min(h-1,y+1)*w+x]-fieldGrid[Math.max(0,y-1)*w+x])*.5;
+    const norm=Math.min(1.0,Math.hypot(dx,dy)*9.5);
+    // True normal shading from neighbor samples; narrow specular
+    // highlights are the optical signature of cold forged metal.
+    const light=.61*dx-.43*dy+.16,denom=Math.hypot(dx,dy,.42);
+    const spec=narrow(Math.max(0,light/denom),12);
+    const smooth=bounded((f+.9)/1.8,0,1);
+    const shadow=.13+.45*smooth+.20*spec;
+    const nickel=metalTone(palette.graphite,palette.nickel,shadow);
+    const porcelain=narrow(Math.max(0,Math.sin(f*12.0+time*.05)),19)*norm;
+    // Refractive Glinda pink and tiny electroluminescent opal
+    // excursions follow field polarity, gain and local derivative.
+    const rose=narrow(Math.max(0,Math.sin(f*9.5+twist*6)),9)*
+      (.1+.32*norm);
+    const opal=narrow(Math.max(0,Math.cos((dx-dy)*26+twist*5)),14)*
+      norm*(.05+.22*gain);
+    // The Arc Flash is a distinct energetic event: voltage + sampled
+    // spatial gradient + field curvature. These colors represent the
+    // synthetic instrument only—not physical discharge measurement.
+    const discharge=narrow(Math.abs(Math.sin(f*28.0+time*.12)),25)*
+      bounded((voltage-.24)/.66,0,1)*Math.min(1,norm*2.5);
+    const base=nickel.map(v=>v*.55+6);
+    const crystal=porcelain*165+spec*75;
+    const r=base[0]+crystal+rose*palette.pink[0]+opal*palette.opal[0]+discharge*palette.arc[0]*1.3;
+    const g=base[1]+crystal+rose*palette.pink[1]+opal*palette.opal[1]+discharge*palette.arc[1]*1.3;
+    const b=base[2]+crystal+rose*palette.pink[2]+opal*palette.opal[2]+discharge*palette.arc[2]*1.1;
+    const px=(x+.5)/w*2-1,py=(y+.5)/h*2-1;
+    const vignette=Math.max(.30,1-.37*(px*px+py*py));
+    data[o]=Math.round(bounded(r*vignette,0,255));
+    data[o+1]=Math.round(bounded(g*vignette,0,255));
+    data[o+2]=Math.round(bounded(b*vignette,0,255));
+    data[o+3]=255;
    }
    sctx.putImageData(img,0,0);
-   ctx.imageSmoothingEnabled=true;ctx.drawImage(small,0,0,width,height);
-   const cx=width/2,cy=height/2;
-   for(const fraction of [.25,.36,.46]){
-    ctx.beginPath();ctx.arc(cx,cy,Math.min(width,height)*fraction,0,Math.PI*2);
-    ctx.lineWidth=1.1;ctx.strokeStyle='rgba(246,244,240,.40)';ctx.stroke();
-   }
-   const bx=cx+pointer.x*cy*.65,by=cy-pointer.y*cy*.65;
-   const halo=ctx.createRadialGradient(bx,by,0,bx,by,Math.min(width,height)*.22);
-   halo.addColorStop(0,'rgba(249,243,109,.50)');
-   halo.addColorStop(1,'rgba(0,0,0,0)');
-   ctx.fillStyle=halo;ctx.fillRect(0,0,width,height);
+   ctx.imageSmoothingEnabled=true;
+   ctx.drawImage(small,0,0,width,height);
+   // Layer II · cold physical-suggestive nickel light, a controlled
+   // spotlight that never replaces the original Baker-Miller palette.
+   const haloX=width*(bounded(pointer.x,-1,1)+1)*.5;
+   const haloY=height*(1-bounded(pointer.y,-1,1))*.5;
+   const outer=ctx.createRadialGradient(haloX,haloY,1,haloX,haloY,Math.min(width,height)*.48);
+   outer.addColorStop(0,'rgba(249,243,109,.18)');
+   outer.addColorStop(.25,'rgba(255,145,175,.08)');
+   outer.addColorStop(.58,'rgba(157,188,193,.035)');
+   outer.addColorStop(1,'rgba(36,40,42,0)');
+   ctx.save();ctx.globalCompositeOperation='screen';
+   ctx.fillStyle=outer;ctx.fillRect(0,0,width,height);
+   const edge=ctx.createLinearGradient(0,0,width*.8,height*.6);
+   edge.addColorStop(0,'rgba(246,244,240,.13)');
+   edge.addColorStop(.18,'rgba(102,112,120,.02)');
+   edge.addColorStop(.36,'rgba(255,145,175,.05)');
+   edge.addColorStop(.5,'rgba(36,40,42,0)');
+   edge.addColorStop(.75,'rgba(249,243,109,.04)');
+   edge.addColorStop(1,'rgba(246,244,240,.08)');
+   ctx.fillStyle=edge;ctx.fillRect(0,0,width,height);ctx.restore();
+   // Optical caustics are now legible through dark negative space;
+   // instrument-specific vector score is composited on its own canvas.
   },
-  dispose(){small=null}
+  dispose(){small=null;fieldGrid=null}
  };
 }
 export async function createFoundryRenderer(canvas,{preferGPU=true}={}){
