@@ -307,6 +307,17 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    paragraph(p.counterfactual),
    mk('h4','','What would have to be measured?'),
    paragraph(p.testable_predicate));
+  const rubric=mk('div','vs-rubric');
+  for(const measurement of p.comparative_measurements){
+   const metric=mk('article','vs-metric');
+   append(metric,
+    mk('span','vs-metric-label',measurement.id+' · NOT MEASURED'),
+    mk('strong','vs-metric-title',measurement.title),
+    mk('code','vs-metric-formula',measurement.formula),
+    paragraph(measurement.positive_interpretation,'vs-note'));
+   rubric.append(metric);
+  }
+  append(box,mk('h4','','The future comparison must earn its numbers'),rubric);
   const list=mk('ul','vs-missing');
   for(const missing of p.missing_evidence)list.append(mk('li','',missing));
   append(box,mk('h4','','Unresolved evidence'),list);
