@@ -906,7 +906,21 @@ body[data-view="overview"] .reading-back{display:none}
           </div>
           <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 22 of 22 mathematical folios</span>
         </div>
-        <div class="formula-list" id="formulaFolioGrid"></div>
+        <div class="formula-gallery-intro">
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE MATHEMATICAL WARDROBE · 22 ORIGINAL FOLIOS</span>
+            <h3>Twenty-two instruments. <em>One collection.</em></h3>
+            <p>Begin with four featured encounters. Open the archive for every recorded formula; filtering and searching always reveal all matches.</p>
+          </div>
+          <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
+        </div>
+        <div class="formula-list" id="formulaFolioGrid" data-expanded="false"></div>
+        <div class="formula-gallery-footer">
+          <button id="formulaGalleryReveal" type="button" class="formula-gallery-reveal" aria-controls="formulaFolioGrid" aria-expanded="false">
+            <span>Explore the full mathematical wardrobe</span>
+            <span class="formula-gallery-count" aria-hidden="true">+ 18 original folios</span>
+          </button>
+          <p class="formula-gallery-fidelity">All 22 folios remain in the original archive · No mathematical claim is changed by presentation.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1398,6 +1412,7 @@ body[data-view="overview"] .reading-back{display:none}
     obsDials: { gain: 72, freshness: 88, pulse: 35 },
     formulaGroup: 'all',
     formulaQuery: '',
+    formulaExpanded: false,
     aiaProjection: 'EXPERIENTIAL',
     workCluster: 'ALL',
     workStatus: 'ALL',
@@ -2135,7 +2150,21 @@ body[data-view="overview"] .reading-back{display:none}
       if (!q) return true;
       return (f.id + ' ' + f.title + ' ' + f.summary + ' ' + f.fallback + ' ' + f.status).toLowerCase().includes(q);
     });
-    if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + DATA.formula_folios.length + ' mathematical folios';
+    const searching = Boolean(q) || state.formulaGroup !== 'all';
+    const expanded = Boolean(state.formulaExpanded || searching);
+    listEl.dataset.expanded = String(expanded);
+    const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
+    if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + DATA.formula_folios.length +
+      ' original folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
+    const reveal = $('formulaGalleryReveal');
+    if (reveal) {
+      reveal.hidden = searching || filtered.length <= 4;
+      reveal.setAttribute('aria-expanded',String(expanded));
+      const title = reveal.querySelector('span:first-child');
+      const count = reveal.querySelector('.formula-gallery-count');
+      if (title) title.textContent = expanded ? 'Return to the four featured folios' : 'Explore the full mathematical wardrobe';
+      if (count) count.textContent = expanded ? '− Fold the collection' : '+ ' + Math.max(0,filtered.length-4) + ' original folios';
+    }
     listEl.innerHTML = filtered.map((f) => {
       let displayTitle = f.title;
       let displayStatus = f.status;
@@ -2151,7 +2180,7 @@ body[data-view="overview"] .reading-back{display:none}
       const links = (f.links || []).map((id) =>
         '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
       ).join(' ');
-      return '<article class="formula-card">' +
+      return '<article class="formula-card" data-folio-id="' + esc(f.id) + '" data-folio-family="' + esc(f.group) + '">' +
         '<div class="badge-row" style="justify-content:space-between">' +
           '<span style="font:600 9.5px var(--font-mono)">' + esc(f.id) + '</span>' +
           '<span class="' + tagClass + '">' + esc(displayStatus) + '</span>' +
@@ -3349,6 +3378,16 @@ body[data-view="overview"] .reading-back{display:none}
       });
     }
 
+    // Full archive remains source-complete in the DOM, visually progressive.
+    // Explicit reader choice controls reveal; search and family filters disclose matches.
+    const galleryReveal=$('formulaGalleryReveal');
+    if(galleryReveal){
+      galleryReveal.addEventListener('click',()=>{
+        state.formulaExpanded=!state.formulaExpanded;
+        renderFormulaFolios();
+        galleryReveal.scrollIntoView({block:'nearest',behavior:state.motionPaused?'instant':'smooth'});
+      });
+    }
     // Formula Filter Controls
     document.querySelectorAll('[data-formula-group]').forEach((btn) => {
       btn.addEventListener('click', () => {
