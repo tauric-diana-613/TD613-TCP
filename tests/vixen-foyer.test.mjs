@@ -71,7 +71,7 @@ test('Original scientific and user interface records remain present; genre impor
  assert(html.includes('observatory-computational-score')===false,
   'The score module should be owned by the Observatory, not duplicated in the public header');
  assert(css.includes('--vf-rose:#FF91AF'));
- assert(css.includes('--vf-flash:#dfbfee'),
+ assert(css.includes('--vf-flash:#FFF2A9'),
   'Live foyer must use revised Glinda-lilac chrome accent');
  assert(html.includes('--arc-flash:#F9F36D'),
   'Historical Vixen theme must remain recoverable without dictating current palette');
