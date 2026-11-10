@@ -38,6 +38,26 @@ try {
     // editorial interface must be navigable and stateful, not a static
     // screenshot with inoperative buttons.
     await page.waitForFunction(()=>window.VIXEN_EDITORIAL_GENRE?.mounted===true,null,{timeout:15000});
+    // Candidate 3's signature Fox House room rail is now a true Vixen
+    // route surface, not a second set of dummy links or a second router.
+    const foxRail=page.locator('#vixenRoomRail');
+    assert.equal(await foxRail.locator('button[data-view]').count(),8);
+    if(width>=1280){
+      assert.equal(await foxRail.isVisible(),true,
+        'Wide desktop must restore the eight-room Claude C3 research rail');
+      assert.equal(await foxRail.locator('button[aria-current="page"]').count(),1);
+      await foxRail.locator('button[data-view="works"]').click();
+      assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
+      assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
+      await foxRail.locator('button[data-view="overview"]').click();
+      assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
+      assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),null);
+    }else{
+      assert.equal(await foxRail.isHidden(),true,
+        'Existing mobile/tablet routing must remain unobstructed');
+    }
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,
+      'The independent Fox House room rail must not add horizontal overflow');
     const foyer=page.locator('.vixen-editorial-foyer');
     assert.equal(await foyer.locator('button[data-view]').count(),4,
       'Four callable research-doorway entrances missing');
