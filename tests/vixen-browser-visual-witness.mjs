@@ -172,6 +172,16 @@ try {
     }
     await foundry.getByRole('button',{name:/HOLD FIELD/}).click();
     assert.equal((await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.status())).stage!=='NONE',true);
+    // The Candidate 3-source "Investigate Source" behavior must actually
+    // navigate to an original Em Work, not merely display a decorative link.
+    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_TCC-01"]').click();
+    const firstWork=foundry.locator('.ef-investigation-doors a[data-source-work]').first();
+    const sourceHref=await firstWork.getAttribute('href');
+    assert.match(sourceHref,/^#works\/emwork_[0-9a-f]+$/);
+    await firstWork.click();
+    await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:6000});
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
+    assert.match(await page.evaluate(()=>location.hash),/^#works\/emwork_/);
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="reference"]').click();
     await page.locator('#vixenReferenceChamber .vxe-source-folio').first().waitFor();
