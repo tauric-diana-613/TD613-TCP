@@ -534,6 +534,15 @@ try {
       const container=page.locator(v.container);
       assert(await container.locator(v.entry).count()>=v.expected,
         'Original source registry must survive architecture: '+v.id);
+      if(v.id==='protocols'){
+        const indexOverflow=await page.locator('#view-protocols .lexicon-index').evaluate(root=>{
+          const nodes=[...root.querySelectorAll('.lexicon-item button')].filter(n=>n.getClientRects().length);
+          return nodes.map(n=>({scroll:n.scrollWidth,client:n.clientWidth,
+            text:n.textContent.trim().slice(0,44)})).filter(n=>n.scroll>n.client+2);
+        });
+        assert.deepEqual(indexOverflow,[],
+          'Long, authentic protocol identifiers must wrap within the index instead of visually clipping');
+      }
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,
         'Editorial '+v.id+' may not introduce horizontal viewport overflow');
       await page.evaluate(css=>{
