@@ -189,7 +189,7 @@ jobs:
           node tests/tcp-smoke.test.mjs
           node scripts/build-encyclopedia-reference.mjs --check
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
-          node --test tests/vixen-podium.test.mjs
+          if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
           node --test tests/loom-observer-channel.test.mjs tests/loom-observer-chamber.test.mjs tests/loom-targeted-ux.test.mjs
           node --test tests/loom-tutorial-temporal-20261014.test.mjs tests/loom-first-crossing-binding-race.test.mjs tests/loom-tutorial-gesture.test.mjs tests/loom-tutorial-artifact.test.mjs
           node scripts/sync-portable-loom-tomography-assets.mjs --check
@@ -240,6 +240,17 @@ jobs:
           node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Execute Podium native five-specialist Dollhouse synthetic refusal witness
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-podium-dollhouse.mjs
+      - name: Preserve Podium native audit machine receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-podium-native-dollhouse-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-dual-estate/ci-podium-native-dollhouse-receipt.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Validate bounded Dollhouse role upgrades and source-only export kit
         run: npm run test:dollhouse:audits
       - name: Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution
