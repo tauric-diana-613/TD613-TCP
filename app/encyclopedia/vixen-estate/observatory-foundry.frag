@@ -85,8 +85,8 @@ vec3 palette(float t){
  float spectral=smoothstep(.12,.82,sin(t*8.+u_model.w*3.)*.5+.5);
  albedo=mix(albedo,glinda,spectral*.34);
  // The electrical yellow phase depends on the same computed field.
- float active=smoothstep(.43,.92,sin(t*22.+u_model.z*6.)*.5+.5);
- albedo=mix(albedo,arcFlash,active*.26);
+ float voltagePhase=smoothstep(.43,.92,sin(t*22.+u_model.z*6.)*.5+.5);
+ albedo=mix(albedo,arcFlash,voltagePhase*.26);
  return albedo;
 }
 void main(){
