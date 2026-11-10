@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
 <link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
+<link rel="stylesheet" href="./vixen-estate/claude-editorial-genre.css">
 <link rel="stylesheet" href="./reference/vixen-operator-encounter.css">
 <!-- Machine-only Podium. Separate route contract; never a Vixen visual panel. -->
 <link rel="alternate" type="application/json" title="Vixen Podium machine research contract"
@@ -499,14 +500,14 @@ body[data-view="overview"] .reading-back{display:none}
     </div>
 
     <nav class="main-nav" aria-label="Atelier Departments">
-      <button type="button" class="nav-btn" data-view="overview" aria-current="page"><small>00</small> Cover</button>
-      <button type="button" class="nav-btn" data-view="observatory"><small>01</small> Observatory</button>
-      <button type="button" class="nav-btn" data-view="works"><small>02</small> Works (32)</button>
-      <button type="button" class="nav-btn" data-view="gates"><small>03</small> Gates (8)</button>
-      <button type="button" class="nav-btn" data-view="protocols"><small>04</small> Protocols (21)</button>
-      <button type="button" class="nav-btn" data-view="holds"><small>05</small> Holds</button>
+      <button type="button" class="nav-btn" data-view="overview" aria-current="page"><small>00</small> Entrance</button>
+      <button type="button" class="nav-btn" data-view="observatory"><small>01</small> The Lab</button>
+      <button type="button" class="nav-btn" data-view="works"><small>02</small> Works</button>
+      <button type="button" class="nav-btn" data-view="gates"><small>03</small> Gates</button>
+      <button type="button" class="nav-btn" data-view="protocols"><small>04</small> Methods</button>
+      <button type="button" class="nav-btn" data-view="holds"><small>05</small> Refusals</button>
       <button type="button" class="nav-btn" data-view="collection"><small>06</small> Salon ✦</button>
-      <button type="button" class="nav-btn" data-view="reference"><small>07</small> Folios</button>
+      <button type="button" class="nav-btn" data-view="reference"><small>07</small> Trace</button>
     </nav>
 
     <div class="header-actions">
@@ -592,13 +593,46 @@ body[data-view="overview"] .reading-back{display:none}
       </div>
     </div>
 
-    <!-- 390px Mobile 2x2 Spatial Wayfinder (V3 Section 6.3) -->
-    <div class="mobile-wayfinder" aria-label="Quick Atelier Wayfinder">
-      <button type="button" data-view="observatory"><strong>01 · Observatory</strong><span>S ≠ W ≠ A &amp; 5 Clocks</span></button>
-      <button type="button" data-view="works"><strong>02 · 32 Works</strong><span>53 Manifestations</span></button>
-      <button type="button" data-view="gates"><strong>03 · 8 Gates</strong><span>[32, 40] Split Pairs</span></button>
-      <button type="button" data-view="protocols"><strong>04 · 21 Protocols</strong><span>06-INSTRUMENTS</span></button>
-    </div>
+    <!-- Claude Candidates 1/2/3 · source-adjudicated interface genre:
+         C3 editorial invitation + four active doorways, C1 independent
+         manuscript/navigation evidence, C2 atmospheric pause. All source
+         authority stays with original Vixen; the previous 2x2 mobile
+         wayfinder becomes a real all-viewport narrative entrance. -->
+    <section class="vixen-editorial-foyer" aria-labelledby="vixenFoyerTitle">
+      <div class="vixen-foyer-intro">
+        <p class="vixen-foyer-kicker">THE FOX HOUSE / AN INVITATION, NOT AN INSTRUCTION MANUAL</p>
+        <h2 id="vixenFoyerTitle">Go deeper. <em>Keep the beautiful contradictions.</em></h2>
+        <p>Thirty-two original Works. Fifty-three linked manifestations. Questions still worthy of company. The machinery has a purpose: to make the research more discoverable, without manufacturing an answer.</p>
+        <div class="vixen-foyer-annotation">𝌋 <span>OPERAHOUSE ≠ OPERA ≠ PERFORMER</span> <span>·</span> HUMAN AUTHORSHIP AND CLOSURE RESERVED</div>
+      </div>
+      <div class="mobile-wayfinder vixen-doorways" role="navigation" aria-label="Four editorial entrances to Vixen">
+        <button type="button" data-view="works" aria-label="Enter the original Vixen Work catalogue">
+          <span class="vixen-door-index">01 / ENTER THE CATALOGUE</span>
+          <strong>Meet the <em>research.</em></strong>
+          <span class="vixen-door-desc">Thirty-two Works, fifty-three manifestations, and the authorship questions they retain.</span>
+          <span class="vixen-door-verb">Browse the Works <span aria-hidden="true">↗</span></span>
+        </button>
+        <button type="button" data-view="observatory" aria-label="Enter the live Vixen mathematical Observatory">
+          <span class="vixen-door-index">02 / DISTURB THE MACHINE</span>
+          <strong>Touch the <em>instrument.</em></strong>
+          <span class="vixen-door-desc">Manipulate a source-derived simulation. Inspect what changes, and what remains unproven.</span>
+          <span class="vixen-door-verb">Experiment <span aria-hidden="true">↗</span></span>
+        </button>
+        <button type="button" data-view="collection" aria-label="Enter the Vixen Synthesis Salon and session research cart">
+          <span class="vixen-door-index">03 / ATTEMPT A RELATION</span>
+          <strong>Make a <em>conjecture.</em></strong>
+          <span class="vixen-door-desc">Bring two Works into a question. Generate, challenge, withdraw, or carry it onward.</span>
+          <span class="vixen-door-verb">Enter the Salon <span aria-hidden="true">↗</span></span>
+        </button>
+        <button type="button" data-view="reference" aria-label="Open the original Vixen Folios and source inquiry">
+          <span class="vixen-door-index">04 / FOLLOW A CITATION</span>
+          <strong>Follow the <em>trace.</em></strong>
+          <span class="vixen-door-desc">Examine a recorded Work, compare manifestations, and inspect the evidence boundary.</span>
+          <span class="vixen-door-verb">Investigate <span aria-hidden="true">↗</span></span>
+        </button>
+      </div>
+      <div class="vixen-foyer-afterword"><span>THE CORPUS GIVES THE QUESTION ITS SHAPE.</span><span>THE OPERATOR DECIDES WHAT IT MAY BECOME. ⟐</span></div>
+    </section>
 
     <!-- Threshold Spread: Preserved Cybernetics Collection, Comparative Question & Custody Membrane -->
     <div class="archive-directory" id="atelierThreshold">
@@ -1120,6 +1154,17 @@ body[data-view="overview"] .reading-back{display:none}
     </div>
   </section>
 </main>
+
+<!-- Claude C3 carry-forward convention, without fabricating a relation.
+     The existing in-session VIXEN_STUDY_TRAY remains the sole state owner. -->
+<div class="vixen-carry-rail" id="vixenCarryRail" role="complementary" aria-label="Carry the research question">
+  <span class="vixen-carry-kicker">CARRY THE QUESTION</span>
+  <button type="button" class="vixen-carry-action" data-view="collection" aria-label="Open source-first Synthesis Salon and session research cart">
+    <span class="vixen-carry-title">Research cart</span>
+    <span class="vixen-carry-count" id="vixenCarryCount">0</span>
+    <span class="vixen-carry-arrow" aria-hidden="true">↗</span>
+  </button>
+</div>
 
 <!-- GLOBAL SEARCH DIALOG (Ctrl/⌘+K) -->
 <dialog class="dialog search-dialog" id="searchDialog" aria-label="Search Vixen Cybernetics Catalogue">
@@ -3518,5 +3563,6 @@ body[data-view="overview"] .reading-back{display:none}
 <script type="module" src="./vixen-estate/synthesis-salon.mjs"></script>
 <script type="module" src="./vixen-estate/observatory-electric-foundry.mjs"></script>
 <script type="module" src="./reference/vixen-operator-encounter.mjs"></script>
+<script type="module" src="./vixen-estate/claude-editorial-genre.mjs"></script>
 </body>
 </html>
