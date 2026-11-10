@@ -56,7 +56,7 @@ def main():
     sha = git("rev-parse", "HEAD")
     if args.exact_head and args.exact_head != sha:
         raise SystemExit("Refusing to package an unexpected Git HEAD")
-    tracked = subprocess.check_output(["git","ls-tree","-r","--name-only","-z","HEAD"],cwd=ROOT).split(b"\\x00")
+    tracked = subprocess.check_output(["git","ls-tree","-r","--name-only","-z","HEAD"],cwd=ROOT).split(bytes([0]))
     tracked = {b.decode("utf-8") for b in tracked if b}
     # Capture all source research + executable scripts/tests, including future additions.
     paths = sorted(p for p in tracked if (
