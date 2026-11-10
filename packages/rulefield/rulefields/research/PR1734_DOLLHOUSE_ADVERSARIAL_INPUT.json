@@ -1,7 +1,7 @@
 {
   "schema": "td613.rulefield.pr1734.native-dollhouse-source-linked-adversarial-input/v1",
   "task_scope": "PR1734_RULEFIELD_SUCCESSION_AGENT_NEUTRAL_AMENDMENT_RELAY_EXACT_HEAD_CUSTODY",
-  "evidence_class": "SOURCE_CODE_AUDIT",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
   "roles": [
     "PEDAGOGUE",
     "APERTURE",
@@ -121,5 +121,7 @@
         "RELOCK"
       ]
     }
-  }
+  },
+  "control_designation": "DELIBERATE_NEGATIVE_CONTROL_SOURCE_LINKED_NOT_REPOSITORY_DEFECT",
+  "authority_boundary": "SYNTHETIC_SCENARIO_ONLY_NO_HUMAN_RELOCK_OR_RELEASE"
 }
