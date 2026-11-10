@@ -283,3 +283,10 @@
  #vixenSynthesisSalon .vs-intro{font-size:13px;line-height:1.4}
  #vixenSynthesisSalon .vs-ritual{margin:7px 0 0;font-size:17px}
 }
+
+/* RGI08 theorem receipt readability: source-contrast takes priority over
+   aesthetic inheritance. The default light-paper .vs-note ink must never
+   bleed through onto the near-black theorem cabinet. */
+#vixenSynthesisSalon .vs-result .vs-note{color:#f6eaf0}
+#vixenSynthesisSalon .vs-result .vs-missing{color:#f5e8ee}
+#vixenSynthesisSalon .vs-result .vs-theorem{color:#fff5f7}
