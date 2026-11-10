@@ -96,7 +96,7 @@ export function createVixenReferenceMembrane({
   const origin=root.origin;
   const base=()=>safeURL(root.href,origin);
   const state={status:'UNOPENED',manifest:null,dir:null,graph:null,byId:null,events:[],counter:0,error:null};
-  const stamp=(action,information={})=>{const event=Object.freeze({sequence:++state.counter,estate:'VIXEN_RESEARCH_INQUIRY',action,...information});state.events.push(event);return event};
+  const stamp=(action,information={})=>{const event=Object.freeze({sequence:++state.counter,estate:'UNIVERSAL_REFERENCE',invocation_locus:'OPERAHOUSE_READ_GATEWAY',action,...information});state.events.push(event);return event};
   const status=()=>Object.freeze({state:state.status,edition:state.manifest?.edition_version||null,records:state.dir?.length||0,edges:state.graph?.edges?.length||0,error:state.error,cryptographic_index_authentication:'NOT_CLAIMED',authority:'READ_ONLY'});
   async function open(){
     if(state.status==='CENSUS_MATCHED')return status();
