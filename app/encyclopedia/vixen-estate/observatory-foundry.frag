@@ -70,18 +70,24 @@ float field(vec2 p, int mode,float t){
  if(mode==14)return sin((p.x+p.y)*.05+t*.25)-sin((p.x-p.y)*.05-t*.25);
  return abs(sin(p.x*.075)*cos(p.y*.12))*(1.-volt);
 }
+// Canonical Vixen theme: Baker-Miller #FF91AF, Arc Flash #F9F36D,
+// Graphite #24282A, Nickel #667078, Porcelain #F6F4F0.
+// Optical machinery is derived from Vixen's computed field, never blue ink.
 vec3 palette(float t){
- vec3 black=vec3(.008,.013,.022);
- vec3 platinum=vec3(.64,.79,.88),ultraviolet=vec3(.27,.14,.61);
- vec3 neon=vec3(.43,.82,1.);
- vec3 glinda=vec3(.97,.39,.72);
- vec3 albedo=mix(ultraviolet,platinum,smoothstep(-.7,.95,t));
- // The rose spectrum is derived from signed field phase, not a background
- // photograph or a clock-independent randomized decoration.
- float rosePhase=smoothstep(.24,.84,sin(t*8. + u_model.w*3.)*.5+.5);
- albedo=mix(albedo,glinda,rosePhase*.24);
- albedo=mix(albedo,neon,pow(smoothstep(.12,.95,t),2.)*.48);
- return mix(black,albedo,clamp(.18+.68*(t+.65),0.,1.));
+ vec3 graphite=vec3(.1412,.1569,.1647);
+ vec3 nickel=vec3(.4,.4392,.4706);
+ vec3 porcelain=vec3(.9647,.9569,.9412);
+ vec3 glinda=vec3(1.,.5686,.6863);
+ vec3 arcFlash=vec3(.9765,.9529,.4275);
+ float silver=smoothstep(-.82,.88,t);
+ vec3 albedo=mix(graphite,nickel,smoothstep(-.9,.15,t));
+ albedo=mix(albedo,porcelain,silver*.74);
+ float spectral=smoothstep(.12,.82,sin(t*8.+u_model.w*3.)*.5+.5);
+ albedo=mix(albedo,glinda,spectral*.34);
+ // The electrical yellow phase depends on the same computed field.
+ float active=smoothstep(.43,.92,sin(t*22.+u_model.z*6.)*.5+.5);
+ albedo=mix(albedo,arcFlash,active*.26);
+ return albedo;
 }
 void main(){
  vec2 uv=(gl_FragCoord.xy/u_res)*2.-1.;
@@ -101,25 +107,28 @@ void main(){
  float edges=pow(clamp(slope*8.,0.,1.),2.0);
  float chrome=pow(abs(sin(f*13.+length(p)*.055)),18.);
  vec3 base=palette(f);
- base+=vec3(.35,.58,.67)*(edges*.53+chrome*.29);
- base+=vec3(.12,.39,.64)*max(0.,b-r)*.42;
- base+=vec3(.41,.07,.35)*max(0.,r-b)*.27;
+ base+=vec3(.67,.68,.67)*(edges*.65+chrome*.38);
+ base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.4;
+ base+=vec3(.9765,.9529,.4275)*max(0.,r-b)*.38;
  float bands=pow(abs(sin(f*24.+t*.035)),25.)*pow(clamp(light,0.,1.),2.);
- base+=vec3(.5,.84,1.)*bands*.23;
+ base+=vec3(.9765,.9529,.4275)*bands*.40;
  float potential=length(uv-pointer);
- float arcSwitch=smoothstep(.55,.9,u_model.z);
- float arcRibbon=pow(1.-abs(sin(f*36.+slope*37.+t*1.15)),38.);
- float arc=arcSwitch*arcRibbon*smoothstep(.10,.68,slope*22.)*
-           (.4+.6*pow(max(0.,1.-potential*.3),2.));
- vec3 bright=mix(vec3(.75,.34,.83),vec3(.43,.78,1.),smoothstep(.2,.8,slope*12.))*arc*1.45;
- bright+=vec3(.98,.99,1.)*pow(arc,3.)*2.4;
- float caustic=pow(max(0.,sin(f*31.+t*.06)),21.)*clamp(slope*19.,0.,1.);
- bright+=vec3(.6,.85,1.)*caustic*.22;
+ float arcSwitch=smoothstep(.26,.86,u_model.z);
+ float arcRibbon=pow(1.-abs(sin(f*34.+slope*37.+t*1.15)),24.);
+ float arc=arcSwitch*arcRibbon*smoothstep(.08,.63,slope*22.)*
+           (.5+.5*pow(max(0.,1.-potential*.3),2.));
+ // Yellow is the authorized high-voltage Arc Flash. Pink marks the
+ // refracting fringe; porcelain supplies the core of a computed discharge.
+ vec3 bright=vec3(.9765,.9529,.4275)*arc*2.12;
+ bright+=vec3(1.,.5686,.6863)*arc*.40;
+ bright+=vec3(.9647,.9569,.9412)*pow(arc,2.6)*2.0;
+ float caustic=pow(max(0.,sin(f*31.+t*.06)),19.)*clamp(slope*19.,0.,1.);
+ bright+=vec3(.9765,.9529,.4275)*caustic*.49;
  float radial=length(uv);
  float ring=exp(-pow((radial-.66)*250.,2.))+
             exp(-pow((radial-.82)*200.,2.))*.36;
  float ringMarkers=pow(max(0.,sin(atan(uv.y,uv.x)*48.)),34.);
- base+=ring*(vec3(.45,.63,.77)+vec3(.8,.36,.57)*ringMarkers*.33)*.45;
+ base+=ring*(vec3(.72,.72,.71)+vec3(.9765,.9529,.4275)*ringMarkers*.60)*.54;
  float wires=0.;
  for(int i=0;i<39;i++){
   float q=float(i);
@@ -133,7 +142,7 @@ void main(){
   float stroke=1.-smoothstep(width,width*4.,distance);
   wires+=stroke*depth*(.24+.76*smoothstep(.03,.62,slope*30.));
  }
- base+=vec3(.24,.38,.55)*min(1.,wires)*.13;
+ base+=vec3(.9765,.9529,.4275)*min(1.,wires)*.18;
  float vignette=clamp(1.-.21*dot(uv,uv),.25,1.);
  vec3 outRGB=(base+bright)*vignette;
  outRGB=pow(max(outRGB,vec3(0.)),vec3(.83));
