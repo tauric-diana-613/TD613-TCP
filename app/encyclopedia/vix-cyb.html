@@ -1495,7 +1495,7 @@ body[data-view="overview"] .reading-back{display:none}
       const active = sec.getAttribute('data-page') === target;
       sec.hidden = !active;
     });
-    document.querySelectorAll('.main-nav .nav-btn').forEach((btn) => {
+    document.querySelectorAll('.main-nav .nav-btn, .vixen-room-rail .vixen-room').forEach((btn) => {
       if (btn.getAttribute('data-view') === target) {
         btn.setAttribute('aria-current', 'page');
       } else {
