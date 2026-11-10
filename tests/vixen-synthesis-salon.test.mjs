@@ -40,6 +40,12 @@ test('two Vixen performers and one documentary method produce a held falsifiable
  assert.equal(r.source_coordinates[0].declared_source_sha256,
   corpus.works[0].linked_sources[0].sha256);
  assert.equal(r.hypothesis_class,'FALSIFIABLE_PROPOSAL_NOT_EVIDENCE');
+ assert.equal(r.comparative_measurements.length,4);
+ assert(r.comparative_measurements.every(x=>x.observed_value===null));
+ assert.deepEqual(r.comparative_measurements.map(x=>x.id),
+  ['U_QUESTION','F_PROVENANCE','C_VERIFICATION','O_ROUTE']);
+ assert.equal(r.cross_source_mechanisms.length,3);
+ assert(r.cross_source_mechanisms.every(x=>x.source_class==='CONSTRUCTION'));
  assert.equal(r.documentary_protocol.execution_status,'DOCUMENTARY_PROTOCOL_NOT_EXECUTED');
  assert.deepEqual(r.experiment_b.arms.map(x=>x.id),
   ['ARM_0_TRANSPORT','ARM_1_ARCHIVAL','ARM_2A_MODULAR','ARM_2B_MATCHED_UNION']);
@@ -123,6 +129,9 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
   click('Compose an unratified theory');assert.equal(app.phase(),'PROPOSED');
   assert.equal(host.querySelector('.vs-result').dataset.claimClass,'OPEN_FIELD_UNRATIFIED_QUESTION');
   assert.match(host.textContent,/Experiment B/);
+  assert.equal(host.querySelectorAll('.vs-metric').length,4);
+  assert.equal(host.querySelectorAll('.vs-metric-label').length,4);
+  assert.match(host.textContent,/NOT MEASURED/);
   click('Refract the encounter');assert.match(host.textContent,/Internal refraction/);
   const before=app.getProposal().source_coordinates.map(x=>x.source_file_id);
   click('Rest without penalty');assert.equal(app.phase(),'REST');
