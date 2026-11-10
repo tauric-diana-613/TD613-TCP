@@ -101,6 +101,44 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
   ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=k%3===0?18:4;
   ctx.stroke();
  }
+ // An architectural corset of LIGHT, rather than decorative screen
+ // concentric circles: twelve paired silk-steel ribs cinch at two source-
+ // dependent asymmetrical waist points. D3/phi curvature and [111] residue
+ // direct the cut. Every visible strand is recomputed from the chosen Works.
+ ctx.save();
+ ctx.globalCompositeOperation='screen';
+ ctx.lineCap='round';
+ for(let rib=0;rib<12;rib++){
+  const u=rib/11,turn=Math.sin(phase+u*TAU+time*.12);
+  const leftWaist=cx-scale*(.11+.018*residues[0]);
+  const rightWaist=cx+scale*(.12+.021*residues[1]);
+  const yTop=cy-scale*(.41-u*.16),yBottom=cy+scale*(.35-u*.08);
+  const lpx=cx-scale*(.33-.06*u)-scale*.012*turn;
+  const rpx=cx+scale*(.34-.04*u)+scale*.012*turn;
+  const ry=cy+scale*(u-.5)*.56;
+  // Two distinct curved paths meet without sharing custody or identity.
+  const pair=[
+   [[lpx,yTop],[leftWaist-scale*.10,cy-scale*.19],[rightWaist+scale*.07,cy+scale*.22],[rpx,yBottom]],
+   [[rpx,yTop],[rightWaist+scale*.10,cy-scale*.20],[leftWaist-scale*.07,cy+scale*.18],[lpx,yBottom]]
+  ];
+  for(let side=0;side<2;side++){
+   const p=pair[side],sourceColor=side===0?GLINDA_LIGHT.pearl:GLINDA_LIGHT.arcFlash;
+   ctx.beginPath();ctx.moveTo(...p[0]);
+   ctx.bezierCurveTo(...p[1],...p[2],...p[3]);
+   ctx.strokeStyle=sourceColor;
+   ctx.globalAlpha=.16+.29*Math.sin(Math.PI*(.1+.8*u)) + .045*(side===0?residues[0]:residues[1]);
+   ctx.lineWidth=rib%3===0?2.6:1.25;
+   ctx.shadowColor=sourceColor;ctx.shadowBlur=rib%3===0?22:8;
+   ctx.stroke();
+  }
+  // Pale rose waist-seam caught by the same geometric cinch.
+  const yy=cy+(u-.5)*scale*.35;
+  ctx.beginPath();ctx.moveTo(leftWaist-scale*.055,yy);
+  ctx.bezierCurveTo(leftWaist,yy+turn*scale*.018,rightWaist,yy-turn*scale*.018,rightWaist+scale*.05,yy);
+  ctx.strokeStyle=GLINDA_LIGHT.rose;ctx.globalAlpha=.19+.25*(1-Math.abs(u-.5));
+  ctx.lineWidth=1.35;ctx.shadowColor=GLINDA_LIGHT.rose;ctx.shadowBlur=12;ctx.stroke();
+ }
+ ctx.restore();
  // The Loom: all 39 source-independent optical carriers retain their
  // structural near/mid/far 6/13/20 census; no carrier becomes a Work.
  for(const c of CARRIERS){
@@ -167,7 +205,8 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
  return Object.freeze({
   frame_class:'SIMULATED_OPTICAL_COMPOSITION',
   carriers:CARRIERS.length,work_ids:[...works],route,lag:clamp(Number(lag),0,120),
-  arc_charge:Math.round(charge*10000)/10000,arc_glints:glints.length,empirical_credit:0
+  arc_charge:Math.round(charge*10000)/10000,arc_glints:glints.length,
+  modeled_couture_ribs:24,empirical_credit:0
  });
 }
 export function mountSalonVeil(canvas,getState){
