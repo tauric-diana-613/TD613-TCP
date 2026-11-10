@@ -57,6 +57,8 @@ try {
     assert.equal(genre.active?.source_estate,'EMSTD613');
     assert.equal(genre.active?.doorways?.length,4);
     assert.equal(genre.inheritedRuntime,true,'Source study tray must remain native owner');
+    assert.equal(await page.locator('#vixenCarryRail').isHidden(),true,
+      'The empty research-cart panel must not obscure editorial invitations');
     await foyer.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     await page.screenshot({
@@ -76,6 +78,13 @@ try {
       return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===1;
     },null,{timeout:4000});
     assert.equal(await page.locator('#vixenCarryCount').textContent(),'1');
+    if(width>680){
+      assert.equal(await page.locator('#vixenCarryRail').isVisible(),true,
+        'A newly carried source Work should make the research cart discoverable');
+    }else{
+      assert.equal(await page.locator('#vixenCarryRail').isHidden(),true,
+        'The mobile navigation owns the cart route; avoid a content-obscuring overlay');
+    }
     await page.evaluate(id=>window.VIXEN_STUDY_TRAY.remove(id),carry);
     await page.waitForFunction(()=>{
       return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===0;
