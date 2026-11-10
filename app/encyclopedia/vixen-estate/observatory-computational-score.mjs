@@ -20,7 +20,7 @@ export const SCORE_CONTRACT=Object.freeze({
 const TAU=Math.PI*2;
 const ink=Object.freeze({
  graphite:'#24282A',nickel:'#667078',porcelain:'#F6F4F0',
- pink:'#FF91AF',arc:'#dfbfee',rose:'#C75F91',
+ pink:'#FF91AF',arc:'#FFF2A9',rose:'#C75F91',
  opal:'#9DBCC1',plum:'#946C99'
 });
 const clip=(v,a=0,b=1)=>Math.min(b,Math.max(a,Number.isFinite(+v)?+v:a));
@@ -95,7 +95,7 @@ function smokeGlass(ctx,width,height,model,time){
  const slit=ctx.createLinearGradient(width*sweep-width*.12,0,width*sweep+width*.12,height);
  slit.addColorStop(0,'rgba(246,244,240,0)');
  slit.addColorStop(.49,'rgba(246,244,240,.015)');
- slit.addColorStop(.5,'rgba(223,191,238,.047)');
+ slit.addColorStop(.5,'rgba(255,242,169,.047)');
  slit.addColorStop(.51,'rgba(255,145,175,.015)');
  slit.addColorStop(1,'rgba(246,244,240,0)');
  ctx.fillStyle=slit;ctx.fillRect(0,0,width,height);
