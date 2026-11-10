@@ -1,10 +1,14 @@
 /** Verify exact-head native Dollhouse audit completion without equating HOLD to CI failure. */
 import {readFileSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 const path=process.argv[2]||'audit-artifacts/pr1735_native_dollhouse_receipt.json';
 const r=JSON.parse(readFileSync(path,'utf8'));
 const roles=['PEDAGOGUE','APERTURE','ATLAS','FADT','TEMPORAL_CUSTODIAN'];
-assert.equal(r.source_revision,process.env.GITHUB_SHA,'actual executing GitHub SHA required');
+const expected=process.env.EXPECTED_AUDIT_SHA;
+assert.match(expected||'',/^[a-f0-9]{40}$/,'PR head SHA required');
+assert.equal(execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),expected,'checkout must be PR head, never the synthetic pull_request merge commit');
+assert.equal(r.source_revision,expected,'actual PR head revision required');
 assert.equal(r.source_revision_verified,true,'verified actual git SHA required');
 assert.deepEqual([...r.roles_executed].sort(),roles.sort(),'all five native specialists must run');
 assert.ok(r.evidence_manifest?.length>=8,'source-bound evidence verification required');
@@ -16,4 +20,4 @@ assert.equal(r.orchestrator?.deployment_authority,false,'cannot grant deployment
 assert.ok(r.orchestrator?.decision?.startsWith('HELD'),'deliberately adversarial counterworlds must not be rubber-stamped');
 assert.ok(r.specialist_findings?.length===5,'all five specialist receipts retained');
 assert.ok(r.specialist_findings.some(x=>x.verdict==='HELD'),'a real specialist veto must survive');
-console.log(JSON.stringify({nativeAudit:true,sourceSHA:r.source_revision,decision:r.orchestrator.decision,roles:r.roles_executed,specialists:r.specialist_findings.map(x=>({role:x.role,verdict:x.verdict,status:x.status,infractions:x.infractions})),infractions:r.detected_infractions,replication:r.empirical_replication_count,release:r.orchestrator.release_authority},null,2));
+console.log(JSON.stringify({nativeAudit:true,sourceSHA:r.source_revision,decision:r.orchestrator.decision,roles:r.roles_executed,specialists:r.specialist_findings.map(x=>({role:x.role,verdict:x.verdict,status:x.status,infractions:x.infractions,extension_error:x.extensions?.extension_error??null,deficit:x.extensions?.epistemic_deficit?.deficit_class??null})),infractions:r.detected_infractions,replication:r.empirical_replication_count,release:r.orchestrator.release_authority},null,2));
