@@ -78,7 +78,7 @@ vec3 palette(float t){
  vec3 nickel=vec3(.4,.4392,.4706);
  vec3 porcelain=vec3(.9647,.9569,.9412);
  vec3 glinda=vec3(1.,.5686,.6863);
- vec3 arcFlash=vec3(.8745,.7490,.9333);
+ vec3 arcFlash=vec3(1.,.9490,.6627);
  float silver=smoothstep(-.82,.88,t);
  vec3 albedo=mix(graphite,nickel,smoothstep(-.9,.15,t));
  albedo=mix(albedo,porcelain,silver*.74);
@@ -154,7 +154,7 @@ void main(){
            mix(.85,.13,quiet);
  // The main discharge is composed by the folio's endpoint geometry,
  // never replaced by a uniform lattice of electric lines.
- vec3 bright=vec3(.8745,.7490,.9333)*arc*2.74;
+ vec3 bright=vec3(1.,.9490,.6627)*arc*2.74;
  bright+=vec3(1.,.5686,.6863)*arc*.53;
  bright+=vec3(.9647,.9569,.9412)*pow(arc,2.2)*2.55;
  float caustic=pow(max(0.,sin(f*18.+t*.10)),35.)*curvature;
