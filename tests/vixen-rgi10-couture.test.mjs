@@ -30,15 +30,18 @@ test('The source-owned eight-room Fox House is never wholly hidden by a 1280px b
  assert.match(css,/body\[data-active-research-stage="OPERAHOUSE"\] #vixenRoomRail\{display:none!important\}/);
  assert.match(css,/scroll-snap-type:x proximity/);
 });
-test('Mustard has been removed from the source-owned styling, not only hidden by a cosmetic patch',async()=>{
+test('Mustard is excluded from active Opera styling while original historic palette remains recoverable',async()=>{
  assert.match(css,/--arc-flash:#dbc9ff/);
  for(const name of paths){
   const content=await readFile(new URL('vixen-estate/'+name,root),'utf8');
   assert(!/#F9F36D|#f9f36d|rgba\(249,243,109/i.test(content),
    'Legacy yellow remains active inside source-owned Opera styling: '+name);
  }
- assert(!/#F9F36D|#f9f36d/i.test(page.match(/<style id="manifest-instance-theme">([\s\S]*?)<\/style>/)[1]),
-  'Instance theme still declares fluorescent yellow as Vixen authority');
+ assert.match(page.match(/<style id="manifest-instance-theme">([\s\S]*?)<\/style>/)[1],
+  /--arc-flash:#F9F36D/,
+  'The historically authored palette is provenance, not a mutable visual source');
+ assert.match(css,/body:not\(\[data-active-research-stage="OPERAHOUSE"\]\)/,
+  'The current couture override must apply only to the original Vixen Opera');
 });
 test('All 22 mathematical folios stay in the data while display is curated',()=>{
  assert.equal(archived.formula_folios.length,22);
