@@ -337,19 +337,21 @@ export async function mountVixenElectricFoundry({
  host.dataset.stageRole='VIXEN_OPERA';
  add(host,heading,railHeading,heroRail,pane,toolbar,eye,controls,score,evidence,gallery);
  renderScore();renderEvidence();renderHero();renderCatalogue();
+ stage.tabIndex=0;
+ stage.setAttribute('aria-label','Calculated Vixen optical field; arrow keys move the computational probe; click to pin');
  const rectToProbe=(event)=>{
-  const rect=canvas.getBoundingClientRect();
+  const rect=state.canvas.getBoundingClientRect();
   return {
    x:((event.clientX-rect.left)/Math.max(1,rect.width))*2-1,
    y:1-((event.clientY-rect.top)/Math.max(1,rect.height))*2
   };
  };
- canvas.addEventListener('pointermove',e=>{
+ stage.addEventListener('pointermove',e=>{
   if(state.locked)return;
   const p=rectToProbe(e);state.pointer={x:bounded(p.x,-1,1),y:bounded(p.y,-1,1)};
  });
- canvas.addEventListener('click',e=>selectProbe(rectToProbe(e),{pin:true}));
- canvas.addEventListener('keydown',e=>{
+ stage.addEventListener('click',e=>selectProbe(rectToProbe(e),{pin:true}));
+ stage.addEventListener('keydown',e=>{
   const ds={ArrowLeft:[-.075,0],ArrowRight:[.075,0],
    ArrowUp:[0,.075],ArrowDown:[0,-.075]};
   if(ds[e.key]){
@@ -358,8 +360,8 @@ export async function mountVixenElectricFoundry({
   }else if(e.key===' '){e.preventDefault();state.playing?pause():resume()}
   else if(e.key==='Escape'){state.locked=false;indicate('UNPIN')}
  });
- canvas.addEventListener('contextmenu',e=>{e.preventDefault();state.locked=false;indicate('UNPIN')});
- canvas.addEventListener('webglcontextlost',e=>{
+ stage.addEventListener('contextmenu',e=>{e.preventDefault();state.locked=false;indicate('UNPIN')});
+ stage.addEventListener('webglcontextlost',e=>{
   e.preventDefault();stop();state.held='GPU_CONTEXT_LOST';log('GPU_CONTEXT_LOST');
  });
  const status=()=>{
@@ -389,6 +391,10 @@ export async function mountVixenElectricFoundry({
  // Runtime starts only while its Opera is the active stage. A source-verified
  // mathematical instrument may exist without a continuous hidden animation.
  const section=host.closest('.view');
+ if(section){
+  section.dataset.foundryMounted='true';
+  window.VIXEN_LEGACY_OBSERVATORY_STOP?.();
+ }
  const watch=new MutationObserver(()=>{
   if(!section?.hidden){
    if(!state.renderer)initialize();
