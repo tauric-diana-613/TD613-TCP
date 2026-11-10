@@ -49,6 +49,10 @@ try {
       const r=node.getBoundingClientRect(),s=getComputedStyle(node);
       return {position:s.position,direction:s.flexDirection,left:r.left,bottom:innerHeight-r.bottom};
     });
+    await page.waitForFunction(()=>window.VIXEN_FOX_HOUSE?.mounted===true,null,{timeout:15000});
+    const declaredDock=await page.evaluate(()=>window.VIXEN_FOX_HOUSE.getState());
+    assert.equal(declaredDock.source_estate,undefined,
+      'An interface state receipt cannot claim source-custody ownership');
     assert.equal(navOrientation.position,'fixed');
     assert.equal(navOrientation.direction,width>=960?'column':'row',
       'Fox House navigation must reflow responsively instead of vanishing at 1280 CSS pixels');
@@ -61,6 +65,16 @@ try {
     await foxRail.locator('button[data-view="overview"]').click();
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),null);
+    if(width<960){
+      await page.locator('#menuToggle').click();
+      await page.locator('#mobileNav button[data-view="holds"]').click();
+      await page.waitForFunction(()=>{
+        const dock=document.querySelector('#vixenRoomRail');
+        return dock.scrollLeft>20&&dock.querySelector('button[data-view="holds"]')?.getAttribute('aria-current')==='page';
+      },null,{timeout:6000});
+      await foxRail.locator('button[data-view="overview"]').click();
+      assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
+    }
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,
       'The independent Fox House room rail must not add horizontal overflow');
     const foyer=page.locator('.vixen-editorial-foyer');
@@ -160,6 +174,7 @@ try {
       const node=document.querySelector('.formula-gallery-intro');
       window.scrollTo({top:Math.max(0,window.scrollY+node.getBoundingClientRect().top-110),behavior:'instant'});
     });
+    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:6000});
     await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false});
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),22,
