@@ -248,7 +248,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vixen-podium-source-audit-${{ github.event.pull_request.head.sha }}
-          path: artifacts/vixen-dual-estate/ci-podium-source-audit.json
+          path: ${{ runner.temp }}/ci-podium-source-audit.json
           if-no-files-found: warn
           retention-days: 14
       - name: Execute Podium native five-specialist Dollhouse synthetic refusal witness
@@ -259,7 +259,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: vixen-podium-native-dollhouse-${{ github.event.pull_request.head.sha }}
-          path: artifacts/vixen-dual-estate/ci-podium-native-dollhouse-receipt.json
+          path: ${{ runner.temp }}/ci-podium-native-dollhouse-receipt.json
           if-no-files-found: warn
           retention-days: 14
       - name: Validate bounded Dollhouse role upgrades and source-only export kit
