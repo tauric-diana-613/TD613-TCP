@@ -352,3 +352,80 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
 @media(max-width:680px){
  .vixen-carry-rail{display:none!important}
 }
+
+/*
+ * Candidate 3's chrome-fox masthead: stop flooding the entire navigation
+ * with Easter-matte Baker-Miller pink. Pink remains a couture highlight,
+ * yellow remains an Arc Flash, and the header becomes smoked chrome glass.
+ * This is a paint-level restoration, not a change to route functionality.
+ */
+body .site-header{
+ background:linear-gradient(180deg,rgba(11,10,14,.97),rgba(17,11,18,.90))!important;
+ border-bottom:1px solid rgba(255,145,175,.46);
+ color:#F6F4F0;
+ backdrop-filter:blur(18px) saturate(1.35);
+ -webkit-backdrop-filter:blur(18px) saturate(1.35);
+ box-shadow:0 8px 30px rgba(8,5,10,.32);
+}
+body .site-header:after{
+ content:'';position:absolute;inset:auto 0 -1px;
+ height:1px;pointer-events:none;
+ background:linear-gradient(90deg,transparent 5%,#FF91AF 32%,
+  #F6F4F0 53%,#F9F36D 70%,transparent 95%);
+ opacity:.58;
+}
+body .site-header .brand-name{
+ color:#F6F4F0;
+ font:400 clamp(17px,1.7vw,23px)/1 var(--vf-serif);
+ letter-spacing:.10em;
+}
+body .site-header .brand-sub{
+ color:#C8AFBC;opacity:.87;letter-spacing:.14em;
+}
+body .site-header .brand-name .project-math,
+body .site-header .brand-mobile-monogram em{
+ color:#FF91AF;
+ font-style:italic;
+}
+body .site-header .brand-mobile-monogram strong{
+ font:400 18px/1.04 var(--vf-serif);
+ letter-spacing:.12em;color:#F6F4F0;
+}
+body .site-header .vixen-fox-emblem{
+ filter:drop-shadow(0 0 11px rgba(255,145,175,.60)) brightness(1.22);
+ border-radius:50%;
+ background:radial-gradient(circle,
+  rgba(255,145,175,.55),rgba(255,145,175,.09) 74%,transparent);
+}
+body .site-header .hdr-pill,
+body .site-header .reading-back{
+ color:#F6F4F0;
+ border-color:rgba(255,145,175,.37);
+ background:rgba(37,25,35,.43);
+ font-weight:600;
+}
+body .site-header .hdr-pill:hover,
+body .site-header .reading-back:hover{
+ color:#F9F36D;
+ border-color:rgba(249,243,109,.67);
+ background:rgba(58,38,52,.67);
+}
+body .site-header .hdr-pill[aria-pressed="true"]{
+ color:#F9F36D;border-color:#F9F36D
+}
+body .site-header .hdr-pill svg.icon{stroke:currentColor}
+body .site-header .mobile-nav{
+ color:#F6F4F0;
+ background:linear-gradient(155deg,#20131D,#08080B);
+ border-bottom:1px solid #FF91AF;
+ box-shadow:0 32px 70px rgba(0,0,0,.74);
+}
+body .site-header .mobile-nav button{
+ color:#F6F4F0;
+ border-bottom:1px solid rgba(255,145,175,.23);
+}
+body .site-header .mobile-nav button:hover,
+body .site-header .mobile-nav button:focus-visible{
+ color:#FF91AF;
+}
+body .site-header .mobile-nav small{color:#F9F36D}
