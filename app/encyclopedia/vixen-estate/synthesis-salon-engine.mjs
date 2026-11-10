@@ -72,6 +72,9 @@ export function toyClockAssay({lag=30,routeOrder='A_B'}={}){
  });
 }
 function sourceEntry(w,requested){
+ if(requested!==undefined&&requested!==null&&
+   !w.linked_sources.some(x=>x.source_file_id===requested))
+   throw new TypeError('INVALID_SOURCE_IDENTITY');
  const chosen=lookup(w.linked_sources,requested,'source_file_id')||w.linked_sources[0];
  invariant(chosen?.source_file_id&&/^[a-f0-9]{64}$/i.test(chosen.sha256||''),'INVALID_SOURCE_IDENTITY');
  return {
