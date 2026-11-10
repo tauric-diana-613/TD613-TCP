@@ -91,7 +91,7 @@ jobs:
       needs.scope.outputs.head_is_current == 'true' &&
       github.event_name == 'pull_request' &&
       github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
