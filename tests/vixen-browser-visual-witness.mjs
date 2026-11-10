@@ -34,6 +34,74 @@ try {
     page.on('pageerror', (error) => errors.push(error.message));
     const response = await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response?.status(), 200, 'Exact HTTP source must load');
+    // RGI09 · Live mathematical Observatory is the principal performance,
+    // not an artist's mockup, a package manifest or a copied foreign Opera.
+    await page.locator('#menuToggle').click();
+    await page.locator('#mobileNav button[data-view="observatory"]').click();
+    await page.waitForFunction(()=>{
+      const api=window.VIXEN_ELECTRIC_FOUNDRY;
+      return api&&api.status().backend!=='PENDING';
+    },null,{timeout:25000});
+    const foundry=page.locator('#vixenElectricFoundry');
+    assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
+      'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
+    assert.equal(await foundry.locator('.ef-carrier').count(),39);
+    assert.equal(await foundry.locator('[data-foundry-dial]').count(),4);
+    assert.equal(await page.locator('#view-observatory').getAttribute('data-foundry-mounted'),'true');
+    assert.equal(await foundry.locator('.ef-canvas').isVisible(),true);
+    assert.equal(await page.locator('#view-observatory .instrument-stage').isHidden(),true,
+      'Legacy four-tab presentation must yield to new Observatory');
+    assert(!/Eclipse[–-]Omega/.test(await foundry.innerText()));
+    const visualBefore=await page.evaluate(()=>{
+      const o=window.VIXEN_ELECTRIC_FOUNDRY;
+      const stage=document.querySelector('#vixenElectricFoundry .ef-stage').getBoundingClientRect();
+      return {
+       status:o.status(),sceneTop:stage.top,
+       pageWidth:document.documentElement.scrollWidth,
+       source:document.querySelector('#vixenElectricFoundry .ef-sourcebadge').textContent,
+       sample:o.getResearchProbe()
+      };
+    });
+    assert(visualBefore.pageWidth<=width+1,'Chrome Observatory horizontal overflow');
+    assert(visualBefore.sceneTop<height-45,
+      'The actual mathematical visualization belongs in the initial Observatory viewport: '+visualBefore.sceneTop);
+    assert.equal(visualBefore.status.source_folios,22);
+    assert.equal(visualBefore.status.source_giveback_tracks,6);
+    assert.equal(visualBefore.status.experiment_b_flight,'HELD');
+    assert.match(visualBefore.source,/TCC-01/);
+    await page.evaluate(()=>{
+      const n=document.querySelector('#vixenElectricFoundry .ef-stage');
+      scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-118),behavior:'instant'});
+    });
+    await page.waitForTimeout(160);
+    await page.screenshot({path:path.join(output,'vixen-'+width+'x'+height+'-electric-foundry.png'),fullPage:false});
+    await foundry.locator('[data-foundry-dial="gain"]').evaluate(el=>{
+      el.value='12';el.dispatchEvent(new Event('input',{bubbles:true}));
+    });
+    const afterDial=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
+    assert.notDeepEqual(visualBefore.sample.metrics,afterDial.metrics,
+      'A source-model dial must change computed diagnostics rather than decorative animation');
+    assert.equal(afterDial.corpus_coordinates.source_folio,'TCC-01');
+    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-07"]').click();
+    const rankProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
+    assert.equal(rankProbe.corpus_coordinates.source_folio,'RC-07');
+    assert(rankProbe.metrics.some(x=>x.name==='singular_values'));
+    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-10"]').click();
+    const xorProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
+    assert(xorProbe.metrics.some(x=>x.name==='joint_I_XY_Z'&&x.value===1));
+    if(width===1440){
+      for(const lab of ['LAB_TCC-04','LAB_TCC-05','LAB_RC-03','LAB_RC-07','LAB_RC-10']){
+        await foundry.locator('.ef-hero-tab[data-lab-id="'+lab+'"]').click();
+        await page.waitForTimeout(115);
+        await page.evaluate(()=>{
+          const n=document.querySelector('#vixenElectricFoundry .ef-stage');
+          scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-118),behavior:'instant'});
+        });
+        await page.screenshot({path:path.join(output,'vixen-1440x900-'+lab.toLowerCase()+'.png'),fullPage:false});
+      }
+    }
+    await foundry.getByRole('button',{name:/HOLD FIELD/}).click();
+    assert.equal((await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.status())).stage!=='NONE',true);
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="reference"]').click();
     await page.locator('#vixenReferenceChamber .vxe-source-folio').first().waitFor();
