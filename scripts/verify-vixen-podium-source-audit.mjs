@@ -44,8 +44,11 @@ const manifest=JSON.parse(await get(relative[5]));
 const cli=await get(relative[6]);
 const tests=await get(relative[8]);
 const constraints=[
- ['TEN_TYPED_ROUTES',manifest.routes.length===10&&code.includes("PODIUM_ROUTES")],
+ ['TWELVE_TYPED_ROUTES',manifest.routes.length===12&&code.includes("PODIUM_ROUTES")],
  ['NO_MACHINE_AUTO_IMPORT',!code.includes('.admitRecord(')&&!code.includes('.prepareImport(')],
+ ['SALON_SHARED_CONJECTURAL_KERNEL',code.includes('composeSalonPlan(corpus,params)')&&
+  code.includes('refractSalonPlan(corpus,params)')&&
+  manifest.routes.some(r=>r.id==='experiment_b.preregister')],
  ['NO_TASK_JSON_SELF_AUTHORITY',code.includes('operatorAuthorized!==true')&&
   cli.includes("process.env.TD613_PODIUM_OPERATOR_DIRECT==='1'")],
  ['INDEPENDENT_VERIFIED_REFERENCE',code.includes('state.seen.set(id,witness)')&&
