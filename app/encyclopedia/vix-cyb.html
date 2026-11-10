@@ -6,6 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <script id="td613-sitewide-reset-preflight" src="../site-epoch-preflight.js" defer></script>
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
+<link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
 <link rel="stylesheet" href="./reference/vixen-operator-encounter.css">
 <!-- Machine-only Podium. Separate route contract; never a Vixen visual panel. -->
 <link rel="alternate" type="application/json" title="Vixen Podium machine research contract"
@@ -503,6 +504,7 @@ body[data-view="overview"] .reading-back{display:none}
       <button type="button" class="nav-btn" data-view="gates"><small>03</small> Gates (8)</button>
       <button type="button" class="nav-btn" data-view="protocols"><small>04</small> Protocols (21)</button>
       <button type="button" class="nav-btn" data-view="holds"><small>05</small> Holds</button>
+      <button type="button" class="nav-btn" data-view="collection"><small>06</small> Salon ✦</button>
       <button type="button" class="nav-btn" data-view="reference"><small>07</small> Folios</button>
     </nav>
 
@@ -512,7 +514,7 @@ body[data-view="overview"] .reading-back{display:none}
         <span class="lbl-desktop">Search</span> <kbd id="searchShortcutKbd">Ctrl/⌘+K</kbd>
       </button>
       <button type="button" class="hdr-pill hide-mobile-hdr" data-view="collection" aria-label="Session Study Tray">
-        <span class="lbl-desktop">Tray</span> (<span id="collectionCount">0</span>)
+        <span class="lbl-desktop">Research cart</span> (<span id="collectionCount">0</span>)
       </button>
       <button type="button" class="hdr-pill hide-mobile-hdr" id="motionBtn" aria-pressed="false" aria-label="Pause animations (Still mode)">
         <span class="lbl-desktop">Still</span> ‖
@@ -534,7 +536,7 @@ body[data-view="overview"] .reading-back{display:none}
     <button type="button" data-view="gates"><small>03</small> 8 Split-Plane Human Gates</button>
     <button type="button" data-view="protocols"><small>04</small> 21 Documentary Protocols</button>
     <button type="button" data-view="holds"><small>05</small> Competent-Null &amp; Holds</button>
-    <button type="button" data-view="collection"><small>06</small> Session Study Tray</button>
+    <button type="button" data-view="collection"><small>06</small> Synthesis Salon &amp; Research Cart</button>
     <button type="button" data-view="reference"><small>07</small> Vixen Folios</button>
     <button type="button" data-action="inspector"><small>ALT+I</small> Concealed Cybernetic Inspector</button>
   </nav>
@@ -1068,18 +1070,25 @@ body[data-view="overview"] .reading-back{display:none}
     </div>
   </section>
 
-  <!-- 06 SESSION STUDY TRAY -->
-  <section class="view" id="view-collection" data-page="collection" aria-label="Session Study Tray" hidden>
+  <!-- 06 VIXEN SYNTHESIS SALON + ORIGINAL SESSION STUDY TRAY -->
+  <section class="view" id="view-collection" data-page="collection" aria-label="Vixen Synthesis Salon and original session research cart" hidden>
     <div class="page-pad">
       <div class="view-heading">
         <div>
-          <p class="eyebrow">06 · LOCAL EPHEMERAL STUDY TRAY · READ-ONLY METADATA EXPORT</p>
-          <h1>Session Study Tray<span class="title-annotation">Zero Server Write · Zero Authority Escalation</span></h1>
-          <p class="intro">Bookmark catalogued works and documentary protocols during your study session and export a study citation bundle.</p>
+          <p class="eyebrow">06 · REPARATIVE THEORY &amp; SOURCE-FIRST RESEARCH CART · VIXEN OPERA</p>
+          <h1>Synthesis Salon<span class="title-annotation">Experiments Begin as Questions</span></h1>
+          <p class="intro">A living couture laboratory: two recorded Works, six prospective giveback tracks, twenty-one documentary methods and a five-clock demonstration. Compose a falsifiable theory proposal, collect its source identities, and preserve what still cannot be known.</p>
         </div>
         <div>
-          <button type="button" class="primary-btn" id="exportTrayBtn">Export Tray JSON ↓</button>
+          <button type="button" class="primary-btn" id="exportTrayBtn">Export Original Research Cart ↓</button>
         </div>
+      </div>
+      <div id="vixenSynthesisSalon" role="region" data-stage-role="VIXEN_OPERA" aria-label="Vixen couture synthesis laboratory and experiment design">
+        <p>The Vixen Synthesis Salon is preparing its historical source catalogue.</p>
+      </div>
+      <div class="salon-existing-tray-heading" style="margin:42px 0 18px;border-top:2px solid var(--graphite);padding-top:28px">
+        <h2 style="font:400 clamp(28px,3.5vw,48px)/1.1 var(--font-serif)">Your Research Cart</h2>
+        <p style="font-size:13px">The original session study tray survives this makeover: sourced works and documentary methods saved during exploration, never commercial purchases or authority grants.</p>
       </div>
       <div class="holds-grid" id="collectionItemsContainer"></div>
     </div>
@@ -1425,8 +1434,12 @@ body[data-view="overview"] .reading-back{display:none}
     renderMathSlots(document);
   }
 
-  // Collection Tray Helper
+  // Collection Tray Helper · shared with the new Salon, without backend writes
+  const knownTrayId=(id)=>DATA.works.some(w=>w.work_id===id)||
+    DATA.instruments.some(x=>x.instrument_id===id)||
+    DATA.giveback_tracks.some(x=>x.id===id);
   function toggleCollection(id) {
+    if(!knownTrayId(id))return false;
     if (state.collection.has(id)) {
       state.collection.delete(id);
       showToast('Removed ' + id + ' from study tray');
@@ -1439,7 +1452,17 @@ body[data-view="overview"] .reading-back{display:none}
     renderCollectionView();
     renderWorksView();
     renderProtocolsView();
+    window.dispatchEvent(new CustomEvent('vixen-study-tray-change',{
+      detail:{count:state.collection.size}
+    }));
+    return state.collection.has(id);
   }
+  window.VIXEN_STUDY_TRAY=Object.freeze({
+    has:(id)=>knownTrayId(id)&&state.collection.has(id),
+    list:()=>[...state.collection],
+    add:(id)=>knownTrayId(id)?(state.collection.has(id)?false:toggleCollection(id)):false,
+    remove:(id)=>knownTrayId(id)&&state.collection.has(id)?(toggleCollection(id),true):false
+  });
 
   // 1. Render Cover Threshold Signal Bars & 10-Stage Procession Spine
   function renderOverviewDynamic() {
@@ -3478,6 +3501,7 @@ body[data-view="overview"] .reading-back{display:none}
 })();
 </script>
 <script type="module" src="./vixen-estate/research-chamber.mjs"></script>
+<script type="module" src="./vixen-estate/synthesis-salon.mjs"></script>
 <script type="module" src="./reference/vixen-operator-encounter.mjs"></script>
 </body>
 </html>
