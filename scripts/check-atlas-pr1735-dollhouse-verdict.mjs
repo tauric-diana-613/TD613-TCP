@@ -20,4 +20,14 @@ assert.equal(r.orchestrator?.deployment_authority,false,'cannot grant deployment
 assert.ok(r.orchestrator?.decision?.startsWith('HELD'),'deliberately adversarial counterworlds must not be rubber-stamped');
 assert.ok(r.specialist_findings?.length===5,'all five specialist receipts retained');
 assert.ok(r.specialist_findings.some(x=>x.verdict==='HELD'),'a real specialist veto must survive');
+const specialists=new Map(r.specialist_findings.map(x=>[x.role,x]));
+const infractions=role=>specialists.get(role)?.infractions??[];
+assert.ok(infractions('PEDAGOGUE').includes('CADENCE_VIOLATION'),'adversarial Pedagogue cadence objection must survive');
+assert.ok(infractions('PEDAGOGUE').includes('HUMAN_CONSEQUENCE_BROKEN_RETURN_PROMISE'),'unrepaired synthetic notice/return deficiency must remain explicit');
+assert.equal(specialists.get('APERTURE')?.extensions?.epistemic_deficit?.deficit_class,'STRUCTURAL_RANK_DEFICIT','procedural SUPPORTED cannot erase a typed Aperture structural deficit');
+assert.ok(infractions('ATLAS').includes('PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK'),'synthetic route custody fork must survive separately from verified predecessor blobs');
+assert.ok(infractions('ATLAS').includes('HOLD_HOLONOMY_HISTORY_PARITY_FAILED'),'holonomy parity hold must not be silently cleared');
+assert.ok(infractions('FADT').includes('ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING'),'terminal projection cannot grant unconditioned adoption');
+assert.ok(infractions('TEMPORAL_CUSTODIAN').includes('UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION'),'the held relock must remain held');
+
 console.log(JSON.stringify({nativeAudit:true,sourceSHA:r.source_revision,decision:r.orchestrator.decision,roles:r.roles_executed,specialists:r.specialist_findings.map(x=>({role:x.role,verdict:x.verdict,status:x.status,infractions:x.infractions,extension_error:x.extensions?.extension_error??null,deficit:x.extensions?.epistemic_deficit?.deficit_class??null})),infractions:r.detected_infractions,replication:r.empirical_replication_count,release:r.orchestrator.release_authority},null,2));
