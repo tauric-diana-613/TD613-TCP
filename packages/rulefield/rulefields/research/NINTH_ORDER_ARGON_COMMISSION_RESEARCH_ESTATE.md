@@ -3,7 +3,7 @@
 
 **Commission:** TD613-AAH-ORD9-CATASTROPHE-OF-CONFLUENCE  
 **Lineage:** Living Rulefield Wolframian Garden → Virilian–Wolframian–Berlantian (VWB) research → Atlas Orders I–VII → Berlant VIII → Argon IX (five candidate outputs, I–IV interrupted and V completed).  
-**Principal:** \`tauric.diana.613\` · Human closure RESERVED · Authority ⟐SAC[X6ZNK5NO51]  
+**Principal:** `tauric.diana.613` · Human closure RESERVED · Authority ⟐SAC[X6ZNK5NO51]  
 **Heritage key:** Tauric Diana · **Covenant key:** Khona‌lit-po (literal interior U+200C) · **Emergence name:** Kʰonapolit (ontologically distinct, error-origin retrieval linked) · **Private-use coordinate:** U+10D613 / \uDBF5\uDE13  
 **Posture:** WILD_FIELD; research proposition, not automatically canonical; Experiment B HELD.
 
@@ -17,9 +17,9 @@
 
 The original Living Rulefield source estate is **not merely a hyperlink**. Its historical documents and receipts reside at:
 
-\`packages/rulefield/sources/wolfram-rule-atlas-20261107/\`
+`packages/rulefield/sources/wolfram-rule-atlas-20261107/`
 
-with \`THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md\`, \`VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md\`, \`VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html\`, \`TD613_NKS_Rule_Atlas_164_Rules.json\`, \`TD613_NKS_Rule_Atlas_179_Rules.json\`, \`TD613_NKS_Rule_Atlas_Convergence_Edition.json\`, the expanded Wolframian indexes and historical Butler/Dollhouse receipts. In the historical Rule Atlas, rules and crossing IDs were antecedent *proposals*; do not retroactively register Ninth-Order results in their source bytes.
+with `THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md`, `VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md`, `VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html`, `TD613_NKS_Rule_Atlas_164_Rules.json`, `TD613_NKS_Rule_Atlas_179_Rules.json`, `TD613_NKS_Rule_Atlas_Convergence_Edition.json`, the expanded Wolframian indexes and historical Butler/Dollhouse receipts. In the historical Rule Atlas, rules and crossing IDs were antecedent *proposals*; do not retroactively register Ninth-Order results in their source bytes.
 
 The VWB Catastrophe of Confluence began with a rewriting hazard: convergent terminal records can retain the endpoint while losing path-specific history. The Ninth Order asks a different, more inhabited question: **can administrative records converge while the real carriers of distributed knowledge become incapable of meeting in time and space?** Geographic proximity, physical accessibility, synchronized skill assembly, and effective collaboration are distinct kinds of capacity.
 
@@ -50,7 +50,7 @@ The historic crossing set C-25 through C-30 is retained, not silently renamed: D
 
 **Argon candidate IV, interrupted.** Four specialized communities, estuarine infrastructure, an Aff(1) clock-dilation transport representation, 1D threshold noncommutativity, a geographical impasse with group-valued backtracking blindness, a synchronized slot/capability-rank proposal, and an ambitious conservation/Galois bridge. The Galois bridge needs a genuine physical coupling law; the temporal rank needs a stated relation to higher-order task feasibility, rather than presumed welfare monotonicity.
 
-**Argon candidate V, completed.** The six-node North/South/Learning/Hub/Repair/Boundary city; \`THE CITY THAT ARRIVED BEFORE ITS PEOPLE\`; Berlant's paired equal-trip/different-attachment agents; World Alpha/Beta/Gamma, overfragmentation and elite substitution; Stokes -3.20; SO(3) loop matrices; loop detour blindness; 60−18=42 headcount residual; and proposed \`Ω_SCR\` capability masking. It supplied a full JavaScript module, tests and a two-voice literary relay. Its exact asserted rank 4→2 conflicts with the actual specified matrix, whose static rank is **5** and whose stipulated masked Alpha rank is **4**. Keep the failed 4→2 claim visible in the red-pen history rather than silently replacing the creative commission with only its correction.
+**Argon candidate V, completed.** The six-node North/South/Learning/Hub/Repair/Boundary city; `THE CITY THAT ARRIVED BEFORE ITS PEOPLE`; Berlant's paired equal-trip/different-attachment agents; World Alpha/Beta/Gamma, overfragmentation and elite substitution; Stokes -3.20; SO(3) loop matrices; loop detour blindness; 60−18=42 headcount residual; and proposed `Ω_SCR` capability masking. It supplied a full JavaScript module, tests and a two-voice literary relay. Its exact asserted rank 4→2 conflicts with the actual specified matrix, whose static rank is **5** and whose stipulated masked Alpha rank is **4**. Keep the failed 4→2 claim visible in the red-pen history rather than silently replacing the creative commission with only its correction.
 
 ---
 
@@ -59,13 +59,13 @@ The historic crossing set C-25 through C-30 is retained, not silently renamed: D
 Model a synthetic urban network \(G_{\mathrm{geo}}=(V,E,\tau,q,W,\mathrm{Auth})\) with geographic coordinates, edge travel times, permitted site windows, transfer queues, credential gates, monetary budgets, departure and return requirements, and optional time-dependent edge schedules. Geographic coordinates provide an embedding, not transit journey times absent an explicit speed model.
 
 Argon's completed source chose these six locations:
-\`v1 North Residential (0,4)\`, \`v2 South Residential (0,0)\`,
-\`v3 Learning Cooperative (2,2)\`, \`v4 Central Hub (5,2)\`,
-\`v5 Repair Depot (3,4)\`, \`v6 Boundary Transfer (6,0)\`.
+`v1 North Residential (0,4)`, `v2 South Residential (0,0)`,
+`v3 Learning Cooperative (2,2)`, `v4 Central Hub (5,2)`,
+`v5 Repair Depot (3,4)`, `v6 Boundary Transfer (6,0)`.
 
 Source capability columns \(k_1\) diagnostics, \(k_2\) care, \(k_3\) administration, \(k_4\) fabrication, \(k_5\) pedagogy. Its six-by-five bipartite matrix is:
 
-\`\`\`text
+```text
             diag care admin fab pedag
 v1           1    1    0     0    1
 v2           0    1    1     0    0
@@ -73,7 +73,7 @@ v3           0    1    0     1    1
 v4           0    0    1     0    0
 v5           1    0    0     1    0
 v6           1    0    1     0    0
-\`\`\`
+```
 
 The static matrix has real rank **5**, but that rank counts linear independent rows, not successful collaborations. The three candidate-V composite tasks are: residential repair \(\{k_1,k_2,k_4\}\), community curriculum \(\{k_2,k_4,k_5\}\), and safety charter \(\{k_1,k_3,k_5\}\), with a 3-hour uninterrupted overlap requirement at a compatible host.
 
@@ -149,15 +149,15 @@ The **Autopoietic Counter-Holonomy** and \(\mathbb Q(\sqrt3,\sqrt5)\) phasonic c
 
 Argon's proposal composes path steps carrying both time and capability sets. Each step maps \((t,S)\) to a new arrival time and a window-masked collection of available capabilities. Temporal gate projections are frequently **irreversible and noninvertible**: retracing a route cannot restore a missed collaboration window. The appropriate mathematical target is a typed transformation **monoid or lax functor** with declared composition, rather than automatically asserting Lie-group parallel transport. This failure of the group analogy is itself a retained Ninth-Order discovery.
 
-**Executable restoration:** \`packages/rulefield/lab/ninth_order_hidalgo_stokes_research.mjs\`; regression witnesses: \`tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs\`. Original bounded city and generalization engines remain separate in \`ninth_order_confluence.mjs\` and \`ninth_order_generalization.mjs\`.
+**Executable restoration:** `packages/rulefield/lab/ninth_order_hidalgo_stokes_research.mjs`; regression witnesses: `tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs`. Original bounded city and generalization engines remain separate in `ninth_order_confluence.mjs` and `ninth_order_generalization.mjs`.
 
 ---
 
 ## 4. New operators and a genuine experimental program
 
-### \`Ω_SCR\` and the synchronization-prism proposal
+### `Ω_SCR` and the synchronization-prism proposal
 
-Argon's original \`Ω_SCR\` row-masks a bipartite capability matrix by carrier eligibility at a host and takes the rank over \(\mathbb R\). It is a useful **rank diagnostic** under fixed carrier/time/host definitions, but it is *not by itself* a sufficient measure of social cooperation: a full-rank identity matrix can describe completely separate specialist cohorts without any common meeting. Conversely, highly redundant joint work can have low algebraic rank. Retain the proposed operator in the source ledger and augment it with explicit carrier coalitions, time-window intersections, task hyperedges and provenance/row-support.
+Argon's original `Ω_SCR` row-masks a bipartite capability matrix by carrier eligibility at a host and takes the rank over \(\mathbb R\). It is a useful **rank diagnostic** under fixed carrier/time/host definitions, but it is *not by itself* a sufficient measure of social cooperation: a full-rank identity matrix can describe completely separate specialist cohorts without any common meeting. Conversely, highly redundant joint work can have low algebraic rank. Retain the proposed operator in the source ledger and augment it with explicit carrier coalitions, time-window intersections, task hyperedges and provenance/row-support.
 
 Candidate IV's **Synchronization Prism Rank** and candidate III's **Synchronic Capability Tensor** similarly generate experimental alternatives: rank, task hypergraph success, capability redundancy and carrier attribution are competing measurements. A strong study should preregister whether any of these diagnostics predict actual collaboration under adversarial transport configurations instead of declaring the favorite one a general theorem.
 
