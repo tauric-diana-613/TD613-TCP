@@ -213,6 +213,10 @@ export async function mountVixenElectricFoundry({
  const pane=node('div','ef-pane');
  const toolbar=node('div','ef-toolbar');
  const controls=node('div','ef-controls');
+ const dialCabinet=node('details','ef-dial-cabinet');
+ const dialInvitation=node('summary','ef-dial-invitation','IV · THE INSTRUMENTS · OPEN FOUR MEASURABLE CONTROLS');
+ dialInvitation.setAttribute('aria-label','Open four controls for the synthetic Vixen mathematical model');
+ add(dialCabinet,dialInvitation,controls);
  const evidence=node('div','ef-evidence');
  const gallery=node('div','ef-gallery');
  const score=node('div','ef-score');
@@ -396,7 +400,7 @@ export async function mountVixenElectricFoundry({
  host.dataset.stageRole='VIXEN_OPERA';
  // The live computed field is the centerpiece, not a reward after a wall
  // of metadata. Source folio and provenance remain visible in its inspector.
- add(host,heading,proscenium,pane,controls,score,evidence,gallery);
+ add(host,heading,proscenium,pane,dialCabinet,score,evidence,gallery);
  renderScore();renderEvidence();renderHero();renderCatalogue();
  stage.tabIndex=0;
  stage.setAttribute('aria-label','Calculated Vixen optical field; arrow keys move the computational probe; click to pin');
