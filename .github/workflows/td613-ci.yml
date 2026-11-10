@@ -253,6 +253,17 @@ jobs:
           path: ${{ runner.temp }}/rgi08-vixen-source-fidelity.json
           if-no-files-found: warn
           retention-days: 14
+      - name: Execute corrected RGI09 native Dollhouse Design with full-source ingestion
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/run-vixen-rgi09-design.mjs
+      - name: Preserve RGI09 design and source-voice separation
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-rgi09-native-design-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/rgi09-vixen-native-design.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Execute RGI08 native Dollhouse Design eight-stage commission
         if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
         run: node scripts/run-vixen-dd02-makeover.mjs
