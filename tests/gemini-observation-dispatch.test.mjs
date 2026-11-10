@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
 const workflow = readFileSync('.github/workflows/td613-ci.yml', 'utf8');
-const remaining = workflow.split('\\n  gemini_observation:\\n')[1];
-const nextJobStart = remaining?.search(/^  [a-zA-Z][a-zA-Z0-9_-]*:\\s*$/m) ?? -1;
+const remaining = workflow.split('\n  gemini_observation:\n')[1];
+const nextJobStart = remaining?.search(/^  [a-zA-Z][a-zA-Z0-9_-]*:\s*$/m) ?? -1;
 const job = nextJobStart === -1 ? remaining : remaining.slice(0,nextJobStart);
 assert.ok(job);
 assert.match(job, /if: github.event_name == 'workflow_dispatch' && inputs.mode == 'gemini-observation' && github.ref == 'refs\/heads\/main'/);
