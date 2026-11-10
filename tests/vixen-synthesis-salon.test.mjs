@@ -100,6 +100,9 @@ test('machine Podium uses exactly the same Vixen kernel for Salon and Experiment
  assert.equal(design.status,'HELD');
  assert.equal(design.result.experiment_b_flight,'HELD');
  assert.equal(design.result.counterfactual.route_memory_non_equivalent,true);
+ assert.equal(design.result.prospective_measurements.length,4);
+ assert(design.result.prospective_measurements.every(x=>x.observed_value===null));
+ assert.equal(design.result.constructed_mechanisms.length,3);
  assert.equal(design.result.manifest_succession,'UNKNOWN');
  assert.equal(design.authority.empirical_replication_credit,0);
 });
