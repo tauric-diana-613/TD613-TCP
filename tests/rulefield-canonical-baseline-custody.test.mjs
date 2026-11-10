@@ -20,5 +20,5 @@ test('successor proves 99 inherited Living Rulefield blobs survived unchanged',(
 test('operator-scientific holds are a baseline constraint rather than a signature',()=>{
  assert.equal(record.protectedExperimentB,'HELD');
  assert.equal(record.humanScientificClosure,'RESERVED');
- assert.match(record.interpretation,/NEITHER_MAIN_MERGE_NOR_OPERATOR_CANONIZATION/);
+ assert.match(record.interpretation,/NEITHER_MAIN_MERGE NOR OPERATOR_CANONIZATION/);
 });
