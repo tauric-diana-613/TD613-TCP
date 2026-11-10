@@ -9,10 +9,10 @@
  * cat task-batch.json | node scripts/vixen-podium.mjs --stdin
  */
 import {readFile,stat} from 'node:fs/promises';
-import {fileURLToPath} from 'node:url';
+import {fileURLToPath,pathToFileURL} from 'node:url';
 import {dirname,resolve,join,sep,relative} from 'node:path';
-import {createVixenPodium,PODIUM_SCHEMA} from '../app/encyclopedia/reference/vixen-podium.mjs';
-import {createVixenReferenceMembrane} from '../app/encyclopedia/reference/vixen-read-gateway.mjs';
+// Native module imports are resolved below from the verified public asset root.
+// This supports both the repository layout and the exact-head preview ZIP.
 
 const defaultRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const options=process.argv.slice(2);
@@ -21,6 +21,8 @@ const input=getFlag('--input');
 const directory=getFlag('--root')||defaultRoot;
 const appRoot=(await stat(join(directory,'app','encyclopedia','vix-cyb.html')).then(()=>join(directory,'app')).catch(()=>directory));
 const sourceRoot=resolve(appRoot,'encyclopedia');
+const {createVixenPodium,PODIUM_SCHEMA}=await import(pathToFileURL(join(sourceRoot,'reference','vixen-podium.mjs')).href);
+const {createVixenReferenceMembrane}=await import(pathToFileURL(join(sourceRoot,'reference','vixen-read-gateway.mjs')).href);
 const base='http://127.0.0.1:6130/encyclopedia/reference/';
 const OUTPUT_CEILING=200000;
 const fileTransport=async(uri,req)=>{
