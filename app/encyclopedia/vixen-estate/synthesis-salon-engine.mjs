@@ -87,11 +87,35 @@ function sourceEntry(w,requested){
   source_content_verified:false,source_body_available:false
  };
 }
-function questionTemplate(a,b,track){
+function questionTemplate(a,b,track,method){
  const left=title(a),right=title(b);
- return 'Under which recorded conditions could '+left+' and '+right+
-  ' inform one independently testable question about '+track.title+
-  ', while preserving their separate authorship, methods and unobserved manuscript bodies?';
+ return 'Can a source-attributed '+String(method.family||'documentary')+
+  ' comparison of '+left+' and '+right+
+  ' under '+track.title+
+  ' yield a falsifiable question whose provenance and utility survive matched competent-union controls without inferring shared authorship?';
+}
+function preregisteredMeasurements(){
+ const measures=[
+  {id:'U_QUESTION',title:'Blinded question usefulness',
+   unit:'PREDECLARED_RUBRIC_SCORE',
+   formula:'ΔU = mean(U_synthesis) - mean(U_competent_union)',
+   positive_interpretation:'A positive effect under matched independent adjudication would warrant further testing, not Manifest admission.'},
+  {id:'F_PROVENANCE',title:'Source-attribution error',
+   unit:'ERRORS_PER_ADJUDICATED_QUESTION',
+   formula:'ΔF = error_rate_synthesis - error_rate_competent_union',
+   positive_interpretation:'Lower error rate would indicate a bounded custody-quality benefit, independent of question novelty.'},
+  {id:'C_VERIFICATION',title:'Additional verification burden',
+   unit:'COUNTED_SOURCE_CHECKS_OR_HUMAN_MINUTES_AS_PREREGISTERED',
+   formula:'ΔC = cost_synthesis - cost_competent_union',
+   positive_interpretation:'A negative cost difference would support an operational-efficiency claim only.'},
+  {id:'O_ROUTE',title:'Order-sensitive question differences',
+   unit:'MATCHED_BLINDED_COMPARISON',
+   formula:'O = distance(Q_AB,Q_BA) under fixed source-set and rubric',
+   positive_interpretation:'An observed difference identifies route sensitivity, not automatic noncommutativity in all worlds.'}
+ ];
+ return measures.map(x=>({...x,observed_value:null,
+  evidence_class:'PROSPECTIVE_MEASUREMENT_DEFINITION_NOT_RESULT',
+  preregistration_state:'REQUIRES_INDEPENDENT_ADJUDICATION'}));
 }
 export function composeSalonPlan(corpus,input={}){
  checkSalonCorpus(corpus);
@@ -106,7 +130,7 @@ export function composeSalonPlan(corpus,input={}){
  const left=sourceEntry(a,input.source_ids?.[0]),right=sourceEntry(b,input.source_ids?.[1]);
  const seq=input.route_order==='B_A'?'B_A':'A_B';
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
- const suggested=questionTemplate(a,b,track);
+ const suggested=questionTemplate(a,b,track,method);
  const proposal=limited(input.question,900)||suggested;
  const observation=limited(input.observable_predicate,450)||
   'In matched, preregistered trials, compare source-attributed question utility, provenance error rate, and additional verification cost against competent-union controls.';
@@ -133,6 +157,21 @@ export function composeSalonPlan(corpus,input={}){
   },
   question:proposal,question_origin:plain(input.question)?'OPERATOR_COMPOSITION':'SOURCE_IDENTITY_GROUNDED_TEMPLATE',
   hypothesis_class:'FALSIFIABLE_PROPOSAL_NOT_EVIDENCE',
+  comparative_measurements:preregisteredMeasurements(),
+  cross_source_mechanisms:[
+   {id:'METHOD_COUPLING',source_class:'CONSTRUCTION',
+    title:'Documentary-method coupling',
+    condition:'Apply the selected documentary method independently to each declared source coordinate before any synthetic comparison.',
+    test:'Can the resulting question be attributed to two independently identified Works?'},
+   {id:'DROMOLOGICAL_REFRACTION',source_class:'CONSTRUCTION',
+    title:'Chronological source refraction',
+    condition:'Change only the order of encountering the same two Works, retaining source ID, custody and rubric.',
+    test:'Does the route alter candidate-question structure or only the encounter narration?'},
+   {id:'COMPETENT_UNION',source_class:'CONSTRUCTION',
+    title:'Independent capable-union comparison',
+    condition:'Benchmark against a genuinely competent combined reader with equivalent time, context, access and source constraints.',
+    test:'Does the proposed synthesis outperform the matched union on a preregistered metric without raising attribution error?'}
+  ],
   suggested_theoretical_relation:
    'R(W₁,W₂ | P) = candidate_question; verified_shared_origin = UNKNOWN; claim_of_emergence = HELD',
   testable_predicate:observation,
