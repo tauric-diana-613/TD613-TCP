@@ -24,6 +24,22 @@ def main(out):
     chamber=(APP/"encyclopedia"/"vixen-estate"/"research-chamber.mjs").read_text(encoding="utf8")
     assert "membrane.search(" not in chamber and "membrane.getRecord(" not in chamber
     assert 'id="vixenSynthesisSalon"' in candidate, "Vixen Salon absent"
+    assert 'id="vixenElectricFoundry"' in candidate, "Vixen flagship Observatory missing"
+    assert 'observatory-electric-foundry.mjs' in candidate, "Live renderer not connected"
+    for name in [
+        "observatory-foundry.frag",
+        "observatory-foundry-renderer.mjs",
+        "observatory-foundry-kernel.mjs",
+        "observatory-vixen-corpus.mjs",
+        "observatory-electric-foundry.mjs",
+        "observatory-electric-foundry.css"
+    ]:
+        assert (APP/"encyclopedia"/"vixen-estate"/name).is_file(), (
+            "Visual source/renderer unavailable: " + name
+        )
+    shader=(APP/"encyclopedia"/"vixen-estate"/"observatory-foundry.frag").read_text(encoding="utf8")
+    assert shader.startswith("#version 300 es") and "for(int i=0;i<39;i++)" in shader
+    assert "data-foundry-mounted" in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8") or "foundryMounted" in (APP/"encyclopedia"/"vixen-estate"/"observatory-electric-foundry.mjs").read_text(encoding="utf8")
     assert 'data-view="collection"' in candidate, "Research cart missing"
     for name in ["synthesis-salon.mjs","synthesis-salon.css","synthesis-salon-engine.mjs"]:
         assert (APP/"encyclopedia"/"vixen-estate"/name).is_file(), "Unpackaged Vixen Salon module: "+name
@@ -80,6 +96,31 @@ SEPARATE 1,141-record Universal reference estate.
 Do not open the HTML by double-clicking (file scheme blocks the modules
 and reference requests). A local HTTP server is sufficient: GitHub main
 and public TD613.com deployment are not required.
+
+## Test the Vixen Electric Foundry — six completed flagship instrument surfaces
+
+1. Navigate to **01 · Observatory**. The previous four-tab stage recedes
+   automatically; the chrome computation theater, not the old four-model
+   interface, becomes the primary interactive instrument.
+2. The six headliners are **TCC-01, TCC-04, TCC-05, RC-03, RC-07,
+   and RC-10**. Select each, inspect its exact recorded Vixen folio
+   title and original formula, and verify the live mathematical readout.
+3. Move Gain, Witness, Impulse Voltage and Refractive Twist; GPU/CPU
+   output, diagnostics and probe state respond causally.
+4. Hover to interrogate local field gradients; click to PIN a probe.
+   The computation is synthetic and source-typed, not empirical proof.
+5. Use Pause/Resume and Single Frame, then visit another view.
+   The frame loop is host-controlled and stops offstage.
+6. Inspect the **39 visual delivery carriers**: 6 near / 13 mid / 20 far.
+   These belong to Loom's optical engine; they are never described as
+   Em's independently sourced authored works.
+7. View other Vixen folios in the historical catalogue: the complete
+   22-formula register and six giveback routes remain discoverable.
+   Registration is not a claim that twenty-eight equal-quality
+   simulations have been built.
+8. The GLSL renderer is in `observatory-foundry.frag`; the control
+   and custody kernel is `observatory-vixen-corpus.mjs`. Both are
+   included in this portable HTTP preview.
 
 ## Test the source-first Vixen Synthesis Salon (one coherent creative Opera)
 
