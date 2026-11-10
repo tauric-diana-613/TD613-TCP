@@ -121,6 +121,7 @@ jobs:
             sleep .2
           done
           node tests/vixen-browser-visual-witness.mjs
+          node tests/vixen-foundry-webgl-canary.mjs
       - name: Preserve exact-head screenshots for human qualification
         if: always()
         uses: actions/upload-artifact@v4
