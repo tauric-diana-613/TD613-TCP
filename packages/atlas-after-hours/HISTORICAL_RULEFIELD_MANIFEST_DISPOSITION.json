@@ -1,0 +1,28 @@
+{
+  "schema": "td613.atlas.historical-rulefield-manifest-disposition/v1",
+  "historical_manifest_path": "RULEFIELD_HANDOFF_MANIFEST.json",
+  "historical_manifest_source_git_head": "04828d8846bd273767f4acc1a4a67893b4f24b65",
+  "historical_manifest_pr": 1722,
+  "historical_snapshot_role": "INHERITED_OLDER_SNAPSHOT_REFERENCE_NOT_CURRENT_HEAD_CERTIFICATE",
+  "current_certificate": "ATLAS_AFTER_HOURS_HANDOFF_MANIFEST.json",
+  "current_source": "EXACT_HEAD_PACKAGER_MUST_RECOMPUTE_ALL_DIGESTS",
+  "known_successor_divergences": [
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "historical_sha256": "02982b0456618ef0d263dd3074454e45a341fed1b82cd9b00f9a2f21fdeeac5c",
+      "current_sha256": "1917d4156646c99ee65d8664ffaa9b3b2338d0fa12c26fe640d8f00d079522ca",
+      "historical_size_bytes": 6978,
+      "current_size_bytes": 10252
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "historical_sha256": "3857f8261796c31c20cf8485651fade38bae8b855e9a6f6e142d2f69f8bd6796",
+      "current_sha256": "5eb20602cd6b93190734fdca633f87847b68c161137732529a852938a5cf258d",
+      "historical_size_bytes": 6869,
+      "current_size_bytes": 7881
+    }
+  ],
+  "assertion": "Inherited predecessor manifest is immutable. Only an exact-head successor certificate may certify current source files.",
+  "scientific_closure": "RESERVED",
+  "protected_experiment_b": "HELD"
+}
