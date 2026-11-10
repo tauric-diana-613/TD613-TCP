@@ -55,12 +55,13 @@ test('Source selection, route and synthetic lag actually alter deterministic opt
  const c=makeVeilFrame({canvas:three.canvas,works:['W_17','W_02'],route:'A_B',lag:20,time:0});
  assert.equal(a.carriers,39);
  assert.equal(a.arc_glints,8,'Six near-Loom carriers and two separately recorded source endpoints form eight computed sparks');
+ assert.equal(a.modeled_couture_ribs,24,'Two source-distinct geometric corset ribs per one of twelve silhouette stations');
  assert.deepEqual(a,same);
  assert.deepEqual(one.steps,repeat.steps);
  assert.notDeepEqual(one.steps,two.steps);
  assert.notDeepEqual(one.steps,three.steps);
  assert(b.arc_charge>a.arc_charge,'More synthetic lag increases opportunity for the declared Arc Flash event');
- assert(one.steps.filter(x=>x[0]==='curve').length>=39,'Loom must generate real geometric carriers');
+ assert(one.steps.filter(x=>x[0]==='curve').length>=75,'Loom carriers and 36 explicit couture Beziers must have real computed geometry');
  assert(one.steps.filter(x=>x[0]==='line').length>100,'D3/phi computed curves must have real vector topology');
  assert.equal(c.empirical_credit,0);
 });
