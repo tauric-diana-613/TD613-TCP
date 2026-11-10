@@ -458,6 +458,13 @@ try {
     assert(!/Eclipse[–-]Omega/.test(await salon.innerText()),
       'Foreign research Opera may never appear in Vixen’s authored Salon');
     assert.equal(await salon.getAttribute('data-stage-role'),'VIXEN_OPERA');
+    const overture=page.locator('#view-collection .vs-overture-notes');
+    assert.equal(await overture.count(),1,'The original research briefing must remain available');
+    assert.equal(await overture.getAttribute('open'),null,'The duplicate introduction begins folded');
+    await overture.locator('summary').click();
+    assert.equal(await overture.locator('p.intro').isVisible(),true,'The full historical brief remains available on request');
+    await overture.locator('summary').click();
+    assert.equal(await overture.getAttribute('open'),null,'Original source-first composition can be restored');
 
     // RGI11: a rendered mathematical costume, not an emoji label or a CSS
     // adjective. Pixel alpha must come from actual source-driven Canvas2D.
