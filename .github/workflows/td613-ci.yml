@@ -1726,4 +1726,203 @@ jobs:
           path: dist/TD613_Rulefield_Antigravity_Handoff_*.zip
           if-no-files-found: error
           retention-days: 14
-
+  rulefield_ix_canonical_and_research:
+    name: 99 inherited Git blobs + full Rulefield tests + Ninth-Order research holds
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute full scoped Rulefield suite and original ancestry verification
+        run: node --test tests/rulefield-*.test.mjs
+      - name: Execute source-linked research receptor and invariants
+        run: |
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs baseline
+          node --input-type=module -e "import {readFileSync} from 'node:fs';import assert from 'node:assert/strict';const p=JSON.parse(readFileSync('packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json','utf8'));assert.equal(p.canonicalMutation,false);assert.equal(p.originalRulePriorityCount,70);assert.equal(p.proposedRulefieldsCount,86);assert.equal(p.retainedHistoricalRecords,596);assert.equal(p.humanClosure,'RESERVED');assert.equal(p.experimentB,'HELD');assert.equal(p.externalAssayRef.parameters,1512);"
+      - name: Run verified ZIP intake negative and positive tests
+        run: python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+  rulefield_ix_portable_handoff:
+    name: Exact-head complete portable Rulefield ZIP — extract and retest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_ARCHIVE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate source-preserving full-stack archive
+        run: python3 scripts/build-rulefield-handoff.py --output-dir dist --exact-head "$EXPECTED_ARCHIVE_SHA"
+      - name: Verify portable ZIP contents and quarantine intake contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Rulefield_Succession_Handoff_*.zip)
+          test "${#files[@]}" -eq 1
+          python3 scripts/rulefield-intake.py verify "${files[0]}"
+          python3 -m zipfile -t "${files[0]}"
+          mkdir -p "$RUNNER_TEMP/rulefield-portable"
+          unzip -q "${files[0]}" -d "$RUNNER_TEMP/rulefield-portable"
+          cd "$RUNNER_TEMP/rulefield-portable"
+          node --test tests/rulefield-*.test.mjs
+          node scripts/rulefield.mjs validate
+          node scripts/rulefield-lab.mjs suite
+          node scripts/rulefield-amend.mjs help > /dev/null
+          node scripts/rulefield-amend.mjs baseline > /dev/null
+          python3 -m unittest discover -s tests -p 'test_rulefield_intake.py'
+      - name: Upload sole inner source ZIP for agent-neutral handoff
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-agent-neutral-exact-head-handoff
+          path: dist/TD613_Rulefield_Succession_Handoff_*.zip
+          if-no-files-found: error
+          retention-days: 30
+  rulefield_ix_native_dollhouse_audit:
+    name: Genuine five-specialist Dollhouse audit — retained HELD, no release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native five-specialist /dollhouse-audit on exact PR head
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input packages/rulefield/rulefields/research/PR1734_DOLLHOUSE_ADVERSARIAL_INPUT.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1734_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1734_stdout.json
+          status=$?
+          echo "$status" > audit-artifacts/pr1734_native_exit_code.txt
+          set -e
+          if [ "$status" -gt 1 ]; then exit "$status"; fi
+      - name: Enforce authentic receipt, exact source revision and retained adversarial holds
+        run: node scripts/check-rulefield-pr1734-dollhouse-verdict.mjs audit-artifacts/pr1734_native_dollhouse_receipt.json
+      - name: Publish specialist receipts without human closure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rulefield-pr1734-native-dollhouse-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
+          retention-days: 30
+  atlas_ix_source_free:
+    name: Ninth Order executable + 18 original byte-hash holds
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run bounded Ninth-Order and predecessor regression suites
+        run: |
+          node --test tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs tests/atlas-after-hours-predecessor-byte-custody.test.mjs tests/atlas-after-hours-original-zip-inventory.test.mjs
+      - name: Run independent source-free Ninth Order simulation
+        run: node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
+      - name: Assert laboratory holds and external protocol disposition
+        run: |
+          node --input-type=module -e "import {CONTRACT,runGeneralizationGrid} from './packages/rulefield/lab/ninth_order_generalization.mjs';const x=runGeneralizationGrid();if(CONTRACT.experimentalFlight!=='HELD'||CONTRACT.scientificClosure!=='RESERVED'||x.count!==1512)process.exit(1);"
+          grep -F 'NO_ACQUISITION' dossier/NINTH_ORDER_EXTERNAL_GENERALIZATION_PREREGISTRATION.md
+  atlas_ix_native_dollhouse_audit:
+    name: Native Dollhouse five-specialist adversarial audit
+    runs-on: ubuntu-latest
+    env:
+      EXPECTED_AUDIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Execute native /dollhouse-audit at exact GitHub HEAD
+        shell: bash
+        run: |
+          mkdir -p audit-artifacts
+          set +e
+          node scripts/run-dollhouse-skill-audit.mjs \
+            --input artifacts/atlas-after-hours/pr1735_dollhouse_adversarial_input.json \
+            --source "$EXPECTED_AUDIT_SHA" --strict-provenance \
+            --format json \
+            --output audit-artifacts/pr1735_native_dollhouse_receipt.json \
+            > audit-artifacts/pr1735_stdout.json
+          EXIT_CODE=$?
+          echo "$EXIT_CODE" > audit-artifacts/pr1735_native_exit_code.txt
+          set -e
+          if [ "$EXIT_CODE" -gt 1 ]; then
+            echo "Native audit execution failed, exit $EXIT_CODE"
+            exit "$EXIT_CODE"
+          fi
+      - name: Validate native specialist execution, receipt integrity and retained holds
+        run: node scripts/check-atlas-pr1735-dollhouse-verdict.mjs audit-artifacts/pr1735_native_dollhouse_receipt.json
+      - name: Publish bounded native audit receipts (no authority conveyed)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-native-dollhouse-adversarial-audit
+          path: audit-artifacts/
+          if-no-files-found: warn
+  atlas_ix_one_piece_handoff:
+    name: Atlas estate — complete exact-HEAD ZIP, historic custody and extracted source-free replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      ATLAS_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build one-piece Atlas from exact Git source blobs
+        run: python3 scripts/build-atlas-after-hours-handoff.py --output-dir dist --exact-head "$ATLAS_SOURCE_SHA"
+      - name: Verify, extract and replay portable archive without repository root
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(dist/TD613_Atlas_After_Hours_Succession_*.zip)
+          test "${#files[@]}" -eq 1
+          python3 scripts/build-atlas-after-hours-handoff.py --verify "${files[0]}"
+          mkdir -p "$RUNNER_TEMP/atlas-portable"
+          unzip -q "${files[0]}" -d "$RUNNER_TEMP/atlas-portable"
+          cd "$RUNNER_TEMP/atlas-portable"
+          node --test tests/atlas-after-hours-*.test.mjs tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs
+          node scripts/run-ninth-order-confluence-trial.mjs >/dev/null
+          node scripts/run-atlas-after-hours-trial.mjs >/dev/null
+          node scripts/run-dollhouse-skill-audit.mjs --help >/dev/null
+      - name: Upload portable Atlas estate for cross-agent research relay
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atlas-pr1735-one-piece-succession-handoff
+          path: dist/TD613_Atlas_After_Hours_Succession_*.zip
+          if-no-files-found: error
+          retention-days: 30

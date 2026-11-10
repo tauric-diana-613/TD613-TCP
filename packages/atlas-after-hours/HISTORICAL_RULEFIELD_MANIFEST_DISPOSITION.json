@@ -52,5 +52,19 @@
   ],
   "assertion": "Inherited predecessor manifest is immutable. Only an exact-head successor certificate may certify current source files.",
   "scientific_closure": "RESERVED",
-  "protected_experiment_b": "HELD"
+  "protected_experiment_b": "HELD",
+  "predecessor_rulefield_blob_divergences": [
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "inherited_rulefield_blob_sha1": "9ce010834192d6187feb85db07600e7893a7080a",
+      "atlas_successor_blob_sha1": "5a843b6679679595f69b67905ded4a107cb34746",
+      "semantics": "ATLAS_COUNTERWORLD_LAB_README_EXPANSION_NOT_R0_BASELINE"
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "inherited_rulefield_blob_sha1": "84090264f2e0043ed210d788cede03d9cbf9f5b2",
+      "atlas_successor_blob_sha1": "81161af3f8f9b7d6312c94951a47d336121ce0b5",
+      "semantics": "ATLAS_NINTH_RESEARCH_MODULE_REGISTRY_EXPANSION_NOT_R0_BASELINE"
+    }
+  ]
 }

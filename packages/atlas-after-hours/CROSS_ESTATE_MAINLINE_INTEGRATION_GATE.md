@@ -12,3 +12,9 @@ The inherited historical `RULEFIELD_HANDOFF_MANIFEST.json` remains frozen as a p
 **Merge readiness means GitHub mergeability plus exact-head CI qualification of this combined tree.** It does not grant external empirical validity, operator priority promotion, deployment, archival overwrite, release, or human scientific closure. Protected Experiment B remains HELD. See /dollhouse-audit negative-control receipt and its preserved dissent.
 
 **Sequence recommendation:** merge Rulefield PR #1734 first only upon separate human approval, then Atlas PR #1735, checking the latter again against the new main head. Both PRs remain unmerged until the Operator chooses.
+
+## Constitutional workflow-consolidation repair
+
+The four-active-workflow rule on `main` takes precedence over the two Ninth-Order experimental YAML files. Their exact original Git blobs remain available as inert historical research documents in the two packages, while their six independent audit/build/test job definitions have been transplanted without removing checks into `.github/workflows/td613-ci.yml`. The consolidated workflow also retains the preexisting `rulefield_handoff` and `atlas_eighth_order` jobs. The old workflow files are deleted only from `.github/workflows/`, not erased from research custody.
+
+The old 99-blob Rulefield predecessor custody fixture remains immutable; Atlas's two evolved lab files are explicitly distinguished from that baseline in the adjacent typed crosswalk and test. All others must remain byte-equal, with fail-closed exceptions.
