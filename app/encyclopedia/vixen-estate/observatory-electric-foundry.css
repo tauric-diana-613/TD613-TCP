@@ -523,3 +523,23 @@
 #vixenElectricFoundry :is(button,canvas,input,summary):focus-visible{
  outline:3px solid #F9F36D;
 }
+
+/* Six native mathematical scenes rendered over the chrome optical engine.
+ * Screen optics may range beyond the original five theme colors, while the
+ * Glinda palette, chrome balance and existing layout remain recognizable.
+ * A shared RAF composes source geometry and reflections in one frame.
+ */
+#vixenElectricFoundry .ef-notation{
+ position:absolute;inset:0;z-index:2;
+ width:100%;height:100%;min-height:540px;display:block;
+ pointer-events:none;mix-blend-mode:screen;
+ filter:drop-shadow(0 0 8px rgba(249,243,109,.17));
+}
+#vixenElectricFoundry .ef-optic-chrome{z-index:3}
+#vixenElectricFoundry .ef-scene-badge{z-index:4}
+@media(max-width:1050px){
+ #vixenElectricFoundry .ef-notation{min-height:470px}
+}
+@media(max-width:740px){
+ #vixenElectricFoundry .ef-notation{min-height:350px}
+}
