@@ -290,3 +290,28 @@
 #vixenSynthesisSalon .vs-result .vs-note{color:#f6eaf0}
 #vixenSynthesisSalon .vs-result .vs-missing{color:#f5e8ee}
 #vixenSynthesisSalon .vs-result .vs-theorem{color:#fff5f7}
+
+/* RGI08 Experiment B: real comparators, observed value deliberately empty. */
+#vixenSynthesisSalon .vs-rubric{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+ padding:0;margin:15px 0 20px;
+}
+#vixenSynthesisSalon .vs-metric{
+ min-width:0;display:flex;flex-direction:column;gap:9px;
+ border:1px solid #b59aa9;background:#302833;padding:18px;
+}
+#vixenSynthesisSalon .vs-metric-label{
+ font:700 10px/1.5 ui-monospace,monospace;color:#f9f36d;
+ letter-spacing:.07em;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-metric-title{
+ font:400 clamp(17px,2vw,24px)/1.15 Georgia,serif;color:#fff0f7;
+}
+#vixenSynthesisSalon .vs-metric-formula{
+ display:block;white-space:normal;font:500 11px/1.6 ui-monospace,monospace;
+ overflow-wrap:anywhere;padding:10px;background:#1b1920;color:#f9f36d;
+}
+#vixenSynthesisSalon .vs-metric .vs-note{color:#f2e5eb}
+@media(max-width:740px){
+ #vixenSynthesisSalon .vs-rubric{grid-template-columns:minmax(0,1fr)}
+}
