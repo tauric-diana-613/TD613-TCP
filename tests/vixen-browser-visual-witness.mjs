@@ -34,6 +34,54 @@ try {
     page.on('pageerror', (error) => errors.push(error.message));
     const response = await page.goto(site, { waitUntil: 'domcontentloaded', timeout: 30000 });
     assert.equal(response?.status(), 200, 'Exact HTTP source must load');
+    // User-supplied Claude Candidates 1/2/3 genre restoration:
+    // editorial interface must be navigable and stateful, not a static
+    // screenshot with inoperative buttons.
+    const foyer=page.locator('.vixen-editorial-foyer');
+    assert.equal(await foyer.locator('button[data-view]').count(),4,
+      'Four callable research-doorway entrances missing');
+    assert.equal(await foyer.isVisible(),true);
+    const genre=await page.evaluate(()=>{
+      const f=document.querySelector('.vixen-editorial-foyer');
+      return {
+        display:getComputedStyle(document.querySelector('.vixen-doorways')).display,
+        overflow:document.documentElement.scrollWidth-innerWidth,
+        active:window.VIXEN_EDITORIAL_GENRE?.getState?.(),
+        label:f.querySelector('h2')?.textContent,
+        inheritedRuntime:!!window.VIXEN_STUDY_TRAY
+      };
+    });
+    assert.equal(genre.display,'grid','Candidate invitation must be spatial and interactive');
+    assert(genre.overflow<=1,'Editorial foyer must not cause horizontal overflow');
+    assert.equal(genre.active?.source_estate,'EMSTD613');
+    assert.equal(genre.active?.doorways?.length,4);
+    assert.equal(genre.inheritedRuntime,true,'Source study tray must remain native owner');
+    await foyer.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(100);
+    await page.screenshot({
+      path:path.join(output,'vixen-'+width+'x'+height+'-claude-editorial-foyer.png'),
+      fullPage:false
+    });
+    await foyer.locator('button[data-view="works"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'works',
+      'Meet the research must enter the original Work catalogue');
+    const carry=await page.evaluate(()=>{
+      const corpus=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent);
+      const id=corpus.works[0].work_id;
+      window.VIXEN_STUDY_TRAY.add(id);
+      return id;
+    });
+    await page.waitForFunction(()=>{
+      return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===1;
+    },null,{timeout:4000});
+    assert.equal(await page.locator('#vixenCarryCount').textContent(),'1');
+    await page.evaluate(id=>window.VIXEN_STUDY_TRAY.remove(id),carry);
+    await page.waitForFunction(()=>{
+      return window.VIXEN_EDITORIAL_GENRE?.getState?.().carried_items===0;
+    },null,{timeout:4000});
+    await page.locator('#menuToggle').click();
+    await page.locator('#mobileNav button[data-view="overview"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
     // RGI09 · Live mathematical Observatory is the principal performance,
     // not an artist's mockup, a package manifest or a copied foreign Opera.
     await page.locator('#menuToggle').click();
