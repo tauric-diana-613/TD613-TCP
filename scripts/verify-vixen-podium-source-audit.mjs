@@ -97,7 +97,9 @@ const disposition={
  merge_authority:false,release_authority:false,deployment_authority:false,
  protected_experiment_b:'HELD'
 };
-const dest=resolve(root,'artifacts/vixen-dual-estate/ci-podium-source-audit.json');
+const dest=process.env.RUNNER_TEMP?
+ resolve(process.env.RUNNER_TEMP,'ci-podium-source-audit.json'):
+ resolve(root,'artifacts/vixen-dual-estate/ci-podium-source-audit.json');
 await mkdir(dirname(dest),{recursive:true});
 await writeFile(dest,JSON.stringify(disposition,null,2)+'\n');
 console.log(JSON.stringify({head,source_checks:constraints.length,
