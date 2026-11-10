@@ -24,6 +24,7 @@ const browser = await chromium.launch({ headless: true });
 const witness = [];
 try {
   for (const { width, height, motion } of screens) {
+    const stem = 'vixen-' + width + 'x' + height + (motion === 'reduce' ? '-reduced' : '');
     const context = await browser.newContext({
       viewport: { width, height },
       reducedMotion: motion,
@@ -313,7 +314,6 @@ try {
     assert(before.header.bottom <= before.source.top, 'Fixed header overlays source card');
     assert.equal(errors.length, 0, 'Uncaught runtime errors before inquiry: ' + errors.join(' | '));
 
-    const stem = 'vixen-' + width + 'x' + height + (motion === 'reduce' ? '-reduced' : '');
     await page.screenshot({ path: path.join(output, stem + '-notice.png'), fullPage: false });
     await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Begin this Work.s comparison/ }).click();
     await page.locator('#vixenReferenceChamber').getByRole('button', { name: /Observe the recorded differences/ }).click();
