@@ -169,7 +169,7 @@
 }
 .vixen-carry-rail:before{
  content:'';position:absolute;top:0;left:0;right:0;height:1px;
- background:linear-gradient(90deg,var(--vf-rose),var(--vf-foil));
+ background:linear-gradient(90deg,var(--vf-rose),var(--vf-flash),var(--vf-porcelain));
 }
 .vixen-carry-kicker{
  display:block;font:700 8px/1.3 var(--vf-mono);
