@@ -150,13 +150,21 @@ export function mountSalonVeil(canvas,getState){
  const win=canvas?.ownerDocument?.defaultView;
  if(!win||typeof getState!=='function')
   return Object.freeze({mounted:false,reason:'NO_VISUAL_HOST'});
- let raf=0,disposed=false,visible=true,frame=0,last=null;
+ let raf=0,disposed=false,visible=true,frame=0,last=null,lastFrameMs=-Infinity;
  const reduced=win.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||false;
- const show=()=>{
+ // A calibrated optical stage, not a 60-FPS CPU tax: 20 FPS maximum while
+ // visible, one static draw when reduced motion is requested.
+ const frameBudgetMs=50;
+ const show=(ms)=>{
+  raf=0;
   if(disposed||!visible||win.document.hidden)return;
+  if(!reduced&&Number.isFinite(ms)&&ms-lastFrameMs<frameBudgetMs){
+   raf=win.requestAnimationFrame(show);return;
+  }
+  if(Number.isFinite(ms))lastFrameMs=ms;
   frame+=1;
   const data=getState();
-  if(data?.works?.length===2)last=makeVeilFrame({canvas,...data,time:reduced?0:frame/72});
+  if(data?.works?.length===2)last=makeVeilFrame({canvas,...data,time:reduced?0:Number.isFinite(ms)?ms/1000:0});
   if(!reduced)raf=win.requestAnimationFrame(show);
  };
  const schedule=()=>{
