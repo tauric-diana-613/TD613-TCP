@@ -262,3 +262,24 @@
 @media(prefers-reduced-motion:reduce){
  #vixenSynthesisSalon *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* RGI08 Source First / Dromological Layout Repair.
+ * No spectacular proscenium may hide the original archival Work behind
+ * the first viewport. Dramatic form yields to evidence before scroll.
+ */
+#vixenSynthesisSalon .vs-head{min-height:0;padding:clamp(18px,2.3vw,30px) clamp(20px,3vw,38px) clamp(21px,2.8vw,36px)}
+#vixenSynthesisSalon .vs-title{
+ max-width:1200px;font-size:clamp(41px,5.25vw,79px);
+ line-height:.91;letter-spacing:-.055em;margin:0 0 10px;
+}
+#vixenSynthesisSalon .vs-intro{
+ font-size:clamp(13px,1.2vw,16px);line-height:1.45;max-width:780px;
+}
+#vixenSynthesisSalon .vs-ritual{right:3%;top:16px}
+#vixenSynthesisSalon .vs-rail{border-top:2px solid #24252a}
+@media (max-width:740px){
+ #vixenSynthesisSalon .vs-head{padding:18px 19px 20px}
+ #vixenSynthesisSalon .vs-title{font-size:clamp(40px,10.2vw,64px);max-width:100%;line-height:.92}
+ #vixenSynthesisSalon .vs-intro{font-size:13px;line-height:1.4}
+ #vixenSynthesisSalon .vs-ritual{margin:7px 0 0;font-size:17px}
+}
