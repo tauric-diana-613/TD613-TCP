@@ -104,6 +104,10 @@ try {
     assert.equal(await page.locator('#vixenReferenceChamber').isHidden(),true,
       'The Vixen Opera must leave the visible stage before a Universal record is inspected');
     assert.equal(await house.isVisible(),true);
+    assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'OPERAHOUSE');
+    assert.equal(await page.locator('#operahouseStageReturn').isVisible(),true);
+    assert.equal(await page.locator('.site-header .brand').isHidden(),true);
+    assert.match(await page.title(),/Operahouse/);
     assert.equal(await house.getAttribute('data-stage-role'),'OPERAHOUSE');
     assert.equal(await house.locator('[data-stage-role="INDEPENDENT_REFERENCE"]').count(),1);
     assert.equal(await house.locator('[data-stage-role="SOURCE_LOCUS"]').count(),1);
@@ -153,6 +157,10 @@ try {
     await house.getByRole('button',{name:/Return to Vixen Opera/}).click();
     assert.equal(await house.isHidden(),true,'Reference Opera must leave before Vixen returns');
     assert.equal(await page.locator('#vixenReferenceChamber').isVisible(),true);
+    assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'VIXEN');
+    assert.equal(await page.locator('#operahouseStageReturn').isHidden(),true);
+    assert.equal(await page.locator('.site-header .brand').isVisible(),true);
+    assert.match(await page.title(),/Vixen Cybernetics/);
     assert(!/G-101/.test(await page.locator('#vixenReferenceChamber').innerText()),
       'No independent Universal record may ride the return route into Vixen');
 
