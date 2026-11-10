@@ -257,7 +257,8 @@ export async function mountVixenElectricFoundry({
   for(const id of HEROES){
    const item=byId.get(id),name=TITLES[id][0];
    const b=BTN(name,()=>switchLab(id),'ef-hero-tab');
-   b.dataset.labId=id;b.setAttribute('aria-pressed',String(state.labId===id));
+   b.dataset.labId=id;b.dataset.ariaNumber=String(HEROES.indexOf(id)+1).padStart(2,'0');
+   b.setAttribute('aria-pressed',String(state.labId===id));
    b.append(node('small','',item.folio_id));
    heroRail.append(b);
   }
