@@ -240,6 +240,17 @@ jobs:
           node tests/gemini-quality-pilot.test.mjs
           node tests/product-architecture/shell.test.mjs
           node tests/giving-validation-scope.test.mjs
+      - name: Execute RGI08 native Dollhouse Design eight-stage commission
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/run-vixen-dd02-makeover.mjs
+      - name: Preserve RGI08 Dollhouse Design structural receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-rgi08-design-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/rgi08-vixen-dollhouse-design-return.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Inspect exact Podium source contract and execute scoped five-role audit
         if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
         run: node scripts/verify-vixen-podium-source-audit.mjs
