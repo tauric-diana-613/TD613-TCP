@@ -21,7 +21,7 @@ assert.equal(receipt.governance.human_closure_required,true);
 assert.equal(receipt.governance.release_authority,false);
 assert(receipt.historical_references.length>=5,'Full historical provenance not admitted');
 for(const r of receipt.historical_references){
- assert.equal(r.inspection_protocol,'FULL_SOURCE_INGESTION',
+ assert.equal(r.content_manifest?.inspection_protocol,'FULL_SOURCE_INGESTION',
   'No binding predecessor may be reduced to a search snippet');
  assert(getReferenceFullContent(r).length>100,
   'Native conductor must actually ingest complete source');
