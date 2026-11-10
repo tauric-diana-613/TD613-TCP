@@ -25,7 +25,7 @@ test("full-size researcher commission preserves named crossings and candidate di
  for(const token of ["Hidalgo","Hägerstrand","Berlant","Wolfram","Stokes","Virilio",
    "Glissant","Sedgwick","GIS","time–space compression","Geographical Impasse Basin",
    "Synchronic Capability Tensor","Synchronization Prism Rank","SO(3)",
-   "Autopoietic Counter-Holonomy","Omega","Delta-Elite",
+   "Autopoietic Counter-Holonomy","Ω_SCR","Delta-Elite",
    "Argon candidate I","Argon candidate II","Argon candidate III","Argon candidate IV","Argon candidate V",
    "X-086","X-095","C-25","C-30",
    "ΣA","ΣB","ΣC","ΣD","ΣR",
