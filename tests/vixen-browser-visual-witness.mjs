@@ -212,6 +212,17 @@ try {
     assert.equal(await salon.locator('.vs-result').getAttribute('data-claim-class'),'OPEN_FIELD_UNRATIFIED_QUESTION');
     assert.match(await salon.locator('.vs-result').innerText(),/Experiment B/);
     assert.match(await salon.locator('.vs-result').innerText(),/HELD/);
+    const theoremContrast=await salon.locator('.vs-result .vs-note').first().evaluate(node=>{
+      const styles=getComputedStyle(node);
+      const paper=getComputedStyle(node.closest('.vs-result'));
+      const rgb=c=>(c.match(/[\d.]+/g)||[]).slice(0,3).map(v=>Number(v)/255);
+      const luminance=c=>rgb(c).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4)
+        .reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+      const fg=luminance(styles.color),bg=luminance(paper.backgroundColor);
+      return (Math.max(fg,bg)+.05)/(Math.min(fg,bg)+.05);
+    });
+    assert(theoremContrast>=4.5,
+      'Result explanations must have WCAG AA contrast on dark couture paper, received '+theoremContrast);
     await salon.getByRole('button',{name:'Refract the encounter order'}).click();
     assert.match(await salon.innerText(),/Internal refraction/);
     await salon.getByRole('button',{name:'Rest without penalty'}).click();
@@ -224,6 +235,9 @@ try {
       const n=document.querySelector('#vixenSynthesisSalon .vs-result');
       if(n)window.scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-96),behavior:'instant'})
     });
+    // A legacy research-cart toast is intentionally short-lived. The
+    // recorded theorem witness must not capture its unrelated overlay.
+    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:6000});
     await page.waitForTimeout(90);
     await page.screenshot({path:path.join(output,stem+'-salon-theorem.png'),fullPage:false});
     assert.equal(errors.length,0,'Uncaught errors across source-bound Salon: '+errors.join(' | '));
