@@ -195,6 +195,24 @@ try {
     const foundry=page.locator('#vixenElectricFoundry');
     assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
       'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
+    assert.equal(await foundry.locator('.ef-proscenium .ef-aria-score .ef-hero-tab').count(),6,
+      'Six original mathematical works must be scored beside the computed stage, not dumped as a dashboard grid');
+    assert.equal(await foundry.locator('.ef-readout').isHidden(),true,
+      'The technical evidence inspector must not permanently compete with the artwork');
+    assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'false');
+    const stageTopology=await foundry.locator('.ef-proscenium').evaluate(n=>({
+      columns:getComputedStyle(n).gridTemplateColumns.split(' ').length,
+      stage:n.querySelector('.ef-stage').getBoundingClientRect().width,
+      score:n.querySelector('.ef-aria-score').getBoundingClientRect().width
+    }));
+    assert(stageTopology.stage>0&&stageTopology.score>0,'Art and score must share one intentional stage geometry');
+    if(width>=741)assert.equal(stageTopology.columns,2,'Desktop receives an asymmetric, composed mathematical stage');
+    await foundry.locator('.ef-inspector-switch').click();
+    assert.equal(await foundry.locator('.ef-readout').isVisible(),true,'Intentional proof reveal must work');
+    assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'true');
+    await foundry.locator('.ef-inspector-switch').click();
+    assert.equal(await foundry.locator('.ef-readout').isHidden(),true,'The evidence curtain must close safely');
+
     assert.equal(await foundry.locator('.ef-carrier').count(),39);
     assert.equal(await foundry.locator('[data-foundry-dial]').count(),4);
     assert.equal(await page.locator('#view-observatory').getAttribute('data-foundry-mounted'),'true');
