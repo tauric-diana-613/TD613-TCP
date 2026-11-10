@@ -22,7 +22,7 @@
   ],
   "assay_notes": {
     "mode": "SOURCE_FREE_ADVERSARIAL_SCENARIO_NOT_EMPIRICAL_ATTESTATION",
-    "pedagogue": "World Alpha has actuation and dashboard verification at t=1 while downstream material effect appears at later t; NOTICE evidence is withheld, not fabricated.",
+    "pedagogue": "Synthetic World Alpha uses source-declared ACT at t=1, dashboard NAME at t=1, WORLD_ANSWERS at t=2 and no recorded NOTICE. No institutional-time subtest is invoked without its required clock schema.",
     "aperture": "Rank-deficient 2-output probe of one terminal observable; synthetic projection counterexample, not claimed existing measurement matrix.",
     "atlas": "Two distinct synthetic route histories share the completion endpoint but differ in hypothetical route/winding metadata.",
     "fadt": "Counterworlds share terminal completion but diverge in collaboration support; unconditional claim widening is deliberately tested as a negative control.",
@@ -43,9 +43,7 @@
           "phase": "WORLD_ANSWERS",
           "at": 2
         }
-      ],
-      "t_op": 1,
-      "t_inst": 1
+      ]
     },
     "APERTURE": {
       "current_operator": [
