@@ -168,6 +168,9 @@ try {
     assert.equal(await wardrobe.getAttribute('data-expanded'),'false');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
       'Source-first couture gallery must not dump all twenty-two cards on initial encounter');
+    assert.deepEqual(await wardrobe.locator('.formula-card:visible').evaluateAll(nodes=>nodes.map(n=>n.dataset.folioId)),
+      ['TCC-01','TCC-04','RC-03','RC-10'],
+      'Featured edit must span original Cybernetics and Refractive Couture families, not blindly show first four metadata rows');
     const galleryReveal=page.locator('#formulaGalleryReveal');
     assert.equal(await galleryReveal.isVisible(),true);
     await page.evaluate(()=>{
