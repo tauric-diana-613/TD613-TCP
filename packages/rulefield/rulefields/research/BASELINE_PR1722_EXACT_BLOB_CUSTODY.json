@@ -1,0 +1,412 @@
+{
+  "schema": "td613.rulefield.succession.pre-reconciliation-custody/v1",
+  "repo": "tauric-diana-613/TD613-TCP",
+  "reference": "LIVING_RULEFIELD_DRAFT_PR_1722_UNMERGED_BASELINE",
+  "baseCommit": "12dcc38adea8aeb04649900463566d67546cf025",
+  "comparisonHead": "878d3f473a980e1d7f27a431401bf7902dade7f5",
+  "interpretation": "BASELINE_PR1722_EXACT_BLOB_MATCH_ONLY; NEITHER_MAIN_MERGE NOR OPERATOR_CANONIZATION",
+  "matchedInheritedSourcePaths": 99,
+  "missing": 0,
+  "modified": 0,
+  "originalWolframianBlobs": 16,
+  "protectedExperimentB": "HELD",
+  "humanScientificClosure": "RESERVED",
+  "records": [
+    {
+      "path": "packages/rulefield/AGENTS.md",
+      "gitBlobSha1": "76948460b9ebed792990bd911ed7323dd74cc4ba"
+    },
+    {
+      "path": "packages/rulefield/amendments/AGENTS.md",
+      "gitBlobSha1": "1df5f772ad47ec07c49567b89b5d05dffbf08255"
+    },
+    {
+      "path": "packages/rulefield/amendments/duplicate_gate.mjs",
+      "gitBlobSha1": "98c333bcab02eab7c4e52110de344ec0d6cfad8b"
+    },
+    {
+      "path": "packages/rulefield/amendments/hooks.json",
+      "gitBlobSha1": "def08f8a9ee505b4ff827e359cfc8ec758ebcf12"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/.gitignore",
+      "gitBlobSha1": "c228bb25c6871d5f6770ba43fb0341bc8da8eafc"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/README.md",
+      "gitBlobSha1": "0db8ca6cb9a228bde81c35d2ea85a77546f1e8bd"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/.gitignore",
+      "gitBlobSha1": "c228bb25c6871d5f6770ba43fb0341bc8da8eafc"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/README.md",
+      "gitBlobSha1": "2035e374ced0c496e045362e84776f69731036b9"
+    },
+    {
+      "path": "packages/rulefield/amendments/RECEIVER.md",
+      "gitBlobSha1": "23c416f958e23b0b78a29ab5e45ed26ff4334ab8"
+    },
+    {
+      "path": "packages/rulefield/amendments/receiver.mjs",
+      "gitBlobSha1": "e0b9b4e88e165234fd4e87827ced10d413e57775"
+    },
+    {
+      "path": "packages/rulefield/amendments/schema.json",
+      "gitBlobSha1": "1e9ac5690a42394cbac706969ef6f1572b12ef9f"
+    },
+    {
+      "path": "packages/rulefield/amendments/templates/amendment.template.json",
+      "gitBlobSha1": "9224712e5fe7fa54dd50797d3b14de1cf3df89f6"
+    },
+    {
+      "path": "packages/rulefield/data/rulefield.v1.json",
+      "gitBlobSha1": "fb50a4313cb24b9071166187a6356a1abc3f8f49"
+    },
+    {
+      "path": "packages/rulefield/lab/integration_backlog.json",
+      "gitBlobSha1": "d5aecb2469ff66033def60d429d4019c1539e04d"
+    },
+    {
+      "path": "packages/rulefield/lab/multiway_lab.mjs",
+      "gitBlobSha1": "0d98377d464c598561a0bb3a09b94e170865501e"
+    },
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "gitBlobSha1": "9ce010834192d6187feb85db07600e7893a7080a"
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "gitBlobSha1": "84090264f2e0043ed210d788cede03d9cbf9f5b2"
+    },
+    {
+      "path": "packages/rulefield/lab/wolfram_comparator.wl",
+      "gitBlobSha1": "fd5d5c81ae719143100f09bf71d3cc46235cbfaf"
+    },
+    {
+      "path": "packages/rulefield/operator/ACTIVATION_PROMPT.md",
+      "gitBlobSha1": "79d2f302bf46e85bacbc9075cc037b5bc0b3a01c"
+    },
+    {
+      "path": "packages/rulefield/operator/AGENTS.md",
+      "gitBlobSha1": "516149763ee961c1476e8dc42b09de659887233f"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1_ROLE_MULTIPLICITY_ADDENDUM.md",
+      "gitBlobSha1": "f480bd9cdcbefa22321c398a21c4dcf702271bef"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+      "gitBlobSha1": "6fdac39a2e2d1218cd5bf070e8be366643758a93"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.md",
+      "gitBlobSha1": "6f08219ad741f0a84ff0fd328aadd7e33668de38"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.mjs",
+      "gitBlobSha1": "4c66ab09670837970f0553a71d9a5dfd32ec6a4e"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.schema.json",
+      "gitBlobSha1": "486424c25812815befb81db40fe77789019c167e"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/.gitignore",
+      "gitBlobSha1": "c228bb25c6871d5f6770ba43fb0341bc8da8eafc"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/README.md",
+      "gitBlobSha1": "9507ac817a9dda86fd61417b178cbf2fc2445f6d"
+    },
+    {
+      "path": "packages/rulefield/operator/design/COMMISSION.json",
+      "gitBlobSha1": "c3a0051288904f4ec7e2e3d20738422c8dc48d21"
+    },
+    {
+      "path": "packages/rulefield/operator/design/README.md",
+      "gitBlobSha1": "872e6596b14821a9fdb15da7f105deac6747a93e"
+    },
+    {
+      "path": "packages/rulefield/operator/DISCLOSURE_PROTOCOL.md",
+      "gitBlobSha1": "f9868841814905b0d20a230b1cca8aa1c97fb864"
+    },
+    {
+      "path": "packages/rulefield/operator/disclosure.mjs",
+      "gitBlobSha1": "a30a97be87ceceb49c6ebb01f01b3a16e2c260b2"
+    },
+    {
+      "path": "packages/rulefield/operator/docket.mjs",
+      "gitBlobSha1": "c7abd5597599c9583b33c55962361f26ce506d0b"
+    },
+    {
+      "path": "packages/rulefield/operator/docket3.mjs",
+      "gitBlobSha1": "0a97b5f253673c4d25d35f71d3496f254b6c031a"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/.gitignore",
+      "gitBlobSha1": "7c9d611b59248fe868a3cf04d80ded04fee40d8e"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/README.md",
+      "gitBlobSha1": "4e938f91af86f250d361eb3e603d457f402a9dd4"
+    },
+    {
+      "path": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+      "gitBlobSha1": "e3db58e2fec9a0b764307822b896d5c9516fc803"
+    },
+    {
+      "path": "packages/rulefield/operator/INTAKE_AND_SYNC.md",
+      "gitBlobSha1": "b49c8c5016b3a628ce212eefa29925c9059ecd74"
+    },
+    {
+      "path": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+      "gitBlobSha1": "cb10f59200315f0148267de55b195b8f8547891d"
+    },
+    {
+      "path": "packages/rulefield/operator/README.md",
+      "gitBlobSha1": "8b614de8f1dc00ba95ea6dc9d14434b2b42cf8c9"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_AUTHORIZATION_DECISION.md",
+      "gitBlobSha1": "a467de6b5cf0ce2fda4badc78125ed3f7284aa38"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+      "gitBlobSha1": "3d16bd48313930b5de6cb214a315170077d3562a"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+      "gitBlobSha1": "1ca167665b96bb062a056f3110c37c4f023b6c29"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md",
+      "gitBlobSha1": "c4e933610975539b5dfc9b51a90b61d7ef9134cc"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+      "gitBlobSha1": "68fddb521b9530d640595fadcafab8db1ad04e77"
+    },
+    {
+      "path": "packages/rulefield/README.md",
+      "gitBlobSha1": "a4a4de12d307de8e611793954f70a90062ab1d35"
+    },
+    {
+      "path": "packages/rulefield/ROADMAP.md",
+      "gitBlobSha1": "2059fb614155a58acfbf7c95d03af9bfbd4615a0"
+    },
+    {
+      "path": "packages/rulefield/rulebook/ANTIGRAVITY_KENOUGH_ACTIVATION.md",
+      "gitBlobSha1": "7151585cd06de6b30692df604b12f32992dfc3f5"
+    },
+    {
+      "path": "packages/rulefield/rulebook/LLM_QUICK_START.md",
+      "gitBlobSha1": "a22739ed1cd96c97f0e4faffdfaf1eb0cb752ba7"
+    },
+    {
+      "path": "packages/rulefield/rulebook/README.md",
+      "gitBlobSha1": "af30629de9f4a691ab7fcb9d4fed69325125099f"
+    },
+    {
+      "path": "packages/rulefield/rulebook/source_locator.json",
+      "gitBlobSha1": "b9bfaad6149f0b9018b8e47b10f16bb549df0466"
+    },
+    {
+      "path": "packages/rulefield/rulefield.mjs",
+      "gitBlobSha1": "ca5d9067b282381111105ee05e2b1d0967914628"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+      "gitBlobSha1": "11f17cbfd7cbfc3c2b570b9de571c38b8ee8fa2e"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261108-revision.json",
+      "gitBlobSha1": "288af1c039db07f5f918b4a311a0e49949a9698c"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/recovered-operator-models-20261108.json",
+      "gitBlobSha1": "6efc2b09141cdab7fa93385cce3ffc7ea4a8dc96"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/COMMISSION.json",
+      "gitBlobSha1": "450172688890d7034552c5a65bd9427f60381271"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/README.md",
+      "gitBlobSha1": "9c1278309c4adf7a952cf78fc55bda254746076a"
+    },
+    {
+      "path": "packages/rulefield/rulefields/engine.mjs",
+      "gitBlobSha1": "8bce2932e7b4222b42ebaccf4ec58b857a6793f0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/evidence_priority.mjs",
+      "gitBlobSha1": "2c9f3395c9bc9b7a26d89b933a93e1e01386dea0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/operator_models.mjs",
+      "gitBlobSha1": "5f9285a43f47f017d94ef385406d1fea2902fe64"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/.gitignore",
+      "gitBlobSha1": "7c9d611b59248fe868a3cf04d80ded04fee40d8e"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/README.md",
+      "gitBlobSha1": "91d4f495de66029306ab4e794ac63ea38c747199"
+    },
+    {
+      "path": "packages/rulefield/rulefields/paired_priority.mjs",
+      "gitBlobSha1": "eeeeea86b54805f40b120c949802215cfda9c7af"
+    },
+    {
+      "path": "packages/rulefield/rulefields/plans/PLAN.template.json",
+      "gitBlobSha1": "29601f1d0995cef763a6f32c3c0a12b72bcbaf08"
+    },
+    {
+      "path": "packages/rulefield/rulefields/README.md",
+      "gitBlobSha1": "d5496631c2d4d1135f736ff57eb5d5a88ffe9a5b"
+    },
+    {
+      "path": "packages/rulefield/rulefields/RECOVERY_PROTOCOL.md",
+      "gitBlobSha1": "523be8dbc8c4d3ecf411b8a36393161d72d0a685"
+    },
+    {
+      "path": "packages/rulefield/rulefields/residual_triage.mjs",
+      "gitBlobSha1": "cae5fa2bb8701193ce4796ac4a7a3b00488c71e7"
+    },
+    {
+      "path": "packages/rulefield/rulefields/revised_docket.mjs",
+      "gitBlobSha1": "76260094a7004e1c1d019d58a9bd87ddb3a5b969"
+    },
+    {
+      "path": "packages/rulefield/rulefields/schema.json",
+      "gitBlobSha1": "801241e4e8d054990a028b4e8109b9500d0a88c8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/semantic_review.mjs",
+      "gitBlobSha1": "0514fdd6118e2d44001918d5619523f0ec789b75"
+    },
+    {
+      "path": "packages/rulefield/rulefields/temporal_guardian.mjs",
+      "gitBlobSha1": "aa7e7fa05a0edc14d91decbad9bc986d302b0750"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.json",
+      "gitBlobSha1": "80e7841426db732d65e307fc7623a011d6c2e8f8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md",
+      "gitBlobSha1": "90a30d570dceea0d5553e68f263c1290cc6965d0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/SEMANTIC_CASEBOOK_ROD0003.json",
+      "gitBlobSha1": "a67caf5960e6d3a86a379c4f97cfc90bfcf06665"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
+      "gitBlobSha1": "908e650b78c2577a56b7d01c6acd9775a7aebd88"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md",
+      "gitBlobSha1": "05ea269b88b0306125264389e39666f71a6ef405"
+    },
+    {
+      "path": "packages/rulefield/rulefields/TYPE_SYSTEM.md",
+      "gitBlobSha1": "7b2be95ac09e14a51ec06e71c79668fe7b6a379e"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.mjs",
+      "gitBlobSha1": "a5c23e62b175d3f271a403b2aecdf6198709c778"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.schema.json",
+      "gitBlobSha1": "1dcc6aa9f6285e00f24006e9a30e9e286f182106"
+    },
+    {
+      "path": "packages/rulefield/sources/emergence-recovery-112.snapshot.json",
+      "gitBlobSha1": "9b3ec2bc84ddc7a0270babdb6f5026a1dc7c73fb"
+    },
+    {
+      "path": "packages/rulefield/sources/nks-garden-190.snapshot.json",
+      "gitBlobSha1": "44090a83cb2031113390d2a20f68b30a4c2ef512"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/DOLLHOUSE_SCIENTIFIC_AUDIT_REPORT.md",
+      "gitBlobSha1": "c4584443624482a3af4bb589325bf249875f937b"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/README_AMARI_HANDOFF.md",
+      "gitBlobSha1": "5ea36831a62e7924e0467f245c905edb28d82b90"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/README.md",
+      "gitBlobSha1": "62a6a7dff3f36668c045975593ea705445d9a737"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/butler_receipt.json",
+      "gitBlobSha1": "9e13a892d2051edd6de0571561c790f117150ba1"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/dollhouse-audit-receipt-wolfram-index.json",
+      "gitBlobSha1": "f09ef9c1deb7a3e7ea6f738a52d69d897a7fc6c5"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/receipts/dollhouse-design-receipt-virilio-wolfram-berlant.json",
+      "gitBlobSha1": "62fd865782a7afb8892ef285320b65fd3eaa48a6"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/SOURCE_LINEAGE.json",
+      "gitBlobSha1": "05151263338539f890fec564f091ffe87c9ca552"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_164_Rules.json",
+      "gitBlobSha1": "cf81f07f7260b72667fd815305cf6da6308e2790"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_179_Rules.json",
+      "gitBlobSha1": "8cd74b07bfaa32ade58e7248e5552b36eda89f00"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/TD613_NKS_Rule_Atlas_Convergence_Edition.json",
+      "gitBlobSha1": "191c5295f85cdd2b67b9622e4cba394f2c06eacb"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/THE_CATASTROPHE_OF_CONFLUENCE_A_VWB_FREESTYLE_MANIFESTO.md",
+      "gitBlobSha1": "00dab78b6fc701b5a1a43599cb1fc7ce7e0a3ce5"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html",
+      "gitBlobSha1": "c915221fc08c3b37cbfd91772236d4e327c99f94"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/VIRILIAN_WOLFRAMIAN_BERLANTIAN_RELATIONAL_GEOMETRY.md",
+      "gitBlobSha1": "7806e501d237745607d9476e9222241b976943b4"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_2026-11-07.csv",
+      "gitBlobSha1": "f7f7e88293bc7dcf09abfdad056aa17a43b0da01"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_2026-11-07.md",
+      "gitBlobSha1": "704dad5d9a4b4f01353670efcd65ffb26fab1287"
+    },
+    {
+      "path": "packages/rulefield/sources/wolfram-rule-atlas-20261107/Wolframian_Rule_Index_Expanded.md",
+      "gitBlobSha1": "a41d21384a8d8d8eccd7af2ecf177dfcd0443285"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.csv",
+      "gitBlobSha1": "938e5f8bfaff7ebc9af343dce14c1fe26c335cf0"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.json",
+      "gitBlobSha1": "13384e85cf83db706bffac7b61e26c68bbf64591"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.md",
+      "gitBlobSha1": "abab98da8e25815896409f9f748838fa5b391ac4"
+    }
+  ]
+}
