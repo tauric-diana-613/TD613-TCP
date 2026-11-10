@@ -174,10 +174,16 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   addEvent('PODIUM_TASK_BATCH_PREPARED',{task_class:'READ_ONLY_INACTIVE_UNTIL_EXPLICIT_EXECUTION'});
  };
  const notice=()=>mk('div','vs-status',state.notice);
+ function withdrawVisibleProposal(){
+  if(!state.result)return;
+  changed();host.querySelector('.vs-result')?.remove();
+  const live=host.querySelector('.vs-status');
+  if(live)live.textContent=state.notice;
+ }
  function render(){
   host.replaceChildren();host.dataset.stageRole='VIXEN_OPERA';
   const head=mk('header','vs-head');
-  const eyebrow=mk('div','vs-eyebrow','06 · VIXEN SYNTHE​SIS SALON · COUTURE LABORATORY'); // nonsemantic ZWSP
+  const eyebrow=mk('div','vs-eyebrow','06 · VIXEN SYNTHESIS SALON · COUTURE LABORATORY');
   const title=mk('h2','vs-title','The theorem');
   title.append(mk('em','vs-title-italics',' never'));
   title.append(document.createTextNode(' finished dressing.'));
@@ -242,8 +248,13 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    const updated=toyClockAssay({lag:state.lag,routeOrder:state.route});
    lagLabel.textContent='Demonstration lag · '+state.lag+' dimensionless ticks';
    bars.replaceChildren(...makeBars(updated));
-   if(state.result){changed();}
+   if(state.result){changed();
+    host.querySelector('.vs-result')?.remove();
+    const live=host.querySelector('.vs-status');
+    if(live)live.textContent=state.notice;
+   }
   });
+  slider.addEventListener('change',()=>render());
   const bars=mk('div','vs-clock-bars');
   bars.append(...makeBars(clocks));
   append(clockBox,lagLabel,slider,bars,paragraph('Distinct derivative domains: k · n · τ · wall · 48 kHz plant. Equal bar positions cannot establish a physical time map. Changing lag genuinely changes these illustrative positions.','vs-custody'));
@@ -251,13 +262,13 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   inputPane.append(paragraph('A QUESTION WORTH REFUSING TO ANSWER PREMATURELY','vs-eyebrow'));
   const q=mk('textarea','vs-textarea');q.placeholder='Optional: your own falsifiable question. Leave blank for a source-attributed construction.';
   q.rows=3;q.maxLength=900;q.value=state.question;q.setAttribute('aria-label','Compose an original research question');
-  q.addEventListener('input',()=>{state.question=q.value;state.result=null;state.refraction=null});
+  q.addEventListener('input',()=>{state.question=q.value;withdrawVisibleProposal()});
   const observable=mk('textarea','vs-textarea');observable.placeholder='Optional: an observable predicate or measured comparison';observable.rows=2;observable.maxLength=450;observable.value=state.observable;
   observable.setAttribute('aria-label','Define the future observable predicate');
-  observable.addEventListener('input',()=>{state.observable=observable.value;state.result=null;state.refraction=null});
+  observable.addEventListener('input',()=>{state.observable=observable.value;withdrawVisibleProposal()});
   const counter=mk('textarea','vs-textarea');counter.placeholder='Optional: the world in which this hypothesis fails';counter.rows=2;counter.maxLength=450;counter.value=state.counterworld;
   counter.setAttribute('aria-label','Define a counterfactual world');
-  counter.addEventListener('input',()=>{state.counterworld=counter.value;state.result=null;state.refraction=null});
+  counter.addEventListener('input',()=>{state.counterworld=counter.value;withdrawVisibleProposal()});
   append(inputPane,q,observable,counter);
   const actions=mk('div','vs-actions');
   if(state.resting){
