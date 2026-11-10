@@ -26,7 +26,9 @@
       "HELD_OR_HUMAN_REVIEW"
     ],
     "no_automatic_source_pairing": true,
-    "no_implicit_engine_connection": true
+    "no_implicit_engine_connection": true,
+    "routes": 12,
+    "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs"
   },
   "source_census": {
     "vixen_works": 32,
@@ -100,6 +102,26 @@
       "authority": "UNRATIFIED_SESSION_ONLY"
     },
     {
+      "id": "vixen.salon.compose",
+      "inputs": [
+        "work_ids",
+        "track_id",
+        "protocol_id"
+      ],
+      "action": "GENERATE_VIXEN_SOURCE_BOUND_UNRATIFIED_QUESTION",
+      "authority": "SOURCE_FREE_OPEN_FIELD_HELD"
+    },
+    {
+      "id": "experiment_b.preregister",
+      "inputs": [
+        "work_ids",
+        "track_id",
+        "protocol_id"
+      ],
+      "action": "DRAFT_MATCHED_COMPETENT_UNION_EXP_B_DESIGN_ONLY",
+      "authority": "UNEXECUTED_HELD_HUMAN_CLOSURE_RESERVED"
+    },
+    {
       "id": "engine.capabilities",
       "inputs": [],
       "action": "SHOW_EXPLICIT_ADAPTERS_AND_HOLDS",
@@ -159,7 +181,8 @@
     "cross_opera_warrant_registry": "EMPTY",
     "science": "UNESTABLISHED",
     "empirical_replication_credit": 0,
-    "receiver_type": "LOCAL_ENGINE_INTERFACE_NOT_EXTERNAL_EMPIRICAL_WITNESS"
+    "receiver_type": "LOCAL_ENGINE_INTERFACE_NOT_EXTERNAL_EMPIRICAL_WITNESS",
+    "experiment_b_competent_union": "PROSPECTIVE_MATCHED_NULL_NOT_EXECUTED"
   },
   "lineage": {
     "historical_dollhouse_audits": "2026-11-08_OPERATOR_SUPPLIED_FIVE_SPECIALIST_RECEIPTS",
