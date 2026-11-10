@@ -35,7 +35,8 @@ const checks=[
   .map(id=>['VIEW_'+id.toUpperCase(),current.includes('id="view-'+id+'"')]),
  ['ORIGINAL_4_MODEL_OBSERVATORY',current.includes('data-obs-tab="planes"')&&
    current.includes('data-obs-tab="clocks"')&&
-   current.includes('data-obs-tab="svd"')],
+   current.includes('data-obs-tab="aperture"')&&
+   current.includes('data-obs-tab="couture"')],
  ['CANVAS_RETAINED',current.includes('id="observatoryCanvas"')],
  ['22_ORIGINAL_FORMULA_FOLIOS',corpus.formula_folios.length===22],
  ['THE_ORIGINAL_8_GATES_REMAIN_UNADJUDICATED',
@@ -64,8 +65,9 @@ assert.equal(plan.status,'OPEN_FIELD_UNRATIFIED_QUESTION');
 assert.equal(plan.experiment_b.status,'HELD_NO_PROTECTED_FLIGHT');
 assert.equal(plan.authority.manifest_successor,'UNKNOWN');
 assert.equal(refracted.route_memory_non_equivalent,true);
-assert.notDeepEqual(toyClockAssay({lag:0}).arrival_order,toyClockAssay({lag:120}).arrival_order,
- 'Toy clock sensitivity must be consequential under perturbation');
+assert.notDeepEqual(toyClockAssay({lag:0}).clocks.map(c=>c.tick),
+ toyClockAssay({lag:120}).clocks.map(c=>c.tick),
+ 'Toy clock sensitivity must be consequential under perturbation without inventing rank crossings');
 const result={
  schema:'td613.vixen.rgi08.reparative-exact-head-retention/v1',
  original_predecessor_sha:baseline,current_head:head,
