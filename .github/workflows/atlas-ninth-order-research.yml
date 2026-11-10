@@ -30,7 +30,7 @@ jobs:
           node-version: '22'
       - name: Run bounded Ninth-Order and predecessor regression suites
         run: |
-          node --test tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/atlas-after-hours-predecessor-byte-custody.test.mjs tests/atlas-after-hours-original-zip-inventory.test.mjs
+          node --test tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs tests/atlas-after-hours-predecessor-byte-custody.test.mjs tests/atlas-after-hours-original-zip-inventory.test.mjs
       - name: Run independent source-free Ninth Order simulation
         run: node scripts/run-ninth-order-confluence-trial.mjs > /dev/null
       - name: Assert laboratory holds and external protocol disposition
@@ -108,7 +108,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/atlas-portable"
           unzip -q "${files[0]}" -d "$RUNNER_TEMP/atlas-portable"
           cd "$RUNNER_TEMP/atlas-portable"
-          node --test tests/atlas-after-hours-*.test.mjs tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs
+          node --test tests/atlas-after-hours-*.test.mjs tests/rulefield-seventh-order-independent-metrology.test.mjs tests/rulefield-eighth-order-reparative-consequence.test.mjs tests/rulefield-ninth-order-confluence.test.mjs tests/rulefield-ninth-order-generalization.test.mjs tests/rulefield-ninth-order-hidalgo-stokes-research.test.mjs tests/rulefield-ninth-order-full-commission-custody.test.mjs
           node scripts/run-ninth-order-confluence-trial.mjs >/dev/null
           node scripts/run-atlas-after-hours-trial.mjs >/dev/null
           node scripts/run-dollhouse-skill-audit.mjs --help >/dev/null
