@@ -10,6 +10,7 @@
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 
+import {setVixenStage} from './vixen-stage-boundary.mjs';
 export const ENCOUNTER_SCHEMA='td613.operahouse.independent-witness-encounter/v1';
 export const CROSS_ATELIER_WITNESS_CONTRACT='ua:contract:cross_atelier_witness';
 const el=(tag,cl='',value)=>{
@@ -289,10 +290,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   footer.append(button('Return to Vixen Opera — independent reference leaves the stage',()=>{
     const chamber=document.getElementById('vixenReferenceChamber');
     if(!chamber)return;
-    host.hidden=true;chamber.hidden=false;
-    window.scrollTo({top:0,behavior:'instant'});
-    chamber.querySelector('.vxe-heading h1')?.setAttribute('tabindex','-1');
-    chamber.querySelector('.vxe-heading h1')?.focus({preventScroll:true});
+    setVixenStage('VIXEN');
   }));
   const path=el('details','oh-history');path.append(el('summary','','Session-only custody route ('+state.events.length+' events)'));
   const list=el('ol','');for(const event of state.events)list.append(el('li','',event.sequence+' · '+event.action));
