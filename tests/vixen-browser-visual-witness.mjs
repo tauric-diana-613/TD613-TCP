@@ -49,6 +49,18 @@ try {
     assert.equal(await foundry.locator('[data-foundry-dial]').count(),4);
     assert.equal(await page.locator('#view-observatory').getAttribute('data-foundry-mounted'),'true');
     assert.equal(await foundry.locator('.ef-canvas').isVisible(),true);
+    assert.equal(await foundry.locator('.ef-notation').count(),1,
+      'A distinct source-native computed mathematical score must be mounted');
+    const firstScore=await page.evaluate(()=>{
+      const node=document.querySelector('#vixenElectricFoundry .ef-notation');
+      const ctx=node.getContext('2d');
+      const data=ctx.getImageData(0,0,node.width,node.height).data;
+      let lit=0;
+      for(let i=3;i<data.length;i+=404)if(data[i]>20)lit++;
+      return {width:node.width,height:node.height,lit,signature:node.toDataURL('image/png')};
+    });
+    assert(firstScore.width>100&&firstScore.height>100&&firstScore.lit>6,
+      'Not enough real vector pixels were drawn to qualify a computational score');
     assert.equal(await page.locator('#view-observatory .instrument-stage').isHidden(),true,
       'Legacy four-tab presentation must yield to new Observatory');
     assert(!/Eclipse[–-]Omega/.test(await foundry.innerText()));
@@ -79,6 +91,11 @@ try {
       el.value='12';el.dispatchEvent(new Event('input',{bubbles:true}));
     });
     const afterDial=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
+    const secondScore=await page.evaluate(()=>{
+      return document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png');
+    });
+    assert.notEqual(secondScore,firstScore.signature,
+      'Changed Vixen research parameters must transform the actual rendered score');
     assert.notDeepEqual(visualBefore.sample.metrics,afterDial.metrics,
       'A source-model dial must change computed diagnostics rather than decorative animation');
     assert.equal(afterDial.corpus_coordinates.source_folio,'TCC-01');
@@ -86,9 +103,13 @@ try {
     const rankProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
     assert.equal(rankProbe.corpus_coordinates.source_folio,'RC-07');
     assert(rankProbe.metrics.some(x=>x.name==='singular_values'));
+    const rankScene=await page.evaluate(()=>document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png'));
+    assert.notEqual(rankScene,secondScore,'Rank lab must draw a genuinely distinct scene from Control Planes');
     await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-10"]').click();
     const xorProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
     assert(xorProbe.metrics.some(x=>x.name==='joint_I_XY_Z'&&x.value===1));
+    const xorScene=await page.evaluate(()=>document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png'));
+    assert.notEqual(xorScene,rankScene,'XOR must project its own information-flow geometry');
     if(width===1440){
       for(const lab of ['LAB_TCC-04','LAB_TCC-05','LAB_RC-03','LAB_RC-07','LAB_RC-10']){
         await foundry.locator('.ef-hero-tab[data-lab-id="'+lab+'"]').click();
