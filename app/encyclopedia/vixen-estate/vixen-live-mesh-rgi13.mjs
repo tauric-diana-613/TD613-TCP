@@ -264,6 +264,9 @@ export function mountVixenLivingMesh({
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
  const paused=()=>reduced||held;
+ // The Salon and Observatory have their OWN live computed stages. Avoid
+ // overpainting them with an almost-invisible second full-screen Canvas.
+ const stageOwned=()=>['collection','observatory'].includes(doc.body.dataset.view);
  function sample(ms){
   if(disposed||doc.hidden)return;
   const paintStart=win.performance?.now?.()||0;
@@ -284,14 +287,15 @@ export function mountVixenLivingMesh({
    quality:w<720?'low':'medium'
   });
   last=paintLivingMesh(ctx,model,{intensity:mode==='observatory'?.55:mode==='reference'?.52:.92});
-  canvas.dataset.route=mode;canvas.dataset.animation=paused()?'STILL':'LIVE';
+  canvas.dataset.route=mode;
+  canvas.dataset.animation=paused()?'STILL':stageOwned()?'AMBIENT_PARKED':'LIVE';
   frame++;
   paintCostMs=(win.performance?.now?.()||paintStart)-paintStart;
   // No visual signal grants truth, identity, authorship or release authority.
  }
  function loop(ms){
   raf=0;
-  if(disposed||doc.hidden||paused())return;
+  if(disposed||doc.hidden||paused()||stageOwned())return;
   // Ambient theatre yields to the research UI: 12 fps mobile, 15 fps desktop.
   // RGI14 now owns the primary on-stage couture. This global atmosphere
   // must remain asynchronous, slow, and cheaper than every source control.
@@ -306,7 +310,7 @@ export function mountVixenLivingMesh({
   if(raf){win.cancelAnimationFrame(raf);raf=0;}
   if(doc.hidden)return;
   sample(paused()?0:(win.performance?.now?.()||0));
-  if(!paused())raf=win.requestAnimationFrame(loop);
+  if(!paused()&&!stageOwned())raf=win.requestAnimationFrame(loop);
  }
  const motion=doc.getElementById('motionBtn');
  held=motion?.getAttribute('aria-pressed')==='true';
