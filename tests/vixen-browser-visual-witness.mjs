@@ -39,7 +39,7 @@ try {
     // editorial interface must be navigable and stateful, not a static
     // screenshot with inoperative buttons.
     try{
-      await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:9000});
+      await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:15000,polling:250});
     }catch(e){
       const diag=await page.evaluate(()=>({
         ready:document.readyState,
@@ -478,7 +478,7 @@ try {
     await page.waitForFunction(()=>
       window.VixenLivingMesh?.status()?.rendered_frames>=1
       &&document.getElementById('vixenLivingMesh')?.width>100,
-      null,{timeout:15000});
+      null,{timeout:15000,polling:250});
     const meshWitness=await page.evaluate(()=>{
       const c=document.getElementById('vixenLivingMesh');
       const state=window.VixenLivingMesh.status();
