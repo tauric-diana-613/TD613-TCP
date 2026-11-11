@@ -306,6 +306,12 @@ function mount(){
  const motionObs=new MutationObserver(restart);
  if(motion)motionObs.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
  mq?.addEventListener?.('change',restart);
+ // A reduced-motion or Still user must still see the correct Work-conditioned
+ // optical field after an intentional source-selection change.
+ const onWorkSelection=e=>{
+  if(e.target?.closest?.('.vs-source-card'))draw(0,true);
+ };
+ host.addEventListener('change',onWorkSelection);
  document.addEventListener('visibilitychange',restart);
  window.addEventListener('resize',restart,{passive:true});
  // First paint follows the original source controls' DOM mount.
@@ -315,6 +321,7 @@ function mount(){
   renderOnce:()=>draw(0,true),
   dispose(){disposed=true;cancelAnimationFrame(raf);io.disconnect();mut.disconnect();
    motionObs.disconnect();mq?.removeEventListener?.('change',restart);
+   host.removeEventListener('change',onWorkSelection);
    document.removeEventListener('visibilitychange',restart);
    window.removeEventListener('resize',restart);canvas?.remove();}
  });
