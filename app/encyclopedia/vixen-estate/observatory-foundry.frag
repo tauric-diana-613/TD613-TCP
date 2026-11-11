@@ -72,7 +72,8 @@ float field(vec2 p, int mode,float t){
 }
 // Archived Vixen theme: Baker-Miller #FF91AF, Arc Flash #F9F36D.
 // Graphite #24282A, Nickel #667078, Porcelain #F6F4F0.
-// Active RGI11 optics: champagne Arc Flash #FFF2A9, three field-dependent pinks.
+// Active RGI14 optics: neutral chrome, rose, pearl and champagne Arc Flash #FFF2A9.
+// Former lavender/plum scatter removed without modifying the scalar field.
 // Optical machinery is derived from Vixen's computed field, never blue ink.
 vec3 palette(float t){
  vec3 graphite=vec3(.1412,.1569,.1647);
@@ -80,7 +81,7 @@ vec3 palette(float t){
  vec3 porcelain=vec3(.9647,.9569,.9412);
  vec3 glinda=vec3(1.,.5686,.6863);
  vec3 pearl=vec3(1.,.8941,.9451);
- vec3 orchid=vec3(.9647,.6471,.8667);
+ vec3 rose=vec3(1.,.40,.67);
  vec3 arcFlash=vec3(1.,.9490,.6627);
  float silver=smoothstep(-.82,.88,t);
  vec3 albedo=mix(graphite,nickel,smoothstep(-.9,.15,t));
@@ -89,9 +90,9 @@ vec3 palette(float t){
  albedo=mix(albedo,glinda,spectral*.34);
  // Three pink transmissions sampled from field geometry, not uniform tint.
  float satin=smoothstep(.65,.98,sin(t*4.2+u_model.x*2.)*.5+.5);
- float orchidPhase=smoothstep(.37,.86,cos(t*6.1+u_model.w*4.)*.5+.5);
+ float rosePhase=smoothstep(.37,.86,cos(t*6.1+u_model.w*4.)*.5+.5);
  albedo=mix(albedo,pearl,satin*.19);
- albedo=mix(albedo,orchid,orchidPhase*.11);
+ albedo=mix(albedo,rose,rosePhase*.11);
  // Champagne Arc Flash remains voltage-conditioned.
  float voltagePhase=smoothstep(.43,.92,sin(t*22.+u_model.z*6.)*.5+.5);
  albedo=mix(albedo,arcFlash,voltagePhase*.30);
@@ -142,7 +143,7 @@ void main(){
  // a replacement for Glinda pink, chrome or canonical Arc Flash yellow.
  base+=vec3(.49,.63,.67)*opal*.038*(1.-quiet*.8);
  base+=vec3(1.,.5686,.6863)*max(0.,b-r)*.075*(1.-quiet*.65);
- base+=vec3(.8745,.7490,.9333)*max(0.,r-b)*.092*(1.-quiet*.65);
+ base+=vec3(1.,.88,.83)*max(0.,r-b)*.092*(1.-quiet*.65);
  float etched=pow(abs(sin(f*13.+length(p)*.027)),36.)*
   pow(curvature,1.3);
  base+=vec3(.9647,.9569,.9412)*etched*.095*(1.-quiet*.88);
@@ -166,12 +167,12 @@ void main(){
  bright+=vec3(1.,.5686,.6863)*arc*.53;
  bright+=vec3(.9647,.9569,.9412)*pow(arc,2.2)*2.55;
  float caustic=pow(max(0.,sin(f*18.+t*.10)),35.)*curvature;
- bright+=vec3(.8745,.7490,.9333)*caustic*.10*(1.-quiet*.82);
+ bright+=vec3(1.,.88,.83)*caustic*.10*(1.-quiet*.82);
  float radial=length(uv);
  float ring=exp(-pow((radial-.66)*250.,2.))+
             exp(-pow((radial-.82)*200.,2.))*.36;
  float ringMarkers=pow(max(0.,sin(atan(uv.y,uv.x)*48.)),34.);
- base+=ring*(vec3(.72,.72,.71)+vec3(.8745,.7490,.9333)*ringMarkers*.60)*.26;
+ base+=ring*(vec3(.72,.72,.71)+vec3(1.,.88,.83)*ringMarkers*.60)*.26;
  float wires=0.;
  for(int i=0;i<39;i++){
   float q=float(i);
@@ -185,7 +186,7 @@ void main(){
   float stroke=1.-smoothstep(width,width*4.,distance);
   wires+=stroke*depth*(.24+.76*smoothstep(.03,.62,slope*30.));
  }
- base+=vec3(.8745,.7490,.9333)*min(1.,wires)*.055*(1.-quiet*.8);
+ base+=vec3(1.,.88,.83)*min(1.,wires)*.055*(1.-quiet*.8);
  // Full depth graphite behind the central apparatus; nickel reflection
  // and sparse gold flares appear at its edges without burying its labels.
  float vignette=clamp(1.-.37*dot(uv,uv),.22,1.);
