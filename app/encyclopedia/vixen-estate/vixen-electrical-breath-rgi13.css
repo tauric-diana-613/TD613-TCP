@@ -158,3 +158,11 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
 @media(print){
  #vixenLivingMesh.vixen-living-mesh{display:none!important;}
 }
+
+/* Motion policy belongs to the operator and OS, not the artistic renderer.
+   The JS draws one stable geometrical snapshot in these modes. */
+@media(prefers-reduced-motion:reduce){
+ #vixenLivingMesh.vixen-living-mesh{
+  animation:none!important;transition:none!important;
+ }
+}
