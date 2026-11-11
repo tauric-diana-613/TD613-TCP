@@ -204,3 +204,102 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card:
 @media print{
  #vixenSynthesisSalon .vixen-opaline-couture,#vixenLivingMesh{display:none!important}
 }
+
+/* RGI14B · FROM THE CHROMIUM WITNESS
+   THE OBSERVATORY still inherited violet illumination from RGI10/11.
+   Its six arias are a Vixen Opera performance: preserve their math and
+   controls, re-materialize the theatre in pearl, silver, pink and Arc. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry{
+ background:linear-gradient(145deg,#0B0D12,#262F35)!important;
+ border-color:rgba(255,240,168,.54)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-header{
+ background:
+  radial-gradient(ellipse at 80% 0,rgba(255,240,168,.2),transparent 59%),
+  linear-gradient(120deg,#20272D,#0B0D12)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-proscenium{
+ background:#090E13!important;
+ border-block-color:rgba(255,240,168,.53)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score{
+ background:linear-gradient(165deg,#FFFAFC 0%,#FFDEEB 47%,#FFC9DE 100%)!important;
+ border-right-color:rgba(255,50,154,.53)!important;
+ color:#24292D!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker{
+ color:#2B3437!important;
+ border-bottom-color:rgba(255,50,154,.26)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker:before{
+ color:#1B2024!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-rail{
+ background:transparent!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab{
+ background:transparent!important;
+ color:#1B2429!important;
+ border-bottom-color:rgba(202,66,127,.24)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:before{
+ color:#E11F83!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab small{
+ color:#9A3B6B!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
+ background:linear-gradient(112deg,#FFF0A8,#FFDBE7 71%,#FF9DC7)!important;
+ border-left-color:#FF329A!important;
+ color:#151D23!important;
+ text-shadow:none!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]:before{
+ color:#D11C74!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-instrument-stage{
+ background:#0C1116!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar{
+ background:linear-gradient(95deg,#151D23,#090E12)!important;
+ border-color:rgba(255,240,168,.35)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-stage{
+ background:radial-gradient(ellipse at 48% 42%,#29343D,#080E13 67%)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-iris-frame{
+ background:linear-gradient(128deg,#111921,#060C10)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-readout:not([hidden]){
+ background:linear-gradient(123deg,#242F36,#0D151B)!important;
+ border-top-color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-pane{
+ background:linear-gradient(120deg,#252F36,#0C1217)!important;
+ border-block-color:rgba(255,240,168,.36)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-lab-subtitle{
+ color:#FFE8F3!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-equation{
+ background:linear-gradient(140deg,#111A20,#070C11)!important;
+ border-color:rgba(255,240,168,.36)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-linked-sources{
+ background:linear-gradient(130deg,#121A20,#070C11)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-gallery-list{
+ background:linear-gradient(145deg,#252D34,#10161B)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-gallery-item{
+ color:#FCEBF1!important;
+ border-bottom-color:rgba(255,240,168,.16)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-gallery-item[aria-pressed="true"]{
+ background:linear-gradient(100deg,rgba(255,50,154,.18),rgba(255,240,168,.08))!important;
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-dial-cabinet{
+ background:#131B21!important;
+ border-color:rgba(255,240,168,.36)!important;
+}
