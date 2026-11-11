@@ -68,8 +68,12 @@ test('No plum can be reintroduced through the last architectural skin',()=>{
  assert.match(css,/--vix-arc:#FFF0A8/);
  assert.match(css,/--vix-hot:#FF329A/);
  assert.match(css,/--vix-electric-lilac:#D7AFFF/);
- assert.doesNotMatch(css,/#[0-9A-Fa-f]{2}(?:1[0-9A-Fa-f]|2[0-9A-Fa-f])(?:3[0-9A-Fa-f]|4[0-9A-Fa-f])/,
-  'Do not infer purity from a swatch alone; still verify browser screenshot');
+ const hex=[...new Set([...css.matchAll(/#[0-9A-Fa-f]{6}\b/g)].map(x=>x[0]))];
+ const plum=hex.filter(h=>{
+  const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);
+  return Math.max(r,g,b)<115 && r>g+11 && b>g+11 && b>=r-6;
+ });
+ assert.deepEqual(plum,[],'No dark plum materials permitted in the RGI14 architecture');
 });
 test('Reject nonpositive viewport rather than manufacturing geometric evidence',()=>{
  assert.throws(()=>coutureGeometry({width:-1,height:690}),/COUTURE_VIEWPORT_REQUIRED/);
