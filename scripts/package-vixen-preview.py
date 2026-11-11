@@ -33,6 +33,9 @@ def main(out):
     assert 'glinda-spectacle-rgi11.css' in candidate, "Actual computational couture not enabled"
     assert 'vixen-electrical-breath-rgi13.css' in candidate, "Living Glinda mesh stylesheet absent"
     assert 'vixen-live-mesh-rgi13.mjs' in candidate, "Living 39-carrier mesh module not wired"
+    assert 'vixen-opaline-couture-rgi14.css' in candidate, "No-plum Opaline architecture stylesheet absent"
+    assert 'vixen-opaline-couture-rgi14.mjs' in candidate, "Source-conditioned Opaline couturier absent"
+    assert (APP/"encyclopedia"/"vixen-estate"/"vixen-opaline-couture-rgi14.mjs").is_file(), "Opaline geometry is not present in distributable source"
     electrical=(APP/"encyclopedia"/"vixen-estate"/"vixen-live-mesh-rgi13.mjs")
     assert electrical.is_file(), "Living mesh module missing from declared Vixen estate"
     assert "OPERAHOUSE ≠ OPERA ≠ PERFORMER" in electrical.read_text(encoding="utf8"), "Optical mesh forgot research roles"
