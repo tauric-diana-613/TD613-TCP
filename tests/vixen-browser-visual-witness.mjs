@@ -643,16 +643,31 @@ try {
     assert(!/🩰|🚬/.test(visualPalette.sourceText),
       'Literal ballet/shoe/cigarette emoji substitutes cannot pass the couture witness');
 
+    // A disclosure click scrolls Chromium to its summary. Reset to the
+    // canonical *Salon entrance* before testing the first-viewport source
+    // position, rather than attributing test-induced scroll to the layout.
+    await page.evaluate(()=>{
+      const entrance=document.querySelector('#view-collection .view-heading');
+      const fixed=document.querySelector('.site-header')?.getBoundingClientRect().height||0;
+      if(entrance)window.scrollTo({
+        top:Math.max(0,window.scrollY+entrance.getBoundingClientRect().top-fixed-6),
+        behavior:'instant'
+      });
+    });
     const salonGeom=await page.evaluate(()=>{
       const root=document.querySelector('#vixenSynthesisSalon');
       const original=root.querySelector('.vs-source-card');
       const header=document.querySelector('.site-header').getBoundingClientRect();
       const r=original.getBoundingClientRect();
       return {top:r.top,headerBottom:header.bottom,
-        documentWidth:document.documentElement.scrollWidth,viewport:innerWidth}
+        documentWidth:document.documentElement.scrollWidth,viewport:innerWidth,
+         scrollY:window.scrollY,stageTop:root.querySelector('.vs-head')?.getBoundingClientRect().top}
     });
     assert(salonGeom.documentWidth <= width+1,'Salon horizontal overflow at '+width);
-    assert(salonGeom.top<height-55,'Original Vixen source must be visible in first Salon viewport: '+width);
+    assert(salonGeom.top<height-55,
+      'Original Vixen source must be visible in first Salon viewport: width='+width+
+      ', top='+salonGeom.top+', stageTop='+salonGeom.stageTop+
+      ', scrollY='+salonGeom.scrollY+', viewportHeight='+height);
     await page.screenshot({path:path.join(output,stem+'-salon-entry.png'),fullPage:false});
     const beforeClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
     await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).evaluate(n=>{
