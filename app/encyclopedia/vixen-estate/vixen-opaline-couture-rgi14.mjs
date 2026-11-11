@@ -236,7 +236,9 @@ function mount(){
  io.observe(host);
  function draw(ms,force=false){
   if(disposed||document.hidden||!attach())return;
-  if(!force&&ms-last<95)return;
+  // Source-first interaction wins over ambient frames: the dress changes
+  // at a bounded 4.5fps, while CSS can interpolate luminous opacity.
+  if(!force&&ms-last<220)return;
   if(!force&&host.getBoundingClientRect().bottom<0)return;
   if(!force&&host.getBoundingClientRect().top>window.innerHeight)return;
   const w=head.clientWidth,h=head.clientHeight;
