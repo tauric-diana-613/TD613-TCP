@@ -671,6 +671,24 @@ try {
       'Original Vixen source must be visible in first Salon viewport: width='+width+
       ', top='+salonGeom.top+', stageTop='+salonGeom.stageTop+
       ', scrollY='+salonGeom.scrollY+', viewportHeight='+height);
+    const readability=await page.evaluate(()=>{
+      const salon=document.getElementById('vixenSynthesisSalon');
+      const intro=salon.querySelector('.vs-intro').getBoundingClientRect();
+      const cards=[...salon.querySelectorAll('.vs-source-card')];
+      const first=cards[0].getBoundingClientRect();
+      const workTitles=cards.map(c=>getComputedStyle(c.querySelector('.vs-work-title')).color);
+      const bodyText=getComputedStyle(salon.querySelector('.vs-intro')).color;
+      const noObstruction=first.top>=intro.bottom-1;
+      return {introBottom:intro.bottom,firstTop:first.top,
+        noObstruction,workTitles,bodyText};
+    });
+    assert(readability.noObstruction,
+      'The source card cannot cover the Salon introduction: firstTop='+
+      readability.firstTop+', introBottom='+readability.introBottom);
+    assert.equal(readability.workTitles[0],'rgb(24, 35, 44)',
+      'Work I title must render dark ink against pearl and may not vanish into blush');
+    assert.equal(readability.workTitles[1],'rgb(255, 248, 250)',
+      'Work II title must render pale ink against neutral black chrome');
     await page.screenshot({path:path.join(output,stem+'-salon-entry.png'),fullPage:false});
     const beforeClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
     await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).evaluate(n=>{
