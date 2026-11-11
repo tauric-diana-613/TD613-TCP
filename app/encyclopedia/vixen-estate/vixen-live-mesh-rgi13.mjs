@@ -52,7 +52,8 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='collection',
  const w=Math.max(1,width),h=Math.max(1,height);
  const seed=visualSeed(sourceIds);
  const isMobile=w<690;
- const nlat=quality==='low'?11:17,nlong=quality==='low'?18:28;
+ const nlat=quality==='low'?11:quality==='medium'?13:17;
+ const nlong=quality==='low'?18:quality==='medium'?24:28;
  const route=String(view||'collection');
  const centerX=w*(isMobile?.78:route==='collection'?.765:route==='observatory'?.79:.82);
  const centerY=h*(route==='overview'?.51:.49);
@@ -84,7 +85,8 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='collection',
  }
  const ribbon=[];
  for(let band=0;band<2;band++){
-  const strands=[],rows=quality==='low'?8:16,steps=quality==='low'?16:30;
+  const strands=[],rows=quality==='low'?8:quality==='medium'?12:16;
+  const steps=quality==='low'?16:quality==='medium'?23:30;
   for(let i=0;i<rows;i++){
    const points=[],q=i/Math.max(1,rows-1);
    for(let j=0;j<steps;j++){
@@ -124,7 +126,9 @@ function stroke(ctx,points,color,width,alpha,glow=0){
  if(!points||points.length<2)return;
  ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
  ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;
- ctx.shadowColor=color;ctx.shadowBlur=glow;
+ // Full-viewport stroke blur is catastrophic in software Chromium; only
+ // tiny segments get bounded glow. Brightness comes from alpha layering.
+ ctx.shadowColor=color;ctx.shadowBlur=points.length<=3?Math.min(glow,5):0;
  ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);
  for(let i=1;i<points.length;i++)ctx.lineTo(points[i].x,points[i].y);
  ctx.stroke();ctx.restore();
@@ -134,7 +138,7 @@ function star(ctx,x,y,energy,tint){
  ctx.save();ctx.globalCompositeOperation='screen';
  ctx.lineWidth=.7+energy*.65;ctx.strokeStyle=tint;
  ctx.globalAlpha=.30+energy*.65;ctx.shadowColor=tint;
- ctx.shadowBlur=10+energy*21;ctx.beginPath();
+ ctx.shadowBlur=3+energy*4;ctx.beginPath();
  ctx.moveTo(x-r*1.45,y);ctx.lineTo(x+r*1.45,y);
  ctx.moveTo(x,y-r*1.65);ctx.lineTo(x,y+r*1.65);
  ctx.moveTo(x-r*.42,y-r*.42);ctx.lineTo(x+r*.42,y+r*.42);
@@ -221,7 +225,7 @@ export function paintLivingMesh(ctx,model,{intensity=1}={}){
  discharge(ctx,xy(center.x-w*.12,h*.91),xy(w*.99,h*.21),
   t+1.7,seed+301,.14+mainPulse*.65,ELECTRIC_COUTURE.core);
  const nlat=ring.length,nlong=ring[0].length;
- for(let i=0;i<52;i++){
+ for(let i=0;i<26;i++){
   const a=(i*7+3)%nlat,b=(i*11+5)%nlong;
   const p=ring[a][b];
   const life=Math.pow(clamp((Math.sin(time*(1.4+i%5*.19)+i*PHI)+.32)/1.32),5);
@@ -232,7 +236,7 @@ export function paintLivingMesh(ctx,model,{intensity=1}={}){
  return Object.freeze({
   schema:model.schema,painted:true,source_mode:model.source_mode,
   model_carriers:fibers.length,hoops:nlat,shell_stations:nlong,
-  glint_candidates:52,empirical_credit:0
+  glint_candidates:26,empirical_credit:0
  });
 }
 export function mountVixenLivingMesh({
@@ -252,7 +256,7 @@ export function mountVixenLivingMesh({
  if(!ctx){canvas.remove();return Object.freeze({mounted:false,reason:'CANVAS2D_UNAVAILABLE'});}
  const mq=win.matchMedia?.('(prefers-reduced-motion: reduce)');
  let reduced=!!mq?.matches,held=false,raf=0,disposed=false,lastMs=-Infinity;
- let frame=0,last=null,resizeNeeded=true,pausedAt=0;
+ let frame=0,last=null,resizeNeeded=true,pausedAt=0,paintCostMs=0;
  let pointer=xy(.5,.5),scroll=win.scrollY||0;
  const width=()=>Math.max(1,win.innerWidth||1),height=()=>Math.max(1,win.innerHeight||1);
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
@@ -260,10 +264,11 @@ export function mountVixenLivingMesh({
  const paused=()=>reduced||held;
  function sample(ms){
   if(disposed||doc.hidden)return;
+  const paintStart=win.performance?.now?.()||0;
   const w=width(),h=height();
   if(resizeNeeded||canvas.width===0||canvas.height===0){
-   const dpr=Math.min(1.75,Math.max(1,win.devicePixelRatio||1));
-   const effective=w<750?Math.min(dpr,1.25):dpr;
+   const dpr=Math.min(1.25,Math.max(1,win.devicePixelRatio||1));
+   const effective=w<750?Math.min(dpr,1):dpr;
    canvas.width=Math.round(w*effective);
    canvas.height=Math.round(h*effective);
    canvas.style.width=w+'px';canvas.style.height=h+'px';
@@ -274,18 +279,19 @@ export function mountVixenLivingMesh({
   const mode=doc.body.dataset.view||'overview';
   const model=buildLivingMesh({
    width:w,height:h,time,scroll,pointer,view:mode,sourceIds:readSources(),
-   quality:w<720?'low':'full'
+   quality:w<720?'low':'medium'
   });
   last=paintLivingMesh(ctx,model,{intensity:mode==='observatory'?.55:mode==='reference'?.52:.92});
   canvas.dataset.route=mode;canvas.dataset.animation=paused()?'STILL':'LIVE';
   frame++;
+  paintCostMs=(win.performance?.now?.()||paintStart)-paintStart;
   // No visual signal grants truth, identity, authorship or release authority.
  }
  function loop(ms){
   raf=0;
   if(disposed||doc.hidden||paused())return;
   // Ambient theatre yields to the research UI: 12 fps mobile, 15 fps desktop.
-  const cap=width()<750?84:67;
+  const cap=Math.max(width()<750?135:100,Math.min(500,paintCostMs*4));
   if(ms-lastMs>=cap){
    sample(ms);lastMs=ms;
   }
@@ -331,7 +337,7 @@ export function mountVixenLivingMesh({
    rendered_frames:frame,route:canvas.dataset.route,
    motion:canvas.dataset.animation,source_mode:last?.source_mode,
    model_carriers:last?.model_carriers,
-   paused_at_frame:pausedAt,empirical_credit:0
+   paused_at_frame:pausedAt,paint_cost_ms:Math.round(paintCostMs),empirical_credit:0
   }),
   renderOnce:()=>{if(!disposed)sample(0);return last;},
   dispose(){
