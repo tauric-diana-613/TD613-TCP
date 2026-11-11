@@ -58,7 +58,7 @@ test('The frontispiece remains above the separate ambient visual costume',()=>{
  assert.match(css,/body\[data-view="overview"\][^{]*#vixenLivingMesh\s*\{[^}]*z-index:0!important/s);
  assert.match(css,/body\[data-view="overview"\][^{]*#view-overview\s*\{[^}]*z-index:2/s);
  assert.match(css,/\.hero-art\s*\{[^}]*z-index:3!important/s);
- assert.match(css,/\\.vixen-opaline-couture/);
+ assert.match(css,/\.vixen-opaline-couture/);
  assert.match(html,/vixen-opaline-couture-rgi14\.css/);
  assert.match(html,/vixen-opaline-couture-rgi14\.mjs/);
 });
