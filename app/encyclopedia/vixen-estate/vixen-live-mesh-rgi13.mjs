@@ -259,8 +259,10 @@ export function mountVixenLivingMesh({
  let frame=0,last=null,resizeNeeded=true,pausedAt=0,paintCostMs=0;
  let pointer=xy(.5,.5),scroll=win.scrollY||0;
  const width=()=>Math.max(1,win.innerWidth||1),height=()=>Math.max(1,win.innerHeight||1);
- const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
-  .slice(0,2).map(s=>s.value).filter(Boolean);
+ // Work identity derives from one selected Work per source-bound card;
+ // the second select in a card is a manifestation, never another Work.
+ const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
+  .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
  const paused=()=>reduced||held;
  function sample(ms){
   if(disposed||doc.hidden)return;
