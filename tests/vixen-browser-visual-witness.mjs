@@ -581,8 +581,8 @@ try {
     // dependent. Avoid comparing its RGB punctuation with a CSS source literal.
     // The next title-color assertion tests the actual rendered ink on pearl,
     // while the screenshot artifact witnesses the color and optical geometry.
-    assert.equal(glindaStage.titleColor,'rgb(32, 19, 33)',
-      'The headlining text must be dark ink on luminous pearl, never the prior white-on-plum');
+    assert.equal(glindaStage.titleColor,'rgb(23, 26, 28)',
+      'The headlining text must be neutral dark chrome on luminous pearl, never the rejected purple-black');
     assert(glindaStage.stageBottom>0,'Operator must encounter the computational optical stage');
 
     const overture=page.locator('#view-collection .vs-overture-notes');
