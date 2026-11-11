@@ -515,8 +515,11 @@ try {
     assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames),stillFrame,
       'Still mode must prevent all new mesh animation frames');
     await page.evaluate(()=>document.getElementById('motionBtn').click());
-    await page.waitForFunction(()=>
-      window.VixenLivingMesh?.status()?.motion==='LIVE',null,{timeout:5000});
+    // OS-reduced-motion remains STILL after the operator releases the
+    // in-page Still switch; only a motion-capable browser may go LIVE.
+    const resumedMotion=motion==='reduce'?'STILL':'LIVE';
+    await page.waitForFunction(expected=>
+      window.VixenLivingMesh?.status()?.motion===expected,resumedMotion,{timeout:5000});
 
 
     // RGI12 operator rejection regression: source-declared plum/pink values
