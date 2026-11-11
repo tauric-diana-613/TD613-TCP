@@ -38,7 +38,21 @@ try {
     // User-supplied Vixen source-owned research encounter:
     // editorial interface must be navigable and stateful, not a static
     // screenshot with inoperative buttons.
-    await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:15000});
+    try{
+      await page.waitForFunction(()=>window.VIXEN_FOYER?.mounted===true,null,{timeout:9000});
+    }catch(e){
+      const diag=await page.evaluate(()=>({
+        ready:document.readyState,
+        foyer:!!document.querySelector('.vixen-editorial-foyer'),
+        carry:!!document.getElementById('vixenCarryRail'),
+        count:!!document.getElementById('vixenCarryCount'),
+        native:!!document.getElementById('collectionCount'),
+        vixenFoyer:window.VIXEN_FOYER?.mounted??null,
+        mesh:window.VixenLivingMesh?.status?.()??null
+      }));
+      throw new Error('VIXEN_FOYER_STARTUP_WITNESS '+JSON.stringify(diag)+
+       ' errors='+JSON.stringify(errors)+' original='+String(e));
+    }
     // Vixen's signature Fox House room rail is now a true Vixen
     // route surface, not a second set of dummy links or a second router.
     const foxRail=page.locator('#vixenRoomRail');
