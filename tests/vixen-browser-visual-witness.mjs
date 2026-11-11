@@ -513,6 +513,9 @@ try {
     assert(meshWitness.connected,'Live visual mesh must be attached');
     assert.equal(meshWitness.role,'VIXEN_OPERA_VISUAL_ONLY');
     assert.equal(meshWitness.route,'collection');
+    assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().motion),
+      motion==='reduce'?'STILL':'AMBIENT_PARKED',
+      'Salon-specific live couture takes precedence over redundant ambient paints');
     assert.equal(meshWitness.meshCarriers,39);
     assert.equal(meshWitness.pointer,'none','The electric mesh cannot steal source controls');
     assert.equal(meshWitness.moduleLoaded,true);
@@ -575,7 +578,7 @@ try {
     await page.evaluate(()=>document.getElementById('motionBtn').click());
     // OS-reduced-motion remains STILL after the operator releases the
     // in-page Still switch; only a motion-capable browser may go LIVE.
-    const resumedMotion=motion==='reduce'?'STILL':'LIVE';
+    const resumedMotion=motion==='reduce'?'STILL':'AMBIENT_PARKED';
     await page.waitForFunction(expected=>
       window.VixenLivingMesh?.status()?.motion===expected,resumedMotion,{timeout:5000});
 
