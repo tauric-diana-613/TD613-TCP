@@ -459,6 +459,52 @@ try {
       'Foreign research Opera may never appear in Vixen’s authored Salon');
     assert.equal(await salon.getAttribute('data-stage-role'),'VIXEN_OPERA');
 
+    // RGI13 acceptance: verify an actually painted, responsive, route-aware
+    // electrical mesh. An image or declared CSS color cannot satisfy this.
+    await page.waitForFunction(()=>
+      window.VixenLivingMesh?.status()?.rendered_frames>=1
+      &&document.getElementById('vixenLivingMesh')?.width>100,
+      null,{timeout:15000});
+    const meshWitness=await page.evaluate(()=>{
+      const c=document.getElementById('vixenLivingMesh');
+      const state=window.VixenLivingMesh.status();
+      const d=c.getContext('2d').getImageData(
+       Math.floor(c.width*.43),0,Math.max(1,Math.floor(c.width*.55)),
+       Math.max(1,Math.floor(c.height*.65))
+      ).data;
+      let colored=0;
+      for(let i=3;i<d.length;i+=16)if(d[i]>10)colored++;
+      return {
+       connected:c.isConnected,role:c.dataset.role,
+       route:state.route,frames:state.rendered_frames,
+       meshCarriers:state.model_carriers,px:colored,
+       pointer:getComputedStyle(c).pointerEvents,
+       moduleLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-live-mesh-rgi13.mjs')),
+       styleLoaded:[...document.styleSheets].some(x=>x.href?.includes('vixen-electrical-breath-rgi13.css'))
+      };
+    });
+    assert(meshWitness.connected,'Live visual mesh must be attached');
+    assert.equal(meshWitness.role,'VIXEN_OPERA_VISUAL_ONLY');
+    assert.equal(meshWitness.route,'collection');
+    assert.equal(meshWitness.meshCarriers,39);
+    assert.equal(meshWitness.pointer,'none','The electric mesh cannot steal source controls');
+    assert.equal(meshWitness.moduleLoaded,true);
+    assert.equal(meshWitness.styleLoaded,true);
+    assert(meshWitness.px>200,'The canvas must visibly paint model-derived electrical light');
+    // Existing Still button must pause our new animation as well as the
+    // historical Observatory; never add a redundant motion authority control.
+    await page.evaluate(()=>document.getElementById('motionBtn').click());
+    await page.waitForFunction(()=>
+      window.VixenLivingMesh?.status()?.motion==='STILL',null,{timeout:5000});
+    const stillFrame=await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
+    await page.waitForTimeout(125);
+    assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames),stillFrame,
+      'Still mode must prevent all new mesh animation frames');
+    await page.evaluate(()=>document.getElementById('motionBtn').click());
+    await page.waitForFunction(()=>
+      window.VixenLivingMesh?.status()?.motion==='LIVE',null,{timeout:5000});
+
+
     // RGI12 operator rejection regression: source-declared plum/pink values
     // never constitute proof of a visible pearl proscenium. The browser must
     // actually load the downstream stylesheet and compute a luminous header.
