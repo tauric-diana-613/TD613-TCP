@@ -245,8 +245,8 @@ function mount(){
   const cw=Math.floor(w*dpr),ch=Math.floor(h*dpr);
   if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
   ctx.setTransform(dpr,0,0,dpr,0,0);
-  const ids=[...host.querySelectorAll('.vs-source-card select')].slice(0,2)
-   .map(x=>x.value).filter(Boolean);
+  const ids=[...host.querySelectorAll('.vs-source-card')].slice(0,2)
+   .map(card=>card.querySelector('select')?.value).filter(Boolean);
   const model=cotureModel(w,h,held()?0:ms/1000,ids);
   paintOpalineCouture(ctx,model);
   frame++;last=ms;
