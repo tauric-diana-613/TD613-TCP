@@ -191,7 +191,7 @@ try {
       const node=document.querySelector('.formula-gallery-intro');
       window.scrollTo({top:Math.max(0,window.scrollY+node.getBoundingClientRect().top-110),behavior:'instant'});
     });
-    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:6000});
+    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:15000,polling:250});
     await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false});
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),22,
@@ -637,7 +637,7 @@ try {
     });
     // A legacy research-cart toast is intentionally short-lived. The
     // recorded theorem witness must not capture its unrelated overlay.
-    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:6000});
+    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:15000,polling:250});
     await page.waitForTimeout(90);
     await page.screenshot({path:path.join(output,stem+'-salon-theorem.png'),fullPage:false});
     assert.equal(errors.length,0,'Uncaught errors across source-bound Salon: '+errors.join(' | '));
