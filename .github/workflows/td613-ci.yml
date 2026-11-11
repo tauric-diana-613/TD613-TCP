@@ -195,6 +195,7 @@ jobs:
           node --test tests/vixen-rgi10-couture.test.mjs
           node --test tests/vixen-rgi11-light.test.mjs
           node --test tests/vixen-rgi13-mesh.test.mjs
+          node --test tests/vixen-rgi14-couture.test.mjs
           node --test tests/vixen-electric-foundry.test.mjs
           node --test tests/vixen-foyer.test.mjs
           node --test tests/loom-observer-channel.test.mjs tests/loom-observer-chamber.test.mjs tests/loom-targeted-ux.test.mjs
