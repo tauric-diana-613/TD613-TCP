@@ -8,6 +8,7 @@
  * OPERAHOUSE ≠ OPERA ≠ PERFORMER; protected Experiment B HELD.
  */
 import {CARRIERS,PHI,triangular,quasiperiodic,project111} from './observatory-foundry-kernel.mjs';
+import {measureCoutureBeats,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs';
 export const OPAL_COUTURE_CONTRACT=Object.freeze({
  schema:'td613.vixen.opaline-couture/v1',role:'OPERA_VISUAL_ONLY',
  mathematical_kinship:'D3_PHI_MOIRE_LAYER_DIFFERENCE_NOT_EPISTEMIC_TRANSFER',
@@ -28,15 +29,19 @@ function seedFor(ids){
  let h=2166136261;for(const ch of text){h^=ch.codePointAt(0);h=Math.imul(h,16777619)>>>0;}
  return h;
 }
-function glint(ctx,x,y,r,color,opacity=1){
+function glint(ctx,x,y,radiusCss,color,opacity=1){
+ // Visual radius is the actual gradient kernel cutoff, not its inner core.
+ const radius=Math.min(BEAT_POLICY.max_bloom_css_px,Math.max(0,radiusCss));
+ if(radius<.2||opacity<=0)return;
+ const r=radius/5;
  ctx.save();ctx.globalCompositeOperation='screen';
- const glow=ctx.createRadialGradient(x,y,0,x,y,r*5);
+ const glow=ctx.createRadialGradient(x,y,0,x,y,radius);
  glow.addColorStop(0,'rgba(255,255,247,.92)');
  glow.addColorStop(.09,color==='gold'?'rgba(255,240,168,.60)':'rgba(255,79,159,.58)');
  glow.addColorStop(.55,color==='gold'?'rgba(255,240,168,.07)':'rgba(255,79,159,.06)');
  glow.addColorStop(1,'rgba(255,255,247,0)');
  ctx.globalAlpha=opacity;ctx.fillStyle=glow;
- ctx.fillRect(x-r*5,y-r*5,r*10,r*10);
+ ctx.fillRect(x-radius,y-radius,radius*2,radius*2);
  ctx.strokeStyle=color==='gold'?P.blonde:P.pearl;
  ctx.globalAlpha=opacity*.9;ctx.lineWidth=.7;ctx.beginPath();
  ctx.moveTo(x-r*2.2,y);ctx.lineTo(x+r*2.2,y);
@@ -77,7 +82,7 @@ function shape(ctx,points,style,width,alpha){
  }
  ctx.stroke();ctx.restore();
 }
-export function coutureGeometry({width,height,time=0,sourceIds=[]}){
+export function coutureGeometry({width,height,time=0,sourceIds=[],devicePixelRatio=1}){
  if(!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0)
   throw new RangeError('COUTURE_VIEWPORT_REQUIRED');
  const W=width,H=height,hash=seedFor(sourceIds),theta=(hash%3991)/3991*TAU;
@@ -109,10 +114,23 @@ export function coutureGeometry({width,height,time=0,sourceIds=[]}){
   for(let j=0;j<=48;j++)points.push(vertex(j/48,t));
   hoops.push({t,points});
  }
- return {W,H,hash,theta,time,center,cy,top,heightDress,ribs,hoops,vertex,empirical_credit:0};
+ // Independent, pre-render finite sample field: 20 ribs x 8 transverse
+ // stations. Its measured bright nodes feed the emitter, never vice versa.
+ const samples=[];
+ for(let i=0;i<39;i+=2){
+  for(let j=0;j<15;j+=2){
+   const [x,y]=vertex(i/39,j/14);
+   samples.push({x,y});
+  }
+ }
+ const optics=measureCoutureBeats({
+  width:W,height:H,time,seed:hash,devicePixelRatio,samplePoints:samples
+ });
+ return {W,H,hash,theta,time,center,cy,top,heightDress,ribs,hoops,
+  vertex,optics,empirical_credit:0};
 }
 export function paintOpalineCouture(ctx,m){
- const {W,H,center,cy,time,theta,ribs,hoops,vertex}=m;
+ const {W,H,center,cy,time,theta,ribs,hoops,vertex,optics}=m;
  ctx.clearRect(0,0,W,H);
  ctx.save();
  // Architectural placement: right-hand material stage only. Headline,
@@ -191,17 +209,19 @@ export function paintOpalineCouture(ctx,m){
   {x:collar[0]+W*.055,y:collar[1]+H*.15},time+.6,pulse*.74,'pink');
  beam(ctx,{x:hem[0]+W*.08,y:hem[1]-H*.025},
   {x:hem[0]-W*.04,y:hem[1]+H*.08},time+1.3,pulse*.7,'gold');
- // Deliberate bounded bloom: peaks move with source-dependent moire phases.
- for(let i=0;i<28;i++){
-  const u=(i*PHI*.34)%1,t=(i*.137)%1,point=vertex(u,t);
-  const energy=Math.pow(clamp((Math.sin(time*(.42+i%4*.08)+i*PHI)+.55)/1.55),4);
-  if(energy>.12)glint(ctx,point[0],point[1],.8+2.4*energy,
-   i%3===0?'gold':'pink',.35+.57*energy);
+ // RGI15 prepass emission: only measured constructive intersections
+ // can illuminate. Destructive troughs retain their dark channels.
+ for(let i=0;i<optics.peaks.length;i++){
+  const p=optics.peaks[i];
+  const alpha=Math.min(.95,p.energy*.96);
+  glint(ctx,p.x,p.y,p.bloomRadius,
+   i%3===0?'gold':'pink',alpha);
  }
- glint(ctx,center,topY(m)-H*.39,3,'gold',.54);
- glint(ctx,center,cy+H*.02,4.6,'gold',.94);
  ctx.restore();
  return Object.freeze({rendered:true,carriers:ribs.length,moire_layers:2,
+  beat_measured_samples:optics.pointsMeasured,beat_emission:optics.totalEmission,
+  bloom_max_css_px:BEAT_POLICY.max_bloom_css_px,
+  beat_peaks:optics.peakCount,beat_nyquist_guard:optics.nyquistGuarded,
   source_identity_claim:false,empirical_credit:0});
 }
 function topY(m){return m.top+m.heightDress*.95;}
@@ -249,11 +269,11 @@ function mount(){
   ctx.setTransform(dpr,0,0,dpr,0,0);
   const ids=[...host.querySelectorAll('.vs-source-card')].slice(0,2)
    .map(card=>card.querySelector('select')?.value).filter(Boolean);
-  const model=cotureModel(w,h,held()?0:ms/1000,ids);
+  const model=cotureModel(w,h,held()?0:ms/1000,ids,dpr);
   paintOpalineCouture(ctx,model);
   frame++;last=ms;
  }
- function cotureModel(w,h,t,ids){return coutureGeometry({width:w,height:h,time:t,sourceIds:ids});}
+ function cotureModel(w,h,t,ids,dpr){return coutureGeometry({width:w,height:h,time:t,sourceIds:ids,devicePixelRatio:dpr});}
  function tick(ms){
   raf=0;if(disposed)return;
   draw(ms);if(!held()&&!document.hidden)raf=requestAnimationFrame(tick);
