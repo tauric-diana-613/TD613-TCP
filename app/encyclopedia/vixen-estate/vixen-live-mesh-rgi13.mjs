@@ -293,7 +293,9 @@ export function mountVixenLivingMesh({
   raf=0;
   if(disposed||doc.hidden||paused())return;
   // Ambient theatre yields to the research UI: 12 fps mobile, 15 fps desktop.
-  const cap=Math.max(width()<750?135:100,Math.min(500,paintCostMs*4));
+  // RGI14 now owns the primary on-stage couture. This global atmosphere
+  // must remain asynchronous, slow, and cheaper than every source control.
+  const cap=Math.max(width()<750?650:500,Math.min(1400,paintCostMs*6));
   if(ms-lastMs>=cap){
    sample(ms);lastMs=ms;
   }
