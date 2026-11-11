@@ -200,15 +200,20 @@ export function paintOpalineCouture(ctx,m){
  ctx.restore();
  // Contracted electric paths terminate within the couture object. They
  // never tear diagonally across the text or the external frontispiece.
- const pulse=.55+.35*Math.sin(time*.8+theta);
- const leftWaist=vertex(.5,.46),rightWaist=vertex(0,.46),
-  collar=vertex(.04,.02),hem=vertex(.09,.86);
- beam(ctx,{x:leftWaist[0]-W*.035,y:leftWaist[1]-H*.10},
-  rightWaist,time+theta,pulse,'gold');
- beam(ctx,{x:collar[0]+W*.032,y:collar[1]-H*.05},
-  {x:collar[0]+W*.055,y:collar[1]+H*.15},time+.6,pulse*.74,'pink');
- beam(ctx,{x:hem[0]+W*.08,y:hem[1]-H*.025},
-  {x:hem[0]-W*.04,y:hem[1]+H*.08},time+1.3,pulse*.7,'gold');
+ // Electrical arcs now originate and terminate at MEASURED constructive
+ // maxima, rather than at arbitrary costume coordinates. This is a
+ // separate bounded display channel, not physical conserved power.
+ const maxima=optics.peaks;
+ if(maxima.length>=2){
+  const a=maxima[0],b=maxima[Math.min(maxima.length-1,4)];
+  const charge=Math.min(.8,Math.max(.12,(a.energy+b.energy)*.75));
+  beam(ctx,{x:a.x,y:a.y},{x:b.x,y:b.y},time+theta,charge,'gold');
+ }
+ if(maxima.length>=4){
+  const a=maxima[1],b=maxima[Math.min(maxima.length-1,6)];
+  const charge=Math.min(.45,Math.max(.10,(a.energy+b.energy)*.42));
+  beam(ctx,{x:a.x,y:a.y},{x:b.x,y:b.y},time+theta+.6,charge,'pink');
+ }
  // RGI15 prepass emission: only measured constructive intersections
  // can illuminate. Destructive troughs retain their dark channels.
  for(let i=0;i<optics.peaks.length;i++){
@@ -230,11 +235,24 @@ function mount(){
  const host=document.getElementById('vixenSynthesisSalon');
  if(!host)return;
  let canvas=null,ctx=null,head=null,last=0,frame=0,raf=0,disposed=false;
+ let lastOptics=null;
  const mq=window.matchMedia?.('(prefers-reduced-motion: reduce)');
  const held=()=>mq?.matches||document.getElementById('motionBtn')?.getAttribute('aria-pressed')==='true';
  const status=()=>Object.freeze({
   mounted:!!canvas?.isConnected,frames:frame,still:!!held(),model_carriers:39,
-  renderer:'VIXEN_RGI14_OPALINE_COUTURE',empirical_credit:0
+  renderer:'VIXEN_RGI15_MEASURED_OPALINE_COUTURE',empirical_credit:0,
+  beat: lastOptics && Object.freeze({
+   measured_samples:lastOptics.pointsMeasured,
+   beat_wavelengths_css_px:lastOptics.pairs.map(p=>Number(p.wavelengthPx.toFixed(3))),
+   beat_velocities_css_px_per_second:lastOptics.pairs.map(p=>Number(p.beatSpeedCssPxPerSecond.toFixed(3))),
+   phase_differences:lastOptics.pairs.map(p=>Number(p.phaseDelta.toFixed(4))),
+   alias_ratio:Number(lastOptics.aliasRatio.toFixed(4)),
+   dark_channel_observed:lastOptics.envelopeMin===0,
+   luminous_peaks:lastOptics.peakCount,
+   bloom_visual_budget:Number(lastOptics.totalEmission.toFixed(4)),
+   bloom_css_px_limit:BEAT_POLICY.max_bloom_css_px,
+   empirical_credit:0
+  })
  });
  function attach(){
   const next=host.querySelector('.vs-head');
@@ -271,6 +289,7 @@ function mount(){
    .map(card=>card.querySelector('select')?.value).filter(Boolean);
   const model=cotureModel(w,h,held()?0:ms/1000,ids,dpr);
   paintOpalineCouture(ctx,model);
+  lastOptics=model.optics;
   frame++;last=ms;
  }
  function cotureModel(w,h,t,ids,dpr){return coutureGeometry({width:w,height:h,time:t,sourceIds:ids,devicePixelRatio:dpr});}
