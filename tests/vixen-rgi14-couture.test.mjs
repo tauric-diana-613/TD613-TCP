@@ -51,7 +51,7 @@ test('The finish is cubic luminous couture, not the rejected rectilinear mesh',(
  assert.equal(r.moire_layers,2);
  assert.equal(r.empirical_credit,0);
  assert(stats.curves>1400,'Apt couture must visibly use smooth Bezier geometry');
- assert(stats.strokes>110,'Independent filament and Arc seams must be painted');
+ assert(stats.strokes>=93,'39 Loom ribs, 36 distinct moire paths, 15 transverse hems and three reflective plinth strokes must survive even when decorative light is suppressed');
  assert(stats.glints>2,'Localized bounded blooms must actually paint');
 });
 test('The frontispiece remains above the separate ambient visual costume',()=>{
