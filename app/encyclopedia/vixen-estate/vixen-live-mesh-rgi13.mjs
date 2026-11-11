@@ -284,7 +284,8 @@ export function mountVixenLivingMesh({
  function loop(ms){
   raf=0;
   if(disposed||doc.hidden||paused())return;
-  const cap=width()<750?53:43;
+  // Ambient theatre yields to the research UI: 12 fps mobile, 15 fps desktop.
+  const cap=width()<750?84:67;
   if(ms-lastMs>=cap){
    sample(ms);lastMs=ms;
   }
@@ -298,6 +299,7 @@ export function mountVixenLivingMesh({
   if(!paused())raf=win.requestAnimationFrame(loop);
  }
  const motion=doc.getElementById('motionBtn');
+ held=motion?.getAttribute('aria-pressed')==='true';
  function readMotion(){
   const next=motion?.getAttribute('aria-pressed')==='true';
   if(next!==held){held=next;if(next)pausedAt=frame;schedule();}
@@ -346,11 +348,26 @@ export function mountVixenLivingMesh({
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined'){
  const start=()=>{
-  const api=mountVixenLivingMesh({document,window});
-  Object.defineProperty(window,'VixenLivingMesh',{
-   value:api,configurable:true,writable:false,enumerable:false
+  // Startup belongs to Vixen's native Opera before any ambient painting.
+  // A deferred frame prevents a Canvas software fallback from delaying the
+  // foyer's DOMContentLoaded event and all human source controls.
+  window.requestAnimationFrame(()=>{
+   try {
+    const api=mountVixenLivingMesh({document,window});
+    Object.defineProperty(window,'VixenLivingMesh',{
+     value:api,configurable:true,writable:false,enumerable:false
+    });
+   } catch(error) {
+    // A visual costume must never make the research Opera inoperable.
+    console.error('VIXEN_LIVING_MESH_FAIL_OPEN_VISUAL_ONLY',error);
+    Object.defineProperty(window,'VixenLivingMesh',{
+     value:Object.freeze({mounted:false,reason:'VISUAL_ENGINE_FAILED'}),
+     configurable:true,writable:false,enumerable:false
+    });
+   }
   });
  };
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+ else if(document.readyState==='interactive')document.addEventListener('DOMContentLoaded',start,{once:true});
  else start();
 }
