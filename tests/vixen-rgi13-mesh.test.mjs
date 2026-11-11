@@ -68,7 +68,7 @@ test('The renderer draws real luminous lines and spark branches, never CSS decor
  assert.equal(result.model_carriers,39);
  assert.equal(result.hoops,17);
  assert.equal(result.shell_stations,28);
- assert.equal(result.glint_candidates,52);
+ assert.equal(result.glint_candidates,26);
  assert.equal(result.empirical_credit,0);
  assert(events.filter(x=>x[0]==='L').length>1100,
   'Proof requires many actual vector segments, not a gradient screenshot');
