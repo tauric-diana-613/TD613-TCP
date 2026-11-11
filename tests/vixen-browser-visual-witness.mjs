@@ -505,11 +505,46 @@ try {
     assert.equal(meshWitness.moduleLoaded,true);
     assert.equal(meshWitness.styleLoaded,true);
     assert(meshWitness.px>200,'The canvas must visibly paint model-derived electrical light');
+    // RGI14 source-governed OPAL / NO-PLUM commission. This must be a
+    // second, physically painted couture layer inside the actual Salon head,
+    // with the original outer mesh subordinated to the frontispiece.
+    await page.waitForFunction(()=>
+      window.VIXEN_OPAL_COUTURE?.status()?.mounted===true,
+      null,{timeout:15000,polling:250});
+    const opalWitness=await page.evaluate(()=>{
+      const canvas=document.querySelector('#vixenSynthesisSalon .vs-head > canvas.vixen-opaline-couture');
+      const stage=document.querySelector('#vixenSynthesisSalon .vs-head');
+      const rect=canvas?.getBoundingClientRect();
+      const data=canvas?.getContext('2d')?.getImageData(
+        Math.floor(canvas.width*.56),Math.floor(canvas.height*.12),
+        Math.max(1,Math.floor(canvas.width*.34)),Math.max(1,Math.floor(canvas.height*.76))
+      )?.data;
+      let luminous=0;
+      if(data)for(let i=3;i<data.length;i+=16)if(data[i]>8)luminous++;
+      return {
+        canvas:!!canvas?.isConnected,computed:window.VIXEN_OPAL_COUTURE?.status?.(),
+        luminous,stageColor:getComputedStyle(stage).backgroundImage,
+        artZ:getComputedStyle(canvas).zIndex,
+        cssLoaded:[...document.styleSheets].some(x=>x.href?.includes('vixen-opaline-couture-rgi14.css')),
+        moduleLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-opaline-couture-rgi14.mjs'))
+      };
+    });
+    assert.equal(opalWitness.canvas,true,'The true Salon must own its computational couture canvas');
+    assert.equal(opalWitness.computed.model_carriers,39);
+    assert.equal(opalWitness.cssLoaded,true);
+    assert.equal(opalWitness.moduleLoaded,true);
+    assert(opalWitness.luminous>180,
+      'Operator-visible opaline corset must contain genuinely computed, luminous pixels, not a stylesheet receipt');
+    assert(/linear-gradient/.test(opalWitness.stageColor),
+      'An explicit porcelain/chrome optical stage is required');
+
     // Existing Still button must pause our new animation as well as the
     // historical Observatory; never add a redundant motion authority control.
     await page.evaluate(()=>document.getElementById('motionBtn').click());
     await page.waitForFunction(()=>
       window.VixenLivingMesh?.status()?.motion==='STILL',null,{timeout:5000});
+    assert.equal(await page.evaluate(()=>window.VIXEN_OPAL_COUTURE?.status()?.still),true,
+      'Operator Still must freeze both the global ambient and local opaline optical dress');
     const stillFrame=await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
     await page.waitForTimeout(125);
     assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames),stillFrame,
