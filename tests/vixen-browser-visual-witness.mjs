@@ -192,7 +192,20 @@ try {
       window.scrollTo({top:Math.max(0,window.scrollY+node.getBoundingClientRect().top-110),behavior:'instant'});
     });
     await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:15000,polling:250});
-    await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false});
+    // Chromium screen capture can starve during simultaneous WebGL/Canvas
+    // frame production. Preserve the real human Still switch, capture one
+    // stable frame, then restore its prior state. Active animation receives
+    // its own frame-progress witness later in this same test.
+    const wasStill=await page.locator('#motionBtn').getAttribute('aria-pressed');
+    if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
+    try {
+      await page.screenshot({
+        path:path.join(output,stem+'-math-wardrobe-featured.png'),
+        fullPage:false,animations:'disabled',timeout:60000
+      });
+    } finally {
+      if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
+    }
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),22,
       'Explicit gallery opening must reveal every original mathematical Folio');
@@ -531,6 +544,16 @@ try {
     });
     assert.equal(opalWitness.canvas,true,'The true Salon must own its computational couture canvas');
     assert.equal(opalWitness.computed.model_carriers,39);
+    assert(opalWitness.computed.beat?.measured_samples>=120,
+      'RGI15 must precompute a separately measured beat field before painting');
+    assert(opalWitness.computed.beat?.beat_wavelengths_css_px?.every(x=>x>0),
+      'The browser must expose finite nonzero beat wavelengths');
+    assert(opalWitness.computed.beat?.alias_ratio<=.45,
+      'Viewport-aware Nyquist alias bound must hold in Chromium');
+    assert(opalWitness.computed.beat?.bloom_visual_budget<=2.40001,
+      'The emitted visual glow must honor its declared finite budget');
+    assert(opalWitness.computed.beat?.bloom_css_px_limit===18,
+      'The bloom kernel cannot silently exceed its declared radius');
     assert.equal(opalWitness.cssLoaded,true);
     assert.equal(opalWitness.moduleLoaded,true);
     assert(opalWitness.luminous>180,
