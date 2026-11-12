@@ -2898,7 +2898,8 @@ body[data-view="overview"] .reading-back{display:none}
           '<h3>ORTHOGONAL CLOCKS &amp; #manifest-instance-theme SEAM (RC-02 / RC-13)</h3>' +
           '<div>• Three Atelier Clocks: <code>τ_theory ⊥ τ_ambiance ⊥ τ_resynthesis</code></div>' +
           '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#F9F36D</code>).</div>' +
-          '<div>• Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
+          '<div>• Historical Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · predecessor Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · predecessor Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
+          '<div>• Current Artwork Delivery: <code>' + esc(MANIFEST.frontispiece.active_source_mode || 'EMBEDDED_HISTORICAL_WEBP') + '</code> · Operator-selected PNG SHA-256 desktop <code>' + esc((MANIFEST.frontispiece.desktop_png_sha256 || 'PENDING').slice(0,24)) + '</code> · mobile <code>' + esc((MANIFEST.frontispiece.mobile_png_sha256 || 'PENDING').slice(0,24)) + '</code> · Human aesthetic closure RESERVED.</div>' +
         '</div>';
     }
   }
