@@ -1,0 +1,88 @@
+{
+  "schema": "td613.vixen.brand-assets/v1",
+  "source": "app/encyclopedia/vix-cyb.html",
+  "policy": "OPERATOR_APPROVED_ART_ONLY",
+  "operahouse_role": "OPERAHOUSE_HOST_ASSET",
+  "opera_role": "VIXEN_CYBERNETICS_PRESENTATION",
+  "scientific_claims": "NONE",
+  "operator_artistic_closure": "RESERVED",
+  "frontispiece": {
+    "stage": "EMBEDDED_HISTORICAL_FALLBACK",
+    "active_image_mode": "EMBEDDED_WEBP",
+    "replacement_requires": [
+      "DESKTOP_PNG",
+      "MOBILE_PNG",
+      "HUMAN_SELECTION"
+    ],
+    "desktop": {
+      "slot": "desktop",
+      "target": "assets/vixen/frontispiece-desktop.png",
+      "mime": "image/png",
+      "min_width": 1400,
+      "min_height": 750,
+      "orientation": "LANDSCAPE_16_9",
+      "status": "PENDING_OPERATOR_SELECTED_ART",
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "legacy_webp_sha256": "a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763"
+    },
+    "mobile": {
+      "slot": "mobile",
+      "target": "assets/vixen/frontispiece-mobile.png",
+      "mime": "image/png",
+      "min_width": 750,
+      "min_height": 1400,
+      "orientation": "PORTRAIT_9_16",
+      "status": "PENDING_OPERATOR_SELECTED_ART",
+      "sha256": null,
+      "width": null,
+      "height": null,
+      "legacy_webp_sha256": "1e31bc0e838c8879dd859034607e8244e9f7bd1f40b59e943b5dddb39aa87266"
+    },
+    "legacy_preservation": "GIT_HISTORY_ONLY_AFTER_APPROVED_REPLACEMENT",
+    "integrity": "BRANCH_SOURCE_SHA256_AND_PNG_HEADER_CRC_DIMENSIONS",
+    "paint_policy": "NO_GRAYSCALE_NO_PINK_OVERLAY_ON_APPROVED_PIXEL_DATA",
+    "alt_text": "Mugler-unchained chromepunk cybernetic astrolabe: mirrored chrome wings, an engraved orbital instrument, and a faceted white crystal."
+  },
+  "fox": {
+    "stage": "STANDALONE_SVG_INSTALLED",
+    "target": "assets/vixen/fox-arcflash.svg",
+    "mime": "image/svg+xml",
+    "width": 48,
+    "height": 48,
+    "viewBox": "0 0 48 48",
+    "sha256": "1fdbf3a3ea97fb43bdbaa8d6d54c14a151d67e6dfec0241fdea162c3a2bae903",
+    "origin": "GEOMETRY_OF_TWO_IDENTICAL_PREVIOUS_INLINE_SVGS",
+    "rendered_in": [
+      "brand-desktop-lockup",
+      "brand-mobile-logo"
+    ],
+    "required_eyes": {
+      "count": 2,
+      "chromatic_core": "#F9F36D",
+      "background_independent": true
+    },
+    "external_resources_allowed": false,
+    "inline_duplicate_svgs_allowed": false,
+    "operator_may_replace_with_final_svg": true
+  },
+  "installation": {
+    "script": "scripts/install-vixen-brand-assets.py",
+    "handoff_arguments": [
+      "--desktop",
+      "--mobile",
+      "--fox"
+    ],
+    "dry_run": "--dry-run",
+    "after_intake": [
+      "python3 scripts/install-vixen-brand-assets.py --check",
+      "node --test tests/vixen-brand-asset-contract.test.mjs",
+      "node tests/vixen-browser-visual-witness.mjs",
+      "python3 scripts/package-vixen-preview.py"
+    ],
+    "all_or_nothing": "PREFLIGHT_ALL_FILES_BEFORE_WRITES",
+    "production_release": false,
+    "main_merge": false
+  }
+}
