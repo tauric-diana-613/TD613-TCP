@@ -20,7 +20,7 @@ body[data-vixen-frontispiece-source="external-selected"] .hero-art img[data-vixe
   mask-image:none!important;-webkit-mask-image:none!important;
   object-fit:contain;
 }
-body[data-vixen-frontispiece-source="external-selected"] .hero-art .cover-light{
+body[data-vixen-frontispiece-source="external-selected"] #cover .cover-light{
   /* Avoid layering an artificial rose flood over the authored backglow. */
   opacity:.18!important;
 }
