@@ -128,6 +128,54 @@ try {
     assert(img.complete&&img.width>=300&&img.height>=300&&img.visible,
       'Original embedded Mugler sculpture must render in the first viewport: '+JSON.stringify(img));
     assert(img.alt.includes('Mugler-unchained chromepunk'));
+    const artRoute=await page.evaluate(()=>{
+      const stage=document.body.dataset.vixenFrontispieceSource;
+      const rendered=document.querySelector('.hero-art img[data-vixen-asset-role="desktop"]');
+      const mobile=document.querySelector('.hero-art source[data-vixen-asset-role="mobile"]');
+      return {
+        stage,mobileRoute:mobile?.getAttribute('srcset')||'',
+        desktopRoute:rendered?.getAttribute('src')||'',
+        current:rendered?.currentSrc||'',
+        renderedFilter:rendered?getComputedStyle(rendered).filter:null
+      };
+    });
+    assert(artRoute.mobileRoute&&artRoute.desktopRoute,'Two independent frontispiece routes required');
+    if(artRoute.stage==='embedded-historical'){
+      assert(artRoute.mobileRoute.startsWith('data:image/webp;base64,'));
+      assert(artRoute.desktopRoute.startsWith('data:image/webp;base64,'));
+    }else{
+      assert.equal(artRoute.stage,'external-selected','Unknown frontispiece custody stage');
+      assert(artRoute.desktopRoute.endsWith('/assets/vixen/frontispiece-desktop.png'));
+      assert(artRoute.mobileRoute.endsWith('/assets/vixen/frontispiece-mobile.png'));
+      assert.match(artRoute.current,/frontispiece-(mobile|desktop)\.png/);
+      assert.equal(artRoute.renderedFilter,'none',
+        'Operator-selected pink/champagne backglow must not be desaturated by couture CSS');
+    }
+    // The logo is genuinely one external SVG in both mastheads. Check rendered
+    // color on the actual pink and graphite backgrounds at native header scale.
+    const foxChromatic=await page.evaluate(async()=>{
+      const x=document.querySelector(innerWidth<=680
+        ?'.brand-mobile-logo .vixen-fox-emblem'
+        :'.brand-desktop-lockup .vixen-fox-emblem');
+      if(!x)return {ready:false};
+      if(!x.complete)await new Promise(resolve=>{x.addEventListener('load',resolve,{once:true});x.addEventListener('error',resolve,{once:true})});
+      const size=innerWidth<=680?38:42;
+      const c=document.createElement('canvas');c.width=size;c.height=size;
+      const ctx=c.getContext('2d',{willReadFrequently:true});
+      ctx.fillStyle='#FF91AF';ctx.fillRect(0,0,size,size);
+      ctx.drawImage(x,0,0,size,size);
+      const rgba=ctx.getImageData(0,0,size,size).data;
+      let yellow=0;
+      for(let j=0;j<rgba.length;j+=4)
+        if(rgba[j]>175&&rgba[j+1]>174&&rgba[j+2]<200&&
+           rgba[j]>=rgba[j+1]*.95&&rgba[j+1]>rgba[j+2]*1.24)yellow++;
+      return {ready:x.complete&&x.naturalWidth>0,source:x.getAttribute('src'),
+        yellowPixels:yellow,filter:getComputedStyle(x).filter};
+    });
+    assert(foxChromatic.ready,'Standalone SVG logo failed to render');
+    assert.equal(foxChromatic.source,'./assets/vixen/fox-arcflash.svg');
+    assert(foxChromatic.yellowPixels>4,
+      'Fox eye pixels must render Arc Flash yellow on pink at actual masthead size: '+JSON.stringify(foxChromatic));
     const topHero=await hero.boundingBox();
     assert(topHero&&topHero.y<160&&topHero.height>=600,
       'The real frontispiece must own the initial viewport');
