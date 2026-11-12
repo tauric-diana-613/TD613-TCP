@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-labelledby="vixenFoxTitle vixenFoxDesc">
+  <title id="vixenFoxTitle">Vixen Cybernetics fox</title>
+  <desc id="vixenFoxDesc">Angular chrome fox crest with two luminous Arc Flash yellow eyes.</desc>
+  <defs>
+    <linearGradient id="vf-chrome" x1="0" y1="3" x2="42" y2="47" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset=".22" stop-color="#D9E3EC"/><stop offset=".43" stop-color="#F6F4F0"/><stop offset=".65" stop-color="#8798A5"/><stop offset=".84" stop-color="#E6EBEF"/><stop offset="1" stop-color="#F6F4F0"/>
+    </linearGradient>
+    <linearGradient id="vf-graphite" x1="8" y1="7" x2="38" y2="43" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#343A40"/><stop offset=".5" stop-color="#15191F"/><stop offset="1" stop-color="#343C43"/>
+    </linearGradient>
+    <filter id="vf-arcflash-bloom" x="-75%" y="-120%" width="250%" height="340%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="1.25"/>
+    </filter>
+  </defs>
+  <!-- Historical 48-by-48 fox silhouette and facial geometry are preserved. -->
+  <circle cx="24" cy="24" r="18.2" stroke="#24282A" stroke-width="1" stroke-dasharray="2.4 2" opacity=".44"/>
+  <path d="M24 15.2L18.6 13.4L6.2 2.4L8.6 20.6L3.4 25.4L13.4 33.4L24 45.8L34.6 33.4L44.6 25.4L39.4 20.6L41.8 2.4L29.4 13.4L24 15.2Z" fill="url(#vf-graphite)"/>
+  <polygon points="8.8,6.8 10.6,19.2 17.4,14.6" fill="url(#vf-chrome)"/>
+  <polygon points="39.2,6.8 37.4,19.2 30.6,14.6" fill="url(#vf-chrome)"/>
+  <polygon points="6.2,25.6 19.2,29.2 21.6,40.4 13.8,33.2" fill="url(#vf-chrome)"/>
+  <polygon points="41.8,25.6 28.8,29.2 26.4,40.4 34.2,33.2" fill="url(#vf-chrome)"/>
+  <polygon points="24,16.6 19.8,27.8 22.1,39.8 24,39.8" fill="#667078"/>
+  <polygon points="24,16.6 28.2,27.8 25.9,39.8 24,39.8" fill="#383E42"/>
+  <line x1="24" y1="16.6" x2="24" y2="40" stroke="#F6F4F0" stroke-width="1" opacity=".85"/>
+  <!-- One geometry, three light passes; eye cores remain yellow rather than tinted pink. -->
+  <g id="vf-arcflash-eyes" data-arcflash-yellow="#F9F36D">
+    <g fill="#F9F36D" opacity=".95" filter="url(#vf-arcflash-bloom)">
+      <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3"/>
+      <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3"/>
+    </g>
+    <g fill="#F9F36D" stroke="#FFFFB2" stroke-width=".24" stroke-linejoin="round">
+      <polygon points="10.8,22.1 19.2,25.7 17.8,28 12.1,25.3"/>
+      <polygon points="37.2,22.1 28.8,25.7 30.2,28 35.9,25.3"/>
+    </g>
+    <path d="M12.8 23.45L15.2 24.52 M35.2 23.45L32.8 24.52" stroke="#FFFFC9" stroke-width=".25" stroke-linecap="round"/>
+  </g>
+  <polygon points="24,16.2 26.3,19.8 24,23.4 21.7,19.8" fill="url(#vf-chrome)" stroke="#24282A" stroke-width=".85"/>
+  <polygon points="21.2,40.2 26.8,40.2 24,45.4" fill="#24282A"/>
+  <line x1="21.6" y1="40.2" x2="26.4" y2="40.2" stroke="#F6F4F0" stroke-width="1.05"/>
+</svg>
