@@ -1,0 +1,36 @@
+/* Vixen brand-asset boundary · SVG fox and operator-approved frontispieces.
+   Included LAST to prevent earlier Glinda/Opaline image filters from corrupting
+   approved art or turning the separate fox eyes pink. No layout redesign. */
+.site-header .brand .vixen-fox-emblem[data-vixen-asset-role="fox"]{
+  width:42px;height:42px;display:block;flex-shrink:0;
+  object-fit:contain;opacity:1!important;
+  filter:drop-shadow(0 0 2px rgba(249,243,109,.30))!important;
+  -webkit-filter:drop-shadow(0 0 2px rgba(249,243,109,.30))!important;
+  mix-blend-mode:normal!important;
+  image-rendering:auto;
+}
+.site-header .brand-mobile-logo .vixen-fox-emblem[data-vixen-asset-role="fox"]{
+  width:38px;height:38px;
+}
+body[data-vixen-frontispiece-source="external-approved"] .hero-art img[data-vixen-asset-role="desktop"]{
+  /* The operator-approved image owns its coloration, crystal and halo.
+     RGI10/RGI14 grayscale, masks and screen blend may not recolor it. */
+  filter:none!important;-webkit-filter:none!important;
+  mix-blend-mode:normal!important;opacity:1!important;
+  mask-image:none!important;-webkit-mask-image:none!important;
+  object-fit:contain;
+}
+body[data-vixen-frontispiece-source="external-approved"] .hero-art .cover-light{
+  /* Avoid layering an artificial rose flood over the authored backglow. */
+  opacity:.18!important;
+}
+@media(max-width:680px){
+  body[data-vixen-frontispiece-source="external-approved"] .hero-art img[data-vixen-asset-role="desktop"]{
+    width:100%;height:100%;object-fit:contain;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .site-header .brand .vixen-fox-emblem[data-vixen-asset-role="fox"]{
+    transition:none!important;transform:none!important;
+  }
+}
