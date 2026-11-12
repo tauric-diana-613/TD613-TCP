@@ -136,7 +136,8 @@ try {
         stage,mobileRoute:mobile?.getAttribute('srcset')||'',
         desktopRoute:rendered?.getAttribute('src')||'',
         current:rendered?.currentSrc||'',
-        renderedFilter:rendered?getComputedStyle(rendered).filter:null
+        renderedFilter:rendered?getComputedStyle(rendered).filter:null,
+        objectFit:rendered?getComputedStyle(rendered).objectFit:null
       };
     });
     assert(artRoute.mobileRoute&&artRoute.desktopRoute,'Two independent frontispiece routes required');
@@ -147,7 +148,10 @@ try {
       assert.equal(artRoute.stage,'external-selected','Unknown frontispiece custody stage');
       assert(artRoute.desktopRoute.endsWith('/assets/vixen/frontispiece-desktop.png'));
       assert(artRoute.mobileRoute.endsWith('/assets/vixen/frontispiece-mobile.png'));
-      assert.match(artRoute.current,/frontispiece-(mobile|desktop)\.png/);
+      const selected=width<=680?'mobile':'desktop';
+      assert(new URL(artRoute.current).pathname.endsWith(`/assets/vixen/frontispiece-${selected}.png`),
+        `Expected the ${selected} frontispiece at ${width} CSS pixels`);
+      assert.equal(artRoute.objectFit,'contain','The frontispiece must fit without cropping');
       assert.equal(artRoute.renderedFilter,'none',
         'Operator-selected pink/champagne backglow must not be desaturated by couture CSS');
     }

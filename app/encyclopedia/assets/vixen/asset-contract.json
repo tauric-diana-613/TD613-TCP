@@ -7,8 +7,8 @@
   "scientific_claims": "NONE",
   "operator_artistic_closure": "RESERVED",
   "frontispiece": {
-    "stage": "EMBEDDED_HISTORICAL_FALLBACK",
-    "active_image_mode": "EMBEDDED_WEBP",
+    "stage": "EXTERNAL_PNG_INSTALLED_REVIEW_PENDING",
+    "active_image_mode": "EXTERNAL_OPERATOR_SELECTED_PNG",
     "replacement_requires": [
       "DESKTOP_PNG",
       "MOBILE_PNG",
@@ -21,11 +21,12 @@
       "min_width": 1400,
       "min_height": 750,
       "orientation": "LANDSCAPE_16_9",
-      "status": "PENDING_OPERATOR_SELECTED_ART",
-      "sha256": null,
-      "width": null,
-      "height": null,
-      "legacy_webp_sha256": "a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763"
+      "status": "OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION",
+      "sha256": "0a4f8848f1afcd6af7c369aed64210a7a06580184cf60d924e7b0a2d398ce935",
+      "width": 1671,
+      "height": 941,
+      "legacy_webp_sha256": "a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763",
+      "bytes": 1414123
     },
     "mobile": {
       "slot": "mobile",
@@ -34,11 +35,12 @@
       "min_width": 750,
       "min_height": 1400,
       "orientation": "PORTRAIT_9_16",
-      "status": "PENDING_OPERATOR_SELECTED_ART",
-      "sha256": null,
-      "width": null,
-      "height": null,
-      "legacy_webp_sha256": "1e31bc0e838c8879dd859034607e8244e9f7bd1f40b59e943b5dddb39aa87266"
+      "status": "OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION",
+      "sha256": "81cbf31edfbb91a09da7c51758349b6f0807421b6bbb250a01aa817b3e722302",
+      "width": 941,
+      "height": 1671,
+      "legacy_webp_sha256": "1e31bc0e838c8879dd859034607e8244e9f7bd1f40b59e943b5dddb39aa87266",
+      "bytes": 1726265
     },
     "legacy_preservation": "GIT_HISTORY_ONLY_AFTER_APPROVED_REPLACEMENT",
     "integrity": "BRANCH_SOURCE_SHA256_AND_PNG_HEADER_CRC_DIMENSIONS",
@@ -46,7 +48,7 @@
     "alt_text": "Mugler-unchained chromepunk cybernetic astrolabe: mirrored chrome wings, an engraved orbital instrument, and a faceted white crystal."
   },
   "fox": {
-    "stage": "STANDALONE_SVG_INSTALLED",
+    "stage": "STANDALONE_SVG_OPERATOR_SELECTED",
     "target": "assets/vixen/fox-arcflash.svg",
     "mime": "image/svg+xml",
     "width": 48,

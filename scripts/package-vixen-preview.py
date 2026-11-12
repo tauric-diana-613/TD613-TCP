@@ -99,7 +99,8 @@ def main(out):
     # operator-selected PNGs using the same machine-checkable contract.
     intake=ROOT/"scripts"/"install-vixen-brand-assets.py"
     assert intake.is_file(), "RGI15 frontispiece intake hook missing"
-    subprocess.run([sys.executable,str(intake),"--check"],cwd=ROOT,check=True)
+    intake_state=json.loads(subprocess.check_output(
+        [sys.executable,str(intake),"--check"],cwd=ROOT,text=True))["stage"]
     base=[
         APP/"site-epoch-preflight.js",
         APP/"encyclopedia"/"index.html",
@@ -123,8 +124,7 @@ SEPARATE 1,141-record Universal reference estate.
 These are THREE separate asset contracts. The standalone Arc Flash-yellow
 fox is installed at encyclopedia/assets/vixen/fox-arcflash.svg and used
 by both 42px desktop and 38px mobile mastheads; it is never rasterized.
-The desktop and mobile frontispieces currently use their historical inline
-WebP fallbacks until the operator supplies the selected 16:9 and 9:16 PNGs.
+{frontispiece_state}
 
 Full checkout (not the extracted preview) accepts the three approved files:
     python3 scripts/install-vixen-brand-assets.py --desktop "chosen-desktop.png" --mobile "chosen-mobile.png" --fox "fox-arcflash.svg" --dry-run
@@ -285,6 +285,14 @@ Unmatched terms and unavailable references must produce honest HELD
 or bounded-negative outcomes.
 See PREVIEW-MANIFEST.json for exact commit and file hashes.
 """
+    frontispiece_state=(
+        "The selected desktop and mobile PNGs are served from separate files\n"
+        "under encyclopedia/assets/vixen/. See asset-contract.json for hashes."
+        if intake_state=="EXTERNAL_PNG_INSTALLED_REVIEW_PENDING" else
+        "The desktop and mobile frontispieces use the historical inline WebP\n"
+        "fallbacks until the operator supplies the selected 16:9 and 9:16 PNGs."
+    )
+    readme=readme.replace("{frontispiece_state}",frontispiece_state,1)
     source=head()
     file_manifest=[{"path":n,"sha256":sha(blob),"bytes":len(blob)} for n,blob in sorted(files.items())]
     files["README.md"]=readme.encode("utf8")

@@ -11,7 +11,8 @@ import {join,resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
 import {deflateSync} from 'node:zlib';
-const root=resolve(new URL('../',import.meta.url).pathname);
+import {fileURLToPath} from 'node:url';
+const root=resolve(fileURLToPath(new URL('../',import.meta.url)));
 const paths={
  page:join(root,'app/encyclopedia/vix-cyb.html'),
  svg:join(root,'app/encyclopedia/assets/vixen/fox-arcflash.svg'),
@@ -25,7 +26,7 @@ const slot=(html,role)=>[...html.matchAll(
  ?'(<source\\b(?=[^>]*data-vixen-asset-role="mobile")[^>]*?\\bsrcset=")([^"]*)(")'
  :'(<img\\b(?=[^>]*data-vixen-asset-role="desktop")[^>]*?\\bsrc=")([^"]*)(")','g')
 )].map(m=>m[2]);
-const python=(args,cwd=root)=>spawnSync('python3',[paths.installer,...args],{
+const python=(args,cwd=root)=>spawnSync(process.env.VIXEN_PYTHON||'python3',[paths.installer,...args],{
  cwd,encoding:'utf8',timeout:25000
 });
 
@@ -78,7 +79,7 @@ test('Desktop/mobile source identities remain independently replaceable and sour
  assert(css.includes('mix-blend-mode:normal!important'));
  const checked=python(['--check']);
  assert.equal(checked.status,0,checked.stderr);
- assert.equal(JSON.parse(checked.stdout).stage,'EMBEDDED_HISTORICAL_FALLBACK');
+ assert.equal(JSON.parse(checked.stdout).stage,state);
 });
 
 // Tiny, fully valid compressed true-color PNG fixture, standard-library only.
