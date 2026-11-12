@@ -50,18 +50,28 @@ test('Desktop/mobile source identities remain independently replaceable and sour
  const html=await readFile(paths.page,'utf8');
  const contract=JSON.parse(await readFile(paths.manifest,'utf8'));
  assert.equal(contract.schema,'td613.vixen.brand-assets/v1');
- assert.equal(contract.frontispiece.stage,'EMBEDDED_HISTORICAL_FALLBACK');
- assert(html.includes('data-vixen-frontispiece-source="embedded-historical"'));
  assert(html.includes('data-vixen-brand-asset-contract="./assets/vixen/asset-contract.json"'));
  assert.equal(slot(html,'desktop').length,1);
  assert.equal(slot(html,'mobile').length,1);
+ const state=contract.frontispiece.stage;
+ assert(['EMBEDDED_HISTORICAL_FALLBACK','EXTERNAL_PNG_INSTALLED_REVIEW_PENDING'].includes(state));
  for(const role of ['desktop','mobile']){
    const [src]=slot(html,role);
-   assert(src.startsWith('data:image/webp;base64,'),'Historical art remains rendered until selected files arrive');
-   assert.equal(sha(Buffer.from(src.split(',')[1],'base64')),
-    contract.frontispiece[role].legacy_webp_sha256);
-   assert.equal(contract.frontispiece[role].status,'PENDING_OPERATOR_SELECTED_ART');
+   const filename='frontispiece-'+role+'.png';
+   if(state==='EMBEDDED_HISTORICAL_FALLBACK'){
+     assert(src.startsWith('data:image/webp;base64,'),'Historical art remains until selected files arrive');
+     assert.equal(sha(Buffer.from(src.split(',')[1],'base64')),
+      contract.frontispiece[role].legacy_webp_sha256);
+     assert.equal(contract.frontispiece[role].status,'PENDING_OPERATOR_SELECTED_ART');
+   }else{
+     assert.equal(src,'./assets/vixen/'+filename);
+     assert.equal(sha(await readFile(join(root,'app/encyclopedia/assets/vixen',filename))),
+      contract.frontispiece[role].sha256);
+     assert.equal(contract.frontispiece[role].status,'OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION');
+   }
  }
+ assert(html.includes('data-vixen-frontispiece-source="'+
+  (state==='EMBEDDED_HISTORICAL_FALLBACK'?'embedded-historical':'external-selected')+'"'));
  const css=await readFile(paths.css,'utf8');
  assert(css.includes('data-vixen-frontispiece-source="external-selected"'));
  assert(css.includes('filter:none!important'));
@@ -98,6 +108,13 @@ test('Operator trio is preflighted in dry-run and installed transactionally into
   await mkdir(dest,{recursive:true});
   await cp(paths.svg,join(dest,'fox-arcflash.svg'));
   await cp(paths.manifest,join(dest,'asset-contract.json'));
+  const current=JSON.parse(await readFile(paths.manifest,'utf8'));
+  if(current.frontispiece.stage==='EXTERNAL_PNG_INSTALLED_REVIEW_PENDING'){
+    for(const role of ['desktop','mobile']){
+      const name='frontispiece-'+role+'.png';
+      await cp(join(root,'app/encyclopedia/assets/vixen',name),join(dest,name));
+    }
+  }
   await mkdir(join(temp,'app/encyclopedia'),{recursive:true});
   await cp(paths.page,join(temp,'app/encyclopedia/vix-cyb.html'));
   const desktop=join(temp,'operator-desktop.png'),mobile=join(temp,'operator-mobile.png');
@@ -108,7 +125,8 @@ test('Operator trio is preflighted in dry-run and installed transactionally into
   assert.equal(dry.status,0,dry.stderr);
   assert.equal(JSON.parse(dry.stdout).mode,'DRY_RUN');
   const historic=await readFile(join(temp,'app/encyclopedia/vix-cyb.html'),'utf8');
-  assert(slot(historic,'desktop')[0].startsWith('data:image/webp;base64'));
+  assert.equal(slot(historic,'desktop')[0].startsWith('data:image/webp;base64,'),
+    current.frontispiece.stage==='EMBEDDED_HISTORICAL_FALLBACK');
   const run=python(args);
   assert.equal(run.status,0,run.stderr);
   const checked=python(['--root',temp,'--check']);
