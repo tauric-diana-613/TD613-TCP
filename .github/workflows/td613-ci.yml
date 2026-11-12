@@ -191,6 +191,8 @@ jobs:
           node scripts/build-encyclopedia-reference.mjs --check
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
           if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
+          if [[ -f tests/vixen-brand-asset-contract.test.mjs ]]; then node --test tests/vixen-brand-asset-contract.test.mjs; fi
+          if [[ -f scripts/install-vixen-brand-assets.py ]]; then python3 scripts/install-vixen-brand-assets.py --check; fi
           node --test tests/vixen-synthesis-salon.test.mjs
           node --test tests/vixen-rgi10-couture.test.mjs
           node --test tests/vixen-rgi11-light.test.mjs
