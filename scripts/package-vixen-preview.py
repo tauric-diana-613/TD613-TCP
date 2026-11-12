@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Create the exact-head Vixen HTTP preview from public app assets only."""
-import argparse, hashlib, json, os, re, subprocess
+import argparse, hashlib, json, os, re, subprocess, sys
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED, ZipInfo
 
@@ -95,12 +95,17 @@ def main(out):
         data=p.read_bytes()
         canonical=data[:-1] if data.endswith(b"\n") else data
         assert sha(canonical)==e["record_sha256"],"Reference digest: "+e["id"]
+    # Validate both pre-replacement embedded WebPs and post-replacement
+    # operator-selected PNGs using the same machine-checkable contract.
+    intake=ROOT/"scripts"/"install-vixen-brand-assets.py"
+    assert intake.is_file(), "RGI15 frontispiece intake hook missing"
+    subprocess.run([sys.executable,str(intake),"--check"],cwd=ROOT,check=True)
     base=[
         APP/"site-epoch-preflight.js",
         APP/"encyclopedia"/"index.html",
         APP/"encyclopedia"/"vix-cyb.html"
     ]
-    for folder in (APP/"encyclopedia"/"reference",APP/"encyclopedia"/"vixen-estate"):
+    for folder in (APP/"encyclopedia"/"reference",APP/"encyclopedia"/"vixen-estate",APP/"encyclopedia"/"assets"/"vixen"):
         base += [f for f in folder.rglob("*") if f.is_file() and not f.name.startswith(".")]
     files={p.relative_to(APP).as_posix():p.read_bytes() for p in base}
     # The machine-only Podium CLI uses dynamically resolved modules; preserve
@@ -112,6 +117,23 @@ def main(out):
 This exact-Git-HEAD preview contains the Vixen operator-facing page,
 its historical 32 Works / eight identity gates / 21 protocols, and the
 SEPARATE 1,141-record Universal reference estate.
+
+## Operator-selected frontispiece and independent fox SVG
+
+These are THREE separate asset contracts. The standalone Arc Flash-yellow
+fox is installed at encyclopedia/assets/vixen/fox-arcflash.svg and used
+by both 42px desktop and 38px mobile mastheads; it is never rasterized.
+The desktop and mobile frontispieces currently use their historical inline
+WebP fallbacks until the operator supplies the selected 16:9 and 9:16 PNGs.
+
+Full checkout (not the extracted preview) accepts the three approved files:
+    python3 scripts/install-vixen-brand-assets.py --desktop "chosen-desktop.png" --mobile "chosen-mobile.png" --fox "fox-arcflash.svg" --dry-run
+    python3 scripts/install-vixen-brand-assets.py --desktop "chosen-desktop.png" --mobile "chosen-mobile.png" --fox "fox-arcflash.svg"
+    python3 scripts/install-vixen-brand-assets.py --check
+
+The installer checks SHA-256, dimensions/orientation, SVG vector integrity
+and source identity before rewriting the HTML. Afterward run full tests and
+generate a NEW exact-head preview; older previews cannot certify new assets.
 
 ## Start in a web browser
 
