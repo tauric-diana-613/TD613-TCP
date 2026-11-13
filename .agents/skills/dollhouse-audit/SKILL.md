@@ -43,7 +43,7 @@ Activate `/dollhouse-audit` or invoke it programmatically when:
 
 Select `$dollhouse-audit` in a Codex session opened in the TD613-TCP checkout. Run the repository entrypoint from the checkout root so that the pinned source references resolve against its Git history. If the operator requires the platform-installed ChatGPT skill, successful local invocation alone cannot verify that platform dispatch.
 
-For a resumed audit that names a staged specification, reuse the file from the prior workspace or an attached copy. If the exact input is unavailable, report the missing path and hold that continuation until the operator authorizes reconstruction.
+For a resumed audit that names a staged specification, reuse the file from the prior workspace or an attached copy. If the input is missing, follow the handoff’s recovery instructions and distinguish a reconstructed input from a recovered original.
 
 ---
 
