@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dollhouse Design"
+  short_description: "Run a TD613 Dollhouse design commission"
+  default_prompt: "Use $dollhouse-design for this TD613 design commission."
