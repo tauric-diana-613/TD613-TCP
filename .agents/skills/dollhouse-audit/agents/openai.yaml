@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dollhouse Audit"
+  short_description: "Run a TD613 Dollhouse scientific audit"
+  default_prompt: "Use $dollhouse-audit for this TD613 scientific audit."
