@@ -26,10 +26,10 @@ The **global Still** button is `#motionBtn`. Its current action sets `body[data-
 ## What is retained, what is active, what is unproven
 
 - `vixen-salon-light.mjs` and `vixen-opaline-couture-rgi14.mjs` remain for declared legacy rollback. Their presence in the tree does not imply they are live alongside folded chrome.
-- `vixen-live-mesh-rgi13.mjs` contains the whole-page mesh used outside the two independently owned optical rooms; its own RAF parks on Salon and Observatory. The Salon now calls `renderHostFrame({time,sourceIds,view,force})` from the folded-cuirass clock, while Observatory can opt in through `data-vixen-optical-mesh-observatory="on"`. This reuses visual operators without equating independent research engines.
+- `vixen-live-mesh-rgi13.mjs` contains the whole-page mesh used outside the two independently owned optical rooms; its own RAF parks on Salon and Observatory. The Salon now calls `renderHostFrame({time,sourceIds,electrodes,view,force})` from the folded-cuirass clock, with three strictly bounded seam electrodes derived from actual material geometry, while Observatory can opt in through `data-vixen-optical-mesh-observatory="on"`. This reuses visual operators without equating independent research engines.
 - Observatory's vector-score canvas is composited within the Foundry's host clock. A usable room-specific *opt-in* cross-room light adapter is prospective, not automatically active.
 - Source evidence and scientific holds live in the retained `artifacts/vixen-dual-estate/VIXEN_OPTICAL_TRIBUNAL_FINAL_20261112.md` and the original design commission. Neither guide nor UI graphics can create empirical acquisition or human acceptance.
-- The approved design is dramatically luminous, electrical, refractive and spatially unified. The latest GREEN capture has significantly flatter chrome and weaker environmental choreography than the approved exhibit. Treat that as an **OPEN VISUAL DEFECT**. Do not report “finished” solely from color interpolation, refraction math, or CI.
+- The approved design is dramatically luminous, electrical, refractive and spatially unified. The earlier batched chrome capture had significantly flatter highlights than the approved exhibit; newer amendments adjust spectral opacity and concentrate finite waist/beam emission. Judge the exact-head Chromium capture, not this document, to qualify the current state. Treat that as an **OPEN VISUAL DEFECT**. Do not report “finished” solely from color interpolation, refraction math, or CI.
 
 ## Fast repair loop
 

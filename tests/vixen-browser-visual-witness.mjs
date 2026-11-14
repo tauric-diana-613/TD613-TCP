@@ -856,6 +856,10 @@ try {
       'Work I title must render dark ink against pearl and may not vanish into blush');
     assert.equal(readability.workTitles[1],'rgb(255, 248, 250)',
       'Work II title must render pale ink against neutral black chrome');
+    // Visual acquisition must not include transient test-automation toasts.
+    // Source and control interactions are independently tested below.
+    await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),
+      null,{timeout:12000,polling:200});
     await page.screenshot({path:path.join(output,stem+'-salon-entry.png'),fullPage:false});
     const beforeClock=await salon.locator('.vs-clock-row strong').allInnerTexts();
     await salon.getByRole('slider',{name:'Synthetic arrival lag in dimensionless ticks'}).evaluate(n=>{
