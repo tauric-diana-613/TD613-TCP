@@ -151,8 +151,10 @@ def check_current(root):
             expected="./assets/vixen/"+FILE_NAMES[role]
             slot,_=source_match(page,role)
             if slot.group(2)!=expected:refuse("IMAGE_ROUTE_NOT_CANONICAL",role)
-            if role=="mobile" and 'type="image/png"' not in slot.group(0):
-                refuse("MOBILE_SOURCE_MIME_MISMATCH")
+            if role=="mobile":
+                mobile_tag=r'<source\b(?=[^>]*data-vixen-asset-role="mobile")[^>]*\btype="image/png"[^>]*>'
+                if len(re.findall(mobile_tag,page))!=1:
+                    refuse("MOBILE_SOURCE_MIME_MISMATCH")
             data=(root/ASSET_REL/FILE_NAMES[role]).read_bytes()
             info=png_info(data,role)
             recorded=front[role]
