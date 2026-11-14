@@ -217,7 +217,7 @@ body[data-view="collection"] #vixenLivingMesh{display:none}
  background:#fffaf7;color:#181d20;font:400 clamp(14px,1.5vw,18px)/1.5 Georgia,serif;
 }
 #vixenSynthesisSalon .vs-textarea:first-of-type{min-height:120px}
-#vixenSynthesisSalon .vs-textarea::placeholder{color:#765a68}
+#vixenSynthesisSalon .vs-textarea::placeholder{color:#6d6b66}
 #vixenSynthesisSalon .vs-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 4px}
 #vixenSynthesisSalon .vs-action{
  border:1px solid #1e2428;min-height:48px;padding:12px 18px;
