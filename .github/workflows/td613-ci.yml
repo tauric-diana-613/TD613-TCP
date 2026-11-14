@@ -540,6 +540,19 @@ jobs:
           path: artifacts/vixen-preview/Vixen_Cybernetics_Encyclopedia_PR1730.zip
           if-no-files-found: error
           retention-days: 14
+      - name: Package source-editable exact-head Vixen agent handoff
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: |
+          python3 -m py_compile scripts/package-vixen-agent-handoff.py
+          python3 scripts/package-vixen-agent-handoff.py --out artifacts/vixen-preview/VIXEN_PR1730_COMPLETE_AGENT_HANDOFF.zip
+      - name: Upload Vixen PR1730 full editable agent handoff
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: td613-vixen-agent-handoff-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-preview/VIXEN_PR1730_COMPLETE_AGENT_HANDOFF.zip
+          if-no-files-found: error
+          retention-days: 14
       - name: Preserve diagnostics only when held
         if: failure()
         uses: actions/upload-artifact@v4
