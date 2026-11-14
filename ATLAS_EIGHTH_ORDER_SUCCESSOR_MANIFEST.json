@@ -1,0 +1,1003 @@
+{
+  "schema": "td613.atlas-after-hours.eighth-order-portable-manifest/v1",
+  "gitParent": "f1928fcafd359f071cc9ded5750fe00b22bb8b02",
+  "historicalHandoffSourceHead": "04828d8846bd273767f4acc1a4a67893b4f24b65",
+  "authority": "SYNTHETIC_SOURCE_FREE_RESEARCH_ONLY",
+  "covenant": "Khona‌lit-po",
+  "humanClosure": "RESERVED",
+  "experimentB": "HELD",
+  "tests": "321/321 LOCAL Node v22.16.0",
+  "audit": "NOT_EXECUTED_NATIVE_SKILL",
+  "holds": [
+    "PREDECESSOR_CHAIN_UNVERIFIED_CUSTODY_FORK",
+    "HOLD_HOLONOMY_HISTORY_PARITY_FAILED",
+    "CLASSIFICATION_REPLAY_STABILITY_HELD_NOT_YET_WITNESSED"
+  ],
+  "files": [
+    {
+      "path": "ARCHIVE_INDEX.md",
+      "size": 6278,
+      "sha256": "aeba144ec4f0d8a806d762fd490fa247edc573f2ef48607b04655ce8c836bd6c"
+    },
+    {
+      "path": "ATLAS_EIGHTH_ORDER_ADJUDICATION.md",
+      "size": 1922,
+      "sha256": "e22e9e6a7233e1b9b9e49663b0e7f0e7e9da2ab4d852437c7177a7619422e124"
+    },
+    {
+      "path": "ATLAS_EIGHTH_ORDER_RUNBOOK.md",
+      "size": 1418,
+      "sha256": "7b2a79920315cb30625c770e9f2d40968370ed59724a7ea370c9271cc679ac3f"
+    },
+    {
+      "path": "COUNTERWORLD_DOCKET.md",
+      "size": 6282,
+      "sha256": "85a198009b0b58743aa9f1fd2c9ac948eed812653937d343e34966c9cf970911"
+    },
+    {
+      "path": "GEOMETRY_OF_REFUSAL_AND_RECOGNITION.md",
+      "size": 11977,
+      "sha256": "4a60a5b888574e0b01ccef586b33673616eaec2907ce9d8d38de55bdc9c605ff"
+    },
+    {
+      "path": "NEW_PRIMITIVE_DECISION.md",
+      "size": 10712,
+      "sha256": "44f2809d31624d15f38304ba97a06b0c393b54ccbf2e51377f2e1725ae4769fb"
+    },
+    {
+      "path": "OPERATOR_REVIEW_PACKET.md",
+      "size": 7878,
+      "sha256": "2c3b1169a7c33af474e9fbe653fbc54e304fcc9e7907db4163afea776969cb10"
+    },
+    {
+      "path": "RECIPROCAL_MANIFEST_TRIAL.md",
+      "size": 7641,
+      "sha256": "e4e5eb5265555951649e8e7772d542f7abc30579f539c5e2386f864c84e72055"
+    },
+    {
+      "path": "RELATIONAL_ATLAS_DOSSIER.md",
+      "size": 8337,
+      "sha256": "ea8cd11955a5184762104beca339f1235f1f408e9266dfb535027557fce3a3b6"
+    },
+    {
+      "path": "RULEFIELD_HANDOFF_MANIFEST.json",
+      "size": 22172,
+      "sha256": "e57b84ded1153dad4cc8b15dae7d150928005a70a75a32e250d0e546b7b3b135"
+    },
+    {
+      "path": "RULEFIELD_HANDOFF_README.md",
+      "size": 757,
+      "sha256": "4f69f0a8ae9df23961db9ad7845f1b23f1f96585c440a8a37c141323d13579cc"
+    },
+    {
+      "path": "SEVEN_CHAMBERS_RECORD.md",
+      "size": 12495,
+      "sha256": "005721f56de697acf58b62cca460742df455a2d429babb5c4fa7c6c3d4585d23"
+    },
+    {
+      "path": "THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR.md",
+      "size": 11717,
+      "sha256": "8c82afb6030e06fd7089f1d7981e693af1a43966e02fafa8991ad7719491ef61"
+    },
+    {
+      "path": "THE_HOME_THAT_SURVIVED_ITS_INHABITANTS.md",
+      "size": 6439,
+      "sha256": "3376f00d18218e897899fda94896716e6daccafc70e76f40c0779f1dc68e2ab1"
+    },
+    {
+      "path": "THE_INSPECTOR_WHO_FOUND_THE_BUILDING_BUT_COULD_NOT_FIND_ITS_PEOPLE.md",
+      "size": 17933,
+      "sha256": "a0fe7b8ba36903bb3744edc3750215cebb176e627548efea084b2d1e1d54264d"
+    },
+    {
+      "path": "THE_INSTITUTION_THAT_LEARNED_TO_IMITATE_ITS_OWN_ERROR.md",
+      "size": 13921,
+      "sha256": "8c3a925b78e9c2c88ae089bdc1812663c41a9cf1de28ef0d16d3685d7ace284f"
+    },
+    {
+      "path": "THE_NOTARY_WHO_COULD_READ_EVERY_WORD_EXCEPT_THE_OBJECTION.md",
+      "size": 14170,
+      "sha256": "d44321dcde4816c4aa358c91cd0a1eeecd93518fb859dadf04f90a39b8e63c24"
+    },
+    {
+      "path": "THE_NOTARY_WHO_NEVER_SAW_THE_WITNESS.md",
+      "size": 13106,
+      "sha256": "8a112357a88e32f3327c6133ae6ee691ab0f0aa80e35718ded8341c8437b8004"
+    },
+    {
+      "path": "THE_REMEDY_THAT_MADE_ITS_OWN_WITNESS_DISAPPEAR.md",
+      "size": 19775,
+      "sha256": "bbda5b875a6314a9b1a313b747906805211e480a94a408712f2b956fdd444385"
+    },
+    {
+      "path": "THE_SENTENCE_THAT_OUTRAN_ITS_AUTHOR.md",
+      "size": 12430,
+      "sha256": "9725dcce3ea6802fc1c1e02dfddc4fbb842b04399c90535c082370b5b3c7467f"
+    },
+    {
+      "path": "THE_STAY_THAT_TESTIFIED_AGAINST_ITS_AUTHOR.md",
+      "size": 15463,
+      "sha256": "d937bbe85df714787eab673c4c25cbeecdf58f035fe513f7af3ca2d980dfc50a"
+    },
+    {
+      "path": "WILD_FIELD_COUNTERWORLD_LOOM_DIRECTIVE.md",
+      "size": 13451,
+      "sha256": "8d366300ae57e71f4962c5fc2a06e989b7d884eda225b16bbc1db5ed1a1d4ecc"
+    },
+    {
+      "path": "WITNESS_THAT_ARRIVED_TOO_LATE_DOSSIER.md",
+      "size": 12869,
+      "sha256": "a0242114553a31ed98708db859e1a2dddd3e3596a0f0e09f656fed4d1bb70c93"
+    },
+    {
+      "path": "WITNESS_WHO_REFUSED_TO_BE_PROVEN.md",
+      "size": 11620,
+      "sha256": "06d0587aa48e6d9a4dec65303bf9c4cbae14fb6756ea5dbbf4ee2c82f4b5af22"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/atlas_audit_spec.json",
+      "size": 1282,
+      "sha256": "6483b734660dd7e6fccb7525ce3004d268c0391ff09cdd6e058d5a79a68d7169"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/audit_receipt_atlas_after_hours.json",
+      "size": 6074,
+      "sha256": "31be4a9dca46f743be3c642777f0e09297766395d09233d7fd13ec2b89c9f83b"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/audit_spec_counterworld_loom.json",
+      "size": 1002,
+      "sha256": "56f5edf7a997a038c2f83dc417eab9ed9381058f2ea4ef0d46ac37efe3ca19e8"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/berlantian_reparative_counterworlds.json",
+      "size": 26346,
+      "sha256": "f33bdf51e54bc34eb3c7e5fb0afb31f85922dc40072510c652b51f508b0c017a"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/commutative_closure_audit.json",
+      "size": 504,
+      "sha256": "b0ef9a5058a2c22d4913b6f24e3962c71f3be2e228240f5e7cbfa43f1316d30f"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/counterworld_loom_eval.json",
+      "size": 319,
+      "sha256": "fa971f572e0ad8d675350da6ae62927cc3ce5f77c7db2398b2c5419a986ef29c"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/discrepancy_fiber_calculus.json",
+      "size": 1338,
+      "sha256": "bb16f733a2919fe2518690088a2757c5be163919c2df39881dd89bae5ca57c18"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/epistemic_phase_displacement.json",
+      "size": 670,
+      "sha256": "9dd8dae96c3a0f2b789e685da92e882540677a0e608172372508ed432cfb0906"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/grand_interlocking_experiment.json",
+      "size": 2432,
+      "sha256": "8a46617d5764a0b368ee795ea401f141e980ed97bc5302a5178664d1cae875df"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/heterostratigraphic_identity.json",
+      "size": 683,
+      "sha256": "2903a986f649b4de10417ca5afa78fb17322d10dd3503645b24ff8a3d78de759"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/triadic_clusters_hearing.json",
+      "size": 1228,
+      "sha256": "efcd56129f340373a26b28a03cfabc0febdfd803ed505390d4520ecb555d2cef"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld-loom/witness_arrived_too_late_suite.json",
+      "size": 14455,
+      "sha256": "4639d82bfea5e32594513766d6fc99f98545c900d8af20e916c88a399212ce18"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/counterworld_docket.json",
+      "size": 2668,
+      "sha256": "3a28f872b6ec50da92d3bf899f015e0a0c65f6f1aa33c2206e97e1001581d756"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/new_primitive_decision.json",
+      "size": 5483,
+      "sha256": "1e4cbf998d1fc947f6771e2e37926bc1fe269a00c52a5e75f26c2a062a41a067"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/operator_review_packet.json",
+      "size": 2712,
+      "sha256": "92a65f59ed63271ba92fe631516c54a8bfee4c989f40aa66f5f64934de8288e0"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/reciprocal_manifest_trial.json",
+      "size": 3855,
+      "sha256": "c8ec315b49011174738ca7e7f38064feb011058e5ee674b28e5c172721e696a9"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/relational_atlas_crosswalk.json",
+      "size": 6161,
+      "sha256": "6587b9ef3a0d689e5197dfda46a6d4515cf1da138fbecacd3004563c81210646"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/relational_atlas_hypergraph.json",
+      "size": 353094,
+      "sha256": "5b300c171bb8aeb07c925011b4dd5c0889897dcba120e6efe1e90d582f4a4bcb"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/reparative_consequence_docket.json",
+      "size": 784,
+      "sha256": "e26fb129cc3254d991cd91cfd00ba2fd770c3ef3915389ef6303790ee313fb2c"
+    },
+    {
+      "path": "artifacts/atlas-after-hours/seven_chamber_record.json",
+      "size": 18878,
+      "sha256": "212109bddebfa7006b05ce4bddefec972360f6989c6b762d8deb82e1a2c0fa52"
+    },
+    {
+      "path": "dossier/COUNTERWORLD_DOCKET.md",
+      "size": 6282,
+      "sha256": "85a198009b0b58743aa9f1fd2c9ac948eed812653937d343e34966c9cf970911"
+    },
+    {
+      "path": "dossier/GEOMETRY_OF_REFUSAL_AND_RECOGNITION.md",
+      "size": 11977,
+      "sha256": "4a60a5b888574e0b01ccef586b33673616eaec2907ce9d8d38de55bdc9c605ff"
+    },
+    {
+      "path": "dossier/NEW_PRIMITIVE_DECISION.md",
+      "size": 10712,
+      "sha256": "44f2809d31624d15f38304ba97a06b0c393b54ccbf2e51377f2e1725ae4769fb"
+    },
+    {
+      "path": "dossier/OPERATOR_REVIEW_PACKET.md",
+      "size": 7878,
+      "sha256": "2c3b1169a7c33af474e9fbe653fbc54e304fcc9e7907db4163afea776969cb10"
+    },
+    {
+      "path": "dossier/RECIPROCAL_MANIFEST_TRIAL.md",
+      "size": 7641,
+      "sha256": "e4e5eb5265555951649e8e7772d542f7abc30579f539c5e2386f864c84e72055"
+    },
+    {
+      "path": "dossier/RELATIONAL_ATLAS_DOSSIER.md",
+      "size": 8337,
+      "sha256": "ea8cd11955a5184762104beca339f1235f1f408e9266dfb535027557fce3a3b6"
+    },
+    {
+      "path": "dossier/SEVEN_CHAMBERS_RECORD.md",
+      "size": 12495,
+      "sha256": "005721f56de697acf58b62cca460742df455a2d429babb5c4fa7c6c3d4585d23"
+    },
+    {
+      "path": "dossier/THE_APPEAL_THAT_REQUIRED_PERMISSION_FROM_THE_ERROR.md",
+      "size": 11717,
+      "sha256": "8c82afb6030e06fd7089f1d7981e693af1a43966e02fafa8991ad7719491ef61"
+    },
+    {
+      "path": "dossier/THE_HOME_THAT_SURVIVED_ITS_INHABITANTS.md",
+      "size": 6439,
+      "sha256": "3376f00d18218e897899fda94896716e6daccafc70e76f40c0779f1dc68e2ab1"
+    },
+    {
+      "path": "dossier/THE_INSPECTOR_WHO_FOUND_THE_BUILDING_BUT_COULD_NOT_FIND_ITS_PEOPLE.md",
+      "size": 17933,
+      "sha256": "a0fe7b8ba36903bb3744edc3750215cebb176e627548efea084b2d1e1d54264d"
+    },
+    {
+      "path": "dossier/THE_INSTITUTION_THAT_LEARNED_TO_IMITATE_ITS_OWN_ERROR.md",
+      "size": 13921,
+      "sha256": "8c3a925b78e9c2c88ae089bdc1812663c41a9cf1de28ef0d16d3685d7ace284f"
+    },
+    {
+      "path": "dossier/THE_NOTARY_WHO_COULD_READ_EVERY_WORD_EXCEPT_THE_OBJECTION.md",
+      "size": 14170,
+      "sha256": "d44321dcde4816c4aa358c91cd0a1eeecd93518fb859dadf04f90a39b8e63c24"
+    },
+    {
+      "path": "dossier/THE_NOTARY_WHO_NEVER_SAW_THE_WITNESS.md",
+      "size": 13106,
+      "sha256": "8a112357a88e32f3327c6133ae6ee691ab0f0aa80e35718ded8341c8437b8004"
+    },
+    {
+      "path": "dossier/THE_REMEDY_THAT_MADE_ITS_OWN_WITNESS_DISAPPEAR.md",
+      "size": 19775,
+      "sha256": "bbda5b875a6314a9b1a313b747906805211e480a94a408712f2b956fdd444385"
+    },
+    {
+      "path": "dossier/THE_SENTENCE_THAT_OUTRAN_ITS_AUTHOR.md",
+      "size": 12430,
+      "sha256": "9725dcce3ea6802fc1c1e02dfddc4fbb842b04399c90535c082370b5b3c7467f"
+    },
+    {
+      "path": "dossier/THE_STAY_THAT_TESTIFIED_AGAINST_ITS_AUTHOR.md",
+      "size": 15463,
+      "sha256": "d937bbe85df714787eab673c4c25cbeecdf58f035fe513f7af3ca2d980dfc50a"
+    },
+    {
+      "path": "dossier/WILD_FIELD_COUNTERWORLD_LOOM_DIRECTIVE.md",
+      "size": 13451,
+      "sha256": "8d366300ae57e71f4962c5fc2a06e989b7d884eda225b16bbc1db5ed1a1d4ecc"
+    },
+    {
+      "path": "dossier/WITNESS_THAT_ARRIVED_TOO_LATE_DOSSIER.md",
+      "size": 12869,
+      "sha256": "a0242114553a31ed98708db859e1a2dddd3e3596a0f0e09f656fed4d1bb70c93"
+    },
+    {
+      "path": "dossier/WITNESS_WHO_REFUSED_TO_BE_PROVEN.md",
+      "size": 11620,
+      "sha256": "06d0587aa48e6d9a4dec65303bf9c4cbae14fb6756ea5dbbf4ee2c82f4b5af22"
+    },
+    {
+      "path": "encyclopedia/vix-cyb.html",
+      "size": 718274,
+      "sha256": "8ae5be8ff1ac3dfed316f5155a385e5a31aa146e640e09da89a148bc7daddaf3"
+    },
+    {
+      "path": "packages/rulefield/AGENTS.md",
+      "size": 9540,
+      "sha256": "9b33d7087ae53e313199e2512abd25bebd87bdf3345d34be4e2bce8256a539b1"
+    },
+    {
+      "path": "packages/rulefield/README.md",
+      "size": 17806,
+      "sha256": "9b75c1c70aa159668880f274f98b5e7bb96a1e92dd1279738e9dd6bc8083a70d"
+    },
+    {
+      "path": "packages/rulefield/ROADMAP.md",
+      "size": 16116,
+      "sha256": "a14799683b3029627506d08c0e155bb5b9160bbd9021a99a691b7642f614249e"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.csv",
+      "size": 318146,
+      "sha256": "3d28acacfa0508602e46e2b7c21062dac1581175c8c3f80825e5b066d0f557e6"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.json",
+      "size": 784157,
+      "sha256": "b875ee6933abd44761398276cc3b02b918c1cf0e761878f2cd0ea995ceb59c99"
+    },
+    {
+      "path": "packages/rulefield/TD613_NKS_Wolframian_Garden_Advancement_20261107.md",
+      "size": 260015,
+      "sha256": "d26bfdfee8c5b11f3a05d987d90cc92f36486918c3af7f97a036a080c7b50e51"
+    },
+    {
+      "path": "packages/rulefield/amendments/AGENTS.md",
+      "size": 2143,
+      "sha256": "f6247d007602a8f675c2cbde9f1a2d41cf0f6cfe42a84c813c08c6cc0c317bdf"
+    },
+    {
+      "path": "packages/rulefield/amendments/RECEIVER.md",
+      "size": 13630,
+      "sha256": "354300f503d3f86199d66a4076c68c2ae770c8057786b8f6a2a86ec9b3c8012a"
+    },
+    {
+      "path": "packages/rulefield/amendments/duplicate_gate.mjs",
+      "size": 7209,
+      "sha256": "8e35cc4567830697ab7ce5379f31939ab681c9348ac94d1e19dcc665ea046c8f"
+    },
+    {
+      "path": "packages/rulefield/amendments/hooks.json",
+      "size": 14485,
+      "sha256": "5f3f437fcd251830b72c84182e5a3e5a73852667ed4144fe200ebbff79ecd56b"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/.gitignore",
+      "size": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/amendments/inbox/README.md",
+      "size": 854,
+      "sha256": "e1c681e917efcd81fd34950d96554f72d0f8b1c37caca752e3e1565fa8c06f68"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/.gitignore",
+      "size": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/amendments/outbox/README.md",
+      "size": 755,
+      "sha256": "5f63d7dda43d9e7603fe5e37dad78456c2182700db275f3b2e559a3e92138367"
+    },
+    {
+      "path": "packages/rulefield/amendments/receiver.mjs",
+      "size": 22048,
+      "sha256": "3e4dad68501ee03fb9a90f911b08db9a2cc652b0982007307624e3391d8d2ef8"
+    },
+    {
+      "path": "packages/rulefield/amendments/schema.json",
+      "size": 9666,
+      "sha256": "066edcd0cb251efc53dbe87c58a81f7ccd6d1d0f831ef16e3b250de6d77a1256"
+    },
+    {
+      "path": "packages/rulefield/amendments/templates/amendment.template.json",
+      "size": 4808,
+      "sha256": "bd77946d2cdd91609c3acc5e11e3c55545e4a290ceef07f2c2a57442766ba927"
+    },
+    {
+      "path": "packages/rulefield/data/rulefield.v1.json",
+      "size": 841300,
+      "sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+    },
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "size": 10252,
+      "sha256": "1917d4156646c99ee65d8664ffaa9b3b2338d0fa12c26fe640d8f00d079522ca"
+    },
+    {
+      "path": "packages/rulefield/lab/counterworld_loom.mjs",
+      "size": 64675,
+      "sha256": "3512ba2f4ac85ff1b257bd031b2846a57c540133ea8284d6d466dea24b5a475e"
+    },
+    {
+      "path": "packages/rulefield/lab/dromological_philology.mjs",
+      "size": 47592,
+      "sha256": "92fd7ffb4f97e37e84a410ff237134f69d001ca24e38b7714193e587bcc89deb"
+    },
+    {
+      "path": "packages/rulefield/lab/eighth_order_reparative_consequence.mjs",
+      "size": 10641,
+      "sha256": "36939022e9d10c25898b77ad2ceabc279e2c65a55a6858123a57cdf9c73ada9d"
+    },
+    {
+      "path": "packages/rulefield/lab/fifth_order_decision_channel.mjs",
+      "size": 21020,
+      "sha256": "9f9c29b6c13b23c72755fa7c89de4b067e037758187a6008fbea777175fea612"
+    },
+    {
+      "path": "packages/rulefield/lab/fourth_order_interpretive_labor.mjs",
+      "size": 28468,
+      "sha256": "405f5d3f4eaeb99df5079ac223dab1e4f38cd370d6a0766faa9b823c0b5c40a7"
+    },
+    {
+      "path": "packages/rulefield/lab/integration_backlog.json",
+      "size": 19852,
+      "sha256": "334102bee49de1a003d2fb4c132343953cb69e9a78742656f6c856537e205cf2"
+    },
+    {
+      "path": "packages/rulefield/lab/multiway_lab.mjs",
+      "size": 11679,
+      "sha256": "d2ef2c8c454f33bfc36fd80358675be87a8fd057c301aad1f89bb5f748cb3c46"
+    },
+    {
+      "path": "packages/rulefield/lab/second_order_institution.mjs",
+      "size": 33879,
+      "sha256": "bb7f6528dcbbe7fe694b8cc882f95e04d62343ff780009295b1f55ba4a5bf91e"
+    },
+    {
+      "path": "packages/rulefield/lab/seventh_order_independent_metrology.mjs",
+      "size": 27397,
+      "sha256": "df3821e0ef13e4640e4562c5b872cded71d66d644e2cf27dfb2779141677e460"
+    },
+    {
+      "path": "packages/rulefield/lab/sixth_order_anticipatory_testimony.mjs",
+      "size": 29901,
+      "sha256": "bb6278f4e083fa3c8a28501aef1b025cad2e2974120d342b7f1783767a138d7b"
+    },
+    {
+      "path": "packages/rulefield/lab/third_order_notary.mjs",
+      "size": 24785,
+      "sha256": "fa2aa3dc8c186b75b66e914e0134084919e78d5503d5bae6da2eb1f5302203dc"
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "size": 7367,
+      "sha256": "57ed58f6074733bc5c7b5e130ed322a7432e9d22db35d66127ec9ebdc4f4e0da"
+    },
+    {
+      "path": "packages/rulefield/lab/wolfram_comparator.wl",
+      "size": 1477,
+      "sha256": "84a4d6d338dca14b79094582e58a7ba53c0e059e6089a5994886e260dad1d95b"
+    },
+    {
+      "path": "packages/rulefield/operator/ACTIVATION_PROMPT.md",
+      "size": 20358,
+      "sha256": "26fc391c018f4b9b8c4ea828dc1be0057515c28dc6456e8b544880f9faecf760"
+    },
+    {
+      "path": "packages/rulefield/operator/AGENTS.md",
+      "size": 3962,
+      "sha256": "13ed7aff4faec76af50fcc76ef94bbf6a899f83d9cd22475db894181b0778cae"
+    },
+    {
+      "path": "packages/rulefield/operator/DISCLOSURE_PROTOCOL.md",
+      "size": 6202,
+      "sha256": "4774d29506758f44919f509d7e5b08f7b88cc22c32541eff1fa5d94e0df32cb8"
+    },
+    {
+      "path": "packages/rulefield/operator/INTAKE_AND_SYNC.md",
+      "size": 3094,
+      "sha256": "8d78ded45bf0c31605e795cb5243cb85fd195d57bde90c5382e53cd158349419"
+    },
+    {
+      "path": "packages/rulefield/operator/IN_CHAT_DECISION_PROTOCOL.md",
+      "size": 5460,
+      "sha256": "cbd65d9cc24d4bf2ea8aaf3862872b6365d6557a9f75524ce163b946647c24e3"
+    },
+    {
+      "path": "packages/rulefield/operator/OPERATOR_GUIDE.md",
+      "size": 27077,
+      "sha256": "da01a276512dd7d658dc812ad73a28ac1e9634a79af9f771bd5f02538b42d196"
+    },
+    {
+      "path": "packages/rulefield/operator/README.md",
+      "size": 6370,
+      "sha256": "7bfe2d704ef4e89dbd462e61916e0db44496b65c169613f129b8efa916a6f892"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.json",
+      "size": 4389,
+      "sha256": "adc7d937091b2853e5d21f0a4de4b55dc02e8150f348d2c5f327b5536e05e32a"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1.md",
+      "size": 3050,
+      "sha256": "2b7599fa735b4540c3ab7369a2b54023248af420c9c4a55054f60f7bda9e42ba"
+    },
+    {
+      "path": "packages/rulefield/operator/contracts/NOMENCLATURE_V1_ROLE_MULTIPLICITY_ADDENDUM.md",
+      "size": 665,
+      "sha256": "c2489b49b9cd8324f29ed95ec14b1c79fa636e5b6ed025ce659e0401f4a6af2f"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.mjs",
+      "size": 2559,
+      "sha256": "f7a758dae393287b8c75017a0e3feb4ca5be09771fa225e4ea32de006aed9664"
+    },
+    {
+      "path": "packages/rulefield/operator/decision.schema.json",
+      "size": 1555,
+      "sha256": "7f724c4fe41418fd507b570f49b1d910076e1cb0b4d82df104552d00d4384912"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/.gitignore",
+      "size": 25,
+      "sha256": "90572454aae237c84790ac5808fb928e7d2c03791016f634f7d39c87d7963a3f"
+    },
+    {
+      "path": "packages/rulefield/operator/decisions/README.md",
+      "size": 981,
+      "sha256": "08e2c273e944cf450e0d29f7dbe73c7c077d32ddafc5c3407177bcec34812b41"
+    },
+    {
+      "path": "packages/rulefield/operator/design/COMMISSION.json",
+      "size": 2190,
+      "sha256": "7d894e3fd6d977939061324ef4548049304a3771f117060305ffcb34fb9d3d1f"
+    },
+    {
+      "path": "packages/rulefield/operator/design/README.md",
+      "size": 1412,
+      "sha256": "5fcf7c3acd25e44e02e5227e345fcd259cdead8ad532ed92b747344756262f37"
+    },
+    {
+      "path": "packages/rulefield/operator/disclosure.mjs",
+      "size": 11033,
+      "sha256": "e8bf0925da1b92f1a2e63021dc3890cd8262326ea7e1d5db5195222c7aeab77f"
+    },
+    {
+      "path": "packages/rulefield/operator/docket.mjs",
+      "size": 11275,
+      "sha256": "f6ea109ca5029abb393a52f59ace891bc9bf1fc5e1e77f537799588f9f376e8d"
+    },
+    {
+      "path": "packages/rulefield/operator/docket3.mjs",
+      "size": 11219,
+      "sha256": "988bd440580530b6fab1ffaed12e84a86e6205b142e07fe37fbe88f40b7d6831"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/.gitignore",
+      "size": 25,
+      "sha256": "aae815b9313ef60fb99d51bec324f3de1cea5256d6bbf58a660578b3e2d5815c"
+    },
+    {
+      "path": "packages/rulefield/operator/dockets/outbox/README.md",
+      "size": 482,
+      "sha256": "75cd15f860c6d42bec379ff226e1d8dfc00662694b8be5209b2ea7db3a2cf071"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_AUTHORIZATION_DECISION.md",
+      "size": 3197,
+      "sha256": "24e26ec23256c84a62d573585ff1d31277f211967f02fe4c33dcc6a2e898f121"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RESEARCH_SUBMISSION_FORM.md",
+      "size": 4829,
+      "sha256": "687a4dd1d5b4247b33c46ce262f6d830a631b1776998f6a5a74b0074d93af0c7"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+      "size": 5254,
+      "sha256": "cf9978bef89fe8252d7685d356a1077b77470521249eb12e525a9c95fde9a4b2"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/PRE_SYNTHESIS_AUTHORIZATION_DOSSIER.md",
+      "size": 4379,
+      "sha256": "9f318adc06a64578b3b36317351ac6e23100bace569f99ff4ac95ec3a3ce433a"
+    },
+    {
+      "path": "packages/rulefield/operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+      "size": 2814,
+      "sha256": "ac0f869e98d86121669390a5e06f21f5c9ab8be83fd4c23d39b450c39ea9eb00"
+    },
+    {
+      "path": "packages/rulefield/rulebook/ANTIGRAVITY_KENOUGH_ACTIVATION.md",
+      "size": 9145,
+      "sha256": "5c924b52027b2f9846b4195aea8259b2763551b24aad2110ac87184c16bc8716"
+    },
+    {
+      "path": "packages/rulefield/rulebook/LLM_QUICK_START.md",
+      "size": 23140,
+      "sha256": "bc40905e09412f6209c22112dfb6dc01b76ddaa1837c772b9f35da01aab2e8d0"
+    },
+    {
+      "path": "packages/rulefield/rulebook/README.md",
+      "size": 788,
+      "sha256": "589f9afd59a2147a6c2e0b2e087174871a20a0ad26b48225718f8da7998b965b"
+    },
+    {
+      "path": "packages/rulefield/rulebook/source_locator.json",
+      "size": 9625,
+      "sha256": "22daa9c92761c5d226d73e1db5a20a2cd845fe85437fda8a1b136cdea1377d53"
+    },
+    {
+      "path": "packages/rulefield/rulefield.mjs",
+      "size": 8500,
+      "sha256": "505370498ea0c9228dc6ca50b0e10e53210f67016acd7f1409ce3951ac2dea1f"
+    },
+    {
+      "path": "packages/rulefield/rulefields/README.md",
+      "size": 15264,
+      "sha256": "cc487c92186cbebf391bfa02f393698037ccc2bdad7defc3a4e9ac57487bac98"
+    },
+    {
+      "path": "packages/rulefield/rulefields/RECOVERY_PROTOCOL.md",
+      "size": 4203,
+      "sha256": "7454bedc013c6f9b804f4aa9ffa1c12abddeb80bc52ee85c8e1d5b69372d416d"
+    },
+    {
+      "path": "packages/rulefield/rulefields/TYPE_SYSTEM.md",
+      "size": 5540,
+      "sha256": "0feec8d61213b5e0a61c590f10c46668fdfcd12bd16c9609e496d82c04a7c704"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261107.json",
+      "size": 73013,
+      "sha256": "921464a487e311f38da34ed283370ff01e94b500f39b8fb2abedd9277ec507c0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/operator-rulefields-20261108-revision.json",
+      "size": 87708,
+      "sha256": "5f803797da7c26cc91c3090dac9ec439d0f3da777ad73733491f2cd1f5ec95a8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/data/recovered-operator-models-20261108.json",
+      "size": 8768,
+      "sha256": "e4a1c60704645163f84d6de927578cf239291a991b0a66776d0b9669acc21ab0"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/COMMISSION.json",
+      "size": 2336,
+      "sha256": "7e0a97681ef8068ddd15b33c12bdf42a6f3e0da345314bbec2a7984affeab6de"
+    },
+    {
+      "path": "packages/rulefield/rulefields/design/README.md",
+      "size": 1182,
+      "sha256": "552fd46a9100e54e8709d9826cdaf1d86d7971f1c71dd666f1c5eefe2209deed"
+    },
+    {
+      "path": "packages/rulefield/rulefields/engine.mjs",
+      "size": 12201,
+      "sha256": "507ee29ac33c8491e4dca3a5df4a7acffccbec894aa76f0121f6ff1bb3ce317a"
+    },
+    {
+      "path": "packages/rulefield/rulefields/evidence_priority.mjs",
+      "size": 8905,
+      "sha256": "d7e43c3c20f287ba9cc9f99b0382024439ba7d80b582fd912beac06cc8cdc47d"
+    },
+    {
+      "path": "packages/rulefield/rulefields/operator_models.mjs",
+      "size": 6284,
+      "sha256": "cbe5c3b892a796baa1fdfeb7c2725229deb7f61d0de60ff4669fd2e84e027062"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/.gitignore",
+      "size": 25,
+      "sha256": "aae815b9313ef60fb99d51bec324f3de1cea5256d6bbf58a660578b3e2d5815c"
+    },
+    {
+      "path": "packages/rulefield/rulefields/outbox/README.md",
+      "size": 228,
+      "sha256": "6bc80c94aac3bb3f167ad2cddb2443091ab2421607e6c3521c79246acb3ed133"
+    },
+    {
+      "path": "packages/rulefield/rulefields/paired_priority.mjs",
+      "size": 10252,
+      "sha256": "ba09458c46066c3d630991998e303da27f4f994303f4e07df9c7ba89b2886d67"
+    },
+    {
+      "path": "packages/rulefield/rulefields/plans/PLAN.template.json",
+      "size": 487,
+      "sha256": "3c142d228a442b42b0e49e6a79931f5de7916ec0d63d606a12cf0ce8d99c986c"
+    },
+    {
+      "path": "packages/rulefield/rulefields/residual_triage.mjs",
+      "size": 10885,
+      "sha256": "b61fce1917c3845ea3a27848a2f57d4acb57ff62fdb6e22f741f246dd8e41f65"
+    },
+    {
+      "path": "packages/rulefield/rulefields/revised_docket.mjs",
+      "size": 11610,
+      "sha256": "6182087735f89ee782c0f982bcccfabd0a7d34593d4ed85ea79c9d4823cb5cbc"
+    },
+    {
+      "path": "packages/rulefield/rulefields/schema.json",
+      "size": 1280,
+      "sha256": "c2f834f90aa0dc19bf334d94378bc8861f44c3ed599890eee43f175158815b02"
+    },
+    {
+      "path": "packages/rulefield/rulefields/semantic_review.mjs",
+      "size": 7875,
+      "sha256": "1c9731372df36332a5fb7e70f263c8102cf1041868e6b367f3b97d54649cf2c8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/temporal_guardian.mjs",
+      "size": 8732,
+      "sha256": "6fd822fcf3d551756f487f4f03e95e1303472612a99c0154eb1d1aa30c9bc6db"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.json",
+      "size": 10039,
+      "sha256": "a9c85bc22c9829441e21213e5da7aea5ae89bf8dc539b5e7f5c468a03ebe7808"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/ROLE_MULTIPLICITY_ROD0002.md",
+      "size": 3842,
+      "sha256": "8824dc69a3262067f920bd93edcb4f5f068c6235a1f3491b7b505ce2a3269ca8"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/SEMANTIC_CASEBOOK_ROD0003.json",
+      "size": 59413,
+      "sha256": "c292a59173db1ac4807b0ee7cb199e96a9e5d779e1daaf229cbd8dfe3f7c17a7"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.json",
+      "size": 34082,
+      "sha256": "bc3bfabdf09cd6c2b4130771125098196a71336384ef770ca514d7d210eb48c2"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_assessment/TYPE_ASSESSMENT_ROD0002.md",
+      "size": 17465,
+      "sha256": "47dca3fe531ee8de69a8afb6e5828e099d11a69f15119c6475fd3c2079bbb0e6"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.mjs",
+      "size": 12873,
+      "sha256": "c8f09310c29d4793c1954c8edf0f1ca817944ff1333ecd441be4ac4adcdd1eee"
+    },
+    {
+      "path": "packages/rulefield/rulefields/type_system.schema.json",
+      "size": 2373,
+      "sha256": "132254f224e26e66eebc4d3ba3bf0f6bc74d772b1c4c07049b2d24d59cc7c709"
+    },
+    {
+      "path": "packages/rulefield/sources/emergence-recovery-112.snapshot.json",
+      "size": 380202,
+      "sha256": "e5f91f0d51dc97724812dad9ab0f119729395aacf283186833c0abe48d7491bf"
+    },
+    {
+      "path": "packages/rulefield/sources/nks-garden-190.snapshot.json",
+      "size": 211541,
+      "sha256": "b5adff0500d4dceed56f0fc6c555a9d2f8cb7e828b89e2a6cdf18f4958add007"
+    },
+    {
+      "path": "scripts/build-rulefield-handoff.py",
+      "size": 7009,
+      "sha256": "bc6daea351d2bec35157dd4354228fcc9285d16189d3edb1512b3bae0772969a"
+    },
+    {
+      "path": "scripts/rulefield-amend.mjs",
+      "size": 2234,
+      "sha256": "cc62ce708e751e6c6e8e379228bfcc215bfac9ad44befbd26ef0c56683397758"
+    },
+    {
+      "path": "scripts/rulefield-docket.mjs",
+      "size": 1129,
+      "sha256": "382c13819fa5c350ebd1a345821435fc754f5d7560169cdee56c1e0a57f91344"
+    },
+    {
+      "path": "scripts/rulefield-docket2.mjs",
+      "size": 1185,
+      "sha256": "8474f902327946800632e3c6881fd6025b22f2a53981cd8185e97f6e3737dadd"
+    },
+    {
+      "path": "scripts/rulefield-docket3.mjs",
+      "size": 1057,
+      "sha256": "04893b8da4fdbc5d0b620bcd339d82ca411f06ea922432a9c27f9791927a6375"
+    },
+    {
+      "path": "scripts/rulefield-fields.mjs",
+      "size": 3795,
+      "sha256": "55aaf365395c672b86f1e5547657de040005bc1771429ee07a5b3a3f177cc012"
+    },
+    {
+      "path": "scripts/rulefield-intake.py",
+      "size": 8164,
+      "sha256": "aa19620165494236085d4d9ae1ff22bf127fa03808f872c6695bc1823ad3d108"
+    },
+    {
+      "path": "scripts/rulefield-lab.mjs",
+      "size": 2674,
+      "sha256": "5c43ba35f3a04a0a171974c0689a27c8bdae910574dcb73808cec953e9468d85"
+    },
+    {
+      "path": "scripts/rulefield-loom.mjs",
+      "size": 18332,
+      "sha256": "de9697cd78452f70628db6c55244a3eab376d1bbf8a65bdbe5470a914cafab29"
+    },
+    {
+      "path": "scripts/rulefield-operator.mjs",
+      "size": 2449,
+      "sha256": "f37be9215efa26d9e768fa0abd379abd9fda4f101dbbb840a905b569bd4ab334"
+    },
+    {
+      "path": "scripts/rulefield-qualification.mjs",
+      "size": 2813,
+      "sha256": "409f67b62d7a316cc8b005e9fde2a18cfa332723dd5b4c5c3bb679aeace10c1c"
+    },
+    {
+      "path": "scripts/rulefield-tomography.mjs",
+      "size": 2668,
+      "sha256": "d7dbe723ce6ec1fc0370e924ba65ed2c2804b7a6415716ca318d77d29d5eb808"
+    },
+    {
+      "path": "scripts/rulefield-types.mjs",
+      "size": 2920,
+      "sha256": "999f4d78288ab98168282faa6b63767ebcd12799edfe6ccbc099f6d9f48045ac"
+    },
+    {
+      "path": "scripts/rulefield.mjs",
+      "size": 3298,
+      "sha256": "8eeddfa7aa6cc9f8f57a055db969f7e9c674235cf99ad02291c466df3e761fe7"
+    },
+    {
+      "path": "scripts/run-atlas-after-hours-trial.mjs",
+      "size": 40037,
+      "sha256": "4369712391f5de5e541c49d7b2fb73c4961c00679b005329243647b6cc3a1f0c"
+    },
+    {
+      "path": "scripts/run-counterworld-loom-trial.mjs",
+      "size": 23015,
+      "sha256": "125d4a0cd5d9e02045a35b1271fa934b0778eaa41c7e4eed60eae6d8c142cde6"
+    },
+    {
+      "path": "scripts/run-dollhouse-skill-audit.mjs",
+      "size": 8438,
+      "sha256": "0592176c8201c76011134cbe349b609d3ead681af2283f31dccb37bd99c00cff"
+    },
+    {
+      "path": "scripts/run-eighth-order-reparative-trial.mjs",
+      "size": 1941,
+      "sha256": "0ed72eb43d1151b555b6699d327f60f6a5763fca891c56d724d1bd7fd721fd59"
+    },
+    {
+      "path": "tests/rulefield-amendments.test.mjs",
+      "size": 4789,
+      "sha256": "31cac2ca6ad19d168aeb9913bafaf62e16e076ad9f2de733229ec107bbfd0bb3"
+    },
+    {
+      "path": "tests/rulefield-counterworld-loom.test.mjs",
+      "size": 35327,
+      "sha256": "5a24d3e3988e36206fe7acbb779b1210e0cc0793e92155b5b562bb9510014d68"
+    },
+    {
+      "path": "tests/rulefield-docket.test.mjs",
+      "size": 6154,
+      "sha256": "b1c3c3bfca8869cdfa0da62bbc60a0339d165d9ad1720fcd238328d9e950b83e"
+    },
+    {
+      "path": "tests/rulefield-docket2.test.mjs",
+      "size": 7184,
+      "sha256": "fd2045af501ad2a91638f8009de58876446f70ee0f283473f7e0ddd5ebb778b1"
+    },
+    {
+      "path": "tests/rulefield-docket3.test.mjs",
+      "size": 3748,
+      "sha256": "c5d63bc77c59c824769b64e1b55c0761ca060ff4db60ec026b47028f925edd49"
+    },
+    {
+      "path": "tests/rulefield-duplicate-gate.test.mjs",
+      "size": 7515,
+      "sha256": "9224dec66530f3b4fa8a1a31326e27fc09f5e1c8e1cb599d6ee9c41906ce9d33"
+    },
+    {
+      "path": "tests/rulefield-eighth-order-reparative-consequence.test.mjs",
+      "size": 4321,
+      "sha256": "a7a057747563836010754061c7cd6a1bbae027888547e29f7a9c65fa00720fe6"
+    },
+    {
+      "path": "tests/rulefield-fields.test.mjs",
+      "size": 8039,
+      "sha256": "ea39f42d8518ab2a62c16faa4d1ef3e1f60c0f111f43d46440da925f01e306a8"
+    },
+    {
+      "path": "tests/rulefield-fifth-order-decision-channel.test.mjs",
+      "size": 5973,
+      "sha256": "5ac36cb41a8b4769a2e0e74ccab7443566fdce98d7c6e8471cbbd00f2d7d5477"
+    },
+    {
+      "path": "tests/rulefield-fourth-order-interpretive-labor.test.mjs",
+      "size": 8072,
+      "sha256": "a85f7cae347d8bfd20425437efa009bb3b51108f11f4551d1ea8bcf62e5cc5a9"
+    },
+    {
+      "path": "tests/rulefield-garden-triptych.test.mjs",
+      "size": 7127,
+      "sha256": "8a01b62ab0cb5abe1fa5698e4d976bcab6c2346f7d5e283857f27e6769929fc0"
+    },
+    {
+      "path": "tests/rulefield-nks-lab.test.mjs",
+      "size": 5796,
+      "sha256": "79be5c02f428bb20a0c89a082e463790e9e195222957fc7803c95937a9a99d51"
+    },
+    {
+      "path": "tests/rulefield-operator.test.mjs",
+      "size": 7980,
+      "sha256": "6ce5ee611b86a99a286aef402e73c2346b0c62a9e9240c78ffa25f85895e201c"
+    },
+    {
+      "path": "tests/rulefield-roadmap.test.mjs",
+      "size": 4430,
+      "sha256": "6a3c8b707576ae23df669726ec193f8781e4d81ceed1abc236a04f6621b65bd2"
+    },
+    {
+      "path": "tests/rulefield-second-order-institution.test.mjs",
+      "size": 8886,
+      "sha256": "a51a62ebd2bcf6f6a9469913d64b67ca4eed44ea48bfeaae132d5b052a68eb62"
+    },
+    {
+      "path": "tests/rulefield-semantic-paired.test.mjs",
+      "size": 10175,
+      "sha256": "d8fcb45abd5125e335a045132d6427e3b3f72cb1e0e4ba8cd51b23f72bd39ae7"
+    },
+    {
+      "path": "tests/rulefield-seventh-order-independent-metrology.test.mjs",
+      "size": 6541,
+      "sha256": "4037b4c62f7caf5344df467ec758aa25bba28c566f98154400ee8bbfc6dc6057"
+    },
+    {
+      "path": "tests/rulefield-sixth-order-anticipatory-testimony.test.mjs",
+      "size": 7682,
+      "sha256": "978c54e3904eeb7bc474b13184da2eb1f20c628c1050f7361a7683532794cb70"
+    },
+    {
+      "path": "tests/rulefield-third-order-notary.test.mjs",
+      "size": 7242,
+      "sha256": "d3c8e895398e9d8846756e16688a7d24fc06bb3ca098dacc4063ad4e34e60f09"
+    },
+    {
+      "path": "tests/rulefield-tomography.test.mjs",
+      "size": 6808,
+      "sha256": "31e3b165aa3cbae44d10998d1ebebf478401333ea049c529ec24608d856a2a13"
+    },
+    {
+      "path": "tests/rulefield-types.test.mjs",
+      "size": 14982,
+      "sha256": "127b12be1e983248fb4278217c6633dd3d063ef75e2c9faa0eeb0510dc362f8a"
+    },
+    {
+      "path": "tests/rulefield-v1.test.mjs",
+      "size": 7185,
+      "sha256": "d415c0f0bb156647ac1d1da45e5143162086c5b60ad45bca694655c6c529b6bc"
+    },
+    {
+      "path": "tests/test_rulefield_intake.py",
+      "size": 3284,
+      "sha256": "c0c56a84c55c4a6af7bb6b521174adf62c4aa27f4f1096ba6cb498884813bec2"
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "schema": "td613.rulefield.pr1734.native-dollhouse-source-linked-adversarial-input/v1",
+  "task_scope": "PR1734_SYNTHETIC_POSITIVE_CONTROL_NO_REAL_HUMAN_RELOCK",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "packages/rulefield/rulefield.mjs",
+    "packages/rulefield/data/rulefield.v1.json",
+    "packages/rulefield/operator/AGENTS.md",
+    "packages/rulefield/operator/AGENT_NEUTRAL_AMENDMENT_RELAY.md",
+    "packages/rulefield/amendments/receiver.mjs",
+    "packages/rulefield/rulefields/type_system.mjs",
+    "packages/rulefield/rulefields/paired_priority.mjs",
+    "packages/rulefield/rulefields/research/BASELINE_PR1722_EXACT_BLOB_CUSTODY.json",
+    "packages/rulefield/rulefields/research/ninth_order_confluence_proposal.json",
+    "tests/rulefield-canonical-baseline-custody.test.mjs",
+    "scripts/build-rulefield-handoff.py",
+    "scripts/rulefield-intake.py"
+  ],
+  "assay_notes": {
+    "mode": "SOURCE_LINKED_SYNTHETIC_POSITIVE_CONTROL_NO_OPERATOR_RELOCK_CLAIM",
+    "pedagogue": "Source-bound receiver sequence contains no autonomous operator decision. An injected sequence lacking verified NOTICE and return creates a synthetic cadence violation, not a claim of actual missing human consent.",
+    "aperture": "Projection of 70 operator priorities alone cannot identify independent observation/custody dimensions; constructed rank-one dashboard is a negative control, not a real institutional sensor.",
+    "atlas": "Two derived rule proposal histories may share a terminal summary but lack source-route equivalence; synthetic fork tests whether the audit will retain a custody hold.",
+    "fadt": "The same candidate title may occur under different conditioning evidence; allowing action under collapsed conditioning is prohibited.",
+    "temporal": "Source and execution are recorded while operator relock remains HELD; never interpret a draft PR/ZIP or same-thread reply as a human signed release."
+  },
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "NOTICE",
+          "at": 0
+        },
+        {
+          "phase": "ACT",
+          "at": 1
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 2
+        },
+        {
+          "phase": "NAME",
+          "at": 3
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "RULEFIELD_PACKET_REVIEW_ONLY",
+        "winding": 0
+      },
+      "trajectoryB": {
+        "endpoint": "RULEFIELD_PACKET_REVIEW_ONLY",
+        "winding": 0
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "CANDIDATE_CONTAINS_SOURCE_LINK",
+          "support": [
+            "RESEARCH_PROPOSAL"
+          ]
+        },
+        {
+          "condition": "CANDIDATE_WITHOUT_SOURCE_LINK",
+          "support": [
+            "RESEARCH_PROPOSAL",
+            "CANONICAL_ADOPTION"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": false
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INGRESS": {
+          "status": "PASS",
+          "entry_id": "PR1734_BASELINE_CUSTODY"
+        },
+        "EXECUTION": {
+          "status": "PASS",
+          "entry_id": "PR1734_RECEIVER_ASSEMBLY"
+        },
+        "RELOCK": {
+          "status": "PASS",
+          "entry_id": "SYNTHETIC_CONTROL_RELOCK_NOT_REAL_APPROVAL"
+        }
+      },
+      "required_phases": [
+        "INGRESS",
+        "EXECUTION",
+        "RELOCK"
+      ]
+    }
+  },
+  "control_designation": "BENIGN_POSITIVE_CONTROL_NOT_A_REAL_HUMAN_AUTHORIZATION",
+  "authority_boundary": "SYNTHETIC_SCENARIO_ONLY_NO_HUMAN_RELOCK_OR_RELEASE"
+}

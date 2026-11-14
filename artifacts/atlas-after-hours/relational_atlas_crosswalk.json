@@ -1,0 +1,142 @@
+[
+  {
+    "historical_id": "X-019",
+    "lane": "HISTORICAL_NKS",
+    "statement": "Historical SRC methods retain projective, cartographic, topological, contextual and tomographic specificity.",
+    "primary_role": "RESEARCH_PROGRAM",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "X-025",
+    "lane": "HISTORICAL_NKS",
+    "statement": "Six phason-seam transitions classify bytes, projection, permissions, route, local compatibility and relation dynamics.",
+    "primary_role": "MODEL",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "X-030",
+    "lane": "HISTORICAL_NKS",
+    "statement": "Recorded route-memory difference alone does not prove geometric holonomy.",
+    "primary_role": "EVIDENCE_BOUNDARY",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "I-043",
+    "lane": "HISTORICAL_NKS",
+    "statement": "Prompt & Tool Symmetrical Exclusion Parity (R4-06). Exogenous charters, theoretical crosswalks, and ground-truth solution keys must be verified absent from candidate-generation prompts in both Arm 2A and Arm 2B before model dispatch.",
+    "primary_role": "RULE",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "I-045",
+    "lane": "HISTORICAL_NKS",
+    "statement": "Atomic Journal Resumption & Turn-Level Idempotence (R4-04). Interrupted execution recovery restores completed turns from transactional disk journals without repeating model provider inference calls or mutating existing step digests.",
+    "primary_role": "RULE",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "I-047",
+    "lane": "HISTORICAL_NKS",
+    "statement": "WebCrypto Throw/Reject Fail-Closed Invariant. Any unexpected exception or promise rejection inside window.crypto.subtle.digest must be caught, recorded with code ERR_WEBCRYPTO_DIGEST_FAILED, and yield verified: false with zero state mutation (Delta s = 0).",
+    "primary_role": "RULE",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "Q04-A02",
+    "lane": "QUEUE_PROPOSAL",
+    "statement": "From Palace II: observe the four distinct times evidence arrived, belief revised, action aligned and public claim changed; retain negative and positive signed lags.",
+    "primary_role": "MODEL",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "Q19-R03",
+    "lane": "QUEUE_PROPOSAL",
+    "statement": "For observationally indistinguishable internal/external worlds, return UNIDENTIFIABLE_FROM_ADMITTED_EVIDENCE rather than a fabricated source verdict.",
+    "primary_role": "MODEL",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "Q21-R03",
+    "lane": "QUEUE_PROPOSAL",
+    "statement": "Preserve negative 0/16 finite archive subset closure as archive-specific; new direct measurement is required for realization.",
+    "primary_role": "SOURCE",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "Q28-R01",
+    "lane": "QUEUE_PROPOSAL",
+    "statement": "Treat relation-geometry as an explicitly defined study of typed relation diagrams and relational-geometry as a broader proposed observer/transport framework; their names alone imply no theorem.",
+    "primary_role": "RESEARCH_PROGRAM",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "AE-12",
+    "lane": "OPERAHOUSE_MEMBRANE",
+    "statement": "A visual restyling may preserve a deterministic mathematical kernel while altering which hypotheses a human observer forms. Measure those effects separately.",
+    "primary_role": "ASSAY",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "TC15",
+    "lane": "THINKER_CONDITION",
+    "statement": "differentiate direct testimony from authorized proxy statements; require explicit attribution",
+    "primary_role": "MODEL",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "CBFE-RG-11",
+    "lane": "CBFE_DD02",
+    "statement": "Claim recoverability depends on observer partition",
+    "primary_role": "MODEL",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  },
+  {
+    "historical_id": "CBFE-RG-12",
+    "lane": "CBFE_DD02",
+    "statement": "Novel rules must outperform competent existing-rule closure",
+    "primary_role": "ASSAY",
+    "dual_role": "RULEFIELD",
+    "primary_context": "CANONICAL_SOURCE_EVALUATION",
+    "dual_context": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+    "authority_transfer": false
+  }
+]

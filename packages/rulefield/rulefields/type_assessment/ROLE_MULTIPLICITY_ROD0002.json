@@ -1,0 +1,243 @@
+{
+  "schema": "td613.rulefield.role-multiplicity-addendum/v1",
+  "docket": "RF-OD-0002",
+  "applicability": "PROPOSED_NONEXCLUSIVE_ROLES_NOT_CANONICAL_ADOPTION",
+  "core_axiom": "Rulefield ≠ Rule means the predicates are not equivalent, NOT that their extensions are disjoint.",
+  "logical_form": "∃x,c1,c2 [Rule(x,c1) ∧ Rulefield(x,c2)] is consistent with Rule ≢ Rulefield.",
+  "field_scope": "Same historical referent may expose a local executable-rule role and a research-domain role; evidence, permissions and outputs are independently typed in each context.",
+  "qualified_reference": "legacy_rule:<historical-id> × role:<typed-role> × context:<context-key>",
+  "no_implicit_authority_transfer": true,
+  "no_original_id_rename": true,
+  "no_historical_statement_mutation": true,
+  "historical_source_count": 596,
+  "operator_held_labels": [
+    "OD-02"
+  ],
+  "examples": [
+    {
+      "historical_id": "I-001",
+      "role_bindings": [
+        {
+          "role": "RULE",
+          "view_ref": "legacy_rule:I-001#role:rule",
+          "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:I-001#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Protected admission guard",
+      "rationale": "Executable protected-admission guard; research field for admissibility proofs, alternative gates, counterexamples, source credentials and authority transfer.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "I-005",
+      "role_bindings": [
+        {
+          "role": "RULE",
+          "view_ref": "legacy_rule:I-005#role:rule",
+          "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:I-005#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Time-custody admission guard",
+      "rationale": "Executable hold on unclassified temporal source inputs; research field for clock availability, delayed evidence, source revisions and temporal observation.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "RGI-01a",
+      "role_bindings": [
+        {
+          "role": "RULE",
+          "view_ref": "legacy_rule:RGI-01a#role:rule",
+          "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:RGI-01a#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Rewrite and provenance formalism",
+      "rationale": "Executable rewrite-record provenance guard; research field for rewriting formalisms, dynamic rule grammars and history-aware branching.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "DRO-03",
+      "role_bindings": [
+        {
+          "role": "RULE",
+          "view_ref": "legacy_rule:DRO-03#role:rule",
+          "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:DRO-03#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Temporal nonretroactivity",
+      "rationale": "Epistemic nonretroactivity guard; research field for temporal tomography, evidence-arrival futures and observer knowledge histories.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "CBFE-RG-09",
+      "role_bindings": [
+        {
+          "role": "RULE",
+          "view_ref": "legacy_rule:CBFE-RG-09#role:rule",
+          "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:CBFE-RG-09#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Situated warrant typing",
+      "rationale": "Hearing/warrant/claim type distinction; research field for computational Black feminist epistemology and alternative access geometries.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "INF-01",
+      "role_bindings": [
+        {
+          "role": "MODEL",
+          "view_ref": "legacy_rule:INF-01#role:model",
+          "context": "MODEL_PROJECTION_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:INF-01#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Information Dome scenes",
+      "rationale": "Three-scene Information Dome model; research field for scene-invariant kernels, projections, operators and observer response.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "Q01-A04",
+      "role_bindings": [
+        {
+          "role": "ASSAY",
+          "view_ref": "legacy_rule:Q01-A04#role:assay",
+          "context": "EXPERIMENTAL_PROTOCOL_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:Q01-A04#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Ambiance–observation contrast",
+      "rationale": "Four-condition presentation study; research field for observer-mediated information recovery, affordance and authority distortion.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "Q18-R01",
+      "role_bindings": [
+        {
+          "role": "THEOREM",
+          "view_ref": "legacy_rule:Q18-R01#role:theorem",
+          "context": "PROOF_AND_LIMITS_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "ASSAY",
+          "view_ref": "legacy_rule:Q18-R01#role:assay",
+          "context": "EXPERIMENTAL_PROTOCOL_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:Q18-R01#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Twin-world exteriority",
+      "rationale": "Twin-world impossibility construction; research field for exteriority, source indistinguishability and competent independent witnesses.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "TC19",
+      "role_bindings": [
+        {
+          "role": "ASSAY",
+          "view_ref": "legacy_rule:TC19#role:assay",
+          "context": "EXPERIMENTAL_PROTOCOL_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:TC19#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Shannon measurements",
+      "rationale": "Shannon-inspired distribution measurement procedure; research field for information-theoretic observability limits.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    },
+    {
+      "historical_id": "Q16-R01",
+      "role_bindings": [
+        {
+          "role": "RESEARCH_PROGRAM",
+          "view_ref": "legacy_rule:Q16-R01#role:research_program",
+          "context": "RESEARCH_PROGRAM_CONTEXT",
+          "binding_status": "ASSESSED_SOURCE_TYPE"
+        },
+        {
+          "role": "RULEFIELD",
+          "view_ref": "legacy_rule:Q16-R01#role:rulefield",
+          "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+          "binding_status": "PROPOSED_RESEARCH_VIEW"
+        }
+      ],
+      "working_label": "Receiver-source experiment",
+      "rationale": "Multi-arm causal comparison program; research field for context-transfer, capsule compression and negative controls.",
+      "type_compatibility": "ROLE_CO-OCCURRENCE_WITH_DISTINCT_CONTEXTS",
+      "empirical_novelty_claimed": false
+    }
+  ],
+  "forbidden_inferences": [
+    "Researchable-as(RULE) does not establish soundness, proof or empirical occurrence.",
+    "Being a RULEFIELD does not grant RULE execution rights.",
+    "A RULE role does not eliminate historically broad field inquiry.",
+    "An agent can propose a multi-role object only with distinct explicitly declared contexts and full child-rule contract.",
+    "No form, self-attestation or future witness can retroactively authorize canonical adoption."
+  ],
+  "human_decision": "REVISE_DOCKET_0002_AND_PRESENT_TO_OPERATOR",
+  "protected_flight": "HELD"
+}

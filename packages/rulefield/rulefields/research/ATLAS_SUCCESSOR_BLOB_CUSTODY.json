@@ -1,0 +1,24 @@
+{
+  "schema": "td613.rulefield.atlas-successor-historical-blob-distinctions/v1",
+  "original_rulefield_baseline": "12dcc38adea8aeb04649900463566d67546cf025",
+  "historical_record": "packages/rulefield/rulefields/research/BASELINE_PR1722_EXACT_BLOB_CUSTODY.json",
+  "historical_count": 99,
+  "historical_exact_matches_still_required": 97,
+  "successor_exceptions": [
+    {
+      "path": "packages/rulefield/lab/README.md",
+      "inherited_rulefield_blob_sha1": "9ce010834192d6187feb85db07600e7893a7080a",
+      "atlas_successor_blob_sha1": "5a843b6679679595f69b67905ded4a107cb34746",
+      "semantics": "ATLAS_COUNTERWORLD_LAB_README_EXPANSION_NOT_R0_BASELINE"
+    },
+    {
+      "path": "packages/rulefield/lab/tool_registry.json",
+      "inherited_rulefield_blob_sha1": "84090264f2e0043ed210d788cede03d9cbf9f5b2",
+      "atlas_successor_blob_sha1": "81161af3f8f9b7d6312c94951a47d336121ce0b5",
+      "semantics": "ATLAS_NINTH_RESEARCH_MODULE_REGISTRY_EXPANSION_NOT_R0_BASELINE"
+    }
+  ],
+  "scientific_closure": "RESERVED",
+  "protected_experiment_b": "HELD",
+  "interpretation": "TWO_EXPLICIT_ATLAS_LAB_DESCENDANTS_WITHOUT_REWRITING_IMMUTABLE_RF_PR1722_CUSTODY"
+}

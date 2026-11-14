@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "td613://rulefield/rulefields/field/v1",
+  "description": "Rulefield != Rule; operator-origin expression is immutable until independently reviewed. Never substitute a field for an executable rule.",
+  "type": "object",
+  "required": [
+    "id",
+    "original_sequence",
+    "original_expression",
+    "proposed_academic_label",
+    "object_type",
+    "domain_class",
+    "assay_family",
+    "scientific_claim_ceiling",
+    "review_status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^RF-[0-9]{3}$"
+    },
+    "original_sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "original_expression": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposed_academic_label": {
+      "type": "string",
+      "minLength": 3
+    },
+    "object_type": {
+      "const": "RULEFIELD"
+    },
+    "domain_class": {
+      "type": "string"
+    },
+    "assay_family": {
+      "type": "string"
+    },
+    "scientific_claim_ceiling": {
+      "const": "UNQUALIFIED_RESEARCH_INTENT"
+    },
+    "review_status": {
+      "const": "STAGED_RULEFIELD_CANDIDATE"
+    },
+    "needs_referent_disambiguation": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": true
+}
