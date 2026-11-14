@@ -22,9 +22,9 @@ export const VEIL_CONTRACT=Object.freeze({
  experiment_b_flight:'HELD',empirical_credit:0
 });
 export const GLINDA_LIGHT=Object.freeze({
- rose:'#FF91AF',pearl:'#FFE4F1',orchid:'#F6A5DD',
- chrome:'#F5F0FA',arcFlash:'#FFF2A9',arcCore:'#FFFBE2',
- blackChrome:'#100D16'
+ rose:'#FF65AA',pearl:'#FFF8F0',electricPink:'#FF6AAE',
+ chrome:'#E5EFF0',arcFlash:'#FFF2A9',arcCore:'#FFFBE2',
+ blackChrome:'#101820'
 });
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(+v)?+v:a));
 const hash=s=>Array.from(String(s||'')).reduce((a,c)=>(Math.imul(a,33)+c.codePointAt(0))>>>0,5381);
@@ -96,7 +96,7 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
    const y=cy+Math.sin(t+tw*.14)*rr*1.12;
    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
   }
-  ctx.strokeStyle=[GLINDA_LIGHT.pearl,GLINDA_LIGHT.rose,GLINDA_LIGHT.arcFlash,GLINDA_LIGHT.orchid][k%4];
+  ctx.strokeStyle=[GLINDA_LIGHT.pearl,GLINDA_LIGHT.rose,GLINDA_LIGHT.arcFlash,GLINDA_LIGHT.electricPink][k%4];
   ctx.lineWidth=k%3===0?1.65:.8;ctx.globalAlpha=.10+.30*(1-k/8);
   ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=k%3===0?18:4;
   ctx.stroke();
@@ -151,7 +151,7 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
   ctx.beginPath();ctx.moveTo(x1,y1);
   ctx.bezierCurveTo(cx+Math.cos(t+time*.08)*rr*.22,cy+Math.sin(t)*rr*.52,
    cx+Math.cos(t*.6)*radiusX*.17,cy+Math.sin(t*.8-time*.06)*radiusY*.20,x2,y2);
-  ctx.strokeStyle=c.near?GLINDA_LIGHT.arcFlash:c.mid?GLINDA_LIGHT.pearl:GLINDA_LIGHT.orchid;
+  ctx.strokeStyle=c.near?GLINDA_LIGHT.arcFlash:c.mid?GLINDA_LIGHT.pearl:GLINDA_LIGHT.electricPink;
   ctx.globalAlpha=c.near?.34:c.mid?.18:.10;
   ctx.shadowBlur=c.near?11:0;ctx.shadowColor=ctx.strokeStyle;
   ctx.lineWidth=c.near?1.3:.65;ctx.stroke();

@@ -23,7 +23,7 @@ const mix=(a,b,t)=>a+(b-a)*t;
 const P=Object.freeze({
  white:'#FFFEF7',pearl:'#FFF7FC',blonde:'#FFF0A8',
  pink:'#FF4F9F',rose:'#FF9CC9',chrome:'#E4EFF2',
- lilac:'#D7AFFF' /* electric lilac alone, never shadow-plum */
+ champagne:'#F5DDB1' /* warm diffraction accent, no violet/plum */
 });
 function seedFor(ids){
  const text=(Array.isArray(ids)?ids:[]).filter(x=>typeof x==='string').slice(0,2).join('|')||'VIXEN_VISUAL_NEUTRAL';

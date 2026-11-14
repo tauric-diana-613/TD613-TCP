@@ -24,7 +24,7 @@ export const MESH_CONTRACT=Object.freeze({
  reduced_motion:'STATIC_ONE_FRAME',auto_deploy:false
 });
 export const ELECTRIC_COUTURE=Object.freeze({
- pearl:'#FFF8FD',blush:'#FFE3F2',rose:'#FF91AF',
+ pearl:'#FFF8F3',blush:'#FFE3EB',rose:'#FF91AF',
  fuchsia:'#FF3F9E',champagne:'#FFF2A9',core:'#FFFBE2',
  chrome:'#D9E1E8',black:'#08090D'
 });

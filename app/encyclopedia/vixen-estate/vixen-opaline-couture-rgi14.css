@@ -2,7 +2,7 @@
  * VIXEN RGI14 · A MATERIAL PALETTE, NOT ANOTHER PLUM PATCH
  * Operator's explicit rejection: NO dusty plum, grape, orchid, violet shadow,
  * or purple light wash. The only permitted purple-like wavelength is a sparse
- * ELECTRIC LILAC diffraction highlight. Chrome is achromatic graphite.
+ * CHAMPAGNE diffraction highlight. Chrome is achromatic graphite.
  * Source status, ownership, scientific controls and export untouched.
  */
 :root{
@@ -16,7 +16,7 @@
  --vix-hot:#FF329A;
  --vix-arc:#FFF0A8;
  --vix-white-arc:#FFFDE9;
- --vix-electric-lilac:#dccdbb;
+ --vix-champagne-sheen:#f5ddb1;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]){
  --bg:#090C10;
