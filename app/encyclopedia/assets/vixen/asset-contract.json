@@ -22,11 +22,11 @@
       "min_height": 750,
       "orientation": "LANDSCAPE_16_9",
       "status": "OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION",
-      "sha256": "0a4f8848f1afcd6af7c369aed64210a7a06580184cf60d924e7b0a2d398ce935",
-      "width": 1671,
-      "height": 941,
+      "sha256": "a3c94ed774a92e63258f8f779b89e70f03574b4a4197ab7098c95a4cc9db2510",
+      "width": 3840,
+      "height": 2160,
       "legacy_webp_sha256": "a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763",
-      "bytes": 1414123
+      "bytes": 4056713
     },
     "mobile": {
       "slot": "mobile",
