@@ -238,12 +238,24 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  // The material reflection has one screen-continuous coordinate field.
  // The mathematical gore contours still deform independently before paint.
  const metal=studioChrome(ctx,m);
- for(const f of m.faces){
-  // The computed lattice remains visible through this shared-gradient material.
-  // Preserve the matte undercut and a coherent chrome field, not 2,304 tiles.
-  ctx.fillStyle=metal;ctx.globalAlpha=.42;
-  trace(ctx,f.points,true);ctx.fill();
-  ctx.strokeStyle=metal;ctx.lineWidth=.28;ctx.stroke();
+ // Twelve grouped gores keep every analytically constructed front face while
+ // batching hundreds of software-raster fill/stroke calls into <=12 fills.
+ // One continuous reflective gradient preserves light/dark variation; the
+ // undercut seams and refraction-driven tension lines remain separate passes.
+ const materialBands=Array.from({length:CUIRASS_POLICY.panels},()=>[]);
+ for(const face of m.faces)materialBands[face.panel].push(face);
+ const visibleBands=materialBands.filter(group=>group.length>0)
+  .sort((a,b)=>a.reduce((n,f)=>n+f.depth,0)/a.length-
+   b.reduce((n,f)=>n+f.depth,0)/b.length);
+ ctx.fillStyle=metal;ctx.globalAlpha=.42;
+ for(const group of visibleBands){
+  ctx.beginPath();
+  for(const face of group){
+   ctx.moveTo(face.points[0][0],face.points[0][1]);
+   for(let i=1;i<face.points.length;i++)ctx.lineTo(face.points[i][0],face.points[i][1]);
+   ctx.closePath();
+  }
+  ctx.fill();
  }
  // Ten prepaint transverse conductors turn the metal silhouette into a
  // legible tailored cage; material highlights are source-over, never a new RAF.
@@ -332,7 +344,7 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
   ctx.globalAlpha=p.energy*(2/3);ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);
  }
  ctx.restore();
- return {rendered:true,faces:m.faces.length,carriers:39,sceneTracks:scene.trails.length,sceneNodes:scene.nodes.length,peaks:m.glints.length,
+ return {rendered:true,faces:m.faces.length,materialBatchCount:visibleBands.length,carriers:39,sceneTracks:scene.trails.length,sceneNodes:scene.nodes.length,peaks:m.glints.length,
   emissionAlpha:m.emissionAllocated,physicalEnergyConserved:false,empirical_credit:0};
 }
 

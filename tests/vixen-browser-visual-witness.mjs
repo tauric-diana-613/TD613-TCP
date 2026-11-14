@@ -619,8 +619,8 @@ try {
     },null,{timeout:15000,polling:250});
     const cuirassWitness=await page.evaluate(async()=>{
       const canvas=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-canvas');
-      const ids=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
-        .slice(0,2).map(n=>n.value);
+      const ids=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
+        .slice(0,2).map(card=>card.querySelector('select')?.value);
       const {buildFoldedCuirass,CUIRASS_CONTRACT,CUIRASS_POLICY}=
         await import('./vixen-estate/vixen-folded-cuirass.mjs');
       const rect=canvas.getBoundingClientRect();
@@ -638,7 +638,7 @@ try {
         rendered:canvas.width>200&&canvas.height>160,
         compositor:canvas.dataset.computation,
         contract:document.getElementById('vixenSynthesisSalon').dataset.opticalContract,
-        sourceCount:ids.length,carriers:on.filaments.length,
+        sourceCount:ids.length,sourceIdsValid:ids.length===2&&ids[0]!==ids[1]&&ids.every(id=>/^emwork_/.test(id)),carriers:on.filaments.length,
         onGain:on.gain,offGain:off.gain,maxDisplacement,
         glintsUnchanged:JSON.stringify(on.glints)===JSON.stringify(off.glints),
         emission:on.emissionAllocated,emissionLimit:CUIRASS_POLICY.total_emission_alpha,
@@ -652,6 +652,8 @@ try {
     assert.equal(cuirassWitness.compositor,'D3_PHI_BEAT_FOLDED_SHELL');
     assert.equal(cuirassWitness.contract,'td613.vixen.folded-cuirass/v1');
     assert.equal(cuirassWitness.sourceCount,2);
+    assert.equal(cuirassWitness.sourceIdsValid,true,
+      'The two optical inputs must be distinct Work IDs, not a manifestation source');
     assert.equal(cuirassWitness.carriers,39);
     assert(cuirassWitness.maxDisplacement>1,
       'Measured D3/phi beats must deform actual prepaint vertices, not merely modify glints');
@@ -669,8 +671,8 @@ try {
     // This tests causal visual consequence, not aesthetics or backend parity.
     const opticalAssay=await page.evaluate(async()=>{
       const canvas=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-canvas');
-      const sourceIds=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
-        .slice(0,2).map(node=>node.value);
+      const sourceIds=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
+        .slice(0,2).map(card=>card.querySelector('select')?.value);
       const {buildFoldedCuirass,paintFoldedCuirass,coutureBackingSize}=
         await import('./vixen-estate/vixen-folded-cuirass.mjs');
       const bounds=canvas.getBoundingClientRect();
@@ -727,6 +729,9 @@ try {
         proposedP95CeilingMs:20,passesProposedP95:sorted[4]<=20
       };
     });
+    assert(opticalAssay.sourceIds.length===2&&opticalAssay.sourceIds[0]!==opticalAssay.sourceIds[1]
+      &&opticalAssay.sourceIds.every(id=>/^emwork_/.test(id)),
+      'Matched browser assay must compare the two selected Works');
     assert.equal(opticalAssay.glintsMatched,true,
       'Beat-to-geometry refraction must preserve selected glints');
     assert.equal(opticalAssay.repeatDrift,0,

@@ -91,8 +91,9 @@ test('continuous studio chrome shares one material field across all faces',()=>{
  const refs=new Map();
  for(const value of colors)if(value&&typeof value==='object')
   refs.set(value,(refs.get(value)||0)+1);
- assert(Math.max(...refs.values())>=m.faces.length,
-  'Chrome facets must share one reflective field instead of distinct tiled colors');
+ assert(Math.max(...refs.values())>=1,
+  'Material gores share one continuous gradient instead of per-face colors');
+ assert.equal(refs.size,1,'Every chrome panel must share the same light field');
  assert(m.faces.every(f=>f.normal.every(Number.isFinite)));
 });
 
@@ -100,9 +101,11 @@ test('Canvas command smoke: filled surfaces and total emissive draw allocation s
  const m=buildFoldedCuirass(params),ctx=context();
  const r=paintFoldedCuirass(ctx,m);
  assert(r.rendered&&r.faces>900);
+ assert(r.materialBatchCount>=1&&r.materialBatchCount<=12,
+  'One batched fill per material gore at most');
  assert(ctx.calls.filter(c=>c.op==='stroke'&&c.mode==='source-over').length>40,
   'A refractive armature must carry mathematically sampled transverse reflectors');
- assert(ctx.calls.filter(c=>c.op==='fill'&&c.mode==='source-over').length>900);
+ assert(ctx.calls.filter(c=>c.op==='fill'&&c.mode==='source-over').length>12);
  const allocated=ctx.calls.filter(c=>c.mode==='screen').reduce((n,c)=>n+c.alpha,0);
  assert(allocated<=CUIRASS_POLICY.total_emission_alpha+1e-8);
  assert(m.glints.every(p=>p.bloomRadius<=18));assert(m.glints.length<=11);
