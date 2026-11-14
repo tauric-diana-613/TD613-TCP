@@ -85,18 +85,31 @@ export function paintSalonField(ctx,m){
  halo.addColorStop(1,'rgba(255,92,170,0)');
  ctx.globalAlpha=.66;ctx.fillStyle=halo;
  ctx.fillRect(cx-haloR,cy-haloR,haloR*2,haloR*2);
+ // Three finite halo batches replace 18 individually blurred strokes.
+ // Crisp phase-conditioned lines remain independent so source-driven pulses
+ // survive batching, with no new scheduler, new emission surface or GPU claim.
+ for(const tone of ['champagne','pink','pearl']){
+  ctx.beginPath();
+  for(const lane of layout.trails){
+   if(lane.color!==tone)continue;
+   lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+  }
+  ctx.strokeStyle=tones[tone];
+  ctx.shadowColor=tone==='champagne'?'#ffdda6':'#ff65ad';
+  ctx.shadowBlur=Math.min(15,H*.025);
+  ctx.lineWidth=2.7;ctx.globalAlpha=.36;
+  ctx.stroke();
+ }
+ ctx.shadowBlur=0;
  for(const lane of layout.trails){
   const light=charge(lane.index+9*lane.side);
   ctx.beginPath();
   lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
   ctx.strokeStyle=tones[lane.color];
-  ctx.shadowColor=lane.color==='champagne'?'#ffdda6':'#ff65ad';
-  ctx.shadowBlur=Math.min(15,H*.025);
   ctx.lineWidth=lane.index%3===0?2.1:1.25;
-  ctx.globalAlpha=Math.min(.82,.31+.34*light);
+  ctx.globalAlpha=Math.min(.82,.31+.43*light);
   ctx.stroke();
  }
- ctx.shadowBlur=0;
  // Sew crossing connections into the same D3/phi trajectories.
  for(let j=5;j<=26;j+=7)for(let k=0;k<8;k++){
   const left=layout.trails[k].points[j];

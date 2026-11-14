@@ -24,6 +24,8 @@ test('field geometry remains derived, finite, deterministic and bounded',()=>{
  assert(ctx.calls.filter(x=>x[0]==='particle').length>=out.nodes.length);
  assert(ctx.calls.every(x=>Number.isFinite(x[1])&&x[1]>=0&&x[1]<=1));
  assert(ctx.calls.filter(x=>x[2]>0).every(x=>x[2]<=18));
+ assert(ctx.calls.filter(x=>x[0]==='stroke'&&x[2]>0).length<=9,
+  'Finite field haloes must share blur passes, not require one expensive blur per track');
  assert.notDeepEqual(a.trails,buildSalonField({...m,time:3}).trails);
 });
 test('no new clock, random source inference, or unbounded glow',()=>{
