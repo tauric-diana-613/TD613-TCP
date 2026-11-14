@@ -3,7 +3,7 @@
  * Ordinary rooms use the same cloth grammar and a neutral/declared Work seed.
  * Observatory opts in and owns its phase. One active owner, no host-frame RAF.
  * Artistic display, never source interpretation or empirical evidence.
- * OPERAHOUSE != OPERA != PERFORMER. Human closure RESERVED; Flight HELD.
+ * OPERAHOUSE ≠ OPERA ≠ PERFORMER. Human closure RESERVED; Flight HELD.
  */
 import {measureCoutureBeats} from './vixen-beat-radiometry-rgi15.mjs';
 import {buildSalonField,paintSalonField} from './vixen-salon-ambient-field.mjs';
