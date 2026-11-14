@@ -2039,7 +2039,7 @@ body[data-view="overview"] .reading-back{display:none}
   // Lifecycle-aware observatory tick: zero perpetual background frames.
   function scheduleObservatoryFrame(){
     if (document.getElementById('view-observatory')?.dataset.foundryMounted==='true')return;
-    if (observatoryFrame || state.view!=='observatory' || state.motionPaused || document.hidden)return;
+    if (observatoryFrame || state.view!=='observatory' || document.body.dataset.vixenMotion==='still' || document.hidden)return;
     observatoryFrame=requestAnimationFrame(tickObservatory);
   }
   function stopObservatoryFrame(){
@@ -2049,7 +2049,7 @@ body[data-view="overview"] .reading-back{display:none}
   function tickObservatory(){
     observatoryFrame=0;
     if(document.getElementById('view-observatory')?.dataset.foundryMounted==='true')return;
-    if(state.view!=='observatory'||state.motionPaused||document.hidden)return;
+    if(state.view!=='observatory'||document.body.dataset.vixenMotion==='still'||document.hidden)return;
     animPhase+=.012;
     drawObservatoryCanvas();
     scheduleObservatoryFrame();
@@ -2419,7 +2419,7 @@ body[data-view="overview"] .reading-back{display:none}
             requestAnimationFrame(() => {
               const gCard = document.getElementById('gate-card-' + sel.gate_num);
               if (gCard) {
-                gCard.scrollIntoView({ behavior: state.motionPaused ? 'auto' : 'smooth', block: 'center' });
+                gCard.scrollIntoView({ behavior: document.body.dataset.vixenMotion==='still' ? 'auto' : 'smooth', block: 'center' });
                 const focusable = gCard.querySelector('button, [tabindex]');
                 if (focusable) focusable.focus({ preventScroll: true });
               }
@@ -3245,38 +3245,47 @@ body[data-view="overview"] .reading-back{display:none}
     // Motion Pause Control (V01-F: distinct visible text, accessible label & pressed state)
     const motionBtn = $('motionBtn');
     if (motionBtn) {
+      const reducedPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+      const systemStill=()=>!!reducedPreference?.matches;
+      const motionHeld=()=>state.motionPaused||systemStill();
       const updateMotionBtn = () => {
-        motionBtn.setAttribute('aria-pressed', String(state.motionPaused));
-        motionBtn.innerHTML = state.motionPaused
-          ? '<span class="lbl-desktop">Resume</span> ▶'
-          : '<span class="lbl-desktop">Still</span> ‖';
-        motionBtn.setAttribute(
-          'aria-label',
-          state.motionPaused ? 'Resume animations (Live mode)' : 'Pause animations (Still mode)'
-        );
+        const held=motionHeld();
+        motionBtn.setAttribute('aria-pressed', String(held));
+        motionBtn.innerHTML = systemStill()
+          ? '<span class="lbl-desktop">Still · system</span> ‖'
+          : held
+            ? '<span class="lbl-desktop">Resume</span> ▶'
+            : '<span class="lbl-desktop">Still</span> ‖';
+        motionBtn.setAttribute('aria-label',systemStill()
+          ? 'Motion held by system reduced-motion preference'
+          : held ? 'Resume animations (Live mode)' : 'Pause animations (Still mode)');
       };
       const broadcastVixenMotion=()=>{
-        document.body.dataset.vixenMotion=state.motionPaused?'still':'live';
+        const held=motionHeld();
+        document.body.dataset.vixenMotion=held?'still':'live';
         window.dispatchEvent(new CustomEvent('vixen:motionchange',{
-          detail:{held:state.motionPaused,source:'GLOBAL_STILL_BUTTON'}
+          detail:{held,source:systemStill()?'SYSTEM_REDUCED_MOTION':'GLOBAL_STILL_BUTTON'}
         }));
       };
-      updateMotionBtn();
-      broadcastVixenMotion();
+      const syncMotion=()=>{
+        if(motionHeld())stopObservatoryFrame();else scheduleObservatoryFrame();
+        updateMotionBtn();broadcastVixenMotion();
+      };
+      syncMotion();
       motionBtn.addEventListener('click', () => {
-        state.motionPaused = !state.motionPaused;
-        if (state.motionPaused) stopObservatoryFrame(); else scheduleObservatoryFrame();
-        updateMotionBtn();
-        broadcastVixenMotion();
-        showToast(state.motionPaused ? 'Motion paused (still mode)' : 'Motion resumed');
+        state.motionPaused=!state.motionPaused;
+        syncMotion();
+        showToast(systemStill()?'Motion remains still (system preference)':
+          motionHeld()?'Motion paused (still mode)':'Motion resumed');
       });
+      reducedPreference?.addEventListener?.('change',syncMotion);
     }
 
     // Cover Interactive Specular Lighting & Perspective Tilt
     const hero = $('cover');
     if (hero) {
       hero.addEventListener('pointermove', (e) => {
-        if (state.motionPaused) return;
+        if (document.body.dataset.vixenMotion==='still') return;
         const r = hero.getBoundingClientRect();
         const nx = (e.clientX - r.left) / r.width;
         const ny = (e.clientY - r.top) / r.height;
@@ -3384,7 +3393,7 @@ body[data-view="overview"] .reading-back{display:none}
       galleryReveal.addEventListener('click',()=>{
         state.formulaExpanded=!state.formulaExpanded;
         renderFormulaFolios();
-        galleryReveal.scrollIntoView({block:'nearest',behavior:state.motionPaused?'instant':'smooth'});
+        galleryReveal.scrollIntoView({block:'nearest',behavior:document.body.dataset.vixenMotion==='still'?'instant':'smooth'});
       });
     }
     // Formula Filter Controls
