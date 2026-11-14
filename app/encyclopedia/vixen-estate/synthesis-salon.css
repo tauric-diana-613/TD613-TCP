@@ -348,6 +348,11 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{right:3%;top:16px}
 #vixenSynthesisSalon .vs-rail{border-top:2px solid #24252a}
 @media (max-width:740px){
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head,
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy,
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{min-height:0}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{width:100%;padding:18px 19px 20px;gap:10px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{font-size:clamp(34px,9.2vw,52px)}
  #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{padding:18px 19px 20px}
  #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{font-size:clamp(40px,10.2vw,64px);max-width:100%;line-height:.92}
  #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-intro{font-size:13px;line-height:1.4}
