@@ -708,13 +708,19 @@ try {
       lumas.sort((a,b)=>a-b);
       const quantile=q=>lumas[Math.min(lumas.length-1,Math.floor((lumas.length-1)*q))]??0;
       // Five actual build+Canvas paint samples on the same browser machine.
-      const costs=[];
+      const costs=[],buildCosts=[],canvasCosts=[];
       for(let i=0;i<5;i++){
         const start=performance.now();
         const model=buildFoldedCuirass({...base,time:time+.025*i});
-        redraw(model);costs.push(performance.now()-start);
+        const built=performance.now();
+        redraw(model);
+        const painted=performance.now();
+        buildCosts.push(built-start);canvasCosts.push(painted-built);
+        costs.push(painted-start);
       }
       const sorted=[...costs].sort((a,b)=>a-b);
+      const buildSorted=[...buildCosts].sort((a,b)=>a-b);
+      const canvasSorted=[...canvasCosts].sort((a,b)=>a-b);
       return {
         claimClass:'VISUAL_MODEL_ASSAY_NOT_SCIENTIFIC_VERIFICATION',
         scene:'SALON_CANVAS2D',clockTime:time,sourceIds,width,height,
@@ -725,7 +731,11 @@ try {
         allOpticsChangedFraction:allOpticsChanged/Math.max(1,samples),
         displayLumaP10:quantile(.10),displayLumaP90:quantile(.90),
         displaySpanP90P10:quantile(.90)-quantile(.10),
+        displayLumaP99:quantile(.99),
+        displayHighlightsOver200:lumas.filter(x=>x>200).length/Math.max(1,samples),
         paintBuildP95Ms:sorted[4],paintBuildMedianMs:sorted[2],
+        modelBuildP95Ms:buildSorted[4],canvasPaintP95Ms:canvasSorted[4],
+        modelBuildMedianMs:buildSorted[2],canvasPaintMedianMs:canvasSorted[2],
         proposedP95CeilingMs:20,passesProposedP95:sorted[4]<=20
       };
     });
@@ -742,8 +752,10 @@ try {
       'All-optics-off must be visually distinguishable from beat-only intervention');
     assert(opticalAssay.displaySpanP90P10>50,
       'Displayed garment region must have bright/dark contrast beyond a flat wash');
-    assert(Number.isFinite(opticalAssay.paintBuildP95Ms),
-      'Browser p95 model build and paint must be measured, not inferred from FPS caps');
+    assert(Number.isFinite(opticalAssay.paintBuildP95Ms)&&
+      Number.isFinite(opticalAssay.modelBuildP95Ms)&&
+      Number.isFinite(opticalAssay.canvasPaintP95Ms),
+      'Browser p95 build and Canvas paint must be measured separately, not inferred from FPS caps');
     // Existing Still button must pause our new animation as well as the
     // historical Observatory; never add a redundant motion authority control.
     await page.evaluate(()=>document.getElementById('motionBtn').click());
