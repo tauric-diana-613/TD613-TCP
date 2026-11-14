@@ -440,7 +440,7 @@ The following 16 atomic rules and 6 candidate crossings were extracted directly 
 | ID | Class | Family | Kind | Rule Statement | State Transition / Guard Syntax | Observable Witness / Provenance |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **P-043** | `P` | Runtime identity | `constraint` | **Five-Clock Non-Equivalence Vernier.**<br/>Calculations of derivative rates ($\frac{de}{dt}$) across disparate clock domains must declare their exact coordinate basis; differentiating across mismatched clocks without an anchored vernier is a fatal type error. | $\frac{\Delta e}{\Delta k_{\text{layer}}} \not\equiv \frac{\Delta e}{\Delta n_{\text{tok}}} \not\equiv \frac{de}{d\tau_{\text{cont}}} \not\equiv \frac{\Delta e}{\Delta t_{\text{wall}}} \not\equiv \frac{\Delta e}{\Delta t_{\text{plant}}}$ | Formulated in `DERIVATIVE_CLOCK_CUSTODY_V0_1` and V4 Synthesis Observatory Tab II. |
-| **P-044** | `P` | Scientific design | `constraint` | **Three-Clock Non-Interference Separation.**<br/>Theoretical invariants ($\tau_{\text{theory}}$), artistic ambiance ($\tau_{\text{ambiance}}$), and prospective empirical resynthesis ($\tau_{\text{resynthesis}}$) must run on independent timelines. Visual changes must never grant scientific credit, and unexecuted empirical protocols must remain pinned at zero credit. | $\tau_{\text{theory}} \perp \tau_{\text{ambiance}} \perp \tau_{\text{resynthesis}}$ | Preregistered in Refractive Couture Mathematical Dossier (`TD613-B-PPF-REFRACTIVE-COUTURE-20261031-R1`). |
+| **P-044** | \`P\` | Scientific design | \`constraint\` | **Conditional Presentation Invariance and Observer Coupling.**<br/>For a declared presentation-only transformation preserving evidence, structural inputs, route/custody identity, and authority inputs, the computational kernel and authorization decision must be identical. Local relational ambiance is a separate typed variable. Observer-response equality is a falsifiable null, never a theorem. The three clocks retain governance separation and zero automatic empirical credit. | \(K(D,S,p_1)=K(D,S,p_2)\); \(A(D,S,p_1)=A(D,S,p_2)\); \(\Delta_{obs}=\mathbb E[Y\mid do(p_1)]-\mathbb E[Y\mid do(p_2)]\) (unconstrained) | RCA-01 bounded Observatory test, deliberate contamination negative control, and \`P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md\`; human-observer effect unestablished. |
 | **P-045** | `P` | Scientific design | `constraint` | **Atlas 9-Domain Mathematical Capability Threshold (A-01 through A-09).**<br/>Claims of emergent mathematical discovery in candidate models require passing all nine non-lexical mathematical assays (including 3-way parity holonomy, Liouville phase contraction $\text{div}(F) < 0$, GHZ entanglement rank, and commutator defect detection) rather than scoring benchmark text. | `score > threshold ∧ ¬passed(A01..A09) -> REJECT_UNEARNED_DISCOVERY` | Established in Issue #1612, Redpen VI, and `atlas-mathematical-qualification-suite.mjs`. |
 
 ### 10.3 Supplemental Exterior Rules (X-083 to X-085)
@@ -471,7 +471,7 @@ The following 16 atomic rules and 6 candidate crossings were extracted directly 
 
 ---
 
-## 11. Virilian / Wolframian / Berlantian Relational-Geometry (Ambiance-Orthogonal Emergence Sciences)
+## 11. Virilian / Wolframian / Berlantian Relational-Geometry (Scoped Ambiance Invariance)
 
 ### 11.1 The Dome-World Axiomatic Inversion: Relational-Geometry vs. Relation-Geometry
 
@@ -486,17 +486,16 @@ In TD613 and Dome-World foundational physics, the distinction between **relation
                                        │
                                        ▼  [Axiomatic Dome-World Inversion]
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ DOME-WORLD RELATIONAL-GEOMETRY RG (Relation-First / Ambiance-Orthogonal)    │
+│ DOME-WORLD RELATIONAL-GEOMETRY RG (Relation-First / Scoped Invariance)    │
 │ Receiver-Relative Witness Relations ρ_ij exist as fundamental primitives   │
 │ Points/Spacetime emerge as holonomic equivalence classes: M = (⊕ ρ_ij) / ~ │
-│ Invariant under Ambiance: τ_theory ⟂ τ_ambiance ⟂ τ_resynthesis (Rule P-044)│
+│ P-044: kernel and authority invariant; observer coupling to be assayed      │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 1. **Relational Primitives:** The manifold $\mathcal{M}$ possesses no independent background container. The ontological primitives are directed receiver-relative witness fibers $\rho_{ij} = \text{Hom}(R_i, R_j)$ between observers $R_i$ and $R_j$. An operational state is an emergent holonomic equivalence class:
    $$\mathcal{M} = \left( \bigoplus_{i, j} \rho_{ij} \right) \Big/ \sim_{\text{holonomy}}$$
-2. **Ambiance Orthogonality ($\tau_{\text{theory}} \perp \tau_{\text{ambiance}}$):** Under Rule `P-044` and Audit finding `W3`, situated ambiance (lighting, layout, emphasis, color tokens) routes human attention but carries identically zero curvature in the relational metric tensor:
-   $$\frac{\partial g_{\mu\nu}(\mathcal{RG})}{\partial \mathbf{u}_{\text{ambiance}}} \equiv \mathbf{0}$$
+2. **P-044 Conditional Presentation Invariance:** Presentation-only changes satisfying fixed-evidence/structure/route/authority preconditions leave protected outputs unchanged, \(K(D,S,p_1)=K(D,S,p_2)\) and \(A(D,S,p_1)=A(D,S,p_2)\). Relational ambiance has different semantics and may alter the admissible inputs. Observer-response coupling \(\Delta_{obs}=\mathbb E[Y\mid do(p_1)]-\mathbb E[Y\mid do(p_2)]\) is tested, not assumed zero. The original zero-curvature/three-clock orthogonality assertion is withdrawn. Consult \`P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md\`.
 
 ---
 
