@@ -1,0 +1,18 @@
+{
+  "schema": "emstd613.vixen.podium-synthesis-state/v1",
+  "status": "BASELINE_UNRATIFIED",
+  "operator_question": null,
+  "operator_method": null,
+  "custom_headline": null,
+  "custom_subtitle": null,
+  "custom_hero_statement": null,
+  "custom_left_spine": null,
+  "active_plan": null,
+  "refraction": null,
+  "supplemental_sources": [],
+  "podium_events": [],
+  "empirical_replication_credit": 0,
+  "scientific_promotion_authority": false,
+  "human_closure_required": true,
+  "release_authority": false
+}

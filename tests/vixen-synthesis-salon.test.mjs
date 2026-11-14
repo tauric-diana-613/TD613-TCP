@@ -191,5 +191,19 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
  for(const obj of [base,salonH,refrH,suppH,benchTombstone,d1.result.synthesis_headline]){
   const txt=JSON.stringify(obj);
   assert.equal(/Khona|Research Atelier|RESEARCH ATELIER|DERIVATIVE CLOCK CUSTODY/i.test(txt),false);
+  assert.equal(/COMPARATIVE LINEAGE|METHOD V0\.1|relative to TD613|Em-side/i.test(txt),false);
+  assert(typeof obj.researchQuestionMeta==='string'&&obj.researchQuestionMeta.length>0);
+  assert(typeof obj.researchQuestion==='string'&&obj.researchQuestion.length>20);
  }
+ const dictated=deriveSynthesisHeadline({
+  corpus,
+  operatorQuestion:'How do SPSC ring-buffer memory barriers map onto multi-clock epistemic holds?',
+  operatorMethod:'OPERATOR DICTATED · PODIUM INQUIRY · UNRATIFIED'
+ });
+ assert.equal(dictated.regime,'OPERATOR_DICTATED_SYNTHESIS');
+ assert.equal(dictated.researchQuestionMeta,'OPERATOR DICTATED · PODIUM INQUIRY · UNRATIFIED');
+ assert.match(dictated.researchQuestion,/SPSC ring-buffer/);
+ assert.equal(dictated.provenance.operator_dictated_question,true);
+ assert.equal(dictated.provenance.empirical_replication_credit,0);
+ assert.equal(dictated.provenance.scientific_promotion_authority,false);
 });

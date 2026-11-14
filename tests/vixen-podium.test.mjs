@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {readFile} from 'node:fs/promises';
+import {readFile,mkdtemp,cp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {createVixenPodium,PODIUM_SCHEMA,PODIUM_ROUTES} from '../app/encyclopedia/reference/vixen-podium.mjs';
@@ -210,4 +212,47 @@ test('Shared active-stage controller changes masthead without changing source ro
   assert.equal(document.title,'Vixen Cybernetics');
   assert.equal(document.getElementById('operahouseStageReturn').hidden,true);
  }finally{doc.window.close()}
+});
+
+test('Podium CLI stays read-only by default and persists synthesis state only with explicit --write-synthesis',async()=>{
+ const defaultOut=JSON.parse(execFileSync(process.execPath,['scripts/vixen-podium.mjs','--stdin'],{
+  cwd:repoRoot,
+  input:JSON.stringify(task('podium.describe',{
+   research_question:'When do non-commuting audio and hypervisor clocks require typed witnesses?'
+  })),
+  encoding:'utf8',
+  timeout:30000
+ }));
+ assert.equal(defaultOut.persisted_synthesis_path,null);
+ assert.match(defaultOut.results[0].result.synthesis_headline.researchQuestion,/non-commuting audio/);
+
+ const sandbox=await mkdtemp(join(tmpdir(),'vixen-podium-synth-'));
+ try{
+  await cp(join(repoRoot,'app','encyclopedia'),join(sandbox,'app','encyclopedia'),{recursive:true});
+  const writeOut=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--stdin'
+  ],{
+   cwd:repoRoot,
+   input:JSON.stringify(task('vixen.salon.compose',{
+    work_ids:[corpus.works[0].work_id,corpus.works[13].work_id],
+    track_id:corpus.giveback_tracks[0].id,
+    protocol_id:corpus.instruments[0].instrument_id,
+    lag_ticks:48,route_order:'A_B',
+    research_question:'What non-collapsing invariants couple SPSC audio rings to hypervisor algedonic interrupts?',
+    method_label:'EM PODIUM SESSION · UNRATIFIED'
+   })),
+   encoding:'utf8',
+   timeout:30000
+  }));
+  assert.equal(writeOut.persisted_synthesis_path,'vixen-estate/podium-synthesis.json');
+  const persisted=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
+  assert.equal(persisted.schema,'emstd613.vixen.podium-synthesis-state/v1');
+  assert.equal(persisted.operator_method,'EM PODIUM SESSION · UNRATIFIED');
+  assert.match(persisted.synthesis_headline.researchQuestion,/SPSC audio rings/);
+  assert.equal(persisted.empirical_replication_credit,0);
+  assert.equal(persisted.scientific_promotion_authority,false);
+  assert.equal(persisted.release_authority,false);
+ }finally{
+  await rm(sandbox,{recursive:true,force:true});
+ }
 });

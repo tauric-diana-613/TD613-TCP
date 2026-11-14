@@ -2,8 +2,8 @@
 
 **Agent entrance:** \`/encyclopedia/reference/podium/manifest.json\`  
 **Task engine:** \`/encyclopedia/reference/vixen-podium.mjs\`  
-**Local Node runner:** \`node scripts/vixen-podium.mjs --manifest\`, then \`--input path/to/task-batch.json\`.  
-**Human-facing Opera:** \`/encyclopedia/vix-cyb.html\` remains a separate presentation.
+**Local Node runner:** \`node scripts/vixen-podium.mjs --manifest\`, then \`--input path/to/task-batch.json\` (add \`--write-synthesis\` when the operator explicitly asks to persist the synthesized research question/headline into \`vixen-estate/podium-synthesis.json\` for \`vix-cyb.html\`).  
+**Human-facing Opera:** \`/encyclopedia/vix-cyb.html\` remains a separate presentation; it reads \`vixen-estate/podium-synthesis.json\` on load without modifying historical \`#vixen-corpus-bundle\` archives or claiming scientific credit.
 **Source estate:** EMSTD613 32 Works / 53 recorded manifestations / 8 unadjudicated human gates / 21 documentary protocols.  
 **Reference estate:** Universal Edition 1.4, 1,141 records / 2,131 graph edges, exact-byte checked read gateway.  
 **Human operator:** Tawanna C. Miller; final creative/scientific closure RESERVED.

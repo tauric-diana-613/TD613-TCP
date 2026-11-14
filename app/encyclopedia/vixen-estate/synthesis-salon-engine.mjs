@@ -362,28 +362,64 @@ export function makePodiumTasks(plan,{recordId=null}={}){
   mandatory_host_review:true,operator_authority_not_encoded_in_json:true
  });
 }
+const cleanText=(value,max=500)=>typeof value==='string'?value.trim().slice(0,max):'';
 export function deriveSynthesisHeadline({
  corpus=null,activePlan=null,refraction=null,
  benchPair=null,benchSnapshots=[],withdrawnCount=0,
- podiumEvents=[],supplementalSources=[]
+ podiumEvents=[],supplementalSources=[],
+ operatorQuestion=null,operatorMethod=null,
+ customHeadline=null,customSubtitle=null,customHeroStatement=null,customLeftSpine=null
 }={}){
  const baseWorks=Array.isArray(corpus?.works)?corpus.works.length:32;
  const extras=Array.isArray(supplementalSources)?supplementalSources.filter(Boolean):[];
  const totalWorks=baseWorks+extras.length;
  const snapshots=Array.isArray(benchSnapshots)?benchSnapshots:[];
  const events=Array.isArray(podiumEvents)?podiumEvents:[];
- const provenance=(regime,extra={})=>({
-  work_census:totalWorks,
-  supplemental_sources:extras.length,
-  snapshot_count:snapshots.length,
-  podium_event_count:events.length,
-  withdrawn_count:Number(withdrawnCount)||0,
-  regime,
-  empirical_replication_credit:0,
-  scientific_promotion_authority:false,
-  human_closure_required:true,
-  ...extra
- });
+ const customQ=cleanText(operatorQuestion,600);
+ const customM=cleanText(operatorMethod,96);
+ const customHdr=cleanText(customHeadline,120);
+ const customSub=cleanText(customSubtitle,140);
+ const customHero=cleanText(customHeroStatement,240);
+ const customSpine=cleanText(customLeftSpine,120);
+ const wrap=(raw)=>{
+  const regime=raw.regime;
+  const hasCustomQ=Boolean(customQ);
+  const meta=customM||(hasCustomQ
+   ?'OPERATOR-DICTATED QUESTION · PODIUM SYNTHESIS · UNRATIFIED'
+   :raw.researchQuestionMeta);
+  const question=hasCustomQ
+   ?(/^[\u201C"]/.test(customQ)?customQ:`“${customQ}”`)
+   :raw.researchQuestion;
+  const hdr=customHdr||raw.headerTagline;
+  const sub=customSub||raw.patternSubtitle;
+  const hero=customHero||raw.heroStatement;
+  const spine=customSpine||raw.leftSpine;
+  const marg=Array.isArray(raw.axiomMarginalia)?[hdr,...raw.axiomMarginalia.slice(1)]:[hdr];
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:hasCustomQ&&regime==='BASELINE_ESTATE_SYNTHESIS'?'OPERATOR_DICTATED_SYNTHESIS':regime,
+   headerTagline:hdr,
+   patternSubtitle:sub,
+   axiomMarginalia:marg,
+   heroStatement:hero,
+   leftSpine:spine,
+   researchQuestionMeta:meta,
+   researchQuestion:question,
+   provenance:{
+    work_census:totalWorks,
+    supplemental_sources:extras.length,
+    snapshot_count:snapshots.length,
+    podium_event_count:events.length,
+    withdrawn_count:Number(withdrawnCount)||0,
+    operator_dictated_question:hasCustomQ,
+    regime:hasCustomQ&&regime==='BASELINE_ESTATE_SYNTHESIS'?'OPERATOR_DICTATED_SYNTHESIS':regime,
+    empirical_replication_credit:0,
+    scientific_promotion_authority:false,
+    human_closure_required:true,
+    ...(raw.provenanceExtra||{})
+   }
+  });
+ };
  if(activePlan&&activePlan.schema===SALON_SCHEMA){
   const clusters=[...new Set((activePlan.source_coordinates||[]).map(x=>x.cluster).filter(Boolean))];
   const clusterText=clusters.length?clusters.join(' & '):'Selected Works';
@@ -400,8 +436,7 @@ export function deriveSynthesisHeadline({
    :(refracted
     ?`Refracted Holonomy Synthesis · ${routeOrder}`
     :`Ordered Synthesis · ${clusterText} · ${routeOrder}`);
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime,
    headerTagline,
    patternSubtitle:inversions>0
@@ -416,13 +451,18 @@ export function deriveSynthesisHeadline({
     ?'Same sources across reversed encounter:\norder alters the candidate question\nwhile truth awaits independent witnesses.'
     :`Trajectory across ${clusterText}:\nsemantic route and vernier ticks\nremain distinct without claiming proof.`,
    leftSpine:`S ≠ W ≠ A · Δ=${inversions} INV · ROUTE ${routeOrder}`,
-   provenance:provenance(regime,{active_route:activePlan.route_identity,active_clusters:clusters})
+   researchQuestionMeta:refracted
+    ?`REFRACTED HOLONOMY QUESTION · ROUTE ${routeOrder} · UNRATIFIED`
+    :`SALON SYNTHESIS QUESTION · ${routeOrder} · UNRATIFIED`,
+   researchQuestion:refracted
+    ?`“Across ${clusterText} traversed in reverse order (${routeOrder}), why does holonomy delta Δ = ${inversions} inversion(s) (L₁ = ${l1Delta} ticks) reshape the candidate horizon along ${trackId} without collapsing witness truth?”`
+    :`“When ${clusterText} are composed along ${routeOrder} with giveback track ${trackId} (L₁ = ${l1Delta}t, Δ = ${inversions} inv), what cross-architecture relation becomes testable without flattening the underlying source works?”`,
+   provenanceExtra:{active_route:activePlan.route_identity,active_clusters:clusters}
   });
  }
  if(extras.length>0){
   const headerTagline=`Extended Constitutive Synthesis (${totalWorks} Works)`;
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'SUPPLEMENTAL_CORPUS_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF WIDENED ADMISSIBILITY.',
@@ -433,13 +473,13 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:`Across ${totalWorks} indexed sources,\nwidened intake refines the question\nwithout granting automatic proof.`,
    leftSpine:`S ≠ W ≠ A · ${totalWorks} WORKS · P-CLOSURE HELD`,
-   provenance:provenance('SUPPLEMENTAL_CORPUS_SYNTHESIS')
+   researchQuestionMeta:`WIDENED CORPUS QUESTION · ${totalWorks} WORKS · UNRATIFIED`,
+   researchQuestion:`“With ${extras.length} supplemental source(s) joined to the ${baseWorks}-work constellation (${totalWorks} total), which typed control-plane boundaries hold and where does widened intake demand fresh empirical witnesses?”`
   });
  }
  if(Number(withdrawnCount)>0){
   const headerTagline='Non-Retroactive Tombstone Synthesis';
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'TOMBSTONE_BOUNDED_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF REVOCABLE SUPPORT.',
@@ -450,13 +490,13 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:'When an upstream source withdraws,\nfuture claims halt immediately\nwhile predecessor records stay legible.',
    leftSpine:'S ≠ W ≠ A · TOMBSTONE CUSTODY · CREDIT 0',
-   provenance:provenance('TOMBSTONE_BOUNDED_SYNTHESIS')
+   researchQuestionMeta:`REVOCABLE SUPPORT QUESTION · ${withdrawnCount} WITHDRAWN · HELD`,
+   researchQuestion:`“After ${withdrawnCount} upstream source withdrawal(s), what residual structure inside the active corpus remains coherent without leaning on revoked support?”`
   });
  }
  if(benchPair==='mismatched_l0'){
   const headerTagline='Boundary-Guarded Non-Collapsing Control';
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'L0_VOCABULARY_GUARD_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF REFUSED CONFLATION.',
@@ -467,13 +507,14 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:'Shared metaphors across manuscripts\nnever manufacture a state operator\nor promote a claim above L0.',
    leftSpine:'S ≠ W ≠ A · L0 BOUNDARY GUARD',
-   provenance:provenance('L0_VOCABULARY_GUARD_SYNTHESIS',{bench_pair:benchPair})
+   researchQuestionMeta:'L0 BOUNDARY QUESTION · VOCABULARY GUARD · HELD',
+   researchQuestion:'“Where two works share terminology across domains without sharing a state operator, how does keeping L0 distinct prevent false convergence from masking genuine mechanism?”',
+   provenanceExtra:{bench_pair:benchPair}
   });
  }
  if(benchPair==='c2_c3_transducer'){
   const headerTagline='Phase-Locked Transduction · Plant Split';
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'L1_PHASE_LOCKED_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF SEPARATE ACTUATORS.',
@@ -484,13 +525,14 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:'Phase-locked math may cross media\nat L1 while audio underruns and flight\nactuators remain strictly partitioned.',
    leftSpine:'S ≠ W ≠ A · L1 TRANSDUCTION SPLIT',
-   provenance:provenance('L1_PHASE_LOCKED_SYNTHESIS',{bench_pair:benchPair})
+   researchQuestionMeta:'L1 TRANSDUCTION QUESTION · PLANT SPLIT · HELD',
+   researchQuestion:'“When phase-locked smoothing crosses between 48 kHz DSP audio clocks and e-textile kinematic arrays at L1, what hazard invariants require separate L2 actuator custody?”',
+   provenanceExtra:{bench_pair:benchPair}
   });
  }
  if(snapshots.length>0){
   const headerTagline=`Predecessor-Linked Synthesis (${snapshots.length} Snapshot${snapshots.length===1?'':'s'})`;
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'SNAPSHOT_CHAIN_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF APPEND-ONLY MEMORY.',
@@ -501,14 +543,14 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:'Each composed snapshot cites its\nimmediate predecessor so route order\nnever vanishes into static prose.',
    leftSpine:`S ≠ W ≠ A · CHAIN #${snapshots.length} · HELD`,
-   provenance:provenance('SNAPSHOT_CHAIN_SYNTHESIS')
+   researchQuestionMeta:`APPEND-ONLY ROUTE QUESTION · DEPTH #${snapshots.length} · HELD`,
+   researchQuestion:`“Across ${snapshots.length} predecessor-linked synthesis step(s), how does preserving order history change the open frontier compared to an unordered set?”`
   });
  }
  if(events.length>0){
   const last=events[events.length-1]?.action||'PODIUM_EVENT';
   const headerTagline='Podium-Updated Constitutive Synthesis';
-  return deepFreeze({
-   schema:'emstd613.vixen.synthesis-headline/v1',
+  return wrap({
    regime:'PODIUM_EVENT_SYNTHESIS',
    headerTagline,
    patternSubtitle:'THE ARCHITECTURE OF GOVERNED INQUIRY.',
@@ -519,11 +561,12 @@ export function deriveSynthesisHeadline({
    ],
    heroStatement:'Podium inspection tracks source order\nand witness deficits before any claim\ncan cross into the public record.',
    leftSpine:'S ≠ W ≠ A · PODIUM LOGGED · CREDIT 0',
-   provenance:provenance('PODIUM_EVENT_SYNTHESIS',{last_event:last})
+   researchQuestionMeta:`PODIUM EXPLORATION QUESTION · ${events.length} STEP(S) · UNRATIFIED`,
+   researchQuestion:`“Following ${events.length} Podium exploration step(s) (latest: ${String(last).slice(0,32)}), what emergent structural question across the corpus warrants human exploration next?”`,
+   provenanceExtra:{last_event:last}
   });
  }
- return deepFreeze({
-  schema:'emstd613.vixen.synthesis-headline/v1',
+ return wrap({
   regime:'BASELINE_ESTATE_SYNTHESIS',
   headerTagline:'Typed Constitutive Cybernetics',
   patternSubtitle:'THE ARCHITECTURE OF NON-COLLAPSING PLANES.',
@@ -534,6 +577,7 @@ export function deriveSynthesisHeadline({
   ],
   heroStatement:'Where semantic steering, witness verification,\nand low-latency actuation refuse to collapse\ninto one untyped plane.',
   leftSpine:'S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS',
-  provenance:provenance('BASELINE_ESTATE_SYNTHESIS')
+  researchQuestionMeta:'CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED',
+  researchQuestion:'“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”'
  });
 }

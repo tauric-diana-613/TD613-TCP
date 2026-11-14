@@ -14,7 +14,7 @@
  * cryptographic proof of the human's presence or consent. The JSON task
  * itself can never authorize native tools or turn read-only into mutation.
  */
-import {readFile,stat} from 'node:fs/promises';
+import {readFile,stat,writeFile} from 'node:fs/promises';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {dirname,resolve,join,sep,relative} from 'node:path';
 // Native module imports are resolved below from the verified public asset root.
@@ -89,9 +89,20 @@ try{
   operatorAuthorized:wantsNative&&hostDirect,engineAdapters});
  const results=[];
  for(const task of tasks)results.push(await podium.dispatch(task));
+ let persistedSynthesisPath=null;
+ if(options.includes('--write-synthesis')){
+  const estateDir=resolve(sourceRoot,'vixen-estate');
+  const outTarget=resolve(estateDir,'podium-synthesis.json');
+  if(!outTarget.startsWith(estateDir+sep)||relative(estateDir,outTarget).startsWith('..'))
+   throw Error('PODIUM_SYNTHESIS_PATH_ESCAPE_REFUSED');
+  const synState=podium.synthesisState();
+  await writeFile(outTarget,JSON.stringify(synState,null,2)+'\n','utf8');
+  persistedSynthesisPath='vixen-estate/podium-synthesis.json';
+ }
  const output={schema:'td613.vixen.podium.cli-batch/v1',task_schema:PODIUM_SCHEMA,
   source_custody:'LOCAL_PUBLIC_ASSETS_ONLY',remote_custody:'NOT_CLAIMED',results,
   route_history:podium.history(),
+  persisted_synthesis_path:persistedSynthesisPath,
   native_host_lane:wantsNative&&hostDirect?'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF':'DISCONNECTED',
   authority:'READ_ONLY_HUMAN_CLOSURE_RESERVED'};
  console.log(JSON.stringify(output,null,2));

@@ -728,8 +728,8 @@ body[data-view="overview"] .reading-back{display:none}
 
         <div class="membrane-layer" data-membrane="SCHOLARLY_INTERPRETATION" style="margin-top:16px">
           <div class="founding-quote">
-            <span class="founding-meta">COMPARATIVE LINEAGE QUESTION · METHOD V0.1</span>
-            “For each Em-side work or bounded cluster, what relation, if any, can be earned relative to TD613, SRC, another Em-side work, or an external scientific witness without collapsing motif recurrence, chronology, manifestation identity, genealogy, mechanism, or empirical support?”
+            <span class="founding-meta" id="synthResearchQuestionMeta">CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED</span>
+            <span id="synthResearchQuestion">“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”</span>
           </div>
         </div>
 
@@ -743,7 +743,7 @@ body[data-view="overview"] .reading-back{display:none}
             <p style="margin-top:8px">Em / Vix / Cass / Cassie and every other stated author retain authorship of their respective works. TD613, TD613-TCP, the SRC Atelier, and the archive operator claim no authorship, ownership, institutional affiliation, endorsement, or origin over the preserved source corpus merely by storing or assaying it here.</p>
             <details class="attribution-more">
               <summary>Full alias preservation &amp; anti-inference custody boundary</summary>
-              <p style="margin-top:8px">This research chamber explores the <strong>comparative lineage question</strong> that motivated this inquiry. It is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
+              <p style="margin-top:8px">This research chamber hosts Em’s preserved works and open constitutive synthesis inquiries on their own terms. Preservation here is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
               <p style="margin-top:8px">A human provenance statement that a work was selected as “derivative,” “branching,” “in-lineage,” or similar enters the archive as a provenance assertion to be tested. The statement remains distinct from a demonstrated textual, conceptual, methodological, genealogical, or empirical relation.</p>
               <p style="margin-top:8px">When multiple aliases appear, preserve the alias exactly as present in the source or human-supplied provenance record. Do not infer civil identity or merge authorship identities without explicit evidence.</p>
             </details>
@@ -1789,7 +1789,7 @@ body[data-view="overview"] .reading-back{display:none}
     contentEl.innerHTML =
       '<div class="stage-watermark" aria-hidden="true">' + esc(cur.glyph) + '</div>' +
       '<div>' +
-        '<p class="eyebrow">' + esc(cur.code) + ' · METHOD V0.1 · NOW / WHY / EXACT</p>' +
+        '<p class="eyebrow">' + esc(cur.code) + ' · SYNTHESIS SPINE · NOW / WHY / EXACT</p>' +
         '<h3>' + esc(cur.title) + '</h3>' +
         '<p>' + esc(cur.summary) + '</p>' +
         '<div class="badge-row" style="margin-top:14px">' + linksHtml + '</div>' +
@@ -4091,7 +4091,13 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
     benchSnapshots: [],
     withdrawnCount: 0,
     podiumEvents: [],
-    supplementalSources: []
+    supplementalSources: [],
+    operatorQuestion: null,
+    operatorMethod: null,
+    customHeadline: null,
+    customSubtitle: null,
+    customHeroStatement: null,
+    customLeftSpine: null
   };
   let currentHeadline = null;
 
@@ -4104,6 +4110,10 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
     if (sub) sub.textContent = h.patternSubtitle;
     const spine = document.getElementById('synthLeftSpine');
     if (spine) spine.textContent = h.leftSpine;
+    const qMeta = document.getElementById('synthResearchQuestionMeta');
+    if (qMeta && h.researchQuestionMeta) qMeta.textContent = h.researchQuestionMeta;
+    const qBody = document.getElementById('synthResearchQuestion');
+    if (qBody && h.researchQuestion) qBody.textContent = h.researchQuestion;
     const marg = document.getElementById('synthAxiomMarginalia');
     if (marg && Array.isArray(h.axiomMarginalia)) {
       marg.replaceChildren(...h.axiomMarginalia.map((line) => {
@@ -4148,7 +4158,13 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
       podiumEvents: Array.isArray(d.podiumEvents) ? d.podiumEvents : live.podiumEvents,
       supplementalSources: Array.isArray(d.supplementalSources) ? d.supplementalSources : live.supplementalSources,
       activePlan: d.activePlan !== undefined ? d.activePlan : live.activePlan,
-      refraction: d.refraction !== undefined ? d.refraction : live.refraction
+      refraction: d.refraction !== undefined ? d.refraction : live.refraction,
+      operatorQuestion: d.operatorQuestion !== undefined ? d.operatorQuestion : live.operatorQuestion,
+      operatorMethod: d.operatorMethod !== undefined ? d.operatorMethod : live.operatorMethod,
+      customHeadline: d.customHeadline !== undefined ? d.customHeadline : live.customHeadline,
+      customSubtitle: d.customSubtitle !== undefined ? d.customSubtitle : live.customSubtitle,
+      customHeroStatement: d.customHeroStatement !== undefined ? d.customHeroStatement : live.customHeroStatement,
+      customLeftSpine: d.customLeftSpine !== undefined ? d.customLeftSpine : live.customLeftSpine
     });
   });
   window.addEventListener('vixen:supplemental-sources-updated', (ev) => {
@@ -4158,6 +4174,34 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
 
   window.VixenSynthesisHeadlines = Object.freeze({ recompute, current: () => currentHeadline });
   recompute();
+  if (typeof fetch === 'function') {
+    fetch('./vixen-estate/podium-synthesis.json', { cache: 'no-store' })
+      .then((res) => (res && res.ok ? res.json() : null))
+      .then((st) => {
+        if (!st || st.schema !== 'emstd613.vixen.podium-synthesis-state/v1') return;
+        if (st.scientific_promotion_authority !== false || Number(st.empirical_replication_credit || 0) !== 0) return;
+        const hasOverride = Boolean(
+          st.active_plan || st.refraction || st.operator_question || st.operator_method ||
+          st.custom_headline || st.custom_subtitle || st.custom_hero_statement || st.custom_left_spine ||
+          (Array.isArray(st.supplemental_sources) && st.supplemental_sources.length) ||
+          (Array.isArray(st.podium_events) && st.podium_events.length)
+        );
+        if (!hasOverride) return;
+        recompute({
+          activePlan: st.active_plan || null,
+          refraction: st.refraction || null,
+          supplementalSources: Array.isArray(st.supplemental_sources) ? st.supplemental_sources : [],
+          podiumEvents: Array.isArray(st.podium_events) ? st.podium_events : [],
+          operatorQuestion: st.operator_question || null,
+          operatorMethod: st.operator_method || null,
+          customHeadline: st.custom_headline || null,
+          customSubtitle: st.custom_subtitle || null,
+          customHeroStatement: st.custom_hero_statement || null,
+          customLeftSpine: st.custom_left_spine || null
+        });
+      })
+      .catch(() => {});
+  }
 })();
 </script>
 <script type="module" src="./vixen-estate/observatory-electric-foundry.mjs"></script>

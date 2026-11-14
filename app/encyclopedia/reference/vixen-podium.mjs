@@ -57,7 +57,43 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
  const reader=membrane||createVixenReferenceMembrane();
  if(!reader||!['open','search','getRecord','related','status'].every(k=>typeof reader[k]==='function'))
    throw new TypeError('PODIUM_REFERENCE_READER_CONTRACT_MISSING');
- const state={opened:false,seen:new Map(),events:[],seq:0,epoch:0,activePlan:null,activeRefraction:null};
+ const state={
+  opened:false,seen:new Map(),events:[],seq:0,epoch:0,activePlan:null,activeRefraction:null,
+  operatorQuestion:null,operatorMethod:null,customHeadline:null,customSubtitle:null,
+  customHeroStatement:null,customLeftSpine:null,supplementalSources:[]
+ };
+ const applyHeadlineParams=params=>{
+  if(!params||typeof params!=='object')return;
+  if(typeof params.research_question==='string')state.operatorQuestion=text(params.research_question,600).trim()||null;
+  else if(typeof params.operator_question==='string')state.operatorQuestion=text(params.operator_question,600).trim()||null;
+  if(typeof params.method_label==='string')state.operatorMethod=text(params.method_label,96).trim()||null;
+  if(typeof params.header_tagline==='string')state.customHeadline=text(params.header_tagline,120).trim()||null;
+  if(typeof params.pattern_subtitle==='string')state.customSubtitle=text(params.pattern_subtitle,140).trim()||null;
+  if(typeof params.hero_statement==='string')state.customHeroStatement=text(params.hero_statement,240).trim()||null;
+  if(typeof params.left_spine==='string')state.customLeftSpine=text(params.left_spine,120).trim()||null;
+  if(Array.isArray(params.supplemental_sources)){
+   state.supplementalSources=params.supplemental_sources
+    .filter(x=>x&&typeof x==='object'&&!Array.isArray(x))
+    .slice(0,24)
+    .map((x,i)=>({
+     id:text(x.id||`SUP-${i+1}`,80)||`SUP-${i+1}`,
+     title:text(x.title||x.id||`Supplemental Source ${i+1}`,160)
+    }));
+  }
+ };
+ const buildHeadline=()=>deriveSynthesisHeadline({
+  corpus,
+  activePlan:state.activePlan,
+  refraction:state.activeRefraction,
+  podiumEvents:state.events,
+  supplementalSources:state.supplementalSources,
+  operatorQuestion:state.operatorQuestion,
+  operatorMethod:state.operatorMethod,
+  customHeadline:state.customHeadline,
+  customSubtitle:state.customSubtitle,
+  customHeroStatement:state.customHeroStatement,
+  customLeftSpine:state.customLeftSpine
+ });
  const event=(action,extra={})=>{
   const e=Object.freeze({sequence:++state.seq,action,observation_time:new Date().toISOString(),
     recording_class:'VOLATILE_SESSION_NOT_APPEND_ONLY_PROOF',...extra});
@@ -88,15 +124,14 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    return receipt(intent,'HELD',rejection('HELD_INVALID_PARAMETERS','Parameters must be a typed object'));
   try{
    if(intent==='podium.describe'){
+    applyHeadlineParams(params);
     event('MACHINE_ROUTE_INSPECTED');
     return receipt(intent,'SUPPORTED',{
      podium:'MACHINE_FACING_RESEARCH_CONDUCTOR',roles:['OPERAHOUSE','OPERA','PERFORMER'],
      counts,available_routes:PODIUM_ROUTES,reader_state:reader.status().state,
      source_revision:sourceRevision,external_engine_connection:'EXPLICIT_ADAPTER_ONLY',
      route_memory:'SESSION_LOCAL_ONLY',
-     synthesis_headline:deriveSynthesisHeadline({
-      corpus,activePlan:state.activePlan,refraction:state.activeRefraction,podiumEvents:state.events
-     })
+     synthesis_headline:buildHeadline()
     });
    }
    if(intent==='vixen.work.inspect'){
@@ -182,6 +217,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
    }
    if(intent==='vixen.salon.compose'){
+    applyHeadlineParams(params);
     const plan=composeSalonPlan(corpus,params);
     state.activePlan=plan;
     state.activeRefraction=null;
@@ -192,13 +228,12 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
     return receipt(intent,'HELD',{
      state:'CREATIVE_PROPOSAL_AWAITING_HUMAN_REVIEW',plan,
-     synthesis_headline:deriveSynthesisHeadline({
-      corpus,activePlan:plan,podiumEvents:state.events
-     }),
+     synthesis_headline:buildHeadline(),
      claim_ceiling:'SOURCE_METADATA_PLUS_OPERATOR_QUESTION_NOT_SCIENCE'
     });
    }
    if(intent==='experiment_b.preregister'){
+    applyHeadlineParams(params);
     const plan=composeSalonPlan(corpus,params);
     const counterfactual=refractSalonPlan(corpus,params);
     state.activePlan=plan;
@@ -213,9 +248,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      state:'PREREGISTRATION_CANDIDATE_ONLY',
      baseline:'COMPETENT_UNION_MATCHED_CONTROL',
      plan:plan.experiment_b,counterfactual,
-     synthesis_headline:deriveSynthesisHeadline({
-      corpus,activePlan:plan,refraction:counterfactual,podiumEvents:state.events
-     }),
+     synthesis_headline:buildHeadline(),
      prospective_measurements:plan.comparative_measurements,
      constructed_mechanisms:plan.cross_source_mechanisms,
      testable_predicate:plan.testable_predicate,
@@ -264,9 +297,31 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    ));
   }
  };
- return Object.freeze({
+  return Object.freeze({
   schema:PODIUM_SCHEMA,routes:()=>[...PODIUM_ROUTES],
   dispatch:run,history:()=>state.events.slice(),
+  synthesisState:()=>{
+   const headline=buildHeadline();
+   return Object.freeze({
+    schema:'emstd613.vixen.podium-synthesis-state/v1',
+    status:headline.regime,
+    operator_question:state.operatorQuestion,
+    operator_method:state.operatorMethod,
+    custom_headline:state.customHeadline,
+    custom_subtitle:state.customSubtitle,
+    custom_hero_statement:state.customHeroStatement,
+    custom_left_spine:state.customLeftSpine,
+    active_plan:state.activePlan,
+    refraction:state.activeRefraction,
+    supplemental_sources:state.supplementalSources.slice(),
+    podium_events:state.events.slice(-24),
+    synthesis_headline:headline,
+    empirical_replication_credit:0,
+    scientific_promotion_authority:false,
+    human_closure_required:true,
+    release_authority:false
+   });
+  },
   state:()=>Object.freeze({opened:state.opened,verified_record_ids:[...state.seen.keys()],
    engine_adapter_count:Object.keys(engineAdapters).filter(k=>typeof engineAdapters[k]==='function').length,
    evidence:'VOLATILE_SESSION_ONLY'})
