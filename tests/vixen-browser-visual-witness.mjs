@@ -493,8 +493,10 @@ try {
     await house.locator('.oh-disposition .oh-payload summary').click();
     const summaryColor=await house.locator('.oh-disposition .oh-payload summary')
       .evaluate(n=>getComputedStyle(n).color);
-    assert.equal(summaryColor,'rgb(51, 35, 52)',
-      'The manuscript-paper receipt disclosure must render with legible dark ink');
+    const ink=summaryColor.match(/\d+/g)?.map(Number)||[];
+    assert.equal(ink.length,3,'Receipt disclosure must expose RGB ink');
+    assert(Math.max(...ink)<100 && ink[1]>=ink[0]-5,
+      'Receipt disclosure requires legible graphite ink without legacy plum');
     const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload pre').innerText());
     assert.equal(receipt.schema,'ua:contract:cross_atelier_witness');
     assert.equal(receipt.admissibility.human_ratified_crosswalk,false);

@@ -17,7 +17,7 @@
  */
 body:not([data-active-research-stage="OPERAHOUSE"]){
   --vixen-pink:#ff65aa;
-  --arc-flash:#F9F36D;
+  --arc-flash:#FFF2A9;
   --graphite:#12181d;
   --nickel:#abb8bd;
   --porcelain:#fff7f1;
@@ -36,7 +36,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]){
   --line:rgba(255,233,200,.17);
   --line-strong:rgba(255,233,200,.39);
   --vf-rose:#ff65aa;
-  --vf-flash:#F9F36D;
+  --vf-flash:#FFF2A9;
   --vf-porcelain:#fff8f0;
   --vf-metal:#d2dde0;
   --vf-wine:#162128;
