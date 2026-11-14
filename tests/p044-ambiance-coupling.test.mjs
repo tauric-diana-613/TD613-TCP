@@ -115,3 +115,28 @@ test('P-044 active surfaces replace unsupported absolute ambiance orthogonality'
     assert.match(source, /P-044/, name);
   }
 });
+
+
+test('P-044 and predecessor X-059 agree across all machine-readable Rule Atlas editions', () => {
+  const dir = new URL('../docs/research/wolfram-rule-atlas/', import.meta.url);
+  const files = ['TD613_NKS_Rule_Atlas_164_Rules.json', 'TD613_NKS_Rule_Atlas_179_Rules.json',
+    'TD613_NKS_Rule_Atlas_Convergence_Edition.json'];
+  for (const name of files) {
+    const atlas = JSON.parse(readFileSync(new URL(name, dir), 'utf8'));
+    const rules = atlas.rules;
+    assert.equal(new Set(rules.map(r => r.id)).size, rules.length, name + ': unique rule identities');
+    const x = rules.find(r => r.id === 'X-059');
+    assert.ok(x, name + ': source three-clock rule retained');
+    assert.doesNotMatch(x.transition, /perp|⟂/i, name + ': no unsupported clock orthogonality');
+    const p = rules.find(r => r.id === 'P-044');
+    if (name.includes('_164_')) {
+      assert.equal(p, undefined, 'historical 164-rule edition has no P-044');
+    } else {
+      assert.ok(p, name + ': P-044 exists');
+      assert.match(p.transition, /presentation_only/);
+      assert.match(p.transition, /H0_observer/);
+      assert.doesNotMatch(p.transition, /perp|⟂/i);
+      assert.match(p.witness, /NOT EXECUTED/);
+    }
+  }
+});
