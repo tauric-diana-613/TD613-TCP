@@ -402,7 +402,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer .mobi
    seam, rather than stacked administrative input cards. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix{
   position:relative;overflow:visible;grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
-  background:linear-gradient(112deg,#eabbd6,#1d1327);
+  background:linear-gradient(112deg,#eabbcc,#131719);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card{
   min-height:440px;padding:clamp(28px,5vw,73px);
@@ -416,7 +416,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-wor
   letter-spacing:-.058em;margin:18px 0 33px;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
-  width:84px;height:84px;font-size:60px;box-shadow:0 0 0 18px rgba(27,14,36,.35);
+  width:84px;height:84px;font-size:60px;box-shadow:0 0 0 18px rgba(15,18,20,.35);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program{
   position:relative;overflow:hidden;padding:clamp(33px,4.8vw,76px);
@@ -424,7 +424,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-pro
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program:after{
   content:'∴';position:absolute;bottom:-.2em;right:.02em;
-  font:italic 230px/1 Georgia,serif;color:rgba(68,35,80,.05);
+  font:italic 230px/1 Georgia,serif;color:rgba(38,45,50,.05);
   pointer-events:none;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks{
@@ -437,7 +437,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-que
   content:'✶  THE QUESTION IS THE GARMENT  ✶';
   display:block;margin-bottom:28px;
   font:italic clamp(20px,2.6vw,36px)/1.2 Didot,Georgia,serif;
-  letter-spacing:.02em;color:#5f3c61;
+  letter-spacing:.02em;color:#3b464d;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-theorem{
   font:italic 400 clamp(27px,4vw,58px)/1.22 Didot,'Bodoni MT',Georgia,serif;
@@ -668,7 +668,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel h2{
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading{
  display:flex;align-items:center;justify-content:space-between;
  gap:16px;min-height:0;margin-bottom:17px;padding:0 0 15px;
- border-bottom:1px solid rgba(245,188,223,.32);
+ border-bottom:1px solid rgba(245,188,209,.32);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1{
  font:600 clamp(16px,2vw,25px)/1.14 ui-monospace,monospace;
@@ -676,7 +676,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading h1 .title-annotation{
  display:inline;margin-left:14px;font:italic 400 .65em/1.4 Georgia,serif;
- text-transform:none;letter-spacing:0;color:#edc0df;
+ text-transform:none;letter-spacing:0;color:#edc0d0;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection>.page-pad>.view-heading .intro{
  font:400 12px/1.5 Georgia,serif;max-width:690px;margin:5px 0 0;

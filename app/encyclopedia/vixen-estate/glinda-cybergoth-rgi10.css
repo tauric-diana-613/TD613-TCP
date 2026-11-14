@@ -198,9 +198,9 @@ body[data-active-research-stage="OPERAHOUSE"] #main{
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(
  #view-observatory,#view-works,#view-gates,#view-protocols,#view-holds,#view-collection,#view-reference
  ){
- background:radial-gradient(ellipse at 91% 2%,rgba(152,91,156,.20),transparent 45%),
- linear-gradient(160deg,#140d1a,#0b0a12 62%,#1b0e1e);
- color:#f9e8f4;
+ background:radial-gradient(ellipse at 91% 2%,rgba(156,91,115,.20),transparent 45%),
+ linear-gradient(160deg,#0d0f11,#090b0c 62%,#0f1214);
+ color:#f9e8ee;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .page-pad{
  padding-top:clamp(30px,4vw,66px);
@@ -519,126 +519,126 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .formula-side .field{
 }
 /* ---- Vixen Salon: black-tulle source cards instead of white forms ---- */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon{
- --vs-gold:#dec4f4;
- --vs-pink:#f4a2d5;
- --vs-ink:#24142c;
- --vs-cream:#f7e6f2;
- --vs-fuchsia:#d268ac;
- background:#100d18;color:#f8e4f3;
- border:1px solid rgba(243,175,223,.56);
- box-shadow:0 28px 70px rgba(7,5,15,.34);
+ --vs-gold:#fff0a8;
+ --vs-pink:#f4a2c0;
+ --vs-ink:#15191c;
+ --vs-cream:#f7e6ec;
+ --vs-fuchsia:#d2688f;
+ background:#0c0e10;color:#f8e4eb;
+ border:1px solid rgba(243,175,200,.56);
+ box-shadow:0 28px 70px rgba(5,6,7,.34);
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head{
- background:radial-gradient(ellipse at 91% -9%,rgba(221,111,178,.44),transparent 61%),
- linear-gradient(135deg,#160e23,#3c1d42 55%,#120d1c);
- border-color:rgba(239,168,216,.44);
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{
+ background:radial-gradient(ellipse at 91% -9%,rgba(221,111,151,.44),transparent 61%),
+ linear-gradient(135deg,#0e1113,#20262a 55%,#0d0f11);
+ border-color:rgba(239,168,194,.44);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-eyebrow{
- color:#d8a3d9;
+ color:#d9a3b7;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-head .vs-eyebrow{
- color:#f5c9e8;
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head .vs-eyebrow{
+ color:#f5c9d9;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title{
- color:#fff2fc;
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{
+ color:#fef3f7;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-title-italics{
- color:#ffaddf;text-shadow:0 0 28px rgba(242,136,209,.25);
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title-italics{
+ color:#f7b5cd;text-shadow:0 0 28px rgba(242,136,175,.25);
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-intro{
- color:#ebcfe3;
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-intro{
+ color:#ebcfd9;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-ritual{color:#f5c8e9}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{color:#f5c8d8}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
- color:#f9eaf6;border-color:rgba(243,177,225,.3);
- background:linear-gradient(132deg,#3b2042,#171321 82%);
+ color:#f9eaef;border-color:rgba(243,177,201,.3);
+ background:linear-gradient(132deg,#22282c,#121517 82%);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
- background:linear-gradient(135deg,#2c203b,#151020 80%);
+ background:linear-gradient(135deg,#1f2528,#0f1214 80%);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:before{
- background:linear-gradient(90deg,#faaedc,#bfa5ef,transparent);
+ background:linear-gradient(90deg,#f6b2cb,#fff0a8,transparent);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-tag,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-field-label{
- color:#d8a9d6;
+ color:#d8a9ba;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-work-title,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-note{
- color:#f8e6f2;
+ color:#f8e6ed;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-select{
- background:#f7e6f1;color:#24162e;
- border-color:#d9b5d4;
+ background:#f7e6ec;color:#161b1d;
+ border-color:#d9b5c2;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-custody{color:#ceb8d1}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-custody{color:#d1b8c1}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-hash{
- color:#f1dceb;background:#241c31;border-color:rgba(240,175,221,.35);
+ color:#f1dce4;background:#1a1f22;border-color:rgba(240,175,199,.35);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-gate{
- background:#f3cde8;color:#24142c;
+ background:#f3cddb;color:#15191c;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
- background:#160d22;color:#f7c5e5;border-color:#e7b7df;
- box-shadow:0 0 0 10px rgba(29,15,38,.88);
+ background:#0e1012;color:#f7c5d7;border-color:#e7b7c9;
+ box-shadow:0 0 0 10px rgba(16,20,22,.88);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail{
- background:linear-gradient(110deg,#f2c3e0,#bbb8dc 60%,#eccbdc);
- color:#1f1429;
+ background:linear-gradient(110deg,#f2c3d4,#dcb8c5 60%,#eccbd7);
+ color:#14181a;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program{
- color:#271830;
- background:linear-gradient(120deg,#f5dbe9,#cfc1dd 75%);
- border-color:#98809d;
+ color:#181d20;
+ background:linear-gradient(120deg,#f5dbe5,#ddc1cb 75%);
+ border-color:#918e8f;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-eyebrow,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-field-label{
- color:#623b6c;
+ color:#3b474e;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-note,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-track-scope,
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-protocol-scope{
- color:#392340;
+ color:#232a2e;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-order-button[aria-pressed="true"]{
- background:#45294e;color:#fbe4f6;
+ background:#2a3237;color:#fbe4ec;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks{
- background:linear-gradient(138deg,#1c1428,#100e1c);border-color:#59405c;
+ background:linear-gradient(138deg,#131719,#0d0f11);border-color:#3c474e;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks .vs-eyebrow{color:#eeb6df}
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks .vs-custody{color:#cdb8d0}
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clock-track{background:#49364e;border-color:#715b7c}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks .vs-eyebrow{color:#eeb6cb}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clocks .vs-custody{color:#d0b8c1}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clock-track{background:#323c42;border-color:#7c5b67}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-clock-bar{
- background:linear-gradient(90deg,#fb9ed2,#bca8e8);
+ background:linear-gradient(90deg,#f5a4c2,#fff0a8);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question{
- background:linear-gradient(125deg,#f0d5e6,#e6d6eb);color:#24172c;
+ background:linear-gradient(125deg,#f0d5df,#ebd6de);color:#171b1e;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question .vs-eyebrow{
- color:#683f70;
+ color:#3f4b53;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-textarea{
- background:rgba(255,249,253,.82);color:#21162a;
- border-color:#98809d;
+ background:rgba(254,250,251,.82);color:#161a1c;
+ border-color:#918e8f;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-textarea::placeholder{color:#705675}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-textarea::placeholder{color:#755661}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-action{
- border-color:#61476d;background:rgba(255,255,255,.23);color:#35213d;
+ border-color:#434f57;background:rgba(255,255,255,.23);color:#21272b;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-primary{
- background:linear-gradient(105deg,#612d60,#39284e);color:#fff0fa;
- border-color:#8c5d87;
+ background:linear-gradient(105deg,#323c42,#272e33);color:#fdf2f6;
+ border-color:#8c5d6e;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result{
- background:linear-gradient(130deg,#170f23,#100c19 78%);color:#f7e8f5;
- border-top-color:#e49bcd;
+ background:linear-gradient(130deg,#0f1214,#0c0e0f 78%);color:#f7e8ee;
+ border-top-color:#e49bb6;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result .vs-action{
- background:rgba(235,166,218,.08);color:#f8dbea;border-color:#bd85bb;
+ background:rgba(235,166,191,.08);color:#f8dbe6;border-color:#bd859a;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result .vs-note{color:#f1e2ef}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result .vs-note{color:#f1e2e7}
 /* ---- original foyer gets a spatial couture treatment, not a bright flat runway ---- */
 body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
  background:

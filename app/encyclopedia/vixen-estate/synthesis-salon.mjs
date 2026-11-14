@@ -8,6 +8,7 @@ import {
  makePodiumTasks,CLOCKS
 } from './synthesis-salon-engine.mjs';
 import {mountSalonVeil,VEIL_CONTRACT} from './vixen-salon-light.mjs';
+import {SALON_COMPOSITOR,mountFoldedCuirass,CUIRASS_CONTRACT} from './vixen-folded-cuirass.mjs';
 
 const mk=(tag,cl,text)=>{
  const el=document.createElement(tag);
@@ -75,7 +76,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   notice:'Choose two recorded Works, one method, and a research question. Your source bodies remain unavailable.'
  };
  let veilHandle=null;
- const veilCoordinates=()=>({works:[...state.works],route:state.route,lag:state.lag});
+ const opticalClock={time:0};
+ const folded=SALON_COMPOSITOR==='FOLDED_CHROME';
+ const veilCoordinates=()=>({works:[...state.works],route:state.route,lag:state.lag,resting:state.resting,opticalClock});
  const getWork=index=>corpus.works.find(w=>w.work_id===state.works[index]);
  const getTrack=()=>corpus.giveback_tracks.find(x=>x.id===state.track);
  const getMethod=()=>corpus.instruments.find(x=>x.instrument_id===state.protocol);
@@ -186,6 +189,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  function render(){
   veilHandle?.dispose();veilHandle=null;
   host.replaceChildren();host.dataset.stageRole='VIXEN_OPERA';
+  host.dataset.couture=folded?'folded-chrome':'legacy';
   const head=mk('header','vs-head');
   const eyebrow=mk('div','vs-eyebrow','06 · VIXEN SYNTHESIS SALON · COUTURE LABORATORY');
   const title=mk('h2','vs-title','The theorem');
@@ -195,14 +199,16 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    'Collect evidence like a fox; compose hypotheses like an opera. Every claim changes what the next question must ask. No source is sold, merged, or made to testify beyond its recorded boundary.','vs-intro');
   // Optical costume derived from Dome D3, phi, Loom carriers and [111] projection.
   // Literal costume emojis are absent: visual rhetoric now lives in silhouette.
-  const veil=mk('canvas','vs-luminous-canvas');
+  const veil=mk('canvas',folded?'vs-cuirass-canvas':'vs-luminous-canvas');
   veil.setAttribute('aria-hidden','true');
-  veil.dataset.computation='D3_PHI_LOOM_39_COUTURE_111';
+  veil.dataset.computation=folded?'D3_PHI_BEAT_FOLDED_SHELL':'D3_PHI_LOOM_39_COUTURE_111';
   const veilCaption=mk('div','vs-optical-label','VIXEN · 39 COMPUTED CARRIERS · OPTICAL COSTUME / MODEL ONLY');
   veilCaption.setAttribute('aria-hidden','true');
   const words=mk('div','vs-hero-copy');
   append(words,eyebrow,title,description);
-  append(head,veil,words,veilCaption);
+  if(folded){
+   const stage=mk('div','vs-optical-stage');append(stage,veil,veilCaption);append(head,words,stage);
+  }else append(head,veil,words,veilCaption);
   const index=mk('div','vs-rail');
   append(index,
    atlasCell('ORIGINAL WORKS','32 / 53 manifestations'),
@@ -297,8 +303,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   append(host,head,columns,seam,index,offer,clockBox,inputPane,notice());
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
-  veilHandle=mountSalonVeil(veil,veilCoordinates);
-  host.dataset.opticalContract=VEIL_CONTRACT.schema;
+  veilHandle=folded?mountFoldedCuirass(veil,veilCoordinates):mountSalonVeil(veil,veilCoordinates);
+  host.dataset.opticalContract=folded?CUIRASS_CONTRACT.schema:VEIL_CONTRACT.schema;
  }
  function titleText(w){return w.display_title||w.declared_title||w.work_id}
  function makeBars(clocks){

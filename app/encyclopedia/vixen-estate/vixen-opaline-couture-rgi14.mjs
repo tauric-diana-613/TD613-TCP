@@ -9,6 +9,7 @@
  */
 import {CARRIERS,PHI,triangular,quasiperiodic,project111} from './observatory-foundry-kernel.mjs';
 import {measureCoutureBeats,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs';
+import {SALON_COMPOSITOR} from './vixen-folded-cuirass.mjs';
 export const OPAL_COUTURE_CONTRACT=Object.freeze({
  schema:'td613.vixen.opaline-couture/v1',role:'OPERA_VISUAL_ONLY',
  mathematical_kinship:'D3_PHI_MOIRE_LAYER_DIFFERENCE_NOT_EPISTEMIC_TRANSFER',
@@ -231,6 +232,7 @@ export function paintOpalineCouture(ctx,m){
 }
 function topY(m){return m.top+m.heightDress*.95;}
 function mount(){
+ if(SALON_COMPOSITOR==='FOLDED_CHROME')return;
  if(typeof document==='undefined'||typeof window==='undefined')return;
  const host=document.getElementById('vixenSynthesisSalon');
  if(!host)return;

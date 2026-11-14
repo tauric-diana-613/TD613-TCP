@@ -91,7 +91,7 @@ export function measureCoutureBeats({
   return Object.freeze({
    d3:kD3,phi:kPhi,delta,
    omegaA,omegaB,deltaOmega:omegaB-omegaA,
-   phaseDelta:wrap(phaseB-phaseA),
+   phaseA,phaseB,phaseDelta:wrap(phaseB-phaseA),
    wavelengthPx:TAU/magnitude,
    beatSpeedCssPxPerSecond:Math.abs(omegaB-omegaA)/magnitude,
    aliasRatio:Math.max(Math.hypot(kD3.x,kD3.y),Math.hypot(kPhi.x,kPhi.y))/(Math.PI*dpr)
