@@ -584,12 +584,12 @@ try {
     const meshWitness=await page.evaluate(()=>{
       const c=document.getElementById('vixenLivingMesh');
       const state=window.VixenLivingMesh.status();
-      const d=c.getContext('2d').getImageData(
-       Math.floor(c.width*.43),0,Math.max(1,Math.floor(c.width*.55)),
-       Math.max(1,Math.floor(c.height*.65))
-      ).data;
+      // The shared page canvas deliberately excludes the Salon stage and
+      // reading surfaces. Measure its actual painted complement, rather
+      // than sampling the portion that now belongs to the garment canvas.
+      const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;
       let colored=0;
-      for(let i=3;i<d.length;i+=16)if(d[i]>10)colored++;
+      for(let i=3;i<d.length;i+=4)if(d[i]>10)colored++;
       return {
        connected:c.isConnected,role:c.dataset.role,
        route:state.route,frames:state.rendered_frames,
@@ -611,7 +611,7 @@ try {
     assert.equal(meshWitness.pointer,'none','The electric mesh cannot steal source controls');
     assert.equal(meshWitness.moduleLoaded,true);
     assert.equal(meshWitness.styleLoaded,true);
-    assert(meshWitness.px>200,'The canvas must visibly paint model-derived electrical light');
+    assert(meshWitness.px>200,'The page complement must visibly paint model-derived electrical light: '+JSON.stringify(meshWitness));
     // DD-02 source-bound folded chrome supersedes the old RGI14 canvas.
     // Qualify real Canvas2D pixels and prepaint geometry without weakening the
     // legacy renderer's separately retained rollback tests.
