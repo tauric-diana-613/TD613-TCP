@@ -14,6 +14,7 @@ import {buildVixenLaboratories,assessVixenLab,completeVixenSourceCensus}
 import {createFoundryRenderer} from './observatory-foundry-renderer.mjs';
 import {paintComputationalScore} from './observatory-computational-score.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
+import {globalMotionHeld} from './vixen-motion-governor.mjs';
 
 export const ELECTRIC_STAGE_SCHEMA='emstd613.vixen.electric-foundry-stage/v1';
 const HEROES=Object.freeze(['LAB_TCC-01','LAB_TCC-04','LAB_TCC-05',
@@ -116,7 +117,7 @@ export async function mountVixenElectricFoundry({
   stage:state.phase,backend:state.renderingBackend,
   frames:state.frames,computational_score:state.scoreState?.schema||'PENDING',
   source_folios:22,source_giveback_tracks:6,
-  flagship_curated:HEROES.length,registry_count:all.length,
+  flagship_curated:HEROES.length,registry_count:all.length,global_still:globalMotionHeld(document),
   historical_original_corpus:'EMSTD613',empirical_credit:0,
   experiment_b_flight:'HELD',
   research_estates_separated:true,source_declared_not_reauthenticated:true
@@ -149,7 +150,7 @@ export async function mountVixenElectricFoundry({
  }
  function canRun(){
   const section=host.closest('.view');
-  return !document.hidden&&!!section&&!section.hidden&&state.playing;
+  return !globalMotionHeld(document)&&!!section&&!section.hidden&&state.playing;
  }
  function frame(ms){
   state.raf=0;
@@ -473,6 +474,8 @@ export async function mountVixenElectricFoundry({
  viewport.observe(stage);
  const visibility=()=>{if(!document.hidden)start();else stop()};
  document.addEventListener('visibilitychange',visibility);
+ const syncGlobalMotion=()=>{if(globalMotionHeld(document))stop();else start()};
+ window.addEventListener('vixen:motionchange',syncGlobalMotion);
  log('FOUNDRY_REGISTERED',{original_census:completeVixenSourceCensus(source)});
  if(section&&!section.hidden)await initialize();
  const api=Object.freeze({
@@ -484,6 +487,7 @@ export async function mountVixenElectricFoundry({
   dispose(){
    stop();watch.disconnect();viewport.disconnect();
    document.removeEventListener('visibilitychange',visibility);
+   window.removeEventListener('vixen:motionchange',syncGlobalMotion);
    state.renderer?.dispose();
   }
  });

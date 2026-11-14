@@ -1,0 +1,16 @@
+/* Global Still freezes decorative CSS but not research input controls. */
+body[data-vixen-motion="still"] *,
+body[data-vixen-motion="still"] *::before,
+body[data-vixen-motion="still"] *::after {
+ animation-play-state: paused !important;
+ transition-duration: 0s !important;
+ scroll-behavior: auto !important;
+}
+@media(prefers-reduced-motion:reduce){
+ body *,body *::before,body *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
+ }
+}

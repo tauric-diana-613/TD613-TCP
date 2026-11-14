@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
 <link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
 <link rel="stylesheet" href="./vixen-estate/vixen-foyer.css">
+<link rel="stylesheet" href="./vixen-estate/vixen-motion.css">
 <link rel="stylesheet" href="./reference/vixen-operator-encounter.css">
 <!-- Machine-only Podium. Separate route contract; never a Vixen visual panel. -->
 <link rel="alternate" type="application/json" title="Vixen Podium machine research contract"
@@ -3254,11 +3255,19 @@ body[data-view="overview"] .reading-back{display:none}
           state.motionPaused ? 'Resume animations (Live mode)' : 'Pause animations (Still mode)'
         );
       };
+      const broadcastVixenMotion=()=>{
+        document.body.dataset.vixenMotion=state.motionPaused?'still':'live';
+        window.dispatchEvent(new CustomEvent('vixen:motionchange',{
+          detail:{held:state.motionPaused,source:'GLOBAL_STILL_BUTTON'}
+        }));
+      };
       updateMotionBtn();
+      broadcastVixenMotion();
       motionBtn.addEventListener('click', () => {
         state.motionPaused = !state.motionPaused;
         if (state.motionPaused) stopObservatoryFrame(); else scheduleObservatoryFrame();
         updateMotionBtn();
+        broadcastVixenMotion();
         showToast(state.motionPaused ? 'Motion paused (still mode)' : 'Motion resumed');
       });
     }

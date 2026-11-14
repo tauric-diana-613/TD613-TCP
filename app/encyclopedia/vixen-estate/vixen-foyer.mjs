@@ -9,6 +9,7 @@
  * This module never receives authorship, laboratory or deployment authority.
  * It interacts with the already-working native Vixen study tray and routes.
  */
+import {globalMotionHeld} from './vixen-motion-governor.mjs';
 export const VIXEN_FOYER_CONTRACT=Object.freeze({
  schema:'emstd613.vixen.editorial-genre/v1',
  candidate_lineage:['REFERENCE_1_RESEARCH_RAIL','REFERENCE_2_SPATIAL_ATMOSPHERE',
@@ -64,7 +65,7 @@ function initialize(){
  const onTray=()=>refresh();
  window.addEventListener('vixen-study-tray-change',onTray);
  const onPointer=e=>{
-  if(frame)return;
+  if(frame||globalMotionHeld(document))return;
   const box=foyer.getBoundingClientRect();
   if(!box.width||!box.height)return;
   const u=Math.max(0,Math.min(1,(e.clientX-box.left)/box.width));
@@ -80,6 +81,8 @@ function initialize(){
   foyer.style.setProperty('--vf-pointer-x','72%');
   foyer.style.setProperty('--vf-pointer-y','0%');
  };
+ const onGlobalMotion=()=>{if(globalMotionHeld(document))onLeave()};
+ window.addEventListener('vixen:motionchange',onGlobalMotion);
  foyer.addEventListener('pointermove',onPointer,{passive:true});
  foyer.addEventListener('pointerleave',onLeave,{passive:true});
  refresh();
@@ -99,6 +102,7 @@ function initialize(){
    if(frame)cancelAnimationFrame(frame);
    observer.disconnect();
    window.removeEventListener('vixen-study-tray-change',onTray);
+   window.removeEventListener('vixen:motionchange',onGlobalMotion);
    foyer.removeEventListener('pointermove',onPointer);
    foyer.removeEventListener('pointerleave',onLeave);
   }
