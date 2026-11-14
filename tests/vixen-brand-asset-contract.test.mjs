@@ -202,3 +202,51 @@ test('Desktop-only intake leaves installed mobile and fox bytes/digests unchange
   assert.match(html,/<source[^>]*data-vixen-asset-role="mobile"[^>]*type="image\/png"/);
  }finally{await rm(temp,{recursive:true,force:true})}
 });
+
+test('Mobile-only intake changes mobile and preserves installed desktop and fox bytes/digests',async()=>{
+ const temp=await mkdtemp(join(tmpdir(),'vixen-mobile-only-'));
+ try{
+  const dest=join(temp,'app/encyclopedia/assets/vixen');
+  await mkdir(dest,{recursive:true});
+  await mkdir(join(temp,'app/encyclopedia'),{recursive:true});
+  for(const role of ['desktop','mobile']){
+   await cp(join(root,'app/encyclopedia/assets/vixen','frontispiece-'+role+'.png'),
+     join(dest,'frontispiece-'+role+'.png'));
+  }
+  await cp(paths.svg,join(dest,'fox-arcflash.svg'));
+  await cp(paths.manifest,join(dest,'asset-contract.json'));
+  await cp(paths.page,join(temp,'app/encyclopedia/vix-cyb.html'));
+  const candidate=join(temp,'new-mobile.png');
+  await writeFile(candidate,samplePng(900,1600));
+  const protectedPaths=[join(dest,'frontispiece-desktop.png'),join(dest,'fox-arcflash.svg')];
+  const original=await Promise.all(protectedPaths.map(p=>readFile(p)));
+  const prior=JSON.parse(await readFile(join(dest,'asset-contract.json'),'utf8'));
+  const args=['--root',temp,'--mobile',candidate,'--mobile-only'];
+  const dry=python([...args,'--dry-run']);
+  assert.equal(dry.status,0,dry.stderr);
+  const report=JSON.parse(dry.stdout);
+  assert.equal(report.intake_scope,'MOBILE_ONLY');
+  assert.equal(report.target_paths.length,3);
+  for(let i=0;i<protectedPaths.length;i++)
+   assert.equal(sha(await readFile(protectedPaths[i])),sha(original[i]));
+  const applied=python(args);
+  assert.equal(applied.status,0,applied.stderr);
+  const checked=python(['--root',temp,'--check']);
+  assert.equal(checked.status,0,checked.stderr);
+  const current=JSON.parse(await readFile(join(dest,'asset-contract.json'),'utf8'));
+  assert.equal(current.frontispiece.mobile.sha256,sha(await readFile(candidate)));
+  assert.deepEqual(current.frontispiece.desktop,prior.frontispiece.desktop);
+  assert.deepEqual(current.fox,prior.fox);
+  for(let i=0;i<protectedPaths.length;i++)
+   assert.equal(sha(await readFile(protectedPaths[i])),sha(original[i]));
+  const html=await readFile(join(temp,'app/encyclopedia/vix-cyb.html'),'utf8');
+  assert.deepEqual(slot(html,'mobile'),['./assets/vixen/frontispiece-mobile.png']);
+  assert.deepEqual(slot(html,'desktop'),['./assets/vixen/frontispiece-desktop.png']);
+  assert.match(html,/<source[^>]*data-vixen-asset-role="mobile"[^>]*type="image\/png"/);
+  const invalid=join(temp,'landscape.png');
+  await writeFile(invalid,samplePng(1600,900));
+  const rejected=python(['--root',temp,'--mobile',invalid,'--mobile-only','--dry-run']);
+  assert.equal(rejected.status,2);
+  assert.match(rejected.stderr,/MOBILE_9_16_GEOMETRY_MISMATCH/);
+ }finally{await rm(temp,{recursive:true,force:true})}
+});

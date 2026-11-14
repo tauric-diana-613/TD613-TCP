@@ -21,6 +21,22 @@ node --test tests/vixen-brand-asset-contract.test.mjs
 
 This path preflights the existing installed assets and the replacement, then writes only the desktop PNG, manifest, and page's embedded reference metadata. Mobile PNG and fox SVG are never rewritten. Original creative approval and human closure remain RESERVED.
 
+### Mobile-only intake · preserve desktop and fox
+
+```bash
+python3 scripts/install-vixen-brand-assets.py --check
+python3 scripts/install-vixen-brand-assets.py --mobile "/path/to/REVISED_MOBILE.png" --mobile-only --dry-run
+python3 scripts/install-vixen-brand-assets.py --mobile "/path/to/REVISED_MOBILE.png" --mobile-only
+python3 scripts/install-vixen-brand-assets.py --check
+node --test tests/vixen-brand-asset-contract.test.mjs
+```
+
+This independently validates a new portrait PNG (9:16), preserves the exact
+desktop frontispiece and fox SVG bytes and manifest records, and updates only
+the mobile PNG, page reference metadata, and asset-contract manifest. Its
+existence does not authorize replacing the already accepted mobile artwork.
+The same human artistic-acceptance and preview-deployment boundaries apply.
+
 ## Three-file operator handoff (full repository checkout)
 
 ```bash
