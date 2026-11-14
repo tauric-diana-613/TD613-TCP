@@ -60,9 +60,9 @@ body[data-view="collection"] #vixenLivingMesh{display:none}
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
   grid-template-columns:minmax(0,1fr);min-height:0;
  }
- #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{padding:25px 22px;gap:18px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{padding:18px 20px;gap:12px}
  #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{font-size:clamp(46px,11vw,68px)}
- #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{min-height:360px;height:105vw;max-height:440px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{min-height:340px;height:90vw;max-height:400px}
 }
 @media(forced-colors:active){
  #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{display:none}
