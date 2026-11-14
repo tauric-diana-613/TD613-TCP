@@ -69,6 +69,11 @@ test('The renderer draws real luminous lines and spark branches, never CSS decor
  assert.equal(result.hoops,17);
  assert.equal(result.shell_stations,28);
  assert.equal(result.glint_candidates,26);
+ assert.equal(result.host_electrodes,0);
+ const anchors=[{x:400,y:300},{x:550,y:500},{x:720,y:250}];
+ assert.equal(paintLivingMesh(fakeCtx().context,model,{electrodes:anchors}).host_electrodes,3);
+ assert.equal(paintLivingMesh(fakeCtx().context,model,
+  {electrodes:[anchors[0],{x:Infinity,y:2}]}).host_electrodes,0);
  assert.equal(result.empirical_credit,0);
  assert(events.filter(x=>x[0]==='L').length>1100,
   'Proof requires many actual vector segments, not a gradient screenshot');

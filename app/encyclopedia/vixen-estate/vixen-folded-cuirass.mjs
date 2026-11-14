@@ -360,8 +360,12 @@ export function mountFoldedCuirass(canvas,getState){
   const m=buildFoldedCuirass({width:r.width,height:r.height,time:clock.time,sourceIds:getState().works});
   const painted=paintFoldedCuirass(ctx,m);
   // The full-viewport ambient mesh inherits this one active Salon clock.
+  const electrodes=[0,3,9].map(i=>{
+   const point=m.seams[i].points[24];
+   return {x:r.left+point[0],y:r.top+point[1]};
+  });
   win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds:m.sourceIds,
-   view:'collection',force:dirty});
+   electrodes,view:'collection',force:dirty});
   paintCosts.push(win.performance.now()-start);if(paintCosts.length>120)paintCosts.shift();
   frames++;dirty=false;
   last={...painted,phase:clock.time,sourceIds:m.sourceIds,viewport:{width:r.width,height:r.height},backing:back,

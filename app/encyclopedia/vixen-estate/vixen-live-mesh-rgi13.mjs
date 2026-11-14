@@ -167,7 +167,7 @@ function discharge(ctx,start,end,time,seed,charge,color=ELECTRIC_COUTURE.champag
   stroke(ctx,[root,tip],color,1.4*intensity,.45*intensity,11);
  }
 }
-export function paintLivingMesh(ctx,model,{intensity=1}={}){
+export function paintLivingMesh(ctx,model,{intensity=1,electrodes=[]}={}){
  if(!ctx||!model?.ring)throw new TypeError('MESH_PAINT_REQUIRES_MODEL_AND_CONTEXT');
  const {width:w,height:h,ring,ribbon,fibers,center,phase:time,seed}=model;
  const power=clamp(intensity);
@@ -218,11 +218,19 @@ export function paintLivingMesh(ctx,model,{intensity=1}={}){
  const t=time,period=(t*.34)%(Math.PI*2);
  const mainPulse=clamp((Math.sin(period+1.2)+.48)/1.48);
  const altPulse=clamp((Math.sin(period*1.7+3.3)+.35)/1.35);
- discharge(ctx,xy(w*.34,h*.025),xy(center.x,center.y),
+ // Three material-derived endpoints replace the existing discharges;
+ // they do not add extra beam passes or create independent RAF ownership.
+ const anchors=(Array.isArray(electrodes)?electrodes:[])
+  .filter(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)
+   &&p.x>=0&&p.x<=w&&p.y>=0&&p.y<=h).slice(0,3);
+ const ends=anchors.length===3?anchors:[
+  xy(center.x,center.y),xy(center.x+w*.06,center.y+h*.035),xy(w*.99,h*.21)
+ ];
+ discharge(ctx,xy(w*.34,h*.025),ends[0],
   t,seed,.18+mainPulse*.78,ELECTRIC_COUTURE.champagne);
- discharge(ctx,xy(w*.02,h*.94),xy(center.x+w*.06,center.y+h*.035),
+ discharge(ctx,xy(w*.02,h*.94),ends[1],
   t+.8,seed+67,.14+altPulse*.72,ELECTRIC_COUTURE.fuchsia);
- discharge(ctx,xy(center.x-w*.12,h*.91),xy(w*.99,h*.21),
+ discharge(ctx,xy(center.x-w*.12,h*.91),ends[2],
   t+1.7,seed+301,.14+mainPulse*.65,ELECTRIC_COUTURE.core);
  const nlat=ring.length,nlong=ring[0].length;
  for(let i=0;i<26;i++){
@@ -236,7 +244,8 @@ export function paintLivingMesh(ctx,model,{intensity=1}={}){
  return Object.freeze({
   schema:model.schema,painted:true,source_mode:model.source_mode,
   model_carriers:fibers.length,hoops:nlat,shell_stations:nlong,
-  glint_candidates:26,empirical_credit:0
+  glint_candidates:26,host_electrodes:anchors.length===3?3:0,
+  empirical_credit:0
  });
 }
 export function mountVixenLivingMesh({
@@ -287,7 +296,8 @@ export function mountVixenLivingMesh({
    width:w,height:h,time,scroll,pointer,view:mode,sourceIds:hostFrame?.sourceIds??readSources(),
    quality:hostFrame?'low':w<720?'low':'medium'
   });
-  last=paintLivingMesh(ctx,model,{intensity:hostFrame?.intensity??(mode==='observatory'?.55:mode==='reference'?.52:.92)});
+  last=paintLivingMesh(ctx,model,{intensity:hostFrame?.intensity??(mode==='observatory'?.55:mode==='reference'?.52:.92),
+   electrodes:hostFrame?.electrodes??[]});
   canvas.dataset.route=mode;
   canvas.dataset.animation=paused()?'STILL':hostFrame?'HOST_FRAME':stageOwned()?'AMBIENT_PARKED':'LIVE';
   frame++;
@@ -345,13 +355,13 @@ export function mountVixenLivingMesh({
   status:()=>Object.freeze({
    rendered_frames:frame,route:canvas.dataset.route,
    motion:canvas.dataset.animation,source_mode:last?.source_mode,
-   model_carriers:last?.model_carriers,
+   model_carriers:last?.model_carriers,host_electrodes:last?.host_electrodes,
    paused_at_frame:pausedAt,paint_cost_ms:Math.round(paintCostMs),
    host_driven_frames:hostFrames,empirical_credit:0
   }),
   renderOnce:()=>{if(!disposed)sample(0);return last;},
   /** Opt-in same-frame host drawing: zero new RAFs or scheduler ownership. */
-  renderHostFrame:({time=0,sourceIds,view=doc.body.dataset.view,force=false}={})=>{
+  renderHostFrame:({time=0,sourceIds,electrodes=[],view=doc.body.dataset.view,force=false}={})=>{
    if(disposed||doc.hidden||!stageOwned()||view!==doc.body.dataset.view)return null;
    if(view==='observatory'&&doc.body.dataset.vixenOpticalMeshObservatory!=='on')return null;
    if(!Number.isFinite(time))return null;
@@ -359,7 +369,7 @@ export function mountVixenLivingMesh({
    const now=win.performance?.now?.()??0;
    if(!force&&now-lastHostFrameMs<180)return last;
    lastHostFrameMs=now;hostFrames++;
-   sample(time*1000,{time,view,sourceIds:sourceIds??readSources(),
+   sample(time*1000,{time,view,electrodes,sourceIds:sourceIds??readSources(),
     intensity:view==='collection'?.85:.45});
    return last;
   },
