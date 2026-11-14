@@ -52,3 +52,31 @@ test('Glinda root palette preserves graphite/pearl/champagne/pink/chrome',()=>{
   assert(css.includes(token),token);
  }
 });
+test('Zero-purple / zero-violet hue guard enforces Baker-Miller rose across inline styles and couture modules',()=>{
+ const extraSources=[
+  ...files,
+  '../app/encyclopedia/vixen-estate/vixen-opaline-couture-rgi14.mjs',
+  '../app/encyclopedia/vixen-estate/observatory-computational-score.mjs'
+ ];
+ const isVioletOrOrchid=([r,g,b])=>{
+  const R=r/255,G=g/255,B=b/255,mx=Math.max(R,G,B),mn=Math.min(R,G,B),d=mx-mn;
+  if(!d)return false;
+  const l=(mx+mn)/2,s=l>0.5?d/(2-mx-mn):d/(mx+mn);
+  let h=mx===R?60*(((G-B)/d)%6):mx===G?60*((B-R)/d+2):60*((R-G)/d+4);
+  if(h<0)h+=360;
+  return h>=235&&h<=327&&s*100>5;
+ };
+ const html=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
+ const styleMatch=html.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
+ const sourcesToCheck=[
+  {label:'vix-cyb.html <style>',body:(styleMatch?styleMatch[1]:'')},
+  ...extraSources.map(p=>({label:p,body:readFileSync(new URL(p,import.meta.url),'utf8')}))
+ ];
+ for(const {label,body} of sourcesToCheck){
+  assert(!/--violet\b/i.test(body),label+' must not redeclare --violet');
+  const clean=body.replace(/\/\*[\s\S]*?\*\//g,'');
+  const tokens=clean.match(/#[a-f\d]{3,8}\b|rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}(?:\s*,\s*[\d.]+)?\s*\)/gi)||[];
+  const bad=tokens.filter(t=>{const c=rgb(t);return c&&isVioletOrOrchid(c);});
+  assert.deepEqual(bad,[],label+' contains purple/violet hue (235-327 deg)');
+ }
+});

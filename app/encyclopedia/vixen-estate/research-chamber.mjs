@@ -55,7 +55,10 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
  const state={phase:'NOTICE',workIndex:0,first:0,second:1,result:null,annotation:'',restReturn:'NOTICE',events:[],seq:0};
  const work=()=>corpus.works[state.workIndex];
  const sources=()=>(work().linked_sources||[]);
- const track=(verb,details={})=>state.events.push(Object.freeze({seq:++state.seq,...stageVixenOperaEvent(verb,castVixenPerformer(work()),details)}));
+ const track=(verb,details={})=>{
+  const prev=state.events[state.events.length-1];
+  state.events.push(Object.freeze({seq:++state.seq,predecessor_seq:prev?prev.seq:null,...stageVixenOperaEvent(verb,castVixenPerformer(work()),details)}));
+ };
  function chooseWork(i){if(!Number.isInteger(i)||i<0||i>=corpus.works.length)return;state.workIndex=i;state.first=0;state.second=1;state.result=null;state.annotation='';state.phase='NOTICE';track('VIXEN_WORK_SELECTED',{work_id:work().work_id});render()}
  function begin(){if(state.phase!=='NOTICE')return;state.phase='ACT';track('MANIFESTATION_COMPARISON_OPENED',{work_id:work().work_id});render()}
  function observe(){
@@ -100,7 +103,19 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   add(selection,identity,text('Work ID: '+w.work_id+' · Manifestations: '+ss.length+' · Same-Work relation: '+(w.identity_status||'UNDETERMINED')+' · Authorship: '+(w.authorship||'UNRESOLVED'),'vxe-source-note'));
   const fullTitle=el('details','vxe-title-disclosure');
   add(fullTitle,el('summary','','Read complete Work title'),text(w.display_title||w.declared_title||w.work_id));
-  selection.append(fullTitle);
+  const fiberLinks=el('div','vxe-fiber-strip');
+  const workLink=el('a','vxe-fiber-chip','Open in Works Lexicon ↗');
+  workLink.href='#works/'+encodeURIComponent(w.work_id);
+  fiberLinks.append(workLink);
+  if(w.human_gate_required&&w.gate_num){
+   const gateLink=el('a','vxe-fiber-chip vxe-fiber-gate',`Human Gate ${w.gate_num} · UNADJUDICATED_PAIR ↗`);
+   gateLink.href='#gates';
+   fiberLinks.append(gateLink);
+  }
+  const salonLink=el('a','vxe-fiber-chip','Compose in Synthesis Salon ↗');
+  salonLink.href='#collection';
+  fiberLinks.append(salonLink);
+  selection.append(fullTitle,fiberLinks);
   container.append(selection);
   const grid=el('div','vxe-spatial vxe-vixen-pair');
   const first=el('section','vxe-estate vxe-estate-vixen');

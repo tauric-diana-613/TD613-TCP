@@ -7,10 +7,10 @@
 :root{
  --vixen-arc-champagne:#FFF2A9;
  --vixen-arc-core:#FFFBE2;
- --vixen-glinda-porcelain:#fff8fc;
+ --vixen-glinda-porcelain:#FFF7FA;
  --vixen-glinda-rose:#FF91AF;
  --vixen-glinda-fuchsia:#FF3F9E;
- --vixen-glinda-tulle:#FFE3F2;
+ --vixen-glinda-tulle:#FFE3EB;
  --vixen-chrome-black:#090B0F;
  --vixen-chrome-metal:#D9E1E8;
  --vixen-electric-champagne:#f2d5b8;
@@ -21,7 +21,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]){
  --vixen-ink:#1a2125;
  --vixen-black-chrome:#08090D;
  background:
-  radial-gradient(ellipse 48% 29% at 13% 4%,rgba(255,227,242,.22),transparent 80%),
+  radial-gradient(ellipse 48% 29% at 13% 4%,rgba(255,227,235,.22),transparent 80%),
   radial-gradient(ellipse 56% 30% at 88% 80%,rgba(255,145,175,.13),transparent 84%),
   linear-gradient(130deg,#090B0F,#24262B 58%,#08090D);
 }
@@ -35,7 +35,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header{
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .hdr-pill{
  border-color:rgba(255,242,169,.43);
  background:rgba(9,10,15,.67);
- box-shadow:inset 0 0 0 1px rgba(255,248,252,.05),0 0 14px rgba(255,145,175,.10);
+ box-shadow:inset 0 0 0 1px rgba(255,247,250,.05),0 0 14px rgba(255,145,175,.10);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header :is(.hdr-pill,.reading-back,.brand):focus-visible,
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(button,a,input,select,textarea):focus-visible{
@@ -133,7 +133,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-rea
 body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
  background:
   radial-gradient(ellipse 50% 52% at 12% 0,rgba(255,255,255,.94),transparent 86%),
-  linear-gradient(108deg,#FFFDFE,#FFE3F2 41%,#FF91AF 54%,#2B2C32 62%,#090B0F);
+  linear-gradient(108deg,#FFFDFE,#FFE3EB 41%,#FF91AF 54%,#2B2C32 62%,#090B0F);
 }
 /* CSS motion is minimal: true visible motion is provided by the driven field.
    Still and OS reduced-motion both freeze the field to a stable snapshot. */

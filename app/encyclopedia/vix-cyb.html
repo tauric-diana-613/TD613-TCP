@@ -99,12 +99,12 @@ body[data-view="overview"] main{padding-top:0}
 .text-link:hover{border-color:var(--graphite)}
 
 /* Cover Stage: Mugler-Unchained Chromepunk Frontispiece on Obsidian Void */
-.hero{height:clamp(760px,100svh,980px);padding-top:72px;position:relative;isolation:isolate;overflow:hidden;background:#050506}
+.hero{height:clamp(760px,100svh,980px);padding-top:72px;position:relative;isolation:isolate;overflow:hidden;background:#060708}
 .cover-registration{position:absolute;top:92px;left:var(--gutter);right:var(--gutter);display:flex;justify-content:space-between;gap:16px;font:500 8.5px/1.5 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:#d8d5ce;z-index:5}
 .hero-art{position:absolute;inset:72px 0 0 0;z-index:1;overflow:hidden;display:grid;place-items:center}
 .hero-art picture{width:100%;height:100%;display:grid;place-items:center}
 .hero-art img{width:min(126%,1760px);height:104%;object-fit:contain;filter:grayscale(1) contrast(1.24) brightness(1.04);mix-blend-mode:screen;opacity:.96;transform:perspective(1300px) rotateX(var(--cover-rx,0deg)) rotateY(var(--cover-ry,0deg));transition:transform .18s linear;mask-image:radial-gradient(ellipse at 50% 48%,#000 38%,rgba(0,0,0,.84) 58%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 48%,#000 38%,rgba(0,0,0,.84) 58%,transparent 80%)}
-.hero-art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#050506 0%,transparent 16%,transparent 80%,#050506 100%);pointer-events:none}
+.hero-art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#060708 0%,transparent 16%,transparent 80%,#060708 100%);pointer-events:none}
 .hero-art figcaption{position:absolute;right:var(--gutter);bottom:16px;padding:4px 9px;font:500 7.5px/1.4 var(--font-mono);letter-spacing:.09em;text-transform:uppercase;z-index:6}
 .cover-light{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at var(--light-x,54%) var(--light-y,46%),rgba(255,145,175,.16),transparent 46%);mix-blend-mode:screen}
 .cover-hairline{position:absolute;z-index:2;inset:18% 48% 12% 49%;transform:rotate(24deg);border-left:1px solid rgba(246,244,240,.22);pointer-events:none}
@@ -268,14 +268,79 @@ body[data-view="overview"] main{padding-top:0}
 .holds-grid{display:grid;gap:24px}
 .hold-panel{background:var(--porcelain);color:var(--graphite);border:1px solid var(--graphite);padding:26px}
 .hold-panel h2{font:400 34px/1.08 var(--font-serif);margin:10px 0 14px}
-.comp-table-wrap{overflow-x:auto;margin-top:14px}
+.comp-table-wrap{container-type:inline-size;overflow:auto;max-block-size:min(560px,80vh);margin-top:14px;border:1px solid var(--line-strong)}
+.comp-table-wrap:focus-visible{outline:2px solid var(--vixen-pink);outline-offset:2px}
 .comp-table{width:100%;border-collapse:collapse;font:500 10.5px/1.6 var(--font-mono);background:#fff}
-.comp-table th,.comp-table td{padding:11px 13px;border:1px solid var(--line-strong);text-align:left;vertical-align:top}
-.comp-table th{background:var(--graphite);color:var(--porcelain);text-transform:uppercase;letter-spacing:.06em;font-size:9px}
+.comp-table caption{caption-side:top;text-align:left;padding:10px 13px;background:#12181d;color:#FFF2A9;font:700 9.5px/1.4 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid rgba(255,145,175,.35)}
+.comp-table th,.comp-table td{padding:11px 13px;border:1px solid var(--line-strong);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.comp-table thead th{background:var(--graphite);color:var(--porcelain);text-transform:uppercase;letter-spacing:.06em;font-size:9px;position:sticky;inset-block-start:0;z-index:1}
+.comp-table tbody th{background:#F7EFF3;color:#12181D;font-weight:700}
+.comp-table-overview{--c2:'Research Surface';--c3:'Stage Role';--c4:'Authority Ceiling'}
+.comp-table-arms{--c2:'Arm 1 · Documentary';--c3:'Arm 2 · Receiver';--c4:'Arm 3 · Competent Null';--c5:'Arm 4 · Reciprocal';--c6:'Determination'}
+.comp-table-candidates{--c2:'Scope';--c3:'Governed Status'}
+@container (width < 600px){
+  .comp-table thead{display:none}
+  .comp-table tbody,.comp-table tr,.comp-table th,.comp-table td{display:block;width:100%}
+  .comp-table tr{margin-bottom:12px;border:1px solid rgba(255,145,175,.45)}
+  .comp-table tbody th[scope="row"]{background:#12181d!important;color:#FFF2A9!important;font-weight:700}
+  .comp-table td::before{display:block;font:700 8.5px/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:#9B1C52;margin-bottom:3px}
+  .comp-table td:nth-child(2)::before{content:var(--c2) ': '}
+  .comp-table td:nth-child(3)::before{content:var(--c3) ': '}
+  .comp-table td:nth-child(4)::before{content:var(--c4) ': '}
+  .comp-table td:nth-child(5)::before{content:var(--c5) ': '}
+  .comp-table td:nth-child(6)::before{content:var(--c6) ': '}
+}
+
+/* Modern Scrollbar Customization */
+:root{scrollbar-color:rgba(255,145,175,.55) #0b1014;scrollbar-width:thin}
+@supports not (scrollbar-color:auto){
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:#0b1014}
+  ::-webkit-scrollbar-thumb{background:#9B1C52;border:1px solid #FFF2A9}
+}
+
+/* Native Control Accents + Fallbacks */
+input[type="range"],progress{accent-color:#9B1C52}
+.instrument-stage input[type="range"],.bench-output progress,.gate-partition-meter{accent-color:#FF65AA}
+@supports not (accent-color:#9B1C52){
+  input[type="range"]{appearance:none;background:#1a2229;height:8px;border:1px solid #FF91AF}
+  input[type="range"]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;background:#FF65AA;border:1px solid #FFF2A9}
+  progress::-webkit-progress-bar{background:#12181d;border:1px solid rgba(255,145,175,.45)}
+  progress::-webkit-progress-value{background:#FF65AA}
+}
+
+/* Rest Bar, Overview Drawer, Pipeline Strip, Bench Ledger, Gate Meter & Podium Wild Field */
+.vixen-rest-bar{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:18px;padding:14px 18px;background:rgba(12,17,22,.88);border:1px solid rgba(255,242,169,.42);border-left:3px solid #FF91AF;color:#FFF7FA}
+.vixen-rest-bar .secondary-btn{background:#182026;color:#FFF2A9;border-color:#FF91AF}
+.vixen-rest-bar .secondary-btn[aria-pressed="true"],.vixen-rest-bar .secondary-btn:hover{background:#FFF2A9;color:#12181D;border-color:#FF65AA}
+.vixen-rest-note{font:500 10.5px/1.6 var(--font-mono);color:#F2E7EC;flex:1;min-width:240px}
+.vixen-overview-drawer{margin-top:14px;background:#10161B;border:1px solid rgba(255,145,175,.38);color:#FFF7FA;padding:12px 16px}
+.vixen-overview-drawer summary{cursor:pointer;font:600 10px/1.5 var(--font-mono);letter-spacing:.09em;text-transform:uppercase;color:#FFF2A9;min-height:36px;display:flex;align-items:center}
+.protocol-pipeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.pipeline-step{padding:12px 14px;background:#11171D;border:1px solid rgba(255,242,169,.38);color:#FFF7FA;font:500 10.5px/1.55 var(--font-mono)}
+.pipeline-step strong{display:block;color:#FFF2A9;margin-bottom:4px;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase}
+.bench-ledger{margin:14px 0 0;padding-left:20px;display:grid;gap:6px;font:500 10px/1.55 var(--font-mono);color:#F3E6EC}
+.bench-ledger li{padding:6px 8px;background:#12181e;border-left:2px solid #FFF2A9;overflow-wrap:anywhere}
+.gate-partition-meter{width:min(100%,260px);height:12px;vertical-align:middle}
+.wf-repertoire-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+.wf-commission-btn{display:flex;flex-direction:column;gap:4px;text-align:left;padding:11px 13px;min-height:64px;background:#12181E;border:1px solid rgba(255,145,175,.38);color:#FFF7FA;font:500 10.5px/1.5 var(--font-mono);cursor:pointer}
+.wf-commission-btn strong{color:#FFF2A9;font-size:10px;letter-spacing:.07em}
+.wf-commission-btn[aria-pressed="true"],.wf-commission-btn:hover{background:#182026;border-color:#FFF2A9;box-shadow:inset 3px 0 0 #FF65AA}
+@media(max-width:740px){
+  .protocol-pipeline,.wf-repertoire-grid{grid-template-columns:minmax(0,1fr)}
+}
 
 /* Dialogs: Concealed Cybernetic Inspector (Alt+I), Search (Cmd+K), Record Sheet */
-.dialog{padding:0;margin:auto;width:min(940px,calc(100% - 28px));max-height:calc(100dvh - 48px);border:2px solid var(--vixen-pink);background:var(--porcelain);color:var(--graphite);box-shadow:0 30px 120px rgba(0,0,0,.78)}
-.dialog::backdrop{background:rgba(9,10,12,.82);backdrop-filter:blur(6px)}
+.dialog{padding:0;margin:auto;width:min(940px,calc(100% - 28px));max-height:calc(100dvh - 48px);border:2px solid var(--vixen-pink);background:var(--porcelain);color:var(--graphite);box-shadow:0 30px 120px rgba(0,0,0,.78);overscroll-behavior:contain}
+.dialog:modal{overscroll-behavior:contain;opacity:1;transform:none;transition-property:opacity,transform,display,overlay;transition-duration:.25s;transition-behavior:allow-discrete}
+@starting-style{.dialog[open]{opacity:0;transform:translateY(8px) scale(.985)}}
+.dialog::backdrop{background:rgba(9,10,12,.82);backdrop-filter:blur(6px);overflow:hidden;overscroll-behavior:contain}
+@media(prefers-reduced-motion:reduce){.dialog:modal{transition-duration:.01s}}
+@media(forced-colors:active){
+  :root{--bg:Canvas;--paper:Canvas;--surface:Canvas;--text:CanvasText;--graphite:CanvasText;--porcelain:Canvas;--vixen-pink:Highlight;--arc-flash:Highlight;--line:GrayText;--line-strong:CanvasText}
+  .primary-btn,.secondary-btn,.stage-btn,.hdr-pill,.wf-commission-btn{border:1px solid ButtonText;color:ButtonText;background:ButtonFace}
+  .dialog{border:2px solid Highlight;background:Canvas;color:CanvasText}
+}
 .dialog-shell{max-height:calc(100dvh - 52px);overflow:auto}
 .dialog-header{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 24px;background:var(--graphite);color:var(--porcelain);position:sticky;top:0;z-index:4;border-bottom:1px solid rgba(255,145,175,.35)}
 .dialog-body{padding:26px}
@@ -392,7 +457,6 @@ body[data-view="overview"] main{padding-top:0}
   --ice:var(--graphite);
   --gold:var(--arc-flash);
   --rose:var(--graphite);
-  --violet:var(--graphite);
   --signal:var(--graphite);
   --paper:var(--porcelain);
   --line:#24282A3D;
@@ -718,6 +782,76 @@ body[data-view="overview"] .reading-back{display:none}
           <p class="eyebrow">CORPUS CLUSTER TOPOLOGY (CLICK TO FILTER 32-WORK CATALOGUE)</p>
           <div class="signal-bars" id="signalBarsContainer"></div>
         </div>
+        <div class="vixen-rest-bar" role="region" aria-label="Pacing and Stage Separation Rest Stop">
+          <button type="button" class="secondary-btn" id="restBtn" aria-pressed="false">Pause here · Nothing expires ‖</button>
+          <span class="vixen-rest-note">NOW / WHY / EXACT · Take any sequence without time penalty. Stage role: <code>OPERA</code> (strictly separated from <code>OPERAHOUSE</code> &amp; <code>PERFORMER</code>).</span>
+        </div>
+        <details class="vixen-overview-drawer" id="overviewTableDrawer">
+          <summary>Compare all 8 Research Rooms &amp; Custody Boundaries (Table Overview)</summary>
+          <div class="comp-table-wrap" role="region" tabindex="0" aria-labelledby="overviewTableCaption">
+            <table id="overviewTable" class="comp-table comp-table-overview">
+              <caption id="overviewTableCaption">Vixen Cybernetics 8-Room Research Map · Role Disjointness &amp; Authority Ceiling</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Room</th>
+                  <th scope="col">Research Surface</th>
+                  <th scope="col">Stage Role</th>
+                  <th scope="col">Authority Ceiling</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">00 · Entrance</th>
+                  <td>Frontispiece, Fox House &amp; 10-Stage Procession</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>HUMAN_CLOSURE_REQUIRED</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">01 · Observatory</th>
+                  <td>Electric Foundry (6 Headliners / 16 Labs) &amp; 22 Math Folios</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>BOUNDED_AUTHORED_MODEL</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">02 · Works</th>
+                  <td>32 Canonical Work Routes · 53 Linked Manifestations · +7 Batch-B</td>
+                  <td><code>PERFORMER</code></td>
+                  <td><code>32/32 AUTHORSHIP: UNRESOLVED</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">03 · Gates</th>
+                  <td>8 Split-Plane (.md/.pdf) Human Identity Gates ([32, 40])</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>UNADJUDICATED_PAIR (256 STATES)</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">04 · Methods</th>
+                  <td>21 Documentary Instruments (06-INSTRUMENTS · 0 Executors)</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>TIER_2_CATALOGUE_METADATA_ONLY</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">05 · Refusals</th>
+                  <td>E-00.1 Competent-Null Tie, LFP Warrants &amp; Covenant Holds</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>EMPIRICAL_CREDIT: 0</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">06 · Salon ✦</th>
+                  <td>Reparative Question Composer, Five Clocks &amp; Research Cart</td>
+                  <td><code>OPERA</code></td>
+                  <td><code>SESSION_LOCAL_REHEARSAL</code></td>
+                </tr>
+                <tr>
+                  <th scope="row">07 · Folios</th>
+                  <td>Source-Bound Comparison Chamber &amp; Separate Operahouse Encounter</td>
+                  <td><code>OPERA ⊥ OPERAHOUSE</code></td>
+                  <td><code>NO_AUTOMATIC_CROSSWALK</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -993,7 +1127,12 @@ body[data-view="overview"] .reading-back{display:none}
       </div>
 
       <div class="hold-panel" style="margin-bottom:22px">
-        <p class="eyebrow" style="margin-bottom:10px">NINE METHODOLOGICAL INVARIANTS · original_methods_inventory.json</p>
+        <p class="eyebrow" style="margin-bottom:10px">DOCUMENTARY PIPELINE &amp; NINE METHODOLOGICAL INVARIANTS · original_methods_inventory.json</p>
+        <div class="protocol-pipeline" role="list" aria-label="Three-Stage Documentary Protocol Pipeline">
+          <div class="pipeline-stage" role="listitem"><strong>1 · Blind Intake &amp; Quarantine</strong><span>87 historical files · c₄ AppleDouble quotient → 54 substantive</span></div>
+          <div class="pipeline-stage" role="listitem"><strong>2 · Method Registry (0 Executors)</strong><span>6 Sieves + 7 Authority + 4 Lineage + 4 Control Planes = 21</span></div>
+          <div class="pipeline-stage" role="listitem"><strong>3 · Work &amp; Gate Binding</strong><span>Binds 32 Works &amp; 8 UNADJUDICATED_PAIR gates without collapse</span></div>
+        </div>
         <div class="badge-row"><span class="tag porcelain">Source vs. Derivative distinction preserved</span><span class="tag porcelain">Work vs. Manifestation distinction preserved</span><span class="tag porcelain">Human-gated work identity (256 hypotheses) preserved without automatic gate collapse</span><span class="tag porcelain">Contextual role vs. Intrinsic assertion distinction preserved</span><span class="tag porcelain">Motif vs. Mechanism promotion ladder enforced</span><span class="tag porcelain">Conceptual convergence vs. Genealogical descent distinguished</span><span class="tag porcelain">Documentary analogy vs. Formal equivalence distinguished</span><span class="tag porcelain">Observed result vs. Reconstructed history distinguished</span><span class="tag porcelain">Internal integrity vs. External empirical confirmation distinguished</span></div>
       </div>
 
@@ -1043,21 +1182,22 @@ body[data-view="overview"] .reading-back{display:none}
           </div>
           <h2>Four-Arm Synthesis Confrontation (Bounded Tie at 100%)</h2>
           <p style="font-size:13.5px;line-height:1.78">Per <code>em_unified_synthesis_receipt.json</code>, Arm 4 (Reciprocal Synthesis) tied Arm 3 (Disciplined Non-Reciprocal Union Competent Null) across every audited structural metric. Vixen presents this tie on-stage rather than claiming unearned reciprocal superiority.</p>
-          <div class="comp-table-wrap">
-            <table class="comp-table">
+          <div class="comp-table-wrap" role="region" tabindex="0" aria-labelledby="confrontationTableCaption">
+            <table class="comp-table comp-table-arms">
+              <caption id="confrontationTableCaption">E-00.1 Four-Arm Synthesis Confrontation · Bounded Tie at 100%</caption>
               <thead>
                 <tr>
-                  <th>Metric / Audit Dimension</th>
-                  <th>Arm 1 · Documentary</th>
-                  <th>Arm 2 · Receiver</th>
-                  <th>Arm 3 · Non-Reciprocal Competent Null</th>
-                  <th>Arm 4 · Reciprocal Candidate</th>
-                  <th>Determination</th>
+                  <th scope="col">Metric / Audit Dimension</th>
+                  <th scope="col">Arm 1 · Documentary</th>
+                  <th scope="col">Arm 2 · Receiver</th>
+                  <th scope="col">Arm 3 · Non-Reciprocal Competent Null</th>
+                  <th scope="col">Arm 4 · Reciprocal Candidate</th>
+                  <th scope="col">Determination</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Trace-Derived Graph Fidelity</td>
+                  <th scope="row">Trace-Derived Graph Fidelity</th>
                   <td> Documentary baseline</td>
                   <td> Receiver baseline</td>
                   <td><strong>100%</strong></td>
@@ -1065,7 +1205,7 @@ body[data-view="overview"] .reading-back{display:none}
                   <td><code>BOUNDED_TIE_AT_100_PERCENT</code></td>
                 </tr>
                 <tr>
-                  <td>Unsupported Target Rejection</td>
+                  <th scope="row">Unsupported Target Rejection</th>
                   <td> Passive</td>
                   <td> Passive</td>
                   <td><strong>100% REJECTED</strong></td>
@@ -1073,7 +1213,7 @@ body[data-view="overview"] .reading-back{display:none}
                   <td><code>BOUNDED_TIE</code></td>
                 </tr>
                 <tr>
-                  <td>False Graph Convergence</td>
+                  <th scope="row">False Graph Convergence</th>
                   <td> 0</td>
                   <td> 0</td>
                   <td><strong>0</strong></td>
@@ -1081,7 +1221,7 @@ body[data-view="overview"] .reading-back{display:none}
                   <td><code>ZERO_FALSE_CONVERGENCE</code></td>
                 </tr>
                 <tr>
-                  <td>Non-Retroactive Withdrawal Ops</td>
+                  <th scope="row">Non-Retroactive Withdrawal Ops</th>
                   <td> N/A</td>
                   <td> N/A</td>
                   <td><strong>2</strong></td>
@@ -1108,44 +1248,55 @@ body[data-view="overview"] .reading-back{display:none}
             <span class="tag porcelain">SEPARATE-TRACK HOLDS (A-PFR0.2 &amp; PP0–PP6)</span>
           </div>
           <h2>Active Candidates &amp; Non-Conflated External Tracks</h2>
-          <div class="comp-table-wrap">
-            <table class="comp-table">
+          <div class="comp-table-wrap" role="region" tabindex="0" aria-labelledby="candidatesTableCaption">
+            <table class="comp-table comp-table-candidates">
+              <caption id="candidatesTableCaption">Active Research Candidates &amp; Non-Conflated External Tracks</caption>
               <thead>
                 <tr>
-                  <th>Track / Candidate</th>
-                  <th>Scope</th>
-                  <th>Governed Status</th>
+                  <th scope="col">Track / Candidate</th>
+                  <th scope="col">Scope</th>
+                  <th scope="col">Governed Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Candidate A · Algedonic Preemption</strong></td>
+                  <th scope="row">Candidate A · Algedonic Preemption</th>
                   <td>Homomorphic raw hazard bypass (<code>ψ_alg</code>) vs scalar EMA smoothing lag across Wild Field I &amp; Beer S1–S5 hypervisors.</td>
                   <td><code>BOUNDED_AUTHORED_COUNTERMODEL</code></td>
                 </tr>
                 <tr>
-                  <td><strong>Candidate B · Five-Clock Custody</strong></td>
+                  <th scope="row">Candidate B · Five-Clock Custody</th>
                   <td>Typed derivative indexing across <code>K_LAYER</code>, <code>N_TOKEN</code>, <code>TAU_CONT</code>, <code>T_WALL</code>, and 48 kHz <code>T_PLANT</code>.</td>
                   <td><code>PROTOCOL_SPECIFIED (DERIVATIVE_CLOCK_CUSTODY_V0_1)</code></td>
                 </tr>
                 <tr>
-                  <td><strong>Candidate C · XOR Synergy Null</strong></td>
+                  <th scope="row">Candidate C · XOR Synergy Null</th>
                   <td>Information-theoretic counterexample (<code>Z = X ⊕ Y</code>, <code>I_int = −1 bit</code>) bounding pairwise concordance heuristics ([RC-10]).</td>
                   <td><code>MANDATORY_NULL_CONTROL</code></td>
                 </tr>
                 <tr>
-                  <td><strong>Track A-PFR0.2 (Q01–Q09)</strong></td>
+                  <th scope="row">Track A-PFR0.2 (Q01–Q09)</th>
                   <td>Separate headless Node.js / offline engine remediation track (WebCrypto fail-closed, safe-integer spans, target registry, UTF-8 fatal bounds).</td>
                   <td><code>SEPARATE_HEADLESS_TRACK_PENDING</code></td>
                 </tr>
                 <tr>
-                  <td><strong>Experiment B Post-Postflight (PP0–PP6)</strong></td>
+                  <th scope="row">Experiment B Post-Postflight (PP0–PP6)</th>
                   <td>Prospective 3-arm blinded test of whether Refractive Couture symmetry-breaking yields stronger falsifiable questions ([RC-12]).</td>
                   <td><code>B_POSTPOSTFLIGHT_PROCEDURE_PINNED_UNEXECUTED</code></td>
                 </tr>
               </tbody>
             </table>
           </div>
+        </article>
+
+        <article class="hold-panel">
+          <div class="badge-row">
+            <span class="tag pink">COVENANT Khona&#x200c;lit-po · ZWNJ U+200C</span>
+            <span class="tag dark">c₄ QUOTIENT: 87 = 54 ⊔ 33 ._*</span>
+            <span class="tag gold">OPERAHOUSE ≠ OPERA ≠ PERFORMER</span>
+          </div>
+          <h2>Covenant Interior Guard, Packaging Fiber (c₄) &amp; Role Separation</h2>
+          <p style="font-size:13.5px;line-height:1.78">Every runtime render preserves three non-collapsible codepoints: Tai Xuan Jing tetragram <code>𝌋</code> (<code>U+1D30B</code>), Supplementary PUA emblem <code>&#x10D613;</code> (<code>U+10D613</code>), and the Covenant interior ZWNJ inside <code>Khona&#x200c;lit-po</code> (<code>U+200C</code>). Meanwhile FADT exact descent partitions the 87 historical intake files cleanly modulo packaging state <code>c₄</code> into 54 substantive records and 33 quarantined <code>._*</code> AppleDouble sidecars, and enforces strict stage disjointness between host service (<code>OPERAHOUSE</code>), curated work environment (<code>OPERA</code>), and recorded EMSTD613 specimen (<code>PERFORMER</code>).</p>
         </article>
       </div>
     </div>
@@ -1207,7 +1358,7 @@ body[data-view="overview"] .reading-back{display:none}
 </div>
 
 <!-- GLOBAL SEARCH DIALOG (Ctrl/⌘+K) -->
-<dialog class="dialog search-dialog" id="searchDialog" aria-label="Search Vixen Cybernetics Catalogue">
+<dialog class="dialog search-dialog" id="searchDialog" closedby="any" aria-label="Search Vixen Cybernetics Catalogue">
   <div class="dialog-shell">
     <div class="dialog-header">
       <span style="font:600 10px var(--font-mono);letter-spacing:.1em;text-transform:uppercase">Vixen Source-Free Catalogue Search (32 Works · 7 Batch-B · 21 Protocols · 22 Folios)</span>
@@ -1222,7 +1373,7 @@ body[data-view="overview"] .reading-back{display:none}
 </dialog>
 
 <!-- CONCEALED CYBERNETIC INSPECTOR (Alt + I) -->
-<dialog class="dialog inspector-dialog" id="inspectorDialog" aria-label="Concealed Cybernetic Inspector">
+<dialog class="dialog inspector-dialog" id="inspectorDialog" closedby="any" aria-label="Concealed Cybernetic Inspector">
   <div class="dialog-shell">
     <div class="dialog-header">
       <span style="font:600 10.5px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--vixen-pink)">◆ Concealed Cybernetic Nervous System · Provenance &amp; Negative-Control Bench</span>
@@ -1233,6 +1384,7 @@ body[data-view="overview"] .reading-back{display:none}
         <button type="button" data-insp-tab="census" aria-pressed="true">I · 87 / 94 / 147 Census &amp; Custodial Duties</button>
         <button type="button" data-insp-tab="bench" aria-pressed="false">II · Fail-Closed UTF-8 &amp; Digest Bench</button>
         <button type="button" data-insp-tab="provenance" aria-pressed="false">III · Codepoint Separation &amp; Couture Seam</button>
+        <button type="button" data-insp-tab="podium" aria-pressed="false">IV · Podium AIX &amp; Wild Field Repertoire</button>
       </div>
       <div id="inspectorTabBody" aria-live="polite"></div>
     </div>
@@ -1614,7 +1766,18 @@ body[data-view="overview"] .reading-back{display:none}
       });
     });
 
-    const cur = DATA.spine_stages.find((s) => s.id === state.spineStage) || DATA.spine_stages[0];
+    const idx = DATA.spine_stages.findIndex((s) => s.id === state.spineStage);
+    const safeIdx = idx >= 0 ? idx : 0;
+    const cur = DATA.spine_stages[safeIdx];
+    const prevSt = safeIdx > 0 ? DATA.spine_stages[safeIdx - 1] : null;
+    const nextSt = safeIdx < DATA.spine_stages.length - 1 ? DATA.spine_stages[safeIdx + 1] : null;
+    const roomByStage = safeIdx <= 1 ? 'works' : safeIdx <= 4 ? 'observatory' : safeIdx <= 7 ? 'holds' : 'collection';
+    const roomLabels = {
+      works: 'Open Works Catalogue ↗',
+      observatory: 'Open Synthesis Observatory ↗',
+      holds: 'Open Refusals & Holds ↗',
+      collection: 'Open Synthesis Salon ↗'
+    };
     const linksHtml = (cur.links || []).map((id) =>
       '<button type="button" class="secondary-btn" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
     ).join(' ');
@@ -1622,10 +1785,15 @@ body[data-view="overview"] .reading-back{display:none}
     contentEl.innerHTML =
       '<div class="stage-watermark" aria-hidden="true">' + esc(cur.glyph) + '</div>' +
       '<div>' +
-        '<p class="eyebrow">' + esc(cur.code) + ' · ATELIER METHOD V0.1</p>' +
+        '<p class="eyebrow">' + esc(cur.code) + ' · ATELIER METHOD V0.1 · NOW / WHY / EXACT</p>' +
         '<h3>' + esc(cur.title) + '</h3>' +
         '<p>' + esc(cur.summary) + '</p>' +
-        '<div class="badge-row" style="margin-top:16px">' + linksHtml + '</div>' +
+        '<div class="badge-row" style="margin-top:14px">' + linksHtml + '</div>' +
+        '<div class="stage-step-controls" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">' +
+          (prevSt ? '<button type="button" class="secondary-btn" data-spine-step="' + esc(prevSt.id) + '">← Prev ' + esc(prevSt.code) + '</button>' : '') +
+          '<button type="button" class="primary-btn" data-spine-room="' + roomByStage + '">' + roomLabels[roomByStage] + '</button>' +
+          (nextSt ? '<button type="button" class="secondary-btn" data-spine-step="' + esc(nextSt.id) + '">Next ' + esc(nextSt.code) + ' →</button>' : '') +
+        '</div>' +
       '</div>' +
       '<div class="stage-formula-card">' +
         '<p class="eyebrow" style="margin-bottom:10px">GOVERNED STAGE INVARIANT</p>' +
@@ -1634,6 +1802,17 @@ body[data-view="overview"] .reading-back{display:none}
         '</div>' +
         '<p style="font:500 9.5px/1.6 var(--font-mono);margin-top:12px">HUMAN CLOSURE REQUIRED · SCIENTIFIC PROMOTION AUTHORITY: FALSE</p>' +
       '</div>';
+    contentEl.querySelectorAll('[data-spine-step]').forEach((b) => {
+      b.addEventListener('click', () => {
+        state.spineStage = b.getAttribute('data-spine-step');
+        renderSpineStage();
+      });
+    });
+    contentEl.querySelectorAll('[data-spine-room]').forEach((b) => {
+      b.addEventListener('click', () => {
+        setView(b.getAttribute('data-spine-room'), { pushHistory: true });
+      });
+    });
     bindRefButtons(contentEl);
     renderMathSlots(contentEl);
   }
@@ -1846,12 +2025,12 @@ body[data-view="overview"] .reading-back{display:none}
       const nodes = [
         { id: 'S-PLANE (Semantic)', x: cx, y: cy - r * 0.82, col: '#FF91AF' },
         { id: 'W-PLANE (Witness)', x: cx - r * 0.95, y: cy + r * 0.62, col: '#F6F4F0' },
-        { id: 'A-PLANE (Actuator)', x: cx + r * 0.95, y: cy + r * 0.62, col: '#dfbfee' }
+        { id: 'A-PLANE (Actuator)', x: cx + r * 0.95, y: cy + r * 0.62, col: '#FFF2A9' }
       ];
 
       // Candidate-2-derived multi-harmonic P-membrane: observable, not a source proof.
       const pPhase = animPhase * (1.2 + p);
-      ctx.strokeStyle = state.obsHostileMode === 'false_setpoint' ? 'rgba(223,191,238,.9)' : 'rgba(255,145,175,.65)';
+      ctx.strokeStyle = state.obsHostileMode === 'false_setpoint' ? 'rgba(255,242,169,.9)' : 'rgba(255,145,175,.65)';
       ctx.lineWidth = 1.6;
       ctx.setLineDash([]);
       ctx.beginPath();
@@ -1873,7 +2052,7 @@ body[data-view="overview"] .reading-back{display:none}
       edges.forEach((e) => {
         const a = nodes[e.from];
         const b = nodes[e.to];
-        ctx.strokeStyle = e.blocked ? 'rgba(223,191,238,0.85)' : 'rgba(246,244,240,0.65)';
+        ctx.strokeStyle = e.blocked ? 'rgba(255,242,169,0.85)' : 'rgba(246,244,240,0.65)';
         ctx.lineWidth = e.blocked ? 2.2 : 1.8;
         if (e.blocked) ctx.setLineDash([6, 4]);
         ctx.beginPath();
@@ -1883,7 +2062,7 @@ body[data-view="overview"] .reading-back{display:none}
         ctx.setLineDash([]);
         const mx = (a.x + b.x) / 2;
         const my = (a.y + b.y) / 2;
-        ctx.fillStyle = e.blocked ? '#dfbfee' : '#cfd3d6';
+        ctx.fillStyle = e.blocked ? '#FFF2A9' : '#cfd3d6';
         ctx.font = '500 10px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillText(e.blocked ? e.label + ' [HELD]' : e.label, mx, my - 6);
@@ -1908,7 +2087,7 @@ body[data-view="overview"] .reading-back{display:none}
           const a=nodes[pt.lane],b=nodes[(pt.lane+1)%3];
           const t=(pt.t+animPhase*(.03+.04*p)+pt.shift*.2)%1;
           const x=a.x+(b.x-a.x)*t, y=a.y+(b.y-a.y)*t;
-          ctx.fillStyle=pt.lane===2?'rgba(223,191,238,.75)':'rgba(255,223,234,.55)';
+          ctx.fillStyle=pt.lane===2?'rgba(255,242,169,.75)':'rgba(255,223,234,.55)';
           ctx.beginPath();ctx.arc(x,y,.7+1.3*((pt.shift+.3)%1),0,Math.PI*2);ctx.fill();
         });
       }
@@ -1933,12 +2112,12 @@ body[data-view="overview"] .reading-back{display:none}
         { name: 'N_TOKEN', r: 0.25, rate: 0.8 + w, col: '#F6F4F0' },
         { name: 'TAU_CONT', r: 0.34, rate: 1.25, col: '#b8c4cc' },
         { name: 'T_WALL', r: 0.43, rate: 1.7, col: '#8fa1ad' },
-        { name: 'T_PLANT (48kHz)', r: 0.52, rate: 2.6 + p, col: '#dfbfee' }
+        { name: 'T_PLANT (48kHz)', r: 0.52, rate: 2.6 + p, col: '#FFF2A9' }
       ];
       const scale = Math.min(W, H) * 0.82;
       clocks.forEach((cl, idx) => {
         const rad = scale * cl.r;
-        ctx.strokeStyle = state.obsHostileMode === 'unindexed_dt' && idx % 2 === 1 ? '#dfbfee' : cl.col;
+        ctx.strokeStyle = state.obsHostileMode === 'unindexed_dt' && idx % 2 === 1 ? '#FFF2A9' : cl.col;
         ctx.globalAlpha = 0.82;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -1973,7 +2152,7 @@ body[data-view="overview"] .reading-back{display:none}
       ctx.save();
       ctx.translate(cx - W * 0.14, cy);
       ctx.rotate(-0.42);
-      ctx.strokeStyle = state.obsHostileMode === 'rank1_collapse' ? '#dfbfee' : '#FF91AF';
+      ctx.strokeStyle = state.obsHostileMode === 'rank1_collapse' ? '#FFF2A9' : '#FF91AF';
       ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
@@ -2022,7 +2201,7 @@ body[data-view="overview"] .reading-back{display:none}
       ctx.moveTo(ix, 50);
       ctx.lineTo(ix, H - 50);
       ctx.stroke();
-      ctx.fillStyle = '#dfbfee';
+      ctx.fillStyle = '#FFF2A9';
       ctx.beginPath();
       ctx.arc(ix, cy + lambdaShift, 6, 0, Math.PI * 2);
       ctx.fill();
@@ -2097,11 +2276,47 @@ body[data-view="overview"] .reading-back{display:none}
     }
   };
 
+  function fnv64Hex(str) {
+    let h1 = 0xcbf29ce4n, h2 = 0x84222325n;
+    let h = (h1 << 32n) | h2;
+    const prime = 0x100000001b3n;
+    const mask = 0xffffffffffffffffn;
+    for (let i = 0; i < str.length; i++) {
+      h ^= BigInt(str.charCodeAt(i));
+      h = (h * prime) & mask;
+    }
+    return h.toString(16).padStart(16, '0');
+  }
+
   function renderSynthesisBench() {
     const c = BENCH_CASES[state.benchPair] || BENCH_CASES.c1_c2_valid;
     const isWithdrawn = Boolean(state.withdrawnSources[c.srcA] || state.withdrawnSources[c.srcB]);
     const effStatus = isWithdrawn ? 'TOMBSTONE (CASCADED NON-RETROACTIVE SOURCE WITHDRAWAL)' : c.status;
     const effLevel = isWithdrawn ? 'WITHDRAWN_TOMBSTONE' : c.level;
+
+    const prevSnap = state.benchSnapshots.length > 0 ? state.benchSnapshots[state.benchSnapshots.length - 1] : null;
+    const predCitation = prevSnap
+      ? 'seq #' + prevSnap.seq + ' (' + prevSnap.pair_key + ' → ' + prevSnap.hypothesis_level + (prevSnap.digest ? ' · ' + prevSnap.digest.slice(0, 8) : '') + ')'
+      : 'GENESIS_NONE (0 prior session snapshots)';
+
+    const findWorkBySrc = (srcId) => DATA.works.find((w) => (w.linked_sources || []).some((s) => s.source_file_id === srcId));
+    const workA = findWorkBySrc(c.srcA);
+    const workB = findWorkBySrc(c.srcB);
+    const renderSrcChip = (srcId, wObj) => {
+      const wFlag = state.withdrawnSources[srcId] ? ' [WITHDRAWN]' : '';
+      return wObj
+        ? '<button type="button" class="secondary-btn" style="min-height:28px;padding:2px 8px;font-size:9px" data-open-ref="' + esc(wObj.work_id) + '">' + esc(srcId + wFlag + ' → ' + wObj.work_id.slice(0, 12)) + ' ↗</button>'
+        : '<code>' + esc(srcId + wFlag) + '</code>';
+    };
+    const ledgerHtml = state.benchSnapshots.length > 0
+      ? '<ol class="bench-ledger" aria-label="Session-local immutable snapshot ancestry chain">' +
+          state.benchSnapshots.slice(-5).map((s) =>
+            '<li><strong>#' + s.seq + '</strong> ' + esc(s.pair_key) + ' → <code>' + esc(s.hypothesis_level) + '</code>' +
+            ' · pred: <code>' + (s.predecessor_seq ? '#' + s.predecessor_seq + ' (' + esc((s.predecessor_digest || '').slice(0, 8)) + ')' : 'GENESIS') + '</code>' +
+            ' · hash: <code>' + esc((s.digest || '').slice(0, 10)) + '</code></li>'
+          ).join('') +
+        '</ol>'
+      : '';
 
     const outEl = $('benchOutputPanel');
     if (!outEl) return;
@@ -2112,14 +2327,16 @@ body[data-view="overview"] .reading-back{display:none}
         '<span class="tag porcelain">E-00.1: BOUNDED_TIE</span>' +
       '</div>' +
       '<div><strong>PAIR:</strong> ' + esc(c.label) + '</div>' +
-      '<div><strong>SOURCES:</strong> ' + esc(c.srcA) + (state.withdrawnSources[c.srcA] ? ' [WITHDRAWN]' : '') + ' · ' + esc(c.srcB) + (state.withdrawnSources[c.srcB] ? ' [WITHDRAWN]' : '') + '</div>' +
+      '<div class="badge-row" style="margin:6px 0"><strong>SOURCES (EMS → EMW):</strong> ' + renderSrcChip(c.srcA, workA) + ' ' + renderSrcChip(c.srcB, workB) + '</div>' +
       '<div style="color:var(--vixen-pink);margin-top:6px"><strong>PRESET HYPOTHESIS:</strong> ' + esc(effLevel) + '</div>' +
       '<div><strong>HYPOTHETICAL OUTCOME:</strong> ' + esc(effStatus) + '</div>' +
       (c.theoryId ? '<div><strong>CANDIDATE ID:</strong> ' + esc(c.theoryId) + '</div>' : '') +
       '<div><strong>RETAINED CONTRADICTIONS:</strong> ' + esc(c.retained.join(' · ')) + '</div>' +
       '<div><strong>WARRANT CEILING:</strong> ' + esc(c.warrant) + '</div>' +
       '<div style="margin-top:8px;color:#cfd3d6">' + esc(c.explanation) + '</div>' +
-      '<div style="margin-top:8px;font-size:9.5px;color:var(--arc-flash)">SESSION_LOCAL_SNAPSHOT COUNT: ' + state.benchSnapshots.length + ' · DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)</div>';
+      '<div style="margin-top:8px;font-size:9.5px;color:var(--arc-flash)">SESSION_LOCAL_SNAPSHOT COUNT: ' + state.benchSnapshots.length + ' · PREDECESSOR CITATION: ' + esc(predCitation) + ' · DEMONSTRATED_NON_RETROACTIVE_DISPLAY_IN_SESSION (Predecessor values retained in-session)</div>' +
+      ledgerHtml;
+    bindRefButtons(outEl);
   }
 
   function renderFormulaFolios() {
@@ -2170,6 +2387,7 @@ body[data-view="overview"] .reading-back{display:none}
       const links = (f.links || []).map((id) =>
         '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
       ).join(' ');
+      const foundryBtn = '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage in Electric Foundry ↑</button>';
       return '<article class="formula-card" data-folio-id="' + esc(f.id) + '" data-folio-family="' + esc(f.group) + '">' +
         '<div class="badge-row" style="justify-content:space-between">' +
           '<span style="font:600 9.5px var(--font-mono)">' + esc(f.id) + '</span>' +
@@ -2180,11 +2398,14 @@ body[data-view="overview"] .reading-back{display:none}
           '<span class="math-fallback">' + esc(displayFallback) + '</span>' +
         '</div>' +
         '<p>' + esc(f.summary) + '</p>' +
-        (links ? '<div class="badge-row">' + links + '</div>' : '') +
+        '<div class="badge-row">' + links + ' ' + foundryBtn + '</div>' +
         '<div class="ceiling-line">CEILING: ' + esc(f.ceiling) + '</div>' +
       '</article>';
     }).join('');
     bindRefButtons(listEl);
+    listEl.querySelectorAll('[data-foundry-folio]').forEach((b) => {
+      b.addEventListener('click', () => stageFolioInFoundry(b.getAttribute('data-foundry-folio')));
+    });
     renderMathSlots(listEl);
   }
 
@@ -2382,6 +2603,8 @@ body[data-view="overview"] .reading-back{display:none}
             '<p style="font:500 10.5px/1.65 var(--font-mono)">Catalog Accession: <code>' + esc(sel.work_id) + '</code> · Identity Status: <strong>' + esc(sel.identity_status) + '</strong> · Contribution Interval: [' + sel.contribution_interval[0] + ', ' + sel.contribution_interval[1] + ']</p>' +
             '<div class="badge-row" style="margin-top:10px">' +
               sel.planes.map((pl) => '<span class="tag porcelain">' + esc(pl) + '</span>').join('') +
+              '<span class="tag dark">FADT c₄: 54 SUBSTANTIVE</span>' +
+              '<span class="tag gold">CLOCK: DERIVATIVE_INDEXED</span>' +
             '</div>' +
           '</div>' +
           '<div data-membrane="SCHOLARLY_INTERPRETATION" class="reader-section">' +
@@ -2407,6 +2630,7 @@ body[data-view="overview"] .reading-back{display:none}
           '</div>' +
           '<div class="reader-section" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">' +
             gateJump +
+            '<button type="button" class="secondary-btn" data-open-folios="' + esc(sel.work_id) + '">Inspect in Folios Chamber ↗</button>' +
             '<button type="button" class="secondary-btn" data-save-tray="' + esc(sel.work_id) + '">' + (saved ? '★ Saved in Tray' : '☆ Save to Study Tray') + '</button>' +
             '<button type="button" class="secondary-btn" data-cite-id="' + esc(sel.work_id) + '">Copy Citation</button>' +
           '</div>';
@@ -2477,9 +2701,10 @@ body[data-view="overview"] .reading-back{display:none}
       const intervalStr = minW === maxW ? String(minW) + ' (Hypothetical Fixed Study)' : '[' + minW + ', ' + maxW + ']';
       summaryEl.innerHTML =
         '<div><span class="eyebrow" style="color:#cfd3d6">ACTIVE SENSITIVITY INTERVAL</span><div class="sens-big">' + esc(intervalStr) + '</div></div>' +
-        '<div style="font:500 10.5px/1.7 var(--font-mono)">' +
-          '<div>Conditional All-Merged Baseline: <strong>32 Works</strong> · Full Corpus Envelope: <strong>[32, 40]</strong> (256 partitions)</div>' +
-          '<div>Unadjudicated Gates Remaining: <strong>' + unadjudicatedCount + ' / 8</strong> (' + activePartitions + ' open states) · <span class="tag gold">LOCAL_HYPOTHETICAL_STUDY_NOT_HUMAN_ADJUDICATION</span></div>' +
+        '<div style="font:500 10.5px/1.7 var(--font-mono);flex:1;min-width:240px">' +
+          '<div>Conditional All-Merged Baseline: <strong>32 Works</strong> · Full Corpus Envelope: <strong>[32, 40]</strong> (<span style="font-variant-numeric:tabular-nums">' + activePartitions + ' / 256</span> = 2<sup>' + unadjudicatedCount + '</sup> open partitions)</div>' +
+          '<div style="margin:6px 0"><progress class="gate-partition-meter" max="256" value="' + activePartitions + '" aria-label="Unadjudicated partition state count">' + activePartitions + ' of 256</progress></div>' +
+          '<div>Unadjudicated Gates Remaining: <strong>' + unadjudicatedCount + ' / 8</strong> · Unpaired Annex Note: <code>emsrc_11</code> / +7 Batch-B PDFs sit outside 32-work envelope · <span class="tag gold">LOCAL_HYPOTHETICAL_STUDY_NOT_HUMAN_ADJUDICATION</span></div>' +
         '</div>';
     }
 
@@ -2498,7 +2723,10 @@ body[data-view="overview"] .reading-back{display:none}
             '<h2>' + esc(g.declared_title) + '</h2>' +
             '<p style="font:500 10px/1.6 var(--font-mono);margin-top:4px">work_id: <code>' + esc(g.work_id) + '</code> · Identity Status: SAME_WORK_SUPPORTED · Interval: [1, 2]</p>' +
           '</div>' +
-          '<button type="button" class="secondary-btn" data-open-ref="' + esc(g.work_id) + '">Open in 32-Work Catalogue ↗</button>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
+            '<button type="button" class="secondary-btn" data-open-folios="' + esc(g.work_id) + '">Compare in Folios ↗</button>' +
+            '<button type="button" class="secondary-btn" data-open-ref="' + esc(g.work_id) + '">Open in 32-Work Catalogue ↗</button>' +
+          '</div>' +
         '</div>' +
         '<div class="bilateral-seam">' +
           '<div class="gate-folio">' +
@@ -2537,6 +2765,7 @@ body[data-view="overview"] .reading-back{display:none}
       });
     });
     bindRefButtons(stackEl);
+    bindUtilityButtons(stackEl);
   }
 
   // 5. Render 04 Protocols: Bijective 21 Documentary Instruments (6+7+4+4=21, 0 Phantoms)
@@ -2681,7 +2910,10 @@ body[data-view="overview"] .reading-back{display:none}
           '<div data-membrane="SCHOLARLY_INTERPRETATION" class="reader-section">' +
             '<h3>WORKS GOVERNED BY THIS INSTRUMENT (' + linkedWorks.length + ')</h3>' +
             '<div class="badge-row">' +
-              linkedWorks.map((w) => '<button type="button" class="secondary-btn" data-open-ref="' + esc(w.work_id) + '">' + esc(w.work_id.slice(0, 13)) + '… · ' + esc(w.declared_title.slice(0, 34)) + '… ↗</button>').join('') +
+              linkedWorks.map((w) =>
+                '<button type="button" class="secondary-btn" data-open-ref="' + esc(w.work_id) + '">' + esc(w.work_id.slice(0, 13)) + '… · ' + esc(w.declared_title.slice(0, 34)) + '… ↗</button>' +
+                (w.human_gate_required ? '<button type="button" class="tag gold" data-open-gate="' + w.gate_num + '" title="Jump to Human Gate #' + w.gate_num + '">[Gate #' + w.gate_num + '] ↗</button>' : '')
+              ).join('') +
             '</div>' +
           '</div>' +
           '<div class="reader-section" style="display:flex;flex-wrap:wrap;gap:10px">' +
@@ -2882,6 +3114,101 @@ body[data-view="overview"] .reading-back{display:none}
       $('runNanBoundsBtn').addEventListener('click', () => runWith(NaN, 5));
       $('runCryptoRejectBtn').addEventListener('click', () => runWith(0, 19, { simulateCryptoReject: true }));
       runWith(0, 19);
+    } else if (state.inspectorTab === 'podium') {
+      const podiumRoutes = [
+        'podium.describe', 'vixen.manifest', 'vixen.work.inspect', 'vixen.work.search',
+        'vixen.gates.inspect', 'vixen.protocols.inspect', 'universal.open', 'universal.search',
+        'universal.get', 'universal.related', 'synthesis.propose', 'engine.invoke'
+      ];
+      const wildCommissions = [
+        { wf: 'wf-algedonic-bypass', roman: 'I', title: 'Algedonic Bypass', desc: 'Raw emergency channel vs scalar EMA smoothing lag.', route: 'engine.invoke', args: { labId: 'LAB_TCC-03', commission: 'wf-algedonic-bypass' } },
+        { wf: 'wf-false-setpoint', roman: 'II', title: 'False Coherent Setpoint', desc: 'Internal stability ||e_S|| → 0 while diverging from witness R_WS(W).', route: 'engine.invoke', args: { labId: 'LAB_RC-02', commission: 'wf-false-setpoint' } },
+        { wf: 'wf-five-clock-vernier', roman: 'III', title: 'Five-Clock Vernier', desc: 'Non-equivalent derivatives across k_layer, n_tok, τ_cont, t_wall, 48 kHz t_plant.', route: 'engine.invoke', args: { labId: 'LAB_TCC-05', commission: 'wf-five-clock-vernier' } },
+        { wf: 'wf-gate-partition-256', roman: 'IV', title: '256-Partition Gate Lattice', desc: '8 human-gated .md/.pdf pairs spanning the [32, 40] Work envelope.', route: 'vixen.gates.inspect', args: { gateNum: 1, commission: 'wf-gate-partition-256' } },
+        { wf: 'wf-appledouble-quotient', roman: 'V', title: 'AppleDouble Quotient', desc: 'Exact FADT fiber 87 = 54 ⊔ 33 ._*.', route: 'vixen.protocols.inspect', args: { protocolId: 'OBFUSCATION_DECOMPRESSION_PROTOCOL', commission: 'wf-appledouble-quotient' } },
+        { wf: 'wf-orthographic-nullspace', roman: 'VI', title: 'Orthographic [111] Nullspace', desc: 'ker(Π_u) = span{u} depth ambiguity family.', route: 'engine.invoke', args: { labId: 'LAB_RC-12', commission: 'wf-orthographic-nullspace' } },
+        { wf: 'wf-xor-synergy-null', roman: 'VII', title: 'XOR Synergy Null', desc: 'Z = X ⊕ Y with zero pairwise mutual information and 1.0 bit synergy.', route: 'engine.invoke', args: { labId: 'LAB_RC-10', commission: 'wf-xor-synergy-null' } },
+        { wf: 'wf-experiment-b-hold', roman: 'VIII', title: 'Experiment B Hold', desc: 'Pinned prospective protocol held pending human-authorized trial.', route: 'synthesis.propose', args: { question: 'Experiment B counterfactual staging check', commission: 'wf-experiment-b-hold' } }
+      ];
+      body.innerHTML =
+        '<div class="insp-card">' +
+          '<h3>TYPED MACHINE PODIUM CONTRACT (td613.vixen.podium.task/v1 · 12 ROUTES)</h3>' +
+          '<p style="color:#cfd3d6;margin-bottom:10px">The Vixen Podium is a machine-facing read/audit contract (<code>./reference/podium/manifest.json</code>) that keeps <code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code> strictly disjoint. It exposes 12 typed routes with <code>deployment_authority: false</code> and <code>empirical_replication_credit: 0</code>:</p>' +
+          '<div class="badge-row" style="margin-bottom:10px">' +
+            podiumRoutes.map((r) => '<button type="button" class="tag dark podium-route-chip" data-podium-route="' + esc(r) + '"><code>' + esc(r) + '</code></button>').join('') +
+          '</div>' +
+          '<div>• CLI Runner: <code>node scripts/vixen-podium.mjs --stdin</code> · Native Read Lane requires explicit <code>TD613_PODIUM_OPERATOR_DIRECT=1</code> host attestation.</div>' +
+          '<div>• Cross-Atelier Witness: <code>synthesis.propose</code> emits <code>ua:contract:cross_atelier_witness</code> with disposition <code>WITNESSED_UNLINKED_PAIR</code> and <code>human_ratified_crosswalk: false</code>.</div>' +
+        '</div>' +
+        '<div class="insp-card">' +
+          '<h3>WILD FIELD REPERTOIRE (8 INTERACTIVE COMMISSIONS → JSONL COMPOSER)</h3>' +
+          '<div class="wf-repertoire-grid">' +
+            wildCommissions.map((wc, idx) =>
+              '<button type="button" class="wf-commission-btn" data-wf-idx="' + idx + '" aria-pressed="' + (idx === 0) + '">' +
+                '<span class="wf-code">' + esc(wc.roman + '. ' + wc.wf) + '</span>' +
+                '<strong>' + esc(wc.title) + '</strong>' +
+                '<small>' + esc(wc.desc) + '</small>' +
+              '</button>'
+            ).join('') +
+          '</div>' +
+          '<div class="podium-composer-box" style="margin-top:12px">' +
+            '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px">' +
+              '<label style="font:500 10px var(--font-mono);color:#cfd3d6">Route: <select id="podiumRouteSelect" style="margin-left:4px;padding:4px 8px;background:#0d0f11;color:#F6F4F0;border:1px solid rgba(255,145,175,.35)">' +
+                podiumRoutes.map((r) => '<option value="' + esc(r) + '">' + esc(r) + '</option>').join('') +
+              '</select></label>' +
+              '<button type="button" class="hdr-pill" id="podiumCopyJsonlBtn" style="background:var(--vixen-pink);color:var(--graphite)">Copy JSONL Task</button>' +
+              '<button type="button" class="hdr-pill" id="podiumCopyCliBtn">Copy CLI Cmd</button>' +
+            '</div>' +
+            '<pre id="podiumComposerPre" style="padding:10px 12px;background:#090b0d;border:1px solid rgba(255,145,175,.35);white-space:pre-wrap;margin:0;font-size:10.5px;line-height:1.55"></pre>' +
+          '</div>' +
+        '</div>';
+      const selEl = $('podiumRouteSelect');
+      const preEl = $('podiumComposerPre');
+      let currentWc = wildCommissions[0];
+      const renderComposer = (routeVal, wc) => {
+        if (!preEl) return;
+        const line = JSON.stringify({
+          schema: 'td613.vixen.podium.task/v1',
+          route: routeVal,
+          stage_role_guard: 'OPERAHOUSE != OPERA != PERFORMER',
+          repertoire_only: true,
+          deployment_authority: false,
+          empirical_replication_credit: 0,
+          params: wc ? wc.args : {}
+        });
+        preEl.textContent = line;
+      };
+      if (selEl) {
+        selEl.value = currentWc.route;
+        selEl.addEventListener('change', () => renderComposer(selEl.value, currentWc));
+      }
+      renderComposer(currentWc.route, currentWc);
+      body.querySelectorAll('[data-wf-idx]').forEach((b) => {
+        b.addEventListener('click', () => {
+          currentWc = wildCommissions[Number(b.getAttribute('data-wf-idx'))] || wildCommissions[0];
+          body.querySelectorAll('[data-wf-idx]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          if (selEl) selEl.value = currentWc.route;
+          renderComposer(currentWc.route, currentWc);
+        });
+      });
+      body.querySelectorAll('[data-podium-route]').forEach((b) => {
+        b.addEventListener('click', () => {
+          const r = b.getAttribute('data-podium-route');
+          if (selEl) selEl.value = r;
+          renderComposer(r, currentWc);
+        });
+      });
+      $('podiumCopyJsonlBtn')?.addEventListener('click', () => {
+        const txt = preEl ? preEl.textContent : '';
+        if (navigator.clipboard?.writeText) navigator.clipboard.writeText(txt).then(() => showToast('Copied Podium JSONL task'));
+        else showToast('Podium JSONL task ready in composer');
+      });
+      $('podiumCopyCliBtn')?.addEventListener('click', () => {
+        const txt = preEl ? preEl.textContent.replace(/'/g, "'\\''") : '';
+        const cmd = "printf '%s\\n' '" + txt + "' | node scripts/vixen-podium.mjs --stdin";
+        if (navigator.clipboard?.writeText) navigator.clipboard.writeText(cmd).then(() => showToast('Copied CLI pipe command'));
+        else showToast('CLI pipe command ready');
+      });
     } else {
       const themeCss = document.getElementById('manifest-instance-theme').textContent;
       const hasCrypto = Boolean(window.crypto && window.crypto.subtle);
@@ -2970,7 +3297,49 @@ body[data-view="overview"] .reading-back{display:none}
     });
   }
 
+  function stageFolioInFoundry(folioId) {
+    const host = $('vixenElectricFoundry');
+    if (host) {
+      const targetBtn = host.querySelector('[data-lab-id="LAB_' + folioId + '"]') ||
+        host.querySelector('[data-lab-id="' + (String(folioId).startsWith('TCC') ? 'LAB_TCC-05' : 'LAB_RC-10') + '"]') ||
+        host.querySelector('[data-lab-id]');
+      if (targetBtn) targetBtn.click();
+      host.scrollIntoView({ behavior: document.body.dataset.vixenMotion === 'still' ? 'instant' : 'smooth', block: 'start' });
+      showToast('Staged ' + folioId + ' inside Electric Foundry Observatory');
+    }
+  }
+
   function bindUtilityButtons(root) {
+    (root || document).querySelectorAll('[data-open-folios]').forEach((btn) => {
+      if (btn.dataset.boundFolios) return;
+      btn.dataset.boundFolios = '1';
+      btn.addEventListener('click', () => {
+        const wId = btn.getAttribute('data-open-folios');
+        setView('reference', { pushHistory: true });
+        requestAnimationFrame(() => {
+          const idx = DATA.works.findIndex((w) => w.work_id === wId);
+          const selEl = document.querySelector('#vixenReferenceChamber select[aria-label="Choose Vixen Work"]');
+          if (selEl && idx >= 0) {
+            selEl.value = String(idx);
+            selEl.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+      });
+    });
+    (root || document).querySelectorAll('[data-open-gate]').forEach((btn) => {
+      if (btn.dataset.boundGateJump) return;
+      btn.dataset.boundGateJump = '1';
+      btn.addEventListener('click', () => {
+        const gNum = btn.getAttribute('data-open-gate');
+        setView('gates', { pushHistory: true, preserveScroll: true });
+        requestAnimationFrame(() => {
+          const gCard = document.getElementById('gate-card-' + gNum);
+          if (gCard) {
+            gCard.scrollIntoView({ behavior: document.body.dataset.vixenMotion === 'still' ? 'instant' : 'smooth', block: 'center' });
+          }
+        });
+      });
+    });
     (root || document).querySelectorAll('[data-copy-hash]').forEach((btn) => {
       if (btn.dataset.boundHash) return;
       btn.dataset.boundHash = '1';
@@ -3353,13 +3722,17 @@ body[data-view="overview"] .reading-back{display:none}
         renderSynthesisBench();
       });
     });
-    const snapBtn = $('recordSnapshotBtn');
+      const snapBtn = $('recordSnapshotBtn');
     if (snapBtn) {
       snapBtn.addEventListener('click', () => {
         const c = BENCH_CASES[state.benchPair] || BENCH_CASES.c1_c2_valid;
         const isWithdrawn = Boolean(state.withdrawnSources[c.srcA] || state.withdrawnSources[c.srcB]);
-        const snapshotEntry = Object.freeze({
+        const prevSnap = state.benchSnapshots.length > 0 ? state.benchSnapshots[state.benchSnapshots.length - 1] : null;
+        const payload = {
           seq: state.benchSnapshots.length + 1,
+          predecessor_seq: prevSnap ? prevSnap.seq : null,
+          predecessor_pair_key: prevSnap ? prevSnap.pair_key : null,
+          predecessor_digest: prevSnap ? (prevSnap.digest || null) : null,
           pair_key: state.benchPair,
           pair_label: c.label,
           hypothesis_level: isWithdrawn ? 'WITHDRAWN_TOMBSTONE' : c.level,
@@ -3370,10 +3743,14 @@ body[data-view="overview"] .reading-back{display:none}
           srcB_withdrawn: Boolean(state.withdrawnSources[c.srcB]),
           captured_scope: 'SESSION_LOCAL_SNAPSHOT',
           recorded_at: new Date().toISOString()
+        };
+        const snapshotEntry = Object.freeze({
+          ...payload,
+          digest: fnv64Hex(JSON.stringify(payload))
         });
         state.benchSnapshots.push(snapshotEntry);
         renderSynthesisBench();
-        showToast('Recorded session-local snapshot #' + state.benchSnapshots.length + ' (frozen in-session state)');
+        showToast('Recorded session-local snapshot #' + state.benchSnapshots.length + ' (' + snapshotEntry.digest.slice(0, 8) + ')');
       });
     }
     const withdrawBtn = $('toggleWithdrawBtn');
@@ -3541,6 +3918,36 @@ body[data-view="overview"] .reading-back{display:none}
     if (inspDlg) {
       $('closeInspectorBtn').addEventListener('click', () => inspDlg.close());
       inspDlg.addEventListener('close', () => { if (lastTrigger && lastTrigger.focus) lastTrigger.focus({ preventScroll: true }); });
+    }
+
+    // Light-dismiss progressive fallback for browsers lacking <dialog closedby="any">
+    if (typeof HTMLDialogElement !== 'undefined' && !('closedBy' in HTMLDialogElement.prototype)) {
+      const outside = (e, dialog) => {
+        const r = dialog.getBoundingClientRect();
+        return e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom;
+      };
+      for (const dialog of document.querySelectorAll('dialog[closedby="any"]')) {
+        let pressedOutside = false;
+        dialog.addEventListener('pointerdown', (e) => { pressedOutside = outside(e, dialog); });
+        dialog.addEventListener('pointerup', (e) => { if (pressedOutside && outside(e, dialog)) dialog.close(); });
+      }
+    }
+
+    // Pedagogue Rest Control (#restBtn): pause ambient motion & hold session cleanly
+    const restBtn = $('restBtn');
+    if (restBtn) {
+      restBtn.addEventListener('click', () => {
+        const isResting = restBtn.getAttribute('aria-pressed') === 'true';
+        const nextRest = !isResting;
+        restBtn.setAttribute('aria-pressed', String(nextRest));
+        restBtn.textContent = nextRest ? 'Resting here · Resume rhythm ▶' : 'Pause here · Nothing expires ‖';
+        if (nextRest && !state.motionPaused && motionBtn) {
+          motionBtn.click();
+        } else if (!nextRest && state.motionPaused && motionBtn) {
+          motionBtn.click();
+        }
+        showToast(nextRest ? 'Resting here — session state preserved without expiry' : 'Ambient rhythm resumed');
+      });
     }
 
     // Global Keyboard Shortcuts (Cmd/Ctrl+K for Search, Alt+I for Concealed Inspector)

@@ -56,7 +56,7 @@
 #vixenElectricFoundry .ef-heading{
  font:400 clamp(35px,4.7vw,73px)/1.04 Georgia,serif;
  letter-spacing:-.055em;max-width:1150px;margin:0 0 11px;
- background:linear-gradient(108deg,#fffcff,#DCD9D5 39%,#e8a7cf 67%,#DCD9D5);
+ background:linear-gradient(108deg,#FFFDF8,#DCD9D5 39%,#FF91AF 67%,#DCD9D5);
  -webkit-background-clip:text;background-clip:text;color:transparent;
  text-shadow:0 12px 33px rgba(102,112,120,.16);
 }
@@ -84,14 +84,14 @@
 }
 #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
  background:linear-gradient(121deg,#928F8F 0%,#24282A 13%,#242b31 72%,#141823 100%);
- color:#fcfcff;box-shadow:inset 0 3px #DCD9D5,inset 0 -3px rgba(194,190,188,.6);
+ color:#FAF8F5;box-shadow:inset 0 3px #DCD9D5,inset 0 -3px rgba(194,190,188,.6);
  text-shadow:0 0 16px rgba(220,217,213,.4)
 }
 #vixenElectricFoundry .ef-hero-tab:hover{background-color:#24282A;color:white}
 #vixenElectricFoundry .ef-pane{
  position:relative;z-index:1;padding:20px clamp(20px,3vw,44px) 20px;
  display:grid;grid-template-columns:1.1fr 1.35fr;column-gap:35px;align-items:start;
- background:linear-gradient(160deg,rgba(26,27,39,.88),rgba(10,15,23,.93));
+ background:linear-gradient(160deg,rgba(18,24,30,.88),rgba(10,15,23,.93));
  border-bottom:1px solid var(--ef-hair);
 }
 #vixenElectricFoundry .ef-pane>.ef-sourcebadge{grid-column:1/-1}
@@ -108,7 +108,7 @@
 }
 #vixenElectricFoundry .ef-lab-subtitle{
  font:italic clamp(16px,1.5vw,23px)/1.24 Georgia,serif;
- margin:4px 0;color:#e9a4cc
+ margin:4px 0;color:#FF91AF
 }
 #vixenElectricFoundry .ef-lab-description{
  grid-column:1;color:#c5cadd;margin:7px 0;
@@ -144,7 +144,7 @@
 #vixenElectricFoundry .ef-toggle,
 #vixenElectricFoundry .ef-button{
  cursor:pointer;min-height:40px;padding:10px 13px;
- background:#161923;color:#F6F4F0;
+ background:#131a21;color:#F6F4F0;
  border:1px solid #928F8F;font:700 10px/1.4 ui-monospace,monospace;
  text-align:left;letter-spacing:.04em;
 }
@@ -226,7 +226,7 @@
 #vixenElectricFoundry .ef-readout{
  min-height:540px;max-height:660px;overflow:auto;display:block;
  background:
- linear-gradient(155deg,#191c29 0%,#090c14 70%),
+ linear-gradient(155deg,#141b22 0%,#090c14 70%),
  radial-gradient(ellipse at 20% 50%,rgba(102,112,120,.13),transparent 85%);
  padding:24px 20px;color:#ebeffc;
 }
@@ -328,7 +328,7 @@
 }
 #vixenElectricFoundry .ef-gallery{
  padding:25px clamp(20px,3vw,45px) 33px;
- background:linear-gradient(150deg,#151925,#20212c 65%,#0c121c);
+ background:linear-gradient(150deg,#151925,#1a2128 65%,#0c121c);
  position:relative;z-index:1;
 }
 #vixenElectricFoundry .ef-gallery .ef-custody{
@@ -358,7 +358,7 @@
 }
 #vixenElectricFoundry .ef-gallery-item[aria-pressed="true"]{
  border-color:#F6F4F0;color:#fff;
- background:linear-gradient(125deg,#667078,#171a29);
+ background:linear-gradient(125deg,#667078,#151d24);
 }
 #vixenElectricFoundry :is(button,canvas,input,summary):focus-visible{
  outline:3px solid #DCD9D5;outline-offset:3px
@@ -402,7 +402,7 @@
 
 
 /* AUTHORITY: original #manifest-instance-theme, Vixen / Astra lineage.
- * #FF91AF Baker-Miller Pink · #eebfd8 Arc Flash
+ * #FF91AF Baker-Miller Pink · #FFF2A9 Arc Flash
  * #24282A Graphite · #667078 Nickel · #F6F4F0 Porcelain
  * A chromatic shader is an INSTRUMENT, never a replacement for this Opera.
  */
@@ -413,10 +413,10 @@
  --ef-hair:rgba(245,216,186,.34);--ef-rose:#FF91AF;
  color:#F6F4F0;
  background:radial-gradient(ellipse at 81% -18%,rgba(255,145,175,.25),transparent 64%),
- linear-gradient(146deg,#24282A 2%,#283036 47%,#111113 100%);
+ linear-gradient(146deg,#24282A 2%,#283036 47%,#0D1115 100%);
  border-color:#667078;
  box-shadow:inset 0 0 0 1px #F6F4F0,0 0 0 3px #24282A,
- 0 36px 72px rgba(23,17,21,.54);
+ 0 36px 72px rgba(14,19,24,.54);
 }
 #vixenElectricFoundry:before{
  background:linear-gradient(90deg,transparent 0%,#FF91AF 13%,#F6F4F0 28%,
@@ -448,7 +448,7 @@
  box-shadow:inset 0 3px #f5d8ba,inset 0 -3px #FF91AF;
 }
 #vixenElectricFoundry .ef-pane{
- background:linear-gradient(160deg,#2f282c,#171719 82%);
+ background:linear-gradient(160deg,#1B232A,#14181D 82%);
 }
 #vixenElectricFoundry .ef-sourcebadge{
  color:#f5d8ba;background:#24282A;border-color:#f5d8ba;
@@ -475,7 +475,7 @@
 #vixenElectricFoundry .ef-button:hover{background:#51575c;color:#F6F4F0}
 #vixenElectricFoundry .ef-eye{border-bottom-color:#f5d8ba}
 #vixenElectricFoundry .ef-stage{
- background:radial-gradient(ellipse at center,#3d3439,#151b1f 74%);
+ background:radial-gradient(ellipse at center,#1E272E,#151b1f 74%);
  box-shadow:inset 0 0 130px rgba(255,145,175,.18);
  border-right-color:rgba(245,216,186,.7);
 }
@@ -504,6 +504,12 @@
 #vixenElectricFoundry .ef-dial input{accent-color:#f5d8ba}
 #vixenElectricFoundry .ef-score{background:#24282A;border-bottom-color:#f5d8ba}
 #vixenElectricFoundry .ef-carrier-grid{border-bottom-color:#f5d8ba}
+#vixenElectricFoundry .ef-carrier{cursor:pointer;transition:transform .16s ease,opacity .16s ease}
+#vixenElectricFoundry .ef-carrier:hover,#vixenElectricFoundry .ef-carrier:focus-visible{transform:scaleY(1.16);opacity:1}
+#vixenElectricFoundry .ef-carrier-detail{
+ margin-top:10px;padding:7px 11px;background:#141a1f;border-left:2px solid #FFF2A9;
+ color:#FFF2A9;font:600 10px/1.5 ui-monospace,monospace;letter-spacing:.06em;
+}
 #vixenElectricFoundry .ef-carrier[data-plane="flight-near"]{border-top-color:#f5d8ba}
 #vixenElectricFoundry .ef-evidence{
  background:#24282A;border-bottom-color:rgba(245,216,186,.5);
@@ -542,4 +548,47 @@
 }
 @media(max-width:740px){
  #vixenElectricFoundry .ef-notation{min-height:350px}
+}
+#vixenElectricFoundry .ef-now-why-exact{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px;
+}
+#vixenElectricFoundry .ef-nwe-cell{
+ padding:7px 10px;background:rgba(12,17,22,.86);border:1px solid rgba(255,242,169,.42);
+ border-left:2px solid #FF91AF;color:#FFF7FA;font:600 9.5px/1.45 ui-monospace,monospace;
+ letter-spacing:.05em;overflow-wrap:anywhere;
+}
+#vixenElectricFoundry .vixen-aperture-hud{
+ display:flex;flex-wrap:wrap;gap:8px;padding:10px clamp(16px,3vw,40px);
+ background:#0F151A;border-top:1px solid rgba(255,242,169,.28);border-bottom:1px solid rgba(255,145,175,.28);
+}
+#vixenElectricFoundry .vixen-hud-pill{
+ display:inline-flex;align-items:center;padding:5px 10px;min-height:28px;
+ background:#172027;border:1px solid rgba(255,242,169,.48);
+ color:#FFF2A9;font:700 9.5px/1.35 ui-monospace,monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+}
+#vixenElectricFoundry .ef-hold-notice{
+ padding:10px clamp(16px,3vw,40px);background:#141A20;border-top:1px solid #FF65AA;border-bottom:1px solid #FFF2A9;
+ color:#FFFDF8;font:600 10.5px/1.55 ui-monospace,monospace;letter-spacing:.05em;
+}
+#vixenElectricFoundry .ef-carrier-controls{
+ display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px;
+}
+#vixenElectricFoundry .ef-carrier-filter{
+ min-height:36px;padding:6px 11px;background:#161E24;color:#FFF7FA;border:1px solid rgba(255,242,169,.42);
+ font:600 9.5px/1.2 ui-monospace,monospace;letter-spacing:.06em;cursor:pointer;
+}
+#vixenElectricFoundry .ef-carrier-filter[aria-pressed="true"]{
+ background:#FFF2A9;color:#12181D;border-color:#FF65AA;font-weight:700;
+}
+#vixenElectricFoundry .ef-carrier-filter:hover{border-color:#FF91AF}
+#vixenElectricFoundry .ef-carrier-jump{background:#182026;border-color:#FF91AF;color:#FFF2A9}
+#vixenElectricFoundry .ef-carrier.is-dimmed{opacity:.18}
+#vixenElectricFoundry .ef-dial input{
+ accent-color:#FFF2A9;
+}
+@supports not (accent-color:#FFF2A9){
+ #vixenElectricFoundry .ef-dial input{background:#12181D;border:1px solid #FFF2A9;min-height:10px}
+}
+@media(max-width:860px){
+ #vixenElectricFoundry .ef-now-why-exact{grid-template-columns:minmax(0,1fr)}
 }

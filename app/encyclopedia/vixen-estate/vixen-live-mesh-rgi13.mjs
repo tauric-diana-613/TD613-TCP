@@ -21,6 +21,31 @@ export const ELECTRIC_COUTURE=Object.freeze({
  champagne:'#FFF2A9',core:'#FFFBE2',chrome:'#D9E1E8',black:'#08090D'
 });
 const hash=s=>{let n=2166136261;for(const c of s){n^=c.codePointAt(0);n=Math.imul(n,16777619)>>>0}return n};
+const smoothstep=(e0,e1,x)=>{const u=Math.max(0,Math.min(1,(x-e0)/Math.max(1e-6,e1-e0)));return u*u*(3-2*u);};
+const OCCLUSION_SELECTORS=Object.freeze([
+ '.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
+ '.hero-art',
+ '.view:not([hidden]) .vs-hero-copy','.view:not([hidden]) .vs-source-card',
+ '.view:not([hidden]) .vs-rail','.view:not([hidden]) .vs-compose',
+ '.view:not([hidden]) .vs-result','.view:not([hidden]) .vs-holonomy-card',
+ '.view:not([hidden]) .vs-vernier-card','.view:not([hidden]) .vs-trajectory-memory',
+ '.view:not([hidden]) .view-heading','.view:not([hidden]) .lexicon-reader',
+ '.view:not([hidden]) .lexicon-index','.view:not([hidden]) .gate-pair-card',
+ '.view:not([hidden]) .vixen-foyer-copy','.view:not([hidden]) .vixen-foyer-intro',
+ '.view:not([hidden]) .vixen-doorways','.view:not([hidden]) .vixen-foyer-frame',
+ '.view:not([hidden]) .vixen-foyer-tail','.view:not([hidden]) .archive-directory',
+ '.view:not([hidden]) .procession-section','.view:not([hidden]) .editorial-questions',
+ '.view:not([hidden]) .research-path','#vixenElectricFoundry',
+ '.view:not([hidden]) .synthesis-bench','.view:not([hidden]) .formula-card',
+ '.view:not([hidden]) .folio-locus','.view:not([hidden]) .hold-panel',
+ '.view:not([hidden]) .comp-table','.view:not([hidden]) .vxe-heading',
+ '.view:not([hidden]) .vxe-steps','.view:not([hidden]) .vxe-status',
+ '.view:not([hidden]) .vxe-work-selector','.view:not([hidden]) .vxe-estate',
+ '.view:not([hidden]) .vxe-membrane','.view:not([hidden]) .vxe-tail',
+ '.view:not([hidden]) .vxe-result','.vixen-aperture-hud',
+ 'dialog','[role="dialog"]','.view:not([hidden]) button','.view:not([hidden]) select',
+ '.view:not([hidden]) input','.view:not([hidden]) textarea','.view:not([hidden]) summary'
+]);
 export function buildLivingMesh({width=1440,height=900,time=0,view='overview',sourceIds=[],
  pointer={x:.5,y:.5},scroll=0}={}){
  if(![width,height,time].every(Number.isFinite)||width<=0||height<=0)
@@ -30,16 +55,39 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='overview',so
  const cx=width*(view==='overview'?.82:.74)+(Math.max(0,Math.min(1,pointer.x))-.5)*16;
  const cy=height*.52-Math.min(18,Math.max(0,scroll)*.008);
  const scene=buildSalonField({width,height,time,field,cx,cy,scale:Math.min(width,height)*.82,sourceIds:ids});
- return {schema:MESH_CONTRACT.schema,width,height,phase:time,view,field,scene,seed,
+ const edge=Math.max(24,Math.min(width,height)*.065);
+ const deflected=scene.trails.map(t=>({
+  ...t,
+  points:t.points.map(([px,py])=>{
+   const dx=px<edge?(1-smoothstep(0,edge,px))*10:(px>width-edge?-(1-smoothstep(0,edge,width-px))*10:0);
+   const dy=py<edge?(1-smoothstep(0,edge,py))*8:(py>height-edge?-(1-smoothstep(0,edge,height-py))*8:0);
+   if(!dx&&!dy)return [px,py];
+   const sign=t.id%2===0?1:-1;
+   return [px+dx+dy*.45*sign,py+dy-dx*.45*sign];
+  })
+ }));
+ const deflectedScene={...scene,trails:deflected};
+ return {schema:MESH_CONTRACT.schema,width,height,phase:time,view,field,scene:deflectedScene,seed,
   source_mode:ids.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK',
   fibers:CARRIERS,empirical_credit:0};
 }
-/** Clip each exclusion separately: an even-odd compound path would XOR
- * overlapping controls, accidentally painting inside their overlap. */
+/** Partition exclusions into minimal disjoint layers and clip via 'evenodd' viewport complement. */
 export function clipMeshExclusions(ctx,width,height,rects){
+ const buckets=[];
+ const overlaps=(a,b)=>a.left<b.left+b.width&&a.left+a.width>b.left&&a.top<b.top+b.height&&a.top+a.height>b.top;
  for(const r of rects){
   if(!r||![r.left,r.top,r.width,r.height].every(Number.isFinite)||r.width<=0||r.height<=0)continue;
-  ctx.beginPath();ctx.rect(0,0,width,height);ctx.rect(r.left,r.top,r.width,r.height);ctx.clip('evenodd');
+  let placed=false;
+  for(const bucket of buckets){
+   if(!bucket.some(other=>overlaps(r,other))){bucket.push(r);placed=true;break;}
+  }
+  if(!placed)buckets.push([r]);
+ }
+ for(const bucket of buckets){
+  ctx.beginPath();
+  ctx.rect(0,0,width,height);
+  for(const r of bucket)ctx.rect(r.left,r.top,r.width,r.height);
+  ctx.clip('evenodd');
  }
 }
 export function paintLivingMesh(ctx,model,{intensity=1,scene=model.scene,origin={x:0,y:0},
@@ -66,24 +114,25 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  const mq=win.matchMedia('(prefers-reduced-motion: reduce)'),motion=doc.getElementById('motionBtn');
  let raf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
  let last=null,hostFrame=null,layoutDirty=true,exclusions=[],dpr=0,paintCostMs=0;
- let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity;
+ let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity,lastBoxCacheMs=-Infinity;
  const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
  const view=()=>doc.body.dataset.view||'overview';
  const stageOwned=()=>['collection','observatory'].includes(view());
  const outsideOpera=()=>doc.body.dataset.activeResearchStage==='OPERAHOUSE';
- const paused=()=>mq.matches||doc.body.dataset.vixenMotion==='still'||motion?.getAttribute('aria-pressed')==='true';
+ const paused=()=>{
+  const btn=doc.getElementById('motionBtn')||motion;
+  return mq.matches||doc.body.dataset.vixenMotion==='still'||btn?.getAttribute('aria-pressed')==='true';
+ };
  const enabled=()=>!outsideOpera()&&(view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
- function readExclusions(){
+ function readExclusions(force=false){
   // Mask content and accepted art, leaving moving cloth along thresholds,
-  // gutters and document edges. No CSS mask suppresses the whole page field.
-  const selectors=['.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
-   '.vs-hero-copy','.vs-source-card','.vs-rail','.vs-compose','.vs-result',
-   '.view-heading','.lexicon-reader','.gate-pair-card','.hero-art','.vixen-foyer-copy',
-   '#vixenElectricFoundry','.folio-locus','dialog','[role="dialog"]','main button',
-   'main select','main input','main textarea','main summary'];
-  exclusions=[...doc.querySelectorAll(selectors.join(','))].flatMap(el=>{
+  // gutters and document edges. Uses active-view scoping + 250ms box cache.
+  const now=win.performance.now();
+  if(!force&&now-lastBoxCacheMs<250&&exclusions.length){layoutDirty=false;return;}
+  lastBoxCacheMs=now;
+  exclusions=[...doc.querySelectorAll(OCCLUSION_SELECTORS.join(','))].flatMap(el=>{
    if(!el.getClientRects().length)return [];
    const r=el.getBoundingClientRect();if(r.bottom<0||r.top>height()||r.right<0||r.left>width())return [];
    return [{left:r.left-3,top:r.top-3,width:r.width+6,height:r.height+6}];
@@ -144,13 +193,14 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  };
  win.addEventListener('pointermove',onPointer,{passive:true});
  win.addEventListener('resize',onLayout,{passive:true});win.addEventListener('scroll',onLayout,{passive:true,capture:true});
- doc.addEventListener('visibilitychange',changed);mq.addEventListener('change',changed);
+ doc.addEventListener('visibilitychange',changed);doc.addEventListener('vixen:motionchange',changed);
+ win.addEventListener('vixen:motionchange',changed);mq.addEventListener('change',changed);
  schedule();
  return Object.freeze({mounted:true,contract:MESH_CONTRACT,
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
    phase:last?.phase??time,source_mode:last?.source_mode,model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,empirical_credit:0}),
-  renderOnce:()=>{layoutDirty=true;draw();return last;},
+  renderOnce:()=>{readExclusions(true);draw();return last;},
   renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,view:route=view(),force=false}={})=>{
    if(disposed||doc.hidden||!stageOwned()||route!==view()||!enabled()||!Number.isFinite(phase))return null;
    if(paused()&&!force)return last;
@@ -162,12 +212,13 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
     if(!force&&now-lastObservatoryPaint<100)return last;
     lastObservatoryPaint=now;
    }
-   if(force)layoutDirty=true;
+   if(force)readExclusions(true);
    hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route};hostFrames++;draw(hostFrame);return last;
   },
   dispose(){disposed=true;cancel();mutation.disconnect();canvas.remove();
    win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
    win.removeEventListener('scroll',onLayout,true);doc.removeEventListener('visibilitychange',changed);
+   doc.removeEventListener('vixen:motionchange',changed);win.removeEventListener('vixen:motionchange',changed);
    mq.removeEventListener('change',changed);}
  });
 }

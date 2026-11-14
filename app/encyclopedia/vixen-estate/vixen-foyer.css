@@ -15,7 +15,7 @@
  --vf-flash:#FFF2A9;
  --vf-porcelain:#F6F4F0;
  --vf-metal:#667078;
- --vf-night:#060608;
+ --vf-night:#070A0D;
  --vf-wine:#24282A;
  --vf-blush:#E8A4BE;
  --vf-foil:linear-gradient(115deg,#F6F4F0 0%,#BCC2C7 13%,#4B555D 29%,#FAF9F6 48%,#8C939B 64%,#F6F4F0 82%,#667078 100%);
@@ -360,7 +360,7 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  * This is a paint-level restoration, not a change to route functionality.
  */
 body .site-header{
- background:linear-gradient(180deg,rgba(12,17,20,.97),rgba(18,11,15,.90))!important;
+ background:linear-gradient(180deg,rgba(12,17,20,.97),rgba(14,19,23,.90))!important;
  border-bottom:1px solid rgba(255,145,175,.46);
  color:#F6F4F0;
  backdrop-filter:blur(18px) saturate(1.35);
@@ -450,7 +450,7 @@ body .site-header .mobile-nav small{color:#f5d8ba}
     display:flex;position:fixed;z-index:88;
     left:0;top:var(--header-height,72px);bottom:0;width:var(--vf-room-width);
     flex-direction:column;align-items:stretch;
-    background:linear-gradient(180deg,#0c1114,#0d1215 58%,#170e13);
+    background:linear-gradient(180deg,#0c1114,#0d1215 58%,#12181D);
     border-right:1px solid rgba(255,145,175,.31);
     box-shadow:5px 0 24px rgba(0,0,0,.23);
     overflow-x:visible;overflow-y:auto;scrollbar-width:thin;
@@ -537,7 +537,7 @@ body .site-header .mobile-nav small{color:#f5d8ba}
  * ─────────────────────────────────────────────────────────────────────── */
 #view-overview > .hero{
  display:block;position:relative;isolation:isolate;
- min-height:760px;overflow:hidden;background:#050506;
+ min-height:760px;overflow:hidden;background:#060708;
 }
 #view-overview > .hero .hero-art{
  display:grid;visibility:visible;opacity:1;z-index:1;

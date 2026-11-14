@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {readFile} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
 import {createVixenPodium,PODIUM_SCHEMA,PODIUM_ROUTES} from '../app/encyclopedia/reference/vixen-podium.mjs';
+const repoRoot=fileURLToPath(new URL('../',import.meta.url));
 const root=new URL('../app/encyclopedia/',import.meta.url);
 const html=await readFile(new URL('vix-cyb.html',root),'utf8');
 const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
@@ -111,7 +113,7 @@ test('Podium portable native CLI performs actual reference read without network 
   task('engine.invoke',{engine:'DOLLHOUSE',operation:'audit',payload:{}})
  ];
  const stdout=execFileSync(process.execPath,['scripts/vixen-podium.mjs','--stdin'],{
-  cwd:new URL('../',import.meta.url).pathname,input:JSON.stringify(batch),encoding:'utf8',timeout:30000
+  cwd:repoRoot,input:JSON.stringify(batch),encoding:'utf8',timeout:30000
  });
  const report=JSON.parse(stdout);
  assert.equal(report.results.length,batch.length);
@@ -129,7 +131,7 @@ test('Native five-specialist Dollhouse negative control executes without turning
  const path=new URL('../artifacts/vixen-dual-estate/podium-dollhouse-negative-control.json',import.meta.url);
  const spec=JSON.parse(await readFile(path,'utf8'));
  spec.source_revision=execFileSync('git',['rev-parse','HEAD'],{
-  cwd:new URL('../',import.meta.url).pathname,encoding:'utf8'
+  cwd:repoRoot,encoding:'utf8'
  }).trim();
  const outcome=await runDollhouseSkillAudit(spec);
  const m=outcome.machine_receipt;
@@ -151,7 +153,7 @@ test('Native Podium refuses CLI flag without operator-direct host attestation',a
  }));
  let failed=null;
  try{execFileSync(process.execPath,['scripts/vixen-podium.mjs','--native-read-tools','--stdin'],{
-  cwd:new URL('../',import.meta.url).pathname,input,encoding:'utf8',timeout:25000,
+  cwd:repoRoot,input,encoding:'utf8',timeout:25000,
   env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'0'}
  })}catch(e){failed=e}
  assert(failed,'Native read-tools flag alone should not grant tools');
@@ -167,7 +169,7 @@ test('Explicit operator-direct native lane executes real Aperture v3.2 and retai
    uncertainty_status:'VALID_DECLARED',sigma_min_floor:0.25,condition_number_ceiling:10}
  }));
  const output=execFileSync(process.execPath,['scripts/vixen-podium.mjs','--native-read-tools','--stdin'],{
-  cwd:new URL('../',import.meta.url).pathname,input,encoding:'utf8',timeout:30000,
+  cwd:repoRoot,input,encoding:'utf8',timeout:30000,
   env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}
  });
  const report=JSON.parse(output),r=report.results[0];

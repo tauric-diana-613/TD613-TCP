@@ -9,7 +9,7 @@
  */
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
-
+import {STAGE_ROLES,readOperahouseStatus,assertStageRoleSeparation} from '../vixen-estate/role-boundary.mjs';
 import {setVixenStage} from './vixen-stage-boundary.mjs';
 export const ENCOUNTER_SCHEMA='td613.operahouse.independent-witness-encounter/v1';
 export const CROSS_ATELIER_WITNESS_CONTRACT='ua:contract:cross_atelier_witness';
@@ -201,10 +201,11 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
  const events=()=>state.events.slice();
  function render(){
   host.replaceChildren();host.dataset.stageRole='OPERAHOUSE';
-  add(host,label('OPERAHOUSE · INDEPENDENT WITNESS ROOM · SOURCE FIRST'),
+  const ohStatus=readOperahouseStatus({state:state.service});
+  add(host,label(`OPERAHOUSE · ${STAGE_ROLES.OPERAHOUSE.kind} · OPERAHOUSE ≠ OPERA ≠ PERFORMER`),
    el('h2','oh-title','A meeting without an identity collapse'),
    note('Vixen and the Universal Encyclopedia remain separate research estates. You choose each source independently. A verified Universal record establishes its own bytes—not a Vixen connection.'),
-   el('p','oh-state','STATE · '+state.phase+' · CROSS-OPERA WARRANTS: ZERO ADMITTED'));
+   el('p','oh-state',`STATE · ${state.phase} · READ STATE: ${ohStatus.read_state} · CROSS-OPERA WARRANTS: ZERO ADMITTED · ROLE SEPARATION: ${assertStageRoleSeparation()}`));
   const grid=el('div','oh-grid');
   const left=el('section','oh-estate');
   left.dataset.estate='EMSTD613';left.dataset.stageRole='SOURCE_LOCUS';
@@ -244,15 +245,35 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
    const raw=JSON.stringify(state.witness.record,null,2);
    details.append(el('pre','',raw.slice(0,6000)));
    const relationList=el('details','oh-payload');
-   relationList.append(el('summary','','Inspect recorded Universal-only graph edges'));
+   relationList.append(el('summary','','Inspect recorded Universal-only graph edges (click neighbor to inspect separately)'));
    const edges=el('ol','oh-edges');
-   for(const edge of state.graph)edges.append(el('li','',
-     edge.source+' · '+edge.type+' · '+edge.target+' · not a Vixen relation'));
+   for(const edge of state.graph){
+    const li=el('li','oh-edge-row');
+    const neighborId=edge.source===state.witness.id?edge.target:edge.source;
+    li.append(el('span','',`${edge.source} · ${edge.type} · ${edge.target} `));
+    if(neighborId){
+     const jump=button(`Inspect ${neighborId} ↗`,()=>inspect(neighborId),state.busy||state.phase==='REST');
+     jump.className='oh-button oh-edge-jump';
+     li.append(jump);
+    }
+    edges.append(li);
+   }
    relationList.append(edges);
+   const srcHex=String(currentSource()?.sha256||'');
+   const uniHex=String(state.witness.record_sha256||'');
+   const srvHex=String(state.witness.served_file_sha256||'');
+   let diffNibbles=0;
+   for(let i=0;i<Math.min(srcHex.length,uniHex.length);i++)if(srcHex[i]!==uniHex[i])diffNibbles++;
+   const lfDelta=el('div','oh-digest-delta');
+   add(lfDelta,
+    label('DUAL-DIGEST LF DELTA · NO CROSS-ESTATE EQUIVALENCE'),
+    note(`Vixen declared SHA-256 vs Universal payload SHA-256: ${srcHex&&uniHex?`${diffNibbles}/64 hex nibbles distinct`:'incomplete'}`),
+    note(`Universal transport self-check (canonical vs served): ${uniHex===srvHex?'EXACT BYTE MATCH':'MISMATCH / SEPARATE ENCODING'}`));
    add(right,label('VERIFIED INDEPENDENT REFERENCE · '+state.witness.id),
     el('h4','',state.witness.record.label||state.witness.id),
     note('Canonical JSON payload SHA-256: '+state.witness.record_sha256),
     note('Served file SHA-256: '+state.witness.served_file_sha256),
+    lfDelta,
     note('Read-only graph edges: '+state.graph.length+' (recorded Universal graph edges; never cross-estate proof)'),
     details,relationList);
   }
@@ -269,13 +290,52 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
     host.append(button('Observe separately — do not ratify a relationship',compare));
   }
   if(state.disposition){
+   const warrant=inspectVixenCrossOperaWarrant({work:currentWork(),source:currentSource()});
    const d=el('section','oh-disposition');d.dataset.encounterState=state.disposition.state;
    add(d,label('THIRD-ORDER RECEIPT · INDEPENDENT SOURCES'),
     el('h3','',state.disposition.state),
     note('Vixen: '+currentWork().work_id+' / '+(currentSource()?.source_file_id||'UNRECORDED')),
     note('Universal: '+state.witness.id+' / '+state.witness.record_sha256),
     note('Relationship: '+state.disposition.relation+' · Publication eligibility: false'),
+    note('Warrant Check: '+warrant.state+' ('+warrant.reason+')'),
     note('The original Vixen source body is unavailable; an independently verified Universal record cannot supply that missing source or establish shared authorship.'));
+   const checklist=el('ul','oh-warrant-checklist');
+   const warrantCoords=[
+    ['1 · VIXEN WORK LOCUS',currentWork().work_id+' ('+(currentWork().authorship||'UNRESOLVED')+')','DECLARED'],
+    ['2 · MANIFESTATION DIGEST',(currentSource()?.source_file_id||'UNRECORDED')+' · '+String(currentSource()?.sha256||'').slice(0,12)+'…','CATALOGUE_ONLY'],
+    ['3 · UNIVERSAL VERIFIED BYTES',state.witness.id+' · verified_at_interaction='+String(state.witness.verified_at_interaction),'VERIFIED'],
+    ['4 · ADMITTED CROSSWALK REGISTRY',warrant.eligible?'CANDIDATE':'0 entries in ADMITTED_VIXEN_CROSSWALKS',warrant.eligible?'PRESENT':'HELD'],
+    ['5 · HUMAN RATIFICATION & WARRANT HASH',warrant.warrant_sha256||'NONE_RATIFIED',warrant.eligible?'RATIFIED':'CLOSED']
+   ];
+   for(const [k,v,st] of warrantCoords){
+    const item=el('li','oh-warrant-item');
+    item.append(el('strong','',k+': '),el('span','',v+' '),el('code','oh-warrant-badge',st));
+    checklist.append(item);
+   }
+   d.append(checklist);
+   const podiumExport=el('details','oh-payload oh-podium-export');
+   const exportPayload=JSON.stringify({
+    schema:'emstd613.vixen.podium-task-batch/v1',
+    origin:'OPERATIONAL_CROSS_ATELIER_PREVIEW_INERT_NOT_AUTO_EXECUTED',
+    auto_executed:false,
+    tasks:[
+     {schema:'td613.vixen.podium.task/v1',intent:'universal.open',params:{}},
+     {schema:'td613.vixen.podium.task/v1',intent:'universal.get',params:{record_id:state.witness.id}},
+     {schema:'td613.vixen.podium.task/v1',intent:'synthesis.propose',params:{
+      work_id:currentWork().work_id,source_id:currentSource()?.source_file_id||null,
+      record_id:state.witness.id,question:state.question||null,disposition:state.disposition.state
+     }}
+    ]
+   },null,2);
+   podiumExport.append(el('summary','','Prepare inert synthesis.propose Podium task batch (human execution required)'));
+   const copyMsg=note('Inert preview: no automated host dispatch occurs here.');
+   const copyBtn=button('Copy bounded synthesis.propose JSON',()=>{
+    navigator.clipboard?.writeText?.(exportPayload).then(
+     ()=>{copyMsg.textContent='Copied bounded synthesis.propose batch to clipboard (not executed).';},
+     ()=>{copyMsg.textContent='Clipboard refused · select the JSON below manually.';});
+   });
+   podiumExport.append(copyBtn,copyMsg,el('pre','',exportPayload));
+   d.append(podiumExport);
    if(state.receipt){
      const receipt=el('details','oh-payload');
      receipt.append(el('summary','','Inspect typed cross-atêlier session witness (not an admitted crosswalk)'));
@@ -294,7 +354,14 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   }));
   const path=el('details','oh-history');path.append(el('summary','','Session-only custody route ('+state.events.length+' events)'));
   const list=el('ol','');for(const event of state.events)list.append(el('li','',event.sequence+' · '+event.action));
-  path.append(list);footer.append(path);host.append(footer);
+  path.append(list);footer.append(path);
+  const memEvents=typeof reader.history==='function'?reader.history():[];
+  if(memEvents.length){
+   const memPath=el('details','oh-history');memPath.append(el('summary','','Read-only Reference Membrane log ('+memEvents.length+' events)'));
+   const memList=el('ol','');for(const ev of memEvents)memList.append(el('li','',(ev.seq||ev.sequence||'·')+' · '+(ev.event||ev.action||'READ_EVENT')));
+   memPath.append(memList);footer.append(memPath);
+  }
+  host.append(footer);
   host.append(note('CUSTODY CEILING · This session log has no durable append-only trust root. Index census, verified record bytes, source identity and substantive relationship remain separate evidentiary coordinates. No production admission, identity closure or Experiment B Flight.'));
  }
  stamp('OPERAHOUSE_NOTICE');render();

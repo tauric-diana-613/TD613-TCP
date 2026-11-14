@@ -26,9 +26,18 @@ const slot=(html,role)=>[...html.matchAll(
  ?'(<source\\b(?=[^>]*data-vixen-asset-role="mobile")[^>]*?\\bsrcset=")([^"]*)(")'
  :'(<img\\b(?=[^>]*data-vixen-asset-role="desktop")[^>]*?\\bsrc=")([^"]*)(")','g')
 )].map(m=>m[2]);
-const python=(args,cwd=root)=>spawnSync(process.env.VIXEN_PYTHON||'python3',[paths.installer,...args],{
- cwd,encoding:'utf8',timeout:25000
-});
+const python=(args,cwd=root)=>{
+ const candidates=process.env.VIXEN_PYTHON
+  ?[process.env.VIXEN_PYTHON]
+  :['python3','python3.12','python',join(process.env.USERPROFILE||'','.local/bin/python3.12.exe')];
+ let last=null;
+ for(const bin of candidates){
+  if(!bin)continue;
+  last=spawnSync(bin,[paths.installer,...args],{cwd,encoding:'utf8',timeout:25000});
+  if(!last.error&&last.status!==9009)return last;
+ }
+ return last;
+};
 
 test('Standalone fox is the only masthead asset, with vivid SVG-native yellow cores',async()=>{
  const html=await readFile(paths.page,'utf8');

@@ -21,7 +21,7 @@ const TAU=Math.PI*2,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const smooth=x=>{const t=clamp(x);return t*t*(3-2*t);};
 const mix=(a,b,t)=>a+(b-a)*t;
 const P=Object.freeze({
- white:'#FFFEF7',pearl:'#FFF7FC',blonde:'#FFF0A8',
+ white:'#FFFEF7',pearl:'#FFF8FA',blonde:'#FFF0A8',
  pink:'#FF4F9F',rose:'#FF9CC9',chrome:'#E4EFF2',
  champagne:'#F5DDB1' /* warm diffraction accent, no violet/plum */
 });

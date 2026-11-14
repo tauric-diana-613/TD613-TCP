@@ -5,10 +5,12 @@
  */
 import {
  checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,
- makePodiumTasks,CLOCKS
+ makePodiumTasks,CLOCKS,computeClockVernier
 } from './synthesis-salon-engine.mjs';
+import {CARRIERS} from './observatory-foundry-kernel.mjs';
 import {mountSalonVeil,VEIL_CONTRACT} from './vixen-salon-light.mjs';
 import {SALON_COMPOSITOR,mountFoldedCuirass,CUIRASS_CONTRACT} from './vixen-folded-cuirass.mjs';
+import {measureCoutureBeats} from './vixen-beat-radiometry-rgi15.mjs';
 
 const mk=(tag,cl,text)=>{
  const el=document.createElement(tag);
@@ -71,14 +73,52 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   track:corpus.giveback_tracks[0].id,
   protocol:corpus.instruments.find(x=>x.instrument_id===corpus.giveback_tracks[0].protocols[0])?.instrument_id||
     corpus.instruments[0].instrument_id,
-  route:'A_B',lag:30,question:'',observable:'',counterworld:'',
-  result:null,refraction:null,resting:false,history:[],
+  route:'A_B',lag:30,activeClock:'k',clockOffsets:{k:0,n:0,tau:0,wall:0,plant:0},
+  question:'',observable:'',counterworld:'',podiumRecordId:'',
+  result:null,refraction:null,
+  trajectoryMemory:{A_B:null,B_A:null,refraction:null},
+  lastRadiometry:null,resting:false,history:[],
   notice:'Choose two recorded Works, one method, and a research question. Your source bodies remain unavailable.'
  };
  let veilHandle=null;
  const opticalClock={time:0};
  const folded=SALON_COMPOSITOR==='FOLDED_CHROME';
- const veilCoordinates=()=>({works:[...state.works],route:state.route,lag:state.lag,resting:state.resting,opticalClock});
+ const persistentVeil=mk('canvas',folded?'vs-cuirass-canvas':'vs-luminous-canvas');
+ persistentVeil.setAttribute('aria-hidden','true');
+ persistentVeil.dataset.computation=folded?'D3_PHI_OPEN_FOLDS_SHARED_CLOTH':'D3_PHI_LOOM_39_COUTURE_111';
+ const carrierCounts=Object.freeze({
+  total:CARRIERS.length,
+  near:CARRIERS.filter(c=>c.near).length,
+  mid:CARRIERS.filter(c=>c.mid).length,
+  far:CARRIERS.filter(c=>c.far).length
+ });
+ let hudCells=null;
+ const updateApertureHud=(rad)=>{
+  if(rad&&typeof rad==='object')state.lastRadiometry=rad;
+  if(!hudCells)return;
+  const r=state.lastRadiometry;
+  const lamMin=Number.isFinite(r?.minWavelengthPx)?r.minWavelengthPx:Number.isFinite(r?.beatMinPx)?r.beatMinPx:null;
+  const lamMax=Number.isFinite(r?.maxWavelengthPx)?r.maxWavelengthPx:Number.isFinite(r?.beatMaxPx)?r.beatMaxPx:null;
+  const nyq=Number.isFinite(r?.nyquistAlpha)?r.nyquistAlpha:Number.isFinite(r?.maxNyquist)?r.maxNyquist:null;
+  const seamLuma=Number.isFinite(r?.seamContrast)?r.seamContrast:Number.isFinite(r?.seamLuma)?r.seamLuma:Number.isFinite(r?.meanLuma)?r.meanLuma:null;
+  const activeMeta=CLOCKS.find(c=>c.id===state.activeClock)||CLOCKS[0];
+  if(lamMin!==null&&lamMax!==null){
+   hudCells[0].textContent=`APERTURE RADIOMETRY · λ_beat ${lamMin.toFixed(1)}–${lamMax.toFixed(1)}px`;
+  }
+  hudCells[1].textContent=`CARRIERS · ${carrierCounts.total} (${carrierCounts.near} NEAR · ${carrierCounts.mid} MID · ${carrierCounts.far} FAR)`;
+  hudCells[2].textContent=nyq!==null
+   ?`NYQUIST α_N ${nyq.toFixed(2)} ≤ 0.45 · ${activeMeta.code}`
+   :`NYQUIST α_N ≤ 0.45 · ${activeMeta.code} (${activeMeta.custodyName})`;
+  hudCells[3].textContent=seamLuma!==null
+   ?`OPTICAL FIELD · SEAM ${seamLuma.toFixed(2)} · ROUTE ${state.route==='A_B'?'I▷II':'II▷I'}`
+   :`ROUTE PARITY · ${state.route==='A_B'?'I ▷ II (+)':'II ▷ I (−)'} · CREDIT = 0`;
+  hudCells[4].textContent='OPERAHOUSE ≠ OPERA ≠ PERFORMER';
+ };
+ const veilCoordinates=()=>({
+  works:[...state.works],route:state.route,lag:state.lag,
+  activeClock:state.activeClock,resting:state.resting,opticalClock,
+  onRadiometry:updateApertureHud
+ });
  const getWork=index=>corpus.works.find(w=>w.work_id===state.works[index]);
  const getTrack=()=>corpus.giveback_tracks.find(x=>x.id===state.track);
  const getMethod=()=>corpus.instruments.find(x=>x.instrument_id===state.protocol);
@@ -87,8 +127,10 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    at:new Date().toISOString(),evidence_class:'SESSION_LOCAL_UNVERIFIED',
    ...extra}))
  };
- const changed=()=>{
-  state.result=null;state.refraction=null;state.notice='Edited source/question configuration · prior proposal withdrawn.';
+ const changed=(preserveTrajectory=false)=>{
+  state.result=null;state.refraction=null;
+  if(!preserveTrajectory)state.trajectoryMemory={A_B:null,B_A:null,refraction:null};
+  state.notice='Edited source/question configuration · prior proposal withdrawn.';
  };
  const chooseWork=(i,id)=>{
   if(state.works[1-i]===id){state.notice='Choose two different recorded Works.';render();return}
@@ -114,17 +156,35 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  };
  const setRoute=id=>{
   if(!['A_B','B_A'].includes(id))return;
-  state.route=id;changed();addEvent('SOURCE_ORDER_DECLARED',{route:id});render();
+  if(state.result)state.trajectoryMemory[state.route]=state.result;
+  const hadProposal=Boolean(state.result);
+  state.route=id;
+  if(hadProposal){
+   state.result=composeSalonPlan(corpus,getInput());
+   state.trajectoryMemory[id]=state.result;
+   state.refraction=refractSalonPlan(corpus,getInput());
+   state.trajectoryMemory.refraction=state.refraction;
+   state.notice='Route flipped to '+(id==='A_B'?'I → II':'II → I')+' · bilateral trajectory memory preserved across non-equivalent routes.';
+  }else{
+   state.notice='Encounter order set to '+(id==='A_B'?'I → II':'II → I')+' · source coordinates and bilateral trajectory memory preserved.';
+  }
+  addEvent('SOURCE_ORDER_DECLARED',{route:id,trajectory_preserved:true});render();
  };
  const getInput=()=>({
   work_ids:[...state.works],source_ids:[...state.sources],
   track_id:state.track,protocol_id:state.protocol,
-  route_order:state.route,lag_ticks:state.lag,question:state.question,
-  observable_predicate:state.observable,counterworld:state.counterworld
+  route_order:state.route,lag_ticks:state.lag,
+  active_clock_id:state.activeClock,clock_offsets:{...state.clockOffsets},
+  question:state.question,observable_predicate:state.observable,counterworld:state.counterworld
  });
  const compose=()=>{
   try{
    state.result=composeSalonPlan(corpus,getInput());
+   state.trajectoryMemory[state.route]=state.result;
+   const alt=state.route==='A_B'?'B_A':'A_B';
+   if(!state.trajectoryMemory[alt]){
+    state.trajectoryMemory[alt]=composeSalonPlan(corpus,{...getInput(),route_order:alt});
+   }
    state.refraction=null;state.notice='Question drafted. Verification, authorship and relation claims remain HELD.';
    addEvent('UNRATIFIED_QUESTION_COMPOSED',{work_ids:[...state.works],
     route:state.route,claim:'QUESTION_NOT_EVIDENCE'})
@@ -133,7 +193,11 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  };
  const refract=()=>{
   if(!state.result)return;
+  const alt=state.route==='A_B'?'B_A':'A_B';
+  state.trajectoryMemory[state.route]=state.result;
+  state.trajectoryMemory[alt]=composeSalonPlan(corpus,{...getInput(),route_order:alt});
   state.refraction=refractSalonPlan(corpus,getInput());
+  state.trajectoryMemory.refraction=state.refraction;
   state.notice='The source identities remain stable. Reversing encounter order changes the recorded route.';
   addEvent('INTERNAL_REFRACTION_OBSERVED',{classification:'COUNTERFACTUAL_ONLY'});
   render();
@@ -169,7 +233,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  };
  const copyPodium=async()=>{
   if(!state.result)return;
-  const raw=JSON.stringify(makePodiumTasks(state.result),null,2);
+  const raw=JSON.stringify(makePodiumTasks(state.result,{recordId:state.podiumRecordId||null}),null,2);
   const copied=await safeCopy(raw);
   if(copied){state.notice='Podium task batch copied. A human-directed agent must still execute it.';render()}
   else{
@@ -187,7 +251,6 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   if(live)live.textContent=state.notice;
  }
  function render(){
-  veilHandle?.dispose?.();veilHandle=null;
   host.replaceChildren();host.dataset.stageRole='VIXEN_OPERA';
   host.dataset.couture=folded?'folded-chrome':'legacy';
   const head=mk('header','vs-head');
@@ -199,13 +262,18 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    'Collect evidence like a fox; compose hypotheses like an opera. Every claim changes what the next question must ask. No source is sold, merged, or made to testify beyond its recorded boundary.','vs-intro');
   // Optical costume derived from Dome D3, phi, Loom carriers and [111] projection.
   // Literal costume emojis are absent: visual rhetoric now lives in silhouette.
-  const veil=mk('canvas',folded?'vs-cuirass-canvas':'vs-luminous-canvas');
-  veil.setAttribute('aria-hidden','true');
+  const veil=persistentVeil;
   veil.dataset.computation=folded?'D3_PHI_OPEN_FOLDS_SHARED_CLOTH':'D3_PHI_LOOM_39_COUTURE_111';
   const veilCaption=mk('div','vs-optical-label','VIXEN · 39 COMPUTED CARRIERS · OPTICAL COSTUME / MODEL ONLY');
   veilCaption.setAttribute('aria-hidden','true');
   const words=mk('div','vs-hero-copy');
-  append(words,eyebrow,title,description);
+  const nowWhyExact=mk('div','vs-now-why-exact');
+  append(nowWhyExact,
+   mk('span','vs-nwe-item',`NOW · Select two Works & encounter direction (${state.route==='A_B'?'I ▷ II':'II ▷ I'})`),
+   mk('span','vs-nwe-item','WHY · Order alters question framing without merging custody'),
+   mk('span','vs-nwe-item','EXACT · Unratified question only · Authorship UNRESOLVED · Credit 0')
+  );
+  append(words,eyebrow,title,description,nowWhyExact);
   if(folded){
    const stage=mk('div','vs-optical-stage');append(stage,veil,veilCaption);append(head,words,stage);
   }else append(head,veil,words,veilCaption);
@@ -237,8 +305,13 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    }
    columns.append(side);
   }
-  const seam=mk('div','vs-seam','≠');
-  seam.setAttribute('aria-label','Distinct source loci, distinct unresolved authorship');
+  const seam=button('',()=>setRoute(state.route==='A_B'?'B_A':'A_B'),'vs-seam');
+  seam.setAttribute('aria-label','Flip encounter order without merging authorship ('+(state.route==='A_B'?'I → II to II → I':'II → I to I → II')+')');
+  seam.title='Flip encounter order (I ▷ II / II ▷ I) · source loci stay distinct';
+  append(seam,
+   mk('span','vs-seam-neq','≠'),
+   mk('span','vs-seam-op',state.route==='A_B'?'I ▷ II ⇄':'II ▷ I ⇄')
+  );
   const offer=mk('div','vs-program');
   append(offer,
    paragraph('THE OPERA · SELECT THE QUESTION, NEVER THE ANSWER','vs-eyebrow'),
@@ -253,29 +326,107 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    const b=button(o==='A_B'?'I → II':'II → I',()=>setRoute(o),'vs-order-button');
    b.setAttribute('aria-pressed',String(state.route===o));routes.append(b);
   }
-  offer.append(routes);
-  const clocks=toyClockAssay({lag:state.lag,routeOrder:state.route});
+  const wA=getWork(0),wB=getWork(1);
+  const vernier=computeClockVernier(state.lag,{
+   route:state.route,activeClockId:state.activeClock,workA:wA,workB:wB,clockOffsets:state.clockOffsets
+  });
+  const holonomyCard=mk('div','vs-holonomy-card');
+  const leadTitle=state.route==='A_B'?titleText(wA):titleText(wB);
+  const tailTitle=state.route==='A_B'?titleText(wB):titleText(wA);
+  const {svg:holonomySvg,centerText:holonomyCenterText}=makeHolonomySvg(wA,wB,vernier,state.route);
+  append(holonomyCard,
+   mk('span','vs-holonomy-badge','ATLAS ROUTE MEMORY · NON-EQUIVALENT TRAJECTORY'),
+   holonomySvg,
+   paragraph(`Active path (${state.route==='A_B'?'I → II':'II → I'}): [${leadTitle}] ➔ [${tailTitle}] · Terminal set invariant, holonomy history distinct.`,'vs-holonomy-detail')
+  );
+  const memStrip=mk('div','vs-trajectory-memory');
+  const fwdSnap=state.trajectoryMemory.A_B,revSnap=state.trajectoryMemory.B_A;
+  const fwdCard=mk('div','vs-traj-cell'+(state.route==='A_B'?' is-active':''));
+  append(fwdCard,
+   mk('span','vs-traj-head','FORWARD · I ▷ II ('+titleText(wA)+' anchor)'),
+   mk('code','vs-traj-order',vernier.forward.arrival_order.join(' ≺ ')),
+   paragraph(fwdSnap?fwdSnap.question:'No I → II proposal drafted yet · clocks previewing live.','vs-traj-note')
+  );
+  const revCard=mk('div','vs-traj-cell'+(state.route==='B_A'?' is-active':''));
+  append(revCard,
+   mk('span','vs-traj-head','REVERSE · II ▷ I ('+titleText(wB)+' anchor)'),
+   mk('code','vs-traj-order',vernier.reverse.arrival_order.join(' ≺ ')),
+   paragraph(revSnap?revSnap.question:'No II → I proposal drafted yet · hysteresis & inversions live.','vs-traj-note')
+  );
+  const seamInvariantNote=mk('div','vs-traj-invariant',
+   `same_terminal_source_set = true · route_history_equal = false · inversions = ${vernier.arrival_inversions} · ΔL1 = ${vernier.tick_l1_delta}t`
+  );
+  append(memStrip,fwdCard,revCard,seamInvariantNote);
+  offer.append(routes,holonomyCard,memStrip);
+  const clocks=state.route==='B_A'?vernier.reverse:vernier.forward;
   const clockBox=mk('section','vs-clocks');
-  clockBox.append(paragraph('FIVE CLOCKS · A SYNTHETIC SCORED DEMONSTRATION','vs-eyebrow'));
+  clockBox.append(paragraph('FIVE CLOCKS · INTERACTIVE VERNIER & NON-COMMUTATIVE HYSTERESIS','vs-eyebrow'));
   const lagLabel=mk('label','vs-slider-label','Demonstration lag · '+state.lag+' dimensionless ticks');
   const slider=mk('input','vs-slider');slider.type='range';slider.min='0';slider.max='120';slider.step='1';slider.value=String(state.lag);
   slider.setAttribute('aria-label','Synthetic arrival lag in dimensionless ticks');
-  slider.addEventListener('input',()=>{
-   state.lag=Number(slider.value);
-   const updated=toyClockAssay({lag:state.lag,routeOrder:state.route});
-   lagLabel.textContent='Demonstration lag · '+state.lag+' dimensionless ticks';
-   bars.replaceChildren(...makeBars(updated));
-   veilHandle?.renderOnce?.();
-   if(state.result){changed();
+  const bars=mk('div','vs-clock-bars');
+  const vernierReadout=mk('div','vs-vernier-readout');
+  const rowRefs=new Map();
+  const invalidateComposedIfAny=()=>{
+   if(state.result){changed(true);
     host.querySelector('.vs-result')?.remove();
     const live=host.querySelector('.vs-status');
     if(live)live.textContent=state.notice;
    }
+  };
+  const updateClockDOMInPlace=()=>{
+   const v=computeClockVernier(state.lag,{
+    route:state.route,activeClockId:state.activeClock,workA:getWork(0),workB:getWork(1),clockOffsets:state.clockOffsets
+   });
+   const activeAssay=state.route==='B_A'?v.reverse:v.forward;
+   lagLabel.textContent='Demonstration lag · '+state.lag+' dimensionless ticks';
+   for(let i=0;i<activeAssay.clocks.length;i++){
+    const c=activeAssay.clocks[i];
+    const ref=rowRefs.get(c.id);
+    if(!ref)continue;
+    ref.row.classList.toggle('is-active',c.id===state.activeClock);
+    ref.selectBtn.setAttribute('aria-pressed',String(c.id===state.activeClock));
+    ref.bar.style.width=(Math.max(6,Math.min(100,c.tick/180*100))).toFixed(2)+'%';
+    const deltaBits=[];
+    if(c.hysteresis_shift)deltaBits.push((c.hysteresis_shift>0?'+':'')+c.hysteresis_shift+'h');
+    if(c.vernier_offset)deltaBits.push((c.vernier_offset>0?'+':'')+c.vernier_offset+'v');
+    ref.tickEl.textContent=String(c.tick)+'t'+(deltaBits.length?' ('+deltaBits.join(' ') +')':'');
+   }
+   vernierReadout.textContent=
+    `ACTIVE ${v.active_clock.code} (${v.active_clock.custodyName}, ${v.active_clock.derivativeSymbol}) · `
+    +`A▷B: ${v.forward.arrival_order.join('≺')} vs B▷A: ${v.reverse.arrival_order.join('≺')} · `
+    +`inversions=${v.arrival_inversions} · L1=${v.tick_l1_delta}t · `
+    +(v.cluster_aligned.length?`cluster affinity [${v.cluster_aligned.join(',')}]`:'cluster orthogonal')
+    +' · physical_time_equivalence=false';
+   holonomyCenterText.textContent=`Δ=${v.arrival_inversions} inv · ${v.tick_l1_delta}t`;
+   seamInvariantNote.textContent=
+    `same_terminal_source_set = true · route_history_equal = false · inversions = ${v.arrival_inversions} · ΔL1 = ${v.tick_l1_delta}t`;
+   updateApertureHud(null);
+  };
+  bars.append(...makeBars(clocks,rowRefs,()=>{updateClockDOMInPlace();veilHandle?.renderOnce?.();invalidateComposedIfAny();},id=>{
+   state.activeClock=id;updateClockDOMInPlace();veilHandle?.renderOnce?.();
+  }));
+  slider.addEventListener('input',()=>{
+   state.lag=Number(slider.value);
+   updateClockDOMInPlace();
+   veilHandle?.renderOnce?.();
+   invalidateComposedIfAny();
   });
-  slider.addEventListener('change',()=>render());
-  const bars=mk('div','vs-clock-bars');
-  bars.append(...makeBars(clocks));
-  append(clockBox,lagLabel,slider,bars,paragraph('Distinct derivative domains: k · n · τ · wall · 48 kHz plant. Equal bar positions cannot establish a physical time map. Changing lag genuinely changes these illustrative positions.','vs-custody'));
+  slider.addEventListener('change',()=>updateClockDOMInPlace());
+  const beatSample=measureCoutureBeats({width:360,height:420,time:opticalClock.time,seed:2166136261});
+  const minLambda=Math.min(...beatSample.pairs.map(p=>p.wavelengthPx)).toFixed(1);
+  const maxLambda=Math.max(...beatSample.pairs.map(p=>p.wavelengthPx)).toFixed(1);
+  const apertureHud=mk('div','vixen-aperture-hud');
+  hudCells=[
+   mk('span','vixen-hud-pill',`APERTURE RADIOMETRY · λ_beat ${minLambda}–${maxLambda}px`),
+   mk('span','vixen-hud-pill',`CARRIERS · ${carrierCounts.total} (${carrierCounts.near} NEAR · ${carrierCounts.mid} MID · ${carrierCounts.far} FAR)`),
+   mk('span','vixen-hud-pill',`NYQUIST α_N ≤ 0.45 · ${vernier.active_clock.code} (${vernier.active_clock.custodyName})`),
+   mk('span','vixen-hud-pill',`ROUTE PARITY · ${state.route==='A_B'?'I ▷ II (+)':'II ▷ I (−)'} · CREDIT = 0`),
+   mk('span','vixen-hud-pill','OPERAHOUSE ≠ OPERA ≠ PERFORMER')
+  ];
+  append(apertureHud,...hudCells);
+  updateClockDOMInPlace();
+  append(clockBox,lagLabel,slider,bars,vernierReadout,apertureHud,paragraph('Distinct derivative domains: k · n · τ · wall · 48 kHz plant. Drag any track (double-click to zero) or select a clock to inspect the folded cuirass under that clock plane. Equal bar positions cannot establish a physical time map.','vs-custody'));
   const inputPane=mk('section','vs-question');
   inputPane.append(paragraph('A QUESTION WORTH REFUSING TO ANSWER PREMATURELY','vs-eyebrow'));
   const q=mk('textarea','vs-textarea');q.placeholder='Optional: your own falsifiable question. Leave blank for a source-attributed construction.';
@@ -291,7 +442,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const actions=mk('div','vs-actions');
   if(state.resting){
    actions.append(button('Resume this unfinished inquiry',resume));
-   append(inputPane,paragraph('REST · Your source and question selections are preserved; the Opera has made no decision for you.','vs-rest'));
+   append(inputPane,paragraph('REST · Temporal suspension honored without penalty. Your selected Works, encounter route, lag ticks, and draft question remain intact; the Opera has made zero decisions for you.','vs-rest'));
   }else{
    append(actions,
     button('Compose an unratified theory ↓',compose,'vs-action vs-primary'),
@@ -303,17 +454,90 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   append(host,head,columns,seam,index,offer,clockBox,inputPane,notice());
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
-  veilHandle=folded?mountFoldedCuirass(veil,veilCoordinates):mountSalonVeil(veil,veilCoordinates);
+  if(!veilHandle){
+   veilHandle=folded?mountFoldedCuirass(veil,veilCoordinates):mountSalonVeil(veil,veilCoordinates);
+  }else{
+   veilHandle.renderOnce?.();
+  }
   host.dataset.opticalContract=folded?CUIRASS_CONTRACT.schema:VEIL_CONTRACT.schema;
  }
  function titleText(w){return w.display_title||w.declared_title||w.work_id}
- function makeBars(clocks){
-  return clocks.clocks.map(c=>{
-   const track=mk('div','vs-clock-row');
-   const bar=mk('div','vs-clock-bar');bar.style.width=(Math.max(6,c.tick/165*100)).toFixed(2)+'%';
-   append(track,mk('span','',c.label),append(mk('div','vs-clock-track'),bar),
-    mk('strong','',String(c.tick)+'t'));
-   return track;
+ function makeHolonomySvg(wA,wB,vernier,route){
+  const NS='http://www.w3.org/2000/svg';
+  const s=(tag,attrs={},text='')=>{
+   const el=document.createElementNS(NS,tag);
+   for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));
+   if(text)el.textContent=text;
+   return el;
+  };
+  const svg=s('svg',{class:'vs-holonomy-svg',viewBox:'0 0 320 120',role:'img',
+   'aria-label':'Holonomy diamond comparing I to II versus II to I source paths'});
+  const defs=s('defs');
+  const mkArrow=(id,fill)=>{
+   const m=s('marker',{id,viewBox:'0 0 8 8',refX:'7',refY:'4',markerWidth:'6',markerHeight:'6',orient:'auto'});
+   m.append(s('path',{d:'M0,1 L7,4 L0,7 Z',fill}));
+   return m;
+  };
+  defs.append(mkArrow('vsArrowRose','#FF91AF'),mkArrow('vsArrowGold','#FFF0A8'));
+  svg.append(defs);
+  const fwdActive=route==='A_B';
+  svg.append(
+   s('path',{d:'M34,60 Q160,12 286,60',fill:'none',stroke:fwdActive?'#FF91AF':'rgba(210,221,224,0.34)',
+    'stroke-width':fwdActive?'2.6':'1.4','marker-end':'url(#vsArrowRose)'}),
+   s('path',{d:'M286,60 Q160,108 34,60',fill:'none',stroke:!fwdActive?'#FFF0A8':'rgba(210,221,224,0.34)',
+    'stroke-width':!fwdActive?'2.6':'1.4','stroke-dasharray':!fwdActive?'none':'4 3','marker-end':'url(#vsArrowGold)'}),
+   s('circle',{cx:'34',cy:'60',r:'11',fill:'#10171D',stroke:'#FF91AF','stroke-width':'1.8'}),
+   s('circle',{cx:'286',cy:'60',r:'11',fill:'#10171D',stroke:'#FFF0A8','stroke-width':'1.8'}),
+   s('text',{x:'34',y:'64','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₁'),
+   s('text',{x:'286',y:'64','text-anchor':'middle',fill:'#FFFDF8','font-size':'10','font-weight':'700'},'W₂'),
+   s('text',{x:'160',y:'20','text-anchor':'middle',fill:fwdActive?'#FF91AF':'#A4B6C2','font-size':'9.5'},'I ▷ II ('+titleText(wA).slice(0,12)+')'),
+   s('text',{x:'160',y:'112','text-anchor':'middle',fill:!fwdActive?'#FFF0A8':'#A4B6C2','font-size':'9.5'},'II ▷ I ('+titleText(wB).slice(0,12)+')')
+  );
+  const centerText=s('text',{x:'160',y:'64','text-anchor':'middle',fill:'#FFF8F0','font-size':'10','font-weight':'600'},
+   `Δ=${vernier.arrival_inversions} inv · ${vernier.tick_l1_delta}t`);
+  svg.append(centerText);
+  return {svg,centerText};
+ }
+ function makeBars(clocks,rowRefs,onScrub,onSelectClock){
+  return clocks.clocks.map((c,idx)=>{
+   const meta=CLOCKS[idx]||c;
+   const row=mk('div','vs-clock-row vs-clock-card'+(c.id===state.activeClock?' is-active':''));
+   row.dataset.clockId=c.id;
+   const selectBtn=button(meta.code+' · '+c.label,()=>onSelectClock(c.id),'vs-clock-select');
+   selectBtn.setAttribute('aria-pressed',String(c.id===state.activeClock));
+   const trackWrap=mk('div','vs-clock-track-wrap');
+   const track=mk('div','vs-clock-track');
+   track.title='Drag horizontally to scrub '+c.label+' Vernier offset; double-click to reset';
+   const bar=mk('div','vs-clock-bar');bar.style.width=(Math.max(6,Math.min(100,c.tick/180*100))).toFixed(2)+'%';
+   track.append(bar);
+   let scrubbing=false;
+   const applyScrub=ev=>{
+    const rect=track.getBoundingClientRect?.();
+    if(!rect||rect.width<=0)return;
+    const rel=Math.max(-1,Math.min(1,(ev.clientX-(rect.left+rect.width/2))/(rect.width/2)));
+    state.clockOffsets[c.id]=Math.round(rel*24);
+    onScrub();
+   };
+   track.addEventListener('pointerdown',ev=>{scrubbing=true;track.setPointerCapture?.(ev.pointerId);applyScrub(ev);});
+   track.addEventListener('pointermove',ev=>{if(scrubbing)applyScrub(ev);});
+   track.addEventListener('pointerup',()=>{scrubbing=false;});
+   track.addEventListener('pointercancel',()=>{scrubbing=false;});
+   track.addEventListener('dblclick',()=>{state.clockOffsets[c.id]=0;onScrub();});
+   const nudge=(delta)=>{
+    state.clockOffsets[c.id]=Math.max(-24,Math.min(24,(state.clockOffsets[c.id]||0)+delta));
+    onScrub();
+   };
+   const minusBtn=button('−',()=>nudge(-2),'vs-clock-step');
+   minusBtn.setAttribute('aria-label','Decrease '+c.label+' Vernier offset');
+   const plusBtn=button('+',()=>nudge(2),'vs-clock-step');
+   plusBtn.setAttribute('aria-label','Increase '+c.label+' Vernier offset');
+   append(trackWrap,minusBtn,track,plusBtn);
+   const tickEl=mk('strong','vs-clock-tick',String(c.tick)+'t');
+   const metaLine=mk('div','vs-clock-meta',
+    `${meta.derivativeSymbol} · ${meta.naturalPeriodLabel} · Clusters [${meta.preferredClusters.join('/')}] · ${c.geometry}`);
+   append(row,selectBtn,trackWrap,tickEl,metaLine);
+   rowRefs?.set(c.id,{row,selectBtn,track,bar,tickEl,metaLine});
+   return row;
   });
  }
  function renderResult(){
@@ -348,7 +572,31 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     mk('strong','',a.role.replaceAll('_',' ')),mk('small','','DESIGN ONLY · HELD'));
    arm.append(cell)
   }
-  append(box,mk('h4','','Experiment B · Unexecuted competent-union comparison'),arm,
+  append(box,mk('h4','','Experiment B · Unexecuted competent-union comparison'),arm);
+  const quad=mk('div','vs-confrontation-quadrant');
+  const qHeader=mk('div','vs-quad-head','FADT QUOTIENT DESCENT · FOUR-ARM CONFRONTATION MATRIX');
+  const qCells=mk('div','vs-quad-grid');
+  const quadSpecs=[
+   {id:'ARM_0_TRANSPORT',axis:'Fibre Base · Custody Invariant',summary:'Holds Work IDs, digests & gate states constant across route traversal.'},
+   {id:'ARM_1_ARCHIVAL',axis:'Single-Source Baseline',summary:'Tests whether one declared Work alone recovers the candidate question.'},
+   {id:'ARM_2A_MODULAR',axis:'Two-Stage Ordered Fibre',summary:'Measures route-ordered synthesis across A ▷ B vs B ▷ A without merging.'},
+   {id:'ARM_2B_MATCHED_UNION',axis:'Competent-Union Control',summary:'Requires surplus above union U \\ ⋂ S_i before attributing emergence.'}
+  ];
+  for(const qItem of quadSpecs){
+   const qCard=mk('article','vs-quad-card');
+   append(qCard,
+    mk('span','vs-quad-id',qItem.id),
+    mk('strong','vs-quad-axis',qItem.axis),
+    paragraph(qItem.summary,'vs-note')
+   );
+   qCells.append(qCard);
+  }
+  const qSeal=paragraph(
+   `Quotient fiber over [${p.source_coordinates.map(x=>x.source_file_id).join(', ')}] · Intersection ≠ Union (U \\ ⋂ S_i = OPEN GAP) · Flight: ${p.experiment_b.status} · Credit: ${p.experiment_b.empirical_acquisition_credit}`,
+   'vs-note vs-quad-seal'
+  );
+  append(quad,qHeader,qCells,qSeal);
+  append(box,quad,
    paragraph('Protected Flight HELD. The Manifest successor remains unknown. No reference source, observed outcome or scientific effect has been invented.','vs-custody'));
   const controls=mk('div','vs-actions');
   append(controls,
@@ -359,10 +607,23 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   box.append(controls);
   if(state.refraction)box.append(details('Internal refraction: identical sources, distinct route history',
    pre(state.refraction)));
+  const recordField=mk('label','vs-field vs-podium-bridge');
+  recordField.append(mk('span','vs-field-label','Optional Universal Reference Record ID (e.g. G-101) for Cross-Atelier Podium Task Preview'));
+  const recordInput=mk('input','vs-input');
+  recordInput.type='text';recordInput.placeholder='Leave empty for Opera-only tasks, or enter e.g. G-101';
+  recordInput.value=state.podiumRecordId;
+  const taskPre=pre(makePodiumTasks(p,{recordId:state.podiumRecordId||null}));
+  recordInput.addEventListener('input',()=>{
+   state.podiumRecordId=recordInput.value.trim().toUpperCase();
+   taskPre.textContent=JSON.stringify(makePodiumTasks(p,{recordId:state.podiumRecordId||null}),null,2);
+  });
+  recordField.append(recordInput);
   const machine=mk('div','vs-machine');
   machine.append(details('Inspect the complete, typed question receipt',pre(p)));
-  machine.append(details('Inspect machine task batch (never auto-executed)',
-   append(pre(makePodiumTasks(p)),mk('p','vs-custody','The Conductor must be explicitly invoked by its host.'))));
+  const podiumDetails=details('Inspect machine task batch (never auto-executed)',
+   append(recordField,taskPre,mk('p','vs-custody','The Conductor must be explicitly invoked by its host.')));
+  podiumDetails.id='vixenSalonPodiumTasks';
+  machine.append(podiumDetails);
   box.append(machine);
   return box
  }

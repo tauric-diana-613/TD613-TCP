@@ -11,7 +11,7 @@
 body:not([data-active-research-stage="OPERAHOUSE"]){
  --glinda-rose:#FF91AF;
  --glinda-pearl:#FFE4F1;
- --glinda-couture:#f6a5d1;
+ --glinda-couture:#FF91AF;
  --glinda-fuchsia:#E64F91;
  --arc-blonde:#FFF2A9;
  --arc-white:#FFFBE2;
@@ -122,7 +122,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([da
  position:absolute;right:3%;bottom:28px;z-index:3;
  color:var(--arc-blonde);font:600 9px/1.6 ui-monospace,monospace;
  letter-spacing:.15em;max-width:315px;text-align:right;
- text-shadow:0 2px 10px #040405;
+ text-shadow:0 2px 10px #050607;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{
  display:none!important;
@@ -140,20 +140,20 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-mix
  border:0;overflow:visible;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card{
- min-height:490px;padding:clamp(31px,4vw,65px);
+ min-height:470px;padding:clamp(31px,3.6vw,54px);
  color:#191e21;border:0!important;
  background:
   radial-gradient(ellipse at 10% 0%,rgba(255,255,255,.94),transparent 50%),
   linear-gradient(145deg,#fefafb,#FFE4F1 75%,#F5C5DD);
- clip-path:polygon(0 0,100% 0,100% calc(100% - 49px),calc(100% - 49px) 100%,0 100%);
- box-shadow:none;transform:translateY(-12px);
+ clip-path:none;
+ box-shadow:none;transform:none;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even){
  color:#fceef3;background:
   radial-gradient(ellipse at 76% 0%,rgba(251,215,228,.27),transparent 53%),
   linear-gradient(135deg,#2c3439,#161a1d 75%,#0b0e0f);
- clip-path:polygon(50px 0,100% 0,100% 100%,0 100%,0 50px);
- transform:translateY(35px);
+ clip-path:none;
+ transform:none;
  border:1px solid rgba(255,228,241,.39)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:before{
@@ -163,7 +163,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-sou
  background:linear-gradient(90deg,var(--arc-blonde),var(--glinda-rose),transparent);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-source-tag{
- color:#93415f;letter-spacing:.16em;
+ color:#A11F5B;letter-spacing:.16em;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-source-tag{
  color:var(--arc-blonde);
@@ -180,10 +180,10 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-sou
  color:#495760;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-custody{
- color:#d6c4cb;
+ color:#E5EDF2;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-select{
- background:#fefafb;color:#15191b;border:1px solid #a97d8d;
+ background:#fefafb;color:#15191b;border:1px solid #C85686;
  min-height:56px;font:500 clamp(13px,1.25vw,17px)/1.3 Georgia,serif;
  padding:13px 15px;max-width:100%;
 }
@@ -191,18 +191,18 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-sou
  background:#f5eaee;color:#1b2023;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card .vs-field-label{
- color:#885065;letter-spacing:.1em;
+ color:#9B1E58;letter-spacing:.1em;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-source-card:nth-child(even) .vs-field-label{
  color:#f3cfdc;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-seam{
  position:relative;z-index:4;display:grid;place-items:center;
- width:88px;height:88px;margin:-87px auto 0;
+ width:80px;height:80px;margin:-28px auto -28px;
  background:radial-gradient(circle at 34% 30%,var(--arc-white),var(--arc-blonde) 49%,#E49D96);
  color:#0f1214;border:2px solid #FFFBE2;border-radius:50%;
  box-shadow:0 0 25px rgba(255,242,169,.65),0 0 78px rgba(255,145,175,.37);
- font:italic 400 49px/1 Georgia,serif;
+ font:italic 400 44px/1 Georgia,serif;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail{
  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
@@ -238,10 +238,13 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-pro
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-select{
  background:#fbeaf0;color:#15191c;
- border:1px solid #ba97a4;min-height:52px;
+ border:1px solid #C85686;min-height:52px;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-field-label{
  color:var(--glinda-pearl);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-order-button{
+ color:#FFF5F7;background:rgba(24,32,38,.88);border:1px solid rgba(255,242,169,.65);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-order-button[aria-pressed="true"]{
  color:#111416;background:var(--arc-blonde);border-color:var(--arc-white);
@@ -253,10 +256,10 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-que
  border:0;border-top:1px solid #f4e2e9;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question:before{
- color:#a84e6f;
+ color:#B82468;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-question .vs-eyebrow{
- color:#8e3b59;
+ color:#9B1E58;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-result{
  background:linear-gradient(120deg,#121517,#1e2327);

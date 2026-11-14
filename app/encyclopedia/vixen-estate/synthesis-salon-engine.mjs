@@ -15,11 +15,36 @@ export const SYNTHESIS_AUTHORITY=Object.freeze({
  experiment_b_flight:'HELD',empirical_replication_credit:0,manifest_successor:'UNKNOWN'
 });
 export const CLOCKS=Object.freeze([
- {id:'k',label:'Layer k',geometry:'DISCRETE_TRANSFORMER_LAYER'},
- {id:'n',label:'Token n',geometry:'DISCRETE_TOKEN_INDEX'},
- {id:'tau',label:'Surrogate τ',geometry:'ODE_SURROGATE_TIME'},
- {id:'wall',label:'Wall scheduler',geometry:'WALL_CLOCK_SCHEDULER'},
- {id:'plant',label:'Plant 48 kHz',geometry:'AUDIO_SAMPLE_CLOCK'}
+ {
+  id:'k',code:'TCC-01',label:'Layer k',custodyName:'Discrete Layer',
+  geometry:'DISCRETE_TRANSFORMER_LAYER',derivativeSymbol:'Δ_k',
+  naturalPeriodLabel:'layer step',preferredClusters:Object.freeze(['I','V']),
+  preferredPlanes:'C4_LAYER',omegaMultiplier:1.18
+ },
+ {
+  id:'n',code:'TCC-02',label:'Token n',custodyName:'Token Index',
+  geometry:'DISCRETE_TOKEN_INDEX',derivativeSymbol:'∂_n',
+  naturalPeriodLabel:'token stride',preferredClusters:Object.freeze(['II','III']),
+  preferredPlanes:'TOKEN_BASIS',omegaMultiplier:0.94
+ },
+ {
+  id:'tau',code:'TCC-03',label:'Surrogate τ',custodyName:'Surrogate τ',
+  geometry:'ODE_SURROGATE_TIME',derivativeSymbol:'d/dτ',
+  naturalPeriodLabel:'1.0 τ unit',preferredClusters:Object.freeze(['III','IV']),
+  preferredPlanes:'FLOW_TAU',omegaMultiplier:1.36
+ },
+ {
+  id:'wall',code:'TCC-04',label:'Wall scheduler',custodyName:'Wall Scheduler',
+  geometry:'WALL_CLOCK_SCHEDULER',derivativeSymbol:'d/dt_w',
+  naturalPeriodLabel:'16.6 ms frame',preferredClusters:Object.freeze(['I','IV']),
+  preferredPlanes:'SCHEDULER_FRAME',omegaMultiplier:0.76
+ },
+ {
+  id:'plant',code:'TCC-05',label:'Plant 48 kHz',custodyName:'Plant 48 kHz',
+  geometry:'AUDIO_SAMPLE_CLOCK',derivativeSymbol:'d/ds_p',
+  naturalPeriodLabel:'20.8 µs sample',preferredClusters:Object.freeze(['II','V']),
+  preferredPlanes:'PLANT_CARRIER',omegaMultiplier:1.54
+ }
 ]);
 const plain=s=>typeof s==='string'?s.trim():'';
 const limited=(s,n=700)=>plain(s).slice(0,n);
@@ -47,28 +72,84 @@ export function checkSalonCorpus(corpus){
   source_class:'HISTORICAL_METADATA',original_source_bodies:'UNAVAILABLE_IN_PUBLIC_SURFACE'
  });
 }
-export function toyClockAssay({lag=30,routeOrder='A_B'}={}){
+function buildClockTicks(t,order,offsets){
+ const off=(id)=>Math.max(-24,Math.min(24,Math.round(num(offsets?.[id]))));
+ const rev=order==='B_A'?1:0;
+ const rows=[
+  {id:'k',base:Math.round(8+.30*t),shift:rev?Math.round(7+.14*t):0,rule:rev?'8 + round(.30*lag) + h_k(rev)':'8 + round(.30*lag)'},
+  {id:'n',base:Math.round(15+.80*t),shift:rev?-Math.round(9-.08*t):0,rule:rev?'15 + round(.80*lag) + h_n(rev)':'15 + round(.80*lag)'},
+  {id:'tau',base:Math.round(27+.42*t),shift:rev?Math.round(6+.18*t):0,rule:rev?'27 + round(.42*lag) + h_τ(rev)':'27 + round(.42*lag)'},
+  {id:'wall',base:Math.round(35+1.05*t),shift:rev?-Math.round(18+.05*t):0,rule:rev?'35 + round(1.05*lag) + h_w(rev)':'35 + round(1.05*lag)'},
+  {id:'plant',base:Math.round(5+.12*t),shift:rev?Math.round(14+.22*t):0,rule:rev?'5 + round(.12*lag) + h_p(rev)':'5 + round(.12*lag)'}
+ ];
+ return rows.map((x,i)=>{
+  const adj=off(x.id);
+  const tick=Math.max(1,x.base+x.shift+adj);
+  return {
+   id:x.id,code:CLOCKS[i].code,tick,hysteresis_shift:x.shift,vernier_offset:adj,
+   rule:x.rule,label:CLOCKS[i].label,custodyName:CLOCKS[i].custodyName,
+   geometry:CLOCKS[i].geometry,derivativeSymbol:CLOCKS[i].derivativeSymbol,
+   evidence_class:'SYNTHETIC_DIMENSIONLESS_CLOCK_TICKS_ONLY'
+  };
+ });
+}
+function rankInversions(aIds,bIds){
+ let inv=0;
+ const pos=new Map(bIds.map((id,i)=>[id,i]));
+ for(let i=0;i<aIds.length;i++){
+  for(let j=i+1;j<aIds.length;j++){
+   if((pos.get(aIds[i])??0)>(pos.get(aIds[j])??0))inv+=1;
+  }
+ }
+ return inv;
+}
+export function toyClockAssay({lag=30,routeOrder='A_B',offsets=null}={}){
  const t=Math.max(0,Math.min(120,Math.round(num(lag))));
  const order=routeOrder==='B_A'?'B_A':'A_B';
  // Pure dimensionless DEMONSTRATION ticks; these are not comparable physical
  // times without independent calibration and a declared conversion map.
- const c=[
-  {id:'k',tick:Math.round(8+.30*t),rule:'8 + round(.30*lag)'},
-  {id:'n',tick:Math.round(15+.80*t),rule:'15 + round(.80*lag)'},
-  {id:'tau',tick:Math.round(27+.42*t),rule:'27 + round(.42*lag)'},
-  {id:'wall',tick:Math.round(35+1.05*t),rule:'35 + round(1.05*lag)'},
-  {id:'plant',tick:Math.round(5+.12*t),rule:'5 + round(.12*lag)'}
- ].map((x,i)=>({
-  ...x,label:CLOCKS[i].label,geometry:CLOCKS[i].geometry,
-  evidence_class:'SYNTHETIC_DIMENSIONLESS_CLOCK_TICKS_ONLY'
- }));
- const sorted=[...c].sort((a,b)=>a.tick-b.tick||a.id.localeCompare(b.id));
+ const fwd=buildClockTicks(t,'A_B',offsets);
+ const rev=buildClockTicks(t,'B_A',offsets);
+ const c=order==='B_A'?rev:fwd;
+ const sortByTick=xs=>[...xs].sort((a,b)=>a.tick-b.tick||a.id.localeCompare(b.id));
+ const fwdOrder=sortByTick(fwd).map(x=>x.id);
+ const revOrder=sortByTick(rev).map(x=>x.id);
+ const sortedOrder=order==='B_A'?revOrder:fwdOrder;
+ const preemptionGap=fwd.reduce((acc,f,idx)=>acc+Math.abs(f.tick-rev[idx].tick),0);
+ const burdenDelta=rev.reduce((s,x)=>s+x.tick,0)-fwd.reduce((s,x)=>s+x.tick,0);
  return deepFreeze({
   schema:'emstd613.vixen.synthetic-five-clock-demonstration/v1',
   parameter_lag_ticks:t,
-  route_order:order,clocks:c,arrival_order:sorted.map(x=>x.id),
+  route_order:order,non_commutative:true,
+  clocks:c,arrival_order:sortedOrder,
+  preemption_gap:preemptionGap,
+  route_burden_delta:order==='B_A'?burdenDelta:0,
+  holonomy_winding:order==='B_A'?rankInversions(fwdOrder,revOrder):0,
   physical_time_equivalence:false,measured_clock_latency:false,
   source_promotion:false,claim:'SENSITIVITY_DEMONSTRATION_NOT_EMPIRICAL_DERIVATIVE'
+ });
+}
+export function computeClockVernier(lag=30,{route='A_B',activeClockId='k',workA=null,workB=null,clockOffsets=null}={}){
+ const forward=toyClockAssay({lag,routeOrder:'A_B',offsets:clockOffsets});
+ const reverse=toyClockAssay({lag,routeOrder:'B_A',offsets:clockOffsets});
+ const active=CLOCKS.find(x=>x.id===activeClockId)||CLOCKS[0];
+ const idx=CLOCKS.findIndex(x=>x.id===active.id);
+ const activeSpread=Math.abs((reverse.clocks[idx]?.tick||0)-(forward.clocks[idx]?.tick||0));
+ const arrivalInversions=rankInversions(forward.arrival_order,reverse.arrival_order);
+ const aligned=[workA?.cluster,workB?.cluster].filter(Boolean).filter(c=>active.preferredClusters.includes(c));
+ return deepFreeze({
+  schema:'emstd613.vixen.clock-vernier/v1',
+  lag_ticks:forward.parameter_lag_ticks,
+  route_order:route==='B_A'?'B_A':'A_B',
+  active_clock_id:active.id,
+  active_clock:active,
+  forward,reverse,
+  arrival_inversions:arrivalInversions,
+  tick_l1_delta:forward.preemption_gap,
+  active_tick_spread:activeSpread,
+  cluster_aligned:aligned,
+  non_commutative_witness:forward.arrival_order.join(',')!==reverse.arrival_order.join(','),
+  physical_time_equivalence:false
  });
 }
 function sourceEntry(w,requested){
@@ -87,10 +168,11 @@ function sourceEntry(w,requested){
   source_content_verified:false,source_body_available:false
  };
 }
-function questionTemplate(a,b,track,method){
+function questionTemplate(a,b,track,method,seq='A_B'){
  const left=title(a),right=title(b);
- return 'Can a source-attributed '+String(method.family||'documentary')+
-  ' comparison of '+left+' and '+right+
+ const anchor=seq==='B_A'?right:left,probe=seq==='B_A'?left:right;
+ return 'Anchored by '+anchor+' ▷ '+probe+': can a source-attributed '+String(method.family||'documentary')+
+  ' comparison of '+anchor+' and '+probe+
   ' under '+track.title+
   ' yield a falsifiable question whose provenance and utility survive matched competent-union controls without inferring shared authorship?';
 }
@@ -130,7 +212,7 @@ export function composeSalonPlan(corpus,input={}){
  const left=sourceEntry(a,input.source_ids?.[0]),right=sourceEntry(b,input.source_ids?.[1]);
  const seq=input.route_order==='B_A'?'B_A':'A_B';
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
- const suggested=questionTemplate(a,b,track,method);
+ const suggested=questionTemplate(a,b,track,method,seq);
  const proposal=limited(input.question,900)||suggested;
  const observation=limited(input.observable_predicate,450)||
   'In matched, preregistered trials, compare source-attributed question utility, provenance error rate, and additional verification cost against competent-union controls.';
@@ -143,7 +225,11 @@ export function composeSalonPlan(corpus,input={}){
   'No Experiment B arm has been run by this session.'
  ];
  const gateIds=[...new Set([left,right].filter(x=>x.human_gate_required).map(x=>x.gate_num))];
- const synthetic=toyClockAssay({lag:input.lag_ticks,routeOrder:seq});
+ const vernier=computeClockVernier(input.lag_ticks,{
+  route:seq,activeClockId:input.active_clock_id,workA:a,workB:b,clockOffsets:input.clock_offsets
+ });
+ const synthetic=seq==='B_A'?vernier.reverse:vernier.forward;
+ const anchorWork=seq==='B_A'?b:a,probeWork=seq==='B_A'?a:b;
  const receipt={
   schema:SALON_SCHEMA,status:'OPEN_FIELD_UNRATIFIED_QUESTION',
   conceptual_form:'CONJECTURAL_VIXEN_UNIFIED_THEORY_STUDY_NOT_DISCOVERY',
@@ -187,6 +273,16 @@ export function composeSalonPlan(corpus,input={}){
    states:Object.fromEntries(gateIds.map(id=>[id,'UNADJUDICATED_PAIR'])),
    human_adjudication_required:gateIds.length>0},
   synthetic_clocks:synthetic,
+  forward_assay:vernier.forward,
+  reverse_assay:vernier.reverse,
+  holonomy_delta:{
+   arrival_inversions:vernier.arrival_inversions,
+   tick_l1_delta:vernier.tick_l1_delta,
+   preemption_gap:synthetic.preemption_gap,
+   route_burden_delta:synthetic.route_burden_delta,
+   route_sign:seq==='B_A'?-1:1,
+   anchor_pair:title(anchorWork)+' ▷ '+title(probeWork)
+  },
   missing_evidence:deficits,
   next_measurement:'PREREGISTER_INDEPENDENT_WITNESSES_AND_MATCHED_CONTROLS',
   experiment_b:{
@@ -240,7 +336,14 @@ export function makePodiumTasks(plan,{recordId=null}={}){
    schema:'td613.vixen.podium.task/v1',intent:'vixen.work.inspect',params:{work_id:x.work_id}
   })),
   {schema:'td613.vixen.podium.task/v1',intent:'vixen.gates.inspect',params:{}},
-  {schema:'td613.vixen.podium.task/v1',intent:'engine.capabilities',params:{}}
+  {schema:'td613.vixen.podium.task/v1',intent:'engine.capabilities',params:{}},
+  {schema:'td613.vixen.podium.task/v1',intent:'experiment_b.preregister',params:{
+   route_identity:plan.route_identity,
+   source_ids:plan.source_coordinates.map(x=>x.source_file_id),
+   instrument_id:plan.documentary_protocol?.instrument_id||null,
+   track_id:plan.giveback_track?.id||null,
+   question:plan.question,held_flight:true
+  }}
  ];
  // External reference inquiry requires a separately chosen record ID. A
  // Vixen question never guesses a Universal record or imports foreign bodies.

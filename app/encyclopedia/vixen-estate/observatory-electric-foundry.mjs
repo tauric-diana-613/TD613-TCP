@@ -97,16 +97,19 @@ export async function mountVixenElectricFoundry({
  const all=buildVixenLaboratories(source),byId=new Map(all.map(l=>[l.id,l]));
  const state={
   labId:HEROES[0],model:{gain:.72,witness:.88,voltage:.83,twist:.45},
-  pointer:{x:0,y:0},locked:false,playing:true,time:0,
+  pointer:{x:0,y:0},locked:false,playing:true,time:0,simPhase:0,
   raf:0,frames:0,last:0,lastPaint:0,
   renderer:null,readout:null,canvas:null,bench:null,phase:'NOTICE',
   history:[],probe:null,held:null,visible:false,
   initialized:false,renderingBackend:'PENDING',
   selectedCatalogueGroup:'UNIFIED',
+  selectedCarrierPlane:'ALL',selectedCarrierIndex:0,
   inspectorOpen:false
  };
  const log=(event,extra={})=>{
-  state.history.push(Object.freeze({seq:state.history.length+1,event,clock:state.time,
+  const prev=state.history[state.history.length-1];
+  state.history.push(Object.freeze({seq:state.history.length+1,predecessor_seq:prev?prev.seq:null,
+   event,clock:state.time,sim_phase:state.simPhase,
    source_estate:'EMSTD613',evidence_class:'SESSION_LOCAL_SIMULATION_ONLY',...extra}));
   if(state.history.length>100)state.history.shift();
  };
@@ -125,6 +128,7 @@ export async function mountVixenElectricFoundry({
  function indicate(reason){
   state.probe=probe();
   state.phase=reason==='PIN'?'PINNED_PROBE':'EXPERIMENTAL_VIEW';
+  if(typeof updateFoundryHud==='function')updateFoundryHud();
   const r=state.readout;if(!r)return;
   r.replaceChildren();
   const p=state.probe;
@@ -139,16 +143,16 @@ export async function mountVixenElectricFoundry({
  }
  function paintRoomMesh(force=false){
   if(document.body.dataset.vixenOpticalMeshObservatory!=='off')
-   window.VixenLivingMesh?.renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[],
+   window.VixenLivingMesh?.renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[],phase:state.simPhase,
     held:!state.playing||globalMotionHeld(document),force});
  }
  function paint(force=false){
   if(!state.renderer)return;
   try{
    state.renderer.paint({optic:lab().optic_program,model:state.model,pointer:state.pointer,
-    time:state.time});
+    time:state.simPhase});
    state.scoreState=paintComputationalScore(state.notation,{
-    labId:state.labId,model:state.model,pointer:state.pointer,time:state.time
+    labId:state.labId,model:state.model,pointer:state.pointer,time:state.simPhase
    });
    // Optional full-viewport lighting borrows the Foundry clock.
    paintRoomMesh(force);
@@ -163,7 +167,7 @@ export async function mountVixenElectricFoundry({
   state.raf=0;
   if(!canRun())return;
   const delta=state.last?bounded((ms-state.last)/1000,0,.064):.016;
-  state.last=ms;state.time+=delta;
+  state.last=ms;state.time+=delta;state.simPhase+=delta;
   // Transparent computational update: host owns cadence; no internal RAFs.
   paint();
   if(ms-state.lastPaint>500){state.lastPaint=ms;indicate('TICK')}
@@ -202,9 +206,12 @@ export async function mountVixenElectricFoundry({
   pulse(pin?'PIN':'MOVE');
  }
  function reset(){
+  const prevPhase=state.simPhase;
   Object.assign(state.model,{gain:.72,witness:.88,voltage:.83,twist:.45});
-  state.pointer={x:0,y:0};state.locked=false;state.time=0;
-  log('LAB_RESET');renderHero();pulse('RESET');
+  state.pointer={x:0,y:0};state.locked=false;state.simPhase=0;
+  // Monotonic custody counter state.time is preserved; only synthetic simulation phase resets.
+  log('LAB_RESET',{reset_from_phase:prevPhase,reset_to_phase:0,monotonic_clock:state.time});
+  renderHero();pulse('RESET');
  }
  function pause(){
   state.playing=false;stop();log('RUN_PAUSED');renderToolbar();return report()
@@ -213,7 +220,7 @@ export async function mountVixenElectricFoundry({
   state.playing=true;log('RUN_RESUMED');renderToolbar();start();return report()
  }
  function step(){
-  stop();state.playing=false;state.time+=1/60;
+  stop();state.playing=false;state.time+=1/60;state.simPhase+=1/60;
   log('SINGLE_STEP');paint(true);indicate('STEP');renderToolbar();
  }
  const display=()=>lab();
@@ -252,9 +259,46 @@ export async function mountVixenElectricFoundry({
  add(iris,stage,readout);
  add(eye,iris);
  const heading=node('header','ef-header');
+ const headingNwe=node('div','ef-now-why-exact');
+ add(headingNwe,
+  node('span','ef-nwe-cell','NOW · Choose one ARIA or folio & steer model probe / dials'),
+  node('span','ef-nwe-cell','WHY · Observe conditioning, nullspace & clock non-equivalence in browser'),
+  node('span','ef-nwe-cell','EXACT · Model-only output · Empirical credit = 0 · Flight HELD')
+ );
  add(heading,label('01 / ELECTRIC FOUNDRY · VIXEN MATHEMATICAL OPERA'),
   node('h2','ef-heading','A cathedral of computed consequences.'),
-  node('p','ef-dek','Six individually choreographed instruments from Em’s original mathematical folios. Every caustic, charge and projection is tied to a declared model; the light makes no claim to prove the world.'));
+  node('p','ef-dek','Six individually choreographed instruments from Em’s original mathematical folios. Every caustic, charge and projection is tied to a declared model; the light makes no claim to prove the world.'),
+  headingNwe);
+ const holdBanner=node('div','ef-hold-notice');
+ const apertureHud=node('div','vixen-aperture-hud');
+ const hudPills=[
+  node('span','vixen-hud-pill','APERTURE · SV/RANK LIVE'),
+  node('span','vixen-hud-pill','39 CARRIERS (6 NEAR · 13 MID · 20 FAR)'),
+  node('span','vixen-hud-pill','MONOTONIC CUSTODY · SIM PHASE RESETTABLE'),
+  node('span','vixen-hud-pill','PROBE (0.00, 0.00)'),
+  node('span','vixen-hud-pill','OPERAHOUSE ≠ OPERA ≠ PERFORMER')
+ ];
+ add(apertureHud,...hudPills);
+ function updateFoundryHud(){
+  const cur=display(),running=state.playing&&!globalMotionHeld(document);
+  const p=state.probe;
+  const svMetric=p?.metrics?.find?.(m=>m.name==='singular_values')?.value;
+  hudPills[0].textContent=svMetric
+   ?`APERTURE · rank=${svMetric.rank} · κ=${svMetric.condition_number??'N/A'}`
+   :`APERTURE · ${cur.folio_id} (${cur.optic_program})`;
+  hudPills[1].textContent=`CARRIERS · 39 (${CARRIERS.filter(c=>c.near).length}/${CARRIERS.filter(c=>c.mid).length}/${CARRIERS.filter(c=>c.far).length})`;
+  hudPills[2].textContent=`CLOCK ${state.time.toFixed(2)}s · PHASE ${state.simPhase.toFixed(2)}s · ${state.renderingBackend}`;
+  hudPills[3].textContent=`PROBE (${state.pointer.x.toFixed(2)}, ${state.pointer.y.toFixed(2)})${state.locked?' PINNED':''}`;
+  hudPills[4].textContent='OPERAHOUSE ≠ OPERA ≠ PERFORMER';
+  if(state.held||!running){
+   holdBanner.hidden=false;
+   holdBanner.textContent=state.held
+    ?`HOLD NOTICE · NOW: Renderer halted (${state.held}) · WHY: Fail-closed boundary · EXACT: Empirical credit = 0, use Reset or WebGL fallback.`
+    :`HOLD NOTICE · NOW: Field paused/still (${globalMotionHeld(document)?'Global Still active':'Operator paused'}) · WHY: Unpenalized temporal suspension · EXACT: Use Single Frame or Propagate to step.`;
+  }else{
+   holdBanner.hidden=true;
+  }
+ }
  const railHeading=label('SIX ARIAS · SOURCE-RECORDED MATHEMATICS');
  const proscenium=node('section','ef-proscenium');
  proscenium.setAttribute('aria-label','Six mathematical arias and live computed Vixen stage');
@@ -262,7 +306,7 @@ export async function mountVixenElectricFoundry({
  ariaScore.setAttribute('aria-label','Choose one of six original Vixen mathematical performances');
  add(ariaScore,railHeading,heroRail);
  const instrumentStage=node('div','ef-instrument-stage');
- add(instrumentStage,toolbar,eye);
+ add(instrumentStage,toolbar,eye,apertureHud,holdBanner);
  add(proscenium,ariaScore,instrumentStage);
  function renderRail(){
   heroRail.replaceChildren();
@@ -310,6 +354,7 @@ export async function mountVixenElectricFoundry({
   sceneBadge.textContent=current.folio_id+' · '+current.research_family+
    ' · '+(running?'ACTIVE SIMULATION':'PAUSED')+
    ' · NO EMPIRICAL CLAIM';
+  updateFoundryHud();
  }
  function renderDials(){
   controls.replaceChildren();
@@ -323,17 +368,44 @@ export async function mountVixenElectricFoundry({
   score.replaceChildren();
   add(score,label('39 CARRIERS · LOOM-CLASSIFIED OPTICAL CHOREOGRAPHY'),
    node('p','ef-score-note','6 near / 13 mid / 20 far. Strata supply light delivery, never Em authorship.'));
+  const controlsRow=node('div','ef-carrier-controls');
+  for(const [pId,pLabel] of [['ALL','ALL 39'],['flight-near','NEAR · 6'],['flight-mid','MID · 13'],['flight-far','FAR · 20']]){
+   const btn=BTN(pLabel,()=>{state.selectedCarrierPlane=pId;renderScore();},'ef-carrier-filter');
+   btn.setAttribute('aria-pressed',String(state.selectedCarrierPlane===pId));
+   controlsRow.append(btn);
+  }
+  const rc04Target=byId.has('LAB_RC-04')?'LAB_RC-04':(all.find(l=>l.optic_program==='LOOM_39')?.id||null);
+  if(rc04Target){
+   const jump=BTN('Stage 39-Skin Loom ('+rc04Target.replace('LAB_','')+') ↑',()=>{
+    switchLab(rc04Target);
+    stage.scrollIntoView?.({behavior:'smooth',block:'nearest'});
+   },'ef-carrier-filter ef-carrier-jump');
+   controlsRow.append(jump);
+  }
+  const carrierDetail=node('div','ef-carrier-detail','Select or hover any of the 39 Loom-classified optical carriers to inspect its depth gain and phase plane.');
   const grid=node('div','ef-carrier-grid');
   for(const c of CARRIERS){
    const bar=node('i','ef-carrier');
    bar.dataset.plane=c.plane;
+   bar.tabIndex=0;
    bar.style.setProperty('--carrier-depth',String(c.depth_gain));
    bar.style.setProperty('--carrier-index',String(c.index));
    bar.style.setProperty('--carrier-hue',c.color);
-   bar.title='Carrier '+String(c.index+1)+' · '+c.plane;
+   const matched=state.selectedCarrierPlane==='ALL'||state.selectedCarrierPlane===c.plane;
+   bar.classList.toggle('is-dimmed',!matched);
+   bar.classList.toggle('is-selected',c.index===state.selectedCarrierIndex);
+   bar.title='Carrier '+String(c.index+1)+' · '+c.plane+' · depth '+c.depth_gain.toFixed(3);
+   const showCarrier=()=>{
+    state.selectedCarrierIndex=c.index;
+    for(const el of grid.children)el.classList.toggle('is-selected',el===bar);
+    carrierDetail.textContent=`CARRIER ${String(c.index+1).padStart(2,'0')}/39 · PLANE: ${c.plane} · DEPTH GAIN: ${c.depth_gain.toFixed(3)} · CSS α: ${c.css_opacity} · CHROMA: ${c.color} · AUTHORITY: VISUAL_ONLY`;
+   };
+   bar.addEventListener('pointerenter',showCarrier);
+   bar.addEventListener('focus',showCarrier);
+   bar.addEventListener('click',showCarrier);
    grid.append(bar);
   }
-  score.append(grid);
+  score.append(controlsRow,grid,carrierDetail);
  }
  function renderHero(){
   const current=display();

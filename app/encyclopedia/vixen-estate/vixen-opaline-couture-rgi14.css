@@ -360,3 +360,281 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-sou
   width:100%;max-width:100%!important;
  }
 }
+
+/* ============================================================================
+ * 𝌋 RGI16 · GLINDA-CYBERGOTH × MUGLER-CHROMEPUNK COUTURE RESCUE OVERRIDES
+ * Enforces >= 7:1 WCAG AAA contrast on every pearl-blush, liquid-chrome, and
+ * obsidian surface across all 8 views without touching witness invariants.
+ * ============================================================================ */
+
+/* 1. Synthesis Salon (.vs-rail, .vs-program, .vs-source-card, .vs-question) */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail .vs-ledger-cell{
+ color:#182026!important;
+ border-right-color:rgba(202,42,115,.22)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail .vs-ledger-label{
+ color:#9A1B56!important;
+ font-weight:700!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail .vs-ledger-cell strong{
+ color:#12181E!important;
+ font-weight:600!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail .vs-ledger-cell small{
+ color:#36424C!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-order-button{
+ color:#FFF5F8!important;
+ background:rgba(24,33,40,.92)!important;
+ border:1px solid rgba(255,240,168,.68)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-program .vs-order-button[aria-pressed="true"]{
+ color:#10151A!important;
+ background:linear-gradient(120deg,#FFFBE4,#FFF0A8 62%,#FFB6D5)!important;
+ border-color:#FFFDE9!important;
+ box-shadow:0 0 18px rgba(255,240,168,.45)!important;
+}
+
+/* 2. Overview Editorial Foyer ("Four Ways to Enter the Opera") */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-kicker{
+ color:#9B1B58!important;
+ font-weight:700!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-intro h2{
+ color:#12181E!important;
+ text-shadow:0 1px 0 rgba(255,255,255,.75)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-intro h2 em{
+ color:#8F164E!important;
+ -webkit-text-fill-color:#8F164E!important;
+ background:none!important;
+ -webkit-background-clip:border-box!important;
+ background-clip:border-box!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-intro>p:not(.vixen-foyer-kicker),
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-annotation{
+ color:#1F2830!important;
+ background:rgba(255,248,250,.88);
+ padding:10px 14px;
+ border-left:3px solid #E11F83;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(odd){
+ background:linear-gradient(145deg,#FFFDFE,#FFE2EE 75%,#FFC2DC)!important;
+ color:#141B21!important;
+ border:1px solid rgba(200,30,107,.42)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(odd) :is(strong,.vixen-door-desc){
+ color:#141B21!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(odd) strong em{
+ color:#8F164E!important;
+ font-style:italic;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(odd) :is(.vixen-door-index,.vixen-door-verb){
+ color:#9E1958!important;
+ font-weight:700!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(even){
+ background:linear-gradient(145deg,#252E36,#0D1318)!important;
+ color:#FFF7FA!important;
+ border:1px solid #FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(even) :is(strong,.vixen-door-desc){
+ color:#FFF7FA!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(even) :is(.vixen-door-index,.vixen-door-verb){
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-foyer-afterword{
+ color:#F5EDF1!important;
+ background:rgba(11,16,21,.78);
+ padding:10px 14px;
+ border-left:2px solid #FFF0A8;
+}
+
+/* 3. Overview Threshold ("The Vixen Threshold") & 10-Stage Procession */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .archive-directory{
+ background:
+  radial-gradient(ellipse at 86% 12%,rgba(255,240,168,.16),transparent 62%),
+  linear-gradient(135deg,#12181F 0%,#1E2730 55%,#0C1116 100%)!important;
+ color:#FFF7FA!important;
+ border:1px solid rgba(255,240,168,.46)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .archive-directory .eyebrow{
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .archive-directory h2,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .archive-directory p{
+ color:#F8EEF3!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-section{
+ background:
+  radial-gradient(ellipse at 18% 0%,rgba(255,145,175,.14),transparent 64%),
+  linear-gradient(140deg,#0E1318 0%,#1B232B 58%,#0A0E12 100%)!important;
+ color:#FFF7FA!important;
+ border-top:1px solid rgba(255,240,168,.38)!important;
+ border-bottom:1px solid rgba(255,145,175,.35)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-section .eyebrow{
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-section :is(h2,h3,p){
+ color:#F9EFF4!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-track .stage-btn{
+ background:linear-gradient(145deg,#1B232A,#0E1318)!important;
+ color:#F6ECF0!important;
+ border:1px solid rgba(255,240,168,.32)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-track .stage-btn .stage-glyph{
+ color:#FF91AF!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-track .stage-btn .stage-label{
+ color:#F6ECF0!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-track .stage-btn[aria-pressed="true"]{
+ background:linear-gradient(135deg,#FFFBE6,#FFE0EE 68%,#FF9EC6)!important;
+ color:#12181E!important;
+ border-color:#FFF0A8!important;
+ box-shadow:0 0 22px rgba(255,240,168,.38)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .procession-track .stage-btn[aria-pressed="true"] :is(.stage-glyph,.stage-label){
+ color:#12181E!important;
+ font-weight:700!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .stage-formula-card{
+ background:linear-gradient(140deg,#141C23,#0B1015)!important;
+ border:1px solid rgba(255,240,168,.48)!important;
+ color:#FFF8FA!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .stage-formula-card .math-block{
+ background:#090D11!important;
+ color:#FFF0A8!important;
+ border:1px solid rgba(255,145,175,.38)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .stage-formula-card .math-block :is(span,.math-fallback){
+ color:#FFF2A9!important;
+ background:transparent!important;
+}
+
+/* 4. Badge & Table Hygiene Across Holds, Gates, Works, Protocols */
+body:not([data-active-research-stage="OPERAHOUSE"]) .tag.dark{
+ background:#12181F!important;
+ color:#FFF7FA!important;
+ border:1px solid rgba(255,240,168,.42)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .tag.porcelain{
+ background:#FFF7FA!important;
+ color:#161D24!important;
+ border:1px solid rgba(202,42,115,.36)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .tag.gold{
+ background:#FFF0A8!important;
+ color:#141A20!important;
+ border:1px solid #E64F91!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .tag.pink{
+ background:#FF91AF!important;
+ color:#12171C!important;
+ border:1px solid #FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .comp-table{
+ width:100%;
+ table-layout:fixed;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .comp-table :is(th,td){
+ overflow-wrap:anywhere;
+ word-break:break-word;
+ white-space:normal;
+ vertical-align:top;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .comp-table code{
+ overflow-wrap:anywhere;
+ word-break:break-word;
+ white-space:normal;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child .comp-table thead th{
+ background:#182028!important;
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child .comp-table tbody th{
+ background:#FFEFF4!important;
+ color:#141B21!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child .comp-table tbody td{
+ background:#FFFDF8!important;
+ color:#141B21!important;
+ border-bottom-color:rgba(24,32,40,.18)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child .comp-table code{
+ background:rgba(143,22,78,.10)!important;
+ color:#8F164E!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card .secondary-btn{
+ background:#141B21!important;
+ color:#FFF2A9!important;
+ border:1px solid rgba(255,240,168,.55)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card .secondary-btn[aria-pressed="true"]{
+ background:#8F164E!important;
+ color:#FFFDF8!important;
+ border-color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card .secondary-btn:hover{
+ background:#FFF0A8!important;
+ color:#12181D!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-gates .gate-pair-card:nth-child(odd) .gate-controls>span{
+ color:#1C2328!important;
+ font-weight:600;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-protocols) .lexicon-reader code{
+ background:rgba(20,27,34,.09)!important;
+ color:#8F164E!important;
+ overflow-wrap:anywhere;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-protocols) .lexicon-reader .manifest-card{
+ background:rgba(255,253,254,.92)!important;
+ border:1px solid rgba(202,42,115,.34)!important;
+ color:#141B21!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-protocols) .lexicon-reader .secondary-btn{
+ background:#FFF9FB!important;
+ color:#141B21!important;
+ border:1px solid #8F164E!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-protocols) .lexicon-reader .secondary-btn:hover,
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-protocols) .lexicon-reader .secondary-btn:focus-visible{
+ background:#141B21!important;
+ color:#FFF2A9!important;
+ border-color:#FF91AF!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(.archive-directory,.procession-section,.stage-formula-card) .secondary-btn{
+ background:#182026!important;
+ color:#FFF8F2!important;
+ border:1px solid rgba(255,240,168,.55)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) :is(.archive-directory,.procession-section,.stage-formula-card) .secondary-btn:hover{
+ background:#FFF0A8!important;
+ color:#12181D!important;
+ border-color:#FF65AA!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:not(:first-child) .comp-table{
+ background:#10161B!important;
+ color:#FFF7FA!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:not(:first-child) .comp-table td{
+ background:#141C23!important;
+ color:#FFF7FA!important;
+ border-color:rgba(255,240,168,.24)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:not(:first-child) .comp-table th{
+ background:#0B1014!important;
+ color:#FFF0A8!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:not(:first-child) .comp-table code{
+ background:rgba(255,240,168,.12)!important;
+ color:#FFF0A8!important;
+}

@@ -20,8 +20,8 @@ export const SCORE_CONTRACT=Object.freeze({
 const TAU=Math.PI*2;
 const ink=Object.freeze({
  graphite:'#24282A',nickel:'#667078',porcelain:'#F6F4F0',
- pink:'#FF91AF',arc:'#FFF2A9',rose:'#C75F91',
- opal:'#9DBCC1',rose:'#bc5877'
+ pink:'#FF91AF',arc:'#FFF2A9',rose:'#FF639E',
+ opal:'#9DBCC1'
 });
 const clip=(v,a=0,b=1)=>Math.min(b,Math.max(a,Number.isFinite(+v)?+v:a));
 function stroke(ctx,color,width=1,blur=0){
@@ -80,13 +80,13 @@ function smokeGlass(ctx,width,height,model,time){
  // overbright tiled field competing with source mathematics.
  const cx=width*.5,cy=height*.52,r=Math.min(width,height)*.62;
  ctx.save();
- ctx.fillStyle='rgba(8,9,13,.21)';
+ ctx.fillStyle='rgba(8,11,14,.21)';
  ctx.fillRect(0,0,width,height);
  const glass=ctx.createRadialGradient(cx,cy,r*.04,cx,cy,r);
- glass.addColorStop(0,'rgba(8,8,14,.69)');
- glass.addColorStop(.48,'rgba(16,14,22,.58)');
- glass.addColorStop(.70,'rgba(27,20,24,.28)');
- glass.addColorStop(1,'rgba(8,8,13,.035)');
+ glass.addColorStop(0,'rgba(8,11,14,.69)');
+ glass.addColorStop(.48,'rgba(14,19,23,.58)');
+ glass.addColorStop(.70,'rgba(18,22,26,.28)');
+ glass.addColorStop(1,'rgba(8,11,14,.035)');
  ctx.fillStyle=glass;
  ctx.fillRect(0,0,width,height);
  // Light slits follow synthetic voltage and temporal phase. Grey-nickel
@@ -315,10 +315,147 @@ function xor(ctx,w,h,params,time){
  mono(ctx,'I(X;Z)=0  ·  I(X,Y;Z)=1 bit',
   xc,y0+hh+24,10,ink.arc,'center');
 }
-function generic(ctx,w,h,params,time){
+function holonomy(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.33;
+ const dTheta=(.15+params.twist*.72)*Math.PI;
+ ring(ctx,cx,cy,r,ink.porcelain,1.3,.65);
+ ring(ctx,cx,cy,r*.64,ink.pink,1.5,.8,0,TAU-dTheta,8);
+ const a0=[cx+r*.64,cy],a1=[cx+Math.cos(TAU-dTheta)*r*.64,cy+Math.sin(TAU-dTheta)*r*.64];
+ diamond(ctx,a0[0],a0[1],6,ink.arc);
+ diamond(ctx,a1[0],a1[1],6,ink.pink);
+ line(ctx,a0,a1,ink.arc,2.2,12);
+ computedArc(ctx,a0,a1,params.voltage,time,1.1);
+ graduated(ctx,cx,cy,r*.92,time,48);
+ mono(ctx,`${labId} · HOLONOMY DEFICIT Δθ = ${(dTheta*180/Math.PI).toFixed(1)}°`,cx,cy+r+24,10,ink.arc,'center');
+}
+function quotient87(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.33;
+ const leftCx=cx-r*.52,rightCx=cx+r*.52;
+ ring(ctx,leftCx,cy,r*.48,ink.pink,1.6,.85);
+ ring(ctx,rightCx,cy,r*.36,ink.arc,1.6,.85);
+ for(let i=0;i<9;i++){
+  const a=TAU*i/9+time*.08;
+  diamond(ctx,leftCx+Math.cos(a)*r*.32,cy+Math.sin(a)*r*.32,3.5,ink.pink);
+ }
+ for(let i=0;i<6;i++){
+  const a=-TAU*i/6-time*.08;
+  diamond(ctx,rightCx+Math.cos(a)*r*.22,cy+Math.sin(a)*r*.22,3.5,ink.arc);
+ }
+ line(ctx,[leftCx+r*.48,cy],[rightCx-r*.36,cy],ink.porcelain,1.8,9);
+ mono(ctx,'54 ADMISSIBLE',leftCx,cy-r*.56,10,ink.pink,'center');
+ mono(ctx,'33 RESIDUAL',rightCx,cy-r*.46,10,ink.arc,'center');
+ mono(ctx,`${labId} · π_c4(87) = 54 ⊔ 33 QUOTIENT`,cx,cy+r*.78,10,ink.porcelain,'center');
+}
+function torusSe(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.34;
+ const pts=[];
+ for(let i=0;i<=72;i++){
+  const u=TAU*i/72;
+  const rr=r*(.68+.24*Math.cos(3*u+time*.4+params.twist*TAU));
+  pts.push([cx+Math.cos(u)*rr,cy+Math.sin(u)*rr*.68]);
+ }
+ poly(ctx,pts,ink.pink,2.1,11);
+ ring(ctx,cx,cy,r*.42,ink.arc,1.4,.75);
+ graduated(ctx,cx,cy,r*.95,time,36);
+ mono(ctx,`${labId} · S_e ≡ ([x+y] = z + 1) CARRY SYMMETRY`,cx,cy+r*.88,10,ink.arc,'center');
+}
+function foldSeam(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.33;
+ const sep=r*(.26+.34*params.gain);
+ const skew=(params.twist-.5)*r*.38;
+ poly(ctx,[[cx-r*.78,cy-sep],[cx,cy-sep+skew],[cx+r*.78,cy-sep]],ink.pink,2.0,10);
+ poly(ctx,[[cx-r*.78,cy+sep],[cx,cy+sep-skew],[cx+r*.78,cy+sep]],ink.arc,2.0,10);
+ for(let i=-3;i<=3;i++){
+  const x=cx+i*r*.22;
+  line(ctx,[x,cy-sep+(i===0?skew:0)],[x,cy+sep-(i===0?skew:0)],ink.porcelain,1.1,6);
+ }
+ ring(ctx,cx,cy,r*.9,ink.nickel,.9,.55);
+ diamond(ctx,cx,cy,7,ink.arc);
+ mono(ctx,`${labId} · F(r)=|T(r)−Q(r)| SEAM GAP`,cx,cy+r+24,10,ink.arc,'center');
+}
+function fourierSpectrum(ctx,w,h,params,time,labId){
+ const x0=w*.15,y0=h*.22,ww=w*.7,hh=h*.56;
+ const N=9,wave=[];
+ for(let i=0;i<=48;i++){
+  const u=i/48,ang=u*TAU*2;
+  let sum=0;
+  for(let k=1;k<=4;k++){
+   const amp=(1/k)*(.4+.6*params.gain);
+   sum+=amp*Math.sin(k*ang+time*(.4+.2*k)+params.twist*k);
+  }
+  wave.push([x0+u*ww,y0+hh*.38-sum*hh*.22]);
+ }
+ poly(ctx,wave,ink.pink,2.2,11);
+ for(let m=0;m<N;m++){
+  const bx=x0+(m+.5)*(ww/N),mag=(.25+.75*Math.abs(Math.sin(m*1.1+params.twist*4+time*.5)))*params.voltage;
+  const bh=mag*hh*.36;
+  line(ctx,[bx,y0+hh],[bx,y0+hh-bh],m%2?ink.arc:ink.porcelain,3.2,8);
+  diamond(ctx,bx,y0+hh-bh,3.5,m%2?ink.arc:ink.pink);
+ }
+ mono(ctx,`${labId} · f(r)=Σ aⱼ sin(kⱼ·r + ϕⱼ)`,w*.5,y0+hh+24,10,ink.arc,'center');
+}
+function d3Lattice(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.34;
+ const theta=.06+params.twist*.38;
+ for(const [rot,col] of [[0,ink.pink],[theta,ink.arc]]){
+  const pts=[];
+  for(let i=0;i<6;i++){
+   const a=rot+i*Math.PI/3+time*.05;
+   pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);
+  }
+  poly(ctx,[pts[0],pts[2],pts[4],pts[0]],col,1.8,9);
+  poly(ctx,[pts[1],pts[3],pts[5],pts[1]],col,1.4,7);
+ }
+ ring(ctx,cx,cy,r*.48,ink.porcelain,1.1,.7);
+ mono(ctx,`${labId} · D₃ ROTATED LATTICE θ=${(theta*180/Math.PI).toFixed(1)}°`,cx,cy+r+24,10,ink.arc,'center');
+}
+function phiStar(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.35;
+ const phi=(1+Math.sqrt(5))/2;
+ for(let m=0;m<10;m++){
+  const a=m*Math.PI/5+time*.04,len=r*(m%2?1/phi:.96);
+  const pt=[cx+Math.cos(a)*len,cy+Math.sin(a)*len];
+  line(ctx,[cx,cy],pt,m%2?ink.arc:ink.pink,1.5,8);
+  diamond(ctx,pt[0],pt[1],3.8,m%2?ink.arc:ink.pink);
+ }
+ ring(ctx,cx,cy,r/phi,ink.porcelain,1.3,.75);
+ mono(ctx,`${labId} · QUASIPERIODIC 10-FOLD φ=${phi.toFixed(3)}`,cx,cy+r+24,10,ink.arc,'center');
+}
+function twinWorldFork(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,rx=Math.min(w,h)*.38,ry=Math.min(w,h)*.24;
+ const s=[cx-rx,cy],e=[cx+rx,cy],midA=[cx,cy-ry*(.7+.4*params.gain)],midB=[cx,cy+ry*(.7+.4*params.twist)];
+ poly(ctx,[s,midA,e],ink.pink,2.2,12);
+ poly(ctx,[s,midB,e],ink.arc,2.2,12);
+ diamond(ctx,s[0],s[1],7,ink.porcelain);
+ diamond(ctx,e[0],e[1],7,ink.porcelain);
+ diamond(ctx,midA[0],midA[1],5.5,ink.pink);
+ diamond(ctx,midB[0],midB[1],5.5,ink.arc);
+ mono(ctx,'γ_A',midA[0],midA[1]-12,10,ink.pink,'center');
+ mono(ctx,'γ_B',midB[0],midB[1]+20,10,ink.arc,'center');
+ mono(ctx,`${labId} · end(γA)=end(γB) ⇏ γA=γB`,cx,cy+ry*1.45,10,ink.arc,'center');
+}
+function causticField(ctx,w,h,params,time,labId){
+ const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.34;
+ const cusp=labId==='LAB_RC-14'?.52:.34;
+ const pts=[];
+ for(let i=0;i<=60;i++){
+  const u=TAU*i/60+time*.09;
+  const rr=r*(.55+cusp*Math.cos(3*u+params.twist*TAU));
+  pts.push([cx+Math.cos(u)*rr,cy+Math.sin(u)*rr]);
+ }
+ poly(ctx,pts,ink.pink,1.9,11);
+ for(let i=0;i<12;i++){
+  const a=TAU*i/12,inner=[cx+Math.cos(a)*r*.25,cy+Math.sin(a)*r*.25],outer=[cx+Math.cos(a+params.twist*.35)*r*.92,cy+Math.sin(a+params.twist*.35)*r*.92];
+  line(ctx,inner,outer,i%2?ink.arc:ink.porcelain,1.2,7);
+ }
+ computedArc(ctx,[cx-r*.45,cy],[cx+r*.45,cy],params.voltage,time,2.1);
+ mono(ctx,`${labId} · ||∇T−∇Q||₂ CAUSTIC DIVERGENCE`,cx,cy+r+24,10,ink.arc,'center');
+}
+function generic(ctx,w,h,params,time,labId='FOLIO'){
  const cx=w*.5,cy=h*.52,r=Math.min(w,h)*.32;
  sourceSeam(ctx,cx,cy,r,params);
  graduated(ctx,cx,cy,r,time,48);
+ mono(ctx,`${labId} · SOURCE-REFERENCED VECTOR PROJECTION`,cx,cy+r+24,10,ink.porcelain,'center');
 }
 export function paintComputationalScore(canvas,{labId='LAB_TCC-01',
  model={},time=0,pointer={x:0,y:0}}={}){
@@ -340,11 +477,16 @@ export function paintComputationalScore(canvas,{labId='LAB_TCC-01',
   voltage=clip(model.voltage),twist=clip(model.twist);
  const params={gain,witness,voltage,twist};
  const mode={
-  'LAB_TCC-01':control,'LAB_TCC-04':clocks,
-  'LAB_TCC-05':algedonic,'LAB_RC-03':couture,
-  'LAB_RC-07':rank,'LAB_RC-10':xor
+  'LAB_TCC-01':control,'LAB_TCC-02':holonomy,'LAB_TCC-03':foldSeam,
+  'LAB_TCC-04':clocks,'LAB_TCC-05':algedonic,'LAB_TCC-06':holonomy,
+  'LAB_TCC-07':quotient87,'LAB_TCC-08':torusSe,
+  'LAB_RC-01':fourierSpectrum,'LAB_RC-02':clocks,'LAB_RC-03':couture,
+  'LAB_RC-04':d3Lattice,'LAB_RC-05':phiStar,'LAB_RC-06':quotient87,
+  'LAB_RC-07':rank,'LAB_RC-08':foldSeam,'LAB_RC-09':holonomy,
+  'LAB_RC-10':xor,'LAB_RC-11':torusSe,'LAB_RC-12':twinWorldFork,
+  'LAB_RC-13':causticField,'LAB_RC-14':causticField
  }[labId]||generic;
- mode(ctx,width,height,params,time);
+ mode(ctx,width,height,params,time,labId);
  // Model-probe coordinate: a mechanically distinct mark, not an outside
  // witnessing event. Its chroma tracks local operator voltage and gain.
  const px=width*(clip(pointer.x,-1,1)+1)/2,

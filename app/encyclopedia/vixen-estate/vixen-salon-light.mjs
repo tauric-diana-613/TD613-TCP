@@ -11,6 +11,7 @@
  */
 import {CARRIERS,triangular,quasiperiodic,project111}
  from './observatory-foundry-kernel.mjs';
+import {globalMotionHeld} from './vixen-motion-governor.mjs';
 
 export const VEIL_CONTRACT=Object.freeze({
  schema:'emstd613.vixen.glinda-electric-veil/v1',
@@ -213,46 +214,61 @@ export function mountSalonVeil(canvas,getState){
  const win=canvas?.ownerDocument?.defaultView;
  if(!win||typeof getState!=='function')
   return Object.freeze({mounted:false,reason:'NO_VISUAL_HOST'});
- let raf=0,disposed=false,visible=true,frame=0,last=null,lastFrameMs=-Infinity;
- const reduced=win.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||false;
+ const doc=win.document;
+ let raf=0,disposed=false,visible=true,frame=0,last=null,lastMs=NaN,lastDrawMs=-Infinity,clockTime=0;
+ const isHeld=()=>globalMotionHeld(doc);
  // A calibrated optical stage, not a 60-FPS CPU tax: 20 FPS maximum while
- // visible, one static draw when reduced motion is requested.
+ // visible, monotonic delta time, and immediate halt when Still or hidden.
  const frameBudgetMs=50;
  const show=(ms)=>{
   raf=0;
-  if(disposed||!visible||win.document.hidden)return;
-  if(!reduced&&Number.isFinite(ms)&&ms-lastFrameMs<frameBudgetMs){
+  if(disposed||!visible||doc.hidden){lastMs=NaN;return;}
+  const held=isHeld();
+  if(!held&&Number.isFinite(ms)&&Number.isFinite(lastDrawMs)&&ms-lastDrawMs<frameBudgetMs){
    raf=win.requestAnimationFrame(show);return;
   }
-  if(Number.isFinite(ms))lastFrameMs=ms;
+  if(!held&&Number.isFinite(ms)){
+   if(Number.isFinite(lastMs))clockTime+=Math.min(.1,Math.max(0,(ms-lastMs)/1000));
+   lastMs=ms;lastDrawMs=ms;
+  }else if(held){
+   lastMs=NaN;
+  }
   frame+=1;
   const data=getState();
-  if(data?.works?.length===2)last=makeVeilFrame({canvas,...data,time:reduced?0:Number.isFinite(ms)?ms/1000:0});
-  if(!reduced)raf=win.requestAnimationFrame(show);
+  if(data?.works?.length===2)last=makeVeilFrame({canvas,...data,time:clockTime});
+  if(!held)raf=win.requestAnimationFrame(show);
  };
  const schedule=()=>{
   if(disposed)return;
   if(raf)win.cancelAnimationFrame(raf);
   raf=0;show();
  };
+ const onMotion=()=>{lastMs=NaN;schedule();};
  const intersection=typeof win.IntersectionObserver==='function'
   ?new win.IntersectionObserver(entries=>{
    visible=entries.some(e=>e.isIntersecting);
-   if(visible)schedule();
-   else if(raf){win.cancelAnimationFrame(raf);raf=0;}
+   if(visible)onMotion();
+   else if(raf){win.cancelAnimationFrame(raf);raf=0;lastMs=NaN;}
   },{threshold:.02}):null;
  intersection?.observe(canvas);
  const ro=typeof win.ResizeObserver==='function'
-  ?new win.ResizeObserver(()=>{if(reduced)schedule()}):null;
+  ?new win.ResizeObserver(()=>{if(isHeld())schedule();}):null;
  ro?.observe(canvas);
- win.document.addEventListener('visibilitychange',schedule);
+ const mo=typeof win.MutationObserver==='function'
+  ?new win.MutationObserver(onMotion):null;
+ const motionBtn=doc.getElementById?.('motionBtn');
+ if(motionBtn)mo?.observe(motionBtn,{attributes:true,attributeFilter:['aria-pressed']});
+ if(doc.body)mo?.observe(doc.body,{attributes:true,attributeFilter:['data-vixen-motion']});
+ doc.addEventListener('visibilitychange',onMotion);
+ doc.addEventListener('vixen:motionchange',onMotion);
  schedule();
  return Object.freeze({
   mounted:true,contract:VEIL_CONTRACT,
-  getStatus:()=>Object.freeze({frames:frame,last,visible}),
-  renderOnce:()=>{if(disposed)return null;last=makeVeilFrame({canvas,...getState(),time:0});return last},
+  getStatus:()=>Object.freeze({frames:frame,last,visible,held:isHeld(),time:clockTime}),
+  renderOnce:()=>{if(disposed)return null;last=makeVeilFrame({canvas,...getState(),time:clockTime});return last},
   dispose(){disposed=true;if(raf)win.cancelAnimationFrame(raf);
-   intersection?.disconnect();ro?.disconnect();
-   win.document.removeEventListener('visibilitychange',schedule);}
+   intersection?.disconnect();ro?.disconnect();mo?.disconnect();
+   doc.removeEventListener('visibilitychange',onMotion);
+   doc.removeEventListener('vixen:motionchange',onMotion);}
  });
 }

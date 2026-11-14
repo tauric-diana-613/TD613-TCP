@@ -201,7 +201,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  margin:3px 8px 8px 0;font:700 12px/1 ui-monospace,monospace;cursor:pointer
 }
 #vixenSynthesisSalon .vs-order-button[aria-pressed="true"]{background:#22292d;color:#fff0a8}
-#vixenSynthesisSalon .vs-clocks{padding:clamp(22px,4vw,50px);background:#25262c;color:#fff3f7}
+#vixenSynthesisSalon .vs-clocks{padding:clamp(22px,4vw,50px);background:#141b20;color:#fff3f7}
 #vixenSynthesisSalon .vs-clocks .vs-eyebrow{color:var(--vs-gold)}
 #vixenSynthesisSalon .vs-clocks .vs-custody{color:#ddd0d5}
 #vixenSynthesisSalon .vs-slider-label{
@@ -368,7 +368,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 }
 #vixenSynthesisSalon .vs-metric{
  min-width:0;display:flex;flex-direction:column;gap:9px;
- border:1px solid #b59aa4;background:#242a2f;padding:18px;
+ border:1px solid #ff91af;background:#242a2f;padding:18px;
 }
 #vixenSynthesisSalon .vs-metric-label{
  font:700 10px/1.5 ui-monospace,monospace;color:#fff0a8;
@@ -382,6 +382,140 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  overflow-wrap:anywhere;padding:10px;background:#161a1d;color:#fff0a8;
 }
 #vixenSynthesisSalon .vs-metric .vs-note{color:#f2e5eb}
+#vixenSynthesisSalon .vs-holonomy-card{
+ grid-column:1/-1;margin-top:10px;padding:12px 16px;
+ background:linear-gradient(125deg,rgba(16,24,30,.92),rgba(26,35,42,.95));
+ border:1px solid rgba(255,145,175,.58);border-left:3px solid #FFF2A9;
+ color:#FFFDFB;
+}
+#vixenSynthesisSalon .vs-holonomy-badge{
+ display:block;font:700 9px/1.4 ui-monospace,monospace;letter-spacing:.14em;
+ color:#FFF2A9;margin-bottom:4px;
+}
+#vixenSynthesisSalon .vs-holonomy-detail{
+ margin:0;font:400 12px/1.5 Georgia,serif;color:#FFE6EF;
+}
+#vixenSynthesisSalon .vixen-aperture-hud{
+ display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 12px;
+}
+#vixenSynthesisSalon .vixen-hud-pill{
+ display:inline-flex;align-items:center;padding:5px 10px;
+ background:rgba(12,18,23,.88);border:1px solid rgba(255,242,169,.52);
+ color:#FFF2A9;font:700 9px/1.35 ui-monospace,monospace;letter-spacing:.08em;
+}
+#vixenSynthesisSalon .vs-podium-bridge{
+ margin:0 0 10px;padding:10px 12px;background:#141b20;border:1px solid rgba(255,145,175,.45);
+}
+#vixenSynthesisSalon .vs-podium-bridge .vs-field-label{color:#FFF2A9}
+#vixenSynthesisSalon .vs-input{
+ width:100%;min-height:40px;padding:8px 12px;background:#0c1115;color:#FFFDFB;
+ border:1px solid #FF91AF;font:500 11px/1.4 ui-monospace,monospace;
+}
+#vixenSynthesisSalon .vs-now-why-exact{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px;
+}
+#vixenSynthesisSalon .vs-nwe-item{
+ padding:8px 11px;background:rgba(12,17,22,.90);border:1px solid rgba(255,242,169,.44);
+ border-left:2px solid #FF91AF;color:#FFF7FA;font:600 9.5px/1.45 ui-monospace,monospace;
+ letter-spacing:.05em;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-mix{position:relative}
+#vixenSynthesisSalon button.vs-seam{
+ position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ margin:12px auto 4px;padding:10px 18px;min-height:44px;
+ background:linear-gradient(125deg,#12181E,#212A32);color:#FFF2A9;
+ border:1px solid #FF91AF;font:700 10.5px/1.2 ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;
+ box-shadow:0 0 22px rgba(255,145,175,.22);
+}
+#vixenSynthesisSalon button.vs-seam:hover{background:#FFF2A9;color:#12181D;border-color:#FF65AA}
+#vixenSynthesisSalon .vs-seam-neq{font:700 16px/1 Georgia,serif;color:#FF91AF}
+#vixenSynthesisSalon button.vs-seam:hover .vs-seam-neq{color:#9B1C52}
+#vixenSynthesisSalon svg.vs-holonomy-svg{
+ display:block;width:100%;max-width:340px;height:auto;margin:6px 0 8px;
+}
+#vixenSynthesisSalon .vs-trajectory-memory{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 18px;
+}
+#vixenSynthesisSalon .vs-traj-cell{
+ padding:11px 13px;background:#131A20;border:1px solid rgba(255,242,169,.32);
+ color:#FFF7FA;min-width:0;
+}
+#vixenSynthesisSalon .vs-traj-cell.is-active{
+ background:#1A232B;border-color:#FFF2A9;box-shadow:0 0 16px rgba(255,242,169,.16);
+}
+#vixenSynthesisSalon .vs-traj-head{
+ display:block;font:700 9px/1.4 ui-monospace,monospace;letter-spacing:.09em;color:#FFF2A9;margin-bottom:5px;
+}
+#vixenSynthesisSalon .vs-traj-order{
+ display:block;padding:4px 7px;margin-bottom:6px;background:#0C1115;color:#FF91AF;
+ font:600 9.5px/1.4 ui-monospace,monospace;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-traj-note{margin:0;font:400 11px/1.5 Georgia,serif;color:#EDE2E6}
+#vixenSynthesisSalon .vs-traj-invariant{
+ grid-column:1/-1;padding:7px 10px;background:#0D1318;border-left:2px solid #FFF2A9;
+ color:#FFF2A9;font:600 9.5px/1.45 ui-monospace,monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-clock-slider{accent-color:#FFF2A9;width:100%;min-height:24px;margin:6px 0 12px}
+@supports not (accent-color:#FFF2A9){
+ #vixenSynthesisSalon .vs-clock-slider{background:#12181D;border:1px solid #FFF2A9}
+}
+#vixenSynthesisSalon .vs-clock-bars{
+ display:grid;gap:8px;padding:12px;background:#0E1419;border:1px solid rgba(255,242,169,.38);margin-bottom:10px;
+}
+#vixenSynthesisSalon .vs-clock-row.vs-clock-card{
+ display:grid;grid-template-columns:minmax(150px,1.2fr) minmax(130px,2fr) auto;gap:8px 12px;align-items:center;
+ padding:9px 11px;background:#161E24;border:1px solid rgba(255,145,175,.34);color:#FFF7FA;
+}
+#vixenSynthesisSalon .vs-clock-row.vs-clock-card.is-active{
+ border-color:#FFF2A9;background:#1E2830;
+}
+#vixenSynthesisSalon .vs-clock-select{
+ text-align:left;min-height:36px;padding:6px 10px;background:#10161B;color:#FFFDF8;
+ border:1px solid rgba(255,145,175,.48);font:600 9.5px/1.35 ui-monospace,monospace;cursor:pointer;
+}
+#vixenSynthesisSalon .vs-clock-select[aria-pressed="true"]{background:#FFF2A9;color:#12181D;border-color:#FF65AA;font-weight:700}
+#vixenSynthesisSalon .vs-clock-track-wrap{display:flex;align-items:center;gap:6px;min-width:0}
+#vixenSynthesisSalon .vs-clock-track{
+ flex:1;height:14px;background:#090D11;border:1px solid rgba(255,242,169,.4);cursor:ew-resize;position:relative;overflow:hidden;
+}
+#vixenSynthesisSalon .vs-clock-bar{
+ height:100%;background:linear-gradient(90deg,#FF65AA,#FF91AF 62%,#FFF2A9);transition:width .14s ease;
+}
+#vixenSynthesisSalon .vs-clock-step{
+ min-width:30px;min-height:30px;padding:0;background:#12181D;color:#FFF2A9;border:1px solid rgba(255,145,175,.5);
+ font:700 13px/1 ui-monospace,monospace;cursor:pointer;
+}
+#vixenSynthesisSalon .vs-clock-tick{
+ color:#FFF2A9;font:700 11px/1 ui-monospace,monospace;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-clock-meta{
+ grid-column:1/-1;font:500 9.5px/1.4 ui-monospace,monospace;color:#E8DCE1;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-vernier-readout{
+ padding:9px 12px;background:#10161B;border:1px solid rgba(255,242,169,.42);border-left:3px solid #FF91AF;
+ color:#FFF7FA;font:600 10px/1.55 ui-monospace,monospace;font-variant-numeric:tabular-nums;margin-bottom:10px;
+}
+#vixenSynthesisSalon .vixen-hud-cell{
+ display:inline-flex;align-items:center;padding:6px 10px;background:#131A20;border:1px solid rgba(255,242,169,.42);
+ color:#FFF2A9;font:600 9.5px/1.35 ui-monospace,monospace;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vixen-hud-cell.is-warn{border-color:#FF65AA;background:#182026;color:#FFD6E4}
+#vixenSynthesisSalon .vs-confrontation-quadrant{
+ margin:18px 0;padding:14px;background:#12181D;border:1px solid rgba(255,242,169,.45);
+}
+#vixenSynthesisSalon .vs-quad-head{
+ font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.12em;color:#FFF2A9;margin-bottom:10px;
+}
+#vixenSynthesisSalon .vs-quad-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#vixenSynthesisSalon .vs-quad-card{padding:12px;background:#192229;border:1px solid rgba(255,145,175,.45);color:#FFF7FA}
+#vixenSynthesisSalon .vs-quad-id{display:block;font:700 9.5px/1.4 ui-monospace,monospace;color:#FFF2A9;letter-spacing:.08em}
+#vixenSynthesisSalon .vs-quad-axis{display:block;font:600 13px/1.35 Georgia,serif;color:#FF91AF;margin:4px 0 6px}
+#vixenSynthesisSalon .vs-quad-card .vs-note{color:#F2E7EC;font-size:11.5px}
+#vixenSynthesisSalon .vs-quad-seal{margin:10px 0 0;color:#FFF2A9;font:600 9.5px/1.5 ui-monospace,monospace}
 @media(max-width:740px){
- #vixenSynthesisSalon .vs-rubric{grid-template-columns:minmax(0,1fr)}
+ #vixenSynthesisSalon .vs-rubric,
+ #vixenSynthesisSalon .vs-now-why-exact,
+ #vixenSynthesisSalon .vs-trajectory-memory,
+ #vixenSynthesisSalon .vs-quad-grid{grid-template-columns:minmax(0,1fr)}
+ #vixenSynthesisSalon .vs-clock-row.vs-clock-card{grid-template-columns:minmax(0,1fr)}
 }

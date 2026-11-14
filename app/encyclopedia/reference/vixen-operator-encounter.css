@@ -6,7 +6,7 @@
   position:relative;isolation:isolate;box-sizing:border-box;scroll-margin-top:92px;margin:clamp(2rem,4vw,4rem) 0 1rem;
   padding:clamp(1.2rem,3vw,3rem);color:#faf4f1;background:
   radial-gradient(ellipse at 92% 9%,rgba(249,243,109,.12),transparent 45%),
-  linear-gradient(150deg,#1b2227,#090e16 65%,#14151e);
+  linear-gradient(150deg,#1b2227,#090e16 65%,#0d1318);
   border:1px solid rgba(249,243,109,.56);box-shadow:0 18px 80px rgba(0,0,0,.24);
 }
 #operahouseEncounter *{box-sizing:border-box}
@@ -24,13 +24,13 @@
   color:#fdf6f9;background:#1c2328;border:1px solid #d8b5c5;
   font:500 .85rem/1.5 system-ui,sans-serif;outline-offset:3px;overflow-wrap:anywhere
 }
-#operahouseEncounter .oh-select option{background:#fff3f8;color:#272024}
+#operahouseEncounter .oh-select option{background:#fff3f8;color:#182026}
 #operahouseEncounter .oh-input:focus-visible,#operahouseEncounter .oh-select:focus-visible,
 #operahouseEncounter .oh-button:focus-visible{outline:2px solid var(--oh-gold);outline-offset:3px}
 #operahouseEncounter .oh-question{
  display:block;width:100%;max-width:930px;min-width:0;min-height:90px;resize:vertical;
  margin:0 0 1rem;padding:1rem;line-height:1.6;font:400 .96rem Georgia,serif;
- background:#171923;color:#fff0f3;border:1px solid #d8b5c5
+ background:#11181e;color:#fff0f3;border:1px solid #ff91af
 }
 #operahouseEncounter .oh-question:focus-visible{outline:2px solid var(--oh-gold);outline-offset:3px}
 #operahouseEncounter .oh-edges{padding:0 0 0 1.2rem;max-height:250px;overflow-y:auto}
@@ -57,8 +57,8 @@
   border-left:3px solid var(--oh-gold);padding:1.5rem;margin:1.4rem 0;background:var(--oh-paper);color:#1b2126
 }
 #operahouseEncounter .oh-disposition h3{font:400 clamp(1.35rem,2.4vw,2rem)/1.2 Georgia,serif;color:#21292e;overflow-wrap:anywhere}
-#operahouseEncounter .oh-disposition .oh-eyebrow{color:#86435b}
-#operahouseEncounter .oh-disposition .oh-note{color:#3c3338}
+#operahouseEncounter .oh-disposition .oh-eyebrow{color:#a8245a}
+#operahouseEncounter .oh-disposition .oh-note{color:#262e34}
 #operahouseEncounter .oh-footer{display:flex;align-items:start;flex-wrap:wrap;gap:1rem;padding-top:1.2rem;border-top:1px solid #ffeac955}
 #operahouseEncounter .oh-history{margin:.55rem 0;padding:.65rem;border:1px solid #ffffff50;min-width:min(100%,260px)}
 #operahouseEncounter .oh-history li{font:.72rem/1.7 ui-monospace,monospace;color:#f2dfe7}
@@ -86,7 +86,7 @@ body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
 }
 #operahouseStageReturn:not([hidden]){
   display:inline-flex;align-items:center;text-align:left;max-width:100%;min-height:46px;
-  padding:.6rem 1.2rem;border:1px solid #343540;color:#1a2126;
+  padding:.6rem 1.2rem;border:1px solid #2c3740;color:#1a2126;
   background:#f8ed75;letter-spacing:.075em;font:700 .7rem/1.5 ui-monospace,monospace;
   text-transform:uppercase;white-space:normal;cursor:pointer;
 }
@@ -99,7 +99,7 @@ body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
    pale disclosure text violates contrast. Preserve the machine witness while
    making its human interpretation legible at each review viewport. */
 #operahouseEncounter .oh-disposition .oh-payload{
-  color:#262e34;background:#fffaf3;border-color:#875c6d;
+  color:#262e34;background:#fffaf3;border-color:#b85a7c;
 }
 #operahouseEncounter .oh-disposition .oh-payload summary{
   color:#262e34;font-weight:700;line-height:1.7;
@@ -114,3 +114,30 @@ body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
 body[data-active-research-stage="OPERAHOUSE"] footer.footer{
   display:none!important;
 }
+#operahouseEncounter .oh-digest-delta{
+  margin:.9rem 0;padding:.85rem 1rem;
+  background:linear-gradient(135deg,#12181f,#1a222a);
+  border:1px solid rgba(249,243,109,.45);border-left:3px solid #FF91AF;
+}
+#operahouseEncounter .oh-digest-delta .oh-note{color:#F6F4F0;margin:.25rem 0;font-size:.78rem}
+#operahouseEncounter .oh-edge-row{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.5rem;
+}
+#operahouseEncounter .oh-button.oh-edge-jump{
+  margin:0;padding:.35rem .7rem;min-height:34px;font-size:.66rem;
+  background:#1c252d;color:#FFF2A9;border:1px solid rgba(255,145,175,.65);
+}
+#operahouseEncounter .oh-button.oh-edge-jump:hover{background:#2d3942;color:#FFFDF8}
+#operahouseEncounter .oh-warrant-checklist{
+  list-style:none;margin:1rem 0;padding:0;display:grid;gap:6px;
+}
+#operahouseEncounter .oh-warrant-item{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;
+  padding:.55rem .8rem;background:#FFFDF8;border:1px solid rgba(24,32,38,.16);
+  color:#182026;font:.72rem/1.5 ui-monospace,monospace;
+}
+#operahouseEncounter .oh-warrant-badge{
+  padding:2px 7px;background:#182026;color:#FFF2A9;font:700 .64rem/1.4 ui-monospace,monospace;
+  border:1px solid #FF91AF;
+}
+#operahouseEncounter .oh-podium-export{border-color:#A81B58}
