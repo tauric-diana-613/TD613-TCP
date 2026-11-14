@@ -187,7 +187,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   if(live)live.textContent=state.notice;
  }
  function render(){
-  veilHandle?.dispose();veilHandle=null;
+  veilHandle?.dispose?.();veilHandle=null;
   host.replaceChildren();host.dataset.stageRole='VIXEN_OPERA';
   host.dataset.couture=folded?'folded-chrome':'legacy';
   const head=mk('header','vs-head');
@@ -265,7 +265,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    const updated=toyClockAssay({lag:state.lag,routeOrder:state.route});
    lagLabel.textContent='Demonstration lag · '+state.lag+' dimensionless ticks';
    bars.replaceChildren(...makeBars(updated));
-   veilHandle?.renderOnce();
+   veilHandle?.renderOnce?.();
    if(state.result){changed();
     host.querySelector('.vs-result')?.remove();
     const live=host.querySelector('.vs-status');
@@ -377,8 +377,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   history:()=>state.history.slice(),
   rest,resume,
   phase:()=>state.resting?'REST':state.result?'PROPOSED':'NOTICE',
-  opticalStatus:()=>veilHandle?.getStatus()||null,
-  dispose:()=>veilHandle?.dispose()
+  opticalStatus:()=>veilHandle?.getStatus?.()||null,
+  dispose:()=>veilHandle?.dispose?.()
  });
 }
 if(typeof document!=='undefined')mountVixenSynthesisSalon();
