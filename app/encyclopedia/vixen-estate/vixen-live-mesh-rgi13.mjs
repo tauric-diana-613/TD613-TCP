@@ -24,7 +24,9 @@ const hash=s=>{let n=2166136261;for(const c of s){n^=c.codePointAt(0);n=Math.imu
 const smoothstep=(e0,e1,x)=>{const u=Math.max(0,Math.min(1,(x-e0)/Math.max(1e-6,e1-e0)));return u*u*(3-2*u);};
 const OCCLUSION_SELECTORS=Object.freeze([
  '.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
- '.hero-art',
+ '#view-overview > #cover','.hero-art',
+ '.view:not([hidden]) .cover-title','.view:not([hidden]) .cover-marginalia',
+ '.view:not([hidden]) .cover-bottom','.view:not([hidden]) .cover-spine',
  '.view:not([hidden]) .vs-hero-copy','.view:not([hidden]) .vs-source-card',
  '.view:not([hidden]) .vs-rail','.view:not([hidden]) .vs-compose',
  '.view:not([hidden]) .vs-result','.view:not([hidden]) .vs-holonomy-card',
@@ -173,7 +175,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   draw();if(!paused()&&!stageOwned()&&!outsideOpera())raf=win.requestAnimationFrame(loop);
  }
  const changed=()=>{
-  layoutDirty=true;
+  layoutDirty=true;lastBoxCacheMs=-Infinity;
   if(hostFrame?.view!==view())hostFrame=null;
   // The optical owner repaints on its own Still transition. Repainting
   // stale host geometry here would publish an intermediate Still frame.
@@ -185,7 +187,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   'data-active-research-stage','data-vixen-optical-mesh-observatory']});
  if(motion)mutation.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
  const onPointer=e=>{pointer={x:e.clientX/width(),y:e.clientY/height()};};
- const onLayout=()=>{layoutDirty=true;
+ const onLayout=()=>{layoutDirty=true;lastBoxCacheMs=-Infinity;
   // Salon must recompute its stage rect; a retained host projection cannot
   // be translated using a stale rectangle while scrolling in Still.
   if(stageOwned()){win.dispatchEvent(new win.Event('vixen:fieldlayout'));return;}

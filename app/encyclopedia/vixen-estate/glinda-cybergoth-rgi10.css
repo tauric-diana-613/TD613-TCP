@@ -128,10 +128,11 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-e
  body:not([data-active-research-stage="OPERAHOUSE"]){--vf-room-width:66px}
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail{
    top:var(--header-height,72px);bottom:0;left:0;width:var(--vf-room-width);
-   flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;
+   flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
    border-right:1px solid rgba(242,213,183,.37);
    box-shadow:8px 0 32px rgba(8,12,15,.28);
  }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail::-webkit-scrollbar{display:none}
  body:not([data-active-research-stage="OPERAHOUSE"]) #main{
    margin-left:var(--vf-room-width);width:calc(100% - var(--vf-room-width));
  }
@@ -139,22 +140,22 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-e
    padding-left:calc(var(--vf-room-width) + 16px);
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-crest{
-   display:grid;place-items:center;min-height:42px;
-   border-bottom:1px solid rgba(247,195,208,.18);font-size:24px;
+   display:grid;place-items:center;min-height:clamp(32px,5vh,42px);flex:0 0 auto;
+   border-bottom:1px solid rgba(247,195,208,.18);font-size:clamp(19px,3vh,24px);
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room{
    display:flex;flex-direction:column;align-items:center;justify-content:center;
-   gap:4px;min-height:64px;width:100%;padding:8px 3px;
+   flex:1 1 0;min-height:44px;max-height:76px;width:100%;padding:clamp(3px,.8vh,8px) 3px;gap:2px;
    border-left:2px solid transparent;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-number{
-   font:italic 23px/.95 Georgia,serif;
+   font:italic clamp(17px,2.8vh,23px)/.95 Georgia,serif;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-name{
-   font:700 7px/1.2 ui-monospace,monospace;letter-spacing:.045em;text-align:center;text-transform:uppercase;
+   font:700 7px/1.15 ui-monospace,monospace;letter-spacing:.045em;text-align:center;text-transform:uppercase;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-end{
-   margin-top:auto;display:flex;align-items:center;padding:13px 0;
+   margin-top:auto;display:flex;align-items:center;justify-content:center;flex:0 0 auto;padding:clamp(6px,1.4vh,13px) 0;
  }
 }
 @media(max-width:959px){
