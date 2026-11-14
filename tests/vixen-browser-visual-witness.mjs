@@ -660,27 +660,29 @@ try {
     // actually load the downstream stylesheet and compute a luminous header.
     const glindaStage=await page.evaluate(()=>{
       const stage=document.querySelector('#vixenSynthesisSalon .vs-head');
-      const title=document.querySelector('#vixenSynthesisSalon .vs-title');
+      const editorial=stage?.querySelector('.vs-hero-copy');
+      const optical=stage?.querySelector('.vs-optical-stage');
+      const title=stage?.querySelector('.vs-title');
       const source=document.querySelector('#vixenSynthesisSalon .vs-source-card');
-      const bg=stage?getComputedStyle(stage).backgroundImage:'';
       return {
        loaded:[...document.styleSheets].some(x=>x.href?.includes('glinda-luminous-proscenium-rgi12.css')),
-       background:bg,
+       editorialGradient:editorial?getComputedStyle(editorial).backgroundImage:'',
+       opticalBackdrop:optical?getComputedStyle(optical).backgroundColor:'',
        titleColor:title?getComputedStyle(title).color:'',
        sourcePosition:source?.getBoundingClientRect().top??null,
        stageBottom:stage?.getBoundingClientRect().bottom??null
       };
     });
     assert.equal(glindaStage.loaded,true,
-      'The RGI12 visual architecture must ship to and load in Chromium');
-    assert(/linear-gradient/i.test(glindaStage.background),
-      'Rejected flat plum stage is forbidden: luminous multistop Glinda gradient must be rendered; actual: '+glindaStage.background);
-    // Chromium's serialization of CSS Color 4 gradients is browser-version
-    // dependent. Avoid comparing its RGB punctuation with a CSS source literal.
-    // The next title-color assertion tests the actual rendered ink on pearl,
-    // while the screenshot artifact witnesses the color and optical geometry.
-    assert.equal(glindaStage.titleColor,'rgb(23, 26, 28)',
-      'The headlining text must be neutral dark chrome on luminous pearl, never the rejected purple-black');
+      'The Glinda visual architecture must ship to and load in Chromium');
+    assert(/linear-gradient/i.test(glindaStage.editorialGradient),
+      'Folded editorial panel must retain visible pearl-pink gradients, rather than the rejected plum composite');
+    assert.equal(glindaStage.opticalBackdrop,'rgb(16, 24, 30)',
+      'The separate dimensional garment stage requires a neutral graphite backdrop');
+    const titleRGB=(glindaStage.titleColor.match(/\d+/g)||[]).map(Number);
+    assert(titleRGB.length>=3&&Math.max(...titleRGB.slice(0,3))<75
+      &&Math.max(...titleRGB.slice(0,3))-Math.min(...titleRGB.slice(0,3))<25,
+      'Headline ink must remain neutral dark chrome on luminous pearl: '+glindaStage.titleColor);
     assert(glindaStage.stageBottom>0,'Operator must encounter the computational optical stage');
 
     const overture=page.locator('#view-collection .vs-overture-notes');
