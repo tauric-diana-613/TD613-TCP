@@ -10,6 +10,8 @@ Preflight ALL three inputs before touching any repository artifact.
   python3 scripts/install-vixen-brand-assets.py --desktop FILE --mobile FILE --fox FILE --dry-run
   python3 scripts/install-vixen-brand-assets.py --desktop FILE --mobile FILE --fox FILE
   python3 scripts/install-vixen-brand-assets.py --check
+  python3 scripts/install-vixen-brand-assets.py --desktop FILE --desktop-only --dry-run
+  python3 scripts/install-vixen-brand-assets.py --desktop FILE --desktop-only
 """
 import argparse
 import base64
@@ -149,6 +151,8 @@ def check_current(root):
             expected="./assets/vixen/"+FILE_NAMES[role]
             slot,_=source_match(page,role)
             if slot.group(2)!=expected:refuse("IMAGE_ROUTE_NOT_CANONICAL",role)
+            if role=="mobile" and 'type="image/png"' not in slot.group(0):
+                refuse("MOBILE_SOURCE_MIME_MISMATCH")
             data=(root/ASSET_REL/FILE_NAMES[role]).read_bytes()
             info=png_info(data,role)
             recorded=front[role]
@@ -221,12 +225,36 @@ def prepare(root,desktop_path,mobile_path,fox_path):
       root/ASSET_REL/FILE_NAMES["fox"]:fox_data,
     },{"desktop":desktop,"mobile":mobile,"fox":fox}
 
+def prepare_desktop_only(root,desktop_path):
+    """Replace installed desktop PNG without writing mobile or fox."""
+    page_path=root/PAGE_REL
+    page=page_path.read_text(encoding="utf8")
+    contract=json.loads((root/CONTRACT_REL).read_text(encoding="utf8"))
+    if check_current(root)["stage"]!="EXTERNAL_PNG_INSTALLED_REVIEW_PENDING":
+        refuse("DESKTOP_ONLY_REQUIRES_INSTALLED_PNG_PAIR")
+    desktop_data=desktop_path.read_bytes()
+    desktop=png_info(desktop_data,"desktop")
+    mobile=png_info((root/ASSET_REL/FILE_NAMES["mobile"]).read_bytes(),"mobile")
+    if desktop["sha256"]==mobile["sha256"]:
+        refuse("TWO_ORIENTATIONS_REQUIRE_DISTINCT_ASSETS")
+    page=replace_slot(page,"desktop","./assets/vixen/"+FILE_NAMES["desktop"])
+    page=update_reference_manifest(page,desktop,mobile)
+    updated=copy.deepcopy(contract)
+    updated["frontispiece"]["desktop"].update(desktop)
+    updated["frontispiece"]["desktop"]["status"]="OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION"
+    return {
+      page_path:page.encode("utf8"),
+      root/CONTRACT_REL:(json.dumps(updated,ensure_ascii=False,indent=2)+"\n").encode("utf8"),
+      root/ASSET_REL/FILE_NAMES["desktop"]:desktop_data,
+    },{"desktop":desktop}
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root",type=Path,default=Path(__file__).resolve().parents[1])
     parser.add_argument("--desktop",type=Path)
     parser.add_argument("--mobile",type=Path)
     parser.add_argument("--fox",type=Path)
+    parser.add_argument("--desktop-only",action="store_true",help="Replace desktop PNG only; preserve mobile and fox")
     parser.add_argument("--dry-run",action="store_true")
     parser.add_argument("--check",action="store_true")
     args=parser.parse_args()
@@ -234,12 +262,18 @@ def main():
     if args.check:
         print(json.dumps(check_current(root),indent=2))
         return
-    if not all((args.desktop,args.mobile,args.fox)):
-        refuse("THREE_OPERATOR_SELECTED_SOURCE_FILES_REQUIRED")
-    updates,info=prepare(root,args.desktop,args.mobile,args.fox)
+    if args.desktop_only:
+        if not args.desktop or args.mobile or args.fox:
+            refuse("DESKTOP_ONLY_ACCEPTS_DESKTOP_PATH_ONLY")
+        updates,info=prepare_desktop_only(root,args.desktop)
+    else:
+        if not all((args.desktop,args.mobile,args.fox)):
+            refuse("THREE_OPERATOR_SELECTED_SOURCE_FILES_REQUIRED")
+        updates,info=prepare(root,args.desktop,args.mobile,args.fox)
     report={
       "schema":"td613.vixen.brand-install-receipt/v1",
       "mode":"DRY_RUN" if args.dry_run else "LOCAL_CHECKOUT_REPLACEMENT",
+      "intake_scope":"DESKTOP_ONLY" if args.desktop_only else "THREE_ASSET_REPLACEMENT",
       "state":"PREVALIDATED_THREE_FILES",
       "target_paths":[str(p.relative_to(root)) for p in updates],
       "source_sha256":{k:v["sha256"] for k,v in info.items()},

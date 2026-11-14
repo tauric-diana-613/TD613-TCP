@@ -66,6 +66,7 @@ test('Desktop/mobile source identities remain independently replaceable and sour
      assert.equal(contract.frontispiece[role].status,'PENDING_OPERATOR_SELECTED_ART');
    }else{
      assert.equal(src,'./assets/vixen/'+filename);
+     if(role==='mobile')assert.match(html,/<source[^>]*data-vixen-asset-role="mobile"[^>]*type="image\/png"/);
      assert.equal(sha(await readFile(join(root,'app/encyclopedia/assets/vixen',filename))),
       contract.frontispiece[role].sha256);
      assert.equal(contract.frontispiece[role].status,'OPERATOR_SELECTED_PENDING_VISUAL_ADJUDICATION');
@@ -162,4 +163,42 @@ test('Wrong orientation and malformed fox are refused without modifying a checko
   const before=await readFile(paths.page);
   assert.equal(sha(before),sha(await readFile(paths.page)),'Actual repo source cannot be mutated by invalid inputs');
  }finally{await rm(tmp,{recursive:true,force:true})}
+});
+
+test('Desktop-only intake leaves installed mobile and fox bytes/digests unchanged',async()=>{
+ const temp=await mkdtemp(join(tmpdir(),'vixen-desktop-only-'));
+ try{
+  const dest=join(temp,'app/encyclopedia/assets/vixen');
+  await mkdir(dest,{recursive:true});
+  await mkdir(join(temp,'app/encyclopedia'),{recursive:true});
+  for(const role of ['desktop','mobile']){
+   await cp(join(root,'app/encyclopedia/assets/vixen','frontispiece-'+role+'.png'),
+     join(dest,'frontispiece-'+role+'.png'));
+  }
+  await cp(paths.svg,join(dest,'fox-arcflash.svg'));
+  await cp(paths.manifest,join(dest,'asset-contract.json'));
+  await cp(paths.page,join(temp,'app/encyclopedia/vix-cyb.html'));
+  const candidate=join(temp,'candidate.png');
+  await writeFile(candidate,samplePng(1600,900));
+  const protectedPaths=[join(dest,'frontispiece-mobile.png'),join(dest,'fox-arcflash.svg')];
+  const original=await Promise.all(protectedPaths.map(p=>readFile(p)));
+  const before=JSON.parse(await readFile(join(dest,'asset-contract.json'),'utf8'));
+  const args=['--root',temp,'--desktop',candidate,'--desktop-only'];
+  const dry=python([...args,'--dry-run']);
+  assert.equal(dry.status,0,dry.stderr);
+  assert.equal(JSON.parse(dry.stdout).intake_scope,'DESKTOP_ONLY');
+  assert.equal(JSON.parse(dry.stdout).target_paths.length,3);
+  const run=python(args);
+  assert.equal(run.status,0,run.stderr);
+  const check=python(['--root',temp,'--check']);
+  assert.equal(check.status,0,check.stderr);
+  const after=JSON.parse(await readFile(join(dest,'asset-contract.json'),'utf8'));
+  assert.equal(after.frontispiece.desktop.sha256,sha(await readFile(candidate)));
+  assert.deepEqual(after.frontispiece.mobile,before.frontispiece.mobile);
+  assert.deepEqual(after.fox,before.fox);
+  for(let i=0;i<protectedPaths.length;i++)
+   assert.equal(sha(await readFile(protectedPaths[i])),sha(original[i]));
+  const html=await readFile(join(temp,'app/encyclopedia/vix-cyb.html'),'utf8');
+  assert.match(html,/<source[^>]*data-vixen-asset-role="mobile"[^>]*type="image\/png"/);
+ }finally{await rm(temp,{recursive:true,force:true})}
 });

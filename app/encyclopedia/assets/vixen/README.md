@@ -5,24 +5,21 @@ mechanism. OPERAHOUSE ≠ OPERA ≠ PERFORMER. Vixen's research corpus, algebra,
 source bodies, human Gates, Podium permissions, and experimental status remain
 unchanged by art edits.
 
-## Active revision at RGI-15
+## Current installed asset state
 
-- `fox-arcflash.svg`: **installed standalone** SVG. Both responsive masthead
-  instances load exactly this file. Its original 48×48 geometric coordinates
-  survive, and the eye cores are yellow `#F9F36D`, with small contained SVG
-  bloom. No raster logo should be installed.
-- `frontispiece-desktop.png`: **operator-selected art pending**. The current
-  desktop HTML still contains the historical fallback WebP, SHA-256
-  `a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763`.
-- `frontispiece-mobile.png`: **operator-selected art pending**. The current
-  mobile HTML still contains the historical fallback WebP, SHA-256
-  `1e31bc0e838c8879dd859034607e8244e9f7bd1f40b59e943b5dddb39aa87266`.
+The draft PR contains external `frontispiece-desktop.png` and `frontispiece-mobile.png`, together with standalone `fox-arcflash.svg`. Both PNG slots are separately routed, and the mobile <source> correctly declares `image/png`. The desktop is pending the operator's revised artwork; the currently installed mobile image remains accepted and must be preserved. The fox's yellow eye geometry is unchanged. Current file digests and dimensions live in `asset-contract.json`; historic WebP digests remain there for provenance.
 
-The two PNG targets intentionally do not yet exist in this PR. **Do not infer
-which candidate Em selected** from historical filenames or previous assistant
-recommendations. The operator must attach the actual selected desktop and
-mobile files to Work mode. The project cannot independently authenticate Em's
-decision from the other candidate images.
+### Desktop-only intake · preserve mobile and fox
+
+```bash
+python3 scripts/install-vixen-brand-assets.py --check
+python3 scripts/install-vixen-brand-assets.py --desktop "/path/to/REVISED_DESKTOP.png" --desktop-only --dry-run
+python3 scripts/install-vixen-brand-assets.py --desktop "/path/to/REVISED_DESKTOP.png" --desktop-only
+python3 scripts/install-vixen-brand-assets.py --check
+node --test tests/vixen-brand-asset-contract.test.mjs
+```
+
+This path preflights the existing installed assets and the replacement, then writes only the desktop PNG, manifest, and page's embedded reference metadata. Mobile PNG and fox SVG are never rewritten. Original creative approval and human closure remain RESERVED.
 
 ## Three-file operator handoff (full repository checkout)
 
