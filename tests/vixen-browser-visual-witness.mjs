@@ -573,56 +573,76 @@ try {
     assert.equal(meshWitness.moduleLoaded,true);
     assert.equal(meshWitness.styleLoaded,true);
     assert(meshWitness.px>200,'The canvas must visibly paint model-derived electrical light');
-    // RGI14 source-governed OPAL / NO-PLUM commission. This must be a
-    // second, physically painted couture layer inside the actual Salon head,
-    // with the original outer mesh subordinated to the frontispiece.
-    await page.waitForFunction(()=>
-      window.VIXEN_OPAL_COUTURE?.status()?.mounted===true,
-      null,{timeout:15000,polling:250});
-    const opalWitness=await page.evaluate(()=>{
-      const canvas=document.querySelector('#vixenSynthesisSalon .vs-head > canvas.vixen-opaline-couture');
-      const stage=document.querySelector('#vixenSynthesisSalon .vs-head');
-      const rect=canvas?.getBoundingClientRect();
-      const data=canvas?.getContext('2d')?.getImageData(
-        Math.floor(canvas.width*.56),Math.floor(canvas.height*.12),
-        Math.max(1,Math.floor(canvas.width*.34)),Math.max(1,Math.floor(canvas.height*.76))
-      )?.data;
-      let luminous=0;
-      if(data)for(let i=3;i<data.length;i+=16)if(data[i]>8)luminous++;
+    // DD-02 source-bound folded chrome supersedes the old RGI14 canvas.
+    // Qualify real Canvas2D pixels and prepaint geometry without weakening the
+    // legacy renderer's separately retained rollback tests.
+    await page.waitForFunction(()=>{
+      const c=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-canvas');
+      if(!c||c.width<200||c.height<160)return false;
+      const d=c.getContext('2d')?.getImageData(0,0,c.width,c.height).data;
+      if(!d)return false;
+      let bright=0,dark=0;
+      for(let i=0;i<d.length;i+=64){
+        const y=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];
+        if(y>170)bright++;if(y<55)dark++;
+      }
+      return bright>25&&dark>25;
+    },null,{timeout:15000,polling:250});
+    const cuirassWitness=await page.evaluate(async()=>{
+      const canvas=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-canvas');
+      const ids=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
+        .slice(0,2).map(n=>n.value);
+      const {buildFoldedCuirass,CUIRASS_CONTRACT,CUIRASS_POLICY}=
+        await import('./vixen-estate/vixen-folded-cuirass.mjs');
+      const rect=canvas.getBoundingClientRect();
+      const args={width:rect.width,height:rect.height,time:0,sourceIds:ids};
+      const on=buildFoldedCuirass({...args,beatToGeometryGain:1});
+      const off=buildFoldedCuirass({...args,beatToGeometryGain:0});
+      let maxDisplacement=0;
+      for(let i=0;i<on.grid.length;i+=3)
+        for(let j=0;j<on.grid[i].length;j+=3){
+          const a=on.grid[i][j].screen,b=off.grid[i][j].screen;
+          maxDisplacement=Math.max(maxDisplacement,Math.hypot(a[0]-b[0],a[1]-b[1]));
+        }
       return {
-        canvas:!!canvas?.isConnected,computed:window.VIXEN_OPAL_COUTURE?.status?.(),
-        luminous,stageColor:getComputedStyle(stage).backgroundImage,
-        artZ:getComputedStyle(canvas).zIndex,
-        cssLoaded:[...document.styleSheets].some(x=>x.href?.includes('vixen-opaline-couture-rgi14.css')),
-        moduleLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-opaline-couture-rgi14.mjs'))
+        connected:canvas.isConnected,
+        rendered:canvas.width>200&&canvas.height>160,
+        compositor:canvas.dataset.computation,
+        contract:document.getElementById('vixenSynthesisSalon').dataset.opticalContract,
+        sourceCount:ids.length,carriers:on.filaments.length,
+        onGain:on.gain,offGain:off.gain,maxDisplacement,
+        glintsUnchanged:JSON.stringify(on.glints)===JSON.stringify(off.glints),
+        emission:on.emissionAllocated,emissionLimit:CUIRASS_POLICY.total_emission_alpha,
+        role:CUIRASS_CONTRACT.role,empiricalCredit:CUIRASS_CONTRACT.empirical_credit,
+        legacyCoutureLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-opaline-couture-rgi14.mjs')),
+        geometryModuleLoaded:true
       };
     });
-    assert.equal(opalWitness.canvas,true,'The true Salon must own its computational couture canvas');
-    assert.equal(opalWitness.computed.model_carriers,39);
-    assert(opalWitness.computed.beat?.measured_samples>=120,
-      'RGI15 must precompute a separately measured beat field before painting');
-    assert(opalWitness.computed.beat?.beat_wavelengths_css_px?.every(x=>x>0),
-      'The browser must expose finite nonzero beat wavelengths');
-    assert(opalWitness.computed.beat?.alias_ratio<=.45,
-      'Viewport-aware Nyquist alias bound must hold in Chromium');
-    assert(opalWitness.computed.beat?.bloom_visual_budget<=2.40001,
-      'The emitted visual glow must honor its declared finite budget');
-    assert(opalWitness.computed.beat?.bloom_css_px_limit===18,
-      'The bloom kernel cannot silently exceed its declared radius');
-    assert.equal(opalWitness.cssLoaded,true);
-    assert.equal(opalWitness.moduleLoaded,true);
-    assert(opalWitness.luminous>180,
-      'Operator-visible opaline corset must contain genuinely computed, luminous pixels, not a stylesheet receipt');
-    assert(/linear-gradient/.test(opalWitness.stageColor),
-      'An explicit porcelain/chrome optical stage is required');
+    assert.equal(cuirassWitness.connected,true,'One genuine source-bound garment canvas must be attached');
+    assert.equal(cuirassWitness.rendered,true,'DD-02 must physically paint in Chromium');
+    assert.equal(cuirassWitness.compositor,'D3_PHI_BEAT_FOLDED_SHELL');
+    assert.equal(cuirassWitness.contract,'td613.vixen.folded-cuirass/v1');
+    assert.equal(cuirassWitness.sourceCount,2);
+    assert.equal(cuirassWitness.carriers,39);
+    assert(cuirassWitness.maxDisplacement>1,
+      'Measured D3/phi beats must deform actual prepaint vertices, not merely modify glints');
+    assert.equal(cuirassWitness.glintsUnchanged,true,
+      'Gain-zero intervention must preserve the same optical glints');
+    assert(cuirassWitness.emission<=cuirassWitness.emissionLimit+.001,
+      'The design must retain the bounded emission budget');
+    assert.equal(cuirassWitness.empiricalCredit,0);
+    assert.equal(cuirassWitness.role,'OPERA_VISUAL_ONLY');
+    assert.equal(cuirassWitness.legacyCoutureLoaded,true,
+      'Archived RGI14 remains available as the source-retained rollback implementation');
 
     // Existing Still button must pause our new animation as well as the
     // historical Observatory; never add a redundant motion authority control.
     await page.evaluate(()=>document.getElementById('motionBtn').click());
     await page.waitForFunction(()=>
       window.VixenLivingMesh?.status()?.motion==='STILL',null,{timeout:5000});
-    assert.equal(await page.evaluate(()=>window.VIXEN_OPAL_COUTURE?.status()?.still),true,
-      'Operator Still must freeze both the global ambient and local opaline optical dress');
+    assert.equal(await salon.getAttribute('data-optical-contract'),
+      'td613.vixen.folded-cuirass/v1',
+      'Still must preserve the active folded compositor without reverting to the old canvas');
     const stillFrame=await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
     await page.waitForTimeout(125);
     assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames),stillFrame,
@@ -671,25 +691,9 @@ try {
     await overture.locator('summary').click();
     assert.equal(await overture.getAttribute('open'),null,'Original source-first composition can be restored');
 
-    // RGI11: a rendered mathematical costume, not an emoji label or a CSS
-    // adjective. Pixel alpha must come from actual source-driven Canvas2D.
-    assert.equal(await salon.getAttribute('data-optical-contract'),
-      'emstd613.vixen.glinda-electric-veil/v1');
-    const veil=salon.locator('canvas.vs-luminous-canvas');
-    assert.equal(await veil.count(),1,'One source-conditioned computed optical garment');
-    assert.equal(await veil.getAttribute('data-computation'),'D3_PHI_LOOM_39_COUTURE_111');
-    await page.waitForFunction(()=>{
-      const c=document.querySelector('#vixenSynthesisSalon .vs-luminous-canvas');
-      if(!c||c.width<200||c.height<200)return false;
-      const d=c.getContext('2d')?.getImageData(
-       Math.floor(c.width*.48),Math.floor(c.height*.20),
-       Math.max(1,Math.floor(c.width*.2)),Math.max(1,Math.floor(c.height*.56))
-      ).data;
-      if(!d)return false;
-      let px=0;
-      for(let i=3;i<d.length;i+=4)if(d[i]>10)px++;
-      return px>200;
-    },null,{timeout:10000});
+    // The folded garment's browser witness above establishes source-conditioned
+    // prepaint geometry and observed light/dark pixels. The legacy RGI11
+    // compositor remains available to the internal rollback route only.
     const visualPalette=await page.evaluate(()=>({
       arc:getComputedStyle(document.body).getPropertyValue('--arc-flash').trim().toUpperCase(),
       sourceText:document.querySelector('#vixenSynthesisSalon').innerText
