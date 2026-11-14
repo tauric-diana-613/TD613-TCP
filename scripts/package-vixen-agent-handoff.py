@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Reproducible, source-editable Vixen PR #1730 handoff; never a release warrant."""
-import argparse, hashlib, json, subprocess, stat
+import argparse, hashlib, json, os, subprocess, stat
 from pathlib import Path, PurePosixPath
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
@@ -29,7 +29,7 @@ def include(path):
 
 def main(out):
     head=git('rev-parse','HEAD').decode().strip()
-    branch=git('branch','--show-current').decode().strip()
+    branch=git('branch','--show-current').decode().strip() or os.environ.get('GITHUB_HEAD_REF','')
     assert branch=='research/vixen-dual-estate-encyclopedia-20261108',('WRONG_BRANCH',branch)
     paths=sorted(p.decode() for p in git('ls-files','-z').split(b'\0') if p and include(p.decode()))
     required={'AGENTS.md','VIXEN_START_HERE.md','app/encyclopedia/vix-cyb.html',
