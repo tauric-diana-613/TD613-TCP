@@ -913,7 +913,7 @@ try {
     await salon.getByRole('button',{name:'Refract the encounter order'}).click();
     assert.match(await salon.innerText(),/Internal refraction/);
     await salon.getByRole('button',{name:'Rest without penalty'}).click();
-    assert.match(await salon.innerText(),/REST · Your source/);
+    assert.match(await salon.innerText(),/REST · Temporal suspension honored without penalty/);
     await salon.getByRole('button',{name:/Resume this unfinished inquiry/}).click();
     assert.match(await salon.getByRole('textbox',{name:'Compose an original research question'}).inputValue(),
       /independently witnessed observation/);
