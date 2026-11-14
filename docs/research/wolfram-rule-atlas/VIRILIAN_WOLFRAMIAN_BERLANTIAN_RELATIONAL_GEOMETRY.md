@@ -40,7 +40,7 @@ In TD613 and Dome-World foundational physics, the distinction between *relation-
    $$\mathcal{M} = \left( \bigoplus_{i, j} \rho_{ij} \right) \Big/ \sim_{\text{holonomy}}$$
 2. **P-044 Conditional Presentation Invariance and Observer Coupling:** The original universal assertion of orthogonality between theory, ambiance, and resynthesis is withdrawn. A presentation-only transformation \(T_p\) is eligible only when it preserves protected evidence \(D\), structural inputs \(S\), routes, permissions, and recording/custody identities. For such an intervention:
    $K(D,S,p_1)=K(D,S,p_2),\qquad A(D,S,p_1)=A(D,S,p_2).$
-   The kernel \(K\) and authorization \(A\) have distinct invariance obligations. Observer response \(Y\) is independently testable: $\Delta_{obs}=\mathbb E[Y\mid do(p_1)]-\mathbb E[Y\mid do(p_2)]$ with no assumed zero or nonzero result. Relational ambiance (local access, route, custody, event memory) cannot be silently typed as a presentation-only transformation. Independent clock *governance* forbids appearance from earning scientific credit; it supplies no metric-space proof of orthogonality. See \`P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md\`.
+   The kernel \(K\) and authorization \(A\) have distinct invariance obligations. Observer response \(Y\) is independently testable: $\Delta_{obs}=\mathbb E[Y\mid do(p_1)]-\mathbb E[Y\mid do(p_2)]$ with no assumed zero or nonzero result. Relational ambiance (local access, route, custody, event memory) cannot be silently typed as a presentation-only transformation. Independent clock *governance* forbids appearance from earning scientific credit; it supplies no metric-space proof of orthogonality. See `P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md`.
 
 ---
 
