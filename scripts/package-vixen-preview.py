@@ -140,7 +140,11 @@ The installer checks SHA-256, dimensions/orientation, SVG vector integrity
 and source identity before rewriting the HTML. Afterward run full tests and
 generate a NEW exact-head preview; older previews cannot certify new assets.
 
-**Agent quickstart:** VIXEN_START_HERE.md at the archive root explains the\nactive optical engines, Still graph and rollback paths. Source-editing agents\nmust use the full repository checkout and its binding root AGENTS.md.\n\n## Start in a web browser
+**Agent quickstart:** VIXEN_START_HERE.md at the archive root explains the
+active optical engines, Still graph and rollback paths. Source-editing agents
+must use the full repository checkout and its binding root AGENTS.md.
+
+## Start in a web browser
 
 1. Unzip the archive. Open a terminal in this extracted directory
    (the one containing the encyclopedia subfolder).
