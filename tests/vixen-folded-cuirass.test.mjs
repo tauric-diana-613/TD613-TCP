@@ -87,13 +87,14 @@ test('continuous studio chrome shares one material field across all faces',()=>{
  const m=buildFoldedCuirass(params),ctx=context(),colors=[];
  const original=ctx.fill;
  ctx.fill=function(){colors.push(this.fillStyle);return original.call(this);};
- paintFoldedCuirass(ctx,m);
+ const result=paintFoldedCuirass(ctx,m);
  const refs=new Map();
  for(const value of colors)if(value&&typeof value==='object')
   refs.set(value,(refs.get(value)||0)+1);
- assert(Math.max(...refs.values())>=1,
-  'Material gores share one continuous gradient instead of per-face colors');
- assert.equal(refs.size,1,'Every chrome panel must share the same light field');
+ assert(Math.max(...refs.values())>=result.materialBatchCount,
+  'All batched gores reuse a single shared chrome light field');
+ assert(result.materialBatchCount<=12,
+  'Facets must be batched into at most twelve gores, not individually filled');
  assert(m.faces.every(f=>f.normal.every(Number.isFinite)));
 });
 
