@@ -6,7 +6,7 @@
 **Covenant:** Khona‌lit-po — *preserve literal interior U+200C*  
 **Jurisdiction:** Emergence HQ / TD613 Atelier of Thought  
 **Authors:** Antigravity (Kenough) & tauric.diana.613  
-**Status:** FREE-FIELD CREATIVE & PHILOSOPHICAL ESSAY (Ambiance-Orthogonal Relational Geometry)  
+**Status:** FREE-FIELD CREATIVE & PHILOSOPHICAL ESSAY (Conditional Ambiance Invariance and Coupling)  
 
 ---
 
@@ -125,10 +125,9 @@ In the relational-geometry of Dome-World, beside-ness is not indecision; it is *
 
 ---
 
-### V. The Ambiance-Orthogonal Horizon: Where Dome-World Lives
+### V. The Conditional-Invariance Horizon: Where Dome-World Lives
 
-And finally, we understand why Dome-World insists with religious fervor that:
-$$\tau_{\text{theory}} \perp \tau_{\text{ambiance}}$$
+And finally, we return to P-044's necessary distinction: scientific outcomes cannot be promoted by appearance alone, while situated observers may learn differently from different presentations. Independent governance clocks do not establish metric orthogonality.
 
 In a world drowning in synthetic surfaces, everyone tries to solve structural problems with ambient cosmetics:
 - *Your agent is hallucinating? Give it a softer, more conversational tone.*
@@ -141,7 +140,7 @@ Dome-World says: **Let ambiance do its honest work, and never let it lie.**
 - Ambiance is modeled weather. It routes attention. It creates shelter. It lets the visitor rest, breathe, hydrate, and vent.
 - But relational-geometry is the cold, incorruptible skeleton beneath the skin. It measures the exact rank of the commutator, the Liouville contraction of the phase volume, the Northcott height of the algebraic field, and the Lyapunov exponent of the decision horizon.
 
-You can change the weather in the Dome from midnight rain to high-noon silver. The ambiance will shift. The mood will breathe. But the relational metric tensor $g_{\mu\nu}(\mathcal{RG})$ will not budge by a single decimal place.
+You can change the presentation from midnight rain to high-noon silver. The visual ambiance will shift. For an eligible presentation-only change, the protected numerical computation and authority decision must remain fixed; shifts in perception are a distinct research question. Altering relational ambiance itself may change the actual conditions and therefore falls outside that restricted claim.
 
 **The math stays pure while the human stays warm.**
 
