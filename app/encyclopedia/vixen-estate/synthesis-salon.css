@@ -17,13 +17,13 @@
  * pretending to be the renderer. Mobile has a separately stacked stage. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
  display:grid;grid-template-columns:minmax(0,1fr);position:relative;
- align-items:stretch;min-height:540px;padding:0;overflow:hidden;
+ align-items:stretch;min-height:480px;padding:0;overflow:hidden;
  background:#111b21;border-bottom:1px solid #fff0a8;box-shadow:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::before,
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::after{content:none;display:none}
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
- position:relative;z-index:2;width:56%;max-width:775px;min-height:540px;
+ position:relative;z-index:2;width:56%;max-width:775px;min-height:480px;
  padding:clamp(25px,3.1vw,48px);
  display:flex;flex-direction:column;justify-content:center;gap:19px;
  background:linear-gradient(90deg,rgba(255,252,248,.97) 0%,rgba(255,249,247,.94) 42%,
@@ -46,7 +46,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  font:400 clamp(15px,1.3vw,19px)/1.5 Georgia,serif;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
- position:absolute;inset:0;z-index:1;min-width:0;min-height:540px;
+ position:absolute;inset:0;z-index:1;min-width:0;min-height:480px;
  overflow:hidden;background:#10181e;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-cuirass-canvas{
