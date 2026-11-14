@@ -460,6 +460,17 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    veilHandle.renderOnce?.();
   }
   host.dataset.opticalContract=folded?CUIRASS_CONTRACT.schema:VEIL_CONTRACT.schema;
+  if(typeof window!=='undefined'){
+   const Ev=window.CustomEvent||globalThis.CustomEvent;
+   if(typeof Ev==='function'){
+    try{
+     window.dispatchEvent(new Ev('vixen:synthesis-updated',{detail:{
+      activePlan:state.result,refraction:state.refraction,resting:state.resting,
+      route:state.route,works:[...state.works]
+     }}));
+    }catch(_){}
+   }
+  }
  }
  function titleText(w){return w.display_title||w.declared_title||w.work_id}
  function makeHolonomySvg(wA,wB,vernier,route){

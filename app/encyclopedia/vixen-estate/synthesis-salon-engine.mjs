@@ -362,3 +362,178 @@ export function makePodiumTasks(plan,{recordId=null}={}){
   mandatory_host_review:true,operator_authority_not_encoded_in_json:true
  });
 }
+export function deriveSynthesisHeadline({
+ corpus=null,activePlan=null,refraction=null,
+ benchPair=null,benchSnapshots=[],withdrawnCount=0,
+ podiumEvents=[],supplementalSources=[]
+}={}){
+ const baseWorks=Array.isArray(corpus?.works)?corpus.works.length:32;
+ const extras=Array.isArray(supplementalSources)?supplementalSources.filter(Boolean):[];
+ const totalWorks=baseWorks+extras.length;
+ const snapshots=Array.isArray(benchSnapshots)?benchSnapshots:[];
+ const events=Array.isArray(podiumEvents)?podiumEvents:[];
+ const provenance=(regime,extra={})=>({
+  work_census:totalWorks,
+  supplemental_sources:extras.length,
+  snapshot_count:snapshots.length,
+  podium_event_count:events.length,
+  withdrawn_count:Number(withdrawnCount)||0,
+  regime,
+  empirical_replication_credit:0,
+  scientific_promotion_authority:false,
+  human_closure_required:true,
+  ...extra
+ });
+ if(activePlan&&activePlan.schema===SALON_SCHEMA){
+  const clusters=[...new Set((activePlan.source_coordinates||[]).map(x=>x.cluster).filter(Boolean))];
+  const clusterText=clusters.length?clusters.join(' & '):'Selected Works';
+  const routeOrder=activePlan.route_identity==='B_A'?'II ▷ I':'I ▷ II';
+  const inversions=Number(activePlan.holonomy_delta?.arrival_inversions||0);
+  const l1Delta=Number(activePlan.holonomy_delta?.tick_l1_delta||0);
+  const trackId=activePlan.giveback_track?.id||'TRACK_OPEN';
+  const refracted=Boolean(refraction?.route_memory_non_equivalent);
+  const regime=extras.length>0
+   ?'SUPPLEMENTAL_SALON_SYNTHESIS'
+   :(refracted?'SALON_REFRACTED_SYNTHESIS':'SALON_COMPOSED_SYNTHESIS');
+  const headerTagline=extras.length>0
+   ?`Extended Constitutive Synthesis (${totalWorks} Works · ${routeOrder})`
+   :(refracted
+    ?`Refracted Holonomy Synthesis · ${routeOrder}`
+    :`Ordered Synthesis · ${clusterText} · ${routeOrder}`);
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime,
+   headerTagline,
+   patternSubtitle:inversions>0
+    ?'THE ARCHITECTURE OF NON-COMMUTING CLOCKS.'
+    :'THE ARCHITECTURE OF ORDERED SOURCE FIBERS.',
+   axiomMarginalia:[
+    headerTagline,
+    `Δ=${inversions} inv · L₁=${l1Delta}t · ${trackId}`,
+    `Route ${routeOrder} · Unratified Question · Credit 0`
+   ],
+   heroStatement:refracted
+    ?'Same sources across reversed encounter:\norder alters the candidate question\nwhile truth awaits independent witnesses.'
+    :`Trajectory across ${clusterText}:\nsemantic route and vernier ticks\nremain distinct without claiming proof.`,
+   leftSpine:`S ≠ W ≠ A · Δ=${inversions} INV · ROUTE ${routeOrder}`,
+   provenance:provenance(regime,{active_route:activePlan.route_identity,active_clusters:clusters})
+  });
+ }
+ if(extras.length>0){
+  const headerTagline=`Extended Constitutive Synthesis (${totalWorks} Works)`;
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'SUPPLEMENTAL_CORPUS_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF WIDENED ADMISSIBILITY.',
+   axiomMarginalia:[
+    headerTagline,
+    'S_semantic ≠ W_witness ≠ A_actuator',
+    `${totalWorks} Works Indexed · Human Closure Reserved`
+   ],
+   heroStatement:`Across ${totalWorks} indexed sources,\nwidened intake refines the question\nwithout granting automatic proof.`,
+   leftSpine:`S ≠ W ≠ A · ${totalWorks} WORKS · P-CLOSURE HELD`,
+   provenance:provenance('SUPPLEMENTAL_CORPUS_SYNTHESIS')
+  });
+ }
+ if(Number(withdrawnCount)>0){
+  const headerTagline='Non-Retroactive Tombstone Synthesis';
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'TOMBSTONE_BOUNDED_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF REVOCABLE SUPPORT.',
+   axiomMarginalia:[
+    headerTagline,
+    `${withdrawnCount} Withdrawn Source(s) · Pred Intact`,
+    'S ≠ W ≠ A · U \\ ⋂ S_i Open Gap'
+   ],
+   heroStatement:'When an upstream source withdraws,\nfuture claims halt immediately\nwhile predecessor records stay legible.',
+   leftSpine:'S ≠ W ≠ A · TOMBSTONE CUSTODY · CREDIT 0',
+   provenance:provenance('TOMBSTONE_BOUNDED_SYNTHESIS')
+  });
+ }
+ if(benchPair==='mismatched_l0'){
+  const headerTagline='Boundary-Guarded Non-Collapsing Control';
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'L0_VOCABULARY_GUARD_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF REFUSED CONFLATION.',
+   axiomMarginalia:[
+    headerTagline,
+    'Vocabulary Overlap ≠ Shared Operator',
+    'Blocked Above L0 · Human Gate Reserved'
+   ],
+   heroStatement:'Shared metaphors across manuscripts\nnever manufacture a state operator\nor promote a claim above L0.',
+   leftSpine:'S ≠ W ≠ A · L0 BOUNDARY GUARD',
+   provenance:provenance('L0_VOCABULARY_GUARD_SYNTHESIS',{bench_pair:benchPair})
+  });
+ }
+ if(benchPair==='c2_c3_transducer'){
+  const headerTagline='Phase-Locked Transduction · Plant Split';
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'L1_PHASE_LOCKED_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF SEPARATE ACTUATORS.',
+   axiomMarginalia:[
+    headerTagline,
+    'Audio Clock ⊥ Aerial Plant Hazard',
+    'L1 Isomorphism · L2 Composition HELD'
+   ],
+   heroStatement:'Phase-locked math may cross media\nat L1 while audio underruns and flight\nactuators remain strictly partitioned.',
+   leftSpine:'S ≠ W ≠ A · L1 TRANSDUCTION SPLIT',
+   provenance:provenance('L1_PHASE_LOCKED_SYNTHESIS',{bench_pair:benchPair})
+  });
+ }
+ if(snapshots.length>0){
+  const headerTagline=`Predecessor-Linked Synthesis (${snapshots.length} Snapshot${snapshots.length===1?'':'s'})`;
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'SNAPSHOT_CHAIN_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF APPEND-ONLY MEMORY.',
+   axiomMarginalia:[
+    headerTagline,
+    `Chain Depth #${snapshots.length} · Non-Retroactive`,
+    'S ≠ W ≠ A · Human Closure Reserved'
+   ],
+   heroStatement:'Each composed snapshot cites its\nimmediate predecessor so route order\nnever vanishes into static prose.',
+   leftSpine:`S ≠ W ≠ A · CHAIN #${snapshots.length} · HELD`,
+   provenance:provenance('SNAPSHOT_CHAIN_SYNTHESIS')
+  });
+ }
+ if(events.length>0){
+  const last=events[events.length-1]?.action||'PODIUM_EVENT';
+  const headerTagline='Podium-Updated Constitutive Synthesis';
+  return deepFreeze({
+   schema:'emstd613.vixen.synthesis-headline/v1',
+   regime:'PODIUM_EVENT_SYNTHESIS',
+   headerTagline,
+   patternSubtitle:'THE ARCHITECTURE OF GOVERNED INQUIRY.',
+   axiomMarginalia:[
+    headerTagline,
+    'S_semantic ≠ W_witness ≠ A_actuator',
+    `Last Event: ${String(last).slice(0,30)}`
+   ],
+   heroStatement:'Podium inspection tracks source order\nand witness deficits before any claim\ncan cross into the public record.',
+   leftSpine:'S ≠ W ≠ A · PODIUM LOGGED · CREDIT 0',
+   provenance:provenance('PODIUM_EVENT_SYNTHESIS',{last_event:last})
+  });
+ }
+ return deepFreeze({
+  schema:'emstd613.vixen.synthesis-headline/v1',
+  regime:'BASELINE_ESTATE_SYNTHESIS',
+  headerTagline:'Typed Constitutive Cybernetics',
+  patternSubtitle:'THE ARCHITECTURE OF NON-COLLAPSING PLANES.',
+  axiomMarginalia:[
+   'Typed Constitutive Cybernetics',
+   'S_semantic ≠ W_witness ≠ A_actuator',
+   'P-Closure ≠ W-Truth · [32, 40] Sensitivity'
+  ],
+  heroStatement:'Where semantic steering, witness verification,\nand low-latency actuation refuse to collapse\ninto one untyped plane.',
+  leftSpine:'S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS',
+  provenance:provenance('BASELINE_ESTATE_SYNTHESIS')
+ });
+}

@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {
- checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,makePodiumTasks,SALON_SCHEMA
+ checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,makePodiumTasks,SALON_SCHEMA,deriveSynthesisHeadline
 } from '../app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs';
 import {createVixenPodium,PODIUM_SCHEMA} from '../app/encyclopedia/reference/vixen-podium.mjs';
 import {mountVixenSynthesisSalon} from '../app/encyclopedia/vixen-estate/synthesis-salon.mjs';
@@ -148,5 +148,48 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
   if(prevDoc===undefined)delete globalThis.document;else globalThis.document=prevDoc;
   if(prevWin===undefined)delete globalThis.window;else globalThis.window=prevWin;
   dom.window.close()
+ }
+});
+test('unified synthesis headline engine reacts deterministically across Podium, Salon, Bench & supplemental sources without human leak or credit promotion',async()=>{
+ const base=deriveSynthesisHeadline({corpus});
+ assert.equal(base.regime,'BASELINE_ESTATE_SYNTHESIS');
+ assert.equal(base.headerTagline,'Typed Constitutive Cybernetics');
+ assert.equal(base.patternSubtitle,'THE ARCHITECTURE OF NON-COLLAPSING PLANES.');
+ assert.equal(base.provenance.empirical_replication_credit,0);
+ assert.equal(base.provenance.scientific_promotion_authority,false);
+ assert.equal(base.provenance.human_closure_required,true);
+
+ const plan=composeSalonPlan(corpus,input);
+ const refr=refractSalonPlan(corpus,input);
+ const salonH=deriveSynthesisHeadline({corpus,activePlan:plan});
+ assert.equal(salonH.regime,'SALON_COMPOSED_SYNTHESIS');
+ assert.notEqual(salonH.headerTagline,base.headerTagline);
+ assert.notEqual(salonH.heroStatement,base.heroStatement);
+
+ const refrH=deriveSynthesisHeadline({corpus,activePlan:plan,refraction:refr});
+ assert.equal(refrH.regime,'SALON_REFRACTED_SYNTHESIS');
+ assert.match(refrH.headerTagline,/Refracted/);
+
+ const suppH=deriveSynthesisHeadline({corpus,supplementalSources:[{id:'SUP-1'},{id:'SUP-2'}]});
+ assert.equal(suppH.regime,'SUPPLEMENTAL_CORPUS_SYNTHESIS');
+ assert.equal(suppH.provenance.work_census,corpus.works.length+2);
+ assert.equal(suppH.patternSubtitle,'THE ARCHITECTURE OF WIDENED ADMISSIBILITY.');
+
+ const benchTombstone=deriveSynthesisHeadline({corpus,withdrawnCount:1});
+ assert.equal(benchTombstone.regime,'TOMBSTONE_BOUNDED_SYNTHESIS');
+
+ const mem={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],getRecord:async()=>({}),
+  related:()=>[],status:()=>({state:'UNOPENED'})};
+ const conductor=createVixenPodium({corpus,membrane:mem});
+ const d0=await conductor.dispatch(run('podium.describe',{}));
+ assert.equal(d0.result.synthesis_headline.regime,'PODIUM_EVENT_SYNTHESIS');
+ const c1=await conductor.dispatch(run('vixen.salon.compose',input));
+ assert.equal(c1.result.synthesis_headline.regime,'SALON_COMPOSED_SYNTHESIS');
+ const d1=await conductor.dispatch(run('podium.describe',{}));
+ assert.equal(d1.result.synthesis_headline.regime,'SALON_COMPOSED_SYNTHESIS');
+
+ for(const obj of [base,salonH,refrH,suppH,benchTombstone,d1.result.synthesis_headline]){
+  const txt=JSON.stringify(obj);
+  assert.equal(/Khona|Research Atelier|RESEARCH ATELIER|DERIVATIVE CLOCK CUSTODY/i.test(txt),false);
  }
 });

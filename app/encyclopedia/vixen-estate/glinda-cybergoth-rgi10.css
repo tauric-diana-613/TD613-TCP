@@ -713,6 +713,33 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .mobile-wayfinder:not(.vixen
  transition:none!important;
  }
 }
+@media(min-width:960px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) footer.footer{
+  margin-left:var(--vf-room-width,66px);
+  width:calc(100% - var(--vf-room-width,66px));
+  max-width:none;
+ }
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-end{
+ display:flex;align-items:center;justify-content:center;
+ padding:12px 4px;margin-top:auto;
+ font-size:15px;line-height:1;letter-spacing:.12em;white-space:nowrap;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .brand-title-stack{
+ display:flex;flex-direction:column;justify-content:center;min-width:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .brand-meta-row{
+ display:flex;align-items:baseline;gap:8px;flex-wrap:nowrap;margin-top:2px;min-width:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .brand-meta-row .project-math{
+ display:inline;white-space:nowrap;flex-shrink:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .brand-meta-row .brand-sep{
+ color:rgba(246,244,240,.42);font-size:9px;line-height:1;flex-shrink:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .brand-meta-row .brand-sub{
+ display:inline;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
 @media(forced-colors:active){
  body:not([data-active-research-stage="OPERAHOUSE"]) :is(
  .formula-card,.formula-gallery-reveal,.site-header,.vixen-room-rail

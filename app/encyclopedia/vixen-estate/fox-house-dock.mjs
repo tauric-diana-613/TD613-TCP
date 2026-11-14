@@ -18,17 +18,19 @@ export function mountFoxHouseDock({document:doc=globalThis.document}={}){
   const isOperahouse=activeStage==='OPERAHOUSE';
   dock.dataset.stageState=isOperahouse?'OPERAHOUSE_ACTIVE':'VIXEN_OPERA';
   let badge=dock.querySelector('#vixenStageStatusBadge');
+  if(!isOperahouse){
+   if(badge)badge.remove();
+   return;
+  }
   if(!badge){
    badge=doc.createElement('span');
    badge.id='vixenStageStatusBadge';
    badge.className='vixen-stage-pill';
    dock.prepend(badge);
   }
-  badge.dataset.stageRole=isOperahouse?STAGE_ROLES.OPERAHOUSE.role:STAGE_ROLES.OPERA.role;
-  badge.textContent=isOperahouse?'OPERAHOUSE_ACTIVE · Host Custody':'OPERA · Source-Guided';
-  badge.title=isOperahouse
-   ?STAGE_ROLES.OPERAHOUSE.kind+' (OPERAHOUSE ≠ OPERA ≠ PERFORMER)'
-   :STAGE_ROLES.OPERA.kind+' (OPERAHOUSE ≠ OPERA ≠ PERFORMER)';
+  badge.dataset.stageRole=STAGE_ROLES.OPERAHOUSE.role;
+  badge.textContent='OPERAHOUSE_ACTIVE · Host Custody';
+  badge.title=STAGE_ROLES.OPERAHOUSE.kind+' (OPERAHOUSE ≠ OPERA ≠ PERFORMER)';
  };
  const synchronize=()=>{
   if(disposed)return;

@@ -300,7 +300,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-reader{
   clip-path:polygon(0 0,calc(100% - 35px) 0,100% 35px,100% 100%,0 100%);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-reader:before{
-  content:'RESEARCH ATELIER';position:absolute;right:23px;top:15px;
+  content:'SOURCE FOLIO';position:absolute;right:23px;top:15px;
   font:700 9px/1 ui-monospace,monospace;letter-spacing:.15em;
   color:#ecd0b3;pointer-events:none;
 }

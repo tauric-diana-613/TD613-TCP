@@ -8,8 +8,9 @@
  */
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
-import {composeSalonPlan,refractSalonPlan} from '../vixen-estate/synthesis-salon-engine.mjs';
+import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
+export {deriveSynthesisHeadline};
 
 export const PODIUM_SCHEMA='td613.vixen.podium.task/v1';
 export const PODIUM_RECEIPT='td613.vixen.podium.receipt/v1';
@@ -56,7 +57,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
  const reader=membrane||createVixenReferenceMembrane();
  if(!reader||!['open','search','getRecord','related','status'].every(k=>typeof reader[k]==='function'))
    throw new TypeError('PODIUM_REFERENCE_READER_CONTRACT_MISSING');
- const state={opened:false,seen:new Map(),events:[],seq:0,epoch:0};
+ const state={opened:false,seen:new Map(),events:[],seq:0,epoch:0,activePlan:null,activeRefraction:null};
  const event=(action,extra={})=>{
   const e=Object.freeze({sequence:++state.seq,action,observation_time:new Date().toISOString(),
     recording_class:'VOLATILE_SESSION_NOT_APPEND_ONLY_PROOF',...extra});
@@ -92,7 +93,10 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      podium:'MACHINE_FACING_RESEARCH_CONDUCTOR',roles:['OPERAHOUSE','OPERA','PERFORMER'],
      counts,available_routes:PODIUM_ROUTES,reader_state:reader.status().state,
      source_revision:sourceRevision,external_engine_connection:'EXPLICIT_ADAPTER_ONLY',
-     route_memory:'SESSION_LOCAL_ONLY'
+     route_memory:'SESSION_LOCAL_ONLY',
+     synthesis_headline:deriveSynthesisHeadline({
+      corpus,activePlan:state.activePlan,refraction:state.activeRefraction,podiumEvents:state.events
+     })
     });
    }
    if(intent==='vixen.work.inspect'){
@@ -179,6 +183,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    }
    if(intent==='vixen.salon.compose'){
     const plan=composeSalonPlan(corpus,params);
+    state.activePlan=plan;
+    state.activeRefraction=null;
     event('VIXEN_SOURCE_BOUND_THEORY_PROPOSED',{
      source_work_ids:plan.source_coordinates.map(x=>x.work_id),
      status:'OPEN_FIELD_UNRATIFIED_QUESTION',
@@ -186,12 +192,17 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
     return receipt(intent,'HELD',{
      state:'CREATIVE_PROPOSAL_AWAITING_HUMAN_REVIEW',plan,
+     synthesis_headline:deriveSynthesisHeadline({
+      corpus,activePlan:plan,podiumEvents:state.events
+     }),
      claim_ceiling:'SOURCE_METADATA_PLUS_OPERATOR_QUESTION_NOT_SCIENCE'
     });
    }
    if(intent==='experiment_b.preregister'){
     const plan=composeSalonPlan(corpus,params);
     const counterfactual=refractSalonPlan(corpus,params);
+    state.activePlan=plan;
+    state.activeRefraction=counterfactual;
     event('EXPERIMENT_B_PROSPECTIVE_PREREG_ONLY',{
      experiment_b_flight:'HELD',
      human_closure:'RESERVED',
@@ -202,6 +213,9 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      state:'PREREGISTRATION_CANDIDATE_ONLY',
      baseline:'COMPETENT_UNION_MATCHED_CONTROL',
      plan:plan.experiment_b,counterfactual,
+     synthesis_headline:deriveSynthesisHeadline({
+      corpus,activePlan:plan,refraction:counterfactual,podiumEvents:state.events
+     }),
      prospective_measurements:plan.comparative_measurements,
      constructed_mechanisms:plan.cross_source_mechanisms,
      testable_predicate:plan.testable_predicate,
