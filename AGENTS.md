@@ -98,6 +98,7 @@ This is defense-in-depth rather than a claim of cryptographic separation between
 
 This repository contains product surfaces, shared engines, research records and release workflows. **Begin with the root shortcuts before discovering architecture by scattered imports:**
 
+- [`VIXEN_START_HERE.md`](VIXEN_START_HERE.md) — Vixen #1730 UI/runtime map, optical clocks, active and rollback branches, tests, asset and deployment boundaries.
 - [`PEDAGOGUE.md`](PEDAGOGUE.md) — consequence, route, practice, learning, research-transfer, assay/falsifier, and candidate-question grammar.
 - [`APERTURE.md`](APERTURE.md) — observability, identifiability, reconstruction, conditioning, uncertainty geometry, widening, abstention, rejection, and replay audit.
 - [`ATLAS.md`](ATLAS.md) — receiver-relative relations, history quotients, reconstruction/custody, symmetry, finite geometry and continuity across projections.
