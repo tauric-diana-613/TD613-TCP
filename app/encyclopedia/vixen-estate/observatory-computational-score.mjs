@@ -21,7 +21,7 @@ const TAU=Math.PI*2;
 const ink=Object.freeze({
  graphite:'#24282A',nickel:'#667078',porcelain:'#F6F4F0',
  pink:'#FF91AF',arc:'#FFF2A9',rose:'#C75F91',
- opal:'#9DBCC1',plum:'#946C99'
+ opal:'#9DBCC1',rose:'#bc5877'
 });
 const clip=(v,a=0,b=1)=>Math.min(b,Math.max(a,Number.isFinite(+v)?+v:a));
 function stroke(ctx,color,width=1,blur=0){
@@ -85,7 +85,7 @@ function smokeGlass(ctx,width,height,model,time){
  const glass=ctx.createRadialGradient(cx,cy,r*.04,cx,cy,r);
  glass.addColorStop(0,'rgba(8,8,14,.69)');
  glass.addColorStop(.48,'rgba(16,14,22,.58)');
- glass.addColorStop(.70,'rgba(24,20,27,.28)');
+ glass.addColorStop(.70,'rgba(27,20,24,.28)');
  glass.addColorStop(1,'rgba(8,8,13,.035)');
  ctx.fillStyle=glass;
  ctx.fillRect(0,0,width,height);
@@ -179,7 +179,7 @@ function control(ctx,w,h,params,time){
 function clocks(ctx,w,h,params,time){
  const ticks=fiveClockTicks(Math.round(120*params.gain));
  const cx=w*.49,cy=h*.51,r=Math.min(w,h)*.41;
- const colors=[ink.pink,ink.arc,ink.porcelain,ink.opal,ink.plum];
+ const colors=[ink.pink,ink.arc,ink.porcelain,ink.opal,ink.rose];
  for(let i=0;i<ticks.length;i++){
   const rr=r-i*r*.135,phase=(ticks[i].tick%73)/73*TAU+time*(.06+i*.035);
   ring(ctx,cx,cy,rr,colors[i],1.4+i*.17,.73);

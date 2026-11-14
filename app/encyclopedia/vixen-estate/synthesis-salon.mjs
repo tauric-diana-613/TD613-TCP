@@ -201,7 +201,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   // Literal costume emojis are absent: visual rhetoric now lives in silhouette.
   const veil=mk('canvas',folded?'vs-cuirass-canvas':'vs-luminous-canvas');
   veil.setAttribute('aria-hidden','true');
-  veil.dataset.computation=folded?'D3_PHI_BEAT_FOLDED_SHELL':'D3_PHI_LOOM_39_COUTURE_111';
+  veil.dataset.computation=folded?'D3_PHI_OPEN_FOLDS_SHARED_CLOTH':'D3_PHI_LOOM_39_COUTURE_111';
   const veilCaption=mk('div','vs-optical-label','VIXEN · 39 COMPUTED CARRIERS · OPTICAL COSTUME / MODEL ONLY');
   veilCaption.setAttribute('aria-hidden','true');
   const words=mk('div','vs-hero-copy');

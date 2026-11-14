@@ -360,7 +360,7 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  * This is a paint-level restoration, not a change to route functionality.
  */
 body .site-header{
- background:linear-gradient(180deg,rgba(12,17,20,.97),rgba(17,11,18,.90))!important;
+ background:linear-gradient(180deg,rgba(12,17,20,.97),rgba(18,11,15,.90))!important;
  border-bottom:1px solid rgba(255,145,175,.46);
  color:#F6F4F0;
  backdrop-filter:blur(18px) saturate(1.35);
@@ -450,7 +450,7 @@ body .site-header .mobile-nav small{color:#f5d8ba}
     display:flex;position:fixed;z-index:88;
     left:0;top:var(--header-height,72px);bottom:0;width:var(--vf-room-width);
     flex-direction:column;align-items:stretch;
-    background:linear-gradient(180deg,#0c1114,#0d1215 58%,#170E17);
+    background:linear-gradient(180deg,#0c1114,#0d1215 58%,#170e13);
     border-right:1px solid rgba(255,145,175,.31);
     box-shadow:5px 0 24px rgba(0,0,0,.23);
     overflow-x:visible;overflow-y:auto;scrollbar-width:thin;

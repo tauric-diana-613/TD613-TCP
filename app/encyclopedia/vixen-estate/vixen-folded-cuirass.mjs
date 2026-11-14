@@ -8,32 +8,29 @@
  * No Living Geometry/Flow-Core source transplant or scientific equivalence.
  * OPERAHOUSE ≠ OPERA ≠ PERFORMER. Human closure RESERVED; empirical credit 0.
  */
-import {measureCoutureBeats,allocateBloom,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs';
+import {measureCoutureBeats,allocateBloom} from './vixen-beat-radiometry-rgi15.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
-import {paintSalonField} from './vixen-salon-ambient-field.mjs';
+import {buildSalonField,paintSalonField,paintFieldSpark,traceFieldPath} from './vixen-salon-ambient-field.mjs';
 
 // Developer rollback only; no extra visitor mode or second deliverable.
 export const SALON_COMPOSITOR='FOLDED_CHROME';
 export const CUIRASS_CONTRACT=Object.freeze({
  schema:'td613.vixen.folded-cuirass/v1',role:'OPERA_VISUAL_ONLY',
  source_capture:'TWO_EXISTING_WORK_IDS_AS_RENDER_PARAMETERS',
- geometry:'PREPAINT_D3_PHI_BEAT_AND_ANALYTIC_DERIVATIVES',
+ geometry:'PREPAINT_D3_PHI_OPEN_FOLDS_AND_CONNECTED_DIAMOND_LATTICE',
  empirical_credit:0,human_closure:'RESERVED',experiment_b_flight:'HELD'
 });
 export const CUIRASS_POLICY=Object.freeze({
  panels:12,angular_steps:72,vertical_steps:32,carriers:39,
  max_dpr:1.25,max_backing_pixels:1500000,desktop_fps:24,mobile_fps:12,
- // Every emissive draw shares these alpha allocations. Chrome is reflected
- // material in source-over; all screen emission obeys an aggregate 3.72 alpha ceiling.
- emission:Object.freeze({glints:1.20,seams:.42,filaments:.28,lattice:.12,waist:.85,beams:.85,haze:0,rails:0,fills:0}),
- total_emission_alpha:3.72,max_bloom_css_px:18,
+ // Only the fixed-reference glints use screen blending.
+ total_emission_alpha:1.20,
  max_radial_strain:.14,max_angular_shear:.035,
  display_contrast_candidate:'Adjacent seam/trough byte-luma ratio >= 3, trough <= 45; browser measurement pending'
 });
 const TAU=2*Math.PI,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const mix=(a,b,t)=>a+(b-a)*t;
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t)};
-const dot=(a,b)=>a.reduce((v,n,i)=>v+n*b[i],0);
 const sub=(a,b)=>a.map((v,i)=>v-b[i]);
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const unit=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l)};
@@ -65,17 +62,17 @@ export function coutureBackingSize(width,height,dpr=1){
 /** Returned geometry is complete and paint-independent. The gain-zero probe
  * fixes Work pair, phase, base shell, camera AND the glint allocation/positions.
  * It changes only deformation; glints remain active for a clean intervention. */
-export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeometryGain=1}={}){
+export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeometryGain=1,integrated=width>800}={}){
  if(![width,height,time,beatToGeometryGain].every(Number.isFinite)||width<=0||height<=0)
   throw new RangeError('CUIRASS_FINITE_INPUT_REQUIRED');
  const gain=clamp(beatToGeometryGain),ids=sourceIds.slice(0,2).map(String);
  const seed=hash(ids.join('|')||'VIXEN_NEUTRAL');
  // A fixed material chart keeps the cut invariant under viewport projection.
  const field=measureCoutureBeats({width:360,height:420,time,seed,devicePixelRatio:1});
- const integrated=width>800;
  const scale=Math.min(width*(integrated?.50:.94),height*.82);
  const cx=width*(integrated?.735:.5),cy=height*.49;
- const yaw=.23,cs=Math.cos(yaw),sn=Math.sin(yaw);
+ // Slow three-quarter articulation exposes rear stays through open cells.
+ const yaw=.19+.13*Math.sin(time*.34),cs=Math.cos(yaw),sn=Math.sin(yaw);
  function surface(u,t,g=gain){
   const angle=u*TAU;
   // Periodic material coordinates close the shell exactly at u=0/1.
@@ -90,51 +87,68 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
   const r=base*(1+strain)+foldDepth*fold;
   const x=Math.sin(a)*r,z=Math.cos(a)*r*.58;
   // Raised wings, a dipped centre neckline and pointed busk/hem.
-  const neckline=-.43-.072*Math.pow(Math.abs(Math.sin(a)),5)+.032*Math.cos(a);
+  const neckline=-.43-.105*Math.pow(Math.abs(Math.sin(a)),5)+.055*Math.cos(a);
   const hem=.39+.055*Math.pow(Math.max(0,Math.cos(a)),6);
   const y=mix(neckline,hem,t)+g*.008*f.direction[1]*Math.sin(Math.PI*t);
   return {p:[x*cs+z*sn,y,z*cs-x*sn],field:f,u,t,fold};
  }
  const project=p=>[cx+p[0]*scale,cy+(p[1]-.16*p[2])*scale,p[2]];
  const N=CUIRASS_POLICY.angular_steps,M=CUIRASS_POLICY.vertical_steps;
+ const stripHalfWidth=t=>.0095*(.78+.38*Math.sin(Math.PI*t));
  const grid=Array.from({length:N+1},(_,i)=>Array.from({length:M+1},(_,j)=>{
   const v=surface(i/N,j/M);return {...v,screen:project(v.p)};
  }));
- // Geometry retains the original face normals for silhouette/culling.
- // Reflective material uses local smooth normals INSIDE each tailored gore.
- // This avoids the checkerboard response of independent per-quad highlights
- // while preserving discontinuous dark seam undercuts and real beat-fold geometry.
- const patchNormals=Array.from({length:N},(_,i)=>Array.from({length:M},(_,j)=>{
-  const v=[grid[i][j],grid[i+1][j],grid[i+1][j+1],grid[i][j+1]];
-  return unit(cross(sub(v[1].p,v[0].p),sub(v[3].p,v[0].p)));
- }));
- const faces=[],panelWidth=N/CUIRASS_POLICY.panels;
- const smoothMaterialNormal=(i,j,normal)=>{
-  const acc=[0,0,0],start=Math.floor(i/panelWidth)*panelWidth;
-  let weight=0;
-  // Within-gore 3x3 smoothing preserves the independent geometric normal
-  // while avoiding 25 source-point weighted calculations per painted facet.
-  for(let du=-1;du<=1;du++)for(let dv=-1;dv<=1;dv++){
-   const ii=i+du,jj=j+dv;
-   if(ii<start||ii>=start+panelWidth||jj<0||jj>=M)continue;
-   const neighbour=patchNormals[ii][jj];
-   if(dot(normal,neighbour)<.55||neighbour[2]+.16*neighbour[1]<=0)continue;
-   const w=(2-Math.abs(du))*(2-Math.abs(dv));
-   for(let k=0;k<3;k++)acc[k]+=w*neighbour[k];
-   weight+=w;
+ // The shell grid is a material chart, NOT a filled skin. Twelve folded
+ // strips cover at most 27% of its angular extent; the rest is open.
+ // Each strip has five continuous facets with a raised arris. All samples,
+ // normals and ribbon boundaries exist before any material/paint operation.
+ const metalStrips=[],faces=[];
+ const stripCuts=[-1,-.52,-.12,.12,.52,1];
+ for(let i=0;i<12;i++){
+  const u=i/12,columns=stripCuts.map(q=>Array.from({length:M+1},(_,j)=>{
+   const t=j/M;
+   const halfWidth=stripHalfWidth(t);
+   const v=surface(u+q*halfWidth,t);
+   const arris=.009*(1-Math.abs(q))*(.7+.3*Math.sin(Math.PI*t));
+   const a=(u+q*halfWidth)*TAU;
+   const n=[Math.sin(a)*cs+Math.cos(a)*sn,0,Math.cos(a)*cs-Math.sin(a)*sn];
+   const p=v.p.map((x,k)=>x+n[k]*arris);
+   return {...v,p,screen:project(p)};
+  }));
+  const bands=[];
+  for(let k=0;k<5;k++){
+   const left=columns[k],right=columns[k+1];
+   const normal=unit(cross(sub(right[16].p,left[16].p),sub(left[17].p,left[16].p)));
+   const points=[...left.map(v=>v.screen),...right.map(v=>v.screen).reverse()];
+   const band={points,normal,geometricNormal:normal,panel:i,facet:k,
+    depth:(left[16].p[2]+right[16].p[2])/2};
+   bands.push(band);faces.push(band);
   }
-  return weight?unit(acc):normal;
- };
- for(let i=0;i<N;i++)for(let j=0;j<M;j++){
-  const v=[grid[i][j],grid[i+1][j],grid[i+1][j+1],grid[i][j+1]];
-  const normal=patchNormals[i][j];
-  if(normal[2]+.16*normal[1]<=0)continue;
-  faces.push({points:v.map(p=>p.screen),normal:smoothMaterialNormal(i,j,normal),
-   geometricNormal:normal,panel:Math.floor(i/panelWidth),
-   depth:v.reduce((n,p)=>n+p.p[2],0)/4,
-   t:(j+.5)/M,u:(i+.5)/N,fold:v.reduce((n,p)=>n+p.fold,0)/4});
+  metalStrips.push({index:i,bands,depth:bands[2].depth,
+   edges:[columns[0],columns[5]].map(c=>c.map(v=>v.screen)),
+   crest:columns[2].map(v=>v.screen)});
  }
- faces.sort((a,b)=>a.depth-b.depth);
+ metalStrips.sort((a,b)=>a.depth-b.depth);
+ // Staggered circumferential rows form triangular/diamond cells on the
+ // deformed chart. Shared vertex objects make every connection exact.
+ const latticeNodes=[],latticeEdges=[],rows=13,cols=24;
+ for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
+  const u=(i+(j%2)*.5)/cols,t=j/(rows-1),v=surface(u,t);
+  latticeNodes.push({id:j*cols+i,row:j,col:i,u,t,point:project(v.p),field:v.field});
+ }
+ const link=(a,b,kind)=>{
+  const steps=4,points=[a.point];
+  let du=b.u-a.u;if(du>.5)du-=1;if(du<-.5)du+=1;
+  for(let k=1;k<steps;k++)points.push(project(surface(a.u+du*k/steps,mix(a.t,b.t,k/steps)).p));
+  points.push(b.point);
+  latticeEdges.push({a:a.id,b:b.id,kind,points,depth:(a.point[2]+b.point[2])/2});
+ };
+ for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){
+  const a=latticeNodes[j*cols+i];
+  if(j%3===0)link(a,latticeNodes[j*cols+(i+1)%cols],'weft');
+  if(j<rows-1)for(const d of [0,j%2?1:-1])
+   link(a,latticeNodes[(j+1)*cols+(i+d+cols)%cols],'bias');
+ }
  const path=(u,t0=0,t1=1,g=gain,steps=48)=>Array.from({length:steps+1},(_,j)=>{
   const t=mix(t0,t1,j/steps);return project(surface(u,t,g).p);
  });
@@ -170,10 +184,12 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  const lengths=points=>points.slice(1).reduce((n,p,i)=>n+Math.hypot(p[0]-points[i][0],p[1]-points[i][1]),0);
  const bounds=grid.flat().reduce((b,v)=>({left:Math.min(b.left,v.screen[0]),right:Math.max(b.right,v.screen[0]),
   top:Math.min(b.top,v.screen[1]),bottom:Math.max(b.bottom,v.screen[1])}),{left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity});
- return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,tensionRings,glints,bounds,
+ const model={width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,metalStrips,openAngularFraction:1-24*stripHalfWidth(.5),latticeNodes,latticeEdges,seams,rims,filaments,tensionRings,glints,bounds,
   metrics:{seamLength:seams.reduce((n,s)=>n+lengths(s.points),0),filamentLength:filaments.reduce((n,s)=>n+lengths(s.points),0),
    contourWidth:bounds.right-bounds.left,contourHeight:bounds.bottom-bounds.top},
-  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)*(.5)+.42+.28+.12+.85+.85};
+  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)*.5};
+ model.scene=buildSalonField(model);
+ return model;
 }
 
 function trace(ctx,points,close=false){
@@ -183,175 +199,110 @@ function trace(ctx,points,close=false){
 function stroke(ctx,points,color,width=1,alpha=1){
  ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;trace(ctx,points);ctx.stroke();
 }
-function frontSegments(points,minDepth=0){
+function frontSegments(points,minDepth=0,front=true){
  const segments=[];let current=[];
  for(const p of points){
-  if(p[2]>=minDepth)current.push(p);
+  if(front?p[2]>=minDepth:p[2]<minDepth)current.push(p);
   else if(current.length){if(current.length>1)segments.push(current);current=[];}
  }
  if(current.length>1)segments.push(current);
  return segments;
 }
-/**
- * One coherent studio illumination across the complete folded surface.
- * A per-quad flat color caused the old tiled/checkerboard chrome. Paint all
- * visible quads with the *same* gradient coordinate field, leaving geometry,
- * seam undercuts, carrier filaments and finite glow individually accountable.
- *
- * Work-pair phase shifts only the studio-light position; it is an artistic
- * parameter, never a claim about an author's content or physical energy.
- */
-function studioChrome(ctx,m){
- const p=m.field.pairs[0],phase=(p?.phaseDelta||0)-(p?.deltaOmega||0)*m.time;
- const shift=Math.sin(phase)*m.scale*.033;
- const x0=m.cx-m.scale*.57+shift,x1=m.cx+m.scale*.57+shift;
- const light=ctx.createLinearGradient(x0,m.cy-m.scale*.08,x1,m.cy+m.scale*.08);
- const stops=[
-  [0,'#11191f'],[.10,'#667982'],[.155,'#fff7ee'],[.205,'#b3c4c8'],
-  [.26,'#293a42'],[.315,'#f9e3f0'],[.365,'#7c9096'],
-  [.425,'#19252d'],[.49,'#fffaf2'],[.55,'#c2d3d5'],
-  [.605,'#34454c'],[.67,'#fff2ce'],[.715,'#91a1a6'],
-  [.765,'#253139'],[.84,'#fce4ed'],[.91,'#78888e'],[1,'#121a21']
- ];
- for(const [offset,color] of stops)light.addColorStop(offset,color);
- return light;
+/** A reflected studio is evaluated separately on each folded metal facet.
+ * Longitudinal gradients travel with material coordinates, while the moving
+ * sheet/contact phase modulates the reflected rose/champagne light. Nothing
+ * fills the open cells; back ribs remain visible through them. */
+function stripChrome(ctx,band,m){
+ const a=band.points[0],b=band.points[CUIRASS_POLICY.vertical_steps];
+ const gradient=ctx.createLinearGradient(a[0],a[1],b[0],b[1]);
+ const facing=Math.abs(band.normal[2]);
+ const spec=clamp(.22+.66*facing+(band.facet===2?.15:0));
+ const phase=m.time*.24+band.panel*.47+m.field.pairs[0].phaseDelta;
+ const hot=.44+.19*Math.sin(phase);
+ const tone=(base)=>{
+  const v=Math.round(base*(.44+.56*spec));return `rgb(${v},${Math.min(255,v+5)},${Math.min(255,v+7)})`;
+ };
+ const stops=[[0,tone(120)],[.08,'#fff3d2'],[.17,tone(48)],
+  [Math.max(.19,hot-.15),tone(180)],[hot-.035,'#fffaf0'],[hot,'#ffffff'],
+  [hot+.045,band.panel%2?'#ffa4cb':'#fff0bc'],[Math.min(.85,hot+.16),tone(29)],
+  [.89,tone(210)],[.97,'#fff3d9'],[1,tone(50)]];
+ for(const [t,c] of stops.sort((a,b)=>a[0]-b[0]))gradient.addColorStop(t,c);
+ return gradient;
 }
-
-/** Refractive material is source-over. Finite additive-looking emission
- * is one bounded screen pass; its sum is an alpha policy, not energy physics. */
+function paintMetal(ctx,m,front){
+ for(const strip of m.metalStrips){
+  if((strip.depth>=0)!==front)continue;
+  ctx.globalCompositeOperation='source-over';
+  for(const band of strip.bands){
+   ctx.globalAlpha=front?1:.55;
+   ctx.fillStyle=stripChrome(ctx,band,m);trace(ctx,band.points,true);ctx.fill();
+  }
+  // Dark machined recess beside the raised arris makes reflected light
+  // dimensional even in Still; edge glints do not substitute for volume.
+  stroke(ctx,strip.crest,'#101a20',front?1.6:1,front?.82:.45);
+  for(const edge of strip.edges)stroke(ctx,edge,'#fff2d1',front?.85:.55,front?.90:.36);
+ }
+}
+function paintWeave(ctx,m,front){
+ // Batch by color/depth; all edges meet the same prepaint node objects.
+ for(const [kind,color] of [['bias','#ffc0df'],['weft','#fff0bd']]){
+  ctx.beginPath();
+  for(const e of m.latticeEdges)if((e.depth>=0)===front&&e.kind===kind)traceFieldPath(ctx,e.points);
+  ctx.globalCompositeOperation='source-over';ctx.strokeStyle=color;
+  ctx.lineWidth=front?.72:.5;ctx.globalAlpha=front?.56:.20;ctx.stroke();
+ }
+ const charge=(m.time*.09)%1;
+ for(const n of m.latticeNodes){
+  if((n.point[2]>=0)!==front)continue;
+  const distance=Math.abs(((n.t-charge+n.col/24+1.5)%1)-.5);
+  const power=Math.exp(-distance*distance/ .0018)*(.35+.65*(.5+.5*n.field.beat));
+  if(power>.32&&n.col%2===0)paintFieldSpark(ctx,n.point,power*(front?1:.45),n.col%3===0?'champagne':'pink',m.scale);
+ }
+ // Articulated 39-carrier filaments carry a longitudinal pulse at material
+ // speed. Rear carriers paint first; chrome stays then occlude them.
+ for(const f of m.filaments){
+  for(const points of frontSegments(f.points,0,front))stroke(ctx,points,f.near?'#fff0bc':f.mid?'#ff80bb':'#f5e8e7',f.near?.95:.45,front?.50:.16);
+ }
+}
 export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  const {width:W,height:H,scale,cx,cy}=m;
  ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
  ctx.clearRect(0,0,W,H);
  const bg=ctx.createLinearGradient(0,0,W,H);
- bg.addColorStop(0,'#28353b');bg.addColorStop(.34,'#1b252b');bg.addColorStop(.66,'#10181e');bg.addColorStop(1,'#070c10');
+ bg.addColorStop(0,'#2b3034');bg.addColorStop(.5,'#222b31');bg.addColorStop(1,'#080e13');
  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
  if(!optics){ctx.restore();return {rendered:true,optics:false};}
- // Field-continuous architecture inherits this frame and clock: no second animation.
- const scene=paintSalonField(ctx,m);
- // Small chrome pedestal uses material shading; no glow outside the garment.
- const py=cy+scale*.48,pr=scale*.43;
+ const scene=m.scene;
+ paintSalonField(ctx,m,{layer:'back'});
+ // The pedestal has a rim, wall and inset floor, with space above it.
+ const py=cy+scale*.48,pr=scale*.44;
  const plinth=ctx.createLinearGradient(cx-pr,0,cx+pr,0);
- for(const [t,c] of [[0,'#171f25'],[.13,'#9ba9ad'],[.23,'#202b33'],[.45,'#e6e8df'],[.50,'#343c42'],[.83,'#a8b4b9'],[1,'#0b1218']])plinth.addColorStop(t,c);
- ctx.fillStyle=plinth;ctx.beginPath();ctx.ellipse(cx,py,pr,scale*.027,0,0,TAU);ctx.fill();
- ctx.fillStyle='#0a1015';ctx.beginPath();ctx.ellipse(cx,py-scale*.009,pr*.95,scale*.014,0,0,TAU);ctx.fill();
- // Back rim precedes faces, preserving a visible hollow neckline.
- stroke(ctx,m.rims[0],'#77888e',2.3,.65);
- // The material reflection has one screen-continuous coordinate field.
- // The mathematical gore contours still deform independently before paint.
- const metal=studioChrome(ctx,m);
- // Twelve grouped gores keep every analytically constructed front face while
- // batching hundreds of software-raster fill/stroke calls into <=12 fills.
- // One continuous reflective gradient preserves light/dark variation; the
- // undercut seams and refraction-driven tension lines remain separate passes.
- const materialBands=Array.from({length:CUIRASS_POLICY.panels},()=>[]);
- for(const face of m.faces)materialBands[face.panel].push(face);
- const visibleBands=materialBands.filter(group=>group.length>0)
-  .sort((a,b)=>a.reduce((n,f)=>n+f.depth,0)/a.length-
-   b.reduce((n,f)=>n+f.depth,0)/b.length);
- // A shared high-luminance chrome gradient restores reflective highlights
- // without abandoning the source-beat transparent optical field.
- ctx.fillStyle=metal;ctx.globalAlpha=.72;
- for(const group of visibleBands){
-  ctx.beginPath();
-  for(const face of group){
-   ctx.moveTo(face.points[0][0],face.points[0][1]);
-   for(let i=1;i<face.points.length;i++)ctx.lineTo(face.points[i][0],face.points[i][1]);
-   ctx.closePath();
-  }
-  ctx.fill();
+ for(const [t,c] of [[0,'#1a252d'],[.14,'#fff4de'],[.23,'#35454e'],[.49,'#ebf5f5'],[.51,'#27333b'],[.82,'#ffcee1'],[1,'#151e24']])plinth.addColorStop(t,c);
+ ctx.fillStyle=plinth;ctx.globalAlpha=1;ctx.beginPath();ctx.ellipse(cx,py,pr,scale*.049,0,0,TAU);ctx.fill();
+ ctx.fillStyle='#10191f';ctx.beginPath();ctx.ellipse(cx,py-scale*.022,pr,scale*.035,0,0,TAU);ctx.fill();
+ for(const r of [1,.89,.68]){
+  ctx.beginPath();ctx.ellipse(cx,py-scale*.022,pr*r,scale*.035*r,0,0,TAU);
+  ctx.strokeStyle=r===1?'#fff1c2':'#ff9ac9';ctx.lineWidth=r===1?1.7:.7;ctx.globalAlpha=r===1?.88:.38;ctx.stroke();
  }
- // Ten prepaint transverse conductors turn the metal silhouette into a
- // legible tailored cage; material highlights are source-over, never a new RAF.
- ctx.shadowColor='#ffc1e2';ctx.shadowBlur=Math.min(9,scale*.020);
- for(let i=0;i<m.tensionRings.length;i++){
-  const ring=m.tensionRings[i];
-  for(const segment of frontSegments(ring.points,.02)){
-   stroke(ctx,segment,i%3===0?'#fff5d4':i%3===1?'#ffcae5':'#dff8ff',
-    i%3===0?1.55:.95,.43+.28*ring.envelope);
-  }
+ paintMetal(ctx,m,false);paintWeave(ctx,m,false);
+ paintWeave(ctx,m,true);paintMetal(ctx,m,true);
+ for(const rim of m.rims)for(const segment of frontSegments(rim)){
+  stroke(ctx,segment,'#0a1219',3.8,1);stroke(ctx,segment,'#fff1c7',1.65,.96);
  }
- ctx.shadowBlur=0;
- // Glowing-but-material circuit junctions follow actual ring/seam crossings.
- for(let k=0;k<m.tensionRings.length;k+=2){
-  const ring=m.tensionRings[k];
-  for(let i=0;i<ring.points.length;i+=9){
-   const p=ring.points[i];if(p[2]<=.03)continue;
-   ctx.beginPath();ctx.ellipse(p[0],p[1],1.55,1.55,0,0,TAU);
-   ctx.fillStyle=(k+i)%3===0?'#fff3b5':'#ff9bcf';
-   ctx.globalAlpha=.50+.32*ring.envelope;ctx.fill();
-  }
- }
- // Capped metal seams. The dark undercut establishes a trough before light.
- const front=m.seams.filter(s=>s.points[24][2]>0);
- for(const s of front){
-  stroke(ctx,s.points,'#05090c',4.5,1);
-  const r=ctx.createLinearGradient(cx-scale*.4,0,cx+scale*.4,0);
-  for(const [t,c] of [[0,'#74848b'],[.18,'#fff9e6'],[.28,'#34444d'],[.55,'#e4eef0'],[.7,'#7c8689'],[1,'#fff0c5']])r.addColorStop(t,c);
-  stroke(ctx,s.points,r,2.4,1);
-  stroke(ctx,s.points,'#fff7e7',.65,.65);
- }
- for(const rim of m.rims){
-  for(const segment of frontSegments(rim)){
-   stroke(ctx,segment,'#070c10',5,1);
-   stroke(ctx,segment,'#f2e4bf',2.0,.9);
-  }
- }
- // Radiating material paths follow the same 39 carriers without masking chrome.
- // Chrome material filaments preserve the 6/13/20 carrier census and
- // follow the beat-deformed joints. Rear strands remain culled pointwise.
- for(const f of m.filaments){
-  for(const segment of frontSegments(f.points,.03))
-   stroke(ctx,segment,f.near?'#fff0bc':f.mid?'#f6c2e8':'#aebec8',f.near?1.15:.72,f.near?.82:f.mid?.60:.35);
- }
+ // Foreground field paths cross the open cells and attach to exact lattice
+ // junctions, with traveling pulses continuous into the page-wide projection.
+ paintSalonField(ctx,m,{layer:'front'});
  ctx.globalCompositeOperation='screen';
- // Bounded visual discharge: the garment emits through its own calculated seams.
- for(const s of front)stroke(ctx,s.points,'#ffe8ae',1.7,.42/Math.max(1,front.length));
- const hot=m.filaments.filter(f=>f.near).flatMap(f=>frontSegments(f.points,.03));
- for(const f of hot){
-  stroke(ctx,f,'#ff4e9b',1.8,.28/Math.max(1,hot.length));
- }
- // Reserve finite emission for the shared field and a distinct waist peak.
- for(let i=0;i<6;i++){
-  const a=scene.trails[i*3].points;
-  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.4,.12/6);
- }
- // A finite champagne-pink waist flash makes field-to-garment conduction visible.
- const wRadius=Math.min(m.scale*.30,126);
- const waist=ctx.createRadialGradient(cx,cy,0,cx,cy,wRadius);
- waist.addColorStop(0,'rgba(255,255,252,1)');
- waist.addColorStop(.10,'rgba(255,246,192,.94)');
- waist.addColorStop(.27,'rgba(255,155,203,.58)');
- waist.addColorStop(.59,'rgba(255,75,158,.14)');
- waist.addColorStop(1,'rgba(255,75,158,0)');
- ctx.globalAlpha=.85;ctx.fillStyle=waist;
- ctx.fillRect(cx-wRadius,cy-wRadius,2*wRadius,2*wRadius);
- // Two bright spatial discharge paths concentrate light rather than
- // dispersing the entire finite beam budget across four faint lines.
- // Geometry and intensity remain phase-bound to the chosen Work pair.
- for(let i=0;i<2;i++){
-  const source=scene.trails[i*8+2].points[19],seam=m.seams[i?9:3].points[18];
-  const beam=ctx.createLinearGradient(source[0],source[1],seam[0],seam[1]);
-  beam.addColorStop(0,'rgba(255,95,164,0)');
-  beam.addColorStop(.55,i%2?'rgba(255,110,180,.85)':'rgba(255,232,166,.85)');
-  beam.addColorStop(1,'rgba(255,253,237,1)');
-  ctx.shadowColor=i%2?'#ff7abd':'#ffe3a0';
-  ctx.shadowBlur=Math.min(18,m.scale*.055);
-  const pulse=.65+.35*(.5+.5*Math.sin(m.time*1.9+i*1.6));
-  stroke(ctx,[source,[(source[0]+seam[0])*.5,(source[1]+seam[1])*.5-m.scale*.016],seam],
-   beam,2.6,(.85/2)*pulse);
- }
- ctx.shadowBlur=0;
- for(const p of m.glints){
-  const r=Math.min(p.bloomRadius,BEAT_POLICY.max_bloom_css_px);
-  const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
-  glow.addColorStop(0,'rgba(255,253,230,1)');glow.addColorStop(.08,'rgba(255,233,184,.85)');
-  glow.addColorStop(.26,'rgba(255,104,158,.22)');glow.addColorStop(.65,'rgba(255,104,158,.035)');
-  glow.addColorStop(1,'rgba(255,104,158,0)');
-  ctx.globalAlpha=p.energy*.5;ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);
+ for(const {x,y,bloomRadius:r,energy} of m.glints){
+  const glint=ctx.createRadialGradient(x,y,0,x,y,r);
+  glint.addColorStop(0,'#fff7de');glint.addColorStop(.27,'rgba(255,192,221,.35)');
+  glint.addColorStop(1,'rgba(255,192,221,0)');
+  ctx.fillStyle=glint;ctx.globalAlpha=energy*.5;ctx.fillRect(x-r,y-r,2*r,2*r);
  }
  ctx.restore();
- return {rendered:true,faces:m.faces.length,materialBatchCount:visibleBands.length,carriers:39,sceneTracks:scene.trails.length,sceneNodes:scene.nodes.length,peaks:m.glints.length,
+ return {rendered:true,faces:m.faces.length,materialBatchCount:m.metalStrips.length,
+  openAngularFraction:m.openAngularFraction,carriers:39,sceneTracks:scene.trails.length,
+  sceneNodes:scene.nodes.length,junctions:m.latticeNodes.length,peaks:m.glints.length,
   emissionAlpha:m.emissionAllocated,physicalEnergyConserved:false,empirical_credit:0};
 }
 
@@ -367,27 +318,32 @@ export function mountFoldedCuirass(canvas,getState){
  const reduced=win.matchMedia('(prefers-reduced-motion: reduce)');
  const clock=getState().opticalClock||{time:0};
  let raf=0,disposed=false,visible=false,lastMs=null,lastPaint=-Infinity,dirty=true,frames=0,last=null;
- let resolution=null,paintCosts=[];
- const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||getState().resting;
- const active=()=>visible&&!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
+ let resolution=null,paintCosts=[],geometryFrames=0;
+ const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||doc.body.dataset.vixenMotion==='still'||getState().resting;
+ const active=()=>!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
  const cancel=()=>{if(raf)win.cancelAnimationFrame(raf);raf=0;lastMs=null;};
  function paint(){
   const r=canvas.getBoundingClientRect();if(r.width<2||r.height<2)return;
-  const start=win.performance.now(),back=coutureBackingSize(r.width,r.height,win.devicePixelRatio||1);
+  const start=win.performance.now();
+  const sourceIds=getState().works;
+  if(!visible){
+   // The room remains alive below its hero, with the SAME clock and Work
+   // phases. Skip hidden metal construction; only the visible room cloth draws.
+   win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds,
+    view:'collection',held:!!held(),force:dirty});
+   frames++;dirty=false;last={phase:clock.time,sourceIds,garmentVisible:false,empirical_credit:0};return;
+  }
+  const back=coutureBackingSize(r.width,r.height,win.devicePixelRatio||1);
   if(canvas.width!==back.width||canvas.height!==back.height){canvas.width=back.width;canvas.height=back.height;}
   ctx.setTransform(back.width/r.width,0,0,back.height/r.height,0,0);
-  const m=buildFoldedCuirass({width:r.width,height:r.height,time:clock.time,sourceIds:getState().works});
-  const painted=paintFoldedCuirass(ctx,m);
-  // The full-viewport ambient mesh inherits this one active Salon clock.
-  const electrodes=[0,3,9].map(i=>{
-   const point=m.seams[i].points[24];
-   return {x:r.left+point[0],y:r.top+point[1]};
-  });
+  const m=buildFoldedCuirass({width:r.width,height:r.height,time:clock.time,sourceIds,integrated:win.innerWidth?win.innerWidth>740:r.width>800});
+  const painted=paintFoldedCuirass(ctx,m);geometryFrames++;
   win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds:m.sourceIds,
-   electrodes,view:'collection',force:dirty});
+   scene:m.scene,stageRect:{left:r.left,top:r.top,width:r.width,height:r.height},
+   view:'collection',held:!!held(),force:dirty});
   paintCosts.push(win.performance.now()-start);if(paintCosts.length>120)paintCosts.shift();
   frames++;dirty=false;
-  last={...painted,phase:clock.time,sourceIds:m.sourceIds,viewport:{width:r.width,height:r.height},backing:back,
+  last={...painted,garmentVisible:true,phase:clock.time,sourceIds:m.sourceIds,viewport:{width:r.width,height:r.height},backing:back,
    metrics:m.metrics,geometryBounds:m.bounds,beatWavelengths:m.field.pairs.map(p=>p.wavelengthPx),
    contrast:'UNMEASURED_BROWSER_PIXELS',frameClass:'LOCAL_RENDER_MODEL_ONLY'};
  }
@@ -413,14 +369,15 @@ export function mountFoldedCuirass(canvas,getState){
  const ro=new win.ResizeObserver(schedule);ro.observe(canvas);
  const mo=new win.MutationObserver(schedule);
  if(motion)mo.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
- mo.observe(doc.body,{attributes:true,attributeFilter:['data-view','data-active-research-stage']});
+ mo.observe(doc.body,{attributes:true,attributeFilter:['data-view','data-active-research-stage','data-vixen-motion']});
  reduced.addEventListener('change',schedule);doc.addEventListener('visibilitychange',schedule);
- win.addEventListener('resize',schedule,{passive:true});trackDpr();
+ win.addEventListener('resize',schedule,{passive:true});
+ win.addEventListener('vixen:fieldlayout',schedule);trackDpr();
  return Object.freeze({mounted:true,contract:CUIRASS_CONTRACT,renderOnce:schedule,
-  getStatus:()=>({frames,still:!!held(),visible,scheduled:!!raf,last,
+  getStatus:()=>({frames,geometryFrames,still:!!held(),visible,scheduled:!!raf,last,
    paintP95Ms:paintCosts.length?[...paintCosts].sort((a,b)=>a-b)[Math.ceil(paintCosts.length*.95)-1]:null}),
   dispose(){disposed=true;cancel();io.disconnect();ro.disconnect();mo.disconnect();
    reduced.removeEventListener('change',schedule);resolution?.removeEventListener('change',onDpr);
-   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);}
+   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);win.removeEventListener('vixen:fieldlayout',schedule);}
  });
 }

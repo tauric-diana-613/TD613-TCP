@@ -649,7 +649,7 @@ try {
     });
     assert.equal(cuirassWitness.connected,true,'One genuine source-bound garment canvas must be attached');
     assert.equal(cuirassWitness.rendered,true,'DD-02 must physically paint in Chromium');
-    assert.equal(cuirassWitness.compositor,'D3_PHI_BEAT_FOLDED_SHELL');
+    assert.equal(cuirassWitness.compositor,'D3_PHI_OPEN_FOLDS_SHARED_CLOTH');
     assert.equal(cuirassWitness.contract,'td613.vixen.folded-cuirass/v1');
     assert.equal(cuirassWitness.sourceCount,2);
     assert.equal(cuirassWitness.sourceIdsValid,true,

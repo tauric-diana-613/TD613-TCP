@@ -12,7 +12,7 @@
 #operahouseEncounter *{box-sizing:border-box}
 #operahouseEncounter .oh-eyebrow{font:600 .64rem/1.6 ui-monospace,monospace;letter-spacing:.16em;color:var(--oh-gold);text-transform:uppercase;margin:0 0 .55rem}
 #operahouseEncounter .oh-title{font:400 clamp(2.1rem,4.4vw,4.3rem)/1.03 Georgia,serif;letter-spacing:-.035em;color:#fff0f3;margin:.25rem 0 1rem;max-width:950px}
-#operahouseEncounter .oh-note{font:400 .92rem/1.6 system-ui,sans-serif;color:#e2d8df;overflow-wrap:anywhere;max-width:920px;margin:.4rem 0 1rem}
+#operahouseEncounter .oh-note{font:400 .92rem/1.6 system-ui,sans-serif;color:#e2d8dd;overflow-wrap:anywhere;max-width:920px;margin:.4rem 0 1rem}
 #operahouseEncounter .oh-state{color:var(--oh-gold);padding:.7rem 1rem;margin:1.5rem 0 1rem;border-left:2px solid var(--oh-gold);background:rgba(249,243,109,.06);font:600 .68rem/1.6 ui-monospace,monospace;letter-spacing:.08em}
 #operahouseEncounter .oh-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.8rem,2vw,1.8rem);align-items:stretch}
 #operahouseEncounter .oh-estate{min-width:0;padding:clamp(1rem,2.4vw,1.8rem);border:1px solid #ffc4d570;background:rgba(255,145,175,.065)}
@@ -24,7 +24,7 @@
   color:#fdf6f9;background:#1c2328;border:1px solid #d8b5c5;
   font:500 .85rem/1.5 system-ui,sans-serif;outline-offset:3px;overflow-wrap:anywhere
 }
-#operahouseEncounter .oh-select option{background:#fff3f8;color:#262027}
+#operahouseEncounter .oh-select option{background:#fff3f8;color:#272024}
 #operahouseEncounter .oh-input:focus-visible,#operahouseEncounter .oh-select:focus-visible,
 #operahouseEncounter .oh-button:focus-visible{outline:2px solid var(--oh-gold);outline-offset:3px}
 #operahouseEncounter .oh-question{
@@ -58,7 +58,7 @@
 }
 #operahouseEncounter .oh-disposition h3{font:400 clamp(1.35rem,2.4vw,2rem)/1.2 Georgia,serif;color:#21292e;overflow-wrap:anywhere}
 #operahouseEncounter .oh-disposition .oh-eyebrow{color:#86435b}
-#operahouseEncounter .oh-disposition .oh-note{color:#3c333b}
+#operahouseEncounter .oh-disposition .oh-note{color:#3c3338}
 #operahouseEncounter .oh-footer{display:flex;align-items:start;flex-wrap:wrap;gap:1rem;padding-top:1.2rem;border-top:1px solid #ffeac955}
 #operahouseEncounter .oh-history{margin:.55rem 0;padding:.65rem;border:1px solid #ffffff50;min-width:min(100%,260px)}
 #operahouseEncounter .oh-history li{font:.72rem/1.7 ui-monospace,monospace;color:#f2dfe7}

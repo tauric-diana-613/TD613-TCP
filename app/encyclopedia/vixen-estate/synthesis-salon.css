@@ -26,8 +26,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  position:relative;z-index:2;width:56%;max-width:775px;min-height:540px;
  padding:clamp(25px,3.1vw,48px);
  display:flex;flex-direction:column;justify-content:center;gap:19px;
- background:linear-gradient(90deg,rgba(255,252,248,.99) 0%,rgba(255,249,247,.97) 49%,
- rgba(255,243,244,.91) 73%,rgba(255,236,240,.78) 88%,rgba(255,235,240,.08) 100%);
+ background:linear-gradient(90deg,rgba(255,252,248,.97) 0%,rgba(255,249,247,.94) 42%,
+ rgba(255,243,244,.90) 67%,rgba(255,236,240,.74) 87%,rgba(255,235,240,0) 100%);
  color:#192027;text-shadow:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{
@@ -58,9 +58,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  text-align:right;color:#dfded6;font:500 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;
  text-shadow:none;pointer-events:none;
 }
-/* Existing Living Mesh may operate in other environments. DD-02 owns its own
- * carrier lattice, so we avoid a second independently scheduled renderer. */
-body[data-view="collection"] #vixenLivingMesh{display:none}
+/* The page canvas paints only the complement of this optical stage, using
+ * the same prepaint scene and this compositor’s clock. */
 @media(max-width:740px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
   display:flex;flex-direction:column;min-height:0;

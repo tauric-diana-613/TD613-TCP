@@ -44,12 +44,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-room-rail .vixen-room
  border-left-color:#FFF0A8!important;
  box-shadow:0 0 28px rgba(255,50,154,.20)!important;
 }
-/* Never place the universal moving canvas over the original Mugler work.
-   On the frontispiece, the original source-owned artwork takes the foreground. */
-body[data-view="overview"]:not([data-active-research-stage="OPERAHOUSE"]) #vixenLivingMesh{
- z-index:0!important;opacity:.08!important;
- filter:grayscale(.35) brightness(1.0)!important;
-}
+/* Preserve the accepted frontispiece's authored display treatment. The
+   room renderer excludes its entire rectangle. */
 body[data-view="overview"]:not([data-active-research-stage="OPERAHOUSE"]) #view-overview{
  position:relative;z-index:2;
 }
@@ -62,18 +58,14 @@ body[data-view="overview"]:not([data-active-research-stage="OPERAHOUSE"]) #view-
 body[data-view="overview"]:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art img{
  opacity:1;mix-blend-mode:screen;
 }
-/* Structural rule: stage owns the couture. Ambient lines become distant
-   threshold weather and must never cover the type, sources or frontispiece. */
+/* The shared cloth is clipped around original art, reading and controls in
+   its renderer. Keep one unfiltered projection: 8% opacity and a 49%-wide
+   transparent mask formerly erased the page-to-garment relationship. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenLivingMesh{
- z-index:3!important;
- opacity:.15!important;
- filter:saturate(1.0) brightness(1.07)!important;
- -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.40) 0%,transparent 27%,transparent 76%,rgba(0,0,0,.6) 100%);
- mask-image:linear-gradient(90deg,rgba(0,0,0,.40) 0%,transparent 27%,transparent 76%,rgba(0,0,0,.6) 100%);
+ z-index:55!important;opacity:1!important;filter:none!important;
+ mix-blend-mode:normal;-webkit-mask-image:none;mask-image:none;
 }
-body[data-view="collection"]:not([data-active-research-stage="OPERAHOUSE"]) #vixenLivingMesh{
- opacity:.08!important;
-}
+body[data-active-research-stage="OPERAHOUSE"] #vixenLivingMesh{display:none!important}
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(
  #view-collection,#view-observatory,#view-works,
  #view-protocols,#view-gates,#view-holds,#view-reference

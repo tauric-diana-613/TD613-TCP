@@ -160,7 +160,7 @@ export function makeVeilFrame({canvas,works=[],route='A_B',lag=30,time=0}={}){
  // Cut-glass structural seam between separately recorded works.
  const left=[cx-scale*.39,cy+residues[0]*scale*.15];
  const right=[cx+scale*.37,cy-residues[1]*scale*.14];
- ctx.save();ctx.strokeStyle='rgba(255,243,251,.76)';ctx.lineWidth=1;
+ ctx.save();ctx.strokeStyle='rgba(255,243,249,.76)';ctx.lineWidth=1;
  ctx.beginPath();ctx.moveTo(...left);ctx.lineTo(cx,cy-scale*.19);
  ctx.lineTo(...right);ctx.stroke();ctx.restore();
  for(const [x,y] of [left,right]){

@@ -137,7 +137,12 @@ export async function mountVixenElectricFoundry({
    node('pre','',JSON.stringify(p,null,2)));
   r.append(raw);
  }
- function paint(){
+ function paintRoomMesh(force=false){
+  if(document.body.dataset.vixenOpticalMeshObservatory!=='off')
+   window.VixenLivingMesh?.renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[],
+    held:!state.playing||globalMotionHeld(document),force});
+ }
+ function paint(force=false){
   if(!state.renderer)return;
   try{
    state.renderer.paint({optic:lab().optic_program,model:state.model,pointer:state.pointer,
@@ -146,8 +151,7 @@ export async function mountVixenElectricFoundry({
     labId:state.labId,model:state.model,pointer:state.pointer,time:state.time
    });
    // Optional full-viewport lighting borrows the Foundry clock.
-   if(document.body.dataset.vixenOpticalMeshObservatory==='on')
-    window.VixenLivingMesh?.renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[]});
+   paintRoomMesh(force);
    state.frames++;
   }catch(e){state.held=String(e.message||e);log('RENDER_REFUSED',{reason:state.held});stop()}
  }
@@ -174,7 +178,7 @@ export async function mountVixenElectricFoundry({
   state.raf=0;state.last=0;
  }
  function pulse(reason){
-  paint();indicate(reason);start();
+  paint(true);indicate(reason);start();
  }
  function switchLab(id){
   if(!byId.has(id))return false;
@@ -210,7 +214,7 @@ export async function mountVixenElectricFoundry({
  }
  function step(){
   stop();state.playing=false;state.time+=1/60;
-  log('SINGLE_STEP');paint();indicate('STEP');renderToolbar();
+  log('SINGLE_STEP');paint(true);indicate('STEP');renderToolbar();
  }
  const display=()=>lab();
  const heroRail=node('div','ef-hero-rail');
@@ -273,7 +277,13 @@ export async function mountVixenElectricFoundry({
  }
  function renderToolbar(){
   toolbar.replaceChildren();
-  const current=display();
+  const roomMesh=BTN('ROOM MESH',()=>{
+   const enabled=document.body.dataset.vixenOpticalMeshObservatory==='off';
+   document.body.dataset.vixenOpticalMeshObservatory=enabled?'on':'off';
+   roomMesh.setAttribute('aria-pressed',String(enabled));paintRoomMesh(true);
+  },'ef-button ef-mesh-toggle');
+  roomMesh.setAttribute('aria-pressed',String(document.body.dataset.vixenOpticalMeshObservatory!=='off'));
+  roomMesh.title='Show the ambient cloth around this instrument';
   const inspect=BTN(state.inspectorOpen?'CLOSE THE PROOF ×':'OPEN THE PROOF ⊕',()=>{
     state.inspectorOpen=!state.inspectorOpen;
     readout.hidden=!state.inspectorOpen;
@@ -289,11 +299,16 @@ export async function mountVixenElectricFoundry({
   add(toolbar,top,
    BTN('→ SINGLE FRAME',step),
    BTN('↺ RESET LAB',reset),
-   inspect,
-   node('span','ef-stage-state',
-    (state.playing?'FIELD LIVE':'FIELD HELD')+' · '+state.renderingBackend));
+   inspect,roomMesh,
+   node('span','ef-stage-state'));
+  updateMotionReadout();
+ }
+ function updateMotionReadout(){
+  const current=display(),running=state.playing&&!globalMotionHeld(document);
+  const readout=toolbar.querySelector('.ef-stage-state');
+  if(readout)readout.textContent=(running?'FIELD LIVE':'FIELD HELD')+' · '+state.renderingBackend;
   sceneBadge.textContent=current.folio_id+' · '+current.research_family+
-   ' · '+(state.playing?'ACTIVE SIMULATION':'PAUSED')+
+   ' · '+(running?'ACTIVE SIMULATION':'PAUSED')+
    ' · NO EMPIRICAL CLAIM';
  }
  function renderDials(){
@@ -477,7 +492,9 @@ export async function mountVixenElectricFoundry({
  viewport.observe(stage);
  const visibility=()=>{if(!document.hidden)start();else stop()};
  document.addEventListener('visibilitychange',visibility);
- const syncGlobalMotion=()=>{if(globalMotionHeld(document))stop();else start()};
+ const syncGlobalMotion=()=>{if(globalMotionHeld(document))stop();else start();updateMotionReadout();paintRoomMesh(true)};
+ const syncFieldLayout=()=>{if(section&&!section.hidden&&state.renderer)paintRoomMesh(true)};
+ window.addEventListener('vixen:fieldlayout',syncFieldLayout);
  window.addEventListener('vixen:motionchange',syncGlobalMotion);
  log('FOUNDRY_REGISTERED',{original_census:completeVixenSourceCensus(source)});
  if(section&&!section.hidden)await initialize();
@@ -485,12 +502,13 @@ export async function mountVixenElectricFoundry({
   mounted:true,source_estate:'EMSTD613',installed_flagships:HEROES.slice(),
   registered_source_projections:all.length,
   status,selectLab:switchLab,setParameter,selectProbe,pause,resume,step,
-  renderOnce:()=>{paint();indicate('OPERATOR_FRAME');return status()},
+  renderOnce:()=>{paint(true);indicate('OPERATOR_FRAME');return status()},
   getResearchProbe:()=>state.probe,
   dispose(){
    stop();watch.disconnect();viewport.disconnect();
    document.removeEventListener('visibilitychange',visibility);
    window.removeEventListener('vixen:motionchange',syncGlobalMotion);
+   window.removeEventListener('vixen:fieldlayout',syncFieldLayout);
    state.renderer?.dispose();
   }
  });

@@ -36,7 +36,7 @@ test('geometry-only refraction moves contours, seams and filaments while glints 
  assert(Math.abs(a.metrics.seamLength-b.metrics.seamLength)>1);
  assert(Math.abs(a.metrics.filamentLength-b.metrics.filamentLength)>1);
  assert(Math.abs(a.metrics.contourWidth-b.metrics.contourWidth)>.1);
- assert.equal(a.faces.length>900,true);assert.equal(a.seams.length,12);
+ assert.equal(a.faces.length,60);assert.equal(a.seams.length,12);
  assert.equal(a.filaments.length,39);
  assert.equal(a.tensionRings.length,10);
  assert(a.tensionRings.every(r=>r.points.length===73&&r.points.every(p=>p.every(Number.isFinite))));
@@ -65,51 +65,22 @@ test('Work change affects geometry and responsive projection preserves the same 
  const mobile=buildFoldedCuirass({...params,width:350,height:390});
  assert.deepEqual(a.grid.map(r=>r.map(v=>v.p)),mobile.grid.map(r=>r.map(v=>v.p)));
 });
-test('material reflection normals are normalized and tailored seams remain distinct',()=>{
+test('open facets retain dimensional normals and real gaps',()=>{
  const m=buildFoldedCuirass(params);
- assert(m.faces.length>900);
- assert(m.faces.every(f=>Number.isInteger(f.panel)&&f.panel>=0&&f.panel<12));
- for(const f of m.faces){
-  const geom=Math.hypot(...f.geometricNormal),material=Math.hypot(...f.normal);
-  approx(geom,1,1e-9);approx(material,1,1e-9);
-  assert(f.normal.every(Number.isFinite));
+ assert.equal(m.metalStrips.length,12);
+ for(const strip of m.metalStrips){
+  assert.equal(strip.bands.length,5);
+  for(const band of strip.bands)approx(Math.hypot(...band.normal),1);
+  assert(distance(strip.edges[0][16],strip.edges[1][16])>.7);
+  assert.notDeepEqual(strip.bands[0].normal,strip.bands[4].normal);
  }
- // Keep a measurable difference between geometric face normals and
- // the material-only reflective field so shallow chrome remains continuous.
- assert(m.faces.some(f=>Math.hypot(...f.normal.map((x,i)=>x-f.geometricNormal[i]))>1e-5));
- assert.equal(CUIRASS_POLICY.emission.waist,.85);
- assert.equal(CUIRASS_POLICY.emission.beams,.85);
- approx(Object.values(CUIRASS_POLICY.emission).reduce((n,v)=>n+v,0),3.72,1e-10);
- assert.equal(CUIRASS_POLICY.total_emission_alpha,3.72);
-});
-
-test('continuous studio chrome shares one material field across all faces',()=>{
- const m=buildFoldedCuirass(params),ctx=context(),colors=[];
- const original=ctx.fill;
- ctx.fill=function(){colors.push(this.fillStyle);return original.call(this);};
- const result=paintFoldedCuirass(ctx,m);
- const refs=new Map();
- for(const value of colors)if(value&&typeof value==='object')
-  refs.set(value,(refs.get(value)||0)+1);
- assert(Math.max(...refs.values())>=result.materialBatchCount,
-  'All batched gores reuse a single shared chrome light field');
- assert(result.materialBatchCount<=12,
-  'Facets must be batched into at most twelve gores, not individually filled');
- assert(m.faces.every(f=>f.normal.every(Number.isFinite)));
-});
-
-test('Canvas command smoke: filled surfaces and total emissive draw allocation stay bounded',()=>{
- const m=buildFoldedCuirass(params),ctx=context();
- const r=paintFoldedCuirass(ctx,m);
- assert(r.rendered&&r.faces>900);
- assert(r.materialBatchCount>=1&&r.materialBatchCount<=12,
-  'One batched fill per material gore at most');
- assert(ctx.calls.filter(c=>c.op==='stroke'&&c.mode==='source-over').length>40,
-  'A refractive armature must carry mathematically sampled transverse reflectors');
- assert(ctx.calls.filter(c=>c.op==='fill'&&c.mode==='source-over').length>12);
+ assert(m.metalStrips.some(s=>s.depth<0)&&m.metalStrips.some(s=>s.depth>0));
+ const ctx=context(),r=paintFoldedCuirass(ctx,m);
+ assert(r.openAngularFraction>.7&&r.openAngularFraction<.9);
+ assert.equal(ctx.calls.filter(c=>c.op==='fill').length,m.faces.length+2);
  const allocated=ctx.calls.filter(c=>c.mode==='screen').reduce((n,c)=>n+c.alpha,0);
+ approx(allocated,m.emissionAllocated);
  assert(allocated<=CUIRASS_POLICY.total_emission_alpha+1e-8);
- assert(m.glints.every(p=>p.bloomRadius<=18));assert(m.glints.length<=11);
  const off=context();paintFoldedCuirass(off,m,{optics:false});
  assert.equal(off.calls.length,1);assert.equal(off.calls[0].op,'rect');
 });
@@ -123,23 +94,26 @@ test('backing resolution follows DPR under a 1.5M pixel ceiling',()=>{
 });
 test('single clock settles in Still/Rest/reduced motion and invalidates paused DPR and Work changes',()=>{
  const events=new Map(),raf=new Map(),media=[],observers=[];
+ const hostFrames=[];
  let id=0,still=true,source=[...sourceIds],resting=false;
  const mq=key=>{const m={key,matches:false,addEventListener:(_,f)=>m.cb=f,removeEventListener:()=>m.cb=null};media.push(m);return m;};
  class Observer{constructor(cb){this.cb=cb;observers.push(this)}observe(){}disconnect(){}}
  const doc={hidden:false,body:{dataset:{view:'collection'}},getElementById:()=>({getAttribute:()=>String(still)}),
   addEventListener:(n,f)=>events.set(n,f),removeEventListener:n=>events.delete(n)};
- const win={devicePixelRatio:1,performance:{now:()=>performance.now()},matchMedia:mq,
+ const win={VixenLivingMesh:{renderHostFrame:frame=>hostFrames.push(frame)},devicePixelRatio:1,performance:{now:()=>performance.now()},matchMedia:mq,
   requestAnimationFrame:f=>{raf.set(++id,f);return id},cancelAnimationFrame:i=>raf.delete(i),
   IntersectionObserver:Observer,ResizeObserver:Observer,MutationObserver:Observer,
   addEventListener:(n,f)=>events.set(n,f),removeEventListener:n=>events.delete(n)};
  doc.defaultView=win;const ctx=context();
  const canvas={ownerDocument:doc,width:0,height:0,clientWidth:550,getContext:()=>ctx,
-  getBoundingClientRect:()=>({width:550,height:460})};
+  getBoundingClientRect:()=>({left:64,top:140,width:550,height:460})};
  const opticalClock={time:0};
  const handle=mountFoldedCuirass(canvas,()=>({works:source,resting,opticalClock}));
  const frame=ms=>{const c=[...raf.values()];raf.clear();c.forEach(f=>f(ms));};
  observers[0].cb([{isIntersecting:true}]);frame(0);
  assert.equal(handle.getStatus().frames,1);assert.equal(raf.size,0);
+ assert.equal(hostFrames[0].scene.time,handle.getStatus().last.phase);
+ assert.equal(hostFrames[0].stageRect.left,64);assert(hostFrames[0].held);
  source=[source[0],corpus.works[8].work_id];handle.renderOnce();frame(10);
  assert.equal(handle.getStatus().frames,2);assert.deepEqual(handle.getStatus().last.sourceIds,source);assert.equal(raf.size,0);
  win.devicePixelRatio=2;media.at(-1).cb();frame(20);
@@ -150,5 +124,11 @@ test('single clock settles in Still/Rest/reduced motion and invalidates paused D
  assert.equal(raf.size,0);assert.equal(handle.getStatus().last.phase,phase);
  resting=false;media[0].matches=true;media[0].cb();frame(150);
  assert.equal(raf.size,0);assert.equal(opticalClock.time,phase);
+ media[0].matches=false;media[0].cb();
+ observers[0].cb([{isIntersecting:false}]);const count=handle.getStatus().geometryFrames;
+ frame(160);frame(260);
+ assert.equal(handle.getStatus().geometryFrames,count);
+ assert(hostFrames.at(-1).time>phase);
+ assert.equal(hostFrames.at(-1).scene,undefined);
  handle.dispose();assert.equal(raf.size,0);
 });

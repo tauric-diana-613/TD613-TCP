@@ -27,7 +27,7 @@
 #view-reference .vxe-copy{font:400 .98rem/1.7 "Iowan Old Style",Georgia,serif;color:#e4d2dc}
 #view-reference .vxe-membrane{align-self:stretch;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.3rem;background:radial-gradient(ellipse 35% 57% at 50%,rgba(245,216,186,.16),transparent 85%);color:var(--vxe-flash)}
 #view-reference .vxe-membrane:before{content:"";position:absolute;top:4%;bottom:4%;left:50%;width:2px;background:linear-gradient(180deg,transparent,#ff91af,#f5d8ba,#ff91af,transparent);box-shadow:0 0 16px #ff91af99;transform:translateX(-50%);z-index:0}
-#view-reference .vxe-membrane>*{z-index:1;writing-mode:vertical-rl;background:#141015;padding:.65rem .4rem;text-transform:uppercase;text-align:center;border:1px solid #f5d8ba4a}
+#view-reference .vxe-membrane>*{z-index:1;writing-mode:vertical-rl;background:#151013;padding:.65rem .4rem;text-transform:uppercase;text-align:center;border:1px solid #f5d8ba4a}
 #view-reference .vxe-membrane strong{font:600 .68rem/1 "Avenir Next Condensed",system-ui,sans-serif;letter-spacing:.22em}
 #view-reference .vxe-membrane span{font:500 .52rem/1 ui-monospace,monospace;letter-spacing:.11em;color:#d8b8bf}
 #view-reference .vxe-estate select,#view-reference .vxe-query-input,#view-reference .vxe-name{display:block;width:100%;max-width:100%;min-height:48px;padding:.8rem 1rem;background:#161c21;color:#f5e1e9;border:1px solid #ffcadd69;font:500 .82rem "Segoe UI",system-ui,sans-serif;outline-offset:4px}
@@ -103,7 +103,7 @@
 
 /* RGI-02 / SOURCE LEGIBILITY: evidence on porcelain must retain readable ink. */
 #view-reference .vxe-document .vxe-copy,
-#view-reference .vxe-evidence .vxe-copy{color:#342b35}
+#view-reference .vxe-evidence .vxe-copy{color:#352b30}
 #view-reference .vxe-document .vxe-copy a,
 #view-reference .vxe-evidence .vxe-copy a{color:#474c51}
 
@@ -185,7 +185,7 @@
   color:#262d33;
 }
 #view-reference .vxe-result .vxe-eyebrow{color:#893b58}
-#view-reference .vxe-result .vxe-copy{color:#302731;font-size:1.03rem}
+#view-reference .vxe-result .vxe-copy{color:#31272c;font-size:1.03rem}
 #view-reference .vxe-result .vxe-small{color:#51575b}
 #view-reference .vxe-observations{
   display:grid;
@@ -196,7 +196,7 @@
 }
 #view-reference .vxe-observations dt,#view-reference .vxe-observations dd{
   margin:0;padding:.85rem .5rem;border-bottom:1px solid #dcc9d2;
-  overflow-wrap:anywhere;font:.82rem/1.5 system-ui,sans-serif;color:#302731
+  overflow-wrap:anywhere;font:.82rem/1.5 system-ui,sans-serif;color:#31272c
 }
 #view-reference .vxe-observations dt{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.67rem;color:#494f53}
 #view-reference .vxe-name{margin:1.1rem 0;width:100%;max-width:930px;padding:1.1rem}

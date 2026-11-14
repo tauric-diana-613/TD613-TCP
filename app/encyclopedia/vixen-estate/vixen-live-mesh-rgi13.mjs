@@ -1,412 +1,180 @@
-/**
- * 𝌋 VIXEN CYBERNETICS — ELECTRICAL BREATH / RGI13
- * A source-conditioned VISUAL costume around Vixen's existing research Opera.
- * No image/video texture, WebSocket, external dependency, source mutation,
- * automatic identity inference, or role/authority change.
- *
- * Sources: existing Dome D3 / φ reference samplers, 39 Loom carriers,
- *          and [111] Couture projection from the Vixen Foundry.
- * This is an optical simulation; not evidence, inference, a real-world
- * observation, an independent witness, or a successor to any estate.
- * OPERAHOUSE ≠ OPERA ≠ PERFORMER. Human closure RESERVED; Flight HELD.
+/** Vixen's room-wide optical cloth. Salon hands over the SAME prepaint scene
+ * and its viewport origin; only the complement of its stage is drawn here.
+ * Ordinary rooms use the same cloth grammar and a neutral/declared Work seed.
+ * Observatory opts in and owns its phase. One active owner, no host-frame RAF.
+ * Artistic display, never source interpretation or empirical evidence.
+ * OPERAHOUSE != OPERA != PERFORMER. Human closure RESERVED; Flight HELD.
  */
-import {CARRIERS,PHI,triangular,quasiperiodic,project111}
-  from './observatory-foundry-kernel.mjs';
-
+import {measureCoutureBeats} from './vixen-beat-radiometry-rgi15.mjs';
+import {buildSalonField,paintSalonField} from './vixen-salon-ambient-field.mjs';
+import {CARRIERS} from './observatory-foundry-kernel.mjs';
 export const MESH_CONTRACT=Object.freeze({
- schema:'td613.vixen.rgi13-electrical-breath/v1',
- estate:'VIXEN_OPERA',surface:'VISUAL_ONLY',
+ schema:'td613.vixen.rgi13-electrical-breath/v2',estate:'VIXEN_OPERA',surface:'VISUAL_ONLY',
  model_families:Object.freeze(['DOME_D3','DOME_PHI','LOOM_39','COUTURE_111']),
  source_rule:'DECLARED_WORK_SELECTION_OR_NEUTRAL_VIXEN_SEED',
- source_mutation:false,cross_estate_promotion:false,
- empirical_credit:0,experiment_b_flight:'HELD',
- operator_motion_control:'motionBtn[aria-pressed]',
- reduced_motion:'STATIC_ONE_FRAME',auto_deploy:false
+ source_mutation:false,cross_estate_promotion:false,empirical_credit:0,experiment_b_flight:'HELD',
+ operator_motion_control:'motionBtn[aria-pressed]',reduced_motion:'STATIC_ONE_FRAME',auto_deploy:false,
+ shared_scene:'IDENTICAL_GEOMETRY_DISJOINT_VIEWPORTS'
 });
 export const ELECTRIC_COUTURE=Object.freeze({
- pearl:'#FFF8F3',blush:'#FFE3EB',rose:'#FF91AF',
- fuchsia:'#FF3F9E',champagne:'#FFF2A9',core:'#FFFBE2',
- chrome:'#D9E1E8',black:'#08090D'
+ pearl:'#FFF8F3',blush:'#FFE3EB',rose:'#FF91AF',fuchsia:'#FF3F9E',
+ champagne:'#FFF2A9',core:'#FFFBE2',chrome:'#D9E1E8',black:'#08090D'
 });
-const TAU=Math.PI*2;
-const clamp=(n,lo=0,hi=1)=>Math.max(lo,Math.min(hi,Number.isFinite(+n)?+n:lo));
-const fract=x=>x-Math.floor(x);
-const hash=x=>[...String(x)].reduce((a,c)=>(Math.imul(a,33)+c.codePointAt(0))>>>0,5381);
-function visualSeed(ids){
- const clean=Array.isArray(ids)?ids.filter(x=>typeof x==='string'&&x.trim()).slice(0,2):[];
- return {
-  hash:hash(clean.length?clean.join('|'):'VIXEN_NEUTRAL_STAGE_ONLY'),
-  source_mode:clean.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK'
- };
-}
-const xy=(x,y)=>({x,y});
-/**
- * Pure geometry, no DOM: deterministic for given model inputs.
- * 17 shell hoops × 28 angular stations, plus 39 depth-specific Loom carriers
- * and two transverse D3/φ drapes spanning the viewport.
- */
-export function buildLivingMesh({width=1440,height=900,time=0,view='collection',
-  sourceIds=[],scroll=0,pointer={x:.5,y:.5},quality='full'}={}){
- if(!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0)
+const hash=s=>{let n=2166136261;for(const c of s){n^=c.codePointAt(0);n=Math.imul(n,16777619)>>>0}return n};
+export function buildLivingMesh({width=1440,height=900,time=0,view='overview',sourceIds=[],
+ pointer={x:.5,y:.5},scroll=0}={}){
+ if(![width,height,time].every(Number.isFinite)||width<=0||height<=0)
   throw new RangeError('MESH_REQUIRES_POSITIVE_VIEWPORT');
- const w=Math.max(1,width),h=Math.max(1,height);
- const seed=visualSeed(sourceIds);
- const isMobile=w<690;
- const nlat=quality==='low'?11:quality==='medium'?13:17;
- const nlong=quality==='low'?18:quality==='medium'?24:28;
- const route=String(view||'collection');
- const centerX=w*(isMobile?.78:route==='collection'?.765:route==='observatory'?.79:.82);
- const centerY=h*(route==='overview'?.51:.49);
- const scale=Math.min(w*1.12,h*1.14);
- const theta=seed.hash%65521/65521*TAU;
- const projection=project111([
-  (seed.hash%991)/991,
-  (seed.hash%641)/641,
-  clamp(scroll/2400)
- ]).projection;
- const drift=clamp(pointer?.x??.5)*.035*scale;
- const breath=1+.048*Math.sin(time*.72+theta);
- const ring=[];
- for(let i=0;i<nlat;i++){
-  const v=-1+2*i/(nlat-1),latitude=[];
-  const seamR=scale*(.105+.245*Math.pow(Math.abs(v),1.65))*breath;
-  for(let j=0;j<nlong;j++){
-   const a=j/nlong*TAU+time*.06+theta*.08;
-   const d3=triangular(68*Math.cos(a)+v*102,70*Math.sin(a)+v*51,{theta:.05});
-   const phi=quasiperiodic(56*Math.cos(a)+v*45,55*Math.sin(a)-v*42,{phase:theta});
-   const radius=seamR*(1+.057*d3+.068*phi);
-   const depth=.78+.22*Math.cos(a);
-   latitude.push(xy(
-    centerX+Math.cos(a)*radius*depth+drift+projection[0]*scale*.027,
-    centerY+v*h*.45+Math.sin(a)*scale*.043+projection[1]*scale*.03
-   ));
-  }
-  ring.push(latitude);
- }
- const ribbon=[];
- for(let band=0;band<2;band++){
-  const strands=[],rows=quality==='low'?8:quality==='medium'?12:16;
-  const steps=quality==='low'?16:quality==='medium'?23:30;
-  for(let i=0;i<rows;i++){
-   const points=[],q=i/Math.max(1,rows-1);
-   for(let j=0;j<steps;j++){
-    const u=j/(steps-1);
-    const beat=quasiperiodic(u*195+seed.hash%37,q*120,{phase:theta})*.045;
-    const leftToRight=u*w;
-    let y=band===0 ? 8+q*h*.20 : h*(.77+q*.19);
-    y+=Math.sin(u*TAU*(1.1+q*.5)+time*.36+q*PHI)*h*(.025+.04*q);
-    y+=beat*h;
-    points.push(xy(leftToRight,y));
-   }
-   strands.push(points);
-  }
-  ribbon.push(strands);
- }
- const fibers=CARRIERS.map(c=>{
-  const s=c.index/39,angle=s*TAU+theta*.12+time*(c.near?.1:c.mid?.04:.018);
-  return {
-   plane:c.plane,near:c.near,mid:c.mid,
-   from:xy(centerX+Math.cos(angle)*scale*.10,centerY+Math.sin(angle)*scale*.16),
-   to:xy(centerX+Math.cos(angle)*scale*(.33+.16*s),
-    centerY+Math.sin(angle)*scale*(.35+.15*s)),
-   depth:c.depth_gain,index:c.index
-  };
- });
- const hueSeed=hash(route)%127;
- return Object.freeze({
-  schema:MESH_CONTRACT.schema,source_mode:seed.source_mode,
-  seed:seed.hash,view:route,width:w,height:h,
-  phase:time,brightness:Math.min(1,.62+.14*Math.sin(time*.8+theta)),
-  charge:.59+.23*Math.sin(time*1.15+hueSeed*.045),
-  ring,ribbon,fibers,center:xy(centerX,centerY),
-  nlat,nlong,empirical_credit:0
- });
+ const ids=sourceIds.slice(0,2).map(String),seed=hash(ids.join('|')||'VIXEN_NEUTRAL');
+ const field=measureCoutureBeats({width:360,height:420,time,seed});
+ const cx=width*(view==='overview'?.82:.74)+(Math.max(0,Math.min(1,pointer.x))-.5)*16;
+ const cy=height*.52-Math.min(18,Math.max(0,scroll)*.008);
+ const scene=buildSalonField({width,height,time,field,cx,cy,scale:Math.min(width,height)*.82,sourceIds:ids});
+ return {schema:MESH_CONTRACT.schema,width,height,phase:time,view,field,scene,seed,
+  source_mode:ids.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK',
+  fibers:CARRIERS,empirical_credit:0};
 }
-function stroke(ctx,points,color,width,alpha,glow=0){
- if(!points||points.length<2)return;
- ctx.save();ctx.lineCap='round';ctx.lineJoin='round';
- ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;
- // Full-viewport stroke blur is catastrophic in software Chromium; only
- // tiny segments get bounded glow. Brightness comes from alpha layering.
- ctx.shadowColor=color;ctx.shadowBlur=points.length<=3?Math.min(glow,5):0;
- ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);
- for(let i=1;i<points.length;i++)ctx.lineTo(points[i].x,points[i].y);
- ctx.stroke();ctx.restore();
-}
-function star(ctx,x,y,energy,tint){
- const r=2+9*energy;
- ctx.save();ctx.globalCompositeOperation='screen';
- ctx.lineWidth=.7+energy*.65;ctx.strokeStyle=tint;
- ctx.globalAlpha=.30+energy*.65;ctx.shadowColor=tint;
- ctx.shadowBlur=3+energy*4;ctx.beginPath();
- ctx.moveTo(x-r*1.45,y);ctx.lineTo(x+r*1.45,y);
- ctx.moveTo(x,y-r*1.65);ctx.lineTo(x,y+r*1.65);
- ctx.moveTo(x-r*.42,y-r*.42);ctx.lineTo(x+r*.42,y+r*.42);
- ctx.stroke();ctx.restore();
-}
-function discharge(ctx,start,end,time,seed,charge,color=ELECTRIC_COUTURE.champagne){
- const intensity=clamp((charge-.14)/.86);
- if(intensity<=.015)return;
- const n=49,dx=end.x-start.x,dy=end.y-start.y;
- const len=Math.max(1,Math.hypot(dx,dy)),px=-dy/len,py=dx/len;
- const points=[];
- const drift=(seed%4099)/4099*TAU;
- for(let i=0;i<=n;i++){
-  const t=i/n,env=Math.sin(t*Math.PI);
-  const kink=env*Math.min(19,len*.042)*intensity*
-    (Math.sin(t*133+time*7+drift)+.37*Math.sin(t*337-time*5+drift));
-  points.push(xy(start.x+dx*t+kink*px,start.y+dy*t+kink*py));
- }
- stroke(ctx,points,ELECTRIC_COUTURE.fuchsia,7*intensity,.23*intensity,23);
- stroke(ctx,points,color,3*intensity,.69*intensity,20);
- stroke(ctx,points,ELECTRIC_COUTURE.core,.95*intensity,.87*intensity,10);
- for(let i=9;i<points.length;i+=15){
-  const t=i/n,side=i%2?1:-1;
-  const root=points[i];
-  const tip=xy(root.x+px*side*19*Math.sin(t*TAU),root.y+py*side*24*Math.cos(t*TAU));
-  stroke(ctx,[root,tip],color,1.4*intensity,.45*intensity,11);
+/** Clip each exclusion separately: an even-odd compound path would XOR
+ * overlapping controls, accidentally painting inside their overlap. */
+export function clipMeshExclusions(ctx,width,height,rects){
+ for(const r of rects){
+  if(!r||![r.left,r.top,r.width,r.height].every(Number.isFinite)||r.width<=0||r.height<=0)continue;
+  ctx.beginPath();ctx.rect(0,0,width,height);ctx.rect(r.left,r.top,r.width,r.height);ctx.clip('evenodd');
  }
 }
-export function paintLivingMesh(ctx,model,{intensity=1,electrodes=[]}={}){
- if(!ctx||!model?.ring)throw new TypeError('MESH_PAINT_REQUIRES_MODEL_AND_CONTEXT');
- const {width:w,height:h,ring,ribbon,fibers,center,phase:time,seed}=model;
- const power=clamp(intensity);
- ctx.clearRect(0,0,w,h);
- ctx.save();ctx.globalCompositeOperation='screen';
- // The skin is pierced by light rather than filled with an all-over color wash.
- const aureole=ctx.createRadialGradient(center.x,center.y,2,
-  center.x,center.y,Math.min(w,h)*.64);
- aureole.addColorStop(0,'rgba(255,251,226,.18)');
- aureole.addColorStop(.28,'rgba(255,145,175,.11)');
- aureole.addColorStop(.69,'rgba(255,210,238,.045)');
- aureole.addColorStop(1,'rgba(255,255,255,0)');
- ctx.globalAlpha=power;ctx.fillStyle=aureole;ctx.fillRect(0,0,w,h);
+export function paintLivingMesh(ctx,model,{intensity=1,scene=model.scene,origin={x:0,y:0},
+ exclusions=[]}={}){
+ if(!ctx||!scene?.trails)throw new TypeError('MESH_PAINT_REQUIRES_MODEL_AND_CONTEXT');
+ ctx.clearRect(0,0,model.width,model.height);ctx.save();
+ clipMeshExclusions(ctx,model.width,model.height,exclusions);
+ ctx.translate(origin.x,origin.y);
+ // Same back/front order as the local stage, including the same pulse points.
+ paintSalonField(ctx,{scene},{layer:'back',intensity});
+ paintSalonField(ctx,{scene},{layer:'front',intensity});
  ctx.restore();
- // Iridescent mesh in the foyer, header, gallery and Salon; 2 membranes.
- for(let band=0;band<ribbon.length;band++){
-  const strands=ribbon[band];
-  for(let i=0;i<strands.length;i++){
-   const c=i%4===0?ELECTRIC_COUTURE.champagne:
-    i%3===0?ELECTRIC_COUTURE.pearl:ELECTRIC_COUTURE.rose;
-   stroke(ctx,strands[i],c,.52+(i%4===0?.38:0),(.13+(i%5===0?.22:0))*power,7);
-  }
-  // Cross warp: the grid remains a connected cloth, not independent ribbons.
-  for(let j=0;j<strands[0].length;j+=2){
-   const line=strands.map(row=>row[j]);
-   stroke(ctx,line,ELECTRIC_COUTURE.blush,.55,.12*power,5);
-  }
- }
- // Superposed waist rings + vertical silk-steel ribs from D3/phi.
- for(let i=0;i<ring.length;i++){
-  const pts=[...ring[i],ring[i][0]];
-  stroke(ctx,pts,i%4===0?ELECTRIC_COUTURE.champagne:ELECTRIC_COUTURE.rose,
-    i%4===0?1.4:.75,(.25+(i%4===0?.15:0))*power,i%4===0?14:8);
- }
- for(let j=0;j<ring[0].length;j++){
-  const line=ring.map(row=>row[j]);
-  stroke(ctx,line,j%5===0?ELECTRIC_COUTURE.core:ELECTRIC_COUTURE.blush,
-   j%5===0?1.8:.8,(j%5===0?.5:.28)*power,j%5===0?21:9);
- }
- for(const c of fibers){
-  const q=c.index%4;
-  const color=c.near?ELECTRIC_COUTURE.champagne:
-   c.mid?ELECTRIC_COUTURE.rose:ELECTRIC_COUTURE.chrome;
-  stroke(ctx,[c.from,c.to],color,c.near?1.4:.7,
-   (c.near?.27:c.mid?.16:.09)*power,c.near?16:7);
-  if(c.near&&q===0)star(ctx,c.to.x,c.to.y,.34*power,color);
- }
- const t=time,period=(t*.34)%(Math.PI*2);
- const mainPulse=clamp((Math.sin(period+1.2)+.48)/1.48);
- const altPulse=clamp((Math.sin(period*1.7+3.3)+.35)/1.35);
- // Three material-derived endpoints replace the existing discharges;
- // they do not add extra beam passes or create independent RAF ownership.
- const anchors=(Array.isArray(electrodes)?electrodes:[])
-  .filter(p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.y)
-   &&p.x>=0&&p.x<=w&&p.y>=0&&p.y<=h).slice(0,3);
- const ends=anchors.length===3?anchors:[
-  xy(center.x,center.y),xy(center.x+w*.06,center.y+h*.035),xy(w*.99,h*.21)
- ];
- discharge(ctx,xy(w*.34,h*.025),ends[0],
-  t,seed,.18+mainPulse*.78,ELECTRIC_COUTURE.champagne);
- discharge(ctx,xy(w*.02,h*.94),ends[1],
-  t+.8,seed+67,.14+altPulse*.72,ELECTRIC_COUTURE.fuchsia);
- discharge(ctx,xy(center.x-w*.12,h*.91),ends[2],
-  t+1.7,seed+301,.14+mainPulse*.65,ELECTRIC_COUTURE.core);
- const nlat=ring.length,nlong=ring[0].length;
- for(let i=0;i<26;i++){
-  const a=(i*7+3)%nlat,b=(i*11+5)%nlong;
-  const p=ring[a][b];
-  const life=Math.pow(clamp((Math.sin(time*(1.4+i%5*.19)+i*PHI)+.32)/1.32),5);
-  if(life>.02)star(ctx,p.x,p.y,life*power,
-   i%4===0?ELECTRIC_COUTURE.champagne:ELECTRIC_COUTURE.rose);
- }
- // No provenance or authorization content appears in a pixel channel.
- return Object.freeze({
-  schema:model.schema,painted:true,source_mode:model.source_mode,
-  model_carriers:fibers.length,hoops:nlat,shell_stations:nlong,
-  glint_candidates:26,host_electrodes:anchors.length===3?3:0,
-  empirical_credit:0
- });
+ return {schema:MESH_CONTRACT.schema,painted:true,source_mode:model.source_mode,
+  model_carriers:39,tracks:scene.trails.length,contacts:scene.contacts.filter(c=>c.junctionId!==null).length,
+  phase:scene.time,empirical_credit:0};
 }
-export function mountVixenLivingMesh({
- document:doc=globalThis.document,window:win=globalThis.window
-}={}){
- if(!doc?.body||!win?.requestAnimationFrame)
-  return Object.freeze({mounted:false,reason:'NO_BROWSER_HOST'});
- if(doc.getElementById('vixenLivingMesh')){
-  return Object.freeze({mounted:false,reason:'ALREADY_MOUNTED'});
- }
- const canvas=doc.createElement('canvas');
- canvas.id='vixenLivingMesh';canvas.className='vixen-living-mesh';
- canvas.setAttribute('aria-hidden','true');
- canvas.dataset.role='VIXEN_OPERA_VISUAL_ONLY';
- doc.body.appendChild(canvas);
- const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
- if(!ctx){canvas.remove();return Object.freeze({mounted:false,reason:'CANVAS2D_UNAVAILABLE'});}
- const mq=win.matchMedia?.('(prefers-reduced-motion: reduce)');
- let reduced=!!mq?.matches,held=false,raf=0,disposed=false,lastMs=-Infinity;
- let frame=0,last=null,resizeNeeded=true,pausedAt=0,paintCostMs=0;
- let lastHostFrameMs=-Infinity,hostFrames=0;
- let pointer=xy(.5,.5),scroll=win.scrollY||0;
- const width=()=>Math.max(1,win.innerWidth||1),height=()=>Math.max(1,win.innerHeight||1);
- // Work identity derives from one selected Work per source-bound card;
- // the second select in a card is a manifestation, never another Work.
+export function mountVixenLivingMesh({document:doc=globalThis.document,window:win=globalThis.window}={}){
+ if(!doc?.body||!win?.requestAnimationFrame)return {mounted:false,reason:'NO_BROWSER_HOST'};
+ if(doc.getElementById('vixenLivingMesh'))return {mounted:false,reason:'ALREADY_MOUNTED'};
+ const canvas=doc.createElement('canvas');canvas.id='vixenLivingMesh';canvas.className='vixen-living-mesh';
+ canvas.setAttribute('aria-hidden','true');doc.body.append(canvas);
+ const ctx=canvas.getContext('2d');if(!ctx){canvas.remove();return {mounted:false,reason:'CANVAS2D_UNAVAILABLE'};}
+ const mq=win.matchMedia('(prefers-reduced-motion: reduce)'),motion=doc.getElementById('motionBtn');
+ let raf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
+ let last=null,hostFrame=null,layoutDirty=true,exclusions=[],dpr=0,paintCostMs=0;
+ let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity;
+ const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
+ const view=()=>doc.body.dataset.view||'overview';
+ const stageOwned=()=>['collection','observatory'].includes(view());
+ const outsideOpera=()=>doc.body.dataset.activeResearchStage==='OPERAHOUSE';
+ const paused=()=>mq.matches||doc.body.dataset.vixenMotion==='still'||motion?.getAttribute('aria-pressed')==='true';
+ const enabled=()=>!outsideOpera()&&(view()!=='observatory'||doc.body.dataset.vixenOpticalMeshObservatory!=='off');
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
- const paused=()=>reduced||held;
- // The Salon and Observatory have their OWN live computed stages. Avoid
- // overpainting them with an almost-invisible second full-screen Canvas.
- const stageOwned=()=>['collection','observatory'].includes(doc.body.dataset.view);
- function sample(ms,hostFrame=null){
-  if(disposed||doc.hidden)return;
-  const paintStart=win.performance?.now?.()||0;
-  const w=width(),h=height();
-  if(resizeNeeded||canvas.width===0||canvas.height===0){
-   const dpr=Math.min(1.25,Math.max(1,win.devicePixelRatio||1));
-   const effective=w<750?Math.min(dpr,1):dpr;
-   canvas.width=Math.round(w*effective);
-   canvas.height=Math.round(h*effective);
-   canvas.style.width=w+'px';canvas.style.height=h+'px';
-   ctx.setTransform(effective,0,0,effective,0,0);
-   resizeNeeded=false;
-  }
-  const time=hostFrame?.time??(paused()?0:ms/1000);
-  const mode=hostFrame?.view??doc.body.dataset.view??'overview';
-  const model=buildLivingMesh({
-   width:w,height:h,time,scroll,pointer,view:mode,sourceIds:hostFrame?.sourceIds??readSources(),
-   quality:hostFrame?'low':w<720?'low':'medium'
-  });
-  last=paintLivingMesh(ctx,model,{intensity:hostFrame?.intensity??(mode==='observatory'?.55:mode==='reference'?.52:.92),
-   electrodes:hostFrame?.electrodes??[]});
-  canvas.dataset.route=mode;
-  canvas.dataset.animation=paused()?'STILL':hostFrame?'HOST_FRAME':stageOwned()?'AMBIENT_PARKED':'LIVE';
-  frame++;
-  paintCostMs=(win.performance?.now?.()||paintStart)-paintStart;
-  // No visual signal grants truth, identity, authorship or release authority.
+ function readExclusions(){
+  // Mask content and accepted art, leaving moving cloth along thresholds,
+  // gutters and document edges. No CSS mask suppresses the whole page field.
+  const selectors=['.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
+   '.vs-hero-copy','.vs-source-card','.vs-rail','.vs-compose','.vs-result',
+   '.view-heading','.lexicon-reader','.gate-pair-card','.hero-art','.vixen-foyer-copy',
+   '#vixenElectricFoundry','.folio-locus','dialog','[role="dialog"]','main button',
+   'main select','main input','main textarea','main summary'];
+  exclusions=[...doc.querySelectorAll(selectors.join(','))].flatMap(el=>{
+   if(!el.getClientRects().length)return [];
+   const r=el.getBoundingClientRect();if(r.bottom<0||r.top>height()||r.right<0||r.left>width())return [];
+   return [{left:r.left-3,top:r.top-3,width:r.width+6,height:r.height+6}];
+  });layoutDirty=false;
  }
- function loop(ms){
-  raf=0;
-  if(disposed||doc.hidden||paused()||stageOwned())return;
-  // Ambient theatre yields to the research UI: 12 fps mobile, 15 fps desktop.
-  // RGI14 now owns the primary on-stage couture. This global atmosphere
-  // must remain asynchronous, slow, and cheaper than every source control.
-  const cap=Math.max(width()<750?650:500,Math.min(1400,paintCostMs*6));
-  if(ms-lastMs>=cap){
-   sample(ms);lastMs=ms;
+ function draw(frame=hostFrame){
+  if(disposed||doc.hidden)return;
+  const start=win.performance.now(),w=width(),h=height();
+  const ratio=Math.min(win.devicePixelRatio||1,1.25,Math.sqrt(1500000/(w*h)));
+  if(canvas.width!==Math.floor(w*ratio)||canvas.height!==Math.floor(h*ratio)||dpr!==ratio){
+   canvas.width=Math.floor(w*ratio);canvas.height=Math.floor(h*ratio);dpr=ratio;layoutDirty=true;
   }
+  ctx.setTransform(canvas.width/w,0,0,canvas.height/h,0,0);
+  if(!enabled()){ctx.clearRect(0,0,w,h);canvas.dataset.animation='PARKED';return;}
+  if(layoutDirty)readExclusions();
+  const shared=stageOwned()&&frame?.view===view()?frame:null;
+  // A parked optical room cannot synthesize a competing autonomous phase.
+  if(stageOwned()&&!shared){ctx.clearRect(0,0,w,h);canvas.dataset.animation='WAITING_FOR_HOST';return;}
+  const model=shared?.scene?{width:w,height:h,scene:shared.scene,
+   source_mode:shared.sourceIds?.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK'}:
+   buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),sourceIds:shared?.sourceIds??readSources(),pointer});
+  const rect=shared?.stageRect;
+  last=paintLivingMesh(ctx,model,{intensity:view()==='observatory'?.46:1,
+   scene:shared?.scene||model.scene,origin:rect?{x:rect.left,y:rect.top}:{x:0,y:0},
+   exclusions:rect?[...exclusions,rect]:exclusions});
+  canvas.dataset.route=view();canvas.dataset.animation=paused()||shared?.held?'STILL':shared?'HOST_FRAME':'LIVE';
+  frames++;paintCostMs=win.performance.now()-start;
+ }
+ function cancel(){if(raf)win.cancelAnimationFrame(raf);raf=0;lastTick=null;}
+ function loop(ms){
+  raf=0;if(disposed||doc.hidden||outsideOpera()||paused()||stageOwned()){lastTick=null;return;}
+  if(lastTick!==null)time+=Math.min(.1,Math.max(0,(ms-lastTick)/1000));lastTick=ms;
+  if(ms-lastPaint>=1000/(width()<750?12:24)){draw(null);lastPaint=ms;}
   raf=win.requestAnimationFrame(loop);
  }
  function schedule(){
-  if(disposed)return;
-  if(raf){win.cancelAnimationFrame(raf);raf=0;}
-  if(doc.hidden)return;
-  sample(paused()?0:(win.performance?.now?.()||0));
-  if(!paused()&&!stageOwned())raf=win.requestAnimationFrame(loop);
+  cancel();if(disposed||doc.hidden)return;
+  draw();if(!paused()&&!stageOwned()&&!outsideOpera())raf=win.requestAnimationFrame(loop);
  }
- const motion=doc.getElementById('motionBtn');
- held=motion?.getAttribute('aria-pressed')==='true';
- function readMotion(){
-  const next=motion?.getAttribute('aria-pressed')==='true';
-  if(next!==held){held=next;if(next)pausedAt=frame;schedule();}
- }
- const mutation=typeof win.MutationObserver==='function'
-  ?new win.MutationObserver(list=>{
-   if(list.some(x=>x.type==='attributes'&&x.target===motion))readMotion();
-   if(list.some(x=>x.type==='attributes'&&x.target===doc.body))schedule();
-  }):null;
- if(mutation){
-  mutation.observe(doc.body,{attributes:true,attributeFilter:['data-view']});
-  if(motion)mutation.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
- }
- const updatePointer=e=>{pointer=xy(clamp(e.clientX/width()),clamp(e.clientY/height()));};
- const updateScroll=()=>{scroll=win.scrollY||0;};
- const updateSize=()=>{resizeNeeded=true;schedule();};
- const updateVisibility=()=>{if(doc.hidden){if(raf)win.cancelAnimationFrame(raf);raf=0;}else schedule();};
- const updateMQ=()=>{reduced=!!mq.matches;schedule();};
- win.addEventListener('pointermove',updatePointer,{passive:true});
- win.addEventListener('scroll',updateScroll,{passive:true});
- win.addEventListener('resize',updateSize,{passive:true});
- doc.addEventListener('visibilitychange',updateVisibility);
- mq?.addEventListener?.('change',updateMQ);
- canvas.addEventListener('contextlost',e=>e.preventDefault());
- schedule();
- const api={
-  mounted:true,contract:MESH_CONTRACT,
-  status:()=>Object.freeze({
-   rendered_frames:frame,route:canvas.dataset.route,
-   motion:canvas.dataset.animation,source_mode:last?.source_mode,
-   model_carriers:last?.model_carriers,host_electrodes:last?.host_electrodes,
-   paused_at_frame:pausedAt,paint_cost_ms:Math.round(paintCostMs),
-   host_driven_frames:hostFrames,empirical_credit:0
-  }),
-  renderOnce:()=>{if(!disposed)sample(0);return last;},
-  /** Opt-in same-frame host drawing: zero new RAFs or scheduler ownership. */
-  renderHostFrame:({time=0,sourceIds,electrodes=[],view=doc.body.dataset.view,force=false}={})=>{
-   if(disposed||doc.hidden||!stageOwned()||view!==doc.body.dataset.view)return null;
-   if(view==='observatory'&&doc.body.dataset.vixenOpticalMeshObservatory!=='on')return null;
-   if(!Number.isFinite(time))return null;
-   if(paused()&&!force)return last;
-   const now=win.performance?.now?.()??0;
-   if(!force&&now-lastHostFrameMs<180)return last;
-   lastHostFrameMs=now;hostFrames++;
-   sample(time*1000,{time,view,electrodes,sourceIds:sourceIds??readSources(),
-    intensity:view==='collection'?.85:.45});
-   return last;
-  },
-  dispose(){
-   disposed=true;if(raf)win.cancelAnimationFrame(raf);
-   mutation?.disconnect();
-   win.removeEventListener('pointermove',updatePointer);
-   win.removeEventListener('scroll',updateScroll);
-   win.removeEventListener('resize',updateSize);
-   doc.removeEventListener('visibilitychange',updateVisibility);
-   mq?.removeEventListener?.('change',updateMQ);canvas.remove();
-  }
+ const changed=()=>{
+  layoutDirty=true;
+  if(hostFrame?.view!==view())hostFrame=null;
+  // The optical owner repaints on its own Still transition. Repainting
+  // stale host geometry here would publish an intermediate Still frame.
+  if(stageOwned()&&hostFrame&&enabled()){cancel();return;}
+  schedule();
  };
- return Object.freeze(api);
+ const mutation=new win.MutationObserver(changed);
+ mutation.observe(doc.body,{attributes:true,attributeFilter:['data-view','data-vixen-motion',
+  'data-active-research-stage','data-vixen-optical-mesh-observatory']});
+ if(motion)mutation.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
+ const onPointer=e=>{pointer={x:e.clientX/width(),y:e.clientY/height()};};
+ const onLayout=()=>{layoutDirty=true;
+  // Salon must recompute its stage rect; a retained host projection cannot
+  // be translated using a stale rectangle while scrolling in Still.
+  if(stageOwned()){win.dispatchEvent(new win.Event('vixen:fieldlayout'));return;}
+  schedule();
+ };
+ win.addEventListener('pointermove',onPointer,{passive:true});
+ win.addEventListener('resize',onLayout,{passive:true});win.addEventListener('scroll',onLayout,{passive:true,capture:true});
+ doc.addEventListener('visibilitychange',changed);mq.addEventListener('change',changed);
+ schedule();
+ return Object.freeze({mounted:true,contract:MESH_CONTRACT,
+  status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
+   phase:last?.phase??time,source_mode:last?.source_mode,model_carriers:last?.model_carriers,
+   contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,empirical_credit:0}),
+  renderOnce:()=>{layoutDirty=true;draw();return last;},
+  renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,view:route=view(),force=false}={})=>{
+   if(disposed||doc.hidden||!stageOwned()||route!==view()||!enabled()||!Number.isFinite(phase))return null;
+   if(paused()&&!force)return last;
+   // Host projections never start a second RAF.
+   // The optional Observatory background yields to the primary instrument.
+   // Salon always projects its identical scene in the very same frame.
+   if(route==='observatory'){
+    const now=win.performance.now();
+    if(!force&&now-lastObservatoryPaint<100)return last;
+    lastObservatoryPaint=now;
+   }
+   if(force)layoutDirty=true;
+   hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route};hostFrames++;draw(hostFrame);return last;
+  },
+  dispose(){disposed=true;cancel();mutation.disconnect();canvas.remove();
+   win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
+   win.removeEventListener('scroll',onLayout,true);doc.removeEventListener('visibilitychange',changed);
+   mq.removeEventListener('change',changed);}
+ });
 }
 if(typeof document!=='undefined'&&typeof window!=='undefined'){
- const start=()=>{
-  // Startup belongs to Vixen's native Opera before any ambient painting.
-  // A deferred frame prevents a Canvas software fallback from delaying the
-  // foyer's DOMContentLoaded event and all human source controls.
-  window.requestAnimationFrame(()=>{
-   try {
-    const api=mountVixenLivingMesh({document,window});
-    Object.defineProperty(window,'VixenLivingMesh',{
-     value:api,configurable:true,writable:false,enumerable:false
-    });
-   } catch(error) {
-    // A visual costume must never make the research Opera inoperable.
-    console.error('VIXEN_LIVING_MESH_FAIL_OPEN_VISUAL_ONLY',error);
-    Object.defineProperty(window,'VixenLivingMesh',{
-     value:Object.freeze({mounted:false,reason:'VISUAL_ENGINE_FAILED'}),
-     configurable:true,writable:false,enumerable:false
-    });
-   }
-  });
- };
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
- else if(document.readyState==='interactive')document.addEventListener('DOMContentLoaded',start,{once:true});
- else start();
+ const start=()=>window.requestAnimationFrame(()=>{
+  try{Object.defineProperty(window,'VixenLivingMesh',{value:mountVixenLivingMesh({document,window}),configurable:true});
+   window.dispatchEvent(new Event('vixen:fieldlayout'));}
+  catch(error){console.error('VIXEN_LIVING_MESH_FAIL_OPEN_VISUAL_ONLY',error);}
+ });
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 }

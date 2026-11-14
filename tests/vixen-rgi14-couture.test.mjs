@@ -54,10 +54,11 @@ test('The finish is cubic luminous couture, not the rejected rectilinear mesh',(
  assert(stats.strokes>=93,'39 Loom ribs, 36 distinct moire paths, 15 transverse hems and three reflective plinth strokes must survive even when decorative light is suppressed');
  assert(stats.glints>2,'Localized bounded blooms must actually paint');
 });
-test('The frontispiece remains above the separate ambient visual costume',()=>{
- assert.match(css,/body\[data-view="overview"\][^{]*#vixenLivingMesh\s*\{[^}]*z-index:0!important/s);
- assert.match(css,/body\[data-view="overview"\][^{]*#view-overview\s*\{[^}]*z-index:2/s);
- assert.match(css,/\.hero-art\s*\{[^}]*z-index:3!important/s);
+test('The room cloth excludes the protected frontispiece artwork',async()=>{
+ const mesh=await readFile(new URL('../app/encyclopedia/vixen-estate/vixen-live-mesh-rgi13.mjs',import.meta.url),'utf8');
+ assert.match(html,/class="hero-art"/);
+ assert(mesh.includes("'.hero-art'"));
+ assert(mesh.includes('clipMeshExclusions(ctx,model.width,model.height,exclusions)'));
  assert.match(css,/\.vixen-opaline-couture/);
  assert.match(html,/vixen-opaline-couture-rgi14\.css/);
  assert.match(html,/vixen-opaline-couture-rgi14\.mjs/);

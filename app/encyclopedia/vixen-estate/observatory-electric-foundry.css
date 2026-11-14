@@ -232,7 +232,7 @@
 }
 #vixenElectricFoundry .ef-readout h3{
  font:400 clamp(24px,2.2vw,32px)/1.1 Georgia,serif;
- margin:0 0 14px;color:#fff5fc;
+ margin:0 0 14px;color:#fff5fa;
 }
 #vixenElectricFoundry .ef-metrics{margin:16px 0;display:grid;gap:6px}
 #vixenElectricFoundry .ef-metric{
@@ -402,7 +402,7 @@
 
 
 /* AUTHORITY: original #manifest-instance-theme, Vixen / Astra lineage.
- * #FF91AF Baker-Miller Pink · #dfbfee Arc Flash
+ * #FF91AF Baker-Miller Pink · #eebfd8 Arc Flash
  * #24282A Graphite · #667078 Nickel · #F6F4F0 Porcelain
  * A chromatic shader is an INSTRUMENT, never a replacement for this Opera.
  */
@@ -448,7 +448,7 @@
  box-shadow:inset 0 3px #f5d8ba,inset 0 -3px #FF91AF;
 }
 #vixenElectricFoundry .ef-pane{
- background:linear-gradient(160deg,#2F282E,#171719 82%);
+ background:linear-gradient(160deg,#2f282c,#171719 82%);
 }
 #vixenElectricFoundry .ef-sourcebadge{
  color:#f5d8ba;background:#24282A;border-color:#f5d8ba;
@@ -475,7 +475,7 @@
 #vixenElectricFoundry .ef-button:hover{background:#51575c;color:#F6F4F0}
 #vixenElectricFoundry .ef-eye{border-bottom-color:#f5d8ba}
 #vixenElectricFoundry .ef-stage{
- background:radial-gradient(ellipse at center,#3D343B,#151b1f 74%);
+ background:radial-gradient(ellipse at center,#3d3439,#151b1f 74%);
  box-shadow:inset 0 0 130px rgba(255,145,175,.18);
  border-right-color:rgba(245,216,186,.7);
 }
@@ -496,7 +496,7 @@
 #vixenElectricFoundry .ef-scene-badge{
  border-color:#f5d8ba;background:rgba(36,40,42,.88);color:#F6F4F0;
 }
-#vixenElectricFoundry .ef-readout{background:linear-gradient(153deg,#2B252B,#151517)}
+#vixenElectricFoundry .ef-readout{background:linear-gradient(153deg,#2b2528,#151517)}
 #vixenElectricFoundry .ef-metric{
  border-color:rgba(255,145,175,.34);
  background:linear-gradient(105deg,#2f383f,#24282A);

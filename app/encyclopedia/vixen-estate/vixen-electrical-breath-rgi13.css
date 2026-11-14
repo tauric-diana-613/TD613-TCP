@@ -7,13 +7,13 @@
 :root{
  --vixen-arc-champagne:#FFF2A9;
  --vixen-arc-core:#FFFBE2;
- --vixen-glinda-porcelain:#FFF8FD;
+ --vixen-glinda-porcelain:#fff8fc;
  --vixen-glinda-rose:#FF91AF;
  --vixen-glinda-fuchsia:#FF3F9E;
  --vixen-glinda-tulle:#FFE3F2;
  --vixen-chrome-black:#090B0F;
  --vixen-chrome-metal:#D9E1E8;
- --vixen-electric-lilac:#f2d5b8; /* only permitted purple family */
+ --vixen-electric-champagne:#f2d5b8;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]){
  --line:rgba(255,238,205,.32);
@@ -35,7 +35,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header{
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .hdr-pill{
  border-color:rgba(255,242,169,.43);
  background:rgba(9,10,15,.67);
- box-shadow:inset 0 0 0 1px rgba(255,248,253,.05),0 0 14px rgba(255,145,175,.10);
+ box-shadow:inset 0 0 0 1px rgba(255,248,252,.05),0 0 14px rgba(255,145,175,.10);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header :is(.hdr-pill,.reading-back,.brand):focus-visible,
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(button,a,input,select,textarea):focus-visible{
@@ -101,19 +101,13 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([da
  width:100vw;
  height:100vh;
  z-index:55;
- opacity:.92;
- mix-blend-mode:screen;
+ opacity:1;
+ mix-blend-mode:normal;
  pointer-events:none!important;
  user-select:none;
  touch-action:none;
  contain:layout style paint;
- filter:saturate(1.55) contrast(1.14);
-}
-body[data-view="observatory"] #vixenLivingMesh.vixen-living-mesh{
- opacity:.62;
-}
-body[data-view="reference"] #vixenLivingMesh.vixen-living-mesh{
- opacity:.57;
+ filter:none;
 }
 /* A little electricity inhabits every room: rails, work envelopes,
    disclosure seams, and selected controls, not just the hero screenshot. */
@@ -144,10 +138,6 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
 /* CSS motion is minimal: true visible motion is provided by the driven field.
    Still and OS reduced-motion both freeze the field to a stable snapshot. */
 @media(max-width:740px){
- #vixenLivingMesh.vixen-living-mesh{
-  opacity:.75;
-  filter:saturate(1.3) contrast(1.12);
- }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{
   background:linear-gradient(157deg,#fffefe 0%,#fce6ee 36%,#FF91AF 49%,#2a3237 64%,#090B0F 100%);
  }
@@ -167,14 +157,6 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
  }
 }
 
-/* Room opt-ins: same-host-clock Living Mesh, no additional RAF ownership. */
-body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{
- display:block!important;opacity:.62!important;filter:saturate(1.35) contrast(1.08);
-}
-body[data-view="observatory"]:not([data-vixen-optical-mesh-observatory="on"])
+/* The Observatory mesh starts on and can be switched off. */
+body[data-view="observatory"][data-vixen-optical-mesh-observatory="off"]
  #vixenLivingMesh.vixen-living-mesh{display:none!important;}
-body[data-view="observatory"][data-vixen-optical-mesh-observatory="on"]
- #vixenLivingMesh.vixen-living-mesh{display:block!important;opacity:.39!important;}
-@media(max-width:740px){
- body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{opacity:.35!important;}
-}

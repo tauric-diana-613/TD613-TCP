@@ -156,7 +156,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-pr
  box-shadow:inset 0 2px 0 #FFF2A9;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score {
- background:linear-gradient(165deg,#FFF8FD,#F9CDE4 48%,#f7dabb 100%);
+ background:linear-gradient(165deg,#fff8fc,#F9CDE4 48%,#f7dabb 100%);
  border-right:1px solid #F3A5D0;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker {
