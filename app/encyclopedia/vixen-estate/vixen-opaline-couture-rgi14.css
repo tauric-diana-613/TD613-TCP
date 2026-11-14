@@ -16,7 +16,7 @@
  --vix-hot:#FF329A;
  --vix-arc:#FFF0A8;
  --vix-white-arc:#FFFDE9;
- --vix-electric-lilac:#D7AFFF;
+ --vix-electric-lilac:#dccdbb;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]){
  --bg:#090C10;

@@ -13,12 +13,12 @@
  --vixen-glinda-tulle:#FFE3F2;
  --vixen-chrome-black:#090B0F;
  --vixen-chrome-metal:#D9E1E8;
- --vixen-electric-lilac:#DDBAFF; /* only permitted purple family */
+ --vixen-electric-lilac:#f2d5b8; /* only permitted purple family */
 }
 body:not([data-active-research-stage="OPERAHOUSE"]){
- --line:rgba(255,211,238,.32);
+ --line:rgba(255,238,205,.32);
  --line-strong:rgba(255,242,169,.46);
- --vixen-ink:#211725;
+ --vixen-ink:#1a2125;
  --vixen-black-chrome:#08090D;
  background:
   radial-gradient(ellipse 48% 29% at 13% 4%,rgba(255,227,242,.22),transparent 80%),
