@@ -11,7 +11,7 @@ test('full-page Salon mesh is driven by its existing clock, without another RAF'
  assert(salon.includes('VixenLivingMesh?.renderHostFrame?.({time:clock.time'));
  assert(!mesh.includes('requestAnimationFrame(renderHostFrame)'));
 });
-test('Observatory opt-in inherits its host clock and is enabled by default',()=>{
+test('Observatory mesh inherits its host clock and is enabled by default',()=>{
  const f=read('observatory-electric-foundry.mjs'),css=read('vixen-electrical-breath-rgi13.css');
  assert(f.includes("dataset.vixenOpticalMeshObservatory!=='off'"));
  assert(f.includes("renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[],"));

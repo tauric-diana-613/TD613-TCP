@@ -253,7 +253,7 @@ test('Vixen source-first visual contract establishes two legible Vixen folios an
  assert.match(css,/select\.vxe-work-select\{[\s\S]*?min-width:0;[\s\S]*?max-width:100%;/);
  assert.match(css,/\.vxe-vixen-pair \.vxe-source-folio/);
  assert.match(css,/\.vxe-work-selector/);
- assert.match(css,/color:#302731/);
+ assert.match(css,/color:#31272c/);
  assert.match(css,/@media\(max-width:780px\)/);
  assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
 });

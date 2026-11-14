@@ -305,6 +305,15 @@ try {
     assert.equal(await foundry.locator('.ef-canvas').isVisible(),true);
     assert.equal(await foundry.locator('.ef-notation').count(),1,
       'A distinct source-native computed mathematical score must be mounted');
+    const roomMesh=foundry.getByRole('button',{name:'ROOM MESH'});
+    await page.waitForFunction(()=>window.VixenLivingMesh?.status()?.route==='observatory');
+    assert.equal(await roomMesh.getAttribute('aria-pressed'),'true');
+    await roomMesh.click();
+    assert.equal(await roomMesh.getAttribute('aria-pressed'),'false');
+    await page.locator('#vixenLivingMesh').waitFor({state:'hidden'});
+    await roomMesh.click();
+    assert.equal(await roomMesh.getAttribute('aria-pressed'),'true');
+    await page.locator('#vixenLivingMesh').waitFor({state:'visible'});
     const firstScore=await page.evaluate(()=>{
       const node=document.querySelector('#vixenElectricFoundry .ef-notation');
       const ctx=node.getContext('2d');
@@ -568,7 +577,8 @@ try {
     // RGI13 acceptance: verify an actually painted, responsive, route-aware
     // electrical mesh. An image or declared CSS color cannot satisfy this.
     await page.waitForFunction(()=>
-      window.VixenLivingMesh?.status()?.rendered_frames>=1
+      window.VixenLivingMesh?.status()?.route==='collection'
+      &&window.VixenLivingMesh.status().host_driven_frames>=1
       &&document.getElementById('vixenLivingMesh')?.width>100,
       null,{timeout:15000,polling:250});
     const meshWitness=await page.evaluate(()=>{
@@ -957,6 +967,29 @@ try {
       await page.screenshot({path:path.join(output,stem+'-'+v.file+'.png'),fullPage:false});
     }
     assert.equal(errors.length,0,'Styling must not produce runtime errors '+errors.join(' | '));
+
+    // Scroll through each authored room in overlapping viewport-sized frames.
+    // Keep the earlier interaction-specific captures as separate evidence.
+    await mkdir(path.join(output,'route-audit'),{recursive:true});
+    for(const route of ['overview','works','observatory','collection','reference','protocols','gates','holds']){
+      await page.goto(site+'#'+route,{waitUntil:'domcontentloaded'});
+      await page.waitForFunction(id=>document.body.dataset.view===id&&
+        !document.getElementById('view-'+id)?.hidden,route);
+      await page.waitForFunction(()=>!!window.VixenLivingMesh?.status()?.route);
+      await page.evaluate(()=>{
+        if(document.getElementById('motionBtn').getAttribute('aria-pressed')!=='true')
+          document.getElementById('motionBtn').click();
+      });
+      await page.waitForTimeout(250);
+      const bottom=await page.evaluate(()=>document.documentElement.scrollHeight-innerHeight);
+      for(let offset=0,n=0;;offset+=Math.floor(height*.83),n++){
+        await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),Math.min(offset,bottom));
+        await page.waitForTimeout(90);
+        await page.screenshot({path:path.join(output,'route-audit',stem+'-'+route+'-'+String(n).padStart(2,'0')+'.jpg'),
+          type:'jpeg',quality:82,fullPage:false});
+        if(offset>=bottom)break;
+      }
+    }
 
     witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, opticalAssay, errors });
     await context.close();

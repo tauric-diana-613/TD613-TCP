@@ -60,6 +60,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  if(!doc?.body||!win?.requestAnimationFrame)return {mounted:false,reason:'NO_BROWSER_HOST'};
  if(doc.getElementById('vixenLivingMesh'))return {mounted:false,reason:'ALREADY_MOUNTED'};
  const canvas=doc.createElement('canvas');canvas.id='vixenLivingMesh';canvas.className='vixen-living-mesh';
+ canvas.dataset.role='VIXEN_OPERA_VISUAL_ONLY';
  canvas.setAttribute('aria-hidden','true');doc.body.append(canvas);
  const ctx=canvas.getContext('2d');if(!ctx){canvas.remove();return {mounted:false,reason:'CANVAS2D_UNAVAILABLE'};}
  const mq=win.matchMedia('(prefers-reduced-motion: reduce)'),motion=doc.getElementById('motionBtn');
