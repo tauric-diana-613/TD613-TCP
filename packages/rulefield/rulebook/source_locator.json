@@ -1,0 +1,406 @@
+{
+  "schema": "td613.rulefield.source-locator/v1",
+  "date": "2026-11-07",
+  "scope": "RESEARCH_DISCOVERY_ROUTES_NOT_AUTOMATIC_ACCESS",
+  "rules": [
+    "Sources must be searched in actually connected and authorized surfaces only.",
+    "A retrieved snippet or saved memory is a lead; cite original source spans and exact revisions.",
+    "A source present at old SHA but absent at main is NOT_FOUND_AT_TIP, not NEVER_EXISTED.",
+    "Historical PRs, uploads, Library files and live web are separate evidence classes.",
+    "Use non-equivalent conceptual aliases for retrieval without presuming identical referents.",
+    "A successful job on HEAD A is not execution evidence for HEAD B.",
+    "Protected Experiment B source content remains HELD; this locator does not authorize unblinding.",
+    "Try alternatives only within the same permission boundary; record inaccessible gaps."
+  ],
+  "source_surfaces": [
+    {
+      "id": "GITHUB_REPO",
+      "access": "CONNECTED_IF_AVAILABLE",
+      "locator": "tauric-diana-613/TD613-TCP",
+      "search_modes": [
+        "code_search",
+        "path_lookup",
+        "branches",
+        "PR_files",
+        "commit_history",
+        "immutable_git_show"
+      ],
+      "witness": [
+        "repo",
+        "commit",
+        "path",
+        "blob_sha",
+        "lines_or_object_id"
+      ]
+    },
+    {
+      "id": "CHAT_UPLOADS",
+      "access": "CONVERSATION_SCOPED",
+      "search_modes": [
+        "filename",
+        "semantic",
+        "text_read",
+        "mounted_file",
+        "ZIP_manifest",
+        "source_images"
+      ],
+      "witness": [
+        "attachment_id",
+        "filename",
+        "hash_if_available",
+        "source_range"
+      ]
+    },
+    {
+      "id": "CHATGPT_LIBRARY",
+      "access": "IF_CONNECTED",
+      "search_modes": [
+        "semantic_search",
+        "exact_find",
+        "read",
+        "materialize",
+        "library_folder"
+      ],
+      "witness": [
+        "file_id",
+        "version",
+        "citation_lines"
+      ]
+    },
+    {
+      "id": "HISTORIC_CHAT_AND_CONTEXT",
+      "access": "IF_RETRIEVABLE",
+      "search_modes": [
+        "Remembering_if_available",
+        "personal_context",
+        "prior_work_summary",
+        "source_locator"
+      ],
+      "witness": [
+        "historical_conversation_ref_or_attribution"
+      ],
+      "warning": "Treat memory as locator, never immutable proof."
+    },
+    {
+      "id": "GIT_HISTORY",
+      "access": "REPOSITORY_REVISION_READ",
+      "search_modes": [
+        "git_log_all",
+        "git_show_exact_sha",
+        "PR_changed_filenames",
+        "test_workflow_logs"
+      ],
+      "witness": [
+        "head",
+        "base",
+        "status",
+        "workflow_run",
+        "job_id",
+        "method"
+      ]
+    },
+    {
+      "id": "ATELIER_SYSTEMS",
+      "access": "SOURCE_AND_EXECUTION_GATE",
+      "search_modes": [
+        "SRC_Atelier",
+        "Wendbine_Atelier",
+        "EMSTD613_Atelier",
+        "Universal_Atelier",
+        "source_bundle",
+        "search_index",
+        "import_witness"
+      ],
+      "witness": [
+        "source_bundle",
+        "ingest_receipt",
+        "native_runner",
+        "query_result"
+      ],
+      "warning": "Claim source retrieval only after index query returns source content."
+    },
+    {
+      "id": "ENCYCLOPEDIA_AND_DOME",
+      "access": "PUBLIC_OR_REPO_AS_PRESENT",
+      "search_modes": [
+        "reference_records",
+        "frontend_script",
+        "projection",
+        "information_dome",
+        "Flow_Core",
+        "Manifest",
+        "Cupola"
+      ],
+      "witness": [
+        "path",
+        "revision",
+        "render_witness",
+        "runtime_execution"
+      ]
+    },
+    {
+      "id": "EXTERNAL_WOLFRAM",
+      "access": "PUBLIC_REFERENCE_OPTIONAL_EXECUTION",
+      "search_modes": [
+        "WolframPhysicsProject",
+        "FunctionRepository_MultiwaySystem",
+        "WolframModel",
+        "Cloud_Notebook"
+      ],
+      "witness": [
+        "function_version",
+        "WL_version",
+        "notebook",
+        "model_parameters",
+        "actual_result"
+      ],
+      "warning": "Public documentation alone has zero execution credit."
+    },
+    {
+      "id": "NETLOGO_COMPLEXITY",
+      "access": "PUBLIC_REFERENCE_OPTIONAL_EXECUTION",
+      "search_modes": [
+        "NetLogo_Web",
+        "model_library",
+        "SFI_ComplexityExplorer"
+      ],
+      "witness": [
+        "model_source",
+        "seed",
+        "scheduler",
+        "run_receipt"
+      ],
+      "warning": "Agent-based model simulation is not real-world empirical proof."
+    },
+    {
+      "id": "CLOUD_RESEARCH_SYSTEMS",
+      "access": "EXPLICIT_AUTHORIZATION_AND_AVAILABLE_CONNECTOR",
+      "search_modes": [
+        "GitHub_Actions",
+        "Vercel",
+        "Neon",
+        "Google_Drive",
+        "Dropbox",
+        "Sharepoint",
+        "OneDrive",
+        "public_domain"
+      ],
+      "witness": [
+        "source_id",
+        "effective_permission",
+        "run_identifier",
+        "version"
+      ],
+      "warning": "Do not infer access from a URL or a prior connected tool."
+    }
+  ],
+  "concept_routing": [
+    {
+      "id": "AMBIANCE",
+      "exact": [
+        "ambiance",
+        "RCA-01",
+        "CONTENT_INVARIANT_PHASON"
+      ],
+      "alternates": [
+        "observer projection",
+        "source invariance",
+        "dome art",
+        "experience differential"
+      ],
+      "likely_families": [
+        "Information Dome",
+        "Encyclopedia",
+        "Manifest",
+        "Flow-Core"
+      ],
+      "desired_fields": [
+        "kernel_invariance",
+        "authority_invariance",
+        "observer_measurement",
+        "sham_control"
+      ]
+    },
+    {
+      "id": "CBFE",
+      "exact": [
+        "computational Black feminist epistemology",
+        "CBFE-RG-11",
+        "Palace II",
+        "P-01.1"
+      ],
+      "alternates": [
+        "conditional hearing",
+        "source-standing crossover",
+        "time-of-admission",
+        "reparative routes"
+      ],
+      "likely_families": [
+        "Palace",
+        "Dollhouse",
+        "Rulefield"
+      ],
+      "desired_fields": [
+        "standing_calibration",
+        "clock",
+        "warrant",
+        "competent_null"
+      ]
+    },
+    {
+      "id": "GEOMETRY",
+      "exact": [
+        "relational-geometry",
+        "relation geometry",
+        "RGI-01",
+        "phasonic"
+      ],
+      "alternates": [
+        "multiway",
+        "hypergraph",
+        "critical pair",
+        "path fiber",
+        "observer quotient"
+      ],
+      "likely_families": [
+        "Wolfram",
+        "Rulefield",
+        "Atlas",
+        "Cupola"
+      ],
+      "desired_fields": [
+        "objects",
+        "morphisms",
+        "rules",
+        "branch_history",
+        "metrics",
+        "falsifier"
+      ]
+    },
+    {
+      "id": "EXTERIORITY",
+      "exact": [
+        "Western Horizon",
+        "Golden Egg",
+        "L,R,J,G,C",
+        "twin worlds"
+      ],
+      "alternates": [
+        "source admissibility",
+        "custody",
+        "observer leakage",
+        "independent origin"
+      ],
+      "likely_families": [
+        "Western Horizon",
+        "Experiment A/B",
+        "FADT",
+        "Atlas"
+      ],
+      "desired_fields": [
+        "episode",
+        "custody",
+        "independent_measurement",
+        "identifiability"
+      ]
+    },
+    {
+      "id": "DOLLHOUSE",
+      "exact": [
+        "DOLLHOUSE.md",
+        "/dollhouse-audit",
+        "/dollhouse-design"
+      ],
+      "alternates": [
+        "Pedagogue",
+        "Aperture",
+        "Atlas",
+        "FADT",
+        "Temporal Custodian",
+        "Orchestrator"
+      ],
+      "likely_families": [
+        "root agents",
+        "skill refs",
+        "tests",
+        "CI"
+      ],
+      "desired_fields": [
+        "actual_engine_execution",
+        "specialist_veto",
+        "source_references"
+      ]
+    },
+    {
+      "id": "ATELIERS",
+      "exact": [
+        "SRC Atelier",
+        "Wendbine",
+        "Em",
+        "EMSTD613"
+      ],
+      "alternates": [
+        "source query",
+        "cross-package lineage",
+        "media retrieval",
+        "search substrate"
+      ],
+      "likely_families": [
+        "Atelier packages",
+        "GitHub PRs",
+        "Library",
+        "source ZIPs"
+      ],
+      "desired_fields": [
+        "source_body",
+        "pagination",
+        "query_verification",
+        "source_origin"
+      ]
+    },
+    {
+      "id": "LORE_AND_STYLE",
+      "exact": [
+        "Maguire Glinda",
+        "Mugler-unchained",
+        "chromepunk",
+        "Refractive Couture"
+      ],
+      "alternates": [
+        "gothic future",
+        "phasonic cupola",
+        "operator legibility",
+        "aesthetic epistemology"
+      ],
+      "likely_families": [
+        "Vixen",
+        "Encyclopedia",
+        "Dome-World"
+      ],
+      "desired_fields": [
+        "source_of_motif",
+        "design_manifest",
+        "kernel_vs_ui",
+        "observer_test"
+      ]
+    }
+  ],
+  "required_packet_fields": [
+    "packet_id",
+    "baseline.registry_sha256",
+    "creator",
+    "operator_authority",
+    "research_intent",
+    "proposals[].kind",
+    "proposals[].anchors",
+    "proposals[].hypothesis",
+    "proposals[].controls.falsifier",
+    "proposals[].controls.competent_null",
+    "proposals[].evidence",
+    "proposals[].uncertainty"
+  ],
+  "native_data": "packages/rulefield/data/rulefield.v1.json",
+  "amendment_schema": "packages/rulefield/amendments/schema.json",
+  "complexity_lab": "packages/rulefield/lab/multiway_lab.mjs",
+  "roadmap": "packages/rulefield/ROADMAP.md"
+}
