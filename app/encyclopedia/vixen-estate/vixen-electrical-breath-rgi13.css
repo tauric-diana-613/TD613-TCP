@@ -166,3 +166,15 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
   animation:none!important;transition:none!important;
  }
 }
+
+/* Room opt-ins: same-host-clock Living Mesh, no additional RAF ownership. */
+body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{
+ display:block!important;opacity:.62!important;filter:saturate(1.35) contrast(1.08);
+}
+body[data-view="observatory"]:not([data-vixen-optical-mesh-observatory="on"])
+ #vixenLivingMesh.vixen-living-mesh{display:none!important;}
+body[data-view="observatory"][data-vixen-optical-mesh-observatory="on"]
+ #vixenLivingMesh.vixen-living-mesh{display:block!important;opacity:.39!important;}
+@media(max-width:740px){
+ body[data-view="collection"] #vixenLivingMesh.vixen-living-mesh{opacity:.35!important;}
+}

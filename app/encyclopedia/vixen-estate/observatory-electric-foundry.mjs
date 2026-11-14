@@ -145,6 +145,9 @@ export async function mountVixenElectricFoundry({
    state.scoreState=paintComputationalScore(state.notation,{
     labId:state.labId,model:state.model,pointer:state.pointer,time:state.time
    });
+   // Optional full-viewport lighting borrows the Foundry clock.
+   if(document.body.dataset.vixenOpticalMeshObservatory==='on')
+    window.VixenLivingMesh?.renderHostFrame?.({time:state.time,view:'observatory',sourceIds:[]});
    state.frames++;
   }catch(e){state.held=String(e.message||e);log('RENDER_REFUSED',{reason:state.held});stop()}
  }

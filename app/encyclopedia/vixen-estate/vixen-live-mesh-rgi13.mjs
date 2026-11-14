@@ -257,6 +257,7 @@ export function mountVixenLivingMesh({
  const mq=win.matchMedia?.('(prefers-reduced-motion: reduce)');
  let reduced=!!mq?.matches,held=false,raf=0,disposed=false,lastMs=-Infinity;
  let frame=0,last=null,resizeNeeded=true,pausedAt=0,paintCostMs=0;
+ let lastHostFrameMs=-Infinity,hostFrames=0;
  let pointer=xy(.5,.5),scroll=win.scrollY||0;
  const width=()=>Math.max(1,win.innerWidth||1),height=()=>Math.max(1,win.innerHeight||1);
  // Work identity derives from one selected Work per source-bound card;
@@ -267,7 +268,7 @@ export function mountVixenLivingMesh({
  // The Salon and Observatory have their OWN live computed stages. Avoid
  // overpainting them with an almost-invisible second full-screen Canvas.
  const stageOwned=()=>['collection','observatory'].includes(doc.body.dataset.view);
- function sample(ms){
+ function sample(ms,hostFrame=null){
   if(disposed||doc.hidden)return;
   const paintStart=win.performance?.now?.()||0;
   const w=width(),h=height();
@@ -280,15 +281,15 @@ export function mountVixenLivingMesh({
    ctx.setTransform(effective,0,0,effective,0,0);
    resizeNeeded=false;
   }
-  const time=paused()?0:ms/1000;
-  const mode=doc.body.dataset.view||'overview';
+  const time=hostFrame?.time??(paused()?0:ms/1000);
+  const mode=hostFrame?.view??doc.body.dataset.view??'overview';
   const model=buildLivingMesh({
-   width:w,height:h,time,scroll,pointer,view:mode,sourceIds:readSources(),
-   quality:w<720?'low':'medium'
+   width:w,height:h,time,scroll,pointer,view:mode,sourceIds:hostFrame?.sourceIds??readSources(),
+   quality:hostFrame?'low':w<720?'low':'medium'
   });
-  last=paintLivingMesh(ctx,model,{intensity:mode==='observatory'?.55:mode==='reference'?.52:.92});
+  last=paintLivingMesh(ctx,model,{intensity:hostFrame?.intensity??(mode==='observatory'?.55:mode==='reference'?.52:.92)});
   canvas.dataset.route=mode;
-  canvas.dataset.animation=paused()?'STILL':stageOwned()?'AMBIENT_PARKED':'LIVE';
+  canvas.dataset.animation=paused()?'STILL':hostFrame?'HOST_FRAME':stageOwned()?'AMBIENT_PARKED':'LIVE';
   frame++;
   paintCostMs=(win.performance?.now?.()||paintStart)-paintStart;
   // No visual signal grants truth, identity, authorship or release authority.
@@ -345,9 +346,23 @@ export function mountVixenLivingMesh({
    rendered_frames:frame,route:canvas.dataset.route,
    motion:canvas.dataset.animation,source_mode:last?.source_mode,
    model_carriers:last?.model_carriers,
-   paused_at_frame:pausedAt,paint_cost_ms:Math.round(paintCostMs),empirical_credit:0
+   paused_at_frame:pausedAt,paint_cost_ms:Math.round(paintCostMs),
+   host_driven_frames:hostFrames,empirical_credit:0
   }),
   renderOnce:()=>{if(!disposed)sample(0);return last;},
+  /** Opt-in same-frame host drawing: zero new RAFs or scheduler ownership. */
+  renderHostFrame:({time=0,sourceIds,view=doc.body.dataset.view,force=false}={})=>{
+   if(disposed||doc.hidden||!stageOwned()||view!==doc.body.dataset.view)return null;
+   if(view==='observatory'&&doc.body.dataset.vixenOpticalMeshObservatory!=='on')return null;
+   if(!Number.isFinite(time))return null;
+   if(paused()&&!force)return last;
+   const now=win.performance?.now?.()??0;
+   if(!force&&now-lastHostFrameMs<180)return last;
+   lastHostFrameMs=now;hostFrames++;
+   sample(time*1000,{time,view,sourceIds:sourceIds??readSources(),
+    intensity:view==='collection'?.85:.45});
+   return last;
+  },
   dispose(){
    disposed=true;if(raf)win.cancelAnimationFrame(raf);
    mutation?.disconnect();
