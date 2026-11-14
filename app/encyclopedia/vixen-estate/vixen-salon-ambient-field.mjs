@@ -66,39 +66,83 @@ export function buildSalonField({width,height,time=0,field,cx,cy,scale,sourceIds
   return {width,height,time,sourceIds:[...sourceIds],trails,nodes,anchors,
     metadata:{pairs:pairs.length,clock_source:'FOLDED_CUIRASS_SHARED',claim_class:'ARTISTIC_VISUAL_ONLY'}};
 }
+/** Spatially entangled couture optics. The same garment clock drives all
+ * trails, nerves, crossings and bounded particle blooms; no independent RAF.
+ * These are finite artistic signals, not observed electromagnetic measurements.
+ */
 export function paintSalonField(ctx,m){
-  const layout=buildSalonField(m);
-  ctx.save();
-  ctx.globalCompositeOperation='source-over';
-  const colors={pink:'#ff73b7',pearl:'#f5fbfa',champagne:'#fff0bd'};
-  for(const lane of layout.trails){
-    ctx.beginPath();
-    lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
-    ctx.strokeStyle=colors[lane.color];
-    ctx.lineWidth=lane.index%3===0?1.4:.72;
-    ctx.globalAlpha=lane.index%3===0?.54:.34;
-    ctx.stroke();
-  }
-  for(let i=0;i<layout.nodes.length;i++){
-    const p=layout.nodes[i];
-    ctx.beginPath();ctx.ellipse(p.x,p.y,i%3===0?1.8:1.05,i%3===0?1.8:1.05,0,0,TAU);
-    ctx.fillStyle=i%3===0?colors.champagne:colors.pink;ctx.globalAlpha=clamp(p.energy*.8,0,.75);ctx.fill();
-  }
-  ctx.globalAlpha=.43;ctx.lineWidth=.7;ctx.strokeStyle=colors.champagne;
+ const layout=buildSalonField(m);
+ const {width:W,height:H,cx,cy,scale,time}=m;
+ const tones={pink:'#ff73b7',pearl:'#fffaf5',champagne:'#fff0bc'};
+ const charge=n=>.5+.5*Math.sin(time*1.42+n*2.399);
+ ctx.save();
+ ctx.globalCompositeOperation='source-over';
+ const haloR=Math.min(H*.48,scale*.60,280);
+ const halo=ctx.createRadialGradient(cx,cy,3,cx,cy,haloR);
+ halo.addColorStop(0,'rgba(255,253,224,.20)');
+ halo.addColorStop(.23,'rgba(255,237,179,.12)');
+ halo.addColorStop(.51,'rgba(255,92,170,.065)');
+ halo.addColorStop(1,'rgba(255,92,170,0)');
+ ctx.globalAlpha=.66;ctx.fillStyle=halo;
+ ctx.fillRect(cx-haloR,cy-haloR,haloR*2,haloR*2);
+ for(const lane of layout.trails){
+  const light=charge(lane.index+9*lane.side);
   ctx.beginPath();
-  ctx.ellipse(m.cx,m.cy,m.scale*.48,m.scale*.20,-.17,0,TAU);ctx.stroke();
-  ctx.beginPath();
-  ctx.ellipse(m.cx,m.cy,m.scale*.55,m.scale*.25,.21,0,TAU);ctx.stroke();
-  // Linked anchors lead into the central garment; those optical paths
-  // inherit its active phase but cannot overwrite or interpret source data.
-  for(let k=0;k<layout.anchors.length;k++){
-    const a=layout.anchors[k],lane=layout.trails[k%layout.trails.length];
-    const p=lane.points[18];
-    ctx.globalAlpha=.28;ctx.lineWidth=.65;ctx.strokeStyle=k%2?colors.pink:colors.pearl;
-    ctx.beginPath();ctx.moveTo(p[0],p[1]);
-    ctx.lineTo((p[0]+a[0])*.5,(p[1]+a[1])*.5);
-    ctx.lineTo(a[0],a[1]);ctx.stroke();
-  }
-  ctx.restore();
-  return layout;
+  lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+  ctx.strokeStyle=tones[lane.color];
+  ctx.shadowColor=lane.color==='champagne'?'#ffdda6':'#ff65ad';
+  ctx.shadowBlur=Math.min(15,H*.025);
+  ctx.lineWidth=lane.index%3===0?2.1:1.25;
+  ctx.globalAlpha=Math.min(.82,.31+.34*light);
+  ctx.stroke();
+ }
+ ctx.shadowBlur=0;
+ // Sew crossing connections into the same D3/phi trajectories.
+ for(let j=5;j<=26;j+=7)for(let k=0;k<8;k++){
+  const left=layout.trails[k].points[j];
+  const right=layout.trails[k+1].points[Math.min(28,j+2)];
+  ctx.beginPath();ctx.moveTo(left[0],left[1]);
+  ctx.lineTo((left[0]+right[0])*.5,(left[1]+right[1])*.5-H*.012);
+  ctx.lineTo(right[0],right[1]);
+  ctx.strokeStyle=k%3===0?tones.champagne:tones.pink;
+  ctx.lineWidth=.82;ctx.globalAlpha=.19+.12*charge(j+k);ctx.stroke();
+ }
+ // Deterministic bounded particle blooms mark computed locations, never random noise.
+ for(let i=0;i<layout.nodes.length;i++){
+  const p=layout.nodes[i],power=p.energy*(.5+.5*charge(i));
+  const r=Math.min(12,4+13*power);
+  const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
+  glow.addColorStop(0,'rgba(255,255,247,.94)');
+  glow.addColorStop(.13,i%3===0?'rgba(255,239,179,.64)':'rgba(255,98,180,.60)');
+  glow.addColorStop(.5,'rgba(255,120,196,.10)');
+  glow.addColorStop(1,'rgba(255,120,196,0)');
+  ctx.globalAlpha=Math.min(.75,.28+power*.55);
+  ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,r*2,r*2);
+  ctx.beginPath();ctx.ellipse(p.x,p.y,i%5===0?1.65:.85,i%5===0?1.65:.85,0,0,TAU);
+  ctx.globalAlpha=.76;ctx.fillStyle=i%3===0?tones.champagne:tones.pearl;ctx.fill();
+ }
+ // A three-axis refractive orbit around the computed waist, with dark channels.
+ for(const [j,tilt] of [[0,-.24],[1,.20],[2,-.45]]){
+  ctx.beginPath();ctx.ellipse(cx,cy,scale*(.48+j*.055),scale*(.21+j*.025),tilt,0,TAU);
+  ctx.strokeStyle=j===0?tones.champagne:j===1?tones.pink:tones.pearl;
+  ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=Math.min(18,H*.025);
+  ctx.lineWidth=j===1?1.25:.90;
+  ctx.globalAlpha=.43+.22*charge(j+40);ctx.stroke();
+ }
+ ctx.shadowBlur=0;
+ // Active rays end at the garment's sewn anchors.
+ for(let k=0;k<layout.anchors.length;k++){
+  const a=layout.anchors[k],p=layout.trails[k%layout.trails.length].points[18];
+  const ray=ctx.createLinearGradient(p[0],p[1],a[0],a[1]);
+  ray.addColorStop(0,'rgba(255,108,186,0)');
+  ray.addColorStop(.65,k%2?'rgba(255,98,166,.62)':'rgba(255,232,180,.56)');
+  ray.addColorStop(1,'rgba(255,252,233,.93)');
+  ctx.beginPath();ctx.moveTo(p[0],p[1]);
+  ctx.lineTo((p[0]+a[0])*.55,(p[1]+a[1])*.55-H*.01);
+  ctx.lineTo(a[0],a[1]);
+  ctx.strokeStyle=ray;ctx.lineWidth=1.2;ctx.globalAlpha=.40+.22*charge(k+63);
+  ctx.stroke();
+ }
+ ctx.restore();
+ return layout;
 }
