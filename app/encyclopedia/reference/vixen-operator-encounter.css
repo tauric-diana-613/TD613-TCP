@@ -6,7 +6,7 @@
   position:relative;isolation:isolate;box-sizing:border-box;scroll-margin-top:92px;margin:clamp(2rem,4vw,4rem) 0 1rem;
   padding:clamp(1.2rem,3vw,3rem);color:#faf4f1;background:
   radial-gradient(ellipse at 92% 9%,rgba(249,243,109,.12),transparent 45%),
-  linear-gradient(150deg,#1d1a25,#090e16 65%,#14151e);
+  linear-gradient(150deg,#1b2227,#090e16 65%,#14151e);
   border:1px solid rgba(249,243,109,.56);box-shadow:0 18px 80px rgba(0,0,0,.24);
 }
 #operahouseEncounter *{box-sizing:border-box}
@@ -37,7 +37,7 @@
 #operahouseEncounter .oh-edges li{font:.76rem/1.65 ui-monospace,monospace;overflow-wrap:anywhere;color:#fff1cf;padding:.3rem 0;border-bottom:1px solid #ffffff22}
 #operahouseEncounter .oh-button{
   display:inline-flex;align-items:center;justify-content:center;text-align:left;min-height:44px;max-width:100%;
-  padding:.7rem 1rem;margin:.3rem .4rem .6rem 0;background:#eb92ad;color:#15151d;
+  padding:.7rem 1rem;margin:.3rem .4rem .6rem 0;background:#eb92ad;color:#161c20;
   border:1px solid #ffc9db;font:650 .73rem/1.5 system-ui,sans-serif;letter-spacing:.02em;
   overflow-wrap:anywhere;white-space:normal;cursor:pointer
 }
@@ -54,9 +54,9 @@
 }
 #operahouseEncounter .oh-error{color:#ffe1b9;font:600 .78rem/1.5 system-ui,sans-serif}
 #operahouseEncounter .oh-disposition{
-  border-left:3px solid var(--oh-gold);padding:1.5rem;margin:1.4rem 0;background:var(--oh-paper);color:#1c1a21
+  border-left:3px solid var(--oh-gold);padding:1.5rem;margin:1.4rem 0;background:var(--oh-paper);color:#1b2126
 }
-#operahouseEncounter .oh-disposition h3{font:400 clamp(1.35rem,2.4vw,2rem)/1.2 Georgia,serif;color:#27202a;overflow-wrap:anywhere}
+#operahouseEncounter .oh-disposition h3{font:400 clamp(1.35rem,2.4vw,2rem)/1.2 Georgia,serif;color:#21292e;overflow-wrap:anywhere}
 #operahouseEncounter .oh-disposition .oh-eyebrow{color:#86435b}
 #operahouseEncounter .oh-disposition .oh-note{color:#3c333b}
 #operahouseEncounter .oh-footer{display:flex;align-items:start;flex-wrap:wrap;gap:1rem;padding-top:1.2rem;border-top:1px solid #ffeac955}
@@ -90,7 +90,7 @@ body[data-active-research-stage="OPERAHOUSE"] .site-header .header-inner{
   background:#f8ed75;letter-spacing:.075em;font:700 .7rem/1.5 ui-monospace,monospace;
   text-transform:uppercase;white-space:normal;cursor:pointer;
 }
-#operahouseStageReturn:focus-visible{outline:3px solid #15151d;outline-offset:3px}
+#operahouseStageReturn:focus-visible{outline:3px solid #161c20;outline-offset:3px}
 @media(max-width:680px){
   #operahouseStageReturn:not([hidden]){font-size:.63rem;padding:.5rem .8rem;letter-spacing:.035em}
 }

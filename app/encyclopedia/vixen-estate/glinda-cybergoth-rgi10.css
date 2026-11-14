@@ -9,7 +9,7 @@
  * No styling operation may place the Universal reader's source in Vixen's cast.
  *
  * MATERIALS: oxidized black chrome / iridescent pearl / sheer pink lacquer /
- * architectural lilac / ice-silver annotations. Warm emergency yellow is
+ * champagne-silver / ice-silver annotations. Warm emergency yellow is
  * excluded from everyday navigation and ornamental headers.
  *
  * HIERARCHY: couture > recorded source > consequential interaction >
@@ -45,7 +45,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]){
   background:
     radial-gradient(ellipse 76% 53% at 6% -7%,rgba(219,101,173,.21),transparent 70%),
     radial-gradient(ellipse 58% 56% at 100% 30%,rgba(110,108,103,.22),transparent 78%),
-    linear-gradient(150deg,#0d0a13,#141a1e 47%,#0a0810 98%);
+    linear-gradient(150deg,#0d1215,#141a1e 47%,#0b1013 98%);
   min-height:100vh;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) ::selection{
@@ -56,9 +56,9 @@ body:not([data-active-research-stage="OPERAHOUSE"]) :is(button,a,input,textarea,
 }
 /* ---- proscenium/masthead: dark chrome, not Easter-matte ---- */
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header{
- background:linear-gradient(100deg,rgba(12,9,20,.97),rgba(22,28,32,.93))!important;
+ background:linear-gradient(100deg,rgba(12,17,20,.97),rgba(22,28,32,.93))!important;
  border-bottom:1px solid rgba(240,172,220,.43);
- box-shadow:0 9px 38px rgba(8,6,14,.55);
+ box-shadow:0 9px 38px rgba(9,14,17,.55);
  color:#fffff5!important;
  -webkit-backdrop-filter:blur(22px) saturate(1.36);
  backdrop-filter:blur(22px) saturate(1.36);
@@ -91,7 +91,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .hdr-pill[aria-
  color:#ffedcb;border-color:#f1b9df;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .mobile-nav{
- background:linear-gradient(145deg,rgba(21,27,31,.99),rgba(10,9,18,.99));
+ background:linear-gradient(145deg,rgba(21,27,31,.99),rgba(12,17,20,.99));
  color:#f6efe5;border-bottom-color:#98958f;
 }
 /* ---- ONE Fox House, two responsive placements, never an invisible desktop rail ---- */
@@ -100,7 +100,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .menu-toggle{di
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail{
  display:flex!important;
  position:fixed;z-index:85;
- background:linear-gradient(180deg,rgba(15,20,24,.97),rgba(13,11,20,.98));
+ background:linear-gradient(180deg,rgba(15,20,24,.97),rgba(14,19,22,.98));
  border-color:rgba(241,212,183,.3);color:#fadcbd;
  -webkit-backdrop-filter:blur(17px);backdrop-filter:blur(17px);
 }
@@ -131,7 +131,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-e
    top:var(--header-height,72px);bottom:0;left:0;width:var(--vf-room-width);
    flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;
    border-right:1px solid rgba(242,213,183,.37);
-   box-shadow:8px 0 32px rgba(7,4,15,.28);
+   box-shadow:8px 0 32px rgba(8,12,15,.28);
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #main{
    margin-left:var(--vf-room-width);width:calc(100% - var(--vf-room-width));
@@ -166,7 +166,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-e
    top:auto;left:0;bottom:0;width:100%;height:67px;
    flex-direction:row;align-items:center;gap:0;overflow-x:auto;overflow-y:hidden;
    border:0;border-top:1px solid rgba(244,181,224,.45);
-   box-shadow:0 -10px 38px rgba(5,3,10,.48);
+   box-shadow:0 -10px 38px rgba(6,11,13,.48);
    overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail::-webkit-scrollbar{display:none}
@@ -236,7 +236,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) :is(
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(.toolbar,.synthesis-bench,.gate-pair-card,.hold-panel){
  background:linear-gradient(135deg,rgba(33,40,45,.92),rgba(17,23,27,.94));
- color:#fdf6eb;box-shadow:0 20px 48px rgba(7,4,13,.14);
+ color:#fdf6eb;box-shadow:0 20px 48px rgba(8,12,15,.14);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(.lexicon-list,.lexicon-reader){
  background:linear-gradient(130deg,#20272c,#141a1e);color:#fef7ed;
@@ -315,7 +315,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry{
  --ef-hair:rgba(244,183,220,.29);
  background:
  radial-gradient(ellipse at 72% -16%,rgba(127,125,120,.29),transparent 63%),
- linear-gradient(155deg,#141a1e,#0b0a15 80%);
+ linear-gradient(155deg,#141a1e,#0d1215 80%);
  border-color:rgba(216,201,184,.55);
  box-shadow:0 3px 0 rgba(239,183,221,.2),0 38px 84px rgba(0,0,0,.5);
 }
@@ -324,7 +324,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry:before
  box-shadow:0 0 22px rgba(239,136,202,.24);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-header{
- background:linear-gradient(120deg,rgba(12,9,19,.97),rgba(39,47,53,.71));
+ background:linear-gradient(120deg,rgba(12,17,20,.97),rgba(39,47,53,.71));
  border-color:rgba(220,205,187,.3);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-kicker{
@@ -342,7 +342,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-he
  border-bottom:1px solid rgba(239,210,181,.42);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab{
- background:linear-gradient(125deg,rgba(28,35,40,.84),rgba(18,16,27,.96));
+ background:linear-gradient(125deg,rgba(28,35,40,.84),rgba(18,24,28,.96));
  color:#faf3e9;border-color:rgba(216,202,184,.19);
  min-height:86px;font-size:clamp(11px,1vw,14px);
 }
@@ -385,7 +385,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-observatory .formula-s
  margin:clamp(30px,4vw,62px) 0 0;
  padding:clamp(22px,3.8vw,54px);
  background:radial-gradient(ellipse at 85% 0,rgba(83,89,94,.29),transparent 50%),
- linear-gradient(145deg,#12181c,#0c0b15 75%);
+ linear-gradient(145deg,#12181c,#0e1316 75%);
  border:1px solid rgba(237,171,216,.32);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-observatory .formula-side>.toolbar{

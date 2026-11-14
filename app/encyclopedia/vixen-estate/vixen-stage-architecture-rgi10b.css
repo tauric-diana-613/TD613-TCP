@@ -17,7 +17,7 @@
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry{
   isolation:isolate;overflow:clip;
   border:1px solid rgba(246,217,187,.38);
-  box-shadow:0 26px 95px rgba(2,0,10,.5);
+  box-shadow:0 26px 95px rgba(4,8,10,.5);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-header{
   min-height:240px;display:flex;flex-direction:column;justify-content:center;
@@ -50,7 +50,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-pr
   grid-template-columns:clamp(196px,22%,304px) minmax(0,1fr);
   align-items:stretch;min-width:0;
   border-block:1px solid rgba(241,177,219,.42);
-  background:#090811;
+  background:#0b1013;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score{
   display:flex;flex-direction:column;min-width:0;
@@ -100,11 +100,11 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-he
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]:before{color:#faf3e9}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-instrument-stage{
   min-width:0;display:flex;flex-direction:column;overflow:hidden;
-  background:#0b0914;
+  background:#0c1114;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar{
   min-height:59px;padding:10px 16px;gap:8px;
-  background:linear-gradient(95deg,#171d22,#15111c 80%);
+  background:linear-gradient(95deg,#171d22,#13191d 80%);
   border-bottom:1px solid rgba(248,187,222,.26);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry :is(.ef-toggle,.ef-button){
@@ -125,7 +125,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-stage{
   width:100%;min-height:660px;border-right:0;
-  background:radial-gradient(circle at 48% 43%,#232a30,#080811 66%);
+  background:radial-gradient(circle at 48% 43%,#232a30,#0b0f12 66%);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-canvas{min-height:660px}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-readout[hidden]{display:none!important}
