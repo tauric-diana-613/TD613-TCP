@@ -1,0 +1,528 @@
+/* 𝌋 VIXEN · SYNTHESIS SALON
+ * Glinda pink × Mugler graphite with a structural research seam.
+ * All ornament is subordinate to legible source identity and consequence.
+ * Operahouse transport, raw records and Podium are never imported by CSS.
+ */
+#vixenSynthesisSalon{
+ --vs-ink:#22272a;--vs-cream:#f9f5ef;--vs-pink:#ff91af;--vs-fuchsia:#ed5a9a;
+ --vs-gold:#FFF2A9;--vs-steel:#667078;--vs-line:rgba(27,29,33,.3);
+ font-family:var(--font-mono,ui-monospace,monospace);
+ position:relative;isolation:isolate;min-width:0;color:var(--vs-ink);
+ background:linear-gradient(143deg,#faf4ed 2%,#f6e6eb 48%,#e6d9de 100%);
+ border:1px solid #20272a;box-shadow:14px 18px 0 #1e2327;
+ overflow:hidden;
+}
+/* DD-02 optical seam: the one Canvas2D clock owns the garment and a
+ * full-header lattice. Paper remains a readable foreground, not an overlay
+ * pretending to be the renderer. Mobile has a separately stacked stage. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
+ display:grid;grid-template-columns:minmax(0,1fr);position:relative;
+ align-items:stretch;min-height:480px;padding:0;overflow:hidden;
+ background:#111b21;border-bottom:1px solid #fff0a8;box-shadow:none;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::before,
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::after{content:none;display:none}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
+ position:relative;z-index:2;width:56%;max-width:775px;min-height:480px;
+ padding:clamp(25px,3.1vw,48px);
+ display:flex;flex-direction:column;justify-content:center;gap:19px;
+ background:linear-gradient(90deg,rgba(255,252,248,.97) 0%,rgba(255,249,247,.94) 42%,
+ rgba(255,243,244,.90) 67%,rgba(255,236,240,.74) 87%,rgba(255,235,240,0) 100%);
+ color:#192027;text-shadow:none;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{
+ max-width:100%;margin:0;font:400 clamp(47px,5.1vw,84px)/.94 Didot,'Bodoni MT',Georgia,serif;
+ letter-spacing:-.065em;color:#192027;text-shadow:none;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title-italics{
+ color:#df267e;background:none;-webkit-text-fill-color:currentColor;
+ text-shadow:none;filter:none;font-weight:400;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy .vs-eyebrow{
+ color:#2d363b;margin:0;font:700 10px/1.65 ui-monospace,monospace;letter-spacing:.16em;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-intro{
+ width:100%;max-width:100%;margin:0;color:#29333b;background:none;
+ font:400 clamp(15px,1.3vw,19px)/1.5 Georgia,serif;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
+ position:absolute;inset:0;z-index:1;min-width:0;min-height:480px;
+ overflow:hidden;background:#10181e;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-cuirass-canvas{
+ display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+ opacity:1;mix-blend-mode:normal;filter:none;mask:none;animation:none;
+}
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-label{
+ position:absolute;z-index:2;bottom:12px;right:18px;left:auto;max-width:58%;
+ text-align:right;color:#dfded6;font:500 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;
+ text-shadow:none;pointer-events:none;
+}
+/* The page canvas paints only the complement of this optical stage, using
+ * the same prepaint scene and this compositor’s clock. */
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
+  display:flex;flex-direction:column;min-height:0;
+ }
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
+  width:100%;max-width:none;min-height:0;padding:22px 20px;gap:12px;
+  background:linear-gradient(145deg,#fffdfb,#fff0f3);
+ }
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{font-size:clamp(46px,11vw,68px)}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
+  position:relative;inset:auto;flex:none;min-height:340px;height:90vw;max-height:440px;
+ }
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-label{
+  left:18px;right:18px;max-width:none;text-align:center;
+ }
+}
+@media(forced-colors:active){
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{display:none}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{background:Canvas;color:CanvasText}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] :is(.vs-title,.vs-title-italics,.vs-intro){color:CanvasText}
+}
+@media print{#vixenSynthesisSalon .vs-optical-stage{display:none}}
+#vixenSynthesisSalon [hidden]{display:none!important}
+#vixenSynthesisSalon *{box-sizing:border-box}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{
+ position:relative;min-height:330px;overflow:hidden;padding:clamp(24px,5vw,74px);
+ border-bottom:2px solid var(--vs-ink);color:#fcf7f4;
+ background:radial-gradient(circle at 85% -10%,#d75786 0%,transparent 52%),
+ linear-gradient(135deg,#111216 20%,#1e2427 56%,#15191b 100%);
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head:before{
+ content:'';position:absolute;right:-9%;top:-16%;width:min(60vw,610px);aspect-ratio:1;
+ border:1px solid rgba(255,240,168,.55);border-radius:50%;
+ box-shadow:0 0 0 25px rgba(255,145,175,.045),0 0 0 51px rgba(255,240,168,.065);
+ transform:rotate(-17deg);pointer-events:none;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head:after{
+ content:'V / VI';position:absolute;right:4%;bottom:-.3em;
+ font:italic clamp(120px,19vw,310px)/1 Georgia,serif;
+ color:rgba(255,145,175,.10);letter-spacing:-.14em;pointer-events:none;
+}
+#vixenSynthesisSalon .vs-eyebrow{
+ position:relative;z-index:1;font:700 clamp(9px,1vw,12px)/1.6 ui-monospace,monospace;
+ color:#b54374;letter-spacing:.18em;text-transform:uppercase;margin:0 0 13px;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head .vs-eyebrow{color:var(--vs-gold)}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{
+ position:relative;z-index:1;max-width:970px;
+ margin:0 0 22px;font:400 clamp(52px,8.6vw,134px)/.82 Georgia,serif;
+ letter-spacing:-.06em;color:#fff2f6;text-wrap:balance;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title-italics{
+ font-weight:400;font-style:italic;color:var(--vs-pink);text-shadow:1px 2px 0 #8c355e;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-intro{
+ position:relative;z-index:1;max-width:700px;
+ font:400 clamp(15px,1.7vw,20px)/1.55 Georgia,serif;
+ color:#e6d8df;margin:0;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{
+ position:absolute;z-index:1;right:6%;top:21px;
+ font:500 clamp(16px,1.8vw,25px)/1.3 Georgia,serif;
+ color:var(--vs-gold);letter-spacing:.18em;user-select:none;
+}
+#vixenSynthesisSalon .vs-rail{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ background:#fff0a8;border-bottom:2px solid #24252a;
+}
+#vixenSynthesisSalon .vs-ledger-cell{
+ display:flex;flex-direction:column;gap:4px;padding:16px 19px;
+ border-right:1px solid #24252a;min-width:0;
+}
+#vixenSynthesisSalon .vs-ledger-cell:last-child{border-right:none}
+#vixenSynthesisSalon .vs-ledger-label{font:700 9px/1.4 ui-monospace,monospace;letter-spacing:.11em;opacity:.75}
+#vixenSynthesisSalon .vs-ledger-cell strong{
+ font:400 clamp(12px,1.6vw,17px)/1.27 Georgia,serif;overflow-wrap:anywhere
+}
+#vixenSynthesisSalon .vs-mix{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;
+ border-bottom:2px solid #1d2326;position:relative;min-width:0
+}
+#vixenSynthesisSalon .vs-source-card{
+ position:relative;min-width:0;background:#f8f3ee;padding:clamp(22px,3.5vw,48px);
+ border-right:1px solid #23292d;
+}
+#vixenSynthesisSalon .vs-source-card:nth-child(even){border-right:0;background:#f1dbe4}
+#vixenSynthesisSalon .vs-source-card:before{
+ content:'';position:absolute;left:0;top:0;height:5px;width:100%;
+ background:linear-gradient(90deg,#14181b,#df6998,#fff0a8);
+}
+#vixenSynthesisSalon .vs-source-tag{font:700 10px/1.5 ui-monospace,monospace;letter-spacing:.15em;color:#91405f}
+#vixenSynthesisSalon .vs-work-title{
+ font:400 clamp(23px,3.3vw,46px)/1.06 Georgia,serif;
+ margin:1.3rem 0 1.1rem;min-height:2.2em;letter-spacing:-.025em;
+ text-wrap:pretty;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-field{display:block;min-width:0;margin:.8rem 0}
+#vixenSynthesisSalon .vs-field-label{
+ display:block;font:700 10px/1.35 ui-monospace,monospace;
+ letter-spacing:.1em;text-transform:uppercase;color:#3e4a51;margin-bottom:.5rem;
+}
+#vixenSynthesisSalon .vs-select{
+ width:100%;max-width:100%;min-width:0;min-height:48px;padding:11px 36px 11px 13px;
+ background:#fffaf4;color:#1a1f22;border:1px solid #48565e;
+ font:500 12px/1.4 system-ui,sans-serif;white-space:normal;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-note{font:400 12px/1.6 system-ui,sans-serif;color:#374248;overflow-wrap:anywhere}
+#vixenSynthesisSalon .vs-custody{
+ color:#435058;font:500 11px/1.65 ui-monospace,monospace;
+ overflow-wrap:anywhere;max-width:920px;
+}
+#vixenSynthesisSalon .vs-hash{
+ padding:10px;border:1px solid #969394;background:#f2e7ea;
+ font:500 10px/1.5 ui-monospace,monospace;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-gate{
+ display:inline-block;background:#1c2125;color:var(--vs-gold);
+ padding:8px 10px;font:700 10px/1.5 ui-monospace,monospace;letter-spacing:.03em;
+}
+#vixenSynthesisSalon .vs-seam{
+ position:absolute;z-index:2;left:50%;transform:translate(-50%,-50%);margin-top:-1px;
+ background:#24272a;color:#fff0a8;border:1px solid #fff0a8;border-radius:50%;
+ width:62px;height:62px;display:grid;place-items:center;
+ font:italic 40px/1 Georgia,serif;box-shadow:0 0 0 10px rgba(247,236,239,.8);
+}
+#vixenSynthesisSalon .vs-program{
+ padding:clamp(22px,4vw,50px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
+ align-items:center;gap:12px 36px;
+ background:linear-gradient(100deg,#ffe4ee,#efebeb);
+ border-bottom:1px solid #24252a;
+}
+#vixenSynthesisSalon .vs-program>.vs-eyebrow{grid-column:1/-1}
+#vixenSynthesisSalon .vs-track-scope,#vixenSynthesisSalon .vs-protocol-scope{
+ font:400 clamp(13px,1.5vw,17px)/1.55 Georgia,serif;max-width:700px;
+}
+#vixenSynthesisSalon .vs-order{grid-column:1/-1;border-top:1px solid #7a7778;padding-top:25px;margin-top:12px}
+#vixenSynthesisSalon .vs-order-button{
+ min-width:130px;min-height:45px;border:1px solid #22292d;color:#22292d;background:transparent;
+ margin:3px 8px 8px 0;font:700 12px/1 ui-monospace,monospace;cursor:pointer
+}
+#vixenSynthesisSalon .vs-order-button[aria-pressed="true"]{background:#22292d;color:#fff0a8}
+#vixenSynthesisSalon .vs-clocks{padding:clamp(22px,4vw,50px);background:#141b20;color:#fff3f7}
+#vixenSynthesisSalon .vs-clocks .vs-eyebrow{color:var(--vs-gold)}
+#vixenSynthesisSalon .vs-clocks .vs-custody{color:#ddd0d5}
+#vixenSynthesisSalon .vs-slider-label{
+ display:block;font:400 clamp(16px,2vw,23px)/1.3 Georgia,serif;margin:12px 0;
+}
+#vixenSynthesisSalon .vs-slider{accent-color:#ff91af;display:block;width:min(620px,100%);min-height:44px;margin:12px 0 22px}
+#vixenSynthesisSalon .vs-clock-bars{display:grid;gap:10px;max-width:920px}
+#vixenSynthesisSalon .vs-clock-row{
+ display:grid;grid-template-columns:minmax(95px,140px) minmax(0,1fr) 46px;align-items:center;gap:12px;
+ font:600 10px/1.5 ui-monospace,monospace;color:#fdf7f4
+}
+#vixenSynthesisSalon .vs-clock-track{
+ height:12px;background:#47545d;border:1px solid #7f7c7d;position:relative;
+}
+#vixenSynthesisSalon .vs-clock-bar{
+ height:100%;background:linear-gradient(90deg,#ef5d9b,#fff0a8);
+ transition:width .22s linear;
+}
+#vixenSynthesisSalon .vs-question{
+ padding:clamp(24px,5vw,58px);background:#f9f5ef;border-top:2px solid #24252a;
+}
+#vixenSynthesisSalon .vs-textarea{
+ display:block;width:100%;max-width:100%;min-height:74px;resize:vertical;
+ margin:12px 0;padding:16px;border:1px solid #6d6a6b;border-radius:0;
+ background:#fffaf7;color:#181d20;font:400 clamp(14px,1.5vw,18px)/1.5 Georgia,serif;
+}
+#vixenSynthesisSalon .vs-textarea:first-of-type{min-height:120px}
+#vixenSynthesisSalon .vs-textarea::placeholder{color:#6d6b66}
+#vixenSynthesisSalon .vs-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:24px 0 4px}
+#vixenSynthesisSalon .vs-action{
+ border:1px solid #1e2428;min-height:48px;padding:12px 18px;
+ background:#fff8f6;color:#1c2125;font:700 11px/1.5 ui-monospace,monospace;
+ white-space:normal;text-align:left;cursor:pointer;
+}
+#vixenSynthesisSalon .vs-action:hover,#vixenSynthesisSalon .vs-order-button:hover{background:#f5d5e0;color:#1d2226}
+#vixenSynthesisSalon .vs-primary{background:#1d2326;color:#fff0a8;border-color:#1d2326}
+#vixenSynthesisSalon .vs-primary:hover{background:#2d353b;color:#fef7fa}
+#vixenSynthesisSalon .vs-quiet{border-style:dashed}
+#vixenSynthesisSalon .vs-status{font:600 11px/1.65 ui-monospace,monospace;padding:12px 22px;background:#fff0a8;color:#1f2024}
+#vixenSynthesisSalon .vs-rest,#vixenSynthesisSalon .vs-empty{
+ background:#f0dce3;color:#1d2326;padding:18px 24px;margin:0;
+ font:italic 17px/1.5 Georgia,serif
+}
+#vixenSynthesisSalon .vs-result{
+ position:relative;margin:0;padding:clamp(24px,5vw,64px);
+ background:#161a1d;color:#f8f1f4;
+ border-top:5px solid var(--vs-fuchsia);
+}
+#vixenSynthesisSalon .vs-result:before{
+ content:'';position:absolute;right:4%;top:10px;width:30%;height:85%;
+ border-right:1px solid rgba(255,145,175,.25);border-top:1px solid rgba(255,145,175,.25);pointer-events:none
+}
+#vixenSynthesisSalon .vs-result>.vs-eyebrow{color:#fff0a8}
+#vixenSynthesisSalon .vs-result-title{
+ font:400 clamp(32px,5vw,64px)/1 Georgia,serif;color:#ffeaf2;margin:10px 0 22px;
+ letter-spacing:-.035em
+}
+#vixenSynthesisSalon .vs-theorem{
+ max-width:1000px;font:italic clamp(23px,3.1vw,38px)/1.3 Georgia,serif;
+ border-left:4px solid #fff0a8;padding-left:18px;margin:25px 0;
+}
+#vixenSynthesisSalon .vs-equation{
+ color:#fff0a8;font:500 clamp(11px,1.25vw,15px)/1.6 ui-monospace,monospace;
+ overflow-wrap:anywhere;padding:12px;background:#293136;border:1px solid #6b6869;
+}
+#vixenSynthesisSalon .vs-result h4{
+ font:italic clamp(20px,2.2vw,28px)/1.2 Georgia,serif;
+ margin:25px 0 10px;color:#ff91af;
+}
+#vixenSynthesisSalon .vs-result p{line-height:1.7}
+#vixenSynthesisSalon .vs-result .vs-custody{color:#e8d7df}
+#vixenSynthesisSalon .vs-result .vs-action{
+ border-color:#fff0a8;background:transparent;color:#fff0a8
+}
+#vixenSynthesisSalon .vs-result .vs-action:hover{background:#fff0a8;color:#161a1d}
+#vixenSynthesisSalon .vs-missing{
+ max-width:980px;padding:0 0 0 20px;
+ font:400 12px/1.8 system-ui,sans-serif;color:#f3e6eb;
+}
+#vixenSynthesisSalon .vs-arms{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:16px 0}
+#vixenSynthesisSalon .vs-arm{
+ display:flex;flex-direction:column;gap:7px;border:1px solid #fff0a8;
+ padding:18px 12px;overflow-wrap:anywhere;min-width:0;
+}
+#vixenSynthesisSalon .vs-arm span{color:#fff0a8;font:700 10px/1.4 ui-monospace,monospace}
+#vixenSynthesisSalon .vs-arm strong{font:400 15px/1.4 Georgia,serif}
+#vixenSynthesisSalon .vs-arm small{font:700 9px/1.5 ui-monospace,monospace;color:#f29dbe}
+#vixenSynthesisSalon .vs-machine{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+#vixenSynthesisSalon .vs-details{
+ min-width:0;color:#f8f3f3;border:1px solid #a8a5a6;padding:12px;background:#1f2428;
+}
+#vixenSynthesisSalon .vs-details summary{
+ cursor:pointer;font:700 11px/1.6 ui-monospace,monospace;color:#fff1f7;min-height:32px;
+}
+#vixenSynthesisSalon .vs-machine-readout{
+ display:block;max-height:400px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;
+ background:#0c1114;border:1px solid #7e7b7c;color:#efeced;
+ padding:15px;font:500 10px/1.7 ui-monospace,monospace;
+}
+#vixenSynthesisSalon :is(button,select,input,textarea,summary):focus-visible{
+ outline:3px solid #a32b57;outline-offset:3px;
+}
+@media (max-width:1050px){
+ #vixenSynthesisSalon .vs-rail{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #vixenSynthesisSalon .vs-ledger-cell:nth-child(2){border-right:0}
+ #vixenSynthesisSalon .vs-ledger-cell:nth-child(-n+2){border-bottom:1px solid #24252a}
+ #vixenSynthesisSalon .vs-arms{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:740px){
+ #vixenSynthesisSalon{box-shadow:6px 7px 0 #1e2327}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{min-height:0;padding:26px 21px 34px}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{font-size:clamp(45px,12vw,75px)}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{position:relative;right:auto;top:auto;margin:15px 0 0;letter-spacing:.08em}
+ #vixenSynthesisSalon .vs-mix{grid-template-columns:minmax(0,1fr)}
+ #vixenSynthesisSalon .vs-source-card{border-right:0;border-bottom:1px solid #21272b}
+ #vixenSynthesisSalon .vs-source-card:nth-child(even){border-bottom:0}
+ #vixenSynthesisSalon .vs-work-title{min-height:0}
+ #vixenSynthesisSalon .vs-seam{width:49px;height:49px;font-size:30px}
+ #vixenSynthesisSalon .vs-program{grid-template-columns:minmax(0,1fr);padding:23px}
+ #vixenSynthesisSalon .vs-program>.vs-eyebrow,#vixenSynthesisSalon .vs-order{grid-column:auto}
+ #vixenSynthesisSalon .vs-question,#vixenSynthesisSalon .vs-result,#vixenSynthesisSalon .vs-clocks{padding:24px 20px}
+ #vixenSynthesisSalon .vs-clock-row{grid-template-columns:92px minmax(0,1fr) 35px;gap:7px}
+ #vixenSynthesisSalon .vs-machine{grid-template-columns:minmax(0,1fr)}
+ #vixenSynthesisSalon .vs-arms{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #vixenSynthesisSalon .vs-rail .vs-ledger-cell{padding:10px}
+ #vixenSynthesisSalon .vs-rail .vs-ledger-label{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ #vixenSynthesisSalon *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* RGI08 Source First / Dromological Layout Repair.
+ * No spectacular proscenium may hide the original archival Work behind
+ * the first viewport. Dramatic form yields to evidence before scroll.
+ */
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{min-height:0;padding:clamp(18px,2.3vw,30px) clamp(20px,3vw,38px) clamp(21px,2.8vw,36px)}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{
+ max-width:1200px;font-size:clamp(41px,5.25vw,79px);
+ line-height:.91;letter-spacing:-.055em;margin:0 0 10px;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-intro{
+ font-size:clamp(13px,1.2vw,16px);line-height:1.45;max-width:780px;
+}
+#vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{right:3%;top:16px}
+#vixenSynthesisSalon .vs-rail{border-top:2px solid #24252a}
+@media (max-width:740px){
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head,
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy,
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{min-height:0}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{width:100%;padding:8px 14px;gap:4px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy .vs-eyebrow{display:none}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{font-size:clamp(26px,7.5vw,42px)}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-intro{display:none}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{padding:18px 19px 20px}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-title{font-size:clamp(40px,10.2vw,64px);max-width:100%;line-height:.92}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-intro{font-size:13px;line-height:1.4}
+ #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-ritual{margin:7px 0 0;font-size:17px}
+}
+
+/* RGI08 theorem receipt readability: source-contrast takes priority over
+   aesthetic inheritance. The default light-paper .vs-note ink must never
+   bleed through onto the near-black theorem cabinet. */
+#vixenSynthesisSalon .vs-result .vs-note{color:#f6eaf0}
+#vixenSynthesisSalon .vs-result .vs-missing{color:#f5e8ee}
+#vixenSynthesisSalon .vs-result .vs-theorem{color:#fff5f7}
+
+/* RGI08 Experiment B: real comparators, observed value deliberately empty. */
+#vixenSynthesisSalon .vs-rubric{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+ padding:0;margin:15px 0 20px;
+}
+#vixenSynthesisSalon .vs-metric{
+ min-width:0;display:flex;flex-direction:column;gap:9px;
+ border:1px solid #ff91af;background:#242a2f;padding:18px;
+}
+#vixenSynthesisSalon .vs-metric-label{
+ font:700 10px/1.5 ui-monospace,monospace;color:#fff0a8;
+ letter-spacing:.07em;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-metric-title{
+ font:400 clamp(17px,2vw,24px)/1.15 Georgia,serif;color:#fff0f7;
+}
+#vixenSynthesisSalon .vs-metric-formula{
+ display:block;white-space:normal;font:500 11px/1.6 ui-monospace,monospace;
+ overflow-wrap:anywhere;padding:10px;background:#161a1d;color:#fff0a8;
+}
+#vixenSynthesisSalon .vs-metric .vs-note{color:#f2e5eb}
+#vixenSynthesisSalon .vs-holonomy-card{
+ grid-column:1/-1;margin-top:10px;padding:12px 16px;
+ background:linear-gradient(125deg,rgba(16,24,30,.92),rgba(26,35,42,.95));
+ border:1px solid rgba(255,145,175,.58);border-left:3px solid #FFF2A9;
+ color:#FFFDFB;
+}
+#vixenSynthesisSalon .vs-holonomy-badge{
+ display:block;font:700 9px/1.4 ui-monospace,monospace;letter-spacing:.14em;
+ color:#FFF2A9;margin-bottom:4px;
+}
+#vixenSynthesisSalon .vs-holonomy-detail{
+ margin:0;font:400 12px/1.5 Georgia,serif;color:#FFE6EF;
+}
+#vixenSynthesisSalon .vixen-aperture-hud{
+ display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 12px;
+}
+#vixenSynthesisSalon .vixen-hud-pill{
+ display:inline-flex;align-items:center;padding:5px 10px;
+ background:rgba(12,18,23,.88);border:1px solid rgba(255,242,169,.52);
+ color:#FFF2A9;font:700 9px/1.35 ui-monospace,monospace;letter-spacing:.08em;
+}
+#vixenSynthesisSalon .vs-podium-bridge{
+ margin:0 0 10px;padding:10px 12px;background:#141b20;border:1px solid rgba(255,145,175,.45);
+}
+#vixenSynthesisSalon .vs-podium-bridge .vs-field-label{color:#FFF2A9}
+#vixenSynthesisSalon .vs-input{
+ width:100%;min-height:40px;padding:8px 12px;background:#0c1115;color:#FFFDFB;
+ border:1px solid #FF91AF;font:500 11px/1.4 ui-monospace,monospace;
+}
+#vixenSynthesisSalon .vs-now-why-exact{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px;
+}
+#vixenSynthesisSalon .vs-nwe-item{
+ padding:8px 11px;background:rgba(12,17,22,.90);border:1px solid rgba(255,242,169,.44);
+ border-left:2px solid #FF91AF;color:#FFF7FA;font:600 9.5px/1.45 ui-monospace,monospace;
+ letter-spacing:.05em;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-mix{position:relative}
+#vixenSynthesisSalon button.vs-seam{
+ position:relative;z-index:4;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ margin:12px auto 4px;padding:10px 18px;min-height:44px;
+ background:linear-gradient(125deg,#12181E,#212A32);color:#FFF2A9;
+ border:1px solid #FF91AF;font:700 10.5px/1.2 ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;
+ box-shadow:0 0 22px rgba(255,145,175,.22);
+}
+#vixenSynthesisSalon button.vs-seam:hover{background:#FFF2A9;color:#12181D;border-color:#FF65AA}
+#vixenSynthesisSalon .vs-seam-neq{font:700 16px/1 Georgia,serif;color:#FF91AF}
+#vixenSynthesisSalon button.vs-seam:hover .vs-seam-neq{color:#9B1C52}
+#vixenSynthesisSalon svg.vs-holonomy-svg{
+ display:block;width:100%;max-width:340px;height:auto;margin:6px 0 8px;
+}
+#vixenSynthesisSalon .vs-trajectory-memory{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 18px;
+}
+#vixenSynthesisSalon .vs-traj-cell{
+ padding:11px 13px;background:#131A20;border:1px solid rgba(255,242,169,.32);
+ color:#FFF7FA;min-width:0;
+}
+#vixenSynthesisSalon .vs-traj-cell.is-active{
+ background:#1A232B;border-color:#FFF2A9;box-shadow:0 0 16px rgba(255,242,169,.16);
+}
+#vixenSynthesisSalon .vs-traj-head{
+ display:block;font:700 9px/1.4 ui-monospace,monospace;letter-spacing:.09em;color:#FFF2A9;margin-bottom:5px;
+}
+#vixenSynthesisSalon .vs-traj-order{
+ display:block;padding:4px 7px;margin-bottom:6px;background:#0C1115;color:#FF91AF;
+ font:600 9.5px/1.4 ui-monospace,monospace;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-traj-note{margin:0;font:400 11px/1.5 Georgia,serif;color:#EDE2E6}
+#vixenSynthesisSalon .vs-traj-invariant{
+ grid-column:1/-1;padding:7px 10px;background:#0D1318;border-left:2px solid #FFF2A9;
+ color:#FFF2A9;font:600 9.5px/1.45 ui-monospace,monospace;letter-spacing:.06em;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-clock-slider{accent-color:#FFF2A9;width:100%;min-height:24px;margin:6px 0 12px}
+@supports not (accent-color:#FFF2A9){
+ #vixenSynthesisSalon .vs-clock-slider{background:#12181D;border:1px solid #FFF2A9}
+}
+#vixenSynthesisSalon .vs-clock-bars{
+ display:grid;gap:8px;padding:12px;background:#0E1419;border:1px solid rgba(255,242,169,.38);margin-bottom:10px;
+}
+#vixenSynthesisSalon .vs-clock-row.vs-clock-card{
+ display:grid;grid-template-columns:minmax(150px,1.2fr) minmax(130px,2fr) auto;gap:8px 12px;align-items:center;
+ padding:9px 11px;background:#161E24;border:1px solid rgba(255,145,175,.34);color:#FFF7FA;
+}
+#vixenSynthesisSalon .vs-clock-row.vs-clock-card.is-active{
+ border-color:#FFF2A9;background:#1E2830;
+}
+#vixenSynthesisSalon .vs-clock-select{
+ text-align:left;min-height:36px;padding:6px 10px;background:#10161B;color:#FFFDF8;
+ border:1px solid rgba(255,145,175,.48);font:600 9.5px/1.35 ui-monospace,monospace;cursor:pointer;
+}
+#vixenSynthesisSalon .vs-clock-select[aria-pressed="true"]{background:#FFF2A9;color:#12181D;border-color:#FF65AA;font-weight:700}
+#vixenSynthesisSalon .vs-clock-track-wrap{display:flex;align-items:center;gap:6px;min-width:0}
+#vixenSynthesisSalon .vs-clock-track{
+ flex:1;height:14px;background:#090D11;border:1px solid rgba(255,242,169,.4);cursor:ew-resize;position:relative;overflow:hidden;
+}
+#vixenSynthesisSalon .vs-clock-bar{
+ height:100%;background:linear-gradient(90deg,#FF65AA,#FF91AF 62%,#FFF2A9);transition:width .14s ease;
+}
+#vixenSynthesisSalon .vs-clock-step{
+ min-width:30px;min-height:30px;padding:0;background:#12181D;color:#FFF2A9;border:1px solid rgba(255,145,175,.5);
+ font:700 13px/1 ui-monospace,monospace;cursor:pointer;
+}
+#vixenSynthesisSalon .vs-clock-tick{
+ color:#FFF2A9;font:700 11px/1 ui-monospace,monospace;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-clock-meta{
+ grid-column:1/-1;font:500 9.5px/1.4 ui-monospace,monospace;color:#E8DCE1;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vs-vernier-readout{
+ padding:9px 12px;background:#10161B;border:1px solid rgba(255,242,169,.42);border-left:3px solid #FF91AF;
+ color:#FFF7FA;font:600 10px/1.55 ui-monospace,monospace;font-variant-numeric:tabular-nums;margin-bottom:10px;
+}
+#vixenSynthesisSalon .vixen-hud-cell{
+ display:inline-flex;align-items:center;padding:6px 10px;background:#131A20;border:1px solid rgba(255,242,169,.42);
+ color:#FFF2A9;font:600 9.5px/1.35 ui-monospace,monospace;font-variant-numeric:tabular-nums;
+}
+#vixenSynthesisSalon .vixen-hud-cell.is-warn{border-color:#FF65AA;background:#182026;color:#FFD6E4}
+#vixenSynthesisSalon .vs-confrontation-quadrant{
+ margin:18px 0;padding:14px;background:#12181D;border:1px solid rgba(255,242,169,.45);
+}
+#vixenSynthesisSalon .vs-quad-head{
+ font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.12em;color:#FFF2A9;margin-bottom:10px;
+}
+#vixenSynthesisSalon .vs-quad-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#vixenSynthesisSalon .vs-quad-card{padding:12px;background:#192229;border:1px solid rgba(255,145,175,.45);color:#FFF7FA}
+#vixenSynthesisSalon .vs-quad-id{display:block;font:700 9.5px/1.4 ui-monospace,monospace;color:#FFF2A9;letter-spacing:.08em}
+#vixenSynthesisSalon .vs-quad-axis{display:block;font:600 13px/1.35 Georgia,serif;color:#FF91AF;margin:4px 0 6px}
+#vixenSynthesisSalon .vs-quad-card .vs-note{color:#F2E7EC;font-size:11.5px}
+#vixenSynthesisSalon .vs-quad-seal{margin:10px 0 0;color:#FFF2A9;font:600 9.5px/1.5 ui-monospace,monospace}
+@media(max-width:740px){
+ #vixenSynthesisSalon .vs-rubric,
+ #vixenSynthesisSalon .vs-now-why-exact,
+ #vixenSynthesisSalon .vs-trajectory-memory,
+ #vixenSynthesisSalon .vs-quad-grid{grid-template-columns:minmax(0,1fr)}
+ #vixenSynthesisSalon .vs-clock-row.vs-clock-card{grid-template-columns:minmax(0,1fr)}
+}

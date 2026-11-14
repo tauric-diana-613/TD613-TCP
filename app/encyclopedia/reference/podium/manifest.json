@@ -1,0 +1,200 @@
+{
+  "schema": "td613.vixen.podium.machine-route-index/v1",
+  "id": "VIXEN_PODIUM_RGI07",
+  "classification": "MACHINE_FACING_READ_ONLY_OPERATOR_COLLABORATION",
+  "title": "The Podium · bounded research conductor",
+  "human_surface": "/encyclopedia/vix-cyb.html",
+  "operahouse": "UNIVERSAL_REFERENCE_TRANSPORT_AND_WARRANT_POLICY",
+  "opera": "VIXEN_CYBERNETICS",
+  "performers": "EMSTD613_WORK_AND_MANIFESTATION_ONLY",
+  "operator_authority": "EXPLICIT_CONTEMPORANEOUS_HUMAN_REQUEST",
+  "protocol": {
+    "task_schema": "td613.vixen.podium.task/v1",
+    "receipt_schema": "td613.vixen.podium.receipt/v1",
+    "transport": "ES_MODULE_DISPATCH_AND_NODE_JSONL_CLI",
+    "machine_entry": "/encyclopedia/reference/vixen-podium.mjs",
+    "source_access": "PUBLIC_CATALOGUE_AND_CANONICAL_REFERENCE_BYTES_ONLY",
+    "logical_separation": "DOES_NOT_ADD_HUMAN_UI_OR_STANDALONE_ARTIFACT",
+    "routing": "TYPED_TASK_INTENT_ONLY_NO_LEXICAL_AUTOROUTING",
+    "consequence_order": [
+      "NOTICE",
+      "SELECT_VIXEN_SOURCE",
+      "INDEPENDENT_REFERENCE_OPEN",
+      "SEARCH",
+      "VERIFY_SOURCE_BYTES",
+      "SYNTHESIS_PROPOSAL",
+      "HELD_OR_HUMAN_REVIEW"
+    ],
+    "no_automatic_source_pairing": true,
+    "no_implicit_engine_connection": true,
+    "routes": 12,
+    "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs"
+  },
+  "source_census": {
+    "vixen_works": 32,
+    "vixen_manifestations": 53,
+    "human_gates": 8,
+    "instruments": 21,
+    "universal_records": 1141,
+    "universal_graph_edges": 2131,
+    "universal_edition": "1.4"
+  },
+  "routes": [
+    {
+      "id": "podium.describe",
+      "inputs": [],
+      "action": "INVENTORY",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "vixen.work.inspect",
+      "inputs": [
+        "work_id"
+      ],
+      "action": "CATALOGUE_LOOKUP",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "vixen.gates.inspect",
+      "inputs": [],
+      "action": "GATE_STATE_INSPECTION",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "universal.open",
+      "inputs": [],
+      "action": "INDEX_CENSUS_FETCH",
+      "authority": "READ_ONLY_EXPLICIT"
+    },
+    {
+      "id": "universal.search",
+      "inputs": [
+        "query"
+      ],
+      "action": "LEXICAL_SEARCH",
+      "authority": "READ_ONLY_EXPLICIT"
+    },
+    {
+      "id": "universal.get",
+      "inputs": [
+        "record_id"
+      ],
+      "action": "EXACT_RECORD_BYTE_VERIFICATION",
+      "authority": "READ_ONLY_EXPLICIT"
+    },
+    {
+      "id": "universal.related",
+      "inputs": [
+        "record_id"
+      ],
+      "action": "RECORDED_UNIVERSAL_GRAPH_RELATIONS",
+      "authority": "READ_ONLY_EXPLICIT"
+    },
+    {
+      "id": "synthesis.propose",
+      "inputs": [
+        "work_id",
+        "source_id",
+        "record_id",
+        "question"
+      ],
+      "action": "TYPED_TWO_SOURCE_PROPOSAL",
+      "authority": "UNRATIFIED_SESSION_ONLY"
+    },
+    {
+      "id": "vixen.salon.compose",
+      "inputs": [
+        "work_ids",
+        "track_id",
+        "protocol_id"
+      ],
+      "action": "GENERATE_VIXEN_SOURCE_BOUND_UNRATIFIED_QUESTION",
+      "authority": "SOURCE_FREE_OPEN_FIELD_HELD"
+    },
+    {
+      "id": "experiment_b.preregister",
+      "inputs": [
+        "work_ids",
+        "track_id",
+        "protocol_id"
+      ],
+      "action": "DRAFT_MATCHED_COMPETENT_UNION_EXP_B_DESIGN_ONLY",
+      "authority": "UNEXECUTED_HELD_HUMAN_CLOSURE_RESERVED"
+    },
+    {
+      "id": "engine.capabilities",
+      "inputs": [],
+      "action": "SHOW_EXPLICIT_ADAPTERS_AND_HOLDS",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "engine.invoke",
+      "inputs": [
+        "engine",
+        "operation",
+        "payload"
+      ],
+      "action": "CALL_ONLY_EXPLICITLY_INJECTED_BOUNDED_ADAPTER",
+      "authority": "EXPLICIT_OPERATOR_CONDUIT_REQUIRED"
+    }
+  ],
+  "optional_engine_adapters": {
+    "ATLAS": [
+      "compare_routes",
+      "trace_relations"
+    ],
+    "RULEFIELD": [
+      "assess_roles",
+      "propose_rulefield"
+    ],
+    "APERTURE": [
+      "audit_epistemic_deficit"
+    ],
+    "DOLLHOUSE": [
+      "audit"
+    ],
+    "UNIVERSAL_ATELIER": [
+      "search",
+      "get",
+      "cite",
+      "neighbors",
+      "route",
+      "context",
+      "verify"
+    ]
+  },
+  "adapters_not_implicitly_installed": true,
+  "authority_denials": [
+    "admitRecord",
+    "prepareImport",
+    "publish",
+    "deploy",
+    "merge",
+    "release",
+    "identity_adjudication",
+    "experiment_b_flight",
+    "external_witness_creation",
+    "private_source_read",
+    "auto_agent_delegation"
+  ],
+  "scientific_claims": {
+    "cross_opera_warrant_registry": "EMPTY",
+    "science": "UNESTABLISHED",
+    "empirical_replication_credit": 0,
+    "receiver_type": "LOCAL_ENGINE_INTERFACE_NOT_EXTERNAL_EMPIRICAL_WITNESS",
+    "experiment_b_competent_union": "PROSPECTIVE_MATCHED_NULL_NOT_EXECUTED"
+  },
+  "lineage": {
+    "historical_dollhouse_audits": "2026-11-08_OPERATOR_SUPPLIED_FIVE_SPECIALIST_RECEIPTS",
+    "aperture": "v3.2-alpha machine-facing task-intent/governance spine",
+    "rulefield": "source-preserving typed role multiplicity, no semantic role promotion",
+    "atlas": "receiver-relative identity; endpoint equality does not erase route history",
+    "temporal": "predecessor references retained; human closure withheld",
+    "universal_atelier": "native ten-operation receiver is separately governed; only seven read operations named above"
+  },
+  "human_closure": "RESERVED",
+  "release_authority": false,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "experiment_b_flight": "HELD"
+}

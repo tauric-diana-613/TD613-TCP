@@ -621,3 +621,30 @@ test('DD-02: scientific companion audit includes Atlas and preserves mathematica
   assert.ok(receipt.scientific_companion_audit, 'Companion audit receipt must be produced');
   assert.ok(receipt.scientific_companion_audit.active_roles.includes('ATLAS'), 'Audit roles must include ATLAS');
 });
+
+
+test('DD-02 native conductor executes full operator-facing Vixen dual-estate commission without claiming launch',async()=>{
+ const commission=JSON.parse(readFileSync(resolve('artifacts/vixen-dual-estate/dd02-commission.json'),'utf8'));
+ assert.equal(commission.deliverable_count,1);
+ assert.equal(commission.audit_register.length,5);
+ assert.equal(commission.boundaries.experiment_b_flight,'HELD');
+ const receipt=await runDollhouseDesignCycle(commission);
+ assert.equal(receipt.output_contract.requested_deliverables,1);
+ assert.equal(receipt.schema,DOLLHOUSE_DESIGN_SCHEMA);
+ assert(receipt.candidates?.length>=2);
+ assert(receipt.selected_instruments.includes('SEDGWICK_REPARATIVE_TEXTURE'));
+ assert(receipt.selected_instruments.includes('PHASONIC_COUNTERPOINT'));
+ console.log('TD613_VIXEN_ESTATE_DD02_RETURN='+JSON.stringify({
+  commission_id:receipt.commission_id,
+  instruments:receipt.selected_instruments,
+  candidate_titles:receipt.candidates.map(c=>c.concept_title),
+  return_schema:receipt.schema,
+  native_execution:true,
+  deliverable_count:receipt.output_contract.requested_deliverables,
+  visual_qualification:'PENDING_INDEPENDENT_REVIEW',
+  receiver_qualification:'PENDING_INDEPENDENT_REVIEW',
+  scientific_credit:0,
+  experiment_b_flight:'HELD',
+  human_closure:'RESERVED'
+ }));
+});
