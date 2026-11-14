@@ -1130,9 +1130,6 @@
     }
   ],
   "git": {
-    "deploymentEnabled": {
-      "**": false,
-      "research/vixen-dual-estate-encyclopedia-20261108": true
-    }
+    "deploymentEnabled": false
   }
 }
