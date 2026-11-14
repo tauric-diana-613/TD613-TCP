@@ -113,6 +113,11 @@ def main(out):
     # that runtime alongside the exact public assets without adding human UI.
     files["scripts/vixen-podium.mjs"]=(ROOT/"scripts"/"vixen-podium.mjs").read_bytes()
     files["scripts/vixen-podium-native-adapters.mjs"]=(ROOT/"scripts"/"vixen-podium-native-adapters.mjs").read_bytes()
+    # One short root entrypoint per shipped preview; archival sources stay in
+    # their original paths. An extracted public preview is not a full checkout.
+    quickstart=ROOT/"VIXEN_START_HERE.md"
+    assert quickstart.is_file(), "Operator agent navigation missing"
+    files["VIXEN_START_HERE.md"]=quickstart.read_bytes()
     readme="""# Vixen Cybernetics Encyclopedia / PR #1730 browser preview
 
 This exact-Git-HEAD preview contains the Vixen operator-facing page,
@@ -135,7 +140,7 @@ The installer checks SHA-256, dimensions/orientation, SVG vector integrity
 and source identity before rewriting the HTML. Afterward run full tests and
 generate a NEW exact-head preview; older previews cannot certify new assets.
 
-## Start in a web browser
+**Agent quickstart:** VIXEN_START_HERE.md at the archive root explains the\nactive optical engines, Still graph and rollback paths. Source-editing agents\nmust use the full repository checkout and its binding root AGENTS.md.\n\n## Start in a web browser
 
 1. Unzip the archive. Open a terminal in this extracted directory
    (the one containing the encyclopedia subfolder).
