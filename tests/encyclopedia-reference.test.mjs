@@ -361,7 +361,7 @@ test('Operator-led two-estate encounter verifies independently and leaves relati
   assert.equal(app.disposition().relation,'UNESTABLISHED');
   assert.equal(app.disposition().publication_eligible,false);
   assert(host.textContent.includes('UNESTABLISHED'));
-  const receiptText=host.querySelector('.oh-disposition .oh-payload pre').textContent;
+  const receiptText=host.querySelector('.oh-disposition .oh-payload:not(.oh-podium-export) pre').textContent;
   const receipt=JSON.parse(receiptText);
   assert.equal(receipt.schema,CROSS_ATELIER_WITNESS_CONTRACT);
   assert.equal(receipt.operator_proposal.evidence_class,'UNRATIFIED_QUESTION_NOT_SOURCE_DATA');

@@ -524,14 +524,14 @@ try {
     assert.equal(await house.locator('.oh-disposition').getAttribute('data-encounter-state'),
       'WITNESSED_UNLINKED_PAIR');
     assert.match(await house.locator('.oh-disposition').innerText(),/Relationship: UNESTABLISHED/);
-    await house.locator('.oh-disposition .oh-payload summary').click();
-    const summaryColor=await house.locator('.oh-disposition .oh-payload summary')
+    await house.locator('.oh-disposition .oh-payload:not(.oh-podium-export) summary').click();
+    const summaryColor=await house.locator('.oh-disposition .oh-payload:not(.oh-podium-export) summary')
       .evaluate(n=>getComputedStyle(n).color);
     const ink=summaryColor.match(/\d+/g)?.map(Number)||[];
     assert.equal(ink.length,3,'Receipt disclosure must expose RGB ink');
     assert(Math.max(...ink)<100 && ink[1]>=ink[0]-5,
       'Receipt disclosure requires legible graphite ink without legacy plum');
-    const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload pre').innerText());
+    const receipt=JSON.parse(await house.locator('.oh-disposition .oh-payload:not(.oh-podium-export) pre').innerText());
     assert.equal(receipt.schema,'ua:contract:cross_atelier_witness');
     assert.equal(receipt.admissibility.human_ratified_crosswalk,false);
     assert.equal(receipt.admissibility.publication_eligible,false);
