@@ -158,10 +158,17 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
   if(v.p[2]>.015)stations.push({x:p[0],y:p[1],envelope:v.field.envelope});
  }
  const glints=allocateBloom(stations);
+ // Ten transverse material tension lines derive from the same prepaint
+ // beat-deformed material coordinates as the corset seam/hem geometry.
+ const tensionRings=Array.from({length:10},(_,k)=>{
+  const j=2+3*k,vertices=grid.map(column=>column[j]);
+  const envelope=vertices.reduce((v,p)=>v+p.field.envelope,0)/vertices.length;
+  return {row:j,points:vertices.map(v=>v.screen),envelope};
+ });
  const lengths=points=>points.slice(1).reduce((n,p,i)=>n+Math.hypot(p[0]-points[i][0],p[1]-points[i][1]),0);
  const bounds=grid.flat().reduce((b,v)=>({left:Math.min(b.left,v.screen[0]),right:Math.max(b.right,v.screen[0]),
   top:Math.min(b.top,v.screen[1]),bottom:Math.max(b.bottom,v.screen[1])}),{left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity});
- return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,glints,bounds,
+ return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,tensionRings,glints,bounds,
   metrics:{seamLength:seams.reduce((n,s)=>n+lengths(s.points),0),filamentLength:filaments.reduce((n,s)=>n+lengths(s.points),0),
    contourWidth:bounds.right-bounds.left,contourHeight:bounds.bottom-bounds.top},
   emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)*(2/3)+.40+.26+.14+.70+.62};
@@ -208,7 +215,7 @@ function studioChrome(ctx,m){
  return light;
 }
 
-/** Reflective material is opaque source-over. All additive-looking emission
+/** Refractive material is source-over. Finite additive-looking emission
  * is one bounded screen pass; its sum is an alpha policy, not energy physics. */
 export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  const {width:W,height:H,scale,cx,cy}=m;
@@ -232,10 +239,32 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  // The mathematical gore contours still deform independently before paint.
  const metal=studioChrome(ctx,m);
  for(const f of m.faces){
-  ctx.fillStyle=metal;ctx.globalAlpha=1;
+  // The computed lattice remains visible through this shared-gradient material.
+  // Preserve the matte undercut and a coherent chrome field, not 2,304 tiles.
+  ctx.fillStyle=metal;ctx.globalAlpha=.42;
   trace(ctx,f.points,true);ctx.fill();
-  // Same paint at shared quad boundaries closes raster cracks without tile seams.
-  ctx.strokeStyle=metal;ctx.lineWidth=.55;ctx.stroke();
+  ctx.strokeStyle=metal;ctx.lineWidth=.28;ctx.stroke();
+ }
+ // Ten prepaint transverse conductors turn the metal silhouette into a
+ // legible tailored cage; material highlights are source-over, never a new RAF.
+ ctx.shadowColor='#ffc1e2';ctx.shadowBlur=Math.min(9,scale*.020);
+ for(let i=0;i<m.tensionRings.length;i++){
+  const ring=m.tensionRings[i];
+  for(const segment of frontSegments(ring.points,.02)){
+   stroke(ctx,segment,i%3===0?'#fff5d4':i%3===1?'#ffcae5':'#dff8ff',
+    i%3===0?1.55:.95,.43+.28*ring.envelope);
+  }
+ }
+ ctx.shadowBlur=0;
+ // Glowing-but-material circuit junctions follow actual ring/seam crossings.
+ for(let k=0;k<m.tensionRings.length;k+=2){
+  const ring=m.tensionRings[k];
+  for(let i=0;i<ring.points.length;i+=9){
+   const p=ring.points[i];if(p[2]<=.03)continue;
+   ctx.beginPath();ctx.ellipse(p[0],p[1],1.55,1.55,0,0,TAU);
+   ctx.fillStyle=(k+i)%3===0?'#fff3b5':'#ff9bcf';
+   ctx.globalAlpha=.50+.32*ring.envelope;ctx.fill();
+  }
  }
  // Capped metal seams. The dark undercut establishes a trough before light.
  const front=m.seams.filter(s=>s.points[24][2]>0);
@@ -253,11 +282,11 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
   }
  }
  // Radiating material paths follow the same 39 carriers without masking chrome.
- // Sparse hairline filaments retain the 6/13/20 carrier census. Rear strands
- // are culled pointwise; no bright lattice obscures the opaque shell.
+ // Chrome material filaments preserve the 6/13/20 carrier census and
+ // follow the beat-deformed joints. Rear strands remain culled pointwise.
  for(const f of m.filaments){
   for(const segment of frontSegments(f.points,.03))
-   stroke(ctx,segment,f.near?'#efb8c4':'#9cadb4',f.near?.65:.35,f.near?.45:.22);
+   stroke(ctx,segment,f.near?'#fff0bc':f.mid?'#f6c2e8':'#aebec8',f.near?1.15:.72,f.near?.82:f.mid?.60:.35);
  }
  ctx.globalCompositeOperation='screen';
  // Bounded visual discharge: the garment emits through its own calculated seams.

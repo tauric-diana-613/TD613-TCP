@@ -38,6 +38,9 @@ test('geometry-only refraction moves contours, seams and filaments while glints 
  assert(Math.abs(a.metrics.contourWidth-b.metrics.contourWidth)>.1);
  assert.equal(a.faces.length>900,true);assert.equal(a.seams.length,12);
  assert.equal(a.filaments.length,39);
+ assert.equal(a.tensionRings.length,10);
+ assert(a.tensionRings.every(r=>r.points.length===73&&r.points.every(p=>p.every(Number.isFinite))));
+ assert.notDeepEqual(a.tensionRings,b.tensionRings);
 });
 test('finite source/time sweep retains closed, monotonic shell and viewport clearance',()=>{
  for(const [width,height] of [[550,460],[350,390]])for(const time of [0,8]){
@@ -97,6 +100,8 @@ test('Canvas command smoke: filled surfaces and total emissive draw allocation s
  const m=buildFoldedCuirass(params),ctx=context();
  const r=paintFoldedCuirass(ctx,m);
  assert(r.rendered&&r.faces>900);
+ assert(ctx.calls.filter(c=>c.op==='stroke'&&c.mode==='source-over').length>40,
+  'A refractive armature must carry mathematically sampled transverse reflectors');
  assert(ctx.calls.filter(c=>c.op==='fill'&&c.mode==='source-over').length>900);
  const allocated=ctx.calls.filter(c=>c.mode==='screen').reduce((n,c)=>n+c.alpha,0);
  assert(allocated<=CUIRASS_POLICY.total_emission_alpha+1e-8);
