@@ -3,7 +3,7 @@
 **Scope:** TD613 / Dome-World / Relational-Geometry / Rule Atlas  
 **Disposition:** Supersedes the *active* absolute ambiance-orthogonality assertion; historical audit receipts and prior authored snapshots remain evidence of the earlier claim.  
 **Authority:** Scientific and software claims remain limited to observations actually tested. Human closure RESERVED.  
-**Assay:** RCA-01, \`tests/p044-ambiance-coupling.test.mjs\`, \`npm run test:ambiance\`
+**Assay:** RCA-01, `tests/p044-ambiance-coupling.test.mjs`, `npm run test:ambiance`
 
 ## 1. Fault: a governance separation was mislabeled a universal metric theorem
 Former P-044 asserted \(\tau_{\rm theory}\perp\tau_{\rm ambiance}\perp\tau_{\rm resynthesis}\) and later treatments claimed \(\partial g_{\mu\nu}/\partial u_{\rm ambiance}\equiv0\). Distinct clocks and separate release authorities do not supply an inner product, a differentiable ambient manifold, or proof of metric independence. Nor does *relational/local-section ambiance* mean the same thing as a change in UX palette or presentation.
@@ -43,12 +43,12 @@ The sign, magnitude, uncertainty, population and causal identification of \(\Del
 **Three-clock governance:** \(\tau_{\rm theory}\), \(\tau_{\rm presentation}\), and \(\tau_{\rm empirical}\) have separate provenance, trigger and promotion authority. This is separation of responsibilities; no pairwise orthogonality or independence theorem follows. An unexecuted empirical protocol remains at zero empirical credit.
 
 ## 4. RCA-01 preregistered bounded software assay
-**Test target:** The shipped \`VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html\` simulation, executed with a deterministic fake DOM/canvas and a controlled animation-frame count.
+**Test target:** The shipped `VIRILIAN_WOLFRAMIAN_BERLANTIAN_PHASONIC_OBSERVATORY.html` simulation, executed with a deterministic fake DOM/canvas and a controlled animation-frame count.
 
-1. **Matched presentation control:** With fixed initial state and fixed number of render frames, compare numerical telemetry and captured geometric draw commands under \`cyber-noir\`, \`high-noon\`, and \`moire-rose\`.
+1. **Matched presentation control:** With fixed initial state and fixed number of render frames, compare numerical telemetry and captured geometric draw commands under `cyber-noir`, `high-noon`, and `moire-rose`.
 2. **Metamorphic frame control:** Repeat across 1, 2, 5, and 8 frames to distinguish a theme effect from time evolution.
-3. **Positive structural control:** Alter \`beta\` through the simulator's numerical input; outputs should change. This establishes that the assay detects structural variation.
-4. **Deliberate mutation/falsification attempt:** Inject a \`beta\` change into the high-noon theme handler *in-memory during testing only*. A capable invariance assay MUST reject the contaminated simulator.
+3. **Positive structural control:** Alter `beta` through the simulator's numerical input; outputs should change. This establishes that the assay detects structural variation.
+4. **Deliberate mutation/falsification attempt:** Inject a `beta` change into the high-noon theme handler *in-memory during testing only*. A capable invariance assay MUST reject the contaminated simulator.
 5. **Synthetic authority negative control:** A theme variable cannot create an operator grant in a simple decision fixture; changing the grant must affect that decision.
 6. **Observer sham/constructed counterexample:** A synthetic observer with unchanged legibility but different palette yields the same outcome; hiding the informational cue changes its outcome. This refutes a **universal** zero-coupling assumption for that constructed observer, not for human populations.
 7. **Static doctrine lint:** The updated active monograph, Rule Atlas index, README, and Observatory must not reinstate the superseded universal formula.
@@ -69,4 +69,7 @@ A genuine observer-response study needs a registered population, sample-size rat
 ## 7. Repository posture and historical trace
 This corrigendum changes active P-044 surfaces, including both JSON atlas editions, the research index, mathematical monograph, research handoff, Observatory and interpretive companion. The previous authored audit report and machine receipts are retained as historical assertions, with an explicit supersession notice rather than silent retroactive falsification. Source-archive/lineage files and unrelated engineering domains are not rewritten as if the original authors made this later correction.
 
-**Validation ledger:** GitHub branch: \`research/p044-ambiance-coupling-corrigendum-20261114\`. Node test and CI results must be reported with actual execution evidence; a test specification or a green synthetic fixture is not itself an independently corroborated human effect. PR stays draft until inspected; no auto-merge or production deployment.
+## 8. Exact-head executable witness (bounded promotion)
+RCA-01 PASS: GitHub Actions **P-044 Ambiance Boundary Assay** run [43613525759](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/43613525759), job 132503516855, Node test TAP **7 passed / 0 failed** at commit `5056190b2e0e2b3a91dd222fcf8033dda40507f9`. This qualifies the fixed-configuration simulated Observatory theme comparison, structural positive control, deliberate mutation rejection, synthetic authority and observer controls, and active-doctrine lint. The receipt proves execution of this bounded suite, not human-response validity or the behavior of unrelated numerical kernels. Later commits require an exact-head rerun; preceding receipts are not automatically portable.
+
+**Validation ledger:** GitHub branch: `research/p044-ambiance-coupling-corrigendum-20261114`. Node test and CI results must be reported with actual execution evidence; a test specification or a green synthetic fixture is not itself an independently corroborated human effect. PR stays draft until inspected; no auto-merge or production deployment.
