@@ -10,6 +10,7 @@
  */
 import {measureCoutureBeats,allocateBloom,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
+import {paintSalonField} from './vixen-salon-ambient-field.mjs';
 
 // Developer rollback only; no extra visitor mode or second deliverable.
 export const SALON_COMPOSITOR='FOLDED_CHROME';
@@ -24,7 +25,7 @@ export const CUIRASS_POLICY=Object.freeze({
  max_dpr:1.25,max_backing_pixels:1500000,desktop_fps:24,mobile_fps:12,
  // Every emissive draw shares these alpha allocations. Chrome is reflected
  // material in source-over; no unbudgeted screen/haze/beam/rib/fill passes.
- emission:Object.freeze({glints:2.4,seams:.72,filaments:.60,haze:0,rails:0,beams:0,fills:0}),
+ emission:Object.freeze({glints:2.4,seams:.52,filaments:.45,lattice:.22,waist:.13,haze:0,rails:0,beams:0,fills:0}),
  total_emission_alpha:3.72,max_bloom_css_px:18,
  max_radial_strain:.14,max_angular_shear:.035,
  display_contrast_candidate:'Adjacent seam/trough byte-luma ratio >= 3, trough <= 45; browser measurement pending'
@@ -76,7 +77,9 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  const seed=hash(ids.join('|')||'VIXEN_NEUTRAL');
  // A fixed material chart keeps the cut invariant under viewport projection.
  const field=measureCoutureBeats({width:360,height:420,time,seed,devicePixelRatio:1});
- const scale=Math.min(width*.94,height*.82),cx=width*.5,cy=height*.49;
+ const integrated=width>800;
+ const scale=Math.min(width*(integrated?.50:.94),height*.82);
+ const cx=width*(integrated?.735:.5),cy=height*.49;
  const yaw=.23,cs=Math.cos(yaw),sn=Math.sin(yaw);
  function surface(u,t,g=gain){
   const angle=u*TAU;
@@ -142,7 +145,7 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,glints,bounds,
   metrics:{seamLength:seams.reduce((n,s)=>n+lengths(s.points),0),filamentLength:filaments.reduce((n,s)=>n+lengths(s.points),0),
    contourWidth:bounds.right-bounds.left,contourHeight:bounds.bottom-bounds.top},
-  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)+.72+.60};
+  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)+.52+.45+.22+.13};
 }
 
 function trace(ctx,points,close=false){
@@ -165,13 +168,13 @@ function chromeColor(normal,t,fold){
  const [nx,ny,nz]=normal;
  const reflection=[2*nz*nx,2*nz*ny,2*nz*nz-1];
  // Finite studio strip reflections: sharp achromatic bands beside graphite.
- const white=gaussian((reflection[0]+.46)/.16)*.92;
- const narrow=gaussian((reflection[0]-.62)/.075)*.90;
- const horizon=gaussian((reflection[1]+.20)/.13)*.42;
+ const white=gaussian((reflection[0]+.46)/.26)*.72;
+ const narrow=gaussian((reflection[0]-.62)/.16)*.76;
+ const horizon=gaussian((reflection[1]+.20)/.22)*.39;
  const edge=Math.pow(1-Math.max(0,nz),3)*.55;
- const light=clamp(.05+white+narrow+horizon+edge);
+ const light=clamp(.17+white+narrow+horizon+edge);
  let c=colorMix(palette.dark,palette.silver,light);
- const rose=gaussian((reflection[0]-.22)/.11)*.32;
+ const rose=gaussian((reflection[0]-.22)/.19)*.17;
  c=colorMix(c,palette.pink,rose);
  c=colorMix(c,palette.gold,gaussian((t-.47)/.055)*light*.24);
  return rgb(c.map(v=>v*(.86+.14*fold)));
@@ -184,9 +187,11 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  ctx.save();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
  ctx.clearRect(0,0,W,H);
  const bg=ctx.createLinearGradient(0,0,W,H);
- bg.addColorStop(0,'#252e34');bg.addColorStop(.45,'#10181e');bg.addColorStop(1,'#070c10');
+ bg.addColorStop(0,'#28353b');bg.addColorStop(.34,'#1b252b');bg.addColorStop(.66,'#10181e');bg.addColorStop(1,'#070c10');
  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
  if(!optics){ctx.restore();return {rendered:true,optics:false};}
+ // Field-continuous architecture inherits this frame and clock: no second animation.
+ const scene=paintSalonField(ctx,m);
  // Small chrome pedestal uses material shading; no glow outside the garment.
  const py=cy+scale*.48,pr=scale*.43;
  const plinth=ctx.createLinearGradient(cx-pr,0,cx+pr,0);
@@ -216,6 +221,7 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
    stroke(ctx,segment,'#f2e4bf',2.0,.9);
   }
  }
+ // Radiating material paths follow the same 39 carriers without masking chrome.
  // Sparse hairline filaments retain the 6/13/20 carrier census. Rear strands
  // are culled pointwise; no bright lattice obscures the opaque shell.
  for(const f of m.filaments){
@@ -224,11 +230,24 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  }
  ctx.globalCompositeOperation='screen';
  // No haze, beams or additional full-scene fill. Each pass spends one share.
- for(const s of front)stroke(ctx,s.points,'#ffe8ae',1,.72/Math.max(1,front.length));
+ for(const s of front)stroke(ctx,s.points,'#ffe8ae',1.3,.52/Math.max(1,front.length));
  const hot=m.filaments.filter(f=>f.near).flatMap(f=>frontSegments(f.points,.03));
  for(const f of hot){
-  stroke(ctx,f,'#ff4e9b',1.2,.60/Math.max(1,hot.length));
+  stroke(ctx,f,'#ff4e9b',1.5,.45/Math.max(1,hot.length));
  }
+ // Reserve finite emission for the shared field and a distinct waist peak.
+ for(let i=0;i<6;i++){
+  const a=scene.trails[i*3].points;
+  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.1,.22/6);
+ }
+ const wRadius=Math.min(m.scale*.26,118);
+ const waist=ctx.createRadialGradient(cx,cy,0,cx,cy,wRadius);
+ waist.addColorStop(0,'rgba(255,255,231,.9)');
+ waist.addColorStop(.18,'rgba(255,226,164,.38)');
+ waist.addColorStop(.45,'rgba(255,93,168,.10)');
+ waist.addColorStop(1,'rgba(255,93,168,0)');
+ ctx.globalAlpha=.13;ctx.fillStyle=waist;
+ ctx.fillRect(cx-wRadius,cy-wRadius,2*wRadius,2*wRadius);
  for(const p of m.glints){
   const r=Math.min(p.bloomRadius,BEAT_POLICY.max_bloom_css_px);
   const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r);
@@ -238,7 +257,7 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
   ctx.globalAlpha=p.energy;ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);
  }
  ctx.restore();
- return {rendered:true,faces:m.faces.length,carriers:39,peaks:m.glints.length,
+ return {rendered:true,faces:m.faces.length,carriers:39,sceneTracks:scene.trails.length,sceneNodes:scene.nodes.length,peaks:m.glints.length,
   emissionAlpha:m.emissionAllocated,physicalEnergyConserved:false,empirical_credit:0};
 }
 

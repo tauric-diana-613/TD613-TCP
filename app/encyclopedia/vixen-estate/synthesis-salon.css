@@ -12,24 +12,26 @@
  border:1px solid #20272a;box-shadow:14px 18px 0 #1e2327;
  overflow:hidden;
 }
-/* DD-02: an owned material stage, physically beside/below the manuscript.
- * Earlier hero rules are scoped to the legacy compositor at their sources.
- * Canvas contains backdrop, material and bounded emission; CSS adds no glow. */
+/* DD-02 optical seam: the one Canvas2D clock owns the garment and a
+ * full-header lattice. Paper remains a readable foreground, not an overlay
+ * pretending to be the renderer. Mobile has a separately stacked stage. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
- display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
- align-items:stretch;min-height:460px;padding:0;
- background:#fff5f7;border-bottom:1px solid #fff0a8;box-shadow:none;
+ display:grid;grid-template-columns:minmax(0,1fr);position:relative;
+ align-items:stretch;min-height:540px;padding:0;overflow:hidden;
+ background:#111b21;border-bottom:1px solid #fff0a8;box-shadow:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::before,
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head::after{content:none;display:none}
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
- position:relative;z-index:1;width:100%;padding:clamp(26px,3.1vw,48px);
- display:flex;flex-direction:column;justify-content:center;gap:20px;
- background:linear-gradient(115deg,#fffdfb,#fff3f5 68%,#ffdae7);
+ position:relative;z-index:2;width:56%;max-width:775px;min-height:540px;
+ padding:clamp(25px,3.1vw,48px);
+ display:flex;flex-direction:column;justify-content:center;gap:19px;
+ background:linear-gradient(90deg,rgba(255,252,248,.99) 0%,rgba(255,249,247,.97) 49%,
+ rgba(255,243,244,.91) 73%,rgba(255,236,240,.78) 88%,rgba(255,235,240,.08) 100%);
  color:#192027;text-shadow:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{
- max-width:100%;margin:0;font:400 clamp(49px,5.2vw,84px)/.94 Didot,'Bodoni MT',Georgia,serif;
+ max-width:100%;margin:0;font:400 clamp(47px,5.1vw,84px)/.94 Didot,'Bodoni MT',Georgia,serif;
  letter-spacing:-.065em;color:#192027;text-shadow:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title-italics{
@@ -44,25 +46,36 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  font:400 clamp(15px,1.3vw,19px)/1.5 Georgia,serif;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
- position:relative;min-width:0;min-height:460px;overflow:hidden;background:#10181e;
+ position:absolute;inset:0;z-index:1;min-width:0;min-height:540px;
+ overflow:hidden;background:#10181e;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-cuirass-canvas{
  display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
  opacity:1;mix-blend-mode:normal;filter:none;mask:none;animation:none;
 }
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-label{
- position:absolute;z-index:1;bottom:12px;right:18px;left:18px;max-width:none;
- text-align:center;color:#dfded6;font:500 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;
+ position:absolute;z-index:2;bottom:12px;right:18px;left:auto;max-width:58%;
+ text-align:right;color:#dfded6;font:500 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;
  text-shadow:none;pointer-events:none;
 }
+/* Existing Living Mesh may operate in other environments. DD-02 owns its own
+ * carrier lattice, so we avoid a second independently scheduled renderer. */
 body[data-view="collection"] #vixenLivingMesh{display:none}
 @media(max-width:740px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-head{
-  grid-template-columns:minmax(0,1fr);min-height:0;
+  display:flex;flex-direction:column;min-height:0;
  }
- #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{padding:18px 20px;gap:12px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-hero-copy{
+  width:100%;max-width:none;min-height:0;padding:22px 20px;gap:12px;
+  background:linear-gradient(145deg,#fffdfb,#fff0f3);
+ }
  #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-title{font-size:clamp(46px,11vw,68px)}
- #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{min-height:340px;height:90vw;max-height:400px}
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{
+  position:relative;inset:auto;flex:none;min-height:340px;height:90vw;max-height:440px;
+ }
+ #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-label{
+  left:18px;right:18px;max-width:none;text-align:center;
+ }
 }
 @media(forced-colors:active){
  #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-stage{display:none}
