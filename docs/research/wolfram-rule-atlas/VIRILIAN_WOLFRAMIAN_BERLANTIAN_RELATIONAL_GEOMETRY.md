@@ -1,6 +1,6 @@
 # 𝌋 TD613 · VIRILIAN / WOLFRAMIAN / BERLANTIAN RELATIONAL-GEOMETRY
 ## Systems-Convergence Interoperability, Multiway Emergence Sciences & Chaos-Decision Horizon
-### Dome-World Foundational Formulation (Ambiance-Orthogonal Relational Metric)
+### Dome-World Foundational Formulation (Conditional Presentation Invariance and Observer Coupling)
 
 **Authority:** `SAC[X6ZNK5NO51]`  
 **Covenant:** Khona‌lit-po — *preserve literal interior U+200C*  
@@ -28,20 +28,19 @@ In TD613 and Dome-World foundational physics, the distinction between *relation-
                                        │
                                        ▼  [Axiomatic Dome-World Inversion]
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ DOME-WORLD RELATIONAL-GEOMETRY RG (Relation-First / Ambiance-Orthogonal)    │
+│ DOME-WORLD RELATIONAL-GEOMETRY RG (Relation-First / Scoped Invariance)    │
 │ Receiver-Relative Witness Relations ρ_ij exist as fundamental primitives   │
 │ Points/Spacetime emerge as holonomic equivalence classes: M = (⊕ ρ_ij) / ~ │
-│ Invariant under Ambiance: τ_theory ⟂ τ_ambiance ⟂ τ_resynthesis (Rule P-044)│
+│ P-044: preserve kernel and authority; assay observer-response coupling        │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 1. **Relational Primitives Over Substantive Points:**  
    In **Relational-Geometry** ($\mathcal{RG}$), the manifold $\mathcal{M}$ possesses no independent background container or static point-masses. The ontological primitives are **directed receiver-relative witness fibers** $\rho_{ij} = \text{Hom}(R_i, R_j)$ between observers $R_i$ and $R_j$. An operational "location" or "state" is purely an emergent equivalence class defined by the holonomy of return cycles:
    $$\mathcal{M} = \left( \bigoplus_{i, j} \rho_{ij} \right) \Big/ \sim_{\text{holonomy}}$$
-2. **Ambiance Orthogonality ($\tau_{\text{theory}} \perp \tau_{\text{ambiance}}$):**  
-   Under Rule `P-044` (Three-Clock Non-Interference Separation), artistic ambiance, aesthetic surface stylings, chromatic palettes, and UX textures belong to an independent temporal and metric domain:
-   $$\tau_{\text{theory}} \perp \tau_{\text{ambiance}} \perp \tau_{\text{resynthesis}}$$
-   Relational-geometry is **strictly orthogonal to ambiance**. Transforming an interface palette, altering typographical weight, or adding atmospheric prose carries identically zero curvature in the relational tensor. The geometry measures structural causal invariance, branchial foliation shear, and infrastructural attrition—never aesthetic decoration.
+2. **P-044 Conditional Presentation Invariance and Observer Coupling:** The original universal assertion of orthogonality between theory, ambiance, and resynthesis is withdrawn. A presentation-only transformation \(T_p\) is eligible only when it preserves protected evidence \(D\), structural inputs \(S\), routes, permissions, and recording/custody identities. For such an intervention:
+   $K(D,S,p_1)=K(D,S,p_2),\qquad A(D,S,p_1)=A(D,S,p_2).$
+   The kernel \(K\) and authorization \(A\) have distinct invariance obligations. Observer response \(Y\) is independently testable: $\Delta_{obs}=\mathbb E[Y\mid do(p_1)]-\mathbb E[Y\mid do(p_2)]$ with no assumed zero or nonzero result. Relational ambiance (local access, route, custody, event memory) cannot be silently typed as a presentation-only transformation. Independent clock *governance* forbids appearance from earning scientific credit; it supplies no metric-space proof of orthogonality. See \`P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md\`.
 
 ---
 
