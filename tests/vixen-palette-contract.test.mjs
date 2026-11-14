@@ -34,7 +34,8 @@ function isPlum([r,g,b]){
  if(d)h=mx===R?60*(((G-B)/d)%6):mx===G?60*((B-R)/d+2):60*((R-G)/d+4);
  if(h<0)h+=360;
  return (d>.045&&h>=242&&h<=326&&b>g+4&&b>=r-17)||
-  (Math.max(r,g,b)<130&&r>g+7&&b>g+5&&h>=316&&h<360);
+  (Math.max(r,g,b)<130&&r>g+7&&b>g+5&&h>=316&&h<360)||
+  (Math.max(r,g,b)<60&&h>=240&&h<=325&&b>g+2&&b>=r+2);
 }
 test('inherited Vixen CSS contains no residual plum/violet chromatic literals',()=>{
  for(const path of files){
