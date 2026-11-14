@@ -25,7 +25,7 @@ export const CUIRASS_POLICY=Object.freeze({
  max_dpr:1.25,max_backing_pixels:1500000,desktop_fps:24,mobile_fps:12,
  // Every emissive draw shares these alpha allocations. Chrome is reflected
  // material in source-over; all screen emission obeys an aggregate 3.72 alpha ceiling.
- emission:Object.freeze({glints:1.60,seams:.40,filaments:.26,lattice:.14,waist:.70,beams:.62,haze:0,rails:0,fills:0}),
+ emission:Object.freeze({glints:1.20,seams:.42,filaments:.28,lattice:.12,waist:.85,beams:.85,haze:0,rails:0,fills:0}),
  total_emission_alpha:3.72,max_bloom_css_px:18,
  max_radial_strain:.14,max_angular_shear:.035,
  display_contrast_candidate:'Adjacent seam/trough byte-luma ratio >= 3, trough <= 45; browser measurement pending'
@@ -171,7 +171,7 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,tensionRings,glints,bounds,
   metrics:{seamLength:seams.reduce((n,s)=>n+lengths(s.points),0),filamentLength:filaments.reduce((n,s)=>n+lengths(s.points),0),
    contourWidth:bounds.right-bounds.left,contourHeight:bounds.bottom-bounds.top},
-  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)*(2/3)+.40+.26+.14+.70+.62};
+  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)*(.5)+.42+.28+.12+.85+.85};
 }
 
 function trace(ctx,points,close=false){
@@ -302,15 +302,15 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  }
  ctx.globalCompositeOperation='screen';
  // Bounded visual discharge: the garment emits through its own calculated seams.
- for(const s of front)stroke(ctx,s.points,'#ffe8ae',1.6,.40/Math.max(1,front.length));
+ for(const s of front)stroke(ctx,s.points,'#ffe8ae',1.7,.42/Math.max(1,front.length));
  const hot=m.filaments.filter(f=>f.near).flatMap(f=>frontSegments(f.points,.03));
  for(const f of hot){
-  stroke(ctx,f,'#ff4e9b',1.7,.26/Math.max(1,hot.length));
+  stroke(ctx,f,'#ff4e9b',1.8,.28/Math.max(1,hot.length));
  }
  // Reserve finite emission for the shared field and a distinct waist peak.
  for(let i=0;i<6;i++){
   const a=scene.trails[i*3].points;
-  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.3,.14/6);
+  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.4,.12/6);
  }
  // A finite champagne-pink waist flash makes field-to-garment conduction visible.
  const wRadius=Math.min(m.scale*.30,126);
@@ -320,19 +320,22 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  waist.addColorStop(.27,'rgba(255,155,203,.58)');
  waist.addColorStop(.59,'rgba(255,75,158,.14)');
  waist.addColorStop(1,'rgba(255,75,158,0)');
- ctx.globalAlpha=.70;ctx.fillStyle=waist;
+ ctx.globalAlpha=.85;ctx.fillStyle=waist;
  ctx.fillRect(cx-wRadius,cy-wRadius,2*wRadius,2*wRadius);
- // Exactly four calculated field-to-seam discharge paths. No extra RAF.
- for(let i=0;i<4;i++){
-  const source=scene.trails[i*4].points[19],seam=m.seams[i*3].points[18];
+ // Two bright spatial discharge paths concentrate light rather than
+ // dispersing the entire finite beam budget across four faint lines.
+ // Geometry and intensity remain phase-bound to the chosen Work pair.
+ for(let i=0;i<2;i++){
+  const source=scene.trails[i*8+2].points[19],seam=m.seams[i?9:3].points[18];
   const beam=ctx.createLinearGradient(source[0],source[1],seam[0],seam[1]);
   beam.addColorStop(0,'rgba(255,95,164,0)');
   beam.addColorStop(.55,i%2?'rgba(255,110,180,.85)':'rgba(255,232,166,.85)');
   beam.addColorStop(1,'rgba(255,253,237,1)');
   ctx.shadowColor=i%2?'#ff7abd':'#ffe3a0';
   ctx.shadowBlur=Math.min(18,m.scale*.055);
+  const pulse=.65+.35*(.5+.5*Math.sin(m.time*1.9+i*1.6));
   stroke(ctx,[source,[(source[0]+seam[0])*.5,(source[1]+seam[1])*.5-m.scale*.016],seam],
-   beam,2.2,.62/4);
+   beam,2.6,(.85/2)*pulse);
  }
  ctx.shadowBlur=0;
  for(const p of m.glints){
@@ -341,7 +344,7 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
   glow.addColorStop(0,'rgba(255,253,230,1)');glow.addColorStop(.08,'rgba(255,233,184,.85)');
   glow.addColorStop(.26,'rgba(255,104,158,.22)');glow.addColorStop(.65,'rgba(255,104,158,.035)');
   glow.addColorStop(1,'rgba(255,104,158,0)');
-  ctx.globalAlpha=p.energy*(2/3);ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);
+  ctx.globalAlpha=p.energy*.5;ctx.fillStyle=glow;ctx.fillRect(p.x-r,p.y-r,2*r,2*r);
  }
  ctx.restore();
  return {rendered:true,faces:m.faces.length,materialBatchCount:visibleBands.length,carriers:39,sceneTracks:scene.trails.length,sceneNodes:scene.nodes.length,peaks:m.glints.length,

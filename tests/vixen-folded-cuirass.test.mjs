@@ -77,8 +77,8 @@ test('material reflection normals are normalized and tailored seams remain disti
  // Keep a measurable difference between geometric face normals and
  // the material-only reflective field so shallow chrome remains continuous.
  assert(m.faces.some(f=>Math.hypot(...f.normal.map((x,i)=>x-f.geometricNormal[i]))>1e-5));
- assert.equal(CUIRASS_POLICY.emission.waist,.70);
- assert.equal(CUIRASS_POLICY.emission.beams,.62);
+ assert.equal(CUIRASS_POLICY.emission.waist,.85);
+ assert.equal(CUIRASS_POLICY.emission.beams,.85);
  approx(Object.values(CUIRASS_POLICY.emission).reduce((n,v)=>n+v,0),3.72,1e-10);
  assert.equal(CUIRASS_POLICY.total_emission_alpha,3.72);
 });
