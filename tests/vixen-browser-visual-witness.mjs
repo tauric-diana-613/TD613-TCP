@@ -558,7 +558,7 @@ try {
       return {
        connected:c.isConnected,role:c.dataset.role,
        route:state.route,frames:state.rendered_frames,
-       meshCarriers:state.model_carriers,px:colored,
+       meshCarriers:state.model_carriers,px:colored,hostDriven:state.host_driven_frames,
        pointer:getComputedStyle(c).pointerEvents,
        moduleLoaded:[...document.scripts].some(x=>x.src?.includes('vixen-live-mesh-rgi13.mjs')),
        styleLoaded:[...document.styleSheets].some(x=>x.href?.includes('vixen-electrical-breath-rgi13.css'))
@@ -568,9 +568,11 @@ try {
     assert.equal(meshWitness.role,'VIXEN_OPERA_VISUAL_ONLY');
     assert.equal(meshWitness.route,'collection');
     assert.equal(await page.evaluate(()=>window.VixenLivingMesh.status().motion),
-      motion==='reduce'?'STILL':'AMBIENT_PARKED',
-      'Salon-specific live couture takes precedence over redundant ambient paints');
+      motion==='reduce'?'STILL':'HOST_FRAME',
+      'Global Living Mesh should inherit its active Salon couture clock');
     assert.equal(meshWitness.meshCarriers,39);
+    if(motion!=='reduce')assert(meshWitness.hostDriven>0,
+      'Salon visual mesh must be painted by the existing primary clock');
     assert.equal(meshWitness.pointer,'none','The electric mesh cannot steal source controls');
     assert.equal(meshWitness.moduleLoaded,true);
     assert.equal(meshWitness.styleLoaded,true);
