@@ -654,7 +654,7 @@ try {
     await page.evaluate(()=>document.getElementById('motionBtn').click());
     // OS-reduced-motion remains STILL after the operator releases the
     // in-page Still switch; only a motion-capable browser may go LIVE.
-    const resumedMotion=motion==='reduce'?'STILL':'AMBIENT_PARKED';
+    const resumedMotion=motion==='reduce'?'STILL':'HOST_FRAME';
     await page.waitForFunction(expected=>
       window.VixenLivingMesh?.status()?.motion===expected,resumedMotion,{timeout:5000});
 
