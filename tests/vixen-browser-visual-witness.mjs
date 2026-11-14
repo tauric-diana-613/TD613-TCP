@@ -335,6 +335,31 @@ try {
     assert.equal(visualBefore.status.source_giveback_tracks,6);
     assert.equal(visualBefore.status.experiment_b_flight,'HELD');
     assert.match(visualBefore.source,/TCC-01/);
+    // Cross-room optical gate: the operator's one Still switch must stop the
+    // Observatory's own GPU/CPU host RAF, not just the ambient Salon/mesh.
+    if(motion!=='reduce'){
+      const beforeHold=await page.locator('#motionBtn').getAttribute('aria-pressed');
+      assert.equal(beforeHold,'false','Ordinary Foundry encounter begins LIVE');
+      await page.evaluate(()=>document.getElementById('motionBtn').click());
+      try{
+        await page.waitForTimeout(130);
+        const frozen=await page.evaluate(()=>({
+          frame:window.VIXEN_ELECTRIC_FOUNDRY.status().frames,
+          held:window.VIXEN_ELECTRIC_FOUNDRY.status().global_still,
+          motion:window.VIXEN_MOTION_GRAPH?.status()?.held
+        }));
+        assert.equal(frozen.held,true,'Still must reach the Observatory engine');
+        assert.equal(frozen.motion,true,'Global motion graph must report held');
+        await page.waitForTimeout(170);
+        assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.status().frames),
+          frozen.frame,'Global Still must stop Foundry frames across CPU and GPU');
+      }finally{
+        await page.evaluate(()=>{
+          if(document.getElementById('motionBtn').getAttribute('aria-pressed')==='true')
+            document.getElementById('motionBtn').click();
+        });
+      }
+    }
     await page.evaluate(()=>{
       const n=document.querySelector('#vixenElectricFoundry .ef-stage');
       scrollTo({top:Math.max(0,scrollY+n.getBoundingClientRect().top-118),behavior:'instant'});
