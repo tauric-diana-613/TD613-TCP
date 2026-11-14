@@ -21,6 +21,8 @@ test('global Still reaches Foundry and pointer field, and halts CSS animation',(
  const foyer=path('vixen-estate/vixen-foyer.mjs');
  assert(html.includes("document.body.dataset.vixenMotion=state.motionPaused"));
  assert(html.includes("broadcastVixenMotion();"));
+ assert(html.includes('class="hdr-pill hdr-motion-control" id="motionBtn"'));
+ assert(!html.includes('class="hdr-pill hide-mobile-hdr" id="motionBtn"'));
  assert(foundry.includes('return !globalMotionHeld(document)&&'));
  assert(foundry.includes("window.addEventListener('vixen:motionchange',syncGlobalMotion)"));
  assert(foyer.includes("if(frame||globalMotionHeld(document))return"));
