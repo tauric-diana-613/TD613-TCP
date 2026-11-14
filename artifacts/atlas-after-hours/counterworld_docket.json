@@ -1,0 +1,73 @@
+{
+  "chamber": "CHAMBER_2_THE_TWO_IDENTICAL_UNIVERSES",
+  "universe_A": {
+    "source_sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed",
+    "trajectory": {
+      "endpoint": "STATE_TERMINAL_AA",
+      "winding_number": 0,
+      "history": [
+        "node_0",
+        "node_1",
+        "terminal_AA"
+      ]
+    }
+  },
+  "universe_B": {
+    "source_sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed",
+    "trajectory": {
+      "endpoint": "STATE_TERMINAL_AA",
+      "winding_number": 1,
+      "history": [
+        "node_0",
+        "node_loop_1",
+        "node_loop_2",
+        "terminal_AA"
+      ]
+    }
+  },
+  "observation_models": {
+    "state_only": {
+      "obs_WA": {
+        "visible_endpoint": "STATE_TERMINAL_AA",
+        "byte_hash": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+      },
+      "obs_WB": {
+        "visible_endpoint": "STATE_TERMINAL_AA",
+        "byte_hash": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+      },
+      "distinguishable": false,
+      "proof_of_limitation": "Under state-only projection Pi_state, Pi_state(W_A) == Pi_state(W_B) because both terminate at STATE_TERMINAL_AA with identical source digests. W_A and W_B are strictly unidentifiable."
+    },
+    "holonomy_widened": {
+      "smallest_lawful_additional_observation": "1 bit of trajectory path holonomy (winding_number mod 2)",
+      "delta_winding": -1,
+      "engine_finding": {
+        "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+        "endpoint_a": "STATE_TERMINAL_AA",
+        "endpoint_b": "STATE_TERMINAL_AA",
+        "endpoints_equal": true,
+        "winding_a": 0,
+        "winding_b": 1,
+        "winding_delta": -1,
+        "history_parity_equal": false,
+        "modulo_2_parity_equal": false,
+        "disposition": "HOLD_DISTINCT_HISTORY_NOT_ERASED",
+        "reason": "equal endpoints do not erase distinct winding histories or loop powers",
+        "laws": {
+          "relation_recognition_not_identity_substitution": true,
+          "shared_orbit_not_same_member": true,
+          "orbit_representatives_never_replace_concrete_members": true,
+          "concrete_member_custody_retained": true,
+          "same_endpoint_does_not_erase_route_history": true,
+          "caller_string_equality_does_not_establish_content_invariance": true
+        }
+      }
+    }
+  },
+  "falsifier": {
+    "falsifier_id": "FALSIFIER_C2_ALREADY_ADMITTED_OBSERVATION",
+    "test": "Can any already-admitted state-only observation distinguish W_A from W_B?",
+    "result": false,
+    "disposition": "OBSERVATIONALLY_UNIDENTIFIABLE_WITHOUT_HOLONOMY_WIDENING"
+  }
+}

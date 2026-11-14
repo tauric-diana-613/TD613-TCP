@@ -1,0 +1,43 @@
+{
+  "task_scope": "ATLAS_AFTER_HOURS_RULEFIELD_RECURSION_TRIAL",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "source_revision": "87dcede2a28ede19d1d5855c1be928b3595596b6",
+  "evidence_references": [
+    "packages/rulefield/data/rulefield.v1.json",
+    "artifacts/atlas-after-hours/relational_atlas_hypergraph.json",
+    "artifacts/atlas-after-hours/seven_chamber_record.json"
+  ],
+  "domain_inputs": {
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 0,
+        "history": ["node_0", "node_1", "terminal_AA"]
+      },
+      "trajectoryB": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 1,
+        "history": ["node_0", "node_loop_1", "node_loop_2", "terminal_AA"]
+      },
+      "relation_identity": {
+        "left": {
+          "id": "I-043",
+          "orbit": "CANONICAL_SOURCE_LANE",
+          "role": "RULE"
+        },
+        "right": {
+          "id": "I-043",
+          "orbit": "RESEARCH_COUNTEREXAMPLE_PROJECTION",
+          "role": "RULEFIELD"
+        }
+      },
+      "future_response": {
+        "t0_state_a": [1, 0],
+        "t0_state_b": [1, 0],
+        "flow_operator_a": [[1, 0.1], [0, 1]],
+        "flow_operator_b": [[1, -0.1], [0, 1]],
+        "delta_t": 1.0
+      }
+    }
+  }
+}

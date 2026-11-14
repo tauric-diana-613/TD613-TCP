@@ -1,0 +1,15 @@
+{
+  "object_id": "legacy_rule:Q18-R01",
+  "present_status_match": true,
+  "present_state": "SUPERSEDED_CANDIDATE",
+  "reinstatement_Alpha": {
+    "admissible": true,
+    "reason": "Continuous executable authority witnessed during T1"
+  },
+  "reinstatement_Beta": {
+    "admissible": false,
+    "reason": "Authority broken during T1: pure RULEFIELD lacked execution standing"
+  },
+  "is_history_consequential": true,
+  "finding": "Present classification ('SUPERSEDED_CANDIDATE') is adequate for descriptive state lookup, but strictly inadequate for determining legitimate future transitions. Historical participation layers (Heterostratigraphy) govern future legal transformations."
+}

@@ -1,0 +1,15 @@
+{
+  "decidable": false,
+  "status": "HELD_UNDECIDABLE_ON_OBSERVATIONAL_FIBER",
+  "fiber_observation": {
+    "endpoint": "TARGET"
+  },
+  "divergent_answers": {
+    "universeA": false,
+    "universeB": true
+  },
+  "minimal_distinguishing_witness": {
+    "name": "1-bit Holonomy Parity (w mod 2)",
+    "cost_bits": 1
+  }
+}

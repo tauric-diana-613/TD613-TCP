@@ -1,0 +1,110 @@
+{
+  "schema": "td613.rulefield.nomenclature-lock/v1",
+  "edition": "1.0.0",
+  "state": "FROZEN_V1_COMPATIBILITY_CONTRACT",
+  "authority": "HUMAN_ACCEPTANCE_PENDING__SOURCE_FREE_DESIGN_LOCK_ONLY",
+  "meaning": "Existing source names remain unchanged. Terminology and identifiers below are stable within v1; later changes require a versioned v2 migration and operator review.",
+  "terms": [
+    {
+      "id": "RULEFIELD",
+      "name": "Research Rulefield",
+      "definition": "Researchable question-space containing hypotheses, source claims, potentially incompatible rules, observers and assays.",
+      "namespace": "RF-001..RF-999",
+      "not_equivalent_to": [
+        "RULE",
+        "PRIORITY"
+      ]
+    },
+    {
+      "id": "RULE",
+      "name": "Executable or Declarative Rule",
+      "definition": "A concrete typed predicate, local transformation, guard or admissible transition with explicit semantic scope and a falsifier.",
+      "namespace": "I/P/X historic unchanged",
+      "not_equivalent_to": [
+        "RULEFIELD"
+      ]
+    },
+    {
+      "id": "PRIORITY",
+      "name": "Research Priority Position",
+      "definition": "Operator attention order; neither scientific strength nor semantic ontology.",
+      "namespace": "Q01..Q99 historical unchanged"
+    },
+    {
+      "id": "RSR",
+      "name": "Rulefield Submission Request",
+      "definition": "Human-original expressions and preferences; no automatic code or source permission.",
+      "template": "operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+      "id_pattern": "RF-SUB-0001"
+    },
+    {
+      "id": "RAP",
+      "name": "Rulefield Amendment Packet",
+      "definition": "Machine-typed amendment proposal using the existing receiver; not automatically adopted.",
+      "schema_ref": "td613.rulefield.amendment-packet/v1",
+      "id_pattern": "RF-AP-0001",
+      "historical_aliases": [
+        "Kiki Receiver Packet"
+      ]
+    },
+    {
+      "id": "PSD",
+      "name": "Pre-Synthesis Disclosure",
+      "definition": "Full-known-information disclosure with complete packet and review; current engine retains its existing schema.",
+      "schema_ref": "td613.rulefield.operator-pre-synthesis-disclosure/v1"
+    },
+    {
+      "id": "ROD",
+      "name": "Rulefield Operator Docket",
+      "definition": "Content-bound operator-facing review of one specific research proposal revision; machine-complete source, scannable in chat.",
+      "schema_ref": "td613.rulefield.operator-docket/v1",
+      "id_pattern": "RF-OD-0001"
+    },
+    {
+      "id": "ODS",
+      "name": "Operator Decision Statement",
+      "definition": "Actual human turn, bound to docket and decision scope; the assistant never self-authenticates it.",
+      "id_pattern": "RF-DEC-0001"
+    },
+    {
+      "id": "SSC",
+      "name": "Staged Synthesis Candidate",
+      "definition": "Noncanonical reviewable implementation following separately authorized source-free staging.",
+      "id_pattern": "RF-SSC-0001"
+    },
+    {
+      "id": "RHB",
+      "name": "Rulefield Handoff Bundle",
+      "definition": "Exact-head ZIP with source manifest and supporting tests, not an automatically live connection.",
+      "id_pattern": "TD613_Rulefield_Antigravity_Handoff_<sha12>.zip"
+    }
+  ],
+  "decisions": {
+    "allow": [
+      "APPROVE_PROVISIONAL_RESEARCH",
+      "APPROVE_SELECTED_FOR_FURTHER_REVIEW",
+      "REQUEST_REVISIONS",
+      "HOLD_SELECTION",
+      "DECLINE_PROPOSAL"
+    ],
+    "forbidden_in_docket": [
+      "MERGE",
+      "DEPLOY",
+      "ADOPT_CANONICAL",
+      "OPEN_PROTECTED_FLIGHT",
+      "AUTOSIGN"
+    ],
+    "human_confirmation": "GenUI.issueNewTurn or clear human message is a new conversation turn; it is not a direct GitHub/registry mutation.",
+    "versioning": "Never rename an already issued ID. Any later terminology change requires a new version and explicit migration ledger."
+  },
+  "artifact_files": {
+    "source_template": "operator/templates/HUMAN_RULEFIELD_SUBMISSION_REQUEST.md",
+    "docket_template": "operator/templates/RULEFIELD_OPERATOR_DOCKET_V1.md",
+    "conversation_protocol": "operator/IN_CHAT_DECISION_PROTOCOL.md",
+    "machine_nomenclature": "operator/contracts/NOMENCLATURE_V1.json",
+    "docket_engine": "operator/docket.mjs",
+    "dossier_source": "operator/disclosure.mjs",
+    "frozen_docket_seed": "RF-OD-0001",
+    "staging_directory": "operator/dockets/outbox/"
+  }
+}

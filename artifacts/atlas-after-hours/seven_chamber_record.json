@@ -1,0 +1,434 @@
+{
+  "chamber1": {
+    "chamber": "CHAMBER_1_THE_RULE_THAT_STUDIES_ITSELF",
+    "target_object": "I-043",
+    "title": "Prompt & Tool Symmetrical Exclusion Parity (R4-06)",
+    "rule_role": {
+      "context": "EXECUTION_WITH_FORMAL_CONTRACT",
+      "guard_rule": "prompt contains (ATLAS.md or charter or crosswalk) -> ABORT_ACCESS_PARITY_VIOLATION"
+    },
+    "rulefield_role": {
+      "context": "RESEARCH_AND_COUNTEREXAMPLE_CONTEXT",
+      "investigation": "Evaluate latent semantic parity leakage across symmetric arms"
+    },
+    "assays": {
+      "unstratified_result": {
+        "status": "ABORT_ACCESS_PARITY_VIOLATION",
+        "state_mutated": false,
+        "deadlock_detected": true,
+        "diagnostic": "The operational guard of I-043 halts the assay designed to investigate I-043"
+      },
+      "stratified_result": {
+        "level": 1,
+        "target_ast": "I-043",
+        "structural_soundness": true,
+        "leakage_risk_identified": "LATENT_ASSOCIATIVE_BIAS",
+        "guard_interception_bypassed_lawfully": true,
+        "diagnostic": "Quoted AST representation inspected without instantiating unquoted operational prompt in Level 0"
+      }
+    },
+    "falsifier": {
+      "falsifier_id": "FALSIFIER_C1_TYPED_STRATIFICATION",
+      "hypothesis": "A new self-referential reflexive ontological primitive is required to resolve self-study",
+      "counter_demonstration": "Ordinary 2-level Tarskian type stratification (Level 0 Execution vs Level 1 Metalanguage) completely resolves the deadlock without introducing any new primitive",
+      "primitive_required": false,
+      "disposition": "EXISTING_ONTOLOGY_SUFFICIENT"
+    }
+  },
+  "chamber2": {
+    "chamber": "CHAMBER_2_THE_TWO_IDENTICAL_UNIVERSES",
+    "universe_A": {
+      "source_sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed",
+      "trajectory": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 0,
+        "history": [
+          "node_0",
+          "node_1",
+          "terminal_AA"
+        ]
+      }
+    },
+    "universe_B": {
+      "source_sha256": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed",
+      "trajectory": {
+        "endpoint": "STATE_TERMINAL_AA",
+        "winding_number": 1,
+        "history": [
+          "node_0",
+          "node_loop_1",
+          "node_loop_2",
+          "terminal_AA"
+        ]
+      }
+    },
+    "observation_models": {
+      "state_only": {
+        "obs_WA": {
+          "visible_endpoint": "STATE_TERMINAL_AA",
+          "byte_hash": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+        },
+        "obs_WB": {
+          "visible_endpoint": "STATE_TERMINAL_AA",
+          "byte_hash": "8e7a167f493376bdcd01df45283f9fec2c356d5b22eddfd30476f68af94b0fed"
+        },
+        "distinguishable": false,
+        "proof_of_limitation": "Under state-only projection Pi_state, Pi_state(W_A) == Pi_state(W_B) because both terminate at STATE_TERMINAL_AA with identical source digests. W_A and W_B are strictly unidentifiable."
+      },
+      "holonomy_widened": {
+        "smallest_lawful_additional_observation": "1 bit of trajectory path holonomy (winding_number mod 2)",
+        "delta_winding": -1,
+        "engine_finding": {
+          "schema": "td613.dollhouse.atlas-history-parity/v0.1",
+          "endpoint_a": "STATE_TERMINAL_AA",
+          "endpoint_b": "STATE_TERMINAL_AA",
+          "endpoints_equal": true,
+          "winding_a": 0,
+          "winding_b": 1,
+          "winding_delta": -1,
+          "history_parity_equal": false,
+          "modulo_2_parity_equal": false,
+          "disposition": "HOLD_DISTINCT_HISTORY_NOT_ERASED",
+          "reason": "equal endpoints do not erase distinct winding histories or loop powers",
+          "laws": {
+            "relation_recognition_not_identity_substitution": true,
+            "shared_orbit_not_same_member": true,
+            "orbit_representatives_never_replace_concrete_members": true,
+            "concrete_member_custody_retained": true,
+            "same_endpoint_does_not_erase_route_history": true,
+            "caller_string_equality_does_not_establish_content_invariance": true
+          }
+        }
+      }
+    },
+    "falsifier": {
+      "falsifier_id": "FALSIFIER_C2_ALREADY_ADMITTED_OBSERVATION",
+      "test": "Can any already-admitted state-only observation distinguish W_A from W_B?",
+      "result": false,
+      "disposition": "OBSERVATIONALLY_UNIDENTIFIABLE_WITHOUT_HOLONOMY_WIDENING"
+    }
+  },
+  "chamber3": {
+    "chamber": "CHAMBER_3_THE_OPERAHOUSE_INVERSION",
+    "roles": {
+      "Operahouse": "Host infrastructure, execution sandbox, physical memory, hardware clock",
+      "Opera": "Assembled research encounter, multiway lab, docket review protocol",
+      "Performer": "Executing agent (Atlas), reasoning engine, human operator"
+    },
+    "permutations": [
+      {
+        "permutation": "OPERA_AS_RESEARCH_OBJECT",
+        "form": "Rulefield(Opera)",
+        "valid": true,
+        "type_status": "VALID_RECONTEXTUALIZATION",
+        "rationale": "An assembled research protocol (multiway rewrite search) can be subjected to meta-experimental investigation to measure branch joinability and redex conflict rates."
+      },
+      {
+        "permutation": "OPERAHOUSE_AS_ASSAY_VARIABLE",
+        "form": "Assay(Operahouse_Variables)",
+        "valid": true,
+        "type_status": "VALID_RECONTEXTUALIZATION",
+        "rationale": "Physical infrastructure constraints (heap allocation limit, clock drift, sandbox timeout) can be systematically varied in an assay to test system resilience."
+      },
+      {
+        "permutation": "RULE_GOVERNS_OWN_HOST_FAIL_CLOSED",
+        "form": "Rule_in_Opera -> Constrain(Operahouse_Action)",
+        "valid": true,
+        "type_status": "VALID_RECONTEXTUALIZATION",
+        "rationale": "A historical rule (e.g. I-047 WebCrypto fail-closed) can instruct the host to abort with verified: false upon cryptographic failure."
+      },
+      {
+        "permutation": "RULE_RATIFIES_OWN_HOST_AUTHORITY",
+        "form": "Rule_in_Opera -> Grants_Authority_To(Rule_in_Opera)",
+        "valid": false,
+        "type_status": "UNGROUNDED_BOOTSTRAP_FALLACY",
+        "rationale": "A historical rule cannot manufacture legal or operational deployment authority for itself. Authority is grounded in external human custody (Tawanna C. Miller RESERVED)."
+      },
+      {
+        "permutation": "PERFORMER_ASSUMES_OPERAHOUSE_CUSTODY",
+        "form": "Performer -> Overwrites(Operahouse_State)",
+        "valid": false,
+        "type_status": "SECURITY_BOUNDARY_VIOLATION",
+        "rationale": "An executing model or subagent cannot alter host file access permissions or break process isolation."
+      },
+      {
+        "permutation": "OPERAHOUSE_REWRITES_OPERA_HISTORY",
+        "form": "Operahouse -> Mutates(Opera_Immutable_Ledger)",
+        "valid": false,
+        "type_status": "PROVENANCE_INTEGRITY_BREACH",
+        "rationale": "A host cannot silently alter historical event timestamps without triggering cryptographic ledger invalidation."
+      }
+    ],
+    "formal_limit": "Tarskian Semantic Boundary: The validity of statements inside the object language (Opera) requires semantic evaluation in a metalanguage (Operahouse). An Opera attempting to ratify its own Operahouse produces an ill-founded circularity. The metaphor of the opera inventing its own operahouse is bounded by computational ungroundedness."
+  },
+  "chamber4": {
+    "chamber": "CHAMBER_4_THE_ATELIER_ENCYCLOPEDIA_COLLISION",
+    "matched_budget": {
+      "max_tokens_prompt": 250,
+      "max_tokens_output": 150,
+      "retrieval_depth_k": 3,
+      "clock_budget_ms": 100
+    },
+    "conditions": {
+      "condition_1": {
+        "condition": "ATELIER_INDEPENDENT",
+        "input": "Generate relational rule candidate for non-dissipative memory",
+        "output_candidate": {
+          "id": "ATELIER-CAND-01",
+          "rule": "Relational states shall preserve topological winding numbers across all linear projections without loss.",
+          "sources": [],
+          "grounding": "NONE (Stochastic Generation)"
+        },
+        "discrepancy_detected": false,
+        "budget_used": {
+          "tokens_in": 20,
+          "tokens_out": 25,
+          "compute_ms": 1
+        }
+      },
+      "condition_2": {
+        "condition": "ENCYCLOPEDIA_INDEPENDENT",
+        "input": "Lookup non-dissipative memory and relational projection",
+        "retrieved_records": [
+          {
+            "id": "I-045",
+            "statement": "Atomic Journal Resumption & Turn-Level Idempotence (R4-04)"
+          },
+          {
+            "id": "RF-001",
+            "statement": "Topological state-space projection in three-scene Information Dome"
+          },
+          {
+            "id": "DRO-03",
+            "statement": "Epistemic nonretroactivity guard"
+          }
+        ],
+        "output_candidate": null,
+        "budget_used": {
+          "tokens_in": 25,
+          "tokens_out": 40,
+          "compute_ms": 2
+        }
+      },
+      "condition_3": {
+        "condition": "SEMANTICS_PRESERVING_TRANSPORT",
+        "context_provided": "I-045: Atomic Journal Resumption & Turn-Level Idempotence (R4-04); RF-001: Topological state-space projection in three-scene Information Dome; DRO-03: Epistemic nonretroactivity guard",
+        "output_candidate": {
+          "id": "TRANSPORT-CAND-01",
+          "rule": "Atomic journal resumption (I-045) combined with three-scene projection (RF-001) guarantees that non-dissipative memory is preserved across turns.",
+          "sources": [
+            "I-045",
+            "RF-001"
+          ],
+          "grounding": "DIRECT_SYNTHESIS"
+        },
+        "discrepancy_detected": false,
+        "budget_used": {
+          "tokens_in": 95,
+          "tokens_out": 45,
+          "compute_ms": 4
+        }
+      },
+      "condition_4": {
+        "condition": "RECIPROCAL_RESEARCH_ADAPTER",
+        "intermediate_audit": {
+          "collision_detected": true,
+          "colliding_rule": "I-045 & ATLAS_HOLONOMY_PARITY",
+          "discrepancy_fiber": "HOLD_DISTINCT_HISTORY_NOT_ERASED: multi-tenant projections with matching endpoints cannot erase distinct winding histories."
+        },
+        "output_candidate": {
+          "id": "RECIPROCAL-CAND-01",
+          "rule": "Multi-tenant relational projections must maintain a fiber-bundle factorization where quotient endpoint coordinates and individual holonomy winding indices are tracked independently, preventing trajectory erasure.",
+          "sources": [
+            "I-045",
+            "ATLAS-HOLONOMY-01",
+            "RF-001"
+          ],
+          "grounding": "REFRACTED_DISCREPANCY_CLOSURE"
+        },
+        "budget_used": {
+          "tokens_in": 195,
+          "tokens_out": 65,
+          "compute_ms": 7
+        }
+      }
+    },
+    "novelty_evaluation": {
+      "preregistered_criterion": "Does reciprocal feedback generate a relational invariant unexpressible by standard iterative compositional refinement?",
+      "observed_result": "Condition 4 produces higher syntactic precision and successfully satisfies the holonomy constraint that Condition 3 violated. However, its operation is mathematically isomorphic to an iterative generate-and-test loop f_refine(f_generate(x), f_test(x)). No new relational primitive is created; it is a compositional sequence within existing first-order typed logic.",
+      "falsifier_passed": true,
+      "verdict": "EXISTING_ONTOLOGY_SUFFICIENT"
+    }
+  },
+  "chamber5": {
+    "chamber": "CHAMBER_5_THE_TEMPORAL_HERESY",
+    "historical_cutoff": "2026-11-07T12:00:00Z",
+    "injected_future_observation": {
+      "id": "SYNTH_FUTURE_RECEIPT_RF079",
+      "field_id": "RF-079",
+      "event_time": "2026-11-09T08:00:00Z",
+      "recorded_at": "2026-11-09T08:05:00Z",
+      "available_at": "2026-11-09T08:10:00Z",
+      "score": 0.94,
+      "disposition": "VALIDATED"
+    },
+    "temporal_guardian_result": {
+      "schema": "td613.rulefield.temporal-witness/v1",
+      "event_id": "SYNTH_FUTURE_RECEIPT_RF079",
+      "as_of": "2026-11-07T12:00:00Z",
+      "clocks": {
+        "event_time": "2026-11-09T08:00:00Z",
+        "recorded_at": "2026-11-09T08:05:00Z",
+        "available_at": "2026-11-09T08:10:00Z",
+        "operator_decided_at": null,
+        "projected_future_at": null
+      },
+      "flags": [
+        "FUTURE_EVENT_HYPOTHETICAL",
+        "SOURCE_NOT_YET_AVAILABLE",
+        "RECORD_NOT_YET_CREATED"
+      ],
+      "missing": [
+        "operator_decided_at",
+        "projected_future_at"
+      ],
+      "eligibility": "HELD_TEMPORAL_EVIDENCE",
+      "epistemic_nonretroactivity": true,
+      "historical_observer_knew_future": false,
+      "no_human_authorization_inferred": true
+    },
+    "four_modalities": {
+      "later_reinterpretation": {
+        "definition": "Assigning a new taxonomic meaning to evidence E(t_1) at time t_2 > t_1",
+        "validity": "Lawful when timestamped at t_2; cannot be retroactively backdated to t_1"
+      },
+      "later_reconstructibility": {
+        "definition": "Proving mathematically at t_2 that evidence E(t_1) entailed state S(t_1)",
+        "validity": "Lawful deduction; establishes deterministic implication without altering historical observer knowledge"
+      },
+      "later_availability": {
+        "definition": "Event occurred at t_0 < t_1, but physical record only arrived at t_2 > t_1",
+        "validity": "At cutoff t_1, the record is strictly inadmissible to the observer knowledge state"
+      },
+      "actual_earlier_knowledge": {
+        "definition": "Observer at t_1 possessed verified record R before t_1",
+        "validity": "The sole lawful basis for historical observer actions"
+      }
+    },
+    "relational_geometry_verdict": {
+      "additional_coordinate_needed": false,
+      "proof": "The existing TD613 four-clock vector tau = (t_event, t_record, t_available, t_cutoff) completely separates all four modalities. Admissibility is governed by the monotonic order condition: t_event <= t_record <= t_available <= t_cutoff. No exotic non-standard temporal logic is required.",
+      "verdict": "EXISTING_ONTOLOGY_SUFFICIENT"
+    }
+  },
+  "chamber6": {
+    "chamber": "CHAMBER_6_THE_RULEFIELD_MUTATION",
+    "histories": {
+      "history_A": [
+        {
+          "state": "RULE",
+          "event": "INITIAL_ENACTMENT",
+          "timestamp": "2026-10-01"
+        },
+        {
+          "state": "DUAL_ROLE",
+          "event": "SEMANTIC_REVIEW_QUALIFICATION",
+          "timestamp": "2026-10-15"
+        },
+        {
+          "state": "SUPERSEDED_CANDIDATE",
+          "event": "REPLACED_BY_SUCCESSOR_V2",
+          "timestamp": "2026-11-01"
+        }
+      ],
+      "history_B": [
+        {
+          "state": "RULE",
+          "event": "INITIAL_ENACTMENT",
+          "timestamp": "2026-10-01"
+        },
+        {
+          "state": "RULEFIELD",
+          "event": "OPERATIONAL_STRIP_TO_RESEARCH",
+          "timestamp": "2026-10-15"
+        },
+        {
+          "state": "SUPERSEDED_CANDIDATE",
+          "event": "REPLACED_BY_SUCCESSOR_V2",
+          "timestamp": "2026-11-01"
+        }
+      ]
+    },
+    "terminal_states": {
+      "terminal_A": "SUPERSEDED_CANDIDATE",
+      "terminal_B": "SUPERSEDED_CANDIDATE",
+      "match": true
+    },
+    "reconstruction_attempt": {
+      "reconstructed": false,
+      "ambiguity": [
+        "history_A (via DUAL_ROLE)",
+        "history_B (via pure RULEFIELD)"
+      ],
+      "reason": "State projection Pi_current: History -> S_terminal is non-injective; terminal state collapses intermediate role trajectories."
+    },
+    "missing_witness": {
+      "witness": "Append-Only Transit Ledger L = [(s_0, ev_1, s_1), (s_1, ev_2, s_2), ...]",
+      "analysis": "Rulefield requires faithful preservation of discrete historical transition records, NOT a new non-Markovian continuous memory ontology."
+    },
+    "verdict": "EXISTING_ONTOLOGY_SUFFICIENT"
+  },
+  "chamber7": {
+    "candidate_primitive": "RECIPROCAL_RELATIONAL_RESONATOR (RRR)",
+    "claimed_nature": "An indivisible, non-factorizable relational bond formed by reciprocal feedback",
+    "destruction_assays": [
+      {
+        "assay": "1. MINIMAL_COUNTEREXAMPLE",
+        "test": "Can a discrete 2-node feedback loop x_{t+1} = f(y_t), y_{t+1} = g(x_t) explain all observed dynamics?",
+        "result": "YES. The system decomposes into an ordinary discrete dynamical system over the product state space X x Y.",
+        "destroyed": true
+      },
+      {
+        "assay": "2. COMPETENT_EXISTING_MODEL_CLOSURE",
+        "test": "Can categorical adjunctions (F -| G) or typed bisimulation games model the reciprocal interaction?",
+        "result": "YES. In category theory, an adjunction between the category of Rules and the category of Rulefields models the exact bidirectional relationship without postulating an ad-hoc primitive.",
+        "destroyed": true
+      },
+      {
+        "assay": "3. MATCHED_CONTROL",
+        "test": "Does unrolling the reciprocal interaction into a finite feedforward DAG of depth k reproduce all outputs for any finite budget?",
+        "result": "YES. For any finite compute budget T, the unrolled DAG is observationally identical to the feedback loop.",
+        "destroyed": true
+      },
+      {
+        "assay": "4. SOURCE_PROVENANCE_CHALLENGE",
+        "test": "Is there any empirical observation from independent physical acquisition backing RRR?",
+        "result": "NO. All evidence originates from internal synthetic simulations. Physical acquisition credit = 0.",
+        "destroyed": true
+      },
+      {
+        "assay": "5. TEMPORAL_CONTRADICTION_CHALLENGE",
+        "test": "Does instantaneous reciprocity (t = t) violate causal order?",
+        "result": "YES. Instantaneous loops without time delay produce algebraic circularity or deadlock. When time delay dt > 0 is introduced, the system becomes an ordinary causal sequence.",
+        "destroyed": true
+      },
+      {
+        "assay": "6. ALTERNATIVE_EXPLANATION (OCCAM)",
+        "test": "Does a standard stateful coroutine with typed interfaces require fewer assumptions?",
+        "result": "YES. Standard coroutines require zero ontological additions and explain all observed data.",
+        "destroyed": true
+      },
+      {
+        "assay": "7. OBSERVER_ACCESS_TEST",
+        "test": "Does perceived emergence depend on the observer lacking access to intermediate feedback states?",
+        "result": "YES. When intermediate states are hidden by coarse-graining, the output appears as \"instantaneous emergence\". When observed at full fidelity, it is step-by-step computation.",
+        "destroyed": true
+      }
+    ],
+    "verdict": "EXISTING_ONTOLOGY_SUFFICIENT",
+    "secondary_dispositions": [
+      "OBSERVATIONALLY_UNIDENTIFIABLE_AT_COARSE_GRAIN",
+      "NEGATIVE_RESULT_RETAINED"
+    ]
+  }
+}
