@@ -70,12 +70,12 @@ test('The visual engine rejects ungrounded work coordinates instead of construct
  assert.throws(()=>makeVeilFrame({canvas,works:['W_ONE']}),/TWO_WORK_IDS/);
  assert.throws(()=>makeVeilFrame({canvas,works:[null,'W_TWO']}),/TWO_WORK_IDS/);
 });
-test('Three Glinda pink registers and genuine pale-electric blond Arc Flash are distinct from archived color lineage',()=>{
- assert.equal(GLINDA_LIGHT.rose,'#FF91AF');
- assert.equal(GLINDA_LIGHT.pearl,'#FFE4F1');
- assert.equal(GLINDA_LIGHT.orchid,'#F6A5DD');
+test('Distinct electric pink and pearl with champagne Arc Flash survive the palette repair',()=>{
+ assert.equal(GLINDA_LIGHT.rose,'#FF65AA');
+ assert.equal(GLINDA_LIGHT.pearl,'#FFF8F0');
+ assert.equal(GLINDA_LIGHT.electricPink,'#FF6AAE');
  assert.equal(GLINDA_LIGHT.arcFlash,'#FFF2A9');
- assert.notEqual(GLINDA_LIGHT.arcFlash,GLINDA_LIGHT.orchid);
+ assert.notEqual(GLINDA_LIGHT.arcFlash,GLINDA_LIGHT.electricPink);
  assert.match(couture,/--arc-blonde:#FFF2A9/);
  assert.match(couture,/--arc-white:#FFFBE2/);
  assert.match(shader,/vec3 arcFlash=vec3\(1\.,\.9490,\.6627\)/);
