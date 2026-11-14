@@ -664,6 +664,81 @@ try {
     assert.equal(cuirassWitness.legacyCoutureLoaded,true,
       'Archived RGI14 remains available as the source-retained rollback implementation');
 
+    // DD-02 controlled, source/pixel-bound falsifier. Three matched local
+    // Canvas2D repaints keep Work pair, phase, viewport and camera fixed.
+    // This tests causal visual consequence, not aesthetics or backend parity.
+    const opticalAssay=await page.evaluate(async()=>{
+      const canvas=document.querySelector('#vixenSynthesisSalon canvas.vs-cuirass-canvas');
+      const sourceIds=[...document.querySelectorAll('#vixenSynthesisSalon .vs-source-card select')]
+        .slice(0,2).map(node=>node.value);
+      const {buildFoldedCuirass,paintFoldedCuirass,coutureBackingSize}=
+        await import('./vixen-estate/vixen-folded-cuirass.mjs');
+      const bounds=canvas.getBoundingClientRect();
+      const width=Math.max(1,Math.round(bounds.width)),height=Math.max(1,Math.round(bounds.height));
+      const time=2.125,base={width,height,time,sourceIds};
+      const measured=coutureBackingSize(width,height,window.devicePixelRatio);
+      const on=buildFoldedCuirass({...base,beatToGeometryGain:1});
+      const zero=buildFoldedCuirass({...base,beatToGeometryGain:0});
+      const redraw=(model,options)=>{
+        const surface=document.createElement('canvas');
+        surface.width=width;surface.height=height;
+        const context=surface.getContext('2d',{willReadFrequently:true});
+        paintFoldedCuirass(context,model,options);
+        return context.getImageData(0,0,width,height).data;
+      };
+      const onPixels=redraw(on),repeatPixels=redraw(on);
+      const zeroPixels=redraw(zero),darkPixels=redraw(on,{optics:false});
+      const luma=(d,i)=>.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];
+      let repeatDrift=0,beatChanged=0,allOpticsChanged=0,samples=0;
+      const lumas=[],left=Math.max(0,Math.floor(on.bounds.left));
+      const right=Math.min(width,Math.ceil(on.bounds.right));
+      const top=Math.max(0,Math.floor(on.bounds.top));
+      const bottom=Math.min(height,Math.ceil(on.bounds.bottom));
+      for(let y=top;y<bottom;y+=2)for(let x=left;x<right;x+=2){
+        const i=(y*width+x)*4;
+        const live=luma(onPixels,i),rep=luma(repeatPixels,i);
+        const gainOff=luma(zeroPixels,i),unlit=luma(darkPixels,i);
+        if(Math.abs(live-rep)>12)repeatDrift++;
+        if(Math.abs(live-gainOff)>12)beatChanged++;
+        if(Math.abs(live-unlit)>12)allOpticsChanged++;
+        lumas.push(live);samples++;
+      }
+      lumas.sort((a,b)=>a-b);
+      const quantile=q=>lumas[Math.min(lumas.length-1,Math.floor((lumas.length-1)*q))]??0;
+      // Five actual build+Canvas paint samples on the same browser machine.
+      const costs=[];
+      for(let i=0;i<5;i++){
+        const start=performance.now();
+        const model=buildFoldedCuirass({...base,time:time+.025*i});
+        redraw(model);costs.push(performance.now()-start);
+      }
+      const sorted=[...costs].sort((a,b)=>a-b);
+      return {
+        claimClass:'VISUAL_MODEL_ASSAY_NOT_SCIENTIFIC_VERIFICATION',
+        scene:'SALON_CANVAS2D',clockTime:time,sourceIds,width,height,
+        viewportDpr:devicePixelRatio,backing:measured,glintsMatched:JSON.stringify(on.glints)===JSON.stringify(zero.glints),
+        samples,repeatDrift,beatChanged,allOpticsChanged,
+        beatChangedFraction:beatChanged/Math.max(1,samples),
+        repeatDriftFraction:repeatDrift/Math.max(1,samples),
+        allOpticsChangedFraction:allOpticsChanged/Math.max(1,samples),
+        displayLumaP10:quantile(.10),displayLumaP90:quantile(.90),
+        displaySpanP90P10:quantile(.90)-quantile(.10),
+        paintBuildP95Ms:sorted[4],paintBuildMedianMs:sorted[2],
+        proposedP95CeilingMs:20,passesProposedP95:sorted[4]<=20
+      };
+    });
+    assert.equal(opticalAssay.glintsMatched,true,
+      'Beat-to-geometry refraction must preserve selected glints');
+    assert.equal(opticalAssay.repeatDrift,0,
+      'Fixed source/phase/viewport must repeat at byte-equal luma sampling');
+    assert(opticalAssay.beatChanged>opticalAssay.repeatDrift+25,
+      'Beat intervention must cause displayed pixel change beyond repeated-paint drift');
+    assert(opticalAssay.allOpticsChanged>opticalAssay.beatChanged,
+      'All-optics-off must be visually distinguishable from beat-only intervention');
+    assert(opticalAssay.displaySpanP90P10>50,
+      'Displayed garment region must have bright/dark contrast beyond a flat wash');
+    assert(Number.isFinite(opticalAssay.paintBuildP95Ms),
+      'Browser p95 model build and paint must be measured, not inferred from FPS caps');
     // Existing Still button must pause our new animation as well as the
     // historical Observatory; never add a redundant motion authority control.
     await page.evaluate(()=>document.getElementById('motionBtn').click());
@@ -862,7 +937,7 @@ try {
     }
     assert.equal(errors.length,0,'Styling must not produce runtime errors '+errors.join(' | '));
 
-    witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, errors });
+    witness.push({ width, height, motion, head, result: 'GEOMETRY_AND_ROUTE_PASS', before, opticalAssay, errors });
     await context.close();
   }
 } finally {
