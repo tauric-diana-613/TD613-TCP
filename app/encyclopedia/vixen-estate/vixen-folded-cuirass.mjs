@@ -25,7 +25,7 @@ export const CUIRASS_POLICY=Object.freeze({
  max_dpr:1.25,max_backing_pixels:1500000,desktop_fps:24,mobile_fps:12,
  // Every emissive draw shares these alpha allocations. Chrome is reflected
  // material in source-over; no unbudgeted screen/haze/beam/rib/fill passes.
- emission:Object.freeze({glints:2.4,seams:.52,filaments:.45,lattice:.22,waist:.13,haze:0,rails:0,beams:0,fills:0}),
+ emission:Object.freeze({glints:2.4,seams:.52,filaments:.34,lattice:.21,waist:.25,haze:0,rails:0,beams:0,fills:0}),
  total_emission_alpha:3.72,max_bloom_css_px:18,
  max_radial_strain:.14,max_angular_shear:.035,
  display_contrast_candidate:'Adjacent seam/trough byte-luma ratio >= 3, trough <= 45; browser measurement pending'
@@ -105,12 +105,36 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  const grid=Array.from({length:N+1},(_,i)=>Array.from({length:M+1},(_,j)=>{
   const v=surface(i/N,j/M);return {...v,screen:project(v.p)};
  }));
- const faces=[];
+ // Geometry retains the original face normals for silhouette/culling.
+ // Reflective material uses local smooth normals INSIDE each tailored gore.
+ // This avoids the checkerboard response of independent per-quad highlights
+ // while preserving discontinuous dark seam undercuts and real beat-fold geometry.
+ const patchNormals=Array.from({length:N},(_,i)=>Array.from({length:M},(_,j)=>{
+  const v=[grid[i][j],grid[i+1][j],grid[i+1][j+1],grid[i][j+1]];
+  return unit(cross(sub(v[1].p,v[0].p),sub(v[3].p,v[0].p)));
+ }));
+ const faces=[],panelWidth=N/CUIRASS_POLICY.panels;
+ const smoothMaterialNormal=(i,j,normal)=>{
+  const acc=[0,0,0],start=Math.floor(i/panelWidth)*panelWidth;
+  let weight=0;
+  for(let du=-2;du<=2;du++)for(let dv=-2;dv<=2;dv++){
+   const ii=i+du,jj=j+dv;
+   if(ii<start||ii>=start+panelWidth||jj<0||jj>=M)continue;
+   const neighbour=patchNormals[ii][jj];
+   if(dot(normal,neighbour)<.55||neighbour[2]+.16*neighbour[1]<=0)continue;
+   const w=(3-Math.abs(du))*(3-Math.abs(dv));
+   for(let k=0;k<3;k++)acc[k]+=w*neighbour[k];
+   weight+=w;
+  }
+  return weight?unit(acc):normal;
+ };
  for(let i=0;i<N;i++)for(let j=0;j<M;j++){
   const v=[grid[i][j],grid[i+1][j],grid[i+1][j+1],grid[i][j+1]];
-  const normal=unit(cross(sub(v[1].p,v[0].p),sub(v[3].p,v[0].p)));
+  const normal=patchNormals[i][j];
   if(normal[2]+.16*normal[1]<=0)continue;
-  faces.push({points:v.map(p=>p.screen),normal,depth:v.reduce((n,p)=>n+p.p[2],0)/4,
+  faces.push({points:v.map(p=>p.screen),normal:smoothMaterialNormal(i,j,normal),
+   geometricNormal:normal,panel:Math.floor(i/panelWidth),
+   depth:v.reduce((n,p)=>n+p.p[2],0)/4,
    t:(j+.5)/M,u:(i+.5)/N,fold:v.reduce((n,p)=>n+p.fold,0)/4});
  }
  faces.sort((a,b)=>a.depth-b.depth);
@@ -145,7 +169,7 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  return {width,height,time,seed,sourceIds:ids,gain,scale,cx,cy,field,grid,faces,seams,rims,filaments,glints,bounds,
   metrics:{seamLength:seams.reduce((n,s)=>n+lengths(s.points),0),filamentLength:filaments.reduce((n,s)=>n+lengths(s.points),0),
    contourWidth:bounds.right-bounds.left,contourHeight:bounds.bottom-bounds.top},
-  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)+.52+.45+.22+.13};
+  emissionAllocated:glints.reduce((n,p)=>n+p.energy,0)+.52+.34+.21+.25};
 }
 
 function trace(ctx,points,close=false){
@@ -168,13 +192,13 @@ function chromeColor(normal,t,fold){
  const [nx,ny,nz]=normal;
  const reflection=[2*nz*nx,2*nz*ny,2*nz*nz-1];
  // Finite studio strip reflections: sharp achromatic bands beside graphite.
- const white=gaussian((reflection[0]+.46)/.26)*.72;
- const narrow=gaussian((reflection[0]-.62)/.16)*.76;
- const horizon=gaussian((reflection[1]+.20)/.22)*.39;
+ const white=gaussian((reflection[0]+.46)/.35)*.66;
+ const narrow=gaussian((reflection[0]-.62)/.27)*.66;
+ const horizon=gaussian((reflection[1]+.20)/.29)*.34;
  const edge=Math.pow(1-Math.max(0,nz),3)*.55;
- const light=clamp(.17+white+narrow+horizon+edge);
+ const light=clamp(.29+white+narrow+horizon+edge);
  let c=colorMix(palette.dark,palette.silver,light);
- const rose=gaussian((reflection[0]-.22)/.19)*.17;
+ const rose=gaussian((reflection[0]-.22)/.24)*.08;
  c=colorMix(c,palette.pink,rose);
  c=colorMix(c,palette.gold,gaussian((t-.47)/.055)*light*.24);
  return rgb(c.map(v=>v*(.86+.14*fold)));
@@ -233,12 +257,12 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  for(const s of front)stroke(ctx,s.points,'#ffe8ae',1.3,.52/Math.max(1,front.length));
  const hot=m.filaments.filter(f=>f.near).flatMap(f=>frontSegments(f.points,.03));
  for(const f of hot){
-  stroke(ctx,f,'#ff4e9b',1.5,.45/Math.max(1,hot.length));
+  stroke(ctx,f,'#ff4e9b',1.5,.34/Math.max(1,hot.length));
  }
  // Reserve finite emission for the shared field and a distinct waist peak.
  for(let i=0;i<6;i++){
   const a=scene.trails[i*3].points;
-  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.1,.22/6);
+  stroke(ctx,a,i%2?'#ffc0e2':'#fff2cb',1.1,.21/6);
  }
  const wRadius=Math.min(m.scale*.26,118);
  const waist=ctx.createRadialGradient(cx,cy,0,cx,cy,wRadius);
@@ -246,7 +270,7 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  waist.addColorStop(.18,'rgba(255,226,164,.38)');
  waist.addColorStop(.45,'rgba(255,93,168,.10)');
  waist.addColorStop(1,'rgba(255,93,168,0)');
- ctx.globalAlpha=.13;ctx.fillStyle=waist;
+ ctx.globalAlpha=.25;ctx.fillStyle=waist;
  ctx.fillRect(cx-wRadius,cy-wRadius,2*wRadius,2*wRadius);
  for(const p of m.glints){
   const r=Math.min(p.bloomRadius,BEAT_POLICY.max_bloom_css_px);

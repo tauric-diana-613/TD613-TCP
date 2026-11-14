@@ -62,6 +62,22 @@ test('Work change affects geometry and responsive projection preserves the same 
  const mobile=buildFoldedCuirass({...params,width:350,height:390});
  assert.deepEqual(a.grid.map(r=>r.map(v=>v.p)),mobile.grid.map(r=>r.map(v=>v.p)));
 });
+test('material reflection normals are normalized and tailored seams remain distinct',()=>{
+ const m=buildFoldedCuirass(params);
+ assert(m.faces.length>900);
+ assert(m.faces.every(f=>Number.isInteger(f.panel)&&f.panel>=0&&f.panel<12));
+ for(const f of m.faces){
+  const geom=Math.hypot(...f.geometricNormal),material=Math.hypot(...f.normal);
+  approx(geom,1,1e-9);approx(material,1,1e-9);
+  assert(f.normal.every(Number.isFinite));
+ }
+ // Keep a measurable difference between geometric face normals and
+ // the material-only reflective field so shallow chrome remains continuous.
+ assert(m.faces.some(f=>Math.hypot(...f.normal.map((x,i)=>x-f.geometricNormal[i]))>1e-5));
+ assert.equal(CUIRASS_POLICY.emission.waist,.25);
+ assert.equal(CUIRASS_POLICY.total_emission_alpha,3.72);
+});
+
 test('Canvas command smoke: filled surfaces and total emissive draw allocation stay bounded',()=>{
  const m=buildFoldedCuirass(params),ctx=context();
  const r=paintFoldedCuirass(ctx,m);
