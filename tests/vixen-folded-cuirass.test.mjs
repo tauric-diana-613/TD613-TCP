@@ -76,7 +76,7 @@ test('material reflection normals are normalized and tailored seams remain disti
  assert(m.faces.some(f=>Math.hypot(...f.normal.map((x,i)=>x-f.geometricNormal[i]))>1e-5));
  assert.equal(CUIRASS_POLICY.emission.waist,.70);
  assert.equal(CUIRASS_POLICY.emission.beams,.62);
- assert.equal(Object.values(CUIRASS_POLICY.emission).reduce((n,v)=>n+v,0),3.72);
+ approx(Object.values(CUIRASS_POLICY.emission).reduce((n,v)=>n+v,0),3.72,1e-10);
  assert.equal(CUIRASS_POLICY.total_emission_alpha,3.72);
 });
 
