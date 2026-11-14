@@ -13,6 +13,14 @@ Rather than imposing a standard template (cards, introduction/methods/conclusion
 
 ---
 
+## Codex Invocation
+
+Select `$dollhouse-design` in a Codex session opened in the TD613-TCP checkout. Run the repository entrypoint from the checkout root so that the pinned source references resolve against its Git history. If the operator requires the platform-installed ChatGPT skill, successful local invocation alone cannot verify that platform dispatch.
+
+For a resumed commission that names a staged JSON input, reuse the file from the prior workspace or an attached copy. If the input is missing, follow the handoff’s recovery instructions and distinguish a reconstructed input from a recovered original.
+
+---
+
 ## Native Antigravity Activation & Invocation
 
 In the Antigravity pairing environment, `/dollhouse-design` is invoked natively through:
