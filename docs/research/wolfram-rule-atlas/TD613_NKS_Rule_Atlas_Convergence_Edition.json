@@ -2728,15 +2728,15 @@
       "class_": "P",
       "family": "Scientific design",
       "kind": "constraint",
-      "rule": "Three-Clock Non-Interference Separation. Theoretical invariants (tau_theory), artistic ambiance (tau_ambiance), and prospective empirical resynthesis (tau_resynthesis) must run on independent timelines. Visual changes must never grant scientific credit, and unexecuted empirical protocols must remain pinned at zero credit.",
-      "transition": "tau_theory perp tau_ambiance perp tau_resynthesis",
-      "witness": "Preregistered in Refractive Couture Mathematical Dossier (TD613-B-PPF-REFRACTIVE-COUTURE-20261031-R1)",
+      "rule": "Conditional Presentation Invariance, Authority Non-Promotion, and Testable Observer Coupling. For a presentation-only intervention that preserves evidence D, structural inputs S, route and custody identity, and authority inputs, protected computational output K(D,S,p) and authorization A(D,S,p) must remain invariant. Relational ambiance, which changes access, routing or histories, lies outside this restricted intervention. Observer response to p is allowed to differ and must be tested with a preregistered randomized assay; no automatic scientific credit from ambiance or clocks.",
+      "transition": "presentation_only(p1,p2) and fixed(D,S,route,custody,authority_inputs) => K(D,S,p1)=K(D,S,p2) AND A(D,S,p1)=A(D,S,p2); H0_observer: E[Y|do(p1)]-E[Y|do(p2)]=0, empirical/testable; relational_ambiance is distinct; clock governance does not imply orthogonality",
+      "witness": "RCA-01 bounded deterministic Observatory metamorphic and mutation controls; human observer study NOT EXECUTED; see P044_AMBIANCE_COUPLING_CORRIGENDUM_20261114.md. Historical Refractive Couture dossier retained as superseded source.",
       "sources": [
         "G01",
         "G14"
       ],
       "confidence": "SOURCE_BOUND",
-      "notes": "Three-clock orthogonality across theory, ambiance, resynthesis"
+      "notes": "P-044 revises the former unsupported universal three-clock orthogonality/zero-curvature claim. Scoped software boundary assertion; only evidence-backed tests may promote implementation status."
     },
     {
       "id": "P-045",
@@ -2814,7 +2814,7 @@
         "Virilio2005"
       ],
       "confidence": "SOURCE_BOUND",
-      "notes": "Mathematically translates Paul Virilio's dromological accident into discrete relativistic control theory. Ambiance-orthogonal."
+      "notes": "Proposed computational dromological model; presentation-only invariance is scoped under revised P-044, not universal ambiance orthogonality."
     },
     {
       "id": "X-087",
@@ -3148,7 +3148,7 @@
     "class_X_count": 95,
     "total_crossings": 30,
     "synthesis_framework": "Virilio (Dromological Mechanics) x Wolfram (NKS Multiway Causal Invariance) x Berlant (Affective/Infrastructural Thermodynamics)",
-    "geometry_type": "Relational-Geometry (Dome-World Primitives, Ambiance-Orthogonal, tau_theory _|_ tau_ambiance)",
+    "geometry_type": "Relational-Geometry (relation-first primitives; P-044 scoped presentation invariance and observer-response assay)",
     "laboratorial_rigor_level": "ADVANCED_NONLINEAR_DYNAMICS_AND_NKS_HYPERGRAPH_REWRITES"
   },
   "crossings": [
