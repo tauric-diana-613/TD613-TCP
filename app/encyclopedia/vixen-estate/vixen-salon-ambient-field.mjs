@@ -66,6 +66,16 @@ export function buildSalonField({width,height,time=0,field,cx,cy,scale,sourceIds
   return {width,height,time,sourceIds:[...sourceIds],trails,nodes,anchors,
     metadata:{pairs:pairs.length,clock_source:'FOLDED_CUIRASS_SHARED',claim_class:'ARTISTIC_VISUAL_ONLY'}};
 }
+/** Source-conditioned D3/phi rail samples interpolated as continuous silk
+ * ribbons, rather than a jagged telemetry plot. Half as many path segments
+ * and no new clocks, sampling sources, or authority-bearing identities. */
+function traceSilk(ctx,points){
+ if(!points.length)return;
+ ctx.moveTo(points[0][0],points[0][1]);
+ for(let i=2;i<points.length;i+=2)
+  ctx.quadraticCurveTo(points[i-1][0],points[i-1][1],points[i][0],points[i][1]);
+ if((points.length-1)%2)ctx.lineTo(points.at(-1)[0],points.at(-1)[1]);
+}
 /** Spatially entangled couture optics. The same garment clock drives all
  * trails, nerves, crossings and bounded particle blooms; no independent RAF.
  * These are finite artistic signals, not observed electromagnetic measurements.
@@ -92,7 +102,7 @@ export function paintSalonField(ctx,m){
   ctx.beginPath();
   for(const lane of layout.trails){
    if(lane.color!==tone)continue;
-   lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+   traceSilk(ctx,lane.points);
   }
   ctx.strokeStyle=tones[tone];
   ctx.shadowColor=tone==='champagne'?'#ffdda6':'#ff65ad';
@@ -104,7 +114,7 @@ export function paintSalonField(ctx,m){
  for(const lane of layout.trails){
   const light=charge(lane.index+9*lane.side);
   ctx.beginPath();
-  lane.points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));
+  traceSilk(ctx,lane.points);
   ctx.strokeStyle=tones[lane.color];
   ctx.lineWidth=lane.index%3===0?2.1:1.25;
   ctx.globalAlpha=Math.min(.82,.31+.43*light);

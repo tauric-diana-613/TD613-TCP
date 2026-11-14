@@ -7,7 +7,7 @@ import {paintSalonField,buildSalonField,SALON_FIELD_POLICY}
 const geometry=()=>buildFoldedCuirass({width:1140,height:550,time:2,sourceIds:['a','b']});
 function canvas(){
  const c={calls:[],save(){},restore(){},beginPath(){},moveTo(){},lineTo(){},
-  closePath(){},ellipse(){},fillRect(){this.calls.push(['gradient',this.globalAlpha])},
+  closePath(){},quadraticCurveTo(){this.calls.push(['curve',this.globalAlpha])},ellipse(){},fillRect(){this.calls.push(['gradient',this.globalAlpha])},
   fill(){this.calls.push(['particle',this.globalAlpha])},
   stroke(){this.calls.push(['stroke',this.globalAlpha,this.shadowBlur])},
   createLinearGradient(){return {addColorStop(){}}},
@@ -20,6 +20,8 @@ test('field geometry remains derived, finite, deterministic and bounded',()=>{
  assert.equal(a.trails.length,SALON_FIELD_POLICY.tracks);
  const ctx=canvas(),out=paintSalonField(ctx,m);
  assert.equal(out.trails.length,18);
+ assert(ctx.calls.some(x=>x[0]==='curve'),
+  'Optical field must paint source-conditioned curved rail trajectories');
  assert(ctx.calls.filter(x=>x[0]==='stroke').length>=60);
  assert(ctx.calls.filter(x=>x[0]==='particle').length>=out.nodes.length);
  assert(ctx.calls.every(x=>Number.isFinite(x[1])&&x[1]>=0&&x[1]<=1));

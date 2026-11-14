@@ -5,7 +5,7 @@ import {buildFoldedCuirass,paintFoldedCuirass,CUIRASS_POLICY} from '../app/encyc
 import {buildSalonField,paintSalonField,SALON_FIELD_POLICY} from '../app/encyclopedia/vixen-estate/vixen-salon-ambient-field.mjs';
 const fixture={width:1120,height:540,time:3,sourceIds:['vixen_work_a','vixen_work_b']};
 const ctx=()=>({globalCompositeOperation:'source-over',globalAlpha:1,
- save(){},restore(){},beginPath(){},moveTo(){},lineTo(){},closePath(){},
+ save(){},restore(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},closePath(){},
  clearRect(){},setTransform(){},ellipse(){},fill(){},stroke(){},fillRect(){},
  createLinearGradient(){return {addColorStop(){}}},createRadialGradient(){return {addColorStop(){}}}});
 test('one clock and shared D3/phi pairs produce deterministic page-wide conductor lattice',()=>{

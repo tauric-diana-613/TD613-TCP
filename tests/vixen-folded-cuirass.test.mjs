@@ -12,7 +12,7 @@ const distance=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
 function context(){
  const calls=[],gradient=()=>({addColorStop(){}});
  return {calls,globalAlpha:1,globalCompositeOperation:'source-over',
-  save(){},restore(){},beginPath(){},moveTo(){},lineTo(){},closePath(){},ellipse(){},
+  save(){},restore(){},beginPath(){},moveTo(){},lineTo(){},quadraticCurveTo(){},closePath(){},ellipse(){},
   clearRect(){},setTransform(){},createLinearGradient:gradient,createRadialGradient:gradient,
   fill(){calls.push({op:'fill',mode:this.globalCompositeOperation,alpha:this.globalAlpha});},
   fillRect(){calls.push({op:'rect',mode:this.globalCompositeOperation,alpha:this.globalAlpha});},
