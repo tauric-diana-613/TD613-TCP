@@ -78,6 +78,19 @@ test('material reflection normals are normalized and tailored seams remain disti
  assert.equal(CUIRASS_POLICY.total_emission_alpha,3.72);
 });
 
+test('continuous studio chrome shares one material field across all faces',()=>{
+ const m=buildFoldedCuirass(params),ctx=context(),colors=[];
+ const original=ctx.fill;
+ ctx.fill=function(){colors.push(this.fillStyle);return original.call(this);};
+ paintFoldedCuirass(ctx,m);
+ const refs=new Map();
+ for(const value of colors)if(value&&typeof value==='object')
+  refs.set(value,(refs.get(value)||0)+1);
+ assert(Math.max(...refs.values())>=m.faces.length,
+  'Chrome facets must share one reflective field instead of distinct tiled colors');
+ assert(m.faces.every(f=>f.normal.every(Number.isFinite)));
+});
+
 test('Canvas command smoke: filled surfaces and total emissive draw allocation stay bounded',()=>{
  const m=buildFoldedCuirass(params),ctx=context();
  const r=paintFoldedCuirass(ctx,m);

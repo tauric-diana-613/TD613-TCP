@@ -38,11 +38,6 @@ const sub=(a,b)=>a.map((v,i)=>v-b[i]);
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 const unit=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l)};
 const hash=s=>{let n=2166136261;for(const c of s){n^=c.codePointAt(0);n=Math.imul(n,16777619)>>>0}return n};
-const palette={dark:[12,18,23],silver:[223,234,237],pearl:[255,252,245],pink:[255,91,157],gold:[255,232,176]};
-const rgb=c=>`rgb(${c.map(v=>Math.round(clamp(v,0,255))).join(',')})`;
-const gaussian=x=>Math.exp(-x*x);
-const colorMix=(a,b,t)=>a.map((v,i)=>mix(v,b[i],clamp(t)));
-
 /** Separately sampleable carriers and their difference; derivatives are with
  * respect to the unrolled material coordinates, before any Canvas call. */
 export function sampleCuirassFields(pairs,x,y,time=0){
@@ -188,20 +183,29 @@ function frontSegments(points,minDepth=0){
  if(current.length>1)segments.push(current);
  return segments;
 }
-function chromeColor(normal,t,fold){
- const [nx,ny,nz]=normal;
- const reflection=[2*nz*nx,2*nz*ny,2*nz*nz-1];
- // Finite studio strip reflections: sharp achromatic bands beside graphite.
- const white=gaussian((reflection[0]+.46)/.35)*.66;
- const narrow=gaussian((reflection[0]-.62)/.27)*.66;
- const horizon=gaussian((reflection[1]+.20)/.29)*.34;
- const edge=Math.pow(1-Math.max(0,nz),3)*.55;
- const light=clamp(.29+white+narrow+horizon+edge);
- let c=colorMix(palette.dark,palette.silver,light);
- const rose=gaussian((reflection[0]-.22)/.24)*.08;
- c=colorMix(c,palette.pink,rose);
- c=colorMix(c,palette.gold,gaussian((t-.47)/.055)*light*.24);
- return rgb(c.map(v=>v*(.86+.14*fold)));
+/**
+ * One coherent studio illumination across the complete folded surface.
+ * A per-quad flat color caused the old tiled/checkerboard chrome. Paint all
+ * visible quads with the *same* gradient coordinate field, leaving geometry,
+ * seam undercuts, carrier filaments and finite glow individually accountable.
+ *
+ * Work-pair phase shifts only the studio-light position; it is an artistic
+ * parameter, never a claim about an author's content or physical energy.
+ */
+function studioChrome(ctx,m){
+ const p=m.field.pairs[0],phase=(p?.phaseDelta||0)-(p?.deltaOmega||0)*m.time;
+ const shift=Math.sin(phase)*m.scale*.033;
+ const x0=m.cx-m.scale*.57+shift,x1=m.cx+m.scale*.57+shift;
+ const light=ctx.createLinearGradient(x0,m.cy-m.scale*.08,x1,m.cy+m.scale*.08);
+ const stops=[
+  [0,'#11191f'],[.10,'#667982'],[.155,'#eff5f2'],[.205,'#b3c4c8'],
+  [.26,'#293a42'],[.315,'#e2eded'],[.365,'#7c9096'],
+  [.425,'#19252d'],[.49,'#f4f7ee'],[.55,'#c2d3d5'],
+  [.605,'#34454c'],[.67,'#f7f6e9'],[.715,'#91a1a6'],
+  [.765,'#253139'],[.84,'#e2e9e5'],[.91,'#78888e'],[1,'#121a21']
+ ];
+ for(const [offset,color] of stops)light.addColorStop(offset,color);
+ return light;
 }
 
 /** Reflective material is opaque source-over. All additive-looking emission
@@ -224,11 +228,14 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  ctx.fillStyle='#0a1015';ctx.beginPath();ctx.ellipse(cx,py-scale*.009,pr*.95,scale*.014,0,0,TAU);ctx.fill();
  // Back rim precedes faces, preserving a visible hollow neckline.
  stroke(ctx,m.rims[0],'#77888e',2.3,.65);
+ // The material reflection has one screen-continuous coordinate field.
+ // The mathematical gore contours still deform independently before paint.
+ const metal=studioChrome(ctx,m);
  for(const f of m.faces){
-  ctx.fillStyle=chromeColor(f.normal,f.t,f.fold);ctx.globalAlpha=1;
+  ctx.fillStyle=metal;ctx.globalAlpha=1;
   trace(ctx,f.points,true);ctx.fill();
-  // Subpixel material overlap closes Canvas triangle/quad cracks.
-  ctx.strokeStyle=ctx.fillStyle;ctx.lineWidth=.55;ctx.stroke();
+  // Same paint at shared quad boundaries closes raster cracks without tile seams.
+  ctx.strokeStyle=metal;ctx.lineWidth=.55;ctx.stroke();
  }
  // Capped metal seams. The dark undercut establishes a trough before light.
  const front=m.seams.filter(s=>s.points[24][2]>0);
