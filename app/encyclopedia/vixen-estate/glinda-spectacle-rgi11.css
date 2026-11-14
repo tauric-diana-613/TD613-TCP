@@ -16,7 +16,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]){
  --arc-blonde:#FFF2A9;
  --arc-white:#FFFBE2;
  --nickel-silver:#DDE2E9;
- --black-chrome:#0E0C13;
+ --black-chrome:#0e1417;
  --vixen-pink:#FF91AF;
  --arc-flash:#FFF2A9;
  --vf-flash:#FFF2A9;
@@ -29,7 +29,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]){
    radial-gradient(ellipse 45% 35% at 82% 8%,rgba(255,228,241,.20),transparent 72%),
    radial-gradient(ellipse 35% 23% at 8% 26%,rgba(255,145,175,.17),transparent 78%),
    radial-gradient(ellipse 41% 47% at 55% 72%,rgba(175,164,150,.09),transparent 83%),
-   #100D16;
+   #101518;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-collection{
  background:
@@ -275,7 +275,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ar
  color:var(--glinda-pearl);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-iris-frame{
- background:linear-gradient(135deg,#0C0B11,#16141C);
+ background:linear-gradient(135deg,#0d1216,#151c20);
 }
 @media(max-width:1020px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([data-couture="folded-chrome"]) .vs-head{

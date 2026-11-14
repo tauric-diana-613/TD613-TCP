@@ -29,7 +29,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header{
  border-bottom:1px solid rgba(255,242,169,.47);
  background:
   radial-gradient(ellipse 25% 100% at 79% 0,rgba(255,145,175,.11),transparent),
-  linear-gradient(100deg,rgba(8,9,13,.95),rgba(30,30,34,.92),rgba(9,11,15,.97));
+  linear-gradient(100deg,rgba(8,9,13,.95),rgba(30,37,42,.92),rgba(9,11,15,.97));
  box-shadow:0 3px 20px rgba(255,145,175,.16),0 0 1px #FFFBE2;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header .hdr-pill{
@@ -43,7 +43,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) :is(button,a,input,select,te
  outline-offset:3px;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-room-rail{
- background:linear-gradient(180deg,#090A0F,#1D1D22,#08090D);
+ background:linear-gradient(180deg,#090A0F,#1d2429,#08090D);
  border-right:1px solid rgba(255,242,169,.35);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-room-rail .vixen-room[aria-current="page"]{
@@ -134,7 +134,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .lexicon-rea
  background:
   radial-gradient(ellipse at 100% 0,rgba(255,251,226,.33),transparent 65%),
   linear-gradient(140deg,#FFFDFE,#FFE6F2 71%,#F6B9D9);
- color:#231C25;
+ color:#1e252a;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-editorial-foyer{
  background:

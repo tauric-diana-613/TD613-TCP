@@ -17,7 +17,7 @@
  position:relative;isolation:isolate;min-width:0;
  background:
  radial-gradient(ellipse 90% 60% at 74% -8%,rgba(102,112,120,.46),transparent 65%),
- linear-gradient(155deg,#0c0c13 3%,#1c1c29 40%,#05070c 100%);
+ linear-gradient(155deg,#0e1317 3%,#1c2328 40%,#05070c 100%);
  border:1px solid rgba(194,190,188,.73);
  box-shadow:inset 0 0 0 2px rgba(15,20,32,.86),
  0 0 0 2px rgba(7,9,15,.9),0 38px 70px rgba(0,4,9,.46);
@@ -440,7 +440,7 @@
 #vixenElectricFoundry .ef-dial output,
 #vixenElectricFoundry .ef-raw summary{color:#f5d8ba}
 #vixenElectricFoundry .ef-hero-tab{
- background:linear-gradient(110deg,#29262B,#343136);color:#F6F4F0;
+ background:linear-gradient(110deg,#252d33,#2f383f);color:#F6F4F0;
  border-color:rgba(255,145,175,.33);
 }
 #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]{
@@ -457,7 +457,7 @@
 #vixenElectricFoundry .ef-lab-subtitle,
 #vixenElectricFoundry .ef-metric small{color:#FF91AF}
 #vixenElectricFoundry .ef-equation{
- background:linear-gradient(120deg,#24282A,#343136);
+ background:linear-gradient(120deg,#24282A,#2f383f);
  border-color:rgba(245,216,186,.63);
  box-shadow:0 0 18px rgba(245,216,186,.16);
 }
@@ -475,7 +475,7 @@
 #vixenElectricFoundry .ef-button:hover{background:#51575c;color:#F6F4F0}
 #vixenElectricFoundry .ef-eye{border-bottom-color:#f5d8ba}
 #vixenElectricFoundry .ef-stage{
- background:radial-gradient(ellipse at center,#3D343B,#141417 74%);
+ background:radial-gradient(ellipse at center,#3D343B,#151b1f 74%);
  box-shadow:inset 0 0 130px rgba(255,145,175,.18);
  border-right-color:rgba(245,216,186,.7);
 }
@@ -499,7 +499,7 @@
 #vixenElectricFoundry .ef-readout{background:linear-gradient(153deg,#2B252B,#151517)}
 #vixenElectricFoundry .ef-metric{
  border-color:rgba(255,145,175,.34);
- background:linear-gradient(105deg,#343136,#24282A);
+ background:linear-gradient(105deg,#2f383f,#24282A);
 }
 #vixenElectricFoundry .ef-dial input{accent-color:#f5d8ba}
 #vixenElectricFoundry .ef-score{background:#24282A;border-bottom-color:#f5d8ba}

@@ -29,7 +29,7 @@
  background:
   radial-gradient(ellipse 55% 75% at var(--vf-pointer-x) var(--vf-pointer-y),rgba(255,145,175,.12),transparent 78%),
   radial-gradient(ellipse 65% 95% at 3% 110%,rgba(80,86,91,.22),transparent 74%),
-  linear-gradient(130deg,#08070A 0%,#151b1f 50%,#060709 100%);
+  linear-gradient(130deg,#0a0e11 0%,#151b1f 50%,#060709 100%);
  color:var(--vf-porcelain);
  isolation:isolate;overflow:hidden;
  padding:clamp(58px,7.8vw,120px) clamp(22px,5vw,96px) clamp(28px,3.3vw,54px);
@@ -162,7 +162,7 @@
  position:fixed;z-index:89;right:clamp(10px,2.5vw,30px);bottom:clamp(12px,2.2vw,30px);
  width:min(226px,calc(100vw - 24px));
  border:1px solid rgba(255,145,175,.64);
- background:linear-gradient(145deg,rgba(31,38,44,.96),rgba(10,10,14,.98));
+ background:linear-gradient(145deg,rgba(31,38,44,.96),rgba(12,17,20,.98));
  box-shadow:0 9px 32px rgba(0,0,0,.46),inset 0 1px rgba(246,244,240,.19);
  backdrop-filter:blur(16px) saturate(1.45);
  padding:11px 13px 12px;
@@ -291,7 +291,7 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
 #vixenElectricFoundry .ef-investigate-door{
  display:inline-flex;align-items:center;gap:10px;
  min-height:40px;padding:10px 13px;
- background:linear-gradient(110deg,#363a3e,#29232C);
+ background:linear-gradient(110deg,#363a3e,#232b31);
  border:1px solid rgba(255,145,175,.65);
  color:#F6F4F0;font:700 10px/1.4 var(--vf-mono);
  letter-spacing:.04em;text-decoration:none;
@@ -360,12 +360,12 @@ body[data-view="collection"] .vixen-carry-rail{display:none}
  * This is a paint-level restoration, not a change to route functionality.
  */
 body .site-header{
- background:linear-gradient(180deg,rgba(11,10,14,.97),rgba(17,11,18,.90))!important;
+ background:linear-gradient(180deg,rgba(12,17,20,.97),rgba(17,11,18,.90))!important;
  border-bottom:1px solid rgba(255,145,175,.46);
  color:#F6F4F0;
  backdrop-filter:blur(18px) saturate(1.35);
  -webkit-backdrop-filter:blur(18px) saturate(1.35);
- box-shadow:0 8px 30px rgba(8,5,10,.32);
+ box-shadow:0 8px 30px rgba(8,13,15,.32);
 }
 body .site-header:after{
  content:'';position:absolute;inset:auto 0 -1px;
@@ -416,7 +416,7 @@ body .site-header .hdr-pill[aria-pressed="true"]{
 body .site-header .hdr-pill svg.icon{stroke:currentColor}
 body .site-header .mobile-nav{
  color:#F6F4F0;
- background:linear-gradient(155deg,#171d21,#08080B);
+ background:linear-gradient(155deg,#171d21,#0a0f12);
  border-bottom:1px solid #FF91AF;
  box-shadow:0 32px 70px rgba(0,0,0,.74);
 }
@@ -450,7 +450,7 @@ body .site-header .mobile-nav small{color:#f5d8ba}
     display:flex;position:fixed;z-index:88;
     left:0;top:var(--header-height,72px);bottom:0;width:var(--vf-room-width);
     flex-direction:column;align-items:stretch;
-    background:linear-gradient(180deg,#0C090F,#0D0A10 58%,#170E17);
+    background:linear-gradient(180deg,#0c1114,#0d1215 58%,#170E17);
     border-right:1px solid rgba(255,145,175,.31);
     box-shadow:5px 0 24px rgba(0,0,0,.23);
     overflow-x:visible;overflow-y:auto;scrollbar-width:thin;
