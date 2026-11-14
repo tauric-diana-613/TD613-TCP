@@ -112,12 +112,14 @@ export function buildFoldedCuirass({width,height,time=0,sourceIds=[],beatToGeome
  const smoothMaterialNormal=(i,j,normal)=>{
   const acc=[0,0,0],start=Math.floor(i/panelWidth)*panelWidth;
   let weight=0;
-  for(let du=-2;du<=2;du++)for(let dv=-2;dv<=2;dv++){
+  // Within-gore 3x3 smoothing preserves the independent geometric normal
+  // while avoiding 25 source-point weighted calculations per painted facet.
+  for(let du=-1;du<=1;du++)for(let dv=-1;dv<=1;dv++){
    const ii=i+du,jj=j+dv;
    if(ii<start||ii>=start+panelWidth||jj<0||jj>=M)continue;
    const neighbour=patchNormals[ii][jj];
    if(dot(normal,neighbour)<.55||neighbour[2]+.16*neighbour[1]<=0)continue;
-   const w=(3-Math.abs(du))*(3-Math.abs(dv));
+   const w=(2-Math.abs(du))*(2-Math.abs(dv));
    for(let k=0;k<3;k++)acc[k]+=w*neighbour[k];
    weight+=w;
   }
@@ -247,7 +249,9 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
  const visibleBands=materialBands.filter(group=>group.length>0)
   .sort((a,b)=>a.reduce((n,f)=>n+f.depth,0)/a.length-
    b.reduce((n,f)=>n+f.depth,0)/b.length);
- ctx.fillStyle=metal;ctx.globalAlpha=.42;
+ // A shared high-luminance chrome gradient restores reflective highlights
+ // without abandoning the source-beat transparent optical field.
+ ctx.fillStyle=metal;ctx.globalAlpha=.72;
  for(const group of visibleBands){
   ctx.beginPath();
   for(const face of group){
