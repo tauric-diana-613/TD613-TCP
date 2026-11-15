@@ -59,8 +59,6 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .site-header{
  border-bottom:1px solid rgba(240,172,189,.43);
  box-shadow:0 9px 38px rgba(9,14,17,.55);
  color:#fffff5!important;
- -webkit-backdrop-filter:blur(22px) saturate(1.36);
- backdrop-filter:blur(22px) saturate(1.36);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) .site-header:after{
  background:linear-gradient(90deg,transparent,#ff8fbd 25%,#fffaef 54%,#bdb0a1 75%,transparent);
@@ -101,7 +99,6 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail{
  position:fixed;z-index:85;
  background:linear-gradient(180deg,rgba(15,20,24,.97),rgba(14,19,22,.98));
  border-color:rgba(241,212,183,.3);color:#fadcbd;
- -webkit-backdrop-filter:blur(17px);backdrop-filter:blur(17px);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room{
  flex:0 0 auto;appearance:none;position:relative;

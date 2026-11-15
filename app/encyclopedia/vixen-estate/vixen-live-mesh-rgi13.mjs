@@ -115,7 +115,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  canvas.setAttribute('aria-hidden','true');doc.body.append(canvas);
  const ctx=canvas.getContext('2d');if(!ctx){canvas.remove();return {mounted:false,reason:'CANVAS2D_UNAVAILABLE'};}
  const mq=win.matchMedia('(prefers-reduced-motion: reduce)'),motion=doc.getElementById('motionBtn');
- let raf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
+ let raf=0,layoutRaf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
  let last=null,hostFrame=null,layoutDirty=true,exclusions=[],dpr=0,paintCostMs=0;
  let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity,lastBoxCacheMs=-Infinity;
  const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
@@ -189,10 +189,15 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  if(motion)mutation.observe(motion,{attributes:true,attributeFilter:['aria-pressed']});
  const onPointer=e=>{pointer={x:e.clientX/width(),y:e.clientY/height()};};
  const onLayout=()=>{layoutDirty=true;lastBoxCacheMs=-Infinity;
-  // Salon must recompute its stage rect; a retained host projection cannot
-  // be translated using a stale rectangle while scrolling in Still.
-  if(stageOwned()){win.dispatchEvent(new win.Event('vixen:fieldlayout'));return;}
-  schedule();
+  if(layoutRaf||disposed||doc.hidden)return;
+  layoutRaf=win.requestAnimationFrame(()=>{
+   layoutRaf=0;
+   if(disposed||doc.hidden)return;
+   // Salon must recompute its stage rect; a retained host projection cannot
+   // be translated using a stale rectangle while scrolling in Still.
+   if(stageOwned()){win.dispatchEvent(new win.Event('vixen:fieldlayout'));return;}
+   if(paused()||!raf)schedule();
+  });
  };
  win.addEventListener('pointermove',onPointer,{passive:true});
  win.addEventListener('resize',onLayout,{passive:true});win.addEventListener('scroll',onLayout,{passive:true,capture:true});
@@ -218,7 +223,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    if(force)readExclusions(true);
    hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route};hostFrames++;draw(hostFrame);return last;
   },
-  dispose(){disposed=true;cancel();mutation.disconnect();canvas.remove();
+  dispose(){disposed=true;cancel();if(layoutRaf)win.cancelAnimationFrame(layoutRaf);layoutRaf=0;mutation.disconnect();canvas.remove();
    win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
    win.removeEventListener('scroll',onLayout,true);doc.removeEventListener('visibilitychange',changed);
    doc.removeEventListener('vixen:motionchange',changed);win.removeEventListener('vixen:motionchange',changed);

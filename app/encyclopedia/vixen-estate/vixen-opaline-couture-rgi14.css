@@ -58,6 +58,7 @@ body[data-view="overview"]:not([data-active-research-stage="OPERAHOUSE"]) #view-
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenLivingMesh{
  z-index:55!important;opacity:1!important;filter:none!important;
  mix-blend-mode:normal;-webkit-mask-image:none;mask-image:none;
+ transform:translateZ(0);backface-visibility:hidden;
 }
 body[data-active-research-stage="OPERAHOUSE"] #vixenLivingMesh{display:none!important}
 body:not([data-active-research-stage="OPERAHOUSE"]) :is(
@@ -407,7 +408,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview #cover{
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art{
  inset:0!important;
- padding:clamp(92px,12.5vh,118px) clamp(14px,2vw,32px) clamp(50px,7vh,70px)!important;
+ padding:clamp(124px,16.5vh,154px) clamp(14px,2vw,32px) clamp(38px,5.2vh,54px)!important;
  z-index:2!important;
  background:#000000!important;
  box-sizing:border-box!important;
