@@ -78,7 +78,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   result:null,refraction:null,
   trajectoryMemory:{A_B:null,B_A:null,refraction:null},
   lastRadiometry:null,resting:false,history:[],
-  notice:'Choose two recorded Works, one method, and a research question. Your source bodies remain unavailable.'
+  notice:'Choose two recorded Works, one method, and a research question. Experiment-A companion bodies are authorized for preview & semantic-semiotic search; production releases require an operator secret.'
  };
  let veilHandle=null;
  const opticalClock={time:0};
@@ -296,7 +296,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     mk('h3','vs-work-title',titleText(w)),
     makeSelectSource(w,state.sources[i],v=>pickSource(i,v)),
     paragraph('Authorship: '+w.authorship+' · Identity: '+w.identity_status),
-    paragraph('Source body: not supplied · SHA-256 is a declared catalogue digest, not a newly witnessed manuscript.','vs-custody')
+    paragraph('Experiment-A Preview: companion text authorized for developer & volunteer-client Em inspection (production builds require an operator secret); SHA-256 records the declared origin digest.','vs-custody')
    );
    const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
    side.append(paragraph('SOURCE '+src.source_file_id+' · '+src.sha256.slice(0,16)+'…','vs-hash'));

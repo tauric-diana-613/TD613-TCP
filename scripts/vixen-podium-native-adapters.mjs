@@ -61,6 +61,7 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
  const apertureV32=await importOptional(resolve(engineRoot,'aperture-v32-typed-epistemic-deficit.js'));
  const td613Aperture=await importOptional(resolve(engineRoot,'td613-aperture.js'));
  const salonEngine=await importOptional(resolve(sourceRoot,'vixen-estate','synthesis-salon-engine.mjs'));
+ const srcEngines=await importOptional(resolve(sourceRoot,'vixen-estate','src-atelier-engines.mjs'));
  const atlasCustody=await importOptional(resolve(engineRoot,'dollhouse-atlas-relational-custody.js'));
  const atlasMath=await importOptional(resolve(engineRoot,'atlas-mathematical-engine.js'));
  const fadtAssist=await importOptional(resolve(engineRoot,'dollhouse-fadt-reparative-assistance.js'));
@@ -141,6 +142,13 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    if(operation==='fadt_discrepancy'){
     if(!fadtAssist?.evaluateFadtDiscrepancyIdentity)throw Error('HELD_FADT_UNAVAILABLE');
     return fadtAssist.evaluateFadtDiscrepancyIdentity(payload.candidate_rule||payload.rule,payload.fiber_rows||payload.rows||payload.fibers||[]);
+   }
+   if(operation==='vixen_semantic_search'){
+    const searchMod=await importOptional(resolve(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs'));
+    if(!searchMod?.loadSemanticSemioticEngine)throw Error('HELD_SEMANTIC_SEMIOTIC_SEARCH_UNAVAILABLE');
+    const engine=await searchMod.loadSemanticSemioticEngine();
+    const searchOpts={...(payload.options||{}),...(payload.mode?{mode:payload.mode}:{})};
+    return engine.search(String(payload.query||''),searchOpts);
    }
    throw Error('HELD_ATLAS_OPERATION');
   };
@@ -289,6 +297,9 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     const apertureNativeSvd=apertureV32?.computeMatrixSvd
      ?apertureV32.computeMatrixSvd(topMatrix)
      :null;
+    const srcAtelierTelemetry=srcEngines?.evaluateCorpusWithSrcEngines
+     ?srcEngines.evaluateCorpusWithSrcEngines(corpus,{operatorQuestion:payload.operatorQuestion||'',activePlan:payload.activePlan||null})
+     :null;
     return {
      schema:'emstd613.vixen.unified-candidate-scores/v1',
      lag_ticks:lag,
@@ -317,7 +328,9 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
      native_cross_checks:{
       fadt_exact_c3:fadtNativeC3?{disposition:fadtNativeC3.disposition,gap_cardinality:fadtNativeC3.irreducible_gap_cardinality,intersection:fadtNativeC3.intersection_support}:null,
       fadt_gap_c1:fadtNativeC1?{disposition:fadtNativeC1.disposition,gap_cardinality:fadtNativeC1.irreducible_gap_cardinality,gap:fadtNativeC1.irreducible_gap}:null,
-      aperture_svd_top:apertureNativeSvd?{kappa:apertureNativeSvd.condition_number,rank:apertureNativeSvd.rank,sigma:apertureNativeSvd.singular_values}:null
+      aperture_svd_top:apertureNativeSvd?{kappa:apertureNativeSvd.condition_number,rank:apertureNativeSvd.rank,sigma:apertureNativeSvd.singular_values}:null,
+      src_atelier_tomography:srcAtelierTelemetry?.phase2_tomography||null,
+      src_atelier_projective:srcAtelierTelemetry?.projective_routing||null
      },
      empirical_replication_credit:0,
      scientific_promotion_authority:false,
@@ -494,6 +507,115 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     };
    }
    throw Error('HELD_UNIVERSAL_ATELIER_OPERATION');
+  };
+ }
+
+ if(srcEngines){
+  adapters.SRC_ATELIER=async({operation,payload={}}={})=>{
+   if(operation==='src_projective_routing'){
+    const docs=Array.isArray(payload.documents)?payload.documents:[];
+    const catalog=Array.isArray(payload.catalog)?payload.catalog:docs;
+    const res=srcEngines.runSrcProjectiveRouting(docs,catalog,{
+     stripTrailingNumerals:payload.stripTrailingNumerals!==false
+    });
+    return{
+     ...res,
+     authority:'ADVISORY_ONLY',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='src_phase2_tomography'){
+    const lifts=Array.isArray(payload.lift_candidates)?payload.lift_candidates:[];
+    const res=srcEngines.runSrcPhase2Tomography(lifts,{snapshot:payload.snapshot});
+    return{
+     ...res,
+     authority:'ADVISORY_ONLY',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='src_phase2_context_roles'){
+    const inputs=Array.isArray(payload.compiler_inputs)?payload.compiler_inputs:[];
+    const edges=Array.isArray(payload.recompilation_edges)?payload.recompilation_edges:[];
+    const res=srcEngines.runSrcPhase2ContextRoles(inputs,edges,{snapshot:payload.snapshot});
+    return{
+     ...res,
+     authority:'ADVISORY_ONLY',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='src_rabbit_hole_traversal'){
+    if(payload.action&&payload.rootData){
+     return srcEngines.runSrcNativeQuery({
+      action:payload.action,
+      entity_id:payload.entity_id||null,
+      rootData:payload.rootData,
+      requestedSnapshot:payload.requestedSnapshot,
+      requestedSeal:payload.requestedSeal,
+      depth:payload.depth,
+      limit:payload.limit
+     });
+    }
+    const seed=String(payload.seed_id||'');
+    if(!seed)throw Error('HELD_SRC_SEED_REQUIRED');
+    if(payload.graph&&typeof payload.graph==='object'){
+     return{
+      ...srcEngines.traverseSrcTypedStrata(payload.graph,seed,{depth:payload.depth,limit:payload.limit}),
+      authority:'ADVISORY_ONLY',
+      empirical_replication_credit:0,
+      human_closure_required:true
+     };
+    }
+    const searchMod=await importOptional(resolve(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs'));
+    if(!searchMod?.loadSemanticSemioticEngine)throw Error('HELD_SEMANTIC_SEMIOTIC_SEARCH_UNAVAILABLE');
+    const engine=await searchMod.loadSemanticSemioticEngine();
+    const res=srcEngines.traverseSrcTypedStrata({adjacency:engine.graphAdjacency},seed,{depth:payload.depth,limit:payload.limit});
+    return{
+     ...res,
+     authority:'ADVISORY_ONLY',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='src_untypical_retrieval'){
+    const searchMod=await importOptional(resolve(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs'));
+    if(!searchMod?.loadSemanticSemioticEngine)throw Error('HELD_SEMANTIC_SEMIOTIC_SEARCH_UNAVAILABLE');
+    const engine=await searchMod.loadSemanticSemioticEngine();
+    const queryStr=String(payload.query||'');
+    const mode=payload.mode||'src_projective';
+    const cond=srcEngines.deriveSrcQueryConditionedWeights(queryStr,mode,null);
+    const searchResult=await engine.search(queryStr,{...(payload.options||{}),mode});
+    return{
+     ...searchResult,
+     src_conditioning:{
+      regime_id:cond.regimeId,
+      weights:cond.weights,
+      matched_signatures:cond.analysis.matchedSignatures,
+      explore_cue:cond.analysis.exploreCue,
+      active_strata:cond.analysis.activeStrata
+     },
+     contract:'EMSTD613_SUBJECT_ONLY_NO_FOREIGN_SRC_BODIES',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='src_heterostratigraphic_audit'){
+    const res=srcEngines.runSrcHeterostratigraphicAudit({
+     corpus:payload.corpus||null,
+     operatorQuestion:String(payload.operator_question??payload.operatorQuestion??''),
+     activePlan:payload.active_plan||payload.activePlan||null,
+     candidateEnvelope:payload.candidate_envelope||payload.candidateEnvelope||null
+    });
+    return{
+     ...res,
+     authority:'ADVISORY_ONLY',
+     empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   throw Error('HELD_SRC_ATELIER_OPERATION');
   };
  }
 

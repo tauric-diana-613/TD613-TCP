@@ -28,7 +28,32 @@ function sourceFolio(src,position){
    text('Declared medium: '+String(src.media_type||'UNRECORDED'),'vxe-source-note'),
    text('Recorded byte length: '+fmt(src.byte_length),'vxe-source-note'),
    el('div','vxe-digest','DECLARED SHA-256\n'+String(src.sha256||'UNRECORDED')));
- add(p,muted('SOURCE BODY UNAVAILABLE IN PUBLIC SURFACE · CATALOGUE METADATA ONLY'));
+ add(p,muted('EXPERIMENT-A PREVIEW AUTHORIZED · FULL COMPANION MANUSCRIPT AVAILABLE (PRODUCTION REQUIRES OPERATOR SECRET)'));
+ if(typeof document!=='undefined'&&src.source_file_id){
+  const bodyDetails=el('details','vxe-title-disclosure vxe-expa-folio-body');
+  const sum=el('summary','','Read Experiment-A manuscript body ('+String(src.source_file_id)+')');
+  const pre=el('pre','vxe-digest','Expand to load full Experiment-A body…');
+  bodyDetails.append(sum,pre);
+  bodyDetails.addEventListener('toggle',async()=>{
+   if(!bodyDetails.open||bodyDetails.dataset.loaded==='true')return;
+   bodyDetails.dataset.loaded='loading';
+   pre.textContent='Loading companion shard for '+src.source_file_id+'…';
+   try{
+    const mod=await import('./corpus-experiment-a.mjs');
+    const rec=await mod.loadExperimentABodyBySourceId(src.source_file_id);
+    if(rec?.text_body){
+     bodyDetails.dataset.loaded='true';
+     const clean=mod.scrubBase64BlobsForDisplay?mod.scrubBase64BlobsForDisplay(rec.text_body):rec.text_body;
+     pre.textContent=clean.slice(0,18000)+(clean.length>18000?'\n\n… [Preview truncated at 18,000 chars inside chamber; open Works Reader for paginated full body]':'');
+    }else{
+     pre.textContent='Custody status: '+(rec?.custody_status||'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
+    }
+   }catch(err){
+    pre.textContent='Companion shard load held: '+(err?.message||err);
+   }
+  });
+  p.append(bodyDetails);
+ }
  return p;
 }
 function compare(a,b){
@@ -93,7 +118,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
   const stateMessage=state.phase==='NOTICE'?'NOTICE · Inspect the historical Work before naming a relationship.'
     :state.phase==='ACT'?'ACT · Choose two manifestations of this same Work.'
     :state.phase==='REST'?'REST · Local session retained; no automatic adjudication.'
-    :state.phase==='WORLD_ANSWERS'?'WORLD ANSWERS · File-level catalogue observations only; original bodies withheld.'
+    :state.phase==='WORLD_ANSWERS'?'WORLD ANSWERS · Experiment-A preview comparison (companion text + file metadata); zero automated adjudication.'
     :'NAME · Your interpretation remains local and cannot alter historical authorship.';
   const status=el('p','vxe-status',stateMessage);status.setAttribute('role','status');container.append(status);
   const selection=el('div','vxe-work-selector');
@@ -157,7 +182,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
     const list=el('dl','vxe-observations');
     state.result.observations.forEach(o=>{list.append(el('dt','',o.dimension),el('dd','',o.observation))});
     evidence.append(list);
-    evidence.append(muted('DECLARED SHA-256 VALUES ARE NOT IN-BROWSER CONTENT VERIFICATIONS · SOURCE BODIES WITHHELD'));
+    evidence.append(muted('EXPERIMENT-A PREVIEW COMPARE · COMPANION BODIES READABLE BELOW · PRODUCTION REQUIRES OPERATOR SECRET · ZERO AUTO-PROMOTION'));
     controls.append(evidence);
   }
   if(state.phase==='NAME'){

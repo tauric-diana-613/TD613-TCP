@@ -22,7 +22,7 @@ const run=(intent,params)=>({schema:PODIUM_SCHEMA,intent,params});
 test('32/53/8/21/6 source census and pre-existing eight human gates cannot be silently rewritten',()=>{
  const x=checkSalonCorpus(corpus);
  assert.deepEqual(x,{works:32,manifestations:53,human_gates:8,instruments:21,giveback_tracks:6,
-  source_class:'HISTORICAL_METADATA',original_source_bodies:'UNAVAILABLE_IN_PUBLIC_SURFACE'});
+  source_class:'EXPERIMENT_A_PREVIEW_COMPANION_AUTHORIZED',original_source_bodies:'EXPERIMENT_A_PREVIEW_AUTHORIZED'});
  const tampered=structuredClone(corpus);tampered.human_gates[0].default_state='HYP_MERGED';
  assert.throws(()=>checkSalonCorpus(tampered),/HUMAN_GATE_PROMOTION_REFUSED/);
  const altered=structuredClone(corpus);altered.works[0].authorship='CERTIFIED_BY_MODEL';
@@ -153,7 +153,7 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
 });
 test('unified synthesis headline engine reacts deterministically across Podium, Salon, Bench & supplemental sources without human leak, boilerplate subtitle, or credit promotion',async()=>{
  const base=deriveSynthesisHeadline({corpus});
- assert.equal(base.regime,'BASELINE_ESTATE_SYNTHESIS');
+ assert.equal(base.regime,'PHASONIC_COUNTERPOINT_SYNTHESIS');
  assert.equal(ANTI_BOILERPLATE_SUBTITLE_RE.test(base.patternSubtitle),false);
  assert.ok(typeof base.headerTagline==='string'&&base.headerTagline.length>5);
  assert.equal(base.provenance.selected_candidate_id,base.candidates[0].id);

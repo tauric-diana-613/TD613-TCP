@@ -155,7 +155,11 @@ export function buildVixenSessionZipBytes(entries) {
 
 export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'AGENTS.md',
+  'corpus-experiment-a-part1.json',
+  'corpus-experiment-a-part2.json',
+  'corpus-experiment-a.mjs',
   'cross-opera-warrant.mjs',
+  'dollhouse-design-grammar.mjs',
   'fox-house-dock.mjs',
   'glinda-cybergoth-rgi10.css',
   'glinda-luminous-proscenium-rgi12.css',
@@ -170,6 +174,8 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'research-chamber.css',
   'research-chamber.mjs',
   'role-boundary.mjs',
+  'semantic-semiotic-index.v1.json',
+  'semantic-semiotic-search.mjs',
   'session-zip.mjs',
   'synthesis-salon-engine.mjs',
   'synthesis-salon.css',

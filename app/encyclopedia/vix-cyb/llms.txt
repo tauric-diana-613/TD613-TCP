@@ -107,6 +107,7 @@ Requires BOTH `TD613_PODIUM_OPERATOR_DIRECT=1` in the host environment AND `--na
   - `fadt_fiber_audit` -> `app/engine/dollhouse-fadt-reparative-assistance.js#computeFadtFiberBounds`
   - `fadt_coordinate_recovery` -> `evaluateFadtCoordinateRecovery`
   - `fadt_discrepancy` -> `evaluateFadtDiscrepancyIdentity`
+  - `vixen_semantic_search` -> `vixen-estate/semantic-semiotic-search.mjs` (`hybrid`, `lexical`, `phrase`, `exact`, `src_projective`)
 - **`DOLLHOUSE`**:
   - `audit` -> `app/engine/dollhouse-skill-dispatcher.js#runDollhouseSkillAudit` (`PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, + `ORCHESTRATOR`)
   - `fadt_reparative_packet` -> `compileFadtReparativePacket`
@@ -177,3 +178,25 @@ python3 scripts/package-vixen-preview.py --out artifacts/vixen-preview/Vixen_Enc
 ```
 
 All generated analyses remain unratified research proposals until human review closes the active gate. ⟐
+
+
+### SRC_ATELIER (`SignalRupture Canon`) Bounded Engine & Heterostratigraphic Method
+- `SRC_ATELIER` implements **SignalRupture Canon (SRC)** OG heterostratigraphic methods (`vixen-estate/src-atelier-engines.mjs`) strictly over the `EMSTD613` subject corpus (zero foreign SRC body leakage; `empirical_replication_credit: 0`, `human_closure_required: true`):
+  - **Six bounded operations (`BOUNDED_ENGINE_OPERATIONS.SRC_ATELIER`):**
+    - `src_projective_routing` — 13 `FIELD_MARKERS` + `Explore X.` projective routing with dual numeral-stripped/raw keys and chronological `LATER`/`PREEXISTING_OR_CONTEMPORANEOUS` tags (`NO_SEMANTIC_OR_CAUSAL_PROMOTION`).
+    - `src_phase2_tomography` — Multidimensional claim-evidence & lift deltas; strictly enforces `composite_score: null`.
+    - `src_phase2_context_roles` — `rho(work | architecture, scope, time)` (`CONTEXTUAL_NOT_INTRINSIC`).
+    - `src_rabbit_hole_traversal` — Depth-bounded `0..4` typed strata walk + 6-state Shadow Graph separating `ATTEMPTED_REJECTED`.
+    - `src_untypical_retrieval` — Signature coordinates (including negative slogan control `"SR, THE LAB."`), query-conditioned regimes (`Q_place`/`Q_type`/`Q_history`/`Q_bridge`/`Q_reader`/`BASELINE_HYBRID`), F/N/G projection (`CROSS_OPERA_QUARANTINED` preserved).
+    - `src_heterostratigraphic_audit` — Full heterostratigraphic audit across 3 corpus rooms (`FORMAL_SR`, `FICTIONAL_SR`, `GOVERNANCE_PROVENANCE_SR`), 4 strata (`ROUTE`, `TEMPORAL`, `PROJECTIVE_ROUTING`, `TOMOGRAPHY_OBSERVABILITY`), Authority 5-tuple $A_t(o)=(G,C,E,F,K)$, non-implication Epistemic State 6-tuple $X_t(o)=(E,V,R,P,L,A)$ (`composite_state_score: null`), `rejectSrcUniversalizer`, dual `H_L_LATENT_ARCHITECTURE` vs `H_R_RETROSPECTIVE_ARCHITECTURE`, and `clone_genes_decoded: false`.
+
+### AIx Conducting & Semantic-Semiotic Search Integration (`podium.conduct` / `window.VixenReference.conduct`)
+- **First-class Podium conductor methods:** `podium.conduct(taskOrBatch)`, `podium.search(query, { mode })`, `podium.exactSearch(query)`, `podium.neighbors(id)`, `podium.route(fromId, toId)`, and `podium.heterostratigraphicAudit({ operatorQuestion })`.
+- **Separated Cross-Opera Search in `universal.search`:** Passing `params.include_vixen_search: true` (with `mode: "hybrid" | "lexical" | "phrase" | "exact" | "src_projective"`) returns EMSTD613 results under `result.vixen_search` (`cross_opera_merged: false`) without merging into Universal Edition 1.4 `result.hits`.
+- **Browser Conductor API:** `window.VixenReference.podium(opts)`, `window.VixenReference.conduct(taskOrBatch, opts)`, and `window.VixenReference.heterostratigraphicAudit(opts)` expose live read-only Podium + Semantic-Semiotic conducting in-page.
+- **CLI AIx Conductor Flags** (require `TD613_PODIUM_OPERATOR_DIRECT=1` + `--native-read-tools`, failing closed otherwise with `HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED`):
+  ```bash
+  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --search "Explore Aperture" --mode src_projective
+  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --src-audit --question "Which heterostratigraphic boundary holds?"
+  TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --conduct '{"search":"vernier clock","mode":"src_projective"}'
+  ```

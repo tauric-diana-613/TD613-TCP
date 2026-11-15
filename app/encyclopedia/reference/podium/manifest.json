@@ -13,7 +13,7 @@
     "receipt_schema": "td613.vixen.podium.receipt/v1",
     "transport": "ES_MODULE_DISPATCH_AND_NODE_JSONL_CLI",
     "machine_entry": "/encyclopedia/reference/vixen-podium.mjs",
-    "source_access": "PUBLIC_CATALOGUE_AND_CANONICAL_REFERENCE_BYTES_ONLY",
+    "source_access": "EXPERIMENT_A_PREVIEW_AUTHORIZED_AND_CANONICAL_REFERENCE_BYTES",
     "logical_separation": "DOES_NOT_ADD_HUMAN_UI_OR_STANDALONE_ARTIFACT",
     "routing": "TYPED_TASK_INTENT_ONLY_NO_LEXICAL_AUTOROUTING",
     "consequence_order": [
@@ -145,7 +145,8 @@
       "atlas_math_dispatch",
       "fadt_fiber_audit",
       "fadt_coordinate_recovery",
-      "fadt_discrepancy"
+      "fadt_discrepancy",
+      "vixen_semantic_search"
     ],
     "RULEFIELD": [
       "assess_roles",
@@ -174,7 +175,76 @@
       "route",
       "context",
       "verify"
+    ],
+    "SRC_ATELIER": [
+      "src_projective_routing",
+      "src_phase2_tomography",
+      "src_phase2_context_roles",
+      "src_rabbit_hole_traversal",
+      "src_untypical_retrieval",
+      "src_heterostratigraphic_audit"
     ]
+  },
+  "aix_conducting": {
+    "conductor_methods": [
+      "conduct",
+      "search",
+      "exactSearch",
+      "neighbors",
+      "route",
+      "heterostratigraphicAudit"
+    ],
+    "semantic_semiotic_search_integration": {
+      "modes": [
+        "hybrid",
+        "lexical",
+        "phrase",
+        "exact",
+        "src_projective"
+      ],
+      "universal_search_flag": "include_vixen_search",
+      "cross_opera_merged": false,
+      "window_reference_method": "window.VixenReference.conduct",
+      "cli_flags": [
+        "--search <query>",
+        "--mode <mode>",
+        "--src-audit",
+        "--conduct <json>"
+      ]
+    },
+    "src_canon": {
+      "canon_name": "SignalRupture Canon (SRC)",
+      "corpus_rooms": [
+        "FORMAL_SR",
+        "FICTIONAL_SR",
+        "GOVERNANCE_PROVENANCE_SR"
+      ],
+      "heterostratigraphic_strata": [
+        "ROUTE",
+        "TEMPORAL",
+        "PROJECTIVE_ROUTING",
+        "TOMOGRAPHY_OBSERVABILITY"
+      ],
+      "authority_axes": [
+        "G",
+        "C",
+        "E",
+        "F",
+        "K"
+      ],
+      "epistemic_state_axes": [
+        "E",
+        "V",
+        "R",
+        "P",
+        "L",
+        "A"
+      ],
+      "composite_state_score": null,
+      "tomography_composite_score": null,
+      "clone_genes_decoded": false,
+      "foreign_src_bodies_admitted": false
+    }
   },
   "adapters_not_implicitly_installed": true,
   "authority_denials": [
@@ -203,7 +273,8 @@
     "rulefield": "source-preserving typed role multiplicity, no semantic role promotion",
     "atlas": "receiver-relative identity; endpoint equality does not erase route history",
     "temporal": "predecessor references retained; human closure withheld",
-    "universal_atelier": "native ten-operation receiver is separately governed; only seven read operations named above"
+    "universal_atelier": "native ten-operation receiver is separately governed; only seven read operations named above",
+    "src_atelier": "SignalRupture Canon (SRC) heterostratigraphic audit & projective tomography over EMSTD613 subject corpus only; zero foreign SRC body adsorption"
   },
   "human_closure": "RESERVED",
   "release_authority": false,

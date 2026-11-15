@@ -50,7 +50,7 @@ export function castVixenPerformer(work){
     work_id:work.work_id,
     title:String(work.display_title||work.declared_title||work.work_id),
     identity_status:work.identity_status||'UNRESOLVED',
-    source_level:'CATALOGUE_METADATA_ONLY'
+    source_level:'EXPERIMENT_A_PREVIEW_AUTHORIZED'
   });
 }
 

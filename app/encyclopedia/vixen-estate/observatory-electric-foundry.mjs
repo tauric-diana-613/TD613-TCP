@@ -125,21 +125,45 @@ export async function mountVixenElectricFoundry({
   experiment_b_flight:'HELD',
   research_estates_separated:true,source_declared_not_reauthenticated:true
  });
+ function toggleInspector(nextOpen){
+  const target=typeof nextOpen==='boolean'?nextOpen:!state.inspectorOpen;
+  state.inspectorOpen=target;
+  readout.hidden=!target;
+  eye.dataset.inspectorOpen=String(target);
+  if(target){
+   indicate('INSPECTOR_OPEN');
+   if(typeof requestAnimationFrame==='function'){
+    requestAnimationFrame(()=>{
+     const rect=readout.getBoundingClientRect();
+     if(rect.height>0&&(rect.bottom>window.innerHeight-20||rect.top<72)){
+      readout.scrollIntoView({block:'nearest',behavior:globalMotionHeld(document)?'auto':'smooth'});
+     }
+    });
+   }
+  }
+  log('INSPECTOR_EXPLICIT_DISCLOSURE',{visible:target});
+  renderToolbar();
+ }
  function indicate(reason){
   state.probe=probe();
   state.phase=reason==='PIN'?'PINNED_PROBE':'EXPERIMENTAL_VIEW';
   if(typeof updateFoundryHud==='function')updateFoundryHud();
   const r=state.readout;if(!r)return;
-  r.replaceChildren();
+  const detailsWasOpen=Boolean(r.querySelector('details.ef-raw[open]'));
+  const bar=node('div','ef-readout-bar');
+  const closeBtn=BTN('Close Proof ×',()=>toggleInspector(false),'ef-readout-close');
+  closeBtn.setAttribute('aria-label','Close the computational proof panel');
+  add(bar,label('LIVE COMPUTATIONAL INSPECTOR · MODEL OUTPUT'),closeBtn);
   const p=state.probe;
-  add(r,label('LIVE COMPUTATIONAL INSPECTOR · MODEL OUTPUT'),
-   node('h3','',lab().name),sourceBadge(lab()),
-   diagnosticRows(p),
-   claim('Synthetic parameters and original Vixen folio labels are distinct evidence classes. No original manuscript body or independent physical witness was acquired.'));
   const raw=node('details','ef-raw');
+  if(detailsWasOpen)raw.open=true;
   add(raw,node('summary','','Inspect typed full probe receipt'),
    node('pre','',JSON.stringify(p,null,2)));
-  r.append(raw);
+  r.replaceChildren(bar,
+   node('h3','',lab().name),sourceBadge(lab()),
+   diagnosticRows(p),
+   claim('Synthetic foundry parameters and companion Experiment-A corpus bodies remain distinct evidence classes (zero empirical physical-witness replication credit; model output stays bounded and non-authoritative).'),
+   raw);
  }
  function paintRoomMesh(force=false){
   if(document.body.dataset.vixenOpticalMeshObservatory!=='off')
@@ -253,7 +277,9 @@ export async function mountVixenElectricFoundry({
  const readout=node('div','ef-readout');state.readout=readout;state.canvas=canvas;
  readout.id='vixenFoundryInspectorReadout';
  readout.hidden=true;
+ readout.setAttribute('tabindex','-1');
  const eye=node('div','ef-eye');
+ eye.dataset.inspectorOpen='false';
  const iris=node('div','ef-iris-frame');
  iris.setAttribute('aria-label','Vixen computational performance; original folio and synthetic data remain separate');
  add(iris,stage,readout);
@@ -329,14 +355,11 @@ export async function mountVixenElectricFoundry({
   roomMesh.setAttribute('aria-pressed',String(document.body.dataset.vixenOpticalMeshObservatory!=='off'));
   roomMesh.title='Show the ambient cloth around this instrument';
   const inspect=BTN(state.inspectorOpen?'CLOSE THE PROOF ×':'OPEN THE PROOF ⊕',()=>{
-    state.inspectorOpen=!state.inspectorOpen;
-    readout.hidden=!state.inspectorOpen;
-    eye.dataset.inspectorOpen=String(state.inspectorOpen);
-    log('INSPECTOR_EXPLICIT_DISCLOSURE',{visible:state.inspectorOpen});
-    renderToolbar();
+    toggleInspector();
   },'ef-inspector-switch');
   inspect.setAttribute('aria-controls',readout.id);
   inspect.setAttribute('aria-expanded',String(state.inspectorOpen));
+  inspect.setAttribute('aria-pressed',String(state.inspectorOpen));
   const top=BTN(state.playing?'Ⅱ · HOLD FIELD':'▷ · PROPAGATE',
    ()=>state.playing?pause():resume(),'ef-toggle');
   top.setAttribute('aria-pressed',String(!state.playing));

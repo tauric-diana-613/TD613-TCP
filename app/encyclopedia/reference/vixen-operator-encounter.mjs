@@ -60,7 +60,7 @@ export function constructCrossAtelierWitness({work,source,witness,warrant,humanQ
    estate:'EMSTD613',role:'SOURCE_LOCUS',work_id:work?.work_id||null,
    manifestation_id:source?.source_file_id||null,
    declared_manifestation_sha256:source?.sha256||null,
-   source_body_access:'UNAVAILABLE_IN_PUBLIC_SURFACE',
+   source_body_access:'EXPERIMENT_A_PREVIEW_AUTHORIZED',
    authorship_claim:'UNRESOLVED'
   }),
   universal:Object.freeze({
@@ -218,7 +218,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
     state.source,selectSource,'Choose a Vixen manifestation'));
    add(left,note('Manifestation ID: '+(currentSource()?.source_file_id||'UNRECORDED')),
     note('Declared source SHA-256: '+(currentSource()?.sha256||'UNRECORDED')),
-    note('Vixen source bodies remain withheld; declared hashes are not content verification.'));
+    note('Experiment-A preview authorized (developer & Em volunteer-client review); future production builds gate personal corpora behind an operator secret.'));
   }else left.append(note('HELD · No documented manifestation for this Work.'));
   const right=el('section','oh-estate oh-reference');
   right.dataset.estate='UNIVERSAL_REFERENCE';right.dataset.stageRole='INDEPENDENT_REFERENCE';
@@ -298,11 +298,11 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
     note('Universal: '+state.witness.id+' / '+state.witness.record_sha256),
     note('Relationship: '+state.disposition.relation+' · Publication eligibility: false'),
     note('Warrant Check: '+warrant.state+' ('+warrant.reason+')'),
-    note('The original Vixen source body is unavailable; an independently verified Universal record cannot supply that missing source or establish shared authorship.'));
+    note('Vixen companion texts are Experiment-A preview accessible; an independently verified Universal record cannot supply cross-estate equivalence or establish shared authorship.'));
    const checklist=el('ul','oh-warrant-checklist');
    const warrantCoords=[
     ['1 · VIXEN WORK LOCUS',currentWork().work_id+' ('+(currentWork().authorship||'UNRESOLVED')+')','DECLARED'],
-    ['2 · MANIFESTATION DIGEST',(currentSource()?.source_file_id||'UNRECORDED')+' · '+String(currentSource()?.sha256||'').slice(0,12)+'…','CATALOGUE_ONLY'],
+    ['2 · MANIFESTATION DIGEST',(currentSource()?.source_file_id||'UNRECORDED')+' · '+String(currentSource()?.sha256||'').slice(0,12)+'…','EXP_A_PREVIEW_AUTHORIZED'],
     ['3 · UNIVERSAL VERIFIED BYTES',state.witness.id+' · verified_at_interaction='+String(state.witness.verified_at_interaction),'VERIFIED'],
     ['4 · ADMITTED CROSSWALK REGISTRY',warrant.eligible?'CANDIDATE':'0 entries in ADMITTED_VIXEN_CROSSWALKS',warrant.eligible?'PRESENT':'HELD'],
     ['5 · HUMAN RATIFICATION & WARRANT HASH',warrant.warrant_sha256||'NONE_RATIFIED',warrant.eligible?'RATIFIED':'CLOSED']

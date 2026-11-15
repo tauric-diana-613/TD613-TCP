@@ -212,8 +212,9 @@ and public TD613.com deployment are not required.
 1. Open **07 · Vixen Folios**; select one of the 32 historical Vixen Works.
 2. Inspect its recorded manifestations. Choose two manifestations of the
    **same Work**, then select **Begin this Work's comparison**.
-3. Select **Observe the recorded differences**. This observation reports
-   only declared catalogue metadata; original source bodies remain withheld.
+3. Select **Observe the recorded differences**. Companion Experiment-A preview
+   bodies are readable locally while human closure remains reserved; production
+   releases gate personal corpora behind an operator secret.
 4. Choose **Name an unresolved question**, optionally annotate it locally,
    **Rest without penalty**, and resume without an identity adjudication.
 5. Visit the Observatory and eight unclosed human gates. Review the phone

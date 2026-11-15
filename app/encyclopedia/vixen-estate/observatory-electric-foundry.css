@@ -162,8 +162,17 @@
 }
 #vixenElectricFoundry .ef-eye{
  position:relative;z-index:1;
- display:grid;grid-template-columns:minmax(0,1.76fr) minmax(0,1fr);
+ display:block;
  min-height:540px;border-bottom:2px solid #C2BEBC;
+}
+#vixenElectricFoundry .ef-iris-frame{
+ display:grid;grid-template-columns:minmax(0,1fr);
+}
+@media(min-width:980px){
+ #vixenElectricFoundry .ef-eye[data-inspector-open="true"] .ef-iris-frame{
+  grid-template-columns:minmax(0,1.42fr) minmax(320px,1fr);
+  align-items:stretch;
+ }
 }
 #vixenElectricFoundry .ef-stage{
  position:relative;min-height:540px;overflow:hidden;
@@ -223,12 +232,28 @@
  font:700 9px/1.55 ui-monospace,monospace;letter-spacing:.06em;
  pointer-events:none;overflow-wrap:anywhere
 }
+#vixenElectricFoundry .ef-readout[hidden]{display:none}
 #vixenElectricFoundry .ef-readout{
  min-height:540px;max-height:660px;overflow:auto;display:block;
  background:
  linear-gradient(155deg,#141b22 0%,#090c14 70%),
  radial-gradient(ellipse at 20% 50%,rgba(102,112,120,.13),transparent 85%);
  padding:24px 20px;color:#ebeffc;
+}
+#vixenElectricFoundry .ef-readout-bar{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ margin-bottom:10px;padding-bottom:10px;
+ border-bottom:1px solid rgba(255,240,168,.28);
+}
+#vixenElectricFoundry .ef-readout-close{
+ flex:0 0 auto;appearance:none;cursor:pointer;
+ padding:6px 11px;min-height:32px;
+ background:rgba(13,21,27,.86);color:#FFF0A8;
+ border:1px solid rgba(255,240,168,.55);
+ font:700 10px/1 ui-monospace,monospace;letter-spacing:.09em;text-transform:uppercase;
+}
+#vixenElectricFoundry .ef-readout-close:hover{
+ background:#242F36;border-color:#FFF0A8;color:#fff5fa;
 }
 #vixenElectricFoundry .ef-readout h3{
  font:400 clamp(24px,2.2vw,32px)/1.1 Georgia,serif;

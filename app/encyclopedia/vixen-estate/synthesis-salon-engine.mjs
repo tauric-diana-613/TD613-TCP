@@ -8,9 +8,24 @@
  * The output is a falsifiable QUESTION and preregistration candidate, not
  * a validated unified theory or an observed emergent Manifest.
  */
+import {
+ AVAILABLE_INSTRUMENTS as DESIGN_INSTRUMENTS,
+ inferContextualInstruments,
+ scoreDesignCadence,
+ deriveDesignGrammarSynthesis
+} from './dollhouse-design-grammar.mjs';
+import {
+ evaluateCorpusWithSrcEngines,
+ deriveSrcQueryConditionedWeights,
+ scoreSrcUntypicalDocument
+} from './src-atelier-engines.mjs';
+
 export const SALON_SCHEMA='emstd613.vixen.reparative-salon-plan/v1';
 export const SYNTHESIS_AUTHORITY=Object.freeze({
- source_body_access:'UNAVAILABLE_IN_PUBLIC_SURFACE',human_gate_closure:'RESERVED',
+ source_body_access:'EXPERIMENT_A_PREVIEW_AUTHORIZED',
+ batch_b_binary_status:'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD',
+ production_personal_corpus_gate:'PRODUCTION_OPERATOR_SECRET_REQUIRED',
+ human_gate_closure:'RESERVED',
  cross_estate_authority:false,source_mutation:false,production_deployment:false,
  experiment_b_flight:'HELD',empirical_replication_credit:0,manifest_successor:'UNKNOWN'
 });
@@ -69,7 +84,8 @@ export function checkSalonCorpus(corpus){
  invariant(Array.isArray(corpus.giveback_tracks)&&corpus.giveback_tracks.length===6,'VIXEN_SIX_GIVEBACK_TRACKS_REQUIRED');
  return deepFreeze({
   works:32,manifestations:53,human_gates:8,instruments:21,giveback_tracks:6,
-  source_class:'HISTORICAL_METADATA',original_source_bodies:'UNAVAILABLE_IN_PUBLIC_SURFACE'
+  source_class:'EXPERIMENT_A_PREVIEW_COMPANION_AUTHORIZED',
+  original_source_bodies:'EXPERIMENT_A_PREVIEW_AUTHORIZED'
  });
 }
 const CLUSTER_ALIAS=Object.freeze({
@@ -301,7 +317,9 @@ function sourceEntry(w,requested){
   gate_num:w.human_gate_required?w.gate_num:null,
   source_file_id:chosen.source_file_id,original_filename:chosen.original_filename,
   declared_source_sha256:chosen.sha256,media_type:chosen.media_type,
-  source_content_verified:false,source_body_available:false
+  custody_status:'EXPERIMENT_A_PREVIEW_AUTHORIZED',
+  body_representation:chosen.media_type==='application/pdf'?'EXTRACTED_NATIVE_PDF_TEXT':'NATIVE_MARKDOWN_TEXT',
+  source_content_verified:false,source_body_available:true
  };
 }
 function computePairTension(a,b,vernier){
@@ -381,7 +399,8 @@ export function composeSalonPlan(corpus,input={}){
  const seq=input.route_order==='B_A'?'B_A':'A_B';
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
  const deficits=[
-  'Original source bodies are unavailable in the public catalogue.',
+  'Batch-A source texts are authorized for Experiment-A Vercel preview and Em volunteer-client inspection; production releases will lock personal corpora behind an operator secret (like TD613 Giving).',
+  'Seven Batch-B PDFs remain metadata-only until their binaries are uploaded to git.',
   'No independent external witness has established any cross-Work causal relationship.',
   'No human ratification has closed the eight bilateral source-identity gates.',
   'No Experiment B arm has been run by this session.'
@@ -810,6 +829,26 @@ function buildBaselineUnifiedCatalog(fadt,totalWorks,baseWorks){
  const exactCluster=fadt.exact_descent_clusters[0]||'C3';
  return [
   {
+   id:'cand-phasonic-frontispiece',
+   regime:'PHASONIC_COUNTERPOINT_SYNTHESIS',
+   governing_instrument:'PHASONIC_COUNTERPOINT',
+   title:'Two-Probe Phasonic Counterpoint Across Non-Collapsing Clocks',
+   lens:'D₃/φ Phasonic Counterpoint × Crossed-Probe Conditioning',
+   clusters:['C1','C2','C3','C4','C5'],
+   clockPair:['plant','wall'],
+   mirrorVector:[1.12,0.34,0.06],
+   xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
+   fadtExact:true,
+   wPlaneGrounded:true,
+   headerTagline:'Phasonic Counterpoint · Two Crossed Probes',
+   patternSubtitle:'CROSSED PROBES · SIGNAL CLEAVED FROM GLARE.',
+   heroStatement:'One beam mistakes the mirror for depth;\ntwo crossed probes cleave signal from glare—\nnothing earns a name until the world replies.',
+   leftSpine:'S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS',
+   researchQuestionMeta:'PHASONIC COUNTERPOINT · FIVE CLOCKS · EXPERIMENT A',
+   researchQuestion:`“Across ${totalWorks} non-collapsing cybernetic works spanning five non-commutative clocks (${exactCluster} exact on {A, W}), what physical invariant survives two crossed probes when single-beam visibility mistakes mirror glare for structural depth?”`,
+   falsifier:'Perturb dual-probe orthogonal coupling and route arrival order A_B vs B_A under Hestenes-Jacobi SVD; hold any mechanism promotion whenever Jacobian rank < 2 or C3 exact descent fails.'
+  },
+  {
    id:'cand-quotient-holonomy',
    regime:'BASELINE_ESTATE_SYNTHESIS',
    title:'Multi-Clock Holonomy & Exact C3 Fiber Quotient',
@@ -955,7 +994,7 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
    xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
    fadtExact:true,
    wPlaneGrounded:true,
-   contextPriority:0,
+   contextPriority:12,
    headerTagline:'Operator-Dictated Inquiry · S ≠ W ≠ A',
    patternSubtitle:'OPERATOR INQUIRY · FIVE CLOCKS BOUND.',
    heroStatement:'Operator-dictated question bound cleanly\nto the five clocks and typed planes,\nawaiting independent empirical closure.',
@@ -1138,6 +1177,7 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
   candidates.push({
    id:'cand-podium-exploration',
    regime:'PODIUM_EVENT_SYNTHESIS',
+   governing_instrument:'CARO_INSTITUTIONAL_RECONSTRUCTION',
    title:'Podium-Gated Exploration Trajectory',
    lens:'Read-Only Podium Trace × Unratified Inquiry',
    clusters:['C1','C2','C3'],
@@ -1148,8 +1188,8 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
    wPlaneGrounded:true,
    contextPriority:5,
    headerTagline,
-   patternSubtitle:`PODIUM TRACE · ${events.length} RECORDED STEPS.`,
-   heroStatement:'Podium inspection tracks source order\nand witness deficits before any claim\ncan cross into the public record.',
+   patternSubtitle:`PODIUM TRACE · ${events.length} STEP${events.length===1?'':'S'} BOUND.`,
+   heroStatement:'Every trace cites what came before it,\nkeeping live observation separate from claim\nuntil human judgment closes the gate.',
    leftSpine:'S ≠ W ≠ A · PODIUM LOGGED · CREDIT 0',
    researchQuestionMeta:`PODIUM EXPLORATION QUESTION · ${events.length} STEP(S) · UNRATIFIED`,
    researchQuestion:`“Following ${events.length} Podium exploration step(s) (latest: ${String(last).slice(0,32)}), what emergent structural question across the corpus warrants human exploration next?”`,
@@ -1167,7 +1207,25 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
  const lag=Number.isFinite(Number(options?.lagTicks))?Number(options.lagTicks):36;
  const limit=Math.max(1,Math.min(20,Number(options?.candidateLimit)||12));
  const fadt=computeFadtCorpusFiberProfile(corpus);
- const rawCandidates=generateUnifiedSynthesisCandidates(corpus,options);
+ const rawGenerated=generateUnifiedSynthesisCandidates(corpus,options);
+ const srcTelemetry=evaluateCorpusWithSrcEngines(corpus,{
+  operatorQuestion:options?.operatorQuestion||'',
+  activePlan:options?.activePlan||null
+ });
+ const qSrcCond=deriveSrcQueryConditionedWeights(options?.operatorQuestion||'','src_projective',null);
+ const rawTpl=rawGenerated.at(-1)||rawGenerated[0];
+ const srcCandidate=rawTpl?{
+  ...structuredClone(rawTpl),
+  id:'cand-src-projective-tomography',
+  title:'SRC Projective Tomography × Contextual Role Ledger',
+  subtitle:'Where signature coordinates, Explore-cue routing, and zero-scalar Phase-2 tomography refuse to flatten carrier history.',
+  tagline:'Signatures operate as projective coordinates across non-collapsing F/N/G strata while representation lifts keep composite_score null and roles strictly contextual.',
+  kind:'src_projective_tomography',
+  clusters:['C1','C2','C4','C5'],
+  instrument:rawTpl.instrument||'Atlas Projection Auditor',
+  grammar:rawTpl.grammar||'Caro Institutional Reconstruction'
+ }:null;
+ const rawCandidates=srcCandidate?[...rawGenerated,srcCandidate]:rawGenerated;
  const clockById=new Map(CLOCKS.map(c=>[c.id,c]));
  const scored=rawCandidates.map(cand=>{
   assertNoBoilerplateSubtitle(cand.patternSubtitle);
@@ -1199,8 +1257,26 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   const noBoilerplate=!ANTI_BOILERPLATE_SUBTITLE_RE.test(cand.patternSubtitle);
   const hasFalsifier=typeof cand.falsifier==='string'&&cand.falsifier.length>12;
   const sCeil=(noLeak&&noBoilerplate&&hasFalsifier)?1:0;
+  const designEval=scoreDesignCadence(cand,options?.operatorQuestion||'');
+  const sDesign=designEval.design_cadence;
+  const srcDocScore=scoreSrcUntypicalDocument(
+   qSrcCond.analysis,
+   {
+    title:[cand.title,cand.subtitle,cand.tagline,cand.kind,cand.lens].filter(Boolean).join(' '),
+    cluster:Array.isArray(cand.clusters)?cand.clusters[0]:'',
+    work_id:cand.id
+   },
+   [cand.id,cand.subtitle,cand.tagline,cand.grammar,cand.instrument].filter(Boolean).join(' ')
+  );
+  const srcBase=(srcTelemetry.phase2_tomography.composite_score===null?0.35:0)
+   +(srcTelemetry.context_roles.intrinsic_role_claim==='CONTEXTUAL_NOT_INTRINSIC'?0.25:0)
+   +(srcTelemetry.projective_routing.candidate_link_count>0||srcTelemetry.projective_routing.field_marker_hits>0?0.18:0.08);
+  const srcQueryBoost=qSrcCond.analysis.hasSrcUntypicalCue
+   ?(cand.id==='cand-src-projective-tomography'?0.22:Math.min(0.22,0.22*srcDocScore.s_src_combined))
+   :(cand.id==='cand-src-projective-tomography'?0.06:0.14);
+  const sSrc=+(Math.min(1,Math.max(0,srcBase+srcQueryBoost))).toFixed(4);
 
-  const composite=+((0.18*sSpec+0.17*sDelta+0.14*sMirror+0.19*sSyn+0.18*sBridge+0.14*sCeil)).toFixed(4);
+  const composite=+((0.15*sSpec+0.14*sDelta+0.10*sMirror+0.15*sSyn+0.14*sBridge+0.11*sCeil+0.11*sDesign+0.10*sSrc)).toFixed(4);
   const breakdown={
    spectral_conditioning:sSpec,
    clock_holonomy:sDelta,
@@ -1208,6 +1284,11 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    synergy_fadt:sSyn,
    cluster_bridge:sBridge,
    epistemic_ceiling:sCeil,
+   design_cadence:sDesign,
+   src_projective_tomography:sSrc,
+   governing_instrument:designEval.governing_instrument,
+   instrument_label:designEval.instrument_label,
+   phasonic_interference:designEval.phasonic_sample.interference,
    svd_kappa:kappa,
    svd_rank:svd.rank,
    vernier_inversions:vernier.arrival_inversions,
@@ -1220,11 +1301,13 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   const hdr=cand.headerTagline;
   const axiomMarginalia=[
    hdr,
-   `Score ${(composite*100).toFixed(1)}% · κ=${Number.isFinite(kappa)?kappa.toFixed(2):'∞'} · Δ=${vernier.arrival_inversions} inv`,
+   `Score ${(composite*100).toFixed(1)}% · κ=${Number.isFinite(kappa)?kappa.toFixed(2):'∞'} · Δ=${vernier.arrival_inversions} inv · ${designEval.governing_instrument}`,
    `FADT Exact [${fadt.exact_descent_clusters.join(',')||'NONE'}] · Credit 0`
   ];
   return {
    ...cand,
+   governing_instrument:cand.governing_instrument||inferContextualInstruments(`${cand.title} ${cand.heroStatement}`)[0],
+   design_grammar:designEval,
    svd_matrix:opMat,
    score:composite,
    breakdown,
@@ -1233,21 +1316,30 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
  });
  scored.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
  const topSlice=scored.slice(0,limit);
+ const grammarSummary=deriveDesignGrammarSynthesis({
+  seed:options?.operatorQuestion||(topSlice[0]?`${topSlice[0].title} ${topSlice[0].heroStatement}`:''),
+  worksCount:Array.isArray(corpus?.works)?corpus.works.length:32,
+  activeInstruments:Object.keys(DESIGN_INSTRUMENTS)
+ });
  return deepFreeze({
   schema:'emstd613.vixen.unified-candidate-ranking/v1',
   lag_ticks:lag,
   fadt_profile:fadt,
+  design_grammar:grammarSummary,
   candidate_count:scored.length,
   top_candidate:topSlice[0]||null,
   candidates:topSlice,
   weights:Object.freeze({
-   spectral_conditioning:0.18,
-   clock_holonomy:0.17,
-   mirror_nullspace:0.14,
-   synergy_fadt:0.19,
-   cluster_bridge:0.18,
-   epistemic_ceiling:0.14
+   spectral_conditioning:0.15,
+   clock_holonomy:0.14,
+   mirror_nullspace:0.10,
+   synergy_fadt:0.15,
+   cluster_bridge:0.14,
+   epistemic_ceiling:0.11,
+   design_cadence:0.11,
+   src_projective_tomography:0.10
   }),
+  src_atelier:srcTelemetry,
   epistemic_ceiling:{empirical_replication_credit:0,scientific_promotion_authority:false,human_closure_required:true}
  });
 }
@@ -1335,7 +1427,10 @@ export function deriveSynthesisHeadline({
   provenance:{
    selected_candidate_id:chosen.id,
    candidate_score:chosen.score,
+   design_cadence:chosen.breakdown?.design_cadence??null,
+   governing_instrument:chosen.governing_instrument||chosen.breakdown?.governing_instrument||null,
    score_breakdown:chosen.breakdown,
+   design_grammar:ranking.design_grammar,
    candidate_count:ranking.candidate_count,
    fadt_exact_clusters:ranking.fadt_profile.exact_descent_clusters,
    fadt_gap_clusters:ranking.fadt_profile.gap_clusters,

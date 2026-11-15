@@ -136,6 +136,7 @@ if(options.includes('--score-candidates')){
  try{
   const rawLag=getFlag('--lag');
   const lagTicks=rawLag!==null&&Number.isFinite(Number(rawLag))?Number(rawLag):36;
+  const question=getFlag('--question')||'';
   const corpus=parsePageCorpus(await readFile(join(sourceRoot,'vix-cyb.html'),'utf8'));
   const wantsNative=options.includes('--native-read-tools');
   const hostDirect=process.env.TD613_PODIUM_OPERATOR_DIRECT==='1';
@@ -144,10 +145,10 @@ if(options.includes('--score-candidates')){
   if(wantsNative&&hostDirect){
    const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
    const adapters=await adapterModule.createPodiumNativeReadAdapters({repoRoot:directory,sourceRoot});
-   scored=await adapters.RULEFIELD({operation:'score_unified_candidates',payload:{corpus,lag_ticks:lagTicks}});
+   scored=await adapters.RULEFIELD({operation:'score_unified_candidates',payload:{corpus,lag_ticks:lagTicks,...(question?{operator_question:question}:{})}});
   }else{
    const salon=await import(pathToFileURL(join(sourceRoot,'vixen-estate','synthesis-salon-engine.mjs')).href);
-   scored=salon.scoreUnifiedSynthesisCandidates({corpus,lagTicks});
+   scored=salon.scoreUnifiedSynthesisCandidates(corpus,{lagTicks,operatorQuestion:question});
   }
   console.log(JSON.stringify({
    schema:'td613.vixen.podium.candidate-scores/v1',
@@ -162,6 +163,85 @@ if(options.includes('--score-candidates')){
   console.error(JSON.stringify({schema:'td613.vixen.podium.cli-error/v1',
    status:'HELD',error:String(e?.message||'PODIUM_SCORING_ERROR').slice(0,300),
    release_authority:false}));
+  process.exit(2);
+ }
+}
+if(options.includes('--search')||options.includes('--src-audit')||options.includes('--conduct')){
+ try{
+  const wantsNative=options.includes('--native-read-tools');
+  const hostDirect=process.env.TD613_PODIUM_OPERATOR_DIRECT==='1';
+  if(!wantsNative||!hostDirect)throw Error('HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED');
+  const corpus=parsePageCorpus(await readFile(join(sourceRoot,'vix-cyb.html'),'utf8'));
+  const membrane=createVixenReferenceMembrane({
+   baseURL:base,fetcher:fileTransport,cryptoProvider:globalThis.crypto
+  });
+  const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
+  const engineAdapters=await adapterModule.createPodiumNativeReadAdapters({repoRoot:directory,sourceRoot});
+  const searchMod=await import(pathToFileURL(join(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs')).href);
+  const semanticSearch=searchMod?.loadSemanticSemioticEngine?await searchMod.loadSemanticSemioticEngine():null;
+  const podium=createVixenPodium({
+   corpus,membrane,sourceRevision:'LOCAL_CHECKOUT_UNVERIFIED',
+   operatorAuthorized:true,engineAdapters,semanticSearch
+  });
+  if(options.includes('--search')){
+   const q=getFlag('--search');
+   if(!q||!q.trim())throw Error('HELD_EMPTY_QUERY');
+   const mode=getFlag('--mode')||'hybrid';
+   const rawLimit=getFlag('--limit');
+   const limit=rawLimit!==null&&Number.isFinite(Number(rawLimit))?Number(rawLimit):12;
+   const res=await podium.search(q,{
+    mode,limit,
+    include_universal:options.includes('--include-universal'),
+    auto_open:true,
+    operator_directive:true
+   });
+   console.log(JSON.stringify({
+    schema:'td613.vixen.podium.cli-search/v1',
+    native_host_lane:'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF',
+    receipt:res,
+    empirical_replication_credit:0,
+    scientific_promotion_authority:false,
+    human_closure_required:true
+   },null,2));
+   process.exit(0);
+  }
+  if(options.includes('--src-audit')){
+   const q=getFlag('--question')||'';
+   const res=await podium.heterostratigraphicAudit({operatorQuestion:q,prefer_adapter:true});
+   console.log(JSON.stringify({
+    schema:'td613.vixen.podium.cli-src-audit/v1',
+    native_host_lane:'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF',
+    receipt:res,
+    empirical_replication_credit:0,
+    scientific_promotion_authority:false,
+    human_closure_required:true
+   },null,2));
+   process.exit(0);
+  }
+  if(options.includes('--conduct')){
+   const rawConduct=getFlag('--conduct');
+   if(!rawConduct||!rawConduct.trim())throw Error('HELD_CONDUCT_INPUT_REQUIRED');
+   const trimmed=rawConduct.trim();
+   const jsonText=(trimmed.startsWith('{')||trimmed.startsWith('['))?trimmed:await readFile(resolve(directory,trimmed),'utf8');
+   const payload=JSON.parse(jsonText);
+   const res=await podium.conduct(payload);
+   console.log(JSON.stringify({
+    schema:'td613.vixen.podium.cli-conduct/v1',
+    native_host_lane:'OPERATOR_DIRECT_ATTESTED_NOT_IDENTITY_PROOF',
+    result:res,
+    empirical_replication_credit:0,
+    scientific_promotion_authority:false,
+    human_closure_required:true
+   },null,2));
+   process.exit(0);
+  }
+ }catch(e){
+  console.error(JSON.stringify({
+   schema:'td613.vixen.podium.cli-error/v1',
+   status:'HELD',
+   error:String(e?.message||'PODIUM_AIX_CONDUCTOR_ERROR').slice(0,300),
+   release_authority:false
+  }));
   process.exit(2);
  }
 }
@@ -220,6 +300,7 @@ if(options.includes('--rollback')){
    kind:'ROLLBACK',
    restored_entry_id:rollbackTarget,
    predecessor_entry_id:prevLastId,
+   predecessor_seq:prevEntry?Number(prevEntry.seq):null,
    predecessor_sha256:prevEntry?.state_sha256||null,
    recorded_at:new Date().toISOString(),
    summary:`Rolled back presentation synthesis to ${rollbackTarget}`,
@@ -298,12 +379,17 @@ try{
  const hostDirect=process.env.TD613_PODIUM_OPERATOR_DIRECT==='1';
  if(wantsNative&&!hostDirect)throw Error('HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED');
  let engineAdapters={};
+ let semanticSearch=null;
  if(wantsNative&&hostDirect){
   const adapterModule=await import(pathToFileURL(resolve(directory,'scripts','vixen-podium-native-adapters.mjs')).href);
   engineAdapters=await adapterModule.createPodiumNativeReadAdapters({repoRoot:directory,sourceRoot});
+  try{
+   const searchMod=await import(pathToFileURL(join(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs')).href);
+   if(searchMod?.loadSemanticSemioticEngine)semanticSearch=await searchMod.loadSemanticSemioticEngine();
+  }catch(_){semanticSearch=null;}
  }
  const podium=createVixenPodium({corpus,membrane,sourceRevision:'LOCAL_CHECKOUT_UNVERIFIED',
-  operatorAuthorized:wantsNative&&hostDirect,engineAdapters});
+  operatorAuthorized:wantsNative&&hostDirect,engineAdapters,semanticSearch});
  const results=[];
  for(const task of tasks)results.push(await podium.dispatch(task));
  if(selectCandidateId&&(input||options.includes('--stdin'))){
@@ -358,6 +444,7 @@ try{
    entry_id:newEntryId,
    kind:nextSeq===0&&!existing?'BASELINE':'SYNTHESIS_PROPOSAL',
    predecessor_entry_id:prevLastId,
+   predecessor_seq:prevEntry?Number(prevEntry.seq):null,
    predecessor_sha256:prevEntry?.state_sha256||null,
    recorded_at:new Date().toISOString(),
    summary:synState.operator_question||synState.custom_subtitle||synState.synthesis_headline?.patternSubtitle||'Podium synthesis update',
@@ -387,7 +474,7 @@ try{
   if(existing)persistedHtmlSync=await syncSynthesisHtmlSlots(existing);
  }
  const output={schema:'td613.vixen.podium.cli-batch/v1',task_schema:PODIUM_SCHEMA,
-  source_custody:'LOCAL_PUBLIC_ASSETS_ONLY',remote_custody:'NOT_CLAIMED',results,
+  source_custody:'EXPERIMENT_A_PREVIEW_AUTHORIZED',remote_custody:'NOT_CLAIMED',results,
   route_history:podium.history(),
   persisted_synthesis_path:persistedSynthesisPath,
   persisted_entry_id:persistedEntryId,

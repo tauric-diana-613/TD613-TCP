@@ -10,6 +10,16 @@ import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
 import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
+import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
+import {
+ SRC_CORPUS_ROOMS,
+ SRC_HETEROSTRATIGRAPHIC_STRATA,
+ SRC_AUTHORITY_AXES,
+ SRC_EPISTEMIC_STATE_AXES,
+ SRC_FALSE_CONTINUITY_SCREENS,
+ SRC_QUERY_REGIMES,
+ runSrcHeterostratigraphicAudit
+} from '../vixen-estate/src-atelier-engines.mjs';
 export {deriveSynthesisHeadline,scoreUnifiedSynthesisCandidates};
 
 export const PODIUM_SCHEMA='td613.vixen.podium.task/v1';
@@ -23,7 +33,8 @@ export const PODIUM_ROUTES=Object.freeze([
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze([
   'compare_routes','trace_relations','atlas_math_dispatch',
-  'fadt_fiber_audit','fadt_coordinate_recovery','fadt_discrepancy'
+  'fadt_fiber_audit','fadt_coordinate_recovery','fadt_discrepancy',
+  'vixen_semantic_search'
  ]),
  RULEFIELD:Object.freeze([
   'assess_roles','propose_rulefield','score_unified_candidates','pedagogue_cadence','pedagogue_institutional_time'
@@ -33,7 +44,15 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'td613_governed_exposure','observatory_diagnostics'
  ]),
  DOLLHOUSE:Object.freeze(['audit','fadt_reparative_packet','temporal_non_retroactivity']),
- UNIVERSAL_ATELIER:Object.freeze(['search','get','cite','neighbors','route','context','verify'])
+ UNIVERSAL_ATELIER:Object.freeze(['search','get','cite','neighbors','route','context','verify']),
+ SRC_ATELIER:Object.freeze([
+  'src_projective_routing',
+  'src_phase2_tomography',
+  'src_phase2_context_roles',
+  'src_rabbit_hole_traversal',
+  'src_untypical_retrieval',
+  'src_heterostratigraphic_audit'
+ ])
 });
 const RX_SHA=/^[a-f0-9]{64}$/;
 const text=(x,max=500)=>typeof x==='string'?x.slice(0,max):'';
@@ -50,11 +69,22 @@ const safeRecord=w=>({
  linked_sources:(w.linked_sources||[]).map(s=>({
   source_file_id:s.source_file_id,original_filename:s.original_filename,
   sha256:s.sha256||null,media_type:s.media_type||null,
-  source_body_access:'UNAVAILABLE_IN_PUBLIC_SURFACE'
+  source_body_access:'EXPERIMENT_A_PREVIEW_AUTHORIZED'
  }))
 });
-export function createVixenPodium({corpus,membrane=null,engineAdapters={},
-  operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT'}={}){
+export function createVixenPodium({corpus,membrane=null,engineAdapters={},engines=null,
+  semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT'}={}){
+ const normalizeAdapters=map=>{
+  if(map===undefined||map===null)return Object.create(null);
+  if(typeof map!=='object'||Array.isArray(map))throw new TypeError('VIXEN_PODIUM_INVALID_ENGINE_ADAPTER_MAP');
+  const out=Object.create(null);
+  for(const k of Object.keys(BOUNDED_ENGINE_OPERATIONS)){
+   if(Object.hasOwn(map,k)&&typeof map[k]==='function')out[k]=map[k];
+  }
+  return out;
+ };
+ const boundAdapters={...normalizeAdapters(engines),...normalizeAdapters(engineAdapters)};
+ const attachedSemantic=(semanticSearch&&typeof semanticSearch.search==='function')?semanticSearch:null;
  const counts=corpus&&Array.isArray(corpus.works)&&Array.isArray(corpus.human_gates)&&
   Array.isArray(corpus.instruments)?census(corpus):null;
  if(!counts||counts.works!==32||counts.manifestations!==53||counts.gates!==8||counts.protocols!==21)
@@ -141,6 +171,25 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
   }
   return false;
  };
+ const runAttachedVixenSearch=async(query,opts={})=>{
+  const mode=SUPPORTED_SEARCH_MODES.includes(opts.mode)?opts.mode:'hybrid';
+  const limit=Math.min(24,Math.max(1,Number(opts.limit)||12));
+  if(attachedSemantic){
+   if(typeof attachedSemantic.searchAsync==='function'&&(opts.async===true||mode==='src_projective'||mode==='exact')){
+    return {available:true,via:'ATTACHED_SEMANTIC_SEMIOTIC_ENGINE',result:await attachedSemantic.searchAsync(query,{...opts,mode,limit})};
+   }
+   return {available:true,via:'ATTACHED_SEMANTIC_SEMIOTIC_ENGINE',result:attachedSemantic.search(query,{...opts,mode,limit})};
+  }
+  if(operatorAuthorized===true&&typeof boundAdapters.SRC_ATELIER==='function'&&(mode==='src_projective'||opts.prefer_src===true)){
+   const res=await boundAdapters.SRC_ATELIER({operation:'src_untypical_retrieval',payload:{query,mode,options:{...opts,limit}}});
+   return {available:true,via:'SRC_ATELIER_ADAPTER',result:res};
+  }
+  if(operatorAuthorized===true&&typeof boundAdapters.ATLAS==='function'){
+   const res=await boundAdapters.ATLAS({operation:'vixen_semantic_search',payload:{query,options:{...opts,mode,limit}}});
+   return {available:true,via:'ATLAS_ADAPTER',result:res};
+  }
+  return {available:false,reason:operatorAuthorized?'HELD_NO_SEARCH_ADAPTER_OR_ENGINE_ATTACHED':'HELD_SEARCH_ENGINE_NOT_ATTACHED_OR_UNAUTHORIZED'};
+ };
  const buildHeadline=()=>deriveSynthesisHeadline({
   corpus,
   activePlan:state.activePlan,
@@ -193,14 +242,39 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      counts,available_routes:PODIUM_ROUTES,reader_state:reader.status().state,
      source_revision:sourceRevision,external_engine_connection:'EXPLICIT_ADAPTER_ONLY',
      route_memory:'SESSION_LOCAL_ONLY',
-     synthesis_headline:buildHeadline()
+     synthesis_headline:buildHeadline(),
+     aix_conductor:{
+      canon_name:'SignalRupture Canon (SRC)',
+      heterostratigraphic_strata:SRC_HETEROSTRATIGRAPHIC_STRATA,
+      corpus_rooms:SRC_CORPUS_ROOMS,
+      src_query_regimes:Object.keys(SRC_QUERY_REGIMES),
+      semantic_search_modes:SUPPORTED_SEARCH_MODES,
+      authority_axes:SRC_AUTHORITY_AXES,
+      epistemic_state_axes:SRC_EPISTEMIC_STATE_AXES,
+      false_continuity_screens:SRC_FALSE_CONTINUITY_SCREENS,
+      first_class_methods:['conduct','search','exactSearch','neighbors','route','heterostratigraphicAudit'],
+      semantic_search_attached:Boolean(attachedSemantic),
+      src_adapter_connected:typeof boundAdapters.SRC_ATELIER==='function',
+      atlas_adapter_connected:typeof boundAdapters.ATLAS==='function'
+     }
     });
    }
    if(intent==='vixen.work.inspect'){
     const id=text(params.work_id,160);
     const w=corpus.works.find(x=>x.work_id===id);
     event('VIXEN_WORK_LOOKUP',{work_id:id,found:Boolean(w)});
-    return receipt(intent,w?'SUPPORTED':'HELD',w? safeRecord(w):
+    return receipt(intent,w?'SUPPORTED':'HELD',w? {
+      ...safeRecord(w),
+      src_heterostratigraphic_context:{
+       canon_name:'SignalRupture Canon (SRC)',
+       corpus_rooms:SRC_CORPUS_ROOMS,
+       strata:SRC_HETEROSTRATIGRAPHIC_STRATA,
+       epistemic_state_model:'X_t=(E,V,R,P,L,A)',
+       authority_model:'A_t=(G,C,E,F,K)',
+       composite_state_score:null,
+       path_lifts_to_direct_edge:false
+      }
+     }:
       rejection('HELD_WORK_NOT_FOUND','No such historical Vixen Work'));
    }
    if(intent==='vixen.gates.inspect'){
@@ -227,9 +301,19 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    if(intent==='universal.search'){
     if(!(await ensureReferenceOpened(params)))return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first or pass auto_open:true under explicit operator directive'));
     const q=text(params.query,200).trim();if(!q)return receipt(intent,'HELD',rejection('HELD_EMPTY_QUERY','Operator must supply query'));
-    const hits=reader.search(q,{limit:Math.min(24,Math.max(1,Number(params.limit)||12))});
+    const limit=Math.min(24,Math.max(1,Number(params.limit)||12));
+    const hits=reader.search(q,{limit});
     event('UNIVERSAL_LEXICAL_SEARCH',{query:q,count:hits.length,classification:'LEXICAL_MATCH_NOT_RELATION'});
-    return receipt(intent,'SUPPORTED',{query:q,hits,claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT'});
+    let vixen_search;
+    if(params.include_vixen_search===true){
+     const requestedMode=SUPPORTED_SEARCH_MODES.includes(params.mode)?params.mode:'hybrid';
+     const sem=await runAttachedVixenSearch(q,{mode:requestedMode,limit});
+     vixen_search=sem.available
+      ?{available:true,estate:'EMSTD613',cross_opera_merged:false,via:sem.via,claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT',...sem.result}
+      :{available:false,estate:'EMSTD613',cross_opera_merged:false,reason:sem.reason||'HELD_SEMANTIC_SEARCH_UNAVAILABLE'};
+     event('UNIVERSAL_SEARCH_WITH_SEPARATE_VIXEN_LANE',{query:q,mode:requestedMode,vixen_available:vixen_search.available,cross_opera_merged:false});
+    }
+    return receipt(intent,'SUPPORTED',{query:q,hits,...(vixen_search?{vixen_search}:{}),claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT'});
    }
    if(intent==='universal.get'){
     if(!(await ensureReferenceOpened(params)))return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first or pass auto_open:true under explicit operator directive'));
@@ -288,6 +372,11 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     const proposal=constructCrossAtelierWitness({
      work,source,witness,warrant,humanQuestion:text(params.question,700),history:state.events
     });
+    const srcHeterostratigraphicAudit=runSrcHeterostratigraphicAudit({
+     corpus,
+     operatorQuestion:text(params.question,700)||state.operatorQuestion||'',
+     activePlan:state.activePlan
+    });
     event('CROSS_ATELIER_UNRATIFIED_PROPOSAL',{
      vixen_work_id:work.work_id,source_id:source.source_file_id,record_id:id,
      state:proposal.disposition,claim:'UNESTABLISHED'
@@ -295,6 +384,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     return receipt(intent,'HELD',{
      ...proposal,state:'WITNESSED_UNLINKED_PAIR',
      synthesis_headline:buildHeadline(),
+     src_heterostratigraphic_audit:srcHeterostratigraphicAudit,
+     aix_conducting_steps:['universal.open','universal.get','vixen.work.inspect','engine.invoke(SRC_ATELIER)','synthesis.propose'],
      question_need:'INDEPENDENT_EVIDENCE_AND_HUMAN_WARRANT_REQUIRED',
      no_automatic_promotion:true,
      scientific_surplus:'UNESTABLISHED'
@@ -352,7 +443,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     event('ENGINE_CAPABILITIES_INSPECTED');
     return receipt(intent,'SUPPORTED',{
      adapters:Object.fromEntries(Object.entries(BOUNDED_ENGINE_OPERATIONS).map(([k,ops])=>
-      [k,{connected:typeof engineAdapters[k]==='function',allowed_operations:ops}])),
+      [k,{connected:typeof boundAdapters[k]==='function',allowed_operations:ops}])),
+     semantic_search_attached:Boolean(attachedSemantic),
      native_receiver_status:'SEPARATE_LINEAGE_NOT_AUTO_CONNECTED',
      no_execution_without_host_explicit_authority:true
     });
@@ -364,7 +456,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
       return receipt(intent,'HELD',rejection('HELD_ENGINE_OPERATION_NOT_ALLOWED','No write/admission/elevation routes'));
     if(operatorAuthorized!==true)
       return receipt(intent,'HELD',rejection('HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED','Task JSON cannot grant execution authority'));
-    const adapter=engineAdapters[engine];
+    const adapter=boundAdapters[engine];
     if(typeof adapter!=='function')
       return receipt(intent,'HELD',rejection('HELD_ENGINE_NOT_CONNECTED','No native tool adapter installed for this host'));
     const payload=params.payload??{};
@@ -388,9 +480,178 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    ));
   }
  };
-  return Object.freeze({
+ const conductSearch=async(query,opts={})=>{
+  const q=text(query,200).trim();
+  if(!q)return receipt('aix.conductor.search','HELD',rejection('HELD_EMPTY_QUERY','Operator must supply query'));
+  const mode=SUPPORTED_SEARCH_MODES.includes(opts.mode)?opts.mode:'hybrid';
+  const limit=Math.min(24,Math.max(1,Number(opts.limit)||12));
+  const sem=await runAttachedVixenSearch(q,{...opts,mode,limit});
+  let universalHits=null;
+  if(opts.include_universal===true){
+   if(await ensureReferenceOpened({auto_open:opts.auto_open,operator_directive:opts.operator_directive})){
+    universalHits=reader.search(q,{limit});
+   }
+  }
+  if(!sem.available&&universalHits===null){
+   return receipt('aix.conductor.search','HELD',rejection(sem.reason,'Attach semanticSearch or authorize native search adapter'));
+  }
+  event('AIX_CONDUCTOR_SEARCH',{query:q,mode,via:sem.available?sem.via:'UNIVERSAL_ONLY',cross_opera_merged:false});
+  return receipt('aix.conductor.search',sem.available?'SUPPORTED':'HELD',{
+   query:q,
+   mode,
+   estate:'EMSTD613',
+   cross_opera_merged:false,
+   via:sem.available?sem.via:null,
+   vixen_search:sem.available?sem.result:null,
+   ...(universalHits!==null?{universal_hits:universalHits}:{}),
+   claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT'
+  });
+ };
+ const conductExactSearch=async(query,opts={})=>{
+  const q=text(query,200).trim();
+  if(!q)return receipt('aix.conductor.exact_search','HELD',rejection('HELD_EMPTY_QUERY','Operator must supply query'));
+  if(attachedSemantic&&typeof attachedSemantic.exactSearch==='function'){
+   const res=await attachedSemantic.exactSearch(q,opts);
+   event('AIX_CONDUCTOR_EXACT_SEARCH',{query:q,cross_opera_merged:false});
+   return receipt('aix.conductor.exact_search','SUPPORTED',{
+    query:q,mode:'exact',estate:'EMSTD613',cross_opera_merged:false,
+    via:'ATTACHED_SEMANTIC_SEMIOTIC_EXACT',vixen_search:res,
+    claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT'
+   });
+  }
+  return conductSearch(q,{...opts,mode:'exact'});
+ };
+ const conductNeighbors=async(id,opts={})=>{
+  const target=text(id,160).trim();
+  if(!target)return receipt('aix.conductor.neighbors','HELD',rejection('HELD_EMPTY_ID','Operator must supply node ID'));
+  const vixenNeighbors=attachedSemantic&&typeof attachedSemantic.neighbors==='function'
+   ?attachedSemantic.neighbors(target,opts)
+   :null;
+  let universalEdges=null;
+  if(opts.include_universal===true&&recordId(target)){
+   if(await ensureReferenceOpened({auto_open:opts.auto_open,operator_directive:opts.operator_directive})){
+    if(!state.seen.has(target)&&(operatorAuthorized===true||opts.auto_verify_record===true||opts.operator_directive===true)){
+     const w=await reader.getRecord(target);
+     if(w?.verified_at_interaction&&RX_SHA.test(w.record_sha256||'')&&w.id===target)state.seen.set(target,w);
+    }
+    if(state.seen.has(target))universalEdges=reader.related(target,{limit:Math.min(24,Math.max(1,Number(opts.limit)||12))});
+   }
+  }
+  if(!vixenNeighbors&&universalEdges===null){
+   return receipt('aix.conductor.neighbors','HELD',rejection('HELD_GRAPH_NEIGHBORS_UNAVAILABLE','Attach semanticSearch or verify Universal record ID'));
+  }
+  event('AIX_CONDUCTOR_NEIGHBORS',{id:target,cross_opera_merged:false});
+  return receipt('aix.conductor.neighbors','SUPPORTED',{
+   id:target,cross_opera_merged:false,path_lifts_to_direct_edge:false,
+   vixen_neighbors:vixenNeighbors,
+   ...(universalEdges!==null?{universal_edges:universalEdges}:{})
+  });
+ };
+ const conductRoute=async(fromId,toId,opts={})=>{
+  const a=text(fromId,160).trim(),b=text(toId,160).trim();
+  if(!a||!b)return receipt('aix.conductor.route','HELD',rejection('HELD_ROUTE_ENDPOINTS_REQUIRED','Operator must supply from and to IDs'));
+  if(opts.universal===true&&operatorAuthorized===true&&typeof boundAdapters.UNIVERSAL_ATELIER==='function'){
+   const res=await boundAdapters.UNIVERSAL_ATELIER({operation:'route',payload:{from:a,to:b,max_depth:opts.max_depth}});
+   event('AIX_CONDUCTOR_ROUTE',{from:a,to:b,estate:'UNIVERSAL_REFERENCE'});
+   return receipt('aix.conductor.route','HELD',{
+    from:a,to:b,estate:'UNIVERSAL_REFERENCE',path_lifts_to_direct_edge:false,route:res
+   });
+  }
+  if(attachedSemantic&&typeof attachedSemantic.route==='function'){
+   const res=attachedSemantic.route(a,b,opts);
+   event('AIX_CONDUCTOR_ROUTE',{from:a,to:b,estate:'EMSTD613'});
+   return receipt('aix.conductor.route',res?'SUPPORTED':'HELD',{
+    from:a,to:b,estate:'EMSTD613',path_lifts_to_direct_edge:false,route:res
+   });
+  }
+  return receipt('aix.conductor.route','HELD',rejection('HELD_ROUTE_UNAVAILABLE','Attach semanticSearch or use operatorAuthorized UNIVERSAL_ATELIER route'));
+ };
+ const conductHeterostratigraphicAudit=async(opts={})=>{
+  const question=text(opts?.operatorQuestion??opts?.operator_question??'',600)||state.operatorQuestion||'';
+  const plan=opts?.activePlan||state.activePlan||null;
+  const candidateEnvelope=opts?.candidateEnvelope||opts?.candidate_envelope||null;
+  let audit;
+  if(opts?.prefer_adapter===true&&operatorAuthorized===true&&typeof boundAdapters.SRC_ATELIER==='function'){
+   audit=await boundAdapters.SRC_ATELIER({
+    operation:'src_heterostratigraphic_audit',
+    payload:{corpus,operator_question:question,active_plan:plan,candidate_envelope:candidateEnvelope}
+   });
+  }else{
+   audit=runSrcHeterostratigraphicAudit({corpus,operatorQuestion:question,activePlan:plan,candidateEnvelope});
+  }
+  event('SRC_HETEROSTRATIGRAPHIC_AUDIT_RUN',{
+   regime:audit?.query_conditioning?.regime_id||null,
+   universalizer_rejected:Boolean(audit?.universalizer_guard&&!audit.universalizer_guard.accepted)
+  });
+  return receipt('aix.conductor.heterostratigraphic_audit','HELD',{
+   ...audit,
+   advisory_only:true
+  });
+ };
+ const conductSingle=async step=>{
+  if(!step||typeof step!=='object'||Array.isArray(step)){
+   return receipt('aix.conductor.invalid','HELD',rejection('HELD_CONDUCTOR_DIRECTIVE','Expected task or directive object'));
+  }
+  if(step.schema===PODIUM_SCHEMA)return run(step);
+  if(typeof step.intent==='string'&&PODIUM_ROUTES.includes(step.intent)){
+   return run({schema:PODIUM_SCHEMA,intent:step.intent,params:step.params||{}});
+  }
+  if(typeof step.search==='string')return conductSearch(step.search,step);
+  if(typeof step.exact==='string')return conductExactSearch(step.exact,step);
+  if(typeof step.neighbors==='string')return conductNeighbors(step.neighbors,step);
+  if(Array.isArray(step.route)&&step.route.length===2)return conductRoute(step.route[0],step.route[1],step);
+  if(typeof step.from==='string'&&typeof step.to==='string')return conductRoute(step.from,step.to,step);
+  if(step.src_projective!==undefined){
+   if(typeof step.src_projective==='string')return conductSearch(step.src_projective,{...step,mode:'src_projective'});
+   return run({
+    schema:PODIUM_SCHEMA,intent:'engine.invoke',
+    params:{engine:'SRC_ATELIER',operation:'src_projective_routing',payload:{documents:Array.isArray(step.src_projective)?step.src_projective:[],catalog:step.catalog}}
+   });
+  }
+  if(step.src_tomography!==undefined){
+   return run({
+    schema:PODIUM_SCHEMA,intent:'engine.invoke',
+    params:{engine:'SRC_ATELIER',operation:'src_phase2_tomography',payload:{lift_candidates:Array.isArray(step.src_tomography)?step.src_tomography:[]}}
+   });
+  }
+  if(step.src_heterostratigraphic!==undefined){
+   const opts=typeof step.src_heterostratigraphic==='object'&&step.src_heterostratigraphic!==null
+    ?step.src_heterostratigraphic
+    :{operatorQuestion:typeof step.src_heterostratigraphic==='string'?step.src_heterostratigraphic:''};
+   return conductHeterostratigraphicAudit(opts);
+  }
+  if(step.propose_headline&&typeof step.propose_headline==='object'){
+   return run({schema:PODIUM_SCHEMA,intent:'podium.describe',params:step.propose_headline});
+  }
+  return receipt('aix.conductor.unknown','HELD',rejection('HELD_CONDUCTOR_DIRECTIVE','Unsupported AIx conductor directive'));
+ };
+ const conduct=async taskOrBatch=>{
+  if(Array.isArray(taskOrBatch)){
+   if(taskOrBatch.length>32){
+    return receipt('aix.conductor.batch','HELD',rejection('HELD_BATCH_TOO_LARGE','Bounded to 32 AIx conducting steps'));
+   }
+   const steps=[];
+   for(const item of taskOrBatch)steps.push(await conductSingle(item));
+   return Object.freeze({
+    schema:'td613.vixen.podium.conduct-batch/v1',
+    canon_name:'SignalRupture Canon (SRC)',
+    step_count:steps.length,
+    steps,
+    synthesis_headline:buildHeadline(),
+    empirical_replication_credit:0,
+    release_authority:false,
+    human_closure_required:true
+   });
+  }
+  return conductSingle(taskOrBatch);
+ };
+ return Object.freeze({
   schema:PODIUM_SCHEMA,routes:()=>[...PODIUM_ROUTES],
-  dispatch:run,history:()=>state.events.slice(),
+  dispatch:run,conduct,
+  search:conductSearch,exactSearch:conductExactSearch,
+  neighbors:conductNeighbors,route:conductRoute,
+  heterostratigraphicAudit:conductHeterostratigraphicAudit,
+  history:()=>state.events.slice(),
    synthesisState:()=>{
    const headline=buildHeadline();
    return Object.freeze({
@@ -417,7 +678,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    });
   },
   state:()=>Object.freeze({opened:state.opened,verified_record_ids:[...state.seen.keys()],
-   engine_adapter_count:Object.keys(engineAdapters).filter(k=>typeof engineAdapters[k]==='function').length,
+   engine_adapter_count:Object.keys(boundAdapters).filter(k=>typeof boundAdapters[k]==='function').length,
+   semantic_search_attached:Boolean(attachedSemantic),
    evidence:'VOLATILE_SESSION_ONLY'})
  });
 }

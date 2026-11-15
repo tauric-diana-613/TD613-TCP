@@ -291,6 +291,13 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ir
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-readout:not([hidden]){
  background:linear-gradient(123deg,#242F36,#0D151B)!important;
  border-top-color:#FFF0A8!important;
+ opacity:1!important;
+}
+@media(min-width:980px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-eye[data-inspector-open="true"] .ef-readout:not([hidden]){
+  border-top-color:transparent!important;
+  border-left:1px solid #FFF0A8!important;
+ }
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-pane{
  background:linear-gradient(120deg,#252F36,#0C1217)!important;

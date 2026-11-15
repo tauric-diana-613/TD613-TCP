@@ -61,7 +61,7 @@ test('Podium preserves separate EMSTD613 and Universal identities under a real t
  const p=createVixenPodium({corpus,membrane:mock()});
  const w=await p.dispatch(task('vixen.work.inspect',{work_id:workId}));
  assert.equal(w.result.role,'PERFORMER');
- assert.equal(w.result.linked_sources[0].source_body_access,'UNAVAILABLE_IN_PUBLIC_SURFACE');
+ assert.equal(w.result.linked_sources[0].source_body_access,'EXPERIMENT_A_PREVIEW_AUTHORIZED');
  const gates=await p.dispatch(task('vixen.gates.inspect'));
  assert.equal(gates.result.gates.length,8);
  assert(gates.result.gates.every(g=>g.status==='UNADJUDICATED_PAIR'));
@@ -126,7 +126,7 @@ test('Podium portable native CLI performs actual reference read without network 
  assert.equal(report.results[5].result.disposition,'WITNESSED_UNLINKED_PAIR');
  assert.equal(report.results[5].result.admissibility.publication_eligible,false);
  assert.equal(report.results[6].result.state,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
- assert.equal(report.source_custody,'LOCAL_PUBLIC_ASSETS_ONLY');
+ assert.equal(report.source_custody,'EXPERIMENT_A_PREVIEW_AUTHORIZED');
 });
 test('Native five-specialist Dollhouse negative control executes without turning a HOLD into science',async()=>{
  const {runDollhouseSkillAudit}=await import('../app/engine/dollhouse-skill-dispatcher.js');
@@ -396,4 +396,188 @@ test('All 5 native Podium adapters execute boundedly, expressed directives auto-
  assert.equal(zip[2],0x03);
  assert.equal(zip[3],0x04);
  assert.ok(crc32Bytes(zip)>0);
+});
+
+
+test('Vixen Podium wires SignalRupture Canon (SRC_ATELIER), heterostratigraphic audit, AIx conducting, and CLI fail-closed custody', async () => {
+  const podiumMod=await import('../app/encyclopedia/reference/vixen-podium.mjs');
+  const adaptersMod=await import('../scripts/vixen-podium-native-adapters.mjs');
+  const searchMod=await import('../app/encyclopedia/vixen-estate/semantic-semiotic-search.mjs');
+  const srcMod=await import('../app/encyclopedia/vixen-estate/src-atelier-engines.mjs');
+  const {readFileSync}=await import('node:fs');
+  const {execFileSync,spawnSync}=await import('node:child_process');
+  const repoRoot=new URL('..',import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1');
+  const rawHtml=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
+  const bundleMatch=rawHtml.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+  const corpus=JSON.parse(bundleMatch[1]);
+
+  const engineAdapters=await adaptersMod.createPodiumNativeReadAdapters({repoRoot});
+  assert.equal(typeof engineAdapters.SRC_ATELIER,'function');
+  const semanticSearch=await searchMod.loadSemanticSemioticEngine();
+
+  const podium=podiumMod.createVixenPodium({
+    corpus,
+    engineAdapters,
+    semanticSearch,
+    operatorAuthorized:true,
+    membrane:{
+      open:async()=>({state:'CENSUS_MATCHED',edition:'1.4',records:1141,edges:2131}),
+      search:(q)=>q.includes('Aperture')?[{id:'UNIV-TEST-1',title:'Universal Stub'}]:[],
+      getRecord:async()=>({}),
+      related:()=>[],
+      status:()=>({state:'OPENED'})
+    }
+  });
+
+  const desc=await podium.dispatch({schema:podiumMod.PODIUM_SCHEMA,intent:'podium.describe',params:{}});
+  assert.equal(desc.status,'SUPPORTED');
+  assert.equal(desc.result.aix_conductor.canon_name,'SignalRupture Canon (SRC)');
+  assert.ok(desc.result.aix_conductor.semantic_search_modes.includes('src_projective'));
+  assert.equal(desc.result.aix_conductor.semantic_search_attached,true);
+
+  const workInspect=await podium.dispatch({
+    schema:podiumMod.PODIUM_SCHEMA,
+    intent:'vixen.work.inspect',
+    params:{work_id:corpus.works[0].work_id}
+  });
+  assert.equal(workInspect.status,'SUPPORTED');
+  assert.equal(workInspect.result.src_heterostratigraphic_context.canon_name,'SignalRupture Canon (SRC)');
+  assert.equal(workInspect.result.src_heterostratigraphic_context.composite_state_score,null);
+
+  const caps=await podium.dispatch({schema:podiumMod.PODIUM_SCHEMA,intent:'engine.capabilities',params:{}});
+  assert.equal(caps.result.adapters.SRC_ATELIER.connected,true);
+  assert.ok(caps.result.adapters.SRC_ATELIER.allowed_operations.includes('src_projective_routing'));
+  assert.ok(caps.result.adapters.SRC_ATELIER.allowed_operations.includes('src_phase2_tomography'));
+  assert.ok(caps.result.adapters.SRC_ATELIER.allowed_operations.includes('src_untypical_retrieval'));
+  assert.ok(caps.result.adapters.SRC_ATELIER.allowed_operations.includes('src_heterostratigraphic_audit'));
+  assert.ok(caps.result.adapters.ATLAS.allowed_operations.includes('vixen_semantic_search'));
+
+  const tomoOut=await podium.dispatch({
+    schema:podiumMod.PODIUM_SCHEMA,
+    intent:'engine.invoke',
+    params:{
+      engine:'SRC_ATELIER',
+      operation:'src_phase2_tomography',
+      payload:{
+        lift_candidates:[{transformation_id:'lift-1',from_id:'raw',to_id:'TCC-01',claim_effects:{scope:'EXPANDED'}}]
+      }
+    }
+  });
+  assert.equal(tomoOut.status,'HELD');
+  assert.equal(tomoOut.result.output.composite_score,null);
+  assert.equal(tomoOut.result.output.empirical_replication_credit,0);
+
+  const untypicalOut=await podium.dispatch({
+    schema:podiumMod.PODIUM_SCHEMA,
+    intent:'engine.invoke',
+    params:{
+      engine:'SRC_ATELIER',
+      operation:'src_untypical_retrieval',
+      payload:{
+        query:'The street knows more than the office.',
+        mode:'src_projective'
+      }
+    }
+  });
+  assert.equal(untypicalOut.status,'HELD');
+  assert.equal(untypicalOut.result.output.src_conditioning.regime_id,'Q_reader');
+  assert.equal(untypicalOut.result.output.contract,'EMSTD613_SUBJECT_ONLY_NO_FOREIGN_SRC_BODIES');
+  assert.ok(untypicalOut.result.output.hits.length>=1);
+
+  const heteroOut=await podium.dispatch({
+    schema:podiumMod.PODIUM_SCHEMA,
+    intent:'engine.invoke',
+    params:{
+      engine:'SRC_ATELIER',
+      operation:'src_heterostratigraphic_audit',
+      payload:{
+        corpus,
+        operator_question:'Tú puedes clonarme, pero no tienes mis genes.',
+        candidate_envelope:{composite_state_score:0.99,global_truth:0.8}
+      }
+    }
+  });
+  assert.equal(heteroOut.status,'HELD');
+  assert.equal(heteroOut.result.output.canon_name,'SignalRupture Canon (SRC)');
+  assert.deepEqual(heteroOut.result.output.corpus_rooms,['FORMAL_SR','FICTIONAL_SR','GOVERNANCE_PROVENANCE_SR']);
+  assert.deepEqual(heteroOut.result.output.authority_axes,['G','C','E','F','K']);
+  assert.deepEqual(heteroOut.result.output.epistemic_state_axes,['E','V','R','P','L','A']);
+  assert.equal(heteroOut.result.output.epistemic_non_implication.composite_state_score,null);
+  assert.equal(heteroOut.result.output.tomography_composite_score,null);
+  assert.equal(heteroOut.result.output.clone_genes_decoded,false);
+  assert.equal(heteroOut.result.output.universalizer_guard.accepted,false);
+  assert.ok(heteroOut.result.output.universalizer_guard.present_forbidden_fields.includes('composite_state_score'));
+
+  // Direct SRC invariant unit assertions
+  const univCheck=srcMod.rejectSrcUniversalizer({composite_state_score:0.5});
+  assert.equal(univCheck.accepted,false);
+  const relCheck=srcMod.classifySrcRelationContinuity({
+    leftType:'operator',rightType:'signature',sharedSignature:true,multiHopPathOnly:true
+  });
+  assert.equal(relCheck.type_mismatch,true);
+  assert.equal(relCheck.scientific_object_identity,'TYPE_MISMATCH');
+  assert.equal(relCheck.clone_genes_decoded,false);
+  assert.equal(relCheck.path_lifts_to_direct_edge,false);
+
+  // Separated universal.search + EMSTD613 vixen_search lane
+  const mergedSep=await podium.dispatch({
+    schema:podiumMod.PODIUM_SCHEMA,
+    intent:'universal.search',
+    params:{query:'Aperture',include_vixen_search:true,mode:'src_projective',limit:4}
+  });
+  assert.equal(mergedSep.status,'SUPPORTED');
+  assert.equal(mergedSep.result.hits[0].id,'UNIV-TEST-1');
+  assert.equal(mergedSep.result.vixen_search.available,true);
+  assert.equal(mergedSep.result.vixen_search.cross_opera_merged,false);
+  assert.equal(mergedSep.result.vixen_search.estate,'EMSTD613');
+
+  // Strict schema rejection on dispatch vs shorthand AIx conductor batch on conduct()
+  const badDispatch=await podium.dispatch({search:'Aperture'});
+  assert.equal(badDispatch.status,'HELD');
+  assert.equal(badDispatch.result.state,'HELD_TASK_CONTRACT');
+
+  const batch=await podium.conduct([
+    {search:'Explore Aperture.',mode:'src_projective',limit:3},
+    {src_heterostratigraphic:{operatorQuestion:'Where does path existence diverge from endpoint identity?'}},
+    {propose_headline:{research_question:'Does heterostratigraphic stratification block composite scalar universalizers?',lag_ticks:36}}
+  ]);
+  assert.equal(batch.schema,'td613.vixen.podium.conduct-batch/v1');
+  assert.equal(batch.canon_name,'SignalRupture Canon (SRC)');
+  assert.equal(batch.step_count,3);
+  assert.equal(batch.steps[0].status,'SUPPORTED');
+  assert.equal(batch.steps[0].result.cross_opera_merged,false);
+  assert.equal(batch.steps[1].status,'HELD');
+  assert.equal(batch.steps[1].result.clone_genes_decoded,false);
+  assert.equal(batch.empirical_replication_credit,0);
+  assert.equal(batch.release_authority,false);
+  assert.equal(batch.human_closure_required,true);
+
+  // CLI --search & --src-audit fail closed without TD613_PODIUM_OPERATOR_DIRECT=1 and succeed with it
+  const failCli=spawnSync(process.execPath,['scripts/vixen-podium.mjs','--native-read-tools','--search','Aperture'],{
+    cwd:repoRoot,encoding:'utf8',env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'0'}
+  });
+  assert.notEqual(failCli.status,0);
+  assert.match(failCli.stderr,/HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED/);
+
+  const okCliSearch=JSON.parse(execFileSync(
+    process.execPath,
+    ['scripts/vixen-podium.mjs','--native-read-tools','--search','Explore Aperture.','--mode','src_projective','--limit','4'],
+    {cwd:repoRoot,encoding:'utf8',env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}}
+  ));
+  assert.equal(okCliSearch.schema,'td613.vixen.podium.cli-search/v1');
+  assert.equal(okCliSearch.receipt.status,'SUPPORTED');
+  assert.equal(okCliSearch.receipt.result.cross_opera_merged,false);
+  assert.equal(okCliSearch.empirical_replication_credit,0);
+  assert.equal(okCliSearch.human_closure_required,true);
+
+  const okCliAudit=JSON.parse(execFileSync(
+    process.execPath,
+    ['scripts/vixen-podium.mjs','--native-read-tools','--src-audit','--question','Tú puedes clonarme, pero no tienes mis genes.'],
+    {cwd:repoRoot,encoding:'utf8',env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}}
+  ));
+  assert.equal(okCliAudit.schema,'td613.vixen.podium.cli-src-audit/v1');
+  assert.equal(okCliAudit.receipt.status,'HELD');
+  assert.equal(okCliAudit.receipt.result.canon_name,'SignalRupture Canon (SRC)');
+  assert.equal(okCliAudit.receipt.result.tomography_composite_score,null);
+  assert.equal(okCliAudit.receipt.result.clone_genes_decoded,false);
 });
