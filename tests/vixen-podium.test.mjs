@@ -261,30 +261,60 @@ test('Podium CLI stays read-only by default and persists synthesis state only wi
    cwd:repoRoot,
    input:JSON.stringify(task('synthesis.propose',{
     operator_directive:true,
-    page_subtitle:'THE ARCHITECTURE OF NON-RETROACTIVE ROLLBACK.',
+    pattern_subtitle:'APPEND-ONLY PODIUM · MONOTONIC PREDECESSOR.',
     inquiry_question:'Can Podium proposals append and roll back without erasing predecessor chains?'
    })),
    encoding:'utf8',
    timeout:30000
   }));
+  assert.equal(secondWrite.results[0].status,'HELD');
+  const thirdWrite=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--select-candidate','cand-quotient-holonomy','--sync-html'
+  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
+  assert.equal(thirdWrite.synced_html,true);
   const listOut=JSON.parse(execFileSync(process.execPath,[
    'scripts/vixen-podium.mjs','--root',sandbox,'--list-syntheses'
   ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
-  assert.equal(listOut.active_entry_id,secondWrite.persisted_entry_id);
-  assert.ok(listOut.count>=3);
+  assert.equal(listOut.active_entry_id,thirdWrite.persisted_entry_id);
+  assert.ok(listOut.count>=4);
 
   const rollbackOut=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--rollback','syn-0000-baseline'
+   'scripts/vixen-podium.mjs','--root',sandbox,'--rollback','syn-0000-baseline','--sync-html'
   ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
   assert.equal(rollbackOut.status,'ROLLED_BACK');
   assert.equal(rollbackOut.restored_entry_id,'syn-0000-baseline');
+  assert.equal(rollbackOut.synced_html,true);
 
   const postRollback=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
   assert.equal(postRollback.active_entry_id,'syn-0000-baseline');
-  assert.equal(postRollback.synthesis_headline.patternSubtitle,'THE ARCHITECTURE OF NON-COLLAPSING PLANES.');
+  assert.equal(postRollback.last_log_entry_id,rollbackOut.log_entry_id);
   assert.equal(postRollback.synthesis_log.length,listOut.count+1);
   assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].kind,'ROLLBACK');
-  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].predecessor_entry_id,secondWrite.persisted_entry_id);
+  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].predecessor_entry_id,thirdWrite.persisted_entry_id);
+
+  // Writing AFTER rollback must link predecessor to last_log_entry_id (rollbackOut.log_entry_id), NEVER alias active_entry_id!
+  const postRbWrite=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--select-candidate','cand-visibility-svd'
+  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
+  const postRbDoc=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
+  assert.equal(postRbDoc.synthesis_log[postRbDoc.synthesis_log.length-1].predecessor_entry_id,rollbackOut.log_entry_id);
+  assert.equal(postRbWrite.persisted_entry_id,postRbDoc.active_entry_id);
+
+  // Native candidate scoring CLI and boilerplate rejection check
+  const scoredCli=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--native-read-tools','--score-candidates'
+  ],{cwd:repoRoot,encoding:'utf8',timeout:30000,env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}}));
+  assert.equal(scoredCli.lag_ticks,36);
+  assert.equal(scoredCli.fadt_profile.work_count,32);
+  assert.ok(scoredCli.top_candidate&&!/\bTHE\s+ARCHITECTURE\s+OF\b/i.test(scoredCli.top_candidate.patternSubtitle));
+
+  const bpCheck=await (async()=>{
+   const {createVixenPodium}=await import('../app/encyclopedia/reference/vixen-podium.mjs');
+   const cp=createVixenPodium({corpus,membrane:mock(),operatorAuthorized:true});
+   return cp.dispatch(task('podium.describe',{pattern_subtitle:'THE ARCHITECTURE OF GENERIC TEMPLATES.'}));
+  })();
+  assert.equal(bpCheck.status,'HELD');
+  assert.equal(bpCheck.result.state,'BOILERPLATE_SUBTITLE_REJECTED');
  }finally{
   await rm(sandbox,{recursive:true,force:true});
  }

@@ -68,11 +68,30 @@ export function gradientMisfit(x,y,opts={}){
 export function singularValues2(M){
  if(!Array.isArray(M)||M.length!==2||M.some(row=>!Array.isArray(row)||row.length!==2||row.some(v=>!Number.isFinite(v))))
   throw new TypeError('APERTURE_NEEDS_DECLARED_FINITE_2X2_OPERATOR');
- const [[a,b],[c,d]]=M;
- const tr=a*a+b*b+c*c+d*d, det=(a*d-b*c)**2;
- const discriminant=Math.sqrt(Math.max(0,tr*tr-4*det));
- const upper=Math.sqrt(Math.max(0,(tr+discriminant)/2));
- const lower=Math.sqrt(Math.max(0,(tr-discriminant)/2));
+ // One-sided Hestenes-Jacobi rotation prevents catastrophic cancellation on ill-conditioned operators.
+ const cols=[
+  [Number(M[0][0]),Number(M[1][0])],
+  [Number(M[0][1]),Number(M[1][1])]
+ ];
+ for(let sweep=0;sweep<40;sweep++){
+  const a=cols[0][0]*cols[0][0]+cols[0][1]*cols[0][1];
+  const b=cols[1][0]*cols[1][0]+cols[1][1]*cols[1][1];
+  const g=cols[0][0]*cols[1][0]+cols[0][1]*cols[1][1];
+  const np=Math.sqrt(a*b);
+  if(np<1e-30)break;
+  const err=Math.abs(g)/np;
+  if(err<1e-15)break;
+  const zeta=(b-a)/(2*g);
+  const t=Math.abs(zeta)<1e-15?1:(Math.sign(zeta)||1)/(Math.abs(zeta)+Math.sqrt(1+zeta*zeta));
+  const c=1/Math.sqrt(1+t*t),s=t*c;
+  for(let r=0;r<2;r++){
+   const c0=cols[0][r],c1=cols[1][r];
+   cols[0][r]=c*c0-s*c1;
+   cols[1][r]=s*c0+c*c1;
+  }
+ }
+ const n0=Math.hypot(cols[0][0],cols[0][1]),n1=Math.hypot(cols[1][0],cols[1][1]);
+ const upper=Math.max(n0,n1),lower=Math.min(n0,n1);
  const tol=1e-8*Math.max(1,upper);
  return Object.freeze({sigma_max:r6(upper),sigma_min:r6(lower),
   rank:Number(upper>tol)+Number(lower>tol),

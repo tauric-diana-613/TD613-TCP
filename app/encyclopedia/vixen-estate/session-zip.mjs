@@ -223,7 +223,7 @@ export function buildSessionStartHereMd({ synthesisState, sessionMeta, exportedA
     '',
     `- **Exported At (UTC):** \`${exportedAt}\``,
     `- **Active Synthesis Entry:** \`${activeEntry}\` (sequence \`${seq}\`)`,
-    `- **Active Subtitle:** ${headline.patternSubtitle || 'THE ARCHITECTURE OF NON-COLLAPSING PLANES.'}`,
+    `- **Active Subtitle:** ${headline.patternSubtitle || 'UNIFIED SYNTHESIS CANDIDATE (ENGINE-DERIVED)'}`,
     `- **Research Question Meta:** ${headline.researchQuestionMeta || 'CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED'}`,
     `- **Study Tray Selected Works:** \`${trayCount}\``,
     '- **Authority Ceiling:** `READ_ONLY_PORTABLE_SNAPSHOT` (`empirical_replication_credit: 0`, `release_authority: false`, `human_closure_required: true`)',

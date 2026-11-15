@@ -183,10 +183,73 @@ try {
     const topHero=await hero.boundingBox();
     assert(topHero&&topHero.y<160&&topHero.height>=600,
       'The real frontispiece must own the initial viewport');
+    // Verify frontispiece clearance, Didone thesis framing, non-boilerplate subtitle,
+    // and scroll-locked DOM stacking (cards strictly above #vixenLivingMesh).
+    const coverGeometry=await page.evaluate(()=>{
+      const w2=document.querySelector('#cover .cover-word-two');
+      const sub=document.querySelector('#synthPatternSubtitle');
+      const heroDesc=document.querySelector('#synthHeroStatement');
+      const enter=document.querySelector('#cover .cover-enter');
+      const orbit=document.querySelector('#cover .enter-orbit');
+      const rW2=w2?.getBoundingClientRect();
+      const rSub=sub?.getBoundingClientRect();
+      const rDesc=heroDesc?.getBoundingClientRect();
+      const rEnter=enter?.getBoundingClientRect();
+      const rOrbit=orbit?.getBoundingClientRect();
+      const descStyle=heroDesc?getComputedStyle(heroDesc):null;
+      const enterTargetBottom=rOrbit?rOrbit.top:rEnter?.top;
+      return {
+        subtitleText:sub?.textContent?.trim()||'',
+        heroFont:descStyle?.fontFamily||'',
+        heroFontSize:parseFloat(descStyle?.fontSize||'0'),
+        heroLineHeight:parseFloat(descStyle?.lineHeight||'0'),
+        word2ToEnterGap:rW2&&enterTargetBottom!==undefined?Math.round(enterTargetBottom-rW2.bottom):null,
+        subToEnterGap:rSub&&rEnter?Math.round(rEnter.top-rSub.bottom):null,
+        descFloorGap:rDesc?Math.round(innerHeight-rDesc.bottom):null,
+        descToEnterHorizGap:rDesc&&rEnter?Math.round(rEnter.left-rDesc.right):null
+      };
+    });
+    assert.equal(/\bTHE\s+ARCHITECTURE\s+OF\b/i.test(coverGeometry.subtitleText),false,
+      'Rendered cover subtitle must come from computational synthesis without generic boilerplate: '+coverGeometry.subtitleText);
+    assert(coverGeometry.word2ToEnterGap>=22&&coverGeometry.subToEnterGap>=20,
+      'Cover CYBERNETICS / subtitle block must stay cleanly clear above Enter the Opera: '+JSON.stringify(coverGeometry));
+    if(width>680){
+      assert(coverGeometry.descFloorGap>=18,
+        'Desktop editorial thesis must lift cleanly off bottom viewport floor: '+JSON.stringify(coverGeometry));
+      assert(coverGeometry.heroFontSize>=16,
+        'Desktop couture Didone thesis typography expected >=16px, got '+coverGeometry.heroFontSize);
+    }
     await page.screenshot({
       path:path.join(output,'vixen-'+width+'x'+height+'-mugler-chromepunk-frontispiece.png'),
       fullPage:false
     });
+    // Exercise #constitutiveInquiry ranked candidate promotion and verify active wheel-scroll lock on panels
+    const scrollAudit=await page.evaluate(async()=>{
+      const iq=document.getElementById('constitutiveInquiry');
+      const mesh=document.getElementById('vixenLivingMesh');
+      const card=document.querySelector('#constitutiveInquiry .ci-card');
+      const cardsCount=document.querySelectorAll('#ciCandidateGrid .ci-candidate-card').length;
+      const startTop=card.getBoundingClientRect().top;
+      const startScroll=window.scrollY;
+      window.scrollTo({top:startScroll+520,behavior:'instant'});
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      const endTop=card.getBoundingClientRect().top;
+      const actualDelta=window.scrollY-startScroll;
+      const measuredShift=startTop-endTop;
+      return {
+        iqPresent:!!iq,
+        cardsCount,
+        meshZ:mesh?Number(getComputedStyle(mesh).zIndex||0):null,
+        cardZ:iq?Number(getComputedStyle(iq).zIndex||getComputedStyle(card).zIndex||0):null,
+        actualDelta,
+        driftPx:Math.abs(measuredShift-actualDelta)
+      };
+    });
+    assert(scrollAudit.cardsCount>=4,'Ranked computational candidates must populate #ciCandidateGrid');
+    assert(scrollAudit.driftPx<2,'DOM cards must track scroll delta accurately without background drift: '+JSON.stringify(scrollAudit));
+    if(scrollAudit.meshZ!==null&&Number.isFinite(scrollAudit.cardZ)){
+      assert(scrollAudit.cardZ>scrollAudit.meshZ,'Cards must composite above #vixenLivingMesh: '+JSON.stringify(scrollAudit));
+    }
     await foyer.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     await page.screenshot({

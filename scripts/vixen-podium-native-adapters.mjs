@@ -129,18 +129,18 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    }
    if(operation==='fadt_fiber_audit'){
     if(!fadtAssist?.computeFadtFiberBounds)throw Error('HELD_FADT_UNAVAILABLE');
-    return fadtAssist.computeFadtFiberBounds(payload.fiber_rows||payload.rows||[]);
+    return fadtAssist.computeFadtFiberBounds(payload.fiber_rows||payload.rows||payload.fibers||[]);
    }
    if(operation==='fadt_coordinate_recovery'){
     if(!fadtAssist?.evaluateFadtCoordinateRecovery)throw Error('HELD_FADT_UNAVAILABLE');
     return fadtAssist.evaluateFadtCoordinateRecovery(
-     payload.fiber_rows||payload.colliding_rows||[],
+     payload.fiber_rows||payload.rows||payload.fibers||payload.colliding_rows||[],
      payload.candidate_coordinates||payload.coordinates||[]
     );
    }
    if(operation==='fadt_discrepancy'){
     if(!fadtAssist?.evaluateFadtDiscrepancyIdentity)throw Error('HELD_FADT_UNAVAILABLE');
-    return fadtAssist.evaluateFadtDiscrepancyIdentity(payload.candidate_rule||payload.rule,payload.fiber_rows||payload.rows||[]);
+    return fadtAssist.evaluateFadtDiscrepancyIdentity(payload.candidate_rule||payload.rule,payload.fiber_rows||payload.rows||payload.fibers||[]);
    }
    throw Error('HELD_ATLAS_OPERATION');
   };
@@ -239,10 +239,14 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
       })
      :null;
     const headline=salonEngine.deriveSynthesisHeadline
-     ?salonEngine.deriveSynthesisHeadline(corpus,{
-       customQuestion:payload?.question||null,
-       customMethod:payload?.method||null,
-       salonPlan:plan
+     ?salonEngine.deriveSynthesisHeadline({
+       corpus,
+       activePlan:plan,
+       operatorQuestion:payload?.question||null,
+       operatorMethod:payload?.method||null,
+       customSubtitle:payload?.pattern_subtitle||null,
+       selectedCandidateId:payload?.selected_candidate_id||null,
+       lagTicks:payload?.lag_ticks??36
       })
      :null;
     return {
@@ -252,6 +256,71 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
      synthesis_headline:headline,
      scientific_promotion_authority:false,
      empirical_replication_credit:0,
+     human_closure_required:true
+    };
+   }
+   if(operation==='score_unified_candidates'){
+    if(!salonEngine?.scoreUnifiedSynthesisCandidates)throw Error('HELD_SALON_SCORING_UNAVAILABLE');
+    const corpus=payload?.corpus||await loadLocalVixenCorpus();
+    const lag=Number.isFinite(Number(payload?.lag_ticks))?Number(payload.lag_ticks):36;
+    const scored=salonEngine.scoreUnifiedSynthesisCandidates({
+     corpus,
+     activePlan:payload?.active_plan||null,
+     refraction:payload?.refraction||null,
+     supplementalSources:Array.isArray(payload?.supplemental_sources)?payload.supplemental_sources:[],
+     podiumEvents:Array.isArray(payload?.podium_events)?payload.podium_events:[],
+     operatorQuestion:payload?.question||payload?.operator_question||null,
+     operatorMethod:payload?.method||payload?.operator_method||null,
+     lagTicks:lag,
+     benchPair:payload?.bench_pair||'c1_c2_valid',
+     benchSnapshots:Array.isArray(payload?.bench_snapshots)?payload.bench_snapshots:[],
+     withdrawnCount:Number(payload?.withdrawn_count||0)
+    });
+    const c3Rows=(corpus.works||[]).filter(w=>w.cluster==='C3').map(w=>({support:Array.isArray(w.planes)?w.planes:[]}));
+    const c1Rows=(corpus.works||[]).filter(w=>w.cluster==='C1').map(w=>({support:Array.isArray(w.planes)?w.planes:[]}));
+    const fadtNativeC3=fadtAssist?.computeFadtFiberBounds&&c3Rows.length
+     ?fadtAssist.computeFadtFiberBounds(c3Rows)
+     :null;
+    const fadtNativeC1=fadtAssist?.computeFadtFiberBounds&&c1Rows.length
+     ?fadtAssist.computeFadtFiberBounds(c1Rows)
+     :null;
+    const topCand=scored.top_candidate||scored.candidates?.[0]||null;
+    const topMatrix=topCand?.svd_matrix||[[1,0.25+(lag/180)],[0,0.85]];
+    const apertureNativeSvd=apertureV32?.computeMatrixSvd
+     ?apertureV32.computeMatrixSvd(topMatrix)
+     :null;
+    return {
+     schema:'emstd613.vixen.unified-candidate-scores/v1',
+     lag_ticks:lag,
+     top_candidate:topCand?{
+      id:topCand.id,
+      title:topCand.title,
+      patternSubtitle:topCand.patternSubtitle,
+      headerTagline:topCand.headerTagline,
+      heroStatement:topCand.heroStatement,
+      leftSpine:topCand.leftSpine,
+      score:topCand.score,
+      breakdown:topCand.breakdown
+     }:null,
+     candidates:scored.candidates.map(c=>({
+      id:c.id,
+      title:c.title,
+      patternSubtitle:c.patternSubtitle,
+      headerTagline:c.headerTagline,
+      heroStatement:c.heroStatement,
+      leftSpine:c.leftSpine,
+      regime:c.regime,
+      score:c.score,
+      breakdown:c.breakdown
+     })),
+     fadt_profile:scored.fadt_profile,
+     native_cross_checks:{
+      fadt_exact_c3:fadtNativeC3?{disposition:fadtNativeC3.disposition,gap_cardinality:fadtNativeC3.irreducible_gap_cardinality,intersection:fadtNativeC3.intersection_support}:null,
+      fadt_gap_c1:fadtNativeC1?{disposition:fadtNativeC1.disposition,gap_cardinality:fadtNativeC1.irreducible_gap_cardinality,gap:fadtNativeC1.irreducible_gap}:null,
+      aperture_svd_top:apertureNativeSvd?{kappa:apertureNativeSvd.condition_number,rank:apertureNativeSvd.rank,sigma:apertureNativeSvd.singular_values}:null
+     },
+     empirical_replication_credit:0,
+     scientific_promotion_authority:false,
      human_closure_required:true
     };
    }

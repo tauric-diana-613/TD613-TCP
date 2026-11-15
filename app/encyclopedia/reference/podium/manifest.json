@@ -150,6 +150,7 @@
     "RULEFIELD": [
       "assess_roles",
       "propose_rulefield",
+      "score_unified_candidates",
       "pedagogue_cadence",
       "pedagogue_institutional_time"
     ],

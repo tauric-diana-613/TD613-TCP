@@ -623,11 +623,11 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  const reduced=win.matchMedia('(prefers-reduced-motion: reduce)');
  const clock=getState().opticalClock||{time:0};
  let raf=0,disposed=false,visible=false,lastMs=null,lastPaint=-Infinity,dirty=true,frames=0,last=null,latestRad=null;
- let resolution=null,paintCosts=[],geometryFrames=0;
+ let resolution=null,paintCosts=[],geometryFrames=0,lastScene=null,lastStageRect=null;
  const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||doc.body.dataset.vixenMotion==='still'||getState().resting;
  const active=()=>!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
  const cancel=()=>{if(raf)win.cancelAnimationFrame(raf);raf=0;lastMs=null;};
- function paint(){
+ function paint(forceHost=false){
   const r=canvas.getBoundingClientRect();if(r.width<2||r.height<2)return;
   const start=win.performance.now();
   const st=getState()||{};
@@ -635,8 +635,9 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   const route=st.route||'A_B',lag=Number.isFinite(st.lag)?st.lag:30,activeClock=st.activeClock||null;
   const onRadiometry=typeof options?.onRadiometry==='function'?options.onRadiometry:(typeof st.onRadiometry==='function'?st.onRadiometry:null);
   if(!visible){
+   lastScene=null;lastStageRect=null;
    win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds,
-    view:'collection',held:!!held(),force:dirty});
+    view:'collection',held:!!held(),force:dirty||forceHost});
    frames++;dirty=false;last={phase:clock.time,sourceIds,garmentVisible:false,empirical_credit:0};return;
   }
   const back=coutureBackingSize(r.width,r.height,win.devicePixelRatio||1);
@@ -645,9 +646,10 @@ export function mountFoldedCuirass(canvas,getState,options={}){
   const m=buildFoldedCuirass({width:r.width,height:r.height,time:clock.time,sourceIds,
    integrated:win.innerWidth?win.innerWidth>740:r.width>800,route,lag,activeClock});
   const painted=paintFoldedCuirass(ctx,m);geometryFrames++;
+  lastScene=m.scene;lastStageRect={left:r.left,top:r.top,width:r.width,height:r.height};
   win.VixenLivingMesh?.renderHostFrame?.({time:clock.time,sourceIds:m.sourceIds,
-   scene:m.scene,stageRect:{left:r.left,top:r.top,width:r.width,height:r.height},
-   view:'collection',held:!!held(),force:dirty});
+   scene:m.scene,stageRect:lastStageRect,
+   view:'collection',held:!!held(),force:dirty||forceHost});
   paintCosts.push(win.performance.now()-start);if(paintCosts.length>120)paintCosts.shift();
   frames++;dirty=false;latestRad=m.radiometry;
   last={...painted,garmentVisible:true,phase:clock.time,sourceIds:m.sourceIds,viewport:{width:r.width,height:r.height},backing:back,
@@ -666,6 +668,10 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  function schedule(){
   cancel();dirty=true;if(!disposed&&active())raf=win.requestAnimationFrame(tick);
  }
+ function onFieldLayout(){
+  if(disposed||!active())return;
+  paint(true);
+ }
  function trackDpr(){
   resolution?.removeEventListener('change',onDpr);
   resolution=win.matchMedia(`(resolution: ${win.devicePixelRatio||1}dppx)`);
@@ -680,7 +686,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  mo.observe(doc.body,{attributes:true,attributeFilter:['data-view','data-active-research-stage','data-vixen-motion']});
  reduced.addEventListener('change',schedule);doc.addEventListener('visibilitychange',schedule);
  win.addEventListener('resize',schedule,{passive:true});
- win.addEventListener('vixen:fieldlayout',schedule);trackDpr();
+ win.addEventListener('vixen:fieldlayout',onFieldLayout);trackDpr();
  return Object.freeze({mounted:true,contract:CUIRASS_CONTRACT,renderOnce:schedule,
   renderStatic(){cancel();dirty=true;paint();return last;},
   latestRadiometry:()=>latestRad,
@@ -688,6 +694,6 @@ export function mountFoldedCuirass(canvas,getState,options={}){
    paintP95Ms:paintCosts.length?[...paintCosts].sort((a,b)=>a-b)[Math.ceil(paintCosts.length*.95)-1]:null}),
   dispose(){disposed=true;cancel();io.disconnect();ro.disconnect();mo.disconnect();
    reduced.removeEventListener('change',schedule);resolution?.removeEventListener('change',onDpr);
-   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);win.removeEventListener('vixen:fieldlayout',schedule);}
+   doc.removeEventListener('visibilitychange',schedule);win.removeEventListener('resize',schedule);win.removeEventListener('vixen:fieldlayout',onFieldLayout);}
  });
 }

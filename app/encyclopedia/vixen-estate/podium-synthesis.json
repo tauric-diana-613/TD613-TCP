@@ -7,32 +7,289 @@
   "custom_subtitle": null,
   "custom_hero_statement": null,
   "custom_left_spine": null,
+  "selected_candidate_id": "cand-visibility-svd",
+  "lag_ticks": 36,
   "active_plan": null,
   "refraction": null,
   "inquiry_conjectures": [],
   "supplemental_sources": [],
-  "podium_events": [],
+  "podium_events": [
+    {
+      "sequence": 1,
+      "action": "MACHINE_ROUTE_INSPECTED",
+      "observation_time": "2026-11-15T05:26:23.976Z",
+      "recording_class": "VOLATILE_SESSION_NOT_APPEND_ONLY_PROOF"
+    }
+  ],
   "synthesis_headline": {
     "schema": "emstd613.vixen.synthesis-headline/v1",
     "regime": "BASELINE_ESTATE_SYNTHESIS",
-    "headerTagline": "Typed Constitutive Cybernetics",
-    "patternSubtitle": "THE ARCHITECTURE OF NON-COLLAPSING PLANES.",
+    "headerTagline": "Aperture Conditioning × Dual-Channel Probe",
+    "patternSubtitle": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
     "axiomMarginalia": [
-      "Typed Constitutive Cybernetics",
-      "S_semantic ≠ W_witness ≠ A_actuator",
-      "P-Closure ≠ W-Truth · [32, 40] Sensitivity"
+      "Aperture Conditioning × Dual-Channel Probe",
+      "Score 86.3% · κ=2.25 · Δ=3 inv",
+      "FADT Exact [C3] · Credit 0"
     ],
-    "heroStatement": "Where semantic steering, witness verification,\nand low-latency actuation refuse to collapse\ninto one untyped plane.",
-    "leftSpine": "S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS",
-    "researchQuestionMeta": "CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED",
-    "researchQuestion": "“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”",
+    "heroStatement": "Single-channel visibility confounds gain\nwith coupling distance; an orthogonal probe\nrestores rank-2 Hestenes-Jacobi conditioning.",
+    "leftSpine": "C2 × C3 · KAPPA(A) BOUND × A-07",
+    "researchQuestionMeta": "INVERSE PROBE SYNTHESIS · C2 × C3 · UNRATIFIED",
+    "researchQuestion": "“Why do capacitive glove envelope curves (C3) and optimal DSP smoothing factors (C2) collapse onto the same V(η, n) level set until an orthogonal dual-frequency probe lifts Jacobian rank to 2?”",
+    "candidates": [
+      {
+        "id": "cand-visibility-svd",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "Dielectric Proximity vs EMA Decay as V(η, n) Inverse Problem",
+        "lens": "Optical Conditioning × Adaptive Filtering",
+        "clusters": [
+          "C2",
+          "C3"
+        ],
+        "patternSubtitle": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
+        "headerTagline": "Aperture Conditioning × Dual-Channel Probe",
+        "score": 0.863,
+        "breakdown": {
+          "spectral_conditioning": 0.8738,
+          "clock_holonomy": 0.7795,
+          "mirror_nullspace": 0.6315,
+          "synergy_fadt": 1,
+          "cluster_bridge": 0.86,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 2.2463,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.330057,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": true
+        },
+        "falsifier": "Compute one-sided Jacobi SVD κ(A) across single- vs dual-probe calibration; reject calibration whenever rank < 2 or κ(A) > 10⁴."
+      },
+      {
+        "id": "cand-podium-exploration",
+        "regime": "PODIUM_EVENT_SYNTHESIS",
+        "title": "Podium-Gated Exploration Trajectory",
+        "lens": "Read-Only Podium Trace × Unratified Inquiry",
+        "clusters": [
+          "C1",
+          "C2",
+          "C3"
+        ],
+        "patternSubtitle": "PODIUM TRACE · 1 RECORDED STEPS.",
+        "headerTagline": "Podium-Updated Constitutive Synthesis",
+        "score": 0.8567,
+        "breakdown": {
+          "spectral_conditioning": 0.9265,
+          "clock_holonomy": 0.6277,
+          "mirror_nullspace": 0.613,
+          "synergy_fadt": 1,
+          "cluster_bridge": 0.93,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 1.5812,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.296447,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": true
+        },
+        "falsifier": "Confirm Podium events keep empirical_replication_credit = 0 and require human closure."
+      },
+      {
+        "id": "cand-spsc-algedonic",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "Wait-Free SPSC Audio Ring as Beer System-3/5 Algedonic Bypass",
+        "lens": "Systems Control × Real-Time Lock-Free Concurrency",
+        "clusters": [
+          "C2",
+          "C1"
+        ],
+        "patternSubtitle": "SPSC BYPASS · WALL VS 48KHZ DRIFT.",
+        "headerTagline": "Algedonic Bypass × Lock-Free Audio",
+        "score": 0.8499,
+        "breakdown": {
+          "spectral_conditioning": 0.8438,
+          "clock_holonomy": 0.888,
+          "mirror_nullspace": 0.6643,
+          "synergy_fadt": 0.838,
+          "cluster_bridge": 0.86,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 2.7715,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.389631,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": false
+        },
+        "falsifier": "Pass audio overrun + token-culling trajectories through A-01/A-05; reject conservative equivalence whenever div(F) < 0."
+      },
+      {
+        "id": "cand-quotient-holonomy",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "Multi-Clock Holonomy & Exact C3 Fiber Quotient",
+        "lens": "Typed Control Planes × FADT Quotient × 5-Clock Vernier",
+        "clusters": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "patternSubtitle": "MULTI-CLOCK HOLONOMY · EXACT C3 DESCENT.",
+        "headerTagline": "Typed Constitutive Cybernetics",
+        "score": 0.845,
+        "breakdown": {
+          "spectral_conditioning": 0.9265,
+          "clock_holonomy": 0.6277,
+          "mirror_nullspace": 0.6192,
+          "synergy_fadt": 1,
+          "cluster_bridge": 0.86,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 1.5812,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.307709,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": true
+        },
+        "falsifier": "Perturb route order A_B vs B_A and operator matrix off-diagonal coupling; reject equivalence if SVD rank drops below 2 or [111] residual orthogonality fails."
+      },
+      {
+        "id": "cand-capacitive-quorum",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "7-Node E-Textile Array as Non-Separable 3-Party Parity Barrier",
+        "lens": "Wearable Haptics × Cryptographic Quorum",
+        "clusters": [
+          "C3",
+          "C1"
+        ],
+        "patternSubtitle": "THREE-NODE PARITY · EXACT C3 FIBER.",
+        "headerTagline": "Wearable Quorum × Exact C3 Fiber",
+        "score": 0.8434,
+        "breakdown": {
+          "spectral_conditioning": 0.9132,
+          "clock_holonomy": 0.6338,
+          "mirror_nullspace": 0.6178,
+          "synergy_fadt": 1,
+          "cluster_bridge": 0.86,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 1.7241,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.30514,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": true
+        },
+        "falsifier": "Evaluate 2-node reduced marginals under EMI perturbation; actuation stays HELD if reduced rank collapses or XOR parity drops."
+      },
+      {
+        "id": "cand-ossl-f_p",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "Discrete OSSL Stylometry Over F_p vs Real Embedding Vector Culling",
+        "lens": "Finite-Field Algebra × Provenance Compression",
+        "clusters": [
+          "C4",
+          "C1"
+        ],
+        "patternSubtitle": "MODULAR RANK F_P ≠ CONTINUOUS COSINE.",
+        "headerTagline": "Finite-Field Rank × Non-Collapsing Provenance",
+        "score": 0.8124,
+        "breakdown": {
+          "spectral_conditioning": 0.892,
+          "clock_holonomy": 0.6948,
+          "mirror_nullspace": 0.5693,
+          "synergy_fadt": 0.838,
+          "cluster_bridge": 0.86,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 1.9858,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.21699,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": true,
+          "fadt_exact": false
+        },
+        "falsifier": "Test modular matrix rank independently of real inner-product κ(A); block provenance promotion when continuous cosine substitutes for F_p proof."
+      },
+      {
+        "id": "cand-room-surplus",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "title": "“1 + 1 = 3” Occupant-Room Surplus as Irreducible FADT Obstruction",
+        "lens": "Quotient Fiber Theory × Shared Context Memory",
+        "clusters": [
+          "C5",
+          "C1"
+        ],
+        "patternSubtitle": "1+1=3 SURPLUS · IRREDUCIBLE GAP |Γ|.",
+        "headerTagline": "Irreducible FADT Gap × W-Plane Guard",
+        "score": 0.7677,
+        "breakdown": {
+          "spectral_conditioning": 0.8938,
+          "clock_holonomy": 0.6646,
+          "mirror_nullspace": 0.6189,
+          "synergy_fadt": 0.838,
+          "cluster_bridge": 0.6,
+          "epistemic_ceiling": 1,
+          "svd_kappa": 1.9613,
+          "svd_rank": 2,
+          "vernier_inversions": 3,
+          "vernier_l1_delta": 72,
+          "mirror_nullspace_ratio": 0.307059,
+          "xor_synergy_bits": 1,
+          "w_plane_grounded": false,
+          "fadt_exact": false
+        },
+        "falsifier": "Enforce W-PLANE pairing guard + XOR synergy check whenever S-PLANE × P-MEMBRANE works lack hardware witnessing."
+      }
+    ],
     "provenance": {
+      "selected_candidate_id": "cand-visibility-svd",
+      "candidate_score": 0.863,
+      "score_breakdown": {
+        "spectral_conditioning": 0.8738,
+        "clock_holonomy": 0.7795,
+        "mirror_nullspace": 0.6315,
+        "synergy_fadt": 1,
+        "cluster_bridge": 0.86,
+        "epistemic_ceiling": 1,
+        "svd_kappa": 2.2463,
+        "svd_rank": 2,
+        "vernier_inversions": 3,
+        "vernier_l1_delta": 72,
+        "mirror_nullspace_ratio": 0.330057,
+        "xor_synergy_bits": 1,
+        "w_plane_grounded": true,
+        "fadt_exact": true
+      },
+      "candidate_count": 7,
+      "fadt_exact_clusters": [
+        "C3"
+      ],
+      "fadt_gap_clusters": [
+        "C1",
+        "C2",
+        "C4",
+        "C5"
+      ],
+      "svd_condition_number": 2.2463,
+      "mirror_nullspace_ratio": 0.330057,
+      "xor_synergy_bits": 1,
       "work_census": 32,
       "supplemental_sources": 0,
       "snapshot_count": 0,
-      "podium_event_count": 0,
+      "podium_event_count": 1,
       "withdrawn_count": 0,
       "operator_dictated_question": false,
+      "operator_selected_candidate": true,
       "regime": "BASELINE_ESTATE_SYNTHESIS",
       "empirical_replication_credit": 0,
       "scientific_promotion_authority": false,
@@ -43,9 +300,9 @@
   "scientific_promotion_authority": false,
   "human_closure_required": true,
   "release_authority": false,
-  "active_entry_id": "syn-0000-baseline",
-  "last_log_entry_id": "syn-0000-baseline",
-  "synthesis_seq": 0,
+  "active_entry_id": "syn-0001-98ab8992",
+  "last_log_entry_id": "syn-0001-98ab8992",
+  "synthesis_seq": 1,
   "synthesis_log": [
     {
       "seq": 0,
@@ -60,6 +317,20 @@
       "researchQuestionMeta": "CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED",
       "researchQuestion": "“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”",
       "state_sha256": "9465e93481d50af1e65c9249de1c534c60507648eb8548479dd4c80022a141a3"
+    },
+    {
+      "seq": 1,
+      "entry_id": "syn-0001-98ab8992",
+      "kind": "SYNTHESIS_PROPOSAL",
+      "predecessor_entry_id": "syn-0000-baseline",
+      "predecessor_sha256": "9465e93481d50af1e65c9249de1c534c60507648eb8548479dd4c80022a141a3",
+      "recorded_at": "2026-11-15T05:26:24.033Z",
+      "summary": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
+      "status": "BASELINE_ESTATE_SYNTHESIS",
+      "patternSubtitle": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
+      "researchQuestionMeta": "INVERSE PROBE SYNTHESIS · C2 × C3 · UNRATIFIED",
+      "researchQuestion": "“Why do capacitive glove envelope curves (C3) and optimal DSP smoothing factors (C2) collapse onto the same V(η, n) level set until an orthogonal dual-frequency probe lifts Jacobian rank to 2?”",
+      "state_sha256": "98ab8992689a01c8028c39eaa008fa7526e7b65d880b82b0ce8bc09292f925a8"
     }
   ],
   "rollback_snapshots": {
@@ -98,6 +369,309 @@
           "podium_event_count": 0,
           "withdrawn_count": 0,
           "operator_dictated_question": false,
+          "regime": "BASELINE_ESTATE_SYNTHESIS",
+          "empirical_replication_credit": 0,
+          "scientific_promotion_authority": false,
+          "human_closure_required": true
+        }
+      },
+      "empirical_replication_credit": 0,
+      "scientific_promotion_authority": false,
+      "human_closure_required": true,
+      "release_authority": false
+    },
+    "syn-0001-98ab8992": {
+      "schema": "emstd613.vixen.podium-synthesis-state/v1",
+      "status": "BASELINE_ESTATE_SYNTHESIS",
+      "operator_question": null,
+      "operator_method": null,
+      "custom_headline": null,
+      "custom_subtitle": null,
+      "custom_hero_statement": null,
+      "custom_left_spine": null,
+      "selected_candidate_id": "cand-visibility-svd",
+      "lag_ticks": 36,
+      "active_plan": null,
+      "refraction": null,
+      "inquiry_conjectures": [],
+      "supplemental_sources": [],
+      "podium_events": [
+        {
+          "sequence": 1,
+          "action": "MACHINE_ROUTE_INSPECTED",
+          "observation_time": "2026-11-15T05:26:23.976Z",
+          "recording_class": "VOLATILE_SESSION_NOT_APPEND_ONLY_PROOF"
+        }
+      ],
+      "synthesis_headline": {
+        "schema": "emstd613.vixen.synthesis-headline/v1",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "headerTagline": "Aperture Conditioning × Dual-Channel Probe",
+        "patternSubtitle": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
+        "axiomMarginalia": [
+          "Aperture Conditioning × Dual-Channel Probe",
+          "Score 86.3% · κ=2.25 · Δ=3 inv",
+          "FADT Exact [C3] · Credit 0"
+        ],
+        "heroStatement": "Single-channel visibility confounds gain\nwith coupling distance; an orthogonal probe\nrestores rank-2 Hestenes-Jacobi conditioning.",
+        "leftSpine": "C2 × C3 · KAPPA(A) BOUND × A-07",
+        "researchQuestionMeta": "INVERSE PROBE SYNTHESIS · C2 × C3 · UNRATIFIED",
+        "researchQuestion": "“Why do capacitive glove envelope curves (C3) and optimal DSP smoothing factors (C2) collapse onto the same V(η, n) level set until an orthogonal dual-frequency probe lifts Jacobian rank to 2?”",
+        "candidates": [
+          {
+            "id": "cand-visibility-svd",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "Dielectric Proximity vs EMA Decay as V(η, n) Inverse Problem",
+            "lens": "Optical Conditioning × Adaptive Filtering",
+            "clusters": [
+              "C2",
+              "C3"
+            ],
+            "patternSubtitle": "ORTHOGONAL PROBE · RANK-2 CONDITIONING.",
+            "headerTagline": "Aperture Conditioning × Dual-Channel Probe",
+            "score": 0.863,
+            "breakdown": {
+              "spectral_conditioning": 0.8738,
+              "clock_holonomy": 0.7795,
+              "mirror_nullspace": 0.6315,
+              "synergy_fadt": 1,
+              "cluster_bridge": 0.86,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 2.2463,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.330057,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": true
+            },
+            "falsifier": "Compute one-sided Jacobi SVD κ(A) across single- vs dual-probe calibration; reject calibration whenever rank < 2 or κ(A) > 10⁴."
+          },
+          {
+            "id": "cand-podium-exploration",
+            "regime": "PODIUM_EVENT_SYNTHESIS",
+            "title": "Podium-Gated Exploration Trajectory",
+            "lens": "Read-Only Podium Trace × Unratified Inquiry",
+            "clusters": [
+              "C1",
+              "C2",
+              "C3"
+            ],
+            "patternSubtitle": "PODIUM TRACE · 1 RECORDED STEPS.",
+            "headerTagline": "Podium-Updated Constitutive Synthesis",
+            "score": 0.8567,
+            "breakdown": {
+              "spectral_conditioning": 0.9265,
+              "clock_holonomy": 0.6277,
+              "mirror_nullspace": 0.613,
+              "synergy_fadt": 1,
+              "cluster_bridge": 0.93,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 1.5812,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.296447,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": true
+            },
+            "falsifier": "Confirm Podium events keep empirical_replication_credit = 0 and require human closure."
+          },
+          {
+            "id": "cand-spsc-algedonic",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "Wait-Free SPSC Audio Ring as Beer System-3/5 Algedonic Bypass",
+            "lens": "Systems Control × Real-Time Lock-Free Concurrency",
+            "clusters": [
+              "C2",
+              "C1"
+            ],
+            "patternSubtitle": "SPSC BYPASS · WALL VS 48KHZ DRIFT.",
+            "headerTagline": "Algedonic Bypass × Lock-Free Audio",
+            "score": 0.8499,
+            "breakdown": {
+              "spectral_conditioning": 0.8438,
+              "clock_holonomy": 0.888,
+              "mirror_nullspace": 0.6643,
+              "synergy_fadt": 0.838,
+              "cluster_bridge": 0.86,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 2.7715,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.389631,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": false
+            },
+            "falsifier": "Pass audio overrun + token-culling trajectories through A-01/A-05; reject conservative equivalence whenever div(F) < 0."
+          },
+          {
+            "id": "cand-quotient-holonomy",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "Multi-Clock Holonomy & Exact C3 Fiber Quotient",
+            "lens": "Typed Control Planes × FADT Quotient × 5-Clock Vernier",
+            "clusters": [
+              "C1",
+              "C2",
+              "C3",
+              "C4",
+              "C5"
+            ],
+            "patternSubtitle": "MULTI-CLOCK HOLONOMY · EXACT C3 DESCENT.",
+            "headerTagline": "Typed Constitutive Cybernetics",
+            "score": 0.845,
+            "breakdown": {
+              "spectral_conditioning": 0.9265,
+              "clock_holonomy": 0.6277,
+              "mirror_nullspace": 0.6192,
+              "synergy_fadt": 1,
+              "cluster_bridge": 0.86,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 1.5812,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.307709,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": true
+            },
+            "falsifier": "Perturb route order A_B vs B_A and operator matrix off-diagonal coupling; reject equivalence if SVD rank drops below 2 or [111] residual orthogonality fails."
+          },
+          {
+            "id": "cand-capacitive-quorum",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "7-Node E-Textile Array as Non-Separable 3-Party Parity Barrier",
+            "lens": "Wearable Haptics × Cryptographic Quorum",
+            "clusters": [
+              "C3",
+              "C1"
+            ],
+            "patternSubtitle": "THREE-NODE PARITY · EXACT C3 FIBER.",
+            "headerTagline": "Wearable Quorum × Exact C3 Fiber",
+            "score": 0.8434,
+            "breakdown": {
+              "spectral_conditioning": 0.9132,
+              "clock_holonomy": 0.6338,
+              "mirror_nullspace": 0.6178,
+              "synergy_fadt": 1,
+              "cluster_bridge": 0.86,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 1.7241,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.30514,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": true
+            },
+            "falsifier": "Evaluate 2-node reduced marginals under EMI perturbation; actuation stays HELD if reduced rank collapses or XOR parity drops."
+          },
+          {
+            "id": "cand-ossl-f_p",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "Discrete OSSL Stylometry Over F_p vs Real Embedding Vector Culling",
+            "lens": "Finite-Field Algebra × Provenance Compression",
+            "clusters": [
+              "C4",
+              "C1"
+            ],
+            "patternSubtitle": "MODULAR RANK F_P ≠ CONTINUOUS COSINE.",
+            "headerTagline": "Finite-Field Rank × Non-Collapsing Provenance",
+            "score": 0.8124,
+            "breakdown": {
+              "spectral_conditioning": 0.892,
+              "clock_holonomy": 0.6948,
+              "mirror_nullspace": 0.5693,
+              "synergy_fadt": 0.838,
+              "cluster_bridge": 0.86,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 1.9858,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.21699,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": true,
+              "fadt_exact": false
+            },
+            "falsifier": "Test modular matrix rank independently of real inner-product κ(A); block provenance promotion when continuous cosine substitutes for F_p proof."
+          },
+          {
+            "id": "cand-room-surplus",
+            "regime": "BASELINE_ESTATE_SYNTHESIS",
+            "title": "“1 + 1 = 3” Occupant-Room Surplus as Irreducible FADT Obstruction",
+            "lens": "Quotient Fiber Theory × Shared Context Memory",
+            "clusters": [
+              "C5",
+              "C1"
+            ],
+            "patternSubtitle": "1+1=3 SURPLUS · IRREDUCIBLE GAP |Γ|.",
+            "headerTagline": "Irreducible FADT Gap × W-Plane Guard",
+            "score": 0.7677,
+            "breakdown": {
+              "spectral_conditioning": 0.8938,
+              "clock_holonomy": 0.6646,
+              "mirror_nullspace": 0.6189,
+              "synergy_fadt": 0.838,
+              "cluster_bridge": 0.6,
+              "epistemic_ceiling": 1,
+              "svd_kappa": 1.9613,
+              "svd_rank": 2,
+              "vernier_inversions": 3,
+              "vernier_l1_delta": 72,
+              "mirror_nullspace_ratio": 0.307059,
+              "xor_synergy_bits": 1,
+              "w_plane_grounded": false,
+              "fadt_exact": false
+            },
+            "falsifier": "Enforce W-PLANE pairing guard + XOR synergy check whenever S-PLANE × P-MEMBRANE works lack hardware witnessing."
+          }
+        ],
+        "provenance": {
+          "selected_candidate_id": "cand-visibility-svd",
+          "candidate_score": 0.863,
+          "score_breakdown": {
+            "spectral_conditioning": 0.8738,
+            "clock_holonomy": 0.7795,
+            "mirror_nullspace": 0.6315,
+            "synergy_fadt": 1,
+            "cluster_bridge": 0.86,
+            "epistemic_ceiling": 1,
+            "svd_kappa": 2.2463,
+            "svd_rank": 2,
+            "vernier_inversions": 3,
+            "vernier_l1_delta": 72,
+            "mirror_nullspace_ratio": 0.330057,
+            "xor_synergy_bits": 1,
+            "w_plane_grounded": true,
+            "fadt_exact": true
+          },
+          "candidate_count": 7,
+          "fadt_exact_clusters": [
+            "C3"
+          ],
+          "fadt_gap_clusters": [
+            "C1",
+            "C2",
+            "C4",
+            "C5"
+          ],
+          "svd_condition_number": 2.2463,
+          "mirror_nullspace_ratio": 0.330057,
+          "xor_synergy_bits": 1,
+          "work_census": 32,
+          "supplemental_sources": 0,
+          "snapshot_count": 0,
+          "podium_event_count": 1,
+          "withdrawn_count": 0,
+          "operator_dictated_question": false,
+          "operator_selected_candidate": true,
           "regime": "BASELINE_ESTATE_SYNTHESIS",
           "empirical_replication_credit": 0,
           "scientific_promotion_authority": false,

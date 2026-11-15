@@ -532,7 +532,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span class="brand-meta-row">
               <span class="project-math">S<sub>e</sub> ≡ [x + y] = z + 1</span>
               <span class="brand-sep" aria-hidden="true">·</span>
-              <span class="brand-sub" id="synthHeaderTagline">Typed Constitutive Cybernetics</span>
+              <span class="brand-sub" id="synthHeaderTagline">Aperture Conditioning × Dual-Channel Probe</span>
             </span>
           </span>
         </span>
@@ -646,25 +646,25 @@ body[data-view="overview"] .reading-back{display:none}
       </figure>
 
       <div class="cover-light" aria-hidden="true"></div>
-      <div class="cover-spine" id="synthLeftSpine" aria-hidden="true">S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS</div>
+      <div class="cover-spine" id="synthLeftSpine" aria-hidden="true">C2 × C3 · KAPPA(A) BOUND × A-07</div>
 
       <h1 class="cover-title">
         <span class="cover-word-one">VIXEN</span>
         <span class="cover-word-two">
           CYBERNETICS
           <span class="cover-serial">S<sub>e</sub> ≡ [x + y] = z + 1</span>
-          <span class="cover-serial-note" id="synthPatternSubtitle">THE ARCHITECTURE OF NON-COLLAPSING PLANES.</span>
+          <span class="cover-serial-note" id="synthPatternSubtitle">ORTHOGONAL PROBE · RANK-2 CONDITIONING.</span>
         </span>
       </h1>
 
       <aside class="cover-marginalia" id="synthAxiomMarginalia" aria-label="Unified Synthesis Axiom">
-        <span>Typed Constitutive Cybernetics</span>
-        <span>S_semantic ≠ W_witness ≠ A_actuator</span>
-        <span>P-Closure ≠ W-Truth · [32, 40] Sensitivity</span>
+        <span>Aperture Conditioning × Dual-Channel Probe</span>
+        <span>Score 86.3% · κ=2.25 · Δ=3 inv</span>
+        <span>FADT Exact [C3] · Credit 0</span>
       </aside>
 
       <div class="cover-bottom">
-        <p class="hero-desc" id="synthHeroStatement">Where semantic steering, witness verification,<br>and low-latency actuation refuse to collapse<br>into one untyped plane.</p>
+        <p class="hero-desc" id="synthHeroStatement">Single-channel visibility confounds gain <br>with coupling distance; an orthogonal probe <br>restores rank-2 Hestenes-Jacobi conditioning.</p>
         <div class="cover-enter-group">
           <a class="cover-enter" href="#vixenFoyer">
             <span>Enter the<br>Opera</span>
@@ -726,7 +726,7 @@ body[data-view="overview"] .reading-back{display:none}
             <h2 class="ci-title">Author Your Inquiry, Lenses &amp; Rollback Log</h2>
           </div>
           <div class="badge-row">
-            <span class="tag gold" id="ciActiveEntryBadge">ACTIVE: syn-0000-baseline</span>
+            <span class="tag gold" id="ciActiveEntryBadge">ACTIVE: syn-0001-98ab8992</span>
             <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
           </div>
         </div>
@@ -804,6 +804,17 @@ body[data-view="overview"] .reading-back{display:none}
           </div>
         </div>
 
+        <div class="ci-card" aria-label="Ranked Unified Synthesis Candidates" style="margin-bottom:16px">
+          <h3 class="ci-card-title">
+            <span>Computational Candidate Synthesis &amp; Scoring Engine</span>
+            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
+          </h3>
+          <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
+            Each candidate theorem is scored across SVD conditioning κ(A), multi-clock holonomy Δτ, [111]<sup>⊥</sup> nullspace geometry, discrete XOR synergy, FADT quotient exactness (U \ I), cluster bridging, and non-collapsing epistemic ceilings.
+          </p>
+          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
+        </div>
+
         <div class="ci-card" aria-label="Outside-Perspective Cross-Domain Conjectures">
           <h3 class="ci-card-title">
             <span>Outside-Perspective Cross-Domain Conjecture Lenses (7 Admissible Bridges)</span>
@@ -832,8 +843,8 @@ body[data-view="overview"] .reading-back{display:none}
 
         <div class="membrane-layer" data-membrane="SCHOLARLY_INTERPRETATION" style="margin-top:16px">
           <div class="founding-quote">
-            <span class="founding-meta" id="synthResearchQuestionMeta">CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED</span>
-            <span id="synthResearchQuestion">“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”</span>
+            <span class="founding-meta" id="synthResearchQuestionMeta">INVERSE PROBE SYNTHESIS · C2 × C3 · UNRATIFIED</span>
+            <span id="synthResearchQuestion">“Why do capacitive glove envelope curves (C3) and optimal DSP smoothing factors (C2) collapse onto the same V(η, n) level set until an orthogonal dual-frequency probe lifts Jacobian rank to 2?”</span>
           </div>
         </div>
 
@@ -1748,8 +1759,27 @@ body[data-view="overview"] .reading-back{display:none}
 
   // Navigation & URL Hash Persistence
   const VALID_VIEWS = ['overview', 'observatory', 'works', 'gates', 'protocols', 'holds', 'collection', 'reference'];
+  function saveCurrentViewScrollState() {
+    if (typeof history?.replaceState !== 'function') return;
+    try {
+      const cur = (history.state && typeof history.state === 'object') ? history.state : {};
+      history.replaceState({ ...cur, view: state.view, scrollY: Math.round(window.scrollY || 0) }, '');
+    } catch (_) {}
+  }
+  let scrollPersistRaf = 0;
+  window.addEventListener('scroll', () => {
+    if (scrollPersistRaf) return;
+    scrollPersistRaf = requestAnimationFrame(() => {
+      scrollPersistRaf = 0;
+      saveCurrentViewScrollState();
+    });
+  }, { passive: true });
   function setView(view, opts) {
+    const prevView = state.view;
     const target = VALID_VIEWS.includes(view) ? view : 'overview';
+    if (prevView !== target && (!opts || !opts.fromPopState)) {
+      saveCurrentViewScrollState();
+    }
     state.view = target;
     document.body.setAttribute('data-view', target);
     document.querySelectorAll('.view').forEach((sec) => {
@@ -1769,19 +1799,28 @@ body[data-view="overview"] .reading-back{display:none}
       mob.hidden = true;
       if (tog) tog.setAttribute('aria-expanded', 'false');
     }
-    if (!opts || !opts.preserveScroll) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+    const targetScroll = (opts && typeof opts.restoreScrollY === 'number')
+      ? opts.restoreScrollY
+      : ((!opts || !opts.preserveScroll) ? 0 : null);
+    if (targetScroll !== null) {
+      window.scrollTo({ top: targetScroll, behavior: 'instant' });
     }
     if (!opts || !opts.skipHash) {
       const hashParts = [target];
       if (target === 'works' && state.selectedWorkId) hashParts.push(state.selectedWorkId);
       if (target === 'protocols' && state.selectedInstId) hashParts.push(state.selectedInstId);
       const newHash = '#' + hashParts.join('/');
+      const stateObj = {
+        view: target,
+        workId: state.selectedWorkId || null,
+        instId: state.selectedInstId || null,
+        scrollY: Math.round(window.scrollY || 0)
+      };
       if (window.location.hash !== newHash) {
         if (opts && opts.pushHistory) {
-          history.pushState(null, '', newHash);
+          history.pushState(stateObj, '', newHash);
         } else {
-          history.replaceState(null, '', newHash);
+          history.replaceState(stateObj, '', newHash);
         }
       }
     }
@@ -4091,10 +4130,18 @@ body[data-view="overview"] .reading-back{display:none}
     });
 
     // Restore & observe URL hash routes (#view or #works/emwork_* or #protocols/INST_*)
-    function applyHashRoute() {
+    function applyHashRoute(ev) {
       const rawHash = (window.location.hash || '').replace(/^#/, '');
+      const restoredScrollY = (ev && ev.type === 'popstate' && ev.state && Number.isFinite(ev.state.scrollY))
+        ? ev.state.scrollY
+        : null;
       if (!rawHash) {
-        setView('overview', { skipHash: true, preserveScroll: true });
+        setView('overview', {
+          skipHash: true,
+          preserveScroll: restoredScrollY === null,
+          restoreScrollY: restoredScrollY,
+          fromPopState: ev?.type === 'popstate'
+        });
         return;
       }
       const [hView, hId] = rawHash.split('/');
@@ -4158,7 +4205,12 @@ body[data-view="overview"] .reading-back{display:none}
         renderProtocolsView({ skipHistory: true });
       }
       const targetView = VALID_VIEWS.includes(hView) ? hView : 'overview';
-      setView(targetView, { skipHash: true, preserveScroll: true });
+      setView(targetView, {
+        skipHash: true,
+        preserveScroll: restoredScrollY === null,
+        restoreScrollY: restoredScrollY,
+        fromPopState: ev?.type === 'popstate'
+      });
     }
     window.addEventListener('hashchange', applyHashRoute);
     window.addEventListener('popstate', applyHashRoute);
@@ -4186,6 +4238,7 @@ body[data-view="overview"] .reading-back{display:none}
 <script type="module">
 import {
   deriveSynthesisHeadline,
+  scoreUnifiedSynthesisCandidates,
   synthesizeOutsidePerspectiveConjectures,
   computeSalonObservatoryDiagnostics
 } from './vixen-estate/synthesis-salon-engine.mjs';
@@ -4210,6 +4263,8 @@ import {
     customSubtitle: null,
     customHeroStatement: null,
     customLeftSpine: null,
+    selectedCandidateId: null,
+    lagTicks: 36,
     inquiryConjectures: []
   };
   let currentHeadline = null;
@@ -4221,28 +4276,43 @@ import {
   let selectedConjectureId = null;
   let lagTicks = 36;
 
-  function fnv64Hex(str) {
-    let h1 = 0x811c9dc5;
-    let h2 = 0x9e3779b9;
-    const s = String(str || '');
-    for (let i = 0; i < s.length; i += 1) {
-      const ch = s.charCodeAt(i);
-      h1 = Math.imul(h1 ^ ch, 0x01000193) >>> 0;
-      h2 = Math.imul(h2 ^ (ch + i), 0x85ebca6b) >>> 0;
+  async function computeSnapshotSha256(obj) {
+    if (!globalThis.crypto?.subtle?.digest || typeof TextEncoder !== 'function') return null;
+    try {
+      const bytes = new TextEncoder().encode(JSON.stringify(obj));
+      const buf = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, '0')).join('');
+    } catch (_) {
+      return null;
     }
-    return h1.toString(16).padStart(8, '0') + h2.toString(16).padStart(8, '0');
+  }
+
+  function hydrateEntryDigestAsync(entry, snap) {
+    computeSnapshotSha256(snap).then((hex) => {
+      if (!hex) return;
+      entry.state_sha256 = hex;
+      entry.digest_algorithm = 'SHA-256';
+      const idx = synthesisLog.indexOf(entry);
+      if (idx >= 0 && synthesisLog[idx + 1]) {
+        synthesisLog[idx + 1].predecessor_sha256 = hex;
+      }
+      renderSynthesisLog();
+    }).catch(() => {});
   }
 
   function snapshotPayload(statusOverride = null) {
+    const selId = live.selectedCandidateId || currentHeadline?.provenance?.selected_candidate_id || null;
     return {
       schema: 'emstd613.vixen.podium-synthesis-state/v1',
-      status: statusOverride || (live.operatorQuestion || live.customSubtitle ? 'OPERATOR_INQUIRY_PROPOSAL' : 'BASELINE_ESTATE_SYNTHESIS'),
+      status: statusOverride || currentHeadline?.regime || (live.operatorQuestion || live.customSubtitle ? 'OPERATOR_INQUIRY_PROPOSAL' : 'BASELINE_ESTATE_SYNTHESIS'),
       operator_question: live.operatorQuestion,
       operator_method: live.operatorMethod,
       custom_headline: live.customHeadline,
       custom_subtitle: live.customSubtitle,
       custom_hero_statement: live.customHeroStatement,
       custom_left_spine: live.customLeftSpine,
+      selected_candidate_id: selId,
+      lag_ticks: lagTicks,
       active_plan: live.activePlan,
       refraction: live.refraction,
       inquiry_conjectures: Array.isArray(live.inquiryConjectures) ? live.inquiryConjectures : [],
@@ -4259,9 +4329,8 @@ import {
   function ensureBaselineLog() {
     if (synthesisLog.length > 0) return;
     const snap = snapshotPayload('BASELINE_ESTATE_SYNTHESIS');
-    const sha = fnv64Hex(JSON.stringify(snap));
     rollbackSnapshots['syn-0000-baseline'] = snap;
-    synthesisLog = [{
+    const baseEntry = {
       seq: 0,
       entry_id: 'syn-0000-baseline',
       kind: 'BASELINE',
@@ -4273,40 +4342,43 @@ import {
       patternSubtitle: snap.synthesis_headline?.patternSubtitle || null,
       researchQuestionMeta: snap.synthesis_headline?.researchQuestionMeta || null,
       researchQuestion: snap.synthesis_headline?.researchQuestion || null,
-      state_sha256: sha
-    }];
+      digest_algorithm: globalThis.crypto?.subtle?.digest ? 'SHA-256-PENDING' : 'IN_SESSION_UNHASHED_FALLBACK',
+      state_sha256: null
+    };
+    synthesisLog = [baseEntry];
+    hydrateEntryDigestAsync(baseEntry, snap);
   }
 
   function recordInSessionEntry(kind, summary, statusOverride = null, explicitRestoredId = null) {
     ensureBaselineLog();
     const prevMaxSeq = synthesisLog.reduce((mx, e) => Math.max(mx, Number(e?.seq) || 0), 0);
     const nextSeq = prevMaxSeq + 1;
-    const prevId = activeEntryId || synthesisLog[synthesisLog.length - 1]?.entry_id || 'syn-0000-baseline';
-    const prevEntry = synthesisLog.find((e) => e.entry_id === prevId) || synthesisLog[synthesisLog.length - 1];
+    const prevEntry = synthesisLog[synthesisLog.length - 1] || null;
+    const prevId = prevEntry?.entry_id || activeEntryId || 'syn-0000-baseline';
     const snap = snapshotPayload(statusOverride);
-    const sha = fnv64Hex(JSON.stringify(snap));
+    const tagSeed = `${nextSeq}-${Date.now().toString(36)}-${String(snap.selected_candidate_id || kind).replace(/[^a-z0-9]/gi, '').slice(0, 6).toLowerCase()}`;
     const entryId = explicitRestoredId
-      ? `syn-${String(nextSeq).padStart(4, '0')}-rollback-${sha.slice(0, 8)}`
-      : `syn-${String(nextSeq).padStart(4, '0')}-${sha.slice(0, 8)}`;
+      ? `syn-${String(nextSeq).padStart(4, '0')}-rollback-${tagSeed.slice(-8)}`
+      : `syn-${String(nextSeq).padStart(4, '0')}-${tagSeed.slice(-8)}`;
     rollbackSnapshots[entryId] = snap;
-    synthesisLog = [
-      ...synthesisLog,
-      {
-        seq: nextSeq,
-        entry_id: entryId,
-        kind,
-        restored_entry_id: explicitRestoredId || undefined,
-        predecessor_entry_id: prevId,
-        predecessor_sha256: prevEntry?.state_sha256 || null,
-        recorded_at: new Date().toISOString(),
-        summary: String(summary || snap.synthesis_headline?.patternSubtitle || 'Operator session proposal').slice(0, 220),
-        status: snap.status,
-        patternSubtitle: snap.synthesis_headline?.patternSubtitle || null,
-        researchQuestionMeta: snap.synthesis_headline?.researchQuestionMeta || null,
-        researchQuestion: snap.synthesis_headline?.researchQuestion || null,
-        state_sha256: sha
-      }
-    ];
+    const entry = {
+      seq: nextSeq,
+      entry_id: entryId,
+      kind,
+      restored_entry_id: explicitRestoredId || undefined,
+      predecessor_entry_id: prevId,
+      predecessor_sha256: prevEntry?.state_sha256 || null,
+      recorded_at: new Date().toISOString(),
+      summary: String(summary || snap.synthesis_headline?.patternSubtitle || 'Operator session proposal').slice(0, 220),
+      status: snap.status,
+      patternSubtitle: snap.synthesis_headline?.patternSubtitle || null,
+      researchQuestionMeta: snap.synthesis_headline?.researchQuestionMeta || null,
+      researchQuestion: snap.synthesis_headline?.researchQuestion || null,
+      digest_algorithm: globalThis.crypto?.subtle?.digest ? 'SHA-256-PENDING' : 'IN_SESSION_UNHASHED_FALLBACK',
+      state_sha256: null
+    };
+    synthesisLog = [...synthesisLog, entry];
+    hydrateEntryDigestAsync(entry, snap);
     synthesisSeq = nextSeq;
     activeEntryId = explicitRestoredId || entryId;
     return activeEntryId;
@@ -4338,7 +4410,10 @@ import {
       const parts = h.heroStatement.split('\n');
       const frag = document.createDocumentFragment();
       parts.forEach((line, idx) => {
-        if (idx > 0) frag.appendChild(document.createElement('br'));
+        if (idx > 0) {
+          frag.appendChild(document.createTextNode(' '));
+          frag.appendChild(document.createElement('br'));
+        }
         frag.appendChild(document.createTextNode(line));
       });
       stmt.replaceChildren(frag);
@@ -4468,7 +4543,11 @@ import {
 
       const chainEl = document.createElement('div');
       chainEl.className = 'ci-log-chain';
-      chainEl.textContent = `pred: ${entry.predecessor_entry_id || 'NONE'} · sha256: ${String(entry.state_sha256 || '').slice(0, 14)}`;
+      const hasSha = typeof entry.state_sha256 === 'string' && /^[a-f0-9]{64}$/i.test(entry.state_sha256);
+      const digestTxt = hasSha
+        ? `sha256: ${entry.state_sha256.slice(0, 14)}`
+        : (entry.digest_algorithm || 'IN_SESSION_UNHASHED_FALLBACK');
+      chainEl.textContent = `pred: ${entry.predecessor_entry_id || 'NONE'} · ${digestTxt}`;
 
       info.append(idEl, sumEl, chainEl);
 
@@ -4494,30 +4573,119 @@ import {
     }));
   }
 
+  function renderCandidates() {
+    const grid = document.getElementById('ciCandidateGrid');
+    const summaryEl = document.getElementById('ciCandidateSummary');
+    if (!grid || !live.corpus) return;
+    let ranked = null;
+    try {
+      ranked = scoreUnifiedSynthesisCandidates({
+        corpus: live.corpus,
+        activePlan: live.activePlan,
+        refraction: live.refraction,
+        benchPair: live.benchPair,
+        benchSnapshots: live.benchSnapshots,
+        withdrawnCount: live.withdrawnCount,
+        podiumEvents: live.podiumEvents,
+        supplementalSources: live.supplementalSources,
+        lagTicks
+      });
+    } catch (_) { ranked = null; }
+    const cands = Array.isArray(ranked?.candidates) ? ranked.candidates : [];
+    const activeCandId = live.selectedCandidateId || currentHeadline?.provenance?.selected_candidate_id || null;
+    if (summaryEl && ranked) {
+      summaryEl.textContent = `${cands.length} SCORED · TOP ${((ranked.top_candidate?.score || 0) * 100).toFixed(1)}% · EXACT [${(ranked.fadt_profile?.exact_descent_clusters || []).join(',') || 'NONE'}]`;
+    }
+    grid.replaceChildren(...cands.map((cand) => {
+      const isSelected = activeCandId === cand.id;
+      const card = document.createElement('article');
+      card.className = 'ci-candidate-card' + (isSelected ? ' is-active' : '');
+      card.dataset.candidateId = cand.id;
+
+      const top = document.createElement('div');
+      const meta = document.createElement('div');
+      meta.className = 'ci-conj-meta';
+      const sc = document.createElement('span');
+      sc.className = 'ci-cand-score';
+      sc.textContent = `${(cand.score * 100).toFixed(1)}%`;
+      meta.appendChild(sc);
+      const b = cand.breakdown || {};
+      meta.appendChild(document.createTextNode(`${(cand.clusters || []).join(' × ')} · κ=${Number(b.svd_kappa || 0).toFixed(2)} · Δ=${b.vernier_inversions ?? 0} inv · ${b.fadt_exact ? 'FADT EXACT' : 'FADT HOLD'}`));
+
+      const h = document.createElement('h4');
+      h.className = 'ci-conj-title';
+      h.textContent = cand.patternSubtitle;
+
+      const body = document.createElement('p');
+      body.className = 'ci-conj-body';
+      body.textContent = `${cand.title} — ${String(cand.heroStatement || '').replace(/\n+/g, ' ')}`;
+
+      const foot = document.createElement('div');
+      foot.className = 'ci-actions-row';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ci-btn' + (isSelected ? ' primary' : '');
+      btn.textContent = isSelected ? 'Active Engine Selection ✓' : 'Promote Candidate';
+      btn.addEventListener('click', () => promoteCandidate(cand.id));
+      foot.appendChild(btn);
+
+      top.append(meta, h, body);
+      card.append(top, foot);
+      return card;
+    }));
+  }
+
   function recompute(patch) {
     if (patch && typeof patch === 'object') Object.assign(live, patch);
+    live.lagTicks = lagTicks;
     const headline = applyHeadline(deriveSynthesisHeadline(live));
     ensureBaselineLog();
     syncInquiryInputs();
     renderTelemetry();
+    renderCandidates();
     renderConjectures();
     renderSynthesisLog();
     return headline;
   }
 
-  function authorInquiry({ question, method, customSubtitle } = {}) {
+  function promoteCandidate(candidateId) {
+    recompute({
+      selectedCandidateId: candidateId,
+      operatorQuestion: null,
+      operatorMethod: null,
+      customHeadline: null,
+      customSubtitle: null,
+      customHeroStatement: null,
+      customLeftSpine: null
+    });
+    const entryId = recordInSessionEntry('SYNTHESIS_PROPOSAL', `Promoted scored candidate ${candidateId}: ${currentHeadline?.patternSubtitle || ''}`);
+    renderSynthesisLog();
+    renderCandidates();
+    const status = document.getElementById('ciStatusLine');
+    if (status) {
+      status.textContent = `PROMOTED CANDIDATE ${candidateId} AS ${entryId} (empirical credit: 0). CLI commit: TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --select-candidate ${candidateId} --sync-html`;
+    }
+    return getSessionSnapshot();
+  }
+
+  function authorInquiry({ question, method, customSubtitle, selectedCandidateId } = {}) {
     const q = typeof question === 'string' && question.trim() ? question.trim() : null;
     const m = typeof method === 'string' && method.trim() ? method.trim() : null;
+    const nextSel = selectedCandidateId !== undefined ? selectedCandidateId : null;
     recompute({
       operatorQuestion: q,
       operatorMethod: m,
-      customSubtitle: customSubtitle !== undefined ? customSubtitle : live.customSubtitle
+      selectedCandidateId: nextSel,
+      customHeadline: null,
+      customHeroStatement: null,
+      customLeftSpine: null,
+      customSubtitle: customSubtitle !== undefined ? customSubtitle : null
     });
     const entryId = recordInSessionEntry('SYNTHESIS_PROPOSAL', q || m || 'Operator inquiry edit');
     renderSynthesisLog();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `APPLIED AS ${entryId} · Headline & Threshold updated (empirical credit: 0). CLI commit: node scripts/vixen-podium.mjs --write-synthesis`;
+      status.textContent = `APPLIED AS ${entryId} · Headline & Threshold updated (empirical credit: 0). CLI commit: node scripts/vixen-podium.mjs --write-synthesis --sync-html`;
     }
     return getSessionSnapshot();
   }
@@ -4526,6 +4694,11 @@ import {
     ensureBaselineLog();
     const targetSnap = rollbackSnapshots[targetEntryId];
     if (!targetSnap) return { ok: false, error: 'SNAPSHOT_NOT_FOUND' };
+    if (Number.isFinite(Number(targetSnap.lag_ticks))) {
+      lagTicks = Number(targetSnap.lag_ticks);
+      const lagInput = document.getElementById('ciLagInput');
+      if (lagInput) lagInput.value = String(lagTicks);
+    }
     recompute({
       activePlan: targetSnap.active_plan || null,
       refraction: targetSnap.refraction || null,
@@ -4537,6 +4710,7 @@ import {
       customSubtitle: targetSnap.custom_subtitle || null,
       customHeroStatement: targetSnap.custom_hero_statement || null,
       customLeftSpine: targetSnap.custom_left_spine || null,
+      selectedCandidateId: targetSnap.selected_candidate_id || null,
       inquiryConjectures: Array.isArray(targetSnap.inquiry_conjectures) ? targetSnap.inquiry_conjectures : []
     });
     recordInSessionEntry(
@@ -4548,7 +4722,7 @@ import {
     renderSynthesisLog();
     const status = document.getElementById('ciStatusLine');
     if (status) {
-      status.textContent = `RESTORED ${targetEntryId} (append-only seq ${synthesisSeq}). CLI equivalent: node scripts/vixen-podium.mjs --rollback ${targetEntryId}`;
+      status.textContent = `RESTORED ${targetEntryId} (append-only seq ${synthesisSeq}). CLI equivalent: node scripts/vixen-podium.mjs --rollback ${targetEntryId} --sync-html`;
     }
     return getSessionSnapshot();
   }
@@ -4618,7 +4792,9 @@ import {
   });
   document.getElementById('ciLagInput')?.addEventListener('input', (ev) => {
     lagTicks = Number(ev.target.value || 36);
+    live.lagTicks = lagTicks;
     renderTelemetry();
+    renderCandidates();
     renderConjectures();
   });
   document.querySelectorAll('#ciFilterBar .ci-chip').forEach((chip) => {
@@ -4638,8 +4814,10 @@ import {
     if (btn) btn.textContent = 'Packaging session archive…';
     try {
       const mod = await import('./vixen-estate/session-zip.mjs');
-      const trayIds = Array.from(document.querySelectorAll('[data-cart-work],[data-work-tray-id]'))
-        .map((el) => el.dataset.cartWork || el.dataset.workTrayId).filter(Boolean);
+      const trayIds = typeof window.VIXEN_STUDY_TRAY?.list === 'function'
+        ? window.VIXEN_STUDY_TRAY.list()
+        : Array.from(document.querySelectorAll('[data-cart-work],[data-work-tray-id]'))
+            .map((el) => el.dataset.cartWork || el.dataset.workTrayId).filter(Boolean);
       const res = await mod.downloadVixenSessionZip({
         synthesisState: getSessionSnapshot(),
         sessionMeta: {
@@ -4663,6 +4841,8 @@ import {
   window.VixenSynthesisHeadlines = Object.freeze({
     recompute,
     current: () => currentHeadline,
+    scoreCandidates: () => scoreUnifiedSynthesisCandidates({ corpus: live.corpus, lagTicks }),
+    selectCandidate: promoteCandidate,
     getSessionSnapshot,
     restoreSnapshot,
     authorInquiry,
@@ -4680,17 +4860,18 @@ import {
         if (st.rollback_snapshots && typeof st.rollback_snapshots === 'object') rollbackSnapshots = st.rollback_snapshots;
         if (st.active_entry_id) activeEntryId = st.active_entry_id;
         if (Number.isInteger(st.synthesis_seq)) synthesisSeq = st.synthesis_seq;
-        const hasOverride = Boolean(
-          st.active_plan || st.refraction || st.operator_question || st.operator_method ||
-          st.custom_headline || st.custom_subtitle || st.custom_hero_statement || st.custom_left_spine ||
-          (Array.isArray(st.supplemental_sources) && st.supplemental_sources.length) ||
-          (Array.isArray(st.podium_events) && st.podium_events.length) ||
-          (Array.isArray(st.inquiry_conjectures) && st.inquiry_conjectures.length)
-        );
-        if (hasOverride) {
+        if (Number.isFinite(Number(st.lag_ticks))) {
+          lagTicks = Number(st.lag_ticks);
+          const lagInput = document.getElementById('ciLagInput');
+          if (lagInput) lagInput.value = String(lagTicks);
+        }
+        try {
           recompute({
             activePlan: st.active_plan || null,
             refraction: st.refraction || null,
+            benchPair: st.bench_pair || 'c1_c2_valid',
+            benchSnapshots: Array.isArray(st.bench_snapshots) ? st.bench_snapshots : [],
+            withdrawnCount: Number(st.withdrawn_count || 0),
             supplementalSources: Array.isArray(st.supplemental_sources) ? st.supplemental_sources : [],
             podiumEvents: Array.isArray(st.podium_events) ? st.podium_events : [],
             operatorQuestion: st.operator_question || null,
@@ -4699,10 +4880,11 @@ import {
             customSubtitle: st.custom_subtitle || null,
             customHeroStatement: st.custom_hero_statement || null,
             customLeftSpine: st.custom_left_spine || null,
+            selectedCandidateId: st.selected_candidate_id || st.synthesis_headline?.provenance?.selected_candidate_id || null,
             inquiryConjectures: Array.isArray(st.inquiry_conjectures) ? st.inquiry_conjectures : []
           });
-        } else {
-          renderSynthesisLog();
+        } catch (_) {
+          recompute({ selectedCandidateId: null, customSubtitle: null });
         }
       })
       .catch(() => {});

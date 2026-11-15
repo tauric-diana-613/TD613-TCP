@@ -100,7 +100,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon:not([da
  display:block!important;
  width:100vw;
  height:100vh;
- z-index:55;
+ z-index:1;
  opacity:1;
  mix-blend-mode:normal;
  pointer-events:none!important;

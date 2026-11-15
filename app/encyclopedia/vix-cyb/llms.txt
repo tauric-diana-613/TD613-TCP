@@ -52,12 +52,14 @@ The active presentation stack inside `vixen-estate/` enforces strict palette sep
 ### Constitutive Inquiry, Synthesis & Custody Engines (`vixen-estate/`)
 - `synthesis-salon-engine.mjs`:
   - `CLOCKS` & `computeClockVernier` — 5 non-commutative clocks (`fast`/`TCC-01`, `tok`/`TCC-02`, `k`/`TCC-03`, `wall`/`TCC-04`, `plant`/`TCC-05`), arrival inversions & tick L1 drift.
-  - `computeMatrixSvd2x2` — Analytical 2×2 SVD (`sigma_max`, `sigma_min`, condition number `condition`, `rank`, `classification`).
-  - `project111Mirror` — Decomposition along `[1, 1, 1]^T` vs orthogonal nullspace (`nullspace_ratio`, `projection_orthogonal_to_111`).
+  - `computeMatrixSvdUnified` / `hestenesJacobiSvd` (`computeMatrixSvd2x2` alias preserved) — One-sided Hestenes-Jacobi SVD (`sigma_max`, `sigma_min`, condition number `condition`, `rank`, `classification`).
+  - `project111Mirror` — Decomposition along `[1, 1, 1]^T` vs orthogonal nullspace (`nullspace_ratio`, `residual`, `projection_orthogonal_to_111`).
   - `computeDiscreteXorSynergy` — Joint vs marginal mutual information (`I_XY_Z_bits`, `synergy_bits`, `synergistic_emergence`).
+  - `computeFadtCorpusFiberProfile` — Scans all 32 Works across `C1–C5` for quotient exactness (`C3` = exact `{A-PLANE, W-PLANE}` descent; `C1, C2, C4, C5` = `HOLD_IRREDUCIBLE_GAP`).
+  - `scoreUnifiedSynthesisCandidates` & `generateUnifiedSynthesisCandidates` — Multi-criteria mathematical candidate scoring ($S_{\text{spec}}, S_\Delta, S_{\perp 111}, S_{\text{syn/fadt}}, S_{\text{bridge}}, S_{\text{ceil}}$) across candidate cybernetic theorems (`ANTI_BOILERPLATE_SUBTITLE_RE` forbids generic `"THE ARCHITECTURE OF ..."` templates).
   - `computeSalonObservatoryDiagnostics` — Unified diagnostic packet combining Vernier, SVD, `[111]` mirror, XOR synergy, and `epistemic_ceiling` (`empirical_credit: 0`, `experiment_b_flight: "HELD"`).
   - `synthesizeOutsidePerspectiveConjectures(corpus, { lagTicks, filterCluster, limit })` — Generates 7 structured cross-domain conjectures across `C1–C5`, `A-01`..`A-09` Atlas domains, Aperture SVD conditioning, and `NOW / WHY / EXACT` falsifier predicates.
-  - `deriveSynthesisHeadline` — Deterministic state machine powering `window.VixenSynthesisHeadlines` (`#synthHeaderTagline`, `#synthPatternSubtitle`, `#synthResearchQuestion`, `#synthAxiomMarginalia`, `#synthHeroStatement`, `#synthLeftSpine`).
+  - `deriveSynthesisHeadline` — Deterministic state machine + candidate selector (`selectedCandidateId`) powering `window.VixenSynthesisHeadlines` (`#synthHeaderTagline`, `#synthPatternSubtitle`, `#synthResearchQuestion`, `#synthAxiomMarginalia`, `#synthHeroStatement`, `#synthLeftSpine`).
   - `composeSalonPlan` & `refractSalonPlan` — Pairwise A→B vs B→A encounter refraction preserving terminal Work identity while proving path dependence.
 - `synthesis-salon.mjs` — Interactive Salon DOM orchestrator.
 - `research-chamber.mjs` — Research Cart / study tray & Work comparison without foreign record leak.
@@ -112,6 +114,7 @@ Requires BOTH `TD613_PODIUM_OPERATOR_DIRECT=1` in the host environment AND `--na
 - **`RULEFIELD`**:
   - `assess_roles` -> `role-boundary.mjs` + `cross-opera-warrant.mjs` + `observatory-vixen-corpus.mjs#completeVixenSourceCensus`
   - `propose_rulefield` -> `composeSalonPlan` + `synthesizeOutsidePerspectiveConjectures` + `deriveSynthesisHeadline`
+  - `score_unified_candidates` -> `scoreUnifiedSynthesisCandidates` + native `computeFadtFiberBounds` + native `computeMatrixSvd`
   - `pedagogue_cadence` -> `app/engine/dollhouse-pedagogue-dromological.js#auditDollhouseDromologicalCadence`
   - `pedagogue_institutional_time` -> `auditDollhouseInstitutionalTime`
 - **`UNIVERSAL_ATELIER`** (Read-only SHA-256-verified mirror; zero write/import admissions):
@@ -121,16 +124,18 @@ Requires BOTH `TD613_PODIUM_OPERATOR_DIRECT=1` in the host environment AND `--na
 
 ## 4. Podium CLI, Append-Only Synthesis Log & Rollback Recipes
 
-### Inspect Manifest & History
+### Inspect Manifest, Score Mathematical Candidates & History
 ```bash
 node scripts/vixen-podium.mjs --manifest
 node scripts/vixen-podium.mjs --list-syntheses
+TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --score-candidates
 ```
 
-### Commit a New Synthesis Proposal (Non-Retroactive Append-Only Log)
-`--write-synthesis` preserves prior entries in `vixen-estate/podium-synthesis.json`, increments monotonic `synthesis_seq`, links `predecessor_entry_id` + `predecessor_sha256`, records `state_sha256`, and saves a restorable snapshot inside `rollback_snapshots`:
+### Commit / Promote a Scored Candidate to `podium-synthesis.json` & Sync `vix-cyb.html`
+`--write-synthesis` preserves prior entries in `vixen-estate/podium-synthesis.json`, increments monotonic `synthesis_seq`, links `predecessor_entry_id` + `predecessor_sha256` from the true monotonic log tip (`last_log_entry_id`), records `state_sha256`, and saves a restorable snapshot inside `rollback_snapshots`. Add `--select-candidate <id>` to promote a ranked mathematical candidate and `--sync-html` to render the SSR headline slots into `vix-cyb.html` without touching `#vixen-corpus-bundle`:
 ```bash
-TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --input task.json
+TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --select-candidate cand-visibility-svd --sync-html
+TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --sync-html --input task.json
 ```
 Example `task.json`:
 ```json

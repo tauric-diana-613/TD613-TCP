@@ -8,9 +8,9 @@
  */
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
-import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures} from '../vixen-estate/synthesis-salon-engine.mjs';
+import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
-export {deriveSynthesisHeadline};
+export {deriveSynthesisHeadline,scoreUnifiedSynthesisCandidates};
 
 export const PODIUM_SCHEMA='td613.vixen.podium.task/v1';
 export const PODIUM_RECEIPT='td613.vixen.podium.receipt/v1';
@@ -26,7 +26,7 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'fadt_fiber_audit','fadt_coordinate_recovery','fadt_discrepancy'
  ]),
  RULEFIELD:Object.freeze([
-  'assess_roles','propose_rulefield','pedagogue_cadence','pedagogue_institutional_time'
+  'assess_roles','propose_rulefield','score_unified_candidates','pedagogue_cadence','pedagogue_institutional_time'
  ]),
  APERTURE:Object.freeze([
   'audit_epistemic_deficit','evaluate_probe_stability','compute_matrix_svd',
@@ -68,7 +68,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
  const state={
   opened:false,seen:new Map(),events:[],seq:0,epoch:0,activePlan:null,activeRefraction:null,
   operatorQuestion:null,operatorMethod:null,customHeadline:null,customSubtitle:null,
-  customHeroStatement:null,customLeftSpine:null,supplementalSources:[],inquiryConjectures:[]
+  customHeroStatement:null,customLeftSpine:null,selectedCandidateId:null,lagTicks:36,
+  supplementalSources:[],inquiryConjectures:[]
  };
  const applyHeadlineParams=params=>{
   if(!params||typeof params!=='object')return;
@@ -77,6 +78,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
    state.operatorQuestion=null;state.operatorMethod=null;
    state.customHeadline=null;state.customSubtitle=null;
    state.customHeroStatement=null;state.customLeftSpine=null;
+   state.selectedCandidateId=null;state.lagTicks=36;
    state.supplementalSources=[];state.inquiryConjectures=[];
    return;
   }
@@ -84,9 +86,19 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
   else if(typeof params.operator_question==='string')state.operatorQuestion=text(params.operator_question,600).trim()||null;
   if(typeof params.method_label==='string')state.operatorMethod=text(params.method_label,96).trim()||null;
   if(typeof params.header_tagline==='string')state.customHeadline=text(params.header_tagline,120).trim()||null;
-  if(typeof params.pattern_subtitle==='string')state.customSubtitle=text(params.pattern_subtitle,140).trim()||null;
+  if(typeof params.pattern_subtitle==='string'){
+   const sub=text(params.pattern_subtitle,140).trim()||null;
+   if(sub)assertNoBoilerplateSubtitle(sub);
+   state.customSubtitle=sub;
+  }
   if(typeof params.hero_statement==='string')state.customHeroStatement=text(params.hero_statement,240).trim()||null;
   if(typeof params.left_spine==='string')state.customLeftSpine=text(params.left_spine,120).trim()||null;
+  const rawSel=params.selected_candidate_id??params.select_candidate_id??params.candidate_id;
+  if(typeof rawSel==='string')state.selectedCandidateId=text(rawSel,96).trim()||null;
+  else if(rawSel===null)state.selectedCandidateId=null;
+  if(params.lag_ticks!==undefined&&Number.isFinite(Number(params.lag_ticks))){
+   state.lagTicks=Math.max(4,Math.min(120,Math.round(Number(params.lag_ticks))));
+  }
   if(Array.isArray(params.supplemental_sources)){
    state.supplementalSources=params.supplemental_sources
     .filter(x=>x&&typeof x==='object'&&!Array.isArray(x))
@@ -140,7 +152,9 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
   customHeadline:state.customHeadline,
   customSubtitle:state.customSubtitle,
   customHeroStatement:state.customHeroStatement,
-  customLeftSpine:state.customLeftSpine
+  customLeftSpine:state.customLeftSpine,
+  selectedCandidateId:state.selectedCandidateId,
+  lagTicks:state.lagTicks
  });
  const event=(action,extra={})=>{
   const e=Object.freeze({sequence:++state.seq,action,observation_time:new Date().toISOString(),
@@ -377,7 +391,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
   return Object.freeze({
   schema:PODIUM_SCHEMA,routes:()=>[...PODIUM_ROUTES],
   dispatch:run,history:()=>state.events.slice(),
-  synthesisState:()=>{
+   synthesisState:()=>{
    const headline=buildHeadline();
    return Object.freeze({
     schema:'emstd613.vixen.podium-synthesis-state/v1',
@@ -388,6 +402,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     custom_subtitle:state.customSubtitle,
     custom_hero_statement:state.customHeroStatement,
     custom_left_spine:state.customLeftSpine,
+    selected_candidate_id:state.selectedCandidateId||headline.provenance?.selected_candidate_id||null,
+    lag_ticks:state.lagTicks,
     active_plan:state.activePlan,
     refraction:state.activeRefraction,
     inquiry_conjectures:state.inquiryConjectures.slice(),

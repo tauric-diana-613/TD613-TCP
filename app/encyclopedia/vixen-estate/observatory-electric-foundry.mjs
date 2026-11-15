@@ -565,7 +565,7 @@ export async function mountVixenElectricFoundry({
  const visibility=()=>{if(!document.hidden)start();else stop()};
  document.addEventListener('visibilitychange',visibility);
  const syncGlobalMotion=()=>{if(globalMotionHeld(document))stop();else start();updateMotionReadout();paintRoomMesh(true)};
- const syncFieldLayout=()=>{if(section&&!section.hidden&&state.renderer)paintRoomMesh(true)};
+ const syncFieldLayout=()=>{if(section&&!section.hidden)paintRoomMesh(true)};
  window.addEventListener('vixen:fieldlayout',syncFieldLayout);
  window.addEventListener('vixen:motionchange',syncGlobalMotion);
  log('FOUNDRY_REGISTERED',{original_census:completeVixenSourceCensus(source)});

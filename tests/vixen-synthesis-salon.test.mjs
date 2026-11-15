@@ -3,7 +3,8 @@ import {test} from 'node:test';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {
- checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,makePodiumTasks,SALON_SCHEMA,deriveSynthesisHeadline
+ checkSalonCorpus,composeSalonPlan,refractSalonPlan,toyClockAssay,makePodiumTasks,SALON_SCHEMA,deriveSynthesisHeadline,
+ scoreUnifiedSynthesisCandidates,hestenesJacobiSvd,computeMatrixSvdUnified,ANTI_BOILERPLATE_SUBTITLE_RE
 } from '../app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs';
 import {createVixenPodium,PODIUM_SCHEMA} from '../app/encyclopedia/reference/vixen-podium.mjs';
 import {mountVixenSynthesisSalon} from '../app/encyclopedia/vixen-estate/synthesis-salon.mjs';
@@ -150,14 +151,37 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
   dom.window.close()
  }
 });
-test('unified synthesis headline engine reacts deterministically across Podium, Salon, Bench & supplemental sources without human leak or credit promotion',async()=>{
+test('unified synthesis headline engine reacts deterministically across Podium, Salon, Bench & supplemental sources without human leak, boilerplate subtitle, or credit promotion',async()=>{
  const base=deriveSynthesisHeadline({corpus});
  assert.equal(base.regime,'BASELINE_ESTATE_SYNTHESIS');
- assert.equal(base.headerTagline,'Typed Constitutive Cybernetics');
- assert.equal(base.patternSubtitle,'THE ARCHITECTURE OF NON-COLLAPSING PLANES.');
+ assert.equal(ANTI_BOILERPLATE_SUBTITLE_RE.test(base.patternSubtitle),false);
+ assert.ok(typeof base.headerTagline==='string'&&base.headerTagline.length>5);
+ assert.equal(base.provenance.selected_candidate_id,base.candidates[0].id);
  assert.equal(base.provenance.empirical_replication_credit,0);
  assert.equal(base.provenance.scientific_promotion_authority,false);
  assert.equal(base.provenance.human_closure_required,true);
+
+ // Multi-criteria candidate scoring + Hestenes-Jacobi SVD verification
+ const ranked=scoreUnifiedSynthesisCandidates(corpus,{lagTicks:36});
+ assert.ok(ranked.candidates.length>=5);
+ for(let i=1;i<ranked.candidates.length;i++){
+  assert.ok(ranked.candidates[i-1].score>=ranked.candidates[i].score,'Candidates must be sorted descending by score');
+ }
+ assert.ok(ranked.fadt_profile.exact_descent_clusters.includes('C3'));
+ assert.throws(()=>deriveSynthesisHeadline({corpus,customSubtitle:'THE ARCHITECTURE OF GENERIC BOILERPLATE.'}),/BOILERPLATE_SUBTITLE_REJECTED/);
+ assert.throws(()=>deriveSynthesisHeadline({corpus,selectedCandidateId:'cand-nonexistent'}),/UNKNOWN_SYNTHESIS_CANDIDATE/);
+
+ const chosen=deriveSynthesisHeadline({corpus,selectedCandidateId:'cand-quotient-holonomy'});
+ assert.equal(chosen.provenance.selected_candidate_id,'cand-quotient-holonomy');
+ assert.equal(chosen.provenance.operator_selected_candidate,true);
+ assert.equal(chosen.patternSubtitle,'MULTI-CLOCK HOLONOMY · EXACT C3 DESCENT.');
+
+ const rank1Svd=hestenesJacobiSvd([[1,2],[2,4]]);
+ assert.equal(rank1Svd.rank,1);
+ assert.equal(rank1Svd.condition_number,Infinity);
+ const rank1Unified=computeMatrixSvdUnified([[1,2],[2,4]]);
+ assert.equal(rank1Unified.classification,'RANK_DEFICIENT');
+ assert.equal(rank1Unified.condition,Infinity);
 
  const plan=composeSalonPlan(corpus,input);
  const refr=refractSalonPlan(corpus,input);
@@ -173,7 +197,8 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
  const suppH=deriveSynthesisHeadline({corpus,supplementalSources:[{id:'SUP-1'},{id:'SUP-2'}]});
  assert.equal(suppH.regime,'SUPPLEMENTAL_CORPUS_SYNTHESIS');
  assert.equal(suppH.provenance.work_census,corpus.works.length+2);
- assert.equal(suppH.patternSubtitle,'THE ARCHITECTURE OF WIDENED ADMISSIBILITY.');
+ assert.equal(ANTI_BOILERPLATE_SUBTITLE_RE.test(suppH.patternSubtitle),false);
+ assert.match(suppH.patternSubtitle,/WIDENED QUOTIENT SUPPORT/);
 
  const benchTombstone=deriveSynthesisHeadline({corpus,withdrawnCount:1});
  assert.equal(benchTombstone.regime,'TOMBSTONE_BOUNDED_SYNTHESIS');
@@ -188,10 +213,11 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
  const d1=await conductor.dispatch(run('podium.describe',{}));
  assert.equal(d1.result.synthesis_headline.regime,'SALON_COMPOSED_SYNTHESIS');
 
- for(const obj of [base,salonH,refrH,suppH,benchTombstone,d1.result.synthesis_headline]){
+ for(const obj of [base,chosen,salonH,refrH,suppH,benchTombstone,d1.result.synthesis_headline]){
   const txt=JSON.stringify(obj);
   assert.equal(/Khona|Research Atelier|RESEARCH ATELIER|DERIVATIVE CLOCK CUSTODY/i.test(txt),false);
   assert.equal(/COMPARATIVE LINEAGE|METHOD V0\.1|relative to TD613|Em-side/i.test(txt),false);
+  assert.equal(/\bTHE\s+ARCHITECTURE\s+OF\b/i.test(obj.patternSubtitle),false);
   assert(typeof obj.researchQuestionMeta==='string'&&obj.researchQuestionMeta.length>0);
   assert(typeof obj.researchQuestion==='string'&&obj.researchQuestion.length>20);
  }

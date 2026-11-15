@@ -27,25 +27,37 @@ const OCCLUSION_SELECTORS=Object.freeze([
  '#view-overview > #cover','.hero-art',
  '.view:not([hidden]) .cover-title','.view:not([hidden]) .cover-marginalia',
  '.view:not([hidden]) .cover-bottom','.view:not([hidden]) .cover-spine',
- '.view:not([hidden]) .vs-hero-copy','.view:not([hidden]) .vs-source-card',
- '.view:not([hidden]) .vs-rail','.view:not([hidden]) .vs-compose',
+ '.view:not([hidden]) .mobile-wayfinder','.view:not([hidden]) .vixen-foyer-afterword',
+ '.view:not([hidden]) .vixen-inquiry-stage','.view:not([hidden]) .view-heading',
+ '.view:not([hidden]) .toolbar','.view:not([hidden]) .aia-bar',
+ '.view:not([hidden]) .instrument-stage','.view:not([hidden]) #vixenElectricFoundry',
+ '.view:not([hidden]) .sensitivity-banner','.view:not([hidden]) #vixenSynthesisSalon',
+ '.view:not([hidden]) .vs-head','.view:not([hidden]) .vs-hero-copy',
+ '.view:not([hidden]) .vs-source-card','.view:not([hidden]) .vs-rail',
+ '.view:not([hidden]) .vs-mix','.view:not([hidden]) .vs-program',
+ '.view:not([hidden]) .vs-order','.view:not([hidden]) .vs-status',
+ '.view:not([hidden]) .vs-details','.view:not([hidden]) .vs-compose',
  '.view:not([hidden]) .vs-result','.view:not([hidden]) .vs-holonomy-card',
  '.view:not([hidden]) .vs-vernier-card','.view:not([hidden]) .vs-trajectory-memory',
- '.view:not([hidden]) .view-heading','.view:not([hidden]) .lexicon-reader',
- '.view:not([hidden]) .lexicon-index','.view:not([hidden]) .gate-pair-card',
+ '.view:not([hidden]) .lexicon-index','.view:not([hidden]) .lexicon-list',
+ '.view:not([hidden]) .lexicon-reader','.view:not([hidden]) .gate-pair-card',
  '.view:not([hidden]) .vixen-foyer-copy','.view:not([hidden]) .vixen-foyer-intro',
  '.view:not([hidden]) .vixen-doorways','.view:not([hidden]) .vixen-foyer-frame',
  '.view:not([hidden]) .vixen-foyer-tail','.view:not([hidden]) .archive-directory',
  '.view:not([hidden]) .ci-head','.view:not([hidden]) .ci-cadence-bar','.view:not([hidden]) .ci-card',
  '.view:not([hidden]) .procession-section','.view:not([hidden]) .editorial-questions',
- '.view:not([hidden]) .research-path','#vixenElectricFoundry',
- '.view:not([hidden]) .synthesis-bench','.view:not([hidden]) .formula-card',
- '.view:not([hidden]) .folio-locus','.view:not([hidden]) .hold-panel',
- '.view:not([hidden]) .comp-table','.view:not([hidden]) .vxe-heading',
- '.view:not([hidden]) .vxe-steps','.view:not([hidden]) .vxe-status',
- '.view:not([hidden]) .vxe-work-selector','.view:not([hidden]) .vxe-estate',
- '.view:not([hidden]) .vxe-membrane','.view:not([hidden]) .vxe-tail',
- '.view:not([hidden]) .vxe-result','.vixen-aperture-hud',
+ '.view:not([hidden]) .research-path','.view:not([hidden]) .synthesis-bench',
+ '.view:not([hidden]) .formula-card','.view:not([hidden]) .formula-gallery-identity',
+ '.view:not([hidden]) .formula-gallery-footer','.view:not([hidden]) .folio-locus',
+ '.view:not([hidden]) .hold-panel','.view:not([hidden]) .comp-table',
+ '.view:not([hidden]) .comp-table-wrap','.view:not([hidden]) .vixen-rest-bar',
+ '.view:not([hidden]) .vixen-overview-drawer','.view:not([hidden]) .protocol-pipeline',
+ '.view:not([hidden]) .wf-repertoire-grid',
+ '.view:not([hidden]) .vxe-heading','.view:not([hidden]) .vxe-steps',
+ '.view:not([hidden]) .vxe-status','.view:not([hidden]) .vxe-work-selector',
+ '.view:not([hidden]) .vxe-estate','.view:not([hidden]) .vxe-membrane',
+ '.view:not([hidden]) .vxe-tail','.view:not([hidden]) .vxe-result',
+ 'footer.footer','.vixen-aperture-hud',
  'dialog','[role="dialog"]','.view:not([hidden]) button','.view:not([hidden]) select',
  '.view:not([hidden]) input','.view:not([hidden]) textarea','.view:not([hidden]) summary'
 ]);
@@ -150,13 +162,14 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   }
   ctx.setTransform(canvas.width/w,0,0,canvas.height/h,0,0);
   if(!enabled()){ctx.clearRect(0,0,w,h);canvas.dataset.animation='PARKED';return;}
-  if(layoutDirty)readExclusions();
+  if(layoutDirty)readExclusions(true);
   const shared=stageOwned()&&frame?.view===view()?frame:null;
   // A parked optical room cannot synthesize a competing autonomous phase.
   if(stageOwned()&&!shared){ctx.clearRect(0,0,w,h);canvas.dataset.animation='WAITING_FOR_HOST';return;}
   const model=shared?.scene?{width:w,height:h,scene:shared.scene,
    source_mode:shared.sourceIds?.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK'}:
-   buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),sourceIds:shared?.sourceIds??readSources(),pointer});
+   buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),sourceIds:shared?.sourceIds??readSources(),pointer,
+    scroll:win.scrollY||win.pageYOffset||0});
   const rect=shared?.stageRect;
   last=paintLivingMesh(ctx,model,{intensity:view()==='observatory'?.46:1,
    scene:shared?.scene||model.scene,origin:rect?{x:rect.left,y:rect.top}:{x:0,y:0},
@@ -168,7 +181,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  function loop(ms){
   raf=0;if(disposed||doc.hidden||outsideOpera()||paused()||stageOwned()){lastTick=null;return;}
   if(lastTick!==null)time+=Math.min(.1,Math.max(0,(ms-lastTick)/1000));lastTick=ms;
-  if(ms-lastPaint>=1000/(width()<750?12:24)){draw(null);lastPaint=ms;}
+  if(layoutDirty||ms-lastPaint>=1000/(width()<750?12:24)){draw(null);lastPaint=ms;}
   raf=win.requestAnimationFrame(loop);
  }
  function schedule(){
@@ -193,10 +206,10 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   layoutRaf=win.requestAnimationFrame(()=>{
    layoutRaf=0;
    if(disposed||doc.hidden)return;
-   // Salon must recompute its stage rect; a retained host projection cannot
-   // be translated using a stale rectangle while scrolling in Still.
+   // Salon and Observatory recompute their stage rect without cancelling running animation loops.
    if(stageOwned()){win.dispatchEvent(new win.Event('vixen:fieldlayout'));return;}
    if(paused()||!raf)schedule();
+   else{draw(null);lastPaint=win.performance.now();}
   });
  };
  win.addEventListener('pointermove',onPointer,{passive:true});
