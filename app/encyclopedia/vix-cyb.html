@@ -2566,8 +2566,9 @@ body[data-view="overview"] .reading-back{display:none}
     const countEl = $('formulaCountLabel');
     if (!listEl) return;
     const q = state.formulaQuery.trim().toLowerCase();
+    const exactFolioMatch = Boolean(q) && DATA.formula_folios.some((f) => f.id.toLowerCase() === q);
     const semFolioScores = new Map();
-    if (q && state.semanticEngine) {
+    if (q && !exactFolioMatch && state.semanticEngine) {
       try {
         const semRes = state.semanticEngine.search(state.formulaQuery.trim(), { limit: 24, unitKindFilter: 'synthesis_folio' });
         for (const h of semRes.hits || []) {
