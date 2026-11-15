@@ -718,6 +718,110 @@ body[data-view="overview"] .reading-back{display:none}
     </section>
 
     <!-- Threshold Spread: Preserved Cybernetics Collection, Comparative Question & Custody Membrane -->
+    <section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
+      <div class="vixen-inquiry-inner">
+        <div class="ci-head">
+          <div>
+            <p class="ci-kicker">OPERA COMPUTATIONAL MACHINERY · CONSTITUTIVE INQUIRY &amp; CROSS-DOMAIN CONJECTURE</p>
+            <h2 class="ci-title">Author Your Inquiry, Lenses &amp; Rollback Log</h2>
+          </div>
+          <div class="badge-row">
+            <span class="tag gold" id="ciActiveEntryBadge">ACTIVE: syn-0000-baseline</span>
+            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
+          </div>
+        </div>
+
+        <div class="ci-cadence-bar" role="region" aria-label="Pedagogue NOW WHY EXACT cadence">
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">NOW · NOTICE</div>
+            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
+            <p class="ci-cadence-copy">Every researcher’s Opera authors its own question without inheriting host prose (<code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code>).</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
+            <p class="ci-cadence-copy">Proposals update the live headline, Vernier / Aperture telemetry, and append-only Podium log while keeping empirical credit at 0.</p>
+          </div>
+        </div>
+
+        <div class="ci-main-grid">
+          <div class="ci-card" aria-label="Operator Inquiry Composer">
+            <h3 class="ci-card-title">
+              <span>Interactive Question &amp; Method Composer</span>
+              <span>LIVE SESSION STATE</span>
+            </h3>
+            <label class="ci-field-label" for="ciQuestionInput">Constitutive Inquiry Question</label>
+            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
+
+            <label class="ci-field-label" for="ciMethodInput">Documentary / Formal Method Label</label>
+            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. Non-collapsing S ≠ W ≠ A · 5-clock vernier + A-05 dynamical assay" />
+
+            <div class="ci-actions-row">
+              <button type="button" class="ci-btn primary" id="ciApplyBtn">Apply Inquiry to Frontispiece</button>
+              <button type="button" class="ci-btn" id="ciSynthesizeBtn">Synthesize 7 Lenses</button>
+              <button type="button" class="ci-btn" id="ciResetBtn">Reset to Baseline</button>
+              <label style="margin-left:auto;font:600 9.5px/1.2 var(--font-mono);color:#FFF2A9;letter-spacing:.1em;display:inline-flex;align-items:center;gap:8px;">
+                VERNIER LAG τ:
+                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
+                <span id="ciLagReadout">36</span>
+              </label>
+            </div>
+            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
+              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
+            </p>
+
+            <div class="ci-telemetry-strip" aria-label="Live Engine Observatory Telemetry">
+              <div class="ci-metric">
+                <div class="ci-metric-label">5-CLOCK VERNIER</div>
+                <div class="ci-metric-val" id="ciMetricVernier">3 inv · |Δτ|=72</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">APERTURE SVD κ(A)</div>
+                <div class="ci-metric-val" id="ciMetricSvd">κ=1.78 · rank 2</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">[111] NULL RATIO</div>
+                <div class="ci-metric-val" id="ciMetricMirror">ratio=0.177 · ⊥[111]</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">FADT &amp; XOR SYNERGY</div>
+                <div class="ci-metric-val" id="ciMetricFadtXor">1.00 bit · ⋂Sᵢ⊂U HOLD</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ci-card" aria-label="Official Podium Synthesis Log and Non-Retroactive Rollback">
+            <h3 class="ci-card-title">
+              <span>Podium Synthesis Log &amp; Rollback</span>
+              <span id="ciLogCount">1 ENTRY · APPEND-ONLY</span>
+            </h3>
+            <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
+              Every synthesis update records an append-only predecessor chain (<code>seq</code>, <code>predecessor_entry_id</code>, SHA-256). Restore any prior snapshot cleanly without erasing history, or export a portable ZIP from the footer.
+            </p>
+            <div class="ci-log-list" id="ciSynthesisLogList" role="list"></div>
+          </div>
+        </div>
+
+        <div class="ci-card" aria-label="Outside-Perspective Cross-Domain Conjectures">
+          <h3 class="ci-card-title">
+            <span>Outside-Perspective Cross-Domain Conjecture Lenses (7 Admissible Bridges)</span>
+            <span>PROPOSAL ONLY · UNRATIFIED</span>
+          </h3>
+          <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
+            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C4" aria-pressed="false">C4 · Virtualization</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C5" aria-pressed="false">C5 · Sui-Generis</button>
+          </div>
+          <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
+        </div>
+      </div>
+    </section>
+
     <div class="archive-directory" id="atelierThreshold">
       <div class="directory-title">
         <div class="membrane-layer" data-membrane="RESEARCH_OBJECT">
@@ -1403,6 +1507,10 @@ body[data-view="overview"] .reading-back{display:none}
     <button type="button" class="text-link" data-action="inspector">Open Concealed Inspector (Alt+I)</button>
     <button type="button" class="text-link" data-action="search">Search Catalogue (Ctrl/⌘+K)</button>
     <a class="text-link footer-td613-mark" id="footerEncyclopediaLink" href="#overview">𝌋 TD613 Encyclopedia →</a>
+  </div>
+  <div class="footer-end-controls">
+    <button type="button" class="text-link footer-session-btn" id="footerSaveSessionBtn">Save current session ⭳</button>
+    <a class="text-link footer-podium-link" id="footerPodiumLink" href="./vix-cyb/llms.txt">PODIUM (AI entrance only) ⟶</a>
   </div>
 </footer>
 
@@ -4076,7 +4184,11 @@ body[data-view="overview"] .reading-back{display:none}
 <script type="module" src="./vixen-estate/research-chamber.mjs"></script>
 <script type="module" src="./vixen-estate/synthesis-salon.mjs"></script>
 <script type="module">
-import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.mjs';
+import {
+  deriveSynthesisHeadline,
+  synthesizeOutsidePerspectiveConjectures,
+  computeSalonObservatoryDiagnostics
+} from './vixen-estate/synthesis-salon-engine.mjs';
 (function () {
   const bundleEl = document.getElementById('vixen-corpus-bundle');
   let corpus = null;
@@ -4097,9 +4209,108 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
     customHeadline: null,
     customSubtitle: null,
     customHeroStatement: null,
-    customLeftSpine: null
+    customLeftSpine: null,
+    inquiryConjectures: []
   };
   let currentHeadline = null;
+  let activeEntryId = 'syn-0000-baseline';
+  let synthesisSeq = 0;
+  let synthesisLog = [];
+  let rollbackSnapshots = {};
+  let activeClusterFilter = 'ALL';
+  let selectedConjectureId = null;
+  let lagTicks = 36;
+
+  function fnv64Hex(str) {
+    let h1 = 0x811c9dc5;
+    let h2 = 0x9e3779b9;
+    const s = String(str || '');
+    for (let i = 0; i < s.length; i += 1) {
+      const ch = s.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 0x01000193) >>> 0;
+      h2 = Math.imul(h2 ^ (ch + i), 0x85ebca6b) >>> 0;
+    }
+    return h1.toString(16).padStart(8, '0') + h2.toString(16).padStart(8, '0');
+  }
+
+  function snapshotPayload(statusOverride = null) {
+    return {
+      schema: 'emstd613.vixen.podium-synthesis-state/v1',
+      status: statusOverride || (live.operatorQuestion || live.customSubtitle ? 'OPERATOR_INQUIRY_PROPOSAL' : 'BASELINE_ESTATE_SYNTHESIS'),
+      operator_question: live.operatorQuestion,
+      operator_method: live.operatorMethod,
+      custom_headline: live.customHeadline,
+      custom_subtitle: live.customSubtitle,
+      custom_hero_statement: live.customHeroStatement,
+      custom_left_spine: live.customLeftSpine,
+      active_plan: live.activePlan,
+      refraction: live.refraction,
+      inquiry_conjectures: Array.isArray(live.inquiryConjectures) ? live.inquiryConjectures : [],
+      supplemental_sources: Array.isArray(live.supplementalSources) ? live.supplementalSources : [],
+      podium_events: Array.isArray(live.podiumEvents) ? live.podiumEvents : [],
+      synthesis_headline: currentHeadline,
+      empirical_replication_credit: 0,
+      scientific_promotion_authority: false,
+      human_closure_required: true,
+      release_authority: false
+    };
+  }
+
+  function ensureBaselineLog() {
+    if (synthesisLog.length > 0) return;
+    const snap = snapshotPayload('BASELINE_ESTATE_SYNTHESIS');
+    const sha = fnv64Hex(JSON.stringify(snap));
+    rollbackSnapshots['syn-0000-baseline'] = snap;
+    synthesisLog = [{
+      seq: 0,
+      entry_id: 'syn-0000-baseline',
+      kind: 'BASELINE',
+      predecessor_entry_id: null,
+      predecessor_sha256: null,
+      recorded_at: '2026-11-14T00:00:00Z',
+      summary: 'Initial canonical Vixen Cybernetics 32-work constitutive inquiry baseline.',
+      status: snap.status,
+      patternSubtitle: snap.synthesis_headline?.patternSubtitle || null,
+      researchQuestionMeta: snap.synthesis_headline?.researchQuestionMeta || null,
+      researchQuestion: snap.synthesis_headline?.researchQuestion || null,
+      state_sha256: sha
+    }];
+  }
+
+  function recordInSessionEntry(kind, summary, statusOverride = null, explicitRestoredId = null) {
+    ensureBaselineLog();
+    const prevMaxSeq = synthesisLog.reduce((mx, e) => Math.max(mx, Number(e?.seq) || 0), 0);
+    const nextSeq = prevMaxSeq + 1;
+    const prevId = activeEntryId || synthesisLog[synthesisLog.length - 1]?.entry_id || 'syn-0000-baseline';
+    const prevEntry = synthesisLog.find((e) => e.entry_id === prevId) || synthesisLog[synthesisLog.length - 1];
+    const snap = snapshotPayload(statusOverride);
+    const sha = fnv64Hex(JSON.stringify(snap));
+    const entryId = explicitRestoredId
+      ? `syn-${String(nextSeq).padStart(4, '0')}-rollback-${sha.slice(0, 8)}`
+      : `syn-${String(nextSeq).padStart(4, '0')}-${sha.slice(0, 8)}`;
+    rollbackSnapshots[entryId] = snap;
+    synthesisLog = [
+      ...synthesisLog,
+      {
+        seq: nextSeq,
+        entry_id: entryId,
+        kind,
+        restored_entry_id: explicitRestoredId || undefined,
+        predecessor_entry_id: prevId,
+        predecessor_sha256: prevEntry?.state_sha256 || null,
+        recorded_at: new Date().toISOString(),
+        summary: String(summary || snap.synthesis_headline?.patternSubtitle || 'Operator session proposal').slice(0, 220),
+        status: snap.status,
+        patternSubtitle: snap.synthesis_headline?.patternSubtitle || null,
+        researchQuestionMeta: snap.synthesis_headline?.researchQuestionMeta || null,
+        researchQuestion: snap.synthesis_headline?.researchQuestion || null,
+        state_sha256: sha
+      }
+    ];
+    synthesisSeq = nextSeq;
+    activeEntryId = explicitRestoredId || entryId;
+    return activeEntryId;
+  }
 
   function applyHeadline(h) {
     currentHeadline = h;
@@ -4135,9 +4346,229 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
     return h;
   }
 
+  function syncInquiryInputs() {
+    const qEl = document.getElementById('ciQuestionInput');
+    const mEl = document.getElementById('ciMethodInput');
+    if (qEl && document.activeElement !== qEl) {
+      qEl.value = live.operatorQuestion || (currentHeadline?.researchQuestion || '').replace(/^[“"]|[”"]$/g, '');
+    }
+    if (mEl && document.activeElement !== mEl) {
+      mEl.value = live.operatorMethod || '';
+    }
+    const badge = document.getElementById('ciActiveEntryBadge');
+    if (badge) badge.textContent = `ACTIVE: ${activeEntryId}`;
+  }
+
+  function renderTelemetry() {
+    const readOut = document.getElementById('ciLagReadout');
+    if (readOut) readOut.textContent = String(lagTicks);
+    let diag = null;
+    try {
+      diag = computeSalonObservatoryDiagnostics({
+        clock_probe: { lag_ticks: lagTicks, route_order: live.refraction?.opposite_route_order || 'A_B' },
+        measurement_operator: { matrix: [[1, 0.25 + (lagTicks / 180)], [0, 0.85]] }
+      });
+    } catch (_) { diag = null; }
+    if (!diag) return;
+    const vEl = document.getElementById('ciMetricVernier');
+    if (vEl && diag.vernier_summary) {
+      vEl.textContent = `${diag.vernier_summary.arrival_inversions} inv · |Δτ|=${diag.vernier_summary.tick_l1_delta}`;
+    }
+    const sEl = document.getElementById('ciMetricSvd');
+    if (sEl && diag.svd_conditioning) {
+      sEl.textContent = `κ=${Number(diag.svd_conditioning.condition || 0).toFixed(2)} · rank ${diag.svd_conditioning.rank}`;
+    }
+    const mEl = document.getElementById('ciMetricMirror');
+    if (mEl && diag.mirror_111) {
+      mEl.textContent = `ratio=${Number(diag.mirror_111.nullspace_ratio || 0).toFixed(3)} · ⊥[111]`;
+    }
+    const xEl = document.getElementById('ciMetricFadtXor');
+    if (xEl && diag.xor_synergy) {
+      xEl.textContent = `${Number(diag.xor_synergy.synergy_bits || 0).toFixed(2)} bit · ⋂Sᵢ⊂U HOLD`;
+    }
+  }
+
+  function renderConjectures() {
+    const grid = document.getElementById('ciConjectureGrid');
+    if (!grid || !live.corpus) return;
+    let items = [];
+    try {
+      items = synthesizeOutsidePerspectiveConjectures(live.corpus, {
+        lagTicks,
+        filterCluster: activeClusterFilter,
+        limit: 7
+      });
+      if (activeClusterFilter === 'ALL') live.inquiryConjectures = items;
+    } catch (_) { items = []; }
+
+    grid.replaceChildren(...items.map((item) => {
+      const card = document.createElement('article');
+      card.className = 'ci-conjecture-card' + (selectedConjectureId === item.id ? ' is-active' : '');
+      card.dataset.conjectureId = item.id;
+
+      const top = document.createElement('div');
+      const meta = document.createElement('div');
+      meta.className = 'ci-conj-meta';
+      meta.textContent = `${(item.clusters || []).join(' × ')} · κ=${Number(item.svd_kappa || 0).toFixed(2)} · ω=${Number(item.frequency_ratio || 0).toFixed(3)}`;
+
+      const h = document.createElement('h4');
+      h.className = 'ci-conj-title';
+      h.textContent = item.title;
+
+      const body = document.createElement('p');
+      body.className = 'ci-conj-body';
+      body.textContent = `${item.now_notice} Exact test: ${item.exact_falsifier}`;
+
+      const foot = document.createElement('div');
+      foot.className = 'ci-actions-row';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ci-btn';
+      btn.textContent = 'Load into Inquiry';
+      btn.addEventListener('click', () => {
+        selectedConjectureId = item.id;
+        authorInquiry({
+          question: `${item.title}: ${item.now_notice} (${item.exact_falsifier})`,
+          method: `${item.lens} · ${(item.atlas_engines || []).join(' + ')}`
+        });
+      });
+      foot.appendChild(btn);
+
+      top.append(meta, h, body);
+      card.append(top, foot);
+      return card;
+    }));
+  }
+
+  function renderSynthesisLog() {
+    ensureBaselineLog();
+    const list = document.getElementById('ciSynthesisLogList');
+    const countEl = document.getElementById('ciLogCount');
+    if (countEl) countEl.textContent = `${synthesisLog.length} ${synthesisLog.length === 1 ? 'ENTRY' : 'ENTRIES'} · APPEND-ONLY`;
+    syncInquiryInputs();
+    if (!list) return;
+
+    const ordered = [...synthesisLog].reverse();
+    list.replaceChildren(...ordered.map((entry) => {
+      const row = document.createElement('div');
+      const isCurrent = entry.entry_id === activeEntryId;
+      row.className = 'ci-log-row' + (isCurrent ? ' is-active' : '');
+      row.setAttribute('role', 'listitem');
+
+      const info = document.createElement('div');
+      info.className = 'ci-log-info';
+
+      const idEl = document.createElement('div');
+      idEl.className = 'ci-log-id';
+      idEl.textContent = `#${entry.seq} · ${entry.entry_id} [${entry.kind}]${isCurrent ? ' · ACTIVE' : ''}`;
+
+      const sumEl = document.createElement('div');
+      sumEl.className = 'ci-log-summary';
+      sumEl.textContent = entry.summary || entry.researchQuestion || 'Vixen synthesis snapshot';
+
+      const chainEl = document.createElement('div');
+      chainEl.className = 'ci-log-chain';
+      chainEl.textContent = `pred: ${entry.predecessor_entry_id || 'NONE'} · sha256: ${String(entry.state_sha256 || '').slice(0, 14)}`;
+
+      info.append(idEl, sumEl, chainEl);
+
+      const act = document.createElement('div');
+      const hasSnap = Boolean(rollbackSnapshots[entry.entry_id]);
+      if (hasSnap && !isCurrent) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ci-btn';
+        btn.dataset.rollbackEntry = entry.entry_id;
+        btn.textContent = 'Restore';
+        btn.addEventListener('click', () => restoreSnapshot(entry.entry_id));
+        act.appendChild(btn);
+      } else {
+        const badge = document.createElement('span');
+        badge.style.cssText = 'font:600 9px/1.2 var(--font-mono);color:#9DBCC1;letter-spacing:.12em;';
+        badge.textContent = isCurrent ? 'ACTIVE HEAD' : 'LOGGED';
+        act.appendChild(badge);
+      }
+
+      row.append(info, act);
+      return row;
+    }));
+  }
+
   function recompute(patch) {
     if (patch && typeof patch === 'object') Object.assign(live, patch);
-    return applyHeadline(deriveSynthesisHeadline(live));
+    const headline = applyHeadline(deriveSynthesisHeadline(live));
+    ensureBaselineLog();
+    syncInquiryInputs();
+    renderTelemetry();
+    renderConjectures();
+    renderSynthesisLog();
+    return headline;
+  }
+
+  function authorInquiry({ question, method, customSubtitle } = {}) {
+    const q = typeof question === 'string' && question.trim() ? question.trim() : null;
+    const m = typeof method === 'string' && method.trim() ? method.trim() : null;
+    recompute({
+      operatorQuestion: q,
+      operatorMethod: m,
+      customSubtitle: customSubtitle !== undefined ? customSubtitle : live.customSubtitle
+    });
+    const entryId = recordInSessionEntry('SYNTHESIS_PROPOSAL', q || m || 'Operator inquiry edit');
+    renderSynthesisLog();
+    const status = document.getElementById('ciStatusLine');
+    if (status) {
+      status.textContent = `APPLIED AS ${entryId} · Headline & Threshold updated (empirical credit: 0). CLI commit: node scripts/vixen-podium.mjs --write-synthesis`;
+    }
+    return getSessionSnapshot();
+  }
+
+  function restoreSnapshot(targetEntryId) {
+    ensureBaselineLog();
+    const targetSnap = rollbackSnapshots[targetEntryId];
+    if (!targetSnap) return { ok: false, error: 'SNAPSHOT_NOT_FOUND' };
+    recompute({
+      activePlan: targetSnap.active_plan || null,
+      refraction: targetSnap.refraction || null,
+      supplementalSources: Array.isArray(targetSnap.supplemental_sources) ? targetSnap.supplemental_sources : [],
+      podiumEvents: Array.isArray(targetSnap.podium_events) ? targetSnap.podium_events : [],
+      operatorQuestion: targetSnap.operator_question || null,
+      operatorMethod: targetSnap.operator_method || null,
+      customHeadline: targetSnap.custom_headline || null,
+      customSubtitle: targetSnap.custom_subtitle || null,
+      customHeroStatement: targetSnap.custom_hero_statement || null,
+      customLeftSpine: targetSnap.custom_left_spine || null,
+      inquiryConjectures: Array.isArray(targetSnap.inquiry_conjectures) ? targetSnap.inquiry_conjectures : []
+    });
+    recordInSessionEntry(
+      'ROLLBACK',
+      `Rolled back presentation synthesis to ${targetEntryId}`,
+      targetSnap.status || 'ROLLED_BACK_TO_PRIOR_SYNTHESIS',
+      targetEntryId
+    );
+    renderSynthesisLog();
+    const status = document.getElementById('ciStatusLine');
+    if (status) {
+      status.textContent = `RESTORED ${targetEntryId} (append-only seq ${synthesisSeq}). CLI equivalent: node scripts/vixen-podium.mjs --rollback ${targetEntryId}`;
+    }
+    return getSessionSnapshot();
+  }
+
+  function resetBaseline() {
+    selectedConjectureId = null;
+    return restoreSnapshot('syn-0000-baseline');
+  }
+
+  function getSessionSnapshot() {
+    ensureBaselineLog();
+    const snap = snapshotPayload();
+    return {
+      ...snap,
+      active_entry_id: activeEntryId,
+      last_log_entry_id: synthesisLog[synthesisLog.length - 1]?.entry_id || activeEntryId,
+      synthesis_seq: synthesisSeq,
+      synthesis_log: synthesisLog,
+      rollback_snapshots: rollbackSnapshots
+    };
   }
 
   window.addEventListener('vixen:synthesis-updated', (ev) => {
@@ -4172,7 +4603,72 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
     recompute({ supplementalSources: Array.isArray(d.supplementalSources) ? d.supplementalSources : [] });
   });
 
-  window.VixenSynthesisHeadlines = Object.freeze({ recompute, current: () => currentHeadline });
+  // Wire #constitutiveInquiry UI controls
+  document.getElementById('ciApplyBtn')?.addEventListener('click', () => {
+    const q = document.getElementById('ciQuestionInput')?.value || '';
+    const m = document.getElementById('ciMethodInput')?.value || '';
+    authorInquiry({ question: q, method: m });
+  });
+  document.getElementById('ciResetBtn')?.addEventListener('click', resetBaseline);
+  document.getElementById('ciSynthesizeBtn')?.addEventListener('click', () => {
+    renderConjectures();
+    renderTelemetry();
+    const status = document.getElementById('ciStatusLine');
+    if (status) status.textContent = `RE-SYNTHESIZED 7 CROSS-DOMAIN CONJECTURES AT VERNIER LAG τ=${lagTicks} (UNRATIFIED PROPOSALS).`;
+  });
+  document.getElementById('ciLagInput')?.addEventListener('input', (ev) => {
+    lagTicks = Number(ev.target.value || 36);
+    renderTelemetry();
+    renderConjectures();
+  });
+  document.querySelectorAll('#ciFilterBar .ci-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      activeClusterFilter = chip.dataset.ciCluster || 'ALL';
+      document.querySelectorAll('#ciFilterBar .ci-chip').forEach((c) => {
+        c.setAttribute('aria-pressed', String(c === chip));
+      });
+      renderConjectures();
+    });
+  });
+
+  // Wire Footer Complete Session ZIP Downloader (#footerSaveSessionBtn)
+  document.getElementById('footerSaveSessionBtn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('footerSaveSessionBtn');
+    const origLabel = btn ? btn.textContent : 'Save current session ⭳';
+    if (btn) btn.textContent = 'Packaging session archive…';
+    try {
+      const mod = await import('./vixen-estate/session-zip.mjs');
+      const trayIds = Array.from(document.querySelectorAll('[data-cart-work],[data-work-tray-id]'))
+        .map((el) => el.dataset.cartWork || el.dataset.workTrayId).filter(Boolean);
+      const res = await mod.downloadVixenSessionZip({
+        synthesisState: getSessionSnapshot(),
+        sessionMeta: {
+          study_tray_work_ids: [...new Set(trayIds)],
+          selected_conjecture_id: selectedConjectureId,
+          active_cluster_filter: activeClusterFilter,
+          clock_vernier_lag: lagTicks,
+          gate_posture: 'DEFAULT_UNADJUDICATED_PAIR_256_STATES'
+        }
+      });
+      if (btn) btn.textContent = `Saved (${res.file_count} files) ✓`;
+      const status = document.getElementById('ciStatusLine');
+      if (status) status.textContent = `EXPORTED PORTABLE SESSION ZIP: ${res.filename} (${res.file_count} files, ${res.total_bytes} bytes).`;
+    } catch (err) {
+      if (btn) btn.textContent = 'Export held (check console)';
+    } finally {
+      setTimeout(() => { if (btn) btn.textContent = origLabel; }, 3200);
+    }
+  });
+
+  window.VixenSynthesisHeadlines = Object.freeze({
+    recompute,
+    current: () => currentHeadline,
+    getSessionSnapshot,
+    restoreSnapshot,
+    authorInquiry,
+    resetBaseline
+  });
+
   recompute();
   if (typeof fetch === 'function') {
     fetch('./vixen-estate/podium-synthesis.json', { cache: 'no-store' })
@@ -4180,25 +4676,34 @@ import { deriveSynthesisHeadline } from './vixen-estate/synthesis-salon-engine.m
       .then((st) => {
         if (!st || st.schema !== 'emstd613.vixen.podium-synthesis-state/v1') return;
         if (st.scientific_promotion_authority !== false || Number(st.empirical_replication_credit || 0) !== 0) return;
+        if (Array.isArray(st.synthesis_log) && st.synthesis_log.length) synthesisLog = st.synthesis_log;
+        if (st.rollback_snapshots && typeof st.rollback_snapshots === 'object') rollbackSnapshots = st.rollback_snapshots;
+        if (st.active_entry_id) activeEntryId = st.active_entry_id;
+        if (Number.isInteger(st.synthesis_seq)) synthesisSeq = st.synthesis_seq;
         const hasOverride = Boolean(
           st.active_plan || st.refraction || st.operator_question || st.operator_method ||
           st.custom_headline || st.custom_subtitle || st.custom_hero_statement || st.custom_left_spine ||
           (Array.isArray(st.supplemental_sources) && st.supplemental_sources.length) ||
-          (Array.isArray(st.podium_events) && st.podium_events.length)
+          (Array.isArray(st.podium_events) && st.podium_events.length) ||
+          (Array.isArray(st.inquiry_conjectures) && st.inquiry_conjectures.length)
         );
-        if (!hasOverride) return;
-        recompute({
-          activePlan: st.active_plan || null,
-          refraction: st.refraction || null,
-          supplementalSources: Array.isArray(st.supplemental_sources) ? st.supplemental_sources : [],
-          podiumEvents: Array.isArray(st.podium_events) ? st.podium_events : [],
-          operatorQuestion: st.operator_question || null,
-          operatorMethod: st.operator_method || null,
-          customHeadline: st.custom_headline || null,
-          customSubtitle: st.custom_subtitle || null,
-          customHeroStatement: st.custom_hero_statement || null,
-          customLeftSpine: st.custom_left_spine || null
-        });
+        if (hasOverride) {
+          recompute({
+            activePlan: st.active_plan || null,
+            refraction: st.refraction || null,
+            supplementalSources: Array.isArray(st.supplemental_sources) ? st.supplemental_sources : [],
+            podiumEvents: Array.isArray(st.podium_events) ? st.podium_events : [],
+            operatorQuestion: st.operator_question || null,
+            operatorMethod: st.operator_method || null,
+            customHeadline: st.custom_headline || null,
+            customSubtitle: st.custom_subtitle || null,
+            customHeroStatement: st.custom_hero_statement || null,
+            customLeftSpine: st.custom_left_spine || null,
+            inquiryConjectures: Array.isArray(st.inquiry_conjectures) ? st.inquiry_conjectures : []
+          });
+        } else {
+          renderSynthesisLog();
+        }
       })
       .catch(() => {});
   }

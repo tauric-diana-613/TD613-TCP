@@ -141,17 +141,29 @@
   "optional_engine_adapters": {
     "ATLAS": [
       "compare_routes",
-      "trace_relations"
+      "trace_relations",
+      "atlas_math_dispatch",
+      "fadt_fiber_audit",
+      "fadt_coordinate_recovery",
+      "fadt_discrepancy"
     ],
     "RULEFIELD": [
       "assess_roles",
-      "propose_rulefield"
+      "propose_rulefield",
+      "pedagogue_cadence",
+      "pedagogue_institutional_time"
     ],
     "APERTURE": [
-      "audit_epistemic_deficit"
+      "audit_epistemic_deficit",
+      "evaluate_probe_stability",
+      "compute_matrix_svd",
+      "td613_governed_exposure",
+      "observatory_diagnostics"
     ],
     "DOLLHOUSE": [
-      "audit"
+      "audit",
+      "fadt_reparative_packet",
+      "temporal_non_retroactivity"
     ],
     "UNIVERSAL_ATELIER": [
       "search",

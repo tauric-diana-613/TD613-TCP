@@ -104,9 +104,10 @@ def main(out):
     base=[
         APP/"site-epoch-preflight.js",
         APP/"encyclopedia"/"index.html",
+        APP/"encyclopedia"/"llms.txt",
         APP/"encyclopedia"/"vix-cyb.html"
     ]
-    for folder in (APP/"encyclopedia"/"reference",APP/"encyclopedia"/"vixen-estate",APP/"encyclopedia"/"assets"/"vixen"):
+    for folder in (APP/"encyclopedia"/"reference",APP/"encyclopedia"/"vixen-estate",APP/"encyclopedia"/"assets"/"vixen",APP/"encyclopedia"/"vix-cyb"):
         base += [f for f in folder.rglob("*") if f.is_file() and not f.name.startswith(".")]
     files={p.relative_to(APP).as_posix():p.read_bytes() for p in base}
     # The machine-only Podium CLI uses dynamically resolved modules; preserve

@@ -399,7 +399,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-pro
 
 /* 2. Frontispiece (#cover) & Overview Editorial Foyer ("Four Ways to Enter the Opera") */
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview #cover{
- height:clamp(600px,100svh,940px)!important;
+ height:clamp(650px,100svh,940px)!important;
  min-height:600px!important;
  background:#000000!important;
  padding:0!important;
@@ -407,7 +407,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview #cover{
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art{
  inset:0!important;
- padding:108px 0 34px!important;
+ padding:clamp(92px,12.5vh,118px) clamp(14px,2vw,32px) clamp(50px,7vh,70px)!important;
  z-index:2!important;
  background:#000000!important;
  box-sizing:border-box!important;
@@ -415,76 +415,90 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art{
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art picture{
  width:100%!important;
  height:100%!important;
- display:grid!important;
- place-items:center!important;
+ max-width:100%!important;
+ max-height:100%!important;
+ min-width:0!important;
+ min-height:0!important;
+ display:flex!important;
+ align-items:center!important;
+ justify-content:center!important;
+ overflow:hidden!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art img{
  width:100%!important;
  height:100%!important;
  max-width:100%!important;
  max-height:100%!important;
+ min-width:0!important;
+ min-height:0!important;
  object-fit:contain!important;
+ object-position:center center!important;
  opacity:1!important;
  filter:none!important;
  mix-blend-mode:normal!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art::after{
- background:linear-gradient(180deg,rgba(0,0,0,.78) 0%,transparent 8%,transparent 90%,rgba(0,0,0,.84) 100%)!important;
+ background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,transparent 7%,transparent 100%)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-light{
  opacity:.35!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-title{
- inset:84px var(--gutter) 104px!important;
- z-index:5!important;
+ inset:84px var(--gutter) clamp(98px,13vh,122px)!important;
+ z-index:7!important;
  pointer-events:none!important;
  display:flex!important;
  flex-direction:column!important;
  justify-content:space-between!important;
 }
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview :is(.cover-word-one,.cover-word-two){
+ font-family:'Didot','Bodoni 72','Bodoni MT','Palatino Linotype','Book Antiqua',Baskerville,Georgia,serif!important;
+ font-weight:400!important;
+}
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-one{
  align-self:flex-start!important;
- font-size:clamp(38px,4.2vw,64px)!important;
- line-height:.88!important;
- letter-spacing:-.045em!important;
+ font-size:clamp(36px,4vw,62px)!important;
+ line-height:.9!important;
+ letter-spacing:-.02em!important;
  color:#FF91AF!important;
  text-shadow:0 4px 28px rgba(0,0,0,.92)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-two{
  align-self:flex-end!important;
  text-align:right!important;
- font-size:clamp(25px,2.75vw,44px)!important;
- line-height:.92!important;
- letter-spacing:-.035em!important;
- max-width:min(38vw,440px)!important;
+ font-size:clamp(24px,2.4vw,38px)!important;
+ line-height:.96!important;
+ letter-spacing:-.015em!important;
+ max-width:min(34vw,420px)!important;
  color:#FF91AF!important;
  text-shadow:0 4px 28px rgba(0,0,0,.96)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial{
  display:block!important;
- margin-top:.32em!important;
- font:italic 500 clamp(14px,1.25vw,19px)/1.2 var(--font-serif)!important;
+ margin-top:.28em!important;
+ font:italic 500 clamp(14px,1.2vw,18px)/1.2 var(--font-serif)!important;
  letter-spacing:0!important;
  color:#FFF2A9!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial-note{
  display:block!important;
- margin-top:6px!important;
+ margin-top:5px!important;
  font:600 9px/1.4 var(--font-mono)!important;
- letter-spacing:.16em!important;
+ letter-spacing:.15em!important;
  text-transform:uppercase!important;
- color:rgba(246,244,240,.88)!important;
+ color:rgba(246,244,240,.92)!important;
+ text-shadow:0 2px 12px rgba(0,0,0,.98),0 0 22px rgba(0,0,0,.95)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-marginalia{
  position:absolute!important;
  top:84px!important;
  right:var(--gutter)!important;
- z-index:6!important;
+ z-index:7!important;
  max-width:44ch!important;
  text-align:right!important;
  font:500 9.5px/1.55 var(--font-mono)!important;
  letter-spacing:.08em!important;
- color:rgba(246,244,240,.88)!important;
+ color:rgba(246,244,240,.9)!important;
  display:flex!important;
  flex-direction:column!important;
  align-items:flex-end!important;
@@ -511,7 +525,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-spine{
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-bottom{
  position:absolute!important;
- bottom:22px!important;
+ bottom:clamp(14px,2vh,22px)!important;
  left:var(--gutter)!important;
  right:var(--gutter)!important;
  z-index:6!important;
@@ -521,12 +535,13 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-bottom
  gap:24px!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-desc{
- font:400 clamp(14.5px,1.35vw,20px)/1.34 var(--font-serif)!important;
- letter-spacing:-.01em!important;
+ font:400 clamp(13.5px,1.15vw,17.5px)/1.36 var(--font-serif)!important;
+ letter-spacing:-.005em!important;
  color:#F6F4F0!important;
- max-width:min(36ch,34vw)!important;
+ max-width:none!important;
+ width:auto!important;
  margin:0!important;
- text-shadow:0 2px 18px rgba(0,0,0,.95)!important;
+ text-shadow:0 2px 18px rgba(0,0,0,.96)!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-enter{
  display:inline-flex!important;
@@ -537,6 +552,11 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-enter{
  text-transform:uppercase!important;
  color:#F6F4F0!important;
  text-decoration:none!important;
+}
+@media(min-width:960px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-desc{
+  white-space:nowrap!important;
+ }
 }
 @media(max-width:1180px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-marginalia{
@@ -550,66 +570,67 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-enter{
 }
 @media(max-width:680px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview #cover{
-  height:clamp(660px,100svh,844px)!important;
-  min-height:660px!important;
+  height:clamp(620px,calc(100svh - 67px),820px)!important;
+  min-height:620px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art{
   inset:0!important;
-  padding:150px 10px 266px!important;
+  padding:172px 14px 206px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-title{
-  inset:72px 18px 168px!important;
+  inset:76px 16px 96px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-one{
-  font-size:34px!important;
+  font-size:30px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-two{
   max-width:100%!important;
-  font-size:23px!important;
+  font-size:21px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial{
-  font-size:13px!important;
-  margin-top:.22em!important;
+  font-size:12.5px!important;
+  margin-top:.18em!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial-note{
   font-size:7.5px!important;
   letter-spacing:.1em!important;
-  margin-top:4px!important;
+  margin-top:3px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-marginalia{
-  top:108px!important;
-  left:18px!important;
-  right:18px!important;
+  top:110px!important;
+  left:16px!important;
+  right:16px!important;
   align-items:flex-start!important;
   text-align:left!important;
-  font-size:8px!important;
-  line-height:1.38!important;
+  font-size:7.5px!important;
+  line-height:1.34!important;
   max-width:none!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-marginalia span{
   white-space:normal!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-bottom{
-  bottom:78px!important;
-  left:18px!important;
-  right:18px!important;
+  bottom:14px!important;
+  left:16px!important;
+  right:16px!important;
   flex-direction:row!important;
   align-items:flex-end!important;
   justify-content:space-between!important;
-  gap:12px!important;
+  gap:10px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-desc{
-  max-width:58vw!important;
-  font-size:13px!important;
+  max-width:62vw!important;
+  white-space:normal!important;
+  font-size:12px!important;
   line-height:1.28!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-enter{
-  font-size:8.5px!important;
-  gap:10px!important;
+  font-size:8px!important;
+  gap:8px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .enter-orbit{
-  width:52px!important;
-  height:52px!important;
+  width:46px!important;
+  height:46px!important;
  }
 }
 
@@ -1001,4 +1022,286 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hol
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:not(:first-child) .comp-table code{
  background:rgba(255,240,168,.12)!important;
  color:#FFF0A8!important;
+}
+
+/* Constitutive Inquiry Interactive Centerpiece (#constitutiveInquiry) */
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-inquiry-stage{
+ position:relative;
+ z-index:4;
+ scroll-margin-top:84px;
+ background:linear-gradient(180deg,#080B0E 0%,#0E141A 52%,#0B1015 100%)!important;
+ color:#F6F4F0!important;
+ border-top:1px solid rgba(255,145,175,.38)!important;
+ border-bottom:1px solid rgba(255,242,169,.28)!important;
+ padding:clamp(36px,4.8vw,64px) var(--gutter) clamp(40px,5vw,70px)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .vixen-inquiry-inner{
+ position:relative;
+ z-index:12;
+ max-width:1380px;
+ margin:0 auto;
+ display:grid;
+ gap:22px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-head{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:flex-end;
+ justify-content:space-between;
+ gap:16px 24px;
+ padding-bottom:18px;
+ border-bottom:1px solid rgba(255,145,175,.28);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-kicker{
+ font:700 10px/1.35 var(--font-mono);
+ letter-spacing:.16em;
+ text-transform:uppercase;
+ color:#FFF2A9;
+ margin-bottom:6px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-title{
+ margin:0;
+ font-family:'Didot','Bodoni 72','Bodoni MT','Palatino Linotype','Book Antiqua',Baskerville,Georgia,serif;
+ font-weight:400;
+ font-size:clamp(28px,3.2vw,46px);
+ line-height:1.04;
+ color:#FF91AF;
+ letter-spacing:-.01em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-cadence-bar{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-cadence-step{
+ background:rgba(15,20,24,.94);
+ border:1px solid rgba(255,145,175,.24);
+ padding:12px 14px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-cadence-label{
+ font:700 9.5px/1.2 var(--font-mono);
+ letter-spacing:.16em;
+ text-transform:uppercase;
+ color:#FFF2A9;
+ margin-bottom:4px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-cadence-copy{
+ margin:0;
+ font:400 13px/1.45 var(--font-serif);
+ color:rgba(246,244,240,.9);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-main-grid{
+ display:grid;
+ grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+ gap:20px;
+ align-items:start;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-card{
+ background:rgba(12,17,22,.96);
+ border:1px solid rgba(255,145,175,.32);
+ padding:20px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-card-title{
+ margin:0 0 12px;
+ font:700 10px/1.35 var(--font-mono);
+ letter-spacing:.15em;
+ text-transform:uppercase;
+ color:#FF91AF;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-field-label{
+ display:block;
+ font:600 9.5px/1.3 var(--font-mono);
+ letter-spacing:.12em;
+ text-transform:uppercase;
+ color:#FFF2A9;
+ margin:12px 0 6px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-textarea,
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-input{
+ width:100%;
+ box-sizing:border-box;
+ background:#060708;
+ color:#F6F4F0;
+ border:1px solid rgba(255,145,175,.38);
+ padding:10px 12px;
+ font:400 14px/1.48 var(--font-serif);
+ border-radius:0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-textarea:focus,
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-input:focus{
+ outline:2px solid #FFF2A9;
+ outline-offset:2px;
+ border-color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-actions-row{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:10px;
+ margin-top:14px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-btn{
+ cursor:pointer;
+ background:#182026;
+ color:#FFF9F5;
+ border:1px solid #FF91AF;
+ padding:9px 14px;
+ font:600 10px/1.2 var(--font-mono);
+ letter-spacing:.13em;
+ text-transform:uppercase;
+ transition:background .15s ease,color .15s ease,border-color .15s ease;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-btn.primary{
+ background:#FF91AF;
+ color:#0F1418;
+ border-color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-btn:hover,
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-btn:focus-visible{
+ background:#FFF2A9;
+ color:#0F1418;
+ border-color:#FF65AA;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-status-line{
+ margin-top:10px;
+ font:500 11px/1.45 var(--font-mono);
+ color:#9DBCC1;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-telemetry-strip{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:10px;
+ margin-top:14px;
+ padding-top:14px;
+ border-top:1px solid rgba(255,242,169,.2);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-metric{
+ background:#060708;
+ border:1px solid rgba(157,188,193,.28);
+ padding:10px 12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-metric-label{
+ font:600 9px/1.2 var(--font-mono);
+ letter-spacing:.12em;
+ text-transform:uppercase;
+ color:#9DBCC1;
+ margin-bottom:4px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-metric-val{
+ font:700 13px/1.3 var(--font-mono);
+ color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-filter-bar{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:8px;
+ margin-bottom:12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-chip{
+ cursor:pointer;
+ background:#0F1418;
+ color:#F6F4F0;
+ border:1px solid rgba(255,145,175,.34);
+ padding:6px 11px;
+ font:600 9.5px/1.2 var(--font-mono);
+ letter-spacing:.12em;
+ text-transform:uppercase;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-chip[aria-pressed="true"]{
+ background:#FF91AF;
+ color:#0F1418;
+ border-color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conjecture-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+ gap:12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conjecture-card{
+ background:#090D11;
+ border:1px solid rgba(255,145,175,.28);
+ padding:14px;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+ gap:10px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conjecture-card.is-active{
+ border-color:#FFF2A9;
+ background:#12181D;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conj-meta{
+ font:700 9px/1.3 var(--font-mono);
+ letter-spacing:.12em;
+ text-transform:uppercase;
+ color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conj-title{
+ margin:4px 0 6px;
+ font:500 15.5px/1.3 var(--font-serif);
+ color:#FF91AF;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-conj-body{
+ margin:0;
+ font:400 12.5px/1.45 var(--font-serif);
+ color:rgba(246,244,240,.88);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-list{
+ display:grid;
+ gap:8px;
+ max-height:310px;
+ overflow-y:auto;
+ padding-right:4px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-row{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ background:#060708;
+ border:1px solid rgba(255,145,175,.22);
+ padding:10px 12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-row.is-active{
+ border-color:#FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-info{
+ min-width:0;
+ flex:1 1 220px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-id{
+ font:700 10px/1.3 var(--font-mono);
+ color:#FFF2A9;
+ letter-spacing:.08em;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-summary{
+ margin-top:3px;
+ font:400 12.5px/1.4 var(--font-serif);
+ color:#F6F4F0;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .ci-log-chain{
+ margin-top:3px;
+ font:500 9.5px/1.3 var(--font-mono);
+ color:#9DBCC1;
+ word-break:break-all;
+}
+@media(max-width:980px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .ci-main-grid,
+ body:not([data-active-research-stage="OPERAHOUSE"]) .ci-cadence-bar{
+  grid-template-columns:minmax(0,1fr);
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) .ci-telemetry-strip{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+}
+@media(max-width:680px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .ci-telemetry-strip{
+  grid-template-columns:minmax(0,1fr);
+ }
 }

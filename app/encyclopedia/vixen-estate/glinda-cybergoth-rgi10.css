@@ -721,6 +721,58 @@ body:not([data-active-research-stage="OPERAHOUSE"]) .mobile-wayfinder:not(.vixen
   max-width:none;
  }
 }
+body:not([data-active-research-stage="OPERAHOUSE"]) footer.footer{
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:14px 20px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-end-controls{
+ margin-left:auto;
+ display:flex;
+ flex-wrap:wrap;
+ align-items:center;
+ gap:12px;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-session-btn,
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-podium-link{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ min-height:44px;
+ padding:8px 14px;
+ font:600 10px/1.25 var(--font-mono);
+ letter-spacing:.13em;
+ text-transform:uppercase;
+ text-decoration:none;
+ cursor:pointer;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-session-btn{
+ background:#141C23;
+ color:#FFF2A9;
+ border:1px solid rgba(255,242,169,.6);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-podium-link{
+ background:#FF91AF;
+ color:#0F1418;
+ border:1px solid #FFF2A9;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-session-btn:hover,
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-session-btn:focus-visible,
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-podium-link:hover,
+body:not([data-active-research-stage="OPERAHOUSE"]) .footer-podium-link:focus-visible{
+ background:#FFF2A9;
+ color:#0F1418;
+ border-color:#FF65AA;
+}
+@media(max-width:680px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) .footer-end-controls{
+  margin-left:0;
+  width:100%;
+  justify-content:flex-start;
+  padding-bottom:74px;
+ }
+}
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenRoomRail .vixen-room-end{
  display:flex;align-items:center;justify-content:center;
  padding:12px 4px;margin-top:auto;

@@ -206,4 +206,26 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
  assert.equal(dictated.provenance.operator_dictated_question,true);
  assert.equal(dictated.provenance.empirical_replication_credit,0);
  assert.equal(dictated.provenance.scientific_promotion_authority,false);
+
+ const {
+  synthesizeOutsidePerspectiveConjectures,
+  computeSalonObservatoryDiagnostics
+ }=await import('../app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs');
+ const conjectures=synthesizeOutsidePerspectiveConjectures(corpus,{lagTicks:36,limit:7});
+ assert.equal(conjectures.length,7);
+ for(const c of conjectures){
+  assert.ok(Array.isArray(c.clusters)&&c.clusters.length>=1);
+  assert.ok(typeof c.now_notice==='string'&&c.now_notice.length>10);
+  assert.ok(typeof c.exact_falsifier==='string'&&c.exact_falsifier.length>10);
+  assert.equal(c.claim_ceiling,'UNRATIFIED_OUTSIDE_PERSPECTIVE_CONJECTURE_NOT_EVIDENCE');
+ }
+ const diag=computeSalonObservatoryDiagnostics({
+  clock_probe:{lag_ticks:36},
+  measurement_operator:{matrix:[[1,0.25],[0,0.85]]}
+ });
+ assert.equal(diag.schema,'emstd613.vixen.salon-observatory-diagnostics/v1');
+ assert.equal(diag.vernier_summary.non_commutative_witness,true);
+ assert.equal(diag.mirror_111.projection_orthogonal_to_111,true);
+ assert.equal(diag.xor_synergy.synergistic_emergence,true);
+ assert.equal(diag.epistemic_ceiling.empirical_credit,0);
 });

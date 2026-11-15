@@ -1,6 +1,6 @@
 {
   "schema": "emstd613.vixen.podium-synthesis-state/v1",
-  "status": "BASELINE_UNRATIFIED",
+  "status": "BASELINE_ESTATE_SYNTHESIS",
   "operator_question": null,
   "operator_method": null,
   "custom_headline": null,
@@ -9,10 +9,105 @@
   "custom_left_spine": null,
   "active_plan": null,
   "refraction": null,
+  "inquiry_conjectures": [],
   "supplemental_sources": [],
   "podium_events": [],
+  "synthesis_headline": {
+    "schema": "emstd613.vixen.synthesis-headline/v1",
+    "regime": "BASELINE_ESTATE_SYNTHESIS",
+    "headerTagline": "Typed Constitutive Cybernetics",
+    "patternSubtitle": "THE ARCHITECTURE OF NON-COLLAPSING PLANES.",
+    "axiomMarginalia": [
+      "Typed Constitutive Cybernetics",
+      "S_semantic ≠ W_witness ≠ A_actuator",
+      "P-Closure ≠ W-Truth · [32, 40] Sensitivity"
+    ],
+    "heroStatement": "Where semantic steering, witness verification,\nand low-latency actuation refuse to collapse\ninto one untyped plane.",
+    "leftSpine": "S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS",
+    "researchQuestionMeta": "CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED",
+    "researchQuestion": "“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”",
+    "provenance": {
+      "work_census": 32,
+      "supplemental_sources": 0,
+      "snapshot_count": 0,
+      "podium_event_count": 0,
+      "withdrawn_count": 0,
+      "operator_dictated_question": false,
+      "regime": "BASELINE_ESTATE_SYNTHESIS",
+      "empirical_replication_credit": 0,
+      "scientific_promotion_authority": false,
+      "human_closure_required": true
+    }
+  },
   "empirical_replication_credit": 0,
   "scientific_promotion_authority": false,
   "human_closure_required": true,
-  "release_authority": false
+  "release_authority": false,
+  "active_entry_id": "syn-0000-baseline",
+  "last_log_entry_id": "syn-0000-baseline",
+  "synthesis_seq": 0,
+  "synthesis_log": [
+    {
+      "seq": 0,
+      "entry_id": "syn-0000-baseline",
+      "kind": "BASELINE",
+      "predecessor_entry_id": null,
+      "predecessor_sha256": null,
+      "recorded_at": "2026-11-14T00:00:00Z",
+      "summary": "Initial canonical Vixen Cybernetics 32-work constitutive inquiry baseline.",
+      "status": "BASELINE_ESTATE_SYNTHESIS",
+      "patternSubtitle": "THE ARCHITECTURE OF NON-COLLAPSING PLANES.",
+      "researchQuestionMeta": "CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED",
+      "researchQuestion": "“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”",
+      "state_sha256": "9465e93481d50af1e65c9249de1c534c60507648eb8548479dd4c80022a141a3"
+    }
+  ],
+  "rollback_snapshots": {
+    "syn-0000-baseline": {
+      "schema": "emstd613.vixen.podium-synthesis-state/v1",
+      "status": "BASELINE_ESTATE_SYNTHESIS",
+      "operator_question": null,
+      "operator_method": null,
+      "custom_headline": null,
+      "custom_subtitle": null,
+      "custom_hero_statement": null,
+      "custom_left_spine": null,
+      "active_plan": null,
+      "refraction": null,
+      "inquiry_conjectures": [],
+      "supplemental_sources": [],
+      "podium_events": [],
+      "synthesis_headline": {
+        "schema": "emstd613.vixen.synthesis-headline/v1",
+        "regime": "BASELINE_ESTATE_SYNTHESIS",
+        "headerTagline": "Typed Constitutive Cybernetics",
+        "patternSubtitle": "THE ARCHITECTURE OF NON-COLLAPSING PLANES.",
+        "axiomMarginalia": [
+          "Typed Constitutive Cybernetics",
+          "S_semantic ≠ W_witness ≠ A_actuator",
+          "P-Closure ≠ W-Truth · [32, 40] Sensitivity"
+        ],
+        "heroStatement": "Where semantic steering, witness verification,\nand low-latency actuation refuse to collapse\ninto one untyped plane.",
+        "leftSpine": "S ≠ W ≠ A · FIVE NON-COMMUTATIVE CLOCKS",
+        "researchQuestionMeta": "CONSTITUTIVE INQUIRY QUESTION · S ≠ W ≠ A · UNRATIFIED",
+        "researchQuestion": "“Across thirty-two cybernetic architectures spanning real-time audio clocks, e-textile transduction, and hypervisor control planes, what non-collapsing invariants emerge when semantic steering, witness verification, and low-latency actuation stay strictly typed—and what open horizon remains for human judgment?”",
+        "provenance": {
+          "work_census": 32,
+          "supplemental_sources": 0,
+          "snapshot_count": 0,
+          "podium_event_count": 0,
+          "withdrawn_count": 0,
+          "operator_dictated_question": false,
+          "regime": "BASELINE_ESTATE_SYNTHESIS",
+          "empirical_replication_credit": 0,
+          "scientific_promotion_authority": false,
+          "human_closure_required": true
+        }
+      },
+      "empirical_replication_credit": 0,
+      "scientific_promotion_authority": false,
+      "human_closure_required": true,
+      "release_authority": false
+    }
+  }
 }

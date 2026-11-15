@@ -72,6 +72,81 @@ export function checkSalonCorpus(corpus){
   source_class:'HISTORICAL_METADATA',original_source_bodies:'UNAVAILABLE_IN_PUBLIC_SURFACE'
  });
 }
+const CLUSTER_ALIAS=Object.freeze({
+ I:'C1',C1:'C1',II:'C2',C2:'C2',III:'C3',C3:'C3',IV:'C4',C4:'C4',V:'C5',C5:'C5'
+});
+const normCluster=c=>CLUSTER_ALIAS[String(c||'').trim().toUpperCase()]||String(c||'').trim();
+const clampNum=(v,lo,hi)=>Math.max(lo,Math.min(hi,num(v)));
+
+export function computeMatrixSvd2x2(M){
+ const a=Number(M?.[0]?.[0]),b=Number(M?.[0]?.[1]),c=Number(M?.[1]?.[0]),d=Number(M?.[1]?.[1]);
+ if(![a,b,c,d].every(Number.isFinite))
+  return deepFreeze({valid:false,sigma_max:0,sigma_min:0,rank:0,condition:Infinity,classification:'INVALID_MATRIX'});
+ const s1=a*a+b*b+c*c+d*d;
+ const det=a*d-b*c;
+ const disc=Math.sqrt(Math.max(0,s1*s1-4*det*det));
+ const sigmaMax=Math.sqrt(Math.max(0,(s1+disc)/2));
+ const sigmaMin=Math.sqrt(Math.max(0,(s1-disc)/2));
+ const rank=sigmaMax<1e-12?0:(sigmaMin/sigmaMax<1e-7?1:2);
+ const condition=sigmaMin>1e-12?sigmaMax/sigmaMin:Infinity;
+ const classification=rank<2?'RANK_DEFICIENT':(condition>1e4?'ILL_CONDITIONED':'WELL_CONDITIONED');
+ return deepFreeze({
+  valid:true,
+  sigma_max:+sigmaMax.toFixed(6),
+  sigma_min:+sigmaMin.toFixed(6),
+  rank,
+  condition:Number.isFinite(condition)?+condition.toFixed(4):Infinity,
+  classification
+ });
+}
+
+export function project111Mirror(vector){
+ const xs=Array.isArray(vector)&&vector.length===3?vector.map(num):[1,1,1];
+ const mean=(xs[0]+xs[1]+xs[2])/3;
+ const proj=[mean,mean,mean];
+ const nullComp=[xs[0]-mean,xs[1]-mean,xs[2]-mean];
+ const totalE=xs[0]*xs[0]+xs[1]*xs[1]+xs[2]*xs[2];
+ const nullE=nullComp[0]*nullComp[0]+nullComp[1]*nullComp[1]+nullComp[2]*nullComp[2];
+ return deepFreeze({
+  vector:xs,
+  projection:proj.map(v=>+v.toFixed(6)),
+  nullspace_component:nullComp.map(v=>+v.toFixed(6)),
+  total_energy:+totalE.toFixed(6),
+  nullspace_energy:+nullE.toFixed(6),
+  nullspace_ratio:totalE>1e-12?+(nullE/totalE).toFixed(6):0,
+  projection_orthogonal_to_111:true
+ });
+}
+
+export function computeDiscreteXorSynergy(samples){
+ const rows=Array.isArray(samples)&&samples.length>0?samples:[
+  {x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}
+ ];
+ const n=rows.length;
+ const cXZ=new Map(),cYZ=new Map(),cXYZ=new Map(),cX=new Map(),cY=new Map(),cXY=new Map(),cZ=new Map();
+ const inc=(m,k)=>m.set(k,(m.get(k)||0)+1);
+ for(const r of rows){
+  const x=String(r?.x??0),y=String(r?.y??0),z=String(r?.z??0);
+  inc(cX,x);inc(cY,y);inc(cZ,z);
+  inc(cXY,x+'|'+y);inc(cXZ,x+'|'+z);inc(cYZ,y+'|'+z);inc(cXYZ,x+'|'+y+'|'+z);
+ }
+ const h=counts=>{let s=0;for(const v of counts.values()){const p=v/n;if(p>0)s-=p*Math.log2(p);}return s;};
+ const miXY_Z=Math.max(0,h(cXY)+h(cZ)-h(cXYZ));
+ const miX_Z=Math.max(0,h(cX)+h(cZ)-h(cXZ));
+ const miY_Z=Math.max(0,h(cY)+h(cZ)-h(cYZ));
+ const redundancy=Math.min(miX_Z,miY_Z);
+ const synergy=Math.max(0,miXY_Z-Math.max(miX_Z,miY_Z));
+ return deepFreeze({
+  sample_count:n,
+  I_X_Z_bits:+miX_Z.toFixed(6),
+  I_Y_Z_bits:+miY_Z.toFixed(6),
+  I_XY_Z_bits:+miXY_Z.toFixed(6),
+  redundancy_bits:+redundancy.toFixed(6),
+  synergy_bits:+synergy.toFixed(6),
+  synergistic_emergence:synergy>1e-6&&miX_Z<1e-6&&miY_Z<1e-6
+ });
+}
+
 function buildClockTicks(t,order,offsets){
  const off=(id)=>Math.max(-24,Math.min(24,Math.round(num(offsets?.[id]))));
  const rev=order==='B_A'?1:0;
@@ -136,7 +211,8 @@ export function computeClockVernier(lag=30,{route='A_B',activeClockId='k',workA=
  const idx=CLOCKS.findIndex(x=>x.id===active.id);
  const activeSpread=Math.abs((reverse.clocks[idx]?.tick||0)-(forward.clocks[idx]?.tick||0));
  const arrivalInversions=rankInversions(forward.arrival_order,reverse.arrival_order);
- const aligned=[workA?.cluster,workB?.cluster].filter(Boolean).filter(c=>active.preferredClusters.includes(c));
+ const preferred=new Set((active.preferredClusters||[]).map(normCluster));
+ const aligned=[workA?.cluster,workB?.cluster].filter(Boolean).filter(c=>preferred.has(normCluster(c)));
  return deepFreeze({
   schema:'emstd613.vixen.clock-vernier/v1',
   lag_ticks:forward.parameter_lag_ticks,
@@ -168,13 +244,45 @@ function sourceEntry(w,requested){
   source_content_verified:false,source_body_available:false
  };
 }
-function questionTemplate(a,b,track,method,seq='A_B'){
+function computePairTension(a,b,vernier){
+ const planesA=new Set(a?.planes||[]),planesB=new Set(b?.planes||[]);
+ const sharedPlanes=[...planesA].filter(p=>planesB.has(p));
+ const allPlanes=[...new Set([...planesA,...planesB])];
+ const symDiffPlanes=allPlanes.filter(p=>!(planesA.has(p)&&planesB.has(p)));
+ const hasWPlaneGrounding=allPlanes.includes('W-PLANE');
+ const protA=new Set(a?.protocols||[]),protB=new Set(b?.protocols||[]);
+ const sharedProtocols=[...protA].filter(p=>protB.has(p));
+ const bridgingProtocols=[...new Set([...protA,...protB])].filter(p=>!(protA.has(p)&&protB.has(p)));
+ const clockForCluster=cl=>{
+  const nc=normCluster(cl);
+  return CLOCKS.find(ck=>(ck.preferredClusters||[]).some(p=>normCluster(p)===nc))||CLOCKS[0];
+ };
+ const clockA=clockForCluster(a?.cluster),clockB=clockForCluster(b?.cluster);
+ const frequencyRatio=+(clockB.omegaMultiplier/clockA.omegaMultiplier).toFixed(4);
+ return {
+  clusters:[a?.cluster||'UNKNOWN',b?.cluster||'UNKNOWN'],
+  shared_planes:sharedPlanes,
+  sym_diff_planes:symDiffPlanes,
+  has_w_plane_grounding:hasWPlaneGrounding,
+  touches_p_membrane:symDiffPlanes.includes('P-MEMBRANE'),
+  shared_protocols:sharedProtocols,
+  bridging_protocols:bridgingProtocols,
+  clock_pair:[clockA.id,clockB.id],
+  clock_frequency_ratio:frequencyRatio,
+  inversions:vernier.arrival_inversions,
+  l1_delta:vernier.tick_l1_delta
+ };
+}
+
+function questionTemplate(a,b,track,method,seq='A_B',tension=null){
  const left=title(a),right=title(b);
  const anchor=seq==='B_A'?right:left,probe=seq==='B_A'?left:right;
- return 'Anchored by '+anchor+' ▷ '+probe+': can a source-attributed '+String(method.family||'documentary')+
-  ' comparison of '+anchor+' and '+probe+
-  ' under '+track.title+
-  ' yield a falsifiable question whose provenance and utility survive matched competent-union controls without inferring shared authorship?';
+ const planeNote=tension&&tension.sym_diff_planes.length
+  ?` across diverging planes [${tension.sym_diff_planes.join(', ')}]`:' within shared plane boundaries';
+ const groundNote=tension&&!tension.has_w_plane_grounding
+  ?' (FLAGGED: missing W-PLANE physical witness grounding — hold any mechanism promotion)':'';
+ return 'Anchored by '+anchor+' ▷ '+probe+': under '+track.title+' and '+String(method.family||'documentary')+
+  ' custody'+planeNote+' (ω ratio '+String(tension?.clock_frequency_ratio||1)+'), what falsifiable structural invariant separates shared state machinery from superficial metaphor without inferring shared authorship?'+groundNote;
 }
 function preregisteredMeasurements(){
  const measures=[
@@ -212,12 +320,6 @@ export function composeSalonPlan(corpus,input={}){
  const left=sourceEntry(a,input.source_ids?.[0]),right=sourceEntry(b,input.source_ids?.[1]);
  const seq=input.route_order==='B_A'?'B_A':'A_B';
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
- const suggested=questionTemplate(a,b,track,method,seq);
- const proposal=limited(input.question,900)||suggested;
- const observation=limited(input.observable_predicate,450)||
-  'In matched, preregistered trials, compare source-attributed question utility, provenance error rate, and additional verification cost against competent-union controls.';
- const counterworld=limited(input.counterworld,450)||
-  'Reverse source encounter order while holding Work identifiers, recorded manifests, question rubric and reference corpus fixed; compare route effects separately from terminal identities.';
  const deficits=[
   'Original source bodies are unavailable in the public catalogue.',
   'No independent external witness has established any cross-Work causal relationship.',
@@ -228,8 +330,21 @@ export function composeSalonPlan(corpus,input={}){
  const vernier=computeClockVernier(input.lag_ticks,{
   route:seq,activeClockId:input.active_clock_id,workA:a,workB:b,clockOffsets:input.clock_offsets
  });
+ const tension=computePairTension(a,b,vernier);
+ const diagnostics=computeSalonObservatoryDiagnostics({
+  clock_probe:{lag_ticks:input.lag_ticks,active_clock_id:input.active_clock_id,clock_offsets:input.clock_offsets,route_order:seq,workA:a,workB:b},
+  measurement_operator:input.measurement_operator,
+  mirror_state:input.mirror_state,
+  synergy_table:input.synergy_table
+ });
  const synthetic=seq==='B_A'?vernier.reverse:vernier.forward;
  const anchorWork=seq==='B_A'?b:a,probeWork=seq==='B_A'?a:b;
+ const suggested=questionTemplate(a,b,track,method,seq,tension);
+ const proposal=limited(input.question,900)||suggested;
+ const observation=limited(input.observable_predicate,450)||
+  'In matched, preregistered trials, compare source-attributed question utility, provenance error rate, and additional verification cost against competent-union controls.';
+ const counterworld=limited(input.counterworld,450)||
+  'Reverse source encounter order while holding Work identifiers, recorded manifests, question rubric and reference corpus fixed; compare route effects separately from terminal identities.';
  const receipt={
   schema:SALON_SCHEMA,status:'OPEN_FIELD_UNRATIFIED_QUESTION',
   conceptual_form:'CONJECTURAL_VIXEN_UNIFIED_THEORY_STUDY_NOT_DISCOVERY',
@@ -283,6 +398,8 @@ export function composeSalonPlan(corpus,input={}){
    route_sign:seq==='B_A'?-1:1,
    anchor_pair:title(anchorWork)+' ▷ '+title(probeWork)
   },
+  structural_tension:tension,
+  observatory_diagnostics:diagnostics,
   missing_evidence:deficits,
   next_measurement:'PREREGISTER_INDEPENDENT_WITNESSES_AND_MATCHED_CONTROLS',
   experiment_b:{
@@ -363,6 +480,203 @@ export function makePodiumTasks(plan,{recordId=null}={}){
  });
 }
 const cleanText=(value,max=500)=>typeof value==='string'?value.trim().slice(0,max):'';
+export function computeSalonObservatoryDiagnostics(input={}){
+ const cp=input?.clock_probe||{};
+ const vernier=computeClockVernier(cp.lag_ticks??30,{
+  route:cp.route_order||'A_B',
+  activeClockId:cp.active_clock_id||'k',
+  workA:cp.workA||null,
+  workB:cp.workB||null,
+  clockOffsets:cp.clock_offsets||null
+ });
+ const mo=input?.measurement_operator||{};
+ const activeFreq=vernier.active_clock?.omegaMultiplier||1.18;
+ const baseMat=Array.isArray(mo.base_matrix)?mo.base_matrix:[
+  [activeFreq,0.34],
+  [0.19,+(activeFreq*0.78).toFixed(4)]
+ ];
+ const svd=computeMatrixSvd2x2(baseMat);
+ const mirrorVec=Array.isArray(input?.mirror_state?.vector)?input.mirror_state.vector:[1,0.62,0.28];
+ const mirror=project111Mirror(mirrorVec);
+ const xorSynergy=computeDiscreteXorSynergy(input?.synergy_table?.samples);
+ const holds=[];
+ if(!svd.valid||svd.rank<2)holds.push('DEFICIT_RANK_DEFICIENT');
+ if(svd.condition>1e4)holds.push('NUMERICAL_STABILITY_DEFICIT');
+ return deepFreeze({
+  schema:'emstd613.vixen.salon-observatory-diagnostics/v1',
+  vernier_summary:{
+   active_clock_id:vernier.active_clock_id,
+   arrival_inversions:vernier.arrival_inversions,
+   tick_l1_delta:vernier.tick_l1_delta,
+   cluster_aligned:vernier.cluster_aligned,
+   non_commutative_witness:vernier.non_commutative_witness
+  },
+  svd_conditioning:svd,
+  mirror_111:mirror,
+  xor_synergy:xorSynergy,
+  aperture_holds:holds,
+  epistemic_ceiling:{empirical_credit:0,experiment_b_flight:'HELD',human_closure_required:true}
+ });
+}
+
+const OUTSIDE_CONJECTURE_SPECS=[
+ {
+  id:'conj-spsc-algedonic',
+  clusters:['C2','C1'],
+  workIds:['emwork_67768e8d5148dd461eb34cac','emwork_085223e721130117f5510975'],
+  fallbackTitles:['Lock-Free SPSC Ring Buffers','The Architecture of Control (Algedonic Systems)'],
+  atlasEngines:['A-01 Temporal Fiber Equivalence','A-05 Dynamical Morphism'],
+  clockPair:['plant','wall'],
+  title:'Wait-Free SPSC Audio Interrupts as Beer System-3/5 Algedonic Bypass',
+  lens:'Systems Control × Real-Time Concurrency',
+  now_notice:'Compare lock-free acquire/release audio overrun flags (C2) against Beer System-3/5 algedonic pain/pleasure escalation (C1).',
+  why_matter:'Both collapse into silent queue corruption if audited only on steady-state throughput while wall (16.6 ms) and 48 kHz sample (20.8 µs) clocks drift (ω ratio 2.026).',
+  exact_falsifier:'Pass queue-saturation + token-culling trajectories through A-01 & A-05: if div(F) < 0 (dissipative EMA smoothing), a dissipative clamp cannot be claimed conservative across clock regimes.',
+  missing_witness:'Live kernel/token-scheduler overrun traces across C2 & C1 + Human Gate #2 review.'
+ },
+ {
+  id:'conj-capacitive-ghz-parity',
+  clusters:['C3','C1'],
+  workIds:['emwork_0885af7e4851a2e81618b37a','emwork_402a8e202524efd197192c39'],
+  fallbackTitles:['Wearable 7-Node Kinematic Drone Interface','Autonomous Multi-Agent Governance & Cryptographic Delegation'],
+  atlasEngines:['A-02 Parity Invariant','A-03 GHZ Reduction & Locality'],
+  clockPair:['tau','k'],
+  title:'7-Node E-Textile Kinematic Capacitance as 3-Node Parity Custody Barrier',
+  lens:'Wearable Haptics × Cryptographic Quorum',
+  now_notice:'Treat 7-node wearable IMU/capacitive array actuation (C3) through the lens of non-separable 3-party quorum delegation (C1).',
+  why_matter:'Single-node and pairwise marginals shift under sweat/EMI drift without identifying intent, whereas 1-bit global phase parity flips (A-03) protect actuation against single-sensor fault injection.',
+  exact_falsifier:'Audit pairwise vs 3-node parity marginals via A-02 & A-03: actuation must remain HELD whenever 2-node reduced marginal rank drops below threshold under single-node perturbation.',
+  missing_witness:'Calibrated body-network EMI logs and Human Gates #3 & #4.'
+ },
+ {
+  id:'conj-nuisance-visibility-dsp',
+  clusters:['C2','C3'],
+  workIds:['emwork_d9462f54ea32585c5d4f05ac','emwork_6377a9e4c9fd59e427517771'],
+  fallbackTitles:['Optimal Smoothing Factors in DSP','Theremin Drone Glove Capacitive Interface'],
+  atlasEngines:['A-07 Quantum Visibility Inverse Problem','Aperture SVD Conditioning'],
+  clockPair:['plant','n'],
+  title:'Dielectric Coupling vs EMA Smoothing Decay as V(η,n) Non-Identifiability',
+  lens:'Optical Inverse Problems × Adaptive Signal Filtering',
+  now_notice:'Pair optimal DSP smoothing decay (C2) with capacitive e-textile skin proximity vs drone range (C3) under single-channel visibility observation.',
+  why_matter:'Like optical visibility V = ηn/(1+n) (A-07), scalar envelope curves conflate fabric dielectric shift η_skin with spatial distance n_range unless an orthogonal probe breaks the level-curve degeneracy.',
+  exact_falsifier:'Evaluate candidate calibration matrices with Aperture SVD & A-07: any single-channel calibration with κ(A) > 10⁴ or rank < 2 fails closed as structurally non-identifiable.',
+  missing_witness:'Orthogonal dual-frequency capacitance/EMA sweep + Gate #4 closure.'
+ },
+ {
+  id:'conj-ossl-finite-field-fadt',
+  clusters:['C4','C1'],
+  workIds:['emwork_80ef3cd291f5f4fe6fdbcdbb','emwork_48f6c55fadb2e4d6b9dc4be8'],
+  fallbackTitles:['OSSL Stylometric Lineage Tracking','Vector Culling & Memory Persistence'],
+  atlasEngines:['A-04 Finite-Field Rank vs Real SVD','FADT Fiber Bounds Γ = U \\ I'],
+  clockPair:['wall','k'],
+  title:'Discrete OSSL Stylometry Over F_p vs Real-Valued Embedding Vector Culling',
+  lens:'Finite-Field Algebra × Provenance Compression',
+  now_notice:'Contrast OSSL discrete stylometric fork signatures (C4) against cosine vector-culling persistence in real embedding space (C1).',
+  why_matter:'Erasure of fork-history conditioning coordinates creates a positive FADT gap |Γ_y| = |U_y \\ I_y| > 0 where unrelated ancestors mimic each other, while A-04 proves finite-field rank refuses continuous SVD.',
+  exact_falsifier:'Run FADT coordinate recovery across fork attributes & A-04 finite-field rank: reject any provenance score importing continuous cosine κ(A) as modular proof.',
+  missing_witness:'Independent corpus-wide OSSL commit graph + Gate #6 review.'
+ },
+ {
+  id:'conj-room-surplus-fadt',
+  clusters:['C5','C1'],
+  workIds:['emwork_3c6593d85fd5b744f24c7a9f','emwork_0d33e61fc09e51761acb87d9'],
+  fallbackTitles:['1 + 1 = 3: Occupants & Room Co-Constitution','Advanced LLM Memory Systems'],
+  atlasEngines:['FADT Discrepancy Identity','A-03 Entangled Entropy Surplus'],
+  clockPair:['k','n'],
+  title:'“1 + 1 = 3” Occupant-Room Surplus as Irreducible FADT Obstruction |Γ_y| > 0',
+  lens:'Social Cybernetics × Quotient Fiber Theory',
+  now_notice:'Examine how “the room plus two occupants equals a third agent” (C5) maps onto LLM shared context memory (C1) — and flag C5’s missing W-PLANE anchor.',
+  why_matter:'When individual state supports K₁, K₂ quotient onto an endpoint without retaining the room coordinate, the residual gap Γ_y = U_y \\ I_y captures irreducible relational surplus — yet C5 lacks W-PLANE hardware witnessing.',
+  exact_falsifier:'Compute FADT discrepancy + XOR 1-bit synergy I(X,Y;Z) - max(I_X, I_Y): enforce mandatory W-PLANE pairing guard whenever both works lie inside S-PLANE × P-MEMBRANE alone.',
+  missing_witness:'W-PLANE instrumentation grounding + empirical multi-agent session logs.'
+ },
+ {
+  id:'conj-mythic-measurement-context',
+  clusters:['C5','C2','C4'],
+  workIds:['emwork_9373eb730b45f7f5afe6b7ae','emwork_e026dfda7f98393d8c020067'],
+  fallbackTitles:['Transmission of Mythic Motifs (3000–700 BCE)','128-Step Hybrid Tracker Engine in Mixxx'],
+  atlasEngines:['A-06 Structural Signature','A-08 Measurement Context Separation'],
+  clockPair:['tau','plant'],
+  title:'Bronze Age Motif Diffusion vs Mixxx 128-Step Pattern Mutation Under Context Separation',
+  lens:'Comparative Philology × Polyrhythmic DSP Phylogeny',
+  now_notice:'Place Eastern Mediterranean motif diffusion (3000–700 BCE, C5) beside 128-step polyrhythmic pattern state transitions (C2) and OSSL fork trees (C4).',
+  why_matter:'Naive motif counting conflates four distinct mechanisms: environmental erasure (decoherence), archival coarse-graining, scribal intervention (projection), and orthography relabeling (gauge redundancy).',
+  exact_falsifier:'Apply A-08 context separation & A-06 signature testing: valid structural invariants must stay stationary under spelling/notation relabeling while shifting under genuine projective recension.',
+  missing_witness:'Blind cross-corpus motif transition matrices stripped of epoch labels.'
+ },
+ {
+  id:'conj-harmonic-false-twins',
+  clusters:['C2','C5'],
+  workIds:['emwork_b5f602e223e39e15b6437a0c','emwork_f2c89864337f162e88991e28'],
+  fallbackTitles:['Third-Order Cybernetic Architecture in Mixxx','Emergent Topologies and Quantum Field Mechanics'],
+  atlasEngines:['A-09 Symbolic & Ladder Commutator Equivalence','Aperture [111] Nullspace'],
+  clockPair:['plant','tau'],
+  title:'Symbolic Operator Twins Across DSP Phase Accumulators and Emergent Field Formulations',
+  lens:'Operator Algebra × Acoustic Synthesis',
+  now_notice:'Audit third-order Mixxx feedback equations (C2) alongside field-topology expressions (C5) for syntactic isomerism vs broken commutator symmetry.',
+  why_matter:'A single dropped radical or transposed sample-rate factor creates a convincing “false twin” whose LaTeX looks homologous yet violates [a, a†] = 1 and destabilizes phase lock.',
+  exact_falsifier:'Verify AST canonical form + ladder commutator residue via A-09 and project gain vectors onto the [111] mirror orthogonality subspace; reject any equivalence breaking commutator preservation.',
+  missing_witness:'Symbolic equation canonicalizer audit over extracted formula folios.'
+ }
+];
+
+export function synthesizeOutsidePerspectiveConjectures(corpus=null,{lagTicks=36,filterCluster=null,limit=7}={}){
+ const works=Array.isArray(corpus?.works)?corpus.works:[];
+ const byId=new Map(works.map(w=>[w.work_id,w]));
+ const vernier=computeClockVernier(lagTicks,{route:'B_A'});
+ const clockById=new Map(CLOCKS.map(c=>[c.id,c]));
+ const list=OUTSIDE_CONJECTURE_SPECS.filter(spec=>{
+  if(!filterCluster||filterCluster==='ALL')return true;
+  return spec.clusters.includes(normCluster(filterCluster));
+ }).slice(0,Math.max(1,Math.min(12,Number(limit)||7))).map((spec,idx)=>{
+  const matchedWorks=spec.workIds.map((wid,wi)=>{
+   const w=byId.get(wid);
+   if(!w)return {work_id:wid,title:spec.fallbackTitles[wi]||wid,cluster:spec.clusters[wi]||spec.clusters[0],planes:[],gate_num:null};
+   return {
+    work_id:w.work_id,
+    title:w.display_title||w.declared_title||spec.fallbackTitles[wi]||w.work_id,
+    cluster:w.cluster,
+    planes:[...(w.planes||[])],
+    human_gate_required:Boolean(w.human_gate_required),
+    gate_num:w.human_gate_required?w.gate_num:null
+   };
+  });
+  const allPlanes=[...new Set(matchedWorks.flatMap(w=>w.planes))];
+  const hasWPlaneGrounding=allPlanes.length===0||allPlanes.includes('W-PLANE');
+  const cA=clockById.get(spec.clockPair[0])||CLOCKS[0];
+  const cB=clockById.get(spec.clockPair[1])||CLOCKS[3];
+  const rho=+((cA.omegaMultiplier/cB.omegaMultiplier)).toFixed(4);
+  const svdSample=computeMatrixSvd2x2([[cA.omegaMultiplier,0.34],[0.19,cB.omegaMultiplier]]);
+  const gates=matchedWorks.map(w=>w.gate_num).filter(g=>g!==null);
+  return {
+   index:idx+1,
+   id:spec.id,
+   title:spec.title,
+   lens:spec.lens,
+   clusters:spec.clusters,
+   works:matchedWorks,
+   planes_crossed:allPlanes,
+   has_w_plane_grounding:hasWPlaneGrounding,
+   grounding_advisory:hasWPlaneGrounding
+    ?'W_PLANE_GROUNDED_PAIR'
+    :'UNGROUNDED_MEMBRANE_GUARD_PAIR_WITH_W_PLANE',
+   clock_pair:[cA.id,cB.id],
+   clock_codes:[cA.code,cB.code],
+   frequency_ratio:rho,
+   vernier_inversions:vernier.arrival_inversions,
+   svd_kappa:svdSample.condition,
+   atlas_engines:spec.atlasEngines,
+   affected_gates:gates,
+   now_notice:spec.now_notice,
+   why_matter:spec.why_matter,
+   exact_falsifier:spec.exact_falsifier,
+   missing_witness:spec.missing_witness,
+   claim_ceiling:'UNRATIFIED_OUTSIDE_PERSPECTIVE_CONJECTURE_NOT_EVIDENCE'
+  };
+ });
+ return deepFreeze(list);
+}
+
 export function deriveSynthesisHeadline({
  corpus=null,activePlan=null,refraction=null,
  benchPair=null,benchSnapshots=[],withdrawnCount=0,

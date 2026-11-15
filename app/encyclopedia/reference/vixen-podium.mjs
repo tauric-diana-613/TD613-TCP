@@ -8,7 +8,7 @@
  */
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
-import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline} from '../vixen-estate/synthesis-salon-engine.mjs';
+import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 export {deriveSynthesisHeadline};
 
@@ -21,10 +21,18 @@ export const PODIUM_ROUTES=Object.freeze([
  'engine.capabilities','engine.invoke'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
- ATLAS:Object.freeze(['compare_routes','trace_relations']),
- RULEFIELD:Object.freeze(['assess_roles','propose_rulefield']),
- APERTURE:Object.freeze(['audit_epistemic_deficit']),
- DOLLHOUSE:Object.freeze(['audit']),
+ ATLAS:Object.freeze([
+  'compare_routes','trace_relations','atlas_math_dispatch',
+  'fadt_fiber_audit','fadt_coordinate_recovery','fadt_discrepancy'
+ ]),
+ RULEFIELD:Object.freeze([
+  'assess_roles','propose_rulefield','pedagogue_cadence','pedagogue_institutional_time'
+ ]),
+ APERTURE:Object.freeze([
+  'audit_epistemic_deficit','evaluate_probe_stability','compute_matrix_svd',
+  'td613_governed_exposure','observatory_diagnostics'
+ ]),
+ DOLLHOUSE:Object.freeze(['audit','fadt_reparative_packet','temporal_non_retroactivity']),
  UNIVERSAL_ATELIER:Object.freeze(['search','get','cite','neighbors','route','context','verify'])
 });
 const RX_SHA=/^[a-f0-9]{64}$/;
@@ -60,10 +68,18 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
  const state={
   opened:false,seen:new Map(),events:[],seq:0,epoch:0,activePlan:null,activeRefraction:null,
   operatorQuestion:null,operatorMethod:null,customHeadline:null,customSubtitle:null,
-  customHeroStatement:null,customLeftSpine:null,supplementalSources:[]
+  customHeroStatement:null,customLeftSpine:null,supplementalSources:[],inquiryConjectures:[]
  };
  const applyHeadlineParams=params=>{
   if(!params||typeof params!=='object')return;
+  if(params.reset_to_baseline===true){
+   state.activePlan=null;state.activeRefraction=null;
+   state.operatorQuestion=null;state.operatorMethod=null;
+   state.customHeadline=null;state.customSubtitle=null;
+   state.customHeroStatement=null;state.customLeftSpine=null;
+   state.supplementalSources=[];state.inquiryConjectures=[];
+   return;
+  }
   if(typeof params.research_question==='string')state.operatorQuestion=text(params.research_question,600).trim()||null;
   else if(typeof params.operator_question==='string')state.operatorQuestion=text(params.operator_question,600).trim()||null;
   if(typeof params.method_label==='string')state.operatorMethod=text(params.method_label,96).trim()||null;
@@ -80,6 +96,38 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      title:text(x.title||x.id||`Supplemental Source ${i+1}`,160)
     }));
   }
+  if(Array.isArray(params.inquiry_conjectures)){
+   state.inquiryConjectures=params.inquiry_conjectures
+    .filter(x=>x&&typeof x==='object'&&!Array.isArray(x))
+    .slice(0,12)
+    .map((x,i)=>({
+     id:text(x.id||`op-conj-${i+1}`,64),
+     title:text(x.title||`Conjecture ${i+1}`,160),
+     lens:text(x.lens||'Operator Dictated Lens',96),
+     now_notice:text(x.now_notice||'',320),
+     why_matter:text(x.why_matter||'',420),
+     exact_falsifier:text(x.exact_falsifier||'',420)
+    }));
+  }else if(params.synthesize_conjectures===true){
+   state.inquiryConjectures=synthesizeOutsidePerspectiveConjectures(corpus,{
+    lagTicks:Number(params.lag_ticks??36),
+    filterCluster:params.cluster||null,
+    limit:Number(params.limit||7)
+   }).map(c=>({...c}));
+  }
+ };
+ const ensureReferenceOpened=async params=>{
+  if(state.opened)return true;
+  if(operatorAuthorized===true||params?.auto_open===true||params?.operator_directive===true){
+   event('UNIVERSAL_CENSUS_AUTO_OPENED_BY_OPERATOR_DIRECTIVE');
+   const x=await reader.open();
+   if(x.state==='CENSUS_MATCHED'){
+    state.opened=true;
+    event('UNIVERSAL_CENSUS_MATCHED',{records:x.records,edges:x.edges});
+    return true;
+   }
+  }
+  return false;
  };
  const buildHeadline=()=>deriveSynthesisHeadline({
   corpus,
@@ -163,14 +211,14 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     return receipt(intent,'HELD',rejection('HELD_REFERENCE_CENSUS','Reference not independently opened'));
    }
    if(intent==='universal.search'){
-    if(!state.opened)return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first'));
+    if(!(await ensureReferenceOpened(params)))return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first or pass auto_open:true under explicit operator directive'));
     const q=text(params.query,200).trim();if(!q)return receipt(intent,'HELD',rejection('HELD_EMPTY_QUERY','Operator must supply query'));
     const hits=reader.search(q,{limit:Math.min(24,Math.max(1,Number(params.limit)||12))});
     event('UNIVERSAL_LEXICAL_SEARCH',{query:q,count:hits.length,classification:'LEXICAL_MATCH_NOT_RELATION'});
     return receipt(intent,'SUPPORTED',{query:q,hits,claim_ceiling:'SEARCH_MATCH_ONLY_NOT_ENTAILMENT'});
    }
    if(intent==='universal.get'){
-    if(!state.opened)return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first'));
+    if(!(await ensureReferenceOpened(params)))return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first or pass auto_open:true under explicit operator directive'));
     const id=text(params.record_id,100);
     if(!recordId(id))return receipt(intent,'HELD',rejection('HELD_REFERENCE_ID','Invalid canonical record ID'));
     const witness=await reader.getRecord(id);
@@ -186,9 +234,17 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
    }
    if(intent==='universal.related'){
-    if(!state.opened)return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first'));
+    if(!(await ensureReferenceOpened(params)))return receipt(intent,'HELD',rejection('HELD_INDEX_NOT_OPEN','Call universal.open first or pass auto_open:true under explicit operator directive'));
     const id=text(params.record_id,100);
-    if(!recordId(id)||!state.seen.has(id))
+    if(!recordId(id))return receipt(intent,'HELD',rejection('HELD_REFERENCE_ID','Invalid canonical record ID'));
+    if(!state.seen.has(id)&&(operatorAuthorized===true||params.auto_verify_record===true||params.operator_directive===true)){
+     const witness=await reader.getRecord(id);
+     if(witness?.verified_at_interaction&&RX_SHA.test(witness.record_sha256||'')&&witness.id===id){
+      state.seen.set(id,witness);
+      event('UNIVERSAL_RECORD_BYTES_VERIFIED',{record_id:id,sha256:witness.record_sha256});
+     }
+    }
+    if(!state.seen.has(id))
       return receipt(intent,'HELD',rejection('HELD_SOURCE_NOT_VERIFIED','First verify the exact reference record'));
     const edges=reader.related(id,{limit:Math.min(24,Math.max(1,Number(params.limit)||12))});
     event('UNIVERSAL_GRAPH_RELATIONS_READ',{record_id:id,count:edges.length});
@@ -196,9 +252,22 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
      claim_ceiling:'UNIVERSAL_GRAPH_EDGE_NOT_CROSS_ESTATE_CAUSAL_PROOF'});
    }
    if(intent==='synthesis.propose'){
+    applyHeadlineParams(params);
     const work=corpus.works.find(w=>w.work_id===text(params.work_id,160));
     const source=work?.linked_sources.find(s=>s.source_file_id===text(params.source_id,160));
-    const id=text(params.record_id,100),witness=state.seen.get(id);
+    const id=text(params.record_id,100);
+    let witness=state.seen.get(id);
+    if(!witness&&recordId(id)&&(operatorAuthorized===true||params.auto_verify_record===true||params.operator_directive===true)){
+     await ensureReferenceOpened(params);
+     if(state.opened){
+      const wBytes=await reader.getRecord(id);
+      if(wBytes?.verified_at_interaction&&RX_SHA.test(wBytes.record_sha256||'')&&wBytes.id===id){
+       state.seen.set(id,wBytes);
+       witness=wBytes;
+       event('UNIVERSAL_RECORD_BYTES_VERIFIED',{record_id:id,sha256:wBytes.record_sha256});
+      }
+     }
+    }
     if(!work||!source)return receipt(intent,'HELD',rejection('HELD_VIXEN_SOURCE_IDENTITY','Historical Work/manifestation pair absent'));
     if(!witness)return receipt(intent,'HELD',rejection('HELD_REFERENCE_NOT_VERIFIED','Verify explicit Universal record first'));
     const warrant=inspectVixenCrossOperaWarrant({work,source});
@@ -211,6 +280,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
     return receipt(intent,'HELD',{
      ...proposal,state:'WITNESSED_UNLINKED_PAIR',
+     synthesis_headline:buildHeadline(),
      question_need:'INDEPENDENT_EVIDENCE_AND_HUMAN_WARRANT_REQUIRED',
      no_automatic_promotion:true,
      scientific_surplus:'UNESTABLISHED'
@@ -221,6 +291,11 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     const plan=composeSalonPlan(corpus,params);
     state.activePlan=plan;
     state.activeRefraction=null;
+    if(!state.inquiryConjectures.length){
+     state.inquiryConjectures=synthesizeOutsidePerspectiveConjectures(corpus,{
+      lagTicks:Number(params.lag_ticks??36),limit:7
+     }).map(c=>({...c}));
+    }
     event('VIXEN_SOURCE_BOUND_THEORY_PROPOSED',{
      source_work_ids:plan.source_coordinates.map(x=>x.work_id),
      status:'OPEN_FIELD_UNRATIFIED_QUESTION',
@@ -228,6 +303,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     });
     return receipt(intent,'HELD',{
      state:'CREATIVE_PROPOSAL_AWAITING_HUMAN_REVIEW',plan,
+     observatory_diagnostics:plan.observatory_diagnostics,
+     outside_conjectures:state.inquiryConjectures,
      synthesis_headline:buildHeadline(),
      claim_ceiling:'SOURCE_METADATA_PLUS_OPERATOR_QUESTION_NOT_SCIENCE'
     });
@@ -313,6 +390,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},
     custom_left_spine:state.customLeftSpine,
     active_plan:state.activePlan,
     refraction:state.activeRefraction,
+    inquiry_conjectures:state.inquiryConjectures.slice(),
     supplemental_sources:state.supplementalSources.slice(),
     podium_events:state.events.slice(-24),
     synthesis_headline:headline,

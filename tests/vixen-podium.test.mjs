@@ -252,7 +252,118 @@ test('Podium CLI stays read-only by default and persists synthesis state only wi
   assert.equal(persisted.empirical_replication_credit,0);
   assert.equal(persisted.scientific_promotion_authority,false);
   assert.equal(persisted.release_authority,false);
+  assert.ok(Array.isArray(persisted.synthesis_log)&&persisted.synthesis_log.length>=2);
+
+  // Second synthesis update appends monotonically; --list-syntheses and --rollback revert cleanly
+  const secondWrite=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--stdin'
+  ],{
+   cwd:repoRoot,
+   input:JSON.stringify(task('synthesis.propose',{
+    operator_directive:true,
+    page_subtitle:'THE ARCHITECTURE OF NON-RETROACTIVE ROLLBACK.',
+    inquiry_question:'Can Podium proposals append and roll back without erasing predecessor chains?'
+   })),
+   encoding:'utf8',
+   timeout:30000
+  }));
+  const listOut=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--list-syntheses'
+  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
+  assert.equal(listOut.active_entry_id,secondWrite.persisted_entry_id);
+  assert.ok(listOut.count>=3);
+
+  const rollbackOut=JSON.parse(execFileSync(process.execPath,[
+   'scripts/vixen-podium.mjs','--root',sandbox,'--rollback','syn-0000-baseline'
+  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
+  assert.equal(rollbackOut.status,'ROLLED_BACK');
+  assert.equal(rollbackOut.restored_entry_id,'syn-0000-baseline');
+
+  const postRollback=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
+  assert.equal(postRollback.active_entry_id,'syn-0000-baseline');
+  assert.equal(postRollback.synthesis_headline.patternSubtitle,'THE ARCHITECTURE OF NON-COLLAPSING PLANES.');
+  assert.equal(postRollback.synthesis_log.length,listOut.count+1);
+  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].kind,'ROLLBACK');
+  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].predecessor_entry_id,secondWrite.persisted_entry_id);
  }finally{
   await rm(sandbox,{recursive:true,force:true});
  }
+});
+
+test('All 5 native Podium adapters execute boundedly, expressed directives auto-open, and session-zip builds PKZIP',async()=>{
+ const {createVixenPodium,BOUNDED_ENGINE_OPERATIONS}=await import('../app/encyclopedia/reference/vixen-podium.mjs');
+ const {createPodiumNativeReadAdapters}=await import('../scripts/vixen-podium-native-adapters.mjs');
+ const {collectVixenSessionFiles,buildVixenSessionZipBytes,crc32Bytes}=await import('../app/encyclopedia/vixen-estate/session-zip.mjs');
+ const html=await readFile(join(repoRoot,'app','encyclopedia','vix-cyb.html'),'utf8');
+ const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
+
+ const adapters=await createPodiumNativeReadAdapters({repoRoot});
+ for(const slot of ['APERTURE','ATLAS','DOLLHOUSE','RULEFIELD','UNIVERSAL_ATELIER']){
+  assert.equal(typeof adapters[slot],'function','Expected connected adapter: '+slot);
+  assert.ok(Array.isArray(BOUNDED_ENGINE_OPERATIONS[slot])&&BOUNDED_ENGINE_OPERATIONS[slot].length>=3);
+ }
+
+ const refDir=join(repoRoot,'app','encyclopedia','reference');
+ const mem={
+  state:'UNOPENED',
+  async open(){this.state='CENSUS_MATCHED';return {state:'CENSUS_MATCHED'}},
+  search:(q)=>q?[{id:'G-001',label:'Eclipse–Omega',family:'I'}]:[],
+  async getRecord(id){return JSON.parse(await readFile(join(refDir,'records',id+'.json'),'utf8'))},
+  related:()=>({outgoing:[],incoming:[]}),
+  status:()=>({state:mem.state})
+ };
+
+ // Expressed operator directive auto-opens reference index; unauthorized caller stays HELD
+ const unauth=createVixenPodium({corpus,membrane:mem,operatorAuthorized:false});
+ const heldSearch=await unauth.dispatch({schema:'td613.vixen.podium.task/v1',intent:'universal.search',params:{query:'Eclipse'}});
+ assert.equal(heldSearch.status,'HELD');
+ assert.equal(heldSearch.result.state,'HELD_INDEX_NOT_OPEN');
+
+ const autoDir=createVixenPodium({corpus,membrane:mem,operatorAuthorized:true,engineAdapters:adapters});
+ const okSearch=await autoDir.dispatch({schema:'td613.vixen.podium.task/v1',intent:'universal.search',params:{query:'Eclipse',auto_open:true}});
+ assert.notEqual(okSearch.result.state,'HELD_INDEX_NOT_OPEN');
+
+ // Invoke all 5 engine slots safely
+ const calls=[
+  ['APERTURE','observatory_diagnostics',{clock_probe:{lag_ticks:36},measurement_operator:{matrix:[[1,0.25],[0,0.85]]}}],
+  ['ATLAS','fadt_fiber_audit',{fiber_rows:[{state:'a',support:['S1','S2']},{state:'b',support:['S2','S3']}]}],
+  ['DOLLHOUSE','fadt_reparative_packet',{fiber_rows:[{state:'a',support:['S1','S2']},{state:'b',support:['S2','S3']}]}],
+  ['RULEFIELD','propose_rulefield',{work_ids:[corpus.works[0].work_id,corpus.works[1].work_id],track_id:corpus.giveback_tracks[0].id,protocol_id:corpus.instruments[0].instrument_id,lag_ticks:36}],
+  ['UNIVERSAL_ATELIER','verify',{id:'G-001'}]
+ ];
+ for(const [engine,operation,payload] of calls){
+  const r=await autoDir.dispatch({schema:'td613.vixen.podium.task/v1',intent:'engine.invoke',params:{engine,operation,payload}});
+  assert.equal(r.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+  assert.equal(r.result.scientific_credit,0);
+ }
+
+ // Verify pure-JS PKZIP archive builder & collector
+ const mockFetch=async(url)=>{
+  const u=new URL(url);
+  const rel=u.pathname.replace(/^\//,'');
+  const abs=join(repoRoot,'app',rel);
+  try{
+   const bytes=await readFile(abs);
+   return {ok:true,arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)};
+  }catch(_){return {ok:false};}
+ };
+ const collected=await collectVixenSessionFiles({
+  baseHref:'http://127.0.0.1/encyclopedia/vix-cyb.html',
+  fetcher:mockFetch,
+  synthesisState:autoDir.synthesisState(),
+  sessionMeta:{study_tray_work_ids:[corpus.works[0].work_id]}
+ });
+ const paths=collected.entries.map(e=>e.path);
+ assert.ok(paths.includes('SESSION_START_HERE.md'));
+ assert.ok(paths.includes('encyclopedia/vix-cyb.html'));
+ assert.ok(paths.includes('encyclopedia/vix-cyb/llms.txt'));
+ assert.ok(paths.includes('encyclopedia/vixen-estate/podium-synthesis.json'));
+ assert.ok(paths.includes('encyclopedia/vixen-estate/session-state.json'));
+
+ const zip=buildVixenSessionZipBytes(collected.entries);
+ assert.equal(zip[0],0x50); // 'P'
+ assert.equal(zip[1],0x4b); // 'K'
+ assert.equal(zip[2],0x03);
+ assert.equal(zip[3],0x04);
+ assert.ok(crc32Bytes(zip)>0);
 });

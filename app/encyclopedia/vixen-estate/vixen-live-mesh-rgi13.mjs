@@ -36,6 +36,7 @@ const OCCLUSION_SELECTORS=Object.freeze([
  '.view:not([hidden]) .vixen-foyer-copy','.view:not([hidden]) .vixen-foyer-intro',
  '.view:not([hidden]) .vixen-doorways','.view:not([hidden]) .vixen-foyer-frame',
  '.view:not([hidden]) .vixen-foyer-tail','.view:not([hidden]) .archive-directory',
+ '.view:not([hidden]) .ci-head','.view:not([hidden]) .ci-cadence-bar','.view:not([hidden]) .ci-card',
  '.view:not([hidden]) .procession-section','.view:not([hidden]) .editorial-questions',
  '.view:not([hidden]) .research-path','#vixenElectricFoundry',
  '.view:not([hidden]) .synthesis-bench','.view:not([hidden]) .formula-card',

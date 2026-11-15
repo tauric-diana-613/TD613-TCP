@@ -1,0 +1,174 @@
+# TD613 · Vixen Cybernetics (`/encyclopedia/vix-cyb.html`) — AI & Operator Podium Guide
+
+Hosted canonical path: `/encyclopedia/vix-cyb/llms.txt`
+Companion Universal index guide: `/encyclopedia/llms.txt`
+Podium machine manifest: `/encyclopedia/reference/podium/manifest.json`
+Podium CLI entrypoint: `scripts/vixen-podium.mjs`
+
+This document is the comprehensive operational manual for AI assistants and researchers interacting with the **Vixen Cybernetics** research estate (`EMSTD613`), its 32 historical Works, its 5-clock computational machinery, its interactive **Constitutive Inquiry Observatory** (`#constitutiveInquiry`), its machine **Podium** CLI, and its **Zero-Dependency Portable Session ZIP** workflow.
+
+Reading this guide or dispatching Podium read routes never grants merge authority, release authority, deployment authority, authorship resolution, or empirical replication credit (`empirical_replication_credit: 0`, `release_authority: false`, `human_closure_required: true`).
+
+---
+
+## 1. Fundamental Stage Law: `OPERAHOUSE ≠ OPERA ≠ PERFORMER`
+
+Vixen Cybernetics separates three distinct authority layers that must never be conflated:
+
+1. **OPERAHOUSE (Host Infrastructure):** `TD613` / `td613-tcp` read-only reference gateway (`reference/vixen-read-gateway.mjs`), stage separator (`reference/vixen-stage-boundary.mjs`), and Universal Edition 1.4 retrieval mirror (`1,141` records; `2,131` typed graph edges). It holds **zero** authorship or source-reclassification authority over the Opera.
+2. **OPERA (Creative & Theoretical Constellation):** The Vixen Cybernetics work itself (`/encyclopedia/vix-cyb.html` + `vixen-estate/`). It houses **32** canonical Works, **53** linked `emsrc_*` manifestations (+7 unpaired Batch-B PDFs), **8** split-plane dual `.md`/`.pdf` human gates (`[32, 40]`, 256 states defaulting to `UNADJUDICATED_PAIR`), **21** documentary protocols (`6 + 7 + 4 + 4` in `06-instruments`), and **22** canonical formula folios across clusters `C1–C5`.
+3. **PERFORMER (Historical Authored Works):** The individual stated authors (`Em / Vix / Cass / Cassie` and cited contributors) and original source coordinates (`emwork_*`, `emsrc_*`).
+
+**Operator Privacy & Identity Boundary:**
+- Keep private/internal covenant keys completely out of human-facing UI prose and generated headlines.
+- Do not fabricate authorship resolution or collapse independent works onto host queries. Every researcher's Opera authors its own Constitutive Inquiry Question and Method in `#constitutiveInquiry` (or via Podium `synthesis.propose`), preserving autonomy across researchers.
+
+---
+
+## 2. File & Cascade Architecture (`app/encyclopedia/`)
+
+### Primary Entry Points & Static Bundles
+- `vix-cyb.html` — Complete page containing inline immutable `<script type="application/json" id="vixen-corpus-bundle">` and `<script type="application/json" id="vixen-estate-manifest">`. Zero external network requests (`STANDALONE_EXTERNAL_RESOURCE_REQUESTS = 0`).
+- `vix-cyb/llms.txt` — This Podium AI & operator instruction guide.
+- `vixen-estate/podium-synthesis.json` — Live persisted synthesis headline, active inquiry question/method, conjectures, monotonic append-only `synthesis_log`, and `rollback_snapshots`.
+
+### CSS Design Stack & Palette Contract
+The active presentation stack inside `vixen-estate/` enforces strict palette separation (**zero purple or violet hues in `235..327` deg** across all stylesheets and optical engines; strictly Baker-Miller Pink `#FF91AF` / `#ff65aa`, Arc Flash `#FFF2A9` / `#FFF0A8`, Warm Porcelain `#F6F4F0` / `#fff9f5`, Obsidian Graphite `#060708` / `#0f1418` / `#12181d`, and Ice Silver `#9DBCC1` / `#d2dde0`):
+- `glinda-cybergoth-rgi10.css` (structural layout, `#vixenRoomRail`, `.footer`, `.footer-end-controls`)
+- `vixen-stage-architecture-rgi10b.css`
+- `glinda-spectacle-rgi11.css`
+- `glinda-luminous-proscenium-rgi12.css`
+- `vixen-electrical-breath-rgi13.css`
+- `vixen-opaline-couture-rgi14.css` (`#cover` full-bleed dark `#000000` frontispiece framing with Didone display type, `.hero-art picture` flex constraint so bottom V-apex never clips, and `#constitutiveInquiry` obsidian command deck)
+- `vixen-foyer.css`, `vixen-motion.css`, `observatory-electric-foundry.css`, `synthesis-salon.css`, `research-chamber.css`
+
+### Optical, WebGL2 & Stage Engines (`vixen-estate/`)
+- `observatory-foundry.frag` (`#version 300 es`, `39` visual carriers: `6` near / `13` mid / `20` far), `observatory-foundry-renderer.mjs`, `observatory-foundry-kernel.mjs`, `observatory-electric-foundry.mjs` (WebGL2 proscenium + dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`).
+- `observatory-vixen-corpus.mjs` — `buildVixenLaboratories(corpus)`, `completeVixenSourceCensus(corpus)`, `assessVixenLab(corpus, id, controls, probe)`.
+- `observatory-computational-score.mjs` — Interactive constellation canvas & visual instrumentation.
+- `vixen-live-mesh-rgi13.mjs`, `vixen-folded-cuirass.mjs`, `vixen-beat-radiometry-rgi15.mjs`, `vixen-motion-governor.mjs`, `vixen-salon-ambient-field.mjs`, `vixen-salon-light.mjs` — Ambient kinetic & optical renderers (host-controlled pause/still compliance).
+- `vixen-opaline-couture-rgi14.mjs`, `vixen-foyer.mjs`, `fox-house-dock.mjs`.
+
+### Constitutive Inquiry, Synthesis & Custody Engines (`vixen-estate/`)
+- `synthesis-salon-engine.mjs`:
+  - `CLOCKS` & `computeClockVernier` — 5 non-commutative clocks (`fast`/`TCC-01`, `tok`/`TCC-02`, `k`/`TCC-03`, `wall`/`TCC-04`, `plant`/`TCC-05`), arrival inversions & tick L1 drift.
+  - `computeMatrixSvd2x2` — Analytical 2×2 SVD (`sigma_max`, `sigma_min`, condition number `condition`, `rank`, `classification`).
+  - `project111Mirror` — Decomposition along `[1, 1, 1]^T` vs orthogonal nullspace (`nullspace_ratio`, `projection_orthogonal_to_111`).
+  - `computeDiscreteXorSynergy` — Joint vs marginal mutual information (`I_XY_Z_bits`, `synergy_bits`, `synergistic_emergence`).
+  - `computeSalonObservatoryDiagnostics` — Unified diagnostic packet combining Vernier, SVD, `[111]` mirror, XOR synergy, and `epistemic_ceiling` (`empirical_credit: 0`, `experiment_b_flight: "HELD"`).
+  - `synthesizeOutsidePerspectiveConjectures(corpus, { lagTicks, filterCluster, limit })` — Generates 7 structured cross-domain conjectures across `C1–C5`, `A-01`..`A-09` Atlas domains, Aperture SVD conditioning, and `NOW / WHY / EXACT` falsifier predicates.
+  - `deriveSynthesisHeadline` — Deterministic state machine powering `window.VixenSynthesisHeadlines` (`#synthHeaderTagline`, `#synthPatternSubtitle`, `#synthResearchQuestion`, `#synthAxiomMarginalia`, `#synthHeroStatement`, `#synthLeftSpine`).
+  - `composeSalonPlan` & `refractSalonPlan` — Pairwise A→B vs B→A encounter refraction preserving terminal Work identity while proving path dependence.
+- `synthesis-salon.mjs` — Interactive Salon DOM orchestrator.
+- `research-chamber.mjs` — Research Cart / study tray & Work comparison without foreign record leak.
+- `role-boundary.mjs` — `STAGE_ROLES`, `castVixenPerformer`, `stageVixenOperaEvent`, `readOperahouseStatus`, `assertStageRoleSeparation`.
+- `cross-opera-warrant.mjs` — `ADMITTED_VIXEN_CROSSWALKS`, `inspectVixenCrossOperaWarrant`, `assertNoAutomaticCrossOperaEntry` (default fail-closed).
+- `session-zip.mjs` — Pure-JS zero-dependency PKZIP Store CRC-32 exporter (`collectVixenSessionFiles`, `buildVixenSessionZipBytes`, `downloadVixenSessionZip`), wired to `#footerSaveSessionBtn` (`Save current session ⭳`).
+
+---
+
+## 3. Podium Machine Contract (`reference/vixen-podium.mjs` & `reference/podium/manifest.json`)
+
+The Podium is the typed machine-collaboration interface (`schema: "td613.vixen.podium.task/v1"` -> receipt `schema: "td613.vixen.podium.receipt/v1"`).
+
+### All 12 Declared Routes (`PODIUM_ROUTES`)
+1. `podium.describe` — Returns Vixen Podium schema, current synthesis headline, and read-only status.
+2. `vixen.work.inspect` — Inspects one of the 32 canonical Vixen Works (`work_id`) and its manifestations.
+3. `vixen.gates.inspect` — Inspects the 8 `[32, 40]` split-plane dual `.md`/`.pdf` human gates (`DEFAULT_UNADJUDICATED_PAIR`).
+4. `universal.open` — Explicitly opens the Universal Edition 1.4 read-only index (requires operator directive or `params.auto_open: true`).
+5. `universal.search` — Lexical token search across 1,141 Universal records.
+6. `universal.get` — Reads & SHA-256-verifies a single Universal record (`reference/records/{ID}.json`).
+7. `universal.related` — Lists outgoing & incoming typed citations from `reference/graph.json`.
+8. `synthesis.propose` — Applies custom inquiry question, method, headline/subtitle overrides, Salon plan, or conjectures to `podium.synthesisState()` (supports `auto_open`, `auto_verify_record`, `reset_to_baseline`, and `synthesize_conjectures` under expressed operator directive).
+9. `vixen.salon.compose` — Runs `composeSalonPlan` / `refractSalonPlan` for two distinct Vixen Works, a giveback track, and a documentary protocol.
+10. `experiment_b.preregister` — Generates a held four-arm Experiment B competent-union preregistration proposal (`experiment_b_flight: "HELD"`).
+11. `engine.capabilities` — Declares bound vs unconnected native engine operations for the current session.
+12. `engine.invoke` — Invokes one of the five bound native engines (`BOUNDED_ENGINE_OPERATIONS`), strictly returning `UNVERIFIED_ENGINE_ADAPTER_RETURN` (`endorsement: false`, `scientific_credit: 0`).
+
+### Expressed Operator Directive Auto-Lift vs Fail-Closed Hold
+- **Unauthorized callers** still fail closed (`HELD_INDEX_NOT_OPEN`, `HELD_TASK_CONTRACT`, `HELD_OPERATOR_DIRECT_NATIVE_LANE_NOT_ATTESTED`).
+- When the human operator explicitly expresses intent (`operatorAuthorized === true`, or explicit task params `auto_open: true` / `operator_directive: true`), gratuitous intermediate holds are lifted cleanly (`ensureReferenceOpened()`, `auto_verify_record` in `synthesis.propose`) without fabricating empirical credit or bypassing identity contracts.
+
+### All 5 Native Engine Adapters (`scripts/vixen-podium-native-adapters.mjs`)
+Requires BOTH `TD613_PODIUM_OPERATOR_DIRECT=1` in the host environment AND `--native-read-tools` on the CLI:
+
+- **`APERTURE`**:
+  - `audit_epistemic_deficit` -> `app/engine/aperture-v32-typed-epistemic-deficit.js#auditTypedEpistemicDeficit`
+  - `evaluate_probe_stability` -> `evaluateCandidateProbeStability`
+  - `compute_matrix_svd` -> `computeMatrixSvd` (one-sided Hestenes-Jacobi SVD)
+  - `td613_governed_exposure` -> `app/engine/td613-aperture.js#buildTD613GovernedExposureSchema` / `reviewTD613ApertureTransfer`
+  - `observatory_diagnostics` -> `vixen-estate/synthesis-salon-engine.mjs#computeSalonObservatoryDiagnostics`
+- **`ATLAS`**:
+  - `compare_routes` -> `app/engine/dollhouse-atlas-relational-custody.js#auditAtlasHolonomyHistoryParity`
+  - `trace_relations` -> `classifyAtlasRelationIdentity`
+  - `atlas_math_dispatch` -> `app/engine/atlas-mathematical-engine.js#dispatchAtlasMathematicalOperation` (`A-01`..`A-09`)
+  - `fadt_fiber_audit` -> `app/engine/dollhouse-fadt-reparative-assistance.js#computeFadtFiberBounds`
+  - `fadt_coordinate_recovery` -> `evaluateFadtCoordinateRecovery`
+  - `fadt_discrepancy` -> `evaluateFadtDiscrepancyIdentity`
+- **`DOLLHOUSE`**:
+  - `audit` -> `app/engine/dollhouse-skill-dispatcher.js#runDollhouseSkillAudit` (`PEDAGOGUE`, `APERTURE`, `ATLAS`, `FADT`, `TEMPORAL_CUSTODIAN`, + `ORCHESTRATOR`)
+  - `fadt_reparative_packet` -> `compileFadtReparativePacket`
+  - `temporal_non_retroactivity` -> `app/engine/dollhouse-temporal-custodian.js#auditTemporalLedgerNonRetroactivity`
+- **`RULEFIELD`**:
+  - `assess_roles` -> `role-boundary.mjs` + `cross-opera-warrant.mjs` + `observatory-vixen-corpus.mjs#completeVixenSourceCensus`
+  - `propose_rulefield` -> `composeSalonPlan` + `synthesizeOutsidePerspectiveConjectures` + `deriveSynthesisHeadline`
+  - `pedagogue_cadence` -> `app/engine/dollhouse-pedagogue-dromological.js#auditDollhouseDromologicalCadence`
+  - `pedagogue_institutional_time` -> `auditDollhouseInstitutionalTime`
+- **`UNIVERSAL_ATELIER`** (Read-only SHA-256-verified mirror; zero write/import admissions):
+  - `search`, `get`, `cite`, `neighbors`, `route` (max BFS depth 5), `context`, `verify`
+
+---
+
+## 4. Podium CLI, Append-Only Synthesis Log & Rollback Recipes
+
+### Inspect Manifest & History
+```bash
+node scripts/vixen-podium.mjs --manifest
+node scripts/vixen-podium.mjs --list-syntheses
+```
+
+### Commit a New Synthesis Proposal (Non-Retroactive Append-Only Log)
+`--write-synthesis` preserves prior entries in `vixen-estate/podium-synthesis.json`, increments monotonic `synthesis_seq`, links `predecessor_entry_id` + `predecessor_sha256`, records `state_sha256`, and saves a restorable snapshot inside `rollback_snapshots`:
+```bash
+TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --write-synthesis --input task.json
+```
+Example `task.json`:
+```json
+{
+  "schema": "td613.vixen.podium.task/v1",
+  "intent": "synthesis.propose",
+  "params": {
+    "operator_directive": true,
+    "operator_question": "Which clock coupling preserves non-commutative lag across C2 ring buffers and C3 piezo arrays?",
+    "operator_method": "A-01 Temporal Fiber + A-05 Dynamical Morphism",
+    "synthesize_conjectures": true,
+    "lag_ticks": 36
+  }
+}
+```
+
+### Roll Back Cleanly to Any Prior Entry
+```bash
+node scripts/vixen-podium.mjs --rollback syn-0000-baseline
+```
+Rollback restores the active presentation snapshot (`active_entry_id`) while appending a monotonic `ROLLBACK` log entry pointing to its immediate predecessor (`UNREFERENCED_RETRY_CHRONOLOGICAL_OBLIVION` prevention).
+
+### Zero-Dependency Portable Session ZIP Workflow
+1. From the footer (`Save current session ⭳`, `#footerSaveSessionBtn`), the operator downloads `vixen-cybernetics-session-YYYY-MM-DD.zip` built locally in-browser by `vixen-estate/session-zip.mjs` (zero CDN calls).
+2. Unpack locally and inspect `SESSION_START_HERE.md`, `encyclopedia/vix-cyb/llms.txt`, `encyclopedia/vixen-estate/podium-synthesis.json`, and `encyclopedia/vixen-estate/session-state.json`.
+3. AI collaborator assists in exploring works, composing conjectures via Podium CLI or `#constitutiveInquiry`, committing via `--write-synthesis`, or reverting via `--rollback <entry_id>`.
+4. Serve extracted directory locally over HTTP (`npx serve .` or `python -m http.server 6130`) and open `/encyclopedia/vix-cyb.html` to view updated synthesis headlines live.
+
+---
+
+## 5. Verification & Visual Witness Commands
+
+```bash
+node scripts/verify-vixen-rgi08-fidelity.mjs
+node scripts/verify-vixen-podium-source-audit.mjs
+node scripts/verify-vixen-podium-dollhouse.mjs
+node --test tests/vixen-*.test.mjs tests/encyclopedia-*.test.mjs
+python3 scripts/package-vixen-preview.py --out artifacts/vixen-preview/Vixen_Encyclopedia_PR1730.zip
+```
+
+All generated analyses remain unratified research proposals until human review closes the active gate. ⟐
