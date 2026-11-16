@@ -88,6 +88,9 @@ export function adjudicateRedpenReturn(packet,submission){
  if(submission.score_sha256!==packet.score_sha256||
     submission.source_revision!==packet.source_revision)
   return held('HELD_STALE_SCORE_OR_SOURCE_REVISION');
+ if(!['REDPEN_JSON_RETURN','IN_CHAT_DECISION_RETURN'].includes(submission.transport)||
+  submission.authenticated_human!==false)
+  return held('HELD_REVIEW_TRANSPORT_CANNOT_AUTHENTICATE_OPERATOR');
  if(!Array.isArray(submission.dispositions)||
   submission.dispositions.length!==packet.decisions.length||
   submission.understood!=='REVIEW_IS_NOT_COMPOSE_AUTHORIZATION')
@@ -113,7 +116,7 @@ export function adjudicateRedpenReturn(packet,submission){
  const annotations=resolved.map(x=>({
   type:'Annotation',motivation:'assessing',
   target:{source:'urn:sha256:'+packet.score_sha256,
-   selector:{type:'JsonPointerSelector',value:'/decisions/'+permitted.get(x.decision_id).index-1}},
+   selector:{type:'JsonPointerSelector',value:'/decisions/'+(permitted.get(x.decision_id).index-1)}},
   body:{type:'TextualBody',value:x.comment||x.action},
   disposition:x.action
  }));

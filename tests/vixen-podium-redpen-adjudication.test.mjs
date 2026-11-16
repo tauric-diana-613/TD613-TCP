@@ -21,9 +21,9 @@ test('score yields accountable list, alternatives, opt-in visuals and interopera
 });
 test('blank / stale / incomplete review cannot authorize or imply Compose',()=>{
  const x=buildRedpenPacket(score),b=makeBlankRedpenReturn(x);
- assert.equal(adjudicateRedpenReturn(x,b).status,'HELD_INVALID_DUPLICATE_OR_UNDECIDED_DISPOSITION');
- assert.equal(adjudicateRedpenReturn(x,{...b,score_sha256:'f'.repeat(64)}).status,'HELD_STALE_SCORE_OR_SOURCE_REVISION');
- assert.equal(adjudicateRedpenReturn(x,{...b,dispositions:b.dispositions.slice(1)}).status,'HELD_INCOMPLETE_REVIEW');
+ assert.equal(adjudicateRedpenReturn(x,b).reason,'HELD_INVALID_DUPLICATE_OR_UNDECIDED_DISPOSITION');
+ assert.equal(adjudicateRedpenReturn(x,{...b,score_sha256:'f'.repeat(64)}).reason,'HELD_STALE_SCORE_OR_SOURCE_REVISION');
+ assert.equal(adjudicateRedpenReturn(x,{...b,dispositions:b.dispositions.slice(1)}).reason,'HELD_INCOMPLETE_REVIEW');
 });
 test('approved items remain unauthenticated review, alternatives demand rescore',()=>{
  const x=buildRedpenPacket(score),b=makeBlankRedpenReturn(x);
@@ -42,4 +42,11 @@ test('visual HTML requirement only attaches for true proposed change',()=>{
  const neutral=structuredClone(score);neutral.visuals.selected.kind='CURRENT_INSTALLED_LAB';
  const pkt=buildRedpenPacket(neutral);assert.equal(pkt.visual_review_required,false);
  assert.equal(pkt.visual_review_attachment,'OMITTED_NO_VISUAL_SUBSTITUTION');
+});
+
+test('task JSON may not impersonate human authentication',()=>{
+ const x=buildRedpenPacket(score),b=makeBlankRedpenReturn(x);
+ b.dispositions.forEach(d=>d.action='APPROVE');
+ assert.equal(adjudicateRedpenReturn(x,{...b,authenticated_human:true}).reason,
+  'HELD_REVIEW_TRANSPORT_CANNOT_AUTHENTICATE_OPERATOR');
 });
