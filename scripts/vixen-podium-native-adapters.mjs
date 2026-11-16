@@ -586,7 +586,11 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     const queryStr=String(payload.query||'');
     const mode=payload.mode||'src_projective';
     const cond=srcEngines.deriveSrcQueryConditionedWeights(queryStr,mode,null);
-    const searchResult=await engine.search(queryStr,{...(payload.options||{}),mode});
+    // Podium refuses >50k-byte native adapter receipts; bound the
+    // SRC search lane without changing the core index or evidence limits.
+    const requestedLimit=Number(payload.options?.limit)||8;
+    const searchResult=await engine.search(queryStr,{...(payload.options||{}),mode,
+     limit:Math.max(1,Math.min(8,requestedLimit))});
     return{
      ...searchResult,
      src_conditioning:{
