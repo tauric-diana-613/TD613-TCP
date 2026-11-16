@@ -24,12 +24,22 @@ const read=(s,id)=>{
 };
 const oldCorpus=read(original,'vixen-corpus-bundle');
 const newCorpus=read(current,'vixen-corpus-bundle');
-assert.equal(sha(newCorpus),sha(oldCorpus),'Historical Vixen source archive bytes changed');
+// A0 intentionally removes the seven dormant PDF metadata registrations from
+// the deployed corpus. The predecessor remains intact in Git at `baseline`;
+// every other canonical corpus field must remain byte-equivalent as JSON values.
+const predecessorCorpus=JSON.parse(oldCorpus);
 const corpus=JSON.parse(newCorpus);
+assert.equal(predecessorCorpus.batch_b_files.length,7,'Expected seven historic annex registrations');
+assert.deepEqual(corpus.batch_b_files,[],'A0 must contain zero prospective Batch-B sources');
+const {batch_b_files:originalAnnex,...historicCanonical}=predecessorCorpus;
+const {batch_b_files:activeAnnex,...activeCanonical}=corpus;
+assert.deepEqual(activeCanonical,historicCanonical,'Canonical 32/53 corpus changed outside sanctioned seven-record quarantine');
 const census=checkSalonCorpus(corpus);
 const oldSignature='VIXENCYBERNETICS$S_e≡[x+y]=z+1$';
 const checks=[
- ['IMMUTABLE_ARCHIVE_BYTE_IDENTITY',sha(newCorpus)===sha(oldCorpus)],
+ ['CANONICAL_ARCHIVE_NON_ANNEX_IDENTITY',JSON.stringify(activeCanonical)===JSON.stringify(historicCanonical)],
+ ['EXPERIMENT_A0_DORMANT_ANNEX_NOT_IN_RUNTIME',activeAnnex.length===0],
+ ['HISTORICAL_ANNEX_SOURCE_RETAINED_IN_GIT',originalAnnex.length===7],
  ['HISTORICAL_SIGNATURE_PRESENT',current.includes(oldSignature)],
  ...['overview','observatory','works','gates','protocols','holds','collection','reference']
   .map(id=>['VIEW_'+id.toUpperCase(),current.includes('id="view-'+id+'"')]),
@@ -72,6 +82,9 @@ const result={
  schema:'td613.vixen.rgi08.reparative-exact-head-retention/v1',
  original_predecessor_sha:baseline,current_head:head,
  original_corpus_sha256:sha(oldCorpus),successor_corpus_sha256:sha(newCorpus),
+ intentional_a0_difference:'SEVEN_HISTORIC_METADATA_ONLY_PDF_REGISTRATIONS_EXCLUDED',
+ predecessor_archive_retained_at_git_revision:baseline,
+ original_canonical_non_annex_corpus_unchanged:true,
  checks:checks.map(([name,pass])=>({name,pass})),
  corpus_census:census,
  performed_probes:['SOURCE_REJECTION','CLOCK_SENSITIVITY','SOURCE_ORDER_NON_EQUIVALENCE'],
@@ -84,5 +97,5 @@ const path=process.env.RUNNER_TEMP?
  resolve(root,'artifacts/vixen-dual-estate/rgi08-source-fidelity.json');
 await writeFile(path,JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({head,base:baseline,checks:checks.length,
- source_digest:sha(newCorpus),status:'SOURCE_ARCHIVE_BYTE_IDENTICAL',
+ source_digest:sha(newCorpus),status:'CANONICAL_NON_ANNEX_SOURCE_IDENTICAL_AND_A0_ANNEX_QUARANTINED',
  experiment_b:'HELD',out:path}));
