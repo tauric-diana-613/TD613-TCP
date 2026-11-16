@@ -2690,7 +2690,7 @@ body[data-view="overview"] .reading-back{display:none}
     renderMathSlots(listEl);
   }
 
-  // 3. Render 02 Works: Exhaustive 32-Work Catalogue & Lineage Navigator (+7 Batch-B Annex)
+  // 3. Render 02 Works: Exhaustive 32-Work Catalogue & Lineage Navigator
   function renderWorksView(opts) {
     const listEl = $('worksListContainer');
     const readerEl = $('worksReaderPanel');
@@ -2721,9 +2721,9 @@ body[data-view="overview"] .reading-back{display:none}
     const q = state.workQuery.trim().toLowerCase();
 
     if (state.workCluster === 'BATCH_B') {
-      // Render the 7 unpaired Prospective Batch-B PDFs (V41-F02 Filter Consistency)
+      // Dormant supplemental-source renderer; A0 admission count is zero
       const bRows = DATA.batch_b_files.filter((r) => !q || (r.source_file_id + ' ' + r.original_filename + ' ' + r.sha256).toLowerCase().includes(q));
-      if (summaryEl) summaryEl.textContent = 'Showing ' + bRows.length + ' of 7 Unpaired Prospective Batch-B PDFs (Outside 32-Work Crosswalk · source_clock: UNRESOLVED)';
+      if (summaryEl) summaryEl.textContent = 'Showing ' + bRows.length + ' of ' + DATA.batch_b_files.length + ' supplemental source records';
 
       if (bRows.length === 0) {
         listEl.innerHTML = '<li class="lexicon-item empty-state" data-state="NO_MATCHING_RECORDS"><div style="padding:24px;text-align:center;font-family:var(--font-mono);font-size:12px;opacity:0.75">No matching Prospective Batch-B records found for &ldquo;' + esc(q) + '&rdquo;. Clear search or select an alternative filter.</div></li>';
