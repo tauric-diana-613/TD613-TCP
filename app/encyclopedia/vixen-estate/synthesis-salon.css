@@ -526,3 +526,132 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  #vixenSynthesisSalon .vs-quad-grid{grid-template-columns:minmax(0,1fr)}
  #vixenSynthesisSalon .vs-clock-row.vs-clock-card{grid-template-columns:minmax(0,1fr)}
 }
+
+
+/* RGI16 — COUTURE READING SURFACE / Experiment A
+ * Dark graphite × archival ivory × oxidized chrome × Arc-Flash champagne.
+ * A full-text typographic treatment for critical research, not a metadata card.
+ * Mirrors the Works reader's color, type and focus grammar.
+ */
+#vixenSynthesisSalon .vs-source-card{
+  position:relative;
+  background:linear-gradient(150deg,rgba(255,255,255,.075),transparent 38%),#f5eced;
+  border-top:2px solid #23252b;
+  box-shadow:inset 0 1px rgba(255,255,255,.75),0 10px 30px rgba(12,16,21,.10);
+}
+#vixenSynthesisSalon .vs-research-bridges{
+  display:flex;flex-wrap:wrap;align-items:stretch;gap:7px;margin:14px 0;
+}
+#vixenSynthesisSalon .vs-research-bridge{
+  appearance:none;display:inline-flex;align-items:center;justify-content:center;
+  min-height:42px;min-width:0;flex:1 1 135px;padding:10px 12px;
+  border:1px solid #403a42;background:#1b2025;color:#fff2e8;
+  font:700 9px/1.4 ui-monospace,SFMono-Regular,monospace;
+  text-transform:uppercase;letter-spacing:.075em;text-align:center;
+  transition:background .2s ease,box-shadow .2s ease,transform .2s ease;
+}
+#vixenSynthesisSalon .vs-research-bridge:hover{
+  background:#9c284f;color:#fff;
+  box-shadow:0 0 0 1px rgba(255,220,167,.48),0 6px 14px rgba(126,24,64,.24);
+  transform:translateY(-1px);
+}
+#vixenSynthesisSalon .vs-manuscript{
+  border:1px solid #c19fae;background:#fbf8f4;
+  color:#25252b;margin:14px 0;overflow:hidden;
+  box-shadow:inset 0 1px #fff,0 10px 30px rgba(27,19,25,.06);
+}
+#vixenSynthesisSalon .vs-manuscript>summary{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  cursor:pointer;padding:16px 18px;min-height:56px;
+  color:#1f2228;background:linear-gradient(110deg,#fff4f3,#eed8dd);
+  font:700 11px/1.45 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.09em;text-transform:uppercase;list-style:none;
+}
+#vixenSynthesisSalon .vs-manuscript>summary::-webkit-details-marker{display:none}
+#vixenSynthesisSalon .vs-manuscript>summary::after{
+  content:'＋';font:400 22px/1 Georgia,serif;color:#a12b56;
+}
+#vixenSynthesisSalon .vs-manuscript[open]>summary::after{content:'−'}
+#vixenSynthesisSalon .vs-manuscript[open]>summary{
+  border-bottom:1px solid #c6a3af;
+}
+#vixenSynthesisSalon .vs-manuscript-body{
+  min-width:0;max-height:min(80vh,1000px);overflow:auto;
+  padding:clamp(18px,3vw,44px);
+  color:#29252a;background:#fffdf9;
+  font:400 clamp(15px,1.18vw,18px)/1.83 Georgia,'Iowan Old Style',serif;
+  overflow-wrap:anywhere;white-space:normal;
+  scrollbar-color:#b98c9d #f6ecec;
+}
+#vixenSynthesisSalon .vix-reader-paragraph{margin:0 0 1.08em;white-space:pre-wrap}
+#vixenSynthesisSalon .vix-reader-heading{
+  margin:1.7em 0 .65em;color:#291d25;
+  font-family:Georgia,'Iowan Old Style',serif;font-weight:600;
+  line-height:1.23;letter-spacing:-.025em;
+}
+#vixenSynthesisSalon .vix-manuscript h3.vix-reader-heading{
+  font-size:clamp(24px,2vw,34px);border-bottom:1px solid #dec6cd;
+  padding-bottom:.36em;
+}
+#vixenSynthesisSalon .vix-manuscript h4.vix-reader-heading{font-size:clamp(20px,1.5vw,27px)}
+#vixenSynthesisSalon .vix-manuscript h5.vix-reader-heading{font-size:clamp(18px,1.2vw,23px)}
+#vixenSynthesisSalon .vix-manuscript h6.vix-reader-heading{font-size:clamp(16px,1vw,20px)}
+#vixenSynthesisSalon .vix-reader-quote{
+  margin:20px 0;padding:12px 22px;
+  border-left:3px solid #b7315c;background:#f9f0f2;color:#49404a;
+  font-style:italic;line-height:1.82;
+}
+#vixenSynthesisSalon .vix-reader-list{
+  display:block;list-style:initial;padding:0 0 0 28px;margin:10px 0 20px;
+}
+#vixenSynthesisSalon ol.vix-reader-list{list-style:decimal}
+#vixenSynthesisSalon .vix-reader-list li{padding:3px 0}
+#vixenSynthesisSalon .vix-manuscript code{
+  background:#f4e8eb;color:#86234b;padding:1px 5px;
+  font:500 .83em/1.7 ui-monospace,SFMono-Regular,monospace;
+}
+#vixenSynthesisSalon .vix-reader-code{
+  max-width:100%;overflow-x:auto;margin:16px 0;padding:18px;
+  background:#171c21;color:#fbeff3;border:1px solid #bb9ba7;
+  font:400 12px/1.65 ui-monospace,SFMono-Regular,monospace;
+  white-space:pre;tab-size:2;
+}
+#vixenSynthesisSalon .vix-math{
+  color:#31212b;font-family:'Cambria Math',serif;
+}
+#vixenSynthesisSalon .vix-math-display{
+  display:block;overflow-x:auto;text-align:center;
+  margin:22px 0;padding:14px 8px;background:#f7f0ef;
+  border-block:1px solid #d9c9ce;
+}
+#vixenSynthesisSalon .vix-math math{font-size:1.12em}
+#vixenSynthesisSalon .vix-reader-raw{
+  margin-top:30px;border-top:1px solid #d8c4cd;padding-top:14px;
+}
+#vixenSynthesisSalon .vix-reader-raw summary{
+  cursor:pointer;color:#772f4f;font:700 10px/1.6 ui-monospace,monospace;
+  text-transform:uppercase;letter-spacing:.08em;
+}
+#vixenSynthesisSalon .vix-reader-raw pre{
+  overflow:auto;max-height:500px;padding:16px;margin:10px 0;
+  background:#191e23;color:#f5dce6;white-space:pre-wrap;
+  font:400 11px/1.6 ui-monospace,monospace;
+}
+#vixenSynthesisSalon .vs-provenance{
+  padding:7px 0;color:#f5ebed;
+  font:500 11px/1.6 ui-monospace,monospace;overflow-wrap:anywhere;
+}
+#vixenSynthesisSalon .vs-provenance p{margin:0 0 9px}
+#vixenSynthesisSalon :is(.vs-manuscript>summary,.vs-research-bridge,.vix-reader-raw summary):focus-visible{
+  outline:3px solid #b62d58;outline-offset:3px;
+}
+@media (max-width:740px){
+  #vixenSynthesisSalon .vs-research-bridges{gap:6px}
+  #vixenSynthesisSalon .vs-research-bridge{flex:1 1 100%;min-height:44px}
+  #vixenSynthesisSalon .vs-manuscript-body{padding:22px 18px;font-size:16px;max-height:70vh}
+  #vixenSynthesisSalon .vs-manuscript>summary{padding:15px 14px;min-height:54px}
+  #vixenSynthesisSalon .vix-math-display{padding:12px 5px}
+}
+@media (prefers-reduced-motion:reduce){
+  #vixenSynthesisSalon .vs-research-bridge{transition:none;transform:none}
+}
