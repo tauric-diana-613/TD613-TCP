@@ -11,7 +11,7 @@
  * Enforced Temporal, FADT, Atlas & Aperture invariants:
  *   - Never alters a single byte of #vixen-corpus-bundle in vix-cyb.html
  *   - Quarantines 33 AppleDouble c4 (._*) sidecars & Archive.zip (unextracted container)
- *   - Preserves source_clock: UNRESOLVED on Batch-B PDFs (never backfilled)
+ *   - Processes only the declared active corpus; held-out hydration sources never enter baseline index
  *   - Keeps paired .md and .pdf manifestations separate under Gates 1..8 ([32, 40])
  *   - Keeps motif tags capped strictly below mechanism promotion
  *   - Zero empirical replication credit; human closure remains reserved
@@ -848,7 +848,7 @@ async function main() {
     }
   }
 
-  // 22 Formula Folios + 6 Giveback Tracks + 7 Batch-B PDFs + Brand Images + Archive Zip Stub
+  // Formula folios, prospective tracks, declared active sources, image metadata and archive stub
   for (const folio of corpus.formula_folios) {
     for (const lnk of (folio.links || [])) addGraphEdge(folio.id, lnk);
     const folioUtf8 = Buffer.from(`${folio.title || ''}\n${folio.summary || ''}\n${folio.fallback || ''}`, 'utf8');
@@ -1487,8 +1487,8 @@ async function main() {
     custody_policy: {
       preview_status: 'EXPERIMENT_A_PREVIEW_AUTHORIZED',
       preview_notice: 'Authorized by Em for Experiment-A Vercel Preview deployments and developer / volunteer-client Em testing.',
-      production_notice: 'Future production releases gate personal corpora behind an operator secret (like TD613 Giving).',
-      batch_b_notice: '7 Batch-B PDFs are registered metadata-only (EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD); binaries await git upload.',
+      experiment_c_main_gate: 'FUTURE_SERVER_ENFORCED_GIVING_STYLE_OPERATOR_SECRET_NOT_YET_IMPLEMENTED',
+      hydration_holdout_admission: 'NOT_ADMITTED_TO_A0_ACTIVE_CORPUS',
       appledouble_quarantined_c4: quarantinedAppleDouble.length,
       archive_container_unextracted: archiveStub ? [archiveStub.source_file_id] : [],
       empirical_replication_credit: 0,
@@ -1542,7 +1542,7 @@ async function main() {
       batch_b_pending_count: batchBEntries.length,
       work_sensitivity_interval: [32, 40],
       preview_status: 'EXPERIMENT_A_PREVIEW_AUTHORIZED',
-      production_personal_corpus_gate: 'PRODUCTION_OPERATOR_SECRET_REQUIRED',
+      experiment_c_main_gate: 'FUTURE_SERVER_ENFORCED_GIVING_STYLE_OPERATOR_SECRET_NOT_YET_IMPLEMENTED',
       retrieval_class: 'LOCAL_SEMANTIC_SEMIOTIC_CANDIDATE_NO_RELATION_PROMOTION',
       shard_seals: shardSeals,
       empirical_replication_credit: 0,
