@@ -6,7 +6,7 @@
  *      (cohort, deployment_env, custody_layer, operator_secret_verified)
  *      preserving exact non-collapse between:
  *      - EXPERIMENT_A_PREVIEW_AUTHORIZED
- *      - EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD (7 Batch-B PDFs)
+ *      - Prospective supplemental sources remain outside A0 active material
  *      - APPLEDOUBLE_C4_QUARANTINED (33 ._* files)
  *      - ARCHIVE_CONTAINER_UNEXTRACTED (Archive.zip)
  *      - No body suppression in Experiment A; server-side operator access is a future Experiment C main-release prerequisite
@@ -785,7 +785,7 @@ export async function verifyExperimentAShards({ baseUrl = '', seals = null } = {
     && !batchB.some((b) => String(b.original_filename || '').startsWith('._'));
   const allBatchBNullBody = batchB.every((b) => b.text_body === null && b.custody_status === 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
 
-  const verified = sources.length === 53 && instruments.length === 21 && batchB.length === 7 && allAppleDoubleClean && allBatchBNullBody;
+  const verified = sources.length === 53 && instruments.length === 21 && batchB.length === 0 && allAppleDoubleClean && allBatchBNullBody;
   return {
     schema: 'td613.vixen.experiment-a-shard-verification/v1',
     status: verified ? 'SHARD_SEALS_VERIFIED' : 'SHARD_SEALS_UNVERIFIED',
