@@ -297,7 +297,8 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     makeSelectSource(w,state.sources[i],v=>pickSource(i,v))
    );
    const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
-   const manuscript=mk('pre','vs-manuscript-body','Expand to read the complete recorded manuscript.');
+   const manuscript=mk('div','vs-manuscript-body');
+   manuscript.textContent='Expand to read the complete recorded manuscript.';
    const manuscriptReader=details('Read complete Experiment-A manuscript',manuscript,'vs-manuscript');
    manuscriptReader.dataset.sourceId=src.source_file_id;
    manuscriptReader.addEventListener('toggle',async()=>{
@@ -309,7 +310,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
      const rec=await mod.loadExperimentABodyBySourceId(src.source_file_id);
      if(!manuscriptReader.isConnected)return;
      if(typeof rec?.text_body==='string'&&rec.text_body.length){
-      manuscript.textContent=mod.scrubBase64BlobsForDisplay(rec.text_body);
+      const {mountVixenManuscript}=await import('./manuscript-reader.mjs');
+      if(!manuscriptReader.isConnected)return;
+      mountVixenManuscript(manuscript,rec.text_body,{sourceId:src.source_file_id,showRaw:true});
       manuscriptReader.dataset.loaded='true';
      }else{
       manuscript.textContent='Original text unavailable: '+(rec?.custody_status||'NO_RECORDED_BODY');
@@ -323,6 +326,29 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     }
    });
    side.append(manuscriptReader);
+   const navigation=mk('div','vs-research-bridges');
+   const openInWorks=button('Open full Works reader',()=>{
+    const route=window.VixenResearchUI;
+    if(route?.openWork)route.openWork(w.work_id,src.source_file_id);
+    else window.location.hash='#works/'+encodeURIComponent(w.work_id);
+   },'vs-research-bridge');
+   const searchSource=button('Search this manuscript',()=>{
+    const route=window.VixenResearchUI;
+    if(route?.openSearch)route.openSearch(src.original_filename,{sourceId:src.source_file_id});
+    else window.dispatchEvent(new CustomEvent('vixen:research-search',{detail:{query:src.original_filename,sourceId:src.source_file_id}}));
+   },'vs-research-bridge');
+   const podiumInspect=button('Copy Podium work-inspection task',async()=>{
+    const task={schema:'td613.vixen.podium.task/v1',intent:'vixen.work.inspect',
+     params:{work_id:w.work_id,source_file_id:src.source_file_id},
+     source_id:src.source_file_id,execution_authority:false};
+    const copied=await safeCopy(JSON.stringify(task,null,2));
+    state.notice=copied?'Read-only Podium task copied; never auto-executed.':'Clipboard unavailable; inspect the task in Podium.';
+    const status=host.querySelector('.vs-status');
+    if(status)status.textContent=state.notice;
+    addEvent('PODIUM_SOURCE_INSPECTION_TASK_PREPARED',{source_file_id:src.source_file_id,auto_execute:false});
+   },'vs-research-bridge');
+   append(navigation,openInWorks,searchSource,podiumInspect);
+   side.append(navigation);
    const provenance=details('Source provenance and unresolved authorship',
     append(mk('div','vs-provenance'),
      paragraph('Authorship: '+w.authorship+' · Identity: '+w.identity_status),
