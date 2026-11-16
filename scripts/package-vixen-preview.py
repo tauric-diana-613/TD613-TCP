@@ -73,10 +73,22 @@ def main(out):
     for name in ["synthesis-salon.mjs","synthesis-salon.css","synthesis-salon-engine.mjs"]:
         assert (APP/"encyclopedia"/"vixen-estate"/name).is_file(), "Unpackaged Vixen Salon module: "+name
     podium=(REF/"podium"/"manifest.json")
+    podium_routes = json.loads(podium.read_text(encoding="utf8"))["routes"] if podium.is_file() else []
+    legacy_routes = {
+        "podium.describe", "vixen.work.inspect", "vixen.gates.inspect",
+        "universal.open", "universal.search", "universal.get", "universal.related",
+        "synthesis.propose", "vixen.salon.compose", "experiment_b.preregister",
+        "engine.capabilities", "engine.invoke"
+    }
+    fusion_routes = {
+        "vixen.fusion.capabilities", "vixen.fusion.search",
+        "vixen.fusion.compare", "vixen.fusion.explain"
+    }
+    route_ids = [item["id"] for item in podium_routes]
     assert (
-        podium.is_file()
-        and len(json.loads(podium.read_text(encoding="utf8"))["routes"]) == 12
-    ), "Machine Podium / Salon bridge contract missing"
+        len(route_ids) == 16 and len(set(route_ids)) == 16
+        and set(route_ids) == (legacy_routes | fusion_routes)
+    ), "Machine Podium / Salon sixteen-route contract missing or original route lost"
     assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
     assert (REF/"vixen-operator-encounter.mjs").is_file()
     assert (REF/"vixen-operator-encounter.css").is_file()
