@@ -15,6 +15,7 @@ import {makePodiumScore,reachPodiumComposeGate} from '../vixen-estate/podium-com
 import {createPodiumComposeGate} from '../vixen-estate/podium-compose-gate.mjs';
 import {buildRedpenPacket,makeBlankRedpenReturn,adjudicateRedpenReturn,
  buildInChatRedpenControls} from '../vixen-estate/podium-redpen-adjudication.mjs';
+import {buildNativeVisualDiff} from '../vixen-estate/podium-native-visual-diff.mjs';
 import {
  normalizeFusionControls,boundedFusionComparisonSpec,
  FUSION_CHANNEL_KEYS,FUSION_PROFILE_IDS,FUSION_WEIGHT_POLICIES,FUSION_PROFILES
@@ -83,7 +84,8 @@ const safeRecord=w=>({
  }))
 });
 export function createVixenPodium({corpus,membrane=null,engineAdapters={},engines=null,
-  semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT',verifyHumanApproval=null}={}){
+  semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT',verifyHumanApproval=null,
+   nativeReviewCaptureProvider=null}={}){
  const normalizeAdapters=map=>{
   if(map===undefined||map===null)return Object.create(null);
   if(typeof map!=='object'||Array.isArray(map))throw new TypeError('VIXEN_PODIUM_INVALID_ENGINE_ADAPTER_MAP');
@@ -96,7 +98,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
  const boundAdapters={...normalizeAdapters(engines),...normalizeAdapters(engineAdapters)};
  // Independent approval only through host-injected verification; never task JSON.
  const composeGate=createPodiumComposeGate({sourceRevision,verifyHumanApproval});
- let latestScore=null,latestRedpenPacket=null,latestRedpenReturn=null;
+ let latestScore=null,latestRedpenPacket=null,latestRedpenReturn=null,latestNativeReview=null;
  const attachedSemantic=(semanticSearch&&typeof semanticSearch.search==='function')?semanticSearch:null;
  const counts=corpus&&Array.isArray(corpus.works)&&Array.isArray(corpus.human_gates)&&
   Array.isArray(corpus.instruments)?census(corpus):null;
@@ -283,7 +285,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
     if(latestScore?.score_sha256!==score.score_sha256){
      composeGate.invalidate('NEW_COMPUTATIONAL_SCORE_INVALIDATES_PREVIOUS_HUMAN_CHALLENGE');
     }
-    latestScore=score;latestRedpenPacket=null;latestRedpenReturn=null;
+    latestScore=score;latestRedpenPacket=null;latestRedpenReturn=null;latestNativeReview=null;
     event('COMPUTATIONAL_SCORE_PREPARED',{digest:score.score_sha256,change_count:score.changes_count,
      visual_form:score.visuals.selected.id});
     return receipt(intent,'SUPPORTED',score);
@@ -303,8 +305,28 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
       visual_attachment_gate:latestRedpenPacket.visual_review_attachment,
       release_authority:false
      });
+    if(params.phase==='visual'){
+     if(!latestRedpenPacket.visual_review_required)
+      return receipt(intent,'SUPPORTED',buildNativeVisualDiff(latestRedpenPacket));
+     if(typeof nativeReviewCaptureProvider!=='function')
+      return receipt(intent,'HELD',rejection('HELD_NATIVE_CAPTURES_NOT_CONNECTED',
+       'Host must generate both previous and new interactive scenes from the exact build'));
+     let captures;try{captures=await nativeReviewCaptureProvider({
+      score:latestScore,packet:latestRedpenPacket,source_revision:sourceRevision
+     });}catch(_){
+      return receipt(intent,'HELD',rejection('HELD_NATIVE_CAPTURE_FAILED','Renderer capture refused'));
+     }
+     const review=buildNativeVisualDiff(latestRedpenPacket,captures);
+     latestNativeReview=review.status==='READY_FOR_OPERATOR_VISUAL_REVIEW'?review:null;
+     return receipt(intent,review.status.startsWith('HELD')?'HELD':'SUPPORTED',review);
+    }
     if(params.phase==='return'){
      const decision=adjudicateRedpenReturn(latestRedpenPacket,params.submission);
+     if(decision.status==='REVIEW_READY_FOR_INDEPENDENT_AUTHENTICATION'&&
+        latestRedpenPacket.visual_review_required&&!latestNativeReview)
+      return receipt(intent,'HELD',rejection('HELD_REQUIRED_EXACT_VISUAL_REVIEW_NOT_ATTACHED',
+       'Before final review, the native previous and replacement scenes must be available.'));
+
      latestRedpenReturn=decision.status==='REVIEW_READY_FOR_INDEPENDENT_AUTHENTICATION'?
       decision:null;
      if(!latestRedpenReturn)composeGate.invalidate('REDPEN_REVISION_OR_REJECTION_REQUIRES_NEW_SCORE');
@@ -313,7 +335,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
      return receipt(intent,decision.status.startsWith('HELD')?'HELD':'SUPPORTED',decision);
     }
     return receipt(intent,'HELD',rejection('HELD_RED_PEN_PHASE_REQUIRED',
-     'Choose export, chat or return. No automatic Compose.'));
+     'Choose export, chat, visual or return. No automatic Compose.'));
    }
    if(intent==='podium.compose'){
     // Agent-only Compose: stage -> request -> STOP. Task booleans cannot approve.

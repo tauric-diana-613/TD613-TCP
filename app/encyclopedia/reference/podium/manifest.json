@@ -203,6 +203,11 @@
       "authority": "READ_ONLY_OPEN_VISUAL_GRAMMAR_STAGING"
     },
     {
+      "id": "podium.redpen",
+      "purpose": "Export, annotate, return and optionally view exact native visual comparisons for one immutable Score",
+      "authority": "READ_ONLY_DECISION_REVIEW_NOT_COMPOSE_AUTHORIZATION"
+    },
+    {
       "id": "podium.compose",
       "inputs": [
         "research_question",
@@ -413,7 +418,20 @@
     "score_edits_invalidate_previous_approval": true,
     "protected_flight": "HELD",
     "visual_audition": "PRE_COMPOSE_SCORE_BOUND_HTML_ALL_QUALIFIED_CANDIDATES",
-    "visual_audition_human_action": "REVIEW_REJECT_REQUEST_EDITS_BEFORE_AUTHORIZATION"
+    "visual_audition_human_action": "REVIEW_REJECT_REQUEST_EDITS_BEFORE_AUTHORIZATION",
+    "redpen_packet_schema": "td613.vixen.podium.redpen-review/v1",
+    "redpen_return_schema": "td613.vixen.podium.redpen-return/v1",
+    "chat_review_schema": "td613.vixen.podium.chat-review-contract/v1",
+    "redpen_outcomes": [
+      "APPROVE",
+      "DENY",
+      "AMEND",
+      "HOLD",
+      "REQUEST_ALTERNATIVE",
+      "REQUEST_EVIDENCE"
+    ],
+    "visual_attachment_rule": "ONLY_PROPOSED_VISUAL_SUBSTITUTIONS; REQUIRES VERIFIED NATIVE BEFORE_AND_AFTER",
+    "redpen_as_human_authentication": false
   },
   "optical_contract": {
     "A": "DISTINCT_D3_PHI_FIELD_AND_FOLD",
@@ -461,6 +479,9 @@
       "visuals.audition.gallery_html",
       "visuals.audition.held[]"
     ],
-    "audition_restrictions": "OFFLINE_SCRIPTLESS_SCHEMATIC_NO_SCIENTIFIC_RENDERER_CLAIM"
+    "audition_restrictions": "OFFLINE_SCRIPTLESS_SCHEMATIC_NO_SCIENTIFIC_RENDERER_CLAIM",
+    "native_visual_review_schema": "td613.vixen.composer.native-visual-diff/v1",
+    "exact_native_capture_requirement": "NATIVE_SAME_BUILD_INTERACTIVE_SCENE_FOR_BEFORE_AND_AFTER_OR_HOLD",
+    "old_exhibit_retained": true
   }
 }
