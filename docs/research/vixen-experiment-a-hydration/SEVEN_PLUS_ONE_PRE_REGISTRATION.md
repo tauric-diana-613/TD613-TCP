@@ -81,3 +81,23 @@ Required fixed-query measurements for A0, A1, A2, and both title/body counterfac
 ## 5. Explicit disclosure
 
 This research-only note intentionally omits all seven file identities so it cannot become a replacement application corpus, a retrieval cheat sheet, or a mislabeled source of empirical credit. It records the intentional experimental exclusion and future seven-plus-one reintroduction.
+
+
+## A0 source-first freeze receipt (witnessed 2026-11-16)
+
+**Source-qualified branch artifact commit:** `e32b82f0d657f7b20b2dd6b86c164ad2a8e5d380`  
+**Builder job:** [Vixen A0 Source-First Isolated Regeneration, run 43822503296](https://github.com/tauric-diana-613/TD613-TCP/actions/runs/43822503296) — SUCCESS, including bounded search and Podium test execution.  
+**Independent source fixture:** `amari/em-td613-lineage-atelier` at `70b5a0f9e94626cba6068f41c6117e7978800bbd`; read-only sibling worktree.  
+**Active manifest SHA-256:** `e9b2329a18bfc98a7ba791ea4b791e9cb5f7f77fa4336a5b3deae6ed715a5887`.
+
+| Artifact | Rebuilt byte length | SHA-256 seal |
+|---|---:|---|
+| `corpus-experiment-a-part1.json` | 1,381,562 | `3b766a590a656b88b9ae31293e75f62de8b8964e4fb7e8e4cf94125d16466e2e` |
+| `corpus-experiment-a-part2.json` | 1,401,624 | `de49b53ec8219b2fed24f7274101911bd034729dddd962e6bf2200923bb3f5f2` |
+| `semantic-semiotic-index.v1.json` | 1,904,722 | Bound by the Git blob in the exact artifact commit; standalone SHA-256 not claimed in this receipt |
+
+**Observed census:** 32 canonical Works; 53 manifestations (all retained); 21 documentary instruments; 1,086 indexed units; 138 active source-metadata entries; zero active held-out PDF records; 0 empirical replication credit.
+
+**A0 qualification scope:** Original source data and derived index were rebuilt with the seven registered-but-unread PDF bodies and their metadata excluded from the active runtime, including their contribution to lexical/SVD/semiotic statistics. The seven originals remain in separately retained archival custody; their historical existence remains a fact of provenance, not an A0 search feature. This document alone is the repository note recording that experimental decision.
+
+**Remaining qualification:** Consolidated exact-head substantive CI and live preview deployment/browser validation, neither implied by a source-builder PASS. The first rebuild attempt had a non-fast-forward Git race; the successful run committed the regenerated artifacts without force-pushing.
