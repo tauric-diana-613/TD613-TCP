@@ -794,7 +794,7 @@ jobs:
           VERCEL_GIT_REPO_OWNER: tauric-diana-613
         run: |
           set -euo pipefail
-          vercel deploy --prebuilt --yes --scope "$VERCEL_SCOPE" | tee "$RUNNER_TEMP/vercel-preview-deploy.log"
+          vercel deploy --prebuilt --archive=tgz --yes --scope "$VERCEL_SCOPE" | tee "$RUNNER_TEMP/vercel-preview-deploy.log"
           URL="$(grep -Eo 'https://[A-Za-z0-9.-]+\.vercel\.app' "$RUNNER_TEMP/vercel-preview-deploy.log" | tail -n 1)"
           [[ "$URL" =~ ^https://[A-Za-z0-9.-]+\.vercel\.app$ ]] || { echo 'Invalid immutable preview URL.' >&2; exit 1; }
           echo "url=$URL" >> "$GITHUB_OUTPUT"
