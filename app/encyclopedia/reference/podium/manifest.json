@@ -27,8 +27,14 @@
     ],
     "no_automatic_source_pairing": true,
     "no_implicit_engine_connection": true,
-    "routes": 12,
-    "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs"
+    "routes": 16,
+    "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs",
+    "machine_subsystems": [
+      "VIXEN_SOURCE_INSPECTION",
+      "UNIVERSAL_REFERENCE_READER",
+      "EXPLICIT_ENGINE_ADAPTERS",
+      "SEMANTIC_SEMIOTIC_FUSION_ABLATION"
+    ]
   },
   "source_census": {
     "vixen_works": 32,
@@ -136,6 +142,51 @@
       ],
       "action": "CALL_ONLY_EXPLICITLY_INJECTED_BOUNDED_ADAPTER",
       "authority": "EXPLICIT_OPERATOR_CONDUIT_REQUIRED"
+    },
+    {
+      "id": "vixen.fusion.capabilities",
+      "inputs": [],
+      "action": "FINITE_FUSION_CAPABILITY_AND_ABLATION_SCHEMA",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "vixen.fusion.search",
+      "inputs": [
+        "query",
+        "mode",
+        "profile",
+        "channels",
+        "weight_policy",
+        "limit"
+      ],
+      "action": "FULL_INDEX_LEXICAL_SEMANTIC_SEMIOTIC_SRC_SCORE_AND_CITATION",
+      "authority": "READ_ONLY_FULL_INDEX_REQUIRED"
+    },
+    {
+      "id": "vixen.fusion.compare",
+      "inputs": [
+        "query",
+        "mode",
+        "profiles",
+        "weight_policy",
+        "limit"
+      ],
+      "action": "BOUNDED_SIX_PROFILE_FUSION_ABLATION_MATRIX",
+      "authority": "READ_ONLY_NO_WEIGHT_PERSISTENCE"
+    },
+    {
+      "id": "vixen.fusion.explain",
+      "inputs": [
+        "query",
+        "hit_id",
+        "mode",
+        "profile",
+        "channels",
+        "weight_policy",
+        "limit"
+      ],
+      "action": "EXPLAIN_EVIDENCE_AND_SCORE_OF_ONE_RETRIEVED_CHUNK",
+      "authority": "READ_ONLY_NOT_ENTAILMENT"
     }
   ],
   "optional_engine_adapters": {
@@ -210,7 +261,43 @@
         "--mode <mode>",
         "--src-audit",
         "--conduct <json>"
-      ]
+      ],
+      "fusion_controls": {
+        "schema": "td613.vixen.fusion-controls/v1",
+        "version": "rgi16",
+        "channels": [
+          "lexical",
+          "semantic",
+          "semiotic",
+          "src"
+        ],
+        "profiles": [
+          "FULL_FUSION",
+          "LEXICAL_ONLY",
+          "SEMANTIC_ONLY",
+          "SEMIOTIC_ONLY",
+          "SRC_ONLY",
+          "NO_SEMANTIC",
+          "NO_SEMIOTIC",
+          "NO_SRC"
+        ],
+        "weight_policies": [
+          "PRESERVE_BASELINE",
+          "RENORMALIZE_ACTIVE"
+        ],
+        "max_profiles_per_comparison": 6,
+        "max_hits": 24,
+        "max_query_characters": 200,
+        "full_index_required": true,
+        "inline_fallback_must_not_be_presented_as_fusion": true,
+        "whole_manuscript_semiotic_interpretation": "UNIMPLEMENTED_NOT_INFERRED",
+        "task_routes": [
+          "vixen.fusion.capabilities",
+          "vixen.fusion.search",
+          "vixen.fusion.compare",
+          "vixen.fusion.explain"
+        ]
+      }
     },
     "src_canon": {
       "canon_name": "SignalRupture Canon (SRC)",
