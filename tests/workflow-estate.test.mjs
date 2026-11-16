@@ -218,4 +218,24 @@ assert.doesNotMatch(consolidated, /^\s*schedule:\s*$/m,
 assert.doesNotMatch(wendbineGate, /cron:|deployment_count|vercel-operator-release\.yml/,
  'Wendbine intake carries no autonomous timing or Vercel release authority.');
 
+
+// PR #1730 single-gesture preview release stays inside the existing fourth workflow.
+// PREPARE may be invoked for source-only evidence; DEPLOY invokes PREPARE first
+// within the same GitHub Actions run, not by demanding a second owner comment.
+const vixenPrepare = relock.split('  vixen-preview-prepare:')[1]?.split('  vixen-preview-deploy:')[0] || '';
+const vixenDeploy = relock.split('  vixen-preview-deploy:')[1] || '';
+assert.ok(vixenPrepare && vixenDeploy, 'PR #1730 must retain two jobs in the existing relock workflow.');
+assert.match(vixenPrepare, /vixen-preview PREPARE/);
+assert.match(vixenPrepare, /vixen-preview DEPLOY/);
+assert.match(vixenPrepare, /sha: \$\{\{ steps\.qualify\.outputs\.sha \}\}/);
+assert.match(vixenDeploy, /needs: vixen-preview-prepare/);
+assert.match(vixenDeploy, /needs\.vixen-preview-prepare\.result == 'success'/);
+assert.match(vixenDeploy, /QUALIFIED_SHA: \$\{\{ needs\.vixen-preview-prepare\.outputs\.sha \}\}/);
+assert.match(vixenDeploy, /GITHUB_RUN_ID\/artifacts/);
+assert.doesNotMatch(vixenDeploy, /MANUAL_PREPARE_RUN|Operator must identify a successful preparation run ID|separate explicit owner comment only/);
+assert.match(vixenDeploy, /vercel deploy --prebuilt/);
+assert.match(vixenDeploy, /Git auto-deployment lock must remain closed/);
+assert.doesNotMatch(vixenDeploy, /vercel deploy [^\n]*--prod/);
+assert.doesNotMatch(vixenDeploy, /td613-vercel-release PRODUCTION/);
+
 console.log('Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.');

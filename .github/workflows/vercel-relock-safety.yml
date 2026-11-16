@@ -432,7 +432,7 @@ jobs:
         run: |
           gh api "repos/$GITHUB_REPOSITORY/issues/$GATE_ISSUE/comments" -f body="𝌋 Wendbine sync HELD. run=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID; automatic_retry=false; merge=false; deployment=false; scientific_promotion=false. Gate #$GATE_ISSUE DORMANT. ⟐"
 
-  # PR #1730 source-only preflight: no Vercel credentials, no deployment.
+  # PR #1730 source-only preflight: PREPARE inspects, DEPLOY continues after this same-run check.
 
   vixen-preview-prepare:
     name: Exact-source GitHub preflight — NO DEPLOY
@@ -445,7 +445,8 @@ jobs:
         github.event.comment.user.login == github.repository_owner ||
         github.event.comment.user.login == 'chatgpt-codex-connector[bot]'
       ) &&
-      startsWith(github.event.comment.body, '/td613-vixen-preview PREPARE ')
+      (startsWith(github.event.comment.body, '/td613-vixen-preview PREPARE ') ||
+       startsWith(github.event.comment.body, '/td613-vixen-preview DEPLOY '))
     concurrency:
       group: td613-vixen-pr1730-preview-prepare
       cancel-in-progress: false
@@ -456,6 +457,8 @@ jobs:
       issues: read
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    outputs:
+      sha: ${{ steps.qualify.outputs.sha }}
     env:
       MANUAL_SHA: ${{ inputs.commit_sha || '' }}
       COMMENT_BODY: ${{ github.event.comment.body || '' }}
@@ -475,7 +478,7 @@ jobs:
           INPUT_SHA="$MANUAL_SHA"
           if [[ "$GITHUB_EVENT_NAME" == 'issue_comment' ]]; then
             read -r COMMAND OP INPUT_SHA EXTRA <<< "$COMMENT_BODY"
-            [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'PREPARE' && -z "$EXTRA" ]] || exit 1
+            [[ "$COMMAND" == '/td613-vixen-preview' && ( "$OP" == 'PREPARE' || "$OP" == 'DEPLOY' ) && -z "$EXTRA" ]] || exit 1
           fi
           [[ "$INPUT_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Exact 40-character SHA required.' >&2; exit 1; }
           PR="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730")"
@@ -589,16 +592,19 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
-  # PR #1730 Preview deployment: separate explicit owner comment only.
+  # PR #1730 Preview deployment: one same-event DEPLOY gesture, after successful PREPARE job.
 
   vixen-preview-deploy:
     name: Verified Vixen preview
+    needs: vixen-preview-prepare
     if: >-
+      needs.vixen-preview-prepare.result == 'success' &&
       github.ref == 'refs/heads/main' &&
       github.event_name == 'issue_comment' &&
       github.event.issue.number == 1730 &&
       github.event.issue.pull_request != null &&
-      github.event.comment.user.login == github.repository_owner &&
+      (github.event.comment.user.login == github.repository_owner ||
+       github.event.comment.user.login == 'chatgpt-codex-connector[bot]') &&
       startsWith(github.event.comment.body, '/td613-vixen-preview DEPLOY ')
     concurrency:
       group: td613-vixen-pr1730-preview-deploy
@@ -612,8 +618,6 @@ jobs:
     timeout-minutes: 120
     environment: vixen-preview
     env:
-      MANUAL_SHA: ${{ inputs.commit_sha || '' }}
-      MANUAL_PREPARE_RUN: ${{ inputs.prepare_run_id || '' }}
       APPROVAL_COMMENT: ${{ github.event.comment.body || '' }}
       VERCEL_SCOPE: tauric-diana-s-projects
       VERCEL_PROJECT: td-613-tcp
@@ -623,56 +627,36 @@ jobs:
       VERCEL_CLI_VERSION: '65.16.0'
 
     steps:
-      - name: Enforce distinct OWNER approval and successful preflight receipt
+      - name: Bind one trusted DEPLOY gesture to this run's completed exact-source preflight
         id: operator_gate
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          QUALIFIED_SHA: ${{ needs.vixen-preview-prepare.outputs.sha }}
         run: |
           set -euo pipefail
-          APPROVED_SHA="$MANUAL_SHA"
-          PREPARE_RUN="$MANUAL_PREPARE_RUN"
-          if [[ "$GITHUB_EVENT_NAME" == 'issue_comment' ]]; then
-            read -r COMMAND OP APPROVED_SHA PREPARE_RUN EXTRA <<< "$APPROVAL_COMMENT"
-            [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'DEPLOY' && -z "$EXTRA" ]] || {
-              echo 'Operator deploy command must be exact.' >&2
-              exit 1
-            }
-          fi
-          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]] || {
-            echo 'Operator must approve an exact 40-character source SHA.' >&2
+          read -r COMMAND OP APPROVED_SHA EXTRA <<< "$APPROVAL_COMMENT"
+          [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'DEPLOY' && -z "${EXTRA:-}" ]] || {
+            echo 'One exact DEPLOY gesture is required; PREPARE never deploys.' >&2
             exit 1
           }
-          [[ "$PREPARE_RUN" =~ ^[0-9]{8,20}$ ]] || {
-            echo 'Operator must identify a successful preparation run ID.' >&2
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ && "$APPROVED_SHA" == "$QUALIFIED_SHA" ]] || {
+            echo 'Gesture SHA differs from the successful same-run PR source preflight.' >&2
             exit 1
           }
-          PREPARED="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN")"
-          jq -e \
-            '.name == "Vercel Relock Safety" and
-             .head_branch == "main" and .status == "completed" and
-             .conclusion == "success" and .event == "issue_comment"' \
-            <<< "$PREPARED" >/dev/null || {
-              echo 'Referenced preparation is not a successful trusted preflight run.' >&2
-              exit 1
-            }
-          PREPARED_JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN/jobs?per_page=100")"
-          jq -e 'any(.jobs[]?; .name == "Exact-source GitHub preflight — NO DEPLOY" and .conclusion == "success")' \
-            <<< "$PREPARED_JOBS" >/dev/null || {
-              echo 'Referenced run lacks successful Vixen source preflight.' >&2
-              exit 1
-            }
-          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN/artifacts?per_page=100")"
+          # A prior PREPARE gesture/run is neither required nor accepted as a second sign-off.
+          # The needs edge ensures the first job completed successfully for this very comment.
+          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100")"
           jq -e --arg receipt "vixen-preview-prepared-$APPROVED_SHA" \
             'any(.artifacts[]?; .name == $receipt and .expired == false)' \
             <<< "$ARTIFACTS" >/dev/null || {
-              echo 'Missing exact-SHA nonexpired PREPARED receipt artifact.' >&2
+              echo 'Same-run exact-SHA preparation receipt absent.' >&2
               exit 1
             }
           echo "INPUT_SHA=$APPROVED_SHA" >> "$GITHUB_ENV"
-          echo "PREPARE_RUN_ID=$PREPARE_RUN" >> "$GITHUB_ENV"
+          echo "PREPARE_RUN_ID=$GITHUB_RUN_ID" >> "$GITHUB_ENV"
           echo "sha=$APPROVED_SHA" >> "$GITHUB_OUTPUT"
-          echo 'Human-authorized preview path accepted; production remains prohibited.'
+          echo 'Single-gesture PREVIEW authorization accepted; no production authority.'
 
       - name: Authorize exact PR head and completed consolidated CI
         shell: bash
@@ -782,6 +766,32 @@ jobs:
           set -euo pipefail
           vercel pull --yes --environment=preview --scope "$VERCEL_SCOPE"
           vercel build --scope "$VERCEL_SCOPE"
+
+      - name: Claim one preview attempt for this comment before invoking the provider
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ATTEMPT_NAME="vixen-preview-attempt-${{ github.event.comment.id }}"
+          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100")"
+          jq -e --arg name "$ATTEMPT_NAME" 'all(.artifacts[]?; .name != $name)' <<< "$ARTIFACTS" >/dev/null || {
+            echo 'This exact comment already consumed its preview deployment attempt.' >&2
+            exit 1
+          }
+          mkdir -p "$RUNNER_TEMP/vixen-preview-attempt"
+          printf 'source_sha=%s\ncomment_id=%s\nrun_id=%s\nprovider_attempt_ceiling=1\n' \
+            "$INPUT_SHA" '${{ github.event.comment.id }}' "$GITHUB_RUN_ID" \
+            > "$RUNNER_TEMP/vixen-preview-attempt/receipt.txt"
+
+      - name: Latch the single-attempt receipt across reruns of this workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-preview-attempt-${{ github.event.comment.id }}
+          path: ${{ runner.temp }}/vixen-preview-attempt/receipt.txt
+          retention-days: 90
+          if-no-files-found: error
+          overwrite: false
 
       - name: Deploy immutable Preview without moving the familiar alias
         id: deploy
