@@ -616,6 +616,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     if(lastPacket)showPacket(lastPacket);
   }
   function completeFirstCrossing(){
+    if(disposed)return;
     // Hidden controls may receive re-entrant events. Local binding alone does
     // not claim practice completion before its current consequence publishes.
     if(!firstCrossingActive||firstCrossingStep!==5||firstCrossingBindingState!=='VERIFIED'||!firstCrossingLessonPublished)return;
@@ -703,7 +704,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossing').focus?.({preventScroll:true});
   }
   async function actFirstCrossing(){
-    if(!firstCrossingActive||firstCrossingBindingState==='PENDING')return;
+    if(disposed||!firstCrossingActive||firstCrossingBindingState==='PENDING')return;
     if(firstCrossingStep===0){
       const correct=firstCrossingSelected.has('brief')&&firstCrossingSelected.has('source')&&!firstCrossingSelected.has('private')&&firstCrossingSelected.size===2;
       if(!correct){
@@ -774,7 +775,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
     $('loomFirstCrossingStop').textContent=lesson.next;
   }
   async function advanceFirstCrossing(){
-    if(!firstCrossingActive||firstCrossingBindingState!=='VERIFIED')return;
+    if(disposed||!firstCrossingActive||firstCrossingBindingState!=='VERIFIED')return;
     if(firstCrossingStep===5){completeFirstCrossing();return;}
     if((firstCrossingStep===2&&!firstCrossingReadinessPublished)||(firstCrossingStep>=3&&!firstCrossingLessonPublished)||firstCrossingStep<2||firstCrossingStep>4)return;
     const next=firstCrossingStep+1, token=++firstCrossingGeneration;
@@ -1389,7 +1390,7 @@ export function mountLoomAiWorkspace(root, environment = window, { demoProjects 
   if(environment.location?.hash==='#loomGate'){openLoomThreshold();openTools('challenge');}
   visibility();
   environment.document.documentElement.dataset.loomBoot='ready';
-  const dispose=()=>{disposed=true;root.removeEventListener('click',tutorialClick,true);root.removeEventListener('keydown',tutorialKeydown,true);environment.document.removeEventListener('keyup',tutorialKeyup,true);cancelSessionBundle();if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
+  const dispose=()=>{if(disposed)return;disposed=true;firstCrossingActive=false;firstCrossingGeneration++;root.removeEventListener('click',tutorialClick,true);root.removeEventListener('keydown',tutorialKeydown,true);environment.document.removeEventListener('keyup',tutorialKeyup,true);cancelSessionBundle();if(flowcoreCopyTimer!==null)environment.clearTimeout(flowcoreCopyTimer);if(flowcoreClearTimer!==null)environment.clearTimeout(flowcoreClearTimer);clearThresholdTimers();stageObserver?.disconnect();returnedReview.dispose();marrowlineChild=null;reentry.dispose();if(pendingTimer!==null)environment.clearInterval(pendingTimer);version++;taskGovernor?.close();controller?.abort();runtime.dispose();coordinator.destroy();reduced.removeEventListener('change',motionChange);environment.document.removeEventListener('visibilitychange',visibility);delete environment.document.documentElement.dataset.loomJourney;delete environment.document.documentElement.dataset.loomFlowPhase;};
   environment.addEventListener('pagehide',dispose,{once:true});return {dispose,inspect:()=>({mode:workspaceMode,session:portableSession?inspectPortableLoomSession(portableSession):null,turn_receipt:turnReceiptVerification?{status:turnReceiptVerification.status,ref:turnReceiptVerification.ref}:null,challenge:challengeVerification?{status:challengeVerification.status,ref:challengeVerification.ref}:null,events:[...events],clock:coordinator.inspect(),replay:{index:replayIndex,count:sceneHistory.length},runtime:runtime.inspect(),geometry:null})};
 }
 if(typeof document!=='undefined')mountLoomAiWorkspace(document.querySelector('#loomAiWorkspace'));
