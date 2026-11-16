@@ -697,25 +697,25 @@ body[data-view="overview"] .reading-back{display:none}
           <span class="vixen-door-index">01 / ENTER THE CATALOGUE</span>
           <strong>Meet the <em>research.</em></strong>
           <span class="vixen-door-desc">Thirty-two Works, fifty-three manifestations, and the authorship questions they retain.</span>
-          <span class="vixen-door-verb">Browse the Works <svg class="vixen-door-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
+          <span class="vixen-door-verb">Browse the Works <span aria-hidden="true" class="vixen-door-desktop-arrow">↗</span><svg class="vixen-door-mobile-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
         </button>
         <button type="button" data-view="observatory" aria-label="Enter the live Vixen mathematical Observatory">
           <span class="vixen-door-index">02 / DISTURB THE MACHINE</span>
           <strong>Touch the <em>instrument.</em></strong>
           <span class="vixen-door-desc">Manipulate a source-derived simulation. Inspect what changes, and what remains unproven.</span>
-          <span class="vixen-door-verb">Experiment <svg class="vixen-door-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
+          <span class="vixen-door-verb">Experiment <span aria-hidden="true" class="vixen-door-desktop-arrow">↗</span><svg class="vixen-door-mobile-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
         </button>
         <button type="button" data-view="collection" aria-label="Enter the Vixen Synthesis Salon and session research cart">
           <span class="vixen-door-index">03 / ATTEMPT A RELATION</span>
           <strong>Make a <em>conjecture.</em></strong>
           <span class="vixen-door-desc">Bring two Works into a question. Generate, challenge, withdraw, or carry it onward.</span>
-          <span class="vixen-door-verb">Enter the Salon <svg class="vixen-door-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
+          <span class="vixen-door-verb">Enter the Salon <span aria-hidden="true" class="vixen-door-desktop-arrow">↗</span><svg class="vixen-door-mobile-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
         </button>
         <button type="button" data-view="reference" aria-label="Open the original Vixen Folios and source inquiry">
           <span class="vixen-door-index">04 / FOLLOW A CITATION</span>
           <strong>Follow the <em>trace.</em></strong>
           <span class="vixen-door-desc">Examine a recorded Work, compare manifestations, and inspect the evidence boundary.</span>
-          <span class="vixen-door-verb">Investigate <svg class="vixen-door-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
+          <span class="vixen-door-verb">Investigate <span aria-hidden="true" class="vixen-door-desktop-arrow">↗</span><svg class="vixen-door-mobile-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M8 5h11v11"/></svg></span>
         </button>
       </div>
       <div class="vixen-foyer-afterword"><span>THE CORPUS GIVES THE QUESTION ITS SHAPE.</span><span>THE OPERATOR DECIDES WHAT IT MAY BECOME. ⟐</span></div>
@@ -1753,7 +1753,6 @@ body[data-view="overview"] .reading-back{display:none}
     readerPhase: 'NOTICE',
     readerRestReturn: 'NOTICE',
     activeManifestationId: null,
-    readerFullView: true,
     focusedPassage: null,
     localInspectedDoc: null,
     globalSearchMode: 'hybrid',
@@ -3108,8 +3107,7 @@ body[data-view="overview"] .reading-back{display:none}
       ).join('') +
     '</div>';
 
-    const custodyLine =
-      '<details class="expa-custody-disclosure"><summary>Source integrity &amp; custody</summary>' +
+    const custodyBody =
       '<div style="font:500 10px/1.6 var(--font-mono);color:#d8cbb8;margin-bottom:8px">' +
         '<span>Policy: <code>' + esc(bodyRec?.custody_status || 'EXPERIMENT_A_PREVIEW_AUTHORIZED') + '</code></span> · ' +
         '<span>Representation: <code>' + esc(bodyRec?.body_representation || 'UNLOADED') + '</code></span>' +
@@ -3121,7 +3119,9 @@ body[data-view="overview"] .reading-back{display:none}
         (bodyRec?.native_text_sha256_exact_match
           ? 'Live Browser WebCrypto SHA-256: <code style="color:#FFF0A8">' + esc(computedSha || 'N/A') + '</code> (NATIVE_EXACT_MATCH)'
           : 'Extracted Text Derivative SHA-256: <code style="color:#FF91AF">' + esc(computedSha || 'N/A') + '</code> · binary_pdf_sha256_verified: <code>' + esc(String(Boolean(bodyRec?.binary_pdf_sha256_verified))) + '</code>') +
-      '</div></details>';
+      '</div>';
+    const custodyLine = '<div class="expa-custody-desktop">' + custodyBody + '</div>' +
+      '<details class="expa-custody-disclosure"><summary>Source integrity &amp; custody</summary>' + custodyBody + '</details>';
     let bodyDisplayHtml = '';
     if (restPaused) {
       bodyDisplayHtml =
@@ -3133,21 +3133,9 @@ body[data-view="overview"] .reading-back{display:none}
     } else if (!rawText) {
       bodyDisplayHtml = '<div class="expa-passage-focus">No extractable companion text available for this manifestation (<code>' + esc(bodyRec?.body_representation || 'NONE') + '</code>).</div>';
     } else {
-      const fullNotice = state.readerFullView
-        ? 'Showing complete companion text (' + rawText.length.toLocaleString('en-US') + ' chars · scrubbing inline image blobs for legibility).'
-        : (focusMatch
-            ? (focusMatchedBodyTerm
-                ? 'Focused Body Prose (offset ~' + effectiveOffset + ' · matched query term · Rung: ' + (state.focusedPassage.highest_rung || 'OBSERVED') + ')'
-                : 'Focused Retrieval Span (offset ' + state.focusedPassage.char_offset + ', len ' + state.focusedPassage.char_length + (state.focusedPassage.page_span ? ', ' + state.focusedPassage.page_span : '') + ' · Rung: ' + (state.focusedPassage.highest_rung || 'OBSERVED') + ')')
-            : 'Opening Companion Excerpt (first 2,400 of ' + rawText.length.toLocaleString('en-US') + ' chars). Toggle full text below for complete review.');
       bodyDisplayHtml =
-        '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">' +
-          '<span style="font:500 10px/1.4 var(--font-mono);color:#FFF0A8">' + esc(fullNotice) + '</span>' +
-          '<button type="button" class="secondary-btn" id="expaToggleFullBtn" style="min-height:30px;padding:4px 10px;font-size:10px">' +
-            (state.readerFullView ? 'Collapse to Focused Excerpt' : 'Read Complete Companion Text (' + rawText.length.toLocaleString('en-US') + ' chars)') +
-          '</button>' +
-        '</div>' +
-        '<div class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Rendered original manuscript text"></div>';
+        '<div class="vixen-manuscript-kicker">COMPANION MANUSCRIPT · COMPLETE TEXT</div>' +
+        '<article class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Complete companion manuscript"></article>';
     }
 
     mountEl.innerHTML =
@@ -3169,11 +3157,11 @@ body[data-view="overview"] .reading-back{display:none}
         const {mountVixenManuscript} = await import('./vixen-estate/manuscript-reader.mjs');
         if (!mountEl.isConnected || mountEl.dataset.workId !== work.work_id) return;
         mountVixenManuscript(coutureReader,
-          state.readerFullView ? rawText : passageExcerpt,
-          {sourceId:activeSrc.source_file_id,showRaw:state.readerFullView});
+          rawText,
+          {sourceId:activeSrc.source_file_id,showRaw:true});
       } catch (error) {
         if (coutureReader.isConnected) {
-          coutureReader.textContent = state.readerFullView ? rawText : passageExcerpt;
+          coutureReader.textContent = rawText;
           coutureReader.dataset.presentation = 'source-text-fallback';
           console.warn('Vixen manuscript renderer unavailable; displaying safe source text',error);
         }
@@ -3207,14 +3195,6 @@ body[data-view="overview"] .reading-back{display:none}
         mountWorkExperimentAReader(work, mountEl);
       });
     });
-    const fullBtn = $('expaToggleFullBtn');
-    if (fullBtn) {
-      fullBtn.addEventListener('click', () => {
-        state.readerFullView = !state.readerFullView;
-        state.readerPhase = state.readerFullView ? 'NAME' : 'WORLD_ANSWERS';
-        mountWorkExperimentAReader(work, mountEl);
-      });
-    }
     const localInput = $('expaLocalFileInput');
     if (localInput) {
       localInput.addEventListener('change', async (ev) => {
@@ -3956,7 +3936,6 @@ body[data-view="overview"] .reading-back{display:none}
         query: state.globalSearchLastQuery || null
       } : null;
       state.readerPhase = 'NOTICE';
-      state.readerFullView = true;
       state.mobileWorkReaderOpen = true;
       renderWorksView({ skipHistory: true });
       setView('works', { pushHistory: true, preserveScroll: state.view === 'works' });
