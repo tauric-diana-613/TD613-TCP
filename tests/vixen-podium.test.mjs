@@ -581,3 +581,49 @@ test('Vixen Podium wires SignalRupture Canon (SRC_ATELIER), heterostratigraphic 
   assert.equal(okCliAudit.receipt.result.tomography_composite_score,null);
   assert.equal(okCliAudit.receipt.result.clone_genes_decoded,false);
 });
+
+
+test('Podium 16-route fusion research conductor validates, compares, and cites without execution authority',async()=>{
+  const {SemanticSemioticSearchEngine}=await import('../app/encyclopedia/vixen-estate/semantic-semiotic-search.mjs');
+  const raw=JSON.parse(await readFile(new URL('vixen-estate/semantic-semiotic-index.v1.json',root),'utf8'));
+  const engine=new SemanticSemioticSearchEngine(raw);
+  const podium=createVixenPodium({corpus,semanticSearch:engine,membrane:mock()});
+  assert.equal(PODIUM_ROUTES.length,16);
+  assert.equal((await podium.dispatch(task('podium.describe'))).result.aix_conductor.fusion_controls.finite_comparison_limit,6);
+  const cap=await podium.dispatch(task('vixen.fusion.capabilities'));
+  assert.equal(cap.status,'SUPPORTED');
+  assert.equal(cap.result.connected,true);
+  assert.ok(cap.result.profiles.NO_SEMIOTIC);
+  const query='algedonic bypass viability';
+  const got=await podium.dispatch(task('vixen.fusion.search',{
+    query,profile:'NO_SEMIOTIC',mode:'hybrid',limit:8
+  }));
+  assert.equal(got.status,'SUPPORTED',JSON.stringify(got.result).slice(0,450));
+  assert.equal(got.result.search.fusion_controls.channels.semiotic,false);
+  assert.ok(got.result.search.hits.length>0);
+  assert.ok(got.result.search.hits.every(h=>h.s_semi===0));
+  assert.equal(got.authority.deployment,false);
+  const cmp=await podium.dispatch(task('vixen.fusion.compare',{
+    query,mode:'hybrid',profiles:['FULL_FUSION','NO_SEMANTIC','NO_SEMIOTIC'],limit:10
+  }));
+  assert.equal(cmp.status,'SUPPORTED',JSON.stringify(cmp.result).slice(0,500));
+  assert.equal(cmp.result.comparisons.length,3);
+  assert.ok(cmp.result.anchor_deltas.length>0);
+  assert.equal(cmp.result.empirical_replication_credit,0);
+  const id=got.result.search.hits[0].id;
+  const explanation=await podium.dispatch(task('vixen.fusion.explain',{
+    query,hit_id:id,mode:'hybrid',profile:'NO_SEMIOTIC',limit:8
+  }));
+  assert.equal(explanation.status,'SUPPORTED',JSON.stringify(explanation.result).slice(0,500));
+  assert.equal(explanation.result.scoring.effective_contributions.semiotic,0);
+  assert.equal(explanation.result.claim_ceiling,'SEARCH_EVIDENCE_ONLY_NOT_SEMANTIC_ENTAILMENT');
+  const bounded=await podium.dispatch(task('vixen.fusion.compare',{
+    query,profiles:['FULL_FUSION','NO_SEMIOTIC','NO_SEMANTIC','LEXICAL_ONLY','SRC_ONLY','SEMANTIC_ONLY','NO_SRC']
+  }));
+  assert.equal(bounded.status,'HELD');
+  const noEngine=createVixenPodium({corpus,membrane:mock()});
+  const refused=await noEngine.dispatch(task('vixen.fusion.search',{query}));
+  assert.equal(refused.status,'HELD');
+  assert.equal(refused.result.state,'HELD_FUSION_ENGINE_NOT_ATTACHED');
+  assert.equal(refused.authority.release,false);
+});
