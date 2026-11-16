@@ -254,6 +254,7 @@ test('Podium bounded ATLAS adapter executes vixen_semantic_search while keeping 
     }
   });
   assert.equal(res.status, 'HELD');
+  assert.ok(res.result.output, JSON.stringify(res.result));
   assert.equal(res.result.output.status, 'SEARCH_OK');
   assert.equal(res.result.output.empirical_replication_credit, 0);
   assert.ok(res.result.output.hits.length >= 1);
