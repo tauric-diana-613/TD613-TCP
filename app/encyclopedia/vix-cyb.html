@@ -3721,24 +3721,28 @@ body[data-view="overview"] .reading-back{display:none}
       runWith(0, 19);
     } else if (state.inspectorTab === 'podium') {
       const podiumRoutes = [
-        'podium.describe', 'vixen.manifest', 'vixen.work.inspect', 'vixen.work.search',
-        'vixen.gates.inspect', 'vixen.protocols.inspect', 'universal.open', 'universal.search',
-        'universal.get', 'universal.related', 'synthesis.propose', 'engine.invoke'
+        'podium.describe','vixen.work.inspect','vixen.gates.inspect',
+        'universal.open','universal.search','universal.get','universal.related',
+        'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
+        'engine.capabilities','engine.invoke',
+        'vixen.fusion.capabilities','vixen.fusion.search',
+        'vixen.fusion.compare','vixen.fusion.explain'
       ];
       const wildCommissions = [
         { wf: 'wf-algedonic-bypass', roman: 'I', title: 'Algedonic Bypass', desc: 'Raw emergency channel vs scalar EMA smoothing lag.', route: 'engine.invoke', args: { labId: 'LAB_TCC-03', commission: 'wf-algedonic-bypass' } },
         { wf: 'wf-false-setpoint', roman: 'II', title: 'False Coherent Setpoint', desc: 'Internal stability ||e_S|| → 0 while diverging from witness R_WS(W).', route: 'engine.invoke', args: { labId: 'LAB_RC-02', commission: 'wf-false-setpoint' } },
         { wf: 'wf-five-clock-vernier', roman: 'III', title: 'Five-Clock Vernier', desc: 'Non-equivalent derivatives across k_layer, n_tok, τ_cont, t_wall, 48 kHz t_plant.', route: 'engine.invoke', args: { labId: 'LAB_TCC-05', commission: 'wf-five-clock-vernier' } },
         { wf: 'wf-gate-partition-256', roman: 'IV', title: '256-Partition Gate Lattice', desc: '8 human-gated .md/.pdf pairs spanning the [32, 40] Work envelope.', route: 'vixen.gates.inspect', args: { gateNum: 1, commission: 'wf-gate-partition-256' } },
-        { wf: 'wf-appledouble-quotient', roman: 'V', title: 'AppleDouble Quotient', desc: 'Exact FADT fiber 87 = 54 ⊔ 33 ._*.', route: 'vixen.protocols.inspect', args: { protocolId: 'OBFUSCATION_DECOMPRESSION_PROTOCOL', commission: 'wf-appledouble-quotient' } },
+        { wf: 'wf-appledouble-quotient', roman: 'V', title: 'AppleDouble Quotient', desc: 'Exact FADT fiber 87 = 54 ⊔ 33 ._*.', route: 'engine.invoke', args: { engine: 'ATLAS', operation: 'fadt_fiber_audit',
+          payload: { protocolId: 'OBFUSCATION_DECOMPRESSION_PROTOCOL', commission: 'wf-appledouble-quotient' } } },
         { wf: 'wf-orthographic-nullspace', roman: 'VI', title: 'Orthographic [111] Nullspace', desc: 'ker(Π_u) = span{u} depth ambiguity family.', route: 'engine.invoke', args: { labId: 'LAB_RC-12', commission: 'wf-orthographic-nullspace' } },
         { wf: 'wf-xor-synergy-null', roman: 'VII', title: 'XOR Synergy Null', desc: 'Z = X ⊕ Y with zero pairwise mutual information and 1.0 bit synergy.', route: 'engine.invoke', args: { labId: 'LAB_RC-10', commission: 'wf-xor-synergy-null' } },
         { wf: 'wf-experiment-b-hold', roman: 'VIII', title: 'Experiment B Hold', desc: 'Pinned prospective protocol held pending human-authorized trial.', route: 'synthesis.propose', args: { question: 'Experiment B counterfactual staging check', commission: 'wf-experiment-b-hold' } }
       ];
       body.innerHTML =
         '<div class="insp-card">' +
-          '<h3>TYPED MACHINE PODIUM CONTRACT (td613.vixen.podium.task/v1 · 12 ROUTES)</h3>' +
-          '<p style="color:#cfd3d6;margin-bottom:10px">The Vixen Podium is a machine-facing read/audit contract (<code>./reference/podium/manifest.json</code>) that keeps <code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code> strictly disjoint. It exposes 12 typed routes with <code>deployment_authority: false</code> and <code>empirical_replication_credit: 0</code>:</p>' +
+          '<h3>TYPED MACHINE PODIUM CONTRACT (td613.vixen.podium.task/v1 · 16 ROUTES)</h3>' +
+          '<p style="color:#cfd3d6;margin-bottom:10px">The Vixen Podium is a machine-facing read/audit contract (<code>./reference/podium/manifest.json</code>) that keeps <code>OPERAHOUSE ≠ OPERA ≠ PERFORMER</code> strictly disjoint. It exposes 16 typed routes with <code>deployment_authority: false</code> and <code>empirical_replication_credit: 0</code>:</p>' +
           '<div class="badge-row" style="margin-bottom:10px">' +
             podiumRoutes.map((r) => '<button type="button" class="tag dark podium-route-chip" data-podium-route="' + esc(r) + '"><code>' + esc(r) + '</code></button>').join('') +
           '</div>' +
@@ -3764,6 +3768,30 @@ body[data-view="overview"] .reading-back{display:none}
               '<button type="button" class="hdr-pill" id="podiumCopyJsonlBtn" style="background:var(--vixen-pink);color:var(--graphite)">Copy JSONL Task</button>' +
               '<button type="button" class="hdr-pill" id="podiumCopyCliBtn">Copy CLI Cmd</button>' +
             '</div>' +
+            '<fieldset id="podiumFusionControlPanel" class="vix-podium-fusion" hidden>' +
+              '<legend>Finite four-channel research conductor · full index only</legend>' +
+              '<div class="vix-podium-fusion-grid">' +
+                '<label>Research query <input id="podiumFusionQuery" type="search" maxlength="200" value="' + esc((state.globalSearchLastQuery || 'algedonic bypass viability').slice(0,200)) + '"></label>' +
+                '<label>Search mode <select id="podiumFusionMode">' +
+                  ['hybrid','lexical','phrase','src_projective'].map(m => '<option value="' + m + '">' + m + '</option>').join('') +
+                '</select></label>' +
+                '<label>Fusion profile <select id="podiumFusionProfile">' +
+                  ['FULL_FUSION','LEXICAL_ONLY','SEMANTIC_ONLY','SEMIOTIC_ONLY','SRC_ONLY','NO_SEMANTIC','NO_SEMIOTIC','NO_SRC'].map(p => '<option value="' + p + '">' + p + '</option>').join('') +
+                '</select></label>' +
+                '<label>Weight policy <select id="podiumFusionWeightPolicy">' +
+                  '<option value="PRESERVE_BASELINE">PRESERVE_BASELINE</option>' +
+                  '<option value="RENORMALIZE_ACTIVE">RENORMALIZE_ACTIVE</option>' +
+                '</select></label>' +
+                '<label>Max hits <input type="number" id="podiumFusionLimit" min="1" max="24" step="1" value="12"></label>' +
+                '<label>Hit ID for explanation <input type="text" id="podiumFusionHitId" maxlength="160" placeholder="Choose returned search hit ID"></label>' +
+              '</div>' +
+              '<div id="podiumFusionCompareProfiles" class="vix-podium-compare-profiles">' +
+                ['FULL_FUSION','LEXICAL_ONLY','SEMANTIC_ONLY','SEMIOTIC_ONLY','SRC_ONLY','NO_SEMANTIC','NO_SEMIOTIC','NO_SRC'].map(p =>
+                  '<label><input type="checkbox" data-podium-fusion-compare="' + p + '"' + (['FULL_FUSION','NO_SEMANTIC','NO_SEMIOTIC'].includes(p) ? ' checked' : '') + '>' + p + '</label>'
+                ).join('') +
+              '</div>' +
+              '<div id="podiumFusionPanelStatus" role="status">All fusion routes preserve empirical credit 0; machine receipts are non-ratifying.</div>' +
+            '</fieldset>' +
             '<pre id="podiumComposerPre" style="padding:10px 12px;background:#090b0d;border:1px solid rgba(255,145,175,.35);white-space:pre-wrap;margin:0;font-size:10.5px;line-height:1.55"></pre>' +
           '</div>' +
         '</div>';
@@ -3772,22 +3800,54 @@ body[data-view="overview"] .reading-back{display:none}
       let currentWc = wildCommissions[0];
       const renderComposer = (routeVal, wc) => {
         if (!preEl) return;
-        const line = JSON.stringify({
-          schema: 'td613.vixen.podium.task/v1',
-          route: routeVal,
-          stage_role_guard: 'OPERAHOUSE != OPERA != PERFORMER',
-          repertoire_only: true,
-          deployment_authority: false,
-          empirical_replication_credit: 0,
-          params: wc ? wc.args : {}
-        });
-        preEl.textContent = line;
+        const isFusion=routeVal.startsWith('vixen.fusion.');
+        const fusionPanel=$('podiumFusionControlPanel');
+        if (fusionPanel) fusionPanel.hidden=!isFusion;
+        const q=$('podiumFusionQuery')?.value||'';
+        const m=$('podiumFusionMode')?.value||'hybrid';
+        const profile=$('podiumFusionProfile')?.value||'FULL_FUSION';
+        const weight_policy=$('podiumFusionWeightPolicy')?.value||'PRESERVE_BASELINE';
+        const limit=Number($('podiumFusionLimit')?.value||12);
+        const profiles=[...document.querySelectorAll('[data-podium-fusion-compare]:checked')]
+          .map(el=>el.getAttribute('data-podium-fusion-compare'));
+        const compareStatus=$('podiumFusionPanelStatus');
+        if(compareStatus&&isFusion) compareStatus.textContent =
+          routeVal==='vixen.fusion.compare'
+            ? 'Selected '+profiles.length+'/6 · Full index mandatory · no publication authority'
+            : 'Read-only typed source retrieval · evidence ceiling preserved';
+        const params=routeVal==='vixen.fusion.capabilities' ? {}
+          :routeVal==='vixen.fusion.compare' ? {query:q,mode:m,profiles:profiles.slice(0,6),weight_policy,limit}
+          :routeVal==='vixen.fusion.search' ? {query:q,mode:m,profile,weight_policy,limit}
+          :routeVal==='vixen.fusion.explain' ? {query:q,mode:m,profile,weight_policy,limit,hit_id:$('podiumFusionHitId')?.value||''}
+          :routeVal==='engine.invoke' && wc && !wc.args.engine
+            ? {engine:'ATLAS',operation:'atlas_math_dispatch',payload:wc.args}
+            :wc ? wc.args : {};
+        const line=JSON.stringify({
+          schema:'td613.vixen.podium.task/v1',
+          intent:routeVal,
+          params,
+          stage_role_guard:'OPERAHOUSE != OPERA != PERFORMER',
+          repertoire_only:true,
+          execution_authority:false,
+          deployment_authority:false,
+          empirical_replication_credit:0
+        },null,2);
+        preEl.textContent=line;
       };
       if (selEl) {
         selEl.value = currentWc.route;
         selEl.addEventListener('change', () => renderComposer(selEl.value, currentWc));
       }
       renderComposer(currentWc.route, currentWc);
+      body.querySelectorAll('#podiumFusionControlPanel input,#podiumFusionControlPanel select').forEach(el=>{
+        el.addEventListener(el.tagName==='INPUT'&&el.type==='search'?'input':'change',()=>{
+          const boxes=[...body.querySelectorAll('[data-podium-fusion-compare]:checked')];
+          if(boxes.length>6&&el.matches('[data-podium-fusion-compare]')){
+            el.checked=false;showToast('Podium compares at most six finite profiles');
+          }
+          if(selEl)renderComposer(selEl.value,currentWc);
+        });
+      });
       body.querySelectorAll('[data-wf-idx]').forEach((b) => {
         b.addEventListener('click', () => {
           currentWc = wildCommissions[Number(b.getAttribute('data-wf-idx'))] || wildCommissions[0];
