@@ -18,7 +18,7 @@ test('RGI17 is a late-loaded, exclusively mobile sheet', () => {
 });
 test('phone typography and frontispiece stay scoped to presentation', () => {
   assert.match(css, /#view-overview \.cover-title/);
-  assert.match(css, /inset:80px 16px clamp\(158px,20svh,184px\)/);
+  assert.match(css, /inset:80px 16px clamp\(190px,23svh,214px\)/);
   assert.match(css, /justify-content:space-between!important/);
   assert.doesNotMatch(css, /inset:clamp\(138px,18svh,178px\) 16px auto/);
   assert.match(css, /#worksLexiconLayout\.has-mobile-reader #worksReaderPanel/);
