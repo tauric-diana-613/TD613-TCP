@@ -742,5 +742,5 @@ test('RGI16 fusion and machine control surfaces remain co-versioned and actually
   assert.ok(page.includes('vixen.fusion.search'));
   assert.equal(podManifest.routes.length,16);
   assert.equal(podManifest.aix_conducting.semantic_semiotic_search_integration.fusion_controls.channels.length,4);
-  assert.match(page,/fusion-console\\.css/);
+  assert.ok(page.includes('fusion-console.css'));
 });
