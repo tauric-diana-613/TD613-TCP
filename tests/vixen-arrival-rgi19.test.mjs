@@ -6,6 +6,7 @@ import {inspectOperaArrival,VIXEN_ARRIVAL_CONTRACT} from '../app/encyclopedia/vi
 const html=readFileSync('app/encyclopedia/vix-cyb.html','utf8');
 const engine=readFileSync('app/encyclopedia/vixen-estate/vixen-arrival-prewarm-rgi19.mjs','utf8');
 const mesh=readFileSync('app/encyclopedia/vixen-estate/vixen-live-mesh-rgi13.mjs','utf8');
+const salon=readFileSync('app/encyclopedia/vixen-estate/synthesis-salon.mjs','utf8');
 const foundry=readFileSync('app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs','utf8');
 const viewIDs=['overview','observatory','works','gates','protocols','holds','collection','reference'];
 const happyDoc={
@@ -56,6 +57,11 @@ test('RGI19 warms static modules and first illustration from landing, without du
  assert.match(engine,/EIGHT_ROOMS_PREPARED/);
  assert.match(engine,/BOUNDED_FAIL_OPEN/);
  assert.match(engine,/coverPrepared&&fontsPrepared/);
+ assert.match(engine,/TWO_SALON_BODIES_VERIFIED/);
+ assert.match(engine,/salon_manuscript_status:salonSourceStatus/);
+ assert.match(salon,/const verifiedBodies=new Map\(\)/);
+ assert.match(salon,/VIXEN_SALON_WARM/);
+ assert.match(salon,/void warmCurrent\(\)/);
 });
 test('RGI19 does not reinitialize GPU work or fragment the living cloth per route',()=>{
  assert.match(foundry,/requestIdleCallback\(prewarm/);
