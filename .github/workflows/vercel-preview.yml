@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 120
     environment: vixen-preview
     env:
-      INPUT_SHA: ${ inputs.commit_sha }}
+      INPUT_SHA: ${{ inputs.commit_sha }}
       VERCEL_SCOPE: tauric-diana-s-projects
       VERCEL_PROJECT: td-613-tcp
       VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
@@ -36,7 +36,7 @@ jobs:
       - name: Authorize exact PR head and completed consolidated CI
         shell: bash
         env:
-          GH_TOKEN: ${ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           [[ "$INPUT_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'A full 40-character commit SHA is required.' >&2; exit 1; }
@@ -62,7 +62,7 @@ jobs:
       - name: Checkout the authorized immutable source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${ inputs.commit_sha }}
+          ref: ${{ inputs.commit_sha }}
           persist-credentials: false
 
       - name: Verify checked-out SHA and deployment lock
@@ -98,7 +98,7 @@ jobs:
       - name: Verify existing Vercel account and project link
         shell: bash
         env:
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           set -euo pipefail
           [[ -n "$VERCEL_TOKEN" ]] || { echo 'VERCEL_TOKEN unavailable in GitHub Actions.' >&2; exit 1; }
@@ -116,7 +116,7 @@ jobs:
       - name: Build whole site as Preview only
         shell: bash
         env:
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           set -euo pipefail
           vercel pull --yes --environment=preview --scope "$VERCEL_SCOPE"
@@ -126,8 +126,8 @@ jobs:
         id: deploy
         shell: bash
         env:
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
-          VERCEL_GIT_COMMIT_SHA: ${ inputs.commit_sha }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_GIT_COMMIT_SHA: ${{ inputs.commit_sha }}
           VERCEL_GIT_COMMIT_REF: research/vixen-dual-estate-encyclopedia-20261108
           VERCEL_GIT_REPO_SLUG: TD613-TCP
           VERCEL_GIT_REPO_OWNER: tauric-diana-613
@@ -141,8 +141,8 @@ jobs:
       - name: Confirm deployment READY and served source bytes
         shell: bash
         env:
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
-          PREVIEW_URL: ${ steps.deploy.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
         run: |
           set -euo pipefail
           vercel inspect "$PREVIEW_URL" --wait --scope "$VERCEL_SCOPE" >/dev/null
@@ -162,8 +162,8 @@ jobs:
       - name: Recheck HEAD and existing alias before reassignment
         shell: bash
         env:
-          GH_TOKEN: ${ github.token }}
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           set -euo pipefail
           CURRENT_SHA="$(gh api "repos/$GITHUB_REPOSITORY/pulls/1730" --jq '.head.sha')"
@@ -176,8 +176,8 @@ jobs:
       - name: Reassign only the established Vixen preview alias
         shell: bash
         env:
-          VERCEL_TOKEN: ${ secrets.VERCEL_TOKEN }}
-          PREVIEW_URL: ${ steps.deploy.outputs.url }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
         run: |
           set -euo pipefail
           vercel alias set "$PREVIEW_URL" "$VERCEL_PREVIEW_ALIAS" --scope "$VERCEL_SCOPE"
