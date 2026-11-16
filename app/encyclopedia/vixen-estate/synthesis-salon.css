@@ -545,7 +545,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 #vixenSynthesisSalon .vs-research-bridge{
   appearance:none;display:inline-flex;align-items:center;justify-content:center;
   min-height:42px;min-width:0;flex:1 1 135px;padding:10px 12px;
-  border:1px solid #403a42;background:#1b2025;color:#fff2e8;
+  border:1px solid #403a3b;background:#1b2025;color:#fff2e8;
   font:700 9px/1.4 ui-monospace,SFMono-Regular,monospace;
   text-transform:uppercase;letter-spacing:.075em;text-align:center;
   transition:background .2s ease,box-shadow .2s ease,transform .2s ease;
@@ -557,8 +557,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 }
 #vixenSynthesisSalon .vs-manuscript{
   border:1px solid #c19fae;background:#fbf8f4;
-  color:#25252b;margin:14px 0;overflow:hidden;
-  box-shadow:inset 0 1px #fff,0 10px 30px rgba(27,19,25,.06);
+  color:#252528;margin:14px 0;overflow:hidden;
+  box-shadow:inset 0 1px #fff,0 10px 30px rgba(27,19,21,.06);
 }
 #vixenSynthesisSalon .vs-manuscript>summary{
   display:flex;align-items:center;justify-content:space-between;gap:16px;
@@ -578,14 +578,14 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 #vixenSynthesisSalon .vs-manuscript-body{
   min-width:0;max-height:min(80vh,1000px);overflow:auto;
   padding:clamp(18px,3vw,44px);
-  color:#29252a;background:#fffdf9;
+  color:#292527;background:#fffdf9;
   font:400 clamp(15px,1.18vw,18px)/1.83 Georgia,'Iowan Old Style',serif;
   overflow-wrap:anywhere;white-space:normal;
   scrollbar-color:#b98c9d #f6ecec;
 }
 #vixenSynthesisSalon .vix-reader-paragraph{margin:0 0 1.08em;white-space:pre-wrap}
 #vixenSynthesisSalon .vix-reader-heading{
-  margin:1.7em 0 .65em;color:#291d25;
+  margin:1.7em 0 .65em;color:#291d20;
   font-family:Georgia,'Iowan Old Style',serif;font-weight:600;
   line-height:1.23;letter-spacing:-.025em;
 }
@@ -598,7 +598,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 #vixenSynthesisSalon .vix-manuscript h6.vix-reader-heading{font-size:clamp(16px,1vw,20px)}
 #vixenSynthesisSalon .vix-reader-quote{
   margin:20px 0;padding:12px 22px;
-  border-left:3px solid #b7315c;background:#f9f0f2;color:#49404a;
+  border-left:3px solid #b7315c;background:#f9f0f2;color:#494043;
   font-style:italic;line-height:1.82;
 }
 #vixenSynthesisSalon .vix-reader-list{
@@ -617,7 +617,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
   white-space:pre;tab-size:2;
 }
 #vixenSynthesisSalon .vix-math{
-  color:#31212b;font-family:'Cambria Math',serif;
+  color:#312122;font-family:'Cambria Math',serif;
 }
 #vixenSynthesisSalon .vix-math-display{
   display:block;overflow-x:auto;text-align:center;
