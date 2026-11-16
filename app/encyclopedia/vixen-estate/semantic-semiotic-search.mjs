@@ -1409,7 +1409,18 @@ export class SemanticSemioticSearchEngine {
       const evidSrc=active.src&&(parsed.mode==='src_projective'
         ?srcEval.s_src_combined>=0.14
         :(srcCond.analysis.hasSrcUntypicalCue&&srcEval.s_src_combined>=0.16));
-      if(!(evidLex||evidSem||evidSemi||evidSrc))continue;
+      // Preserve the previous admission thresholds for an unmodified full
+      // fusion request. A deliberate ablation uses only its active channels.
+      const unmodifiedFusion=active.lexical&&active.semantic&&active.semiotic&&active.src;
+      const originalEvidence=parsed.mode==='lexical'
+        ?(sLex>=0.08||(parsed.phrases.length>0&&phraseMatchBoost>0))
+        :(parsed.mode==='phrase'||parsed.mode==='exact')
+          ?(phraseMatchBoost>0||sLex>=0.08)
+          :parsed.mode==='src_projective'
+            ?(srcEval.s_src_combined>=0.14||sLex>=0.08||sSemi>=0.25||phraseMatchBoost>0)
+            :(sLex>=0.08||(sSem>=0.42&&alphaSupport>=0.5)||sSemi>=0.30||
+              phraseMatchBoost>0||(srcCond.analysis.hasSrcUntypicalCue&&srcEval.s_src_combined>=0.16));
+      if(!(unmodifiedFusion?originalEvidence:(evidLex||evidSem||evidSemi||evidSrc)))continue;
 
       const titleLow=String(m.title||'').toLowerCase();
       const titlePhraseBonus=active.lexical&&parsed.positiveLow.length>=4&&titleLow.includes(parsed.positiveLow)?0.14:0;
