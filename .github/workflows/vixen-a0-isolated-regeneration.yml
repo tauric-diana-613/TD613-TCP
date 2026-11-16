@@ -73,6 +73,9 @@ jobs:
             throw Error('MISSING_CANONICAL_SOURCE');
           console.log('A0 regenerated: index docs',idx.docs.length,'metadata',idx.sources_meta.length);
           NODE
+      - name: Install locked test dependency without lifecycle hooks
+        shell: bash
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Qualify rebuilt shards, search fusion, Podium and release boundaries
         shell: bash
         run: |
