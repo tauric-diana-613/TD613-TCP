@@ -25,6 +25,11 @@ import {
 } from './corpus-experiment-a.mjs';
 
 import {
+  normalizeFusionControls,scoreFusionChannels,FUSION_PROFILE_IDS
+} from './fusion-controls.mjs';
+export {normalizeFusionControls,FUSION_PROFILE_IDS} from './fusion-controls.mjs';
+
+import {
   deriveSrcQueryConditionedWeights,
   scoreSrcUntypicalDocument
 } from './src-atelier-engines.mjs';
@@ -968,11 +973,13 @@ export class SemanticSemioticSearchEngine {
     uniqueSources = false,
     cursorToken = null,
     deployment_env = resolveDeploymentEnvironment(),
-    operator_secret_verified = false
+    operator_secret_verified = false,
+    fusion = null
   } = {}) {
     const safeOffset = Math.max(0, Number(offset) || 0);
     const safeLimit = Math.max(1, Math.min(200, Number(limit) || 20));
     const parsed = parseStructuredQuery(query, mode);
+    const fusionControls=normalizeFusionControls(fusion);
 
     const custGate = this._checkCustodyGate({ deployment_env, operator_secret_verified });
     if (!custGate.readable) {
@@ -1063,6 +1070,7 @@ export class SemanticSemioticSearchEngine {
       includeImages: Boolean(includeImages),
       collapseManifestations: Boolean(collapseManifestations),
       uniqueSources: Boolean(uniqueSources),
+      fusion_controls:fusionControls,
       deployment_env: custGate.env,
       operator_secret_verified: Boolean(operator_secret_verified),
       index_sha256: this.indexBindingFingerprint
@@ -1391,38 +1399,28 @@ export class SemanticSemioticSearchEngine {
         why.push(`SRC coordinates: ${srcEval.matched_tokens.slice(0, 5).join(', ')}`);
       }
 
-      const hasEvidence = parsed.mode === 'lexical'
-        ? (sLex >= 0.08 || (parsed.phrases.length > 0 && phraseMatchBoost > 0))
-        : (parsed.mode === 'phrase' || parsed.mode === 'exact')
-          ? (phraseMatchBoost > 0 || sLex >= 0.08)
-          : parsed.mode === 'src_projective'
-            ? (srcEval.s_src_combined >= 0.14 || sLex >= 0.08 || sSemi >= 0.25 || phraseMatchBoost > 0)
-            : (sLex >= 0.08 || (sSem >= 0.42 && alphaSupport >= 0.5) || sSemi >= 0.30 || phraseMatchBoost > 0 || (srcCond.analysis.hasSrcUntypicalCue && srcEval.s_src_combined >= 0.16));
-      if (!hasEvidence) continue;
+      // Feature controls are a bounded *ablation* of actual retrieval channels.
+      // Compute raw diagnostics unchanged; disabled channels cannot authorize
+      // eligibility, add score, or manufacture an evidence rung.
+      const active=fusionControls.channels;
+      const evidLex=active.lexical&&(sLex>=0.08||(parsed.phrases.length>0&&phraseMatchBoost>0));
+      const evidSem=active.semantic&&sSem>=0.42&&alphaSupport>=0.5;
+      const evidSemi=active.semiotic&&sSemi>=(parsed.mode==='src_projective'?0.25:0.30);
+      const evidSrc=active.src&&(parsed.mode==='src_projective'
+        ?srcEval.s_src_combined>=0.14
+        :(srcCond.analysis.hasSrcUntypicalCue&&srcEval.s_src_combined>=0.16));
+      if(!(evidLex||evidSem||evidSemi||evidSrc))continue;
 
-      const titleLow = String(m.title || '').toLowerCase();
-      const titlePhraseBonus = parsed.positiveLow.length >= 4 && titleLow.includes(parsed.positiveLow) ? 0.14 : 0;
-      const kindPrior = uk === 'work_route' || uk === 'instrument_record' ? 0.04 : 0;
-
-      let total;
-      if (parsed.mode === 'lexical' || parsed.mode === 'phrase' || parsed.mode === 'exact') {
-        total = Math.min(1, 0.80 * sLex + 0.15 * sSemi + phraseMatchBoost + titlePhraseBonus + kindPrior);
-      } else if (parsed.mode === 'src_projective' || srcCond.analysis.hasSrcUntypicalCue) {
-        total = Math.min(
-          1,
-          srcWeights.lex * sLex +
-          srcWeights.sem * sSem +
-          srcWeights.semi * sSemi +
-          srcWeights.src_proj * srcEval.s_src_proj +
-          srcWeights.src_sig * srcEval.s_src_sig +
-          phraseMatchBoost +
-          titlePhraseBonus +
-          kindPrior
-        );
-      } else {
-        total = Math.min(1, 0.50 * sLex + 0.30 * sSem + 0.20 * sSemi + phraseMatchBoost + titlePhraseBonus + kindPrior);
-      }
-      if (total < 0.09) continue;
+      const titleLow=String(m.title||'').toLowerCase();
+      const titlePhraseBonus=active.lexical&&parsed.positiveLow.length>=4&&titleLow.includes(parsed.positiveLow)?0.14:0;
+      const kindPrior=uk==='work_route'||uk==='instrument_record'?0.04:0;
+      const fusionScore=scoreFusionChannels({
+        lexical:sLex,semantic:sSem,semiotic:sSemi,
+        src_proj:srcEval.s_src_proj,src_sig:srcEval.s_src_sig
+      },fusionControls,parsed.mode,srcCond.analysis.hasSrcUntypicalCue,srcWeights);
+      const total=Math.min(1,fusionScore.active_score+
+        (active.lexical?phraseMatchBoost:0)+titlePhraseBonus+kindPrior);
+      if(total<0.09)continue;
 
       let displaySnippet = doc.sn || '';
       if (rawChunkSlice && parsed.phrases.length > 0 && rawChunkSlice.toLowerCase().includes(parsed.phrases[0])) {
@@ -1480,6 +1478,10 @@ export class SemanticSemioticSearchEngine {
         semiotic_tags: tags,
         highest_rung: highestRung,
         score_total: +total.toFixed(4),
+        fusion_controls:fusionControls,
+        fusion_contributions:fusionScore.effective_contributions,
+        fusion_normalization_factor:fusionScore.normalization_factor,
+        fusion_active_weight_sum:fusionScore.active_weight_sum,
         s_lex: +sLex.toFixed(4),
         s_sem: +sSem.toFixed(4),
         s_semi: +sSemi.toFixed(4),
@@ -1588,6 +1590,8 @@ export class SemanticSemioticSearchEngine {
       excludes: parsed.excludes,
       excluded_by_negative_count: excludedByNegativeCount,
       all_candidate_chunks: candidates.length,
+      fusion_controls:fusionControls,
+      fusion_state:'FULL_INDEX_FUSION',
       src_conditioning: {
         regime_id: srcCond.regimeId,
         has_untypical_cue: srcCond.analysis.hasSrcUntypicalCue,
