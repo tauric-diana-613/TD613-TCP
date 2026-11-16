@@ -29,3 +29,16 @@ test('New swarm renderer remains distinct; unsupported Observatory geometry expl
  assert.equal(legacy.selected_preview_renderer,'EXISTING_OBSERVATORY_HOST_REQUIRED');
  assert.throws(()=>paintPodiumOpticalPreview(null,legacy),/HELD_PREVIEW_CANVAS_AND_PLAN_REQUIRED/);
 });
+
+test('Podium Score exposes the full measured optical contract and truthful cross-estate lineage',()=>{
+ const x=buildPodiumOpticalPlan({sourceIds:['source:A','source:B'],
+  breakdown:{phasonic_interference:.7},width:360,height:300,phase:.25});
+ assert.equal(x.original_four_optical_requirements.length,4);
+ assert.equal(x.exact_four_operator_assay.four_operators.measured_beat_geometry.pairs.length,3);
+ assert.equal(x.exact_four_operator_assay.four_operators.bounded_bloom_emission.displayed_dark_trough_fidelity,
+  'HELD_NOT_YET_VISUALLY_VERIFIED');
+ assert.equal(x.engine_family_lineage.find(e=>e.family==='APERTURE_V32').imported_runtime,false);
+ assert.equal(x.engine_family_lineage.find(e=>e.family==='DOLLHOUSE_DESIGN').is_renderer,false);
+ assert.equal(x.engine_family_lineage.find(e=>e.family==='HOLONOMY_LOOM').carrier_partition,'6/13/20');
+ assert.equal(x.exact_four_operator_assay.classifications.release_authority,false);
+});

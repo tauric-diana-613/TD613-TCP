@@ -14,6 +14,7 @@ import {SALON_FIELD_POLICY} from './vixen-salon-ambient-field.mjs';
 import {VEIL_CONTRACT} from './vixen-salon-light.mjs';
 import {RENDERER_CONTRACT} from './observatory-foundry-renderer.mjs';
 import {SCORE_CONTRACT} from './observatory-computational-score.mjs';
+import {measureObservatoryOpticalInstrument,OPTICAL_OPERATOR_ORDER,ENGINE_LINEAGE} from './observatory-optical-instrument-contract.mjs';
 export const OPTICAL_BRIDGE_SCHEMA='td613.vixen.podium.salon-optical-performance/v1';
 const b=(n,a=0,c=1)=>Math.max(a,Math.min(c,Number.isFinite(+n)?+n:a));
 const r=n=>Math.round(n*1e6)/1e6;
@@ -44,6 +45,7 @@ export function buildPodiumOpticalPlan({sourceIds=[],breakdown={},visualFormId='
  const model=buildFold(ctl.fold_gain),baseline=buildFold(0);
  const opaline=coutureGeometry({width,height,time:phase,sourceIds,devicePixelRatio:D});
  const mesh=buildLivingMesh({width,height,time:phase,view:'observatory',sourceIds});
+ const fourOperatorAssay=measureObservatoryOpticalInstrument({width,height,dpr:D,time:phase,sourceIds});
  const swarm=computeSwarmComposition({width,height,phase,sourceIds,iterations:16,
   alignment:b(.22+.70*ctl.synergy),cohesion:b(.14+.70*ctl.holonomy),
   separation:b(.12+.62*ctl.nullspace)});
@@ -54,6 +56,9 @@ export function buildPodiumOpticalPlan({sourceIds=[],breakdown={},visualFormId='
   selected_preview_renderer:render,score_to_optics_controls:ctl,
   source_ids:sourceIds,source_ids_are_seeds_not_custody_claims:true,
   viewport:{width,height,dpr:D,phase,lag,route:ctl.route},
+  original_four_optical_requirements:OPTICAL_OPERATOR_ORDER,
+  exact_four_operator_assay:fourOperatorAssay,
+  engine_family_lineage:ENGINE_LINEAGE,
   four_macro_operators:{
    A_distinct_D3_phi_fold:{d3:r(triangular(21,13)),phi:r(quasiperiodic(21,13)),
     corset_panels:CUIRASS_POLICY.panels,
