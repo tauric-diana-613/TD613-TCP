@@ -618,6 +618,7 @@ jobs:
       VERCEL_SCOPE: tauric-diana-s-projects
       VERCEL_PROJECT: td-613-tcp
       VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
+      VERCEL_PROJECT_ID: prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7
       VERCEL_PREVIEW_ALIAS: td-613-tcp-git-research-vixen-du-4ba43a-tauric-diana-s-projects.vercel.app
       VERCEL_CLI_VERSION: '65.16.0'
 
@@ -749,7 +750,7 @@ jobs:
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const link = JSON.parse(fs.readFileSync('.vercel/project.json', 'utf8'));
-          if (link.orgId !== process.env.VERCEL_ORG_ID || !/^prj_/.test(link.projectId || '')) {
+          if (link.orgId !== process.env.VERCEL_ORG_ID || link.projectId !== process.env.VERCEL_PROJECT_ID) {
             throw new Error('Vercel link resolved to an unexpected owner or project.');
           }
           NODE
