@@ -188,6 +188,11 @@ export async function mountVixenElectricFoundry({
    state.scoreState=paintComputationalScore(state.notation,{
     labId:state.labId,model:state.model,pointer:state.pointer,time:state.simPhase
    });
+   // Selected silver cuff samples the SAME Foundry phase (no second RAF).
+   if(force||state.frames%8===0){
+    heroRail.style.setProperty('--vixen-silver-lux',
+     String(globalMotionHeld(document)?0.92:(0.76+0.24*Math.sin(state.simPhase*2.8)).toFixed(3)));
+   }
    // Optional full-viewport lighting borrows the Foundry clock.
    paintRoomMesh(force);
    // The approved visual is a separate overlay, fed by THIS host clock.
@@ -382,6 +387,15 @@ export async function mountVixenElectricFoundry({
   }
  }
  const railHeading=label('SIX ARIAS · SOURCE-RECORDED MATHEMATICS');
+ // The same synthesis engine's presentational result drives both the cover
+ // and this Opera editorial title; no Podium Score is mounted into the Opera.
+ const titleFromCover=()=>String(document.getElementById('synthPatternSubtitle')?.textContent||'Phasonic Counterpoint').trim().slice(0,110);
+ railHeading.dataset.synthesisHeadline=titleFromCover();
+ const onSynthesisEditorial=(event)=>{
+  const title=event.detail?.patternSubtitle;
+  if(typeof title==='string'&&title.trim())railHeading.dataset.synthesisHeadline=title.trim().slice(0,110);
+ };
+ document.addEventListener('vixen:editorial-synthesis',onSynthesisEditorial);
  const proscenium=node('section','ef-proscenium');
  proscenium.setAttribute('aria-label','Six mathematical arias and live computed Vixen stage');
  const ariaScore=node('nav','ef-aria-score');
@@ -397,7 +411,13 @@ export async function mountVixenElectricFoundry({
    const b=BTN(name,()=>switchLab(id),'ef-hero-tab');
    b.dataset.labId=id;b.dataset.ariaNumber=String(HEROES.indexOf(id)+1).padStart(2,'0');
    b.setAttribute('aria-pressed',String(state.labId===id));
+   b.setAttribute('aria-label','Select experiment '+String(HEROES.indexOf(id)+1)+': '+name);
    b.append(node('small','',item.folio_id));
+   if(state.labId===id){
+    const silver=node('span','ef-silver-lace');
+    silver.setAttribute('aria-hidden','true');
+    b.append(silver);
+   }
    heroRail.append(b);
   }
  }
@@ -410,7 +430,7 @@ export async function mountVixenElectricFoundry({
   },'ef-button ef-mesh-toggle');
   roomMesh.setAttribute('aria-pressed',String(document.body.dataset.vixenOpticalMeshObservatory!=='off'));
   roomMesh.title='Show the ambient cloth around this instrument';
-  const inspect=BTN(state.inspectorOpen?'CLOSE THE PROOF ×':'OPEN THE PROOF ⊕',()=>{
+  const inspect=BTN(state.inspectorOpen?'CLOSE THE PROOF':'OPEN THE PROOF',()=>{
     toggleInspector();
   },'ef-inspector-switch');
   inspect.setAttribute('aria-controls',readout.id);
@@ -620,7 +640,11 @@ export async function mountVixenElectricFoundry({
   }
   state.renderingBackend=state.renderer.status().backend;
   state.renderer.resize();
-  renderToolbar();paint();indicate('BOOT');start();
+  renderToolbar();
+  // A hidden room may have a prepared GPU/context without consuming a frame.
+  // Its first visible frame still follows the existing Foundry owner clock.
+  if(!section?.hidden){paint();indicate('BOOT');start();}
+  else{state.probe=probe();state.phase='PREWARMED';}
   window.dispatchEvent(new CustomEvent('vixen-electric-foundry-ready',{detail:status()}));
  }
  // Runtime starts only while its Opera is the active stage. A source-verified
@@ -633,7 +657,7 @@ export async function mountVixenElectricFoundry({
  const watch=new MutationObserver(()=>{
   if(!section?.hidden){
    if(!state.renderer)initialize();
-   else {state.renderer.resize();paint();start();}
+   else {state.renderer.resize();paint();if(state.phase==='PREWARMED')indicate('ACTIVATED');start();}
   }else stop();
  });
  if(section)watch.observe(section,{attributes:true,attributeFilter:['hidden']});
@@ -649,6 +673,14 @@ export async function mountVixenElectricFoundry({
  window.addEventListener('vixen:motionchange',syncGlobalMotion);
  log('FOUNDRY_REGISTERED',{original_census:completeVixenSourceCensus(source)});
  if(section&&!section.hidden)await initialize();
+ else {
+  // Prepare once during idle rather than allocating a WebGL renderer on a
+  // visitor's first Observatory click. Still/hidden stages do not animate.
+  const prewarm=()=>{if(!state.initialized)void initialize();};
+  if(typeof window.requestIdleCallback==='function')
+   window.requestIdleCallback(prewarm,{timeout:1700});
+  else setTimeout(prewarm,240);
+ }
  // The machine Podium supplies an exact checked Score receipt. Nothing in
  // this host auto-accepts approval; default browser mount is always HOLD.
  const stageComposerPreview=async({composeReceipt,labId=state.labId}={})=>{
@@ -697,6 +729,7 @@ export async function mountVixenElectricFoundry({
   dispose(){
    stop();watch.disconnect();viewport.disconnect();
    document.removeEventListener('visibilitychange',visibility);
+   document.removeEventListener('vixen:editorial-synthesis',onSynthesisEditorial);
    window.removeEventListener('vixen:motionchange',syncGlobalMotion);
    window.removeEventListener('vixen:fieldlayout',syncFieldLayout);
    state.composerDeck?.revert('FOUNDRY_DISPOSED');
