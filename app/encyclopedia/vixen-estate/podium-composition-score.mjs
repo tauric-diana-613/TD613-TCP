@@ -12,21 +12,13 @@ import {buildFoldedCuirass,CUIRASS_POLICY} from './vixen-folded-cuirass.mjs';
 import {measureCoutureBeats,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs';
 import {buildLivingMesh} from './vixen-live-mesh-rgi13.mjs';
 import {CARRIERS,triangular,quasiperiodic,project111} from './observatory-foundry-kernel.mjs';
-import {computeSwarmComposition,SWARM_SCHEMA} from './observatory-swarm-composition.mjs';
+import {planOpenFormComposition} from './observatory-open-form-protocol.mjs';
 import {buildPodiumOpticalPlan} from './podium-salon-optical-bridge.mjs';
 export const COMPOSER_SCORE_SCHEMA='td613.vixen.podium.composer-score/v1';
 const tidy=(x,max=500)=>typeof x==='string'?x.trim().slice(0,max):'';
 const fail=(ok,error)=>{if(!ok)throw Object.assign(new TypeError(error),{code:error})};
 const round=n=>Math.round(n*10000)/10000;
 const clip=(x,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(+x)?+x:a));
-const forms=Object.freeze([
- {id:'PHASONIC_FOLD',family:'D3_PHI_FOLDED_CHROME',engine:'FOLDED_CUIRASS_AND_WEBGL2',lab:'LAB_RC-05',installed:true,signal:'phasonic_interference'},
- {id:'OBSERVABILITY_SPECTRUM',family:'SVD_RANK_GEOMETRY',engine:'OBSERVATORY_CANVAS2D_SVD',lab:'LAB_RC-07',installed:true,signal:'spectral_conditioning'},
- {id:'ROUTE_HOLONOMY',family:'NONCOMMUTING_ROUTE_RETURN',engine:'OBSERVATORY_CANVAS2D_HOLONOMY',lab:'LAB_RC-09',installed:true,signal:'clock_holonomy'},
- {id:'XOR_SYNERGY',family:'DISTRIBUTED_INFORMATION',engine:'OBSERVATORY_CANVAS2D_XOR',lab:'LAB_RC-10',installed:true,signal:'synergy_fadt'},
- {id:'SWARM_DYNAMICS',family:'MULTI_AGENT_PHASE_SPACE',engine:'NEW_SWARM_CANVAS2D_PAINTER',lab:'LAB_RC-09',installed:false,signal:'src_projective_tomography'},
- {id:'RELATIONAL_GRAPH',family:'TYPED_EDGE_TOPOLOGY',engine:'NEW_GRAPH_RENDERER',lab:'LAB_TCC-01',installed:false,signal:'cluster_bridge'}
-]);
 const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
 async function digest(obj){
  fail(globalThis.crypto?.subtle,'HELD_CRYPTOGRAPHIC_DIGEST_REQUIRED');
@@ -57,7 +49,6 @@ function opticalDiagnostics(sourceIds,lagTicks){
  const folded=buildFoldedCuirass({width,height,time:clock,sourceIds,beatToGeometryGain:1,lag:lagTicks,integrated:false});
  const control=buildFoldedCuirass({width,height,time:clock,sourceIds,beatToGeometryGain:0,lag:lagTicks,integrated:false});
  const mesh=buildLivingMesh({width,height,time:clock,view:'observatory',sourceIds});
- const swarm=computeSwarmComposition({width,height,sourceIds,phase:clock,iterations:12});
  const delta=round(folded.metrics.seamLength-control.metrics.seamLength);
  const phaseD=triangular(13.1,11.3,{theta:.04}),phaseP=quasiperiodic(13.1,11.3,{phase:.08});
  const vector=project111([clip(Math.abs(delta)/300),clip(beat.totalEmission/BEAT_POLICY.peak_budget),.5]);
@@ -88,7 +79,6 @@ function opticalDiagnostics(sourceIds,lagTicks){
    P111_projection:vector.projection,
    SVD_rank:svd.rank,SVD_condition_number:round(svd.condition_number),
    vernier_inversions:clocks.arrival_inversions,
-   swarm_model_schema:SWARM_SCHEMA,swarm_agents:swarm.agent_count,
    GPU_fallback_contract:'WEBGL2_THEN_DETERMINISTIC_CANVAS2D',
    native_computational_score:'PRESENT_CURRENT_LAB_ID_MAPPING',
    compositing:'BEAT_PREPAINT_THEN_FIELD_THEN_MATERIAL_THEN_BOUNDED_BLOOM',
@@ -107,8 +97,11 @@ const humanReadable=score=>[
  ...score.proposed_changes.map(c=>c.id+' · '+c.state+' · '+c.title+' · '+c.justification),
  '## Optical acceptance contract A / B / C / D',
  ...Object.entries(score.optical).filter(([k])=>/^[ABCD]_/.test(k)).map(([k,v])=>k+' · '+JSON.stringify(v)),
+ '## Open-form proposals and missing evidence',
+ ...score.visuals.open_form_protocol.proposed.map(v=>v.id+' · '+v.status+
+  ' · '+v.requirements.join(',')),
  '## Alternatives',
- ...score.visuals.alternatives.map(v=>v.id+' '+v.fitness+' '+v.renderer_state),
+ ...score.visuals.alternatives.map(v=>v.id+' '+v.fitness+' '+(v.renderer_state||v.status)),
  '## Composer closure',
  'Read the exact digest; request final edits or authorize this exact Score. No corpus changes or publication before approval.',
  'Composing is NOT deploying, merging, source admission, scientific closure or an Experiment B flight.'
@@ -134,33 +127,28 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
  const sourceIds=rankedWorks.slice(0,2).map(w=>w.work_id);
  const optic=opticalDiagnostics(sourceIds,lag);
  const labs=buildVixenLaboratories(corpus);
- const textual=(question+' '+winner.title+' '+winner.subtitle).toLowerCase();
- const candidates=forms.map(form=>{
-  const signal=clip(winner.breakdown[form.signal]);
-  const cue=form.id==='SWARM_DYNAMICS'&&/swarm|multi.agent|flock|collective/.test(textual)?1:
-   form.id==='RELATIONAL_GRAPH'&&/causal|graph|edge/.test(textual)?1:0;
-  // Score architecture on its own model signal; an unverified title is a lead only.
-  const evidence=round(.66*signal+.17*clip(winner.score)+.12*cue+.05*(form.installed?1:0));
-  const lab=labs.find(x=>x.id===form.lab);
-  return {id:form.id,family:form.family,engine:form.engine,lab_id:form.lab,
-   current_optic:lab?.optic_program||null,fitness:evidence,
-   signal_component:form.signal,signal_value:signal,query_cue:cue,
-   renderer_state:form.installed?'EXISTING_ENGINE':'NEW_GEOMETRY_CANDIDATE',
-   install_readiness:form.installed?'CURRENT_RUNTIME':'REQUIRES_COMPOSER_AND_QUALIFICATION',
-   has_executable_candidate_preview:form.id==='SWARM_DYNAMICS',
-   evidence_ceiling:'MODEL_AND_SOURCE_METADATA_ONLY'};
- }).sort((a,b)=>b.fitness-a.fitness||a.id.localeCompare(b.id));
- const chosen=candidates[0];
+ // A synthesis may submit mathematical visual forms never envisioned by the
+ // original chart/animation designer. They are scored as proposals, not
+ // installed as executable renderers by task JSON or title matching.
+ const activeSourceIds=corpus.works.flatMap(w=>[w.work_id,...w.linked_sources.map(x=>x.source_file_id)]);
+ const openForms=planOpenFormComposition({
+  labs,proposals:params.visual_proposals||[],sourceIds:activeSourceIds,
+  synthesis:ranked
+ });
+ const chosen=openForms.selected;
+ const candidates=openForms.alternatives;
+ const newFormHeld=chosen.kind==='OPEN_FORM_PROPOSAL';
  // Native score signals now drive the real Salon render pipeline; stage only.
  const salonOptics=buildPodiumOpticalPlan({sourceIds,breakdown:winner.breakdown,
   visualFormId:chosen.id,lagTicks:lag,width:360,height:300,phase:0,dpr:1});
  const changes=[
   {id:'SCORE-01',state:'PROPOSED',area:'SYNTHESIS',title:'Select '+winner.title,
    justification:'Native eight-dimensional model score '+winner.score+' with original weights and breakdown; not an observed result'},
-  {id:'SCORE-02',state:chosen.install_readiness==='CURRENT_RUNTIME'?'PROPOSED':'HELD_NEW_RENDERER',
-   area:'OBSERVATORY',title:'Choose '+chosen.family+' for '+chosen.lab_id,
-   justification:'Model-based visual fitness '+chosen.fitness+' vs existing '+chosen.current_optic+
-    '; renders through explicitly declared optical A/B/C/D pipeline'},
+  {id:'SCORE-02',state:newFormHeld?'HELD_NEW_RENDERER_AND_COMPOSER':'PROPOSED',
+   area:'OBSERVATORY',title:newFormHeld?'Propose open-form mathematical visualization '+chosen.family:
+    'Retain installed Observatory visual form '+chosen.family,
+   justification:'Design fitness '+chosen.fitness+' does not establish an empirical property; '+
+    'new mathematical mappings and renderer families must satisfy source proof, validation, independent code review and exact human authorization'},
   {id:'SCORE-03',state:'PROPOSED',area:'OPTICAL_ENGINE',title:'Connect four macro operators and the 39-carrier lattice to the new Score',
    justification:'Real prepaint diagnostics, fold displacement, emission bounds, pixel sampling, still/motion cadence and WebGL fallback inspected'},
   {id:'SCORE-04',state:'PROPOSED',area:'EDITORIAL',title:'Compose replacement explanation, captions and mathematical evidence limits',
@@ -193,7 +181,10 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
    breakdown:winner.breakdown,falsifier:winner.falsifier||null},
    alternatives:ranked.candidates.slice(1,5).map(x=>({id:x.id,title:x.title,score:x.score})),
    weights:ranked.weights,work_seeds:sourceIds,operator_question:question||null},
-  visuals:{selected:chosen,alternatives:candidates.slice(1),decision_owner:'PODIUM',
+  visuals:{selected:chosen,alternatives:candidates,open_form_protocol:openForms,
+   decision_owner:'PODIUM_PROPOSES_HUMAN_COMPOSER_AUTHORIZES',
+   candidate_form_count:openForms.candidate_count,
+   form_family_whitelist:null,
    runtime_scene_replacement:false},
   optical:optic,salon_optical_performance:salonOptics,
   proposed_changes:changes,changes_count:changes.length,

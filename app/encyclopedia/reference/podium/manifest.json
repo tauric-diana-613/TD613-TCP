@@ -196,10 +196,11 @@
         "research_question",
         "pending_materials",
         "source_changes",
-        "lag_ticks"
+        "lag_ticks",
+        "visual_proposals"
       ],
-      "action": "SOURCE_BOUNDED_COMPUTATIONAL_AND_VISUAL_SCORE_WITH_FULL_CHANGE_LEDGER",
-      "authority": "READ_ONLY"
+      "action": "SOURCE_BOUND_SYNTHESIS_SCORE_AND_OPEN_GRAMMAR_COMPARISON",
+      "authority": "READ_ONLY_OPEN_VISUAL_GRAMMAR_STAGING"
     },
     {
       "id": "podium.compose",
@@ -207,10 +208,11 @@
         "research_question",
         "pending_materials",
         "source_changes",
-        "lag_ticks"
+        "lag_ticks",
+        "visual_proposals"
       ],
-      "action": "PRESENT_SCORE_AND_REQUEST_HUMAN_FINAL_EDITS_AND_CLOSURE",
-      "authority": "HELD_NO_MUTATION"
+      "action": "MACHINE_ONLY_COMPOSE_SCORE_PRESENTATION_STOP_FOR_HUMAN_AUTHORIZATION",
+      "authority": "HELD_NO_MUTATION_INDEPENDENT_HUMAN_APPROVAL_REQUIRED"
     }
   ],
   "optional_engine_adapters": {
@@ -424,5 +426,32 @@
       "ROOM_WIDE_MESH_AND_SOURCE_OCCLUSION",
       "SWARM_CANDIDATE_RENDERER"
     ]
+  },
+  "visual_composition_protocol": {
+    "schema": "td613.vixen.observatory.open-form/v1",
+    "candidate_input": "visual_proposals",
+    "candidate_vocabulary": "OPEN_FORM_UNBOUNDED_GRAMMAR_FAMILY",
+    "installed_form_selection": "RETAIN_SOURCE_BOUND_EXISTING_LABS",
+    "required_fields": [
+      "evidence.source_ids",
+      "evidence.locators",
+      "mathematical_model.observables",
+      "mathematical_model.transformations",
+      "mathematical_model.assumptions",
+      "mathematical_model.falsifiers",
+      "data_mapping.channels",
+      "visual_grammar.primitives",
+      "visual_grammar.composition_rules",
+      "interaction_contract.nonvisual_equivalent",
+      "transition.replaces_lab_id",
+      "transition.rollback_form_id",
+      "renderer_plan.validation_plan"
+    ],
+    "automatic_renderer_install": false,
+    "new_scene_requires": "HUMAN_COMPOSER_PLUS_INDEPENDENT_RENDERER_PR_CI_VISUAL_ASSAY",
+    "computational_fitness_is_empirical_validation": false,
+    "source_body_attestation_not_inferred": true,
+    "existing_observatory_unmodified_until_qualified": true,
+    "unreviewed_runtime_js_from_task": false
   }
 }

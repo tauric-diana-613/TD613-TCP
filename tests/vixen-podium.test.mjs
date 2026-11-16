@@ -216,8 +216,30 @@ test('Shared active-stage controller changes masthead without changing source ro
 
 test('Machine Podium autonomously scores source-bound visual architecture, stops at Compose, and refuses user-synthesis mutation',async()=>{
  const one=createVixenPodium({corpus,membrane:mock()});
- const proposal={research_question:'Can swarm phase dynamics outperform a fixed holonomy optical representation?',
-  source_changes:[{source_file_id:source.source_file_id,action:'EXCLUDE',reason:'Possible incomplete PDF; await forensic verification'}]};
+ const proposal={research_question:'Which meaning-preserving visual form best expresses the mathematical source?',
+  source_changes:[{source_file_id:source.source_file_id,action:'EXCLUDE',reason:'Possible incomplete PDF; await forensic verification'}],
+  visual_proposals:[{
+   id:'NEW_GRAMMAR_OUTSIDE_EXISTING_CHARTS',
+   title:'An open-ended source-bound representation',
+   family:'OPERATOR_DEFINED_MATHEMATICAL_FORM',
+   evidence:{source_ids:[source.source_file_id],locators:[{
+    source_id:source.source_file_id,locator:'identified source coordinate',
+    supports:'provisional mathematical representation (not body verification)'
+   }]},
+   mathematical_model:{observables:['bounded x(t)'],transformations:['T(x,t)'],
+    assumptions:['constructed model'],falsifiers:['transform violates source equation']},
+   data_mapping:{channels:[{observable:'bounded x(t)',
+    visual_channel:'new source-conditioned spatial gesture',
+    units:'normalized',interpretation:'illustrative model, not independent observation'}]},
+   visual_grammar:{description:'New composition family outside preinstalled renderer catalogue',
+    primitives:['new abstract geometric unit'],composition_rules:['meaning preserving transformation']},
+   interaction_contract:{interaction_model:'bounded controls',reduced_motion_fallback:'static view',
+    nonvisual_equivalent:'equation and source-bound table'},
+   transition:{replaces_lab_id:'LAB_RC-09',rollback_form_id:'HOLONOMY',
+    failure_modes:['source interpretation unsettled']},
+   renderer_plan:{implementation_strategy:'separate reviewed renderer',
+    validation_plan:'geometry, semantics and accessibility in exact-head Chromium'}
+  }]};
  const scored=await one.dispatch(task('podium.score',proposal));
  assert.equal(scored.status,'SUPPORTED',JSON.stringify(scored.result).slice(0,600));
  assert.equal(scored.result.synthesis.selected.score>=0,true);
@@ -230,7 +252,11 @@ test('Machine Podium autonomously scores source-bound visual architecture, stops
  assert.equal(scored.result.optical.additional_pipelines.carrier_count,39);
  assert.equal(scored.result.optical.D_viewport_DPR_sampling_clock.single_host_clock_required,true);
  assert.ok(scored.result.human_readable_score.includes('SOURCE-01'));
- assert.ok([scored.result.visuals.selected,...scored.result.visuals.alternatives].some(v=>v.id==='SWARM_DYNAMICS'));
+ assert.equal(scored.result.visuals.selected.id,'NEW_GRAMMAR_OUTSIDE_EXISTING_CHARTS');
+ assert.equal(scored.result.visuals.selected.status,'CANDIDATE_READY_FOR_REVIEW');
+ assert.equal(scored.result.visuals.selected.renderer_installed,false);
+ assert.equal(scored.result.visuals.open_form_protocol.form_family_whitelist,null);
+ assert.equal(scored.result.visuals.open_form_protocol.active_observatory_form_unchanged,true);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI14_opaline_ribs,39);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI13_room_mesh_carriers,39);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.swarm_agents,39);

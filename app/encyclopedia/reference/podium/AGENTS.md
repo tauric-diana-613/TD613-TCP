@@ -108,22 +108,20 @@ The four macro optical operators A-D and existing coupled stack
 (RGI13 room mesh, RGI14 opaline couture, RGI15 beat radiometry, DD02 folded
 cuirass, WebGL2+Canvas fallback, 39 Loom carriers, five-clock and SVD score)
 must survive mathematical and image-rendering continuity assays.
-New swarm is a coded computational visualization CANDIDATE, not a verified
-claim about blind-archive research or an approved installed laboratory.
+OPEN-FORM COMPOSITION: A source-bounded Score may propose a completely
+unanticipated mathematical visual grammar with new primitives, channels,
+interactions, timings and accessible equivalents. There is no exhaustive
+chart/animation/holonomy/simulation family enumeration. The Score must show
+exact source references, mathematical observables, transformations,
+assumptions, falsifiers, units, semantic mappings, current-lab displacement,
+rollback and renderer qualification requirements. Unverified papers do not
+authorize a new data receiver. Unreviewed renderer code must not execute.
+The existing Observatory stays intact while a proposal is staged; a separately
+reviewed renderer and human Score-specific approval are required before any
+actual visual-form substitution.
 
 Legacy user-synthesis --write-synthesis / --sync-html / --rollback are held:
 there is no independently authenticated Score-specific Composer release
 service in the current CLI. Do not permit machine task flags to self-authorize.
 No corpus edit, publication, production release, Experiment B Flight or
 authorial closure is authorized by a Score.
-
-## RGI18B · Podium coupling to Salon's actual optical engines
-The machine Score binds mathematical weights to a true recomputation of
-DD02 folded-chrome garment strain, RGI15 prepaint D3/phi beat fields,
-RGI14 Opaline ribs and hoops, RGI13 room-wide 39-carrier mesh, shared
-DD02 field cloth, original veiling and WebGL2/Canvas mathematical kernels.
-The four macro operator witnesses A-D are retained in Score receipts.
-Distinct swarm-preview geometry uses its own painter, while unbound
-Observatory forms explicitly HOLD rather than reverting to the same chart.
-`paintPodiumOpticalPreview` is host-called, canvas-owned and does not
-install into live Salon/Observatory or schedule animation.
