@@ -1,0 +1,96 @@
+name: Vixen A0 Source-First Isolated Regeneration
+
+on:
+  push:
+    branches:
+      - research/vixen-dual-estate-encyclopedia-20261108
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vixen-a0-source-first-regeneration
+  cancel-in-progress: false
+
+jobs:
+  regenerate-a0:
+    if: ${{ github.event.head_commit.message == 'ops(vixen-a0): regenerate source-grounded seven-free index' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert exact branch and A0 manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = 'research/vixen-dual-estate-encyclopedia-20261108'
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          const h=readFileSync('app/encyclopedia/vix-cyb.html','utf8');
+          const m=h.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+          if(!m)throw Error('MISSING_ACTIVE_CORPUS');
+          const c=JSON.parse(m[1]);
+          if(c.works.length!==32||c.batch_b_files.length!==0||c.instruments.length!==21)
+            throw Error('A0_CANONICAL_CENSUS_AND_ZERO_HELDOUT_REQUIRED');
+          const n=c.works.reduce((x,w)=>x+w.linked_sources.length,0);
+          if(n!==53)throw Error('A0_MANIFESTATIONS_MUST_EQUAL_53');
+          console.log('A0 32/53/21 · heldout active count 0');
+          NODE
+      - name: Mount independently recorded source fixture read-only sibling
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/heads/amari/em-td613-lineage-atelier:refs/remotes/origin/amari/em-td613-lineage-atelier'
+          git worktree add --detach ../em-e00-1a-comparator-wiring refs/remotes/origin/amari/em-td613-lineage-atelier
+          printf 'FROZEN_SOURCE_FIXTURE_COMMIT=%s\n' "$(git -C ../em-e00-1a-comparator-wiring rev-parse HEAD)"
+          test -f ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/01-MANIFESTS/source-files.jsonl
+          test -f ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/03-DERIVATIVES/derivative-index.jsonl
+      - name: Rebuild complete corpus and hybrid semantic-semiotic index from source
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/build-vixen-experiment-a-corpus.mjs | tee "$RUNNER_TEMP/a0-index-builder.json"
+          node scripts/build-vixen-experiment-a-corpus.mjs --check
+          node --input-type=module - <<'NODE'
+          import {readFileSync} from 'node:fs';
+          const dir='app/encyclopedia/vixen-estate/';
+          const p=JSON.parse(readFileSync(dir+'corpus-experiment-a-part1.json','utf8'));
+          const q=JSON.parse(readFileSync(dir+'corpus-experiment-a-part2.json','utf8'));
+          const idx=JSON.parse(readFileSync(dir+'semantic-semiotic-index.v1.json','utf8'));
+          if(p.batch_b_files.length!==0||idx.corpus_custody.batch_b_pending_count!==0)
+            throw Error('HELDOUT_METADATA_LEAK_IN_INDEX');
+          if(idx.sources_meta.some(x=>x.cust==='EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD'||x.source_file_id?.startsWith('emb_')))
+            throw Error('HELDOUT_SOURCE_ID_IN_ACTIVE_INDEX');
+          if(idx.docs.some(d=>String(d.id).startsWith('emb_')))
+            throw Error('HELDOUT_DOCUMENT_IN_ACTIVE_INDEX');
+          if(Object.keys(p.sources).length+Object.keys(q.sources).length!==53)
+            throw Error('MISSING_CANONICAL_SOURCE');
+          console.log('A0 regenerated: index docs',idx.docs.length,'metadata',idx.sources_meta.length);
+          NODE
+      - name: Qualify rebuilt shards, search fusion, Podium and release boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test tests/vixen-semantic-semiotic-search.test.mjs tests/vixen-podium.test.mjs
+          git diff --check
+      - name: Commit only three derived A0 artifacts, no source mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'td613-ci-source-first'
+          git config user.email 'td613-ci-source-first@users.noreply.github.com'
+          git add -- app/encyclopedia/vixen-estate/corpus-experiment-a-part1.json \
+                     app/encyclopedia/vixen-estate/corpus-experiment-a-part2.json \
+                     app/encyclopedia/vixen-estate/semantic-semiotic-index.v1.json
+          if git diff --cached --quiet; then
+            echo 'No derived artifacts changed; nothing to push'
+          else
+            git commit -m 'build(vixen): freeze seven-free A0 shards and freshly centered fusion index'
+            git push origin HEAD:refs/heads/research/vixen-dual-estate-encyclopedia-20261108
+          fi
