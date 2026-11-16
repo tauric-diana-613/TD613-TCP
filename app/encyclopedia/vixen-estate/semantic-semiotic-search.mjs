@@ -1318,14 +1318,14 @@ export class SemanticSemioticSearchEngine {
       let highestRung = 'MOTIF_MATCH';
       const why = [];
 
-      if (docMatchedTerms && docMatchedTerms.size > 0) {
+      if (fusionControls.channels.lexical && docMatchedTerms && docMatchedTerms.size > 0) {
         why.push(`bm25f terms: ${[...docMatchedTerms].slice(0, 6).join(', ')}`);
       }
-      if (matchedPhraseLabel) {
+      if (fusionControls.channels.lexical && matchedPhraseLabel) {
         why.push(`phrase match: "${matchedPhraseLabel}"`);
       }
 
-      if (semioticProfile.planeVec && Array.isArray(doc.pv)) {
+      if (fusionControls.channels.semiotic && semioticProfile.planeVec && Array.isArray(doc.pv)) {
         let pDot = 0;
         for (let p = 0; p < 4; p++) pDot += semioticProfile.planeVec[p] * (doc.pv[p] || 0);
         if (pDot > 0) {
@@ -1333,17 +1333,17 @@ export class SemanticSemioticSearchEngine {
           why.push(`plane affinity (${pDot.toFixed(2)})`);
         }
       }
-      if (semioticProfile.clusters.size && m.cluster && semioticProfile.clusters.has(m.cluster)) {
+      if (fusionControls.channels.semiotic && semioticProfile.clusters.size && m.cluster && semioticProfile.clusters.has(m.cluster)) {
         sSemi += 0.25;
         highestRung = 'STRUCTURAL_ANALOGY_CANDIDATE';
         why.push(`cluster match: ${m.cluster}`);
       }
-      if (semioticProfile.workMatches.size && m.work_id && semioticProfile.workMatches.has(m.work_id.toLowerCase())) {
+      if (fusionControls.channels.semiotic && semioticProfile.workMatches.size && m.work_id && semioticProfile.workMatches.has(m.work_id.toLowerCase())) {
         sSemi += 0.30;
         highestRung = 'MECHANISM_CANDIDATE';
         why.push(`work id: ${m.work_id}`);
       }
-      if (semioticProfile.protoMatches.size) {
+      if (fusionControls.channels.semiotic && semioticProfile.protoMatches.size) {
         const hitProto = (m.protocol_ids || []).some((p) => semioticProfile.protoMatches.has(String(p).toLowerCase()))
           || (m.source_file_id && semioticProfile.protoMatches.has(m.source_file_id.toLowerCase()));
         if (hitProto) {
@@ -1352,7 +1352,7 @@ export class SemanticSemioticSearchEngine {
           why.push('protocol/source id match');
         }
       }
-      if (semioticProfile.tags.length && tags.length) {
+      if (fusionControls.channels.semiotic && semioticProfile.tags.length && tags.length) {
         let tagHits = 0;
         const matchedTags = [];
         for (const tObj of tags) {
@@ -1373,7 +1373,7 @@ export class SemanticSemioticSearchEngine {
       const ceiling = RUNG_CEILINGS[highestRung] ?? 0.55;
       sSemi = Math.min(ceiling, Math.min(1, sSemi));
 
-      if (useSvdChannel && sSem >= 0.42 && alphaSupport >= 0.5) {
+      if (fusionControls.channels.semantic && useSvdChannel && sSem >= 0.42 && alphaSupport >= 0.5) {
         why.push(`svd z=${semZScores[i].toFixed(2)}`);
       }
 
@@ -1381,7 +1381,7 @@ export class SemanticSemioticSearchEngine {
         || (m.instrument_id && this.shardTexts.get(m.instrument_id))
         || doc.sn
         || '';
-      const useSrcScoring = (parsed.mode === 'hybrid' && srcCond.analysis.hasSrcUntypicalCue) || parsed.mode === 'src_projective';
+      const useSrcScoring = fusionControls.channels.src && ((parsed.mode === 'hybrid' && srcCond.analysis.hasSrcUntypicalCue) || parsed.mode === 'src_projective');
       const srcEval = useSrcScoring
         ? scoreSrcUntypicalDocument(srcCond.analysis, m, srcTextHint)
         : { s_src_proj: 0, s_src_sig: 0, s_src_combined: 0, matched_tokens: [], matched_signatures: [], explore_match_type: null };
