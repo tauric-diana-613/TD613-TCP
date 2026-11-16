@@ -1,4 +1,5 @@
 name: Vixen A0 Source-First Isolated Regeneration
+# Run is authorized only by an exact-message, branch-local source-first trigger.
 
 on:
   push:
