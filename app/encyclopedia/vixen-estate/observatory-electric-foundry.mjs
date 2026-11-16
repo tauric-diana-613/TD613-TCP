@@ -629,7 +629,8 @@ export async function mountVixenElectricFoundry({
   if(state.initialized)return;
   state.initialized=true;
   try{
-   state.renderer=await createFoundryRenderer(canvas);
+   try{
+    state.renderer=await createFoundryRenderer(canvas);
   }catch(first){
    log('GPU_BACKEND_REFUSED',{reason:String(first)});
    const clone=canvas.cloneNode(false);
