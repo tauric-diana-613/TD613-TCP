@@ -14,6 +14,7 @@ import {buildLivingMesh} from './vixen-live-mesh-rgi13.mjs';
 import {CARRIERS,triangular,quasiperiodic,project111} from './observatory-foundry-kernel.mjs';
 import {planOpenFormComposition} from './observatory-open-form-protocol.mjs';
 import {buildPodiumOpticalPlan} from './podium-salon-optical-bridge.mjs';
+import {buildVisualScoreAuditions} from './observatory-score-auditions.mjs';
 export const COMPOSER_SCORE_SCHEMA='td613.vixen.podium.composer-score/v1';
 const tidy=(x,max=500)=>typeof x==='string'?x.trim().slice(0,max):'';
 const fail=(ok,error)=>{if(!ok)throw Object.assign(new TypeError(error),{code:error})};
@@ -100,6 +101,12 @@ const humanReadable=score=>[
  '## Open-form proposals and missing evidence',
  ...score.visuals.open_form_protocol.proposed.map(v=>v.id+' · '+v.status+
   ' · '+v.requirements.join(',')),
+ '## Visual auditions · standalone HTML studies before Compose',
+ 'Eligible: '+score.visuals.audition.eligible_count+' · held: '+score.visuals.audition.held_count+
+  ' · unratified, no actual renderer implied',
+ ...score.visuals.audition.candidates.map(v=>v.rank+' · '+v.id+' · heuristic '+v.fitness+
+  ' · '+v.preview_type+' · see visuals.audition.candidates[].standalone_html'),
+ 'Comparison gallery: visuals.audition.gallery_html (standalone, sandboxed)',
  '## Alternatives',
  ...score.visuals.alternatives.map(v=>v.id+' '+v.fitness+' '+(v.renderer_state||v.status)),
  '## Composer closure',
@@ -137,6 +144,7 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
  });
  const chosen=openForms.selected;
  const candidates=openForms.alternatives;
+ const audition=buildVisualScoreAuditions(openForms);
  const newFormHeld=chosen.kind==='OPEN_FORM_PROPOSAL';
  // Native score signals now drive the real Salon render pipeline; stage only.
  const salonOptics=buildPodiumOpticalPlan({sourceIds,breakdown:winner.breakdown,
@@ -182,7 +190,7 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
    alternatives:ranked.candidates.slice(1,5).map(x=>({id:x.id,title:x.title,score:x.score})),
    weights:ranked.weights,work_seeds:sourceIds,operator_question:question||null},
   visuals:{selected:chosen,alternatives:candidates,open_form_protocol:openForms,
-   decision_owner:'PODIUM_PROPOSES_HUMAN_COMPOSER_AUTHORIZES',
+   audition,decision_owner:'PODIUM_PROPOSES_HUMAN_COMPOSER_AUTHORIZES',
    candidate_form_count:openForms.candidate_count,
    form_family_whitelist:null,
    runtime_scene_replacement:false},

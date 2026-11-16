@@ -15,6 +15,7 @@ import {createFoundryRenderer} from './observatory-foundry-renderer.mjs';
 import {paintComputationalScore} from './observatory-computational-score.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
 import {globalMotionHeld} from './vixen-motion-governor.mjs';
+import {createObservatoryComposerDeck} from './observatory-composer-deck.mjs';
 
 export const ELECTRIC_STAGE_SCHEMA='emstd613.vixen.electric-foundry-stage/v1';
 const HEROES=Object.freeze(['LAB_TCC-01','LAB_TCC-04','LAB_TCC-05',
@@ -85,8 +86,11 @@ function sourceBadge(lab){
   lab.id+' · '+lab.folio_id+' · '+lab.status+' · ORIGINAL VIXEN CORPUS')
 }
 export async function mountVixenElectricFoundry({
- host=document.getElementById('vixenElectricFoundry'),corpus
+ host=document.getElementById('vixenElectricFoundry'),corpus,composerHost=null
 }={}){
+ // The browser's default auto-mount supplies NO human approval capability.
+ // Only an independent trusted application host may supply these callbacks.
+ // User task JSON and window globals are never treated as human authority.
  if(!host)return Object.freeze({mounted:false,reason:'NO_HOST'});
  let source;
  try{source=declaration(corpus);buildVixenLaboratories(source)}
@@ -123,6 +127,7 @@ export async function mountVixenElectricFoundry({
   flagship_curated:HEROES.length,registry_count:all.length,global_still:globalMotionHeld(document),
   historical_original_corpus:'EMSTD613',empirical_credit:0,
   experiment_b_flight:'HELD',
+  composer_preview:state.composerDeck?.inspect()||{status:'HELD_UNMOUNTED'},
   research_estates_separated:true,source_declared_not_reauthenticated:true
  });
  function toggleInspector(nextOpen){
@@ -180,6 +185,13 @@ export async function mountVixenElectricFoundry({
    });
    // Optional full-viewport lighting borrows the Foundry clock.
    paintRoomMesh(force);
+   // The approved visual is a separate overlay, fed by THIS host clock.
+   // No dynamic module selection, unreviewed code or independent RAF here.
+   if(state.composerDeck?.inspect().current_form_id){
+    void state.composerDeck.paint({lab_id:state.labId,frame:{
+     time:state.simPhase,model:{...state.model},pointer:{...state.pointer}
+    }}).catch(()=>state.composerDeck.revert('HELD_COMPOSER_PAINT_REJECTION'));
+   }
    state.frames++;
   }catch(e){state.held=String(e.message||e);log('RENDER_REFUSED',{reason:state.held});stop()}
  }
@@ -210,6 +222,7 @@ export async function mountVixenElectricFoundry({
  }
  function switchLab(id){
   if(!byId.has(id))return false;
+  if(id!==state.labId)state.composerDeck?.revert('LAB_CHANGED_EXPLICIT_REVIEW_REQUIRED');
   state.labId=id;state.pointer={x:0,y:0};state.locked=false;
   log('VIXEN_FOLIO_SELECTED',{id,original_formula:lab().formula});
   renderHero();renderCatalogue();
@@ -269,11 +282,22 @@ export async function mountVixenElectricFoundry({
  const notation=node('canvas','ef-notation');
  notation.setAttribute('aria-hidden','true');
  state.notation=notation;
+ const composerCanvas=node('canvas','ef-composer-preview');
+ composerCanvas.id='vixenComposerPreviewCanvas';
+ composerCanvas.setAttribute('aria-label','Unratified, separately authorized Composer preview; original Observatory exhibit remains preserved');
+ composerCanvas.setAttribute('role','img');
+ composerCanvas.hidden=true;
+ state.composerDeck=createObservatoryComposerDeck({
+  canvas:composerCanvas,
+  verifyHumanReceipt:typeof composerHost?.verifyHumanReceipt==='function'?composerHost.verifyHumanReceipt:null,
+  isScoreCurrent:typeof composerHost?.isScoreCurrent==='function'?composerHost.isScoreCurrent:null,
+  reviewedRenderers:Array.isArray(composerHost?.reviewedRenderers)?composerHost.reviewedRenderers:[]
+ });
  const overlay=node('div','ef-optic-chrome');
  add(overlay,node('div','ef-fiducial'),node('div','ef-crossline'),
   node('div','ef-aperture-ring'),node('div','ef-phase-lock'));
  const sceneBadge=node('div','ef-scene-badge');
- add(stage,canvas,notation,overlay,sceneBadge);
+ add(stage,canvas,notation,composerCanvas,overlay,sceneBadge);
  const readout=node('div','ef-readout');state.readout=readout;state.canvas=canvas;
  readout.id='vixenFoundryInspectorReadout';
  readout.hidden=true;
@@ -593,10 +617,26 @@ export async function mountVixenElectricFoundry({
  window.addEventListener('vixen:motionchange',syncGlobalMotion);
  log('FOUNDRY_REGISTERED',{original_census:completeVixenSourceCensus(source)});
  if(section&&!section.hidden)await initialize();
+ // The machine Podium supplies an exact checked Score receipt. Nothing in
+ // this host auto-accepts approval; default browser mount is always HOLD.
+ const stageComposerPreview=async({composeReceipt,labId=state.labId}={})=>{
+  const target=byId.get(labId);
+  if(!target||labId!==state.labId)
+   return Object.freeze({status:'HELD_TARGET_LAB_MUST_BE_CURRENT',release_authority:false});
+  const result=await state.composerDeck.stage({
+   composeReceipt,lab_id:target.id,current_form_id:target.optic_program,
+   frame:{time:state.simPhase,model:{...state.model},pointer:{...state.pointer}}
+  });
+  log('COMPOSER_PREVIEW_REQUEST',{target_lab:labId,status:result.status,
+   source_mutation:false,release_authority:false});
+  return result;
+ };
  const api=Object.freeze({
   mounted:true,source_estate:'EMSTD613',installed_flagships:HEROES.slice(),
   registered_source_projections:all.length,
   status,selectLab:switchLab,setParameter,selectProbe,pause,resume,step,
+  stageComposerPreview,composerPreviewStatus:()=>state.composerDeck.inspect(),
+  revertComposerPreview:()=>state.composerDeck.revert('EXPLICIT_OPERATOR_REVERT'),
   renderOnce:()=>{paint(true);indicate('OPERATOR_FRAME');return status()},
   getResearchProbe:()=>state.probe,
   dispose(){
@@ -604,6 +644,7 @@ export async function mountVixenElectricFoundry({
    document.removeEventListener('visibilitychange',visibility);
    window.removeEventListener('vixen:motionchange',syncGlobalMotion);
    window.removeEventListener('vixen:fieldlayout',syncFieldLayout);
+   state.composerDeck?.revert('FOUNDRY_DISPOSED');
    state.renderer?.dispose();
   }
  });

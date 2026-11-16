@@ -411,7 +411,9 @@
     "automatic_deploy": false,
     "comparison": "Source baseline and proposed exclusions must be enumerated before any composition state change",
     "score_edits_invalidate_previous_approval": true,
-    "protected_flight": "HELD"
+    "protected_flight": "HELD",
+    "visual_audition": "PRE_COMPOSE_SCORE_BOUND_HTML_ALL_QUALIFIED_CANDIDATES",
+    "visual_audition_human_action": "REVIEW_REJECT_REQUEST_EDITS_BEFORE_AUTHORIZATION"
   },
   "optical_contract": {
     "A": "DISTINCT_D3_PHI_FIELD_AND_FOLD",
@@ -452,6 +454,13 @@
     "computational_fitness_is_empirical_validation": false,
     "source_body_attestation_not_inferred": true,
     "existing_observatory_unmodified_until_qualified": true,
-    "unreviewed_runtime_js_from_task": false
+    "unreviewed_runtime_js_from_task": false,
+    "audition_schema": "td613.vixen.observatory.visual-audition/v1",
+    "audition_output": [
+      "visuals.audition.candidates[].standalone_html",
+      "visuals.audition.gallery_html",
+      "visuals.audition.held[]"
+    ],
+    "audition_restrictions": "OFFLINE_SCRIPTLESS_SCHEMATIC_NO_SCIENTIFIC_RENDERER_CLAIM"
   }
 }

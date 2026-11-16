@@ -257,6 +257,12 @@ test('Machine Podium autonomously scores source-bound visual architecture, stops
  assert.equal(scored.result.visuals.selected.renderer_installed,false);
  assert.equal(scored.result.visuals.open_form_protocol.form_family_whitelist,null);
  assert.equal(scored.result.visuals.open_form_protocol.active_observatory_form_unchanged,true);
+ assert.equal(scored.result.visuals.audition.eligible_count,1);
+ assert.equal(scored.result.visuals.audition.candidates[0].id,'NEW_GRAMMAR_OUTSIDE_EXISTING_CHARTS');
+ assert.match(scored.result.visuals.audition.candidates[0].standalone_html,/<!doctype html>/i);
+ assert.match(scored.result.visuals.audition.gallery_html,/sandbox=""/);
+ assert.equal(scored.result.visuals.audition.canonical_writes,0);
+ assert.match(scored.result.human_readable_score,/Visual auditions/);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI14_opaline_ribs,39);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI13_room_mesh_carriers,39);
  assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.swarm_agents,39);

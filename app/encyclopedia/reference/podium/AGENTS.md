@@ -120,6 +120,24 @@ The existing Observatory stays intact while a proposal is staged; a separately
 reviewed renderer and human Score-specific approval are required before any
 actual visual-form substitution.
 
+PRE-COMPOSE VISUAL AUDITION: The Score includes visuals.audition.candidates
+with a standalone_html study for EACH qualified open-form proposal and
+visuals.audition.gallery_html with sandboxed, side-by-side previews.
+There is no rule limiting the audition to one candidate, a fixed shortlist,
+or a predefined chart family. Up to the protocol's 24 declared proposals are
+individually evaluated, while held proposals remain visible with reasons.
+A candidate may propose visual_grammar.preview_scene.layers as pure declarative
+vector geometry (circle/ellipse/rect/line/polyline/polygon/path/text);
+otherwise the instrument makes a distinct source-labelled storyboard.
+The generated HTML has no executable JS, remote fetch, automatic promotion,
+source ingestion, or authorization function. Source-mapped concept art is NOT
+a mathematical renderer, empirical proof, a source-body attestation, or an
+adjudication of visual fitness. This audition happens BEFORE Compose.
+The human can compare, reject, request revision, or select a proposed form.
+Selection/change alters the Score and invalidates any prior human challenge.
+The independently authenticated Composer and separate code-qualification
+boundary still govern actual Observatory substitutions.
+
 Legacy user-synthesis --write-synthesis / --sync-html / --rollback are held:
 there is no independently authenticated Score-specific Composer release
 service in the current CLI. Do not permit machine task flags to self-authorize.
