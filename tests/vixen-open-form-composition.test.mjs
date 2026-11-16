@@ -74,3 +74,24 @@ test('duplicate candidate IDs are held even across new arbitrary families',()=>{
  assert.equal(a.eligible_proposal_count,0);
  assert.ok(a.proposed.every(p=>p.status==='HELD_DUPLICATE_FORM_ID'));
 });
+
+test('The Composer may select the seventh eligible audition, but never obtain release authority by selecting',()=>{
+ const proposals=Array.from({length:7},(_,i)=>({...exemplar(),
+  id:'UNEXPECTED_FORM_'+i,
+  title:'Independent new visual grammar '+i,
+  family:'NOVEL_'+i
+ }));
+ const result=planOpenFormComposition({labs,sourceIds:['work:A'],
+  proposals,selectionId:'UNEXPECTED_FORM_6'});
+ assert.equal(result.selected.id,'UNEXPECTED_FORM_6');
+ assert.equal(result.selection.explicit_request_resolved,true);
+ assert.equal(result.proposed.length,7);
+ assert.equal(result.release_authority,false);
+ assert.equal(result.active_observatory_form_unchanged,true);
+ assert.throws(()=>planOpenFormComposition({labs,sourceIds:['work:A'],
+  proposals,selectionId:'INVENTED_EIGHTH'}),/HELD_VISUAL_SELECTION_NOT_ELIGIBLE/);
+ const denied=proposals.map(x=>({...x}));
+ denied[2].evidence={source_ids:['foreign:unverified'],locators:[]};
+ assert.throws(()=>planOpenFormComposition({labs,sourceIds:['work:A'],
+  proposals:denied,selectionId:'UNEXPECTED_FORM_2'}),/HELD_VISUAL_SELECTION_NOT_ELIGIBLE/);
+});

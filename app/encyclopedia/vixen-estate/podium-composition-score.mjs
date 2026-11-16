@@ -140,6 +140,7 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
  const activeSourceIds=corpus.works.flatMap(w=>[w.work_id,...w.linked_sources.map(x=>x.source_file_id)]);
  const openForms=planOpenFormComposition({
   labs,proposals:params.visual_proposals||[],sourceIds:activeSourceIds,
+  selectionId:params.visual_selection_id||null,
   synthesis:ranked
  });
  const chosen=openForms.selected;

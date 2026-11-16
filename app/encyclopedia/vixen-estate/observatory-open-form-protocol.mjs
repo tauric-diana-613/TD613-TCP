@@ -77,7 +77,7 @@ function inspectProposal(p,i,sourceIds,currentIds){
   scientific_promotion:false,empirical_replication_credit:0,release_authority:false
  };
 }
-export function planOpenFormComposition({labs,proposals=[],sourceIds=[],synthesis=null}={}){
+export function planOpenFormComposition({labs,proposals=[],sourceIds=[],synthesis=null,selectionId=null}={}){
  if(!Array.isArray(labs)||!Array.isArray(proposals)||proposals.length>24||
     !Array.isArray(sourceIds)||sourceIds.length>256)
   throw new TypeError('HELD_OPEN_FORM_BOUNDS');
@@ -101,10 +101,18 @@ export function planOpenFormComposition({labs,proposals=[],sourceIds=[],synthesi
  const ranked=[...examined].sort((a,b)=>b.fitness-a.fitness||a.id.localeCompare(b.id));
  const baseline=installed[0]||null;
  const eligible=ranked.filter(x=>x.status==='CANDIDATE_READY_FOR_REVIEW');
- const selected=eligible[0]||baseline;
+ // The Composer can request any audition by exact ID for a NEW Score.
+ // Selection is not acceptance: it cannot confer installation/release authority.
+ const request=selectionId===null||selectionId===undefined?'':str(selectionId,120);
+ const explicit=request?eligible.find(x=>x.id===request):null;
+ if(request&&!explicit)throw new TypeError('HELD_VISUAL_SELECTION_NOT_ELIGIBLE');
+ const selected=explicit||eligible[0]||baseline;
  return {
   schema:OPEN_FORM_SCHEMA,decision_space:'EXTENSIBLE_PROPOSED_GRAMMARS_NOT_FINITE_CHART_ENUMERATION',
   installed,proposed:ranked,selected,alternatives:[...ranked.filter(x=>x!==selected),...installed.filter(x=>x!==selected)],
+  selection:{requested_id:request||null,
+   chosen_id:selected?.id||null,explicit_request_resolved:!!explicit,
+   status:'PROPOSAL_ONLY_REQUIRES_NEW_SCORE_DIGEST_AND_HUMAN_COMPOSER'},
   dynamic_form_types:true,form_family_whitelist:null,
   accepted_renderer_code_from_task:false,installed_renderer_modules_unmodified:true,
   composition_execution:'HELD_PENDING_EXACT_SCORE_HUMAN_CLOSURE_AND_RENDERER_QUALIFICATION',
