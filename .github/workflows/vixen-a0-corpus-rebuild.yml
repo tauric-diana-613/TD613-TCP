@@ -1,0 +1,124 @@
+name: Vixen A0 Seven-Free Corpus Rebuilder
+on:
+  issue_comment:
+permissions:
+  contents: write
+  pull-requests: read
+concurrency:
+  group: vixen-a0-rebuild-pr1730
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    if: ${{ github.event.issue.pull_request && github.actor == 'tauric-diana-613' && startsWith(github.event.comment.body, '/td613-vixen-a0-rebuild ') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Verify owner command and exact PR source
+        id: gate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.comment?.body?.trim() || '';
+            const match = body.match(/^\/td613-vixen-a0-rebuild ([a-f0-9]{40})$/);
+            if (!match || context.issue.number !== 1730 || context.actor !== 'tauric-diana-613') {
+              core.setFailed('OWNER_PR_EXACT_SHA_AUTHORITY_REQUIRED'); return;
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo, pull_number: 1730
+            });
+            if (pr.state !== 'open' || pr.merged || pr.base.ref !== 'main' ||
+                pr.head.ref !== 'research/vixen-dual-estate-encyclopedia-20261108' ||
+                pr.head.sha !== match[1] ||
+                pr.head.repo.full_name !== 'tauric-diana-613/TD613-TCP') {
+              core.setFailed('VIXEN_PR_SOURCE_CHANGED_OR_SCOPE_INVALID'); return;
+            }
+            core.setOutput('source_sha', match[1]);
+      - name: Checkout exact authorized PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: research/vixen-dual-estate-encyclopedia-20261108
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: true
+      - name: Verify source, preserve comparator read-only
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ steps.gate.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git fetch origin research/em-e00-1a-comparator-wiring-20261106
+          git worktree add --detach ../em-e00-1a-comparator-wiring origin/research/em-e00-1a-comparator-wiring-20261106
+          test -d ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613/02-ORIGINALS
+          test -f scripts/build-vixen-experiment-a-corpus.mjs
+      - name: Regenerate full Vixen corpus and numeric fused index
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --version
+          node scripts/build-vixen-experiment-a-corpus.mjs --em-root ../em-e00-1a-comparator-wiring/packages/dome_world_exact/fixtures/a15-r0/EMSTD613 | tee "$RUNNER_TEMP/a0-rebuild.log"
+      - name: Verify A0 quarantine and generated index seals before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {createHash} from 'node:crypto';
+          const root='app/encyclopedia/vixen-estate/';
+          const html=fs.readFileSync('app/encyclopedia/vix-cyb.html','utf8');
+          const body=html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)?.[1];
+          if(!body)throw Error('A0_BUNDLE_MISSING');
+          const bundle=JSON.parse(body);
+          const p1Raw=fs.readFileSync(root+'corpus-experiment-a-part1.json');
+          const p2Raw=fs.readFileSync(root+'corpus-experiment-a-part2.json');
+          const indexRaw=fs.readFileSync(root+'semantic-semiotic-index.v1.json','utf8');
+          const p1=JSON.parse(p1Raw),p2=JSON.parse(p2Raw),idx=JSON.parse(indexRaw);
+          if(bundle.batch_b_files.length!==0 || p1.batch_b_files.length!==0 ||
+             idx.corpus_custody.batch_b_pending_count!==0)
+            throw Error('A0_SEVEN_HOLDOUT_RECORDS_STILL_ACTIVE');
+          const idPattern=/emb_20260911|Semantic Error Derivatives Research\.pdf/;
+          if(idPattern.test(html)||idPattern.test(indexRaw)||idPattern.test(String(p1Raw)))
+            throw Error('A0_IDENTITIES_EXPOSED_IN_RUNTIME');
+          if(idx.sources_meta.some(m=>m.source_file_id?.startsWith('emb_') || m.cust==='EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD'))
+            throw Error('A0_SOURCE_INDEX_CONTAMINATED');
+          const sha=b=>createHash('sha256').update(b).digest('hex');
+          const seals=idx.corpus_custody.shard_seals;
+          if(seals.part1.sha256!==sha(p1Raw)||seals.part2.sha256!==sha(p2Raw))
+            throw Error('A0_SHARD_SEAL_MISMATCH');
+          if(idx.corpus_custody.vixen_corpus_bundle_sha256!==sha(body))
+            throw Error('A0_BUNDLE_BINDING_MISMATCH');
+          if(Object.keys(p1.sources).length+Object.keys(p2.sources).length!==53||
+             Object.keys(p2.instruments).length!==21)
+            throw Error('A0_CORE_SOURCE_CENSUS_CHANGED');
+          console.log(JSON.stringify({
+            status:'A0_PRECOMMIT_VERIFIED',seven_active:0,
+            sources:53,instruments:21,indexed_docs:idx.docs.length,
+            index_sha256:sha(indexRaw),
+            part1_sha256:sha(p1Raw),part2_sha256:sha(p2Raw)
+          },null,2));
+          NODE
+      - name: Commit only generated Vixen A0 corpus/index artifacts
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ steps.gate.outputs.source_sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git add -- app/encyclopedia/vixen-estate/corpus-experiment-a-part1.json app/encyclopedia/vixen-estate/corpus-experiment-a-part2.json app/encyclopedia/vixen-estate/semantic-semiotic-index.v1.json
+          if git diff --cached --quiet; then
+            echo 'A0_INDEX_ALREADY_MATCHES_BASELINE'
+          else
+            test "$(git diff --cached --name-only | wc -l)" -eq 3
+            git config user.name 'TD613 source-qualified GitHub Actions'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'build(vixen): regenerate sealed A0 seven-free semantic-semiotic index'
+            git push origin HEAD:refs/heads/research/vixen-dual-estate-encyclopedia-20261108
+            echo "A0_REBUILT_COMMIT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Retain reproducibility receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-a0-regeneration-receipt
+          path: ${{ runner.temp }}/a0-rebuild.log
+          if-no-files-found: ignore
