@@ -3146,7 +3146,7 @@ body[data-view="overview"] .reading-back{display:none}
             (state.readerFullView ? 'Collapse to Focused Excerpt' : 'Read Complete Companion Text (' + rawText.length.toLocaleString('en-US') + ' chars)') +
           '</button>' +
         '</div>' +
-        '<pre class="expa-body-pre" id="expaCompanionBodyPre">' + esc(state.readerFullView ? rawText : passageExcerpt) + '</pre>';
+        '<div class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Rendered original manuscript text"></div>';
     }
 
     mountEl.innerHTML =
@@ -3158,6 +3158,26 @@ body[data-view="overview"] .reading-back{display:none}
       custodyLine +
       bodyDisplayHtml +
       renderLocalDropSection();
+
+    // The Works reader shares the exact-source, MathML-aware presentation kernel
+    // with the Salon. Preserve the original manuscript bytes and hash witness;
+    // the rendered view is an explicitly derived, safely escaped display.
+    const coutureReader = mountEl.querySelector('#expaCompanionBodyPre');
+    if (coutureReader && rawText && !restPaused) {
+      try {
+        const {mountVixenManuscript} = await import('./vixen-estate/manuscript-reader.mjs');
+        if (!mountEl.isConnected || mountEl.dataset.workId !== work.work_id) return;
+        mountVixenManuscript(coutureReader,
+          state.readerFullView ? rawText : passageExcerpt,
+          {sourceId:activeSrc.source_file_id,showRaw:state.readerFullView});
+      } catch (error) {
+        if (coutureReader.isConnected) {
+          coutureReader.textContent = state.readerFullView ? rawText : passageExcerpt;
+          coutureReader.dataset.presentation = 'source-text-fallback';
+          console.warn('Vixen manuscript renderer unavailable; displaying safe source text',error);
+        }
+      }
+    }
 
     mountEl.querySelectorAll('[data-reader-phase]').forEach((btn) => {
       btn.addEventListener('click', () => {
