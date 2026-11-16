@@ -687,3 +687,60 @@ test('SRC Atelier native engines & untypical-input projective/signature retrieva
   assert.ok(srcCand);
   assert.ok(srcCand.breakdown.src_projective_tomography >= 0.9);
 });
+
+
+test('RGI16 live fusion channels are real ablations with bound cursors, honest semiotic rungs and canonical defaults',async()=>{
+  const {normalizeFusionControls,scoreFusionChannels, boundedFusionComparisonSpec}=await import('../app/encyclopedia/vixen-estate/fusion-controls.mjs');
+  assert.throws(()=>normalizeFusionControls({channels:{lexical:false,semantic:false,semiotic:false,src:false}}),/ZERO_ACTIVE_CHANNELS/);
+  assert.throws(()=>normalizeFusionControls({channels:{semantic:'false'}}),/INVALID_CHANNEL/);
+  assert.throws(()=>normalizeFusionControls({weight_policy:'MAKE_UP_EVIDENCE'}),/UNKNOWN_WEIGHT_POLICY/);
+  const unit=scoreFusionChannels({lexical:0.8,semantic:0.6,semiotic:0.4},null,'hybrid');
+  assert.equal(+unit.active_score.toFixed(2),0.66);
+  const removed=scoreFusionChannels({lexical:0.8,semantic:0.6,semiotic:0.4},{profile:'NO_SEMIOTIC'},'hybrid');
+  assert.equal(+removed.active_score.toFixed(2),0.58);
+  assert.equal(removed.effective_contributions.semiotic,0);
+  const renormalized=scoreFusionChannels({lexical:0.8,semantic:0.6,semiotic:0.4},
+    {profile:'NO_SEMIOTIC',weight_policy:'RENORMALIZE_ACTIVE'},'hybrid');
+  assert.ok(renormalized.active_score>removed.active_score);
+  assert.throws(()=>boundedFusionComparisonSpec({query:'algedonic',profiles:Array(7).fill('FULL_FUSION')}),/PROFILES_MUST_BE_UNIQUE/);
+
+  const idx=JSON.parse(await readFile(new URL('semantic-semiotic-index.v1.json',estateDir),'utf8'));
+  const eng=new searchMod.SemanticSemioticSearchEngine(idx);
+  const query='algedonic bypass viability';
+  const full=eng.search(query,{limit:12});
+  const explicitFull=eng.search(query,{limit:12,fusion:{profile:'FULL_FUSION'}});
+  assert.equal(full.status,'SEARCH_OK');
+  assert.equal(full.fusion_state,'FULL_INDEX_FUSION');
+  assert.deepEqual(full.hits.map(h=>[h.id,h.score_total]),explicitFull.hits.map(h=>[h.id,h.score_total]));
+  const noSemi=eng.search(query,{limit:12,fusion:{profile:'NO_SEMIOTIC'}});
+  assert.equal(noSemi.status,'SEARCH_OK');
+  assert.ok(noSemi.hits.length>0);
+  assert.ok(noSemi.hits.every(h=>h.s_semi===0&&h.fusion_contributions.semiotic===0));
+  const noSemantic=eng.search(query,{limit:12,fusion:{profile:'NO_SEMANTIC'}});
+  assert.ok(noSemantic.hits.every(h=>h.s_sem===0&&h.fusion_contributions.semantic===0));
+  assert.notEqual(noSemi.pagination.cursor_token,full.pagination.cursor_token);
+  const stale=eng.search(query,{
+    offset:12,limit:12,cursorToken:full.pagination.cursor_token,fusion:{profile:'NO_SEMIOTIC'}
+  });
+  assert.equal(stale.status,'CURSOR_MISMATCH');
+  assert.equal(full.empirical_replication_credit,0);
+  assert.equal(noSemi.release_authority,false);
+});
+
+test('RGI16 fusion and machine control surfaces remain co-versioned and actually linked',async()=>{
+  const page=await readFile(vixHtmlUrl,'utf8');
+  const {readFileSync}=await import('node:fs');
+  const podManifest=JSON.parse(readFileSync(new URL('../app/encyclopedia/reference/podium/manifest.json',import.meta.url),'utf8'));
+  assert.ok(page.includes('id="vixenFusionConsole"'));
+  for(const channel of ['lexical','semantic','semiotic','src']){
+    assert.ok(page.includes('data-fusion-channel="'+channel+'"'));
+  }
+  for(const id of ['globalFusionWeightPolicy','globalFusionReadout','globalFusionCopyTask',
+    'globalFusionCompare','globalFusionTaskPreview'])assert.ok(page.includes('id="'+id+'"'));
+  assert.ok(page.includes('fusion:currentVixenFusionControls()'));
+  assert.ok(page.includes('vixen.fusion.compare'));
+  assert.ok(page.includes('vixen.fusion.search'));
+  assert.equal(podManifest.routes.length,16);
+  assert.equal(podManifest.aix_conducting.semantic_semiotic_search_integration.fusion_controls.channels.length,4);
+  assert.match(page,/fusion-console\\.css/);
+});
