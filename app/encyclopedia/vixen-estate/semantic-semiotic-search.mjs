@@ -890,7 +890,7 @@ export class SemanticSemioticSearchEngine {
       clusters: countMap((d) => (this.sourcesMeta[d.ci]?.cluster || 'UNCLUSTERED')),
       custody_statuses: countMap((d) => (this.sourcesMeta[d.ci]?.cust || 'UNKNOWN')),
       appledouble_quarantined_c4: this.index.corpus_custody?.appledouble_quarantined_c4 || 33,
-      batch_b_pending_count: this.index.corpus_custody?.batch_b_pending_count || 7,
+      batch_b_pending_count: this.index.corpus_custody?.batch_b_pending_count ?? 0,
       manifestation_count_invariant: [32, 40],
       empirical_replication_credit: 0,
       human_closure_required: true,
