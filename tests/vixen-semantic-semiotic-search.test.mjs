@@ -738,3 +738,19 @@ test('RGI16 fusion and machine control surfaces remain co-versioned and actually
   assert.equal(podManifest.aix_conducting.semantic_semiotic_search_integration.fusion_controls.channels.length,4);
   assert.ok(page.includes('fusion-console.css'));
 });
+
+
+test('A0 full-index constructor refuses silently reintroduced prospective corpus records',async()=>{
+  const idx=JSON.parse(await readFile(new URL('semantic-semiotic-index.v1.json',estateDir),'utf8'));
+  assert.equal(idx.corpus_custody.batch_b_pending_count,0);
+  assert.equal(idx.docs.length,1086,'source-first frozen A0 document census');
+  assert.equal(idx.sources_meta.length,138,'source-first frozen A0 metadata census');
+  const badCount={...idx,corpus_custody:{...idx.corpus_custody,batch_b_pending_count:1}};
+  assert.throws(()=>new searchMod.SemanticSemioticSearchEngine(badCount),
+    /VIXEN_A0_PROSPECTIVE_CORPUS_NOT_ADMITTED/);
+  const marker=idx.semiotic_taxonomy.unit_kinds.indexOf('prospective_batch_b');
+  assert.ok(marker>=0);
+  const badDocs={...idx,docs:[...idx.docs,{id:'synthetic-inadmissible',uk:marker}]};
+  assert.throws(()=>new searchMod.SemanticSemioticSearchEngine(badDocs),
+    /VIXEN_A0_PROSPECTIVE_CORPUS_NOT_ADMITTED/);
+});
