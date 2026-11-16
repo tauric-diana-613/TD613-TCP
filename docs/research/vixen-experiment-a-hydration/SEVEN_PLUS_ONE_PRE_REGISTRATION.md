@@ -52,6 +52,22 @@ Measure separately:
 
 **Outcome requirement:** produce a typed score breakdown separating title/metadata prior, body-evidence support, body-evidence contradiction, uncertainty, and purely computational diagnostics. If any of these axes are unavailable in the current engine, mark that axis **UNIMPLEMENTED** rather than substituting an LLM-generated interpretation or forcing a change. This test applies to the recovered seven-source condition and the prospectively blind eighth without leaking either into the A0 baseline.
 
+## 3B. Semantic-semiotic **fusion** instrumentation and counterfactuals
+
+The Vixen semantic-semiotic engine has three real scoring channels, **not** a semantic-only retrieval model. The current standard hybrid mode combines lexical BM25F (0.50), hashed-Jacobi SVD semantic similarity (0.30), and structured semiotic affinity (0.20), with bounded additive bonuses. Alternative lexical/phrase/exact and SRC-conditioned query regimes have different weights and gates. The initial metadata-only inline fallback explicitly sets semantic and semiotic scores to zero; label it **FALLBACK_NOT_FUSION**, and do not include it in claims about full-engine semiotic competence.
+
+The semiotic channel computes query-profile matches against S/W/A/P control planes, cluster identity, work and protocol identity, and a finite tag taxonomy, with bounded motif/analogy/mechanism candidate ceilings. These are **index/query structural alignments**, not by themselves human-level interpretation of a complete text. A 'MECHANISM_CANDIDATE' retrieval rung conveys search eligibility only, never proof of a mechanism or authorship.
+
+Required fixed-query measurements for A0, A1, A2, and both title/body counterfactual suites:
+
+- Record every hit's `s_lex`, `s_sem`, `s_semi`, `s_src_proj`, `s_src_sig`, `score_total`, `highest_rung`, `semiotic_tags`, `plane_vec`, `why`, source-id and passage offsets, along with query/mode and the exact weight vector in `src_conditioning`.
+- Compare **fusion** against lexical-only, semantic-ablated, and semiotic-ablated regimes without modifying the immutable A0 artifact; conduct ablations in independently labeled, ephemeral assay runs, not by silently changing the production formula or deleting a corpus axis.
+- Challenge the semiotic tagger with matching technical terms inside allegory/irony/negation, with a title that implies one mechanism while the entire manuscript argues another, and with two distinct interpretations supported by nonidentical passage sets. Measure false analogy, false mechanism rungs, polarity and evidence-credit errors.
+- Track whether new body evidence updates semiotic taxonomy and document-plane vectors **at all**, whether those updates are reflected in precomputed index seals, and whether downstream synthesis and Salon score inputs receive the new features. A change to retrieval hit ranking alone is not demonstrated synthesis hydration.
+- Preserve invariances in pure SVD/clock/geometry scores unless their actual numerical inputs change. Require a typed, source-grounded provenance link for every claimed interpretation and downstream candidate-score delta.
+
+**Pass/fail distinction:** FUSION_IMPLEMENTED means the independently scored channels and weights operate according to code; WHOLE_MANUSCRIPT_SEMIOTIC_INTERPRETATION_WITNESSED requires full-text passage-based, contrastive evidence and counterexamples, which the existing rule/tag-affinity logic alone does not establish.
+
 ## 4. Release and custody gates
 
 - **No active release of the seven-body bundle in A0.** Do not embed its contents, metadata identities, names, or hashes in public application files or in test input data.
