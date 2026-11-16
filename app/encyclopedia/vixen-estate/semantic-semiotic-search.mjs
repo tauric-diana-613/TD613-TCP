@@ -1489,7 +1489,6 @@ export class SemanticSemioticSearchEngine {
         semiotic_tags: tags,
         highest_rung: highestRung,
         score_total: +total.toFixed(4),
-        fusion_controls:fusionControls,
         fusion_contributions:fusionScore.effective_contributions,
         fusion_normalization_factor:fusionScore.normalization_factor,
         fusion_active_weight_sum:fusionScore.active_weight_sum,
