@@ -293,7 +293,7 @@ export async function mountVixenElectricFoundry({
  const score=node('div','ef-score');
  const stage=node('section','ef-stage');
  stage.setAttribute('aria-label','Computed chrome-light field and operator probe');
- const canvas=node('canvas','ef-canvas');
+ let canvas=node('canvas','ef-canvas');
  canvas.id='vixenElectricField';
  canvas.setAttribute('aria-label','Interactive calculated Vixen mathematical optical field; move or click to probe a model coordinate');
  canvas.setAttribute('role','img');
@@ -635,6 +635,7 @@ export async function mountVixenElectricFoundry({
    const clone=canvas.cloneNode(false);
    clone.id='vixenElectricField';
    canvas.replaceWith(clone);
+   canvas=clone;
    state.canvas=clone;
    state.renderer=await createFoundryRenderer(clone,{preferGPU:false});
   }
@@ -646,6 +647,14 @@ export async function mountVixenElectricFoundry({
   if(!section?.hidden){paint();indicate('BOOT');start();}
   else{state.probe=probe();state.phase='PREWARMED';}
   window.dispatchEvent(new CustomEvent('vixen-electric-foundry-ready',{detail:status()}));
+  }catch(error){
+   // Recoverable hidden prewarm failure must never permanently brick the room.
+   state.renderer?.dispose?.();
+   state.renderer=null;
+   state.initialized=false;
+   log('FOUNDRY_INITIALIZATION_HELD',{reason:String(error)});
+   throw error;
+  }
  }
  // Runtime starts only while its Opera is the active stage. A source-verified
  // mathematical instrument may exist without a continuous hidden animation.
@@ -676,7 +685,18 @@ export async function mountVixenElectricFoundry({
  else {
   // Prepare once during idle rather than allocating a WebGL renderer on a
   // visitor's first Observatory click. Still/hidden stages do not animate.
-  const prewarm=()=>{if(!state.initialized)void initialize();};
+  const prewarm=()=>{
+   if(state.initialized)return;
+   void initialize().catch(error=>{
+    // A hidden first attempt is an optimization, not a release condition.
+    if(section&&!section.hidden){
+     void initialize().catch(visibleError=>{
+      host.dataset.previewHold='RENDERER_UNAVAILABLE';
+      console.warn('VIXEN_FOUNDRY_VISIBLE_RETRY_HELD',visibleError);
+     });
+    }else console.warn('VIXEN_FOUNDRY_PREWARM_DEFERRED',error);
+   });
+  };
   if(typeof window.requestIdleCallback==='function')
    window.requestIdleCallback(prewarm,{timeout:1700});
   else setTimeout(prewarm,240);
