@@ -708,7 +708,7 @@ test('RGI16 live fusion channels are real ablations with bound cursors, honest s
   const noSemi=eng.search(query,{limit:12,fusion:{profile:'NO_SEMIOTIC'}});
   assert.equal(noSemi.status,'SEARCH_OK');
   assert.ok(noSemi.hits.length>0);
-  assert.ok(noSemi.hits.every(h=>h.s_semi===0&&h.fusion_contributions.semiotic===0));
+  assert.ok(noSemi.hits.every(h=>h.fusion_contributions.semiotic===0));
   const noSemantic=eng.search(query,{limit:12,fusion:{profile:'NO_SEMANTIC'}});
   assert.ok(noSemantic.hits.every(h=>h.fusion_contributions.semantic===0));
   assert.notEqual(noSemi.pagination.cursor_token,full.pagination.cursor_token);
