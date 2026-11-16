@@ -21,3 +21,8 @@ test('Restore-original control is visible only when an authorized preview is sta
  assert.match(foundry,/composerRevert\.hidden=!active/);
  assert.match(foundry,/No canonical change/);
 });
+
+test('a failed optical measurement revokes the preview instead of leaving an unqualified image',()=>{
+ assert.match(foundry,/state\.composerDeck\.revert\('HELD_OPTICAL_ASSAY_FAILED'\)/);
+ assert.match(foundry,/canonical_mutation:false,release_authority:false/);
+});

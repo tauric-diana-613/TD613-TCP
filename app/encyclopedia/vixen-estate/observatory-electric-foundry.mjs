@@ -671,9 +671,16 @@ export async function mountVixenElectricFoundry({
   if(result.status!=='SUPPORTED_PREVIEW_ONLY')return result;
   paintRoomMesh(true);
   // Optical audit ≠ displayed-pixel fidelity proof or empirical acquisition.
-  const optical_assay=measureObservatoryOpticalInstrument({
-   width:360,height:300,dpr:1,time:state.simPhase,sourceIds});
-  return Object.freeze({...result,optical_assay,live_site_canonical_mutation:false});
+  try{
+   const optical_assay=measureObservatoryOpticalInstrument({
+    width:360,height:300,dpr:1,time:state.simPhase,sourceIds});
+   return Object.freeze({...result,optical_assay,live_site_canonical_mutation:false});
+  }catch(_){
+   state.composerDeck.revert('HELD_OPTICAL_ASSAY_FAILED');
+   updateComposerReview();paintRoomMesh(true);
+   return Object.freeze({status:'HELD_OPTICAL_ASSAY_FAILED',
+    preview_only:true,canonical_mutation:false,release_authority:false});
+  }
  };
  const api=Object.freeze({
   mounted:true,source_estate:'EMSTD613',installed_flagships:HEROES.slice(),
