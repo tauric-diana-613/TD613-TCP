@@ -22,7 +22,7 @@ const EXPECTED_ROOMS=Object.freeze({
  protocols:'#view-protocols #protocolsLexiconLayout',
  holds:'#view-holds .holds-grid',
  collection:'#view-collection #vixenSynthesisSalon .vs-head',
- reference:'#view-reference #vixenReferenceChamber'
+ reference:'#view-reference #vixenReferenceChamber .vxe-heading'
 });
 const MODULES=Object.freeze([
  './manuscript-reader.mjs',
@@ -63,6 +63,7 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
  if(win.VIXEN_OPERA_ARRIVAL?.mounted)return win.VIXEN_OPERA_ARRIVAL;
  const veil=doc.getElementById('vixEntryVeil');
  let done=false,reason='INITIALIZING',resources=null,materialized=null;
+ let coverPrepared=false,fontsPrepared=false;
  const start=win.performance?.now?.()||0;
  const report=()=>Object.freeze({
   ...inspectOperaArrival(doc,win),state:done?'REVEALED':'PREPARING',
@@ -98,7 +99,12 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
  }).catch(()=>{materialized='HELD_NONCRITICAL_SOURCE';});
  // Predecode the approved first-image asset; no duplicate image requests.
  const cover=doc.querySelector(EXPECTED_ROOMS.overview);
- const coverDecode=cover?.decode?.().catch(()=>null)||Promise.resolve();
+ const coverDecode=cover?.decode?.().then(
+  ()=>{coverPrepared=true;},()=>{coverPrepared=Boolean(cover.complete&&cover.naturalWidth>0);}
+ )||Promise.resolve().then(()=>{coverPrepared=true;});
+ const fontWarm=doc.fonts?.ready?.then(
+  ()=>{fontsPrepared=true;},()=>{fontsPrepared=true;}
+ )||Promise.resolve().then(()=>{fontsPrepared=true;});
  // No arbitrary minimum multi-second delay. Show only when rooms, mesh, hero
  // and the first needed source-owned engines are ready; fail open at ceiling.
  const deadline=win.setTimeout(()=>finish('BOUNDED_FAIL_OPEN'),3100);
@@ -106,12 +112,12 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
   if(done)return;
   const status=inspectOperaArrival(doc,win);
   if(status.critical_presentation_ready&&resources&&
-     materialized!==null){
+     materialized!==null&&coverPrepared&&fontsPrepared){
    await oneFrame(win);
    if(!done){win.clearTimeout(deadline);finish('EIGHT_ROOMS_PREPARED');}
   }else win.setTimeout(check,65);
  };
- void Promise.allSettled([preload,deep,coverDecode]).then(()=>{if(!done)check();});
+ void Promise.allSettled([preload,deep,coverDecode,fontWarm]).then(()=>{if(!done)check();});
  // Ensure startup can reveal the page even when remote research hydration
  // has a long wait; the interval starts before those asynchronous fetches.
  win.setTimeout(check,40);
