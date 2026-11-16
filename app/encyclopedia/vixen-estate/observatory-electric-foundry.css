@@ -633,3 +633,19 @@
 @media(max-width:740px){
  #vixenElectricFoundry .ef-composer-preview{min-height:350px}
 }
+
+/* RGI22 · Human-visible, reversible exhibit preview. Original Foundry stays mounted. */
+#vixenElectricFoundry .ef-composer-review{
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
+ background:#121b22;color:#fce8ef;border:1px solid rgba(255,231,202,.36);
+ padding:9px 13px;font:600 10.5px/1.45 ui-monospace,monospace;
+ letter-spacing:.045em;max-width:100%;flex-wrap:wrap;
+}
+#vixenElectricFoundry .ef-composer-review[data-preview-state="PREVIEW_REVIEW"]{
+ border-color:#fff2a9;color:#fff2dc;
+}
+#vixenElectricFoundry .ef-composer-restore{
+ background:#fff2a9;color:#111923;border:1px solid #ff91af;cursor:pointer;
+ min-height:36px;padding:6px 14px;font:700 11px/1.2 system-ui,sans-serif;
+}
+#vixenElectricFoundry .ef-composer-restore[hidden]{display:none!important}
