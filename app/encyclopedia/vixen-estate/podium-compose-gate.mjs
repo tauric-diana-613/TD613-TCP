@@ -29,6 +29,51 @@ async function digest(data){
  const hash=await globalThis.crypto.subtle.digest('SHA-256',bytes);
  return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
+async function verifyNativeComputationalScore(score,revision){
+ if(!plain(score)||score.schema!=='td613.vixen.podium.composer-score/v1'||
+    score.score_scope!=='USER_SUBMITTED_SYNTHESIS_NOT_DEVELOPER_EDIT'||
+    score.source_revision_declared!==revision||!SHA.test(score.score_sha256||''))
+  return 'COMPUTATIONAL_SCORE_IDENTITY_REQUIRED';
+ const copy=clone(score);
+ const original=copy.score_sha256;
+ delete copy.score_sha256;
+ delete copy.human_readable_score;
+ if(!globalThis.crypto?.subtle)return 'CRYPTOGRAPHIC_VERIFIER_UNAVAILABLE';
+ const bytes=new TextEncoder().encode(JSON.stringify(copy));
+ const hash=await globalThis.crypto.subtle.digest('SHA-256',bytes);
+ const actual=[...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');
+ return actual===original?null:'COMPUTATIONAL_SCORE_DIGEST_INVALID';
+}
+function consequenceMatch(changes,score){
+ const problems=[];
+ const expected=score.source_census?.source_changes;
+ if(!Array.isArray(expected))return ['COMPUTATIONAL_SOURCE_CENSUS_REQUIRED'];
+ const kind={ADMIT:'CORPUS_ADD',EXCLUDE:'CORPUS_EXCLUDE',REPLACE:'CORPUS_REPLACE',RECLASSIFY:'CORPUS_RECLASSIFY'};
+ const supplied=changes.filter(c=>typeof c?.type==='string'&&c.type.startsWith('CORPUS_'));
+ const seen=new Set();
+ for(const item of expected){
+  const key=kind[item.action]+'|'+item.source_file_id;
+  if(seen.has(key))problems.push('DUPLICATE_COMPUTED_SOURCE_ACTION');
+  seen.add(key);
+  if(!supplied.some(c=>c.type===kind[item.action]&&c.source_ids?.length===1&&
+     c.source_ids[0]===item.source_file_id))
+   problems.push('UNSTAGED_COMPUTED_CORPUS_CONSEQUENCE:'+key);
+ }
+ for(const item of supplied){
+  const key=item.type+'|'+(item.source_ids?.length===1?item.source_ids[0]:'INVALID_MULTISOURCE');
+  if(!seen.has(key))problems.push('UNSCORED_CORPUS_CONSEQUENCE:'+key);
+ }
+ const selected=score.visuals?.selected;
+ if(selected?.kind==='OPEN_FORM_PROPOSAL'){
+  if(!changes.some(c=>c.type==='VISUAL_FORM_CHANGE'&&c.visual?.form_id===selected.id))
+   problems.push('UNSTAGED_COMPUTED_VISUAL_FORM:'+selected.id);
+ }
+ for(const item of changes.filter(c=>c.type==='VISUAL_FORM_CHANGE')){
+  if(item.visual?.form_id!==selected?.id)
+   problems.push('UNSCORED_VISUAL_FORM:'+String(item.visual?.form_id));
+ }
+ return problems;
+}
 function nonce(){
  if(!globalThis.crypto?.getRandomValues)throw Error('HELD_CRYPTOGRAPHIC_NONCE_UNAVAILABLE');
  const bytes=new Uint8Array(24);globalThis.crypto.getRandomValues(bytes);
@@ -62,6 +107,13 @@ export function createPodiumComposeGate({sourceRevision='UNVERIFIED',verifyHuman
   if(!plain(materials)||!Array.isArray(materials.changes)||!materials.changes.length||materials.changes.length>24)
    return fail('HELD_COMPOSITION_CHANGES_REQUIRED',['1–24 exact proposed changes']);
   const missing=materials.changes.flatMap((c,i)=>checkChange(c,i));
+  const computed=materials.computed_score;
+  const computedError=await verifyNativeComputationalScore(computed,sourceRevision);
+  if(computedError)missing.push(computedError);
+  if(!SHA.test(materials.computation_score_digest||'')||
+    materials.computation_score_digest!==computed?.score_sha256)
+   missing.push('COMPUTATIONAL_SCORE_DIGEST_BINDING_REQUIRED');
+  if(!computedError)missing.push(...consequenceMatch(materials.changes,computed));
   if(!bounded(materials.question,700))missing.push('QUESTION_REQUIRED');
   if(!bounded(materials.operator_boundary,350))missing.push('OPERATOR_BOUNDARY_REQUIRED');
   if(!bounded(materials.source_set_revision,90))missing.push('SOURCE_SET_REVISION_REQUIRED');
@@ -71,7 +123,10 @@ export function createPodiumComposeGate({sourceRevision='UNVERIFIED',verifyHuman
    schema:'td613.vixen.podium.composition-score/v1',version:1,
    source_revision:sourceRevision,source_set_revision:bounded(materials.source_set_revision,90),
    question:bounded(materials.question,700),operator_boundary:bounded(materials.operator_boundary,350),
-   changes:clone(materials.changes),requested_scope:'LOCAL_RESEARCH_COMPOSITION_PREVIEW',
+   changes:clone(materials.changes),
+   computation_score_digest:computed.score_sha256,
+   computational_score:clone(computed),
+   requested_scope:'LOCAL_RESEARCH_COMPOSITION_PREVIEW',
    corpus_admission_authority:false,scientific_promotion_authority:false,
    experiment_b_flight:'HELD',release_authority:false
   };
@@ -80,6 +135,13 @@ export function createPodiumComposeGate({sourceRevision='UNVERIFIED',verifyHuman
   state.request=null;state.approval=null;state.composed=false;state.seq++;
   return Object.freeze({schema:COMPOSE_GATE_SCHEMA,status:'HELD',state:COMPOSE_STATES.STAGED,
    score:copyScore(),needs:'EXPLICIT_INDEPENDENT_HUMAN_AUTHORIZATION',release_authority:false});
+ }
+ function invalidate(reason='COMPUTATIONAL_SCORE_CHANGED'){
+  const previous=state.score?.score_digest||null;
+  state.score=null;state.request=null;state.approval=null;state.composed=false;state.seq++;
+  return Object.freeze({schema:COMPOSE_GATE_SCHEMA,status:'HELD',
+   state:'HELD_PREVIOUS_COMPOSITION_INVALIDATED',reason,previous_digest:previous,
+   release_authority:false,scientific_promotion_authority:false});
  }
  function inspect(){
   return Object.freeze({schema:COMPOSE_GATE_SCHEMA,status:'HELD',
@@ -144,5 +206,5 @@ export function createPodiumComposeGate({sourceRevision='UNVERIFIED',verifyHuman
    corpus_writes:0,index_writes:0,deployments:0,release_authority:false
   });
  }
- return Object.freeze({stage,inspect,requestCompose,acceptHumanApproval,compose});
+ return Object.freeze({stage,inspect,invalidate,requestCompose,acceptHumanApproval,compose});
 }

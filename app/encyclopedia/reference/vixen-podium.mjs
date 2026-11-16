@@ -278,6 +278,9 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
    }
    if(intent==='podium.score'){
     const score=await makePodiumScore(corpus,params,sourceRevision);
+    if(latestScore?.score_sha256!==score.score_sha256){
+     composeGate.invalidate('NEW_COMPUTATIONAL_SCORE_INVALIDATES_PREVIOUS_HUMAN_CHALLENGE');
+    }
     latestScore=score;
     event('COMPUTATIONAL_SCORE_PREPARED',{digest:score.score_sha256,change_count:score.changes_count,
      visual_form:score.visuals.selected.id});
@@ -289,21 +292,29 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
     if(params.phase==='stage'){
      if(!latestScore||params.score_sha256!==latestScore.score_sha256)
       return receipt(intent,'HELD',rejection('HELD_CURRENT_COMPUTATIONAL_SCORE_REQUIRED','Review and bind the exact computational Score digest'));
-     const held=await composeGate.stage({...params.materials,computation_score_digest:latestScore.score_sha256});
+     const held=await composeGate.stage({...params.materials,
+      computation_score_digest:latestScore.score_sha256,computed_score:latestScore});
      event('COMPOSE_SCORE_STAGE_ATTEMPT',{digest:latestScore.score_sha256,state:held.state});
      return receipt(intent,'HELD',held);
     }
     if(params.phase==='request'){
+     if(!latestScore||composeGate.inspect().score?.computation_score_digest!==latestScore.score_sha256)
+      return receipt(intent,'HELD',rejection('HELD_CURRENT_COMPUTATIONAL_SCORE_REQUIRED','Previously staged Score is stale or unavailable'));
      const held=await composeGate.requestCompose({score_digest:params.score_digest});
      event('COMPOSE_HUMAN_AUTHORIZATION_REQUESTED',{state:held.state,release_authority:false});
      return receipt(intent,'HELD',held);
     }
     if(params.phase==='compose'){
+     if(!latestScore||composeGate.inspect().score?.computation_score_digest!==latestScore.score_sha256)
+      return receipt(intent,'HELD',rejection('HELD_CURRENT_COMPUTATIONAL_SCORE_REQUIRED','Re-score requires a new independent human review'));
      const result=composeGate.compose({score_digest:params.score_digest});
      event('COMPOSE_PREVIEW_ATTEMPT',{state:result.state,release_authority:false});
      return receipt(intent,result.status==='SUPPORTED'?'SUPPORTED':'HELD',result);
     }
     const staged=await reachPodiumComposeGate(corpus,params,sourceRevision);
+    if(latestScore?.score_sha256!==staged.score_sha256)
+     composeGate.invalidate('NEW_COMPUTATIONAL_SCORE_INVALIDATES_PREVIOUS_HUMAN_CHALLENGE');
+    latestScore=staged.score;
     event('COMPOSE_STOPPED_FOR_HUMAN_CLOSURE',{digest:staged.score_sha256,canonical_write:false,
      source_mutation:false,authorization:'NOT_RECEIVED'});
     return receipt(intent,'HELD',staged);
