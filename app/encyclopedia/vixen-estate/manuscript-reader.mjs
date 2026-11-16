@@ -6,7 +6,7 @@
  */
 const INLINE_TOKENS = /(\\\([\s\S]+?\\\)|(?<!\\)\$(?!\$)[^\n$]+?(?<!\\)\$|\*\*[^*\n]+\*\*|\*[^*\n]+\*|\x60[^\x60\n]+\x60)/g;
 const SECTION = /^#{1,6}\s+(.+)$/;
-const FENCE = /^\s*(``{3,}|~{3,})(.*)$/;
+const FENCE = /^\s*(`{3,}|~{3,})(.*)$/;
 
 function mathNode(doc, expression, display) {
   const holder = doc.createElement(display ? 'div' : 'span');
@@ -101,7 +101,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw
   };
   for (const line of lines) {
     if (fence) {
-      if (/^\s*(?:``{3,}|~{3,})\s*$/.test(line)) { closeFence(); }
+      if (/^\s*(?:`{3,}|~{3,})\s*$/.test(line)) { closeFence(); }
       else fence.lines.push(line);
       continue;
     }
