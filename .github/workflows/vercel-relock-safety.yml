@@ -749,9 +749,18 @@ jobs:
           vercel link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE"
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
-          const link = JSON.parse(fs.readFileSync('.vercel/project.json', 'utf8'));
-          if (link.orgId !== process.env.VERCEL_ORG_ID || link.projectId !== process.env.VERCEL_PROJECT_ID) {
-            throw new Error('Vercel link resolved to an unexpected owner or project.');
+          // Vercel CLI 65.16.0 may link directly from the two environment IDs
+          // without writing .vercel/project.json. Validate both pinned IDs,
+          // and validate the local link file if the CLI produced one.
+          if (process.env.VERCEL_ORG_ID !== 'team_pX5L7AFivMzMU1lH28Y6RIhX' ||
+              process.env.VERCEL_PROJECT_ID !== 'prj_Zb6g9tqAr5iJSAFWGU4u4lof6oF7') {
+            throw new Error('Unexpected Vercel environment project or team ID.');
+          }
+          if (fs.existsSync('.vercel/project.json')) {
+            const link = JSON.parse(fs.readFileSync('.vercel/project.json', 'utf8'));
+            if (link.orgId !== process.env.VERCEL_ORG_ID || link.projectId !== process.env.VERCEL_PROJECT_ID) {
+              throw new Error('Vercel link resolved to an unexpected owner or project.');
+            }
           }
           NODE
           vercel project inspect "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" >/dev/null
