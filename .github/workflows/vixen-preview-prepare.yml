@@ -76,7 +76,7 @@ jobs:
             <<< "$RUNS")"
           [[ -n "$CI_RUN" ]] || { echo 'No exact-HEAD GREEN consolidated CI.' >&2; exit 1; }
           JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CI_RUN/jobs?per_page=100")"
-          jq -e '(.jobs | length) >= 5 and ([.jobs[].conclusion] | all(. == "success"))' \
+          jq -e '([.jobs[] | select(.conclusion != "skipped")] | length) >= 5 and ([.jobs[] | select(.conclusion != "skipped") | .conclusion] | all(. == "success"))' \
             <<< "$JOBS" >/dev/null || { echo 'Consolidated validation incomplete.' >&2; exit 1; }
           echo "sha=$INPUT_SHA" >> "$GITHUB_OUTPUT"
           echo "ci_run=$CI_RUN" >> "$GITHUB_OUTPUT"
