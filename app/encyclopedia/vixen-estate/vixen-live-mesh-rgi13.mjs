@@ -192,7 +192,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   if(layoutDirty)readExclusions(true);
   const shared=stageOwned()&&frame?.view===view()?frame:null;
   // A parked optical room cannot synthesize a competing autonomous phase.
-  if(stageOwned()&&!shared){ctx.clearRect(0,0,w,h);canvas.dataset.animation='WAITING_FOR_HOST';return;}
+  if(stageOwned()&&!shared){canvas.dataset.animation='AWAITING_HOST_HELD_LAST_FRAME';return;}
   // A source-bound machine preview may condition the room-wide optical cloth.
   // The field is a visual projection, never a custody/authorization grant.
   const supplied=shared?.opticalField||
@@ -248,8 +248,20 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    else{draw(null);lastPaint=win.performance.now();}
   });
  };
+ // Window scrolling must not synchronously invalidate hundreds of exclusion
+ // rectangles on each wheel tick. Nested manuscript/panel scrolling never
+ // changes the outer visible cloth geometry. Keep single active mesh canvas.
+ let lastOuterScrollPaint=-Infinity;
+ const onOuterScroll=(event)=>{
+  if(event.target&&event.target!==doc&&event.target!==doc.documentElement&&event.target!==win)return;
+  const now=win.performance.now();
+  if(now-lastOuterScrollPaint<125)return;
+  lastOuterScrollPaint=now;
+  onLayout();
+ };
  win.addEventListener('pointermove',onPointer,{passive:true});
- win.addEventListener('resize',onLayout,{passive:true});win.addEventListener('scroll',onLayout,{passive:true,capture:true});
+ win.addEventListener('resize',onLayout,{passive:true});
+ win.addEventListener('scroll',onOuterScroll,{passive:true,capture:true});
  doc.addEventListener('visibilitychange',changed);doc.addEventListener('vixen:motionchange',changed);
  win.addEventListener('vixen:motionchange',changed);mq.addEventListener('change',changed);
  schedule();
@@ -278,7 +290,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   },
   dispose(){disposed=true;cancel();if(layoutRaf)win.cancelAnimationFrame(layoutRaf);layoutRaf=0;mutation.disconnect();canvas.remove();
    win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
-   win.removeEventListener('scroll',onLayout,true);doc.removeEventListener('visibilitychange',changed);
+   win.removeEventListener('scroll',onOuterScroll,true);doc.removeEventListener('visibilitychange',changed);
    doc.removeEventListener('vixen:motionchange',changed);win.removeEventListener('vixen:motionchange',changed);
    mq.removeEventListener('change',changed);}
  });
