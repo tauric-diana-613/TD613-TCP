@@ -1,0 +1,192 @@
+/* RGI18 · Operator redpen: Vixen Opera presentation only.
+ * Fabrics: black mercury chrome, opal porcelain, electric magenta, pale silver.
+ * Never substitute decorative pictographs for couture; no purple/plum wash.
+ * OPERAHOUSE ≠ OPERA ≠ PERFORMER · No scientific/corpus authority.
+ */
+/* I — Source-identical reading with repaired PDF-derived lineation in JS. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-couture-reader.vix-manuscript {
+ display:block!important;box-sizing:border-box!important;width:100%!important;min-width:0!important;
+ max-width:100%!important;text-align:left!important;white-space:normal!important;
+ word-break:normal!important;overflow-wrap:break-word!important;
+ color:#23272a!important;background:#fffaf7!important;
+ font:400 clamp(16px,1.18vw,19px)/1.74 "Iowan Old Style",Georgia,serif!important;
+ letter-spacing:-.012em!important;padding:clamp(24px,4vw,58px)!important;
+ border:1px solid #d3b6bf!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reader-paragraph {
+ display:block!important;width:100%!important;max-width:76ch!important;
+ margin:0 0 1.06em!important;padding:0!important;font:inherit!important;
+ white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+ text-wrap:pretty!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reader-heading {
+ max-width:35ch;text-wrap:balance;word-break:normal!important;color:#11171a!important;
+ letter-spacing:-.034em!important;
+}
+/* II — Evident operational affordance, retaining existing toolbar positions. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar .ef-inspector-switch {
+ position:relative!important;display:inline-flex!important;align-items:center!important;
+ justify-content:space-between!important;gap:12px!important;min-height:46px!important;
+ min-width:174px!important;padding:10px 14px!important;white-space:nowrap!important;
+ color:#11191c!important;
+ background:linear-gradient(114deg,#fffefa 0%,#eef7f9 37%,#cbd5da 74%,#fff5f5 100%)!important;
+ border:1.5px solid #fbfcfd!important;
+ box-shadow:inset 0 1px #fff,inset 0 -2px #97a7ad,0 0 0 1px #334147,0 5px 15px #0008,0 0 13px #fff6!important;
+ font:800 10.5px/1.2 ui-monospace,Consolas,monospace!important;letter-spacing:.09em!important;
+ transition:filter .18s ease,box-shadow .18s ease!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar .ef-inspector-switch::after {
+ content:"⊕";font:600 21px/1 Georgia,serif;color:#cb146d;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar .ef-inspector-switch[aria-expanded="true"]::after {content:"⊖";}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar .ef-inspector-switch:hover {
+ filter:brightness(1.09);box-shadow:inset 0 1px #fff,0 0 0 2px #fff,0 0 23px #fffa,0 8px 19px #0009!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar .ef-inspector-switch:focus-visible {outline:3px solid #f9ec7c!important;outline-offset:3px!important;}
+/* III — The instrument rail title is engine-fed, never static 'The Score'. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker::before {
+ content:attr(data-synthesis-headline)!important;display:block!important;
+ max-width:27ch;text-wrap:balance;overflow-wrap:break-word;
+ font:italic 400 clamp(24px,2.75vw,39px)/1.09 Didot,"Bodoni MT",Georgia,serif!important;
+ text-transform:none!important;letter-spacing:-.045em!important;color:#192126!important;
+}
+/* IV–V — A pale-silver luminous selection cuff + right-aligned magenta index.
+ * Halo motion is sampled from the existing Foundry clock, no additional RAF. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab {
+ position:relative!important;isolation:isolate!important;cursor:pointer!important;
+ padding-right:34px!important;overflow:visible!important;
+ transition:background .17s ease,filter .17s ease!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab::after {
+ content:"◀";position:absolute;right:12px;top:50%;transform:translateY(-50%);
+ color:#d41680;font:700 14px/1 "Segoe UI Symbol",Arial,sans-serif;opacity:.8;z-index:5;
+ pointer-events:none;filter:drop-shadow(0 0 3px #ed459b66);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:hover::after,
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:focus-visible::after {opacity:1;color:#fd168e;}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"] {
+ z-index:4!important;color:#171c20!important;
+ background:linear-gradient(110deg,#fffcf7 0%,#ffe7e6 34%,#ffd7e7 80%,#ffeff1 100%)!important;
+ border:2px solid #faffff!important;outline:1px solid #b9c8cf!important;outline-offset:-5px!important;
+ box-shadow:0 0 0 3px #e6f3fa,0 0 11px 4px #f9fdffec,
+            0 0 34px 10px #d7e9f6b0,inset 0 1px #fff,inset 0 -2px #aabcc5!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]::before {color:#df1479!important;}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-silver-lace {
+ position:absolute;inset:-7px;pointer-events:none;z-index:-1;
+ opacity:var(--vixen-silver-lux,.85);mix-blend-mode:screen;
+ background:
+  linear-gradient(90deg,transparent 14%,#f7fcfd9c 31%,transparent 43%) top/100% 2px no-repeat,
+  linear-gradient(90deg,transparent 57%,#f5ffffd0 72%,transparent 89%) bottom/100% 2px no-repeat,
+  linear-gradient(0deg,transparent 14%,#f5ffffde 42%,transparent 61%) left/2px 100% no-repeat,
+  linear-gradient(0deg,transparent 46%,#f7fcffd5 71%,transparent 94%) right/2px 100% no-repeat;
+ filter:drop-shadow(0 0 7px #e4faff) drop-shadow(0 0 11px #f4faff);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:focus-visible {outline:3px solid #f8ed7e!important;outline-offset:4px!important;}
+/* VI — Methods title as one dramatic chrome bodice, no plum cast. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols>.page-pad>.view-heading {
+ position:relative!important;isolation:isolate!important;overflow:hidden!important;
+ display:flex!important;align-items:flex-end!important;min-height:clamp(340px,34vw,470px)!important;
+ padding:clamp(30px,5vw,70px)!important;margin-bottom:25px!important;
+ background:
+  radial-gradient(ellipse 24% 100% at 98% 9%,#f8ffff27,transparent 84%),
+  radial-gradient(ellipse 37% 80% at 5% 112%,#ff458e35,transparent 74%),
+  linear-gradient(120deg,#060a0c 0%,#141b1e 40%,#293135 56%,#0b1012 77%,#050809 100%)!important;
+ border:1px solid #9eafb5!important;
+ box-shadow:0 0 0 1px #2c3a3e,inset 0 1px #fff,0 25px 62px #0007!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols>.page-pad>.view-heading::before {
+ content:"";position:absolute;inset:9px;border:1px solid #e5f3f33f;z-index:0;pointer-events:none;
+ clip-path:polygon(0 0,100% 0,100% 51%,95% 51%,95% 100%,0 100%);
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols>.page-pad>.view-heading::after {
+ content:"";position:absolute;right:-9%;bottom:-105%;width:62%;aspect-ratio:1;
+ border-radius:50%;border:1px solid #ff91af55;pointer-events:none;
+ box-shadow:0 0 0 20px #e5f7f811,0 0 0 60px #e5f7f807,0 0 45px #ff91af44;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading>div:first-child {position:relative;z-index:1;min-width:0;max-width:1050px;}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading .eyebrow {color:#f5deca!important;font-size:10px!important;letter-spacing:.14em!important;}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading h1 {
+ color:#fffef9!important;margin:24px 0 0!important;
+ font:400 clamp(55px,9vw,142px)/.88 Didot,"Bodoni MT",Georgia,serif!important;
+ letter-spacing:-.076em!important;text-wrap:balance!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading .title-annotation {
+ display:block!important;color:#ff91af!important;margin-top:21px!important;
+ font:italic 400 clamp(21px,2.3vw,32px)/1.25 Georgia,serif!important;
+ letter-spacing:-.024em!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading .intro {
+ max-width:78ch!important;color:#faf5eb!important;
+ font:400 clamp(14px,1.1vw,17px)/1.7 Georgia,serif!important;margin-top:25px!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-heading .intro code{color:#ffedb7!important;}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .view-number {
+ position:absolute!important;right:4%;top:9%;z-index:0!important;
+ opacity:1!important;color:#efffff18!important;
+ font:italic 400 clamp(110px,20vw,300px)/.85 Georgia,serif!important;
+ -webkit-text-stroke:1px #efffff42;
+}
+/* The pipeline becomes a humane three-act diagram + an inspectable law shelf. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols .vix-method-pedagogy {
+ padding:clamp(22px,3vw,42px)!important;margin-bottom:23px!important;
+ background:linear-gradient(122deg,#fffcfa,#eaf1f2 70%,#fee5ee)!important;
+ color:#1a2328!important;border:1px solid #b8c9ce!important;
+ box-shadow:0 15px 42px #0004!important;
+}
+#view-protocols .vix-method-pedagogy .vix-method-eyebrow {color:#a12d61!important;font:800 10px/1.45 ui-monospace,monospace;letter-spacing:.17em;}
+#view-protocols .vix-method-pedagogy h2 {
+ margin:11px 0 8px;color:#10181b;
+ font:italic 400 clamp(29px,3.5vw,49px)/1 Didot,"Bodoni MT",Georgia,serif;letter-spacing:-.04em;
+}
+#view-protocols .vix-method-pedagogy .vix-method-dek {color:#3d4b51;font:400 15px/1.62 Georgia,serif;max-width:74ch;margin:0 0 22px;}
+#view-protocols .vix-method-pedagogy .protocol-pipeline {
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:1px!important;
+ background:#bbcbd0;border:1px solid #a8bfc5;margin:0 0 18px!important;
+}
+#view-protocols .vix-method-pedagogy .pipeline-stage {
+ min-width:0;display:flex;flex-direction:column;gap:10px;
+ padding:23px 22px!important;color:#22323a;
+ background:linear-gradient(160deg,#fff,#edf5f6)!important;
+}
+#view-protocols .vix-method-pedagogy .pipeline-stage::before {
+ content:attr(data-sequence);color:#c21b73;font:italic 400 34px/1 Didot,Georgia,serif;
+}
+#view-protocols .vix-method-pedagogy .pipeline-stage strong {font:700 14px/1.4 system-ui,sans-serif;color:#172125;}
+#view-protocols .vix-method-pedagogy .pipeline-stage span {font:400 13px/1.62 Georgia,serif;color:#3f5055;}
+#view-protocols .vix-method-pedagogy .pipeline-stage em {font:italic 400 12px/1.6 Georgia,serif;color:#90435e;}
+#view-protocols .vix-method-pedagogy .vix-method-invariants {
+ background:#141c1f;color:#f9f6f0;border:1px solid #53656b;padding:0 20px;
+}
+#view-protocols .vix-method-pedagogy .vix-method-invariants summary {
+ cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:15px;
+ min-height:62px;padding:12px 0;color:#fff8f0;
+ font:700 12px/1.6 ui-monospace,monospace;letter-spacing:.055em;
+}
+#view-protocols .vix-method-pedagogy .vix-method-invariants summary::after {content:"＋";color:#ff91af;font-size:22px;}
+#view-protocols .vix-method-pedagogy .vix-method-invariants[open] summary::after {content:"−";}
+#view-protocols .vix-method-pedagogy .vix-method-invariants summary:focus-visible {outline:2px solid #ffeb85;outline-offset:3px;}
+#view-protocols .vix-method-pedagogy .vix-invariant-grid {
+ list-style:none;counter-reset:vix-law;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:1px;padding:1px;background:#3d4b51;margin:0 -20px;
+}
+#view-protocols .vix-method-pedagogy .vix-invariant-grid li {
+ counter-increment:vix-law;background:#222e32;color:#fff6f3;
+ padding:18px 16px;font:400 13px/1.55 Georgia,serif;
+}
+#view-protocols .vix-method-pedagogy .vix-invariant-grid li::before {
+ content:counter(vix-law,decimal-leading-zero);display:block;margin-bottom:8px;
+ color:#ff91af;font:700 10px/1 ui-monospace,monospace;
+}
+@media(max-width:850px){
+ #view-protocols .vix-method-pedagogy .protocol-pipeline {grid-template-columns:1fr!important;}
+ #view-protocols .vix-method-pedagogy .vix-invariant-grid{grid-template-columns:1fr!important;}
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-protocols>.page-pad>.view-heading{padding:29px!important;min-height:340px!important;}
+}
+/* VII–VIII — avoid document-wide smooth-scroll interception; preserve
+ * explicitly requested scrollIntoView smooth travel and reduced-motion law. */
+html {scroll-behavior:auto!important;}
+@media(prefers-reduced-motion:reduce){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab,
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-inspector-switch{transition:none!important;}
+}
