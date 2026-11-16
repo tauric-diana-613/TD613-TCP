@@ -44,3 +44,10 @@ test('Rollback only proposes a recovery and requires exact independently stored 
  await assert.rejects(()=>ledger.proposeTransaction({
   source_revision:rev,score_digest:score,before:{},after:{},consequences:[{}]}),/RESTORATION/);
 }));
+
+test('interrupted ledger fragment fails closed and requires manual custody recovery',()=>inTemp(async(ledger,dir)=>{
+ await ledger.append('SCORE_STAGED',rev,score,{source_set_revision:'test'});
+ await writeFile(join(dir,'entries','.uncommitted-interruption'),'partial');
+ await assert.rejects(()=>ledger.inspect(),/UNCOMMITTED_CUSTODY_FRAGMENT/);
+ await assert.rejects(()=>ledger.append('COMPOSE_REQUESTED',rev,score,{}),/UNCOMMITTED_CUSTODY_FRAGMENT/);
+}));

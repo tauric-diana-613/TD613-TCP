@@ -7,7 +7,7 @@
  * Hash chaining proves internal consistency, NOT external-origin provenance.
  */
 import {mkdir,readFile,readdir,open,rename,unlink,rmdir,stat} from 'node:fs/promises';
-import {join,resolve} from 'node:path';
+import {join,resolve,isAbsolute} from 'node:path';
 import {createHash,randomBytes} from 'node:crypto';
 
 export const COMPOSE_LEDGER_SCHEMA='td613.vixen.compose.custody-ledger/v1';
@@ -37,13 +37,16 @@ function recordValid(event){
 // Lock acquisition intentionally never steals stale locks; operator recovery
 // must verify custody before removing a crashed writer's lock.
 export function createComposeCustodyLedger({directory=null,now=()=>new Date().toISOString()}={}){
- if(!directory||typeof directory!=='string'||!resolve(directory).startsWith('/'))
+ if(!directory||typeof directory!=='string'||!isAbsolute(directory))
   error('HELD_EXTERNALLY_MOUNTED_PERSISTENT_CUSTODY_DIR_REQUIRED');
  const dir=resolve(directory),entries=join(dir,'entries'),lock=join(dir,'.writer.lock');
  async function readHead(){
   let names;
   try{names=(await readdir(entries)).filter(x=>x.endsWith('.json')).sort()}
   catch(e){if(e.code==='ENOENT')return {head:'0'.repeat(64),events:[]};throw e}
+  // Never ignore uncommitted fragments after an interrupted filesystem write.
+  if(names.some(x=>x.startsWith('.uncommitted-')))
+    error('HELD_UNCOMMITTED_CUSTODY_FRAGMENT');
   let previous='0'.repeat(64),seq=0;
   const events=[];
   for(const name of names){
