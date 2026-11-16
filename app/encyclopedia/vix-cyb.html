@@ -7,6 +7,7 @@
 <script id="td613-sitewide-reset-preflight" src="../site-epoch-preflight.js" defer></script>
 <!-- Self-hosted MIT-licensed KaTeX, MathML-only output; no CDN / telemetry. -->
 <script src="./vixen-estate/vendor/katex-0.16.9.min.js"></script>
+<link rel="stylesheet" href="./vixen-estate/fusion-console.css">
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
 <link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
@@ -1498,6 +1499,52 @@ body[data-view="overview"] .reading-back{display:none}
       <button type="button" class="expa-mode-btn" data-search-mode="exact" role="radio" aria-checked="false">Exact UTF-8</button>
       <button type="button" class="expa-mode-btn" data-search-mode="src_projective" role="radio" aria-checked="false">SRC Projective</button>
     </div>
+    <details class="vix-fusion-console" id="vixenFusionConsole" open>
+      <summary>Fusion Laboratory <span>Four independently controlled evidence channels</span></summary>
+      <div class="vix-fusion-inner">
+        <fieldset class="vix-fusion-channels" id="globalFusionChannels">
+          <legend>Retrieval channels · switch off to test a genuine ablation</legend>
+          <label class="vix-fusion-channel" data-channel="lexical">
+            <input type="checkbox" data-fusion-channel="lexical" checked>
+            <span class="vix-fusion-glyph">L</span>
+            <span><strong>Lexical</strong><small>BM25F · exact terms</small></span>
+          </label>
+          <label class="vix-fusion-channel" data-channel="semantic">
+            <input type="checkbox" data-fusion-channel="semantic" checked>
+            <span class="vix-fusion-glyph">S</span>
+            <span><strong>Semantic</strong><small>Hashed-Jacobi SVD</small></span>
+          </label>
+          <label class="vix-fusion-channel" data-channel="semiotic">
+            <input type="checkbox" data-fusion-channel="semiotic" checked>
+            <span class="vix-fusion-glyph">Σ</span>
+            <span><strong>Semiotic</strong><small>Planes · motifs · rungs</small></span>
+          </label>
+          <label class="vix-fusion-channel" data-channel="src">
+            <input type="checkbox" data-fusion-channel="src" checked>
+            <span class="vix-fusion-glyph">R</span>
+            <span><strong>SRC projective</strong><small>Query-conditioned route</small></span>
+          </label>
+        </fieldset>
+        <div class="vix-fusion-actionrow">
+          <label>Weight treatment
+            <select id="globalFusionWeightPolicy">
+              <option value="PRESERVE_BASELINE">Preserve original weights (assay)</option>
+              <option value="RENORMALIZE_ACTIVE">Renormalize active channels</option>
+            </select>
+          </label>
+          <button type="button" class="vix-fusion-tool" id="globalFusionReset">Restore full fusion</button>
+          <button type="button" class="vix-fusion-tool" id="globalFusionCopyTask">Copy Podium search task</button>
+          <button type="button" class="vix-fusion-tool vix-fusion-compare" id="globalFusionCompare">Compare channels in Podium</button>
+        </div>
+        <div class="vix-fusion-readout" id="globalFusionReadout" aria-live="polite">
+          FULL INDEX: hybrid L 0.50 · S 0.30 · Σ 0.20 · SRC conditioned when cued.
+        </div>
+        <details class="vix-fusion-machine-preview" id="globalFusionTaskTray">
+          <summary>Machine-readable task preview (copy-only)</summary>
+          <pre id="globalFusionTaskPreview"></pre>
+        </details>
+      </div>
+    </details>
     <div class="expa-aperture-bar" id="globalSearchObservabilityBar" aria-live="polite">
       <span>SEMANTIC-SEMIOTIC ENGINE · READY · EXPERIMENT-A CORPUS READABLE</span>
       <span>EMPIRICAL_REPLICATION_CREDIT: 0</span>
