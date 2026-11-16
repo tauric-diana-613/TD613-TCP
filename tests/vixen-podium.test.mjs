@@ -214,112 +214,57 @@ test('Shared active-stage controller changes masthead without changing source ro
  }finally{doc.window.close()}
 });
 
-test('Podium CLI stays read-only by default and persists synthesis state only with explicit --write-synthesis',async()=>{
+test('Machine Podium autonomously scores source-bound visual architecture, stops at Compose, and refuses user-synthesis mutation',async()=>{
+ const one=createVixenPodium({corpus,membrane:mock()});
+ const proposal={research_question:'Can swarm phase dynamics outperform a fixed holonomy optical representation?',
+  source_changes:[{source_file_id:source.source_file_id,action:'EXCLUDE',reason:'Possible incomplete PDF; await forensic verification'}]};
+ const scored=await one.dispatch(task('podium.score',proposal));
+ assert.equal(scored.status,'SUPPORTED',JSON.stringify(scored.result).slice(0,600));
+ assert.equal(scored.result.synthesis.selected.score>=0,true);
+ assert.equal(scored.result.changes_count>=6,true);
+ assert.match(scored.result.score_sha256,/^[0-9a-f]{64}$/);
+ assert.equal(scored.result.source_census.source_changes[0].action,'EXCLUDE');
+ assert.equal(scored.result.source_census.source_changes[0].current_state_mutated,false);
+ assert.equal(scored.result.visuals.selected.id.length>0,true);
+ assert.equal(scored.result.optical.B_prepaint_beat_diagnostics.pairs.length,3);
+ assert.equal(scored.result.optical.additional_pipelines.carrier_count,39);
+ assert.equal(scored.result.optical.D_viewport_DPR_sampling_clock.single_host_clock_required,true);
+ assert.ok(scored.result.human_readable_score.includes('SOURCE-01'));
+ assert.ok(scored.result.visuals.alternatives.some(v=>v.id==='SWARM_DYNAMICS'));
+ const held=await one.dispatch(task('podium.compose',{...proposal,approved:true,publish:true}));
+ assert.equal(held.status,'HELD');
+ assert.equal(held.result.status,'HELD_AWAITING_HUMAN_COMPOSER');
+ assert.equal(held.result.score_sha256,scored.result.score_sha256);
+ assert.equal(held.result.canonical_commit,false);
+ assert.equal(held.result.task_json_authentication,false);
+ const edited=await one.dispatch(task('podium.compose',{...proposal,
+  research_question:'Human edit: different research question for the score'}));
+ assert.notEqual(edited.result.score_sha256,held.result.score_sha256);
  const defaultOut=JSON.parse(execFileSync(process.execPath,['scripts/vixen-podium.mjs','--stdin'],{
-  cwd:repoRoot,
-  input:JSON.stringify(task('podium.describe',{
-   research_question:'When do non-commuting audio and hypervisor clocks require typed witnesses?'
-  })),
-  encoding:'utf8',
-  timeout:30000
+  cwd:repoRoot,input:JSON.stringify(task('podium.describe',{})),encoding:'utf8',timeout:30000
  }));
  assert.equal(defaultOut.persisted_synthesis_path,null);
- assert.match(defaultOut.results[0].result.synthesis_headline.researchQuestion,/non-commuting audio/);
-
- const sandbox=await mkdtemp(join(tmpdir(),'vixen-podium-synth-'));
+ const sandbox=await mkdtemp(join(tmpdir(),'vixen-hitl-custody-'));
  try{
   await cp(join(repoRoot,'app','encyclopedia'),join(sandbox,'app','encyclopedia'),{recursive:true});
-  const writeOut=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--stdin'
-  ],{
-   cwd:repoRoot,
-   input:JSON.stringify(task('vixen.salon.compose',{
-    work_ids:[corpus.works[0].work_id,corpus.works[13].work_id],
-    track_id:corpus.giveback_tracks[0].id,
-    protocol_id:corpus.instruments[0].instrument_id,
-    lag_ticks:48,route_order:'A_B',
-    research_question:'What non-collapsing invariants couple SPSC audio rings to hypervisor algedonic interrupts?',
-    method_label:'EM PODIUM SESSION · UNRATIFIED'
-   })),
-   encoding:'utf8',
-   timeout:30000
-  }));
-  assert.equal(writeOut.persisted_synthesis_path,'vixen-estate/podium-synthesis.json');
-  const persisted=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
-  assert.equal(persisted.schema,'emstd613.vixen.podium-synthesis-state/v1');
-  assert.equal(persisted.operator_method,'EM PODIUM SESSION · UNRATIFIED');
-  assert.match(persisted.synthesis_headline.researchQuestion,/SPSC audio rings/);
-  assert.equal(persisted.empirical_replication_credit,0);
-  assert.equal(persisted.scientific_promotion_authority,false);
-  assert.equal(persisted.release_authority,false);
-  assert.ok(Array.isArray(persisted.synthesis_log)&&persisted.synthesis_log.length>=2);
-
-  // Second synthesis update appends monotonically; --list-syntheses and --rollback revert cleanly
-  const secondWrite=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--stdin'
-  ],{
-   cwd:repoRoot,
-   input:JSON.stringify(task('synthesis.propose',{
-    operator_directive:true,
-    pattern_subtitle:'APPEND-ONLY PODIUM · MONOTONIC PREDECESSOR.',
-    inquiry_question:'Can Podium proposals append and roll back without erasing predecessor chains?'
-   })),
-   encoding:'utf8',
-   timeout:30000
-  }));
-  assert.equal(secondWrite.results[0].status,'HELD');
-  const thirdWrite=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--select-candidate','cand-quotient-holonomy','--sync-html'
-  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
-  assert.equal(thirdWrite.synced_html,true);
-  const listOut=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--list-syntheses'
-  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
-  assert.equal(listOut.active_entry_id,thirdWrite.persisted_entry_id);
-  assert.ok(listOut.count>=4);
-
-  const rollbackOut=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--rollback','syn-0000-baseline','--sync-html'
-  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
-  assert.equal(rollbackOut.status,'ROLLED_BACK');
-  assert.equal(rollbackOut.restored_entry_id,'syn-0000-baseline');
-  assert.equal(rollbackOut.synced_html,true);
-
-  const postRollback=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
-  assert.equal(postRollback.active_entry_id,'syn-0000-baseline');
-  assert.equal(postRollback.last_log_entry_id,rollbackOut.log_entry_id);
-  assert.equal(postRollback.synthesis_log.length,listOut.count+1);
-  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].kind,'ROLLBACK');
-  assert.equal(postRollback.synthesis_log[postRollback.synthesis_log.length-1].predecessor_entry_id,thirdWrite.persisted_entry_id);
-
-  // Writing AFTER rollback must link predecessor to last_log_entry_id (rollbackOut.log_entry_id), NEVER alias active_entry_id!
-  const postRbWrite=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--root',sandbox,'--write-synthesis','--select-candidate','cand-visibility-svd'
-  ],{cwd:repoRoot,encoding:'utf8',timeout:30000}));
-  const postRbDoc=JSON.parse(await readFile(join(sandbox,'app','encyclopedia','vixen-estate','podium-synthesis.json'),'utf8'));
-  assert.equal(postRbDoc.synthesis_log[postRbDoc.synthesis_log.length-1].predecessor_entry_id,rollbackOut.log_entry_id);
-  assert.equal(postRbWrite.persisted_entry_id,postRbDoc.active_entry_id);
-
-  // Native candidate scoring CLI and boilerplate rejection check
-  const scoredCli=JSON.parse(execFileSync(process.execPath,[
-   'scripts/vixen-podium.mjs','--native-read-tools','--score-candidates'
-  ],{cwd:repoRoot,encoding:'utf8',timeout:30000,env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'}}));
-  assert.equal(scoredCli.lag_ticks,36);
-  assert.equal(scoredCli.fadt_profile.work_count,32);
-  assert.ok(scoredCli.top_candidate&&!/\bTHE\s+ARCHITECTURE\s+OF\b/i.test(scoredCli.top_candidate.patternSubtitle));
-
-  const bpCheck=await (async()=>{
-   const {createVixenPodium}=await import('../app/encyclopedia/reference/vixen-podium.mjs');
-   const cp=createVixenPodium({corpus,membrane:mock(),operatorAuthorized:true});
-   return cp.dispatch(task('podium.describe',{pattern_subtitle:'THE ARCHITECTURE OF GENERIC TEMPLATES.'}));
-  })();
-  assert.equal(bpCheck.status,'HELD');
-  assert.equal(bpCheck.result.state,'BOILERPLATE_SUBTITLE_REJECTED');
- }finally{
-  await rm(sandbox,{recursive:true,force:true});
- }
+  const base=join(sandbox,'app','encyclopedia');
+  const beforeState=await readFile(join(base,'vixen-estate','podium-synthesis.json'),'utf8');
+  const beforeSite=await readFile(join(base,'vix-cyb.html'),'utf8');
+  for(const flags of [['--write-synthesis','--stdin'],['--sync-html'],['--rollback','syn-0000-baseline']]){
+   assert.throws(()=>execFileSync(process.execPath,['scripts/vixen-podium.mjs','--root',sandbox,...flags],
+    {cwd:repoRoot,input:JSON.stringify(task('podium.describe',{approved:true})),
+     encoding:'utf8',timeout:30000,env:{...process.env,TD613_PODIUM_OPERATOR_DIRECT:'1'},stdio:['pipe','pipe','pipe']}));
+  }
+  assert.equal(await readFile(join(base,'vixen-estate','podium-synthesis.json'),'utf8'),beforeState);
+  assert.equal(await readFile(join(base,'vix-cyb.html'),'utf8'),beforeSite);
+ }finally{await rm(sandbox,{recursive:true,force:true})}
+ const candidates=JSON.parse(execFileSync(process.execPath,['scripts/vixen-podium.mjs','--score-candidates'],
+  {cwd:repoRoot,encoding:'utf8',timeout:30000}));
+ assert.ok(candidates.top_candidate);
+ const bp=await one.dispatch(task('podium.describe',{pattern_subtitle:'THE ARCHITECTURE OF GENERIC TEMPLATES.'}));
+ assert.equal(bp.status,'HELD');
+ assert.equal(bp.result.state,'BOILERPLATE_SUBTITLE_REJECTED');
 });
-
 test('All 5 native Podium adapters execute boundedly, expressed directives auto-open, and session-zip builds PKZIP',async()=>{
  const {createVixenPodium,BOUNDED_ENGINE_OPERATIONS}=await import('../app/encyclopedia/reference/vixen-podium.mjs');
  const {createPodiumNativeReadAdapters}=await import('../scripts/vixen-podium-native-adapters.mjs');
@@ -588,7 +533,7 @@ test('Podium 16-route fusion research conductor validates, compares, and cites w
   const raw=JSON.parse(await readFile(new URL('vixen-estate/semantic-semiotic-index.v1.json',root),'utf8'));
   const engine=new SemanticSemioticSearchEngine(raw);
   const podium=createVixenPodium({corpus,semanticSearch:engine,membrane:mock()});
-  assert.equal(PODIUM_ROUTES.length,16);
+  assert.equal(PODIUM_ROUTES.length,18);
   assert.equal((await podium.dispatch(task('podium.describe'))).result.aix_conductor.fusion_controls.finite_comparison_limit,6);
   const cap=await podium.dispatch(task('vixen.fusion.capabilities'));
   assert.equal(cap.status,'SUPPORTED');

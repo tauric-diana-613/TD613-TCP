@@ -90,3 +90,29 @@ The native DD-02 conductor's two creative candidates and internal refraction rem
 **Machine interface is operationally inspectable but not self-authorizing.**
 
 𝄐 Khona‌lit-po (literal U+200C) · \`𝌋\` U+1D30B vs heritage emblem U+10D613 · \`⟐SAC[X6ZNK5NO51]\` · Operator closure RESERVED
+
+## RGI18 · Podium Score → Human Composer
+This gate applies to USER-SUBMITTED SYNTHESIS and consequential operations.
+DEVELOPER EDITS retain the established PR, test, and exact-head CI route.
+
+The Podium selects, scores, and proposes visual geometry autonomously.
+The complete Score enumerates synthesis, alternatives, all corpus exclusions,
+source additions, replacements and reclassifications, optical engines,
+renderer capabilities, evidence limits, prerequisites and presentation edits.
+The Compose machine-only route presents the Score and stops for human
+editorial closure, with score_sha256. A changed Score demands a new approval.
+Do not accept a task-JSON approval or a GitHub comment written by the bot
+as independent human approval.
+
+The four macro optical operators A-D and existing coupled stack
+(RGI13 room mesh, RGI14 opaline couture, RGI15 beat radiometry, DD02 folded
+cuirass, WebGL2+Canvas fallback, 39 Loom carriers, five-clock and SVD score)
+must survive mathematical and image-rendering continuity assays.
+New swarm is a coded computational visualization CANDIDATE, not a verified
+claim about blind-archive research or an approved installed laboratory.
+
+Legacy user-synthesis --write-synthesis / --sync-html / --rollback are held:
+there is no independently authenticated Score-specific Composer release
+service in the current CLI. Do not permit machine task flags to self-authorize.
+No corpus edit, publication, production release, Experiment B Flight or
+authorial closure is authorized by a Score.

@@ -23,11 +23,13 @@
       "SEARCH",
       "VERIFY_SOURCE_BYTES",
       "SYNTHESIS_PROPOSAL",
-      "HELD_OR_HUMAN_REVIEW"
+      "HELD_OR_HUMAN_REVIEW",
+      "PODIUM_COMPUTATIONAL_SCORE",
+      "STOP_AT_HUMAN_COMPOSER_GATE"
     ],
     "no_automatic_source_pairing": true,
     "no_implicit_engine_connection": true,
-    "routes": 16,
+    "routes": 18,
     "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs",
     "machine_subsystems": [
       "VIXEN_SOURCE_INSPECTION",
@@ -187,6 +189,28 @@
       ],
       "action": "EXPLAIN_EVIDENCE_AND_SCORE_OF_ONE_RETRIEVED_CHUNK",
       "authority": "READ_ONLY_NOT_ENTAILMENT"
+    },
+    {
+      "id": "podium.score",
+      "inputs": [
+        "research_question",
+        "pending_materials",
+        "source_changes",
+        "lag_ticks"
+      ],
+      "action": "SOURCE_BOUNDED_COMPUTATIONAL_AND_VISUAL_SCORE_WITH_FULL_CHANGE_LEDGER",
+      "authority": "READ_ONLY"
+    },
+    {
+      "id": "podium.compose",
+      "inputs": [
+        "research_question",
+        "pending_materials",
+        "source_changes",
+        "lag_ticks"
+      ],
+      "action": "PRESENT_SCORE_AND_REQUEST_HUMAN_FINAL_EDITS_AND_CLOSURE",
+      "authority": "HELD_NO_MUTATION"
     }
   ],
   "optional_engine_adapters": {
@@ -367,5 +391,38 @@
   "release_authority": false,
   "merge_authority": false,
   "deployment_authority": false,
-  "experiment_b_flight": "HELD"
+  "experiment_b_flight": "HELD",
+  "compose_gate": {
+    "schema": "td613.vixen.podium.compose-hitl/v1",
+    "scope": "USER_SUBMITTED_SYNTHESIS_ONLY",
+    "developer_source_edits": "NORMAL_PR_AND_CI_PATH_UNCHANGED",
+    "research_and_visual_decision_owner": "PODIUM",
+    "final_edits_closure_owner": "HUMAN_COMPOSER",
+    "review_artifact": "FULL_SCORE_AND_SHA256_DIGEST_WITH_INDIVIDUAL_SOURCE_CHANGES",
+    "authorization": "INDEPENDENT_HUMAN_RESPONSE_BOUND_TO_UNMODIFIED_SCORE_DIGEST",
+    "external_human_approval_gateway": "NOT_YET_CONNECTED",
+    "pending_source_changes": "HELD",
+    "source_admission": "HELD",
+    "source_removal": "HELD",
+    "canonical_synthesis_write": "HELD",
+    "automatic_publish": false,
+    "automatic_deploy": false,
+    "comparison": "Source baseline and proposed exclusions must be enumerated before any composition state change",
+    "score_edits_invalidate_previous_approval": true,
+    "protected_flight": "HELD"
+  },
+  "optical_contract": {
+    "A": "DISTINCT_D3_PHI_FIELD_AND_FOLD",
+    "B": "PREPAINT_BEAT_WAVEVECTOR_INTERFERENCE",
+    "C": "BOUNDED_BLOOM_AND_DARK_TROUGHS",
+    "D": "VIEWPORT_DPR_SAMPLE_AND_HOST_CLOCK",
+    "additional": [
+      "39_CARRIERS_6_13_20",
+      "FOLDED_CUIRASS_12_PANELS",
+      "WEBGL2_CANVAS2D",
+      "SVD_P111_FIVE_CLOCKS",
+      "ROOM_WIDE_MESH_AND_SOURCE_OCCLUSION",
+      "SWARM_CANDIDATE_RENDERER"
+    ]
+  }
 }

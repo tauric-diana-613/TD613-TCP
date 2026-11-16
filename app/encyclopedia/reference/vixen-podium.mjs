@@ -11,6 +11,7 @@ import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
 import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle} from '../vixen-estate/synthesis-salon-engine.mjs';
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
+import {makePodiumScore,reachPodiumComposeGate} from '../vixen-estate/podium-composition-score.mjs';
 import {
  normalizeFusionControls,boundedFusionComparisonSpec,
  FUSION_CHANNEL_KEYS,FUSION_PROFILE_IDS,FUSION_WEIGHT_POLICIES,FUSION_PROFILES
@@ -33,7 +34,8 @@ export const PODIUM_ROUTES=Object.freeze([
  'universal.open','universal.search','universal.get','universal.related',
  'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
  'engine.capabilities','engine.invoke',
- 'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain'
+ 'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain',
+ 'podium.score','podium.compose'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze([
@@ -269,6 +271,18 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
       atlas_adapter_connected:typeof boundAdapters.ATLAS==='function'
      }
     });
+   }
+   if(intent==='podium.score'){
+    const score=await makePodiumScore(corpus,params,sourceRevision);
+    event('COMPUTATIONAL_SCORE_PREPARED',{digest:score.score_sha256,change_count:score.changes_count,
+     visual_form:score.visuals.selected.id});
+    return receipt(intent,'SUPPORTED',score);
+   }
+   if(intent==='podium.compose'){
+    const staged=await reachPodiumComposeGate(corpus,params,sourceRevision);
+    event('COMPOSE_STOPPED_FOR_HUMAN_CLOSURE',{digest:staged.score_sha256,canonical_write:false,
+     source_mutation:false,authorization:'NOT_RECEIVED'});
+    return receipt(intent,'HELD',staged);
    }
    // Four finite fusion routes are read-only and cannot acquire external
    // execution authority, scientific promotion, or private-source access.

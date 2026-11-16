@@ -23,6 +23,18 @@ import {dirname,resolve,join,sep,relative} from 'node:path';
 
 const defaultRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const options=process.argv.slice(2);
+// These flags persist USER SYNTHESIS into active presentation/corpus slots.
+// Developer Git source edits remain on their usual PR/CI path. A bot-supplied
+// CLI flag or task JSON is never independently authenticated human closure.
+if(['--write-synthesis','--sync-html','--rollback'].some(x=>options.includes(x))){
+ console.error(JSON.stringify({
+  schema:'td613.vixen.podium.compose-hitl/v1',status:'HELD_HUMAN_COMPOSER_REQUIRED',
+  reason:'Read-only Score and Compose first; no trusted human Score-digest approver is installed for these user-synthesis writers.',
+  request:'Use podium.compose, disclose all source exclusions and visual changes, obtain independent Composer approval for a specific score_sha256.',
+  developer_code_edits_exempt:true,source_mutation:false,canonical_write:false,deploy:false
+ }));
+ process.exit(2);
+}
 const getFlag=name=>{
  const idx=options.indexOf(name);
  return idx>=0&&idx+1<options.length?options[idx+1]:null;
