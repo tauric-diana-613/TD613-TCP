@@ -4024,6 +4024,18 @@ body[data-view="overview"] .reading-back{display:none}
   const GLOBAL_SEARCH_PAGE_SIZE = 12;
   let _lastGlobalSearchHits = [];
   let _globalSearchSeq = 0;
+  function currentVixenFusionControls() {
+    const channels = {};
+    document.querySelectorAll('#globalFusionChannels [data-fusion-channel]').forEach((el) => {
+      channels[el.getAttribute('data-fusion-channel')] = Boolean(el.checked);
+    });
+    if (!Object.values(channels).some(Boolean)) channels.lexical = true;
+    return {
+      profile: 'FULL_FUSION',
+      channels,
+      weight_policy: $('globalFusionWeightPolicy')?.value || 'PRESERVE_BASELINE'
+    };
+  }
 
   function renderGlobalSearchResult(result, { append = false } = {}) {
     const resEl = $('globalSearchResults');
@@ -4045,11 +4057,14 @@ body[data-view="overview"] .reading-back{display:none}
       const obsSummary = obs
         ? ('κ=' + obs.condition_number_kappa + ' · rank=' + obs.effective_rank + ' · α_supp=' + obs.alpha_support)
         : (result.engine_version || 'inline-fallback');
+      const engineLane = result.fusion_state === 'FULL_INDEX_FUSION'
+        ? 'FULL FUSION INDEX'
+        : 'INLINE FALLBACK · NO SEMANTIC/SEMIOTIC INFERENCE';
       const srcRegimeNote = result.src_conditioning && (result.src_conditioning.has_untypical_cue || modeTag === 'src_projective')
         ? (' · REGIME: <code>' + esc(result.src_conditioning.regime_id) + '</code>')
         : '';
       obsBar.innerHTML =
-        '<span>MODE: <code>' + esc(modeTag) + '</code>' + srcRegimeNote + ' · STATUS: <code>' + esc(result.status) + '</code> · ' + esc(obsSummary) + ' · SHOWING ' + _lastGlobalSearchHits.length + '/' + (result.total_hits ?? _lastGlobalSearchHits.length) + '</span>' +
+        '<span>' + esc(engineLane) + ' · MODE: <code>' + esc(modeTag) + '</code>' + srcRegimeNote + ' · STATUS: <code>' + esc(result.status) + '</code> · ' + esc(obsSummary) + ' · SHOWING ' + _lastGlobalSearchHits.length + '/' + (result.total_hits ?? _lastGlobalSearchHits.length) + '</span>' +
         '<span>EMPIRICAL_REPLICATION_CREDIT: 0 · EXPERIMENT A: READABLE</span>';
     }
 
@@ -4076,6 +4091,12 @@ body[data-view="overview"] .reading-back{display:none}
       const deltaStr = Number.isFinite(m.delta_chan) ? (' · Δchan ' + (m.delta_chan >= 0 ? '+' : '') + m.delta_chan.toFixed(2)) : '';
       const shaShort = m.chunk_sha256 ? (' · chunk:' + String(m.chunk_sha256).slice(0, 8)) : '';
       const srcRegimeBadge = (m.s_src > 0 && m.src_regime) ? (' · SRC:' + m.src_regime) : '';
+      const fusionContrib = m.fusion_contributions && typeof m.fusion_contributions === 'object'
+        ? ('Active contribution · L ' + (m.fusion_contributions.lexical || 0).toFixed(3) +
+          ' · S ' + (m.fusion_contributions.semantic || 0).toFixed(3) +
+          ' · Σ ' + (m.fusion_contributions.semiotic || 0).toFixed(3) +
+          ' · SRC ' + ((m.fusion_contributions.src_proj || 0) + (m.fusion_contributions.src_sig || 0)).toFixed(3))
+        : '';
       const scoreBadge = Number.isFinite(m.score_total)
         ? ('SCORE ' + m.score_total.toFixed(3) + ' [L:' + (m.s_lex ?? 0).toFixed(2) + ' S:' + (m.s_sem ?? 0).toFixed(2) + ' Σ:' + (m.s_semi ?? 0).toFixed(2) + ' R:' + (m.s_src ?? 0).toFixed(2) + ']' + srcRegimeBadge + deltaStr)
         : (m.kind || 'record');
@@ -4090,6 +4111,7 @@ body[data-view="overview"] .reading-back{display:none}
         (whyLine ? '<div class="expa-search-why">' + esc(whyLine) + '</div>' : '') +
         (snippetText ? '<div class="expa-search-snippet">' + esc(snippetText) + '</div>' : '') +
         '<div class="expa-score-pills"><span>' + esc(scoreBadge + rungBadge + shaShort) + '</span></div>' +
+        (fusionContrib ? '<div class="vix-fusion-result-breakdown">' + esc(fusionContrib) + '</div>' : '') +
       '</button>';
     }).join('');
 
@@ -4148,7 +4170,8 @@ body[data-view="overview"] .reading-back{display:none}
       mode,
       offset: state.globalSearchOffset,
       limit: GLOBAL_SEARCH_PAGE_SIZE,
-      cursorToken: append ? cursorToken : null
+      cursorToken: append ? cursorToken : null,
+      ...(mode === 'exact' ? {} : {fusion:currentVixenFusionControls()})
     };
 
     const hydratePromise = hydrateExperimentAModules();
@@ -4178,12 +4201,14 @@ body[data-view="overview"] .reading-back{display:none}
           renderGlobalSearchResult(deepRes, { append });
           return;
         }
-        if (append) {
-          const nextRes = window.VixenReference.searchDetailed(qStr, searchOpts);
-          if (seq !== _globalSearchSeq) return;
-          renderGlobalSearchResult(nextRes, { append: true });
-        }
-      }).catch(() => {});
+        const nextRes = window.VixenReference.searchDetailed(qStr, searchOpts);
+        if (seq !== _globalSearchSeq) return;
+        renderGlobalSearchResult(nextRes, { append });
+      }).catch((error) => {
+        if (seq !== _globalSearchSeq) return;
+        const bar=$('globalSearchObservabilityBar');
+        if (bar) bar.textContent='FULL FUSION INDEX HELD · ' + String(error?.message || error);
+      });
     }
   }
 
@@ -4944,6 +4969,70 @@ body[data-view="overview"] .reading-back{display:none}
     const searchInput = $('globalSearchInput');
     const searchModesEl = $('globalSearchModes');
     let lastTrigger = null;
+    const fusionPanel = $('vixenFusionConsole');
+    const fusionField = $('globalFusionChannels');
+    const fusionReadout = $('globalFusionReadout');
+    const fusionChecks = [...document.querySelectorAll('#globalFusionChannels [data-fusion-channel]')];
+    const fusionPolicy = $('globalFusionWeightPolicy');
+    function refreshFusionReadout() {
+      const mode = state.globalSearchMode || 'hybrid';
+      const enabled = fusionChecks.filter(el => el.checked).map(el => el.dataset.fusionChannel);
+      const exact = mode === 'exact';
+      if (fusionField) fusionField.disabled = exact;
+      if (fusionPolicy) fusionPolicy.disabled = exact;
+      if (fusionReadout) fusionReadout.textContent = exact
+        ? 'EXACT UTF-8 BYTE SEARCH · Channel weights inapplicable; exact source spans remain unchanged.'
+        : ('ACTIVE: ' + enabled.join(' · ').toUpperCase() + ' · ' + (fusionPolicy?.value || 'PRESERVE_BASELINE') +
+           ' · Full index required · Semiotic rungs remain retrieval candidates, never proven meanings.');
+    }
+    const redrawFusion = () => {
+      refreshFusionReadout();
+      runGlobalSearch(searchInput?.value || '');
+    };
+    fusionChecks.forEach(el => el.addEventListener('change', () => {
+      if (!fusionChecks.some(box => box.checked)) {
+        el.checked = true;
+        showToast('At least one fusion channel must remain enabled');
+      }
+      redrawFusion();
+    }));
+    fusionPolicy?.addEventListener('change', redrawFusion);
+    $('globalFusionReset')?.addEventListener('click', () => {
+      fusionChecks.forEach(el => { el.checked = true; });
+      if (fusionPolicy) fusionPolicy.value='PRESERVE_BASELINE';
+      redrawFusion();
+    });
+    const podiumFusionTask = (comparison = false) => ({
+      schema:'td613.vixen.podium.task/v1',
+      intent:comparison?'vixen.fusion.compare':'vixen.fusion.search',
+      params:comparison
+        ? {query:String(searchInput?.value || '').slice(0,200),mode:state.globalSearchMode==='exact'?'hybrid':state.globalSearchMode,
+            profiles:['FULL_FUSION','NO_SEMANTIC','NO_SEMIOTIC','SRC_ONLY'],limit:12,
+            weight_policy:fusionPolicy?.value || 'PRESERVE_BASELINE'}
+        : {query:String(searchInput?.value || '').slice(0,200),mode:state.globalSearchMode==='exact'?'hybrid':state.globalSearchMode,
+            channels:currentVixenFusionControls().channels,profile:'FULL_FUSION',limit:12,
+            weight_policy:fusionPolicy?.value || 'PRESERVE_BASELINE'},
+      authority:{deployment:false,release:false,empirical_replication_credit:0},
+      execution_authority:false
+    });
+    const exportFusionTask = async (comparison) => {
+      const query=String(searchInput?.value||'').trim();
+      if (query.length<2) {showToast('Enter a query of at least two characters');return;}
+      const task=podiumFusionTask(comparison);
+      const text=JSON.stringify(task,null,2);
+      const tray=$('globalFusionTaskTray'),preview=$('globalFusionTaskPreview');
+      if (preview) preview.textContent=text;
+      if (tray) tray.open=true;
+      try{
+        if(navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(text);
+          showToast(comparison?'Podium ablation comparison copied':'Podium fusion search copied');
+        } else showToast('Copy-only Podium task ready below');
+      }catch(_){showToast('Clipboard blocked · task displayed below');}
+    };
+    $('globalFusionCopyTask')?.addEventListener('click',()=>exportFusionTask(false));
+    $('globalFusionCompare')?.addEventListener('click',()=>exportFusionTask(true));
+    refreshFusionReadout();
     function syncSearchModeButtons() {
       if (!searchModesEl) return;
       searchModesEl.querySelectorAll('[data-search-mode]').forEach((btn) => {
@@ -4955,6 +5044,7 @@ body[data-view="overview"] .reading-back{display:none}
         btn.addEventListener('click', () => {
           state.globalSearchMode = btn.getAttribute('data-search-mode') || 'hybrid';
           syncSearchModeButtons();
+          refreshFusionReadout();
           runGlobalSearch(searchInput ? searchInput.value : '');
           if (searchInput) searchInput.focus();
         });
