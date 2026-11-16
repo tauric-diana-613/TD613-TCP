@@ -520,10 +520,20 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./assets/vixen/brand-assets.css" data-vixen-brand-contract="SVG_FOX_AND_APPROVED_FRONTISPIECE">
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-seams-rgi16.css" data-visual-system="VIXEN_OPERATOR_MOBILE_SEAM_REPAIR_RGI16">
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-reading-rgi17.css" data-visual-system="VIXEN_MOBILE_EDITORIAL_READING_RGI17">
+<link rel="stylesheet" href="./vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
+<link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
+<link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
+<link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
 <link rel="alternate" type="application/json" title="Vixen brand asset intake contract" href="./assets/vixen/asset-contract.json">
 </head>
 <body data-view="overview" data-vixen-frontispiece-source="external-selected">
 <a href="#main" class="skip-link">Skip to Opera Workspace</a>
+<div class="vix-entry-veil" id="vixEntryVeil" role="status" aria-live="polite" aria-label="Preparing Vixen Cybernetics" data-state="arriving">
+  <div class="vix-entry-fox" aria-hidden="true">⦮ ⦯꠹</div>
+  <strong>VIXEN CYBERNETICS</strong>
+  <span>Loading the Opera · arranging its living field</span>
+  <div class="vix-entry-line" aria-hidden="true"></div>
+</div>
 
 <header class="site-header" role="banner">
   <div class="header-inner">
@@ -1251,15 +1261,31 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="view-number" aria-hidden="true">21</div>
       </div>
 
-      <div class="hold-panel" style="margin-bottom:22px">
-        <p class="eyebrow" style="margin-bottom:10px">DOCUMENTARY PIPELINE &amp; NINE METHODOLOGICAL INVARIANTS · original_methods_inventory.json</p>
-        <div class="protocol-pipeline" role="list" aria-label="Three-Stage Documentary Protocol Pipeline">
-          <div class="pipeline-stage" role="listitem"><strong>1 · Blind Intake &amp; Quarantine</strong><span>87 historical files · c₄ AppleDouble quotient → 54 substantive</span></div>
-          <div class="pipeline-stage" role="listitem"><strong>2 · Method Registry (0 Executors)</strong><span>6 Sieves + 7 Authority + 4 Lineage + 4 Control Planes = 21</span></div>
-          <div class="pipeline-stage" role="listitem"><strong>3 · Work &amp; Gate Binding</strong><span>Binds 32 Works &amp; 8 UNADJUDICATED_PAIR gates without collapse</span></div>
+      <section class="hold-panel vix-method-pedagogy" aria-labelledby="vixMethodsGuideTitle">
+        <p class="vix-method-eyebrow">06-INSTRUMENTS · DOCUMENTARY PIPELINE · SOURCE-BOUND METHODS</p>
+        <h2 id="vixMethodsGuideTitle">From a source to a claim.</h2>
+        <p class="vix-method-dek">Three discrete operations, each with a different evidentiary limit. Follow the sequence first; the nine constraints remain available for inspection without competing with the instruments beneath.</p>
+        <div class="protocol-pipeline" role="list" aria-label="Three steps from documentary intake to provenance-safe work binding">
+          <div class="pipeline-stage" role="listitem" data-sequence="01"><strong>Blind Intake &amp; Quarantine</strong><span>87 historical files · c₄ AppleDouble quotient → 54 substantive</span><em>Establish which materials can be counted before making comparisons.</em></div>
+          <div class="pipeline-stage" role="listitem" data-sequence="02"><strong>Method Registry (0 Executors)</strong><span>6 Sieves + 7 Authority + 4 Lineage + 4 Control Planes = 21</span><em>Identify what the methods describe; registration grants no execution authority.</em></div>
+          <div class="pipeline-stage" role="listitem" data-sequence="03"><strong>Work &amp; Gate Binding</strong><span>Binds 32 Works &amp; 8 UNADJUDICATED_PAIR gates without collapse</span><em>Keep unresolved identity and custody boundaries visible at the point of interpretation.</em></div>
         </div>
-        <div class="badge-row"><span class="tag porcelain">Source vs. Derivative distinction preserved</span><span class="tag porcelain">Work vs. Manifestation distinction preserved</span><span class="tag porcelain">Human-gated work identity (256 hypotheses) preserved without automatic gate collapse</span><span class="tag porcelain">Contextual role vs. Intrinsic assertion distinction preserved</span><span class="tag porcelain">Motif vs. Mechanism promotion ladder enforced</span><span class="tag porcelain">Conceptual convergence vs. Genealogical descent distinguished</span><span class="tag porcelain">Documentary analogy vs. Formal equivalence distinguished</span><span class="tag porcelain">Observed result vs. Reconstructed history distinguished</span><span class="tag porcelain">Internal integrity vs. External empirical confirmation distinguished</span></div>
-      </div>
+        <details class="vix-method-invariants">
+          <summary><span>Inspect the nine methodological constraints</span><span aria-hidden="true">09 / 09</span></summary>
+          <ol class="vix-invariant-grid" aria-label="Nine preserved methodological invariants">
+            <li>Source vs. Derivative distinction preserved</li>
+            <li>Work vs. Manifestation distinction preserved</li>
+            <li>Human-gated work identity (256 hypotheses) preserved without automatic gate collapse</li>
+            <li>Contextual role vs. Intrinsic assertion distinction preserved</li>
+            <li>Motif vs. Mechanism promotion ladder enforced</li>
+            <li>Conceptual convergence vs. Genealogical descent distinguished</li>
+            <li>Documentary analogy vs. Formal equivalence distinguished</li>
+            <li>Observed result vs. Reconstructed history distinguished</li>
+            <li>Internal integrity vs. External empirical confirmation distinguished</li>
+          </ol>
+        </details>
+        <p class="vix-method-dek" style="font-size:12px;margin:17px 0 0">Registry witness: <code>original_methods_inventory.json</code> · Standalone executors: <strong>0</strong>. Explore all 21 documentary instruments below.</p>
+      </section>
 
       <div class="toolbar">
         <label class="field" aria-label="Search 21 documentary instruments">
@@ -5492,6 +5518,12 @@ import {
   function applyHeadline(h) {
     currentHeadline = h;
     document.body.dataset.synthesisRegime = h.regime;
+    // Opera editorial headers follow the same live synthesis result as the
+    // cover, without giving the Observatory research/Podium authority.
+    document.dispatchEvent(new CustomEvent('vixen:editorial-synthesis', {
+      detail: { patternSubtitle: h.patternSubtitle, headerTagline: h.headerTagline,
+                regime: h.regime, source: 'SYNTHESIS_PRESENTATION_ONLY' }
+    }));
     const hdr = document.getElementById('synthHeaderTagline');
     if (hdr) hdr.textContent = h.headerTagline;
     const sub = document.getElementById('synthPatternSubtitle');
@@ -6002,5 +6034,37 @@ import {
 <script type="module" src="./vixen-estate/fox-house-dock.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-live-mesh-rgi13.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-opaline-couture-rgi14.mjs"></script>
+<script>
+/* RGI18 entry: reveal when critical presentation surfaces exist.
+ * Bounded fail-open; no artificial fixed multi-second loading period.
+ * The same living mesh canvas survives navigation between rooms. */
+(() => {
+  const veil=document.getElementById('vixEntryVeil');
+  if (!veil) return;
+  const start=performance.now();
+  let closed=false;
+  const finish=()=>{
+    if(closed)return;closed=true;
+    veil.dataset.state='revealed';
+    veil.setAttribute('aria-hidden','true');
+    setTimeout(()=>veil.remove(),430);
+  };
+  const ready=()=>Boolean(
+    window.VixenLivingMesh?.mounted &&
+    document.querySelector('#vixenSynthesisSalon .vs-head') &&
+    document.querySelector('#vixenElectricFoundry .ef-proscenium') &&
+    document.querySelector('#view-works .lexicon-layout')
+  );
+  const poll=()=>{
+    if(closed)return;
+    const age=performance.now()-start;
+    if((ready()&&age>=380)||age>=2900){finish();return;}
+    setTimeout(poll,80);
+  };
+  if(document.readyState==='complete')poll();
+  else window.addEventListener('load',poll,{once:true});
+  setTimeout(finish,3100); // fail open even when a module or font fails
+})();
+</script>
 </body>
 </html>
