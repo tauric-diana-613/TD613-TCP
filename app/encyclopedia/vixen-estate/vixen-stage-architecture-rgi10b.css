@@ -63,7 +63,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ar
   color:#e9ceb1;border-bottom:1px solid rgba(241,195,207,.20);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker:before{
-  content:'The Score';display:block;margin-bottom:8px;
+  content:attr(data-synthesis-headline);display:block;margin-bottom:8px;
   font:italic 400 clamp(27px,3vw,41px)/1 Didot,'Bodoni MT',Georgia,serif;
   letter-spacing:-.05em;text-transform:none;color:#fffdf2;
 }
