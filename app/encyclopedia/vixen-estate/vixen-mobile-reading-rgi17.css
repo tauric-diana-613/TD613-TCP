@@ -5,11 +5,16 @@
  * desktop layout remain unchanged. All rules stay inside the mobile query.
  */
 @media screen and (max-width:680px) {
-  /* Restore the title to the upper-middle stage, preserving the chrome's
-     centre of gravity and the original thesis anchoring. */
+  /* Two-ended frontispiece: VIXEN near the masthead; CYBERNETICS
+     near the FOOT of the artwork, a few pixels above the old lower anchor.
+     Preserve the thesis as its own separate footer, below the heading. */
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-title {
-    inset:clamp(138px,18svh,178px) 16px auto!important;
-    gap:16px!important;
+    inset:80px 16px clamp(158px,20svh,184px)!important;
+    height:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:space-between!important;
+    gap:0!important;
   }
 
   /* A single broad reading canvas in Works rather than four nested mats.

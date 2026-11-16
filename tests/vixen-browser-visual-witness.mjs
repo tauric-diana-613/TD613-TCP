@@ -186,12 +186,16 @@ try {
     // Verify frontispiece clearance, Didone thesis framing, non-boilerplate subtitle,
     // and scroll-locked DOM stacking (cards strictly above #vixenLivingMesh).
     const coverGeometry=await page.evaluate(()=>{
+      const w1=document.querySelector('#cover .cover-word-one');
       const w2=document.querySelector('#cover .cover-word-two');
+      const cover=document.querySelector('#cover');
       const sub=document.querySelector('#synthPatternSubtitle');
       const heroDesc=document.querySelector('#synthHeroStatement');
       const enter=document.querySelector('#cover .cover-enter');
       const orbit=document.querySelector('#cover .enter-orbit');
+      const rW1=w1?.getBoundingClientRect();
       const rW2=w2?.getBoundingClientRect();
+      const rCover=cover?.getBoundingClientRect();
       const rSub=sub?.getBoundingClientRect();
       const rDesc=heroDesc?.getBoundingClientRect();
       const rEnter=enter?.getBoundingClientRect();
@@ -205,6 +209,10 @@ try {
         heroLineHeight:parseFloat(descStyle?.lineHeight||'0'),
         word2ToEnterGap:rW2&&enterTargetBottom!==undefined?Math.round(enterTargetBottom-rW2.bottom):null,
         subToEnterGap:rSub&&rEnter?Math.round(rEnter.top-rSub.bottom):null,
+        titleFirstFraction:rCover&&rW1?(rW1.top-rCover.top)/rCover.height:null,
+        titleSecondFraction:rCover&&rW2?(rW2.bottom-rCover.top)/rCover.height:null,
+        word2ToThesisGap:rW2&&rDesc?Math.round(rDesc.top-rW2.bottom):null,
+        titleAlignment:rW2?getComputedStyle(w2.parentElement).justifyContent:null,
         descFloorGap:rDesc?Math.round(innerHeight-rDesc.bottom):null,
         descToEnterHorizGap:rDesc&&rEnter?Math.round(rEnter.left-rDesc.right):null
       };
@@ -213,6 +221,14 @@ try {
       'Rendered cover subtitle must come from computational synthesis without generic boilerplate: '+coverGeometry.subtitleText);
     assert(coverGeometry.word2ToEnterGap>=22&&coverGeometry.subToEnterGap>=20,
       'Cover CYBERNETICS / subtitle block must stay cleanly clear above Enter the Opera: '+JSON.stringify(coverGeometry));
+    if(width<=680){
+      assert.equal(coverGeometry.titleAlignment,'space-between',
+        'Mobile VIXEN and CYBERNETICS must occupy separate cover ends: '+JSON.stringify(coverGeometry));
+      assert(coverGeometry.titleFirstFraction<.22&&coverGeometry.titleSecondFraction>.66&&coverGeometry.titleSecondFraction<.86,
+        'Mobile CYBERNETICS must return to the lower cover, with VIXEN near masthead: '+JSON.stringify(coverGeometry));
+      assert(coverGeometry.word2ToThesisGap>=12,
+        'Mobile subtitle must clear the thesis, not cover it: '+JSON.stringify(coverGeometry));
+    }
     if(width>680){
       assert(coverGeometry.descFloorGap>=18,
         'Desktop editorial thesis must lift cleanly off bottom viewport floor: '+JSON.stringify(coverGeometry));
