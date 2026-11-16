@@ -9,7 +9,7 @@
  *      - EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD (7 Batch-B PDFs)
  *      - APPLEDOUBLE_C4_QUARANTINED (33 ._* files)
  *      - ARCHIVE_CONTAINER_UNEXTRACTED (Archive.zip)
- *      - PRODUCTION_OPERATOR_SECRET_REQUIRED (future personal-corpus production gate)
+ *      - No body suppression in Experiment A; server-side operator access is a future Experiment C main-release prerequisite
  *   2. Cached loaders for corpus-experiment-a-part1.json & corpus-experiment-a-part2.json
  *   3. UTF-16 surrogate-safe passage slicer & WebCrypto SHA-256 verifier
  */
@@ -18,9 +18,9 @@ export const EXPERIMENT_A_CUSTODY_POLICY = Object.freeze({
   cohort: 'EXPERIMENT_A',
   preview_status: 'EXPERIMENT_A_PREVIEW_AUTHORIZED',
   batch_b_status: 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD',
-  production_gate_status: 'PRODUCTION_OPERATOR_SECRET_REQUIRED',
+  experiment_c_main_release_gate: 'SERVER_SIDE_GIVING_STYLE_SECRET_NOT_YET_IMPLEMENTED',
   authority_basis: 'Em blank authorization for Experiment-A Vercel Preview deployments & volunteer-client/dev verification; closure of Experiment A pending Em acceptance',
-  production_gate_model: 'Operator-secret gated personal corpus (modeled after TD613 Giving)',
+  experiment_c_release_condition: 'Implement server-enforced TD613 Giving-style operator access before any main-branch client release; never treat this experimental client-side corpus as secret.',
   empirical_replication_credit: 0,
   human_closure_required: true,
   release_authority: false
@@ -93,8 +93,7 @@ export function resolveDeploymentEnvironment({ hostname = '', vercelEnv = '', ov
 export function resolveExperimentACustody({
   cohort = 'EXPERIMENT_A',
   deployment_env = resolveDeploymentEnvironment(),
-  custody_layer = 'DERIVATIVE_OR_MD',
-  operator_secret_verified = false
+  custody_layer = 'DERIVATIVE_OR_MD'
 } = {}) {
   const layer = String(custody_layer || 'DERIVATIVE_OR_MD').toUpperCase();
   const env = String(deployment_env || 'EXPERIMENT_A_LOCAL').toUpperCase();
@@ -141,18 +140,10 @@ export function resolveExperimentACustody({
     };
   }
 
-  if (env === 'PRODUCTION' && !operator_secret_verified) {
-    return {
-      status: 'PRODUCTION_OPERATOR_SECRET_REQUIRED',
-      authorized: false,
-      readable: false,
-      metadata_searchable: false,
-      production_gate: 'TD613_GIVING_OPERATOR_SECRET',
-      reason: 'Future production deployments gate personal corpora behind an operator secret (like TD613 Giving).'
-    };
-  }
-
-  if (cohort === 'EXPERIMENT_A' && (env === 'VERCEL_PREVIEW' || env === 'EXPERIMENT_A_LOCAL' || operator_secret_verified)) {
+  // Experiment A is a readable research preview, including Vercel builds.
+  // Future main-branch client release is a separate Experiment C admission,
+  // requiring a real server-side secret gate before publishing the corpus.
+  if (cohort === 'EXPERIMENT_A') {
     return {
       status: 'EXPERIMENT_A_PREVIEW_AUTHORIZED',
       authorized: true,
@@ -167,11 +158,11 @@ export function resolveExperimentACustody({
   }
 
   return {
-    status: 'PRODUCTION_OPERATOR_SECRET_REQUIRED',
+    status: 'OUTSIDE_EXPERIMENT_A_COHORT',
     authorized: false,
     readable: false,
     metadata_searchable: false,
-    reason: 'Custody held outside authorized Experiment-A cohort/environment.'
+    reason: 'The requested record is outside the authorized Experiment-A cohort.'
   };
 }
 
@@ -321,20 +312,18 @@ export function shardForWorkIndex(workIndex) {
   return Number(workIndex) >= 16 ? 2 : 1;
 }
 
-function enforceProductionSecretGateForBody(record, opts = {}) {
+function projectExperimentACustodyForBody(record, opts = {}) {
   if (!record) return null;
   const deployment_env = resolveDeploymentEnvironment({
     override: opts.deployment_env || ''
   });
-  const operator_secret_verified = Boolean(opts.operator_secret_verified);
   const custody_layer = record.custody_status === 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD'
     ? 'BATCH_B_PENDING_PDF'
     : 'DERIVATIVE_OR_MD';
   const gate = resolveExperimentACustody({
     cohort: 'EXPERIMENT_A',
     deployment_env,
-    custody_layer,
-    operator_secret_verified
+    custody_layer
   });
   if (!gate.readable) {
     return {
@@ -369,11 +358,11 @@ export async function loadExperimentABodyBySourceId(sourceFileId, { hintShard = 
     const shard = await loadExperimentAShard(sNum, opts);
     if (shard?.sources && shard.sources[sourceFileId]) {
       const rec = await verifyBodyRecordIntegrity(shard.sources[sourceFileId]);
-      return enforceProductionSecretGateForBody(rec, opts);
+      return projectExperimentACustodyForBody(rec, opts);
     }
     if (sNum === 1 && Array.isArray(shard?.batch_b_files)) {
       const bf = shard.batch_b_files.find((x) => x.source_file_id === sourceFileId);
-      if (bf) return enforceProductionSecretGateForBody(bf, opts);
+      if (bf) return projectExperimentACustodyForBody(bf, opts);
     }
     if (sNum === 1 && Array.isArray(shard?.image_assets)) {
       const im = shard.image_assets.find((x) => x.id === sourceFileId || x.filename === sourceFileId);
@@ -392,7 +381,7 @@ export async function loadInstrumentBodyById(instrumentId, opts = {}) {
   const inst = shard2?.instruments?.[instrumentId] || null;
   if (!inst) return null;
   const verified = await verifyBodyRecordIntegrity(inst);
-  return enforceProductionSecretGateForBody(verified, opts);
+  return projectExperimentACustodyForBody(verified, opts);
 }
 
 function snapLeftSafe(str, idx) {
