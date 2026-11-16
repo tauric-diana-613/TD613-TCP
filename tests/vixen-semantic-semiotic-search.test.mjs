@@ -114,7 +114,7 @@ test('Experiment-A shards and semantic-semiotic index satisfy budget, custody, a
   assert.ok(instRec.text_body.length > 500);
 });
 
-test('FADT custody resolver separates Experiment-A preview authorization from future Production operator-secret gate', () => {
+test('Experiment-A readable corpus remains authorized across local, preview and production-labeled build environments; Experiment C main release requires separate server gate', () => {
   const prevRes = corpusMod.resolveExperimentACustody({ deployment_env: 'VERCEL_PREVIEW', custody_layer: 'DERIVATIVE_OR_MD' });
   assert.equal(prevRes.status, 'EXPERIMENT_A_PREVIEW_AUTHORIZED');
   assert.equal(prevRes.authorized, true);
@@ -126,16 +126,18 @@ test('FADT custody resolver separates Experiment-A preview authorization from fu
   assert.equal(batchRes.status, 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
   assert.equal(batchRes.readable, false);
 
-  const prodLocked = corpusMod.resolveExperimentACustody({ deployment_env: 'PRODUCTION', operator_secret_verified: false });
-  assert.equal(prodLocked.status, 'PRODUCTION_OPERATOR_SECRET_REQUIRED');
-  assert.equal(prodLocked.authorized, false);
-  assert.equal(prodLocked.readable, false);
-
-  const prodOpen = corpusMod.resolveExperimentACustody({ deployment_env: 'PRODUCTION', operator_secret_verified: true });
-  assert.equal(prodOpen.status, 'EXPERIMENT_A_PREVIEW_AUTHORIZED');
-  assert.equal(prodOpen.authorized, true);
-  assert.equal(prodOpen.readable, true);
-  assert.equal(prodOpen.empirical_replication_credit, 0);
+  const productionLabeledExperimentA = corpusMod.resolveExperimentACustody({ deployment_env: 'PRODUCTION', operator_secret_verified: false });
+  assert.equal(productionLabeledExperimentA.status, 'EXPERIMENT_A_PREVIEW_AUTHORIZED');
+  assert.equal(productionLabeledExperimentA.authorized, true);
+  assert.equal(productionLabeledExperimentA.readable, true);
+  assert.equal(productionLabeledExperimentA.empirical_replication_credit, 0);
+  assert.equal(corpusMod.EXPERIMENT_A_CUSTODY_POLICY.experiment_c_main_release_gate,
+    'SERVER_SIDE_GIVING_STYLE_SECRET_NOT_YET_IMPLEMENTED');
+  for (const environment of ['EXPERIMENT_A_LOCAL', 'VERCEL_PREVIEW', 'PRODUCTION']) {
+    const gate = corpusMod.resolveExperimentACustody({ deployment_env: environment });
+    assert.equal(gate.readable, true);
+    assert.equal(gate.authorized, true);
+  }
 });
 
 test('Semantic-Semiotic engine retrieves across all readable corpus strata while enforcing negative canary, Cross-Opera quarantine, Unicode, and [32,40] non-collapse', async () => {
@@ -305,9 +307,9 @@ test('vix-cyb.html runtime and static audit confirm zero stale offline-custody l
     // Verify Pedagogue search UI mode pills & inline Wendbine search parity (quotes, -exclude, custody)
     const modeBtns = dom.window.document.querySelectorAll('#globalSearchModes [data-search-mode]');
     assert.equal(modeBtns.length, 5);
-    const prodBlocked = api.searchDetailed('algedonic', { deployment_env: 'PRODUCTION', operator_secret_verified: false });
-    assert.equal(prodBlocked.status, 'PRODUCTION_OPERATOR_SECRET_REQUIRED');
-    assert.equal(prodBlocked.total_hits, 0);
+    const productionLabeledSearch = api.searchDetailed('algedonic', { deployment_env: 'PRODUCTION', operator_secret_verified: false });
+    assert.notEqual(productionLabeledSearch.status, 'PRODUCTION_OPERATOR_SECRET_REQUIRED');
+    assert.ok(productionLabeledSearch.total_hits > 0);
   } finally {
     dom.window.close();
   }
@@ -470,9 +472,9 @@ test('Wendbine search modes, quotes, -exclude order, clean-to-raw projection, pa
     assert.equal(cr.total_hits, 0);
   }
 
-  const prodBlocked = eng.search('algedonic bypass', { deployment_env: 'PRODUCTION', operator_secret_verified: false });
-  assert.equal(prodBlocked.status, 'PRODUCTION_OPERATOR_SECRET_REQUIRED');
-  assert.equal(prodBlocked.total_hits, 0);
+  const productionLabeledSearch = eng.search('algedonic bypass', { deployment_env: 'PRODUCTION', operator_secret_verified: false });
+  assert.equal(productionLabeledSearch.status, 'SEARCH_OK');
+  assert.ok(productionLabeledSearch.total_hits > 0);
 
   // Aperture non-SPD rejection (no 0.05 floor masking!)
   const badCovIdx = structuredClone(rawIdx);
