@@ -12,6 +12,7 @@ import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOuts
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
 import {makePodiumScore,reachPodiumComposeGate} from '../vixen-estate/podium-composition-score.mjs';
+import {createPodiumComposeGate} from '../vixen-estate/podium-compose-gate.mjs';
 import {
  normalizeFusionControls,boundedFusionComparisonSpec,
  FUSION_CHANNEL_KEYS,FUSION_PROFILE_IDS,FUSION_WEIGHT_POLICIES,FUSION_PROFILES
@@ -80,7 +81,7 @@ const safeRecord=w=>({
  }))
 });
 export function createVixenPodium({corpus,membrane=null,engineAdapters={},engines=null,
-  semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT'}={}){
+  semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT',verifyHumanApproval=null}={}){
  const normalizeAdapters=map=>{
   if(map===undefined||map===null)return Object.create(null);
   if(typeof map!=='object'||Array.isArray(map))throw new TypeError('VIXEN_PODIUM_INVALID_ENGINE_ADAPTER_MAP');
@@ -91,6 +92,9 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
   return out;
  };
  const boundAdapters={...normalizeAdapters(engines),...normalizeAdapters(engineAdapters)};
+ // Independent approval only through host-injected verification; never task JSON.
+ const composeGate=createPodiumComposeGate({sourceRevision,verifyHumanApproval});
+ let latestScore=null;
  const attachedSemantic=(semanticSearch&&typeof semanticSearch.search==='function')?semanticSearch:null;
  const counts=corpus&&Array.isArray(corpus.works)&&Array.isArray(corpus.human_gates)&&
   Array.isArray(corpus.instruments)?census(corpus):null;
@@ -274,11 +278,31 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
    }
    if(intent==='podium.score'){
     const score=await makePodiumScore(corpus,params,sourceRevision);
+    latestScore=score;
     event('COMPUTATIONAL_SCORE_PREPARED',{digest:score.score_sha256,change_count:score.changes_count,
      visual_form:score.visuals.selected.id});
     return receipt(intent,'SUPPORTED',score);
    }
    if(intent==='podium.compose'){
+    // Agent-only Compose: stage -> request -> STOP. Task booleans cannot approve.
+    if(params.phase==='inspect')return receipt(intent,'HELD',composeGate.inspect());
+    if(params.phase==='stage'){
+     if(!latestScore||params.score_sha256!==latestScore.score_sha256)
+      return receipt(intent,'HELD',rejection('HELD_CURRENT_COMPUTATIONAL_SCORE_REQUIRED','Review and bind the exact computational Score digest'));
+     const held=await composeGate.stage({...params.materials,computation_score_digest:latestScore.score_sha256});
+     event('COMPOSE_SCORE_STAGE_ATTEMPT',{digest:latestScore.score_sha256,state:held.state});
+     return receipt(intent,'HELD',held);
+    }
+    if(params.phase==='request'){
+     const held=await composeGate.requestCompose({score_digest:params.score_digest});
+     event('COMPOSE_HUMAN_AUTHORIZATION_REQUESTED',{state:held.state,release_authority:false});
+     return receipt(intent,'HELD',held);
+    }
+    if(params.phase==='compose'){
+     const result=composeGate.compose({score_digest:params.score_digest});
+     event('COMPOSE_PREVIEW_ATTEMPT',{state:result.state,release_authority:false});
+     return receipt(intent,result.status==='SUPPORTED'?'SUPPORTED':'HELD',result);
+    }
     const staged=await reachPodiumComposeGate(corpus,params,sourceRevision);
     event('COMPOSE_STOPPED_FOR_HUMAN_CLOSURE',{digest:staged.score_sha256,canonical_write:false,
      source_mutation:false,authorization:'NOT_RECEIVED'});
@@ -796,6 +820,8 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
  return Object.freeze({
   schema:PODIUM_SCHEMA,routes:()=>[...PODIUM_ROUTES],
   dispatch:run,conduct,
+  acceptHumanApprovalFromHost:proof=>composeGate.acceptHumanApproval(proof),
+  compositionStatus:()=>composeGate.inspect(),
   search:conductSearch,exactSearch:conductExactSearch,
   neighbors:conductNeighbors,route:conductRoute,
   heterostratigraphicAudit:conductHeterostratigraphicAudit,
