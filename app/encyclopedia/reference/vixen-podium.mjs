@@ -13,6 +13,8 @@ import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant
 import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
 import {makePodiumScore,reachPodiumComposeGate} from '../vixen-estate/podium-composition-score.mjs';
 import {createPodiumComposeGate} from '../vixen-estate/podium-compose-gate.mjs';
+import {buildRedpenPacket,makeBlankRedpenReturn,adjudicateRedpenReturn,
+ buildInChatRedpenControls} from '../vixen-estate/podium-redpen-adjudication.mjs';
 import {
  normalizeFusionControls,boundedFusionComparisonSpec,
  FUSION_CHANNEL_KEYS,FUSION_PROFILE_IDS,FUSION_WEIGHT_POLICIES,FUSION_PROFILES
@@ -36,7 +38,7 @@ export const PODIUM_ROUTES=Object.freeze([
  'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
  'engine.capabilities','engine.invoke',
  'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain',
- 'podium.score','podium.compose'
+ 'podium.score','podium.redpen','podium.compose'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze([
@@ -94,7 +96,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
  const boundAdapters={...normalizeAdapters(engines),...normalizeAdapters(engineAdapters)};
  // Independent approval only through host-injected verification; never task JSON.
  const composeGate=createPodiumComposeGate({sourceRevision,verifyHumanApproval});
- let latestScore=null;
+ let latestScore=null,latestRedpenPacket=null,latestRedpenReturn=null;
  const attachedSemantic=(semanticSearch&&typeof semanticSearch.search==='function')?semanticSearch:null;
  const counts=corpus&&Array.isArray(corpus.works)&&Array.isArray(corpus.human_gates)&&
   Array.isArray(corpus.instruments)?census(corpus):null;
@@ -281,10 +283,37 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
     if(latestScore?.score_sha256!==score.score_sha256){
      composeGate.invalidate('NEW_COMPUTATIONAL_SCORE_INVALIDATES_PREVIOUS_HUMAN_CHALLENGE');
     }
-    latestScore=score;
+    latestScore=score;latestRedpenPacket=null;latestRedpenReturn=null;
     event('COMPUTATIONAL_SCORE_PREPARED',{digest:score.score_sha256,change_count:score.changes_count,
      visual_form:score.visuals.selected.id});
     return receipt(intent,'SUPPORTED',score);
+   }
+   if(intent==='podium.redpen'){
+    // Redpen is a returnable critique; never independent WebAuthn authority.
+    if(!latestScore||params.score_sha256!==latestScore.score_sha256)
+     return receipt(intent,'HELD',rejection('HELD_CURRENT_COMPUTATIONAL_SCORE_REQUIRED',
+      'An immutable current Score must be explicitly selected'));
+    if(!latestRedpenPacket)latestRedpenPacket=buildRedpenPacket(latestScore);
+    if(params.phase==='export'||params.phase==='chat')
+     return receipt(intent,'SUPPORTED',{
+      packet:latestRedpenPacket,
+      blank_return:makeBlankRedpenReturn(latestRedpenPacket,{
+       transport:params.phase==='chat'?'IN_CHAT_DECISION_RETURN':'REDPEN_JSON_RETURN'}),
+      chat_controls:buildInChatRedpenControls(latestRedpenPacket),
+      visual_attachment_gate:latestRedpenPacket.visual_review_attachment,
+      release_authority:false
+     });
+    if(params.phase==='return'){
+     const decision=adjudicateRedpenReturn(latestRedpenPacket,params.submission);
+     latestRedpenReturn=decision.status==='REVIEW_READY_FOR_INDEPENDENT_AUTHENTICATION'?
+      decision:null;
+     if(!latestRedpenReturn)composeGate.invalidate('REDPEN_REVISION_OR_REJECTION_REQUIRES_NEW_SCORE');
+     event('REDPEN_REVIEW_RETURNED',{score_sha256:latestScore.score_sha256,
+      state:decision.status,human_authentication_completed:false});
+     return receipt(intent,decision.status.startsWith('HELD')?'HELD':'SUPPORTED',decision);
+    }
+    return receipt(intent,'HELD',rejection('HELD_RED_PEN_PHASE_REQUIRED',
+     'Choose export, chat or return. No automatic Compose.'));
    }
    if(intent==='podium.compose'){
     // Agent-only Compose: stage -> request -> STOP. Task booleans cannot approve.
