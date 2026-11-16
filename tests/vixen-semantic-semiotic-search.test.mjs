@@ -88,12 +88,7 @@ test('Experiment-A shards and semantic-semiotic index satisfy budget, custody, a
 
   const totalSources = Object.keys(p1.sources).length + Object.keys(p2.sources).length;
   assert.equal(totalSources, 53);
-  assert.equal(p1.batch_b_files.length, 7);
-  for (const b of p1.batch_b_files) {
-    assert.equal(b.custody_status, 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
-    assert.equal(b.body_representation, 'BINARY_PENDING_UPLOAD_NO_TEXT');
-    assert.equal(b.text_body, null);
-  }
+  assert.deepEqual(p1.batch_b_files, [], 'A0 baseline must exclude held-out manuscript metadata and bodies');
 
   const mdRec = await corpusMod.loadExperimentABodyBySourceId('emsrc_b7e4e42924d33bdaf666a4f8');
   assert.equal(mdRec.custody_status, 'EXPERIMENT_A_PREVIEW_AUTHORIZED');
@@ -158,10 +153,8 @@ test('Semantic-Semiotic engine retrieves across all readable corpus strata while
   assert.equal(qSpsc.status, 'SEARCH_OK');
   assert.equal(qSpsc.hits[0].source_file_id, 'emsrc_2ddaf8197adecc8c5ba09c33');
 
-  const qBatchB = eng.search('Semantic Error Derivatives Research', { limit: 5 });
-  assert.equal(qBatchB.status, 'SEARCH_OK');
-  assert.equal(qBatchB.hits[0].id, 'emb_20260911_811766eb1387');
-  assert.equal(qBatchB.hits[0].custody_status, 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
+  assert.equal(eng.sourcesMeta.some(m => m.cust === 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD'), false,
+    'No held-out metadata may reach the full index');
 
   const qImg = eng.search('sculptural frontispiece chrome astrolabe', { limit: 5 });
   assert.equal(qImg.status, 'SEARCH_OK');
@@ -301,8 +294,8 @@ test('vix-cyb.html runtime and static audit confirm zero stale offline-custody l
     assert.equal(det.empirical_replication_credit, 0);
     const workRec = api.get('emwork_085223e721130117f5510975');
     assert.equal(workRec.custody_status, 'EXPERIMENT_A_PREVIEW_AUTHORIZED');
-    const batchRec = api.get('emb_20260911_811766eb1387');
-    assert.equal(batchRec.custody_status, 'EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD');
+    assert.equal(JSON.parse(dom.window.document.getElementById('vixen-corpus-bundle').textContent).batch_b_files.length,0);
+    assert.equal(dom.window.document.querySelector('[data-work-cluster="BATCH_B"]'),null);
 
     // Verify Pedagogue search UI mode pills & inline Wendbine search parity (quotes, -exclude, custody)
     const modeBtns = dom.window.document.querySelectorAll('#globalSearchModes [data-search-mode]');
@@ -322,7 +315,7 @@ test('Wendbine hardening: streamed byte cap, fatal UTF-8 decode, sealed shard ve
   assert.equal(sealsCheck.empirical_replication_credit, 0);
   assert.equal(sealsCheck.sources_verified, 53);
   assert.equal(sealsCheck.instruments_verified, 21);
-  assert.equal(sealsCheck.batch_b_pending_count, 7);
+  assert.equal(sealsCheck.batch_b_pending_count, 0);
 
   // Fatal UTF-8 check on parseLocalDocument with malformed UTF-8 sequence [0xFF, 0xFE, 0xFD]
   await assert.rejects(
@@ -452,11 +445,11 @@ test('Wendbine search modes, quotes, -exclude order, clean-to-raw projection, pa
   assert.equal(rLex.status, 'SEARCH_OK');
   assert.ok(rLex.hits.every((h) => h.s_sem === 0));
 
-  // Exact UTF-8 byte search (overlapping advance & [2, 500] bounds & Batch-B rights-gaps status)
+  // Exact UTF-8 byte search with no held-out metadata gap in the A0 baseline
   const exTooShort = await corpusMod.exactSearchInExperimentAShards('a');
   assert.equal(exTooShort.status, 'EXACT_QUERY_TOO_SHORT');
   const exOk = await corpusMod.exactSearchInExperimentAShards('Denavit-Hartenberg', { limit: 10 });
-  assert.equal(exOk.status, 'EXECUTED_MATCHES_WITH_BATCH_B_RIGHTS_GAPS');
+  assert.equal(exOk.status, 'EXECUTED_MATCHES');
   assert.ok(exOk.returned_hits >= 1);
   assert.equal(exOk.hits[0].offset_unit, 'UTF8_BYTE');
   assert.match(exOk.hits[0].exact_utf8_sha256, /^[0-9a-f]{64}$/);
