@@ -400,7 +400,7 @@ export function composeSalonPlan(corpus,input={}){
  const route=seq==='A_B'?[left.source_file_id,right.source_file_id]:[right.source_file_id,left.source_file_id];
  const deficits=[
   'Batch-A source texts are authorized for Experiment-A Vercel preview and Em volunteer-client inspection; production releases will lock personal corpora behind an operator secret (like TD613 Giving).',
-  'Seven Batch-B PDFs remain metadata-only until their binaries are uploaded to git.',
+  'Future supplemental research requires independently verified body hydration before scoring.',
   'No independent external witness has established any cross-Work causal relationship.',
   'No human ratification has closed the eight bilateral source-identity gates.',
   'No Experiment B arm has been run by this session.'
