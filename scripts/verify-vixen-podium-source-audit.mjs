@@ -44,14 +44,14 @@ const manifest=JSON.parse(await get(relative[5]));
 const cli=await get(relative[6]);
 const tests=await get(relative[8]);
 const constraints=[
- ['EIGHTEEN_TYPED_ROUTES_WITH_LEGACY_SIXTEEN_PRESERVED',
-  manifest.routes.length===18&&code.includes("PODIUM_ROUTES")&&
+ ['NINETEEN_TYPED_ROUTES_WITH_LEGACY_SIXTEEN_AND_REDPEN_PRESERVED',
+  manifest.routes.length===19&&code.includes("PODIUM_ROUTES")&&
   [
    'podium.describe','vixen.work.inspect','vixen.gates.inspect','universal.open',
    'universal.search','universal.get','universal.related','synthesis.propose',
    'vixen.salon.compose','experiment_b.preregister','engine.capabilities','engine.invoke',
    'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain',
-   'podium.score','podium.compose'
+   'podium.score','podium.redpen','podium.compose'
   ].every(id=>manifest.routes.some(route=>route.id===id))],
  ['NO_MACHINE_AUTO_IMPORT',!code.includes('.admitRecord(')&&!code.includes('.prepareImport(')],
  ['SALON_SHARED_CONJECTURAL_KERNEL',code.includes('composeSalonPlan(corpus,params)')&&
