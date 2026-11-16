@@ -80,11 +80,51 @@ function flushParagraph(doc, frag, lines) {
   lines.length = 0;
 }
 
+/**
+ * Presentation-only repair for OCR/PDF derivatives whose blank-line spacing
+ * produced one- or two-word HTML paragraphs. A run needs >= 7 neighboring,
+ * short, unpunctuated fragments; headings, lists and quotations are excluded.
+ * Neither raw manuscript bytes nor source hashes are changed. Full exact text
+ * remains visible in the disclosure following the editorial projection.
+ */
+export function projectManuscriptLineation(source) {
+  const raw = String(source ?? '').replace(/\r\n/g, '\n');
+  const blocks = raw.split(/\n[ \t]*\n+/);
+  const isMicro = (value) => {
+    const line = value.trim();
+    return line.length > 0 && line.length <= 58 &&
+      !line.includes('\n') && line.split(/\s+/).length <= 4 &&
+      !/^(?:#{1,6}\s|>|[-*+]\s|\d+[.)]\s|`{3}|~{3}|\$\$|\\\[)/.test(line) &&
+      !/[.!?…:;]$/.test(line);
+  };
+  const result = [];
+  let collapsed = 0;
+  for (let i = 0; i < blocks.length;) {
+    let next = i;
+    while (next < blocks.length && isMicro(blocks[next])) next++;
+    const run = blocks.slice(i, next);
+    const average = run.reduce((sum, part) => sum + part.trim().split(/\s+/).length, 0) / Math.max(1, run.length);
+    const lowercaseFragments = run.filter(part => /^[a-z]/.test(part.trim())).length;
+    // A normal sequence of short editorial headings remains distinct; only
+    // pathologically fractured prose is reflowed.
+    if (run.length >= 7 && average <= 2.7 && lowercaseFragments >= Math.ceil(run.length * .55)) {
+      result.push(run.map(part => part.trim()).join(' '));
+      collapsed += run.length - 1;
+      i = next;
+    } else {
+      result.push(blocks[i]);
+      i++;
+    }
+  }
+  return Object.freeze({text: result.join('\n\n'), collapsed_micro_paragraphs: collapsed});
+}
+
 export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw = true} = {}) {
   if (!target || typeof target.replaceChildren !== 'function') throw new TypeError('VIXEN_READER_TARGET_REQUIRED');
   const doc = target.ownerDocument;
   const raw = String(manuscript ?? '');
-  const lines = raw.replace(/\r\n/g, '\n').split('\n');
+  const projected = projectManuscriptLineation(raw);
+  const lines = projected.text.split('\n');
   const fragment = doc.createDocumentFragment();
   const paragraph = [];
   let list = null;
@@ -190,6 +230,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw
   target.replaceChildren(fragment);
   target.dataset.sourceId = sourceId;
   target.dataset.presentation = 'full-manuscript-mathml';
+  target.dataset.lineation = projected.collapsed_micro_paragraphs ? 'pdf-fragment-reflow' : 'source-paragraphs';
   if (showRaw) {
     const rawDetails = doc.createElement('details');
     rawDetails.className = 'vix-reader-raw';
@@ -203,6 +244,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw
   return Object.freeze({
     source_id: sourceId,
     source_characters: raw.length,
+    display_lineation_collapses: projected.collapsed_micro_paragraphs,
     displayed_complete: true,
     rendered_math_elements: target.querySelectorAll('[data-math-rendered="mathml"]').length,
     fallback_math_elements: target.querySelectorAll('[data-math-rendered="source-fallback"]').length
