@@ -80,6 +80,20 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   lastRadiometry:null,resting:false,history:[],
   notice:'Choose two recorded Works, read their manuscripts, select a documentary method, and construct an unratified question. Experiment-A texts remain readable throughout this research preview.'
  };
+ // First-landing source verification cache, shared by the two Salon readers.
+ // All data remain within Experiment-A's existing custody loader; previewing
+ // a source here never admits or changes any work, evidence or authority.
+ const verifiedBodies=new Map();
+ function warmSalonBody(sourceId){
+  if(!sourceId)return Promise.resolve({record:null,error:null});
+  if(!verifiedBodies.has(sourceId)){
+   const preparation=import('./corpus-experiment-a.mjs')
+    .then(mod=>mod.loadExperimentABodyBySourceId(sourceId))
+    .then(record=>({record,error:null}),error=>({record:null,error}));
+   verifiedBodies.set(sourceId,preparation);
+  }
+  return verifiedBodies.get(sourceId);
+ }
  let veilHandle=null;
  const opticalClock={time:0};
  const folded=SALON_COMPOSITOR==='FOLDED_CHROME';
@@ -306,8 +320,9 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
     manuscriptReader.dataset.loaded='loading';
     manuscript.textContent='Loading and verifying the selected manuscript…';
     try{
-     const mod=await import('./corpus-experiment-a.mjs');
-     const rec=await mod.loadExperimentABodyBySourceId(src.source_file_id);
+     const warmed=await warmSalonBody(src.source_file_id);
+     if(warmed.error)throw warmed.error;
+     const rec=warmed.record;
      if(!manuscriptReader.isConnected)return;
      if(typeof rec?.text_body==='string'&&rec.text_body.length){
       const {mountVixenManuscript}=await import('./manuscript-reader.mjs');
@@ -693,7 +708,22 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   box.append(machine);
   return box
  }
+ // Warm both current manuscript bodies as soon as the Opera loads, without
+ // opening any disclosure or forcing a hidden document into layout.
+ const warmCurrent=()=>Promise.all(state.sources.map(id=>warmSalonBody(id)));
+ if(typeof window!=='undefined'){
+  Object.defineProperty(window,'VIXEN_SALON_WARM',{
+   configurable:true,
+   value:Object.freeze({
+    ready:warmCurrent,
+    status:()=>Object.freeze({expected:state.sources.length,
+     cached:state.sources.filter(id=>verifiedBodies.has(id)).length,
+     source_mutation:false,admission_authority:false})
+   })
+  });
+ }
  addEvent('SALON_ENTERED',{operator_authority:'UNRATIFIED_QUESTIONS_ONLY'});render();
+ void warmCurrent();
  window.addEventListener('vixen-study-tray-change',()=>{
   const status=host.querySelector('.vs-status');
   if(status&&!state.resting)status.textContent='The shared session study tray has changed; its source identities remain unchanged.';
