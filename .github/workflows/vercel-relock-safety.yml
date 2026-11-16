@@ -794,6 +794,12 @@ jobs:
           VERCEL_GIT_REPO_OWNER: tauric-diana-613
         run: |
           set -euo pipefail
+          # Prebuilt function bundles refer to repository sources. Source-only
+          # .vercelignore exclusions must not drop those required function files.
+          # This edit is temporary in the CI checkout and restored on exit.
+          cp .vercelignore "$RUNNER_TEMP/vercelignore.preview-original"
+          trap 'cp "$RUNNER_TEMP/vercelignore.preview-original" .vercelignore' EXIT
+          grep -v '^packages/dome_world_exact/' "$RUNNER_TEMP/vercelignore.preview-original" > .vercelignore
           vercel deploy --prebuilt --archive=tgz --yes --scope "$VERCEL_SCOPE" | tee "$RUNNER_TEMP/vercel-preview-deploy.log"
           URL="$(grep -Eo 'https://[A-Za-z0-9.-]+\.vercel\.app' "$RUNNER_TEMP/vercel-preview-deploy.log" | tail -n 1)"
           [[ "$URL" =~ ^https://[A-Za-z0-9.-]+\.vercel\.app$ ]] || { echo 'Invalid immutable preview URL.' >&2; exit 1; }
