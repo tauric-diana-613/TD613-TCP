@@ -14,7 +14,8 @@ export const MESH_CONTRACT=Object.freeze({
  source_rule:'DECLARED_WORK_SELECTION_OR_NEUTRAL_VIXEN_SEED',
  source_mutation:false,cross_estate_promotion:false,empirical_credit:0,experiment_b_flight:'HELD',
  operator_motion_control:'motionBtn[aria-pressed]',reduced_motion:'STATIC_ONE_FRAME',auto_deploy:false,
- shared_scene:'IDENTICAL_GEOMETRY_DISJOINT_VIEWPORTS'
+ shared_scene:'IDENTICAL_GEOMETRY_DISJOINT_VIEWPORTS',
+ authorized_preview_field:'RENDER_SEEDS_AND_OPTICS_ONLY_NOT_HUMAN_AUTHORITY'
 });
 export const ELECTRIC_COUTURE=Object.freeze({
  pearl:'#FFF8F3',blush:'#FFE3EB',rose:'#FF91AF',fuchsia:'#FF3F9E',
@@ -22,6 +23,23 @@ export const ELECTRIC_COUTURE=Object.freeze({
 });
 const hash=s=>{let n=2166136261;for(const c of s){n^=c.codePointAt(0);n=Math.imul(n,16777619)>>>0}return n};
 const smoothstep=(e0,e1,x)=>{const u=Math.max(0,Math.min(1,(x-e0)/Math.max(1e-6,e1-e0)));return u*u*(3-2*u);};
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+export function normalizeComposerVisualField(input){
+ if(!input||input.schema!=='td613.vixen.observatory.visual-field/v1'||
+  input.status!=='SUPPORTED_PREVIEW_ONLY'||input.release_authority!==false||
+  input.canonical_mutation!==false||!Array.isArray(input.source_ids)||
+  !input.source_ids.length||input.source_ids.length>2||
+  input.source_ids.some(x=>typeof x!=='string'||x.length<1||x.length>200)||
+  typeof input.form_id!=='string'||!input.form_id||input.form_id.length>120||
+  !/^[0-9a-f]{64}$/.test(input.score_digest||'')||
+  !Number.isFinite(input.mesh_strength)||input.mesh_strength<0||input.mesh_strength>1||
+  !Number.isFinite(input.fold_strength)||input.fold_strength<0||input.fold_strength>1)return null;
+ return Object.freeze({schema:input.schema,status:input.status,
+  source_ids:Object.freeze(input.source_ids.slice()),form_id:input.form_id,
+  score_digest:input.score_digest,mesh_strength:input.mesh_strength,
+  fold_strength:input.fold_strength,preview_only:true,source_ids_as_seeds_only:true,
+  empirical_credit:0,canonical_mutation:false,release_authority:false});
+}
 const OCCLUSION_SELECTORS=Object.freeze([
  '.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
  '#view-overview > #cover','.hero-art',
@@ -62,14 +80,20 @@ const OCCLUSION_SELECTORS=Object.freeze([
  '.view:not([hidden]) input','.view:not([hidden]) textarea','.view:not([hidden]) summary'
 ]);
 export function buildLivingMesh({width=1440,height=900,time=0,view='overview',sourceIds=[],
- pointer={x:.5,y:.5},scroll=0}={}){
+ pointer={x:.5,y:.5},scroll=0,opticalField=null}={}){
  if(![width,height,time].every(Number.isFinite)||width<=0||height<=0)
   throw new RangeError('MESH_REQUIRES_POSITIVE_VIEWPORT');
- const ids=sourceIds.slice(0,2).map(String),seed=hash(ids.join('|')||'VIXEN_NEUTRAL');
+ const preview=normalizeComposerVisualField(opticalField);
+ const ids=(preview?.source_ids||sourceIds.slice(0,2)).map(String);
+ const seed=hash((ids.join('|')||'VIXEN_NEUTRAL')+(preview?'|'+preview.form_id:''));
  const field=measureCoutureBeats({width:360,height:420,time,seed});
- const cx=width*(view==='overview'?.82:.74)+(Math.max(0,Math.min(1,pointer.x))-.5)*16;
- const cy=height*.52-Math.min(18,Math.max(0,scroll)*.008);
- const scene=buildSalonField({width,height,time,field,cx,cy,scale:Math.min(width,height)*.82,sourceIds:ids});
+ const cx=width*(view==='overview'?.82:.74)+(Math.max(0,Math.min(1,pointer.x))-.5)*16+
+  (preview?(preview.mesh_strength-.5)*26:0);
+ const cy=height*.52-Math.min(18,Math.max(0,scroll)*.008)+
+  (preview?(preview.fold_strength-.5)*14:0);
+ const scale=Math.min(width,height)*.82*(preview?.fold_strength!==undefined?
+  .78+.44*preview.fold_strength:1);
+ const scene=buildSalonField({width,height,time,field,cx,cy,scale,sourceIds:ids});
  const edge=Math.max(24,Math.min(width,height)*.065);
  const deflected=scene.trails.map(t=>({
   ...t,
@@ -84,6 +108,8 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='overview',so
  const deflectedScene={...scene,trails:deflected};
  return {schema:MESH_CONTRACT.schema,width,height,phase:time,view,field,scene:deflectedScene,seed,
   source_mode:ids.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK',
+  visual_form_id:preview?.form_id||null,preview_score_digest:preview?.score_digest||null,
+  field_strength:preview?.mesh_strength??null,
   fibers:CARRIERS,empirical_credit:0};
 }
 /** Partition exclusions into minimal disjoint layers and clip via 'evenodd' viewport complement. */
@@ -117,7 +143,8 @@ export function paintLivingMesh(ctx,model,{intensity=1,scene=model.scene,origin=
  ctx.restore();
  return {schema:MESH_CONTRACT.schema,painted:true,source_mode:model.source_mode,
   model_carriers:39,tracks:scene.trails.length,contacts:scene.contacts.filter(c=>c.junctionId!==null).length,
-  phase:scene.time,empirical_credit:0};
+  phase:scene.time,visual_form_id:model.visual_form_id||null,
+  preview_score_digest:model.preview_score_digest||null,empirical_credit:0};
 }
 export function mountVixenLivingMesh({document:doc=globalThis.document,window:win=globalThis.window}={}){
  if(!doc?.body||!win?.requestAnimationFrame)return {mounted:false,reason:'NO_BROWSER_HOST'};
@@ -166,12 +193,21 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   const shared=stageOwned()&&frame?.view===view()?frame:null;
   // A parked optical room cannot synthesize a competing autonomous phase.
   if(stageOwned()&&!shared){ctx.clearRect(0,0,w,h);canvas.dataset.animation='WAITING_FOR_HOST';return;}
+  // A source-bound machine preview may condition the room-wide optical cloth.
+  // The field is a visual projection, never a custody/authorization grant.
+  const supplied=shared?.opticalField||
+   (!stageOwned()?win.VIXEN_ELECTRIC_FOUNDRY?.approvedVisualField?.():null);
+  const preview=normalizeComposerVisualField(supplied);
   const model=shared?.scene?{width:w,height:h,scene:shared.scene,
-   source_mode:shared.sourceIds?.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK'}:
-   buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),sourceIds:shared?.sourceIds??readSources(),pointer,
-    scroll:win.scrollY||win.pageYOffset||0});
+   source_mode:shared.sourceIds?.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK',
+   visual_form_id:preview?.form_id||null,preview_score_digest:preview?.score_digest||null}:
+   buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),
+    sourceIds:shared?.sourceIds??preview?.source_ids??readSources(),
+    opticalField:preview,pointer,scroll:win.scrollY||win.pageYOffset||0});
   const rect=shared?.stageRect;
-  last=paintLivingMesh(ctx,model,{intensity:view()==='observatory'?.46:1,
+  const light=preview?(view()==='observatory'?.22+.40*preview.mesh_strength:
+   .45+.5*preview.mesh_strength):(view()==='observatory'?.46:1);
+  last=paintLivingMesh(ctx,model,{intensity:clamp(light,0,1),
    scene:shared?.scene||model.scene,origin:rect?{x:rect.left,y:rect.top}:{x:0,y:0},
    exclusions:rect?[...exclusions,rect]:exclusions});
   canvas.dataset.route=view();canvas.dataset.animation=paused()||shared?.held?'STILL':shared?'HOST_FRAME':'LIVE';
@@ -219,10 +255,12 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  schedule();
  return Object.freeze({mounted:true,contract:MESH_CONTRACT,
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
-   phase:last?.phase??time,source_mode:last?.source_mode,model_carriers:last?.model_carriers,
+   phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
+   model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,empirical_credit:0}),
   renderOnce:()=>{readExclusions(true);draw();return last;},
-  renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,view:route=view(),force=false}={})=>{
+  renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,
+   opticalField=null,view:route=view(),force=false}={})=>{
    if(disposed||doc.hidden||!stageOwned()||route!==view()||!enabled()||!Number.isFinite(phase))return null;
    if(paused()&&!force)return last;
    // Host projections never start a second RAF.
@@ -234,7 +272,9 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
     lastObservatoryPaint=now;
    }
    if(force)readExclusions(true);
-   hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route};hostFrames++;draw(hostFrame);return last;
+   hostFrame={time:phase,sourceIds,scene,stageRect,held,view:route,
+    opticalField:normalizeComposerVisualField(opticalField)};
+   hostFrames++;draw(hostFrame);return last;
   },
   dispose(){disposed=true;cancel();if(layoutRaf)win.cancelAnimationFrame(layoutRaf);layoutRaf=0;mutation.disconnect();canvas.remove();
    win.removeEventListener('pointermove',onPointer);win.removeEventListener('resize',onLayout);
