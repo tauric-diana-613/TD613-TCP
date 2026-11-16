@@ -42,10 +42,11 @@ export function createComposeCustodyLedger({directory=null,now=()=>new Date().to
  const dir=resolve(directory),entries=join(dir,'entries'),lock=join(dir,'.writer.lock');
  async function readHead(){
   let names;
-  try{names=(await readdir(entries)).filter(x=>x.endsWith('.json')).sort()}
+  let allNames;
+  try{allNames=await readdir(entries);names=allNames.filter(x=>x.endsWith('.json')).sort()}
   catch(e){if(e.code==='ENOENT')return {head:'0'.repeat(64),events:[]};throw e}
   // Never ignore uncommitted fragments after an interrupted filesystem write.
-  if(names.some(x=>x.startsWith('.uncommitted-')))
+  if(allNames.some(x=>x.startsWith('.uncommitted-')))
     error('HELD_UNCOMMITTED_CUSTODY_FRAGMENT');
   let previous='0'.repeat(64),seq=0;
   const events=[];
