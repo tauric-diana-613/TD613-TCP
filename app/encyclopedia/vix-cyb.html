@@ -524,6 +524,14 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
+<link rel="modulepreload" href="./vixen-estate/vixen-arrival-prewarm-rgi19.mjs">
+<link rel="modulepreload" href="./vixen-estate/vixen-opaline-couture-rgi14.mjs">
+<link rel="modulepreload" href="./vixen-estate/research-chamber.mjs">
+<link rel="modulepreload" href="./vixen-estate/manuscript-reader.mjs">
+<link rel="modulepreload" href="./vixen-estate/semantic-semiotic-search.mjs">
+<link rel="modulepreload" href="./vixen-estate/corpus-experiment-a.mjs">
+<link rel="preload" as="image" href="./assets/vixen/frontispiece-desktop.png" media="(min-width: 681px)" fetchpriority="high">
+<link rel="preload" as="image" href="./assets/vixen/frontispiece-mobile.png" media="(max-width: 680px)" fetchpriority="high">
 <link rel="alternate" type="application/json" title="Vixen brand asset intake contract" href="./assets/vixen/asset-contract.json">
 </head>
 <body data-view="overview" data-vixen-frontispiece-source="external-selected">
@@ -656,7 +664,7 @@ body[data-view="overview"] .reading-back{display:none}
       <figure class="hero-art">
         <picture data-vixen-brand-asset-contract="./assets/vixen/asset-contract.json">
           <source data-vixen-asset-role="mobile" media="(max-width: 680px)" srcset="./assets/vixen/frontispiece-mobile.png" type="image/png">
-          <img data-vixen-asset-role="desktop" src="./assets/vixen/frontispiece-desktop.png" alt="Mugler-unchained chromepunk refractive couture sculpture: soaring liquid-mercury chrome wing-strakes suspending three intersecting S, W, and A gyroscopic control-plane rings, five concentric vernier clock rings, and a central hexagonal optical rock-crystal prism pierced by a vertical algedonic preemption lance on obsidian black.">
+          <img fetchpriority="high" data-vixen-asset-role="desktop" src="./assets/vixen/frontispiece-desktop.png" alt="Mugler-unchained chromepunk refractive couture sculpture: soaring liquid-mercury chrome wing-strakes suspending three intersecting S, W, and A gyroscopic control-plane rings, five concentric vernier clock rings, and a central hexagonal optical rock-crystal prism pierced by a vertical algedonic preemption lance on obsidian black.">
         </picture>
       </figure>
 
@@ -5357,7 +5365,15 @@ body[data-view="overview"] .reading-back{display:none}
   renderCollectionView();
   bindRefButtons(document);
   initEvents();
-  hydrateExperimentAModules();
+  // All-eight-room startup shares one deep source hydration; no route-load
+  // requests can create a duplicate search engine on first entry.
+  window.VIXEN_BOOT_HYDRATION = hydrateExperimentAModules().then(result => ({
+    status: result?.error ? 'HELD_NONCRITICAL_SOURCE' : 'SOURCE_ENGINE_READY',
+    error: result?.error || null,
+    source_authority: false
+  })).catch(error=>({
+    status:'HELD_NONCRITICAL_SOURCE',error:String(error),source_authority:false
+  }));
   renderMathSlots(document);
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stopObservatoryFrame();else scheduleObservatoryFrame()});
   scheduleObservatoryFrame();
@@ -6034,37 +6050,6 @@ import {
 <script type="module" src="./vixen-estate/fox-house-dock.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-live-mesh-rgi13.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-opaline-couture-rgi14.mjs"></script>
-<script>
-/* RGI18 entry: reveal when critical presentation surfaces exist.
- * Bounded fail-open; no artificial fixed multi-second loading period.
- * The same living mesh canvas survives navigation between rooms. */
-(() => {
-  const veil=document.getElementById('vixEntryVeil');
-  if (!veil) return;
-  const start=performance.now();
-  let closed=false;
-  const finish=()=>{
-    if(closed)return;closed=true;
-    veil.dataset.state='revealed';
-    veil.setAttribute('aria-hidden','true');
-    setTimeout(()=>veil.remove(),430);
-  };
-  const ready=()=>Boolean(
-    window.VixenLivingMesh?.mounted &&
-    document.querySelector('#vixenSynthesisSalon .vs-head') &&
-    document.querySelector('#vixenElectricFoundry .ef-proscenium') &&
-    document.querySelector('#view-works .lexicon-layout')
-  );
-  const poll=()=>{
-    if(closed)return;
-    const age=performance.now()-start;
-    if((ready()&&age>=380)||age>=2900){finish();return;}
-    setTimeout(poll,80);
-  };
-  if(document.readyState==='complete')poll();
-  else window.addEventListener('load',poll,{once:true});
-  setTimeout(finish,3100); // fail open even when a module or font fails
-})();
-</script>
+<script type="module" src="./vixen-estate/vixen-arrival-prewarm-rgi19.mjs"></script>
 </body>
 </html>
