@@ -4,9 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       commit_sha:
-        description: 'Exact 40-character HEAD SHA of PR #1730 (must have GREEN consolidated CI)'
+        description: 'Exact reviewed current PR #1730 HEAD SHA'
         type: string
         required: true
+      prepare_run_id:
+        description: 'Successful TD613 Vixen Preview Prepare run ID reviewed by owner'
+        type: string
+        required: true
+  issue_comment:
+    types: [created]
 
 permissions:
   contents: read
@@ -20,12 +26,25 @@ concurrency:
 jobs:
   preview:
     name: Verified Vixen preview
-    if: github.actor == github.repository_owner && github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (
+        (github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner) ||
+        (
+          github.event_name == 'issue_comment' &&
+          github.event.issue.number == 1730 &&
+          github.event.issue.pull_request != null &&
+          github.event.comment.user.login == github.repository_owner &&
+          startsWith(github.event.comment.body, '/td613-vixen-preview DEPLOY ')
+        )
+      )
     runs-on: ubuntu-latest
     timeout-minutes: 120
     environment: vixen-preview
     env:
-      INPUT_SHA: ${{ inputs.commit_sha }}
+      MANUAL_SHA: ${{ inputs.commit_sha || '' }}
+      MANUAL_PREPARE_RUN: ${{ inputs.prepare_run_id || '' }}
+      APPROVAL_COMMENT: ${{ github.event.comment.body || '' }}
       VERCEL_SCOPE: tauric-diana-s-projects
       VERCEL_PROJECT: td-613-tcp
       VERCEL_ORG_ID: team_pX5L7AFivMzMU1lH28Y6RIhX
@@ -33,6 +52,53 @@ jobs:
       VERCEL_CLI_VERSION: '65.16.0'
 
     steps:
+      - name: Enforce distinct OWNER approval and successful preflight receipt
+        id: operator_gate
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          APPROVED_SHA="$MANUAL_SHA"
+          PREPARE_RUN="$MANUAL_PREPARE_RUN"
+          if [[ "$GITHUB_EVENT_NAME" == 'issue_comment' ]]; then
+            read -r COMMAND OP APPROVED_SHA PREPARE_RUN EXTRA <<< "$APPROVAL_COMMENT"
+            [[ "$COMMAND" == '/td613-vixen-preview' && "$OP" == 'DEPLOY' && -z "$EXTRA" ]] || {
+              echo 'Operator deploy command must be exact.' >&2
+              exit 1
+            }
+          fi
+          [[ "$APPROVED_SHA" =~ ^[0-9a-f]{40}$ ]] || {
+            echo 'Operator must approve an exact 40-character source SHA.' >&2
+            exit 1
+          }
+          [[ "$PREPARE_RUN" =~ ^[0-9]{8,20}$ ]] || {
+            echo 'Operator must identify a successful preparation run ID.' >&2
+            exit 1
+          }
+          PREPARED="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN")"
+          jq -e \
+            '.name == "TD613 Vixen Preview Prepare" and
+             .path == ".github/workflows/vixen-preview-prepare.yml" and
+             .head_branch == "main" and .status == "completed" and
+             .conclusion == "success" and
+             (.event == "issue_comment" or .event == "workflow_dispatch")' \
+            <<< "$PREPARED" >/dev/null || {
+              echo 'Referenced preparation is not a successful trusted preflight run.' >&2
+              exit 1
+            }
+          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PREPARE_RUN/artifacts?per_page=100")"
+          jq -e --arg receipt "vixen-preview-prepared-$APPROVED_SHA" \
+            'any(.artifacts[]?; .name == $receipt and .expired == false)' \
+            <<< "$ARTIFACTS" >/dev/null || {
+              echo 'Missing exact-SHA nonexpired PREPARED receipt artifact.' >&2
+              exit 1
+            }
+          echo "INPUT_SHA=$APPROVED_SHA" >> "$GITHUB_ENV"
+          echo "PREPARE_RUN_ID=$PREPARE_RUN" >> "$GITHUB_ENV"
+          echo "sha=$APPROVED_SHA" >> "$GITHUB_OUTPUT"
+          echo 'Human-authorized preview path accepted; production remains prohibited.'
+
       - name: Authorize exact PR head and completed consolidated CI
         shell: bash
         env:
@@ -62,7 +128,7 @@ jobs:
       - name: Checkout the authorized immutable source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ inputs.commit_sha }}
+          ref: ${{ steps.operator_gate.outputs.sha }}
           persist-credentials: false
 
       - name: Verify checked-out SHA and deployment lock
@@ -127,7 +193,7 @@ jobs:
         shell: bash
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_GIT_COMMIT_SHA: ${{ inputs.commit_sha }}
+          VERCEL_GIT_COMMIT_SHA: ${{ steps.operator_gate.outputs.sha }}
           VERCEL_GIT_COMMIT_REF: research/vixen-dual-estate-encyclopedia-20261108
           VERCEL_GIT_REPO_SLUG: TD613-TCP
           VERCEL_GIT_REPO_OWNER: tauric-diana-613
