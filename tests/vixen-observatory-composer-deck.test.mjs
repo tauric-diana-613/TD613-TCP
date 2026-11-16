@@ -72,3 +72,26 @@ test('Foundry wires Composer preview to its existing host scheduler only',()=>{
  assert.doesNotMatch(d,/setInterval\s*\(/);
  assert.doesNotMatch(s,/window\.TD613_COMPOSE_OVERRIDE/);
 });
+
+test('Reviewed Compose gives only a bounded source-and-score-conditioned visual field, then revokes it on revert',async()=>{
+ const c=canvas();const source=receipt();
+ source.composition.computational_score.salon_optical_performance={
+  score_to_optics_controls:{mesh_intensity:.83,fold_gain:.74}};
+ const deck=createObservatoryComposerDeck({
+  canvas:c,isScoreCurrent:async()=>true,verifyHumanReceipt:async()=>true,
+  reviewedRenderers:[{id:'UNEXPECTED_GEOMETRY',source_sha256:'d'.repeat(64),
+   review_receipt_id:'reviewed-module',paintFrame:()=>({mapped:true})}]
+ });
+ assert.equal(deck.visualField(),null);
+ const a=await deck.stage({composeReceipt:source,lab_id:'LAB_RC-09',
+  current_form_id:'HOLONOMY',frame:{time:0}});
+ assert.equal(a.status,'SUPPORTED_PREVIEW_ONLY');
+ const field=deck.visualField();
+ assert.equal(field.mesh_strength,.83);
+ assert.equal(field.fold_strength,.74);
+ assert.deepEqual(field.source_ids,['work:A','work:B']);
+ assert.equal(field.canonical_mutation,false);
+ assert.equal(field.release_authority,false);
+ deck.revert();
+ assert.equal(deck.visualField(),null);
+});

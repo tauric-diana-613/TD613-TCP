@@ -9,6 +9,7 @@ import {createReviewedVisualFormHost,extractApprovedVisual}
 
 export const COMPOSER_DECK_SCHEMA='td613.vixen.observatory.composer-deck/v1';
 const SHA=/^[a-f0-9]{64}$/;
+const clamp=x=>Math.min(1,Math.max(0,typeof x==='number'&&Number.isFinite(x)?x:0));
 const refusal=(reason)=>Object.freeze({
  schema:COMPOSER_DECK_SCHEMA,status:'HELD',reason,
  preview_only:true,canonical_mutation:false,release_authority:false
@@ -23,6 +24,16 @@ export function createObservatoryComposerDeck({
   throw new TypeError('HELD_PREVIEW_CANVAS_REQUIRED');
  const visualHost=createReviewedVisualFormHost({verifyHumanReceipt,reviewedRenderers});
  let active=null,painting=false,epoch=0,frameCount=0,lastPaint=null;
+ // The field is a visual consequence of already independently approved
+ // preview scope. It cannot grant human authority, modify sources or publish.
+ const visualField=()=>active?Object.freeze({
+  schema:'td613.vixen.observatory.visual-field/v1',
+  status:'SUPPORTED_PREVIEW_ONLY',score_digest:active.score_digest,
+  form_id:active.form_id,source_ids:active.source_ids.slice(),
+  mesh_strength:active.mesh_strength,fold_strength:active.fold_strength,
+  original_exhibit_preserved:true,source_ids_as_seeds_only:true,
+  canonical_mutation:false,release_authority:false
+ }):null;
  canvas.hidden=true;
  const inspect=()=>Object.freeze({
   schema:COMPOSER_DECK_SCHEMA,status:active?'PREVIEW_READY':'HELD',
@@ -84,8 +95,12 @@ export function createObservatoryComposerDeck({
    canvas.hidden=true;canvas.style.visibility='';
    return refusal(verdict.status);
   }
+  const optics=composeReceipt.composition.computational_score?.salon_optical_performance?.score_to_optics_controls;
   active={composeReceipt,lab_id,form_id:binding.form_id,
-   score_digest:binding.score_digest,source_revision:composeReceipt.composition.source_revision};
+   score_digest:binding.score_digest,source_revision:composeReceipt.composition.source_revision,
+   source_ids:binding.source_ids.slice(),
+   mesh_strength:typeof optics?.mesh_intensity==='number'?clamp(optics.mesh_intensity):.48,
+   fold_strength:typeof optics?.fold_gain==='number'?clamp(optics.fold_gain):.5};
   canvas.hidden=false;canvas.style.visibility='visible';frameCount=1;lastPaint=verdict;
   return Object.freeze({...inspect(),status:'SUPPORTED_PREVIEW_ONLY',
    renderer:verdict.review_receipt_id||'EXISTING_REVIEWED_PAINT_PATH',
@@ -122,5 +137,5 @@ export function createObservatoryComposerDeck({
    return refusal('HELD_RENDERER_EXCEPTION');
   }finally{painting=false}
  }
- return Object.freeze({stage,paint,revert,inspect,available:visualHost.available});
+ return Object.freeze({stage,paint,revert,inspect,visualField,available:visualHost.available});
 }
