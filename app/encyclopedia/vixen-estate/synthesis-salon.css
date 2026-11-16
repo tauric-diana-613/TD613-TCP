@@ -552,12 +552,12 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 }
 #vixenSynthesisSalon .vs-research-bridge:hover{
   background:#9c284f;color:#fff;
-  box-shadow:0 0 0 1px rgba(255,220,167,.48),0 6px 14px rgba(126,24,64,.24);
+  box-shadow:0 0 0 1px rgba(255,220,167,.48),0 6px 14px rgba(150,30,58,.24);
   transform:translateY(-1px);
 }
 #vixenSynthesisSalon .vs-manuscript{
   border:1px solid #c19fae;background:#fbf8f4;
-  color:#252528;margin:14px 0;overflow:hidden;
+  color:#252526;margin:14px 0;overflow:hidden;
   box-shadow:inset 0 1px #fff,0 10px 30px rgba(27,19,21,.06);
 }
 #vixenSynthesisSalon .vs-manuscript>summary{
@@ -629,7 +629,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
   margin-top:30px;border-top:1px solid #d8c4cd;padding-top:14px;
 }
 #vixenSynthesisSalon .vix-reader-raw summary{
-  cursor:pointer;color:#772f4f;font:700 10px/1.6 ui-monospace,monospace;
+  cursor:pointer;color:#94344f;font:700 10px/1.6 ui-monospace,monospace;
   text-transform:uppercase;letter-spacing:.08em;
 }
 #vixenSynthesisSalon .vix-reader-raw pre{
