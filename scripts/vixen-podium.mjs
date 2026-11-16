@@ -23,6 +23,14 @@ import {dirname,resolve,join,sep,relative} from 'node:path';
 
 const defaultRoot=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const options=process.argv.slice(2);
+// Human Compose authorization is not connected to this CLI. Historical
+// write flags would bypass the Score; refuse regardless of bot JSON/env.
+if(options.some(flag=>['--write-synthesis','--sync-html','--rollback'].includes(flag))){
+ console.error(JSON.stringify({schema:'td613.vixen.podium.cli-custody-hold/v1',
+  status:'HELD',reason:'HELD_INDEPENDENT_HUMAN_COMPOSE_APPROVAL_NOT_CONNECTED',
+  available:'SCORE_STAGE_AND_REQUEST_ONLY',canonical_writes:0,release_authority:false}));
+ process.exit(2);
+}
 // These flags persist USER SYNTHESIS into active presentation/corpus slots.
 // Developer Git source edits remain on their usual PR/CI path. A bot-supplied
 // CLI flag or task JSON is never independently authenticated human closure.
