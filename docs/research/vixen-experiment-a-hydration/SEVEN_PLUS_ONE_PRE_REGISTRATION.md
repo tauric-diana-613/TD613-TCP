@@ -34,6 +34,22 @@ The seven-source body set **must not** be presumed to move scores simply because
 
 Compare A0, A1, A2 with declared primary outcome(s), effect size, stability, and negative controls. Preserve exact source digests, scorer revision, baseline receipts, and run chronology. Prior metadata influence is disclosed; only newly observed text carries new text-evidence credit.
 
+## 3A. Title/body anti-conflation assay — academic camp and cryptic multivalence
+
+Titles are authored material and must be preserved **verbatim**, including tongue-in-cheek academia camp, deliberate crypticity, irony, layered metaphor, rhetorical misdirection, and direct/double meaning. A title can be a valuable entry and navigation signal but cannot be treated as a validated summary of the manuscript's technical thesis or as sufficient evidence of a relation between works.
+
+**Preregister a paired intervention on the same fixed manuscript body:** (i) authentic title, (ii) neutral descriptive title assigned only inside the disposable assay, (iii) blinded/opaque title of matched length, and (iv) title with high lexical overlap but an intentionally contradictory body from a clearly designated synthetic negative control. The genuine title is never overwritten in the source archive, UI canon, or citation. These alternate labels are ephemeral assay variables, never editorial replacements.
+
+Measure separately:
+
+1. **Retrieval sensitivity:** title-only lexical route and metadata retrieval may legitimately change across titles, whereas body-passage retrieval must remain grounded in the unchanged manuscript bytes, paragraph and page locations, and source SHA-256.
+2. **Synthesis sensitivity:** all claimed *content-grounded* arguments, mathematical relations, contradictions, semantic neighborhoods, candidate evidence, and score components must track body witnesses rather than title resemblance. Title-only candidate rank movement must be labeled as title/metadata influence, not new substantive scholarship.
+3. **Rhetorical preservation:** record explicitly whether the manuscript supports a literal thesis, an ironic/camp framing, an allegorical second reading, or more than one interpretation; require cited passage evidence for each interpretation. Ambiguity may remain unresolved. Never automatically collapse irony into literal belief, metaphor into empirical causality, or deliberately cryptic vocabulary into empty data.
+4. **Adversarial negative:** a title strongly matching an existing candidate while the body rebuts that candidate must not manufacture supporting evidence. The scorer must distinguish support, contradiction, unclear relevance, and absence of evidence.
+5. **Invariance audit:** use the same source body and computational scoring configuration. A movement in a title-derived search score may be legitimate; a movement in a supposedly manuscript-derived mathematical score without any changed mathematical input requires an explicit provenance explanation.
+
+**Outcome requirement:** produce a typed score breakdown separating title/metadata prior, body-evidence support, body-evidence contradiction, uncertainty, and purely computational diagnostics. If any of these axes are unavailable in the current engine, mark that axis **UNIMPLEMENTED** rather than substituting an LLM-generated interpretation or forcing a change. This test applies to the recovered seven-source condition and the prospectively blind eighth without leaking either into the A0 baseline.
+
 ## 4. Release and custody gates
 
 - **No active release of the seven-body bundle in A0.** Do not embed its contents, metadata identities, names, or hashes in public application files or in test input data.
