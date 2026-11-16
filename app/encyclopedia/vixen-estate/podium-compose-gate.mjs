@@ -157,7 +157,7 @@ export function createPodiumComposeGate({sourceRevision='UNVERIFIED',verifyHuman
   if(!state.request)state.request=Object.freeze({
    schema:'td613.vixen.podium.human-request/v1',
    score_digest:state.score.score_digest,source_revision:sourceRevision,
-   nonce:nonce(),approval_scope:'LOCAL_RESEARCH_COMPOSITION_PREVIEW',
+   nonce:nonce(),created_at_ms:Date.now(),approval_scope:'LOCAL_RESEARCH_COMPOSITION_PREVIEW',
    requested_effects:state.score.changes.map(c=>({type:c.type,source_ids:c.source_ids})),
    complete_score:copyScore(),human_closure:'REQUESTED_NOT_GRANTED'
   });

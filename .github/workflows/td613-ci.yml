@@ -193,6 +193,7 @@ jobs:
           if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
           for source_bound_suite in \
             tests/vixen-podium-compose-score-custody.test.mjs \
+            tests/vixen-compose-human-webauthn.test.mjs \
             tests/vixen-open-form-composition.test.mjs \
             tests/vixen-open-form-runtime.test.mjs \
             tests/vixen-score-audition.test.mjs \
