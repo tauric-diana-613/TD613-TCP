@@ -24,22 +24,19 @@
     "api/dome-world-engine.py": {
       "maxDuration": 60,
       "includeFiles": "packages/dome_world_exact/**/*.py",
-      "excludeFiles": "{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}"
+      "excludeFiles": "packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**"
     },
     "api/dome-world-engine-guard.py": {
       "maxDuration": 60,
-      "includeFiles": "{api/dome-world-engine.py,packages/dome_world_exact/**/*.py}",
-      "excludeFiles": "{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}"
+      "includeFiles": "{api/dome-world-engine.py,packages/dome_world_exact/**/*.py}"
     },
     "api/ash-local-commitment.py": {
       "maxDuration": 60,
-      "includeFiles": "packages/dome_world_exact/ash_*.py",
-      "excludeFiles": "{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}"
+      "includeFiles": "packages/dome_world_exact/ash_*.py"
     },
     "api/ash-local-commitment-guard.py": {
       "maxDuration": 60,
-      "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}",
-      "excludeFiles": "{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}"
+      "includeFiles": "{api/ash-local-commitment.py,packages/dome_world_exact/ash_*.py}"
     }
   },
   "redirects": [
