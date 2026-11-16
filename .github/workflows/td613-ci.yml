@@ -201,6 +201,7 @@ jobs:
             tests/vixen-open-form-runtime.test.mjs \
             tests/vixen-score-audition.test.mjs \
             tests/vixen-observatory-composer-deck.test.mjs \
+            tests/vixen-observatory-optical-instrument.test.mjs \
             tests/vixen-podium-salon-optical-bridge.test.mjs; do
             if [[ -f "$source_bound_suite" ]]; then node --test "$source_bound_suite"; fi
           done
