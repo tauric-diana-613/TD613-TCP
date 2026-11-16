@@ -125,6 +125,8 @@ jobs:
           set -euo pipefail
           [[ -n "$VERCEL_TOKEN" ]] || { echo 'HELD: Existing VERCEL_TOKEN not available.' >&2; exit 1; }
           vercel whoami --scope "$VERCEL_SCOPE" >/dev/null
+          # Read-only named-project existence check BEFORE link. Link --yes may create missing projects.
+          vercel project inspect "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" >/dev/null
           vercel link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE"
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
