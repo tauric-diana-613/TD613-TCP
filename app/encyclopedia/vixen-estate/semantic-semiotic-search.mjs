@@ -418,6 +418,15 @@ export class SemanticSemioticSearchEngine {
     this.sourcesMeta = rawIndex.sources_meta || [];
     this.docs = rawIndex.docs || [];
 
+    // A0 is a frozen, source-qualified corpus. A prospective supplement can
+    // enter only through a new, separately qualified hydration build.
+    const pendingSupplementCount=Number(rawIndex.corpus_custody?.batch_b_pending_count??0);
+    const indexHasProspectiveRecords=this.docs.some(d=>
+      this.unitKinds[d.uk]==='prospective_batch_b');
+    if(!Number.isInteger(pendingSupplementCount)||pendingSupplementCount!==0||
+       indexHasProspectiveRecords)
+      throw new TypeError('VIXEN_A0_PROSPECTIVE_CORPUS_NOT_ADMITTED');
+
     this.chunkShaBytes = rawIndex.chunk_sha256_b64
       ? decodeBase64Bytes(rawIndex.chunk_sha256_b64)
       : null;
