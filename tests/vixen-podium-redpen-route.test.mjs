@@ -16,3 +16,8 @@ test('new Score wipes review and no redpen return grants authentication',()=>{
  assert.doesNotMatch(section,/acceptHumanApproval\(/);
  assert.doesNotMatch(section,/release_authority:true/);
 });
+
+test('exact-head Vixen preview packaging includes the new redpen route',()=>{
+ const p=readFileSync(new URL('../scripts/package-vixen-preview.py',import.meta.url),'utf8');
+ assert.match(p,/compose_routes = \{"podium.score", "podium.redpen", "podium.compose"\}/);
+});
