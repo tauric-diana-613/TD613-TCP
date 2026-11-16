@@ -194,6 +194,9 @@ jobs:
           for source_bound_suite in \
             tests/vixen-podium-compose-score-custody.test.mjs \
             tests/vixen-compose-human-webauthn.test.mjs \
+            tests/vixen-compose-custody-ledger.test.mjs \
+            tests/vixen-compose-host-session.test.mjs \
+            tests/reconcile-vixen-seven.test.mjs \
             tests/vixen-open-form-composition.test.mjs \
             tests/vixen-open-form-runtime.test.mjs \
             tests/vixen-score-audition.test.mjs \
