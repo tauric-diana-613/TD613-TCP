@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <script id="td613-sitewide-reset-preflight" src="../site-epoch-preflight.js" defer></script>
+<!-- Self-hosted MIT-licensed KaTeX, MathML-only output; no CDN / telemetry. -->
+<script src="./vixen-estate/vendor/katex-0.16.9.min.js"></script>
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
 <link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
@@ -1805,8 +1807,9 @@ body[data-view="overview"] .reading-back{display:none}
         try {
           window.katex.render(tex, el, {
             displayMode: el.getAttribute('data-display') === 'true',
-            throwOnError: false,
-            strict: 'ignore'
+            output: 'mathml',
+            trust: false, maxExpand: 1000, maxSize: 10,
+            throwOnError: false, strict: 'ignore'
           });
           el.dataset.katexDone = tex;
         } catch (_err) {
@@ -4919,6 +4922,37 @@ body[data-view="overview"] .reading-back{display:none}
         if (searchInput) searchInput.focus();
       }
     }
+    // Research bridge: human-facing Opera navigation only. Podium receives
+    // typed, manually copied read tasks; no machine execution is triggered.
+    window.VixenResearchUI = Object.freeze({
+      openSearch(query, {sourceId = null} = {}) {
+        const q = String(query || '').trim();
+        if (searchInput) searchInput.value = q;
+        openSearch(document.activeElement);
+        runGlobalSearch(q);
+        return Object.freeze({query:q,source_id:sourceId,mode:state.globalSearchMode});
+      },
+      openWork(workId, sourceId = null) {
+        const work = DATA.works.find(w => w.work_id === workId);
+        if (!work) return false;
+        if (state.workCluster === 'BATCH_B') state.workStatus = state.lastCanonicalWorkStatus || 'ALL';
+        state.workCluster = 'ALL';
+        state.workStatus = 'ALL';
+        state.workQuery = '';
+        state.selectedWorkId = work.work_id;
+        state.mobileWorkReaderOpen = true;
+        state.readerPhase = 'WORLD_ANSWERS';
+        state.focusedPassage = null;
+        if (sourceId && work.linked_sources.some(src => src.source_file_id === sourceId)) {
+          state.activeManifestationId = sourceId;
+        }
+        const workSearch = $('workSearchInput');
+        if (workSearch) workSearch.value = '';
+        setView('works', {pushHistory:true});
+        renderWorksView({skipHistory:true});
+        return true;
+      }
+    });
     document.querySelectorAll('[data-action="search"]').forEach((b) => {
       b.addEventListener('click', () => openSearch(b));
     });
