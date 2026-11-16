@@ -19,8 +19,12 @@ test('observable response changes with true host phase; renderer time has no chi
  const x=measureObservatoryOpticalInstrument({width:360,height:300,time:0,sourceIds:['A','B']});
  const y=measureObservatoryOpticalInstrument({width:360,height:300,time:.9,sourceIds:['A','B']});
  assert.equal(y.four_operators.viewport_temporal.time_received_from_host,.9);
- assert.notDeepEqual(x.four_operators.measured_beat_geometry.pairs,
-  y.four_operators.measured_beat_geometry.pairs);
+ assert.deepEqual(x.four_operators.measured_beat_geometry.pairs,
+  y.four_operators.measured_beat_geometry.pairs,
+  'wavelength and beat speed should remain invariant under time evolution');
+ assert.notEqual(x.four_operators.measured_beat_geometry.envelope_mean,
+  y.four_operators.measured_beat_geometry.envelope_mean,
+  'the sampled envelope, rather than the fixed wave vectors, should evolve');
 });
 test('origin, design orchestration, and active renderers cannot masquerade as each other',()=>{
  const a=ENGINE_LINEAGE.find(x=>x.family==='APERTURE_V32');

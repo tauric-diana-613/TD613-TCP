@@ -77,7 +77,9 @@ export function measureObservatoryOpticalInstrument(options={}){
   filament_delta_css_px:r(fold.metrics.filamentLength-baseline.metrics.filamentLength),
   opaline_ribs:opaline.ribs.length,opaline_hoops:opaline.hoops.length,
   mesh_carriers:mesh.fibers.length,mesh_trails:mesh.scene.trails.length,
-  measured_samples:beat.pointsMeasured,total_emission:r(beat.totalEmission)
+  measured_samples:beat.pointsMeasured,temporal_envelope_mean:r(beat.envelopeMean),
+  temporal_envelope_min:r(beat.envelopeMin),temporal_envelope_max:r(beat.envelopeMax),
+  total_emission:r(beat.totalEmission)
  });
  return Object.freeze({
   schema:OPTICAL_INSTRUMENT_SCHEMA,
@@ -87,7 +89,9 @@ export function measureObservatoryOpticalInstrument(options={}){
       seam_css_px:metrics.seam_delta_css_px,filament_css_px:metrics.filament_delta_css_px},
     periodic_equals_quasiperiodic:false},
    measured_beat_geometry:{kind:OPTICAL_OPERATOR_ORDER[1],
-    pairs:optics,measured_samples:beat.pointsMeasured,computed_before_paint:true},
+    pairs:optics,measured_samples:beat.pointsMeasured,
+    envelope_mean:metrics.temporal_envelope_mean,
+    computed_before_paint:true,geometry_time_invariant:true},
    bounded_bloom_emission:{kind:OPTICAL_OPERATOR_ORDER[2],
     computed_emission:metrics.total_emission,emission_budget:BEAT_POLICY.peak_budget,
     peaks:beat.peakCount,peak_budget:BEAT_POLICY.max_peaks,
