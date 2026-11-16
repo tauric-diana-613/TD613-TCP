@@ -12,6 +12,10 @@ import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOuts
 import {inspectVixenCrossOperaWarrant} from '../vixen-estate/cross-opera-warrant.mjs';
 import {SUPPORTED_SEARCH_MODES} from '../vixen-estate/semantic-semiotic-search.mjs';
 import {
+ normalizeFusionControls,boundedFusionComparisonSpec,
+ FUSION_CHANNEL_KEYS,FUSION_PROFILE_IDS,FUSION_WEIGHT_POLICIES,FUSION_PROFILES
+} from '../vixen-estate/fusion-controls.mjs';
+import {
  SRC_CORPUS_ROOMS,
  SRC_HETEROSTRATIGRAPHIC_STRATA,
  SRC_AUTHORITY_AXES,
@@ -28,7 +32,8 @@ export const PODIUM_ROUTES=Object.freeze([
  'podium.describe','vixen.work.inspect','vixen.gates.inspect',
  'universal.open','universal.search','universal.get','universal.related',
  'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
- 'engine.capabilities','engine.invoke'
+ 'engine.capabilities','engine.invoke',
+ 'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze([
@@ -249,6 +254,12 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
       corpus_rooms:SRC_CORPUS_ROOMS,
       src_query_regimes:Object.keys(SRC_QUERY_REGIMES),
       semantic_search_modes:SUPPORTED_SEARCH_MODES,
+      fusion_controls:{
+       channels:FUSION_CHANNEL_KEYS,profiles:FUSION_PROFILE_IDS,
+       weight_policies:FUSION_WEIGHT_POLICIES,
+       finite_comparison_limit:6,finite_hit_limit:24,
+       no_implicit_external_engine_connection:true
+      },
       authority_axes:SRC_AUTHORITY_AXES,
       epistemic_state_axes:SRC_EPISTEMIC_STATE_AXES,
       false_continuity_screens:SRC_FALSE_CONTINUITY_SCREENS,
@@ -257,6 +268,129 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
       src_adapter_connected:typeof boundAdapters.SRC_ATELIER==='function',
       atlas_adapter_connected:typeof boundAdapters.ATLAS==='function'
      }
+    });
+   }
+   // Four finite fusion routes are read-only and cannot acquire external
+   // execution authority, scientific promotion, or private-source access.
+   if(intent==='vixen.fusion.capabilities'){
+    event('FUSION_CAPABILITIES_INSPECTED');
+    return receipt(intent,'SUPPORTED',{
+     schema:'td613.vixen.fusion-machine-capabilities/v1',
+     engine:'LEXICAL_SEMANTIC_SEMIOTIC_SRC_RETRIEVAL',
+     connected:Boolean(attachedSemantic),
+     channels:FUSION_CHANNEL_KEYS,
+     profiles:Object.fromEntries(FUSION_PROFILE_IDS.map(k=>[k,FUSION_PROFILES[k]])),
+     supported_modes:SUPPORTED_SEARCH_MODES,
+     weight_policies:FUSION_WEIGHT_POLICIES,
+     bounds:{min_query_chars:2,max_query_chars:200,max_hits:24,max_profiles:6},
+     source_evidence:'RETRIEVED_PASSAGES_WITH_SOURCE_AND_OFFSET',
+     all_semiotic_rungs:'CANDIDATE_ONLY_NOT_ENTAILMENT',
+     fallback_status:'FALLBACK_NOT_FUSION',
+     output_receipts:PODIUM_RECEIPT,
+     native_invocation_required:false,
+     independent_empirical_witness_observed:false,
+     release_authority:false
+    });
+   }
+   if(['vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain'].includes(intent)){
+    const q=params.query;
+    if(typeof q!=='string'||q.trim().length<2||q.length>200){
+     return receipt(intent,'HELD',rejection('HELD_FUSION_QUERY_BOUNDS','Query must contain 2–200 characters'));
+    }
+    if(!attachedSemantic){
+     return receipt(intent,'HELD',rejection('HELD_FUSION_ENGINE_NOT_ATTACHED','Attach the full semantic-semiotic index; fallback cannot substitute for fusion'));
+    }
+    const runFusion=async(mode,limit,spec)=>{
+     if(!['hybrid','lexical','phrase','src_projective'].includes(mode)){
+      throw new TypeError('VIXEN_FUSION_UNSUPPORTED_ABLATION_MODE');
+     }
+     const fusion=normalizeFusionControls(spec);
+     const args={mode,limit,fusion};
+     const raw=typeof attachedSemantic.searchAsync==='function'
+      ?await attachedSemantic.searchAsync(q,args)
+      :attachedSemantic.search(q,args);
+     if(raw?.fusion_state!=='FULL_INDEX_FUSION'||raw?.status==='INLINE_FALLBACK_OK'){
+      return {available:false,status:raw?.status||'UNAVAILABLE'};
+     }
+     return {available:true,result:raw,fusion};
+    };
+    if(intent==='vixen.fusion.compare'){
+     const request=boundedFusionComparisonSpec(params);
+     const comparisons=[];
+     for(const profile of request.profiles){
+      const calc=await runFusion(request.mode,request.limit,{profile,weight_policy:request.weight_policy});
+      if(!calc.available)return receipt(intent,'HELD',rejection('HELD_FUSION_FULL_INDEX_REQUIRED',calc.status));
+      comparisons.push({
+       profile,channels:calc.fusion.channels,weight_policy:calc.fusion.weight_policy,
+       status:calc.result.status,total_hits:calc.result.total_hits,
+       hits:(calc.result.hits||[]).slice(0,request.limit).map((h,i)=>({
+        id:h.id,rank:i+1,score:h.score_total,
+        channels:h.fusion_contributions||null,
+        raw:{lex:h.s_lex,semantic:h.s_sem,semiotic:h.s_semi,src:h.s_src},
+        rung:h.highest_rung,source_file_id:h.source_file_id,
+        page_span:h.page_span||null,chunk_sha256:h.chunk_sha256||null
+       }))
+      });
+     }
+     const anchorResult=comparisons[0];
+     const changes=(anchorResult?.hits||[]).slice(0,12).map(h=>({
+      id:h.id,source_file_id:h.source_file_id,
+      per_profile:Object.fromEntries(comparisons.map(c=>{
+       const m=c.hits.find(x=>x.id===h.id);
+       return [c.profile,m?{rank:m.rank,score:m.score}:null];
+      }))
+     }));
+     event('VIXEN_FUSION_ABLATION_COMPARED',{profile_count:comparisons.length,query:q.slice(0,80)});
+     return receipt(intent,'SUPPORTED',{
+      schema:'td613.vixen.fusion-comparison/v1',
+      query:q,mode:request.mode,weight_policy:request.weight_policy,
+      comparisons,anchor_deltas:changes,engine:'FULL_INDEX_FUSION',
+      qualification:'RETRIEVAL_RANKING_NOT_BODY_ENTAILMENT',
+      source_revision:sourceRevision,
+      empirical_replication_credit:0
+     });
+    }
+    const limit=Number(params.limit??12);
+    if(!Number.isInteger(limit)||limit<1||limit>24){
+     return receipt(intent,'HELD',rejection('HELD_FUSION_HIT_LIMIT','Fusion hits must be an integer 1–24'));
+    }
+    const mode=params.mode??'hybrid';
+    const spec={
+     profile:params.profile??'FULL_FUSION',
+     channels:params.channels??{},
+     weight_policy:params.weight_policy??'PRESERVE_BASELINE'
+    };
+    const calc=await runFusion(mode,limit,spec);
+    if(!calc.available)return receipt(intent,'HELD',rejection('HELD_FUSION_FULL_INDEX_REQUIRED',calc.status));
+    if(intent==='vixen.fusion.explain'){
+     const id=text(params.hit_id,160);
+     if(!id)return receipt(intent,'HELD',rejection('HELD_FUSION_HIT_ID_REQUIRED','Supply a returned hit_id'));
+     const hit=(calc.result.hits||[]).find(x=>x.id===id);
+     if(!hit)return receipt(intent,'HELD',rejection('HELD_FUSION_HIT_NOT_IN_BOUNDED_PAGE','Hit not found in specified query/limit/profile result'));
+     event('VIXEN_FUSION_HIT_EXPLAINED',{hit_id:id});
+     return receipt(intent,'SUPPORTED',{
+      query:q,profile:calc.fusion.profile,mode,hit_id:id,
+      source_file_id:hit.source_file_id,
+      source_sha256:hit.sha256||null,
+      chunk_sha256:hit.chunk_sha256||null,
+      citation:hit.citation||null,
+      scoring:{
+       total:hit.score_total,lexical:hit.s_lex,semantic:hit.s_sem,
+       semiotic:hit.s_semi,src:hit.s_src,
+       effective_contributions:hit.fusion_contributions,
+       normalization:hit.fusion_normalization_factor,
+       active_weight_sum:hit.fusion_active_weight_sum,
+       highest_rung:hit.highest_rung,why:hit.why
+      },
+      claim_ceiling:'SEARCH_EVIDENCE_ONLY_NOT_SEMANTIC_ENTAILMENT'
+     });
+    }
+    event('VIXEN_FUSION_SEARCH_READ',{mode,profile:calc.fusion.profile,hits:calc.result.returned_hits});
+    return receipt(intent,'SUPPORTED',{
+     query:q,mode,profile:calc.fusion.profile,
+     engine:'FULL_INDEX_FUSION',fusion_controls:calc.fusion,
+     search:calc.result,
+     claim_ceiling:'SEARCH_RETRIEVAL_AND_SEMIOTIC_AFFINITY_NOT_PROOF'
     });
    }
    if(intent==='vixen.work.inspect'){
