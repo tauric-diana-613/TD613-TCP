@@ -66,3 +66,37 @@
  .vix-fusion-tool{flex:1 1 44%}
 }
 @media(prefers-reduced-motion:reduce){.vix-fusion-channel,.vix-fusion-tool{transition:none}}
+
+
+/* Machine-facing Podium task composer: the operator edits a typed envelope;
+   all execution remains with separately authorized Podium clients. */
+.vix-podium-fusion[hidden]{display:none!important}
+.vix-podium-fusion{display:block;border:1px solid rgba(250,210,169,.35);
+ padding:12px 14px 14px;margin:8px 0 16px;
+ background:linear-gradient(123deg,rgba(231,113,153,.12),transparent 62%),#10161c;
+ min-width:0;color:#faedf0}
+.vix-podium-fusion>legend{
+ font:700 10px/1.5 ui-monospace,SFMono-Regular,monospace;
+ letter-spacing:.08em;text-transform:uppercase;color:#ffdda9;padding:0 8px}
+.vix-podium-fusion-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.vix-podium-fusion-grid label{display:flex;flex-direction:column;gap:5px;
+ min-width:0;font:600 9px/1.5 ui-monospace,SFMono-Regular,monospace;
+ text-transform:uppercase;letter-spacing:.07em;color:#ddcbd1}
+.vix-podium-fusion-grid :is(input,select){min-width:0;width:100%;min-height:40px;
+ background:#0b1015;border:1px solid rgba(254,200,179,.42);
+ padding:8px 10px;color:#f7eef0;font:500 11px/1.4 ui-monospace,SFMono-Regular,monospace}
+.vix-podium-compare-profiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:5px;margin-top:13px}
+.vix-podium-compare-profiles label{display:flex;gap:5px;align-items:center;
+ font:600 9px/1.4 ui-monospace,SFMono-Regular,monospace;
+ padding:8px 6px;background:rgba(250,235,218,.06);
+ color:#ebd5df;overflow-wrap:anywhere;cursor:pointer}
+.vix-podium-compare-profiles :is(input){accent-color:#e4a95f;flex:none}
+#podiumFusionPanelStatus{font:500 10px/1.5 ui-monospace,SFMono-Regular,monospace;
+ color:#fad9ac;margin-top:10px}
+.vix-podium-fusion :is(input,select):focus-visible{outline:2px solid #ffe8a8;outline-offset:2px}
+@media(max-width:900px){
+ .vix-podium-fusion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .vix-podium-compare-profiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){.vix-podium-fusion-grid{grid-template-columns:minmax(0,1fr)}}
