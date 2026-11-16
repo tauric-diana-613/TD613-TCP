@@ -13,6 +13,7 @@ import {measureCoutureBeats,BEAT_POLICY} from './vixen-beat-radiometry-rgi15.mjs
 import {buildLivingMesh} from './vixen-live-mesh-rgi13.mjs';
 import {CARRIERS,triangular,quasiperiodic,project111} from './observatory-foundry-kernel.mjs';
 import {computeSwarmComposition,SWARM_SCHEMA} from './observatory-swarm-composition.mjs';
+import {buildPodiumOpticalPlan} from './podium-salon-optical-bridge.mjs';
 export const COMPOSER_SCORE_SCHEMA='td613.vixen.podium.composer-score/v1';
 const tidy=(x,max=500)=>typeof x==='string'?x.trim().slice(0,max):'';
 const fail=(ok,error)=>{if(!ok)throw Object.assign(new TypeError(error),{code:error})};
@@ -150,6 +151,9 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
    evidence_ceiling:'MODEL_AND_SOURCE_METADATA_ONLY'};
  }).sort((a,b)=>b.fitness-a.fitness||a.id.localeCompare(b.id));
  const chosen=candidates[0];
+ // Native score signals now drive the real Salon render pipeline; stage only.
+ const salonOptics=buildPodiumOpticalPlan({sourceIds,breakdown:winner.breakdown,
+  visualFormId:chosen.id,lagTicks:lag,width:360,height:300,phase:0,dpr:1});
  const changes=[
   {id:'SCORE-01',state:'PROPOSED',area:'SYNTHESIS',title:'Select '+winner.title,
    justification:'Native eight-dimensional model score '+winner.score+' with original weights and breakdown; not an observed result'},
@@ -160,7 +164,15 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
   {id:'SCORE-03',state:'PROPOSED',area:'OPTICAL_ENGINE',title:'Connect four macro operators and the 39-carrier lattice to the new Score',
    justification:'Real prepaint diagnostics, fold displacement, emission bounds, pixel sampling, still/motion cadence and WebGL fallback inspected'},
   {id:'SCORE-04',state:'PROPOSED',area:'EDITORIAL',title:'Compose replacement explanation, captions and mathematical evidence limits',
-   justification:'Pending human final edits, no automatic tagline overwrite'}
+   justification:'Pending human final edits, no automatic tagline overwrite'},
+  {id:'SCORE-05',state:'PROPOSED',area:'SALON_COUTURE',
+   title:'Bind the Score to Folded Chrome corset, room-wide mesh, Opaline, beat radiometry and lighting',
+   justification:'Measured native optical controls: fold '+salonOptics.score_to_optics_controls.fold_gain+
+    ', mesh '+salonOptics.score_to_optics_controls.mesh_intensity+
+    ', scene '+salonOptics.selected_preview_renderer},
+  {id:'SCORE-06',state:salonOptics.selected_preview_renderer==='EXISTING_OBSERVATORY_HOST_REQUIRED'?'HELD_HOST_RENDERER':'PROPOSED_PREVIEW',
+   area:'ALTERNATIVE_VISUAL_FORM',title:'Stage a different computational renderer without coercion to the old chart',
+   justification:'Canvas renderer selection remains a separate Composer-governed installation'}
  ];
  for(const change of sourceChangesList)changes.push({id:'SOURCE-'+String(change.index).padStart(2,'0'),
   state:'HELD_CORPUS_MUTATION',area:'SOURCE_CUSTODY',
@@ -183,7 +195,8 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
    weights:ranked.weights,work_seeds:sourceIds,operator_question:question||null},
   visuals:{selected:chosen,alternatives:candidates.slice(1),decision_owner:'PODIUM',
    runtime_scene_replacement:false},
-  optical:optic,proposed_changes:changes,changes_count:changes.length,
+  optical:optic,salon_optical_performance:salonOptics,
+  proposed_changes:changes,changes_count:changes.length,
   complete_score_required:true,composer_closure:'RESERVED',
   original_corpus_unchanged:true,site_unchanged:true,developer_code_edits_exempt:true,
   protected_flight:'HELD',scientific_promotion:false,empirical_replication_credit:0,

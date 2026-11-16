@@ -116,3 +116,14 @@ there is no independently authenticated Score-specific Composer release
 service in the current CLI. Do not permit machine task flags to self-authorize.
 No corpus edit, publication, production release, Experiment B Flight or
 authorial closure is authorized by a Score.
+
+## RGI18B · Podium coupling to Salon's actual optical engines
+The machine Score binds mathematical weights to a true recomputation of
+DD02 folded-chrome garment strain, RGI15 prepaint D3/phi beat fields,
+RGI14 Opaline ribs and hoops, RGI13 room-wide 39-carrier mesh, shared
+DD02 field cloth, original veiling and WebGL2/Canvas mathematical kernels.
+The four macro operator witnesses A-D are retained in Score receipts.
+Distinct swarm-preview geometry uses its own painter, while unbound
+Observatory forms explicitly HOLD rather than reverting to the same chart.
+`paintPodiumOpticalPreview` is host-called, canvas-owned and does not
+install into live Salon/Observatory or schedule animation.

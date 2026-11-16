@@ -230,7 +230,12 @@ test('Machine Podium autonomously scores source-bound visual architecture, stops
  assert.equal(scored.result.optical.additional_pipelines.carrier_count,39);
  assert.equal(scored.result.optical.D_viewport_DPR_sampling_clock.single_host_clock_required,true);
  assert.ok(scored.result.human_readable_score.includes('SOURCE-01'));
- assert.ok(scored.result.visuals.alternatives.some(v=>v.id==='SWARM_DYNAMICS'));
+ assert.ok([scored.result.visuals.selected,...scored.result.visuals.alternatives].some(v=>v.id==='SWARM_DYNAMICS'));
+ assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI14_opaline_ribs,39);
+ assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.RGI13_room_mesh_carriers,39);
+ assert.equal(scored.result.salon_optical_performance.coupled_pipeline_evidence.swarm_agents,39);
+ assert.equal(scored.result.salon_optical_performance.four_macro_operators.B_beat_prepaint.pairs.length,3);
+ assert.equal(scored.result.salon_optical_performance.stage_preview_binding.live_site_not_changed,true);
  const held=await one.dispatch(task('podium.compose',{...proposal,approved:true,publish:true}));
  assert.equal(held.status,'HELD');
  assert.equal(held.result.status,'HELD_AWAITING_HUMAN_COMPOSER');
