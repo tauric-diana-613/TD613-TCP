@@ -570,7 +570,7 @@ test('Podium 16-route fusion research conductor validates, compares, and cites w
   const raw=JSON.parse(await readFile(new URL('vixen-estate/semantic-semiotic-index.v1.json',root),'utf8'));
   const engine=new SemanticSemioticSearchEngine(raw);
   const podium=createVixenPodium({corpus,semanticSearch:engine,membrane:mock()});
-  assert.equal(PODIUM_ROUTES.length,18);
+  assert.equal(PODIUM_ROUTES.length,19);
   assert.equal((await podium.dispatch(task('podium.describe'))).result.aix_conductor.fusion_controls.finite_comparison_limit,6);
   const cap=await podium.dispatch(task('vixen.fusion.capabilities'));
   assert.equal(cap.status,'SUPPORTED');
