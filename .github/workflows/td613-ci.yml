@@ -1178,7 +1178,7 @@ jobs:
     name: Offline Marrowline layout regression
     needs: scope
     if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
