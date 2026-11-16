@@ -1909,15 +1909,22 @@ body[data-view="overview"] .reading-back{display:none}
       history.replaceState({ ...cur, view: state.view, scrollY: Math.round(window.scrollY || 0) }, '');
     } catch (_) {}
   }
-  let scrollPersistRaf = 0;
+  // Browser history writes during every scrolling frame compete with optical
+  // compositor time. Coalesce them AFTER the wheel settles. Navigation still
+  // snapshots synchronously, so back/forward retains exact room coordinates.
+  let scrollPersistTimer = 0;
   window.addEventListener('scroll', () => {
-    if (scrollPersistRaf) return;
-    scrollPersistRaf = requestAnimationFrame(() => {
-      scrollPersistRaf = 0;
+    if (scrollPersistTimer) clearTimeout(scrollPersistTimer);
+    scrollPersistTimer = setTimeout(() => {
+      scrollPersistTimer = 0;
       saveCurrentViewScrollState();
-    });
+    }, 160);
   }, { passive: true });
   function setView(view, opts) {
+    if (scrollPersistTimer) {
+      clearTimeout(scrollPersistTimer);
+      scrollPersistTimer = 0;
+    }
     const prevView = state.view;
     const target = VALID_VIEWS.includes(view) ? view : 'overview';
     if (prevView !== target && (!opts || !opts.fromPopState)) {
