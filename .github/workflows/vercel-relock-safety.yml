@@ -767,6 +767,32 @@ jobs:
           vercel pull --yes --environment=preview --scope "$VERCEL_SCOPE"
           vercel build --scope "$VERCEL_SCOPE"
 
+      - name: Claim one preview attempt for this comment before invoking the provider
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ATTEMPT_NAME="vixen-preview-attempt-${{ github.event.comment.id }}"
+          ARTIFACTS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100")"
+          jq -e --arg name "$ATTEMPT_NAME" 'all(.artifacts[]?; .name != $name)' <<< "$ARTIFACTS" >/dev/null || {
+            echo 'This exact comment already consumed its preview deployment attempt.' >&2
+            exit 1
+          }
+          mkdir -p "$RUNNER_TEMP/vixen-preview-attempt"
+          printf 'source_sha=%s\ncomment_id=%s\nrun_id=%s\nprovider_attempt_ceiling=1\n' \
+            "$INPUT_SHA" '${{ github.event.comment.id }}' "$GITHUB_RUN_ID" \
+            > "$RUNNER_TEMP/vixen-preview-attempt/receipt.txt"
+
+      - name: Latch the single-attempt receipt across reruns of this workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-preview-attempt-${{ github.event.comment.id }}
+          path: ${{ runner.temp }}/vixen-preview-attempt/receipt.txt
+          retention-days: 90
+          if-no-files-found: error
+          overwrite: false
+
       - name: Deploy immutable Preview without moving the familiar alias
         id: deploy
         shell: bash
