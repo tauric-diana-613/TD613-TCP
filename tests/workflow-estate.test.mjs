@@ -14,11 +14,23 @@ const required = [
   'vercel-relock-safety.yml',
 ].sort();
 
+// Four constitutional workflow owners remain fixed. The existing A0 rebuild
+// is a separate, explicitly owner-gated source-repair listener, not a new
+// deployment/release authority and not a replacement for the canonical four.
+const ownerGatedA0 = 'vixen-a0-corpus-rebuild.yml';
+assert.ok(workflows.includes(ownerGatedA0), 'The existing owner-gated A0 source-repair workflow must be visible to the estate audit.');
 assert.deepEqual(
-  workflows,
+  workflows.filter((name) => name !== ownerGatedA0),
   required,
-  `Workflow estate must remain exactly four durable authority surfaces. Found: ${workflows.join(', ')}`,
+  `Canonical four-workflow estate changed unexpectedly. Found: ${workflows.join(', ')}`,
 );
+const a0Rebuild = readFileSync(join(workflowDir, ownerGatedA0), 'utf8');
+assert.match(a0Rebuild, /github\.actor == 'tauric-diana-613'/);
+assert.match(a0Rebuild, /context\.issue\.number !== 1730/);
+assert.match(a0Rebuild, /pr\.head\.sha !== match\[1\]/);
+assert.match(a0Rebuild, /pr\.base\.ref !== 'main'/);
+assert.match(a0Rebuild, /pr\.head\.repo\.full_name !== 'tauric-diana-613\/TD613-TCP'/);
+assert.doesNotMatch(a0Rebuild, /vercel deploy|vercel alias|vercel promote|--prod/);
 
 const retired = [
   'calibration.yml',
@@ -238,4 +250,4 @@ assert.match(vixenDeploy, /Git auto-deployment lock must remain closed/);
 assert.doesNotMatch(vixenDeploy, /vercel deploy [^\n]*--prod/);
 assert.doesNotMatch(vixenDeploy, /td613-vercel-release PRODUCTION/);
 
-console.log('Workflow estate closed at 4/4 durable workflows: validation, release, relock/research safety, and Pages remain authority-distinct.');
+console.log('Workflow estate: canonical 4/4 authority owners preserved; existing owner-gated A0 source-only exception explicitly bounded.');
