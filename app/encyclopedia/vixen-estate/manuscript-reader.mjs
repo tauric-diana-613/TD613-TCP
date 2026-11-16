@@ -65,7 +65,17 @@ function flushParagraph(doc, frag, lines) {
   if (!lines.length) return;
   const p = doc.createElement('p');
   p.className = 'vix-reader-paragraph';
-  appendInline(doc, p, lines.join('\n'));
+  // Manuscript source is immutable. Ordinary single newlines are soft prose wraps
+  // (especially PDF derivatives); only explicit Markdown hard breaks become <br>.
+  // The exact original bytes remain available through the raw-source disclosure.
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const hardBreak = /(?: {2,}|\\)$/.test(line);
+    appendInline(doc, p, hardBreak ? line.replace(/(?: {2,}|\\)$/, '') : line);
+    if (i < lines.length - 1) {
+      p.append(hardBreak ? doc.createElement('br') : doc.createTextNode(' '));
+    }
+  }
   frag.append(p);
   lines.length = 0;
 }

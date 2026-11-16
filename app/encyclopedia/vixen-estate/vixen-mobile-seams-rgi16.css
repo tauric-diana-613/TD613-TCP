@@ -1,0 +1,142 @@
+/* VIXEN RGI16 · operator's 2026-11-16 annotated mobile seam corrections.
+ * Presentation ONLY: preserve original image assets, manuscripts, provenance,
+ * typed routes, corpus state, hash identities, and the 7+1 experiment hold.
+ * Late-loaded deliberately, since RGI14's !important mobile rules force the
+ * title below the fold and a single column of oversized entrance doors. */
+
+/* Mobile frontispiece: VIXEN and CYBERNETICS form one readable heading,
+   the chrome sculpture owns the center, and the thesis/entrance follow. */
+@media (max-width:680px) {
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview #cover {
+   height:clamp(780px,calc(100svh + 18px),920px)!important;
+   min-height:780px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-title {
+   inset:78px 16px auto!important;
+   height:auto!important;
+   gap:11px!important;
+   justify-content:flex-start!important;
+   text-align:left!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-one {
+   font-size:clamp(31px,8vw,39px)!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-word-two {
+   align-self:flex-end!important;
+   text-align:right!important;
+   max-width:100%!important;
+   font-size:clamp(24px,6.8vw,31px)!important;
+   line-height:1.02!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial {
+   font-size:clamp(12px,3.2vw,15px)!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-serial-note {
+   font-size:7px!important;
+   line-height:1.3!important;
+   letter-spacing:.07em!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-marginalia {
+   display:none!important; /* metrics still present in the research state */
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art {
+   inset:0!important;
+   padding:205px 9px 207px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art img {
+   width:100%!important;height:100%!important;object-fit:contain!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-bottom {
+   left:16px!important;right:16px!important;bottom:27px!important;
+   flex-direction:column!important;align-items:stretch!important;
+   justify-content:flex-end!important;gap:12px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-desc {
+   max-width:100%!important;width:100%!important;
+   font-size:clamp(15.5px,4.1vw,18px)!important;
+   line-height:1.35!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .cover-enter-group {
+   align-self:flex-end!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .enter-orbit {
+   width:50px!important;height:50px!important;
+ }
+ /* Reclaim the spatial wayfinder: two compact columns, four genuine doors. */
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .mobile-wayfinder.vixen-doorways {
+   grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   gap:10px!important;
+   margin-top:22px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(n) {
+   min-height:172px!important;
+   padding:15px 12px!important;
+   overflow:hidden!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(n) strong {
+   font-size:clamp(20px,5.3vw,26px)!important;
+   line-height:1.05!important;
+   overflow-wrap:normal!important;
+   hyphens:none!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(n) .vixen-door-desc {
+   display:none!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(n) .vixen-door-index {
+   font-size:7px!important;
+   line-height:1.35!important;
+   margin-bottom:11px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vixen-editorial-foyer .vixen-doorways button:nth-child(n) .vixen-door-verb {
+   padding-top:12px!important;
+   font-size:8px!important;
+ }
+ /* Reader provenance is accessible via disclosure, rather than obstructing
+    the actual manuscript with two full SHA-256 strings. */
+ #worksExperimentAReaderMount {
+   min-width:0!important;
+   max-width:100%!important;
+   padding:12px!important;
+ }
+ #worksExperimentAReaderMount .vix-couture-reader {
+   min-width:0!important;
+   max-width:100%!important;
+   max-height:none!important;
+   overflow-y:visible!important;
+   overflow-x:auto!important;
+   padding:21px 16px!important;
+   font-size:clamp(16px,4.2vw,19px)!important;
+   line-height:1.72!important;
+   overflow-wrap:break-word!important;
+   word-break:normal!important;
+ }
+ #worksExperimentAReaderMount .vix-reader-paragraph {
+   white-space:normal!important;
+   overflow-wrap:break-word!important;
+   word-break:normal!important;
+ }
+ #worksExperimentAReaderMount .vix-reader-heading {
+   overflow-wrap:break-word!important;
+   word-break:normal!important;
+ }
+}
+.vixen-door-verb .vixen-door-arrow{
+ flex:none;display:block;width:19px;height:19px;
+ color:inherit;stroke:currentColor;
+ transition:transform .2s cubic-bezier(.16,1,.3,1);
+}
+.mobile-wayfinder.vixen-doorways button:hover .vixen-door-verb .vixen-door-arrow,
+.mobile-wayfinder.vixen-doorways button:focus-visible .vixen-door-verb .vixen-door-arrow{
+ transform:translate(2px,-2px);
+}
+.expa-custody-disclosure{
+ margin:11px 0 16px;padding:9px 11px;
+ border:1px solid rgba(255,240,168,.27);
+ color:#e8d8cb;min-width:0;overflow-wrap:anywhere;
+}
+.expa-custody-disclosure summary{
+ cursor:pointer;font:600 10px/1.5 ui-monospace,monospace;
+ color:#fff0a8;letter-spacing:.05em;
+}
+.expa-custody-disclosure[open] summary{margin-bottom:12px}
+.expa-custody-disclosure code{overflow-wrap:anywhere;word-break:break-word}
