@@ -857,7 +857,7 @@ body[data-view="overview"] .reading-back{display:none}
               <span class="tag dark">32/32 AUTHORSHIP: HELD</span>
             </div>
             <p style="margin-top:8px">Em / Vix / Cass / Cassie and every other stated author retain authorship of their respective works. TD613, TD613-TCP, the SRC Atelier, and the archive operator claim no authorship, ownership, institutional affiliation, endorsement, or origin over the preserved source corpus merely by storing or assaying it here.</p>
-            <p style="margin-top:8px"><strong>Experiment-A Preview Custody (`EXPERIMENT_A_PREVIEW_AUTHORIZED`):</strong> Per Em’s blanket authority for Experiment-A preview evaluation (developer testing and Em volunteer-client review), all 53 readable <code>.md</code> / extracted <code>.pdf</code> manifestations and 21 <code>06-INSTRUMENTS</code> scripts are searchable (semantic + semiotic) and readable directly inside Works, Folios, and Methods. The 7 prospective Batch-B PDFs await binary upload and remain honestly labeled <code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code>. Future multi-human <em>Production</em> releases gate personal corpora behind an operator secret (modeled after TD613 Giving); <code>empirical_replication_credit: 0</code>.</p>
+            <p style="margin-top:8px"><strong>Experiment-A Preview Custody (`EXPERIMENT_A_PREVIEW_AUTHORIZED`):</strong> Per Em’s blanket authority for Experiment-A preview evaluation (developer testing and Em volunteer-client review), all 53 readable <code>.md</code> / extracted <code>.pdf</code> manifestations and 21 <code>06-INSTRUMENTS</code> scripts are searchable (semantic + semiotic) and readable directly inside Works, Folios, and Methods. The 7 prospective Batch-B PDFs await binary upload and remain honestly labeled <code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code>. Experiment A contains no corpus-access suppression; before any Experiment C main-branch release, a separate server-side TD613 Giving-style operator gate must be implemented and qualified. <code>empirical_replication_credit: 0</code>.</p>
             <details class="attribution-more">
               <summary>Full alias preservation &amp; anti-inference custody boundary</summary>
               <p style="margin-top:8px">This research chamber hosts Em’s preserved works and open constitutive synthesis inquiries on their own terms. Preservation here is not a declaration of membership, coauthorship, derivation, or incorporation into the host infrastructure.</p>
@@ -1166,7 +1166,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">02 · EXHAUSTIVE 32-WORK CATALOGUE &amp; +7 BATCH-B ANNEX · EXPERIMENT-A COMPANION PREVIEW</p>
           <h1>THE WORKS.<span class="title-annotation">32 recorded Works · 53 linked manifestations</span></h1>
-          <p class="intro">The preserved catalogue comprises thirty-two canonical works across five research clusters alongside seven prospective inquiry documents. Under Em’s Experiment-A preview authorization (<code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code>), all 53 readable <code>.md</code> / extracted <code>.pdf</code> texts and 21 <code>06-INSTRUMENTS</code> bodies are searchable and inspectable here (future multi-human Production builds require an operator secret like TD613 Giving). The 7 Batch-B PDFs remain metadata-searchable (<code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code>) pending binary upload.</p>
+          <p class="intro">The preserved catalogue comprises thirty-two canonical works across five research clusters alongside seven prospective inquiry documents. Under Em’s Experiment-A preview authorization (<code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code>), all 53 readable <code>.md</code> / extracted <code>.pdf</code> texts and 21 <code>06-INSTRUMENTS</code> bodies are searchable and inspectable here (a separate Giving-style server gate will be required before any future Experiment C main-branch client release). The 7 Batch-B PDFs remain metadata-searchable (<code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code>) pending binary upload.</p>
         </div>
         <div class="view-number" aria-hidden="true">32</div>
       </div>
@@ -1497,7 +1497,7 @@ body[data-view="overview"] .reading-back{display:none}
       <button type="button" class="expa-mode-btn" data-search-mode="src_projective" role="radio" aria-checked="false">SRC Projective</button>
     </div>
     <div class="expa-aperture-bar" id="globalSearchObservabilityBar" aria-live="polite">
-      <span>SEMANTIC-SEMIOTIC ENGINE · READY · EXPERIMENT-A PREVIEW AUTHORIZED (PRODUCTION SECRET-GATED)</span>
+      <span>SEMANTIC-SEMIOTIC ENGINE · READY · EXPERIMENT-A CORPUS READABLE</span>
       <span>EMPIRICAL_REPLICATION_CREDIT: 0</span>
     </div>
     <div class="command-results" id="globalSearchResults"></div>
@@ -2725,7 +2725,7 @@ body[data-view="overview"] .reading-back{display:none}
               '<div><strong>SHA-256:</strong> <code>' + esc(selB.sha256) + '</code></div>' +
               '<div><strong>Provenance Basis:</strong> ' + esc(selB.provenance_basis) + '</div>' +
               '<div><strong>Source Clock:</strong> ' + esc(selB.source_clock) + ' (never backfilled)</div>' +
-              '<div><strong>Custody Status:</strong> <code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code> — Searchable by filename &amp; directory inventory in Experiment-A preview; original PDF binary awaits git upload (zero fabricated OCR). Production builds require an operator secret (TD613 Giving pattern).</div>' +
+              '<div><strong>Custody Status:</strong> <code>EXPERIMENT_A_METADATA_ONLY_BINARY_PENDING_UPLOAD</code> — Searchable by filename &amp; directory inventory in Experiment-A preview; original PDF binary awaits git upload (zero fabricated OCR). Experiment A applies no secret gate.</div>' +
             '</div>' +
           '</div>';
 
@@ -2800,7 +2800,7 @@ body[data-view="overview"] .reading-back{display:none}
           const gateNote = w.human_gate_required ? ' · Gate #' + w.gate_num + ' [UNADJUDICATED_PAIR]' : '';
           let projLine = w.cluster + ' · ' + w.identity_status + ' · ' + w.manifestations_count + ' file(s)' + gateNote;
           if (state.aiaProjection === 'CUSTODIAL') {
-            projLine = 'Experiment-A Preview · ' + w.identity_status + ' · Companion Text Authorized (Prod Secret-Gated)';
+            projLine = 'Experiment-A Preview · ' + w.identity_status + ' · Readable Original Manifestations';
           } else if (state.aiaProjection === 'AUDIT') {
             projLine = w.protocols.join(', ') + ' · interval [' + w.contribution_interval[0] + ',' + w.contribution_interval[1] + ']';
           } else if (state.aiaProjection === 'IMPLEMENTATION') {
@@ -2832,13 +2832,13 @@ body[data-view="overview"] .reading-back{display:none}
             '</div>' +
             '<div>source_file_id: <code>' + esc(s.source_file_id) + '</code> · ' + fmtBytes(s.byte_length) + ' · ' + esc(s.media_type) + '</div>' +
             '<div>SHA-256: <code>' + esc(s.sha256) + '</code> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-copy-hash="' + esc(s.sha256) + '">Copy</button> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-inspect-manifestation="' + esc(s.source_file_id) + '">' + (isActiveManifest ? 'Inspecting Below ✓' : 'Open Manifestation Below ↓') + '</button></div>' +
-            '<div>Curatorial Status: Experiment-A Vercel Preview authorized (<code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code>); companion corpus accessible for Em &amp; developer verification. Future Production deployments gate personal corpora behind an operator secret.</div>' +
+            '<div>Available now: full Experiment-A manuscript text opens in the reader below (when a recorded text body exists).</div>' +
           '</div>';
         }).join('');
 
         const LENS_HEADINGS = {
           EXPERIENTIAL: 'Reading Guide · Inquiry & Conceptual Context',
-          CUSTODIAL: 'Experiment-A Preview Custody · Provenance & Secret-Gate Notice',
+          CUSTODIAL: 'Experiment-A Source Provenance · Reader Access',
           AUDIT: 'Evidence & Verification · Protocols & Interval Bounds',
           IMPLEMENTATION: 'System Architecture · Transduction & Manifestation Files'
         };
@@ -2849,7 +2849,6 @@ body[data-view="overview"] .reading-back{display:none}
           '<div data-membrane="HOST_INFRASTRUCTURE" class="badge-row">' +
             '<span class="tag pink">' + esc(sel.cluster + ' · ' + sel.cluster_short) + '</span>' +
             '<span class="tag gold">EXPERIMENT_A_PREVIEW_AUTHORIZED</span>' +
-            '<span class="tag porcelain">Prod: Operator-Secret Gated</span>' +
             '<span class="tag porcelain">Recorded Authorship: ' + esc(sel.authorship) + '</span>' +
             (sel.human_gate_required ? '<span class="tag gold">Gate #' + sel.gate_num + ' · UNADJUDICATED_PAIR</span>' : '') +
           '</div>' +
@@ -3108,7 +3107,6 @@ body[data-view="overview"] .reading-back{display:none}
     mountEl.innerHTML =
       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">' +
         '<strong style="font:600 11px/1.4 var(--font-mono);letter-spacing:.08em;color:#FF91AF">EXPERIMENT-A COMPANION READER · VOLUNTEER / DEV AUTHORIZED</strong>' +
-        '<span style="font:500 9.5px/1.4 var(--font-mono);color:#d8cbb8">Future Prod: Operator-Secret Gated (TD613 Giving)</span>' +
       '</div>' +
       renderPhaseRail() +
       manifestTabsHtml +
@@ -3426,7 +3424,7 @@ body[data-view="overview"] .reading-back{display:none}
               '<div><strong>Standalone Executors in Lineage:</strong> <code>' + sel.standalone_executors_in_lineage + '</code></div>' +
               '<div><strong>Committed Byte Length:</strong> ' + fmtBytes(sel.byte_length) + '</div>' +
               '<div><strong>SHA-256:</strong> <code>' + esc(sel.sha256) + '</code> <button type="button" class="secondary-btn" style="min-height:30px;padding:2px 8px;font-size:8px" data-copy-hash="' + esc(sel.sha256) + '">Copy</button></div>' +
-              '<div><strong>Experiment-A Preview Status:</strong> Full documentary protocol script accessible under <code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code> (<code>0</code> standalone executors). Production builds gate personal corpus access behind an operator secret.</div>' +
+              '<div><strong>Experiment-A Preview Status:</strong> Full documentary protocol script accessible under <code>EXPERIMENT_A_PREVIEW_AUTHORIZED</code> (<code>0</code> standalone executors). Experiment-A protocol bodies remain readable during this experiment.</div>' +
             '</div>' +
             '<div id="protocolExperimentAReaderMount" class="expa-reader-shell" data-instrument-id="' + esc(sel.instrument_id) + '"></div>' +
           '</div>' +
@@ -4002,15 +4000,13 @@ body[data-view="overview"] .reading-back{display:none}
         : '';
       obsBar.innerHTML =
         '<span>MODE: <code>' + esc(modeTag) + '</code>' + srcRegimeNote + ' · STATUS: <code>' + esc(result.status) + '</code> · ' + esc(obsSummary) + ' · SHOWING ' + _lastGlobalSearchHits.length + '/' + (result.total_hits ?? _lastGlobalSearchHits.length) + '</span>' +
-        '<span>EMPIRICAL_REPLICATION_CREDIT: 0 · PROD: SECRET_GATED</span>';
+        '<span>EMPIRICAL_REPLICATION_CREDIT: 0 · EXPERIMENT A: READABLE</span>';
     }
 
     if (_lastGlobalSearchHits.length === 0) {
       let msg = '0 matching records across semantic-semiotic corpus (Negative-canary zero verified).';
       if (result.status === 'CROSS_OPERA_QUARANTINED') {
         msg = '0 matching records · Cross-Opera identifier quarantined (CROSS_OPERA_QUARANTINED).';
-      } else if (result.status === 'PRODUCTION_OPERATOR_SECRET_REQUIRED') {
-        msg = '0 matching records · Production personal corpus requires verified operator secret (fail-closed).';
       } else if (result.status === 'CURSOR_MISMATCH') {
         msg = 'Pagination cursor invalidated by query or filter change; reset to page 1.';
       }
@@ -4251,22 +4247,8 @@ body[data-view="overview"] .reading-back{display:none}
     const limit = Math.max(1, Math.min(200, Number(opts.limit) || 12));
     const mode = String(opts.mode || 'hybrid').toLowerCase();
     const env = resolveInlineEnv(opts.deployment_env);
-    if (env === 'PRODUCTION' && !opts.operator_secret_verified) {
-      return {
-        status: 'PRODUCTION_OPERATOR_SECRET_REQUIRED',
-        engine_version: 'sync-inline-guard',
-        mode,
-        query: rawQ,
-        total_hits: 0,
-        returned_hits: 0,
-        pagination: { offset, limit, total_hits: 0, has_more: false, next_offset: null },
-        hits: [],
-        empirical_replication_credit: 0,
-        human_closure_required: true,
-        release_authority: false,
-        aperture_observability: null
-      };
-    }
+    // Experiment-A inline search has no secret gate; missing binary and
+    // Cross-Opera evidence classifications remain independently enforced.
     if (/(?:eclipse[-–—\s]*omega|\b(?:astraea|tauricdiana|wendbine|palace|src-[a-z0-9-]+|apt-\d{3}|g-\d{3})\b)/i.test(rawQ)) {
       return {
         status: 'CROSS_OPERA_QUARANTINED',
@@ -4540,7 +4522,7 @@ body[data-view="overview"] .reading-back{display:none}
     exportTray: () => deepClone({
       exported_at: new Date().toISOString(),
       covenant: MANIFEST.covenant,
-      capability_ceiling: 'EXPERIMENT_A_PREVIEW_AUTHORIZED_PRODUCTION_SECRET_GATED',
+      capability_ceiling: 'EXPERIMENT_A_CORPUS_READABLE_MAIN_RELEASE_HELD',
       records: [...state.collection].map((id) => ALL_RECORDS.find((r) => r.id === id)).filter(Boolean)
     })
   });
