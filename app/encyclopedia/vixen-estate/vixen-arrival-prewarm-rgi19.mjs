@@ -63,13 +63,14 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
  if(win.VIXEN_OPERA_ARRIVAL?.mounted)return win.VIXEN_OPERA_ARRIVAL;
  const veil=doc.getElementById('vixEntryVeil');
  let done=false,reason='INITIALIZING',resources=null,materialized=null;
- let coverPrepared=false,fontsPrepared=false;
+ let coverPrepared=false,fontsPrepared=false,salonSourceStatus='PENDING';
  const start=win.performance?.now?.()||0;
  const report=()=>Object.freeze({
   ...inspectOperaArrival(doc,win),state:done?'REVEALED':'PREPARING',
   reason,elapsed_ms:Math.round((win.performance?.now?.()||start)-start),
   resource_load_status:resources?'SETTLED':'IN_FLIGHT',
   source_hydration_status:materialized||'PENDING',
+  salon_manuscript_status:salonSourceStatus,
   release_authority:false
  });
  const finish=(why)=>{
@@ -93,6 +94,17 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
   }));
   return resources;
  });
+ // Preverify the two initial Salon manuscript bodies against original hashes.
+ // The same cache is reused if visitors later open the manuscript disclosures.
+ const salonManuscripts=preload.then(async()=>{
+  const service=win.VIXEN_SALON_WARM;
+  if(!service?.ready){salonSourceStatus='HELD_SALON_PREWARM_UNAVAILABLE';return;}
+  try{
+   const prepared=await service.ready();
+   salonSourceStatus=prepared.length===2&&prepared.every(x=>x?.record?.text_body&&!x.error)
+    ?'TWO_SALON_BODIES_VERIFIED':'HELD_SALON_BODY_READINESS';
+  }catch(_){salonSourceStatus='HELD_SALON_BODY_READINESS';}
+ });
  const deep=Promise.resolve(win.VIXEN_BOOT_HYDRATION).then(x=>{
   materialized=x?.error?'HELD_NONCRITICAL_SOURCE':x?'SOURCE_ENGINE_READY':'NO_SOURCE_BOOT_SIGNAL';
   return materialized;
@@ -112,12 +124,16 @@ export function mountVixenOperaArrival({document:doc=globalThis.document,window:
   if(done)return;
   const status=inspectOperaArrival(doc,win);
   if(status.critical_presentation_ready&&resources&&
-     materialized!==null&&coverPrepared&&fontsPrepared){
+     materialized==='SOURCE_ENGINE_READY'&&
+     salonSourceStatus==='TWO_SALON_BODIES_VERIFIED'&&
+     coverPrepared&&fontsPrepared){
    await oneFrame(win);
    if(!done){win.clearTimeout(deadline);finish('EIGHT_ROOMS_PREPARED');}
   }else win.setTimeout(check,65);
  };
- void Promise.allSettled([preload,deep,coverDecode,fontWarm]).then(()=>{if(!done)check();});
+ void Promise.allSettled([preload,salonManuscripts,deep,coverDecode,fontWarm]).then(()=>{
+  if(!done)check();
+ });
  // Ensure startup can reveal the page even when remote research hydration
  // has a long wait; the interval starts before those asynchronous fetches.
  win.setTimeout(check,40);
