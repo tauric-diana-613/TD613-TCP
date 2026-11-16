@@ -1,0 +1,187 @@
+{
+  "schema": "td613.vixen.seven-forensic-reconciliation/v1",
+  "title": "Historical seven PDF registrations · exact metadata and A0 custody differential",
+  "classification": "READ_ONLY_RECONCILIATION_NOT_A_CORPUS_AMENDMENT",
+  "observed_historical_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4",
+  "recorded_exclusion_revision": "18cd2305ec069f9f672f0c8af2dbf6ea6d7ed7e4",
+  "seven_free_index_regeneration_revision": "e32b82f0d657f7b20b2dd6b86c164ad2a8e5d380",
+  "observed_current_pr_revision": "7d657533b8c8d4fd11ae50f1e5751f6c432650c9",
+  "historical_counts": {
+    "works": 32,
+    "works_manifestations": 53,
+    "prospective_batch_b_metadata_registrations": 7
+  },
+  "current_counts": {
+    "works": 32,
+    "works_manifestations": 53,
+    "prospective_batch_b_metadata_registrations": 0
+  },
+  "semantics": "The seven are prospective metadata-only Batch-B registrations, never part of the 53 original Works manifestations. Source declarations are historical statements, not independently verified binaries.",
+  "scientific_evidence": "FILE_BODY_NOT_AVAILABLE_FROM_CURRENT_PUBLIC_MANIFEST; CORRUPTION_UNPROVEN",
+  "indexed_effect": "REQUIRES_EXACT_PRE_AND_POST_INDEX_COMPARISON; SEARCH_HITS_AND_HASHES_NOT_ASSUMED_FROM_MANIFEST_ONLY",
+  "irreversible_action_authority": false,
+  "operator_human_compose_closure": "RESERVED",
+  "entries": [
+    {
+      "ordinal": 1,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_c56744fae0f7",
+        "original_filename": "Multi-Density Topology Research Strategy (1).pdf",
+        "declared_binary_sha256": "c56744fae0f76252a127a4e3a238395aa6086b900ebab2455b53b9fc478cb233",
+        "declared_byte_length": 224351,
+        "declared_pages": 12,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 2,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_7c568aaf6e78",
+        "original_filename": "Audio DSP And LLM Architecture.pdf",
+        "declared_binary_sha256": "7c568aaf6e7860b32c401b0890952f89da27707f6f74f6de774c92b4d4dfd8f6",
+        "declared_byte_length": 234970,
+        "declared_pages": 12,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 3,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_6c888365fa73",
+        "original_filename": "Quantum Tensor Bridge Analysis.pdf",
+        "declared_binary_sha256": "6c888365fa73119cbf3e9ce349dd3c8bf41e7603b48b47854e4ccbbcec4e3881",
+        "declared_byte_length": 182893,
+        "declared_pages": 8,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "SOURCE_TEXT_STATES_SEPTEMBER_2026; FILE_CREATION_ORDER_UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 4,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_fe1c355b4e7a",
+        "original_filename": "Algedonic LLM Swarm Control.pdf",
+        "declared_binary_sha256": "fe1c355b4e7adc97997c90cdbff68f1ced90a82d007c3b2d588bff4fc666b676",
+        "declared_byte_length": 248554,
+        "declared_pages": 12,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 5,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_87ee5e995742",
+        "original_filename": "Swarm Architecture Prompt Research.pdf",
+        "declared_binary_sha256": "87ee5e9957420205871e95657604e031719725e1c08d21765dd760e636dc470e",
+        "declared_byte_length": 240932,
+        "declared_pages": 13,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 6,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_c90233bf09f6",
+        "original_filename": "Cognitive Time And Synchronicity Research.pdf",
+        "declared_binary_sha256": "c90233bf09f6fe8af3b17f481cea6a8b81a7add46009e8b0af8e9b50883e0f63",
+        "declared_byte_length": 280092,
+        "declared_pages": 12,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    },
+    {
+      "ordinal": 7,
+      "declared_historical_identity": {
+        "batch_id": "EMSTD613-BATCH-B-2026-09-11",
+        "source_file_id": "emb_20260911_811766eb1387",
+        "original_filename": "Semantic Error Derivatives Research.pdf",
+        "declared_binary_sha256": "811766eb13876fc35259a20efecdcca00daf23dce869f87fcdd3162a652f5a8b",
+        "declared_byte_length": 254863,
+        "declared_pages": 13,
+        "media_type": "application/pdf",
+        "provenance_basis": "HUMAN_PROVENANCE_CURRENT_CHAT_HANDOFF_CORRECTED_SEVENTH",
+        "source_clock": "UNRESOLVED",
+        "analysis_role": "PROSPECTIVE_BATCH_B",
+        "capability_tier": "TIER_2_CATALOGUE_METADATA_ONLY",
+        "body_availability": "UNAVAILABLE_IN_PUBLIC_SURFACE"
+      },
+      "as_observed_in_historical_manifest": true,
+      "as_observed_in_current_active_a0_batch_registration": false,
+      "current_binary_sha256_independently_verified": false,
+      "corruption_evidence_class": "UNPROVEN_ALLEGATION_NO_BINARY_COMPARISON",
+      "candidate_disposition": "HOLD_NO_HYDRATION_NO_REMOVAL_IN_THIS_OPERATION",
+      "original_registration_recoverable_from_revision": "7824615fedc1ec333dc38edb692e399e2a216bf4"
+    }
+  ]
+}
