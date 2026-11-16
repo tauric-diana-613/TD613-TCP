@@ -147,7 +147,12 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     const searchMod=await importOptional(resolve(sourceRoot,'vixen-estate','semantic-semiotic-search.mjs'));
     if(!searchMod?.loadSemanticSemioticEngine)throw Error('HELD_SEMANTIC_SEMIOTIC_SEARCH_UNAVAILABLE');
     const engine=await searchMod.loadSemanticSemioticEngine();
-    const searchOpts={...(payload.options||{}),...(payload.mode?{mode:payload.mode}:{})};
+    // The machine receipt has a strict 50 KB envelope. Honor the caller's
+    // finite hit bound instead of accidentally returning the default 20 hits.
+    const limitIn=Number(payload.limit??payload.options?.limit??8);
+    if(!Number.isInteger(limitIn)||limitIn<1||limitIn>12)
+      throw Error('HELD_ATLAS_SEARCH_LIMIT_1_TO_12');
+    const searchOpts={...(payload.options||{}),...(payload.mode?{mode:payload.mode}:{}),limit:limitIn};
     return engine.search(String(payload.query||''),searchOpts);
    }
    throw Error('HELD_ATLAS_OPERATION');
