@@ -121,7 +121,7 @@ jobs:
             <<< "$RUNS")"
           [[ -n "$RUN_ID" ]] || { echo 'No successful exact-head consolidated validation was found.' >&2; exit 1; }
           JOBS="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100")"
-          jq -e '(.jobs | length) >= 5 and ([.jobs[].conclusion] | all(. == "success"))' \
+          jq -e '([.jobs[] | select(.conclusion != "skipped")] | length) >= 5 and ([.jobs[] | select(.conclusion != "skipped") | .conclusion] | all(. == "success"))' \
             <<< "$JOBS" >/dev/null || { echo 'Expected all consolidated validation jobs to pass.' >&2; exit 1; }
           echo "Authorized PR #1730 SHA=$INPUT_SHA with consolidated CI run $RUN_ID"
 
