@@ -21,6 +21,7 @@ export function normalizeFusionControls(spec=null){
  if(spec==null)spec={};
  if(typeof spec!=='object'||Array.isArray(spec))throw new TypeError('VIXEN_FUSION_CONTROLS_OBJECT_REQUIRED');
  for(const key of Object.keys(spec)){
+  if(key==='schema'&&spec.schema==='td613.vixen.fusion-controls/v1')continue;
   if(!['channels','weight_policy','profile'].includes(key))throw new TypeError('VIXEN_FUSION_UNKNOWN_CONTROL:'+key);
  }
  const profile=spec.profile==null?'FULL_FUSION':String(spec.profile);
