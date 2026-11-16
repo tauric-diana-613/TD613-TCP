@@ -85,10 +85,13 @@ def main(out):
         "vixen.fusion.compare", "vixen.fusion.explain"
     }
     route_ids = [item["id"] for item in podium_routes]
+    compose_routes = {"podium.score", "podium.compose"}
+    expected_routes = legacy_routes | fusion_routes | compose_routes
     assert (
-        len(route_ids) == 16 and len(set(route_ids)) == 16
-        and set(route_ids) == (legacy_routes | fusion_routes)
-    ), "Machine Podium / Salon sixteen-route contract missing or original route lost"
+        len(route_ids) == len(expected_routes)
+        and len(set(route_ids)) == len(route_ids)
+        and set(route_ids) == expected_routes
+    ), "Machine Podium requires all 16 legacy/fusion routes plus two exact Compose/HITL routes"
     assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
     assert (REF/"vixen-operator-encounter.mjs").is_file()
     assert (REF/"vixen-operator-encounter.css").is_file()

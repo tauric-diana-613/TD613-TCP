@@ -39,7 +39,10 @@ export function extractApprovedVisual(receipt){
  const candidates=receipt.approved_visual_candidates;
  if(!Array.isArray(candidates)||candidates.length!==1)return null;
  const selected=candidates[0];
- if(!VISUAL_FORMS.includes(selected.form_id))return null;
+ if(typeof selected.form_id!=='string'||!selected.form_id.trim()||selected.form_id.length>120)return null;
+ // A newly proposed family may have no installed painter yet: never reject
+ // its *concept* because the old exhibition programme lacks its identifier.
+ // Painting still requires an independently reviewed renderer module.
  return Object.freeze({form_id:selected.form_id,
   data_contract:selected.data_contract,
   source_ids:(receipt.composition?.changes||[])
@@ -49,7 +52,7 @@ export function extractApprovedVisual(receipt){
   approval_receipt:receipt.approval.independent_receipt_id
  });
 }
-export function paintComposerVisualFrame(canvas,{form_id='SWARM_DYNAMICS',
+export function paintComposerVisualFrame(canvas,{form_id='PHASONIC_FOLD',
  time=0,model={},pointer={x:0,y:0},sourceIds=[],labId='LAB_RC-09'}={}){
  if(!VISUAL_FORMS.includes(form_id))throw new TypeError('HELD_UNREGISTERED_VISUAL_FORM');
  if(!canvas?.getContext)throw new TypeError('HELD_VISUAL_CANVAS_REQUIRED');
@@ -101,4 +104,76 @@ export function inspectOpticalReadiness({width=480,height=360,time=0,sourceIds=[
   optical_engines:OPTICAL_REUSE,beat_pairs:beats.pairs.length,
   nyquist_guarded:beats.nyquistGuarded,single_host_clock:true,
   no_automatic_scene_replacement:true,human_closure:'RESERVED'});
+}
+
+/**
+ * Open-form host extension. The finite VISUAL_FORMS constant above records
+ * legacy renderers that CURRENTLY EXIST; it is not a scientific taxonomy.
+ *
+ * An operator-approved novel mathematical grammar can be installed through a
+ * separately reviewed ESM renderer adapter. The adapter is injected by
+ * trusted application code (functions are impossible inside JSON tasks).
+ * No string-to-code evaluation, remote module fetch, source modification,
+ * or independent animation clock is performed by this host.
+ */
+export function createReviewedVisualFormHost({reviewedRenderers=[],verifyHumanReceipt=null}={}){
+ if(!Array.isArray(reviewedRenderers)||reviewedRenderers.length>32)
+  throw new TypeError('HELD_REVIEWED_RENDERER_BOUNDS');
+ const registry=new Map();
+ for(const item of reviewedRenderers){
+  if(!item||typeof item.id!=='string'||!/^[A-Z0-9][A-Z0-9_.:-]{1,119}$/.test(item.id)||
+     typeof item.paintFrame!=='function'||typeof item.source_sha256!=='string'||
+     !/^[0-9a-f]{64}$/.test(item.source_sha256)||
+     typeof item.review_receipt_id!=='string'||!item.review_receipt_id.trim()||
+     registry.has(item.id)||VISUAL_FORMS.includes(item.id))
+   throw new TypeError('HELD_UNREVIEWED_OR_DUPLICATE_VISUAL_RENDERER');
+  registry.set(item.id,Object.freeze({
+   paintFrame:item.paintFrame,
+   source_sha256:item.source_sha256,
+   review_receipt_id:item.review_receipt_id
+  }));
+ }
+ const available=()=>Object.freeze({
+  schema:COMPOSE_PREVIEW_SCHEMA,
+  legacy_installed:VISUAL_FORMS.slice(),
+  reviewed_extensions:[...registry.keys()],
+  accepted_unreviewed_task_code:false,
+  arbitrary_future_visual_families_allowed:true,
+  active_exhibit_untouched:true,
+  human_approval_verifier_connected:typeof verifyHumanReceipt==='function'
+ });
+ async function paintAuthorized(canvas,{composeReceipt,formOptions={}}={}){
+  const authorization=extractApprovedVisual(composeReceipt);
+  if(!authorization)return Object.freeze({status:'HELD_INVALID_COMPOSER_RECEIPT',painted:false});
+  if(typeof verifyHumanReceipt!=='function')
+   return Object.freeze({status:'HELD_INDEPENDENT_HOST_APPROVAL_UNAVAILABLE',painted:false});
+  let authenticated=false;
+  try{authenticated=(await verifyHumanReceipt(composeReceipt,authorization))===true}
+  catch(_){return Object.freeze({status:'HELD_INDEPENDENT_HOST_APPROVAL_REFUSED',painted:false})}
+  if(!authenticated)return Object.freeze({status:'HELD_INDEPENDENT_HOST_APPROVAL_REFUSED',painted:false});
+  if(VISUAL_FORMS.includes(authorization.form_id)){
+   const rendered=paintComposerVisualFrame(canvas,{...formOptions,
+    form_id:authorization.form_id,sourceIds:authorization.source_ids});
+   return Object.freeze({status:'SUPPORTED_PREVIEW_ONLY',form_id:authorization.form_id,
+    preview:rendered,source_mutation:false,active_exhibit_replaced:false,
+    release_authority:false,empirical_replication_credit:0});
+  }
+  const renderer=registry.get(authorization.form_id);
+  if(!renderer)return Object.freeze({status:'HELD_NEW_RENDERER_NOT_INSTALLED',painted:false,
+   needed:'REVIEWED_SOURCE_MODULE_PR_CI_VISUAL_AND_ACCESSIBILITY_QUALIFICATION',
+   suggested_visual_family:authorization.form_id});
+  if(!canvas?.getContext)throw new TypeError('HELD_CANVAS_REQUIRED');
+  const output=await renderer.paintFrame(canvas,{
+   ...formOptions,form_id:authorization.form_id,
+   sourceIds:authorization.source_ids,
+   host_clock_only:true,
+   data_contract:authorization.data_contract
+  });
+  return Object.freeze({status:'SUPPORTED_PREVIEW_ONLY',
+   form_id:authorization.form_id,review_receipt_id:renderer.review_receipt_id,
+   renderer_source_sha256:renderer.source_sha256,
+   preview:output,active_exhibit_replaced:false,
+   source_mutation:false,release_authority:false,empirical_replication_credit:0});
+ }
+ return Object.freeze({available,paintAuthorized});
 }
