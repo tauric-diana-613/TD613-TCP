@@ -107,8 +107,15 @@ const humanReadable=score=>[
  ...score.visuals.audition.candidates.map(v=>v.rank+' · '+v.id+' · heuristic '+v.fitness+
   ' · '+v.preview_type+' · see visuals.audition.candidates[].standalone_html'),
  'Comparison gallery: visuals.audition.gallery_html (standalone, sandboxed)',
- '## Alternatives',
- ...score.visuals.alternatives.map(v=>v.id+' '+v.fitness+' '+(v.renderer_state||v.status)),
+ '## Synthesis alternatives · weighted scores, dimensions and falsifiers',
+ ...score.synthesis.candidate_comparison.map(x=>x.rank+' · '+x.review_status+' · '+x.id+
+  ' · weighted '+x.score+' · dimension scores '+JSON.stringify(x.breakdown)+
+  ' · falsifier '+JSON.stringify(x.falsifier||'NOT_DECLARED')),
+ '## Visual alternatives · displaced exhibits and held candidates',
+ ...score.visuals.alternatives.map(v=>v.id+' · fitness '+v.fitness+
+  ' · '+(v.renderer_state||v.status)+' · evidence refs '+
+  JSON.stringify(v.source_refs||v.work_refs||[])+
+  ' · missing requirements '+JSON.stringify(v.requirements||[])),
  '## Composer closure',
  'Read the exact digest; request final edits or authorize this exact Score. No corpus changes or publication before approval.',
  'Composing is NOT deploying, merging, source admission, scientific closure or an Experiment B flight.'
@@ -188,7 +195,17 @@ export async function makePodiumScore(corpus,params={},sourceRevision='UNVERIFIE
    labs:labs.length,pending:pendingEntries,source_changes:sourceChangesList},
   synthesis:{selected:{id:winner.id,title:winner.title,score:winner.score,
    breakdown:winner.breakdown,falsifier:winner.falsifier||null},
-   alternatives:ranked.candidates.slice(1,5).map(x=>({id:x.id,title:x.title,score:x.score})),
+   alternatives:ranked.candidates.slice(1,12).map((x,i)=>({
+    rank:i+2,id:x.id,title:x.title,score:x.score,breakdown:x.breakdown,
+    falsifier:x.falsifier||null,source_refs:x.source_refs||null,
+    review_status:'RANKED_BUT_NOT_SELECTED'
+   })),
+   candidate_comparison:ranked.candidates.slice(0,12).map((x,i)=>({
+    rank:i+1,id:x.id,title:x.title,score:x.score,breakdown:x.breakdown,
+    falsifier:x.falsifier||null,source_refs:x.source_refs||null,
+    review_status:i===0?'SELECTED_FOR_PROPOSAL':'NOT_SELECTED'
+   })),
+   candidate_ranking_count:Math.min(12,ranked.candidates.length),
    weights:ranked.weights,work_seeds:sourceIds,operator_question:question||null},
   visuals:{selected:chosen,alternatives:candidates,open_form_protocol:openForms,
    audition,decision_owner:'PODIUM_PROPOSES_HUMAN_COMPOSER_AUTHORIZES',

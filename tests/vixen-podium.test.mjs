@@ -245,6 +245,11 @@ test('Machine Podium autonomously scores source-bound visual architecture, stops
  assert.equal(scored.result.synthesis.selected.score>=0,true);
  assert.equal(scored.result.changes_count>=6,true);
  assert.match(scored.result.score_sha256,/^[0-9a-f]{64}$/);
+ assert.ok(scored.result.synthesis.candidate_comparison.length>=1);
+ assert.equal(scored.result.synthesis.candidate_comparison[0].review_status,'SELECTED_FOR_PROPOSAL');
+ assert.equal(scored.result.synthesis.candidate_ranking_count,scored.result.synthesis.candidate_comparison.length);
+ assert.ok(scored.result.synthesis.candidate_comparison.every(x=>x.score!==undefined));
+ assert.match(scored.result.human_readable_score,/Synthesis alternatives/);
  assert.equal(scored.result.source_census.source_changes[0].action,'EXCLUDE');
  assert.equal(scored.result.source_census.source_changes[0].current_state_mutated,false);
  assert.equal(scored.result.visuals.selected.id.length>0,true);
