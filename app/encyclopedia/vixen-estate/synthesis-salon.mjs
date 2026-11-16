@@ -78,7 +78,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   result:null,refraction:null,
   trajectoryMemory:{A_B:null,B_A:null,refraction:null},
   lastRadiometry:null,resting:false,history:[],
-  notice:'Choose two recorded Works, one method, and a research question. Experiment-A companion bodies are authorized for preview & semantic-semiotic search; production releases require an operator secret.'
+  notice:'Choose two recorded Works, read their manuscripts, select a documentary method, and construct an unratified question. Experiment-A texts remain readable throughout this research preview.'
  };
  let veilHandle=null;
  const opticalClock={time:0};
@@ -294,12 +294,41 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
      id:x.work_id,label:String(j+1).padStart(2,'0')+' · '+titleText(x)
     })),w.work_id,v=>chooseWork(i,v)),
     mk('h3','vs-work-title',titleText(w)),
-    makeSelectSource(w,state.sources[i],v=>pickSource(i,v)),
-    paragraph('Authorship: '+w.authorship+' · Identity: '+w.identity_status),
-    paragraph('Experiment-A Preview: companion text authorized for developer & volunteer-client Em inspection (production builds require an operator secret); SHA-256 records the declared origin digest.','vs-custody')
+    makeSelectSource(w,state.sources[i],v=>pickSource(i,v))
    );
    const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
-   side.append(paragraph('SOURCE '+src.source_file_id+' · '+src.sha256.slice(0,16)+'…','vs-hash'));
+   const manuscript=mk('pre','vs-manuscript-body','Expand to read the complete recorded manuscript.');
+   const manuscriptReader=details('Read complete Experiment-A manuscript',manuscript,'vs-manuscript');
+   manuscriptReader.dataset.sourceId=src.source_file_id;
+   manuscriptReader.addEventListener('toggle',async()=>{
+    if(!manuscriptReader.open||manuscriptReader.dataset.loaded==='true'||manuscriptReader.dataset.loaded==='loading')return;
+    manuscriptReader.dataset.loaded='loading';
+    manuscript.textContent='Loading and verifying the selected manuscript…';
+    try{
+     const mod=await import('./corpus-experiment-a.mjs');
+     const rec=await mod.loadExperimentABodyBySourceId(src.source_file_id);
+     if(!manuscriptReader.isConnected)return;
+     if(typeof rec?.text_body==='string'&&rec.text_body.length){
+      manuscript.textContent=mod.scrubBase64BlobsForDisplay(rec.text_body);
+      manuscriptReader.dataset.loaded='true';
+     }else{
+      manuscript.textContent='Original text unavailable: '+(rec?.custody_status||'NO_RECORDED_BODY');
+      manuscriptReader.dataset.loaded='unavailable';
+     }
+    }catch(err){
+     if(manuscriptReader.isConnected){
+      manuscript.textContent='Manuscript verification/load failed: '+(err?.message||String(err));
+      manuscriptReader.dataset.loaded='error';
+     }
+    }
+   });
+   side.append(manuscriptReader);
+   const provenance=details('Source provenance and unresolved authorship',
+    append(mk('div','vs-provenance'),
+     paragraph('Authorship: '+w.authorship+' · Identity: '+w.identity_status),
+     paragraph('SOURCE '+src.source_file_id+' · SHA-256 '+src.sha256,'vs-hash')
+    ),'vs-details');
+   side.append(provenance);
    if(w.human_gate_required){
     side.append(paragraph('HUMAN GATE '+w.gate_num+' · UNADJUDICATED_PAIR','vs-gate'));
    }
