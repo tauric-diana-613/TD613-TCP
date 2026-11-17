@@ -53,8 +53,15 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
  display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
  opacity:1;mix-blend-mode:normal;filter:none;mask:none;animation:none;
 }
+/* Salon-only presentation constitution: 60Hz light on a transparent
+ * canvas above the source-governed, separately paced garment. One RAF. */
+#vixenSynthesisSalon[data-couture="folded-chrome"] .vs-cuirass-motion-canvas{
+ display:block;position:absolute;inset:0;width:100%;height:100%;
+ pointer-events:none;z-index:2;background:transparent;opacity:1;
+ mix-blend-mode:screen;animation:none!important;transition:none!important;
+}
 #vixenSynthesisSalon[data-couture="folded-chrome"] .vs-optical-label{
- position:absolute;z-index:2;bottom:12px;right:18px;left:auto;max-width:58%;
+ position:absolute;z-index:3;bottom:12px;right:18px;left:auto;max-width:58%;
  text-align:right;color:#dfded6;font:500 8px/1.6 ui-monospace,monospace;letter-spacing:.12em;
  text-shadow:none;pointer-events:none;
 }
