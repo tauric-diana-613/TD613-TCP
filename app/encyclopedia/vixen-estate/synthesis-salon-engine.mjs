@@ -1237,7 +1237,9 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
   fadtExact:false,
   wPlaneGrounded:false,
-  contextPriority:4,
+  // Available as a ranked inquiry, but never auto-overrides the approved
+  // featured frontispiece without an explicit question or selection.
+  contextPriority:0,
   headerTagline:'Documentary Routes · Contextual Attribution',
   patternSubtitle:'CROSS-REFERENCE MAP · SOURCE LINKS HELD TO CONTEXT.',
   heroStatement:`The source-route assay found ${sourceLinks} candidate link${sourceLinks===1?'':'s'} and ${sourceCues} routing cue${sourceCues===1?'':'s'}. ${contextualPasses} contextual role check${contextualPasses===1?'':'s'} passed; ${tomographyCount} reconstruction candidate${tomographyCount===1?'':'s'} remain distinct from independent proof.`,
