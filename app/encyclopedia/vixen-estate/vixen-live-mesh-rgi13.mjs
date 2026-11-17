@@ -6,7 +6,7 @@
  * OPERAHOUSE ≠ OPERA ≠ PERFORMER. Human closure RESERVED; Flight HELD.
  */
 import {measureCoutureBeats} from './vixen-beat-radiometry-rgi15.mjs';
-import {buildSalonField,paintSalonField} from './vixen-salon-ambient-field.mjs';
+import {buildSalonField,paintSalonField,pointOnFieldPath} from './vixen-salon-ambient-field.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
 export const MESH_CONTRACT=Object.freeze({
  schema:'td613.vixen.rgi13-electrical-breath/v2',estate:'VIXEN_OPERA',surface:'VISUAL_ONLY',
@@ -115,17 +115,30 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='overview',so
   .78+.44*preview.fold_strength:1);
  const scene=buildSalonField({width,height,time:opticalTime,field,cx,cy,scale,sourceIds:ids});
  const edge=Math.max(24,Math.min(width,height)*.065);
- const deflected=scene.trails.map(t=>({
-  ...t,
-  points:t.points.map(([px,py])=>{
+ // Keep every prepaint vertex a single identity through edge deflection.
+ // Previous optical copies discarded depth and left pulse/cross-link geometry
+ // in the old coordinates, visibly detaching particles and beams.
+ const vertexMap=new Map();
+ const deflected=scene.trails.map(t=>{
+  const points=t.points.map(p=>{
+   const known=vertexMap.get(p);if(known)return known;
+   const [px,py,pz]=p;
    const dx=px<edge?(1-smoothstep(0,edge,px))*10:(px>width-edge?-(1-smoothstep(0,edge,width-px))*10:0);
    const dy=py<edge?(1-smoothstep(0,edge,py))*8:(py>height-edge?-(1-smoothstep(0,edge,height-py))*8:0);
-   if(!dx&&!dy)return [px,py];
+   if(!dx&&!dy){vertexMap.set(p,p);return p;}
    const sign=t.id%2===0?1:-1;
-   return [px+dx+dy*.45*sign,py+dy-dx*.45*sign];
-  })
- }));
- const deflectedScene={...scene,trails:deflected};
+   const next=[px+dx+dy*.45*sign,py+dy-dx*.45*sign,pz];
+   vertexMap.set(p,next);return next;
+  });
+  return {...t,points,contact:vertexMap.get(t.contact)||t.contact,
+   pulse:pointOnFieldPath(points,t.phase)};
+ });
+ const deflectedScene={...scene,trails:deflected,
+  crossings:scene.crossings.map(link=>({...link,
+   points:link.points.map(p=>vertexMap.get(p)||p)})),
+  nodes:scene.nodes.map(n=>({...n,point:deflected[n.trailId].pulse})),
+  contacts:scene.contacts.map(c=>({...c,point:vertexMap.get(c.point)||c.point}))
+ };
  return {schema:MESH_CONTRACT.schema,width,height,phase:time,view,field,scene:deflectedScene,seed,
   source_mode:ids.length===2?'DECLARED_WORK_COORDINATES':'NEUTRAL_STAGE_NO_ASSIGNED_WORK',
   visual_form_id:preview?.form_id||null,preview_score_digest:preview?.score_digest||null,
