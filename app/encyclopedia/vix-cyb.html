@@ -3221,7 +3221,12 @@ body[data-view="overview"] .reading-back{display:none}
       bodyDisplayHtml = '<div class="expa-passage-focus">No extractable companion text available for this manifestation (<code>' + esc(bodyRec?.body_representation || 'NONE') + '</code>).</div>';
     } else {
       bodyDisplayHtml =
-        '<div class="vixen-manuscript-kicker">COMPANION MANUSCRIPT · COMPLETE TEXT</div>' +
+        '<div class="vix-reading-atelier-bar" role="group" aria-label="Manuscript reading controls">' +
+          '<div><span class="vix-reading-atelier-eyebrow">VIXEN · THE READING ATELIER</span>' +
+          '<span class="vix-reading-atelier-name">Complete ' + (String(activeSrc.media_type || '').includes('pdf') ? 'PDF-derived reading edition' : 'native manuscript') + '</span>' +
+          '<span class="vix-reading-atelier-custody">Presentation-only typography · Source identities and bytes preserved</span></div>' +
+          '<button type="button" id="expaReaderFocusButton" class="vix-reading-atelier-focus" aria-pressed="false" aria-controls="worksLexiconLayout">Expand reading atelier ↗</button>' +
+        '</div>' +
         '<article class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Complete companion manuscript"></article>';
     }
 
@@ -3245,7 +3250,10 @@ body[data-view="overview"] .reading-back{display:none}
         if (!mountEl.isConnected || mountEl.dataset.workId !== work.work_id) return;
         mountVixenManuscript(coutureReader,
           rawText,
-          {sourceId:activeSrc.source_file_id,showRaw:true});
+          {sourceId:activeSrc.source_file_id,
+           sourceFormat:activeSrc.media_type || '',
+           documentTitle:work.declared_title || '',
+           showRaw:true});
       } catch (error) {
         if (coutureReader.isConnected) {
           coutureReader.textContent = rawText;
@@ -3253,6 +3261,24 @@ body[data-view="overview"] .reading-back{display:none}
           console.warn('Vixen manuscript renderer unavailable; displaying safe source text',error);
         }
       }
+    }
+
+    const readingFocusButton=mountEl.querySelector('#expaReaderFocusButton');
+    if(readingFocusButton){
+      const readingLayout=document.getElementById('worksLexiconLayout');
+      const syncReadingFocus=()=>{
+        const focus=readingLayout?.dataset.readingFocus==='true';
+        readingFocusButton.setAttribute('aria-pressed',String(focus));
+        readingFocusButton.textContent=focus?'Return to index ↙':'Expand reading atelier ↗';
+      };
+      syncReadingFocus();
+      readingFocusButton.addEventListener('click',()=>{
+        if(!readingLayout)return;
+        readingLayout.dataset.readingFocus=
+          String(readingLayout.dataset.readingFocus!=='true');
+        syncReadingFocus();
+        readingFocusButton.focus({preventScroll:true});
+      });
     }
 
     mountEl.querySelectorAll('[data-reader-phase]').forEach((btn) => {
