@@ -214,7 +214,7 @@ try {
       await view.locator('.vix-couture-route-guide h2').waitFor({state:'visible',timeout:10000});
       assert.equal(await view.locator('.vix-route-stage').count(),3,
         room+' route must present exactly three readable evidentiary operations');
-      const disclosure=view.locator('.vix-route-custody');
+      const disclosure=view.locator('.vix-couture-route-guide .vix-route-custody').first();
       await disclosure.locator('summary').click();
       assert.notEqual(await disclosure.getAttribute('open'),null,
         room+' custody disclosure must work with real input');
