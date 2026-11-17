@@ -1203,6 +1203,19 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
  return candidates;
 }
 
+function assertNoGeneratedCandidateBoilerplate(candidate){
+ // Recorded source titles are immutable and may coincidentally share a phrase.
+ // Generated candidate headlines, however, may never recycle that template.
+ for(const field of ['title','headerTagline','patternSubtitle','heroStatement']){
+  const sample=cleanText(candidate?.[field],2400);
+  if(ANTI_BOILERPLATE_SUBTITLE_RE.test(sample)){
+   const err=new TypeError('BOILERPLATE_SYNTHESIS_CANDIDATE_REJECTED:'+field);
+   err.code='BOILERPLATE_SYNTHESIS_CANDIDATE_REJECTED';
+   throw err;
+  }
+ }
+}
+
 export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={}){
  const wrapped=corpusOrOpts&&typeof corpusOrOpts==='object'&&!Array.isArray(corpusOrOpts.works)&&('corpus'in corpusOrOpts);
  const corpus=wrapped?corpusOrOpts.corpus:corpusOrOpts;
@@ -1264,6 +1277,7 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
 
  const clockById=new Map(CLOCKS.map(c=>[c.id,c]));
  const scored=rawCandidates.map(cand=>{
+  assertNoGeneratedCandidateBoilerplate(cand);
   assertNoBoilerplateSubtitle(cand.patternSubtitle);
   const cA=clockById.get(cand.clockPair[0])||CLOCKS[0];
   const cB=clockById.get(cand.clockPair[1])||CLOCKS[2];
