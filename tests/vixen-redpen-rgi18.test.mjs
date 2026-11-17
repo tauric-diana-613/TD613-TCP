@@ -71,6 +71,50 @@ test('redpen VII — mesh excludes nested scroll invalidation and keeps same can
  assert.doesNotMatch(mesh,/win\.addEventListener\('scroll',onLayout/);
  assert.match(visual,/html \{scroll-behavior:auto!important;\}/);
 });
+
+test('RGI23 · engine text receives bounded editorial lineation, no CSS-generated header',()=>{
+ assert.match(foundry,/function renderSynthesisHeadline\(raw\)/);
+ assert.match(foundry,/railTitle\.textContent=crossed/);
+ assert.match(foundry,/sourceText\.length<=110/);
+ assert.match(foundry,/railHeading\.prepend\(railTitle\)/);
+ assert.match(visual,/\.ef-aria-score>\.ef-kicker::before\s*\{[\s\S]*?content:none!important/);
+ assert.match(visual,/\.ef-rail-display-headline/);
+ assert.match(visual,/white-space:pre-line!important/);
+});
+test('RGI23 · selection marker follows actual aria-pressed and gold frame, not all hover targets',()=>{
+ assert.match(foundry,/b\.setAttribute\('aria-pressed',String\(state\.labId===id\)\)/);
+ assert.match(visual,/\.ef-hero-tab::after\s*\{\s*content:none!important/);
+ assert.match(visual,/\.ef-hero-tab\[aria-pressed="true"\]::after\s*\{\s*content:"◀"!important/);
+ assert.match(visual,/border:2px solid #d6ad45!important/);
+ assert.match(visual,/@keyframes vix-gold-interference/);
+ assert.match(visual,/@media\(prefers-reduced-motion:reduce\)/);
+});
+test('RGI23 · proof has uniform toolbar material and status lives outside optical frame',()=>{
+ assert.match(visual,/\.ef-toolbar :is\(button\.ef-toggle,button\.ef-button,button\.ef-inspector-switch\)/);
+ assert.match(visual,/\.ef-toolbar \.ef-inspector-switch::after\s*\{\s*content:none!important/);
+ assert.match(foundry,/add\(stage,canvas,notation,composerCanvas,overlay\);/);
+ assert.match(foundry,/add\(eye,iris,sceneBadge\);/);
+ assert.doesNotMatch(foundry,/COMPOSER HELD · No independently authorized exhibit substitution/);
+ assert.match(foundry,/composerReview\.hidden=!active/);
+ assert.match(visual,/\.ef-composer-review\[hidden\]/);
+ assert.match(visual,/\.ef-scene-badge\s*\{[\s\S]*?position:relative!important/);
+});
+test('RGI23 · three pedagogical Opera paths preserve all native source-bearing controls',()=>{
+ for(const name of ['vixWorksPathTitle','vixGatePathTitle','vixRefusalPathTitle']){
+  assert.match(page,new RegExp('id="'+name+'"'));
+ }
+ assert.equal((page.match(/class="vix-couture-route-guide"/g)||[]).length,3);
+ assert.equal((page.match(/class="vix-route-stage" role="listitem"/g)||[]).length,9);
+ assert.equal((page.match(/class="vix-route-custody"/g)||[]).length,3);
+ for(const id of ['workSearchInput','worksListContainer','gateSensitivityReadout',
+  'gatesStackContainer','resetGatesBtn','vixenElectricFoundry']){
+  assert.match(page,new RegExp('id="'+id+'"'));
+ }
+ assert.match(page,/BOUNDED_TIE/);
+ assert.match(visual,/RGI23 · THREE ROOM COUTURE/);
+ assert.match(visual,/#view-gates \.gate-controls \.segmented button\[aria-pressed="true"\]/);
+});
+
 test('redpen VIII — loaded CSS, host prewarm, bounded fail-open arrival curtain',()=>{
  assert.match(page,/vixen-redpen-couture-rgi18\.css/);
  assert.match(page,/rel="modulepreload".*observatory-electric-foundry\.mjs/);
