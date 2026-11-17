@@ -41,11 +41,19 @@
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art {
    inset:0!important;
-   /* Stage-scale only: leave approved artwork and green-padlocked type intact.
-      The formerly enormous 205/207px letterbox starved the sculpture of
-      the mobile viewport's upper third. */
-   padding:clamp(112px,14svh,128px) 3px clamp(136px,17svh,152px)!important;
+   /* RGI21 operator-redpen correction: RESTORE the approved image scale.
+      Previous RGI20 expansion (112/136 padding) enlarged the chrome into
+      the operator-locked CYBERNETICS anchor. Keep the original 172/206
+      image frame and move that frame UP; do not scale, crop, regenerate,
+      shift the approved headings or modify desktop composition. */
+   padding:172px 14px 206px!important;
    place-items:center!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art picture {
+   /* Translate the image-containing frame, not the title anchors or the
+      image's original perspective transform. It remains fully inside
+      the cover at the 390px and 428px witness sizes. */
+   transform:translateY(-66px)!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art img {
    width:100%!important;height:100%!important;object-fit:contain!important;
