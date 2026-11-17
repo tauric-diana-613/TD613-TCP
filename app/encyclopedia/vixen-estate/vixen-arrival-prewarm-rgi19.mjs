@@ -53,7 +53,7 @@ export function inspectOperaArrival(doc=globalThis.document,win=globalThis.windo
   all_rooms_materialized:allRooms,
   cover_decoded:imageReady,mesh_ready:meshReady,
   observatory_gpu_prepared:gpuPrepared,salon_prepared:salonReady,
-  critical_presentation_ready:allRooms&&imageReady&&meshReady&&salonReady,
+  critical_presentation_ready:allRooms&&imageReady&&meshReady&&salonReady&&gpuPrepared,
   scientific_promotion_authority:false,corpus_mutation:false
  });
 }
