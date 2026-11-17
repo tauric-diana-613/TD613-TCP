@@ -271,3 +271,26 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
 @media (prefers-reduced-motion:reduce){
  #constitutiveInquiry .ci-candidate-card{transition:none!important}
 }
+
+
+/* Keep mathematical notation and long uninterrupted strings inside the
+ * manuscript's own measure instead of expanding the containing article. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre,
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre :is(*, *::before, *::after){
+ box-sizing:border-box!important;min-width:0!important;overflow-wrap:anywhere!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre :is(pre,.vix-reader-code,.vix-reader-raw pre){
+ max-width:100%!important;white-space:pre-wrap!important;word-break:break-word!important;
+ overflow-wrap:anywhere!important;overflow-x:auto!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre :is(.vix-math,.vix-math-display,.katex-display,.katex){
+ max-width:100%!important;overflow-x:auto!important;overflow-y:hidden!important
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre :is(table,blockquote,figure,img,svg){
+ max-width:100%!important;min-width:0!important
+}
