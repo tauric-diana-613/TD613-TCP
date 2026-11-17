@@ -74,6 +74,38 @@ test('RGI24 · Markdown documents keep native structural breaks and manifest ide
  assert.match(visual,/RGI24 · THE READING ATELIER/);
  assert.match(visual,/data-reading-focus="true"/);
 });
+test('RGI25 · Noir Folio replaces porcelain reading asset with compact, interactive source-safe layout',()=>{
+ const noir=read('app/encyclopedia/vixen-estate/vixen-noir-folio-rgi25.css');
+ assert.match(page,/vixen-noir-folio-rgi25\.css/);
+ assert.match(page,/class="vix-noir-folio-frame"/);
+ assert.match(page,/data-folio-density="compact"/);
+ assert.match(page,/data-folio-density="comfort"/);
+ assert.match(page,/id="vixFolioProgress"/);
+ assert.match(page,/id="vixFolioPrevious"/);
+ assert.match(page,/id="vixFolioNext"/);
+ assert.match(noir,/RGI25 \/ VIXEN'S NOIR FOLIO/);
+ assert.match(noir,/background:linear-gradient\(130deg,#0c1519,#121d22/);
+ assert.match(noir,/font:400 clamp\(14px,1\.04vw,16\.5px\)/);
+ assert.match(noir,/data-folio-density="comfort"/);
+ assert.match(noir,/#view-works #worksExperimentAReaderMount #expaCompanionBodyPre/);
+ assert.doesNotMatch(noir,/background:#fffaf7!important|background:#fffefb!important/i);
+ assert.match(page,/sourceFormat:activeSrc\.media_type/);
+ assert.match(page,/documentTitle:work\.declared_title/);
+});
+
+test('RGI25 · scoring cards explain eight axes and keep TD613 candidate authorship distinct',()=>{
+ const noir=read('app/encyclopedia/vixen-estate/vixen-noir-folio-rgi25.css');
+ const engine=read('app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs');
+ assert.match(noir,/\.ci-candidate-axes/);
+ assert.match(page,/SHOW EIGHT SCORING AXES|INSPECT THE EIGHT SCORING AXES/);
+ assert.match(page,/NOT A PROBABILITY OF TRUTH/);
+ assert.match(page,/operaResearchLabel/);
+ assert.match(page,/documentary source-route/);
+ assert.match(engine,/id:'cand-vixen-documentary-route'/);
+ assert.match(engine,/methodology_origin:'TD613'/);
+ assert.doesNotMatch(engine,/id:'cand-src-projective-tomography'/);
+ assert.doesNotMatch(engine,/const srcCandidate=rawTpl/);
+});
 test('redpen II — proof is one operable high contrast toggle',()=>{
  assert.match(foundry,/BTN\(state\.inspectorOpen\?'CLOSE THE PROOF':'OPEN THE PROOF'/);
  assert.match(foundry,/aria-expanded/);
