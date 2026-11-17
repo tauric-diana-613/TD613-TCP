@@ -1411,6 +1411,24 @@ try {
       },route);
       assert.equal(entered.animation,'none','No route may reintroduce opacity-fade compositing');
       assert.equal(entered.opacity,'1','A room must remain solid through route entry');
+      if(route==='collection'&&motion==='no-preference'){
+        const stage=page.locator('#vixenSynthesisSalon .vs-optical-stage');
+        await stage.scrollIntoViewIfNeeded();
+        await page.waitForFunction(()=>{
+          const st=window.VIXEN_SALON_PRESENTATION?.status?.();
+          return st?.visible&&st?.motion_frames>=2&&st?.target_fps===60;
+        },null,{timeout:15000,polling:100});
+        const first=await page.evaluate(()=>window.VIXEN_SALON_PRESENTATION.status());
+        await page.waitForTimeout(620);
+        const later=await page.evaluate(()=>window.VIXEN_SALON_PRESENTATION.status());
+        assert(later.motion_frames>first.motion_frames+4,
+          'Desktop Salon light must continue between garment geometry frames');
+        assert(later.motion_frames>later.geometry_frames,
+          '60Hz optical presentation must outrun costly model generation');
+        assert.equal(later.clock_count,1,'Salon must retain one host RAF clock');
+        await page.screenshot({path:path.join(output,'route-audit',stem+'-salon-optical-presentation.jpg'),
+          type:'jpeg',quality:88,fullPage:false});
+      }
       await page.waitForFunction(()=>!!window.VixenLivingMesh?.status()?.route);
       await page.evaluate(()=>{
         if(document.getElementById('motionBtn').getAttribute('aria-pressed')!=='true')
