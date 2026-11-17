@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="./vixen-estate/fusion-console.css">
 <link rel="stylesheet" href="./vixen-estate/research-chamber.css">
 <link rel="stylesheet" href="./vixen-estate/synthesis-salon.css">
+<link rel="stylesheet" href="./vixen-estate/vixen-ai-journey.css">
 <link rel="stylesheet" href="./vixen-estate/observatory-electric-foundry.css">
 <link rel="stylesheet" href="./vixen-estate/vixen-foyer.css">
 <link rel="stylesheet" href="./vixen-estate/vixen-motion.css">
@@ -1524,6 +1525,95 @@ body[data-view="overview"] .reading-back{display:none}
           <button type="button" class="primary-btn" id="exportTrayBtn">Export Original Research Cart ↓</button>
         </div>
       </div>
+
+      <!-- Independent research-collaboration UI. AI host is not implied present. -->
+      <section id="vixenAiJourney" role="region" aria-label="Guided AI research adventure">
+        <div class="vma-header">
+          <div>
+            <span class="vma-kicker">THE RESEARCH ADVENTURE · CHOOSE YOUR ROLE</span>
+            <h2>Follow the clue.<br>Change the question.</h2>
+            <p class="vma-intro">Two very different ways to explore one extraordinary research collection.
+              The guide follows documentary leads, stages optional field missions, and invites you to choose
+              which mystery deserves your attention next. Your sources, judgments, and authorship remain yours.</p>
+          </div>
+          <span class="vma-season">READ ONLY · YOUR JOURNEY, YOUR MOVES</span>
+        </div>
+        <div id="vmaStartPanel">
+          <div class="vma-roles" role="group" aria-label="Choose one ontological role for your research session">
+            <button type="button" class="vma-role" data-vma-role="MAESTRO" aria-pressed="false">
+              <span>01 · DOCUMENTARY EXPLORATION</span>
+              <strong>Maestro</strong>
+              <span>Your AI research guide follows rabbit holes, traces sources, proposes side quests,
+                and suggests overlooked places to go. You decide where the journey travels.</span>
+            </button>
+            <button type="button" class="vma-role" data-vma-role="COMPOSER" aria-pressed="false">
+              <span>02 · INTERPRETIVE RESEARCH</span>
+              <strong>Composer</strong>
+              <span>Your AI research partner develops competing interpretations, challenges attractive claims,
+                and helps frame questions that could actually be tested.</span>
+            </button>
+          </div>
+          <label for="vmaGoal">What are you curious about? · Optional</label>
+          <input id="vmaGoal" type="text" maxlength="300" autocomplete="off"
+            placeholder="A theme, a puzzling passage, a contradiction, or something you cannot explain…">
+          <div class="vma-inline">
+            <button type="button" class="vma-btn vma-primary" id="vmaStart" disabled>Begin the research adventure ↗</button>
+            <span class="vma-muted">You choose one role per session. To change roles, end this journey and begin a new one.</span>
+          </div>
+        </div>
+        <div id="vmaPlayPanel" hidden>
+          <div class="vma-session-bar">
+            <span id="vmaCurrentRole">NO ROLE SELECTED</span>
+            <span id="vmaChapter" class="vma-season">CHAPTER 00</span>
+          </div>
+          <div class="vma-board">
+            <div>
+              <div class="vma-panel" id="vmaStory" aria-live="polite"></div>
+              <div class="vma-panel" id="vmaMoves" style="margin-top:10px"></div>
+              <div class="vma-panel" id="vmaMissions" style="margin-top:10px"></div>
+            </div>
+            <div>
+              <div class="vma-panel" id="vmaSources"></div>
+              <div class="vma-panel" id="vmaCart" style="margin-top:10px"></div>
+              <div class="vma-panel" style="margin-top:10px">
+                <h4 class="vma-section-title">Program Notes</h4>
+                <p id="vmaNotesState" class="vma-muted">OFF · future note authoring requires separate permission</p>
+                <div class="vma-inline">
+                  <button type="button" class="vma-small" id="vmaNotesRequest">Ask to begin Program Notes</button>
+                  <button type="button" class="vma-small vma-primary" id="vmaNotesApprove" hidden>Allow future notes</button>
+                  <button type="button" class="vma-small vma-quiet" id="vmaNotesRevoke" hidden>Stop writing notes</button>
+                  <button type="button" class="vma-small vma-quiet" id="vmaDownloadNotes">Save Program Notes</button>
+                </div>
+                <div id="vmaNotesView"></div>
+              </div>
+            </div>
+          </div>
+          <div id="vmaReportPanel" hidden>
+            <span class="vma-kicker">A FIELD NOTE · YOUR OBSERVATION</span>
+            <h4 class="vma-section-title" id="vmaReportTitle">Report a clue</h4>
+            <p class="vma-muted">Describe what you saw, heard, compared, or tested. Your report is recorded as your account;
+              it does not automatically become verified evidence. The guide will seek an alternative explanation.</p>
+            <label for="vmaReportText">What did you notice?</label>
+            <textarea id="vmaReportText" maxlength="1200" rows="4"
+              placeholder="I observed… The passage or setting was… I wondered whether…"></textarea>
+            <div class="vma-inline">
+              <button type="button" class="vma-btn vma-primary" id="vmaReportSubmit">Return my clue to the guide</button>
+              <button type="button" class="vma-btn" id="vmaReportCancel">Keep exploring</button>
+            </div>
+          </div>
+          <div class="vma-exit">
+            <button type="button" class="vma-btn vma-primary" id="vmaCopyAi">Carry this journey into AI chat</button>
+            <button type="button" class="vma-btn" id="vmaSave">Save research journey ↓</button>
+            <button type="button" class="vma-btn" id="vmaEnd">End session · Choose another role</button>
+          </div>
+          <textarea id="vmaCopyFallback" hidden readonly aria-label="AI handoff text to copy"></textarea>
+          <p class="vma-muted">The page offers genuine source-grounded local guidance and a structured AI handoff.
+            Live-model conversation requires your connected AI chat. No model, private engine, or autonomous execution
+            is implied merely by opening this interface.</p>
+        </div>
+        <p role="status" aria-live="polite" id="vmaStatus">Choose Maestro or Composer to begin.</p>
+      </section>
+
       <div id="vixenSynthesisSalon" role="region" data-stage-role="VIXEN_OPERA" aria-label="Vixen couture synthesis laboratory and experiment design">
         <p>The Vixen Synthesis Salon is preparing its historical source catalogue.</p>
       </div>
@@ -1669,6 +1759,7 @@ body[data-view="overview"] .reading-back{display:none}
   </div>
 </footer>
 
+<button type="button" id="vmaJourneyDock" hidden aria-label="Return to research adventure">Resume the adventure ⤴</button>
 <div id="vixenToast" class="toast" role="status" aria-live="polite"></div>
 
 <script id="vixen-reference-manifest" type="application/json">{"schema":"td613.vixen.reference-manifest/v4.1","surface_id":"vixen-cybernetics-atelier","route":"/encyclopedia/vix-cyb.html","atelier_id":"EMSTD613","covenant":"Khona‌lit-po","authority_token":"SAC[X6ZNK5NO51]","stage_succession_role":"EXPERIMENT_A_PREVIEW_COMPANION_AUTHORIZED","stage_2_seam_id":"manifest-instance-theme","preserved_signature_literal":"VIXENCYBERNETICS$S_e≡[x+y]=z+1$","rendered_title_math_ornament":"S_e ≡ [x + y] = z + 1","codepoint_separation":{"tetragram_tai_xuan_jing":{"glyph":"𝌋","codepoint":"U+1D30B","utf8_hex":"f09d8c8b"},"supplementary_pua_emblem":{"glyph":"􍘓","codepoint":"U+10D613","utf8_hex":"f48d9893"},"covenant_interior_zwnj":{"host":"Khona‌lit-po","codepoint":"U+200C","utf8_hex":"e2808c"}},"three_tier_source_contract":{"tier_1_authorized_viewable_text":["ATELIER_PROFILE.json","ATTRIBUTION.md","em_unified_synthesis_receipt.json","Typed Constitutive Cybernetics & RC-01..RC-14 Synthesis Folios"],"tier_2_experiment_a_preview_companion":["32 emwork_* routes & full companion bodies","53 linked emsrc_* .md & extracted PDF bodies","21 06-INSTRUMENTS protocol markdown bodies","3 brand visual assets (IMAGE_METADATA_ONLY_NO_OCR)"],"production_personal_corpus_gate":"FUTURE_EXPERIMENT_C_MAIN_RELEASE_SERVER_SIDE_GIVING_STYLE_SECRET_REQUIRED"},"counts":{"historical_estate_files":87,"historical_estate_bytes":7938934,"appledouble_quarantined_c4":33,"substantive_historical_files":54,"analyzable_manifestations":53,"recipient_indexed_sources":87,"recipient_total_records":140,"canonical_works_conditional":32,"human_gated_pairs":8,"work_sensitivity_interval":[32,40],"work_sensitivity_partitions":256,"documentary_instruments":21,"standalone_executors":0,"synthesis_formula_folios":22},"frontispiece":{"classification":"PROVISIONAL_CREATIVE_ARTWORK","grammar":"Mugler-Unchained Chromepunk Refractive Couture · Tri-Plane Cybernetic Astrolabe & Five-Clock Vernier","human_skeleton_anatomy_present":false,"encyclopedia_asset_reused":false,"desktop_webp_bytes":118810,"desktop_webp_sha256":"a6a9781b9e204478a8bf9a3b8fff769605bdcaf1c90b7b42829cd882d1871763","mobile_webp_bytes":134084,"mobile_webp_sha256":"1e31bc0e838c8879dd859034607e8244e9f7bd1f40b59e943b5dddb39aa87266","active_source_mode":"EXTERNAL_OPERATOR_SELECTED_PNG","active_custody_status":"HUMAN_AESTHETIC_REVIEW_PENDING","desktop_png_sha256":"25beb07c76620f15ece49b36916d08d85dfbf41a2e94bbea0869f27576a66715","mobile_png_sha256":"81cbf31edfbb91a09da7c51758349b6f0807421b6bbb250a01aa817b3e722302","desktop_png_dimensions":[3040,1616],"mobile_png_dimensions":[941,1671],"asset_contract":"assets/vixen/asset-contract.json"},"claim_ceilings":{"all_work_authorship":"UNRESOLVED","human_gates_default":"UNADJUDICATED_PAIR","multilayer_warrant_claim_entailment":"HELD_UNVERIFIED_BY_SYNTAX_ALONE","competent_null_e00_1":"BOUNDED_TIE","scientific_reciprocal_surplus":"UNESTABLISHED","a_pfr0_2_engine_track":"SEPARATE_HEADLESS_TRACK_PENDING","experiment_b_post_postflight":"B_POSTPOSTFLIGHT_PROCEDURE_PINNED_UNEXECUTED","empirical_replication_credit":0,"scientific_promotion_authority":false}}</script>
@@ -6261,6 +6352,7 @@ import {
 })();
 </script>
 <script type="module" src="./vixen-estate/vixen-opera-public-copy.mjs"></script>
+<script type="module" src="./vixen-estate/vixen-ai-journey.mjs"></script>
 <script type="module" src="./vixen-estate/observatory-electric-foundry.mjs"></script>
 <script type="module" src="./reference/vixen-operator-encounter.mjs"></script>
 <script type="module" src="./vixen-estate/vixen-foyer.mjs"></script>

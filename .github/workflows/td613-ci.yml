@@ -251,6 +251,8 @@ jobs:
           if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
           node --test tests/vixen-native-atelier-bridge.test.mjs
           node --test tests/vixen-public-copy.test.mjs
+          node --test tests/vixen-ai-session.test.mjs
+          node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
           for source_bound_suite in \
             tests/vixen-podium-compose-score-custody.test.mjs \
             tests/vixen-podium-redpen-adjudication.test.mjs \

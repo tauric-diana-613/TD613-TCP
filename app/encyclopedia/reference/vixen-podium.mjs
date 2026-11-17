@@ -6,6 +6,7 @@
  * personal data access, or privileged execution. A supplied native adapter
  * runs only via an independent host-provided authorization boolean.
  */
+import {createVixenAiSession} from '../vixen-estate/vixen-ai-session.mjs';
 import {createVixenReferenceMembrane} from './vixen-read-gateway.mjs';
 import {constructCrossAtelierWitness} from './vixen-operator-encounter.mjs';
 import {composeSalonPlan,refractSalonPlan,deriveSynthesisHeadline,synthesizeOutsidePerspectiveConjectures,scoreUnifiedSynthesisCandidates,assertNoBoilerplateSubtitle} from '../vixen-estate/synthesis-salon-engine.mjs';
@@ -39,7 +40,9 @@ export const PODIUM_ROUTES=Object.freeze([
  'synthesis.propose','vixen.salon.compose','experiment_b.preregister',
  'engine.capabilities','engine.invoke',
  'vixen.fusion.capabilities','vixen.fusion.search','vixen.fusion.compare','vixen.fusion.explain',
- 'podium.score','podium.redpen','podium.compose'
+ 'podium.score','podium.redpen','podium.compose',
+ 'vixen.ai.start','vixen.ai.choose','vixen.ai.report','vixen.ai.status',
+ 'vixen.ai.notes','vixen.ai.handoff','vixen.ai.archive','vixen.ai.finish'
 ]);
 export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  ATLAS:Object.freeze([
@@ -90,7 +93,8 @@ const safeRecord=w=>({
 });
 export function createVixenPodium({corpus,membrane=null,engineAdapters={},engines=null,
   semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT',verifyHumanApproval=null,
-   nativeReviewCaptureProvider=null}={}){
+   nativeReviewCaptureProvider=null,readVisitorCart=null,verifyProgramNotesConsent=null,
+   authorProgramNote=null}={}){
  const normalizeAdapters=map=>{
   if(map===undefined||map===null)return Object.create(null);
   if(typeof map!=='object'||Array.isArray(map))throw new TypeError('VIXEN_PODIUM_INVALID_ENGINE_ADAPTER_MAP');
@@ -246,6 +250,13 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
   });
   return value;
  };
+ // An explicit role governs a single human/AI journey. The API never
+ // impersonates an LLM and never treats a task boolean as notes consent.
+ const aiSession=createVixenAiSession({
+  corpus,readCart:typeof readVisitorCart==='function'?readVisitorCart:()=>[],
+  verifyProgramNotesConsent,authorProgramNote,
+  hostRead:async({intent,params})=>run({schema:PODIUM_SCHEMA,intent,params})
+ });
  const run=async task=>{
   if(!task||typeof task!=='object'||Array.isArray(task)||task.schema!==PODIUM_SCHEMA ||
     !PODIUM_ROUTES.includes(task.intent))
@@ -254,6 +265,35 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
   if(!params||typeof params!=='object'||Array.isArray(params))
    return receipt(intent,'HELD',rejection('HELD_INVALID_PARAMETERS','Parameters must be a typed object'));
   try{
+   if(intent.startsWith('vixen.ai.')){
+    let result;
+    switch(intent){
+     case 'vixen.ai.start':
+      result=await aiSession.start({role:params.role,goal:params.goal});
+      break;
+     case 'vixen.ai.choose':
+      result=await aiSession.choose({
+       choice_id:params.choice_id,source_work_id:params.source_work_id??null,
+       question:params.question||''});
+      break;
+     case 'vixen.ai.report':
+      result=await aiSession.report({quest_id:params.quest_id,outcome:params.outcome||'',
+       observation:params.observation||'',skip:params.skip===true});
+      break;
+     case 'vixen.ai.status':result=aiSession.status();break;
+     case 'vixen.ai.notes':
+      result=params.phase==='view'?aiSession.notes():
+       await aiSession.permission({phase:params.phase,proof:params.proof??null});
+      break;
+     case 'vixen.ai.handoff':result=aiSession.handoff();break;
+     case 'vixen.ai.archive':result=aiSession.archive();break;
+     case 'vixen.ai.finish':result=aiSession.finish();break;
+    }
+    if(result?.status==='SUPPORTED')event('AI_RESEARCH_SESSION_STEP',{
+     role:result?.result?.role||null,session_intent:intent,
+     notes_written_only_after_verification:true,claim_ceiling:'READ_ONLY'});
+    return receipt(intent,result?.status||'HELD',result?.result||rejection('HELD_AI_SESSION_ROUTING','Unknown session response'));
+   }
    if(intent==='podium.describe'){
     applyHeadlineParams(params);
     event('MACHINE_ROUTE_INSPECTED');

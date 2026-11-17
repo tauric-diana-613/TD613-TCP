@@ -200,3 +200,43 @@ All generated analyses remain unratified research proposals until human review c
   TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --src-audit --question "Which heterostratigraphic boundary holds?"
   TD613_PODIUM_OPERATOR_DIRECT=1 node scripts/vixen-podium.mjs --native-read-tools --conduct '{"search":"vernier clock","mode":"src_projective"}'
   ```
+
+
+---
+
+## Research Adventure · Maestro and Composer (AI Session v1)
+
+The visitor explicitly chooses exactly one ontological role per research session. A role is immutable until the visitor ends that session.
+
+**MAESTRO**: active documentary conductor. Investigate leads, pursue rabbit holes, inspect source boundaries, propose several specific next scenes, surface hidden features and offer meaningful visitor excursions. Carry the intellectual work. Do not reduce the experience to a passive list of jargon.
+
+**COMPOSER**: active interpretive partner. Use read-only research tools to develop competing explanations, provisional synthesis and falsification questions. This creative role does not grant Podium Compose authorization; publication and corpus mutation remain independently gated.
+
+The next task can belong to AI, HUMAN or COLLABORATIVE. Offer human excursions such as reading a passage, testing an interactive dial, examining a manuscript manifestation, inspecting a reference or curating the study cart. Make every excursion optional, narratively meaningful, with a clear task and a way to report the result. Human testimony is recorded as USER_REPORT_UNVERIFIED, not scientific proof.
+
+The original research cart remains the only cart state owner. An AI can suggest saving an identified source; only an explicit visitor gesture can add or remove it. The shopping metaphor means curated intellectual exploration, never a commercial transaction.
+
+Program Notes start OFF. Before any bot-authored notes, request separate permission; verify the visitor's direct gesture through an independently injected host callback. No task JSON boolean, implied consent, or prior chat supplies that authority. Notes begin prospectively after permission; revoked permission stops future authoring. HOST_AI_DRAFT is allowed only when an actual AI host authored the text, otherwise the stored output is labeled LOCAL_STRUCTURED_OUTLINE.
+
+The browser presents source-grounded local guidance with exact real corpus work IDs. It does not claim to have a live remote model connected. The visitor may use the AI handoff to carry a machine-readable source and route packet into an actual LLM chat. A connected model should perform authorized bounded reads, narrate what it actually learned, identify an alternative, propose two to four substantive next moves and consider an optional visitor task.
+
+### Typed session routes
+
+- vixen.ai.start: role MAESTRO or COMPOSER, and optional goal. Starts a source-bound opening turn.
+- vixen.ai.choose: choice_id, optional source_work_id and question. Conducts a bounded source-grounded next scene.
+- vixen.ai.report: quest_id plus observation or skip:true. Holds user testimony separately and can trigger a counterexample-oriented follow-up.
+- vixen.ai.status: reports active immutable role, route trail, missions and permission state.
+- vixen.ai.notes: request, grant, revoke or view. Grant requires real host verification independent of task JSON.
+- vixen.ai.handoff: returns recorded source IDs, actual read receipts and holds, route and visitor-report history, AI instructions, available branches, and consent ceiling.
+- vixen.ai.archive: returns a session-local portable metadata snapshot.
+- vixen.ai.finish: ends that role and returns the final archive for explicit export.
+
+### Example machine input
+
+    [
+      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.start","params":{"role":"MAESTRO","goal":"Why do clock synchronization and human oversight intersect?"}},
+      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.choose","params":{"choice_id":"compare"}},
+      {"schema":"td613.vixen.podium.task/v1","intent":"vixen.ai.handoff","params":{}}
+    ]
+
+No route admits foreign source bodies to Vixen, rewrites manuscripts, establishes authorship, verifies scientific externality, grants private index access, deploys, publishes, or merges. A self-reported visitor field task remains a self-report. Original engine names are legal machine metadata only; do not surface them as visitor labels.

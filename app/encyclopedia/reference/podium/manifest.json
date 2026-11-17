@@ -29,7 +29,7 @@
     ],
     "no_automatic_source_pairing": true,
     "no_implicit_engine_connection": true,
-    "routes": 18,
+    "routes": 27,
     "experimental_design_engine": "./vixen-estate/synthesis-salon-engine.mjs",
     "machine_subsystems": [
       "VIXEN_SOURCE_INSPECTION",
@@ -218,6 +218,68 @@
       ],
       "action": "MACHINE_ONLY_COMPOSE_SCORE_PRESENTATION_STOP_FOR_HUMAN_AUTHORIZATION",
       "authority": "HELD_NO_MUTATION_INDEPENDENT_HUMAN_APPROVAL_REQUIRED"
+    },
+    {
+      "id": "vixen.ai.start",
+      "inputs": [
+        "role",
+        "goal"
+      ],
+      "action": "Select an exclusive Maestro or Composer ontological session role",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.choose",
+      "inputs": [
+        "choice_id",
+        "source_work_id",
+        "question"
+      ],
+      "action": "Pursue an actively researched branch with cited next moves",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.report",
+      "inputs": [
+        "quest_id",
+        "observation",
+        "skip"
+      ],
+      "action": "Record an optional human or collaborative field task as an unverified visitor report",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.status",
+      "inputs": [],
+      "action": "Inspect immutable role and session-local path, missions and narration",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.notes",
+      "inputs": [
+        "phase",
+        "proof"
+      ],
+      "action": "Request, independently verify, view or revoke prospective Program Notes authoring",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.handoff",
+      "inputs": [],
+      "action": "Return an AI-readable contextual briefing with source IDs and action suggestions",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.archive",
+      "inputs": [],
+      "action": "Make a portable read-only research route and permission-scoped notes archive",
+      "authority": "READ_ONLY_SESSION_LOCAL"
+    },
+    {
+      "id": "vixen.ai.finish",
+      "inputs": [],
+      "action": "End the role-locked session and return its final local archive",
+      "authority": "READ_ONLY_SESSION_LOCAL"
     }
   ],
   "optional_engine_adapters": {
@@ -483,5 +545,37 @@
     "native_visual_review_schema": "td613.vixen.composer.native-visual-diff/v1",
     "exact_native_capture_requirement": "NATIVE_SAME_BUILD_INTERACTIVE_SCENE_FOR_BEFORE_AND_AFTER_OR_HOLD",
     "old_exhibit_retained": true
+  },
+  "ai_roles": {
+    "schema": "vixen.ai.session/v1",
+    "selectable_roles": [
+      "MAESTRO",
+      "COMPOSER"
+    ],
+    "single_active_role": true,
+    "role_change_requires_new_session": true,
+    "maestro": "Active evidence-led exploration and optional human/AI/collaborative quests",
+    "composer": "Provisional critical interpretation, rival explanations and falsifiable question development",
+    "bot_is_not_inferred_present": "Browser guide supplies source-grounded local suggestions and machine handoff until a model is actually connected",
+    "program_notes": "OFF_UNTIL_INDEPENDENT_HUMAN_PERMISSION_VERIFIED_NO_RETROACTIVE_AUTHORING",
+    "quests": {
+      "actors": [
+        "AI",
+        "HUMAN",
+        "COLLABORATIVE"
+      ],
+      "human_reports": "USER_REPORT_UNVERIFIED",
+      "automatic_completion": false
+    },
+    "archive": "EXPLICIT_USER_LOCAL_EXPORT_ONLY",
+    "authority": {
+      "native_read_host_authorized_only": true,
+      "no_external_delegation": true,
+      "corpus_mutations": false,
+      "auto_cart_mutations": false,
+      "source_equivalence_claims": false,
+      "merge": false,
+      "release": false
+    }
   }
 }
