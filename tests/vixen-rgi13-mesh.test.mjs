@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {
  MESH_CONTRACT,ELECTRIC_COUTURE,buildLivingMesh,paintLivingMesh,
- meshOcclusionMode,MOBILE_STACKING_ONLY_MAX_WIDTH
+ meshOcclusionMode,MOBILE_STACKING_ONLY_MAX_WIDTH,
+ MESH_ANIMATION_TARGET_FPS,meshFrameIntervalMs
 } from '../app/encyclopedia/vixen-estate/vixen-live-mesh-rgi13.mjs';
 const root=new URL('../app/encyclopedia/',import.meta.url);
 const page=await readFile(new URL('./vix-cyb.html',root),'utf8');
@@ -123,4 +124,21 @@ test('iPhone scroll uses permanent foreground compositing, never time-lagged rec
  assert.match(seam,/#view-overview \.vix-entrance-research-door\s*\{\s*position:relative;z-index:2;isolation:isolate;/);
  const light=await readFile(new URL('./vixen-estate/vixen-opaline-couture-rgi14.css',root),'utf8');
  assert.match(light,/#vixenLivingMesh\s*\{\s*z-index:1!important/);
+});
+
+test('Vixen optical breath uses 30Hz presentation budget without mobile 12Hz phase jumps',async()=>{
+ assert.equal(MESH_ANIMATION_TARGET_FPS,30);
+ for(const w of [320,390,428,680,740,1024]){
+  assert(Math.abs(meshFrameIntervalMs(w)-1000/30)<1e-10);
+ }
+ const source=await readFile(new URL('./vixen-estate/vixen-live-mesh-rgi13.mjs',root),'utf8');
+ assert.match(source,/ms-lastPaint>=meshFrameIntervalMs\(width\(\)\)-1/);
+ assert.match(source,/now-lastObservatoryPaint<meshFrameIntervalMs\(width\(\)\)-1/);
+ assert.doesNotMatch(source,/1000\/\(width\(\)<750\?12:24\)/);
+ assert.match(source,/target_fps:MESH_ANIMATION_TARGET_FPS,presented_fps:presentedFps/);
+ const model=buildLivingMesh({width:390,height:844,time:1.25});
+ assert.equal(model.scene.trails.length,51);
+ assert.equal(model.fibers.length,39);
+ assert(model.scene.crossings.length>model.scene.trails.length);
+ assert.equal(meshOcclusionMode(390),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
 });
