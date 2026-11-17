@@ -225,6 +225,10 @@ body[data-view="overview"] main{padding-top:0}
 .bench-output{padding:18px;background:var(--graphite);color:var(--porcelain);font:500 10.5px/1.75 var(--font-mono)}
 
 /* Formula Folios Grid */
+.vixen-wardrobe-computation{padding:12px 14px;background:#fff;border:1px solid var(--line-strong);font:500 11px/1.6 var(--font-mono);overflow-wrap:anywhere}
+.vixen-wardrobe-computation[hidden]{display:none}
+.vixen-wardrobe-computation pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:17rem;overflow-y:auto;font:500 10px/1.45 var(--font-mono);background:var(--porcelain);padding:9px}
+
 .formula-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .formula-card{background:var(--porcelain);color:var(--graphite);border:1px solid var(--graphite);padding:22px;display:flex;flex-direction:column;gap:12px}
 .formula-card h3{font:400 26px/1.12 var(--font-serif)}
@@ -955,8 +959,8 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="view-heading">
         <div>
           <p class="eyebrow">01 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
-          <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; Refractive Couture Nullspaces</span></h1>
-          <p class="intro">Interactive mathematical observatory exploring Typed Constitutive Cybernetics: non-collapsing control planes (S ≠ W ≠ A + P), five-clock derivative custody, algedonic preemption countermodels, and the fourteen formal bounds ([RC-01]–[RC-14]).</p>
+          <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
+          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. Each theory folio can now run a real computational receipt; technical reference methods remain outside Vixen’s authorship.</p>
         </div>
         <div class="view-number" aria-hidden="true">01</div>
       </div>
@@ -1043,24 +1047,22 @@ body[data-view="overview"] .reading-back{display:none}
         </div>
       </div>
 
-      <!-- 22 Mathematical Folios (TCC-01..08 + RC-01..14) -->
+      <!-- Eight Vixen theory folios only. Technical RC engine materials remain in preserved archive data, not Vixen performers. -->
       <div class="formula-side">
         <div class="toolbar">
           <label class="field" aria-label="Filter mathematical folios">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="formulaSearchInput" type="search" placeholder="Search 22 mathematical folios (S ≠ W ≠ A, clock, RC-07, κ, holonomy, XOR…)">
+            <input id="formulaSearchInput" type="search" placeholder="Search eight Vixen theory folios (S ≠ W ≠ A, five clocks…)">
           </label>
           <div class="segmented" role="group" aria-label="Folio family filter">
-            <button type="button" data-formula-group="all" aria-pressed="true">All Folios (22)</button>
-            <button type="button" data-formula-group="unified" aria-pressed="false">Unified Cybernetics (8)</button>
-            <button type="button" data-formula-group="couture" aria-pressed="false">Refractive Couture RC-01..14 (14)</button>
+            <button type="button" data-formula-group="all" aria-pressed="true">Vixen Theory · 8</button>
           </div>
-          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 22 of 22 mathematical folios</span>
+          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 Vixen theory folios</span>
         </div>
         <div class="formula-gallery-intro">
-          <div class="formula-gallery-identity"><span class="formula-collection-id">THE MATHEMATICAL WARDROBE · 22 ORIGINAL FOLIOS</span>
-            <h3>Twenty-two instruments. <em>One collection.</em></h3>
-            <p>Begin with four featured encounters. Open the archive for every recorded formula; filtering and searching always reveal all matches.</p>
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · EIGHT THEORY FOLIOS</span>
+            <h3>Eight Vixen theories. <em>Executable synthesis links.</em></h3>
+            <p>Every displayed folio is mapped to its exact Vixen computational model and the native unified synthesis ranking. Compute a receipt or stage the matching laboratory; no silent substitution.</p>
           </div>
           <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
         </div>
@@ -1068,9 +1070,9 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="formula-gallery-footer">
           <button id="formulaGalleryReveal" type="button" class="formula-gallery-reveal" aria-controls="formulaFolioGrid" aria-expanded="false">
             <span>Explore the full mathematical wardrobe</span>
-            <span class="formula-gallery-count" aria-hidden="true">+ 18 original folios</span>
+            <span class="formula-gallery-count" aria-hidden="true">+ 4 theory folios</span>
           </button>
-          <p class="formula-gallery-fidelity">All 22 folios remain in the original archive · No mathematical claim is changed by presentation.</p>
+          <p class="formula-gallery-fidelity">Eight Vixen theory folios are onstage. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
         </div>
       </div>
     </div>
@@ -2820,12 +2822,46 @@ body[data-view="overview"] .reading-back{display:none}
     }
   }
 
+  // On-demand bridge executes actual Foundry mathematics plus the same unified
+  // synthesis scorer used by the Salon/Podium; it does not manufacture authorship.
+  let wardrobeEnginePromise=null;
+  async function computeVixenFolio(folioId,buttonEl){
+    const panel=buttonEl.closest('[data-folio-id]')?.querySelector('[data-vixen-computation]');
+    if(!panel)return;
+    panel.hidden=false;panel.textContent='Computing the Vixen source-bound model…';
+    buttonEl.disabled=true;
+    try{
+      wardrobeEnginePromise ||= import('./vixen-estate/observatory-math-wardrobe.mjs');
+      const engine=await wardrobeEnginePromise;
+      const receipt=engine.computeVixenTheoryReceipt(DATA,folioId);
+      if(!panel.isConnected)return;
+      const result=receipt.synthesis.top_candidate;
+      const name=document.createElement('strong');
+      name.textContent='LIVE SOURCE-BOUND COMPUTATION · '+receipt.folio_id;
+      const info=document.createElement('p');
+      info.textContent='Exact lab: '+receipt.foundry.lab_id+
+        ' · referenced Vixen Works: '+receipt.foundry.source_work_count+
+        ' · unified candidates ranked: '+receipt.synthesis.candidate_count+
+        ' · leading proposal: '+(result?.title||'HELD')+
+        ' · model score: '+(Number.isFinite(result?.score)?result.score.toFixed(4):'HELD');
+      const metrics=document.createElement('pre');
+      metrics.textContent=receipt.foundry.metrics.map(item=>item.name+' = '+
+        (typeof item.value==='object'?JSON.stringify(item.value):String(item.value))).join('\\n');
+      const ceiling=document.createElement('p');
+      ceiling.textContent='Executable mathematical demonstration and candidate ranking; empirical credit 0. Human scientific approval remains reserved.';
+      panel.replaceChildren(name,info,metrics,ceiling);
+      buttonEl.textContent='Recompute Vixen synthesis ↻';
+    }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
+    finally{buttonEl.disabled=false}
+  }
   function renderFormulaFolios() {
     const listEl = $('formulaFolioGrid');
     const countEl = $('formulaCountLabel');
     if (!listEl) return;
+    const theoryFolios = theoryFolios.filter(f => f.group === 'unified' && /^TCC-0[1-8]$/.test(f.id));
+    if (theoryFolios.length !== 8 || theoryFolios.filter(f => f.group === 'couture').length !== 14) throw Error('WARDROBE_ROLE_CENSUS_MISMATCH');
     const q = state.formulaQuery.trim().toLowerCase();
-    const exactFolioMatch = Boolean(q) && DATA.formula_folios.some((f) => f.id.toLowerCase() === q);
+    const exactFolioMatch = Boolean(q) && theoryFolios.some((f) => f.id.toLowerCase() === q);
     const semFolioScores = new Map();
     if (q && !exactFolioMatch && state.semanticEngine) {
       try {
@@ -2835,7 +2871,7 @@ body[data-view="overview"] .reading-back{display:none}
         }
       } catch (_) {}
     }
-    const filtered = DATA.formula_folios.filter((f) => {
+    const filtered = theoryFolios.filter((f) => {
       if (state.formulaGroup !== 'all' && f.group !== state.formulaGroup) return false;
       if (!q) return true;
       if (semFolioScores.has(f.id)) return true;
@@ -2847,7 +2883,7 @@ body[data-view="overview"] .reading-back{display:none}
     // Deliberate editorial edit: the four flagship mathematical identities
     // appear first, across both original folio families. This reorders only
     // PRESENTATION, not the canonical DATA archive, source IDs or citations.
-    const curatedIds=['TCC-01','TCC-04','RC-03','RC-10'];
+    const curatedIds=['TCC-01','TCC-04','TCC-05','TCC-06'];
     const displayFolios=(!q&&state.formulaGroup==='all')
       ? [...curatedIds.map(id=>filtered.find(f=>f.id===id)).filter(Boolean),
         ...filtered.filter(f=>!curatedIds.includes(f.id))]
@@ -2856,8 +2892,8 @@ body[data-view="overview"] .reading-back{display:none}
     const expanded = Boolean(state.formulaExpanded || searching);
     listEl.dataset.expanded = String(expanded);
     const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
-    if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + DATA.formula_folios.length +
-      ' original folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
+    if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + theoryFolios.length +
+      ' Vixen theory folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
     const reveal = $('formulaGalleryReveal');
     if (reveal) {
       reveal.hidden = searching || filtered.length <= 4;
@@ -2865,24 +2901,19 @@ body[data-view="overview"] .reading-back{display:none}
       const title = reveal.querySelector('span:first-child');
       const count = reveal.querySelector('.formula-gallery-count');
       if (title) title.textContent = expanded ? 'Return to the four featured folios' : 'Explore the full mathematical wardrobe';
-      if (count) count.textContent = expanded ? '− Fold the collection' : '+ ' + Math.max(0,filtered.length-4) + ' original folios';
+      if (count) count.textContent = expanded ? '− Fold the collection' : '+ ' + Math.max(0,filtered.length-4) + ' theory folios';
     }
     listEl.innerHTML = displayFolios.map((f) => {
       let displayTitle = f.title;
       let displayStatus = f.status;
       let displayFallback = f.fallback;
       let displayLatex = f.latex;
-      if (f.id === 'RC-06') {
-        displayTitle = 'RC-06 · Finite Admissibility & Packaging Quarantine (c₄)';
-        displayStatus = 'EXACT DESCENT (FIBER QUOTIENT)';
-        displayFallback = 'π_{c₄}(87) = 54_substantive ⊔ 33 ._*(c₄)';
-        displayLatex = '\\pi_{c_4}(87) = 54_{\\text{substantive}} \\sqcup 33_{\\texttt{._*}\\text{ AppleDouble}(c_4)}';
-      }
       const tagClass = displayStatus.includes('BRANDING') || displayStatus.includes('PIN_CANDIDATE') ? 'tag gold' : 'tag dark';
       const links = (f.links || []).map((id) =>
         '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
       ).join(' ');
-      const foundryBtn = '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage in Electric Foundry ↑</button>';
+      const computeBtn = '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-compute-vixen-folio="' + esc(f.id) + '">Compute with unified synthesis ↗</button>';
+      const foundryBtn = '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage exact Foundry model ↑</button>';
       return '<article class="formula-card" data-folio-id="' + esc(f.id) + '" data-folio-family="' + esc(f.group) + '">' +
         '<div class="badge-row" style="justify-content:space-between">' +
           '<span style="font:600 9.5px var(--font-mono)">' + esc(f.id) + '</span>' +
@@ -2893,13 +2924,17 @@ body[data-view="overview"] .reading-back{display:none}
           '<span class="math-fallback">' + esc(displayFallback) + '</span>' +
         '</div>' +
         '<p>' + esc(f.summary) + '</p>' +
-        '<div class="badge-row">' + links + ' ' + foundryBtn + '</div>' +
+        '<div class="badge-row">' + links + ' ' + computeBtn + ' ' + foundryBtn + '</div>' +
+        '<div class="vixen-wardrobe-computation" data-vixen-computation hidden aria-live="polite"></div>' +
         '<div class="ceiling-line">CEILING: ' + esc(f.ceiling) + '</div>' +
       '</article>';
     }).join('');
     bindRefButtons(listEl);
     listEl.querySelectorAll('[data-foundry-folio]').forEach((b) => {
       b.addEventListener('click', () => stageFolioInFoundry(b.getAttribute('data-foundry-folio')));
+    });
+    listEl.querySelectorAll('[data-compute-vixen-folio]').forEach(btn=>{
+      btn.addEventListener('click',()=>computeVixenFolio(btn.getAttribute('data-compute-vixen-folio'),btn));
     });
     renderMathSlots(listEl);
   }
@@ -4261,6 +4296,7 @@ body[data-view="overview"] .reading-back{display:none}
       renderProtocolsView({ skipHistory: true });
       setView('protocols', { pushHistory: true, preserveScroll: state.view === 'protocols' });
     } else if (DATA.formula_folios.some((f) => f.id === baseId)) {
+      if (!/^TCC-0[1-8]$/.test(baseId)) { showToast('Reference method stays in the technical archive, outside this Opera.'); return; }
       state.formulaGroup = 'all';
       state.formulaQuery = baseId;
       const fq = $('formulaSearchInput');
@@ -4282,15 +4318,19 @@ body[data-view="overview"] .reading-back{display:none}
   }
 
   function stageFolioInFoundry(folioId) {
-    const host = $('vixenElectricFoundry');
-    if (host) {
-      const targetBtn = host.querySelector('[data-lab-id="LAB_' + folioId + '"]') ||
-        host.querySelector('[data-lab-id="' + (String(folioId).startsWith('TCC') ? 'LAB_TCC-05' : 'LAB_RC-10') + '"]') ||
-        host.querySelector('[data-lab-id]');
-      if (targetBtn) targetBtn.click();
-      host.scrollIntoView({ behavior: document.body.dataset.vixenMotion === 'still' ? 'instant' : 'smooth', block: 'start' });
-      showToast('Staged ' + folioId + ' inside Electric Foundry Observatory');
+    if(!/^TCC-0[1-8]$/.test(String(folioId))){
+      showToast('This technical archival method is outside Vixen’s theory wardrobe.');
+      return false;
     }
+    const exactId='LAB_'+folioId;
+    const foundry=window.VIXEN_ELECTRIC_FOUNDRY;
+    if(!foundry?.selectLab?.(exactId)){
+      showToast('Exact laboratory unavailable; refusing to substitute another model.');
+      return false;
+    }
+    $('vixenElectricFoundry')?.scrollIntoView({behavior:document.body.dataset.vixenMotion==='still'?'instant':'smooth',block:'start'});
+    showToast('Staged exact Vixen theory '+folioId);
+    return true;
   }
 
   function bindUtilityButtons(root) {
