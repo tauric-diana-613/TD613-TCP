@@ -41,7 +41,11 @@
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art {
    inset:0!important;
-   padding:205px 9px 207px!important;
+   /* Stage-scale only: leave approved artwork and green-padlocked type intact.
+      The formerly enormous 205/207px letterbox starved the sculpture of
+      the mobile viewport's upper third. */
+   padding:clamp(112px,14svh,128px) 3px clamp(136px,17svh,152px)!important;
+   place-items:center!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .hero-art img {
    width:100%!important;height:100%!important;object-fit:contain!important;
