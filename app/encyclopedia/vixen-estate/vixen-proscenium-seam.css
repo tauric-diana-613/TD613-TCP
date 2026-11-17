@@ -1,0 +1,153 @@
+/*
+ * 𝄐 THE PROSCENIUM SEAM — Vixen source-safe interface jurisdiction.
+ * Opera: encounter/Salon; operator: diagnostics/local history; Podium: machine
+ * tasks and independent human Compose approval. No corpus mutation or backend
+ * authority is granted by any of these presentation-only rules.
+ */
+#view-overview .vix-entrance-research-door {
+  position:relative;isolation:isolate;
+  margin:clamp(22px,4vw,56px) auto clamp(26px,5vw,72px);
+  width:min(100% - 2*var(--gutter,24px),1000px);
+  box-sizing:border-box;padding:clamp(24px,4.2vw,54px);
+  border:1px solid rgba(255,145,175,.36);
+  background:linear-gradient(135deg,#12171b 0%,#222026 62%,#171619 100%);
+  color:#F6F4F0;box-shadow:0 10px 38px rgba(0,0,0,.22);
+}
+#view-overview .vix-entrance-research-door h2{
+  font:italic 400 clamp(34px,5vw,70px)/1.06 Didot,'Bodoni MT',Georgia,serif;
+  letter-spacing:-.04em;margin:8px 0 16px;max-width:800px;
+}
+#view-overview .vix-entrance-research-door p:not(.eyebrow){
+  font:400 clamp(15px,1.5vw,19px)/1.6 Georgia,serif;
+  max-width:680px;color:#e8dce1;margin:0 0 22px;
+}
+#view-overview .vix-entrance-research-door .eyebrow{color:#FF91AF}
+#view-overview .vix-entrance-research-door button.ci-btn{min-height:48px}
+#view-collection #constitutiveInquiry{
+  display:block;position:relative;isolation:isolate;
+  margin:clamp(34px,5vw,72px) 0 22px;
+}
+#view-collection #constitutiveInquiry .ci-main-grid.ci-studio-grid{
+  display:grid;grid-template-columns:minmax(0,1fr)!important;
+}
+#view-collection #constitutiveInquiry .ci-studio-grid>.ci-card{min-width:0}
+#view-collection .vix-operator-boundary-note{
+  margin:22px 0 0;line-height:1.65;
+  color:#f3dfe5;overflow-wrap:anywhere;
+}
+#view-collection .vix-operator-boundary-note button{
+  display:inline-flex;vertical-align:middle;margin:3px 7px;white-space:normal;
+}
+#view-operator[hidden]{display:none!important}
+#view-operator{position:relative;isolation:isolate;padding-block:clamp(70px,8vw,115px) 110px;}
+#view-operator>.vixen-inquiry-inner{width:min(100%,1440px);margin:0 auto;box-sizing:border-box;}
+#view-operator .ci-head{gap:20px}
+#view-operator .ci-title{margin:6px 0 14px;line-height:1.05;overflow-wrap:anywhere}
+#view-operator .vix-operator-dek{
+  color:#f3dee6;max-width:860px;
+  font:400 clamp(14px,1.5vw,18px)/1.55 Georgia,serif;
+  margin:8px 0 18px;
+}
+#view-operator .vix-operator-jump{
+  display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 30px;
+  padding:12px 0;border-block:1px solid rgba(255,145,175,.34);
+}
+#view-operator .vix-operator-jump button{
+  cursor:pointer;background:#22282c;border:1px solid rgba(255,145,175,.48);
+  padding:12px 16px;min-height:44px;color:#f8e2e8;
+  font:700 11px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace;
+  letter-spacing:.035em;
+}
+#view-operator .vix-operator-jump button:focus-visible,
+#view-operator .ci-btn:focus-visible,
+#vixenRestoreReviewDialog button:focus-visible{
+  outline:3px solid #FFF2A9;outline-offset:3px;
+}
+#view-operator .vix-operator-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr);gap:22px;align-items:start}
+#view-operator .vix-operator-grid>section{min-width:0;scroll-margin-top:120px}
+#view-operator .vix-operator-section-title{
+  color:#ffcadb;font:italic 400 clamp(26px,3.5vw,42px)/1.13 Georgia,serif;
+  margin:0 0 14px;
+}
+#view-operator .ci-card{min-width:0}
+#view-operator .ci-card-title{flex-wrap:wrap;gap:8px}
+#view-operator .ci-telemetry-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 22px;}
+#view-operator .ci-metric{min-width:0}
+#view-operator .ci-metric-val{overflow-wrap:anywhere}
+#view-operator .ci-log-list{max-height:min(65vh,660px);overflow-y:auto;overscroll-behavior:contain}
+#view-operator .ci-log-row{grid-template-columns:minmax(0,1fr) auto;gap:10px;min-width:0}
+#view-operator .ci-log-info,
+#view-operator .ci-log-id,
+#view-operator .ci-log-chain,
+#view-operator .ci-log-summary{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+#view-operator .ci-log-chain{font-size:10px;line-height:1.55}
+#view-operator .vix-operator-reset{margin:16px 0 24px;min-height:45px;}
+#view-operator .vix-operator-machine{margin-top:25px;scroll-margin-top:110px;}
+#view-operator .vix-operator-machine>p{font:400 15px/1.6 Georgia,serif}
+#view-operator .vix-operator-machine .ci-actions-row{flex-wrap:wrap}
+#view-operator .vix-operator-machine a.ci-btn{
+ display:inline-flex;align-items:center;justify-content:center;text-decoration:none;
+ min-height:44px;padding:10px 15px;
+}
+#view-operator .vix-operator-boundary-note{
+  padding:16px 18px;border-left:2px solid #FFF2A9;background:rgba(255,242,169,.07);
+  color:#f4dee7;font:500 12px/1.65 ui-monospace,SFMono-Regular,monospace;
+}
+#view-gates .vix-gate-advanced-reset{min-width:230px;max-width:100%;padding:12px}
+#view-gates .vix-gate-advanced-reset button{min-height:44px;margin-top:12px}
+#vixenRestoreReviewDialog{
+  width:min(calc(100% - 24px),850px);max-width:850px;
+  box-sizing:border-box;max-height:min(88dvh,950px);overflow:auto;
+  border:1px solid #e9abc6;background:#151a1e;color:#f7e8ee;
+}
+#vixenRestoreReviewDialog::backdrop{background:rgba(4,7,9,.83);backdrop-filter:blur(6px)}
+#vixenRestoreReviewDialog .dialog-header{align-items:center;gap:14px}
+#vixenRestoreReviewDialog .dialog-header h2{
+ margin:0;color:#ffd3e3;font:italic 400 clamp(21px,3vw,35px)/1.13 Georgia,serif;
+}
+#vixenRestoreReviewDialog .dialog-body>p{font:400 15px/1.6 Georgia,serif}
+#vixenRestoreReviewDialog .vix-restore-comparison{
+  display:grid;gap:10px;margin:18px 0;max-height:46dvh;overflow-y:auto;
+}
+#vixenRestoreReviewDialog .vix-restore-diff-row{
+  background:#20272b;border-left:3px solid #FF91AF;padding:13px 16px;min-width:0;
+}
+#vixenRestoreReviewDialog .vix-restore-diff-row h3{
+  font:700 12px/1.4 ui-monospace,SFMono-Regular,monospace;
+  letter-spacing:.065em;color:#FFF2A9;margin:0 0 7px;
+}
+#vixenRestoreReviewDialog .vix-restore-diff-row p{
+  margin:5px 0;overflow-wrap:anywhere;white-space:pre-wrap;
+  font:400 12px/1.5 ui-monospace,SFMono-Regular,monospace;
+}
+#vixenRestoreReviewDialog .vix-restore-diff-row p:last-child{color:#ffc9da}
+#vixenRestoreReviewDialog .vix-restore-target{
+  background:#0d1114;padding:11px 13px;border:1px solid #66646c;
+  font:600 10px/1.55 ui-monospace,SFMono-Regular,monospace;overflow-wrap:anywhere;
+}
+#vixenRestoreReviewDialog .vix-restore-ack{
+  display:flex;gap:11px;align-items:flex-start;margin:14px 0 22px;
+  color:#fff2d9;font:500 13px/1.5 ui-monospace,SFMono-Regular,monospace;
+}
+#vixenRestoreReviewDialog .vix-restore-ack input{width:19px;height:19px;flex:0 0 19px;accent-color:#FF91AF}
+#vixenRestoreReviewDialog .ci-actions-row{display:flex;flex-wrap:wrap;gap:12px}
+#vixenRestoreReviewDialog button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:740px){
+ #view-overview .vix-entrance-research-door{width:calc(100% - 28px);margin:24px auto 34px;padding:25px 19px}
+ #view-operator{padding-block:80px 98px}
+ #view-operator .vixen-inquiry-inner{padding:0 15px}
+ #view-operator .vix-operator-grid{grid-template-columns:minmax(0,1fr)}
+ #view-operator .ci-telemetry-strip{grid-template-columns:minmax(0,1fr)}
+ #view-operator .ci-log-row{grid-template-columns:minmax(0,1fr)}
+ #view-operator .ci-log-row .ci-btn{width:100%;min-height:44px}
+ #view-operator .vix-operator-jump button{flex:1 1 45%;min-width:0}
+ #view-operator .ci-head{display:block}
+ #view-operator .badge-row{margin:12px 0}
+ #view-collection #constitutiveInquiry .vixen-inquiry-inner{padding-inline:15px}
+ #vixenRestoreReviewDialog{width:calc(100% - 20px);max-height:85dvh}
+ #vixenRestoreReviewDialog .dialog-body{padding:18px 15px}
+ #vixenRestoreReviewDialog .ci-actions-row button{flex:1 1 100%}
+}
+@media(prefers-reduced-motion:reduce){
+ #view-operator *,#vixenRestoreReviewDialog *{scroll-behavior:auto!important}
+}
