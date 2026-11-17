@@ -21,10 +21,11 @@ const unique=xs=>[...new Set(xs)];
 const caption=(work)=>named(work.display_title||work.declared_title||'Untitled recorded work');
 const boundString=(s,n=400)=>typeof s==='string'?s.trim().slice(0,n):'';
 function findWorks(corpus,request){
- const {goal='',trail=[],cart=[],source_work_id=null,question='',path='source'}=request;
+ const {goal='',trail=[],cart=[],source_work_id=null,question='',path='source',retrieval_work_ids=[]}=request;
  const query=tok([goal,question].filter(Boolean).join(' '));
  const prior=new Set(recent(trail));
  const tray=new Set(cart);
+ const fused=new Set(retrieval_work_ids);
  const focus=corpus.works.find(w=>w.work_id===source_work_id)
    ||corpus.works.find(w=>w.work_id===recent(trail,1)[0])||null;
  const focusTerms=focus?tok([focus.display_title,focus.cluster_short].join(' ')):new Set();
@@ -33,6 +34,7 @@ function findWorks(corpus,request){
   const rationale=[];
   let score=intersection(query,title)*5+intersection(query,cluster)*2;
   if(tray.has(w.work_id)){score+=4;rationale.push('In your research cart');}
+  if(fused.has(w.work_id)){score+=18;rationale.push('Retrieved by the full semantic-semiotic source index; ranking alone cannot prove a relationship');}
   if(focus&&w.work_id!==focus.work_id&&w.cluster!==focus.cluster){score+=path==='countertest'?3:1;rationale.push('Contrasting research area');}
   if(focus&&w.work_id!==focus.work_id&&intersection(focusTerms,title)>0){score+=3;rationale.push('A related vocabulary worth checking');}
   if(focus&&w.work_id!==focus.work_id&&Array.isArray(w.protocols)&&w.protocols.some(p=>(focus.protocols||[]).includes(p))){score+=3;rationale.push('Shares a recorded research method');}
@@ -163,8 +165,10 @@ async function inspectWithHost(path,work,question,hostRead){
     linked_work_id:params.work_id||null,query:params.query||null,
     record:value.work_id?{work_id:value.work_id,linked_sources:value.linked_sources||[],
       identity_status:value.identity_status,authorship:value.authorship}:null,
+    qualified_semantic_semiotic_fusion:intent==='vixen.fusion.search'&&value.search?.fusion_state==='FULL_INDEX_FUSION',
     hits:hits.slice(0,6).map(h=>({id:h.id,source_file_id:h.source_file_id||null,
-      label:named(h.label||h.title||h.id),citation:h.citation||null,sha256:h.sha256||null})),
+      label:named(h.label||h.title||h.id),citation:h.citation||null,
+      work_id:h.work_id||null,sha256:h.sha256||null})),
     claim_ceiling:'RETRIEVAL_OR_CATALOGUE_OBSERVATION_NOT_LINEAGE_PROOF'};
  }catch(_){return {status:'HELD',reason:'READ_ADAPTER_FAILED_CLOSED'};}
 }
@@ -176,15 +180,33 @@ export async function conductVixenNarrativeTurn({
  if(!corpus||!Array.isArray(corpus.works))throw TypeError('CORPUS_REQUIRED');
  if(!Number.isInteger(max_read_calls)||max_read_calls<0||max_read_calls>3)
   throw RangeError('BOUNDED_READ_CALLS_REQUIRED');
- const path=choice_id;
- const {focus,ranked}=findWorks(corpus,{goal,trail,cart,source_work_id,question,path});
- const featured=ranked[0]||null,contrasting=ranked.find(x=>featured&&x.cluster_id!==featured.cluster_id)||ranked[1]||null;
+ const path=choice_id,query=boundString(question||goal,200);
  const reads=[];
- if(max_read_calls>0){
-  const first=await inspectWithHost(path,featured,question||goal,hostRead);
-  reads.push(first);
-  if(max_read_calls>1&&['compare','source'].includes(path)&&contrasting?.work_id){
-   reads.push(await inspectWithHost('compare',contrasting,question||goal,hostRead));
+ let callsLeft=max_read_calls;
+ let retrievalWorkIds=[];
+ if(callsLeft>0 && query.length>=2 && ['source','compare','countertest','question','methods'].includes(path)){
+  // Full-index fusion is the information-bearing lane. A held/unattached
+  // index receives no score credit and cannot be represented as retrieval.
+  const retrieval=await inspectWithHost('countertest',null,query,hostRead);
+  reads.push(retrieval);callsLeft--;
+  if(retrieval.qualified_semantic_semiotic_fusion===true){
+   const lookup=new Map();
+   for(const work of corpus.works){
+    lookup.set(work.work_id,work.work_id);
+    for(const src of work.linked_sources||[])lookup.set(src.source_file_id,work.work_id);
+   }
+   retrievalWorkIds=[...new Set((retrieval.hits||[]).map(h=>
+    lookup.get(h.work_id)||lookup.get(h.source_file_id)).filter(Boolean))];
+  }
+ }
+ const {focus,ranked}=findWorks(corpus,{goal,trail,cart,source_work_id,
+  question,path,retrieval_work_ids:retrievalWorkIds});
+ const featured=ranked[0]||null,contrasting=ranked.find(x=>featured&&x.cluster_id!==featured.cluster_id)||ranked[1]||null;
+ if(callsLeft>0){
+  const first=await inspectWithHost(path==='countertest'?'compare':path,featured,query,hostRead);
+  reads.push(first);callsLeft--;
+  if(callsLeft>0&&['compare','source'].includes(path)&&contrasting?.work_id){
+   reads.push(await inspectWithHost('compare',contrasting,query,hostRead));
   }
  }
  const lead=featured?('The strongest starting point in this catalogue is “'+featured.title+'.”'):'The catalogue needs a more specific starting question.';
@@ -230,6 +252,8 @@ export async function conductVixenNarrativeTurn({
    evidence_count:reads.filter(r=>r.status==='OBSERVED_READ_ONLY').length,
    corpus_work_ids:ranked.map(x=>x.work_id),
    no_admitted_crosswalk:true,empirical_replication_credit:0,
-   research_ranking_is_heuristic:true}
+   research_ranking_is_heuristic:true,
+   full_index_fusion_used:reads.some(r=>r.qualified_semantic_semiotic_fusion===true),
+   fallback_only:!reads.some(r=>r.qualified_semantic_semiotic_fusion===true)}
  });
 }

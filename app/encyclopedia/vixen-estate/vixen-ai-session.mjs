@@ -104,7 +104,7 @@ export function formatVixenChatCard(card){
  return lines.join('\n');
 }
 export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesConsent=null,
- hostRead=null,authorProgramNote=null}={}){
+ hostRead=null,hostNarrate=null,authorProgramNote=null}={}){
  if(!corpus||!Array.isArray(corpus.works)||corpus.works.length!==32 ||
     !Array.isArray(corpus.instruments)||corpus.instruments.length!==21)
   throw TypeError('VIXEN_AI_SESSION_CORPUS_REQUIRED');
@@ -119,6 +119,28 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   let values=[];
   try{values=readCart()}catch(_){}
   return Array.isArray(values)?[...new Set(values.filter(x=>allowedIds.has(x)))].slice(0,100):[];
+ };
+ const enrichWithVerifiedHost=async(turn)=>{
+  if(!turn||typeof hostNarrate!=='function')return turn;
+  const eligible=new Set((turn.source_candidates||[]).flatMap(x=>
+   [x.work_id,...(x.manifestations||[]).map(y=>y.source_file_id)]));
+  let generated;
+  try{generated=await hostNarrate({
+   schema:'vixen.ai.host-narration-request/v1',role:current?.role,
+   visitor_goal:current?.goal,source_candidates:turn.source_candidates,
+   observed_reads:turn.observed_reads,visitor_reports:current?.questReports||[],
+   route_history:current?.path||[],quests:turn.quests,
+   claim_ceiling:'NARRATIVE_NOT_SCIENTIFIC_PROOF'
+  })}catch(_){generated=null;}
+  const citations=generated?.cited_source_ids;
+  if(!generated||!Array.isArray(citations)||!citations.length||
+   !citations.every(x=>typeof x==='string'&&eligible.has(x))||
+   typeof generated.opening!=='string'||!generated.opening.trim())return turn;
+  return Object.freeze({...turn,narrative:Object.freeze({...turn.narrative,
+   opening:safe(generated.opening,2200),cliffhanger:
+    typeof generated.cliffhanger==='string'?safe(generated.cliffhanger,600):turn.narrative.cliffhanger}),
+   model_citations:citations.slice(0,12),narration_origin:'GROUNDED_CONNECTED_MODEL',
+   no_admitted_crosswalk:true});
  };
  const currentStatus=()=>!current?receipt('HELD',stateError('SESSION_ROLE_SELECTION_REQUIRED')):
   receipt('SUPPORTED',{session_id:current.id,role:current.role,active:current.active,
@@ -141,6 +163,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
     goal:current.goal,choice_id:role==='MAESTRO'?'source':'question',
     trail:[],cart:getCart(),hostRead,
     max_read_calls:typeof hostRead==='function'?2:0,step_number:0});
+   current.latestTurn=await enrichWithVerifiedHost(current.latestTurn);
   }catch(_){current.latestTurn=null;}
   return receipt('SUPPORTED',{role,session_id:current.id,
    chat_card:publicCard(current),opening_turn:current.latestTurn,
@@ -164,6 +187,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
    trail:current.path,cart:getCart(),hostRead,
    max_read_calls:typeof hostRead==='function'?2:0,step_number:step.sequence});}
   catch(_){return receipt('HELD',stateError('NARRATIVE_CONDUCTOR_UNAVAILABLE'));}
+  narrative=await enrichWithVerifiedHost(narrative);
   current.path.push(step);current.current=id;current.cartSnapshot=getCart();
   current.latestTurn=narrative;current.turns.push({step,narrative});
   if(current.notesAllowed){
@@ -210,6 +234,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
      source_work_id:entry.source_work_id,trail:current.path,cart:getCart(),
      hostRead,max_read_calls:typeof hostRead==='function'?2:0,
      step_number:current.path.length+1});
+    followup=await enrichWithVerifiedHost(followup);
     current.latestTurn=followup;
     current.turns.push({type:'FOLLOW_UP_TO_VOLUNTARY_VISITOR_REPORT',
      report_id:entry.quest_id,narrative:followup});

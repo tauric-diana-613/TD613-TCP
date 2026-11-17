@@ -457,12 +457,12 @@ try {
       'Every candidate must expose all eight weighted axes and a test question');
     assert(cardAudit.cards.some(c=>c.id==='cand-vixen-documentary-route'),
       'TD613 documentary route analysis must be a native candidate, not an SRC attribution');
-    assert(cardAudit.cards.every(c=>!/\\bSRC\\b|\\bFADT\\b|SignalRupture/i.test(c.title+' '+c.subtitle+' '+c.prose)),
+    assert(cardAudit.cards.every(c=>!/\bSRC\b|\bFADT\b|SignalRupture/i.test(c.title+' '+c.subtitle+' '+c.prose)),
       'Public candidate descriptions must define concepts without leaking internal agent acronyms');
     const texts=cardAudit.cards.map(c=>c.subtitle+'|'+c.prose);
     assert.equal(new Set(texts).size,texts.length,
       'Distinct scored hypotheses must never be identical boilerplate');
-    assert(cardAudit.cards.every(c=>/\\d+\\.\\d%/.test(c.score)),
+    assert(cardAudit.cards.every(c=>/\d+\.\d%/.test(c.score)),
       'Weighted numeric rankings must be retained as rubric scores');
     await page.locator('#ciCandidateGrid details.ci-candidate-explanation summary').first().click();
     assert.equal(await page.locator('#ciCandidateGrid details.ci-candidate-explanation').first().getAttribute('open'),'',

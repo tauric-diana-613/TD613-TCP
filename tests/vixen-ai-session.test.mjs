@@ -40,7 +40,7 @@ test('Source-anchored journey does actual bounded read routing without confoundi
  assert.equal(started.result.opening_turn.role,'MAESTRO');
  assert.equal(started.result.opening_turn.provenance.no_admitted_crosswalk,true);
  assert(calls.length>0&&calls.length<=2);
- assert(calls.every(x=>x.intent==='vixen.work.inspect'));
+ assert(calls.every(x=>['vixen.work.inspect','vixen.fusion.search'].includes(x.intent)));
  assert(started.result.opening_turn.source_candidates.every(x=>ids.includes(x.work_id)));
  const recommended=started.result.opening_turn.research_cart_recommendation;
  assert.equal(recommended.action,'SUGGEST_ONLY_NOT_MUTATION');
@@ -135,4 +135,48 @@ test('The site mounts actual role controls and a source-only browser guide',()=>
  assert.match(js,/window\.VIXEN_STUDY_TRAY/);
  assert.match(js,/verifyProgramNotesConsent/);
  assert.doesNotMatch(js,/fetch\(['"]https?:\/\//);
+});
+
+test('Full semantic-semiotic source-index results, when qualified, inform a bounded Maestro recommendation',async()=>{
+ const target=corpus.works[13],source=target.linked_sources[0];
+ let searches=0;
+ const sess=createVixenAiSession({corpus,hostRead:async({intent,params})=>{
+  if(intent==='vixen.fusion.search'){
+   searches++;
+   return {status:'SUPPORTED',result:{search:{fusion_state:'FULL_INDEX_FUSION',
+    hits:[{id:'source-bound-synthetic-test',source_file_id:source.source_file_id,
+      citation:'Test citation only',score_total:0.92}]}}};
+  }
+  return {status:'SUPPORTED',result:{work_id:params.work_id,
+   linked_sources:[],identity_status:'UNRESOLVED'}};
+ }});
+ const opening=await sess.start({role:'MAESTRO',goal:'Investigate an unexpected connection'});
+ assert.equal(opening.status,'SUPPORTED');
+ assert.equal(searches,1,'Opening must attempt information-bearing full-index retrieval');
+ assert.equal(opening.result.opening_turn.provenance.full_index_fusion_used,true);
+ assert.equal(opening.result.opening_turn.featured_work.work_id,target.work_id);
+ assert(opening.result.opening_turn.featured_work.provenance_reason
+  .some(x=>/semantic-semiotic/.test(x)));
+ assert.equal(opening.result.opening_turn.provenance.no_admitted_crosswalk,true);
+});
+
+test('A connected model can narrate only when its citations are present in the actual source candidates',async()=>{
+ let called=0;
+ const valid=createVixenAiSession({corpus,hostNarrate:async request=>{
+  called++;
+  return {opening:'A source-backed scene unfolded with a competing interpretation.',
+   cliffhanger:'Should we test the other source?',
+   cited_source_ids:[request.source_candidates[0].work_id]};
+ }});
+ const entry=await valid.start({role:'MAESTRO',goal:'feedback'});
+ assert.equal(entry.status,'SUPPORTED');
+ assert.equal(called,1);
+ assert.equal(entry.result.opening_turn.narration_origin,'GROUNDED_CONNECTED_MODEL');
+ assert.equal(entry.result.opening_turn.model_citations.length,1);
+ const fake=createVixenAiSession({corpus,hostNarrate:async()=>
+  ({opening:'The impossible record is established.',cited_source_ids:['UNKNOWN_SOURCE']})});
+ const denied=await fake.start({role:'MAESTRO',goal:'feedback'});
+ assert.equal(denied.status,'SUPPORTED');
+ assert.equal(denied.result.opening_turn.narration_origin,undefined,
+  'Unsourced model narration must not replace the source-grounded baseline');
 });

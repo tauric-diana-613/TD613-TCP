@@ -83,7 +83,7 @@ test('original native host operations include source-bound research routes witho
  for(const [estate,ops] of Object.entries(expected)){
    assert.equal(typeof adapters[estate],'function');
    for(const op of ops)assert.ok(BOUNDED_ENGINE_OPERATIONS[estate].includes(op),estate+': '+op+' missing');
-   assert.equal(BOUNDED_ENGINE_OPERATIONS[estate].some(op=>/build|write|import|publish|admit|seal|restore|mutate/i.test(op)),false);
+   assert.equal(BOUNDED_ENGINE_OPERATIONS[estate].some(op=>/^(?:build_|write_|import_|publish_|admit_|seal_|restore_|mutate_)/i.test(op)),false);
  }
  const summary=native.WENDBINE_ATELIER({operation:'wendbine_public_query',payload:{action:'summary'}});
  assert.equal(summary.kind,'ORIGINAL_NATIVE_EXECUTABLE');

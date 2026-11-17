@@ -94,7 +94,7 @@ const safeRecord=w=>({
 export function createVixenPodium({corpus,membrane=null,engineAdapters={},engines=null,
   semanticSearch=null,operatorAuthorized=false,sourceRevision='UNVERIFIED_EXTERNAL_INPUT',verifyHumanApproval=null,
    nativeReviewCaptureProvider=null,readVisitorCart=null,verifyProgramNotesConsent=null,
-   authorProgramNote=null}={}){
+   authorProgramNote=null,narrateAiTurn=null}={}){
  const normalizeAdapters=map=>{
   if(map===undefined||map===null)return Object.create(null);
   if(typeof map!=='object'||Array.isArray(map))throw new TypeError('VIXEN_PODIUM_INVALID_ENGINE_ADAPTER_MAP');
@@ -255,6 +255,7 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
  const aiSession=createVixenAiSession({
   corpus,readCart:typeof readVisitorCart==='function'?readVisitorCart:()=>[],
   verifyProgramNotesConsent,authorProgramNote,
+  hostNarrate:typeof narrateAiTurn==='function'?narrateAiTurn:null,
   hostRead:async({intent,params})=>run({schema:PODIUM_SCHEMA,intent,params})
  });
  const run=async task=>{
