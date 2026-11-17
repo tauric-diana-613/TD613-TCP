@@ -33,17 +33,17 @@ test('iOS native glyph is forced into text presentation, never blue emoji',()=>{
  const cssGlyph=readFileSync(new URL('../app/encyclopedia/vixen-estate/vixen-redpen-couture-rgi18.css', import.meta.url),'utf8');
  assert.equal((cssGlyph.match(/content:"◀︎"/g)||[]).length,2);
  assert.doesNotMatch(cssGlyph,/content:"◀"/);
- assert.match(cssGlyph,/U\\+FE0E text selector/);
+ assert.match(cssGlyph,/U\+FE0E text selector/);
 });
 test('Salon flip control wins over decorative circle positioning on mobile',()=>{
  const cssSalon=readFileSync(new URL('../app/encyclopedia/vixen-estate/synthesis-salon.css', import.meta.url),'utf8');
  const corrected=cssSalon.slice(cssSalon.indexOf('Operator iPhone REDPEN'));
  assert(corrected.length>200,'Operator redpen containment must be present');
- assert.match(corrected,/button\\.vs-seam\\s*\\{/);
+ assert.match(corrected,/button\.vs-seam\s*\{/);
  assert.match(corrected,/position:relative!important/);
  assert.match(corrected,/left:auto!important/);
  assert.match(corrected,/transform:none!important/);
  assert.match(corrected,/height:auto!important/);
- assert.match(corrected,/font:700 12px\\/1\\.2/);
- assert.match(corrected,/max-width:calc\\(100% - 32px\\)!important/);
+ assert.match(corrected,/font:700 12px\/1\.2/);
+ assert.match(corrected,/max-width:calc\(100% - 32px\)!important/);
 });
