@@ -275,6 +275,44 @@ try {
         'Animated mobile optical cloth must keep painting during reverse scroll');
       await livePage.screenshot({path:path.join(output,name+'-animated-reverse-scroll.png'),
         fullPage:false});
+      // Immediate tab switch: the old .view opacity animation made every
+      // opaque panel transparent while the room-wide electrical cloth moved.
+      const atomicRouteWitness=await livePage.evaluate(()=>{
+        return ['works','collection','reference','works'].map(id=>{
+          const trigger=document.querySelector('#vixenRoomRail button[data-view="'+id+'"]');
+          if(!trigger)throw new Error('MISSING_ROOM_BUTTON '+id);
+          trigger.click();
+          const section=document.getElementById('view-'+id);
+          const style=getComputedStyle(section);
+          return {id,route:document.body.dataset.view,opacity:style.opacity,
+            animation:style.animationName,hidden:section.hidden};
+        });
+      });
+      for(const sample of atomicRouteWitness){
+        assert.equal(sample.route,sample.id);
+        assert.equal(sample.hidden,false);
+        assert.equal(sample.opacity,'1','Route panels must be fully opaque from the first frame');
+        assert.equal(sample.animation,'none','No route-entry opacity tween can reveal the mesh');
+      }
+      await livePage.evaluate(()=>{
+        document.querySelector('#vixenRoomRail button[data-view="collection"]').click();
+      });
+      await livePage.locator('#vixenSynthesisSalon .vs-optical-stage').scrollIntoViewIfNeeded();
+      await livePage.waitForFunction(()=>{
+        const s=window.VIXEN_SALON_PRESENTATION?.status?.();
+        return s?.target_fps===60&&s?.visible&&s.motion_frames>=3;
+      },null,{timeout:15000,polling:100});
+      const firstSalon=await livePage.evaluate(()=>window.VIXEN_SALON_PRESENTATION.status());
+      await livePage.waitForTimeout(650);
+      const finalSalon=await livePage.evaluate(()=>window.VIXEN_SALON_PRESENTATION.status());
+      assert(finalSalon.motion_frames>firstSalon.motion_frames+4,
+        'Salon particles must move continuously without forcing geometry remesh');
+      assert(finalSalon.motion_frames>finalSalon.geometry_frames,
+        'Salon presentation cadence must exceed expensive garment redraw cadence');
+      assert.equal(finalSalon.clock_count,1,'Separate Salon constitution may not spawn a second clock');
+      runningSamples.push({salon:{start:firstSalon,finish:finalSalon,atomicRouteWitness}});
+      await livePage.screenshot({path:path.join(output,name+'-salon-charge-live.png'),
+        fullPage:false});
       // The original CI only tested a fast Chromium path at 60Hz. CPU-throttle
       // the *real canvas* here to witness recovery under missed presentation
       // frames, recording quality, paint cost and actual cadence. This is a
