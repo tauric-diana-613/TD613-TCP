@@ -76,7 +76,37 @@ try {
     await foxRail.locator('button[data-view="works"]').click();
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
-    await foxRail.locator('button[data-view="overview"]').click();
+    // RGI23 three-room editorial self-review: actual buttons and disclosure
+    // affordances, not merely static CSS/HTML snapshots.
+    for(const room of ['works','gates','holds']){
+      if(room!=='works')await foxRail.locator('button[data-view="'+room+'"]').click();
+      const view=page.locator('#view-'+room);
+      await view.locator('.vix-couture-route-guide h2').waitFor({state:'visible',timeout:10000});
+      assert.equal(await view.locator('.vix-route-stage').count(),3,
+        room+' route must present exactly three readable evidentiary operations');
+      const disclosure=view.locator('.vix-route-custody');
+      await disclosure.locator('summary').click();
+      assert.notEqual(await disclosure.getAttribute('open'),null,
+        room+' custody disclosure must work with real input');
+      await disclosure.locator('summary').click();
+      const surface=await view.evaluate(el=>{
+        const guide=el.querySelector('.vix-couture-route-guide');
+        const heading=el.querySelector('.view-heading');
+        const r=guide.getBoundingClientRect();
+        return {guideWidth:r.width,documentWidth:document.documentElement.scrollWidth,
+          headingBackground:getComputedStyle(heading).backgroundImage};
+      });
+      assert(surface.guideWidth>250&&surface.documentWidth<=innerWidth+1,
+        room+' couture surface must not overflow: '+JSON.stringify(surface));
+      assert(!/rgb\(60,\s*20,\s*60\)/.test(surface.headingBackground),
+        room+' heading should not regress to plum');
+      await view.locator('.vix-couture-route-guide').scrollIntoViewIfNeeded();
+      await page.screenshot({
+        path:path.join(output,stem+'-rgi23-'+room+'-couture.png'),
+        fullPage:false,animations:'disabled',timeout:60000
+      });
+    }
+        await foxRail.locator('button[data-view="overview"]').click();
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'overview');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),null);
     if(width<960){
@@ -357,7 +387,43 @@ try {
       'Six original mathematical works must be scored beside the computed stage, not dumped as a dashboard grid');
     assert.equal(await foundry.locator('.ef-readout').isHidden(),true,
       'The technical evidence inspector must not permanently compete with the artwork');
-    assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'false');
+    const opticalCouture=await foundry.evaluate(el=>{
+      const r=e=>e.getBoundingClientRect();
+      const tabs=[...el.querySelectorAll('.ef-hero-tab')];
+      const badges=[...el.querySelectorAll('.ef-scene-badge')];
+      const stage=el.querySelector('.ef-stage');
+      const railText=el.querySelector('.ef-rail-display-headline');
+      const buttons=[...el.querySelectorAll('.ef-toolbar button')];
+      return {
+        tabCount:tabs.length,
+        active:tabs.filter(x=>x.getAttribute('aria-pressed')==='true').length,
+        markers:tabs.filter(x=>getComputedStyle(x,'::after').content.includes('◀')).length,
+        selectedBorder:getComputedStyle(tabs.find(x=>x.getAttribute('aria-pressed')==='true')).borderTopColor,
+        railTitle:railText?.textContent||'',
+        railTitleVisible:!!railText&&r(railText).width>60&&r(railText).height>40,
+        pseudoTitle:getComputedStyle(el.querySelector('.ef-aria-score>.ef-kicker'),'::before').content,
+        toolbarHeights:buttons.map(x=>Math.round(r(x).height)),
+        toolbarColors:buttons.map(x=>getComputedStyle(x).backgroundImage),
+        badgeBelowStage:badges.length===1&&r(badges[0]).top>=r(stage).bottom-2,
+        composerHidden:el.querySelector('.ef-composer-review')?.hidden===true
+      };
+    });
+    assert.equal(opticalCouture.active,1,'Exactly one aria must be selected');
+    assert.equal(opticalCouture.markers,1,'Exactly one magenta selection arrow permitted');
+    assert.equal(opticalCouture.railTitleVisible,true,'Engine-fed headline must be readable as text');
+    assert.match(opticalCouture.railTitle,/Crossed probes|source-recorded arias/i);
+    assert.equal(opticalCouture.pseudoTitle,'none','CSS-generated engine title must be suppressed');
+    assert.equal(opticalCouture.badgeBelowStage,true,
+      'Live simulation label must be below, never overlay, the computed visual field');
+    assert.equal(opticalCouture.composerHidden,true,'A dormant Composer bar must not consume stage space');
+    assert(opticalCouture.toolbarHeights.length===5,'Five native dashboard controls remain');
+    assert(Math.max(...opticalCouture.toolbarHeights)-Math.min(...opticalCouture.toolbarHeights)<=4,
+      'Proof control must share a uniform button height: '+JSON.stringify(opticalCouture));
+    assert.equal(new Set(opticalCouture.toolbarColors).size,1,
+      'Proof must share the same button material rather than a pale special control');
+    assert.notEqual(opticalCouture.selectedBorder,'rgb(250, 255, 255)',
+      'Selected aria's border may not remain pale silver');
+        assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'false');
     const stageTopology=await foundry.locator('.ef-proscenium').evaluate(n=>({
       columns:getComputedStyle(n).gridTemplateColumns.split(' ').length,
       stage:n.querySelector('.ef-stage').getBoundingClientRect().width,
@@ -467,7 +533,14 @@ try {
       'A source-model dial must change computed diagnostics rather than decorative animation');
     assert.equal(afterDial.corpus_coordinates.source_folio,'TCC-01');
     await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-07"]').click();
-    const rankProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
+    const selectionMove=await foundry.evaluate(el=>{
+      const active=[...el.querySelectorAll('.ef-hero-tab')].filter(x=>x.getAttribute('aria-pressed')==='true');
+      const arrows=[...el.querySelectorAll('.ef-hero-tab')].filter(x=>getComputedStyle(x,'::after').content.includes('◀'));
+      return {selected:active.map(x=>x.dataset.labId),arrows:arrows.map(x=>x.dataset.labId)};
+    });
+    assert.deepEqual(selectionMove,{selected:['LAB_RC-07'],arrows:['LAB_RC-07']},
+      'The arrow must move on selection and leave the previous aria');
+        const rankProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
     assert.equal(rankProbe.corpus_coordinates.source_folio,'RC-07');
     assert(rankProbe.metrics.some(x=>x.name==='singular_values'));
     const rankScene=await page.evaluate(()=>document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png'));
