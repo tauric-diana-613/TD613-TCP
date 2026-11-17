@@ -136,7 +136,9 @@ test('Vixen Encyclopedia preserves sovereign Opera, named Performers, and separa
  assert.match(page,/07<\/small> Folios/);
  assert.match(page,/07<\/small> Vixen Folios/);
  assert.match(page,/vixen-estate\/research-chamber.mjs/);
- assert.match(page,/const VALID_VIEWS = \[[^\]]*'reference'\]/);
+ assert.match(page,/const VALID_VIEWS = \[[^\]]*'reference', 'operator'\]/);
+  assert.match(page,/id="view-operator"[^>]*data-page="operator"/);
+  assert.match(page,/id="vixenRestoreReviewDialog"/);
  assert.match(page,/vixenParticleField/);
  assert.match(page,/UNADJUDICATED_PAIR/);
  assert(!page.includes('renderCart('),'No commercial storefront in Vixen Opera');
