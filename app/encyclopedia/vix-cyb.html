@@ -5847,66 +5847,134 @@ import {
     }));
   }
 
+  // Technical operators can remain in the computational back end.
+  // The Vixen Opera supplies meaning first; exact names remain inspectable
+  // in developer artifacts without implying ownership or attribution.
+  const operaResearchLabel=value=>String(value||'')
+    .replace(/\bFADT\b/g,'finite admissibility')
+    .replace(/\bSRC\b/g,'documentary source-route')
+    .replace(/\bOSSL\b/g,'recorded fork lineage')
+    .replace(/\bL0\b/g,'vocabulary-only')
+    .replace(/\bL1\b/g,'mathematical correspondence')
+    .replace(/\bL2\b/g,'physical implementation');
+  const operaClusterLabel=Object.freeze({
+    C1:'AI & viability',C2:'Audio & signal',C3:'Wearable sensors',
+    C4:'Virtual systems',C5:'Historical & emergent works'
+  });
+  const operaCandidateAxes=Object.freeze([
+    ['spectral_conditioning','Matrix conditioning',.15,'Does the numerical comparison remain stable?'],
+    ['clock_holonomy','Clock order',.14,'What changes when clocks or route orders differ?'],
+    ['mirror_nullspace','Projection geometry',.10,'Which dimensions remain distinguishable under projection?'],
+    ['synergy_fadt','Information and admissibility',.15,'What information or lawful alternatives survive combination?'],
+    ['cluster_bridge','Source-domain breadth',.14,'How broadly does this proposal engage recorded domains?'],
+    ['epistemic_ceiling','Evidence restraint',.11,'Does the proposal preserve its unproven boundaries?'],
+    ['design_cadence','Conceptual construction',.11,'How coherently does the question join the chosen methods?'],
+    ['src_projective_tomography','Documentary route audit',.10,'Does documentary traversal preserve contextual attribution?']
+  ]);
   function renderCandidates() {
-    const grid = document.getElementById('ciCandidateGrid');
-    const summaryEl = document.getElementById('ciCandidateSummary');
-    if (!grid || !live.corpus) return;
-    let ranked = null;
-    try {
-      ranked = scoreUnifiedSynthesisCandidates({
-        corpus: live.corpus,
-        activePlan: live.activePlan,
-        refraction: live.refraction,
-        benchPair: live.benchPair,
-        benchSnapshots: live.benchSnapshots,
-        withdrawnCount: live.withdrawnCount,
-        podiumEvents: live.podiumEvents,
-        supplementalSources: live.supplementalSources,
+    const grid=document.getElementById('ciCandidateGrid');
+    const summaryEl=document.getElementById('ciCandidateSummary');
+    if(!grid||!live.corpus)return;
+    let ranked;
+    try{
+      ranked=scoreUnifiedSynthesisCandidates({
+        corpus:live.corpus,activePlan:live.activePlan,
+        refraction:live.refraction,benchPair:live.benchPair,
+        benchSnapshots:live.benchSnapshots,withdrawnCount:live.withdrawnCount,
+        podiumEvents:live.podiumEvents,supplementalSources:live.supplementalSources,
         lagTicks
       });
-    } catch (_) { ranked = null; }
-    const cands = Array.isArray(ranked?.candidates) ? ranked.candidates : [];
-    const activeCandId = live.selectedCandidateId || currentHeadline?.provenance?.selected_candidate_id || null;
-    if (summaryEl && ranked) {
-      summaryEl.textContent = `${cands.length} SCORED · TOP ${((ranked.top_candidate?.score || 0) * 100).toFixed(1)}% · EXACT [${(ranked.fadt_profile?.exact_descent_clusters || []).join(',') || 'NONE'}]`;
+    }catch(error){
+      // Fail closed and visibly. Never substitute a convincing generic card.
+      console.error('VIXEN_CANDIDATE_GENERATION_HELD',error);
+      grid.replaceChildren();
+      const warning=document.createElement('p');
+      warning.className='ci-candidate-error';
+      warning.textContent='Proposals held: source-grounded scoring could not be verified. No candidate has been substituted.';
+      grid.append(warning);
+      if(summaryEl)summaryEl.textContent='RANKING HELD · NO SUBSTITUTE CANDIDATES';
+      return;
     }
-    grid.replaceChildren(...cands.map((cand) => {
-      const isSelected = activeCandId === cand.id;
-      const card = document.createElement('article');
-      card.className = 'ci-candidate-card' + (isSelected ? ' is-active' : '');
-      card.dataset.candidateId = cand.id;
-
-      const top = document.createElement('div');
-      const meta = document.createElement('div');
-      meta.className = 'ci-conj-meta';
-      const sc = document.createElement('span');
-      sc.className = 'ci-cand-score';
-      sc.textContent = `${(cand.score * 100).toFixed(1)}%`;
-      meta.appendChild(sc);
-      const b = cand.breakdown || {};
-      meta.appendChild(document.createTextNode(`${(cand.clusters || []).join(' × ')} · κ=${Number(b.svd_kappa || 0).toFixed(2)} · Δ=${b.vernier_inversions ?? 0} inv · ${b.fadt_exact ? 'FADT EXACT' : 'FADT HOLD'}`));
-
-      const h = document.createElement('h4');
-      h.className = 'ci-conj-title';
-      h.textContent = cand.patternSubtitle;
-
-      const body = document.createElement('p');
-      body.className = 'ci-conj-body';
-      body.textContent = `${cand.title} — ${String(cand.heroStatement || '').replace(/\n+/g, ' ')}`;
-
-      const foot = document.createElement('div');
-      foot.className = 'ci-actions-row';
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'ci-btn' + (isSelected ? ' primary' : '');
-      btn.textContent = isSelected ? 'Active Engine Selection ✓' : 'Promote Candidate';
-      btn.addEventListener('click', () => promoteCandidate(cand.id));
-      foot.appendChild(btn);
-
-      top.append(meta, h, body);
-      card.append(top, foot);
+    const candidates=Array.isArray(ranked?.candidates)?ranked.candidates:[];
+    const activeId=live.selectedCandidateId||currentHeadline?.provenance?.selected_candidate_id||null;
+    if(summaryEl)summaryEl.textContent=
+      candidates.length+' PROPOSALS · LEADING WEIGHTED FIT '+((ranked.top_candidate?.score||0)*100).toFixed(1)+'% · NOT A PROBABILITY OF TRUTH';
+    const cards=candidates.map((candidate,index)=>{
+      const active=activeId===candidate.id;
+      const card=document.createElement('article');
+      card.className='ci-candidate-card'+(active?' is-active':'');
+      card.dataset.candidateId=candidate.id;
+      const eyebrow=document.createElement('div');
+      eyebrow.className='ci-candidate-eyebrow';
+      const rank=document.createElement('span');
+      rank.textContent='RESEARCH PROPOSAL '+String(index+1).padStart(2,'0');
+      const status=document.createElement('span');
+      status.textContent=active?'CURRENT INQUIRY':'AWAITING HUMAN REVIEW';
+      eyebrow.append(rank,status);
+      const metrics=document.createElement('div');
+      metrics.className='ci-candidate-metrics';
+      const figure=document.createElement('strong');
+      figure.className='ci-cand-score';
+      figure.textContent=(candidate.score*100).toFixed(1)+'%';
+      const why=document.createElement('span');
+      why.textContent='WEIGHTED MODEL FIT · NOT EMPIRICAL CONFIDENCE';
+      metrics.append(figure,why);
+      const heading=document.createElement('h4');
+      heading.className='ci-conj-title';
+      heading.textContent=operaResearchLabel(candidate.title);
+      const subtitle=document.createElement('div');
+      subtitle.className='ci-candidate-subtitle';
+      subtitle.textContent=operaResearchLabel(candidate.patternSubtitle);
+      const summary=document.createElement('p');
+      summary.className='ci-conj-body';
+      summary.textContent=operaResearchLabel(candidate.publicExplanation||candidate.heroStatement);
+      const domains=document.createElement('div');
+      domains.className='ci-candidate-domains';
+      for(const cluster of candidate.clusters||[]){
+        const tag=document.createElement('span');
+        tag.textContent=operaClusterLabel[cluster]||'Other recorded works';
+        domains.append(tag);
+      }
+      const detail=document.createElement('details');
+      detail.className='ci-candidate-explanation';
+      const toggle=document.createElement('summary');
+      toggle.textContent='INSPECT THE EIGHT SCORING AXES & FALSIFIER';
+      detail.append(toggle);
+      const axes=document.createElement('div');
+      axes.className='ci-candidate-axes';
+      for(const [key,label,weight,explanation] of operaCandidateAxes){
+        const value=Math.min(1,Math.max(0,Number(candidate.breakdown?.[key])||0));
+        const row=document.createElement('div');row.className='ci-axis';
+        const labelRow=document.createElement('div');labelRow.className='ci-axis-label';
+        const name=document.createElement('span');name.textContent=label;
+        const stat=document.createElement('span');
+        stat.textContent=Math.round(value*100)+'/100 · '+(weight*100).toFixed(0)+'% weight';
+        labelRow.append(name,stat);
+        const rail=document.createElement('div');rail.className='ci-axis-rail';
+        const fill=document.createElement('span');fill.style.width=(value*100).toFixed(1)+'%';
+        rail.append(fill);
+        const explanationText=document.createElement('p');
+        explanationText.textContent=explanation;
+        row.append(labelRow,rail,explanationText);axes.append(row);
+      }
+      const question=document.createElement('p');
+      question.className='ci-candidate-question';
+      question.textContent='QUESTION TO TEST · '+operaResearchLabel(candidate.researchQuestion);
+      const falsifier=document.createElement('p');
+      falsifier.className='ci-candidate-falsifier';
+      falsifier.textContent='HOW TO CHALLENGE IT · '+operaResearchLabel(candidate.falsifier);
+      detail.append(axes,question,falsifier);
+      const foot=document.createElement('div');foot.className='ci-actions-row';
+      const button=document.createElement('button');
+      button.type='button';
+      button.className='ci-btn'+(active?' primary':'');
+      button.textContent=active?'CURRENTLY SELECTED ✓':'EXPLORE THIS PROPOSAL';
+      button.addEventListener('click',()=>promoteCandidate(candidate.id));
+      foot.append(button);
+      card.append(eyebrow,metrics,heading,subtitle,summary,domains,detail,foot);
       return card;
-    }));
+    });
+    grid.replaceChildren(...cards);
   }
 
   function recompute(patch) {
