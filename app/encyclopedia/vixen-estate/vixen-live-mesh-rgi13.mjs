@@ -245,7 +245,11 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  function draw(frame=hostFrame){
   if(disposed||doc.hidden)return;
   const start=win.performance.now(),w=width(),h=height();
-  const ratio=Math.min(win.devicePixelRatio||1,1.25,Math.sqrt(1500000/(w*h)));
+  // Reduce pixel fill-rate only if actual missed frames persist. Soft glow
+  // survives 1x raster scaling; continuous 60Hz motion takes precedence over
+  // sampling a 1.25x surface that the hardware cannot present on time.
+  const scaleCap=rasterQuality.stride>=4?1:rasterQuality.stride===2?1.12:1.25;
+  const ratio=Math.min(win.devicePixelRatio||1,scaleCap,Math.sqrt(1500000/(w*h)));
   if(canvas.width!==Math.floor(w*ratio)||canvas.height!==Math.floor(h*ratio)||dpr!==ratio){
    canvas.width=Math.floor(w*ratio);canvas.height=Math.floor(h*ratio);dpr=ratio;layoutDirty=true;
   }
@@ -349,6 +353,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
    occlusion_mode:meshOcclusionMode(width()),exclusion_count:exclusions.length,
    raster_detail_stride:rasterQuality.stride,quality_slow_frames:rasterQuality.slow,
+   raster_backing_scale:dpr,
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
    model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,
