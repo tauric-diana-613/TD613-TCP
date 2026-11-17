@@ -422,7 +422,7 @@ try {
     assert.equal(new Set(opticalCouture.toolbarColors).size,1,
       'Proof must share the same button material rather than a pale special control');
     assert.notEqual(opticalCouture.selectedBorder,'rgb(250, 255, 255)',
-      'Selected aria's border may not remain pale silver');
+      "Selected aria border may not remain pale silver");
         assert.equal(await foundry.locator('.ef-inspector-switch').getAttribute('aria-expanded'),'false');
     const stageTopology=await foundry.locator('.ef-proscenium').evaluate(n=>({
       columns:getComputedStyle(n).gridTemplateColumns.split(' ').length,
