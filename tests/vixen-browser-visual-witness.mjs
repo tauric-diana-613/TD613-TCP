@@ -532,6 +532,17 @@ try {
     assert.notDeepEqual(visualBefore.sample.metrics,afterDial.metrics,
       'A source-model dial must change computed diagnostics rather than decorative animation');
     assert.equal(afterDial.corpus_coordinates.source_folio,'TCC-01');
+    if(width<=920){
+      const railGeometry=await foundry.locator('.ef-hero-rail').evaluate(el=>{
+        const scroller=getComputedStyle(el);
+        return {width:el.clientWidth,scrollWidth:el.scrollWidth,
+          overflowX:scroller.overflowX,direction:scroller.flexDirection,
+          fifthX:el.querySelector('[data-lab-id="LAB_RC-07"]')?.getBoundingClientRect().x,
+          viewportWidth:innerWidth};
+      });
+      assert(railGeometry.scrollWidth>railGeometry.width+100&&railGeometry.overflowX==='auto',
+        'All six arias must inhabit a bounded, scrollable horizontal rail: '+JSON.stringify(railGeometry));
+    }
     await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-07"]').click();
     const selectionMove=await foundry.evaluate(el=>{
       const active=[...el.querySelectorAll('.ef-hero-tab')].filter(x=>x.getAttribute('aria-pressed')==='true');
