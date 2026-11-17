@@ -87,7 +87,9 @@ test('Live Salon keeps the legacy optical contract and mounts one folded computa
  assert.match(salon,/import \{SALON_COMPOSITOR,mountFoldedCuirass,CUIRASS_CONTRACT\}/);
  assert.match(salon,/const folded=SALON_COMPOSITOR==='FOLDED_CHROME'/);
  assert.match(salon,/veil\.dataset\.computation=folded\?'D3_PHI_OPEN_FOLDS_SHARED_CLOTH':'D3_PHI_LOOM_39_COUTURE_111'/);
- assert.match(salon,/veilHandle=folded\?mountFoldedCuirass\(veil,veilCoordinates\):mountSalonVeil\(veil,veilCoordinates\)/);
+ assert.match(salon,/veilHandle=folded\\?mountFoldedCuirass\\(veil,veilCoordinates,\\{motionCanvas:persistentMotion\\}\\):mountSalonVeil\\(veil,veilCoordinates\\)/);
+  assert.match(salon,/const persistentMotion=folded\\?mk\\('canvas','vs-cuirass-motion-canvas'\\):null/);
+  assert.match(salon,/append\\(stage,veil,persistentMotion,veilCaption\\)/);
  assert.match(salon,/veilHandle\?\.dispose\?\.\(\)/,'Unavailable Canvas2D host must not break source interaction');
  assert.doesNotMatch(salon,/🩰|🚬/);
  assert.match(salon,/host\.dataset\.opticalContract=folded\?CUIRASS_CONTRACT\.schema:VEIL_CONTRACT\.schema/);
