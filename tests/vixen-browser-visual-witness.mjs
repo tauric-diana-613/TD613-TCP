@@ -760,6 +760,48 @@ try {
     await page.waitForFunction(()=>document.body.dataset.view==='works',null,{timeout:6000});
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
     assert.match(await page.evaluate(()=>location.hash),/^#works\/emwork_/);
+    // Operator iPhone REDPEN: the earlier frontispiece-only GREEN missed the
+    // Unicode selection glyph, the original-title boundary, and the giant
+    // displaced encounter-order control. Inspect the REAL mobile DOM geometry
+    // at every browser-witness viewport before proceeding to Folios.
+    await page.locator('#menuToggle').click();
+    await page.locator('#mobileNav button[data-view="collection"]').click();
+    await page.waitForFunction(()=>document.body.dataset.view==='collection' &&
+      !!document.querySelector('#vixenSynthesisSalon button.vs-seam'),null,{timeout:16000});
+    const salon=page.locator('#vixenSynthesisSalon');
+    const sourceCard=salon.locator('.vs-source-card').first();
+    assert.match(await sourceCard.locator('.vs-work-title').innerText(),/^The Architecture of Control:/);
+    assert.match(await sourceCard.locator('.vs-title-provenance').innerText(),
+      /NOT A GENERATED SYNTHESIS CANDIDATE/);
+    const seam=salon.locator('button.vs-seam');
+    await seam.scrollIntoViewIfNeeded();
+    const seamWitness=await seam.evaluate(el=>{
+      const r=el.getBoundingClientRect(),style=getComputedStyle(el);
+      const parent=el.parentElement?.getBoundingClientRect();
+      return {x:r.x,y:r.y,right:r.right,width:r.width,height:r.height,
+       fontSize:style.fontSize,position:style.position,transform:style.transform,
+       parentLeft:parent?.left,parentRight:parent?.right,
+       pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,
+       label:el.innerText};
+    });
+    assert(seamWitness.width>=96&&seamWitness.width<=240&&seamWitness.height<=85,
+      'Salon route switch must be a bounded control, not a giant ornament: '+JSON.stringify(seamWitness));
+    assert(seamWitness.x>=0&&seamWitness.right<=width+1,
+      'Salon route control escapes the phone viewport: '+JSON.stringify(seamWitness));
+    assert(seamWitness.x>=seamWitness.parentLeft-2&&seamWitness.right<=seamWitness.parentRight+2,
+      'Salon route control detached from its research stage: '+JSON.stringify(seamWitness));
+    assert.equal(seamWitness.position,'relative');
+    assert.equal(seamWitness.transform,'none');
+    assert(seamWitness.pageWidth<=width+1,'Salon creates horizontal document overflow: '+JSON.stringify(seamWitness));
+    if(width<=680){
+      await page.screenshot({path:path.join(output,stem+'-salon-order-redpen.png'),fullPage:false});
+      await sourceCard.locator('.vs-work-title').scrollIntoViewIfNeeded();
+      await page.screenshot({path:path.join(output,stem+'-salon-source-title-redpen.png'),fullPage:false});
+    }
+    const firstOrder=await seam.locator('.vs-seam-op').innerText();
+    await seam.click();
+    const secondOrder=await seam.locator('.vs-seam-op').innerText();
+    assert.notEqual(firstOrder,secondOrder,'Route flip remains functional after layout repair');
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="reference"]').click();
     await page.locator('#vixenReferenceChamber .vxe-source-folio').first().waitFor();
