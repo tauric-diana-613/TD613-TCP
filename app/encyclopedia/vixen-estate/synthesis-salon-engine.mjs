@@ -1172,7 +1172,9 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
   });
  }
  if(events.length>0){
-  const last=events[events.length-1]?.action||'PODIUM_EVENT';
+  const last=cleanText(events[events.length-1]?.action||'UNSPECIFIED_RESEARCH_ACTION',96);
+  const readableAction=last.replace(/[_-]+/g,' ').toLowerCase();
+  const eventSummary=`${events.length} recorded step${events.length===1?'':'s'}; latest: ${readableAction}`;
   const headerTagline='Podium-Updated Constitutive Synthesis';
   candidates.push({
    id:'cand-podium-exploration',
@@ -1188,8 +1190,9 @@ export function generateUnifiedSynthesisCandidates(corpus=null,{
    wPlaneGrounded:true,
    contextPriority:5,
    headerTagline,
-   patternSubtitle:`PODIUM TRACE · ${events.length} STEP${events.length===1?'':'S'} BOUND.`,
-   heroStatement:'Every trace cites what came before it,\nkeeping live observation separate from claim\nuntil human judgment closes the gate.',
+   patternSubtitle:`PODIUM EXPLORATION · ${events.length} RECORDED RESEARCH STEP${events.length===1?'':'S'}.`,
+   heroStatement:`Latest action: ${readableAction}. This candidate examines whether the actual sequence of ${events.length} research decision${events.length===1?'':'s'} changes the next testable question. No observation or empirical verification is inferred from this record.`,
+   publicExplanation:`Sequence-bound inquiry: ${eventSummary}. Compare the recorded order and its preceding evidence before proposing an experiment.`,
    leftSpine:'S ≠ W ≠ A · PODIUM LOGGED · CREDIT 0',
    researchQuestionMeta:`PODIUM EXPLORATION QUESTION · ${events.length} STEP(S) · UNRATIFIED`,
    researchQuestion:`“Following ${events.length} Podium exploration step(s) (latest: ${String(last).slice(0,32)}), what emergent structural question across the corpus warrants human exploration next?”`,
@@ -1213,19 +1216,48 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   activePlan:options?.activePlan||null
  });
  const qSrcCond=deriveSrcQueryConditionedWeights(options?.operatorQuestion||'','src_projective',null);
- const rawTpl=rawGenerated.at(-1)||rawGenerated[0];
- const srcCandidate=rawTpl?{
-  ...structuredClone(rawTpl),
+ // A distinct source-grounded SRC candidate, not a clone of the last
+ // baseline/event candidate (which duplicated the Podium prose).
+ const sourceLinks=Number(srcTelemetry?.projective_routing?.candidate_link_count||0);
+ const sourceCues=Number(srcTelemetry?.projective_routing?.cue_count||0);
+ const contextualPasses=Number(srcTelemetry?.context_roles?.pass_count||0);
+ const tomographyCount=Number(srcTelemetry?.phase2_tomography?.candidate_count||0);
+ const srcCandidate={
   id:'cand-src-projective-tomography',
-  title:'SRC Projective Tomography × Contextual Role Ledger',
-  subtitle:'Where signature coordinates, Explore-cue routing, and zero-scalar Phase-2 tomography refuse to flatten carrier history.',
-  tagline:'Signatures operate as projective coordinates across non-collapsing F/N/G strata while representation lifts keep composite_score null and roles strictly contextual.',
+  regime:'SRC_CONTEXTUAL_SOURCE_PROJECTION',
+  governing_instrument:'CARO_INSTITUTIONAL_RECONSTRUCTION',
   kind:'src_projective_tomography',
+  title:'Contextual Source Mapping Across Recorded Research Routes',
+  subtitle:'Documentary cross-references without converting resemblance into causal proof.',
+  tagline:'Signature coordinates and role tracing retain their distinct evidentiary ceilings.',
+  lens:'Documentary Projective Routing × Contextual Role Assessment',
   clusters:['C1','C2','C4','C5'],
-  instrument:rawTpl.instrument||'Atlas Projection Auditor',
-  grammar:rawTpl.grammar||'Caro Institutional Reconstruction'
- }:null;
- const rawCandidates=srcCandidate?[...rawGenerated,srcCandidate]:rawGenerated;
+  clockPair:['wall','k'],
+  mirrorVector:[1.07,0.33,0.12],
+  xorSamples:[{x:0,y:0,z:0},{x:0,y:1,z:1},{x:1,y:0,z:1},{x:1,y:1,z:0}],
+  fadtExact:false,
+  wPlaneGrounded:false,
+  contextPriority:4,
+  headerTagline:'Documentary Routes · Contextual Attribution',
+  patternSubtitle:'CROSS-REFERENCE MAP · SOURCE LINKS HELD TO CONTEXT.',
+  heroStatement:`The source-route assay found ${sourceLinks} candidate link${sourceLinks===1?'':'s'} and ${sourceCues} routing cue${sourceCues===1?'':'s'}. ${contextualPasses} contextual role check${contextualPasses===1?'':'s'} passed; ${tomographyCount} reconstruction candidate${tomographyCount===1?'':'s'} remain distinct from independent proof.`,
+  publicExplanation:'Compares source-route matches, contextual roles and projective reconstruction. Similar names or motifs suggest a research question, not authorship, mechanism or cause.',
+  leftSpine:'DOCUMENTARY ROUTING ≠ EMPIRICAL ORIGIN',
+  researchQuestionMeta:'DOCUMENTARY COMPARISON · HUMAN REVIEW',
+  researchQuestion:`“Given ${sourceLinks} proposed source routes, ${contextualPasses} contextual role passes and ${tomographyCount} bounded reconstruction candidates, which connections survive source-by-source inspection and independent witness controls?”`,
+  falsifier:'Recheck each proposed edge against original documents and independent context; reject provenance inferred from content scores or absent external witnesses.',
+  provenanceExtra:{candidate_links:sourceLinks,source_cues:sourceCues,contextual_role_passes:contextualPasses,reconstruction_candidates:tomographyCount},
+  instrument:'Atlas Projection Auditor',
+  grammar:'Contextual Documentary Attribution'
+ };
+ const rawCandidates=[...rawGenerated,srcCandidate];
+ const surfaceKeys=new Set();
+ for(const candidate of rawCandidates){
+  const key=[candidate.patternSubtitle,candidate.heroStatement].join('⟐').trim();
+  if(surfaceKeys.has(key))throw new Error('VIXEN_DUPLICATE_SYNTHESIS_CANDIDATE:'+candidate.id);
+  surfaceKeys.add(key);
+ }
+
  const clockById=new Map(CLOCKS.map(c=>[c.id,c]));
  const scored=rawCandidates.map(cand=>{
   assertNoBoilerplateSubtitle(cand.patternSubtitle);
