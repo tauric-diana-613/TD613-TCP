@@ -825,7 +825,7 @@ try {
     const house=page.locator('#operahouseEncounter');
     assert.equal(await house.isHidden(),true,'The other Opera must be offstage by default');
     await page.locator('#vixenReferenceChamber').getByRole('button',
-      {name:/Enter Operahouse reading room/}).click();
+      {name:/Open independent reference reading room/}).click();
     assert.equal(await page.locator('#vixenReferenceChamber').isHidden(),true,
       'The Vixen Opera must leave the visible stage before a Universal record is inspected');
     assert.equal(await house.isVisible(),true);
@@ -834,7 +834,7 @@ try {
     assert.equal(await page.locator('.site-header .brand').isHidden(),true);
     assert.equal(await page.locator('footer.footer').isHidden(),true,
       'The Vixen research footer cannot remain visible on the Operahouse stage');
-    assert.match(await page.title(),/Operahouse/);
+    assert.match(await page.title(),/Independent Source Reading Room/);
     assert.equal(await house.getAttribute('data-stage-role'),'OPERAHOUSE');
     assert.equal(await house.locator('[data-stage-role="INDEPENDENT_REFERENCE"]').count(),1);
     assert.equal(await house.locator('[data-stage-role="SOURCE_LOCUS"]').count(),1);
@@ -887,7 +887,7 @@ try {
     });
     await page.waitForTimeout(90);
     await page.screenshot({path:path.join(output,stem+'-operahouse-receipt.png'),fullPage:false});
-    await house.getByRole('button',{name:/Return to Vixen Opera/}).click();
+    await house.getByRole('button',{name:/Return to Vixen/}).click();
     assert.equal(await house.isHidden(),true,'Reference Opera must leave before Vixen returns');
     assert.equal(await page.locator('#vixenReferenceChamber').isVisible(),true);
     assert.equal(await page.locator('body').getAttribute('data-active-research-stage'),'VIXEN');
