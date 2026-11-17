@@ -83,8 +83,11 @@ svg.icon{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.45;
 
 main{max-width:var(--page);margin:auto;padding-top:72px}
 body[data-view="overview"] main{padding-top:0}
-.view{animation:view-enter .45s var(--ease)}
-@keyframes view-enter{from{opacity:0}to{opacity:1}}
+/* Every route owns its opaque panels on the FIRST COMPOSITOR FRAME.
+   Fading an entire .view from opacity:0 exposes the moving z1 electrical
+   cloth through every supposedly solid surface during tab navigation.
+   Route switches are atomic; individual controls may still animate. */
+.view{opacity:1;animation:none;transition:none}
 .page-pad{padding:52px var(--gutter) 84px}
 .eyebrow{font:500 9px/1.6 var(--font-mono);letter-spacing:.15em;text-transform:uppercase}
 
