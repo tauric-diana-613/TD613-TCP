@@ -62,8 +62,11 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
   'src_phase2_context_roles',
   'src_rabbit_hole_traversal',
   'src_untypical_retrieval',
-  'src_heterostratigraphic_audit'
- ])
+  'src_heterostratigraphic_audit','src_native_epoch_query','src_native_text'
+ ]),
+ WENDBINE_ATELIER:Object.freeze(['wendbine_private_status','wendbine_private_search']),
+ EM_ATELIER:Object.freeze(['em_native_text']),
+ CROSS_ATELIER:Object.freeze(['cross_atelier_lexical'])
 });
 const RX_SHA=/^[a-f0-9]{64}$/;
 const text=(x,max=500)=>typeof x==='string'?x.slice(0,max):'';
@@ -679,7 +682,10 @@ export function createVixenPodium({corpus,membrane=null,engineAdapters={},engine
      adapters:Object.fromEntries(Object.entries(BOUNDED_ENGINE_OPERATIONS).map(([k,ops])=>
       [k,{connected:typeof boundAdapters[k]==='function',allowed_operations:ops}])),
      semantic_search_attached:Boolean(attachedSemantic),
-     native_receiver_status:'SEPARATE_LINEAGE_NOT_AUTO_CONNECTED',
+     native_receiver_status:typeof boundAdapters.WENDBINE_ATELIER==='function' &&
+      typeof boundAdapters.EM_ATELIER==='function' && typeof boundAdapters.CROSS_ATELIER==='function'
+      ?'ORIGINAL_NATIVE_HOST_BRIDGES_CONNECTED_PRIVATE_INDEX_STILL_REQUIRED'
+      :'ORIGINAL_NATIVE_RESEARCH_ENGINES_NOT_CONNECTED',
      no_execution_without_host_explicit_authority:true
     });
    }

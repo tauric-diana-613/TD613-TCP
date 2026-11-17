@@ -1,3 +1,4 @@
+import {createNativeAtelierReadAdapters} from './vixen-native-atelier-bridge.mjs';
 /**
  * 𝌋 Podium native source-only engine conduit.
  *
@@ -628,5 +629,22 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
   };
  }
 
+ // Original native engines remain separate from browser-side interpretive adapters.
+ // Native Python never executes in public Vixen; only an explicitly authorized Podium host can call it.
+ let originalNative=null;
+ try {originalNative=createNativeAtelierReadAdapters({repoRoot});}
+ catch(_) {originalNative=null;} // Portable read-only ZIPs may intentionally omit original estates.
+ if(originalNative){
+  const adapted=adapters.SRC_ATELIER;
+  adapters.SRC_ATELIER=async(request)=>{
+   if(['src_native_epoch_query','src_native_text'].includes(request.operation))
+    return originalNative.SRC_ATELIER(request);
+   if(typeof adapted==='function')return adapted(request);
+   throw Error('HELD_SRC_BROWSER_ADAPTER_UNAVAILABLE');
+  };
+  adapters.WENDBINE_ATELIER=async(request)=>originalNative.WENDBINE_ATELIER(request);
+  adapters.EM_ATELIER=async(request)=>originalNative.EM_ATELIER(request);
+  adapters.CROSS_ATELIER=async(request)=>originalNative.CROSS_ATELIER(request);
+ }
  return Object.freeze(adapters);
 }
