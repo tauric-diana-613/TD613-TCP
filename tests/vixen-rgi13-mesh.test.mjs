@@ -95,7 +95,7 @@ test('Non-finite or absent dimensional geometry is rejected',()=>{
  assert.throws(()=>buildLivingMesh({width:500,height:NaN}),/POSITIVE_VIEWPORT/);
 });
 
-test('iPhone scroll uses permanent foreground compositing, never time-lagged rectangle clipping',()=>{
+test('iPhone scroll uses permanent foreground compositing, never time-lagged rectangle clipping',async()=>{
  assert.equal(MOBILE_STACKING_ONLY_MAX_WIDTH,740);
  for(const width of [320,375,390,428,680,740]){
   assert.equal(meshOcclusionMode(width),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
