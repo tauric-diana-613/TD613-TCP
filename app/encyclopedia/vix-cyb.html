@@ -521,6 +521,7 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-seams-rgi16.css" data-visual-system="VIXEN_OPERATOR_MOBILE_SEAM_REPAIR_RGI16">
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-reading-rgi17.css" data-visual-system="VIXEN_MOBILE_EDITORIAL_READING_RGI17">
 <link rel="stylesheet" href="./vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
+<link rel="stylesheet" href="./vixen-estate/vixen-noir-folio-rgi25.css" data-visual-system="VIXEN_NOIR_FOLIO_AND_INTERPRETABLE_SYNTHESIS_RGI25">
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
@@ -833,8 +834,9 @@ body[data-view="overview"] .reading-back{display:none}
             <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
           </h3>
           <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
-            Each candidate theorem is scored across SVD conditioning κ(A), multi-clock holonomy Δτ, [111]<sup>⊥</sup> nullspace geometry, discrete XOR synergy, FADT quotient exactness (U \ I), cluster bridging, and non-collapsing epistemic ceilings.
+            These are <strong>ranked research proposals, not verified discoveries</strong>. Eight distinct checks assess matrix conditioning, clock-order differences, projection geometry, information synergy, finite admissibility under grouping, source-cluster coverage, evidentiary restraint, and interpretive design. Open a card to inspect why it ranked where it did; a higher percentage is a weighted rubric score, <strong>not</strong> a probability of truth.
           </p>
+          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
           <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
         </div>
 
@@ -3222,12 +3224,24 @@ body[data-view="overview"] .reading-back{display:none}
     } else {
       bodyDisplayHtml =
         '<div class="vix-reading-atelier-bar" role="group" aria-label="Manuscript reading controls">' +
-          '<div><span class="vix-reading-atelier-eyebrow">VIXEN · THE READING ATELIER</span>' +
-          '<span class="vix-reading-atelier-name">Complete ' + (String(activeSrc.media_type || '').includes('pdf') ? 'PDF-derived reading edition' : 'native manuscript') + '</span>' +
-          '<span class="vix-reading-atelier-custody">Presentation-only typography · Source identities and bytes preserved</span></div>' +
-          '<button type="button" id="expaReaderFocusButton" class="vix-reading-atelier-focus" aria-pressed="false" aria-controls="worksLexiconLayout">Expand reading atelier ↗</button>' +
+          '<div class="vix-folio-identity">' +
+            '<span class="vix-reading-atelier-eyebrow">THE NOIR FOLIO · READING EDITION</span>' +
+            '<span class="vix-reading-atelier-name">' + esc(work.declared_title || 'Recorded manuscript') + '</span>' +
+            '<span class="vix-reading-atelier-custody">' + (String(activeSrc.media_type || '').includes('pdf') ? 'PDF text derivative · reading projection' : 'Native manuscript · original structure') + ' · source intact</span>' +
+          '</div>' +
+          '<div class="vix-folio-controls" role="group" aria-label="Manuscript density controls">' +
+            '<button type="button" data-folio-density="compact" aria-pressed="true">COMPACT</button>' +
+            '<button type="button" data-folio-density="comfort" aria-pressed="false">RELAXED</button>' +
+            '<button type="button" id="expaReaderFocusButton" class="vix-reading-atelier-focus" aria-pressed="false" aria-controls="worksLexiconLayout">EXPAND ↗</button>' +
+          '</div>' +
         '</div>' +
-        '<article class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Complete companion manuscript"></article>';
+        '<div class="vix-noir-folio-frame">' +
+          '<div class="vix-folio-topline"><span>DOCUMENTARY SOURCE · MANUSCRIPT</span><span id="vixFolioProgress">POSITION 0%</span></div>' +
+          '<article class="expa-body-pre vix-couture-reader" id="expaCompanionBodyPre" aria-label="Complete companion manuscript" tabindex="0"></article>' +
+          '<div class="vix-folio-footer" role="group" aria-label="Manuscript navigation">' +
+            '<button type="button" id="vixFolioPrevious">← PREVIOUS</button><span>Exact source preserved · Reflow changes whitespace only</span><button type="button" id="vixFolioNext">NEXT →</button>' +
+          '</div>' +
+        '</div>';
     }
 
     mountEl.innerHTML =
@@ -3260,6 +3274,35 @@ body[data-view="overview"] .reading-back{display:none}
           coutureReader.dataset.presentation = 'source-text-fallback';
           console.warn('Vixen manuscript renderer unavailable; displaying safe source text',error);
         }
+      }
+    }
+
+    // Reading tools affect only the presentation layer, never source custody.
+    const folio=mountEl.querySelector('#expaCompanionBodyPre');
+    if(folio){
+      folio.dataset.folioDensity='compact';
+      const progress=mountEl.querySelector('#vixFolioProgress');
+      const updateFolioPosition=()=>{
+        const maximum=Math.max(0,folio.scrollHeight-folio.clientHeight);
+        const percent=maximum?Math.round(folio.scrollTop/maximum*100):100;
+        if(progress)progress.textContent='POSITION '+percent+'%';
+      };
+      folio.addEventListener('scroll',updateFolioPosition,{passive:true});
+      updateFolioPosition();
+      for(const button of mountEl.querySelectorAll('[data-folio-density]')){
+        button.addEventListener('click',()=>{
+          folio.dataset.folioDensity=button.dataset.folioDensity;
+          for(const peer of mountEl.querySelectorAll('[data-folio-density]'))
+            peer.setAttribute('aria-pressed',String(peer===button));
+          updateFolioPosition();
+        });
+      }
+      for(const [selector,direction] of [['#vixFolioPrevious',-1],['#vixFolioNext',1]]){
+        mountEl.querySelector(selector)?.addEventListener('click',()=>{
+          folio.scrollBy({top:direction*Math.max(160,folio.clientHeight*.82),
+            behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+          folio.focus({preventScroll:true});
+        });
       }
     }
 
