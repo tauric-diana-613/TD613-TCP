@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {buildFoldedCuirass,sampleCuirassFields,paintFoldedCuirass,coutureBackingSize,
- mountFoldedCuirass,CUIRASS_POLICY} from '../app/encyclopedia/vixen-estate/vixen-folded-cuirass.mjs';
+ mountFoldedCuirass,CUIRASS_POLICY,SALON_PRESENTATION_CONSTITUTION,paintSalonChargePresentation} from '../app/encyclopedia/vixen-estate/vixen-folded-cuirass.mjs';
 const html=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
 const corpus=JSON.parse(html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
 const sourceIds=corpus.works.slice(1,3).map(w=>w.work_id);
@@ -92,6 +92,22 @@ test('backing resolution follows DPR under a 1.5M pixel ceiling',()=>{
  }
  assert.throws(()=>coutureBackingSize(0,100));
 });
+test('Salon presentation is independently paced, source-coherent, and does not remesh',()=>{
+ assert.equal(SALON_PRESENTATION_CONSTITUTION.presentation_fps,60);
+ assert.equal(SALON_PRESENTATION_CONSTITUTION.geometry_mobile_fps,12);
+ assert.equal(SALON_PRESENTATION_CONSTITUTION.geometry_desktop_fps,24);
+ assert.equal(SALON_PRESENTATION_CONSTITUTION.clock_ownership,'ONE_FOLDED_CUIRASS_RAF');
+ const model=buildFoldedCuirass(params);
+ const sceneBefore=JSON.stringify(model.scene);
+ const painter=context();
+ const light=paintSalonChargePresentation(painter,model.scene,{time:1.7,width:550,height:460});
+ assert.equal(light.source_tracks,51);
+ assert.equal(light.carrier_count,39);
+ assert(light.active_charges>0&&light.active_charges<=17);
+ assert.equal(JSON.stringify(model.scene),sceneBefore,
+  'Moving light must never rewrite source-governed geometry');
+ assert(painter.calls.some(c=>c.op==='stroke'),'Moving charge is actually painted');
+});
 test('single clock settles in Still/Rest/reduced motion and invalidates paused DPR and Work changes',()=>{
  const events=new Map(),raf=new Map(),media=[],observers=[];
  const hostFrames=[];
@@ -107,8 +123,9 @@ test('single clock settles in Still/Rest/reduced motion and invalidates paused D
  doc.defaultView=win;const ctx=context();
  const canvas={ownerDocument:doc,width:0,height:0,clientWidth:550,getContext:()=>ctx,
   getBoundingClientRect:()=>({left:64,top:140,width:550,height:460})};
+ const motionCanvas={width:0,height:0,getContext:()=>context()};
  const opticalClock={time:0};
- const handle=mountFoldedCuirass(canvas,()=>({works:source,resting,opticalClock}));
+ const handle=mountFoldedCuirass(canvas,()=>({works:source,resting,opticalClock}),{motionCanvas});
  const frame=ms=>{const c=[...raf.values()];raf.clear();c.forEach(f=>f(ms));};
  observers[0].cb([{isIntersecting:true}]);frame(0);
  assert.equal(handle.getStatus().frames,1);assert.equal(raf.size,0);
@@ -118,7 +135,11 @@ test('single clock settles in Still/Rest/reduced motion and invalidates paused D
  assert.equal(handle.getStatus().frames,2);assert.deepEqual(handle.getStatus().last.sourceIds,source);assert.equal(raf.size,0);
  win.devicePixelRatio=2;media.at(-1).cb();frame(20);
  assert.equal(canvas.width,687);assert.equal(raf.size,0);
- still=false;observers[2].cb();frame(30);frame(80);frame(130);
+ still=false;observers[2].cb();frame(30);frame(80);frame(96);frame(112);frame(130);
+ assert(handle.getStatus().motionFrames>handle.getStatus().geometryFrames,
+  'Salon 60Hz light must continue between expensive source-material frames');
+ assert.equal(handle.getStatus().salon_presentation_target_fps,60);
+ assert(motionCanvas.width>0&&motionCanvas.height>0);
  assert(opticalClock.time>0);assert.equal(raf.size,1);
  resting=true;handle.renderOnce();frame(140);const phase=opticalClock.time;
  assert.equal(raf.size,0);assert.equal(handle.getStatus().last.phase,phase);
