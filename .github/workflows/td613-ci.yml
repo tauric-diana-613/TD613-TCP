@@ -171,6 +171,7 @@ jobs:
             if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
             sleep .2
           done
+          node tests/vixen-public-copy-browser.test.mjs
           node tests/vixen-browser-visual-witness.mjs
           node tests/vixen-observatory-open-form-browser.test.mjs
           node tests/vixen-foundry-webgl-canary.mjs
