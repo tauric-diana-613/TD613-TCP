@@ -103,7 +103,8 @@ test('Salon presentation is independently paced, source-coherent, and does not r
  const light=paintSalonChargePresentation(painter,model.scene,{time:1.7,width:550,height:460});
  assert.equal(light.source_tracks,51);
  assert.equal(light.carrier_count,39);
- assert(light.active_charges>0&&light.active_charges<=17);
+ // Six sampled luminous lanes per each of three bands = 18 maximum.
+ assert(light.active_charges>0&&light.active_charges<=18);
  assert.equal(JSON.stringify(model.scene),sceneBefore,
   'Moving light must never rewrite source-governed geometry');
  assert(painter.calls.some(c=>c.op==='stroke'),'Moving charge is actually painted');
