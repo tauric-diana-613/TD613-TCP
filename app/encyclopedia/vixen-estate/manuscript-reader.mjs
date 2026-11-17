@@ -87,8 +87,96 @@ function flushParagraph(doc, frag, lines) {
  * Neither raw manuscript bytes nor source hashes are changed. Full exact text
  * remains visible in the disclosure following the editorial projection.
  */
-export function projectManuscriptLineation(source) {
-  const raw = String(source ?? '').replace(/\r\n/g, '\n');
+/**
+ * A PDF text derivative can contain thousands of artificial blank lines
+ * between individual words. The old lowercase-majority micro-paragraph rule
+ * skipped title-case headings and punctuation-bound runs, producing a
+ * one-word-per-paragraph reading column.
+ *
+ * PDF-only reflow is a PRESENTATION PROJECTION. Its output may regroup
+ * whitespace into readable sentences and paragraphs, but the original,
+ * custody-verified text stays byte-identical and available in the raw view.
+ * No words, research propositions, citations, or source identities are
+ * generated or substituted. Native Markdown retains its own structure.
+ */
+function reflowExtractedPdf(source, documentTitle = '') {
+  const raw = String(source ?? '').replace(/\r\n?/g, '\n');
+  const blocks = raw.split(/\n[ \t]*\n+/);
+  const micro = blocks.filter(block => {
+    const line = block.trim();
+    return line.length > 0 && line.length <= 64 &&
+      !line.includes('\n') && line.split(/\s+/).length <= 4;
+  }).length;
+  // Normal readable PDFs, code, and already-structured manuscripts never
+  // enter this destructive-to-whitespace (but not content) projection.
+  if (blocks.length < 60 || micro / blocks.length < 0.72) return null;
+
+  let prose = raw.replace(/\s+/gu, ' ').trim();
+  let displayTitle = '';
+  const words = String(documentTitle || '').trim().split(/\s+/).filter(Boolean);
+  if (words.length >= 3 && words.length <= 40) {
+    const normal = value => String(value).normalize('NFKC')
+      .replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+    const leading = [...prose.matchAll(/\S+/g)].slice(0, words.length);
+    if (leading.length === words.length &&
+        leading.every((match, i) => normal(match[0]) === normal(words[i]))) {
+      const final = leading[leading.length - 1];
+      const consumed = final.index + final[0].length;
+      displayTitle = prose.slice(0, consumed);
+      prose = prose.slice(consumed).trimStart();
+    }
+  }
+
+  // Group extracted sentences into literary paragraphs. Long runs without
+  // reliable full stops are broken only at spaces, never inside source words.
+  const sentences = prose.split(/(?<=[.!?…])\s+(?=(?:["“'‘(\[])?\p{Lu})/u);
+  const paragraphs = [];
+  let paragraph = '';
+  const append = value => {
+    let remaining = String(value || '').trim();
+    while (remaining.length > 940) {
+      let boundary = remaining.lastIndexOf(' ', 780);
+      if (boundary < 280) boundary = remaining.indexOf(' ', 780);
+      if (boundary < 0) break;
+      paragraphs.push(remaining.slice(0, boundary).trim());
+      remaining = remaining.slice(boundary).trimStart();
+    }
+    if (remaining) {
+      if (paragraph && paragraph.length + remaining.length > 850) {
+        paragraphs.push(paragraph);
+        paragraph = '';
+      }
+      paragraph = paragraph ? paragraph + ' ' + remaining : remaining;
+      if (paragraph.length >= 540) {
+        paragraphs.push(paragraph);
+        paragraph = '';
+      }
+    }
+  };
+  for (const sentence of sentences) append(sentence);
+  if (paragraph) paragraphs.push(paragraph);
+
+  // A structural invariant: remove only whitespace and editorial block
+  // boundaries. The text's complete nonwhitespace character sequence must
+  // remain unchanged, including citations, accents, symbols and punctuation.
+  const flatten = value => String(value).replace(/\s+/gu, '');
+  if (flatten(displayTitle + paragraphs.join('')) !== flatten(raw)) {
+    throw new Error('VIXEN_PDF_REFLOW_NONWHITESPACE_INVARIANT');
+  }
+  return Object.freeze({
+    text: paragraphs.join('\n\n'),
+    projection_title: displayTitle,
+    collapsed_micro_paragraphs: Math.max(0, blocks.length - paragraphs.length - (displayTitle ? 1 : 0)),
+    pdf_derivative_reflow: true
+  });
+}
+
+export function projectManuscriptLineation(source, {sourceFormat = '', documentTitle = ''} = {}) {
+  const raw = String(source ?? '').replace(/\r\n?/g, '\n');
+  if (String(sourceFormat).toLowerCase().includes('pdf')) {
+    const pdfEdition = reflowExtractedPdf(raw, documentTitle);
+    if (pdfEdition) return pdfEdition;
+  }
   const blocks = raw.split(/\n[ \t]*\n+/);
   const isMicro = (value) => {
     const line = value.trim();
@@ -105,8 +193,6 @@ export function projectManuscriptLineation(source) {
     const run = blocks.slice(i, next);
     const average = run.reduce((sum, part) => sum + part.trim().split(/\s+/).length, 0) / Math.max(1, run.length);
     const lowercaseFragments = run.filter(part => /^[a-z]/.test(part.trim())).length;
-    // A normal sequence of short editorial headings remains distinct; only
-    // pathologically fractured prose is reflowed.
     if (run.length >= 7 && average <= 2.7 && lowercaseFragments >= Math.ceil(run.length * .55)) {
       result.push(run.map(part => part.trim()).join(' '));
       collapsed += run.length - 1;
@@ -116,16 +202,27 @@ export function projectManuscriptLineation(source) {
       i++;
     }
   }
-  return Object.freeze({text: result.join('\n\n'), collapsed_micro_paragraphs: collapsed});
+  return Object.freeze({
+    text: result.join('\n\n'),
+    projection_title: '',
+    collapsed_micro_paragraphs: collapsed,
+    pdf_derivative_reflow: false
+  });
 }
 
-export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw = true} = {}) {
+export function mountVixenManuscript(target, manuscript, {sourceId = '', sourceFormat = '', documentTitle = '', showRaw = true} = {}) {
   if (!target || typeof target.replaceChildren !== 'function') throw new TypeError('VIXEN_READER_TARGET_REQUIRED');
   const doc = target.ownerDocument;
   const raw = String(manuscript ?? '');
-  const projected = projectManuscriptLineation(raw);
+  const projected = projectManuscriptLineation(raw, {sourceFormat, documentTitle});
   const lines = projected.text.split('\n');
   const fragment = doc.createDocumentFragment();
+  if (projected.projection_title) {
+    const title = doc.createElement('h3');
+    title.className = 'vix-reader-heading vix-pdf-source-title';
+    title.textContent = projected.projection_title;
+    fragment.append(title);
+  }
   const paragraph = [];
   let list = null;
   let fence = null;
@@ -230,7 +327,9 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw
   target.replaceChildren(fragment);
   target.dataset.sourceId = sourceId;
   target.dataset.presentation = 'full-manuscript-mathml';
-  target.dataset.lineation = projected.collapsed_micro_paragraphs ? 'pdf-fragment-reflow' : 'source-paragraphs';
+  target.dataset.lineation = projected.pdf_derivative_reflow
+    ? 'pdf-source-wordflow-reconstructed'
+    : projected.collapsed_micro_paragraphs ? 'micro-paragraph-reflow' : 'source-paragraphs';
   if (showRaw) {
     const rawDetails = doc.createElement('details');
     rawDetails.className = 'vix-reader-raw';
@@ -245,6 +344,7 @@ export function mountVixenManuscript(target, manuscript, {sourceId = '', showRaw
     source_id: sourceId,
     source_characters: raw.length,
     display_lineation_collapses: projected.collapsed_micro_paragraphs,
+    derivative_reflow_applied: projected.pdf_derivative_reflow,
     displayed_complete: true,
     rendered_math_elements: target.querySelectorAll('[data-math-rendered="mathml"]').length,
     fallback_math_elements: target.querySelectorAll('[data-math-rendered="source-fallback"]').length
