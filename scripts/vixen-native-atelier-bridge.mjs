@@ -24,6 +24,45 @@ const privateFile=(repo,value)=>{
   if(inside(repo,actual)||!lstatSync(actual).isFile())HOLD('HELD_PRIVATE_INDEX_OUTSIDE_REPO_REQUIRED');
   return actual;
 };
+const privateDirectory=(repo,value)=>{
+ const name=nonempty(value,2048);
+ if(!isAbsolute(name)||!existsSync(name)||lstatSync(name).isSymbolicLink())HOLD('HELD_PRIVATE_MODEL_DIRECTORY_REQUIRED');
+ const actual=realpathSync(name);
+ if(inside(repo,actual)||!lstatSync(actual).isDirectory())HOLD('HELD_PRIVATE_MODEL_OUTSIDE_REPO_REQUIRED');
+ return actual;
+};
+function executeNode(repo,script,args){
+ if(!inside(repo,script)||!existsSync(script))HOLD('HELD_NATIVE_SOURCE_NOT_INSTALLED');
+ try{
+  return JSON.parse(execFileSync(process.execPath,[script,...args],{
+   cwd:repo,encoding:'utf8',timeout:12000,maxBuffer:64000,
+   env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}
+  }));
+ }catch(e){HOLD('HELD_NATIVE_NODE_EXECUTION_FAILED')}
+}
+function semanticRead(repo,estate,payload){
+ const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0',estate,'99-ADMIN','native-semantic-search-v1.py']);
+ const sourceIndex=privateFile(repo,payload.source_index_path);
+ const vectorIndex=privateFile(repo,payload.vector_index_path);
+ const modelDir=privateDirectory(repo,payload.model_dir);
+ const args=['--source-index',sourceIndex,'--vector-index',vectorIndex,'--model-dir',modelDir,
+  '--estate',estate,nonempty(payload.query,2000)];
+ return {estate,kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,
+  semantic_corpus_pairing_verified_by_original_runtime:true,
+  relation_proven:false,scientific_credit:0,data:execute(repo,script,args)};
+}
+function provenancePinnedRoot(repo,config,defaultRoot){
+ if(!config)return defaultRoot;
+ const path=privateDirectory(repo,config.path);
+ const wanted=nonempty(config.git_head,40);
+ if(!/^[0-9a-f]{40}$/.test(wanted))HOLD('HELD_NATIVE_PINNED_HEAD_REQUIRED');
+ let observed=null;
+ try{observed=execFileSync('git',['-C',path,'rev-parse','HEAD'],{encoding:'utf8',timeout:5000}).trim()}
+ catch(_){HOLD('HELD_NATIVE_SOURCE_CHECKOUT_INVALID')}
+ if(observed!==wanted)HOLD('HELD_NATIVE_SOURCE_CHECKOUT_HEAD_DRIFT');
+ return path;
+}
+
 const PY=process.env.TD613_NATIVE_PYTHON || (process.platform==='win32'?'python':'python3');
 function execute(repo,script,args){
   if(!inside(repo,script)||!existsSync(script))HOLD('HELD_NATIVE_SOURCE_NOT_INSTALLED');
@@ -38,8 +77,8 @@ function execute(repo,script,args){
     HOLD('HELD_NATIVE_ENGINE_EXECUTION_FAILED');
   }
 }
-function nativeText(repo,estate,payload){
-  const root=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0',estate]);
+function nativeText(repo,estate,payload,externalRoot=null){
+  const root=externalRoot||safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0',estate]);
   const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0',estate,'99-ADMIN',
     estate==='SRC'?'src-native-text-search-v1.py':'em-native-text-search-v1.py']);
   const index=privateFile(repo,payload.index_path);
@@ -54,25 +93,72 @@ function nativeText(repo,estate,payload){
   return {estate,kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
     data:execute(repo,script,args)};
 }
-export function createNativeAtelierReadAdapters({repoRoot=process.cwd()}={}){
+export function createNativeAtelierReadAdapters({repoRoot=process.cwd(),sourceCheckouts=null}={}){
   const repo=realpathSync(resolve(repoRoot));
   const srcRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC']);
   const wRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE']);
   const emRoot=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','EMSTD613']);
+  const pinnedSRC=provenancePinnedRoot(repo,sourceCheckouts?.SRC,srcRoot);
+  const pinnedEm=provenancePinnedRoot(repo,sourceCheckouts?.EMSTD613,emRoot);
   return Object.freeze({
     SRC_ATELIER:({operation,payload={}})=>{
-      if(operation==='src_native_text')return nativeText(repo,'SRC',payload);
+      if(operation==='src_native_text')return nativeText(repo,'SRC',payload,pinnedSRC);
+      if(operation==='src_native_semantic')return semanticRead(repo,'SRC',payload);
+      if(operation==='src_native_projective_assay'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC','99-ADMIN','run-projective-routing-grammar-assay.py']);
+       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
+        data:execute(repo,script,['--root',pinnedSRC])};
+      }
+      if(operation==='src_native_evidence_traverse'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC','99-ADMIN','src-evidence-rabbit-hole-v1.py']);
+       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
+        data:execute(repo,script,['--src-root',pinnedSRC,nonempty(payload.entity_id,240),
+         '--depth',String(bounded(payload.depth??2,4)),'--limit',String(bounded(payload.limit??15,40))])};
+      }
+      if(operation==='src_native_research_journey'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC','99-ADMIN','src-research-journey-v1.py']);
+       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
+        data:execute(repo,script,['--root',pinnedSRC,'--index',privateFile(repo,payload.index_path),
+         nonempty(payload.query,2000),'--depth',String(bounded(payload.depth??2,4)),
+         '--limit',String(bounded(payload.limit??8,30))])};
+      }
       if(operation!=='src_native_epoch_query')HOLD('HELD_SRC_NATIVE_OPERATION');
       const snapshot=nonempty(payload.snapshot_id,150),seal=nonempty(payload.seal_id,180);
       const action=String(payload.action||'summary');
       if(!['summary','resolve','trace','authority'].includes(action))HOLD('HELD_SRC_NATIVE_COMMAND');
       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','SRC','99-ADMIN','srcquery.py']);
-      const args=['--root',srcRoot,'--snapshot-id',snapshot,'--seal-id',seal,action];
+      const args=['--root',pinnedSRC,'--snapshot-id',snapshot,'--seal-id',seal,action];
       if(action!=='summary')args.push(nonempty(payload.entity_id,250));
       if(action==='authority'&&payload.scope)args.push('--scope',nonempty(payload.scope,100));
       return {estate:'SRC',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,data:execute(repo,script,args)};
     },
     WENDBINE_ATELIER:({operation,payload={}})=>{
+      if(operation==='wendbine_public_query'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE','99-ADMIN','wendbine-query.mjs']);
+       const action=String(payload.action||'summary');
+       if(!['summary','search','recent','resolve'].includes(action))HOLD('HELD_WENDBINE_PUBLIC_QUERY_ACTION');
+       const args=[action];
+       if(action==='search'){
+        const mode=String(payload.mode||'lexical');
+        if(!['lexical','semantic'].includes(mode))HOLD('HELD_WENDBINE_SEARCH_MODE');
+        args.push(nonempty(payload.query,1500),'--mode',mode,'--limit',String(bounded(payload.limit??10,30)));
+       }else if(action==='recent')args.push('--limit',String(bounded(payload.limit??10,30)));
+       else if(action==='resolve')args.push(nonempty(payload.entity_id,250));
+       return {estate:'WENDBINE',kind:'ORIGINAL_NATIVE_EXECUTABLE',
+        public_index_only:true,read_only:true,scientific_credit:0,data:executeNode(repo,script,args)};
+      }
+      if(operation==='wendbine_sealed_epoch_query'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE','99-ADMIN','wendbine-srcquery.mjs']);
+       const action=String(payload.action||'summary'),route=String(payload.route||'AUDIT');
+       if(!['summary','resolve','chronology','versions','relations'].includes(action)||
+          !['EXPERIENTIAL','CUSTODIAL','AUDIT','IMPLEMENTATION'].includes(route))HOLD('HELD_WENDBINE_EPOCH_ROUTE');
+       const args=['--root',wRoot,'--snapshot-id',nonempty(payload.snapshot_id,160),
+        '--seal-id',nonempty(payload.seal_id,160),'--route',route,'--action',action];
+       if(['resolve','versions'].includes(action))args.push('--id',nonempty(payload.entity_id,250));
+       if(action==='relations'&&payload.entity_id)args.push('--id',nonempty(payload.entity_id,250));
+       return {estate:'WENDBINE',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,
+        epoch_pinned:true,scientific_credit:0,data:executeNode(repo,script,args)};
+      }
       if(!['wendbine_private_status','wendbine_private_search'].includes(operation))HOLD('HELD_WENDBINE_NATIVE_OPERATION');
       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','WENDBINE','99-ADMIN','wendbine-private-unified-query.py']);
       const index=privateFile(repo,payload.index_path);
@@ -86,15 +172,40 @@ export function createNativeAtelierReadAdapters({repoRoot=process.cwd()}={}){
         original_corpus_remains_separate:true,scientific_credit:0,data:execute(repo,script,args)};
     },
     EM_ATELIER:({operation,payload={}})=>{
-      if(operation!=='em_native_text')HOLD('HELD_EM_NATIVE_OPERATION');
-      return nativeText(repo,'EMSTD613',payload);
+      if(operation==='em_native_text')return nativeText(repo,'EMSTD613',payload,pinnedEm);
+      if(operation==='em_native_semantic')return semanticRead(repo,'EMSTD613',payload);
+      if(operation==='em_native_work_route'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','EMSTD613','99-ADMIN','em-work-route-v1.py']);
+       return {estate:'EMSTD613',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
+        data:execute(repo,script,['--em-root',pinnedEm,nonempty(payload.work_id,250)])};
+      }
+      if(operation==='em_native_research_journey'){
+       const script=safePublicRoot(repo,['packages','dome_world_exact','fixtures','a15-r0','EMSTD613','99-ADMIN','em-research-journey-v1.py']);
+       return {estate:'EMSTD613',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,scientific_credit:0,
+        data:execute(repo,script,['--root',pinnedEm,'--index',privateFile(repo,payload.index_path),
+         nonempty(payload.query,2000)])};
+      }
+      HOLD('HELD_EM_NATIVE_OPERATION');
     },
     CROSS_ATELIER:({operation,payload={}})=>{
+      if(operation==='cross_atelier_semantic'){
+       const wdb=privateFile(repo,payload.wendbine_db);
+       const script=safePublicRoot(repo,['scripts','atelier-cross-estate-query-v1.py']);
+       const modelSha=nonempty(payload.model_sha256,64);
+       if(!/^[0-9a-f]{64}$/.test(modelSha))HOLD('HELD_SEMANTIC_MODEL_DIGEST');
+       return {estate:'CROSS_ATELIER',kind:'ORIGINAL_NATIVE_EXECUTABLE',read_only:true,
+        source_bound:true,relation_proven:false,scientific_credit:0,
+        data:execute(repo,script,['--repo-root',repo,'--wendbine-db',wdb,
+        '--src-checkout',pinnedSRC,'--em-checkout',pinnedEm,'semantic',
+        '--query-vector-file',privateFile(repo,payload.query_vector_file),
+        '--private-vectors',privateFile(repo,payload.vector_index_file),
+        '--model-sha256',modelSha,'--limit',String(bounded(payload.limit??8,20))])};
+      }
       if(operation!=='cross_atelier_lexical')HOLD('HELD_CROSS_ATELIER_OPERATION');
       const wdb=privateFile(repo,payload.wendbine_db);
       const script=safePublicRoot(repo,['scripts','atelier-cross-estate-query-v1.py']);
-      const args=['--repo-root',repo,'--wendbine-db',wdb,'--src-checkout',srcRoot,
-        '--em-checkout',emRoot,'lexical',nonempty(payload.query,2000),
+      const args=['--repo-root',repo,'--wendbine-db',wdb,'--src-checkout',pinnedSRC,
+        '--em-checkout',pinnedEm,'lexical',nonempty(payload.query,2000),
         '--limit',String(bounded(payload.limit??8,20))];
       return {estate:'CROSS_ATELIER',kind:'ORIGINAL_NATIVE_EXECUTABLE',
         evidence_only:true,not_public_vixen_corpus:true,read_only:true,scientific_credit:0,

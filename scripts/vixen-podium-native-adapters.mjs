@@ -55,7 +55,7 @@ async function importOptional(filePath){
  }catch(_){return null}
 }
 
-export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sourceRoot:explicitSourceRoot=null}={}){
+export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sourceRoot:explicitSourceRoot=null,nativeSourceCheckouts=null}={}){
  const adapters={};
  const {sourceRoot,engineRoot}=resolveAssetBases(repoRoot,explicitSourceRoot);
 
@@ -632,12 +632,12 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
  // Original native engines remain separate from browser-side interpretive adapters.
  // Native Python never executes in public Vixen; only an explicitly authorized Podium host can call it.
  let originalNative=null;
- try {originalNative=createNativeAtelierReadAdapters({repoRoot});}
+ try {originalNative=createNativeAtelierReadAdapters({repoRoot,sourceCheckouts:nativeSourceCheckouts});}
  catch(_) {originalNative=null;} // Portable read-only ZIPs may intentionally omit original estates.
  if(originalNative){
   const adapted=adapters.SRC_ATELIER;
   adapters.SRC_ATELIER=async(request)=>{
-   if(['src_native_epoch_query','src_native_text'].includes(request.operation))
+   if(['src_native_epoch_query','src_native_text','src_native_semantic','src_native_projective_assay','src_native_evidence_traverse','src_native_research_journey'].includes(request.operation))
     return originalNative.SRC_ATELIER(request);
    if(typeof adapted==='function')return adapted(request);
    throw Error('HELD_SRC_BROWSER_ADAPTER_UNAVAILABLE');
