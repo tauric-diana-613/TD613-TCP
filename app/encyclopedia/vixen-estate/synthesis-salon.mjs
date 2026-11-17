@@ -721,6 +721,23 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  // opening any disclosure or forcing a hidden document into layout.
  const warmCurrent=()=>Promise.all(state.sources.map(id=>warmSalonBody(id)));
  if(typeof window!=='undefined'){
+  // Read-only, source-free optical performance witness. The heavy model and
+  // moving light are separated only at presentation; no public approval UI.
+  Object.defineProperty(window,'VIXEN_SALON_PRESENTATION',{
+   configurable:true,
+   value:Object.freeze({status:()=>{
+    const v=veilHandle?.getStatus?.()||{};
+    return Object.freeze({
+     visual_only:true,scene_role:'SALON',clock_count:1,
+     motion_frames:v.motionFrames||0,geometry_frames:v.geometryFrames||0,
+     presented_fps:v.salon_presentation_fps||0,
+     target_fps:v.salon_presentation_target_fps||0,
+     charge_paint_ms:v.motion_paint_cost_ms||0,
+     geometry_p95_ms:v.paintP95Ms??null,
+     visible:Boolean(v.visible),still:Boolean(v.still)
+    });
+   }})
+  });
   Object.defineProperty(window,'VIXEN_SALON_WARM',{
    configurable:true,
    value:Object.freeze({
