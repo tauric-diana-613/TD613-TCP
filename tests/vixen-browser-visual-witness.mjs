@@ -94,10 +94,14 @@ try {
         const heading=el.querySelector('.view-heading');
         const r=guide.getBoundingClientRect();
         return {guideWidth:r.width,documentWidth:document.documentElement.scrollWidth,
+          guideZ:Number(getComputedStyle(guide).zIndex),
+          meshZ:Number(getComputedStyle(document.querySelector('#vixenLivingMesh')).zIndex),
           headingBackground:getComputedStyle(heading).backgroundImage};
       });
       assert(surface.guideWidth>250&&surface.documentWidth<=width+1,
         room+' couture surface must not overflow: '+JSON.stringify(surface));
+      assert(surface.guideZ>surface.meshZ,
+        room+' source-reading guide must paint ABOVE the ambient optical field: '+JSON.stringify(surface));
       assert(!/rgb\(60,\s*20,\s*60\)/.test(surface.headingBackground),
         room+' heading should not regress to plum');
       await view.locator('.vix-couture-route-guide').scrollIntoViewIfNeeded();
