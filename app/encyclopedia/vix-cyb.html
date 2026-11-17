@@ -2861,9 +2861,12 @@ body[data-view="overview"] .reading-back{display:none}
     const theoryFolios = DATA.formula_folios.filter(f => f.group === 'unified' && /^TCC-0[1-8]$/.test(f.id));
     if (theoryFolios.length !== 8 || DATA.formula_folios.filter(f => f.group === 'couture').length !== 14) throw Error('WARDROBE_ROLE_CENSUS_MISMATCH');
     const q = state.formulaQuery.trim().toLowerCase();
+    // An explicit engineering/optics archive ID is a typed lookup, never a
+    // semantic invitation to impersonate a Vixen theoretical performer.
+    const technicalArchiveId = /^rc-\d{2}$/.test(q);
     const exactFolioMatch = Boolean(q) && theoryFolios.some((f) => f.id.toLowerCase() === q);
     const semFolioScores = new Map();
-    if (q && !exactFolioMatch && state.semanticEngine) {
+    if (q && !technicalArchiveId && !exactFolioMatch && state.semanticEngine) {
       try {
         const semRes = state.semanticEngine.search(state.formulaQuery.trim(), { limit: 24, unitKindFilter: 'synthesis_folio' });
         for (const h of semRes.hits || []) {
@@ -2872,6 +2875,7 @@ body[data-view="overview"] .reading-back{display:none}
       } catch (_) {}
     }
     const filtered = theoryFolios.filter((f) => {
+      if (technicalArchiveId) return false;
       if (state.formulaGroup !== 'all' && f.group !== state.formulaGroup) return false;
       if (!q) return true;
       if (semFolioScores.has(f.id)) return true;
