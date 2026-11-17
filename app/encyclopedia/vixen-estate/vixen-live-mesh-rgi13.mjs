@@ -40,9 +40,18 @@ export function normalizeComposerVisualField(input){
   fold_strength:input.fold_strength,preview_only:true,source_ids_as_seeds_only:true,
   empirical_credit:0,canonical_mutation:false,release_authority:false});
 }
+// iOS viewport scroll and fixed-canvas paints do not share a synchronous
+// layout epoch. Small screens use the already-declared z-index:2 foreground
+// instead of sampling animated rectangle cutouts at 125/250ms intervals.
+export const MOBILE_STACKING_ONLY_MAX_WIDTH=740;
+export function meshOcclusionMode(viewportWidth) {
+ return viewportWidth<=MOBILE_STACKING_ONLY_MAX_WIDTH
+  ? 'STACKING_ONLY_NO_SCROLL_RECT_MASKS' : 'RECTANGLE_COMPLEMENT';
+}
 const OCCLUSION_SELECTORS=Object.freeze([
  '.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
  '#view-overview > #cover','.hero-art',
+ '.view:not([hidden]) .vix-entrance-research-door',
  '.view:not([hidden]) .cover-title','.view:not([hidden]) .cover-marginalia',
  '.view:not([hidden]) .cover-bottom','.view:not([hidden]) .cover-spine',
  '.view:not([hidden]) .mobile-wayfinder','.view:not([hidden]) .vixen-foyer-afterword',
@@ -169,6 +178,12 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  const readSources=()=>[...doc.querySelectorAll('#vixenSynthesisSalon .vs-source-card')]
   .slice(0,2).map(card=>card.querySelector('select')?.value).filter(Boolean);
  function readExclusions(force=false){
+  // On mobile, clip NO scroll-relative DOM rectangles. The canvas remains
+  // animated, but panels use stable foreground stacking and opaque backgrounds.
+  if(meshOcclusionMode(width())==='STACKING_ONLY_NO_SCROLL_RECT_MASKS'){
+   exclusions=[];layoutDirty=false;lastBoxCacheMs=win.performance.now();
+   return;
+  }
   // Mask content and accepted art, leaving moving cloth along thresholds,
   // gutters and document edges. Uses active-view scoping + 250ms box cache.
   const now=win.performance.now();
@@ -253,6 +268,9 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  // changes the outer visible cloth geometry. Keep single active mesh canvas.
  let lastOuterScrollPaint=-Infinity;
  const onOuterScroll=(event)=>{
+  // No mobile mask invalidation: a repaint from the previous scroll epoch
+  // causes the rectangular pop-in seen on iPhone during momentum scrolling.
+  if(meshOcclusionMode(width())==='STACKING_ONLY_NO_SCROLL_RECT_MASKS')return;
   if(event.target&&event.target!==doc&&event.target!==doc.documentElement&&event.target!==win)return;
   const now=win.performance.now();
   if(now-lastOuterScrollPaint<125)return;
@@ -267,6 +285,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  schedule();
  return Object.freeze({mounted:true,contract:MESH_CONTRACT,
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
+   occlusion_mode:meshOcclusionMode(width()),exclusion_count:exclusions.length,
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
    model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,empirical_credit:0}),
