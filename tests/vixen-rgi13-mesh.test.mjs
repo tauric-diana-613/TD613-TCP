@@ -137,7 +137,7 @@ test('Vixen optical breath uses 60Hz presentation and visible motion without mob
  assert.match(source,/now-lastObservatoryPaint<meshFrameIntervalMs\(width\(\)\)-1/);
  assert.doesNotMatch(source,/1000\/\(width\(\)<750\?12:24\)/);
  assert.doesNotMatch(source,/MESH_ANIMATION_TARGET_FPS=30/);
- assert.match(source,/target_fps:MESH_ANIMATION_TARGET_FPS,presented_fps:presentedFps/);
+ assert.match(source,/target_fps:MESH_ANIMATION_TARGET_FPS,visual_tempo:MESH_VISUAL_TEMPO,presented_fps:presentedFps/);
  const model=buildLivingMesh({width:390,height:844,time:1.25});
  assert.equal(model.scene.trails.length,51);
  assert.equal(model.fibers.length,39);
