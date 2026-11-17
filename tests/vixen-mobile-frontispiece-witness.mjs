@@ -241,7 +241,8 @@ try {
           document.body.dataset.vixenMotion==='live';
       },null,{timeout:15000,polling:100});
       const initialMesh=await livePage.evaluate(()=>window.VixenLivingMesh.status());
-      assert.equal(initialMesh.target_fps,30,'A 12Hz hard cap makes the breathing field jump');
+      assert.equal(initialMesh.target_fps,60,'A 30Hz cap makes the 60Hz mobile field visibly step');
+      assert.equal(initialMesh.visual_tempo,2.75,'Visible charge should travel in roughly 4.3 seconds');
       const startFrames=initialMesh.rendered_frames;
       for(const y of [target+250,target-180,target+300,target-130]){
         await livePage.evaluate(y0=>window.scrollTo({top:y0,behavior:'instant'}),y);
@@ -256,8 +257,9 @@ try {
         runningSamples.push({scrollY:y,frames:live.rendered_frames,mask:live.occlusion_mode});
       }
       const finalMesh=await livePage.evaluate(()=>window.VixenLivingMesh.status());
-      assert.equal(finalMesh.target_fps,30);
-      assert(finalMesh.presented_fps>0&&Number.isFinite(finalMesh.presented_fps),
+      assert.equal(finalMesh.target_fps,60);
+      assert.equal(finalMesh.visual_tempo,2.75);
+      assert(finalMesh.presented_fps>=40&&Number.isFinite(finalMesh.presented_fps),
         'Instrument actual paint cadence; callback frequency is not presentation FPS');
       assert(finalMesh.paint_cost_ms>=0&&Number.isFinite(finalMesh.paint_cost_ms));
       // Capture observed paint cost/FPS separately from the theoretical 30Hz
@@ -266,7 +268,8 @@ try {
         presented_fps:finalMesh.presented_fps,
         presented_interval_ms:finalMesh.presented_interval_ms,
         paint_cost_ms:finalMesh.paint_cost_ms,
-        target_fps:finalMesh.target_fps
+        target_fps:finalMesh.target_fps,
+        visual_tempo:finalMesh.visual_tempo
       }});
       assert(runningSamples.at(-2).frames>startFrames,
         'Animated mobile optical cloth must keep painting during reverse scroll');
