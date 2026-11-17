@@ -99,7 +99,8 @@ test('Observatory first visible host frame paints even in global Still mode',asy
  const foundry=await readFile(new URL('./vixen-estate/observatory-electric-foundry.mjs',root),'utf8');
  assert.match(foundry,/if\(!section\?\.hidden\)\{paint\(true\);indicate\('BOOT'\);start\(\);\}/);
  assert.match(foundry,/else \{state\.renderer\.resize\(\);paint\(true\);if\(state\.phase==='PREWARMED'\)indicate\('ACTIVATED'\);start\(\);\}/);
- assert.match(foundry,/if\(paused\(\)&&!force\)return last/);
+ const mesh=await readFile(new URL('./vixen-estate/vixen-live-mesh-rgi13.mjs',root),'utf8');
+ assert.match(mesh,/if\(paused\(\)&&!force\)return last/);
  assert.match(foundry,/window\.VixenLivingMesh\?\.renderHostFrame\?\.\(\{time:state\.time,view:'observatory'/);
 });
 
