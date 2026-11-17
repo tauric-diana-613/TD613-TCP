@@ -523,6 +523,7 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-reading-rgi17.css" data-visual-system="VIXEN_MOBILE_EDITORIAL_READING_RGI17">
 <link rel="stylesheet" href="./vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
 <link rel="stylesheet" href="./vixen-estate/vixen-obsidian-reading-rgi26.css" data-visual-system="VIXEN_OBSIDIAN_EDITORIAL_READING_AND_PEDAGOGICAL_SCORING_RGI26">
+<link rel="stylesheet" href="./vixen-estate/vixen-proscenium-seam.css">
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
@@ -612,6 +613,7 @@ body[data-view="overview"] .reading-back{display:none}
     <button type="button" data-view="holds"><small>05</small> Competent-Null &amp; Holds</button>
     <button type="button" data-view="collection"><small>06</small> Synthesis Salon &amp; Research Cart</button>
     <button type="button" data-view="reference"><small>07</small> Vixen Folios</button>
+    <button type="button" data-view="operator"><small>SETTINGS</small> Podium Settings &amp; Ledger</button>
     <button type="button" data-action="inspector"><small>ALT+I</small> Concealed Cybernetic Inspector</button>
   </nav>
 </header>
@@ -742,122 +744,8 @@ body[data-view="overview"] .reading-back{display:none}
       <div class="vixen-foyer-afterword"><span>THE CORPUS GIVES THE QUESTION ITS SHAPE.</span><span>THE OPERATOR DECIDES WHAT IT MAY BECOME. ⟐</span></div>
     </section>
 
-    <!-- Threshold Spread: Preserved Cybernetics Collection, Comparative Question & Custody Membrane -->
-    <section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
-      <div class="vixen-inquiry-inner">
-        <div class="ci-head">
-          <div>
-            <p class="ci-kicker">OPERA COMPUTATIONAL MACHINERY · CONSTITUTIVE INQUIRY &amp; CROSS-DOMAIN CONJECTURE</p>
-            <h2 class="ci-title">Author Your Inquiry, Lenses &amp; Rollback Log</h2>
-          </div>
-          <div class="badge-row">
-            <span class="tag gold" id="ciActiveEntryBadge">ACTIVE: syn-0002-d0a10ba8</span>
-            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
-          </div>
-        </div>
-
-        <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">NOW · NOTICE</div>
-            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
-            <p class="ci-cadence-copy">Every inquiry is independently authored. The hosting tools supply research assistance without claiming ownership of the work.</p>
-          </div>
-          <div class="ci-cadence-step">
-            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
-            <p class="ci-cadence-copy">Proposals update the live research question, clock and matrix-stability readings, and a recoverable session history while keeping empirical credit at 0.</p>
-          </div>
-        </div>
-
-        <div class="ci-main-grid">
-          <div class="ci-card" aria-label="Operator Inquiry Composer">
-            <h3 class="ci-card-title">
-              <span>Interactive Question &amp; Method Composer</span>
-              <span>LIVE SESSION STATE</span>
-            </h3>
-            <label class="ci-field-label" for="ciQuestionInput">Constitutive Inquiry Question</label>
-            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
-
-            <label class="ci-field-label" for="ciMethodInput">Documentary / Formal Method Label</label>
-            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. Non-collapsing S ≠ W ≠ A · 5-clock vernier + A-05 dynamical assay" />
-
-            <div class="ci-actions-row">
-              <button type="button" class="ci-btn primary" id="ciApplyBtn">Apply Inquiry to Frontispiece</button>
-              <button type="button" class="ci-btn" id="ciSynthesizeBtn">Synthesize 7 Lenses</button>
-              <button type="button" class="ci-btn" id="ciResetBtn">Reset to Baseline</button>
-              <label style="margin-left:auto;font:600 9.5px/1.2 var(--font-mono);color:#FFF2A9;letter-spacing:.1em;display:inline-flex;align-items:center;gap:8px;">
-                VERNIER LAG τ:
-                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
-                <span id="ciLagReadout">36</span>
-              </label>
-            </div>
-            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
-              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
-            </p>
-
-            <div class="ci-telemetry-strip" aria-label="Live Engine Observatory Telemetry">
-              <div class="ci-metric">
-                <div class="ci-metric-label">5-CLOCK VERNIER</div>
-                <div class="ci-metric-val" id="ciMetricVernier">3 inv · |Δτ|=72</div>
-              </div>
-              <div class="ci-metric">
-                <div class="ci-metric-label">MATRIX STABILITY κ(A)</div>
-                <div class="ci-metric-val" id="ciMetricSvd">κ=1.78 · rank 2</div>
-              </div>
-              <div class="ci-metric">
-                <div class="ci-metric-label">[111] NULL RATIO</div>
-                <div class="ci-metric-val" id="ciMetricMirror">ratio=0.177 · ⊥[111]</div>
-              </div>
-              <div class="ci-metric">
-                <div class="ci-metric-label">INFORMATION SYNERGY &amp; EVIDENCE PRESERVATION</div>
-                <div class="ci-metric-val" id="ciMetricFadtXor">1.00 bit · ⋂Sᵢ⊂U HOLD</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="ci-card" aria-label="Official Podium Synthesis Log and Non-Retroactive Rollback">
-            <h3 class="ci-card-title">
-              <span>Podium Synthesis Log &amp; Rollback</span>
-              <span id="ciLogCount">1 ENTRY · APPEND-ONLY</span>
-            </h3>
-            <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
-              Every synthesis update records an append-only predecessor chain (<code>seq</code>, <code>predecessor_entry_id</code>, SHA-256). Restore any prior snapshot cleanly without erasing history, or export a portable ZIP from the footer.
-            </p>
-            <div class="ci-log-list" id="ciSynthesisLogList" role="list"></div>
-          </div>
-        </div>
-
-        <div class="ci-card" aria-label="Ranked Unified Synthesis Candidates" style="margin-bottom:16px">
-          <h3 class="ci-card-title">
-            <span>Computational Candidate Synthesis &amp; Scoring Engine</span>
-            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
-          </h3>
-          <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
-            These are <strong>ranked research proposals, not verified discoveries</strong>. Eight distinct checks assess matrix conditioning, clock-order differences, projection geometry, information synergy, finite admissibility under grouping, source-cluster coverage, evidentiary restraint, and interpretive design. Open a card to inspect why it ranked where it did; a higher percentage is a weighted rubric score, <strong>not</strong> a probability of truth.
-          </p>
-          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
-          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
-        </div>
-
-        <div class="ci-card" aria-label="Outside-Perspective Cross-Domain Conjectures">
-          <h3 class="ci-card-title">
-            <span>Outside-Perspective Cross-Domain Conjecture Lenses (7 Admissible Bridges)</span>
-            <span>PROPOSAL ONLY · UNRATIFIED</span>
-          </h3>
-          <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
-            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C4" aria-pressed="false">C4 · Virtualization</button>
-            <button type="button" class="ci-chip" data-ci-cluster="C5" aria-pressed="false">C5 · Sui-Generis</button>
-          </div>
-          <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
-        </div>
-      </div>
-    </section>
+    <!-- The public Entrance is a doorway, never a history/rollback controller. -->
+    <aside class="vix-entrance-research-door"><p class="eyebrow">RESEARCH BEGINS WITH A QUESTION</p><h2>Where might the evidence lead?</h2><p>Read the Works, encounter the instruments, and bring a question into the Salon. Every proposal remains open to human challenge.</p><button class="ci-btn" type="button" data-view="collection">Enter the Research Salon</button></aside>
 
     <div class="archive-directory" id="atelierThreshold">
       <div class="directory-title">
@@ -1283,7 +1171,7 @@ body[data-view="overview"] .reading-back{display:none}
 
       <div class="sensitivity-banner">
         <div class="sensitivity-metrics" id="gateSensitivityReadout" aria-live="polite"></div>
-        <button type="button" class="hdr-pill" id="resetGatesBtn" style="background:var(--vixen-pink);color:var(--graphite);border-color:var(--vixen-pink)">Reset All 8 Gates to UNADJUDICATED_PAIR</button>
+        <details class="vix-route-custody vix-gate-advanced-reset"><summary>Advanced · Reset local hypothetical assumptions</summary><p>Reset only the eight reversible sensitivity hypotheses; original source records remain untouched.</p><button type="button" class="hdr-pill" id="resetGatesBtn">Reset All 8 Local Assumptions</button></details>
       </div>
 
       <div class="gates-stack" id="gatesStackContainer"></div>
@@ -1628,6 +1516,96 @@ body[data-view="overview"] .reading-back{display:none}
         <p role="status" aria-live="polite" id="vmaStatus">Choose Maestro or Composer to begin.</p>
       </section>
 
+<section class="vixen-inquiry-stage" id="constitutiveInquiry" aria-label="Constitutive Inquiry Observatory">
+      <div class="vixen-inquiry-inner">
+        <div class="ci-head">
+          <div>
+            <p class="ci-kicker">SALON · RESEARCH STUDIO · ORIGINAL WORKS FIRST</p>
+            <h2 class="ci-title">Develop the Question</h2>
+          </div>
+          <div class="badge-row">
+            <span class="tag gold">LOCAL RESEARCH · PROPOSAL ONLY</span>
+            <span class="tag porcelain">EMPIRICAL CREDIT: 0 · HUMAN CLOSURE REQUIRED</span>
+          </div>
+        </div>
+
+        <div class="ci-cadence-bar" role="region" aria-label="Guided research: observation, purpose, and evidence">
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">NOW · NOTICE</div>
+            <p class="ci-cadence-copy">Dictate your own inquiry question and method—or load one of seven cross-domain conjectures grounded across C1–C5 works.</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">WHY · OPERA AUTONOMY</div>
+            <p class="ci-cadence-copy">Every inquiry is independently authored. The hosting tools supply research assistance without claiming ownership of the work.</p>
+          </div>
+          <div class="ci-cadence-step">
+            <div class="ci-cadence-label">EXACT · BOUNDARY</div>
+            <p class="ci-cadence-copy">Proposals update the live research question, clock and matrix-stability readings, and a recoverable session history while keeping empirical credit at 0.</p>
+          </div>
+        </div>
+
+        <div class="ci-main-grid ci-studio-grid">
+          <div class="ci-card" aria-label="Research Question Composer">
+            <h3 class="ci-card-title">
+              <span>Compose a Research Question</span>
+              <span>LOCAL REHEARSAL</span>
+            </h3>
+            <label class="ci-field-label" for="ciQuestionInput">Constitutive Inquiry Question</label>
+            <textarea class="ci-textarea" id="ciQuestionInput" rows="3" spellcheck="true" aria-describedby="ciStatusLine"></textarea>
+
+            <label class="ci-field-label" for="ciMethodInput">Documentary / Formal Method Label</label>
+            <input class="ci-input" id="ciMethodInput" type="text" placeholder="e.g. Non-collapsing S ≠ W ≠ A · 5-clock vernier + A-05 dynamical assay" />
+
+            <div class="ci-actions-row">
+              <button type="button" class="ci-btn primary" id="ciApplyBtn">Preview This Inquiry</button>
+              <button type="button" class="ci-btn" id="ciSynthesizeBtn">Synthesize 7 Lenses</button>
+              
+              <label style="margin-left:auto;font:600 9.5px/1.2 var(--font-mono);color:#FFF2A9;letter-spacing:.1em;display:inline-flex;align-items:center;gap:8px;">
+                VERNIER LAG τ:
+                <input id="ciLagInput" type="range" min="4" max="72" step="2" value="36" aria-label="Vernier clock lag ticks" />
+                <span id="ciLagReadout">36</span>
+              </label>
+            </div>
+            <p class="ci-status-line" id="ciStatusLine" role="status" aria-live="polite">
+              BASELINE LOADED · Edit above or click any cross-domain conjecture below to project into this session.
+            </p>
+
+            
+          </div>
+
+          
+        </div>
+
+        <div class="ci-card" aria-label="Ranked Unified Synthesis Candidates" style="margin-bottom:16px">
+          <h3 class="ci-card-title">
+            <span>Computational Candidate Synthesis &amp; Scoring Engine</span>
+            <span id="ciCandidateSummary">MULTI-AXIS SCORING · PROMOTABLE TO PODIUM</span>
+          </h3>
+          <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
+            These are <strong>ranked research proposals, not verified discoveries</strong>. Eight distinct checks assess matrix conditioning, clock-order differences, projection geometry, information synergy, finite admissibility under grouping, source-cluster coverage, evidentiary restraint, and interpretive design. Open a card to inspect why it ranked where it did; a higher percentage is a weighted rubric score, <strong>not</strong> a probability of truth.
+          </p>
+          <div class="ci-candidate-key" aria-label="Scoring explanation"><span>01 · Proposed relation</span><span>02 · Model fit</span><span>03 · Evidence boundary</span><span>04 · Open checks</span><span>Human evaluation required</span></div>
+          <div class="ci-candidate-grid" id="ciCandidateGrid"></div>
+        </div>
+
+        <div class="ci-card" aria-label="Outside-Perspective Cross-Domain Conjectures">
+          <h3 class="ci-card-title">
+            <span>Outside-Perspective Cross-Domain Conjecture Lenses (7 Admissible Bridges)</span>
+            <span>PROPOSAL ONLY · UNRATIFIED</span>
+          </h3>
+          <div class="ci-filter-bar" id="ciFilterBar" role="group" aria-label="Filter conjectures by corpus cluster">
+            <button type="button" class="ci-chip" data-ci-cluster="ALL" aria-pressed="true">ALL CLUSTERS</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C1" aria-pressed="false">C1 · Hypervisors &amp; Viable AI</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C2" aria-pressed="false">C2 · Audio / Mixxx DSP</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C3" aria-pressed="false">C3 · E-Textile / Drone</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C4" aria-pressed="false">C4 · Virtualization</button>
+            <button type="button" class="ci-chip" data-ci-cluster="C5" aria-pressed="false">C5 · Sui-Generis</button>
+          </div>
+          <div class="ci-conjecture-grid" id="ciConjectureGrid"></div>
+        </div>
+      </div>
+        <p class="vix-operator-boundary-note">Research proposals stay open to challenge. For presentation history, restores and machine receipts, <button type="button" class="ci-btn" data-view="operator">Open Podium Settings &amp; Ledger</button>.</p>
+    </section>
       <div class="salon-existing-tray-heading" style="margin:42px 0 18px;border-top:2px solid var(--graphite);padding-top:28px">
         <h2 style="font:400 clamp(28px,3.5vw,48px)/1.1 var(--font-serif)">Your Research Cart</h2>
         <p style="font-size:13px">The original session study tray survives this makeover: sourced works and documentary methods saved during exploration, never commercial purchases or authority grants.</p>
@@ -1664,6 +1642,47 @@ body[data-view="overview"] .reading-back{display:none}
   </button>
 </div>
 
+
+<!-- Operator route exists within the ONE shared SPA. No duplicate research state. -->
+<section class="view vixen-inquiry-stage vix-operator-view" id="view-operator" data-page="operator" aria-label="Podium Settings and Ledger" hidden>
+<div class="vixen-inquiry-inner">
+<header class="ci-head"><div><p class="ci-kicker">OPERATOR WORKSPACE · EVIDENCE AND CONSEQUENCE BOUNDARIES</p><h1 class="ci-title">Podium Settings &amp; Ledger</h1><p class="vix-operator-dek">Inspect history, measurements and machine contracts without granting permission to persist research, alter the source estate, or deploy.</p></div><div class="badge-row"><span class="tag gold" id="ciActiveEntryBadge">CURRENT PRESENTATION</span><span class="tag porcelain">PERSISTENT COMPOSE · HELD FOR HUMAN APPROVAL</span></div></header>
+<nav class="vix-operator-jump" aria-label="Operator workspace sections"><button type="button" data-vix-operator-jump="vixOperatorHistory">History &amp; review</button><button type="button" data-vix-operator-jump="vixOperatorDiagnostics">Diagnostics</button><button type="button" data-vix-operator-jump="vixOperatorPodium">Podium &amp; approvals</button></nav>
+<div class="ci-main-grid vix-operator-grid">
+<section id="vixOperatorHistory" aria-label="Presentation history"><h2 class="vix-operator-section-title">01 · Presentation history</h2><div class="ci-card" aria-label="Official Podium Synthesis Log and Non-Retroactive Rollback">
+            <h3 class="ci-card-title">
+              <span>Presentation History &amp; Review</span>
+              <span id="ciLogCount">1 ENTRY · APPEND-ONLY</span>
+            </h3>
+            <p style="margin:0 0 12px;font:400 12.5px/1.45 var(--font-serif);color:rgba(246,244,240,.86)">
+              Imported and session-local presentation events, with byte-digest status. A local restore changes the current display only; independent human Compose authorization is required for persisted changes.
+            </p>
+            <div class="ci-log-list" id="ciSynthesisLogList" role="list"></div>
+          </div><button type="button" class="ci-btn vix-operator-reset" id="ciResetBtn">Review return to baseline</button></section>
+<section id="vixOperatorDiagnostics" aria-label="Bounded instrument telemetry"><h2 class="vix-operator-section-title">02 · Instrument diagnostics</h2><div class="ci-card"><h3 class="ci-card-title"><span>Live Readouts</span><span>MODEL MEASUREMENTS · NOT EMPIRICAL PROOF</span></h3><p class="vix-operator-dek">Clock, matrix and information measurements reflect local research model settings. They do not establish causal or external witness truth.</p><div class="ci-telemetry-strip" aria-label="Live Engine Observatory Telemetry">
+              <div class="ci-metric">
+                <div class="ci-metric-label">5-CLOCK VERNIER</div>
+                <div class="ci-metric-val" id="ciMetricVernier">3 inv · |Δτ|=72</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">MATRIX STABILITY κ(A)</div>
+                <div class="ci-metric-val" id="ciMetricSvd">κ=1.78 · rank 2</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">[111] NULL RATIO</div>
+                <div class="ci-metric-val" id="ciMetricMirror">ratio=0.177 · ⊥[111]</div>
+              </div>
+              <div class="ci-metric">
+                <div class="ci-metric-label">INFORMATION SYNERGY &amp; EVIDENCE PRESERVATION</div>
+                <div class="ci-metric-val" id="ciMetricFadtXor">1.00 bit · ⋂Sᵢ⊂U HOLD</div>
+              </div>
+            </div><button type="button" class="ci-btn" data-action="inspector">Open Diagnostic Inspector</button></div></section>
+</div>
+<section class="ci-card vix-operator-machine" id="vixOperatorPodium" aria-label="Podium research and human Compose authority"><h2 class="vix-operator-section-title">03 · Podium &amp; human approvals</h2><p>The Podium is an independent machine-facing conductor. A research Score, Redpen or local presentation restore confers no independent human authorization, corpus admission, or deployment authority.</p><div class="ci-actions-row"><button class="ci-btn" type="button" data-action="inspector">Inspect Podium Tasks</button><a class="ci-btn" href="./reference/podium/manifest.json">Machine Task Contract</a><a class="ci-btn" href="./vix-cyb/llms.txt">AI Research Entrance</a><button class="ci-btn" type="button" data-view="collection">Back to Salon</button></div><p class="vix-operator-boundary-note">Authenticated Compose is a separate, host-verified human approval gate. This public browser interface contains no secret, identity attestation or privileged write path.</p></section>
+</div>
+</section>
+<dialog class="dialog inspector-dialog vix-restore-dialog" id="vixenRestoreReviewDialog" aria-labelledby="vixRestoreReviewTitle" closedby="any"><div class="dialog-shell"><div class="dialog-header"><h2 id="vixRestoreReviewTitle">Review Local Presentation Restore</h2><button type="button" class="hdr-pill" id="vixRestoreReviewCancelTop">Close ✕</button></div><div class="dialog-body"><p>Compare the current and proposed presentation. Confirming appends a NEW local rollback event without erasing history. It does not grant persistent Compose approval.</p><div id="vixRestoreComparison" class="vix-restore-comparison" role="list"></div><label class="vix-restore-ack"><input id="vixRestoreScopeAcknowledge" type="checkbox"> I authorize this local presentation change only; persisted composition remains held.</label><div class="ci-actions-row"><button type="button" class="ci-btn" id="vixRestoreReviewCancel">Keep Current</button><button type="button" class="ci-btn primary" id="vixRestoreReviewConfirm" disabled>Restore Local Presentation</button></div></div></div></dialog>
+
 <!-- GLOBAL SEARCH DIALOG (Ctrl/⌘+K) -->
 <dialog class="dialog search-dialog" id="searchDialog" closedby="any" aria-label="Search Vixen Cybernetics Catalogue">
   <div class="dialog-shell">
@@ -1682,7 +1701,7 @@ body[data-view="overview"] .reading-back{display:none}
       <button type="button" class="expa-mode-btn" data-search-mode="exact" role="radio" aria-checked="false">Exact UTF-8</button>
       <button type="button" class="expa-mode-btn" data-search-mode="src_projective" role="radio" aria-checked="false">Document Routes</button>
     </div>
-    <details class="vix-fusion-console" id="vixenFusionConsole" open>
+    <details class="vix-fusion-console" id="vixenFusionConsole">
       <summary>Fusion Laboratory <span>Four independently controlled evidence channels</span></summary>
       <div class="vix-fusion-inner">
         <fieldset class="vix-fusion-channels" id="globalFusionChannels">
@@ -1760,6 +1779,7 @@ body[data-view="overview"] .reading-back{display:none}
     <strong>VIXEN CYBERNETICS</strong> · Recorded Work Status: <code>HELD</code> (32/32) · Human Closure Required · Empirical Replication Credit: <code>0</code>
   </div>
   <div class="footer-actions">
+    <button type="button" class="text-link" data-view="operator">Podium Settings &amp; Ledger</button>
     <button type="button" class="text-link" data-action="inspector">Open Concealed Inspector (Alt+I)</button>
     <button type="button" class="text-link" data-action="search">Search Catalogue (Ctrl/⌘+K)</button>
     <a class="text-link footer-td613-mark" id="footerEncyclopediaLink" href="#overview">𝌋 Collection index →</a>
@@ -2050,7 +2070,7 @@ body[data-view="overview"] .reading-back{display:none}
   }
 
   // Navigation & URL Hash Persistence
-  const VALID_VIEWS = ['overview', 'observatory', 'works', 'gates', 'protocols', 'holds', 'collection', 'reference'];
+  const VALID_VIEWS = ['overview', 'observatory', 'works', 'gates', 'protocols', 'holds', 'collection', 'reference', 'operator'];
   function saveCurrentViewScrollState() {
     if (typeof history?.replaceState !== 'function') return;
     try {
