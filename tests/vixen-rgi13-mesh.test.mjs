@@ -2,7 +2,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {
- MESH_CONTRACT,ELECTRIC_COUTURE,buildLivingMesh,paintLivingMesh
+ MESH_CONTRACT,ELECTRIC_COUTURE,buildLivingMesh,paintLivingMesh,
+ meshOcclusionMode,MOBILE_STACKING_ONLY_MAX_WIDTH
 } from '../app/encyclopedia/vixen-estate/vixen-live-mesh-rgi13.mjs';
 const root=new URL('../app/encyclopedia/',import.meta.url);
 const page=await readFile(new URL('./vix-cyb.html',root),'utf8');
@@ -92,4 +93,25 @@ test('The actual page imports the live module and places RGI13 after RGI12',()=>
 test('Non-finite or absent dimensional geometry is rejected',()=>{
  assert.throws(()=>buildLivingMesh({width:-2,height:500}),/POSITIVE_VIEWPORT/);
  assert.throws(()=>buildLivingMesh({width:500,height:NaN}),/POSITIVE_VIEWPORT/);
+});
+
+test('iPhone scroll uses permanent foreground compositing, never time-lagged rectangle clipping',()=>{
+ assert.equal(MOBILE_STACKING_ONLY_MAX_WIDTH,740);
+ for(const width of [320,375,390,428,680,740]){
+  assert.equal(meshOcclusionMode(width),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+ }
+ assert.equal(meshOcclusionMode(741),'RECTANGLE_COMPLEMENT');
+ assert.equal(meshOcclusionMode(1024),'RECTANGLE_COMPLEMENT');
+ const meshSource=await readFile(new URL('./vixen-estate/vixen-live-mesh-rgi13.mjs',root),'utf8');
+ const section=meshSource.slice(meshSource.indexOf('function readExclusions('),
+  meshSource.indexOf('function draw('));
+ assert.match(section,/if\(meshOcclusionMode\(width\(\)\)===\x27STACKING_ONLY_NO_SCROLL_RECT_MASKS\x27\)\{/);
+ assert.match(section,/exclusions=\[\];layoutDirty=false/);
+ const scrollHandler=meshSource.slice(meshSource.indexOf('const onOuterScroll='),meshSource.indexOf('win.addEventListener(\x27pointermove\x27'));
+ assert.match(scrollHandler,/if\(meshOcclusionMode\(width\(\)\)===\x27STACKING_ONLY_NO_SCROLL_RECT_MASKS\x27\)return/);
+ assert.match(meshSource,/occlusion_mode:meshOcclusionMode\(width\(\)\),exclusion_count:exclusions.length/);
+ const seam=await readFile(new URL('./vixen-estate/vixen-proscenium-seam.css',root),'utf8');
+ assert.match(seam,/#view-overview \.vix-entrance-research-door\s*\{\s*position:relative;z-index:2;isolation:isolate;/);
+ const light=await readFile(new URL('./vixen-estate/vixen-opaline-couture-rgi14.css',root),'utf8');
+ assert.match(light,/#vixenLivingMesh\s*\{\s*z-index:1!important/);
 });
