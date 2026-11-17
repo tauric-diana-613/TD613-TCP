@@ -151,11 +151,13 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const w=corpus.works.find(x=>x.work_id===id);
   if(!w)return;
   state.works[i]=id;state.sources[i]=w.linked_sources[0].source_file_id;
+  void warmSalonBody(state.sources[i]);
   changed();addEvent('SOURCE_SELECTED',{side:i,work_id:id});render();
  };
  const pickSource=(i,id)=>{
   if(!getWork(i)?.linked_sources.some(x=>x.source_file_id===id))return;
-  state.sources[i]=id;changed();addEvent('MANIFESTATION_SELECTED',{side:i,source_file_id:id});render();
+  state.sources[i]=id;void warmSalonBody(id);
+  changed();addEvent('MANIFESTATION_SELECTED',{side:i,source_file_id:id});render();
  };
  const setTrack=id=>{
   if(!corpus.giveback_tracks.some(t=>t.id===id))return;
