@@ -768,12 +768,12 @@ try {
     await page.locator('#mobileNav button[data-view="collection"]').click();
     await page.waitForFunction(()=>document.body.dataset.view==='collection' &&
       !!document.querySelector('#vixenSynthesisSalon button.vs-seam'),null,{timeout:16000});
-    const salon=page.locator('#vixenSynthesisSalon');
-    const sourceCard=salon.locator('.vs-source-card').first();
+    const salonRedpen=page.locator('#vixenSynthesisSalon');
+    const sourceCard=salonRedpen.locator('.vs-source-card').first();
     assert.match(await sourceCard.locator('.vs-work-title').innerText(),/^The Architecture of Control:/);
     assert.match(await sourceCard.locator('.vs-title-provenance').innerText(),
       /NOT A GENERATED SYNTHESIS CANDIDATE/);
-    const seam=salon.locator('button.vs-seam');
+    const seam=salonRedpen.locator('button.vs-seam');
     await seam.scrollIntoViewIfNeeded();
     const seamWitness=await seam.evaluate(el=>{
       const r=el.getBoundingClientRect(),style=getComputedStyle(el);
