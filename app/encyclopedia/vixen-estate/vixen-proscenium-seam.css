@@ -7,7 +7,7 @@
 #view-overview .vix-entrance-research-door {
   position:relative;isolation:isolate;
   margin:clamp(22px,4vw,56px) auto clamp(26px,5vw,72px);
-  width:min(100% - 2*var(--gutter,24px),1000px);
+  width:min(calc(100% - 2 * var(--gutter, 24px)), 1000px);
   box-sizing:border-box;padding:clamp(24px,4.2vw,54px);
   border:1px solid rgba(255,145,175,.36);
   background:linear-gradient(135deg,#12171b 0%,#222026 62%,#171619 100%);
