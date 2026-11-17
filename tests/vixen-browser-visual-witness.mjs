@@ -74,6 +74,12 @@ try {
     else assert(navOrientation.left<4,'Desktop rail must anchor left');
     assert.equal(await foxRail.locator('button[aria-current="page"]').count(),1);
     await foxRail.locator('button[data-view="works"]').click();
+    const firstFrameOpacity=await page.evaluate(()=>{
+      const node=document.getElementById('view-works'),style=getComputedStyle(node);
+      return {opacity:style.opacity,animationName:style.animationName,hidden:node.hidden};
+    });
+    assert.deepEqual(firstFrameOpacity,{opacity:'1',animationName:'none',hidden:false},
+      'Works must enter fully opaque on the same frame as navigation; no canvas bleed-through');
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
     // RGI24 operator screenshot regression: the SECOND Work is the real
@@ -1399,6 +1405,12 @@ try {
       await page.goto(site+'#'+route,{waitUntil:'domcontentloaded'});
       await page.waitForFunction(id=>document.body.dataset.view===id&&
         !document.getElementById('view-'+id)?.hidden,route);
+      const entered=await page.evaluate(id=>{
+        const sec=document.getElementById('view-'+id),st=getComputedStyle(sec);
+        return {animation:st.animationName,opacity:st.opacity};
+      },route);
+      assert.equal(entered.animation,'none','No route may reintroduce opacity-fade compositing');
+      assert.equal(entered.opacity,'1','A room must remain solid through route entry');
       await page.waitForFunction(()=>!!window.VixenLivingMesh?.status()?.route);
       await page.evaluate(()=>{
         if(document.getElementById('motionBtn').getAttribute('aria-pressed')!=='true')
