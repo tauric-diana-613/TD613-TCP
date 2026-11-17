@@ -312,10 +312,12 @@ export async function mountVixenElectricFoundry({
   isScoreCurrent:typeof composerHost?.isScoreCurrent==='function'?composerHost.isScoreCurrent:null,
   reviewedRenderers:Array.isArray(composerHost?.reviewedRenderers)?composerHost.reviewedRenderers:[]
  });
+ // Only surface Composer controls when an independently admitted review
+ // exists. The passive "COMPOSER HELD" banner was not an actionable UI.
  const composerReview=node('div','ef-composer-review');
+ composerReview.hidden=true;
  composerReview.setAttribute('role','status');composerReview.setAttribute('aria-live','polite');
- const composerMessage=node('span','ef-composer-review-message',
-  'COMPOSER HELD · No independently authorized exhibit substitution');
+ const composerMessage=node('span','ef-composer-review-message','');
  const composerRevert=BTN('Restore original exhibit',()=>{
   state.composerDeck.revert('OPERATOR_RESTORE_ORIGINAL');
   updateComposerReview();paintRoomMesh(true);
@@ -325,16 +327,17 @@ export async function mountVixenElectricFoundry({
  function updateComposerReview(){
   const active=state.composerDeck.visualField();
   composerReview.dataset.previewState=active?'PREVIEW_REVIEW':'HELD';
+  composerReview.hidden=!active;
   composerMessage.textContent=active
    ?'REVIEW PREVIEW · '+active.form_id+' · Original exhibit preserved · No canonical change'
-   :'COMPOSER HELD · No independently authorized exhibit substitution';
+   :'';
   composerRevert.hidden=!active;
  }
  const overlay=node('div','ef-optic-chrome');
  add(overlay,node('div','ef-fiducial'),node('div','ef-crossline'),
   node('div','ef-aperture-ring'),node('div','ef-phase-lock'));
  const sceneBadge=node('div','ef-scene-badge');
- add(stage,canvas,notation,composerCanvas,overlay,sceneBadge);
+ add(stage,canvas,notation,composerCanvas,overlay);
  const readout=node('div','ef-readout');state.readout=readout;state.canvas=canvas;
  readout.id='vixenFoundryInspectorReadout';
  readout.hidden=true;
@@ -344,7 +347,9 @@ export async function mountVixenElectricFoundry({
  const iris=node('div','ef-iris-frame');
  iris.setAttribute('aria-label','Vixen computational performance; original folio and synthetic data remain separate');
  add(iris,stage,readout);
- add(eye,iris);
+ // The folio/simulation caption is below the stage, never superimposed
+ // over its data or interactive optical field.
+ add(eye,iris,sceneBadge);
  const heading=node('header','ef-header');
  const headingNwe=node('div','ef-now-why-exact');
  add(headingNwe,
@@ -386,14 +391,30 @@ export async function mountVixenElectricFoundry({
    holdBanner.hidden=true;
   }
  }
+ // The source synthesis may supply a short subtitle, but is not entitled
+ // to dictate display line breaks or insert arbitrary unbounded title text.
+ // Contract: fixed legible typography, controlled lineation, no HTML parsing.
  const railHeading=label('SIX ARIAS · SOURCE-RECORDED MATHEMATICS');
- // The same synthesis engine's presentational result drives both the cover
- // and this Opera editorial title; no Podium Score is mounted into the Opera.
- const titleFromCover=()=>String(document.getElementById('synthPatternSubtitle')?.textContent||'Phasonic Counterpoint').trim().slice(0,110);
- railHeading.dataset.synthesisHeadline=titleFromCover();
+ const railTitle=node('span','ef-rail-display-headline');
+ railHeading.prepend(railTitle);
+ const titleFromCover=()=>String(document.getElementById('synthPatternSubtitle')?.textContent||'').trim();
+ function renderSynthesisHeadline(raw){
+  const sourceText=String(raw??'').replace(/\s+/g,' ').trim();
+  const safe=sourceText.length<=110&&/^[\p{L}\p{N}\s.,·:;—-]+$/u.test(sourceText);
+  const accepted=safe?sourceText:'';
+  // An engine-supplied phrase retains its meaning but receives an editorial
+  // lineation independent of the narrow rail/card width.
+  const crossed=/\bcrossed probes\b/i.test(accepted)&&/\bsignal\b/i.test(accepted)&&/\bglare\b/i.test(accepted);
+  railTitle.textContent=crossed
+   ?'Crossed probes.\nSignal cleaved\nfrom glare.'
+   :(accepted||'Six source-recorded arias.');
+  railHeading.dataset.synthesisHeadline=accepted||'Six source-recorded arias.';
+  railHeading.title=accepted||'Six source-recorded arias.';
+ }
+ renderSynthesisHeadline(titleFromCover());
  const onSynthesisEditorial=(event)=>{
-  const title=event.detail?.patternSubtitle;
-  if(typeof title==='string'&&title.trim())railHeading.dataset.synthesisHeadline=title.trim().slice(0,110);
+  if(typeof event.detail?.patternSubtitle==='string')
+   renderSynthesisHeadline(event.detail.patternSubtitle);
  };
  document.addEventListener('vixen:editorial-synthesis',onSynthesisEditorial);
  const proscenium=node('section','ef-proscenium');
@@ -414,9 +435,9 @@ export async function mountVixenElectricFoundry({
    b.setAttribute('aria-label','Select experiment '+String(HEROES.indexOf(id)+1)+': '+name);
    b.append(node('small','',item.folio_id));
    if(state.labId===id){
-    const silver=node('span','ef-silver-lace');
-    silver.setAttribute('aria-hidden','true');
-    b.append(silver);
+    const gold=node('span','ef-silver-lace'); // retained class for historical compatibility
+    gold.setAttribute('aria-hidden','true');
+    b.append(gold);
    }
    heroRail.append(b);
   }
