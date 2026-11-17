@@ -685,7 +685,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-reader{
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount{
  min-width:0!important;
 }
-body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-reader-shell{
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount.expa-reader-shell{
  background:linear-gradient(144deg,#10191c,#111b20 75%,#21272a)!important;
  border:1px solid #dbbe87!important;
  box-shadow:inset 0 0 0 1px #ffffff0d,0 18px 45px #0005!important;
@@ -824,7 +824,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-layout[
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works .lexicon-reader{
   padding:12px!important;
  }
- body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-reader-shell{
+ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount.expa-reader-shell{
   padding:10px!important;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{
