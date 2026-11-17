@@ -666,7 +666,7 @@ export async function mountVixenElectricFoundry({
   renderToolbar();
   // A hidden room may have a prepared GPU/context without consuming a frame.
   // Its first visible frame still follows the existing Foundry owner clock.
-  if(!section?.hidden){paint();indicate('BOOT');start();}
+  if(!section?.hidden){paint(true);indicate('BOOT');start();}
   else{state.probe=probe();state.phase='PREWARMED';}
   window.dispatchEvent(new CustomEvent('vixen-electric-foundry-ready',{detail:status()}));
   }catch(error){
@@ -688,7 +688,7 @@ export async function mountVixenElectricFoundry({
  const watch=new MutationObserver(()=>{
   if(!section?.hidden){
    if(!state.renderer)initialize();
-   else {state.renderer.resize();paint();if(state.phase==='PREWARMED')indicate('ACTIVATED');start();}
+   else {state.renderer.resize();paint(true);if(state.phase==='PREWARMED')indicate('ACTIVATED');start();}
   }else stop();
  });
  if(section)watch.observe(section,{attributes:true,attributeFilter:['hidden']});
