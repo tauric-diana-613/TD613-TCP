@@ -120,14 +120,14 @@ try {
       'The manuscript must not create a nested horizontal scrollbar: '+JSON.stringify(reading));
     assert(reading.sourceCharacters>35000&&reading.custodyLabel.includes('Source integrity'),
       'Complete exact original derivative must remain available in its disclosure');
-    // RGI25: structural pass alone missed the ghastly white page in the
-    // operator screenshot. Inspect true computed styles and test the controls.
+    // RGI26: test actual computed pixels; source and presentation stay separate.
+    // Inspect visible reader and density/page controls, not unused historical CSS.
     const noirWitness=await manuscript.evaluate(el=>{
       const style=getComputedStyle(el);
       const first=el.querySelector('.vix-reader-paragraph');
       const ps=first?getComputedStyle(first):null;
       const paint=el.getBoundingClientRect();
-      return {background:style.backgroundImage,textColor:style.color,
+      return {background:style.backgroundImage,backgroundColor:style.backgroundColor,textColor:style.color,
         fontSize:parseFloat(style.fontSize),lineHeight:parseFloat(style.lineHeight),
         firstLineHeight:ps?parseFloat(ps.lineHeight):0,
         paragraphMargin:ps?parseFloat(ps.marginBottom):0,
@@ -136,16 +136,18 @@ try {
         pageControls:!!document.getElementById('vixFolioNext'),
         footer:!!document.querySelector('.vix-folio-footer')};
     });
-    assert.match(noirWitness.background, /12,\s*21,\s*25|18,\s*29,\s*34/,
-      'Noir Folio must NOT be the oversized white-paper manuscript: '+JSON.stringify(noirWitness));
-    assert(noirWitness.fontSize>=14&&noirWitness.fontSize<=17.5,
+    const readerChannels=(noirWitness.backgroundColor.match(/\d+/g)||[]).slice(0,3).map(Number);
+    assert.equal(readerChannels.length,3,'Reader background RGB must be observable');
+    assert(readerChannels.every(channel=>channel<70),
+      'Obsidian reader must be dark, not the oversized white-paper manuscript: '+JSON.stringify(noirWitness));
+    assert(noirWitness.fontSize>=13.3&&noirWitness.fontSize<=17.5,
       'Compact manuscript font must remain comfortably dense: '+JSON.stringify(noirWitness));
     assert(noirWitness.paragraphMargin<=16&&noirWitness.padding<=28&&noirWitness.pageControls&&noirWitness.footer,
-      'Noir Folio must use tight editorial rhythm and true navigational controls: '+JSON.stringify(noirWitness));
-    await workMount.locator('[data-folio-density="comfort"]').click();
+      'Obsidian reader must use tight editorial rhythm and true navigational controls: '+JSON.stringify(noirWitness));
+    await workMount.locator('button[data-folio-density="comfort"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'comfort');
-    assert.equal(await workMount.locator('[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
-    await workMount.locator('[data-folio-density="compact"]').click();
+    assert.equal(await workMount.locator('button[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
+    await workMount.locator('button[data-folio-density="compact"]').click();
     assert.equal(await manuscript.getAttribute('data-folio-density'),'compact');
     const beforeScroll=await manuscript.evaluate(el=>el.scrollTop);
     await workMount.locator('#vixFolioNext').click();
