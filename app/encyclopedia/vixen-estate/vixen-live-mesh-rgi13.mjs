@@ -43,12 +43,11 @@ export function normalizeComposerVisualField(input){
 // iOS viewport scroll and fixed-canvas paints do not share a synchronous
 // layout epoch. Small screens use the already-declared z-index:2 foreground
 // instead of sampling animated rectangle cutouts at 125/250ms intervals.
-// Browser display, not a source/custody clock. The previous 12Hz mobile cap
-// advanced phase at 60Hz while presenting only every fifth pose. On 60Hz
-// devices, 30Hz paints produce evenly spaced two-vsync optical updates.
-// Preserve a 30Hz upper bound to protect the UI thread from the full 51-track
-// triangular field; the compositor's no-scroll-rect rule remains unchanged.
-export const MESH_ANIMATION_TARGET_FPS=30;
+// Prior 390px witness measured about 1ms per paint, while a fixed 30Hz cap
+// visibly limited fluidity. Use the normal 60Hz display budget, with one clock.
+export const MESH_ANIMATION_TARGET_FPS=60;
+// Faster artistic optical phase; human/source/custody clocks stay unchanged.
+export const MESH_VISUAL_TEMPO=2.75;
 export function meshFrameIntervalMs(_viewportWidth){
  return 1000/MESH_ANIMATION_TARGET_FPS;
 }
@@ -104,14 +103,17 @@ export function buildLivingMesh({width=1440,height=900,time=0,view='overview',so
  const preview=normalizeComposerVisualField(opticalField);
  const ids=(preview?.source_ids||sourceIds.slice(0,2)).map(String);
  const seed=hash((ids.join('|')||'VIXEN_NEUTRAL')+(preview?'|'+preview.form_id:''));
- const field=measureCoutureBeats({width:360,height:420,time,seed});
+ // Magnify the autonomous display clock consistently across measured
+ // radiometry and the connected geometry. Host prepaint scenes bypass this.
+ const opticalTime=time*MESH_VISUAL_TEMPO;
+ const field=measureCoutureBeats({width:360,height:420,time:opticalTime,seed});
  const cx=width*(view==='overview'?.82:.74)+(Math.max(0,Math.min(1,pointer.x))-.5)*16+
   (preview?(preview.mesh_strength-.5)*26:0);
  const cy=height*.52-Math.min(18,Math.max(0,scroll)*.008)+
   (preview?(preview.fold_strength-.5)*14:0);
  const scale=Math.min(width,height)*.82*(preview?.fold_strength!==undefined?
   .78+.44*preview.fold_strength:1);
- const scene=buildSalonField({width,height,time,field,cx,cy,scale,sourceIds:ids});
+ const scene=buildSalonField({width,height,time:opticalTime,field,cx,cy,scale,sourceIds:ids});
  const edge=Math.max(24,Math.min(width,height)*.065);
  const deflected=scene.trails.map(t=>({
   ...t,
@@ -312,7 +314,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
    model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,
-    target_fps:MESH_ANIMATION_TARGET_FPS,presented_fps:presentedFps,
+    target_fps:MESH_ANIMATION_TARGET_FPS,visual_tempo:MESH_VISUAL_TEMPO,presented_fps:presentedFps,
     presented_interval_ms:presentedIntervalMs,empirical_credit:0}),
   renderOnce:()=>{readExclusions(true);draw();return last;},
   renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,
