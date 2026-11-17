@@ -43,6 +43,15 @@ export function normalizeComposerVisualField(input){
 // iOS viewport scroll and fixed-canvas paints do not share a synchronous
 // layout epoch. Small screens use the already-declared z-index:2 foreground
 // instead of sampling animated rectangle cutouts at 125/250ms intervals.
+// Browser display, not a source/custody clock. The previous 12Hz mobile cap
+// advanced phase at 60Hz while presenting only every fifth pose. On 60Hz
+// devices, 30Hz paints produce evenly spaced two-vsync optical updates.
+// Preserve a 30Hz upper bound to protect the UI thread from the full 51-track
+// triangular field; the compositor's no-scroll-rect rule remains unchanged.
+export const MESH_ANIMATION_TARGET_FPS=30;
+export function meshFrameIntervalMs(_viewportWidth){
+ return 1000/MESH_ANIMATION_TARGET_FPS;
+}
 export const MOBILE_STACKING_ONLY_MAX_WIDTH=740;
 export function meshOcclusionMode(viewportWidth) {
  return viewportWidth<=MOBILE_STACKING_ONLY_MAX_WIDTH
@@ -164,6 +173,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  const ctx=canvas.getContext('2d');if(!ctx){canvas.remove();return {mounted:false,reason:'CANVAS2D_UNAVAILABLE'};}
  const mq=win.matchMedia('(prefers-reduced-motion: reduce)'),motion=doc.getElementById('motionBtn');
  let raf=0,layoutRaf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
+  let lastPresentedMs=null,presentedIntervalMs=0,presentedFps=0;
  let last=null,hostFrame=null,layoutDirty=true,exclusions=[],dpr=0,paintCostMs=0;
  let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity,lastBoxCacheMs=-Infinity;
  const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
@@ -227,12 +237,25 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    exclusions:rect?[...exclusions,rect]:exclusions});
   canvas.dataset.route=view();canvas.dataset.animation=paused()||shared?.held?'STILL':shared?'HOST_FRAME':'LIVE';
   frames++;paintCostMs=win.performance.now()-start;
+   // Measured presentation cadence (not the 60/120Hz scheduling callback rate).
+   // Ignore the first frame and long background-tab interruptions.
+   const now=win.performance.now();
+   if(lastPresentedMs!==null){
+    const dt=now-lastPresentedMs;
+    if(dt>0&&dt<250){
+     presentedIntervalMs=presentedIntervalMs?presentedIntervalMs*.75+dt*.25:dt;
+     presentedFps=1000/presentedIntervalMs;
+    }
+   }
+   lastPresentedMs=now;
  }
  function cancel(){if(raf)win.cancelAnimationFrame(raf);raf=0;lastTick=null;}
  function loop(ms){
   raf=0;if(disposed||doc.hidden||outsideOpera()||paused()||stageOwned()){lastTick=null;return;}
   if(lastTick!==null)time+=Math.min(.1,Math.max(0,(ms-lastTick)/1000));lastTick=ms;
-  if(layoutDirty||ms-lastPaint>=1000/(width()<750?12:24)){draw(null);lastPaint=ms;}
+  if(layoutDirty||ms-lastPaint>=meshFrameIntervalMs(width())-1){
+    draw(null);lastPaint=ms;
+   }
   raf=win.requestAnimationFrame(loop);
  }
  function schedule(){
@@ -288,7 +311,9 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    occlusion_mode:meshOcclusionMode(width()),exclusion_count:exclusions.length,
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
    model_carriers:last?.model_carriers,
-   contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,empirical_credit:0}),
+   contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,
+    target_fps:MESH_ANIMATION_TARGET_FPS,presented_fps:presentedFps,
+    presented_interval_ms:presentedIntervalMs,empirical_credit:0}),
   renderOnce:()=>{readExclusions(true);draw();return last;},
   renderHostFrame:({time:phase=0,sourceIds=[],scene=null,stageRect=null,held=false,
    opticalField=null,view:route=view(),force=false}={})=>{
@@ -299,7 +324,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    // Salon always projects its identical scene in the very same frame.
    if(route==='observatory'){
     const now=win.performance.now();
-    if(!force&&now-lastObservatoryPaint<100)return last;
+    if(!force&&now-lastObservatoryPaint<meshFrameIntervalMs(width())-1)return last;
     lastObservatoryPaint=now;
    }
    if(force)readExclusions(true);
