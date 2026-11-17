@@ -1412,6 +1412,15 @@ try {
       assert.equal(entered.animation,'none','No route may reintroduce opacity-fade compositing');
       assert.equal(entered.opacity,'1','A room must remain solid through route entry');
       if(route==='collection'&&motion==='no-preference'){
+        // The route-audit intentionally sets global Still after each prior
+        // screenshot. Hash navigation keeps the SAME document and that toggle.
+        // Explicitly resume for this live-motion witness, then the usual
+        // route-audit code returns to Still before snapshot walking.
+        await page.evaluate(()=>{
+          const btn=document.getElementById('motionBtn');
+          if(btn?.getAttribute('aria-pressed')==='true')btn.click();
+        });
+        await page.waitForFunction(()=>document.body.dataset.vixenMotion==='live');
         const stage=page.locator('#vixenSynthesisSalon .vs-optical-stage');
         await stage.scrollIntoViewIfNeeded();
         await page.waitForFunction(()=>{
@@ -1422,7 +1431,7 @@ try {
         await page.waitForTimeout(620);
         const later=await page.evaluate(()=>window.VIXEN_SALON_PRESENTATION.status());
         assert(later.motion_frames>first.motion_frames+4,
-          'Desktop Salon light must continue between garment geometry frames');
+          'Desktop Salon light must continue between garment geometry frames: '+JSON.stringify({first,later}));
         assert(later.motion_frames>later.geometry_frames,
           '60Hz optical presentation must outrun costly model generation');
         assert.equal(later.clock_count,1,'Salon must retain one host RAF clock');
