@@ -655,3 +655,44 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon[data-co
 @media (prefers-reduced-motion:reduce){
   #vixenSynthesisSalon .vs-research-bridge{transition:none;transform:none}
 }
+
+
+/* Operator iPhone REDPEN · two independent Work cards, one real route control.
+ * Retire the RGI10/12 ornament's absolute/left:50%/circular sizing on the
+ * functional button. The actual flip control remains keyboard/touch operable. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon button.vs-seam{
+ position:relative!important;inset:auto!important;left:auto!important;right:auto!important;
+ top:auto!important;bottom:auto!important;transform:none!important;
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ flex-wrap:nowrap!important;gap:10px!important;
+ box-sizing:border-box!important;width:max-content!important;
+ max-width:calc(100% - 28px)!important;height:auto!important;min-height:48px!important;
+ margin:14px auto 18px!important;padding:11px 18px!important;
+ border-radius:7px!important;
+ font:700 12px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace!important;
+ letter-spacing:.035em!important;white-space:nowrap!important;
+ box-shadow:0 4px 18px rgba(0,0,0,.26),0 0 0 1px rgba(255,145,175,.22)!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon button.vs-seam .vs-seam-op{
+ display:inline-block;min-width:0;max-width:100%;
+ font:700 12px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace!important;
+ letter-spacing:.035em!important;white-space:nowrap;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon button.vs-seam .vs-seam-neq{
+ font:700 16px/1 Georgia,serif!important;flex:0 0 auto;
+}
+#vixenSynthesisSalon .vs-title-provenance{
+ margin:-.45rem 0 1.1rem;max-width:100%;overflow-wrap:anywhere;
+ color:inherit;opacity:.8;
+ font:700 9px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;
+ letter-spacing:.085em;text-transform:uppercase;
+}
+@media(max-width:740px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon button.vs-seam{
+  width:fit-content!important;max-width:calc(100% - 32px)!important;
+  margin:12px auto 18px!important;padding:12px 14px!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenSynthesisSalon .vs-rail{
+  min-width:0!important;max-width:100%!important;
+ }
+}
