@@ -188,7 +188,31 @@ try {
     const repeatPanel=await invitation.screenshot({animations:'disabled'});
     assert(initialPanel.equals(repeatPanel),
       'Reduced-motion Entrance invitation must be pixel-identical after reverse momentum scrolling');
-    witness.push({device,geom,compositor,scrollSamples:samples,errors});
+    // The user reported the defect with NORMAL motion enabled. Re-run the
+    // reversal while the actual 39-carrier field is animating; reduced-motion
+    // pixel equality alone would miss a live repaint/occlusion regression.
+    await page.emulateMedia({reducedMotion:'no-preference'});
+    await page.waitForFunction(()=>window.VixenLivingMesh?.status?.()?.motion==='LIVE',
+      null,{timeout:6000});
+    const startFrames=await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
+    const runningSamples=[];
+    for(const y of [target+250,target-180,target+300,target-130]){
+      await page.evaluate(y0=>window.scrollTo({top:y0,behavior:'instant'}),y);
+      await page.waitForTimeout(160);
+      const live=await page.evaluate(()=>({
+        ...window.VixenLivingMesh.status(),
+        panelZ:getComputedStyle(document.querySelector('#view-overview .vix-entrance-research-door')).zIndex
+      }));
+      assert.equal(live.occlusion_mode,'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+      assert.equal(live.exclusion_count,0);
+      assert.equal(live.panelZ,'2');
+      runningSamples.push({scrollY:y,frames:live.rendered_frames,mask:live.occlusion_mode});
+    }
+    assert(runningSamples.at(-1).frames>startFrames,
+      'Mobile electrical field must continue animating instead of being disabled');
+    await page.screenshot({path:path.join(output,name+'-animated-reverse-scroll.png'),
+      fullPage:false});
+    witness.push({device,geom,compositor,scrollSamples:samples,animatedScrollSamples:runningSamples,errors});
     await context.close();
   }
 } finally {await browser.close()}
