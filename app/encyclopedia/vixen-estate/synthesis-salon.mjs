@@ -98,6 +98,12 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
  const opticalClock={time:0};
  const folded=SALON_COMPOSITOR==='FOLDED_CHROME';
  const persistentVeil=mk('canvas',folded?'vs-cuirass-canvas':'vs-luminous-canvas');
+ // Salon-specific optical presentation layer: a single 60Hz host clock moves
+ // just the charge, while the material model retains its separately bounded
+ // source-bound geometry cadence. Persist both canvases across DOM renders.
+ const persistentMotion=folded?mk('canvas','vs-cuirass-motion-canvas'):null;
+ persistentMotion?.setAttribute('aria-hidden','true');
+ if(persistentMotion)persistentMotion.dataset.role='SALON_PRESENTATION_ONLY';
  persistentVeil.setAttribute('aria-hidden','true');
  persistentVeil.dataset.computation=folded?'D3_PHI_OPEN_FOLDS_SHARED_CLOTH':'D3_PHI_LOOM_39_COUTURE_111';
  const carrierCounts=Object.freeze({
@@ -291,7 +297,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   );
   append(words,eyebrow,title,description,nowWhyExact);
   if(folded){
-   const stage=mk('div','vs-optical-stage');append(stage,veil,veilCaption);append(head,words,stage);
+   const stage=mk('div','vs-optical-stage');append(stage,veil,persistentMotion,veilCaption);append(head,words,stage);
   }else append(head,veil,words,veilCaption);
   const index=mk('div','vs-rail');
   append(index,
@@ -528,7 +534,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   if(state.result&&!state.resting)host.append(renderResult());
   else host.append(paragraph('Nothing has been composed on your behalf. The original source estate remains open for inquiry.','vs-empty'));
   if(!veilHandle){
-   veilHandle=folded?mountFoldedCuirass(veil,veilCoordinates):mountSalonVeil(veil,veilCoordinates);
+   veilHandle=folded?mountFoldedCuirass(veil,veilCoordinates,{motionCanvas:persistentMotion}):mountSalonVeil(veil,veilCoordinates);
   }else{
    veilHandle.renderOnce?.();
   }
