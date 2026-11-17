@@ -132,29 +132,20 @@ function reflowExtractedPdf(source, documentTitle = '') {
   const sentences = prose.split(/(?<=[.!?…])\s+(?=(?:["“'‘(\[])?\p{Lu})/u);
   const paragraphs = [];
   let paragraph = '';
-  const append = value => {
-    let remaining = String(value || '').trim();
-    while (remaining.length > 940) {
-      let boundary = remaining.lastIndexOf(' ', 780);
-      if (boundary < 280) boundary = remaining.indexOf(' ', 780);
-      if (boundary < 0) break;
-      paragraphs.push(remaining.slice(0, boundary).trim());
-      remaining = remaining.slice(boundary).trimStart();
-    }
-    if (remaining) {
-      if (paragraph && paragraph.length + remaining.length > 850) {
-        paragraphs.push(paragraph);
-        paragraph = '';
-      }
-      paragraph = paragraph ? paragraph + ' ' + remaining : remaining;
-      if (paragraph.length >= 540) {
-        paragraphs.push(paragraph);
-        paragraph = '';
-      }
-    }
+  const flush = () => {
+    if (paragraph.trim()) paragraphs.push(paragraph.trim());
+    paragraph = '';
   };
-  for (const sentence of sentences) append(sentence);
-  if (paragraph) paragraphs.push(paragraph);
+  for (const sentence of sentences) {
+    const words = String(sentence).trim().split(/\s+/).filter(Boolean);
+    if (paragraph.length > 420 && paragraph.length + sentence.length > 820) flush();
+    for (const word of words) {
+      if (paragraph.length > 540 && paragraph.length + word.length > 890) flush();
+      paragraph += (paragraph ? ' ' : '') + word;
+    }
+    if (paragraph.length >= 615) flush();
+  }
+  flush();
 
   // A structural invariant: remove only whitespace and editorial block
   // boundaries. The text's complete nonwhitespace character sequence must
