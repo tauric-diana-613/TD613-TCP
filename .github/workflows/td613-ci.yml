@@ -249,6 +249,7 @@ jobs:
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
           if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
           node --test tests/vixen-native-atelier-bridge.test.mjs
+          node --test tests/vixen-public-copy.test.mjs
           for source_bound_suite in \
             tests/vixen-podium-compose-score-custody.test.mjs \
             tests/vixen-podium-redpen-adjudication.test.mjs \
