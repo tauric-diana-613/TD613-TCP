@@ -1561,6 +1561,16 @@ body[data-view="overview"] .reading-back{display:none}
             <span class="vma-muted">You choose one role per session. To change roles, end this journey and begin a new one.</span>
           </div>
         </div>
+        <div id="vmaEndSummary" class="vma-panel" hidden style="margin-top:13px">
+          <span class="vma-kicker">FINALE · THE RESEARCH TRAIL IS YOURS</span>
+          <h3 class="vma-section-title">An ending is another doorway.</h3>
+          <p class="vma-muted">Your session has concluded. Keep its source trail, save any previously authorized Program Notes,
+            or choose another research role. The original collection remains unchanged.</p>
+          <div class="vma-inline">
+            <button type="button" class="vma-btn vma-primary" id="vmaSaveFinal">Save the completed journey ↓</button>
+            <button type="button" class="vma-btn" id="vmaDownloadFinalNotes">Save its Program Notes ↓</button>
+          </div>
+        </div>
         <div id="vmaPlayPanel" hidden>
           <div class="vma-session-bar">
             <span id="vmaCurrentRole">NO ROLE SELECTED</span>
@@ -4752,6 +4762,21 @@ body[data-view="overview"] .reading-back{display:none}
   }
 
   window.VixenReference = Object.freeze({
+    // Source-specific wayfinding: explicit visitor action, never automatic
+    // source admission or evidence promotion. Keep the reader ID canonical.
+    openWork: (workId) => {
+      const work=DATA.works.find(w=>w.work_id===workId);
+      if(!work)return {opened:false,reason:'UNKNOWN_CANONICAL_WORK'};
+      state.workCluster='ALL';state.workStatus='ALL';state.workQuery='';
+      const search=$('workSearchInput');if(search)search.value='';
+      state.selectedWorkId=work.work_id;
+      state.activeManifestationId=work.linked_sources?.[0]?.source_file_id||null;
+      state.readerPhase='NOTICE';state.mobileWorkReaderOpen=true;
+      renderWorksView({skipHistory:true});
+      setView('works',{pushHistory:true});
+      return {opened:true,work_id:work.work_id,read_only:true,
+       identity_status:work.identity_status,authorship:work.authorship};
+    },
     manifest: () => deepClone(MANIFEST),
     get: (id) => {
       const found = ALL_RECORDS.find((r) => r.id === id);

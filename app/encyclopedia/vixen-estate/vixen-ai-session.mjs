@@ -299,7 +299,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
  };
  const finish=()=>{
   if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
-  const saved=archive();current.active=false;
+  current.active=false;const saved=archive();
   return receipt('SUPPORTED',{archive:saved.result,message:'Session ended. Choose a new role to begin a separate session.'});
  };
  return Object.freeze({start,choose,report,handoff,permission,notes,archive,finish,status:currentStatus,

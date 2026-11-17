@@ -26,7 +26,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   if(corpus.works.length!==32)throw Error('CENSUS_UNVERIFIED');
  }catch(_){host.replaceChildren(node('p','vma-failure','The local catalogue is unavailable; research guidance is held.'));return {mounted:false}}
  const directConsent=Symbol('DIRECT_VISITOR_NOTES_OPT_IN');
- let podiumPromise=null,role=null,active=false,busy=false,pendingQuest=null;
+ let podiumPromise=null,role=null,active=false,busy=false,pendingQuest=null,lastArchive=null,lastNotes=null;
  const read=async({intent,params})=>{
   if(!window.VixenReference?.podium)return {status:'HELD',result:{state:'READER_NOT_ATTACHED'}};
   try{
@@ -53,6 +53,7 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   const state=session.status(),item=state.status==='SUPPORTED'?state.result:null;
   const handoff=active?session.handoff().result:null;
   by('vmaStartPanel').hidden=active;by('vmaPlayPanel').hidden=!active;
+  by('vmaEndSummary').hidden=!lastArchive||active;
   by('vmaChapter').textContent='CHAPTER '+String(item?.history_length||0).padStart(2,'0');
   by('vmaCurrentRole').textContent=role?role+' · ROLE LOCKED':'CHOOSE YOUR ROLE';
   resumeDock();if(!active)return;
@@ -84,7 +85,10 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
     node('h5','',w.title),
     node('p','',w.provenance_reason?.join(' · ')||'Recorded source awaiting further examination'));
    const row=node('div','vma-inline');
-   row.append(button('Read the work',()=>visit('works'),'vma-small'),
+   row.append(button('Read the work',()=>{
+      const opened=window.VixenReference?.openWork?.(w.work_id);
+      if(!opened?.opened)visit('works');
+     },'vma-small'),
     button('Save to cart',()=>{
      const tray=window.VIXEN_STUDY_TRAY;
      const added=tray?.add?.(w.work_id);
@@ -109,7 +113,12 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
     q.execution_status==='READ_ONLY_INSPECTION_RECEIPTED'?
     'A read-only source check was recorded.':'A proposed check; model or reader not connected.'));
    else{
-    row.append(button('Open mission room',()=>visit(q.suggested_view||'reference'),'vma-small'));
+    row.append(button('Open mission room',()=>{
+      if(q.suggested_view==='works'&&q.target_work_id){
+       if(window.VixenReference?.openWork?.(q.target_work_id)?.opened)return;
+      }
+      visit(q.suggested_view||'reference');
+     },'vma-small'));
     row.append(button('Report a clue',()=>{
      pendingQuest=q.quest_id;by('vmaReportTitle').textContent=q.title;
      by('vmaReportText').value='';reportPanel.hidden=false;by('vmaReportText').focus();
@@ -197,10 +206,25 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
   download(text,'vixen-program-notes.md','text/markdown;charset=utf-8');
  });
  by('vmaEnd').addEventListener('click',()=>{
-  session.finish();active=false;role=null;pendingQuest=null;
+  lastNotes=session.notes().status==='SUPPORTED'?session.notes().result:null;
+  const ended=session.finish();lastArchive=ended.status==='SUPPORTED'?ended.result.archive:null;
+  active=false;role=null;pendingQuest=null;
   by('vmaStart').disabled=true;reportPanel.hidden=true;
   host.querySelectorAll('[data-vma-role]').forEach(x=>x.setAttribute('aria-pressed','false'));
   announce('Session ended. Begin a new session to select a different role.');render();
+ });
+ by('vmaSaveFinal').addEventListener('click',()=>{
+   if(!lastArchive)return;
+   download(JSON.stringify(lastArchive,null,2)+'\n','vixen-completed-research-journey.json');
+   announce('Final research journey saved locally. No upload occurred.');
+ });
+ by('vmaDownloadFinalNotes').addEventListener('click',()=>{
+   if(!lastNotes){announce('No Program Notes were authorized for that journey.');return}
+   const content=['# Program Notes from a completed journey','',
+    'Provisional editorial notes: no source relationship or empirical result is adjudicated.',
+    ...lastNotes.entries.flatMap(n=>['','## '+n.title,
+      n.draft||n.visitor_observation||n.highlighted_work||'Local structured outline'])].join('\n');
+   download(content,'vixen-completed-program-notes.md','text/markdown;charset=utf-8');
  });
  by('vmaJourneyDock')?.addEventListener('click',()=>visit('collection'));
  document.addEventListener('click',()=>queueMicrotask(resumeDock),{capture:true});
