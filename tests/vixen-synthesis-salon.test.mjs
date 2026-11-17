@@ -281,3 +281,57 @@ test('unified synthesis headline engine reacts deterministically across Podium, 
  assert.equal(diag.xor_synergy.synergistic_emergence,true);
  assert.equal(diag.epistemic_ceiling.empirical_credit,0);
 });
+
+test('Recorded title remains source-owned while candidates reject an Architecture-of boilerplate family',()=>{
+ const recorded=corpus.works.find(x=>x.work_id==='emwork_085223e721130117f5510975');
+ assert(recorded,'Algedonic work must be present in original Experiment-A catalogue');
+ assert.equal(recorded.display_title,
+  'The Architecture of Control: A Cybernetic Synthesis of Biological Homeostasis, Organizational Viability, and Agentic AI Resilience');
+ assert.equal(recorded.linked_sources[0].original_filename,'Algedonic Systems Deep Research.pdf');
+ assert.equal(recorded.authorship,'UNRESOLVED');
+ const scenarios=[
+  {candidateLimit:20},
+  {candidateLimit:20,operatorQuestion:'Do two independent clocks refute a cached witness?'},
+  {candidateLimit:20,podiumEvents:[{action:'SOURCE_INSPECTION'}]},
+  {candidateLimit:20,supplementalSources:[{id:'SUP-1'}]}
+ ];
+ for(const opts of scenarios){
+  const ranked=scoreUnifiedSynthesisCandidates(corpus,opts);
+  assert(ranked.candidates.length>=7);
+  const names=new Set();
+  for(const cand of ranked.candidates){
+   assert(!names.has(cand.title),'Two candidates reuse the same generated title: '+cand.title);
+   names.add(cand.title);
+   for(const field of ['title','headerTagline','patternSubtitle','heroStatement']){
+    assert.doesNotMatch(String(cand[field]||''),/\\bTHE\\s+ARCHITECTURE\\s+OF\\b/i,
+     'Generated candidate '+cand.id+' recycled a formulaic '+field);
+   }
+  }
+ }
+});
+
+test('Human-facing Salon explicitly differentiates immutable Work title and proposed research',()=>{
+ const dom=new JSDOM('<!doctype html><html><body><div id="vixenSynthesisSalon"></div></body></html>',
+  {url:'https://example.test/'});
+ const previous={document:globalThis.document,window:globalThis.window};
+ try{
+  globalThis.document=dom.window.document;
+  globalThis.window=dom.window;
+  const mounted=mountVixenSynthesisSalon({corpus});
+  assert.equal(mounted.mounted,true);
+  const original=dom.window.document.querySelector('.vs-source-card');
+  assert.match(original.querySelector('.vs-work-title').textContent,/^The Architecture of Control:/);
+  assert.match(original.querySelector('.vs-source-tag').textContent,/ORIGINAL RECORDED WORK/);
+  assert.match(original.querySelector('.vs-title-provenance').textContent,
+   /NOT A GENERATED SYNTHESIS CANDIDATE/);
+  assert.equal(original.querySelector('.vs-field select').value,
+   'emwork_085223e721130117f5510975');
+  assert.equal(dom.window.document.querySelectorAll('button.vs-seam').length,1);
+ }finally{
+  if(previous.document===undefined)delete globalThis.document;
+  else globalThis.document=previous.document;
+  if(previous.window===undefined)delete globalThis.window;
+  else globalThis.window=previous.window;
+  dom.window.close();
+ }
+});
