@@ -226,27 +226,38 @@ try {
     // The user reported the defect with NORMAL motion enabled. Re-run the
     // reversal while the actual 39-carrier field is animating; reduced-motion
     // pixel equality alone would miss a live repaint/occlusion regression.
-    await page.emulateMedia({reducedMotion:'no-preference'});
-    await page.waitForFunction(()=>window.VixenLivingMesh?.status?.()?.motion==='LIVE',
-      null,{timeout:6000});
-    const startFrames=await page.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
+    const liveContext=await browser.newContext({
+      viewport:device,deviceScaleFactor:3,isMobile:true,hasTouch:true,
+      reducedMotion:'no-preference'
+    });
     const runningSamples=[];
-    for(const y of [target+250,target-180,target+300,target-130]){
-      await page.evaluate(y0=>window.scrollTo({top:y0,behavior:'instant'}),y);
-      await page.waitForTimeout(160);
-      const live=await page.evaluate(()=>({
-        ...window.VixenLivingMesh.status(),
-        panelZ:getComputedStyle(document.querySelector('#view-overview .vix-entrance-research-door')).zIndex
-      }));
-      assert.equal(live.occlusion_mode,'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
-      assert.equal(live.exclusion_count,0);
-      assert.equal(live.panelZ,'2');
-      runningSamples.push({scrollY:y,frames:live.rendered_frames,mask:live.occlusion_mode});
-    }
-    assert(runningSamples.at(-1).frames>startFrames,
-      'Mobile electrical field must continue animating instead of being disabled');
-    await page.screenshot({path:path.join(output,name+'-animated-reverse-scroll.png'),
-      fullPage:false});
+    try{
+      const livePage=await liveContext.newPage();
+      const liveResponse=await livePage.goto(site,{waitUntil:'domcontentloaded',timeout:30000});
+      assert.equal(liveResponse?.status(),200);
+      await livePage.waitForFunction(()=>{
+        const st=window.VixenLivingMesh?.status?.();
+        return st?.motion==='LIVE'&&st.rendered_frames>=2 &&
+          document.body.dataset.vixenMotion==='live';
+      },null,{timeout:15000,polling:100});
+      const startFrames=await livePage.evaluate(()=>window.VixenLivingMesh.status().rendered_frames);
+      for(const y of [target+250,target-180,target+300,target-130]){
+        await livePage.evaluate(y0=>window.scrollTo({top:y0,behavior:'instant'}),y);
+        await livePage.waitForTimeout(160);
+        const live=await livePage.evaluate(()=>({
+          ...window.VixenLivingMesh.status(),
+          panelZ:getComputedStyle(document.querySelector('#view-overview .vix-entrance-research-door')).zIndex
+        }));
+        assert.equal(live.occlusion_mode,'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+        assert.equal(live.exclusion_count,0);
+        assert.equal(live.panelZ,'2');
+        runningSamples.push({scrollY:y,frames:live.rendered_frames,mask:live.occlusion_mode});
+      }
+      assert(runningSamples.at(-1).frames>startFrames,
+        'Animated mobile optical cloth must keep painting during reverse scroll');
+      await livePage.screenshot({path:path.join(output,name+'-animated-reverse-scroll.png'),
+        fullPage:false});
+    }finally{await liveContext.close()}
     witness.push({device,geom,compositor,scrollSamples:samples,animatedScrollSamples:runningSamples,errors});
     await context.close();
   }
