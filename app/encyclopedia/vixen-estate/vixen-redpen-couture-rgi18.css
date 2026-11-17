@@ -364,6 +364,33 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .vixen
    max-width:34ch;font-size:clamp(22px,3.5vw,30px)!important;
  }
 }
+/* Chromium 390px witness: the six-aria carousel must be a genuinely
+   bounded horizontal SCROLL PORT. Its fifth and sixth real buttons cannot
+   sit in clipped, non-scrollable inline overflow. */
+@media(max-width:920px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score{
+   width:100%!important;max-width:100%!important;min-width:0!important;
+   overflow:hidden!important;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-rail{
+   box-sizing:border-box!important;display:flex!important;flex-direction:row!important;
+   flex:0 1 auto!important;width:100%!important;min-width:0!important;max-width:100%!important;
+   overflow-x:auto!important;overflow-y:hidden!important;
+   overscroll-behavior-x:contain!important;touch-action:pan-x!important;
+   scroll-snap-type:none!important;scrollbar-width:thin!important;
+   scrollbar-color:#d8aa65 #2b2328!important;
+   -webkit-overflow-scrolling:touch;
+ }
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab{
+   flex:0 0 178px!important;min-width:178px!important;max-width:178px!important;
+   scroll-margin-inline:12px!important;
+ }
+}
+@media(max-width:650px){
+ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab{
+   flex-basis:173px!important;min-width:173px!important;max-width:173px!important;
+ }
+}
 @media(max-width:650px){
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-toolbar :is(button.ef-toggle,button.ef-button,button.ef-inspector-switch){
    flex:1 1 calc(50% - 7px)!important;min-height:45px!important;padding:8px!important;
