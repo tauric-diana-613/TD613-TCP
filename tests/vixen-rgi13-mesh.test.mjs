@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {pointOnFieldPath} from '../app/encyclopedia/vixen-estate/vixen-salon-ambient-field.mjs';
 import {
  MESH_CONTRACT,ELECTRIC_COUTURE,buildLivingMesh,paintLivingMesh,
  meshOcclusionMode,MOBILE_STACKING_ONLY_MAX_WIDTH,
@@ -19,6 +20,29 @@ function fakeCtx(){
  };
  return {context,events};
 }
+
+test('desktop and mobile particles stay attached to edge-deflected beam geometry',()=>{
+ for(const [width,height] of [[390,844],[428,926],[1440,900]]){
+  const mesh=buildLivingMesh({width,height,time:4.5,sourceIds:['W_01','W_02']});
+  assert.equal(mesh.scene.trails.length,51);
+  assert.equal(mesh.fibers.length,39);
+  assert(mesh.scene.trails.flatMap(t=>t.points).every(p=>p.length===3&&p.every(Number.isFinite)),
+   'Edge deflection must preserve three-dimensional sample vertices');
+  const vertices=new Set(mesh.scene.trails.flatMap(t=>t.points));
+  for(const trail of mesh.scene.trails){
+   assert.strictEqual(trail.points[32],trail.contact,
+    'Sewn midpoint must remain an identical shared material vertex');
+   assert(trail.pulse.every(Number.isFinite));
+   const p=pointOnFieldPath(trail.points,trail.phase);
+   for(let k=0;k<3;k++)assert(Math.abs(trail.pulse[k]-p[k])<1e-8,
+    'Moving charge must remain attached to the visible beam on '+width+'px');
+  }
+  for(const edge of mesh.scene.crossings)assert(edge.points.every(p=>vertices.has(p)),
+   'The cross-link must attach to the same rendered beam coordinates');
+  for(const n of mesh.scene.nodes)assert.strictEqual(n.point,mesh.scene.trails[n.trailId].pulse);
+  for(const c of mesh.scene.contacts)assert(vertices.has(c.point));
+ }
+});
 test('The full-page Glinda mesh is a visual costume with no authority',()=>{
  assert.equal(MESH_CONTRACT.estate,'VIXEN_OPERA');
  assert.equal(MESH_CONTRACT.surface,'VISUAL_ONLY');
