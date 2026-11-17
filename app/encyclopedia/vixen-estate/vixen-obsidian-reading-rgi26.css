@@ -114,7 +114,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
   font:400 clamp(13.5px,.95vw,15.5px)/1.49 "Iowan Old Style","Palatino Linotype",Georgia,serif!important;
   white-space:normal!important;letter-spacing:0!important;text-align:left!important;
   word-break:normal!important;overflow-wrap:break-word!important;scrollbar-color:#d3a384 #17282b!important;
-  column-count:1!important;display:block!important;min-height:0!important
+  columns:auto!important;column-count:auto!important;column-width:auto!important;
+  column-fill:balance!important;display:block!important;min-height:0!important
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre::before,
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount #expaCompanionBodyPre::after{
@@ -293,4 +294,15 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
 #worksExperimentAReaderMount #expaCompanionBodyPre :is(table,blockquote,figure,img,svg){
  max-width:100%!important;min-width:0!important
+}
+
+
+/* Prevent constrained-height column fragmentation from turning a single
+ * manuscript into thousands of pixels of offscreen side-by-side columns.
+ * The source is vertical, independently scrollable, never horizontally paginated. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-works
+#worksExperimentAReaderMount #expaCompanionBodyPre.vix-couture-reader.vix-manuscript{
+ columns:auto!important;column-width:auto!important;column-count:auto!important;
+ column-fill:balance!important;column-gap:normal!important;
+ writing-mode:horizontal-tb!important;overflow-x:hidden!important;overflow-y:auto!important
 }

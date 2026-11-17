@@ -70,3 +70,28 @@ test('Vixen browser loads new editorial system without exposing native estate to
  assert.match(css,/#constitutiveInquiry \.ci-candidate-card/);
  assert.doesNotMatch(css,/background:\s*(?:white|#fff(?:fff)?)[;\s!]/i);
 });
+
+test('original native host operations include source-bound research routes without write authority',async()=>{
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
+ const expected={
+   SRC_ATELIER:['src_native_epoch_query','src_native_text','src_native_semantic',
+     'src_native_projective_assay','src_native_evidence_traverse','src_native_research_journey'],
+   WENDBINE_ATELIER:['wendbine_private_status','wendbine_private_search','wendbine_public_query','wendbine_sealed_epoch_query'],
+   EM_ATELIER:['em_native_text','em_native_semantic','em_native_work_route','em_native_research_journey'],
+   CROSS_ATELIER:['cross_atelier_lexical','cross_atelier_semantic']
+ };
+ for(const [estate,ops] of Object.entries(expected)){
+   assert.equal(typeof adapters[estate],'function');
+   for(const op of ops)assert.ok(BOUNDED_ENGINE_OPERATIONS[estate].includes(op),estate+': '+op+' missing');
+   assert.equal(BOUNDED_ENGINE_OPERATIONS[estate].some(op=>/build|write|import|publish|admit|seal|restore|mutate/i.test(op)),false);
+ }
+ const summary=native.WENDBINE_ATELIER({operation:'wendbine_public_query',payload:{action:'summary'}});
+ assert.equal(summary.kind,'ORIGINAL_NATIVE_EXECUTABLE');
+ assert.equal(summary.read_only,true);
+ assert.equal(summary.scientific_credit,0);
+ assert.ok(summary.data?.result?.indexed_records>0);
+ assert.throws(()=>native.SRC_ATELIER({operation:'src_native_research_journey',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
+ assert.throws(()=>native.WENDBINE_ATELIER({operation:'wendbine_sealed_epoch_query',payload:{}}),/HELD_NATIVE_INPUT_REQUIRED/);
+ assert.throws(()=>native.EM_ATELIER({operation:'em_native_semantic',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
+ assert.throws(()=>native.CROSS_ATELIER({operation:'cross_atelier_semantic',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
+});

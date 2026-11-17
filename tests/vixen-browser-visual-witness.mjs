@@ -119,6 +119,8 @@ try {
     if(reading.horizontalOverflow>2){
       const overflowEvidence=await manuscript.evaluate(root=>{
         const outer=root.getBoundingClientRect();
+        const s=getComputedStyle(root);
+        console.error('VIXEN_MANUSCRIPT_COLUMN_STATE',JSON.stringify({columnCount:s.columnCount,columnWidth:s.columnWidth,columnFill:s.columnFill,columns:s.columns,display:s.display,overflowX:s.overflowX,overflowY:s.overflowY}));
         return [...root.querySelectorAll('*')].map(el=>{
           const box=el.getBoundingClientRect();
           const style=getComputedStyle(el);
@@ -145,7 +147,7 @@ try {
       const first=el.querySelector('.vix-reader-paragraph');
       const ps=first?getComputedStyle(first):null;
       const paint=el.getBoundingClientRect();
-      return {background:style.backgroundImage,backgroundColor:style.backgroundColor,textColor:style.color,
+      return {background:style.backgroundImage,backgroundColor:style.backgroundColor,textColor:style.color,columnCount:style.columnCount,columnWidth:style.columnWidth,
         fontSize:parseFloat(style.fontSize),lineHeight:parseFloat(style.lineHeight),
         firstLineHeight:ps?parseFloat(ps.lineHeight):0,
         paragraphMargin:ps?parseFloat(ps.marginBottom):0,
@@ -154,6 +156,7 @@ try {
         pageControls:!!document.getElementById('vixFolioNext'),
         footer:!!document.querySelector('.vix-folio-footer')};
     });
+    assert.equal(noirWitness.columnCount,'auto','Manuscripts must not fragment into horizontal CSS columns');
     const readerChannels=(noirWitness.backgroundColor.match(/\d+/g)||[]).slice(0,3).map(Number);
     assert.equal(readerChannels.length,3,'Reader background RGB must be observable');
     assert(readerChannels.every(channel=>channel<70),

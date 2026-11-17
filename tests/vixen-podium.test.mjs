@@ -203,7 +203,8 @@ test('Shared active-stage controller changes masthead without changing source ro
   assert.equal(document.getElementById('vixenReferenceChamber').hidden,true);
   assert.equal(document.getElementById('operahouseEncounter').hidden,false);
   assert.equal(document.body.dataset.activeResearchStage,'OPERAHOUSE');
-  assert.match(document.title,/Operahouse/);
+  assert.match(document.title,/Independent Source Reading Room/);
+   assert.doesNotMatch(document.title,/Operahouse|EMSTD613|SRC|Atelier|TD613/i);
   assert.equal(document.getElementById('operahouseStageReturn').hidden,false);
   const y=setVixenStage('VIXEN',{document,focus:false});
   assert.equal(y.visible_stage,'VIXEN_OPERA');
