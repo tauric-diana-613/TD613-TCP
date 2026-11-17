@@ -20,8 +20,8 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bAtelier\b/gi,'research workspace'],
   [/\bTD613-TCP\b/g,'the hosting archive'],
   [/\bTD613\b/g,'the research host'],
-  [/\bOPERAHOUSE\b/g,'research hosting layer'],
-  [/\bPERFORMER\b/g,'recorded work']
+  [/\bOPERAHOUSE\b/gi,'research hosting layer'],
+  [/\bPERFORMER\b/gi,'recorded work']
 ]);
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
 export const PUBLIC_COPY_VERSION='vixen-public-copy/v1';

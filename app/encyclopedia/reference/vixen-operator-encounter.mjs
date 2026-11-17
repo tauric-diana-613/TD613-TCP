@@ -202,7 +202,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
  function render(){
   host.replaceChildren();host.dataset.stageRole='OPERAHOUSE';
   const ohStatus=readOperahouseStatus({state:state.service});
-  add(host,label(`OPERAHOUSE · ${STAGE_ROLES.OPERAHOUSE.kind} · OPERAHOUSE ≠ OPERA ≠ PERFORMER`),
+  add(host,label('Independent source comparison · Original authorship remains separate'),
    el('h2','oh-title','A meeting without an identity collapse'),
    note('Vixen and the Universal Encyclopedia remain separate research estates. You choose each source independently. A verified Universal record establishes its own bytes—not a Vixen connection.'),
    el('p','oh-state',`STATE · ${state.phase} · READ STATE: ${ohStatus.read_state} · CROSS-OPERA WARRANTS: ZERO ADMITTED · ROLE SEPARATION: ${assertStageRoleSeparation()}`));
@@ -235,7 +235,7 @@ export function mountVixenOperahouseEncounter({host=document.getElementById('ope
   }
   if(state.hits.length){
    const results=el('div','oh-results');
-   results.append(label('LEXICAL RESULTS · NOT VIXEN PERFORMERS'));
+   results.append(label('Independent search results · No inferred author relationship'));
    for(const hit of state.hits)results.append(button(hit.id+' · '+hit.label,()=>inspect(hit.id),
      state.busy||state.phase==='REST'));
    right.append(results);

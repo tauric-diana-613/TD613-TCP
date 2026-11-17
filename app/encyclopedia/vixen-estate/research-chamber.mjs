@@ -192,13 +192,13 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
     controls.append(text('This note remains in browser memory; the eight human gates remain UNADJUDICATED_PAIR.','vxe-source-note'))
   }
   const policy=inspectVixenCrossOperaWarrant({work:w,source:ss[state.first]});
-  const backstage=el('details','vxe-trace');backstage.append(el('summary','','Operahouse custody status / separate Encyclopedia'));
+  const backstage=el('details','vxe-trace');backstage.append(el('summary','','Independent source access and custody status'));
   backstage.append(text('Cross-Opera source passage: '+policy.state+' · '+policy.reason+'. No mapping is currently human-ratified. This Opera displays its own Works only.','vxe-source-note'));
   backstage.append(text('Public Universal reference index remains available through the separate TD613 Encyclopedia. Its records cannot become Vixen performers through lexical search or proximity.','vxe-source-note'));
   controls.append(backstage);
   // A real invitation across a visible stage boundary, with zero automatic
   // transport, source lookup or transfer of authorship.
-  controls.append(action('Enter Operahouse reading room — Vixen leaves the stage',()=>{
+  controls.append(action('Open independent reference reading room',()=>{
     const room=document.getElementById('operahouseEncounter');
     if(!room)return;
     setVixenStage('OPERAHOUSE');

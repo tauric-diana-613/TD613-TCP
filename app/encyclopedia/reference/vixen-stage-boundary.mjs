@@ -21,8 +21,8 @@ function stageReturnControl(doc){
    back=doc.createElement('button');
    back.type='button';back.id='operahouseStageReturn';
    back.className='operahouse-stage-return';
-   back.textContent='OPERAHOUSE · Independent reading room · Return to Vixen';
-   back.setAttribute('aria-label','Leave the Operahouse reading room and return to Vixen Cybernetics');
+   back.textContent='Reference reading room · Return to Vixen';
+   back.setAttribute('aria-label','Return from source comparison to Vixen Cybernetics');
    left.append(back);
    back.addEventListener('click',()=>setVixenStage('VIXEN',{document:doc}));
  }
@@ -41,7 +41,7 @@ export function setVixenStage(which,{document:doc=globalThis.document,focus=true
  doc.body.dataset.activeResearchStage=which;
  const back=stageReturnControl(doc);
  if(back)back.hidden=!entering;
- doc.title=entering?'Operahouse · Independent Reading Room · TD613':snapshot.get(doc).title;
+ doc.title=entering?'Independent Source Reading Room · Vixen Cybernetics':snapshot.get(doc).title;
  const win=doc.defaultView;
  if(win&&typeof win.scrollTo==='function'){
    try{win.scrollTo({top:0,behavior:'instant'})}catch(_){}
