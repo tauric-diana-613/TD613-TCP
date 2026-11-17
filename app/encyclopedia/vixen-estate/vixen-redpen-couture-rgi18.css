@@ -58,8 +58,8 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-he
  transition:background .17s ease,filter .17s ease!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab::after {
- content:"◀";position:absolute;right:12px;top:50%;transform:translateY(-50%);
- color:#d41680;font:700 14px/1 "Segoe UI Symbol",Arial,sans-serif;opacity:.8;z-index:5;
+ content:"◀︎";position:absolute;right:12px;top:50%;transform:translateY(-50%);
+ color:#d41680;font:700 14px/1 "Apple Symbols","Arial Unicode MS",Arial,sans-serif;opacity:.8;z-index:5;
  pointer-events:none;filter:drop-shadow(0 0 3px #ed459b66);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:hover::after,
@@ -289,15 +289,16 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ra
  letter-spacing:-.048em!important;color:#1a2225!important;
  text-wrap:pretty;
 }
+/* U+25C0 BLACK LEFT-POINTING TRIANGLE + U+FE0E text selector: never iOS emoji presentation. */
 /* Only the selected aria may display the glyph. A new renderRail selection
    moves both the real aria-pressed state and its unique gold frame. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab::after {
  content:none!important;display:none!important;
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab[aria-pressed="true"]::after {
- content:"◀"!important;display:block!important;position:absolute!important;
+ content:"◀︎"!important;display:block!important;position:absolute!important;
  right:13px!important;top:50%!important;transform:translateY(-50%)!important;
- font:700 16px/1 "Segoe UI Symbol",Arial,sans-serif!important;
+ font:700 16px/1 "Apple Symbols","Arial Unicode MS",Arial,sans-serif!important;
  color:#db0873!important;opacity:1!important;z-index:5!important;
  text-shadow:0 0 10px #ff3995aa!important;pointer-events:none!important;
 }
