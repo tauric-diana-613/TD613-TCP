@@ -1216,18 +1216,18 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   activePlan:options?.activePlan||null
  });
  const qSrcCond=deriveSrcQueryConditionedWeights(options?.operatorQuestion||'','src_projective',null);
- // A distinct source-grounded SRC candidate, not a clone of the last
+ // A distinct TD613/Vixen documentary-route candidate, not a clone of the last
  // baseline/event candidate (which duplicated the Podium prose).
  const sourceLinks=Number(srcTelemetry?.projective_routing?.candidate_link_count||0);
  const sourceCues=Number(srcTelemetry?.projective_routing?.cue_count||0);
  const contextualPasses=Number(srcTelemetry?.context_roles?.pass_count||0);
  const tomographyCount=Number(srcTelemetry?.phase2_tomography?.candidate_count||0);
- const srcCandidate={
-  id:'cand-src-projective-tomography',
-  regime:'SRC_CONTEXTUAL_SOURCE_PROJECTION',
+ const documentaryCandidate={
+  id:'cand-vixen-documentary-route',
+  regime:'VIXEN_CONTEXTUAL_DOCUMENTARY_ROUTE',
   governing_instrument:'CARO_INSTITUTIONAL_RECONSTRUCTION',
-  kind:'src_projective_tomography',
-  title:'Contextual Source Mapping Across Recorded Research Routes',
+  kind:'contextual_documentary_route_analysis',
+  title:'Contextual Documentary Route Analysis',
   subtitle:'Documentary cross-references without converting resemblance into causal proof.',
   tagline:'Signature coordinates and role tracing retain their distinct evidentiary ceilings.',
   lens:'Documentary Projective Routing × Contextual Role Assessment',
@@ -1248,9 +1248,11 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   falsifier:'Recheck each proposed edge against original documents and independent context; reject provenance inferred from content scores or absent external witnesses.',
   provenanceExtra:{candidate_links:sourceLinks,source_cues:sourceCues,contextual_role_passes:contextualPasses,reconstruction_candidates:tomographyCount},
   instrument:'Atlas Projection Auditor',
-  grammar:'Contextual Documentary Attribution'
+  grammar:'TD613 Contextual Documentary Attribution',
+  methodology_origin:'TD613',
+  computation_basis:'REUSABLE_SOURCE_ROUTE_INSTRUMENTS'
  };
- const rawCandidates=[...rawGenerated,srcCandidate];
+ const rawCandidates=[...rawGenerated,documentaryCandidate];
  const surfaceKeys=new Set();
  for(const candidate of rawCandidates){
   const key=[candidate.patternSubtitle,candidate.heroStatement].join('⟐').trim();
@@ -1304,8 +1306,8 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    +(srcTelemetry.context_roles.intrinsic_role_claim==='CONTEXTUAL_NOT_INTRINSIC'?0.25:0)
    +(srcTelemetry.projective_routing.candidate_link_count>0||srcTelemetry.projective_routing.field_marker_hits>0?0.18:0.08);
   const srcQueryBoost=qSrcCond.analysis.hasSrcUntypicalCue
-   ?(cand.id==='cand-src-projective-tomography'?0.22:Math.min(0.22,0.22*srcDocScore.s_src_combined))
-   :(cand.id==='cand-src-projective-tomography'?0.06:0.14);
+   ?(cand.id==='cand-vixen-documentary-route'?0.22:Math.min(0.22,0.22*srcDocScore.s_src_combined))
+   :(cand.id==='cand-vixen-documentary-route'?0.06:0.14);
   const sSrc=+(Math.min(1,Math.max(0,srcBase+srcQueryBoost))).toFixed(4);
 
   const composite=+((0.15*sSpec+0.14*sDelta+0.10*sMirror+0.15*sSyn+0.14*sBridge+0.11*sCeil+0.11*sDesign+0.10*sSrc)).toFixed(4);
