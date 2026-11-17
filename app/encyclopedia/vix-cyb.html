@@ -2858,8 +2858,8 @@ body[data-view="overview"] .reading-back{display:none}
     const listEl = $('formulaFolioGrid');
     const countEl = $('formulaCountLabel');
     if (!listEl) return;
-    const theoryFolios = theoryFolios.filter(f => f.group === 'unified' && /^TCC-0[1-8]$/.test(f.id));
-    if (theoryFolios.length !== 8 || theoryFolios.filter(f => f.group === 'couture').length !== 14) throw Error('WARDROBE_ROLE_CENSUS_MISMATCH');
+    const theoryFolios = DATA.formula_folios.filter(f => f.group === 'unified' && /^TCC-0[1-8]$/.test(f.id));
+    if (theoryFolios.length !== 8 || DATA.formula_folios.filter(f => f.group === 'couture').length !== 14) throw Error('WARDROBE_ROLE_CENSUS_MISMATCH');
     const q = state.formulaQuery.trim().toLowerCase();
     const exactFolioMatch = Boolean(q) && theoryFolios.some((f) => f.id.toLowerCase() === q);
     const semFolioScores = new Map();
@@ -2881,7 +2881,7 @@ body[data-view="overview"] .reading-back{display:none}
       filtered.sort((a, b) => (semFolioScores.get(b.id) || 0) - (semFolioScores.get(a.id) || 0));
     }
     // Deliberate editorial edit: the four flagship mathematical identities
-    // appear first, across both original folio families. This reorders only
+    // appear first within the Vixen theory family. This reorders only
     // PRESENTATION, not the canonical DATA archive, source IDs or citations.
     const curatedIds=['TCC-01','TCC-04','TCC-05','TCC-06'];
     const displayFolios=(!q&&state.formulaGroup==='all')
