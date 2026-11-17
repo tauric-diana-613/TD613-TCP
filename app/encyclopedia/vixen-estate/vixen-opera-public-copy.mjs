@@ -17,7 +17,11 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bSRC\b/g,'documentary source-route analysis'],
   [/\bFADT\b/gi,'finite evidence classification'],
   [/\bAteliers\b/gi,'research workspaces'],
-  [/\bAtelier\b/gi,'research workspace']
+  [/\bAtelier\b/gi,'research workspace'],
+  [/\bTD613-TCP\b/g,'the hosting archive'],
+  [/\bTD613\b/g,'the research host'],
+  [/\bOPERAHOUSE\b/g,'research hosting layer'],
+  [/\bPERFORMER\b/g,'recorded work']
 ]);
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
 export const PUBLIC_COPY_VERSION='vixen-public-copy/v1';
