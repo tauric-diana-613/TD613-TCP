@@ -1676,9 +1676,9 @@ body[data-view="overview"] .reading-back{display:none}
                 <div class="ci-metric-label">INFORMATION SYNERGY &amp; EVIDENCE PRESERVATION</div>
                 <div class="ci-metric-val" id="ciMetricFadtXor">1.00 bit · ⋂Sᵢ⊂U HOLD</div>
               </div>
-            </div><button type="button" class="ci-btn" data-action="inspector">Open Diagnostic Inspector</button></div></section>
+            </div><button type="button" class="ci-btn" data-action="inspector" data-open-inspector-tab="bench">Open Diagnostic Inspector</button></div></section>
 </div>
-<section class="ci-card vix-operator-machine" id="vixOperatorPodium" aria-label="Podium research and human Compose authority"><h2 class="vix-operator-section-title">03 · Podium &amp; human approvals</h2><p>The Podium is an independent machine-facing conductor. A research Score, Redpen or local presentation restore confers no independent human authorization, corpus admission, or deployment authority.</p><div class="ci-actions-row"><button class="ci-btn" type="button" data-action="inspector">Inspect Podium Tasks</button><a class="ci-btn" href="./reference/podium/manifest.json">Machine Task Contract</a><a class="ci-btn" href="./vix-cyb/llms.txt">AI Research Entrance</a><button class="ci-btn" type="button" data-view="collection">Back to Salon</button></div><p class="vix-operator-boundary-note">Authenticated Compose is a separate, host-verified human approval gate. This public browser interface contains no secret, identity attestation or privileged write path.</p></section>
+<section class="ci-card vix-operator-machine" id="vixOperatorPodium" aria-label="Podium research and human Compose authority"><h2 class="vix-operator-section-title">03 · Podium &amp; human approvals</h2><p>The Podium is an independent machine-facing conductor. A research Score, Redpen or local presentation restore confers no independent human authorization, corpus admission, or deployment authority.</p><div class="ci-actions-row"><button class="ci-btn" type="button" data-action="inspector" data-open-inspector-tab="podium">Inspect Podium Tasks</button><a class="ci-btn" href="./reference/podium/manifest.json">Machine Task Contract</a><a class="ci-btn" href="./vix-cyb/llms.txt">AI Research Entrance</a><button class="ci-btn" type="button" data-view="collection">Back to Salon</button></div><p class="vix-operator-boundary-note">Authenticated Compose is a separate, host-verified human approval gate. This public browser interface contains no secret, identity attestation or privileged write path.</p></section>
 </div>
 </section>
 <dialog class="dialog inspector-dialog vix-restore-dialog" id="vixenRestoreReviewDialog" aria-labelledby="vixRestoreReviewTitle" closedby="any"><div class="dialog-shell"><div class="dialog-header"><h2 id="vixRestoreReviewTitle">Review Local Presentation Restore</h2><button type="button" class="hdr-pill" id="vixRestoreReviewCancelTop">Close ✕</button></div><div class="dialog-body"><p>Compare the current and proposed presentation. Confirming appends a NEW local rollback event without erasing history. It does not grant persistent Compose approval.</p><div id="vixRestoreComparison" class="vix-restore-comparison" role="list"></div><label class="vix-restore-ack"><input id="vixRestoreScopeAcknowledge" type="checkbox"> I authorize this local presentation change only; persisted composition remains held.</label><div class="ci-actions-row"><button type="button" class="ci-btn" id="vixRestoreReviewCancel">Keep Current</button><button type="button" class="ci-btn primary" id="vixRestoreReviewConfirm" disabled>Restore Local Presentation</button></div></div></div></dialog>
@@ -5465,7 +5465,13 @@ body[data-view="overview"] .reading-back{display:none}
       }
     }
     document.querySelectorAll('[data-action="inspector"]').forEach((b) => {
-      b.addEventListener('click', () => openInspector(b));
+      b.addEventListener('click', () => {
+        const requestedTab=b.getAttribute('data-open-inspector-tab');
+        if (['census','bench','provenance','podium'].includes(requestedTab)) {
+          state.inspectorTab=requestedTab;
+        }
+        openInspector(b);
+      });
     });
     document.querySelectorAll('[data-insp-tab]').forEach((b) => {
       b.addEventListener('click', () => {
