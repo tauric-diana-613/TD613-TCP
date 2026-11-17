@@ -104,6 +104,11 @@ try {
         room+' source-reading guide must paint ABOVE the ambient optical field: '+JSON.stringify(surface));
       assert(!/rgb\(60,\s*20,\s*60\)/.test(surface.headingBackground),
         room+' heading should not regress to plum');
+      if(room==='holds'){
+        const ink=await view.locator('.holds-grid>.hold-panel:first-child>p').evaluate(el=>getComputedStyle(el).color);
+        assert.equal(ink,'rgb(245, 238, 225)',
+          'Refusals bounded-tie explanation must have legible light ink on dark couture panel');
+      }
       await view.locator('.vix-couture-route-guide').scrollIntoViewIfNeeded();
       await page.screenshot({
         path:path.join(output,stem+'-rgi23-'+room+'-couture.png'),
