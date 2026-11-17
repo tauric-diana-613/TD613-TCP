@@ -151,6 +151,32 @@ test('materialized Salon retains source selectors, research cart, rest, theory a
   dom.window.close()
  }
 });
+test('Vixen TD613 documentary-route candidate is independent of reused SRC implementation and Podium event text',()=>{
+ const events=[
+  {action:'EXAMINE_ROUTE',event_id:'A'},
+  {action:'DOCUMENT_SOURCE_INFERENCE',event_id:'B'}
+ ];
+ const ranked=scoreUnifiedSynthesisCandidates(corpus,{podiumEvents:events,candidateLimit:20});
+ const documentary=ranked.candidates.find(x=>x.id==='cand-vixen-documentary-route');
+ const podium=ranked.candidates.find(x=>x.id==='cand-podium-exploration');
+ assert(documentary,'TD613/Vixen native documentary-route inquiry must exist');
+ assert(podium,'Podium action-derived inquiry must exist independently');
+ assert.equal(documentary.methodology_origin,'TD613');
+ assert.equal(documentary.kind,'contextual_documentary_route_analysis');
+ assert.equal(documentary.regime,'VIXEN_CONTEXTUAL_DOCUMENTARY_ROUTE');
+ assert(!/SignalRupture|SRC\b|Podium Trace|PODIUM EXPLORATION/i.test(
+  [documentary.title,documentary.patternSubtitle,documentary.heroStatement,documentary.publicExplanation].join(' ')),
+  'Implementation heritage must not become a public scholarly attribution');
+ assert.match(podium.heroStatement,/document source inference/i,
+  'Podium candidate must reflect actual last recorded action rather than copy boilerplate');
+ assert.notEqual(documentary.patternSubtitle,podium.patternSubtitle);
+ assert.notEqual(documentary.heroStatement,podium.heroStatement);
+ const surfaces=ranked.candidates.map(x=>[x.patternSubtitle,x.heroStatement].join('|'));
+ assert.equal(new Set(surfaces).size,surfaces.length,'All candidate surfaces must be unique');
+ assert.equal(ranked.epistemic_ceiling.empirical_replication_credit,0);
+ assert.equal(ranked.epistemic_ceiling.human_closure_required,true);
+});
+
 test('unified synthesis headline engine reacts deterministically across Podium, Salon, Bench & supplemental sources without human leak, boilerplate subtitle, or credit promotion',async()=>{
  const base=deriveSynthesisHeadline({corpus});
  assert.equal(base.regime,'PHASONIC_COUNTERPOINT_SYNTHESIS');
