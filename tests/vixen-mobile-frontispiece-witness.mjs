@@ -275,6 +275,30 @@ try {
         'Animated mobile optical cloth must keep painting during reverse scroll');
       await livePage.screenshot({path:path.join(output,name+'-animated-reverse-scroll.png'),
         fullPage:false});
+      // The original CI only tested a fast Chromium path at 60Hz. CPU-throttle
+      // the *real canvas* here to witness recovery under missed presentation
+      // frames, recording quality, paint cost and actual cadence. This is a
+      // synthetic pressure test, not a claim about iOS Safari hardware.
+      if(device.width===390){
+        const cdp=await liveContext.newCDPSession(livePage);
+        await cdp.send('Emulation.setCPUThrottlingRate',{rate:8});
+        try{
+          await livePage.waitForTimeout(2600);
+          const pressure=await livePage.evaluate(()=>window.VixenLivingMesh.status());
+          assert([1,2,4].includes(pressure.raster_detail_stride));
+          assert(pressure.rendered_frames>startFrames,'Optical thread must continue under load');
+          assert(pressure.raster_backing_scale>=.5&&pressure.raster_backing_scale<=1.25);
+          if(pressure.presented_fps<38||pressure.paint_cost_ms>9){
+            assert(pressure.raster_detail_stride>1,
+              'Missing real display frames must lower raster work instead of persisting at full quality: '+JSON.stringify(pressure));
+          }
+          runningSamples.push({throttled_8x:{
+            fps:pressure.presented_fps,paint_ms:pressure.paint_cost_ms,
+            raster_stride:pressure.raster_detail_stride,
+            backing_scale:pressure.raster_backing_scale
+          }});
+        }finally{await cdp.send('Emulation.setCPUThrottlingRate',{rate:1})}
+      }
     }finally{await liveContext.close()}
     witness.push({device,geom,compositor,scrollSamples:samples,animatedScrollSamples:runningSamples,errors});
     await context.close();
