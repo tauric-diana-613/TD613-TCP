@@ -608,6 +608,16 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel:nth-
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .hold-panel h2{
  color:#fff9ec!important;
 }
+/* REFUSALS reading contrast: earlier porcelain-era paragraph ink must never
+   survive on newly dark bounded-tie panels. Preserve the light table body's
+   own separately authored dark text by targeting direct prose only. */
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:nth-child(n)>:is(p,ul,ol){
+ color:#f5eee1!important;opacity:1!important;
+}
+body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:nth-child(n)>p code{
+ color:#ffe8ac!important;background:#263137!important;border:1px solid #e5ba735e!important;
+ padding:2px 4px!important;
+}
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-holds .holds-grid>.hold-panel:first-child{
  background:
  radial-gradient(ellipse at 90% 1%,#ffb4b01e,transparent 57%),
