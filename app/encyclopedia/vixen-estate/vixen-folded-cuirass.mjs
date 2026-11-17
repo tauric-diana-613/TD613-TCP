@@ -10,7 +10,7 @@
  */
 import {measureCoutureBeats,allocateBloom} from './vixen-beat-radiometry-rgi15.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
-import {buildSalonField,paintSalonField,paintFieldSpark,traceFieldPath} from './vixen-salon-ambient-field.mjs';
+import {buildSalonField,paintSalonField,paintFieldSpark,traceFieldPath,pointOnFieldPath,chargeSeamEnvelope} from './vixen-salon-ambient-field.mjs';
 
 // Developer rollback only; no extra visitor mode or second deliverable.
 export const SALON_COMPOSITOR='FOLDED_CHROME';
@@ -23,10 +23,23 @@ export const CUIRASS_CONTRACT=Object.freeze({
 export const CUIRASS_POLICY=Object.freeze({
  panels:12,angular_steps:72,vertical_steps:32,carriers:39,
  max_dpr:1.25,max_backing_pixels:1500000,desktop_fps:24,mobile_fps:12,
+ presentation_fps:60,
  // Only the fixed-reference glints use screen blending.
  total_emission_alpha:1.20,
  max_radial_strain:.14,max_angular_shear:.035,
  display_contrast_candidate:'Adjacent seam/trough byte-luma ratio >= 3, trough <= 45; browser measurement pending'
+});
+// Salon owns ONE clock, with two independently budgeted render surfaces.
+// The garment's exact mathematical and material frames stay source-governed;
+// lightweight charge movement is presented at up to 60Hz on a transparent
+// canvas. This constitution changes neither custody nor source computation.
+export const SALON_PRESENTATION_CONSTITUTION=Object.freeze({
+ schema:'vixen.salon.optical-presentation/v1',
+ presentation_fps:60,geometry_mobile_fps:12,geometry_desktop_fps:24,
+ clock_ownership:'ONE_FOLDED_CUIRASS_RAF',
+ presentation:'ANIMATED_CHARGE_ON_CACHED_SOURCE_GEOMETRY',
+ manuscript_or_admission_authority:false,empirical_credit:0,
+ human_closure:'RESERVED'
 });
 const TAU=2*Math.PI,clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const mix=(a,b,t)=>a+(b-a)*t;
@@ -611,6 +624,42 @@ export function paintFoldedCuirass(ctx,m,{optics=true}={}){
   radiometry:m.radiometry};
 }
 
+/** One lightweight charge pass per display frame, using the last complete,
+ * source-conditioned garment geometry. No source remesh, DOM layout, costly
+ * chrome material paint, new clock, or second animation scheduler. */
+export function paintSalonChargePresentation(ctx,scene,{time=0,width=1,height=1}={}){
+ if(!ctx||!scene?.trails)throw new TypeError('SALON_PRESENTATION_REQUIRES_CACHED_SCENE');
+ ctx.clearRect(0,0,width,height);ctx.save();
+ ctx.lineCap='round';ctx.lineJoin='round';
+ let activeCharges=0;
+ for(const t of scene.trails){
+  if(t.lane%3!==0&&t.lane!==8)continue;
+  // Shared optical clock, independent of the expensive material raster. The
+  // original Work-conditioned sampled points are immutable for this pass.
+  const phase=((time*.085*2.75+t.lane*.061+t.band*.213)%1+1)%1;
+  const envelope=chargeSeamEnvelope(phase);
+  if(envelope<=.005)continue;
+  const start=Math.max(0,phase-.036);
+  const p0=pointOnFieldPath(t.points,start);
+  const p1=pointOnFieldPath(t.points,(start+phase)*.5);
+  const p2=pointOnFieldPath(t.points,phase);
+  ctx.beginPath();ctx.moveTo(p0[0],p0[1]);
+  if(typeof ctx.quadraticCurveTo==='function')
+   ctx.quadraticCurveTo(p1[0],p1[1],p2[0],p2[1]);
+  else ctx.lineTo(p2[0],p2[1]);
+  ctx.strokeStyle=t.color==='champagne'?'#fff6c7':t.color==='pearl'?'#f9e9f5':'#ff9cc7';
+  ctx.lineWidth=t.lane===8?1.8:1.2;
+  ctx.globalAlpha=envelope*(t.layer==='front'?.87:.51);ctx.stroke();
+  if(t.lane%3===0){
+   paintFieldSpark(ctx,p2,envelope*(t.layer==='front'?.67:.35),t.color,scene.scale);
+   activeCharges++;
+  }
+ }
+ ctx.restore();
+ return {presentation:'SALON_LIGHT_ONLY',active_charges:activeCharges,
+  source_tracks:scene.trails.length,carrier_count:39,empirical_credit:0};
+}
+
 /** One Salon clock. Still freezes phase; reduced motion/Rest never schedules
  * recurring paints. Resize and resolution media-query events invalidate even
  * while paused. Work updates repaint once at the retained phase. */
@@ -619,11 +668,14 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  if(!win||typeof getState!=='function')return {mounted:false,reason:'NO_VISUAL_HOST'};
  const ctx=canvas.getContext('2d',{alpha:false});
  if(!ctx)return {mounted:false,reason:'CANVAS2D_UNAVAILABLE'};
+ const motionCanvas=options.motionCanvas||null;
+ const motionCtx=motionCanvas?.getContext?.('2d',{alpha:true})||null;
  const motion=doc.getElementById('motionBtn');
  const reduced=win.matchMedia('(prefers-reduced-motion: reduce)');
  const clock=getState().opticalClock||{time:0};
  let raf=0,disposed=false,visible=false,lastMs=null,lastPaint=-Infinity,dirty=true,frames=0,last=null,latestRad=null;
  let resolution=null,paintCosts=[],geometryFrames=0,lastScene=null,lastStageRect=null;
+ let motionFrames=0,lastMotionPaint=-Infinity,motionPaintCostMs=0,motionPresentedFps=0;
  const held=()=>reduced.matches||motion?.getAttribute('aria-pressed')==='true'||doc.body.dataset.vixenMotion==='still'||getState().resting;
  const active=()=>!doc.hidden&&doc.body.dataset.view==='collection'&&doc.body.dataset.activeResearchStage!=='OPERAHOUSE';
  const cancel=()=>{if(raf)win.cancelAnimationFrame(raf);raf=0;lastMs=null;};
@@ -657,12 +709,33 @@ export function mountFoldedCuirass(canvas,getState,options={}){
    contrast:'UNMEASURED_BROWSER_PIXELS',frameClass:'LOCAL_RENDER_MODEL_ONLY'};
   if(onRadiometry)onRadiometry(latestRad,last);
  }
+ function paintMotion(ms=win.performance.now()){
+  if(!motionCtx||!lastScene||!lastStageRect||!visible)return;
+  const w=lastStageRect.width,h=lastStageRect.height;
+  if(w<2||h<2)return;
+  // Screen-space particles at 1x: cost is independent of physical DPR 3x.
+  const bw=Math.round(w),bh=Math.round(h);
+  if(motionCanvas.width!==bw||motionCanvas.height!==bh){
+   motionCanvas.width=bw;motionCanvas.height=bh;
+  }
+  motionCtx.setTransform(motionCanvas.width/w,0,0,motionCanvas.height/h,0,0);
+  const begin=win.performance.now();
+  paintSalonChargePresentation(motionCtx,lastScene,{time:clock.time,width:w,height:h});
+  motionPaintCostMs=win.performance.now()-begin;
+  if(Number.isFinite(lastMotionPaint)&&lastMotionPaint>=0&&ms>lastMotionPaint)
+   motionPresentedFps=1000/(ms-lastMotionPaint);
+  lastMotionPaint=ms;motionFrames++;
+ }
  function tick(ms){
   raf=0;if(disposed||!active()){lastMs=null;return;}
   if(lastMs!==null&&!held())clock.time+=Math.min(.1,Math.max(0,(ms-lastMs)/1000));
   lastMs=ms;
   const interval=1000/(canvas.clientWidth<500?CUIRASS_POLICY.mobile_fps:CUIRASS_POLICY.desktop_fps);
   if(dirty||(!held()&&ms-lastPaint>=interval)){paint();lastPaint=ms;}
+  // The bright charges now have their OWN presentation rate, but remain
+  // under the same sole Salon RAF and shared optical phase.
+  const lightInterval=1000/SALON_PRESENTATION_CONSTITUTION.presentation_fps;
+  if(visible&&(held()||ms-lastMotionPaint>=lightInterval-1))paintMotion(ms);
   if(!held())raf=win.requestAnimationFrame(tick);else lastMs=null;
  }
  function schedule(){
@@ -670,7 +743,7 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  }
  function onFieldLayout(){
   if(disposed||!active())return;
-  paint(true);
+  paint(true);paintMotion();
  }
  function trackDpr(){
   resolution?.removeEventListener('change',onDpr);
@@ -688,9 +761,14 @@ export function mountFoldedCuirass(canvas,getState,options={}){
  win.addEventListener('resize',schedule,{passive:true});
  win.addEventListener('vixen:fieldlayout',onFieldLayout);trackDpr();
  return Object.freeze({mounted:true,contract:CUIRASS_CONTRACT,renderOnce:schedule,
-  renderStatic(){cancel();dirty=true;paint();return last;},
+  renderStatic(){cancel();dirty=true;paint();paintMotion();return last;},
   latestRadiometry:()=>latestRad,
-  getStatus:()=>({frames,geometryFrames,still:!!held(),visible,scheduled:!!raf,last,
+  getStatus:()=>({frames,geometryFrames,motionFrames,still:!!held(),visible,scheduled:!!raf,last,
+   salon_presentation_constitution:SALON_PRESENTATION_CONSTITUTION.schema,
+   salon_presentation_target_fps:SALON_PRESENTATION_CONSTITUTION.presentation_fps,
+   salon_presentation_fps:motionPresentedFps,motion_paint_cost_ms:motionPaintCostMs,
+   geometry_mobile_fps:CUIRASS_POLICY.mobile_fps,
+   geometry_desktop_fps:CUIRASS_POLICY.desktop_fps,
    paintP95Ms:paintCosts.length?[...paintCosts].sort((a,b)=>a-b)[Math.ceil(paintCosts.length*.95)-1]:null}),
   dispose(){disposed=true;cancel();io.disconnect();ro.disconnect();mo.disconnect();
    reduced.removeEventListener('change',schedule);resolution?.removeEventListener('change',onDpr);
