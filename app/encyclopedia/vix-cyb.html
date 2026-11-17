@@ -5946,7 +5946,7 @@ import {
 
       const idEl = document.createElement('div');
       idEl.className = 'ci-log-id';
-      idEl.textContent = `#${entry.seq} · ${entry.entry_id} [${entry.kind}]${isCurrent ? ' · ACTIVE' : ''}`;
+      idEl.textContent = `#${entry.seq} · ${entry.entry_id} [${entry.kind}]${isCurrent ? ' · CURRENT PRESENTATION' : ''}${entry === synthesisLog.at(-1) ? ' · LEDGER TIP' : ''}`;
 
       const sumEl = document.createElement('div');
       sumEl.className = 'ci-log-summary';
@@ -5958,7 +5958,7 @@ import {
       const digestTxt = hasSha
         ? `sha256: ${entry.state_sha256.slice(0, 14)}`
         : (entry.digest_algorithm || 'IN_SESSION_UNHASHED_FALLBACK');
-      chainEl.textContent = `pred: ${entry.predecessor_entry_id || 'NONE'} · ${digestTxt}`;
+      chainEl.textContent = `predecessor: ${entry.predecessor_entry_id || 'NONE'} · predecessor digest: ${String(entry.predecessor_sha256 || 'UNAVAILABLE').slice(0, 14)} · state ${digestTxt} · SESSION/IMPORTED, NOT AN EXTERNAL ATTESTATION`;
 
       info.append(idEl, sumEl, chainEl);
 
@@ -5969,13 +5969,13 @@ import {
         btn.type = 'button';
         btn.className = 'ci-btn';
         btn.dataset.rollbackEntry = entry.entry_id;
-        btn.textContent = 'Restore';
-        btn.addEventListener('click', () => restoreSnapshot(entry.entry_id));
+        btn.textContent = 'Review Restore';
+        btn.addEventListener('click', () => requestRestoreSnapshot(entry.entry_id));
         act.appendChild(btn);
       } else {
         const badge = document.createElement('span');
         badge.style.cssText = 'font:600 9px/1.2 var(--font-mono);color:#9DBCC1;letter-spacing:.12em;';
-        badge.textContent = isCurrent ? 'ACTIVE HEAD' : 'LOGGED';
+        badge.textContent = isCurrent ? 'CURRENT PRESENTATION' : entry === synthesisLog.at(-1) ? 'LEDGER TIP' : 'LOGGED';
         act.appendChild(badge);
       }
 
@@ -6233,9 +6233,94 @@ import {
     return getSessionSnapshot();
   }
 
+
+  // PROSCENIUM SEAM: untrusted browser state can be rehearsed, never mistaken
+  // for authenticated Podium Compose, source admission or an external receipt.
+  let pendingLocalRestore = null;
+  function requestRestoreSnapshot(targetEntryId) {
+    ensureBaselineLog();
+    const target = rollbackSnapshots[targetEntryId];
+    if (!target) return {ok:false,error:'SNAPSHOT_NOT_FOUND'};
+    const dialog = document.getElementById('vixenRestoreReviewDialog');
+    const comparison = document.getElementById('vixRestoreComparison');
+    const acknowledge = document.getElementById('vixRestoreScopeAcknowledge');
+    const confirm = document.getElementById('vixRestoreReviewConfirm');
+    if (!dialog || typeof dialog.showModal !== 'function' || !comparison || !acknowledge || !confirm)
+      return {ok:false,error:'LOCAL_RESTORE_REVIEW_UNAVAILABLE'};
+    const current = snapshotPayload();
+    const fields = [
+      ['Selected candidate','selected_candidate_id'],
+      ['Operator inquiry','operator_question'],
+      ['Method','operator_method'],
+      ['Vernier lag','lag_ticks'],
+      ['Synthesis regime','status'],
+      ['Presentation subtitle','custom_subtitle'],
+      ['Featured tagline','synthesis_headline','headerTagline'],
+      ['Featured research question','synthesis_headline','researchQuestion'],
+      ['Active plan','active_plan'],
+      ['Refraction','refraction'],
+      ['Supplemental sources','supplemental_sources']
+    ];
+    const asText = value => value == null ? 'NONE'
+      : typeof value === 'string' ? value.slice(0,850)
+      : JSON.stringify(value).slice(0,850);
+    const rows = fields.map(([label,field,member])=>{
+      const earlier = member ? current[field]?.[member] : current[field];
+      const later = member ? target[field]?.[member] : target[field];
+      if (JSON.stringify(earlier)===JSON.stringify(later)) return null;
+      const row = document.createElement('article');
+      row.className='vix-restore-diff-row';
+      row.setAttribute('role','listitem');
+      const title=document.createElement('h3');
+      title.textContent=label;
+      const from=document.createElement('p');
+      const to=document.createElement('p');
+      from.textContent='CURRENT · '+asText(earlier);
+      to.textContent='PROPOSED · '+asText(later);
+      row.append(title,from,to);
+      return row;
+    }).filter(Boolean);
+    if (!rows.length) {
+      const row=document.createElement('p');
+      row.textContent='This snapshot has no displayed-field difference. Reapplying it would still append a local event.';
+      rows.push(row);
+    }
+    const marker=document.createElement('p');
+    marker.className='vix-restore-target';
+    marker.textContent='REVIEWING '+targetEntryId+' · CURRENT PRESENTATION '+activeEntryId+
+      ' · LATEST SESSION EVENT '+(synthesisLog.at(-1)?.entry_id||'NONE');
+    comparison.replaceChildren(marker,...rows);
+    pendingLocalRestore=targetEntryId;
+    acknowledge.checked=false;
+    confirm.disabled=true;
+    if (!dialog.open) dialog.showModal();
+    return {ok:true,review:'OPEN',scope:'LOCAL_PRESENTATION_ONLY',target_entry_id:targetEntryId};
+  }
+  const restoreDialog=document.getElementById('vixenRestoreReviewDialog');
+  const dismissRestoreReview=()=>{restoreDialog?.close();pendingLocalRestore=null;};
+  document.getElementById('vixRestoreScopeAcknowledge')?.addEventListener('change',(ev)=>{
+    const btn=document.getElementById('vixRestoreReviewConfirm');
+    if(btn)btn.disabled=!ev.target.checked;
+  });
+  document.getElementById('vixRestoreReviewCancel')?.addEventListener('click',dismissRestoreReview);
+  document.getElementById('vixRestoreReviewCancelTop')?.addEventListener('click',dismissRestoreReview);
+  restoreDialog?.addEventListener('close',()=>{pendingLocalRestore=null;});
+  document.getElementById('vixRestoreReviewConfirm')?.addEventListener('click',()=>{
+    if (!pendingLocalRestore || !document.getElementById('vixRestoreScopeAcknowledge')?.checked) return;
+    const target=pendingLocalRestore;
+    dismissRestoreReview();
+    restoreSnapshot(target);
+  });
+  document.querySelectorAll('[data-vix-operator-jump]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const id=button.getAttribute('data-vix-operator-jump');
+      document.getElementById(id)?.scrollIntoView({behavior:'instant',block:'start'});
+    });
+  });
+
   function resetBaseline() {
     selectedConjectureId = null;
-    return restoreSnapshot('syn-0000-baseline');
+    return requestRestoreSnapshot('syn-0000-baseline');
   }
 
   function getSessionSnapshot() {
@@ -6352,7 +6437,7 @@ import {
     scoreCandidates: () => scoreUnifiedSynthesisCandidates({ corpus: live.corpus, lagTicks }),
     selectCandidate: promoteCandidate,
     getSessionSnapshot,
-    restoreSnapshot,
+    restoreSnapshot: requestRestoreSnapshot,
     authorInquiry,
     resetBaseline
   });
