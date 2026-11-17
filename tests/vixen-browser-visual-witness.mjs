@@ -120,6 +120,42 @@ try {
       'The manuscript must not create a nested horizontal scrollbar: '+JSON.stringify(reading));
     assert(reading.sourceCharacters>35000&&reading.custodyLabel.includes('Source integrity'),
       'Complete exact original derivative must remain available in its disclosure');
+    // RGI25: structural pass alone missed the ghastly white page in the
+    // operator screenshot. Inspect true computed styles and test the controls.
+    const noirWitness=await manuscript.evaluate(el=>{
+      const style=getComputedStyle(el);
+      const first=el.querySelector('.vix-reader-paragraph');
+      const ps=first?getComputedStyle(first):null;
+      const paint=el.getBoundingClientRect();
+      return {background:style.backgroundImage,textColor:style.color,
+        fontSize:parseFloat(style.fontSize),lineHeight:parseFloat(style.lineHeight),
+        firstLineHeight:ps?parseFloat(ps.lineHeight):0,
+        paragraphMargin:ps?parseFloat(ps.marginBottom):0,
+        width:paint.width,padding:parseFloat(style.paddingLeft),
+        density:el.dataset.folioDensity,
+        pageControls:!!document.getElementById('vixFolioNext'),
+        footer:!!document.querySelector('.vix-folio-footer')};
+    });
+    assert.match(noirWitness.background, /12,\s*21,\s*25|18,\s*29,\s*34/,
+      'Noir Folio must NOT be the oversized white-paper manuscript: '+JSON.stringify(noirWitness));
+    assert(noirWitness.fontSize>=14&&noirWitness.fontSize<=17.5,
+      'Compact manuscript font must remain comfortably dense: '+JSON.stringify(noirWitness));
+    assert(noirWitness.paragraphMargin<=16&&noirWitness.padding<=28&&noirWitness.pageControls&&noirWitness.footer,
+      'Noir Folio must use tight editorial rhythm and true navigational controls: '+JSON.stringify(noirWitness));
+    await workMount.locator('[data-folio-density="comfort"]').click();
+    assert.equal(await manuscript.getAttribute('data-folio-density'),'comfort');
+    assert.equal(await workMount.locator('[data-folio-density="comfort"]').getAttribute('aria-pressed'),'true');
+    await workMount.locator('[data-folio-density="compact"]').click();
+    assert.equal(await manuscript.getAttribute('data-folio-density'),'compact');
+    const beforeScroll=await manuscript.evaluate(el=>el.scrollTop);
+    await workMount.locator('#vixFolioNext').click();
+    await page.waitForTimeout(320);
+    const afterScroll=await manuscript.evaluate(el=>el.scrollTop);
+    assert(afterScroll>beforeScroll+20,'NEXT must genuinely page through the manuscript');
+    await workMount.locator('#vixFolioPrevious').click();
+    await page.waitForTimeout(320);
+    assert(Number((await manuscript.evaluate(el=>el.scrollTop)))<afterScroll,
+      'PREVIOUS must return toward the manuscript start');
     await page.evaluate(()=>{
       const n=document.querySelector('#expaCompanionBodyPre');
       n.scrollTop=0;
@@ -376,6 +412,43 @@ try {
     if(scrollAudit.meshZ!==null&&Number.isFinite(scrollAudit.cardZ)){
       assert(scrollAudit.cardZ>scrollAudit.meshZ,'Cards must composite above #vixenLivingMesh: '+JSON.stringify(scrollAudit));
     }
+    // RGI25: browser must show distinct Vixen/TD613 source analysis without
+    // copying a podium event or exposing operator-only method acronyms.
+    const cardAudit=await page.locator('#ciCandidateGrid').evaluate(el=>{
+      const cards=[...el.querySelectorAll('.ci-candidate-card')];
+      const data=cards.map(card=>({
+        id:card.dataset.candidateId,
+        title:card.querySelector('.ci-conj-title')?.textContent||'',
+        subtitle:card.querySelector('.ci-candidate-subtitle')?.textContent||'',
+        prose:card.querySelector('.ci-conj-body')?.textContent||'',
+        score:card.querySelector('.ci-cand-score')?.textContent||'',
+        axes:card.querySelectorAll('.ci-axis').length,
+        details:card.querySelectorAll('details.ci-candidate-explanation').length
+      }));
+      return {cards:data,publicText:el.innerText,
+        keyCount:document.querySelectorAll('.ci-candidate-key span').length};
+    });
+    assert(cardAudit.cards.length>=8,'Multi-axis Vixen candidate ranking must render');
+    assert.equal(cardAudit.keyCount,5,'A visible scoring legend must explain the reading order');
+    assert(cardAudit.cards.every(c=>c.axes===8&&c.details===1),
+      'Every candidate must expose all eight weighted axes and a test question');
+    assert(cardAudit.cards.some(c=>c.id==='cand-vixen-documentary-route'),
+      'TD613 documentary route analysis must be a native candidate, not an SRC attribution');
+    assert(cardAudit.cards.every(c=>!/\\bSRC\\b|\\bFADT\\b|SignalRupture/i.test(c.title+' '+c.subtitle+' '+c.prose)),
+      'Public candidate descriptions must define concepts without leaking internal agent acronyms');
+    const texts=cardAudit.cards.map(c=>c.subtitle+'|'+c.prose);
+    assert.equal(new Set(texts).size,texts.length,
+      'Distinct scored hypotheses must never be identical boilerplate');
+    assert(cardAudit.cards.every(c=>/\\d+\\.\\d%/.test(c.score)),
+      'Weighted numeric rankings must be retained as rubric scores');
+    await page.locator('#ciCandidateGrid details.ci-candidate-explanation summary').first().click();
+    assert.equal(await page.locator('#ciCandidateGrid details.ci-candidate-explanation').first().getAttribute('open'),'',
+      'Scientific rationale must be accessible through an interactive disclosure');
+    await page.screenshot({
+      path:path.join(output,stem+'-rgi25-ranked-proposals-no-boilerplate.png'),
+      fullPage:false,animations:'disabled',timeout:60000
+    });
+    await page.locator('#ciCandidateGrid details.ci-candidate-explanation summary').first().click();
     await foyer.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     await page.screenshot({
