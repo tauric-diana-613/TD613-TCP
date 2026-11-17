@@ -5,7 +5,7 @@ import {pointOnFieldPath} from '../app/encyclopedia/vixen-estate/vixen-salon-amb
 import {
  MESH_CONTRACT,ELECTRIC_COUTURE,buildLivingMesh,paintLivingMesh,
  meshOcclusionMode,MOBILE_STACKING_ONLY_MAX_WIDTH,
- MESH_ANIMATION_TARGET_FPS,MESH_VISUAL_TEMPO,meshFrameIntervalMs
+ MESH_ANIMATION_TARGET_FPS,MESH_VISUAL_TEMPO,meshFrameIntervalMs,adaptMeshPaintQuality
 } from '../app/encyclopedia/vixen-estate/vixen-live-mesh-rgi13.mjs';
 const root=new URL('../app/encyclopedia/',import.meta.url);
 const page=await readFile(new URL('./vix-cyb.html',root),'utf8');
@@ -134,8 +134,9 @@ test('iPhone scroll uses permanent foreground compositing, never time-lagged rec
  for(const width of [320,375,390,428,680,740]){
   assert.equal(meshOcclusionMode(width),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
  }
- assert.equal(meshOcclusionMode(741),'RECTANGLE_COMPLEMENT');
- assert.equal(meshOcclusionMode(1024),'RECTANGLE_COMPLEMENT');
+ assert.equal(meshOcclusionMode(741),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+ assert.equal(meshOcclusionMode(1024),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+ assert.equal(meshOcclusionMode(2560),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
  const meshSource=await readFile(new URL('./vixen-estate/vixen-live-mesh-rgi13.mjs',root),'utf8');
  const section=meshSource.slice(meshSource.indexOf('function readExclusions('),
   meshSource.indexOf('function draw('));
@@ -178,4 +179,43 @@ test('Vixen optical breath uses 60Hz presentation and visible motion without mob
   'A charge must visibly traverse about 23% of its strand each second');
  assert.equal(frame1.field.pairs.length,frame0.field.pairs.length,
   'Visual tempo cannot silently remove radiometric source pairs');
+});
+
+test('all-width compositor uses stable z1/z2 foreground while retaining exact stage-rect clipping',async()=>{
+ for(const width of [390,428,740,741,1024,1440,2560])
+  assert.equal(meshOcclusionMode(width),'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+ const source=await readFile(new URL('./vixen-estate/vixen-live-mesh-rgi13.mjs',root),'utf8');
+ assert.match(source,/exclusions:rect\?\[\.\.\.exclusions,rect\]:exclusions/);
+ assert.match(source,/opticalField:preview,pointer,scroll:0/);
+ const light=await readFile(new URL('./vixen-estate/vixen-opaline-couture-rgi14.css',root),'utf8');
+ assert.match(light,/#vixenLivingMesh\s*\{\s*z-index:1!important/);
+});
+
+test('frame-budget adaptation reduces only raster commands and recovers with hysteresis',()=>{
+ let q={stride:1,slow:0,fast:0};
+ for(let i=0;i<3;i++)q=adaptMeshPaintQuality(q,{paintMs:14,frameMs:34});
+ assert.equal(q.stride,2,'Missed frame deadlines should engage cheaper raster strokes');
+ for(let i=0;i<3;i++)q=adaptMeshPaintQuality(q,{paintMs:14,frameMs:34});
+ assert.equal(q.stride,4,'Persistent contention should choose quarter-detail raster');
+ for(let i=0;i<149;i++)q=adaptMeshPaintQuality(q,{paintMs:1.3,frameMs:16.67});
+ assert.equal(q.stride,4,'Do not oscillate quality after a few good frames');
+ q=adaptMeshPaintQuality(q,{paintMs:1.3,frameMs:16.67});
+ assert.equal(q.stride,2,'Gradually recover on sustained good frame budgets');
+ for(let i=0;i<150;i++)q=adaptMeshPaintQuality(q,{paintMs:1.3,frameMs:16.67});
+ assert.equal(q.stride,1,'Restore full raster detail when stable');
+ for(const width of [390,1440]){
+  const model=buildLivingMesh({width,height:width===390?844:900,time:4.25});
+  const counts=[];
+  for(const stride of [1,2,4]){
+   const {context,events}=fakeCtx();
+   paintLivingMesh(context,model,{detailStride:stride});
+   counts.push(events.filter(x=>x[0]==='L').length);
+  }
+  assert(counts[0]>counts[1]&&counts[1]>counts[2],
+   'Optical raster overload should reduce path commands at '+width+'px');
+  assert(counts[2]<counts[0]*.55,'Quarter-detail should materially lower Canvas2D work');
+  assert.equal(model.scene.trails.length,51);
+  assert.equal(model.fibers.length,39);
+  assert(model.scene.crossings.every(x=>x.points.every(p=>p.length===3)));
+ }
 });
