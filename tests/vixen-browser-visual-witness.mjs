@@ -116,6 +116,24 @@ try {
       'Never render word-per-line PDF fragments: '+JSON.stringify(reading));
     assert(reading.manuscriptWidth>Math.min(width*.6,320),
       'The manuscript must own a substantial readable paper width: '+JSON.stringify(reading));
+    if(reading.horizontalOverflow>2){
+      const overflowEvidence=await manuscript.evaluate(root=>{
+        const outer=root.getBoundingClientRect();
+        return [...root.querySelectorAll('*')].map(el=>{
+          const box=el.getBoundingClientRect();
+          const style=getComputedStyle(el);
+          return {
+            tag:el.tagName, cls:String(el.className?.baseVal||el.className||'').slice(0,100),
+            left:Math.round(box.left),right:Math.round(box.right),width:Math.round(box.width),
+            scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,
+            overflowX:style.overflowX,whiteSpace:style.whiteSpace,
+            sample:(el.childNodes.length===1&&el.firstChild.nodeType===3?el.textContent:'').slice(0,100)
+          };
+        }).filter(e=>e.right>outer.right+3 || e.width>outer.width+3 ||
+            e.scrollWidth>e.clientWidth+outer.width).sort((a,b)=>(b.right-b.left)-(a.right-a.left)).slice(0,15);
+      });
+      console.error('VIXEN_MANUSCRIPT_OVERFLOW_DIAGNOSTIC',JSON.stringify({reading,overflowEvidence}));
+    }
     assert(reading.horizontalOverflow<=2,
       'The manuscript must not create a nested horizontal scrollbar: '+JSON.stringify(reading));
     assert(reading.sourceCharacters>35000&&reading.custodyLabel.includes('Source integrity'),
