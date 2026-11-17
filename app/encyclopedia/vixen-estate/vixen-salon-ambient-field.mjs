@@ -45,10 +45,26 @@ function sampleBeatScalar(pairs,x,y,time){
  }
  return beat/n;
 }
+// Interpolating cubic Hermite (Catmull-Rom): charge moves C1-continuously
+// through every retained prepaint vertex, including the sewn midpoint.
+// Sampled geometry and triangular cross-links remain untouched.
 export function pointOnFieldPath(points,u){
+ if(!Array.isArray(points)||points.length<2)throw new TypeError('FIELD_PATH_NEEDS_VERTICES');
  const q=clamp(u)*(points.length-1),i=Math.min(points.length-2,Math.floor(q)),t=q-i;
- const a=points[i],b=points[i+1];
- return [mix(a[0],b[0],t),mix(a[1],b[1],t),mix(a[2],b[2],t)];
+ const a=points[i],b=points[i+1],prev=points[Math.max(0,i-1)],
+  next=points[Math.min(points.length-1,i+2)];
+ const t2=t*t,t3=t2*t,h0=2*t3-3*t2+1,h1=t3-2*t2+t,
+  h2=-2*t3+3*t2,h3=t3-t2;
+ return [h0*a[0]+h1*(b[0]-prev[0])*.5+h2*b[0]+h3*(next[0]-a[0])*.5,
+  h0*a[1]+h1*(b[1]-prev[1])*.5+h2*b[1]+h3*(next[1]-a[1])*.5,
+  h0*a[2]+h1*(b[2]-prev[2])*.5+h2*b[2]+h3*(next[2]-a[2])*.5];
+}
+// C1 fade at the periodic phase seam prevents end-of-track spark teleporting
+// and sudden luminous beam-tail reappearance. Lane phases stay staggered.
+export function chargeSeamEnvelope(phase,edge=.065){
+ const p=((phase%1)+1)%1;
+ const fade=u=>{const t=clamp(u);return t*t*(3-2*t)};
+ return fade(p/edge)*fade((1-p)/edge);
 }
 /** Mesh coordinates are computed BEFORE paint, including the moving charge.
  * Every lane has a shared midpoint with one material junction. Staggered
@@ -151,7 +167,8 @@ export function buildSalonField({width,height,time=0,field,cx=width*.74,cy=heigh
  for(const t of trails){
   if(t.lane%3!==0)continue;
   const beat=sampleBeatScalar(pairs,t.phase*54,t.lane,time);
-  nodes.push({point:t.pulse,power:.48+.42*(.5+.5*beat),color:t.color,layer:t.layer,trailId:t.id});
+  nodes.push({point:t.pulse,power:.48+.42*(.5+.5*beat),
+    visibility:chargeSeamEnvelope(t.phase),color:t.color,layer:t.layer,trailId:t.id});
  }
  return {width,height,time,sourceIds:[...sourceIds],cx,cy,scale,trails,crossings,nodes,contacts,
   metadata:{pairs:pLen,clock_source:'FOLDED_CUIRASS_SHARED',claim_class:'ARTISTIC_VISUAL_ONLY',
@@ -161,6 +178,23 @@ export function traceFieldPath(ctx,points){
  if(!points.length)return;
  ctx.moveTo(points[0][0],points[0][1]);
  for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);
+}
+// The three bright leading beams have interpolating silk Bézier tangents.
+// Every original sample vertex remains on the drawn path; the dense background
+// weave and its exact shared crossing endpoints remain lightweight straight.
+export function traceSilkBeam(ctx,points){
+ if(!points.length)return;
+ if(typeof ctx.bezierCurveTo!=='function'||points.length<3){
+  traceFieldPath(ctx,points);return;
+ }
+ ctx.moveTo(points[0][0],points[0][1]);
+ for(let i=0;i<points.length-1;i++){
+  const a=points[i],b=points[i+1],
+   prev=points[Math.max(0,i-1)],next=points[Math.min(points.length-1,i+2)];
+  const k=.13;
+  ctx.bezierCurveTo(a[0]+(b[0]-prev[0])*k,a[1]+(b[1]-prev[1])*k,
+   b[0]-(next[0]-a[0])*k,b[1]-(next[1]-a[1])*k,b[0],b[1]);
+ }
 }
 export function paintFieldSpark(ctx,p,power,color='pink',scale=400){
  const r=Math.min(18,scale*.018+11*power),x=p[0],y=p[1],a=clamp(power);
@@ -203,7 +237,7 @@ export function paintSalonField(ctx,model,{layer='all',intensity=1}={}){
  // Leading threads travel through their sewn contacts into the page.
  for(const t of scene.trails){
   if(t.lane!==8||(!all&&t.layer!==layer))continue;
-  ctx.beginPath();traceFieldPath(ctx,t.points);
+  ctx.beginPath();traceSilkBeam(ctx,t.points);
   ctx.strokeStyle=t.band===0?'#ffd798':'#fa82b9';
   ctx.lineWidth=5.4;ctx.globalAlpha=.19*power;ctx.stroke();
   ctx.lineWidth=2.7;ctx.globalAlpha=.46*power;ctx.stroke();
@@ -215,19 +249,27 @@ export function paintSalonField(ctx,model,{layer='all',intensity=1}={}){
  for(const t of scene.trails){
   if((!all&&t.layer!==layer)||(t.lane%3!==0&&t.lane!==8))continue;
   const start=Math.max(0,t.phase-.065),mid=mix(start,t.phase,.55);
+  const c0=pointOnFieldPath(t.points,mix(start,mid,.5));
+  const c1=pointOnFieldPath(t.points,mix(mid,t.phase,.5));
   const p0=pointOnFieldPath(t.points,start),p1=pointOnFieldPath(t.points,mid),p2=t.pulse;
-  ctx.beginPath();ctx.moveTo(p0[0],p0[1]);ctx.lineTo(p1[0],p1[1]);
-  ctx.strokeStyle=palette[t.color];ctx.lineWidth=1.5;ctx.globalAlpha=.56*power;ctx.stroke();
-  ctx.beginPath();ctx.moveTo(p1[0],p1[1]);ctx.lineTo(p2[0],p2[1]);
-  ctx.strokeStyle='#fffef3';ctx.lineWidth=1.9;ctx.globalAlpha=.88*power;ctx.stroke();
+  const seam=chargeSeamEnvelope(t.phase);
+  ctx.beginPath();ctx.moveTo(p0[0],p0[1]);
+  if(typeof ctx.quadraticCurveTo==='function')ctx.quadraticCurveTo(c0[0],c0[1],p1[0],p1[1]);
+  else ctx.lineTo(p1[0],p1[1]);
+  ctx.strokeStyle=palette[t.color];ctx.lineWidth=1.5;ctx.globalAlpha=.56*power*seam;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(p1[0],p1[1]);
+  if(typeof ctx.quadraticCurveTo==='function')ctx.quadraticCurveTo(c1[0],c1[1],p2[0],p2[1]);
+  else ctx.lineTo(p2[0],p2[1]);
+  ctx.strokeStyle='#fffef3';ctx.lineWidth=1.9;ctx.globalAlpha=.88*power*seam;ctx.stroke();
  }
  for(let i=0,lim=Math.min(SALON_FIELD_POLICY.max_sparks,scene.nodes.length);i<lim;i++){
-  const n=scene.nodes[i];if(all||n.layer===layer)paintFieldSpark(ctx,n.point,n.power*power,n.color,scale);
+  const n=scene.nodes[i];if(all||n.layer===layer)paintFieldSpark(ctx,n.point,n.power*(n.visibility??1)*power,n.color,scale);
  }
  for(let i=8;i<scene.contacts.length;i+=17){
   const t=scene.trails[scene.contacts[i].trailId];if(!all&&t.layer!==layer)continue;
   const d=Math.abs(t.phase-.5),charge=Math.exp(-d*d/.0036);
-  if(charge>.025)paintFieldSpark(ctx,scene.contacts[i].point,.25+.75*charge,'champagne',scale);
+  if(charge>.025)paintFieldSpark(ctx,scene.contacts[i].point,
+   (.25+.75*charge)*chargeSeamEnvelope(t.phase),'champagne',scale);
  }
  ctx.restore();return scene;
 }
