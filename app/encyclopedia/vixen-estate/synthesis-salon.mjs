@@ -305,11 +305,12 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
    const w=getWork(i),side=mk('article','vs-source-card');
    side.dataset.estate='EMSTD613';
    append(side,
-    paragraph((i===0?'I':'II')+' · VIXEN PERFORMER · RECORDED WORK','vs-source-tag'),
+    paragraph((i===0?'I':'II')+' · ORIGINAL RECORDED WORK · SOURCE-TITLE','vs-source-tag'),
     select('Choose Work '+(i+1),corpus.works.map((x,j)=>({
      id:x.work_id,label:String(j+1).padStart(2,'0')+' · '+titleText(x)
     })),w.work_id,v=>chooseWork(i,v)),
     mk('h3','vs-work-title',titleText(w)),
+    paragraph('RECORDED CATALOGUE TITLE · NOT A GENERATED SYNTHESIS CANDIDATE · AUTHORSHIP UNRESOLVED','vs-title-provenance'),
     makeSelectSource(w,state.sources[i],v=>pickSource(i,v))
    );
    const src=w.linked_sources.find(x=>x.source_file_id===state.sources[i]);
