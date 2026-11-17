@@ -84,6 +84,57 @@ jobs:
             echo 'practice_fixture_changed=false' >> "$GITHUB_OUTPUT"
           fi
 
+  # Operator RGI20: release a reviewable iPhone screenshot BEFORE the long
+  # Vixen geometry suite finishes. Standalone job, no deployment rights.
+  vixen_mobile_first_frame:
+    name: Vixen iPhone frontispiece first-frame REDPEN witness
+    needs: scope
+    if: >-
+      needs.scope.outputs.head_is_current == 'true' &&
+      github.event_name == 'pull_request' &&
+      github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Prepare isolated mobile Chromium
+        run: |
+          npm ci
+          npm install --no-save --package-lock=false "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Capture mobile first-frame chrome and locked anchors
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 6130 --bind 127.0.0.1 --directory app >"$RUNNER_TEMP/vixen-mobile-http.log" 2>&1 &
+          server_pid="$!"
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 25); do
+            if curl -fsSI http://127.0.0.1:6130/encyclopedia/vix-cyb.html >/dev/null; then break; fi
+            sleep .2
+          done
+          node tests/vixen-mobile-frontispiece-witness.mjs
+      - name: Publish FIRST mobile screenshots for independent self-adjudication
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-mobile-redpen-${{ github.event.pull_request.head.sha }}
+          path: artifacts/vixen-mobile-redpen/
+          retention-days: 14
+          if-no-files-found: warn
+
   vixen_browser_qualification:
     name: Vixen exact-head Chromium source-first geometry witness
     needs: scope
