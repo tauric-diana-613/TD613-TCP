@@ -55,3 +55,18 @@ test('native executables refuse private index omission or repository-local discl
  assert.throws(()=>native.SRC_ATELIER({operation:'src_native_epoch_query',payload:{}}),
   /HELD_NATIVE_INPUT_REQUIRED/);
 });
+
+test('Vixen browser loads new editorial system without exposing native estate toolkits as Opera labels',()=>{
+ const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
+ const css=readFileSync(resolve(repo,'app/encyclopedia/vixen-estate/vixen-obsidian-reading-rgi26.css'),'utf8');
+ assert.match(html,/href="\.\/vixen-estate\/vixen-obsidian-reading-rgi26\.css"/);
+ assert.doesNotMatch(html,/href="\.\/vixen-estate\/vixen-noir-folio-rgi25\.css"/);
+ assert.match(html,/ci-scoring-primer/);
+ assert.match(html,/An instrument for asking better questions/);
+ assert.match(html,/THE OBSIDIAN READING ROOM/);
+ assert.doesNotMatch(html,/>FADT Exact \[C3\]/);
+ assert.doesNotMatch(html,/>FADT &amp; XOR SYNERGY/);
+ assert.match(css,/#expaCompanionBodyPre/);
+ assert.match(css,/#constitutiveInquiry \.ci-candidate-card/);
+ assert.doesNotMatch(css,/background:\s*(?:white|#fff(?:fff)?)[;\s!]/i);
+});
