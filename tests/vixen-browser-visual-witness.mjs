@@ -408,7 +408,15 @@ try {
       path:path.join(output,'vixen-'+width+'x'+height+'-mugler-chromepunk-frontispiece.png'),
       fullPage:false
     });
-    // Exercise #constitutiveInquiry ranked candidate promotion and verify active wheel-scroll lock on panels
+    // The public Entrance now invites inquiry; the candidate cards live in
+    // the source-first Salon, never behind a rollback panel on the frontispiece.
+    assert.equal(await page.locator('#view-overview #ciSynthesisLogList').count(),0);
+    assert.equal(await page.locator('#view-overview #ciCandidateGrid').count(),0);
+    assert.equal(await page.locator('#view-overview #ciMetricVernier').count(),0);
+    await page.locator('#vixenRoomRail button[data-view="collection"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'collection');
+    // Exercise #constitutiveInquiry ranked candidate scoring inside Salon and
+    // verify the active wheel-scroll lock on its instrument cards.
     const scrollAudit=await page.evaluate(async()=>{
       const iq=document.getElementById('constitutiveInquiry');
       const mesh=document.getElementById('vixenLivingMesh');
@@ -472,6 +480,7 @@ try {
       fullPage:false,animations:'disabled',timeout:60000
     });
     await page.locator('#ciCandidateGrid details.ci-candidate-explanation summary').first().click();
+    await page.locator('#vixenRoomRail button[data-view="overview"]').click();
     await foyer.scrollIntoViewIfNeeded();
     await page.waitForTimeout(100);
     await page.screenshot({
@@ -802,6 +811,40 @@ try {
     await seam.click();
     const secondOrder=await seam.locator('.vs-seam-op').innerText();
     assert.notEqual(firstOrder,secondOrder,'Route flip remains functional after layout repair');
+    // 𝄐 PROSCENIUM SEAM: browser witness the actual routed human operator
+    // workspace and a non-mutating review/cancel of local rollback.
+    await page.locator('.footer [data-view="operator"]').click();
+    assert.equal(await page.evaluate(()=>document.body.dataset.view),'operator');
+    const op=page.locator('#view-operator');
+    assert.equal(await op.isVisible(),true);
+    assert.equal(await page.locator('#view-overview #ciSynthesisLogList').count(),0);
+    assert.equal(await op.locator('#ciSynthesisLogList').count(),1);
+    assert.equal(await op.locator('#ciMetricVernier').count(),1);
+    assert.equal(await op.locator('#ciResetBtn').count(),1);
+    await op.locator('.ci-log-row').first().waitFor({state:'visible',timeout:10000});
+    const beforeLogCount=await op.locator('.ci-log-row').count();
+    const candidateRestore=op.locator('button[data-rollback-entry]').first();
+    await candidateRestore.waitFor({state:'visible',timeout:12000});
+    await candidateRestore.click();
+    const review=page.locator('#vixenRestoreReviewDialog');
+    assert.equal(await review.isVisible(),true,'Restore must open comparative review');
+    assert.equal(await review.locator('#vixRestoreReviewConfirm').isDisabled(),true,
+      'Local restore requires positive scope acknowledgement');
+    assert.match(await review.locator('#vixRestoreComparison').innerText(),
+      /REVIEWING .* CURRENT PRESENTATION .* LATEST SESSION EVENT/);
+    assert.match(await review.innerText(),/persisted composition remains held|persistent Compose approval/i);
+    if(width<=680){
+      await page.screenshot({path:path.join(output,stem+'-operator-restore-review.png'),fullPage:false});
+    }
+    await review.locator('#vixRestoreReviewCancel').click();
+    assert.equal(await review.isVisible(),false);
+    assert.equal(await op.locator('.ci-log-row').count(),beforeLogCount,
+      'Cancel must never append a rollback or mutate the loaded ledger');
+    assert((await page.evaluate(()=>document.documentElement.scrollWidth))<=width+2,
+      'Podium Settings must not create horizontal document overflow');
+    await op.locator('#ciLogCount').scrollIntoViewIfNeeded();
+    await page.screenshot({path:path.join(output,stem+'-proscenium-operator-ledger.png'),fullPage:false});
+    await page.locator('#vixenRoomRail button[data-view="collection"]').click();
     await page.locator('#menuToggle').click();
     await page.locator('#mobileNav button[data-view="reference"]').click();
     await page.locator('#vixenReferenceChamber .vxe-source-folio').first().waitFor();
