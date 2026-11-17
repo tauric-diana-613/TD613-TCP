@@ -303,7 +303,7 @@ test('Recorded title remains source-owned while candidates reject an Architectur
    assert(!names.has(cand.title),'Two candidates reuse the same generated title: '+cand.title);
    names.add(cand.title);
    for(const field of ['title','headerTagline','patternSubtitle','heroStatement']){
-    assert.doesNotMatch(String(cand[field]||''),/\\bTHE\\s+ARCHITECTURE\\s+OF\\b/i,
+    assert.doesNotMatch(String(cand[field]||''),/\bTHE\s+ARCHITECTURE\s+OF\b/i,
      'Generated candidate '+cand.id+' recycled a formulaic '+field);
    }
   }
