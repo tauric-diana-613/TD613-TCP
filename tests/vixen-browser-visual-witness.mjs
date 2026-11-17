@@ -529,14 +529,20 @@ try {
       return api&&api.status().backend!=='PENDING';
     },null,{timeout:25000});
     const wardrobe=page.locator('#formulaFolioGrid');
-    assert.equal(await wardrobe.locator('.formula-card').count(),22,
-      'All twenty-two mathematical Folios must remain materially present in the original source archive');
+    const archiveCensus=await page.evaluate(()=>{
+      const records=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent).formula_folios;
+      return {total:records.length,technical:records.filter(x=>x.group==='couture').length};
+    });
+    assert.deepEqual(archiveCensus,{total:22,technical:14},
+      'Original archive preserves all 22 records including 14 reference methods');
+    assert.equal(await wardrobe.locator('.formula-card').count(),8,
+      'Only eight Vixen theory folios are onstage; technical records are not Performers');
     assert.equal(await wardrobe.getAttribute('data-expanded'),'false');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
-      'Source-first couture gallery must not dump all twenty-two cards on initial encounter');
+      'Vixen theory wardrobe must open with four curated source-grounded cards');
     assert.deepEqual(await wardrobe.locator('.formula-card:visible').evaluateAll(nodes=>nodes.map(n=>n.dataset.folioId)),
-      ['TCC-01','TCC-04','RC-03','RC-10'],
-      'Featured edit must span original Cybernetics and Refractive Couture families, not blindly show first four metadata rows');
+      ['TCC-01','TCC-04','TCC-05','TCC-06'],
+      'Featured edit stays strictly within Vixen theory subject identity');
     const galleryReveal=page.locator('#formulaGalleryReveal');
     assert.equal(await galleryReveal.isVisible(),true);
     await page.evaluate(()=>{
@@ -559,16 +565,26 @@ try {
       if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
     }
     await galleryReveal.click();
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),22,
-      'Explicit gallery opening must reveal every original mathematical Folio');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),8,
+      'Explicit gallery reveal exposes all eight theory folios while preserving technical records offstage');
     assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
-      'Curated gallery should close without deleting or modifying original source nodes');
+      'The curated gallery closes without changing immutable source records');
     await page.locator('#formulaSearchInput').fill('RC-07');
-    assert.equal(await wardrobe.getAttribute('data-expanded'),'true',
-      'An explicit search must not hide matching source Folios behind curation');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
+      'Search must not promote engineering methods into Vixen theory performers');
+    await page.locator('#formulaSearchInput').fill('TCC-04');
+    assert.equal(await wardrobe.getAttribute('data-expanded'),'true');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),1);
+    await wardrobe.locator('[data-folio-id="TCC-04"] [data-compute-vixen-folio]').click();
+    await page.waitForFunction(()=>{
+      const receipt=document.querySelector('[data-folio-id="TCC-04"] [data-vixen-computation]');
+      return receipt&&!receipt.hidden&&/LIVE SOURCE-BOUND COMPUTATION|COMPUTATION HELD/.test(receipt.textContent);
+    },null,{timeout:30000});
+    assert.match(await wardrobe.locator('[data-folio-id="TCC-04"] [data-vixen-computation]').textContent(),
+      /LIVE SOURCE-BOUND COMPUTATION · TCC-04/,
+      'The on-demand source-bound computational bridge must execute successfully');
     await page.locator('#formulaSearchInput').fill('');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
     const foundry=page.locator('#vixenElectricFoundry');
