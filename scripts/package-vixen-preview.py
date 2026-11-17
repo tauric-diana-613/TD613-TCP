@@ -86,12 +86,24 @@ def main(out):
     }
     route_ids = [item["id"] for item in podium_routes]
     compose_routes = {"podium.score", "podium.redpen", "podium.compose"}
-    expected_routes = legacy_routes | fusion_routes | compose_routes
+    session_routes = {
+        "vixen.ai.start", "vixen.ai.choose", "vixen.ai.report", "vixen.ai.status",
+        "vixen.ai.notes", "vixen.ai.handoff", "vixen.ai.archive", "vixen.ai.finish"
+    }
+    expected_routes = legacy_routes | fusion_routes | compose_routes | session_routes
     assert (
-        len(route_ids) == len(expected_routes)
+        len(route_ids) == 27
+        and len(route_ids) == len(expected_routes)
         and len(set(route_ids)) == len(route_ids)
         and set(route_ids) == expected_routes
-    ), "Machine Podium requires all 16 legacy/fusion routes plus Score, Redpen review and Compose/HITL"
+    ), "Machine Podium must preserve 19 original routes and exactly eight role-locked AI session routes"
+    ai_contract = json.loads(podium.read_text(encoding="utf8"))["ai_roles"]
+    assert (
+        ai_contract["single_active_role"] is True
+        and ai_contract["role_change_requires_new_session"] is True
+        and ai_contract["program_notes"].startswith("OFF_UNTIL_INDEPENDENT_HUMAN_PERMISSION_VERIFIED")
+        and ai_contract["authority"]["corpus_mutations"] is False
+    ), "Maestro and Composer must remain read-only, exclusive, and independently permission-gated"
     assert 'id="operahouseEncounter"' in candidate, "Independent Operahouse witness room missing"
     assert (REF/"vixen-operator-encounter.mjs").is_file()
     assert (REF/"vixen-operator-encounter.css").is_file()
