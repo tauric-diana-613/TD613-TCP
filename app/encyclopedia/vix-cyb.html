@@ -521,7 +521,7 @@ body[data-view="overview"] .reading-back{display:none}
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-seams-rgi16.css" data-visual-system="VIXEN_OPERATOR_MOBILE_SEAM_REPAIR_RGI16">
 <link rel="stylesheet" href="./vixen-estate/vixen-mobile-reading-rgi17.css" data-visual-system="VIXEN_MOBILE_EDITORIAL_READING_RGI17">
 <link rel="stylesheet" href="./vixen-estate/vixen-redpen-couture-rgi18.css" data-visual-system="VIXEN_OPERATOR_REDPEN_COUTURE_RGI18">
-<link rel="stylesheet" href="./vixen-estate/vixen-noir-folio-rgi25.css" data-visual-system="VIXEN_NOIR_FOLIO_AND_INTERPRETABLE_SYNTHESIS_RGI25">
+<link rel="stylesheet" href="./vixen-estate/vixen-obsidian-reading-rgi26.css" data-visual-system="VIXEN_OBSIDIAN_EDITORIAL_READING_AND_PEDAGOGICAL_SCORING_RGI26">
 <link rel="modulepreload" href="./vixen-estate/observatory-electric-foundry.mjs">
 <link rel="modulepreload" href="./vixen-estate/synthesis-salon.mjs">
 <link rel="modulepreload" href="./vixen-estate/vixen-live-mesh-rgi13.mjs">
@@ -684,7 +684,7 @@ body[data-view="overview"] .reading-back{display:none}
       <aside class="cover-marginalia" id="synthAxiomMarginalia" aria-label="Unified Synthesis Axiom">
         <span>Phasonic Counterpoint · Two Crossed Probes</span>
         <span>Score 89.4% · κ=2.77 · Δ=3 inv · PHASONIC_COUNTERPOINT</span>
-        <span>FADT Exact [C3] · Credit 0</span>
+        <span>Verified classification boundaries · Independent evidence still required</span>
       </aside>
 
       <div class="cover-bottom">
@@ -810,7 +810,7 @@ body[data-view="overview"] .reading-back{display:none}
                 <div class="ci-metric-val" id="ciMetricMirror">ratio=0.177 · ⊥[111]</div>
               </div>
               <div class="ci-metric">
-                <div class="ci-metric-label">FADT &amp; XOR SYNERGY</div>
+                <div class="ci-metric-label">INFORMATION SYNERGY &amp; EVIDENCE PRESERVATION</div>
                 <div class="ci-metric-val" id="ciMetricFadtXor">1.00 bit · ⋂Sᵢ⊂U HOLD</div>
               </div>
             </div>
@@ -2991,7 +2991,7 @@ body[data-view="overview"] .reading-back{display:none}
             '<p style="font:500 10.5px/1.65 var(--font-mono)">Catalog Accession: <code>' + esc(sel.work_id) + '</code> · Identity Status: <strong>' + esc(sel.identity_status) + '</strong> · Contribution Interval: [' + sel.contribution_interval[0] + ', ' + sel.contribution_interval[1] + ']</p>' +
             '<div class="badge-row" style="margin-top:10px">' +
               sel.planes.map((pl) => '<span class="tag porcelain">' + esc(pl) + '</span>').join('') +
-              '<span class="tag dark">FADT c₄: 54 SUBSTANTIVE</span>' +
+              '<span class="tag dark">54 substantive files · 33 excluded system sidecars</span>' +
               '<span class="tag gold">CLOCK: DERIVATIVE_INDEXED</span>' +
             '</div>' +
           '</div>' +
@@ -3225,7 +3225,7 @@ body[data-view="overview"] .reading-back{display:none}
       bodyDisplayHtml =
         '<div class="vix-reading-atelier-bar" role="group" aria-label="Manuscript reading controls">' +
           '<div class="vix-folio-identity">' +
-            '<span class="vix-reading-atelier-eyebrow">THE NOIR FOLIO · READING EDITION</span>' +
+            '<span class="vix-reading-atelier-eyebrow">THE OBSIDIAN READING ROOM · EDITORIAL EDITION</span>' +
             '<span class="vix-reading-atelier-name">' + esc(work.declared_title || 'Recorded manuscript') + '</span>' +
             '<span class="vix-reading-atelier-custody">' + (String(activeSrc.media_type || '').includes('pdf') ? 'PDF text derivative · reading projection' : 'Native manuscript · original structure') + ' · source intact</span>' +
           '</div>' +
@@ -3830,7 +3830,7 @@ body[data-view="overview"] .reading-back{display:none}
         '<div class="insp-card">' +
           '<h3>HISTORICAL ESTATE (87 + 53) VS RECIPIENT CENSUS (94 + 53 = 147)</h3>' +
           '<div>• Historical 01-MANIFESTS/source-files.jsonl: <strong>87 files</strong> (7,938,934 B = 20 PDF [5,642,539 B] + 33 MD [1,534,070 B] + 1 Archive.zip [697,429 B] + 33 <code>._*</code> AppleDouble [64,896 B]).</div>' +
-          '<div>• FADT Packaging Fiber (c₄): Quarantines <strong>33 <code>._*</code> AppleDouble sidecars</strong> → <strong>54 substantive historical items</strong> (53 analyzable text/PDF manifestations + 1 container zip).</div>' +
+          '<div>• Source-package classification: Quarantines <strong>33 <code>._*</code> AppleDouble sidecars</strong> → <strong>54 substantive historical items</strong> (53 analyzable text/PDF manifestations + 1 container zip).</div>' +
           '<div>• Canonical Work Crosswalk: <strong>32 conditional Work routes</strong> (8 human-gated <code>UNADJUDICATED_PAIR</code>, 13 confirmed dual, 11 singletons; sensitivity interval <strong>[32, 40]</strong> across 2⁸ = 256 states).</div>' +
         '</div>' +
         '<div class="insp-card">' +
@@ -5852,6 +5852,8 @@ import {
   // in developer artifacts without implying ownership or attribution.
   const operaResearchLabel=value=>String(value||'')
     .replace(/\bFADT\b/g,'finite admissibility')
+    .replace(/\bSignalRupture\b/gi,'documentary route analysis')
+    .replace(/\bWendbine\b/gi,'external-source archive')
     .replace(/\bSRC\b/g,'documentary source-route')
     .replace(/\bOSSL\b/g,'recorded fork lineage')
     .replace(/\bL0\b/g,'vocabulary-only')
@@ -5917,7 +5919,7 @@ import {
       figure.className='ci-cand-score';
       figure.textContent=(candidate.score*100).toFixed(1)+'%';
       const why=document.createElement('span');
-      why.textContent='WEIGHTED MODEL FIT · NOT EMPIRICAL CONFIDENCE';
+      why.textContent='RUBRIC FIT · NEVER A PROBABILITY OF TRUTH';
       metrics.append(figure,why);
       const heading=document.createElement('h4');
       heading.className='ci-conj-title';
@@ -5938,7 +5940,7 @@ import {
       const detail=document.createElement('details');
       detail.className='ci-candidate-explanation';
       const toggle=document.createElement('summary');
-      toggle.textContent='INSPECT THE EIGHT SCORING AXES & FALSIFIER';
+      toggle.textContent='OPEN EVIDENCE LEDGER · EIGHT AXES & COUNTERTEST';
       detail.append(toggle);
       const axes=document.createElement('div');
       axes.className='ci-candidate-axes';
@@ -5968,13 +5970,38 @@ import {
       const button=document.createElement('button');
       button.type='button';
       button.className='ci-btn'+(active?' primary':'');
-      button.textContent=active?'CURRENTLY SELECTED ✓':'EXPLORE THIS PROPOSAL';
+      button.textContent=active?'CURRENTLY SELECTED ✓':'USE AS NEXT RESEARCH QUESTION';
       button.addEventListener('click',()=>promoteCandidate(candidate.id));
       foot.append(button);
       card.append(eyebrow,metrics,heading,subtitle,summary,domains,detail,foot);
       return card;
     });
-    grid.replaceChildren(...cards);
+    // Pedagogical framing is part of the evidence interface, not an opaque score.
+    const primer=document.createElement('section');
+    primer.className='ci-scoring-primer';
+    primer.setAttribute('aria-label','How to read scored research proposals');
+    const kicker=document.createElement('div');
+    kicker.className='ci-primer-kicker';
+    kicker.textContent='THE RESEARCH SCORE · AN EXPLAINED RUBRIC';
+    const headline=document.createElement('h3');
+    headline.className='ci-primer-title';
+    headline.textContent='An instrument for asking better questions—not awarding scientific truth.';
+    const explanation=document.createElement('p');
+    explanation.textContent='Every percentage is a weighted fit to eight declared research criteria. It estimates neither the likelihood of a theory being true nor authorship, causation, replication, or experimental verification. Candidate identity and explanation follow this Opera’s recorded research questions.';
+    const steps=document.createElement('div');
+    steps.className='ci-primer-grid';
+    for(const [label,explain] of [
+      ['01 · PROPOSE','Start with a distinct research question grounded in the recorded works.'],
+      ['02 · WEIGH','Open the ledger: each of eight axis ratings is multiplied by its published weight. The weights total 100%.'],
+      ['03 · CHALLENGE','Inspect the falsifier, unresolved source boundaries, and need for independent evidence before proceeding.']
+    ]){
+      const step=document.createElement('div');step.className='ci-primer-step';
+      const strong=document.createElement('strong');strong.textContent=label;
+      const body=document.createElement('span');body.textContent=explain;
+      step.append(strong,body);steps.append(step);
+    }
+    primer.append(kicker,headline,explanation,steps);
+    grid.replaceChildren(primer,...cards);
   }
 
   function recompute(patch) {
