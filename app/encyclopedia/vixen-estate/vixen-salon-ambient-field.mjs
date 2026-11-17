@@ -174,10 +174,17 @@ export function buildSalonField({width,height,time=0,field,cx=width*.74,cy=heigh
   metadata:{pairs:pLen,clock_source:'FOLDED_CUIRASS_SHARED',claim_class:'ARTISTIC_VISUAL_ONLY',
    junction_rule:'IDENTICAL_PREPAINT_VERTEX',triangular_edges:crossings.length}};
 }
-export function traceFieldPath(ctx,points){
+// The full 65-point source geometry remains untouched. Under an overloaded
+// compositor, draw ordinary garment strokes at a bounded sampling stride;
+// 32 (the sewn midpoint), both endpoints, and all 51 track identities remain
+// visible. The three hero beams are always rendered at full cubic detail.
+export function traceFieldPath(ctx,points,stride=1){
  if(!points.length)return;
+ const sample=stride===2||stride===4?stride:1;
  ctx.moveTo(points[0][0],points[0][1]);
- for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);
+ for(let i=sample;i<points.length;i+=sample)ctx.lineTo(points[i][0],points[i][1]);
+ const end=points.length-1;
+ if(end%sample!==0)ctx.lineTo(points[end][0],points[end][1]);
 }
 // The three bright leading beams have interpolating silk Bézier tangents.
 // Every original sample vertex remains on the drawn path; the dense background
@@ -217,7 +224,7 @@ export function paintFieldSpark(ctx,p,power,color='pink',scale=400){
  * light is finite source-over: no full-frame blur or cumulative screen wash.
  * The rear cloth, open chrome and foreground cloth are separate depth passes.
  */
-export function paintSalonField(ctx,model,{layer='all',intensity=1}={}){
+export function paintSalonField(ctx,model,{layer='all',intensity=1,detailStride=1}={}){
  const scene=model.scene||buildSalonField(model),power=clamp(intensity);
  const all=layer==='all';
  ctx.save();ctx.globalCompositeOperation='source-over';ctx.lineCap='round';ctx.lineJoin='round';
@@ -230,7 +237,7 @@ export function paintSalonField(ctx,model,{layer='all',intensity=1}={}){
  }
  for(const tone of ['pink','pearl','champagne']){
   ctx.beginPath();
-  for(const t of scene.trails)if((all||t.layer===layer)&&t.color===tone)traceFieldPath(ctx,t.points);
+  for(const t of scene.trails)if((all||t.layer===layer)&&t.color===tone)traceFieldPath(ctx,t.points,detailStride);
   ctx.strokeStyle=palette[tone];ctx.lineWidth=3.2;ctx.globalAlpha=.085*power;ctx.stroke();
   ctx.lineWidth=tone==='champagne'?1.05:.65;ctx.globalAlpha=(tone==='champagne'?.64:.46)*power;ctx.stroke();
  }
@@ -244,7 +251,13 @@ export function paintSalonField(ctx,model,{layer='all',intensity=1}={}){
   ctx.strokeStyle=t.band===0?'#fff9da':'#ffe7f3';
   ctx.lineWidth=1.1;ctx.globalAlpha=.84*power;ctx.stroke();
  }
- ctx.beginPath();for(const edge of scene.crossings)if(all||edge.layer===layer)traceFieldPath(ctx,edge.points);
+ ctx.beginPath();for(let i=0;i<scene.crossings.length;i++){
+  const edge=scene.crossings[i];
+  // Render half/quarter of fine cross-hatching only when overloaded;
+  // preserve the model's complete 111+ source-bound triangular edges.
+  if((detailStride===2||detailStride===4)&&i%detailStride!==0)continue;
+  if(all||edge.layer===layer)traceFieldPath(ctx,edge.points);
+ }
  ctx.strokeStyle='#ffbcda';ctx.lineWidth=.45;ctx.globalAlpha=.27*power;ctx.stroke();
  for(const t of scene.trails){
   if((!all&&t.layer!==layer)||(t.lane%3!==0&&t.lane!==8))continue;
