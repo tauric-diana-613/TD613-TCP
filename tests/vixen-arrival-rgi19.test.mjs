@@ -45,6 +45,8 @@ test('RGI19 requires finished first illustration and one persistent mesh',()=>{
  }};
  assert.equal(inspectOperaArrival(fake,happyWindow).cover_decoded,false);
  assert.equal(inspectOperaArrival(happyDoc,{}).critical_presentation_ready,false);
+ assert.equal(inspectOperaArrival(happyDoc,{VixenLivingMesh:{mounted:true},
+  VIXEN_ELECTRIC_FOUNDRY:{status:()=>({backend:'PENDING'})}}).critical_presentation_ready,false);
 });
 test('RGI19 warms static modules and first illustration from landing, without duplicating source engine',()=>{
  assert.equal(VIXEN_ARRIVAL_CONTRACT.rooms,8);
