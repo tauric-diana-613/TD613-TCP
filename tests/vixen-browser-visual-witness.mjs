@@ -96,7 +96,7 @@ try {
         return {guideWidth:r.width,documentWidth:document.documentElement.scrollWidth,
           headingBackground:getComputedStyle(heading).backgroundImage};
       });
-      assert(surface.guideWidth>250&&surface.documentWidth<=innerWidth+1,
+      assert(surface.guideWidth>250&&surface.documentWidth<=width+1,
         room+' couture surface must not overflow: '+JSON.stringify(surface));
       assert(!/rgb\(60,\s*20,\s*60\)/.test(surface.headingBackground),
         room+' heading should not regress to plum');
