@@ -117,7 +117,78 @@ try {
       'Approved image was cropped past the frontispiece top');
     assert(geom.chromatic.paintedBottom<=geom.hero.bottom,
       'Approved image was cropped past the frontispiece bottom');
-    witness.push({device,geom,errors});
+    // The 2026-11-17 iPhone REDPEN screenshot showed 39-carrier optical
+    // threads crossing an unregistered Entrance panel and hard-edged black
+    // mask rectangles popping in/out across the archive threshold.
+    // Reproduce on BOTH native-scale phone viewports after first-frame checks.
+    await page.waitForFunction(() => window.VixenLivingMesh?.status?.()?.rendered_frames>0,
+      {timeout:12000}).catch(()=>{});
+    const invitation=page.locator('#view-overview .vix-entrance-research-door');
+    assert.equal(await invitation.count(),1,'New invitation must be present once');
+    await invitation.scrollIntoViewIfNeeded();
+    await page.evaluate(()=>document.fonts.ready);
+    const initialPanel=await invitation.screenshot({animations:'disabled'});
+    const compositor=await page.evaluate(()=>{
+      const panel=document.querySelector('#view-overview .vix-entrance-research-door');
+      const cloth=document.querySelector('#vixenLivingMesh');
+      const mesh=window.VixenLivingMesh?.status?.()||null;
+      return {
+        panelZ:Number(getComputedStyle(panel).zIndex),
+        clothZ:Number(getComputedStyle(cloth).zIndex),
+        panelOpacity:getComputedStyle(panel).opacity,
+        panelBackground:getComputedStyle(panel).backgroundImage,
+        clothPosition:getComputedStyle(cloth).position,
+        clothHidden:getComputedStyle(cloth).display==='none',
+        clothFrameSize:[cloth.width,cloth.height],
+        mesh
+      };
+    });
+    assert(compositor.panelZ>=2&&compositor.clothZ===1,
+      'New foreground card must composite ABOVE the moving canvas: '+JSON.stringify(compositor));
+    assert.equal(compositor.panelOpacity,'1');
+    assert.match(compositor.panelBackground,/gradient/);
+    assert.equal(compositor.clothPosition,'fixed');
+    assert.equal(compositor.clothHidden,false,'Keep electrical artwork alive on mobile');
+    assert(compositor.clothFrameSize.every(n=>n>0),'Keep real canvas frames');
+    assert.equal(compositor.mesh?.occlusion_mode,'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+    assert.equal(compositor.mesh?.exclusion_count,0);
+    const target=await invitation.evaluate(el=>
+      Math.round(el.getBoundingClientRect().top+window.scrollY+el.offsetHeight*.4));
+    const positions=[Math.max(0,target-400),target-120,target+120,target+330,target-120];
+    const samples=[];
+    for(let i=0;i<positions.length;i++){
+      await page.evaluate(y=>window.scrollTo({top:y,behavior:'instant'}),positions[i]);
+      await page.waitForTimeout(140);
+      const sample=await page.evaluate(()=>{
+        const el=document.querySelector('#view-overview .vix-entrance-research-door');
+        const r=el.getBoundingClientRect(),s=getComputedStyle(el);
+        return {
+          scrollY:window.scrollY,top:r.top,bottom:r.bottom,
+          opacity:s.opacity,zIndex:s.zIndex,
+          mask:window.VixenLivingMesh?.status?.()?.occlusion_mode||null,
+          excluded:window.VixenLivingMesh?.status?.()?.exclusion_count??null,
+          route:document.body.dataset.view,
+          width:document.documentElement.scrollWidth
+        };
+      });
+      assert.equal(sample.route,'overview','Scrolling must not remount or change research rooms');
+      assert.equal(sample.opacity,'1','Entrance panel must never blink away mid-scroll');
+      assert.equal(sample.zIndex,'2','Foreground stack is invariant across scrolling');
+      assert.equal(sample.mask,'STACKING_ONLY_NO_SCROLL_RECT_MASKS');
+      assert.equal(sample.excluded,0,'No scroll-epoch canvas mask rectangle may reappear');
+      assert(sample.width<=device.width+2,'No mobile horizontal overflow from field or panel');
+      samples.push(sample);
+      if(i===2){
+        await page.screenshot({path:path.join(output,name+'-scroll-seam.png'),
+          fullPage:false,animations:'disabled'});
+      }
+    }
+    await invitation.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(100);
+    const repeatPanel=await invitation.screenshot({animations:'disabled'});
+    assert(initialPanel.equals(repeatPanel),
+      'Reduced-motion Entrance invitation must be pixel-identical after reverse momentum scrolling');
+    witness.push({device,geom,compositor,scrollSamples:samples,errors});
     await context.close();
   }
 } finally {await browser.close()}
