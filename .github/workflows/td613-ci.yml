@@ -235,6 +235,11 @@ jobs:
         run: |
           npm ci
           python -m pip install --disable-pip-version-check pytest sympy
+      - name: Wendbine native research-engine source restoration · exact original tests
+        run: |
+          python3 -m py_compile scripts/wendbine-*-v1.py
+          python3 -m unittest discover -s tests -p 'test_wendbine_*_v1.py' -v
+          node --test tests/atelier-method-v01.test.mjs
       - name: Enforce the four-workflow estate and release membrane
         run: |
           node tests/workflow-estate.test.mjs
