@@ -52,9 +52,30 @@ export function meshFrameIntervalMs(_viewportWidth){
  return 1000/MESH_ANIMATION_TARGET_FPS;
 }
 export const MOBILE_STACKING_ONLY_MAX_WIDTH=740;
-export function meshOcclusionMode(viewportWidth) {
- return viewportWidth<=MOBILE_STACKING_ONLY_MAX_WIDTH
-  ? 'STACKING_ONLY_NO_SCROLL_RECT_MASKS' : 'RECTANGLE_COMPLEMENT';
+// Foreground stacking now handles panel coverage on ALL viewport widths.
+// Desktop DOM-rectangle mask recomputations previously forced layout while
+// painting; avoiding that scroll-epoch race also reduces compositor stalls.
+export function meshOcclusionMode(_viewportWidth){
+ return 'STACKING_ONLY_NO_SCROLL_RECT_MASKS';
+}
+// Bounded, reversible raster-detail reduction only when measured frame
+// presentation or paint cost exceeds the 60Hz budget. The model, carrier
+// identities, joint vertices, temporal phase and source claim remain exact.
+export function adaptMeshPaintQuality(state,{paintMs=0,frameMs=0}={}){
+ const current=state||{stride:1,slow:0,fast:0};
+ const stride=[1,2,4].includes(current.stride)?current.stride:1;
+ const budget=1000/MESH_ANIMATION_TARGET_FPS;
+ const stressed=paintMs>budget*.46||frameMs>budget*1.42;
+ const severe=paintMs>budget*.75||frameMs>budget*2.25;
+ if(!Number.isFinite(paintMs)||!Number.isFinite(frameMs)||frameMs<=0)return {...current,stride};
+ if(stressed){
+  const slow=(current.slow||0)+(severe?2:1);
+  if(slow>=5)return {stride:Math.min(4,stride*2),slow:0,fast:0};
+  return {stride,slow,fast:0};
+ }
+ const fast=(current.fast||0)+1;
+ if(fast>=150&&stride>1)return {stride:stride/2,slow:0,fast:0};
+ return {stride,slow:0,fast};
 }
 const OCCLUSION_SELECTORS=Object.freeze([
  '.site-header .brand','.site-header button','.site-header a','.vixen-room-rail',
@@ -165,14 +186,14 @@ export function clipMeshExclusions(ctx,width,height,rects){
  }
 }
 export function paintLivingMesh(ctx,model,{intensity=1,scene=model.scene,origin={x:0,y:0},
- exclusions=[]}={}){
+ exclusions=[],detailStride=1}={}){
  if(!ctx||!scene?.trails)throw new TypeError('MESH_PAINT_REQUIRES_MODEL_AND_CONTEXT');
  ctx.clearRect(0,0,model.width,model.height);ctx.save();
  clipMeshExclusions(ctx,model.width,model.height,exclusions);
  ctx.translate(origin.x,origin.y);
  // Same back/front order as the local stage, including the same pulse points.
- paintSalonField(ctx,{scene},{layer:'back',intensity});
- paintSalonField(ctx,{scene},{layer:'front',intensity});
+ paintSalonField(ctx,{scene},{layer:'back',intensity,detailStride});
+ paintSalonField(ctx,{scene},{layer:'front',intensity,detailStride});
  ctx.restore();
  return {schema:MESH_CONTRACT.schema,painted:true,source_mode:model.source_mode,
   model_carriers:39,tracks:scene.trails.length,contacts:scene.contacts.filter(c=>c.junctionId!==null).length,
@@ -190,6 +211,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  let raf=0,layoutRaf=0,disposed=false,time=0,lastTick=null,lastPaint=-Infinity,frames=0,hostFrames=0;
   let lastPresentedMs=null,presentedIntervalMs=0,presentedFps=0;
  let last=null,hostFrame=null,layoutDirty=true,exclusions=[],dpr=0,paintCostMs=0;
+ let rasterQuality={stride:1,slow:0,fast:0};
  let pointer={x:.5,y:.5},lastObservatoryPaint=-Infinity,lastBoxCacheMs=-Infinity;
  const width=()=>Math.max(1,win.innerWidth),height=()=>Math.max(1,win.innerHeight);
  const view=()=>doc.body.dataset.view||'overview';
@@ -243,11 +265,12 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
    visual_form_id:preview?.form_id||null,preview_score_digest:preview?.score_digest||null}:
    buildLivingMesh({width:w,height:h,time:shared?.time??time,view:view(),
     sourceIds:shared?.sourceIds??preview?.source_ids??readSources(),
-    opticalField:preview,pointer,scroll:win.scrollY||win.pageYOffset||0});
+    opticalField:preview,pointer,scroll:0});
   const rect=shared?.stageRect;
   const light=preview?(view()==='observatory'?.22+.40*preview.mesh_strength:
    .45+.5*preview.mesh_strength):(view()==='observatory'?.46:1);
   last=paintLivingMesh(ctx,model,{intensity:clamp(light,0,1),
+   detailStride:rasterQuality.stride,
    scene:shared?.scene||model.scene,origin:rect?{x:rect.left,y:rect.top}:{x:0,y:0},
    exclusions:rect?[...exclusions,rect]:exclusions});
   canvas.dataset.route=view();canvas.dataset.animation=paused()||shared?.held?'STILL':shared?'HOST_FRAME':'LIVE';
@@ -260,6 +283,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
     if(dt>0&&dt<250){
      presentedIntervalMs=presentedIntervalMs?presentedIntervalMs*.75+dt*.25:dt;
      presentedFps=1000/presentedIntervalMs;
+     rasterQuality=adaptMeshPaintQuality(rasterQuality,{paintMs:paintCostMs,frameMs:dt});
     }
    }
    lastPresentedMs=now;
@@ -324,6 +348,7 @@ export function mountVixenLivingMesh({document:doc=globalThis.document,window:wi
  return Object.freeze({mounted:true,contract:MESH_CONTRACT,
   status:()=>({rendered_frames:frames,route:canvas.dataset.route,motion:canvas.dataset.animation,
    occlusion_mode:meshOcclusionMode(width()),exclusion_count:exclusions.length,
+   raster_detail_stride:rasterQuality.stride,quality_slow_frames:rasterQuality.slow,
    phase:last?.phase??time,source_mode:last?.source_mode,visual_form_id:last?.visual_form_id||null,
    model_carriers:last?.model_carriers,
    contacts:last?.contacts??0,host_driven_frames:hostFrames,scheduled:!!raf,paint_cost_ms:paintCostMs,
