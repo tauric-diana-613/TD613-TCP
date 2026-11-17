@@ -28,6 +28,52 @@ test('redpen I — short normal section labels and long prose remain separate',(
  assert.equal(projected.collapsed_micro_paragraphs,0);
  assert.match(visual,/\.vix-reader-paragraph/);
 });
+
+test('RGI24 · each captured native-PDF text derivative reflows losslessly, even title-case fragments',()=>{
+ const bundle=JSON.parse(page.match(/<script id="vixen-corpus-bundle" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+ const titleBySource=new Map(bundle.works.flatMap(w=>
+   (w.linked_sources||[]).map(s=>[s.source_file_id,w.declared_title])));
+ const canon=s=>String(s).replace(/\s+/gu,'');
+ let counted=0;
+ let titleMatched=0;
+ for(const shardName of ['corpus-experiment-a-part1.json','corpus-experiment-a-part2.json']){
+  const shard=JSON.parse(read('app/encyclopedia/vixen-estate/'+shardName));
+  for(const source of Object.values(shard.sources)){
+   if(source.format!=='pdf'||!source.text_body)continue;
+   counted++;
+   const projection=projectManuscriptLineation(source.text_body,{
+    sourceFormat:source.media_type,documentTitle:titleBySource.get(source.source_file_id)||''
+   });
+   assert.equal(projection.pdf_derivative_reflow,true,source.original_filename);
+   assert.equal(canon(projection.projection_title+projection.text),canon(source.text_body),
+     'Source nonwhitespace characters must remain exact and ordered: '+source.original_filename);
+   const paragraphs=projection.text.split(/\n\n+/);
+   assert(paragraphs.length>=18&&paragraphs.length<=160,
+     'PDF should be readable as substantial editorial paragraphs: '+source.original_filename+' '+paragraphs.length);
+   assert(paragraphs.filter(p=>p.trim().split(/\s+/).length<4).length<=1,
+     'PDF renderer may not expose one-word fragments as manuscript paragraphs: '+source.original_filename);
+   assert(projection.collapsed_micro_paragraphs>1000,
+     'This actual derivative must exercise a real multi-thousand fragment recovery: '+source.original_filename);
+   if(projection.projection_title)titleMatched++;
+  }
+ }
+ assert.equal(counted,20,'Test all recorded PDF derivatives across both source shards');
+ assert(titleMatched>=6,'At least six source-matched title headings must restore without invention');
+ const original=read('app/encyclopedia/vixen-estate/manuscript-reader.mjs');
+ assert.match(original,/VIXEN_PDF_REFLOW_NONWHITESPACE_INVARIANT/);
+ assert.match(original,/pre\.textContent = raw/);
+ assert.match(page,/sourceFormat:activeSrc\.media_type/);
+ assert.match(page,/documentTitle:work\.declared_title/);
+});
+test('RGI24 · Markdown documents keep native structural breaks and manifest identities',()=>{
+ const native='# **Folio**\n\nFirst paragraph.\n\n## Evidence\n\nSecond paragraph.';
+ const projection=projectManuscriptLineation(native,{sourceFormat:'text/markdown',documentTitle:'Folio'});
+ assert.equal(projection.pdf_derivative_reflow,false);
+ assert.equal(projection.text,native);
+ assert.match(page,/id="expaReaderFocusButton"/);
+ assert.match(visual,/RGI24 · THE READING ATELIER/);
+ assert.match(visual,/data-reading-focus="true"/);
+});
 test('redpen II — proof is one operable high contrast toggle',()=>{
  assert.match(foundry,/BTN\(state\.inspectorOpen\?'CLOSE THE PROOF':'OPEN THE PROOF'/);
  assert.match(foundry,/aria-expanded/);
