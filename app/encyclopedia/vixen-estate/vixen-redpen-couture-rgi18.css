@@ -457,7 +457,9 @@ body:not([data-active-research-stage="OPERAHOUSE"]) :is(#view-works,#view-gates,
 /* An actual, inspectable pathway, not an inert marketing card.
    details/summary works with touch, keyboard and screen readers. */
 body:not([data-active-research-stage="OPERAHOUSE"]) .vix-couture-route-guide{
- position:relative;overflow:hidden;isolation:isolate;
+ /* The canvas ambient field is z=1. Couture guide must compose above it
+    like the source cards, or light-trails obscure the lesson text. */
+ position:relative;z-index:2!important;overflow:hidden;isolation:isolate;
  margin:0 0 22px;padding:clamp(21px,3vw,39px);
  background:linear-gradient(115deg,#fffcf7,#f0f4f0 68%,#ffe8ed)!important;
  color:#162228!important;border:1px solid #d4c1aa!important;
