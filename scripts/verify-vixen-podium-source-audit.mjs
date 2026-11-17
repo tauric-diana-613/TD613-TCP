@@ -44,8 +44,14 @@ const manifest=JSON.parse(await get(relative[5]));
 const cli=await get(relative[6]);
 const tests=await get(relative[8]);
 const constraints=[
- ['NINETEEN_TYPED_ROUTES_WITH_LEGACY_SIXTEEN_AND_REDPEN_PRESERVED',
-  manifest.routes.length===19&&code.includes("PODIUM_ROUTES")&&
+ ['TWENTY_SEVEN_TYPED_ROUTES_WITH_ORIGINAL_NINETEEN_AND_ROLE_LOCK',
+  manifest.routes.length===27&&manifest.protocol.routes===27&&code.includes("PODIUM_ROUTES")&&
+  new Set(manifest.routes.map(x=>x.id)).size===27&&
+  ['vixen.ai.start','vixen.ai.choose','vixen.ai.report','vixen.ai.status',
+   'vixen.ai.notes','vixen.ai.handoff','vixen.ai.archive','vixen.ai.finish']
+    .every(id=>manifest.routes.some(route=>route.id===id))&&
+  manifest.ai_roles?.single_active_role===true&&
+  manifest.ai_roles?.program_notes?.includes('INDEPENDENT_HUMAN_PERMISSION_VERIFIED')&&
   [
    'podium.describe','vixen.work.inspect','vixen.gates.inspect','universal.open',
    'universal.search','universal.get','universal.related','synthesis.propose',

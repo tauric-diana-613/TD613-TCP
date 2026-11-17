@@ -22,6 +22,7 @@ test('Maestro and Composer are exclusive session ontologies and cannot silently 
  assert.equal(session.status().result.role,'MAESTRO');
  const ended=session.finish();
  assert.equal(ended.status,'SUPPORTED');
+ assert.equal(ended.result.archive.active,false);
  const switched=await session.start({role:'COMPOSER',goal:'find a falsifier'});
  assert.equal(switched.status,'SUPPORTED');
  assert.equal(session.status().result.role,'COMPOSER');
@@ -46,6 +47,7 @@ test('Source-anchored journey does actual bounded read routing without confoundi
  assert.equal(recommended.action,'SUGGEST_ONLY_NOT_MUTATION');
  const stage=session.status().result;
  assert.deepEqual(stage.cart_ids,[ids[0]]);
+ assert.deepEqual(session.handoff().result.saved_cart_ids,[ids[0]]);
  assert.equal(stage.program_notes_permission,'NOT_REQUESTED');
  assert.equal(stage.note_count,0);
  const branch=await session.choose({choice_id:'compare',source_work_id:recommended.work_id});
@@ -56,6 +58,8 @@ test('Source-anchored journey does actual bounded read routing without confoundi
  assert.equal(session.notes().status,'HELD');
  assert.match(formatVixenChatCard(branch.result.chat_card),/Field missions/);
  assert.equal(session.archive().result.original_corpus_modified,false);
+ assert(session.archive().result.storyline.length>=2,
+  'Archive must retain the actual opening research chapter and subsequent reads');
 });
 test('Human mission reports are optional user testimony and prompt bounded counterexample follow-ups',async()=>{
  const session=createVixenAiSession({corpus});
@@ -71,6 +75,8 @@ test('Human mission reports are optional user testimony and prompt bounded count
  assert.equal(done.result.report.crosswalk_proven,false);
  assert(done.result.research_turn?.narrative);
  assert.equal(session.archive().result.visitor_reports.length,1);
+ assert(session.archive().result.storyline.length>=2,
+  'Visitor report must retain its counterexample follow-up in the portable storyline');
  assert.equal((await session.report({quest_id:mission.quest_id,skip:true})).status,'HELD');
 });
 test('Program Notes cannot be silently authored, pre-consent backfilled, or granted via a task boolean',async()=>{
@@ -179,4 +185,32 @@ test('A connected model can narrate only when its citations are present in the a
  assert.equal(denied.status,'SUPPORTED');
  assert.equal(denied.result.opening_turn.narration_origin,undefined,
   'Unsourced model narration must not replace the source-grounded baseline');
+});
+
+test('The standard portable session ZIP optionally carries the visitor journey without changing corpus custody',async()=>{
+ const {collectVixenSessionFiles}=await import('../app/encyclopedia/vixen-estate/session-zip.mjs');
+ const s=createVixenAiSession({corpus});
+ await s.start({role:'MAESTRO',goal:'clock feedback'});
+ await s.choose({choice_id:'compare'});
+ const archive=s.archive().result;
+ const result=await collectVixenSessionFiles({
+  baseHref:'https://example.test/encyclopedia/vix-cyb.html',
+  fetcher:async()=>({ok:false}),
+  synthesisState:{},sessionMeta:{},documentRef:null,
+  aiJourneyArchive:archive,exportedAt:'2026-11-17T00:00:00Z'
+ });
+ const item=result.entries.find(x=>x.path==='encyclopedia/vixen-estate/ai-research-journey.json');
+ assert(item,'Expected the AI journey to be carried by the original user-triggered ZIP');
+ const contents=JSON.parse(item.data);
+ assert.equal(contents.role,'MAESTRO');
+ assert(contents.storyline.length>=2);
+ assert.equal(contents.program_notes,undefined,'Unauthorised notes are not manufactured');
+ assert.equal(contents.original_corpus_modified,false);
+ assert.equal(contents.release_authority,false);
+ const denied=await collectVixenSessionFiles({
+  baseHref:'https://example.test/encyclopedia/vix-cyb.html',
+  fetcher:async()=>({ok:false}),
+  aiJourneyArchive:{schema:'vixen.ai.session-archive/v1',original_corpus_modified:true,release_authority:false}
+ });
+ assert(!denied.entries.some(x=>x.path.endsWith('/ai-research-journey.json')));
 });

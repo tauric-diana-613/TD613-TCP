@@ -227,7 +227,14 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
    download(content,'vixen-completed-program-notes.md','text/markdown;charset=utf-8');
  });
  by('vmaJourneyDock')?.addEventListener('click',()=>visit('collection'));
- document.addEventListener('click',()=>queueMicrotask(resumeDock),{capture:true});
+ // A navigation click updates hidden rooms after capture. Observe that actual
+ // visibility transition, including direct source jumps and room changes.
+ const collectionRoom=by('view-collection');
+ if(collectionRoom){
+  const navigationObserver=new MutationObserver(resumeDock);
+  navigationObserver.observe(collectionRoom,{attributes:true,attributeFilter:['hidden']});
+ }
+ document.addEventListener('click',()=>requestAnimationFrame(resumeDock),{capture:true});
  window.addEventListener('hashchange',resumeDock);
  window.addEventListener('vixen-study-tray-change',()=>{if(active)render()});
  render();announce('Choose Maestro or Composer. Notes begin OFF.');

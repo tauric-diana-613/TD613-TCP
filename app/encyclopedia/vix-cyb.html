@@ -6303,8 +6303,10 @@ import {
         ? window.VIXEN_STUDY_TRAY.list()
         : Array.from(document.querySelectorAll('[data-cart-work],[data-work-tray-id]'))
             .map((el) => el.dataset.cartWork || el.dataset.workTrayId).filter(Boolean);
+      const currentAiJourney = window.VixenAIModes?.session?.archive?.();
       const res = await mod.downloadVixenSessionZip({
         synthesisState: getSessionSnapshot(),
+        aiJourneyArchive: currentAiJourney?.status === 'SUPPORTED' ? currentAiJourney.result : null,
         sessionMeta: {
           study_tray_work_ids: [...new Set(trayIds)],
           selected_conjecture_id: selectedConjectureId,

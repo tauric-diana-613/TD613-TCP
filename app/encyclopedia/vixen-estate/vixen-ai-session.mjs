@@ -12,7 +12,7 @@
 import {conductVixenNarrativeTurn} from './vixen-ai-conductor.mjs';
 export const VIXEN_AI_SESSION_SCHEMA='vixen.ai.session/v1';
 export const VIXEN_AI_ROLES=Object.freeze(['MAESTRO','COMPOSER']);
-const LIMIT=32;
+const LIMIT=128;
 const safe=(s,n=500)=>typeof s==='string'?s.trim().slice(0,n):'';
 const stateError=(code)=>Object.freeze({ok:false,status:'HELD',reason:code,read_only:true});
 const node=(id,title,description,view,choices,question,evidence)=>{
@@ -164,6 +164,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
     trail:[],cart:getCart(),hostRead,
     max_read_calls:typeof hostRead==='function'?2:0,step_number:0});
    current.latestTurn=await enrichWithVerifiedHost(current.latestTurn);
+   if(current.latestTurn)current.turns.push({kind:'OPENING_RESEARCH_ROUTE',narrative:current.latestTurn});
   }catch(_){current.latestTurn=null;}
   return receipt('SUPPORTED',{role,session_id:current.id,
    chat_card:publicCard(current),opening_turn:current.latestTurn,
@@ -171,6 +172,7 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
  };
  const choose=async({choice_id,source_work_id=null,question=''}={})=>{
   if(!current?.active)return receipt('HELD',stateError('SESSION_NOT_STARTED'));
+  if(current.path.length>=LIMIT)return receipt('HELD',stateError('SESSION_ROUTE_HISTORY_LIMIT_EXPORT_AND_RESTART'));
   const id=safe(choice_id,60);
   const valid=new Set([...displayOptions(current.role,current.current).map(x=>x.id),
    ...(current.latestTurn?.choices||[]).map(x=>x.choice_id)]);
@@ -269,6 +271,17 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   return receipt('SUPPORTED',{schema:'vixen.ai.host-handoff/v1',role:current.role,
    session_id:current.id,visitor_goal:current.goal,current_step:current.path.at(-1)||null,
    route_history:current.path.slice(),visitor_reports:current.questReports.slice(),
+   saved_cart_ids:getCart(),
+   prior_research_chapters:current.turns.slice(-20).map(t=>({
+    kind:t.kind||t.type||'CHOSEN_ROUTE',
+    step:t.step||null,report_id:t.report_id||null,
+    source_candidates:t.narrative?.source_candidates?.map(x=>({
+      work_id:x.work_id,manifestations:x.manifestations?.map(z=>z.source_file_id)||[]
+    }))||[],
+    read_receipts:t.narrative?.observed_reads||[],
+    narration_origin:t.narrative?.narration_origin||'LOCAL_SOURCE_GROUNDED',
+    evidence_class:'ROUTE_MEMORY_NOT_INDEPENDENT_PROOF'
+   })),
    source_candidates:selected?.source_candidates||[],
    observed_reads:selected?.observed_reads||[],narrative:selected?.narrative||null,
    quests:selected?.quests||[],next_choices:selected?.choices||[],
@@ -314,6 +327,9 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
   const archive={
    schema:'vixen.ai.session-archive/v1',id:current.id,role:current.role,goal:current.goal,
    active:current.active,route_history:current.path.map(x=>({...x})),
+   storyline:current.turns.map(t=>({kind:t.kind||t.type||'CHOSEN_ROUTE',
+    step:t.step||null,report_id:t.report_id||null,
+    narrative:t.narrative,epistemic_claim:'PROVISIONAL_ROUTE_RECORD'})),
    saved_cart_ids:getCart(),notes_permission:current.notesPermission,
    visitor_reports:current.questReports.slice(),
    ...(current.notesEverAllowed?{program_notes:current.notes.map(x=>({...x}))}:{}),

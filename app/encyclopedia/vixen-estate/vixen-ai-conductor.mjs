@@ -109,36 +109,86 @@ function routeOptions(path,role,suggestions,history){
 function questsForTurn({role,path,featured,alternative,reads,step=1}){
  const title=featured?.title||'the selected manuscript';
  const other=alternative?.title||'a contrasting work';
- const noun=path==='observatory'?'the clock-and-stability demonstration':
-  path==='methods'?'the documentary-method catalogue':
-  path==='cart'?'your saved research cart':
-  path==='countertest'?'the limits and counterexamples exhibit':
-  path==='question'?'the Synthesis Salon':
-  path==='context'?'the independent reference room':'the manuscript reading room';
- const room=path==='observatory'?'observatory':path==='methods'?'protocols':
-  path==='cart'||path==='question'?'collection':
-  path==='countertest'?'holds':path==='context'?'reference':'works';
  const readOK=reads.some(x=>x.status==='OBSERVED_READ_ONLY');
+ const missions={
+  source:{
+   room:'works',ai:'Verify the original source coordinates',
+   aiWork:'Inspect the work record, its separate manifestations, identity holds and any available citation anchors before suggesting an interpretation.',
+   human:'The marginalia challenge',
+   humanWork:'Open “'+title+'.” Find one passage or source-version difference that changes your first impression. Report its location and what remains uncertain.',
+   together:'The two-manuscript riddle'},
+  compare:{
+   room:'reference',ai:'Investigate the rival route',
+   aiWork:'Find an independently recorded source with competing language or chronology; evaluate its identity and the limits of any apparent relationship.',
+   human:'Spot the non-equivalence',
+   humanWork:'Compare two documented manifestations or research entries. Report one specific difference in wording, date or source custody; avoid treating titles as proof.',
+   together:'The counter-chronology duel'},
+  context:{
+   room:'reference',ai:'Trace a reference without assuming influence',
+   aiWork:'Consult the independent read-only reference index; distinguish verified record bytes from hypothesized links.',
+   human:'The citation detective',
+   humanWork:'Open the reference reading room. Choose one actual citation or recorded relationship and write down exactly what it establishes—and what it leaves unresolved.',
+   together:'The provenance chess match'},
+  countertest:{
+   room:'holds',ai:'Hunt the disconfirming witness',
+   aiWork:'Search for a counterexample or missing independent observation, then state which claim must remain held.',
+   human:'Break your favorite hypothesis',
+   humanWork:'Inspect the held claims and counterexamples. Find one plausible alternative explanation and tell the guide what observation could disprove your original idea.',
+   together:'The adversarial evidence hearing'},
+  observatory:{
+   room:'observatory',ai:'Prepare a controlled thought experiment',
+   aiWork:'Identify a variable, expected model response, and the distinction between simulation and external measurement.',
+   human:'The dial-room experiment',
+   humanWork:'Open the Observatory. Try two clearly different settings of an interactive control, observe the change, and report the control and both settings. A simulated change remains a model observation.',
+   together:'The two-setting laboratory'},
+  methods:{
+   room:'protocols',ai:'Select a suitable research procedure',
+   aiWork:'Match the question to a documentary method and identify its prerequisites, exclusions, and falsifier.',
+   human:'The protocol treasure hunt',
+   humanWork:'Open the documentary methods. Find one procedure you did not notice before and report its strongest negative control or missing prerequisite.',
+   together:'The method-and-witness trial'},
+  question:{
+   room:'collection',ai:'Draft two incompatible predictions',
+   aiWork:'Frame competing, falsifiable predictions drawn from the recorded sources and make the missing evidence explicit.',
+   human:'Write the decisive question',
+   humanWork:'Visit the Synthesis Salon and formulate one prediction that could turn out false. Report what you would measure and what outcome would count against it.',
+   together:'The competing-thesis duet'},
+  cart:{
+   room:'collection',ai:'Curate a source-balanced itinerary',
+   aiWork:'Inspect the visitor-selected source IDs and suggest the most informative reading order; never add, remove, or adjudicate items.',
+   human:'The research cart challenge',
+   humanWork:'Review your research cart. Deliberately choose one source to prioritize and one contrasting source to consider. Report why both belong; additions are always your decision.',
+   together:'The evidence shopping expedition'},
+  return:{
+   room:'overview',ai:'Revisit the route from an alternate lens',
+   aiWork:'Review prior routes without retroactively rewriting earlier observations or their epistemic states.',
+   human:'The second-look expedition',
+   humanWork:'Return to the entrance, revisit a feature you previously overlooked, and report how your question changes.',
+   together:'The reverse-path mystery'}
+ };
+ const m=missions[path]||missions.source;
  return [
-  {quest_id:'turn-'+step+'-ai',actor:'AI',title:'Follow the documentary clue',
-   description:'Inspect the recorded sources and seek a conflicting or corroborating reading.',
+  {quest_id:'turn-'+step+'-ai',actor:'AI',title:m.ai,description:m.aiWork,
    target_work_id:featured?.work_id||null,
-   expected_result:'A citation-aware account of what was inspected, what was inferred and what remains unknown',
+   expected_result:'A source-cited finding, rival reading and limits of what was observed',
    execution_status:readOK?'READ_ONLY_INSPECTION_RECEIPTED':'PROPOSED_NOT_EXECUTED',
    optional:true,requires_new_consent:false,claim_ceiling:'READ_RECEIPT_NOT_ESTABLISHED_RELATION'},
-  {quest_id:'turn-'+step+'-human',actor:'HUMAN',title:'Field excursion: '+noun,
-   description:'Open '+noun+'. Find one concrete detail in “'+title+'” that surprises or challenges your first impression.',
-   suggested_view:room,target_work_id:featured?.work_id||null,
-   expected_result:'Describe the feature, phrase or observation you encountered in your own words',
+  {quest_id:'turn-'+step+'-human',actor:'HUMAN',title:m.human,
+   description:m.humanWork,suggested_view:m.room,
+   target_work_id:featured?.work_id||null,
+   expected_result:'A visitor-authored observation, specific source or feature, and uncertainty statement',
    execution_status:'AWAITING_VOLUNTARY_VISITOR_REPORT',
    optional:true,report_source:'SELF_REPORT_NOT_VERIFIED',never_requires_upload:true},
-  {quest_id:'turn-'+step+'-collab',actor:'COLLABORATIVE',title:'The counterexample duet',
-   description:'You select a passage from “'+title+'”; the AI compares it cautiously against “'+other+'” and proposes a testable rival interpretation.',
-   suggested_view:'reference',target_work_id:featured?.work_id||null,
+  {quest_id:'turn-'+step+'-collab',actor:'COLLABORATIVE',title:m.together,
+   description:'You choose one precise clue from “'+title+
+    '”; the AI examines a competing route through “'+other+
+    '.” Together, draft a disconfirming test without assuming historical influence.',
+   suggested_view:m.room,target_work_id:featured?.work_id||null,
    alternative_work_id:alternative?.work_id||null,
-   expected_result:'A source-identified comparison, competing hypotheses and an explicit limit on the claimed connection',
+   expected_result:'A traceable comparison, a competing explanation and an unresolved countertest',
    execution_status:'NEEDS_VISITOR_SOURCE_SELECTION',
-   optional:true,report_source:'SELF_REPORT_NOT_VERIFIED',claim_ceiling:'UNRATIFIED_PROPOSAL_ONLY'}
+   optional:true,report_source:'SELF_REPORT_NOT_VERIFIED',
+   claim_ceiling:'UNRATIFIED_PROPOSAL_ONLY'}
  ];
 }
 const readIntentByPath=Object.freeze({

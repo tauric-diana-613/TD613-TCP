@@ -285,6 +285,7 @@ export async function collectVixenSessionFiles({
   documentRef = typeof document !== 'undefined' ? document : null,
   synthesisState = {},
   sessionMeta = {},
+  aiJourneyArchive = null,
   exportedAt = new Date().toISOString()
 } = {}) {
   const baseUrl = new URL(baseHref);
@@ -332,6 +333,20 @@ export async function collectVixenSessionFiles({
     release_authority: false
   };
 
+  // Portable visitor journey is an optional, explicitly user-triggered
+  // inclusion in this existing session ZIP. Never ingest source bodies or
+  // write a journey into the canonical Vixen estate.
+  const acceptedJourney=aiJourneyArchive?.schema==='vixen.ai.session-archive/v1' &&
+   aiJourneyArchive.original_corpus_modified===false &&
+   aiJourneyArchive.release_authority===false ? aiJourneyArchive:null;
+  if(acceptedJourney){
+   entries.push({
+    path:'encyclopedia/vixen-estate/ai-research-journey.json',
+    data:JSON.stringify(acceptedJourney,null,2)+'\n',
+    mtime:nowDate
+   });
+   sessionStatePayload.optional_ai_journey_included=true;
+  }
   // 4-7. Fetch LLM guides, site preflight, vixen-estate, assets/vixen, and reference files in bounded parallel batches
   const batchTargets = [
     ['./vix-cyb/llms.txt', 'encyclopedia/vix-cyb/llms.txt'],
