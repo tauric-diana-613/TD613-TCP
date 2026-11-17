@@ -76,6 +76,77 @@ try {
     await foxRail.locator('button[data-view="works"]').click();
     assert.equal(await page.evaluate(()=>document.body.dataset.view),'works');
     assert.equal(await foxRail.locator('button[data-view="works"]').getAttribute('aria-current'),'page');
+    // RGI24 operator screenshot regression: the SECOND Work is the real
+    // title-case Algedonic PDF derivative (thousands of artificial word
+    // breaks). Inspect its actual browser-rendered manuscript, not an
+    // invented fixture or a decorative splash screen.
+    const architectureWork=page.locator('#worksListContainer button[data-select-work]')
+      .filter({hasText:/The Architecture of Control/i}).first();
+    await architectureWork.click({timeout:20000});
+    const workMount=page.locator('#worksExperimentAReaderMount');
+    const pdfManifest=workMount.locator('[data-select-manifestation]')
+      .filter({hasText:/Algedonic Systems Deep Research\.pdf/i}).first();
+    await pdfManifest.waitFor({state:'visible',timeout:25000});
+    await pdfManifest.click({timeout:20000});
+    await page.waitForFunction(()=>{
+      const doc=document.querySelector('#expaCompanionBodyPre');
+      return doc?.dataset.lineation==='pdf-source-wordflow-reconstructed' &&
+        doc.querySelectorAll('.vix-reader-paragraph').length>20;
+    },null,{timeout:30000,polling:250});
+    const manuscript=page.locator('#expaCompanionBodyPre');
+    const reading=await manuscript.evaluate(el=>{
+      const paragraphs=[...el.querySelectorAll('.vix-reader-paragraph')];
+      const paragraphWords=paragraphs.map(p=>p.textContent.trim().split(/\s+/).length);
+      const title=el.querySelector('.vix-pdf-source-title')?.textContent||'';
+      const raw=el.querySelector('.vix-reader-raw pre')?.textContent||'';
+      const bounds=el.getBoundingClientRect();
+      const projection=el.dataset.lineation;
+      return {projection,title,paragraphs:paragraphs.length,
+        averageWords:paragraphWords.reduce((a,b)=>a+b,0)/Math.max(1,paragraphs.length),
+        shortParagraphs:paragraphWords.filter(n=>n<=3).length,
+        titleWords:title.trim().split(/\s+/).length,
+        sourceCharacters:raw.length,
+        manuscriptWidth:Math.round(bounds.width),
+        horizontalOverflow:el.scrollWidth-el.clientWidth,
+        custodyLabel:document.querySelector('#worksExperimentAReaderMount .expa-custody-disclosure summary')?.textContent||''};
+    });
+    assert.match(reading.title,/The Architecture of Control/i,
+      'The actual PDF source title must return to a single editorial heading');
+    assert(reading.paragraphs>=18&&reading.averageWords>30&&reading.shortParagraphs<=1,
+      'Never render word-per-line PDF fragments: '+JSON.stringify(reading));
+    assert(reading.manuscriptWidth>Math.min(width*.6,320),
+      'The manuscript must own a substantial readable paper width: '+JSON.stringify(reading));
+    assert(reading.horizontalOverflow<=2,
+      'The manuscript must not create a nested horizontal scrollbar: '+JSON.stringify(reading));
+    assert(reading.sourceCharacters>35000&&reading.custodyLabel.includes('Source integrity'),
+      'Complete exact original derivative must remain available in its disclosure');
+    await page.evaluate(()=>{
+      const n=document.querySelector('#expaCompanionBodyPre');
+      n.scrollTop=0;
+      window.scrollTo({top:Math.max(0,window.scrollY+n.getBoundingClientRect().top-125),behavior:'instant'});
+    });
+    await page.waitForTimeout(125);
+    await page.screenshot({
+      path:path.join(output,stem+'-rgi24-architecture-pdf-manuscript.png'),
+      fullPage:false,animations:'disabled',timeout:60000
+    });
+    if(width>800){
+      const focus=workMount.locator('#expaReaderFocusButton');
+      await focus.click();
+      assert.equal(await page.locator('#worksLexiconLayout').getAttribute('data-reading-focus'),'true',
+        'Full-width reading atelier must remain user-operable and source-preserving');
+      await page.evaluate(()=>{
+        const n=document.querySelector('#expaCompanionBodyPre');
+        n.scrollTop=0;
+        window.scrollTo({top:Math.max(0,window.scrollY+n.getBoundingClientRect().top-126),behavior:'instant'});
+      });
+      await page.screenshot({
+        path:path.join(output,stem+'-rgi24-architecture-focus-atelier.png'),
+        fullPage:false,animations:'disabled',timeout:60000
+      });
+      await focus.click();
+      assert.equal(await page.locator('#worksLexiconLayout').getAttribute('data-reading-focus'),'false');
+    }
     // RGI23 three-room editorial self-review: actual buttons and disclosure
     // affordances, not merely static CSS/HTML snapshots.
     for(const room of ['works','gates','holds']){
