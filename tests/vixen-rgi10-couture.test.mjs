@@ -43,13 +43,16 @@ test('Mustard is excluded from active Opera styling while original historic pale
  assert.match(css,/body:not\(\[data-active-research-stage="OPERAHOUSE"\]\)/,
   'The current couture override must apply only to the original Vixen Opera');
 });
-test('All 22 mathematical folios stay in the data while display is curated',()=>{
+test('Historical host records stay archived while the public wardrobe reads original Work mathematics',()=>{
  assert.equal(archived.formula_folios.length,22);
  assert.match(page,/id="formulaFolioGrid" data-expanded="false"/);
  assert.match(page,/id="formulaGalleryReveal"/);
  assert.match(page,/formulaExpanded: false/);
  assert.match(page,/state\.formulaExpanded=!state\.formulaExpanded/);
- assert.match(page,/const searching = Boolean\(q\) \|\| state\.formulaGroup !== 'all'/);
+ assert.match(page,/const searching=Boolean\\(q\\),expanded=Boolean\\(state\\.formulaExpanded\\|\\|searching\\)/);
+ assert.match(page,/buildOriginalWorkMathWardrobe\\(DATA\\)/);
+ assert.match(page,/data-work-math-id/);
+ assert.doesNotMatch(page,/data-compute-vixen-folio=/);
  assert.match(css,/\.formula-list:not\(\[data-expanded="true"\]\)>.formula-card:nth-child\(n\+5\)/);
  assert.match(css,/\.formula-card:nth-child\(1\)/);
  assert.match(css,/\.formula-card:nth-child\(2\)/);
