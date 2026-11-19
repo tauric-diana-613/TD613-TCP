@@ -610,7 +610,13 @@ try {
     assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
       'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
     assert.equal(await foundry.locator('.ef-proscenium .ef-aria-score .ef-hero-tab').count(),6,
-      'Six original mathematical works must be scored beside the computed stage, not dumped as a dashboard grid');
+      'Six curated research presentations occupy the editorial rail; the full source catalogue stays independently accessible');
+    assert.equal(await foundry.locator('.ef-hero-tab[aria-pressed="true"]').count(),0,
+      'An unfeatured source remains staged without impersonating a curated aria');
+    assert.match(await foundry.locator('.ef-gallery-item[aria-pressed="true"]').innerText(),/TCC-08/,
+      'The source catalogue must preserve the exact active eighth record');
+    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-04')),true,
+      'Explicitly return to a featured aria before measuring its curated rail');
     assert.equal(await foundry.locator('.ef-readout').isHidden(),true,
       'The technical evidence inspector must not permanently compete with the artwork');
     const opticalCouture=await foundry.evaluate(el=>{
@@ -637,7 +643,7 @@ try {
     assert.equal(opticalCouture.active,1,'Exactly one aria must be selected');
     assert.equal(opticalCouture.markers,1,'Exactly one magenta selection arrow permitted');
     assert.equal(opticalCouture.railTitleVisible,true,'Engine-fed headline must be readable as text');
-    assert.match(opticalCouture.railTitle,/Crossed probes|source-recorded arias/i);
+    assert.match(opticalCouture.railTitle,/Crossed probes|source-recorded arias|Vixen inquiry arias/i);
     assert.equal(opticalCouture.pseudoTitle,'none','CSS-generated engine title must be suppressed');
     assert.equal(opticalCouture.badgeBelowStage,true,
       'Live simulation label must be below, never overlay, the computed visual field');
