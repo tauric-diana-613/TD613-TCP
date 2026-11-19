@@ -377,11 +377,12 @@ export async function mountVixenElectricFoundry({
  add(apertureHud,...hudPills);
  function updateFoundryHud(){
   const cur=display(),running=state.playing&&!globalMotionHeld(document);
+   const subjectId=cur.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?cur.id.replace(/^LAB_/,''):cur.folio_id;
   const p=state.probe;
   const svMetric=p?.metrics?.find?.(m=>m.name==='singular_values')?.value;
   hudPills[0].textContent=svMetric
    ?`APERTURE · rank=${svMetric.rank} · κ=${svMetric.condition_number??'N/A'}`
-   :`APERTURE · ${cur.folio_id} (${cur.optic_program})`;
+   :`OPTICAL METHOD · ${subjectId} (bounded simulation)`;
   hudPills[1].textContent=`CARRIERS · 39 (${CARRIERS.filter(c=>c.near).length}/${CARRIERS.filter(c=>c.mid).length}/${CARRIERS.filter(c=>c.far).length})`;
   hudPills[2].textContent=`CLOCK ${state.time.toFixed(2)}s · PHASE ${state.simPhase.toFixed(2)}s · ${state.renderingBackend}`;
   hudPills[3].textContent=`PROBE (${state.pointer.x.toFixed(2)}, ${state.pointer.y.toFixed(2)})${state.locked?' PINNED':''}`;
@@ -398,7 +399,7 @@ export async function mountVixenElectricFoundry({
  // The source synthesis may supply a short subtitle, but is not entitled
  // to dictate display line breaks or insert arbitrary unbounded title text.
  // Contract: fixed legible typography, controlled lineation, no HTML parsing.
- const railHeading=label('SIX ARIAS · SOURCE-RECORDED MATHEMATICS');
+ const railHeading=label('SIX ARIAS · VIXEN RESEARCH INQUIRIES');
  const railTitle=node('span','ef-rail-display-headline');
  railHeading.prepend(railTitle);
  const titleFromCover=()=>String(document.getElementById('synthPatternSubtitle')?.textContent||'').trim();
@@ -475,7 +476,7 @@ export async function mountVixenElectricFoundry({
   const current=display(),running=state.playing&&!globalMotionHeld(document);
   const readout=toolbar.querySelector('.ef-stage-state');
   if(readout)readout.textContent=(running?'FIELD LIVE':'FIELD HELD')+' · '+state.renderingBackend;
-  sceneBadge.textContent=current.folio_id+' · '+current.research_family+
+  sceneBadge.textContent=(current.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?current.id.replace(/^LAB_/,''):current.folio_id)+' · '+current.research_family+
    ' · '+(running?'ACTIVE SIMULATION':'PAUSED')+
    ' · NO EMPIRICAL CLAIM';
   updateFoundryHud();
@@ -533,8 +534,15 @@ export async function mountVixenElectricFoundry({
    node('p','ef-lab-subtitle',current.name),
    node('p','ef-lab-description',ellipsis(current.summary,500)));
   const equation=node('div','ef-equation');
-  add(equation,label('SOURCE-RECORDED EQUATION · NEVER A SHADER-INVENTED THEOREM'),
-   node('p','',ellipsis(current.formula,440)));
+  if(current.stage_subject_kind==='PROSPECTIVE_GIVEBACK'){
+    add(equation,label('PROSPECTIVE STUDY · NO CLAIMED ORIGINAL EQUATION'),
+     node('p','','This unexecuted research track uses separately attributed optical instrumentation; the backstage model never becomes an authored Vixen theorem.'));
+   }else if(current.stage_subject_kind==='TITLE_ORNAMENT'){
+    add(equation,label('SOURCE-CATALOGUED TITLE EMBLEM · NOT A THEOREM'),node('p','',ellipsis(current.formula,440)));
+   }else{
+    add(equation,label('SOURCE-BOUND RESEARCH-PROGRAMME FORMULA · BOUNDED RECONSTRUCTION'),
+     node('p','',ellipsis(current.formula,440)));
+   }
   pane.append(equation);
   const labrefs=node('div','ef-linked-sources');
   add(labrefs,label('DECLARED WORK AND PROTOCOL COORDINATES'),
@@ -596,7 +604,8 @@ export async function mountVixenElectricFoundry({
   const c=completeVixenSourceCensus(source);
   const grid=node('div','ef-census');
   for(const [name,value] of [['ORIGINAL WORKS',c.source_work_count],
-    ['FORMAL FOLIOS',c.source_formula_labs],['GIVEBACK ROUTES',c.source_track_labs],
+    ['VIXEN INQUIRIES',c.opera_programme_folios],['TITLE ORNAMENT',c.opera_title_ornaments],
+     ['BACKSTAGE METHODS',c.backstage_technical_folios],['GIVEBACK ROUTES',c.source_track_labs],
     ['LIVE CARRIERS',c.optical_strata]]){
    const e=node('div','ef-census-cell');
    add(e,node('strong','',String(value)),node('small','',name));grid.append(e);
