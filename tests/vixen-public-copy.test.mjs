@@ -18,6 +18,7 @@ test('presentation aliases explain internal names without changing machine ident
  assert.match(after,/documentary|research|source|evidence/i);
  assert.equal(translatePublicCopy('conscription not-src transform'),'conscription not-src transform');
  assert.equal(translatePublicCopy('The Architecture of Control'),'The Architecture of Control');
+  assert.equal(translatePublicCopy('OPERAHOUSE ≠ OPERA ≠ PERFORMER'),'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
 });
 
 test('DOM language boundary covers initial chrome and asynchronous user-facing messages',async()=>{
@@ -43,6 +44,16 @@ test('DOM language boundary covers initial chrome and asynchronous user-facing m
  dom.window.close();
 });
 
+test('Source titles and machine receipts never pass through public alias rewriting',async()=>{
+ const dom=new JSDOM('<body><h2>OPERAHOUSE ≠ OPERA ≠ PERFORMER</h2><div data-vixen-source-provenance title="SRC Atelier Original">Original EMSTD613 FADT evidence</div><div class="vs-work-title">Atelier witness manuscript</div></body>');
+ const guard=installVixenPublicCopy(dom.window.document.body);
+ assert.equal(dom.window.document.querySelector('h2').textContent,'OPERAHOUSE ≠ OPERA ≠ PERFORMER');
+ const source=dom.window.document.querySelector('[data-vixen-source-provenance]');
+ assert.equal(source.textContent,'Original EMSTD613 FADT evidence');
+ assert.equal(source.getAttribute('title'),'SRC Atelier Original');
+ assert.equal(dom.window.document.querySelector('.vs-work-title').textContent,'Atelier witness manuscript');
+ guard.disconnect();dom.window.close();
+});
 test('Vixen public markup imports boundary and rejects literal internal names in core controls',()=>{
  assert.match(html,/vixen-opera-public-copy\.mjs/);
  assert.match(html,/>Document Routes<\/button>/);

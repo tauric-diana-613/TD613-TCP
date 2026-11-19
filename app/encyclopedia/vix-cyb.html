@@ -4464,6 +4464,9 @@ body[data-view="overview"] .reading-back{display:none}
         ? (' · bytes [' + m.start_utf8 + ',' + m.end_utf8 + ')')
         : (m.page_span ? (' · pp.' + (Array.isArray(m.page_span) ? m.page_span.join('-') : m.page_span)) : (m.char_length ? (' · @' + m.char_offset) : ''));
       const custodyTag = m.custody_status || m.body_availability || m.status || '';
+      const roleTag = /^RC-(?:0[1-9]|1[0-4])$/.test(String(m.id||''))
+        ? 'OPERAHOUSE TECHNICAL ARCHIVE · NOT A PERFORMER'
+        : (m.unit_kind || m.kind || '');
       const whyLine = Array.isArray(m.why) && m.why.length ? ('Why: ' + m.why.join(' · ')) : '';
       const snippetText = m.snippet || m.observed_quote || m.description || m.summary || '';
       const rungBadge = m.highest_rung ? (' · RUNG:' + m.highest_rung) : '';
@@ -4481,10 +4484,10 @@ body[data-view="overview"] .reading-back{display:none}
         : (m.kind || 'record');
 
       // Pedagogue Hierarchy: NOTICE / custody -> Title -> Why -> Clean Snippet -> Deferred technical scores
-      return '<button type="button" class="command-result" data-search-pick="' + esc(m.id) + '" data-search-index="' + idx + '">' +
+      return '<button type="button" class="command-result" data-vixen-source-provenance="true" data-search-pick="' + esc(m.id) + '" data-search-index="' + idx + '">' +
         '<div class="expa-search-custody">' +
           '<span>' + esc((m.original_filename || m.id) + fmtBadge + spanBadge) + '</span>' +
-          '<span>' + esc((m.unit_kind || m.kind || '') + ' · ' + custodyTag) + '</span>' +
+          '<span>' + esc(roleTag + ' · ' + custodyTag) + '</span>' +
         '</div>' +
         '<div style="font:400 18px/1.22 var(--font-serif);margin-top:2px">' + esc(m.title) + '</div>' +
         (whyLine ? '<div class="expa-search-why">' + esc(whyLine) + '</div>' : '') +

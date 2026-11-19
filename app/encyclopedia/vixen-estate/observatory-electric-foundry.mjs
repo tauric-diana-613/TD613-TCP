@@ -84,7 +84,7 @@ function ellipsis(s,max=900){
 }
 function sourceBadge(lab){
  return node('div','ef-sourcebadge',
-  lab.id+' · '+lab.folio_id+' · '+lab.status+' · '+
+  lab.id+' · '+(lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?'TRACK-BOUND OPTICS':lab.folio_id)+' · '+lab.status+' · '+
    (lab.stage_subject_kind==='TITLE_ORNAMENT'?'OPERA ORNAMENT · NO MATHEMATICAL THEOREM':
     lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?'VIXEN PROSPECTIVE TRACK · NOT EXECUTED':
     lab.stage_role==='OPERA'?'VIXEN INQUIRY MODEL · NOT A PRIMARY WORK':
@@ -584,7 +584,8 @@ export async function mountVixenElectricFoundry({
   const subset=all.filter(l=>state.selectedCatalogueGroup==='GIVEBACK'
     ?l.kind==='PROSPECTIVE_GIVEBACK_SIMULATION':canStageVixenFolio(l)&&l.kind==='CANONICAL_FORMULA_SIMULATION');
   for(const item of subset){
-   const b=BTN(item.folio_id+' · '+item.name,()=>switchLab(item.id),'ef-gallery-item');
+   const name=item.kind==='PROSPECTIVE_GIVEBACK_SIMULATION'?item.id.replace(/^LAB_/,''):item.folio_id;
+    const b=BTN(name+' · '+item.name,()=>switchLab(item.id),'ef-gallery-item');
    b.setAttribute('aria-pressed',String(item.id===state.labId));
    list.append(b);
   }

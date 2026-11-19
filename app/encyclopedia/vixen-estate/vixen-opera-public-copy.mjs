@@ -20,8 +20,7 @@ const PUBLIC_TERMS=Object.freeze([
   [/\bAtelier\b/gi,'research workspace'],
   [/\bTD613-TCP\b/g,'the hosting archive'],
   [/\bTD613\b/g,'the research host'],
-  [/\bOPERAHOUSE\b/gi,'research hosting layer'],
-  [/\bPERFORMER\b/gi,'recorded work']
+  // The constitutional roles are public terms of art. Never erase their identity.
 ]);
 const NONPRESENTATION=new Set(['SCRIPT','STYLE','TEMPLATE','NOSCRIPT','TEXTAREA','INPUT']);
 export const PUBLIC_COPY_VERSION='vixen-public-copy/v1';
@@ -37,7 +36,7 @@ function protectedSource(node){
   // Exact source, transfer and machine receipts continue to be retrievable
   // without rewriting provenance or falsifying the underlying source bytes.
   return Boolean(parent.closest(
-    '[data-vixen-machine-only], [data-machine-receipt], .vix-reader-raw, .vix-fusion-machine-preview'
+    '[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'
   ));
 }
 function rewriteNode(node){

@@ -32,3 +32,8 @@ The original 22 formula and 6 giveback entries remain in the **same immutable co
 - The synthesizer's computational execution validates mechanics, not actual user-source scientific truth. Native engine-family parity across every Atelier operation is a separate proof obligation.
 - Human interpretation, source authorship, scientific closure, experiment flight, merge and deployment authority remain RESERVED/HELD.
 - Exact-head unit and Chromium CI are required. Preview publication remains a separate operator gesture via GitHub issue #1744.
+
+## Additional boundary findings (second pass)
+9. **Role erasure in public-copy translation.** The DOM wording adapter renamed literal OPERAHOUSE and PERFORMER terms, rendering the constitutional law indistinct. Those typed role names are now exempt while unrelated machine implementation names remain translated only in interpretive chrome.
+10. **Exact source title alteration.** Dynamic provenance fields and search hit titles previously passed through public alias rewriting, risking inaccurate original title/filename rendering. Search cards now declare original-source provenance and retain canonical labels; scholarly source title nodes are excluded from text mutation.
+11. **Misleading track optical coordinate.** A prospective giveback track could surface its RC optic binding as though it were a subject folio in public badges/catalogue. Public staging now labels the prospective track itself; internal machine evidence retains the real optical identifier.
