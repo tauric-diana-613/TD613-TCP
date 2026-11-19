@@ -61,6 +61,7 @@ export const BOUNDED_ENGINE_OPERATIONS=Object.freeze({
  UNIVERSAL_ATELIER:Object.freeze(['search','get','cite','neighbors','route','context','verify']),
  SRC_ATELIER:Object.freeze([
   'src_projective_routing','src_verified_vixen_work_pair',
+   'src_verified_vixen_original_projective_differential',
   'src_phase2_tomography',
   'src_phase2_context_roles',
   'src_rabbit_hole_traversal',
