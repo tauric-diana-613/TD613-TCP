@@ -4,19 +4,13 @@
  */
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {readFileSync,readdirSync} from 'node:fs';
+// Discover all Vixen CSS rather than protecting only the early Glinda modules.
 const files=[
  '../app/encyclopedia/reference/vixen-operator-encounter.css',
- '../app/encyclopedia/vixen-estate/glinda-cybergoth-rgi10.css',
- '../app/encyclopedia/vixen-estate/vixen-stage-architecture-rgi10b.css',
- '../app/encyclopedia/vixen-estate/glinda-spectacle-rgi11.css',
- '../app/encyclopedia/vixen-estate/glinda-luminous-proscenium-rgi12.css',
- '../app/encyclopedia/vixen-estate/vixen-electrical-breath-rgi13.css',
- '../app/encyclopedia/vixen-estate/vixen-opaline-couture-rgi14.css',
- '../app/encyclopedia/vixen-estate/synthesis-salon.css',
- '../app/encyclopedia/vixen-estate/vixen-foyer.css',
- '../app/encyclopedia/vixen-estate/observatory-electric-foundry.css',
- '../app/encyclopedia/vixen-estate/research-chamber.css',
+ ...readdirSync(new URL('../app/encyclopedia/vixen-estate/',import.meta.url))
+  .filter(name=>name.endsWith('.css')).sort()
+  .map(name=>'../app/encyclopedia/vixen-estate/'+name)
 ];
 function rgb(s){
  const m=s.match(/^#([a-f\d]{3,8})$/i);
