@@ -10,7 +10,7 @@
   width:min(calc(100% - 2 * var(--gutter, 24px)), 1000px);
   box-sizing:border-box;padding:clamp(24px,4.2vw,54px);
   border:1px solid rgba(255,145,175,.36);
-  background:linear-gradient(135deg,#12171b 0%,#222026 62%,#171619 100%);
+  background:linear-gradient(135deg,#12171b 0%,#222629 62%,#191b1d 100%);
   color:#F6F4F0;box-shadow:0 10px 38px rgba(0,0,0,.22);
 }
 /* Screenshot 2026-11-17 mobile REDPEN: this new invitation was added after
@@ -19,7 +19,7 @@
  * rectangles at scrolling thresholds. Keep the artwork behind the panel. */
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-overview .vix-entrance-research-door{
  position:relative;z-index:2;isolation:isolate;
- background:linear-gradient(135deg,#12171b 0%,#222026 62%,#171619 100%);
+ background:linear-gradient(135deg,#12171b 0%,#222629 62%,#191b1d 100%);
 }
 #view-overview .vix-entrance-research-door h2{
   font:italic 400 clamp(34px,5vw,70px)/1.06 Didot,'Bodoni MT',Georgia,serif;
