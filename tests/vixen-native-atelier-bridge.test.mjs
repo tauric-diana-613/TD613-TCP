@@ -206,3 +206,29 @@ test('SRC computation runs on two real, SHA-verified original Vixen Work bodies 
   payload:{work_ids:[workIds[0],'emwork_000000000000000000000000'],
    query:'Explore quantum entanglement'}}),/HELD_FOREIGN_OR_UNREGISTERED_VIXEN_WORK/);
 });
+
+test('original SRC Python projective functions execute on identical verified Vixen Work bytes and expose method differences',async()=>{
+ const work_ids=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
+ assert.ok(BOUNDED_ENGINE_OPERATIONS.SRC_ATELIER.includes('src_verified_vixen_original_projective_differential'));
+ const payload={work_ids,query:'Explore quantum entanglement'};
+ const js=await adapters.SRC_ATELIER({operation:'src_verified_vixen_work_pair',payload});
+ const observed=await adapters.SRC_ATELIER({operation:'src_verified_vixen_original_projective_differential',payload});
+ const native=observed.original_native_differential;
+ assert.equal(js.native_python_executed,false);
+ assert.equal(observed.native_python_executed,true);
+ assert.equal(native.original_python_replay.native_python_executed,true);
+ assert.deepEqual(observed.source_proofs,js.source_proofs);
+ assert.deepEqual(observed.scored_works,js.scored_works);
+ assert.deepEqual(native.original_python_replay.verified_vixen_derivatives.map(x=>x.work_id),work_ids);
+ assert.match(native.original_python_replay.original_method_sha256,/^[a-f0-9]{64}$/);
+ assert.equal(native.original_python_replay.original_src_archive_loaded,false);
+ assert.equal(native.full_method_equivalence,'HELD_UNPROVEN');
+ assert.equal(native.synthetic_query_probe.evidence_class,'SYNTHETIC_OPERATOR_QUERY_NOT_MANUSCRIPT');
+ assert.equal(observed.authorship_promotion,false);
+ assert.equal(observed.scientific_credit,0);
+ assert.equal(observed.human_closure_required,true);
+ await assert.rejects(()=>adapters.SRC_ATELIER({operation:'src_verified_vixen_original_projective_differential',
+  payload:{work_ids:[work_ids[0],'emwork_000000000000000000000000'],query:'Explore quantum entanglement'}}),
+  /HELD_FOREIGN_OR_UNREGISTERED_VIXEN_WORK/);
+});
