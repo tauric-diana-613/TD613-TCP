@@ -316,6 +316,16 @@ test('All 5 native Podium adapters execute boundedly, expressed directives auto-
  const corpus=JSON.parse(html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/)[1]);
 
  const adapters=await createPodiumNativeReadAdapters({repoRoot});
+ const genuine=await adapters.RULEFIELD({operation:'assess_roles',payload:{work_id:corpus.works[0].work_id}});
+ assert.equal(genuine.source_work_state,'SOURCE_ROSTER_MATCHED');
+ assert.equal(genuine.staged_opera_event.performer.work_id,corpus.works[0].work_id);
+ const injected=structuredClone(corpus);
+ const forgedId='emwork_'+'0'.repeat(24);
+ injected.works[0].work_id=forgedId;
+ const refused=await adapters.RULEFIELD({operation:'assess_roles',payload:{work_id:forgedId,corpus:injected}});
+ assert.equal(refused.source_work_state,'HELD_UNKNOWN_VIXEN_WORK');
+ assert.equal(refused.staged_opera_event,null,
+  'A caller-supplied research corpus cannot fabricate a native Vixen Performer');
  for(const slot of ['APERTURE','ATLAS','DOLLHOUSE','RULEFIELD','UNIVERSAL_ATELIER']){
   assert.equal(typeof adapters[slot],'function','Expected connected adapter: '+slot);
   assert.ok(Array.isArray(BOUNDED_ENGINE_OPERATIONS[slot])&&BOUNDED_ENGINE_OPERATIONS[slot].length>=3);
