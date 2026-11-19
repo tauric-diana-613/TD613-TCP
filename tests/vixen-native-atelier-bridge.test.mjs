@@ -95,3 +95,31 @@ test('original native host operations include source-bound research routes witho
  assert.throws(()=>native.EM_ATELIER({operation:'em_native_semantic',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
  assert.throws(()=>native.CROSS_ATELIER({operation:'cross_atelier_semantic',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
 });
+
+test('original SRC archive is executed through the genuine native host bridge with source-bounded, zero-authority receipts',()=>{
+ const sealPath=resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/phase2/current-seal.json');
+ const seal=JSON.parse(readFileSync(sealPath,'utf8'));
+ const original=native.SRC_ATELIER({operation:'src_native_epoch_query',payload:{
+  snapshot_id:seal.atelier_snapshot_id,seal_id:seal.seal_id,action:'resolve',
+  entity_id:'academia:145078372:page'
+ }});
+ assert.equal(original.kind,'ORIGINAL_NATIVE_EXECUTABLE');
+ assert.equal(original.read_only,true);
+ assert.equal(original.scientific_credit,0);
+ assert.equal(original.data.query_epoch.atelier_snapshot_id,seal.atelier_snapshot_id);
+ assert.equal(original.data.query_epoch.seal_id,seal.seal_id);
+ assert.equal(original.data.result.entity_id,'academia:145078372:page');
+ assert.ok(Array.isArray(original.data.result.matches));
+ assert.ok(original.data.result.matches.some(row=>row.entity_id==='academia:145078372:page'));
+
+ const assay=native.SRC_ATELIER({operation:'src_native_projective_assay',payload:{}});
+ assert.equal(assay.kind,'ORIGINAL_NATIVE_EXECUTABLE');
+ assert.equal(assay.read_only,true);
+ assert.equal(assay.scientific_credit,0);
+ assert.equal(assay.data.schema_version,'src-projective-routing-summary/v1');
+ assert.equal(assay.data.atelier_snapshot_id,seal.atelier_snapshot_id);
+ assert.equal(assay.data.seal_id,seal.seal_id);
+ assert.ok(assay.data.document_count>0,'read actual retained SRC source derivatives, not a synthetic fixture');
+ assert.equal(assay.data.status,'BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED');
+ assert.ok(assay.data.automatic_promotions_forbidden.includes('MACHINE_ROUTING_EFFECT_CONFIRMED'));
+});
