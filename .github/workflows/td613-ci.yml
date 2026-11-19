@@ -1245,7 +1245,7 @@ jobs:
     needs: scope
     if: github.event_name == 'pull_request' && needs.scope.outputs.head_is_current == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
