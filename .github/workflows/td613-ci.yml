@@ -284,6 +284,7 @@ jobs:
           node --test tests/vixen-electric-foundry.test.mjs
           # Each constitutional subject boundary must execute on this exact commit, not merely exist as a file.
           node --test tests/vixen-stage-subject-contract.test.mjs tests/vixen-math-wardrobe.test.mjs
+          node --test tests/vixen-original-work-mathematics.test.mjs
           node --test tests/vixen-foyer.test.mjs
           node --test tests/vixen-folded-cuirass.test.mjs tests/vixen-motion-graph.test.mjs tests/vixen-palette-contract.test.mjs tests/vixen-room-optics.test.mjs tests/vixen-room-radiance.test.mjs tests/vixen-salon-ambient-field.test.mjs
           node scripts/run-pedagogue-design-gate.mjs tests/fixtures/pedagogue/vixen-frontispiece-route-design.json
