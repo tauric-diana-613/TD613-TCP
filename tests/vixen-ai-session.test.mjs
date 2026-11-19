@@ -236,6 +236,7 @@ test('Maestro keeps a visitor-selected Work distinct from a rival Work it really
  assert.equal(boundary.selected_work_id,selected);
  assert.equal(boundary.selection_is_not_read_receipt,true);
  assert.equal(boundary.read_is_not_lineage_proof,true);
+ assert.equal(boundary.catalogue_inspection_is_not_full_manuscript_read,true);
  const observed=(rival.result.narrative.observed_reads||[])
   .filter(x=>x.status==='OBSERVED_READ_ONLY'&&x.intent==='vixen.work.inspect')
   .map(x=>x.record.work_id);
@@ -247,4 +248,11 @@ test('Maestro keeps a visitor-selected Work distinct from a rival Work it really
  assert.ok(boundary.observed_work_ids.every(x=>ids.includes(x)),
   'The rival may only be a real Vixen source');
  assert.equal(rival.result.narrative.provenance.no_admitted_crosswalk,true);
+ const handoff=await podium.dispatch(task('vixen.ai.handoff'));
+ assert.equal(handoff.status,'SUPPORTED');
+ assert.deepEqual(handoff.result.selection_execution_boundary,boundary);
+ const browser=readFileSync(fileURLToPath(new URL('../app/encyclopedia/vixen-estate/vixen-ai-journey.mjs',import.meta.url)),'utf8');
+ assert.match(browser,/Your selected work:/);
+ assert.match(browser,/Catalog records actually checked:/);
+ assert.doesNotMatch(browser,/SRC_NATIVE_[A-Z]+|SRC_ATELIER_ISOMORPHIC/);
 });

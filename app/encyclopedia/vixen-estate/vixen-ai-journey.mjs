@@ -102,6 +102,21 @@ export function mountVixenAiJourney(host=by('vixenAiJourney')){
    readResults.filter(x=>x.status==='OBSERVED_READ_ONLY').length+' supported; '+
    readResults.filter(x=>x.status!=='OBSERVED_READ_ONLY').length+
    ' held or unconnected. Neither establishes influence or authorship.'));
+  const boundary=handoff?.selection_execution_boundary;
+  if(boundary?.selected_work_id){
+   const title=id=>{
+    const w=corpus.works.find(w=>w.work_id===id);
+    return w?.display_title||w?.declared_title||'Unresolved record';
+   };
+   const actuallyChecked=boundary.observed_work_ids||[];
+   const followedRival=boundary.inspection_status==='SELECTED_SOURCE_NOT_INSPECTED_RIVAL_READ';
+   sources.append(node('p','vma-muted',
+    'Your selected work: '+title(boundary.selected_work_id)+
+    '. Catalog records actually checked: '+
+    (actuallyChecked.length?actuallyChecked.map(title).join(' · '):'None qualified on this turn')+'. '+
+    (followedRival?'The guide checked a different work for its countertest. ':'')+
+    'A selection, a catalog check, and a full-text reading are different evidence.'));
+  }
   const tasks=by('vmaMissions');tasks.replaceChildren(node('h4','vma-section-title','Field missions · all optional'));
   for(const q of handoff?.quests||[]){
    const x=node('article','vma-quest');

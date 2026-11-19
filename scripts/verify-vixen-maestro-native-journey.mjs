@@ -94,6 +94,7 @@ async function witness(){
    'A declared selection cannot fabricate an observed read');
   assert.equal(boundary.selection_is_not_read_receipt,true);
   assert.equal(boundary.read_is_not_lineage_proof,true);
+  assert.equal(boundary.catalogue_inspection_is_not_full_manuscript_read,true);
   return {step:step.sequence,node_id:step.node_id,selected_work_id:step.source_work_id,
    featured_work_id:boundary.featured_work_id,observed_work_ids:actual,
    inspection_status:boundary.inspection_status,
@@ -142,6 +143,10 @@ async function witness(){
  assert.equal(handoff.status,'SUPPORTED');
  assert.equal(handoff.result.role,'MAESTRO');
  assert.equal(handoff.result.route_history.length,3);
+ assert.equal(handoff.result.selection_execution_boundary.selected_work_id,
+  alignments.at(-1).selected_work_id);
+ assert.deepEqual(handoff.result.selection_execution_boundary.observed_work_ids,
+  alignments.at(-1).observed_work_ids);
  assert.equal(handoff.result.program_notes_permission,'NOT_REQUESTED');
  assert.equal(handoff.result.human_approval_for_corpus_mutation,false);
  const archive=await podium.dispatch(task('vixen.ai.archive'));

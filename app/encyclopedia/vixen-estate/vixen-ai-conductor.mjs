@@ -284,6 +284,7 @@ export async function conductVixenNarrativeTurn({
   observed_work_ids:observedWorkIds,inspection_status:sourceInspectionStatus,
   selection_is_not_read_receipt:true,
   read_is_not_lineage_proof:true,
+  catalogue_inspection_is_not_full_manuscript_read:true,
   evidence_class:'OPERATOR_SELECTION_AND_OBSERVED_HOST_READS_SEPARATED'
  });
  const options=routeOptions(path,role,ranked,trail);

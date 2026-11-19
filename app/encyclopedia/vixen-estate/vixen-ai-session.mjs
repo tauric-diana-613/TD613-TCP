@@ -283,7 +283,9 @@ export function createVixenAiSession({corpus,readCart=()=>[],verifyProgramNotesC
     evidence_class:'ROUTE_MEMORY_NOT_INDEPENDENT_PROOF'
    })),
    source_candidates:selected?.source_candidates||[],
-   observed_reads:selected?.observed_reads||[],narrative:selected?.narrative||null,
+   observed_reads:selected?.observed_reads||[],
+   selection_execution_boundary:selected?.selection_execution_boundary||null,
+   narrative:selected?.narrative||null,
    quests:selected?.quests||[],next_choices:selected?.choices||[],
    ai_instructions:selected?.ai_narration_brief||null,
    program_notes_permission:current.notesPermission,
