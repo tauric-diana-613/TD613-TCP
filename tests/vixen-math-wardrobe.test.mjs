@@ -76,3 +76,10 @@ test('verified Work mathematics preserves manuscript identity and digest; reject
  assert.equal(corrupted.verified_work_math_count,0);
  assert(corrupted.source_refusals.some(x=>x.reason==='DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'));
 });
+
+test('original manuscript titles and exact mathematical passages are exempt from display-copy substitution',()=>{
+ assert.match(html,/<h3 data-vixen-source-provenance="true">/);
+ assert.match(html,/data-original-math-passage data-vixen-source-provenance="true"/);
+ assert.match(html,/quote\.setAttribute\('data-vixen-source-provenance','true'\)/);
+ assert.match(html,/renderFormulaFolios\(\);\s*drawObservatoryCanvas\(\)/);
+});
