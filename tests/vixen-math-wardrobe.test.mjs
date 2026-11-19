@@ -7,11 +7,11 @@ const marker='<script id="vixen-corpus-bundle" type="application/json">';
 const start=html.indexOf(marker),end=html.indexOf('</script>',start+marker.length);
 assert.ok(start>=0&&end>start);
 const corpus=JSON.parse(html.slice(start+marker.length,end));
-test('wardrobe distinguishes seven inquiries and one authorial title ornament, retaining 14 technical records in source',()=>{
+test('wardrobe presents all eight Vixen folios with unchanged backstage RC records',()=>{
  const x=selectVixenTheoryFolios(corpus);
  assert.deepEqual(x.theories.map(f=>f.id),VIXEN_THEORY_IDS);
  assert.equal(x.retained_technical_count,14);
- assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · SEVEN INQUIRIES \+ ONE ORNAMENT/);
+ assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · EIGHT FOLIOS/);
  assert.doesNotMatch(html,/Refractive Couture RC-01\.\.14 \(14\)/);
 });
 test('exact Vixen formula invokes Foundry and unified candidate ranking with zero scientific promotion',()=>{
@@ -28,11 +28,13 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
 test('archive engineering cannot cross into Vixen theory performer',()=>{
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
  assert.match(html,/foundry\?\.selectLab\?\.\(exactId\)/);
- assert.match(html,/const foundryBtn = f.id==='TCC-08' \? ''/);
- assert.match(html,/\^TCC-0\[1-7\]\$\/\.test\(String\(folioId\)\)/);
- assert.match(html,/Only the seven inquiry folios may stage a Foundry model/);
+ assert.match(html,/const foundryBtn = '<button/);
+ assert.match(html,/\^TCC-0\[1-8\]\$\/\.test\(String\(folioId\)\)/);
+ assert.match(html,/Only the eight Vixen folios may stage Foundry models/);
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
- assert.equal(ornament.foundry.lab_id,null,'Ornament inspection must not invoke an optical experiment');
- assert.equal(ornament.synthesis.candidate_count,0);
+ assert.equal(ornament.foundry.lab_id,'LAB_TCC-08','Eighth stages its own optical model');
+  assert.equal(ornament.foundry.model,'TOROID');
+  assert.ok(ornament.synthesis.candidate_count>=1);
+  assert.equal(ornament.authority.empirical_credit,0);
  assert.doesNotMatch(html,/startsWith\('TCC'\) \? 'LAB_TCC-05'/);
 });
