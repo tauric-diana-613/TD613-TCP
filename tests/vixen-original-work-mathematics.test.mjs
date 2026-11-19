@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {
  extractOriginalMathPassages,buildOriginalWorkMathWardrobe,scoreOriginalWorkMath
 } from '../app/encyclopedia/vixen-estate/observatory-work-mathematics.mjs';
@@ -12,8 +13,9 @@ const corpus=JSON.parse(html.slice(i+marker.length,j));
 const lookup=new Map(corpus.works.flatMap(w=>w.linked_sources.map(s=>[s.source_file_id,w])));
 const admittedFixture=async source_file_id=>{
  const work=lookup.get(source_file_id);
+ const text_body='$a + b = c$';
  return {source_file_id,work_id:work.work_id,readable:true,body_sha256_verified:true,
-  derivative_sha256:'SYNTHETIC_FIXTURE_ONLY',text_body:'$$a + b = c$$'};
+  derivative_sha256:createHash('sha256').update(text_body).digest('hex'),text_body};
 };
 test('math extraction returns exact literal source positions without proof promotion',()=>{
  const passages=extractOriginalMathPassages('Words before $$a + b = c$$ and after');
