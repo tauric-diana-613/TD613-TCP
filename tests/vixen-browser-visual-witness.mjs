@@ -590,17 +590,17 @@ try {
       assert.equal(await galleryReveal.isHidden(),true);
     }
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,verifiedCount));
-    const firstWork=provenance[0].id;
+    const firstMathWorkId=provenance[0].id;
     await page.locator('#formulaSearchInput').fill('RC-07');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
       'Host engineering catalogue IDs cannot produce fabricated original math entries');
     await page.locator('#formulaSearchInput').fill('TCC-08');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
       'Title-locus ornament cannot impersonate an original Work');
-    await page.locator('#formulaSearchInput').fill(firstWork);
+    await page.locator('#formulaSearchInput').fill(firstMathWorkId);
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),1,
       'Filtering by exact original Work coordinate must be deterministic');
-    const selected=wardrobe.locator('.formula-card[data-work-math-id="'+firstWork+'"]');
+    const selected=wardrobe.locator('.formula-card[data-work-math-id="'+firstMathWorkId+'"]');
     await selected.locator('[data-compute-original-work]').click();
     await page.waitForFunction(id=>{
       const p=document.querySelector('[data-work-math-id="'+id+'"] [data-vixen-computation]');
