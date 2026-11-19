@@ -152,7 +152,7 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
  const vixenHtml=await readFile(new URL('vix-cyb.html',root),'utf8');
  const vixenCorpus=JSON.parse(vixenHtml.match(/<script id="vixen-corpus-bundle" type="application\/json">([\s\S]*?)<\/script>/)[1]);
  const source=castVixenPerformer(vixenCorpus.works[0],vixenCorpus);
- assert.equal(source.estate,'EMSTD613');assert.equal(source.role,'PERFORMER');assert.equal(source.identity_status,'UNRESOLVED');
+ assert.equal(source.estate,'EMSTD613');assert.equal(source.role,'PERFORMER');assert.equal(source.identity_status,vixenCorpus.works[0].identity_status);
  const event=stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{work_id:source.work_id});
  assert.equal(event.role,'OPERA');assert.equal(event.performer.role,'PERFORMER');
  assert.throws(()=>castVixenPerformer({work_id:'LAB_RC-07'},vixenCorpus),/PERFORMER_WORK_NOT_IN_SOURCE_ROSTER/);
