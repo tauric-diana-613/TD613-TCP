@@ -78,7 +78,7 @@ const bad=matrix.filter(row=>row.original_python_present===false||
  row.js_export_present===false||row.podium_operation_present===false||
  row.native_host_present===false||row.consumer_wired===false);
 assert.deepEqual(bad.map(x=>x.capability),[],
- 'Manifest's declared source-to-Vixen call paths must exist in the exact checkout');
+ "Declared source-to-Vixen call paths must exist in the exact checkout");
 const source_revision=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim();
 const originalAvailable=matrix.filter(x=>x.original_python_present===true).map(x=>x.capability);
 const wired=matrix.filter(x=>x.podium_operation_present&&x.js_export_present===true).map(x=>x.capability);
