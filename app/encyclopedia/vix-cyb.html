@@ -1057,12 +1057,12 @@ body[data-view="overview"] .reading-back{display:none}
           <div class="segmented" role="group" aria-label="Folio family filter">
             <button type="button" data-formula-group="all" aria-pressed="true">All folios</button>
           </div>
-          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 recorded folios</span>
+          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Locating source mathematics…</span>
         </div>
         <div class="formula-gallery-intro">
-          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL FOLIOS</span>
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL WORK MATHEMATICS</span>
             <h3>Mathematics in motion. <em>Sources in their own names.</em></h3>
-            <p>Explore source-linked models and provisional synthesis questions. TCC-08 keeps its original authorial title-locus status rather than becoming a research theorem. Technical optics remain instruments of presentation, never original Vixen Works.</p>
+            <p>Read mathematical expressions directly from custody-verified original Work texts, with exact source manifestation IDs and derivative checksums. Optional unified synthesis uses these passages as query context, while host instrumentation retains its separate identity.</p>
           </div>
           <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
         </div>
@@ -1070,9 +1070,9 @@ body[data-view="overview"] .reading-back{display:none}
         <div class="formula-gallery-footer">
           <button id="formulaGalleryReveal" type="button" class="formula-gallery-reveal" aria-controls="formulaFolioGrid" aria-expanded="false">
             <span>Explore the full mathematical wardrobe</span>
-            <span class="formula-gallery-count" aria-hidden="true">+ 4 folios</span>
+            <span class="formula-gallery-count" aria-hidden="true">+ source-backed Works</span>
           </button>
-          <p class="formula-gallery-fidelity">Original mathematical records and bounded computation remain distinct. The fourteen RC technical methods retain their backstage engineering role, without receiving Vixen authorship. Independent evidence and human adjudication govern scientific ratification.</p>
+          <p class="formula-gallery-fidelity">Original mathematical passages are derived from admitted Work manuscripts; missing or unverifiable text stays held. Host engineering records remain outside this wardrobe, and synthetic candidate rankings confer zero empirical or authorship authority.</p>
         </div>
       </div>
     </div>
@@ -2822,163 +2822,129 @@ body[data-view="overview"] .reading-back{display:none}
     }
   }
 
-  // On-demand bridge executes actual Foundry mathematics plus the same unified
-  // synthesis scorer used by the Salon/Podium; it does not manufacture authorship.
-  let wardrobeEnginePromise=null;
-  async function computeVixenFolio(folioId,buttonEl){
-    const panel=buttonEl.closest('[data-folio-id]')?.querySelector('[data-vixen-computation]');
+  // The visible mathematical wardrobe comes from SHA-verified original Works,
+  // never from an inferred TCC/RC host-equipment catalogue.
+  let originalWorkMathModule=null,originalWorkMathPromise=null,originalWorkMathArchive=null,originalWorkMathError=null;
+  async function computeOriginalWorkMath(workId,buttonEl){
+    const panel=buttonEl.closest('[data-work-math-id]')?.querySelector('[data-vixen-computation]');
     if(!panel)return;
-    panel.hidden=false;panel.textContent='Computing the Vixen source-bound model…';
+    panel.hidden=false;panel.textContent='Evaluating a verified original manuscript passage…';
     buttonEl.disabled=true;
     try{
-      wardrobeEnginePromise ||= import('./vixen-estate/observatory-math-wardrobe.mjs');
-      const engine=await wardrobeEnginePromise;
-      const receipt=engine.computeVixenTheoryReceipt(DATA,folioId);
+      if(!originalWorkMathArchive||!originalWorkMathModule)throw Error('WORK_MATHEMATICS_SOURCE_NOT_READY');
+      const entry=originalWorkMathArchive.entries.find(e=>e.work_id===workId);
+      if(!entry)throw Error('WORK_MATHEMATICS_SOURCE_UNVERIFIED');
+      const receipt=originalWorkMathModule.scoreOriginalWorkMath(DATA,entry);
       if(!panel.isConnected)return;
-      const result=receipt.synthesis.top_candidate;
-      const name=document.createElement('strong');
-      name.textContent='LIVE SOURCE-BOUND COMPUTATION · '+receipt.folio_id;
-      const info=document.createElement('p');
-      info.textContent='Exact lab: '+receipt.foundry.lab_id+
-         ' · referenced Vixen Works: '+receipt.foundry.source_work_count+
-         ' · unified candidates ranked: '+receipt.synthesis.candidate_count+
-         ' · leading proposal: '+(result?.title||'HELD')+
-         ' · model score: '+(Number.isFinite(result?.score)?result.score.toFixed(4):'HELD');
-      const metrics=document.createElement('pre');
-      metrics.textContent=receipt.foundry.metrics.map(item=>item.name+' = '+
-        (typeof item.value==='object'?JSON.stringify(item.value):String(item.value))).join('\\n');
-      const evidence=document.createElement('details');
-       evidence.setAttribute('data-wardrobe-evidence','true');
-       const summary=document.createElement('summary');
-       summary.textContent='Inspect candidate scores and evidence limits';
-       evidence.append(summary);
-       const origin=document.createElement('p');
-       origin.textContent='Recorded folio: '+receipt.folio_id+
-         ' · Human-authored question: '+(receipt.synthesis.human_question||'NONE')+
-         ' · Query origin: '+receipt.synthesis.question_origin;
-       evidence.append(origin);
-       const labels={spectral_conditioning:'Spectral conditioning',
-         clock_holonomy:'Clock-order sensitivity',
-         mirror_nullspace:'Projection residual',
-         synergy_fadt:'Joint-source synergy',
-         cluster_bridge:'Cluster relationship',
-         epistemic_ceiling:'Evidence limit',
-         design_cadence:'Formal grammar',
-         src_projective_tomography:'Documentary-route estimate'};
-       for(const candidate of receipt.synthesis.scored_candidates){
-         const card=document.createElement('p');
-         const scores=Object.entries(labels)
-           .filter(([key])=>Number.isFinite(candidate.breakdown[key]))
-           .map(([key,label])=>label+': '+candidate.breakdown[key].toFixed(4)).join(' · ');
-         card.textContent=candidate.title+' · candidate score '+
-           (Number.isFinite(candidate.score)?candidate.score.toFixed(4):'HELD')+
-           ' · '+scores+' · Proposed falsifier: '+(candidate.falsifier||'UNDECLARED');
-         evidence.append(card);
-       }
-       const trace=document.createElement('p');
-       trace.textContent='Documentary-route links: '+receipt.synthesis.engine_trace.src_projective_links+
-         ' · Contextual-role checks: '+receipt.synthesis.engine_trace.src_contextual_role_passes+
-         ' · Tomographic candidates: '+receipt.synthesis.engine_trace.src_tomography_candidates+
-         ' · Host-native tools: not invoked · Original manuscript passages: not retrieved here';
-       evidence.append(trace);
-       const ceiling=document.createElement('p');
-      ceiling.textContent=receipt.source_title_locus_ornament
-        ?'TCC-08 preserves the historical title-locus notation. Its diagnostics grant neither an arithmetic theorem nor an experimental-design decision or empirical proof.'
-        :'Bounded mathematical exploration and unratified candidate ranking; empirical credit 0. Any scientific promotion requires independent evidence and human adjudication.';
-      panel.replaceChildren(name,info,metrics,evidence,ceiling);
-      buttonEl.textContent='Recompute Vixen synthesis ↻';
-    }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
-    finally{buttonEl.disabled=false}
+      const heading=document.createElement('strong');
+      heading.textContent='ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS · '+receipt.work_id;
+      const source=document.createElement('p');
+      source.textContent='Verified manifestation '+receipt.source_file_id+
+        ' · derivative SHA-256 '+receipt.derivative_sha256+
+        ' · exact excerpt offset '+receipt.excerpt_offset_utf16;
+      const quote=document.createElement('pre');
+      quote.textContent=receipt.excerpt_literal;
+      const score=document.createElement('p');
+      score.textContent='Ranked candidate hypotheses: '+receipt.candidate_count+
+        ' · leading candidate: '+(receipt.top_candidate?.title||'HELD')+
+        ' · score: '+(Number.isFinite(receipt.top_candidate?.score)?receipt.top_candidate.score.toFixed(4):'HELD');
+      const details=document.createElement('details');
+      details.dataset.wardrobeEvidence='true';
+      const summary=document.createElement('summary');
+      summary.textContent='Inspect ranked hypotheses and falsifiers';
+      details.append(summary);
+      for(const cand of receipt.candidates){
+        const item=document.createElement('p');
+        item.textContent=cand.title+' · candidate score '+(Number.isFinite(cand.score)?cand.score.toFixed(4):'HELD')+
+         ' · proposed falsifier: '+(cand.falsifier||'UNDECLARED');
+        details.append(item);
+      }
+      const ceiling=document.createElement('p');
+      ceiling.textContent='Source excerpt: verified admitted Work derivative. Ranking: corpus-wide metadata and a query conditioned by this passage. It is not source-specific proof, an executed native-host engine, a new authored theorem or empirical corroboration. Scientific credit 0.';
+      panel.replaceChildren(heading,source,quote,score,details,ceiling);
+      buttonEl.textContent='Recompute source-conditioned synthesis ↻';
+    }catch(error){
+      panel.textContent='COMPUTATION HELD · '+String(error?.message||error);
+    }finally{buttonEl.disabled=false}
   }
   function renderFormulaFolios() {
-    const listEl = $('formulaFolioGrid');
-    const countEl = $('formulaCountLabel');
-    if (!listEl) return;
-    const theoryFolios = DATA.formula_folios.filter(f => f.group === 'unified' && /^TCC-0[1-8]$/.test(f.id));
-    if (theoryFolios.length !== 8 || DATA.formula_folios.filter(f => f.group === 'couture').length !== 14) throw Error('WARDROBE_ROLE_CENSUS_MISMATCH');
-    const q = state.formulaQuery.trim().toLowerCase();
-    // An explicit engineering/optics archive ID is a typed lookup, never a
-    // semantic invitation to impersonate a Vixen theoretical performer.
-    const technicalArchiveId = /^rc-\d{2}$/.test(q);
-    const exactFolioMatch = Boolean(q) && theoryFolios.some((f) => f.id.toLowerCase() === q);
-    const semFolioScores = new Map();
-    if (q && !technicalArchiveId && !exactFolioMatch && state.semanticEngine) {
-      try {
-        const semRes = state.semanticEngine.search(state.formulaQuery.trim(), { limit: 24, unitKindFilter: 'synthesis_folio' });
-        for (const h of semRes.hits || []) {
-          if (h.id && !semFolioScores.has(h.id)) semFolioScores.set(h.id, h.score_total || 0.2);
-        }
-      } catch (_) {}
+    const listEl=$('formulaFolioGrid'),countEl=$('formulaCountLabel'),reveal=$('formulaGalleryReveal');
+    if(!listEl)return;
+    if(!originalWorkMathPromise&&state.view==='observatory'){
+      originalWorkMathPromise=import('./vixen-estate/observatory-work-mathematics.mjs')
+        .then(async m=>{
+          originalWorkMathModule=m;
+          originalWorkMathArchive=await m.buildOriginalWorkMathWardrobe(DATA);
+          renderFormulaFolios();
+        }).catch(error=>{
+          originalWorkMathError=String(error?.message||error);
+          renderFormulaFolios();
+        });
     }
-    const filtered = theoryFolios.filter((f) => {
-      if (technicalArchiveId) return false;
-      if (state.formulaGroup !== 'all' && f.group !== state.formulaGroup) return false;
-      if (!q) return true;
-      if (semFolioScores.has(f.id)) return true;
-      return (f.id + ' ' + f.title + ' ' + f.summary + ' ' + f.fallback + ' ' + f.status).toLowerCase().includes(q);
-    });
-    if (q && semFolioScores.size > 0) {
-      filtered.sort((a, b) => (semFolioScores.get(b.id) || 0) - (semFolioScores.get(a.id) || 0));
+    if(!originalWorkMathArchive){
+      listEl.dataset.expanded='false';
+      listEl.textContent=originalWorkMathError
+        ?'SOURCE MATHEMATICS HELD · '+originalWorkMathError
+        :'Reading original Work mathematics from custody-verified source bodies…';
+      if(countEl)countEl.textContent=originalWorkMathError?'SOURCE VERIFICATION HELD':'Verifying original Work manifestations…';
+      if(reveal)reveal.hidden=true;
+      return;
     }
-    // Deliberate editorial edit: the four flagship mathematical identities
-    // appear first within the Vixen theory family. This reorders only
-    // PRESENTATION, not the canonical DATA archive, source IDs or citations.
-    const curatedIds=['TCC-01','TCC-04','TCC-05','TCC-06'];
-    const displayFolios=(!q&&state.formulaGroup==='all')
-      ? [...curatedIds.map(id=>filtered.find(f=>f.id===id)).filter(Boolean),
-        ...filtered.filter(f=>!curatedIds.includes(f.id))]
-      : filtered;
-    const searching = Boolean(q) || state.formulaGroup !== 'all';
-    const expanded = Boolean(state.formulaExpanded || searching);
-    listEl.dataset.expanded = String(expanded);
-    const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
-    if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + theoryFolios.length +
-      ' recorded mathematical folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
-    const reveal = $('formulaGalleryReveal');
-    if (reveal) {
-      reveal.hidden = searching || filtered.length <= 4;
+    const q=state.formulaQuery.trim().toLowerCase();
+    const hostRecordQuery=/^(?:tcc|rc)-\d+$/i.test(q);
+    const entries=originalWorkMathArchive.entries.filter(entry=>!hostRecordQuery&&
+      [entry.work_id,entry.title,entry.original_filename,...entry.source_excerpts.map(p=>p.literal)]
+       .filter(Boolean).join(' ').toLowerCase().includes(q));
+    const searching=Boolean(q),expanded=Boolean(state.formulaExpanded||searching);
+    listEl.dataset.expanded=String(expanded);
+    const visibleCount=expanded?entries.length:Math.min(4,entries.length);
+    if(countEl)countEl.textContent=visibleCount+' of '+entries.length+
+       ' Works with verified mathematical passages · '+originalWorkMathArchive.examined_work_count+
+       ' original Works examined';
+    if(reveal){
+      reveal.hidden=searching||entries.length<=4;
       reveal.setAttribute('aria-expanded',String(expanded));
-      const title = reveal.querySelector('span:first-child');
-      const count = reveal.querySelector('.formula-gallery-count');
-      if (title) title.textContent = expanded ? 'Return to the four featured folios' : 'Explore the full mathematical wardrobe';
-      if (count) count.textContent = expanded ? '− Fold the collection' : '+ ' + Math.max(0,filtered.length-4) + ' folios';
+      const title=reveal.querySelector('span:first-child');
+      const count=reveal.querySelector('.formula-gallery-count');
+      if(title)title.textContent=expanded?'Return to the featured manuscripts':'Explore the full mathematical wardrobe';
+      if(count)count.textContent=expanded?'− Fold the collection':'+ '+Math.max(0,entries.length-4)+' source-backed Works';
     }
-    listEl.innerHTML = displayFolios.map((f) => {
-      let displayTitle = f.title;
-      let displayStatus = f.status;
-      let displayFallback = f.fallback;
-      let displayLatex = f.latex;
-      const tagClass = displayStatus.includes('BRANDING') || displayStatus.includes('PIN_CANDIDATE') ? 'tag gold' : 'tag dark';
-      const links = (f.links || []).map((id) =>
-        '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
-      ).join(' ');
-      const computeBtn = '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-compute-vixen-folio="' + esc(f.id) + '">Compute with unified synthesis ↗</button>';
-      const foundryBtn = '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage exact Foundry model ↑</button>';
-      return '<article class="formula-card" data-folio-id="' + esc(f.id) + '" data-folio-family="' + esc(f.group) + '">' +
-        '<div class="badge-row" style="justify-content:space-between">' +
-          '<span style="font:600 9.5px var(--font-mono)">' + esc(f.id) + '</span>' +
-          '<span class="' + tagClass + '">' + esc(displayStatus) + '</span>' +
-        '</div>' +
-        '<h3>' + esc(displayTitle) + '</h3>' +
-        '<div class="math-block" data-latex="' + esc(displayLatex) + '" data-display="true">' +
-          '<span class="math-fallback">' + esc(displayFallback) + '</span>' +
-        '</div>' +
-        '<p>' + esc(f.summary) + '</p>' +
-        '<div class="badge-row">' + links + ' ' + computeBtn + ' ' + foundryBtn + '</div>' +
-        '<div class="vixen-wardrobe-computation" data-vixen-computation hidden aria-live="polite"></div>' +
-        '<div class="ceiling-line">CEILING: ' + esc(f.ceiling) + '</div>' +
+    if(hostRecordQuery){
+      listEl.textContent='Technical formula-register IDs belong to the host apparatus, not original Vixen manuscript mathematics.';
+      return;
+    }
+    if(!entries.length){
+      listEl.textContent=searching?'No matching verified mathematical manuscript passages.':
+        'No mathematical passages were verified in the admitted Work texts. No host-engineering formula is substituted.';
+      return;
+    }
+    listEl.innerHTML=entries.map(entry=>{
+      const excerpt=entry.source_excerpts[0];
+      const more=entry.source_excerpts.length-1;
+      return '<article class="formula-card" data-work-math-id="'+esc(entry.work_id)+'">'+
+        '<div class="badge-row" style="justify-content:space-between">'+
+          '<span style="font:600 9.5px var(--font-mono)">ORIGINAL WORK · '+esc(entry.work_id)+'</span>'+
+          '<span class="tag gold">SOURCE DERIVATIVE VERIFIED</span>'+
+        '</div>'+
+        '<h3>'+esc(entry.title)+'</h3>'+
+        '<pre class="math-block" style="white-space:pre-wrap;overflow-wrap:anywhere" data-original-math-passage>'+esc(excerpt.literal)+'</pre>'+
+        '<p>Recorded mathematics: '+esc(excerpt.kind)+' · exact source offset '+excerpt.offset_utf16+
+        (more>0?' · '+more+' additional recorded passage(s)':'')+'</p>'+
+        '<p style="overflow-wrap:anywhere;font:500 9px var(--font-mono)">Source manifestation: '+esc(entry.source_file_id)+
+        ' · derivative SHA-256: '+esc(entry.derivative_sha256)+'</p>'+
+        '<div class="badge-row">'+
+          '<button type="button" class="secondary-btn" data-open-ref="'+esc(entry.work_id)+'">Read original Work ↗</button>'+
+          '<button type="button" class="secondary-btn" data-compute-original-work="'+esc(entry.work_id)+'">Compute source-conditioned synthesis ↗</button>'+
+        '</div>'+
+        '<div class="vixen-wardrobe-computation" data-vixen-computation hidden aria-live="polite"></div>'+
+        '<div class="ceiling-line">ORIGINAL SOURCE TEXT ≠ SYNTHESIS MODEL ≠ EMPIRICAL PROOF.</div>'+
       '</article>';
     }).join('');
     bindRefButtons(listEl);
-    listEl.querySelectorAll('[data-foundry-folio]').forEach((b) => {
-      b.addEventListener('click', () => stageFolioInFoundry(b.getAttribute('data-foundry-folio')));
+    listEl.querySelectorAll('[data-compute-original-work]').forEach(btn=>{
+      btn.addEventListener('click',()=>computeOriginalWorkMath(btn.getAttribute('data-compute-original-work'),btn));
     });
-    listEl.querySelectorAll('[data-compute-vixen-folio]').forEach(btn=>{
-      btn.addEventListener('click',()=>computeVixenFolio(btn.getAttribute('data-compute-vixen-folio'),btn));
-    });
-    renderMathSlots(listEl);
   }
-
   // 3. Render 02 Works: Exhaustive 32-Work Catalogue & Lineage Navigator
   function renderWorksView(opts) {
     const listEl = $('worksListContainer');
