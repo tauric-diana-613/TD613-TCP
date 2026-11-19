@@ -166,14 +166,10 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
   add('L2_COMPOSABLE','HELD_UNLESS_TYPED','retain domain residue');
   add('L3_FALSIFIABLE','UNEXECUTED','external matched witness');
  }else if(f==='TCC-08'){
-  // Eighth folio: real bounded TOROID probe, without reifying title notation.
-  add('source_signature','Sₑ ≡ [x+y] = z+1','ORIGINAL_TITLE_LOCUS_NOTATION');
-  add('title_locus_toroid_projection',r6(visual.diagnostic.field_value),'BOUNDED_SYNTHETIC_OPTICAL_FIELD');
-  add('probe_gain',r6(gain),'NORMALIZED_EXPERIMENT_CONTROL');
-  add('probe_twist',r6(twist),'NORMALIZED_EXPERIMENT_CONTROL');
-  add('independent_emergence_witness',null,'NOT_OBSERVED');
-  add('notation_claims_arithmetic_identity',false,'SOURCE_REFUSAL');
-  add('theorem_or_empirical_operator',false,'HUMAN_UNRATIFIED');
+  // Pre-audit TCC-08 model metrics restored verbatim; optical preview exists
+  // separately and does not turn title-locus notation into a theorem.
+  add('signature','Sₑ ≡ [x+y] = z+1','AUTHORIAL_BRANDING_ONLY');
+  add('arithmetic_or_empirical_operator',null,'NO_THEOREM');
  }else if(f==='RC-01'){
   add('circuit',freeze(['M0','VISUAL_INSTRUCTION','RENDERED_VT','AUDIT_QUESTION_QT1']),'formal design grammar');
   add('empirically_better_question',null,'POSTFLIGHT_TEST_UNEXECUTED');

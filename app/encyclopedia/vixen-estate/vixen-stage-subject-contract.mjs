@@ -36,6 +36,5 @@ export function canStageVixenFolio(lab){
  return lab.kind==='CANONICAL_FORMULA_SIMULATION' &&
   lab.stage_subject_kind==='RESEARCH_PROGRAMME' &&
   /^TCC-0[1-8]$/.test(lab.folio_id) && lab.id==='LAB_'+lab.folio_id &&
-  lab.source_estate==='EMSTD613' &&
-  (lab.folio_id!=='TCC-08'||(lab.source_ornament===true && lab.status==='BRANDING_ORNAMENT_ONLY' && lab.optic_program==='TOROID'));
+  lab.source_estate==='EMSTD613';
 }

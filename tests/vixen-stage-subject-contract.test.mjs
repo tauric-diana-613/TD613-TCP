@@ -71,8 +71,9 @@ test('Eight source-conditioned explorations; eighth uses TOROID without conferri
  assert.equal(ornament.source_title_locus_ornament,true);
  assert.equal(ornament.foundry.lab_id,'LAB_TCC-08');
  assert.equal(ornament.foundry.model,'TOROID');
- assert.ok(ornament.foundry.metrics.some(x=>x.name==='title_locus_toroid_projection'));
- assert.ok(ornament.foundry.metrics.some(x=>x.name==='notation_claims_arithmetic_identity'&&x.value===false));
+ assert.ok(ornament.foundry.metrics.some(x=>x.name==='signature'&&x.unit==='AUTHORIAL_BRANDING_ONLY'));
+ assert.ok(ornament.foundry.metrics.some(x=>x.name==='arithmetic_or_empirical_operator'&&x.value===null&&x.unit==='NO_THEOREM'),
+  'Original TCC-08 historical metric semantics must be retained, not invented');
  assert.equal(ornament.authority.empirical_credit,0);
  assert.match(ornament.synthesis.question,/Vixen Signature Emblem/);
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);

@@ -253,3 +253,9 @@ The browser presents source-grounded local guidance with exact real corpus work 
     ]
 
 No route admits foreign source bodies to Vixen, rewrites manuscripts, establishes authorship, verifies scientific externality, grants private index access, deploys, publishes, or merges. A self-reported visitor field task remains a self-report. Original engine names are legal machine metadata only; do not surface them as visitor labels.
+
+### Experiment separation: hydration 7 + 1 vs eight TCC source folios
+
+The planned **Batch-B hydration 7 + 1** protocol means seven historical PDFs against the frozen A0 baseline followed by a genuinely blind eighth document for comparison and human adjudication. It is a separate, unexecuted experiment and SHALL NOT be used as a classification, stage-eligibility or candidate-count rule for the Vixen theoretical wardrobe.
+
+The independent TCC-01 through TCC-08 collection already had eight source-bound computational receipts and direct Foundry staging at pre-audit baseline a5753d88127b35b48eb1caf2debf924e2ad29379. Preserve that design. The original TCC-08 source-specific notation and its pre-audit metrics `signature` and `arithmetic_or_empirical_operator` remain intact, with no new theorem or empirical inference. Do not add invented TCC-08 metrics or condition scientific exploration on a display/branding label.
