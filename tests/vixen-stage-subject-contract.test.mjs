@@ -52,3 +52,15 @@ test('Unified ranking receives source-specific evidence while TCC-08 remains bra
  assert.equal(ornament.synthesis.state,'HELD_BRANDING_ONLY_NO_THEOREM');
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
 });
+
+test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
+ const guide=readFileSync(new URL('../app/encyclopedia/vix-cyb/llms.txt',import.meta.url),'utf8');
+ assert.match(guide,/7.*OPERA research-programme folios/);
+ assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
+ assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
+ assert.match(guide,/RC-03.*RC-07.*RC-10.*no right to headline/i);
+ assert.match(guide,/LAB_RC-##/);
+ assert.match(guide,/TCC-08.*ornamental title locus/);
+ assert.match(guide,/bounded computational connection/);
+ assert.doesNotMatch(guide,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
+});
