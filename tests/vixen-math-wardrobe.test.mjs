@@ -1,66 +1,78 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {VIXEN_THEORY_IDS,selectVixenTheoryFolios,computeVixenTheoryReceipt} from '../app/encyclopedia/vixen-estate/observatory-math-wardrobe.mjs';
+import {createHash} from 'node:crypto';
+import {VIXEN_THEORY_IDS,selectVixenTheoryFolios,computeVixenTheoryReceipt}
+ from '../app/encyclopedia/vixen-estate/observatory-math-wardrobe.mjs';
+import {extractOriginalMathPassages,buildOriginalWorkMathWardrobe,scoreOriginalWorkMath}
+ from '../app/encyclopedia/vixen-estate/observatory-work-mathematics.mjs';
+
 const html=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
 const marker='<script id="vixen-corpus-bundle" type="application/json">';
 const start=html.indexOf(marker),end=html.indexOf('</script>',start+marker.length);
-assert.ok(start>=0&&end>start);
+assert(start>=0&&end>start);
 const corpus=JSON.parse(html.slice(start+marker.length,end));
-test('wardrobe presents all eight Vixen folios with unchanged backstage RC records',()=>{
+
+test('public mathematical wardrobe derives from source-verified original Works rather than technical formula inventory',()=>{
+ assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL WORK MATHEMATICS/);
+ assert.match(html,/buildOriginalWorkMathWardrobe\(DATA\)/);
+ assert.match(html,/data-work-math-id/);
+ assert.match(html,/data-original-math-passage/);
+ assert.match(html,/data-open-ref="\'+esc\(entry\.work_id\)/);
+ assert.match(html,/source-backed Works/);
+ assert.doesNotMatch(html,/data-compute-vixen-folio=/);
+ assert.doesNotMatch(html,/data-foundry-folio=/);
+});
+
+test('legacy TCC register remains preserved as historical source notes without being the public original Work wardrobe',()=>{
  const x=selectVixenTheoryFolios(corpus);
  assert.deepEqual(x.theories.map(f=>f.id),VIXEN_THEORY_IDS);
  assert.equal(x.retained_technical_count,14);
- assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL FOLIOS/);
- assert.doesNotMatch(html,/Refractive Couture RC-01\.\.14 \(14\)/);
-});
-test('exact Vixen formula invokes Foundry and unified candidate ranking with zero scientific promotion',()=>{
- const x=computeVixenTheoryReceipt(corpus,'TCC-04');
- assert.equal(x.foundry.lab_id,'LAB_TCC-04');
- assert.ok(x.foundry.metrics.length>0);
- assert.ok(x.synthesis.candidate_count>=1);
-  assert.equal(x.synthesis.conditioning_folio,'TCC-04');
-  assert.match(x.synthesis.question,/Five Non-Equivalent Derivative Clocks/);
- assert.match(html,/data-wardrobe-evidence/);
- assert.match(html,/Inspect candidate scores and evidence limits/);
- assert.match(html,/Human-authored question:/);
- assert.match(html,/Host-native tools: not invoked/);
- assert.equal(x.synthesis.engine,'BROWSER_ISOMORPHIC_UNIFIED_CANDIDATE_RANKING');
- assert.equal(x.synthesis.question_origin,'ARCHIVAL_FOLIO_CONTEXT_ONLY');
- assert.equal(x.synthesis.human_question,null);
- assert.equal(x.synthesis.query_provenance.human_question_supplied,false);
- assert.equal(x.synthesis.engine_trace.native_host_executable_invoked,false);
- assert.equal(x.synthesis.engine_trace.manuscript_passages_read_by_wardrobe,false);
- assert.ok(x.synthesis.scored_candidates.length>=1);
- assert.equal(x.synthesis.scored_candidates[0].id,x.synthesis.top_candidate.id);
- assert.ok('src_projective_tomography' in x.synthesis.scored_candidates[0].breakdown);
- assert.equal(x.authority.empirical_credit,0);
- assert.equal(x.authority.experimental_subject_count,null);
- assert.equal(x.authority.experiment_design_state,'UNDETERMINED_BY_ARCHIVAL_CENSUS');
- assert.equal(x.authority.research_proposal_review,'PODIUM_SCORE_AND_HUMAN_COMPOSER_REQUIRED');
- assert.equal(x.authority.technical_methods_elevated,0);
-});
-test('archive engineering cannot cross into Vixen theory performer',()=>{
- assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
- assert.match(html,/foundry\?\.selectLab\?\.\(exactId\)/);
- assert.match(html,/const foundryBtn = '<button/);
- assert.match(html,/\^TCC-0\[1-8\]\$\/\.test\(String\(folioId\)\)/);
- assert.match(html,/Only source-recorded TCC models can be inspected here/);
+ const original=computeVixenTheoryReceipt(corpus,'TCC-04');
+ assert.equal(original.foundry.lab_id,'LAB_TCC-04');
+ assert.equal(original.synthesis.engine_trace.native_host_executable_invoked,false);
+ assert.equal(original.synthesis.engine_trace.manuscript_passages_read_by_wardrobe,false);
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
  assert.equal(ornament.folio_kind,'TITLE_LOCUS_ORNAMENT');
- assert.equal(ornament.foundry.lab_id,'LAB_TCC-08','Eighth stages its own optical model');
-  assert.equal(ornament.foundry.model,'TOROID');
-  assert.ok(ornament.synthesis.candidate_count>=1);
-  assert.equal(ornament.authority.experimental_subject_count,null);
-  assert.equal(ornament.authority.empirical_credit,0);
- assert.doesNotMatch(html,/startsWith\('TCC'\) \? 'LAB_TCC-05'/);
+ assert.equal(ornament.source_title_locus_ornament,true);
+ assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
 });
 
-test('folio-derived context has separate provenance from a real human question',()=>{
- const a=computeVixenTheoryReceipt(corpus,'TCC-04');
- const b=computeVixenTheoryReceipt(corpus,'TCC-04',{operatorQuestion:'What independent evidence would distinguish the sources?'});
- assert.equal(a.synthesis.question_origin,'ARCHIVAL_FOLIO_CONTEXT_ONLY');
- assert.equal(b.synthesis.question_origin,'HUMAN_SUPPLIED_PLUS_FOLIO_CONTEXT');
- assert.equal(a.authority.experimental_subject_count,null);
- assert.equal(b.authority.experimental_subject_count,null);
+test('mathematical passages are transcribed from text and never invented from metadata',()=>{
+ assert.deepEqual(extractOriginalMathPassages('Only a poetic headline without mathematics.'),[]);
+ const math=extractOriginalMathPassages('Here is a source relation: $$x^2+y^2=z^2$$');
+ assert.equal(math.length,1);
+ assert.equal(math[0].literal,'x^2+y^2=z^2');
+ assert.equal(math[0].independent_proof,false);
+});
+
+test('verified Work mathematics preserves manuscript identity and digest; rejects caller-forged receipts',async()=>{
+ const work=corpus.works[0],source=work.linked_sources[0];
+ const body='An independently recorded equation: $$x^2+y^2=z^2$$.\n';
+ const derivative=createHash('sha256').update(body).digest('hex');
+ const readSource=async id=>id===source.source_file_id?{
+  source_file_id:id,work_id:work.work_id,text_body:body,
+  derivative_sha256:derivative,body_sha256_verified:true,readable:true
+ }:null;
+ const wardrobe=await buildOriginalWorkMathWardrobe(corpus,{readSource});
+ assert.equal(wardrobe.examined_work_count,corpus.works.length);
+ assert.equal(wardrobe.verified_work_math_count,1);
+ assert.equal(wardrobe.technical_formula_promotions,0);
+ const entry=wardrobe.entries[0];
+ assert.equal(entry.work_id,work.work_id);
+ assert.equal(entry.source_file_id,source.source_file_id);
+ assert.equal(entry.declared_source_sha256,source.sha256);
+ assert.equal(entry.derivative_sha256,derivative);
+ assert.equal(entry.source_excerpts[0].literal,'x^2+y^2=z^2');
+ const result=scoreOriginalWorkMath(corpus,entry);
+ assert.equal(result.work_id,entry.work_id);
+ assert.equal(result.excerpt_literal,entry.source_excerpts[0].literal);
+ assert.equal(result.native_host_tools_executed,false);
+ assert.equal(result.empirical_credit,0);
+ assert.throws(()=>scoreOriginalWorkMath(corpus,{...entry}),/UNVERIFIED_OR_FOREIGN_MATHEMATICAL_MANUSCRIPT/);
+ const corrupted=await buildOriginalWorkMathWardrobe(corpus,{readSource:async id=>
+  id===source.source_file_id?{source_file_id:id,work_id:work.work_id,text_body:body,
+   derivative_sha256:'0'.repeat(64),body_sha256_verified:true,readable:true}:null});
+ assert.equal(corrupted.verified_work_math_count,0);
+ assert(corrupted.source_refusals.some(x=>x.reason==='DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'));
 });
