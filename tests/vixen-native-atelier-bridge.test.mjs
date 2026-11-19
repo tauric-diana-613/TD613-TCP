@@ -232,3 +232,28 @@ test('original SRC Python projective functions execute on identical verified Vix
   payload:{work_ids:[work_ids[0],'emwork_000000000000000000000000'],query:'Explore quantum entanglement'}}),
   /HELD_FOREIGN_OR_UNREGISTERED_VIXEN_WORK/);
 });
+
+test('original SRC versus JavaScript routing exposes known agreement and disagreement under synthetic controls',async()=>{
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
+ const work_ids=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
+ const run=query=>adapters.SRC_ATELIER({
+  operation:'src_verified_vixen_original_projective_differential',payload:{work_ids,query}
+ });
+ const agreed=await run('Explore Emergent Topologies and Quantum Field Mechanics');
+ const agreement=agreed.original_native_differential.synthetic_query_probe;
+ assert.equal(agreement.exact_agreement,true,
+  'Matching an exact documented title segment should agree across both methods');
+ assert.ok(agreement.original_python.some(x=>x.startsWith(work_ids[1]+'|')),
+  'The original SRC method must actually resolve the second Vixen work');
+ const divergent=await run('Explore Topologies Quantum Fiction Stranger');
+ const differences=divergent.original_native_differential.synthetic_query_probe;
+ assert.equal(differences.exact_agreement,false,
+  'Original proportional-overlap and JS two-term overlap rules must remain distinguishable');
+ assert.ok(differences.javascript.some(x=>x.startsWith(work_ids[1]+'|')),
+  'The JS engine admits the two-of-four lexical candidate');
+ assert.ok(!differences.original_python.some(x=>x.startsWith(work_ids[1]+'|')),
+  'The original SRC method refuses the same two-of-four overlap');
+ assert.equal(divergent.original_native_differential.full_method_equivalence,'HELD_UNPROVEN');
+ assert.equal(divergent.original_native_differential.original_python_replay.original_src_archive_loaded,false);
+ assert.equal(divergent.scientific_credit,0);
+});
