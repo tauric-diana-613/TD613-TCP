@@ -2149,6 +2149,9 @@ body[data-view="overview"] .reading-back{display:none}
       }
     }
     if (target === 'observatory') {
+      // The original-manuscript wardrobe is lazy by route: start verification
+      // when the Observatory is entered, even after boot hydration completed.
+      renderFormulaFolios();
       drawObservatoryCanvas();
       scheduleObservatoryFrame();
     } else {
