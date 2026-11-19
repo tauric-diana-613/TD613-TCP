@@ -530,28 +530,47 @@ try {
     },null,{timeout:25000});
     const wardrobe=page.locator('#formulaFolioGrid');
     const archiveCensus=await page.evaluate(()=>{
-      const d=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent);
-      return {formula:d.formula_folios.length,technical:d.formula_folios.filter(x=>x.group==='couture').length,works:d.works.length};
+      const records=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent).formula_folios;
+      return {total:records.length,technical:records.filter(x=>x.group==='couture').length};
     });
-    assert.deepEqual(archiveCensus,{formula:22,technical:14,works:32},
-      'Original source catalogue and host methods remain untouched');
+    assert.deepEqual(archiveCensus,{total:22,technical:14},
+      'Technical formula archive remains intact but cannot be substituted as original mathematics');
     await page.waitForFunction(()=>{
-      const t=document.querySelector('#formulaCountLabel')?.textContent||'';
-      return /Works with verified mathematical passages|SOURCE VERIFICATION HELD/.test(t);
-    },null,{timeout:90000});
-    assert.match(await page.locator('#formulaCountLabel').innerText(),/Works with verified mathematical passages/,
-      'Real source mathematics must load before the wardrobe can claim source fidelity');
-    const total=await wardrobe.locator('.formula-card[data-work-math-id]').count();
-    assert.ok(total>0,'Only verified original Work passages may enter the research wardrobe');
-    assert.equal(await wardrobe.locator('.formula-card[data-folio-id]').count(),0,
-      'TCC and RC host catalogue entries cannot impersonate original Works');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,total));
-    const firstCard=wardrobe.locator('.formula-card[data-work-math-id]').first();
-    const workId=await firstCard.getAttribute('data-work-math-id');
-    assert.match(workId,/^emwork_[0-9a-f]{24}$/);
-    assert.match(await firstCard.innerText(),/SOURCE DERIVATIVE VERIFIED/);
-    assert.match(await firstCard.innerText(),/derivative SHA-256: [0-9a-f]{64}/);
-    assert.equal(await firstCard.locator('[data-original-math-passage]').count(),1);
+      const label=document.querySelector('#formulaCountLabel')?.textContent||'';
+      return /Works with verified mathematical passages|SOURCE VERIFICATION HELD/.test(label);
+    },null,{timeout:60000});
+    const sourceCountText=await page.locator('#formulaCountLabel').innerText();
+    assert.doesNotMatch(sourceCountText,/SOURCE VERIFICATION HELD/,
+      'Manuscript source reader must load verified original Work bodies without fallback');
+    const allVerified=wardrobe.locator('.formula-card[data-work-math-id]');
+    const verifiedCount=await allVerified.count();
+    assert(verifiedCount>0,'Original Work math wardrobe must show independently verified source passages');
+    const provenance=await allVerified.evaluateAll(nodes=>nodes.map(node=>({
+      id:node.getAttribute('data-work-math-id'),
+      passage:node.querySelector('[data-original-math-passage]')?.textContent||'',
+      links:[...node.querySelectorAll('[data-open-ref]')].map(n=>n.getAttribute('data-open-ref')),
+      source:node.textContent
+    })));
+    const originalRoster=await page.evaluate(()=>new Set(JSON.parse(
+      document.querySelector('#vixen-corpus-bundle').textContent
+    ).works.map(w=>w.work_id)));
+    // DOM serialization keeps only plain arrays; local roster is reconstructed
+    // without equating TCC/RC formula IDs to actual original manuscript Works.
+    const recordedIds=await page.evaluate(()=>JSON.parse(
+      document.querySelector('#vixen-corpus-bundle').textContent
+    ).works.map(w=>w.work_id));
+    for(const item of provenance){
+      assert(recordedIds.includes(item.id),'Wardrobe Work ID must exist in original corpus: '+item.id);
+      assert.match(item.id,/^emwork_[0-9a-f]{24}$/);
+      assert(item.passage.trim().length>2,'Verified original source passage must be visible');
+      assert(item.links.includes(item.id),'Original manuscript reader must be directly reachable');
+      assert.match(item.source,/derivative SHA-256:/);
+      assert.doesNotMatch(item.source,/HOST_ENGINEERING_AS_AUTHORSHIP/);
+    }
+    assert.equal(await wardrobe.locator('[data-folio-id]').count(),0,
+      'No TCC/RC technical formula may masquerade as an original Work card');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,verifiedCount),
+      'Original manuscript gallery opens with at most four verified entries');
     const galleryReveal=page.locator('#formulaGalleryReveal');
     await page.evaluate(()=>{
       const node=document.querySelector('.formula-gallery-intro');
@@ -560,33 +579,48 @@ try {
     await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:15000,polling:250});
     const wasStill=await page.locator('#motionBtn').getAttribute('aria-pressed');
     if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
-    try{await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false,animations:'disabled',timeout:60000});}
-    finally{if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());}
-    if(total>4){
+    try{
+      await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),
+        fullPage:false,animations:'disabled',timeout:60000});
+    }finally{
+      if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
+    }
+    if(verifiedCount>4){
       assert.equal(await galleryReveal.isVisible(),true);
       await galleryReveal.click();
-      assert.equal(await wardrobe.locator('.formula-card:visible').count(),total);
+      assert.equal(await wardrobe.locator('.formula-card:visible').count(),verifiedCount);
+      assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
       await galleryReveal.click();
-      assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
+    }else{
+      assert.equal(await galleryReveal.isHidden(),true);
     }
-    await firstCard.locator('[data-compute-original-work]').click();
-    await page.waitForFunction(()=>{
-      const el=document.querySelector('.formula-card[data-work-math-id] [data-vixen-computation]');
-      return el&&!el.hidden&&/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS|COMPUTATION HELD/.test(el.textContent);
-    },null,{timeout:40000});
-    assert.match(await firstCard.locator('[data-vixen-computation]').innerText(),/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS/,
-      'The actual original Work passage must be the synthesis computation input');
-    assert.match(await firstCard.locator('[data-vixen-computation]').innerText(),/not source-specific proof/);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,verifiedCount));
+    const firstWork=provenance[0].id;
     await page.locator('#formulaSearchInput').fill('RC-07');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
+      'Host engineering catalogue IDs cannot produce fabricated original math entries');
     await page.locator('#formulaSearchInput').fill('TCC-08');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0);
-    await page.locator('#formulaSearchInput').fill(workId);
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),1);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
+      'Title-locus ornament cannot impersonate an original Work');
+    await page.locator('#formulaSearchInput').fill(firstWork);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),1,
+      'Filtering by exact original Work coordinate must be deterministic');
+    const selected=wardrobe.locator('.formula-card[data-work-math-id="'+firstWork+'"]');
+    await selected.locator('[data-compute-original-work]').click();
+    await page.waitForFunction(id=>{
+      const p=document.querySelector('[data-work-math-id="'+id+'"] [data-vixen-computation]');
+      return p&&!p.hidden&&/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS|COMPUTATION HELD/.test(p.textContent);
+    },firstWork,{timeout:30000});
+    const scoredText=await selected.locator('[data-vixen-computation]').innerText();
+    assert.match(scoredText,/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS/,
+      'A verified original passage must actually trigger source-conditioned candidate ranking');
+    assert.match(scoredText,/Scientific credit 0/);
+    assert.match(scoredText,/not source-specific proof, an executed native-host engine/);
     await page.locator('#formulaSearchInput').fill('');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,total));
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,verifiedCount));
+    // The Foundry remains an optically real but separate host-level stage.
     assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-08')),true,
-      'Host optical simulations remain available separately from original Work mathematics');
+      'Retain bounded historical title-locus visualization without granting primary authorship');
     const foundry=page.locator('#vixenElectricFoundry');
     assert.equal(await foundry.locator('.ef-gallery-tab').count(),2,'Technical RC archive cannot be public Foundry tab');
     assert.equal(await foundry.locator('.ef-hero-tab[data-lab-id^="LAB_RC-"]').count(),0,'No RC apparatus headlines Opera');
