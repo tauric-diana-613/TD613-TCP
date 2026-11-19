@@ -601,7 +601,8 @@ try {
     assert.equal(await foundry.locator('.ef-hero-tab[data-lab-id^="LAB_RC-"]').count(),0,'No RC apparatus headlines Opera');
     const rcRefusal=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_RC-07'));
     assert.equal(rcRefusal,false,'Public stage API must reject exact RC technical instrument');
-    assert.match(await foundry.locator('.ef-sourcebadge').first().innerText(),/NOT A PRIMARY WORK|PROSPECTIVE TRACK/);
+    assert.match(await foundry.locator('.ef-sourcebadge').first().innerText(),/NOT A PRIMARY WORK|PROSPECTIVE TRACK|VIXEN TITLE-LOCUS PROBE · NO THEOREM/,
+      'A staged eighth folio must retain its source title-locus ceiling without being excluded');
     assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
       'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
     assert.equal(await foundry.locator('.ef-proscenium .ef-aria-score .ef-hero-tab').count(),6,
