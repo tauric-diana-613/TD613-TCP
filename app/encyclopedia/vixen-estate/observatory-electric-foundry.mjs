@@ -368,7 +368,7 @@ export async function mountVixenElectricFoundry({
  const holdBanner=node('div','ef-hold-notice');
  const apertureHud=node('div','vixen-aperture-hud');
  const hudPills=[
-  node('span','vixen-hud-pill','APERTURE · SV/RANK LIVE'),
+  node('span','vixen-hud-pill','OBSERVATION · SV/RANK LIVE'),
   node('span','vixen-hud-pill','39 CARRIERS (6 NEAR · 13 MID · 20 FAR)'),
   node('span','vixen-hud-pill','MONOTONIC CUSTODY · SIM PHASE RESETTABLE'),
   node('span','vixen-hud-pill','PROBE (0.00, 0.00)'),
@@ -491,7 +491,7 @@ export async function mountVixenElectricFoundry({
  }
  function renderScore(){
   score.replaceChildren();
-  add(score,label('39 CARRIERS · LOOM-CLASSIFIED OPTICAL CHOREOGRAPHY'),
+  add(score,label('39 CARRIERS · DEPTH-CLASSIFIED OPTICAL CHOREOGRAPHY'),
    node('p','ef-score-note','6 near / 13 mid / 20 far. Strata supply light delivery, never Em authorship.'));
   const controlsRow=node('div','ef-carrier-controls');
   for(const [pId,pLabel] of [['ALL','ALL 39'],['flight-near','NEAR · 6'],['flight-mid','MID · 13'],['flight-far','FAR · 20']]){
@@ -500,7 +500,7 @@ export async function mountVixenElectricFoundry({
    controlsRow.append(btn);
   }
   // Technical RC optical instruments remain archived, never selected as Vixen performers.
-  const carrierDetail=node('div','ef-carrier-detail','Select or hover any of the 39 Loom-classified optical carriers to inspect its depth gain and phase plane.');
+  const carrierDetail=node('div','ef-carrier-detail','Select or hover any of the 39 depth-indexed optical carriers to inspect its depth gain and phase plane.');
   const grid=node('div','ef-carrier-grid');
   for(const c of CARRIERS){
    const bar=node('i','ef-carrier');
@@ -610,7 +610,7 @@ export async function mountVixenElectricFoundry({
    const e=node('div','ef-census-cell');
    add(e,node('strong','',String(value)),node('small','',name));grid.append(e);
   }
-  add(evidence,grid,claim('OPERAHOUSE ≠ OPERA ≠ PERFORMER. Dome-Art, Loom, Aperture and Couture are borrowed instrument engines. The preserved original Works and derivative programme folios occupy different roles; fourteen technical RC folios remain backstage, retained for computation without acquiring Vixen authorship. Experiment B protected Flight HELD.'));
+  add(evidence,grid,claim('OPERAHOUSE ≠ OPERA ≠ PERFORMER. Host-owned optical and diagnostic methods remain backstage instrumentation, never authored Vixen Works. The preserved original Works and research inquiries occupy different roles; fourteen technical records remain archived for computation without acquiring Performer identity. Protected experimental flight HELD.'));
  }
  host.replaceChildren();
  host.dataset.stageRole='VIXEN_OPERA';
