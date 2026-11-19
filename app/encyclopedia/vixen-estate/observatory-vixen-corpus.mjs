@@ -253,6 +253,7 @@ export function completeVixenSourceCensus(corpus){
   schema:VIXEN_LABS_SCHEMA,lab_count:labs.length,
   source_formula_labs:labs.filter(x=>x.kind==='CANONICAL_FORMULA_SIMULATION').length,
   source_track_labs:labs.filter(x=>x.kind==='PROSPECTIVE_GIVEBACK_SIMULATION').length,
+   opera_source_records:labs.filter(x=>x.stage_role==='OPERA'&&x.kind==='CANONICAL_FORMULA_SIMULATION').length,
    opera_programme_folios:labs.filter(x=>x.stage_subject_kind==='RESEARCH_PROGRAMME').length,
    opera_title_ornaments:labs.filter(x=>x.source_ornament===true).length,
    backstage_technical_folios:labs.filter(x=>x.stage_role==='OPERAHOUSE').length,

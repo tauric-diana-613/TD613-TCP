@@ -580,10 +580,10 @@ export async function mountVixenElectricFoundry({
  }
  function renderCatalogue(){
   gallery.replaceChildren();
-  add(gallery,label('THE SOURCE STAGE · TCC RECORDS + HELD PROSPECTIVE TRACKS'),
-   claim('Six models are artistically featured; other recorded TCC models are available for inspection. Neither this catalogue nor its visual previews establish the number or design of a scientific experiment. Podium Score and human Composer govern proposals. Fourteen technical methods stay backstage.'));
+  add(gallery,label('THE MATHEMATICAL FOLIOS · SOURCE-BOUND MODELS + PROSPECTIVE TRACKS'),
+   claim('Explore source-linked mathematical models alongside separately held giveback proposals. Six curated optical scenes present original research questions; host tools remain backstage without acquiring the authorship or empirical authority of the underlying Works.'));
   const picker=node('div','ef-gallery-tabs');
-  for(const [id,text] of [['UNIFIED','TCC SOURCE RECORDS'],['GIVEBACK','GIVEBACK · 6']]){
+  for(const [id,text] of [['UNIFIED','SOURCE FOLIOS'],['GIVEBACK','GIVEBACK · 6']]){
    const b=BTN(text,()=>{state.selectedCatalogueGroup=id;renderCatalogue()},'ef-gallery-tab');
    b.setAttribute('aria-pressed',String(state.selectedCatalogueGroup===id));
    picker.append(b)
@@ -605,7 +605,7 @@ export async function mountVixenElectricFoundry({
   const c=completeVixenSourceCensus(source);
   const grid=node('div','ef-census');
   for(const [name,value] of [['ORIGINAL WORKS',c.source_work_count],
-    ['TCC SOURCE RECORDS',c.opera_programme_folios],
+    ['SOURCE FOLIOS',c.opera_source_records],
      ['BACKSTAGE METHODS',c.backstage_technical_folios],['GIVEBACK ROUTES',c.source_track_labs],
     ['LIVE CARRIERS',c.optical_strata]]){
    const e=node('div','ef-census-cell');
