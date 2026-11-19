@@ -84,3 +84,14 @@ test('Public optical captions explain instruments without naming their private h
  // Legitimate optical and research source terminology is not globally rewritten.
  assert.match(foundry,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
 });
+
+test('Vixen Observatory presents observation mathematics without claiming host RC methods as source works',()=>{
+ const start=html.indexOf('const OBS_MODELS');
+ const end=html.indexOf('function renderObservatoryControls',start);
+ assert.ok(start>=0&&end>start);
+ const models=html.slice(start,end);
+ assert.match(models,/Observation Geometry & Fiber Admissibility/);
+ assert.match(models,/Projection Nullspace & Measurement Context/);
+ assert.doesNotMatch(models,/\[RC-0\d\]|Atlas A-08 Contexts|DERIVATIVE_CLOCK_CUSTODY_V0_1/);
+ assert.doesNotMatch(html,/VERDICT: \[RC-03\]|VERDICT: IDENTIFIABLE_2X2_OPERATOR \(\[RC-07\]/);
+});

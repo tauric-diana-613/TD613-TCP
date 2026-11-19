@@ -2292,7 +2292,7 @@ body[data-view="overview"] .reading-back{display:none}
   const OBS_MODELS = {
     planes: {
       title: 'Typed Constitutive Control Planes (S ≠ W ≠ A + P)',
-      desc: 'Simulates Semantic steering (S), Witness verification (W), Actuator commands (A), and Recursive Persistence (P) under the EPISTEMIC_CONTROL_PLANE_HOSTILE_BATTERY_V0_1.',
+      desc: 'Simulates distinct source steering, witness verification, actuator control and persistence under bounded counterexamples.',
       latex: '\\mathcal{S} \\neq \\mathcal{W} \\neq \\mathcal{A}, \\quad u_A = T_{SA}(C_S(\\mathcal{S}, R_{WS}(\\mathcal{W})), \\text{rx})',
       fallback: 'S ≠ W ≠ A,   u_A = T_SA(C_S(S, R_WS(W)), rx)',
       modes: [
@@ -2303,7 +2303,7 @@ body[data-view="overview"] .reading-back{display:none}
       ]
     },
     clocks: {
-      title: 'Five-Clock Derivative Custody Vernier (DERIVATIVE_CLOCK_CUSTODY_V0_1)',
+      title: 'Five-Clock Derivative Custody Vernier',
       desc: 'Renders the five non-equivalent clocks across Vixen’s hypervisor, Mixxx DSP, and kinematic drone works: k_layer, n_token, τ_cont, t_wall, and 48 kHz t_plant.',
       latex: '\\frac{\\Delta e}{\\Delta k_{\\text{layer}}} \\not\\equiv \\frac{\\Delta e}{\\Delta n_{\\text{tok}}} \\not\\equiv \\frac{de}{d\\tau_{\\text{cont}}} \\not\\equiv \\frac{\\Delta e}{\\Delta t_{\\text{wall}}} \\not\\equiv \\frac{\\Delta e}{\\Delta t_{\\text{plant}}}',
       fallback: 'Δe/Δk_layer ≢ Δe/Δn_tok ≢ de/dτ_cont ≢ Δe/Δt_wall ≢ Δe/Δt_plant',
@@ -2314,7 +2314,7 @@ body[data-view="overview"] .reading-back{display:none}
       ]
     },
     aperture: {
-      title: 'Observation Geometry & Fiber Admissibility ([RC-06] / [RC-07])',
+      title: 'Observation Geometry & Fiber Admissibility',
       desc: 'Compares rank-1 collinear observation collapse [[1,1],[0.15,0.15]] against lifted 2×2 (κ ≈ 2.3275) and 3×2 (κ ≈ 2.6311) operators, alongside finite quotient AppleDouble quarantine.',
       latex: 'A_{2\\times 2} = \\begin{bmatrix}1 & 0.5\\\\ 0.2 & 0.8\\end{bmatrix}\\;(\\kappa \\approx 2.3275), \\quad A_{3\\times 2}\\;(\\kappa \\approx 2.6311)',
       fallback: 'A_{2×2} = [[1, 0.5], [0.2, 0.8]] (κ ≈ 2.3275),   A_{3×2} (κ ≈ 2.6311)',
@@ -2325,14 +2325,14 @@ body[data-view="overview"] .reading-back{display:none}
       ]
     },
     couture: {
-      title: 'Refractive Couture [111] Nullspace & Atlas A-08 Contexts',
-      desc: 'Projects 3D tri-plane cybernetic geometry onto the 2D viewing plane Π_u = I − uuᵀ, demonstrating ker(Π_u) = span{u} ([RC-03]) and A-08 gauge/coarse-graining separation.',
+      title: 'Projection Nullspace & Measurement Context',
+      desc: 'Projects a three-dimensional observation onto a two-dimensional viewing plane Π_u = I − uuᵀ, illustrating the nullspace ker(Π_u) = span{u} and why gauge relabeling differs from lost information.',
       latex: '\\Pi_u = I_3 - uu^\\top, \\quad \\ker(\\Pi_u) = \\operatorname{span}\\{u\\} \\implies \\text{3D Inverse Held}',
       fallback: 'Π_u = I₃ − u uᵀ,   ker(Π_u) = span{u} ⇒ 3D Inverse Held',
       modes: [
         { id: 'nominal', label: 'Depth Ambiguity Family (x + λu)' },
-        { id: 'coarse_grain', label: 'A-08 Coarse-Graining (Metadata Tier 2)' },
-        { id: 'gauge_seam', label: 'A-08 Gauge Redundancy (#manifest-instance-theme)' }
+        { id: 'coarse_grain', label: 'Coarse-Graining (Metadata Tier 2)' },
+        { id: 'gauge_seam', label: 'Gauge Redundancy (Display Theme)' }
       ]
     }
   };
@@ -2428,7 +2428,7 @@ body[data-view="overview"] .reading-back{display:none}
         out.innerHTML =
           '<div><strong>OBSERVATION OPERATOR:</strong> A_def = [[1, 1], [0.15, 0.15]] · rank = 1, nullity = 1</div>' +
           '<div>Condition Number κ(A_def): ∞ (SINGULAR) · Unobservable Subspace dim = 1</div>' +
-          '<div style="color:var(--arc-flash)">VERDICT: ABSTAIN_IDENTIFIABILITY_DEFICIT ([RC-07])</div>';
+          '<div style="color:var(--arc-flash)">VERDICT: Rank-deficient observation cannot identify the missing dimension</div>';
       } else if (state.obsHostileMode === 'lifted_3x2') {
         out.innerHTML =
           '<div><strong>OBSERVATION OPERATOR:</strong> Lifted 3×2 Redundant Witness Operator</div>' +
@@ -2438,13 +2438,13 @@ body[data-view="overview"] .reading-back{display:none}
         out.innerHTML =
           '<div><strong>OBSERVATION OPERATOR:</strong> Lifted 2×2 Orthogonalized Witness Operator</div>' +
           '<div>rank(A_2×2) = 2 · σ_max/σ_min = κ ≈ 2.3275 · Noise Amplification Bounded</div>' +
-          '<div style="color:#b9f6ca">VERDICT: IDENTIFIABLE_2X2_OPERATOR ([RC-07] VERIFIED)</div>';
+          '<div style="color:#b9f6ca">VERDICT: Lifted 2×2 observation is identifiable under the declared model</div>';
       }
     } else {
       out.innerHTML =
         '<div><strong>COUTURE PROJECTION:</strong> Orthographic [111] Camera Π_u = I₃ − uuᵀ (rank 2, nullity 1)</div>' +
         '<div>Depth Fiber Offset λ = ' + ((p - 0.5) * 2.4).toFixed(2) + ' along u = (1,1,1)/√3 → IDENTICAL 2D PIXEL PROJECTION!</div>' +
-        '<div style="color:var(--arc-flash)">VERDICT: [RC-03] 3D INVERSE REJECTED · A-08 CONTEXT = ' + esc(state.obsHostileMode.toUpperCase()) + '</div>';
+        '<div style="color:var(--arc-flash)">VERDICT: 3D INVERSE REJECTED · MEASUREMENT CONTEXT = ' + esc(state.obsHostileMode.toUpperCase()) + '</div>';
     }
   }
 
@@ -4239,7 +4239,7 @@ body[data-view="overview"] .reading-back{display:none}
           '<div>• Dynamic Runtime Sub-Checks: WebCrypto SubtleDigest = <code>' + (hasCrypto ? 'AVAILABLE' : 'HELD_CRYPTO_UNAVAILABLE') + '</code> · A-PFR0.2 Engine Track = <code>SEPARATE_HEADLESS_TRACK_PENDING</code> (never hardcoded PREFLIGHT_VERIFIED).</div>' +
         '</div>' +
         '<div class="insp-card">' +
-          '<h3>THREE-CLOCK GOVERNANCE &amp; #manifest-instance-theme SEAM (RC-02 / RC-13 · P-044)</h3>' +
+          '<h3>THREE-CLOCK GOVERNANCE &amp; DISPLAY-THEME SEPARATION</h3>' +
           '<div>• Separate Clock Ledgers: <code>τ_theory, τ_presentation, τ_empirical</code> · Conditional invariance <code>K(D,S,p₁)=K(D,S,p₂)</code> &amp; <code>A(D,S,p₁)=A(D,S,p₂)</code> (no pairwise orthogonality theorem)</div>' +
           '<div>• Active <code>#manifest-instance-theme</code> Layer Length: <strong>' + themeCss.length + ' chars</strong> (Baker–Miller <code>#FF91AF</code>, Graphite <code>#24282A</code>, Porcelain <code>#F6F4F0</code>, Smoked Nickel <code>#667078</code>, rare Arc Flash <code>#F9F36D</code>).</div>' +
           '<div>• Historical Frontispiece Custody: <code>PROVISIONAL_CREATIVE_ARTWORK</code> (Mugler-Unchained Cybernetic Astrolabe · predecessor Desktop WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.desktop_webp_sha256.slice(0, 24)) + '…</code> · predecessor Mobile WebP SHA-256 <code>' + esc(MANIFEST.frontispiece.mobile_webp_sha256.slice(0, 24)) + '…</code> · Zero Encyclopedia asset reuse · Zero Experiment B claim).</div>' +
