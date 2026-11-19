@@ -251,6 +251,8 @@ jobs:
           node --test tests/encyclopedia-navigation.test.mjs tests/encyclopedia-reference.test.mjs tests/encyclopedia-intake.test.mjs
           if [[ -f tests/vixen-podium.test.mjs ]]; then node --test tests/vixen-podium.test.mjs; fi
           node --test tests/vixen-native-atelier-bridge.test.mjs
+          # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
+          node --test tests/vixen-src-original-typed-traversal.test.mjs
           node --test tests/vixen-public-copy.test.mjs
           node --test tests/vixen-ai-session.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
