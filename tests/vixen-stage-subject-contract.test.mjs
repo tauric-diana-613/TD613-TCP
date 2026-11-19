@@ -1,0 +1,54 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {VIXEN_OPERA_HEADLINERS,canStageVixenFolio,classifyVixenFolio,auditVixenFolioCensus}
+ from '../app/encyclopedia/vixen-estate/vixen-stage-subject-contract.mjs';
+import {buildVixenLaboratories,completeVixenSourceCensus,assessVixenLab}
+ from '../app/encyclopedia/vixen-estate/observatory-vixen-corpus.mjs';
+import {computeVixenTheoryReceipt} from '../app/encyclopedia/vixen-estate/observatory-math-wardrobe.mjs';
+const html=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
+const source=html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
+assert.ok(source,'original archive preserved');
+const corpus=JSON.parse(source[1]);
+test('7 inquiry folios, one title ornament, 14 technical archives, zero invented Performers',()=>{
+ const roles=auditVixenFolioCensus(corpus),census=completeVixenSourceCensus(corpus);
+ assert.deepEqual([roles.programme,roles.ornaments,roles.technical,roles.performers_in_folio_registry],[7,1,14,0]);
+ assert.deepEqual([census.opera_programme_folios,census.opera_title_ornaments,census.backstage_technical_folios],[7,1,14]);
+ const labs=buildVixenLaboratories(corpus);assert.equal(labs.length,28);
+ for(const lab of labs.filter(l=>l.folio_id.startsWith('RC-')&&l.kind==='CANONICAL_FORMULA_SIMULATION')){
+  assert.equal(lab.stage_role,'OPERAHOUSE');assert.equal(lab.performer,false);
+  assert.equal(canStageVixenFolio(lab),false);
+  assert.equal(assessVixenLab(corpus,lab.id).corpus_coordinates.stage_role,'OPERAHOUSE');
+ }
+});
+test('Only Vixen programme models headline the Opera stage; RC maths remain callable offstage',()=>{
+ const labs=buildVixenLaboratories(corpus);
+ assert.equal(VIXEN_OPERA_HEADLINERS.length,6);
+ for(const id of VIXEN_OPERA_HEADLINERS)
+  assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_'+id)),true);
+ const foundry=readFileSync(new URL('../app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs',import.meta.url),'utf8');
+ assert.match(foundry,/!canStageVixenFolio\(byId\.get\(id\)\)/);
+ assert.doesNotMatch(foundry,/\['COUTURE','RC · 14'\]/);
+ assert.doesNotMatch(foundry,/Stage 39-Skin Loom/);
+ assert.doesNotMatch(foundry,/ORIGINAL VIXEN CORPUS/);
+ const tcc8=labs.find(x=>x.id==='LAB_TCC-08');
+ assert.equal(tcc8.stage_subject_kind,'TITLE_ORNAMENT');
+ assert.equal(classifyVixenFolio(corpus.formula_folios.find(x=>x.id==='TCC-08')).scientific_claim_authority,false);
+});
+test('Tampered or duplicated role coordinates are refused',()=>{
+ const bad=structuredClone(corpus);bad.formula_folios[0].id='RC-07';
+ assert.throws(()=>auditVixenFolioCensus(bad),/VIXEN_STAGE_SUBJECT_UNDECLARED/);
+ const duplicate=structuredClone(corpus);duplicate.formula_folios[1].id=duplicate.formula_folios[0].id;
+ assert.throws(()=>auditVixenFolioCensus(duplicate),/VIXEN_DUPLICATE_STAGE_SUBJECT/);
+});
+test('Unified ranking receives source-specific evidence while TCC-08 remains branding only',()=>{
+ const x=computeVixenTheoryReceipt(corpus,'TCC-01');
+ const y=computeVixenTheoryReceipt(corpus,'TCC-05');
+ assert.notEqual(x.synthesis.question,y.synthesis.question);
+ assert.equal(x.synthesis.conditioning_folio,'TCC-01');
+ assert.equal(y.synthesis.conditioning_folio,'TCC-05');
+ const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
+ assert.equal(ornament.synthesis.candidate_count,0);
+ assert.equal(ornament.synthesis.state,'HELD_BRANDING_ONLY_NO_THEOREM');
+ assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
+});

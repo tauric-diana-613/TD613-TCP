@@ -19,6 +19,8 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
  assert.equal(x.foundry.lab_id,'LAB_TCC-04');
  assert.ok(x.foundry.metrics.length>0);
  assert.ok(x.synthesis.candidate_count>=1);
+  assert.equal(x.synthesis.conditioning_folio,'TCC-04');
+  assert.match(x.synthesis.question,/Five Non-Equivalent Derivative Clocks/);
  assert.equal(x.synthesis.engine,'NATIVE_UNIFIED_CANDIDATE_RANKING');
  assert.equal(x.authority.empirical_credit,0);
  assert.equal(x.authority.technical_methods_elevated,0);

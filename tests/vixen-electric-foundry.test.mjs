@@ -37,7 +37,7 @@ test('All mathematical SUBJECTS are Vixen historical folios and giveback tracks;
  }
 });
 test('Six individually directed source-native headliners: executed mathematical probes, not lab-count inflation',()=>{
- const ids=['LAB_TCC-01','LAB_TCC-04','LAB_TCC-05','LAB_RC-03','LAB_RC-07','LAB_RC-10'];
+ const ids=['LAB_TCC-01','LAB_TCC-04','LAB_TCC-05','LAB_TCC-06','LAB_TCC-03','LAB_TCC-07'];
  const results=ids.map(id=>assessVixenLab(corpus,id,{gain:.72,witness:.7,voltage:.88,twist:.53},
   {x:.12,y:-.28}));
  assert.equal(results.length,6);
@@ -57,13 +57,13 @@ test('Six individually directed source-native headliners: executed mathematical 
  assert.equal(clocks.length,5);
  const alg=results[2].metrics;
  assert(alg.some(x=>x.name==='raw_preempts_0_65'));
- const nullspace=results[3].metrics;
- assert(nullspace.some(x=>x.name==='unique_inverse'&&x.value===false));
- const rank=results[4].metrics.find(x=>x.name==='singular_values').value;
- assert.equal(typeof rank.rank,'number');
- const xor=results[5].metrics;
- assert(xor.some(x=>x.name==='pairwise_I_X_Z'&&x.value===0));
- assert(xor.some(x=>x.name==='joint_I_XY_Z'&&x.value===1));
+ const constitutive=results[3].metrics;
+  assert(constitutive.some(x=>x.name==='constitutive_coupling_demonstrated'&&x.value===false));
+  assert(constitutive.some(x=>x.name==='coordinate_projection'));
+  const recursive=results[4].metrics;
+  assert(recursive.some(x=>x.name==='independent_witness_content'&&x.value===null));
+  const promotion=results[5].metrics;
+  assert(promotion.some(x=>x.name==='L3_FALSIFIABLE'&&x.value==='UNEXECUTED'));
 });
 test('Actual model output responds to controls and independent probe position',()=>{
  for(const optic of ['CONTROL_PLANES','FIVE_CLOCKS','ALGEDONIC','COUTURE_111',

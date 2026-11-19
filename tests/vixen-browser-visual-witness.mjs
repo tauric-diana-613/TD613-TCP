@@ -588,6 +588,11 @@ try {
     await page.locator('#formulaSearchInput').fill('');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
     const foundry=page.locator('#vixenElectricFoundry');
+    assert.equal(await foundry.locator('.ef-gallery-tab').count(),2,'Technical RC archive cannot be public Foundry tab');
+    assert.equal(await foundry.locator('.ef-hero-tab[data-lab-id^="LAB_RC-"]').count(),0,'No RC apparatus headlines Opera');
+    const rcRefusal=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_RC-07'));
+    assert.equal(rcRefusal,false,'Public stage API must reject exact RC technical instrument');
+    assert.match(await foundry.locator('.ef-sourcebadge').first().innerText(),/NOT A PRIMARY WORK|PROSPECTIVE TRACK/);
     assert.equal(await foundry.locator('.ef-hero-tab').count(),6,
       'Six art-directed flagship experiences rather than twenty-eight nominal visual demos');
     assert.equal(await foundry.locator('.ef-proscenium .ef-aria-score .ef-hero-tab').count(),6,
@@ -744,32 +749,32 @@ try {
         const scroller=getComputedStyle(el);
         return {width:el.clientWidth,scrollWidth:el.scrollWidth,
           overflowX:scroller.overflowX,direction:scroller.flexDirection,
-          fifthX:el.querySelector('[data-lab-id="LAB_RC-07"]')?.getBoundingClientRect().x,
+          fifthX:el.querySelector('[data-lab-id="LAB_TCC-03"]')?.getBoundingClientRect().x,
           viewportWidth:innerWidth};
       });
       assert(railGeometry.scrollWidth>railGeometry.width+100&&railGeometry.overflowX==='auto',
         'All six arias must inhabit a bounded, scrollable horizontal rail: '+JSON.stringify(railGeometry));
     }
-    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-07"]').click();
+    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_TCC-03"]').click();
     const selectionMove=await foundry.evaluate(el=>{
       const active=[...el.querySelectorAll('.ef-hero-tab')].filter(x=>x.getAttribute('aria-pressed')==='true');
       const arrows=[...el.querySelectorAll('.ef-hero-tab')].filter(x=>getComputedStyle(x,'::after').content.includes('◀'));
       return {selected:active.map(x=>x.dataset.labId),arrows:arrows.map(x=>x.dataset.labId)};
     });
-    assert.deepEqual(selectionMove,{selected:['LAB_RC-07'],arrows:['LAB_RC-07']},
+    assert.deepEqual(selectionMove,{selected:['LAB_TCC-03'],arrows:['LAB_TCC-03']},
       'The arrow must move on selection and leave the previous aria');
         const rankProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
-    assert.equal(rankProbe.corpus_coordinates.source_folio,'RC-07');
-    assert(rankProbe.metrics.some(x=>x.name==='singular_values'));
+    assert.equal(rankProbe.corpus_coordinates.source_folio,'TCC-03');
+    assert(rankProbe.metrics.some(x=>x.name==='independent_witness_content'));
     const rankScene=await page.evaluate(()=>document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png'));
     assert.notEqual(rankScene,secondScore,'Rank lab must draw a genuinely distinct scene from Control Planes');
-    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_RC-10"]').click();
+    await foundry.locator('.ef-hero-tab[data-lab-id="LAB_TCC-07"]').click();
     const xorProbe=await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.getResearchProbe());
-    assert(xorProbe.metrics.some(x=>x.name==='joint_I_XY_Z'&&x.value===1));
+    assert(xorProbe.metrics.some(x=>x.name==='L3_FALSIFIABLE'&&x.value==='UNEXECUTED'));
     const xorScene=await page.evaluate(()=>document.querySelector('#vixenElectricFoundry .ef-notation').toDataURL('image/png'));
     assert.notEqual(xorScene,rankScene,'XOR must project its own information-flow geometry');
     if(width===1440){
-      for(const lab of ['LAB_TCC-04','LAB_TCC-05','LAB_RC-03','LAB_RC-07','LAB_RC-10']){
+      for(const lab of ['LAB_TCC-04','LAB_TCC-05','LAB_TCC-06','LAB_TCC-03','LAB_TCC-07']){
         await foundry.locator('.ef-hero-tab[data-lab-id="'+lab+'"]').click();
         await page.waitForTimeout(115);
         await page.evaluate(()=>{
