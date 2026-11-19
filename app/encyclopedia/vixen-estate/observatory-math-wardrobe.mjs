@@ -1,7 +1,7 @@
 /**
- * Source-bound computation over recorded TCC catalogue entries. Inventory
- * cardinality is NOT experimental design, preregistration or admission.
- * Any scientific proposal must pass native Podium Score and human Composer.
+ * Source-bound computation over Vixen's original recorded folios. Their
+ * independent source statuses stay preserved: previews are neither authored
+ * theorems nor scientific ratification.
  * Historical RC optics/engineering records are retained but never performed as
  * Vixen authorship. All output is bounded, synthetic and human-unratified.
  */

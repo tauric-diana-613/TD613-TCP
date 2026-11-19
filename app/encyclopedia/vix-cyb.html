@@ -960,7 +960,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">01 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
           <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
-          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. The archive records eight TCC entries. Inventory is documentary, not an experiment design or subject-count decision. Native Score and human Composer govern proposed research. Technical reference methods remain outside Vixen’s authorship.</p>
+          <p class="intro">Explore Vixen’s typed control planes, non-interchangeable clocks and source-grounded synthesis questions through live mathematical models. Original research sources remain distinct from the host optics that render them; scientific conclusions and authorship require their own evidence and review.</p>
         </div>
         <div class="view-number" aria-hidden="true">01</div>
       </div>
@@ -1047,22 +1047,22 @@ body[data-view="overview"] .reading-back{display:none}
         </div>
       </div>
 
-      <!-- All eight Vixen folios retain computation; archived RC engineering remains a separate role. -->
+      <!-- Preserve existing source-folio reading/visualization routes; RC technical methods remain host tooling. -->
       <div class="formula-side">
         <div class="toolbar">
           <label class="field" aria-label="Filter mathematical folios">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="formulaSearchInput" type="search" placeholder="Search eight Vixen folios (S ≠ W ≠ A, five clocks…)">
+            <input id="formulaSearchInput" type="search" placeholder="Search mathematical folios (S ≠ W ≠ A, five clocks…)">
           </label>
           <div class="segmented" role="group" aria-label="Folio family filter">
-            <button type="button" data-formula-group="all" aria-pressed="true">TCC source records</button>
+            <button type="button" data-formula-group="all" aria-pressed="true">All folios</button>
           </div>
-          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 Vixen folios</span>
+          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 recorded folios</span>
         </div>
         <div class="formula-gallery-intro">
-          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · SOURCE REGISTER</span>
-            <h3>Recorded TCC folios. <em>Experiment design remains open.</em></h3>
-            <p>These recorded TCC entries have bounded model-reading controls, not a preregistered eight-subject study. TCC-08 retains its original non-theorem title notation. The native Podium Score and human Composer govern research proposals; fourteen RC technical records remain backstage.</p>
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL FOLIOS</span>
+            <h3>Mathematics in motion. <em>Sources in their own names.</em></h3>
+            <p>Explore source-linked models and provisional synthesis questions. TCC-08 keeps its original authorial title-locus status rather than becoming a research theorem. Technical optics remain instruments of presentation, never original Vixen Works.</p>
           </div>
           <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
         </div>
@@ -1072,7 +1072,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span>Explore the full mathematical wardrobe</span>
             <span class="formula-gallery-count" aria-hidden="true">+ 4 folios</span>
           </button>
-          <p class="formula-gallery-fidelity">The catalogue has eight recorded TCC entries with bounded source diagnostics. Experimental N and method selection are NOT determined by the archive; proposals require a Podium Score and human Composer. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
+          <p class="formula-gallery-fidelity">Original mathematical records and bounded computation remain distinct. The fourteen RC technical methods retain their backstage engineering role, without receiving Vixen authorship. Independent evidence and human adjudication govern scientific ratification.</p>
         </div>
       </div>
     </div>
@@ -2884,7 +2884,7 @@ body[data-view="overview"] .reading-back{display:none}
        const ceiling=document.createElement('p');
       ceiling.textContent=receipt.source_title_locus_ornament
         ?'TCC-08 preserves the historical title-locus notation. Its diagnostics grant neither an arithmetic theorem nor an experimental-design decision or empirical proof.'
-        :'Bounded source diagnostic and unratified candidate ranking. Archival count does not select experimental N. Podium Score and human Composer approval required; empirical credit 0.';
+        :'Bounded mathematical exploration and unratified candidate ranking; empirical credit 0. Any scientific promotion requires independent evidence and human adjudication.';
       panel.replaceChildren(name,info,metrics,evidence,ceiling);
       buttonEl.textContent='Recompute Vixen synthesis ↻';
     }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
@@ -2933,7 +2933,7 @@ body[data-view="overview"] .reading-back{display:none}
     listEl.dataset.expanded = String(expanded);
     const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
     if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + theoryFolios.length +
-      ' historical TCC records · experimental N: UNDETERMINED' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
+      ' recorded mathematical folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
     const reveal = $('formulaGalleryReveal');
     if (reveal) {
       reveal.hidden = searching || filtered.length <= 4;
