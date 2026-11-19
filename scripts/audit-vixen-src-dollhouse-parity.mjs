@@ -164,7 +164,7 @@ const fadtControlFinding=fadtControl.machine_receipt.specialist_findings[0];
 assert.equal(fadtControlFinding.verdict,'HELD',
  'FADT must reject a hypothetical unconditional grant across divergent supports');
 assert.ok(fadtControlFinding.infractions.includes('ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING'),
- 'FADT's distinct admissibility infraction must survive the audit');
+ "FADT admissibility infraction must survive the audit");
 const crossJurisdiction={
  source_identity_audit:atlasIdentity,
  finite_support_audit:{
