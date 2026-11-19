@@ -2846,6 +2846,8 @@ body[data-view="overview"] .reading-back{display:none}
         ' · derivative SHA-256 '+receipt.derivative_sha256+
         ' · exact excerpt offset '+receipt.excerpt_offset_utf16;
       const quote=document.createElement('pre');
+      // Do not translate or normalize any byte-grounded original mathematics.
+      quote.setAttribute('data-vixen-source-provenance','true');
       quote.textContent=receipt.excerpt_literal;
       const score=document.createElement('p');
       score.textContent='Ranked candidate hypotheses: '+receipt.candidate_count+
@@ -2929,8 +2931,8 @@ body[data-view="overview"] .reading-back{display:none}
           '<span style="font:600 9.5px var(--font-mono)">ORIGINAL WORK · '+esc(entry.work_id)+'</span>'+
           '<span class="tag gold">SOURCE DERIVATIVE VERIFIED</span>'+
         '</div>'+
-        '<h3>'+esc(entry.title)+'</h3>'+
-        '<pre class="math-block" style="white-space:pre-wrap;overflow-wrap:anywhere" data-original-math-passage>'+esc(excerpt.literal)+'</pre>'+
+        '<h3 data-vixen-source-provenance="true">'+esc(entry.title)+'</h3>'+
+        '<pre class="math-block" style="white-space:pre-wrap;overflow-wrap:anywhere" data-original-math-passage data-vixen-source-provenance="true">'+esc(excerpt.literal)+'</pre>'+
         '<p>Recorded mathematics: '+esc(excerpt.kind)+' · exact source offset '+excerpt.offset_utf16+
         (more>0?' · '+more+' additional recorded passage(s)':'')+'</p>'+
         '<p style="overflow-wrap:anywhere;font:500 9px var(--font-mono)">Source manifestation: '+esc(entry.source_file_id)+
