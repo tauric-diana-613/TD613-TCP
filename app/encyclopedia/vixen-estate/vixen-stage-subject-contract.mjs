@@ -1,4 +1,5 @@
-/** OPERAHOUSE ≠ OPERA ≠ PERFORMER: no formula archive is a primary authored Work. */
+/** OPERAHOUSE ≠ OPERA ≠ PERFORMER: source-register census can neither
+ * define experimental N nor authorize Score / Composer decisions. */
 export const VIXEN_STAGE_SUBJECT_SCHEMA='emstd613.vixen.stage-subjects/v1';
 export const VIXEN_OPERA_HEADLINERS=Object.freeze(['TCC-01','TCC-04','TCC-05','TCC-06','TCC-03','TCC-07']);
 export function classifyVixenFolio(folio){
@@ -27,7 +28,8 @@ export function auditVixenFolioCensus(corpus){
 }
 export function canStageVixenFolio(lab){
  // Stage eligibility is a positive authorization, never a negative technical-ID filter.
- // Title-locus notation limits theorem claims, not access to one of the eight folio experiments.
+ // A source model can be inspected, but stage access is not an experiment
+ // registration, experimental selection or human Composer authorization.
  if(!lab||lab.stage_role!=='OPERA'||lab.primary_work!==false||
     lab.performer!==false||lab.scientific_claim_authority!==false)return false;
  if(lab.kind==='PROSPECTIVE_GIVEBACK_SIMULATION')

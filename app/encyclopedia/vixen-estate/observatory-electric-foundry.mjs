@@ -580,10 +580,10 @@ export async function mountVixenElectricFoundry({
  }
  function renderCatalogue(){
   gallery.replaceChildren();
-  add(gallery,label('THE STAGE · 8 VIXEN FOLIOS + 6 PROSPECTIVE TRACKS'),
-   claim('Six featured inquiries and two additional folios can be staged here. TCC-08 has a bounded TOROID probe while its authorial title notation remains non-theorem; fourteen technical methods stay backstage and no model becomes an original Work.'));
+  add(gallery,label('THE SOURCE STAGE · TCC RECORDS + HELD PROSPECTIVE TRACKS'),
+   claim('Six models are artistically featured; other recorded TCC models are available for inspection. Neither this catalogue nor its visual previews establish the number or design of a scientific experiment. Podium Score and human Composer govern proposals. Fourteen technical methods stay backstage.'));
   const picker=node('div','ef-gallery-tabs');
-  for(const [id,text] of [['UNIFIED','FOLIOS · 8'],['GIVEBACK','GIVEBACK · 6']]){
+  for(const [id,text] of [['UNIFIED','TCC SOURCE RECORDS'],['GIVEBACK','GIVEBACK · 6']]){
    const b=BTN(text,()=>{state.selectedCatalogueGroup=id;renderCatalogue()},'ef-gallery-tab');
    b.setAttribute('aria-pressed',String(state.selectedCatalogueGroup===id));
    picker.append(b)
@@ -605,7 +605,7 @@ export async function mountVixenElectricFoundry({
   const c=completeVixenSourceCensus(source);
   const grid=node('div','ef-census');
   for(const [name,value] of [['ORIGINAL WORKS',c.source_work_count],
-    ['VIXEN FOLIOS',c.opera_programme_folios],
+    ['TCC SOURCE RECORDS',c.opera_programme_folios],
      ['BACKSTAGE METHODS',c.backstage_technical_folios],['GIVEBACK ROUTES',c.source_track_labs],
     ['LIVE CARRIERS',c.optical_strata]]){
    const e=node('div','ef-census-cell');

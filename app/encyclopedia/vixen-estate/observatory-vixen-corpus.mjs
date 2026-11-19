@@ -246,6 +246,7 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
   authority:freeze({subject_from:lab.stage_role==='OPERAHOUSE'?'OPERAHOUSE_TECHNICAL_ARCHIVE':'EMSTD613_CANONICAL_SOURCE_RECORDS',
    optical_tooling_is_not_authorship:true,archival_folio_is_not_performer:true,empirical_replication_credit:0,
    human_closure:'RESERVED',experiment_b_flight:'HELD',
+   experimental_subject_count:null,experimental_design_authority:false,
    scientific_claim:'BOUNDED_SYNTHETIC_OR_SOURCE_RECORDED_ONLY'})
  });
 }
@@ -258,6 +259,7 @@ export function completeVixenSourceCensus(corpus){
    opera_programme_folios:labs.filter(x=>x.stage_subject_kind==='RESEARCH_PROGRAMME').length,
    opera_title_ornaments:labs.filter(x=>x.source_ornament===true).length,
    backstage_technical_folios:labs.filter(x=>x.stage_role==='OPERAHOUSE').length,
+  experimental_subject_count:null,experiment_count_from_folio_inventory:false,
   source_work_count:corpus.works.length,
   source_original_record_count:corpus.works.reduce((n,w)=>n+w.linked_sources.length,0),
   source_instruments:corpus.instruments.length,

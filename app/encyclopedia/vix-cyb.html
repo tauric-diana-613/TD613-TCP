@@ -808,7 +808,7 @@ body[data-view="overview"] .reading-back{display:none}
           </button>
           <button type="button" class="stat-btn" data-view="observatory">
             <span class="stat-value">S≠W≠A</span>
-            <span class="stat-label">Typed Constitutive Synthesis<small>4 Crossing Morphisms · 5 Non-Equivalent Clocks · 8 Vixen Folios</small></span>
+            <span class="stat-label">Typed Constitutive Synthesis<small>4 Crossing Morphisms · 5 Non-Equivalent Clocks · Historical TCC Register</small></span>
             <span aria-hidden="true">→</span>
           </button>
           <button type="button" class="stat-btn" data-view="holds">
@@ -960,7 +960,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">01 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
           <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
-          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. All eight Vixen folios run source-bound computational explorations; the eighth retains its original non-theorem title-locus notation. Technical reference methods remain outside Vixen’s authorship.</p>
+          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. The archive records eight TCC entries. Inventory is documentary, not an experiment design or subject-count decision. Native Score and human Composer govern proposed research. Technical reference methods remain outside Vixen’s authorship.</p>
         </div>
         <div class="view-number" aria-hidden="true">01</div>
       </div>
@@ -1055,14 +1055,14 @@ body[data-view="overview"] .reading-back{display:none}
             <input id="formulaSearchInput" type="search" placeholder="Search eight Vixen folios (S ≠ W ≠ A, five clocks…)">
           </label>
           <div class="segmented" role="group" aria-label="Folio family filter">
-            <button type="button" data-formula-group="all" aria-pressed="true">Vixen folios · 8</button>
+            <button type="button" data-formula-group="all" aria-pressed="true">TCC source records</button>
           </div>
           <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 Vixen folios</span>
         </div>
         <div class="formula-gallery-intro">
-          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · EIGHT FOLIOS</span>
-            <h3>Eight Vixen folios. <em>Eight source-linked explorations.</em></h3>
-            <p>Every folio receives its own exact model, source-conditioned exploration and Foundry stage control. TCC-08 keeps its original title-locus notation and its no-theorem ceiling; this archival status never disqualifies it from the eight-folio experiment. Fourteen RC optical methods stay backstage.</p>
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · SOURCE REGISTER</span>
+            <h3>Recorded TCC folios. <em>Experiment design remains open.</em></h3>
+            <p>These recorded TCC entries have bounded model-reading controls, not a preregistered eight-subject study. TCC-08 retains its original non-theorem title notation. The native Podium Score and human Composer govern research proposals; fourteen RC technical records remain backstage.</p>
           </div>
           <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
         </div>
@@ -1072,7 +1072,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span>Explore the full mathematical wardrobe</span>
             <span class="formula-gallery-count" aria-hidden="true">+ 4 folios</span>
           </button>
-          <p class="formula-gallery-fidelity">Eight Vixen folios are available for computation and staging. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
+          <p class="formula-gallery-fidelity">The catalogue has eight recorded TCC entries with bounded source diagnostics. Experimental N and method selection are NOT determined by the archive; proposals require a Podium Score and human Composer. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
         </div>
       </div>
     </div>
@@ -2849,8 +2849,8 @@ body[data-view="overview"] .reading-back{display:none}
         (typeof item.value==='object'?JSON.stringify(item.value):String(item.value))).join('\\n');
       const ceiling=document.createElement('p');
       ceiling.textContent=receipt.source_title_locus_ornament
-        ?'TCC-08 retains its original title-locus notation; the TOROID model and ranked proposals are bounded explorations, not an arithmetic theorem or empirical proof.'
-        :'Bounded computation and source-conditioned candidate ranking; empirical credit 0. Human scientific approval remains reserved.';
+        ?'TCC-08 preserves the historical title-locus notation. Its diagnostics grant neither an arithmetic theorem nor an experimental-design decision or empirical proof.'
+        :'Bounded source diagnostic and unratified candidate ranking. Archival count does not select experimental N. Podium Score and human Composer approval required; empirical credit 0.';
       panel.replaceChildren(name,info,metrics,ceiling);
       buttonEl.textContent='Recompute Vixen synthesis ↻';
     }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
@@ -2899,7 +2899,7 @@ body[data-view="overview"] .reading-back{display:none}
     listEl.dataset.expanded = String(expanded);
     const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
     if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + theoryFolios.length +
-      ' Vixen wardrobe folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
+      ' historical TCC records · experimental N: UNDETERMINED' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
     const reveal = $('formulaGalleryReveal');
     if (reveal) {
       reveal.hidden = searching || filtered.length <= 4;
@@ -4325,7 +4325,7 @@ body[data-view="overview"] .reading-back{display:none}
 
   function stageFolioInFoundry(folioId) {
     if(!/^TCC-0[1-8]$/.test(String(folioId))){
-      showToast('Only the eight Vixen folios may stage Foundry models; technical archive methods remain backstage.');
+      showToast('Only source-recorded TCC models can be inspected here; experimental selection requires a Podium Score and human Composer.');
       return false;
     }
     const exactId='LAB_'+folioId;

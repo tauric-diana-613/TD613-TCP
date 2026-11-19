@@ -1,6 +1,7 @@
 /**
- * Source-bound computation for all eight Vixen folios, including a bounded
- * title-locus optical probe for TCC-08. Its source notation is not a theorem.
+ * Source-bound computation over recorded TCC catalogue entries. Inventory
+ * cardinality is NOT experimental design, preregistration or admission.
+ * Any scientific proposal must pass native Podium Score and human Composer.
  * Historical RC optics/engineering records are retained but never performed as
  * Vixen authorship. All output is bounded, synthetic and human-unratified.
  */
@@ -23,7 +24,7 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
  const folio=roster.theories.find(f=>f.id===id);
  if(!folio)throw new TypeError('TECHNICAL_METHOD_NOT_VIXEN_PERFORMER');
  const kind=classifyVixenFolio(folio).kind;
- // Original title-locus status limits theorem claims, not the eighth experimental route.
+ // Folio status is source metadata, not a grant of experimental authority.
  const controls={gain:opts.gain??.72,witness:opts.witness??.88,voltage:opts.voltage??.83,twist:opts.twist??.45,sampleIndex:opts.sampleIndex??40};
  const result=assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
  if(result&&result.corpus_coordinates.source_folio!==id)throw new Error('FOLIO_TO_COMPUTATION_ID_MISMATCH');
@@ -46,6 +47,10 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
     top_candidate:ranking?.top_candidate?Object.freeze({id:ranking.top_candidate.id,title:ranking.top_candidate.title,score:ranking.top_candidate.score}):null}),
   diagnostics:Object.freeze({svd_class:math?.svd_conditioning.classification??null,
     arrival_inversions:math?.vernier_summary.arrival_inversions??null}),
-  authority:Object.freeze({technical_methods_elevated:0,empirical_credit:0,scientific_closure:'HUMAN_RESERVED'})
+  authority:Object.freeze({technical_methods_elevated:0,empirical_credit:0,
+    source_register_count:roster.theories.length,experimental_subject_count:null,
+    experiment_design_state:'UNDETERMINED_BY_ARCHIVAL_CENSUS',
+    research_proposal_review:'PODIUM_SCORE_AND_HUMAN_COMPOSER_REQUIRED',
+    scientific_closure:'HUMAN_RESERVED'})
  });
 }
