@@ -27,6 +27,8 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
  for(const id of VIXEN_OPERA_HEADLINERS)
   assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_'+id)),true);
  const foundry=readFileSync(new URL('../app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs',import.meta.url),'utf8');
+ assert.match(foundry,/Six source-linked Vixen inquiry models/);
+ assert.doesNotMatch(foundry,/Six individually choreographed instruments from Em’s original mathematical folios/);
  assert.match(foundry,/!canStageVixenFolio\(byId\.get\(id\)\)/);
  assert.doesNotMatch(foundry,/\['COUTURE','RC · 14'\]/);
  assert.doesNotMatch(foundry,/Stage 39-Skin Loom/);

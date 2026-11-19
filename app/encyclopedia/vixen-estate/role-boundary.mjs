@@ -6,6 +6,7 @@
  * Theater metaphor is an ontological type constraint, never a license for
  * infrastructure to declare authorship or for a performer to deploy itself.
  */
+import {assertLocalVixenSourceRoster} from './vixen-performer-source-roster.mjs';
 export const VIXEN_ROLE_SCHEMA='td613.vixen.presentation-roles/v1';
 
 export const STAGE_ROLES=Object.freeze({
@@ -42,6 +43,16 @@ const OBSERVATION_EVENTS=new Set([
  'OPERATOR_RESUMED','OPERA_RETURNED_TO_NOTICE'
 ]);
 
+const EVENT_DETAIL_FIELDS=Object.freeze({
+ INSPECT_WORK:new Set(['target','note']),
+ VIXEN_WORK_SELECTED:new Set(['work_id']),
+ MANIFESTATION_COMPARISON_OPENED:new Set(['work_id']),
+ VIXEN_METADATA_OBSERVED:new Set(['first_source_id','second_source_id','classification']),
+ HUMAN_QUESTION_OPENED:new Set(['classification']),
+ UNPENALIZED_REST:new Set(),
+ OPERATOR_RESUMED:new Set(),
+ OPERA_RETURNED_TO_NOTICE:new Set()
+});
 const AUTHORITY_DENIED=new Set([
   'release_authority','deployment_authority','merge_authority',
   'scientific_closure_authority','identity_adjudication_authority',
@@ -53,11 +64,12 @@ export function castVixenPerformer(work,corpus){
     throw new TypeError('PERFORMER_WORK_ID_REQUIRED');
   if(!Array.isArray(corpus?.works)||corpus.works.length!==32)
     throw new TypeError('PERFORMER_SOURCE_ROSTER_REQUIRED');
-  // Positive membership in this caller's admitted 32-Work source roster,
-  // coupled to an issued object identity, prevents ad-hoc role labels and RC
-  // method IDs from becoming Performer-shaped Opera event inputs.
+  // A caller-supplied 32-record array cannot declare Performer custody.
+  // Compare every recorded Work coordinate with the pinned local snapshot.
+  // Matching local records remain distinct from independent external origin.
   if(!SOURCE_WORK_ID.test(work.work_id)||!corpus.works.some(row=>row===work))
     throw new TypeError('PERFORMER_WORK_NOT_IN_SOURCE_ROSTER');
+  assertLocalVixenSourceRoster(corpus);
   const performer=Object.freeze({
     role:STAGE_ROLES.PERFORMER.role,
     estate:'EMSTD613',
@@ -83,6 +95,18 @@ export function stageVixenOperaEvent(action,performer,details={}){
   // Even a properly issued Performer cannot label an observation as a deploy,
   // release, admit, promotion or adjudication event.
   if(!OBSERVATION_EVENTS.has(action))throw new TypeError('OPERA_EVENT_NOT_OBSERVATIONAL:'+action);
+  // Privilege-bearing claims cannot hide inside arbitrary nested details
+  // under an otherwise lawful observational event verb.
+  const permitted=EVENT_DETAIL_FIELDS[action];
+  for(const key of Reflect.ownKeys(details)){
+   if(typeof key!=='string'||!permitted.has(key))
+    throw new TypeError('OPERA_EVENT_DETAILS_UNDECLARED:'+String(key));
+   const value=details[key];
+   if(value!==null&&typeof value!=='string'&&typeof value!=='number'&&typeof value!=='boolean')
+    throw new TypeError('OPERA_EVENT_DETAILS_NOT_SCALAR:'+key);
+   if(typeof value==='number'&&!Number.isFinite(value))
+    throw new TypeError('OPERA_EVENT_DETAILS_NONFINITE:'+key);
+  }
   return Object.freeze({
     role:STAGE_ROLES.OPERA.role,
     opera:'VIXEN_CYBERNETICS_ENCYCLOPEDIA',

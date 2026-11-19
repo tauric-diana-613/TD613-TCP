@@ -1,7 +1,8 @@
 /**
  * VIXEN / ELECTRIC FOUNDRY · complete human-facing Observatory.
  *
- * The six flagship instruments are ART-DIRECTED FROM THE ORIGINAL EM CORPUS.
+ * Six source-linked research inquiries are art-directed here. Optical
+ * stage machinery remains distinct from the scholarly source Works.
  * 22 canonical Vixen formula folios + six prospective giveback tracks remain
  * available to inspect as proposals, NOT twenty-eight equally polished labs.
  * Loom, Dome-Art, Aperture and Couture supply optical engines only.
@@ -363,7 +364,7 @@ export async function mountVixenElectricFoundry({
  );
  add(heading,label('01 / ELECTRIC FOUNDRY · VIXEN MATHEMATICAL OPERA'),
   node('h2','ef-heading','A cathedral of computed consequences.'),
-  node('p','ef-dek','Six individually choreographed instruments from Em’s original mathematical folios. Every caustic, charge and projection is tied to a declared model; the light makes no claim to prove the world.'),
+  node('p','ef-dek','Six source-linked Vixen inquiry models, choreographed through separate optical instrumentation. Their light is a synthetic interpretation of recorded research questions, never proof of authorship or physical effect.'),
   headingNwe);
  const holdBanner=node('div','ef-hold-notice');
  const apertureHud=node('div','vixen-aperture-hud');

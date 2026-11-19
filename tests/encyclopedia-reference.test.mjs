@@ -158,6 +158,21 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
  assert.throws(()=>castVixenPerformer({work_id:'LAB_RC-07'},vixenCorpus),/PERFORMER_WORK_NOT_IN_SOURCE_ROSTER/);
  assert.throws(()=>castVixenPerformer({...vixenCorpus.works[0]},vixenCorpus),/PERFORMER_WORK_NOT_IN_SOURCE_ROSTER/);
  assert.throws(()=>castVixenPerformer(vixenCorpus.works[0],{works:[]}),/PERFORMER_SOURCE_ROSTER_REQUIRED/);
+  const forgedLocalRoster=structuredClone(vixenCorpus);
+  forgedLocalRoster.works[0].display_title='Synthetic replacement title';
+  assert.throws(()=>castVixenPerformer(forgedLocalRoster.works[0],forgedLocalRoster),
+    /PERFORMER_ROSTER_CUSTODY_MISMATCH/);
+  const swappedSource=structuredClone(vixenCorpus);
+  swappedSource.works[0].linked_sources[0].sha256='0'.repeat(64);
+  assert.throws(()=>castVixenPerformer(swappedSource.works[0],swappedSource),
+    /PERFORMER_ROSTER_CUSTODY_MISMATCH/);
+  const inventedRoster=structuredClone(vixenCorpus);
+  inventedRoster.works[0].work_id='emwork_'+'0'.repeat(24);
+  assert.throws(()=>castVixenPerformer(inventedRoster.works[0],inventedRoster),
+    /PERFORMER_ROSTER_CUSTODY_MISMATCH/);
+  const exactLocalReplica=structuredClone(vixenCorpus);
+  assert.equal(castVixenPerformer(exactLocalReplica.works[0],exactLocalReplica).work_id,
+    vixenCorpus.works[0].work_id,'Byte-matched admitted record remains local, never external proof');
  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',
   {role:'PERFORMER',estate:'EMSTD613',work_id:source.work_id},{work_id:source.work_id}),/OPERA_REQUIRES_TYPED_PERFORMER/);
  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',
@@ -171,6 +186,14 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
  }
  assert.throws(()=>stageVixenOperaEvent('ADMIT',source,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  assert.throws(()=>stageVixenOperaEvent('RELEASE',source,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{nested:{release_authority:true}}),
+    /OPERA_EVENT_DETAILS_UNDECLARED/);
+  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{work_id:['unexpected']}),
+    /OPERA_EVENT_DETAILS_NOT_SCALAR/);
+  assert.throws(()=>stageVixenOperaEvent('UNPENALIZED_REST',source,{note:'invented authority'}),
+    /OPERA_EVENT_DETAILS_UNDECLARED/);
+  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{[Symbol('authority')]:true}),
+    /OPERA_EVENT_DETAILS_UNDECLARED/);
  assert.throws(()=>stageVixenOperaEvent('PROMOTE',source,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  const infra=readOperahouseStatus({state:'CENSUS_MATCHED'});
  assert.equal(infra.role,'OPERAHOUSE');assert.equal(infra.release_authority,false);
