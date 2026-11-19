@@ -404,6 +404,17 @@ jobs:
           path: ${{ runner.temp }}/ci-vixen-src-dollhouse-parity.json
           if-no-files-found: warn
           retention-days: 14
+      - name: Witness three-stage Maestro research descent with actual SRC Python on verified Vixen Works
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/verify-vixen-maestro-native-journey.mjs
+      - name: Preserve the original-method Maestro journey and source-custody receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-maestro-native-journey-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-vixen-maestro-native-journey.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Validate bounded Dollhouse role upgrades and source-only export kit
         run: npm run test:dollhouse:audits
       - name: Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution
