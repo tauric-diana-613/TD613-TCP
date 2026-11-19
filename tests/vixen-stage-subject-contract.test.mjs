@@ -105,7 +105,7 @@ test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
  assert.match(guide,/8.*historically recorded OPERA folio entries/);
  assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
  assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
- assert.match(guide,/RC-03.*RC-07.*RC-10.*no right to headline/i);
+ assert.match(guide,/RC records remain OPERAHOUSE technical optics/);
  assert.match(guide,/LAB_RC-##/);
  assert.match(guide,/TCC-08.*TITLE_LOCUS_ORNAMENT.*BRANDING_ORNAMENT_ONLY/);
  assert.match(guide,/browser-isomorphic/);
