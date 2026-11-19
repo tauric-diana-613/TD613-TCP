@@ -393,6 +393,17 @@ jobs:
           path: ${{ runner.temp }}/ci-podium-native-dollhouse-receipt.json
           if-no-files-found: warn
           retention-days: 14
+      - name: Vixen SRC capability parity — Atlas FADT Aperture deterministic redpen
+        if: ${{ github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        run: node scripts/audit-vixen-src-dollhouse-parity.mjs
+      - name: Preserve SRC parity and Dollhouse source-bound machine receipt
+        if: ${{ always() && github.event_name == 'pull_request' && github.head_ref == 'research/vixen-dual-estate-encyclopedia-20261108' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vixen-src-dollhouse-parity-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/ci-vixen-src-dollhouse-parity.json
+          if-no-files-found: warn
+          retention-days: 14
       - name: Validate bounded Dollhouse role upgrades and source-only export kit
         run: npm run test:dollhouse:audits
       - name: Validate Loom Instrument Lab, held gates, advisory minimization, and declared service resolution
