@@ -155,7 +155,7 @@
  display:flex;gap:6px;flex-wrap:wrap
 }
 #vixenAiJourney #vmaReportPanel{
- border:1px solid #f5b4b7!important;background:#262126!important;
+ border:1px solid #f5b4b7!important;background:#24282a!important;
  padding:14px!important;margin:12px 0!important;color:#f9ead6!important
 }
 #vixenAiJourney #vmaCopyFallback{min-height:95px}
