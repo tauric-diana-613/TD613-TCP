@@ -3,10 +3,13 @@
  * from custody-verified Experiment-A Work bodies (NOT the TCC/RC host catalogue).
  * It assigns no new folio IDs, theorem status, research subjects or empirical credit.
  */
-import {loadExperimentABodyBySourceId,shardForWorkIndex} from './corpus-experiment-a.mjs';
+import {loadExperimentABodyBySourceId,shardForWorkIndex,computeSha256HexAsync} from './corpus-experiment-a.mjs';
 import {scoreUnifiedSynthesisCandidates} from './synthesis-salon-engine.mjs';
 
 export const WORK_MATH_SCHEMA='emstd613.vixen.original-work-math/v1';
+// Issue immutable source-backed entries; a caller's cloned receipt cannot
+// promote an arbitrary snippet into an admitted scholarly manifestation.
+const ISSUED_WORK_MATH_ENTRIES=new WeakSet();
 const MATH_FORMS=Object.freeze([
  {kind:'MATH_FENCE',re:/\`{3}(?:math|latex|tex)[^\n]*\n([\s\S]{2,1800}?)\`{3}/gi},
  {kind:'DISPLAY_TEX',re:/\\\[([\s\S]{2,1800}?)\\\]/g},
@@ -81,9 +84,19 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
    if(!verified||verified.source_file_id!==source.source_file_id ||
       (verified.work_id&&verified.work_id!==work.work_id)||
       verified.body_sha256_verified!==true||verified.readable===false||
-      typeof verified.text_body!=='string'){
+      typeof verified.text_body!=='string'||
+      !/^[0-9a-f]{64}$/i.test(source.sha256||'')){
     unavailable.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
       reason:'BODY_UNAVAILABLE_OR_UNVERIFIED'}));continue;
+   }
+   // Independently rehash even when a plugged-in source reader asserts a
+   // verified flag. The derivative text digest and original source-file
+   // digest refer to distinct substrates and must never be conflated.
+   const expected=verified.derivative_sha256||verified.body_sha256||null;
+   if(!/^[0-9a-f]{64}$/i.test(expected||'')||
+      (await computeSha256HexAsync(verified.text_body))!==expected){
+     unavailable.push(Object.freeze({work_id:work.work_id,source_file_id:source.source_file_id,
+       reason:'DERIVATIVE_BODY_SHA256_MISMATCH_OR_ABSENT'}));continue;
    }
    const passages=extractOriginalMathPassages(verified.text_body,{max:maxPassagesPerWork});
    if(!passages.length)continue;
@@ -96,6 +109,7 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
     source_excerpts:passages,
     empirical_credit:0,host_instrument_authorship:false
    });
+   ISSUED_WORK_MATH_ENTRIES.add(selected);
    break;
   }
   if(selected)entries.push(selected);else empty.push(work.work_id);
@@ -111,7 +125,7 @@ export async function buildOriginalWorkMathWardrobe(corpus,{
 }
 export function scoreOriginalWorkMath(corpus,entry,{operatorQuestion=''}={}){
  const work=corpus?.works?.find(w=>w.work_id===entry?.work_id);
- if(!work||entry.source_body_sha256_verified!==true ||
+ if(!work||!ISSUED_WORK_MATH_ENTRIES.has(entry)||entry.source_body_sha256_verified!==true ||
     !work.linked_sources?.some(s=>s.source_file_id===entry.source_file_id &&
       s.sha256===entry.declared_source_sha256)||
     !entry.source_excerpts?.length)
