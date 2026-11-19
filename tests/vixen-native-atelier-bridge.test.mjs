@@ -126,9 +126,12 @@ test('original SRC archive is executed through the genuine native host bridge wi
 
 test('explicit Podium engine.invoke executes the retained SRC Python resolver but keeps scientific authorization HELD',async()=>{
  const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
- const embedded=html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\\s\\S]*?)<\\/script>/);
- assert.ok(embedded,'original Vixen corpus must be loaded from its unchanged source bundle');
- const corpus=JSON.parse(embedded[1]);
+ const sourceTag=html.indexOf('id="vixen-corpus-bundle"');
+ assert.ok(sourceTag>=0,'original Vixen corpus must be present in the unchanged source bundle');
+ const bodyStart=html.indexOf('>',sourceTag)+1;
+ const bodyEnd=html.indexOf('</script>',bodyStart);
+ assert.ok(bodyStart>0&&bodyEnd>bodyStart,'original Vixen corpus script must be complete');
+ const corpus=JSON.parse(html.slice(bodyStart,bodyEnd));
  const seal=JSON.parse(readFileSync(resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/phase2/current-seal.json'),'utf8'));
  const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
  const reader={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],getRecord:async()=>null,
