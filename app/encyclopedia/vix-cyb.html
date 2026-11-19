@@ -2847,11 +2847,45 @@ body[data-view="overview"] .reading-back{display:none}
       const metrics=document.createElement('pre');
       metrics.textContent=receipt.foundry.metrics.map(item=>item.name+' = '+
         (typeof item.value==='object'?JSON.stringify(item.value):String(item.value))).join('\\n');
-      const ceiling=document.createElement('p');
+      const evidence=document.createElement('details');
+       evidence.setAttribute('data-wardrobe-evidence','true');
+       const summary=document.createElement('summary');
+       summary.textContent='Inspect candidate scores and evidence limits';
+       evidence.append(summary);
+       const origin=document.createElement('p');
+       origin.textContent='Recorded folio: '+receipt.folio_id+
+         ' · Human-authored question: '+(receipt.synthesis.human_question||'NONE')+
+         ' · Query origin: '+receipt.synthesis.question_origin;
+       evidence.append(origin);
+       const labels={spectral_conditioning:'Spectral conditioning',
+         clock_holonomy:'Clock-order sensitivity',
+         mirror_nullspace:'Projection residual',
+         synergy_fadt:'Joint-source synergy',
+         cluster_bridge:'Cluster relationship',
+         epistemic_ceiling:'Evidence limit',
+         design_cadence:'Formal grammar',
+         src_projective_tomography:'Documentary-route estimate'};
+       for(const candidate of receipt.synthesis.scored_candidates){
+         const card=document.createElement('p');
+         const scores=Object.entries(labels)
+           .filter(([key])=>Number.isFinite(candidate.breakdown[key]))
+           .map(([key,label])=>label+': '+candidate.breakdown[key].toFixed(4)).join(' · ');
+         card.textContent=candidate.title+' · candidate score '+
+           (Number.isFinite(candidate.score)?candidate.score.toFixed(4):'HELD')+
+           ' · '+scores+' · Proposed falsifier: '+(candidate.falsifier||'UNDECLARED');
+         evidence.append(card);
+       }
+       const trace=document.createElement('p');
+       trace.textContent='Documentary-route links: '+receipt.synthesis.engine_trace.src_projective_links+
+         ' · Contextual-role checks: '+receipt.synthesis.engine_trace.src_contextual_role_passes+
+         ' · Tomographic candidates: '+receipt.synthesis.engine_trace.src_tomography_candidates+
+         ' · Host-native tools: not invoked · Original manuscript passages: not retrieved here';
+       evidence.append(trace);
+       const ceiling=document.createElement('p');
       ceiling.textContent=receipt.source_title_locus_ornament
         ?'TCC-08 preserves the historical title-locus notation. Its diagnostics grant neither an arithmetic theorem nor an experimental-design decision or empirical proof.'
         :'Bounded source diagnostic and unratified candidate ranking. Archival count does not select experimental N. Podium Score and human Composer approval required; empirical credit 0.';
-      panel.replaceChildren(name,info,metrics,ceiling);
+      panel.replaceChildren(name,info,metrics,evidence,ceiling);
       buttonEl.textContent='Recompute Vixen synthesis ↻';
     }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
     finally{buttonEl.disabled=false}

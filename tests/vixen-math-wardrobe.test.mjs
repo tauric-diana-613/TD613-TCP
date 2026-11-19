@@ -21,6 +21,10 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
  assert.ok(x.synthesis.candidate_count>=1);
   assert.equal(x.synthesis.conditioning_folio,'TCC-04');
   assert.match(x.synthesis.question,/Five Non-Equivalent Derivative Clocks/);
+ assert.match(html,/data-wardrobe-evidence/);
+ assert.match(html,/Inspect candidate scores and evidence limits/);
+ assert.match(html,/Human-authored question:/);
+ assert.match(html,/Host-native tools: not invoked/);
  assert.equal(x.synthesis.engine,'BROWSER_ISOMORPHIC_UNIFIED_CANDIDATE_RANKING');
  assert.equal(x.synthesis.question_origin,'ARCHIVAL_FOLIO_CONTEXT_ONLY');
  assert.equal(x.synthesis.human_question,null);
