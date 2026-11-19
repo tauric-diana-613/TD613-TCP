@@ -149,10 +149,19 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
  const {STAGE_ROLES,assertStageRoleSeparation,castVixenPerformer,stageVixenOperaEvent,readOperahouseStatus}=await import('../app/encyclopedia/vixen-estate/role-boundary.mjs');
  assert.equal(assertStageRoleSeparation(),true);
  assert.deepEqual(Object.keys(STAGE_ROLES).sort(),['OPERA','OPERAHOUSE','PERFORMER']);
- const source=castVixenPerformer({work_id:'emwork_fixture',display_title:'A Vixen work',identity_status:'UNRESOLVED'});
+ const vixenHtml=await readFile(new URL('vix-cyb.html',root),'utf8');
+ const vixenCorpus=JSON.parse(vixenHtml.match(/<script id="vixen-corpus-bundle" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+ const source=castVixenPerformer(vixenCorpus.works[0],vixenCorpus);
  assert.equal(source.estate,'EMSTD613');assert.equal(source.role,'PERFORMER');assert.equal(source.identity_status,'UNRESOLVED');
  const event=stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{work_id:source.work_id});
  assert.equal(event.role,'OPERA');assert.equal(event.performer.role,'PERFORMER');
+ assert.throws(()=>castVixenPerformer({work_id:'LAB_RC-07'},vixenCorpus),/PERFORMER_WORK_NOT_IN_SOURCE_ROSTER/);
+ assert.throws(()=>castVixenPerformer({...vixenCorpus.works[0]},vixenCorpus),/PERFORMER_WORK_NOT_IN_SOURCE_ROSTER/);
+ assert.throws(()=>castVixenPerformer(vixenCorpus.works[0],{works:[]}),/PERFORMER_SOURCE_ROSTER_REQUIRED/);
+ assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',
+  {role:'PERFORMER',estate:'EMSTD613',work_id:source.work_id},{work_id:source.work_id}),/OPERA_REQUIRES_TYPED_PERFORMER/);
+ assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',
+  {...source},{work_id:source.work_id}),/OPERA_REQUIRES_TYPED_PERFORMER/);
  assert.throws(()=>stageVixenOperaEvent('ADMIT',source,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  assert.throws(()=>stageVixenOperaEvent('RELEASE',source,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  assert.throws(()=>stageVixenOperaEvent('PROMOTE',source,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
