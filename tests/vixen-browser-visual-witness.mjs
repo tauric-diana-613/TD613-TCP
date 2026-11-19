@@ -615,8 +615,8 @@ try {
       'An unfeatured source remains staged without impersonating a curated aria');
     assert.match(await foundry.locator('.ef-gallery-item[aria-pressed="true"]').innerText(),/TCC-08/,
       'The source catalogue must preserve the exact active eighth record');
-    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-04')),true,
-      'Explicitly return to a featured aria before measuring its curated rail');
+    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-01')),true,
+      'Explicitly return to the original featured control-plane aria before measuring its curated rail');
     assert.equal(await foundry.locator('.ef-readout').isHidden(),true,
       'The technical evidence inspector must not permanently compete with the artwork');
     const opticalCouture=await foundry.evaluate(el=>{
