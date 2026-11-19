@@ -579,10 +579,10 @@ export async function mountVixenElectricFoundry({
  }
  function renderCatalogue(){
   gallery.replaceChildren();
-  add(gallery,label('THE VIXEN PROGRAMME · 7 RESEARCH FOLIOS + 1 ORNAMENT + 6 PROSPECTIVE TRACKS'),
-   claim('Six bounded, source-linked inquiry demonstrations are shown here; no synthetic folio is an original Work. Fourteen technical optical records stay in the archived machine register, outside this Opera stage.'));
+  add(gallery,label('THE STAGE · 7 RESEARCH INQUIRIES + 6 PROSPECTIVE TRACKS · TITLE ORNAMENT IN WARDROBE'),
+   claim('Six featured inquiries plus one additional research model can be staged here; the title ornament remains a source-reading item without an executable model. Fourteen technical optical records stay in the archived machine register; no synthetic folio becomes an original Work.'));
   const picker=node('div','ef-gallery-tabs');
-  for(const [id,text] of [['UNIFIED','TCC · 8'],['GIVEBACK','GIVEBACK · 6']]){
+  for(const [id,text] of [['UNIFIED','INQUIRIES · 7'],['GIVEBACK','GIVEBACK · 6']]){
    const b=BTN(text,()=>{state.selectedCatalogueGroup=id;renderCatalogue()},'ef-gallery-tab');
    b.setAttribute('aria-pressed',String(state.selectedCatalogueGroup===id));
    picker.append(b)
