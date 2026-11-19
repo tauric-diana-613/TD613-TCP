@@ -49,7 +49,7 @@ test('Historical host records stay archived while the public wardrobe reads orig
  assert.match(page,/id="formulaGalleryReveal"/);
  assert.match(page,/formulaExpanded: false/);
  assert.match(page,/state\.formulaExpanded=!state\.formulaExpanded/);
- assert(page.includes('const searching=Boolean(q),expanded=Boolean(state.formulaExpanded||searching)'), 'Source-first wardrobe must honor expansion state');
+ assert.match(page,/const searching=Boolean\(q\),expanded=Boolean\(state\.formulaExpanded\|\|searching\)/);
  assert(page.includes('buildOriginalWorkMathWardrobe(DATA)'), 'Wardrobe must derive from verified Work texts');
  assert.match(page,/data-work-math-id/);
  assert.doesNotMatch(page,/data-compute-vixen-folio=/);
