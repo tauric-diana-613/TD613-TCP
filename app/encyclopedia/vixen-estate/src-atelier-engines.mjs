@@ -1083,14 +1083,12 @@ export function evaluateCorpusWithSrcEngines(
 
   // Documentary protocol membership is a catalogue fact, never witnessed
   // implementation or compilation. No arbitrary first-six instrument subset.
-  const compilerInputs = instruments.filter(inst=>typeof inst?.instrument_id==='string').map(inst => ({
-    compiler_id: 'vixen_synthesis_salon',
-    input_id: inst.instrument_id,
-    scope_time: `${inst.cluster || 'UNSPECIFIED_CLUSTER'}:DOCUMENTARY_REGISTRY`,
-    role_in_context: 'RECORDED_PROTOCOL_NOT_EXECUTED',
-    adjudication_status: 'DOCUMENTARY_NOT_EXECUTED'
-  }));
-  const contextRoles = runSrcPhase2ContextRoles(compilerInputs, []);
+  // Recorded methods remain documentary source metadata. Feeding them into
+  // the compilation-pass executor would manufacture a compiler "pass" even
+  // with DOCUMENTARY_NOT_EXECUTED labels. No execution evidence is present.
+  const documentaryProtocolIds=instruments.filter(inst=>typeof inst?.instrument_id==='string'&&inst.instrument_id)
+    .map(inst=>inst.instrument_id);
+  const contextRoles = runSrcPhase2ContextRoles([], []);
 
   const regimeEval = deriveSrcQueryConditionedWeights(operatorQuestion || '', 'hybrid', null);
 
@@ -1107,14 +1105,15 @@ export function evaluateCorpusWithSrcEngines(
       observed_transformation_receipts:0,
       verified_compiler_executions:0,
       candidate_source_record_count:docs.length,
-      documentary_protocol_count:compilerInputs.length,
+      documentary_protocol_count:documentaryProtocolIds.length,
       adjudication:'UNEXECUTED_SOURCE_REVIEW'
     }),
     projective_routing: {
       cue_count: projective.cue_count,
       candidate_link_count: projective.candidate_link_count,
       field_marker_hits: projective.field_marker_hits,
-      raw_numeral_delta: projective.cue_count === rawProjective.cue_count ? 0 : 1,
+      raw_numeral_delta: projective.cues.reduce((n,cue,i)=>
+        n+(cue.stripped_target!==rawProjective.cues[i]?.stripped_target?1:0),0),
       semantic_promotion: 'NO_SEMANTIC_OR_CAUSAL_PROMOTION'
     },
     phase2_tomography: {
@@ -1128,7 +1127,8 @@ export function evaluateCorpusWithSrcEngines(
       pass_count: contextRoles.pass_count,
       intrinsic_role_claim: contextRoles.intrinsic_role_claim,
       witnessed_executions:0,
-      documentary_only:true
+      documentary_only:true,
+      documentary_protocol_count:documentaryProtocolIds.length
     },
     query_conditioning: {
       regime_id: regimeEval.regimeId,
