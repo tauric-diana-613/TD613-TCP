@@ -12,6 +12,7 @@ import {createHash} from 'node:crypto';
 import {stableContentEquals,computeTypedFnv32} from '../app/engine/dollhouse-atlas-relational-custody.js';
 import {computeFadtFiberBounds} from '../app/engine/dollhouse-fadt-reparative-assistance.js';
 import {runDollhouseSkillAudit} from '../app/engine/dollhouse-skill-dispatcher.js';
+import {createPodiumNativeReadAdapters} from './vixen-podium-native-adapters.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=path=>readFileSync(resolve(root,path),'utf8');
@@ -42,7 +43,8 @@ const srcModules=[
  ['NATIVE_RESEARCH_JOURNEY','src-research-journey-v1.py',null,'src_native_research_journey',null],
  ['SIGNATURE_CONDITIONING','native-semantic-search-v1.py','deriveSrcQueryConditionedWeights','src_untypical_retrieval',search],
  ['HETEROSTRATIGRAPHIC_AUDIT',null,'runSrcHeterostratigraphicAudit','src_heterostratigraphic_audit',null],
- ['VERIFIED_VIXEN_WORK_PAIR',null,'scoreSrcUntypicalDocument','src_verified_vixen_work_pair',null]
+ ['VERIFIED_VIXEN_WORK_PAIR',null,'scoreSrcUntypicalDocument','src_verified_vixen_work_pair',null],
+ ['ORIGINAL_SRC_PROJECTIVE_VIXEN_DIFFERENTIAL','run-projective-routing-grammar-assay.py','runSrcProjectiveRouting','src_verified_vixen_original_projective_differential',null]
 ];
 const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation,consumer])=>{
  const original_present=originalPyName?originalPy.includes(originalPyName):null;
@@ -65,7 +67,7 @@ const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation
   native_host_present,product_consumer:consumer,consumer_wired,
   tested_by_named_bridge_test:executed_by_specific_test,
   native_python_equivalence_witness:'UNPROVEN',
-  original_python_executed_on_vixen_corpus:false,
+  original_python_executed_on_vixen_corpus:capability==='ORIGINAL_SRC_PROJECTIVE_VIXEN_DIFFERENTIAL',
   original_research_corpus_admission:false
  };
 });
@@ -101,6 +103,37 @@ const atlasIdentity={
  vixen_typed_digest:computeTypedFnv32(vixenIdentity).profile_qualified_digest,
  distinct_manifestations_preserved:true,
  native_equivalence_proved:false,real_winding_history_witnessed:false
+};
+const originalSourceMethods=await createPodiumNativeReadAdapters({repoRoot:root});
+const sourceMethodExecution=await originalSourceMethods.SRC_ATELIER({
+ operation:'src_verified_vixen_original_projective_differential',
+ payload:{
+  work_ids:['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'],
+  query:'Explore Topologies Quantum Fiction Stranger'
+ }
+});
+assert.equal(sourceMethodExecution.native_python_executed,true,
+ 'Original SRC Python must execute on verified Vixen derivatives in this audit');
+const nativeDifferential=sourceMethodExecution.original_native_differential;
+assert.equal(nativeDifferential.original_python_replay.original_method_sha256,srcIdentity.byte_sha256,
+ 'Original Python method bytes must match the inventoried SRC source');
+assert.equal(nativeDifferential.original_python_replay.original_src_archive_loaded,false,
+ 'SRC archive may supply code, never Vixen Work source data');
+assert.equal(nativeDifferential.synthetic_query_probe.exact_agreement,false,
+ 'Known two-of-four-word lexical divergence must remain visible, not hidden by a synthetic pass');
+assert.equal(nativeDifferential.full_method_equivalence,'HELD_UNPROVEN');
+assert.equal(sourceMethodExecution.scientific_credit,0);
+const nativeMethodWitness={
+ schema:'td613.vixen.original-src-method-witness/v1',
+ original_python_sha256:srcIdentity.byte_sha256,
+ source_proofs:sourceMethodExecution.source_proofs,
+ original_python_executed:true,
+ original_research_corpus_loaded:false,
+ real_work_comparison:nativeDifferential.real_work_comparison,
+ synthetic_query_probe:nativeDifferential.synthetic_query_probe,
+ full_native_method_equivalence:'HELD_UNPROVEN',
+ independent_empirical_replication_credit:0,
+ human_closure_required:true
 };
 const supportStates=[
  {condition:'ORIGINAL_PYTHON_REFERENCE_PRESENT',support:originalAvailable},
@@ -194,7 +227,8 @@ const redpen={
   {role:'ATLAS',verdict:atlas.verdict,infractions:atlas.infractions},
   {role:'FADT',verdict:fadt.verdict,infractions:fadt.infractions}
  ],
- measured_source_equivalence_replays:0,
+ observed_original_python_vs_js_method_comparisons:1,
+  independently_confirmed_scientific_equivalence:0,
  numerical_assay_class:'ABSTRACT_EVIDENCE_COVERAGE_RANK_NOT_PHYSICAL_OBSERVATION',
  disposition:'HELD_NATIVE_METHOD_EQUIVALENCE_NOT_YET_WITNESSED',
  missing_observations:[
@@ -209,8 +243,9 @@ const receipt={
  schema:'td613.vixen.src-dollhouse-capability-parity/v1',
  target_pr:1730,source_revision,
  selection:roles,orchestrator_used:true,
- source_observation_class:'STATIC_CODE_AUDIT_PLUS_BOUNDED_DETERMINISTIC_DOMAIN_ASSAY',
+ source_observation_class:'STATIC_CODE_AUDIT_PLUS_VERIFIED_ORIGINAL_PYTHON_EXECUTION_PLUS_DETERMINISTIC_DOMAIN_ASSAY',
  original_python_inventory,
+ native_original_method_witness:nativeMethodWitness,
  matrix,cross_jurisdiction_handoff:crossJurisdiction,dollhouse:{
   roles_executed:m.roles_executed,
   findings:m.specialist_findings.map(f=>({
