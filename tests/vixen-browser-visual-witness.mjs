@@ -605,7 +605,7 @@ try {
     await page.waitForFunction(id=>{
       const p=document.querySelector('[data-work-math-id="'+id+'"] [data-vixen-computation]');
       return p&&!p.hidden&&/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS|COMPUTATION HELD/.test(p.textContent);
-    },firstWork,{timeout:30000});
+    },firstMathWorkId,{timeout:30000});
     const scoredText=await selected.locator('[data-vixen-computation]').innerText();
     assert.match(scoredText,/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS/,
       'A verified original passage must actually trigger source-conditioned candidate ranking');
