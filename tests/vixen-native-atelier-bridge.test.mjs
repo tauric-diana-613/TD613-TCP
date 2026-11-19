@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-import {existsSync,readFileSync,realpathSync} from 'node:fs';
+import {existsSync,readFileSync,realpathSync,mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve,dirname} from 'node:path';
+import {tmpdir} from 'node:os';
 import {createNativeAtelierReadAdapters} from '../scripts/vixen-native-atelier-bridge.mjs';
 import {createPodiumNativeReadAdapters} from '../scripts/vixen-podium-native-adapters.mjs';
 import {createVixenPodium,PODIUM_SCHEMA,BOUNDED_ENGINE_OPERATIONS} from '../app/encyclopedia/reference/vixen-podium.mjs';
@@ -96,62 +97,60 @@ test('original native host operations include source-bound research routes witho
  assert.throws(()=>native.CROSS_ATELIER({operation:'cross_atelier_semantic',payload:{query:'test'}}),/HELD_NATIVE_INPUT_REQUIRED/);
 });
 
-test('original SRC archive is executed through the genuine native host bridge with source-bounded, zero-authority receipts',()=>{
- const sealPath=resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/phase2/current-seal.json');
- const seal=JSON.parse(readFileSync(sealPath,'utf8'));
- const original=native.SRC_ATELIER({operation:'src_native_epoch_query',payload:{
-  snapshot_id:seal.atelier_snapshot_id,seal_id:seal.seal_id,action:'resolve',
-  entity_id:'academia:145078372:page'
- }});
- assert.equal(original.kind,'ORIGINAL_NATIVE_EXECUTABLE');
- assert.equal(original.read_only,true);
- assert.equal(original.scientific_credit,0);
- assert.equal(original.data.query_epoch.atelier_snapshot_id,seal.atelier_snapshot_id);
- assert.equal(original.data.query_epoch.seal_id,seal.seal_id);
- assert.equal(original.data.result.entity_id,'academia:145078372:page');
- assert.ok(Array.isArray(original.data.result.matches));
- assert.ok(original.data.result.matches.some(row=>row.entity_id==='academia:145078372:page'));
 
- const assay=native.SRC_ATELIER({operation:'src_native_projective_assay',payload:{}});
- assert.equal(assay.kind,'ORIGINAL_NATIVE_EXECUTABLE');
- assert.equal(assay.read_only,true);
- assert.equal(assay.scientific_credit,0);
- assert.equal(assay.data.schema_version,'src-projective-routing-summary/v1');
- assert.equal(assay.data.atelier_snapshot_id,seal.atelier_snapshot_id);
- assert.equal(assay.data.seal_id,seal.seal_id);
- assert.ok(assay.data.document_count>0,'read actual retained SRC source derivatives, not a synthetic fixture');
- assert.equal(assay.data.status,'BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED');
- assert.ok(assay.data.automatic_promotions_forbidden.includes('MACHINE_ROUTING_EFFECT_CONFIRMED'));
+test('original SRC projective-assay executable computes on isolated synthetic input, without touching any SRC corpus',()=>{
+ const scratch=mkdtempSync(resolve(tmpdir(),'vixen-src-engine-fixture-'));
+ try{
+  const dir=resolve(scratch,'03-DERIVATIVES/text/zenodo');
+  mkdirSync(dir,{recursive:true});
+  writeFileSync(resolve(dir,'zenodo-99900001-file-0.md'),
+   'Synthetic engine test only. Explore Aurora. No real research subject, author, or SRC source is admitted.\n');
+  const originalScript=resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/99-ADMIN/run-projective-routing-grammar-assay.py');
+  const result=JSON.parse(execFileSync(python,[originalScript,'--root',scratch],{
+   cwd:scratch,encoding:'utf8',timeout:12000,
+   env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',PYTHONUTF8:'1'}
+  }));
+  assert.equal(result.schema_version,'src-projective-routing-summary/v1');
+  assert.equal(result.document_count,1);
+  assert.ok(result.explore_observation_count>=1);
+  assert.equal(result.status,'BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED');
+  assert.ok(result.automatic_promotions_forbidden.includes('MACHINE_ROUTING_EFFECT_CONFIRMED'));
+  assert.equal(existsSync(resolve(scratch,'04-RECEIPTS')),false,'Original assay executed read-only');
+ }finally{rmSync(scratch,{recursive:true,force:true});}
 });
 
-test('explicit Podium engine.invoke executes the retained SRC Python resolver but keeps scientific authorization HELD',async()=>{
+test('authorized Podium invokes installed SRC computational method on synthetic Vixen-plane records only',async()=>{
  const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
- const sourceTag=html.indexOf('id="vixen-corpus-bundle"');
- assert.ok(sourceTag>=0,'original Vixen corpus must be present in the unchanged source bundle');
- const bodyStart=html.indexOf('>',sourceTag)+1;
- const bodyEnd=html.indexOf('</script>',bodyStart);
- assert.ok(bodyStart>0&&bodyEnd>bodyStart,'original Vixen corpus script must be complete');
+ const start=html.indexOf('<script id="vixen-corpus-bundle" type="application/json">');
+ assert.ok(start>=0);
+ const bodyStart=html.indexOf('>',start)+1,bodyEnd=html.indexOf('</script>',bodyStart);
  const corpus=JSON.parse(html.slice(bodyStart,bodyEnd));
- const seal=JSON.parse(readFileSync(resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/phase2/current-seal.json'),'utf8'));
+ assert.equal(corpus.works.length,32,'Vixen original Work census preserved');
+ assert.ok(corpus.works.every(w=>/^emwork_/.test(w.work_id)),'No foreign research Work admitted to Vixen');
+ assert.ok(corpus.works.every(w=>w.linked_sources.every(s=>/^emsrc_/.test(s.source_file_id))),
+  'Original Vixen source register must not become the SRC research archive');
  const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
  const reader={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],getRecord:async()=>null,
   related:()=>[],status:()=>({state:'UNOPENED'})};
  const command={schema:PODIUM_SCHEMA,intent:'engine.invoke',params:{
-  engine:'SRC_ATELIER',operation:'src_native_epoch_query',payload:{
-   snapshot_id:seal.atelier_snapshot_id,seal_id:seal.seal_id,
-   action:'resolve',entity_id:'academia:145078372:page'
+  engine:'SRC_ATELIER',operation:'src_projective_routing',payload:{
+   documents:[{record_id:'fixture-reader',title:'Fixture reader',body:'Explore Aurora.'}],
+   catalog:[{record_id:'fixture-destination',title:'Aurora'}]
   }
  }};
- const denied=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:false,engineAdapters:adapters}).dispatch(command);
- assert.equal(denied.status,'HELD');
+ const held=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:false,engineAdapters:adapters}).dispatch(command);
+ assert.equal(held.status,'HELD');
+ assert.equal(held.result.code,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
  const executed=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:true,engineAdapters:adapters}).dispatch(command);
- assert.equal(executed.status,'HELD','native execution never auto-adjudicates evidence');
+ assert.equal(executed.status,'HELD','Computational execution cannot confer scientific approval');
  assert.equal(executed.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
  assert.equal(executed.result.engine,'SRC_ATELIER');
- assert.equal(executed.result.operation,'src_native_epoch_query');
- assert.equal(executed.result.output.kind,'ORIGINAL_NATIVE_EXECUTABLE');
- assert.equal(executed.result.output.data.query_epoch.seal_id,seal.seal_id);
- assert.equal(executed.result.output.data.result.entity_id,'academia:145078372:page');
- assert.equal(executed.result.endorsement,false);
+ assert.equal(executed.result.operation,'src_projective_routing');
+ assert.equal(executed.result.output.method,'SRC_PROJECTIVE_ROUTING');
+ assert.equal(executed.result.output.cue_count,1);
+ assert.equal(executed.result.output.candidate_link_count,1);
+ assert.equal(executed.result.output.links[0].target_record_id,'fixture-destination');
+ assert.equal(executed.result.output.links[0].semantic_promotion,'NO_SEMANTIC_OR_CAUSAL_PROMOTION');
  assert.equal(executed.result.scientific_credit,0);
+ assert.equal(executed.result.endorsement,false);
 });
