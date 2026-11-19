@@ -140,7 +140,7 @@ test('authorized Podium invokes installed SRC computational method on synthetic 
  }};
  const held=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:false,engineAdapters:adapters}).dispatch(command);
  assert.equal(held.status,'HELD');
- assert.equal(held.result.code,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
+ assert.equal(held.result.state,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
  const executed=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:true,engineAdapters:adapters}).dispatch(command);
  assert.equal(executed.status,'HELD','Computational execution cannot confer scientific approval');
  assert.equal(executed.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
