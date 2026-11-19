@@ -28,5 +28,11 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
 test('archive engineering cannot cross into Vixen theory performer',()=>{
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
  assert.match(html,/foundry\?\.selectLab\?\.\(exactId\)/);
+ assert.match(html,/const foundryBtn = f.id==='TCC-08' \? ''/);
+ assert.match(html,/\^TCC-0\[1-7\]\$\/\.test\(String\(folioId\)\)/);
+ assert.match(html,/Only the seven inquiry folios may stage a Foundry model/);
+ const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
+ assert.equal(ornament.foundry.lab_id,null,'Ornament inspection must not invoke an optical experiment');
+ assert.equal(ornament.synthesis.candidate_count,0);
  assert.doesNotMatch(html,/startsWith\('TCC'\) \? 'LAB_TCC-05'/);
 });
