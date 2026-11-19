@@ -204,10 +204,12 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
   adapters.RULEFIELD=async ({operation,payload={}})=>{
    if(operation==='assess_roles'){
     const separation=roleBoundary?.assertStageRoleSeparation?roleBoundary.assertStageRoleSeparation():null;
-    const corpus=payload?.corpus||await loadLocalVixenCorpus();
+    // Role and original Work identity come from the local source intake,
+    // never an untrusted caller-supplied synthetic research corpus.
+    const corpus=await loadLocalVixenCorpus();
     const targetId=String(payload?.work_id||corpus.works?.[0]?.work_id||'');
-    const workObj=corpus.works?.find(w=>w.work_id===targetId)||corpus.works?.[0];
-    const performer=roleBoundary?.castVixenPerformer&&workObj?roleBoundary.castVixenPerformer(workObj):null;
+    const workObj=corpus.works?.find(w=>w.work_id===targetId)||null;
+    const performer=roleBoundary?.castVixenPerformer&&workObj?roleBoundary.castVixenPerformer(workObj,corpus):null;
     const operaEvent=roleBoundary?.stageVixenOperaEvent&&performer
      ?roleBoundary.stageVixenOperaEvent(String(payload?.action||'INSPECT_WORK'),performer,{target:targetId,note:'BOUNDED_READ_ONLY_AUDIT'})
      :null;
@@ -220,6 +222,7 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     return {
      schema:'emstd613.vixen.rulefield-assessment/v1',
      roles_separated:separation,
+     source_work_state:workObj?'SOURCE_ROSTER_MATCHED':'HELD_UNKNOWN_VIXEN_WORK',
      operahouse_status:operahouse,
      staged_opera_event:operaEvent,
      cross_opera_warrant:warrant,
