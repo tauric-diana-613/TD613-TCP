@@ -59,7 +59,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-he
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab::after {
  content:"◀︎";position:absolute;right:12px;top:50%;transform:translateY(-50%);
- color:#d41680;font:700 14px/1 "Apple Symbols","Arial Unicode MS",Arial,sans-serif;opacity:.8;z-index:5;
+ color:#ff65aa;font:700 14px/1 "Apple Symbols","Arial Unicode MS",Arial,sans-serif;opacity:.8;z-index:5;
  pointer-events:none;filter:drop-shadow(0 0 3px #ed459b66);
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab:hover::after,
@@ -204,7 +204,7 @@ html {scroll-behavior:auto!important;}
 .vix-entry-veil[data-state="revealed"]{opacity:0;visibility:hidden;pointer-events:none;}
 .vix-entry-veil .vix-entry-fox {
  font:400 clamp(25px,4vw,49px)/1 Georgia,serif;letter-spacing:.05em;
- color:#f0f9fc;text-shadow:0 0 12px #e6faff8c,0 0 35px #fca7d862;
+ color:#f0f9fc;text-shadow:0 0 12px #e6faff8c,0 0 35px #ffa7ce62;
 }
 .vix-entry-veil strong {
  font:400 clamp(23px,4vw,52px)/1 Didot,"Bodoni MT",Georgia,serif;
@@ -379,7 +379,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .vixen
    overflow-x:auto!important;overflow-y:hidden!important;
    overscroll-behavior-x:contain!important;touch-action:pan-x!important;
    scroll-snap-type:none!important;scrollbar-width:thin!important;
-   scrollbar-color:#d8aa65 #2b2328!important;
+   scrollbar-color:#d8aa65 #282b2e!important;
    -webkit-overflow-scrolling:touch;
  }
  body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-hero-tab{
