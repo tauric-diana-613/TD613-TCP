@@ -26,8 +26,15 @@ export function auditVixenFolioCensus(corpus){
   historical_records:folios.length,performers_in_folio_registry:0});
 }
 export function canStageVixenFolio(lab){
- if(!lab||lab.stage_role!=='OPERA')return false;
- if(lab.kind==='PROSPECTIVE_GIVEBACK_SIMULATION')return lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK';
- return lab.kind==='CANONICAL_FORMULA_SIMULATION'&&/^TCC-0[1-8]$/.test(lab.folio_id)
-  && lab.stage_subject_kind!=='ARCHIVAL_TECHNICAL_INSTRUMENT';
+ // Stage eligibility is a positive authorization, never a negative technical-ID filter.
+ // A decorative title locus has a reading path, not a mathematical actuation path.
+ if(!lab||lab.stage_role!=='OPERA'||lab.primary_work!==false||
+    lab.performer!==false||lab.scientific_claim_authority!==false)return false;
+ if(lab.kind==='PROSPECTIVE_GIVEBACK_SIMULATION')
+  return lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK' &&
+   /^LAB_TRACK-[A-F]$/.test(lab.id) && lab.source_estate==='EMSTD613';
+ return lab.kind==='CANONICAL_FORMULA_SIMULATION' &&
+  lab.stage_subject_kind==='RESEARCH_PROGRAMME' &&
+  /^TCC-0[1-7]$/.test(lab.folio_id) && lab.id==='LAB_'+lab.folio_id &&
+  lab.source_estate==='EMSTD613';
 }
