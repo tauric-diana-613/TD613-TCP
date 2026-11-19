@@ -71,7 +71,11 @@ async function witness(){
   {choice_id:'countertest',source_work_id:workIds[1],
    question:'What independent observation could defeat a claimed derivation?'},
   {choice_id:'source',source_work_id:workIds[1],
-   question:'Return to an original manuscript instead of treating matching words as proof'}
+   question:'Return to an original manuscript instead of treating matching words as proof'},
+  {choice_id:'context',source_work_id:workIds[0],
+   question:'Which recorded manifestation and custody route actually supports the contrast?'},
+  {choice_id:'source',source_work_id:workIds[0],
+   question:'Revisit the first source after the contextual descent and identify what changed'}
  ];
  const turns=[start.result.opening_turn],route=[];
  for(const next of path){
@@ -139,10 +143,32 @@ async function witness(){
  assert.equal(differential.full_method_equivalence,'HELD_UNPROVEN');
  assert.equal(computational.scientific_credit,0);
  assert.equal(computational.authorship_promotion,false);
+ const typedResult=await podium.dispatch(task('engine.invoke',{
+  engine:'SRC_ATELIER',
+  operation:'src_verified_vixen_original_typed_traversal',
+  payload:{work_ids:workIds,query:'Explore the recorded Vixen manifestation custody route'}
+ }));
+ assert.equal(typedResult.status,'HELD');
+ assert.equal(typedResult.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+ const typed=typedResult.result.output;
+ assert.equal(typed.native_python_executed,true);
+ assert.deepEqual(typed.source_proofs,computational.source_proofs,
+  'Reader routes and projective assay must operate on the same verified Work derivatives');
+ const typedOriginal=typed.original_native_traversal;
+ assert.equal(typedOriginal.native_original_registry_used,false);
+ assert.equal(typedOriginal.catalogue_work_count,32);
+ assert.equal(typedOriginal.recorded_manifestation_count,53);
+ assert.ok(typedOriginal.routes.every(route=>
+  route.original_function_result.witnessed_typed_routes.some(edge=>
+   edge.graph_kind==='DIGITAL_CUSTODY'&&edge.path_length===2&&
+   edge.candidate_direct_relation_admitted===false)));
+ assert.equal(typedOriginal.full_native_method_parity,'HELD_ADAPTED_INPUT_AND_UNTESTED_READER_ROUTES');
+ assert.equal(typedOriginal.query_influenced_typed_traversal,false);
+ assert.equal(typed.scientific_credit,0);
  const handoff=await podium.dispatch(task('vixen.ai.handoff'));
  assert.equal(handoff.status,'SUPPORTED');
  assert.equal(handoff.result.role,'MAESTRO');
- assert.equal(handoff.result.route_history.length,3);
+ assert.equal(handoff.result.route_history.length,5);
  assert.equal(handoff.result.selection_execution_boundary.selected_work_id,
   alignments.at(-1).selected_work_id);
  assert.deepEqual(handoff.result.selection_execution_boundary.observed_work_ids,
@@ -153,7 +179,7 @@ async function witness(){
  assert.equal(archive.status,'SUPPORTED');
  assert.equal(archive.result.original_corpus_modified,false);
  assert.equal(archive.result.release_authority,false);
- assert.equal(archive.result.storyline.length,4);
+ assert.equal(archive.result.storyline.length,6);
  assert.equal(sha256(readFileSync(htmlPath)),before,'Every original Vixen catalogue byte must remain unchanged');
  const receipt={
   schema:'td613.vixen.maestro-source-bound-native-journey-witness/v1',
@@ -174,6 +200,23 @@ async function witness(){
    actual_body_comparison:differential.real_work_comparison,
    synthetic_probe:differential.synthetic_query_probe,
    full_native_equivalence:'HELD_UNPROVEN',
+   engine_output_automatically_endorsed:false
+  },
+  typed_method_execution:{
+   original_src_python_executed:true,
+   original_method_sha256:typedOriginal.original_method_sha256,
+   vixen_recorded_manifestations:typedOriginal.recorded_manifestation_count,
+   original_src_registries_used:false,
+   ephemeral_registry_class:typedOriginal.ephemeral_registry_class,
+   source_proofs:typed.source_proofs,
+   typed_paths:typedOriginal.routes.map(r=>({
+    work_id:r.seed_work_id,
+    witnessed:r.original_function_result.witnessed_typed_routes.length,
+    held:r.original_function_result.held_typed_routes.length,
+    two_hop_custody_not_scholarly_relation:true
+   })),
+   typed_query_as_document_content:false,
+   full_native_parity:'HELD_ADAPTED_INPUT_AND_UNTESTED_READER_ROUTES',
    engine_output_automatically_endorsed:false
   },
   no_full_index_fusion_claim:true,
