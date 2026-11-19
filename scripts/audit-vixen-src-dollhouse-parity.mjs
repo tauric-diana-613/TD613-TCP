@@ -45,7 +45,9 @@ const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation
  const original_present=originalPyName?originalPy.includes(originalPyName):null;
  const js_export_present=jsExport?new RegExp('export (?:function|const) '+jsExport+'\\b').test(content[js]):null;
  const podium_operation_present=podiumOperation?
-  content[podium].includes("operation==='"+podiumOperation+"'"):false;
+  (podiumOperation.startsWith('src_native_')
+   ? content[podium].includes("'"+podiumOperation+"'")
+   : content[podium].includes("operation==='"+podiumOperation+"'")):false;
  const native_host_present=podiumOperation?.startsWith('src_native_')?
   content[native].includes("operation==='"+podiumOperation+"'"):null;
  const consumer_wired=consumer?
