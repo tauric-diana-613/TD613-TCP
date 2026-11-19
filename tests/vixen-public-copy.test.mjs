@@ -63,3 +63,11 @@ test('Vixen public markup imports boundary and rejects literal internal names in
  assert.doesNotMatch(html,/>FADT Exact \[C3\]/);
  assert.match(html,/THE OBSIDIAN READING ROOM/);
 });
+
+test('Global search preserves title/filename only, not unrelated dynamic explanatory UI text',()=>{
+ const source=html.slice(html.indexOf('function renderGlobalSearchResult'),html.indexOf('function runGlobalSearch'));
+ assert.doesNotMatch(source,/class="command-result" data-vixen-source-provenance/);
+ assert.match(source,/<span data-vixen-source-provenance="true">/);
+ assert.match(source,/<div data-vixen-source-provenance="true" style="font:400/);
+ assert.match(source,/<div class="expa-search-why">/);
+});

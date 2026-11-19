@@ -4487,12 +4487,12 @@ body[data-view="overview"] .reading-back{display:none}
         : (m.kind || 'record');
 
       // Pedagogue Hierarchy: NOTICE / custody -> Title -> Why -> Clean Snippet -> Deferred technical scores
-      return '<button type="button" class="command-result" data-vixen-source-provenance="true" data-search-pick="' + esc(m.id) + '" data-search-index="' + idx + '">' +
+      return '<button type="button" class="command-result" data-search-pick="' + esc(m.id) + '" data-search-index="' + idx + '">' +
         '<div class="expa-search-custody">' +
-          '<span>' + esc((m.original_filename || m.id) + fmtBadge + spanBadge) + '</span>' +
+          '<span data-vixen-source-provenance="true">' + esc((m.original_filename || m.id) + fmtBadge + spanBadge) + '</span>' +
           '<span>' + esc(roleTag + ' · ' + custodyTag) + '</span>' +
         '</div>' +
-        '<div style="font:400 18px/1.22 var(--font-serif);margin-top:2px">' + esc(m.title) + '</div>' +
+        '<div data-vixen-source-provenance="true" style="font:400 18px/1.22 var(--font-serif);margin-top:2px">' + esc(m.title) + '</div>' +
         (whyLine ? '<div class="expa-search-why">' + esc(whyLine) + '</div>' : '') +
         (snippetText ? '<div class="expa-search-snippet">' + esc(snippetText) + '</div>' : '') +
         '<div class="expa-score-pills"><span>' + esc(scoreBadge + rungBadge + shaShort) + '</span></div>' +

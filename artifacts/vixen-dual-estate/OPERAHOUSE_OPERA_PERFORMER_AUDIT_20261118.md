@@ -43,3 +43,5 @@ The original 22 formula and 6 giveback entries remain in the **same immutable co
 14. **Global arithmetic inflation:** the overview and Foundry presented all 22 archived formulas as Vixen stage mathematics. Public counts now distinguish seven inquiry folios, one title ornament, and fourteen retained backstage methods.
 
 15. **AI-facing instructions imported the retired breach:** `vix-cyb/llms.txt` still presented every archive formula as a Vixen stage theory and instructed assistant consumers to headline three RC engineering instruments. Updated to the exact 7-inquiry / 1-title-emblem / 14-technical-method ontology and six legitimate stage headliners. Added a non-regression test to exact-head CI.
+
+16. **Overbroad source-field exemption:** Search cards were entirely exempted from the interpretive public-copy filter in order to protect original titles. Scoped exemption to filename and source-title elements, restoring public copy normalization for ranking/method captions and other generated text.
