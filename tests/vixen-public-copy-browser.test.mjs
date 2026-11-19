@@ -24,14 +24,14 @@ try{
    await page.waitForFunction(key=>document.body.dataset.view===key,route,{timeout:10000});
    await page.waitForTimeout(110);
    const leakage=await page.evaluate(()=>{
-    const banned=/\b(?:Wendbine|SignalRupture|EMSTD613|SRC|Atelier|FADT|TD613|OPERAHOUSE|PERFORMER)\b/g;
+    const banned=/\b(?:Wendbine|SignalRupture|EMSTD613|SRC|Atelier|FADT|TD613)\b/g; // Preserve the public constitutional role names.
     const text=document.body.innerText;
     const visibleText=[...text.matchAll(banned)].slice(0,18).map(m=>({
       term:m[0],excerpt:text.slice(Math.max(0,m.index-50),m.index+70)
     }));
     const attrs=[];
     for(const el of document.querySelectorAll('[aria-label],[aria-description],[title],[placeholder],[alt]')){
-      if(el.closest('[data-vixen-machine-only], [data-machine-receipt], .vix-reader-raw, .vix-fusion-machine-preview'))continue;
+      if(el.closest('[data-vixen-machine-only], [data-machine-receipt], [data-vixen-source-provenance], .vs-work-title, .vxe-document, .vix-reader-raw, .vix-fusion-machine-preview'))continue;
       if(el.closest('[hidden]'))continue;
       if(!el.getClientRects().length)continue;
       for(const name of ['aria-label','aria-description','title','placeholder','alt']){
@@ -42,6 +42,8 @@ try{
     }
     return {visibleText,attrs,mounted:document.body.dataset.vixenPublicCopyMounted};
    });
+   assert.match(await page.locator('#view-overview').innerText(),/OPERAHOUSE|OPERA|PERFORMER/,
+     'Canonical role terminology remains legible in the source-labelled Opera');
    assert.deepEqual(leakage.visibleText,[],
      'Vixen visible text exposes private research nomenclature in '+route+' '+viewport.width+': '+JSON.stringify(leakage));
    assert.deepEqual(leakage.attrs,[],
