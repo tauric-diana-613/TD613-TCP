@@ -22,7 +22,7 @@ const plain=s=>typeof s==='string'?s.trim():'';
 const eligibleLiteral=s=>Boolean(s&&s.length>=3&&s.length<=1800&&!/data:image|https?:\/\/|<script|<\/script/i.test(s));
 const mathLine=s=>{
  const t=s.trim();
- if(t.length<5||t.length>260||/^\s*[#>|*-]{2,}/.test(t)||/https?:\/\//i.test(t)||/\$\$|\\\[|\\\]|\\\(|\\\)|```/.test(t))return false;
+ if(t.length<5||t.length>260||/^\s*[#>|*-]{2,}/.test(t)||/https?:\/\//i.test(t)||/\$|\\\[|\\\]|\\\(|\\\)|```/.test(t))return false;
  // Single-line mathematical relation or an explicit mathematical operator,
  // rather than a generic English paragraph with an equals sign.
  return /[∫∑∏∂∇⊕⊗√∈∉≡≠≤≥⇒↦∝≈]/.test(t) ||
