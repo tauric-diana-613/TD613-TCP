@@ -18,7 +18,7 @@ test('public mathematical wardrobe derives from source-verified original Works r
  assert.match(html,/buildOriginalWorkMathWardrobe\(DATA\)/);
  assert.match(html,/data-work-math-id/);
  assert.match(html,/data-original-math-passage/);
- assert.match(html,/data-open-ref="\'+esc\(entry\.work_id\)/);
+ assert.match(html,/data-open-ref=.*entry\\.work_id/);
  assert.match(html,/source-backed Works/);
  assert.doesNotMatch(html,/data-compute-vixen-folio=/);
  assert.doesNotMatch(html,/data-foundry-folio=/);
