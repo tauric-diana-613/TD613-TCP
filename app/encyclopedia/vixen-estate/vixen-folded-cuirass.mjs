@@ -647,7 +647,7 @@ export function paintSalonChargePresentation(ctx,scene,{time=0,width=1,height=1}
   if(typeof ctx.quadraticCurveTo==='function')
    ctx.quadraticCurveTo(p1[0],p1[1],p2[0],p2[1]);
   else ctx.lineTo(p2[0],p2[1]);
-  ctx.strokeStyle=t.color==='champagne'?'#fff6c7':t.color==='pearl'?'#f9e9f5':'#ff9cc7';
+  ctx.strokeStyle=t.color==='champagne'?'#fff6c7':t.color==='pearl'?'#fff0f3':'#ff9cc7';
   ctx.lineWidth=t.lane===8?1.8:1.2;
   ctx.globalAlpha=envelope*(t.layer==='front'?.87:.51);ctx.stroke();
   if(t.lane%3===0){
