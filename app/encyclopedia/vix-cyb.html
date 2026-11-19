@@ -808,7 +808,7 @@ body[data-view="overview"] .reading-back{display:none}
           </button>
           <button type="button" class="stat-btn" data-view="observatory">
             <span class="stat-value">S≠W≠A</span>
-            <span class="stat-label">Typed Constitutive Synthesis<small>4 Crossing Morphisms · 5 Non-Equivalent Clocks · 7 Inquiry Folios + 1 Title Ornament</small></span>
+            <span class="stat-label">Typed Constitutive Synthesis<small>4 Crossing Morphisms · 5 Non-Equivalent Clocks · 8 Vixen Folios</small></span>
             <span aria-hidden="true">→</span>
           </button>
           <button type="button" class="stat-btn" data-view="holds">
@@ -960,7 +960,7 @@ body[data-view="overview"] .reading-back{display:none}
         <div>
           <p class="eyebrow">01 · MULTI-MODEL SYNTHESIS OBSERVATORY · TYPED CONSTITUTIVE CYBERNETICS</p>
           <h1>Control Planes, Five Clocks<span class="title-annotation">&amp; the Vixen Theory Wardrobe</span></h1>
-          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. Seven inquiry folios can run source-bound computational receipts; the eighth is an inspectable authorial title ornament. Technical reference methods remain outside Vixen’s authorship.</p>
+          <p class="intro">Interactive Vixen research Observatory: typed control planes, non-interchangeable clocks, and source-bound synthesis hypotheses. All eight Vixen folios run source-bound computational explorations; the eighth retains its original non-theorem title-locus notation. Technical reference methods remain outside Vixen’s authorship.</p>
         </div>
         <div class="view-number" aria-hidden="true">01</div>
       </div>
@@ -1047,22 +1047,22 @@ body[data-view="overview"] .reading-back{display:none}
         </div>
       </div>
 
-      <!-- Seven Vixen inquiry folios and one title ornament only. Technical RC engine materials stay in the preserved archive, never Vixen performers. -->
+      <!-- All eight Vixen folios retain computation; archived RC engineering remains a separate role. -->
       <div class="formula-side">
         <div class="toolbar">
           <label class="field" aria-label="Filter mathematical folios">
             <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-            <input id="formulaSearchInput" type="search" placeholder="Search seven inquiries and one title ornament (S ≠ W ≠ A, five clocks…)">
+            <input id="formulaSearchInput" type="search" placeholder="Search eight Vixen folios (S ≠ W ≠ A, five clocks…)">
           </label>
           <div class="segmented" role="group" aria-label="Folio family filter">
-            <button type="button" data-formula-group="all" aria-pressed="true">Vixen folios · 7 + 1</button>
+            <button type="button" data-formula-group="all" aria-pressed="true">Vixen folios · 8</button>
           </div>
-          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 folios (7 inquiries + 1 ornament)</span>
+          <span id="formulaCountLabel" style="font:500 10px var(--font-mono)">Showing 4 of 8 Vixen folios</span>
         </div>
         <div class="formula-gallery-intro">
-          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · SEVEN INQUIRIES + ONE ORNAMENT</span>
-            <h3>Seven Vixen inquiries + one title ornament. <em>Bounded synthesis links.</em></h3>
-            <p>The seven inquiry folios have exact computed models and folio-conditioned candidate ranking; the eighth is an authorial title ornament, not a mathematical theorem. Inspect the ornament as a source record, or compute and stage a matching inquiry laboratory; no silent substitution.</p>
+          <div class="formula-gallery-identity"><span class="formula-collection-id">THE VIXEN MATHEMATICAL WARDROBE · EIGHT FOLIOS</span>
+            <h3>Eight Vixen folios. <em>Eight source-linked explorations.</em></h3>
+            <p>Every folio receives its own exact model, source-conditioned exploration and Foundry stage control. TCC-08 keeps its original title-locus notation and its no-theorem ceiling; this archival status never disqualifies it from the eight-folio experiment. Fourteen RC optical methods stay backstage.</p>
           </div>
           <span class="formula-gallery-asterisk" aria-hidden="true">✳</span>
         </div>
@@ -1072,7 +1072,7 @@ body[data-view="overview"] .reading-back{display:none}
             <span>Explore the full mathematical wardrobe</span>
             <span class="formula-gallery-count" aria-hidden="true">+ 4 folios</span>
           </button>
-          <p class="formula-gallery-fidelity">Seven Vixen inquiry folios and one title ornament are onstage. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
+          <p class="formula-gallery-fidelity">Eight Vixen folios are available for computation and staging. Fourteen technical research-method records remain preserved in the archival dataset without being promoted to Vixen-authored mathematics. Scientific ratification remains held.</p>
         </div>
       </div>
     </div>
@@ -2828,7 +2828,7 @@ body[data-view="overview"] .reading-back{display:none}
   async function computeVixenFolio(folioId,buttonEl){
     const panel=buttonEl.closest('[data-folio-id]')?.querySelector('[data-vixen-computation]');
     if(!panel)return;
-    panel.hidden=false;panel.textContent=folioId==='TCC-08'?'Inspecting the authorial title ornament…':'Computing the Vixen source-bound model…';
+    panel.hidden=false;panel.textContent='Computing the Vixen source-bound model…';
     buttonEl.disabled=true;
     try{
       wardrobeEnginePromise ||= import('./vixen-estate/observatory-math-wardrobe.mjs');
@@ -2837,13 +2837,9 @@ body[data-view="overview"] .reading-back{display:none}
       if(!panel.isConnected)return;
       const result=receipt.synthesis.top_candidate;
       const name=document.createElement('strong');
-      const titleOnly=receipt.synthesis.state==='HELD_BRANDING_ONLY_NO_THEOREM';
-       name.textContent=titleOnly?'AUTHORIAL TITLE ORNAMENT · NO THEOREM · '+receipt.folio_id
-         :'LIVE SOURCE-BOUND COMPUTATION · '+receipt.folio_id;
+      name.textContent='LIVE SOURCE-BOUND COMPUTATION · '+receipt.folio_id;
       const info=document.createElement('p');
-      info.textContent=titleOnly
-        ?'Source title locus only · Optical experiment: NOT PERFORMED · Candidates ranked: 0 · Scientific claim: HELD'
-        :'Exact lab: '+receipt.foundry.lab_id+
+      info.textContent='Exact lab: '+receipt.foundry.lab_id+
          ' · referenced Vixen Works: '+receipt.foundry.source_work_count+
          ' · unified candidates ranked: '+receipt.synthesis.candidate_count+
          ' · leading proposal: '+(result?.title||'HELD')+
@@ -2852,10 +2848,11 @@ body[data-view="overview"] .reading-back{display:none}
       metrics.textContent=receipt.foundry.metrics.map(item=>item.name+' = '+
         (typeof item.value==='object'?JSON.stringify(item.value):String(item.value))).join('\\n');
       const ceiling=document.createElement('p');
-      ceiling.textContent=titleOnly?'Recorded title ornament; no theorem, no scientific proposal and zero empirical credit.':
-         'Executable mathematical demonstration and source-conditioned candidate ranking; empirical credit 0. Human scientific approval remains reserved.';
-      panel.replaceChildren(name,info,...(titleOnly?[]:[metrics]),ceiling);
-      buttonEl.textContent=titleOnly?'Reinspect title ornament ↻':'Recompute Vixen synthesis ↻';
+      ceiling.textContent=receipt.source_title_locus_ornament
+        ?'TCC-08 retains its original title-locus notation; the TOROID model and ranked proposals are bounded explorations, not an arithmetic theorem or empirical proof.'
+        :'Bounded computation and source-conditioned candidate ranking; empirical credit 0. Human scientific approval remains reserved.';
+      panel.replaceChildren(name,info,metrics,ceiling);
+      buttonEl.textContent='Recompute Vixen synthesis ↻';
     }catch(error){panel.textContent='COMPUTATION HELD · '+String(error?.message||error)}
     finally{buttonEl.disabled=false}
   }
@@ -2902,7 +2899,7 @@ body[data-view="overview"] .reading-back{display:none}
     listEl.dataset.expanded = String(expanded);
     const visibleCount = expanded ? filtered.length : Math.min(4,filtered.length);
     if (countEl) countEl.textContent = 'Showing ' + visibleCount + ' of ' + theoryFolios.length +
-      ' Vixen wardrobe folios (7 inquiries + 1 ornament)' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
+      ' Vixen wardrobe folios' + (searching ? ' · Filtered archive view' : expanded ? ' · Complete wardrobe' : ' · Featured edit');
     const reveal = $('formulaGalleryReveal');
     if (reveal) {
       reveal.hidden = searching || filtered.length <= 4;
@@ -2921,9 +2918,8 @@ body[data-view="overview"] .reading-back{display:none}
       const links = (f.links || []).map((id) =>
         '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-open-ref="' + esc(id) + '">' + esc(id) + ' ↗</button>'
       ).join(' ');
-      const computeBtn = '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-compute-vixen-folio="' + esc(f.id) + '">' + (f.id==='TCC-08'?'Inspect authorial title ornament ↗':'Compute with unified synthesis ↗') + '</button>';
-      const foundryBtn = f.id==='TCC-08' ? '' :
-        '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage exact Foundry model ↑</button>';
+      const computeBtn = '<button type="button" class="secondary-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-compute-vixen-folio="' + esc(f.id) + '">Compute with unified synthesis ↗</button>';
+      const foundryBtn = '<button type="button" class="secondary-btn formula-foundry-stage-btn" style="min-height:36px;padding:4px 9px;font-size:8.5px" data-foundry-folio="' + esc(f.id) + '">Stage exact Foundry model ↑</button>';
       return '<article class="formula-card" data-folio-id="' + esc(f.id) + '" data-folio-family="' + esc(f.group) + '">' +
         '<div class="badge-row" style="justify-content:space-between">' +
           '<span style="font:600 9.5px var(--font-mono)">' + esc(f.id) + '</span>' +
@@ -4328,8 +4324,8 @@ body[data-view="overview"] .reading-back{display:none}
   }
 
   function stageFolioInFoundry(folioId) {
-    if(!/^TCC-0[1-7]$/.test(String(folioId))){
-      showToast('Only the seven inquiry folios may stage a Foundry model; ornaments and technical archives remain records.');
+    if(!/^TCC-0[1-8]$/.test(String(folioId))){
+      showToast('Only the eight Vixen folios may stage Foundry models; technical archive methods remain backstage.');
       return false;
     }
     const exactId='LAB_'+folioId;
