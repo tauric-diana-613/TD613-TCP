@@ -99,6 +99,7 @@ const audit=await runDollhouseSkillAudit({
    // Abstract source-evidence rank assay. Column 2 intentionally has no
    // independent equivalence observations. It is NOT a measured physical probe.
    current_operator:[[matrix.length,0],[wired.length,0]],
+   matrix:[[matrix.length,0],[wired.length,0]],
    noise_covariance:[[1,0],[0,1]]
   }
  }
@@ -113,9 +114,18 @@ const aperture=m.specialist_findings.find(f=>f.role==='APERTURE');
 const atlas=m.specialist_findings.find(f=>f.role==='ATLAS');
 const fadt=m.specialist_findings.find(f=>f.role==='FADT');
 assert.ok(atlas&&fadt&&aperture);
+assert.equal(aperture.verdict,'HELD','Aperture must redpen unobserved independent parity axis');
+assert.ok(aperture.infractions.includes('NUMERICAL_STABILITY_DEFICIT'));
+assert.ok(m.orchestrator.decision.startsWith('HELD'),'Orchestrator must preserve Aperture veto');
 const redpen={
  role:'APERTURE',basis:'EXACT_HEAD_STATIC_INVENTORY_PLUS_ABSTRACT_SENSITIVITY_ASSAY',
  machine_verdict:aperture.verdict,
+ source_reviewed_roles:[
+  {role:'ATLAS',verdict:atlas.verdict,infractions:atlas.infractions},
+  {role:'FADT',verdict:fadt.verdict,infractions:fadt.infractions}
+ ],
+ measured_source_equivalence_replays:0,
+ numerical_assay_class:'ABSTRACT_EVIDENCE_COVERAGE_RANK_NOT_PHYSICAL_OBSERVATION',
  disposition:'HELD_NATIVE_METHOD_EQUIVALENCE_NOT_YET_WITNESSED',
  missing_observations:[
   'No complete original-Python-versus-Vixen-JavaScript paired test across all methods',
