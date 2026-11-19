@@ -32,6 +32,8 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
  assert.match(foundry,/Six source-linked Vixen inquiry models/);
  assert.doesNotMatch(foundry,/Six individually choreographed instruments from Em’s original mathematical folios/);
  assert.match(foundry,/!canStageVixenFolio\(byId\.get\(id\)\)/);
+ assert.match(foundry,/SOURCE_MODEL_PREVIEW/);
+ assert.doesNotMatch(foundry,/EXPERIMENTAL_VIEW/);
  assert.doesNotMatch(foundry,/\['COUTURE','RC · 14'\]/);
  assert.doesNotMatch(foundry,/Stage 39-Skin Loom/);
  assert.doesNotMatch(foundry,/ORIGINAL VIXEN CORPUS/);

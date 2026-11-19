@@ -159,7 +159,7 @@ export async function mountVixenElectricFoundry({
  }
  function indicate(reason){
   state.probe=probe();
-  state.phase=reason==='PIN'?'PINNED_PROBE':'EXPERIMENTAL_VIEW';
+  state.phase=reason==='PIN'?'PINNED_PROBE':'SOURCE_MODEL_PREVIEW';
   if(typeof updateFoundryHud==='function')updateFoundryHud();
   const r=state.readout;if(!r)return;
   const detailsWasOpen=Boolean(r.querySelector('details.ef-raw[open]'));
