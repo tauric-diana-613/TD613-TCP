@@ -71,3 +71,16 @@ test('Global search preserves title/filename only, not unrelated dynamic explana
  assert.match(source,/<div data-vixen-source-provenance="true" style="font:400/);
  assert.match(source,/<div class="expa-search-why">/);
 });
+
+
+test('Public optical captions explain instruments without naming their private host engines',()=>{
+ const foundry=readFileSync(resolve(here,'../app/encyclopedia/vixen-estate/observatory-electric-foundry.mjs'),'utf8');
+ const salon=readFileSync(resolve(here,'../app/encyclopedia/vixen-estate/synthesis-salon.mjs'),'utf8');
+ assert.doesNotMatch(foundry,/LOOM-CLASSIFIED OPTICAL CHOREOGRAPHY|Loom-classified optical carriers/);
+ assert.doesNotMatch(foundry,/Dome-Art, Loom, Aperture and Couture are borrowed instrument engines/);
+ assert.doesNotMatch(salon,/APERTURE RADIOMETRY/);
+ assert.match(foundry,/DEPTH-CLASSIFIED OPTICAL CHOREOGRAPHY/);
+ assert.match(salon,/SPECTRAL RADIOMETRY/);
+ // Legitimate optical and research source terminology is not globally rewritten.
+ assert.match(foundry,/OPERAHOUSE ≠ OPERA ≠ PERFORMER/);
+});
