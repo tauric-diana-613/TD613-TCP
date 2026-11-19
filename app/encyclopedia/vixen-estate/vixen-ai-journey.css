@@ -49,7 +49,7 @@
 }
 #vixenAiJourney .vma-role:hover{border-color:#f4c39a!important;transform:translateY(-1px)}
 #vixenAiJourney .vma-role[aria-pressed="true"]{
- border:2px solid var(--vma-pink)!important;background:#34242bd9!important;
+ border:2px solid var(--vma-pink)!important;background:#343638d9!important;
  box-shadow:inset 0 0 0 1px #f9c8a92b!important
 }
 #vixenAiJourney .vma-role strong{
@@ -80,7 +80,7 @@
  background:#ffdcb0!important;color:#192024!important;border-color:#ffe3bc!important
 }
 #vixenAiJourney :is(.vma-btn,.vma-small):hover{
- color:#fff6e2!important;border-color:#f6b1b6!important;background:#4c3239!important
+ color:#fff6e2!important;border-color:#f6b1b6!important;background:#474449!important
 }
 #vixenAiJourney :is(.vma-btn,.vma-small):disabled{opacity:.45;cursor:not-allowed!important}
 #vixenAiJourney .vma-muted,#vixenAiJourney .vma-limit{
@@ -165,7 +165,7 @@
  border-radius:30px!important;box-shadow:0 9px 35px #0009!important;
  padding:11px 17px!important;cursor:pointer;font:750 11px/1.25 ui-sans-serif,sans-serif!important
 }
-#vmaJourneyDock:hover{background:#4c2838!important;color:#fff2dd!important}
+#vmaJourneyDock:hover{background:#474246!important;color:#fff2dd!important}
 #vixenAiJourney [hidden],#vmaJourneyDock[hidden]{display:none!important}
 @media(max-width:940px){
  #vixenAiJourney .vma-board{grid-template-columns:minmax(0,1fr)}
