@@ -1,6 +1,6 @@
 /**
- * Source-bound computation for seven inquiry coordinates, with a non-computational
- * inspection path for the eighth (authorial title ornament).
+ * Source-bound computation for all eight Vixen folios, including a bounded
+ * title-locus optical probe for TCC-08. Its source notation is not a theorem.
  * Historical RC optics/engineering records are retained but never performed as
  * Vixen authorship. All output is bounded, synthetic and human-unratified.
  */
@@ -23,28 +23,26 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
  const folio=roster.theories.find(f=>f.id===id);
  if(!folio)throw new TypeError('TECHNICAL_METHOD_NOT_VIXEN_PERFORMER');
  const kind=classifyVixenFolio(folio).kind;
- // Inspect the original ornament without constructing an optical experiment
- // or running an unrelated diagnostics engine merely because its ID has TCC form.
+ // Original title-locus status limits theorem claims, not the eighth experimental route.
  const controls={gain:opts.gain??.72,witness:opts.witness??.88,voltage:opts.voltage??.83,twist:opts.twist??.45,sampleIndex:opts.sampleIndex??40};
- const result=kind==='TITLE_ORNAMENT'?null:assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
+ const result=assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
  if(result&&result.corpus_coordinates.source_folio!==id)throw new Error('FOLIO_TO_COMPUTATION_ID_MISMATCH');
  const sourceQuestion=[folio.id,folio.title,folio.summary.slice(0,320),
   (folio.links||[]).join(' '),String(opts.operatorQuestion||'').slice(0,240)].join(' · ');
- const ranking=kind==='TITLE_ORNAMENT'?null:scoreUnifiedSynthesisCandidates(corpus,
+ const ranking=scoreUnifiedSynthesisCandidates(corpus,
   {lagTicks:opts.lagTicks??36,candidateLimit:4,operatorQuestion:sourceQuestion});
- const math=kind==='TITLE_ORNAMENT'?null:
-  computeSalonObservatoryDiagnostics({clock_probe:{lag_ticks:opts.lagTicks??36,active_clock_id:'k'}});
+ const math=computeSalonObservatoryDiagnostics({clock_probe:{lag_ticks:opts.lagTicks??36,active_clock_id:'k'}});
  return Object.freeze({
   schema:'emstd613.vixen.theory-wardrobe-computation/v1',folio_id:id,folio_title:folio.title,
-  folio_kind:kind,
+  folio_kind:kind,source_title_locus_ornament:folio.status==='BRANDING_ORNAMENT_ONLY',
   foundry:Object.freeze({lab_id:result?.corpus_coordinates.lab_id??null,
     model:result?.optical_engine.program??null,
     source_work_count:result?.corpus_coordinates.source_works.length??0,
     source_work_ids:result?.corpus_coordinates.source_works??Object.freeze([]),
     metrics:result?.metrics??Object.freeze([])}),
   synthesis:Object.freeze({engine:'NATIVE_UNIFIED_CANDIDATE_RANKING',candidate_count:ranking?.candidate_count??0,
-    conditioning_folio:id,question:kind==='TITLE_ORNAMENT'?null:sourceQuestion,
-    state:kind==='TITLE_ORNAMENT'?'HELD_BRANDING_ONLY_NO_THEOREM':'UNRATIFIED_SOURCE_CONDITIONED_CANDIDATE_RANKING',
+    conditioning_folio:id,question:sourceQuestion,
+    state:'UNRATIFIED_SOURCE_CONDITIONED_CANDIDATE_RANKING',
     top_candidate:ranking?.top_candidate?Object.freeze({id:ranking.top_candidate.id,title:ranking.top_candidate.title,score:ranking.top_candidate.score}):null}),
   diagnostics:Object.freeze({svd_class:math?.svd_conditioning.classification??null,
     arrival_inversions:math?.vernier_summary.arrival_inversions??null}),

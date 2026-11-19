@@ -78,6 +78,7 @@ export function buildVixenLaboratories(corpus){
     record_container_estate:'EMSTD613_ARCHIVAL_BUNDLE',
     stage_role:subject.stage_role,stage_subject_kind:subject.kind,
     primary_work:false,performer:false,scientific_claim_authority:false,
+   source_ornament:subject.source_ornament===true,
    research_family:f.group==='couture'?'REFRACTIVE_COUTURE_FORMALISM':'TYPED_CONSTITUTIVE_CYBERNETICS',
    name:f.title,summary:f.summary,formula:f.fallback,status:f.status,
    ceiling:f.ceiling,optic_program:optic,work_refs:freeze(workRefs),
@@ -165,8 +166,14 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
   add('L2_COMPOSABLE','HELD_UNLESS_TYPED','retain domain residue');
   add('L3_FALSIFIABLE','UNEXECUTED','external matched witness');
  }else if(f==='TCC-08'){
-  add('signature','Sₑ ≡ [x+y] = z+1','AUTHORIAL_BRANDING_ONLY');
-  add('arithmetic_or_empirical_operator',null,'NO_THEOREM');
+  // Eighth folio: real bounded TOROID probe, without reifying title notation.
+  add('source_signature','Sₑ ≡ [x+y] = z+1','ORIGINAL_TITLE_LOCUS_NOTATION');
+  add('title_locus_toroid_projection',r6(visual.diagnostic.field_value),'BOUNDED_SYNTHETIC_OPTICAL_FIELD');
+  add('probe_gain',r6(gain),'NORMALIZED_EXPERIMENT_CONTROL');
+  add('probe_twist',r6(twist),'NORMALIZED_EXPERIMENT_CONTROL');
+  add('independent_emergence_witness',null,'NOT_OBSERVED');
+  add('notation_claims_arithmetic_identity',false,'SOURCE_REFUSAL');
+  add('theorem_or_empirical_operator',false,'HUMAN_UNRATIFIED');
  }else if(f==='RC-01'){
   add('circuit',freeze(['M0','VISUAL_INSTRUCTION','RENDERED_VT','AUDIT_QUESTION_QT1']),'formal design grammar');
   add('empirically_better_question',null,'POSTFLIGHT_TEST_UNEXECUTED');
@@ -253,7 +260,7 @@ export function completeVixenSourceCensus(corpus){
   source_formula_labs:labs.filter(x=>x.kind==='CANONICAL_FORMULA_SIMULATION').length,
   source_track_labs:labs.filter(x=>x.kind==='PROSPECTIVE_GIVEBACK_SIMULATION').length,
    opera_programme_folios:labs.filter(x=>x.stage_subject_kind==='RESEARCH_PROGRAMME').length,
-   opera_title_ornaments:labs.filter(x=>x.stage_subject_kind==='TITLE_ORNAMENT').length,
+   opera_title_ornaments:labs.filter(x=>x.source_ornament===true).length,
    backstage_technical_folios:labs.filter(x=>x.stage_role==='OPERAHOUSE').length,
   source_work_count:corpus.works.length,
   source_original_record_count:corpus.works.reduce((n,w)=>n+w.linked_sources.length,0),

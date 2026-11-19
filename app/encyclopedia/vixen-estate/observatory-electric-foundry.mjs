@@ -86,7 +86,7 @@ function ellipsis(s,max=900){
 function sourceBadge(lab){
  return node('div','ef-sourcebadge',
   lab.id+' · '+(lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?'TRACK-BOUND OPTICS':lab.folio_id)+' · '+lab.status+' · '+
-   (lab.stage_subject_kind==='TITLE_ORNAMENT'?'OPERA ORNAMENT · NO MATHEMATICAL THEOREM':
+   (lab.source_ornament===true?'VIXEN TITLE-LOCUS PROBE · NO THEOREM':
     lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?'VIXEN PROSPECTIVE TRACK · NOT EXECUTED':
     lab.stage_role==='OPERA'?'VIXEN INQUIRY MODEL · NOT A PRIMARY WORK':
     'OPERAHOUSE TECHNICAL ARCHIVE · NOT A PERFORMER'))
@@ -538,8 +538,8 @@ export async function mountVixenElectricFoundry({
   if(current.stage_subject_kind==='PROSPECTIVE_GIVEBACK'){
     add(equation,label('PROSPECTIVE STUDY · NO CLAIMED ORIGINAL EQUATION'),
      node('p','','This unexecuted research track uses separately attributed optical instrumentation; the backstage model never becomes an authored Vixen theorem.'));
-   }else if(current.stage_subject_kind==='TITLE_ORNAMENT'){
-    add(equation,label('SOURCE-CATALOGUED TITLE EMBLEM · NOT A THEOREM'),node('p','',ellipsis(current.formula,440)));
+   }else if(current.source_ornament===true){
+    add(equation,label('EIGHTH SOURCE FOLIO · SYMBOLIC OPTICAL PROBE · NOT A THEOREM'),node('p','',ellipsis(current.formula,440)));
    }else{
     add(equation,label('SOURCE-BOUND RESEARCH-PROGRAMME FORMULA · BOUNDED RECONSTRUCTION'),
      node('p','',ellipsis(current.formula,440)));
@@ -580,10 +580,10 @@ export async function mountVixenElectricFoundry({
  }
  function renderCatalogue(){
   gallery.replaceChildren();
-  add(gallery,label('THE STAGE · 7 RESEARCH INQUIRIES + 6 PROSPECTIVE TRACKS · TITLE ORNAMENT IN WARDROBE'),
-   claim('Six featured inquiries plus one additional research model can be staged here; the title ornament remains a source-reading item without an executable model. Fourteen technical optical records stay in the archived machine register; no synthetic folio becomes an original Work.'));
+  add(gallery,label('THE STAGE · 8 VIXEN FOLIOS + 6 PROSPECTIVE TRACKS'),
+   claim('Six featured inquiries and two additional folios can be staged here. TCC-08 has a bounded TOROID probe while its authorial title notation remains non-theorem; fourteen technical methods stay backstage and no model becomes an original Work.'));
   const picker=node('div','ef-gallery-tabs');
-  for(const [id,text] of [['UNIFIED','INQUIRIES · 7'],['GIVEBACK','GIVEBACK · 6']]){
+  for(const [id,text] of [['UNIFIED','FOLIOS · 8'],['GIVEBACK','GIVEBACK · 6']]){
    const b=BTN(text,()=>{state.selectedCatalogueGroup=id;renderCatalogue()},'ef-gallery-tab');
    b.setAttribute('aria-pressed',String(state.selectedCatalogueGroup===id));
    picker.append(b)
@@ -605,7 +605,7 @@ export async function mountVixenElectricFoundry({
   const c=completeVixenSourceCensus(source);
   const grid=node('div','ef-census');
   for(const [name,value] of [['ORIGINAL WORKS',c.source_work_count],
-    ['VIXEN INQUIRIES',c.opera_programme_folios],['TITLE ORNAMENT',c.opera_title_ornaments],
+    ['VIXEN FOLIOS',c.opera_programme_folios],
      ['BACKSTAGE METHODS',c.backstage_technical_folios],['GIVEBACK ROUTES',c.source_track_labs],
     ['LIVE CARRIERS',c.optical_strata]]){
    const e=node('div','ef-census-cell');
