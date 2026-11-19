@@ -566,8 +566,10 @@ try {
     }
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),8,
-      'Expanded wardrobe preserves all eight experimental folios without promoting technical records');
+      'Expanded wardrobe preserves eight archival folio records without choosing experimental N');
     assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
+    assert.match(await page.locator('.formula-gallery-intro').innerText(),/Experiments require a Score/);
+    assert.match(await page.locator('#formulaCountLabel').innerText(),/experimental N: UNDETERMINED/);
     const ornamentCard=wardrobe.locator('.formula-card[data-folio-id="TCC-08"]');
     assert.equal(await ornamentCard.locator('[data-foundry-folio]').count(),1,
       'The eighth folio must have the same direct Foundry stage button');

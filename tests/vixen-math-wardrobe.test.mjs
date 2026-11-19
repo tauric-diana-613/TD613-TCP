@@ -11,7 +11,7 @@ test('wardrobe presents all eight Vixen folios with unchanged backstage RC recor
  const x=selectVixenTheoryFolios(corpus);
  assert.deepEqual(x.theories.map(f=>f.id),VIXEN_THEORY_IDS);
  assert.equal(x.retained_technical_count,14);
- assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · EIGHT FOLIOS/);
+ assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · SOURCE REGISTER/);
  assert.doesNotMatch(html,/Refractive Couture RC-01\.\.14 \(14\)/);
 });
 test('exact Vixen formula invokes Foundry and unified candidate ranking with zero scientific promotion',()=>{
@@ -23,6 +23,9 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
   assert.match(x.synthesis.question,/Five Non-Equivalent Derivative Clocks/);
  assert.equal(x.synthesis.engine,'NATIVE_UNIFIED_CANDIDATE_RANKING');
  assert.equal(x.authority.empirical_credit,0);
+ assert.equal(x.authority.experimental_subject_count,null);
+ assert.equal(x.authority.experiment_design_state,'UNDETERMINED_BY_ARCHIVAL_CENSUS');
+ assert.equal(x.authority.research_proposal_review,'PODIUM_SCORE_AND_HUMAN_COMPOSER_REQUIRED');
  assert.equal(x.authority.technical_methods_elevated,0);
 });
 test('archive engineering cannot cross into Vixen theory performer',()=>{
@@ -30,11 +33,12 @@ test('archive engineering cannot cross into Vixen theory performer',()=>{
  assert.match(html,/foundry\?\.selectLab\?\.\(exactId\)/);
  assert.match(html,/const foundryBtn = '<button/);
  assert.match(html,/\^TCC-0\[1-8\]\$\/\.test\(String\(folioId\)\)/);
- assert.match(html,/Only the eight Vixen folios may stage Foundry models/);
+ assert.match(html,/Only source-recorded TCC models can be inspected here/);
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
  assert.equal(ornament.foundry.lab_id,'LAB_TCC-08','Eighth stages its own optical model');
   assert.equal(ornament.foundry.model,'TOROID');
   assert.ok(ornament.synthesis.candidate_count>=1);
+  assert.equal(ornament.authority.experimental_subject_count,null);
   assert.equal(ornament.authority.empirical_credit,0);
  assert.doesNotMatch(html,/startsWith\('TCC'\) \? 'LAB_TCC-05'/);
 });

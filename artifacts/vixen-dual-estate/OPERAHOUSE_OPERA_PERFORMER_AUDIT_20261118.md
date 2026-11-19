@@ -3,14 +3,14 @@
 
 ## Finite subject census · corrected after operator objection (Finding 27)
 
-**Authoritative current interpretation: eight TCC folios, each with computation and Foundry staging; fourteen separate RC technical records.** Historical findings 4, 14, 15, 17 and 18 below document earlier mistaken restrictions, which are **superseded** by Finding 27. They may not be reused as current test obligations or user-facing copy.
+**Authoritative present distinction: eight recorded historical TCC catalogue entries and fourteen technical RC archive entries. Neither count establishes experimental N, eligibility, methodology or conclusion.** Historical findings 4, 14, 15, 17 and 18 below document earlier mistaken restrictions, which are **superseded** by Finding 27. They may not be reused as current test obligations or user-facing copy.
 
 | Source or apparatus | Count | Type | Authorized consequence |
 | --- | ---: | --- | --- |
 | Original Works | 32 | PERFORMER source loci | Read original source evidence with unresolved authorship |
 | Linked manifestations | 53 | Original source coordinates | Source-preserving inspection |
 | Documentary instruments | 21 | Historical Vixen method records | Registry; standalone execution count remains zero |
-| TCC-01…08 | 8 | OPERA source-linked folio explorations | Bounded computation and ranking for all eight; TCC-08 retains a non-theorem source notation, never an experimental exclusion |
+| TCC-01…08 | 8 archived entries | OPERA source records; NOT an experimental cohort | Bounded source diagnostics only; experiment design undetermined, Podium Score and human Composer required |
 | RC-01…14 | 14 | OPERAHOUSE technical/optical archived instruments | Offstage calculation only, no original Work or Performer claim |
 | Giveback tracks | 6 | OPERA prospective proposals | Demonstrations with empirical credit zero |
 | Human-ratified cross-Opera warrants | 0 | HELD | No automatic crosswalk, authorship merger or source promotion |
@@ -97,3 +97,7 @@ The earlier audit conflated two numerically similar but methodologically indepen
 The TCC wardrobe was already **eight source folios** at the pre-audit baseline `a5753d88127b35b48eb1caf2debf924e2ad29379`, where `computeVixenTheoryReceipt` computed all eight and the UI exposed exact-ID staging for `TCC-01` through `TCC-08`. The temporary 7+1 public classification and corresponding computational refusal were unauthorized methodological interference. The later invented TCC-08 diagnostic sequence was also unauthorized. That sequence has now been withdrawn in favor of the original TCC-08 metrics (`signature`, `arithmetic_or_empirical_operator`), and its staging eligibility relies on the same TCC ID/role contract as other folios, not a branding-status condition.
 
 This correction preserves the immutable original TCC-08 source status and title without adding a theorem, new witness, optical operator or unrelated mini-experiment. Any further proposed scientific restructuring must be separately sourced and authorized, rather than laundered through an infrastructure attribution audit.
+
+## Finding 29 · reject source-inventory-to-experiment inference
+
+The eight TCC archival IDs are historical inventory coordinates only. They are not proof of eight experimental subjects, approved studies, trial arms, ranked research choices, or empirical outcomes. The visual catalogue supports source-bound model demonstrations without admitting any experimental design. Machine diagnostic receipts return `experimental_subject_count: null`, `experiment_design_state: UNDETERMINED_BY_ARCHIVAL_CENSUS`, and `PODIUM_SCORE_AND_HUMAN_COMPOSER_REQUIRED`; the Foundry census records `experiment_count_from_folio_inventory: false`. Independent open-form proposals must be evidence-located and adjudicated through native Podium Score and human Composer, which preserve source custody and require explicit authorization. The 7+blind-eighth Batch-B hydration experiment remains distinct and HELD. This correction does not modify the embedded historical 22-formula JSON, authored Works, source hashes, original TCC-08 metrics, or experimental source records.

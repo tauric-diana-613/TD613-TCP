@@ -10,11 +10,13 @@ const html=readFileSync(new URL('../app/encyclopedia/vix-cyb.html',import.meta.u
 const source=html.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
 assert.ok(source,'original archive preserved');
 const corpus=JSON.parse(source[1]);
-test('All eight TCC folios have an Opera exploration route; one source marker remains non-theorem',()=>{
+test('Historical TCC archive has its recorded census, without determining experimental N',()=>{
  const roles=auditVixenFolioCensus(corpus),census=completeVixenSourceCensus(corpus);
  assert.deepEqual([roles.programme,roles.ornaments,roles.technical,roles.performers_in_folio_registry],[8,1,14,0]);
  assert.deepEqual([census.opera_programme_folios,census.opera_title_ornaments,census.backstage_technical_folios],[8,1,14]);
  const labs=buildVixenLaboratories(corpus);assert.equal(labs.length,28);
+ assert.equal(census.experimental_subject_count,null,'Archival record count must not set experimental N');
+ assert.equal(census.experiment_count_from_folio_inventory,false);
  for(const lab of labs.filter(l=>l.folio_id.startsWith('RC-')&&l.kind==='CANONICAL_FORMULA_SIMULATION')){
   assert.equal(lab.stage_role,'OPERAHOUSE');assert.equal(lab.performer,false);
   assert.equal(canStageVixenFolio(lab),false);
@@ -58,7 +60,7 @@ test('Tampered or duplicated role coordinates are refused',()=>{
  const duplicate=structuredClone(corpus);duplicate.formula_folios[1].id=duplicate.formula_folios[0].id;
  assert.throws(()=>auditVixenFolioCensus(duplicate),/VIXEN_DUPLICATE_STAGE_SUBJECT/);
 });
-test('Eight source-conditioned explorations; eighth uses TOROID without conferring theorem authority',()=>{
+test('Historical TCC-08 diagnostics remain original source semantics without experimental admission',()=>{
  const x=computeVixenTheoryReceipt(corpus,'TCC-01');
  const y=computeVixenTheoryReceipt(corpus,'TCC-05');
  assert.notEqual(x.synthesis.question,y.synthesis.question);
