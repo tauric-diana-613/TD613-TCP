@@ -54,3 +54,44 @@ test('source-conditioned candidate receipt retains evidence and native-execution
  assert.throws(()=>scoreOriginalWorkMath(corpus,{...x.entries[0],declared_source_sha256:'0'.repeat(64)}),
   /UNVERIFIED_OR_FOREIGN_MATHEMATICAL_MANUSCRIPT/);
 });
+
+test('mathematics classifier rejects prose, code assignments, malformed display citations and TeX-wrapped words',()=>{
+ for(const quotation of [
+  '> 1. **Dependency Verification**: Checks for the presence of the binary',
+  '> * **Model Selection**: A user-interface configuration',
+  '| **Tier 3** | Optimized Model Call | < 5 s |',
+  'HERMES_API_TIMEOUT=1800',
+  'networkingMode=mirrored',
+  '--vm-type=vz',
+  '$cybernetics$',
+  '\\[PDF\\]',
+  '$$cs.LG$$',
+  '\\[span\\_23\\]'
+ ]){
+  assert.deepEqual(extractOriginalMathPassages(quotation),[],
+   'Nonmathematical exact source must remain unclassified: '+quotation);
+ }
+ for(const quotation of [
+  '$$a + b = c$$','$$a+b=c$$','$$x^2 + y^2 = z^2$$',
+  'T_i = \\frac{a+b}{c}',
+  '\\[\\frac{x}{y}\\]'
+ ]){
+  assert.ok(extractOriginalMathPassages(quotation).length>0,'Recorded equation was lost: '+quotation);
+ }
+});
+test('real immutable Work derivatives exclude the two screenshot false-positive folios but retain genuine equations',()=>{
+ const shard=JSON.parse(readFileSync(new URL('../app/encyclopedia/vixen-estate/corpus-experiment-a-part1.json',import.meta.url),'utf8'));
+ const docs=shard.sources;
+ const guide=docs.emsrc_f9d7bff007dd9547d42db2c1;
+ const cybernetics=docs.emsrc_b7e4e42924d33bdaf666a4f8;
+ const mathematics=docs.emsrc_31ed6fb3bdc15d3c29b8ae13;
+ assert.ok(guide?.text_body&&cybernetics?.text_body&&mathematics?.text_body);
+ assert.equal(extractOriginalMathPassages(guide.text_body,{max:30}).length,0,
+  'A software-installation checklist must not become mathematics');
+ assert.equal(extractOriginalMathPassages(cybernetics.text_body,{max:30}).length,0,
+  'An unstructured prose mention of cybernetics must not become mathematics');
+ const equations=extractOriginalMathPassages(mathematics.text_body,{max:30});
+ assert.ok(equations.length>0,'A genuine source equation must remain independently extractable');
+ assert.ok(equations.some(x=>/I\(t\)/.test(x.literal)),'Documented equation was lost');
+ assert.ok(equations.every(x=>x.observed_in==='ORIGINAL_SOURCE_DERIVATIVE'&&x.independent_proof===false));
+});
