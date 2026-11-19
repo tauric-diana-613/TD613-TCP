@@ -1,5 +1,6 @@
 /**
- * Direct computational bridge for Vixen's eight original theory coordinates.
+ * Source-bound computation for seven inquiry coordinates, with a non-computational
+ * inspection path for the eighth (authorial title ornament).
  * Historical RC optics/engineering records are retained but never performed as
  * Vixen authorship. All output is bounded, synthetic and human-unratified.
  */
@@ -21,25 +22,32 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
  const roster=selectVixenTheoryFolios(corpus);
  const folio=roster.theories.find(f=>f.id===id);
  if(!folio)throw new TypeError('TECHNICAL_METHOD_NOT_VIXEN_PERFORMER');
- const controls={gain:opts.gain??.72,witness:opts.witness??.88,voltage:opts.voltage??.83,twist:opts.twist??.45,sampleIndex:opts.sampleIndex??40};
- const result=assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
- if(result.corpus_coordinates.source_folio!==id)throw new Error('FOLIO_TO_COMPUTATION_ID_MISMATCH');
  const kind=classifyVixenFolio(folio).kind;
+ // Inspect the original ornament without constructing an optical experiment
+ // or running an unrelated diagnostics engine merely because its ID has TCC form.
+ const controls={gain:opts.gain??.72,witness:opts.witness??.88,voltage:opts.voltage??.83,twist:opts.twist??.45,sampleIndex:opts.sampleIndex??40};
+ const result=kind==='TITLE_ORNAMENT'?null:assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
+ if(result&&result.corpus_coordinates.source_folio!==id)throw new Error('FOLIO_TO_COMPUTATION_ID_MISMATCH');
  const sourceQuestion=[folio.id,folio.title,folio.summary.slice(0,320),
   (folio.links||[]).join(' '),String(opts.operatorQuestion||'').slice(0,240)].join(' · ');
  const ranking=kind==='TITLE_ORNAMENT'?null:scoreUnifiedSynthesisCandidates(corpus,
   {lagTicks:opts.lagTicks??36,candidateLimit:4,operatorQuestion:sourceQuestion});
- const math=computeSalonObservatoryDiagnostics({clock_probe:{lag_ticks:opts.lagTicks??36,active_clock_id:'k'}});
+ const math=kind==='TITLE_ORNAMENT'?null:
+  computeSalonObservatoryDiagnostics({clock_probe:{lag_ticks:opts.lagTicks??36,active_clock_id:'k'}});
  return Object.freeze({
   schema:'emstd613.vixen.theory-wardrobe-computation/v1',folio_id:id,folio_title:folio.title,
-  foundry:Object.freeze({lab_id:result.corpus_coordinates.lab_id,model:result.optical_engine.program,
-    source_work_count:result.corpus_coordinates.source_works.length,
-    source_work_ids:result.corpus_coordinates.source_works,metrics:result.metrics}),
+  folio_kind:kind,
+  foundry:Object.freeze({lab_id:result?.corpus_coordinates.lab_id??null,
+    model:result?.optical_engine.program??null,
+    source_work_count:result?.corpus_coordinates.source_works.length??0,
+    source_work_ids:result?.corpus_coordinates.source_works??Object.freeze([]),
+    metrics:result?.metrics??Object.freeze([])}),
   synthesis:Object.freeze({engine:'NATIVE_UNIFIED_CANDIDATE_RANKING',candidate_count:ranking?.candidate_count??0,
     conditioning_folio:id,question:kind==='TITLE_ORNAMENT'?null:sourceQuestion,
     state:kind==='TITLE_ORNAMENT'?'HELD_BRANDING_ONLY_NO_THEOREM':'UNRATIFIED_SOURCE_CONDITIONED_CANDIDATE_RANKING',
     top_candidate:ranking?.top_candidate?Object.freeze({id:ranking.top_candidate.id,title:ranking.top_candidate.title,score:ranking.top_candidate.score}):null}),
-  diagnostics:Object.freeze({svd_class:math.svd_conditioning.classification,arrival_inversions:math.vernier_summary.arrival_inversions}),
+  diagnostics:Object.freeze({svd_class:math?.svd_conditioning.classification??null,
+    arrival_inversions:math?.vernier_summary.arrival_inversions??null}),
   authority:Object.freeze({technical_methods_elevated:0,empirical_credit:0,scientific_closure:'HUMAN_RESERVED'})
  });
 }
