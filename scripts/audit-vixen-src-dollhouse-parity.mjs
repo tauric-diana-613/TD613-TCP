@@ -51,12 +51,10 @@ const srcModules=[
 const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation,consumer])=>{
  const original_present=originalPyName?originalPy.includes(originalPyName):null;
  const js_export_present=jsExport?new RegExp('export (?:function|const) '+jsExport+'\\b').test(content[js]):null;
- const podium_operation_present=podiumOperation?
-  (podiumOperation.startsWith('src_native_')
-   ? content[podium].includes("'"+podiumOperation+"'")
-   : content[podium].includes("operation==='"+podiumOperation+"'")||
-     (podiumOperation==='src_verified_vixen_original_typed_traversal'&&
-      content[podium].includes("'src_verified_vixen_original_typed_traversal'"))):false;
+ const podium_operation_present=podiumOperation?(
+  content[podium].includes("operation==='"+podiumOperation+"'") ||
+  content[podium].includes("'"+podiumOperation+"'")
+ ):false;
  const native_host_present=podiumOperation?.startsWith('src_native_')?
   content[native].includes("'"+podiumOperation+"'"):null;
  const consumer_wired=consumer?
