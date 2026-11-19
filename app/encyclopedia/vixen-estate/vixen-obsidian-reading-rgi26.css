@@ -166,7 +166,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
 /* The scoring atelier: a published rubric that invites falsification instead of an opaque leaderboard. */
 #constitutiveInquiry .ci-scoring-primer{
   grid-column:1/-1;padding:clamp(15px,1.4vw,23px);margin:0 0 5px;
-  background:linear-gradient(118deg,#18272a,#26212b 68%,#121a23)!important;
+  background:linear-gradient(118deg,#18272a,#22272a 68%,#121a23)!important;
   color:#f7ead6!important;border:1px solid #c5a57d84;border-left:4px solid #f3b5bd;
   box-shadow:0 10px 35px #01050955
 }
@@ -198,7 +198,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
 }
 #constitutiveInquiry .ci-candidate-card{
   min-width:0!important;padding:14px 14px 12px!important;border-radius:3px!important;
-  background:linear-gradient(155deg,#172427,#101a1f 55%,#231b24)!important;
+  background:linear-gradient(155deg,#172427,#101a1f 55%,#202528)!important;
   color:#f2e4d1!important;border:1px solid #8a716baf!important;
   display:flex!important;flex-direction:column!important;gap:8px!important;
   box-shadow:0 10px 20px #0006!important;transition:transform .18s ease,border-color .18s ease!important
