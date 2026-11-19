@@ -530,76 +530,63 @@ try {
     },null,{timeout:25000});
     const wardrobe=page.locator('#formulaFolioGrid');
     const archiveCensus=await page.evaluate(()=>{
-      const records=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent).formula_folios;
-      return {total:records.length,technical:records.filter(x=>x.group==='couture').length};
+      const d=JSON.parse(document.querySelector('#vixen-corpus-bundle').textContent);
+      return {formula:d.formula_folios.length,technical:d.formula_folios.filter(x=>x.group==='couture').length,works:d.works.length};
     });
-    assert.deepEqual(archiveCensus,{total:22,technical:14},
-      'Original archive preserves all 22 records including 14 reference methods');
-    assert.equal(await wardrobe.locator('.formula-card').count(),8,
-      'All eight Vixen folios remain in the wardrobe; technical records are not Performers');
-    assert.equal(await wardrobe.getAttribute('data-expanded'),'false');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
-      'Vixen theory wardrobe must open with four curated source-grounded cards');
-    assert.deepEqual(await wardrobe.locator('.formula-card:visible').evaluateAll(nodes=>nodes.map(n=>n.dataset.folioId)),
-      ['TCC-01','TCC-04','TCC-05','TCC-06'],
-      'Featured edit stays strictly within Vixen theory subject identity');
+    assert.deepEqual(archiveCensus,{formula:22,technical:14,works:32},
+      'Original source catalogue and host methods remain untouched');
+    await page.waitForFunction(()=>{
+      const t=document.querySelector('#formulaCountLabel')?.textContent||'';
+      return /Works with verified mathematical passages|SOURCE VERIFICATION HELD/.test(t);
+    },null,{timeout:90000});
+    assert.match(await page.locator('#formulaCountLabel').innerText(),/Works with verified mathematical passages/,
+      'Real source mathematics must load before the wardrobe can claim source fidelity');
+    const total=await wardrobe.locator('.formula-card[data-work-math-id]').count();
+    assert.ok(total>0,'Only verified original Work passages may enter the research wardrobe');
+    assert.equal(await wardrobe.locator('.formula-card[data-folio-id]').count(),0,
+      'TCC and RC host catalogue entries cannot impersonate original Works');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,total));
+    const firstCard=wardrobe.locator('.formula-card[data-work-math-id]').first();
+    const workId=await firstCard.getAttribute('data-work-math-id');
+    assert.match(workId,/^emwork_[0-9a-f]{24}$/);
+    assert.match(await firstCard.innerText(),/SOURCE DERIVATIVE VERIFIED/);
+    assert.match(await firstCard.innerText(),/derivative SHA-256: [0-9a-f]{64}/);
+    assert.equal(await firstCard.locator('[data-original-math-passage]').count(),1);
     const galleryReveal=page.locator('#formulaGalleryReveal');
-    assert.equal(await galleryReveal.isVisible(),true);
     await page.evaluate(()=>{
       const node=document.querySelector('.formula-gallery-intro');
       window.scrollTo({top:Math.max(0,window.scrollY+node.getBoundingClientRect().top-110),behavior:'instant'});
     });
     await page.waitForFunction(()=>!document.querySelector('#vixenToast')?.classList.contains('visible'),null,{timeout:15000,polling:250});
-    // Chromium screen capture can starve during simultaneous WebGL/Canvas
-    // frame production. Preserve the real human Still switch, capture one
-    // stable frame, then restore its prior state. Active animation receives
-    // its own frame-progress witness later in this same test.
     const wasStill=await page.locator('#motionBtn').getAttribute('aria-pressed');
     if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
-    try {
-      await page.screenshot({
-        path:path.join(output,stem+'-math-wardrobe-featured.png'),
-        fullPage:false,animations:'disabled',timeout:60000
-      });
-    } finally {
-      if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());
+    try{await page.screenshot({path:path.join(output,stem+'-math-wardrobe-featured.png'),fullPage:false,animations:'disabled',timeout:60000});}
+    finally{if(wasStill!=='true')await page.evaluate(()=>document.getElementById('motionBtn').click());}
+    if(total>4){
+      assert.equal(await galleryReveal.isVisible(),true);
+      await galleryReveal.click();
+      assert.equal(await wardrobe.locator('.formula-card:visible').count(),total);
+      await galleryReveal.click();
+      assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
     }
-    await galleryReveal.click();
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),8,
-      'Expanded wardrobe preserves original source-record identities and bounded optical previews');
-    assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
-    const programmeDisclosure=await page.locator('.formula-gallery-intro').innerText();
-    assert.match(programmeDisclosure,/Mathematics in motion/);
-    assert.match(programmeDisclosure,/TCC-08 keeps its original authorial title-locus status/);
-    assert.match(await page.locator('#formulaCountLabel').innerText(),/recorded mathematical folios/);
-    const ornamentCard=wardrobe.locator('.formula-card[data-folio-id="TCC-08"]');
-    assert.equal(await ornamentCard.locator('[data-foundry-folio]').count(),1,
-      'The eighth folio must have the same direct Foundry stage button');
-    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-08')),true,
-      'Eighth source folio must select its own TOROID model');
-    await ornamentCard.locator('[data-compute-vixen-folio]').click();
-    await page.waitForFunction(()=>document.querySelector('[data-folio-id="TCC-08"] [data-vixen-computation]')?.textContent.includes('LIVE SOURCE-BOUND COMPUTATION · TCC-08'),null,{timeout:30000});
-    assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/LAB_TCC-08/);
-    assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/arithmetic theorem[\s\S]*empirical proof/);
-    await galleryReveal.click();
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
-      'The curated gallery closes without changing immutable source records');
-    await page.locator('#formulaSearchInput').fill('RC-07');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0,
-      'Search must not promote engineering methods into Vixen theory performers');
-    await page.locator('#formulaSearchInput').fill('TCC-04');
-    assert.equal(await wardrobe.getAttribute('data-expanded'),'true');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),1);
-    await wardrobe.locator('[data-folio-id="TCC-04"] [data-compute-vixen-folio]').click();
+    await firstCard.locator('[data-compute-original-work]').click();
     await page.waitForFunction(()=>{
-      const receipt=document.querySelector('[data-folio-id="TCC-04"] [data-vixen-computation]');
-      return receipt&&!receipt.hidden&&/LIVE SOURCE-BOUND COMPUTATION|COMPUTATION HELD/.test(receipt.textContent);
-    },null,{timeout:30000});
-    assert.match(await wardrobe.locator('[data-folio-id="TCC-04"] [data-vixen-computation]').textContent(),
-      /LIVE SOURCE-BOUND COMPUTATION · TCC-04/,
-      'The on-demand source-bound computational bridge must execute successfully');
+      const el=document.querySelector('.formula-card[data-work-math-id] [data-vixen-computation]');
+      return el&&!el.hidden&&/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS|COMPUTATION HELD/.test(el.textContent);
+    },null,{timeout:40000});
+    assert.match(await firstCard.locator('[data-vixen-computation]').innerText(),/ORIGINAL WORK · SOURCE-CONDITIONED SYNTHESIS/,
+      'The actual original Work passage must be the synthesis computation input');
+    assert.match(await firstCard.locator('[data-vixen-computation]').innerText(),/not source-specific proof/);
+    await page.locator('#formulaSearchInput').fill('RC-07');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0);
+    await page.locator('#formulaSearchInput').fill('TCC-08');
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),0);
+    await page.locator('#formulaSearchInput').fill(workId);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),1);
     await page.locator('#formulaSearchInput').fill('');
-    assert.equal(await wardrobe.locator('.formula-card:visible').count(),4);
+    assert.equal(await wardrobe.locator('.formula-card:visible').count(),Math.min(4,total));
+    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-08')),true,
+      'Host optical simulations remain available separately from original Work mathematics');
     const foundry=page.locator('#vixenElectricFoundry');
     assert.equal(await foundry.locator('.ef-gallery-tab').count(),2,'Technical RC archive cannot be public Foundry tab');
     assert.equal(await foundry.locator('.ef-hero-tab[data-lab-id^="LAB_RC-"]').count(),0,'No RC apparatus headlines Opera');
