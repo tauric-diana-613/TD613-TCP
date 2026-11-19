@@ -8,6 +8,9 @@ import {readFileSync,readdirSync,existsSync,mkdirSync,writeFileSync} from 'node:
 import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+import {stableContentEquals,computeTypedFnv32} from '../app/engine/dollhouse-atlas-relational-custody.js';
+import {computeFadtFiberBounds} from '../app/engine/dollhouse-fadt-reparative-assistance.js';
 import {runDollhouseSkillAudit} from '../app/engine/dollhouse-skill-dispatcher.js';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -83,6 +86,29 @@ const source_revision=execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding
 const originalAvailable=matrix.filter(x=>x.original_python_present===true).map(x=>x.capability);
 const wired=matrix.filter(x=>x.podium_operation_present&&x.js_export_present===true).map(x=>x.capability);
 const roles=['ATLAS','FADT','APERTURE'];
+const sourceFingerprint=path=>({
+ estate:path===js?'VIXEN_CYBERNETICS':'SRC_SOURCE_ARCHIVE',
+ file:path,byte_sha256:createHash('sha256').update(read(path),'utf8').digest('hex')
+});
+const srcIdentity=sourceFingerprint(original+'run-projective-routing-grammar-assay.py');
+const vixenIdentity=sourceFingerprint(js);
+// Atlas's typed custody contract identifies two distinct source manifestations.
+// Neither distinct identity nor an equal endpoint is a native-method equivalence proof.
+assert.equal(stableContentEquals(srcIdentity,vixenIdentity),false);
+const atlasIdentity={
+ original_source:srcIdentity,vixen_computation:vixenIdentity,
+ original_typed_digest:computeTypedFnv32(srcIdentity).profile_qualified_digest,
+ vixen_typed_digest:computeTypedFnv32(vixenIdentity).profile_qualified_digest,
+ distinct_manifestations_preserved:true,
+ native_equivalence_proved:false,real_winding_history_witnessed:false
+};
+const supportStates=[
+ {condition:'ORIGINAL_PYTHON_REFERENCE_PRESENT',support:originalAvailable},
+ {condition:'VIXEN_JAVASCRIPT_AND_PODIUM_WIRED',support:wired}
+];
+const fadtSupport=computeFadtFiberBounds(supportStates);
+assert.ok(fadtSupport.irreducible_gap_cardinality>0,
+ 'A capability difference must survive finite union/intersection analysis');
 const audit=await runDollhouseSkillAudit({
  source_revision,task_scope:'VIXEN_SRC_METHOD_PARITY_AUDIT_ONLY',
  evidence_class:'SOURCE_CODE_AUDIT',
@@ -91,10 +117,7 @@ const audit=await runDollhouseSkillAudit({
  domain_inputs:{
   ATLAS:{trajectoryA:{endpoint:'SRC_VIXEN_TRANSLATION',winding:0},
    trajectoryB:{endpoint:'SRC_VIXEN_TRANSLATION',winding:0}},
-  FADT:{fiberRows:[
-   {condition:'ORIGINAL_PYTHON_REFERENCE_PRESENT',support:originalAvailable},
-   {condition:'VIXEN_JAVASCRIPT_AND_PODIUM_WIRED',support:wired}
-  ],attempts_unconditioned_action:false},
+  FADT:{fiberRows:supportStates,attempts_unconditioned_action:false},
   APERTURE:{
    // Abstract source-evidence rank assay. Column 2 intentionally has no
    // independent equivalence observations. It is NOT a measured physical probe.
@@ -117,6 +140,53 @@ assert.ok(atlas&&fadt&&aperture);
 assert.equal(aperture.verdict,'HELD','Aperture must redpen unobserved independent parity axis');
 assert.ok(aperture.infractions.includes('NUMERICAL_STABILITY_DEFICIT'));
 assert.ok(m.orchestrator.decision.startsWith('HELD'),'Orchestrator must preserve Aperture veto');
+// Separate hostile controls prove the dolls defend THEIR OWN boundaries.
+// These deliberately proposed errors are synthetic, not observed production actions.
+const atlasControl=await runDollhouseSkillAudit({
+ source_revision,task_scope:'VIXEN_SRC_ATLAS_HISTORY_ERASURE_NEGATIVE_CONTROL',
+ evidence_class:'SYNTHETIC_TEST_FIXTURE',roles:['ATLAS'],
+ include_orchestrator:false,domain_inputs:{ATLAS:{
+  trajectoryA:{endpoint:'SAME_DECLARED_TARGET',winding:0},
+  trajectoryB:{endpoint:'SAME_DECLARED_TARGET',winding:1}
+ }}
+});
+const atlasControlFinding=atlasControl.machine_receipt.specialist_findings[0];
+assert.equal(atlasControlFinding.verdict,'HELD',
+ 'Atlas must detect equal endpoints concealing distinct route history');
+const fadtControl=await runDollhouseSkillAudit({
+ source_revision,task_scope:'VIXEN_SRC_FADT_UNCONDITIONED_PROMOTION_NEGATIVE_CONTROL',
+ evidence_class:'SYNTHETIC_TEST_FIXTURE',roles:['FADT'],
+ include_orchestrator:false,domain_inputs:{FADT:{
+  fiberRows:supportStates,attempts_unconditioned_action:true
+ }}
+});
+const fadtControlFinding=fadtControl.machine_receipt.specialist_findings[0];
+assert.equal(fadtControlFinding.verdict,'HELD',
+ 'FADT must reject a hypothetical unconditional grant across divergent supports');
+assert.ok(fadtControlFinding.infractions.includes('ILLEGAL_ACTION_GRANT_UNDER_ERASED_CONDITIONING'),
+ 'FADT's distinct admissibility infraction must survive the audit');
+const crossJurisdiction={
+ source_identity_audit:atlasIdentity,
+ finite_support_audit:{
+  declared_supports_only:true,authenticated_lawful_actions:false,
+  intersection:fadtSupport.intersection_support,
+  union:fadtSupport.union_support,
+  irreducible_gap:fadtSupport.irreducible_gap,
+  gap_cardinality:fadtSupport.irreducible_gap_cardinality,
+  actual_unconditioned_grant_attempted:false
+ },
+ synthetic_negative_controls:{
+  evidentiary_class:'SYNTHETIC_TEST_FIXTURE_NOT_OBSERVED_SOURCE_DEFECT',
+  atlas:{verdict:atlasControlFinding.verdict,
+   infractions:atlasControlFinding.infractions,
+   historical_cross_source_equivalence_witnessed:false},
+  fadt:{verdict:fadtControlFinding.verdict,
+   infractions:fadtControlFinding.infractions,
+   unauthorized_promotion_was_hypothetical:true}
+ },
+ distinction:'ATLAS_SOURCE_IDENTITY_AND_RELATIONAL_HISTORY_VS_FADT_FINITE_STAGE_ERASURE_VS_APERTURE_INDEPENDENT_OBSERVABILITY',
+ no_role_scope_widening:true
+};
 const redpen={
  role:'APERTURE',basis:'EXACT_HEAD_STATIC_INVENTORY_PLUS_ABSTRACT_SENSITIVITY_ASSAY',
  machine_verdict:aperture.verdict,
@@ -141,7 +211,7 @@ const receipt={
  selection:roles,orchestrator_used:true,
  source_observation_class:'STATIC_CODE_AUDIT_PLUS_BOUNDED_DETERMINISTIC_DOMAIN_ASSAY',
  original_python_inventory,
- matrix,dollhouse:{
+ matrix,cross_jurisdiction_handoff:crossJurisdiction,dollhouse:{
   roles_executed:m.roles_executed,
   findings:m.specialist_findings.map(f=>({
    role:f.role,verdict:f.verdict,status:f.status,defect_class:f.defect_class,infractions:f.infractions
@@ -162,6 +232,8 @@ console.log(JSON.stringify({
  mapped_capability_count:matrix.length,unmapped_source_tools:original_python_inventory.filter(x=>!x.mapped_reference).length,
  roles_executed:m.roles_executed,
  verdicts:m.specialist_findings.map(x=>({role:x.role,verdict:x.verdict})),
+ adverse_controls:{atlas:atlasControlFinding.verdict,fadt:fadtControlFinding.verdict},
+ fadt_gap_cardinality:fadtSupport.irreducible_gap_cardinality,
  aperture_redpen:redpen.disposition,full_native_parity:receipt.full_native_parity,
  artifact:out
 },null,2));
