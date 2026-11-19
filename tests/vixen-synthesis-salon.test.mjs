@@ -7,6 +7,7 @@ import {
  scoreUnifiedSynthesisCandidates,hestenesJacobiSvd,computeMatrixSvdUnified,ANTI_BOILERPLATE_SUBTITLE_RE
 } from '../app/encyclopedia/vixen-estate/synthesis-salon-engine.mjs';
 import {createVixenPodium,PODIUM_SCHEMA} from '../app/encyclopedia/reference/vixen-podium.mjs';
+import {evaluateCorpusWithSrcEngines} from '../app/encyclopedia/vixen-estate/src-atelier-engines.mjs';
 import {mountVixenSynthesisSalon} from '../app/encyclopedia/vixen-estate/synthesis-salon.mjs';
 const raw=await readFile(new URL('../app/encyclopedia/vix-cyb.html',import.meta.url),'utf8');
 const match=raw.match(/id="vixen-corpus-bundle"[^>]*>([\s\S]*?)<\/script>/);
@@ -346,4 +347,24 @@ test('archival folio source context cannot mint a human-dictated synthesis candi
  assert.equal(human.query_provenance.human_question_supplied,true);
  assert.equal(human.candidates.some(x=>x.regime==='OPERATOR_DICTATED_SYNTHESIS'),true);
  assert.equal(source.epistemic_ceiling.empirical_replication_credit,0);
+});
+
+test('SRC adapter cannot manufacture source chronology, research cues, observed lifts or witnessed protocol execution',()=>{
+ const x=evaluateCorpusWithSrcEngines(corpus);
+ assert.equal(x.evidence_basis.mode,'CATALOGUE_METADATA_ONLY');
+ assert.equal(x.evidence_basis.manuscript_passages_read,false);
+ assert.equal(x.evidence_basis.injected_source_cues,0);
+ assert.equal(x.evidence_basis.synthetic_timestamps,0);
+ assert.equal(x.phase2_tomography.candidate_count,0,'Never take first four formula records as witnessed lift evidence');
+ assert.equal(x.phase2_tomography.composite_score,null);
+ assert.equal(x.phase2_tomography.claimed_observed_transformations,0);
+ assert.equal(x.context_roles.witnessed_executions,0);
+ assert.equal(x.context_roles.documentary_only,true);
+ assert.equal(x.context_roles.role_count,corpus.instruments.length,'Every actually recorded method is documentary, not arbitrarily the first six');
+ assert.equal(x.evidence_basis.documentary_protocol_count,corpus.instruments.length);
+ assert.equal(x.empirical_replication_credit,0);
+ const copy=structuredClone(corpus);
+ copy.formula_folios.reverse();
+ assert.deepEqual(evaluateCorpusWithSrcEngines(copy).phase2_tomography,x.phase2_tomography,
+  'Changing formula archive order cannot change scientific source-lift evidence');
 });

@@ -1059,44 +1059,36 @@ export function evaluateCorpusWithSrcEngines(
   const works = Array.isArray(corpus?.works) ? corpus.works : [];
   const instruments = Array.isArray(corpus?.instruments) ? corpus.instruments : [];
 
-  const docs = works.map((w, idx) => ({
-    record_id: w.work_id || `work_${idx}`,
-    title: w.display_title || w.declared_title || w.work_id || '',
+  // This adapter sees catalogue metadata, not admitted manuscript body text.
+  // Never plant an Explore cue or manufacture source chronology to inflate routing.
+  const docs = works.filter(w=>typeof w?.work_id==='string').map(w => ({
+    record_id: w.work_id,
+    title: w.display_title || w.declared_title || w.work_id,
     body: [
       w.display_title || w.declared_title || '',
       w.abstract || '',
       w.summary || '',
       w.cluster || '',
-      Array.isArray(w.planes) ? w.planes.join(' ') : '',
-      w.work_id === 'emwork_f2c89864337f162e88991e28' ? 'Explore Emergent Topologies and Quantum Field Mechanics.' : '',
-      w.cluster === 'C5' ? 'structural simulation narrative partial projections.' : ''
-    ].join(' '),
-    created: w.created || (2024 + (idx % 3)) + '-01-01T00:00:00Z'
+      Array.isArray(w.planes) ? w.planes.join(' ') : ''
+    ].filter(Boolean).join(' '),
+    created: w.created || null
   }));
 
   const projective = runSrcProjectiveRouting(docs, docs, { stripTrailingNumerals: true });
   const rawProjective = runSrcProjectiveRouting(docs, docs, { stripTrailingNumerals: false });
 
-  const liftCandidates = (corpus?.formula_folios || []).slice(0, 4).map((f) => ({
-    transformation_id: `lift:${f.id}`,
-    from_id: f.id,
-    to_id: activePlan?.work_ids?.[0] || f.links?.[0] || f.id,
-    claim_effects: {
-      scope: f.group === 'couture' ? 'EXPANDED' : 'PRESERVED',
-      semantic_core: 'PRESERVED',
-      falsifiers: f.ceiling || 'UNEXAMINED',
-      evidence: 'UNKNOWN'
-    },
-    adjudication_status: 'OBSERVED'
-  }));
-  const tomography = runSrcPhase2Tomography(liftCandidates);
+  // A folio ordinal is not an observed source transformation. With no
+  // independent before/after receipt, tomography must report zero candidates.
+  const tomography = runSrcPhase2Tomography([]);
 
-  const compilerInputs = instruments.slice(0, 6).map((inst, idx) => ({
+  // Documentary protocol membership is a catalogue fact, never witnessed
+  // implementation or compilation. No arbitrary first-six instrument subset.
+  const compilerInputs = instruments.filter(inst=>typeof inst?.instrument_id==='string').map(inst => ({
     compiler_id: 'vixen_synthesis_salon',
-    input_id: inst.instrument_id || `inst_${idx}`,
-    scope_time: `${inst.cluster || 'MULTI_CLUSTER'}:EXPERIMENT_A`,
-    role_in_context: inst.role || 'BOUNDARY_INSTRUMENT',
-    adjudication_status: 'WITNESSED'
+    input_id: inst.instrument_id,
+    scope_time: `${inst.cluster || 'UNSPECIFIED_CLUSTER'}:DOCUMENTARY_REGISTRY`,
+    role_in_context: 'RECORDED_PROTOCOL_NOT_EXECUTED',
+    adjudication_status: 'DOCUMENTARY_NOT_EXECUTED'
   }));
   const contextRoles = runSrcPhase2ContextRoles(compilerInputs, []);
 
@@ -1107,6 +1099,17 @@ export function evaluateCorpusWithSrcEngines(
     engine_version: SRC_ENGINE_VERSION,
     snapshot_id: SRC_SNAPSHOT_ID,
     seal_id: SRC_CANONICAL_SEAL_ID,
+    evidence_basis: Object.freeze({
+      mode:'CATALOGUE_METADATA_ONLY',
+      manuscript_passages_read:false,
+      injected_source_cues:0,
+      synthetic_timestamps:0,
+      observed_transformation_receipts:0,
+      verified_compiler_executions:0,
+      candidate_source_record_count:docs.length,
+      documentary_protocol_count:compilerInputs.length,
+      adjudication:'UNEXECUTED_SOURCE_REVIEW'
+    }),
     projective_routing: {
       cue_count: projective.cue_count,
       candidate_link_count: projective.candidate_link_count,
@@ -1117,12 +1120,15 @@ export function evaluateCorpusWithSrcEngines(
     phase2_tomography: {
       candidate_count: tomography.candidate_count,
       composite_score: tomography.composite_score,
-      contract_status: tomography.contract_status
+      contract_status: tomography.contract_status,
+      claimed_observed_transformations: 0
     },
     context_roles: {
       role_count: contextRoles.role_count,
       pass_count: contextRoles.pass_count,
-      intrinsic_role_claim: contextRoles.intrinsic_role_claim
+      intrinsic_role_claim: contextRoles.intrinsic_role_claim,
+      witnessed_executions:0,
+      documentary_only:true
     },
     query_conditioning: {
       regime_id: regimeEval.regimeId,
