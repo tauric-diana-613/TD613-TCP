@@ -73,7 +73,9 @@ export function buildVixenLaboratories(corpus){
   ensure(workRefs.every(id=>works.has(id)),'FOLIO_FOREIGN_WORK_REFUSED');
    const subject=classifyVixenFolio(f);
   entries.push(freeze({
-   id:'LAB_'+f.id,folio_id:f.id,source_estate:'EMSTD613',
+   id:'LAB_'+f.id,folio_id:f.id,
+    source_estate:subject.stage_role==='OPERAHOUSE'?'TD613_OPERAHOUSE':'EMSTD613',
+    record_container_estate:'EMSTD613_ARCHIVAL_BUNDLE',
     stage_role:subject.stage_role,stage_subject_kind:subject.kind,
     primary_work:false,performer:false,scientific_claim_authority:false,
    research_family:f.group==='couture'?'REFRACTIVE_COUTURE_FORMALISM':'TYPED_CONSTITUTIVE_CYBERNETICS',
@@ -88,6 +90,8 @@ export function buildVixenLaboratories(corpus){
   ensure(t.protocols.every(id=>methods.has(id)),'FOREIGN_METHOD_IN_GIVEBACK');
   entries.push(freeze({
    id:'LAB_'+t.id,folio_id:bind.folio,source_estate:'EMSTD613',
+    borrowed_optic_role:bind.folio.startsWith('RC-')?'OPERAHOUSE':'OPERA',
+    record_container_estate:'EMSTD613_ARCHIVAL_BUNDLE',
     stage_role:'OPERA',stage_subject_kind:'PROSPECTIVE_GIVEBACK',primary_work:false,
     performer:false,scientific_claim_authority:false,
    research_family:'VIXEN_GIVEBACK_PROSPECTIVE',name:t.title,summary:t.summary,
@@ -226,16 +230,17 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
    stage_role:lab.stage_role,stage_subject_kind:lab.stage_subject_kind,
   original_formula:lab.formula,original_status:lab.status,
   source_works:lab.work_refs,recorded_methods:lab.instrument_refs,
+  record_container_estate:lab.record_container_estate,borrowed_optic_role:lab.borrowed_optic_role||null,
   requested_mode:'INTERACTIVE_SYNTHETIC_REFERENCE_PROJECTION'
  });
  return freeze({
-  schema:VIXEN_LABS_SCHEMA,source_estate:'EMSTD613',
+  schema:VIXEN_LABS_SCHEMA,source_estate:lab.source_estate,
   corpus_coordinates:annotation,
   lab_title:lab.name,model_domain:lab.research_family,
   optical_engine:freeze({program:lab.optic_program,borrowed_from:'DOME_ART_LOOM_APERTURE_COUTURE_TOOLING_ONLY'}),
   probe:visual.probe,visual_scalar:visual.diagnostic.field_value,
   metrics:freeze(diagnostics),
-  authority:freeze({subject_from:'EMSTD613_CANONICAL_SOURCE_RECORDS',
+  authority:freeze({subject_from:lab.stage_role==='OPERAHOUSE'?'OPERAHOUSE_TECHNICAL_ARCHIVE':'EMSTD613_CANONICAL_SOURCE_RECORDS',
    optical_tooling_is_not_authorship:true,archival_folio_is_not_performer:true,empirical_replication_credit:0,
    human_closure:'RESERVED',experiment_b_flight:'HELD',
    scientific_claim:'BOUNDED_SYNTHETIC_OR_SOURCE_RECORDED_ONLY'})

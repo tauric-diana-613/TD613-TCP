@@ -24,7 +24,8 @@ test('All mathematical SUBJECTS are Vixen historical folios and giveback tracks;
  const folios=new Map(corpus.formula_folios.map(f=>[f.id,f]));
  const tracks=new Map(corpus.giveback_tracks.map(t=>[t.id,t]));
  for(const e of entries){
-  assert.equal(e.source_estate,'EMSTD613');
+  assert.equal(e.source_estate,e.stage_role==='OPERAHOUSE'?'TD613_OPERAHOUSE':'EMSTD613');
+    assert.equal(e.record_container_estate,'EMSTD613_ARCHIVAL_BUNDLE');
   assert.equal(e.empirical_credit,0);
   if(e.kind==='CANONICAL_FORMULA_SIMULATION'){
    const f=folios.get(e.folio_id);assert(f,e.id);
