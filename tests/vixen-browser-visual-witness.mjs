@@ -566,12 +566,12 @@ try {
     }
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),8,
-      'Expanded wardrobe preserves eight archival folio records without choosing experimental N');
+      'Expanded wardrobe preserves original source-record identities and bounded optical previews');
     assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
     const programmeDisclosure=await page.locator('.formula-gallery-intro').innerText();
-    assert.match(programmeDisclosure,/Experiment design remains open/);
-    assert.match(programmeDisclosure,/Podium Score and human Composer govern research proposals/);
-    assert.match(await page.locator('#formulaCountLabel').innerText(),/experimental N: UNDETERMINED/);
+    assert.match(programmeDisclosure,/Mathematics in motion/);
+    assert.match(programmeDisclosure,/TCC-08 keeps its original authorial title-locus status/);
+    assert.match(await page.locator('#formulaCountLabel').innerText(),/recorded mathematical folios/);
     const ornamentCard=wardrobe.locator('.formula-card[data-folio-id="TCC-08"]');
     assert.equal(await ornamentCard.locator('[data-foundry-folio]').count(),1,
       'The eighth folio must have the same direct Foundry stage button');

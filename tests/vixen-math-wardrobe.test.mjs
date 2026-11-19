@@ -11,7 +11,7 @@ test('wardrobe presents all eight Vixen folios with unchanged backstage RC recor
  const x=selectVixenTheoryFolios(corpus);
  assert.deepEqual(x.theories.map(f=>f.id),VIXEN_THEORY_IDS);
  assert.equal(x.retained_technical_count,14);
- assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · SOURCE REGISTER/);
+ assert.match(html,/THE VIXEN MATHEMATICAL WARDROBE · ORIGINAL FOLIOS/);
  assert.doesNotMatch(html,/Refractive Couture RC-01\.\.14 \(14\)/);
 });
 test('exact Vixen formula invokes Foundry and unified candidate ranking with zero scientific promotion',()=>{
@@ -47,6 +47,7 @@ test('archive engineering cannot cross into Vixen theory performer',()=>{
  assert.match(html,/\^TCC-0\[1-8\]\$\/\.test\(String\(folioId\)\)/);
  assert.match(html,/Only source-recorded TCC models can be inspected here/);
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
+ assert.equal(ornament.folio_kind,'TITLE_LOCUS_ORNAMENT');
  assert.equal(ornament.foundry.lab_id,'LAB_TCC-08','Eighth stages its own optical model');
   assert.equal(ornament.foundry.model,'TOROID');
   assert.ok(ornament.synthesis.candidate_count>=1);

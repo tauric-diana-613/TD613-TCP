@@ -12,10 +12,12 @@ assert.ok(source,'original archive preserved');
 const corpus=JSON.parse(source[1]);
 test('Historical TCC archive has its recorded census, without determining experimental N',()=>{
  const roles=auditVixenFolioCensus(corpus),census=completeVixenSourceCensus(corpus);
- assert.deepEqual([roles.programme,roles.ornaments,roles.technical,roles.performers_in_folio_registry],[8,1,14,0]);
- assert.deepEqual([census.opera_programme_folios,census.opera_title_ornaments,census.backstage_technical_folios],[8,1,14]);
+ assert.deepEqual([roles.programme,roles.ornaments,roles.technical,roles.performers_in_folio_registry],[7,1,14,0]);
+ assert.deepEqual([census.opera_programme_folios,census.opera_title_ornaments,census.backstage_technical_folios],[7,1,14]);
  const labs=buildVixenLaboratories(corpus);assert.equal(labs.length,28);
  assert.equal(census.experimental_subject_count,null,'Archival record count must not set experimental N');
+ assert.equal(roles.opera_source_records,8,'Archive has eight source IDs, not eight classified research theorems');
+ assert.equal(census.opera_source_records,8,'Original title-locus record stays inside the source inventory');
  assert.equal(census.experiment_count_from_folio_inventory,false);
  for(const lab of labs.filter(l=>l.folio_id.startsWith('RC-')&&l.kind==='CANONICAL_FORMULA_SIMULATION')){
   assert.equal(lab.stage_role,'OPERAHOUSE');assert.equal(lab.performer,false);
@@ -38,9 +40,9 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
  assert.doesNotMatch(foundry,/Stage 39-Skin Loom/);
  assert.doesNotMatch(foundry,/ORIGINAL VIXEN CORPUS/);
  const tcc8=labs.find(x=>x.id==='LAB_TCC-08');
- assert.equal(tcc8.stage_subject_kind,'RESEARCH_PROGRAMME');
+ assert.equal(tcc8.stage_subject_kind,'TITLE_LOCUS_ORNAMENT');
  assert.equal(tcc8.source_ornament,true,'Source title-locus status remains recorded');
- assert.equal(canStageVixenFolio(tcc8),true,'Every TCC folio, including the eighth, has a genuine optical model');
+ assert.equal(canStageVixenFolio(tcc8),true,'Existing bounded source-model inspection survives the status correction');
  assert.equal(classifyVixenFolio(corpus.formula_folios.find(x=>x.id==='TCC-08')).scientific_claim_authority,false);
  assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_TCC-02')),true);
  assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_TRACK-A')),true);
@@ -57,6 +59,20 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
   {...valid,source_estate:'TD613_OPERAHOUSE'}
  ]) assert.equal(canStageVixenFolio(forged),false,'Forged source/role attribution must fail closed');
 });
+test('Original title-locus classification resists source-status and role forging',()=>{
+ const falseTitle=structuredClone(corpus);
+ falseTitle.formula_folios.find(f=>f.id==='TCC-08').status='ENGINE_EXECUTED_OFFLINE';
+ assert.throws(()=>auditVixenFolioCensus(falseTitle),/TITLE_LOCUS_SOURCE_STATUS_MISMATCH/);
+ const other=structuredClone(corpus);
+ other.formula_folios.find(f=>f.id==='TCC-01').status='BRANDING_ORNAMENT_ONLY';
+ assert.throws(()=>auditVixenFolioCensus(other),/INQUIRY_SOURCE_STATUS_MISMATCH/);
+ const original=corpus.formula_folios.find(f=>f.id==='TCC-08');
+ assert.equal(classifyVixenFolio(original).kind,'TITLE_LOCUS_ORNAMENT');
+ const lens=buildVixenLaboratories(corpus).find(x=>x.id==='LAB_TCC-08');
+ assert.equal(canStageVixenFolio({...lens,stage_subject_kind:'RESEARCH_PROGRAMME'}),false);
+ assert.equal(canStageVixenFolio({...lens,source_ornament:false}),false);
+ assert.equal(canStageVixenFolio({...lens,status:'ENGINE_EXECUTED_OFFLINE'}),false);
+});
 test('Tampered or duplicated role coordinates are refused',()=>{
  const bad=structuredClone(corpus);bad.formula_folios[0].id='RC-07';
  assert.throws(()=>auditVixenFolioCensus(bad),/VIXEN_STAGE_SUBJECT_UNDECLARED/);
@@ -72,7 +88,7 @@ test('Historical TCC-08 diagnostics remain original source semantics without exp
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
  assert.ok(ornament.synthesis.candidate_count>=1,'Eighth must participate in ranked exploration');
  assert.equal(ornament.synthesis.state,'UNRATIFIED_SOURCE_CONDITIONED_CANDIDATE_RANKING');
- assert.equal(ornament.folio_kind,'RESEARCH_PROGRAMME');
+ assert.equal(ornament.folio_kind,'TITLE_LOCUS_ORNAMENT');
  assert.equal(ornament.source_title_locus_ornament,true);
  assert.equal(ornament.foundry.lab_id,'LAB_TCC-08');
  assert.equal(ornament.foundry.model,'TOROID');
@@ -86,7 +102,7 @@ test('Historical TCC-08 diagnostics remain original source semantics without exp
 
 test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
  const guide=readFileSync(new URL('../app/encyclopedia/vix-cyb/llms.txt',import.meta.url),'utf8');
- assert.match(guide,/8.*OPERA folio explorations/);
+ assert.match(guide,/8.*historically recorded OPERA folio entries/);
  assert.match(guide,/14.*OPERAHOUSE technical\/optical records/);
  assert.match(guide,/TCC-06.*TCC-03.*TCC-07/);
  assert.match(guide,/RC-03.*RC-07.*RC-10.*no right to headline/i);
