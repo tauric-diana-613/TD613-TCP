@@ -497,7 +497,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const maxLambda=Math.max(...beatSample.pairs.map(p=>p.wavelengthPx)).toFixed(1);
   const apertureHud=mk('div','vixen-aperture-hud');
   hudCells=[
-   mk('span','vixen-hud-pill',`APERTURE RADIOMETRY · λ_beat ${minLambda}–${maxLambda}px`),
+   mk('span','vixen-hud-pill',`SPECTRAL RADIOMETRY · λ_beat ${minLambda}–${maxLambda}px`),
    mk('span','vixen-hud-pill',`CARRIERS · ${carrierCounts.total} (${carrierCounts.near} NEAR · ${carrierCounts.mid} MID · ${carrierCounts.far} FAR)`),
    mk('span','vixen-hud-pill',`NYQUIST α_N ≤ 0.45 · ${vernier.active_clock.code} (${vernier.active_clock.custodyName})`),
    mk('span','vixen-hud-pill',`ROUTE PARITY · ${state.route==='A_B'?'I ▷ II (+)':'II ▷ I (−)'} · CREDIT = 0`),
