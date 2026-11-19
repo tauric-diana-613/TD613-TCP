@@ -1323,12 +1323,16 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    },
    [cand.id,cand.subtitle,cand.tagline,cand.grammar,cand.instrument].filter(Boolean).join(' ')
   );
-  const srcBase=(srcTelemetry.phase2_tomography.composite_score===null?0.35:0)
-   +(srcTelemetry.context_roles.intrinsic_role_claim==='CONTEXTUAL_NOT_INTRINSIC'?0.25:0)
-   +(srcTelemetry.projective_routing.candidate_link_count>0||srcTelemetry.projective_routing.field_marker_hits>0?0.18:0.08);
-  const srcQueryBoost=qSrcCond.analysis.hasSrcUntypicalCue
+  // SRC relevance must be earned from actual declared metadata cues. A
+  // null tomography composite is a refusal, not positive evidence; an empty
+  // compiler pass is not a witnessed source execution. Scores remain bounded
+  // exploratory retrieval rankings, never authorship or empirical proof.
+  const srcCueRecorded=srcTelemetry.projective_routing.cue_count>0||
+    srcTelemetry.projective_routing.field_marker_hits>0;
+  const srcBase=srcCueRecorded?0.18:0;
+  const srcQueryBoost=srcCueRecorded&&qSrcCond.analysis.hasSrcUntypicalCue
    ?(cand.id==='cand-vixen-documentary-route'?0.22:Math.min(0.22,0.22*srcDocScore.s_src_combined))
-   :(cand.id==='cand-vixen-documentary-route'?0.06:0.14);
+   :0;
   const sSrc=+(Math.min(1,Math.max(0,srcBase+srcQueryBoost))).toFixed(4);
 
   const composite=+((0.15*sSpec+0.14*sDelta+0.10*sMirror+0.15*sSyn+0.14*sBridge+0.11*sCeil+0.11*sDesign+0.10*sSrc)).toFixed(4);
@@ -1341,6 +1345,9 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    epistemic_ceiling:sCeil,
    design_cadence:sDesign,
    src_projective_tomography:sSrc,
+   src_relevance_only:true,
+   src_observed_transformation_count:srcTelemetry.phase2_tomography.claimed_observed_transformations,
+   src_witnessed_compiler_executions:srcTelemetry.context_roles.witnessed_executions,
    governing_instrument:designEval.governing_instrument,
    instrument_label:designEval.instrument_label,
    phasonic_interference:designEval.phasonic_sample.interference,
