@@ -2,6 +2,13 @@
  * define experimental N nor authorize Score / Composer decisions. */
 export const VIXEN_STAGE_SUBJECT_SCHEMA='emstd613.vixen.stage-subjects/v1';
 export const VIXEN_OPERA_HEADLINERS=Object.freeze(['TCC-01','TCC-04','TCC-05','TCC-06','TCC-03','TCC-07']);
+/** Existing source-bound optical assignment, not an experimental cohort or N. */
+export const VIXEN_SOURCE_FOLIO_OPTICS=Object.freeze({
+ 'TCC-01':'CONTROL_PLANES','TCC-02':'CONTROL_PLANES',
+ 'TCC-03':'FOLD_SEAM','TCC-04':'FIVE_CLOCKS',
+ 'TCC-05':'ALGEDONIC','TCC-06':'COUTURE_111',
+ 'TCC-07':'TWIN_WORLD','TCC-08':'TOROID'
+});
 export function classifyVixenFolio(folio){
  const id=String(folio?.id||'');
  if(folio?.group==='unified'&&/^TCC-0[1-8]$/.test(id))
@@ -38,5 +45,6 @@ export function canStageVixenFolio(lab){
  return lab.kind==='CANONICAL_FORMULA_SIMULATION' &&
   lab.stage_subject_kind==='RESEARCH_PROGRAMME' &&
   /^TCC-0[1-8]$/.test(lab.folio_id) && lab.id==='LAB_'+lab.folio_id &&
-  lab.source_estate==='EMSTD613';
+  lab.source_estate==='EMSTD613' &&
+  lab.optic_program===VIXEN_SOURCE_FOLIO_OPTICS[lab.folio_id];
 }

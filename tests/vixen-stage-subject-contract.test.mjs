@@ -48,6 +48,7 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
  for(const forged of [
   {...valid,stage_subject_kind:'TITLE_ORNAMENT'},
   {...valid,folio_id:'TCC-08',id:'LAB_TCC-08'},
+  {...valid,optic_program:'TOROID'},
   {...valid,id:'LAB_RC-07'},
   {...valid,performer:true},
   {...valid,stage_role:'OPERAHOUSE'},

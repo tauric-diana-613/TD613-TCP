@@ -16,7 +16,7 @@ import {
  fieldAt,sceneProbe,project111,singularValues2,fiveClockTicks,
  FOUNDRY_SCHEMA,CARRIERS
 } from './observatory-foundry-kernel.mjs';
-import {auditVixenFolioCensus,classifyVixenFolio} from './vixen-stage-subject-contract.mjs';
+import {auditVixenFolioCensus,classifyVixenFolio,VIXEN_SOURCE_FOLIO_OPTICS} from './vixen-stage-subject-contract.mjs';
 
 export const VIXEN_LABS_SCHEMA='emstd613.vixen.corpus-referenced-observatory/v1';
 export const VIXEN_SOURCE_ESTATES=Object.freeze({
@@ -25,10 +25,7 @@ export const VIXEN_SOURCE_ESTATES=Object.freeze({
  cross_estate_promotion:false,external_empirical_credit:0
 });
 const OPTICS_BY_FOLIO=Object.freeze({
- 'TCC-01':'CONTROL_PLANES','TCC-02':'CONTROL_PLANES',
- 'TCC-03':'FOLD_SEAM','TCC-04':'FIVE_CLOCKS',
- 'TCC-05':'ALGEDONIC','TCC-06':'COUTURE_111',
- 'TCC-07':'TWIN_WORLD','TCC-08':'TOROID',
+ ...VIXEN_SOURCE_FOLIO_OPTICS,
  'RC-01':'FOURIER','RC-02':'FIVE_CLOCKS','RC-03':'COUTURE_111',
  'RC-04':'D3_MOIRE','RC-05':'PHI_QUASI',
  'RC-06':'GATE_256','RC-07':'APERTURE_SVD',
