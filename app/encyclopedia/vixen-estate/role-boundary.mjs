@@ -76,7 +76,10 @@ export function stageVixenOperaEvent(action,performer,details={}){
      !ISSUED_PERFORMERS.has(performer))throw new TypeError('OPERA_REQUIRES_TYPED_PERFORMER');
   if(!details||typeof details!=='object'||Array.isArray(details))throw new TypeError('OPERA_EVENT_DETAILS_INVALID');
   for(const key of Object.keys(details))if(AUTHORITY_DENIED.has(key))throw new TypeError('OPERAHOUSE_AUTHORITY_LEAK:'+key);
-  if('role' in details||'layer' in details||'estate' in details||'performer' in details)throw new TypeError('OPERA_IDENTITY_COLLISION');
+  // The details spread is after validated event fields: never let it replace
+  // a validated action, named Opera, issued Performer or custody authority.
+  for(const key of ['role','layer','estate','performer','opera','action','authority'])
+    if(key in details)throw new TypeError('OPERA_IDENTITY_COLLISION:'+key);
   // Even a properly issued Performer cannot label an observation as a deploy,
   // release, admit, promotion or adjudication event.
   if(!OBSERVATION_EVENTS.has(action))throw new TypeError('OPERA_EVENT_NOT_OBSERVATIONAL:'+action);
