@@ -20,14 +20,48 @@ const MATH_FORMS=Object.freeze([
 ]);
 const plain=s=>typeof s==='string'?s.trim():'';
 const eligibleLiteral=s=>Boolean(s&&s.length>=3&&s.length<=1800&&!/data:image|https?:\/\/|<script|<\/script/i.test(s));
+// Verified source bytes establish quotation integrity, not mathematical identity.
+// Be conservative: Markdown checklists, code settings, citations and prose
+// wrapped in TeX may not masquerade as original mathematical passages.
+const balancedBraces=s=>{
+ let depth=0;
+ for(const c of s){
+  if(c==='{')depth++;
+  else if(c==='}'&&--depth<0)return false;
+ }
+ return depth===0;
+};
+const mathematicalExpression=s=>{
+ const t=plain(s);
+ if(!eligibleLiteral(t)||!balancedBraces(t)||
+    /^\s*(?:>|\||#{1,6}\s|--|[-*+]\s|\x60|!\[|\d+[.)]\s+\*\*)/.test(t)||
+    /https?:\/\/|<\/?[A-Za-z]|\]\(|\[\^|\b(?:std::|cite:)\b|\*\*|\x60/.test(t))return false;
+ if(/^(?:where|note|figure|table|source|chapter|reference|example|in this|the following|the|this|for|from|with|during|under|our)\s/i.test(t))return false;
+ if(/^[A-Za-z][A-Za-z\s-]{2,}$/.test(t))return false;
+ // A formatting macro or lone operator is not a mathematical statement.
+ const mathCommand=/\\(?:d?frac|tfrac|sum|prod|i?int|oint|lim|sqrt|partial|nabla)(?![A-Za-z])/;
+ const equal=t.indexOf('=');
+ const inequality=/^\s*\(?(?:[A-Za-z]\w{0,3}|\d+)\s*[<>]\s*(?:[A-Za-z]\w{0,3}|\d+)/;
+ if(equal<0&&!mathCommand.test(t)&&!inequality.test(t))return false;
+ if(equal>=0){
+  const left=t.slice(0,equal).trim().replace(/\\$/,'').trim();
+  const right=t.slice(equal+1).trim();
+  if(!/[\p{L}\p{N}]/u.test(left)||!/[\p{L}\p{N}]/u.test(right)||
+     (!mathCommand.test(t)&&!/^(?:\\[A-Za-z]+|\(?[A-Za-z]{1,4}(?=[\s({_^+*/-]|$)|\d)/.test(left))||
+     /^['"\x60]/.test(right)||(!mathCommand.test(t)&&left.split(/\s+/).length>7))return false;
+  if(/^(?:[A-Z][A-Z0-9_]{5,}|[a-z][A-Za-z]{6,})\s*$/.test(left)&&
+     !mathCommand.test(t)&&!/[+*/^{}()\[\]∑∫]/.test(t))return false;
+ }
+ if(!mathCommand.test(t)&&t.split(/\s+/).length>14)return false;
+ if(equal<0&&!mathCommand.test(t)&&
+    (/^\\(?:approx|rightarrow|leq|geq|times|cdot)\b/.test(t)||t.split(/\s+/).length<2))return false;
+ return true;
+};
 const mathLine=s=>{
- const t=s.trim();
- if(t.length<5||t.length>260||/^\s*[#>|*-]{2,}/.test(t)||/https?:\/\//i.test(t)||/\$|\\\[|\\\]|\\\(|\\\)|```/.test(t))return false;
- // Single-line mathematical relation or an explicit mathematical operator,
- // rather than a generic English paragraph with an equals sign.
- return /[∫∑∏∂∇⊕⊗√∈∉≡≠≤≥⇒↦∝≈]/.test(t) ||
-  (/[=<>]/.test(t)&&/[(){}\[\]\\^_+\-*/]/.test(t)&&
-   /\b(?:[A-Za-z]\w{0,3}|P|I|E|Var|dim|rank|lim|arg)\b/.test(t));
+ const t=plain(s);
+ if(t.length<5||t.length>260||/^\s*(?:[\x60#>|]|[-*+]\s|\d+[.)]\s)/.test(t)||
+    /(?:https?:\/\/|\$|\\\[|\\\]|\\\(|\\\)|\x60{3})/.test(t))return false;
+ return mathematicalExpression(t);
 };
 export function extractOriginalMathPassages(text,{max=4}={}){
  if(typeof text!=='string')return Object.freeze([]);
@@ -36,7 +70,8 @@ export function extractOriginalMathPassages(text,{max=4}={}){
   form.re.lastIndex=0;
   for(const m of text.matchAll(form.re)){
    const literal=plain(m[form.kind==='EQUATION_ENV'?2:1]);
-   if(!eligibleLiteral(literal))continue;
+   if(form.kind==='DISPLAY_TEX'&&m.index>0&&/[A-Za-z0-9]/.test(text[m.index-1]))continue;
+   if(!mathematicalExpression(literal))continue;
    matches.push({kind:form.kind,literal,offset_utf16:m.index});
   }
  }
