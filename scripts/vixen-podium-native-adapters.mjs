@@ -522,7 +522,8 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
 
  if(srcEngines){
   adapters.SRC_ATELIER=async({operation,payload={}}={})=>{
-   if(operation==='src_verified_vixen_work_pair'||operation==='src_verified_vixen_original_projective_differential'){
+   if(['src_verified_vixen_work_pair','src_verified_vixen_original_projective_differential',
+       'src_verified_vixen_original_typed_traversal'].includes(operation)){
     // Read only the two explicitly requested Vixen Works. The SRC engine
     // supplies computation; SRC's research corpus supplies no input.
     const workIds=payload.work_ids;
@@ -577,6 +578,62 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
       record_id:workId,work_id:workId,title:work.display_title||work.declared_title||workId,
       cluster:work.cluster||'',body:selected.body.text_body,created:work.created||null
      });
+    }
+    if(operation==='src_verified_vixen_original_typed_traversal'){
+     // The unchanged original SRC Python evidence traverser receives only
+     // Vixen's own local catalogue links and independently rehashed readable
+     // derivatives. Its ephemeral registries never enter either source estate.
+     const script=resolve(repoRoot,'scripts','vixen-src-original-typed-traversal.py');
+     if(!existsSync(script))throw Error('HELD_ORIGINAL_SRC_TYPED_VIXEN_BRIDGE_UNAVAILABLE');
+     const packet={
+      query,
+      catalogue:corpus.works.map(w=>({
+       work_id:w.work_id,
+       linked_sources:(w.linked_sources||[]).map(s=>({
+        source_file_id:s.source_file_id,original_sha256:s.sha256
+       }))
+      })),
+      selected:documents.map((d,i)=>({
+       work_id:d.work_id,source_file_id:sourceProofs[i].source_file_id,
+       original_sha256:sourceProofs[i].declared_original_source_sha256,
+       derivative_sha256:sourceProofs[i].verified_derivative_sha256,
+       body:d.body
+      }))
+     };
+     const python=process.env.TD613_NATIVE_PYTHON||(process.platform==='win32'?'python':'python3');
+     let replay;
+     try{
+      replay=JSON.parse(execFileSync(python,[script],{
+       cwd:repoRoot,input:JSON.stringify(packet),encoding:'utf8',timeout:20000,
+       maxBuffer:4*1024*1024,
+       env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',PYTHONUTF8:'1'}
+      }));
+     }catch(e){
+      throw Error('HELD_ORIGINAL_SRC_TYPED_VIXEN_EXECUTION: '+String(e?.message||'UNKNOWN').slice(0,180));
+     }
+     if(replay?.original_python_executed!==true||
+        replay.original_function!=='src-evidence-rabbit-hole-v1.py:explore'||
+        replay.catalogue_work_count!==32||replay.recorded_manifestation_count!==53||
+        replay.selected_verified_derivatives?.length!==2||
+        replay.selected_verified_derivatives.some((p,i)=>
+         p.work_id!==sourceProofs[i].work_id||
+         p.source_file_id!==sourceProofs[i].source_file_id||
+         p.derivative_sha256!==sourceProofs[i].verified_derivative_sha256))
+      throw Error('HELD_ORIGINAL_SRC_TYPED_VIXEN_RECEIPT_MISMATCH');
+     return {
+      schema:'td613.vixen.src-native-typed-vixen-podium/v1',
+      method:'ORIGINAL_SRC_TYPED_EVIDENCE_TRAVERSAL',
+      source_estate:'VIXEN_EXPERIMENT_A_ONLY',
+      native_python_executed:true,
+      original_native_traversal:replay,
+      source_proofs:sourceProofs,
+      reader_route_status:'ADAPTED_CATALOGUE_AND_VERIFIED_DERIVATIVES_ONLY',
+      body_lexical_relevance:'NOT_USED_FOR_TYPED_TRAVERSAL',
+      read_only:true,authorship_promotion:false,
+      scholarly_relation_admission:false,
+      scientific_credit:0,empirical_replication_credit:0,
+      human_closure_required:true
+     };
     }
     const projective=srcEngines.runSrcProjectiveRouting(documents,documents);
     let originalDifferential=null;
