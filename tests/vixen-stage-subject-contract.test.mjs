@@ -33,7 +33,21 @@ test('Only Vixen programme models headline the Opera stage; RC maths remain call
  assert.doesNotMatch(foundry,/ORIGINAL VIXEN CORPUS/);
  const tcc8=labs.find(x=>x.id==='LAB_TCC-08');
  assert.equal(tcc8.stage_subject_kind,'TITLE_ORNAMENT');
+ assert.equal(canStageVixenFolio(tcc8),false,'Title ornament cannot enter the mathematical Foundry');
  assert.equal(classifyVixenFolio(corpus.formula_folios.find(x=>x.id==='TCC-08')).scientific_claim_authority,false);
+ assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_TCC-02')),true);
+ assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_TRACK-A')),true);
+ assert.equal(canStageVixenFolio(labs.find(x=>x.id==='LAB_TRACK-D')),true,
+  'Borrowed optical method retains its technical role without becoming a Performer');
+ const valid=labs.find(x=>x.id==='LAB_TCC-01');
+ for(const forged of [
+  {...valid,stage_subject_kind:'TITLE_ORNAMENT'},
+  {...valid,folio_id:'TCC-08',id:'LAB_TCC-08'},
+  {...valid,id:'LAB_RC-07'},
+  {...valid,performer:true},
+  {...valid,stage_role:'OPERAHOUSE'},
+  {...valid,source_estate:'TD613_OPERAHOUSE'}
+ ]) assert.equal(canStageVixenFolio(forged),false,'Forged source/role attribution must fail closed');
 });
 test('Tampered or duplicated role coordinates are refused',()=>{
  const bad=structuredClone(corpus);bad.formula_folios[0].id='RC-07';
@@ -50,6 +64,12 @@ test('Unified ranking receives source-specific evidence while TCC-08 remains bra
  const ornament=computeVixenTheoryReceipt(corpus,'TCC-08');
  assert.equal(ornament.synthesis.candidate_count,0);
  assert.equal(ornament.synthesis.state,'HELD_BRANDING_ONLY_NO_THEOREM');
+ assert.equal(ornament.folio_kind,'TITLE_ORNAMENT');
+ assert.equal(ornament.foundry.lab_id,null);
+ assert.equal(ornament.foundry.model,null);
+ assert.deepEqual(ornament.foundry.metrics,[]);
+ assert.equal(ornament.diagnostics.svd_class,null);
+ assert.equal(ornament.diagnostics.arrival_inversions,null);
  assert.throws(()=>computeVixenTheoryReceipt(corpus,'RC-07'),/TECHNICAL_METHOD_NOT_VIXEN_PERFORMER/);
 });
 
