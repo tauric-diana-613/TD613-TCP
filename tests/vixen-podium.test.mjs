@@ -326,6 +326,11 @@ test('All 5 native Podium adapters execute boundedly, expressed directives auto-
  assert.equal(refused.source_work_state,'HELD_UNKNOWN_VIXEN_WORK');
  assert.equal(refused.staged_opera_event,null,
   'A caller-supplied research corpus cannot fabricate a native Vixen Performer');
+ for(const invalid of ['',null,'LAB_RC-07']){
+  const held=await adapters.RULEFIELD({operation:'assess_roles',payload:{work_id:invalid}});
+  assert.equal(held.source_work_state,'HELD_UNKNOWN_VIXEN_WORK');
+  assert.equal(held.staged_opera_event,null,'An explicit invalid target never defaults to the first Work');
+ }
  for(const slot of ['APERTURE','ATLAS','DOLLHOUSE','RULEFIELD','UNIVERSAL_ATELIER']){
   assert.equal(typeof adapters[slot],'function','Expected connected adapter: '+slot);
   assert.ok(Array.isArray(BOUNDED_ENGINE_OPERATIONS[slot])&&BOUNDED_ENGINE_OPERATIONS[slot].length>=3);
