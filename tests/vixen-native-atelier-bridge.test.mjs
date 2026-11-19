@@ -154,3 +154,55 @@ test('authorized Podium invokes installed SRC computational method on synthetic 
  assert.equal(executed.result.scientific_credit,0);
  assert.equal(executed.result.endorsement,false);
 });
+
+
+test('SRC computation runs on two real, SHA-verified original Vixen Work bodies via Podium without corpus crossover',async()=>{
+ const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
+ const marker='<script id="vixen-corpus-bundle" type="application/json">';
+ const start=html.indexOf(marker);
+ assert.ok(start>=0);
+ const end=html.indexOf('</script>',start+marker.length);
+ const corpus=JSON.parse(html.slice(start+marker.length,end));
+ const workIds=['emwork_dd9a66eba0e2dde8e29f00f6','emwork_f2c89864337f162e88991e28'];
+ for(const id of workIds)assert.ok(corpus.works.some(w=>w.work_id===id));
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
+ const reader={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],getRecord:async()=>null,
+  related:()=>[],status:()=>({state:'UNOPENED'})};
+ const command=query=>({schema:PODIUM_SCHEMA,intent:'engine.invoke',params:{
+  engine:'SRC_ATELIER',operation:'src_verified_vixen_work_pair',
+  payload:{work_ids:workIds,query}
+ }});
+ const denied=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:false,engineAdapters:adapters})
+  .dispatch(command('Explore quantum entanglement'));
+ assert.equal(denied.status,'HELD');
+ assert.equal(denied.result.state,'HELD_OPERATOR_AUTHORITY_NOT_SUPPLIED');
+ const podium=createVixenPodium({corpus,membrane:reader,operatorAuthorized:true,engineAdapters:adapters});
+ const quantum=await podium.dispatch(command('Explore quantum entanglement'));
+ assert.equal(quantum.status,'HELD','Computation has no adjudication or publication power');
+ assert.equal(quantum.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+ const output=quantum.result.output;
+ assert.equal(output.schema,'td613.vixen.src-verified-work-pair/v1');
+ assert.equal(output.source_estate,'VIXEN_EXPERIMENT_A_ONLY');
+ assert.equal(output.native_python_executed,false);
+ assert.equal(output.projective_routing.document_count,2);
+ assert.equal(output.source_proofs.length,2);
+ assert.deepEqual(output.source_proofs.map(p=>p.work_id),workIds);
+ assert.ok(output.source_proofs.every(p=>p.derivative_bytes_rehashed&&
+  /^[a-f0-9]{64}$/.test(p.verified_derivative_sha256)&&/^emsrc_[a-f0-9]{24}$/.test(p.source_file_id)));
+ assert.equal(output.scored_works[1].explore_match_type,'BODY_PROJECTIVE_TARGET',
+  'A real quantum manuscript body must influence SRC scoring beyond its title');
+ assert.ok(output.scored_works[1].s_src_combined>output.scored_works[0].s_src_combined);
+ const audio=(await podium.dispatch(command('Explore ring buffer'))).result.output;
+ assert.equal(audio.scored_works[0].explore_match_type,'BODY_PROJECTIVE_TARGET',
+  'A real audio manuscript body must influence SRC scoring beyond its title');
+ assert.ok(audio.scored_works[0].s_src_combined>audio.scored_works[1].s_src_combined);
+ assert.deepEqual(audio.source_proofs,output.source_proofs,'Two queries must not mutate source custody');
+ assert.equal(output.scientific_credit,0);
+ assert.equal(output.authorship_promotion,false);
+ assert.equal(output.human_closure_required,true);
+ assert.equal(corpus.works.length,32);
+ assert.ok(corpus.works.every(w=>w.linked_sources.every(s=>/^emsrc_/.test(s.source_file_id))));
+ await assert.rejects(()=>adapters.SRC_ATELIER({operation:'src_verified_vixen_work_pair',
+  payload:{work_ids:[workIds[0],'emwork_000000000000000000000000'],
+   query:'Explore quantum entanglement'}}),/HELD_FOREIGN_OR_UNREGISTERED_VIXEN_WORK/);
+});

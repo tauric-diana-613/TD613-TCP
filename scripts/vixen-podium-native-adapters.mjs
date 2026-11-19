@@ -522,6 +522,88 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
 
  if(srcEngines){
   adapters.SRC_ATELIER=async({operation,payload={}}={})=>{
+   if(operation==='src_verified_vixen_work_pair'){
+    // Read only the two explicitly requested Vixen Works. The SRC engine
+    // supplies computation; SRC's research corpus supplies no input.
+    const workIds=payload.work_ids;
+    if(!Array.isArray(workIds)||workIds.length!==2||
+       new Set(workIds).size!==2||
+       !workIds.every(id=>typeof id==='string'&&/^emwork_[0-9a-f]{24}$/.test(id)))
+     throw Error('HELD_TWO_DISTINCT_VIXEN_WORK_IDS_REQUIRED');
+    const query=typeof payload.query==='string'?payload.query.trim():'';
+    if(query.length<9||query.length>240||!/^Explore\s+\S/i.test(query))
+     throw Error('HELD_EXPLICIT_SRC_COMPUTATIONAL_QUERY_REQUIRED');
+    const corpus=await loadLocalVixenCorpus();
+    if(corpus.works?.length!==32||
+       corpus.works.reduce((n,w)=>n+(w.linked_sources?.length||0),0)!==53)
+     throw Error('HELD_VIXEN_CORPUS_CENSUS_DRIFT');
+    const reader=await importOptional(resolve(sourceRoot,'vixen-estate','corpus-experiment-a.mjs'));
+    if(typeof reader?.loadExperimentABodyBySourceId!=='function')
+     throw Error('HELD_ORIGINAL_VIXEN_BODY_READER_UNAVAILABLE');
+    const sourceProofs=[],documents=[];
+    for(const workId of workIds){
+     const index=corpus.works.findIndex(w=>w.work_id===workId);
+     if(index<0)throw Error('HELD_FOREIGN_OR_UNREGISTERED_VIXEN_WORK');
+     const work=corpus.works[index];
+     let selected=null;
+     for(const source of work.linked_sources||[]){
+      if(!/^emsrc_[0-9a-f]{24}$/.test(source.source_file_id||'')||
+         !/^[0-9a-f]{64}$/i.test(source.sha256||''))
+       throw Error('HELD_INVALID_VIXEN_SOURCE_MANIFESTATION');
+      const body=await reader.loadExperimentABodyBySourceId(source.source_file_id,{
+       hintShard:reader.shardForWorkIndex(index)
+      });
+      if(!body||typeof body.text_body!=='string')continue;
+      if(body.readable===false||body.body_sha256_verified!==true||
+         body.source_file_id!==source.source_file_id||
+         (body.work_id&&body.work_id!==workId))
+       throw Error('HELD_UNVERIFIED_VIXEN_SOURCE_BODY');
+      const expectedDigest=body.derivative_sha256||body.body_sha256;
+      if(!/^[0-9a-f]{64}$/i.test(expectedDigest||'')||
+         createHash('sha256').update(body.text_body,'utf8').digest('hex')!==expectedDigest)
+       throw Error('HELD_VIXEN_DERIVATIVE_DIGEST_MISMATCH');
+      if(body.text_body.length>400000)throw Error('HELD_VIXEN_SOURCE_BODY_TOO_LARGE');
+      selected={source,body,derivativeDigest:expectedDigest};
+      break;
+     }
+     if(!selected)throw Error('HELD_VIXEN_WORK_HAS_NO_VERIFIED_READABLE_BODY');
+     sourceProofs.push(Object.freeze({
+      work_id:workId,source_file_id:selected.source.source_file_id,
+      declared_original_source_sha256:selected.source.sha256,
+      verified_derivative_sha256:selected.derivativeDigest,
+      derivative_bytes_rehashed:true,authorship:work.authorship||'UNRESOLVED'
+     }));
+     documents.push({
+      record_id:workId,work_id:workId,title:work.display_title||work.declared_title||workId,
+      cluster:work.cluster||'',body:selected.body.text_body,created:work.created||null
+     });
+    }
+    const projective=srcEngines.runSrcProjectiveRouting(documents,documents);
+    const conditioned=srcEngines.deriveSrcQueryConditionedWeights(query,'src_projective',null);
+    const scored=documents.map((doc,i)=>({
+     work_id:doc.work_id,source_file_id:sourceProofs[i].source_file_id,
+     ...srcEngines.scoreSrcUntypicalDocument(conditioned.analysis,{
+      work_id:doc.work_id,title:doc.title,cluster:doc.cluster
+     },doc.body)
+    }));
+    return {
+     schema:'td613.vixen.src-verified-work-pair/v1',
+     method:'SRC_VERIFIED_VIXEN_WORK_PAIR_COMPUTATION',
+     source_estate:'VIXEN_EXPERIMENT_A_ONLY',
+     computational_engine:'SRC_ATELIER_ISOMORPHIC',
+     native_python_executed:false,
+     read_only:true,query_regime:conditioned.regimeId,
+     source_proofs:sourceProofs,scored_works:scored,
+     projective_routing:{
+      method:projective.method,document_count:projective.document_count,
+      cue_count:projective.cue_count,candidate_link_count:projective.candidate_link_count,
+      field_marker_hits:projective.field_marker_hits
+     },
+     observed_compiler_executions:0,observed_transformations:0,
+     scientific_credit:0,empirical_replication_credit:0,
+     authorship_promotion:false,human_closure_required:true
+    };
+   }
    if(operation==='src_projective_routing'){
     const docs=Array.isArray(payload.documents)?payload.documents:[];
     const catalog=Array.isArray(payload.catalog)?payload.catalog:docs;
