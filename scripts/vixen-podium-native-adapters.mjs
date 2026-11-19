@@ -207,7 +207,8 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
     // Role and original Work identity come from the local source intake,
     // never an untrusted caller-supplied synthetic research corpus.
     const corpus=await loadLocalVixenCorpus();
-    const targetId=String(payload?.work_id||corpus.works?.[0]?.work_id||'');
+    const targetId=Object.prototype.hasOwnProperty.call(payload||{},'work_id')
+     ?String(payload.work_id??''):String(corpus.works?.[0]?.work_id||'');
     const workObj=corpus.works?.find(w=>w.work_id===targetId)||null;
     const performer=roleBoundary?.castVixenPerformer&&workObj?roleBoundary.castVixenPerformer(workObj,corpus):null;
     const operaEvent=roleBoundary?.stageVixenOperaEvent&&performer
