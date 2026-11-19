@@ -536,7 +536,7 @@ try {
     assert.deepEqual(archiveCensus,{total:22,technical:14},
       'Original archive preserves all 22 records including 14 reference methods');
     assert.equal(await wardrobe.locator('.formula-card').count(),8,
-      'Only eight Vixen theory folios are onstage; technical records are not Performers');
+      'Seven inquiries and one title ornament are preserved in the wardrobe; technical records are not Performers');
     assert.equal(await wardrobe.getAttribute('data-expanded'),'false');
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
       'Vixen theory wardrobe must open with four curated source-grounded cards');
@@ -566,8 +566,16 @@ try {
     }
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),8,
-      'Explicit gallery reveal exposes all eight theory folios while preserving technical records offstage');
+      'Expanded wardrobe preserves seven inquiries and one title ornament without promoting technical records');
     assert.equal(await galleryReveal.getAttribute('aria-expanded'),'true');
+    const ornamentCard=wardrobe.locator('.formula-card[data-folio-id="TCC-08"]');
+    assert.equal(await ornamentCard.locator('[data-foundry-folio]').count(),0,
+      'An authorial title ornament must have no mathematical stage button');
+    assert.equal(await page.evaluate(()=>window.VIXEN_ELECTRIC_FOUNDRY.selectLab('LAB_TCC-08')),false,
+      'Even a direct Foundry API call cannot promote title ornament to computed model');
+    await ornamentCard.locator('[data-compute-vixen-folio]').click();
+    await page.waitForFunction(()=>document.querySelector('[data-folio-id="TCC-08"] [data-vixen-computation]')?.textContent.includes('Optical experiment: NOT PERFORMED'),null,{timeout:20000});
+    assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/NO THEOREM/);
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
       'The curated gallery closes without changing immutable source records');
