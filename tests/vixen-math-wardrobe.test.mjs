@@ -21,7 +21,15 @@ test('exact Vixen formula invokes Foundry and unified candidate ranking with zer
  assert.ok(x.synthesis.candidate_count>=1);
   assert.equal(x.synthesis.conditioning_folio,'TCC-04');
   assert.match(x.synthesis.question,/Five Non-Equivalent Derivative Clocks/);
- assert.equal(x.synthesis.engine,'NATIVE_UNIFIED_CANDIDATE_RANKING');
+ assert.equal(x.synthesis.engine,'BROWSER_ISOMORPHIC_UNIFIED_CANDIDATE_RANKING');
+ assert.equal(x.synthesis.question_origin,'ARCHIVAL_FOLIO_CONTEXT_ONLY');
+ assert.equal(x.synthesis.human_question,null);
+ assert.equal(x.synthesis.query_provenance.human_question_supplied,false);
+ assert.equal(x.synthesis.engine_trace.native_host_executable_invoked,false);
+ assert.equal(x.synthesis.engine_trace.manuscript_passages_read_by_wardrobe,false);
+ assert.ok(x.synthesis.scored_candidates.length>=1);
+ assert.equal(x.synthesis.scored_candidates[0].id,x.synthesis.top_candidate.id);
+ assert.ok('src_projective_tomography' in x.synthesis.scored_candidates[0].breakdown);
  assert.equal(x.authority.empirical_credit,0);
  assert.equal(x.authority.experimental_subject_count,null);
  assert.equal(x.authority.experiment_design_state,'UNDETERMINED_BY_ARCHIVAL_CENSUS');
@@ -41,4 +49,13 @@ test('archive engineering cannot cross into Vixen theory performer',()=>{
   assert.equal(ornament.authority.experimental_subject_count,null);
   assert.equal(ornament.authority.empirical_credit,0);
  assert.doesNotMatch(html,/startsWith\('TCC'\) \? 'LAB_TCC-05'/);
+});
+
+test('folio-derived context has separate provenance from a real human question',()=>{
+ const a=computeVixenTheoryReceipt(corpus,'TCC-04');
+ const b=computeVixenTheoryReceipt(corpus,'TCC-04',{operatorQuestion:'What independent evidence would distinguish the sources?'});
+ assert.equal(a.synthesis.question_origin,'ARCHIVAL_FOLIO_CONTEXT_ONLY');
+ assert.equal(b.synthesis.question_origin,'HUMAN_SUPPLIED_PLUS_FOLIO_CONTEXT');
+ assert.equal(a.authority.experimental_subject_count,null);
+ assert.equal(b.authority.experimental_subject_count,null);
 });

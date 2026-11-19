@@ -1223,12 +1223,17 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
  const lag=Number.isFinite(Number(options?.lagTicks))?Number(options.lagTicks):36;
  const limit=Math.max(1,Math.min(20,Number(options?.candidateLimit)||12));
  const fadt=computeFadtCorpusFiberProfile(corpus);
+ // Source metadata contributes to computation, but never impersonates a
+ // human-authored operator question or creates an operator-dictated candidate.
+ const sourceContext=cleanText(options?.sourceContext,600);
+ const humanQuestion=cleanText(options?.operatorQuestion,600);
+ const scoringContext=[sourceContext,humanQuestion].filter(Boolean).join(' · ');
  const rawGenerated=generateUnifiedSynthesisCandidates(corpus,options);
  const srcTelemetry=evaluateCorpusWithSrcEngines(corpus,{
-  operatorQuestion:options?.operatorQuestion||'',
+  operatorQuestion:scoringContext,
   activePlan:options?.activePlan||null
  });
- const qSrcCond=deriveSrcQueryConditionedWeights(options?.operatorQuestion||'','src_projective',null);
+ const qSrcCond=deriveSrcQueryConditionedWeights(scoringContext,'src_projective',null);
  // A distinct TD613/Vixen documentary-route candidate, not a clone of the last
  // baseline/event candidate (which duplicated the Podium prose).
  const sourceLinks=Number(srcTelemetry?.projective_routing?.candidate_link_count||0);
@@ -1307,7 +1312,7 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
   const noBoilerplate=!ANTI_BOILERPLATE_SUBTITLE_RE.test(cand.patternSubtitle);
   const hasFalsifier=typeof cand.falsifier==='string'&&cand.falsifier.length>12;
   const sCeil=(noLeak&&noBoilerplate&&hasFalsifier)?1:0;
-  const designEval=scoreDesignCadence(cand,options?.operatorQuestion||'');
+  const designEval=scoreDesignCadence(cand,scoringContext);
   const sDesign=designEval.design_cadence;
   const srcDocScore=scoreSrcUntypicalDocument(
    qSrcCond.analysis,
@@ -1367,7 +1372,7 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
  scored.sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id));
  const topSlice=scored.slice(0,limit);
  const grammarSummary=deriveDesignGrammarSynthesis({
-  seed:options?.operatorQuestion||(topSlice[0]?`${topSlice[0].title} ${topSlice[0].heroStatement}`:''),
+  seed:scoringContext||(topSlice[0]?`${topSlice[0].title} ${topSlice[0].heroStatement}`:''),
   worksCount:Array.isArray(corpus?.works)?corpus.works.length:32,
   activeInstruments:Object.keys(DESIGN_INSTRUMENTS)
  });
@@ -1390,6 +1395,10 @@ export function scoreUnifiedSynthesisCandidates(corpusOrOpts=null,optionsArg={})
    src_projective_tomography:0.10
   }),
   src_atelier:srcTelemetry,
+  query_provenance:Object.freeze({
+   source_context_present:Boolean(sourceContext),human_question_supplied:Boolean(humanQuestion),
+   source_context_is_not_operator_instruction:true
+  }),
   epistemic_ceiling:{empirical_replication_credit:0,scientific_promotion_authority:false,human_closure_required:true}
  });
 }

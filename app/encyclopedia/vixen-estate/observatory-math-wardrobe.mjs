@@ -28,10 +28,14 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
  const controls={gain:opts.gain??.72,witness:opts.witness??.88,voltage:opts.voltage??.83,twist:opts.twist??.45,sampleIndex:opts.sampleIndex??40};
  const result=assessVixenLab(corpus,'LAB_'+id,controls,{x:0,y:0});
  if(result&&result.corpus_coordinates.source_folio!==id)throw new Error('FOLIO_TO_COMPUTATION_ID_MISMATCH');
- const sourceQuestion=[folio.id,folio.title,folio.summary.slice(0,320),
-  (folio.links||[]).join(' '),String(opts.operatorQuestion||'').slice(0,240)].join(' · ');
- const ranking=scoreUnifiedSynthesisCandidates(corpus,
-  {lagTicks:opts.lagTicks??36,candidateLimit:4,operatorQuestion:sourceQuestion});
+ const sourceContext=[folio.id,folio.title,folio.summary.slice(0,320),
+  (folio.links||[]).join(' ')].join(' · ');
+ const humanQuestion=typeof opts.operatorQuestion==='string'?opts.operatorQuestion.trim().slice(0,240):'';
+ const ranking=scoreUnifiedSynthesisCandidates(corpus,{
+  lagTicks:opts.lagTicks??36,candidateLimit:4,sourceContext,operatorQuestion:humanQuestion
+ });
+ if(ranking.query_provenance.human_question_supplied!==Boolean(humanQuestion))
+  throw new TypeError('SOURCE_CONTEXT_MISATTRIBUTED_TO_HUMAN_OPERATOR');
  const math=computeSalonObservatoryDiagnostics({clock_probe:{lag_ticks:opts.lagTicks??36,active_clock_id:'k'}});
  return Object.freeze({
   schema:'emstd613.vixen.theory-wardrobe-computation/v1',folio_id:id,folio_title:folio.title,
@@ -41,10 +45,28 @@ export function computeVixenTheoryReceipt(corpus,id,opts={}){
     source_work_count:result?.corpus_coordinates.source_works.length??0,
     source_work_ids:result?.corpus_coordinates.source_works??Object.freeze([]),
     metrics:result?.metrics??Object.freeze([])}),
-  synthesis:Object.freeze({engine:'NATIVE_UNIFIED_CANDIDATE_RANKING',candidate_count:ranking?.candidate_count??0,
-    conditioning_folio:id,question:sourceQuestion,
+  synthesis:Object.freeze({
+    engine:'BROWSER_ISOMORPHIC_UNIFIED_CANDIDATE_RANKING',
+    candidate_count:ranking.candidate_count,conditioning_folio:id,
+    question:sourceContext,human_question:humanQuestion||null,
+    question_origin:humanQuestion?'HUMAN_SUPPLIED_PLUS_FOLIO_CONTEXT':'ARCHIVAL_FOLIO_CONTEXT_ONLY',
+    query_provenance:ranking.query_provenance,
     state:'UNRATIFIED_SOURCE_CONDITIONED_CANDIDATE_RANKING',
-    top_candidate:ranking?.top_candidate?Object.freeze({id:ranking.top_candidate.id,title:ranking.top_candidate.title,score:ranking.top_candidate.score}):null}),
+    top_candidate:ranking.top_candidate?Object.freeze({id:ranking.top_candidate.id,title:ranking.top_candidate.title,score:ranking.top_candidate.score}):null,
+    scored_candidates:Object.freeze(ranking.candidates.map(c=>Object.freeze({
+      id:c.id,title:c.title,regime:c.regime,score:c.score,breakdown:Object.freeze({...c.breakdown}),
+      research_question:c.researchQuestion||null,falsifier:c.falsifier||null
+    }))),
+    engine_trace:Object.freeze({
+      src_projective_links:ranking.src_atelier?.projective_routing?.candidate_link_count??null,
+      src_contextual_role_passes:ranking.src_atelier?.context_roles?.pass_count??null,
+      src_tomography_candidates:ranking.src_atelier?.phase2_tomography?.candidate_count??null,
+      src_tomography_composite:ranking.src_atelier?.phase2_tomography?.composite_score??null,
+      native_host_executable_invoked:false,manuscript_passages_read_by_wardrobe:false,
+      mode:'LOCAL_IN_BROWSER_ENGINE_ADAPTER',
+      attribution:'TECHNICAL_INSTRUMENT_REUSE_NOT_SCHOLARLY_AUTHORSHIP'
+    })
+  }),
   diagnostics:Object.freeze({svd_class:math?.svd_conditioning.classification??null,
     arrival_inversions:math?.vernier_summary.arrival_inversions??null}),
   authority:Object.freeze({technical_methods_elevated:0,empirical_credit:0,

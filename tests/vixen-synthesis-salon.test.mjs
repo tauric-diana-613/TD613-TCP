@@ -335,3 +335,15 @@ test('Human-facing Salon explicitly differentiates immutable Work title and prop
   dom.window.close();
  }
 });
+
+test('archival folio source context cannot mint a human-dictated synthesis candidate',()=>{
+ const source=scoreUnifiedSynthesisCandidates(corpus,{sourceContext:'TCC-04 five clocks',candidateLimit:20});
+ const human=scoreUnifiedSynthesisCandidates(corpus,{sourceContext:'TCC-04 five clocks',
+  operatorQuestion:'What independent witness would falsify clock inference?',candidateLimit:20});
+ assert.equal(source.query_provenance.human_question_supplied,false);
+ assert.equal(source.query_provenance.source_context_present,true);
+ assert.equal(source.candidates.some(x=>x.regime==='OPERATOR_DICTATED_SYNTHESIS'),false);
+ assert.equal(human.query_provenance.human_question_supplied,true);
+ assert.equal(human.candidates.some(x=>x.regime==='OPERATOR_DICTATED_SYNTHESIS'),true);
+ assert.equal(source.epistemic_ceiling.empirical_replication_credit,0);
+});
