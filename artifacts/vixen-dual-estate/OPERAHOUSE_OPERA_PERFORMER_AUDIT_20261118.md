@@ -1,14 +1,16 @@
 # OPERAHOUSE ≠ OPERA ≠ PERFORMER · Vixen Stage Boundary Tribunal
 **Commission:** 2026-11-18. **Target:** PR #1730, starting at `a5753d88127b35b48eb1caf2debf924e2ad29379`. **Constitution:** scholarly Work/manifestation provenance never transfers to display apparatus; host machinery never becomes the Vixen Opera; archived methods never inherit Performer identity by rendering.
 
-## Finite subject census
+## Finite subject census · corrected after operator objection (Finding 27)
+
+**Authoritative current interpretation: eight TCC folios, each with computation and Foundry staging; fourteen separate RC technical records.** Historical findings 4, 14, 15, 17 and 18 below document earlier mistaken restrictions, which are **superseded** by Finding 27. They may not be reused as current test obligations or user-facing copy.
+
 | Source or apparatus | Count | Type | Authorized consequence |
 | --- | ---: | --- | --- |
 | Original Works | 32 | PERFORMER source loci | Read original source evidence with unresolved authorship |
 | Linked manifestations | 53 | Original source coordinates | Source-preserving inspection |
 | Documentary instruments | 21 | Historical Vixen method records | Registry; standalone execution count remains zero |
-| TCC-01…07 | 7 | OPERA research-programme inquiries | Bounded, source-linked computational demonstrations |
-| TCC-08 | 1 | OPERA title ornament | Branding display; scientific ranking withheld |
+| TCC-01…08 | 8 | OPERA source-linked folio explorations | Bounded computation and ranking for all eight; TCC-08 retains a non-theorem source notation, never an experimental exclusion |
 | RC-01…14 | 14 | OPERAHOUSE technical/optical archived instruments | Offstage calculation only, no original Work or Performer claim |
 | Giveback tracks | 6 | OPERA prospective proposals | Demonstrations with empirical credit zero |
 | Human-ratified cross-Opera warrants | 0 | HELD | No automatic crosswalk, authorship merger or source promotion |
@@ -19,7 +21,7 @@ The original 22 formula and 6 giveback entries remain in the **same immutable co
 1. **Headline substitution:** `RC-03`, `RC-07`, `RC-10` were three of six public headliners. Replaced with exactly sourced `TCC-06`, `TCC-03`, `TCC-07` inquiries; six-aria stage remains intact.
 2. **Authorship inflation:** `sourceBadge()` marked even technical `RC` labs “ORIGINAL VIXEN CORPUS.” Corrected to explicit research-programme, ornament, prospective, and backstage technical classification; original Work attribution requires independent provenance.
 3. **Foundry backdoor:** `Stage 39-Skin Loom (RC-04)` and the `RC · 14` gallery promoted backstage optical instruments. Removed those routes and hardened the public `selectLab()` API; archived computational probes survive offstage.
-4. **Branding promoted to theory:** `TCC-08` is labelled `BRANDING_ORNAMENT_ONLY` in original source data. It now carries an explicit non-theorem kind and returns zero ranked proposals.
+4. **Historic mistaken restriction—SUPERSEDED:** The source status `BRANDING_ORNAMENT_ONLY` was incorrectly turned into a computation veto and zero candidate ranking for `TCC-08`. Finding 27 withdraws that decision while retaining the original non-theorem source ceiling.
 5. **Misleading identical rankers:** per-folio Foundry calculations were exact, while candidate ranking received an identical empty query. Now candidate ranking is conditioned on original folio ID/title/summary/linked source IDs and bounded optional operator question.
 6. **Test inversion:** Foundry unit and Chromium witnesses explicitly preferred the `RC` headline breach. Replaced these expectations with six onstage inquiry witnesses and exact negative RC-selection canaries.
 7. **Search edge:** Exact `RC-##` lookup already fails closed in the public wardrobe; semantic near-match retrieval must never substitute a scholarly source for an unmatched technical ID.
@@ -40,9 +42,9 @@ The original 22 formula and 6 giveback entries remain in the **same immutable co
 
 12. **Machine source-origin confusion:** the technical `RC` engine projections previously inherited `source_estate: EMSTD613` from the archive's container. Computed model receipts now distinguish `TD613_OPERAHOUSE` origin from `EMSTD613_ARCHIVAL_BUNDLE` custody, retaining original JSON unchanged.
 13. **Prospective technical formula staged as research equation:** prospective `TRACK-D` binds backstage `RC-09` optical methods. The visible proposal now presents a study question with no invented theorem; staging badges show the track identity, while machine receipts retain borrowed-optic provenance.
-14. **Global arithmetic inflation:** the overview and Foundry presented all 22 archived formulas as Vixen stage mathematics. Public counts now distinguish seven inquiry folios, one title ornament, and fourteen retained backstage methods.
+14. **Global arithmetic inflation:** The overview and Foundry had conflated all 22 archived formulas with Vixen stage mathematics. Current counts distinguish eight source-linked TCC folios from fourteen backstage RC methods; TCC-08's source notation remains non-theorem.
 
-15. **AI-facing instructions imported the retired breach:** `vix-cyb/llms.txt` still presented every archive formula as a Vixen stage theory and instructed assistant consumers to headline three RC engineering instruments. Updated to the exact 7-inquiry / 1-title-emblem / 14-technical-method ontology and six legitimate stage headliners. Added a non-regression test to exact-head CI.
+15. **AI-facing instructions imported the retired breach:** `vix-cyb/llms.txt` still presented every archive formula as a Vixen stage theory and instructed assistant consumers to headline three RC engineering instruments. Updated to the operator-corrected eight-TCC-folio / fourteen-RC-technical-method ontology, with six curated headliners but eight accessible folios. Added a non-regression test to exact-head CI.
 
 16. **Overbroad source-field exemption:** Search cards were entirely exempted from the interpretive public-copy filter in order to protect original titles. Scoped exemption to filename and source-title elements, restoring public copy normalization for ranking/method captions and other generated text.
 
