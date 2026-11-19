@@ -162,6 +162,9 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
   {role:'PERFORMER',estate:'EMSTD613',work_id:source.work_id},{work_id:source.work_id}),/OPERA_REQUIRES_TYPED_PERFORMER/);
  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',
   {...source},{work_id:source.work_id}),/OPERA_REQUIRES_TYPED_PERFORMER/);
+ assert.throws(()=>stageVixenOperaEvent('RELEASE',source,{}),/OPERA_EVENT_NOT_OBSERVATIONAL/);
+ assert.throws(()=>stageVixenOperaEvent('ADMIT',source,{}),/OPERA_EVENT_NOT_OBSERVATIONAL/);
+ assert.throws(()=>stageVixenOperaEvent('CONFIRM_AUTHORSHIP',source,{}),/OPERA_EVENT_NOT_OBSERVATIONAL/);
  assert.throws(()=>stageVixenOperaEvent('ADMIT',source,{admitRecord:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  assert.throws(()=>stageVixenOperaEvent('RELEASE',source,{release_authority:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
  assert.throws(()=>stageVixenOperaEvent('PROMOTE',source,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
