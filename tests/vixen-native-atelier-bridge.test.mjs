@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {resolve,dirname} from 'node:path';
 import {createNativeAtelierReadAdapters} from '../scripts/vixen-native-atelier-bridge.mjs';
 import {createPodiumNativeReadAdapters} from '../scripts/vixen-podium-native-adapters.mjs';
-import {BOUNDED_ENGINE_OPERATIONS} from '../app/encyclopedia/reference/vixen-podium.mjs';
+import {createVixenPodium,PODIUM_SCHEMA,BOUNDED_ENGINE_OPERATIONS} from '../app/encyclopedia/reference/vixen-podium.mjs';
 
 const repo=realpathSync(resolve(dirname(fileURLToPath(import.meta.url)),'..'));
 const native=createNativeAtelierReadAdapters({repoRoot:repo});
@@ -122,4 +122,33 @@ test('original SRC archive is executed through the genuine native host bridge wi
  assert.ok(assay.data.document_count>0,'read actual retained SRC source derivatives, not a synthetic fixture');
  assert.equal(assay.data.status,'BOUNDED_MACHINE_PASS_HUMAN_ADJUDICATION_REQUIRED');
  assert.ok(assay.data.automatic_promotions_forbidden.includes('MACHINE_ROUTING_EFFECT_CONFIRMED'));
+});
+
+test('explicit Podium engine.invoke executes the retained SRC Python resolver but keeps scientific authorization HELD',async()=>{
+ const html=readFileSync(resolve(repo,'app/encyclopedia/vix-cyb.html'),'utf8');
+ const embedded=html.match(/<script[^>]*id="vixen-corpus-bundle"[^>]*>([\\s\\S]*?)<\\/script>/);
+ assert.ok(embedded,'original Vixen corpus must be loaded from its unchanged source bundle');
+ const corpus=JSON.parse(embedded[1]);
+ const seal=JSON.parse(readFileSync(resolve(repo,'packages/dome_world_exact/fixtures/a15-r0/SRC/04-RECEIPTS/phase2/current-seal.json'),'utf8'));
+ const adapters=await createPodiumNativeReadAdapters({repoRoot:repo});
+ const reader={open:async()=>({state:'CENSUS_MATCHED'}),search:()=>[],getRecord:async()=>null,
+  related:()=>[],status:()=>({state:'UNOPENED'})};
+ const command={schema:PODIUM_SCHEMA,intent:'engine.invoke',params:{
+  engine:'SRC_ATELIER',operation:'src_native_epoch_query',payload:{
+   snapshot_id:seal.atelier_snapshot_id,seal_id:seal.seal_id,
+   action:'resolve',entity_id:'academia:145078372:page'
+  }
+ }};
+ const denied=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:false,engineAdapters:adapters}).dispatch(command);
+ assert.equal(denied.status,'HELD');
+ const executed=await createVixenPodium({corpus,membrane:reader,operatorAuthorized:true,engineAdapters:adapters}).dispatch(command);
+ assert.equal(executed.status,'HELD','native execution never auto-adjudicates evidence');
+ assert.equal(executed.result.state,'UNVERIFIED_ENGINE_ADAPTER_RETURN');
+ assert.equal(executed.result.engine,'SRC_ATELIER');
+ assert.equal(executed.result.operation,'src_native_epoch_query');
+ assert.equal(executed.result.output.kind,'ORIGINAL_NATIVE_EXECUTABLE');
+ assert.equal(executed.result.output.data.query_epoch.seal_id,seal.seal_id);
+ assert.equal(executed.result.output.data.result.entity_id,'academia:145078372:page');
+ assert.equal(executed.result.endorsement,false);
+ assert.equal(executed.result.scientific_credit,0);
 });
