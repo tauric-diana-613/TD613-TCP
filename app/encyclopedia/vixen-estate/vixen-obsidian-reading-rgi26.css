@@ -22,7 +22,7 @@
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksReaderPanel.lexicon-reader{
   --ink:#e9e0d2;--dim:#b7aa9b;--gold:#e3bb78;--rose:#f7a3b6;--rule:#84695877;
   min-width:0!important;padding:clamp(10px,1vw,17px)!important;
-  background:radial-gradient(ellipse 85% 36% at 85% 1%,#402f383a,transparent 76%),#0b1215!important;
+  background:radial-gradient(ellipse 85% 36% at 85% 1%,#3436383a,transparent 76%),#0b1215!important;
   color:var(--ink)!important;border:1px solid #bca48091!important;
   border-radius:4px!important;box-shadow:0 24px 70px #0009,inset 0 0 0 1px #f4cc8510!important
 }
@@ -55,7 +55,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-reading-atelier-bar{
   display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;
   align-items:end!important;gap:10px!important;padding:9px 12px 10px!important;margin:5px 0 0!important;
-  background:linear-gradient(110deg,#35252c,#182326 57%,#0c151a)!important;
+  background:linear-gradient(110deg,#323437,#182326 57%,#0c151a)!important;
   border:1px solid #b5917499!important;border-bottom:2px solid #efb2ad!important;border-radius:2px 2px 0 0!important
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-folio-identity{
@@ -86,7 +86,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperiment
   background:#eec998!important;color:#191c1e!important;border-color:#fff5d5!important
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-controls button,.vix-folio-footer button):hover{
-  border-color:#ff8eac!important;color:#fff5dc!important;background:#573442!important
+  border-color:#ff8eac!important;color:#fff5dc!important;background:#585258!important
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount :is(.vix-folio-controls button,.vix-folio-footer button):focus-visible,
 #constitutiveInquiry :is(button,summary):focus-visible{outline:3px solid #e9be85!important;outline-offset:3px!important}
