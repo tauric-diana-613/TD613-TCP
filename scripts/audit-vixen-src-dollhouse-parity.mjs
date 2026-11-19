@@ -49,7 +49,7 @@ const matrix=srcModules.map(([capability,originalPyName,jsExport,podiumOperation
    ? content[podium].includes("'"+podiumOperation+"'")
    : content[podium].includes("operation==='"+podiumOperation+"'")):false;
  const native_host_present=podiumOperation?.startsWith('src_native_')?
-  content[native].includes("operation==='"+podiumOperation+"'"):null;
+  content[native].includes("'"+podiumOperation+"'"):null;
  const consumer_wired=consumer?
   (consumer===salon?content[salon].includes(jsExport)||content[salon].includes('evaluateCorpusWithSrcEngines'):
    content[search].includes('srcEngines')||content[search].includes('deriveSrcQueryConditionedWeights')):null;
