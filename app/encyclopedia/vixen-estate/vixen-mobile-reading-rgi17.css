@@ -102,7 +102,7 @@
     border:1px solid #ebd8de!important;
     border-radius:9px!important;
     background:#f8f0f1!important;
-    color:#473842!important;
+    color:#414348!important;
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .expa-custody-disclosure summary {
     color:#7d3b54!important;
@@ -189,7 +189,7 @@
     padding:12px 14px!important;
     border-left:3px solid #ae5274!important;
     background:#f7edef!important;
-    color:#423b40!important;
+    color:#3e4245!important;
   }
   body:not([data-active-research-stage="OPERAHOUSE"]) #view-works #worksExperimentAReaderMount .vix-manuscript :is(.vix-reader-code,.vix-math-display,.vix-reader-raw pre) {
     max-width:100%!important;
