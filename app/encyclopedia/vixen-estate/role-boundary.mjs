@@ -6,7 +6,7 @@
  * Theater metaphor is an ontological type constraint, never a license for
  * infrastructure to declare authorship or for a performer to deploy itself.
  */
-import {assertLocalVixenSourceRoster} from './vixen-performer-source-roster.mjs';
+import {assertLocalVixenSourceRoster,belongsToVixenPerformerSource} from './vixen-performer-source-roster.mjs';
 export const VIXEN_ROLE_SCHEMA='td613.vixen.presentation-roles/v1';
 
 export const STAGE_ROLES=Object.freeze({
@@ -106,6 +106,16 @@ export function stageVixenOperaEvent(action,performer,details={}){
     throw new TypeError('OPERA_EVENT_DETAILS_NOT_SCALAR:'+key);
    if(typeof value==='number'&&!Number.isFinite(value))
     throw new TypeError('OPERA_EVENT_DETAILS_NONFINITE:'+key);
+  }
+  // Bind each observation's named Work and manifestation coordinates to the
+  // actually issued local Performer, rather than merely trusting an event verb.
+  if(('work_id' in details&&details.work_id!==performer.work_id)||
+     ('target' in details&&details.target!==performer.work_id))
+   throw new TypeError('OPERA_EVENT_WORK_COORDINATE_MISMATCH');
+  for(const key of ['first_source_id','second_source_id']){
+   if(key in details&&details[key]!==null&&
+      !belongsToVixenPerformerSource(performer.work_id,details[key]))
+    throw new TypeError('OPERA_EVENT_SOURCE_COORDINATE_MISMATCH:'+key);
   }
   return Object.freeze({
     role:STAGE_ROLES.OPERA.role,

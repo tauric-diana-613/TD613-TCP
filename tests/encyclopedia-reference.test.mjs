@@ -195,6 +195,18 @@ test('Operahouse ≠ Opera ≠ Performer, with no authority inherited by a Vixen
   assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{[Symbol('authority')]:true}),
     /OPERA_EVENT_DETAILS_UNDECLARED/);
  assert.throws(()=>stageVixenOperaEvent('PROMOTE',source,{cross_estate_authorship:true}),/OPERAHOUSE_AUTHORITY_LEAK/);
+  assert.throws(()=>stageVixenOperaEvent('VIXEN_WORK_SELECTED',source,{work_id:'emwork_'+'0'.repeat(24)}),
+    /OPERA_EVENT_WORK_COORDINATE_MISMATCH/);
+  assert.throws(()=>stageVixenOperaEvent('INSPECT_WORK',source,{target:vixenCorpus.works[1].work_id}),
+    /OPERA_EVENT_WORK_COORDINATE_MISMATCH/);
+  assert.throws(()=>stageVixenOperaEvent('VIXEN_METADATA_OBSERVED',source,{
+    first_source_id:vixenCorpus.works[1].linked_sources[0].source_file_id,
+    second_source_id:null,classification:'METADATA_COMPARISON_ONLY'}),
+    /OPERA_EVENT_SOURCE_COORDINATE_MISMATCH/);
+  assert.equal(stageVixenOperaEvent('VIXEN_METADATA_OBSERVED',source,{
+    first_source_id:vixenCorpus.works[0].linked_sources[0].source_file_id,
+    second_source_id:vixenCorpus.works[0].linked_sources[1]?.source_file_id||null,
+    classification:'METADATA_COMPARISON_ONLY'}).performer.work_id,source.work_id);
  const infra=readOperahouseStatus({state:'CENSUS_MATCHED'});
  assert.equal(infra.role,'OPERAHOUSE');assert.equal(infra.release_authority,false);
  assert.equal(infra.experiment_b_flight,'HELD');

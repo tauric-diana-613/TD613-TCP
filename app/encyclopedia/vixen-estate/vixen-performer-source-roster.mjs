@@ -13,6 +13,13 @@ function workCoordinate(work){
     s=>[s.source_file_id,s.sha256??null,s.original_filename??null])
  ]);
 }
+export function belongsToVixenPerformerSource(workId,sourceFileId){
+ if(typeof sourceFileId!=='string')return false;
+ const serialized=PINNED_LOCAL_WORK_COORDINATES.get(workId);
+ if(!serialized)return false;
+ const row=JSON.parse(serialized);
+ return row[5].some(source=>source[0]===sourceFileId);
+}
 export function assertLocalVixenSourceRoster(corpus){
  if(!Array.isArray(corpus?.works)||corpus.works.length!==32)
   throw new TypeError('PERFORMER_SOURCE_ROSTER_REQUIRED');
