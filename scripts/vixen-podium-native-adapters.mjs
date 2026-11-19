@@ -522,7 +522,7 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
 
  if(srcEngines){
   adapters.SRC_ATELIER=async({operation,payload={}}={})=>{
-   if(operation==='src_verified_vixen_work_pair'){
+   if(operation==='src_verified_vixen_work_pair'||operation==='src_verified_vixen_original_projective_differential'){
     // Read only the two explicitly requested Vixen Works. The SRC engine
     // supplies computation; SRC's research corpus supplies no input.
     const workIds=payload.work_ids;
@@ -579,6 +579,68 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
      });
     }
     const projective=srcEngines.runSrcProjectiveRouting(documents,documents);
+    let originalDifferential=null;
+    if(operation==='src_verified_vixen_original_projective_differential'){
+     const python=process.env.TD613_NATIVE_PYTHON||(process.platform==='win32'?'python':'python3');
+     const script=resolve(repoRoot,'scripts','vixen-src-original-projective-differential.py');
+     if(!existsSync(script))throw Error('HELD_SRC_ORIGINAL_PYTHON_REPLAY_SCRIPT_UNAVAILABLE');
+     const packet={query,documents:documents.map((d,i)=>({
+      record_id:d.work_id,title:d.title,body:d.body,created:d.created,
+      body_sha256:sourceProofs[i].verified_derivative_sha256
+     }))};
+     let replay;
+     try{
+      replay=JSON.parse(execFileSync(python,[script],{
+       cwd:repoRoot,input:JSON.stringify(packet),encoding:'utf8',
+       timeout:20000,maxBuffer:4*1024*1024,
+       env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',PYTHONUTF8:'1'}
+      }));
+     }catch(e){
+      throw Error('HELD_SRC_ORIGINAL_PYTHON_REPLAY_FAILED: '+String(e?.message||'UNKNOWN').slice(0,180));
+     }
+     if(replay?.native_python_executed!==true||
+       replay.verified_vixen_derivatives?.length!==sourceProofs.length||
+       replay.verified_vixen_derivatives.some((p,i)=>
+        p.work_id!==sourceProofs[i].work_id||
+        p.sha256!==sourceProofs[i].verified_derivative_sha256))
+      throw Error('HELD_SRC_PYTHON_DERIVATIVE_RECEIPT_MISMATCH');
+     const jsEdges=projective.links.map(edge=>{
+      const cue=projective.cues.find(x=>x.cue_id===edge.cue_id);
+      return [edge.source_record_id,cue?.normalized_target||'',
+       edge.target_record_id,edge.match_type,edge.temporal_relationship].join('|');
+     }).sort();
+     const pythonEdges=replay.real_body_edges;
+     const jsSet=new Set(jsEdges),pythonSet=new Set(pythonEdges);
+     const queryControl=srcEngines.runSrcProjectiveRouting([{
+      record_id:documents[0].record_id,title:documents[0].title,
+      body:query.replace(/[.!?]+$/,'')+'.',created:documents[0].created
+     }],documents);
+     const jsProbe=[...new Set(queryControl.links.map(x=>
+      x.target_record_id+'|'+x.match_type))].sort();
+     const pyProbe=[...new Set(replay.operator_query_probe.candidates.map(x=>
+      x.work_id+'|'+x.match_type))].sort();
+     originalDifferential={
+      schema:'td613.vixen.src-original-projective-differential/v1',
+      original_python_replay:replay,
+      javascript_engine:projective.method,
+      real_work_comparison:{
+       javascript_edge_count:jsEdges.length,original_python_edge_count:replay.real_body_edge_count,
+       javascript_only:jsEdges.filter(x=>!pythonSet.has(x)).slice(0,32),
+       python_only:pythonEdges.filter(x=>!jsSet.has(x)).slice(0,32),
+       comparison_complete:!replay.real_body_edges_truncated,
+       observed_original_cues:projective.cue_count>0||replay.real_body_observation_count>0,
+       exact_agreement:replay.real_body_edges_truncated?'HELD_TRUNCATED':
+        JSON.stringify(jsEdges)===JSON.stringify(pythonEdges)
+      },
+      synthetic_query_probe:{
+       evidence_class:'SYNTHETIC_OPERATOR_QUERY_NOT_MANUSCRIPT',
+       original_python:pyProbe,javascript:jsProbe,
+       exact_agreement:JSON.stringify(jsProbe)===JSON.stringify(pyProbe)
+      },
+      full_method_equivalence:'HELD_UNPROVEN',
+      scientific_credit:0,human_closure_required:true
+     };
+    }
     const conditioned=srcEngines.deriveSrcQueryConditionedWeights(query,'src_projective',null);
     const scored=documents.map((doc,i)=>({
      work_id:doc.work_id,source_file_id:sourceProofs[i].source_file_id,
@@ -587,11 +649,12 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
      },doc.body)
     }));
     return {
-     schema:'td613.vixen.src-verified-work-pair/v1',
+     schema:originalDifferential?'td613.vixen.src-verified-native-projective-differential/v1':'td613.vixen.src-verified-work-pair/v1',
      method:'SRC_VERIFIED_VIXEN_WORK_PAIR_COMPUTATION',
      source_estate:'VIXEN_EXPERIMENT_A_ONLY',
      computational_engine:'SRC_ATELIER_ISOMORPHIC',
-     native_python_executed:false,
+     native_python_executed:Boolean(originalDifferential),
+     original_native_differential:originalDifferential,
      read_only:true,query_regime:conditioned.regimeId,
      source_proofs:sourceProofs,scored_works:scored,
      projective_routing:{
