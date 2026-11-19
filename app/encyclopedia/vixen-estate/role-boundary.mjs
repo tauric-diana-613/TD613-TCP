@@ -36,6 +36,11 @@ export const STAGE_ROLES=Object.freeze({
 
 const ISSUED_PERFORMERS=new WeakSet();
 const SOURCE_WORK_ID=/^emwork_[0-9a-f]{24}$/;
+const OBSERVATION_EVENTS=new Set([
+ 'INSPECT_WORK','VIXEN_WORK_SELECTED','MANIFESTATION_COMPARISON_OPENED',
+ 'VIXEN_METADATA_OBSERVED','HUMAN_QUESTION_OPENED','UNPENALIZED_REST',
+ 'OPERATOR_RESUMED','OPERA_RETURNED_TO_NOTICE'
+]);
 
 const AUTHORITY_DENIED=new Set([
   'release_authority','deployment_authority','merge_authority',
@@ -72,6 +77,9 @@ export function stageVixenOperaEvent(action,performer,details={}){
   if(!details||typeof details!=='object'||Array.isArray(details))throw new TypeError('OPERA_EVENT_DETAILS_INVALID');
   for(const key of Object.keys(details))if(AUTHORITY_DENIED.has(key))throw new TypeError('OPERAHOUSE_AUTHORITY_LEAK:'+key);
   if('role' in details||'layer' in details||'estate' in details||'performer' in details)throw new TypeError('OPERA_IDENTITY_COLLISION');
+  // Even a properly issued Performer cannot label an observation as a deploy,
+  // release, admit, promotion or adjudication event.
+  if(!OBSERVATION_EVENTS.has(action))throw new TypeError('OPERA_EVENT_NOT_OBSERVATIONAL:'+action);
   return Object.freeze({
     role:STAGE_ROLES.OPERA.role,
     opera:'VIXEN_CYBERNETICS_ENCYCLOPEDIA',
