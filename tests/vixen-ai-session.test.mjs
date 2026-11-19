@@ -214,3 +214,37 @@ test('The standard portable session ZIP optionally carries the visitor journey w
  });
  assert(!denied.entries.some(x=>x.path.endsWith('/ai-research-journey.json')));
 });
+
+test('Maestro keeps a visitor-selected Work distinct from a rival Work it really inspected',async()=>{
+ const selected='emwork_f2c89864337f162e88991e28';
+ const base='emwork_dd9a66eba0e2dde8e29f00f6';
+ const podium=createVixenPodium({corpus});
+ const start=await podium.dispatch(task('vixen.ai.start',{role:'MAESTRO',
+  goal:'Explore the difference between source evidence and computational analogy'}));
+ assert.equal(start.status,'SUPPORTED');
+ const compare=await podium.dispatch(task('vixen.ai.choose',{
+  choice_id:'compare',source_work_id:base,
+  question:'What source-specific reading distinguishes two research areas?'
+ }));
+ assert.equal(compare.status,'SUPPORTED');
+ const rival=await podium.dispatch(task('vixen.ai.choose',{
+  choice_id:'countertest',source_work_id:selected,
+  question:'What independent observation could defeat a claimed derivation?'
+ }));
+ assert.equal(rival.status,'SUPPORTED');
+ const boundary=rival.result.narrative.selection_execution_boundary;
+ assert.equal(boundary.selected_work_id,selected);
+ assert.equal(boundary.selection_is_not_read_receipt,true);
+ assert.equal(boundary.read_is_not_lineage_proof,true);
+ const observed=(rival.result.narrative.observed_reads||[])
+  .filter(x=>x.status==='OBSERVED_READ_ONLY'&&x.intent==='vixen.work.inspect')
+  .map(x=>x.record.work_id);
+ assert.deepEqual(boundary.observed_work_ids,[...new Set(observed)]);
+ assert.equal(boundary.inspection_status,
+  observed.includes(selected)?'SELECTED_SOURCE_ACTUALLY_INSPECTED':
+   observed.length?'SELECTED_SOURCE_NOT_INSPECTED_RIVAL_READ':
+   'SELECTED_SOURCE_NOT_INSPECTED_NO_READ');
+ assert.ok(boundary.observed_work_ids.every(x=>ids.includes(x)),
+  'The rival may only be a real Vixen source');
+ assert.equal(rival.result.narrative.provenance.no_admitted_crosswalk,true);
+});

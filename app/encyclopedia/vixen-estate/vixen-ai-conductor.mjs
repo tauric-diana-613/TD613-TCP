@@ -270,6 +270,22 @@ export async function conductVixenNarrativeTurn({
   'Why this trail: '+reason+'.',
   'What remains open: '+questions
  ].filter(Boolean);
+ const observedWorkIds=unique(reads.filter(r=>
+  r.status==='OBSERVED_READ_ONLY'&&r.intent==='vixen.work.inspect'&&
+  typeof r.record?.work_id==='string').map(r=>r.record.work_id));
+ const selectedWorkId=typeof source_work_id==='string'&&
+   corpus.works.some(w=>w.work_id===source_work_id)?source_work_id:null;
+ const sourceInspectionStatus=!selectedWorkId?'NO_EXPLICIT_SOURCE_SELECTION':
+  observedWorkIds.includes(selectedWorkId)?'SELECTED_SOURCE_ACTUALLY_INSPECTED':
+  observedWorkIds.length?'SELECTED_SOURCE_NOT_INSPECTED_RIVAL_READ':
+  'SELECTED_SOURCE_NOT_INSPECTED_NO_READ';
+ const selectionExecutionBoundary=Object.freeze({
+  selected_work_id:selectedWorkId,featured_work_id:featured?.work_id||null,
+  observed_work_ids:observedWorkIds,inspection_status:sourceInspectionStatus,
+  selection_is_not_read_receipt:true,
+  read_is_not_lineage_proof:true,
+  evidence_class:'OPERATOR_SELECTION_AND_OBSERVED_HOST_READS_SEPARATED'
+ });
  const options=routeOptions(path,role,ranked,trail);
  const quests=questsForTurn({role,path,featured,alternative:contrasting,reads,step:step_number});
  const narrative=Object.freeze({
@@ -283,6 +299,7 @@ export async function conductVixenNarrativeTurn({
  return Object.freeze({schema:MAESTRO_CONDUCTOR_SCHEMA,role,choice_id:path,
   narrative,featured_work:featured,alternative_work:contrasting,
   source_candidates:ranked,observed_reads:reads,
+  selection_execution_boundary:selectionExecutionBoundary,
   choices:options,quests,cart_ids:unique(cart).slice(0,100),
   research_cart_recommendation:featured?.work_id?{
     work_id:featured.work_id,title:featured.title,reason:'Review or add this source through the visitor-controlled research cart',

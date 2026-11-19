@@ -83,6 +83,24 @@ async function witness(){
   route.push(out.result.step);
   turns.push(out.result.narrative);
  }
+ const alignments=route.map((step,i)=>{
+  const boundary=turns[i+1].selection_execution_boundary;
+  assert.equal(boundary.selected_work_id,step.source_work_id,
+   'Visitor selection must remain explicitly identified across the research turn');
+  const actual=[...new Set((turns[i+1].observed_reads||[])
+   .filter(r=>r.status==='OBSERVED_READ_ONLY'&&r.intent==='vixen.work.inspect'&&r.record?.work_id)
+   .map(r=>r.record.work_id))];
+  assert.deepEqual(boundary.observed_work_ids,actual,
+   'A declared selection cannot fabricate an observed read');
+  assert.equal(boundary.selection_is_not_read_receipt,true);
+  assert.equal(boundary.read_is_not_lineage_proof,true);
+  return {step:step.sequence,node_id:step.node_id,selected_work_id:step.source_work_id,
+   featured_work_id:boundary.featured_work_id,observed_work_ids:actual,
+   inspection_status:boundary.inspection_status,
+   proposed_connection_proved:false};
+ });
+ assert.ok(alignments.some(x=>x.observed_work_ids.length),
+  'At least one research step must contain a real read');
  const sourceReads=[];
  for(const turn of turns){
   assert.equal(turn.role,'MAESTRO');
@@ -142,6 +160,7 @@ async function witness(){
   steps:route.map(x=>({sequence:x.sequence,node_id:x.node_id,source_work_id:x.source_work_id,
    evidence_class:x.evidence_class})),
   source_reads:sourceReads,
+  route_selected_vs_inspected:alignments,
   original_works:workIds,
   method_execution:{
    original_src_python_executed:true,
