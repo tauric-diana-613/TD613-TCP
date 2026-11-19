@@ -360,11 +360,27 @@ test('SRC adapter cannot manufacture source chronology, research cues, observed 
  assert.equal(x.phase2_tomography.claimed_observed_transformations,0);
  assert.equal(x.context_roles.witnessed_executions,0);
  assert.equal(x.context_roles.documentary_only,true);
- assert.equal(x.context_roles.role_count,corpus.instruments.length,'Every actually recorded method is documentary, not arbitrarily the first six');
+ assert.equal(x.context_roles.role_count,0,'Documentary roster is not a compiler execution');
+ assert.equal(x.context_roles.pass_count,0,'No executed source compilation pass is recorded');
+ assert.equal(x.context_roles.documentary_protocol_count,corpus.instruments.length);
  assert.equal(x.evidence_basis.documentary_protocol_count,corpus.instruments.length);
  assert.equal(x.empirical_replication_credit,0);
  const copy=structuredClone(corpus);
  copy.formula_folios.reverse();
  assert.deepEqual(evaluateCorpusWithSrcEngines(copy).phase2_tomography,x.phase2_tomography,
   'Changing formula archive order cannot change scientific source-lift evidence');
+});
+
+test('SRC unobserved methods cannot inflate the unified ranking evidence score',()=>{
+ const ranked=scoreUnifiedSynthesisCandidates(corpus,{candidateLimit:20});
+ assert.equal(ranked.src_atelier.phase2_tomography.candidate_count,0);
+ assert.equal(ranked.src_atelier.context_roles.pass_count,0);
+ assert.equal(ranked.src_atelier.projective_routing.raw_numeral_delta,0);
+ for(const cand of ranked.candidates){
+  assert.equal(cand.breakdown.src_relevance_only,true);
+  assert.equal(cand.breakdown.src_observed_transformation_count,0);
+  assert.equal(cand.breakdown.src_witnessed_compiler_executions,0);
+  if(ranked.src_atelier.projective_routing.cue_count===0&&ranked.src_atelier.projective_routing.field_marker_hits===0)
+   assert.equal(cand.breakdown.src_projective_tomography,0);
+ }
 });
