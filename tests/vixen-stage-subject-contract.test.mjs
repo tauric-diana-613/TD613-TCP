@@ -92,6 +92,9 @@ test('AI guide cannot reimport archived RC optics as Opera headline works',()=>{
  assert.match(guide,/RC-03.*RC-07.*RC-10.*no right to headline/i);
  assert.match(guide,/LAB_RC-##/);
  assert.match(guide,/TCC-08.*authorial title-locus notation/);
- assert.match(guide,/bounded computational connection/);
+ assert.match(guide,/browser-isomorphic/);
+ assert.match(guide,/sourceContext/);
+ assert.match(guide,/operatorQuestion/);
+ assert.match(guide,/separately gated Podium/);
  assert.doesNotMatch(guide,/dial cabinet for `TCC-01`, `TCC-04`, `TCC-05`, `RC-03`, `RC-07`, `RC-10`/);
 });
