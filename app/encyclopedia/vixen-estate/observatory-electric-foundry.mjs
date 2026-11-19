@@ -438,7 +438,7 @@ export async function mountVixenElectricFoundry({
    const b=BTN(name,()=>switchLab(id),'ef-hero-tab');
    b.dataset.labId=id;b.dataset.ariaNumber=String(HEROES.indexOf(id)+1).padStart(2,'0');
    b.setAttribute('aria-pressed',String(state.labId===id));
-   b.setAttribute('aria-label','Select experiment '+String(HEROES.indexOf(id)+1)+': '+name);
+   b.setAttribute('aria-label','Select featured source model '+String(HEROES.indexOf(id)+1)+': '+name);
    b.append(node('small','',item.folio_id));
    if(state.labId===id){
     const gold=node('span','ef-silver-lace'); // retained class for historical compatibility
@@ -539,7 +539,7 @@ export async function mountVixenElectricFoundry({
     add(equation,label('PROSPECTIVE STUDY · NO CLAIMED ORIGINAL EQUATION'),
      node('p','','This unexecuted research track uses separately attributed optical instrumentation; the backstage model never becomes an authored Vixen theorem.'));
    }else if(current.source_ornament===true){
-    add(equation,label('EIGHTH SOURCE FOLIO · SYMBOLIC OPTICAL PROBE · NOT A THEOREM'),node('p','',ellipsis(current.formula,440)));
+    add(equation,label('TITLE-LOCUS SOURCE MODEL · SYMBOLIC OPTICAL PREVIEW · NOT A THEOREM'),node('p','',ellipsis(current.formula,440)));
    }else{
     add(equation,label('SOURCE-BOUND RESEARCH-PROGRAMME FORMULA · BOUNDED RECONSTRUCTION'),
      node('p','',ellipsis(current.formula,440)));
