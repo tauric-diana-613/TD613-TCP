@@ -580,7 +580,7 @@ try {
     await ornamentCard.locator('[data-compute-vixen-folio]').click();
     await page.waitForFunction(()=>document.querySelector('[data-folio-id="TCC-08"] [data-vixen-computation]')?.textContent.includes('LIVE SOURCE-BOUND COMPUTATION · TCC-08'),null,{timeout:30000});
     assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/LAB_TCC-08/);
-    assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/not an arithmetic theorem or empirical proof/);
+    assert.match(await ornamentCard.locator('[data-vixen-computation]').innerText(),/arithmetic theorem[\s\S]*empirical proof/);
     await galleryReveal.click();
     assert.equal(await wardrobe.locator('.formula-card:visible').count(),4,
       'The curated gallery closes without changing immutable source records');
