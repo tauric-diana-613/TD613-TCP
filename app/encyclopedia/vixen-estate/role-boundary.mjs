@@ -34,17 +34,26 @@ export const STAGE_ROLES=Object.freeze({
   })
 });
 
+const ISSUED_PERFORMERS=new WeakSet();
+const SOURCE_WORK_ID=/^emwork_[0-9a-f]{24}$/;
+
 const AUTHORITY_DENIED=new Set([
   'release_authority','deployment_authority','merge_authority',
   'scientific_closure_authority','identity_adjudication_authority',
   'admitRecord','prepareImport','cross_estate_authorship'
 ]);
 
-export function castVixenPerformer(work){
-  if(!work||typeof work.work_id!=='string'||!work.work_id.trim())throw new TypeError('PERFORMER_WORK_ID_REQUIRED');
-  // Preserve historical source ID as a provenance coordinate; never infer
-  // civil identity, shared authorship, or permission to admit new source bodies.
-  return Object.freeze({
+export function castVixenPerformer(work,corpus){
+  if(!work||typeof work.work_id!=='string'||!work.work_id.trim())
+    throw new TypeError('PERFORMER_WORK_ID_REQUIRED');
+  if(!Array.isArray(corpus?.works)||corpus.works.length!==32)
+    throw new TypeError('PERFORMER_SOURCE_ROSTER_REQUIRED');
+  // Positive membership in this caller's admitted 32-Work source roster,
+  // coupled to an issued object identity, prevents ad-hoc role labels and RC
+  // method IDs from becoming Performer-shaped Opera event inputs.
+  if(!SOURCE_WORK_ID.test(work.work_id)||!corpus.works.some(row=>row===work))
+    throw new TypeError('PERFORMER_WORK_NOT_IN_SOURCE_ROSTER');
+  const performer=Object.freeze({
     role:STAGE_ROLES.PERFORMER.role,
     estate:'EMSTD613',
     work_id:work.work_id,
@@ -52,11 +61,14 @@ export function castVixenPerformer(work){
     identity_status:work.identity_status||'UNRESOLVED',
     source_level:'EXPERIMENT_A_PREVIEW_AUTHORIZED'
   });
+  ISSUED_PERFORMERS.add(performer);
+  return performer;
 }
 
 export function stageVixenOperaEvent(action,performer,details={}){
   if(typeof action!=='string'||!/^[A-Z][A-Z0-9_]*$/.test(action))throw new TypeError('OPERA_EVENT_ACTION_INVALID');
-  if(performer?.role!==STAGE_ROLES.PERFORMER.role||performer?.estate!=='EMSTD613')throw new TypeError('OPERA_REQUIRES_TYPED_PERFORMER');
+  if(performer?.role!==STAGE_ROLES.PERFORMER.role||performer?.estate!=='EMSTD613'||
+     !ISSUED_PERFORMERS.has(performer))throw new TypeError('OPERA_REQUIRES_TYPED_PERFORMER');
   if(!details||typeof details!=='object'||Array.isArray(details))throw new TypeError('OPERA_EVENT_DETAILS_INVALID');
   for(const key of Object.keys(details))if(AUTHORITY_DENIED.has(key))throw new TypeError('OPERAHOUSE_AUTHORITY_LEAK:'+key);
   if('role' in details||'layer' in details||'estate' in details||'performer' in details)throw new TypeError('OPERA_IDENTITY_COLLISION');
