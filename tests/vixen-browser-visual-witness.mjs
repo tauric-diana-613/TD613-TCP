@@ -551,11 +551,6 @@ try {
       links:[...node.querySelectorAll('[data-open-ref]')].map(n=>n.getAttribute('data-open-ref')),
       source:node.textContent
     })));
-    const originalRoster=await page.evaluate(()=>new Set(JSON.parse(
-      document.querySelector('#vixen-corpus-bundle').textContent
-    ).works.map(w=>w.work_id)));
-    // DOM serialization keeps only plain arrays; local roster is reconstructed
-    // without equating TCC/RC formula IDs to actual original manuscript Works.
     const recordedIds=await page.evaluate(()=>JSON.parse(
       document.querySelector('#vixen-corpus-bundle').textContent
     ).works.map(w=>w.work_id));
