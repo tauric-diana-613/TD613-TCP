@@ -82,7 +82,7 @@ export function mountVixenResearchChamber({container=$('vixenReferenceChamber')}
  const sources=()=>(work().linked_sources||[]);
  const track=(verb,details={})=>{
   const prev=state.events[state.events.length-1];
-  state.events.push(Object.freeze({seq:++state.seq,predecessor_seq:prev?prev.seq:null,...stageVixenOperaEvent(verb,castVixenPerformer(work()),details)}));
+  state.events.push(Object.freeze({seq:++state.seq,predecessor_seq:prev?prev.seq:null,...stageVixenOperaEvent(verb,castVixenPerformer(work(),corpus),details)}));
  };
  function chooseWork(i){if(!Number.isInteger(i)||i<0||i>=corpus.works.length)return;state.workIndex=i;state.first=0;state.second=1;state.result=null;state.annotation='';state.phase='NOTICE';track('VIXEN_WORK_SELECTED',{work_id:work().work_id});render()}
  function begin(){if(state.phase!=='NOTICE')return;state.phase='ACT';track('MANIFESTATION_COMPARISON_OPENED',{work_id:work().work_id});render()}
