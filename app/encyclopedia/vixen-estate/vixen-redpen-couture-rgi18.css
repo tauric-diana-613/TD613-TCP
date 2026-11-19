@@ -278,7 +278,7 @@ body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-ar
 }
 body:not([data-active-research-stage="OPERAHOUSE"]) #vixenElectricFoundry .ef-aria-score>.ef-kicker {
  padding:18px 17px 16px!important;min-height:0!important;
- color:#5a404c!important;
+ color:#554b50!important;
  font:750 9px/1.45 ui-monospace,Consolas,monospace!important;
  letter-spacing:.12em!important;
 }
