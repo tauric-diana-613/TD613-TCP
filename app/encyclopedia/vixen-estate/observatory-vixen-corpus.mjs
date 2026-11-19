@@ -16,6 +16,7 @@ import {
  fieldAt,sceneProbe,project111,singularValues2,fiveClockTicks,
  FOUNDRY_SCHEMA,CARRIERS
 } from './observatory-foundry-kernel.mjs';
+import {auditVixenFolioCensus,classifyVixenFolio} from './vixen-stage-subject-contract.mjs';
 
 export const VIXEN_LABS_SCHEMA='emstd613.vixen.corpus-referenced-observatory/v1';
 export const VIXEN_SOURCE_ESTATES=Object.freeze({
@@ -52,6 +53,7 @@ const freeze=o=>Object.freeze(o);
 export function buildVixenLaboratories(corpus){
  ensure(corpus&&Array.isArray(corpus.formula_folios)&&corpus.formula_folios.length===22,
   'VIXEN_22_CANONICAL_FOLIOS_REQUIRED');
+ auditVixenFolioCensus(corpus);
  ensure(Array.isArray(corpus.works)&&corpus.works.length===32,'VIXEN_32_WORKS_REQUIRED');
  ensure(Array.isArray(corpus.instruments)&&corpus.instruments.length===21,'VIXEN_21_PROTOCOLS_REQUIRED');
  ensure(Array.isArray(corpus.giveback_tracks)&&corpus.giveback_tracks.length===6,
@@ -69,8 +71,11 @@ export function buildVixenLaboratories(corpus){
   const workRefs=(f.links||[]).filter(id=>id.startsWith('emwork_'));
   const protocolRefs=(f.links||[]).filter(id=>methods.has(id));
   ensure(workRefs.every(id=>works.has(id)),'FOLIO_FOREIGN_WORK_REFUSED');
+   const subject=classifyVixenFolio(f);
   entries.push(freeze({
    id:'LAB_'+f.id,folio_id:f.id,source_estate:'EMSTD613',
+    stage_role:subject.stage_role,stage_subject_kind:subject.kind,
+    primary_work:false,performer:false,scientific_claim_authority:false,
    research_family:f.group==='couture'?'REFRACTIVE_COUTURE_FORMALISM':'TYPED_CONSTITUTIVE_CYBERNETICS',
    name:f.title,summary:f.summary,formula:f.fallback,status:f.status,
    ceiling:f.ceiling,optic_program:optic,work_refs:freeze(workRefs),
@@ -83,6 +88,8 @@ export function buildVixenLaboratories(corpus){
   ensure(t.protocols.every(id=>methods.has(id)),'FOREIGN_METHOD_IN_GIVEBACK');
   entries.push(freeze({
    id:'LAB_'+t.id,folio_id:bind.folio,source_estate:'EMSTD613',
+    stage_role:'OPERA',stage_subject_kind:'PROSPECTIVE_GIVEBACK',primary_work:false,
+    performer:false,scientific_claim_authority:false,
    research_family:'VIXEN_GIVEBACK_PROSPECTIVE',name:t.title,summary:t.summary,
    formula:folios.get(bind.folio).fallback,
    status:t.status||'PROSPECTIVE_ONLY',ceiling:'PREREGISTRATION_CANDIDATE_NOT_EXECUTED',
@@ -216,6 +223,7 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
  }
  const annotation=freeze({
   lab_id:id,source_folio:lab.folio_id,source_family:lab.research_family,
+   stage_role:lab.stage_role,stage_subject_kind:lab.stage_subject_kind,
   original_formula:lab.formula,original_status:lab.status,
   source_works:lab.work_refs,recorded_methods:lab.instrument_refs,
   requested_mode:'INTERACTIVE_SYNTHETIC_REFERENCE_PROJECTION'
@@ -228,7 +236,7 @@ export function assessVixenLab(corpus,id,controls={},probe={x:0,y:0}){
   probe:visual.probe,visual_scalar:visual.diagnostic.field_value,
   metrics:freeze(diagnostics),
   authority:freeze({subject_from:'EMSTD613_CANONICAL_SOURCE_RECORDS',
-   optical_tooling_is_not_authorship:true,empirical_replication_credit:0,
+   optical_tooling_is_not_authorship:true,archival_folio_is_not_performer:true,empirical_replication_credit:0,
    human_closure:'RESERVED',experiment_b_flight:'HELD',
    scientific_claim:'BOUNDED_SYNTHETIC_OR_SOURCE_RECORDED_ONLY'})
  });
@@ -239,6 +247,9 @@ export function completeVixenSourceCensus(corpus){
   schema:VIXEN_LABS_SCHEMA,lab_count:labs.length,
   source_formula_labs:labs.filter(x=>x.kind==='CANONICAL_FORMULA_SIMULATION').length,
   source_track_labs:labs.filter(x=>x.kind==='PROSPECTIVE_GIVEBACK_SIMULATION').length,
+   opera_programme_folios:labs.filter(x=>x.stage_subject_kind==='RESEARCH_PROGRAMME').length,
+   opera_title_ornaments:labs.filter(x=>x.stage_subject_kind==='TITLE_ORNAMENT').length,
+   backstage_technical_folios:labs.filter(x=>x.stage_role==='OPERAHOUSE').length,
   source_work_count:corpus.works.length,
   source_original_record_count:corpus.works.reduce((n,w)=>n+w.linked_sources.length,0),
   source_instruments:corpus.instruments.length,

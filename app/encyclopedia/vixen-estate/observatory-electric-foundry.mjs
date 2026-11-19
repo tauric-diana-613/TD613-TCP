@@ -15,19 +15,19 @@ import {createFoundryRenderer} from './observatory-foundry-renderer.mjs';
 import {paintComputationalScore} from './observatory-computational-score.mjs';
 import {CARRIERS} from './observatory-foundry-kernel.mjs';
 import {globalMotionHeld} from './vixen-motion-governor.mjs';
+import {VIXEN_OPERA_HEADLINERS,canStageVixenFolio} from './vixen-stage-subject-contract.mjs';
 import {createObservatoryComposerDeck} from './observatory-composer-deck.mjs';
 import {measureObservatoryOpticalInstrument} from './observatory-optical-instrument-contract.mjs';
 
 export const ELECTRIC_STAGE_SCHEMA='emstd613.vixen.electric-foundry-stage/v1';
-const HEROES=Object.freeze(['LAB_TCC-01','LAB_TCC-04','LAB_TCC-05',
- 'LAB_RC-03','LAB_RC-07','LAB_RC-10']);
+const HEROES=Object.freeze(VIXEN_OPERA_HEADLINERS.map(id=>'LAB_'+id));
 const TITLES=Object.freeze({
  'LAB_TCC-01':['I · THE CONTROL CATHEDRAL','Non-collapsing constitutive planes'],
  'LAB_TCC-04':['II · THE VELVET VERNIER','Five irreducible time domains'],
  'LAB_TCC-05':['III · ALGEDONIC ARC FLASH','Raw danger versus smoothed response'],
- 'LAB_RC-03':['IV · THE [111] MIRROR','Projection that refuses to invert'],
- 'LAB_RC-07':['V · THE OBSERVABILITY LIFT','Singular values and rank deficit'],
- 'LAB_RC-10':['VI · THE XOR ORACLE','Synergy invisible to isolated witnesses']
+ 'LAB_TCC-06':['IV · THE CONSTITUTIVE MIRROR','Projection versus constitutive coupling'],
+ 'LAB_TCC-03':['V · THE UNRECEIVED WITNESS','Recursion cannot establish external witness truth'],
+ 'LAB_TCC-07':['VI · THE RESIDUE CHORUS','Four promotion levels with contradiction retained']
 });
 const node=(tag,className,text)=>{
  const el=document.createElement(tag);
@@ -84,7 +84,11 @@ function ellipsis(s,max=900){
 }
 function sourceBadge(lab){
  return node('div','ef-sourcebadge',
-  lab.id+' · '+lab.folio_id+' · '+lab.status+' · ORIGINAL VIXEN CORPUS')
+  lab.id+' · '+lab.folio_id+' · '+lab.status+' · '+
+   (lab.stage_subject_kind==='TITLE_ORNAMENT'?'OPERA ORNAMENT · NO MATHEMATICAL THEOREM':
+    lab.stage_subject_kind==='PROSPECTIVE_GIVEBACK'?'VIXEN PROSPECTIVE TRACK · NOT EXECUTED':
+    lab.stage_role==='OPERA'?'VIXEN INQUIRY MODEL · NOT A PRIMARY WORK':
+    'OPERAHOUSE TECHNICAL ARCHIVE · NOT A PERFORMER'))
 }
 export async function mountVixenElectricFoundry({
  host=document.getElementById('vixenElectricFoundry'),corpus,composerHost=null
@@ -96,7 +100,7 @@ export async function mountVixenElectricFoundry({
  let source;
  try{source=declaration(corpus);buildVixenLaboratories(source)}
  catch(e){
-  host.replaceChildren(claim('HELD · Original Vixen mathematical corpus unavailable: '+e.message));
+  host.replaceChildren(claim('HELD · Vixen mathematical programme inventory unavailable: '+e.message));
   return Object.freeze({mounted:false,reason:'SOURCE_CENSUS_FAILURE'});
  }
  const all=buildVixenLaboratories(source),byId=new Map(all.map(l=>[l.id,l]));
@@ -239,7 +243,7 @@ export async function mountVixenElectricFoundry({
   paint(true);indicate(reason);start();
  }
  function switchLab(id){
-  if(!byId.has(id))return false;
+  if(!byId.has(id)||!canStageVixenFolio(byId.get(id)))return false;
   if(id!==state.labId){state.composerDeck?.revert('LAB_CHANGED_EXPLICIT_REVIEW_REQUIRED');
    updateComposerReview();}
   state.labId=id;state.pointer={x:0,y:0};state.locked=false;
@@ -407,9 +411,9 @@ export async function mountVixenElectricFoundry({
   const crossed=/\bcrossed probes\b/i.test(accepted)&&/\bsignal\b/i.test(accepted)&&/\bglare\b/i.test(accepted);
   railTitle.textContent=crossed
    ?'Crossed probes.\nSignal cleaved\nfrom glare.'
-   :(accepted||'Six source-recorded arias.');
-  railHeading.dataset.synthesisHeadline=accepted||'Six source-recorded arias.';
-  railHeading.title=accepted||'Six source-recorded arias.';
+   :(accepted||'Six Vixen inquiry arias.');
+  railHeading.dataset.synthesisHeadline=accepted||'Six Vixen inquiry arias.';
+  railHeading.title=accepted||'Six Vixen inquiry arias.';
  }
  renderSynthesisHeadline(titleFromCover());
  const onSynthesisEditorial=(event)=>{
@@ -420,7 +424,7 @@ export async function mountVixenElectricFoundry({
  const proscenium=node('section','ef-proscenium');
  proscenium.setAttribute('aria-label','Six mathematical arias and live computed Vixen stage');
  const ariaScore=node('nav','ef-aria-score');
- ariaScore.setAttribute('aria-label','Choose one of six original Vixen mathematical performances');
+ ariaScore.setAttribute('aria-label','Choose one of six source-linked Vixen research inquiry models');
  add(ariaScore,railHeading,heroRail);
  const instrumentStage=node('div','ef-instrument-stage');
  add(instrumentStage,toolbar,eye,composerReview,apertureHud,holdBanner);
@@ -494,14 +498,7 @@ export async function mountVixenElectricFoundry({
    btn.setAttribute('aria-pressed',String(state.selectedCarrierPlane===pId));
    controlsRow.append(btn);
   }
-  const rc04Target=byId.has('LAB_RC-04')?'LAB_RC-04':(all.find(l=>l.optic_program==='LOOM_39')?.id||null);
-  if(rc04Target){
-   const jump=BTN('Stage 39-Skin Loom ('+rc04Target.replace('LAB_','')+') ↑',()=>{
-    switchLab(rc04Target);
-    stage.scrollIntoView?.({behavior:'smooth',block:'nearest'});
-   },'ef-carrier-filter ef-carrier-jump');
-   controlsRow.append(jump);
-  }
+  // Technical RC optical instruments remain archived, never selected as Vixen performers.
   const carrierDetail=node('div','ef-carrier-detail','Select or hover any of the 39 Loom-classified optical carriers to inspect its depth gain and phase plane.');
   const grid=node('div','ef-carrier-grid');
   for(const c of CARRIERS){
@@ -574,20 +571,18 @@ export async function mountVixenElectricFoundry({
  }
  function renderCatalogue(){
   gallery.replaceChildren();
-  add(gallery,label('THE SOURCE REGISTRY · 22 FOLIOS + 6 GIVEBACK ROUTES'),
-   claim('The six headliners are rendered as authored computational performances. Other source entries remain a catalogue of prospective reference projections, not twenty-eight completed spectacles.'));
+  add(gallery,label('THE VIXEN PROGRAMME · 7 RESEARCH FOLIOS + 1 ORNAMENT + 6 PROSPECTIVE TRACKS'),
+   claim('Six bounded, source-linked inquiry demonstrations are shown here; no synthetic folio is an original Work. Fourteen technical optical records stay in the archived machine register, outside this Opera stage.'));
   const picker=node('div','ef-gallery-tabs');
-  for(const [id,text] of [['UNIFIED','TCC · 8'],['COUTURE','RC · 14'],['GIVEBACK','GIVEBACK · 6']]){
+  for(const [id,text] of [['UNIFIED','TCC · 8'],['GIVEBACK','GIVEBACK · 6']]){
    const b=BTN(text,()=>{state.selectedCatalogueGroup=id;renderCatalogue()},'ef-gallery-tab');
    b.setAttribute('aria-pressed',String(state.selectedCatalogueGroup===id));
    picker.append(b)
   }
   gallery.append(picker);
   const list=node('div','ef-gallery-list');
-  const subset=all.filter(l=>state.selectedCatalogueGroup==='GIVEBACK'?
-   l.kind==='PROSPECTIVE_GIVEBACK_SIMULATION':
-   l.kind==='CANONICAL_FORMULA_SIMULATION'&&(
-    state.selectedCatalogueGroup==='UNIFIED'?l.folio_id.startsWith('TCC-'):l.folio_id.startsWith('RC-')));
+  const subset=all.filter(l=>state.selectedCatalogueGroup==='GIVEBACK'
+    ?l.kind==='PROSPECTIVE_GIVEBACK_SIMULATION':canStageVixenFolio(l)&&l.kind==='CANONICAL_FORMULA_SIMULATION');
   for(const item of subset){
    const b=BTN(item.folio_id+' · '+item.name,()=>switchLab(item.id),'ef-gallery-item');
    b.setAttribute('aria-pressed',String(item.id===state.labId));
@@ -605,7 +600,7 @@ export async function mountVixenElectricFoundry({
    const e=node('div','ef-census-cell');
    add(e,node('strong','',String(value)),node('small','',name));grid.append(e);
   }
-  add(evidence,grid,claim('OPERAHOUSE ≠ OPERA ≠ PERFORMER. Dome-Art, Loom, Aperture and Couture are borrowed instrument engines. All rendered mathematical subjects, equations and linked Works originate from Vixen’s own source registry. Experiment B protected Flight HELD.'));
+  add(evidence,grid,claim('OPERAHOUSE ≠ OPERA ≠ PERFORMER. Dome-Art, Loom, Aperture and Couture are borrowed instrument engines. The preserved original Works and derivative programme folios occupy different roles; fourteen technical RC folios remain backstage, retained for computation without acquiring Vixen authorship. Experiment B protected Flight HELD.'));
  }
  host.replaceChildren();
  host.dataset.stageRole='VIXEN_OPERA';
