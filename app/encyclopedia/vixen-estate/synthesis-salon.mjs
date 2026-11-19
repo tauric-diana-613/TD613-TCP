@@ -123,7 +123,7 @@ export function mountVixenSynthesisSalon({host=document.getElementById('vixenSyn
   const seamLuma=Number.isFinite(r?.seamContrast)?r.seamContrast:Number.isFinite(r?.seamLuma)?r.seamLuma:Number.isFinite(r?.meanLuma)?r.meanLuma:null;
   const activeMeta=CLOCKS.find(c=>c.id===state.activeClock)||CLOCKS[0];
   if(lamMin!==null&&lamMax!==null){
-   hudCells[0].textContent=`APERTURE RADIOMETRY · λ_beat ${lamMin.toFixed(1)}–${lamMax.toFixed(1)}px`;
+   hudCells[0].textContent=`SPECTRAL RADIOMETRY · λ_beat ${lamMin.toFixed(1)}–${lamMax.toFixed(1)}px`;
   }
   hudCells[1].textContent=`CARRIERS · ${carrierCounts.total} (${carrierCounts.near} NEAR · ${carrierCounts.mid} MID · ${carrierCounts.far} FAR)`;
   hudCells[2].textContent=nyq!==null
