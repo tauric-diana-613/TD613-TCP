@@ -255,6 +255,7 @@ jobs:
           node --test tests/vixen-native-atelier-bridge.test.mjs
           # Host-only historical compiler and retrospective Wendbine reconstruction controls.
           node --test tests/wendbine-proscenium-assay.test.mjs
+          node --test tests/vixen-wendbine-method-transfer.test.mjs
           # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
           node --test tests/vixen-src-original-typed-traversal.test.mjs
           # Original SRC Phase II role compiler, evidence interface, and tomography must execute on verified Vixen Works.
