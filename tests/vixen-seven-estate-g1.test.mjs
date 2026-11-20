@@ -169,6 +169,5 @@ test('MATH-C: native Dollhouse specialist preserves typed covariance veto',async
   assert.equal(finding.extensions.epistemic_deficit.deficit_class,'INVALID_NOISE_GEOMETRY');
   assert(finding.infractions.includes('INDEFINITE_NOISE_COVARIANCE'));
   assert(!finding.infractions.includes('URL_HASH_DOES_NOT_EQUAL_WORKSPACE_ADMITTED'));
-  assert.equal(run.machine_receipt.overall_decision?.startsWith('HELD')||
-    run.machine_receipt.overall_decision==='HELD',true);
+  assert.equal(run.exit_code,1,'Native mathematical veto must fail closed');
 });
