@@ -265,6 +265,7 @@ jobs:
           node --test tests/wendbine-open-world-ceiling.test.mjs
           node --test tests/vixen-dual-atelier-comparative-maestro.test.mjs
           node --test tests/vixen-human-comparative-field.test.mjs
+          node --test tests/vixen-em-atelier-proscenium.test.mjs
           node --check app/encyclopedia/vixen-estate/comparative-field-probes.mjs
           node --check app/encyclopedia/vixen-estate/vixen-comparative-field-trial.mjs
           node --test tests/vixen-observatory-throughput.test.mjs
