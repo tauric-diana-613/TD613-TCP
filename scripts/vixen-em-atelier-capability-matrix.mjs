@@ -15,7 +15,8 @@ const entries=[
  ['em_native_semantic','native-semantic-search-v1.py','ORIGINAL_TD613_ARCHIVAL_RETRIEVAL','HOST_ONLY_PRIVATE_VECTOR_MODEL_AND_INDEX_REQUIRED'],
  ['em_native_work_route','em-work-route-v1.py','ORIGINAL_TD613_WORK_IDENTITY_ROUTE','HOST_ONLY_EXTERNAL_SOURCE_REGISTRIES_REQUIRED'],
  ['em_native_research_journey','em-research-journey-v1.py','ORIGINAL_TD613_READONLY_DERIVATIVE_TO_WORK_JOURNEY','HOST_ONLY_EXTERNAL_SOURCE_REGISTRIES_REQUIRED'],
- ['em_verified_vixen_native_span_identity','em-motif-mechanism-control-v1.py','TD613_DERIVED_NATIVE_SOURCE_ANATOMY_FIREWALL','HOST_ONLY_REAL_VERIFIED_VIXEN_PAIR_EXECUTED']
+ ['em_verified_vixen_native_span_identity','em-motif-mechanism-control-v1.py','TD613_DERIVED_NATIVE_SOURCE_ANATOMY_FIREWALL','HOST_ONLY_REAL_VERIFIED_VIXEN_PAIR_EXECUTED'],
+ ['em_hostile_method_expedition','em-motif-mechanism-control-v1.py','TD613_DERIVED_NATIVE_FIREWALL_WITH_SYNTHETIC_ADVERSARIAL_CONTROLS','HOST_ONLY_REAL_VERIFIED_VIXEN_PAIR_EXECUTED']
 ];
 const sh=x=>createHash('sha256').update(x).digest('hex');
 const blob=x=>{const b=Buffer.from(x);return createHash('sha1').update(Buffer.concat([Buffer.from('blob '+b.length+'\0'),b])).digest('hex')};
