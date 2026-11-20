@@ -46,6 +46,26 @@ if (baselineProjection.functions?.['api/khonapolit.js']) {
   delete baselineProjection.functions['api/khonapolit.js'].includeFiles;
   baselineProjection.functions['api/khonapolit.js'].maxDuration = 60;
 }
+const ADMITTED_PYTHON_EXCLUDE =
+  '{packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**,docs/**,reports/**,tmp/**,.codex-temp/**,tests/**}';
+for (const pyFn of [
+  'api/dome-world-engine.py',
+  'api/dome-world-engine-guard.py',
+  'api/ash-local-commitment.py',
+  'api/ash-local-commitment-guard.py'
+]) {
+  assert.equal(
+    baselineProjection.functions?.[pyFn]?.excludeFiles,
+    ADMITTED_PYTHON_EXCLUDE,
+    `${pyFn} must carry the exact admitted non-runtime excludeFiles pattern`
+  );
+  if (pyFn === 'api/dome-world-engine.py') {
+    baselineProjection.functions[pyFn].excludeFiles =
+      'packages/dome_world_exact/{bridge,fixtures,schemas,tests,verification}/**';
+  } else {
+    delete baselineProjection.functions[pyFn].excludeFiles;
+  }
+}
 const baselineRaw = `${JSON.stringify(baselineProjection, null, 2)}\n`;
 const gitBlob = Buffer.concat([
   Buffer.from(`blob ${Buffer.byteLength(baselineRaw)}\0`),
