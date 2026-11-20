@@ -179,6 +179,7 @@ export const VIXEN_ESTATE_ASSET_PATHS = Object.freeze([
   'vixen-ai-session.mjs',
   'vixen-ai-conductor.mjs',
   'vixen-ai-journey.mjs',
+  'vixen-local-exit.mjs',
   'vixen-ai-journey.css',
   'vixen-opera-public-copy.mjs',
   'vixen-obsidian-reading-rgi26.css',
