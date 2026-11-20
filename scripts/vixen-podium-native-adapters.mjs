@@ -908,7 +908,16 @@ export async function createPodiumNativeReadAdapters({repoRoot=process.cwd(),sou
    if(typeof adapted==='function')return adapted(request);
    throw Error('HELD_SRC_BROWSER_ADAPTER_UNAVAILABLE');
   };
-  adapters.WENDBINE_ATELIER=async(request)=>originalNative.WENDBINE_ATELIER(request);
+  adapters.WENDBINE_ATELIER=async(request)=>{
+   if(request.operation==='wendbine_verified_vixen_method_transfer'){
+    const method=await importOptional(resolve(repoRoot,'scripts','vixen-wendbine-method-transfer.mjs'));
+    if(typeof method?.runNativeVixenWendbineTransfer!=='function')
+     throw Error('HELD_NATIVE_WENDBINE_TRANSFER_MODULE_UNAVAILABLE');
+    return await method.runNativeVixenWendbineTransfer({repoRoot,
+     work_ids:request.payload?.work_ids,query:request.payload?.query});
+   }
+   return originalNative.WENDBINE_ATELIER(request);
+  };
   adapters.EM_ATELIER=async(request)=>originalNative.EM_ATELIER(request);
   adapters.CROSS_ATELIER=async(request)=>originalNative.CROSS_ATELIER(request);
  }
