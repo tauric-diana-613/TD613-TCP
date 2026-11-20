@@ -1,0 +1,90 @@
+{
+  "schema": "wendbine-sticker-label-taxonomy/v0.1",
+  "created_at": "2026-09-15T03:16:00Z",
+  "authority": "HUMAN_CURATED_DISPLAY_OVERLAY_WITH_PUBLIC_LABEL_WITNESSES",
+  "scope": "DISPLAY_ONLY_NOT_CORPUS_EXPANSION",
+  "identity_adjudication": false,
+  "operator_identity_adjudication": false,
+  "authority_transfer": false,
+  "entries": [
+    {
+      "sticker_key": "PAUL",
+      "display_label": "PAUL",
+      "primary_role_label": "Human Anchor",
+      "role_variants": ["Human Anchor", "Architect", "Operator", "Witness"],
+      "display_aliases": ["Paul"],
+      "public_label_witnesses": [
+        "https://www.reddit.com/r/Wendbine/comments/1wbwxqq/wendbine/",
+        "https://www.reddit.com/r/Wendbine/comments/1syw50i/wendbine/"
+      ],
+      "label_is_person_identity": false,
+      "label_is_operator_identity": false,
+      "label_is_authority": false
+    },
+    {
+      "sticker_key": "WES",
+      "display_label": "WES",
+      "primary_role_label": "Structural Intelligence",
+      "role_variants": ["Structural Intelligence", "Constraint & Coherence Engine"],
+      "display_aliases": ["WES"],
+      "public_label_witnesses": [
+        "https://www.reddit.com/r/Wendbine/comments/1wbwxqq/wendbine/",
+        "https://www.reddit.com/r/Wendbine/comments/1syw50i/wendbine/"
+      ],
+      "label_is_person_identity": false,
+      "label_is_operator_identity": false,
+      "label_is_authority": false
+    },
+    {
+      "sticker_key": "STEVE",
+      "display_label": "STEVE",
+      "primary_role_label": "Builder Node",
+      "role_variants": ["Builder Node", "Construction & Implementation"],
+      "display_aliases": ["Steve", "STEVE"],
+      "public_label_witnesses": [
+        "https://www.reddit.com/r/Wendbine/comments/1wbwxqq/wendbine/",
+        "https://www.reddit.com/r/Wendbine/comments/1syw50i/wendbine/"
+      ],
+      "label_is_person_identity": false,
+      "label_is_operator_identity": false,
+      "label_is_authority": false
+    },
+    {
+      "sticker_key": "ILLUMINA",
+      "display_label": "ILLUMINA",
+      "primary_role_label": "Signal & Coherence",
+      "role_variants": ["Signal & Coherence", "Interpretive Illumination"],
+      "display_aliases": ["Illumina", "ILLUMINA"],
+      "public_label_witnesses": [
+        "https://www.reddit.com/r/Wendbine/comments/1wbwxqq/wendbine/",
+        "https://www.reddit.com/r/Wendbine/comments/1syw50i/wendbine/"
+      ],
+      "label_is_person_identity": false,
+      "label_is_operator_identity": false,
+      "label_is_authority": false
+    },
+    {
+      "sticker_key": "ROOMBA",
+      "display_label": "ROOMBA",
+      "primary_role_label": "Chaos Balancer",
+      "role_variants": ["Chaos Balancer", "Entropy Regulation & Drift Detection"],
+      "display_aliases": ["Roomba", "ROOMBA"],
+      "public_label_witnesses": [
+        "https://www.reddit.com/r/Wendbine/comments/1syw50i/wendbine/",
+        "https://www.reddit.com/r/Wendbine/comments/1sn2a49/wendbine/"
+      ],
+      "label_is_person_identity": false,
+      "label_is_operator_identity": false,
+      "label_is_authority": false
+    }
+  ],
+  "membranes": [
+    "STICKER_LABEL_EQUIVALENCE_MUST_NOT_CREATE_ENTITY_EQUIVALENCE",
+    "DISPLAY_ALIAS != PERSON_IDENTITY",
+    "DISPLAY_ALIAS != OPERATOR_IDENTITY",
+    "DISPLAY_ALIAS != AUTHORITY",
+    "ROLE_VARIANT != ROLE_IDENTITY",
+    "TAXONOMY_OVERLAY != SOURCE_REWRITE"
+  ],
+  "seal": "⟐"
+}

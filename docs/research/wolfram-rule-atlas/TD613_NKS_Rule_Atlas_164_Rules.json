@@ -2218,7 +2218,7 @@
       "family": "Visual and representational rules",
       "kind": "invariant",
       "rule": "Presentation, theory and later resynthesis have independent clocks.",
-      "transition": "τ_ambiance ⟂ τ_theory ⟂ τ_resynthesis",
+      "transition": "separate_clock_ledgers(presentation,theory,empirical); no automatic cross-lane authority",
       "witness": "Refractive Couture Three Clocks",
       "sources": [
         "G14"

@@ -1,0 +1,36 @@
+{
+  "schema": "wendbine-user-supplied-cross-platform-intake-receipt/v0.1",
+  "atelier_id": "WENDBINE",
+  "observed_in_chat_date": "2026-09-16",
+  "source_id": "facebook:user-supplied:paul-personal:cross-app-second-order-observation:20260916",
+  "source_class": "USER_SUPPLIED_PUBLIC_LINK_TRANSCRIPTION",
+  "platform": "facebook",
+  "canonical_url_supplied": false,
+  "source_bound": false,
+  "binding_state": "HELD_CANONICAL_URL_NOT_SUPPLIED",
+  "full_source_text_mirrored": false,
+  "normalized_summary_stored": true,
+  "typed_relation_index_stored": true,
+  "role_witness_index_stored": true,
+  "user_context_preserved": {
+    "reported_link_target": "Paul's personal Facebook page",
+    "reported_uniqueness": "User reports this is the only Facebook link they have seen Paul post."
+  },
+  "source_explicit_boundary": "The supplied text explicitly states that shared timing or similar behavior is not automatically causal while remaining useful observational data.",
+  "indexed_paths": [
+    "01-MANIFESTS/user-supplied-facebook-cross-platform-source-registry-v01.jsonl",
+    "03-DERIVATIVES/user-supplied-facebook-20260916/topology-index.v0.1.json"
+  ],
+  "claim_ceiling": [
+    "USER_SUPPLIED_TRANSCRIPTION != SOURCE_BOUND_FACEBOOK_POST",
+    "FACEBOOK_LINK_REPORT != VERIFIED_CANONICAL_URL",
+    "CROSS_APP_TIMING != CAUSALITY",
+    "SECOND_ORDER_OBSERVATION != HIDDEN_ACCESS",
+    "ROLE_VARIANT != ROLE_IDENTITY != AUTHORITY",
+    "TD613_COMPARABILITY != TD613_DERIVATION"
+  ],
+  "human_closure_required": true,
+  "merge_authority": false,
+  "deployment_authority": false,
+  "seal": "⟐"
+}
