@@ -259,6 +259,7 @@ jobs:
           node --test tests/wendbine-maestro-research-loop.test.mjs
           node --test tests/wendbine-proscenium-dollhouse.test.mjs
           node --test tests/wendbine-frequency-null-challenge.test.mjs
+          node --test tests/wendbine-topology-rewire-challenge.test.mjs
           # Execute the original Python SRC typed traverser against real verified Vixen derivatives.
           node --test tests/vixen-src-original-typed-traversal.test.mjs
           # Original SRC Phase II role compiler, evidence interface, and tomography must execute on verified Vixen Works.
