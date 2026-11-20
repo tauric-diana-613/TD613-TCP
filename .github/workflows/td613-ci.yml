@@ -255,6 +255,8 @@ jobs:
           node --test tests/vixen-src-original-typed-traversal.test.mjs
           # Original SRC Phase II role compiler, evidence interface, and tomography must execute on verified Vixen Works.
           node --test tests/vixen-src-original-phase2-host.test.mjs
+          # Keep Vixen optical-layer and antique-gold manuscript redpens enforceable.
+          node --test tests/vixen-stage35-visual-redpen.test.mjs
           node --test tests/vixen-public-copy.test.mjs
           node --test tests/vixen-ai-session.test.mjs
           node --check app/encyclopedia/vixen-estate/vixen-ai-journey.mjs
