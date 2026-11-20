@@ -1,0 +1,60 @@
+{
+  "schema": "td613.atelier-profile/v0.1",
+  "atelier_id": "EMSTD613",
+  "method_version": "td613.atelier-method/v0.1",
+  "method_pr": 1118,
+  "research_question": "For each Em-side work or bounded cluster, what relation, if any, can be earned relative to TD613, SRC, another Em-side work, or an external scientific witness without collapsing motif recurrence, chronology, manifestation identity, genealogy, mechanism, or empirical support?",
+  "source_unit": "preserved source file resolved through manifestation and operational Work identity with explicit provenance and identity uncertainty",
+  "snapshot_model": "PROVENANCE_PRESERVING_LINEAGE_CORPUS_WITH_IDENTITY_SENSITIVITY",
+  "profile_state": "DRAFT_UNMERGED_LINEAGE_ATELIER",
+  "active_stages": [
+    "S0_SCOPE_CUSTODY",
+    "S1_IDENTITY_MANIFESTATION_CONTROL",
+    "S2_BRUTAL_ANATOMY",
+    "S3_TYPED_RELATIONAL_TOPOLOGY",
+    "S4_TEMPORAL_VERSION_AUTHORITY_CONTROL",
+    "S5_CONVERGENCE_DIVERGENCE_LINEAGE",
+    "S6_RECONSTRUCTION_WITHDRAWAL_HELDOUT",
+    "S7_EXTERNAL_SCIENTIFIC_CONFRONTATION",
+    "S8_RED_TEAM_ALTERNATIVE_MODELS",
+    "S9_CLAIM_CEILING_NEXT_TEST_HUMAN_RETURN"
+  ],
+  "held_or_conditional_stages": {},
+  "aia_routes": ["EXPERIENTIAL", "CUSTODIAL", "AUDIT", "IMPLEMENTATION"],
+  "distinctive_strengths": [
+    "BLIND_INVENTORY",
+    "WORK_MANIFESTATION_IDENTITY_CONTROL",
+    "IDENTITY_SENSITIVITY",
+    "BRUTAL_ANATOMY",
+    "MOTIF_NULL",
+    "CONVERGENCE_DIVERGENCE",
+    "GENEALOGY",
+    "EMERGENCE_TEST",
+    "EXTERNAL_SCIENCE_CONFRONTATION",
+    "RED_TEAM_ALTERNATIVES"
+  ],
+  "identity_law": "SOURCE_FILE != MANIFESTATION != WORK; SUPPORTED_IDENTITY != CONFIRMED_IDENTITY",
+  "temporal_authority_law": "CHRONOLOGICAL_PRIORITY != CONCEPTUAL_PRIORITY != DERIVATION",
+  "negative_states": [
+    "SAME_WORK_SUPPORTED",
+    "AMBIGUOUS_NAME_MATCH",
+    "LIKELY_UNRELATED",
+    "IDENTITY_SENSITIVITY_REQUIRED",
+    "LINEAGE_UNRESOLVED",
+    "MECHANISM_UNRESOLVED"
+  ],
+  "graph_families": [
+    "SOURCE_MANIFESTATION",
+    "WORK_IDENTITY",
+    "MOTIF",
+    "MECHANISM",
+    "GENEALOGY",
+    "CONVERGENCE_DIVERGENCE",
+    "EMERGENCE",
+    "EXTERNAL_WITNESS",
+    "AUTHORITY_PROVENANCE"
+  ],
+  "supported_identity_requires_split_collapse_sensitivity": true,
+  "human_closure_required": true,
+  "scientific_promotion_authority": false
+}
