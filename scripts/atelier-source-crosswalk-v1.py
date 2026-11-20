@@ -50,7 +50,9 @@ def annotate(hits,em_root,*,limit=100):
                 "byte_end_exclusive","chunk_id","chunk_sha256","source_kind",
                 "relative_path","source_observation_class","relation_authority",
                 "source_version","source_epoch","source_observed_at","capture_at",
-                "method","score")}
+                "capture_manifest_sha256","capture_visibility_state","canonical_url",
+                "original_source_bytes_verified","capture_bytes_verified",
+                "method","score","embedding_model_sha256","matched_query_terms")}
         # Preserve distinct source/derivative span boundaries and rights status.
         span_hash=hit.get("chunk_sha256")
         src_hash=hit.get("source_sha256")
@@ -71,17 +73,49 @@ def annotate(hits,em_root,*,limit=100):
           "source_epoch":hit.get("source_epoch"),
           "source_observation_class":hit.get("source_observation_class"),
           "source_observed_at":hit.get("source_observed_at"),
-          "capture_at":hit.get("capture_at"),"source_field":hit.get("source_field"),
+          "capture_at":hit.get("capture_at"),
+          "capture_manifest_sha256":hit.get("capture_manifest_sha256"),
+          "capture_visibility_state":hit.get("capture_visibility_state"),
+          "source_field":hit.get("source_field"),
           "chunk_id":hit.get("chunk_id"),"span_sha256":span_hash,
           "byte_offset":byte_offset,"byte_length":byte_length,
           "byte_end_exclusive":byte_offset+byte_length,
           "rights_status":"UNVERIFIED_ORIGINAL_RETURN_HELD",
+          "retrieved_source_original_bytes_flag":hit.get("original_source_bytes_verified",False),
+          "retrieved_capture_bytes_verified":hit.get("capture_bytes_verified",False),
           "original_source_bytes_verified":False,
           "external_origin_proven":False,"human_approved":False,
           "method_origin":"SOURCE_CHUNK_PRODUCER_UPSTREAM",
           "adapter":"TD613_ATELIER_CROSSWALK",
           "semantic_equivalence_proven":False
         } if span_valid else None)
+        span_payload=item["source_span_receipt"]
+        item["span_commitment_sha256"]=(
+          hashlib.sha256(json.dumps(span_payload,ensure_ascii=False,sort_keys=True,
+             separators=(",",":")).encode("utf8")).hexdigest()
+          if span_payload is not None else None)
+        # A common envelope transports diverse executable returns without
+        # equating their original method, source ownership or evidentiary grade.
+        item["research_braid_envelope"]={
+          "schema":"td613.braid.method-observation-envelope/v1",
+          "implementation_id":hit.get("method"),
+          "method_origin":"SOURCE_INSTRUMENT_DECLARED_NOT_INFERRED",
+          "source_estate":estate,
+          "derivative_source_id":sid,
+          "span_commitment_sha256":item["span_commitment_sha256"],
+          "span_status":item["source_span_status"],
+          "observation_class":hit.get("source_observation_class") or "UNOBSERVED",
+          "observation_time":hit.get("source_observed_at") or hit.get("capture_at"),
+          "capture_id":hit.get("capture_id"),
+          "rights_status":"UNVERIFIED_ORIGINAL_RETURN_HELD",
+          "original_source_admission":False,
+          "cross_estate_method_equivalence_proven":False,
+          "original_performer_authorship_proven":False,
+          "empirical_replication_credit":0,
+          "human_approval_required":True,
+          "next_action":"HUMAN_SOURCE_AND_RIGHTS_REVIEW",
+          "uncertainty":"SOURCE_SPAN_AND_HISTORICAL_ORIGIN_NOT_EXTERNAL_AUTHENTICATED"
+        }
         if estate=="EMSTD613":
             rel=sid.removeprefix("derivative:")
             native=indexed.get(rel)
