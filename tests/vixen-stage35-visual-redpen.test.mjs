@@ -35,19 +35,19 @@ test('Maestro text sits above a gently visible field, not a flattened canvas',()
  assert.match(rule,/position:\s*relative/);
  assert.match(rule,/z-index:\s*2\s*!important/);
  assert.match(rule,/isolation:\s*isolate/);
- assert.match(rule,/linear-gradient\(120deg,rgba\(16,26,32,\.90\),rgba\(22,30,33,\.91\) 45%,rgba\(12,20,25,\.92\)\)/);
+ assert.match(rule,/linear-gradient\(120deg,rgba\(16,26,32,\.86\),rgba\(22,30,33,\.87\) 45%,rgba\(12,20,25,\.88\)\)/);
  assert.match(journey,/#vixenAiJourney \.vma-panel/);
  assert.match(mesh,/#vixenLivingMesh/);
  assert.match(mesh,/z-index:1\s*!important/);
  assert.match(html,/id="vixenAiJourney"/);
  assert.doesNotMatch(rule,/display:\s*none|opacity:\s*0|filter:\s*blur/);
 });
-test('Obsidian PDF manuscript title beats old dark rule with antique gold',()=>{
+test('Obsidian PDF manuscript title beats old dark rule with flaxen gold',()=>{
  const sel='.vix-reader-heading.vix-pdf-source-title';
  assert.ok(earlier.includes(sel));
  const rule=lastRule(reading,sel);
- assert.match(rule,/color:\s*#e8c895\s*!important/);
- assert.ok(contrast('e8c895','101b1c')>9);
+ assert.match(rule,/color:\s*#efd18a\s*!important/);
+ assert.ok(contrast('efd18a','101b1c')>9);
  assert.ok(html.indexOf('vixen-redpen-couture-rgi18.css')<html.indexOf('vixen-obsidian-reading-rgi26.css'));
  assert.match(reading,/vix-reader-paragraph/);
 });
