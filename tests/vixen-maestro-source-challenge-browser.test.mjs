@@ -94,13 +94,13 @@ try{
  await panel.getByRole('button',{name:'Investigate the actual structural claim'}).click();
  await page.waitForFunction(()=>window.VixenSourceChallenge.status().phase==='FIELDWORK');
  const form=panel.locator('form.ve-form');
- await fillEvidence(form);
+ await fillEvidence(page,form);
  await form.locator('[name=excerpt_0]').fill('Fabricated passage. This exact text is absent from the original source.');
  await form.getByRole('button',{name:'Record the redpen and prepare local receipt'}).click();
  await page.waitForFunction(()=>document.querySelector('#vmaSourceChallenge .ve-status')?.textContent?.includes('HELD_CHALLENGE_EXCERPT_NOT_IN_VERIFIED_SOURCE'),
   null,{timeout:20000});
  assert.equal(await page.evaluate(()=>window.VixenSourceChallenge.status().report_recorded),false);
- await fillEvidence(form);
+ await fillEvidence(page,form);
  await form.locator('[name=judgment]').selectOption('STRUCTURAL_CANDIDATE_UNPROVEN');
  await form.getByRole('button',{name:'Record the redpen and prepare local receipt'}).click();
  await page.waitForFunction(()=>window.VixenSourceChallenge.status().phase==='RECEIPT',
