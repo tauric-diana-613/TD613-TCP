@@ -46,7 +46,42 @@ def annotate(hits,em_root,*,limit=100):
         if estate not in ("SRC","EMSTD613","WENDBINE") or not isinstance(sid,str):
             raise ValueError("UNREGISTERED_CROSSWALK_ESTATE")
         item={k:hit.get(k) for k in ("estate","source_id","capture_id",
-                "source_field","source_sha256","byte_offset","method","score")}
+                "source_field","source_sha256","byte_offset","byte_length",
+                "byte_end_exclusive","chunk_id","chunk_sha256","source_kind",
+                "relative_path","source_observation_class","relation_authority",
+                "source_version","source_epoch","source_observed_at","capture_at",
+                "method","score")}
+        # Preserve distinct source/derivative span boundaries and rights status.
+        span_hash=hit.get("chunk_sha256")
+        src_hash=hit.get("source_sha256")
+        byte_offset=hit.get("byte_offset")
+        byte_length=hit.get("byte_length")
+        span_valid=(isinstance(span_hash,str) and re.fullmatch(r"[0-9a-f]{64}",span_hash)
+            and isinstance(src_hash,str) and re.fullmatch(r"[0-9a-f]{64}",src_hash)
+            and type(byte_offset) is int and byte_offset>=0
+            and type(byte_length) is int and byte_length>0
+            and hit.get("byte_end_exclusive",byte_offset+byte_length)==byte_offset+byte_length)
+        item["source_span_status"]="DERIVATIVE_SPAN_RECEIPT_BOUNDED" if span_valid else "HELD_SPAN_NOT_VERIFIED"
+        item["source_span_receipt"]=({
+          "schema":"td613.source-span-receipt/v1",
+          "estate":estate,"source_id":sid,"source_sha256":src_hash,
+          "manifestation_id":hit.get("manifestation_id"),
+          "source_kind":hit.get("source_kind"),"relative_path":hit.get("relative_path"),
+          "capture_id":hit.get("capture_id"),"source_version":hit.get("source_version"),
+          "source_epoch":hit.get("source_epoch"),
+          "source_observation_class":hit.get("source_observation_class"),
+          "source_observed_at":hit.get("source_observed_at"),
+          "capture_at":hit.get("capture_at"),"source_field":hit.get("source_field"),
+          "chunk_id":hit.get("chunk_id"),"span_sha256":span_hash,
+          "byte_offset":byte_offset,"byte_length":byte_length,
+          "byte_end_exclusive":byte_offset+byte_length,
+          "rights_status":"UNVERIFIED_ORIGINAL_RETURN_HELD",
+          "original_source_bytes_verified":False,
+          "external_origin_proven":False,"human_approved":False,
+          "method_origin":"SOURCE_CHUNK_PRODUCER_UPSTREAM",
+          "adapter":"TD613_ATELIER_CROSSWALK",
+          "semantic_equivalence_proven":False
+        } if span_valid else None)
         if estate=="EMSTD613":
             rel=sid.removeprefix("derivative:")
             native=indexed.get(rel)
@@ -76,6 +111,8 @@ def annotate(hits,em_root,*,limit=100):
     return {"schema":"td613.atelier-crosswalk/v1",
         "results":out,"em_registry_sha256":{"derivatives":dh,"work_manifestations":mh},
         "cross_estate_relations":"RETRIEVAL_CANDIDATES_ONLY",
+        "source_span_contract":"td613.source-span-receipt/v1",
+        "span_preservation":"PER_RESULT_DISTINCT_NO_SILENT_EQUIVALENCE",
         "independent_native_identity_confirmation":"REQUIRED_BEFORE_PROMOTION",
         "work_identity_may_be_human_gated":True,
         "scientific_promotion":False}
