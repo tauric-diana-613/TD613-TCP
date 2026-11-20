@@ -1,0 +1,35 @@
+{
+  "task_scope": "VIXEN_BRAID_G1_INVALID_COVARIANCE_NATIVE_CLI",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "roles": [
+    "APERTURE"
+  ],
+  "include_orchestrator": false,
+  "evidence_references": [
+    "app/engine/aperture-v32-typed-epistemic-deficit.js"
+  ],
+  "domain_inputs": {
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ]
+    }
+  }
+}
