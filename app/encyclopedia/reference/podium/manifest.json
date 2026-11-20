@@ -353,7 +353,8 @@
       "wendbine_maestro_research_step",
       "wendbine_public_frequency_null",
       "wendbine_public_topology_rewire",
-      "wendbine_public_directed_walk"
+      "wendbine_public_directed_walk",
+      "wendbine_public_open_world_ceiling"
     ],
     "EM_ATELIER": [
       "em_native_text",
