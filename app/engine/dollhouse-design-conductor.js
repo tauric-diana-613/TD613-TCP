@@ -31,6 +31,20 @@ import {
   validateStructuredSnapshotDomain,
   SERIALIZATION_PROFILES
 } from './dollhouse-atlas-relational-custody.js';
+import {
+  AVAILABLE_INSTRUMENTS,
+  VALID_MEDIA,
+  THEMATIC_CLUSTERS,
+  analyzeSeedSemantics,
+  inferContextualInstruments
+} from '../encyclopedia/vixen-estate/dollhouse-design-grammar.mjs';
+export {
+  AVAILABLE_INSTRUMENTS,
+  VALID_MEDIA,
+  THEMATIC_CLUSTERS,
+  analyzeSeedSemantics,
+  inferContextualInstruments
+};
 
 export const DOLLHOUSE_DESIGN_SCHEMA = 'td613.dollhouse-design.return-receipt/v0.2';
 export const DOLLHOUSE_DESIGN_VERSION = 'v0.2-candidate';
@@ -64,57 +78,7 @@ export const VALID_PROVENANCE_CLASSES = Object.freeze([
   'WORKING_TREE_LOCAL_SUBSTITUTE'
 ]);
 
-export const AVAILABLE_INSTRUMENTS = Object.freeze({
-  PHASONIC_COUNTERPOINT: {
-    id: 'PHASONIC_COUNTERPOINT',
-    label: 'D₃/φ Phasonic Counterpoint',
-    lineage: 'Aperture v3.2-alpha Triple Overlay',
-    operatesOn: 'transmedia invariance, periodic recurrence, quasiperiodic detour, and temporal lag',
-    suitableFor: ['VISUAL', 'MOTION', 'HYBRID', 'THEORETICAL'],
-    governing_theory: 'Triple Overlay (D₃ Periodic Lattice × φ Quasiperiodic Modulation × Heterostratigraphic Interference)'
-  },
-  CARO_INSTITUTIONAL_RECONSTRUCTION: {
-    id: 'CARO_INSTITUTIONAL_RECONSTRUCTION',
-    label: 'Caro Institutional Reconstruction',
-    lineage: 'Thinkers Bin (Robert Caro / Institutional Power)',
-    operatesOn: 'physical corridors, procedural friction, bureaucratic accumulation, and omitted records',
-    suitableFor: ['SCHOLARLY', 'VISUAL', 'PRODUCT', 'HYBRID'],
-    governing_theory: 'Robert Caro Archival Reconstruction & Procedural Resistance'
-  },
-  BUTLER_PERFORMATIVE_ITERATION: {
-    id: 'BUTLER_PERFORMATIVE_ITERATION',
-    label: 'Butler Performative Iteration',
-    lineage: 'Thinkers Bin (Judith Butler / Performative Subversion)',
-    operatesOn: 'ritualized reiteration, normative slippage, and compulsory legibility',
-    suitableFor: ['SCHOLARLY', 'THEORETICAL', 'VISUAL'],
-    governing_theory: 'Judith Butler Citational Reiteration & Normative Subversion'
-  },
-  SEDGWICK_REPARATIVE_TEXTURE: {
-    id: 'SEDGWICK_REPARATIVE_TEXTURE',
-    label: 'Sedgwick Reparative Texture',
-    lineage: 'Thinkers Bin (Eve Kosofsky Sedgwick / Reparative Reading)',
-    operatesOn: 'textural granularity, affective survival, and resisting paranoid closure',
-    suitableFor: ['SCHOLARLY', 'VISUAL', 'PRODUCT'],
-    governing_theory: 'Eve Kosofsky Sedgwick Paratactic Beside-ness & Affective Survival'
-  },
-  DIALECTICAL_TENSION: {
-    id: 'DIALECTICAL_TENSION',
-    label: 'Contrapuntal Dialectic',
-    lineage: 'Classical Dialectics & Polyphony',
-    operatesOn: 'irreducible antithesis, competing perspectives, and non-synthesizing juxtaposition',
-    suitableFor: ['SCHOLARLY', 'THEORETICAL', 'MOTION'],
-    governing_theory: 'Polyphonic Contrapuntalism & Irreducible Antithesis'
-  }
-});
-
-export const VALID_MEDIA = Object.freeze([
-  'VISUAL',
-  'MOTION',
-  'SCHOLARLY',
-  'THEORETICAL',
-  'PRODUCT',
-  'HYBRID'
-]);
+const VALID_DESIGN_INSTRUMENT_IDS = Object.freeze(Object.keys(AVAILABLE_INSTRUMENTS));
 
 function deepFreeze(value) {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
@@ -382,89 +346,8 @@ export function resolveHistoricalReferences(references = [], options = {}) {
   return Object.freeze(references.map(ref => resolveHistoricalReference(ref, options)));
 }
 
-export const THEMATIC_CLUSTERS = Object.freeze({
-  // Five selectable tradition clusters for deterministic instrument scoring
-  institutional: Object.freeze([
-    'king', 'court', 'power', 'authority', 'sovereign', 'censor', 'bureaucracy',
-    'statute', 'archive', 'allegiance', 'title', 'law', 'corridor', 'gatekeeper',
-    'administrative', 'official', 'procedural', 'redact', 'redaction', 'petition',
-    'waiting', 'waiting-room', 'hearing', 'permit', 'clerk', 'sanction', 'stamp'
-  ]),
-  performative: Object.freeze([
-    'performativity', 'performative', 'ritual', 'reiteration', 'reiterate', 'norm',
-    'normative', 'subversion', 'subversive', 'slippage', 'mimicry', 'convention',
-    'citation', 'citational', 'legibility', 'syntax', 'grammar', 'marks', 'repetition',
-    'parody', 'conformity', 'compulsory', 'script', 'iteration'
-  ]),
-  reparative: Object.freeze([
-    'reparative', 'texture', 'textural', 'beside', 'besideness', 'affective', 'care',
-    'survival', 'fragment', 'shelter', 'parataxis', 'paratactic', 'communal',
-    'vulnerability', 'dissolve', 'dissolution', 'reparation', 'touch', 'tactile',
-    'loss', 'wound', 'remedy', 'gathering', 'discarded', 'patch', 'textile'
-  ]),
-  dialectical: Object.freeze([
-    'dialectical', 'dialectic', 'tension', 'antithesis', 'polyphonic', 'polyphony',
-    'dissonance', 'contradiction', 'dispute', 'rival', 'oppose', 'opposition',
-    'irreducible', 'counterpoint', 'interval', 'unison', 'synthesis', 'antagonism',
-    'contrapuntal', 'thesis', 'incommensurable', 'conflict', 'voice'
-  ]),
-  phasonic: Object.freeze([
-    'phason', 'phasonic', 'quasiperiodic', 'lattice', 'periodic', 'moiré', 'trajectory',
-    'geometry', 'wave', 'interference', 'recurrence', 'detour', 'transmedia', 'cadence',
-    'temporal', 'spatial', 'endpoint', 'door', 'arrival', 'passage', 'stage', 'machinery',
-    'proscenium', 'scaffold', 'projection', 'strain', 'd3', 'phi', 'scene', 'time'
-  ]),
-  // Semantic descriptive clusters for candidate generation
-  temporal: Object.freeze([
-    'time', 'scene', 'history', 'before', 'after', 'dawn', 'future', 'past',
-    'passage', 'cadence', 'quietly', 'temporal', 'moment'
-  ]),
-  machinery: Object.freeze([
-    'machinery', 'machine', 'stage', 'pulley', 'crane', 'gear', 'lever',
-    'rigging', 'console', 'engine', 'instrument', 'mechanism', 'anvil'
-  ]),
-  textual: Object.freeze([
-    'punctuation', 'grammar', 'marks', 'sentence', 'clause', 'word', 'syntax',
-    'letters', 'language', 'title', 'ledger', 'record', 'stop', 'colon', 'dash'
-  ]),
-  spatial: Object.freeze([
-    'theater', 'corridor', 'door', 'endpoint', 'boundary', 'threshold',
-    'estuary', 'proscenium', 'hall', 'room', 'vault', 'site', 'ground'
-  ]),
-  relational: Object.freeze([
-    'arrive', 'differ', 'separate', 'change', 'converge', 'refract', 'invert',
-    'slip', 'reiterate', 'dissolve', 'suspend', 'hold'
-  ])
-});
-
-/**
- * Analyzes seed semantics to derive operative keywords and thematic tensions.
- * @param {string} seed
- * @returns {object}
- */
-export function analyzeSeedSemantics(seed = '') {
-  const clean = String(seed).toLowerCase();
-  const words = clean.match(/[a-z0-9'-]+/g) || [];
-
-  const detected = {};
-  for (const [clusterName, termList] of Object.entries(THEMATIC_CLUSTERS)) {
-    detected[clusterName] = words.filter(w => termList.includes(w));
-  }
-
-  const stopWords = new Set([
-    'a', 'an', 'the', 'in', 'which', 'are', 'and', 'each', 'of', 'it', 'to',
-    'for', 'with', 'on', 'at', 'by', 'from', 'but', 'is', 'as', 'that', 'this',
-    'when', 'where', 'only', 'all', 'any', 'into', 'over'
-  ]);
-  const salientKeywords = words.filter(w => !stopWords.has(w) && w.length > 2);
-
-  return {
-    raw: seed,
-    word_count: words.length,
-    detected_clusters: detected,
-    salient_keywords: Array.from(new Set(salientKeywords))
-  };
-}
+// Seed semantic clusters & analyzer are imported and re-exported from
+// app/encyclopedia/vixen-estate/dollhouse-design-grammar.mjs (zero-I/O shared core).
 
 export const CANONICAL_HISTORICAL_FIXTURES = Object.freeze({
   'tests/fixtures/dollhouse/caro_corridor_primary.html': Object.freeze({
@@ -961,36 +844,7 @@ export function deriveCommissionCandidates(commission) {
   return [candidateA, candidateB];
 }
 
-/**
- * Infers a context-sensitive default instrument from the semantic seed when omitted.
- * Uses deterministic token scoring across THEMATIC_CLUSTERS.
- * @param {string} seed
- * @returns {Array<string>}
- */
-export function inferContextualInstruments(seed = '') {
-  const analysis = analyzeSeedSemantics(seed);
-
-  const scores = {
-    CARO_INSTITUTIONAL_RECONSTRUCTION: analysis.detected_clusters.institutional.length,
-    BUTLER_PERFORMATIVE_ITERATION: analysis.detected_clusters.performative.length,
-    SEDGWICK_REPARATIVE_TEXTURE: analysis.detected_clusters.reparative.length,
-    DIALECTICAL_TENSION: analysis.detected_clusters.dialectical.length,
-    PHASONIC_COUNTERPOINT: analysis.detected_clusters.phasonic.length
-  };
-
-  // Find candidate with highest score (deterministic tie-break follows order above)
-  let bestInstrument = null;
-  let maxScore = 0;
-  for (const [inst, score] of Object.entries(scores)) {
-    if (score > maxScore) {
-      maxScore = score;
-      bestInstrument = inst;
-    }
-  }
-
-  // If at least one cluster matched with score > 0, return best; otherwise predictable fallback to PHASONIC
-  return [bestInstrument || 'PHASONIC_COUNTERPOINT'];
-}
+// inferContextualInstruments imported and re-exported from dollhouse-design-grammar.mjs.
 
 /**
  * Normalizes and validates the incoming design commission.

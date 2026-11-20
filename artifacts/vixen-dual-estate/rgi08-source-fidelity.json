@@ -1,0 +1,117 @@
+{
+  "schema": "td613.vixen.rgi08.reparative-exact-head-retention/v1",
+  "original_predecessor_sha": "adaf4da2b13abed98bbefcef30d89ac05aeee3c3",
+  "current_head": "270e3a8d20bb4c4339bedb538adf679074602a71",
+  "original_corpus_sha256": "7569eff8a5dbf2924b1e96efe248acfcec76648bdf8fad64deae7030444be362",
+  "successor_corpus_sha256": "7569eff8a5dbf2924b1e96efe248acfcec76648bdf8fad64deae7030444be362",
+  "checks": [
+    {
+      "name": "IMMUTABLE_ARCHIVE_BYTE_IDENTITY",
+      "pass": true
+    },
+    {
+      "name": "HISTORICAL_SIGNATURE_PRESENT",
+      "pass": true
+    },
+    {
+      "name": "VIEW_OVERVIEW",
+      "pass": true
+    },
+    {
+      "name": "VIEW_OBSERVATORY",
+      "pass": true
+    },
+    {
+      "name": "VIEW_WORKS",
+      "pass": true
+    },
+    {
+      "name": "VIEW_GATES",
+      "pass": true
+    },
+    {
+      "name": "VIEW_PROTOCOLS",
+      "pass": true
+    },
+    {
+      "name": "VIEW_HOLDS",
+      "pass": true
+    },
+    {
+      "name": "VIEW_COLLECTION",
+      "pass": true
+    },
+    {
+      "name": "VIEW_REFERENCE",
+      "pass": true
+    },
+    {
+      "name": "ORIGINAL_4_MODEL_OBSERVATORY",
+      "pass": true
+    },
+    {
+      "name": "CANVAS_RETAINED",
+      "pass": true
+    },
+    {
+      "name": "22_ORIGINAL_FORMULA_FOLIOS",
+      "pass": true
+    },
+    {
+      "name": "THE_ORIGINAL_8_GATES_REMAIN_UNADJUDICATED",
+      "pass": true
+    },
+    {
+      "name": "ORIGINAL_CART_REUSED",
+      "pass": true
+    },
+    {
+      "name": "SALON_CREATIVE_ENGINE_PRESENT",
+      "pass": true
+    },
+    {
+      "name": "SALON_CREATED_FROM_SAME_SOURCE_CORPUS",
+      "pass": true
+    },
+    {
+      "name": "OPERAHOUSE_SEPARATION",
+      "pass": true
+    },
+    {
+      "name": "MACHINE_TASK_INTERFACE_SEPARATE",
+      "pass": true
+    },
+    {
+      "name": "HUMAN_AUTHORSHIP_NOT_PROMOTED",
+      "pass": true
+    },
+    {
+      "name": "ORIGINAL_HUMAN_GATE_SENSITIVITY_UNALTERED",
+      "pass": true
+    },
+    {
+      "name": "NO_AUTOMATIC_PROTECTED_FLIGHT",
+      "pass": true
+    }
+  ],
+  "corpus_census": {
+    "works": 32,
+    "manifestations": 53,
+    "human_gates": 8,
+    "instruments": 21,
+    "giveback_tracks": 6,
+    "source_class": "EXPERIMENT_A_PREVIEW_COMPANION_AUTHORIZED",
+    "original_source_bodies": "EXPERIMENT_A_PREVIEW_AUTHORIZED"
+  },
+  "performed_probes": [
+    "SOURCE_REJECTION",
+    "CLOCK_SENSITIVITY",
+    "SOURCE_ORDER_NON_EQUIVALENCE"
+  ],
+  "source_free_read_only": true,
+  "independent_empirical_acquisition_credit": 0,
+  "experiment_b_flight": "HELD",
+  "scientific_qualification": "NOT_GRANTED",
+  "authored_by": "NATIVE_SOURCE_RETENTION_ASSAY",
+  "human_creative_closure": "RESERVED"
+}

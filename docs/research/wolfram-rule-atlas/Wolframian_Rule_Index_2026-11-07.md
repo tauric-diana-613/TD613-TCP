@@ -262,7 +262,7 @@ We do not infer causal invariance from an apparently identical terminal answer; 
 | Rule | Type | Transition / invariant | Evidence and ceiling | Trace |
 |---|---|---|---|---|
 | **X-058** | constraint | **Artwork may precede source admission as provisional presentation.**<br/>`creative image -> visual anchor, evidentiary authority zero` | Empty Encyclopedia and Vixen frontispiece precedent | G10, G14 |
-| **X-059** | invariant | **Presentation, theory and later resynthesis have independent clocks.**<br/>`τ_ambiance ⟂ τ_theory ⟂ τ_resynthesis` | Refractive Couture Three Clocks | G14 |
+| **X-059** | invariant | **Presentation, theory and later resynthesis have independent clocks.**<br/>`separate_clock_ledgers(presentation,theory,empirical); no automatic cross-lane authority` | Refractive Couture Three Clocks | G14 |
 | **X-060** | constraint | **Refractive Couture PP0–PP6 defines a separate mathematical-image research pipeline, with independently gated entry.**<br/>`deferred math/art pipeline -> new artwork and inquiry only under separate postflight activation` | Deferred Refractive Couture pipeline | G14, G01 |
 | **X-061** | invariant | **A rendered silhouette cannot uniquely recover an occluded 3D object.**<br/>`2D projection -> infinitely many compatible depth configurations` | Inverse-projection nullspace RC-03 | G14 |
 | **X-062** | constraint | **Apparent axial symmetry can be projection-induced coincidence.**<br/>`different 3D symmetry groups -> same visible quotient` | Observational quotient collapse; no hidden discovery | G14 |

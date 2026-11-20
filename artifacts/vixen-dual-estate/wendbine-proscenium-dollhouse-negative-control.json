@@ -1,0 +1,136 @@
+{
+  "schema": "td613.wendbine.proscenium-dollhouse-negative-control/v1",
+  "task_scope": "WENDBINE_OPERAHOUSE_SOURCE_ROLE_TEMPORAL_ADMISSIBILITY_NEGATIVE_CONTROL",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "source_revision": "RUNTIME_EXACT_GIT_HEAD_SUPPLIED_BY_NATIVE_TEST",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "scripts/wendbine-proscenium-assay.mjs",
+    "scripts/vixen-wendbine-method-transfer.mjs",
+    "scripts/wendbine-evidence-routes-v1.py",
+    "scripts/wendbine-bitemporal-capture-v1.py",
+    "scripts/wendbine-maestro-research-loop.mjs",
+    "scripts/vixen-native-atelier-bridge.mjs",
+    "scripts/vixen-podium-native-adapters.mjs",
+    "app/encyclopedia/reference/vixen-podium.mjs",
+    "app/encyclopedia/reference/podium/manifest.json"
+  ],
+  "control_designation": "DELIBERATE_NEGATIVE_CONTROL_NOT_REPOSITORY_OR_EMPIRICAL_VIOLATION",
+  "notes": [
+    "Distinct PROVENANCE: source Reddit publication versus TD613 historical fixture versus derived host method versus Vixen Performer",
+    "Pedagogue negative case deliberately confuses NOTICE, NAME and WORLD_ANSWERS",
+    "Aperture negative case intentionally rank-deficient; no unobserved subspace is reconstructed",
+    "Atlas negative case shares terminal classification but retains distinct route histories",
+    "FADT negative case attempts illegal role/authority crossing between separate estates",
+    "Temporal Custodian negative case withholds human closure and source-history rest",
+    "Five native specialist calls are synthetic fault-injection witnesses, not an independent scholarly review or external empirical proof"
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "ACT",
+          "at": 1
+        },
+        {
+          "phase": "NAME",
+          "at": 2
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 3
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "WITNESSED_UNLINKED_PAIR",
+        "winding": 0,
+        "history": [
+          "PUBLIC_WENDBINE_SOURCE",
+          "TD613_ORIGINAL_COMPILER",
+          "DERIVED_HOST_METHOD"
+        ]
+      },
+      "trajectoryB": {
+        "endpoint": "WITNESSED_UNLINKED_PAIR",
+        "winding": 1,
+        "history": [
+          "VIXEN_VERIFIED_WORK",
+          "DERIVED_HOST_METHOD",
+          "PODIUM_RECEIPT"
+        ]
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "WENDBINE_PUBLIC_SOURCE",
+          "support": [
+            "SOURCE_URL_BOUND",
+            "SOURCE_POSTER_AUTHORSHIP_UNPROMOTED"
+          ]
+        },
+        {
+          "condition": "VIXEN_EXPERIMENT_A_WORK",
+          "support": [
+            "MANIFEST_AND_DERIVATIVE_SHA",
+            "VIXEN_PERFORMER_ONLY"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": true
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INGRESS": {
+          "status": "PASS",
+          "entry_id": "HISTORICAL_AUDITS_ADMITTED"
+        },
+        "EXECUTION": {
+          "status": "PASS",
+          "entry_id": "PODIUM_SOURCE_FREE_TESTED"
+        },
+        "RELOCK": {
+          "status": "HELD",
+          "entry_id": "HUMAN_ADJUDICATION_RESERVED"
+        }
+      },
+      "required_phases": [
+        "INGRESS",
+        "EXECUTION",
+        "RELOCK"
+      ]
+    }
+  }
+}

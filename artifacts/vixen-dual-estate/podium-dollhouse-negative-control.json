@@ -1,0 +1,129 @@
+{
+  "schema": "td613.vixen.podium.native-dollhouse-input/v1",
+  "task_scope": "PR1730_PODIUM_OPERAHOUSE_TYPED_SOURCE_AND_AGENT_AUTHORITY_ADVERSARIAL_NEGATIVE_CONTROL",
+  "evidence_class": "SYNTHETIC_TEST_FIXTURE",
+  "source_revision": "RUNTIME_EXACT_GIT_HEAD_SUPPLIED_BY_NATIVE_TEST",
+  "roles": [
+    "PEDAGOGUE",
+    "APERTURE",
+    "ATLAS",
+    "FADT",
+    "TEMPORAL_CUSTODIAN"
+  ],
+  "include_orchestrator": true,
+  "evidence_references": [
+    "app/encyclopedia/reference/vixen-podium.mjs",
+    "app/encyclopedia/reference/podium/manifest.json",
+    "app/encyclopedia/reference/vixen-operator-encounter.mjs",
+    "app/encyclopedia/reference/vixen-read-gateway.mjs",
+    "tests/vixen-podium.test.mjs"
+  ],
+  "control_designation": "DELIBERATE_NEGATIVE_CONTROL_NOT_REPOSITORY_OR_EMPIRICAL_VIOLATION",
+  "notes": [
+    "Pedagogue deliberately receives NAME before WORLD_ANSWERS and no NOTICE; must retain cadence hold.",
+    "Aperture deliberately receives a rank-deficient synthetic observation and an otherwise valid covariance; replay stability remains held.",
+    "Atlas receives equal terminal classification with distinct path histories; must reject a forced history merger.",
+    "FADT receives same shared terminal source class under unequal permission supports; must reject unconditional engine authorizations.",
+    "Temporal Custodian receives an explicitly HELD human relock; no synthetic fixture may claim real operator closure.",
+    "This native five-role run tests engine responsiveness to negative controls. It cannot prove the real Podium code satisfies all research requirements."
+  ],
+  "domain_inputs": {
+    "PEDAGOGUE": {
+      "events": [
+        {
+          "phase": "ACT",
+          "at": 1
+        },
+        {
+          "phase": "NAME",
+          "at": 2
+        },
+        {
+          "phase": "WORLD_ANSWERS",
+          "at": 3
+        }
+      ]
+    },
+    "APERTURE": {
+      "current_operator": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "noise_covariance": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "latent_dimension": 2
+    },
+    "ATLAS": {
+      "trajectoryA": {
+        "endpoint": "WITNESSED_UNLINKED_PAIR",
+        "winding": 0,
+        "history": [
+          "VIXEN_SOURCE",
+          "UNIVERSAL_VERIFIED"
+        ]
+      },
+      "trajectoryB": {
+        "endpoint": "WITNESSED_UNLINKED_PAIR",
+        "winding": 1,
+        "history": [
+          "UNIVERSAL_VERIFIED",
+          "VIXEN_SOURCE"
+        ]
+      }
+    },
+    "FADT": {
+      "fiberRows": [
+        {
+          "condition": "VIXEN_SOURCE",
+          "support": [
+            "WORK_INSPECT",
+            "NO_AUTHORSHIP_PROMOTION"
+          ]
+        },
+        {
+          "condition": "UNIVERSAL_REFERENCE",
+          "support": [
+            "RECORD_READ",
+            "NO_AUTHORSHIP_PROMOTION"
+          ]
+        }
+      ],
+      "attempts_unconditioned_action": true
+    },
+    "TEMPORAL_CUSTODIAN": {
+      "phases": {
+        "INGRESS": {
+          "status": "PASS",
+          "entry_id": "HISTORICAL_AUDITS_ADMITTED"
+        },
+        "EXECUTION": {
+          "status": "PASS",
+          "entry_id": "PODIUM_SOURCE_FREE_TESTED"
+        },
+        "RELOCK": {
+          "status": "HELD",
+          "entry_id": "HUMAN_ADJUDICATION_RESERVED"
+        }
+      },
+      "required_phases": [
+        "INGRESS",
+        "EXECUTION",
+        "RELOCK"
+      ]
+    }
+  }
+}

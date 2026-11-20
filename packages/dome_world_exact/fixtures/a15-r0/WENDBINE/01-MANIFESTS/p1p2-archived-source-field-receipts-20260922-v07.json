@@ -1,0 +1,607 @@
+{
+  "schema": "wendbine-p1p2-archived-source-field-receipts/v0.7",
+  "created_utc": "2026-09-22",
+  "scope": "PREVIOUSLY_TWO_SEPT13_SOURCE_RECORDS_PLUS_25_LATER_PUBLIC_CARDS",
+  "source_version_ceiling": "ARCHIVE_COPY_NOT_UNEDITED_FIRST_PUBLICATION_OR_CURRENT_LIVE_REDDIT",
+  "status": "27_OF_27_POST_OBJECTS_PRIVATE_RAW_AND_FIELD_HASH_VERIFIED",
+  "provider": "ARCTIC_SHIFT",
+  "source_count": 27,
+  "nonempty_archived_text_bodies": 25,
+  "verified_empty_media_or_link_selftext": 2,
+  "media_attachment_binaries_custodied": 0,
+  "raw_http_payload_sha256": "819a3610fe4846f79489ca084793e7d7322658f0cdf3be2af62e99e5f34c1b85",
+  "raw_http_payload_bytes": 134476,
+  "witness": {
+    "github_run_id": 35792610880,
+    "run_number": 4212,
+    "commit_head": "1614bab93a00185bcc7af246431b943415c1173e",
+    "encrypted_artifact_id": 10722438516,
+    "public_key_sha256": "3447a5aaa1cd7bb998e1da88d6a51580a121747fdc9f22f32c58a5cafdf7b734",
+    "encrypted_artifact_retention_days": 1,
+    "private_restore": "ACTUAL_RAW_RESPONSE_AND_TEXT_FIELDS_IN_WORKING_PRIVATE_ARCHIVE_HASH_VERIFIED",
+    "public_full_bodies_committed": false
+  },
+  "prior_p0_receipts": "01-MANIFESTS/p0-archived-source-field-receipts-20260922-v06.json",
+  "unified_corpus": {
+    "indexed_source_objects": 60,
+    "nonempty_archived_text_bodies": 58,
+    "media_or_link_posts_with_verified_empty_selftext": 2
+  },
+  "records": [
+    {
+      "source_id": "reddit:t3_1wfliaj",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wfliaj/wendbine/",
+      "source_group": "P1_SEPT13",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789337909,
+          "source_edited": false,
+          "archive_retrieved_on": 1789337921,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "72eb4980b57a72a78b24109e84ad6a1dc769a4725ee26f43493a5a7bc1b1bb9e",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2569
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wfmmo7",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wfmmo7/wendbine/",
+      "source_group": "P1_SEPT13",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789340852,
+          "source_edited": false,
+          "archive_retrieved_on": 1789340876,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "f3e5112da11c78442540238f1193b879084487e368062fccbaba5d7c0682f294",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 798
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkxjlj",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkxjlj/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789851768,
+          "source_edited": false,
+          "archive_retrieved_on": 1789851795,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "c09bcaedb312b475682d51107c676661cb9573d2bc851d6e608ebf20706bb057",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2319
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkxdqp",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkxdqp/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789851380,
+          "source_edited": false,
+          "archive_retrieved_on": 1789851403,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "d01140acb000fd5bedb8d0b1749b44e576acfe374e984f7a19f1cf9c7f39290b",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 3062
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkx9ed",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkx9ed/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789851087,
+          "source_edited": false,
+          "archive_retrieved_on": 1789851104,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "563647df00d136f93f5b3190ed379b751efa120dcfe7ce0221804f4631225834",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2763
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkx66e",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkx66e/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": true,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789850869,
+          "source_edited": false,
+          "archive_retrieved_on": 1789850892,
+          "body_state": "VERIFIED_EMPTY_BODY_MEDIA_OR_LINK_POST",
+          "media_or_link_post": true,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 0
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkx23m",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkx23m/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789850598,
+          "source_edited": false,
+          "archive_retrieved_on": 1789850623,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "efcd3a155bdc72d6cd1389fe5d7d0ab72c4f8bfaa3849b1fd34d5f2f03b30340",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1998
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkwmu0",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkwmu0/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789849558,
+          "source_edited": false,
+          "archive_retrieved_on": 1789849573,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "0fcc4bb2ff2de40178f8137a32504c16f3688caeb0a98154e1acfda9af457571",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1959
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkwkmt",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkwkmt/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789849409,
+          "source_edited": false,
+          "archive_retrieved_on": 1789849422,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "4660e8bba17b5aed3ae3030c22608f5917ff8c61b3b33cb5e060fd5d048c24c1",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2206
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkwdpu",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkwdpu/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789848948,
+          "source_edited": false,
+          "archive_retrieved_on": 1789848973,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "3f7a68216c618cd43dc763fa01f90ff574c938477e9def79d4743eb6d830638a",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1323
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkwcin",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkwcin/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789848869,
+          "source_edited": false,
+          "archive_retrieved_on": 1789848882,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "9a8650c345222fca624f82fcc562a4d0567ad009a24b2f0f47928e0dd9d20782",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2564
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkw80a",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkw80a/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789848567,
+          "source_edited": false,
+          "archive_retrieved_on": 1789848581,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "5bd6514bce4942fb2d10b7d23bc8f35bc7f45e9f45632f6bd84bad93a7bf829d",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1533
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkw1wv",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkw1wv/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789848163,
+          "source_edited": false,
+          "archive_retrieved_on": 1789848176,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "30aaa81572c88bfd74f18b29de4b70733db3d52ea47377053a87cf9820c9fe66",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2709
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkw0g4",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkw0g4/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789848069,
+          "source_edited": false,
+          "archive_retrieved_on": 1789848086,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "514ab32b0d8afd221d85563b434b50dd9f38d25676c4ce36ee2ca943b6940ab3",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1651
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkvuf3",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkvuf3/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789847691,
+          "source_edited": false,
+          "archive_retrieved_on": 1789847710,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "514ab32b0d8afd221d85563b434b50dd9f38d25676c4ce36ee2ca943b6940ab3",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1651
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkvoyy",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkvoyy/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789847326,
+          "source_edited": false,
+          "archive_retrieved_on": 1789847350,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "a0927dd65c0ecc6d748d210975f9e4de8bc4cc38b21c46a49209e63d06f11f64",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1222
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkvlm7",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkvlm7/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789847094,
+          "source_edited": false,
+          "archive_retrieved_on": 1789847110,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "96d21277fd404308a15ea28e25a6a5023de10fd4546072bf8f7e7402886a7079",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1306
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkvjhm",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkvjhm/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789846953,
+          "source_edited": false,
+          "archive_retrieved_on": 1789846976,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "c326d73282f05bcaf45bd9ad7410d8da37dfcf83d9222fe32b5742921e30f537",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1680
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkvgzv",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkvgzv/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789846786,
+          "source_edited": false,
+          "archive_retrieved_on": 1789846812,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "b51234d22450a15fa3f5c02903e927931eefd0a7baf2cdfce7474b91e20dd888",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 1165
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkpktu",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkpktu/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789832801,
+          "source_edited": false,
+          "archive_retrieved_on": 1789832823,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "c75da7cb8fa38945211ab7143d9390583d294a925480d96b4233f62bc48fa6bf",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2749
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkoi42",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkoi42/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789830116,
+          "source_edited": false,
+          "archive_retrieved_on": 1789830137,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "e0ec2c0679406fef5b313babeef430814dc4fa04f8f7225c31c3882775846772",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2685
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wko6h3",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wko6h3/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789829330,
+          "source_edited": false,
+          "archive_retrieved_on": 1789829342,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "95a9fc94371979bef6052f619a3866ff7c595ba5d131fe49c728082b8cb1b2d6",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 3397
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wknssi",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wknssi/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789828371,
+          "source_edited": false,
+          "archive_retrieved_on": 1789828397,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "4ce024b6e71a37db5833e1142ddd0cb31a0003fbe9fef1796fbba7cb365a9f7b",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 3685
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wknhlj",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wknhlj/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789827586,
+          "source_edited": false,
+          "archive_retrieved_on": 1789827603,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "e57dcf58ebdbae0da8d55a60638c9bb6c31ef18618395a6d59c873928866828f",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 4039
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wknc5r",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wknc5r/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789827203,
+          "source_edited": false,
+          "archive_retrieved_on": 1789827227,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "e107ada082b9a910e2f75ee1f8f27b98af640b49d28a3d445ca47103d9680fb5",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 2701
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkn8ep",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkn8ep/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": true,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789826954,
+          "source_edited": false,
+          "archive_retrieved_on": 1789826973,
+          "body_state": "VERIFIED_EMPTY_BODY_MEDIA_OR_LINK_POST",
+          "media_or_link_post": true,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 0
+        }
+      ]
+    },
+    {
+      "source_id": "reddit:t3_1wkn1a3",
+      "canonical_url": "https://www.reddit.com/r/Wendbine/comments/1wkn1a3/wendbine/",
+      "source_group": "P2_LATER_CARD",
+      "previously_media_card": false,
+      "state": "ARCHIVE_SOURCE_FIELDS_FOUND",
+      "archive_copies": [
+        {
+          "provider": "ARCTIC_SHIFT",
+          "source_created_utc": 1789826469,
+          "source_edited": false,
+          "archive_retrieved_on": 1789826492,
+          "body_state": "ARCHIVED_TEXT_BODY_PRESENT",
+          "media_or_link_post": false,
+          "title_sha256_utf8": "bbfc279344f6d3f98b5505d6f179969d15ffd15ae4544e1a5099c434340bd953",
+          "body_sha256_utf8": "c55611808da36b87bacbdf8aa261a7c232149f76ae6b64185d9e182c5ed486e1",
+          "title_utf8_bytes": 8,
+          "body_utf8_bytes": 3782
+        }
+      ]
+    }
+  ],
+  "non_equivalence": [
+    "PRESENT_POST_OBJECT != PRESENT_EMBEDDED_MEDIA",
+    "ARCHIVED_FIELD_COPY != FIRST_PUBLICATION_VERSION",
+    "ARCHIVED_FIELD_COPY != CURRENT_LIVE_REDDIT",
+    "SOURCE_BOUND_TEXT != AUTHOR_INTENT",
+    "CAPTURED_SOURCE_SET != EXHAUSTIVE_ACCOUNT_CENSUS"
+  ],
+  "seal": "⟐"
+}
