@@ -13,6 +13,8 @@ import {dirname, resolve, relative, isAbsolute, sep} from 'node:path';
 const HERE=dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT=resolve(HERE,'../packages/dome_world_exact/fixtures/a15-r0/WENDBINE');
 const GRAPHS=Object.freeze(['G_D','G_A','G_F','G_I','G_T','G_P','G_R','G_O','G_X']);
+const EVIDENCE_CLASSES=Object.freeze(['SOURCE_EXPLICIT_OR_DIRECT_PARAPHRASE',
+ 'SOURCE_EXPLICIT_NEGATIVE_RELATION','SOURCE_EXPLICIT_SYNTHESIS','SOURCE_EXPLICIT_PROGRAM','SOURCE_EXPLICIT_SEQUENCE']);
 const MAX_POSTS=10000, MAX_EDGES=200000;
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const assert=(ok,code)=>{if(!ok)throw Error(code)};
@@ -43,7 +45,7 @@ export function validateNativeMaterials(meta,posts,relations){
  for(const e of relations){
   assert(ids.has(e.source_id),'HELD_RELATION_UNADMITTED_SOURCE');
   assert(GRAPHS.includes(e.graph),'HELD_UNREGISTERED_GRAPH_FAMILY');
-  assert(typeof e.evidence_class==='string'&&/^SOURCE_[A-Z0-9_]+$/.test(e.evidence_class),
+  assert(EVIDENCE_CLASSES.includes(e.evidence_class),
    'HELD_RELATION_EVIDENCE_PROMOTION');
   assert(['from','relation','to'].every(k=>typeof e[k]==='string'&&e[k].length>0),
    'HELD_MALFORMED_RELATION');
@@ -126,7 +128,11 @@ export function runReconstructionAssay({meta,posts,relations,mode='assay',target
  const shuffled=predict(title,reverse,earlierEdges);
  const permuted=predict(title,candidates,earlierEdges,{permute:true});
  const ablated=predict(title,candidates,earlierEdges,{ablate:true});
- const decoy=predict('Unrelated astronomical culinary basalt cartography',candidates,earlierEdges);
+ const targetTokens=tok(title);
+ const decoySource=[...candidates].sort((a,b)=>
+  overlap(targetTokens,tok(a.technical_header))-overlap(targetTokens,tok(b.technical_header))||
+  a.source_id.localeCompare(b.source_id))[0]||null;
+ const decoy=predict(decoySource?.technical_header||'',candidates,earlierEdges);
  const baselineScore=score(baseline,target,relations);
  const results={C0:{kind:'BASELINE_EARLIER_PUBLIC_ONLY',prediction:baseline,scoring:baselineScore},
   C1:{kind:'ORDER_SHUFFLE_DETERMINISM_SANITY_ONLY',prediction:shuffled,
@@ -134,7 +140,11 @@ export function runReconstructionAssay({meta,posts,relations,mode='assay',target
    warning:'ORDER_INVARIANCE_IS_NOT_RECONSTRUCTION_EVIDENCE'},
   C2:{kind:'CONCEPT_LABEL_PERMUTATION',prediction:permuted,scoring:score(permuted,target,relations)},
   C3:{kind:'TYPED_EDGE_ABLATION',prediction:ablated,scoring:score(ablated,target,relations)},
-  C4:{kind:'UNRELATED_TECHNICAL_DECOY',prediction:decoy,scoring:score(decoy,target,relations)}};
+  C4:{kind:'EARLIER_REGISTERED_TECHNICAL_POST_MIN_LEXICAL_OVERLAP_DECOY',
+   decoy_source_id:decoySource?.source_id||null,
+   declared_lexical_overlap:decoySource?overlap(targetTokens,tok(decoySource.technical_header)):null,
+   semantic_independence_proven:false,
+   prediction:decoy,scoring:score(decoy,target,relations)}};
  const caution='SINGLE_TARGET_DIAGNOSTIC_NO_PREREGISTERED_MULTI_TARGET_OR_HISTORICAL_CAPTURE_WITNESS';
  const core={...common,state:'HELD_RECONSTRUCTION_NOT_ADJUDICATED',
   target_source_id:target.source_id,disclosed_query_surface:'TARGET_TECHNICAL_HEADER_OR_OPERATOR_QUERY',
@@ -161,6 +171,52 @@ export function runReconstructionAssay({meta,posts,relations,mode='assay',target
    next_steps:nextSteps,adaptive_rule:'STOP_OR_REVISE_IF_NEGATIVE_CONTROL_MATCHES_OR_OUTPERFORMS_BASELINE',
    loop_state:'WAITING_FOR_NEW_OPERATOR_OR_INDEPENDENT_EVIDENCE',
    can_proceed_without_new_evidence:false,automated_hypothesis_promotion:false}};
+}
+
+// Finite archive-wide sensitivity sweep. This is retrospective exploration;
+// it is not the untouched v0.1 preregistered held-out experiment.
+export function runRetrospectiveSweep({meta,posts,relations}){
+ validateNativeMaterials(meta,posts,relations);
+ const firstDay=sorted(new Set(posts.map(p=>p.public_date)))[0];
+ const eligible=posts.filter(p=>p.public_date>firstDay).sort((a,b)=>
+  a.public_date.localeCompare(b.public_date)||a.source_id.localeCompare(b.source_id));
+ const rows=eligible.map(target=>{
+  const receipt=runReconstructionAssay({meta,posts,relations,mode:'assay',target_source_id:target.source_id});
+  const s=receipt.controls;
+  return {source_id:target.source_id,public_day:target.public_date,
+   earlier_source_count:receipt.earlier_day_source_count,
+   baseline_graph_hits:s.C0.scoring.graph_hits,
+   label_permutation_graph_hits:s.C2.scoring.graph_hits,
+   edge_ablation_graph_hits:s.C3.scoring.graph_hits,
+   technical_decoy_graph_hits:s.C4.scoring.graph_hits,
+   baseline_neighbor_hits:s.C0.scoring.neighbor_hits,
+   decoy_source_id:s.C4.decoy_source_id,
+   baseline_abstained:s.C0.prediction.state.startsWith('ABSTAIN'),
+   control_order_witness:s.C1.identical_to_baseline,
+   positive_witness_source_ids:s.C0.prediction.witnesses.map(x=>x.source_id)};
+ });
+ const sum=k=>rows.reduce((n,x)=>n+x[k],0);
+ const strict=rows.filter(r=>r.baseline_graph_hits>r.label_permutation_graph_hits&&
+  r.baseline_graph_hits>r.technical_decoy_graph_hits).length;
+ return {schema:'td613.wendbine.public-retrospective-sweep/v1',
+  state:'HELD_EXPLORATORY_SWEEP_NOT_PREREGISTERED',
+  snapshot_id:meta.snapshot_id,coverage_state:meta.coverage.state,
+  baseline_source_count:posts.length,target_count:rows.length,earliest_public_day:firstDay,
+  chronology:'STRICTLY_EARLIER_PUBLISHED_DAY_NO_SAME_DAY_ORDER',
+  observation_clock:'NOT_HISTORICALLY_ATTESTED_BY_THIS_SNAPSHOT',
+  query_leakage:'TECHNICAL_HEADER_DISCLOSED',
+  negative_control_source:'EARLIER_PUBLIC_REGISTERED_TECHNICAL_POST',
+  aggregates:{baseline_graph_hits:sum('baseline_graph_hits'),
+   label_permutation_graph_hits:sum('label_permutation_graph_hits'),
+   edge_ablation_graph_hits:sum('edge_ablation_graph_hits'),
+   technical_decoy_graph_hits:sum('technical_decoy_graph_hits'),
+   baseline_neighbor_hits:sum('baseline_neighbor_hits'),
+   baseline_abstentions:rows.filter(r=>r.baseline_abstained).length,
+   baseline_beats_both_adversarial_graph_controls:strict},
+  per_target:rows,statistical_significance:'UNTESTED',
+  source_bodies_copied:false,private_state_accessed:false,
+  scientific_credit:0,human_closure_required:true,method_parity:'HELD_UNPROVEN',
+  claim_ceiling:'DESCRIPTIVE_RETROSPECTIVE_DIAGNOSTIC_NOT_INDEPENDENT_VALIDATION'};
 }
 
 export async function loadOriginalPublicFixture(root=DEFAULT_ROOT){
@@ -200,7 +256,7 @@ export async function loadOriginalPublicFixture(root=DEFAULT_ROOT){
 
 export async function runNativeWendbineAssay(opts={}){
  const native=await loadOriginalPublicFixture();
- const result=runReconstructionAssay({...native,...opts});
+ const result=opts.mode==='sweep'?runRetrospectiveSweep(native):runReconstructionAssay({...native,...opts});
  return {...result,original_compiler_receipt:native.compiler_receipt,source_byte_custody:native.digests,
   vixen_work_import_count:0,original_archive_modified:false};
 }
