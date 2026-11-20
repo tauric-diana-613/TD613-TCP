@@ -48,14 +48,21 @@ def source_chunks(source_iter,*,max_chars=1200,overlap=100):
                 chunk=text[begin:begin+max_chars]
                 if not chunk:break
                 offset=len(text[:begin].encode("utf8"))
+                span_bytes=chunk.encode("utf8")
+                span_sha256=digest(span_bytes)
+                span_length=len(span_bytes)
+                # Span identity includes byte length and digest; overlapping 200/400
+                # character selections can never collapse to one ID.
                 uid="chunk:"+digest(json.dumps([row["estate"],row["source_id"],
-                   row.get("capture_id"),field,field_hash,offset],
+                   row.get("capture_id"),field,field_hash,offset,span_length,span_sha256],
                    ensure_ascii=False,separators=(",",":")).encode("utf8"))
                 yield {"chunk_id":uid,"estate":row["estate"],
                   "source_id":row["source_id"],"capture_id":row.get("capture_id"),
                   "source_kind":row["source_kind"],"relative_path":row.get("relative_path"),
                   "source_field":field,"source_sha256":field_hash,
-                  "byte_offset":offset,"chunk_sha256":digest(chunk.encode("utf8")),
+                  "byte_offset":offset,"byte_length":span_length,
+                  "byte_end_exclusive":offset+span_length,
+                  "chunk_sha256":span_sha256,
                   "chunk":chunk,"source_observation_class":
                       "OPERATOR_LOCAL_OBSERVED_CAPTURE" if row.get("capture_id")
                       else "NATIVE_DERIVATIVE_OR_PROVIDER_OBSERVATION",
