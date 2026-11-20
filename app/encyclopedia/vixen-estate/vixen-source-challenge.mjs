@@ -227,7 +227,10 @@ export function mountVixenSourceChallenge(host=$('vmaSourceChallenge')){
  };
  const advance=(from,to)=>{if(!authorized()||state.phase!==from)return;
   state.phase=to;redraw()};
- const reset=()=>{state.epoch++;state.phase='SETUP';state.busy=false;
+ const reset=()=>{
+  if(state.receipt&&!state.receiptExportRequested &&
+     !window.confirm('This completed local challenge receipt has not been exported. Discard it and begin another challenge?'))return;
+  state.epoch++;state.phase='SETUP';state.busy=false;
   state.documents=null;state.result=null;state.report=null;state.receipt=null;state.error=null;state.focus=null;
   state.draft=Object.create(null);state.draftRevision++;state.receiptExportRequested=false;
   redraw()};
