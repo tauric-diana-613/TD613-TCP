@@ -352,7 +352,10 @@ export function runSrcPhase2ContextRoles(compilerInputs = [], recompilationEdges
   const byCompiler = new Map();
 
   for (const inp of compilerInputs) {
-    const cid = inp.compiler_id || 'unknown-compiler';
+    // Original SRC compilation refuses to key a role without both coordinates.
+    // An unnamed compiler or subject cannot acquire a fabricated contextual identity.
+    const cid = typeof inp?.compiler_id==='string'?inp.compiler_id.trim():'';
+    if(!cid||typeof inp.input_id!=='string'||!inp.input_id.trim())continue;
     if (!byCompiler.has(cid)) byCompiler.set(cid, []);
     byCompiler.get(cid).push(inp);
   }
@@ -365,9 +368,9 @@ export function runSrcPhase2ContextRoles(compilerInputs = [], recompilationEdges
         compiler_id: compilerId,
         work_or_entity_id: inp.input_id,
         architecture_scope_time: inp.scope_time || 'UNSPECIFIED_SCOPE_TIME',
-        contextual_role: inp.role_in_context || 'WITNESSED_INPUT',
+        contextual_role: inp.role_in_context || 'CANDIDATE_INPUT',
         intrinsic_role_claim: 'CONTEXTUAL_NOT_INTRINSIC',
-        adjudication_status: inp.adjudication_status || 'WITNESSED',
+        adjudication_status: inp.adjudication_status || 'UNRESOLVED',
         atelier_snapshot_id: snapshot,
         seal_epoch_binding: 'RESOLVE_MATCHED_CURRENT_SEAL',
         source_status: 'ARCHIVE_OBSERVATION'
