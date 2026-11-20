@@ -24,6 +24,14 @@ These are bounded *research routes*, not a claim that the five original speciali
 
 **STOP rule:** If the endpoint-aware method ties/loses relevant controls, if no genuine external witness is available, or if the proposed held-out outcome is already disclosed through archive inspection, retain HELD. Author acceptance and Vixen Composer release are separate human gates.
 
+## New 𝄐: pre-classified known-neighborhood vs open-world novelty
+
+The bounded host-only `wendbine_public_open_world_ceiling` instrument now executes the immutable original public source compiler and partitions 114 registered later-day concept occurrences into 35 prior-concept-and-endpoint, 6 prior-concept-only, 1 prior-endpoint-only, and 72 neither. This produces **73 unseen relative to earlier declared concepts** versus **79 outside the narrower intersection-only candidate universe**. Both denominators are required; silently substituting one for the other would overstate what a closed-vocabulary graph method could possibly predict.
+
+**Critical adverse witness:** all 12 retrospectively inspected targets contain at least one novel label, leaving zero known-only negatives. Novelty specificity, false-positive calibration, and AUROC are unidentifiable in this archive. The new title-phrase generator is explicitly a *disclosed-title literal leakage baseline*, plus a rotated synthetic-title control—not independently discovered semantics. [Full open-world charter](WENDBINE_OPEN_WORLD_NOVELTY_CHARTER_V1.md).
+
+The next legitimate target is a **prospectively frozen, independently captured mixed-class evaluation** with a real witness and independent blinded annotation. No additional internal archive recombination earns those conditions. A green CI result can establish source-typed execution and refusal, never a new empirical prospective finding.
+
 ## Required independent next acquisition before any prospective claim
 
 - Specify *in advance*, with human review and a dated external custody witness, the target population, admissible source URLs, publication/capture cutoffs, intended sample size, stopping rule, annotation protocol, missing-data policy and source-text usage rights. These entries remain **UNSET** here and therefore cannot be asserted as a completed preregistration.
